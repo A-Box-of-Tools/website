@@ -109,11 +109,25 @@
     <summary type="html">Retirez des mots d'un PDF au lieu de peindre un rectangle noir par-dessus. Les lettres sont supprimées des instructions de dessin de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé.</summary>
   </entry>
   <entry>
+    <title type="html">Image en SVG</title>
+    <id>https://abox.tools/fr/convertir-image-en-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-image-en-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Vectorisez une image en noir et blanc en un vrai contour SVG, dans votre navigateur. Logos, pochoirs, signatures, dessins au trait et silhouettes deviennent des courbes qui se redimensionnent à toute taille. Un clic retire ce que le tracé a pris à tort. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
     <title type="html">Lecteur de QR codes et de codes-barres</title>
     <id>https://abox.tools/fr/lecteur-de-qr-code/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/lecteur-de-qr-code/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Lisez un QR code depuis une photo, une capture d'écran ou votre caméra, et voyez exactement où mène le lien avant de l'ouvrir. Codes-barres EAN, UPC, Code 128, Code 39 et ITF aussi. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment vectoriser une image en SVG</title>
+    <id>https://abox.tools/fr/guides/convertir-une-image-en-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/convertir-une-image-en-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Transformez un logo, un pochoir, une signature ou une silhouette en un vrai contour vectoriel dans votre navigateur. Quelles images se vectorisent bien, lesquelles ne le feront jamais, et comment corriger ce que le traceur prend à tort.</summary>
   </entry>
   <entry>
     <title type="html">Comment faire un graphique de comparaison de tailles</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-un-gif-a-partir-d-images/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Transformer une série d'images en un GIF animé&amp;nbsp;: à quelle vitesse un GIF peut réellement défiler, ce que change le réglage de la palette, et les trois choses qui allègent vraiment le fichier.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment créer un code QR et prouver qu'il se scanne</title>
-    <id>https://abox.tools/fr/guides/creer-un-code-qr-et-prouver-qu-il-se-scanne/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-un-code-qr-et-prouver-qu-il-se-scanne/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Générer le code, puis le vérifier avec le lecteur du même site - la charge exacte, le vrai lien, à la taille d'impression et depuis une photo - avant le tirage. Tout dans le navigateur, rien d'envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment créer une miniature de vidéo depuis l'image exacte</title>
-    <id>https://abox.tools/fr/guides/creer-une-miniature-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-une-miniature-de-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Avancer image par image jusqu'au bon instant, l'enregistrer sans perte, la mettre au format de la plateforme et tenir sa limite d'octets. Trois outils du navigateur à la suite, et la vidéo ne quitte jamais votre machine.</summary>
   </entry>
 </feed>

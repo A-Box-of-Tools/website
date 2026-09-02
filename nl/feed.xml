@@ -102,6 +102,13 @@
     <summary type="html">Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat.</summary>
   </entry>
   <entry>
+    <title type="html">Afbeelding naar SVG</title>
+    <id>https://abox.tools/nl/afbeelding-naar-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-naar-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Trek een zwart-witafbeelding over tot een echte svg-omtrek, in je browser. Logo's, sjablonen, handtekeningen, lijntekeningen en silhouetten worden curven die je naar elk formaat kunt schalen. Klik weg wat het overtrekken verkeerd meenam. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF onleesbaar maken</title>
     <id>https://abox.tools/nl/pdf-onleesbaar-maken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-onleesbaar-maken/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-scannen/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo trek je een afbeelding over tot een svg</title>
+    <id>https://abox.tools/nl/gidsen/een-afbeelding-naar-svg-omzetten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-afbeelding-naar-svg-omzetten/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Maak van een logo, een sjabloon, een handtekening of een silhouet een echte vectoromtrek in je browser. Welke afbeeldingen goed overtrekken, welke dat nooit zullen doen, en hoe je verbetert wat de overtrekker fout doet.</summary>
   </entry>
   <entry>
     <title type="html">Base64-codeerder &amp; -decodeerder</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Maak van jpg-, png- of WebP-afbeeldingen een mp4-diavoorstelling, gratis en volledig in je browser. Er wordt niets geüpload, je hoeft je niet aan te melden, en het werkt offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Afbeeldingscompressor</title>
-    <id>https://abox.tools/nl/afbeelding-comprimeren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-comprimeren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comprimeer een JPEG, PNG of WebP naar een exacte grootte: 100 KB, 2 MB, wat je maar wilt. Draait volledig in je browser, uploadt niets en werkt offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Afbeeldingsformaat wijzigen</title>
-    <id>https://abox.tools/nl/afbeelding-formaat-wijzigen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-formaat-wijzigen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Schaal, snijd bij en zet JPEG-, PNG- en WebP-afbeeldingen om in je browser. Exacte pixels, een percentage of een lange zijde - één afbeelding of een hele map. Er wordt niets geüpload.</summary>
   </entry>
 </feed>

@@ -102,6 +102,13 @@
     <summary type="html">Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti.</summary>
   </entry>
   <entry>
+    <title type="html">Immagine in SVG</title>
+    <id>https://abox.tools/it/immagine-in-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagine-in-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Ricalca un'immagine in bianco e nero in un vero contorno SVG, nel browser. Loghi, stencil, firme, disegni al tratto e silhouette diventano curve che puoi scalare a qualsiasi dimensione. Un clic toglie quello che il ricalco ha preso di troppo. Non viene caricato niente.</summary>
+  </entry>
+  <entry>
     <title type="html">Lettore di QR code e codici a barre</title>
     <id>https://abox.tools/it/leggere-qr-code/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/leggere-qr-code/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/oscurare-pdf/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Togli le parole da un PDF invece di disegnarci sopra un rettangolo nero. Le lettere vengono cancellate dalle istruzioni con cui la pagina si disegna, il file finito viene riaperto e cercato per dimostrare che non ci sono più, e non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Come ricalcare un'immagine in un SVG</title>
+    <id>https://abox.tools/it/guide/convertire-un-immagine-in-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/convertire-un-immagine-in-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Trasforma un logo, uno stencil, una firma o una silhouette in un vero contorno vettoriale nel browser. Quali immagini si ricalcano bene, quali non lo faranno mai, e come sistemare le parti che il ricalco sbaglia.</summary>
   </entry>
   <entry>
     <title type="html">Codificatore e decodificatore Base64</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/verificare-il-checksum-di-un-file/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Come confrontare un checksum MD5 o SHA-256 su Windows, macOS e Linux o nel browser, cosa dimostra davvero una corrispondenza, e l'errore che rende inutile tutto l'esercizio.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come creare un codice QR e provare che si legge</title>
-    <id>https://abox.tools/it/guide/creare-un-codice-qr-e-provare-che-si-legge/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-un-codice-qr-e-provare-che-si-legge/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Genera il codice, poi verificalo con il lettore dello stesso sito: il contenuto esatto, il vero link, a misura di stampa e da una foto, prima della tiratura. Tutto nel browser, niente caricato.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come creare un video boomerang</title>
-    <id>https://abox.tools/it/guide/creare-un-video-boomerang/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-un-video-boomerang/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Taglia il momento, inverti la copia, unisci le due e mettilo in loop. Tre strumenti in fila, tutti nel browser, e l'ordine che riduce tutto il lavoro a un minuto.</summary>
   </entry>
 </feed>

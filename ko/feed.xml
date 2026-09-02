@@ -116,6 +116,20 @@
     <summary type="html">사진, 스크린숏, 카메라로 QR 코드를 읽고, 열기 전에 링크가 실제로 어디로 가는지 확인하세요. EAN, UPC, Code 128, Code 39, ITF 바코드도 읽습니다. 아무것도 올라가지 않습니다.</summary>
   </entry>
   <entry>
+    <title type="html">이미지를 SVG로</title>
+    <id>https://abox.tools/ko/이미지-svg-변환/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/이미지-svg-변환/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">흑백 이미지의 윤곽을 브라우저에서 진짜 SVG 곡선으로 땁니다. 로고, 스텐실, 서명, 선화, 실루엣이 어떤 크기로도 키울 수 있는 곡선이 됩니다. 잘못 딸려 온 것은 클릭 한 번으로 뺍니다. 아무것도 업로드되지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">이미지의 윤곽을 SVG로 따는 방법</title>
+    <id>https://abox.tools/ko/가이드/이미지-svg-변환하기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/이미지-svg-변환하기/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">로고, 스텐실, 서명, 실루엣을 브라우저에서 진짜 벡터 윤곽선으로 만듭니다. 어떤 이미지가 잘 따지고 어떤 이미지는 결코 안 되는지, 그리고 잘못 딴 부분을 고치는 법.</summary>
+  </entry>
+  <entry>
     <title type="html">Base64 인코더 · 디코더</title>
     <id>https://abox.tools/ko/base64-인코딩/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/exif-정보-삭제/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">사진에 숨어 있는 EXIF와 GPS 정보를 보고, 고치고, 한 번에 전부 지웁니다. 브라우저 안에서 처리하고, 아무것도 업로드하지 않으며, 사진 자체는 다시 인코딩되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 분석</title>
-    <id>https://abox.tools/ko/gif-분석/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-분석/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">브라우저에서 GIF를 뜯어봅니다. 프레임마다의 재생 시간과 폐기 방식, 색상 표, 반복 횟수, 그리고 용량이 어디로 갔는지 바이트 단위로 보여 줍니다. 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 프레임 분리</title>
-    <id>https://abox.tools/ko/gif-프레임-분리/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-프레임-분리/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">움직이는 GIF를 프레임으로 나눠 한 장씩 PNG로 저장합니다. 무료이고 전부 브라우저 안에서 돌아갑니다. 투명도와 재생 시간이 그대로 남고, 업로드는 없으며 오프라인에서도 됩니다.</summary>
   </entry>
 </feed>

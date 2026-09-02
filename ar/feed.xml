@@ -102,6 +102,13 @@
     <summary type="html">نسّق XML وأزِح أسطره واضغطه، وحوّل XML إلى JSON أو JSON إلى XML. المحلّل يعمل في متصفّحك ولا يُرفع شيء، فلا تغادر تغذيةٌ ولا فاتورةٌ ولا ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
+    <title type="html">صورة إلى SVG</title>
+    <id>https://abox.tools/ar/تحويل-صورة-إلى-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-صورة-إلى-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">تتبَّع صورة بالأبيض والأسود إلى خط محيط SVG حقيقي، داخل متصفحك. الشعارات والقوالب والتوقيعات والرسوم الخطية والظلال تصير منحنيات تكبّرها إلى أي حجم. وما التقطه التتبّع خطأً تزيله بنقرة. لا يُرفع شيء.</summary>
+  </entry>
+  <entry>
     <title type="html">طامس PDF</title>
     <id>https://abox.tools/ar/طمس-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-pdf/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/مسح-رمز-qr/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">اقرأ رمز QR من صورة أو لقطة شاشة أو كاميرتك، وانظر بالضبط إلى أين يذهب الرابط قبل أن تفتحه. وباركودات EAN وUPC وCode 128 وCode 39 وITF كذلك. ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تتبَّع صورة إلى SVG</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-صورة-إلى-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-صورة-إلى-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">حوِّل شعاراً أو قالباً أو توقيعاً أو ظلاً إلى خط محيط متجهي حقيقي في متصفحك. أي الصور تُتتبَّع جيداً، وأيها لن تُتتبَّع أبداً، وكيف تصلح الأجزاء التي يخطئ فيها المتتبِّع.</summary>
   </entry>
   <entry>
     <title type="html">رسم مقارنة الأطوال</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصور-إلى-فيديو/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">حوِّل صور JPG أو PNG أو WebP إلى فيديو عرض شرائح بصيغة MP4، مجاناً وداخل متصفحك بالكامل. ولا يُرفع شيء، ولا تسجيل، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
-    <title type="html">الصورة إلى Data URI</title>
-    <id>https://abox.tools/ar/تحويل-الصورة-إلى-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصورة-إلى-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل صورة PNG أو JPEG أو SVG أو WebP إلى Data URI تلصقه في CSS أو HTML. أما ملفات SVG فتُرمَّز بالنسبة المئوية لا بـ base64، فتبقى مقروءة وأقصر. يعمل داخل متصفحك، ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">الصورة إلى ICO</title>
-    <id>https://abox.tools/ar/إنشاء-فافيكون/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-فافيكون/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل ملف PNG أو JPEG أو SVG إلى ملف ‎.ico‎ حقيقي متعدّد الأحجام أو ملف ‎.icns‎ لـ macOS داخل متصفحك. فافيكون، وأيقونة تطبيق Windows، وأيقونة تطبيق Mac، ومعها ملفات Apple وAndroid التي يحتاجها الموقع. ولا يُرفع شيء.</summary>
   </entry>
 </feed>

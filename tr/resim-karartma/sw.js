@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resim-karartma/:';
-const CACHE_NAME=CACHE_PREFIX+'16617a8425';
+const CACHE_NAME=CACHE_PREFIX+'8418db65ed';
 const ASSETS=[
 './',
 'index.html',

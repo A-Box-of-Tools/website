@@ -102,6 +102,13 @@
     <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
+    <title type="html">Bild zu SVG</title>
+    <id>https://abox.tools/de/bild-in-svg-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-in-svg-umwandeln/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Ein Schwarz-Weiß-Bild im Browser in eine echte SVG-Kontur nachzeichnen. Logos, Schablonen, Unterschriften, Strichzeichnungen und Silhouetten werden zu Kurven, die sich in jede Größe skalieren lassen. Ein Klick entfernt, was der Tracer falsch verstanden hat. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF-Schwärzer</title>
     <id>https://abox.tools/de/pdf-schwaerzen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-schwaerzen/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/qr-code-scannen/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Einen QR-Code aus einem Foto, einem Screenshot oder mit der Kamera scannen und sehen, wohin der Link wirklich führt, bevor Sie ihn öffnen. Auch EAN, UPC, Code 128, Code 39 und ITF. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">So zeichnen Sie ein Bild als SVG nach</title>
+    <id>https://abox.tools/de/ratgeber/bild-in-svg-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/bild-in-svg-umwandeln/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Ein Logo, eine Schablone, eine Unterschrift oder eine Silhouette im Browser in eine echte Vektorkontur verwandeln. Welche Bilder sich gut nachzeichnen lassen, welche nie, und wie Sie korrigieren, was der Tracer falsch versteht.</summary>
   </entry>
   <entry>
     <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-schwaerzen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Namen, Adressen oder Kontonummern in einem Foto oder Screenshot abdecken und das Bild neu speichern, sodass die verdeckten Pixel wirklich weg sind und nicht unter einem Rechteck liegen. Läuft komplett im Browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bilder in Video</title>
-    <id>https://abox.tools/de/bilder-in-video-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-video-umwandeln/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPG-, PNG- oder WebP-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und offline geht es auch.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bildkompressor</title>
-    <id>https://abox.tools/de/bild-komprimieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-komprimieren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG, PNG oder WebP auf eine exakte Größe komprimieren, ob 100 KB oder 2 MB. Läuft komplett im Browser: kein Upload, kein Konto, auch offline.</summary>
   </entry>
 </feed>

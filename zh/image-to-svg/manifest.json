@@ -1,8 +1,8 @@
 {
   "id": "/zh/image-to-svg/",
-  "name": "Image to SVG",
-  "short_name": "Image to SVG",
-  "description": "One shape, one outline. Point at whatever should not be there.",
+  "name": "\u56fe\u7247\u8f6c SVG",
+  "short_name": "\u56fe\u7247\u8f6c SVG",
+  "description": "\u4e00\u4e2a\u5f62\u72b6\uff0c\u4e00\u6761\u8f6e\u5ed3\u3002\u4e0d\u8be5\u6709\u7684\u4e1c\u897f\uff0c\u70b9\u4e00\u4e0b\u5c31\u597d\u3002",
   "lang": "zh-Hans",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/hi/image-to-svg/",
-  "name": "Image to SVG",
-  "short_name": "Image to SVG",
-  "description": "One shape, one outline. Point at whatever should not be there.",
+  "name": "\u0924\u0938\u094d\u0935\u0940\u0930 \u0938\u0947 SVG",
+  "short_name": "\u0924\u0938\u094d\u0935\u0940\u0930 \u0938\u0947 SVG",
+  "description": "\u090f\u0915 \u0906\u0915\u093e\u0930, \u090f\u0915 \u0906\u0909\u091f\u0932\u093e\u0907\u0928\u0964 \u091c\u094b \u0928\u0939\u0940\u0902 \u0939\u094b\u0928\u093e \u091a\u093e\u0939\u093f\u090f, \u0909\u0938 \u092a\u0930 \u092c\u0938 \u0909\u0901\u0917\u0932\u0940 \u0930\u0916 \u0926\u0940\u091c\u093f\u090f\u0964",
   "lang": "hi",
   "dir": "ltr",
   "start_url": "./",

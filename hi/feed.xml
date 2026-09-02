@@ -116,6 +116,20 @@
     <summary type="html">किसी फ़ोटो, स्क्रीनशॉट या अपने कैमरे से QR कोड पढ़िए, और खोलने से पहले देखिए कि लिंक असल में कहाँ जाता है। EAN, UPC, Code 128, Code 39 और ITF बारकोड भी। कुछ भी अपलोड नहीं होता।</summary>
   </entry>
   <entry>
+    <title type="html">तस्वीर से SVG</title>
+    <id>https://abox.tools/hi/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/image-to-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">काली-सफ़ेद तस्वीर को ट्रेस करके असली SVG आउटलाइन बनाइए, अपने ब्राउज़र में ही। लोगो, स्टेंसिल, दस्तखत, लाइन ड्रॉइंग और सिल्हूट ऐसे कर्व बन जाते हैं जिन्हें आप किसी भी साइज़ तक बड़ा कर सकते हैं। ट्रेस में जो गलत आ गया, उसे एक क्लिक से हटाइए। कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीर को SVG में कैसे ट्रेस करें</title>
+    <id>https://abox.tools/hi/guides/trace-an-image-into-an-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/trace-an-image-into-an-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">लोगो, स्टेंसिल, दस्तखत या सिल्हूट को अपने ब्राउज़र में असली वेक्टर आउटलाइन बनाइए। कौन-सी तस्वीरें अच्छे से ट्रेस होती हैं, कौन-सी कभी नहीं होंगी, और ट्रेसर जो हिस्से गलत करता है उन्हें कैसे ठीक करें।</summary>
+  </entry>
+  <entry>
     <title type="html">Base64 एनकोडर-डिकोडर</title>
     <id>https://abox.tools/hi/base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/base64/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIF को उसके फ़्रेमों में खोलें, जो हटाना हो हटाएँ या क्रम बदलें, और समय-सारणी बचाए हुए फिर जोड़ दें। आने-जाने में क्या बचता है, पैलेट की कीमत क्या है, और GIF के भारी होने की वजह कैसे देखें।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF को फ़्रेमों में कैसे बाँटें</title>
-    <id>https://abox.tools/hi/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">चलती GIF का हर फ़्रेम PNG में निकालिए: कुछ फ़्रेम तस्वीर का सिर्फ़ एक छोटा टुकड़ा क्यों होते हैं, पारदर्शिता का क्या होता है, और समय कैसे सँभालें ताकि सब वापस जोड़ा जा सके।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF फ़्रेम स्प्लिटर</title>
-    <id>https://abox.tools/hi/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/split-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">किसी एनिमेटेड GIF को उसके फ़्रेम में बाँटिए और हर फ़्रेम को PNG में सहेजिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। ट्रांसपेरेंसी और टाइमिंग बनी रहती है। कुछ अपलोड नहीं होता और ऑफ़लाइन भी चलता है।</summary>
   </entry>
 </feed>

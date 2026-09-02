@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/reverse-video/:';
-const CACHE_NAME=CACHE_PREFIX+'8f9e90da84';
+const CACHE_NAME=CACHE_PREFIX+'aeb173b676';
 const ASSETS=[
 './',
 'index.html',

@@ -102,6 +102,13 @@
     <summary type="html">Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado.</summary>
   </entry>
   <entry>
+    <title type="html">Imagem para SVG</title>
+    <id>https://abox.tools/pt/imagem-para-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagem-para-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Vetorize uma imagem em preto e branco num contorno SVG de verdade, no seu navegador. Logotipos, estênceis, assinaturas, desenhos a traço e silhuetas viram curvas que você pode ampliar a qualquer tamanho. Um clique tira o que o traçado pegou por engano. Nada é enviado.</summary>
+  </entry>
+  <entry>
     <title type="html">Leitor de QR Code e código de barras</title>
     <id>https://abox.tools/pt/ler-qr-code/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/ler-qr-code/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/tarjar-pdf/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Tire palavras de um PDF em vez de desenhar um retângulo preto por cima. As letras são apagadas das próprias instruções de desenho da página, o arquivo pronto é reaberto e pesquisado para provar que sumiram, e nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como vetorizar uma imagem em SVG</title>
+    <id>https://abox.tools/pt/guias/converter-imagem-para-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-imagem-para-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Transforme um logotipo, um estêncil, uma assinatura ou uma silhueta num contorno vetorial de verdade no seu navegador. Quais imagens vetorizam bem, quais nunca vão vetorizar, e como consertar as partes que o traçador erra.</summary>
   </entry>
   <entry>
     <title type="html">Codificador e decodificador Base64</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Levar texto ou arquivos de um navegador para outro por uma conexão direta e criptografada: sem mandar e-mail para si mesmo, sem histórico de chat, sem conta, e sem servidor guardando cópia.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como conferir um download com o checksum dele</title>
-    <id>https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Como comparar um checksum MD5 ou SHA-256 no Windows, no macOS e no Linux ou no navegador, o que uma coincidência realmente prova, e o erro que deixa a operação inteira sem sentido.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como criar um código QR e provar que ele escaneia</title>
-    <id>https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Gere o código e depois verifique com o leitor do mesmo site: a carga exata, o link real, no tamanho de impressão e a partir de uma foto, antes da tiragem. Tudo no navegador, nada enviado.</summary>
   </entry>
 </feed>

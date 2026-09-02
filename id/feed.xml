@@ -102,6 +102,13 @@
     <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
   </entry>
   <entry>
+    <title type="html">Gambar ke SVG</title>
+    <id>https://abox.tools/id/gambar-ke-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Jiplak gambar hitam putih menjadi garis luar SVG sungguhan, di peramban Anda. Logo, stensil, tanda tangan, gambar garis, dan siluet menjadi kurva yang bisa Anda perbesar ke ukuran berapa pun. Satu klik membuang yang salah terambil. Tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
     <title type="html">Pembaca QR &amp; Barcode</title>
     <id>https://abox.tools/id/pindai-kode-qr/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/pindai-kode-qr/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/sensor-pdf/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Keluarkan kata dari sebuah PDF alih-alih menggambar persegi hitam di atasnya. Hurufnya dihapus dari instruksi menggambar halamannya sendiri, file jadinya dibuka lagi dan dicari untuk membuktikan hurufnya sudah hilang, dan tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara menjiplak gambar menjadi SVG</title>
+    <id>https://abox.tools/id/panduan/gambar-ke-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gambar-ke-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Ubah logo, stensil, tanda tangan, atau siluet menjadi garis luar vektor sungguhan di peramban Anda. Gambar mana yang terjiplak dengan baik, mana yang tidak akan pernah, dan cara memperbaiki bagian yang salah dijiplak.</summary>
   </entry>
   <entry>
     <title type="html">Cara membuat bagan perbandingan tinggi badan</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/berbagi-teks-antar-perangkat/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Memindahkan teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi - tanpa mengirim email ke diri sendiri, tanpa riwayat chat, tanpa akun, dan tanpa server yang menyimpan salinan.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membandingkan dua file JSON</title>
-    <id>https://abox.tools/id/panduan/membandingkan-dua-file-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membandingkan-dua-file-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Format kedua file dengan cara yang sama, urutkan kuncinya, lalu bandingkan. Kenapa diff JSON mentah hampir seluruhnya derau, cara membakukan kedua sisi di peramban, dan apa yang bertahan sampai ke tambalan.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuat GIF animasi dari gambar</title>
-    <id>https://abox.tools/id/panduan/buat-gif-dari-gambar/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/buat-gif-dari-gambar/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ubah sekumpulan gambar menjadi satu GIF animasi: seberapa cepat sebuah GIF sebenarnya bisa diputar, apa yang diubah setelan paletnya, dan tiga hal yang benar-benar membuat file-nya lebih kecil.</summary>
   </entry>
 </feed>

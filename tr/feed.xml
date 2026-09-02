@@ -102,6 +102,13 @@
     <summary type="html">YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Görselden SVG'ye</title>
+    <id>https://abox.tools/tr/gorseli-svg-ye-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gorseli-svg-ye-donusturme/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Siyah beyaz bir görseli tarayıcınızda gerçek bir SVG dış çizgisine çevirin. Logolar, şablonlar, imzalar, çizgi çizimler ve silüetler istediğiniz boyuta büyüyen eğrilere dönüşür. Yanlışlıkla alınanı bir tıkla çıkarın. Hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF Karartıcı</title>
     <id>https://abox.tools/tr/pdf-karartma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-karartma/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/qr-kod-okuma/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Bir fotoğraftan, ekran görüntüsünden ya da kameranızdan QR kod okuyun ve bağlantının nereye gittiğini açmadan önce tam olarak görün. EAN, UPC, Code 128, Code 39 ve ITF barkodları da. Hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir görsel SVG'ye nasıl çevrilir</title>
+    <id>https://abox.tools/tr/rehberler/gorseli-svg-ye-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gorseli-svg-ye-donusturme/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Bir logoyu, şablonu, imzayı ya da silüeti tarayıcınızda gerçek bir vektör dış çizgisine dönüştürün. Hangi görseller iyi çevrilir, hangileri asla çevrilmez ve çeviricinin yanlış yaptığı kısımlar nasıl düzeltilir.</summary>
   </entry>
   <entry>
     <title type="html">Base64 Kodlayıcı ve Çözücü</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cssye-resim-gomme/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Bir data URI'nin bedeli, base64'ün neden üçte bir eklediği ve gzip'in bunu neden geri vermediği, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası.</summary>
-  </entry>
-  <entry>
-    <title type="html">Birden çok sayfa tek ve küçük bir PDF'e nasıl taranır</title>
-    <id>https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Her sayfayı fotoğraflayın, tek PDF alın, elinizdeki belgelerle birleştirin ve gönderilene kadar küçültün. Arka arkaya üç tarayıcı aracı ve evraklar telefondan hiç çıkmıyor.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bumerang video nasıl yapılır</title>
-    <id>https://abox.tools/tr/rehberler/bumerang-video-yapma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/bumerang-video-yapma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Anı kesin, kopyayı ters çevirin, ikisini birleştirin ve döngüye alın. Arka arkaya üç araç, hepsi tarayıcıda ve bütün işi bir dakikaya indiren sıra.</summary>
   </entry>
 </feed>

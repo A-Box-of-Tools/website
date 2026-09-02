@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/pdf-zusammenfuegen/:';
-const CACHE_NAME=CACHE_PREFIX+'1931ad1bef';
+const CACHE_NAME=CACHE_PREFIX+'9419c7468c';
 const ASSETS=[
 './',
 'index.html',

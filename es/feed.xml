@@ -109,11 +109,25 @@
     <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
   </entry>
   <entry>
+    <title type="html">Imagen a SVG</title>
+    <id>https://abox.tools/es/convertir-imagen-a-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-imagen-a-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Vectoriza una imagen en blanco y negro en un contorno SVG de verdad, en tu navegador. Logotipos, plantillas, firmas, dibujos a línea y siluetas se convierten en curvas que puedes escalar a cualquier tamaño. Un clic quita lo que el trazado tomó de más. No se sube nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Lector de códigos QR y de barras</title>
     <id>https://abox.tools/es/escanear-codigo-qr/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/escanear-codigo-qr/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Lee un código QR desde una foto, una captura o tu cámara y mira exactamente adónde lleva el enlace antes de abrirlo. También EAN, UPC, Code 128, Code 39 e ITF. No se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo vectorizar una imagen en SVG</title>
+    <id>https://abox.tools/es/guias/convertir-una-imagen-a-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-una-imagen-a-svg/"/>
+    <updated>2026-08-31T00:00:00Z</updated>
+    <summary type="html">Convierte un logotipo, una plantilla, una firma o una silueta en un contorno vectorial de verdad en tu navegador. Qué imágenes se vectorizan bien, cuáles nunca lo harán, y cómo arreglar las partes que el trazador toma mal.</summary>
   </entry>
   <entry>
     <title type="html">Codificador y decodificador Base64</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/comprimir-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Reduce el tamaño de un PDF sin subirlo. Tu propio navegador lo lee, vuelve a comprimirlo y lo reescribe, y antes de tocar nada te enseña dónde está de verdad el tamaño.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compresor de imágenes</title>
-    <id>https://abox.tools/es/comprimir-imagen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/comprimir-imagen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comprime un JPEG, PNG o WebP al tamaño exacto que te pidan: 100 KB, 2 MB o el que sea. Todo dentro del navegador, sin subir nada, sin cuenta y sin conexión.</summary>
-  </entry>
-  <entry>
-    <title type="html">Creador de fotos de carnet</title>
-    <id>https://abox.tools/es/foto-carnet/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/foto-carnet/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Haz una foto de pasaporte o visado según la norma publicada de tu país: milímetros y DPI exactos, una guía en vivo de altura de cabeza y línea de ojos, comprobación del fondo, una hoja de 10x15 lista para imprimir y un archivo ajustado al límite en KB del portal. No se sube nada.</summary>
   </entry>
 </feed>

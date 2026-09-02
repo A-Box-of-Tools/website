@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/grab-frame/:';
-const CACHE_NAME=CACHE_PREFIX+'5a2b8f55e8';
+const CACHE_NAME=CACHE_PREFIX+'4d30d8682b';
 const ASSETS=[
 './',
 'index.html',
