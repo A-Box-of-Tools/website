@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/compare-heights/:';
-const CACHE_NAME=CACHE_PREFIX+'6df5804950';
+const CACHE_NAME=CACHE_PREFIX+'40d7e33cf5';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=d01779287f',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/chart.js',
 'src/figures.js',
 'src/import-image.js',

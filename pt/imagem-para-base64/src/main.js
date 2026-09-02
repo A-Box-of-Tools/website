@@ -29,10 +29,6 @@ downloadAll:$('download-all'),
 resultList:$('result-list'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
-networkCount:$('network-count'),
-networkDot:$('network-dot'),
-offlineStatus:$('offline-status'),
-offlineDot:$('offline-dot'),
 };
 let items=[];
 let nextId=1;
@@ -349,64 +345,6 @@ const open=el.privacyPanel.hidden;
 el.privacyPanel.hidden=!open;
 el.privacyToggle.setAttribute('aria-expanded',String(open));
 });
-const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
-function monitorNetwork(){
-const platform=new Set();
-const unexplained=new Set();
-const inspect=(entries)=>{
-for(const entry of entries){
-if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
-const url=new URL(entry.name,location.href);
-if(url.origin===location.origin)continue;
-if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
-else unexplained.add(url.hostname);
-}
-const total=performance.getEntriesByType('resource')
-.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
-const clean=unexplained.size===0;
-const platformNote=platform.size
-?phrase(platform.size===1?'net.platform.one':'net.platform.many',
-{hosts:platform.size})
-:'';
-el.networkCount.textContent=clean
-?phrase('net.clean',{total,platform:platformNote})
-:phrase('net.dirty',{hosts:[...unexplained].join(', '),platform:platformNote});
-el.networkCount.className=clean?'good':'warn';
-el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
-};
-inspect(performance.getEntriesByType('resource'));
-try{
-new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
-}catch{
-}
-}
-async function registerServiceWorker(){
-const fail=(message,detail)=>{
-el.offlineStatus.textContent=message;
-el.offlineDot.className='live-dot';
-if(detail){
-el.offlineStatus.title=detail;
-console.info('Offline caching unavailable:',detail);
-}
-};
-if(!('serviceWorker'in navigator)){
-fail(phrase('offline.none'));
-return;
-}
-if(!window.isSecureContext){
-fail(phrase('offline.insecure'));
-return;
-}
-try{
-await navigator.serviceWorker.register('sw.js');
-await navigator.serviceWorker.ready;
-el.offlineStatus.textContent=phrase('offline.ready');
-el.offlineStatus.className='good';
-el.offlineDot.className='live-dot good';
-}catch(error){
-fail(phrase('offline.failed'),error.message);
-}
-}
 window.addEventListener('error',(event)=>{
 showLoadError(phrase('error.broke',{detail:event.message}));
 });
@@ -414,6 +352,4 @@ window.addEventListener('unhandledrejection',(event)=>{
 showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
 });
 draw();
-monitorNetwork();
-registerServiceWorker();
 document.getElementById('boot-warning')?.remove();

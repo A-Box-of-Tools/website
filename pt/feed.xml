@@ -26,11 +26,25 @@
   <id>https://abox.tools/pt/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/pt/</uri>
   </author>
+  <entry>
+    <title type="html">Leitor de QR Code e código de barras</title>
+    <id>https://abox.tools/pt/ler-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/ler-qr-code/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Leia um QR Code de uma foto, de um print ou pela câmera, e veja exatamente para onde o link leva antes de abrir. EAN, UPC, Code 128, Code 39 e ITF também. Nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tarjador de PDF</title>
+    <id>https://abox.tools/pt/tarjar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/tarjar-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Tire palavras de um PDF em vez de desenhar um retângulo preto por cima. As letras são apagadas das próprias instruções de desenho da página, o arquivo pronto é reaberto e pesquisado para provar que sumiram, e nada é enviado.</summary>
+  </entry>
   <entry>
     <title type="html">Codificador e decodificador Base64</title>
     <id>https://abox.tools/pt/codificar-base64/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-uma-miniatura-de-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Avance quadro a quadro até o instante certo, salve sem perda, ponha no formato da plataforma e acerte o limite de bytes dela. Três ferramentas do navegador em sequência, e a filmagem nunca sai da sua máquina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como digitalizar várias páginas em um PDF pequeno</title>
-    <id>https://abox.tools/pt/guias/digitalizar-varias-paginas-em-um-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/digitalizar-varias-paginas-em-um-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Fotografe cada página, receba um PDF, combine com os documentos que já existem e encolha até dar para enviar. Três ferramentas do navegador em sequência, e a papelada nunca sai do telefone.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como editar um GIF quadro a quadro</title>
-    <id>https://abox.tools/pt/guias/editar-um-gif-quadro-a-quadro/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/editar-um-gif-quadro-a-quadro/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Desmonte um GIF nos quadros dele, tire ou reordene os que precisar, e reconstrua mantendo os tempos. O que sobrevive à ida e volta, o que a paleta custa, e como ver por que um GIF pesa.</summary>
   </entry>
 </feed>

@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/comparer-des-tailles/:';
-const CACHE_NAME=CACHE_PREFIX+'284c47dc30';
+const CACHE_NAME=CACHE_PREFIX+'6bb74e2311';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=d01779287f',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/chart.js',
 'src/figures.js',
 'src/import-image.js',

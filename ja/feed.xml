@@ -26,11 +26,25 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">PDFの黒塗り</title>
+    <id>https://abox.tools/ja/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">PDFの文字の上に黒い四角を描くのではなく、文字そのものを取り除きます。文字はページを描く命令から消され、できあがったファイルをもう一度開いて検索し、本当に消えたことを確かめます。何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコード・バーコード読み取りツール</title>
+    <id>https://abox.tools/ja/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode-reader/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">写真、スクリーンショット、カメラからQRコードを読み取り、開く前にリンクの行き先をそのまま確かめられます。EAN、UPC、Code 128、Code 39、ITFのバーコードにも対応。何もアップロードされません。</summary>
+  </entry>
   <entry>
     <title type="html">Base64エンコーダー・デコーダー</title>
     <id>https://abox.tools/ja/base64/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF分解</title>
-    <id>https://abox.tools/ja/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/split-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">アニメーションGIFをコマに分解し、1枚ずつPNGとして保存します。無料で、処理はすべてブラウザの中。透過も表示時間もそのまま残ります。アップロードは一切なく、オフラインでも動きます。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF解析</title>
-    <id>https://abox.tools/ja/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">GIFをブラウザの中で分解します。各コマの表示時間と破棄方法、カラーテーブル、繰り返し回数、そしてファイルサイズがどこへ消えたかの1バイト単位の内訳まで。アップロードは一切ありません。</summary>
   </entry>
 </feed>

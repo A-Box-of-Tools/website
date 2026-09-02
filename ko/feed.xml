@@ -26,11 +26,25 @@
   <id>https://abox.tools/ko/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ko/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ko/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ko/</uri>
   </author>
+  <entry>
+    <title type="html">PDF 가리기</title>
+    <id>https://abox.tools/ko/pdf-가리기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">PDF에서 글자 위에 검은 칸을 그리는 대신 글자를 빼냅니다. 글자는 그 장을 그리는 명령에서 지워지고, 완성된 파일을 다시 열어 검색해서 사라졌음을 증명하며, 아무것도 업로드되지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR과 바코드 스캔</title>
+    <id>https://abox.tools/ko/qr코드-스캔/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/qr코드-스캔/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">사진, 스크린숏, 카메라로 QR 코드를 읽고, 열기 전에 링크가 실제로 어디로 가는지 확인하세요. EAN, UPC, Code 128, Code 39, ITF 바코드도 읽습니다. 아무것도 올라가지 않습니다.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 인코더 · 디코더</title>
     <id>https://abox.tools/ko/base64-인코딩/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-프레임별로-편집/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIF를 프레임으로 분해해 빼거나 순서를 바꾸고, 타이밍을 지킨 채 다시 조립합니다. 왕복에서 무엇이 살아남는지, 팔레트의 값은 얼마인지, GIF가 무거운 이유를 어떻게 보는지.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF를 프레임으로 나누는 법</title>
-    <id>https://abox.tools/ko/가이드/gif-프레임-분리하기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-프레임-분리하기/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">움직이는 GIF의 모든 프레임을 PNG로 뽑는 방법. 어떤 프레임은 왜 그림의 작은 조각뿐인지, 투명은 어떻게 되는지, 그리고 다시 합칠 수 있도록 시간 정보를 남기는 법.</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC를 JPG로</title>
-    <id>https://abox.tools/ko/heic-jpg-변환/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/heic-jpg-변환/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">아이폰 HEIC 사진을 브라우저에서 JPG로 바꿉니다. 디코더가 내 기기에서 돕니다. 업로드 없음, 가입 없음, 오프라인 동작, 촬영 날짜와 카메라 정보도 함께 옮길 수 있습니다.</summary>
   </entry>
 </feed>

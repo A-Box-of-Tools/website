@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/convertir-video-a-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'d22a5006ad';
+const CACHE_NAME=CACHE_PREFIX+'36b03aaa0a';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=ed773d3176',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/demux.js',
 'src/draw.js',

@@ -26,11 +26,25 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Lettore di QR code e codici a barre</title>
+    <id>https://abox.tools/it/leggere-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/leggere-qr-code/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Leggi un QR code da una foto, uno screenshot o dalla fotocamera, e guarda esattamente dove porta il link prima di aprirlo. Anche EAN, UPC, Code 128, Code 39 e ITF. Non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Oscuratore di PDF</title>
+    <id>https://abox.tools/it/oscurare-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/oscurare-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Togli le parole da un PDF invece di disegnarci sopra un rettangolo nero. Le lettere vengono cancellate dalle istruzioni con cui la pagina si disegna, il file finito viene riaperto e cercato per dimostrare che non ci sono più, e non viene caricato niente.</summary>
+  </entry>
   <entry>
     <title type="html">Codificatore e decodificatore Base64</title>
     <id>https://abox.tools/it/codifica-base64/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-miniatura-per-un-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Avanza fotogramma per fotogramma fino all'istante giusto, salvalo senza perdite, portalo al formato della piattaforma e centra il suo limite di byte. Tre strumenti del browser in fila, e il girato non lascia mai la tua macchina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come dividere una GIF in fotogrammi</title>
-    <id>https://abox.tools/it/guide/dividere-una-gif-in-fotogrammi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/dividere-una-gif-in-fotogrammi/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Tirare fuori ogni fotogramma di una GIF animata come PNG: perché certi fotogrammi sono solo un pezzetto dell'immagine, che fine fa la trasparenza e come tenere i tempi per rimetterla insieme.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come fare una GIF animata da immagini</title>
-    <id>https://abox.tools/it/guide/creare-una-gif-da-immagini/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-gif-da-immagini/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Trasformare una serie di immagini in una GIF animata: quanto veloce può andare davvero una GIF, cosa cambia l'impostazione della tavolozza, e le tre cose che il file lo alleggeriscono sul serio.</summary>
   </entry>
 </feed>

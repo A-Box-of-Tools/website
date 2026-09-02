@@ -565,67 +565,6 @@ const open=panel.hidden;
 panel.hidden=!open;
 $('privacy-toggle').setAttribute('aria-expanded',String(open));
 });
-const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
-const RENDEZVOUS_HOST=new URL(RENDEZVOUS.replace('wss:','https:')).hostname;
-function monitorNetwork(){
-const platform=new Set();
-const external=new Set();
-const inspect=(entries)=>{
-for(const entry of entries){
-if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
-const url=new URL(entry.name,location.href);
-if(url.origin===location.origin)continue;
-if(url.hostname===RENDEZVOUS_HOST)continue;
-if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
-else external.add(url.hostname);
-}
-const total=performance.getEntriesByType('resource')
-.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
-const clean=external.size===0;
-const platformNote=platform.size
-?phrase(platform.size===1?'net.platform.one':'net.platform.many',
-{hosts:platform.size})
-:'';
-$('network-count').textContent=clean
-?phrase('net.clean',{total,platform:platformNote})
-:phrase('net.dirty',{hosts:[...external].join(', '),platform:platformNote});
-$('network-count').className=clean?'good':'warn';
-$('network-dot').className=`live-dot ${clean ? 'good' : 'warn'}`;
-};
-inspect(performance.getEntriesByType('resource'));
-try{
-new PerformanceObserver((list)=>inspect(list.getEntries()))
-.observe({type:'resource',buffered:true});
-}catch{
-}
-}
-async function registerServiceWorker(){
-const fail=(message,detail)=>{
-$('offline-status').textContent=message;
-$('offline-dot').className='live-dot';
-if(detail){
-$('offline-status').title=detail;
-console.info('Offline caching unavailable:',detail);
-}
-};
-if(!('serviceWorker'in navigator)){
-fail(phrase('offline.none'));
-return;
-}
-if(!window.isSecureContext){
-fail(phrase('offline.insecure'));
-return;
-}
-try{
-await navigator.serviceWorker.register('sw.js');
-await navigator.serviceWorker.ready;
-$('offline-status').textContent=phrase('offline.ready');
-$('offline-status').className='good';
-$('offline-dot').className='live-dot good';
-}catch(error){
-fail(phrase('offline.failed'),error.message);
-}
-}
 function bootError(detail){
 const target=$('share').hidden?$('view-status'):$('status');
 target.hidden=false;
@@ -657,6 +596,4 @@ try{sessionStorage.setItem(`share-text-carry:${code}`,String(Date.now()));}catch
 }
 anchor.href=anchor.pathname+location.hash;
 },true);
-monitorNetwork();
-registerServiceWorker();
 document.getElementById('boot-warning')?.remove();

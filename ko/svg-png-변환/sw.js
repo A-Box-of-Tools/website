@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/svg-png-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'84a7fcf65c';
+const CACHE_NAME=CACHE_PREFIX+'bb633d3c27';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=b34fa0a8ec',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',

@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/condividere-testo/:';
-const CACHE_NAME=CACHE_PREFIX+'a98094b4f4';
+const CACHE_NAME=CACHE_PREFIX+'138cb8ee4d';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=a88d5a648a',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/main.js',
 'src/markdown.js',
 'src/names.js',

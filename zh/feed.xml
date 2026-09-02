@@ -26,11 +26,25 @@
   <id>https://abox.tools/zh/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh/</uri>
   </author>
+  <entry>
+    <title type="html">PDF 涂黑</title>
+    <id>https://abox.tools/zh/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">把字从 PDF 里拿掉，而不是在上面画个黑块。字是从绘制这一页的指令里删掉的，做好的文件会被重新打开搜一遍，证明它们真的没了，而且什么都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码识读</title>
+    <id>https://abox.tools/zh/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
+  </entry>
   <entry>
     <title type="html">Base64 编码解码</title>
     <id>https://abox.tools/zh/base64/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">不上传也能给 PDF 瘦身。读取、重新压缩、重新写出，全由你自己的浏览器完成，而且动手之前先告诉你这份文件的体积到底压在哪儿。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 涂黑</title>
-    <id>https://abox.tools/zh/redact-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把字从 PDF 里拿掉，而不是在上面画个黑块。字是从绘制这一页的指令里删掉的，做好的文件会被重新打开搜一遍，证明它们真的没了，而且什么都不会上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG 转图片</title>
-    <id>https://abox.tools/zh/svg-to-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/svg-to-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在浏览器里把 SVG 转成 PNG、JPEG 或 WebP，尺寸随你定。给宽度、给倍数，或者给一个框，还能顺手出 @2x 和 @3x。透明保住，什么都不上传。</summary>
   </entry>
 </feed>

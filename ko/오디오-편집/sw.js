@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/오디오-편집/:';
-const CACHE_NAME=CACHE_PREFIX+'5b630d5d38';
+const CACHE_NAME=CACHE_PREFIX+'c2d90f2fac';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=01d18a45f9',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/decode.js',
 'src/edit.js',

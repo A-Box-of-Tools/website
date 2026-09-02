@@ -26,11 +26,25 @@
   <id>https://abox.tools/zh-TW/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh-TW/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh-TW/</uri>
   </author>
+  <entry>
+    <title type="html">PDF 塗黑</title>
+    <id>https://abox.tools/zh-TW/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">把字從 PDF 裡拿掉，而不是在上面畫個黑塊。字是從繪製這一頁的指令裡刪掉的，做好的檔案會被重新開啟搜一遍，證明它們真的沒了，而且什麼都不會上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">QR Code 與條碼識讀</title>
+    <id>https://abox.tools/zh-TW/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
+  </entry>
   <entry>
     <title type="html">Base64 編碼解碼</title>
     <id>https://abox.tools/zh-TW/base64/</id>
@@ -221,24 +235,10 @@
     <summary type="html">在瀏覽器裡把 iPhone 的 HEIC 照片轉成 JPG。解碼器跑在你自己的機器上，不上傳，不註冊，斷網也能用，拍攝日期和相機資訊可以一起帶過去。</summary>
   </entry>
   <entry>
-    <title type="html">PDF 塗黑</title>
-    <id>https://abox.tools/zh-TW/redact-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把字從 PDF 裡拿掉，而不是在上面畫個黑塊。字是從繪製這一頁的指令裡刪掉的，做好的檔案會被重新開啟搜一遍，證明它們真的沒了，而且什麼都不會上傳。</summary>
-  </entry>
-  <entry>
     <title type="html">PDF 壓縮</title>
     <id>https://abox.tools/zh-TW/compress-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compress-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">不上傳也能給 PDF 瘦身。讀取、重新壓縮、重新寫出，全由你自己的瀏覽器完成，而且動手之前先告訴你這份檔案的體積到底壓在哪裡。</summary>
-  </entry>
-  <entry>
-    <title type="html">QR Code 與條碼產生</title>
-    <id>https://abox.tools/zh-TW/qr-barcode/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">產生連結、Wi-Fi 或者名片 QR Code，也產生 EAN-13、UPC-A、Code 128 和 Code 39 條碼。可下載 SVG 或 PNG。全部在你的瀏覽器裡完成。</summary>
   </entry>
 </feed>

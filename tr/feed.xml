@@ -26,11 +26,25 @@
   <id>https://abox.tools/tr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/tr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/tr/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/tr/</uri>
   </author>
+  <entry>
+    <title type="html">PDF Karartıcı</title>
+    <id>https://abox.tools/tr/pdf-karartma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-karartma/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Bir PDF'ten kelimeleri, üzerlerine siyah dikdörtgen çizmek yerine çıkarın. Harfler sayfanın kendi çizim talimatlarından silinir, bitmiş dosya yeniden açılıp gittiklerini kanıtlamak için aranır ve hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR ve Barkod Okuyucu</title>
+    <id>https://abox.tools/tr/qr-kod-okuma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/qr-kod-okuma/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Bir fotoğraftan, ekran görüntüsünden ya da kameranızdan QR kod okuyun ve bağlantının nereye gittiğini açmadan önce tam olarak görün. EAN, UPC, Code 128, Code 39 ve ITF barkodları da. Hiçbir şey yüklenmez.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 Kodlayıcı ve Çözücü</title>
     <id>https://abox.tools/tr/base64-kodlama/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/dicom-goruntuleyici/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">BT, MR, röntgen ve ultrason taramalarını tarayıcınızda açın. Pencere ve seviye, bütün bir seriyi kaydırma, milimetre cinsinden ölçüm, her DICOM etiketini okuma ve dosyada hastayı tam olarak neyin tanımladığını görme. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">EXIF Görüntüleyici ve Silici</title>
-    <id>https://abox.tools/tr/exif-verisi-silme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/exif-verisi-silme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir fotoğrafta saklı EXIF ve GPS verisini görün, düzenleyin ya da tek tıklamayla hepsini silin. Tarayıcınızda: hiçbir şey yüklenmez ve fotoğraf hiçbir zaman yeniden kodlanmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Ayırıcı</title>
-    <id>https://abox.tools/tr/gifi-karelere-ayirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gifi-karelere-ayirma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Hareketli bir GIF'i karelerine ayırın ve her birini PNG olarak kaydedin; ücretsiz ve tamamen tarayıcınızda. Saydamlığı ve zamanlamayı korur. Hiçbir şey yüklenmez ve çevrimdışı da çalışır.</summary>
   </entry>
 </feed>

@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/extract-audio-from-video/:';
-const CACHE_NAME=CACHE_PREFIX+'d96a1c9452';
+const CACHE_NAME=CACHE_PREFIX+'8b88e08b0d';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=01d18a45f9',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/decode.js',
 'src/main.js',

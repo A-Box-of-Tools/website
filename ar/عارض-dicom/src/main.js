@@ -18,10 +18,6 @@ fileInput:$('file-input'),
 loadError:$('load-error'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
-networkCount:$('network-count'),
-networkDot:$('network-dot'),
-offlineStatus:$('offline-status'),
-offlineDot:$('offline-dot'),
 working:$('working'),
 viewerCard:$('viewer-card'),
 fileName:$('file-name'),
@@ -895,63 +891,4 @@ const opening=el.privacyPanel.hidden;
 el.privacyPanel.hidden=!opening;
 el.privacyToggle.setAttribute('aria-expanded',String(opening));
 });
-const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
-function monitorNetwork(){
-const platform=new Set();
-const unexplained=new Set();
-const inspect=(entries)=>{
-for(const entry of entries){
-if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
-const url=new URL(entry.name,window.location.href);
-if(url.origin===window.location.origin)continue;
-if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
-else unexplained.add(url.hostname);
-}
-const total=performance.getEntriesByType('resource')
-.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:'))
-.length;
-const clean=unexplained.size===0;
-const note_=platform.size
-?phrase(platform.size===1?'net.platform.one':'net.platform.many',
-{hosts:platform.size})
-:'';
-el.networkCount.textContent=clean
-?phrase('net.clean',{total,platform:note_})
-:phrase('net.dirty',{hosts:[...unexplained].join(', '),platform:note_});
-el.networkCount.className=clean?'good':'warn';
-el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
-};
-inspect(performance.getEntriesByType('resource'));
-try{
-new PerformanceObserver((list)=>inspect(list.getEntries()))
-.observe({type:'resource',buffered:true});
-}catch{
-}
-}
-async function registerServiceWorker(){
-const failed=(message,detail)=>{
-el.offlineStatus.textContent=message;
-el.offlineDot.className='live-dot';
-if(detail)el.offlineStatus.title=detail;
-};
-if(!('serviceWorker'in navigator)){
-failed(phrase('offline.none'));
-return;
-}
-if(!window.isSecureContext){
-failed(phrase('offline.insecure'));
-return;
-}
-try{
-await navigator.serviceWorker.register('sw.js');
-await navigator.serviceWorker.ready;
-el.offlineStatus.textContent=phrase('offline.ready');
-el.offlineStatus.className='good';
-el.offlineDot.className='live-dot good';
-}catch(error){
-failed(phrase('offline.failed'),error.message);
-}
-}
-monitorNetwork();
-registerServiceWorker();
 document.getElementById('boot-warning')?.remove();

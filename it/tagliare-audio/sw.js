@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/tagliare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'05a696260d';
+const CACHE_NAME=CACHE_PREFIX+'d317eae1af';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=9fcd0e65fa',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/decode.js',
 'src/main.js',

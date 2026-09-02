@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/videodan-ses-cikarma/:';
-const CACHE_NAME=CACHE_PREFIX+'e650a02727';
+const CACHE_NAME=CACHE_PREFIX+'e9943cfea5';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=01d18a45f9',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/decode.js',
 'src/main.js',

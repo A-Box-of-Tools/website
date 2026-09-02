@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/ضغط-الصور/:';
-const CACHE_NAME=CACHE_PREFIX+'7acef0c6cb';
+const CACHE_NAME=CACHE_PREFIX+'f0907d1d9a';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=d920efd6aa',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',

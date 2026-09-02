@@ -26,11 +26,25 @@
   <id>https://abox.tools/de/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/de/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/de/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/de/</uri>
   </author>
+  <entry>
+    <title type="html">PDF-Schwärzer</title>
+    <id>https://abox.tools/de/pdf-schwaerzen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-schwaerzen/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Wörter aus einem PDF entfernen, statt ein schwarzes Rechteck darüber zu legen. Die Buchstaben werden aus den Zeichenanweisungen der Seite gelöscht, die fertige Datei wird erneut geöffnet und durchsucht, um zu belegen, dass sie weg sind, und nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR- &amp; Barcode-Scanner</title>
+    <id>https://abox.tools/de/qr-code-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/qr-code-scannen/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Einen QR-Code aus einem Foto, einem Screenshot oder mit der Kamera scannen und sehen, wohin der Link wirklich führt, bevor Sie ihn öffnen. Auch EAN, UPC, Code 128, Code 39 und ITF. Nichts wird hochgeladen.</summary>
+  </entry>
   <entry>
     <title type="html">Audio-Editor</title>
     <id>https://abox.tools/de/audio-bearbeiten/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bildgroesse-aendern/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Exakte Pixel, ein Prozentwert oder die lange Kante, für ein Bild oder einen ganzen Ordner. Nichts wird hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOM-Viewer</title>
-    <id>https://abox.tools/de/dicom-viewer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/dicom-viewer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Öffnen Sie CT-, MRT-, Röntgen- und Ultraschallaufnahmen im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">EXIF-Betrachter &amp; -Entferner</title>
-    <id>https://abox.tools/de/exif-daten-entfernen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/exif-daten-entfernen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert.</summary>
   </entry>
 </feed>

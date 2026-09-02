@@ -1,12 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تكديس-الصور/:';
-const CACHE_NAME=CACHE_PREFIX+'5017db804e';
+const CACHE_NAME=CACHE_PREFIX+'38a224b85c';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=4eb216cde0',
 'manifest.json',
 'src/shared/phrases.js',
+'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/align.js',
 'src/fft.js',

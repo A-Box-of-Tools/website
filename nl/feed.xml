@@ -26,11 +26,25 @@
   <id>https://abox.tools/nl/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/nl/</uri>
   </author>
+  <entry>
+    <title type="html">PDF onleesbaar maken</title>
+    <id>https://abox.tools/nl/pdf-onleesbaar-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-onleesbaar-maken/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Haal woorden uit een PDF in plaats van er een zwarte rechthoek overheen te tekenen. De letters worden gewist uit de tekeninstructies van de pagina zelf, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&amp;uuml;pload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Qr- &amp; barcodescanner</title>
+    <id>https://abox.tools/nl/qr-code-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-scannen/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload.</summary>
+  </entry>
   <entry>
     <title type="html">Audio uit video halen</title>
     <id>https://abox.tools/nl/audio-uit-video-halen/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/dicom-viewer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Open CT-, MRI-, r&amp;ouml;ntgen- en echoscans in je browser. Venster en niveau, een hele serie doorbladeren, meten in millimeters, elke DICOM-tag lezen en precies zien wat er in het bestand de pati&amp;euml;nt aanwijst. Er wordt niets ge&amp;uuml;pload.</summary>
-  </entry>
-  <entry>
-    <title type="html">EXIF-lezer &amp; -wisser</title>
-    <id>https://abox.tools/nl/exif-gegevens-verwijderen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/exif-gegevens-verwijderen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bekijk de EXIF- en gps-gegevens die in een foto verstopt zitten, bewerk ze, of wis alles in één klik. Alles in je browser, en de foto wordt nooit opnieuw gecodeerd.</summary>
-  </entry>
-  <entry>
-    <title type="html">Een GIF splitsen in frames</title>
-    <id>https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten.</summary>
   </entry>
 </feed>

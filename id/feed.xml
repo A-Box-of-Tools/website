@@ -26,11 +26,25 @@
   <id>https://abox.tools/id/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/id/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/id/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/id/</uri>
   </author>
+  <entry>
+    <title type="html">Pembaca QR &amp; Barcode</title>
+    <id>https://abox.tools/id/pindai-kode-qr/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/pindai-kode-qr/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Baca kode QR dari sebuah foto, tangkapan layar, atau kamera Anda, dan lihat persis ke mana tautannya pergi sebelum Anda membukanya. Barcode EAN, UPC, Code 128, Code 39, dan ITF juga. Tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Penyensor PDF</title>
+    <id>https://abox.tools/id/sensor-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/sensor-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Keluarkan kata dari sebuah PDF alih-alih menggambar persegi hitam di atasnya. Hurufnya dihapus dari instruksi menggambar halamannya sendiri, file jadinya dibuka lagi dan dicari untuk membuktikan hurufnya sudah hilang, dan tidak ada yang diunggah.</summary>
+  </entry>
   <entry>
     <title type="html">Cara membuat bagan perbandingan tinggi badan</title>
     <id>https://abox.tools/id/panduan/membuat-bagan-perbandingan-tinggi/</id>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gif-dari-potongan-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Potong dulu detik-detik yang penting, lalu ubah hanya bagian itu. Kapan garis waktu pengubah GIF sudah cukup, kapan memotong dulu dengan pemotong video, dan kenapa tiap detik GIF semahal itu.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuat kode QR dan membuktikannya terbaca</title>
-    <id>https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Buat kodenya, lalu periksa dengan pembaca dari situs yang sama: isi persisnya, tautan sebenarnya, pada ukuran cetak dan dari sebuah foto, sebelum naik cetak. Semuanya di peramban, tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuat thumbnail video dari bingkai yang tepat</title>
-    <id>https://abox.tools/id/panduan/membuat-thumbnail-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-thumbnail-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Melangkah bingkai demi bingkai ke saat yang tepat, simpan tanpa kehilangan mutu, sesuaikan dengan bentuk platform, dan tepat di bawah batas bitenya. Tiga perkakas peramban berurutan, dan rekaman tidak pernah meninggalkan komputer Anda.</summary>
   </entry>
 </feed>

@@ -26,11 +26,25 @@
   <id>https://abox.tools/fr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/fr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/fr/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/fr/</uri>
   </author>
+  <entry>
+    <title type="html">Caviardeur de PDF</title>
+    <id>https://abox.tools/fr/caviarder-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/caviarder-un-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Retirez des mots d'un PDF au lieu de peindre un rectangle noir par-dessus. Les lettres sont supprimées des instructions de dessin de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Lecteur de QR codes et de codes-barres</title>
+    <id>https://abox.tools/fr/lecteur-de-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/lecteur-de-qr-code/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Lisez un QR code depuis une photo, une capture d'écran ou votre caméra, et voyez exactement où mène le lien avant de l'ouvrir. Codes-barres EAN, UPC, Code 128, Code 39 et ITF aussi. Rien n'est envoyé.</summary>
+  </entry>
   <entry>
     <title type="html">Comment faire un graphique de comparaison de tailles</title>
     <id>https://abox.tools/fr/guides/faire-un-graphique-de-tailles/</id>
@@ -193,13 +207,6 @@
     <summary type="html">Recouvrez un nom, une adresse ou un numéro de compte sur une photo ou une capture, puis réenregistrez l'image&amp;nbsp;: les pixels masqués disparaissent du fichier au lieu de rester sous un rectangle. Tout se passe dans le navigateur.</summary>
   </entry>
   <entry>
-    <title type="html">Caviardeur de PDF</title>
-    <id>https://abox.tools/fr/caviarder-un-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/caviarder-un-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Retirez des mots d'un PDF au lieu de peindre un rectangle noir par-dessus. Les lettres sont supprimées des instructions de dessin de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé.</summary>
-  </entry>
-  <entry>
     <title type="html">Comment comparer deux fichiers JSON</title>
     <id>https://abox.tools/fr/guides/comparer-deux-fichiers-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/comparer-deux-fichiers-json/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/decouper-un-gif-en-images/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Récupérer chaque image d'un GIF animé en PNG&amp;nbsp;: pourquoi certaines images ne sont qu'un petit morceau, ce que devient la transparence, et comment garder les durées pour tout remonter ensuite.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment faire un GIF à partir d'une partie d'une vidéo</title>
-    <id>https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Couper d'abord les secondes qui comptent, puis ne convertir que celles-là. Quand la timeline du convertisseur GIF suffit, quand couper d'abord avec le découpeur vidéo, et pourquoi chaque seconde de GIF coûte si cher.</summary>
   </entry>
 </feed>

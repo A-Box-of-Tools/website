@@ -26,24 +26,38 @@
   <id>https://abox.tools/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/"/>
-  <updated>2026-08-31T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/</uri>
   </author>
+  <entry>
+    <title type="html">Image to SVG</title>
+    <id>https://abox.tools/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Redactor</title>
+    <id>https://abox.tools/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Take words out of a PDF instead of drawing a black rectangle over them. The letters are deleted from the page's own drawing instructions, the finished file is opened again and searched to prove they have gone, and nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR &amp; Barcode Reader</title>
+    <id>https://abox.tools/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/qr-barcode-reader/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Read a QR code from a photo, a screenshot or your camera, and see exactly where the link goes before you open it. EAN, UPC, Code 128, Code 39 and ITF barcodes too. Nothing is uploaded.</summary>
+  </entry>
   <entry>
     <title type="html">How to trace an image into an SVG</title>
     <id>https://abox.tools/guides/trace-an-image-into-an-svg/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Turn a logo, a stencil, a signature or a silhouette into a real vector outline in your browser. Which pictures trace well, which never will, and how to fix the parts the tracer gets wrong.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image to SVG</title>
-    <id>https://abox.tools/image-to-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
-    <updated>2026-08-31T00:00:00Z</updated>
-    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
   </entry>
   <entry>
     <title type="html">Audio Editor</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC to JPG</title>
-    <id>https://abox.tools/heic-to-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/heic-to-jpg/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convert iPhone HEIC photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash &amp; Checksum</title>
-    <id>https://abox.tools/hash-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
   </entry>
 </feed>

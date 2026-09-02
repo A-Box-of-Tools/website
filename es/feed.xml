@@ -26,11 +26,25 @@
   <id>https://abox.tools/es/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/es/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/es/"/>
-  <updated>2026-08-30T00:00:00Z</updated>
+  <updated>2026-09-01T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/es/</uri>
   </author>
+  <entry>
+    <title type="html">Censor de PDF</title>
+    <id>https://abox.tools/es/censurar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-pdf/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Lector de códigos QR y de barras</title>
+    <id>https://abox.tools/es/escanear-codigo-qr/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/escanear-codigo-qr/"/>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <summary type="html">Lee un código QR desde una foto, una captura o tu cámara y mira exactamente adónde lleva el enlace antes de abrirlo. También EAN, UPC, Code 128, Code 39 e ITF. No se sube nada.</summary>
+  </entry>
   <entry>
     <title type="html">Codificador y decodificador Base64</title>
     <id>https://abox.tools/es/codificar-base64/</id>
@@ -193,13 +207,6 @@
     <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
-    <title type="html">Censor de PDF</title>
-    <id>https://abox.tools/es/censurar-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
-  </entry>
-  <entry>
     <title type="html">Censor de imágenes</title>
     <id>https://abox.tools/es/censurar-imagen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-imagen/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/foto-carnet/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Haz una foto de pasaporte o visado según la norma publicada de tu país: milímetros y DPI exactos, una guía en vivo de altura de cabeza y línea de ojos, comprobación del fondo, una hoja de 10x15 lista para imprimir y un archivo ajustado al límite en KB del portal. No se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cuándo meter una imagen dentro de tu CSS y cuándo no</title>
-    <id>https://abox.tools/es/guias/incrustar-una-imagen-en-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/incrustar-una-imagen-en-css/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Lo que cuesta un data URI, por qué base64 añade un tercio y gzip no te lo devuelve, por qué un SVG no debería ir nunca en base64, y el error de comillas que rompe los SVG incrustados sin decir nada.</summary>
   </entry>
 </feed>
