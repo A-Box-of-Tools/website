@@ -13,7 +13,7 @@
 import { encodeText } from './qr-encode.js';
 import {
   alignmentPositions, LEVEL_BITS, RECOVERY, sizeOf,
-} from './qr-tables.js';
+} from './shared/qr-tables.js';
 
 /** The eight mask conditions, by their number in the specification. */
 const MASKS = [

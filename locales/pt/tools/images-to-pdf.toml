@@ -27,7 +27,7 @@ live_hint = """
       desligue a internet e faça um assim mesmo."""
 
 read_first = """
-, e <code>src/pdf.js</code> e <code>src/document.js</code>
+, e <code>src/shared/pdf-page-writer.js</code> e <code>src/document.js</code>
       para a escrita inteira do arquivo, que nunca encosta na rede."""
 
 howto_heading = "Como transformar imagens em um PDF"
@@ -70,7 +70,7 @@ body = """
 title = "O PDF é escrito aqui."
 body = """
  Um PDF é uma lista de objetos e uma tabela
-      dizendo onde cada um começa, e o <code>src/pdf.js</code> escreve as duas
+      dizendo onde cada um começa, e o <code>src/shared/pdf-page-writer.js</code> escreve as duas
       coisas. Nenhuma biblioteca é buscada, nada é renderizado num servidor, e o
       arquivo pronto vai da memória direto para um download."""
 

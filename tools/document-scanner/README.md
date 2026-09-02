@@ -24,7 +24,7 @@ would want it, is on [the page itself](https://abox.tools/document-scanner/).
              encode.js ──▶ JPEG, or one bit per pixel deflated
                    │
                    ▼
-            document.js ──▶ the PDF, via pdf.js
+            document.js ──▶ the PDF, via shared/pdf-page-writer.js
 
 Every one of those but `encode.js` is a pure function on a pixel array or on
 numbers, which is why most of this tool is tested without a browser:
@@ -174,17 +174,14 @@ that then have to be matched again. That is the opposite of what happens with
 8-bit photographic data, and it is what a bit depth of one does to the
 arithmetic.
 
-## `src/pdf.js` is a copy
+## The PDF writer is a shared part
 
-It is byte-for-byte the writer from
-[`images-to-pdf`](../images-to-pdf/src/pdf.js), and
-[`tests/python/test_duplicates.py`](../../tests/python/test_duplicates.py) holds
-the two identical. It is a copy from before the JavaScript tests could follow a
-`./shared/` import — a module under `shared/js/` is copied into a tool at build
-time, and the tests import tool modules straight off the disk.
-`tests/js/resolve-shared.mjs` resolves that path for the tests now (see "Shared
-parts" in `docs/adding-a-tool.md`), so moving it to `shared/js/` is the next
-step. Until then a fix to one copy belongs in both, and that test will say so.
+It is [`shared/js/pdf-page-writer.js`](../../shared/js/pdf-page-writer.js),
+asked for in `tool.toml` and copied into this tool at `src/shared/` by the
+build — the same writer [`images-to-pdf`](../images-to-pdf/) ships. The two
+tools carried byte-for-byte copies until the JavaScript tests could follow a
+`./shared/` import (`tests/js/resolve-shared.mjs`); a fix to it lands in both
+now.
 
 `document.js` is *not* a copy. Images to PDF has to place a picture of any shape
 on a page of any other shape, with fit modes, rotation and a page colour; here

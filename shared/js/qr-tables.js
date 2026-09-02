@@ -1,8 +1,19 @@
 /**
- * The tables from ISO/IEC 18004 that a QR encoder cannot derive for itself,
- * and the arithmetic for everything it can.
+ * The tables from ISO/IEC 18004 that neither a QR encoder nor a QR reader can
+ * derive for itself, and the arithmetic for everything they can.
  *
- * Two things live here rather than in the encoder. The first is the pair of
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/qr-tables.js and the
+ * build copies it to <tool>/src/shared/qr-tables.js for the two tools that
+ * ask for it with `js_parts = ["qr-tables", ...]`: the QR writer and the QR
+ * reader. It is one file on purpose - a reader that disagreed with the writer
+ * next door about the size of a symbol, or about how its blocks are split,
+ * would not be usefully different from it, it would be wrong. The two carried
+ * identical copies until the tests could follow a `./shared/` import; see
+ * tests/js/resolve-shared.mjs. The field arithmetic is NOT shared: the
+ * writer's gf256.js computes a remainder and the reader's reed-solomon.js
+ * finds errors, which are different halves of the same mathematics.
+ *
+ * Two things live here rather than in the encoder or the decoder. The first is the pair of
  * tables below, which are the specification's Table 9 read into two arrays:
  * how many error-correction codewords each block gets, and how many blocks
  * there are, for each of the forty versions at each of the four levels. Those

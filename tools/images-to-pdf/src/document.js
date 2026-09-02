@@ -9,7 +9,7 @@
  * that anybody has to take on trust.
  */
 
-import { PdfWriter, num, textString } from './pdf.js';
+import { PdfWriter, num, textString } from './shared/pdf-page-writer.js';
 import { prepareImage } from './encode.js';
 import { layoutPage, placement } from './layout.js';
 

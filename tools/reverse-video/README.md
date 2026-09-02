@@ -161,7 +161,7 @@ leaving at 6, it just becomes larger.
 | `src/shared/mp4-reader.js` | the MP4/MOV reader, shared with every video tool here |
 | `src/shared/mp4-writer.js` | the writer, shared with `/trim-video/` |
 | `src/draw.js` | one frame onto a canvas, the right way up |
-| `src/support.js` | what this browser will decode and encode |
+| `src/shared/video-support.js` | what this browser will decode and encode, shared with the other video tools |
 | `src/main.js` | the page |
 
 `tests/js/reverse-video.test.js` covers `timeline.js` and the sample reversal in

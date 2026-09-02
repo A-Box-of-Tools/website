@@ -6,7 +6,7 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { timelapseByDecoding, previewFrame, decoderConfig, averageFps } from './decode.js';
 import { timelapseByPlaying } from './playback.js';
 import { TimelapseWriter } from './encode.js';
-import { hasEncoder, hasWebCodecs, canDecode, pickH264Codec } from './support.js';
+import { hasEncoder, hasWebCodecs, canDecode, pickH264Codec } from './shared/video-support.js';
 import {
   MIN_FRAMES,
   clampSpeed, speedForLength, lengthForSpeed, sampleInterval, frameTimes, repeatsFrames,

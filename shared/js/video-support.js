@@ -1,14 +1,28 @@
 /**
- * Feature detection for the two crop paths.
+ * Feature detection for the tools that both read a video's frames and write
+ * new ones: what this browser will decode, what it will encode, and what it
+ * can record.
  *
- * The exact path needs WebCodecs, because it decodes and re-encodes the frames
- * itself. The recording path needs only the things every browser has had for
- * years - a <video> element and MediaRecorder - which is why it can accept any
- * file the browser knows how to play, including containers this repository has
- * no demuxer for.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/video-support.js and
+ * the build copies it to <tool>/src/shared/video-support.js for the tools that
+ * ask for it with `js_parts = ["video-support", "codec-support", ...]`: the
+ * cropper, the trimmer, the reverser and the time-lapse maker. They carried
+ * two variants of it - the cropper and trimmer asked about MediaRecorder for
+ * their recording fallback, the reverser and time-lapse maker about the
+ * encoder alone for their playback path - and this file answers every
+ * question either pair asked. The three tools whose support.js asks something
+ * else again (grab-frame about still formats, images-to-video about encoding
+ * only, video-to-gif about reading only) keep their own.
+ *
+ * Every one of these tools has an exact path, which decodes and re-encodes
+ * the frames itself and so needs WebCodecs, and a fallback that leaves the
+ * reading to a <video> element - recording what plays for the cropper and
+ * trimmer, encoding what plays for the reverser and time-lapse maker - which
+ * is why the fallback can accept any file the browser knows how to play,
+ * including containers this repository has no demuxer for.
  */
 
-import { askSupported } from './shared/codec-support.js';
+import { askSupported } from './codec-support.js';
 
 /**
  * Candidate H.264 codec strings, best profile/level first. Levels matter: 4.0
@@ -34,6 +48,16 @@ export function hasWebCodecs() {
     && typeof window.VideoFrame === 'function';
 }
 
+/**
+ * What the writing half alone needs. The reverser's and the time-lapse
+ * maker's playback paths leave the decoding to a <video> element, so they can
+ * run wherever there is an encoder, decoder or not.
+ */
+export function hasEncoder() {
+  return typeof window.VideoEncoder === 'function'
+    && typeof window.VideoFrame === 'function';
+}
+
 export function hasMediaRecorder() {
   return typeof window.MediaRecorder === 'function'
     && typeof HTMLCanvasElement.prototype.captureStream === 'function';
@@ -52,7 +76,11 @@ export async function canDecode(config) {
  * @returns {Promise<string|null>}
  */
 export async function pickH264Codec({ width, height, framerate, bitrate }) {
-  if (!hasWebCodecs()) return null;
+  // Gated on the encoder alone: this is an encoder question, and the
+  // reverser's playback path asks it on browsers that have no VideoDecoder.
+  // The cropper and trimmer only reach it from their exact path, which has
+  // already asked hasWebCodecs(), so nothing is looser for them.
+  if (!hasEncoder()) return null;
 
   for (const codec of H264_CANDIDATES) {
     const supported = await askSupported(VideoEncoder, {

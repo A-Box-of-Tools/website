@@ -15,7 +15,7 @@
  * person who made it.
  */
 
-import { PdfWriter, PT_PER_INCH, PT_PER_MM, num, textString } from './pdf.js';
+import { PdfWriter, PT_PER_INCH, PT_PER_MM, num, textString } from './shared/pdf-page-writer.js';
 
 /** What the document says made it. No version, no machine, no user. */
 const PRODUCER = 'abox.tools document scanner';

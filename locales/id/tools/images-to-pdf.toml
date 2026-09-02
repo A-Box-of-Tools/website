@@ -27,7 +27,7 @@ live_hint = """
       mini, atau nama file. Atau cabut koneksi internet dan tetap buat satu."""
 
 read_first = """
-, dan <code>src/pdf.js</code> serta
+, dan <code>src/shared/pdf-page-writer.js</code> serta
       <code>src/document.js</code> untuk seluruh penulisan file-nya, yang tidak
       pernah menyentuh jaringan."""
 
@@ -71,7 +71,7 @@ body = """
 title = "PDF-nya ditulis di sini."
 body = """
  Sebuah PDF adalah daftar objek dan tabel yang
-      mencatat di mana setiap objek dimulai, dan <code>src/pdf.js</code> menulis
+      mencatat di mana setiap objek dimulai, dan <code>src/shared/pdf-page-writer.js</code> menulis
       keduanya. Tidak ada pustaka yang diambil, tidak ada yang digambar di
       server, dan file yang sudah jadi diserahkan langsung ke unduhan dari
       memori."""

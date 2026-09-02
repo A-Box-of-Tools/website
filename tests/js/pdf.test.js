@@ -1,7 +1,7 @@
 /**
- * tools/images-to-pdf/src/{pdf,layout,jpeg}.js.
+ * shared/js/pdf-page-writer.js and tools/images-to-pdf/src/{layout,jpeg}.js.
  *
- * pdf.js writes the three things a PDF is as far as this tool is concerned: a
+ * The page writer writes the three things a PDF is as far as this tool is concerned: a
  * list of numbered objects, a cross-reference table saying what byte each one
  * starts at, and a trailer. The byte offsets are the part worth testing,
  * because getting one wrong produces a file that opens in one reader and not
@@ -17,7 +17,7 @@ import assert from 'node:assert/strict';
 
 import {
   PT_PER_INCH, PT_PER_MM, PdfWriter, num, textString,
-} from '../../tools/images-to-pdf/src/pdf.js';
+} from '../../shared/js/pdf-page-writer.js';
 import {
   PAGE_SIZES, displaySize, fitRect, layoutPage, pageSizePt, placement, seenSize,
   swapsAxes,

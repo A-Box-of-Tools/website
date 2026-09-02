@@ -15,7 +15,7 @@ import {
   openSegment, readTimestamps, segmentRanges, totalCaptured, writeTimestamps,
 } from './segments.js';
 import { keyframeTimes, keyframeBefore, invertRanges, totalSeconds } from './ranges.js';
-import { hasWebCodecs, hasMediaRecorder, canDecode } from './support.js';
+import { hasWebCodecs, hasMediaRecorder, canDecode } from './shared/video-support.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer and the writer are

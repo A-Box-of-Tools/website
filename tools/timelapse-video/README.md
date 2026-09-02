@@ -126,7 +126,7 @@ over sixty times as many frames.
 | `draw.js` | one frame onto the output canvas, the right way up |
 | `shared/mp4-reader.js` | the MP4 reader, shared — see below |
 | `shared/mp4-muxer.js` | the muxer, shared — see below |
-| `support.js` | what this browser will decode and encode |
+| `shared/video-support.js` | what this browser will decode and encode, shared with the other video tools |
 | `main.js` | the page: wiring, the summary, the progress bar |
 
 ## The shared reader and muxer

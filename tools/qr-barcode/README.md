@@ -29,7 +29,7 @@ Six steps, and each one needs the answer to the last:
 
 `src/qr-encode.js` is the first four and `src/qr.js` is the last two, with the
 field arithmetic in `src/gf256.js` and the specification's tables in
-`src/qr-tables.js`.
+`src/shared/qr-tables.js`, a shared part the reader next door ships too.
 
 The awkward join is between steps two and three: the header carries the
 character count in a field whose *width* depends on the version, and the version
@@ -43,7 +43,7 @@ Almost everything about a QR code follows from a formula. The size of a symbol
 is `4v + 17`. The number of codewords it holds is the square, minus the corners,
 minus the timing lines, minus the alignment grid, over eight. Where the
 alignment patterns go is a spacing rule with exactly one exception in forty
-versions. All of that is written as arithmetic in `src/qr-tables.js`, because a
+versions. All of that is written as arithmetic in `src/shared/qr-tables.js`, because a
 formula can be read and checked and a column of forty numbers can only be
 trusted.
 

@@ -186,17 +186,16 @@ translations of it in an index is fifteen chances to be judged on the half of
 the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
-**A few modules are still copied, and must stay in step until they move.**
-The QR tables sit in the QR writer and reader, the PDF page writer in two
-tools, and the WebCodecs support probes in two pairs of video tools, from
-before the tests could follow a `./shared/` import.
-`tests/python/test_duplicates.py` declares which copies must agree and fails
-if they drift, comparing tokens so each copy keeps its own comments. Fix one
-copy and it will tell you about the others; add a new copy and it will make
-you declare it — or move the module to `shared/js/`, which is what happened
-to the CRC, the ZIP writer, the four PDF modules, the MP4 reader, the two MP4
-writers, the audio decoder trio and the text parsers, and is the answer for
-the rest.
+**No module is copied between tools any more, and a test keeps it so.** There
+used to be twenty-one declared groups of byte-identical copies — the MP4
+reader six times over, the PDF grammar three — because a shared part could
+not be imported by a tested leaf module. Every one has moved to `shared/js/`
+since the tests learned to follow a `./shared/` import.
+`tests/python/test_duplicates.py` still scans every `tools/*/src/` for two
+files of the same name with the same tokens and fails on one it has not been
+told about; the answer to that failure is a part under `shared/js/` and a line
+in `js_parts`, not a declaration. The singletons it lists are files that share
+a name with something and nothing else.
 
 ## Adding a tool
 

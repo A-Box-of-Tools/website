@@ -28,7 +28,7 @@ live_hint = """
       一條請求帶著圖片、縮圖或者檔名。或者乾脆拔掉網線，照做不誤。"""
 
 read_first = """\
-      ，寫檔案的全部過程在 <code>src/pdf.js</code> 和 \
+      ，寫檔案的全部過程在 <code>src/shared/pdf-page-writer.js</code> 和 \
       <code>src/document.js</code> 裡，它們碰都不碰網路。"""
 
 howto_heading = "圖片怎麼變成 PDF"
@@ -68,7 +68,7 @@ body = """\
 title = "PDF 是在這裡寫出來的。"
 body = """\
       一個 PDF 說白了就是一串物件，外加一張記著每個物件從哪裡開始的表，兩樣\
-      都由 <code>src/pdf.js</code> 寫。沒有庫要去外面取，沒有哪一步在伺服器上\
+      都由 <code>src/shared/pdf-page-writer.js</code> 寫。沒有庫要去外面取，沒有哪一步在伺服器上\
       渲染，成品直接從記憶體交給下載。"""
 
 [[privacy]]

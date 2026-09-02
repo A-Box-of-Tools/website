@@ -21,7 +21,7 @@ import { generator, multiply, remainder } from '../../tools/qr-barcode/src/gf256
 import {
   blockLayout, countBits, dataCapacity, LEVELS, remainderBits, sizeOf,
   totalCodewords,
-} from '../../tools/qr-barcode/src/qr-tables.js';
+} from '../../shared/js/qr-tables.js';
 import {
   capacityFor, chooseMode, encodeText, fitVersion,
 } from '../../tools/qr-barcode/src/qr-encode.js';

@@ -28,7 +28,7 @@
  */
 
 import { decodeMatrix, UnreadableError } from './qr-decode.js';
-import { sizeOf } from './qr-tables.js';
+import { sizeOf } from './shared/qr-tables.js';
 
 /** The largest symbol there is, which bounds how coarsely a row scan may step. */
 const MAX_MODULES = 177;

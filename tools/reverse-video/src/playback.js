@@ -28,7 +28,7 @@
  */
 
 import { drawFitted } from './draw.js';
-import { pickH264Codec } from './support.js';
+import { pickH264Codec } from './shared/video-support.js';
 import { reversedAudioTrack } from './audio.js';
 import { writeFile } from './reverse.js';
 
