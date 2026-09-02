@@ -89,6 +89,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
 | `shared/css/results.css` | `css_parts = ["results"]` | the source panel, the summary rows, the result and its meta line, the results list; put before the tool's own rules, so a tool that wants one of them different keeps its own |
 | `shared/css/form.css` | `css_parts = ["form"]` | the controls' vocabulary: fields and their notes, the card lede, the big button, option rows, the options box, the run and export rows, number fields |
+| `shared/css/checks.css` | `css_parts = ["checks"]` | a checkbox row with a bold title and a dim note, as the image and PDF tools draw it |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `shared/js/image-list.js` | `js_parts = ["image-list"]` | a list of pictures to work through in order: decoded once for a thumbnail and their size, sorted, reordered, re-decoded one at a time |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |

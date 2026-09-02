@@ -108,7 +108,7 @@ card = """
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["form"]
+css_parts = ["form", "checks"]
 
 # Shared modules this tool asks for, copied into it at src/shared/ by the
 # build: download hands the chart to the browser as a file.

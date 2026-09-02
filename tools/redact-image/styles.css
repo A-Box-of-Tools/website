@@ -198,18 +198,6 @@ kbd {
   margin-bottom: 0.8rem;
 }
 
-.check input { margin-top: 0.25rem; flex: none; }
-.check strong { display: block; font-size: 0.9rem; }
-
-.check-note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 70ch;
-}
-
 .option-row {
   display: flex;
   align-items: center;

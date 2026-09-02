@@ -1,0 +1,37 @@
+/* ---------------------------------------------------------------- checks
+   A checkbox with a title and a note under it, laid out as a row the whole
+   of which can be clicked: the input at the top of the row, the title in
+   bold, the note dim beneath.
+
+   Asked for with `css_parts = ["checks"]`. Thirteen tools - the image and
+   PDF ones - carried these rules token for token; the build puts this file
+   before a tool's own stylesheet, so a tool that wants one of them different
+   writes its own rule and wins, provided it sets every property the rule
+   here sets. The video and text tools style their checkboxes another way
+   and do not ask for this. */
+
+.check {
+  align-items: flex-start;
+  cursor: pointer;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.check input {
+  flex: none;
+  margin-top: 0.25rem;
+}
+
+.check strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.check-note {
+  color: var(--text-dim);
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin-top: 0.15rem;
+  max-width: 70ch;
+}
