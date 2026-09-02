@@ -402,13 +402,6 @@
 }
 
 .summary { margin: 0; font-size: 0.88rem; }
-.summary > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
 .summary > div:last-child { border-bottom: none; }
 .summary dt { color: var(--text-dim); }
 .summary dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -431,7 +424,6 @@
   overflow-y: auto;
 }
 
-.result { margin-top: 1.25rem; }
 .result video {
   width: 100%;
   border-radius: var(--radius);
@@ -439,12 +431,3 @@
   display: block;
 }
 
-.result-meta {
-  margin-top: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }

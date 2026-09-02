@@ -54,17 +54,6 @@ button.file-main-wrap:focus-visible {
   outline-offset: -2px;
 }
 
-.file-name {
-  margin: 0;
-  font-weight: 600;
-  font-size: 0.92rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.file-sub { margin: 0; font-size: 0.8rem; color: var(--text-dim); }
-
 /* What this row is about to become, said on the row itself rather than only
    after the run. A batch where one picture is already smaller than the size
    asked for behaves differently from the rest, and that is worth seeing
@@ -114,9 +103,6 @@ button.file-main-wrap:focus-visible {
   text-transform: uppercase;
   white-space: nowrap;
 }
-
-.row-remove:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
-.row-remove:disabled { opacity: 0.4; cursor: default; }
 
 /* --------------------------------------------------------------- the stage */
 
@@ -456,27 +442,12 @@ button.file-main-wrap:focus-visible {
 
 /* ----------------------------------------------------------------- results */
 
-.results { margin-top: 1.4rem; }
-
-.results-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.4rem;
-}
-
-.results-head h3 { margin: 0; font-size: 0.95rem; }
-
 .results-summary {
   margin: 0 0 0.8rem;
   font-size: 0.88rem;
   color: var(--text-dim);
   max-width: 72ch;
 }
-
-.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 
 .result-row {
   display: flex;
@@ -527,8 +498,6 @@ button.file-main-wrap:focus-visible {
 
 .result-text { min-width: 0; flex: 1 1 22rem; }
 
-.result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
-
 .result-headline {
   margin: 0.25rem 0 0;
   font-size: 0.92rem;
@@ -544,8 +513,6 @@ button.file-main-wrap:focus-visible {
   color: var(--text-dim);
   max-width: 68ch;
 }
-
-.result-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
 
 /* ------------------------------------------------------------------ viewer */
 

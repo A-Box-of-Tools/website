@@ -28,7 +28,7 @@ roadmap_group = "video"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress"]
+css_parts = ["progress", "results"]
 
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.

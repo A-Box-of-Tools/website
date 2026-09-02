@@ -28,6 +28,9 @@ roadmap_group = "images"
 # Shared modules this tool asks for. file-picker brings in the drop zone; the
 # list of boxes underneath the picture is this tool's own, because it is a list
 # of rectangles rather than a list of files.
+# Shared stylesheet parts this tool asks for, put before its own rules by
+# the build so that its own can override them.
+css_parts = ["results"]
 js_parts = ["file-picker", "message-box"]
 lastmod = "2026-08-27"
 

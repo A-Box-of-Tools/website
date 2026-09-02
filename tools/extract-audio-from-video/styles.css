@@ -3,30 +3,6 @@
 
 /* -------------------------------------------------------------- the source */
 
-.source {
-  margin: 1rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0 1.2rem;
-  font-size: 0.88rem;
-}
-
-.source > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.source dt { color: var(--text-dim); flex: none; }
-.source dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: end;
-  overflow-wrap: anywhere;
-}
-
 .path-note {
   margin: 0.9rem 0 0;
   padding: 0.6rem 0.8rem;
@@ -171,14 +147,6 @@ input[type="range"] {
   gap: 0 1.2rem;
 }
 
-.summary > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
 .summary dt { color: var(--text-dim); flex: none; }
 .summary dd {
   margin: 0;
@@ -208,19 +176,6 @@ input[type="range"] {
   font-size: 0.9rem;
   white-space: pre-line;
 }
-
-.result { margin-top: 1.25rem; }
-
-.result-meta {
-  margin-top: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
 
 @media (max-width: 620px) {
   .value-box { width: 5.5rem; }
