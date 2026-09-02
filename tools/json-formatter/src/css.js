@@ -24,7 +24,7 @@
  *     occasionally change a page.
  */
 
-import { ParseError } from './errors.js';
+import { ParseError } from './shared/parse-errors.js';
 
 /* -------------------------------------------------------------------- read */
 

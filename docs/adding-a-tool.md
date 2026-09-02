@@ -102,6 +102,10 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/audio-decode.js` | `js_parts = ["audio-decode"]` | the browser's own decoder, asked for the audio track and nothing else |
 | `shared/js/samplerate.js` | `js_parts = ["samplerate"]` | the sample rate sniffed out of a file's header before it is decoded; `audio-decode` imports it |
 | `shared/js/wav.js` | `js_parts = ["wav"]` | the WAV writer: a header in front of the samples |
+| `shared/js/parse-errors.js` | `js_parts = ["parse-errors"]` | the `ParseError` every text parser throws, with a line, a column and a phrase key; each `parse-*` part below imports it |
+| `shared/js/parse-json.js` | `js_parts = ["parse-json"]` | JSON read into the tree every text parser speaks, and printed back |
+| `shared/js/parse-yaml.js` | `js_parts = ["parse-yaml"]` | YAML 1.2, in the half of it a converter needs |
+| `shared/js/parse-xml.js` | `js_parts = ["parse-xml"]` | XML and HTML, one parser with two rulebooks |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 

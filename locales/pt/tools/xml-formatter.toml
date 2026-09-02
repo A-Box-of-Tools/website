@@ -17,7 +17,7 @@ og_image_alt = "Formatador de XML - organizar, comprimir ou converter, sem envio
 
 pledge = """
     Formatar e converter são aritmética sobre um texto, feita aqui, nesta
-    página. O analisador é escrito à mão e está em <code>src/xml.js</code>, e não
+    página. O analisador é escrito à mão e está em <code>src/shared/parse-xml.js</code>, e não
     há mais nada. Esta ferramenta não tem função de rede de espécie alguma
     &mdash; nada para buscar, nada para enviar &mdash; e isso pesa aqui mais do
     que a palavra &ldquo;XML&rdquo; sugere: o que chega neste formato costuma ser
@@ -30,7 +30,7 @@ live_hint = """
       você colou. Ou desconecte da internet e formate assim mesmo."""
 
 read_first = """
-, <code>src/xml.js</code> para o analisador que
+, <code>src/shared/parse-xml.js</code> para o analisador que
       diz qual tag nunca foi fechada, e <code>src/convert.js</code> para entender
       por que todo valor sai do XML como texto em vez de ser adivinhado."""
 
@@ -86,7 +86,7 @@ body = """
  Um
       <code>DOCTYPE</code> com uma entidade externa dentro é o jeito de convencer
       um analisador de XML a ler um arquivo da máquina que está analisando, e é o
-      buraco mais antigo do formato. <code>src/xml.js</code> é um leitor escrito à
+      buraco mais antigo do formato. <code>src/shared/parse-xml.js</code> é um leitor escrito à
       mão que não tem resolução de entidades nenhuma &mdash; não desligada,
       ausente &mdash; e esta página nunca entrega o seu texto ao
       <code>DOMParser</code> do próprio navegador."""
@@ -172,7 +172,7 @@ a = """
         Não, e não há nada para desligar. Resolver entidades externas é o jeito de
         convencer um analisador de XML a ler arquivos da máquina que o executa
         &mdash; o ataque que costuma ser escrito XXE &mdash; e
-        <code>src/xml.js</code> é um leitor escrito à mão sem resolução de
+        <code>src/shared/parse-xml.js</code> é um leitor escrito à mão sem resolução de
         entidades nenhuma. O seu texto também nunca é entregue ao
         <code>DOMParser</code> do próprio navegador. Um <code>DOCTYPE</code> passa
         adiante sem nunca ser executado."""

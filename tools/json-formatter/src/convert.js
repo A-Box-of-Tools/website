@@ -2,7 +2,7 @@
  * Converting between the formats, which is four conversions and one shared
  * tree.
  *
- * The tree is the one json.js describes. A conversion is therefore never a
+ * The tree is the one shared/parse-json.js describes. A conversion is therefore never a
  * conversion: it is one parser and one printer, chosen from the list, with
  * nothing in between them that knows about both formats at once. That is what
  * keeps "JSON to YAML" and "YAML to JSON" from disagreeing about what a
@@ -16,7 +16,7 @@
  *   - **JSON to YAML** loses nothing. Every JSON document is a YAML document.
  *   - **YAML to JSON** loses comments, because JSON has nowhere to put one,
  *     and refuses outright on anchors, aliases and tags rather than guessing
- *     (see yaml.js).
+ *     (see shared/parse-yaml.js).
  *   - **JSON to XML** has to invent element names for the members of an array
  *     and cannot represent an empty object and an empty string differently.
  *   - **XML to JSON** loses the order of mixed content, comments, and the
@@ -26,9 +26,9 @@
  * Each of those is on the page beside the button that does it, not only here.
  */
 
-import { parseJson, printJson } from './json.js';
-import { parseYaml, printYaml } from './yaml.js';
-import { parseXml, printXml } from './xml.js';
+import { parseJson, printJson } from './shared/parse-json.js';
+import { parseYaml, printYaml } from './shared/parse-yaml.js';
+import { parseXml, printXml } from './shared/parse-xml.js';
 
 /* -------------------------------------------------------------- JSON, YAML */
 

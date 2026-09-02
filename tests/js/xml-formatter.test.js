@@ -20,7 +20,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import {
   jsonToXml, xmlToJson, CONVERSIONS, conversionById,
 } from '../../tools/xml-formatter/src/convert.js';
-import { parseXml, printXml } from '../../tools/xml-formatter/src/xml.js';
+import { parseXml, printXml } from '../../shared/js/parse-xml.js';
 
 test('the menu is the two XML directions, in the order the page is named for', () => {
   assert.deepEqual(CONVERSIONS.map((item) => item.id), ['xml-json', 'json-xml']);
@@ -44,10 +44,16 @@ test('an unknown id falls back to the first direction rather than throwing', () 
 });
 
 test('this tool ships no YAML parser, and nothing here reaches for one', () => {
+  // The parsers are shared parts now, so "ships" is decided by tool.toml: a
+  // part a tool does not ask for is not copied into it, and an import of one
+  // fails the build. Both halves are checked, because either alone would let
+  // six hundred lines of YAML parser onto a page that never mentions YAML.
   const files = readdirSync('tools/xml-formatter/src');
   assert.ok(!files.includes('yaml.js'), 'a YAML parser has appeared in a tool that never mentions YAML');
+  const toml = readFileSync('tools/xml-formatter/tool.toml', 'utf8');
+  assert.ok(!/"parse-yaml"/.test(toml), 'tool.toml has started asking for the shared YAML parser');
   const source = readFileSync('tools/xml-formatter/src/convert.js', 'utf8');
-  assert.ok(!/from '\.\/yaml\.js'/.test(source), 'convert.js has grown an import of yaml.js');
+  assert.ok(!/parse-yaml\.js|\/yaml\.js/.test(source), 'convert.js has grown an import of the YAML parser');
 });
 
 /*

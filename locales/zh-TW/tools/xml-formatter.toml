@@ -22,7 +22,7 @@ og_image_alt = "XML 格式化 - 排開、壓平或轉換，不上傳"
 
 pledge = """\
     格式化和轉換都是對一段字串做算術，就在這裡，在這個頁面上。解析器是手寫的，\
-    在 <code>src/xml.js</code> 裡，除此之外再沒有別的。這個工具壓根就沒有網路功能，\
+    在 <code>src/shared/parse-xml.js</code> 裡，除此之外再沒有別的。這個工具壓根就沒有網路功能，\
     沒有要取的，也沒有要發的。這一點在這裡比「XML」這個詞聽起來更重要：以這個格式\
     送過來的，多半是一張發票、一份銀行流水、一份病歷，或者一個頭裡帶著某人憑據的 \
     SOAP 請求。"""
@@ -32,7 +32,7 @@ live_hint = """
       帶走你貼進去的一個字元。嫌麻煩就直接拔掉網線，照樣格式化。"""
 
 read_first = """\
-，告訴你哪個標籤沒閉合的解析器在 <code>src/xml.js</code>，\
+，告訴你哪個標籤沒閉合的解析器在 <code>src/shared/parse-xml.js</code>，\
       XML 裡每個值為什麼都按字串出來、而不是靠猜的，在 <code>src/convert.js</code>。"""
 
 howto_heading = "不上傳就把 XML 格式化的步驟"
@@ -80,7 +80,7 @@ body = """\
 title = "外部實體永遠不會被解析。"
 body = """\
       帶外部實體的 <code>DOCTYPE</code>，是把 XML 解析器誆去讀解析它的那臺機器上的\
-      檔案的辦法，也是這個格式最老的一個洞。<code>src/xml.js</code> 是手寫的讀取器，\
+      檔案的辦法，也是這個格式最老的一個洞。<code>src/shared/parse-xml.js</code> 是手寫的讀取器，\
       裡面壓根就沒有實體解析這回事——不是關掉了，是根本沒有——而且這個頁面也從不把\
       你的文字交給瀏覽器內建的 <code>DOMParser</code>。"""
 
@@ -147,7 +147,7 @@ a = """\
 q = "它會解析外部實體嗎？"
 a = """\
         不會，也沒有什麼可關的。解析外部實體，是把 XML 解析器誆去讀執行它的那臺機器上\
-        的檔案的辦法，也就是通常寫作 XXE 的那個攻擊，而 <code>src/xml.js</code> 是\
+        的檔案的辦法，也就是通常寫作 XXE 的那個攻擊，而 <code>src/shared/parse-xml.js</code> 是\
         手寫的讀取器，裡面壓根沒有實體解析。你的文字也從不交給瀏覽器內建的 \
         <code>DOMParser</code>。<code>DOCTYPE</code> 會原樣帶過去，但永遠不會被執行。"""
 

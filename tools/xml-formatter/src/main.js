@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { parseXml, printXml } from './xml.js';
+import { parseXml, printXml } from './shared/parse-xml.js';
 import { CONVERSIONS, conversionById } from './convert.js';
 import { SAMPLES } from './samples.js';
 

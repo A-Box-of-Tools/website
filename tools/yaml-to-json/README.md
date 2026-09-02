@@ -23,21 +23,18 @@ click away.
 Both of those sentences are on the page, under the menu, *before* anything is
 pasted rather than after.
 
-## The parsers are copies, on purpose
+## The parsers are shared parts, and only the ones this page reads
 
-`src/json.js`, `src/yaml.js` and `src/errors.js` are byte for byte
-`json-formatter`'s. They are declared as a group in
-`tests/python/test_duplicates.py`, which fails if they drift, so a fix to the
-YAML reader is a fix to both pages rather than to whichever one somebody
-happened to open.
-
-They are copies from before the JavaScript tests could follow a `./shared/`
-import. `build.py` copies `shared/js/` into a tool at `src/shared/` **at build
-time**; that path does not exist in the source tree, and the tests import these
-modules straight off the disk with no build in front of them.
-`tests/js/resolve-shared.mjs` resolves that path for the tests now, so moving
-the two to `shared/js/` is the next step, as it is for the MP4 reader the
-repository copied five times over for the same reason.
+The JSON parser, the YAML parser and the error they throw are
+`shared/js/parse-json.js`, `parse-yaml.js` and `parse-errors.js`, asked for in
+`tool.toml` and copied into this tool at `src/shared/` by the build — the same
+files `json-formatter` ships. They were byte-for-byte copies until the
+JavaScript tests could follow a `./shared/` import
+(`tests/js/resolve-shared.mjs`); a fix to the YAML reader is a fix to both
+pages now, rather than to whichever one somebody happened to open.
+`parse-xml` is deliberately not asked for: this page never mentions XML, and
+`tests/js/yaml-to-json.test.js` fails if it ever ships the three hundred lines
+of parser for it.
 
 `src/convert.js` is the deliberate exception and is declared as a singleton
 with its reason. The formatter's copy carries the XML pair as well, and
@@ -51,7 +48,7 @@ never mentions XML.
   other way those words are written back *quoted*, even though this reader
   would not need the quotes — because whatever opens the file next may be a 1.1
   reader.
-- **Key order and digits survive.** `src/json.js` is a hand-written parser
+- **Key order and digits survive.** `src/shared/parse-json.js` is a hand-written parser
   rather than a call to `JSON.parse`, which reorders integer-like keys and
   rounds a twenty-digit id to the nearest double.
 

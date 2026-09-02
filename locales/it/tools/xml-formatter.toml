@@ -17,7 +17,7 @@ og_image_alt = "Formattatore XML - sistemarlo, compattarlo o convertirlo, senza 
 
 pledge = """
     Formattare e convertire sono aritmetica su una stringa, fatta qui, in questa
-    pagina. Il parser è scritto a mano e sta in <code>src/xml.js</code>, e non
+    pagina. Il parser è scritto a mano e sta in <code>src/shared/parse-xml.js</code>, e non
     c'è nient'altro. Questo strumento non ha nessuna funzione di rete di alcun
     tipo &mdash; niente da scaricare, niente da mandare &mdash; e qui conta più
     di quanto la parola &ldquo;XML&rdquo; lasci pensare: quello che arriva in
@@ -31,7 +31,7 @@ live_hint = """
       hai incollato. Oppure stacca internet e formattalo lo stesso."""
 
 read_first = """
-, <code>src/xml.js</code> per il parser che ti
+, <code>src/shared/parse-xml.js</code> per il parser che ti
       dice quale tag non è stato mai chiuso, e <code>src/convert.js</code> per il
       motivo per cui ogni valore esce dall'XML come stringa invece di essere
       indovinato."""
@@ -89,7 +89,7 @@ body = """
       <code>DOCTYPE</code> con dentro un'entità esterna è il modo in cui un
       parser XML viene convinto a leggere un file dalla macchina che sta
       analizzando, ed è il buco più vecchio del formato.
-      <code>src/xml.js</code> è un lettore scritto a mano che non ha nessuna
+      <code>src/shared/parse-xml.js</code> è un lettore scritto a mano che non ha nessuna
       risoluzione di entità &mdash; non disattivata, assente &mdash; e questa
       pagina non consegna mai il tuo testo al <code>DOMParser</code> del browser
       stesso."""
@@ -176,7 +176,7 @@ a = """
         No, e non c'è niente da disattivare. La risoluzione delle entità esterne
         è il modo in cui un parser XML viene convinto a leggere file dalla
         macchina che lo esegue &mdash; l'attacco che di solito si scrive XXE
-        &mdash; e <code>src/xml.js</code> è un lettore scritto a mano senza
+        &mdash; e <code>src/shared/parse-xml.js</code> è un lettore scritto a mano senza
         nessuna risoluzione di entità. Il tuo testo non viene mai consegnato
         nemmeno al <code>DOMParser</code> del browser. Un <code>DOCTYPE</code>
         viene portato avanti senza essere mai eseguito."""

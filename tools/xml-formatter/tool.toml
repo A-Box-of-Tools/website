@@ -18,17 +18,18 @@
 # CSS included. This one is XML and the JSON it converts to, and nothing else -
 # the two link to each other rather than duplicating each other.
 #
-# THE PARSERS ARE COPIES, ON PURPOSE
+# THE PARSERS ARE SHARED PARTS, AND ONLY THE ONES THIS PAGE READS
 #
-# src/xml.js, src/json.js and src/errors.js are byte for byte json-formatter's,
-# declared in tests/python/test_duplicates.py so that a fix to one is a fix to
-# both. They are copies from before the JavaScript tests could follow a
-# ./shared/ import (tests/js/resolve-shared.mjs resolves it now), so moving
-# them to shared/js is the next step rather than a rule. src/convert.js
-# is the deliberate exception - json-formatter's carries the YAML pair too, and
-# importing it here would drag six hundred lines of YAML parser into a tool
-# that never mentions YAML. Its two functions are lifted from that file
-# unchanged all the same, so the two copies can still be read side by side.
+# The XML parser, the JSON parser and the error they throw are
+# shared/js/parse-xml.js, parse-json.js and parse-errors.js, asked for in
+# js_parts below and copied into this tool at src/shared/ by the build - the
+# same files json-formatter ships. They were byte-for-byte copies until the
+# JavaScript tests could follow a ./shared/ import. parse-yaml is deliberately
+# NOT asked for: this page never mentions YAML, and tests/js/xml-formatter.test.js
+# fails if it ever ships the six hundred lines of parser for it. src/convert.js
+# stays this tool's own for the same reason - json-formatter's carries the YAML
+# pair too - and its two functions are lifted from that file unchanged, so the
+# two copies can still be read side by side.
 #
 
 slug = "xml-formatter"
@@ -55,8 +56,8 @@ roadmap_group = "beyond"
 
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the file that is easier to drop than to open, select all and copy.
-js_parts = ["file-picker"]
-lastmod = "2026-08-30"
+js_parts = ["file-picker", "parse-errors", "parse-json", "parse-xml"]
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -85,7 +86,7 @@ csp_note = """
 
 pledge = """
     Formatting and converting are arithmetic over a string, done here, in this
-    page. The parser is hand-written and in <code>src/xml.js</code>, and there
+    page. The parser is hand-written and in <code>src/shared/parse-xml.js</code>, and there
     is nothing else. This tool has no network feature of any kind &mdash;
     nothing to fetch, nothing to send &mdash; which matters here more than the
     word &ldquo;XML&rdquo; suggests: what arrives in this format is usually an
@@ -100,7 +101,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/xml.js</code> for the
+, <code>src/shared/parse-xml.js</code> for the
       parser that tells you which tag was never closed, and
       <code>src/convert.js</code> for why every value comes out of XML as a
       string rather than being guessed at."""
@@ -169,7 +170,7 @@ body = """
  A
       <code>DOCTYPE</code> with an external entity in it is how an XML parser is
       talked into reading a file off the machine that parsed it, and it is the
-      oldest hole in the format. <code>src/xml.js</code> is a hand-written
+      oldest hole in the format. <code>src/shared/parse-xml.js</code> is a hand-written
       reader that has no entity resolution in it at all &mdash; not disabled,
       absent &mdash; and this page never hands your text to the browser's own
       <code>DOMParser</code>."""
@@ -259,7 +260,7 @@ a = """
         No, and there is nothing to switch off. External entity resolution is
         how an XML parser is talked into reading files off the machine running
         it &mdash; the attack usually written XXE &mdash; and
-        <code>src/xml.js</code> is a hand-written reader with no entity
+        <code>src/shared/parse-xml.js</code> is a hand-written reader with no entity
         resolution in it at all. Your text is never handed to the browser's own
         <code>DOMParser</code> either. A <code>DOCTYPE</code> is carried through
         without ever being acted on."""

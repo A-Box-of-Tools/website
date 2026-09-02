@@ -18,7 +18,7 @@ og_image_alt = "YAML'den JSON'a Dönüştürücü - iki yön, yükleme yok"
 pledge = """
     Dönüştürmek, bir metin dizisi üzerinde yapılan aritmetiktir; burada, bu
     sayfada yapılır. İki ayrıştırıcı da elle yazılmıştır ve <code>src/</code>
-    içindedir &mdash; <code>yaml.js</code> ve <code>json.js</code> &mdash; başka
+    içindedir &mdash; <code>shared/parse-yaml.js</code> ve <code>shared/parse-json.js</code> &mdash; başka
     da bir şey yoktur. Bu aracın herhangi bir ağ işlevi hiç yoktur &mdash;
     getirecek bir şey de, gönderecek bir şey de &mdash; ve bu, burada bu sitenin
     hemen her yerinden daha çok önemlidir: bir YAML dosyası çoğunlukla bir
@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 , bir çıpanın ne demek istediğini tahmin etmek yerine
-      onu geri çeviren okuyucu için <code>src/yaml.js</code>, ve bir dönüşümün
+      onu geri çeviren okuyucu için <code>src/shared/parse-yaml.js</code>, ve bir dönüşümün
       neden iki biçimi birden bilen hiçbir şey araya girmeden bir ayrıştırıcı ile
       bir yazıcıdan ibaret olduğu için <code>src/convert.js</code>."""
 

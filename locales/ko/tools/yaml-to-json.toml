@@ -17,8 +17,8 @@ og_image_alt = "YAML → JSON 변환기 - 양방향, 업로드 없이"
 
 pledge = """
     변환은 문자열에 대한 산술이고, 그 일이 여기, 이 페이지에서 벌어집니다. 두 파서는
-    모두 손으로 쓴 것이고 <code>src/</code>에 있습니다. <code>yaml.js</code>와
-    <code>json.js</code>이며, 그 밖에는 아무것도 없습니다. 이 도구에는 네트워크 기능
+    모두 손으로 쓴 것이고 <code>src/</code>에 있습니다. <code>shared/parse-yaml.js</code>와
+    <code>shared/parse-json.js</code>이며, 그 밖에는 아무것도 없습니다. 이 도구에는 네트워크 기능
     자체가 없어서 가져올 것도 보낼 것도 없습니다. 그것이 이 사이트의 거의 어느
     곳에서보다 여기서 더 무겁습니다. YAML 파일은 대개 배포 설정이고, 배포 설정은 대개
     호스트 이름과 버킷 이름과 비밀로 가득하기 때문입니다."""
@@ -30,7 +30,7 @@ live_hint = """
 
 read_first = """
 , 앵커가 무슨 뜻이었는지 짐작하는 대신 거절하는 리더는
-      <code>src/yaml.js</code>를, 변환이 왜 두 형식을 동시에 아는 무언가가 사이에 끼지
+      <code>src/shared/parse-yaml.js</code>를, 변환이 왜 두 형식을 동시에 아는 무언가가 사이에 끼지
       않은 파서 하나와 프린터 하나인지는 <code>src/convert.js</code>를 보세요."""
 
 howto_heading = "YAML을 업로드하지 않고 JSON으로 바꾸는 방법"

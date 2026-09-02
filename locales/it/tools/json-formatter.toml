@@ -18,8 +18,8 @@ og_image_alt = "Formattatore JSON - formattare, minimizzare e convertire, senza 
 pledge = """
     Formattare e convertire sono aritmetica su una stringa, fatta qui, in questa
     pagina. I parser sono scritti a mano e stanno in <code>src/</code>:
-    <code>json.js</code>, <code>xml.js</code>, <code>css.js</code>,
-    <code>yaml.js</code>; e non c'è altro. Questo strumento non ha nessuna
+    <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>, <code>css.js</code>,
+    <code>shared/parse-yaml.js</code>; e non c'è altro. Questo strumento non ha nessuna
     funzione di rete, niente da scaricare e niente da mandare, e qui conta più
     che quasi in qualsiasi altro punto di questo sito: quello che la gente
     incolla in un formattatore sono token di accesso, cookie di sessione, dati
@@ -32,7 +32,7 @@ live_hint = """
       connessione e formattalo lo stesso."""
 
 read_first = """
-, <code>src/json.js</code> per il parser che tiene le
+, <code>src/shared/parse-json.js</code> per il parser che tiene le
       tue chiavi nell'ordine in cui le hai scritte, e <code>src/convert.js</code>
       per capire perché una conversione è un parser e uno scrittore, senza niente
       in mezzo che conosca i due formati insieme."""
@@ -87,7 +87,7 @@ title = "I formattatori tengono quello che gli è stato dato."
 body = """
  Un oggetto JSON torna
       indietro con le chiavi nell'ordine in cui le hai scritte e i numeri scritti come
-      li hai scritti tu, perché <code>src/json.js</code> è un parser e non una chiamata
+      li hai scritti tu, perché <code>src/shared/parse-json.js</code> è un parser e non una chiamata
       a <code>JSON.parse</code>, che riordina le chiavi che sembrano interi e trasforma
       un id di venti cifre nel double più vicino. I test in
       <code>tests/js/text-format.test.js</code> controllano esattamente questo."""

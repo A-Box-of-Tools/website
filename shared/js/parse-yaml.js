@@ -1,6 +1,13 @@
 /**
  * YAML, in the half of it that a converter needs.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/parse-yaml.js and the
+ * build copies it to <tool>/src/shared/parse-yaml.js for the tools that ask
+ * for it with `js_parts = ["parse-yaml", "parse-errors", ...]`: the JSON
+ * formatter and the YAML converter. The XML formatter never mentions YAML and
+ * does not ask, which is how six hundred lines stay off a page that would
+ * never call them. See the header of parse-json.js for how the parsers travel.
+ *
  * WHAT IS SUPPORTED, AND WHY IT IS A HALF
  *
  * YAML is a large specification with several features that exist to describe
@@ -22,12 +29,12 @@
  * `true`, `false`, `null` and `~` are read as anything but text.
  */
 
-import { ParseError } from './errors.js';
+import { ParseError } from './parse-errors.js';
 
 /* ------------------------------------------------------------------- write */
 
 /**
- * Print the shared tree (see json.js) as YAML.
+ * Print the shared tree (see parse-json.js) as YAML.
  *
  * @param {object} data
  * @param {object} [options]

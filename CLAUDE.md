@@ -186,15 +186,17 @@ translations of it in an index is fifteen chances to be judged on the half of
 the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
-**Some modules are still copied, and must stay in step until they move.** The
-text parsers sit in the three formatter pages, and the QR tables in the QR
-writer and reader, from before the tests could follow a `./shared/` import.
+**A few modules are still copied, and must stay in step until they move.**
+The QR tables sit in the QR writer and reader, the PDF page writer in two
+tools, and the WebCodecs support probes in two pairs of video tools, from
+before the tests could follow a `./shared/` import.
 `tests/python/test_duplicates.py` declares which copies must agree and fails
 if they drift, comparing tokens so each copy keeps its own comments. Fix one
 copy and it will tell you about the others; add a new copy and it will make
 you declare it — or move the module to `shared/js/`, which is what happened
 to the CRC, the ZIP writer, the four PDF modules, the MP4 reader, the two MP4
-writers and the audio decoder trio, and is the answer for the rest.
+writers, the audio decoder trio and the text parsers, and is the answer for
+the rest.
 
 ## Adding a tool
 

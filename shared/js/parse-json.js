@@ -1,6 +1,15 @@
 /**
  * JSON, read and written by hand.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/parse-json.js and the
+ * build copies it to <tool>/src/shared/parse-json.js for every tool that asks
+ * for it with `js_parts = ["parse-json", "parse-errors", ...]` - the JSON
+ * formatter, the XML formatter and the YAML converter, which all read and
+ * write JSON. It imports parse-errors.js beside it, so the two are asked for
+ * together and buildlib/imports.py refuses one without the other. The three
+ * pages carried identical copies until the tests could follow a `./shared/`
+ * import; see tests/js/resolve-shared.mjs.
+ *
  * WHY NOT `JSON.parse`
  *
  * Two reasons, and both of them are the difference between a formatter you can
@@ -17,7 +26,7 @@
  *      exactly as it was written, and printed back byte for byte.
  *
  * It also cannot say where the error was in terms a page can show. See
- * errors.js.
+ * parse-errors.js.
  *
  * THE SHAPE EVERYTHING ELSE SPEAKS
  *
@@ -39,7 +48,7 @@
  * parser has no raw and is escaped from its value instead.
  */
 
-import { ParseError } from './errors.js';
+import { ParseError } from './parse-errors.js';
 
 /* -------------------------------------------------------------------- read */
 

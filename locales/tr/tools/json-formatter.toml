@@ -21,8 +21,8 @@ og_image_alt = "JSON Biçimlendirici - biçimlendir, küçült ve dönüştür, 
 pledge = """
     Biçimlendirmek ve dönüştürmek, burada, bu sayfada yapılan, bir dizge
     üzerinde bir aritmetiktir. Ayrıştırıcılar elle yazılmıştır ve
-    <code>src/</code> içindedir &mdash; <code>json.js</code>,
-    <code>xml.js</code>, <code>css.js</code>, <code>yaml.js</code> &mdash; ve
+    <code>src/</code> içindedir &mdash; <code>shared/parse-json.js</code>,
+    <code>shared/parse-xml.js</code>, <code>css.js</code>, <code>shared/parse-yaml.js</code> &mdash; ve
     başka bir şey yoktur. Bu aracın hiçbir türde ağ özelliği yoktur &mdash;
     getirecek bir şey yok, gönderecek bir şey yok &mdash; ve bu, sitenin
     neredeyse başka hiçbir yerinde olmadığı kadar burada önemlidir: insanların
@@ -37,7 +37,7 @@ live_hint = """
 
 read_first = """
 , anahtarlarınızı yazdığınız sırada tutan
-      ayrıştırıcı için <code>src/json.js</code>; bir dönüştürmenin neden iki biçimi
+      ayrıştırıcı için <code>src/shared/parse-json.js</code>; bir dönüştürmenin neden iki biçimi
       aynı anda bilen hiçbir şey olmadan bir ayrıştırıcı ile bir yazıcıdan ibaret
       olduğu için de <code>src/convert.js</code>."""
 
@@ -88,7 +88,7 @@ title = "Biçimlendiriciler kendilerine verileni koruyor."
 body = """
  Bir JSON nesnesi,
       anahtarları yazdığınız sırada ve sayıları yazdığınız gibi geri gelir; çünkü
-      <code>src/json.js</code>, tamsayı benzeri anahtarları yeniden sıralayan ve
+      <code>src/shared/parse-json.js</code>, tamsayı benzeri anahtarları yeniden sıralayan ve
       yirmi haneli bir kimliği en yakın çift duyarlıklı sayıya çeviren
       <code>JSON.parse</code> çağrısı değil, bir ayrıştırıcıdır.
       <code>tests/js/text-format.test.js</code> içindeki testler tam olarak bunu

@@ -35,8 +35,8 @@ roadmap_group = "beyond"
 
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the file that is easier to drop than to open, select all and copy.
-js_parts = ["file-picker"]
-lastmod = "2026-08-30"
+js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml", "parse-xml"]
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -66,8 +66,8 @@ csp_note = """
 pledge = """
     Formatting and converting are arithmetic over a string, done here, in this
     page. The parsers are hand-written and in <code>src/</code> &mdash;
-    <code>json.js</code>, <code>xml.js</code>, <code>css.js</code>,
-    <code>yaml.js</code> &mdash; and there is nothing else. This tool has no
+    <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>, <code>css.js</code>,
+    <code>shared/parse-yaml.js</code> &mdash; and there is nothing else. This tool has no
     network feature of any kind &mdash; nothing to fetch, nothing to send
     &mdash; which matters more here than almost anywhere on this site: the
     things people paste into a formatter are access tokens, session cookies,
@@ -81,7 +81,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/json.js</code> for the
+, <code>src/shared/parse-json.js</code> for the
       parser that keeps your keys in the order you wrote them, and
       <code>src/convert.js</code> for why a conversion is one parser and one
       printer with nothing in between that knows about both formats at
@@ -150,7 +150,7 @@ title = "The formatters keep what they were given."
 body = """
  A JSON object comes back with its keys
       in the order you wrote them and its numbers spelled the way you spelled
-      them, because <code>src/json.js</code> is a parser rather than a call to
+      them, because <code>src/shared/parse-json.js</code> is a parser rather than a call to
       <code>JSON.parse</code>, which reorders integer-like keys and turns a
       twenty-digit id into the nearest double. The tests in
       <code>tests/js/text-format.test.js</code> check exactly that."""

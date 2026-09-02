@@ -18,8 +18,8 @@ og_image_alt = "Formateador de JSON - formatear, minificar y convertir, sin subi
 pledge = """
     Formatear y convertir son aritmética sobre una cadena de texto, hecha aquí,
     en esta página. Los analizadores están escritos a mano y viven en
-    <code>src/</code>: <code>json.js</code>, <code>xml.js</code>,
-    <code>css.js</code>, <code>yaml.js</code>; y no hay nada más. Esta
+    <code>src/</code>: <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>,
+    <code>css.js</code>, <code>shared/parse-yaml.js</code>; y no hay nada más. Esta
     herramienta no tiene ninguna función de red, nada que pedir y nada que
     enviar, lo cual importa aquí más que en casi ningún otro sitio de esta web:
     lo que la gente pega en un formateador son tokens de acceso, cookies de
@@ -31,7 +31,7 @@ live_hint = """
       lo que has pegado. O desconéctate de internet y formatéalo igualmente."""
 
 read_first = """
-, <code>src/json.js</code> para el analizador que
+, <code>src/shared/parse-json.js</code> para el analizador que
       mantiene tus claves en el orden en que las escribiste, y
       <code>src/convert.js</code> para ver por qué una conversión es un analizador
       y un escritor, sin nada en medio que conozca los dos formatos a la vez."""
@@ -86,7 +86,7 @@ title = "Los formateadores conservan lo que se les dio."
 body = """
  Un objeto JSON vuelve con sus
       claves en el orden en que las escribiste y sus números escritos como los
-      escribiste tú, porque <code>src/json.js</code> es un analizador y no una llamada
+      escribiste tú, porque <code>src/shared/parse-json.js</code> es un analizador y no una llamada
       a <code>JSON.parse</code>, que reordena las claves que parecen enteros y
       convierte un identificador de veinte cifras en el doble más cercano. Las pruebas
       de <code>tests/js/text-format.test.js</code> comprueban exactamente eso."""

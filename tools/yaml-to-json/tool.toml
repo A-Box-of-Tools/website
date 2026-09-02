@@ -18,16 +18,17 @@
 # JSON is still json-formatter's job and this page does not duplicate it; the
 # two link to each other.
 #
-# THE PARSERS ARE COPIES, ON PURPOSE
+# THE PARSERS ARE SHARED PARTS, AND ONLY THE ONES THIS PAGE READS
 #
-# src/json.js, src/yaml.js and src/errors.js are byte for byte json-formatter's,
-# declared in tests/python/test_duplicates.py so that a fix to one is a fix to
-# both. They cannot be shared: build.py copies shared/js into a tool at
-# src/shared/ at build time, that path does not exist in the source tree, and
-# the JavaScript tests import these modules straight off the disk. src/convert.js
-# is the deliberate exception - json-formatter's carries the XML pair too, and
-# importing it here would drag three hundred lines of XML parser into a tool
-# that never mentions XML.
+# The JSON parser, the YAML parser and the error they throw are
+# shared/js/parse-json.js, parse-yaml.js and parse-errors.js, asked for in
+# js_parts below and copied into this tool at src/shared/ by the build - the
+# same files json-formatter ships. They were byte-for-byte copies until the
+# JavaScript tests could follow a ./shared/ import. parse-xml is deliberately
+# NOT asked for: this page never mentions XML, and tests/js/yaml-to-json.test.js
+# fails if it ever ships the three hundred lines of parser for it.
+# src/convert.js stays this tool's own for the same reason - json-formatter's
+# carries the XML pair too.
 #
 
 slug = "yaml-to-json"
@@ -55,8 +56,8 @@ roadmap_group = "beyond"
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the config file that is easier to drop than to open, select all
 # and copy.
-js_parts = ["file-picker"]
-lastmod = "2026-08-30"
+js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml"]
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -86,7 +87,7 @@ csp_note = """
 pledge = """
     Converting is arithmetic over a string, done here, in this page. The two
     parsers are hand-written and in <code>src/</code> &mdash;
-    <code>yaml.js</code> and <code>json.js</code> &mdash; and there is nothing
+    <code>shared/parse-yaml.js</code> and <code>shared/parse-json.js</code> &mdash; and there is nothing
     else. This tool has no network feature of any kind &mdash; nothing to
     fetch, nothing to send &mdash; which matters more here than almost anywhere
     on this site: a YAML file is usually a deployment config, and a deployment
@@ -100,7 +101,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/yaml.js</code> for the
+, <code>src/shared/parse-yaml.js</code> for the
       reader that refuses an anchor rather than guessing what it meant, and
       <code>src/convert.js</code> for why a conversion is one parser and one
       printer with nothing in between that knows about both formats at

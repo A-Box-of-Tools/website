@@ -44,10 +44,16 @@ test('an unknown id falls back to the first direction rather than throwing', () 
 });
 
 test('this tool ships no XML parser, and nothing here reaches for one', () => {
+  // The parsers are shared parts now, so "ships" is decided by tool.toml: a
+  // part a tool does not ask for is not copied into it, and an import of one
+  // fails the build. Both halves are checked, because either alone would let
+  // three hundred lines of XML parser onto a page that never mentions XML.
   const files = readdirSync('tools/yaml-to-json/src');
   assert.ok(!files.includes('xml.js'), 'an XML parser has appeared in a tool that never mentions XML');
+  const toml = readFileSync('tools/yaml-to-json/tool.toml', 'utf8');
+  assert.ok(!/"parse-xml"/.test(toml), 'tool.toml has started asking for the shared XML parser');
   const source = readFileSync('tools/yaml-to-json/src/convert.js', 'utf8');
-  assert.ok(!/from '\.\/xml\.js'/.test(source), 'convert.js has grown an import of xml.js');
+  assert.ok(!/parse-xml\.js|\/xml\.js/.test(source), 'convert.js has grown an import of the XML parser');
 });
 
 test('YAML to JSON keeps 1.2 semantics and the digits it was given', () => {

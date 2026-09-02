@@ -18,7 +18,7 @@ og_image_alt = "Formateador de XML - ordenarlo, comprimirlo o convertirlo, sin s
 pledge = """
     Formatear y convertir son aritmética sobre una cadena de texto, hecha aquí,
     en esta página. El analizador está escrito a mano y vive en
-    <code>src/xml.js</code>, y no hay nada más. Esta herramienta no tiene función
+    <code>src/shared/parse-xml.js</code>, y no hay nada más. Esta herramienta no tiene función
     de red de ninguna clase &mdash; nada que descargar, nada que enviar &mdash; y
     eso pesa aquí más de lo que la palabra &laquo;XML&raquo; sugiere: lo que
     llega en este formato suele ser una factura, un extracto bancario, un
@@ -31,7 +31,7 @@ live_hint = """
       desconéctate de internet y formatéalo igualmente."""
 
 read_first = """
-, <code>src/xml.js</code> para el analizador
+, <code>src/shared/parse-xml.js</code> para el analizador
       que te dice qué etiqueta no se cerró nunca, y <code>src/convert.js</code>
       para saber por qué todos los valores salen del XML como cadenas en lugar de
       adivinarse."""
@@ -89,7 +89,7 @@ body = """
       <code>DOCTYPE</code> con una entidad externa dentro es la manera de
       convencer a un analizador de XML de que lea un archivo de la máquina que
       está analizando, y es el agujero más antiguo del formato.
-      <code>src/xml.js</code> es un lector escrito a mano que no tiene
+      <code>src/shared/parse-xml.js</code> es un lector escrito a mano que no tiene
       resolución de entidades en absoluto &mdash; no desactivada, ausente
       &mdash; y esta página nunca le entrega tu texto al
       <code>DOMParser</code> del propio navegador."""
@@ -176,7 +176,7 @@ a = """
         No, y no hay nada que desactivar. La resolución de entidades externas es
         la manera de convencer a un analizador de XML de que lea archivos de la
         máquina donde corre &mdash; el ataque que suele escribirse XXE &mdash; y
-        <code>src/xml.js</code> es un lector escrito a mano sin resolución de
+        <code>src/shared/parse-xml.js</code> es un lector escrito a mano sin resolución de
         entidades en absoluto. Tu texto tampoco se le entrega nunca al
         <code>DOMParser</code> del propio navegador. Un <code>DOCTYPE</code> pasa
         de largo sin llegar a ejecutarse."""

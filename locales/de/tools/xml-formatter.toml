@@ -18,7 +18,7 @@ og_image_alt = "XML-Formatierer - auslegen, minimieren oder umwandeln, ohne Uplo
 pledge = """
     Formatieren und Umwandeln sind Rechnen auf einer Zeichenkette, und zwar
     hier, auf dieser Seite. Der Parser ist von Hand geschrieben und steht in
-    <code>src/xml.js</code>, und mehr gibt es nicht. Eine Netzfunktion hat
+    <code>src/shared/parse-xml.js</code>, und mehr gibt es nicht. Eine Netzfunktion hat
     dieses Werkzeug überhaupt nicht, weder etwas abzurufen noch etwas zu senden.
     Das wiegt hier schwerer, als das Wort &bdquo;XML&ldquo; vermuten lässt, denn
     was in diesem Format ankommt, ist meist eine Rechnung, ein Kontoauszug, eine
@@ -32,7 +32,7 @@ live_hint = """
       Internetverbindung und formatieren Sie es trotzdem."""
 
 read_first = """
-, <code>src/xml.js</code> für den Parser, der
+, <code>src/shared/parse-xml.js</code> für den Parser, der
       Ihnen sagt, welches Tag nie geschlossen wurde, und
       <code>src/convert.js</code> dafür, warum jeder Wert als Zeichenkette aus
       dem XML kommt, statt erraten zu werden."""
@@ -90,7 +90,7 @@ body = """
       <code>DOCTYPE</code> mit einer externen Entität darin ist der Weg, auf dem
       ein XML-Parser dazu gebracht wird, eine Datei von dem Gerät zu lesen, das
       gerade parst, und es ist das älteste Loch des Formats.
-      <code>src/xml.js</code> ist ein von Hand geschriebener Leser, in dem
+      <code>src/shared/parse-xml.js</code> ist ein von Hand geschriebener Leser, in dem
       überhaupt keine Entitätsauflösung steckt &mdash; nicht abgeschaltet,
       sondern gar nicht vorhanden &mdash; und diese Seite übergibt Ihren Text
       auch niemals dem <code>DOMParser</code> des Browsers."""
@@ -179,7 +179,7 @@ a = """
         Nein, und es gibt auch nichts abzuschalten. Das Auflösen externer
         Entitäten ist der Weg, auf dem ein XML-Parser dazu gebracht wird, Dateien
         von dem Gerät zu lesen, auf dem er läuft &mdash; der Angriff, der
-        üblicherweise XXE geschrieben wird &mdash; und <code>src/xml.js</code>
+        üblicherweise XXE geschrieben wird &mdash; und <code>src/shared/parse-xml.js</code>
         ist ein von Hand geschriebener Leser ohne jede Entitätsauflösung. Ihr
         Text wird auch niemals dem <code>DOMParser</code> des Browsers übergeben.
         Ein <code>DOCTYPE</code> wird durchgereicht, ohne jemals ausgeführt zu

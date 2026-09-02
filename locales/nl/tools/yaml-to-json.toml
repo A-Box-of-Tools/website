@@ -18,7 +18,7 @@ og_image_alt = "YAML-naar-JSON-omzetter - beide richtingen, zonder upload"
 pledge = """
     Omzetten is rekenen aan een tekenreeks, hier, in deze pagina. De twee
     parsers zijn met de hand geschreven en staan in <code>src/</code> &mdash;
-    <code>yaml.js</code> en <code>json.js</code> &mdash; en meer is er niet. Dit
+    <code>shared/parse-yaml.js</code> en <code>shared/parse-json.js</code> &mdash; en meer is er niet. Dit
     gereedschap heeft überhaupt geen netwerkfunctie &mdash; niets op te halen,
     niets te versturen &mdash; en dat weegt hier zwaarder dan bijna overal
     anders op deze site: een YAML-bestand is meestal een deployconfiguratie, en
@@ -31,7 +31,7 @@ live_hint = """
       om."""
 
 read_first = """
-, <code>src/yaml.js</code> voor de lezer die een
+, <code>src/shared/parse-yaml.js</code> voor de lezer die een
       anker weigert in plaats van te raden wat het betekende, en
       <code>src/convert.js</code> voor waarom een omzetting één parser en één
       printer is, met niets ertussen dat beide formaten tegelijk kent."""

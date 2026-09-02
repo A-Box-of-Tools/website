@@ -1,16 +1,17 @@
 /**
  * Formatting: which language this is, and laying it out or squeezing it flat.
  *
- * Nothing here does any of the work - json.js, xml.js, css.js and yaml.js do -
+ * Nothing here does any of the work - the shared parse-json, parse-xml and
+ * parse-yaml modules and css.js do -
  * and that is the point of the file. The page needs one function that takes
  * some text and a choice of language, and one that guesses the language when
  * the choice is "whatever this is", and neither belongs inside a parser.
  */
 
-import { parseJson, printJson } from './json.js';
-import { parseXml, printXml } from './xml.js';
+import { parseJson, printJson } from './shared/parse-json.js';
+import { parseXml, printXml } from './shared/parse-xml.js';
 import { parseCss, printCss } from './css.js';
-import { parseYaml, printYaml } from './yaml.js';
+import { parseYaml, printYaml } from './shared/parse-yaml.js';
 
 /** Everything the language menu offers, and what each one can be asked for. */
 export const LANGUAGES = [

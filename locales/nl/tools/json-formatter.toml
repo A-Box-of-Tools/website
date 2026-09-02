@@ -18,8 +18,8 @@ og_image_alt = "JSON-formatter - formatteren, verkleinen en omzetten, zonder upl
 pledge = """
     Formatteren en omzetten zijn rekenwerk op een tekenreeks, hier gedaan, in
     deze pagina. De parsers zijn met de hand geschreven en staan in
-    <code>src/</code>: <code>json.js</code>, <code>xml.js</code>,
-    <code>css.js</code>, <code>yaml.js</code>; en meer is er niet. Deze tool
+    <code>src/</code>: <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>,
+    <code>css.js</code>, <code>shared/parse-yaml.js</code>; en meer is er niet. Deze tool
     heeft geen enkele netwerkfunctie, niets op te halen en niets te versturen,
     en dat telt hier zwaarder dan bijna waar ook op deze site: wat mensen in een
     formatter plakken zijn toegangstokens, sessiecookies, klantgegevens en nog
@@ -32,7 +32,7 @@ live_hint = """
       alsnog."""
 
 read_first = """
-, <code>src/json.js</code> voor de parser die je
+, <code>src/shared/parse-json.js</code> voor de parser die je
       sleutels in de volgorde laat staan waarin je ze schreef, en
       <code>src/convert.js</code> voor waarom een omzetting één parser en één
       schrijver is, zonder iets ertussen dat beide formaten tegelijk kent."""
@@ -87,7 +87,7 @@ title = "De formatters houden wat ze kregen."
 body = """
  Een JSON-object komt terug met zijn
       sleutels in de volgorde waarin je ze schreef en met zijn getallen gespeld zoals
-      jij ze spelde, want <code>src/json.js</code> is een parser en geen aanroep van
+      jij ze spelde, want <code>src/shared/parse-json.js</code> is een parser en geen aanroep van
       <code>JSON.parse</code>, die sleutels die op gehele getallen lijken naar voren
       haalt en een id van twintig cijfers in de dichtstbijzijnde double verandert. De
       tests in <code>tests/js/text-format.test.js</code> controleren precies dat."""
