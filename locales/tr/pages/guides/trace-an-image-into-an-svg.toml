@@ -1,0 +1,17 @@
+#
+# Rehber: bir görseli SVG'ye çevirme - Türkçe.
+#
+
+nav = "Görseli SVG'ye çevirme"
+title = "Bir Görsel SVG'ye Nasıl Çevrilir &mdash; Yüklemeden"
+description = "Bir logoyu, şablonu, imzayı ya da silüeti tarayıcınızda gerçek bir vektör dış çizgisine dönüştürün. Hangi görseller iyi çevrilir, hangileri asla çevrilmez ve çeviricinin yanlış yaptığı kısımlar nasıl düzeltilir."
+heading = "Bir görsel SVG'ye nasıl çevrilir"
+lede = """
+    Büyütülmüş bir PNG merdivendir. Bir SVG ise çizim talimatıdır, dolayısıyla
+    her boyutta keskindir &mdash; birini öbürüne dönüştürmeye de çevirme denir.
+    Şekillerde harika, fotoğraflarda kötü çalışır ve bu fark, başlamadan önce
+    anlamaya değer."""
+updated = "31 Ağustos 2026"
+og_title = "Bir logoyu ya da silüeti tarayıcınızda SVG'ye çevirme"
+og_description = "Hangi görseller temiz eğrilere dönüşür, hangileri dört bin leke olarak geri gelir ve orada olmaması gereken parçalar nasıl tıkla çıkarılır. Hiçbir şey yüklenmez."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

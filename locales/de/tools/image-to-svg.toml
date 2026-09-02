@@ -1,0 +1,318 @@
+#
+# Bild zu SVG - German.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Bild zu SVG"
+heading = "Bild&nbsp;zu&nbsp;SVG <span class=\"h1-kw\">&mdash; ein Logo, eine Schablone oder eine Silhouette in Kurven nachzeichnen</span>"
+tagline = "Eine Form, eine Kontur. Zeigen Sie auf das, was nicht hineingehört."
+
+title = "Bild zu SVG &mdash; Logo oder Silhouette vektorisieren, ohne Upload"
+description = "Ein Schwarz-Weiß-Bild im Browser in eine echte SVG-Kontur nachzeichnen. Logos, Schablonen, Unterschriften, Strichzeichnungen und Silhouetten werden zu Kurven, die sich in jede Größe skalieren lassen. Ein Klick entfernt, was der Tracer falsch verstanden hat. Nichts wird hochgeladen."
+og_title = "Ein Logo oder eine Silhouette in ein SVG verwandeln, ohne es hochzuladen"
+og_description = "Ein vergrößertes Bitmap ist eine Treppe; eine Kontur ist eine Anweisung. Dieses Werkzeug findet die Form, legt Kurven an sie an und lässt Sie wegklicken, was nicht hineingehört. Alles auf Ihrem eigenen Gerät."
+og_image_alt = "Bild zu SVG - ein Logo, eine Schablone oder eine Silhouette in Kurven nachzeichnen"
+
+pledge = """
+    Ihr Browser liest das Bild von Ihrer Festplatte, <code>src/mask.js</code>
+    macht daraus ein Bit je Pixel, <code>src/contour.js</code> läuft am Rand
+    der Form entlang und <code>src/fit.js</code> legt Kurven an sie an. Das
+    sind rund sechshundert Zeilen, die Sie lesen können, ohne Engine dahinter
+    und ohne dass etwas heruntergeladen würde, um sie auszuführen. Dieses
+    Werkzeug hat keinerlei Netzwerkfunktion: nichts abzurufen, nichts zu
+    senden, und hinter dieser Seite steht auch kein Server, an den eine
+    Zeichnung gehen könnte, selbst wenn es eine solche Funktion gäbe."""
+
+live_hint = """
+      Sie müssen uns nicht glauben: Öffnen Sie die DevTools, behalten Sie den
+      Netzwerk-Tab im Auge und zeichnen Sie etwas nach. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte dessen,
+      was Sie gewählt haben. Oder trennen Sie die Internetverbindung und
+      zeichnen Sie trotzdem eines nach."""
+
+read_first = """
+, <code>src/mask.js</code> dafür, wie aus
+      einem Bild ein Bit je Pixel wird, <code>src/contour.js</code> für den
+      Lauf am Rand der Form entlang, <code>src/fit.js</code> dafür, wie aus
+      einer Treppe Kurven werden, und <code>src/subject.js</code> dafür, wie
+      der Hintergrund bestimmt wird, wenn es kein Hell und Dunkel gibt, nach dem
+      sich trennen ließe."""
+
+howto_heading = "So zeichnen Sie ein Bild als SVG nach, ohne es hochzuladen"
+
+card = """
+            Ein vergrößertes Bitmap ist eine Treppe. Eine Kontur ist eine
+            Anweisung und deshalb in jeder Größe scharf &mdash; sofern Sie eine
+            Form haben und keine Fotografie."""
+
+[words]
+plural = "Bilder"
+choose = "ein Bild"
+analytics_extra = """, und keine der
+  Farben, Größen oder Dateinamen, die dieses Werkzeug ermittelt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ihr Bild hat keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört dieser Website. Es gibt hier keine Stelle,
+      an der Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
+      dorthin schicken würde, wenn es sie gäbe."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Nirgends in
+      <code>src/</code> steht ein <code>fetch</code>, ein
+      <code>XMLHttpRequest</code> oder ein <code>sendBeacon</code>. Das ganze
+      Werkzeug ist Arithmetik über die Pixel eines einzigen Bildes: ein
+      Schwellwert, ein Lauf am Rand dessen entlang, was es gefunden hat, und
+      etwas Kurvenanpassung."""
+
+[[privacy]]
+title = "Es gibt keine Engine zum Herunterladen."
+body = """
+ Nachzeichnen ist
+      sonst das Programm von jemand anderem, und im Web heißt das: mehrere
+      Megabyte kompilierter Code, die vor dem ersten Klick eintreffen. Hier
+      gibt es das nicht. Das Ganze sind ein paar hundert Zeilen gewöhnliches
+      JavaScript von diesem Ursprung, und deshalb funktioniert die Seite in dem
+      Moment, in dem sie sich öffnet, statt nach einer Wartezeit."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spendenknopf von Buy Me a Coffee.
+      Keines davon bekommt irgendetwas über Ihr Bild in die Hand. Jede Zeile,
+      die es liest, schwellt oder nachzeichnet, wird von diesem Ursprung
+      ausgeliefert und steht im Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzwerkverbindung, und das
+      Werkzeug ist unverändert, weil es nie einen Netzwerkschritt darin gab.
+      Das ist der einfachste Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie das Bild aus."
+body = """
+ Ein Logo, eine Schablone, eine
+      Unterschrift, ein Stempel, eine eingescannte Zeichnung, eine Silhouette.
+      Alles mit einer klaren Form darin lässt sich gut nachzeichnen; ein Foto
+      von einem Zimmer nicht, und weiter unten steht dazu eine klare Warnung
+      statt einer Überraschung am Ende. Die Datei wird direkt von Ihrer
+      Festplatte gelesen, und währenddessen wird nichts irgendwohin
+      gesendet."""
+
+[[howto]]
+title = "Sagen Sie, was die Form ist."
+body = """
+ Eine Zeichnung auf Papier trennt sich nach
+      <strong>Hell und Dunkel</strong>, und die Schwelle wird für Sie
+      ermittelt. Ein Foto von einem einzelnen Gegenstand tut das nicht: Eine
+      dunkelrote Figur auf dunkelgrauem Stein ist dunkel auf dunkel, und keine
+      Helligkeit trennt die beiden. Dafür ist <strong>das Motiv</strong> da: Es
+      lernt aus einem Streifen am Rand des Bildes, was der Hintergrund ist, und
+      behält alles, was nicht dazugehört."""
+
+[[howto]]
+title = "Schauen Sie auf die rote Linie, nicht auf die Einstellungen."
+body = """
+ Die Kontur wird über die Pixel
+      gezeichnet, aus denen sie stammt, denn nur dort lässt sich die Frage
+      entscheiden: Eine Kontur ist relativ zu genau diesen Pixeln richtig oder
+      falsch und zu nichts sonst. Ziehen Sie eines der beiden Bilder, um beide
+      zu verschieben, und zoomen Sie mit dem Mausrad so weit hinein, dass Sie
+      sehen, was die Linie wirklich tut."""
+
+[[howto]]
+title = "Klicken Sie weg, was nicht hineingehört."
+body = """
+ Ein Fleck, eine Heftklammer, ein
+      Stempel, eine Bildunterschrift, ein Schatten. Ein Klick nimmt die ganze
+      Fläche dieser Farbe und nicht ein einzelnes Pixel, Sie zeigen also auf
+      eine Form; ein zweiter Klick holt sie zurück. Ein Klick auf ein
+      eingeschlossenes Stück Hintergrund füllt es stattdessen, und so schließt
+      sich ein Loch, das keines sein sollte."""
+
+[[howto]]
+title = "Ändern Sie die Glättung nur, wenn es nötig ist."
+body = """
+ <em>Detail</em> ist, wie weit sich die
+      Linie beim Vereinfachen von den Pixeln entfernen darf, und wird je Form
+      ermittelt, solange Sie nichts anderes sagen. <em>Eckenschärfe</em>
+      entscheidet, wie stark die Kontur abknicken muss, damit der Knick als Ecke
+      bleibt, statt zur Kurve gerundet zu werden. Bei den meisten Bildern muss
+      keines von beiden angefasst werden."""
+
+[[howto]]
+title = "Nehmen Sie das SVG."
+body = """
+ Eine Datei, ein einziger
+      <code>&lt;path&gt;</code>, keine Füllregel, um die Sie sich kümmern
+      müssten: Die Außenlinien sind in die eine Richtung gewunden und die
+      Löcher in die andere, und genau das macht aus einer Form mit vierzig
+      Löchern ein einziges Element. Es öffnet sich in Illustrator, Inkscape,
+      Figma, einem Browser und einem Schneidplotter."""
+
+[[faq]]
+q = "Wird mein Bild irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, von ein paar hundert Zeilen JavaScript von diesem
+        Ursprung nachgezeichnet und als Download zurückgegeben. Dieses Werkzeug
+        hat keinerlei Netzwerkfunktion, es ruft nie etwas ab und sendet nie
+        etwas, und die <code>Content-Security-Policy</code> der Seite nennt jede
+        Adresse, die sie kontaktieren darf; keine davon gehört dieser
+        Website."""
+
+[[faq]]
+q = "Macht das aus meinem Foto ein SVG?"
+a = """
+        Nicht auf brauchbare Weise, und die Seite sagt es Ihnen, statt Sie es
+        nach dem Herunterladen entdecken zu lassen. Nachzeichnen macht aus jeder
+        Fläche ähnlicher Farbe eine eigene Form, ein Foto kommt also als
+        Tausende überlappender Kleckse zurück und als Datei, die um ein
+        Vielfaches größer ist als das JPEG, sich langsam öffnet und nicht wie
+        das Foto aussieht. Was sich gut nachzeichnen lässt, ist ein Bild mit
+        einer <em>Form</em> darin: ein Logo, eine Schablone, eine Unterschrift,
+        eine Strichzeichnung, eine Silhouette. Bei einem Foto von einem
+        einzelnen Gegenstand schneidet die Einstellung <em>das Motiv</em> ihn
+        als eine einzige Silhouette aus, und das ist etwas anderes und wirklich
+        nützlich."""
+
+[[faq]]
+q = "Was unterscheidet die beiden Arten, die Form zu finden?"
+a = """
+        Die Frage, die sie stellen. <strong>Hell und Dunkel</strong> fragt für
+        jedes Pixel, ob es dunkler ist als ein Schwellwert, und das ist genau
+        richtig für Tinte auf Papier und nutzlos, wenn Motiv und Hintergrund
+        gleich dunkel sind. <strong>Das Motiv</strong> fragt, was der
+        Hintergrund ist: Es lernt das aus einem Streifen am Rand des Bildes,
+        misst jedes Pixel daran und behält das größte Stück, das nicht dazu
+        gehört. Das funktioniert bei einem Foto von einem Gegenstand auf
+        einigermaßen ruhigem Hintergrund und scheitert an einem so eng
+        beschnittenen Bild, dass das Motiv über drei Seiten hinausläuft, denn
+        dann sind die Ränder, aus denen es lernt, selbst das Motiv. In dem Fall
+        können Sie stattdessen selbst auf den Hintergrund zeigen."""
+
+[[faq]]
+q = "Warum hat die nachgezeichnete Form Löcher oder verliert dünne Teile?"
+a = """
+        Weil das Bild sie schon hatte, sobald es ein Bit je Pixel war. Schalten
+        Sie <em>was der Tracer bekommen hat</em> ein und sehen Sie es sich an:
+        Unter etwa zwölf Pixeln ist die Punze eines Buchstabens bereits
+        zugelaufen und seine Stämme sind bereits verschmolzen, und kein
+        Nachzeichnen der Welt holt ein Loch zurück, das nicht da ist. Die
+        Abhilfe liegt weiter vorn: den Schwellwert verschieben oder von einem
+        größeren Scan ausgehen. Im Modus <em>das Motiv</em> schließt
+        <em>Lücken schließen bis</em> kleine Löcher, und <em>ganz ausfüllen</em>
+        schließt jedes Loch, das der Hintergrund vom Bildrand aus nicht
+        erreicht."""
+
+[[faq]]
+q = "Kann ich korrigieren, was es falsch verstanden hat?"
+a = """
+        Ja, und dafür ist der dritte Schritt zum größten Teil da. Klicken Sie
+        auf alles, was nicht in die Zeichnung gehört, und es verschwindet; ein
+        zweiter Klick holt es zurück. Ein Klick nimmt die ganze Fläche dieser
+        Farbe, ein Klick entfernt also einen ganzen Fleck oder einen ganzen
+        Stempel und nicht ein Pixel. Ein Klick auf ein eingeschlossenes Stück
+        Hintergrund füllt es. Korrekturen werden getrennt vom Schwellwert
+        aufbewahrt, ein späteres Verschieben des Reglers wirft sie also nicht
+        weg."""
+
+[[faq]]
+q = "Wie groß wird das SVG?"
+a = """
+        Bei einer Form kleiner als das Bild: Eine nachgezeichnete Silhouette
+        hat meist ein bis fünf Kilobyte, ein Logo ein paar mehr. Die Seite
+        nennt die genaue Zahl neben dem Download. Bei einem Foto wird es
+        riesig, und das ist das deutlichste Zeichen dafür, dass dies für diese
+        Datei das falsche Werkzeug ist; ab etwa tausend einzelnen Formen hört
+        die Seite auf zu zeichnen und sagt es."""
+
+[[faq]]
+q = "Zeichnet es in Farbe nach?"
+a = """
+        Nein. Hier entsteht eine Form in einer Farbe, denn das ist der Fall,
+        der am Ende wie eine Zeichnung aussieht und nicht wie eine schlechte
+        Fotokopie. Farbiges Nachzeichnen heißt, auf ein paar Farben zu
+        reduzieren und jede als eigene Ebene nachzuzeichnen, und das Ergebnis
+        enttäuscht die meisten, die danach fragen. Wenn Sie Farbe brauchen,
+        zeichnen Sie die Form hier nach und füllen Sie sie in Ihrem
+        Zeichenprogramm."""
+
+[[faq]]
+q = "Was kann ich hinterher mit dem SVG anfangen?"
+a = """
+        Es in jede Größe skalieren, ohne dass es weich wird, es mit einem
+        einzigen Attribut umfärben, animieren, drucken oder an einen
+        Schneidplotter oder einen Laser schicken. Es ist ein einziger
+        <code>&lt;path&gt;</code> ohne Füllregel, die man falsch setzen könnte,
+        Illustrator, Inkscape, Figma, ein Browser und die meiste CNC-Software
+        lesen es also alle gleich."""
+
+[[faq]]
+q = "Gibt es eine Grenze für die Größe des Bildes?"
+a = """
+        Die Ihres Geräts, nicht unsere. Eine mit 300&nbsp;dpi gescannte
+        A4-Seite, etwa neun Megapixel, ist in einem Bruchteil einer Sekunde
+        nachgezeichnet. Größere Bilder gehen auch; sie dauern nur länger, und
+        die Arbeit geschieht auf Ihrem eigenen Prozessor statt in einer
+        Warteschlange irgendwo."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Auch die Zahl und die Größe der
+        Dateien sind nicht begrenzt, weil kein Server dafür bezahlt: Die Arbeit
+        geschieht auf Ihrem eigenen Gerät. Die Website trägt Werbung, und die
+        bezahlt sie; den Anzeigen wird nichts über Ihre Dateien mitgegeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die
+        Internetverbindung, und sie arbeitet weiter. Das ist auch der
+        einfachste Beweis dafür, dass nichts hochgeladen wird: Ein Werkzeug,
+        das Ihr Bild zum Nachzeichnen wegschickte, bliebe in dem Moment stehen,
+        in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "Ein Schwarz-Weiß-Bild im Browser in eine SVG-Kontur nachzeichnen. Trennt nach Hell und Dunkel oder findet das Motiv vor seinem Hintergrund, legt Kurven an die Form an und lässt alles wegklicken, was nicht nachgezeichnet werden soll. Nichts wird hochgeladen."
+features = [
+  "Zeichnet eine Bitmap-Form als echte kubische Kurven nach, scharf in jeder Größe",
+  "Zwei Wege, die Form zu finden: nach Hell und Dunkel, oder als Motiv vor dem Hintergrund",
+  "Ein Klick lässt einen Teil weg, ein Klick auf eine eingeschlossene Lücke füllt sie",
+  "Die Kontur liegt über den Pixeln, aus denen sie stammt, bei bis zu sechzehnfacher Vergrößerung",
+  "Löcher und verschachtelte Löcher kommen als ein Pfad ohne zu setzende Füllregel heraus",
+  "Schwellwerte für Ecken und Glättung, je Form ermittelt, solange Sie nichts anderes sagen",
+  "Warnt, wenn ein Bild ein Foto ist und keine Strichzeichnung",
+  "Läuft offline; kein Upload, kein Konto, keine Engine zum Herunterladen",
+]
+
+[picker]
+title = "Bild hierher ziehen"
+hint = "oder klicken und auswählen &mdash; PNG, JPEG, WebP, GIF, AVIF"

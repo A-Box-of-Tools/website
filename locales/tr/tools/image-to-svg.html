@@ -1,0 +1,265 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Görseli seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Kaldır</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Şeklin ne olduğunu söyleyin</h2>
+
+    <p class="card-lede">
+      Çevirme, piksel başına bir bit ister &mdash; içeride ya da dışarıda. Buna
+      karar vermenin iki yolu var ve farklı görsellere uyarlar. Beyaz kâğıt
+      üzerindeki bir çizim <strong>açık ve koyu</strong> ile ayrılır. Bir
+      nesnenin fotoğrafı ayrılmaz: koyu gri taş üzerindeki koyu kırmızı bir
+      heykel, koyu üstüne koyudur ve hiçbir parlaklık ikisini ayırmaz. O,
+      görselin kenarlarından arka planın ne olduğunu çıkaran ve ondan olmayan
+      her şeyi tutan <strong>özne</strong>yi ister.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Ne aranacak</label>
+      <select id="find">
+        <option value="threshold">Açık ve koyu &mdash; bir çizim, bir logo, bir tarama</option>
+        <option value="subject">Özne &mdash; tek bir şeyin fotoğrafı</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Açığın koyuya dönüştüğü yer</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Benim için hesapla</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Ne kadarı özne sayılır</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Gölgeye ne kadar girilsin</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Şu kadara kadar boşlukları kapat</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          İçini tamamen doldur</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Küçük parçaları da tut</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Arka planı kenarlardan öğren</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Tersine çevir &mdash; açık yarıyı çevir</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Dış çizgiyi kontrol edin ve yanlış yaptığını düzeltin</h2>
+
+    <p class="card-lede">
+      Kırmızı çizgi, dış çizginin şu anki hali; geldiği piksellerin üstüne
+      çizilmiş &mdash; sorunun karara bağlanabileceği tek yer, çünkü bir dış
+      çizgi o piksellere göre doğru ya da yanlıştır, başka hiçbir şeye göre
+      değil. İki görselden birini sürükleyin, ikisi birden kayar; yakınlaştırmak
+      için tekerleği çevirin ve orada olmaması gereken her şeye tıklayın. Bir
+      tıklama o rengin tüm lekesini alır; yani bir pikseli değil, bir şekli
+      gösteriyorsunuz. Geri koymak için yeniden tıklayın.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">Görsel</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="Görsel; üstüne çevrilmiş dış çizgi çizilmiş. Kaydırmak için sürükleyin, yakınlaştırmak için tekerleği çevirin, bir parçayı dışarıda bırakmak için tıklayın."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="Çevrilmiş çizim. Kaydırmak için sürükleyin, yakınlaştırmak için tekerleği çevirin, bir parçayı dışarıda bırakmak için tıklayın."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Yakınlaştırma</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Sığdır</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Göster</label>
+        <select id="show">
+          <option value="picture">Görsel</option>
+          <option value="mask">Çeviricinin aldığı</option>
+          <option value="measured">Ölçtüğü</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Dış çizgiyi üstüne çiz</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Bir tıklama şunu alır</label>
+        <select id="wand-mode">
+          <option value="colour">O renkteki her şeyi</option>
+          <option value="shape">Ona bağlı her şeyi</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Yeterince yakın</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Tıklayınca onun yerine &ldquo;bu arka plan&rdquo; de</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Geri al</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Hepsini geri al</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Çizgi ne kadar yumuşak olmalı</h2></summary>
+      <p class="fold-note">
+        Piksel merdiveninin nasıl eğriye dönüşeceğine iki sayı karar verir.
+        Çoğu görselde ikisine de dokunmak gerekmez; gerektiğinde ikisini de
+        bilmekte yarar var.
+      </p>
+      <div class="option-row">
+        <label for="detail">Ayrıntı</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Şekil başına hesapla</label>
+      </div>
+      <p class="field-note">
+        Çizginin piksellerden ne kadar uzaklaşabileceği. Yaklaşık birin altında
+        hiçbir şey yapmaz, çünkü merdivenin bir basamağı ait olduğu çizgiden
+        tam bir piksel uzaktadır; yaklaşık ikinin üstünde ise gerçek eğrileri
+        yemeye başlar.
+      </p>
+      <div class="option-row">
+        <label for="corner">Köşe keskinliği</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        Bir dönüşün eğriye yuvarlanmak yerine köşe olarak kalması için dış
+        çizginin ne kadar dönmesi gerektiği. Fazla düşükse her titreme köşe
+        olur ve bir daire çokgen olarak geri gelir.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> SVG'yi alın</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>SVG'yi indir</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">bu tarayıcı görselin kodunu çözemedi.</span>
+    <span data-phrase="read.failed">O dosya açılamadı: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">Çevrilmekte olan görsel, {width} &times; {height} piksel</span>
+
+    <span data-phrase="threshold.auto">hesaplandı: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Bir parça bulundu; görselin %{share}
+      kadarı.</span>
+    <span data-phrase="subject.found.many">{islands} ayrı parça bulundu ve en büyüğü
+      tutuldu; görselin %{share} kadarı.</span>
+    <span data-phrase="subject.told">Arka plan olarak gösterdiğiniz {count} renk
+      kullanılıyor.</span>
+    <span data-phrase="subject.border">Arka plan, görselin kenarı boyunca uzanan bir
+      şeritten öğreniliyor.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">şekil başına</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">tam olarak o renk</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">kullanılmıyor &mdash; bir tıklama bağlı
+      şeklin tamamını alır</span>
+
+    <span data-phrase="hover.ink">Şeklin parçası: {size} piksel, görselin %{share}
+      kadarı. Dışarıda bırakmak için tıklayın.</span>
+    <span data-phrase="hover.paper">Şeklin parçası değil: {size} piksel, görselin
+      %{share} kadarı. Doldurmak için tıklayın.</span>
+    <span data-phrase="hover.big">{size} pikselden fazla &mdash; siz hareket ederken
+      dış çizgisini çizmek için fazla büyük. Yine de almak için tıklayın.</span>
+    <span data-phrase="hover.long">{size} piksel. Kenar, siz hareket ederken
+      çizilemeyecek kadar uzun.</span>
+    <span data-phrase="hover.sample">Bu renk: arka plan sayılanlara eklemek için
+      tıklayın.</span>
+    <span data-phrase="samples.clear.one">O rengi unut</span>
+    <span data-phrase="samples.clear.many">O {count} rengi unut</span>
+
+    <span data-phrase="facts.line.one">Bir şekil, {points} nokta, {bytes}.
+      {ms}&nbsp;ms'de çevrildi.</span>
+    <span data-phrase="facts.line.many">{loops} şekil, {points} nokta, {bytes}.
+      {ms}&nbsp;ms'de çevrildi.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">Sizden {count} düzeltme.</span>
+    <span data-phrase="facts.edits.many">Sizden {count} düzeltme.</span>
+    <span data-phrase="toobig.warning">Bu, {loops} ayrı şekil ve {bytes} çizim olarak
+      çıktı; bir fotoğraf çizgi çizimmiş gibi çevrildiğinde böyle görünür. Dosya yine
+      de indirmeniz için duruyor, ama yavaş açılacak ve fotoğrafa benzemeyecek. Bunun
+      yerine yukarıdaki <em>özne</em>yi deneyin.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

@@ -1,0 +1,304 @@
+#
+# Immagine in SVG - Italian.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Immagine in SVG"
+heading = "Immagine&nbsp;in&nbsp;SVG <span class=\"h1-kw\">&mdash; ricalcare un logo, uno stencil o una silhouette in curve</span>"
+tagline = "Una forma, un contorno. Indica quello che non dovrebbe esserci."
+
+title = "Immagine in SVG &mdash; vettorializzare un logo o una silhouette, senza caricare"
+description = "Ricalca un'immagine in bianco e nero in un vero contorno SVG, nel browser. Loghi, stencil, firme, disegni al tratto e silhouette diventano curve che puoi scalare a qualsiasi dimensione. Un clic toglie quello che il ricalco ha preso di troppo. Non viene caricato niente."
+og_title = "Trasformare un logo o una silhouette in un SVG, senza caricarlo"
+og_description = "Una bitmap ingrandita è una scala; un contorno sono istruzioni. Questo trova la forma, le adatta delle curve e ti lascia togliere con un clic quello che non dovrebbe esserci, tutto sulla tua macchina."
+og_image_alt = "Immagine in SVG - ricalcare un logo, uno stencil o una silhouette in curve"
+
+pledge = """
+    L'immagine viene letta dal disco dal tuo browser, ridotta a un bit per
+    pixel da <code>src/mask.js</code>, percorsa lungo il bordo da
+    <code>src/contour.js</code> e rivestita di curve da <code>src/fit.js</code>
+    &mdash; circa seicento righe che puoi leggere, senza nessun motore dietro
+    e niente da scaricare per farle girare. Questo strumento non ha nessuna
+    funzione di rete: niente da prendere, niente da mandare, e nessun server
+    dall'altra parte di questa pagina a cui mandare un disegno anche se ci
+    fosse."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri i DevTools, guarda la scheda Rete e
+      ricalca qualcosa. Nemmeno una richiesta porta un'immagine, una miniatura,
+      un nome di file o un byte di quello che hai scelto. Oppure stacca
+      internet e ricalcane una lo stesso."""
+
+read_first = """
+, <code>src/mask.js</code> per come
+      un'immagine diventa un bit per pixel, <code>src/contour.js</code> per il
+      giro lungo il bordo della forma, <code>src/fit.js</code> per come una
+      scala diventa curve, e <code>src/subject.js</code> per come si ricava lo
+      sfondo quando non c'è chiaro e scuro da cui separare."""
+
+howto_heading = "Come ricalcare un'immagine in un SVG senza caricarla"
+
+card = """
+            Una bitmap ingrandita è una scala. Un contorno sono istruzioni,
+            quindi è nitido a qualsiasi dimensione &mdash; se quello che hai è
+            una forma e non una fotografia."""
+
+[words]
+plural = "immagini"
+choose = "un'immagine"
+analytics_extra = """, e nessuno dei
+  colori, delle dimensioni o dei nomi di file che questo strumento calcola"""
+
+[[facts]]
+text = "Nessun caricamento"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "La tua immagine non ha nessun posto dove andare."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nessuno appartiene a questo sito. Non c'è nessun punto qui
+      in cui i tuoi file potrebbero venire raccolti, e niente nel codice che li
+      manderebbe lì se ci fosse."""
+
+[[privacy]]
+title = "Niente qui va a prendere niente."
+body = """
+ Non c'è nessun
+      <code>fetch</code>, nessun <code>XMLHttpRequest</code> e nessun
+      <code>sendBeacon</code> da nessuna parte in <code>src/</code>. Lo
+      strumento intero è aritmetica sui pixel di una sola immagine: una
+      soglia, un giro lungo il bordo di quello che ha trovato, e un po' di
+      adattamento di curve."""
+
+[[privacy]]
+title = "Non c'è nessun motore da scaricare."
+body = """
+ Il ricalco di
+      solito è il programma di qualcun altro, e sul web significa parecchi
+      megabyte di codice compilato che arrivano prima del primo clic. Qui non
+      c'è niente del genere. Il tutto sono poche centinaia di righe di
+      JavaScript normale servite da questa origine, ed è anche per questo che
+      la pagina funziona nel momento in cui si apre invece che dopo
+      un'attesa."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli viene dato."
+body = """
+ Gli script di
+      pubblicità e misurazione vengono da Google, e il pulsante per le donazioni
+      da Buy Me a Coffee. A nessuno di loro viene passato niente sulla tua
+      immagine. Ogni riga che la legge, la soglia o la ricalca è servita da
+      questa origine ed è nel repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento è identico,
+      perché non c'è mai stato un passaggio di rete dentro. È la prova più
+      semplice di tutte."""
+
+[[howto]]
+title = "Scegli l'immagine."
+body = """
+ Un logo, uno stencil, una firma, un
+      timbro, un disegno scansionato, una silhouette. Qualsiasi cosa con una
+      forma chiara dentro si ricalca bene; la foto di una stanza no, e più in
+      basso c'è un avviso chiaro invece di una sorpresa alla fine. Il file
+      viene letto direttamente dal tuo disco e intanto niente viene mandato da
+      nessuna parte."""
+
+[[howto]]
+title = "Di' che cos'è la forma."
+body = """
+ Un disegno su carta si separa per
+      <strong>chiaro e scuro</strong>, e il livello viene calcolato per te. La
+      foto di un oggetto no &mdash; una figura rosso scuro su pietra grigio
+      scuro è scuro su scuro, e nessuna luminosità le separa. Quella vuole
+      <strong>il soggetto</strong>, che impara che cos'è lo sfondo da una fascia
+      lungo il bordo dell'immagine e tiene tutto quello che non lo è."""
+
+[[howto]]
+title = "Guarda la linea rossa, non le impostazioni."
+body = """
+ Il contorno viene disegnato sopra i
+      pixel da cui è venuto, perché è l'unico posto in cui la questione si può
+      decidere: un contorno è giusto o sbagliato rispetto a quei pixel e a
+      nient'altro. Trascina una delle due immagini per spostarle entrambe, e
+      gira la rotellina per ingrandire abbastanza da vedere cosa fa davvero la
+      linea."""
+
+[[howto]]
+title = "Togli con un clic quello che non dovrebbe esserci."
+body = """
+ Un puntino, una graffetta, un timbro,
+      una didascalia, un'ombra. Un clic prende tutta la macchia di quel colore
+      invece di un pixel, quindi stai indicando una forma; cliccala di nuovo
+      per rimetterla. Cliccare un pezzo di sfondo chiuso lo riempie invece, ed è
+      così che un buco che non dovrebbe essere un buco si chiude."""
+
+[[howto]]
+title = "Regola la levigatura solo se serve."
+body = """
+ <em>Dettaglio</em> è quanto la linea
+      può allontanarsi dai pixel mentre viene semplificata, e viene calcolato
+      per forma a meno che tu non dica altrimenti. <em>Nettezza degli
+      angoli</em> decide quanto il contorno deve girare perché quella svolta
+      resti un angolo invece di venire arrotondata. La maggior parte delle
+      immagini non ha bisogno di toccare né l'uno né l'altra."""
+
+[[howto]]
+title = "Prendi l'SVG."
+body = """
+ Un file, un solo
+      <code>&lt;path&gt;</code>, nessuna regola di riempimento di cui
+      preoccuparsi: i contorni girano in un verso e i buchi nell'altro, ed è
+      questo che fa di una forma con quaranta buchi un solo elemento. Si apre
+      in Illustrator, Inkscape, Figma, un browser e una macchina da taglio."""
+
+[[faq]]
+q = "La mia immagine viene caricata da qualche parte?"
+a = """
+        No. Il file viene letto dal tuo browser sul tuo hardware, ricalcato da
+        poche centinaia di righe di JavaScript servite da questa origine, e
+        restituito come download. Questo strumento non ha nessuna funzione di
+        rete &mdash; non va mai a prendere niente e non manda mai niente
+        &mdash; e la <code>Content-Security-Policy</code> della pagina elenca
+        ogni indirizzo che può contattare, nessuno dei quali appartiene a
+        questo sito."""
+
+[[faq]]
+q = "Trasformerà la mia fotografia in un SVG?"
+a = """
+        Non in modo utile, e la pagina te lo dirà invece di lasciartelo
+        scoprire dopo il download. Il ricalco trasforma ogni macchia di colore
+        simile in una forma a sé, quindi una fotografia torna come migliaia di
+        chiazze sovrapposte e un file molte volte più grande del JPEG, che si
+        apre lentamente e non somiglia alla fotografia. Quello che si ricalca
+        bene è un'immagine con una <em>forma</em> dentro: un logo, uno stencil,
+        una firma, un disegno al tratto, una silhouette. Per la fotografia di
+        un solo oggetto, l'impostazione <em>il soggetto</em> lo ritaglierà come
+        un'unica silhouette piena, che è una cosa diversa e davvero utile."""
+
+[[faq]]
+q = "Qual è la differenza tra i due modi di trovare la forma?"
+a = """
+        La domanda che fanno. <strong>Chiaro e scuro</strong> chiede se ogni
+        pixel è più scuro di un livello, che è esattamente giusto per inchiostro
+        su carta e inutile quando il soggetto e lo sfondo sono ugualmente
+        scuri. <strong>Il soggetto</strong> chiede che cos'è lo sfondo &mdash;
+        lo impara da una fascia lungo il bordo dell'immagine, misura ogni pixel
+        rispetto a quello e tiene la cosa più grande che non lo è. Funziona
+        sulla fotografia di un oggetto su uno sfondo più o meno uniforme, e
+        fallisce su un'immagine ritagliata così stretta che il soggetto esce da
+        tre lati, perché i bordi da cui impara sono allora il soggetto stesso.
+        Quando succede, puoi indicare tu lo sfondo al suo posto."""
+
+[[faq]]
+q = "Perché la forma ricalcata ha dei buchi, o perde le parti sottili?"
+a = """
+        Perché li aveva l'immagine, una volta diventata un bit per pixel.
+        Attiva <em>cosa ha ricevuto il ricalco</em> per vederlo: sotto circa
+        dodici pixel l'occhio di una lettera si è già riempito e le sue aste si
+        sono già fuse, e nessun ricalco recupera un buco che non c'è. I rimedi
+        stanno a monte &mdash; sposta la soglia, o parti da una scansione più
+        grande. In modalità <em>il soggetto</em>, <em>chiudi i vuoti fino a</em>
+        sigilla i buchi piccoli e <em>riempilo tutto</em> chiude ogni buco che
+        lo sfondo non riesce a raggiungere dal bordo dell'immagine."""
+
+[[faq]]
+q = "Posso sistemare le parti che ha sbagliato?"
+a = """
+        Sì, ed è a questo che serve quasi tutto il terzo passo. Clicca
+        qualsiasi cosa che non dovrebbe stare nel disegno e sparisce; cliccala
+        di nuovo e torna. Un clic prende tutta la macchia di quel colore, quindi
+        un clic toglie un puntino intero o un timbro intero invece di un pixel.
+        Cliccare un pezzo di sfondo chiuso lo riempie. Le correzioni vengono
+        tenute separate dalla soglia, quindi spostare il cursore dopo non le
+        butta via."""
+
+[[faq]]
+q = "Quanto sarà grande l'SVG?"
+a = """
+        Per una forma, meno dell'immagine: una silhouette ricalcata di solito
+        pesa da uno a cinque kilobyte, e un logo qualcuno in più. La pagina te
+        lo dice esattamente, accanto al download. Per una fotografia sarà
+        enorme, che è il segno più chiaro che è lo strumento sbagliato per quel
+        file &mdash; e la pagina smette di disegnare e lo dice oltre circa un
+        migliaio di forme separate."""
+
+[[faq]]
+q = "Ricalca a colori?"
+a = """
+        No. Questo fa una forma di un solo colore, che è il caso che viene fuori
+        come un disegno invece che come una brutta fotocopia. Ricalcare a
+        colori vuol dire quantizzare a pochi colori e ricalcare ciascuno come
+        un livello a sé, e il risultato delude quasi tutti quelli che lo
+        chiedono. Se ti serve il colore, ricalca la forma qui e riempila nel tuo
+        programma di disegno."""
+
+[[faq]]
+q = "Cosa posso fare con l'SVG dopo?"
+a = """
+        Scalarlo a qualsiasi dimensione senza che diventi sfocato, ricolorarlo
+        con un solo attributo, animarlo, stamparlo, o mandarlo a una macchina da
+        taglio o a un laser. È un solo <code>&lt;path&gt;</code> senza regola di
+        riempimento da sbagliare, quindi Illustrator, Inkscape, Figma, un
+        browser e quasi tutti i software CNC lo leggono allo stesso modo."""
+
+[[faq]]
+q = "C'è un limite alla dimensione dell'immagine?"
+a = """
+        Quello della tua macchina, non il nostro. Una pagina A4 scansionata a
+        300&nbsp;dpi &mdash; circa nove megapixel &mdash; si ricalca in una
+        frazione di secondo. Le immagini più grandi funzionano; ci mettono solo
+        di più, e il lavoro avviene sul tuo processore invece che in una coda da
+        qualche parte."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è nessun account, nessun accesso, nessuna prova e
+        nessuna filigrana. Non c'è nemmeno un limite al numero o alla dimensione
+        dei file, perché non c'è nessun server che li paga &mdash; il lavoro
+        avviene sulla tua macchina. Il sito ha della pubblicità, ed è quella che
+        lo paga; agli annunci non viene dato niente sui tuoi file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca internet e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che mandasse via la tua immagine per
+        ricalcarla si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Ricalca un'immagine in bianco e nero in un contorno SVG nel browser. Separa per chiaro e scuro o trova il soggetto contro il suo sfondo, adatta delle curve alla forma e lascia togliere con un clic tutto quello che non va ricalcato. Non viene caricato niente."
+features = [
+  "Ricalca una forma bitmap in vere curve cubiche, nitide a qualsiasi dimensione",
+  "Due modi per trovare la forma: per chiaro e scuro, o per soggetto contro sfondo",
+  "Un clic su una parte la lascia fuori, uno su un vuoto chiuso lo riempie",
+  "Il contorno è disegnato sopra i pixel da cui è venuto, fino a sedici ingrandimenti",
+  "Buchi e buchi annidati escono come un solo tracciato senza regola di riempimento da impostare",
+  "Soglie di angolo e levigatura, calcolate per forma a meno che tu non dica altrimenti",
+  "Avvisa quando un'immagine è una fotografia e non un disegno al tratto",
+  "Funziona offline; nessun caricamento, nessun account, nessun motore da scaricare",
+]
+
+[picker]
+title = "Trascina qui un'immagine"
+hint = "oppure clicca per sceglierla &mdash; PNG, JPEG, WebP, GIF, AVIF"

@@ -1,0 +1,18 @@
+#
+# Guide: tracing an image into an SVG - French.
+#
+
+nav = "Vectoriser une image en SVG"
+title = "Comment vectoriser une image en SVG &mdash; sans l'envoyer nulle part"
+description = "Transformez un logo, un pochoir, une signature ou une silhouette en un vrai contour vectoriel dans votre navigateur. Quelles images se vectorisent bien, lesquelles ne le feront jamais, et comment corriger ce que le traceur prend à tort."
+heading = "Comment vectoriser une image en SVG"
+lede = """
+    Un PNG agrandi est un escalier. Un SVG est une instruction de dessin,
+    donc net à toute taille &mdash; et transformer l'un en l'autre s'appelle
+    vectoriser. Cela marche à merveille sur les formes et mal sur les
+    photographies, et la différence vaut d'être comprise avant de
+    commencer."""
+updated = "31 août 2026"
+og_title = "Vectoriser un logo ou une silhouette en SVG, dans votre navigateur"
+og_description = "Quelles images se changent en courbes propres, lesquelles reviennent en quatre mille taches, et comment retirer d'un clic ce qui ne devrait pas y être. Rien n'est envoyé."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

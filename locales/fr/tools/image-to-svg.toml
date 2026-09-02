@@ -1,0 +1,314 @@
+#
+# Image en SVG - French.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Image en SVG"
+heading = "Image&nbsp;en&nbsp;SVG <span class=\"h1-kw\">&mdash; vectoriser un logo, un pochoir ou une silhouette en courbes</span>"
+tagline = "Une forme, un contour. Pointez ce qui ne devrait pas y être."
+
+title = "Image en SVG &mdash; vectoriser un logo ou une silhouette, sans envoi"
+description = "Vectorisez une image en noir et blanc en un vrai contour SVG, dans votre navigateur. Logos, pochoirs, signatures, dessins au trait et silhouettes deviennent des courbes qui se redimensionnent à toute taille. Un clic retire ce que le tracé a pris à tort. Rien n'est envoyé."
+og_title = "Transformer un logo ou une silhouette en SVG, sans l'envoyer nulle part"
+og_description = "Un bitmap agrandi est un escalier&nbsp;; un contour est une instruction. Cet outil trouve la forme, y ajuste des courbes et vous laisse retirer d'un clic ce qui ne devrait pas y être, le tout sur votre propre machine."
+og_image_alt = "Image en SVG - vectoriser un logo, un pochoir ou une silhouette en courbes"
+
+pledge = """
+    L'image est lue sur votre disque par votre propre navigateur, ramenée à un
+    bit par pixel par <code>src/mask.js</code>, parcourue le long de son bord
+    par <code>src/contour.js</code> et habillée de courbes par
+    <code>src/fit.js</code> &mdash; six cents lignes environ, que vous pouvez
+    lire, sans moteur derrière et sans rien à télécharger pour les exécuter.
+    Cet outil n'a aucune fonction réseau&nbsp;: rien à aller chercher, rien à
+    envoyer, et pas de serveur au bout de cette page à qui envoyer un dessin
+    quand bien même il y en aurait une."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, surveillez
+      l'onglet Réseau et vectorisez quelque chose. Pas une requête n'emporte
+      une image, une vignette, un nom de fichier ni un octet de ce que vous
+      avez choisi. Ou coupez la connexion et vectorisez-en une quand même."""
+
+read_first = """
+, <code>src/mask.js</code> pour la façon
+      dont une image devient un bit par pixel, <code>src/contour.js</code> pour
+      le parcours le long du bord de la forme, <code>src/fit.js</code> pour la
+      façon dont un escalier devient des courbes, et <code>src/subject.js</code>
+      pour la façon dont l'arrière-plan est déterminé quand il n'y a ni clair
+      ni sombre pour séparer."""
+
+howto_heading = "Comment vectoriser une image en SVG sans l'envoyer nulle part"
+
+card = """
+            Un bitmap agrandi est un escalier. Un contour est une instruction,
+            donc net à toute taille &mdash; si ce que vous avez est une forme et
+            non une photographie."""
+
+[words]
+plural = "images"
+choose = "une image"
+analytics_extra = """, et aucune des
+  couleurs, tailles ou noms de fichier que cet outil calcule"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Votre image n'a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où vos fichiers pourraient atterrir, et rien dans le code qui
+      les y enverrait s'il y en avait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Il n'y a
+      ni <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. L'outil entier
+      est de l'arithmétique sur les pixels d'une seule image&nbsp;: un seuil, un
+      parcours le long du bord de ce qu'il a trouvé, et un peu d'ajustement de
+      courbes."""
+
+[[privacy]]
+title = "Il n'y a aucun moteur à télécharger."
+body = """
+ Vectoriser,
+      c'est d'ordinaire le programme de quelqu'un d'autre, et sur le web cela
+      veut dire plusieurs mégaoctets de code compilé qui arrivent avant le
+      premier clic. Il n'y a rien de tel ici. Le tout tient en quelques
+      centaines de lignes de JavaScript ordinaire servies depuis cette origine,
+      et c'est aussi pour cela que la page fonctionne dès qu'elle s'ouvre plutôt
+      qu'après une attente."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts de
+      publicité et de mesure viennent de Google, et le bouton de don de Buy Me
+      a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre image. Chaque
+      ligne qui la lit, la seuille ou la vectorise est servie depuis cette
+      origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Il fonctionne hors ligne."
+body = """
+ Coupez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez l'image."
+body = """
+ Un logo, un pochoir, une signature, un
+      tampon, un dessin numérisé, une silhouette. Tout ce qui contient une forme
+      nette se vectorise bien&nbsp;; la photo d'une pièce, non, et un
+      avertissement clair vous attend plus bas plutôt qu'une surprise à la fin.
+      Le fichier est lu directement sur votre disque et rien n'est envoyé nulle
+      part pendant ce temps."""
+
+[[howto]]
+title = "Dites ce qu'est la forme."
+body = """
+ Un dessin sur papier se sépare par
+      <strong>clair et sombre</strong>, et le seuil est calculé pour vous. La
+      photo d'un objet, non &mdash; une silhouette rouge sombre sur une pierre
+      gris sombre, c'est du sombre sur du sombre, et aucune luminosité ne les
+      sépare. Celle-là veut <strong>le sujet</strong>, qui apprend ce qu'est
+      l'arrière-plan sur une bande le long du bord de l'image et garde tout ce
+      qui n'en fait pas partie."""
+
+[[howto]]
+title = "Regardez la ligne rouge, pas les réglages."
+body = """
+ Le contour est dessiné par-dessus les
+      pixels dont il vient, parce que c'est le seul endroit où la question peut
+      se trancher&nbsp;: un contour est juste ou faux par rapport à ces pixels
+      et à rien d'autre. Faites glisser l'une ou l'autre image pour déplacer
+      les deux, et zoomez à la molette assez loin pour voir ce que la ligne fait
+      vraiment."""
+
+[[howto]]
+title = "Retirez d'un clic ce qui ne devrait pas y être."
+body = """
+ Une tache, une agrafe, un tampon, une
+      légende, une ombre. Un clic prend toute la plage de cette couleur plutôt
+      qu'un pixel, vous pointez donc une forme&nbsp;; cliquez-la encore pour la
+      remettre. Cliquer un morceau d'arrière-plan enclavé le remplit à la
+      place, et c'est ainsi qu'un trou qui ne devrait pas en être un se
+      referme."""
+
+[[howto]]
+title = "Ne touchez au lissage que s'il le faut."
+body = """
+ <em>Détail</em> est la distance dont la
+      ligne peut s'écarter des pixels en se simplifiant, et il est calculé par
+      forme sauf indication contraire. <em>Netteté des angles</em> décide de
+      combien le contour doit tourner pour que ce virage reste un angle plutôt
+      que d'être arrondi. La plupart des images n'ont besoin ni de l'un ni de
+      l'autre."""
+
+[[howto]]
+title = "Prenez le SVG."
+body = """
+ Un fichier, un seul
+      <code>&lt;path&gt;</code>, aucune règle de remplissage dont se
+      soucier&nbsp;: les contours tournent dans un sens et les trous dans
+      l'autre, et c'est ce qui fait d'une forme percée de quarante trous un
+      seul élément. Il s'ouvre dans Illustrator, Inkscape, Figma, un navigateur
+      et une machine de découpe."""
+
+[[faq]]
+q = "Mon image est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le fichier est lu par votre propre navigateur sur votre propre
+        matériel, vectorisé par quelques centaines de lignes de JavaScript
+        servies depuis cette origine, et rendu sous forme de téléchargement.
+        Cet outil n'a aucune fonction réseau &mdash; il ne va jamais rien
+        chercher et n'envoie jamais rien &mdash; et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle peut contacter, dont aucune n'appartient à ce site."""
+
+[[faq]]
+q = "Cela transformera-t-il ma photo en SVG&nbsp;?"
+a = """
+        Pas utilement, et la page vous le dira plutôt que de vous le laisser
+        découvrir après le téléchargement. La vectorisation fait de chaque
+        plage de couleur voisine une forme à part, si bien qu'une photo revient
+        en milliers de taches superposées et en un fichier bien plus lourd que
+        le JPEG, qui s'ouvre lentement et ne ressemble pas à la photo. Ce qui
+        se vectorise bien, c'est une image avec une <em>forme</em>
+        dedans&nbsp;: un logo, un pochoir, une signature, un dessin au trait,
+        une silhouette. Pour la photo d'un seul objet, le réglage <em>le
+        sujet</em> le découpera en une silhouette pleine, ce qui est autre chose
+        et sincèrement utile."""
+
+[[faq]]
+q = "Quelle différence entre les deux façons de trouver la forme&nbsp;?"
+a = """
+        La question qu'elles posent. <strong>Clair et sombre</strong> demande si
+        chaque pixel est plus sombre qu'un seuil, ce qui est exactement juste
+        pour de l'encre sur du papier et inutile quand le sujet et
+        l'arrière-plan sont aussi sombres l'un que l'autre. <strong>Le
+        sujet</strong> demande ce qu'est l'arrière-plan &mdash; il l'apprend
+        sur une bande le long du bord de l'image, mesure chaque pixel par
+        rapport à lui, et garde la plus grande chose qui n'en fait pas partie.
+        Cela marche sur la photo d'un objet posé sur un fond à peu près uni, et
+        échoue sur une image cadrée si serré que le sujet déborde de trois
+        côtés, puisque les bords dont il apprend sont alors le sujet lui-même.
+        Vous pouvez alors pointer l'arrière-plan vous-même à la place."""
+
+[[faq]]
+q = "Pourquoi la forme vectorisée a-t-elle des trous, ou perd-elle ses parties fines&nbsp;?"
+a = """
+        Parce que l'image les avait déjà, une fois ramenée à un bit par pixel.
+        Activez <em>ce que le traceur a reçu</em> pour le voir&nbsp;: sous
+        environ douze pixels, la contre-forme d'une lettre est déjà bouchée et
+        ses fûts déjà fondus, et aucune vectorisation ne rend un trou qui n'est
+        pas là. Les remèdes sont en amont &mdash; déplacez le seuil, ou partez
+        d'un scan plus grand. En mode <em>le sujet</em>, <em>refermer les
+        écarts jusqu'à</em> scelle les petits trous et <em>remplir en
+        plein</em> ferme tout trou que l'arrière-plan ne peut pas atteindre
+        depuis le bord de l'image."""
+
+[[faq]]
+q = "Puis-je corriger ce qu'il a pris à tort&nbsp;?"
+a = """
+        Oui, et c'est à cela que sert l'essentiel de la troisième étape. Cliquez
+        tout ce qui ne devrait pas être dans le dessin et cela disparaît&nbsp;;
+        cliquez-le encore et cela revient. Un clic prend toute la plage de cette
+        couleur, si bien qu'un clic retire une tache entière ou un tampon entier
+        plutôt qu'un pixel. Cliquer un morceau d'arrière-plan enclavé le
+        remplit. Les corrections sont conservées à part du seuil, si bien que
+        déplacer le curseur ensuite ne les jette pas."""
+
+[[faq]]
+q = "Quelle taille fera le SVG&nbsp;?"
+a = """
+        Pour une forme, moins que l'image&nbsp;: une silhouette vectorisée fait
+        d'ordinaire un à cinq kilo-octets, et un logo quelques-uns de plus. La
+        page vous le dit exactement, à côté du téléchargement. Pour une photo il
+        sera énorme, ce qui est le signe le plus clair que ce n'est pas le bon
+        outil pour ce fichier &mdash; et la page cesse de dessiner et le dit
+        passé un millier de formes distinctes environ."""
+
+[[faq]]
+q = "Vectorise-t-il en couleur&nbsp;?"
+a = """
+        Non. Ceci fait une forme d'une seule couleur, ce qui est le cas qui
+        ressort comme un dessin plutôt que comme une mauvaise photocopie.
+        Vectoriser en couleur, c'est quantifier en quelques couleurs et
+        vectoriser chacune comme son propre calque, et le résultat déçoit la
+        plupart de ceux qui le demandent. S'il vous faut de la couleur,
+        vectorisez la forme ici et remplissez-la dans votre logiciel de
+        dessin."""
+
+[[faq]]
+q = "Que puis-je faire du SVG ensuite&nbsp;?"
+a = """
+        Le redimensionner à toute taille sans qu'il devienne flou, le recolorer
+        avec un seul attribut, l'animer, l'imprimer, ou l'envoyer à une machine
+        de découpe ou à un laser. C'est un seul <code>&lt;path&gt;</code> sans
+        règle de remplissage à se tromper, donc Illustrator, Inkscape, Figma, un
+        navigateur et la plupart des logiciels de CNC le lisent tous de la même
+        façon."""
+
+[[faq]]
+q = "Y a-t-il une limite à la taille de l'image&nbsp;?"
+a = """
+        Celle de votre machine, pas la nôtre. Une page A4 numérisée à
+        300&nbsp;ppp &mdash; neuf mégapixels environ &mdash; se vectorise en une
+        fraction de seconde. Les images plus grandes fonctionnent&nbsp;; elles
+        prennent seulement plus de temps, et le travail se fait sur votre propre
+        processeur plutôt que dans une file d'attente quelque part."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni connexion, ni période d'essai,
+        ni filigrane. Il n'y a pas non plus de limite au nombre ni à la taille
+        des fichiers, parce qu'aucun serveur ne les paie &mdash; le travail se
+        fait sur votre propre machine. Le site porte de la publicité, et c'est
+        elle qui le finance&nbsp;; les annonces ne reçoivent rien sur vos
+        fichiers."""
+
+[[faq]]
+q = "Fonctionne-t-il hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, puis coupez la connexion, et elle
+        continue de fonctionner. C'est aussi la façon la plus simple de prouver
+        que rien n'est envoyé&nbsp;: un outil qui expédierait votre image pour
+        la vectoriser s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Vectorisez une image en noir et blanc en un contour SVG dans le navigateur. Sépare par clair et sombre ou trouve le sujet sur son arrière-plan, ajuste des courbes à la forme et laisse retirer d'un clic tout ce qui ne devrait pas être vectorisé. Rien n'est envoyé."
+features = [
+  "Vectorise une forme bitmap en vraies courbes cubiques, nettes à toute taille",
+  "Deux façons de trouver la forme&nbsp;: par clair et sombre, ou par sujet sur arrière-plan",
+  "Un clic sur une partie l'écarte, un clic sur un vide enclavé le remplit",
+  "Le contour est dessiné par-dessus les pixels dont il vient, jusqu'à seize fois",
+  "Trous et trous imbriqués sortent en un seul chemin sans règle de remplissage à régler",
+  "Seuils d'angle et de lissage, calculés par forme sauf indication contraire",
+  "Prévient quand une image est une photographie plutôt qu'un dessin au trait",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans moteur à télécharger",
+]
+
+[picker]
+title = "Déposez une image ici"
+hint = "ou cliquez pour parcourir &mdash; PNG, JPEG, WebP, GIF, AVIF"

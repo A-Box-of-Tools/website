@@ -1,0 +1,231 @@
+<main id="main">
+  <!-- ステップ1｜画像 -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">外す</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2｜どのピクセルが形なのか -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> 何が形なのかを伝える</h2>
+
+    <p class="card-lede">
+      トレースには1ピクセル1ビットが必要です。中か、外か。それを決める方法は2つあり、向いている画像が違います。白い紙に描いた図は<strong>明暗</strong>で分けられます。物を写した写真はそうはいきません。暗い灰色の石の上の暗い赤の像は、暗い上に暗いもので、明るさでは分けられないからです。そうした写真には<strong>被写体</strong>を選んでください。画像の縁から何が背景かを割り出し、背景でないものをすべて残します。
+    </p>
+
+    <div class="option-row">
+      <label for="find">探すもの</label>
+      <select id="find">
+        <option value="threshold">明暗｜図面、ロゴ、スキャン</option>
+        <option value="subject">被写体｜物をひとつ写した写真</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">明るいと暗いの境目</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          自動で計算する</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">どこまでを被写体と見なすか</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">影の中をどこまで追うか</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">隙間を塞ぐ幅</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          中を塗りつぶす</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          小さな断片も残す</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          縁から背景を学ぶ</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        反転する｜明るい側をトレースする</label>
+    </div>
+  </section>
+
+  <!-- ステップ3｜輪郭を見て、直す -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> 輪郭を確かめ、間違いを直す</h2>
+
+    <p class="card-lede">
+      赤い線がいまの輪郭で、その元になったピクセルの上に重ねて描かれています。この問いに答えが出せる場所はそこしかありません。輪郭が正しいか間違っているかは、そのピクセルとの関係だけで決まるからです。どちらかの画像をドラッグすれば両方が動き、ホイールを回せば拡大できます。あってはいけないものはクリックしてください。クリックひとつでその色のかたまり全体が選ばれるので、指しているのはピクセルではなく形です。もう一度クリックすれば戻ります。
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">画像</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="画像。トレースした輪郭が重ねて描かれています。ドラッグで移動、ホイールで拡大、部分をクリックで外します。"></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="トレースした図。ドラッグで移動、ホイールで拡大、部分をクリックで外します。"></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">ズーム</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> 全体表示</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">表示</label>
+        <select id="show">
+          <option value="picture">画像</option>
+          <option value="mask">トレーサーが受け取ったもの</option>
+          <option value="measured">測定したもの</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          輪郭を重ねて描く</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">クリックで選ぶ範囲</label>
+        <select id="wand-mode">
+          <option value="colour">同じ色のところ全部</option>
+          <option value="shape">つながっているところ全部</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">同じ色と見なす幅</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          クリックで「これは背景」と伝える</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>元に戻す</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>すべて元に戻す</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>線をどれだけ滑らかにするか</h2></summary>
+      <p class="fold-note">
+        ピクセルの階段がどう曲線になるかは、2つの数値で決まります。たいていの画像ではどちらも触る必要がなく、必要になったときのために、どちらも知っておく価値があります。
+      </p>
+      <div class="option-row">
+        <label for="detail">細かさ</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          形ごとに計算する</label>
+      </div>
+      <p class="field-note">
+        線がピクセルからどれだけ離れてよいか。1を下回ると何も起こりません。階段の一段は、本来属する線からまるまる1ピクセル外れているからです。2を超えると、本物の曲線まで削り始めます。
+      </p>
+      <div class="option-row">
+        <label for="corner">角の鋭さ</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        曲がり角が曲線に丸められずに角として残るために、輪郭がどれだけ曲がる必要があるか。低すぎると、あらゆる揺れが角になり、円は多角形になって戻ってきます。
+      </p>
+    </details>
+  </section>
+
+  <!-- ステップ4｜ファイル -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> SVGを受け取る</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>SVGをダウンロード</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">このブラウザでは画像をデコードできませんでした。</span>
+    <span data-phrase="read.failed">そのファイルは開けませんでした：{why}</span>
+    <span data-phrase="loaded.name">{name}｜{width}&times;{height}</span>
+    <span data-phrase="picture.alt">トレース中の画像、{width}&times;{height}ピクセル</span>
+
+    <span data-phrase="threshold.auto">自動：{level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">断片を1つ見つけました。画像の{share}%です。</span>
+    <span data-phrase="subject.found.many">{islands}個の断片を見つけ、最大のものを残しました。画像の{share}%です。</span>
+    <span data-phrase="subject.told">背景として指定された{count}色を使っています。</span>
+    <span data-phrase="subject.border">画像の縁に沿った帯から背景を学んでいます。</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">形ごと</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">その色とまったく同じもの</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">未使用｜クリックでつながった形全体を選びます</span>
+
+    <span data-phrase="hover.ink">形の一部：{size}ピクセル、画像の{share}%。クリックで外します。</span>
+    <span data-phrase="hover.paper">形の外：{size}ピクセル、画像の{share}%。クリックで塗りつぶします。</span>
+    <span data-phrase="hover.big">{size}ピクセル超。動かしながら輪郭を描くには大きすぎます。クリックすればそれでも選べます。</span>
+    <span data-phrase="hover.long">{size}ピクセル。縁が長すぎて、動かしながらは描けません。</span>
+    <span data-phrase="hover.sample">この色：クリックで、背景と見なす色に加えます。</span>
+    <span data-phrase="samples.clear.one">その色を忘れる</span>
+    <span data-phrase="samples.clear.many">その{count}色を忘れる</span>
+
+    <span data-phrase="facts.line.one">形1個、{points}点、{bytes}。トレースに{ms}ミリ秒。</span>
+    <span data-phrase="facts.line.many">形{loops}個、{points}点、{bytes}。トレースに{ms}ミリ秒。</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">手動の修正{count}件。</span>
+    <span data-phrase="facts.edits.many">手動の修正{count}件。</span>
+    <span data-phrase="toobig.warning">結果は{loops}個の独立した形と{bytes}の図になりました。これは、線画のつもりでトレースされた写真の姿です。ファイルはそのままダウンロードできますが、開くのは遅く、写真には見えません。代わりに上の<em>被写体</em>を試してください。</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

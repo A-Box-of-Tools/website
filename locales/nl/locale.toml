@@ -62,6 +62,7 @@ complete = true
 # Ook hier de klus: "svg naar png" is wat er getypt wordt, en png is het formaat
 # dat er in vrijwel alle gevallen uit moet komen.
 "svg-to-image" = "svg-naar-png"
+"image-to-svg" = "afbeelding-naar-svg"
 # "Data-URI" is het vakwoord; "base64" is wat er gezocht wordt, en het is de
 # regel die je uiteindelijk in je CSS plakt.
 "image-to-data-uri" = "afbeelding-naar-base64"
@@ -123,6 +124,7 @@ complete = true
 "guides/is-it-safe-to-upload-files" = "gidsen/is-bestanden-uploaden-veilig"
 "guides/make-a-favicon" = "gidsen/zelf-een-favicon-maken"
 "guides/convert-an-svg-to-png" = "gidsen/een-svg-naar-png-omzetten"
+"guides/trace-an-image-into-an-svg" = "gidsen/een-afbeelding-naar-svg-omzetten"
 "guides/turn-a-video-into-a-gif" = "gidsen/van-een-video-een-gif-maken"
 "guides/convert-heic-to-jpg" = "gidsen/heic-naar-jpg-omzetten"
 "guides/embed-an-image-in-css" = "gidsen/een-afbeelding-in-css-zetten"

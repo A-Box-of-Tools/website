@@ -1,0 +1,307 @@
+#
+# Gambar ke SVG - Bahasa Indonesia.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Gambar ke SVG"
+heading = "Gambar&nbsp;ke&nbsp;SVG <span class=\"h1-kw\">&mdash; jiplak logo, stensil, atau siluet menjadi kurva</span>"
+tagline = "Satu bentuk, satu garis luar. Tunjuk saja yang seharusnya tidak ada."
+
+title = "Gambar ke SVG &mdash; Vektorkan Logo atau Siluet, Tanpa Unggah"
+description = "Jiplak gambar hitam putih menjadi garis luar SVG sungguhan, di peramban Anda. Logo, stensil, tanda tangan, gambar garis, dan siluet menjadi kurva yang bisa Anda perbesar ke ukuran berapa pun. Satu klik membuang yang salah terambil. Tidak ada yang diunggah."
+og_title = "Ubah logo atau siluet menjadi SVG, tanpa mengunggahnya"
+og_description = "Bitmap yang diperbesar adalah tangga; garis luar adalah perintah. Alat ini menemukan bentuknya, memasangkan kurva, dan membiarkan Anda mengeklik yang seharusnya tidak ada, semuanya di mesin Anda sendiri."
+og_image_alt = "Gambar ke SVG - jiplak logo, stensil, atau siluet menjadi kurva"
+
+pledge = """
+    Gambarnya dibaca dari disk oleh peramban Anda sendiri, diringkas menjadi
+    satu bit per piksel oleh <code>src/mask.js</code>, ditelusuri tepinya oleh
+    <code>src/contour.js</code>, dan dipasangi kurva oleh <code>src/fit.js</code>
+    &mdash; sekitar enam ratus baris yang bisa Anda baca, tanpa mesin di baliknya
+    dan tanpa apa pun yang diunduh untuk menjalankannya. Alat ini tidak punya
+    fitur jaringan dalam bentuk apa pun: tidak ada yang diambil, tidak ada yang
+    dikirim, dan seandainya pun ada, tidak ada server di ujung lain halaman ini
+    untuk menerima sebuah gambar."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu jiplak sesuatu. Tidak satu pun permintaan membawa gambar, gambar
+      mini, nama file, atau satu byte pun dari yang Anda pilih. Atau cabut
+      koneksi internet dan tetap jiplak satu."""
+
+read_first = """
+, <code>src/mask.js</code> untuk bagaimana sebuah
+      gambar menjadi satu bit per piksel, <code>src/contour.js</code> untuk
+      perjalanan mengelilingi tepi bentuk, <code>src/fit.js</code> untuk
+      bagaimana sebuah tangga menjadi kurva, dan <code>src/subject.js</code>
+      untuk bagaimana latar ditebak ketika tidak ada terang dan gelap untuk
+      dipisahkan."""
+
+howto_heading = "Cara menjiplak gambar menjadi SVG tanpa mengunggahnya"
+
+card = """
+            Bitmap yang diperbesar adalah tangga. Garis luar adalah perintah,
+            jadi tajam pada ukuran berapa pun &mdash; kalau yang Anda punya
+            adalah bentuk, bukan foto."""
+
+[words]
+plural = "gambar"
+choose = "sebuah gambar"
+analytics_extra = """, dan tidak satu pun
+  warna, ukuran, atau nama file yang dihitung alat ini"""
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tempat tujuan."
+body = """
+ Content-Security-Policy
+      menyebut setiap alamat yang boleh dihubungi halaman ini, dan tidak satu pun
+      milik situs ini. Tidak ada titik di sini tempat file Anda bisa dikumpulkan,
+      dan tidak ada apa pun di kodenya yang akan mengirimnya ke sana seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada apa pun di sini yang mengambil apa pun."
+body = """
+ Tidak ada
+      <code>fetch</code>, <code>XMLHttpRequest</code>, atau
+      <code>sendBeacon</code> di mana pun dalam <code>src/</code>. Seluruh alat
+      ini adalah hitung-hitungan atas piksel satu gambar: sebuah ambang, satu
+      putaran mengelilingi tepi dari yang ditemukannya, dan sedikit pemasangan
+      kurva."""
+
+[[privacy]]
+title = "Tidak ada mesin untuk diunduh."
+body = """
+ Menjiplak biasanya program
+      orang lain, dan di web itu berarti beberapa megabyte kode terkompilasi
+      datang sebelum klik pertama. Di sini tidak ada yang seperti itu. Semuanya
+      hanya beberapa ratus baris JavaScript biasa yang disajikan dari asal ini,
+      dan itu pula sebabnya halaman ini bekerja begitu terbuka, bukan setelah
+      menunggu."""
+
+[[privacy]]
+title = "Yang dimuat Google, dan yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan
+      pengukuran datang dari Google, dan tombol donasi dari Buy Me a Coffee.
+      Tidak satu pun dari mereka diberi apa pun tentang gambar Anda. Setiap
+      baris yang membaca, mengambangkan, atau menjiplaknya disajikan dari asal
+      ini dan tercantum di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan jaringan dan alat ini tidak
+      berubah, karena tidak pernah ada langkah jaringan di dalamnya. Itu bukti
+      paling sederhana dari semuanya."""
+
+[[howto]]
+title = "Pilih gambarnya."
+body = """
+ Logo, stensil, tanda tangan, stempel,
+      gambar hasil pindaian, siluet. Apa pun dengan bentuk yang jelas di
+      dalamnya terjiplak dengan bersih; foto sebuah ruangan tidak, dan di bawah
+      ada peringatan jujur soal itu, bukan kejutan di akhir. File dibaca
+      langsung dari disk Anda dan tidak ada yang dikirim ke mana pun sementara
+      itu."""
+
+[[howto]]
+title = "Katakan apa bentuknya."
+body = """
+ Gambar di atas kertas terpisah
+      oleh <strong>terang dan gelap</strong>, dan tingkatnya dihitung untuk
+      Anda. Foto sebuah benda tidak &mdash; patung merah tua di atas batu
+      abu-abu tua adalah gelap di atas gelap, dan tidak ada kecerahan yang
+      memisahkan keduanya. Foto seperti itu butuh <strong>subjeknya</strong>,
+      yang belajar apa itu latar dari sebuah pita di sepanjang tepi gambar dan
+      menyimpan semua yang bukan latar."""
+
+[[howto]]
+title = "Lihat garis merahnya, bukan pengaturannya."
+body = """
+ Garis luar digambar di atas
+      piksel asalnya, karena itu satu-satunya tempat pertanyaan ini bisa
+      diputuskan: garis luar itu benar atau salah terhadap piksel-piksel itu dan
+      bukan terhadap hal lain. Seret salah satu gambar untuk menggeser keduanya,
+      dan putar roda untuk memperbesar cukup jauh sampai terlihat apa yang
+      sebenarnya dilakukan garis itu."""
+
+[[howto]]
+title = "Klik untuk membuang yang seharusnya tidak ada."
+body = """
+ Bintik, staples, stempel,
+      keterangan, bayangan. Satu klik mengambil seluruh bercak warna itu, bukan
+      satu piksel, jadi Anda menunjuk sebuah bentuk; klik lagi untuk
+      mengembalikannya. Mengeklik bagian latar yang terkurung justru
+      mengisinya, dan begitulah lubang yang seharusnya bukan lubang ditutup."""
+
+[[howto]]
+title = "Atur kehalusannya hanya jika perlu."
+body = """
+ <em>Detail</em> adalah
+      seberapa jauh garis boleh menjauh dari piksel saat disederhanakan, dan
+      dihitung per bentuk kecuali Anda bilang lain. <em>Ketajaman sudut</em>
+      memutuskan seberapa jauh garis luar harus berbelok agar belokan itu tetap
+      menjadi sudut dan bukannya dibulatkan. Kebanyakan gambar tidak perlu
+      menyentuh keduanya."""
+
+[[howto]]
+title = "Ambil SVG-nya."
+body = """
+ Satu file, satu
+      <code>&lt;path&gt;</code>, tanpa aturan isian yang perlu dipusingkan:
+      garis luar berputar ke satu arah dan lubang ke arah sebaliknya, dan itulah
+      yang membuat bentuk dengan empat puluh lubang menjadi satu elemen. Ia
+      terbuka di Illustrator, Inkscape, Figma, peramban, dan mesin potong."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca oleh peramban Anda sendiri di perangkat keras Anda
+        sendiri, dijiplak oleh beberapa ratus baris JavaScript yang disajikan
+        dari asal ini, dan dikembalikan sebagai unduhan. Alat ini tidak punya
+        fitur jaringan dalam bentuk apa pun &mdash; tidak pernah mengambil apa
+        pun dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut setiap alamat
+        yang boleh dihubunginya, dan tidak satu pun milik situs ini."""
+
+[[faq]]
+q = "Apakah ini akan mengubah foto saya menjadi SVG?"
+a = """
+        Tidak dengan cara yang berguna, dan halaman ini akan mengatakannya
+        alih-alih membiarkan Anda mengetahuinya setelah mengunduh. Menjiplak
+        mengubah setiap bercak warna yang mirip menjadi bentuk tersendiri, jadi
+        sebuah foto kembali sebagai ribuan noda yang saling tumpang tindih dan
+        file yang berkali-kali lebih besar dari JPEG-nya, lambat dibuka, dan
+        tidak mirip fotonya. Yang terjiplak dengan baik adalah gambar yang punya
+        <em>bentuk</em> di dalamnya: logo, stensil, tanda tangan, gambar garis,
+        siluet. Untuk foto satu benda, pengaturan <em>subjeknya</em> akan
+        memotongnya sebagai satu siluet padat, yang merupakan hal berbeda dan
+        benar-benar berguna."""
+
+[[faq]]
+q = "Apa bedanya dua cara menemukan bentuk itu?"
+a = """
+        Pertanyaan yang diajukannya. <strong>Terang dan gelap</strong> bertanya
+        apakah setiap piksel lebih gelap dari satu tingkat, yang tepat sekali
+        untuk tinta di atas kertas dan tidak berguna ketika subjek dan latar
+        sama gelapnya. <strong>Subjeknya</strong> bertanya apa itu latar
+        &mdash; ia mempelajarinya dari sebuah pita di sepanjang tepi gambar,
+        mengukur setiap piksel terhadapnya, dan menyimpan hal terbesar yang
+        bukan latar. Itu berhasil pada foto sebuah benda di depan latar yang
+        kurang lebih rata, dan gagal pada gambar yang dipangkas begitu rapat
+        sampai subjeknya keluar di tiga sisi, karena tepi tempatnya belajar saat
+        itu adalah subjek itu sendiri. Kalau itu terjadi, Anda bisa menunjuk
+        latarnya sendiri."""
+
+[[faq]]
+q = "Kenapa bentuk hasil jiplakan berlubang, atau kehilangan bagian yang tipis?"
+a = """
+        Karena gambarnya memang sudah begitu sejak menjadi satu bit per piksel.
+        Nyalakan <em>yang diterima penjiplak</em> untuk melihatnya: di bawah
+        sekitar dua belas piksel, lubang dalam sebuah huruf sudah terisi dan
+        batang-batangnya sudah menyatu, dan tidak ada jiplakan yang bisa
+        mengembalikan lubang yang tidak ada. Perbaikannya ada di hulu &mdash;
+        geser ambangnya, atau mulai dari pindaian yang lebih besar. Dalam mode
+        <em>subjeknya</em>, <em>tutup celah hingga</em> menutup lubang-lubang
+        kecil dan <em>isi penuh</em> menutup setiap lubang yang tidak bisa
+        dijangkau latar dari tepi gambar."""
+
+[[faq]]
+q = "Bisakah saya memperbaiki bagian yang salah?"
+a = """
+        Bisa, dan untuk itulah sebagian besar langkah ketiga. Klik apa pun yang
+        seharusnya tidak ada di gambar dan ia hilang; klik lagi dan ia kembali.
+        Satu klik mengambil seluruh bercak warna itu, jadi satu klik membuang
+        seluruh bintik atau seluruh stempel, bukan satu piksel. Mengeklik bagian
+        latar yang terkurung akan mengisinya. Koreksi disimpan terpisah dari
+        ambang, jadi menggeser penggesernya setelah itu tidak membuangnya."""
+
+[[faq]]
+q = "Seberapa besar SVG-nya?"
+a = """
+        Untuk sebuah bentuk, lebih kecil dari gambarnya: siluet hasil jiplakan
+        biasanya satu sampai lima kilobyte, dan logo beberapa kilobyte lebih.
+        Halaman ini memberi tahu angkanya persis, di samping unduhan. Untuk
+        foto, ia akan sangat besar, dan itu tanda paling jelas bahwa ini alat
+        yang salah untuk file itu &mdash; dan setelah sekitar seribu bentuk
+        terpisah, halaman berhenti menggambar dan mengatakannya."""
+
+[[faq]]
+q = "Apakah ia menjiplak dalam warna?"
+a = """
+        Tidak. Alat ini membuat satu bentuk dalam satu warna, dan itulah kasus
+        yang keluar sebagai gambar, bukan fotokopi yang buruk. Menjiplak dalam
+        warna berarti mengurangi ke beberapa warna dan menjiplak masing-masing
+        sebagai lapisan tersendiri, dan hasilnya mengecewakan kebanyakan orang
+        yang memintanya. Kalau Anda butuh warna, jiplak bentuknya di sini dan
+        isi warnanya di program gambar Anda."""
+
+[[faq]]
+q = "Apa yang bisa saya lakukan dengan SVG-nya setelah itu?"
+a = """
+        Memperbesarnya ke ukuran berapa pun tanpa jadi buram, mengubah warnanya
+        dengan satu atribut, menganimasikannya, mencetaknya, atau mengirimnya
+        ke mesin potong atau laser. Ia satu <code>&lt;path&gt;</code> tanpa
+        aturan isian yang bisa salah, jadi Illustrator, Inkscape, Figma,
+        peramban, dan kebanyakan perangkat lunak CNC membacanya sama."""
+
+[[faq]]
+q = "Apakah ada batas ukuran gambar?"
+a = """
+        Batas mesin Anda, bukan batas kami. Selembar A4 yang dipindai pada
+        300&nbsp;dpi &mdash; sekitar sembilan megapiksel &mdash; terjiplak dalam
+        sepersekian detik. Gambar yang lebih besar juga bisa; hanya lebih lama,
+        dan kerjanya terjadi di prosesor Anda sendiri, bukan di antrean di suatu
+        tempat."""
+
+[[faq]]
+q = "Apakah ini gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, login, masa percobaan, atau tanda air. Tidak
+        ada pula batas jumlah atau ukuran file, karena tidak ada server yang
+        membayarnya &mdash; kerjanya terjadi di mesin Anda sendiri. Situs ini
+        memasang iklan, dan itulah yang membiayainya; iklan tidak diberi apa pun
+        tentang file Anda."""
+
+[[faq]]
+q = "Apakah bisa jalan tanpa internet?"
+a = """
+        Bisa. Muat halamannya sekali, lalu putuskan internet, dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke luar untuk dijiplak akan
+        berhenti begitu kabelnya dicabut."""
+
+[schema]
+description = "Jiplak gambar hitam putih menjadi garis luar SVG di peramban. Memisahkan dengan terang dan gelap atau menemukan subjek dari latarnya, memasangkan kurva ke bentuknya, dan membiarkan Anda mengeklik semua yang seharusnya tidak dijiplak. Tidak ada yang diunggah."
+features = [
+  "Menjiplak bentuk bitmap menjadi kurva kubik sungguhan, tajam pada ukuran berapa pun",
+  "Dua cara menemukan bentuk: dengan terang dan gelap, atau dengan subjek terhadap latar",
+  "Klik sebuah bagian untuk membuangnya, klik celah yang terkurung untuk mengisinya",
+  "Garis luar digambar di atas piksel asalnya, diperbesar hingga enam belas kali",
+  "Lubang dan lubang bersarang keluar sebagai satu path tanpa aturan isian yang perlu diatur",
+  "Ambang sudut dan kehalusan, dihitung per bentuk kecuali Anda bilang lain",
+  "Memperingatkan ketika sebuah gambar adalah foto, bukan gambar garis",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa mesin untuk diunduh",
+]
+
+[picker]
+title = "Jatuhkan sebuah gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; PNG, JPEG, WebP, GIF, AVIF"

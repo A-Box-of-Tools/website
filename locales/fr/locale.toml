@@ -60,6 +60,7 @@ complete = true
 # SVG en PNG" is what gets typed, and "convertir-un-svg-en-une-png" is not
 # French anybody writes - the formats behave like proper nouns here.
 "svg-to-image" = "convertir-svg-en-png"
+"image-to-svg" = "convertir-image-en-svg"
 "heic-to-jpg" = "convertir-heic-en-jpg"
 # The same shape as "images-en-pdf" and "images-en-video" above: a conversion
 # named by its two ends.
@@ -129,6 +130,7 @@ complete = true
 # The guides keep the article the tool slugs drop, because a question is asked
 # in full sentences even when a search box is not.
 "guides/convert-an-svg-to-png" = "guides/convertir-un-svg-en-png"
+"guides/trace-an-image-into-an-svg" = "guides/convertir-une-image-en-svg"
 "guides/convert-heic-to-jpg" = "guides/convertir-un-heic-en-jpg"
 "guides/turn-a-video-into-a-gif" = "guides/transformer-une-video-en-gif"
 "guides/embed-an-image-in-css" = "guides/integrer-une-image-dans-le-css"

@@ -1,0 +1,266 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambarnya</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Buang</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Katakan apa bentuknya</h2>
+
+    <p class="card-lede">
+      Menjiplak butuh satu bit per piksel &mdash; di dalam, atau di luar. Ada
+      dua cara memutuskannya, dan keduanya cocok untuk gambar yang berbeda.
+      Gambar di atas kertas putih terpisah oleh <strong>terang dan
+      gelap</strong>. Foto sebuah benda tidak: patung merah tua di atas batu
+      abu-abu tua adalah gelap di atas gelap, dan tidak ada kecerahan yang
+      memisahkan keduanya. Foto seperti itu butuh <strong>subjeknya</strong>,
+      yang menebak apa itu latar dari tepi gambar dan menyimpan semua yang bukan
+      latar.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Yang dicari</label>
+      <select id="find">
+        <option value="threshold">Terang dan gelap &mdash; gambar, logo, pindaian</option>
+        <option value="subject">Subjeknya &mdash; foto satu benda</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Batas terang menjadi gelap</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Hitungkan untuk saya</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Seberapa banyak dianggap subjek</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Seberapa jauh mengikutinya ke bayangan</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Tutup celah hingga</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Isi penuh</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Simpan juga potongan yang lebih kecil</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Pelajari latar dari tepi</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Tukar &mdash; jiplak separuh yang terang saja</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Periksa garis luarnya, dan perbaiki yang salah</h2>
+
+    <p class="card-lede">
+      Garis merah adalah garis luar sebagaimana adanya sekarang, digambar di
+      atas piksel asalnya &mdash; satu-satunya tempat pertanyaan ini bisa
+      diputuskan, karena garis luar itu benar atau salah terhadap piksel-piksel
+      itu dan bukan terhadap hal lain. Seret salah satu gambar untuk menggeser
+      keduanya, putar roda untuk memperbesar, dan klik apa pun yang seharusnya
+      tidak ada. Satu klik mengambil seluruh bercak warna itu, jadi Anda menunjuk
+      sebuah bentuk, bukan sebuah piksel; klik lagi untuk mengembalikannya.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">Gambarnya</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="Gambarnya, dengan garis luar hasil jiplakan di atasnya. Seret untuk menggeser, putar roda untuk memperbesar, klik sebuah bagian untuk membuangnya."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">SVG-nya</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="Gambar hasil jiplakan. Seret untuk menggeser, putar roda untuk memperbesar, klik sebuah bagian untuk membuangnya."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Pas</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Tampilkan</label>
+        <select id="show">
+          <option value="picture">Gambarnya</option>
+          <option value="mask">Yang diterima penjiplak</option>
+          <option value="measured">Yang diukurnya</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Gambar garis luarnya di atas</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Satu klik mengambil</label>
+        <select id="wand-mode">
+          <option value="colour">Semua yang berwarna itu</option>
+          <option value="shape">Semua yang tersambung</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Cukup mirip</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Klik untuk bilang &ldquo;ini latar&rdquo; saja</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Urungkan</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Urungkan semua</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Seberapa halus garisnya</h2></summary>
+      <p class="fold-note">
+        Dua angka memutuskan bagaimana tangga piksel menjadi kurva. Keduanya
+        tidak perlu disentuh untuk kebanyakan gambar, dan keduanya patut
+        diketahui untuk saat dibutuhkan.
+      </p>
+      <div class="option-row">
+        <label for="detail">Detail</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Hitung per bentuk</label>
+      </div>
+      <p class="field-note">
+        Seberapa jauh garis boleh menjauh dari piksel. Di bawah sekitar satu, ia
+        tidak melakukan apa-apa, karena satu anak tangga berada satu piksel
+        penuh di luar garis tempatnya seharusnya; di atas sekitar dua, ia mulai
+        memakan kurva yang sungguhan.
+      </p>
+      <div class="option-row">
+        <label for="corner">Ketajaman sudut</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        Seberapa jauh garis luar harus berbelok agar belokan itu tetap menjadi
+        sudut dan bukannya dibulatkan menjadi kurva. Terlalu rendah, dan setiap
+        goyangan menjadi sudut dan lingkaran kembali sebagai poligon.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Ambil SVG-nya</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Unduh SVG-nya</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">peramban ini tidak bisa mendekode gambarnya.</span>
+    <span data-phrase="read.failed">File itu tidak bisa dibuka: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">Gambar yang sedang dijiplak, {width} kali {height} piksel</span>
+
+    <span data-phrase="threshold.auto">dihitung: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Ditemukan satu potongan, {share}% dari
+      gambar.</span>
+    <span data-phrase="subject.found.many">Ditemukan {islands} potongan terpisah dan
+      yang terbesar disimpan, {share}% dari gambar.</span>
+    <span data-phrase="subject.told">Memakai {count} warna yang Anda tunjuk sebagai
+      latar.</span>
+    <span data-phrase="subject.border">Mempelajari latar dari sebuah pita di sepanjang
+      tepi gambar.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">per bentuk</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">persis warna itu</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">tidak dipakai &mdash; satu klik mengambil
+      seluruh bentuk yang tersambung</span>
+
+    <span data-phrase="hover.ink">Bagian dari bentuk: {size} piksel, {share}% dari
+      gambar. Klik untuk membuangnya.</span>
+    <span data-phrase="hover.paper">Bukan bagian dari bentuk: {size} piksel, {share}%
+      dari gambar. Klik untuk mengisinya.</span>
+    <span data-phrase="hover.big">Lebih dari {size} piksel &mdash; terlalu banyak untuk
+      digambar garis luarnya sambil Anda bergerak. Klik untuk tetap mengambilnya.</span>
+    <span data-phrase="hover.long">{size} piksel. Tepinya terlalu panjang untuk digambar
+      sambil Anda bergerak.</span>
+    <span data-phrase="hover.sample">Warna ini: klik untuk menambahkannya ke yang
+      dianggap latar.</span>
+    <span data-phrase="samples.clear.one">Lupakan warna itu</span>
+    <span data-phrase="samples.clear.many">Lupakan {count} warna itu</span>
+
+    <span data-phrase="facts.line.one">Satu bentuk, {points} titik, {bytes}. Dijiplak
+      dalam {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} bentuk, {points} titik, {bytes}.
+      Dijiplak dalam {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} koreksi dari Anda.</span>
+    <span data-phrase="facts.edits.many">{count} koreksi dari Anda.</span>
+    <span data-phrase="toobig.warning">Hasilnya {loops} bentuk terpisah dan {bytes}
+      gambar, dan begitulah rupa sebuah foto ketika dijiplak seolah-olah gambar garis.
+      File-nya tetap bisa Anda unduh, tapi akan lambat dibuka dan tidak akan mirip
+      fotonya. Coba <em>subjeknya</em> di atas.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

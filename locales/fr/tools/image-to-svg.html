@@ -1,0 +1,267 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez l'image</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Retirer</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Dites ce qu'est la forme</h2>
+
+    <p class="card-lede">
+      Vectoriser demande un bit par pixel &mdash; dedans, ou dehors. Il y a
+      deux façons d'en décider, et elles conviennent à des images différentes.
+      Un dessin sur papier blanc se sépare par <strong>clair et sombre</strong>.
+      La photo d'un objet, non&nbsp;: une silhouette rouge sombre sur une pierre
+      gris sombre, c'est du sombre sur du sombre, et aucune luminosité ne les
+      sépare. Celle-là veut <strong>le sujet</strong>, qui détermine ce qu'est
+      l'arrière-plan d'après les bords de l'image et garde tout ce qui n'en
+      fait pas partie.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Ce qu'il faut chercher</label>
+      <select id="find">
+        <option value="threshold">Clair et sombre &mdash; un dessin, un logo, un scan</option>
+        <option value="subject">Le sujet &mdash; la photo d'un seul objet</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Où le clair devient sombre</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Le calculer pour moi</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Ce qui compte comme le sujet</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Jusqu'où le suivre dans l'ombre</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Refermer les écarts jusqu'à</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Remplir en plein</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Garder aussi les morceaux plus petits</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Apprendre l'arrière-plan sur les bords</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Inverser &mdash; vectoriser la moitié claire à la place</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Vérifiez le contour, et corrigez ce qu'il a pris à tort</h2>
+
+    <p class="card-lede">
+      La ligne rouge est le contour tel qu'il est, dessiné par-dessus les pixels
+      dont il vient &mdash; le seul endroit où la question peut se trancher,
+      parce qu'un contour est juste ou faux par rapport à ces pixels et à rien
+      d'autre. Faites glisser l'une ou l'autre image pour déplacer les deux,
+      zoomez à la molette, et cliquez tout ce qui ne devrait pas y être. Un
+      clic prend toute la plage de cette couleur, vous pointez donc une forme et
+      non un pixel&nbsp;; cliquez-la encore pour la remettre.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">L'image</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="L'image, avec le contour vectorisé dessiné par-dessus. Glisser pour déplacer, molette pour zoomer, clic sur une partie pour l'écarter."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">Le SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="Le dessin vectorisé. Glisser pour déplacer, molette pour zoomer, clic sur une partie pour l'écarter."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Ajuster</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Afficher</label>
+        <select id="show">
+          <option value="picture">L'image</option>
+          <option value="mask">Ce que le traceur a reçu</option>
+          <option value="measured">Ce qu'il a mesuré</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Dessiner le contour par-dessus</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Un clic prend</label>
+        <select id="wand-mode">
+          <option value="colour">Tout ce qui est de cette couleur</option>
+          <option value="shape">Tout ce qui y est relié</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Assez proche</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Un clic dit plutôt &laquo;&nbsp;ceci est l'arrière-plan&nbsp;&raquo;</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Annuler</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Tout annuler</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Le degré de lissage de la ligne</h2></summary>
+      <p class="fold-note">
+        Deux nombres décident de la façon dont l'escalier de pixels devient des
+        courbes. Ni l'un ni l'autre n'a besoin d'être touché pour la plupart des
+        images, et tous deux valent d'être connus pour le cas où il le faut.
+      </p>
+      <div class="option-row">
+        <label for="detail">Détail</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Le calculer par forme</label>
+      </div>
+      <p class="field-note">
+        La distance dont la ligne peut s'écarter des pixels. Sous un environ,
+        cela ne fait rien du tout, parce qu'une marche d'escalier se tient à un
+        pixel entier de la ligne à laquelle elle appartient&nbsp;; au-dessus de
+        deux environ, cela commence à manger de vraies courbes.
+      </p>
+      <div class="option-row">
+        <label for="corner">Netteté des angles</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        De combien le contour doit tourner pour que ce virage reste un angle
+        plutôt que d'être arrondi en courbe. Trop bas, chaque ondulation devient
+        un angle et un cercle revient en polygone.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Prenez le SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Télécharger le SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">ce navigateur n'a pas pu décoder l'image.</span>
+    <span data-phrase="read.failed">Ce fichier n'a pas pu être ouvert&nbsp;: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">L'image en cours de vectorisation, {width} par {height} pixels</span>
+
+    <span data-phrase="threshold.auto">calculé&nbsp;: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Un morceau trouvé, soit {share}&nbsp;% de
+      l'image.</span>
+    <span data-phrase="subject.found.many">{islands} morceaux distincts trouvés, le plus
+      grand gardé, soit {share}&nbsp;% de l'image.</span>
+    <span data-phrase="subject.told">Utilise les {count} couleurs que vous avez
+      désignées comme arrière-plan.</span>
+    <span data-phrase="subject.border">Apprend l'arrière-plan sur une bande le long du
+      bord de l'image.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">par forme</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">exactement cette couleur</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">sans effet &mdash; un clic prend toute la
+      forme reliée</span>
+
+    <span data-phrase="hover.ink">Fait partie de la forme&nbsp;: {size} pixels,
+      {share}&nbsp;% de l'image. Cliquez pour l'écarter.</span>
+    <span data-phrase="hover.paper">Hors de la forme&nbsp;: {size} pixels,
+      {share}&nbsp;% de l'image. Cliquez pour le remplir.</span>
+    <span data-phrase="hover.big">Plus de {size} pixels &mdash; trop pour tracer le
+      contour pendant le déplacement. Cliquez pour le prendre quand même.</span>
+    <span data-phrase="hover.long">{size} pixels. Le bord est trop long pour être
+      dessiné pendant le déplacement.</span>
+    <span data-phrase="hover.sample">Cette couleur&nbsp;: cliquez pour l'ajouter à ce
+      qui compte comme arrière-plan.</span>
+    <span data-phrase="samples.clear.one">Oublier cette couleur</span>
+    <span data-phrase="samples.clear.many">Oublier ces {count} couleurs</span>
+
+    <span data-phrase="facts.line.one">Une forme, {points} points, {bytes}. Vectorisée
+      en {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} formes, {points} points, {bytes}.
+      Vectorisées en {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} correction de votre main.</span>
+    <span data-phrase="facts.edits.many">{count} corrections de votre main.</span>
+    <span data-phrase="toobig.warning">Cela a donné {loops} formes distinctes et
+      {bytes} de dessin, ce qui est l'allure d'une photographie vectorisée comme si
+      c'était un dessin au trait. Le fichier reste à vous à télécharger, mais il
+      s'ouvrira lentement et ne ressemblera pas à la photo. Essayez plutôt
+      <em>le sujet</em>, plus haut.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

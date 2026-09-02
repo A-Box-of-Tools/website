@@ -1,0 +1,17 @@
+#
+# Panduan: menjiplak gambar menjadi SVG - Bahasa Indonesia.
+#
+
+nav = "Menjiplak gambar menjadi SVG"
+title = "Cara Menjiplak Gambar Menjadi SVG &mdash; Tanpa Mengunggahnya"
+description = "Ubah logo, stensil, tanda tangan, atau siluet menjadi garis luar vektor sungguhan di peramban Anda. Gambar mana yang terjiplak dengan baik, mana yang tidak akan pernah, dan cara memperbaiki bagian yang salah dijiplak."
+heading = "Cara menjiplak gambar menjadi SVG"
+lede = """
+    PNG yang diperbesar adalah tangga. SVG adalah perintah menggambar, jadi tajam
+    pada ukuran berapa pun &mdash; dan mengubah yang satu menjadi yang lain
+    disebut menjiplak. Ia bekerja indah pada bentuk dan buruk pada foto, dan
+    perbedaannya patut dipahami sebelum mulai."""
+updated = "31 Agustus 2026"
+og_title = "Menjiplak logo atau siluet menjadi SVG, di peramban Anda"
+og_description = "Gambar mana yang menjadi kurva bersih, mana yang kembali sebagai empat ribu noda, dan cara mengeklik bagian yang seharusnya tidak ada. Tidak ada yang diunggah."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

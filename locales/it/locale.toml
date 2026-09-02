@@ -53,6 +53,7 @@ complete = true
 # Lo strumento scrive anche JPEG e WebP, ma la domanda che porta qui è sempre
 # la stessa, e nomina il PNG.
 "svg-to-image" = "svg-in-png"
+"image-to-svg" = "immagine-in-svg"
 "trim-video" = "tagliare-video"
 "video-to-gif" = "video-in-gif"
 "gif-analyzer" = "analizzare-gif"
@@ -113,6 +114,7 @@ complete = true
 "guides/is-it-safe-to-upload-files" = "guide/e-sicuro-caricare-i-propri-file"
 "guides/make-a-favicon" = "guide/creare-una-favicon"
 "guides/convert-an-svg-to-png" = "guide/convertire-un-svg-in-png"
+"guides/trace-an-image-into-an-svg" = "guide/convertire-un-immagine-in-svg"
 "guides/convert-heic-to-jpg" = "guide/convertire-heic-in-jpg"
 "guides/embed-an-image-in-css" = "guide/inserire-un-immagine-nel-css"
 "guides/make-a-qr-code" = "guide/creare-un-qr-code"
