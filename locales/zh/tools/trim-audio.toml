@@ -27,9 +27,9 @@ live_hint = """
 
 read_first = """\
 ，标记和它们保存成的文件在 <code>src/segments.js</code>，\
-      把你的文件交给浏览器自带解码器的那二十行在 <code>src/decode.js</code>，\
+      把你的文件交给浏览器自带解码器的那二十行在 <code>src/shared/audio-decode.js</code>，\
       把一个标记换算成一段采样并逐个复制的循环在 <code>src/trim.js</code>，\
-      写在这些采样前面的文件头在 <code>src/wav.js</code>。它们都没有引入任何\
+      写在这些采样前面的文件头在 <code>src/shared/wav.js</code>。它们都没有引入任何\
       能发出请求的东西。"""
 
 howto_heading = "剪辑音频文件的步骤"

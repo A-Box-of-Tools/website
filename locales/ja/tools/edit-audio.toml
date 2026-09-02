@@ -32,10 +32,10 @@ live_hint = """
 
 read_first = """
 、ファイルをブラウザ自身のデコーダーに渡す20行については\
-<code>src/decode.js</code>、タイムストレッチについては\
+<code>src/shared/audio-decode.js</code>、タイムストレッチについては\
       <code>src/stretch.js</code>、リサンプリングについては\
       <code>src/speed.js</code>、サンプルの前に付くヘッダーについては\
-      <code>src/wav.js</code>です。どれもリクエストを出せるものを読み込んで\
+      <code>src/shared/wav.js</code>です。どれもリクエストを出せるものを読み込んで\
       いません。"""
 
 howto_heading = "音声ファイルを編集する手順"

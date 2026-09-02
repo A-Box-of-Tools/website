@@ -21,7 +21,7 @@ pledge = """
     que toca um arquivo num elemento <code>&lt;video&gt;</code>, e o que se pede
     a ele é a faixa de áudio e mais nada. Escrever um WAV é colocar um cabeçalho
     de quarenta e quatro bytes na frente das amostras, em
-    <code>src/wav.js</code>. Não há nenhum codificador no caminho, não há etapa
+    <code>src/shared/wav.js</code>. Não há nenhum codificador no caminho, não há etapa
     de envio, e esta página não tem função de rede de espécie alguma."""
 
 live_hint = """
@@ -30,9 +30,9 @@ live_hint = """
       desconecte da internet e tire o som mesmo assim."""
 
 read_first = """
-, <code>src/decode.js</code> para o único
+, <code>src/shared/audio-decode.js</code> para o único
       decodificador que existe aqui e para entender por que a imagem nunca é
-      pedida, e <code>src/samplerate.js</code> para a leitura de cabeçalho que
+      pedida, e <code>src/shared/samplerate.js</code> para a leitura de cabeçalho que
       impede a sua gravação de ser reamostrada em silêncio."""
 
 howto_heading = "Como extrair o áudio de um vídeo sem enviar o arquivo"

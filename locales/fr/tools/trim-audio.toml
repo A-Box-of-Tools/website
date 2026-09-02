@@ -32,10 +32,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> pour les repères et le
-      fichier dans lequel ils sont enregistrés, <code>src/decode.js</code> pour les
+      fichier dans lequel ils sont enregistrés, <code>src/shared/audio-decode.js</code> pour les
       vingt lignes qui confient votre fichier au décodeur du navigateur,
       <code>src/trim.js</code> pour le calcul qui transforme un repère en une plage
-      d'échantillons et la boucle qui les copie, et <code>src/wav.js</code> pour
+      d'échantillons et la boucle qui les copie, et <code>src/shared/wav.js</code> pour
       l'en-tête qui se place devant. Aucun d'eux n'importe quoi que ce soit capable
       de faire une requête."""
 

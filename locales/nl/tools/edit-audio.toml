@@ -32,10 +32,10 @@ live_hint = """
       wegstuurde om hem te laten verwerken zou er domweg mee ophouden."""
 
 read_first = """
-, <code>src/decode.js</code> voor de twintig regels
+, <code>src/shared/audio-decode.js</code> voor de twintig regels
       die je bestand aan de eigen decoder van de browser geven,
       <code>src/stretch.js</code> voor het uitrekken in de tijd,
-      <code>src/speed.js</code> voor de resampler, en <code>src/wav.js</code> voor
+      <code>src/speed.js</code> voor de resampler, en <code>src/shared/wav.js</code> voor
       de kop die vóór de samples komt. Geen ervan importeert iets wat een verzoek
       kan doen."""
 

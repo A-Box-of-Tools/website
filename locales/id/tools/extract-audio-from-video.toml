@@ -20,7 +20,7 @@ pledge = """
     Dekodernya adalah yang sudah ada di peramban Anda, jalur kode yang sama
     yang memutar berkas di elemen <code>&lt;video&gt;</code>, dan yang diminta
     darinya hanyalah jalur audio. Menulis WAV berarti menaruh header empat puluh
-    empat bita di depan sampel, ada di <code>src/wav.js</code>. Tidak ada
+    empat bita di depan sampel, ada di <code>src/shared/wav.js</code>. Tidak ada
     enkoder di dalamnya, tidak ada langkah unggah, dan halaman ini tidak punya
     fungsi jaringan apa pun."""
 
@@ -31,9 +31,9 @@ live_hint = """
       tetap."""
 
 read_first = """
-, <code>src/decode.js</code> untuk satu-satunya
+, <code>src/shared/audio-decode.js</code> untuk satu-satunya
       dekoder yang ada dan alasan gambar tidak pernah diminta, dan
-      <code>src/samplerate.js</code> untuk pembacaan header yang mencegah
+      <code>src/shared/samplerate.js</code> untuk pembacaan header yang mencegah
       rekaman Anda diambil ulang sampelnya diam-diam."""
 
 howto_heading = "Cara mengekstrak audio dari video tanpa mengunggahnya"

@@ -31,10 +31,10 @@ live_hint = """
 
 read_first = """
 , dosyanızı tarayıcının kendi çözücüsüne veren yirmi
-      satır için <code>src/decode.js</code>, zaman esneticisi için
+      satır için <code>src/shared/audio-decode.js</code>, zaman esneticisi için
       <code>src/stretch.js</code>, yeniden örnekleyici için
       <code>src/speed.js</code> ve örneklerin önüne giden başlık için
-      <code>src/wav.js</code>. Hiçbiri istek yapabilecek bir şeyi içeri
+      <code>src/shared/wav.js</code>. Hiçbiri istek yapabilecek bir şeyi içeri
       almaz."""
 
 howto_heading = "Bir ses dosyası nasıl düzenlenir"

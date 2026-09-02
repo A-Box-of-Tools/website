@@ -31,10 +31,10 @@ live_hint = """
       processado simplesmente pararia."""
 
 read_first = """
-, <code>src/decode.js</code> para as vinte linhas que
+, <code>src/shared/audio-decode.js</code> para as vinte linhas que
       entregam o seu arquivo ao decodificador do próprio navegador,
       <code>src/stretch.js</code> para o esticador de tempo,
-      <code>src/speed.js</code> para o reamostrador, e <code>src/wav.js</code>
+      <code>src/speed.js</code> para o reamostrador, e <code>src/shared/wav.js</code>
       para o cabeçalho que vai na frente das amostras. Nenhum deles importa
       qualquer coisa que consiga fazer uma requisição."""
 

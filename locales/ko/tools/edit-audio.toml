@@ -28,9 +28,9 @@ live_hint = """
 
 read_first = """
 , 파일을 브라우저 자체 디코더에 넘기는
-      스무 줄은 <code>src/decode.js</code>, 타임 스트레처는
+      스무 줄은 <code>src/shared/audio-decode.js</code>, 타임 스트레처는
       <code>src/stretch.js</code>, 리샘플러는 <code>src/speed.js</code>, 샘플 앞에
-      붙는 헤더는 <code>src/wav.js</code>에 있습니다. 어느 것도 요청을 보낼 수
+      붙는 헤더는 <code>src/shared/wav.js</code>에 있습니다. 어느 것도 요청을 보낼 수
       있는 무언가를 불러오지 않습니다."""
 
 howto_heading = "오디오 파일을 편집하는 방법"

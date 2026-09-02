@@ -33,10 +33,10 @@ live_hint = """
       fermerebbe e basta."""
 
 read_first = """
-, <code>src/decode.js</code> per le venti righe
+, <code>src/shared/audio-decode.js</code> per le venti righe
       che consegnano il tuo file al decodificatore del browser,
       <code>src/stretch.js</code> per il time stretch, <code>src/speed.js</code>
-      per il ricampionatore, e <code>src/wav.js</code> per l'intestazione che va
+      per il ricampionatore, e <code>src/shared/wav.js</code> per l'intestazione che va
       davanti ai campioni. Nessuno di loro importa qualcosa che sappia fare una
       richiesta."""
 

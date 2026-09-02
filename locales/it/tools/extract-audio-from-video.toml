@@ -21,7 +21,7 @@ pledge = """
     codice che riproduce un file in un elemento <code>&lt;video&gt;</code>, e gli
     viene chiesta la traccia audio e nient'altro. Scrivere un WAV significa
     mettere un'intestazione di quarantaquattro byte davanti ai campioni, in
-    <code>src/wav.js</code>. Non c'è nessun codificatore di mezzo, nessun passo
+    <code>src/shared/wav.js</code>. Non c'è nessun codificatore di mezzo, nessun passo
     di caricamento, e questa pagina non ha nessuna funzione di rete di alcun
     tipo."""
 
@@ -31,9 +31,9 @@ live_hint = """
       Oppure stacca internet ed estrai il suono lo stesso."""
 
 read_first = """
-, <code>src/decode.js</code> per l'unico
+, <code>src/shared/audio-decode.js</code> per l'unico
       decodificatore che c'è e per il motivo per cui l'immagine non viene mai
-      chiesta, e <code>src/samplerate.js</code> per la lettura dell'intestazione
+      chiesta, e <code>src/shared/samplerate.js</code> per la lettura dell'intestazione
       che impedisce alla tua registrazione di essere ricampionata in
       silenzio."""
 

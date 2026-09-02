@@ -32,10 +32,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> für die Marken und die
-      Datei, in der sie landen, <code>src/decode.js</code> für die zwanzig Zeilen,
+      Datei, in der sie landen, <code>src/shared/audio-decode.js</code> für die zwanzig Zeilen,
       die Ihre Datei dem Dekoder des Browsers übergeben, <code>src/trim.js</code>
       für die Rechnung, die aus einer Marke einen Sample-Abschnitt macht, und für
-      die Schleife, die ihn kopiert, sowie <code>src/wav.js</code> für den Kopf,
+      die Schleife, die ihn kopiert, sowie <code>src/shared/wav.js</code> für den Kopf,
       der davor geschrieben wird. Keines davon importiert etwas, das eine Anfrage
       stellen könnte."""
 

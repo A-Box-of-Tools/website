@@ -187,14 +187,14 @@ the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
 **Some modules are still copied, and must stay in step until they move.** The
-audio decoder trio sits in every tool that reads sound, and the text parsers
-in the three formatter pages, from before the tests could follow a
-`./shared/` import. `tests/python/test_duplicates.py` declares which copies
-must agree and fails if they drift, comparing tokens so each copy keeps its
-own comments. Fix one copy and it will tell you about the others; add a new
-copy and it will make you declare it — or move the module to `shared/js/`,
-which is what happened to the CRC, the ZIP writer, the four PDF modules, the
-MP4 reader and the two MP4 writers, and is the answer for the rest.
+text parsers sit in the three formatter pages, and the QR tables in the QR
+writer and reader, from before the tests could follow a `./shared/` import.
+`tests/python/test_duplicates.py` declares which copies must agree and fails
+if they drift, comparing tokens so each copy keeps its own comments. Fix one
+copy and it will tell you about the others; add a new copy and it will make
+you declare it — or move the module to `shared/js/`, which is what happened
+to the CRC, the ZIP writer, the four PDF modules, the MP4 reader, the two MP4
+writers and the audio decoder trio, and is the answer for the rest.
 
 ## Adding a tool
 

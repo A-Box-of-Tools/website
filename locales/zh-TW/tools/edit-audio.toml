@@ -30,9 +30,9 @@ live_hint = """
       網線照編，一個把音訊送出去處理的工具，這時候就該停了。"""
 
 read_first = """\
-      ，<code>src/decode.js</code> 裡是把你的檔案交給瀏覽器內建解碼器的那二十\
+      ，<code>src/shared/audio-decode.js</code> 裡是把你的檔案交給瀏覽器內建解碼器的那二十\
       來行，<code>src/stretch.js</code> 裡是變速不變調的那部分，\
-      <code>src/speed.js</code> 裡是重取樣，<code>src/wav.js</code> 裡是取樣\
+      <code>src/speed.js</code> 裡是重取樣，<code>src/shared/wav.js</code> 裡是取樣\
       前面那個檔案頭。這幾個都沒有引入任何能發請求的東西。"""
 
 howto_heading = "音訊檔案怎麼編輯"

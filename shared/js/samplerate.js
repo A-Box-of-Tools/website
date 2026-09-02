@@ -1,6 +1,12 @@
 /**
  * Reading the sample rate out of a file before decoding it.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/samplerate.js and the
+ * build copies it to <tool>/src/shared/samplerate.js for every tool that asks
+ * for it in js_parts - which is every tool that asks for audio-decode.js,
+ * because the decoder imports this to know what rate to decode at. See the
+ * header of audio-decode.js for how the three audio parts travel.
+ *
  * This exists because of a detail in the Web Audio specification that quietly
  * costs quality. `decodeAudioData` does not hand back the samples that are in
  * the file: it hands back those samples resampled to the sample rate of the

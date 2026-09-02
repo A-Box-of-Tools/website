@@ -21,7 +21,7 @@ pledge = """
     bestand afspeelt in een <code>&lt;video&gt;</code>-element, en er wordt om
     het geluidsspoor gevraagd en om niets anders. Een WAV schrijven is een kop
     van vierenveertig bytes voor de samples zetten, en dat staat in
-    <code>src/wav.js</code>. Er zit geen encoder in de lus, er is geen
+    <code>src/shared/wav.js</code>. Er zit geen encoder in de lus, er is geen
     uploadstap en deze pagina heeft überhaupt geen netwerkfunctie."""
 
 live_hint = """
@@ -31,9 +31,9 @@ live_hint = """
       uit."""
 
 read_first = """
-, <code>src/decode.js</code> voor de enige
+, <code>src/shared/audio-decode.js</code> voor de enige
       decoder die er is en waarom er nooit om het beeld wordt gevraagd, en
-      <code>src/samplerate.js</code> voor het uitlezen van de kop waardoor je
+      <code>src/shared/samplerate.js</code> voor het uitlezen van de kop waardoor je
       opname niet stilletjes opnieuw bemonsterd wordt."""
 
 howto_heading = "Zo haal je de audio uit een video zonder hem te uploaden"

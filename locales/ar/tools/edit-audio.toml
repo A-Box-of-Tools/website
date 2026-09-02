@@ -33,10 +33,10 @@ live_hint = """
       ترسل صوتك بعيداً ليُعالَج كانت ستتوقف ببساطة."""
 
 read_first = """
-، و<code>src/decode.js</code> للأسطر العشرين
+، و<code>src/shared/audio-decode.js</code> للأسطر العشرين
       التي تناول ملفك لفاكِّ ترميز المتصفح نفسه، و<code>src/stretch.js</code>
       لمُطيل الزمن، و<code>src/speed.js</code> لمُعيد أخذ العيّنات، و
-      <code>src/wav.js</code> للترويسة التي تتقدّم العيّنات. وليس فيها ما
+      <code>src/shared/wav.js</code> للترويسة التي تتقدّم العيّنات. وليس فيها ما
       يستورد شيئاً يستطيع إرسال طلب."""
 
 howto_heading = "كيف تحرّر ملفاً صوتياً"

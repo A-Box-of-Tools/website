@@ -16,7 +16,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 
 import { mixToMono } from '../../tools/extract-audio-from-video/src/mono.js';
-import { writeWav } from '../../tools/extract-audio-from-video/src/wav.js';
+import { writeWav } from '../../shared/js/wav.js';
 
 const channel = (...values) => Float32Array.from(values);
 

@@ -20,7 +20,7 @@ pledge = """
     디코더는 브라우저에 이미 들어 있는 그 디코더입니다. 파일을
     <code>&lt;video&gt;</code> 요소에서 재생할 때와 똑같은 코드 경로이고, 여기서
     요청하는 것은 오디오 트랙 하나뿐입니다. WAV를 쓴다는 것은 샘플 앞에 마흔네
-    바이트짜리 헤더를 붙이는 일이고, <code>src/wav.js</code>에 그렇게 적혀
+    바이트짜리 헤더를 붙이는 일이고, <code>src/shared/wav.js</code>에 그렇게 적혀
     있습니다. 중간에 인코더가 없고, 업로드 단계도 없으며, 이 페이지에는 네트워크
     기능 자체가 없습니다."""
 
@@ -31,8 +31,8 @@ live_hint = """
 
 read_first = """
 , 여기 있는 단 하나의 디코더와 화면이 왜 한 번도
-      요청되지 않는지는 <code>src/decode.js</code>를, 녹음이 조용히 리샘플링되는
-      것을 막는 헤더 확인은 <code>src/samplerate.js</code>를 보세요."""
+      요청되지 않는지는 <code>src/shared/audio-decode.js</code>를, 녹음이 조용히 리샘플링되는
+      것을 막는 헤더 확인은 <code>src/shared/samplerate.js</code>를 보세요."""
 
 howto_heading = "동영상을 업로드하지 않고 오디오를 꺼내는 방법"
 

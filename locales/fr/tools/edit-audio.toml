@@ -37,11 +37,11 @@ live_hint = """
       votre audio ailleurs pour le traiter s'arrêterait tout simplement."""
 
 read_first = """
-, <code>src/decode.js</code> pour les vingt lignes qui
+, <code>src/shared/audio-decode.js</code> pour les vingt lignes qui
       remettent votre fichier au décodeur du navigateur,
       <code>src/stretch.js</code> pour l'étirement temporel,
       <code>src/speed.js</code> pour le rééchantillonneur, et
-      <code>src/wav.js</code> pour l'en-tête posé devant les échantillons. Aucun
+      <code>src/shared/wav.js</code> pour l'en-tête posé devant les échantillons. Aucun
       d'eux n'importe la moindre chose capable d'émettre une requête."""
 
 howto_heading = "Comment modifier un fichier audio"

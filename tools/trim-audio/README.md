@@ -171,17 +171,18 @@ lose anything either.
 What that costs the user is size — about 10 MB a minute in stereo — and the page
 says so before the button is pressed.
 
-## What is shared with the audio editor, and why it is copied
+## What is shared with the audio editor
 
-`src/decode.js`, `src/samplerate.js` and `src/wav.js` are byte for byte the
-[audio editor](../edit-audio/)'s. That was the arrangement the MP4 reader had
-across the video tools too, until it moved to `shared/js/mp4-reader.js`, and
-the three here are next: a shared part is copied into each tool at build time,
-so a tool folder in `dist/` stays complete on its own, cached by its own service
-worker, and readable without following an import into a neighbour.
+The decoder, the sample-rate sniffer and the WAV writer are
+`shared/js/audio-decode.js`, `samplerate.js` and `wav.js`, asked for in
+`tool.toml` and copied into this tool at `src/shared/` by the build — the same
+three the [audio editor](../edit-audio/) ships. A shared part is copied into
+each tool at build time, so a tool folder in `dist/` stays complete on its own,
+cached by its own service worker, and readable without following an import into
+a neighbour.
 
-The one thing worth knowing about `decode.js` is documented in
-`src/samplerate.js`: `decodeAudioData` resamples to whatever rate the context
+The one thing worth knowing about the decoder is documented in
+`src/shared/samplerate.js`: `decodeAudioData` resamples to whatever rate the context
 was created at, so the rate is sniffed out of the file's own header first and
 the context is created to match. A file whose format does not say is decoded at
 48 kHz and the page states that it was assumed.

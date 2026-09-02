@@ -99,6 +99,9 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/mp4-reader.js` | `js_parts = ["mp4-reader"]` | the MP4/MOV reader: every sample, where it is and when it shows |
 | `shared/js/mp4-writer.js` | `js_parts = ["mp4-writer"]` | the MP4 writer for tracks being copied: two tracks, interleaved, sample entries as bytes |
 | `shared/js/mp4-muxer.js` | `js_parts = ["mp4-muxer"]` | the MP4 writer for one H.264 track an encoder just produced |
+| `shared/js/audio-decode.js` | `js_parts = ["audio-decode"]` | the browser's own decoder, asked for the audio track and nothing else |
+| `shared/js/samplerate.js` | `js_parts = ["samplerate"]` | the sample rate sniffed out of a file's header before it is decoded; `audio-decode` imports it |
+| `shared/js/wav.js` | `js_parts = ["wav"]` | the WAV writer: a header in front of the samples |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 

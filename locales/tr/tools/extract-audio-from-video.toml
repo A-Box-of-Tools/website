@@ -20,7 +20,7 @@ pledge = """
     Çözücü, tarayıcınızda zaten bulunan çözücüdür &mdash; bir dosyayı
     <code>&lt;video&gt;</code> ögesinde oynatan kod yolunun aynısı &mdash; ve
     ondan yalnızca ses izi istenir. WAV yazmak, örneklerin önüne kırk dört
-    baytlık bir başlık koymaktır; <code>src/wav.js</code> içinde durur. Döngüde
+    baytlık bir başlık koymaktır; <code>src/shared/wav.js</code> içinde durur. Döngüde
     hiçbir kodlayıcı yoktur, yükleme adımı yoktur ve bu sayfanın herhangi bir
     ağ işlevi hiç bulunmaz."""
 
@@ -31,9 +31,9 @@ live_hint = """
 
 read_first = """
 , buradaki tek çözücü ve görüntünün neden hiç
-      istenmediği için <code>src/decode.js</code>, kaydınızın sessizce yeniden
+      istenmediği için <code>src/shared/audio-decode.js</code>, kaydınızın sessizce yeniden
       örneklenmesini engelleyen başlık okuması için ise
-      <code>src/samplerate.js</code>."""
+      <code>src/shared/samplerate.js</code>."""
 
 howto_heading = "Bir videonun sesi yüklemeden nasıl çıkarılır"
 

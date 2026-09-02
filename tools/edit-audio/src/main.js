@@ -2,10 +2,10 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { decodeAudio, UnreadableFile } from './decode.js';
+import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import { render, lengthAfter } from './edit.js';
 import { peak, dbToGain, gainToDb, normalizeGain } from './effects.js';
-import { writeWav, wavSize } from './wav.js';
+import { writeWav, wavSize } from './shared/wav.js';
 import { drawWaveform } from './waveform.js';
 
 const $ = (id) => document.getElementById(id);
@@ -56,7 +56,7 @@ const el = {
 
 /** @type {File|null} */
 let file = null;
-/** What decode.js handed back, or null before a file is chosen. */
+/** What shared/audio-decode.js handed back, or null before a file is chosen. */
 let source = null;
 /** The loudest sample in the file as it was decoded. Measured once. */
 let sourcePeak = 0;
@@ -110,7 +110,7 @@ async function loadFile(picked) {
     showSource();
     updateSummary();
   } catch (error) {
-    // decode.js throws a key; a browser that failed for its own reasons
+    // shared/audio-decode.js throws a key; a browser that failed for its own reasons
     // throws a sentence, and phrase() hands back what it does not know.
     if (error instanceof UnreadableFile) showError(phrase(error.message));
     else {

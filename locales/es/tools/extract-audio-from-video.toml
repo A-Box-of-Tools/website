@@ -21,7 +21,7 @@ pledge = """
     que reproduce un archivo en un elemento <code>&lt;video&gt;</code>, y se le
     pide la pista de audio y nada más. Escribir un WAV consiste en poner una
     cabecera de cuarenta y cuatro bytes delante de las muestras, y eso está en
-    <code>src/wav.js</code>. No hay ningún codificador por medio, no hay paso de
+    <code>src/shared/wav.js</code>. No hay ningún codificador por medio, no hay paso de
     subida, y esta página no tiene función de red de ninguna clase."""
 
 live_hint = """
@@ -30,9 +30,9 @@ live_hint = """
       de internet y saca el sonido igualmente."""
 
 read_first = """
-, <code>src/decode.js</code> para el único
+, <code>src/shared/audio-decode.js</code> para el único
       descodificador que hay y para saber por qué nunca se pide la imagen, y
-      <code>src/samplerate.js</code> para el olfateo de cabecera que evita que
+      <code>src/shared/samplerate.js</code> para el olfateo de cabecera que evita que
       tu grabación se remuestree en silencio."""
 
 howto_heading = "Cómo extraer el audio de un vídeo sin subirlo"

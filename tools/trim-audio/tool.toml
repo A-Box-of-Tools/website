@@ -40,13 +40,13 @@ css_parts = ["progress"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "audio-decode", "samplerate", "wav"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["edit-audio"]
-lastmod = "2026-08-28"
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -87,10 +87,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> for the marks and the
-      file they save to, <code>src/decode.js</code> for the twenty lines that
+      file they save to, <code>src/shared/audio-decode.js</code> for the twenty lines that
       hand your file to the browser's own decoder, <code>src/trim.js</code> for
       the arithmetic that turns a mark into a run of samples and the loop that
-      copies them, and <code>src/wav.js</code> for the header that goes in front
+      copies them, and <code>src/shared/wav.js</code> for the header that goes in front
       of them. None of them imports anything that can make a request."""
 
 # --- the written half of the page --------------------------------------------

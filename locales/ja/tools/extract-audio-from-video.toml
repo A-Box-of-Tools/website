@@ -24,7 +24,7 @@ og_image_alt = "動画から音声を抽出 - 音だけを、アップロード�
 pledge = """
     デコーダーはブラウザにもとから入っているものです。<code>&lt;video&gt;</code>要素で\
     ファイルを再生するのと同じコード経路で、そこに求めるのは音声トラックだけです。\
-    WAVを書くとは、サンプルの前に44バイトの見出しを置くことで、<code>src/wav.js</code>に\
+    WAVを書くとは、サンプルの前に44バイトの見出しを置くことで、<code>src/shared/wav.js</code>に\
     そう書いてあります。途中にエンコーダーはなく、アップロードの段階もなく、この\
     ページにはネットワーク機能そのものがありません。"""
 
@@ -35,8 +35,8 @@ live_hint = """
 
 read_first = """
 、たった一つのデコーダーと、なぜ映像が一度も要求されないのかは\
-      <code>src/decode.js</code>、録音が黙って再標本化されるのを防ぐ見出しの\
-      読み取りは<code>src/samplerate.js</code>です。"""
+      <code>src/shared/audio-decode.js</code>、録音が黙って再標本化されるのを防ぐ見出しの\
+      読み取りは<code>src/shared/samplerate.js</code>です。"""
 
 howto_heading = "動画をアップロードせずに音声を取り出す手順"
 
