@@ -312,7 +312,7 @@ this are not checked in. All of them ran in the browser against files generated
 in the page, so nothing had to be committed as a fixture. What they covered, if
 it needs doing again:
 
-- a 90-frame, three-second H.264 MP4 written by `src/mp4.js` from `VideoEncoder`
+- a 90-frame, three-second H.264 MP4 written by `src/shared/mp4-writer.js` from `VideoEncoder`
   output, with keyframes at 0 s, 1 s and 2 s, played back by the browser to prove
   the muxer's output is a real file before anything was cut out of it;
 - a copy of 0.5 s → 2.2 s from that clip: 66 samples written, `mdhd` reporting

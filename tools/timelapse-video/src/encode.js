@@ -14,7 +14,7 @@
  * is that and nothing else.
  */
 
-import { Mp4Muxer } from './mp4.js';
+import { Mp4Muxer } from './shared/mp4-muxer.js';
 
 /** Frames in flight before the caller is asked to wait. */
 const QUEUE_LIMIT = 8;

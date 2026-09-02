@@ -1,13 +1,22 @@
 /**
- * An ISO-BMFF (MP4) writer, told about a track rather than deciding it.
+ * An ISO-BMFF (MP4) writer for tracks that are being copied rather than made.
  *
- * This is the writer from /trim-video/, unchanged, and it is more general than
- * this tool strictly needs: everything a reversed file contains was written by
- * an encoder a moment ago, so there is no arriving codec to preserve and no
- * arriving frame order to respect. What it is used for here is the pair of
- * sample entries - one built from the video encoder's own configuration
- * record, one built around the audio encoder's - and the interleaving that
- * puts a second of picture beside a second of sound.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/mp4-writer.js and the
+ * build copies it to <tool>/src/shared/mp4-writer.js for the tools that ask
+ * for it with `js_parts = ["mp4-writer", ...]`: the trimmer, which wrote it,
+ * and the reverser, which uses it unchanged for the pair of sample entries and
+ * the interleaving that puts a second of picture beside a second of sound. The
+ * two carried identical copies until the tests could follow a `./shared/`
+ * import; see tests/js/resolve-shared.mjs. It is not the only MP4 writer here:
+ * shared/js/mp4-muxer.js writes the one H.264 track an encoder just produced,
+ * and /crop-video/ keeps a writer of its own with a different timescale.
+ *
+ * The muxer in /crop-video/ writes one H.264 track out of an encoder it just
+ * ran, which lets it assume a great deal: one codec, no B-frames, no rotation,
+ * and a sample entry it builds itself. A trim can assume none of that. The
+ * frames it writes are the frames that arrived - whatever codec they are in,
+ * in whatever order they decode, turned whichever way the file says - and the
+ * whole point is that they come out the other side untouched.
  *
  * So this writer is told about a track rather than deciding it:
  *

@@ -773,7 +773,7 @@ async function runExport() {
   } catch (error) {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      // mp4.js is shared with timelapse-video and throws phrase keys; a browser
+      // shared/mp4-muxer.js throws phrase keys; a browser
       // that failed for its own reasons throws a sentence, and phrase() hands
       // back what it does not recognise.
       showError(error?.message
