@@ -564,6 +564,7 @@ order = [
   "is-it-safe-to-upload-files",
   "is-it-safe-to-scan-a-qr-code",
   "is-it-safe-to-upload-a-photo-of-your-id",
+  "can-blacked-out-text-be-recovered",
 ]
 
 #

@@ -1,0 +1,18 @@
+#
+# Guida: si può recuperare il testo oscurato? - Italian.
+#
+
+nav = "Il testo oscurato si recupera?"
+title = "Si può recuperare il testo coperto di nero?"
+description = "Spesso sì: perché la maggior parte dei riquadri neri viene disegnata sopra il testo invece di prenderne il posto. I tre modi in cui un'oscuratura fallisce, le copie che un file conserva del proprio passato, e che cosa serve perché una rimozione resti tale."
+heading = "Si può recuperare il testo coperto di nero?"
+lede = """
+    Sgradevolmente spesso, sì &mdash; con lo strumento di selezione del
+    testo, non con un laboratorio. La maggior parte dei rettangoli neri
+    viene disegnata <em>sopra</em> le parole e salvata accanto a loro, e
+    le parole viaggiano lì sotto. Questa pagina è il catalogo dei modi in
+    cui succede, e di che cosa deve significare, invece, rimuovere."""
+updated = "26 agosto 2026"
+og_title = "Si può recuperare il testo coperto di nero?"
+og_description = "Spesso bastano seleziona e copia. Perché un rettangolo disegnato non è un'oscuratura, perché un mosaico si può rileggere, e che cosa serve davvero per togliere qualcosa da un file."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

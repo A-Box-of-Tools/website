@@ -1,0 +1,18 @@
+#
+# Ratgeber: Kann geschwärzter Text wiederhergestellt werden? - German.
+#
+
+nav = "Kommt geschwärzter Text wieder?"
+title = "Kann geschwärzter Text wiederhergestellt werden?"
+description = "Oft ja - weil die meisten schwarzen Balken über den Text gelegt statt an seine Stelle gesetzt werden. Die drei Arten, auf die Schwärzung scheitert, die Kopien, die eine Datei von ihrer eigenen Vergangenheit behält, und wie Entfernen aussieht, das entfernt bleibt."
+heading = "Kann geschwärzter Text wiederhergestellt werden?"
+lede = """
+    Unangenehm oft: ja &mdash; mit dem Textauswahl-Werkzeug, nicht mit
+    einem Labor. Die meisten schwarzen Rechtecke werden <em>über</em> die
+    Wörter gezeichnet und neben ihnen gespeichert, und die Wörter reisen
+    darunter mit. Diese Seite ist der Katalog der Arten, auf die das
+    passiert &mdash; und dessen, was Entfernen stattdessen heißen muss."""
+updated = "26. August 2026"
+og_title = "Kann geschwärzter Text wiederhergestellt werden?"
+og_description = "Oft genügt Markieren und Kopieren. Warum ein gezeichnetes Rechteck keine Schwärzung ist, warum sich ein Mosaik zurücklesen lässt, und was es wirklich braucht, etwas aus einer Datei zu entfernen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

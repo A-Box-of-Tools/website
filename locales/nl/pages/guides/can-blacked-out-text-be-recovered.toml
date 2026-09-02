@@ -1,0 +1,19 @@
+#
+# Gids: is zwartgelakte tekst terug te halen? - Dutch.
+#
+
+nav = "Komt zwartgelakte tekst terug?"
+title = "Is zwartgelakte tekst terug te halen?"
+description = "Vaak wel - omdat de meeste zwarte balken over de tekst heen getekend worden in plaats van in haar plaats gezet. De drie manieren waarop weglakken faalt, de kopieën die een bestand van zijn eigen verleden bewaart, en wat verwijderen werkelijk moet betekenen."
+heading = "Is zwartgelakte tekst terug te halen?"
+lede = """
+    Ongemakkelijk vaak wel &mdash; met het tekstselectiegereedschap, niet
+    met een laboratorium. De meeste zwarte rechthoeken worden
+    <em>over</em> de woorden getekend en ernaast opgeslagen, en de woorden
+    reizen eronder mee. Deze pagina is de catalogus van de manieren waarop
+    dat gebeurt, en van wat verwijderen in plaats daarvan moet
+    betekenen."""
+updated = "26 augustus 2026"
+og_title = "Is zwartgelakte tekst terug te halen?"
+og_description = "Vaak volstaat selecteren en kopiëren. Waarom een getekende rechthoek geen weglakking is, waarom een mozaïek terug te lezen valt, en wat er werkelijk nodig is om iets uit een bestand te verwijderen."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

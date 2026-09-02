@@ -1,0 +1,18 @@
+#
+# Panduan: bisakah teks yang dihitamkan dipulihkan? - Indonesian.
+#
+
+nav = "Teks yang dihitamkan bisa balik?"
+title = "Bisakah Teks yang Dihitamkan Dipulihkan?"
+description = "Sering kali bisa - karena kebanyakan kotak hitam digambar di atas teks, bukan menggantikan tempatnya. Tiga cara penyensoran gagal, salinan-salinan yang disimpan sebuah berkas tentang masa lalunya sendiri, dan apa arti menghapus yang benar-benar terhapus."
+heading = "Bisakah teks yang dihitamkan dipulihkan?"
+lede = """
+    Sering sampai bikin tidak nyaman: bisa &mdash; dengan alat seleksi
+    teks, bukan dengan laboratorium. Kebanyakan persegi hitam digambar
+    <em>di atas</em> kata-kata dan disimpan di sampingnya, dan kata-kata
+    itu ikut menumpang di bawahnya. Halaman ini adalah katalog cara hal
+    itu terjadi, dan apa yang seharusnya dimaksud dengan menghapus."""
+updated = "26 Agustus 2026"
+og_title = "Bisakah teks yang dihitamkan dipulihkan?"
+og_description = "Sering cukup dengan seleksi lalu salin. Mengapa persegi yang digambar bukan penyensoran, mengapa mosaik bisa dibaca balik, dan apa yang sungguh diperlukan untuk mencabut sesuatu dari sebuah berkas."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
