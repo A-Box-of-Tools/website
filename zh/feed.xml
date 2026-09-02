@@ -179,6 +179,13 @@
     <summary type="html">一边播放录音，一边把值得留下的段落随手标出来，然后把这些段落存成一个文件。切点精确到采样，接缝不咔哒，什么都不上传。</summary>
   </entry>
   <entry>
+    <title type="html">AI 智能体能用这些工具吗？</title>
+    <id>https://abox.tools/zh/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">能。这些都是普通网页，不用注册，每个控件都写着名字，智能体开得动。真正要紧的是智能体的浏览器跑在哪儿，因为你的文件留不留在你机器上，就由它决定。</summary>
+  </entry>
+  <entry>
     <title type="html">DICOM 阅片器</title>
     <id>https://abox.tools/zh/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/dicom-viewer/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/svg-to-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">在浏览器里把 SVG 转成 PNG、JPEG 或 WebP，尺寸随你定。给宽度、给倍数，或者给一个框，还能顺手出 @2x 和 @3x。透明保住，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">二维码与条形码生成</title>
-    <id>https://abox.tools/zh/qr-barcode/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
   </entry>
 </feed>

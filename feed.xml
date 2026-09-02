@@ -193,6 +193,13 @@
     <summary type="html">Turn part of an MP4, MOV or WebM into an animated GIF. Choose the section, the width and the frame rate; the frames are read and the GIF is written in your browser. Nothing uploaded.</summary>
   </entry>
   <entry>
+    <title type="html">Can an AI agent use these tools?</title>
+    <id>https://abox.tools/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Yes - they are ordinary web pages with no accounts and labelled controls, and an agent can drive them like anything else. What matters is where the agent's browser runs, because that decides whether your file still stays on your machine.</summary>
+  </entry>
+  <entry>
     <title type="html">DICOM Viewer</title>
     <id>https://abox.tools/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to check a download against its checksum</title>
-    <id>https://abox.tools/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless.</summary>
   </entry>
 </feed>

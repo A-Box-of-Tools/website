@@ -179,6 +179,13 @@
     <summary type="html">一邊播放錄音，一邊把值得留下的段落隨手標出來，然後把這些段落存成一個檔案。切點精確到取樣，接縫不咔噠，什麼都不上傳。</summary>
   </entry>
   <entry>
+    <title type="html">AI 智慧體能用這些工具嗎？</title>
+    <id>https://abox.tools/zh-TW/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">能。這些都是普通網頁，不用註冊，每個控制元件都寫著名字，智慧體開得動。真正要緊的是智慧體的瀏覽器跑在哪裡，因為你的檔案留不留在你機器上，就由它決定。</summary>
+  </entry>
+  <entry>
     <title type="html">DICOM 閱片器</title>
     <id>https://abox.tools/zh-TW/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/dicom-viewer/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">產生連結、Wi-Fi 或者名片 QR Code，也產生 EAN-13、UPC-A、Code 128 和 Code 39 條碼。可下載 SVG 或 PNG。全部在你的瀏覽器裡完成。</summary>
-  </entry>
-  <entry>
-    <title type="html">QR Code 與條碼識讀</title>
-    <id>https://abox.tools/zh-TW/qr-barcode-reader/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
   </entry>
 </feed>

@@ -186,6 +186,20 @@
     <summary type="html">両方のファイルを同じように整形し、キーを並べ替えてから比較する。生のJSON差分がほとんどノイズである理由、ブラウザで両側を正規形にする方法、そしてパッチまで生き残るもの。</summary>
   </entry>
   <entry>
+    <title type="html">AIにファイルをアップロードしても安全ですか?</title>
+    <id>https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">チャット欄は、そう見えないだけのアップロードフォームです。AIに渡したファイルが実際に行く先、AIが変換サイトと違う3つの点、そして仕事に値するときに、少なく・きれいにして送る方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">AIエージェントはこの道具を使えますか?</title>
+    <id>https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">使えます。どれもアカウント不要でボタンに名前の付いた、ただのウェブページだからです。大事なのはエージェントのブラウザがどこで動いているか。ファイルがあなたの機械に残るかどうかは、それで決まります。</summary>
+  </entry>
+  <entry>
     <title type="html">DICOMビューア</title>
     <id>https://abox.tools/ja/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/dicom-viewer/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIFをブラウザの中で分解します。各コマの表示時間と破棄方法、カラーテーブル、繰り返し回数、そしてファイルサイズがどこへ消えたかの1バイト単位の内訳まで。アップロードは一切ありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC→JPG変換ツール</title>
-    <id>https://abox.tools/ja/heic-to-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/heic-to-jpg/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">iPhoneのHEIC写真をブラウザの中でJPGに変換します。デコーダーが動くのは手元の端末です。アップロードなし、登録なし、オフラインでも動作。撮影日時やカメラ情報も引き継げます。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSONを誰にも渡さずに整形する方法</title>
-    <id>https://abox.tools/ja/guides/format-json-without-uploading-it/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/format-json-without-uploading-it/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">自分のブラウザの中でJSONを整え、確かめ、詰める方法。整形ツールがファイルについて決して変えてはいけないもの、エラーの読み方、そして貼り付ける先が問題になる理由。</summary>
   </entry>
 </feed>

@@ -179,6 +179,20 @@
     <summary type="html">긴 동영상을 타임랩스로 바꿉니다. 10배, 60배, 직접 입력한 배속까지. 브라우저에서 돌아갑니다. 업로드 없음, 워터마크 없음, 오프라인 동작.</summary>
   </entry>
   <entry>
+    <title type="html">AI 에이전트가 이 도구들을 쓸 수 있을까?</title>
+    <id>https://abox.tools/ko/가이드/ai-에이전트로-도구-사용/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/ai-에이전트로-도구-사용/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">쓸 수 있습니다. 계정 없이, 모든 조작 요소에 이름이 붙은 평범한 웹페이지라서, 에이전트는 다른 무엇을 다루듯 이것들을 다룹니다. 중요한 것은 에이전트의 브라우저가 어디에서 도는가이고, 파일이 당신 기계에 남는지는 그것이 결정합니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">AI에 파일을 업로드해도 안전할까?</title>
+    <id>https://abox.tools/ko/가이드/ai에-파일-업로드-안전한가/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/ai에-파일-업로드-안전한가/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">채팅창은 업로드 폼처럼 보이지 않는 업로드 폼입니다. AI에 건넨 파일이 실제로 가는 곳, AI가 변환 사이트와 다른 세 가지, 그리고 일이 그럴 만할 때 덜 보내고 깨끗하게 보내는 법.</summary>
+  </entry>
+  <entry>
     <title type="html">DICOM 뷰어</title>
     <id>https://abox.tools/ko/dicom-뷰어/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/dicom-뷰어/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/heic-jpg-변환/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">아이폰 HEIC 사진을 브라우저에서 JPG로 바꿉니다. 디코더가 내 기기에서 돕니다. 업로드 없음, 가입 없음, 오프라인 동작, 촬영 날짜와 카메라 정보도 함께 옮길 수 있습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON 파일 두 개를 비교하는 방법</title>
-    <id>https://abox.tools/ko/가이드/json-파일-두-개-비교/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/json-파일-두-개-비교/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">두 파일을 같은 방식으로 정렬하고, 키를 정렬하고, 그다음 비교합니다. 날것의 JSON diff가 왜 거의 잡음뿐인지, 브라우저에서 양쪽을 표준형으로 만드는 법, 그리고 패치까지 살아남는 것.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 가리기</title>
-    <id>https://abox.tools/ko/pdf-가리기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDF에서 글자 위에 검은 칸을 그리는 대신 글자를 빼냅니다. 글자는 그 장을 그리는 명령에서 지워지고, 완성된 파일을 다시 열어 검색해서 사라졌음을 증명하며, 아무것도 업로드되지 않습니다.</summary>
   </entry>
 </feed>

@@ -179,11 +179,25 @@
     <summary type="html">Ubah sebagian MP4, MOV, atau WebM menjadi GIF bergerak. Pilih bagiannya, lebarnya, dan laju bingkainya; bingkainya dibaca dan GIF-nya ditulis di peramban Anda. Tidak ada yang diunggah.</summary>
   </entry>
   <entry>
+    <title type="html">Apakah aman mengunggah file ke AI?</title>
+    <id>https://abox.tools/id/panduan/apakah-aman-mengunggah-file-ke-ai/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/apakah-aman-mengunggah-file-ke-ai/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Jendela obrolan adalah formulir unggah yang tidak kelihatan seperti formulir unggah. Ke mana sebenarnya file yang Anda serahkan ke AI pergi, apa bedanya AI dengan konverter, dan cara mengirim lebih sedikit - dan mengirimnya bersih - saat pekerjaannya memang layak.</summary>
+  </entry>
+  <entry>
     <title type="html">Berbagi teks dan berkas</title>
     <id>https://abox.tools/id/berbagi-teks/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/berbagi-teks/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Kirim teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi. Nama tautan yang bisa diucapkan, pembaruan langsung saat mengetik, persetujuan per pembaca - dan tidak pernah ada apa pun di server mana pun. Gratis, tanpa daftar.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bisakah agen AI memakai alat ini?</title>
+    <id>https://abox.tools/id/panduan/bisakah-agen-ai-memakai-alat-ini/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/bisakah-agen-ai-memakai-alat-ini/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Bisa - semuanya halaman web biasa, tanpa akun, dengan kontrol yang berlabel, dan agen menjalankannya seperti menjalankan apa pun. Yang penting adalah di mana peramban si agen berjalan, karena itulah yang menentukan apakah file Anda tetap di mesin Anda.</summary>
   </entry>
   <entry>
     <title type="html">Cara berbagi teks dan berkas antar perangkat tanpa mengunggahnya</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-thumbnail-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Melangkah bingkai demi bingkai ke saat yang tepat, simpan tanpa kehilangan mutu, sesuaikan dengan bentuk platform, dan tepat di bawah batas bitenya. Tiga perkakas peramban berurutan, dan rekaman tidak pernah meninggalkan komputer Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuat video boomerang</title>
-    <id>https://abox.tools/id/panduan/membuat-video-boomerang/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-video-boomerang/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Potong momennya, balik salinannya, gabungkan keduanya, dan biarkan berulang. Tiga alat berturut-turut, semuanya di peramban, dan urutan yang membuat seluruh pekerjaan selesai dalam semenit.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memeriksa unduhan terhadap checksum-nya</title>
-    <id>https://abox.tools/id/panduan/memverifikasi-checksum-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memverifikasi-checksum-file/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia.</summary>
   </entry>
 </feed>
