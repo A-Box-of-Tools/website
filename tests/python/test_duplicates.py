@@ -3,20 +3,20 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The MP4 writer is about five hundred lines of box building and it sits in
-every tool that writes a video file. It is a copy because of a rule that held
-until tests/js/resolve-shared.mjs: a shared module is copied into a tool at
-build time, at src/shared/, so a source file importing one could not be loaded
-outside a build - and the JavaScript tests import tool modules straight off
-the disk with no build in front of them. Every one of those tools reaches the
-writer from a leaf module that has tests, so sharing it would have traded
-those tests for the deduplication.
+The audio decoder, the resampler and the WAV writer are six hundred lines
+between them and they sit in every tool that reads sound. They are copies
+because of a rule that held until tests/js/resolve-shared.mjs: a shared module
+is copied into a tool at build time, at src/shared/, so a source file
+importing one could not be loaded outside a build - and the JavaScript tests
+import tool modules straight off the disk with no build in front of them.
+Every one of those tools reaches them from a leaf module that has tests, so
+sharing them would have traded those tests for the deduplication.
 
 That rule is gone. The tests now resolve a tool module's `./shared/` imports to
 shared/js/ themselves; the CRC and the ZIP writer went first, then the four PDF
-modules, then the MP4 reader that used to be the largest group here. Every
-group below is a move that has not happened yet, and until it happens the
-copies still have to agree - which is all this file has ever enforced. See "Shared
+modules, then the MP4 reader and the two MP4 writers. Every group below is a
+move that has not happened yet, and until it happens the copies still have to
+agree - which is all this file has ever enforced. See "Shared
 parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
@@ -46,12 +46,13 @@ The groups are deliberate, not accidental:
     write both back untouched, and the four re-encoding tools' copy did not -
     and the shared module is the superset. The four that never read those two
     fields carry a copy of a few dozen bytes for it, which is nothing.
-  - mp4.js has two groups. Trim and reverse write the sound that arrived back
-    out with the picture, so their writer interleaves two tracks. Images-to-video
-    and the time-lapse maker both write one video track and no audio - a
-    time-lapse has no sound worth keeping - so they share the smaller muxer.
-    crop-video's writer is its own: it carries audio like the trim pair and takes
-    a different timescale and tkhd signature from either.
+  - mp4.js is gone from here too, as two shared modules rather than one,
+    because it was two APIs: shared/js/mp4-writer.js is the trim and reverse
+    tools' writer, which interleaves the sound that arrived with the picture,
+    and shared/js/mp4-muxer.js is the one video track images-to-video and the
+    time-lapse maker write from an encoder. crop-video's writer is still its
+    own: it carries audio like the trim pair and takes a different timescale
+    and tkhd signature from either, so it stays a singleton below.
   - pdf.js is the PDF container writer, in the tool that puts pictures on pages
     and the one that puts straightened pages on pages. It is the same file on
     purpose and there is nothing in it either of them wants differently: an
@@ -91,8 +92,6 @@ TOOLS = ROOT / 'tools'
 
 # (module, tools whose copies must be identical to each other)
 GROUPS = [
-    ('mp4.js', ['reverse-video', 'trim-video']),
-    ('mp4.js', ['images-to-video', 'timelapse-video']),
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
     ('pdf.js', ['document-scanner', 'images-to-pdf']),
     # The five below were already identical, token for token, and were found
@@ -122,7 +121,8 @@ GROUPS = [
 # Copies that are not duplicates of anything, and why. Named so that
 # test_every_copy_is_declared can tell "deliberately its own" from "forgotten".
 SINGLETONS = {
-    ('mp4.js', 'crop-video'): 'its own timescale and tkhd signature',
+    ('mp4.js', 'crop-video'):
+        'its own timescale and tkhd signature, unlike either shared writer',
     # The groups are keyed by file name, and a shared name is not a shared
     # module. Both of these are byte cursors over a format that is not PDF,
     # and the DICOM one swaps endianness inside a single file, which nothing

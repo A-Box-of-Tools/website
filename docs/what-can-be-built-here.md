@@ -12,8 +12,9 @@ actually want done to a media file — and putting every entry through one test:
 
 Note what that test does **not** ask. It does not ask whether the code is small,
 or hand-written, or readable in one sitting. Those are good properties — most of
-this repository has all three, and `src/mp4.js` is why the first tool needed no
-dependency at all — but they are a preference, not the promise. The promise is
+this repository has all three, and the hand-written MP4 muxer, now
+`shared/js/mp4-muxer.js`, is why the first tool needed no dependency at all —
+but they are a preference, not the promise. The promise is
 that your file stays on your machine. A tool that keeps that promise with thirty
 megabytes of vendored WebAssembly keeps it exactly as completely as one that
 keeps it with four hundred lines of hand-written muxer.
@@ -36,7 +37,7 @@ an engine to do it instead, and these all stay small enough to read.
 |---|---|
 | Image resize, crop, rotate, convert, compress, filters, text | `createImageBitmap` → `<canvas>` → `canvas.toBlob`. PNG, JPEG and WebP are encoders the browser already has. Compression is built: `/compress-image/`, where the interesting part turned out to be not the encoding but the search that decides what quality to ask for. Resize, crop and convert are built too, as one tool rather than three: `/resize-image/`, where they are one `drawImage` call and the work is entirely in deciding which rectangle goes where |
 | Metadata viewer and remover | EXIF is a byte structure inside the file, so reading it is parsing and removing it is deleting bytes. Built: `/exif-editor/`. Note that it does **not** re-encode through a canvas, which was the original plan here — going through a canvas drops every tag, but it also re-compresses the picture. Rewriting the container instead leaves the image data untouched |
-| Icons and images to PDF | Containers, not codecs — a header wrapped around images that are already encoded. The same trick `src/mp4.js` plays. PDF is built: `/images-to-pdf/`, where the payoff is that a JPEG can go into the document byte for byte and never be decoded at all. Icons are built too: `/image-to-ico/` writes both desktop containers, and the interesting part turned out to be neither header but the table of which sizes each platform actually asks for |
+| Icons and images to PDF | Containers, not codecs — a header wrapped around images that are already encoded. The same trick the MP4 muxer plays. PDF is built: `/images-to-pdf/`, where the payoff is that a JPEG can go into the document byte for byte and never be decoded at all. Icons are built too: `/image-to-ico/` writes both desktop containers, and the interesting part turned out to be neither header but the table of which sizes each platform actually asks for |
 | Reading and rewriting a PDF | Object syntax, a cross-reference table and `DecompressionStream` for the Flate that nearly every stream in one is wrapped in. Built: `/compress-pdf/`, which needed the reader `/images-to-pdf/` never had. Merging, splitting, reordering, rotating and pulling the images back out are all small tools on top of it now that it exists |
 | SVG to PNG | An `<img>` holding an SVG draws to a canvas. Only for SVGs with no external references, which is also what keeps it offline |
 | GIF: make, split, resize, reverse, retime, analyze | LZW and a color quantizer, written out the way the MP4 muxer was. Making one is built: `/gif-maker/`, where the file format turned out to be the easy half and the palette the whole job — 256 colours have to be chosen out of tens of thousands, and which 256 is what the picture looks like. Reading animated GIFs is `ImageDecoder` where it exists and a hand-written parser where it does not |

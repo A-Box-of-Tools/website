@@ -1,19 +1,21 @@
 /**
  * Minimal ISO-BMFF (MP4) writer for a single H.264 video track.
  *
- * The same muxer /images-to-video/ uses, and for the same reason: a time-lapse
- * is a slideshow that happens to have been cut out of a video. Every frame is
- * held for exactly as long as the next one, there is no sound, and the frames
- * were all encoded a moment ago rather than copied out of a file - so none of
- * the machinery the cropping and trimming writers carry, the audio track and
- * the chunk interleaving and the edit lists, has anything to do here.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/mp4-muxer.js and the
+ * build copies it to <tool>/src/shared/mp4-muxer.js for the tools that ask for
+ * it with `js_parts = ["mp4-muxer", ...]`: images-to-video, which wrote it,
+ * and the time-lapse maker, which is a slideshow cut out of a video and wants
+ * exactly this - every frame held for as long as the next, no sound, and
+ * frames encoded a moment ago rather than copied out of a file. The two
+ * carried identical copies until the tests could follow a `./shared/` import;
+ * see tests/js/resolve-shared.mjs. The trimmer and the reverser, which copy
+ * arriving tracks and carry sound, use shared/js/mp4-writer.js instead.
  *
  * Written by hand so this project has no dependencies and no build step: the
  * source in this folder is byte-for-byte what the browser runs.
  *
  * Scope and assumptions:
- *   - Exactly one video track, and no audio. A time-lapse has none to keep:
- *     sound played sixty times too fast is not sound. See README.md.
+ *   - Exactly one video track, no audio.
  *   - Samples arrive in presentation order with no B-frames, so no `ctts`
  *     box is needed. WebCodecs H.264 encoders do not emit B-frames by
  *     default, and we never ask for them.

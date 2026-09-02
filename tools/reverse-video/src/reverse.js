@@ -31,7 +31,7 @@
  */
 
 import { FileWindow } from './shared/mp4-reader.js';
-import { Mp4Writer, avcSampleEntry } from './mp4.js';
+import { Mp4Writer, avcSampleEntry } from './shared/mp4-writer.js';
 import { drawFitted } from './draw.js';
 import { pickH264Codec } from './support.js';
 import { reversedAudioTrack } from './audio.js';

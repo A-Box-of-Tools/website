@@ -21,7 +21,7 @@ import {
 } from '../../tools/trim-video/src/ranges.js';
 import { formatTime, parseTime } from '../../tools/trim-video/src/timeline.js';
 import { estimateCopy } from '../../tools/trim-video/src/copy.js';
-import { MOVIE_TIMESCALE, Mp4Writer, avcSampleEntry } from '../../tools/trim-video/src/mp4.js';
+import { MOVIE_TIMESCALE, Mp4Writer, avcSampleEntry } from '../../shared/js/mp4-writer.js';
 import { ascii, blobBytes } from './helpers.js';
 
 /* ------------------------------------------------------------- fixtures */
@@ -409,7 +409,7 @@ test('estimateCopy reports no pre-roll when every section is on a keyframe', () 
   assert.equal(found.preRoll, 0);
 });
 
-/* -------------------------------------------------------------- mp4.js */
+/* ------------------------------------------------- shared/js/mp4-writer.js */
 
 const AVCC = new Uint8Array([1, 0x64, 0, 0x1f, 0xff, 0xe1, 0, 4, 0x67, 1, 2, 3, 1, 0, 4, 0x68, 1, 2, 3]);
 

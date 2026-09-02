@@ -135,7 +135,7 @@ File  →  createImageBitmap  →  <canvas>  →  VideoFrame  →  VideoEncoder 
 | `src/images.js` | Import, decode, thumbnails, ordering |
 | `src/compose.js` | Canvas compositing — fit modes, output sizing |
 | `src/encoder.js` | WebCodecs encode loop (primary path) |
-| `src/mp4.js` | ISO-BMFF muxer, written by hand — no dependency |
+| `src/shared/mp4-muxer.js` | ISO-BMFF muxer, written by hand — no dependency; shared with `/timelapse-video/` |
 | `src/recorder.js` | MediaRecorder → WebM (fallback path) |
 | `src/remote.js` | Downloading images from web addresses into local blobs |
 | `src/support.js` | Codec and API feature detection |
@@ -156,9 +156,10 @@ background tabs. The app warns you if the tab was hidden mid-recording.
 
 ### About the MP4 muxer
 
-`src/mp4.js` writes the container by hand because there is no bundler to pull in a
-library — the build assembles pages and minifies them, and never adds code that
-was not written here. It is deliberately narrow:
+`src/shared/mp4-muxer.js` — `shared/js/mp4-muxer.js`, copied in by the build and
+shared with the time-lapse maker — writes the container by hand because there
+is no bundler to pull in a library: the build assembles pages and minifies
+them, and never adds code that was not written here. It is deliberately narrow:
 
 - one H.264 video track, no audio
 - samples in presentation order, no B-frames, so no `ctts` box is needed

@@ -94,8 +94,9 @@ in less than an hour.
 
 Dropped, deliberately. Audio at 60× is a chirp, and audio left at its original
 speed under a picture that has raced ahead of it is a different clip from the
-one that was asked for. Neither is worth writing, so `mp4.js` here is the
-video-only muxer rather than the one the cropping tool uses.
+one that was asked for. Neither is worth writing, so the muxer here is
+`shared/mp4-muxer.js`, the video-only one, rather than the writer the cropping
+tool uses.
 
 Dropping it is also most of the reason an hour of video comes out as a few
 megabytes. If the sound is what somebody wanted, `/edit-audio/` will save it.
@@ -124,20 +125,18 @@ over sixty times as many frames.
 | `encode.js` | canvas → `VideoEncoder` → `Mp4Muxer`; shared by both paths |
 | `draw.js` | one frame onto the output canvas, the right way up |
 | `shared/mp4-reader.js` | the MP4 reader, shared — see below |
-| `mp4.js` | the muxer. A copy — see below |
+| `shared/mp4-muxer.js` | the muxer, shared — see below |
 | `support.js` | what this browser will decode and encode |
 | `main.js` | the page: wiring, the summary, the progress bar |
 
-## The shared reader and the copied muxer
+## The shared reader and muxer
 
-`shared/mp4-reader.js` is the reader every video tool here ships —
-`shared/js/mp4-reader.js`, asked for in `tool.toml` and copied in by the build.
-`mp4.js` is still the same muxer `/images-to-video/` carries, from before the
-JavaScript tests could follow a `./shared/` import; `tests/js/resolve-shared.mjs`
-resolves that now, so moving it is the next step.
-
-`tests/python/test_duplicates.py` declares the muxer's copies and fails if they
-drift apart. Fix one and it will tell you about the other.
+`shared/mp4-reader.js` is the reader every video tool here ships, and
+`shared/mp4-muxer.js` is the muxer `/images-to-video/` wrote — both
+`shared/js/` parts, asked for in `tool.toml` and copied in by the build. Each
+was a copy of another tool's file until the JavaScript tests could follow a
+`./shared/` import (`tests/js/resolve-shared.mjs`); a fix to either lands in
+every tool that ships it now.
 
 ## Rotation
 

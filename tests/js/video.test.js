@@ -1,7 +1,7 @@
 /**
- * tools/images-to-video/src/{mp4,compose}.js.
+ * shared/js/mp4-muxer.js and tools/images-to-video/src/compose.js.
  *
- * mp4.js is an ISO-BMFF writer built by hand, so nothing has to be fetched to
+ * The muxer is an ISO-BMFF writer built by hand, so nothing has to be fetched to
  * make a video. The part that can go quietly wrong is `stco`: it holds an
  * absolute file offset, and that offset depends on how large `moov` is, which
  * is only known once `moov` has been built. The file builds it twice and
@@ -12,7 +12,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { Mp4Muxer } from '../../tools/images-to-video/src/mp4.js';
+import { Mp4Muxer } from '../../shared/js/mp4-muxer.js';
 import {
   resolveOutputSize, toEvenSize,
 } from '../../tools/images-to-video/src/compose.js';

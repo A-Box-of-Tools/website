@@ -159,7 +159,7 @@ leaving at 6, it just becomes larger.
 | `src/playback.js` | the fallback: measuring the frame rate, then a seek a frame |
 | `src/audio.js` | decoding a track, turning it round, encoding it again, and the `esds` at both ends |
 | `src/shared/mp4-reader.js` | the MP4/MOV reader, shared with every video tool here |
-| `src/mp4.js` | the writer, copied from `/trim-video/` |
+| `src/shared/mp4-writer.js` | the writer, shared with `/trim-video/` |
 | `src/draw.js` | one frame onto a canvas, the right way up |
 | `src/support.js` | what this browser will decode and encode |
 | `src/main.js` | the page |
