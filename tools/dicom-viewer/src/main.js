@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { PIXEL_DATA, parseDataset, parseFile, walk } from './dicom.js';
 import { describe, formatTag } from './dictionary.js';
@@ -81,6 +82,8 @@ const el = {
   tagRows: $('tag-rows'),
   showMore: $('show-more'),
 };
+
+const { show: showError } = messageBox(el.loadError);
 
 /**
  * What a field with nothing in it shows.
@@ -1225,11 +1228,6 @@ function save(blob, name) {
 }
 
 /* ------------------------------------------------------------------ messages */
-
-function showError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
 
 function hideError() {
   el.loadError.hidden = true;

@@ -1,6 +1,9 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText } from './shared/format.js';
+import { downloadLink } from './shared/download.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { CODECS, codecById, CodecError } from './encode.js';
 import { SAMPLES } from './samples.js';
@@ -25,9 +28,14 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error, {
+  onShow: () => { el.resultNote.textContent = phrase('result.none'); },
+});
+const download = downloadLink(el.download);
+const humanBytes = (n) => sizeText(n, phrase, { under: 'size.b', kb: 1, mb: 2 });
+
 /** The text of the last successful result, for the copy and download buttons. */
 let result = null;
-let downloadUrl = null;
 
 /* --------------------------------------------------------------- the menu */
 
@@ -164,22 +172,7 @@ function show(text, note, name) {
   el.resultNote.textContent = note;
   result = { text, name };
   el.copy.disabled = text === '';
-  offerDownload(text, name);
-}
-
-/**
- * The download is a blob: URL made in this page from a string that was already
- * in this page. Nothing is uploaded to produce it and nothing is fetched to
- * serve it.
- */
-function offerDownload(text, name) {
-  if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-  downloadUrl = null;
-  if (text === '') { el.download.hidden = true; return; }
-  downloadUrl = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
-  el.download.href = downloadUrl;
-  el.download.download = name;
-  el.download.hidden = false;
+  download.offer(text, name);
 }
 
 el.copy.addEventListener('click', async () => {
@@ -203,32 +196,13 @@ el.copy.addEventListener('click', async () => {
 function clearResult() {
   el.output.textContent = '';
   el.copy.disabled = true;
-  el.download.hidden = true;
+  download.clear();
   result = null;
-  if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-  downloadUrl = null;
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-  el.resultNote.textContent = phrase('result.none');
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
 }
 
 /* ----------------------------------------------------------------- wording */
 
 const pickedDirection = () => document.querySelector('input[name="direction"]:checked').value;
-
-function humanBytes(bytes) {
-  if (bytes < 1024) return phrase('size.b', { n: bytes });
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(1) });
-  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(2) });
-}
 
 /* ------------------------------------------------- privacy panel + offline */
 

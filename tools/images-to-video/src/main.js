@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText, durationText } from './shared/format.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { loadImages, decodeFull, releaseItem, sortItems, moveItem } from './images.js';
 import { drawFrame, resolveOutputSize } from './compose.js';
@@ -60,6 +62,10 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1 });
+const formatDuration = (seconds) => durationText(seconds, phrase, { decimals: 1 });
 
 /** @type {object[]} */
 let items = [];
@@ -126,7 +132,6 @@ async function addFiles(files) {
 
 
 /* ------------------------------------------------------------ web addresses */
-
 
 // The importer itself is shared - src/shared/url-import.js, brought in by
 // [picker.urls] in this tool's tool.toml. What stays here is the one part that
@@ -555,15 +560,6 @@ function syncCustomControls() {
 /** The dash a summary row shows when there is nothing to summarise. */
 const EMPTY = '\u2014';
 
-function formatDuration(seconds) {
-  const whole = Math.round(seconds);
-  const mins = Math.floor(whole / 60);
-  const secs = whole % 60;
-  return mins
-    ? phrase('time.minutes', { minutes: mins, seconds: String(secs).padStart(2, '0') })
-    : phrase('time.seconds', { n: seconds.toFixed(1) });
-}
-
 function updateSummary() {
   if (!items.length) {
     el.sumImages.textContent = EMPTY;
@@ -679,16 +675,6 @@ function initFormatNote() {
 
 /* ------------------------------------------------------------------ export */
 
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
 function setProgress({ phase, done, total, realtime }) {
   const fraction = total > 0 ? Math.min(1, done / total) : 0;
   el.progressBar.style.width = `${(fraction * 100).toFixed(1)}%`;
@@ -720,11 +706,6 @@ function outputFilename(extension) {
     String(now.getDate()).padStart(2, '0'),
   ].join('-');
   return `slideshow-${stamp}.${extension}`;
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
 }
 
 async function runExport() {

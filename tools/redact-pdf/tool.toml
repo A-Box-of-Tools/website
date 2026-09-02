@@ -40,7 +40,7 @@ css_parts = ["progress"]
 # travel together, because the reader and the writer import the other two;
 # the compressor and the merger ask for the same four. Everything this tool
 # does to a page's drawing instructions is its own and stays in src/.
-js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer"]
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box"]
 lastmod = "2026-09-01"
 
 # --- what search engines and chat apps are told ------------------------------

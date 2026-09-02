@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { writeIco, dibEntry, readIcoDirectory } from './ico.js';
 import { writeIcns, readIcnsElements, ICNS_TYPES, ICNS_SIZES } from './icns.js';
 import { PRESETS, SIZES, WHY, presetById, storageFor, dibBytes } from './sizes.js';
@@ -64,6 +65,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 
 /**
  * @typedef {object} Item
@@ -1001,16 +1004,6 @@ for (const box of [el.wantIco, el.wantIcns, el.wantPack]) {
 }
 
 /* ------------------------------------------------------------------ errors */
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /* ------------------------------------------------- privacy panel + offline */
 

@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, fill } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { DISPOSALS, NotAGif, frameData, parseGif } from './gif.js';
 import { lzwDecode } from './lzw.js';
@@ -62,6 +63,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError } = messageBox(el.loadError);
 
 /**
  * How much of a file is drawn rather than merely measured.
@@ -349,19 +352,6 @@ function renderFindings(list) {
     item.append(mark, body);
     el.findings.append(item);
   }
-}
-
-/**
- * A finding's blanks, with any that are themselves a phrase resolved.
- *
- * gif.js quotes the reader's account of a truncation inside its own
- * sentence, and names what a file that is not a GIF appears to be inside
- * its refusal. Both are phrases, and a key dropped into a blank would reach
- * the page as the key, so the inner one is resolved on the way in.
- */
-function fill(values = {}) {
-  return Object.fromEntries(Object.entries(values)
-    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
 }
 
 /* ------------------------------------------------------------ the budget */
@@ -660,11 +650,6 @@ el.copyReport.addEventListener('click', async () => {
 });
 
 /* ------------------------------------------------------------- the frame */
-
-function showError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
 
 function hideError() {
   el.loadError.hidden = true;

@@ -28,7 +28,7 @@ roadmap_group = "images"
 # Shared modules this tool asks for. file-picker brings in the drop zone; the
 # list of boxes underneath the picture is this tool's own, because it is a list
 # of rectangles rather than a list of files.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "message-box"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

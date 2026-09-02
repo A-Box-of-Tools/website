@@ -36,7 +36,7 @@ css_parts = ["progress"]
 # reader and the writer import the other two; the compressor and the redactor
 # ask for the same four. This tool carried its own copy of all six until the
 # tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer"]
+js_parts = ["file-picker", "zip", "crc32", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "format"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

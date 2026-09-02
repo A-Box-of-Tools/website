@@ -1,6 +1,9 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, fill } from './shared/phrases.js';
+import { sizeText, durationText } from './shared/format.js';
+import { openInPlayer } from './shared/media.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { timelapseByDecoding, previewFrame, decoderConfig, averageFps } from './decode.js';
@@ -71,6 +74,10 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
+const formatDuration = (seconds) => durationText(seconds, phrase, { hours: 'time.hours' });
+
 /** @type {File|null} */
 let file = null;
 let objectUrl = null;
@@ -104,38 +111,6 @@ const picker = wireFilePicker({
 });
 
 /* ----------------------------------------------------------------- loading */
-
-/**
- * Ask the <video> element to open the file, and report what it made of it.
- *
- * This says the container was parsed, and nothing more. Whether a frame can
- * actually be decoded out of it is a separate question, asked by
- * `firstFrameLands` below - see the note there for why the two are not the
- * same question.
- */
-function openInPlayer(video, url) {
-  return new Promise((resolve) => {
-    const done = (result) => {
-      clearTimeout(timer);
-      video.removeEventListener('loadedmetadata', ok);
-      video.removeEventListener('error', bad);
-      resolve(result);
-    };
-    const ok = () => done({
-      ok: video.videoWidth > 0 && video.videoHeight > 0,
-      width: video.videoWidth,
-      height: video.videoHeight,
-      duration: Number.isFinite(video.duration) ? video.duration : 0,
-    });
-    const bad = () => done({ ok: false, width: 0, height: 0, duration: 0 });
-
-    const timer = setTimeout(bad, 15000);
-    video.addEventListener('loadedmetadata', ok, { once: true });
-    video.addEventListener('error', bad, { once: true });
-    video.src = url;
-    video.load();
-  });
-}
 
 /**
  * How long to wait for the probe frame before giving up on the file.
@@ -529,27 +504,6 @@ function updateSummary() {
 
 /* ------------------------------------------------------------------ export */
 
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
-/**
- * An error's blanks, with any that are themselves a phrase resolved.
- *
- * playback.js quotes what the player said inside its own sentence. Both are
- * phrases, and a key dropped into a blank would reach the page as the key.
- */
-function fill(values = {}) {
-  return Object.fromEntries(Object.entries(values)
-    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
-}
-
 /** An error whose message is a phrase key; showError resolves it. */
 const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
@@ -573,28 +527,6 @@ function setProgress({ phase, done, total }) {
 function outputFilename() {
   const base = (file?.name ?? 'video').replace(/\.[^.]+$/, '');
   return `${base}-timelapse.mp4`;
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  if (bytes < 1024 * 1024 * 1024) {
-    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
-  }
-  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
-}
-
-function formatDuration(seconds) {
-  const whole = Math.max(0, Math.round(seconds));
-  const hours = Math.floor(whole / 3600);
-  const minutes = Math.floor((whole % 3600) / 60);
-  if (hours) {
-    return phrase('time.hours', { hours, minutes: String(minutes).padStart(2, '0') });
-  }
-  if (minutes) {
-    return phrase('time.minutes',
-      { minutes, seconds: String(whole % 60).padStart(2, '0') });
-  }
-  return phrase('time.seconds', { n: seconds < 10 ? seconds.toFixed(1) : whole });
 }
 
 /** The interval, in the unit that makes it readable rather than always in seconds. */

@@ -32,7 +32,7 @@ css_parts = ["progress"]
 # Shared modules this tool asks for. Only the drop zone: the list underneath it
 # is this tool's own, because a row in it carries what was found inside a RAW
 # file rather than what the operating system said about the file.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "message-box"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

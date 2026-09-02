@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { downloadLink } from './shared/download.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { maskFromImage } from './mask.js';
 import { subjectMask } from './subject.js';
@@ -66,6 +67,8 @@ const el = {
   tooBig: $('too-big'),
 };
 
+const download = downloadLink(el.download);
+
 /**
  * What a preview may cost, and what a click may.
  *
@@ -103,7 +106,6 @@ let outPath = null;       // out.d as a Path2D, parsed once rather than per fram
 let overwhelming = false;
 let bgSamples = [];
 let hover = { ...NOTHING };
-let downloadUrl = null;
 
 const view = new Viewport({
   hosts: [el.stagePicture, el.stageSvg],
@@ -504,12 +506,8 @@ function sizeText(bytes) {
 }
 
 function offerDownload() {
-  if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-  const blob = new Blob([out.svg], { type: 'image/svg+xml' });
-  downloadUrl = URL.createObjectURL(blob);
-  el.download.href = downloadUrl;
-  el.download.download = phrase('save.name', { stem: picture.stem });
-  el.download.hidden = false;
+  download.offer(new Blob([out.svg], { type: 'image/svg+xml' }),
+    phrase('save.name', { stem: picture.stem }));
 }
 
 function showSamples() {

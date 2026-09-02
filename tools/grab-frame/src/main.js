@@ -1,6 +1,10 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, fill } from './shared/phrases.js';
+import { sizeText, durationText } from './shared/format.js';
+import { openInPlayer } from './shared/media.js';
+import { saveBlob } from './shared/download.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { FrameReader, decodeSeries, frameNear, seriesFrames } from './frames.js';
@@ -66,6 +70,10 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
+const formatDuration = (seconds) => durationText(seconds, phrase);
+
 /** @type {File|null} */
 let file = null;
 let objectUrl = null;
@@ -122,35 +130,6 @@ const picker = wireFilePicker({
 });
 
 /* ----------------------------------------------------------------- loading */
-
-/**
- * Ask the <video> element to open the file, and report what it made of it.
- * A browser that will not play a format still says so quickly, so this is also
- * the test for whether the playback path is available at all.
- */
-function openInPlayer(video, url) {
-  return new Promise((resolve) => {
-    const done = (result) => {
-      clearTimeout(timer);
-      video.removeEventListener('loadedmetadata', ok);
-      video.removeEventListener('error', bad);
-      resolve(result);
-    };
-    const ok = () => done({
-      ok: video.videoWidth > 0 && video.videoHeight > 0,
-      width: video.videoWidth,
-      height: video.videoHeight,
-      duration: Number.isFinite(video.duration) ? video.duration : 0,
-    });
-    const bad = () => done({ ok: false, width: 0, height: 0, duration: 0 });
-
-    const timer = setTimeout(bad, 15000);
-    video.addEventListener('loadedmetadata', ok, { once: true });
-    video.addEventListener('error', bad, { once: true });
-    video.src = url;
-    video.load();
-  });
-}
 
 async function loadFile(picked) {
   if (working) return;
@@ -685,16 +664,6 @@ el.downloadAll.addEventListener('click', async () => {
   }
 });
 
-/** Hand a blob to the browser's downloads and let go of it afterwards. */
-function saveBlob(blob, name) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 60_000);
-}
-
 /* ------------------------------------------------------------- the grabbing */
 
 /** The frame on screen, at its full size, ready to encode. */
@@ -850,43 +819,6 @@ function setProgress({ done, total, step }) {
     total: total.toLocaleString(),
     percent: Math.round(fraction * 100),
   });
-}
-
-/**
- * An error's blanks, with any that are themselves a phrase resolved.
- *
- * still.js names the format it could not write; the reader's sentence is
- * built here, where a phrase can be read.
- */
-function fill(values = {}) {
-  return Object.fromEntries(Object.entries(values)
-    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  if (bytes < 1024 * 1024 * 1024) {
-    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
-  }
-  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
-}
-
-function formatDuration(seconds) {
-  const whole = Math.max(0, Math.round(seconds));
-  const minutes = Math.floor(whole / 60);
-  return minutes
-    ? phrase('time.minutes', { minutes, seconds: String(whole % 60).padStart(2, '0') })
-    : phrase('time.seconds', { n: seconds < 10 ? seconds.toFixed(1) : whole });
 }
 
 window.addEventListener('beforeunload', (event) => {

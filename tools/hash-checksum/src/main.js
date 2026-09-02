@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { ALGORITHMS, ORDER, Stopped, Unreadable, hashFile } from './hash.js';
 import { algorithmsIn, readExpected, verdict } from './expected.js';
@@ -37,6 +38,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError } = messageBox(el.loadError);
 
 /** The five checkboxes, by the algorithm they turn on. */
 const boxes = new Map(
@@ -368,11 +371,6 @@ el.downloadChecksums.addEventListener('click', () => {
 });
 
 /* ------------------------------------------------------------- the frame */
-
-function showError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
 
 function hideError() {
   el.loadError.hidden = true;

@@ -1,6 +1,9 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText } from './shared/format.js';
+import { openInPlayer } from './shared/media.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { framesByDecoding, framesByPlaying, decoderConfig } from './frames.js';
@@ -71,6 +74,9 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
+
 /**
  * How long a section the tool starts you off with when the clip is longer.
  *
@@ -132,35 +138,6 @@ const picker = wireFilePicker({
 });
 
 /* ----------------------------------------------------------------- loading */
-
-/**
- * Ask the <video> element to open the file, and report what it made of it.
- * A browser that will not play a format still says so quickly, so this is also
- * the test for whether the player path is available at all.
- */
-function openInPlayer(video, url) {
-  return new Promise((resolve) => {
-    const done = (result) => {
-      clearTimeout(timer);
-      video.removeEventListener('loadedmetadata', ok);
-      video.removeEventListener('error', bad);
-      resolve(result);
-    };
-    const ok = () => done({
-      ok: video.videoWidth > 0 && video.videoHeight > 0,
-      width: video.videoWidth,
-      height: video.videoHeight,
-      duration: Number.isFinite(video.duration) ? video.duration : 0,
-    });
-    const bad = () => done({ ok: false, width: 0, height: 0, duration: 0 });
-
-    const timer = setTimeout(bad, 15000);
-    video.addEventListener('loadedmetadata', ok, { once: true });
-    video.addEventListener('error', bad, { once: true });
-    video.src = url;
-    video.load();
-  });
-}
 
 async function loadFile(picked) {
   if (exporting) return;
@@ -474,16 +451,6 @@ function updateSummary() {
 
 /* ------------------------------------------------------------------ export */
 
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
 function setProgress({ phase, done, total }) {
   // Reading the frames is most of the wait on the player path and about half of
   // it on the reader path, so the bar gives it the first two thirds rather than
@@ -502,14 +469,6 @@ function setProgress({ phase, done, total }) {
 function outputFilename() {
   const base = (file?.name ?? 'video').replace(/\.[^.]+$/, '');
   return `${base}.gif`;
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  if (bytes < 1024 * 1024 * 1024) {
-    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
-  }
-  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
 }
 
 async function runExport() {

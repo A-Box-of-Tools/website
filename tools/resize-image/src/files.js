@@ -8,13 +8,9 @@
  */
 
 import { FORMATS } from './codecs.js';
+import { sizeText } from './shared/format.js';
 
-/** File sizes. Nothing here is read against a limit, so ordinary rounding. */
-export function bytes(n, t) {
-  if (n < 1024) return t('size.bytes', { n });
-  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
-  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
-}
+export const bytes = (n, t) => sizeText(n, t, { under: 'size.bytes', kb: 'auto', mb: 2 });
 
 /** "4032 × 3024", with a real multiplication sign. */
 export function dimensions(width, height) {

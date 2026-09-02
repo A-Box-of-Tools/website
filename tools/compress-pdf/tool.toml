@@ -34,7 +34,7 @@ css_parts = ["progress"]
 # travel together, because the reader and the writer import the other two;
 # the merger and the redactor ask for the same four. This tool carried its own
 # copy of them until the tests learned to follow a ./shared/ import.
-js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer"]
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

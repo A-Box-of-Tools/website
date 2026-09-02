@@ -1,6 +1,9 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { measureImage } from './shared/media.js';
+import { saveBlob } from './shared/download.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { readImage, readBytes, serialize, exifBytes, outputType, KIND_NAMES } from './container.js';
@@ -50,6 +53,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 
 /**
  * @typedef {object} Item
@@ -114,7 +119,7 @@ async function addFiles(files) {
 
       // One decode, used twice: it draws the thumbnail, and its dimensions are
       // what a WebP with no extended header needs before metadata can be added.
-      const dims = await measure(item.thumbUrl);
+      const dims = await measureImage(item.thumbUrl);
       if (dims && item.doc) item.doc.canvas = dims;
 
       if (item.ok) normalizeExif(item);
@@ -179,16 +184,6 @@ function normalizeExif(item) {
   item.exifUnreadable = Boolean(item.exif && !item.exif.ok && item.meta.exif);
   item.exifError = item.exifUnreadable ? item.exif.error : null;
   if (!item.exif?.ok) item.exif = emptyExif();
-}
-
-/** Read a picture's pixel size without keeping the decoded image around. */
-function measure(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
-    img.onerror = () => resolve(null);
-    img.src = url;
-  });
 }
 
 
@@ -1097,18 +1092,6 @@ function showResults(results) {
   };
 }
 
-/** Hand a blob to the browser's downloads. */
-function saveBlob(blob, name) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  // Revoked late: revoking immediately can cancel a download that has not
-  // started yet in some browsers.
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-}
-
 el.saveEdits.addEventListener('click', () => {
   const item = selected();
   if (!item) return;
@@ -1150,16 +1133,6 @@ el.revertEdits.addEventListener('click', async () => {
 });
 
 /* ------------------------------------------------------------------ errors */
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 function showEditError(message) {
   el.editError.textContent = message;

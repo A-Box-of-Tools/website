@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import {
   compressDocument, describeSettings, PRESETS,
 } from './compress.js';
@@ -52,6 +53,9 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError } = messageBox(el.loadError);
+const { show: note } = messageBox(el.loadNote);
 
 /**
  * @typedef {object} Loaded
@@ -183,16 +187,6 @@ function emptyInventory() {
   el.breakdownBar.hidden = true;
   el.breakdownList.replaceChildren();
   el.inventoryNotes.textContent = '';
-}
-
-function showLoadError(text) {
-  el.loadError.textContent = text;
-  el.loadError.hidden = false;
-}
-
-function note(text) {
-  el.loadNote.textContent = text;
-  el.loadNote.hidden = false;
 }
 
 el.clearFile.addEventListener('click', () => {

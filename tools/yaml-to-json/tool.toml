@@ -56,7 +56,7 @@ roadmap_group = "beyond"
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the config file that is easier to drop than to open, select all
 # and copy.
-js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml"]
+js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml", "message-box", "download", "format"]
 lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------

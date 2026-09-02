@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import {
   SPECS, backgroundOf, pixelLabel, portalBytes, portalPixels, printLabel,
   specById, specsByCountry, trim, withCustom,
@@ -86,6 +87,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 
 /** The custom fields, by the key withCustom() reads them under. */
 const CUSTOM_FIELDS = {
@@ -818,16 +821,6 @@ function showProgress(fraction, label) {
 }
 
 /* ------------------------------------------------------------------ errors */
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /* ------------------------------------------------- privacy panel + offline */
 

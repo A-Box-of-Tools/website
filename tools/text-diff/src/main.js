@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { downloadLink } from './shared/download.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { compareText, alignRows, diffWords, formatUnified } from './diff.js';
 import { SAMPLES } from './samples.js';
@@ -31,9 +33,13 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error, {
+  onShow: () => { el.resultNote.textContent = phrase('result.failed'); },
+});
+const download = downloadLink(el.download);
+
 /** The patch of the last comparison, for the copy and download buttons. */
 let result = null;
-let downloadUrl = null;
 
 /** What the Copy button says at rest, read off the button rather than written
  *  here, so that the word it goes back to after "Copied" is the translated one
@@ -193,7 +199,7 @@ function runDiff(aText, bText) {
   const patch = formatUnified(ops, { aLabel: 'original', bLabel: 'changed' });
   result = { text: patch, name: 'changes.patch' };
   el.copy.disabled = patch === '';
-  offerDownload(patch, 'changes.patch');
+  download.offer(patch, 'changes.patch');
 
   if (stats.identical) {
     el.resultNote.textContent = phrase('result.identical');
@@ -339,21 +345,6 @@ function side(text, words, where, marked) {
 
 /* -------------------------------------------------------------- the result */
 
-/**
- * The download is a blob: URL made in this page from a string that was already
- * in this page. Nothing is uploaded to produce it and nothing is fetched to
- * serve it.
- */
-function offerDownload(text, name) {
-  if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-  downloadUrl = null;
-  if (text === '') { el.download.hidden = true; return; }
-  downloadUrl = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
-  el.download.href = downloadUrl;
-  el.download.download = name;
-  el.download.hidden = false;
-}
-
 el.copy.addEventListener('click', async () => {
   if (!result) return;
   try {
@@ -375,21 +366,8 @@ el.copy.addEventListener('click', async () => {
 function clearResult() {
   el.diffView.replaceChildren();
   el.copy.disabled = true;
-  el.download.hidden = true;
+  download.clear();
   result = null;
-  if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-  downloadUrl = null;
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-  el.resultNote.textContent = phrase('result.failed');
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
 }
 
 /* ----------------------------------------------------------------- wording */
