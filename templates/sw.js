@@ -83,7 +83,18 @@ self.addEventListener('fetch', (event) => {
         // available offline afterwards.
         if (response.ok && response.type === 'basic') {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          // Kept, not awaited: the response goes back to the page whether or
+          // not the copy lands. But a write that fails - the quota is full,
+          // the store is ephemeral, the engine will not keep this response -
+          // rejects a promise nobody is holding, and an unhandled rejection
+          // in a worker is reported through the page it serves. The hub's QA
+          // check saw exactly that on Mobile Safari, as eleven words and no
+          // stack: "Unhandled Promise Rejection: undefined". A cache write
+          // that fails is a missed cache and nothing more, so it may fail
+          // quietly.
+          caches.open(CACHE_NAME)
+            .then((cache) => cache.put(request, copy))
+            .catch(() => {});
         }
         return response;
       }).catch(() => (
