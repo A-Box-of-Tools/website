@@ -199,6 +199,9 @@ complete = true
 "guides/what-a-pdf-remembers" = "ratgeber/was-ein-pdf-sich-merkt"
 "guides/does-converting-a-photo-remove-its-metadata" = "ratgeber/entfernt-das-umwandeln-die-metadaten-eines-fotos"
 "guides/how-can-a-web-page-work-offline" = "ratgeber/wie-kann-eine-webseite-offline-funktionieren"
+"guides/whats-inside-a-dicom-file" = "ratgeber/was-in-einer-dicom-datei-steckt"
+"guides/can-an-ai-agent-use-these-tools" = "ratgeber/kann-ein-ki-agent-diese-werkzeuge-nutzen"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "ratgeber/ist-das-hochladen-von-dateien-zu-einer-ki-sicher"
 
 #
 # ---------------------------------------------------------------------------

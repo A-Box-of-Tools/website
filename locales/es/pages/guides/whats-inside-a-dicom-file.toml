@@ -1,0 +1,18 @@
+#
+# Guía: ¿qué hay dentro de un archivo DICOM? - Spanish.
+#
+
+nav = "¿Qué hay dentro de un DICOM?"
+title = "¿Qué hay dentro de un archivo DICOM?"
+description = "Un escáner médico es un historial de paciente con una imagen dentro: nombre, fecha de nacimiento, números de hospital, el centro y claves de vuelta al archivo. Qué lleva la cabecera, por qué borrar el nombre no es anonimizar, y cómo mirar sin subir nada."
+heading = "¿Qué hay dentro de un archivo DICOM?"
+lede = """
+    Más que el escáner. Un archivo DICOM es un historial médico con una
+    imagen dentro: tu nombre, tu fecha de nacimiento y tu número de
+    hospital viajan en el mismo archivo que los píxeles &mdash; y eso
+    importa sobre todo en el momento exacto en que te entregan un CD y
+    sales a buscar un visor."""
+updated = "26 de agosto de 2026"
+og_title = "¿Qué hay dentro de un archivo DICOM?"
+og_description = "Un historial de paciente con una imagen dentro: nombre, fecha de nacimiento, números de hospital y claves de vuelta al archivo. Qué lleva la cabecera, y cómo mirar sin subirlo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

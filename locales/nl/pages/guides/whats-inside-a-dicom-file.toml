@@ -1,0 +1,18 @@
+#
+# Gids: wat zit er in een DICOM-bestand? - Dutch.
+#
+
+nav = "Wat zit er in een DICOM-bestand?"
+title = "Wat zit er in een DICOM-bestand?"
+description = "Een medische scan is een patiëntendossier met een beeld erin: naam, geboortedatum, ziekenhuisnummers, de instelling en sleutels terug naar het archief. Wat de header draagt, waarom de naam wissen geen anonimiseren is, en hoe je kijkt zonder te uploaden."
+heading = "Wat zit er in een DICOM-bestand?"
+lede = """
+    Meer dan de scan. Een DICOM-bestand is een medisch dossier met een
+    beeld erin: je naam, je geboortedatum en je ziekenhuisnummer reizen in
+    hetzelfde bestand als de pixels &mdash; wat het meest telt op precies
+    het moment dat iemand je een cd in handen drukt en je een viewer gaat
+    zoeken."""
+updated = "26 augustus 2026"
+og_title = "Wat zit er in een DICOM-bestand?"
+og_description = "Een patiëntendossier met een beeld erin: naam, geboortedatum, ziekenhuisnummers en sleutels terug naar het archief. Wat de header draagt, en hoe je kijkt zonder het te uploaden."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

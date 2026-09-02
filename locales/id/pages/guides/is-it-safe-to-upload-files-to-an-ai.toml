@@ -1,0 +1,19 @@
+#
+# Panduan: apakah aman mengunggah file ke AI? - Indonesian.
+#
+
+nav = "Apakah aman mengunggah file ke AI?"
+title = "Apakah Aman Mengunggah File ke AI?"
+description = "Jendela obrolan adalah formulir unggah yang tidak kelihatan seperti formulir unggah. Ke mana sebenarnya file yang Anda serahkan ke AI pergi, apa bedanya AI dengan konverter, dan cara mengirim lebih sedikit - dan mengirimnya bersih - saat pekerjaannya memang layak."
+heading = "Apakah aman mengunggah file ke AI?"
+lede = """
+    Pertanyaan yang sama dengan yang diajukan panduan pertama situs ini
+    tentang konverter, kini diarahkan ke tempat file benar-benar pergi
+    sekarang. Jawaban jujurnya berbentuk sama: biasanya tidak terjadi
+    apa-apa, dan tidak satu pun bisa Anda periksa &mdash; ditambah satu
+    perbedaan yang penting. Konverter mengubah file Anda tanpa peduli
+    isinya. Ke AI, file justru dikirim supaya ada yang membacanya."""
+updated = "27 Agustus 2026"
+og_title = "Apakah aman mengunggah file ke AI?"
+og_description = "Jendela obrolan adalah formulir unggah yang tidak kelihatan seperti itu. Ke mana file sebenarnya pergi, apa bedanya AI dengan konverter, dan cara mengirim lebih sedikit dan mengirimnya bersih."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

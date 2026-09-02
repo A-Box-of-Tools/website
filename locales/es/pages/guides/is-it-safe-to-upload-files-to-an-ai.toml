@@ -1,0 +1,20 @@
+#
+# Guía: ¿es seguro subir archivos a una IA? - Spanish.
+#
+
+nav = "¿Es seguro subir archivos a una IA?"
+title = "¿Es seguro subir archivos a una IA?"
+description = "Una ventana de chat es un formulario de subida que no lo parece. Adónde va de verdad un archivo que le entregas a una IA, en qué se diferencia una IA de un conversor, y cómo enviar menos - y enviarlo limpio - cuando el trabajo lo merece."
+heading = "¿Es seguro subir archivos a una IA?"
+lede = """
+    La misma pregunta que la primera guía de este sitio hizo sobre los
+    conversores, apuntada al lugar adonde los archivos se van de verdad
+    ahora. La respuesta honesta tiene la misma forma: casi siempre no pasa
+    nada malo, y no puedes verificar nada de ello &mdash; más una
+    diferencia que importa. Un conversor transforma tu archivo sin que le
+    importe lo que contiene. A una IA se le envía el archivo precisamente
+    para que algo lo lea."""
+updated = "27 de agosto de 2026"
+og_title = "¿Es seguro subir archivos a una IA?"
+og_description = "Una ventana de chat es un formulario de subida que no lo parece. Adónde va de verdad el archivo, en qué se diferencia una IA de un conversor, y cómo enviar menos y enviarlo limpio."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

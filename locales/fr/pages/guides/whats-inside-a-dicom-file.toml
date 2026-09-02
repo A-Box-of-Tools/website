@@ -1,0 +1,18 @@
+#
+# Guide : que contient un fichier DICOM ? - French.
+#
+
+nav = "Que contient un fichier DICOM ?"
+title = "Que contient un fichier DICOM ?"
+description = "Un examen d'imagerie est un dossier médical avec une image dedans : nom, date de naissance, numéros d'hôpital, l'établissement et des clés vers l'archive. Ce que porte l'en-tête, pourquoi effacer le nom n'est pas anonymiser, et comment regarder sans téléverser."
+heading = "Que contient un fichier DICOM ?"
+lede = """
+    Plus que l'examen. Un fichier DICOM est un dossier médical avec une
+    image dedans&nbsp;: votre nom, votre date de naissance et votre numéro
+    d'hôpital voyagent dans le même fichier que les pixels &mdash; ce qui
+    compte le plus à l'instant précis où l'on vous tend un CD et où vous
+    partez chercher une visionneuse."""
+updated = "26 août 2026"
+og_title = "Que contient un fichier DICOM ?"
+og_description = "Un dossier médical avec une image dedans : nom, date de naissance, numéros d'hôpital et clés vers l'archive. Ce que porte l'en-tête, et comment regarder sans le téléverser."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

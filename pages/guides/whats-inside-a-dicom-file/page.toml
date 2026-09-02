@@ -1,0 +1,36 @@
+#
+# Guide: what's inside a DICOM file?
+#
+# The dicom-viewer README calls that tool the sharpest version of the
+# site's promise, and this page is the reader-facing half of that
+# argument: what a scan's header actually carries, why "I deleted the
+# name" is not de-identification (PS3.15 knows better), and why the file
+# most worth being careful with is the one people upload most casually -
+# because a CD from a hospital is useless without a viewer.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/whats-inside-a-dicom-file"
+kind = "guide"
+nav = "What's inside a DICOM file?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "What's Inside a DICOM File?"
+description = "A medical scan is a patient record with a picture inside: name, birth date, hospital numbers, the institution, and keys back into the archive. What the header carries, why deleting the name is not anonymising, and how to look without uploading."
+
+heading = "What's inside a DICOM file?"
+lede = """
+    More than the scan. A DICOM file is a medical record with a picture
+    inside it: your name, birth date and hospital number travel in the
+    same file as the pixels &mdash; which matters most at the exact moment
+    you are handed a CD and go looking for a viewer."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "What's inside a DICOM file?"
+og_description = "A patient record with a picture inside: name, birth date, hospital numbers, and keys back into the archive. What the header carries, and how to look without uploading it."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -1,0 +1,18 @@
+#
+# Guida: un agente IA può usare questi strumenti? - Italian.
+#
+
+nav = "Un agente IA può usare questi strumenti?"
+title = "Un agente IA può usare questi strumenti?"
+description = "Sì: sono pagine web comuni, senza account e con i comandi etichettati, e un agente le guida come qualsiasi altra cosa. Ciò che conta è dove gira il browser dell'agente, perché decide se il tuo file resta sulla tua macchina."
+heading = "Un agente IA può usare questi strumenti?"
+lede = """
+    Sì. Sono pagine web comuni, senza account, senza captcha e con ogni
+    comando etichettato, e un agente le guida come guida tutto il resto. La
+    domanda che merita una pagina è quella dietro: quando affidi a un agente
+    una faccenda con i file, il file dove va? La risposta dipende per intero
+    da dove gira il browser dell'agente."""
+updated = "27 agosto 2026"
+og_title = "Un agente IA può usare questi strumenti?"
+og_description = "Pagine web comuni, comandi etichettati, nessun account: quindi sì. Ciò che conta è dove gira il browser dell'agente, perché decide se il tuo file resta sulla tua macchina."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

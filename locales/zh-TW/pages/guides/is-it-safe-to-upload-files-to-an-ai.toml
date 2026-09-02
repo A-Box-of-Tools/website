@@ -1,0 +1,26 @@
+#
+# Guide: is it safe to upload files to an AI? - Traditional Chinese.
+#
+# Overrides for pages/guides/is-it-safe-to-upload-files-to-an-ai/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "把檔案傳給 AI 安全嗎？"
+
+title = "把檔案傳給 AI 安全嗎？"
+description = "聊天視窗就是個上傳表單，只是不長那樣。交給 AI 的檔案究竟去了哪裡，AI 和轉換器差在哪三處，以及值得傳的時候，怎麼少傳，怎麼傳得乾淨。"
+
+heading = "把檔案傳給 AI 安全嗎？"
+lede = """
+    這個站第一篇指南問過轉換器的那個問題，如今對準檔案真正去的地方再問\
+    一遍。老實的回答形狀不變：多半沒事，而你一樣也核實不了。另加一條要\
+    緊的差別：轉換器變換你的檔案，不關心裡面是什麼；把檔案交給 AI，恰恰\
+    是為了讓什麼東西去讀它。"""
+
+updated = "2026年8月27日"
+
+og_title = "把檔案傳給 AI 安全嗎？"
+og_description = "聊天視窗就是個上傳表單，只是不長那樣。檔案究竟去了哪裡，AI 和轉換器差在哪裡，以及怎麼少傳、傳得乾淨。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

@@ -1,0 +1,148 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      File DICOM &mdash; <code>.dcm</code> di CD yang diserahkan rumah
+      sakit &mdash; bukan format gambar seperti JPEG. Ia format rekam
+      medis dengan gambar di dalamnya. Sebelum pikselnya mulai, berkas ini
+      membawa kepala berisi ratusan penanda, dan di antaranya, secara
+      rutin: nama lengkap pasien, tanggal lahir, jenis kelamin, dan nomor
+      rumah sakitnya; tanggal, jam, dan uraian pemeriksaan; dokter
+      perujuk; institusi dan mesinnya, sampai ke nomor seri; serta
+      seperangkat pengenal unik yang bekerja sebagai kunci kembali ke
+      arsip yang menghasilkannya.
+    </p>
+    <p>
+      Tidak satu pun terlihat saat gambarnya ada di layar, dan justru
+      begitulah ia terlupakan. Hasil pindai itu adalah rekamnya.
+      Perlakukan berkasnya sebagai dokumen yang memang ia adalah, bukan
+      sebagai gambar yang ia kandung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengapa berkas ini diunggah begitu enteng</h2>
+    <p>
+      Jebakannya dalam praktik: seorang pasien disodori cakram atau
+      unduhan usai pemeriksaan, mencoba membukanya, dan tidak ada apa pun
+      di komputernya yang mau &mdash; DICOM bukan format yang dipahami
+      perangkat lunak biasa. Maka ia mencari &ldquo;buka file dcm
+      online&rdquo;, dan hampir semua yang ditemukannya adalah kotak
+      unggah. Sesaat kemudian, sebuah rekam medis lengkap dan
+      teridentifikasi &mdash; nama, tanggal lahir, nomor rumah sakit,
+      uraian pemeriksaan yang berbau diagnosis, semuanya &mdash; berada di
+      server milik siapa pun yang kebetulan naik peringkat hari itu.
+    </p>
+    <p>
+      Perhatikan bentuknya: ini masalah foto KTP terulang lagi &mdash;
+      berkas sensitif, momen gesekan, mesin pencari &mdash; tetapi dengan
+      berkas yang sensitif tingkat dua. Paspor membocorkan siapa Anda;
+      hasil pindai membocorkan siapa Anda <em>dan apa yang sedang
+      diperiksa</em>. Argumen umum soal unggahan punya
+      <a href="../apakah-aman-mengunggah-file/">halamannya sendiri</a>;
+      inilah berkas yang membuat argumen itu tak butuh bumbu apa pun.
+    </p>
+    <p>
+      Membuka berkasnya secara lokal adalah seluruh obatnya, dan untuk
+      itulah <a href="../../penampil-dicom/">penampil DICOM</a> di sini:
+      hasil pindainya, kendali jendela sungguhan, satu folder disusun
+      kembali menjadi serinya, pengukuran dalam milimeter, dan setiap
+      penanda kepala berkas terbaca &mdash; tanpa ada yang meninggalkan
+      mesin Anda. Langkah demi langkahnya ada di
+      <a href="../membuka-file-dicom/">panduan membukanya</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>&ldquo;Namanya sudah kuhapus&rdquo; bukan de-identifikasi</h2>
+    <p>
+      Kekeliruan berikutnya lebih halus dan niatnya lebih baik: membagikan
+      hasil pindai &mdash; ke layanan opini kedua, peneliti, forum &mdash;
+      setelah menghapus penanda yang paling kentara. Standarnya sendiri
+      blak-blakan soal betapa kurangnya itu. Profil de-identifikasi milik
+      DICOM menyenaraikan penanda yang harus dibereskan sebelum sebuah
+      kumpulan data boleh disebut ter-de-identifikasi, dan senarainya
+      sampai <em>ratusan</em> butir, karena identitas bersembunyi di lebih
+      banyak tempat daripada kolom nama:
+    </p>
+    <ul>
+      <li>
+        <strong>Pengenal langsung di luar nama</strong> &mdash; tanggal
+        lahir, ID pasien, nomor kunjungan, nama dokter dan institusi.
+      </li>
+      <li>
+        <strong>Kunci</strong> &mdash; pengenal unik yang dicap di setiap
+        berkas: mereka tidak mengatakan siapa Anda, tetapi mengatakan
+        persis <em>rekam yang mana Anda</em>, bagi sistem mana pun yang
+        pernah melihat aslinya.
+      </li>
+      <li>
+        <strong>Pengenal semu</strong> &mdash; tanggal dan jam
+        pemeriksaan, model dan nomor seri mesin, bagian tubuh, usia
+        pasien: samar satu-satu, sempit bila digabung.
+      </li>
+      <li>
+        <strong>Pikselnya sendiri</strong> &mdash; USG dan beberapa
+        modalitas lain membakar nama pasien langsung ke dalam gambar, di
+        tempat yang tak terjangkau penyuntingan penanda mana pun. (Untuk
+        gambar hasil ekspor, itu pekerjaan
+        <a href="../../sensor-gambar/">penyensoran di tingkat piksel</a>,
+        bukan alat metadata.)
+      </li>
+    </ul>
+    <p>
+      Karena itulah penampil di sini punya panel yang menyenaraikan persis
+      apa saja di berkas Anda yang mengidentifikasi pasien, dan seberapa
+      langsung &mdash; dibangun dari senarai milik standarnya sendiri. Dan
+      karena itu pula penampil ini hanya <em>membaca</em>: ia tidak
+      memuat kode yang menulis berkas DICOM, sebab
+      &ldquo;teranonimkan&rdquo; adalah janji dengan palang jauh lebih
+      tinggi daripada yang dilompati sebuah penampil &mdash; dan alat yang
+      menepatinya setengah-setengah lebih buruk daripada yang tidak pernah
+      menjanjikannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Memperlakukan hasil pindai sebagai rekam yang memang ia adalah</h2>
+    <p>
+      Kebiasaannya jatuh sendiri dari semua di atas:
+    </p>
+    <ul>
+      <li>
+        <strong>Lihat secara lokal.</strong> Penampil yang bekerja dengan
+        Wi-Fi mati &mdash; yang ini begitu &mdash; sudah membuktikan di
+        mana pekerjaannya terjadi. Penampil bawaan di cakramnya, kalau
+        berjalan di mesin Anda, juga tidak apa-apa.
+      </li>
+      <li>
+        <strong>Bagikan lewat saluran medis bila isinya yang jadi
+        soal.</strong> Mengirim satu studi ke rumah sakit lain adalah
+        masalah yang sudah terpecahkan, dengan infrastruktur yang bisa
+        dimintai tanggung jawab di belakangnya; email pribadi berisi
+        <code>.zip</code> penuh berkas <code>.dcm</code> adalah salinan
+        rekam Anda di server-server surat, tanpa batas waktu.
+      </li>
+      <li>
+        <strong>Kalau memang harus membagikan berkas, ketahui dulu
+        isinya.</strong> Baca kepala berkas dan panel identitasnya, supaya
+        yang Anda teruskan adalah keputusan, bukan kejutan &mdash; dan
+        perlakukan &ldquo;de-identifikasi yang benar&rdquo; sebagai
+        layanan yang wajib diberikan penyedia pencitraan Anda bila
+        diminta, bukan kotak centang yang Anda improvisasi.
+      </li>
+      <li>
+        <strong>Ingat, cakramnya hidup lebih lama daripada
+        urusannya.</strong> Salinan di folder unduhan dan CD di laci juga
+        rekam yang lengkap, sama seperti pindaian KTP yang tak seorang pun
+        ingat pernah menghapusnya.
+      </li>
+    </ul>
+    <p>
+      Tidak satu pun dari ini berkata jangan pernah membagikan hasil
+      pindai &mdash; opini kedua memang gunanya salinan. Yang dikatakannya:
+      berkas ini dokumen tentang Anda, maka dua pertanyaan yang terus
+      didatangi seluruh kelompok panduan ini berlaku juga di sini &mdash;
+      kepada siapa ia diserahkan, dan apakah penyerahan itu memang perlu
+      terjadi.
+    </p>
+  </section>

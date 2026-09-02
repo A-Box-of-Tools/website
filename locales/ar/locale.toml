@@ -189,6 +189,9 @@ complete = true
 "guides/what-a-pdf-remembers" = "أدلة/ما-الذي-يتذكره-ملف-pdf"
 "guides/does-converting-a-photo-remove-its-metadata" = "أدلة/هل-التحويل-يزيل-بيانات-الصورة"
 "guides/how-can-a-web-page-work-offline" = "أدلة/كيف-تعمل-صفحة-ويب-دون-إنترنت"
+"guides/whats-inside-a-dicom-file" = "أدلة/ماذا-يوجد-داخل-ملف-dicom"
+"guides/can-an-ai-agent-use-these-tools" = "أدلة/هل-يستخدم-وكيل-ai-هذه-الأدوات"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "أدلة/هل-رفع-الملفات-الى-ai-آمن"
 
 #
 # ---------------------------------------------------------------------------

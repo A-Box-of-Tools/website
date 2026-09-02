@@ -1,0 +1,19 @@
+#
+# Panduan: bisakah agen AI memakai alat ini? - Indonesian.
+#
+
+nav = "Bisakah agen AI memakai alat ini?"
+title = "Bisakah Agen AI Memakai Alat Ini?"
+description = "Bisa - semuanya halaman web biasa, tanpa akun, dengan kontrol yang berlabel, dan agen menjalankannya seperti menjalankan apa pun. Yang penting adalah di mana peramban si agen berjalan, karena itulah yang menentukan apakah file Anda tetap di mesin Anda."
+heading = "Bisakah agen AI memakai alat ini?"
+lede = """
+    Bisa. Semuanya halaman web biasa, tanpa akun, tanpa captcha, dan setiap
+    kontrolnya berlabel, sehingga agen menjalankannya seperti menjalankan
+    yang lain. Pertanyaan yang pantas mendapat satu halaman ada di
+    baliknya: saat Anda menyerahkan urusan file kepada agen, ke mana file
+    itu pergi? Jawabannya sepenuhnya bergantung pada di mana peramban si
+    agen berjalan."""
+updated = "27 Agustus 2026"
+og_title = "Bisakah agen AI memakai alat ini?"
+og_description = "Halaman web biasa, kontrol berlabel, tanpa akun: jadi bisa. Yang penting adalah di mana peramban si agen berjalan - itulah yang menentukan apakah file Anda tetap di mesin Anda."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

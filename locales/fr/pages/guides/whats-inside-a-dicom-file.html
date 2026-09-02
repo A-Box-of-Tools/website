@@ -1,0 +1,154 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Un fichier DICOM &mdash; le <code>.dcm</code> du CD qu'un hôpital
+      vous remet &mdash; n'est pas un format d'image comme le JPEG. C'est
+      un format de dossier médical avec une image dedans. Avant que les
+      pixels ne commencent, le fichier porte un en-tête de centaines
+      d'étiquettes, et parmi elles, couramment&nbsp;: le nom complet du
+      patient, sa date de naissance, son sexe et son numéro
+      d'hôpital&nbsp;; la date, l'heure et la description de
+      l'examen&nbsp;; le médecin prescripteur&nbsp;; l'établissement et
+      l'appareil, jusqu'au numéro de série&nbsp;; et un jeu
+      d'identifiants uniques qui font office de clés vers l'archive qui
+      les a produits.
+    </p>
+    <p>
+      Rien de tout cela ne s'affiche quand l'image est à l'écran, et c'est
+      exactement ainsi qu'on l'oublie. L'examen est le dossier. Traitez le
+      fichier comme le document qu'il est, pas comme l'image qu'il
+      contient.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi ce fichier se téléverse si négligemment</h2>
+    <p>
+      Le piège en pratique&nbsp;: après un examen, on vous remet un disque
+      ou un téléchargement, vous essayez de l'ouvrir, et rien sur la
+      machine ne veut &mdash; DICOM n'est pas un format que les logiciels
+      ordinaires parlent. Alors on cherche
+      &laquo;&nbsp;ouvrir fichier dcm en ligne&nbsp;&raquo;, et l'essentiel
+      de ce qu'on trouve est une case de téléversement. Quelques instants
+      plus tard, un dossier médical complet et identifié &mdash; nom, date
+      de naissance, numéros d'hôpital, descriptions d'examen à teneur de
+      diagnostic et tout &mdash; est sur le serveur de qui s'est bien
+      classé ce jour-là.
+    </p>
+    <p>
+      Remarquez la silhouette&nbsp;: c'est le problème de la pièce
+      d'identité qui recommence &mdash; un fichier sensible, un moment de
+      friction, un moteur de recherche &mdash; mais avec un fichier
+      sensible au second degré. Un passeport dit qui vous êtes&nbsp;; un
+      examen dit qui vous êtes <em>et ce qu'on cherchait</em>. L'argument
+      général sur les téléversements a
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">sa propre page</a>&nbsp;;
+      voici le fichier pour lequel il n'a besoin d'aucun assaisonnement.
+    </p>
+    <p>
+      Ouvrir le fichier en local est tout le remède, et c'est à cela que
+      sert la <a href="../../visionneuse-dicom/">visionneuse DICOM</a>
+      d'ici&nbsp;: l'examen, un vrai réglage de fenêtrage, un dossier
+      rempilé en sa série, des mesures en millimètres, chaque étiquette de
+      l'en-tête lisible &mdash; et rien ne quitte votre machine. Le pas à
+      pas est dans <a href="../ouvrir-un-fichier-dicom/">le guide pour
+      l'ouvrir</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>&laquo;&nbsp;J'ai enlevé le nom&nbsp;&raquo; n'est pas de la
+    dé-identification</h2>
+    <p>
+      L'erreur suivante est plus fine et mieux intentionnée&nbsp;:
+      partager un examen &mdash; avec un service de second avis, un
+      chercheur, un forum &mdash; après avoir effacé l'étiquette évidente.
+      Le standard lui-même est brutal sur l'insuffisance de la chose. Le
+      profil de dé-identification propre à DICOM liste les étiquettes à
+      traiter avant qu'un jeu de données puisse se dire dé-identifié, et
+      il court sur des <em>centaines</em> d'entrées, parce que l'identité
+      se loge à plus d'endroits que le champ du nom&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Des identifiants directs au-delà du nom</strong> &mdash;
+        date de naissance, identifiant patient, numéro de dossier, les
+        noms du médecin et de l'établissement.
+      </li>
+      <li>
+        <strong>Des clés</strong> &mdash; les identifiants uniques
+        estampillés dans chaque fichier&nbsp;: ils ne disent pas qui vous
+        êtes, mais exactement <em>quel dossier vous êtes</em>, pour tout
+        système qui a vu l'original.
+      </li>
+      <li>
+        <strong>Des quasi-identifiants</strong> &mdash; date et heure de
+        l'examen, modèle et numéro de série de l'appareil, région du
+        corps, âge du patient&nbsp;: vagues un à un, étroits ensemble.
+      </li>
+      <li>
+        <strong>Les pixels eux-mêmes</strong> &mdash; l'échographie et
+        d'autres modalités gravent le nom du patient droit dans l'image,
+        là où aucune retouche d'étiquettes n'atteint. (Pour une image
+        exportée, c'est l'affaire d'un
+        <a href="../../caviarder-une-image/">caviardage au niveau des
+        pixels</a>, pas d'un outil de métadonnées.)
+      </li>
+    </ul>
+    <p>
+      Voilà pourquoi la visionneuse d'ici a un panneau qui liste
+      exactement ce qui, dans votre fichier, identifie le patient, et à
+      quel degré &mdash; bâti sur la liste du standard lui-même. Et voilà
+      pourquoi la visionneuse ne fait que <em>lire</em>&nbsp;: elle ne
+      contient aucun code qui écrive un fichier DICOM, parce
+      qu'&laquo;&nbsp;anonymisé&nbsp;&raquo; est une promesse dont la
+      barre est bien plus haute que celle qu'une visionneuse franchit
+      &mdash; et un outil qui la tiendrait à moitié serait pire qu'un
+      outil qui ne la fait jamais.
+    </p>
+  </section>
+
+  <section>
+    <h2>Manier un examen comme le dossier qu'il est</h2>
+    <p>
+      Les habitudes découlent de tout ce qui précède&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Regardez-le en local.</strong> Une visionneuse qui marche
+        wifi coupé &mdash; celle-ci le fait &mdash; a prouvé où le travail
+        se passe. La visionneuse fournie sur le disque, si elle tourne sur
+        votre machine, convient aussi.
+      </li>
+      <li>
+        <strong>Partagez par les canaux médicaux quand le contenu est
+        l'enjeu.</strong> Envoyer une étude à un autre hôpital est un
+        problème résolu, avec une infrastructure qui rend des
+        comptes&nbsp;; un courriel personnel avec un <code>.zip</code> de
+        fichiers <code>.dcm</code> est une copie de votre dossier dans des
+        serveurs de messagerie, indéfiniment.
+      </li>
+      <li>
+        <strong>Si vous devez partager un fichier, sachez d'abord ce qu'il
+        y a dedans.</strong> Lisez l'en-tête et le panneau d'identité, pour
+        que ce que vous transmettez soit une décision plutôt qu'une
+        surprise &mdash; et considérez la dé-identification en règle comme
+        un service que votre centre d'imagerie vous doit sur demande, pas
+        comme une case que vous improvisez.
+      </li>
+      <li>
+        <strong>Le disque survit à la démarche.</strong> La copie du
+        dossier de téléchargements et le CD dans le tiroir sont eux aussi
+        des dossiers complets, comme le scan de pièce d'identité que
+        personne ne se souvient d'avoir effacé.
+      </li>
+    </ul>
+    <p>
+      Rien de tout cela ne dit de ne jamais partager un examen &mdash; les
+      seconds avis sont la raison d'être des copies. Cela dit&nbsp;: le
+      fichier est un document sur vous, et les deux questions auxquelles
+      tout ce groupe de guides revient sans cesse sont ici aussi les
+      bonnes &mdash; à qui le remet-on, et cette remise devait-elle
+      seulement avoir lieu.
+    </p>
+  </section>

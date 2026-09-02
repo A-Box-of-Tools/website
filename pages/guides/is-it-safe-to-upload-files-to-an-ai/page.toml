@@ -1,0 +1,41 @@
+#
+# Guide: is it safe to upload files to an AI?
+#
+# The flagship question asked again, ten guides later, about the destination
+# people actually send files to now. A chat window is an upload form that
+# does not look like one, and it differs from a converter in three ways that
+# matter: the content is read rather than transformed, an agent may forward
+# it onward, and the file people paste is the sensitive one, because the job
+# is "explain this". The four checks mostly do not translate - a chatbot
+# needs the network by design - so the discipline shifts to sending less and
+# sending it clean, which is where this site's redaction and EXIF tools earn
+# their place as the pre-flight step.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-upload-files-to-an-ai"
+kind = "guide"
+nav = "Is it safe to upload files to an AI?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is It Safe to Upload Files to an AI?"
+description = "A chat window is an upload form that does not look like one. Where a file you hand to an AI actually goes, how that differs from a converter, and how to send less - and send it clean - when the job is worth it."
+
+heading = "Is it safe to upload files to an AI?"
+lede = """
+    The same question this site's first guide asked about converters,
+    aimed at the place files actually go now. The honest answer is the
+    same shape: usually nothing bad happens, and you cannot verify any of
+    it &mdash; plus one difference that matters. A converter transforms
+    your file without caring what is in it. An AI is sent the file
+    precisely so that something will read it."""
+
+updated = "27 August 2026"
+published = "2026-08-27"
+lastmod = "2026-08-27"
+
+og_title = "Is it safe to upload files to an AI?"
+og_description = "A chat window is an upload form that does not look like one. Where the file actually goes, what makes an AI different from a converter, and how to send less and send it clean."
+og_image_alt = "abox.tools - tools that never touch a server"
