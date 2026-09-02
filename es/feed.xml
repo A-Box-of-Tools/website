@@ -39,11 +39,32 @@
     <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
+    <title type="html">Cortador de audio</title>
+    <id>https://abox.tools/es/cortar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Reproduce una grabación y marca cada trozo que valga la pena según pasa, y guarda luego esos trozos como un solo archivo. Cortes exactos al sample, sin chasquidos en las uniones, sin subir nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Cortador de vídeo</title>
     <id>https://abox.tools/es/cortar-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Mira un vídeo y ve marcando cada trozo que valga la pena mientras se reproduce; luego guarda esos trozos en un solo archivo. Todo en el navegador: sin subir nada, sin recodificar nada y también sin conexión.</summary>
+  </entry>
+  <entry>
+    <title type="html">Editor de audio</title>
+    <id>https://abox.tools/es/editar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Pon una pista del revés, acelérala o ralentízala y levanta una grabación que quedó floja. También le saca el sonido a un vídeo. Todo en el navegador, sin subir nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extraer el audio de un vídeo</title>
+    <id>https://abox.tools/es/extraer-audio-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/extraer-audio-de-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Saca el sonido de un MP4, MOV o WebM y guárdalo como WAV. El vídeo no sale de tu dispositivo y su imagen no se descodifica en ningún momento: todo el trabajo ocurre en tu propio navegador.</summary>
   </entry>
   <entry>
     <title type="html">Recortador de vídeo</title>
@@ -102,20 +123,6 @@
     <summary type="html">Convierte una lista de alturas en una imagen lado a lado: cómo escribir las alturas, qué figura elegir para un niño, por qué un objeto familiar hace más que una tercera persona, y cómo sacar el gráfico como PNG o SVG.</summary>
   </entry>
   <entry>
-    <title type="html">Editor de audio</title>
-    <id>https://abox.tools/es/editar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Pon una pista del revés, acelérala o ralentízala y levanta una grabación que quedó floja. También le saca el sonido a un vídeo. Todo en el navegador, sin subir nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Extraer el audio de un vídeo</title>
-    <id>https://abox.tools/es/extraer-audio-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/extraer-audio-de-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Saca el sonido de un MP4, MOV o WebM y guárdalo como WAV. El vídeo no sale de tu dispositivo y su imagen no se descodifica en ningún momento: todo el trabajo ocurre en tu propio navegador.</summary>
-  </entry>
-  <entry>
     <title type="html">Formateador de JSON</title>
     <id>https://abox.tools/es/formatear-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/apilar-imagenes/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Combina una ráfaga de fotografías en una sola: promédialas para matar el ruido, toma la mediana para quitar a la gente de una escena, aclara para dejar estelas de estrellas o apila el enfoque de una macro. Lee CR2, NEF, ARW, DNG, RAF y CR3 sacando la propia vista previa de la cámara. Funciona entero en el navegador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cortador de audio</title>
-    <id>https://abox.tools/es/cortar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Reproduce una grabación y marca cada trozo que valga la pena según pasa, y guarda luego esos trozos como un solo archivo. Cortes exactos al sample, sin chasquidos en las uniones, sin subir nada.</summary>
   </entry>
   <entry>
     <title type="html">Creador de GIF</title>

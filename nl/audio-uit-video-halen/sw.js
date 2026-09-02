@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/audio-uit-video-halen/:';
-const CACHE_NAME=CACHE_PREFIX+'a609ec7707';
+const CACHE_NAME=CACHE_PREFIX+'b38c4d28ee';
 const ASSETS=[
 './',
 'index.html',
@@ -9,11 +9,11 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
-'src/decode.js',
+'src/shared/audio-decode.js',
+'src/shared/samplerate.js',
+'src/shared/wav.js',
 'src/main.js',
 'src/mono.js',
-'src/samplerate.js',
-'src/wav.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

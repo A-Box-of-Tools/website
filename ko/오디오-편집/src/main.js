@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./decode.js';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
 import{render,lengthAfter}from'./edit.js';
 import{peak,dbToGain,gainToDb,normalizeGain}from'./effects.js';
-import{writeWav,wavSize}from'./wav.js';
+import{writeWav,wavSize}from'./shared/wav.js';
 import{drawWaveform}from'./waveform.js';
 const $=(id)=>document.getElementById(id);
 const el={

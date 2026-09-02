@@ -53,6 +53,27 @@
     <summary type="html">把 MP4、MOV 或 WebM 裁成任意形狀，方圖、9:16 直式，或者精確到畫素的一個框。在瀏覽器裡跑，不上傳，聲音留著，斷網也能用。</summary>
   </entry>
   <entry>
+    <title type="html">從影片裡提取音訊</title>
+    <id>https://abox.tools/zh-TW/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/extract-audio-from-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 裡的聲音取出來，存成 WAV。影片不會離開你的裝置，畫面也從不解碼，整個過程都在你自己的瀏覽器裡跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">音訊剪輯</title>
+    <id>https://abox.tools/zh-TW/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">一邊播放錄音，一邊把值得留下的段落隨手標出來，然後把這些段落存成一個檔案。切點精確到取樣，接縫不咔噠，什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">音訊編輯</title>
+    <id>https://abox.tools/zh-TW/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/edit-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把一段聲音倒著放、放快或放慢，把錄輕了的錄音提上來。影片裡的聲音也能抽出來。在瀏覽器裡跑，什麼都不上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">PDF 塗黑</title>
     <id>https://abox.tools/zh-TW/redact-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-pdf/"/>
@@ -95,13 +116,6 @@
     <summary type="html">在你的瀏覽器裡把 YAML 轉成 JSON、把 JSON 轉成 YAML。它讀的是 YAML 1.2，所以 yes 和 no 還是字串，而且會明確說出每個方向丟了什麼。什麼都不上傳：一份配置檔案永遠不會離開你的裝置。</summary>
   </entry>
   <entry>
-    <title type="html">從影片裡提取音訊</title>
-    <id>https://abox.tools/zh-TW/extract-audio-from-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/extract-audio-from-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 裡的聲音取出來，存成 WAV。影片不會離開你的裝置，畫面也從不解碼，整個過程都在你自己的瀏覽器裡跑。</summary>
-  </entry>
-  <entry>
     <title type="html">怎麼做一張身高對比圖</title>
     <id>https://abox.tools/zh-TW/guides/make-a-height-comparison-chart/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-height-comparison-chart/"/>
@@ -121,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-heights/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">把身高並排比出來。可以加男性、女性、男孩、女孩，也可以加物件——門、窗、白板、自動售貨機——用釐米或者英尺英寸都行，做好的圖能下載成 PNG 或 SVG。它是在你的瀏覽器裡畫的。</summary>
-  </entry>
-  <entry>
-    <title type="html">音訊編輯</title>
-    <id>https://abox.tools/zh-TW/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/edit-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把一段聲音倒著放、放快或放慢，把錄輕了的錄音提上來。影片裡的聲音也能抽出來。在瀏覽器裡跑，什麼都不上傳。</summary>
   </entry>
   <entry>
     <title type="html">GIF 製作</title>
@@ -191,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/document-scanner/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">把手機拍的紙張照片變成一份擺正、亮度均勻的 PDF。四個角替你找好，透視給你掰正，陰影除掉。全部在你的瀏覽器裡跑，什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">音訊剪輯</title>
-    <id>https://abox.tools/zh-TW/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">一邊播放錄音，一邊把值得留下的段落隨手標出來，然後把這些段落存成一個檔案。切點精確到取樣，接縫不咔噠，什麼都不上傳。</summary>
   </entry>
   <entry>
     <title type="html">AI 智慧體能用這些工具嗎？</title>

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/sunting-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'d54d54461c';
+const CACHE_NAME=CACHE_PREFIX+'8cabc65607';
 const ASSETS=[
 './',
 'index.html',
@@ -9,14 +9,14 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
-'src/decode.js',
+'src/shared/audio-decode.js',
+'src/shared/samplerate.js',
+'src/shared/wav.js',
 'src/edit.js',
 'src/effects.js',
 'src/main.js',
-'src/samplerate.js',
 'src/speed.js',
 'src/stretch.js',
-'src/wav.js',
 'src/waveform.js',
 'analytics.js',
 ];

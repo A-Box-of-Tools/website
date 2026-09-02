@@ -32,11 +32,32 @@
     <uri>https://abox.tools/ar/</uri>
   </author>
   <entry>
+    <title type="html">استخراج الصوت من الفيديو</title>
+    <id>https://abox.tools/ar/استخراج-الصوت-من-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/استخراج-الصوت-من-الفيديو/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">استخرج الصوت من ملف MP4 أو MOV أو WebM واحفظه بصيغة WAV. الفيديو لا يغادر جهازك، وصورته لا تُفكّ شفرتها أبداً، فالعمل كلّه يجري في متصفّحك أنت.</summary>
+  </entry>
+  <entry>
     <title type="html">اقتصاص الفيديو</title>
     <id>https://abox.tools/ar/اقتصاص-الفيديو/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/اقتصاص-الفيديو/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">اقتصص ملف MP4 أو MOV أو WebM إلى أي نسبة - مربّعة، أو 9:16، أو إطار بكسل محدّد. يعمل داخل متصفحك: لا يُرفع شيء، ويبقى الصوت، ويعمل دون اتصال.</summary>
+  </entry>
+  <entry>
+    <title type="html">محرّر الصوت</title>
+    <id>https://abox.tools/ar/تحرير-الصوت/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">مقصّ الصوت</title>
+    <id>https://abox.tools/ar/قص-الصوت/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">شغّل تسجيلاً وعلّم على كل جزء يستحق البقاء وهو يمرّ، ثم احفظ تلك الأجزاء ملفاً واحداً. قَصٌّ دقيق إلى العيّنة، وبلا طقطقة عند الوصلات، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">مقصّ الفيديو</title>
@@ -67,13 +88,6 @@
     <summary type="html">اقرأ رمز QR من صورة أو لقطة شاشة أو كاميرتك، وانظر بالضبط إلى أين يذهب الرابط قبل أن تفتحه. وباركودات EAN وUPC وCode 128 وCode 39 وITF كذلك. ولا يُرفع شيء.</summary>
   </entry>
   <entry>
-    <title type="html">استخراج الصوت من الفيديو</title>
-    <id>https://abox.tools/ar/استخراج-الصوت-من-الفيديو/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/استخراج-الصوت-من-الفيديو/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">استخرج الصوت من ملف MP4 أو MOV أو WebM واحفظه بصيغة WAV. الفيديو لا يغادر جهازك، وصورته لا تُفكّ شفرتها أبداً، فالعمل كلّه يجري في متصفّحك أنت.</summary>
-  </entry>
-  <entry>
     <title type="html">رسم مقارنة الأطوال</title>
     <id>https://abox.tools/ar/مقارنة-الاطوال/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-الاطوال/"/>
@@ -86,13 +100,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">حوّل قائمة أطوال إلى صورة جنباً إلى جنب: كيف تكتب الأطوال، وأي شكل تختار للطفل، ولماذا يفعل شيء مألوف واحد أكثر مما يفعله شخص ثالث، وكيف تُخرِج الرسم بصيغة PNG أو SVG.</summary>
-  </entry>
-  <entry>
-    <title type="html">محرّر الصوت</title>
-    <id>https://abox.tools/ar/تحرير-الصوت/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">محوّل YAML إلى JSON</title>
@@ -191,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/اقتصاص-الفيديو/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">اختصر مقطعاً إلى مربّع أو إلى 9:16 طولي أو إلى إطار بكسل محدّد. أي نسبة تريدها كل منصة، ولماذا على الاقتصاص أن يعيد الترميز بينما لا يفعل التقصير، وماذا يكلّف ذلك.</summary>
-  </entry>
-  <entry>
-    <title type="html">مقصّ الصوت</title>
-    <id>https://abox.tools/ar/قص-الصوت/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">شغّل تسجيلاً وعلّم على كل جزء يستحق البقاء وهو يمرّ، ثم احفظ تلك الأجزاء ملفاً واحداً. قَصٌّ دقيق إلى العيّنة، وبلا طقطقة عند الوصلات، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">HEIC إلى JPG</title>

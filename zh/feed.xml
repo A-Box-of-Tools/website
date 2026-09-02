@@ -32,6 +32,13 @@
     <uri>https://abox.tools/zh/</uri>
   </author>
   <entry>
+    <title type="html">从视频里提取音频</title>
+    <id>https://abox.tools/zh/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/extract-audio-from-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 里的声音取出来，存成 WAV。视频不会离开你的设备，画面也从不解码，整个过程都在你自己的浏览器里跑。</summary>
+  </entry>
+  <entry>
     <title type="html">视频剪切</title>
     <id>https://abox.tools/zh/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
@@ -51,6 +58,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/crop-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">把 MP4、MOV 或 WebM 裁成任意形状，方图、9:16 竖屏，或者精确到像素的一个框。在浏览器里跑，不上传，声音留着，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">音频剪辑</title>
+    <id>https://abox.tools/zh/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">一边播放录音，一边把值得留下的段落随手标出来，然后把这些段落存成一个文件。切点精确到采样，接缝不咔哒，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">音频编辑</title>
+    <id>https://abox.tools/zh/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/edit-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把一段声音倒着放、放快或放慢，把录轻了的录音提上来。视频里的声音也能抽出来。在浏览器里跑，什么都不上传。</summary>
   </entry>
   <entry>
     <title type="html">PDF 涂黑</title>
@@ -95,13 +116,6 @@
     <summary type="html">在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。</summary>
   </entry>
   <entry>
-    <title type="html">从视频里提取音频</title>
-    <id>https://abox.tools/zh/extract-audio-from-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/extract-audio-from-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 里的声音取出来，存成 WAV。视频不会离开你的设备，画面也从不解码，整个过程都在你自己的浏览器里跑。</summary>
-  </entry>
-  <entry>
     <title type="html">怎么做一张身高对比图</title>
     <id>https://abox.tools/zh/guides/make-a-height-comparison-chart/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-height-comparison-chart/"/>
@@ -121,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-heights/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">把身高并排比出来。可以加男性、女性、男孩、女孩，也可以加物件——门、窗、白板、自动售货机——用厘米或者英尺英寸都行，做好的图能下载成 PNG 或 SVG。它是在你的浏览器里画的。</summary>
-  </entry>
-  <entry>
-    <title type="html">音频编辑</title>
-    <id>https://abox.tools/zh/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/edit-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把一段声音倒着放、放快或放慢，把录轻了的录音提上来。视频里的声音也能抽出来。在浏览器里跑，什么都不上传。</summary>
   </entry>
   <entry>
     <title type="html">GIF 制作</title>
@@ -191,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/video-to-gif/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">把 MP4、MOV 或 WebM 里的一段做成 GIF 动图。段落、宽度和帧率你来定，读帧和写 GIF 都在你的浏览器里完成。什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">音频剪辑</title>
-    <id>https://abox.tools/zh/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">一边播放录音，一边把值得留下的段落随手标出来，然后把这些段落存成一个文件。切点精确到采样，接缝不咔哒，什么都不上传。</summary>
   </entry>
   <entry>
     <title type="html">AI 智能体能用这些工具吗？</title>

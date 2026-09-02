@@ -39,6 +39,13 @@
     <summary type="html">Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur&amp;nbsp;: rien n'est envoyé et rien n'est réencodé.</summary>
   </entry>
   <entry>
+    <title type="html">Découpeur audio</title>
+    <id>https://abox.tools/fr/couper-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
+  </entry>
+  <entry>
     <title type="html">Extracteur d'image</title>
     <id>https://abox.tools/fr/extraire-une-image-d-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-une-image-d-une-video/"/>
@@ -46,11 +53,25 @@
     <summary type="html">Enregistrez n'importe quelle image d'un MP4, MOV ou WebM en PNG ou JPEG pleine taille. Avancez image par image, ou prenez-en une toutes les quelques secondes. Tout se passe dans le navigateur, rien n'est envoyé.</summary>
   </entry>
   <entry>
+    <title type="html">Extraire l'audio d'une vidéo</title>
+    <id>https://abox.tools/fr/extraire-l-audio-d-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-l-audio-d-une-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV. La vidéo ne quitte pas votre machine et son image n'est jamais décodée&amp;nbsp;: tout le travail se fait dans votre propre navigateur.</summary>
+  </entry>
+  <entry>
     <title type="html">Recadreur de vidéos</title>
     <id>https://abox.tools/fr/recadrer-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/recadrer-une-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Recadrez un MP4, un MOV ou un WebM dans la forme que vous voulez&amp;nbsp;: carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur, le son est gardé et rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Éditeur audio</title>
+    <id>https://abox.tools/fr/modifier-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/modifier-un-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi.</summary>
   </entry>
   <entry>
     <title type="html">Caviardeur de PDF</title>
@@ -102,13 +123,6 @@
     <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
   </entry>
   <entry>
-    <title type="html">Extraire l'audio d'une vidéo</title>
-    <id>https://abox.tools/fr/extraire-l-audio-d-une-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-l-audio-d-une-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV. La vidéo ne quitte pas votre machine et son image n'est jamais décodée&amp;nbsp;: tout le travail se fait dans votre propre navigateur.</summary>
-  </entry>
-  <entry>
     <title type="html">Formateur JSON</title>
     <id>https://abox.tools/fr/formater-du-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
@@ -121,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-xml/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Mettez en forme, indentez et compactez du XML, et convertissez XML en JSON ou JSON en XML. L'analyseur tourne dans votre navigateur et rien n'est envoyé, donc un flux, une facture ou un fichier de configuration ne quitte jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Éditeur audio</title>
-    <id>https://abox.tools/fr/modifier-un-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/modifier-un-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi.</summary>
   </entry>
   <entry>
     <title type="html">Comment recadrer une vidéo dans une autre forme</title>
@@ -149,13 +156,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/faire-un-timelapse/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Transformez une longue vidéo en timelapse&amp;nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne.</summary>
-  </entry>
-  <entry>
-    <title type="html">Découpeur audio</title>
-    <id>https://abox.tools/fr/couper-un-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
   </entry>
   <entry>
     <title type="html">Empileur d'images</title>

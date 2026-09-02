@@ -32,6 +32,20 @@
     <uri>https://abox.tools/it/</uri>
   </author>
   <entry>
+    <title type="html">Editor audio</title>
+    <id>https://abox.tools/it/modificare-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Estrarre l'audio da un video</title>
+    <id>https://abox.tools/it/estrarre-audio-da-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-audio-da-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Tira fuori il suono da un MP4, MOV o WebM e salvalo come WAV. Il video non lascia il tuo dispositivo e la sua immagine non viene mai decodificata: tutto il lavoro gira nel tuo browser.</summary>
+  </entry>
+  <entry>
     <title type="html">Estrattore di fotogrammi</title>
     <id>https://abox.tools/it/estrarre-fotogramma-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-fotogramma-video/"/>
@@ -51,6 +65,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser, non carica niente, non ricodifica niente e funziona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Taglierino audio</title>
+    <id>https://abox.tools/it/tagliare-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti.</summary>
   </entry>
   <entry>
     <title type="html">Lettore di QR code e codici a barre</title>
@@ -100,20 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/convertire-yaml-in-json/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Converti YAML in JSON e JSON in YAML nel tuo browser. Legge YAML 1.2, quindi yes e no restano stringhe, e dice esattamente cosa perde ogni direzione. Non viene caricato niente: un file di configurazione non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Editor audio</title>
-    <id>https://abox.tools/it/modificare-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Estrarre l'audio da un video</title>
-    <id>https://abox.tools/it/estrarre-audio-da-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-audio-da-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Tira fuori il suono da un MP4, MOV o WebM e salvalo come WAV. Il video non lascia il tuo dispositivo e la sua immagine non viene mai decodificata: tutto il lavoro gira nel tuo browser.</summary>
   </entry>
   <entry>
     <title type="html">Formattatore JSON</title>
@@ -184,13 +191,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/scansionare-documenti/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Trasforma la foto di una pagina scattata col telefono in un PDF raddrizzato e illuminato in modo uniforme. Gli angoli te li trova lui, la prospettiva viene annullata, l'ombra viene divisa via. Funziona interamente nel tuo browser: non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Taglierino audio</title>
-    <id>https://abox.tools/it/tagliare-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti.</summary>
   </entry>
   <entry>
     <title type="html">Unire e dividere PDF</title>

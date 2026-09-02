@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/extract-audio-from-video/:';
-const CACHE_NAME=CACHE_PREFIX+'14e843e874';
+const CACHE_NAME=CACHE_PREFIX+'b090b7f2c4';
 const ASSETS=[
 './',
 'index.html',
@@ -9,11 +9,11 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
-'src/decode.js',
+'src/shared/audio-decode.js',
+'src/shared/samplerate.js',
+'src/shared/wav.js',
 'src/main.js',
 'src/mono.js',
-'src/samplerate.js',
-'src/wav.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

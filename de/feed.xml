@@ -32,11 +32,32 @@
     <uri>https://abox.tools/de/</uri>
   </author>
   <entry>
+    <title type="html">Audio-Editor</title>
+    <id>https://abox.tools/de/audio-bearbeiten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-bearbeiten/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio-Schneider</title>
+    <id>https://abox.tools/de/audio-schneiden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-schneiden/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
+  </entry>
+  <entry>
     <title type="html">Standbild-Greifer</title>
     <id>https://abox.tools/de/standbild-aus-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/standbild-aus-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Jedes Einzelbild eines MP4, MOV oder WebM in voller Größe als PNG oder JPEG speichern. Bild für Bild vorrücken oder alle paar Sekunden eines nehmen. Läuft im Browser, es wird nichts hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ton aus Video extrahieren</title>
+    <id>https://abox.tools/de/ton-aus-video-extrahieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ton-aus-video-extrahieren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Holen Sie den Ton aus einem MP4, MOV oder WebM und speichern Sie ihn als WAV. Das Video verlässt Ihr Gerät nicht, und sein Bild wird nie dekodiert. Die ganze Arbeit läuft in Ihrem eigenen Browser.</summary>
   </entry>
   <entry>
     <title type="html">Video-Schneider</title>
@@ -67,13 +88,6 @@
     <summary type="html">Einen QR-Code aus einem Foto, einem Screenshot oder mit der Kamera scannen und sehen, wohin der Link wirklich führt, bevor Sie ihn öffnen. Auch EAN, UPC, Code 128, Code 39 und ITF. Nichts wird hochgeladen.</summary>
   </entry>
   <entry>
-    <title type="html">Audio-Editor</title>
-    <id>https://abox.tools/de/audio-bearbeiten/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-bearbeiten/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen.</summary>
-  </entry>
-  <entry>
     <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
     <id>https://abox.tools/de/base64-kodieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
@@ -102,13 +116,6 @@
     <summary type="html">Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
-    <title type="html">Ton aus Video extrahieren</title>
-    <id>https://abox.tools/de/ton-aus-video-extrahieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ton-aus-video-extrahieren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Holen Sie den Ton aus einem MP4, MOV oder WebM und speichern Sie ihn als WAV. Das Video verlässt Ihr Gerät nicht, und sein Bild wird nie dekodiert. Die ganze Arbeit läuft in Ihrem eigenen Browser.</summary>
-  </entry>
-  <entry>
     <title type="html">Wie man ein Größenvergleichsdiagramm erstellt</title>
     <id>https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/yaml-in-json-umwandeln/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio-Schneider</title>
-    <id>https://abox.tools/de/audio-schneiden/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-schneiden/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
     <title type="html">Bild-Stacker</title>

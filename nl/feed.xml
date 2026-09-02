@@ -32,6 +32,27 @@
     <uri>https://abox.tools/nl/</uri>
   </author>
   <entry>
+    <title type="html">Audio uit video halen</title>
+    <id>https://abox.tools/nl/audio-uit-video-halen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-uit-video-halen/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Haal het geluid uit een MP4, MOV of WebM en bewaar het als WAV. De video blijft op je eigen apparaat en het beeld wordt nooit gedecodeerd, want het hele karwei draait in je eigen browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audiobewerker</title>
+    <id>https://abox.tools/nl/audio-bewerken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audioknipper</title>
+    <id>https://abox.tools/nl/audio-knippen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
+  </entry>
+  <entry>
     <title type="html">Framegrabber</title>
     <id>https://abox.tools/nl/frame-uit-video-halen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/frame-uit-video-halen/"/>
@@ -65,20 +86,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-scannen/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio uit video halen</title>
-    <id>https://abox.tools/nl/audio-uit-video-halen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-uit-video-halen/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Haal het geluid uit een MP4, MOV of WebM en bewaar het als WAV. De video blijft op je eigen apparaat en het beeld wordt nooit gedecodeerd, want het hele karwei draait in je eigen browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audiobewerker</title>
-    <id>https://abox.tools/nl/audio-bewerken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
   </entry>
   <entry>
     <title type="html">Base64-codeerder &amp; -decodeerder</title>
@@ -142,13 +149,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-stacken/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Voeg een reeks foto's samen tot &amp;eacute;&amp;eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&amp;egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audioknipper</title>
-    <id>https://abox.tools/nl/audio-knippen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
   </entry>
   <entry>
     <title type="html">Documentscanner</title>

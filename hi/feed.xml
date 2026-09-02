@@ -32,6 +32,20 @@
     <uri>https://abox.tools/hi/</uri>
   </author>
   <entry>
+    <title type="html">ऑडियो एडिटर</title>
+    <id>https://abox.tools/hi/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">किसी ट्रैक को उलटी दिशा में चलाइए, उसे तेज़ या धीमा कीजिए, और धीमी रिकॉर्डिंग को ऊँचा कीजिए। वीडियो में से आवाज़ भी निकाल देता है। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऑडियो ट्रिमर</title>
+    <id>https://abox.tools/hi/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
     <title type="html">वीडियो कटर</title>
     <id>https://abox.tools/hi/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-video/"/>
@@ -51,6 +65,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/grab-frame/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">MP4, MOV या WebM का कोई भी फ़्रेम पूरे आकार की PNG या JPEG में सहेजिए। एक-एक फ़्रेम आगे बढ़िए, या हर कुछ सेकंड में एक तस्वीर लीजिए। सब आपके ब्राउज़र में चलता है, कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो से ऑडियो निकालें</title>
+    <id>https://abox.tools/hi/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/extract-audio-from-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM से आवाज़ निकालिए और उसे WAV में सेव कीजिए। वीडियो आपकी डिवाइस से बाहर नहीं जाता और उसकी तस्वीर कभी डिकोड नहीं होती, क्योंकि पूरा काम आपके अपने ब्राउज़र में होता है।</summary>
   </entry>
   <entry>
     <title type="html">PDF से मिटाइए</title>
@@ -109,25 +130,11 @@
     <summary type="html">ऊँचाइयों की सूची को अगल-बगल की तस्वीर में बदलिए: ऊँचाइयाँ कैसे लिखें, बच्चे के लिए कौन-सी आकृति चुनें, एक जानी-पहचानी चीज़ तीसरे व्यक्ति से ज़्यादा काम क्यों करती है, और चार्ट को PNG या SVG के रूप में कैसे बाहर लाएँ।</summary>
   </entry>
   <entry>
-    <title type="html">ऑडियो एडिटर</title>
-    <id>https://abox.tools/hi/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">किसी ट्रैक को उलटी दिशा में चलाइए, उसे तेज़ या धीमा कीजिए, और धीमी रिकॉर्डिंग को ऊँचा कीजिए। वीडियो में से आवाज़ भी निकाल देता है। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
     <title type="html">टेक्स्ट डिफ़</title>
     <id>https://abox.tools/hi/text-diff/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/text-diff/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
-  </entry>
-  <entry>
-    <title type="html">वीडियो से ऑडियो निकालें</title>
-    <id>https://abox.tools/hi/extract-audio-from-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/extract-audio-from-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">MP4, MOV या WebM से आवाज़ निकालिए और उसे WAV में सेव कीजिए। वीडियो आपकी डिवाइस से बाहर नहीं जाता और उसकी तस्वीर कभी डिकोड नहीं होती, क्योंकि पूरा काम आपके अपने ब्राउज़र में होता है।</summary>
   </entry>
   <entry>
     <title type="html">GIF मेकर</title>
@@ -149,13 +156,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/stack-images/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">एक बर्स्ट में ली गई तस्वीरों को एक में जोड़िए। औसत लेकर नॉइज़ खत्म कीजिए, माध्यिका से दृश्य में से लोगों को हटाइए, तारों की लकीरों के लिए हल्का कीजिए, या किसी मैक्रो शॉट की फ़ोकस स्टैकिंग कीजिए। CR2, NEF, ARW, DNG, RAF और CR3 को कैमरे की अपनी झलक निकालकर पढ़ता है। सब कुछ आपके ब्राउज़र में ही चलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऑडियो ट्रिमर</title>
-    <id>https://abox.tools/hi/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
   </entry>
   <entry>
     <title type="html">किसी वीडियो को दूसरे आकार में कैसे क्रॉप करें</title>

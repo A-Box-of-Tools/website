@@ -46,6 +46,27 @@
     <summary type="html">Corte um MP4, MOV ou WebM para qualquer formato: quadrado, 9:16, ou uma caixa exata em pixels. Roda no navegador, não envia nada, mantém o som e funciona offline.</summary>
   </entry>
   <entry>
+    <title type="html">Cortador de áudio</title>
+    <id>https://abox.tools/pt/cortar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Toque uma gravação e marque cada trecho que vale a pena enquanto ele passa, depois salve esses trechos num arquivo só. Cortes exatos na amostra, sem estalo nas emendas, nada enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Editor de áudio</title>
+    <id>https://abox.tools/pt/editar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/editar-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Toque uma faixa de trás para a frente, acelere ou desacelere, e deixe uma gravação baixa mais alta. Também tira o som de dentro de um vídeo. Roda no navegador e não envia nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extrair o áudio de um vídeo</title>
+    <id>https://abox.tools/pt/extrair-audio-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/extrair-audio-de-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Tire o som de um MP4, MOV ou WebM e salve como WAV. O vídeo não sai do seu computador e a imagem dele nunca é decodificada: o trabalho todo roda no seu próprio navegador.</summary>
+  </entry>
+  <entry>
     <title type="html">Extrator de quadro</title>
     <id>https://abox.tools/pt/extrair-quadro-de-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/extrair-quadro-de-video/"/>
@@ -102,20 +123,6 @@
     <summary type="html">Converta YAML para JSON e JSON para YAML no seu navegador. Ele lê YAML 1.2, então yes e no continuam sendo texto, e diz exatamente o que cada sentido perde. Nada é enviado: um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
-    <title type="html">Editor de áudio</title>
-    <id>https://abox.tools/pt/editar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/editar-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Toque uma faixa de trás para a frente, acelere ou desacelere, e deixe uma gravação baixa mais alta. Também tira o som de dentro de um vídeo. Roda no navegador e não envia nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Extrair o áudio de um vídeo</title>
-    <id>https://abox.tools/pt/extrair-audio-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/extrair-audio-de-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Tire o som de um MP4, MOV ou WebM e salve como WAV. O vídeo não sai do seu computador e a imagem dele nunca é decodificada: o trabalho todo roda no seu próprio navegador.</summary>
-  </entry>
-  <entry>
     <title type="html">Formatador de JSON</title>
     <id>https://abox.tools/pt/formatar-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-json/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-video/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cortador de áudio</title>
-    <id>https://abox.tools/pt/cortar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Toque uma gravação e marque cada trecho que vale a pena enquanto ele passa, depois salve esses trechos num arquivo só. Cortes exatos na amostra, sem estalo nas emendas, nada enviado.</summary>
   </entry>
   <entry>
     <title type="html">Criador de GIF</title>

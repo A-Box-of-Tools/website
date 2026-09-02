@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./decode.js';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
 import{
 formatDuration,openSegment,readTimestamps,segmentRanges,totalCaptured,
 writeTimestamps,
@@ -10,7 +10,7 @@ import{Timeline,formatTime,parseTime}from'./timeline.js';
 import{
 invertRanges,isUntouched,planSections,sectionFrames,totalSeconds,trim,
 }from'./trim.js';
-import{writeWav,wavSize}from'./wav.js';
+import{writeWav,wavSize}from'./shared/wav.js';
 import{drawWaveform,summarise}from'./waveform.js';
 const $=(id)=>document.getElementById(id);
 const el={

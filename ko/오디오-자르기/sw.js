@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/오디오-자르기/:';
-const CACHE_NAME=CACHE_PREFIX+'aebd599fce';
+const CACHE_NAME=CACHE_PREFIX+'591a20a275';
 const ASSETS=[
 './',
 'index.html',
@@ -9,13 +9,13 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
-'src/decode.js',
+'src/shared/audio-decode.js',
+'src/shared/samplerate.js',
+'src/shared/wav.js',
 'src/main.js',
-'src/samplerate.js',
 'src/segments.js',
 'src/timeline.js',
 'src/trim.js',
-'src/wav.js',
 'src/waveform.js',
 'analytics.js',
 ];

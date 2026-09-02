@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/audio-schneiden/:';
-const CACHE_NAME=CACHE_PREFIX+'7314f7b1f1';
+const CACHE_NAME=CACHE_PREFIX+'fe23b4a97a';
 const ASSETS=[
 './',
 'index.html',
@@ -9,13 +9,13 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
-'src/decode.js',
+'src/shared/audio-decode.js',
+'src/shared/samplerate.js',
+'src/shared/wav.js',
 'src/main.js',
-'src/samplerate.js',
 'src/segments.js',
 'src/timeline.js',
 'src/trim.js',
-'src/wav.js',
 'src/waveform.js',
 'analytics.js',
 ];

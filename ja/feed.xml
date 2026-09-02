@@ -32,6 +32,13 @@
     <uri>https://abox.tools/ja/</uri>
   </author>
   <entry>
+    <title type="html">動画から音声を抽出</title>
+    <id>https://abox.tools/ja/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/extract-audio-from-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4やMOV、WebMから音声を取り出してWAVとして保存します。動画が端末を離れることはなく、映像は一度も復号されません。処理はすべてご自分のブラウザの中で動きます。</summary>
+  </entry>
+  <entry>
     <title type="html">動画のコマ切り出し</title>
     <id>https://abox.tools/ja/grab-frame/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/grab-frame/"/>
@@ -51,6 +58,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/crop-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">音声の切り出し</title>
+    <id>https://abox.tools/ja/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">録音を再生しながら、残したい部分に次々と印を付け、その部分を1つのファイルとして保存します。サンプル単位で正確に切れ、つなぎ目でプチッと鳴らず、アップロードもありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">音声編集ツール</title>
+    <id>https://abox.tools/ja/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/edit-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">音声を逆から再生し、速くしたり遅くしたりし、小さな録音を大きくします。動画から音声だけ取り出すこともできます。処理はブラウザの中だけ。アップロードはありません。</summary>
   </entry>
   <entry>
     <title type="html">PDFの黒塗り</title>
@@ -102,13 +123,6 @@
     <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
   </entry>
   <entry>
-    <title type="html">動画から音声を抽出</title>
-    <id>https://abox.tools/ja/extract-audio-from-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/extract-audio-from-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">MP4やMOV、WebMから音声を取り出してWAVとして保存します。動画が端末を離れることはなく、映像は一度も復号されません。処理はすべてご自分のブラウザの中で動きます。</summary>
-  </entry>
-  <entry>
     <title type="html">身長比較チャート</title>
     <id>https://abox.tools/ja/compare-heights/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/compare-heights/"/>
@@ -121,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-height-comparison-chart/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">身長の一覧を並べて見せる絵にする方法。身長の書き方、子どもにどの図を選ぶか、なぜ見慣れたもの一つが三人目より効くのか、そして図表をPNGやSVGとして取り出す方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">音声編集ツール</title>
-    <id>https://abox.tools/ja/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/edit-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">音声を逆から再生し、速くしたり遅くしたりし、小さな録音を大きくします。動画から音声だけ取り出すこともできます。処理はブラウザの中だけ。アップロードはありません。</summary>
   </entry>
   <entry>
     <title type="html">GIF作成</title>
@@ -191,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/stack-images/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">連写した写真を1枚にまとめます。平均でノイズを消し、中央値で場面から人を消し、比較明で星の軌跡にし、あるいはマクロ撮影を深度合成します。CR2・NEF・ARW・DNG・RAF・CR3は、カメラ自身のプレビューを取り出して読みます。すべてブラウザの中で動きます。</summary>
-  </entry>
-  <entry>
-    <title type="html">音声の切り出し</title>
-    <id>https://abox.tools/ja/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">録音を再生しながら、残したい部分に次々と印を付け、その部分を1つのファイルとして保存します。サンプル単位で正確に切れ、つなぎ目でプチッと鳴らず、アップロードもありません。</summary>
   </entry>
   <entry>
     <title type="html">2つのJSONファイルを比較する方法</title>

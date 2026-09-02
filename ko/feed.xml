@@ -53,6 +53,27 @@
     <summary type="html">MP4, MOV, WebM의 화면을 원하는 모양으로 자릅니다. 정사각형, 9:16, 픽셀 단위로 정확하게. 브라우저에서 돌아갑니다. 업로드 없음, 소리는 그대로, 오프라인 동작.</summary>
   </entry>
   <entry>
+    <title type="html">동영상에서 오디오 추출</title>
+    <id>https://abox.tools/ko/동영상-오디오-추출/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-오디오-추출/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4, MOV, WebM에서 소리를 꺼내 WAV로 저장합니다. 동영상은 기기를 떠나지 않고 화면은 한 번도 디코딩되지 않습니다. 모든 작업이 사용자의 브라우저 안에서 이뤄집니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">오디오 자르기</title>
+    <id>https://abox.tools/ko/오디오-자르기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-자르기/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">녹음을 틀어 놓고 지나가는 대로 남길 부분마다 표시한 다음, 그 부분들을 한 파일로 저장합니다. 샘플 단위로 정확히 잘리고, 이음매에서 딱 소리가 나지 않으며, 아무것도 업로드되지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">오디오 편집</title>
+    <id>https://abox.tools/ko/오디오-편집/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-편집/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF 가리기</title>
     <id>https://abox.tools/ko/pdf-가리기/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
@@ -93,20 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/yaml-json-변환/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">브라우저에서 YAML을 JSON으로, JSON을 YAML로 바꿉니다. YAML 1.2를 읽어서 yes와 no가 문자열로 남고, 각 방향이 무엇을 잃는지 정확히 말해 줍니다. 아무것도 업로드되지 않아서 설정 파일이 기기를 떠나지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">동영상에서 오디오 추출</title>
-    <id>https://abox.tools/ko/동영상-오디오-추출/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-오디오-추출/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">MP4, MOV, WebM에서 소리를 꺼내 WAV로 저장합니다. 동영상은 기기를 떠나지 않고 화면은 한 번도 디코딩되지 않습니다. 모든 작업이 사용자의 브라우저 안에서 이뤄집니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">오디오 편집</title>
-    <id>https://abox.tools/ko/오디오-편집/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-편집/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">키 비교 차트</title>
@@ -170,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/문서-스캔/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">휴대폰으로 찍은 종이 사진을 반듯하고 고르게 밝은 PDF로 만듭니다. 네 모서리는 찾아 주고, 원근은 되돌리고, 그림자는 나눠서 걷어 냅니다. 전부 브라우저 안에서 돌아갑니다. 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">오디오 자르기</title>
-    <id>https://abox.tools/ko/오디오-자르기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-자르기/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">녹음을 틀어 놓고 지나가는 대로 남길 부분마다 표시한 다음, 그 부분들을 한 파일로 저장합니다. 샘플 단위로 정확히 잘리고, 이음매에서 딱 소리가 나지 않으며, 아무것도 업로드되지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">이미지 스택</title>

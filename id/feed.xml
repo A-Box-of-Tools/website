@@ -32,11 +32,25 @@
     <uri>https://abox.tools/id/</uri>
   </author>
   <entry>
+    <title type="html">Ekstrak Audio dari Video</title>
+    <id>https://abox.tools/id/ekstrak-audio-dari-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/ekstrak-audio-dari-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ambil suara dari MP4, MOV, atau WebM dan simpan sebagai WAV. Video tidak pernah meninggalkan perangkat Anda dan gambarnya tidak pernah didekode, karena seluruh pekerjaan berjalan di peramban Anda sendiri.</summary>
+  </entry>
+  <entry>
     <title type="html">Pemangkas Video</title>
     <id>https://abox.tools/id/pangkas-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/pangkas-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemotong Audio</title>
+    <id>https://abox.tools/id/potong-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Putar sebuah rekaman dan tandai setiap bagian yang layak disimpan sambil berjalan, lalu simpan bagian-bagian itu sebagai satu file. Potongan persis pada sampel, tanpa bunyi klik di sambungannya, tidak ada yang diunggah.</summary>
   </entry>
   <entry>
     <title type="html">Pemotong Video</title>
@@ -51,6 +65,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/ambil-bingkai-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Simpan bingkai mana pun dari MP4, MOV, atau WebM sebagai PNG atau JPEG ukuran penuh. Melangkah bingkai demi bingkai, atau ambil satu setiap beberapa detik. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Penyunting Audio</title>
+    <id>https://abox.tools/id/sunting-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/sunting-audio/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
   </entry>
   <entry>
     <title type="html">Pembaca QR &amp; Barcode</title>
@@ -72,13 +93,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-bagan-perbandingan-tinggi/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Ubah daftar tinggi badan menjadi gambar berdampingan: cara menulis tingginya, figur mana yang dipilih untuk anak, kenapa satu benda yang akrab lebih berguna daripada orang ketiga, dan cara mengeluarkan bagannya sebagai PNG atau SVG.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ekstrak Audio dari Video</title>
-    <id>https://abox.tools/id/ekstrak-audio-dari-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/ekstrak-audio-dari-video/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Ambil suara dari MP4, MOV, atau WebM dan simpan sebagai WAV. Video tidak pernah meninggalkan perangkat Anda dan gambarnya tidak pernah didekode, karena seluruh pekerjaan berjalan di peramban Anda sendiri.</summary>
   </entry>
   <entry>
     <title type="html">Pembanding Teks</title>
@@ -123,13 +137,6 @@
     <summary type="html">Ubah YAML ke JSON dan JSON ke YAML di peramban Anda. Ia membaca YAML 1.2, jadi yes dan no tetap berupa teks, dan ia menyebutkan persis apa yang hilang di tiap arah. Tidak ada yang diunggah: sebuah berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
   </entry>
   <entry>
-    <title type="html">Penyunting Audio</title>
-    <id>https://abox.tools/id/sunting-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/sunting-audio/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
     <title type="html">Cara memangkas video ke bentuk lain</title>
     <id>https://abox.tools/id/panduan/pangkas-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pangkas-video/"/>
@@ -170,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/pemindai-dokumen/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Ubah foto ponsel sebuah halaman menjadi PDF yang lurus dan tercahayai rata. Sudutnya dicarikan untuk Anda, perspektifnya diluruskan, bayangannya dibagi keluar. Berjalan sepenuhnya di peramban Anda: tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemotong Audio</title>
-    <id>https://abox.tools/id/potong-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Putar sebuah rekaman dan tandai setiap bagian yang layak disimpan sambil berjalan, lalu simpan bagian-bagian itu sebagai satu file. Potongan persis pada sampel, tanpa bunyi klik di sambungannya, tidak ada yang diunggah.</summary>
   </entry>
   <entry>
     <title type="html">Penggabung dan Pemisah PDF</title>

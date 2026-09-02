@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./decode.js';
-import{writeWav}from'./wav.js';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
+import{writeWav}from'./shared/wav.js';
 import{mixToMono}from'./mono.js';
 const $=(id)=>document.getElementById(id);
 const el={

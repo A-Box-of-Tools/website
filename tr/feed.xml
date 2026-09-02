@@ -32,6 +32,20 @@
     <uri>https://abox.tools/tr/</uri>
   </author>
   <entry>
+    <title type="html">Ses Düzenleyici</title>
+    <id>https://abox.tools/tr/ses-duzenleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ses Kesici</title>
+    <id>https://abox.tools/tr/ses-kesme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-kesme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir kaydı oynatın, geçerken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Örnek hassasiyetinde kesimler, birleşme yerlerinde tıklama yok, hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">Video Kare Yakalayıcı</title>
     <id>https://abox.tools/tr/videodan-kare-yakalama/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-kare-yakalama/"/>
@@ -51,6 +65,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kirpma/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Bir MP4, MOV veya WebM'i istediğiniz şekle kırpın: kare, 9:16 ya da tam piksel kutusu. Tarayıcınızda çalışır: hiçbir şey yüklenmez, ses korunur, çevrimdışı da çalışır.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videodan Ses Çıkarma</title>
+    <id>https://abox.tools/tr/videodan-ses-cikarma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-ses-cikarma/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir MP4, MOV veya WebM dosyasındaki sesi alıp WAV olarak kaydedin. Video cihazınızdan çıkmaz ve görüntüsü hiçbir zaman çözülmez; işin tamamı kendi tarayıcınızda yürür.</summary>
   </entry>
   <entry>
     <title type="html">PDF Karartıcı</title>
@@ -100,20 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-karsilastirma/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ses Düzenleyici</title>
-    <id>https://abox.tools/tr/ses-duzenleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Videodan Ses Çıkarma</title>
-    <id>https://abox.tools/tr/videodan-ses-cikarma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-ses-cikarma/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Bir MP4, MOV veya WebM dosyasındaki sesi alıp WAV olarak kaydedin. Video cihazınızdan çıkmaz ve görüntüsü hiçbir zaman çözülmez; işin tamamı kendi tarayıcınızda yürür.</summary>
   </entry>
   <entry>
     <title type="html">XML Biçimlendirici</title>
@@ -170,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-birlestirme/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">PDF'leri birleştirin, birini birkaç dosyaya bölün ve sayfaları istediğiniz sıraya sürükleyin &amp;mdash; hepsi kendi tarayıcınızın içinde. Hiçbir şey yüklenmez, hesap gerekmez ve bitmiş dosya size sunulmadan önce yeniden açılıp sayılır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ses Kesici</title>
-    <id>https://abox.tools/tr/ses-kesme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-kesme/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Bir kaydı oynatın, geçerken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Örnek hassasiyetinde kesimler, birleşme yerlerinde tıklama yok, hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
     <title type="html">Time-Lapse Yapıcı</title>
