@@ -108,6 +108,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/audio-decode.js` | `js_parts = ["audio-decode"]` | the browser's own decoder, asked for the audio track and nothing else |
 | `shared/js/samplerate.js` | `js_parts = ["samplerate"]` | the sample rate sniffed out of a file's header before it is decoded; `audio-decode` imports it |
 | `shared/js/wav.js` | `js_parts = ["wav"]` | the WAV writer: a header in front of the samples |
+| `shared/js/aac.js` | `js_parts = ["aac"]` | an AAC track's description, read out of an `mp4a` sample entry and written round a new one; imports `mp4-boxes` |
 | `shared/js/parse-errors.js` | `js_parts = ["parse-errors"]` | the `ParseError` every text parser throws, with a line, a column and a phrase key; each `parse-*` part below imports it |
 | `shared/js/parse-json.js` | `js_parts = ["parse-json"]` | JSON read into the tree every text parser speaks, and printed back |
 | `shared/js/parse-yaml.js` | `js_parts = ["parse-yaml"]` | YAML 1.2, in the half of it a converter needs |
