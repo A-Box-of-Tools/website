@@ -1,0 +1,25 @@
+#
+# Guide: is it safe to upload a photo of your ID? - Traditional Chinese.
+#
+# Overrides for pages/guides/is-it-safe-to-upload-a-photo-of-your-id/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "上傳證件照安全嗎？"
+
+title = "把身份證、護照的照片傳到網上安全嗎？"
+description = "證件是唯一一種「多半沒事」不夠用的檔案。證件洩露真正的代價是什麼，為什麼危險的一步是提交前的改尺寸，以及怎麼讓證件不出這臺機器就把事全辦完。"
+
+heading = "把身份證、護照的照片傳到網上安全嗎？"
+lede = """
+    傳給它本來要去的官方表格，安全。證件就是做這個用的。風險住在前面一步，\
+    住在你因為表格寫著「300&nbsp;KB 以內、JPEG」而順路去的那個轉換或壓縮\
+    網站。而那一步，從頭到尾都不必發生。"""
+
+updated = "2026年8月26日"
+
+og_title = "把身份證、護照的照片傳到網上安全嗎？"
+og_description = "危險的一步不是申請表格，是它前面那趟改尺寸、壓體積的彎路。那趟彎路，從來不需要你的證件離開這臺機器。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

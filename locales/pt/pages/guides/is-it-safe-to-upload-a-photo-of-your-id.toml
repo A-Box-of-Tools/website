@@ -1,0 +1,18 @@
+#
+# Guia: é seguro enviar foto do documento? - Brazilian Portuguese.
+#
+
+nav = "É seguro enviar seu documento?"
+title = "É seguro enviar uma foto do seu documento de identidade?"
+description = "Um documento de identidade é o único arquivo em que &ldquo;provavelmente não dá nada&rdquo; não basta. O que um vazamento custa de verdade, por que o momento arriscado é o redimensionamento logo antes do pedido, e como fazer tudo sem o documento sair da sua máquina."
+heading = "É seguro enviar uma foto do seu documento de identidade?"
+lede = """
+    Para o formulário oficial a que ele se destina: sim &mdash; o documento
+    existe para isso. O risco mora um passo antes: no conversor ou
+    compressor que você visita porque o formulário exigiu &ldquo;menos de
+    300&nbsp;KB, JPEG&rdquo; &mdash; e esse passo é o que nunca precisa
+    acontecer."""
+updated = "26 de agosto de 2026"
+og_title = "É seguro enviar uma foto do seu documento de identidade?"
+og_description = "O passo arriscado não é o formulário do pedido. É o desvio para reduzir e comprimir logo antes - e esse desvio nunca precisa que o documento saia da sua máquina."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

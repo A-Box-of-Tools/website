@@ -1,0 +1,18 @@
+#
+# Panduan: apakah aman mengunggah foto KTP? - Indonesian.
+#
+
+nav = "Apakah aman mengunggah foto KTP?"
+title = "Apakah Aman Mengunggah Foto KTP atau Paspor Anda?"
+description = "Dokumen identitas adalah satu-satunya berkas yang tidak cukup diberi jawaban &ldquo;mungkin aman&rdquo;. Berapa harga sebenarnya sebuah kebocoran identitas, mengapa momen berbahayanya adalah pengubahan ukuran tepat sebelum pendaftaran, dan cara mengerjakan semuanya tanpa dokumen meninggalkan mesin Anda."
+heading = "Apakah aman mengunggah foto KTP atau paspor Anda?"
+lede = """
+    Ke formulir resmi yang memang tujuannya: ya &mdash; untuk itulah
+    dokumen itu ada. Risikonya tinggal satu langkah lebih awal: di
+    pengonversi atau pengompres yang Anda datangi karena formulir menuntut
+    &ldquo;di bawah 300&nbsp;KB, JPEG&rdquo; &mdash; dan langkah itulah
+    yang tidak pernah perlu terjadi."""
+updated = "26 Agustus 2026"
+og_title = "Apakah aman mengunggah foto KTP atau paspor Anda?"
+og_description = "Langkah berisikonya bukan formulir pendaftaran. Melainkan jalan memutar untuk mengecilkan dan mengompres tepat sebelumnya - dan jalan memutar itu tidak pernah membutuhkan dokumen Anda keluar dari mesin Anda."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

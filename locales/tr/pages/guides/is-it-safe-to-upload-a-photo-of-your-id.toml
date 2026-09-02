@@ -1,0 +1,17 @@
+#
+# Rehber: kimlik fotoğrafı yüklemek güvenli mi? - Turkish.
+#
+
+nav = "Kimlik fotoğrafı yüklemek güvenli mi?"
+title = "Kimliğinizin Fotoğrafını Yüklemek Güvenli mi?"
+description = "Kimlik belgesi, &ldquo;muhtemelen sorun olmaz&rdquo; cevabının yetmediği tek dosyadır. Bir kimlik sızıntısının gerçek bedeli, riskli anın neden başvurudan hemen önceki boyutlandırma olduğu ve belge makinenizden hiç çıkmadan bütün işin nasıl yapılacağı."
+heading = "Kimliğinizin fotoğrafını yüklemek güvenli mi?"
+lede = """
+    Belgenin hedefi olan resmi forma: evet &mdash; belge bunun için var.
+    Risk bir adım öncesinde oturur: formun &ldquo;300&nbsp;KB altı,
+    JPEG&rdquo; dediği için uğradığınız dönüştürücüde ya da sıkıştırıcıda
+    &mdash; ve o adımın hiçbir zaman atılması gerekmez."""
+updated = "26 Ağustos 2026"
+og_title = "Kimliğinizin fotoğrafını yüklemek güvenli mi?"
+og_description = "Riskli adım başvuru formu değil. Hemen öncesindeki küçültme ve sıkıştırma molası - ve o molanın belgenizin makinenizden çıkmasına hiç ihtiyacı yok."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

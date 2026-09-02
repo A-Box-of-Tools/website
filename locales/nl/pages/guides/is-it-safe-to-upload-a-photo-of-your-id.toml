@@ -1,0 +1,18 @@
+#
+# Gids: is je identiteitsbewijs uploaden veilig? - Dutch.
+#
+
+nav = "Je identiteitsbewijs uploaden - veilig?"
+title = "Is het veilig om een foto van je identiteitsbewijs te uploaden?"
+description = "Een identiteitsbewijs is het ene bestand waarbij &ldquo;waarschijnlijk prima&rdquo; niet volstaat. Wat een gelekt ID werkelijk kost, waarom het riskante moment het verkleinen vlak vóór de aanvraag is, en hoe alles kan zonder dat het document je machine verlaat."
+heading = "Is het veilig om een foto van je identiteitsbewijs te uploaden?"
+lede = """
+    Naar het officiële formulier waarvoor het bedoeld is: ja &mdash;
+    daarvoor bestaat het document. Het risico woont één stap eerder: bij de
+    converter of compressor waar je langsgaat omdat het formulier
+    &ldquo;maximaal 300&nbsp;KB, JPEG&rdquo; eiste. En die stap hoeft nooit
+    te gebeuren."""
+updated = "26 augustus 2026"
+og_title = "Is het veilig om een foto van je identiteitsbewijs te uploaden?"
+og_description = "De riskante stap is niet het aanvraagformulier. Het is de omweg langs verkleinen en comprimeren vlak ervoor - en die omweg heeft nooit nodig dat je document je machine verlaat."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
