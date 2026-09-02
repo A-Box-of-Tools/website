@@ -7,17 +7,6 @@
 
 /* The one button on the page big enough to be found without reading. */
 
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
-}
-
 .hint-line {
   margin: 0.5rem 0 0;
   font-size: 0.84rem;
@@ -196,18 +185,6 @@ kbd {
   gap: 0.6rem;
   cursor: pointer;
   margin-bottom: 0.8rem;
-}
-
-.check input { margin-top: 0.25rem; flex: none; }
-.check strong { display: block; font-size: 0.9rem; }
-
-.check-note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 70ch;
 }
 
 .option-row {

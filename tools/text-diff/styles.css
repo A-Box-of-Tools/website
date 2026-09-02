@@ -7,8 +7,6 @@
 .field-note { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
 .field-note:empty { display: none; }
 
-.field.checks { gap: 0.5rem; }
-
 .settings {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -27,31 +25,12 @@
 
 /* -------------------------------------------------------------- the boxes */
 
-.panes {
-  margin-top: 1rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
 /* Two boxes side by side once there is room for both, and stacked before
    that - a comparison on a phone is two full-width boxes, not two narrow
    ones. */
 @media (min-width: 780px) {
   .panes { grid-template-columns: 1fr 1fr; }
 }
-
-.pane { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
-
-.pane-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.pane-head label { font-size: 0.85rem; font-weight: 600; }
 
 textarea {
   width: 100%;

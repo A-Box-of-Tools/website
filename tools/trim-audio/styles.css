@@ -3,16 +3,6 @@
 
 /* ---------------------------------------------------------- what was opened */
 
-.path-note {
-  margin: 0.9rem 0 0;
-  padding: 0.6rem 0.8rem;
-  border-radius: 7px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-size: 0.84rem;
-}
-
 .stage-hint { margin: 0 0 0.9rem; font-size: 0.85rem; color: var(--text-dim); }
 
 kbd {
@@ -368,20 +358,6 @@ audio.player {
   gap: 0.7rem;
 }
 
-.modes legend { padding: 0 0.35rem; font-size: 0.8rem; color: var(--text-dim); }
-
-.mode {
-  display: flex;
-  gap: 0.55rem;
-  align-items: start;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.mode input { margin: 0.15rem 0 0; flex: none; }
-.mode span { display: flex; flex-direction: column; gap: 0.1rem; color: var(--text-dim); }
-.mode strong { color: var(--text); font-size: 0.9rem; }
-
 /* ---------------------------------------------------------------- settings */
 
 .settings {
@@ -411,17 +387,6 @@ audio.player {
   gap: 0.6rem;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
 }
 
 @media (max-width: 620px) {

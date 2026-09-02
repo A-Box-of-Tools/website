@@ -58,25 +58,6 @@
 
 /* The sentence under a control, restating what it is about to do. */
 
-.check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  cursor: pointer;
-}
-
-.check input { margin-top: 0.25rem; flex: none; }
-.check strong { display: block; font-size: 0.9rem; }
-
-.check-note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 70ch;
-}
-
 .options .field-summary {
   padding-top: 0.7rem;
   border-top: 1px dashed var(--border);

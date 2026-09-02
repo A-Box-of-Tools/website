@@ -7,17 +7,6 @@
   now that was every control on the site.
 */
 
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
-}
-
 /* ------------------------------------------------------------- the options */
 
 .option-row {
@@ -31,25 +20,7 @@
 
 .option-row input[type="number"] { width: 7rem; }
 
-.check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  cursor: pointer;
-}
-
-.check input { margin-top: 0.25rem; flex: none; }
-.check strong { display: block; font-size: 0.9rem; }
 .check + .check { margin-top: 0.8rem; }
-
-.check-note {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.82rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 70ch;
-}
 
 .options .field-summary {
   padding-top: 0.7rem;

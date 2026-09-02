@@ -1,0 +1,41 @@
+/* ----------------------------------------------------------------- notes
+   The error line under a drop zone or a control, and the note that says
+   which path a file took or what the stage is showing.
+
+   Asked for with `css_parts = ["notes"]`. Sixteen tools carried these rules
+   token for token; the build puts this file before a tool's own stylesheet,
+   so a tool that wants one of them different writes its own rule and wins,
+   provided it sets every property the rule here sets. The image tools give
+   `.error` a ceiling and a scrollbar and the text tools set its margin the
+   other way; each keeps that as a rule of its own on top of this one. */
+
+.error {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  border-radius: 7px;
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  white-space: pre-line;
+}
+
+.path-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+}
+
+.stage-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+}

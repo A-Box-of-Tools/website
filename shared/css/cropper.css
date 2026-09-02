@@ -1,0 +1,72 @@
+/* --------------------------------------------------------------- cropper
+   The crop box shared/js/cropper.js draws: the box itself with the dimmed
+   picture round it, its eight handles, the size label, and the ring it
+   wears when a keyboard has it.
+
+   Asked for with `css_parts = ["cropper"]`. The video cropper and the image
+   resizer, which share the class that draws the box, carried these rules
+   token for token, and the ID photo tool most of them; the build puts this
+   file before a tool's own stylesheet, so a tool that wants one of them
+   different writes its own rule and wins, provided it sets every property
+   the rule here sets. */
+
+.crop-box {
+  border: 1px solid rgb(255 255 255 / 90%);
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 45%);
+  box-sizing: border-box;
+  cursor: move;
+  position: absolute;
+  touch-action: none;
+}
+
+.crop-box::before {
+  background: linear-gradient(to right, transparent calc(33.333% - 0.5px), rgb(255 255 255 / 55%) calc(33.333% - 0.5px) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px), transparent calc(66.667% - 0.5px), rgb(255 255 255 / 55%) calc(66.667% - 0.5px) calc(66.667% + 0.5px), transparent calc(66.667% + 0.5px)), linear-gradient(to bottom, transparent calc(33.333% - 0.5px), rgb(255 255 255 / 55%) calc(33.333% - 0.5px) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px), transparent calc(66.667% - 0.5px), rgb(255 255 255 / 55%) calc(66.667% - 0.5px) calc(66.667% + 0.5px), transparent calc(66.667% + 0.5px));
+  content: "";
+  inset: 0;
+  opacity: 0.55;
+  pointer-events: none;
+  position: absolute;
+}
+
+.crop-box.dragging::before { opacity: 0.9; }
+
+.crop-box:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.crop-handle {
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 45%);
+  border-radius: 3px;
+  height: 14px;
+  position: absolute;
+  width: 14px;
+}
+
+.crop-handle::after {
+  content: "";
+  inset: -10px;
+  position: absolute;
+}
+
+.crop-size {
+  background: rgb(0 0 0 / 65%);
+  border-radius: 99px;
+  bottom: 0.4rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  left: 50%;
+  padding: 0.1rem 0.45rem;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.crop-controls {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}

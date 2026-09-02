@@ -1,0 +1,40 @@
+/* ----------------------------------------------------------------- modes
+   A choice between two ways of working, drawn as a pair of radio rows with
+   a bold title and a dim explanation each: keep the marked parts or cut
+   them out, encode or decode.
+
+   Asked for with `css_parts = ["modes"]`. Five tools carried these rules
+   token for token; the build puts this file before a tool's own stylesheet,
+   so a tool that wants one of them different writes its own rule and wins,
+   provided it sets every property the rule here sets. */
+
+.mode {
+  align-items: start;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.85rem;
+  gap: 0.55rem;
+}
+
+.mode input {
+  flex: none;
+  margin: 0.15rem 0 0;
+}
+
+.mode span {
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.mode strong {
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.modes legend {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  padding: 0 0.35rem;
+}
