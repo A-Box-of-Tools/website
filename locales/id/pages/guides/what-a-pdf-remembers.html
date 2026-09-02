@@ -1,0 +1,160 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      PDF bukan gambar dari halaman-halamannya. Ia sebuah wadah, dan
+      halaman hanyalah bagian muatan yang ditampilkan. Di sekelilingnya,
+      format ini punya tempat untuk blok informasi dokumen, salinan XML
+      kedua dari blok yang sama, komentar, data formulir, berkas
+      terlampir &mdash; dan, lewat satu cara menyimpan suntingan yang
+      sangat umum, versi-versi lengkap dokumen yang lebih lama, bertumpuk
+      di bawah versi terkini.
+    </p>
+    <p>
+      Tidak satu pun dari ini cacat. Setiap bagian dirancang untuk tugas
+      yang masuk akal, dan di dalam satu organisasi sebagian besar tak
+      berbahaya atau malah berguna. Masalahnya adalah penyeberangan batas:
+      begitu sebuah PDF pergi &mdash; ke pihak lawan, ke milis, ke berkas
+      publik &mdash; semua yang diingatnya ikut pergi, dan yang diingatnya
+      tidak ditampilkan halaman mana pun. Orang memeriksa apa yang
+      dikatakan dokumen dan mengirim apa yang dikandung berkas, dan itu
+      dua hal berbeda.
+    </p>
+  </section>
+
+  <section>
+    <h2>Label nama: /Info dan paket XMP</h2>
+    <p>
+      Setiap PDF boleh membawa kamus informasi dokumen: penulis, judul,
+      tanggal pembuatan dan perubahan, serta nama program yang membuat dan
+      memproduksinya. Kebanyakan membawa salinan kedua yang lebih kaya
+      dari fakta yang sama sebagai XML tertanam, bernama XMP. Keduanya
+      tidak ditampilkan bersama halaman; keduanya hanya sejauh satu panel
+      properti.
+    </p>
+    <p>
+      Nilai-nilainya terisi otomatis, dan justru itu yang membuatnya
+      bocor. <em>Penulis</em> biasanya nama akun yang dipakai memasang
+      sistem operasi: nama asli dan lengkap, di dokumen yang penulisnya
+      kira anonim: lamaran, penilaian, keluhan, penawaran. <em>Judul</em>
+      lazimnya nama berkas asal si PDF diekspor, sehingga
+      <code>Draf-v7-keberatan-hukum.docx</code> hidup terus di dalam PDF
+      rapi yang seharusnya menggantikannya. Baris produser menanggali
+      perangkat lunaknya; tanggal-tanggal membantah cerita resmi. Sudah
+      ada kajian utuh tentang apa yang diakui PDF-PDF lembaga di blok
+      ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pemulihan tak diminta: penyimpanan inkremental</h2>
+    <p>
+      Bagian paling tajam di wadah ini adalah yang paling dibanggakan
+      formatnya. PDF mendukung <em>pembaruan inkremental</em>: alih-alih
+      menulis ulang berkas, penyunting boleh menambahkan perubahannya di
+      ujung dan membiarkan semua yang sebelumnya tak tersentuh. Penampil
+      membaca berkas dari belakang dan menampilkan versi terbaru; versi
+      lama masih di sana, byte demi byte, di berkas yang sama.
+    </p>
+    <p>
+      Menyimpan dengan menambah itu cepat dan tahan macet &mdash; dan
+      artinya dokumen yang disunting begitu mengandung riwayatnya
+      sendiri. Teks yang &ldquo;dihapus&rdquo; tidak pergi: ia
+      tergantikan, dan memulihkannya tinggal membaca berkas sebagaimana
+      adanya sebelum tambahan terakhir. Persegi hitam yang ditarik di atas
+      sebuah nama, di penyunting yang menyimpan secara inkremental,
+      menghasilkan berkas yang memuat nama itu <em>dua kali</em> &mdash;
+      sekali di bawah persegi, sekali di riwayat &mdash; yang
+      melipatgandakan kegagalan yang diceritakan
+      <a href="../bisakah-teks-yang-dihitamkan-dipulihkan/">panduan
+      penyensoran</a>.
+    </p>
+    <p>
+      Obatnya penulisan ulang menyeluruh: buka berkasnya, simpan yang
+      benar-benar dipakai versi terkini, tulis berkas baru tanpa masa
+      lalu. Itulah yang dilakukan
+      <a href="../../kompres-pdf/">pengompres PDF</a> di sini sejak
+      rancangan: penulisan ulang mau tak mau meninggalkan riwayat, dan
+      alat ini menghitung materi tergantikan yang ditinggalkannya dalam
+      rincian ukurannya &mdash; yang sekaligus cara termudah mengetahui
+      bahwa berkas Anda ternyata punya riwayat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Palka muatan: komentar, isian, lampiran, lapisan</h2>
+    <p>
+      Sisa ingatannya lebih biasa, dan tetap bocor:
+    </p>
+    <ul>
+      <li>
+        <strong>Komentar dan anotasi</strong>: percakapan peninjauan, ikut
+        bepergian bersama dokumen yang ditinjau, terlihat bagi siapa pun
+        yang terpikir untuk melihat.
+      </li>
+      <li>
+        <strong>Isian formulir</strong> menyimpan nilai yang pernah diisi
+        sebagai data bahkan ketika halaman yang sudah diratakan tak lagi
+        menampilkannya.
+      </li>
+      <li>
+        <strong>Lampiran</strong>: PDF bisa menanam berkas utuh, jenis apa
+        pun, dan penampil memunculkannya di panel samping yang kebanyakan
+        orang tak pernah buka. Lembar kerja di balik grafik kadang ikut
+        terlampir pada grafiknya.
+      </li>
+      <li>
+        <strong>Lapisan konten opsional</strong> bisa menyimpan isi
+        halaman yang dimatikan alih-alih dibuang: hadir seutuhnya, tampil
+        tidak pernah.
+      </li>
+    </ul>
+    <p>
+      Masing-masing adalah data yang tidak diperlihatkan halaman, di
+      sebuah berkas yang dinilai orang dari halamannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengirim PDF tanpa ingatannya</h2>
+    <p>
+      Polanya begini: yang selamat ditentukan oleh cara berkas ditulis,
+      maka obatnya adalah melewatkannya pada sesuatu yang menulis dengan
+      pelupa, di mesin Anda sendiri &mdash; riwayat sebuah dokumen justru
+      hal yang paling tidak boleh diunggah ke server orang asing, argumen
+      yang dibentangkan penuh oleh
+      <a href="../apakah-aman-mengunggah-file/">panduan tentang
+      mengunggah</a>. Tiga alat situs ini menulis PDF, dan ketiganya
+      dibangun untuk meninggalkan ingatan di luar:
+    </p>
+    <ul>
+      <li>
+        Alat <a href="../../gabung-pdf/">gabung dan pisah PDF</a> menulis
+        keluaran <strong>tanpa kamus informasi sama sekali</strong>: tanpa
+        penulis, tanpa tanggal, tanpa baris yang menyebut perangkat
+        lunaknya. Yang disalinnya dari berkas asli Anda adalah yang
+        dipakai halaman-halamannya, bukan bagasinya. Ada
+        <a href="../gabung-dan-pisah-file-pdf/">panduannya</a>.
+      </li>
+      <li>
+        <a href="../../kompres-pdf/">Pengompres PDF</a> menulis ulang
+        berkas seluruhnya &mdash; riwayat tergantikan ditinggalkan, paket
+        XMP dan data privat aplikasi tak disimpan &mdash; dan merinci apa
+        saja yang dibuangnya. Juga
+        <a href="../perkecil-ukuran-pdf/">dengan panduan</a>.
+      </li>
+      <li>
+        Alat <a href="../../sensor-pdf/">penyensor PDF</a>, untuk saat
+        ingatan justru pokoknya: pada tiap jalanan ia membersihkan blok
+        informasi, paket XMP, penanda buku, komentar, nilai isian, dan
+        lampiran, di samping penyensoran itu sendiri &mdash;
+        <a href="../sensor-pdf/">panduannya</a> menelusuri semuanya.
+      </li>
+    </ul>
+    <p>
+      Dan uji terimanya mencerminkan kebocorannya: nilaikan berkasnya,
+      bukan halamannya. Buka panel properti dan baca yang tersisa; cari di
+      berkas mentah sebuah kata yang dibuang; lihat rincian pengompres
+      tentang apa yang selama ini dipikul dokumen Anda. PDF tanpa ingatan
+      tak punya apa-apa untuk diakui, siapa pun pembacanya.
+    </p>
+  </section>

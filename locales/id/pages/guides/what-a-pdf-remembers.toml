@@ -1,0 +1,18 @@
+#
+# Panduan: apa yang diingat sebuah PDF. - Indonesian.
+#
+
+nav = "Apa yang diingat sebuah PDF"
+title = "Apa yang Diingat Sebuah PDF"
+description = "Nama penulis, berkas Word yang dulu menjadi asalnya, komentar, lampiran - dan kadang setiap versi dirinya yang lebih lama, termasuk yang sudah dihapus. Di mana PDF menyimpan ingatannya, dan cara mengirim satu tanpa riwayatnya."
+heading = "Apa yang diingat sebuah PDF"
+lede = """
+    Lebih dari sekadar halaman-halamannya. PDF lazim membawa nama
+    penulisnya, perangkat lunak yang membuatnya, berkas yang dulu ia
+    sebelum menjadi PDF &mdash; dan, kalau disunting dengan satu cara yang
+    sangat umum, setiap versi dirinya yang lebih lama, termasuk bagian
+    yang dihapus. Tidak satu pun tampil di layar."""
+updated = "26 Agustus 2026"
+og_title = "Apa yang diingat sebuah PDF"
+og_description = "Nama penulis, berkas Word asalnya, komentar, lampiran - kadang setiap versi lamanya sendiri. Di mana ingatan itu tinggal, dan cara mengirim PDF tanpanya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

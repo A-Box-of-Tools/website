@@ -1,0 +1,18 @@
+#
+# Gids: wat een pdf onthoudt. - Dutch.
+#
+
+nav = "Wat een pdf onthoudt"
+title = "Wat een pdf onthoudt"
+description = "Auteursnamen, het Word-bestand dat hij was, opmerkingen, bijlagen - en soms elke eerdere versie van zichzelf, verwijderingen inbegrepen. Waar een pdf zijn geheugen bewaart, en hoe je er een verstuurt zonder zijn geschiedenis."
+heading = "Wat een pdf onthoudt"
+lede = """
+    Meer dan zijn pagina's. Een pdf draagt doorgaans de naam van zijn
+    auteur, de software die hem maakte, het bestand dat hij was voordat
+    hij een pdf werd &mdash; en, als hij op een bepaalde veelvoorkomende
+    manier bewerkt is, elke eerdere versie van zichzelf, verwijderingen
+    inbegrepen. Niets daarvan verschijnt op het scherm."""
+updated = "26 augustus 2026"
+og_title = "Wat een pdf onthoudt"
+og_description = "Auteursnamen, het Word-bestand dat hij was, opmerkingen, bijlagen - soms elke eerdere versie van zichzelf. Waar dat geheugen woont, en hoe je een pdf zonder verstuurt."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
