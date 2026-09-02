@@ -1,5 +1,11 @@
 /**
- * Putting one sampled frame on the canvas the output is encoded from.
+ * Putting one frame of a video on the canvas an output is built from.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/frame-canvas.js and
+ * the build copies it to <tool>/src/shared/frame-canvas.js for the tools that
+ * ask for it with `js_parts = ["frame-canvas", ...]`: the time-lapse maker
+ * and the GIF converter, which carried the same file apart from one hint to
+ * the browser. It imports nothing.
  *
  * Both ways of reading a video go through here, so an instant taken by
  * WebCodecs and the same instant taken from the browser's own player land on
@@ -44,22 +50,33 @@ export function drawScaled(ctx, source, {
 }
 
 /**
- * A canvas to draw the frames into.
+ * A canvas to draw the frames into. One is reused for every frame in the
+ * clip, which is what keeps a thousand-frame time-lapse from holding a
+ * thousand pictures at once.
  *
  * `alpha: false` because a video frame has no transparency and saying so lets
- * the browser skip compositing. Unlike the GIF tool's canvas this one is never
- * read back with getImageData - every frame goes straight into a VideoFrame and
- * from there to the encoder - so `willReadFrequently` would be exactly the
- * wrong hint here, and it is left off: this canvas wants to stay on the GPU.
+ * the browser skip compositing.
  *
- * One canvas is reused for every frame in the clip, which is what keeps a
- * thousand-frame time-lapse from holding a thousand pictures at once.
+ * `readBack` is the one thing the two tools disagree on, and it is a hint in
+ * opposite directions. The GIF converter reads every frame straight back out
+ * with getImageData, which is the one access pattern that is slower on a
+ * GPU-backed canvas than on a software one, so it asks for
+ * `willReadFrequently`. The time-lapse maker never reads its canvas back -
+ * every frame goes straight into a VideoFrame and from there to the encoder -
+ * so for it that hint would be exactly wrong, and its canvas stays on the GPU.
+ *
+ * @param {number} width
+ * @param {number} height
+ * @param {{readBack?: boolean}} [options]
+ * @returns {{canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D}}
  */
-export function frameCanvas(width, height) {
+export function frameCanvas(width, height, { readBack = false } = {}) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext('2d', { alpha: false });
+  const ctx = canvas.getContext('2d', readBack
+    ? { alpha: false, willReadFrequently: true }
+    : { alpha: false });
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   return { canvas, ctx };

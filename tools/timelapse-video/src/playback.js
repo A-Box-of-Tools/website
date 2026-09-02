@@ -15,7 +15,7 @@
  * usually, not always, the frame in front of the mark.
  */
 
-import { drawScaled, frameCanvas } from './draw.js';
+import { drawScaled, frameCanvas } from './shared/frame-canvas.js';
 import { throwIfAborted, said } from './shared/errors.js';
 
 /** Give up on a seek that never lands rather than hanging the page. */
