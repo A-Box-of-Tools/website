@@ -1,5 +1,5 @@
 /**
- * tools/compress-pdf/src/objects.js - the PDF object grammar.
+ * shared/js/pdf-objects.js - the PDF object grammar.
  *
  * This is the half of the format images-to-pdf never needed. That tool only
  * ever wrote documents it had just built; this one opens files somebody else
@@ -19,7 +19,7 @@ import {
   Name, Parser, PdfStream, PdfString, PdfSyntaxError, Ref,
   ascii as asciiOf, indexOfAscii, isName, lastIndexOfAscii, name,
   parseIndirectObject,
-} from '../../tools/compress-pdf/src/objects.js';
+} from '../../shared/js/pdf-objects.js';
 import { ascii, concat } from './pdf-fixtures.js';
 
 /** Parse one value out of a source string. */

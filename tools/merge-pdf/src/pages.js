@@ -17,7 +17,7 @@
  * except a sanity check.
  */
 
-import { isName, PdfString, Ref } from './objects.js';
+import { isName, PdfString, Ref } from './shared/pdf-objects.js';
 
 /** The keys a page inherits from the nodes above it. There are exactly four,
  *  and they are named in the specification's table of page tree attributes. */
@@ -30,7 +30,7 @@ const DEFAULT_BOX = [0, 0, 612, 792];
 /**
  * Every page of `doc`, in reading order.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @returns {{ref: object|null, dict: Map, inherited: Map, box: number[],
  *            rotate: number, width: number, height: number}[]}
  */

@@ -1,6 +1,14 @@
 /**
  * Writing the document back out.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-writer.js and the
+ * build copies it to <tool>/src/shared/pdf-writer.js. One of the four PDF
+ * parts that travel together; see the header of pdf-objects.js. It was
+ * written for the compressor, which is why the notes below talk about the
+ * saving, and the merger and the redactor use it unchanged: it asks a document
+ * for four things - objects, trailer, getObject, resolve - and anything that
+ * answers those is a document it can write.
+ *
  * Not an edit of the original bytes: a fresh file, built from the objects that
  * are still reachable from the catalogue. That choice is where a good part of
  * the saving comes from, and it is worth being explicit about why.
@@ -29,10 +37,10 @@
  * table for a compatibility case that no longer exists.
  */
 
-import { deflate, filterNames } from './filters.js';
+import { deflate, filterNames } from './pdf-filters.js';
 import {
   name, Name, PdfStream, PdfString, Ref,
-} from './objects.js';
+} from './pdf-objects.js';
 
 /** Objects per packed stream. Larger batches compress a shade better and cost
  *  a reader more to unpack for one lookup; this is roughly where writers sit. */
@@ -213,7 +221,7 @@ export function stripMetadata(doc) {
 /* ------------------------------------------------------------ the rewrite */
 
 /**
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./pdf-reader.js').PdfDocument} doc
  * @param {{onProgress?: (done: number, total: number) => void,
  *          recompress?: boolean, signal?: AbortSignal}} options
  * @returns {Promise<Blob>}

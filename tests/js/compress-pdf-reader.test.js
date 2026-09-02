@@ -1,5 +1,7 @@
 /**
- * tools/compress-pdf/src/{reader,filters}.js.
+ * shared/js/pdf-{reader,filters}.js, the PDF reader and stream filters every
+ * PDF tool here ships. The tests were written against compress-pdf's copy and
+ * keep that name.
  *
  * The reader's job is to survive files it did not write. There are three ways
  * in - a classic cross-reference table, a cross-reference stream, and, when
@@ -16,9 +18,9 @@ import assert from 'node:assert/strict';
 
 import {
   EncryptedPdfError, NotAPdfError, PdfDocument, scanObjectHeaders,
-} from '../../tools/compress-pdf/src/reader.js';
-import { decodeStream, filterNames } from '../../tools/compress-pdf/src/filters.js';
-import { PdfStream, name } from '../../tools/compress-pdf/src/objects.js';
+} from '../../shared/js/pdf-reader.js';
+import { decodeStream, filterNames } from '../../shared/js/pdf-filters.js';
+import { PdfStream, name } from '../../shared/js/pdf-objects.js';
 import {
   MINIMAL_OBJECTS, ascii, buildPdf, concat, deflate, minimalPdf, pdfWithMetadata,
   streamObject, text,

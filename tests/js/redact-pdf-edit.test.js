@@ -17,10 +17,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { decodeStream } from '../../tools/redact-pdf/src/filters.js';
+import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { findTerm, glyphsIn } from '../../tools/redact-pdf/src/matches.js';
-import { PdfStream } from '../../tools/redact-pdf/src/objects.js';
-import { PdfDocument } from '../../tools/redact-pdf/src/reader.js';
+import { PdfStream } from '../../shared/js/pdf-objects.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { redact, remover } from '../../tools/redact-pdf/src/redact.js';
 import { decodeText, encodeText } from '../../tools/redact-pdf/src/strings.js';
 import { pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';

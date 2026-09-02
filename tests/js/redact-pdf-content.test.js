@@ -23,7 +23,7 @@ import assert from 'node:assert/strict';
 import {
   applySplices, encode, formatNumber, formatString, formatValue, lex,
 } from '../../tools/redact-pdf/src/content.js';
-import { Name, PdfString } from '../../tools/redact-pdf/src/objects.js';
+import { Name, PdfString } from '../../shared/js/pdf-objects.js';
 import { ascii, concat } from './pdf-fixtures.js';
 
 const ops = (source) => lex(ascii(source));

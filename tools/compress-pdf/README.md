@@ -128,7 +128,7 @@ beside it says which object is the catalogue.
 
 It is also the part of a PDF most likely to be wrong. Offsets drift when a file
 is edited by something careless, concatenated, truncated, or mailed through a
-gateway that helpfully rewrote its line endings. So `src/reader.js` checks
+gateway that helpfully rewrote its line endings. So `src/shared/pdf-reader.js` checks
 rather than trusts, and when the table disagrees with the file, **the file
 wins**: `rebuildByScanning` walks the bytes looking for `12 0 obj` headers and
 believes what it finds, taking the last of each number, which is the
@@ -158,7 +158,7 @@ quietly on your behalf would be a surprising thing to have used.
 
 ## Writing a new file rather than editing the old one
 
-`src/writer.js` walks out from the catalogue and writes only what it reaches.
+`src/shared/pdf-writer.js` walks out from the catalogue and writes only what it reaches.
 That is where a good part of the saving on an edited document comes from: every
 superseded object, every page that was deleted three saves ago, and every
 orphaned image is simply not copied over.

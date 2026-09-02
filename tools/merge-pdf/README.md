@@ -155,7 +155,7 @@ give up and go back to the site that wanted the upload.
 
 ## The check at the end
 
-Every finished file is handed straight back to `src/reader.js`, parsed as though
+Every finished file is handed straight back to `src/shared/pdf-reader.js`, parsed as though
 a stranger had sent it, and its pages counted by walking the tree rather than by
 reading `/Count`. If the number is not the number asked for, the run is reported
 as failed and **no download is offered**.
@@ -166,16 +166,16 @@ cross-reference stream and every reference between them. It is not a proof of
 correctness and is not described as one. It is the difference between a bug
 caught here and a bug caught by whoever the document was sent to.
 
-## What is shared with the PDF Compressor, and why it is copied
+## What is shared with the PDF Compressor
 
-`src/objects.js`, `src/filters.js`, `src/reader.js` and `src/writer.js` are
-byte-for-byte copies of the same four files in [PDF
-Compressor](../compress-pdf/), the way `crc32.js` and `zip.js` were copies
-across seven tools here before they moved to `shared/js/`. The copies date from
-when the JavaScript tests could not follow a `./shared/` import; they can now
-(`tests/js/resolve-shared.mjs`), so the four are a move waiting to be made.
-Until it is made they change in both places, the JavaScript tests cover both
-copies, and `tests/python/test_duplicates.py` fails if they drift.
+The object grammar, the stream filters, the reader and the writer are
+`shared/js/pdf-{objects,filters,reader,writer}.js`, asked for in `tool.toml`
+and copied into this tool at `src/shared/` by the build — the same four the
+[compressor](../compress-pdf/) and the [redactor](../redact-pdf/) ship. They
+were three byte-identical copies until the JavaScript tests could follow a
+`./shared/` import (`tests/js/resolve-shared.mjs`); now a repair to the
+reader's cross-reference recovery, or to a stream whose `/Length` lies, lands
+in all three tools at once.
 
 The writer took no changes at all to be used for this. It asks a document for
 four things — `objects`, `trailer`, `getObject`, `resolve` — so `Build` in

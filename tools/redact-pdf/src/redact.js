@@ -29,12 +29,12 @@
 
 import { applySplices, encode } from './content.js';
 import { planEdits } from './edit.js';
-import { PdfStream, Ref } from './objects.js';
+import { PdfStream, Ref } from './shared/pdf-objects.js';
 import { removeCarriedFiles, scrubStrings } from './strings.js';
-import { stripMetadata, writeDocument } from './writer.js';
+import { stripMetadata, writeDocument } from './shared/pdf-writer.js';
 
 /**
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {import('./text.js').Page[]} pages
  * @param {Map<number, Set<number>>} chosen  page index to glyph indices
  * @param {object} options

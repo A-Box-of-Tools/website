@@ -35,9 +35,9 @@
  */
 
 import { lex } from './content.js';
-import { decodeStream } from './filters.js';
+import { decodeStream } from './shared/pdf-filters.js';
 import { glyphsOf, readFonts } from './fonts.js';
-import { isName, Name, PdfStream, PdfString, Ref } from './objects.js';
+import { isName, Name, PdfStream, PdfString, Ref } from './shared/pdf-objects.js';
 import { decodeText } from './strings.js';
 
 /**
@@ -98,7 +98,7 @@ function numbers(args, count) {
 /**
  * Read one page.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {Map} page the page dictionary
  * @param {number} number the page number, one-based, for reporting
  * @returns {Promise<Page>}
