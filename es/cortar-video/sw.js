@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/cortar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'a974f98f6f';
+const CACHE_NAME=CACHE_PREFIX+'5436b5f629';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=27b318abb1',
+'styles.css?v=124e4021cc',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
@@ -21,6 +21,7 @@ const ASSETS=[
 'src/shared/mp4-boxes.js',
 'src/shared/segments.js',
 'src/shared/timeline.js',
+'src/shared/aac.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',

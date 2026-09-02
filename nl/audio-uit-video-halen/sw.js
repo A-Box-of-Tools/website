@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/audio-uit-video-halen/:';
-const CACHE_NAME=CACHE_PREFIX+'8b0636e1b3';
+const CACHE_NAME=CACHE_PREFIX+'f8f7501799';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=01d18a45f9',
+'styles.css?v=c11676590f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/오디오-자르기/:';
-const CACHE_NAME=CACHE_PREFIX+'40b56ba0c6';
+const CACHE_NAME=CACHE_PREFIX+'ef47536848';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=9fcd0e65fa',
+'styles.css?v=4cb60687bd',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
