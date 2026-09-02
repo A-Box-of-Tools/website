@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-birlestirme/:';
-const CACHE_NAME=CACHE_PREFIX+'8c000f4d96';
+const CACHE_NAME=CACHE_PREFIX+'d00a3fa626';
 const ASSETS=[
 './',
 'index.html',
@@ -8,8 +8,9 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
+'src/shared/zip.js',
+'src/shared/crc32.js',
 'src/assemble.js',
-'src/crc32.js',
 'src/dests.js',
 'src/filters.js',
 'src/format.js',
@@ -21,7 +22,6 @@ const ASSETS=[
 'src/produce.js',
 'src/reader.js',
 'src/writer.js',
-'src/zip.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

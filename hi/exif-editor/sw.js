@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/exif-editor/:';
-const CACHE_NAME=CACHE_PREFIX+'8577fc55e3';
+const CACHE_NAME=CACHE_PREFIX+'013794a4f5';
 const ASSETS=[
 './',
 'index.html',
@@ -8,8 +8,9 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
+'src/shared/zip.js',
+'src/shared/crc32.js',
 'src/container.js',
-'src/crc32.js',
 'src/jpeg.js',
 'src/main.js',
 'src/png.js',
@@ -17,7 +18,6 @@ const ASSETS=[
 'src/tags.js',
 'src/tiff.js',
 'src/webp.js',
-'src/zip.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

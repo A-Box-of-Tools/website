@@ -1,6 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{makeZip}from'./shared/zip.js';
 import{readImage,readBytes,serialize,exifBytes,outputType,KIND_NAMES}from'./container.js';
 import{serializeExif,setEntryValue,createEntry,TYPE}from'./tiff.js';
 import{describeTag}from'./tags.js';
@@ -8,7 +9,6 @@ import{
 formatValue,readPosition,buildFindings,badges,bytes as humanBytes,
 countTags,metadataSize,hasMetadata,tagGroups,
 }from'./report.js';
-import{makeZip}from'./zip.js';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
