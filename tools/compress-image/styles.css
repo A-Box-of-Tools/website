@@ -1,7 +1,6 @@
 /* ----------------------------------------------------- buy me a coffee */
 
 /* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
 
 .error {
   margin: 1rem 0 0;
@@ -18,14 +17,6 @@
 }
 
 /* --------------------------------------------------------------- file list */
-
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
 
 /* Said on the row itself rather than only in the results, so that "nothing
    happened to this one" is expected rather than a surprise afterwards. */
@@ -58,30 +49,8 @@
 /* The sentence under a control, restating what it is about to do. Every
    setting on this page has one, because "quality 0.78, scale 0.61" means
    nothing to somebody who came here to get under 500 KB. */
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
 
 .field-summary.warn { color: var(--danger); font-weight: 600; }
-
-.options {
-  margin: 1.2rem 0 0;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.options legend {
-  padding: 0 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-dim);
-}
 
 .option-row {
   display: flex;
@@ -91,13 +60,10 @@
   margin-bottom: 0.9rem;
 }
 
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-
 /* `max-width` alone loses: a flex item's automatic minimum is min-content, and
    for a <select> that is its longest option - a whole sentence here. Without the
    `min-width`, the row stayed as wide as that sentence on a narrow screen. */
 .option-row { min-width: 0; }
-.option-row select { min-width: 0; max-width: 100%; }
 
 .check {
   display: flex;
@@ -124,8 +90,6 @@
 }
 
 /* ----------------------------------------------------------------- running */
-
-.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
 /* ----------------------------------------------------------------- results */
 

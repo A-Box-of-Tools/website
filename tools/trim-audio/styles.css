@@ -390,9 +390,7 @@ audio.player {
   gap: 0.9rem;
 }
 
-.field { display: flex; flex-direction: column; gap: 0.3rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
 
 .summary {
   margin: 1.2rem 0 0;

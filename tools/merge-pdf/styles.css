@@ -5,7 +5,6 @@
 */
 
 /* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
 
 .error {
   margin: 1rem 0 0;
@@ -20,24 +19,9 @@
   white-space: pre-line;
 }
 
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
-
 .card-lede .grip { letter-spacing: -2px; font-weight: 700; color: var(--accent); }
 
 /* The sentence under a control, restating what it is about to do. */
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
 
 .field-note {
   margin: 0.4rem 0 0;
@@ -328,8 +312,6 @@
 }
 
 /* ----------------------------------------------------------------- running */
-
-.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
 /* ----------------------------------------------------------------- results */
 

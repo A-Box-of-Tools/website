@@ -6,7 +6,6 @@
 */
 
 /* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
 
 .error {
   margin: 1rem 0 0;
@@ -19,25 +18,9 @@
   white-space: pre-line;
 }
 
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
-
 .hint-line {
   margin: 0.5rem 0 0;
   font-size: 0.84rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
-
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
   line-height: 1.55;
   color: var(--text-dim);
   max-width: 72ch;
@@ -207,21 +190,6 @@ kbd {
 
 /* ------------------------------------------------------------- the settings */
 
-.options {
-  margin: 1.2rem 0 0;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.options legend {
-  padding: 0 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-dim);
-}
-
 .check {
   display: flex;
   align-items: flex-start;
@@ -252,11 +220,8 @@ kbd {
   border-top: 1px dashed var(--border);
 }
 
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-
 /* `max-width` alone loses: a flex item's automatic minimum is min-content, and
    for a <select> that is its longest option. */
-.option-row select { min-width: 0; max-width: 100%; }
 
 .settings {
   display: grid;
@@ -362,8 +327,6 @@ kbd {
 }
 
 /* ------------------------------------------------------------- the result */
-
-.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
 .progress-label { margin: 0.7rem 0 0; font-size: 0.85rem; color: var(--text-dim); }
 

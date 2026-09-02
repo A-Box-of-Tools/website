@@ -8,22 +8,6 @@
   to stop somebody and calm enough not to look like the page has broken.
 */
 
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
-
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
-
 .error {
   margin: 1rem 0 0;
   padding: 0.7rem 0.9rem;
@@ -115,9 +99,6 @@ kbd {
   flex-wrap: wrap;
   min-width: 0;
 }
-
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-.option-row select { min-width: 0; max-width: 100%; }
 
 .check {
   display: flex;

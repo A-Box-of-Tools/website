@@ -1,7 +1,6 @@
 /* ----------------------------------------------------- buy me a coffee */
 
 /* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
 
 .error {
   margin: 1rem 0 0;
@@ -18,14 +17,6 @@
 }
 
 /* --------------------------------------------------------------- file list */
-
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
 
 .file-row.selected {
   border-color: var(--accent);

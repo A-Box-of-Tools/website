@@ -7,7 +7,6 @@
 */
 
 /* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
 
 .error {
   margin: 1rem 0 0;
@@ -21,14 +20,6 @@
   white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
-}
-
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
 }
 
 /* --------------------------------------------------------------- file list */
@@ -76,19 +67,6 @@
   gap: 0.6rem;
 }
 
-.numbers label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-}
-
-.numbers input {
-  width: 6.5rem;
-  font-variant-numeric: tabular-nums;
-}
-
 /* The label is 0.8rem and the input inherits it, which is right on a desktop
    and wrong on an iPhone: Safari zooms the page into any field it is asked to
    focus whose text is under 16px, and then leaves it zoomed. Sixteen only where
@@ -116,12 +94,9 @@
   min-width: 0;
 }
 
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-
 /* `max-width` alone loses: a flex item's automatic minimum is min-content, and
    for a <select> that is its longest option - a whole sentence in each of
    these. */
-.option-row select { min-width: 0; max-width: 100%; }
 
 /* The sentence under a control, restating what it is about to do. */
 .field-summary {
@@ -210,8 +185,6 @@
 }
 
 /* ----------------------------------------------------------------- running */
-
-.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
 /* ----------------------------------------------------------------- results */
 
