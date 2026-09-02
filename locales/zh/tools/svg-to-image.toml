@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """\
       ，<code>src/svg.js</code> 里是文件自身尺寸怎么读出来、根标签怎么改写，\
-      <code>src/render.js</code> 里是干光栅化那八行，一个 &lt;img&gt;、一次\
+      <code>src/render.js</code> 里是干光栅化那八行，一个 &lt;img&gt;、一次 \
       <code>drawImage</code>、一次 <code>toBlob</code>，中间什么都没有。"""
 
 howto_heading = "不上传怎么把 SVG 转成 PNG"
@@ -42,8 +42,8 @@ card = """
             一样锐利。"""
 
 [words]
-plural = "SVG 文件"
-choose = "SVG"
+plural = " SVG 文件"
+choose = " SVG "
 
 [[facts]]
 text = "不上传"
@@ -70,16 +70,16 @@ body = """\
 [[privacy]]
 title = "这里没有任何东西会去联网取数据。"
 body = """\
-      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个\
+      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个 \
       <code>XMLHttpRequest</code>、一个 <code>sendBeacon</code> 都找不到。\
       整个光栅化就是一个装着你自己文件 blob 的 <code>&lt;img&gt;</code>、\
-      一次往画布上的 <code>drawImage</code>，再加一次\
+      一次往画布上的 <code>drawImage</code>，再加一次 \
       <code>canvas.toBlob</code>。"""
 
 [[privacy]]
 title = "SVG 是文档，而这是它动弹不得的那种模式。"
 body = """\
-      一个 SVG 里可以装 <code>&lt;script&gt;</code>、装远程的\
+      一个 SVG 里可以装 <code>&lt;script&gt;</code>、装远程的 \
       <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code>、装样式表和\
       网络字体。经由 <code>&lt;img&gt;</code> 绘制时，它处在规范所说的\
       <em>安全静态模式</em>：脚本不会跑，那些地址一个都不会去取。这是浏览器给\
@@ -119,7 +119,7 @@ body = """\
 title = "需要高分屏的那几份，就一起出了。"
 body = """\
       手机和 Retina 笔记本每个 CSS 像素要画两到三个设备像素，所以一个 200 像素\
-      的 logo，背后得垫一张 400 或者 600 像素的文件。勾上 <code>@2x</code> 和\
+      的 logo，背后得垫一张 400 或者 600 像素的文件。勾上 <code>@2x</code> 和 \
       <code>@3x</code>，出来的文件名正是 Xcode、安卓工具链和 CSS
       <code>image-set()</code> 各自期待的那种，而且每一份都严格是第一份的两倍\
       或三倍，不是各自取整。"""
@@ -150,7 +150,7 @@ q = "我的 SVG 会传到什么地方去吗？"
 a = """
         不会。文件由你自己的浏览器在你自己的硬件上读进来，再由那个负责渲染你\
         看到的每一张图的引擎画到画布上，然后作为下载还给你。这个工具没有任何\
-        联网功能，不取东西，也不发东西。页面的\
+        联网功能，不取东西，也不发东西。页面的 \
         <code>Content-Security-Policy</code> 把它可能联的地址全列了出来，\
         没有一个是本站的。"""
 
@@ -219,9 +219,9 @@ a = """
 [[faq]]
 q = "SVG 里带脚本或者外部图片，它能读吗？"
 a = """
-        能读，而且浏览器肯画的部分它都会画出来。经由 <code>&lt;img&gt;</code>\
+        能读，而且浏览器肯画的部分它都会画出来。经由 <code>&lt;img&gt;</code> \
         加载的 SVG 处在<em>安全静态模式</em>：脚本不跑，外部引用不取，动画也不\
-        播，你拿到的是第一帧。所以一个里面引了远程 <code>&lt;image&gt;</code>\
+        播，你拿到的是第一帧。所以一个里面引了远程 <code>&lt;image&gt;</code> \
         的文件，出来会缺那一块。那是浏览器替你拒掉的，也正因如此，这个页面才敢\
         放心打开一个从没见过的文件。"""
 

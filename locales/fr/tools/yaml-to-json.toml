@@ -47,7 +47,7 @@ card = """
             la confier à personne."""
 
 [words]
-plural = "YAML et JSON"
+plural = "fichiers YAML et JSON"
 choose = "un fichier"
 analytics_extra = """, ni le YAML ni le
   JSON qui passe par là"""

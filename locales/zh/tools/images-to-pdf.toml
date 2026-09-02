@@ -28,7 +28,7 @@ live_hint = """
       一条请求带着图片、缩略图或者文件名。或者干脆拔掉网线，照做不误。"""
 
 read_first = """\
-      ，写文件的全部过程在 <code>src/pdf.js</code> 和\
+      ，写文件的全部过程在 <code>src/pdf.js</code> 和 \
       <code>src/document.js</code> 里，它们碰都不碰网络。"""
 
 howto_heading = "图片怎么变成 PDF"

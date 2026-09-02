@@ -29,7 +29,7 @@
     <ul>
       <li><strong>十六進数32文字</strong> &mdash; MD5.</li>
       <li><strong>40</strong> &mdash; SHA-1.</li>
-      <li><strong>64</strong> &mdash; SHA-256。いちばんよく見るのがこれです.</li>
+      <li><strong>64</strong> &mdash; SHA-256。いちばんよく見るのがこれです。</li>
       <li><strong>96</strong> &mdash; SHA-384.</li>
       <li><strong>128</strong> &mdash; SHA-512.</li>
     </ul>
@@ -51,7 +51,7 @@
     <p>
       どのOSにもこれをする道具が入っています。ページを使うにしても、コマンドを知っておく価値はあります。「このサイトが正直に計算した証拠は」という問いに対しては、同じファイルを手元の機械に付属する道具に通すこと以上の答えはありません。
     </p>
-    <p><strong>Windows</strong>、PowerShell で:</p>
+    <p><strong>Windows</strong>、PowerShell で：</p>
     <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
     <p>
       古い機械では代わりに <code>certutil -hashfile disk.iso SHA256</code> があり、大文字で空白入りに出力します。チェックサムの照合で大文字小文字が意味を持つことはありません。あの文字は言葉ではなく数字だからです。
@@ -92,7 +92,7 @@
     <p>
       手元のバイト列が、誰かがその数字を書き留めたときに目の前にあったバイト列と同じだ、ということです。それは確かに役に立つ事実で、しかも多くの人が思っているより狭い範囲の事実なので、何を含み何を含まないかを並べておきます。
     </p>
-    <p><strong>一致が排除するもの:</strong></p>
+    <p><strong>一致が排除するもの：</strong></p>
     <ul>
       <li>
         途中で止まったのに、見た目は完全なファイルを残したダウンロード。
@@ -107,7 +107,7 @@
         宣伝している内容とは別のものを黙って配っているミラー。
       </li>
     </ul>
-    <p><strong>一致が排除しないもの:</strong></p>
+    <p><strong>一致が排除しないもの：</strong></p>
     <ul>
       <li>
         <strong>そのファイルが有害でないこと。</strong>配布元はマルウェアでも同じ正確さで測れます。チェックサムが言うのは「これが配られたものだ」であって、「これは安全だ」ではありません。

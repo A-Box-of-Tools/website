@@ -45,7 +45,7 @@ card = """
             oder einen Feed ein, ohne sie jemandem zu geben."""
 
 [words]
-plural = "XML und JSON"
+plural = "XML- und JSON-Dateien"
 choose = "eine Datei"
 analytics_extra = """, und kein XML,
   das hier hindurchgeht"""

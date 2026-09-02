@@ -28,7 +28,7 @@ live_hint = """
       一條請求帶著圖片、縮圖或者檔名。或者乾脆拔掉網線，照做不誤。"""
 
 read_first = """\
-      ，寫檔案的全部過程在 <code>src/pdf.js</code> 和\
+      ，寫檔案的全部過程在 <code>src/pdf.js</code> 和 \
       <code>src/document.js</code> 裡，它們碰都不碰網路。"""
 
 howto_heading = "圖片怎麼變成 PDF"

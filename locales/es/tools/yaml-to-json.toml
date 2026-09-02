@@ -45,7 +45,7 @@ card = """
             nadie."""
 
 [words]
-plural = "YAML y JSON"
+plural = "archivos YAML y JSON"
 choose = "un archivo"
 analytics_extra = """, ni del YAML ni del
   JSON que pasa por aquí"""

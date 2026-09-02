@@ -3,7 +3,7 @@
 #
 
 nav = "證明 QR Code 掃得出"
-title = "做一個 QR Code，並證明它掃得出來 &mdash; 在印兩百張海報之前"
+title = "做一個 QR Code，並證明它掃得出來——在印兩百張海報之前"
 description = "產生 QR Code，再用同一個網站的識別器驗證：一字不差的內容、真正的連結，按印刷尺寸、用一張照片，在批次印刷之前。全在瀏覽器裡，什麼都不上傳。"
 
 heading = "怎麼做一個 QR Code，並證明它掃得出來"
@@ -13,5 +13,5 @@ lede = """
 updated = "2026年8月26日"
 
 og_title = "印兩百張之前，先證明海報掃得出來"
-og_description = "產生 QR Code，給打樣拍張照，再用同一個網站的識別器讀回來 &mdash; 內容、連結，一樣不少 &mdash; 然後再給印刷放行。"
+og_description = "產生 QR Code，給打樣拍張照，再用同一個網站的識別器讀回來——內容、連結，一樣不少——然後再給印刷放行。"
 og_image_alt = "abox.tools - 從不碰伺服器的工具"

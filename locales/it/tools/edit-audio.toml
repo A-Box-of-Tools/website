@@ -195,9 +195,11 @@ a = """
         Sì, e qui è lo stesso identico lavoro che aprire un MP3. Trascina dentro
         un MP4, un MOV o un WebM e viene decodificata solo la sua traccia audio:
         l'immagine non viene mai letta, e quello che esce è un file sonoro senza
-        video dentro. È anche il modo per salvare il suono di una clip senza
-        modificarlo per niente: lascia stare ogni impostazione e premi il
-        pulsante."""
+        video dentro.
+        Se è tutto quello che vuoi &mdash; il suono, così com'è &mdash;, allora
+        <a href="../estrarre-audio-da-video/">Estrarre l'audio da un video</a>
+        fa lo stesso lavoro in una pagina che non ha nient'altro. Torna qui
+        quando anche il suono va cambiato."""
 
 [[faq]]
 q = "Cambiare la velocità cambia l'intonazione?"

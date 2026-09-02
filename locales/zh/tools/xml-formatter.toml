@@ -42,9 +42,9 @@ card = """\
             订阅源，不用交给任何人。"""
 
 [words]
-plural = "XML 和 JSON"
+plural = " XML 和 JSON "
 choose = "一个文件"
-analytics_extra = """，经过这里的 XML\
+analytics_extra = """，经过这里的 XML \
   同样如此"""
 
 [[facts]]
@@ -72,7 +72,7 @@ body = """\
 [[privacy]]
 title = "这里不会去取任何东西。"
 body = """\
-      <code>src/</code> 里哪儿都没有 <code>fetch</code>，没有\
+      <code>src/</code> 里哪儿都没有 <code>fetch</code>，没有 \
       <code>XMLHttpRequest</code>，也没有 <code>sendBeacon</code>。解析器和打印器\
       都是这个页面里的函数：进去一段字符串，出来一段字符串。"""
 
@@ -138,7 +138,7 @@ body = """\
 q = "我的 XML 会被上传到什么地方吗？"
 a = """\
         不会。这个页面上的解析器和打印器都是在你自己的浏览器里、你自己的硬件上跑的\
-        函数。这个工具压根就没有网络功能，从不取任何东西，也从不发任何东西，页面的\
+        函数。这个工具压根就没有网络功能，从不取任何东西，也从不发任何东西，页面的 \
         <code>Content-Security-Policy</code> 里写着它允许联系的每一个地址，没有一个\
         属于本站。这一点对 XML 来说比这个格式的名声听上去更要紧：以它送过来的多半是\
         一张发票、一份银行流水、一份病历，或者一个头里带着凭据的 SOAP 请求。"""
@@ -148,7 +148,7 @@ q = "它会解析外部实体吗？"
 a = """\
         不会，也没有什么可关的。解析外部实体，是把 XML 解析器诓去读运行它的那台机器上\
         的文件的办法，也就是通常写作 XXE 的那个攻击，而 <code>src/xml.js</code> 是\
-        手写的读取器，里面压根没有实体解析。你的文本也从不交给浏览器自带的\
+        手写的读取器，里面压根没有实体解析。你的文本也从不交给浏览器自带的 \
         <code>DOMParser</code>。<code>DOCTYPE</code> 会原样带过去，但永远不会被执行。"""
 
 [[faq]]
@@ -219,4 +219,4 @@ features = [
 
 [picker]
 title = "把文件拖到这里"
-hint = "也可以点击选择 &mdash; 一个 .xml、.svg 或 .rss 文件"
+hint = "也可以点击选择——一个 .xml、.svg 或 .rss 文件"

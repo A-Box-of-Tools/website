@@ -18,7 +18,7 @@ og_image_alt = "Comparador de alturas - comparar alturas lado a lado, sem envio"
 pledge = """
     Um gráfico de alturas é aritmética e um desenho: não há arquivo nenhum para
     enviar nem serviço nenhum para consultar &mdash; e o único arquivo que esta
-    página aceita, um SVG seu para pôr na régua, é lido aqui e não vai a lugar
+    página aceita, uma imagem sua para pôr na régua, é lido aqui e não vai a lugar
     nenhum. O homem, a mulher, o menino e a menina são ilustrações de domínio
     público que vão junto com esta página, e o menino e a menina são desenhos de
     crianças de verdade, não adultos encolhidos &mdash; que é o que impede um
@@ -119,7 +119,7 @@ body = """
       carregar dentro."""
 
 [[privacy]]
-title = "Um SVG que você acrescenta é lido aqui, e reconstruído em vez de aceito."
+title = "Uma imagem que você acrescenta é lida aqui, e nunca enviada."
 body = """
  O arquivo
       nunca sai desta página &mdash; ele é lido com o próprio
@@ -131,7 +131,15 @@ body = """
       trás em vez de passar. Isso conta em dobro, porque o gráfico que você
       baixa é um arquivo que você manda para outras pessoas: qualquer coisa que
       tivesse sobrevivido seria o navegador delas chamando o servidor de um
-      estranho, dias depois, a partir de algo que esta página escreveu."""
+      estranho, dias depois, a partir de algo que esta página escreveu.
+
+      Uma fotografia ou um PNG não é um programa e não tem nada a reconstruir: o
+      próprio decodificador do navegador lê o arquivo, que é redesenhado aqui
+      num canvas antes de ir para o gráfico. É esse redesenho que deixa para
+      trás os metadados do arquivo &mdash; a câmera, o lugar, o perfil, o que
+      quer que houvesse ali &mdash;, porque nada disso sobrevive a um canvas. O
+      que acaba no gráfico é uma imagem que esta página codificou, escrita como
+      dados e não como endereço, então o gráfico continua sem apontar para nada."""
 
 [[privacy]]
 title = "As ilustrações estão aqui, não são buscadas."
@@ -203,12 +211,12 @@ body = """
 [[howto]]
 title = "Ou ponha nele um desenho seu."
 body = """
- <strong>Acrescentar seu
-      próprio SVG</strong> pega um arquivo da sua máquina e desenha a forma dele
-      na altura que você der &mdash; o recurso a usar quando o gráfico é sobre um
-      produto, um veículo ou um prédio em vez de uma pessoa. Ele mantém as
-      proporções do próprio desenho, colore como qualquer outra linha, e lê o
-      arquivo aqui em vez de mandá-lo para algum lugar."""
+ <strong>Sua própria imagem</strong> pega um arquivo da sua máquina e põe na
+      régua na altura que você der &mdash; o recurso a usar quando o gráfico é
+      sobre um produto, um veículo ou um prédio em vez de uma pessoa. Um SVG é
+      desenhado na cor da própria linha, como qualquer outra figura; uma
+      fotografia ou um PNG entra do jeito que é. Os dois mantêm as próprias
+      proporções, e os dois são lidos aqui em vez de mandados para algum lugar."""
 
 [[howto]]
 title = "Ponha a régua nas unidades em que quem lê pensa."
@@ -285,23 +293,31 @@ a = """
         atribuição grudaria essa exigência no seu gráfico."""
 
 [[faq]]
-q = "Posso pôr um desenho meu no gráfico?"
+q = "Posso pôr uma imagem minha no gráfico?"
 a = """
-        Pode &mdash; <strong>Acrescentar seu próprio SVG</strong> pega qualquer
-        arquivo SVG e põe a forma dele na régua na altura que você digitar: um
-        logotipo, uma planta, uma peça de máquina, um carro. As proporções são
-        as dele, então não há largura a preencher.
+        Pode &mdash; <strong>Sua própria imagem</strong> pega um desenho ou uma
+        fotografia e põe na régua na altura que você digitar: um logotipo, uma
+        planta, uma peça de máquina, um carro, ou uma foto da coisa em si. As
+        proporções são as dela, então não há largura a preencher.
         <br><br>
-        Duas coisas a saber. Ele é desenhado numa <strong>única cor
-        chapada</strong>, a que aquela linha estiver, porque é isso que o resto
-        do gráfico é &mdash; então um desenho feito de contornos finos em vez de
-        formas preenchidas sai como um borrão, e para isso esta é a ferramenta
-        errada. E só as <em>formas</em> são mantidas: o arquivo é reconstruído do
-        zero a partir de traçados, retângulos e círculos, e tudo o que pudesse
-        alcançar a rede &mdash; uma imagem vinculada, uma folha de estilo, uma
-        fonte, um script &mdash; fica para trás. O arquivo em si nunca vai a
-        lugar nenhum; essa parte é sobre o gráfico que você baixa, que é um
-        arquivo que você talvez mande para alguém."""
+        Um <strong>SVG</strong> é desenhado numa única cor chapada, a que aquela
+        linha estiver, porque é isso que o resto do gráfico é &mdash; então um
+        desenho feito de contornos finos em vez de formas preenchidas sai como
+        um borrão, e para isso esta é a ferramenta errada. Só as <em>formas</em>
+        são mantidas: o arquivo é reconstruído do zero a partir de traçados,
+        retângulos e círculos, e tudo o que pudesse alcançar a rede &mdash; uma
+        imagem vinculada, uma folha de estilo, uma fonte, um script &mdash; fica
+        para trás.
+        <br><br>
+        Uma <strong>foto ou um PNG</strong> entra do jeito que é e mantém as
+        próprias cores, então a cor da linha só dá nome a ela. Ela é redesenhada
+        aqui antes de entrar, o que limita quanto acrescenta ao gráfico e deixa
+        para trás os metadados do arquivo. A transparência é mantida, então um
+        recorte fica limpo em pé na régua &mdash; e uma foto traz o fundo junto,
+        que vale a pena cortar antes.
+        <br><br>
+        Nenhum dos dois arquivos vai a lugar nenhum. Isso conta em dobro, porque
+        o gráfico que você baixa é um arquivo que você talvez mande para alguém."""
 
 [[faq]]
 q = "Por que não tem uma criança pequena ou um bebê?"
@@ -330,17 +346,24 @@ a = """
 [[faq]]
 q = "Dá para pôr um objeto no gráfico?"
 a = """
-        Dá &mdash; um retângulo simples recebe uma altura e uma largura, então
-        qualquer coisa com duas dimensões entra ao lado das pessoas. O menu tem
-        vinte para começar, em quatro grupos: portas e janelas, escola e
-        escritório (um quadro, uma mesa, um arquivo, uma tela de projeção),
-        coisas da cidade (uma máquina de vendas, uma lixeira com rodas, uma cesta
-        de basquete, um contêiner de 20&nbsp;ft) e coisas de casa. Algumas são
-        normas de verdade e outras são tamanhos típicos, o que a página fala em
-        voz alta; cada uma chega como uma linha comum onde você pode digitar por
-        cima. Um objeto familiar faz mais por um gráfico do que qualquer
-        quantidade de gente a mais: é ele que transforma uma comparação numa noção
-        de escala."""
+        Dá &mdash; e a maioria já chega desenhada. O menu tem vinte para
+        começar, em quatro grupos: portas e janelas, escola e escritório (um
+        quadro, uma mesa, um arquivo, uma tela de projeção), coisas da cidade
+        (uma máquina de vendas, uma lixeira com rodas, uma cesta de basquete, um
+        contêiner de 20&nbsp;ft) e coisas de casa. Dezessete deles vêm com
+        desenho &mdash; uma porta com maçaneta, uma geladeira com o freezer em
+        cima, um sofá que dá para ver que é um sofá &mdash; e o desenho é
+        ajustado à altura e à largura da linha, então os números continuam
+        decidindo o tamanho, e os seus, digitados por cima, continuam valendo.
+        Os outros três são retângulos simples, porque não apareceu nenhum
+        desenho livre deles que fosse ao mesmo tempo certo e bem proporcionado,
+        e um desenho errado é pior do que um bloco honesto num gráfico que trata
+        de escala.
+        <br><br>
+        Algumas dessas medidas são normas de verdade e outras são tamanhos
+        típicos, o que a página fala em voz alta. Um objeto familiar faz mais
+        por um gráfico do que qualquer quantidade de gente a mais: é ele que
+        transforma uma comparação numa noção de escala."""
 
 [[faq]]
 q = "Tem uma figura para cachorro ou gato?"
@@ -409,7 +432,7 @@ features = [
   "Alturas digitadas como 173, 1,73 m, 5'8\", 68 in ou 5 ft 8, com a leitura mostrada de volta",
   "Centímetros ou pés e polegadas, trocados sem mudar a altura de ninguém",
   "Vinte objetos prontos, dezessete deles desenhados: portas, janelas, um quadro branco, uma máquina de vendas, móveis",
-  "Qualquer SVG seu na régua, reconstruído só a partir das formas dele",
+  "Qualquer imagem sua na régua &mdash; um SVG reconstruído a partir das formas dele, ou uma foto do jeito que é",
   "Uma régua cujo espaçamento é escolhido pelo que a imagem aguenta",
   "Qualquer cor de fundo, ou nenhuma, com a tinta escolhida para continuar legível em cima",
   "PNG em qualquer altura em pixels, e um SVG que imprime nítido em qualquer tamanho",

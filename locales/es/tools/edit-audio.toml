@@ -188,8 +188,10 @@ a = """
         Sí, y aquí es el mismo trabajo que abrir un MP3. Suelta un MP4, un MOV o
         un WebM y solo se descodifica su pista de audio: la imagen no se lee en
         ningún momento, y lo que sale es un archivo de sonido sin vídeo dentro.
-        Es además la manera de guardar el sonido de un clip sin editarlo lo más
-        mínimo: no toques ningún ajuste y pulsa el botón."""
+        Si eso es todo lo que quieres &mdash; el sonido, sin cambios &mdash;,
+        entonces <a href="../extraer-audio-de-video/">Extraer el audio de un
+        vídeo</a> hace el mismo trabajo en una página que no tiene nada más.
+        Vuelve aquí cuando el sonido también necesite cambios."""
 
 [[faq]]
 q = "¿Cambiar la velocidad cambia el tono?"

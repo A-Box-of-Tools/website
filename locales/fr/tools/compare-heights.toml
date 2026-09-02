@@ -18,7 +18,7 @@ og_image_alt = "Comparateur de tailles - comparer des tailles côte à côte, sa
 pledge = """
     Un graphique de tailles, c'est de l'arithmétique et un dessin&nbsp;: il n'y
     a pas de fichier à envoyer ni de service à interroger &mdash; et le seul
-    fichier que cette page accepte, un SVG à vous à poser sur la règle, est lu
+    fichier que cette page accepte, une image à vous à poser sur la règle, est lu
     ici et ne va nulle part. L'homme, la femme, le garçon et la fille sont des
     illustrations du domaine public livrées avec cette page, et le garçon et la
     fille sont des dessins d'enfants réels plutôt que d'adultes rapetissés
@@ -123,7 +123,7 @@ body = """
       à récupérer et aucune image à charger dedans."""
 
 [[privacy]]
-title = "Un SVG que vous ajoutez est lu ici, et reconstruit plutôt que cru sur parole."
+title = "Une image que vous ajoutez est lue ici, et jamais envoyée."
 body = """
  Le fichier ne
       quitte jamais cette page &mdash; il est lu avec le <code>FileReader</code>
@@ -136,7 +136,17 @@ body = """
       graphique que vous téléchargez est un fichier que vous envoyez à
       d'autres&nbsp;: ce qui aurait survécu serait leur navigateur appelant le
       serveur d'un inconnu, des jours plus tard, depuis quelque chose que cette
-      page a écrit."""
+      page a écrit.
+
+      Une photographie ou un PNG n'est pas un programme et n'a rien à
+      reconstruire&nbsp;: le décodeur du navigateur lui-même la lit, et elle est
+      redessinée ici sur un canvas avant d'aller sur le graphique. C'est ce
+      redessin qui laisse derrière lui les métadonnées du fichier &mdash;
+      l'appareil, le lieu, le profil, tout ce qui s'y trouvait &mdash;, parce
+      que rien de cela ne survit à un canvas. Ce qui finit dans le graphique est
+      une image que cette page a encodée elle-même, inscrite comme des données
+      et non comme une adresse, si bien que le graphique ne pointe toujours vers
+      rien."""
 
 [[privacy]]
 title = "Les illustrations sont ici, elles ne sont pas récupérées."
@@ -214,13 +224,13 @@ body = """
 [[howto]]
 title = "Ou posez-y votre propre dessin."
 body = """
- <strong>Ajouter votre
-      propre SVG</strong> prend un fichier sur votre machine et dessine sa forme
-      à la hauteur que vous lui donnez &mdash; ce vers quoi se tourner quand le
-      graphique porte sur un produit, un véhicule ou un bâtiment plutôt que sur
-      une personne. Il garde les proportions propres au dessin, le colore comme
-      n'importe quelle autre ligne, et lit le fichier ici plutôt que de
-      l'envoyer où que ce soit."""
+ <strong>Votre propre image</strong> prend un fichier sur votre machine et le
+      pose sur la règle à la hauteur que vous lui donnez &mdash; ce vers quoi se
+      tourner quand le graphique porte sur un produit, un véhicule ou un
+      bâtiment plutôt que sur une personne. Un SVG est dessiné dans la couleur
+      de sa ligne, comme toute autre silhouette&nbsp;; une photographie ou un
+      PNG y va tel quel. L'un comme l'autre garde ses propres proportions, et
+      l'un comme l'autre est lu ici plutôt qu'envoyé où que ce soit."""
 
 [[howto]]
 title = "Réglez la règle sur les unités auxquelles pense votre lecteur."
@@ -303,24 +313,34 @@ a = """
         exigence à votre graphique."""
 
 [[faq]]
-q = "Puis-je mettre mon propre dessin sur le graphique&nbsp;?"
+q = "Puis-je mettre ma propre image sur le graphique&nbsp;?"
 a = """
-        Oui &mdash; <strong>Ajouter votre propre SVG</strong> prend n'importe
-        quel fichier SVG et pose sa forme sur la règle à la hauteur que vous
-        tapez&nbsp;: un logo, un plan, une pièce de machine, une voiture. Ses
-        proportions sont les siennes, il n'y a donc pas de largeur à remplir.
+        Oui &mdash; <strong>Votre propre image</strong> prend un dessin ou une
+        photographie et le pose sur la règle à la hauteur que vous tapez&nbsp;:
+        un logo, un plan, une pièce de machine, une voiture, ou une photo de la
+        chose elle-même. Ses proportions sont les siennes, il n'y a donc pas de
+        largeur à remplir.
         <br><br>
-        Deux choses à savoir. Il est dessiné dans <strong>une seule couleur
-        pleine</strong>, celle sur laquelle cette ligne est réglée, parce que
-        c'est ce qu'est le reste du graphique &mdash; un dessin fait de contours
-        fins plutôt que de formes pleines ressort donc en pâté, et ce n'est pas
-        le bon outil pour cela. Et seules les <em>formes</em> sont
-        gardées&nbsp;: le fichier est reconstruit de zéro à partir de chemins,
-        de rectangles et de cercles, et tout ce qui pourrait atteindre le réseau
-        &mdash; une image liée, une feuille de style, une police, un script
-        &mdash; reste derrière. Le fichier lui-même ne va jamais nulle part
-        ; cette partie concerne le graphique que vous téléchargez, qui est un
-        fichier que vous enverriez peut-être à quelqu'un."""
+        Un <strong>SVG</strong> est dessiné dans une seule couleur pleine, celle
+        sur laquelle cette ligne est réglée, parce que c'est ce qu'est le reste
+        du graphique &mdash; un dessin fait de contours fins plutôt que de
+        formes pleines ressort donc en pâté, et ce n'est pas le bon outil pour
+        cela. Seules les <em>formes</em> sont gardées&nbsp;: le fichier est
+        reconstruit de zéro à partir de chemins, de rectangles et de cercles, et
+        tout ce qui pourrait atteindre le réseau &mdash; une image liée, une
+        feuille de style, une police, un script &mdash; reste derrière.
+        <br><br>
+        Une <strong>photo ou un PNG</strong> y va tel quel et garde ses propres
+        couleurs, si bien que la couleur de la ligne ne fait plus que le nommer.
+        Il est redessiné ici avant d'y aller, ce qui borne ce qu'il ajoute au
+        graphique et laisse derrière lui les métadonnées du fichier. La
+        transparence est conservée, un détourage se tient donc proprement sur la
+        règle &mdash; et une photo apporte son arrière-plan avec elle, qu'il
+        vaut mieux rogner d'abord.
+        <br><br>
+        Aucun des deux fichiers ne va nulle part. Cela compte deux fois, parce
+        que le graphique que vous téléchargez est un fichier que vous enverriez
+        peut-être à quelqu'un."""
 
 [[faq]]
 q = "Pourquoi n'y a-t-il ni tout-petit ni bébé&nbsp;?"
@@ -350,15 +370,23 @@ a = """
 [[faq]]
 q = "Puis-je mettre un objet sur le graphique&nbsp;?"
 a = """
-        Oui &mdash; un simple rectangle prend une hauteur et une largeur, donc
-        tout ce qui a deux dimensions se place à côté des personnes. Le menu en
-        propose vingt pour commencer, en quatre groupes&nbsp;: portes et
-        fenêtres, école et bureau (un tableau, un bureau, un classeur, un écran
-        de projection), choses de la ville (un distributeur, une poubelle à
-        roulettes, un panier de basket, un conteneur de 20&nbsp;ft) et choses de
-        la maison. Certaines sont de véritables normes et d'autres des tailles
-        typiques, ce que la page dit à voix haute&nbsp;; chacune arrive comme une
-        ligne ordinaire par-dessus laquelle vous pouvez taper. Un objet familier
+        Oui &mdash; et la plupart arrivent dessinés. Le menu en propose vingt
+        pour commencer, en quatre groupes&nbsp;: portes et fenêtres, école et
+        bureau (un tableau, un bureau, un classeur, un écran de projection),
+        choses de la ville (un distributeur, une poubelle à roulettes, un panier
+        de basket, un conteneur de 20&nbsp;ft) et choses de la maison. Dix-sept
+        d'entre eux viennent avec un dessin &mdash; une porte avec sa poignée,
+        un réfrigérateur avec son congélateur au-dessus, un canapé dont on voit
+        que c'est un canapé &mdash;, et le dessin est ajusté à la hauteur et à
+        la largeur de la ligne, si bien que ce sont toujours les nombres qui
+        décident de la taille, et que les vôtres, tapés par-dessus, valent
+        toujours. Les trois autres sont de simples rectangles, parce qu'aucun
+        dessin libre de ceux-là ne s'est révélé à la fois juste et bien
+        proportionné, et qu'un dessin faux est pire qu'un bloc honnête sur un
+        graphique qui parle d'échelle.
+        <br><br>
+        Certaines de ces tailles sont de véritables normes et d'autres des
+        tailles typiques, ce que la page dit à voix haute. Un objet familier
         fait plus pour un graphique que n'importe quel nombre de personnes
         supplémentaires&nbsp;: c'est lui qui transforme une comparaison en sens
         de l'échelle."""
@@ -433,7 +461,7 @@ features = [
   "Tailles tapées 173, 1,73 m, 5'8\", 68 in ou 5 ft 8, avec la lecture affichée",
   "Centimètres ou pieds et pouces, changés sans modifier la taille de personne",
   "Vingt objets tout prêts, dont dix-sept dessinés : portes, fenêtres, un tableau blanc, un distributeur, des meubles",
-  "N'importe quel SVG à vous sur la règle, reconstruit à partir de ses seules formes",
+  "N'importe quelle image à vous sur la règle &mdash; un SVG reconstruit à partir de ses formes, ou une photo telle quelle",
   "Une règle dont l'espacement est choisi d'après ce que l'image peut porter",
   "N'importe quelle couleur de fond, ou aucune, avec une encre choisie pour rester lisible dessus",
   "PNG à n'importe quelle hauteur en pixels, et un SVG qui s'imprime net à n'importe quelle taille",

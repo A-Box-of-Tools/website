@@ -33,7 +33,7 @@ live_hint = """
 
 read_first = """\
       ，<code>src/ico.js</code> 和 <code>src/icns.js</code> 里是那两种图标格式，\
-      前者是目录、条目和掩码，后者是苹果定死的十个槽位；<code>src/sizes.js</code>\
+      前者是目录、条目和掩码，后者是苹果定死的十个槽位；<code>src/sizes.js</code> \
       里是页面上每一个尺寸的来历。"""
 
 howto_heading = "不上传怎么做一个 .ico 文件"
@@ -71,16 +71,16 @@ body = """\
 [[privacy]]
 title = "这里没有任何东西会去联网取数据。"
 body = """\
-      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个\
+      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个 \
       <code>XMLHttpRequest</code>、一个 <code>sendBeacon</code> 都找不到。\
-      缩放就是往画布上做一次 <code>drawImage</code>，每个图标则是\
+      缩放就是往画布上做一次 <code>drawImage</code>，每个图标则是 \
       <code>src/ico.js</code> 或者 <code>src/icns.js</code> 在这个页面里，\
       给那些像素前面加上一个文件头。"""
 
 [[privacy]]
 title = "文件的说明，是从它自己的字节里读回来的。"
 body = """\
-      成品图标旁边列出的那串尺寸，不是你勾了什么就写什么，而是\
+      成品图标旁边列出的那串尺寸，不是你勾了什么就写什么，而是 \
       <code>readIcoDirectory</code> 或 <code>readIcnsElements</code> 从刚写好\
       的文件里重新读出来的。万一写入的结果跟设置对不上，页面当场就会说，不用\
       等到 Windows 什么都不画、macOS 画出一张白纸的时候才发现。"""
@@ -136,7 +136,7 @@ body = """\
 [[howto]]
 title = "把文件拿走。"
 body = """\
-      一个 .ico，每个尺寸都在里面。你要的是网站图标时，它就叫\
+      一个 .ico，每个尺寸都在里面。你要的是网站图标时，它就叫 \
       <code>favicon.ico</code>，因为浏览器就照这个地址找。勾了 macOS 的话，\
       旁边还有一个 .icns，直接放进 Mac 应用包就行。再勾上网站那一套，就还有\
       苹果、安卓和 Windows 磁贴用的图、一份 manifest，以及一段可以直接粘进\
@@ -222,7 +222,7 @@ a = """
 [[faq]]
 q = "能顺便做 macOS 的图标吗？"
 a = """
-        能，勾上 <em>macOS 图标</em>，就在 <code>.ico</code> 旁边多一个\
+        能，勾上 <em>macOS 图标</em>，就在 <code>.ico</code> 旁边多一个 \
         <code>.icns</code>，也可以只要它。同一件事换了个容器，两边互不认账：\
         Windows 要 .ico，Mac 应用包要 .icns。那边的尺寸没得挑，因为苹果公开的\
         就是十个槽位，16、32、64、128、256、512 和 1024 像素，其中三个会出现\
@@ -241,9 +241,9 @@ a = """
 [[faq]]
 q = "这个 .icns 跟 iconutil 做出来的一样吗？"
 a = """
-        十个槽位一样，四字母类型一样，每个槽位里装 PNG 也一样，这正是\
+        十个槽位一样，四字母类型一样，每个槽位里装 PNG 也一样，这正是 \
         <code>iconutil</code> 从一个 <code>.iconset</code> 文件夹生成出来的\
-        东西。有一处是故意不同的：苹果那个工具还会写一个 <code>TOC&nbsp;</code>\
+        东西。有一处是故意不同的：苹果那个工具还会写一个 <code>TOC&nbsp;</code> \
         元素，也就是后面各元素类型和长度的索引。它属于优化，不是格式的必需\
         部分，没有它的话读取方就从头到尾走一遍，得到的答案完全相同。而一个\
         错的索引比没有索引更糟，所以干脆不写。"""

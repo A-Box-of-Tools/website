@@ -18,7 +18,7 @@ og_image_alt = "Boy Karşılaştırma - boyları yan yana karşılaştırma, yü
 pledge = """
     Bir boy grafiği aritmetik ve bir çizimdir: gönderilecek bir dosya ve
     sorulacak bir hizmet yoktur &mdash; ve bu sayfanın kabul ettiği tek dosya,
-    cetvele koyacağınız kendi SVG'niz, burada okunur ve hiçbir yere gitmez.
+    cetvele koyacağınız kendi görseliniz, burada okunur ve hiçbir yere gitmez.
     Erkek, kadın, erkek çocuk ve kız çocuk bu sayfayla birlikte gelen kamu malı
     çizimlerdir, ve erkek çocuk ile kız çocuk küçültülmüş yetişkinler değil
     gerçek çocukların çizimleridir &mdash; bir aile grafiğinin, kimsenin adını
@@ -116,7 +116,7 @@ body = """
       getirilecek bir yazı tipi ve içine yüklenecek bir görsel yoktur."""
 
 [[privacy]]
-title = "Eklediğiniz bir SVG burada okunur, ve güvenilmek yerine yeniden kurulur."
+title = "Eklediğiniz bir görsel burada okunur, ve asla gönderilmez."
 body = """
  Dosya bu sayfadan
       hiç çıkmaz &mdash; tarayıcının kendi <code>FileReader</code>'ıyla okunur
@@ -127,7 +127,15 @@ body = """
       yapılan atıf, taşınmak yerine geride bırakılır. Bu iki kez önemlidir,
       çünkü indirdiğiniz grafik başkalarına gönderdiğiniz bir dosyadır: sağ
       kalan herhangi bir şey, günler sonra, bu sayfanın yazdığı bir şeyden
-      onların tarayıcısının bir yabancının sunucusunu çağırması olurdu."""
+      onların tarayıcısının bir yabancının sunucusunu çağırması olurdu.
+
+      Bir fotoğraf ya da PNG bir program değildir ve yeniden kurulacak hiçbir
+      şeyi yoktur: onu tarayıcının kendi çözücüsü okur, ve grafiğe konmadan önce
+      burada bir tuvale yeniden çizilir. Dosyanın üst verisini &mdash; kamerayı,
+      yeri, profili, içinde ne varsa &mdash; geride bırakan da bu yeniden
+      çizmedir; çünkü bunların hiçbiri bir tuvalden sağ çıkmaz. Grafiğe giren
+      şey bu sayfanın kodladığı bir görseldir, adres olarak değil veri olarak
+      yazılır, dolayısıyla grafik yine hiçbir yeri göstermez."""
 
 [[privacy]]
 title = "Çizimler burada, getirilmiyor."
@@ -198,12 +206,12 @@ body = """
 [[howto]]
 title = "Ya da üzerine kendi çiziminizi koyun."
 body = """
- <strong>Kendi SVG'nizi
-      ekleyin</strong>, makinenizden bir dosya alır ve onun biçimini verdiğiniz
-      boyda çizer &mdash; grafik bir insan yerine bir ürün, bir araç ya da bir
-      bina hakkındayken başvurulacak şey budur. Çizimin kendi oranlarını korur,
-      onu diğer satırlar gibi renklendirir, ve dosyayı bir yere göndermek yerine
-      burada okur."""
+ <strong>Kendi görseliniz</strong>, makinenizden bir dosya alır ve onu
+      verdiğiniz boyda cetvele koyar &mdash; grafik bir insan yerine bir ürün,
+      bir araç ya da bir bina hakkındayken başvurulacak şey budur. Bir SVG,
+      diğer her figür gibi satırının kendi rengiyle çizilir; bir fotoğraf ya da
+      PNG olduğu gibi konur. İkisi de kendi oranlarını korur, ve ikisi de bir
+      yere gönderilmek yerine burada okunur."""
 
 [[howto]]
 title = "Cetveli okurunuzun düşündüğü birimlere ayarlayın."
@@ -279,23 +287,32 @@ a = """
         iliştirirdi."""
 
 [[faq]]
-q = "Grafiğe kendi çizimimi koyabilir miyim?"
+q = "Grafiğe kendi görselimi koyabilir miyim?"
 a = """
-        Evet &mdash; <strong>Kendi SVG'nizi ekleyin</strong>, herhangi bir SVG
-        dosyasını alır ve onun biçimini yazdığınız boyda cetvele koyar: bir
-        logo, bir kat planı, bir makine parçası, bir araba. Oranları kendine
-        aittir, dolayısıyla doldurulacak bir genişlik yoktur.
+        Evet &mdash; <strong>Kendi görseliniz</strong>, bir çizim ya da bir
+        fotoğraf alır ve onu yazdığınız boyda cetvele koyar: bir logo, bir kat
+        planı, bir makine parçası, bir araba ya da şeyin kendisinin bir
+        fotoğrafı. Oranları kendine aittir, dolayısıyla doldurulacak bir
+        genişlik yoktur.
         <br><br>
-        Bilinmesi gereken iki şey var. <strong>Tek bir düz renkle</strong>
-        çizilir, o satırın ayarlandığı renkle, çünkü grafiğin geri kalanı da
-        odur &mdash; yani dolu biçimler yerine ince dış hatlardan yapılmış bir
-        çizim leke olarak çıkar, ve bunun için bu yanlış araçtır. Ve yalnızca
-        <em>biçimler</em> tutulur: dosya, yollardan, dikdörtgenlerden ve
-        dairelerden sıfırdan yeniden kurulur, ve ağa ulaşabilecek ne varsa
-        &mdash; bağlantılı bir resim, bir stil sayfası, bir yazı tipi, bir betik
-        &mdash; geride bırakılır. Dosyanın kendisi hiçbir yere gitmez; bu kısım
-        indirdiğiniz grafikle ilgilidir, ki o da birine gönderebileceğiniz bir
-        dosyadır."""
+        Bir <strong>SVG</strong> tek bir düz renkle çizilir, o satırın
+        ayarlandığı renkle, çünkü grafiğin geri kalanı da odur &mdash; yani dolu
+        biçimler yerine ince dış hatlardan yapılmış bir çizim leke olarak çıkar,
+        ve bunun için bu yanlış araçtır. Yalnızca <em>biçimler</em> tutulur:
+        dosya, yollardan, dikdörtgenlerden ve dairelerden sıfırdan yeniden
+        kurulur, ve ağa ulaşabilecek ne varsa &mdash; bağlantılı bir resim, bir
+        stil sayfası, bir yazı tipi, bir betik &mdash; geride bırakılır.
+        <br><br>
+        Bir <strong>fotoğraf ya da PNG</strong> olduğu gibi konur ve kendi
+        renklerini korur, dolayısıyla satırın rengi yalnızca ona ad verir.
+        Konmadan önce burada yeniden çizilir; bu, grafiğe ne kadar ekleyeceğini
+        sınırlar ve dosyanın üst verisini geride bırakır. Saydamlık korunur,
+        böylece kesilip çıkarılmış bir görsel cetvelde temiz durur &mdash; bir
+        fotoğrafsa arka planını da beraberinde getirir, onu önce kırpmak iyi
+        olur.
+        <br><br>
+        İki dosyanın hiçbiri hiçbir yere gitmez. Bu iki kez önemlidir, çünkü
+        indirdiğiniz grafik birine gönderebileceğiniz bir dosyadır."""
 
 [[faq]]
 q = "Neden küçük çocuk ya da bebek yok?"
@@ -322,16 +339,23 @@ a = """
 [[faq]]
 q = "Grafiğe bir nesne koyabilir miyim?"
 a = """
-        Evet &mdash; sade bir dikdörtgen bir yükseklik ve bir genişlik alır, yani iki
-        boyutu olan her şey insanların yanına konur. Menüde başlamak için yirmi tane
-        var, dört grup hâlinde: kapılar ve pencereler, okul ve ofis (bir beyaz tahta,
-        bir masa, bir dosya dolabı, bir projeksiyon perdesi), şehirdeki şeyler (bir
-        otomat, bir tekerlekli çöp konteyneri, bir basketbol potası, 20&nbsp;ft'lik
-        bir deniz konteyneri) ve evdeki şeyler. Bunların bir kısmı gerçek standart, bir
-        kısmı olağan ölçüdür; sayfa bunu açıkça söyler. Her biri üzerine
-        yazabileceğiniz sıradan bir satır olarak gelir. Tanıdık tek bir nesne, bir
-        grafik için ne kadar fazladan insandan daha çoğunu yapar: bir karşılaştırmayı
-        ölçek duygusuna çeviren odur."""
+        Evet &mdash; ve çoğu çizilmiş olarak gelir. Menüde başlamak için yirmi
+        tane var, dört grup hâlinde: kapılar ve pencereler, okul ve ofis (bir
+        beyaz tahta, bir masa, bir dosya dolabı, bir projeksiyon perdesi),
+        şehirdeki şeyler (bir otomat, bir tekerlekli çöp konteyneri, bir
+        basketbol potası, 20&nbsp;ft'lik bir deniz konteyneri) ve evdeki şeyler.
+        On yedisi bir resimle gelir &mdash; kollu bir kapı, dondurucusu üstte
+        bir buzdolabı, koltuk olduğu belli bir koltuk &mdash; ve resim satırdaki
+        yükseklik ile genişliğe oturtulur; dolayısıyla boyutu yine sayılar
+        belirler ve üzerine yazdığınız kendi sayılarınız yine geçerlidir. Kalan
+        üçü sade dikdörtgendir, çünkü onlar için hem doğru hem de oranları doğru
+        bir özgür çizim bulunamadı; ölçek üzerine bir grafikte yanlış bir çizim,
+        dürüst bir bloktan daha kötüdür.
+        <br><br>
+        Bunların bir kısmı gerçek standart, bir kısmı olağan ölçüdür; sayfa bunu
+        açıkça söyler. Tanıdık tek bir nesne, bir grafik için ne kadar fazladan
+        insandan daha çoğunu yapar: bir karşılaştırmayı ölçek duygusuna çeviren
+        odur."""
 
 [[faq]]
 q = "Köpek ya da kedi için bir figür var mı?"
@@ -398,7 +422,7 @@ features = [
   "173, 1,73 m, 5'8\", 68 in ya da 5 ft 8 olarak yazılan boylar, okunuşu geri gösterilerek",
   "Santimetre ya da fit ve inç; kimsenin boyunu değiştirmeden değiştirilir",
   "Yirmi hazır nesne, on yedisi çizilmiş: kapılar, pencereler, bir beyaz tahta, bir otomat, mobilyalar",
-  "Cetvelde kendi SVG'nizden herhangi biri, yalnızca biçimlerinden yeniden kurulmuş",
+  "Cetvelde kendi görselinizden herhangi biri &mdash; biçimlerinden yeniden kurulmuş bir SVG ya da olduğu gibi bir fotoğraf",
   "Aralığı, resmin taşıyabileceğinden seçilen bir cetvel",
   "Her arka plan rengi ya da hiçbiri; üzerinde okunur kalacak biçimde seçilen mürekkeple",
   "Her piksel yüksekliğinde PNG, ve her boyutta net basılan bir SVG",

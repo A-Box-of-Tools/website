@@ -45,7 +45,7 @@ card = """
             hem aan iemand te geven."""
 
 [words]
-plural = "XML en JSON"
+plural = "XML- en JSON-bestanden"
 choose = "een bestand"
 analytics_extra = """, en niets van de XML
   die er doorheen gaat"""

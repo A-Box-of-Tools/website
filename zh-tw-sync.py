@@ -133,6 +133,10 @@ TAIWAN_REGISTER = [
     ('幹到一半', '做到一半'),
     ('幹不了', '做不到'),
     ('幹得了', '做得到'),
+    # s2twp segments 能干净 as 能干+净 and writes 能幹淨, which the bare rule
+    # below would then turn into 能做淨. 幹淨 is never a word, so it is
+    # always 乾淨 that was meant.
+    ('幹淨', '乾淨'),
     ('幹', '做'),
 
     # 兒化. Northern mainland speech, not written in Taiwan.
@@ -328,6 +332,8 @@ TAIWAN_REGISTER = [
     ('攢起來', '累積起來'),
     ('攢出一份', '湊出一份'),
     ('很會攢', '很會囤'),
+    # 抠图 - cutting a subject out of its background - is 去背 in Taiwan.
+    ('摳好的圖', '去背好的圖'),
     ('摳出來', '裁出來'),
     ('岔子', '差錯'),
 
@@ -375,6 +381,9 @@ TAIWAN_REGISTER_RE = [
     # Spacing where a replacement above put Latin against Han: the corpus
     # spaces Latin from Han everywhere else, so QR Code and MB follow.
     (re.compile(r'(?<=[一-鿿])(?=QR Code)'), ' '),
+    # The same seam one tag later: zh writes 一个<a>二维码…</a> closed up, and
+    # the link text now opens with Latin, so the space goes before the tag.
+    (re.compile(r'(?<=[一-鿿])(?=<a [^>]*>QR Code)'), ' '),
     (re.compile(r'(?<=QR Code)(?=[一-鿿])'), ' '),
     (re.compile(r'(?<=MB)(?=[一-鿿])'), ' '),
 ]

@@ -55,7 +55,7 @@ card = """
 
 [words]
 plural = "ملفاتك"
-choose = "ملفاً"
+choose = "ملف"
 analytics_extra = """، ولا
   مجموعاً تحقّقياً من ملفك"""
 

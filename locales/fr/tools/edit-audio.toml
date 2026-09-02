@@ -197,9 +197,11 @@ q = "Puis-je récupérer le son d'une vidéo&nbsp;?"
 a = """
         Oui, et c'est ici le même travail qu'ouvrir un MP3. Déposez un MP4, un MOV ou
         un WebM et seule sa piste audio est décodée&nbsp;: l'image n'est jamais lue,
-        et ce qui sort est un fichier son sans vidéo dedans. C'est aussi la façon
-        d'enregistrer le son d'un clip sans le modifier du tout, puisqu'il suffit de
-        ne toucher à aucun réglage et d'appuyer sur le bouton."""
+        et ce qui sort est un fichier son sans vidéo dedans.
+        Si c'est tout ce que vous voulez &mdash; le son, inchangé &mdash;, alors
+        <a href="../extraire-l-audio-d-une-video/">Extraire l'audio d'une
+        vidéo</a> fait le même travail sur une page qui ne contient rien
+        d'autre. Revenez ici quand le son doit aussi être modifié."""
 
 [[faq]]
 q = "Changer la vitesse change-t-il la hauteur&nbsp;?"

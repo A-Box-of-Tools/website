@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """
 、そしてネットワークに一切触れないエンコードのループについては\
-      <code>src/encoder.js</code>です。"""
+<code>src/encoder.js</code>です。"""
 
 howto_heading = "画像を動画にする手順"
 

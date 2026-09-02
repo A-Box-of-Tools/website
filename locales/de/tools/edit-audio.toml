@@ -193,9 +193,12 @@ a = """
         Ja, und hier ist das dieselbe Aufgabe wie das Öffnen einer MP3. Ziehen
         Sie ein MP4, MOV oder WebM hinein, und es wird nur die Tonspur dekodiert.
         Das Bild wird nie gelesen, und heraus kommt eine Audiodatei ohne Video
-        darin. So sichern Sie auch den Ton eines Clips, ohne ihn überhaupt zu
-        bearbeiten: Lassen Sie einfach jede Einstellung in Ruhe und drücken Sie
-        auf die Schaltfläche."""
+        darin.
+        Wenn das schon alles ist, was Sie wollen &mdash; den Ton, unverändert
+        &mdash;, dann erledigt <a href="../ton-aus-video-extrahieren/">Ton aus
+        Video extrahieren</a> dieselbe Aufgabe auf einer Seite, auf der sonst
+        nichts steht. Kommen Sie hierher zurück, wenn der Ton auch verändert
+        werden soll."""
 
 [[faq]]
 q = "Ändert eine Tempoänderung die Tonhöhe?"

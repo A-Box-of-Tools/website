@@ -43,7 +43,7 @@ card = """
             consegnarlo a nessuno."""
 
 [words]
-plural = "testo"
+plural = "testi"
 choose = "un file"
 analytics_extra = """, e nessuna delle
   codifiche che questo strumento legge o scrive"""

@@ -29,7 +29,7 @@ live_hint = """
       一條請求帶著頁面、圖片或者檔名。或者乾脆拔掉網線，照壓不誤。"""
 
 read_first = """\
-      ，讀和寫的全部過程在 <code>src/reader.js</code> 和\
+      ，讀和寫的全部過程在 <code>src/reader.js</code> 和 \
       <code>src/writer.js</code> 裡，這兩個檔案都夠不著網路。"""
 
 howto_heading = "PDF 怎麼變小"
@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "文件"
-choose = "PDF"
+choose = " PDF "
 
 [[facts]]
 text = "不上傳"
@@ -138,7 +138,7 @@ body = """\
 q = "我的 PDF 會傳到什麼地方去嗎？"
 a = """
         不會。讀取、重新壓縮、寫出，全由你自己的瀏覽器在你自己的硬體上完成。\
-        這個工具沒有伺服器那一半，頁面的 <code>Content-Security-Policy</code>\
+        這個工具沒有伺服器那一半，頁面的 <code>Content-Security-Policy</code> \
         把它可能聯的地址全列了出來，沒有一個是本站的。連可選的聯網功能都\
         沒有。"""
 

@@ -68,7 +68,7 @@ body = """\
 title = "这里没有任何东西会去联网取数据。"
 body = """\
       跟这箱子里别的工具不一样，这一个连“从网址加载”都没有，一步可选的联网\
-      都没有。整个 <code>src/</code> 里，一个 <code>fetch</code>、一个\
+      都没有。整个 <code>src/</code> 里，一个 <code>fetch</code>、一个 \
       <code>XMLHttpRequest</code>、一个 <code>sendBeacon</code> 都找不到。"""
 
 [[privacy]]
@@ -124,7 +124,7 @@ body = """\
 q = "我的照片会传到什么地方去吗？"
 a = """
         不会。读取、解析、重写，全由你自己的浏览器在你自己的硬件上完成。这个\
-        工具没有任何联网功能，不取东西，也不发东西。页面的\
+        工具没有任何联网功能，不取东西，也不发东西。页面的 \
         <code>Content-Security-Policy</code> 把它可能联的地址全列了出来，\
         没有一个是本站的。"""
 

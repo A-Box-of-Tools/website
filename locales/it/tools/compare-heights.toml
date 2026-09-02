@@ -18,7 +18,7 @@ og_image_alt = "Confronto di altezze - confrontare altezze affiancate, senza car
 pledge = """
     Un grafico delle altezze è aritmetica e un disegno: non c'è nessun file da
     mandare e nessun servizio da interrogare &mdash; e l'unico file che questa
-    pagina accetta, un SVG tuo da mettere sul righello, viene letto qui e non va
+    pagina accetta, un'immagine tua da mettere sul righello, viene letto qui e non va
     da nessuna parte. L'uomo, la donna, il bambino e la bambina sono disegni di
     pubblico dominio che viaggiano con questa pagina, e il bambino e la bambina
     sono disegni di bambini veri invece che di adulti fatti piccoli &mdash; ed è
@@ -123,7 +123,7 @@ body = """
       c'è nessun font da scaricare e nessuna immagine da caricarci dentro."""
 
 [[privacy]]
-title = "Un SVG che aggiungi viene letto qui, e ricostruito invece che creduto."
+title = "Un'immagine che aggiungi viene letta qui, e mai inviata."
 body = """
  Il file non
       lascia mai questa pagina &mdash; viene letto con il <code>FileReader</code>
@@ -135,7 +135,16 @@ body = """
       fuori invece di passare. Conta due volte, perché il grafico che scarichi è
       un file che mandi ad altre persone: quello che fosse sopravvissuto sarebbe
       il loro browser che chiama il server di uno sconosciuto, giorni dopo, da
-      qualcosa che ha scritto questa pagina."""
+      qualcosa che ha scritto questa pagina.
+
+      Una fotografia o un PNG non è un programma e non ha niente da ricostruire:
+      la legge il decodificatore del browser stesso, e viene ridisegnata qui su
+      un canvas prima di finire sul grafico. È quel ridisegno a lasciare fuori i
+      metadati del file &mdash; la fotocamera, il luogo, il profilo, qualunque
+      cosa ci fosse dentro &mdash;, perché niente di tutto questo sopravvive a
+      un canvas. Quello che finisce nel grafico è un'immagine codificata da
+      questa pagina, scritta dentro come dati e non come indirizzo, così il
+      grafico continua a non puntare a niente."""
 
 [[privacy]]
 title = "I disegni sono qui, non vengono scaricati."
@@ -210,12 +219,13 @@ body = """
 [[howto]]
 title = "Oppure metticene sopra uno tuo."
 body = """
- <strong>Aggiungi il tuo
-      SVG</strong> prende un file dalla tua macchina e ne disegna la forma
-      all'altezza che gli dai &mdash; la cosa da usare quando il grafico parla
-      di un prodotto, un veicolo o un edificio invece che di una persona. Tiene
-      le proporzioni del disegno stesso, lo colora come qualsiasi altra riga, e
-      legge il file qui invece di mandarlo da qualche parte."""
+ <strong>La tua immagine</strong> prende un file dalla tua macchina e lo mette
+      sul righello all'altezza che gli dai &mdash; la cosa da usare quando il
+      grafico parla di un prodotto, un veicolo o un edificio invece che di una
+      persona. Un SVG viene disegnato nel colore della sua riga come ogni altra
+      figura; una fotografia o un PNG ci va così com'è. Entrambi tengono le
+      proprie proporzioni, ed entrambi vengono letti qui invece di essere
+      mandati da qualche parte."""
 
 [[howto]]
 title = "Metti il righello nelle unità in cui pensa chi legge."
@@ -295,24 +305,31 @@ a = """
         richiedesse l'attribuzione attaccherebbe quella richiesta al tuo grafico."""
 
 [[faq]]
-q = "Posso mettere un mio disegno sul grafico?"
+q = "Posso mettere una mia immagine sul grafico?"
 a = """
-        Sì &mdash; <strong>Aggiungi il tuo SVG</strong> prende qualsiasi file
-        SVG e ne mette la forma sul righello all'altezza che scrivi: un logo,
-        una pianta, un pezzo di macchinario, un'auto. Le proporzioni sono le
-        sue, quindi non c'è una larghezza da riempire.
+        Sì &mdash; <strong>La tua immagine</strong> prende un disegno o una
+        fotografia e lo mette sul righello all'altezza che scrivi: un logo, una
+        pianta, un pezzo di macchinario, un'auto, o una foto della cosa stessa.
+        Le proporzioni sono le sue, quindi non c'è una larghezza da riempire.
         <br><br>
-        Due cose da sapere. Viene disegnato in <strong>un solo colore
-        pieno</strong>, quello su cui è impostata quella riga, perché è quello
-        che è il resto del grafico &mdash; quindi un disegno fatto di contorni
-        sottili invece che di forme piene esce come una macchia, e per quello
-        questo è lo strumento sbagliato. E si tengono solo le <em>forme</em>: il
-        file viene ricostruito da zero a partire da tracciati, rettangoli e
-        cerchi, e tutto quello che potrebbe raggiungere la rete &mdash;
-        un'immagine collegata, un foglio di stile, un font, uno script &mdash;
-        resta fuori. Il file in sé non va mai da nessuna parte; quella parte
-        riguarda il grafico che scarichi, che è un file che magari mandi a
-        qualcuno."""
+        Un <strong>SVG</strong> viene disegnato in un solo colore pieno, quello
+        su cui è impostata quella riga, perché è quello che è il resto del
+        grafico &mdash; quindi un disegno fatto di contorni sottili invece che
+        di forme piene esce come una macchia, e per quello questo è lo strumento
+        sbagliato. Si tengono solo le <em>forme</em>: il file viene ricostruito
+        da zero a partire da tracciati, rettangoli e cerchi, e tutto quello che
+        potrebbe raggiungere la rete &mdash; un'immagine collegata, un foglio di
+        stile, un font, uno script &mdash; resta fuori.
+        <br><br>
+        Una <strong>foto o un PNG</strong> ci va così com'è e tiene i suoi
+        colori, quindi il colore della riga si limita a darle un nome. Viene
+        ridisegnata qui prima di andarci, il che limita quanto aggiunge al
+        grafico e lascia fuori i metadati del file. La trasparenza si conserva,
+        quindi uno scontorno sta pulito sul righello &mdash; e una foto si porta
+        dietro lo sfondo, che conviene ritagliare prima.
+        <br><br>
+        Nessuno dei due file va da nessuna parte. Conta due volte, perché il
+        grafico che scarichi è un file che magari mandi a qualcuno."""
 
 [[faq]]
 q = "Perché non c'è un bimbo piccolo o un neonato?"
@@ -341,17 +358,25 @@ a = """
 [[faq]]
 q = "Posso mettere un oggetto sul grafico?"
 a = """
-        Sì &mdash; un semplice rettangolo prende un'altezza e una larghezza,
-        quindi qualsiasi cosa con due dimensioni va accanto alle persone. Il menù
-        ne tiene venti da cui partire, in quattro gruppi: porte e finestre, scuola
-        e ufficio (una lavagna, una scrivania, un classificatore, uno schermo da
+        Sì &mdash; e la maggior parte arriva disegnata. Il menù ne tiene venti
+        da cui partire, in quattro gruppi: porte e finestre, scuola e ufficio
+        (una lavagna, una scrivania, un classificatore, uno schermo da
         proiezione), cose in giro per la città (un distributore automatico, un
-        bidone con ruote, un canestro, un container da 20&nbsp;ft) e cose in giro
-        per casa. Alcune sono davvero standard e altre misure tipiche, cosa che la
-        pagina dice a voce alta; ognuna arriva come una riga normale su cui puoi
-        scrivere. Un oggetto familiare fa per un grafico più di qualunque numero
-        di persone in più: è quello che trasforma un confronto in un senso della
-        scala."""
+        bidone con ruote, un canestro, un container da 20&nbsp;ft) e cose in
+        giro per casa. Diciassette di loro arrivano con un disegno &mdash; una
+        porta con la maniglia, un frigorifero con il congelatore sopra, un
+        divano che si vede che è un divano &mdash; e il disegno viene adattato
+        all'altezza e alla larghezza della riga, così sono sempre i numeri a
+        decidere la misura, e i tuoi, scritti sopra, valgono sempre. Gli altri
+        tre sono semplici rettangoli, perché di loro non è saltato fuori nessun
+        disegno libero che fosse insieme giusto e proporzionato bene, e un
+        disegno sbagliato è peggio di un blocco onesto su un grafico che parla
+        di scala.
+        <br><br>
+        Alcune di queste misure sono davvero standard e altre misure tipiche,
+        cosa che la pagina dice a voce alta. Un oggetto familiare fa per un
+        grafico più di qualunque numero di persone in più: è quello che
+        trasforma un confronto in un senso della scala."""
 
 [[faq]]
 q = "C'è una figura per un cane o un gatto?"
@@ -421,7 +446,7 @@ features = [
   "Altezze scritte come 173, 1,73 m, 5'8\", 68 in o 5 ft 8, con la lettura mostrata",
   "Centimetri o piedi e pollici, cambiati senza modificare l'altezza di nessuno",
   "Venti oggetti già pronti, diciassette dei quali disegnati: porte, finestre, una lavagna bianca, un distributore, mobili",
-  "Qualunque SVG tuo sul righello, ricostruito dalle sole sue forme",
+  "Qualunque immagine tua sul righello &mdash; un SVG ricostruito dalle sue forme, o una foto così com'è",
   "Un righello la cui spaziatura è scelta da quello che l'immagine riesce a portare",
   "Qualsiasi colore di sfondo, o nessuno, con l'inchiostro scelto per restare leggibile sopra",
   "PNG a qualsiasi altezza in pixel, e un SVG che stampa nitido a qualsiasi dimensione",

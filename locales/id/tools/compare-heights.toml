@@ -18,8 +18,7 @@ og_image_alt = "Pembanding Tinggi Badan - membandingkan tinggi berdampingan, tan
 pledge = """
     Bagan tinggi badan adalah hitungan dan sebuah gambar: tidak ada berkas yang
     perlu dikirim dan tidak ada layanan yang perlu ditanyai &mdash; dan satu
-    berkas yang diterima halaman ini, SVG milik Anda untuk ditaruh di
-    penggarisnya, dibaca di sini dan tidak ke mana-mana. Pria, wanita, anak
+    berkas yang diterima halaman ini, gambar milik Anda untuk ditaruh di penggarisnya, dibaca di sini dan tidak ke mana-mana. Pria, wanita, anak
     laki-laki, dan anak perempuan adalah karya seni domain publik yang ikut
     dikirim bersama halaman ini, dan anak laki-laki serta anak perempuannya
     adalah gambar anak-anak sungguhan, bukan orang dewasa yang dikecilkan
@@ -123,7 +122,7 @@ body = """
       perlu diambil dan tidak ada gambar yang perlu dimuat di dalamnya."""
 
 [[privacy]]
-title = "SVG yang Anda tambahkan dibaca di sini, dan dibangun ulang alih-alih dipercaya."
+title = "Gambar yang Anda tambahkan dibaca di sini, dan tidak pernah dikirim."
 body = """
  Berkasnya tidak
       pernah meninggalkan halaman ini &mdash; ia dibaca dengan
@@ -135,7 +134,16 @@ body = """
       penting dua kali lipat, karena bagan yang Anda unduh adalah berkas yang
       Anda kirim ke orang lain: apa pun yang selamat akan menjadi peramban
       mereka yang memanggil server orang asing, berhari-hari kemudian, dari
-      sesuatu yang ditulis halaman ini."""
+      sesuatu yang ditulis halaman ini.
+
+      Foto atau PNG bukan program dan tidak punya apa pun untuk dibangun ulang:
+      dekoder milik peramban sendiri yang membacanya, lalu ia digambar ulang ke
+      sebuah kanvas di sini sebelum naik ke bagan. Penggambaran ulang itulah
+      yang meninggalkan metadata berkasnya &mdash; kamera, lokasi, profil, apa
+      pun yang ada di dalamnya &mdash; karena tak satu pun dari itu selamat dari
+      kanvas. Yang berakhir di bagan adalah gambar yang dienkode halaman ini
+      sendiri, ditulis sebagai data dan bukan sebagai alamat, sehingga bagannya
+      tetap tidak menunjuk ke mana pun."""
 
 [[privacy]]
 title = "Karya gambarnya ada di sini, bukan diambil dari luar."
@@ -211,13 +219,13 @@ body = """
 [[howto]]
 title = "Atau taruh gambar Anda sendiri di atasnya."
 body = """
- <strong>Tambahkan SVG
-      milik Anda</strong> mengambil berkas dari mesin Anda dan menggambar
-      bentuknya pada tinggi berapa pun yang Anda berikan &mdash; inilah yang
-      dipakai kalau bagannya tentang produk, kendaraan, atau bangunan, bukan
-      tentang orang. Ia mempertahankan proporsi gambarnya sendiri, mewarnainya
-      seperti baris lain mana pun, dan membaca berkasnya di sini alih-alih
-      mengirimnya ke mana pun."""
+ <strong>Gambar milik Anda</strong> mengambil berkas dari mesin Anda dan
+      menaruhnya di penggaris pada tinggi berapa pun yang Anda berikan &mdash;
+      inilah yang dipakai kalau bagannya tentang produk, kendaraan, atau
+      bangunan, bukan tentang orang. SVG digambar dengan warna barisnya sendiri
+      seperti figur lain mana pun; foto atau PNG naik apa adanya. Keduanya
+      mempertahankan proporsinya sendiri, dan keduanya dibaca di sini alih-alih
+      dikirim ke mana pun."""
 
 [[howto]]
 title = "Setel penggarisnya ke satuan yang dipikirkan pembaca Anda."
@@ -299,21 +307,31 @@ a = """
 [[faq]]
 q = "Bisakah saya menaruh gambar saya sendiri di bagannya?"
 a = """
-        Bisa &mdash; <strong>Tambahkan SVG milik Anda</strong> mengambil berkas
-        SVG apa pun dan menaruh bentuknya di penggaris pada tinggi berapa pun
-        yang Anda ketik: logo, denah, bagian mesin, mobil. Proporsinya adalah
-        miliknya sendiri, jadi tidak ada lebar yang perlu diisi.
+        Bisa &mdash; <strong>Gambar milik Anda</strong> mengambil gambar atau
+        foto dan menaruhnya di penggaris pada tinggi berapa pun yang Anda ketik:
+        logo, denah, bagian mesin, mobil, atau foto bendanya sendiri.
+        Proporsinya adalah miliknya sendiri, jadi tidak ada lebar yang perlu
+        diisi.
         <br><br>
-        Dua hal yang perlu diketahui. Ia digambar sebagai <strong>satu warna
-        padat</strong>, warna yang disetel untuk baris itu, karena itulah
-        seluruh sisa bagannya &mdash; jadi gambar yang dibuat dari garis tipis,
-        bukan bentuk terisi, keluar sebagai gumpalan, dan untuk itu ini alat
-        yang keliru. Dan hanya <em>bentuk</em>-nya yang disimpan: berkasnya
-        dibangun ulang dari nol dari path, persegi panjang, dan lingkaran, dan
-        apa pun yang bisa menjangkau jaringan &mdash; gambar tertaut, lembar
-        gaya, fon, skrip &mdash; ditinggalkan. Berkasnya sendiri tidak pernah ke
-        mana-mana; bagian itu tentang bagan yang Anda unduh, yang merupakan
-        berkas yang mungkin Anda kirim ke orang lain."""
+        <strong>SVG</strong> digambar sebagai satu warna padat, warna yang
+        disetel untuk baris itu, karena itulah seluruh sisa bagannya &mdash;
+        jadi gambar yang dibuat dari garis tipis, bukan bentuk terisi, keluar
+        sebagai gumpalan, dan untuk itu ini alat yang keliru. Hanya
+        <em>bentuk</em>-nya yang disimpan: berkasnya dibangun ulang dari nol
+        dari path, persegi panjang, dan lingkaran, dan apa pun yang bisa
+        menjangkau jaringan &mdash; gambar tertaut, lembar gaya, fon, skrip
+        &mdash; ditinggalkan.
+        <br><br>
+        <strong>Foto atau PNG</strong> naik apa adanya dan mempertahankan
+        warnanya sendiri, jadi warna barisnya hanya memberi nama. Ia digambar
+        ulang di sini sebelum naik, yang membatasi seberapa banyak ia menambah
+        ke bagan dan meninggalkan metadata berkasnya. Transparansi
+        dipertahankan, jadi potongan hasil seleksi berdiri bersih di penggaris
+        &mdash; dan foto membawa serta latarnya, yang sebaiknya dipangkas dulu.
+        <br><br>
+        Tak satu pun dari kedua berkas itu pergi ke mana-mana. Itu penting dua
+        kali lipat, karena bagan yang Anda unduh adalah berkas yang mungkin Anda
+        kirim ke orang lain."""
 
 [[faq]]
 q = "Kenapa tidak ada balita atau bayi?"
@@ -343,17 +361,24 @@ a = """
 [[faq]]
 q = "Bisakah saya menaruh sebuah benda di bagan?"
 a = """
-        Bisa &mdash; persegi panjang polos menerima tinggi dan lebar, jadi apa pun
-        yang punya dua dimensi bisa berdiri di samping orang-orangnya. Menunya
-        memuat dua puluh untuk memulai, dalam empat kelompok: pintu dan jendela,
+        Bisa &mdash; dan sebagian besar datang sudah bergambar. Menunya memuat
+        dua puluh untuk memulai, dalam empat kelompok: pintu dan jendela,
         sekolah dan kantor (papan tulis, meja, lemari arsip, layar proyektor),
         benda-benda di kota (mesin penjual otomatis, tong sampah beroda, ring
-        basket, kontainer kapal 20&nbsp;ft), dan benda-benda di rumah. Sebagian
-        memang standar sungguhan dan sebagian ukuran lazim, dan halaman ini
-        mengatakannya terang-terangan; tiap satunya datang sebagai baris biasa
-        yang bisa Anda timpa. Satu benda yang akrab berbuat lebih banyak untuk
-        sebuah bagan daripada berapa pun tambahan orang: ia yang mengubah
-        perbandingan menjadi rasa akan skala."""
+        basket, kontainer kapal 20&nbsp;ft), dan benda-benda di rumah. Tujuh
+        belas di antaranya datang dengan gambar &mdash; pintu dengan gagangnya,
+        kulkas dengan freezer di atasnya, sofa yang kelihatan memang sofa
+        &mdash; dan gambarnya dipaskan ke tinggi dan lebar di baris itu, jadi
+        angkalah yang tetap menentukan ukuran, dan angka Anda sendiri yang
+        diketik menimpanya tetap berlaku. Tiga sisanya persegi panjang polos,
+        karena tidak ada gambar bebas untuk ketiganya yang ternyata benar
+        sekaligus proporsinya tepat, dan gambar yang keliru lebih buruk daripada
+        balok yang jujur pada bagan tentang skala.
+        <br><br>
+        Sebagian ukuran ini memang standar sungguhan dan sebagian ukuran lazim,
+        dan halaman ini mengatakannya terang-terangan. Satu benda yang akrab
+        berbuat lebih banyak untuk sebuah bagan daripada berapa pun tambahan
+        orang: ia yang mengubah perbandingan menjadi rasa akan skala."""
 
 [[faq]]
 q = "Apakah ada figur untuk anjing atau kucing?"
@@ -423,7 +448,7 @@ features = [
   "Tinggi diketik sebagai 173, 1,73 m, 5'8\", 68 in, atau 5 ft 8, dengan hasil bacanya ditampilkan",
   "Sentimeter atau kaki dan inci, ditukar tanpa mengubah tinggi siapa pun",
   "Dua puluh benda siap pakai, tujuh belas di antaranya bergambar: pintu, jendela, papan tulis, mesin penjual otomatis, perabot",
-  "SVG milik Anda sendiri di penggaris, dibangun ulang hanya dari bentuk-bentuknya",
+  "Gambar milik Anda sendiri di penggaris &mdash; SVG yang dibangun ulang dari bentuk-bentuknya, atau foto apa adanya",
   "Penggaris yang jaraknya dipilih dari apa yang sanggup dibawa gambarnya",
   "Warna latar apa pun, atau tanpa latar, dengan tinta yang dipilih agar tetap terbaca di atasnya",
   "PNG pada tinggi piksel berapa pun, dan SVG yang tercetak tajam pada ukuran berapa pun",

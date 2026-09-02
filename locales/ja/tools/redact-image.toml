@@ -84,9 +84,9 @@ body = """
 title = "ここでは何も取りに行きません。"
 body = """
 <code>src/</code>のどこにも<code>fetch</code>も<code>XMLHttpRequest</code>も\
-      <code>sendBeacon</code>もありません。やっているのは\
-      <code>getImageData</code>と、バイト列を回る3つのループと、\
-      <code>canvas.toBlob</code>だけで、どれもブラウザに最初から入っています。"""
+<code>sendBeacon</code>もありません。やっているのは\
+<code>getImageData</code>と、バイト列を回る3つのループと、\
+<code>canvas.toBlob</code>だけで、どれもブラウザに最初から入っています。"""
 
 [[privacy]]
 title = "枠のことはどこにも報告されません。"

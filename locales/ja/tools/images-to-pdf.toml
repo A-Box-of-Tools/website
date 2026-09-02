@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """
 、そしてファイル書き出しのすべてについては<code>src/pdf.js</code>と\
-      <code>src/document.js</code>です。どちらもネットワークに触れません。"""
+<code>src/document.js</code>です。どちらもネットワークに触れません。"""
 
 howto_heading = "画像をPDFにする手順"
 

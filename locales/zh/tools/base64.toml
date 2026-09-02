@@ -155,4 +155,4 @@ features = [
 
 [picker]
 title = "把文件拖到这里"
-hint = "也可以点击选择 &mdash; 任何文本文件。"
+hint = "也可以点击选择——任何文本文件。"

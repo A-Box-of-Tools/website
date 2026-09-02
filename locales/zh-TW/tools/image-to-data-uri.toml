@@ -39,7 +39,7 @@ read_first = """\
 howto_heading = "圖片怎麼轉成 data URI"
 
 card = """
-            點陣圖走 base64，SVG 走百分號編碼，外面那圈 CSS 規則或者\
+            點陣圖走 base64，SVG 走百分號編碼，外面那圈 CSS 規則或者 \
             <code>&lt;img&gt;</code> 標籤也一併寫好。"""
 
 [words]
@@ -71,7 +71,7 @@ body = """\
 [[privacy]]
 title = "這裡沒有任何東西會去聯網取資料。"
 body = """\
-      整個 <code>src/</code> 裡，一個 <code>fetch</code>、一個\
+      整個 <code>src/</code> 裡，一個 <code>fetch</code>、一個 \
       <code>XMLHttpRequest</code>、一個 <code>sendBeacon</code> 都找不到。\
       編碼就是 <code>btoa</code> 和 <code>encodeURIComponent</code>，瀏覽器\
       從一開始就帶著的兩個函式，進去是位元組，出來是文字，哪裡也不去。"""
@@ -112,7 +112,7 @@ body = """\
 [[howto]]
 title = "說清楚這行要貼到哪裡。"
 body = """\
-      光要 URI，要一條 CSS 規則，要一個自定義屬性，要 <code>&lt;img&gt;</code>\
+      光要 URI，要一條 CSS 規則，要一個自定義屬性，要 <code>&lt;img&gt;</code> \
       標籤，還是要 Markdown。每一種都替你把 URI 的引號加好了，而引號正是最容易\
       弄錯的地方，弄錯了偏偏只有 SVG 會出事。"""
 
@@ -147,8 +147,8 @@ a = """
 [[faq]]
 q = "data URI 是什麼？"
 a = """
-        一種把整個檔案寫在「本該寫網址的地方」的辦法。原來寫\
-        <code>url("logo.png")</code>，瀏覽器就得跑一趟去取；改寫成\
+        一種把整個檔案寫在「本該寫網址的地方」的辦法。原來寫 \
+        <code>url("logo.png")</code>，瀏覽器就得跑一趟去取；改寫成 \
         <code>url("data:image/png;base64,iVBORw0...")</code>，圖片本身就在\
         這串字裡，瀏覽器當場解出來。實際效果是少一次請求，圖片跟著樣式表或者\
         頁面一起到，而不是等它們到了之後再去取。"""
@@ -159,7 +159,7 @@ a = """
         因為 base64 對它來說是錯的編碼。SVG 本身是文字，而網址本來就能裝文字，\
         只有少數幾個字元需要轉義。把那幾個轉成百分號寫法、別的原樣留著，產生的
         URI 通常比同一個檔案的 base64 短五分之一左右，而且在樣式表裡還看得懂，\
-        元素名、顏色、<code>viewBox</code> 都還在，隨手能改。個別工具鏈非要\
+        元素名、顏色、<code>viewBox</code> 都還在，隨手能改。個別工具鏈非要 \
         <code>;base64</code> 不可，頁面上有個勾選框可以強制。"""
 
 [[faq]]
@@ -204,7 +204,7 @@ a = """
         寫下的東西全都跟著畫面走：位置、時間戳、機身序列號。手機照片裡這些能\
         佔到 30 KB，編成 base64 就是 40 KB 壓在你頁面的關鍵路徑上，同時還把一個\
         家庭住址提交進了儲存庫。JPEG、PNG 和 WebP 裡到底帶了多少後設資料，頁面會讀\
-        出來告訴你。想先清乾淨，用<a href="../exif-editor/">EXIF 檢視與清除</a>。"""
+        出來告訴你。想先清乾淨，用 <a href="../exif-editor/">EXIF 檢視與清除</a>。"""
 
 [[faq]]
 q = "為什麼它用的類型跟我的副檔名不一樣？"

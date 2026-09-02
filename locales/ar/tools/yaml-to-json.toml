@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "ملفات YAML وJSON الخاصة بك"
-choose = "ملفاً"
+choose = "ملف"
 analytics_extra = """، ولا شيئاً من YAML
   أو JSON الذي يمرّ من هنا"""
 

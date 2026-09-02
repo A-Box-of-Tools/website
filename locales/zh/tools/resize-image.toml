@@ -69,9 +69,9 @@ body = """\
 [[privacy]]
 title = "这里没有任何东西会去联网取数据。"
 body = """\
-      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个\
+      整个 <code>src/</code> 里，一个 <code>fetch</code>、一个 \
       <code>XMLHttpRequest</code>、一个 <code>sendBeacon</code> 都找不到。\
-      缩放就是往画布上做一次 <code>drawImage</code>，再来一次\
+      缩放就是往画布上做一次 <code>drawImage</code>，再来一次 \
       <code>canvas.toBlob</code>，缩放器和编码器都是你浏览器里早就装好的。"""
 
 [[privacy]]
@@ -184,7 +184,7 @@ a = """
         真正被处理过的图会，属于顺带的效果：裁切或者缩放都得把画面解码成像素、\
         再把像素编回去，而一张画布上只有像素，不带任何标签，所以位置、相机型号\
         和时间戳干脆就没写进新文件。你完全没动过的文件是另一回事，它逐字节原样\
-        还给你，标签一个不少。想清掉元数据、画面别动，那该用\
+        还给你，标签一个不少。想清掉元数据、画面别动，那该用 \
         <a href="../exif-editor/">EXIF 查看与清除</a>，它只重写容器，不重新\
         压缩任何东西。"""
 

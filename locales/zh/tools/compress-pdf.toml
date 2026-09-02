@@ -29,7 +29,7 @@ live_hint = """
       一条请求带着页面、图片或者文件名。或者干脆拔掉网线，照压不误。"""
 
 read_first = """\
-      ，读和写的全部过程在 <code>src/reader.js</code> 和\
+      ，读和写的全部过程在 <code>src/reader.js</code> 和 \
       <code>src/writer.js</code> 里，这两个文件都够不着网络。"""
 
 howto_heading = "PDF 怎么变小"
@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "文档"
-choose = "PDF"
+choose = " PDF "
 
 [[facts]]
 text = "不上传"
@@ -138,7 +138,7 @@ body = """\
 q = "我的 PDF 会传到什么地方去吗？"
 a = """
         不会。读取、重新压缩、写出，全由你自己的浏览器在你自己的硬件上完成。\
-        这个工具没有服务器那一半，页面的 <code>Content-Security-Policy</code>\
+        这个工具没有服务器那一半，页面的 <code>Content-Security-Policy</code> \
         把它可能联的地址全列了出来，没有一个是本站的。连可选的联网功能都\
         没有。"""
 

@@ -18,7 +18,7 @@ og_image_alt = "Lengtevergelijker - lengtes naast elkaar vergelijken, zonder upl
 pledge = """
     Een lengtegrafiek is rekenwerk en een tekening: er is geen bestand om te
     versturen en geen dienst om iets aan te vragen &mdash; en het ene bestand
-    dat deze pagina aanneemt, een eigen SVG voor op de meetlat, wordt hier
+    dat deze pagina aanneemt, een eigen afbeelding voor op de meetlat, wordt hier
     gelezen en gaat nergens heen. De man, de vrouw, de jongen en het meisje zijn
     illustraties uit het publieke domein die met deze pagina meekomen, en de
     jongen en het meisje zijn tekeningen van echte kinderen in plaats van klein
@@ -122,7 +122,7 @@ body = """
       lettertype op te halen en geen afbeelding in te laden."""
 
 [[privacy]]
-title = "Een SVG die je toevoegt wordt hier gelezen, en herbouwd in plaats van vertrouwd."
+title = "Een afbeelding die je toevoegt wordt hier gelezen, en nooit verstuurd."
 body = """
  Het bestand
       verlaat deze pagina nooit &mdash; het wordt gelezen met de eigen
@@ -134,7 +134,16 @@ body = """
       document achterblijft in plaats van mee te komen. Dat telt dubbel, want de
       grafiek die je downloadt is een bestand dat je naar anderen stuurt: alles
       wat het overleefd had, zou hun browser zijn die dagen later de server van
-      een vreemde aanroept, vanuit iets dat deze pagina heeft geschreven."""
+      een vreemde aanroept, vanuit iets dat deze pagina heeft geschreven.
+
+      Een foto of een PNG is geen programma en heeft niets dat herbouwd hoeft te
+      worden: de eigen decoder van de browser leest hem, en hij wordt hier
+      opnieuw op een canvas getekend voordat hij op de grafiek komt. Dat opnieuw
+      tekenen is wat de metadata van het bestand achterlaat &mdash; de camera,
+      de plek, het profiel, wat er ook in zat &mdash; want niets daarvan
+      overleeft een canvas. Wat in de grafiek belandt is een afbeelding die deze
+      pagina zelf heeft gecodeerd, als data erin geschreven en niet als adres,
+      zodat de grafiek nog steeds nergens naar wijst."""
 
 [[privacy]]
 title = "De illustraties staan hier, ze worden niet opgehaald."
@@ -209,13 +218,13 @@ body = """
 [[howto]]
 title = "Of zet er je eigen tekening op."
 body = """
- <strong>Eigen SVG
-      toevoegen</strong> neemt een bestand van je machine en tekent de vorm
-      ervan op de hoogte die je opgeeft &mdash; waar je naar grijpt als de
-      grafiek over een product, een voertuig of een gebouw gaat in plaats van
-      over een mens. Het houdt de eigen verhoudingen van de tekening aan, kleurt
-      hem als elke andere regel, en leest het bestand hier in plaats van het
-      ergens heen te sturen."""
+ <strong>Eigen afbeelding</strong> neemt een bestand van je machine en zet het
+      op de meetlat op de hoogte die je opgeeft &mdash; waar je naar grijpt als
+      de grafiek over een product, een voertuig of een gebouw gaat in plaats van
+      over een mens. Een SVG wordt in de kleur van de eigen regel getekend, net
+      als elke andere figuur; een foto of een PNG komt erop zoals hij is.
+      Allebei houden ze hun eigen verhoudingen, en allebei worden ze hier
+      gelezen in plaats van ergens heen gestuurd."""
 
 [[howto]]
 title = "Zet de meetlat in de eenheden waarin je lezer denkt."
@@ -296,24 +305,34 @@ a = """
         plakken."""
 
 [[faq]]
-q = "Kan ik mijn eigen tekening op de grafiek zetten?"
+q = "Kan ik mijn eigen afbeelding op de grafiek zetten?"
 a = """
-        Ja &mdash; <strong>Eigen SVG toevoegen</strong> neemt elk SVG-bestand
-        en zet de vorm ervan op de meetlat op de hoogte die je typt: een logo,
-        een plattegrond, een machineonderdeel, een auto. De verhoudingen zijn de
-        zijne, dus er is geen breedte in te vullen.
+        Ja &mdash; <strong>Eigen afbeelding</strong> neemt een tekening of een
+        foto en zet die op de meetlat op de hoogte die je typt: een logo, een
+        plattegrond, een machineonderdeel, een auto, of een foto van het ding
+        zelf. De verhoudingen zijn de zijne, dus er is geen breedte in te
+        vullen.
         <br><br>
-        Twee dingen om te weten. Hij wordt in <strong>één egale kleur</strong>
-        getekend, die waar die regel op staat, want dat is wat de rest van de
-        grafiek is &mdash; een tekening van dunne omtrekken in plaats van
-        gevulde vormen komt er dus als een klodder uit, en daarvoor is dit het
-        verkeerde gereedschap. En alleen de <em>vormen</em> worden bewaard: het
-        bestand wordt van de grond af opnieuw opgebouwd uit paden, rechthoeken
-        en cirkels, en alles wat het netwerk zou kunnen bereiken &mdash; een
-        gelinkte afbeelding, een stylesheet, een lettertype, een script &mdash;
-        blijft achter. Het bestand zelf gaat nooit ergens heen; dat deel gaat
-        over de grafiek die je downloadt, die een bestand is dat je misschien
-        naar iemand stuurt."""
+        Een <strong>SVG</strong> wordt in één egale kleur getekend, die waar die
+        regel op staat, want dat is wat de rest van de grafiek is &mdash; een
+        tekening van dunne omtrekken in plaats van gevulde vormen komt er dus
+        als een klodder uit, en daarvoor is dit het verkeerde gereedschap.
+        Alleen de <em>vormen</em> worden bewaard: het bestand wordt van de grond
+        af opnieuw opgebouwd uit paden, rechthoeken en cirkels, en alles wat het
+        netwerk zou kunnen bereiken &mdash; een gelinkte afbeelding, een
+        stylesheet, een lettertype, een script &mdash; blijft achter.
+        <br><br>
+        Een <strong>foto of een PNG</strong> komt erop zoals hij is en houdt
+        zijn eigen kleuren, dus de kleur van de regel geeft hem alleen nog een
+        naam. Hij wordt hier opnieuw getekend voordat hij erop komt, wat
+        begrenst hoeveel hij aan de grafiek toevoegt en de metadata van het
+        bestand achterlaat. Transparantie blijft bewaard, dus een uitsnede staat
+        netjes op de meetlat &mdash; en een foto neemt zijn achtergrond mee, die
+        je beter eerst wegsnijdt.
+        <br><br>
+        Geen van beide bestanden gaat ergens heen. Dat telt dubbel, want de
+        grafiek die je downloadt is een bestand dat je misschien naar iemand
+        stuurt."""
 
 [[faq]]
 q = "Waarom is er geen peuter of baby?"
@@ -342,17 +361,24 @@ a = """
 [[faq]]
 q = "Kan ik een voorwerp op de grafiek zetten?"
 a = """
-        Ja &mdash; een gewone rechthoek neemt een hoogte en een breedte, dus alles
-        met twee afmetingen komt naast de mensen te staan. Het menu heeft er
-        twintig om mee te beginnen, in vier groepen: deuren en ramen, school en
-        kantoor (een whiteboard, een bureau, een archiefkast, een
-        projectiescherm), dingen in de stad (een automaat, een kliko, een
-        basketbalring, een zeecontainer van 20&nbsp;ft) en dingen in huis. Sommige
-        daarvan zijn echte normen en sommige gebruikelijke maten, wat de pagina
-        hardop zegt; elk ervan komt binnen als een gewone regel waar je overheen
-        kunt typen. Eén vertrouwd voorwerp doet meer voor een grafiek dan hoeveel
-        extra mensen ook: het is wat een vergelijking verandert in een gevoel voor
-        schaal."""
+        Ja &mdash; en de meeste komen getekend binnen. Het menu heeft er twintig
+        om mee te beginnen, in vier groepen: deuren en ramen, school en kantoor
+        (een whiteboard, een bureau, een archiefkast, een projectiescherm),
+        dingen in de stad (een automaat, een kliko, een basketbalring, een
+        zeecontainer van 20&nbsp;ft) en dingen in huis. Zeventien ervan komen
+        met een tekening &mdash; een deur met een klink, een koelkast met het
+        vriesvak erboven, een bank waar je aan ziet dat het een bank is &mdash;
+        en die tekening wordt in de hoogte en breedte van de regel gepast, zodat
+        de getallen nog steeds de maat bepalen en je eigen getallen, eroverheen
+        getypt, nog steeds gelden. De andere drie zijn kale rechthoeken, omdat
+        er van die drie geen vrije tekening bleek te zijn die tegelijk klopte en
+        goed geproportioneerd was, en een verkeerde tekening is op een grafiek
+        over schaal erger dan een eerlijk blok.
+        <br><br>
+        Sommige van die maten zijn echte normen en sommige gebruikelijke maten,
+        wat de pagina hardop zegt. Eén vertrouwd voorwerp doet meer voor een
+        grafiek dan hoeveel extra mensen ook: het is wat een vergelijking
+        verandert in een gevoel voor schaal."""
 
 [[faq]]
 q = "Is er een figuur voor een hond of een kat?"
@@ -423,7 +449,7 @@ features = [
   "Lengtes getypt als 173, 1,73 m, 5'8\", 68 in of 5 ft 8, met de lezing terug in beeld",
   "Centimeters of voet en inches, gewisseld zonder iemands lengte te veranderen",
   "Twintig kant-en-klare voorwerpen, zeventien ervan getekend: deuren, ramen, een whiteboard, een automaat, meubels",
-  "Elke eigen SVG op de meetlat, herbouwd uit alleen zijn vormen",
+  "Elke eigen afbeelding op de meetlat &mdash; een SVG herbouwd uit zijn vormen, of een foto zoals hij is",
   "Een meetlat waarvan de afstand wordt gekozen uit wat de afbeelding kan dragen",
   "Elke achtergrondkleur, of geen, met inkt die erop leesbaar blijft",
   "PNG op elke pixelhoogte, en een SVG die op elk formaat scherp afdrukt",
