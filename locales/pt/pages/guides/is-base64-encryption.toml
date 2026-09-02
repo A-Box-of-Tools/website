@@ -1,0 +1,17 @@
+#
+# Guia: base64 é criptografia? - Brazilian Portuguese.
+#
+
+nav = "Base64 é criptografia?"
+title = "Base64 é criptografia?"
+description = "Não - e a diferença importa na prática. Codificação, criptografia e hash resolvem três problemas diferentes: o primeiro qualquer um desfaz, o segundo só quem tem a chave, o terceiro ninguém. Qual é qual, e como reconhecer de vista."
+heading = "Base64 é criptografia?"
+lede = """
+    Não. Base64 é uma troca de figurino, não um cadeado: qualquer um que o
+    reconheça o desfaz em milissegundos, sem chave nenhuma. Mas a pergunta
+    merece resposta de verdade, porque codificação, criptografia e hash se
+    parecem na tela e não poderiam prometer coisas mais diferentes."""
+updated = "26 de agosto de 2026"
+og_title = "Base64 é criptografia?"
+og_description = "Não - qualquer um desfaz, sem chave. Codificação, criptografia e hash se parecem na tela e prometem três coisas completamente diferentes. Qual é qual."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

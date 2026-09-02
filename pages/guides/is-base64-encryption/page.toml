@@ -1,0 +1,36 @@
+#
+# Guide: is base64 encryption?
+#
+# The misconception with the steadiest search volume of anything this group
+# covers. Base64-looking strings read as scrambled, so people file them
+# under "secure", and real systems have shipped with passwords "protected"
+# this way. One page to hold the three-way distinction the tools keep
+# needing: encoding reverses for everyone, encryption reverses for the key
+# holder, hashing reverses for no one.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-base64-encryption"
+kind = "guide"
+nav = "Is base64 encryption?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is Base64 Encryption?"
+description = "No - and the difference matters in practice. Encoding, encryption and hashing solve three different problems: one anybody can reverse, one the key holder can reverse, one nobody can. Which is which, and how to tell on sight."
+
+heading = "Is base64 encryption?"
+lede = """
+    No. Base64 is a change of costume, not a lock: anyone who recognises it
+    can undo it in milliseconds, no key required. But the question deserves
+    a real answer, because encoding, encryption and hashing look alike on
+    screen and could hardly be more different in what they promise."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Is base64 encryption?"
+og_description = "No - anyone can undo it, no key required. Encoding, encryption and hashing look alike on screen and promise three completely different things. Which is which."
+og_image_alt = "abox.tools - tools that never touch a server"

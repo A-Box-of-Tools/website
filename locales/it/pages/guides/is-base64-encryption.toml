@@ -1,0 +1,18 @@
+#
+# Guida: base64 è una cifratura? - Italian.
+#
+
+nav = "Base64 è una cifratura?"
+title = "Base64 è una cifratura?"
+description = "No - e la differenza conta in pratica. Codifica, cifratura e hash risolvono tre problemi diversi: la prima la disfa chiunque, la seconda chi ha la chiave, il terzo nessuno. Quale è quale, e come riconoscerli a colpo d'occhio."
+heading = "Base64 è una cifratura?"
+lede = """
+    No. Base64 è un cambio d'abito, non una serratura: chiunque lo
+    riconosca lo disfa in millisecondi, senza nessuna chiave. Ma la
+    domanda merita una risposta vera, perché codifica, cifratura e hash si
+    somigliano sullo schermo e non potrebbero promettere cose più
+    diverse."""
+updated = "26 agosto 2026"
+og_title = "Base64 è una cifratura?"
+og_description = "No - chiunque può disfarlo, senza chiave. Codifica, cifratura e hash si somigliano sullo schermo e promettono tre cose completamente diverse. Quale è quale."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

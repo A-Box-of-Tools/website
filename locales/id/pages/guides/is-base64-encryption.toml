@@ -1,0 +1,18 @@
+#
+# Panduan: apakah base64 itu enkripsi? - Indonesian.
+#
+
+nav = "Apakah base64 itu enkripsi?"
+title = "Apakah Base64 Itu Enkripsi?"
+description = "Bukan - dan bedanya penting dalam praktik. Encoding, enkripsi, dan hash menyelesaikan tiga masalah berbeda: yang pertama bisa dibalik siapa saja, yang kedua hanya pemegang kunci, yang ketiga tidak seorang pun. Mana yang mana, dan cara mengenalinya sekali lihat."
+heading = "Apakah base64 itu enkripsi?"
+lede = """
+    Bukan. Base64 itu ganti kostum, bukan gembok: siapa pun yang
+    mengenalinya bisa membaliknya dalam hitungan milidetik, tanpa kunci
+    apa pun. Tapi pertanyaannya pantas dijawab sungguh-sungguh, karena
+    encoding, enkripsi, dan hash tampak mirip di layar dan janjinya tidak
+    bisa lebih berbeda lagi."""
+updated = "26 Agustus 2026"
+og_title = "Apakah base64 itu enkripsi?"
+og_description = "Bukan - siapa pun bisa membaliknya, tanpa kunci. Encoding, enkripsi, dan hash tampak mirip di layar dan menjanjikan tiga hal yang sama sekali berbeda. Mana yang mana."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

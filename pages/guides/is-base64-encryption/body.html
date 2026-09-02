@@ -1,0 +1,130 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      No. Base64 is an <em>encoding</em>: a way of writing any data using
+      only sixty-four safe characters, so that it survives being carried
+      through systems built for plain text. It has no key, no secret and no
+      security property of any kind. Decoding it requires recognising it,
+      and nothing else &mdash; which takes a person about one glance and a
+      computer about one millisecond.
+    </p>
+    <p>
+      The question is worth asking anyway, because the confusion is
+      universal and occasionally expensive. A base64 string
+      <em>looks</em> scrambled &mdash; <code>cGFzc3dvcmQ=</code> reveals
+      nothing to the eye &mdash; and things that look scrambled get filed
+      under &ldquo;secure&rdquo;. Real products have shipped with passwords
+      &ldquo;protected&rdquo; this way. The cure is one distinction, learned
+      once: <strong>encoding is for machines, encryption is for secrets,
+      hashing is for fingerprints.</strong> Three jobs, three tools, and
+      only one of them protects anything.
+    </p>
+  </section>
+
+  <section>
+    <h2>Encoding: reversible by everyone</h2>
+    <p>
+      An encoding changes how data is <em>written</em>, never what it says.
+      Email attachments, images embedded in stylesheets, tokens in URLs
+      &mdash; all of these need arbitrary bytes to travel through channels
+      that only reliably carry text, and base64 is the standard costume:
+      three bytes in, four characters out, using letters, digits and two
+      punctuation marks, with <code>=</code> padding the end. That trailing
+      <code>=</code> is the tell, and once you know it you will see base64
+      everywhere.
+    </p>
+    <p>
+      The defining property: the recipe is public and runs the same way
+      backwards. There is nothing to know, so there is nothing to not know.
+      Percent-encoding in URLs (<code>%20</code> for a space), HTML entities
+      (<code>&amp;amp;</code>), hex dumps and backslash escapes are the same
+      idea in different dress, and the
+      <a href="../../encode-text/">Base64 Encoder &amp; Decoder</a> here
+      speaks all of them, both directions, on your own machine. Decoding a
+      string you found is precisely as legitimate as reading it, because
+      encoding was never a lock in the first place.
+    </p>
+  </section>
+
+  <section>
+    <h2>Encryption: reversible by the key holder</h2>
+    <p>
+      Encryption is the one that actually protects content. It transforms
+      data with a <em>key</em>, and the mathematics are arranged so that
+      reversing the transformation without the key is not merely difficult
+      but computationally out of reach &mdash; while with the key it is
+      instant. The secrecy lives entirely in the key, not in the method: the
+      algorithms are published, standardised and stronger for it.
+    </p>
+    <p>
+      This is where the visual confusion bites, because encrypted bytes are
+      routinely base64-encoded so they can travel &mdash; scrambled by a
+      key, then costumed for transport. Two layers, doing different jobs. A
+      JSON Web Token is the classic case: three base64 pieces joined by
+      dots, of which the first two <em>decode</em> into readable JSON for
+      anyone who tries. People paste tokens into public web decoders daily,
+      having assumed the whole thing was sealed; the honest framing is that
+      a JWT is a postcard with a tamper-proof signature, not an envelope.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hashing: reversible by no one</h2>
+    <p>
+      A hash runs in one direction only. Feed any amount of data through
+      SHA-256 and out comes a fixed-size number &mdash; the same number
+      every time for the same data, a completely different number for data
+      that differs by one bit, and no way back from the number to the data
+      for anybody, key or no key. It is not a costume and not a lock; it is
+      a <em>fingerprint</em>.
+    </p>
+    <p>
+      That is what makes it the right tool for the two jobs it owns.
+      Checking that a downloaded file is exactly the file the publisher
+      meant &mdash; compare fingerprints, which the
+      <a href="../../hash-checksum/">Hash &amp; Checksum</a> tool does on
+      your machine, with <a href="../verify-a-file-checksum/">a guide of its
+      own</a>. And storing passwords: a well-run service keeps only the hash
+      of yours, so that even its own stolen database does not contain the
+      password itself. When a site can email you your forgotten password, it
+      has told you it never hashed it &mdash; and when a config
+      &ldquo;secures&rdquo; one as <code>cGFzc3dvcmQ=</code>, it has told
+      you it only ever encoded it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Telling them apart in the wild</h2>
+    <p>
+      A working shortcut for the string in front of you:
+    </p>
+    <ul>
+      <li>
+        <strong>Decodes into something readable?</strong> It was encoding.
+        Letters, digits, maybe <code>+</code> and <code>/</code>, often
+        <code>=</code> at the end &mdash; run it through a decoder and see.
+      </li>
+      <li>
+        <strong>Decodes into binary noise?</strong> Then the base64 was only
+        the costume, and the content underneath is either encrypted,
+        compressed, or was never text &mdash; the encoding tells you nothing
+        either way.
+      </li>
+      <li>
+        <strong>Fixed length, hex characters, never decodes?</strong> 64 hex
+        characters is the shape of SHA-256; 32 is the shape of MD5. Hashes
+        do not decode; they only ever match or fail to.
+      </li>
+    </ul>
+    <p>
+      And the operational moral of each: never rely on encoding for
+      secrecy; never build encryption yourself when your platform ships it;
+      never store a password as anything but a hash. The string you decode
+      to check, meanwhile, may itself be the sensitive part &mdash; a token
+      being debugged usually is &mdash; which is why the
+      <a href="../../encode-text/">decoder here</a> runs where the secret
+      already is, on your machine, and why
+      <a href="../is-it-safe-to-paste-into-an-online-tool/">what pasting
+      into a web tool actually does</a> has a page of its own.
+    </p>
+  </section>

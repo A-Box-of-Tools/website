@@ -195,6 +195,7 @@ complete = true
 "guides/can-blacked-out-text-be-recovered" = "ratgeber/kann-geschwaerzter-text-wiederhergestellt-werden"
 "guides/is-it-safe-to-paste-into-an-online-tool" = "ratgeber/ist-das-einfuegen-in-online-tools-sicher"
 "guides/is-it-safe-to-use-an-online-password-generator" = "ratgeber/sind-online-passwortgeneratoren-sicher"
+"guides/is-base64-encryption" = "ratgeber/ist-base64-eine-verschluesselung"
 
 #
 # ---------------------------------------------------------------------------

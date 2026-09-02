@@ -1,0 +1,146 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Non. Base64 est un <em>encodage</em>&nbsp;: une façon d'écrire
+      n'importe quelles données avec seulement soixante-quatre caractères
+      sans danger, pour qu'elles survivent au passage dans des systèmes
+      bâtis pour du texte simple. Il n'a pas de clé, pas de secret et
+      aucune propriété de sécurité d'aucune sorte. Le décoder exige de le
+      reconnaître, rien d'autre &mdash; environ un coup d'œil pour une
+      personne, une milliseconde pour un ordinateur.
+    </p>
+    <p>
+      La question vaut pourtant d'être posée, parce que la confusion est
+      universelle et parfois coûteuse. Une chaîne base64 <em>a l'air</em>
+      brouillée &mdash; <code>cGFzc3dvcmQ=</code> ne révèle rien à l'œil
+      &mdash; et ce qui a l'air brouillé se range sous
+      &laquo;&nbsp;sécurisé&nbsp;&raquo;. De vrais produits ont été livrés
+      avec des mots de passe &laquo;&nbsp;protégés&nbsp;&raquo; de cette
+      façon. Le remède est une distinction, apprise une fois&nbsp;:
+      <strong>l'encodage est pour les machines, le chiffrement pour les
+      secrets, le hachage pour les empreintes.</strong> Trois travaux,
+      trois outils, et un seul des trois protège quoi que ce soit.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'encodage&nbsp;: réversible par tout le monde</h2>
+    <p>
+      Un encodage change la façon dont les données sont <em>écrites</em>,
+      jamais ce qu'elles disent. Pièces jointes de courriel, images
+      embarquées dans des feuilles de style, jetons dans des adresses
+      &mdash; partout, des octets arbitraires doivent traverser des canaux
+      qui ne transportent fiablement que du texte, et base64 est le
+      costume standard&nbsp;: trois octets entrent, quatre caractères
+      sortent, faits de lettres, de chiffres et de deux signes, avec
+      <code>=</code> pour combler la fin. Ce <code>=</code> final est le
+      signe distinctif, et une fois qu'on le connaît, on voit du base64
+      partout.
+    </p>
+    <p>
+      La propriété qui définit tout&nbsp;: la recette est publique et
+      tourne pareil à l'envers. Il n'y a rien à savoir, donc rien à ne pas
+      savoir. Le pourcent-encodage des adresses (<code>%20</code> pour une
+      espace), les entités HTML (<code>&amp;amp;</code>), l'hexadécimal et
+      les échappements à barre oblique inverse sont la même idée en
+      d'autres habits, et l'<a href="../../encoder-base64/">encodeur-
+      décodeur base64</a> d'ici les parle tous, dans les deux sens, sur
+      votre propre machine. Décoder une chaîne trouvée est exactement
+      aussi légitime que la lire, parce qu'un encodage n'a jamais été une
+      serrure.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le chiffrement&nbsp;: réversible par le détenteur de la clé</h2>
+    <p>
+      Le chiffrement est celui qui protège vraiment un contenu. Il
+      transforme les données avec une <em>clé</em>, et les mathématiques
+      sont arrangées pour que défaire la transformation sans la clé ne
+      soit pas simplement difficile mais hors de portée du calcul &mdash;
+      tandis qu'avec la clé, c'est immédiat. Le secret loge entièrement
+      dans la clé, pas dans la méthode&nbsp;: les algorithmes sont
+      publiés, normalisés, et plus forts pour cela.
+    </p>
+    <p>
+      C'est ici que la confusion visuelle mord, parce que des octets
+      chiffrés sont routinièrement encodés en base64 pour voyager &mdash;
+      brouillés par une clé, puis costumés pour le transport. Deux
+      couches, deux travaux. Le JSON Web Token est le cas d'école&nbsp;:
+      trois morceaux de base64 joints par des points, dont les deux
+      premiers se <em>décodent</em> en JSON lisible pour quiconque
+      essaie. Des gens collent des jetons dans des décodeurs web publics
+      tous les jours, en ayant supposé que le tout était scellé&nbsp;; la
+      description honnête est qu'un JWT est une carte postale à signature
+      infalsifiable, pas une enveloppe.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le hachage&nbsp;: réversible par personne</h2>
+    <p>
+      Un hachage ne tourne que dans un sens. Faites passer n'importe
+      quelle quantité de données par SHA-256 et il en sort un nombre de
+      taille fixe &mdash; le même nombre à chaque fois pour les mêmes
+      données, un nombre complètement différent pour des données qui
+      diffèrent d'un bit, et aucun chemin du nombre vers les données, pour
+      personne, clé ou pas. Ce n'est ni un costume ni une serrure&nbsp;;
+      c'est une <em>empreinte</em>.
+    </p>
+    <p>
+      C'est ce qui en fait l'outil des deux travaux qui lui appartiennent.
+      Vérifier qu'un fichier téléchargé est exactement celui que l'éditeur
+      a publié &mdash; comparer les empreintes, ce que l'outil de
+      <a href="../../verifier-une-somme-de-controle/">somme de
+      contrôle</a> fait sur votre machine, avec
+      <a href="../verifier-la-somme-de-controle-d-un-telechargement/">son
+      guide</a>. Et conserver des mots de passe&nbsp;: un service bien
+      tenu ne garde que le hachage du vôtre, si bien que même sa base
+      volée ne contient pas le mot de passe. Quand un site peut vous
+      renvoyer par courriel votre mot de passe oublié, il vous a dit
+      qu'il ne l'a jamais haché &mdash; et quand une configuration
+      &laquo;&nbsp;sécurise&nbsp;&raquo; le sien en
+      <code>cGFzc3dvcmQ=</code>, elle vous a dit qu'elle n'a jamais fait
+      que l'encoder.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les distinguer sur le terrain</h2>
+    <p>
+      Un raccourci qui marche, pour la chaîne devant vous&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Elle se décode en quelque chose de lisible&nbsp;?</strong>
+        C'était de l'encodage. Lettres, chiffres, peut-être <code>+</code>
+        et <code>/</code>, souvent <code>=</code> à la fin &mdash;
+        passez-la dans un décodeur et regardez.
+      </li>
+      <li>
+        <strong>Elle se décode en bruit binaire&nbsp;?</strong> Alors le
+        base64 n'était que le costume, et ce qu'il habille est chiffré,
+        compressé, ou n'a jamais été du texte &mdash; l'encodage ne vous
+        dit rien dans les deux cas.
+      </li>
+      <li>
+        <strong>Longueur fixe, caractères hexadécimaux, ne se décode
+        jamais&nbsp;?</strong> 64 caractères hexadécimaux, c'est la
+        silhouette de SHA-256&nbsp;; 32, celle de MD5. Les hachages ne se
+        décodent pas&nbsp;; ils coïncident, ou pas.
+      </li>
+    </ul>
+    <p>
+      Et la morale pratique de chacun&nbsp;: ne comptez jamais sur un
+      encodage pour le secret&nbsp;; ne construisez jamais votre propre
+      chiffrement quand votre plateforme le fournit&nbsp;; ne stockez
+      jamais un mot de passe autrement que haché. La chaîne que vous
+      décodez pour vérifier peut d'ailleurs être elle-même la partie
+      sensible &mdash; un jeton en cours de débogage l'est en général
+      &mdash; et c'est pourquoi le
+      <a href="../../encoder-base64/">décodeur d'ici</a> tourne là où le
+      secret se trouve déjà, sur votre machine, et pourquoi
+      <a href="../est-il-sur-de-coller-du-texte-dans-un-outil-en-ligne/">
+      ce que coller dans un outil web fait vraiment</a> a une page à lui.
+    </p>
+  </section>

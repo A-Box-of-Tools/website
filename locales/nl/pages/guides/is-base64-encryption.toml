@@ -1,0 +1,18 @@
+#
+# Gids: is base64 versleuteling? - Dutch.
+#
+
+nav = "Is base64 versleuteling?"
+title = "Is base64 versleuteling?"
+description = "Nee - en het verschil doet er in de praktijk toe. Coderen, versleutelen en hashen lossen drie verschillende problemen op: het eerste draait iedereen terug, het tweede alleen de sleutelhouder, het derde niemand. Wat wat is, en hoe je ze op het oog herkent."
+heading = "Is base64 versleuteling?"
+lede = """
+    Nee. Base64 is een kostuumwissel, geen slot: wie het herkent, draait
+    het in milliseconden terug, zonder enige sleutel. Maar de vraag
+    verdient een echt antwoord, want codering, versleuteling en hashing
+    lijken op het scherm op elkaar en konden in wat ze beloven niet meer
+    verschillen."""
+updated = "26 augustus 2026"
+og_title = "Is base64 versleuteling?"
+og_description = "Nee - iedereen kan het terugdraaien, zonder sleutel. Codering, versleuteling en hashing lijken op elkaar en beloven drie totaal verschillende dingen. Wat wat is."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

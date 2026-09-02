@@ -1,0 +1,24 @@
+#
+# Guide: is base64 encryption? - Traditional Chinese.
+#
+# Overrides for pages/guides/is-base64-encryption/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of
+# the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "base64 是加密嗎？"
+
+title = "Base64 算加密嗎？"
+description = "不算。而且這個區別在實際裡很要命。編碼、加密、雜湊解決的是三個不同的問題：第一個誰都能還原，第二個持有金鑰的人能還原，第三個誰也還原不了。哪個是哪個，一眼怎麼認。"
+
+heading = "Base64 算加密嗎？"
+lede = """
+    不算。Base64 是換裝，不是上鎖：認得它的人，不用任何鑰匙，幾毫秒就能\
+    還原。但這個問題值得認真回答，因為編碼、加密和雜湊在螢幕上長得像，\
+    承諾的事卻天差地別。"""
+
+updated = "2026年8月26日"
+
+og_title = "Base64 算加密嗎？"
+og_description = "不算。誰都能還原，不用鑰匙。編碼、加密、雜湊在螢幕上長得像，承諾的是完全不同的三件事。哪個是哪個。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
