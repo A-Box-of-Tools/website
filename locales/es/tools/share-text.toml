@@ -99,7 +99,10 @@ body = """
       texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta
       la llamada a una compartición privada viaja por el canal directo
       cifrado. Su código completo está en el repositorio, junto al de esta
-      herramienta."""
+      herramienta. Lo que sobrevive a una compartición es una sola cosa:
+      Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión
+      durante siete días, con el nombre de enlace, la dirección y la hora,
+      nunca el contenido."""
 
 [[privacy]]
 title = "Nada se guarda: cerrar la pestaña es el borrado."
@@ -236,7 +239,10 @@ a = """
         texto, no los archivos, no sus nombres ni tamaños, no a quién se
         dejó entrar en una compartición privada, y no lo que nadie escribió
         al presentarse: todo eso viaja por el canal directo, cifrado de
-        extremo a extremo, que no pasa por el servidor."""
+        extremo a extremo, que no pasa por el servidor. Cloudflare, que
+        ejecuta el servidor, guarda un registro de cada conexión durante siete
+        días: el nombre de enlace, la dirección y la hora. Nada más sobrevive
+        a la compartición."""
 
 [[faq]]
 q = "¿Qué pasa cuando cierro la pestaña?"

@@ -109,6 +109,22 @@
       entregar la página y mantener el servicio en pie y seguro. No tenemos acceso
       a los registros por visitante de ninguno de los dos.
     </p>
+
+    <h3>El intermediario de la herramienta de compartir</h3>
+    <p>
+      Una herramienta, <a href="../compartir-texto/">Compartir texto y
+      archivos</a>, lleva texto y archivos directamente de un navegador a
+      otro, y una conexión directa necesita una presentación. Por eso esa
+      página, la única del sitio, abre un WebSocket a un pequeño servidor
+      nuestro, que junta los dos extremos de un nombre de enlace y les pasa el
+      establecimiento de la conexión. Nunca ve el texto ni los archivos;
+      viajan por la conexión cifrada que él presentó. Sí ve el nombre de
+      enlace, cuándo se conecta y se va cada lado, y sus direcciones IP, y
+      Cloudflare, que lo ejecuta, guarda un registro de cada conexión durante
+      siete días. Es el único registro por visitante de este sitio que podemos
+      leer. La propia página de la herramienta lo describe por completo, y su
+      código entero está en el repositorio.
+    </p>
   </section>
 
   <section>

@@ -106,6 +106,21 @@
       the page and to keep the service up and secure. We do not have access to
       per-visitor logs from either of them.
     </p>
+
+    <h3>The share tool&rsquo;s rendezvous</h3>
+    <p>
+      One tool, <a href="../share-text/">Share Text &amp; Files</a>, moves
+      text and files straight from one browser to another, and a direct
+      connection needs an introduction. So that page &mdash; alone on this
+      site &mdash; opens one WebSocket to a small server of ours, which
+      matches the two ends of a link name and passes their connection set-up
+      between them. It never sees the text or the files; those travel the
+      encrypted connection it introduced. It does see the link name, when each
+      side connects and leaves, and their IP addresses, and Cloudflare, which
+      runs it, keeps a log of each connection for seven days. It is the only
+      per-visitor log on this site that we can read. The tool&rsquo;s own page
+      describes it in full, and its entire source is in the repository.
+    </p>
   </section>
 
   <section>

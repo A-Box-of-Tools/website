@@ -101,7 +101,10 @@ body = """
       texte, les fichiers, qui a été admis ni ce que quiconque a écrit
       &mdash; même le toc-toc d'un partage privé voyage par le canal direct
       chiffré. Son code complet est dans le dépôt, à côté de celui de cet
-      outil."""
+      outil. Ce qui survit à un partage tient en une chose&nbsp;: Cloudflare,
+      qui fait tourner le serveur, garde un journal de chaque connexion
+      pendant sept jours, avec le nom de lien, l'adresse et l'heure, jamais le
+      contenu."""
 
 [[privacy]]
 title = "Rien n'est stocké : fermer l'onglet, c'est l'effacement."
@@ -242,7 +245,9 @@ a = """
         pas leurs noms ni leurs tailles, pas qui a été admis à un partage
         privé, et pas ce que quiconque a écrit en se présentant &mdash; tout
         cela voyage par le canal direct, chiffré de bout en bout, qui ne
-        passe pas par le serveur."""
+        passe pas par le serveur. Cloudflare, qui fait tourner le serveur,
+        garde un journal de chaque connexion pendant sept jours&nbsp;: le nom
+        de lien, l'adresse et l'heure. Rien d'autre ne survit au partage."""
 
 [[faq]]
 q = "Que se passe-t-il quand je ferme l'onglet ?"

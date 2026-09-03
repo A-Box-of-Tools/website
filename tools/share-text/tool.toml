@@ -36,7 +36,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-lastmod = "2026-08-27"
+lastmod = "2026-09-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -150,7 +150,10 @@ body = """
       and their IP addresses. It cannot see the text, the files, who was let
       in, or what anybody said &mdash; even the knock on a private share
       travels the encrypted peer channel. Its entire source is in the
-      repository beside this tool's."""
+      repository beside this tool's. What outlives a share is one thing:
+      Cloudflare, which runs the server, keeps a log of each connection for
+      seven days &mdash; the link name, the address and the time, never a
+      payload."""
 
 [[privacy]]
 title = "Nothing is stored, so closing the tab is the deletion."
@@ -284,7 +287,10 @@ a = """
         exchange. Not the text, not the files, not their names or sizes, not
         who was admitted to a private share, and not what anyone wrote in an
         introduction &mdash; all of that travels the peer channel, which is
-        encrypted end to end and does not pass through the server."""
+        encrypted end to end and does not pass through the server. Cloudflare,
+        which runs the server, keeps a log of each connection for seven days:
+        the link name, the address and the time. Nothing else outlives the
+        share."""
 
 [[faq]]
 q = "What happens when I close the tab?"

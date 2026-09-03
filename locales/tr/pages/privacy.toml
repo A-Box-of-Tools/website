@@ -10,7 +10,7 @@ lede = """
     Kısa sürümü: dosyalarınız hiçbir zaman yüklenmez, çünkü yüklenecek bir yer
     yoktur. Bu sayfadaki diğer her şey reklamlar, ziyaret sayacı ve barındırma
     hakkındadır &mdash; yani başka şirketlerin gerçekten karıştığı kısımlar."""
-updated = "22 Ağustos 2026"
+updated = "3 Eylül 2026"
 og_title = "Gizlilik ve Çerezler &mdash; abox.tools"
 og_description = "Dosyalarınız hiçbir zaman yüklenmez. Ne toplanıyor, kim topluyor ve nasıl kapatırsınız."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

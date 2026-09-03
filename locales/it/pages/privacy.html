@@ -112,6 +112,22 @@
       tenere il servizio in piedi e al sicuro. Non abbiamo accesso ai registri per
       singolo visitatore di nessuno dei due.
     </p>
+
+    <h3>Il mediatore dello strumento di condivisione</h3>
+    <p>
+      Uno strumento, <a href="../condividere-testo/">Condividere testo e
+      file</a>, porta testo e file direttamente da un browser all'altro, e una
+      connessione diretta ha bisogno di una presentazione. Così quella pagina,
+      unica del sito, apre un WebSocket verso un piccolo server nostro, che
+      mette insieme i due capi di un nome di link e passa fra loro
+      l'impostazione della connessione. Non vede mai il testo né i file:
+      viaggiano sulla connessione cifrata che ha presentato. Vede il nome di
+      link, quando ciascun lato si connette e se ne va, e gli indirizzi IP, e
+      Cloudflare, che lo fa girare, tiene un registro di ogni connessione per
+      sette giorni. È l'unico registro per singolo visitatore di questo sito
+      che possiamo leggere. La pagina dello strumento lo descrive per intero,
+      e il suo codice completo sta nel repository.
+    </p>
   </section>
 
   <section>

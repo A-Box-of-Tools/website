@@ -110,6 +110,21 @@
       istenen sayfa ve kullanıcı aracınız dâhildir. İkisinden de ziyaretçi başına
       günlüklere erişimimiz yok.
     </p>
+
+    <h3>Paylaşım aracının aracı sunucusu</h3>
+    <p>
+      Bir araç, <a href="../metin-paylasma/">Metin ve dosya paylaşımı</a>,
+      metni ve dosyaları bir tarayıcıdan diğerine doğrudan taşır; doğrudan bir
+      bağlantı ise bir tanıştırma ister. Bu yüzden o sayfa &mdash; bu sitede
+      yalnızca o sayfa &mdash; bize ait küçük bir sunucuya tek bir WebSocket
+      açar. Bu sunucu bir bağlantı adının iki ucunu buluşturur ve bağlantı
+      kurulumunu aralarında iletir. Metni ya da dosyaları hiçbir zaman görmez;
+      onlar, sunucunun tanıştırdığı şifreli bağlantıdan gider. Gördükleri
+      bağlantı adı, her tarafın ne zaman bağlanıp ayrıldığı ve IP
+      adresleridir; onu çalıştıran Cloudflare da her bağlantının kaydını yedi
+      gün tutar. Bu sitede okuyabildiğimiz tek ziyaretçi başına kayıt budur.
+      Aracın kendi sayfası onu eksiksiz anlatır ve tüm kaynak kodu depodadır.
+    </p>
   </section>
 
   <section>

@@ -116,6 +116,23 @@
       die Seite auszuliefern und den Dienst verfügbar und sicher zu halten. Auf
       besucherbezogene Protokolle haben wir bei keinem der beiden Zugriff.
     </p>
+
+    <h3>Der Vermittler des Teilen-Werkzeugs</h3>
+    <p>
+      Ein Werkzeug, <a href="../text-teilen/">Text &amp; Dateien teilen</a>,
+      bringt Text und Dateien direkt von einem Browser zum anderen, und eine
+      Direktverbindung braucht eine Vorstellung. Deshalb öffnet diese Seite,
+      als einzige dieser Website, einen WebSocket zu einem kleinen eigenen
+      Server, der die beiden Enden eines Link-Namens zusammenbringt und den
+      Verbindungsaufbau zwischen ihnen weiterreicht. Den Text und die Dateien
+      sieht er nie; die reisen über die verschlüsselte Verbindung, die er
+      vermittelt hat. Er sieht den Link-Namen, wann sich jede Seite verbindet
+      und wieder geht, und die IP-Adressen, und Cloudflare, das ihn betreibt,
+      führt sieben Tage lang ein Protokoll jeder Verbindung. Es ist das
+      einzige besucherbezogene Protokoll dieser Website, das wir lesen können.
+      Die Seite des Werkzeugs beschreibt ihn vollständig, und sein gesamter
+      Quelltext liegt im Repository.
+    </p>
   </section>
 
   <section>

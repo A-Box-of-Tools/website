@@ -98,7 +98,9 @@ body = """
       gittiği ve IP adresleri. Göremedikleri: metin, dosyalar, kimin içeri
       alındığı ya da kimin ne yazdığı &mdash; özel bir paylaşımın kapısını
       çalmak bile şifreli doğrudan kanaldan gider. Tam kaynak kodu, bu
-      aracınkiyle yan yana depodadır."""
+      aracınkiyle yan yana depodadır. Bir paylaşımdan geriye tek bir şey
+      kalır: sunucuyu çalıştıran Cloudflare, her bağlantının kaydını yedi gün
+      tutar &mdash; bağlantı adı, adres ve saat; içerik asla."""
 
 [[privacy]]
 title = "Hiçbir şey saklanmaz: sekmeyi kapatmak silmenin ta kendisidir."
@@ -233,7 +235,9 @@ a = """
         dosyaları göremez, adlarını ve boyutlarını göremez, özel bir
         paylaşıma kimin alındığını göremez, kendini tanıtırken kimin ne
         yazdığını da göremez &mdash; bunların hepsi, sunucudan geçmeyen
-        uçtan uca şifreli doğrudan kanaldan gider."""
+        uçtan uca şifreli doğrudan kanaldan gider. Sunucuyu çalıştıran
+        Cloudflare, her bağlantının kaydını yedi gün tutar: bağlantı adı,
+        adres ve saat. Paylaşımdan geriye başka hiçbir şey kalmaz."""
 
 [[faq]]
 q = "Sekmeyi kapattığımda ne olur?"

@@ -101,7 +101,10 @@ body = """
       wer eingelassen wurde oder was jemand geschrieben hat &mdash; selbst
       das Anklopfen bei einer privaten Freigabe reist über den
       verschlüsselten Direktkanal. Sein vollständiger Quelltext liegt im
-      Repository neben dem dieses Werkzeugs."""
+      Repository neben dem dieses Werkzeugs. Was eine Freigabe überdauert, ist
+      eine einzige Sache: Cloudflare, das den Server betreibt, führt sieben
+      Tage lang ein Protokoll jeder Verbindung, mit dem Link-Namen, der
+      Adresse und der Uhrzeit, nie mit einer Nutzlast."""
 
 [[privacy]]
 title = "Nichts ist gespeichert - das Schließen des Tabs ist die Löschung."
@@ -245,7 +248,9 @@ a = """
         einer privaten Freigabe eingelassen wurde, und nicht, was jemand in
         einer Vorstellung geschrieben hat &mdash; all das reist über den
         Ende-zu-Ende-verschlüsselten Direktkanal, der nicht durch den Server
-        läuft."""
+        läuft. Cloudflare, das den Server betreibt, führt sieben Tage lang ein
+        Protokoll jeder Verbindung: den Link-Namen, die Adresse und die
+        Uhrzeit. Sonst überdauert nichts die Freigabe."""
 
 [[faq]]
 q = "Was passiert, wenn ich den Tab schließe?"
