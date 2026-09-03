@@ -329,10 +329,6 @@ kbd {
 }
 
 .check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  cursor: pointer;
   margin-bottom: 0.8rem;
 }
 

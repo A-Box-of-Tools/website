@@ -211,16 +211,6 @@
 }
 
 .field > label { font-size: 0.85rem; font-weight: 600; }
-
-.check {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-.check input { margin: 0; }
-
 .summary {
   margin: 1.2rem 0;
   font-size: 0.88rem;

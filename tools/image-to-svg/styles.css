@@ -26,14 +26,6 @@
   padding-inline-start: 0.9rem;
   margin: 0 0 0.9rem;
 }
-
-.check {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text);
-}
-
 .field-note {
   margin: 0 0 0.8rem;
   color: var(--text-dim);

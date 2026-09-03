@@ -116,12 +116,6 @@
   color: var(--text-dim);
 }
 
-.check { display: flex; gap: 0.6rem; align-items: flex-start; cursor: pointer; }
-.check input { flex: none; margin-top: 0.2rem; }
-.check > span { display: flex; flex-direction: column; gap: 0.25rem; }
-.check strong { font-size: 0.92rem; }
-.check-note { font-size: 0.82rem; line-height: 1.55; color: var(--text-dim); max-width: 62ch; }
-
 /* ------------------------------------------------------------- the results */
 
 .results-head {

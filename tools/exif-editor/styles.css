@@ -120,11 +120,7 @@
 }
 
 .check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
   margin-bottom: 0.7rem;
-  cursor: pointer;
 }
 
 /* The exact bargain the button above is offering, restated as one sentence
