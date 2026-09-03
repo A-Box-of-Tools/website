@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/ton-aus-video-extrahieren/:';
-const CACHE_NAME=CACHE_PREFIX+'28cca99523';
+const CACHE_NAME=CACHE_PREFIX+'40fbd366c7';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=02263156f8',
+'styles.css?v=83afbff316',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

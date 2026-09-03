@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-pdf-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'3a6e57e1de';
+const CACHE_NAME=CACHE_PREFIX+'2c3461d91f';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=cd0e0ab1df',
+'styles.css?v=4e72356d3b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

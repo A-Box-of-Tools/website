@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/penampil-dicom/:';
-const CACHE_NAME=CACHE_PREFIX+'bb92a6c645';
+const CACHE_NAME=CACHE_PREFIX+'8f1ca94792';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5a66521f2a',
+'styles.css?v=65635bfead',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
