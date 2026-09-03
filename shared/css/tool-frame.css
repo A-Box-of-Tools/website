@@ -809,6 +809,26 @@ button, .as-button {
   font-size: 0.92rem;
 }
 
+/* A thumb needs forty-four pixels of something to land on, and nothing above
+   gives it that: a ghost button is 34 pixels tall, a primary 41, and the
+   tools that set a scale of their own landed between 31 and 36 - so on a
+   phone twenty-nine of the forty-one tools had controls a visitor cannot
+   reliably hit. This is the floor, applied where a thumb is the pointer and
+   nowhere else: a narrow desktop window driven by a mouse does not need it,
+   and the mobile emulations the QA suite runs report a coarse pointer, which
+   is how it is measured. A minimum height rather than padding, so a "1:1"
+   chip or a "-5s" button keeps its width and a row that wrapped before wraps
+   the same way. Links dressed as buttons are inline by default and would
+   ignore a minimum height, so they are laid out as a box here too. */
+@media (pointer: coarse) {
+  button, .as-button { min-height: 44px; }
+  .as-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 /*
   The button that starts the work, and the only control on a tool page that
   needs to feel like one.
