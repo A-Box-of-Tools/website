@@ -14,6 +14,28 @@
 // the site's Cloudflare account. The free plan carries it - the object
 // hibernates between messages and writes nothing to storage, so an idle
 // room costs nothing at all.
+//
+// It answers only the site's own pages, and lets one address knock only so
+// often. Both are the least that keeps a switchboard with no login from being
+// borrowed, and neither reads anything. The one line it ever prints is the
+// close code of a refusal.
+
+// A browser sends Origin on every WebSocket handshake and a page cannot forge
+// it, so checking it keeps the rendezvous from becoming free signalling for
+// somebody else's site. A script can send any Origin it likes; the rate limit
+// is for that. Local builds are served from localhost and need the live
+// rendezvous to try the tool at all, so localhost is let in on any port.
+const SITE = "https://abox.tools";
+
+function fromOurPage(origin) {
+  if (origin === SITE) return true;
+  try {
+    const host = new URL(origin).hostname;
+    return host === "localhost" || host === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
 
 export default {
   async fetch(request, env) {
@@ -30,6 +52,16 @@ export default {
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
       }
+      if (!fromOurPage(request.headers.get("Origin"))) {
+        return new Response("not for this page", { status: 403 });
+      }
+      // Keyed by address rather than by room: the nuisance this caps is one
+      // client opening rooms by the thousand, and the room name is theirs to
+      // vary. Counted per Cloudflare location, so it is a cap, not a wall.
+      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      if (!knock.success) {
+        return new Response("too many connections from this address", { status: 429 });
+      }
       return env.ROOMS.get(env.ROOMS.idFromName(room[1])).fetch(request);
     }
     return new Response("not found", { status: 404 });
@@ -37,6 +69,8 @@ export default {
 };
 
 const MAX_VIEWERS = 16;
+// UTF-16 units, not bytes, so up to three times this on the wire: a bound on
+// nonsense rather than a budget. A session description is a few kilobytes.
 const MAX_MESSAGE = 64 * 1024;
 
 // One room. Sockets are tagged with their role - viewers also with a random
@@ -57,6 +91,11 @@ export class Room {
     // attached, so rejections complete the upgrade and then close with a
     // 4xxx code the page can read.
     const refuse = (code, reason) => {
+      // The one line this worker prints. A refusal completes the upgrade with
+      // 101 exactly like an admission, so the invocation log cannot tell the
+      // two apart; this can, and it carries the code alone - no name, no
+      // address, nothing a person typed.
+      console.log(JSON.stringify({ refused: code, reason }));
       server.accept();
       server.close(code, reason);
       return new Response(null, { status: 101, webSocket: client });
@@ -70,7 +109,10 @@ export class Room {
     } else if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
       if (this.ctx.getWebSockets("viewer").length >= MAX_VIEWERS) return refuse(4429, "full");
-      const id = crypto.randomUUID();
+      // Tags are one namespace - "host", "viewer" and every id - so an id is
+      // prefixed to be unmistakable for a role, and a host's `to` is honoured
+      // only in that shape. Without both, `to: "viewer"` would reach the room.
+      const id = "v:" + crypto.randomUUID();
       this.ctx.acceptWebSocket(server, ["viewer", id]);
       server.serializeAttachment({ role: "viewer", id });
       this.toHost({ type: "join", id });
@@ -93,7 +135,7 @@ export class Room {
     if (who === null) return;
     if (who.role === "viewer") {
       this.toHost({ type: "signal", from: who.id, data: parsed.data });
-    } else if (typeof parsed.to === "string") {
+    } else if (typeof parsed.to === "string" && parsed.to.startsWith("v:")) {
       // The viewer's id doubles as its socket tag, so addressing a reply is
       // a lookup, not a scan.
       for (const peer of this.ctx.getWebSockets(parsed.to)) {
