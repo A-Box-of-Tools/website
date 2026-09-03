@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/couper-un-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'a095e0a376';
+const CACHE_NAME=CACHE_PREFIX+'a8303f499c';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5430be08f5',
+'styles.css?v=be83157edb',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

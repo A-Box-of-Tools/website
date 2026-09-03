@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحليل-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'80bea8bd39';
+const CACHE_NAME=CACHE_PREFIX+'c720b93034';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=6b2b82ce81',
+'styles.css?v=cc0cd7c15d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

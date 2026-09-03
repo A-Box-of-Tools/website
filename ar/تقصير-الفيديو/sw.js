@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تقصير-الفيديو/:';
-const CACHE_NAME=CACHE_PREFIX+'370eb345cf';
+const CACHE_NAME=CACHE_PREFIX+'a64e4b2ea7';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=356f3d9ae3',
+'styles.css?v=fee3ef63bd',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

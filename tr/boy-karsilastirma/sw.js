@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/boy-karsilastirma/:';
-const CACHE_NAME=CACHE_PREFIX+'86307e2335';
+const CACHE_NAME=CACHE_PREFIX+'5d0f900a64';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=91ca7d7d99',
+'styles.css?v=9fbd35166c',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/crop-video/:';
-const CACHE_NAME=CACHE_PREFIX+'902ff2cd14';
+const CACHE_NAME=CACHE_PREFIX+'e958ca5617';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=18f622a3e1',
+'styles.css?v=216a7dd25b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

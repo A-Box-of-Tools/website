@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/yaml-naar-json-omzetten/:';
-const CACHE_NAME=CACHE_PREFIX+'f769b8758f';
+const CACHE_NAME=CACHE_PREFIX+'aeab6144da';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=c0e85a1822',
+'styles.css?v=fd18e4239f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
