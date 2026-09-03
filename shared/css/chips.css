@@ -1,0 +1,54 @@
+/* ----------------------------------------------------------------- chips
+   A row of small buttons for choosing one of a few - an aspect ratio, a
+   playback speed, a target size, an output scale - with the chosen one lit.
+
+   Asked for with `css_parts = ["chips"]`. Five tools drew this row before
+   this file, four ways between them: three paddings, two font sizes, the
+   figures tabular on some and not others, and the lit one marked `.active`
+   on every page and `aria-pressed` as well on one. Both marks light a chip
+   here, because the JavaScript on those pages sets one or the other and a
+   stylesheet is not the place to make them agree. The build puts this
+   before a tool's own stylesheet, so a tool that needs one of these
+   different writes its own rule and wins, provided it sets every property
+   the rule here sets. The rows of ghost buttons that apply a preset and
+   stay unlit - a target size, a common width - are buttons, not chips, and
+   do not use this. */
+
+.chips {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chips-label {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin-inline-end: 0.2rem;
+}
+
+.chip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0.32rem 0.75rem;
+}
+
+.chip:hover:not(:disabled) { border-color: var(--accent); }
+
+.chip:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.chip.active,
+.chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
