@@ -190,6 +190,15 @@ class TheCheckoutTheDeployRunsOn(unittest.TestCase):
     wrong thing was the ground it stood on, and the only place that is written
     down is the workflow.
 
+    Then the fix for that did not work either, and this time nothing failed.
+    `fetch-tags: true` on the checkout only lets git follow tags by itself, and
+    at depth 1 git follows just the tags on the one commit it fetched, which
+    is never a version. The script proposed 1.0.0 again, the rerun guard found
+    1.0.0 on the remote, and the step exited 0 for a week while five tools
+    shipped under the old number. So the tags are now fetched by name, in a
+    step of their own, and the assertion below is on that step - and against
+    the option that looked like it worked.
+
     Read as text rather than parsed. The test job installs Python and Node and
     nothing else, so there is no YAML parser here to reach for - and the
     alternative to a crude assertion is the one the workflow's own comments
@@ -207,11 +216,16 @@ class TheCheckoutTheDeployRunsOn(unittest.TestCase):
         assert sep, 'build.yml has no build job'
         cls.build = tail
 
-    def test_it_asks_for_the_tags(self):
-        # Without this the version is worked out on a checkout that cannot see
-        # a single tag, and the answer is always FIRST.
-        checkout = self.build.partition('actions/checkout')[2]
-        self.assertIn('fetch-tags: true', checkout.partition('- name:')[0])
+    def test_it_fetches_the_tags_by_name(self):
+        # Between the checkout and the next action there has to be a fetch
+        # that names the tags as a refspec; without it the version is worked
+        # out on a checkout that cannot see a single tag, and the answer is
+        # always FIRST. And `fetch-tags` must not creep back onto the checkout
+        # in its place: it reads as the same thing and is not.
+        after_checkout = self.build.partition('actions/checkout')[2]
+        between = after_checkout.partition('actions/setup-python')[0]
+        self.assertIn("git fetch --depth=1 origin '+refs/tags/*:refs/tags/*'", between)
+        self.assertNotIn('fetch-tags', between)
 
     def test_the_tag_guard_asks_the_remote(self):
         # A local `git rev-parse refs/tags/...` is worth nothing on a checkout

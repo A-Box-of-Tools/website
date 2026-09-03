@@ -15,6 +15,8 @@ Prints the version to tag and its reason, as two lines:
 and prints nothing at all - exiting 0 - when the rule says the version does
 not move. "Nothing to do" is the ordinary case, not a failure: a change to the
 tests, to CI or to the documentation is required to leave the version alone.
+The one exit code other than 0 is for the one question it cannot answer
+honestly, described in the last section below.
 
 WHY IT MEASURES FROM THE LAST TAG
 
@@ -31,6 +33,20 @@ Because a script that prints an answer can be run by anybody, on any checkout,
 to see what the next deploy will do - and one that also pushes a ref cannot.
 The workflow does the pushing, where the permission to do it is granted and
 visible.
+
+WHY IT WILL NOT NAME THE FIRST VERSION ON A CHECKOUT THAT CANNOT SEE ANY
+
+A checkout with no tags looks exactly like a repository that has never been
+tagged, and the deploy runs on a shallow checkout that has to fetch its tags
+on purpose. For a week that fetch was silently doing nothing, and this script
+proposed 1.0.0 on every deploy; the workflow found 1.0.0 already on the remote,
+took that for a rerun, and exited 0 - so the version stood still through a
+hundred and seventy-seven commits and five new tools. Now, before naming the
+first version, the script asks origin whether it already holds one. If it
+does, the answer is a sentence on stderr and exit code 1, because a deploy
+that cannot measure must say so rather than measure from nothing. A
+repository with no remote at all - a local experiment, the tests - is still
+allowed its first version.
 """
 
 import subprocess
@@ -66,14 +82,46 @@ def changed_since(ref, head):
     return everything, added
 
 
+def remote_versions():
+    """The tag names origin holds, or None when there is no origin to ask.
+
+    Asked only when this checkout has no version tag, to tell "never tagged"
+    from "cannot see the tags". An annotated tag lists twice in ls-remote,
+    once as itself and once peeled to its commit with `^{}` on the end; the
+    peeled line names the same tag and is dropped.
+    """
+    if 'origin' not in git('remote').split():
+        return None
+    names = []
+    for line in git('ls-remote', '--tags', 'origin').splitlines():
+        if 'refs/tags/' not in line:
+            continue
+        name = line.split('refs/tags/', 1)[1]
+        if not name.endswith('^{}'):
+            names.append(name)
+    return names
+
+
 def main(argv):
     head = argv[1] if len(argv) > 1 else 'HEAD'
 
     current = rule.latest(git('tag', '--list').splitlines())
     if current is None:
-        # Nothing has ever been tagged, so there is no span to measure and
-        # nothing to compare against. The first deploy names the starting
-        # point rather than trying to work out what came before it.
+        elsewhere = remote_versions()
+        held = rule.latest(elsewhere) if elsewhere else None
+        if held is not None:
+            # Not a first deploy: a checkout that did not fetch its tags. The
+            # workflow would find the first version already on the remote,
+            # call that a rerun and exit 0, which is how the version stood
+            # still for a week - so this is the one answer that is an error.
+            print(f'No version tag in this checkout, but origin holds '
+                  f'{rule.dotted(held)}. The tags were not fetched, so there '
+                  f'is nothing to measure from; fetch them and ask again.',
+                  file=sys.stderr)
+            return 1
+        # Nothing has ever been tagged, anywhere, so there is no span to
+        # measure and nothing to compare against. The first deploy names the
+        # starting point rather than trying to work out what came before it.
         print(rule.dotted(rule.FIRST))
         print(f'{rule.dotted(rule.FIRST)}: the first version.')
         return 0

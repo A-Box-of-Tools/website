@@ -53,12 +53,15 @@ def load_script():
 
 
 class FakeGit:
-    """Enough of git to answer the three questions the script asks."""
+    """Enough of git to answer the four questions the script asks."""
 
-    def __init__(self, tags, changed=(), added=()):
+    def __init__(self, tags, changed=(), added=(), remote_tags=None):
         self.tags = list(tags)
         self.changed = list(changed)
         self.added = list(added)
+        # None is a repository with no remote at all; a list is what origin
+        # would answer, handed back in the shape ls-remote prints it.
+        self.remote_tags = remote_tags
         self.spans = []
 
     def __call__(self, *args):
@@ -69,6 +72,10 @@ class FakeGit:
             if '--diff-filter=A' in args:
                 return '\n'.join(self.added) + '\n'
             return '\n'.join(self.changed) + '\n'
+        if args[0] == 'remote':
+            return '' if self.remote_tags is None else 'origin\n'
+        if args[0] == 'ls-remote':
+            return ''.join(f'{"0" * 40}\trefs/tags/{name}\n' for name in self.remote_tags)
         raise AssertionError(f'the script asked git something unexpected: {args}')
 
 
@@ -85,9 +92,28 @@ class WhatItDecides(unittest.TestCase):
         self.module = load_script()
 
     def test_the_first_deploy_names_a_starting_point(self):
-        # Nothing tagged yet: there is no span to measure, so there is nothing
-        # to work out and the answer is the first version rather than an error.
+        # Nothing tagged yet and no remote to ask: there is no span to measure,
+        # so there is nothing to work out and the answer is the first version
+        # rather than an error.
         self.module.git = FakeGit(tags=[])
+        code, out, _ = run(self.module)
+        self.assertEqual(code, 0)
+        self.assertEqual(out.splitlines()[0], '1.0.0')
+
+    def test_a_checkout_that_cannot_see_the_tags_origin_holds_is_an_error(self):
+        # No local tag but a version on the remote is not a first deploy; it is
+        # a checkout that did not fetch its tags. Naming 1.0.0 here is what let
+        # the version stand still for a week, so the answer is exit 1 with
+        # nothing on stdout - the workflow must not tag anything from it.
+        self.module.git = FakeGit(tags=[], remote_tags=['1.0.0', '1.0.2'])
+        code, out, err = run(self.module)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(out, '')
+        self.assertIn('1.0.2', err)
+
+    def test_a_remote_with_no_version_tag_still_allows_the_first(self):
+        # Tags that are not versions do not make the remote a versioned one.
+        self.module.git = FakeGit(tags=[], remote_tags=['split-safety-e80668985'])
         code, out, _ = run(self.module)
         self.assertEqual(code, 0)
         self.assertEqual(out.splitlines()[0], '1.0.0')
@@ -242,6 +268,26 @@ class AgainstARealRepository(unittest.TestCase):
         code, out, _ = self.ask()
         self.assertEqual(code, 0)
         self.assertEqual(out.splitlines()[0], '1.0.1')
+
+    def test_a_clone_that_left_the_tags_behind_refuses_to_start_over(self):
+        # The deploy's own failure, reproduced: an annotated version tag on the
+        # remote, a shallow clone made without tags, and the script run inside
+        # the clone. Annotated on purpose - ls-remote lists such a tag twice,
+        # once peeled, and the script must count it once. The clone carries
+        # the script and the rule from the commit, so nothing is copied in.
+        self.git('tag', '-a', '1.0.0', '-m', 'the first version')
+        clone = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, clone, ignore_errors=True)
+        subprocess.run(['git', 'clone', '-q', '--no-tags', '--depth=1',
+                        self.dir.as_uri(), str(clone)],
+                       check=True, capture_output=True, encoding='utf-8')
+
+        done = subprocess.run(
+            [sys.executable, str(clone / 'scripts' / 'next_version.py')],
+            cwd=clone, capture_output=True, encoding='utf-8')
+        self.assertNotEqual(done.returncode, 0)
+        self.assertEqual(done.stdout, '')
+        self.assertIn('1.0.0', done.stderr)
 
 
 if __name__ == '__main__':

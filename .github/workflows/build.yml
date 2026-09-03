@@ -166,22 +166,33 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      # `fetch-tags` because the version is a tag now. Without it the default
-      # checkout brings none, `git tag --list` on the runner is empty, and
-      # scripts/next_version.py takes its "nothing has ever been tagged"
-      # branch and proposes the FIRST version on every single deploy - which
-      # the remote then rejects, because 1.0.0 has existed since the day the
-      # scheme started. That is not a hypothetical: it failed nine deploys in
-      # a row, starting with the one that introduced the script.
+      # The version is a tag, so the deploy has to be able to see the tags. The
+      # default checkout brings none: it fetches the one commit being deployed
+      # at depth 1, `git tag --list` on the runner is empty, and
+      # scripts/next_version.py has no span to measure. Two fixes have been
+      # tried here, and the first did not work.
       #
-      # `fetch-depth` stays at the default 1. The tags come with the commits
-      # they point at, and `git diff <tag>..HEAD` compares two commit objects
-      # rather than walking between them, so the shallow history is enough.
-      # `fetch-depth: 0` would work too and would drag in the whole of the
-      # dist branch to do it.
+      # `fetch-tags: true` on the checkout action was the first. All it does is
+      # drop `--no-tags` from the fetch and leave git to follow tags by itself,
+      # and git follows only the tags that point at a commit it fetched - which
+      # at depth 1 is the head alone, and no version tag points at the head. So
+      # the runner stayed blind: the script proposed 1.0.0 on every deploy, the
+      # rerun guard below found 1.0.0 already on the remote, and the step
+      # exited 0 saying there was nothing to do. A hundred and seventy-seven
+      # commits and five new tools went out under 1.0.2 before anyone read the
+      # line it printed.
+      #
+      # The fetch below is the second. It names the tags as a refspec, which
+      # git fetches whether or not their commits are in the shallow history:
+      # each tagged commit arrives as a shallow root of its own, and `git diff
+      # <tag>..HEAD` compares two commit objects rather than walking between
+      # them, so depth 1 is still enough. `fetch-depth: 0` would work too and
+      # would drag in the whole of the dist branch to do it. And the script now
+      # refuses to name the first version while the remote holds one, so if
+      # this fetch ever stops working the step fails instead of agreeing.
       - uses: actions/checkout@v4
-        with:
-          fetch-tags: true
+      - name: Fetch the version tags the checkout leaves behind
+        run: git fetch --depth=1 origin '+refs/tags/*:refs/tags/*'
 
       # The build uses tomllib, which is standard library from 3.11 onwards.
       # Python alone produces a working, readable site: that is what plain
