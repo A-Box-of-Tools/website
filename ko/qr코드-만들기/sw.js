@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/qr코드-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'99967cfeee';
+const CACHE_NAME=CACHE_PREFIX+'58e6a60f19';
 const ASSETS=[
 './',
 'index.html',

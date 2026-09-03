@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gif-analiz-etme/:';
-const CACHE_NAME=CACHE_PREFIX+'7801b33fb3';
+const CACHE_NAME=CACHE_PREFIX+'e207e192c5';
 const ASSETS=[
 './',
 'index.html',

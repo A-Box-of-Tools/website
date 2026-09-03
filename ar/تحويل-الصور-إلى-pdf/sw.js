@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-الصور-إلى-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'9649700dde';
+const CACHE_NAME=CACHE_PREFIX+'53b887af17';
 const ASSETS=[
 './',
 'index.html',

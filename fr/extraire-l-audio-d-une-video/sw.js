@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/extraire-l-audio-d-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'9ee716a550';
+const CACHE_NAME=CACHE_PREFIX+'b2fc5a8b59';
 const ASSETS=[
 './',
 'index.html',

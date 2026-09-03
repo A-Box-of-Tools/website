@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/hitung-checksum/:';
-const CACHE_NAME=CACHE_PREFIX+'4d73492dc1';
+const CACHE_NAME=CACHE_PREFIX+'51fee9c647';
 const ASSETS=[
 './',
 'index.html',

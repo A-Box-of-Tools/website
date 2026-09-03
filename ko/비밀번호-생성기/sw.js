@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/비밀번호-생성기/:';
-const CACHE_NAME=CACHE_PREFIX+'6ccf6854e9';
+const CACHE_NAME=CACHE_PREFIX+'f50f96e65c';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gorseli-svg-ye-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'19c16687a6';
+const CACHE_NAME=CACHE_PREFIX+'4c0dad491d';
 const ASSETS=[
 './',
 'index.html',

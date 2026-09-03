@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/استخراج-الصوت-من-الفيديو/:';
-const CACHE_NAME=CACHE_PREFIX+'0fd96674fb';
+const CACHE_NAME=CACHE_PREFIX+'26f97221b9';
 const ASSETS=[
 './',
 'index.html',

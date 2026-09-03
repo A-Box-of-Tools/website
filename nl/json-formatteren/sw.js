@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/json-formatteren/:';
-const CACHE_NAME=CACHE_PREFIX+'af1c834496';
+const CACHE_NAME=CACHE_PREFIX+'ff0cd4e087';
 const ASSETS=[
 './',
 'index.html',
