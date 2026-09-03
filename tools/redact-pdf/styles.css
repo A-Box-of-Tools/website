@@ -285,11 +285,7 @@
 /* --------------------------------------------------------------- the run */
 
 .check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
   margin-top: 1rem;
-  cursor: pointer;
 }
 
 /* ---------------------------------------------------------------- results */

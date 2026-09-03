@@ -245,11 +245,7 @@
 .unit { font-size: 0.82rem; color: var(--text-dim); }
 
 .check {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
   margin-top: 1.1rem;
-  cursor: pointer;
 }
 
 /* ----------------------------------------------------------------- running */

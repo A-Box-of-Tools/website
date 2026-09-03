@@ -32,6 +32,10 @@ favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
 glyph = "send"
 category = "text-codes-and-passwords"
 roadmap_group = "beyond"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules: the checkbox rows of the sharing options.
+css_parts = ["checks"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

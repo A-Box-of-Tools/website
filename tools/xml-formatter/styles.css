@@ -46,15 +46,6 @@
   gap: 0.9rem 1.2rem;
   align-items: start;
 }
-
-.check {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-weight: 600;
-  font-size: 0.88rem;
-}
-.check input { margin: 0; }
 /* -------------------------------------------------------------- the boxes */
 
 textarea {

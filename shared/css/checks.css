@@ -1,14 +1,20 @@
 /* ---------------------------------------------------------------- checks
-   A checkbox with a title and a note under it, laid out as a row the whole
-   of which can be clicked: the input at the top of the row, the title in
-   bold, the note dim beneath.
+   A checkbox and its words, laid out as a row the whole of which can be
+   clicked. It comes in two shapes, told apart by what is in it:
 
-   Asked for with `css_parts = ["checks"]`. Thirteen tools - the image and
-   PDF ones - carried these rules token for token; the build puts this file
-   before a tool's own stylesheet, so a tool that wants one of them different
-   writes its own rule and wins, provided it sets every property the rule
-   here sets. The video and text tools style their checkboxes another way
-   and do not ask for this. */
+     - a title in bold with a note dim beneath it, the input at the top of
+       the row - "Keep the date, the camera and the place / Where and when
+       it was taken stay in the file";
+     - a few words on one line, no title and no note - "Keep the sound",
+       "Sort the keys of every object" - the input centred on them and the
+       words in bold at the size of a label.
+
+   Asked for with `css_parts = ["checks"]`. The build puts this file before a
+   tool's own stylesheet, so a tool that wants one of them different writes
+   its own rule and wins, provided it sets every property the rule here sets;
+   the second shape is written with :where so that it has no more weight than
+   `.check` itself. Before this file every tool drew these for itself - twelve
+   ways between twenty-one tools, the same row at three sizes and two gaps. */
 
 .check {
   align-items: flex-start;
@@ -20,6 +26,19 @@
 .check input {
   flex: none;
   margin-top: 0.25rem;
+}
+
+/* The one-line shape. A check with a bold title is the other kind; one
+   without is this. */
+.check:where(:not(:has(strong))) {
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  gap: 0.45rem;
+}
+
+.check:where(:not(:has(strong))) input {
+  margin: 0;
 }
 
 .check strong {

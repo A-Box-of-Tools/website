@@ -97,7 +97,7 @@ card = """
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["panes"]
+css_parts = ["panes", "checks"]
 
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
