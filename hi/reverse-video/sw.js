@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/reverse-video/:';
-const CACHE_NAME=CACHE_PREFIX+'dc7fd710c4';
+const CACHE_NAME=CACHE_PREFIX+'5d360a7f8b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0de1302dc3',
+'styles.css?v=6eef664233',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

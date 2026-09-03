@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/oscurare-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'21c24e0fff';
+const CACHE_NAME=CACHE_PREFIX+'89d0ef397b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=653a7f4294',
+'styles.css?v=31ff549cbf',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
