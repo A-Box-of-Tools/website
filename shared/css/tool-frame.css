@@ -785,12 +785,21 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 
 /* ------------------------------------------------------------ form controls */
 
-input, select, button {
+input, select, textarea, button {
   font: inherit;
   color: var(--text);
 }
 
-select, input[type="number"], input[type="color"] {
+/* Text fields too. This rule named selects, numbers and colours and stopped
+   there, so a page range, a start time or a name got the browser's own box
+   and each tool then drew its own: 31 pixels with square corners in one,
+   26 in another, the frame's look copied by hand in five more. A field is a
+   field. What a tool chooses on purpose - a width, tabular figures, a
+   textarea's height - it still says in a rule of its own, which wins on
+   order; what it no longer has to say is what a field looks like. */
+select, textarea,
+input[type="number"], input[type="color"],
+input[type="text"], input[type="search"], input[type="url"], input[type="email"] {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
