@@ -16,6 +16,20 @@ class_name = "Room"
 tag = "v1"
 new_sqlite_classes = ["Room"]
 
+# One address may open thirty sockets a minute. A person never comes near it -
+# a host opens one, each reader one - and it is the difference between a script
+# spending the free plan's daily quota in an hour and spending its own patience.
+# Counted per Cloudflare location, so it is a cap on nuisance rather than a
+# wall. The namespace id is an arbitrary label that keeps this counter apart
+# from any other the account might declare.
+[[ratelimits]]
+name = "LIMIT"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 30
+  period = 60
+
 # Persisted logs, switched on in the dashboard and written down here so a later
 # `wrangler deploy` from this file agrees with it rather than quietly switching
 # them back off. The worker prints nothing of its own, so what is kept is

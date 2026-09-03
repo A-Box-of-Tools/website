@@ -86,6 +86,15 @@ a decision rather than a browser API: a mistake in it sends somebody to the
 wrong language, or sends a crawler out of the page it was asked to index, and
 neither raises anything.
 
+`rendezvous.test.js` is the other. It covers the door of
+`workers/rendezvous/worker.js` - the handler that decides whether a request
+reaches a room at all: it wants a websocket, from one of the site's own pages,
+from an address that has not been knocking all minute. Node has `Request` and
+`Response`, and the Durable Object and the rate limiter are a few lines of fake
+that record what they were asked, so each refusal can be pinned to the check
+that made it and the room shown never to have been touched. The room itself
+needs the Workers runtime and is tried in a browser instead.
+
 On the Python side the same reasoning points at the minifiers. `buildlib/`
 already refuses to write output whose tokens moved; `tests/python/` checks the
 refusals fire, and checks every stylesheet and every module in the repository

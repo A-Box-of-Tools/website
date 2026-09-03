@@ -42,5 +42,9 @@ __test-*.png
 .env
 *.token
 
+# Written by wrangler beside the worker on every deploy: its own state and
+# cache, nothing of ours.
+.wrangler/
+
 # Written by scripts/emit_media.py as the input to rendering media/*.png.
 media/src/
