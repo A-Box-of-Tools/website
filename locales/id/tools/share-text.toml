@@ -83,7 +83,11 @@ body = """
       lewat kanal data WebRTC: koneksi langsung, terenkripsi DTLS, antara
       browser Anda dan browser setiap pembaca. Di jalur itu tidak ada
       server. Di jaringan yang sama, byte-nya bahkan tidak keluar gedung:
-      dua laptop di Wi-Fi yang sama menukarnya secara lokal."""
+      dua laptop di Wi-Fi yang sama menukarnya secara lokal.
+      Satu-satunya pengecualian adalah pembaca yang jaringannya tidak bisa
+      dijangkau langsung dan yang kemudian memilih, di halamannya sendiri,
+      penerus terenkripsi: penerus itu meneruskan teks tersandi yang sama
+      dan tidak bisa membacanya."""
 
 [[privacy]]
 title = "Apa itu perantara, dan semua yang dilihatnya."
@@ -319,13 +323,20 @@ a = """
 q = "Bagaimana kalau kami tidak bisa terhubung?"
 a = """
         Sebagian besar pasangan browser saling menjangkau langsung begitu
-        diperkenalkan; sebagian kecil tidak, biasanya saat kedua sisi
-        berada di balik jenis jaringan kantor atau seluler yang paling
-        ketat. Halaman ini tidak diam-diam beralih ke server penerus
-        &mdash; itu akan mengubah diam-diam apa alat ini sebenarnya &mdash;:
-        setelah dua puluh detik ia berkata terus terang bahwa koneksi
-        langsung tidak terjadi. Mencoba dari jaringan lain biasanya
-        menyelesaikannya."""
+        diperkenalkan; sebagian kecil tidak, biasanya saat salah satu sisi
+        berada di jaringan alamat-bersama operator seluler atau di balik
+        jaringan kantor yang ketat. Halaman ini tidak pernah diam-diam
+        beralih ke penerus &mdash; itu akan mengubah apa alat ini tanpa
+        mengatakannya &mdash;: setelah dua puluh detik ia berkata terus
+        terang bahwa koneksi langsung tidak terjadi, lalu menawarkan satu
+        kepada pembaca: penerus yang dijalankan Cloudflare, yang meneruskan
+        byte terenkripsi di antara kedua browser dan tidak bisa membacanya,
+        karena kuncinya tidak pernah meninggalkan kedua ujung. Pembaca
+        memilihnya secara sadar, di halamannya sendiri, setelah diberi tahu
+        apa yang dilihat penerus &mdash; kedua alamat, seperti koneksi
+        langsung &mdash;, dan di sana pun tidak ada yang disimpan. Sisi Anda
+        tidak berubah: browser Anda tetap mengirim ke satu pembaca itu,
+        seperti yang akan dilakukannya bila pembaca ada di balik VPN."""
 
 [[faq]]
 q = "Amankah merender Markdown, bila siapa pun bisa membagikan apa pun?"

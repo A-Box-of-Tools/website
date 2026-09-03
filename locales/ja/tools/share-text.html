@@ -90,6 +90,15 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          代わりの道は、暗号化された中継です。あなたのブラウザはCloudflareが運営する中継サーバーを通して送受信することになります。中継サーバーは暗号化されたバイトを転送するだけで、読むことはできません。直接接続がそうであったように、あなたのネットワークアドレスと共有している人のアドレスは知ることになります。そこにも何も保存されず、共有している人のページは引き続きあなただけに送ります。
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">中継を通してもう一度試す</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">このリンクをもう一度確認</button>
       </div>
@@ -152,6 +161,9 @@
     <span data-phrase="view.nobody">このアドレスでは誰も共有していません。共有していたタブが閉じられたのかもしれません。その場合、共有も一緒に消えています。</span>
     <span data-phrase="view.full">この共有はすでに読む側の上限に達しています。</span>
     <span data-phrase="view.no-connect">共有している人へ直接届きませんでした。どちらかのネットワークがピアツーピア接続を許していない可能性があります。</span>
+    <span data-phrase="view.relaying">中継を通して接続しています&hellip;</span>
+    <span data-phrase="view.relay-none">いま使える中継がありません。別のネットワークから試せば、たいていつながります。</span>
+    <span data-phrase="view.relay-failed">中継を通しても共有している人へ届きませんでした。タブを閉じたのかもしれません。</span>
     <span data-phrase="view.error">接続中に問題が起きました。ページを再読み込みして、もう一度試してください。</span>
     <span data-phrase="view.download">ダウンロード</span>
     <span data-phrase="view.file-gone">もう共有されていません</span>

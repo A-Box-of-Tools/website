@@ -83,7 +83,10 @@ body = """
       viajan por un canal de datos WebRTC: una conexión directa, cifrada con
       DTLS, entre tu navegador y el de cada lector. En ese camino no hay
       servidor. En la misma red, los bytes ni siquiera salen del edificio:
-      dos portátiles en el mismo wifi se los pasan en local."""
+      dos portátiles en el mismo wifi se los pasan en local.
+      La única excepción es un lector cuya red no se puede alcanzar
+      directamente y que entonces elige, en su propia página, un relevo
+      cifrado: reenvía el mismo texto cifrado y no puede leerlo."""
 
 [[privacy]]
 title = "Qué es el intermediario, y todo lo que ve."
@@ -312,12 +315,19 @@ a = """
 q = "¿Y si no conseguimos conectar?"
 a = """
         La mayoría de los pares de navegadores se alcanzan directamente una
-        vez presentados; una minoría no, normalmente cuando los dos lados
-        están tras la clase más estricta de red móvil o corporativa. Esta
-        página no recurre en silencio a un servidor que retransmita &mdash;
-        eso cambiaría a escondidas lo que esta herramienta es &mdash;, sino
-        que a los veinte segundos dice claramente que no hubo conexión
-        directa. Probar desde otra red suele resolverlo."""
+        vez presentados; una minoría no, normalmente cuando un lado está en
+        la red de direcciones compartidas de una operadora móvil o tras una
+        red corporativa estricta. Esta página nunca pasa a un relevo en
+        silencio &mdash; eso cambiaría lo que esta herramienta es sin
+        decirlo &mdash;, así que a los veinte segundos dice claramente que
+        no hubo conexión directa y le ofrece uno al lector: un relevo de
+        Cloudflare que reenvía los bytes cifrados entre los dos navegadores
+        y no puede leerlos, porque la clave nunca sale de los dos extremos.
+        El lector lo elige por su nombre, en su propia página, tras saber
+        qué ve &mdash; las dos direcciones, como la conexión directa
+        &mdash;, y ahí tampoco se guarda nada. Tu lado no cambia: tu
+        navegador sigue enviando a ese único lector, como lo haría si
+        estuviera tras una VPN."""
 
 [[faq]]
 q = "¿Es seguro renderizar Markdown, si cualquiera puede compartir cualquier cosa?"

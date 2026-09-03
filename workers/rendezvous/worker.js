@@ -17,8 +17,19 @@
 //
 // It answers only the site's own pages, and lets one address knock only so
 // often. Both are the least that keeps a switchboard with no login from being
-// borrowed, and neither reads anything. The one line it ever prints is the
-// close code of a refusal.
+// borrowed, and neither reads anything. The lines it ever prints are the
+// close code of a refusal and the status of a relay credential it could not
+// mint.
+//
+// The one thing it does beyond forwarding: a viewer whose direct attempt has
+// failed may ask, once, for a relay. The room then mints a short-lived
+// credential for Cloudflare's TURN service and hands it back on the same
+// socket. The relay forwards the DTLS-encrypted bytes between the two
+// browsers and cannot read them - it holds no key - so what changes is the
+// path, not what anyone can see. Two secrets make it possible, set with
+// `npx wrangler secret put`: TURN_KEY_ID and TURN_KEY_TOKEN, from a TURN key
+// made in the dashboard under Realtime. Without them the ask goes unanswered
+// and the page says no relay is available, which is exactly what is true.
 
 // A browser sends Origin on every WebSocket handshake and a page cannot forge
 // it, so checking it keeps the rendezvous from becoming free signalling for
@@ -68,6 +79,49 @@ export default {
   },
 };
 
+// How long a relay credential stays good. It is checked when the relay
+// allocation is made and each time it is refreshed, so a reader relayed for
+// longer than this loses the connection at the next refresh; a working day
+// covers the classroom and the long call, and bounds what a credential that
+// leaked out of a page could be used for.
+const RELAY_TTL = 8 * 60 * 60;
+const RELAY_API = "https://rtc.live.cloudflare.com/v1/turn/keys/";
+
+// The TURN entry a viewer redials with, or null when there is none to give:
+// no key configured, or Cloudflare declined. Only the entry carrying a
+// credential is returned - the page already knows the STUN servers, and a
+// relay is the one thing it is asking for.
+export async function relayServers(env, fetchImpl = fetch) {
+  if (!env.TURN_KEY_ID || !env.TURN_KEY_TOKEN) return null;
+  let res;
+  try {
+    res = await fetchImpl(`${RELAY_API}${env.TURN_KEY_ID}/credentials/generate-ice-servers`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.TURN_KEY_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ttl: RELAY_TTL }),
+    });
+  } catch {
+    console.log(JSON.stringify({ relay: "unreachable" }));
+    return null;
+  }
+  if (!res.ok) {
+    console.log(JSON.stringify({ relay: res.status }));
+    return null;
+  }
+  let body;
+  try {
+    body = await res.json();
+  } catch {
+    return null;
+  }
+  const servers = Array.isArray(body?.iceServers) ? body.iceServers : [];
+  const turn = servers.filter((s) => typeof s?.username === "string" && typeof s?.credential === "string");
+  return turn.length > 0 ? turn : null;
+}
+
 const MAX_VIEWERS = 16;
 // UTF-16 units, not bytes, so up to three times this on the wire: a bound on
 // nonsense rather than a budget. A session description is a few kilobytes.
@@ -77,8 +131,9 @@ const MAX_MESSAGE = 64 * 1024;
 // id - so the object needs no fields of its own and hibernation has nothing
 // to lose.
 export class Room {
-  constructor(ctx) {
+  constructor(ctx, env) {
     this.ctx = ctx;
+    this.env = env;
     // Keepalives are answered without waking the object.
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
   }
@@ -134,6 +189,13 @@ export class Room {
     const who = ws.deserializeAttachment();
     if (who === null) return;
     if (who.role === "viewer") {
+      if (parsed.relay === true) {
+        // Once per socket: the flag lives in the attachment, so hibernation
+        // cannot forget it and a page cannot mint credentials by the dozen.
+        if (who.relayed) return;
+        ws.serializeAttachment({ ...who, relayed: true });
+        return this.relay(ws);
+      }
       this.toHost({ type: "signal", from: who.id, data: parsed.data });
     } else if (typeof parsed.to === "string" && parsed.to.startsWith("v:")) {
       // The viewer's id doubles as its socket tag, so addressing a reply is
@@ -167,6 +229,13 @@ export class Room {
     } else {
       this.toHost({ type: "leave", id: who.id });
     }
+  }
+
+  async relay(ws) {
+    const iceServers = await relayServers(this.env);
+    try {
+      ws.send(JSON.stringify({ type: "relay", iceServers }));
+    } catch {}
   }
 
   toHost(message) {

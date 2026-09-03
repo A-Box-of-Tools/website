@@ -84,7 +84,11 @@ body = """
       über einen WebRTC-Datenkanal: eine direkte, DTLS-verschlüsselte
       Verbindung zwischen Ihrem Browser und dem jedes Lesers. In diesem Weg
       steht kein Server. Im selben Netz verlassen die Bytes nicht einmal das
-      Gebäude &mdash; zwei Laptops im selben WLAN tauschen sie lokal aus."""
+      Gebäude &mdash; zwei Laptops im selben WLAN tauschen sie lokal aus.
+      Die eine Ausnahme ist ein Leser, dessen Netz direkt nicht zu erreichen
+      ist und der dann auf seiner eigenen Seite ein verschlüsseltes Relais
+      wählt: Es reicht denselben Chiffretext weiter und kann ihn nicht
+      lesen."""
 
 [[privacy]]
 title = "Was der Vermittler ist, und alles, was er sieht."
@@ -323,13 +327,21 @@ a = """
 q = "Was, wenn wir keine Verbindung bekommen?"
 a = """
         Die meisten Browserpaare erreichen einander direkt, sobald sie
-        vorgestellt sind; eine Minderheit nicht, typischerweise wenn beide
-        Seiten hinter der strengsten Sorte Mobilfunk- oder Firmennetz
-        sitzen. Diese Seite weicht nicht heimlich auf einen weiterleitenden
-        Server aus &mdash; das würde stillschweigend ändern, was dieses
-        Werkzeug ist &mdash;, sondern sagt nach zwanzig Sekunden klar, dass
-        keine Direktverbindung zustande kam. Ein Versuch aus einem anderen
-        Netz löst es meistens."""
+        vorgestellt sind; eine Minderheit nicht, typischerweise wenn eine
+        Seite im Mobilfunknetz eines Anbieters mit geteilten Adressen oder
+        hinter einem strengen Firmennetz sitzt. Diese Seite wechselt nie
+        stillschweigend auf ein Relais &mdash; das würde ändern, was dieses
+        Werkzeug ist, ohne es zu sagen &mdash;, sondern sagt nach zwanzig
+        Sekunden klar, dass keine Direktverbindung zustande kam, und bietet
+        dem Leser eines an: ein von Cloudflare betriebenes Relais, das die
+        verschlüsselten Bytes zwischen den beiden Browsern weiterreicht und
+        sie nicht lesen kann, weil der Schlüssel die beiden Enden nie
+        verlässt. Der Leser wählt es ausdrücklich, auf seiner eigenen Seite,
+        nachdem ihm gesagt wurde, was es sieht &mdash; beide Adressen, wie
+        die Direktverbindung auch &mdash;, und gespeichert wird auch dort
+        nichts. Ihre Seite der Freigabe ändert sich nicht: Ihr Browser
+        sendet weiterhin an diesen einen Leser, so wie er es täte, säße der
+        Leser hinter einem VPN."""
 
 [[faq]]
 q = "Ist das Markdown-Rendern sicher, wenn jeder alles teilen kann?"

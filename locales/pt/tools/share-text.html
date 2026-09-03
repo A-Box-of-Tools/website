@@ -117,6 +117,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          A alternativa é um retransmissor criptografado. Seu navegador
+          enviaria e receberia por um servidor retransmissor da Cloudflare,
+          que repassa os bytes criptografados e não consegue lê-los; ele
+          fica sabendo o seu endereço de rede e o de quem compartilha, como
+          a conexão direta também saberia. Ali também nada é guardado, e a
+          página de quem compartilha continua enviando só para você.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Tentar de novo pelo retransmissor</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Verificar este link de novo</button>
       </div>
@@ -178,6 +192,9 @@
     <span data-phrase="view.nobody">Ninguém está compartilhando neste endereço. Talvez a aba tenha sido fechada &mdash; nesse caso, o compartilhamento se foi com ela.</span>
     <span data-phrase="view.full">Este compartilhamento já tem o máximo de leitores.</span>
     <span data-phrase="view.no-connect">Não foi possível alcançar diretamente quem compartilha. Talvez uma das duas redes não permita conexões ponto a ponto.</span>
+    <span data-phrase="view.relaying">Conectando pelo retransmissor&hellip;</span>
+    <span data-phrase="view.relay-none">Nenhum retransmissor está disponível agora. Tentar de outra rede costuma funcionar.</span>
+    <span data-phrase="view.relay-failed">Não foi possível alcançar quem compartilha nem pelo retransmissor. Talvez a aba tenha sido fechada.</span>
     <span data-phrase="view.error">Algo deu errado na conexão. Recarregue a página e tente de novo.</span>
     <span data-phrase="view.download">Baixar</span>
     <span data-phrase="view.file-gone">Não é mais compartilhado</span>

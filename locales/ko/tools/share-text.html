@@ -113,6 +113,17 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          대안은 암호화된 중계입니다. 당신의 브라우저는 Cloudflare가 운영하는 중계 서버를 거쳐 보내고 받게 되는데,
+          그 서버는 암호화된 바이트를 전달만 할 뿐 읽지 못합니다. 직접 연결이 그랬을 것처럼 당신의 네트워크 주소와 공유하는
+          사람의 주소는 알게 됩니다. 거기에도 저장되는 것은 없고, 공유하는 사람의 페이지는 여전히 당신에게만 보냅니다.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">중계를 거쳐 다시 시도</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">이 링크 다시 확인</button>
       </div>
@@ -174,6 +185,9 @@
     <span data-phrase="view.nobody">이 주소에서는 아무도 공유하고 있지 않습니다. 공유하던 탭이 닫혔을 수 있고 &mdash; 그렇다면 공유도 함께 사라졌습니다.</span>
     <span data-phrase="view.full">이 공유는 이미 읽는 사람 정원이 찼습니다.</span>
     <span data-phrase="view.no-connect">공유하는 사람에게 직접 닿을 수 없었습니다. 두 네트워크 중 하나가 피어 투 피어 연결을 막고 있을 수 있습니다.</span>
+    <span data-phrase="view.relaying">중계를 거쳐 연결 중&hellip;</span>
+    <span data-phrase="view.relay-none">지금은 쓸 수 있는 중계가 없습니다. 다른 네트워크에서 시도하면 대개 됩니다.</span>
+    <span data-phrase="view.relay-failed">중계를 거쳐도 공유하는 사람에게 닿을 수 없었습니다. 탭을 닫았을지도 모릅니다.</span>
     <span data-phrase="view.error">연결 중에 문제가 생겼습니다. 페이지를 새로 고치고 다시 시도하세요.</span>
     <span data-phrase="view.download">내려받기</span>
     <span data-phrase="view.file-gone">더 이상 공유되지 않음</span>

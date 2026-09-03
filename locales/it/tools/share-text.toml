@@ -83,7 +83,10 @@ body = """
       canale dati WebRTC: una connessione diretta, cifrata con DTLS, tra il
       tuo browser e quello di ogni lettore. Su quel percorso non c'è nessun
       server. Sulla stessa rete i byte non escono nemmeno dall'edificio:
-      due portatili sullo stesso Wi-Fi se li passano in locale."""
+      due portatili sullo stesso Wi-Fi se li passano in locale.
+      L'unica eccezione è un lettore la cui rete non si può raggiungere
+      direttamente e che allora sceglie, sulla propria pagina, un ripetitore
+      cifrato: inoltra lo stesso testo cifrato e non può leggerlo."""
 
 [[privacy]]
 title = "Che cos'è il mediatore, e tutto quello che vede."
@@ -315,12 +318,20 @@ a = """
 q = "E se non riusciamo a connetterci?"
 a = """
         La maggior parte delle coppie di browser si raggiunge direttamente
-        una volta presentata; una minoranza no, di solito quando entrambi i
-        lati stanno dietro il tipo più severo di rete aziendale o mobile.
-        Questa pagina non ripiega di nascosto su un server che ritrasmette
-        &mdash; cambierebbe in silenzio ciò che questo strumento è &mdash;:
-        dopo venti secondi dice chiaramente che una connessione diretta non
-        c'è stata. Riprovare da un'altra rete di solito risolve."""
+        una volta presentata; una minoranza no, di solito quando uno dei due
+        lati sta sulla rete a indirizzi condivisi di un operatore mobile o
+        dietro una rete aziendale severa. Questa pagina non passa mai a un
+        ripetitore di nascosto &mdash; cambierebbe ciò che questo strumento
+        è senza dirlo &mdash;: dopo venti secondi dice chiaramente che una
+        connessione diretta non c'è stata, e ne offre uno al lettore: un
+        ripetitore gestito da Cloudflare che inoltra i byte cifrati tra i
+        due browser e non può leggerli, perché la chiave non lascia mai i
+        due capi. Il lettore lo sceglie esplicitamente, sulla propria
+        pagina, dopo aver saputo cosa vede &mdash; entrambi gli indirizzi,
+        come la connessione diretta &mdash;, e nemmeno lì viene conservato
+        nulla. Il tuo lato della condivisione non cambia: il tuo browser
+        continua a inviare a quel solo lettore, come farebbe se stesse
+        dietro una VPN."""
 
 [[faq]]
 q = "Renderizzare Markdown è sicuro, se chiunque può condividere qualsiasi cosa?"

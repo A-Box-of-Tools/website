@@ -90,6 +90,15 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          另一条路是加密中转。你的浏览器会经由 Cloudflare 运行的一台中转服务器收发，它只转发加密后的字节，读不了内容；它会知道你的网络地址和分享方的地址，直连本来也会如此。那里同样什么都不存，分享方的页面也仍然只发给你一个人。
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">经中转再试一次</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">再查一次这个链接</button>
       </div>
@@ -152,6 +161,9 @@
     <span data-phrase="view.nobody">这个地址上没人在分享。可能分享的人关掉了标签页——那样的话，分享也随之消失了。</span>
     <span data-phrase="view.full">这次分享的读者名额已满。</span>
     <span data-phrase="view.no-connect">无法直连到分享的人。可能两边网络里有一方不允许点对点连接。</span>
+    <span data-phrase="view.relaying">正在经中转连接&hellip;</span>
+    <span data-phrase="view.relay-none">眼下没有可用的中转。换个网络再试，多半就好了。</span>
+    <span data-phrase="view.relay-failed">经中转也够不到分享的人。对方可能已经关掉了标签页。</span>
     <span data-phrase="view.error">连接时出了点问题。刷新页面再试一次。</span>
     <span data-phrase="view.download">下载</span>
     <span data-phrase="view.file-gone">已不再分享</span>

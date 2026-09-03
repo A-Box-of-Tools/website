@@ -114,6 +114,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          विकल्प है एक एन्क्रिप्टेड रिले। आपका ब्राउज़र Cloudflare के एक
+          रिले सर्वर के ज़रिये भेजेगा और पाएगा, जो एन्क्रिप्टेड बाइट आगे
+          बढ़ाता है और उन्हें पढ़ नहीं सकता; उसे आपका नेटवर्क पता और साझा
+          करने वाले का पता मालूम होता है, जैसे सीधे कनेक्शन को होता। वहाँ
+          भी कुछ नहीं रखा जाता, और साझा करने वाले का पन्ना अब भी सिर्फ़
+          आपको भेजता है।
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">रिले से फिर कोशिश करें</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">यह लिंक फिर जाँचें</button>
       </div>
@@ -175,6 +189,9 @@
     <span data-phrase="view.nobody">इस पते पर कोई कुछ साझा नहीं कर रहा। शायद साझा करने वाले ने टैब बंद कर दिया &mdash; तब साझा भी उसी के साथ गया।</span>
     <span data-phrase="view.full">इस साझा में पाठकों की अधिकतम संख्या पहले ही पूरी है।</span>
     <span data-phrase="view.no-connect">साझा करने वाले तक सीधे नहीं पहुँचा जा सका। हो सकता है दोनों में से कोई नेटवर्क पीयर-टु-पीयर कनेक्शन न आने देता हो।</span>
+    <span data-phrase="view.relaying">रिले से जुड़ा जा रहा है&hellip;</span>
+    <span data-phrase="view.relay-none">अभी कोई रिले उपलब्ध नहीं है। किसी दूसरे नेटवर्क से कोशिश करने पर अक्सर बात बन जाती है।</span>
+    <span data-phrase="view.relay-failed">रिले से भी साझा करने वाले तक नहीं पहुँचा जा सका। शायद उन्होंने अपना टैब बंद कर दिया है।</span>
     <span data-phrase="view.error">जुड़ते समय कुछ गड़बड़ हो गई। पन्ना फिर लोड करके दोबारा कोशिश कीजिए।</span>
     <span data-phrase="view.download">डाउनलोड करें</span>
     <span data-phrase="view.file-gone">अब साझा नहीं है</span>

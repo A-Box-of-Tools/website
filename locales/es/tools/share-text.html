@@ -116,6 +116,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          La alternativa es un relevo cifrado. Tu navegador enviaría y
+          recibiría a través de un servidor de relevo de Cloudflare, que
+          reenvía los bytes cifrados y no puede leerlos; conoce tu
+          dirección de red y la de quien comparte, como la habría conocido
+          la conexión directa. Ahí tampoco se guarda nada, y la página de
+          quien comparte sigue enviando solo a ti.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Volver a intentarlo por el relevo</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Comprobar este enlace otra vez</button>
       </div>
@@ -177,6 +191,9 @@
     <span data-phrase="view.nobody">Nadie comparte en esta dirección. Puede que quien compartía cerrara su pestaña &mdash; en ese caso, se fue con ella.</span>
     <span data-phrase="view.full">Esta compartición ya tiene su máximo de lectores.</span>
     <span data-phrase="view.no-connect">No se pudo llegar directamente a quien comparte. Puede que una de las dos redes no permita conexiones entre pares.</span>
+    <span data-phrase="view.relaying">Conectando por el relevo&hellip;</span>
+    <span data-phrase="view.relay-none">Ahora mismo no hay relevo disponible. Probar desde otra red suele funcionar.</span>
+    <span data-phrase="view.relay-failed">No se pudo llegar a quien comparte ni siquiera por el relevo. Puede que haya cerrado su pestaña.</span>
     <span data-phrase="view.error">Algo falló al conectar. Recarga la página y prueba otra vez.</span>
     <span data-phrase="view.download">Descargar</span>
     <span data-phrase="view.file-gone">Ya no se comparte</span>

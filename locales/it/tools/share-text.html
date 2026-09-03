@@ -116,6 +116,21 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          L'alternativa è un ripetitore cifrato. Il tuo browser invierebbe
+          e riceverebbe attraverso un server ripetitore di Cloudflare, che
+          inoltra i byte cifrati e non può leggerli; conosce il tuo
+          indirizzo di rete e quello di chi condivide, come lo avrebbe
+          conosciuto la connessione diretta. Nemmeno lì viene conservato
+          nulla, e la pagina di chi condivide continua a inviare soltanto a
+          te.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Riprova attraverso il ripetitore</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Ricontrolla questo link</button>
       </div>
@@ -177,6 +192,9 @@
     <span data-phrase="view.nobody">Nessuno sta condividendo a questo indirizzo. Forse chi condivideva ha chiuso la scheda &mdash; in quel caso è sparito tutto con lei.</span>
     <span data-phrase="view.full">Questa condivisione ha già il suo massimo di lettori.</span>
     <span data-phrase="view.no-connect">Impossibile raggiungere direttamente chi condivide. Forse una delle due reti non permette connessioni peer-to-peer.</span>
+    <span data-phrase="view.relaying">Connessione attraverso il ripetitore&hellip;</span>
+    <span data-phrase="view.relay-none">In questo momento non c'è un ripetitore disponibile. Riprovare da un'altra rete di solito funziona.</span>
+    <span data-phrase="view.relay-failed">Impossibile raggiungere chi condivide nemmeno attraverso il ripetitore. Forse ha chiuso la scheda.</span>
     <span data-phrase="view.error">Qualcosa è andato storto durante la connessione. Ricarica la pagina e riprova.</span>
     <span data-phrase="view.download">Scarica</span>
     <span data-phrase="view.file-gone">Non più condiviso</span>
