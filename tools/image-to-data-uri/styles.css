@@ -3,24 +3,13 @@
    the file list is shared/css/file-list.css, both prepended by the build. */
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  /* Files that could not be read are reported one per line. */
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }
 
 .field-summary {
-  margin: 0.9rem 0 0;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--text-dim);
   max-width: 68ch;
 }
 
@@ -108,12 +97,9 @@
 /* ------------------------------------------------------------- the options */
 
 .options legend {
-  padding: 0 0.4rem;
   font-size: 0.8rem;
-  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-dim);
 }
 
 /* ------------------------------------------------------------- the results */

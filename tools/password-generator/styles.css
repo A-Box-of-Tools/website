@@ -62,15 +62,17 @@
   .segment span { transition: none; }
 }
 
-.card-lede { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
+.card-lede { margin: 0; font-size: 0.88rem; }
 
 /* ------------------------------------------------------------- the options */
 
-.settings { display: grid; gap: 1.15rem; }
+/* One column at any width: the fields here are a list to read down, not a
+   grid to fill, and two side by side would put the length beside the
+   character sets as if they were of a kind. */
+.settings { grid-template-columns: 1fr; }
 
-.field { display: flex; flex-direction: column; gap: 0.3rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
+.field-note { margin: 0.15rem 0 0; }
 
 .checks-label { font-size: 0.85rem; font-weight: 600; }
 .check input { width: 1rem; height: 1rem; }
@@ -255,8 +257,6 @@
 
 .error {
   margin: 0 0 0.9rem;
-  color: var(--danger);
-  font-size: 0.88rem;
 }
 
 .note-card p { margin: 0; font-size: 0.9rem; color: var(--text-dim); }

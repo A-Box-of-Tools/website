@@ -359,16 +359,6 @@
 
 /* -------------------------------------------------------------- the messages */
 
-.error {
-  margin: 1rem 0 0;
-  padding: 0.6rem 0.8rem;
-  border-radius: 7px;
-  background: var(--surface-2);
-  border: 1px solid var(--danger);
-  color: var(--danger);
-  font-size: 0.88rem;
-}
-
 @media (max-width: 560px) {
   .identity-row { grid-template-columns: 1fr; }
   .viewport { height: min(60vh, 420px); }

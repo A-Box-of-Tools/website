@@ -8,22 +8,10 @@
   to stop somebody and calm enough not to look like the page has broken.
 */
 
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  line-height: 1.55;
-}
+.error { line-height: 1.55; }
 
 .run-row {
-  display: flex;
-  align-items: center;
   gap: 0.6rem;
-  flex-wrap: wrap;
   margin-top: 1.1rem;
 }
 

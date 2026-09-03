@@ -27,7 +27,7 @@ roadmap_group = "documents"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress", "form", "checks"]
+css_parts = ["progress", "form", "checks", "notes"]
 
 # file-picker brings in the drop zone; zip is the archive a split comes back
 # in when it is more than one file, and crc32 is the checksum it needs. The

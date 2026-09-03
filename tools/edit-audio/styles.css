@@ -90,13 +90,7 @@ input[type="range"] {
   gap: 0.7rem;
 }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
-
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.9rem;
-}
+.field-note { margin: 0.5rem 0 0; }
 
 .settings .field-note { margin-top: 0.15rem; }
 
@@ -121,10 +115,6 @@ input[type="range"] {
 
 .export-row {
   margin-top: 1.2rem;
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 @media (max-width: 620px) {

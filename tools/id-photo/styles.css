@@ -26,7 +26,7 @@
 
 /* `max-width` alone loses: a flex item's automatic minimum is min-content, and
    for a <select> that is its longest option - a whole sentence here. */
-.option-row select { min-width: 0; max-width: 100%; flex: 1 1 20rem; }
+.option-row select { flex: 1 1 20rem; }
 
 /* --------------------------------------------------------- the chosen file */
 
@@ -470,22 +470,11 @@
 /* ---------------------------------------------------------------- settings */
 
 .settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
   align-items: start;
   margin-bottom: 1.1rem;
 }
 
-.field { display: flex; flex-direction: column; gap: 0.35rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-
-.field-note {
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.5;
-  color: var(--text-dim);
-}
 
 /* ----------------------------------------------------------------- running */
 

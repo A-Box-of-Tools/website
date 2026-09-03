@@ -4,36 +4,7 @@
   which the build puts in front of this file.
 */
 
-/* The one button on the page big enough to be found without reading. */
-.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
-
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  max-width: 72ch;
-}
-
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
-
-/* The sentence under a control, restating what it is about to do. */
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
+.error { max-width: 72ch; }
 
 /* ------------------------------------------------------------- the file row */
 
@@ -236,9 +207,6 @@
   margin-bottom: 0.9rem;
 }
 
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-
-.inline-pair { display: flex; align-items: center; gap: 0.5rem; }
 .inline-pair input[type="number"] { width: 6.5rem; font-size: 1.05rem; font-weight: 600; }
 .inline-pair input[type="range"] { width: 12rem; }
 .inline-pair output { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -249,8 +217,6 @@
 }
 
 /* ----------------------------------------------------------------- running */
-
-.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
 /* ----------------------------------------------------------------- results */
 

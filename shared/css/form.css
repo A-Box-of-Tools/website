@@ -9,7 +9,13 @@
    own stylesheet, so a tool that wants one of them different writes its own
    rule and wins - provided it sets every property the rule here sets, or the
    value here shows through the gap. `.option-row` itself is not here: the
-   tools disagree on its width and its margin, so each keeps its own. */
+   tools disagree on its width and its margin, so each keeps its own.
+
+   `.settings` and `.inline-pair` came later, from the same kind of count:
+   eleven tools had drawn the settings grid with six different column widths
+   and twelve the pair with three gaps, none of them for a reason a visitor
+   could see. A tool with a real reason - password-generator's settings are a
+   single column - still says so in a rule of its own. */
 
 .field {
   display: flex;
@@ -20,7 +26,29 @@
 .field-note {
   color: var(--text-dim);
   font-size: 0.78rem;
+  line-height: 1.5;
   margin: 0;
+}
+
+/* What an empty note does is the tool's to say: the text tools hide it
+   (`.field-note:empty { display: none }`), the tools whose note is written
+   in later give it a line's height so the page does not jump. Neither is
+   here. */
+
+/* The grid a card's settings sit in: as many columns as fit at 220px, one on
+   a phone. */
+.settings {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* Two controls that read as one - a number and its unit, a slider and its
+   readout, width by height. */
+.inline-pair {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .field-summary {

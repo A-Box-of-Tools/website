@@ -170,12 +170,6 @@
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.9rem;
-}
-
 .field label { font-size: 0.85rem; font-weight: 600; }
 
 .field input[type="text"] {
@@ -186,7 +180,6 @@
   min-width: 0;
 }
 
-.inline-pair { display: flex; align-items: center; gap: 0.4rem; }
 .inline-pair input { width: 100%; min-width: 0; }
 .inline-pair span { color: var(--text-dim); flex: none; }
 .inline-pair select { flex: none; }
@@ -299,15 +292,6 @@
 }
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  /* Files that could not be read are reported one per line. */
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }

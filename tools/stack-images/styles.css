@@ -97,27 +97,13 @@
 
 /* ----------------------------------------------------------- the settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.9rem;
-}
-
 /* The method decides what every other control means, so it gets the whole row
    and its explanation has room to be a sentence rather than a label. */
 .field-wide { grid-column: 1 / -1; }
 
 .field label { font-size: 0.85rem; font-weight: 600; }
 
-.field-note {
-  margin: 0;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  line-height: 1.5;
-  min-height: 1em;
-}
-
-.inline-pair { display: flex; align-items: center; gap: 0.5rem; }
+.field-note { min-height: 1em; }
 
 .inline-pair input[type="range"] { width: 100%; min-width: 0; }
 
