@@ -48,7 +48,14 @@ window.gtag = gtag;
 // the tag script above is async and sends nothing on its own. Deliberately
 // not an inline script in the head, for the same CSP reason this whole file
 // exists.
-if (navigator.webdriver) {
+//
+// The same switch, thrown for the same reason, when this file is running
+// anywhere but the site's own domain: a pull request's preview on Cloudflare
+// Pages, a build served from a laptop. Those are the same bytes as
+// production - which is what makes testing them worth anything - so the file
+// cannot be built differently there; it has to notice where it is. A visit
+// to a preview is a developer checking their work, not a visitor.
+if (navigator.webdriver || location.origin + '/' !== '{{ site.domain }}') {
   window['ga-disable-{{ site.analytics_id }}'] = true;
 }
 

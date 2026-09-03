@@ -81,3 +81,39 @@ rule fights that control. Same for **Always Use HTTPS**.
   what the dashboard calls "All incoming requests".
 - **Editing in the dashboard is fine, but temporary.** The next apply overwrites
   it. Change the JSON and re-run instead, so the change survives and gets reviewed.
+
+## Previews, for a pull request
+
+Production stays on GitHub Pages. A pull request, though, gets a build of its
+own on **Cloudflare Pages** - a second, separate project, direct upload, no
+git integration - at `https://pr-<number>.abox-preview.pages.dev/`, and the QA
+suite is run against that before anything reaches `main`. See the `preview`
+job in `.github/workflows/build.yml` for what it does and why.
+
+Pages reads `_headers`, so a preview carries the same security headers as
+production without the transform rule above; and Pages marks every deployment
+that is not the project's production branch `noindex` by itself, so a preview
+cannot be indexed. The site's own analytics switch themselves off away from
+the production domain (`templates/analytics.js`), so a preview counts no
+visits either.
+
+### Setting it up, once
+
+1. In the Cloudflare dashboard, **Workers & Pages → Create → Pages → Upload
+   assets**. Name the project `abox-preview` and upload anything - the first
+   deployment from the workflow replaces it. Leave the production branch as
+   `main`: the workflow deploys to branches named `pr-<number>`, which is what
+   makes each one a preview rather than the project's production.
+2. Create an API token under *My Profile → API Tokens* with
+   **Account → Cloudflare Pages → Edit**, scoped to this account.
+3. In the website repository's settings, add two secrets:
+   `CLOUDFLARE_API_TOKEN` (the token) and `CLOUDFLARE_ACCOUNT_ID` (from the
+   dashboard's account home, right-hand column). A different project name goes
+   in a repository variable `CLOUDFLARE_PAGES_PROJECT`; without one the
+   workflow assumes `abox-preview`.
+4. In the QA repository's settings, add `WEBSITE_STATUS_TOKEN`: a fine-grained
+   token for this repository with **Commit statuses: write**. It is what lets
+   a QA run against a preview show up as a check on the pull request.
+
+Until the secrets exist the `preview` job says so and skips, and pull
+requests stay green; nothing else changes.
