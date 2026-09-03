@@ -15,6 +15,16 @@ the negotiation blobs. What it cannot see: the text, the files, who was
 admitted, or what anybody said - all of that travels the encrypted peer
 channel, including the knock on a private share.
 
+That is what it sees. What it stores is a shorter list, and no longer an
+empty one: `observability.logs` in `wrangler.toml` asks Cloudflare to keep
+its own record of every invocation for seven days, readable in the Workers
+dashboard. The worker prints nothing itself, so that record is the request
+and its outcome - the URL, which carries the code word and the role, and
+the metadata Cloudflare attaches to it - and never a payload. It is a view
+of the switchboard working, not of anything passing through it. Tracing is
+written off in the same file rather than left to its default, so there is
+no second stream to account for.
+
 ## Deploy
 
 ```
