@@ -99,7 +99,10 @@ body = """
       testo, i file, chi è stato fatto entrare né cosa ha scritto qualcuno:
       perfino il bussare a una condivisione privata viaggia sul canale
       diretto cifrato. Il suo codice completo sta nel repository, accanto a
-      quello di questo strumento."""
+      quello di questo strumento. Quello che sopravvive a una condivisione è
+      una cosa sola: Cloudflare, che fa girare il server, tiene un registro di
+      ogni connessione per sette giorni, con il nome di link, l'indirizzo e
+      l'ora, mai il contenuto."""
 
 [[privacy]]
 title = "Niente viene salvato: chiudere la scheda è la cancellazione."
@@ -238,7 +241,9 @@ a = """
         i loro nomi o dimensioni, non chi è stato ammesso a una condivisione
         privata, e non ciò che qualcuno ha scritto presentandosi: tutto
         questo viaggia sul canale diretto, cifrato da estremo a estremo, che
-        non passa dal server."""
+        non passa dal server. Cloudflare, che fa girare il server, tiene un
+        registro di ogni connessione per sette giorni: il nome di link,
+        l'indirizzo e l'ora. Nient'altro sopravvive alla condivisione."""
 
 [[faq]]
 q = "Cosa succede quando chiudo la scheda?"

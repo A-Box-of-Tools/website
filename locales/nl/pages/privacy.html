@@ -110,6 +110,23 @@
       de dienst draaiend en veilig te houden. Wij hebben van geen van
       beide toegang tot logboeken per bezoeker.
     </p>
+
+    <h3>De tussenpersoon van het deelgereedschap</h3>
+    <p>
+      Eén gereedschap, <a href="../tekst-delen/">Tekst en bestanden delen</a>,
+      brengt tekst en bestanden rechtstreeks van de ene browser naar de
+      andere, en een rechtstreekse verbinding vraagt om een introductie.
+      Daarom opent die pagina, als enige op deze site, één WebSocket naar een
+      kleine server van ons, die de twee uiteinden van een linknaam bij elkaar
+      brengt en de opbouw van de verbinding tussen hen doorgeeft. De tekst en
+      de bestanden ziet hij nooit, want die reizen over de versleutelde
+      verbinding die hij tot stand bracht. Hij ziet wel de linknaam, wanneer
+      elke kant verbindt en vertrekt, en de IP-adressen, en Cloudflare, dat
+      hem draait, bewaart zeven dagen lang een logboek van elke verbinding.
+      Het is het enige logboek per bezoeker op deze site dat wij kunnen lezen.
+      De pagina van het gereedschap beschrijft hem volledig, en zijn volledige
+      broncode staat in de repository.
+    </p>
   </section>
 
   <section>

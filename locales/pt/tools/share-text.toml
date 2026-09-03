@@ -98,7 +98,10 @@ body = """
       endereços IP. Não pode ver o texto, os arquivos, quem foi admitido nem
       o que alguém escreveu: até a batida numa porta privada viaja pelo
       canal direto criptografado. O código completo dele está no
-      repositório, ao lado do desta ferramenta."""
+      repositório, ao lado do desta ferramenta. O que sobrevive a um
+      compartilhamento é uma coisa só: a Cloudflare, que executa o servidor,
+      guarda um registro de cada conexão por sete dias, com o nome de link, o
+      endereço e a hora, nunca o conteúdo."""
 
 [[privacy]]
 title = "Nada é armazenado: fechar a aba é a exclusão."
@@ -234,7 +237,9 @@ a = """
         não seus nomes nem tamanhos, não quem foi admitido a um
         compartilhamento privado, e não o que alguém escreveu ao se
         apresentar: tudo isso viaja pelo canal direto, criptografado de
-        ponta a ponta, que não passa pelo servidor."""
+        ponta a ponta, que não passa pelo servidor. A Cloudflare, que executa
+        o servidor, guarda um registro de cada conexão por sete dias: o nome
+        de link, o endereço e a hora. Nada mais sobrevive ao compartilhamento."""
 
 [[faq]]
 q = "O que acontece quando fecho a aba?"

@@ -116,6 +116,23 @@
       &mdash; untuk mengantarkan halamannya dan menjaga layanannya tetap hidup
       dan aman. Kami tidak punya akses ke log per pengunjung dari keduanya.
     </p>
+
+    <h3>Perantara alat berbagi</h3>
+    <p>
+      Satu alat, <a href="../berbagi-teks/">Berbagi teks dan berkas</a>,
+      memindahkan teks dan berkas langsung dari satu peramban ke peramban
+      lain, dan koneksi langsung butuh perkenalan. Maka halaman itu &mdash;
+      satu-satunya di situs ini &mdash; membuka satu WebSocket ke server kecil
+      milik kami, yang mempertemukan kedua ujung sebuah nama tautan dan
+      meneruskan penyiapan koneksi di antara keduanya. Server itu tidak pernah
+      melihat teks atau berkasnya; keduanya berjalan lewat koneksi terenkripsi
+      yang diperkenalkannya. Yang dilihatnya adalah nama tautan, kapan tiap
+      sisi terhubung dan pergi, dan alamat IP mereka, dan Cloudflare, yang
+      menjalankannya, menyimpan log setiap koneksi selama tujuh hari. Itulah
+      satu-satunya log per pengunjung di situs ini yang bisa kami baca.
+      Halaman alatnya sendiri menjelaskannya secara lengkap, dan seluruh
+      kodenya ada di repositori.
+    </p>
   </section>
 
   <section>

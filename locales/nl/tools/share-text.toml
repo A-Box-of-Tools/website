@@ -99,7 +99,10 @@ body = """
       de tekst, de bestanden, wie werd binnengelaten of wat iemand schreef
       &mdash; zelfs het aankloppen bij privé delen reist over het
       versleutelde rechtstreekse kanaal. Zijn volledige broncode staat in de
-      repository, naast die van dit gereedschap."""
+      repository, naast die van dit gereedschap. Wat een deelsessie overleeft,
+      is één ding: Cloudflare, dat de server draait, bewaart zeven dagen lang
+      een logboek van elke verbinding, met de linknaam, het adres en het
+      tijdstip, nooit de inhoud."""
 
 [[privacy]]
 title = "Niets wordt opgeslagen - het tabblad sluiten ís het wissen."
@@ -236,7 +239,10 @@ a = """
         bestanden, niet hun namen of groottes, niet wie er bij privé delen
         werd binnengelaten, en niet wat iemand bij het voorstellen schreef
         &mdash; dat alles reist over het rechtstreekse, eind-tot-eind
-        versleutelde kanaal, dat niet langs de server loopt."""
+        versleutelde kanaal, dat niet langs de server loopt. Cloudflare, dat
+        de server draait, bewaart zeven dagen lang een logboek van elke
+        verbinding: de linknaam, het adres en het tijdstip. Verder overleeft
+        niets het delen."""
 
 [[faq]]
 q = "Wat gebeurt er als ik het tabblad sluit?"

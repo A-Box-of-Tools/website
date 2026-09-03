@@ -117,6 +117,22 @@
       afin de livrer la page et de garder le service debout et sûr. Nous n'avons
       accès aux journaux par visiteur d'aucun des deux.
     </p>
+
+    <h3>L'entremetteur de l'outil de partage</h3>
+    <p>
+      Un outil, <a href="../partager-du-texte/">Partager du texte et des
+      fichiers</a>, fait passer du texte et des fichiers directement d'un
+      navigateur à l'autre, et une connexion directe demande une présentation.
+      Cette page, seule sur ce site, ouvre donc un WebSocket vers un petit
+      serveur à nous, qui réunit les deux bouts d'un nom de lien et relaie
+      entre eux l'établissement de la connexion. Il ne voit jamais le texte ni
+      les fichiers&nbsp;; ils voyagent par la connexion chiffrée qu'il a
+      présentée. Il voit le nom de lien, quand chaque côté se connecte et
+      repart, et les adresses IP, et Cloudflare, qui le fait tourner, garde un
+      journal de chaque connexion pendant sept jours. C'est le seul journal
+      par visiteur de ce site que nous puissions lire. La page de l'outil le
+      décrit en entier, et son code complet est dans le dépôt.
+    </p>
   </section>
 
   <section>

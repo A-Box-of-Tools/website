@@ -100,7 +100,9 @@ body = """
       siapa yang diizinkan masuk, atau apa yang ditulis siapa pun &mdash;
       bahkan ketukan pada berbagi privat berjalan lewat kanal langsung yang
       terenkripsi. Kode lengkapnya ada di repositori, di samping kode alat
-      ini."""
+      ini. Yang bertahan setelah sebuah berbagi hanya satu hal: Cloudflare,
+      yang menjalankan server itu, menyimpan log setiap koneksi selama tujuh
+      hari &mdash; nama tautan, alamat, dan waktunya, tidak pernah isinya."""
 
 [[privacy]]
 title = "Tidak ada yang disimpan: menutup tab adalah penghapusannya."
@@ -241,7 +243,10 @@ a = """
         berkasnya, bukan nama atau ukurannya, bukan siapa yang diterima di
         berbagi privat, dan bukan apa yang ditulis seseorang saat
         memperkenalkan diri &mdash; semuanya berjalan lewat kanal langsung
-        yang terenkripsi ujung ke ujung dan tidak melewati server."""
+        yang terenkripsi ujung ke ujung dan tidak melewati server. Cloudflare,
+        yang menjalankan server itu, menyimpan log setiap koneksi selama tujuh
+        hari: nama tautan, alamat, dan waktunya. Tidak ada yang lain yang
+        bertahan setelah berbagi berakhir."""
 
 [[faq]]
 q = "Apa yang terjadi saat saya menutup tab?"

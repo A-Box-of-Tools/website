@@ -14,7 +14,7 @@ heading = "隐私与 Cookie"
 lede = """
     先说短的：你的文件不会上传，因为根本没有可以传到的地方。这一页剩下的内容\
     讲的是广告、访问统计和托管，也就是确实牵涉到别家公司的那几部分。"""
-updated = "2026年8月22日"
+updated = "2026年9月3日"
 og_title = "隐私与 Cookie | abox.tools"
 og_description = "你的文件不会上传。什么被收集了、由谁收集，以及怎么把它关掉。"
 og_image_alt = "abox.tools - 不走服务器的工具"
