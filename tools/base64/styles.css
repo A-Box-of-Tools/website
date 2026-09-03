@@ -30,10 +30,6 @@ textarea {
   min-height: 220px;
   resize: vertical;
   padding: 0.7rem 0.8rem;
-  background: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   font: 0.86rem/1.5 ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
   tab-size: 2;
 }
