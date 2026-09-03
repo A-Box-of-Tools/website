@@ -244,9 +244,6 @@ body.is-reordering { user-select: none; }
 }
 
 .run-row {
-  display: flex;
-  align-items: center;
   gap: 0.6rem;
-  flex-wrap: wrap;
   margin-top: 1.2rem;
 }

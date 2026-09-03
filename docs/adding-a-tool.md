@@ -88,7 +88,7 @@ A component more than one tool needs, and that no tool should own, lives under
 |---|---|---|
 | `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
 | `shared/css/results.css` | `css_parts = ["results"]` | the source panel, the summary rows, the result and its meta line, the results list; put before the tool's own rules, so a tool that wants one of them different keeps its own |
-| `shared/css/form.css` | `css_parts = ["form"]` | the controls' vocabulary: fields and their notes, the card lede, the big button, option rows, the options box, the run and export rows, number fields |
+| `shared/css/form.css` | `css_parts = ["form"]` | the controls' vocabulary: fields and their notes, the settings grid they sit in, the inline pair, the card lede, the big button, option rows, the options box, the run and export rows, number fields |
 | `shared/css/checks.css` | `css_parts = ["checks"]` | a checkbox row, in both its shapes: a bold title with a dim note beneath, or a few words on one line |
 | `shared/css/notes.css` | `css_parts = ["notes"]` | the error line, and the note that says which path a file took |
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |

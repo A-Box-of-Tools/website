@@ -33,7 +33,7 @@ roadmap_group = "documents"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress", "form", "checks"]
+css_parts = ["progress", "form", "checks", "notes"]
 
 # file-picker brings in the drop zone. The four pdf-* parts are the PDF itself
 # - the object grammar, the stream filters, the reader and the writer - and

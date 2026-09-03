@@ -37,7 +37,7 @@ lastmod = "2026-09-01"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["form", "checks"]
+css_parts = ["form", "checks", "notes"]
 
 # The drop zone brings in shared/js/file-picker.js. Several files at once is
 # deliberate: a folder of screenshots, or a photograph of a page of codes, is a

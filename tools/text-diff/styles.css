@@ -4,15 +4,9 @@
 /* ------------------------------------------------------------- the options */
 
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
+.field-note { margin: 0.15rem 0 0; }
 .field-note:empty { display: none; }
-
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.9rem 1.2rem;
-  align-items: start;
-}
+.settings { align-items: start; }
 /* -------------------------------------------------------------- the boxes */
 
 /* Two boxes side by side once there is room for both, and stacked before
@@ -36,16 +30,7 @@ textarea:focus-visible {
   outline-offset: 1px;
 }
 
-.error {
-  margin: 0 0 1rem;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
-}
+.error { margin: 0 0 1rem; }
 
 /* ------------------------------------------------------------ the diff view */
 

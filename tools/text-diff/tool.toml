@@ -37,7 +37,7 @@ roadmap_group = "beyond"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["form", "panes", "checks"]
+css_parts = ["form", "panes", "checks", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the two files that are easier to drop than to open, select all

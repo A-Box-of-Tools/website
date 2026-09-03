@@ -9,15 +9,6 @@
 /* The one button on the page big enough to be found without reading. */
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  /* Files that could not be read are reported one per line. */
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }
@@ -103,9 +94,7 @@
   margin: 1.1rem 0 0;
   padding-top: 0.8rem;
   border-top: 1px dashed var(--border);
-  font-size: 0.86rem;
   line-height: 1.6;
-  color: var(--text-dim);
   max-width: 74ch;
   overflow-wrap: anywhere;
 }
@@ -114,22 +103,9 @@
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  align-items: start;
-}
+.settings { align-items: start; }
 
-.field { display: flex; flex-direction: column; gap: 0.35rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-
-.field-note {
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.5;
-  color: var(--text-dim);
-}
 
 .field output { font-variant-numeric: tabular-nums; }
 

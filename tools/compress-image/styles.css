@@ -3,15 +3,6 @@
 /* The one button on the page big enough to be found without reading. */
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  /* Files that could not be read are reported one per line. */
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }
@@ -37,8 +28,6 @@
   font-weight: 600;
   margin-bottom: 0.35rem;
 }
-
-.inline-pair { display: flex; gap: 0.4rem; }
 
 /* Wide enough for "1024" and no wider: this is the number the whole page turns
    on, and a full-width box makes it look like a search field. */

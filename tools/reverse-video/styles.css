@@ -27,12 +27,6 @@
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 0.9rem;
-}
-
 .field > label { font-size: 0.85rem; font-weight: 600; }
 .summary {
   margin: 1.2rem 0;

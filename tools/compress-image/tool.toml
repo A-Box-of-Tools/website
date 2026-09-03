@@ -28,7 +28,7 @@ roadmap_group = "images"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
 # more than one tool needs and that no tool should own.
-css_parts = ["file-list", "progress", "results", "form", "checks"]
+css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.

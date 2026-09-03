@@ -7,7 +7,10 @@
    so a tool that wants one of them different writes its own rule and wins,
    provided it sets every property the rule here sets. The image tools give
    `.error` a ceiling and a scrollbar and the text tools set its margin the
-   other way; each keeps that as a rule of its own on top of this one. */
+   other way; each keeps that as a rule of its own on top of this one. Every
+   tool that has an error line asks for this now - the three that had drawn
+   it as a grey box with a red edge, and the one that had drawn it as bare
+   red text, draw it as the rest do. */
 
 .error {
   background: color-mix(in srgb, var(--danger) 12%, transparent);

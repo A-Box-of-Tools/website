@@ -360,12 +360,6 @@ audio.player {
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.9rem;
-}
-
 .field > label { font-size: 0.85rem; font-weight: 600; }
 
 .summary {
@@ -383,10 +377,6 @@ audio.player {
 
 .export-row {
   margin-top: 1.2rem;
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 @media (max-width: 620px) {

@@ -5,15 +5,6 @@
 /* The one button on the page big enough to be found without reading. */
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  /* Files that could not be read are reported one per line. */
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }
@@ -41,8 +32,6 @@
      and for a <select> that is its longest option - a whole sentence here. */
   min-width: 0;
 }
-
-.inline-pair { display: flex; gap: 0.6rem; align-items: center; }
 
 .inline-pair input[type="range"] { flex: 1 1 12rem; min-width: 0; }
 
@@ -127,4 +116,3 @@
   color: var(--text-dim);
   max-width: 68ch;
 }
-

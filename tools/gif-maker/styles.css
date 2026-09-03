@@ -237,17 +237,9 @@
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.9rem;
-}
-
 .field label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0; font-size: 0.78rem; color: var(--text-dim); min-height: 1em; }
+.field-note { min-height: 1em; }
 
-/* Width x height, side by side. */
-.inline-pair { display: flex; align-items: center; gap: 0.4rem; }
 .inline-pair input { width: 100%; min-width: 0; }
 .inline-pair span { color: var(--text-dim); flex: none; }
 
@@ -317,14 +309,6 @@
 /* ------------------------------------------------------------------ export */
 
 .error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
   max-height: 12rem;
   overflow-y: auto;
 }
@@ -351,4 +335,3 @@
   max-width: 100%;
   height: auto;
 }
-

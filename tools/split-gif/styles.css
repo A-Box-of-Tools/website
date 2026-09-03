@@ -5,19 +5,11 @@
 
 /* ---------------------------------------------------------------- settings */
 
-.settings {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 0.9rem;
-  margin-bottom: 1.2rem;
-}
+.settings { margin-bottom: 1.2rem; }
 
 .field > label { font-size: 0.85rem; font-weight: 600; }
 
 .inline-pair {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
   font-size: 0.85rem;
   color: var(--text-dim);
 }
