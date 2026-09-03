@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/confrontare-altezze/:';
-const CACHE_NAME=CACHE_PREFIX+'901e55414a';
+const CACHE_NAME=CACHE_PREFIX+'b50a739c9a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1814edca1e',
+'styles.css?v=91ca7d7d99',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

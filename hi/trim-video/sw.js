@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/trim-video/:';
-const CACHE_NAME=CACHE_PREFIX+'26dd971e46';
+const CACHE_NAME=CACHE_PREFIX+'b2313d7917';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d9ea8bd8ae',
+'styles.css?v=356f3d9ae3',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

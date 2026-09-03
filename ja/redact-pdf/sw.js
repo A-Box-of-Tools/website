@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/redact-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'dded9be26f';
+const CACHE_NAME=CACHE_PREFIX+'3da5519625';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=72ae8d1b69',
+'styles.css?v=79260b4d46',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

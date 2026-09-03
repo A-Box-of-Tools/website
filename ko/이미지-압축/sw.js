@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-압축/:';
-const CACHE_NAME=CACHE_PREFIX+'1f4bc44e7f';
+const CACHE_NAME=CACHE_PREFIX+'ddb69d3c1a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5715aa27e9',
+'styles.css?v=96a4428200',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
