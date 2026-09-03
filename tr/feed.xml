@@ -26,11 +26,18 @@
   <id>https://abox.tools/tr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/tr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/tr/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/tr/</uri>
   </author>
+  <entry>
+    <title type="html">Metin ve dosya paylaşımı</title>
+    <id>https://abox.tools/tr/metin-paylasma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-paylasma/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Metni veya dosyaları bir tarayıcıdan diğerine doğrudan ve şifreli bir bağlantıyla gönderin. Söylenebilir bir bağlantı adı, siz yazarken canlı güncelleme, okuyucu başına onay - ve hiçbir sunucuda asla hiçbir şey. Ücretsiz, kayıt yok.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 Kodlayıcı ve Çözücü</title>
     <id>https://abox.tools/tr/base64-kodlama/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Windows, macOS ve Linux'ta ya da tarayıcınızda bir MD5 veya SHA-256 sağlama toplamı nasıl denetlenir, bir eşleşme gerçekte neyi kanıtlar ve bütün işi anlamsız kılan hata.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir resim CSS'inizin içine ne zaman konur, ne zaman konmaz</title>
-    <id>https://abox.tools/tr/rehberler/cssye-resim-gomme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cssye-resim-gomme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir data URI'nin bedeli, base64'ün neden üçte bir eklediği ve gzip'in bunu neden geri vermediği, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası.</summary>
   </entry>
 </feed>

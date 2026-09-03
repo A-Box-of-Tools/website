@@ -26,11 +26,18 @@
   <id>https://abox.tools/de/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/de/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/de/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/de/</uri>
   </author>
+  <entry>
+    <title type="html">Text &amp; Dateien teilen</title>
+    <id>https://abox.tools/de/text-teilen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/text-teilen/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen schicken. Ein aussprechbarer Link-Name, Live-Aktualisierung beim Tippen, Freigabe pro Leser - und niemals etwas auf einem Server. Kostenlos, ohne Anmeldung.</summary>
+  </entry>
   <entry>
     <title type="html">Audio-Editor</title>
     <id>https://abox.tools/de/audio-bearbeiten/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/favicon-erstellen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Ein PNG, JPEG oder SVG im Browser in eine echte .ico mit mehreren Größen oder eine macOS-.icns umwandeln. Favicon, Windows-App-Symbol, Mac-App-Symbol, dazu die Apple- und Android-Dateien, die eine Website braucht. Nichts wird hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bild-Schwärzer</title>
-    <id>https://abox.tools/de/bild-schwaerzen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-schwaerzen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Namen, Adressen oder Kontonummern in einem Foto oder Screenshot abdecken und das Bild neu speichern, sodass die verdeckten Pixel wirklich weg sind und nicht unter einem Rechteck liegen. Läuft komplett im Browser.</summary>
   </entry>
 </feed>

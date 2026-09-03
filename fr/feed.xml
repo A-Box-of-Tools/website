@@ -26,11 +26,18 @@
   <id>https://abox.tools/fr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/fr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/fr/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/fr/</uri>
   </author>
+  <entry>
+    <title type="html">Partager du texte et des fichiers</title>
+    <id>https://abox.tools/fr/partager-du-texte/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/partager-du-texte/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Envoyez du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée. Un nom de lien prononçable, mise à jour en direct pendant la frappe, approbation lecteur par lecteur - et jamais rien sur aucun serveur. Gratuit, sans inscription.</summary>
+  </entry>
   <entry>
     <title type="html">Convertisseur YAML vers JSON</title>
     <id>https://abox.tools/fr/convertir-du-yaml-en-json/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/comparer-deux-fichiers-json/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Formater les deux fichiers de la même façon, trier les clés, puis les comparer. Pourquoi un diff JSON brut n'est presque que du bruit, comment canoniser les deux côtés dans le navigateur, et ce qui survit jusqu'au correctif.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment créer un GIF animé à partir d'images</title>
-    <id>https://abox.tools/fr/guides/creer-un-gif-a-partir-d-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-un-gif-a-partir-d-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transformer une série d'images en un GIF animé&amp;nbsp;: à quelle vitesse un GIF peut réellement défiler, ce que change le réglage de la palette, et les trois choses qui allègent vraiment le fichier.</summary>
   </entry>
 </feed>

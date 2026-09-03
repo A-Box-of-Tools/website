@@ -26,11 +26,18 @@
   <id>https://abox.tools/ko/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ko/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ko/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ko/</uri>
   </author>
+  <entry>
+    <title type="html">텍스트·파일 공유</title>
+    <id>https://abox.tools/ko/텍스트-공유/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/텍스트-공유/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">텍스트나 파일을 직접적이고 암호화된 연결로 한 브라우저에서 다른 브라우저로 보내세요. 말로 전할 수 있는 링크 이름, 입력하는 대로 실시간 반영, 읽는 사람마다 승인 - 그리고 어떤 서버에도 아무것도 남지 않습니다. 무료, 가입 없음.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 인코더 · 디코더</title>
     <id>https://abox.tools/ko/base64-인코딩/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/dicom-뷰어/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">CT, MRI, 엑스레이, 초음파 영상을 브라우저에서 엽니다. 창과 레벨, 시리즈 전체 넘겨보기, 밀리미터 단위 계측, 모든 DICOM 태그 읽기, 그리고 이 파일에서 무엇이 환자를 가리키는지까지. 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">EXIF 확인 및 제거</title>
-    <id>https://abox.tools/ko/exif-정보-삭제/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/exif-정보-삭제/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">사진에 숨어 있는 EXIF와 GPS 정보를 보고, 고치고, 한 번에 전부 지웁니다. 브라우저 안에서 처리하고, 아무것도 업로드하지 않으며, 사진 자체는 다시 인코딩되지 않습니다.</summary>
   </entry>
 </feed>

@@ -26,11 +26,18 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">テキストとファイルの共有</title>
+    <id>https://abox.tools/ja/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ送れます。声に出して伝えられるリンク名、入力と同時のライブ更新、読む人ごとの承認。そしてどのサーバーにも何も残りません。無料、登録不要。</summary>
+  </entry>
   <entry>
     <title type="html">Base64エンコーダー・デコーダー</title>
     <id>https://abox.tools/ja/base64/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">使えます。どれもアカウント不要でボタンに名前の付いた、ただのウェブページだからです。大事なのはエージェントのブラウザがどこで動いているか。ファイルがあなたの機械に残るかどうかは、それで決まります。</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOMビューア</title>
-    <id>https://abox.tools/ja/dicom-viewer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/dicom-viewer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">CT・MRI・レントゲン・超音波の検査画像をブラウザで開きます。ウィンドウと中心値、シリーズ全体の送り、ミリ単位の計測、すべてのDICOMタグの表示、そしてそのファイルの何が患者を特定するのかまで。何もアップロードしません。</summary>
   </entry>
 </feed>

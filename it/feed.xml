@@ -26,11 +26,18 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Condividere testo e file</title>
+    <id>https://abox.tools/it/condividere-testo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/condividere-testo/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Manda testo o file da un browser all'altro su una connessione diretta e cifrata. Un nome di link pronunciabile, aggiornamento in tempo reale mentre scrivi, approvazione lettore per lettore - e mai niente su nessun server. Gratis, senza registrazione.</summary>
+  </entry>
   <entry>
     <title type="html">Codificatore e decodificatore Base64</title>
     <id>https://abox.tools/it/codifica-base64/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/confrontare-due-file-json/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Formatta i due file allo stesso modo, ordina le chiavi, poi confrontali. Perché un diff JSON grezzo è quasi solo rumore, come portare i due lati in forma canonica nel browser, e cosa sopravvive fino alla patch.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come controllare un download con il suo checksum</title>
-    <id>https://abox.tools/it/guide/verificare-il-checksum-di-un-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/verificare-il-checksum-di-un-file/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Come confrontare un checksum MD5 o SHA-256 su Windows, macOS e Linux o nel browser, cosa dimostra davvero una corrispondenza, e l'errore che rende inutile tutto l'esercizio.</summary>
   </entry>
 </feed>

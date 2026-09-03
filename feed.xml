@@ -26,11 +26,18 @@
   <id>https://abox.tools/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/</uri>
   </author>
+  <entry>
+    <title type="html">Share Text &amp; Files</title>
+    <id>https://abox.tools/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/share-text/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up.</summary>
+  </entry>
   <entry>
     <title type="html">Audio Editor</title>
     <id>https://abox.tools/edit-audio/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. In your browser: nothing uploaded, and the photo is never re-encoded.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Analyzer</title>
-    <id>https://abox.tools/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
   </entry>
 </feed>

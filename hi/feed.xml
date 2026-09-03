@@ -26,11 +26,18 @@
   <id>https://abox.tools/hi/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/hi/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/hi/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/hi/</uri>
   </author>
+  <entry>
+    <title type="html">टेक्स्ट और फ़ाइलें साझा करें</title>
+    <id>https://abox.tools/hi/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/share-text/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से भेजिए। बोलकर बताने लायक लिंक-नाम, टाइप करते-करते लाइव अपडेट, हर पाठक के लिए अनुमति - और किसी सर्वर पर कभी कुछ नहीं। मुफ़्त, बिना साइन-अप।</summary>
+  </entry>
   <entry>
     <title type="html">Base64 एनकोडर-डिकोडर</title>
     <id>https://abox.tools/hi/base64/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-analyzer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIF को अपने ब्राउज़र में खोलकर देखिए: हर फ़्रेम की देरी और डिस्पोज़ल, कलर टेबल, लूप की गिनती, और फ़ाइल का साइज़ कहाँ गया इसका बाइट-दर-बाइट ब्योरा। कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF को फ़्रेम-दर-फ़्रेम कैसे संपादित करें</title>
-    <id>https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">GIF को उसके फ़्रेमों में खोलें, जो हटाना हो हटाएँ या क्रम बदलें, और समय-सारणी बचाए हुए फिर जोड़ दें। आने-जाने में क्या बचता है, पैलेट की कीमत क्या है, और GIF के भारी होने की वजह कैसे देखें।</summary>
   </entry>
 </feed>

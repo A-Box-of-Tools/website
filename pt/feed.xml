@@ -26,11 +26,18 @@
   <id>https://abox.tools/pt/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/pt/</uri>
   </author>
+  <entry>
+    <title type="html">Compartilhar texto e arquivos</title>
+    <id>https://abox.tools/pt/compartilhar-texto/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/compartilhar-texto/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro.</summary>
+  </entry>
   <entry>
     <title type="html">Aparador de vídeo</title>
     <id>https://abox.tools/pt/aparar-video/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comparar-dois-arquivos-json/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Formate os dois arquivos do mesmo jeito, ordene as chaves e compare depois. Por que um diff de JSON cru é quase só ruído, como canonizar os dois lados no navegador, e o que sobrevive até o patch.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como compartilhar texto e arquivos entre dispositivos sem fazer upload</title>
-    <id>https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Levar texto ou arquivos de um navegador para outro por uma conexão direta e criptografada: sem mandar e-mail para si mesmo, sem histórico de chat, sem conta, e sem servidor guardando cópia.</summary>
   </entry>
 </feed>

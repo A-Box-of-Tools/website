@@ -26,11 +26,18 @@
   <id>https://abox.tools/zh-TW/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh-TW/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/"/>
-  <updated>2026-09-02T00:00:00Z</updated>
+  <updated>2026-09-03T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh-TW/</uri>
   </author>
+  <entry>
+    <title type="html">文字與檔案分享</title>
+    <id>https://abox.tools/zh-TW/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/share-text/"/>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <summary type="html">把文字或檔案經由直連加密通道從一個瀏覽器送到另一個。連結名稱說得出口，邊打字邊即時同步，逐一核准讀者——任何伺服器上永遠不存任何東西。免費，無須註冊。</summary>
+  </entry>
   <entry>
     <title type="html">Base64 編碼解碼</title>
     <id>https://abox.tools/zh-TW/base64/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/exif-editor/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">看清一張照片裡藏著的 EXIF 和 GPS 資訊，改它，或者一鍵清光。在瀏覽器裡跑，什麼都不上傳，畫面也從不重新編碼。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 分析</title>
-    <id>https://abox.tools/zh-TW/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/gif-analyzer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在瀏覽器裡把 GIF 拆開看：每一幀的延時和處置方式、顏色表、循環次數，以及體積去了哪裡的逐位元組明細。什麼都不上傳。</summary>
   </entry>
 </feed>
