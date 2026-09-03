@@ -144,31 +144,6 @@
 
 /* --------------------------------------------------------- crop controls */
 
-.aspect-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.aspect-row button {
-  padding: 0.32rem 0.7rem;
-  font-size: 0.85rem;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--surface-2);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.aspect-row button:hover { border-color: var(--accent); }
-
-.aspect-row button.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-text);
-  font-weight: 600;
-}
-
 .numbers {
   display: flex;
   flex-wrap: wrap;

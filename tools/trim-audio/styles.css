@@ -198,6 +198,7 @@ audio.player {
 }
 
 .transport button { padding: 0.4rem 0.9rem; font-size: 0.86rem; }
+
 /* The play button shows a glyph, not a word, so the glyph gets a size a
    thumb can find and the padding is retuned to keep the row one height. */
 .transport #play { min-width: 3.2rem; font-size: 1rem; line-height: 1; padding-block: 0.55rem; }
@@ -205,31 +206,6 @@ audio.player {
 
 .speed-row {
   margin-top: 0.6rem;
-  display: flex;
-  gap: 0.3rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.speed-label { font-size: 0.8rem; color: var(--text-dim); margin-inline-end: 0.2rem; }
-
-.speed {
-  padding: 0.25rem 0.6rem;
-  font-size: 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--surface-2);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.speed:hover { border-color: var(--accent); }
-
-.speed.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-text);
-  font-weight: 600;
 }
 
 /* ----------------------------------------------------------------- the parts */
