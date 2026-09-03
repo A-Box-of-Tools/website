@@ -12,7 +12,10 @@
 # only meaningful if the served files are committed somewhere a reader can see.
 #
 # On a pull request this builds but does not publish, so a change that breaks
-# the build is caught before it reaches main.
+# the build is caught before it reaches main. It does put the build somewhere
+# a browser can reach - a preview of its own on Cloudflare Pages, see the
+# `preview` job - and asks the QA suite to run against that, so the browser
+# tests see a change before visitors do rather than twenty minutes after.
 #
 # The unit tests run first, in their own job, and the build waits on them. They
 # cover the hand-written code on both sides: the generator in Python and the
@@ -252,6 +255,18 @@ jobs:
 
           exit $status
 
+      # On a pull request the deployed build goes to the preview job instead
+      # of the dist branch. A day is plenty: the preview is uploaded within
+      # minutes, and the next push to the pull request builds again.
+      - name: Hand the build to the preview
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: _site/
+          include-hidden-files: true
+          retention-days: 1
+
       - name: Publish to the dist branch
         id: publish
         if: github.event_name != 'pull_request'
@@ -453,4 +468,175 @@ jobs:
             echo '```'
             find _site -type f | sort | sed 's|^_site/|  |'
             echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # A PREVIEW OF EVERY PULL REQUEST, AND THE QA SUITE RUN AGAINST IT
+  #
+  # Until this job existed the browser suite only ever saw a change after it
+  # was live: merge, build, push to dist, Pages, and then QA (post-deploy)
+  # asked the qa repository to run. The first browser test of a change ran
+  # some twenty minutes after visitors had it, and the net was a report and
+  # an issue rather than a gate. Everything that suite found in its first
+  # months, it found on production.
+  #
+  # So a pull request gets a deployment of its own. Not a standing staging
+  # server - the site is static and stateless, and a server to keep in step
+  # can hold one change at a time - but a preview per pull request on
+  # Cloudflare Pages, a second project there, uploaded directly from the
+  # build above. The site already sits behind Cloudflare; Pages reads the
+  # `_headers` the repository keeps "in case the site ever moves to a host
+  # that reads it", so a preview carries the security headers from the file;
+  # Pages marks every non-production deployment noindex on its own; and each
+  # preview is an origin of its own, so root-absolute paths and the offline
+  # worker behave exactly as on production. The bytes are the ones the build
+  # job made - the same `_site` that would have gone to dist - which is the
+  # point: what is tested is what ships.
+  #
+  # The suite itself runs in the qa repository, as it does after a deploy,
+  # dispatched with the preview's address and this pull request's head
+  # commit. Its result comes back as a commit status, `qa/preview`, on that
+  # commit, with the run as its link. Report-only for now; once it has been
+  # green for a while, branch protection can require it.
+  #
+  # SETUP, ONCE: a Cloudflare Pages project (direct upload) and two secrets
+  # here, CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID; a WEBSITE_STATUS_TOKEN
+  # in the qa repository for the status; QA_DISPATCH_TOKEN as before. The
+  # steps are in cloudflare/README.md. Until the Cloudflare secrets exist this
+  # job says so and stops, and the pull request stays green.
+  #
+  # A pull request from a fork gets no secrets and therefore no preview. That
+  # is GitHub's rule, and the right one: a fork's workflow must not be able to
+  # deploy with this repository's credentials.
+  preview:
+    needs: build
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # For the sticky comment that carries the preview's address.
+      pull-requests: write
+    env:
+      PR: ${{ github.event.pull_request.number }}
+      SHA: ${{ github.event.pull_request.head.sha }}
+      PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT || 'abox-preview' }}
+    steps:
+      - name: Is there somewhere to put it?
+        id: gate
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo '::notice::No preview: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are not both set. See cloudflare/README.md, "Previews".'
+          fi
+
+      - name: Take the build
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: site-preview
+          path: _site
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          node-version: '20'
+
+      # `--branch pr-<n>` is what makes this a preview rather than the
+      # project's production: Pages gives every non-production branch an
+      # alias of its own, <branch>.<project>.pages.dev, stable across the
+      # pull request's pushes, which is the address the comment and the QA
+      # run use. There is no git checkout in this job, so the commit is
+      # named by hand.
+      - name: Upload it to Cloudflare Pages
+        if: steps.gate.outputs.ready == 'true'
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@3 pages deploy _site \
+            --project-name "$PROJECT" \
+            --branch "pr-$PR" \
+            --commit-hash "$SHA" \
+            --commit-message "Preview of pull request #$PR at ${SHA:0:7}" \
+            --commit-dirty=true
+          echo "url=https://pr-$PR.$PROJECT.pages.dev/" >> "$GITHUB_OUTPUT"
+
+      # The alias takes a moment to answer after the first upload for a
+      # branch. Waiting here, as QA (post-deploy) waits for production, keeps
+      # the qa repository's workflow honest about what it tests.
+      - name: Wait until it answers
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          URL: ${{ steps.upload.outputs.url }}
+        run: |
+          set -euo pipefail
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null "$URL"; then
+              echo "Answering: $URL"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::$URL never answered after five minutes."
+          exit 1
+
+      # One comment per pull request, edited on every push rather than added
+      # to, so the address is always at the top of the conversation and never
+      # repeated down it.
+      - name: Say where it is, on the pull request
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          URL: ${{ steps.upload.outputs.url }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          marker='<!-- preview-address -->'
+          body=$(printf '%s\n**Preview:** %s\n\nBuilt from %s. The QA suite runs against it; its result is the `qa/preview` check below.' \
+            "$marker" "$URL" "${SHA:0:7}")
+          existing=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n1)
+          if [ -n "$existing" ]; then
+            gh api --method PATCH "repos/$REPO/issues/comments/$existing" -f body="$body" > /dev/null
+          else
+            gh api --method POST "repos/$REPO/issues/$PR/comments" -f body="$body" > /dev/null
+          fi
+
+      # The same token QA (post-deploy) uses; see that workflow's header for
+      # why the default token cannot start a run in another repository.
+      - name: Ask the QA suite to run against it
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
+          URL: ${{ steps.upload.outputs.url }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN}" ]; then
+            echo '::error::QA_DISPATCH_TOKEN is not set - see .github/workflows/qa-on-deploy.yml.'
+            exit 1
+          fi
+          gh workflow run report.yml --repo A-Box-of-Tools/qa \
+            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA"
+          echo "Dispatched against $URL"
+
+      - name: Summary
+        if: always()
+        env:
+          URL: ${{ steps.upload.outputs.url }}
+        run: |
+          {
+            echo '### Preview'
+            echo
+            if [ -n "$URL" ]; then
+              echo "- $URL"
+              echo '- The QA suite runs against it in [A-Box-of-Tools/qa](https://github.com/A-Box-of-Tools/qa/actions); the result is the `qa/preview` status on this commit.'
+            else
+              echo 'Not deployed: the Cloudflare secrets are not set. See cloudflare/README.md, "Previews".'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
