@@ -75,6 +75,14 @@ test('a localhost page reaches the room too, on any port', async () => {
   }
 });
 
+test("a pull request's preview reaches the room, whichever number it is", async () => {
+  const e = env();
+  for (const origin of ['https://pr-358.abox-preview.pages.dev', 'https://pr-1.abox-preview.pages.dev', 'https://94869022.abox-preview.pages.dev']) {
+    const res = await worker.fetch(upgrade('/ws/brave-otter-42', { Origin: origin }), e);
+    assert.equal(res.status, 200, origin);
+  }
+});
+
 test('any other origin, or none, is refused before a room is touched', async () => {
   const e = env();
   const cases = [
@@ -82,6 +90,13 @@ test('any other origin, or none, is refused before a room is touched', async () 
     { Origin: 'https://abox.tools.example.com' },
     { Origin: 'https://notabox.tools' },
     { Origin: 'http://abox.tools' },
+    // The preview suffix is the project's, not the platform's, and only over
+    // https: another Pages project, a lookalike, and a plain-http preview
+    // are all somebody else's page.
+    { Origin: 'https://other.pages.dev' },
+    { Origin: 'https://pr-1.abox-preview.pages.dev.example.com' },
+    { Origin: 'https://abox-preview.pages.dev.evil.example' },
+    { Origin: 'http://pr-1.abox-preview.pages.dev' },
     { Origin: 'null' },
     {},
   ];

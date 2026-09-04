@@ -37,12 +37,20 @@
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
 const SITE = "https://abox.tools";
+// Every pull request is deployed to a preview of its own on Cloudflare Pages
+// (see the `preview` job in .github/workflows/build.yml), at
+// https://pr-<n>.abox-preview.pages.dev, and the QA suite is run against it -
+// share-text included, which is the one tool that cannot work without this
+// worker's say-so. The suffix is the project's, so no other Pages project on
+// the same platform is let in by it.
+const PREVIEWS = ".abox-preview.pages.dev";
 
 function fromOurPage(origin) {
   if (origin === SITE) return true;
   try {
-    const host = new URL(origin).hostname;
-    return host === "localhost" || host === "127.0.0.1";
+    const { protocol, hostname } = new URL(origin);
+    if (hostname === "localhost" || hostname === "127.0.0.1") return true;
+    return protocol === "https:" && hostname.endsWith(PREVIEWS);
   } catch {
     return false;
   }
