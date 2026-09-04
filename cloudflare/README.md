@@ -99,11 +99,23 @@ visits either.
 
 ### Setting it up, once
 
-1. In the Cloudflare dashboard, **Workers & Pages → Create → Pages → Upload
-   assets**. Name the project `abox-preview` and upload anything - the first
-   deployment from the workflow replaces it. Leave the production branch as
-   `main`: the workflow deploys to branches named `pr-<number>`, which is what
-   makes each one a preview rather than the project's production.
+1. In the Cloudflare dashboard, **Workers & Pages → Create application**, then
+   the **Pages** tab rather than Workers, then **Upload assets**. Name the
+   project `abox-preview` and upload anything - the first deployment from the
+   workflow replaces it. Leave the production branch as `main`: the workflow
+   deploys to branches named `pr-<number>`, which is what makes each one a
+   preview rather than the project's production.
+
+   The same from a terminal, with no placeholder to upload, once the token
+   below exists:
+
+   ```bash
+   npx wrangler@3 pages project create abox-preview --production-branch main
+   ```
+
+   The Pages tab is easy to miss: the dashboard leads with the Workers flow,
+   and a git-connected Worker is not what this wants - it would build the
+   site on Cloudflare's side and refuse the workflow's direct uploads.
 2. Create an API token under *My Profile → API Tokens* with
    **Account → Cloudflare Pages → Edit**, scoped to this account.
 3. In the website repository's settings, add two secrets:
