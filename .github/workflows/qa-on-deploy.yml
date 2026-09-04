@@ -15,6 +15,11 @@
 # `workflow_run` is the trigger meant for chaining and is not suppressed. It
 # only fires for workflows defined on the default branch, which build.yml is.
 #
+# And only when the Build actually deployed something: a merge that changes
+# no built file - a README, a workflow, the worker, a test - finishes a Build
+# that pushes nothing, and re-testing an unchanged site is a full run of the
+# suite for nothing. The first step below asks the dist branch.
+#
 # This only dispatches; it does not run the suite itself. The qa repo's own
 # report.yml runs it and publishes the result to that repo's gh-pages
 # branch, so there is one place the suite runs and one report to read -
@@ -60,11 +65,44 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.event == 'push')
     steps:
+      # A Build that finished is not a deploy. The publish step pushes to dist
+      # only when the built site differs from what is there, and says
+      # "identical ... nothing to push" otherwise - which is every merge that
+      # touches only a README, a workflow, the worker's source or a test. The
+      # suite then re-tested a production that had not changed: two such
+      # merges seven minutes apart cost two full runs and two published
+      # reports of the same site. So this asks dist whether it moved for the
+      # commit that triggered this run. The publish commit names its source -
+      # "Build <short sha>: <subject>" - and if the head of dist does not name
+      # this one, nothing was deployed and there is nothing to check. A manual
+      # run is a person asking, and is never second-guessed.
+      - name: Did this build deploy anything?
+        id: deployed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = 'workflow_dispatch' ]; then
+            echo 'deployed=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/commits/dist" --jq '.commit.message' | head -n1)
+          if [[ "$latest" == "Build ${SHA:0:7}:"* ]]; then
+            echo "deployed=true" >> "$GITHUB_OUTPUT"
+            echo "dist is at '$latest'; this build deployed."
+          else
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Nothing deployed: the build for ${SHA:0:7} left dist at '$latest'. The site is as it was, so the suite is not asked to run."
+          fi
+
       # GitHub Pages usually publishes within a minute of `dist` moving, but
       # that isn't guaranteed. Waiting here rather than in the qa repo keeps
       # that repo's workflow honest about what it tests: by the time it is
       # asked to run, the deploy it is meant to check is actually live.
       - name: Wait for the deploy to actually be live
+        if: steps.deployed.outputs.deployed == 'true'
         run: |
           set -euo pipefail
           for _ in $(seq 1 30); do
@@ -79,6 +117,7 @@ jobs:
           exit 1
 
       - name: Ask the QA repo to run its suite
+        if: steps.deployed.outputs.deployed == 'true'
         env:
           GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
         run: |
@@ -98,6 +137,12 @@ jobs:
         if: always()
         run: |
           {
+            if [ "${{ steps.deployed.outputs.deployed }}" != 'true' ]; then
+              echo '### QA not asked to run'
+              echo
+              echo 'This build deployed nothing - the site is identical to what was already live - so there was nothing new to test.'
+              exit 0
+            fi
             echo '### QA dispatched'
             echo
             echo 'The suite runs in the QA repository, not here.'
