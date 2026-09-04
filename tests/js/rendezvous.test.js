@@ -13,7 +13,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import worker from '../../workers/rendezvous/worker.js';
+import worker, { relayServers } from '../../workers/rendezvous/worker.js';
 
 const HOST = 'https://rendezvous.example';
 const OURS = 'https://abox.tools';
@@ -107,6 +107,57 @@ test('the limit is counted per address, not per room', async () => {
   await worker.fetch(upgrade('/ws/two', { Origin: OURS }), e);
   assert.deepEqual(e.asked.keys, ['203.0.113.7', '203.0.113.7']);
   assert.deepEqual(e.asked.rooms, ['id:one', 'id:two']);
+});
+
+/*
+ * The relay credential. The room's half - one ask per socket, the answer on
+ * the same socket - needs the runtime; the minting itself is a plain
+ * function of the environment and a fetch, and that half runs here with a
+ * fetch that records what it was asked.
+ */
+
+const TURN = {
+  urls: ['turn:turn.cloudflare.com:3478?transport=udp', 'turns:turn.cloudflare.com:443?transport=tcp'],
+  username: 'u',
+  credential: 'c',
+};
+
+function minting(status = 201, body = { iceServers: [{ urls: ['stun:stun.cloudflare.com:3478'] }, TURN] }) {
+  const calls = [];
+  const fetchImpl = async (url, init) => {
+    calls.push({ url, init });
+    return new Response(JSON.stringify(body), { status });
+  };
+  return { calls, fetchImpl };
+}
+
+const KEYED = { TURN_KEY_ID: 'key-1', TURN_KEY_TOKEN: 'tok-1' };
+
+test('with no key configured there is no relay, and nothing is asked', async () => {
+  for (const env of [{}, { TURN_KEY_ID: 'key-1' }, { TURN_KEY_TOKEN: 'tok-1' }]) {
+    const { calls, fetchImpl } = minting();
+    assert.equal(await relayServers(env, fetchImpl), null);
+    assert.deepEqual(calls, []);
+  }
+});
+
+test('a key mints a credential from Cloudflare and hands back the TURN entry alone', async () => {
+  const { calls, fetchImpl } = minting();
+  const servers = await relayServers(KEYED, fetchImpl);
+  assert.deepEqual(servers, [TURN]);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].url, 'https://rtc.live.cloudflare.com/v1/turn/keys/key-1/credentials/generate-ice-servers');
+  assert.equal(calls[0].init.method, 'POST');
+  assert.equal(calls[0].init.headers.Authorization, 'Bearer tok-1');
+  const { ttl } = JSON.parse(calls[0].init.body);
+  assert.ok(ttl > 0 && ttl <= 24 * 60 * 60, `a bounded ttl, got ${ttl}`);
+});
+
+test('a refusal from Cloudflare, or an answer with no credential in it, is no relay', async () => {
+  assert.equal(await relayServers(KEYED, minting(401).fetchImpl), null);
+  assert.equal(await relayServers(KEYED, minting(201, { iceServers: [{ urls: ['stun:x'] }] }).fetchImpl), null);
+  assert.equal(await relayServers(KEYED, minting(201, {}).fetchImpl), null);
+  assert.equal(await relayServers(KEYED, async () => { throw new Error('down'); }), null);
 });
 
 test('a name outside the accepted shape is not a room', async () => {

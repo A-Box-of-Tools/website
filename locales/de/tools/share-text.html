@@ -118,6 +118,21 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          Die Alternative ist ein verschlüsselter Umweg über ein Relais.
+          Ihr Browser würde über einen Relais-Server von Cloudflare senden
+          und empfangen, der die verschlüsselten Bytes weiterreicht und
+          nicht lesen kann; er erfährt Ihre Netzadresse und die des
+          Teilenden, wie es auch die Direktverbindung getan hätte.
+          Gespeichert wird auch dort nichts, und die Seite des Teilenden
+          sendet weiterhin allein an Sie.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Erneut versuchen, über das Relais</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Diesen Link erneut prüfen</button>
       </div>
@@ -179,6 +194,9 @@
     <span data-phrase="view.nobody">Unter dieser Adresse teilt niemand etwas. Vielleicht hat der Teilende seinen Tab geschlossen &mdash; dann ist die Freigabe mit ihm verschwunden.</span>
     <span data-phrase="view.full">Diese Freigabe hat bereits ihre Höchstzahl an Lesern.</span>
     <span data-phrase="view.no-connect">Der Teilende war direkt nicht zu erreichen. Eines der beiden Netze lässt womöglich keine Peer-to-Peer-Verbindung zu.</span>
+    <span data-phrase="view.relaying">Verbinde über das Relais&hellip;</span>
+    <span data-phrase="view.relay-none">Gerade ist kein Relais verfügbar. Ein Versuch aus einem anderen Netz klappt meistens.</span>
+    <span data-phrase="view.relay-failed">Der Teilende war auch über das Relais nicht zu erreichen. Vielleicht hat er seinen Tab geschlossen.</span>
     <span data-phrase="view.error">Beim Verbinden ist etwas schiefgegangen. Laden Sie die Seite neu und versuchen Sie es wieder.</span>
     <span data-phrase="view.download">Herunterladen</span>
     <span data-phrase="view.file-gone">Wird nicht mehr geteilt</span>

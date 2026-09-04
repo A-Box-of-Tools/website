@@ -150,6 +150,11 @@ button.danger {
 }
 .seg button.active { background: var(--accent); color: var(--surface); }
 
+/* The relay offer and the "check again" button show together after a failed
+   direct attempt; a breath between the primary action and the fallback keeps
+   them from reading as one row. */
+#relayrow:not([hidden]) + #retryrow { margin-top: 0.75rem; }
+
 #received {
   padding: 0.75rem;
   white-space: pre-wrap;

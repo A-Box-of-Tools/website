@@ -54,7 +54,9 @@ csp_note = """
   carries the rendezvous, the WebSocket that matches the two ends of a link
   name and relays their WebRTC negotiation. It is the introduction only -
   the text and files travel the peer-to-peer channel, which CSP does not
-  govern and no server touches. The worker's whole source is in the
+  govern and no server touches, unless a reader who could not be reached
+  directly chooses Cloudflare's TURN relay, which forwards the encrypted
+  channel without a key to it. The worker's whole source is in the
   repository at workers/rendezvous/."""
 
 # --- the pledge block --------------------------------------------------------
@@ -135,7 +137,10 @@ body = """
       over a WebRTC data channel: a direct, DTLS-encrypted connection between
       your browser and each reader's. There is no server in that path. On the
       same network the bytes never even leave the building &mdash; two laptops
-      on one Wi-Fi exchange them locally."""
+      on one Wi-Fi exchange them locally. The one exception is a reader whose
+      network cannot be reached directly and who then chooses, on their own
+      page, an encrypted relay: it forwards the same ciphertext and cannot
+      read it."""
 
 [[privacy]]
 title = "What the rendezvous is, and the whole of what it sees."
@@ -358,12 +363,19 @@ a = """
 q = "What if we can't connect?"
 a = """
         Most pairs of browsers can reach each other directly once
-        introduced; a minority cannot, typically when both sides sit behind
-        the strictest kind of mobile-carrier or corporate network. This page
-        does not fall back to relaying through a server &mdash; that would
-        quietly change what this tool is &mdash; so after twenty seconds it
-        says plainly that a direct connection could not be made. Trying from
-        a different network usually resolves it."""
+        introduced; a minority cannot, typically when one side is on a
+        mobile carrier's shared-address network or behind a strict corporate
+        one. This page never switches to a relay quietly &mdash; that would
+        change what this tool is without saying so &mdash; so after twenty
+        seconds it says plainly that a direct connection could not be made,
+        and offers the reader one: a relay run by Cloudflare that forwards
+        the encrypted bytes between the two browsers and cannot read them,
+        since the key never leaves the two ends. The reader chooses it by
+        name, on their own page, after being told what it sees &mdash; both
+        addresses, as the direct connection would &mdash; and nothing is
+        stored there either. Your side of the share does not change: your
+        browser still sends to that one reader, as it would if they were on
+        a VPN."""
 
 [[faq]]
 q = "Is the markdown safe to render, if anyone can share anything?"

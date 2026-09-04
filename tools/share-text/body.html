@@ -119,6 +119,23 @@
         </div>
       </div>
 
+      <!-- Shown only after a direct attempt has failed. The relay is the
+           reader's choice and is described before the click, in the same
+           terms as the direct connection above. -->
+      <div id="relayrow" hidden>
+        <p>
+          The alternative is an encrypted relay. Your browser would send and
+          receive through a relay server run by Cloudflare, which forwards
+          the encrypted bytes and cannot read them; it learns your network
+          address and the sharer&rsquo;s, as the direct connection would
+          have. Nothing is stored there either, and the sharer&rsquo;s page
+          still sends to you alone.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Try again through the relay</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Check this link again</button>
       </div>
@@ -181,6 +198,9 @@
     <span data-phrase="view.nobody">Nobody is sharing at this address. The sharer may have closed their tab &mdash; if so, the share is gone with it.</span>
     <span data-phrase="view.full">This share already has its maximum number of readers.</span>
     <span data-phrase="view.no-connect">Could not reach the sharer directly. One of the two networks may not allow a peer-to-peer connection.</span>
+    <span data-phrase="view.relaying">Connecting through the relay&hellip;</span>
+    <span data-phrase="view.relay-none">No relay is available right now. Trying from a different network usually works.</span>
+    <span data-phrase="view.relay-failed">Could not reach the sharer even through the relay. They may have closed their tab.</span>
     <span data-phrase="view.error">Something went wrong while connecting. Reload to try again.</span>
     <span data-phrase="view.download">Download</span>
     <span data-phrase="view.file-gone">No longer shared</span>

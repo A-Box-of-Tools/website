@@ -30,6 +30,19 @@ namespace_id = "1001"
   limit = 30
   period = 60
 
+# The relay a reader may ask for after a direct attempt has failed is
+# Cloudflare's TURN service, and minting a credential for it takes a TURN key:
+# made in the dashboard under Realtime, and handed to the worker as two secrets
+# rather than two lines here, since one of them is a bearer token -
+#
+#     npx wrangler secret put TURN_KEY_ID
+#     npx wrangler secret put TURN_KEY_TOKEN
+#
+# Without them the worker answers a relay ask with nothing and the page says so.
+# The first 1,000 GB a month of relayed traffic are free; a relay carries the
+# same encrypted bytes the direct path would, and only for the pairs that
+# could not connect directly.
+
 # Persisted logs, switched on in the dashboard and written down here so a later
 # `wrangler deploy` from this file agrees with it rather than quietly switching
 # them back off. The worker prints nothing of its own, so what is kept is

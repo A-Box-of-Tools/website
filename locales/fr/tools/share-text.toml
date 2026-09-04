@@ -85,7 +85,11 @@ body = """
       chiffrée en DTLS, entre votre navigateur et celui de chaque lecteur.
       Aucun serveur ne se trouve sur ce chemin. Sur le même réseau, les
       octets ne quittent même pas le bâtiment &mdash; deux portables sur le
-      même Wi-Fi se les passent en local."""
+      même Wi-Fi se les passent en local.
+      La seule exception est un lecteur dont le réseau ne peut pas être
+      atteint directement et qui choisit alors, sur sa propre page, un
+      relais chiffré : il fait suivre le même texte chiffré et ne peut pas
+      le lire."""
 
 [[privacy]]
 title = "Ce qu'est l'entremetteur, et tout ce qu'il voit."
@@ -321,13 +325,20 @@ a = """
 q = "Et si nous n'arrivons pas à nous connecter ?"
 a = """
         La plupart des paires de navigateurs s'atteignent directement une
-        fois présentées ; une minorité non, typiquement quand les deux bouts
-        sont derrière la sorte la plus stricte de réseau mobile ou
-        d'entreprise. Cette page ne se rabat pas en douce sur un serveur
-        relais &mdash; cela changerait en silence ce qu'est cet outil
-        &mdash; : au bout de vingt secondes, elle dit clairement qu'aucune
-        connexion directe n'a abouti. Essayer depuis un autre réseau règle
-        la chose la plupart du temps."""
+        fois présentées ; une minorité non, typiquement quand l'un des bouts
+        est sur le réseau à adresses partagées d'un opérateur mobile ou
+        derrière un réseau d'entreprise strict. Cette page ne passe jamais à
+        un relais en douce &mdash; cela changerait ce qu'est cet outil sans
+        le dire &mdash; : au bout de vingt secondes, elle dit clairement
+        qu'aucune connexion directe n'a abouti, et en propose un au lecteur
+        : un relais exploité par Cloudflare, qui fait suivre les octets
+        chiffrés entre les deux navigateurs sans pouvoir les lire, puisque
+        la clé ne quitte jamais les deux bouts. Le lecteur le choisit en
+        connaissance de cause, sur sa propre page, après avoir appris ce que
+        le relais voit &mdash; les deux adresses, comme la connexion directe
+        &mdash;, et rien n'y est stocké non plus. Votre côté du partage ne
+        change pas : votre navigateur n'envoie toujours qu'à ce lecteur-là,
+        comme il le ferait s'il était derrière un VPN."""
 
 [[faq]]
 q = "Le rendu Markdown est-il sûr, si n'importe qui peut partager n'importe quoi ?"

@@ -116,6 +116,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          Het alternatief is een versleuteld tussenstation. Je browser zou
+          zenden en ontvangen via een relaisserver van Cloudflare, die de
+          versleutelde bytes doorgeeft en ze niet kan lezen; hij leert je
+          netwerkadres en dat van de deler kennen, zoals de rechtstreekse
+          verbinding dat ook had gedaan. Ook daar wordt niets opgeslagen,
+          en de pagina van de deler stuurt nog steeds alleen naar jou.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Opnieuw proberen via het tussenstation</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Deze link opnieuw controleren</button>
       </div>
@@ -177,6 +191,9 @@
     <span data-phrase="view.nobody">Niemand deelt iets op dit adres. Misschien heeft de deler zijn tabblad gesloten &mdash; dan is het delen daarmee verdwenen.</span>
     <span data-phrase="view.full">Dit delen zit al aan zijn maximum aantal lezers.</span>
     <span data-phrase="view.no-connect">De deler was rechtstreeks niet te bereiken. Mogelijk staat een van beide netwerken geen peer-to-peer-verbinding toe.</span>
+    <span data-phrase="view.relaying">Verbinden via het tussenstation&hellip;</span>
+    <span data-phrase="view.relay-none">Er is nu geen tussenstation beschikbaar. Het vanaf een ander netwerk proberen werkt meestal.</span>
+    <span data-phrase="view.relay-failed">De deler was ook via het tussenstation niet te bereiken. Misschien heeft die het tabblad gesloten.</span>
     <span data-phrase="view.error">Er ging iets mis bij het verbinden. Herlaad de pagina en probeer opnieuw.</span>
     <span data-phrase="view.download">Downloaden</span>
     <span data-phrase="view.file-gone">Wordt niet meer gedeeld</span>

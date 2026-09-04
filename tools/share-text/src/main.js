@@ -12,6 +12,21 @@ import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 const RENDEZVOUS = 'wss://rendezvous.a-box-of-tools.workers.dev';
 const RTC = { iceServers: [{ urls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'] }] };
 
+// A direct connection is what this page is, and it is also what a minority of
+// network pairs cannot make: a phone on a carrier's address-sharing network
+// and a laptop behind a strict router have no path a STUN server can
+// discover. For that case, and only after the direct attempt has failed, the
+// reader may ask for a relay. The rendezvous mints a short-lived credential
+// for Cloudflare's TURN service, the reader redials with it, and the relay
+// forwards the DTLS-encrypted bytes it cannot read - the same ciphertext the
+// direct path carries. It is the reader's choice, made on the reader's page,
+// and the sharer's side of the exchange does not change: its bytes still go
+// to that one reader and nowhere else, the way they would if the reader sat
+// behind a VPN. The choice rides a reload so the redial is a fresh socket
+// and a fresh peer connection rather than a renegotiation of a failed one.
+const RELAY_FLAG = (code) => `share-text-relay:${code}`;
+const RELAY_WAIT = 5000;
+
 const wsUrl = (code, role) => `${RENDEZVOUS}/ws/${code}?role=${role}`;
 const shareUrl = (code) => `${location.origin}${location.pathname}#${code}`;
 
@@ -426,6 +441,7 @@ $('copylink').addEventListener('click', () => {
 function fail(text) {
   if ($('received').hidden === false) return;
   $('consent').hidden = true;
+  $('relayrow').hidden = true;
   $('retryrow').hidden = false;
   $('view-status').textContent = text;
 }
@@ -438,17 +454,24 @@ function view(code) {
 
   // A language switch made while connected sets this flag on the way out.
   // It stands in for the consent the same reader gave moments ago on the
-  // same share, so the gate is not shown twice for one session.
+  // same share, so the gate is not shown twice for one session. The relay
+  // button sets it too, along with its own flag: the reader has consented,
+  // watched the direct attempt fail, and asked for the relay by name.
   let carried = false;
+  let wantRelay = false;
   try {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
+    wantRelay = carried && sessionStorage.getItem(RELAY_FLAG(code)) === '1';
+    sessionStorage.removeItem(RELAY_FLAG(code));
   } catch {}
 
   const ws = new WebSocket(wsUrl(code, 'viewer'));
   let pc = null;
   let dcRef = null;
+  let relay = null;      // the TURN entry the rendezvous minted, once asked for
+  let relayReply = null; // resolves the ask, with the entry or null
   let got = false;
   let connected = false;
   let done = false;
@@ -572,8 +595,8 @@ function view(code) {
   async function dial() {
     if (pc !== null || ws.readyState !== 1) return;
     $('consent').hidden = true;
-    $('view-status').textContent = phrase('view.connecting');
-    pc = new RTCPeerConnection(RTC);
+    $('view-status').textContent = phrase(relay ? 'view.relaying' : 'view.connecting');
+    pc = new RTCPeerConnection(relay ? { iceServers: [...RTC.iceServers, relay] } : RTC);
     pc.onicecandidate = (ev) => {
       if (ev.candidate && ws.readyState === 1) ws.send(JSON.stringify({ data: { candidate: ev.candidate } }));
     };
@@ -582,6 +605,21 @@ function view(code) {
     // the rendezvous close below.
     pc.onconnectionstatechange = () => {
       if (connected && (pc.connectionState === 'failed' || pc.connectionState === 'closed')) sharerGone();
+    };
+    // An attempt that never connects: ICE gives up on its own once every
+    // candidate pair has been tried, and the timer below covers the case
+    // where it never says so. A direct attempt that fails offers the relay;
+    // a relayed one that fails has nothing left to offer.
+    let given = false;
+    const giveUp = () => {
+      if (given || got || connected || done) return;
+      given = true;
+      if (relay) { fail(phrase('view.relay-failed')); return; }
+      fail(phrase('view.no-connect'));
+      $('relayrow').hidden = false;
+    };
+    pc.oniceconnectionstatechange = () => {
+      if (pc.iceConnectionState === 'failed') giveUp();
     };
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
@@ -635,13 +673,41 @@ function view(code) {
     dc.onclose = sharerGone;
     await pc.setLocalDescription(await pc.createOffer());
     ws.send(JSON.stringify({ data: { sdp: pc.localDescription } }));
-    setTimeout(() => {
-      if (!got && !connected && !done) fail(phrase('view.no-connect'));
-    }, 20000);
+    setTimeout(giveUp, 20000);
+  }
+
+  // The credential is minted by the rendezvous, one per socket, and handed
+  // back on the same socket; a rendezvous that has no relay to offer - or an
+  // older one that does not know the question - leaves the ask unanswered,
+  // and the wait below turns that silence into a sentence.
+  function askRelay() {
+    return new Promise((resolve) => {
+      relayReply = resolve;
+      setTimeout(() => resolve(null), RELAY_WAIT);
+      ws.send(JSON.stringify({ relay: true }));
+    });
+  }
+
+  async function relayDial() {
+    relay = await askRelay();
+    relayReply = null;
+    if (relay === null) { fail(phrase('view.relay-none')); return; }
+    await dial();
   }
 
   $('connect').addEventListener('click', () => {
     dial().catch(() => fail(phrase('view.error')));
+  });
+
+  $('relay').addEventListener('click', () => {
+    try {
+      sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
+      sessionStorage.setItem(RELAY_FLAG(code), '1');
+    } catch {
+      fail(phrase('view.error'));
+      return;
+    }
+    location.reload();
   });
 
   ws.onopen = () => setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
@@ -651,12 +717,21 @@ function view(code) {
     const m = JSON.parse(e.data);
     try {
       if (m.type === 'ready') {
-        if (carried) {
+        if (wantRelay) {
+          $('consent').hidden = true;
+          $('view-status').textContent = phrase('view.relaying');
+          await relayDial();
+        } else if (carried) {
           await dial();
         } else {
           $('view-status').textContent = phrase('view.someone');
           $('consent').hidden = false;
         }
+      } else if (m.type === 'relay' && relayReply !== null) {
+        // Only a TURN entry with a credential is worth carrying; anything
+        // else the rendezvous might send is not a relay.
+        const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
+        relayReply(entry ?? null);
       } else if (m.type === 'signal' && pc) {
         if (m.data.sdp) await pc.setRemoteDescription(m.data.sdp);
         else if (m.data.candidate) await pc.addIceCandidate(m.data.candidate);

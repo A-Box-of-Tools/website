@@ -83,7 +83,11 @@ body = """
       over een WebRTC-datakanaal: een rechtstreekse, met DTLS versleutelde
       verbinding tussen jouw browser en die van elke lezer. Op dat pad staat
       geen server. Op hetzelfde netwerk verlaten de bytes niet eens het
-      gebouw &mdash; twee laptops op dezelfde wifi geven ze lokaal door."""
+      gebouw &mdash; twee laptops op dezelfde wifi geven ze lokaal door.
+      De ene uitzondering is een lezer wiens netwerk niet rechtstreeks te
+      bereiken is en die dan, op de eigen pagina, een versleuteld
+      tussenstation kiest: dat geeft dezelfde versleutelde tekst door en kan
+      hem niet lezen."""
 
 [[privacy]]
 title = "Wat de tussenpersoon is, en alles wat hij ziet."
@@ -312,12 +316,20 @@ a = """
 q = "En als we geen verbinding krijgen?"
 a = """
         De meeste browserparen bereiken elkaar rechtstreeks zodra ze zijn
-        voorgesteld; een minderheid niet, meestal wanneer beide kanten
-        achter het strengste soort bedrijfs- of mobiel netwerk zitten. Deze
-        pagina valt niet stiekem terug op een doorgeefserver &mdash; dat zou
-        in stilte veranderen wat dit gereedschap is &mdash;: na twintig
-        seconden zegt hij ronduit dat een rechtstreekse verbinding niet
-        lukte. Het vanaf een ander netwerk proberen lost het meestal op."""
+        voorgesteld; een minderheid niet, meestal wanneer één kant op het
+        netwerk met gedeelde adressen van een mobiele provider zit of achter
+        een streng bedrijfsnetwerk. Deze pagina schakelt nooit stiekem over
+        op een tussenstation &mdash; dat zou veranderen wat dit gereedschap
+        is zonder het te zeggen &mdash;: na twintig seconden zegt hij
+        ronduit dat een rechtstreekse verbinding niet lukte, en biedt de
+        lezer er een aan: een door Cloudflare gedraaid tussenstation dat de
+        versleutelde bytes tussen de twee browsers doorgeeft en ze niet kan
+        lezen, omdat de sleutel de twee uiteinden nooit verlaat. De lezer
+        kiest het bewust, op de eigen pagina, nadat verteld is wat het ziet
+        &mdash; beide adressen, zoals de rechtstreekse verbinding ook
+        &mdash;, en ook daar wordt niets opgeslagen. Jouw kant van het delen
+        verandert niet: je browser stuurt nog steeds naar die ene lezer,
+        zoals hij dat ook zou doen als die achter een VPN zat."""
 
 [[faq]]
 q = "Is Markdown renderen veilig, als iedereen alles kan delen?"

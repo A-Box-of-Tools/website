@@ -117,6 +117,21 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          L'alternative est un relais chiffré. Votre navigateur enverrait
+          et recevrait par un serveur relais de Cloudflare, qui fait suivre
+          les octets chiffrés sans pouvoir les lire ; il apprend votre
+          adresse réseau et celle de la personne qui partage, comme
+          l'aurait fait la connexion directe. Rien n'y est stocké non plus,
+          et la page de la personne qui partage n'envoie toujours qu'à
+          vous.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Réessayer par le relais</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Revérifier ce lien</button>
       </div>
@@ -178,6 +193,9 @@
     <span data-phrase="view.nobody">Personne ne partage à cette adresse. Peut-être l'onglet a-t-il été fermé &mdash; le partage est alors parti avec.</span>
     <span data-phrase="view.full">Ce partage a déjà son nombre maximal de lecteurs.</span>
     <span data-phrase="view.no-connect">Impossible d'atteindre directement la personne qui partage. L'un des deux réseaux n'autorise peut-être pas les connexions pair à pair.</span>
+    <span data-phrase="view.relaying">Connexion par le relais&hellip;</span>
+    <span data-phrase="view.relay-none">Aucun relais n'est disponible pour le moment. Essayer depuis un autre réseau marche la plupart du temps.</span>
+    <span data-phrase="view.relay-failed">Impossible d'atteindre la personne qui partage, même par le relais. Elle a peut-être fermé son onglet.</span>
     <span data-phrase="view.error">Quelque chose a mal tourné pendant la connexion. Rechargez la page et réessayez.</span>
     <span data-phrase="view.download">Télécharger</span>
     <span data-phrase="view.file-gone">N'est plus partagé</span>

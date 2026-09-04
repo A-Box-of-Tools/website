@@ -118,6 +118,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          Alternatifnya adalah penerus terenkripsi. Browser Anda akan
+          mengirim dan menerima lewat server penerus milik Cloudflare, yang
+          meneruskan byte terenkripsi dan tidak bisa membacanya; server itu
+          mengetahui alamat jaringan Anda dan alamat pembagi, seperti yang
+          akan diketahui koneksi langsung. Di sana pun tidak ada yang
+          disimpan, dan halaman pembagi tetap mengirim hanya kepada Anda.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Coba lagi lewat penerus</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Periksa tautan ini lagi</button>
       </div>
@@ -179,6 +193,9 @@
     <span data-phrase="view.nobody">Tidak ada yang berbagi di alamat ini. Mungkin pembaginya menutup tab &mdash; bila begitu, bagikannya ikut lenyap.</span>
     <span data-phrase="view.full">Berbagi ini sudah mencapai jumlah pembaca maksimum.</span>
     <span data-phrase="view.no-connect">Tidak bisa menjangkau pembagi secara langsung. Mungkin salah satu jaringan tidak mengizinkan koneksi peer-to-peer.</span>
+    <span data-phrase="view.relaying">Menghubungkan lewat penerus&hellip;</span>
+    <span data-phrase="view.relay-none">Saat ini tidak ada penerus yang tersedia. Mencoba dari jaringan lain biasanya berhasil.</span>
+    <span data-phrase="view.relay-failed">Tidak bisa menjangkau pembagi bahkan lewat penerus. Mungkin tabnya sudah ditutup.</span>
     <span data-phrase="view.error">Ada yang salah saat menghubungkan. Muat ulang halaman dan coba lagi.</span>
     <span data-phrase="view.download">Unduh</span>
     <span data-phrase="view.file-gone">Tidak dibagikan lagi</span>

@@ -83,7 +83,10 @@ body = """
       viajam por um canal de dados WebRTC: uma conexão direta, criptografada
       com DTLS, entre o seu navegador e o de cada leitor. Nesse caminho não
       há servidor. Na mesma rede, os bytes nem saem do prédio: dois
-      notebooks no mesmo Wi-Fi passam tudo localmente."""
+      notebooks no mesmo Wi-Fi passam tudo localmente.
+      A única exceção é um leitor cuja rede não pode ser alcançada
+      diretamente e que então escolhe, na própria página, um retransmissor
+      criptografado: ele repassa o mesmo texto cifrado e não consegue lê-lo."""
 
 [[privacy]]
 title = "O que é o intermediário, e tudo o que ele vê."
@@ -308,12 +311,20 @@ a = """
 q = "E se a gente não conseguir conectar?"
 a = """
         A maioria dos pares de navegadores se alcança diretamente depois de
-        apresentada; uma minoria não, geralmente quando os dois lados estão
-        atrás do tipo mais rígido de rede corporativa ou de celular. Esta
-        página não recorre em silêncio a um servidor retransmissor &mdash;
-        isso mudaria escondido o que esta ferramenta é &mdash;: depois de
-        vinte segundos ela diz com clareza que não houve conexão direta.
-        Tentar de outra rede costuma resolver."""
+        apresentada; uma minoria não, geralmente quando um dos lados está na
+        rede de endereços compartilhados de uma operadora de celular ou
+        atrás de uma rede corporativa rígida. Esta página nunca passa para
+        um retransmissor em silêncio &mdash; isso mudaria o que esta
+        ferramenta é sem dizer &mdash;: depois de vinte segundos ela diz com
+        clareza que não houve conexão direta e oferece um ao leitor: um
+        retransmissor mantido pela Cloudflare que repassa os bytes
+        criptografados entre os dois navegadores e não consegue lê-los,
+        porque a chave nunca sai das duas pontas. O leitor o escolhe de
+        forma explícita, na própria página, depois de saber o que ele vê
+        &mdash; os dois endereços, como a conexão direta veria &mdash;, e
+        ali também nada é guardado. O seu lado não muda: seu navegador
+        continua enviando só para aquele leitor, como faria se ele estivesse
+        atrás de uma VPN."""
 
 [[faq]]
 q = "Renderizar Markdown é seguro, se qualquer um pode compartilhar qualquer coisa?"

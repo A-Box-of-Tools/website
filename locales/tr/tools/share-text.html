@@ -117,6 +117,20 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          Alternatif, şifreli bir aktarıcı. Tarayıcınız, şifreli baytları
+          ileten ama okuyamayan Cloudflare'ın bir aktarıcı sunucusu
+          üzerinden gönderip alır; o sunucu, doğrudan bağlantının da
+          öğreneceği gibi, sizin ağ adresinizi ve paylaşanınkini öğrenir.
+          Orada da hiçbir şey saklanmaz ve paylaşanın sayfası yine yalnızca
+          size gönderir.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">Aktarıcı üzerinden yeniden dene</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Bu bağlantıyı yeniden dene</button>
       </div>
@@ -178,6 +192,9 @@
     <span data-phrase="view.nobody">Bu adreste kimse bir şey paylaşmıyor. Paylaşan sekmesini kapatmış olabilir &mdash; öyleyse paylaşım da onunla gitti.</span>
     <span data-phrase="view.full">Bu paylaşım okuyucu sınırına çoktan ulaştı.</span>
     <span data-phrase="view.no-connect">Paylaşana doğrudan ulaşılamadı. İki ağdan biri eşler arası bağlantıya izin vermiyor olabilir.</span>
+    <span data-phrase="view.relaying">Aktarıcı üzerinden bağlanılıyor&hellip;</span>
+    <span data-phrase="view.relay-none">Şu anda kullanılabilir bir aktarıcı yok. Başka bir ağdan denemek çoğu zaman işe yarar.</span>
+    <span data-phrase="view.relay-failed">Paylaşana aktarıcı üzerinden de ulaşılamadı. Sekmesini kapatmış olabilir.</span>
     <span data-phrase="view.error">Bağlanırken bir şeyler ters gitti. Sayfayı yenileyip yeniden deneyin.</span>
     <span data-phrase="view.download">İndir</span>
     <span data-phrase="view.file-gone">Artık paylaşılmıyor</span>

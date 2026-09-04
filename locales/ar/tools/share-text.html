@@ -112,6 +112,19 @@
         </div>
       </div>
 
+      <div id="relayrow" hidden>
+        <p>
+          البديل هو مُرحِّل مشفّر. سيرسل متصفحك ويستقبل عبر خادم ترحيل
+          تديره Cloudflare، يمرّر البايتات المشفّرة ولا يستطيع قراءتها؛
+          ويعرف عنوان شبكتك وعنوان المشارك، كما كان الاتصال المباشر
+          سيعرفهما. لا يُخزَّن هناك شيء أيضاً، وصفحة المشارك ما زالت ترسل
+          إليك وحدك.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="relay" class="primary">أعد المحاولة عبر المُرحِّل</button>
+        </div>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">افحص هذا الرابط مجدداً</button>
       </div>
@@ -173,6 +186,9 @@
     <span data-phrase="view.nobody">لا أحد يشارك على هذا العنوان. ربما أغلق المشارك تبويبه &mdash; وعندها تكون المشاركة قد ذهبت معه.</span>
     <span data-phrase="view.full">بلغت هذه المشاركة حدّها الأقصى من القراء.</span>
     <span data-phrase="view.no-connect">تعذّر بلوغ المشارك مباشرة. قد تكون إحدى الشبكتين لا تسمح باتصال الند للند.</span>
+    <span data-phrase="view.relaying">جارٍ الاتصال عبر المُرحِّل&hellip;</span>
+    <span data-phrase="view.relay-none">لا يوجد مُرحِّل متاح الآن. والمحاولة من شبكة أخرى تنجح غالباً.</span>
+    <span data-phrase="view.relay-failed">تعذّر بلوغ المشارك حتى عبر المُرحِّل. ربما أغلق تبويبه.</span>
     <span data-phrase="view.error">حدث خطأ أثناء الاتصال. أعد تحميل الصفحة وحاول مجدداً.</span>
     <span data-phrase="view.download">تنزيل</span>
     <span data-phrase="view.file-gone">لم يعد مشتركاً</span>

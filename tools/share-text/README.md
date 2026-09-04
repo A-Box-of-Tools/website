@@ -34,8 +34,9 @@ all of that travels the peer channel.
 The endpoint is a constant at the top of `src/main.js` and one line in
 `tool.toml`'s `[csp]`; those two places change together or not at all.
 STUN (Cloudflare's and Google's public servers) helps the browsers discover
-their own addresses; ICE traffic is outside `connect-src`'s vocabulary, which
-is why CSP alone can never fully describe a WebRTC page.
+their own addresses; ICE traffic — STUN and, when a reader chooses it, the
+TURN relay — is outside `connect-src`'s vocabulary, which is why CSP alone
+can never fully describe a WebRTC page.
 
 ## How the pieces work
 
@@ -75,10 +76,37 @@ is why CSP alone can never fully describe a WebRTC page.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
   all with one-off checked. Nothing else is ever stored.
 
+## The relay, and why it is the reader's
+
+Direct first, always: the page dials with STUN alone, and a pair that cannot
+be joined that way — typically a phone on a carrier's address-sharing network
+against a laptop behind a strict router, which is the tool's headline use
+case at its unluckiest — fails after twenty seconds with an honest message.
+That used to be the end of it. It is now followed by an offer, on the
+reader's page only: redial through Cloudflare's TURN service. The reader
+sends `{relay: true}` on the rendezvous socket, the room mints a
+short-lived credential (`relayServers` in the worker, `TURN_KEY_ID` and
+`TURN_KEY_TOKEN` as secrets, eight-hour TTL, once per socket) and hands it
+back as `{relay, iceServers}`, and the page reloads with a flag in
+`sessionStorage` so the redial is a fresh socket and a fresh peer connection
+rather than a renegotiation of a failed one. The sharer's side does not
+change at all: its own candidates pair with the reader's relayed one, and
+ICE's peer-reflexive discovery handles the sharer being the one behind the
+strict NAT.
+
+Why the reader and not the sharer: the relay forwards DTLS ciphertext it holds
+no key to, so what it changes is the path, not what anyone can see — and the
+path on the reader's side is the reader's business, exactly as a VPN would be.
+The sharer's page still sends to that one reader and nowhere else. The relay
+is never chosen for anyone: the page says what it is and what it sees (both
+addresses, as the direct connection would have) and waits for a click, which
+is the same shape as the consent before the direct connection. A rendezvous
+with no key configured, or an older one that does not know the question,
+leaves the ask unanswered, and five seconds of silence becomes "no relay is
+available" — the page degrades to exactly what it was.
+
 ## Limits, deliberate
 
-STUN only — no TURN relay, so peer pairs that are both behind the strictest
-NATs fail with an honest message rather than falling back to a server that
-would carry the bytes. Sixteen readers, 50k characters, 200 MB a file. The
-sharer's tab must stay open and awake: phones suspend background tabs
-quickly, so this is "desktop shares, anyone reads".
+Sixteen readers, 50k characters, 200 MB a file. The sharer's tab must stay
+open and awake: phones suspend background tabs quickly, so this is "desktop
+shares, anyone reads".

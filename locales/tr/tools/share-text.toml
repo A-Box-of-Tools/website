@@ -83,7 +83,10 @@ body = """
       veri kanalından gider: tarayıcınız ile her okuyucunun tarayıcısı
       arasında doğrudan, DTLS ile şifreli bir bağlantı. O yolda sunucu
       yoktur. Aynı ağda baytlar binadan bile çıkmaz &mdash; aynı Wi-Fi'daki
-      iki dizüstü her şeyi yerel olarak aktarır."""
+      iki dizüstü her şeyi yerel olarak aktarır.
+      Tek istisna, ağına doğrudan ulaşılamayan ve bunun üzerine kendi
+      sayfasında şifreli bir aktarıcı seçen okuyucudur: aktarıcı aynı
+      şifreli metni iletir ve onu okuyamaz."""
 
 [[privacy]]
 title = "Aracı nedir, ve gördüğü her şey."
@@ -306,12 +309,19 @@ a = """
 q = "Ya bağlanamazsak?"
 a = """
         Tarayıcı çiftlerinin çoğu tanıştırıldıktan sonra birbirine doğrudan
-        ulaşır; bir azınlık ulaşamaz, genellikle iki taraf da en katı türde
-        kurumsal ya da mobil ağın arkasındayken. Bu sayfa gizlice aktaran
-        bir sunucuya geri düşmez &mdash; bu, aracın ne olduğunu sessizce
-        değiştirirdi &mdash;: yirmi saniye sonra doğrudan bağlantının
-        kurulamadığını açıkça söyler. Başka bir ağdan denemek çoğu zaman
-        çözer."""
+        ulaşır; bir azınlık ulaşamaz, genellikle bir taraf bir mobil
+        operatörün paylaşımlı adres ağındayken ya da katı bir kurumsal ağın
+        arkasındayken. Bu sayfa hiçbir zaman sessizce bir aktarıcıya geçmez
+        &mdash; bu, aracın ne olduğunu söylemeden değiştirmek olurdu
+        &mdash;: yirmi saniye sonra doğrudan bağlantının kurulamadığını
+        açıkça söyler ve okuyucuya bir aktarıcı önerir: iki tarayıcı
+        arasında şifreli baytları ileten ve anahtar iki uçtan hiç
+        ayrılmadığı için onları okuyamayan, Cloudflare'ın işlettiği bir
+        aktarıcı. Okuyucu onu kendi sayfasında, neyi gördüğü &mdash;
+        doğrudan bağlantının göreceği gibi iki adresi &mdash; kendisine
+        söylendikten sonra açıkça seçer ve orada da hiçbir şey saklanmaz.
+        Sizin tarafınız değişmez: tarayıcınız, okuyucu bir VPN'in arkasında
+        olsaydı yapacağı gibi, yine yalnızca o tek okuyucuya gönderir."""
 
 [[faq]]
 q = "Herkes her şeyi paylaşabiliyorsa Markdown'ı işlemek güvenli mi?"
