@@ -8,8 +8,10 @@ import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
 // It carries WebRTC negotiation and nothing else - the text and the files
 // travel the direct channel it sets up. See workers/rendezvous/ in the
-// repository for the whole of what runs there.
-const RENDEZVOUS = 'wss://rendezvous.a-box-of-tools.workers.dev';
+// repository for the whole of what runs there. A subdomain of the site rather
+// than the worker's workers.dev name: that whole domain is blocked inside
+// mainland China, and this one is not.
+const RENDEZVOUS = 'wss://rendezvous.abox.tools';
 const RTC = { iceServers: [{ urls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'] }] };
 
 // A direct connection is what this page is, and it is also what a minority of

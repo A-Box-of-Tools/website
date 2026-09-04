@@ -5,6 +5,21 @@ name = "rendezvous"
 main = "worker.js"
 compatibility_date = "2026-08-01"
 
+# The worker answers on a name under the site's own domain, not only on the
+# workers.dev one it was born with. The whole workers.dev domain is blocked
+# inside mainland China, and a reader there saw the page load and then wait
+# forever for an introduction that could never arrive; abox.tools itself is
+# reachable, so its subdomain is too. `custom_domain = true` has the deploy
+# create the DNS record and the certificate in the zone, which is on the same
+# account, so there is nothing to click. The workers.dev address keeps
+# answering alongside it - a page cached before the switch still finds the
+# switchboard - and the page names this hostname in exactly two places:
+# the constant at the top of tools/share-text/src/main.js and the connect-src
+# line of its tool.toml.
+routes = [
+  { pattern = "rendezvous.abox.tools", custom_domain = true },
+]
+
 [[durable_objects.bindings]]
 name = "ROOMS"
 class_name = "Room"
