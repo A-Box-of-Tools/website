@@ -2,7 +2,7 @@
 import{phrase}from'./shared/phrases.js';
 import{renderMarkdown}from'./markdown.js';
 import{CODE_PATTERN,formatSize,makeCode,normalize}from'./names.js';
-const RENDEZVOUS='wss://rendezvous.a-box-of-tools.workers.dev';
+const RENDEZVOUS='wss://rendezvous.abox.tools';
 const RTC={iceServers:[{urls:['stun:stun.cloudflare.com:3478','stun:stun.l.google.com:19302']}]};
 const RELAY_FLAG=(code)=>`share-text-relay:${code}`;
 const RELAY_WAIT=5000;
