@@ -1060,11 +1060,21 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     src_dir = tool['dir'] / 'src'
     assets = tool_assets(tool)
 
+    # One version for the whole graph, from the sources rather than the
+    # emitted copies, so that a copy carrying the version inside it is not
+    # part of what the version is taken from. Every page tag, every import
+    # and every precache entry asks for a module by this - see
+    # sitelib.version_imports for why. The modules are the same bytes in
+    # every language, so the version is too.
+    sources = [(name, path.read_text(encoding='utf-8')) for name, path in assets]
+    js_v = sitelib.text_hash(''.join(text for _, text in sources))
+    module_hrefs = [f'{name}?v={js_v}' for name, _ in assets]
+
     emitted = []
-    for name, path in assets:
+    for name, text in sources:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
         emitted.append((name, emit.js(
-            dest / name, path.read_text(encoding='utf-8'),
+            dest / name, sitelib.version_imports(text, js_v),
             where=f'{locale["prefix"]}{tool["out_slug"]}/{name}')))
 
     for extra in sorted(src_dir.iterdir()):
@@ -1151,7 +1161,8 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'guide': guide,
             'related': related,
             'ui': ui,
-            'modules': [name for name, _ in assets],
+            'modules': module_hrefs,
+            'js_v': js_v,
             'footer': footer,
             'csp': sitelib.render_csp(root['csp'], root.get('app_csp', {}),
                                       root.get('tool_csp', {}),
@@ -1210,7 +1221,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'words': tool['words'],
         'assets': (['index.html', css_href, 'manifest.json']
-                   + [name for name, _ in assets] + vendored),
+                   + module_hrefs + vendored),
         'cache_scope': f'/{locale["prefix"]}{tool["out_slug"]}/',
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')

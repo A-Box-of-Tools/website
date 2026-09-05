@@ -588,6 +588,36 @@ def text_hash(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()[:10]
 
 
+# A relative module specifier, wherever one can appear: `import './x.js'`,
+# `import {..} from './x.js'`, `export .. from './x.js'`, `import('./x.js')`,
+# and `new URL('./x.js', import.meta.url)`, which is how a worker is named.
+# Only ./ and ../ paths ending in .js, and only ones not already carrying a
+# query: a bare name is a package and a URL is somebody else's.
+_MODULE_SPECIFIER = re.compile(
+    r"""(\b(?:import|from)\s+|\bimport\s*\(\s*|\bnew URL\(\s*)(['"])(\.\.?/[^'"?]+\.js)\2""")
+
+
+def version_imports(text, version):
+    """Puts `?v=<version>` on every relative import in a module, so the whole
+    graph a page loads is asked for by URLs that change when the code does.
+
+    The page's own script tags are versioned the same way, for the reason
+    text_hash gives: scripts are cached for four hours and pages for ten
+    minutes, so a deploy that changes a tool's script and its page together
+    reaches a visitor as the new page running the old script. share-text
+    showed how that ends - the page's Content-Security-Policy named the
+    rendezvous at its new address while the cached script still dialled the
+    old one, and nothing could be shared until the cache turned over.
+
+    Versioning the tag alone would move the problem one import down: a new
+    main.js importing `./shared/x.js` would get whichever x.js the edge held.
+    So every specifier in the emitted copy carries the version too, and the
+    service worker precaches those exact URLs. The source in src/ is
+    untouched; only the deployed copies say where they are in time."""
+    return _MODULE_SPECIFIER.sub(
+        lambda m: f'{m.group(1)}{m.group(2)}{m.group(3)}?v={version}{m.group(2)}', text)
+
+
 # ---------------------------------------------------------------------------
 # Shared parts
 #
