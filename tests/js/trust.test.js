@@ -72,7 +72,7 @@ test('anything else is external, and a look-alike is not the platform', () => {
 });
 
 test('a host the page declared is counted and not reported', () => {
-  const rendezvous = 'rendezvous.a-box-of-tools.workers.dev';
+  const rendezvous = 'rendezvous.abox.tools';
   const sorted = sortHosts(entries(`wss://${rendezvous}/`, `${ORIGIN}/share-text/`),
     page([rendezvous]));
   assert.equal(sorted.total, 2);

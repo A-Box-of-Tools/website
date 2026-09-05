@@ -32,7 +32,10 @@ cannot see: the text, the files, who was admitted, or what a knock said —
 all of that travels the peer channel.
 
 The endpoint is a constant at the top of `src/main.js` and one line in
-`tool.toml`'s `[csp]`; those two places change together or not at all.
+`tool.toml`'s `[csp]`; those two places change together or not at all. It is
+a subdomain of the site, `rendezvous.abox.tools`, rather than the worker's
+own `workers.dev` name, because that whole domain is blocked inside mainland
+China and the site's is not; the worker answers at both.
 STUN (Cloudflare's and Google's public servers) helps the browsers discover
 their own addresses; ICE traffic — STUN and, when a reader chooses it, the
 TURN relay — is outside `connect-src`'s vocabulary, which is why CSP alone

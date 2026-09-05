@@ -101,7 +101,7 @@ card = """
 
 # The one directive this tool widens: its own rendezvous. See csp_note.
 [csp]
-"connect-src" = ["wss://rendezvous.a-box-of-tools.workers.dev"]
+"connect-src" = ["wss://rendezvous.abox.tools"]
 
 [words]
 plural = "shared text and files"

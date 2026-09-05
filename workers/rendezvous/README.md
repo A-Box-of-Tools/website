@@ -33,10 +33,17 @@ to its default, so there is no second stream to account for.
 npx wrangler deploy
 ```
 
-from this directory, logged in to the site's Cloudflare account. The tool
-page names this worker's hostname in its `connect-src` and in one constant
-in `tools/share-text/src/main.js`; if the worker is ever renamed or moved to
-a custom domain, those are the two places that change.
+from this directory, logged in to the site's Cloudflare account. The worker
+answers at `rendezvous.abox.tools`, a custom domain that `wrangler.toml`
+declares and the deploy creates in the zone - the DNS record and the
+certificate both - so no dashboard step exists. It also still answers at
+the `workers.dev` name it was born with, and should keep doing so: a page
+cached before the switch dials the old name. The custom domain is not a
+nicety. The whole `workers.dev` domain is blocked inside mainland China, and
+a reader there saw the page load and then wait forever for an introduction,
+while the site's own domain resolves fine. The tool page names the hostname
+in its `connect-src` and in one constant in `tools/share-text/src/main.js`;
+if the worker ever moves again, those are the two places that change.
 
 This folder is invisible to `build.py` - the deploy is by hand, and rare,
 because nearly every feature the tool has gained since the first version has
