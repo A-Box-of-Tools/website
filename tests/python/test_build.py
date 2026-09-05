@@ -55,6 +55,46 @@ def warm(tree):
 
 
 
+class VersionedImports(unittest.TestCase):
+    """sitelib.version_imports: every way a module names another, and the
+    ways a string that looks like one is not."""
+
+    def rewrite(self, text):
+        return buildmod.sitelib.version_imports(text, 'abc123')
+
+    def test_every_kind_of_relative_specifier_gets_the_version(self):
+        cases = {
+            "import { a } from './x.js';": "import { a } from './x.js?v=abc123';",
+            'import b from "../y.js";': 'import b from "../y.js?v=abc123";',
+            "import './side-effect.js';": "import './side-effect.js?v=abc123';",
+            "export { c } from './shared/z.js';": "export { c } from './shared/z.js?v=abc123';",
+            "const m = await import('./late.js');": "const m = await import('./late.js?v=abc123');",
+            "import( './spaced.js' )": "import( './spaced.js?v=abc123' )",
+            "new Worker(new URL('./worker.js', import.meta.url), { type: 'module' })":
+                "new Worker(new URL('./worker.js?v=abc123', import.meta.url), { type: 'module' })",
+        }
+        for source, expected in cases.items():
+            with self.subTest(source=source):
+                self.assertEqual(self.rewrite(source), expected)
+
+    def test_what_is_not_a_relative_module_is_left_alone(self):
+        untouched = [
+            "import x from 'https://example.com/x.js';",
+            "import y from 'package';",
+            "import z from './already.js?v=0';",
+            "const p = './not-an-import.js';",
+            "fetch('./data.json')",
+            "import.meta.url",
+        ]
+        for source in untouched:
+            with self.subTest(source=source):
+                self.assertEqual(self.rewrite(source), source)
+
+    def test_the_rewrite_is_the_same_twice(self):
+        once = self.rewrite("import { a } from './x.js';")
+        self.assertEqual(self.rewrite(once), once)
+
+
 class GuideGroups(unittest.TestCase):
     """Every way a guide could be written and then linked to from nowhere.
 
@@ -624,6 +664,32 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_every_module_is_asked_for_by_one_versioned_url_everywhere(self):
+        """The page's two module tags, its modulepreloads, every relative
+        import inside the emitted modules, and the worker's precache list all
+        name a module by the same `?v=<hash>`. Any one of them bare, or on a
+        different version, is a way for a deploy to pair a new page with a
+        stale module - see sitelib.version_imports."""
+        for slug in ('stack-images', self.a_tool()):
+            if not (self.out / slug / 'index.html').is_file():
+                continue
+            with self.subTest(tool=slug):
+                page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
+                worker = (self.out / slug / 'sw.js').read_text(encoding='utf-8')
+                version = page.split('src="src/main.js?v=')[1].split('"')[0]
+                self.assertRegex(version, r'^[0-9a-f]{10}$')
+                self.assertIn(f'src="src/shared/trust.js?v={version}"', page)
+                self.assertIn(f'href="src/main.js?v={version}"', page)
+                self.assertIn(f"'src/main.js?v={version}'", worker)
+                self.assertNotIn("'src/main.js'", worker)
+                for module in sorted((self.out / slug / 'src').rglob('*.js')):
+                    text = module.read_text(encoding='utf-8')
+                    bare = re.findall(r"""(?:import|from)\s*\(?\s*['"](\.\.?/[^'"]+)['"]""", text)
+                    with self.subTest(module=module.name):
+                        for specifier in bare:
+                            self.assertTrue(specifier.endswith(f'?v={version}'),
+                                            f'{specifier} is not on this deploy\'s version')
+
     def test_a_tool_pages_links_leave_in_a_new_tab_except_the_switcher(self):
         """Every link away from a tool page opens elsewhere - see frame().
 
@@ -858,7 +924,7 @@ class BuildTheSite(unittest.TestCase):
             text = (self.out / name).read_text(encoding='utf-8')
             with self.subTest(page=name):
                 self.assertIn(asked, text)
-                self.assertLess(text.index(asked), text.index('src="src/main.js"'),
+                self.assertLess(text.index(asked), text.index('src="src/main.js?v='),
                                 'it has to be listening before the picker is')
 
         for name in self.written:

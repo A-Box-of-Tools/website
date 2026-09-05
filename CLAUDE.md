@@ -22,7 +22,9 @@ own page at length, which is the pattern any future network feature must follow
 (see the guarantees comment in `config/site.toml`).
 
 No dependencies, no lockfile, no build step for the JavaScript. What is in
-`tools/<slug>/src/` is byte for byte what the browser runs.
+`tools/<slug>/src/` is what the browser runs, minified for deployment and with
+`?v=<hash>` on every relative import so a deploy never pairs a new page with a
+cached old module (`sitelib.version_imports`); nothing else is transformed.
 
 ## Commands
 

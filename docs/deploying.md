@@ -110,6 +110,18 @@ It matches on the whole request, query string included, so a worker that cached
 styled online and bare offline. `build.py` passes the same string to both, which
 is the only reason they cannot drift.
 
+**The modules are versioned the same way, imports included.** A tool's page
+asks for `src/main.js?v=<hash>` and `src/shared/trust.js?v=<hash>`, its
+modulepreloads say the same, and inside every emitted module each relative
+import - `from './x.js'`, `import('./x.js')`, `new URL('./x.js', ...)` - carries
+the same `?v=`. One hash per tool, taken from the module sources, so a change
+to any one of them moves every URL in the graph. Versioning the tag alone
+would move the stale copy one import down. This one was found the hard way
+too: the rendezvous moved to a new address, the page's policy moved with it,
+and for a while the cached `main.js` dialled the old address under a page that
+forbade it. The files in `src/` are untouched; only the deployed copies carry
+the query, and `sitelib.version_imports` is the whole of the rewrite.
+
 ## The 404 page
 
 `build.py` writes `404.html` to the root of the output, which is where

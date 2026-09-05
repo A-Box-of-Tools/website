@@ -476,8 +476,12 @@
   script that fills it in is the frame's too - copied into src/shared/ by the
   build like phrases.js, and loaded here rather than imported by main.js, so a
   tool whose own script fails to boot still gets an honest panel.
+
+  Versioned, like the stylesheet above and every import inside these modules,
+  so a deploy that changes a script and this page together cannot reach a
+  visitor as the new page running the old script. See sitelib.version_imports.
 -->
-<script type="module" src="src/shared/trust.js"></script>
-<script type="module" src="src/main.js"></script>
+<script type="module" src="src/shared/trust.js?v={{ js_v }}"></script>
+<script type="module" src="src/main.js?v={{ js_v }}"></script>
 </body>
 </html>
