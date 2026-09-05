@@ -1,25 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/파비콘-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'79b9ade8bd';
+const CACHE_NAME=CACHE_PREFIX+'38a9c4ed2c';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=7d6b11678a',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/files.js',
-'src/icns.js',
-'src/ico.js',
-'src/main.js',
-'src/pack.js',
-'src/render.js',
-'src/sizes.js',
+'src/shared/phrases.js?v=a69b115f80',
+'src/shared/trust.js?v=a69b115f80',
+'src/shared/file-picker.js?v=a69b115f80',
+'src/shared/zip.js?v=a69b115f80',
+'src/shared/crc32.js?v=a69b115f80',
+'src/shared/message-box.js?v=a69b115f80',
+'src/shared/format.js?v=a69b115f80',
+'src/files.js?v=a69b115f80',
+'src/icns.js?v=a69b115f80',
+'src/ico.js?v=a69b115f80',
+'src/main.js?v=a69b115f80',
+'src/pack.js?v=a69b115f80',
+'src/render.js?v=a69b115f80',
+'src/sizes.js?v=a69b115f80',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

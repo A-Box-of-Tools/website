@@ -1,13 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{saveBlob}from'./shared/download.js';
-import{KINDS,compose,missing}from'./payload.js';
-import{makeQr}from'./qr.js';
-import{capacityFor}from'./qr-encode.js';
-import{SYMBOLOGIES,makeBarcode}from'./barcode.js';
+import{phrase}from'./shared/phrases.js?v=b5506e299a';
+import{saveBlob}from'./shared/download.js?v=b5506e299a';
+import{KINDS,compose,missing}from'./payload.js?v=b5506e299a';
+import{makeQr}from'./qr.js?v=b5506e299a';
+import{capacityFor}from'./qr-encode.js?v=b5506e299a';
+import{SYMBOLOGIES,makeBarcode}from'./barcode.js?v=b5506e299a';
 import{
 barcodeSvg,qrSvg,sizeOfSvg,svgToPng,
-}from'./render.js';
+}from'./render.js?v=b5506e299a';
 const $=(id)=>document.getElementById(id);
 const el={
 symbology:$('symbology'),

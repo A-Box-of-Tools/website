@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{drawUpright}from'./draw.js';
-import{micros}from'./shared/webcodecs.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=05da797a51';
+import{drawUpright}from'./draw.js?v=05da797a51';
+import{micros}from'./shared/webcodecs.js?v=05da797a51';
+import{throwIfAborted}from'./shared/errors.js?v=05da797a51';
 export function displayOrder(video){
 const list=video.samples.map((sample,decode)=>({
 decode,

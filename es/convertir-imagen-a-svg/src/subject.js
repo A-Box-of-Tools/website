@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{otsu}from'./mask.js';
+import{otsu}from'./mask.js?v=154adf5d1e';
 export const SUBJECT_DEFAULTS={
 band:0.05,
 useBorder:true,

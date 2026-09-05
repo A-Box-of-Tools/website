@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{decodeRLE}from'./rle.js';
-import{decodeJPEGLossless}from'./jpeg-lossless.js';
-import{number,numbers,text}from'./values.js';
-import{refuse}from'./refusal.js';
+import{decodeRLE}from'./rle.js?v=df43bc672f';
+import{decodeJPEGLossless}from'./jpeg-lossless.js?v=df43bc672f';
+import{number,numbers,text}from'./values.js?v=df43bc672f';
+import{refuse}from'./refusal.js?v=df43bc672f';
 export function imageInfo(dataset,decoder){
 const rows=number(dataset,'00280010',decoder,0);
 const columns=number(dataset,'00280011',decoder,0);

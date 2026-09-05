@@ -1,24 +1,24 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/analizzare-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'3a8c4ddd07';
+const CACHE_NAME=CACHE_PREFIX+'77271ffe17';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=4fd0e9915c',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/budget.js',
-'src/findings.js',
-'src/format.js',
-'src/frames.js',
-'src/gif.js',
-'src/lzw.js',
-'src/main.js',
-'src/reader.js',
-'src/report.js',
+'src/shared/phrases.js?v=bed13b6cb6',
+'src/shared/trust.js?v=bed13b6cb6',
+'src/shared/file-picker.js?v=bed13b6cb6',
+'src/shared/message-box.js?v=bed13b6cb6',
+'src/budget.js?v=bed13b6cb6',
+'src/findings.js?v=bed13b6cb6',
+'src/format.js?v=bed13b6cb6',
+'src/frames.js?v=bed13b6cb6',
+'src/gif.js?v=bed13b6cb6',
+'src/lzw.js?v=bed13b6cb6',
+'src/main.js?v=bed13b6cb6',
+'src/reader.js?v=bed13b6cb6',
+'src/report.js?v=bed13b6cb6',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

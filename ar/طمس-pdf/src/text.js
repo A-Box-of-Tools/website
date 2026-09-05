@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{lex}from'./content.js';
-import{decodeStream}from'./shared/pdf-filters.js';
-import{glyphsOf,readFonts}from'./fonts.js';
-import{isName,Name,PdfStream,PdfString,Ref}from'./shared/pdf-objects.js';
-import{decodeText}from'./strings.js';
+import{lex}from'./content.js?v=48fbbf8377';
+import{decodeStream}from'./shared/pdf-filters.js?v=48fbbf8377';
+import{glyphsOf,readFonts}from'./fonts.js?v=48fbbf8377';
+import{isName,Name,PdfStream,PdfString,Ref}from'./shared/pdf-objects.js?v=48fbbf8377';
+import{decodeText}from'./strings.js?v=48fbbf8377';
 const SPACE_GAP=0.25;
 const LINE_GAP=0.4;
 const MAX_DEPTH=12;

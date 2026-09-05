@@ -1,20 +1,20 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{measureImage}from'./shared/media.js';
-import{saveBlob}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
+import{phrase}from'./shared/phrases.js?v=6ce0c50246';
+import{measureImage}from'./shared/media.js?v=6ce0c50246';
+import{saveBlob}from'./shared/download.js?v=6ce0c50246';
+import{messageBox}from'./shared/message-box.js?v=6ce0c50246';
 import{
 decode,encodableTypes,release,FORMATS,JPEG,PNG,WEBP,READABLE,
-}from'./codecs.js';
+}from'./codecs.js?v=6ce0c50246';
 import{
 fitToTarget,keepFormat,alternativeFormat,QUALITY_FLOOR,
-}from'./compress.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{compare,hasTransparency}from'./measure.js';
+}from'./compress.js?v=6ce0c50246';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=6ce0c50246';
+import{compare,hasTransparency}from'./measure.js?v=6ce0c50246';
 import{
 bytes,targetBytes,dimensions,outName,change,matchText,psnrText,
-}from'./files.js';
-import{makeZip}from'./shared/zip.js';
+}from'./files.js?v=6ce0c50246';
+import{makeZip}from'./shared/zip.js?v=6ce0c50246';
 const $=(id)=>document.getElementById(id);
 const say=(saying)=>(saying?phrase(saying.key,saying.values):'');
 const humanBytes=(n)=>say(bytes(n));

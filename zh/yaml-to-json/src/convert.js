@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{parseJson,printJson}from'./shared/parse-json.js';
-import{parseYaml,printYaml}from'./shared/parse-yaml.js';
+import{parseJson,printJson}from'./shared/parse-json.js?v=f87a3bb150';
+import{parseYaml,printYaml}from'./shared/parse-yaml.js?v=f87a3bb150';
 export function jsonToYaml(text,{indent=2}={}){
 return printYaml(parseJson(text),{indent});
 }

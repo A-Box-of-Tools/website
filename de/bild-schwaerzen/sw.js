@@ -1,21 +1,21 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-schwaerzen/:';
-const CACHE_NAME=CACHE_PREFIX+'745ec0b9f5';
+const CACHE_NAME=CACHE_PREFIX+'7c1e20e86d';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=3278deebe7',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/files.js',
-'src/main.js',
-'src/preview.js',
-'src/redact.js',
-'src/regions.js',
-'src/stage.js',
+'src/shared/phrases.js?v=c44e3bded9',
+'src/shared/trust.js?v=c44e3bded9',
+'src/shared/file-picker.js?v=c44e3bded9',
+'src/shared/message-box.js?v=c44e3bded9',
+'src/files.js?v=c44e3bded9',
+'src/main.js?v=c44e3bded9',
+'src/preview.js?v=c44e3bded9',
+'src/redact.js?v=c44e3bded9',
+'src/regions.js?v=c44e3bded9',
+'src/stage.js?v=c44e3bded9',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

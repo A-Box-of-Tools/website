@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{SCALES,outputSize,planRun,scaleThatFits}from'./plan.js';
+import{phrase}from'./shared/phrases.js?v=6592a180a2';
+import{messageBox}from'./shared/message-box.js?v=6592a180a2';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=6592a180a2';
+import{SCALES,outputSize,planRun,scaleThatFits}from'./plan.js?v=6592a180a2';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -62,7 +62,7 @@ let local=null;
 function ensureWorker(){
 if(worker||local)return;
 try{
-worker=new Worker(new URL('./worker.js',import.meta.url),{type:'module'});
+worker=new Worker(new URL('./worker.js?v=6592a180a2',import.meta.url),{type:'module'});
 worker.addEventListener('message',(event)=>handle(event.data));
 worker.addEventListener('error',()=>{
 worker=null;
@@ -70,7 +70,7 @@ showError(phrase('error.unknown'));
 finishRun();
 });
 }catch{
-local=import('./pipeline.js');
+local=import('./pipeline.js?v=6592a180a2');
 }
 }
 async function send(message){

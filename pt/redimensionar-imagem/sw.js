@@ -1,25 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/redimensionar-imagem/:';
-const CACHE_NAME=CACHE_PREFIX+'6b3879564d';
+const CACHE_NAME=CACHE_PREFIX+'3942f4fe9f';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=a730c7cd79',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/media.js',
-'src/shared/format.js',
-'src/shared/cropper.js',
-'src/codecs.js',
-'src/files.js',
-'src/geometry.js',
-'src/main.js',
+'src/shared/phrases.js?v=cff3c8840c',
+'src/shared/trust.js?v=cff3c8840c',
+'src/shared/file-picker.js?v=cff3c8840c',
+'src/shared/zip.js?v=cff3c8840c',
+'src/shared/crc32.js?v=cff3c8840c',
+'src/shared/message-box.js?v=cff3c8840c',
+'src/shared/download.js?v=cff3c8840c',
+'src/shared/media.js?v=cff3c8840c',
+'src/shared/format.js?v=cff3c8840c',
+'src/shared/cropper.js?v=cff3c8840c',
+'src/codecs.js?v=cff3c8840c',
+'src/files.js?v=cff3c8840c',
+'src/geometry.js?v=cff3c8840c',
+'src/main.js?v=cff3c8840c',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

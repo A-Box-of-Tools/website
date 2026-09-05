@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{padTo,setDensity}from'./jpeg.js';
+import{padTo,setDensity}from'./jpeg.js?v=147d2bfb4a';
 export const JPEG='image/jpeg';
 export async function decode(file){
 if(typeof createImageBitmap==='function'){

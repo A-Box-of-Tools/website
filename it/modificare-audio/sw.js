@@ -1,25 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/modificare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'b9e195e3c7';
+const CACHE_NAME=CACHE_PREFIX+'6743da63c6';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=83afbff316',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/audio-decode.js',
-'src/shared/samplerate.js',
-'src/shared/wav.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/edit.js',
-'src/effects.js',
-'src/main.js',
-'src/speed.js',
-'src/stretch.js',
-'src/waveform.js',
+'src/shared/phrases.js?v=06e52d0bdb',
+'src/shared/trust.js?v=06e52d0bdb',
+'src/shared/file-picker.js?v=06e52d0bdb',
+'src/shared/audio-decode.js?v=06e52d0bdb',
+'src/shared/samplerate.js?v=06e52d0bdb',
+'src/shared/wav.js?v=06e52d0bdb',
+'src/shared/message-box.js?v=06e52d0bdb',
+'src/shared/format.js?v=06e52d0bdb',
+'src/edit.js?v=06e52d0bdb',
+'src/effects.js?v=06e52d0bdb',
+'src/main.js?v=06e52d0bdb',
+'src/speed.js?v=06e52d0bdb',
+'src/stretch.js?v=06e52d0bdb',
+'src/waveform.js?v=06e52d0bdb',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

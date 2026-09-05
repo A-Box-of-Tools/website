@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PT_PER_INCH,PT_PER_MM}from'./shared/pdf-page-writer.js';
+import{PT_PER_INCH,PT_PER_MM}from'./shared/pdf-page-writer.js?v=3e8b71192e';
 export const PAGE_SIZES={
 a3:[297,420],
 a4:[210,297],

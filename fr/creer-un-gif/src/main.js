@@ -1,14 +1,14 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{phrase}from'./shared/phrases.js?v=935edb04f5';
+import{sizeText,durationText}from'./shared/format.js?v=935edb04f5';
+import{messageBox}from'./shared/message-box.js?v=935edb04f5';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=935edb04f5';
 import{
 loadImages,releaseItem,sortItems,moveItem,decodeFull,
 clampDelay,DEFAULT_DELAY,MIN_DELAY,MAX_DELAY,
-}from'./images.js';
-import{drawFrame,resolveOutputSize,MAX_SIDE}from'./compose.js';
-import{encodeGif,loopValue}from'./encode.js';
+}from'./images.js?v=935edb04f5';
+import{drawFrame,resolveOutputSize,MAX_SIDE}from'./compose.js?v=935edb04f5';
+import{encodeGif,loopValue}from'./encode.js?v=935edb04f5';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

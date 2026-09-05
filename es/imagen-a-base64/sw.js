@@ -1,22 +1,22 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/imagen-a-base64/:';
-const CACHE_NAME=CACHE_PREFIX+'b4bb0b87ba';
+const CACHE_NAME=CACHE_PREFIX+'09d15287c2';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=cc9a0dd042',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/encode.js',
-'src/files.js',
-'src/main.js',
-'src/metadata.js',
-'src/shapes.js',
-'src/sniff.js',
+'src/shared/phrases.js?v=99bbf4b1ff',
+'src/shared/trust.js?v=99bbf4b1ff',
+'src/shared/file-picker.js?v=99bbf4b1ff',
+'src/shared/message-box.js?v=99bbf4b1ff',
+'src/shared/format.js?v=99bbf4b1ff',
+'src/encode.js?v=99bbf4b1ff',
+'src/files.js?v=99bbf4b1ff',
+'src/main.js?v=99bbf4b1ff',
+'src/metadata.js?v=99bbf4b1ff',
+'src/shapes.js?v=99bbf4b1ff',
+'src/sniff.js?v=99bbf4b1ff',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

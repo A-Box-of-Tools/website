@@ -1,22 +1,22 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{measureImage}from'./shared/media.js';
-import{saveBlob}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
+import{phrase}from'./shared/phrases.js?v=cff3c8840c';
+import{measureImage}from'./shared/media.js?v=cff3c8840c';
+import{saveBlob}from'./shared/download.js?v=cff3c8840c';
+import{messageBox}from'./shared/message-box.js?v=cff3c8840c';
 import{
 decode,encodableTypes,keepFormat,release,render as renderImage,
 FORMATS,JPEG,PNG,WEBP,READABLE,
-}from'./codecs.js';
+}from'./codecs.js?v=cff3c8840c';
 import{
 fromFractions,isUntouched,parseRatio,plan,ratioCrop,toFractions,wholeOf,
-}from'./geometry.js';
-import{Cropper}from'./shared/cropper.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+}from'./geometry.js?v=cff3c8840c';
+import{Cropper}from'./shared/cropper.js?v=cff3c8840c';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=cff3c8840c';
 import{
 bytes,change as changeOf,countOf as imageCount,describePlan as planText,
 dimensions,outName,scaleText,
-}from'./files.js';
-import{makeZip}from'./shared/zip.js';
+}from'./files.js?v=cff3c8840c';
+import{makeZip}from'./shared/zip.js?v=cff3c8840c';
 const $=(id)=>document.getElementById(id);
 const humanBytes=(n)=>bytes(n,phrase);
 const change=(before,after)=>changeOf(before,after,phrase);

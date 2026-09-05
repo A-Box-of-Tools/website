@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{said}from'./shared/errors.js';
-const ENGINE=new URL('../vendor/libheif.js',import.meta.url);
+import{said}from'./shared/errors.js?v=2d5096652c';
+const ENGINE=new URL('../vendor/libheif.js?v=2d5096652c',import.meta.url);
 let loading=null;
 export function warmEngine(){
 engine().catch(()=>{

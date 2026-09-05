@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{fft2}from'./fft.js';
+import{fft2}from'./fft.js?v=6592a180a2';
 export const ALIGN_MODES=['none','translate','similarity'];
 export const MAX_ROTATION=30;
 export const MIN_SCALE=0.8;

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{sizeText}from'./shared/format.js';
+import{sizeText}from'./shared/format.js?v=a69b115f80';
 export const bytes=(n,t)=>sizeText(n,t,{under:'size.bytes',kb:'auto',mb:2});
 export const dimensions=(width,height)=>`${width} × ${height}`;
 export const countOf=(n,noun,t)=>

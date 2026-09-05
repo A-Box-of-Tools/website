@@ -1,14 +1,14 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{Mp4Writer,avcSampleEntry}from'./shared/mp4-writer.js';
-import{drawFitted}from'./draw.js';
-import{pickH264Codec}from'./shared/video-support.js';
-import{reversedAudioTrack}from'./audio.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=710dc5c362';
+import{Mp4Writer,avcSampleEntry}from'./shared/mp4-writer.js?v=710dc5c362';
+import{drawFitted}from'./draw.js?v=710dc5c362';
+import{pickH264Codec}from'./shared/video-support.js?v=710dc5c362';
+import{reversedAudioTrack}from'./audio.js?v=710dc5c362';
 import{
 closeDurations,frameWindows,gopRanges,outputSize,reversedTimes,windowLimit,
-}from'./timeline.js';
-import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js';
-import{throwIfAborted,said}from'./shared/errors.js';
+}from'./timeline.js?v=710dc5c362';
+import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js?v=710dc5c362';
+import{throwIfAborted,said}from'./shared/errors.js?v=710dc5c362';
 const VIDEO_TIMESCALE=90000;
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};

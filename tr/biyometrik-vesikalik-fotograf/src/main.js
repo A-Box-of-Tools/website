@@ -1,29 +1,29 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
+import{phrase}from'./shared/phrases.js?v=147d2bfb4a';
+import{messageBox}from'./shared/message-box.js?v=147d2bfb4a';
 import{
 SPECS,backgroundOf,pixelLabel,portalBytes,portalPixels,printLabel,
 specById,specsByCountry,trim,withCustom,
-}from'./specs.js';
+}from'./specs.js?v=147d2bfb4a';
 import{
 fitFrame,frameAspect,guideLines,measure,passes,printPixels,resampling,
-}from'./geometry.js';
-import{PAPERS,bestSheet,describeSheet,paperById}from'./sheet.js';
+}from'./geometry.js?v=147d2bfb4a';
+import{PAPERS,bestSheet,describeSheet,paperById}from'./sheet.js?v=147d2bfb4a';
 import{
 checkBackground,checkSignature,readBackground,readSignature,
-}from'./background.js';
+}from'./background.js?v=147d2bfb4a';
 import{
 decode,drawCrop,drawSheet,encodePrint,encodeToBand,free,release,
 samplePixels,sizeText,
-}from'./encode.js';
-import{WORKING_EDGE,findMarks}from'./detect.js';
-import{Cropper}from'./cropper.js';
-import{Marks}from'./marks.js';
+}from'./encode.js?v=147d2bfb4a';
+import{WORKING_EDGE,findMarks}from'./detect.js?v=147d2bfb4a';
+import{Cropper}from'./cropper.js?v=147d2bfb4a';
+import{Marks}from'./marks.js?v=147d2bfb4a';
 import{
 bandText,centreText,outName,readyText,resamplingText,statusClass,stemOf,
 tiltText,verdictText,
-}from'./files.js';
-import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
+}from'./files.js?v=147d2bfb4a';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js?v=147d2bfb4a';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

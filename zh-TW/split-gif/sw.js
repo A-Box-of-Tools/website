@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/split-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'479fa6996b';
+const CACHE_NAME=CACHE_PREFIX+'ad8865d283';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=45f2dcd005',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/compose.js',
-'src/frames.js',
-'src/gif.js',
-'src/main.js',
-'src/sheet.js',
+'src/shared/phrases.js?v=cc214ca370',
+'src/shared/trust.js?v=cc214ca370',
+'src/shared/file-picker.js?v=cc214ca370',
+'src/shared/zip.js?v=cc214ca370',
+'src/shared/crc32.js?v=cc214ca370',
+'src/shared/message-box.js?v=cc214ca370',
+'src/shared/format.js?v=cc214ca370',
+'src/compose.js?v=cc214ca370',
+'src/frames.js?v=cc214ca370',
+'src/gif.js?v=cc214ca370',
+'src/main.js?v=cc214ca370',
+'src/sheet.js?v=cc214ca370',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

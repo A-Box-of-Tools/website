@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{loadImages as loadList}from'./shared/image-list.js';
-export{decodeFull,moveItem,releaseItem,sortItems}from'./shared/image-list.js';
+import{loadImages as loadList}from'./shared/image-list.js?v=935edb04f5';
+export{decodeFull,moveItem,releaseItem,sortItems}from'./shared/image-list.js?v=935edb04f5';
 const THUMB_MAX=200;
 export const DEFAULT_DELAY=0.5;
 export const MIN_DELAY=0.02;

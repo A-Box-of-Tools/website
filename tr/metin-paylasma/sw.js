@@ -1,16 +1,16 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/metin-paylasma/:';
-const CACHE_NAME=CACHE_PREFIX+'7584c87743';
+const CACHE_NAME=CACHE_PREFIX+'ab263724dd';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=3618686fe1',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/main.js',
-'src/markdown.js',
-'src/names.js',
+'src/shared/phrases.js?v=94109b3ace',
+'src/shared/trust.js?v=94109b3ace',
+'src/main.js?v=94109b3ace',
+'src/markdown.js?v=94109b3ace',
+'src/names.js?v=94109b3ace',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

@@ -1,13 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{readSource}from'./assemble.js';
-import{bytes,count as countOf,shortName}from'./format.js';
-import{sizeLabel}from'./pages.js';
-import{describeRanges,parseRanges}from'./plan.js';
-import{produce}from'./produce.js';
-import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{phrase}from'./shared/phrases.js?v=9577a93b49';
+import{messageBox}from'./shared/message-box.js?v=9577a93b49';
+import{readSource}from'./assemble.js?v=9577a93b49';
+import{bytes,count as countOf,shortName}from'./format.js?v=9577a93b49';
+import{sizeLabel}from'./pages.js?v=9577a93b49';
+import{describeRanges,parseRanges}from'./plan.js?v=9577a93b49';
+import{produce}from'./produce.js?v=9577a93b49';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js?v=9577a93b49';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=9577a93b49';
 const $=(id)=>document.getElementById(id);
 const humanBytes=(n)=>bytes(n,phrase);
 const count=(n,noun)=>countOf(n,noun,phrase);

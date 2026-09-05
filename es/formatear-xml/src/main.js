@@ -1,12 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{downloadLink}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{parseXml,printXml}from'./shared/parse-xml.js';
-import{CONVERSIONS,conversionById}from'./convert.js';
-import{SAMPLES}from'./samples.js';
+import{phrase,fill}from'./shared/phrases.js?v=b3cdabb13c';
+import{sizeText}from'./shared/format.js?v=b3cdabb13c';
+import{downloadLink}from'./shared/download.js?v=b3cdabb13c';
+import{messageBox}from'./shared/message-box.js?v=b3cdabb13c';
+import{wireFilePicker}from'./shared/file-picker.js?v=b3cdabb13c';
+import{parseXml,printXml}from'./shared/parse-xml.js?v=b3cdabb13c';
+import{CONVERSIONS,conversionById}from'./convert.js?v=b3cdabb13c';
+import{SAMPLES}from'./samples.js?v=b3cdabb13c';
 const $=(id)=>document.getElementById(id);
 const el={
 tabs:Array.from(document.querySelectorAll('.tab')),

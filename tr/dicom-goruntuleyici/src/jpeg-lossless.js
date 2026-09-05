@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{refuse}from'./refusal.js';
+import{refuse}from'./refusal.js?v=df43bc672f';
 const SOF3=0xc3;
 const DHT=0xc4;
 const SOI=0xd8;

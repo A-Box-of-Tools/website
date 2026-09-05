@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{uidName}from'./uids.js';
+import{uidName}from'./uids.js?v=df43bc672f';
 const TEXT=new Set(['AE','AS','CS','DA','DS','DT','IS','LO','LT',
 'PN','SH','ST','TM','UC','UI','UR','UT']);
 const SINGLE=new Set(['LT','ST','UT','UR']);

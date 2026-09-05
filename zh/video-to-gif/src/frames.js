@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{drawScaled,frameCanvas}from'./shared/frame-canvas.js';
-import{decoderConfig,settle}from'./shared/webcodecs.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=e168e3fc1d';
+import{drawScaled,frameCanvas}from'./shared/frame-canvas.js?v=e168e3fc1d';
+import{decoderConfig,settle}from'./shared/webcodecs.js?v=e168e3fc1d';
+import{throwIfAborted}from'./shared/errors.js?v=e168e3fc1d';
 const REORDER_SLACK=0.5;
 const SEEK_TIMEOUT=10_000;
 class Sampler{

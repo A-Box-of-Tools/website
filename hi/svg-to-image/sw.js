@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/svg-to-image/:';
-const CACHE_NAME=CACHE_PREFIX+'fe1e46f420';
+const CACHE_NAME=CACHE_PREFIX+'e9c47f54a0';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=b800f5587e',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/files.js',
-'src/main.js',
-'src/render.js',
-'src/sizing.js',
-'src/svg.js',
+'src/shared/phrases.js?v=954778cf04',
+'src/shared/trust.js?v=954778cf04',
+'src/shared/file-picker.js?v=954778cf04',
+'src/shared/zip.js?v=954778cf04',
+'src/shared/crc32.js?v=954778cf04',
+'src/shared/message-box.js?v=954778cf04',
+'src/shared/format.js?v=954778cf04',
+'src/files.js?v=954778cf04',
+'src/main.js?v=954778cf04',
+'src/render.js?v=954778cf04',
+'src/sizing.js?v=954778cf04',
+'src/svg.js?v=954778cf04',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

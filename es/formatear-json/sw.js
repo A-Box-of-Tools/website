@@ -1,26 +1,26 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/formatear-json/:';
-const CACHE_NAME=CACHE_PREFIX+'1c5d8fd5f3';
+const CACHE_NAME=CACHE_PREFIX+'07bc3b54e9';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=c8ec849bd7',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/parse-errors.js',
-'src/shared/parse-json.js',
-'src/shared/parse-yaml.js',
-'src/shared/parse-xml.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/format.js',
-'src/convert.js',
-'src/css.js',
-'src/format.js',
-'src/main.js',
-'src/samples.js',
+'src/shared/phrases.js?v=c08a72bca6',
+'src/shared/trust.js?v=c08a72bca6',
+'src/shared/file-picker.js?v=c08a72bca6',
+'src/shared/parse-errors.js?v=c08a72bca6',
+'src/shared/parse-json.js?v=c08a72bca6',
+'src/shared/parse-yaml.js?v=c08a72bca6',
+'src/shared/parse-xml.js?v=c08a72bca6',
+'src/shared/message-box.js?v=c08a72bca6',
+'src/shared/download.js?v=c08a72bca6',
+'src/shared/format.js?v=c08a72bca6',
+'src/convert.js?v=c08a72bca6',
+'src/css.js?v=c08a72bca6',
+'src/format.js?v=c08a72bca6',
+'src/main.js?v=c08a72bca6',
+'src/samples.js?v=c08a72bca6',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

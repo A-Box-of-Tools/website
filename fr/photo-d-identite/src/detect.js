@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{deltaE,rgbToLab}from'./background.js';
+import{deltaE,rgbToLab}from'./background.js?v=147d2bfb4a';
 export const WORKING_EDGE=480;
 const SMALLEST_HEAD=24;
 const EYE_LEVEL=0.49;

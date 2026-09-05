@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{encode,FORMATS,JPEG,PNG,WEBP}from'./codecs.js';
+import{encode,FORMATS,JPEG,PNG,WEBP}from'./codecs.js?v=6ce0c50246';
 export const QUALITY_CEILING=0.94;
 export const QUALITY_FLOOR=0.62;
 export const SEARCH_QUALITY=0.8;

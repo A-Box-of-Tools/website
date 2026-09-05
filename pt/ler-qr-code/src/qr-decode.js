@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{correct}from'./reed-solomon.js';
+import{correct}from'./reed-solomon.js?v=e0be586cb6';
 import{
 alignmentPositions,blockLayout,countBits,remainderBits,sizeOf,totalCodewords,
-}from'./shared/qr-tables.js';
+}from'./shared/qr-tables.js?v=e0be586cb6';
 const ALPHANUMERIC='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
 const LEVEL_OF_BITS={0:'M',1:'L',2:'H',3:'Q'};
 const ECI_CHARSETS={

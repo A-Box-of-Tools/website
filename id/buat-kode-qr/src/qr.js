@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{encodeText}from'./qr-encode.js';
+import{encodeText}from'./qr-encode.js?v=b5506e299a';
 import{
 alignmentPositions,LEVEL_BITS,RECOVERY,sizeOf,
-}from'./shared/qr-tables.js';
+}from'./shared/qr-tables.js?v=b5506e299a';
 const MASKS=[
 (row,col)=>(row+col)%2===0,
 (row)=>row%2===0,

@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{walk}from'./dicom.js';
-import{describe,formatTag}from'./dictionary.js';
-import{display}from'./values.js';
-import{fileSize}from'./format.js';
+import{walk}from'./dicom.js?v=df43bc672f';
+import{describe,formatTag}from'./dictionary.js?v=df43bc672f';
+import{display}from'./values.js?v=df43bc672f';
+import{fileSize}from'./format.js?v=df43bc672f';
 export function report(file,decoder,t){
 const lines=[];
 const say=(text='')=>lines.push(text);

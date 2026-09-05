@@ -1,12 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{saveBlob}from'./shared/download.js';
-import{SHAPES,objectShape,shapeOf}from'./figures.js';
-import{FONT,chartSvg,isDark}from'./chart.js';
-import{format,formatBoth,parseHeight,toInput}from'./units.js';
-import{svgBlob,svgToPng}from'./save.js';
-import{LIMITS,importSvg}from'./import-svg.js';
-import{IMAGE_LIMITS,fit,imageMarkup,nameFromFile}from'./import-image.js';
+import{phrase}from'./shared/phrases.js?v=c0afd74cac';
+import{saveBlob}from'./shared/download.js?v=c0afd74cac';
+import{SHAPES,objectShape,shapeOf}from'./figures.js?v=c0afd74cac';
+import{FONT,chartSvg,isDark}from'./chart.js?v=c0afd74cac';
+import{format,formatBoth,parseHeight,toInput}from'./units.js?v=c0afd74cac';
+import{svgBlob,svgToPng}from'./save.js?v=c0afd74cac';
+import{LIMITS,importSvg}from'./import-svg.js?v=c0afd74cac';
+import{IMAGE_LIMITS,fit,imageMarkup,nameFromFile}from'./import-image.js?v=c0afd74cac';
 const $=(id)=>document.getElementById(id);
 const el={
 rows:$('rows'),

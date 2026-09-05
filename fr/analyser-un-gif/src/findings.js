@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{isFullCanvas,duration}from'./frames.js';
+import{isFullCanvas,duration}from'./frames.js?v=bed13b6cb6';
 const LEVELS={bad:0,warn:1,note:2};
 export function findings(gif,stats={}){
 const out=[];

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{sizeText}from'./shared/format.js';
+import{sizeText}from'./shared/format.js?v=cc214ca370';
 export const formatBytes=(n,t)=>sizeText(n,t,{under:'size.b',kb:'auto',mb:1});
 const THUMB_MAX=168;
 export function frameName(sourceName,number,total){

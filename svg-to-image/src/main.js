@@ -1,20 +1,20 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
+import{phrase,fill}from'./shared/phrases.js?v=954778cf04';
+import{messageBox}from'./shared/message-box.js?v=954778cf04';
 import{
 decodeSvgText,intrinsicSize,looksLikeSvg,
-}from'./svg.js';
+}from'./svg.js?v=954778cf04';
 import{
 MODES,atDensity,checkLimits,describePlan,planSize,times,
-}from'./sizing.js';
+}from'./sizing.js?v=954778cf04';
 import{
 FORMATS,JPEG,PNG,WEBP,draw,encodableTypes,loadAt,rasterize,
-}from'./render.js';
+}from'./render.js?v=954778cf04';
 import{
 bytes as humanBytes,dimensions,outName,sourceKey,uniqueNames,
-}from'./files.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{makeZip}from'./shared/zip.js';
+}from'./files.js?v=954778cf04';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=954778cf04';
+import{makeZip}from'./shared/zip.js?v=954778cf04';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{md5}from'./md5.js';
-import{sha1}from'./sha1.js';
-import{sha256}from'./sha256.js';
-import{sha384,sha512}from'./sha512.js';
+import{md5}from'./md5.js?v=37afe7ce81';
+import{sha1}from'./sha1.js?v=37afe7ce81';
+import{sha256}from'./sha256.js?v=37afe7ce81';
+import{sha384,sha512}from'./sha512.js?v=37afe7ce81';
 export const ALGORITHMS={
 md5:{create:md5,tag:'MD5',hex:32},
 sha1:{create:sha1,tag:'SHA1',hex:40},

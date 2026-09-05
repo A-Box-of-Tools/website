@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import*as jpeg from'./jpeg.js';
-import*as png from'./png.js';
-import*as webp from'./webp.js';
-import{parseExif,serializeExif}from'./tiff.js';
+import*as jpeg from'./jpeg.js?v=8f41c9007e';
+import*as png from'./png.js?v=8f41c9007e';
+import*as webp from'./webp.js?v=8f41c9007e';
+import{parseExif,serializeExif}from'./tiff.js?v=8f41c9007e';
 const HANDLERS={jpeg,png,webp};
 export const KIND_NAMES={jpeg:'JPEG',png:'PNG',webp:'WebP'};
 const latin1=new TextDecoder('latin1');

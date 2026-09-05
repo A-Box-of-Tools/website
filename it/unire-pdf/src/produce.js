@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{assemble}from'./assemble.js';
-import{archiveName,outputNames,splitInto}from'./plan.js';
-import{count}from'./format.js';
-import{PdfDocument}from'./shared/pdf-reader.js';
-import{makeZip}from'./shared/zip.js';
-import{writeDocument}from'./shared/pdf-writer.js';
+import{assemble}from'./assemble.js?v=9577a93b49';
+import{archiveName,outputNames,splitInto}from'./plan.js?v=9577a93b49';
+import{count}from'./format.js?v=9577a93b49';
+import{PdfDocument}from'./shared/pdf-reader.js?v=9577a93b49';
+import{makeZip}from'./shared/zip.js?v=9577a93b49';
+import{writeDocument}from'./shared/pdf-writer.js?v=9577a93b49';
 export async function produce(entries,how,{onProgress,signal,t}={}){
 const parts=splitInto(entries,how.split);
 const names=outputNames(parts,{

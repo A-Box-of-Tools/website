@@ -1,17 +1,17 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{writeIco,dibEntry,readIcoDirectory}from'./ico.js';
-import{writeIcns,readIcnsElements,ICNS_TYPES,ICNS_SIZES}from'./icns.js';
-import{PRESETS,SIZES,WHY,presetById,storageFor,dibBytes}from'./sizes.js';
-import{decode,release,square,pixels,png,FIT,NOMINAL_VECTOR}from'./render.js';
-import{PACK_IMAGES,manifest,browserConfig,headSnippet,readme}from'./pack.js';
+import{phrase}from'./shared/phrases.js?v=a69b115f80';
+import{messageBox}from'./shared/message-box.js?v=a69b115f80';
+import{writeIco,dibEntry,readIcoDirectory}from'./ico.js?v=a69b115f80';
+import{writeIcns,readIcnsElements,ICNS_TYPES,ICNS_SIZES}from'./icns.js?v=a69b115f80';
+import{PRESETS,SIZES,WHY,presetById,storageFor,dibBytes}from'./sizes.js?v=a69b115f80';
+import{decode,release,square,pixels,png,FIT,NOMINAL_VECTOR}from'./render.js?v=a69b115f80';
+import{PACK_IMAGES,manifest,browserConfig,headSnippet,readme}from'./pack.js?v=a69b115f80';
 import{
 bytes,dimensions,countOf as count,iconName,folderFor,
 describe as describeSizes,listOf as joinList,
-}from'./files.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{makeZip}from'./shared/zip.js';
+}from'./files.js?v=a69b115f80';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=a69b115f80';
+import{makeZip}from'./shared/zip.js?v=a69b115f80';
 const $=(id)=>document.getElementById(id);
 const humanBytes=(n)=>bytes(n,phrase);
 const countOf=(n,noun)=>count(n,noun,phrase);

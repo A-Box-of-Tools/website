@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تكديس-الصور/:';
-const CACHE_NAME=CACHE_PREFIX+'e9b6941ca0';
+const CACHE_NAME=CACHE_PREFIX+'d0099281a8';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=006c29eb58',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/align.js',
-'src/fft.js',
-'src/main.js',
-'src/pipeline.js',
-'src/plan.js',
-'src/raw.js',
-'src/stack.js',
-'src/worker.js',
+'src/shared/phrases.js?v=6592a180a2',
+'src/shared/trust.js?v=6592a180a2',
+'src/shared/file-picker.js?v=6592a180a2',
+'src/shared/message-box.js?v=6592a180a2',
+'src/align.js?v=6592a180a2',
+'src/fft.js?v=6592a180a2',
+'src/main.js?v=6592a180a2',
+'src/pipeline.js?v=6592a180a2',
+'src/plan.js?v=6592a180a2',
+'src/raw.js?v=6592a180a2',
+'src/stack.js?v=6592a180a2',
+'src/worker.js?v=6592a180a2',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

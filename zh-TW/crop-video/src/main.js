@@ -1,15 +1,15 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{decoderConfig,averageFps}from'./shared/webcodecs.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{cropExact,grabFrame}from'./transcode.js';
-import{cropByRecording}from'./record.js';
-import{Cropper}from'./shared/cropper.js';
-import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js';
+import{phrase,fill}from'./shared/phrases.js?v=517f38ef82';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js?v=517f38ef82';
+import{sizeText,durationText}from'./shared/format.js?v=517f38ef82';
+import{openInPlayer}from'./shared/media.js?v=517f38ef82';
+import{messageBox}from'./shared/message-box.js?v=517f38ef82';
+import{wireFilePicker}from'./shared/file-picker.js?v=517f38ef82';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=517f38ef82';
+import{cropExact,grabFrame}from'./transcode.js?v=517f38ef82';
+import{cropByRecording}from'./record.js?v=517f38ef82';
+import{Cropper}from'./shared/cropper.js?v=517f38ef82';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js?v=517f38ef82';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

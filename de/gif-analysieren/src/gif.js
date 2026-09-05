@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ByteReader,Truncated,text}from'./reader.js';
+import{ByteReader,Truncated,text}from'./reader.js?v=bed13b6cb6';
 const EXTENSION=0x21;
 const IMAGE_DESCRIPTOR=0x2c;
 const TRAILER=0x3b;

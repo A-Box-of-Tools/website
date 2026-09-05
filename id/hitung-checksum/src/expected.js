@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ALGORITHMS,ORDER}from'./hash.js';
+import{ALGORITHMS,ORDER}from'./hash.js?v=37afe7ce81';
 const BY_LENGTH=new Map(ORDER.map((id)=>[ALGORITHMS[id].hex,id]));
 const TAGGED=/^[^\S\n]*[A-Za-z0-9-]+[^\S\n]*\(([^)]*)\)[^\S\n]*=[^\S\n]*([0-9a-fA-F]+)[^\S\n]*$/;
 const GNU=/^[^\S\n]*([0-9a-fA-F]{16,160})[^\S\n]+[*?^ ]?[^\S\n]*(\S.*?)[^\S\n]*$/;

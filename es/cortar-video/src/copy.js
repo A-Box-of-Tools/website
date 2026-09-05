@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Mp4Writer,MOVIE_TIMESCALE}from'./shared/mp4-writer.js';
-import{planRanges}from'./ranges.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{Mp4Writer,MOVIE_TIMESCALE}from'./shared/mp4-writer.js?v=6ce570d903';
+import{planRanges}from'./ranges.js?v=6ce570d903';
+import{throwIfAborted}from'./shared/errors.js?v=6ce570d903';
 function rescale(ticks,from,to){
 return from===to?ticks:ticks*to/from;
 }

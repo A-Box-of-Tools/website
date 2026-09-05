@@ -1,16 +1,16 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{saveBlob}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
-import{encodePixels,encodableTypes,FORMATS,JPEG,PNG,WEBP}from'./codecs.js';
-import{heifBrand,isAvif,readExif}from'./boxes.js';
-import{describeExif,fitsInJpeg,uprightExif,withExif}from'./exif.js';
-import{decodeHeic,engine,warmEngine}from'./heif.js';
+import{phrase}from'./shared/phrases.js?v=2d5096652c';
+import{saveBlob}from'./shared/download.js?v=2d5096652c';
+import{messageBox}from'./shared/message-box.js?v=2d5096652c';
+import{encodePixels,encodableTypes,FORMATS,JPEG,PNG,WEBP}from'./codecs.js?v=2d5096652c';
+import{heifBrand,isAvif,readExif}from'./boxes.js?v=2d5096652c';
+import{describeExif,fitsInJpeg,uprightExif,withExif}from'./exif.js?v=2d5096652c';
+import{decodeHeic,engine,warmEngine}from'./heif.js?v=2d5096652c';
 import{
 bytes as humanBytes,change,dimensions,metadataText,outName,uniqueNames,
-}from'./files.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{makeZip}from'./shared/zip.js';
+}from'./files.js?v=2d5096652c';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=2d5096652c';
+import{makeZip}from'./shared/zip.js?v=2d5096652c';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

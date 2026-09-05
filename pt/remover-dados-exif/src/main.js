@@ -1,17 +1,17 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{measureImage}from'./shared/media.js';
-import{saveBlob}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{makeZip}from'./shared/zip.js';
-import{readImage,readBytes,serialize,exifBytes,outputType,KIND_NAMES}from'./container.js';
-import{serializeExif,setEntryValue,createEntry,TYPE}from'./tiff.js';
-import{describeTag}from'./tags.js';
+import{phrase}from'./shared/phrases.js?v=8f41c9007e';
+import{measureImage}from'./shared/media.js?v=8f41c9007e';
+import{saveBlob}from'./shared/download.js?v=8f41c9007e';
+import{messageBox}from'./shared/message-box.js?v=8f41c9007e';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=8f41c9007e';
+import{makeZip}from'./shared/zip.js?v=8f41c9007e';
+import{readImage,readBytes,serialize,exifBytes,outputType,KIND_NAMES}from'./container.js?v=8f41c9007e';
+import{serializeExif,setEntryValue,createEntry,TYPE}from'./tiff.js?v=8f41c9007e';
+import{describeTag}from'./tags.js?v=8f41c9007e';
 import{
 formatValue,readPosition,buildFindings,badges,bytes as humanBytes,
 countTags,metadataSize,hasMetadata,tagGroups,
-}from'./report.js';
+}from'./report.js?v=8f41c9007e';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

@@ -1,21 +1,21 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/extraer-audio-de-video/:';
-const CACHE_NAME=CACHE_PREFIX+'cbf3b707f2';
+const CACHE_NAME=CACHE_PREFIX+'70167699c0';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=83afbff316',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/audio-decode.js',
-'src/shared/samplerate.js',
-'src/shared/wav.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/main.js',
-'src/mono.js',
+'src/shared/phrases.js?v=03fa3304f1',
+'src/shared/trust.js?v=03fa3304f1',
+'src/shared/file-picker.js?v=03fa3304f1',
+'src/shared/audio-decode.js?v=03fa3304f1',
+'src/shared/samplerate.js?v=03fa3304f1',
+'src/shared/wav.js?v=03fa3304f1',
+'src/shared/message-box.js?v=03fa3304f1',
+'src/shared/format.js?v=03fa3304f1',
+'src/main.js?v=03fa3304f1',
+'src/mono.js?v=03fa3304f1',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

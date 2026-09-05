@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{said}from'./shared/errors.js';
+import{said}from'./shared/errors.js?v=2d5096652c';
 export const JPEG='image/jpeg';
 export const PNG='image/png';
 export const WEBP='image/webp';

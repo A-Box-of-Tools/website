@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{GifWriter}from'./gif.js';
-import{createHistogram,addToHistogram,buildPalette,mapFrame}from'./quantize.js';
-import{drawFrame}from'./compose.js';
-import{decodeFull}from'./images.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{GifWriter}from'./gif.js?v=935edb04f5';
+import{createHistogram,addToHistogram,buildPalette,mapFrame}from'./quantize.js?v=935edb04f5';
+import{drawFrame}from'./compose.js?v=935edb04f5';
+import{decodeFull}from'./images.js?v=935edb04f5';
+import{throwIfAborted}from'./shared/errors.js?v=935edb04f5';
 const yieldToPage=()=>new Promise((resolve)=>setTimeout(resolve,0));
 export function loopValue(mode,times){
 if(mode==='once')return null;

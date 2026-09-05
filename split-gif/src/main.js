@@ -1,15 +1,15 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeGif,GifFormatError,playedDelay,totalDuration}from'./gif.js';
-import{GifCanvas,flatten,parseColour,patchPixels}from'./compose.js';
+import{phrase}from'./shared/phrases.js?v=cc214ca370';
+import{messageBox}from'./shared/message-box.js?v=cc214ca370';
+import{wireFilePicker}from'./shared/file-picker.js?v=cc214ca370';
+import{decodeGif,GifFormatError,playedDelay,totalDuration}from'./gif.js?v=cc214ca370';
+import{GifCanvas,flatten,parseColour,patchPixels}from'./compose.js?v=cc214ca370';
 import{
 disposalLabel,encodePng,formatBytes,formatSeconds,
 baseName,frameName,thumbnail,timingList,zipName,
-}from'./frames.js';
-import{makeZip}from'./shared/zip.js';
-import{cellAt,sheetName,sheetPlan}from'./sheet.js';
+}from'./frames.js?v=cc214ca370';
+import{makeZip}from'./shared/zip.js?v=cc214ca370';
+import{cellAt,sheetName,sheetPlan}from'./sheet.js?v=cc214ca370';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

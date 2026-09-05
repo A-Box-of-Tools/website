@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Name}from'./pdf-objects.js';
+import{Name}from'./pdf-objects.js?v=9577a93b49';
 const IMAGE_FILTERS=new Set([
 'DCTDecode','DCT','JPXDecode','JBIG2Decode','CCITTFaxDecode','CCF',
 ]);

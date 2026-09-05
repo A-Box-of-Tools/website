@@ -1,11 +1,11 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{isGoTo,namedDestinations,resolveDestination}from'./dests.js';
-import{count}from'./format.js';
-import{decodeText,normalizeRotation,readPages}from'./pages.js';
-import{pruneOutline,readOutline,writeOutline}from'./outline.js';
+import{isGoTo,namedDestinations,resolveDestination}from'./dests.js?v=9577a93b49';
+import{count}from'./format.js?v=9577a93b49';
+import{decodeText,normalizeRotation,readPages}from'./pages.js?v=9577a93b49';
+import{pruneOutline,readOutline,writeOutline}from'./outline.js?v=9577a93b49';
 import{
 isName,name,Name,PdfStream,Ref,
-}from'./shared/pdf-objects.js';
+}from'./shared/pdf-objects.js?v=9577a93b49';
 const SKIPPED_PAGE_KEYS=new Set([
 'Parent','B','StructParents','Metadata','PieceInfo','AA','Annots',
 'Rotate','MediaBox','Type','LastModified','Tabs',

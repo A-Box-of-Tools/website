@@ -1,12 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{downloadLink}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{LANGUAGES,languageById,formatText,detectLanguage}from'./format.js';
-import{CONVERSIONS,conversionById}from'./convert.js';
-import{SAMPLES}from'./samples.js';
+import{phrase,fill}from'./shared/phrases.js?v=c08a72bca6';
+import{sizeText}from'./shared/format.js?v=c08a72bca6';
+import{downloadLink}from'./shared/download.js?v=c08a72bca6';
+import{messageBox}from'./shared/message-box.js?v=c08a72bca6';
+import{wireFilePicker}from'./shared/file-picker.js?v=c08a72bca6';
+import{LANGUAGES,languageById,formatText,detectLanguage}from'./format.js?v=c08a72bca6';
+import{CONVERSIONS,conversionById}from'./convert.js?v=c08a72bca6';
+import{SAMPLES}from'./samples.js?v=c08a72bca6';
 const $=(id)=>document.getElementById(id);
 const el={
 tabs:Array.from(document.querySelectorAll('.tab')),

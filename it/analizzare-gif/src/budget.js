@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{HEADER_BYTES}from'./gif.js';
+import{HEADER_BYTES}from'./gif.js?v=bed13b6cb6';
 export function budget(gif){
 let controls=0;
 let descriptors=0;

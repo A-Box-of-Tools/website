@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{drawWaveform}from'./waveform.js';
-import{Timeline as Bar,formatTime,parseTime}from'./shared/timeline.js';
+import{drawWaveform}from'./waveform.js?v=2782288283';
+import{Timeline as Bar,formatTime,parseTime}from'./shared/timeline.js?v=2782288283';
 export{formatTime,parseTime};
 const MIN_SEGMENT=0.02;
 export class Timeline extends Bar{

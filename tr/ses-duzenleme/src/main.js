@@ -1,13 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
-import{render,lengthAfter}from'./edit.js';
-import{peak,dbToGain,gainToDb,normalizeGain}from'./effects.js';
-import{writeWav,wavSize}from'./shared/wav.js';
-import{drawWaveform}from'./waveform.js';
+import{phrase}from'./shared/phrases.js?v=06e52d0bdb';
+import{sizeText}from'./shared/format.js?v=06e52d0bdb';
+import{messageBox}from'./shared/message-box.js?v=06e52d0bdb';
+import{wireFilePicker}from'./shared/file-picker.js?v=06e52d0bdb';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js?v=06e52d0bdb';
+import{render,lengthAfter}from'./edit.js?v=06e52d0bdb';
+import{peak,dbToGain,gainToDb,normalizeGain}from'./effects.js?v=06e52d0bdb';
+import{writeWav,wavSize}from'./shared/wav.js?v=06e52d0bdb';
+import{drawWaveform}from'./waveform.js?v=06e52d0bdb';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

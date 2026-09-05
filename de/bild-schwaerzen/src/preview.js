@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{applyRegions}from'./redact.js';
+import{applyRegions}from'./redact.js?v=c44e3bded9';
 const MAX_SIDE=1800;
 export class Preview{
 #canvas;

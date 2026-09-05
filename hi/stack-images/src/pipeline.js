@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{WEAK_PEAK,estimate,phaseCorrelate,window2d}from'./align.js';
+import{WEAK_PEAK,estimate,phaseCorrelate,window2d}from'./align.js?v=6592a180a2';
 import{
 bands,commonArea,outputSize,placement,planRun,refineMargin,refineWindow,workingSize,
-}from'./plan.js';
-import{findPreview,jpegSize,looksRaw}from'./raw.js';
-import{createStack}from'./stack.js';
+}from'./plan.js?v=6592a180a2';
+import{findPreview,jpegSize,looksRaw}from'./raw.js?v=6592a180a2';
+import{createStack}from'./stack.js?v=6592a180a2';
 export const ALIGN_SIZE=256;
 const THUMB_SIZE=256;
 const MIN_PREVIEW_PIXELS=640*480;

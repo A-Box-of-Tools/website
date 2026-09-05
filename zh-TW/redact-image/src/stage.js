@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{HANDLES,MIN_SIZE,clampRect,fromDrag,isUsable,moveRect,resizeRect}from'./regions.js';
+import{HANDLES,MIN_SIZE,clampRect,fromDrag,isUsable,moveRect,resizeRect}from'./regions.js?v=c44e3bded9';
 export class Stage{
 #stage;
 #handlers;

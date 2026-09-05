@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ByteSink}from'./bytes.js';
+import{ByteSink}from'./bytes.js?v=935edb04f5';
 const MAX_CODE=4096;
 const MAX_CODE_SIZE=12;
 export function lzwEncode(indices,minCodeSize){

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{inspectJpeg}from'./jpeg.js';
+import{inspectJpeg}from'./jpeg.js?v=3e8b71192e';
 const THUMB_MAX=320;
 const HEAD_BYTES=512*1024;
 let nextId=1;

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{sniffSampleRate}from'./samplerate.js';
+import{sniffSampleRate}from'./samplerate.js?v=06e52d0bdb';
 const FALLBACK_RATE=48000;
 export class UnreadableFile extends Error{
 constructor(message){

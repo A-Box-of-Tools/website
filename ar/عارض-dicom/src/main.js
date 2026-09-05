@@ -1,17 +1,17 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{PIXEL_DATA,parseDataset,parseFile,walk}from'./dicom.js';
-import{describe,formatTag}from'./dictionary.js';
-import{charset,display,text}from'./values.js';
-import{sopClass}from'./uids.js';
-import{decodeFrame,frameFragment,imageInfo}from'./pixels.js';
-import{CT_PRESETS,fileWindows,fullRange,measured,render}from'./window.js';
-import{describeInstance,organise,sliceSpacing}from'./series.js';
-import{identifiers}from'./identity.js';
-import{report}from'./report.js';
-import{count,fileSize,exact,millimetres,quantity,windowLabel}from'./format.js';
+import{phrase}from'./shared/phrases.js?v=df43bc672f';
+import{messageBox}from'./shared/message-box.js?v=df43bc672f';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=df43bc672f';
+import{PIXEL_DATA,parseDataset,parseFile,walk}from'./dicom.js?v=df43bc672f';
+import{describe,formatTag}from'./dictionary.js?v=df43bc672f';
+import{charset,display,text}from'./values.js?v=df43bc672f';
+import{sopClass}from'./uids.js?v=df43bc672f';
+import{decodeFrame,frameFragment,imageInfo}from'./pixels.js?v=df43bc672f';
+import{CT_PRESETS,fileWindows,fullRange,measured,render}from'./window.js?v=df43bc672f';
+import{describeInstance,organise,sliceSpacing}from'./series.js?v=df43bc672f';
+import{identifiers}from'./identity.js?v=df43bc672f';
+import{report}from'./report.js?v=df43bc672f';
+import{count,fileSize,exact,millimetres,quantity,windowLabel}from'./format.js?v=df43bc672f';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

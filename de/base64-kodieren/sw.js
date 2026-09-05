@@ -1,20 +1,20 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/base64-kodieren/:';
-const CACHE_NAME=CACHE_PREFIX+'b94a92aa9b';
+const CACHE_NAME=CACHE_PREFIX+'bc9f1d844b';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=091d0d7806',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/format.js',
-'src/encode.js',
-'src/main.js',
-'src/samples.js',
+'src/shared/phrases.js?v=55a2a4f312',
+'src/shared/trust.js?v=55a2a4f312',
+'src/shared/file-picker.js?v=55a2a4f312',
+'src/shared/message-box.js?v=55a2a4f312',
+'src/shared/download.js?v=55a2a4f312',
+'src/shared/format.js?v=55a2a4f312',
+'src/encode.js?v=55a2a4f312',
+'src/main.js?v=55a2a4f312',
+'src/samples.js?v=55a2a4f312',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

@@ -1,26 +1,26 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/biometrisches-passbild/:';
-const CACHE_NAME=CACHE_PREFIX+'2533c43ab4';
+const CACHE_NAME=CACHE_PREFIX+'d541191446';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=8829daeccc',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/background.js',
-'src/cropper.js',
-'src/detect.js',
-'src/encode.js',
-'src/files.js',
-'src/geometry.js',
-'src/jpeg.js',
-'src/main.js',
-'src/marks.js',
-'src/sheet.js',
-'src/specs.js',
+'src/shared/phrases.js?v=147d2bfb4a',
+'src/shared/trust.js?v=147d2bfb4a',
+'src/shared/file-picker.js?v=147d2bfb4a',
+'src/shared/message-box.js?v=147d2bfb4a',
+'src/background.js?v=147d2bfb4a',
+'src/cropper.js?v=147d2bfb4a',
+'src/detect.js?v=147d2bfb4a',
+'src/encode.js?v=147d2bfb4a',
+'src/files.js?v=147d2bfb4a',
+'src/geometry.js?v=147d2bfb4a',
+'src/jpeg.js?v=147d2bfb4a',
+'src/main.js?v=147d2bfb4a',
+'src/marks.js?v=147d2bfb4a',
+'src/sheet.js?v=147d2bfb4a',
+'src/specs.js?v=147d2bfb4a',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

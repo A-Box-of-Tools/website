@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{OBJECTS}from'./objects.js';
-import{TRACED}from'./traced.js';
+import{OBJECTS}from'./objects.js?v=c0afd74cac';
+import{TRACED}from'./traced.js?v=c0afd74cac';
 export const SHAPES=[
 ...Object.entries(TRACED).map(([id,art])=>({
 id,

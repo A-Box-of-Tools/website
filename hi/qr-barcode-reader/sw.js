@@ -1,24 +1,24 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/qr-barcode-reader/:';
-const CACHE_NAME=CACHE_PREFIX+'5366899e37';
+const CACHE_NAME=CACHE_PREFIX+'a5771df0cf';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=ef39771fc6',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/qr-tables.js',
-'src/binarize.js',
-'src/camera.js',
-'src/detect.js',
-'src/linear.js',
-'src/main.js',
-'src/payload.js',
-'src/qr-decode.js',
-'src/reed-solomon.js',
-'src/scan.js',
+'src/shared/phrases.js?v=e0be586cb6',
+'src/shared/trust.js?v=e0be586cb6',
+'src/shared/file-picker.js?v=e0be586cb6',
+'src/shared/qr-tables.js?v=e0be586cb6',
+'src/binarize.js?v=e0be586cb6',
+'src/camera.js?v=e0be586cb6',
+'src/detect.js?v=e0be586cb6',
+'src/linear.js?v=e0be586cb6',
+'src/main.js?v=e0be586cb6',
+'src/payload.js?v=e0be586cb6',
+'src/qr-decode.js?v=e0be586cb6',
+'src/reed-solomon.js?v=e0be586cb6',
+'src/scan.js?v=e0be586cb6',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

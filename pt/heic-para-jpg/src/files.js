@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FORMATS}from'./codecs.js';
-import{sizeText}from'./shared/format.js';
+import{FORMATS}from'./codecs.js?v=2d5096652c';
+import{sizeText}from'./shared/format.js?v=2d5096652c';
 export const bytes=(n,t)=>sizeText(n,t,{under:'size.bytes',kb:'auto',mb:2});
 export function dimensions(width,height){
 return`${width} × ${height}`;

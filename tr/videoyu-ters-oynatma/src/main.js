@@ -1,15 +1,15 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{decoderConfig,averageFps}from'./shared/webcodecs.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{reverseExact}from'./reverse.js';
-import{measureFps,reverseByPlayback}from'./playback.js';
-import{gopRanges}from'./timeline.js';
-import{hasWebCodecs,hasEncoder,canDecode}from'./shared/video-support.js';
+import{phrase}from'./shared/phrases.js?v=710dc5c362';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js?v=710dc5c362';
+import{sizeText,durationText}from'./shared/format.js?v=710dc5c362';
+import{openInPlayer}from'./shared/media.js?v=710dc5c362';
+import{messageBox}from'./shared/message-box.js?v=710dc5c362';
+import{wireFilePicker}from'./shared/file-picker.js?v=710dc5c362';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=710dc5c362';
+import{reverseExact}from'./reverse.js?v=710dc5c362';
+import{measureFps,reverseByPlayback}from'./playback.js?v=710dc5c362';
+import{gopRanges}from'./timeline.js?v=710dc5c362';
+import{hasWebCodecs,hasEncoder,canDecode}from'./shared/video-support.js?v=710dc5c362';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

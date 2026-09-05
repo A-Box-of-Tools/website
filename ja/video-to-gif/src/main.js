@@ -1,16 +1,16 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{decoderConfig}from'./shared/webcodecs.js';
-import{sizeText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{framesByDecoding,framesByPlaying}from'./frames.js';
-import{encodeGif,ColorHistogram,MAX_COLORS}from'./encode.js';
-import{RangeBar,formatTime,parseTime}from'./range.js';
-import{frameTimes,frameDelays,outputSize,workingBytes,estimateBytes,MAX_FPS}from'./plan.js';
-import{hasWebCodecs,canDecode}from'./support.js';
+import{phrase}from'./shared/phrases.js?v=e168e3fc1d';
+import{decoderConfig}from'./shared/webcodecs.js?v=e168e3fc1d';
+import{sizeText}from'./shared/format.js?v=e168e3fc1d';
+import{openInPlayer}from'./shared/media.js?v=e168e3fc1d';
+import{messageBox}from'./shared/message-box.js?v=e168e3fc1d';
+import{wireFilePicker}from'./shared/file-picker.js?v=e168e3fc1d';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=e168e3fc1d';
+import{framesByDecoding,framesByPlaying}from'./frames.js?v=e168e3fc1d';
+import{encodeGif,ColorHistogram,MAX_COLORS}from'./encode.js?v=e168e3fc1d';
+import{RangeBar,formatTime,parseTime}from'./range.js?v=e168e3fc1d';
+import{frameTimes,frameDelays,outputSize,workingBytes,estimateBytes,MAX_FPS}from'./plan.js?v=e168e3fc1d';
+import{hasWebCodecs,canDecode}from'./support.js?v=e168e3fc1d';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

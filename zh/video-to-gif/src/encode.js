@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ColorHistogram,Palette,medianCut,amplitudeFor,quantizeFrame}from'./quantize.js';
-import{GifWriter,diffFrame}from'./gif.js';
+import{ColorHistogram,Palette,medianCut,amplitudeFor,quantizeFrame}from'./quantize.js?v=e168e3fc1d';
+import{GifWriter,diffFrame}from'./gif.js?v=e168e3fc1d';
 export const MAX_COLORS=255;
 const MAX_DELAY=0xffff;
 const YIELD_EVERY=8;

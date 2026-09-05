@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeelding-naar-svg/:';
-const CACHE_NAME=CACHE_PREFIX+'5baddd60d0';
+const CACHE_NAME=CACHE_PREFIX+'e459d36f31';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=933513ef95',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/download.js',
-'src/contour.js',
-'src/fit.js',
-'src/main.js',
-'src/mask.js',
-'src/regions.js',
-'src/subject.js',
-'src/trace.js',
-'src/view.js',
+'src/shared/phrases.js?v=154adf5d1e',
+'src/shared/trust.js?v=154adf5d1e',
+'src/shared/file-picker.js?v=154adf5d1e',
+'src/shared/download.js?v=154adf5d1e',
+'src/contour.js?v=154adf5d1e',
+'src/fit.js?v=154adf5d1e',
+'src/main.js?v=154adf5d1e',
+'src/mask.js?v=154adf5d1e',
+'src/regions.js?v=154adf5d1e',
+'src/subject.js?v=154adf5d1e',
+'src/trace.js?v=154adf5d1e',
+'src/view.js?v=154adf5d1e',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

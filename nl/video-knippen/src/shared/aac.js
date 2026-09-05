@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{fourcc,bytes,concat,u16,u32,box}from'./mp4-boxes.js';
+import{fourcc,bytes,concat,u16,u32,box}from'./mp4-boxes.js?v=6ce570d903';
 const DEFAULT_BITRATE=160_000;
 function descriptorLength(view,at){
 let value=0;

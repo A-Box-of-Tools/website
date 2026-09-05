@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{Mp4Writer,VIDEO_TIMESCALE}from'./mp4.js';
-import{drawCropped}from'./draw.js';
-import{pickH264Codec}from'./shared/video-support.js';
-import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js';
-import{throwIfAborted,said}from'./shared/errors.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=517f38ef82';
+import{Mp4Writer,VIDEO_TIMESCALE}from'./mp4.js?v=517f38ef82';
+import{drawCropped}from'./draw.js?v=517f38ef82';
+import{pickH264Codec}from'./shared/video-support.js?v=517f38ef82';
+import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js?v=517f38ef82';
+import{throwIfAborted,said}from'./shared/errors.js?v=517f38ef82';
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
 const MIN_BITRATE=200_000;

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ByteSink}from'./bytes.js';
-import{lzwEncode}from'./lzw.js';
+import{ByteSink}from'./bytes.js?v=935edb04f5';
+import{lzwEncode}from'./lzw.js?v=935edb04f5';
 const EXTENSION=0x21;
 const IMAGE_DESCRIPTOR=0x2c;
 const TRAILER=0x3b;

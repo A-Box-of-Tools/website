@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Mp4Muxer}from'./shared/mp4-muxer.js';
-import{QUEUE_LIMIT}from'./shared/webcodecs.js';
+import{Mp4Muxer}from'./shared/mp4-muxer.js?v=afd42a1152';
+import{QUEUE_LIMIT}from'./shared/webcodecs.js?v=afd42a1152';
 const KEYFRAME_SECONDS=2;
 export class TimelapseWriter{
 #encoder=null;

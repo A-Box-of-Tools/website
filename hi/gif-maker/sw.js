@@ -1,26 +1,26 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/gif-maker/:';
-const CACHE_NAME=CACHE_PREFIX+'0a5e984cbd';
+const CACHE_NAME=CACHE_PREFIX+'11f7c39105';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=6fe2389ef7',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/shared/errors.js',
-'src/shared/image-list.js',
-'src/bytes.js',
-'src/compose.js',
-'src/encode.js',
-'src/gif.js',
-'src/images.js',
-'src/lzw.js',
-'src/main.js',
-'src/quantize.js',
+'src/shared/phrases.js?v=935edb04f5',
+'src/shared/trust.js?v=935edb04f5',
+'src/shared/file-picker.js?v=935edb04f5',
+'src/shared/message-box.js?v=935edb04f5',
+'src/shared/format.js?v=935edb04f5',
+'src/shared/errors.js?v=935edb04f5',
+'src/shared/image-list.js?v=935edb04f5',
+'src/bytes.js?v=935edb04f5',
+'src/compose.js?v=935edb04f5',
+'src/encode.js?v=935edb04f5',
+'src/gif.js?v=935edb04f5',
+'src/images.js?v=935edb04f5',
+'src/lzw.js?v=935edb04f5',
+'src/main.js?v=935edb04f5',
+'src/quantize.js?v=935edb04f5',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

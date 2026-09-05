@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FORMATS}from'./codecs.js';
+import{FORMATS}from'./codecs.js?v=6ce0c50246';
 export function bytes(n){
 if(n<1024)return{key:'size.bytes',values:{amount:n}};
 if(n<1024*1024){

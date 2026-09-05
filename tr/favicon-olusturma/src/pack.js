@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{listOf}from'./files.js';
+import{listOf}from'./files.js?v=a69b115f80';
 const WIDTH=78;
 export const PACK_IMAGES=[
 {

@@ -1,14 +1,14 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{DISPOSALS,NotAGif,frameData,parseGif}from'./gif.js';
-import{lzwDecode}from'./lzw.js';
-import{Compositor,duration,isFullCanvas,paintFrame}from'./frames.js';
-import{budget,distinctColors,paletteWaste}from'./budget.js';
-import{findings}from'./findings.js';
-import{report}from'./report.js';
-import{clock,count,delay,exact,fileSize,hex,percent,plural,rate}from'./format.js';
+import{phrase,fill}from'./shared/phrases.js?v=bed13b6cb6';
+import{messageBox}from'./shared/message-box.js?v=bed13b6cb6';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=bed13b6cb6';
+import{DISPOSALS,NotAGif,frameData,parseGif}from'./gif.js?v=bed13b6cb6';
+import{lzwDecode}from'./lzw.js?v=bed13b6cb6';
+import{Compositor,duration,isFullCanvas,paintFrame}from'./frames.js?v=bed13b6cb6';
+import{budget,distinctColors,paletteWaste}from'./budget.js?v=bed13b6cb6';
+import{findings}from'./findings.js?v=bed13b6cb6';
+import{report}from'./report.js?v=bed13b6cb6';
+import{clock,count,delay,exact,fileSize,hex,percent,plural,rate}from'./format.js?v=bed13b6cb6';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

@@ -1,22 +1,22 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{joinByCopy,estimateJoinCopy}from'./copy.js';
-import{decoderConfig,averageFps}from'./shared/webcodecs.js';
-import{joinExact,grabFrame,chooseJoinBitrate}from'./transcode.js';
-import{trimByRecording,estimateRecording}from'./record.js';
-import{joinability,outputFrame}from'./clips.js';
-import{fittedBox}from'./draw.js';
-import{Timeline,formatTime,parseTime}from'./timeline.js';
+import{phrase}from'./shared/phrases.js?v=6ce570d903';
+import{sizeText,durationText}from'./shared/format.js?v=6ce570d903';
+import{openInPlayer}from'./shared/media.js?v=6ce570d903';
+import{messageBox}from'./shared/message-box.js?v=6ce570d903';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=6ce570d903';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=6ce570d903';
+import{joinByCopy,estimateJoinCopy}from'./copy.js?v=6ce570d903';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js?v=6ce570d903';
+import{joinExact,grabFrame,chooseJoinBitrate}from'./transcode.js?v=6ce570d903';
+import{trimByRecording,estimateRecording}from'./record.js?v=6ce570d903';
+import{joinability,outputFrame}from'./clips.js?v=6ce570d903';
+import{fittedBox}from'./draw.js?v=6ce570d903';
+import{Timeline,formatTime,parseTime}from'./timeline.js?v=6ce570d903';
 import{
 openSegment,readTimestamps,segmentRanges,totalCaptured,writeTimestamps,
-}from'./segments.js';
-import{keyframeTimes,keyframeBefore,invertRanges,totalSeconds}from'./ranges.js';
-import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js';
+}from'./segments.js?v=6ce570d903';
+import{keyframeTimes,keyframeBefore,invertRanges,totalSeconds}from'./ranges.js?v=6ce570d903';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js?v=6ce570d903';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

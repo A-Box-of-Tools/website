@@ -1,13 +1,13 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{Mp4Writer,MOVIE_TIMESCALE,avcSampleEntry}from'./shared/mp4-writer.js';
-import{planRanges}from'./ranges.js';
-import{closeDurations,audioSamplesFor}from'./copy.js';
-import{encodeJoinedAudio,targetAudioFormat}from'./audio.js';
-import{drawFitted}from'./draw.js';
-import{pickH264Codec}from'./shared/video-support.js';
-import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=6ce570d903';
+import{Mp4Writer,MOVIE_TIMESCALE,avcSampleEntry}from'./shared/mp4-writer.js?v=6ce570d903';
+import{planRanges}from'./ranges.js?v=6ce570d903';
+import{closeDurations,audioSamplesFor}from'./copy.js?v=6ce570d903';
+import{encodeJoinedAudio,targetAudioFormat}from'./audio.js?v=6ce570d903';
+import{drawFitted}from'./draw.js?v=6ce570d903';
+import{pickH264Codec}from'./shared/video-support.js?v=6ce570d903';
+import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js?v=6ce570d903';
+import{throwIfAborted}from'./shared/errors.js?v=6ce570d903';
 const VIDEO_TIMESCALE=90000;
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};

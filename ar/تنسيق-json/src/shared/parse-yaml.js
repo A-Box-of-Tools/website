@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ParseError}from'./parse-errors.js';
+import{ParseError}from'./parse-errors.js?v=c08a72bca6';
 export function printYaml(data,{indent=2}={}){
 const step=' '.repeat(Math.max(1,indent));
 const lines=[];

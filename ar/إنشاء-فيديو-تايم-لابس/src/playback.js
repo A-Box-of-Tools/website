@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{drawScaled,frameCanvas}from'./shared/frame-canvas.js';
-import{throwIfAborted,said}from'./shared/errors.js';
+import{drawScaled,frameCanvas}from'./shared/frame-canvas.js?v=afd42a1152';
+import{throwIfAborted,said}from'./shared/errors.js?v=afd42a1152';
 const SEEK_TIMEOUT=10_000;
 const MEDIA_ERRORS={
 1:'media.aborted',

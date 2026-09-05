@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{askSupported}from'./codec-support.js';
+import{askSupported}from'./codec-support.js?v=710dc5c362';
 const H264_CANDIDATES=[
 'avc1.640034',
 'avc1.640033',

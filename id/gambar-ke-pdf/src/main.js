@@ -1,11 +1,11 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{loadImages,releaseItem,rotateItem,sortItems,moveItem}from'./images.js';
-import{layoutPage,seenSize,PAGE_SIZES}from'./layout.js';
-import{buildDocument}from'./document.js';
+import{phrase}from'./shared/phrases.js?v=3e8b71192e';
+import{sizeText}from'./shared/format.js?v=3e8b71192e';
+import{messageBox}from'./shared/message-box.js?v=3e8b71192e';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=3e8b71192e';
+import{loadImages,releaseItem,rotateItem,sortItems,moveItem}from'./images.js?v=3e8b71192e';
+import{layoutPage,seenSize,PAGE_SIZES}from'./layout.js?v=3e8b71192e';
+import{buildDocument}from'./document.js?v=3e8b71192e';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

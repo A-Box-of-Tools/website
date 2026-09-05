@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{refuse}from'./refusal.js';
+import{refuse}from'./refusal.js?v=df43bc672f';
 export function decodeRLE(bytes,pixels,samples,bytesPerSample){
 if(bytes.length<64){
 throw refuse('rle.short');

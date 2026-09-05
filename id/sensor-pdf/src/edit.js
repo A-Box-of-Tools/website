@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{formatNumber,formatString,formatValue}from'./content.js';
-import{PdfString}from'./shared/pdf-objects.js';
-import{decodeText,encodeText}from'./strings.js';
-import{cornersOf,endOf}from'./text.js';
+import{formatNumber,formatString,formatValue}from'./content.js?v=48fbbf8377';
+import{PdfString}from'./shared/pdf-objects.js?v=48fbbf8377';
+import{decodeText,encodeText}from'./strings.js?v=48fbbf8377';
+import{cornersOf,endOf}from'./text.js?v=48fbbf8377';
 export function planEdits(page,removing,{boxes=true,remove=null}={}){
 const splices=new Map();
 const byOperator=new Map();

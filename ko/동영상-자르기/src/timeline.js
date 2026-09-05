@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Timeline as Bar,formatTime,parseTime}from'./shared/timeline.js';
+import{Timeline as Bar,formatTime,parseTime}from'./shared/timeline.js?v=6ce570d903';
 export{formatTime,parseTime};
 const MIN_SEGMENT=0.05;
 const MAX_TICKS=400;

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{bitLength,blocks}from'./blocks.js';
+import{bitLength,blocks}from'./blocks.js?v=37afe7ce81';
 export function sha1(){
 let h0=0x67452301|0;
 let h1=0xefcdab89|0;

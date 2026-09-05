@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{blur,globalBinarize,grayscale,invert,localBinarize}from'./binarize.js';
-import{readQr}from'./detect.js';
-import{readLinear}from'./linear.js';
-import{describe}from'./payload.js';
+import{blur,globalBinarize,grayscale,invert,localBinarize}from'./binarize.js?v=e0be586cb6';
+import{readQr}from'./detect.js?v=e0be586cb6';
+import{readLinear}from'./linear.js?v=e0be586cb6';
+import{describe}from'./payload.js?v=e0be586cb6';
 export function scan(image,{thorough=true}={}){
 const{width,height}=image;
 if(!width||!height)return null;

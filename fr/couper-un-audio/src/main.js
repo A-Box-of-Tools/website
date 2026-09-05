@@ -1,19 +1,19 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
+import{phrase}from'./shared/phrases.js?v=2782288283';
+import{sizeText}from'./shared/format.js?v=2782288283';
+import{messageBox}from'./shared/message-box.js?v=2782288283';
+import{wireFilePicker}from'./shared/file-picker.js?v=2782288283';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js?v=2782288283';
 import{
 formatDuration,openSegment,readTimestamps,segmentRanges,totalCaptured,
 writeTimestamps,
-}from'./segments.js';
-import{Timeline,formatTime,parseTime}from'./timeline.js';
+}from'./segments.js?v=2782288283';
+import{Timeline,formatTime,parseTime}from'./timeline.js?v=2782288283';
 import{
 invertRanges,isUntouched,planSections,sectionFrames,totalSeconds,trim,
-}from'./trim.js';
-import{writeWav,wavSize}from'./shared/wav.js';
-import{drawWaveform,summarise}from'./waveform.js';
+}from'./trim.js?v=2782288283';
+import{writeWav,wavSize}from'./shared/wav.js?v=2782288283';
+import{drawWaveform,summarise}from'./waveform.js?v=2782288283';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

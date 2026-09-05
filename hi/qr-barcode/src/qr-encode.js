@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{remainder}from'./gf256.js';
+import{remainder}from'./gf256.js?v=b5506e299a';
 import{
 blockLayout,countBits,dataCapacity,remainderBits,
-}from'./shared/qr-tables.js';
+}from'./shared/qr-tables.js?v=b5506e299a';
 export const ALPHANUMERIC='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
 const MODE_BITS={numeric:0b0001,alphanumeric:0b0010,byte:0b0100};
 export function chooseMode(text){

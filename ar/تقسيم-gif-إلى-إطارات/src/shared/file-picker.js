@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./phrases.js';
+import{phrase}from'./phrases.js?v=cc214ca370';
 export function wireFilePicker({input,dropzone,onFiles,idleTitle}){
 const titleEl=dropzone.querySelector('.dropzone-title');
 const idle=idleTitle??titleEl?.textContent??'';

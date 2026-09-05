@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{trim}from'./specs.js';
+import{trim}from'./specs.js?v=147d2bfb4a';
 export function stemOf(name){
 const clean=String(name??'').replace(/\.[^./\\]+$/,'');
 return clean||'photo';

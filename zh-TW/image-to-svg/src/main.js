@@ -1,12 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{downloadLink}from'./shared/download.js';
-import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
-import{maskFromImage}from'./mask.js';
-import{subjectMask}from'./subject.js';
-import{traceMask}from'./trace.js';
-import{labelRegions,selectRegion,outlineOfSelection,MaskEdits}from'./regions.js';
-import{Viewport,clamp}from'./view.js';
+import{phrase}from'./shared/phrases.js?v=154adf5d1e';
+import{downloadLink}from'./shared/download.js?v=154adf5d1e';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js?v=154adf5d1e';
+import{maskFromImage}from'./mask.js?v=154adf5d1e';
+import{subjectMask}from'./subject.js?v=154adf5d1e';
+import{traceMask}from'./trace.js?v=154adf5d1e';
+import{labelRegions,selectRegion,outlineOfSelection,MaskEdits}from'./regions.js?v=154adf5d1e';
+import{Viewport,clamp}from'./view.js?v=154adf5d1e';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

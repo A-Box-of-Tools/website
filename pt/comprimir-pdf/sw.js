@@ -1,25 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/comprimir-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'c9fa4160a3';
+const CACHE_NAME=CACHE_PREFIX+'415236f242';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=6af8deaf07',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/pdf-objects.js',
-'src/shared/pdf-filters.js',
-'src/shared/pdf-reader.js',
-'src/shared/pdf-writer.js',
-'src/shared/message-box.js',
-'src/compress.js',
-'src/format.js',
-'src/images.js',
-'src/inventory.js',
-'src/main.js',
-'src/placements.js',
+'src/shared/phrases.js?v=3f63a0468a',
+'src/shared/trust.js?v=3f63a0468a',
+'src/shared/file-picker.js?v=3f63a0468a',
+'src/shared/pdf-objects.js?v=3f63a0468a',
+'src/shared/pdf-filters.js?v=3f63a0468a',
+'src/shared/pdf-reader.js?v=3f63a0468a',
+'src/shared/pdf-writer.js?v=3f63a0468a',
+'src/shared/message-box.js?v=3f63a0468a',
+'src/compress.js?v=3f63a0468a',
+'src/format.js?v=3f63a0468a',
+'src/images.js?v=3f63a0468a',
+'src/inventory.js?v=3f63a0468a',
+'src/main.js?v=3f63a0468a',
+'src/placements.js?v=3f63a0468a',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

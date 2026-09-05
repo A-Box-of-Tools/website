@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/konversi-yaml-ke-json/:';
-const CACHE_NAME=CACHE_PREFIX+'da79be9f14';
+const CACHE_NAME=CACHE_PREFIX+'760469988d';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=c8ec849bd7',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/parse-errors.js',
-'src/shared/parse-json.js',
-'src/shared/parse-yaml.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/format.js',
-'src/convert.js',
-'src/main.js',
-'src/samples.js',
+'src/shared/phrases.js?v=f87a3bb150',
+'src/shared/trust.js?v=f87a3bb150',
+'src/shared/file-picker.js?v=f87a3bb150',
+'src/shared/parse-errors.js?v=f87a3bb150',
+'src/shared/parse-json.js?v=f87a3bb150',
+'src/shared/parse-yaml.js?v=f87a3bb150',
+'src/shared/message-box.js?v=f87a3bb150',
+'src/shared/download.js?v=f87a3bb150',
+'src/shared/format.js?v=f87a3bb150',
+'src/convert.js?v=f87a3bb150',
+'src/main.js?v=f87a3bb150',
+'src/samples.js?v=f87a3bb150',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

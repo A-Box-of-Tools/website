@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{describeTag,GROUP_LABELS}from'./tags.js';
-import{GROUP_ORDER}from'./tiff.js';
+import{describeTag,GROUP_LABELS}from'./tags.js?v=8f41c9007e';
+import{GROUP_ORDER}from'./tiff.js?v=8f41c9007e';
 const MAX_LIST=8;
 export function formatValue(group,entry){
 const spec=describeTag(group,entry.tag);

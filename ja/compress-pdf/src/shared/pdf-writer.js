@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{deflate,filterNames}from'./pdf-filters.js';
+import{deflate,filterNames}from'./pdf-filters.js?v=3f63a0468a';
 import{
 name,Name,PdfStream,PdfString,Ref,
-}from'./pdf-objects.js';
+}from'./pdf-objects.js?v=3f63a0468a';
 const PACK_SIZE=200;
 const WORTH_DEFLATING=128;
 class ByteWriter{

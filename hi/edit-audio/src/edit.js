@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{reverse,applyGain,peak,dbToGain,normalizeGain}from'./effects.js';
-import{resample,resampledLength}from'./speed.js';
-import{stretch,stretchedLength}from'./stretch.js';
+import{reverse,applyGain,peak,dbToGain,normalizeGain}from'./effects.js?v=06e52d0bdb';
+import{resample,resampledLength}from'./speed.js?v=06e52d0bdb';
+import{stretch,stretchedLength}from'./stretch.js?v=06e52d0bdb';
 export async function render(source,settings,{onProgress,signal}={}){
 const report=(done,label)=>onProgress?.(Math.min(1,Math.max(0,done)),label);
 let channels=source.channels.map((samples)=>Float32Array.from(samples));

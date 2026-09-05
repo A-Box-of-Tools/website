@@ -1,11 +1,11 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
-import{writeWav}from'./shared/wav.js';
-import{mixToMono}from'./mono.js';
+import{phrase}from'./shared/phrases.js?v=03fa3304f1';
+import{sizeText}from'./shared/format.js?v=03fa3304f1';
+import{messageBox}from'./shared/message-box.js?v=03fa3304f1';
+import{wireFilePicker}from'./shared/file-picker.js?v=03fa3304f1';
+import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js?v=03fa3304f1';
+import{writeWav}from'./shared/wav.js?v=03fa3304f1';
+import{mixToMono}from'./mono.js?v=03fa3304f1';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

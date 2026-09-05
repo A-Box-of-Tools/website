@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ByteReader,Truncated}from'./reader.js';
-import{describe}from'./dictionary.js';
-import{IMPLICIT_LITTLE,transferSyntax}from'./uids.js';
+import{ByteReader,Truncated}from'./reader.js?v=df43bc672f';
+import{describe}from'./dictionary.js?v=df43bc672f';
+import{IMPLICIT_LITTLE,transferSyntax}from'./uids.js?v=df43bc672f';
 export class NotDicom extends Error{
 constructor(message){
 super(message);

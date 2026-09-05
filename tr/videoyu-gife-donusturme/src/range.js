@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-export{clockText as formatTime}from'./shared/format.js';
+export{clockText as formatTime}from'./shared/format.js?v=e168e3fc1d';
 const MIN_SECTION=0.1;
 const clamp=(value,low,high)=>Math.max(low,Math.min(high,value));
 export function parseTime(text){

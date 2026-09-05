@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./shared/mp4-reader.js';
-import{decodeRuns}from'./plan.js';
-import{drawScaled,frameCanvas}from'./shared/frame-canvas.js';
-import{decoderConfig,settle}from'./shared/webcodecs.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{FileWindow}from'./shared/mp4-reader.js?v=afd42a1152';
+import{decodeRuns}from'./plan.js?v=afd42a1152';
+import{drawScaled,frameCanvas}from'./shared/frame-canvas.js?v=afd42a1152';
+import{decoderConfig,settle}from'./shared/webcodecs.js?v=afd42a1152';
+import{throwIfAborted}from'./shared/errors.js?v=afd42a1152';
 class Sampler{
 #times;
 #canvas;

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{blockSize,blurRadius,clampRect}from'./regions.js';
+import{blockSize,blurRadius,clampRect}from'./regions.js?v=c44e3bded9';
 export const FILL=[0,0,0];
 export function fillRegion(image,rect,colour=FILL){
 const{data,width}=image;

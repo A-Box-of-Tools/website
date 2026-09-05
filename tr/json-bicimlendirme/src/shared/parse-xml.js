@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ParseError}from'./parse-errors.js';
+import{ParseError}from'./parse-errors.js?v=c08a72bca6';
 const VOID=new Set([
 'area','base','br','col','embed','hr','img','input',
 'link','meta','param','source','track','wbr',

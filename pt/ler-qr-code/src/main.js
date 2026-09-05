@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import*as camera from'./camera.js';
-import{scan}from'./scan.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{phrase}from'./shared/phrases.js';
+import*as camera from'./camera.js?v=e0be586cb6';
+import{scan}from'./scan.js?v=e0be586cb6';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=e0be586cb6';
+import{phrase}from'./shared/phrases.js?v=e0be586cb6';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

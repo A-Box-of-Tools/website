@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{modules as code128Modules,QUIET as CODE128_QUIET}from'./code128.js';
+import{modules as code128Modules,QUIET as CODE128_QUIET}from'./code128.js?v=b5506e299a';
 const WIDE=3;
 const EAN_L=[
 '0001101','0011001','0010011','0111101','0100011',

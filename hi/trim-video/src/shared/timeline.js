@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{clockText as formatTime}from'./format.js';
+import{clockText as formatTime}from'./format.js?v=6ce570d903';
 export{formatTime};
 function clamp(value,low,high){
 return Math.max(low,Math.min(high,value));

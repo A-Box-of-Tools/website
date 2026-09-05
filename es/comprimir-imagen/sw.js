@@ -1,24 +1,24 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/comprimir-imagen/:';
-const CACHE_NAME=CACHE_PREFIX+'9f294872f7';
+const CACHE_NAME=CACHE_PREFIX+'be1583895e';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=50c05d17f3',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/media.js',
-'src/codecs.js',
-'src/compress.js',
-'src/files.js',
-'src/main.js',
-'src/measure.js',
+'src/shared/phrases.js?v=6ce0c50246',
+'src/shared/trust.js?v=6ce0c50246',
+'src/shared/file-picker.js?v=6ce0c50246',
+'src/shared/zip.js?v=6ce0c50246',
+'src/shared/crc32.js?v=6ce0c50246',
+'src/shared/message-box.js?v=6ce0c50246',
+'src/shared/download.js?v=6ce0c50246',
+'src/shared/media.js?v=6ce0c50246',
+'src/codecs.js?v=6ce0c50246',
+'src/compress.js?v=6ce0c50246',
+'src/files.js?v=6ce0c50246',
+'src/main.js?v=6ce0c50246',
+'src/measure.js?v=6ce0c50246',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

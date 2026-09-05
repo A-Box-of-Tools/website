@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{describe,isPrivate}from'./dictionary.js';
+import{describe,isPrivate}from'./dictionary.js?v=df43bc672f';
 const IDENTIFIERS={
 '00100010':'direct',
 '00100020':'direct',

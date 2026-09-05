@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{pick,randomInt}from'./random.js';
-import{wordlist}from'./wordlist.js';
+import{pick,randomInt}from'./random.js?v=6e06d53ee8';
+import{wordlist}from'./wordlist.js?v=6e06d53ee8';
 const LOWER='abcdefghijklmnopqrstuvwxyz';
 const UPPER='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIGITS='0123456789';

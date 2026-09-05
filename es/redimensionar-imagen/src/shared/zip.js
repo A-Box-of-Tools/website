@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{crc32}from'./crc32.js';
+import{crc32}from'./crc32.js?v=cff3c8840c';
 const LOCAL_SIG=0x04034b50;
 const CENTRAL_SIG=0x02014b50;
 const END_SIG=0x06054b50;

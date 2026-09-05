@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{decodeStream}from'./shared/pdf-filters.js';
+import{decodeStream}from'./shared/pdf-filters.js?v=3f63a0468a';
 import{
 indexOfAscii,Name,Parser,PdfStream,Ref,
-}from'./shared/pdf-objects.js';
+}from'./shared/pdf-objects.js?v=3f63a0468a';
 const MAX_DEPTH=12;
 export async function measurePlacements(doc){
 const found=new Map();

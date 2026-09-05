@@ -1,21 +1,21 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{decoderConfig,averageFps}from'./shared/webcodecs.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{timelapseByDecoding,previewFrame}from'./decode.js';
-import{timelapseByPlaying}from'./playback.js';
-import{TimelapseWriter}from'./encode.js';
-import{hasEncoder,hasWebCodecs,canDecode,pickH264Codec}from'./shared/video-support.js';
+import{phrase,fill}from'./shared/phrases.js?v=afd42a1152';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js?v=afd42a1152';
+import{sizeText,durationText}from'./shared/format.js?v=afd42a1152';
+import{openInPlayer}from'./shared/media.js?v=afd42a1152';
+import{messageBox}from'./shared/message-box.js?v=afd42a1152';
+import{wireFilePicker}from'./shared/file-picker.js?v=afd42a1152';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=afd42a1152';
+import{timelapseByDecoding,previewFrame}from'./decode.js?v=afd42a1152';
+import{timelapseByPlaying}from'./playback.js?v=afd42a1152';
+import{TimelapseWriter}from'./encode.js?v=afd42a1152';
+import{hasEncoder,hasWebCodecs,canDecode,pickH264Codec}from'./shared/video-support.js?v=afd42a1152';
 import{
 MIN_FRAMES,
 clampSpeed,speedForLength,lengthForSpeed,sampleInterval,frameTimes,repeatsFrames,
 outputSize,chooseBitrate,estimateBytes,decodeRuns,decodeCost,
-}from'./plan.js';
-import{said}from'./shared/errors.js';
+}from'./plan.js?v=afd42a1152';
+import{said}from'./shared/errors.js?v=afd42a1152';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

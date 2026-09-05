@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Name,Parser,PdfString}from'./shared/pdf-objects.js';
+import{Name,Parser,PdfString}from'./shared/pdf-objects.js?v=48fbbf8377';
 function startsValue(code){
 if(code===0x2f||code===0x28||code===0x5b||code===0x3c)return true;
 if(code>=0x30&&code<=0x39)return true;

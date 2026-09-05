@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{audioDecoderConfig,mp4aSampleEntry}from'./shared/aac.js';
+import{audioDecoderConfig,mp4aSampleEntry}from'./shared/aac.js?v=6ce570d903';
 export{audioDecoderConfig,mp4aSampleEntry};
 const TARGET_BITRATE=160_000;
 const AAC_CODEC='mp4a.40.2';

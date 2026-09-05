@@ -1,14 +1,14 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
-import{loadImages,decodeFull,releaseItem,sortItems,moveItem}from'./images.js';
-import{drawFrame,resolveOutputSize}from'./compose.js';
-import{encodeToMp4,countFrames}from'./encoder.js';
-import{recordToWebm}from'./recorder.js';
-import{hasWebCodecs,hasMediaRecorder}from'./support.js';
-import{wireUrlImport}from'./shared/url-import.js';
+import{phrase}from'./shared/phrases.js?v=df6ebe855b';
+import{sizeText,durationText}from'./shared/format.js?v=df6ebe855b';
+import{messageBox}from'./shared/message-box.js?v=df6ebe855b';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=df6ebe855b';
+import{loadImages,decodeFull,releaseItem,sortItems,moveItem}from'./images.js?v=df6ebe855b';
+import{drawFrame,resolveOutputSize}from'./compose.js?v=df6ebe855b';
+import{encodeToMp4,countFrames}from'./encoder.js?v=df6ebe855b';
+import{recordToWebm}from'./recorder.js?v=df6ebe855b';
+import{hasWebCodecs,hasMediaRecorder}from'./support.js?v=df6ebe855b';
+import{wireUrlImport}from'./shared/url-import.js?v=df6ebe855b';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

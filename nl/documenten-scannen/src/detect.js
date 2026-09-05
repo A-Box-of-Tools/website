@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{
 clampPoint,isConvex,orderCorners,quadArea,sharpestCorner,wholeFrame,
-}from'./geometry.js';
+}from'./geometry.js?v=a0bba120a7';
 export const WORKING_EDGE=480;
 const THETA_STEPS=180;
 const RHO_STEP=2;

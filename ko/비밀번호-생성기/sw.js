@@ -1,18 +1,18 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/비밀번호-생성기/:';
-const CACHE_NAME=CACHE_PREFIX+'f50f96e65c';
+const CACHE_NAME=CACHE_PREFIX+'bdda6d6339';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=d2d1e38f33',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/generate.js',
-'src/main.js',
-'src/random.js',
-'src/strength.js',
-'src/wordlist.js',
+'src/shared/phrases.js?v=6e06d53ee8',
+'src/shared/trust.js?v=6e06d53ee8',
+'src/generate.js?v=6e06d53ee8',
+'src/main.js?v=6e06d53ee8',
+'src/random.js?v=6e06d53ee8',
+'src/strength.js?v=6e06d53ee8',
+'src/wordlist.js?v=6e06d53ee8',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

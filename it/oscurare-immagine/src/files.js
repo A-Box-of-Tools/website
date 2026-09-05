@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{blockCount,blurRadius,strengthOf}from'./regions.js';
+import{blockCount,blurRadius,strengthOf}from'./regions.js?v=c44e3bded9';
 export function stemOf(name){
 const clean=String(name??'').replace(/\.[^./\\]+$/,'');
 return clean||'image';

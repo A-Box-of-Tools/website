@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Mp4Muxer}from'./shared/mp4-muxer.js';
-import{drawFrame}from'./compose.js';
-import{decodeFull}from'./images.js';
-import{pickH264Codec}from'./support.js';
-import{settle}from'./shared/webcodecs.js';
-import{throwIfAborted}from'./shared/errors.js';
+import{Mp4Muxer}from'./shared/mp4-muxer.js?v=df6ebe855b';
+import{drawFrame}from'./compose.js?v=df6ebe855b';
+import{decodeFull}from'./images.js?v=df6ebe855b';
+import{pickH264Codec}from'./support.js?v=df6ebe855b';
+import{settle}from'./shared/webcodecs.js?v=df6ebe855b';
+import{throwIfAborted}from'./shared/errors.js?v=df6ebe855b';
 const QUALITY_BPP={low:0.03,medium:0.07,high:0.15};
 const MAX_BITRATE=50_000_000;
 export function countFrames(items,fps){

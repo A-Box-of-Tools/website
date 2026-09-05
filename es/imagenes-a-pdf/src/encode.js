@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{inspectJpeg}from'./jpeg.js';
+import{inspectJpeg}from'./jpeg.js?v=3e8b71192e';
 export async function prepareImage(item,settings){
 const limit=Number(settings.maxSide)||0;
 const resizing=limit>0&&Math.max(item.width,item.height)>limit;

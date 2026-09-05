@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{renderMarkdown}from'./markdown.js';
-import{CODE_PATTERN,formatSize,makeCode,normalize}from'./names.js';
+import{phrase}from'./shared/phrases.js?v=94109b3ace';
+import{renderMarkdown}from'./markdown.js?v=94109b3ace';
+import{CODE_PATTERN,formatSize,makeCode,normalize}from'./names.js?v=94109b3ace';
 const RENDEZVOUS='wss://rendezvous.abox.tools';
 const RTC={iceServers:[{urls:['stun:stun.cloudflare.com:3478','stun:stun.l.google.com:19302']}]};
 const RELAY_FLAG=(code)=>`share-text-relay:${code}`;

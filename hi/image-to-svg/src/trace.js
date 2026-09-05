@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{maskFromImage,inkFraction}from'./mask.js';
-import{traceContours}from'./contour.js';
-import{fitContour,DEFAULTS}from'./fit.js';
+import{maskFromImage,inkFraction}from'./mask.js?v=154adf5d1e';
+import{traceContours}from'./contour.js?v=154adf5d1e';
+import{fitContour,DEFAULTS}from'./fit.js?v=154adf5d1e';
 export const TRACE_DEFAULTS={
 ...DEFAULTS,
 threshold:'otsu',

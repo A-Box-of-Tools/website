@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{traceContours}from'./contour.js';
+import{traceContours}from'./contour.js?v=154adf5d1e';
 export function labelRegions(mask,options={}){
 const{w,h,bits}=mask;
 const joinDiagonals=options.joinDiagonals===true;

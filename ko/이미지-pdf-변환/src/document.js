@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfWriter,num,textString}from'./shared/pdf-page-writer.js';
-import{prepareImage}from'./encode.js';
-import{layoutPage,placement}from'./layout.js';
+import{PdfWriter,num,textString}from'./shared/pdf-page-writer.js?v=3e8b71192e';
+import{prepareImage}from'./encode.js?v=3e8b71192e';
+import{layoutPage,placement}from'./layout.js?v=3e8b71192e';
 const PRODUCER='abox.tools images to PDF';
 export async function buildDocument(items,settings,{onProgress,signal}={}){
 if(!items.length)throw new Error('build.noimages');

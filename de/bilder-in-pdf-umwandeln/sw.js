@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bilder-in-pdf-umwandeln/:';
-const CACHE_NAME=CACHE_PREFIX+'fd9a92c206';
+const CACHE_NAME=CACHE_PREFIX+'4f3d9b6004';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=4e72356d3b',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/pdf-page-writer.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/document.js',
-'src/encode.js',
-'src/images.js',
-'src/jpeg.js',
-'src/layout.js',
-'src/main.js',
+'src/shared/phrases.js?v=3e8b71192e',
+'src/shared/trust.js?v=3e8b71192e',
+'src/shared/file-picker.js?v=3e8b71192e',
+'src/shared/pdf-page-writer.js?v=3e8b71192e',
+'src/shared/message-box.js?v=3e8b71192e',
+'src/shared/format.js?v=3e8b71192e',
+'src/document.js?v=3e8b71192e',
+'src/encode.js?v=3e8b71192e',
+'src/images.js?v=3e8b71192e',
+'src/jpeg.js?v=3e8b71192e',
+'src/layout.js?v=3e8b71192e',
+'src/main.js?v=3e8b71192e',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

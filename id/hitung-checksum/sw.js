@@ -1,24 +1,24 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/hitung-checksum/:';
-const CACHE_NAME=CACHE_PREFIX+'51fee9c647';
+const CACHE_NAME=CACHE_PREFIX+'ea120c7b88';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=4bd3b7173b',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/blocks.js',
-'src/expected.js',
-'src/format.js',
-'src/hash.js',
-'src/main.js',
-'src/md5.js',
-'src/sha1.js',
-'src/sha256.js',
-'src/sha512.js',
+'src/shared/phrases.js?v=37afe7ce81',
+'src/shared/trust.js?v=37afe7ce81',
+'src/shared/file-picker.js?v=37afe7ce81',
+'src/shared/message-box.js?v=37afe7ce81',
+'src/blocks.js?v=37afe7ce81',
+'src/expected.js?v=37afe7ce81',
+'src/format.js?v=37afe7ce81',
+'src/hash.js?v=37afe7ce81',
+'src/main.js?v=37afe7ce81',
+'src/md5.js?v=37afe7ce81',
+'src/sha1.js?v=37afe7ce81',
+'src/sha256.js?v=37afe7ce81',
+'src/sha512.js?v=37afe7ce81',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

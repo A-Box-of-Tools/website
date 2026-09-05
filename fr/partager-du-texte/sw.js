@@ -1,16 +1,16 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/partager-du-texte/:';
-const CACHE_NAME=CACHE_PREFIX+'e6958e8561';
+const CACHE_NAME=CACHE_PREFIX+'c3a88f25d9';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=3618686fe1',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/main.js',
-'src/markdown.js',
-'src/names.js',
+'src/shared/phrases.js?v=94109b3ace',
+'src/shared/trust.js?v=94109b3ace',
+'src/main.js?v=94109b3ace',
+'src/markdown.js?v=94109b3ace',
+'src/names.js?v=94109b3ace',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{bitLength,blocks}from'./blocks.js';
+import{bitLength,blocks}from'./blocks.js?v=37afe7ce81';
 const K=new Int32Array([
 0xd76aa478|0,0xe8c7b756|0,0x242070db|0,0xc1bdceee|0,
 0xf57c0faf|0,0x4787c62a|0,0xa8304613|0,0xfd469501|0,

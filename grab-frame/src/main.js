@@ -1,16 +1,16 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase,fill}from'./shared/phrases.js';
-import{sizeText,durationText}from'./shared/format.js';
-import{openInPlayer}from'./shared/media.js';
-import{saveBlob}from'./shared/download.js';
-import{messageBox}from'./shared/message-box.js';
-import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{FrameReader,decodeSeries,frameNear,seriesFrames}from'./frames.js';
-import{drawUpright,frameCanvas}from'./draw.js';
-import{FORMATS,clockTime,encodeStill,stillName}from'./still.js';
-import{makeZip}from'./shared/zip.js';
-import{hasWebCodecs,canDecode,encodableTypes}from'./support.js';
+import{phrase,fill}from'./shared/phrases.js?v=05da797a51';
+import{sizeText,durationText}from'./shared/format.js?v=05da797a51';
+import{openInPlayer}from'./shared/media.js?v=05da797a51';
+import{saveBlob}from'./shared/download.js?v=05da797a51';
+import{messageBox}from'./shared/message-box.js?v=05da797a51';
+import{wireFilePicker}from'./shared/file-picker.js?v=05da797a51';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js?v=05da797a51';
+import{FrameReader,decodeSeries,frameNear,seriesFrames}from'./frames.js?v=05da797a51';
+import{drawUpright,frameCanvas}from'./draw.js?v=05da797a51';
+import{FORMATS,clockTime,encodeStill,stillName}from'./still.js?v=05da797a51';
+import{makeZip}from'./shared/zip.js?v=05da797a51';
+import{hasWebCodecs,canDecode,encodableTypes}from'./support.js?v=05da797a51';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

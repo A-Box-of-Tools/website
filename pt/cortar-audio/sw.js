@@ -1,26 +1,26 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/cortar-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'63756f9438';
+const CACHE_NAME=CACHE_PREFIX+'2ab0e98f91';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=58ae7c8891',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/audio-decode.js',
-'src/shared/samplerate.js',
-'src/shared/wav.js',
-'src/shared/message-box.js',
-'src/shared/format.js',
-'src/shared/segments.js',
-'src/shared/timeline.js',
-'src/main.js',
-'src/segments.js',
-'src/timeline.js',
-'src/trim.js',
-'src/waveform.js',
+'src/shared/phrases.js?v=2782288283',
+'src/shared/trust.js?v=2782288283',
+'src/shared/file-picker.js?v=2782288283',
+'src/shared/audio-decode.js?v=2782288283',
+'src/shared/samplerate.js?v=2782288283',
+'src/shared/wav.js?v=2782288283',
+'src/shared/message-box.js?v=2782288283',
+'src/shared/format.js?v=2782288283',
+'src/shared/segments.js?v=2782288283',
+'src/shared/timeline.js?v=2782288283',
+'src/main.js?v=2782288283',
+'src/segments.js?v=2782288283',
+'src/timeline.js?v=2782288283',
+'src/trim.js?v=2782288283',
+'src/waveform.js?v=2782288283',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

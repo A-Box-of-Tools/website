@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Cancelled,inspect,runStack}from'./pipeline.js';
+import{Cancelled,inspect,runStack}from'./pipeline.js?v=6592a180a2';
 let cancelled=false;
 let working=false;
 const waiting=[];

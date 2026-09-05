@@ -1,23 +1,23 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/formatar-xml/:';
-const CACHE_NAME=CACHE_PREFIX+'8c6b6077ae';
+const CACHE_NAME=CACHE_PREFIX+'b59911df11';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=c8ec849bd7',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/parse-errors.js',
-'src/shared/parse-json.js',
-'src/shared/parse-xml.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/shared/format.js',
-'src/convert.js',
-'src/main.js',
-'src/samples.js',
+'src/shared/phrases.js?v=b3cdabb13c',
+'src/shared/trust.js?v=b3cdabb13c',
+'src/shared/file-picker.js?v=b3cdabb13c',
+'src/shared/parse-errors.js?v=b3cdabb13c',
+'src/shared/parse-json.js?v=b3cdabb13c',
+'src/shared/parse-xml.js?v=b3cdabb13c',
+'src/shared/message-box.js?v=b3cdabb13c',
+'src/shared/download.js?v=b3cdabb13c',
+'src/shared/format.js?v=b3cdabb13c',
+'src/convert.js?v=b3cdabb13c',
+'src/main.js?v=b3cdabb13c',
+'src/samples.js?v=b3cdabb13c',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

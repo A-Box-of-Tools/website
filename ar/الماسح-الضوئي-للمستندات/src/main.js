@@ -1,20 +1,20 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
-import{makeZip}from'./shared/zip.js';
-import{WORKING_EDGE,findPageQuad}from'./detect.js';
+import{phrase}from'./shared/phrases.js?v=a0bba120a7';
+import{messageBox}from'./shared/message-box.js?v=a0bba120a7';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js?v=a0bba120a7';
+import{makeZip}from'./shared/zip.js?v=a0bba120a7';
+import{WORKING_EDGE,findPageQuad}from'./detect.js?v=a0bba120a7';
 import{
 clampPoint,copyQuad,orderCorners,outputSize,pageAspect,scaleQuad,wholeFrame,
-}from'./geometry.js';
-import{turnQuad,warpPage}from'./warp.js';
-import{cleanPage}from'./clean.js';
-import{encodeImage,encodePage}from'./encode.js';
-import{buildDocument}from'./document.js';
+}from'./geometry.js?v=a0bba120a7';
+import{turnQuad,warpPage}from'./warp.js?v=a0bba120a7';
+import{cleanPage}from'./clean.js?v=a0bba120a7';
+import{encodeImage,encodePage}from'./encode.js?v=a0bba120a7';
+import{buildDocument}from'./document.js?v=a0bba120a7';
 import{
 coverage,matchPaper,outName,pageName,ratioText,scanQuality,sizeText,stemOf,
-}from'./pages.js';
-import{Corners}from'./stage.js';
+}from'./pages.js?v=a0bba120a7';
+import{Corners}from'./stage.js?v=a0bba120a7';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

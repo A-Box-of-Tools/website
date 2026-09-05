@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfDocument}from'./shared/pdf-reader.js';
-import{harvestStrings}from'./strings.js';
-import{pagesOf,readPage}from'./text.js';
+import{PdfDocument}from'./shared/pdf-reader.js?v=48fbbf8377';
+import{harvestStrings}from'./strings.js?v=48fbbf8377';
+import{pagesOf,readPage}from'./text.js?v=48fbbf8377';
 export async function harvestAll(doc,pages=null){
 const read=pages??await Promise.all(
 pagesOf(doc).map((page,index)=>readPage(doc,page,index+1)),

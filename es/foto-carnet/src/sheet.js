@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{mmToPx}from'./geometry.js';
+import{mmToPx}from'./geometry.js?v=147d2bfb4a';
 export const PAPERS=[
 {id:'4x6',label:'paper.4x6',widthMm:152.4,heightMm:101.6},
 {id:'5x7',label:'paper.5x7',widthMm:177.8,heightMm:127},

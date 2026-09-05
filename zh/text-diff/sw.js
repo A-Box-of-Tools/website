@@ -1,19 +1,19 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/text-diff/:';
-const CACHE_NAME=CACHE_PREFIX+'c98dbbe487';
+const CACHE_NAME=CACHE_PREFIX+'a3bf55f14d';
 const ASSETS=[
 './',
 'index.html',
 'styles.css?v=9fd8675e76',
 'manifest.json',
-'src/shared/phrases.js',
-'src/shared/trust.js',
-'src/shared/file-picker.js',
-'src/shared/message-box.js',
-'src/shared/download.js',
-'src/diff.js',
-'src/main.js',
-'src/samples.js',
+'src/shared/phrases.js?v=260ec49996',
+'src/shared/trust.js?v=260ec49996',
+'src/shared/file-picker.js?v=260ec49996',
+'src/shared/message-box.js?v=260ec49996',
+'src/shared/download.js?v=260ec49996',
+'src/diff.js?v=260ec49996',
+'src/main.js?v=260ec49996',
+'src/samples.js?v=260ec49996',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

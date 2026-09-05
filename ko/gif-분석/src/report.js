@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{DISPOSALS}from'./gif.js';
-import{duration,isFullCanvas}from'./frames.js';
-import{clock,count,delay,exact,fileSize,hex,percent,rate}from'./format.js';
+import{DISPOSALS}from'./gif.js?v=bed13b6cb6';
+import{duration,isFullCanvas}from'./frames.js?v=bed13b6cb6';
+import{clock,count,delay,exact,fileSize,hex,percent,rate}from'./format.js?v=bed13b6cb6';
 const RULE='-'.repeat(64);
 const columns=(text)=>[...text].reduce((n,ch)=>n
 +(/[\u1100-\u115f\u2e80-\u303e\u3041-\u33ff\u3400-\u4dbf\u4e00-\u9fff\ua000-\ua4cf\uac00-\ud7a3\uf900-\ufaff\ufe30-\ufe6f\uff00-\uff60\uffe0-\uffe6]/.test(ch)?2:1),0);

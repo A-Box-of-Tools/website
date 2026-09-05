@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{homography,project}from'./geometry.js';
+import{homography,project}from'./geometry.js?v=a0bba120a7';
 const MAX_SAMPLES=2;
 const INSET=3;
 export function warpPage(source,quad,size){

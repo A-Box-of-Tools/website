@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{drawFrame}from'./compose.js';
-import{decodeFull}from'./images.js';
-import{pickWebmMimeType}from'./support.js';
+import{drawFrame}from'./compose.js?v=df6ebe855b';
+import{decodeFull}from'./images.js?v=df6ebe855b';
+import{pickWebmMimeType}from'./support.js?v=df6ebe855b';
 export async function recordToWebm({items,settings,onProgress,signal}){
 const{width,height,fps,fit,background,quality}=settings;
 const mimeType=pickWebmMimeType();

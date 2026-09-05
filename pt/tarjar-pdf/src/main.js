@@ -1,15 +1,15 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{messageBox}from'./shared/message-box.js';
-import{bytes as humanBytes,outName,tally}from'./format.js';
+import{phrase}from'./shared/phrases.js?v=48fbbf8377';
+import{messageBox}from'./shared/message-box.js?v=48fbbf8377';
+import{bytes as humanBytes,outName,tally}from'./format.js?v=48fbbf8377';
 import{
 contextOf,FINDERS,findPattern,findTerm,glyphsIn,mergeRanges,wordsOf,
-}from'./matches.js';
-import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js';
-import{redact}from'./redact.js';
-import{pagesOf,readPage}from'./text.js';
-import{harvestAll,verify}from'./verify.js';
-import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+}from'./matches.js?v=48fbbf8377';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js?v=48fbbf8377';
+import{redact}from'./redact.js?v=48fbbf8377';
+import{pagesOf,readPage}from'./text.js?v=48fbbf8377';
+import{harvestAll,verify}from'./verify.js?v=48fbbf8377';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js?v=48fbbf8377';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),

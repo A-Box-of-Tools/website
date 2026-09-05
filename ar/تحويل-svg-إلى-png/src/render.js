@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{sizedSvg}from'./svg.js';
+import{sizedSvg}from'./svg.js?v=954778cf04';
 export const PNG='image/png';
 export const JPEG='image/jpeg';
 export const WEBP='image/webp';

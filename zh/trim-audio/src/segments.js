@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import*as shared from'./shared/segments.js';
+import*as shared from'./shared/segments.js?v=2782288283';
 export{
 TIMESTAMP_FORMATS,formatClock,openSegment,parseClock,readTimestamps,
-}from'./shared/segments.js';
+}from'./shared/segments.js?v=2782288283';
 const MIN_SEGMENT=0.001;
 export const segmentRanges=(segments)=>shared.segmentRanges(segments,MIN_SEGMENT);
 export const totalCaptured=(segments)=>shared.totalCaptured(segments,MIN_SEGMENT);

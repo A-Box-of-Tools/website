@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
-import{classSizes,generate,phraseChoices,SYMBOL_SETS}from'./generate.js';
+import{phrase}from'./shared/phrases.js?v=6e06d53ee8';
+import{classSizes,generate,phraseChoices,SYMBOL_SETS}from'./generate.js?v=6e06d53ee8';
 import{
 bits,crackTime,passphraseSpace,passwordSpace,rating,scientific,
-}from'./strength.js';
-import{wordlist}from'./wordlist.js';
+}from'./strength.js?v=6e06d53ee8';
+import{wordlist}from'./wordlist.js?v=6e06d53ee8';
 const $=(id)=>document.getElementById(id);
 const el={
 modes:Array.from(document.querySelectorAll('input[name="mode"]')),

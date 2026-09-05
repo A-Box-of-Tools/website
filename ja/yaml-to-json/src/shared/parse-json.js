@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{ParseError}from'./parse-errors.js';
+import{ParseError}from'./parse-errors.js?v=f87a3bb150';
 export function parseJson(text){
 const state={text,at:0};
 skipSpace(state);
