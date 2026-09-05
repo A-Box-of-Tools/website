@@ -2,9 +2,9 @@
 
 *Why each planned tool is planned, and why the ones that are gone are gone.*
 
-[`config/planned.toml`](config/planned.toml) is what the hub page shows: a name
-and a phrase, ten words at most, because a roadmap card that argues with the
-reader is a card nobody finishes. This file is the argument. One section per
+[`config/planned.toml`](config/planned.toml) is what the roadmap page shows: a
+name and a phrase, ten words at most, because a roadmap card that argues with
+the reader is a card nobody finishes. This file is the argument. One section per
 line on that list, saying who wants the thing, what in this repository already
 does most of the work, and what it costs to keep the promise while doing it.
 
@@ -95,7 +95,10 @@ an AVIF is one AV1 keyframe in the same ISO-BMFF container HEIC uses, and
 `VideoEncoder` encodes AV1 today — `av01.0.04M.08` reports supported and hands
 back a real OBU stream, sequence header and all. So the encoder is already
 installed and the work is the container, which is the kind of thing this
-repository has three of in `mp4.js` and a reader for in
+repository has three writers for — two of them shared parts,
+[`mp4-muxer.js`](shared/js/mp4-muxer.js) and
+[`mp4-writer.js`](shared/js/mp4-writer.js), built on the box helpers in
+[`mp4-boxes.js`](shared/js/mp4-boxes.js) — and a reader for in
 [`heic-to-jpg`](tools/heic-to-jpg/src/boxes.js).
 
 One piece is genuinely missing and should not be discovered late:
@@ -141,13 +144,14 @@ separate tool and not a button on the viewer.
 ### GIF to MP4 or WebM
 
 Same animation, usually a tenth of the size, and every platform that rejects a
-30 MB GIF accepts the MP4. The muxer exists five times over in this repository
-already — three variants of `mp4.js`, declared as groups in
-`tests/python/test_duplicates.py` — and the one this wants is the smaller of
-them, the single video track with no audio that
-[`images-to-video`](tools/images-to-video/) and the time-lapse maker share. A
-GIF has no sound to carry. So the work is the decode side and the encoder
-settings.
+30 MB GIF accepts the MP4. The muxer is a shared part already:
+[`mp4-muxer.js`](shared/js/mp4-muxer.js) writes the one H.264 track an encoder
+just produced, with no audio, and [`images-to-video`](tools/images-to-video/) and
+the time-lapse maker both ship it. It was five copies of `mp4.js` declared as
+duplicate groups until every one moved to `shared/js/`, which is why the group
+list in `tests/python/test_duplicates.py` is empty now. A GIF has no sound to
+carry, so that is the writer this wants, and the work is the decode side and
+the encoder settings.
 
 ### Edit a GIF
 
@@ -195,25 +199,31 @@ is the frame-by-frame decode of the GIF going in, which
 ### Resize
 
 The most-wanted video job there is, and the reason is always the same: the file
-will not send. `VideoDecoder` and `VideoEncoder` do the work, with the demuxer
-that [`crop-video`](tools/crop-video/) already carries.
+will not send. `VideoDecoder` and `VideoEncoder` do the work, behind the reader
+that [`crop-video`](tools/crop-video/) and five other tools already ship as
+[`mp4-reader.js`](shared/js/mp4-reader.js).
 
 ### Rotate
 
 The cheapest thing on this entire list, and it should be built first for that
 reason. A sideways MP4 does not need re-encoding — it needs a different display
-matrix in `tkhd`, which is a few bytes. `tests/python/test_duplicates.py` says
-of the second `demux.js` group that the trim and reverse readers deliberately
-carry the sample entry and the display matrix out of the file whole, so the
-hard part is already sitting in the repository being used for something else.
+matrix in `tkhd`, which is a few bytes. Both halves of that are shared parts:
+[`mp4-reader.js`](shared/js/mp4-reader.js) carries the sample entry and the
+display matrix out of the file whole, and reads the quarter turn the matrix
+asks for, and [`mp4-writer.js`](shared/js/mp4-writer.js) writes the matrix it
+is handed back into `tkhd`, because the trimmer and the reverser need a clip
+filmed on a phone to come out the right way up. So the hard part is already
+sitting in the repository being used for something else, and this tool is the
+line between the two that changes the matrix.
 
 ### Mute a video
 
 Dropping the audio track from an MP4 is a remux: the video samples are copied
 untouched and one track is left out. Note what is *not* on this card any more —
-saving a video's audio on its own already ships, in
-[`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/), both of
-which take a video and never decode its picture. Half of the old
+saving a video's audio on its own already ships, as a page of its own at
+[`extract-audio-from-video`](tools/extract-audio-from-video/), and
+[`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/) take a
+video too; none of the three decodes its picture. Half of the old
 "Mute, or save the audio" line was a promise to build something that existed.
 
 ### Convert to MP4
@@ -246,10 +256,13 @@ transcription service.
 ### Convert format
 
 MP3, WAV and Opus. WAV out is a 44-byte header in front of the samples and
-already exists in [`edit-audio/src/wav.js`](tools/edit-audio/src/wav.js); Opus
-comes out of `MediaRecorder`, which every browser ships, and out of
-`AudioEncoder` beside it, which also encodes AAC — so an `.m4a`, which is what
-most people mean when they say a file will not play, is free as well. MP3 is
+already exists as [`wav.js`](shared/js/wav.js), the part the audio editor, the
+trimmer and the extractor all ship; Opus comes out of `MediaRecorder`, which
+every browser ships, and out of `AudioEncoder` beside it, which also encodes
+AAC — so an `.m4a`, which is what most people mean when they say a file will
+not play, is free as well, and [`aac.js`](shared/js/aac.js) already writes the
+description that goes round the configuration the encoder hands back, because
+the video cutter and the reverser re-encode their sound. MP3 is
 the one that needs help, and it is the one claim on this list that measuring
 did not overturn: `AudioEncoder.isConfigSupported({codec: 'mp3'})` is false and
 `MediaRecorder` will not take `audio/mpeg`. The answer is `libmp3lame` alone,
@@ -303,9 +316,10 @@ check `tools/` before adding a name here rather than after.
 
 CSV in both directions, with RFC 4180 quoting done properly, the delimiter and
 encoding sniffed rather than assumed, and the mess a spreadsheet exported
-tidied up. [`json-formatter`](tools/json-formatter/src/json.js) already owns a JSON
-parser that keeps key order, keeps numbers as the text they were written as and
-keeps duplicate keys, so one half of this is a printer away. The files are
+tidied up. [`parse-json.js`](shared/js/parse-json.js), which the JSON
+formatter, the XML formatter and the YAML converter all ship, is a JSON parser
+that keeps key order, keeps numbers as the text they were written as and keeps
+duplicate keys, so one half of this is a printer away. The files are
 payroll, customer lists and exports from systems people are not allowed to
 paste into a website.
 
@@ -333,7 +347,7 @@ made its tool look unfinished for as long as it sat on the roadmap.
 | Change GIF speed | [Edit a GIF](#edit-a-gif) | Retiming is editing the delay on each frame — the same file, the same tool. |
 | Fade in & out | [`edit-audio`](tools/edit-audio/) | [`trim-audio`](tools/trim-audio/src/main.js) already places fades on its cuts. What was left is fading the head and tail of a whole file: a control in the audio editor. |
 | Waveform image | [`edit-audio`](tools/edit-audio/src/waveform.js) | That tool already draws the waveform. The roadmap item was a download button underneath it. |
-| Save a video's audio | shipped | [`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/) both accept a video and never decode its picture. This was on the roadmap after it was built. |
+| Save a video's audio | shipped | [`extract-audio-from-video`](tools/extract-audio-from-video/) is a page of its own now, and [`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/) accept a video too; none of the three decodes its picture. This was on the roadmap after it was built. |
 | Rotate PDF pages | [`merge-pdf`](tools/merge-pdf/) | `/Rotate` is one number in the page dictionary, so the merger got it for nothing while it was already rewriting them — per page, per range, or the whole document. It was on the roadmap after it was built, paired with [Crop pages](#crop-pages), which is the half that is still real. |
 
 ## Taken off the list
