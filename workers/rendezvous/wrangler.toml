@@ -16,6 +16,12 @@ compatibility_date = "2026-08-01"
 # switchboard - and the page names this hostname in exactly two places:
 # the constant at the top of tools/share-text/src/main.js and the connect-src
 # line of its tool.toml.
+#
+# `workers_dev` has to be said out loud: the moment a worker declares a route,
+# wrangler turns the workers.dev name off unless told otherwise, and the first
+# deploy of this file did exactly that - every page already out there dialled
+# the old name and found nothing. Both names stay on, deliberately.
+workers_dev = true
 routes = [
   { pattern = "rendezvous.abox.tools", custom_domain = true },
 ]
