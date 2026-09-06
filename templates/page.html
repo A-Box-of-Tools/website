@@ -131,8 +131,17 @@
     <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/">{{ ui.guide.open_tool }}</a>
     <span class="guide-cta-note">{{ tool.tagline }}</span>
   </p>
-{% endif %}  <p class="legal-date">{{ ui.last_updated }} {{ page.updated }}</p>
+{% endif %}  <!--
+    The date and, beside it, the page as Markdown: one quiet row of things
+    about the page rather than the page. Together because they are the same
+    kind of fact - when this was written, and where the words can be had
+    without the frame - and a reader looking for either looks in the same
+    place for both. The row wraps under the date where the column is narrow.
+  -->
+  <div class="page-meta">
+    <p class="legal-date">{{ ui.last_updated }} {{ page.updated }}</p>
 {% include "partials/page-md.html" %}
+  </div>
 </header>
 
 <!--

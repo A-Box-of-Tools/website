@@ -652,11 +652,14 @@ footer_source = "Read the code on GitHub"
 footer_x = "abox.tools on X"
 
 # The row beside every page's Markdown twin - see buildlib/markdown.py. The
-# button says what it copies, not who it is for: "for AI" would date, and the
-# person pasting a page into a chat and the script fetching index.md want the
-# same thing under the same name. `md_copied` and `md_failed` are what the
-# status beside the button says for two seconds after a press.
-md_copy = "Copy page as Markdown"
+# button names the reader it is for and its tooltip names the format: a
+# person about to paste a page into a chat is looking for the first, and asks
+# the second only once they have found it. The link beside it names the
+# format outright, because a link's text is its promise. `md_copied` and
+# `md_failed` are what the status beside the button says for two seconds
+# after a press.
+md_copy = "Copy for LLM"
+md_copy_title = "Copies the page as Markdown"
 md_copied = "Copied"
 md_failed = "Could not copy"
 md_view = "View as Markdown"

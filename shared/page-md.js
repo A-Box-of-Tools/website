@@ -1,5 +1,5 @@
 /**
- * "Copy page as Markdown" - the button beside every page's Markdown twin.
+ * "Copy for LLM" - the button beside every page's Markdown twin.
  *
  * GENERATED FILE - do not edit; see shared/page-md.js.
  *

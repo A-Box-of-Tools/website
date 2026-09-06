@@ -347,8 +347,9 @@ what it does and does not handle.
 Three things point at it. The page's head carries
 `<link rel="alternate" type="text/markdown" href="index.md">`, which is how a
 crawler or an agent finds it without guessing. A row on the page — at the head
-of the written part on a tool page, under the date on a prose page — offers
-**Copy page as Markdown** and **View as Markdown**. And the tool's service
+of the written part on a tool page, beside the date on a prose page — offers
+**Copy for LLM**, whose tooltip says the format is Markdown, and **View as
+Markdown**. And the tool's service
 worker precaches it with the rest of the folder, so the link works offline like
 every other link that stays inside it.
 
