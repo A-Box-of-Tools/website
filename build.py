@@ -101,6 +101,7 @@ from buildlib import cssmin
 from buildlib import i18n
 from buildlib import icons as iconlib
 from buildlib import imports
+from buildlib import markdown as mdlib
 from buildlib import minify
 from buildlib import screens
 from buildlib import site as sitelib
@@ -248,6 +249,14 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         (SHARED / 'lang-keep.js').read_text(encoding='utf-8'), 'shared/lang-keep.js')
     keep_v = sitelib.text_hash(keep_js)
 
+    # The copy button beside every page's Markdown twin - see
+    # buildlib/markdown.py. Served from the root and hashed like the four
+    # above, for the same reasons: every page in every language asks for the
+    # same bytes, and a tool's service worker would otherwise hold the old
+    # copy until the tool itself shipped a change.
+    md_js = emit.js_text(
+        (SHARED / 'page-md.js').read_text(encoding='utf-8'), 'shared/page-md.js')
+    md_v = sitelib.text_hash(md_js)
 
     # The eight lines that register the front page's service worker. Written
     # here rather than into each language because there is nothing in it that
@@ -438,7 +447,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         for locale in targets:
             done, links = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
-                                       feedback_v, handoff_v, keep_v,
+                                       feedback_v, handoff_v, keep_v, md_v,
                                        offline_v, filter_v, site_css, emit, only)
             written += done
             page_links.update(links)
@@ -447,7 +456,8 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
                             tools, prose, planned, css_v, lang_v, feedback_v,
-                            handoff_v, keep_v, offline_v, filter_v, site_css, emit, only)
+                            handoff_v, keep_v, md_v, offline_v, filter_v,
+                            site_css, emit, only)
                 for locale in targets
             ]
             for future in pending:
@@ -571,6 +581,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     write(out / 'feedback.js', feedback_js)
     write(out / 'handoff.js', handoff_js)
     write(out / 'lang-keep.js', keep_js)
+    write(out / 'page-md.js', md_js)
 
     # Last, because a link is only checkable once everything it could point at
     # has been written. The pages the parent wrote itself - the 404 - joined
@@ -609,7 +620,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, feedback_v, handoff_v, keep_v, offline_v,
+                 css_v, lang_v, feedback_v, handoff_v, keep_v, md_v, offline_v,
                  filter_v, site_css, emit, only=None):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
@@ -708,7 +719,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
         if only and tool['slug'] not in only:
             continue
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, feedback_v, handoff_v, keep_v,
+                   links, lang_v, feedback_v, handoff_v, keep_v, md_v,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
                    [by_slug[s] for s in tool.get('handoff', [])], emit)
@@ -740,7 +751,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
 
     for page in lprose:
         build_page(dest_root, templates, locale, locales, site, page, footer,
-                   links, css_v, lang_v, by_slug, emit)
+                   links, css_v, lang_v, md_v, by_slug, emit)
         written.append(f'{locale["prefix"]}{page["out_slug"]}/index.html')
 
     build_guides(dest_root, templates, locale, locales, site, groups,
@@ -1047,8 +1058,8 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, feedback_v, handoff_v, keep_v, guide, related, handoff,
-               emit):
+               lang_v, feedback_v, handoff_v, keep_v, md_v, guide, related,
+               handoff, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -1155,6 +1166,13 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         for source in tool['csp'].get('connect-src', [])
         if urlsplit(source).hostname}))
 
+    # The page again as Markdown: beside it as index.md, and inside it for
+    # the copy button. Rendered from the same dicts the page is, so it cannot
+    # say anything the page does not. buildlib/markdown.py says why it exists
+    # and why it is carried in the page rather than fetched.
+    twin = write(dest / 'index.md', mdlib.tool_page(
+        templates, root, tool, ui['tool'], guide, related))
+
     page = emit.html(dest / 'index.html', open_links_elsewhere(templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
@@ -1184,6 +1202,8 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'keep_href': f'/lang-keep.js?v={keep_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
+            'markdown': twin,
+            'md_href': f'/page-md.js?v={md_v}',
         }))))
 
     css = write(dest / 'styles.css', css)
@@ -1214,13 +1234,17 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # the writes above - the same bytes the files hold - so nothing written a
     # moment ago is opened again just to be hashed. The vendored files were
     # never emitted, only copied, so theirs are read from where they live.
-    cached = ([('index.html', page), ('styles.css', css),
+    #
+    # The Markdown twin is in the list too, so that "View as Markdown" is a
+    # link that works with the network unplugged, like every other link that
+    # stays inside this folder.
+    cached = ([('index.html', page), ('index.md', twin), ('styles.css', css),
                ('analytics.js', analytics), ('manifest.json', manifest)]
               + emitted
               + [(name, (tool['dir'] / name).read_bytes()) for name in vendored])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'words': tool['words'],
-        'assets': (['index.html', css_href, 'manifest.json']
+        'assets': (['index.html', 'index.md', css_href, 'manifest.json']
                    + module_hrefs + vendored),
         'cache_scope': f'/{locale["prefix"]}{tool["out_slug"]}/',
         'cache_hash': sitelib.cache_hash(cached),
@@ -1364,7 +1388,7 @@ def tool_css(tool):
 
 
 def build_page(out, templates, locale, locales, site, page, footer, links,
-               css_v, lang_v, by_slug, emit):
+               css_v, lang_v, md_v, by_slug, emit):
     """A prose page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
@@ -1442,6 +1466,15 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
     context['ui'] = i18n.render_ui(
         templates, root['ui'], context, f'ui [{locale["lang"]}]',
         include=['guide'] if context['tool'] else [])
+
+    # The page again as Markdown, beside it and inside it - the same
+    # arrangement as a tool page, for the reasons buildlib/markdown.py gives.
+    # From the rendered body rather than the source one, so the twin carries
+    # what the page carries: the translation, the resolved links, the
+    # measured screenshots.
+    context['markdown'] = write(dest / 'index.md', mdlib.prose_page(
+        templates, root, page, context['tool'], context['ui'], context['body']))
+    context['md_href'] = f'/page-md.js?v={md_v}'
 
     emit.html(dest / 'index.html', templates.render('page.html', context))
 

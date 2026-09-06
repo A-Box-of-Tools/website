@@ -397,6 +397,11 @@ footer_sitemap = "Site haritası"
 footer_source = "Kaynak kodu GitHub'da okuyun"
 footer_x = "X'te abox.tools"
 
+md_copy = "Sayfayı Markdown olarak kopyala"
+md_copied = "Kopyalandı"
+md_failed = "Kopyalanamadı"
+md_view = "Markdown olarak görüntüle"
+
 guarantees_note = """
     Bunların hiçbirine güvenmeniz gerekmez.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -434,6 +439,12 @@ guide_heading = "Uzun sürüm"
 related_heading = "Kutuda ayrıca"
 handoff_lead = "Sonucu doğrudan şuraya taşıyın:"
 privacy_heading = "Gizlilik iddiası nasıl doğrulanabilir"
+
+md_note = """
+    Bu sayfa, tamamen tarayıcınızda çalışan etkileşimli bir araçtır:
+    {{ tool.url }}. Ona verdiğiniz hiçbir şey yüklenmez. Aşağıda, sayfanın bu
+    araç hakkında sözcüklerle söylediği her şey yer alır; kullanmak için
+    adresi açın."""
 
 card_waiting = "Yukarıdan bir dosya seçtiğinizde açılır."
 pledge_line = """

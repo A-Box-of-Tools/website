@@ -61,6 +61,13 @@ site returns, which needs no token at all.
 | `Referrer-Policy` | `no-referrer` | Outgoing links do not carry which page you came from |
 | `Permissions-Policy` | `camera=(self), microphone=(), geolocation=(), usb=(), payment=()` | Switches off capabilities no tool here uses, so a future mistake cannot quietly start using one. `camera=(self)` is the one exception: `/qr-barcode-reader/` reads a code from a live camera, and a page cannot ask for a capability its own site has switched off. `(self)` is this origin only — no embedded frame gets it, and nothing else moved |
 
+A second rule, on `.md` addresses only, adds `X-Robots-Tag: noindex`. Every
+tool and prose page has a Markdown twin beside it at `index.md` — see
+"Every page as Markdown" in [docs/deploying.md](../docs/deploying.md) — and
+the twin is the same words as the page, so a search engine must not be left
+to pick the copy with no tool on it. The page's `<link rel="alternate">` says
+which is the original; this header says the other one is not a page to list.
+
 Deliberately **not** set here: a full `Content-Security-Policy`. Each page ships
 its own policy in a `<meta>` tag, and when two policies apply the browser enforces
 both intersected — a broader policy at the edge would silently tighten every tool

@@ -35,6 +35,12 @@
 <link rel="canonical" href="{{ page.url }}">
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
+<!--
+  The same page as Markdown, at its own address, for a reader that is not a
+  person. The file sits beside this one, and the button under the heading
+  copies the same text - see buildlib/markdown.py.
+-->
+<link rel="alternate" type="text/markdown" href="index.md">
 {% include "partials/lang-script.html" %}
 
 <meta name="google-adsense-account" content="{{ site.adsense_client }}">
@@ -126,6 +132,7 @@
     <span class="guide-cta-note">{{ tool.tagline }}</span>
   </p>
 {% endif %}  <p class="legal-date">{{ ui.last_updated }} {{ page.updated }}</p>
+{% include "partials/page-md.html" %}
 </header>
 
 <!--

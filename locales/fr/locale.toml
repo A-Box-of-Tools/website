@@ -404,6 +404,11 @@ footer_sitemap = "Plan du site"
 footer_source = "Lire le code sur GitHub"
 footer_x = "abox.tools sur X"
 
+md_copy = "Copier la page en Markdown"
+md_copied = "Copié"
+md_failed = "Impossible de copier"
+md_view = "Voir en Markdown"
+
 guarantees_note = """
     Rien de tout cela n'est à croire sur parole.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -438,6 +443,12 @@ guide_heading = "La version longue"
 related_heading = "Aussi dans la boîte"
 handoff_lead = "Poursuivre avec le résultat dans&nbsp;:"
 privacy_heading = "Comment cette promesse se vérifie"
+
+md_note = """
+    Cette page est un outil interactif qui fonctionne entièrement dans votre
+    navigateur, à l'adresse {{ tool.url }} &mdash; rien de ce que vous lui
+    confiez n'est envoyé. Ce qui suit est tout ce que la page dit de l'outil,
+    en mots&nbsp;; pour l'utiliser, ouvrez l'adresse."""
 
 card_waiting = "S'ouvre dès que vous choisissez un fichier ci-dessus."
 # Tournée à l'actif : le participe passé s'accorderait avec

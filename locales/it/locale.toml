@@ -380,6 +380,11 @@ footer_sitemap = "Mappa del sito"
 footer_source = "Leggi il codice su GitHub"
 footer_x = "abox.tools su X"
 
+md_copy = "Copia la pagina come Markdown"
+md_copied = "Copiato"
+md_failed = "Copia non riuscita"
+md_view = "Vedi come Markdown"
+
 guarantees_note = """
     Niente di tutto questo va preso per buono.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -414,6 +419,12 @@ guide_heading = "La versione lunga"
 related_heading = "Anche nella cassetta"
 handoff_lead = "Porta il risultato dritto in:"
 privacy_heading = "Come si verifica quello che promette"
+
+md_note = """
+    Questa pagina è uno strumento interattivo che funziona interamente nel tuo
+    browser, all'indirizzo {{ tool.url }} &mdash; nulla di ciò che gli affidi
+    viene caricato. Quanto segue è tutto ciò che la pagina dice dello
+    strumento a parole; per usarlo, apri l'indirizzo."""
 
 card_waiting = "Si apre appena scegli un file qui sopra."
 # Il nome che sta in mezzo cambia genere da uno strumento all'altro - le

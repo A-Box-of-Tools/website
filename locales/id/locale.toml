@@ -409,6 +409,11 @@ footer_sitemap = "Peta situs"
 footer_source = "Baca kode sumber di GitHub"
 footer_x = "abox.tools di X"
 
+md_copy = "Salin halaman sebagai Markdown"
+md_copied = "Tersalin"
+md_failed = "Gagal menyalin"
+md_view = "Lihat sebagai Markdown"
+
 guarantees_note = """
     Anda tidak perlu memercayai semua itu begitu saja.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -446,6 +451,12 @@ guide_heading = "Versi lebih lengkap"
 related_heading = "Juga ada di dalam kotak"
 handoff_lead = "Bawa hasilnya langsung ke:"
 privacy_heading = "Cara memverifikasi klaim privasi ini"
+
+md_note = """
+    Halaman ini adalah alat interaktif yang berjalan sepenuhnya di peramban
+    Anda, di {{ tool.url }} &mdash; tidak ada yang Anda berikan padanya yang
+    diunggah. Berikut ini semua yang dikatakan halaman tentang alat ini dalam
+    kata-kata; untuk memakainya, buka alamat tersebut."""
 
 card_waiting = "Terbuka begitu Anda memilih berkas di atas."
 pledge_line = """

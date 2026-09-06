@@ -43,6 +43,13 @@
 <link rel="canonical" href="{{ tool.url }}">
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}
+<!--
+  The same page as Markdown, at its own address: the words of this page
+  without the interface around them, for a reader that is not a person. The
+  file sits beside this one, and the button at the head of the written part
+  below copies the same text - see buildlib/markdown.py.
+-->
+<link rel="alternate" type="text/markdown" href="index.md">
 {% include "partials/lang-script.html" %}
 
 <!--
@@ -366,6 +373,7 @@
     operations without hunting for it. A fold is not a deletion: the words are
     in the page, one click from anybody who wants them.
   -->
+{% include "partials/page-md.html" %}
   <details class="how-to-fold">
     <summary><h2 id="how-to-h">{{ tool.howto_heading }}</h2></summary>
     <ol class="how-to">

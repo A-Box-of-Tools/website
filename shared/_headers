@@ -28,3 +28,9 @@
 #
 # Deliberately NOT set: Cross-Origin-Embedder-Policy. Enabling it would block
 # the cross-origin <img> loads that "Add from a web address" depends on.
+#
+# Not expressible here: the X-Robots-Tag: noindex that every page's Markdown
+# twin (index.md) gets at the edge. Neither host that reads this file matches
+# a path by its extension, so that rule lives only in
+# cloudflare/response-headers.json. See "Every page as Markdown" in
+# docs/deploying.md for why the twins are kept out of the index.

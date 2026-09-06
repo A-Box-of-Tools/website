@@ -257,6 +257,11 @@ footer_sitemap = "站点地图"
 footer_source = "在 GitHub 上读代码"
 footer_x = "abox.tools 的 X 账号"
 
+md_copy = "以 Markdown 复制本页"
+md_copied = "已复制"
+md_failed = "复制失败"
+md_view = "以 Markdown 查看"
+
 guarantees_note = """
     上面这些不用你信。<a href="{{ base }}{{ links.safety_guide }}/">
       怎么判断一个工具是不是真需要你的文件</a>\
@@ -288,6 +293,9 @@ guide_heading = "说得更细的版本"
 related_heading = "工具箱里还有"
 handoff_lead = "把结果直接带到："
 privacy_heading = "这条隐私承诺怎么核实"
+
+md_note = """
+    本页是一个完全在你的浏览器里运行的交互式工具，地址是 {{ tool.url }}。你交给它的任何内容都不会被上传。下面是这个页面用文字对该工具的全部说明；要使用它，请打开这个地址。"""
 
 card_waiting = "在上方选择文件后就会打开。"
 pledge_line = """
