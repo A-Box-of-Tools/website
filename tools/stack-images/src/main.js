@@ -342,7 +342,8 @@ function renderList() {
 
 function row(slot, index, isReference) {
   const item = document.createElement('li');
-  item.className = isReference ? 'frame-row is-reference' : 'frame-row';
+  item.className = 'frame-row';
+  if (isReference) item.classList.add('is-reference');
 
   const label = slot.info?.name ?? slot.file.name;
   item.append(dragHandle(label, index));

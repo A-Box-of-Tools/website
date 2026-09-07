@@ -141,8 +141,9 @@ body = """
  Elde tutuluyorsa: evet,
       yalnızca kaydırma. Elde tutuluyor ve aynı zamanda dönüyorsanız: kaydırma,
       döndürme ve ölçekleme. Sabitlenmiş tripod ya da aralıklı çekim: hayır, ve daha
-      hızlı olur. Her kare listedeki ilk kareye göre ölçülür; herhangi bir kareyi
-      ilk sıraya yükseltebilmenizin nedeni de budur."""
+      hızlı olur. Her kare referans işaretli kareye göre ölçülür; siz başka bir şey
+      söylemedikçe bu, listedeki ilk karedir. &laquo;Referans yap&raquo;
+      işareti taşır, listeyi koyduğunuz sırada bırakır."""
 
 [[howto]]
 title = "Dört sayıyı okuyun, sonra düğmeye basın."
@@ -213,8 +214,8 @@ a = """
 [[faq]]
 q = "Kareleri hizalamak aslında ne yapar?"
 a = """
-        Her karenin ilkine göre ne kadar kaydığını bulur ve onu bir pikselin
-        kesirine varan hassasiyetle geri taşır. Yöntem faz korelasyonudur: iki
+        Her karenin referans kareye göre ne kadar kaydığını bulur ve onu bir
+        pikselin kesirine varan hassasiyetle geri taşır. Yöntem faz korelasyonudur: iki
         görüntü arasındaki kayma, tayfları arasında bir faz farkı olarak ortaya
         çıkar; dolayısıyla her birine bir Fourier dönüşümü, iki piksellik bir kaymayı
         bulduğu ucuzlukta iki yüz piksellik bir kaymayı da bulur. İkinci ayar, aynı
