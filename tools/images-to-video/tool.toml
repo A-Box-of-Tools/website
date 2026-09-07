@@ -32,8 +32,8 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "codec-support", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "codec-support", "codec-probe", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -53,8 +53,10 @@ og_card = "Turn a folder of images into an MP4 slideshow, encoded on your own ma
 csp_note = """
   img-src allows http/https so the "add from web address" feature can pull an
   image IN, and because ad creatives come from anywhere. media-src and
-  worker-src need blob: because the finished video and the encoder both live in
-  memory on this machine rather than at a URL."""
+  worker-src need blob: because the finished video and the encoder both live
+  in memory on this machine rather than at a URL. worker-src also carries the
+  small script that asks this browser what it can encode, which is a file in
+  this folder."""
 
 # --- the pledge block --------------------------------------------------------
 

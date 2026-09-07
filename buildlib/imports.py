@@ -18,6 +18,10 @@ Two ways that happens, and neither is hypothetical:
     `shared/js/crc32.js` is exactly this shape. The tool builds, the page
     loads, and the ZIP writer is missing its checksum function.
 
+A third shape names a file without importing it: `new URL('./worker.js',
+import.meta.url)`, which is how a Worker's script is found. It fails the same
+way and is read the same way - see `asset_urls` below.
+
 Both are invisible to `python build.py` and to CI, and both break the tool
 completely. So the build reads every module it is about to emit, collects the
 specifiers, and refuses a tool whose imports do not all land on a file that
@@ -65,6 +69,36 @@ def specifiers(source, where='<js>'):
         elif (previous == '(' and index >= 2
                 and tokens[index - 2][1] == 'import'):
             found.append((line, text[1:-1]))
+
+    return found
+
+
+def asset_urls(source, where='<js>'):
+    """Every file `source` names with `new URL('…', import.meta.url)`.
+
+    Not an import, so `specifiers` above does not see it, but the same failure
+    with the same cost: a Worker started from a path nobody shipped is a 404
+    on the visitor's machine, and the feature it was carrying simply never
+    happens. `shared/js/codec-support.js` starting `codec-probe.js` and
+    stack-images starting its own `worker.js` are both this shape, and the
+    first is a shared module whose worker has to be listed in `js_parts`
+    separately - the zip/crc32 trap again, in a place `import` never looks.
+
+    Only relative strings are collected. `new URL(text)` over something a
+    visitor typed and `new URL('https://…')` are the same expression naming no
+    file in this repository, and there is nothing for them to land on.
+    """
+    found = []
+    tokens = minify.tokenize_js(source, where)
+
+    for index, (line, text) in enumerate(tokens):
+        if index < 3 or not text or text[0] not in '\'"':
+            continue
+        if [tokens[index - back][1] for back in (3, 2, 1)] != ['new', 'URL', '(']:
+            continue
+        specifier = text[1:-1]
+        if specifier.startswith('./') or specifier.startswith('../'):
+            found.append((line, specifier))
 
     return found
 
@@ -200,6 +234,19 @@ def check(shipped, read, where):
                 problems.append(
                     f'{name}:{line}: "{specifier}" -> {target}, which this '
                     f'tool does not ship')
+
+        # A file named by `new URL(…, import.meta.url)` rather than imported.
+        # Checked only where it lands inside src/, because that is the whole of
+        # what a tool's asset list covers: a vendored engine sits in vendor/
+        # and is shipped by a path this set knows nothing about.
+        for line, specifier in asset_urls(source, f'{where}/{name}'):
+            target = resolve(name, specifier)
+            if target is None or not target.startswith('src/'):
+                continue
+            if target not in shipped:
+                problems.append(
+                    f'{name}:{line}: new URL("{specifier}") -> {target}, '
+                    f'which this tool does not ship')
 
         # A file that exists can still lack the name asked of it; the browser
         # refuses to link the whole module and the page's code never starts.

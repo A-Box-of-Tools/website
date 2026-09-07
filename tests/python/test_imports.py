@@ -91,6 +91,37 @@ class Resolve(unittest.TestCase):
         self.assertIsNone(imports.resolve('src/main.js', 'lodash'))
 
 
+class AssetUrls(unittest.TestCase):
+    """`new URL('./x.js', import.meta.url)` - how a Worker's script is named.
+
+    Not an import, so the reader above never sees it, and the tool that ships
+    the module without shipping its worker builds cleanly and then does
+    nothing at all when the button is pressed.
+    """
+
+    def urls(self, source):
+        return [spec for _, spec in imports.asset_urls(source)]
+
+    def test_a_worker_script(self):
+        self.assertEqual(
+            self.urls("new Worker(new URL('./worker.js', import.meta.url));"),
+            ['./worker.js'])
+
+    def test_a_path_out_of_the_folder(self):
+        self.assertEqual(
+            self.urls("const E = new URL('../vendor/lib.js', import.meta.url);"),
+            ['../vendor/lib.js'])
+
+    def test_an_absolute_url_names_no_file(self):
+        self.assertEqual(self.urls("new URL('https://example.com/x.js');"), [])
+
+    def test_a_url_built_from_something_a_visitor_typed(self):
+        self.assertEqual(self.urls('url = new URL(raw.trim());'), [])
+
+    def test_the_word_in_prose_is_not_one(self):
+        self.assertEqual(self.urls("// new URL('./x.js') in a comment"), [])
+
+
 class Check(unittest.TestCase):
     def test_a_tool_whose_imports_all_land(self):
         files = {'src/main.js': "import { z } from './zip.js';",
@@ -124,6 +155,32 @@ class Check(unittest.TestCase):
         with self.assertRaises(ConfigError) as caught:
             imports.check(set(files), files.get, 'demo')
         self.assertIn('2 import(s)', str(caught.exception))
+
+    def test_a_worker_script_that_was_never_shipped(self):
+        # codec-support.js is in js_parts and codec-probe.js is not: the page
+        # loads, the encoder question is never answered, and nothing says so.
+        files = {'src/main.js': "import { a } from './shared/ask.js';",
+                 'src/shared/ask.js':
+                     "export const a = new Worker("
+                     "new URL('./probe.js', import.meta.url));"}
+        with self.assertRaises(ConfigError) as caught:
+            imports.check(set(files), files.get, 'demo')
+        self.assertIn('src/shared/probe.js', str(caught.exception))
+
+    def test_a_worker_script_that_was_shipped(self):
+        files = {'src/main.js': "import { a } from './shared/ask.js';",
+                 'src/shared/ask.js':
+                     "export const a = new Worker("
+                     "new URL('./probe.js', import.meta.url));",
+                 'src/shared/probe.js': ''}
+        imports.check(set(files), files.get, 'demo')       # does not raise
+
+    def test_a_vendored_engine_is_left_alone(self):
+        # vendor/ is shipped by another path entirely and is not in the asset
+        # list this check is given, so it has nothing to say about it.
+        files = {'src/main.js': "const E = new URL('../vendor/lib.js', "
+                                "import.meta.url);"}
+        imports.check(set(files), files.get, 'demo')       # does not raise
 
     def test_non_javascript_is_not_read(self):
         # A tool's src/ can hold other files; they are copied, not parsed.

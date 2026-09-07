@@ -123,6 +123,8 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/parse-xml.js` | `js_parts = ["parse-xml"]` | XML and HTML, one parser with two rulebooks |
 | `shared/js/qr-tables.js` | `js_parts = ["qr-tables"]` | the QR specification's tables and the arithmetic around them, for the writer and the reader alike |
 | `shared/js/pdf-page-writer.js` | `js_parts = ["pdf-page-writer"]` | a PDF writer for putting pictures on pages; not the quartet's rewriter |
+| `shared/js/codec-support.js` | `js_parts = ["codec-support", "codec-probe"]` | whether this browser will encode a configuration, with a deadline on the answer; never listed without `codec-probe` |
+| `shared/js/codec-probe.js` | `js_parts = ["codec-probe"]` | the worker `codec-support` puts that question to, so a browser that blocks on it cannot take the page with it; needs `worker-src 'self'` in the tool's `[csp]` |
 | `shared/js/video-support.js` | `js_parts = ["video-support"]` | what this browser will decode, encode and record; imports `codec-support` |
 | `shared/js/frame-canvas.js` | `js_parts = ["frame-canvas"]` | the canvas a video's frames are drawn into at the output size, turned the way the file asks; `readBack` for a tool that reads the pixels out again |
 | `shared/js/format.js` | `js_parts = ["format"]` | sizes, durations and the m:ss.mmm clock as words, in the tiers and decimals the tool names |
@@ -134,9 +136,13 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 
 `zip` needs `crc32` listed as well — it is a separate part because a PNG writer
-wants the checksum without the archive. The four `pdf-*` parts travel
-together: the reader and the writer both import the grammar and the filters,
-and `buildlib/imports.py` refuses a tool that lists some and not the rest.
+wants the checksum without the archive. `codec-support` needs `codec-probe` the
+same way, and for a reason `import` cannot express: it starts that file as a
+Worker rather than importing it, so the tool that lists one and not the other
+builds cleanly and then says nothing at all when the button is pressed. The
+four `pdf-*` parts travel together: the reader and the writer both import the
+grammar and the filters, and `buildlib/imports.py` refuses a tool that lists
+some and not the rest.
 
 `phrases` and `trust` are the two parts no tool asks for. Every tool page wears
 the frame, the frame has sentences its JavaScript puts on screen, and the
@@ -214,7 +220,9 @@ module a tool is about to ship, with the tokeniser from `minify.py` rather than
 a regular expression, and refuses a tool whose imports do not all land on a
 file that tool ships. The case it exists for: `shared/js/zip.js` imports
 `./crc32.js`, so a tool asking for `"zip"` and not `"crc32"` would build
-cleanly and 404 in the browser.
+cleanly and 404 in the browser. A file named by `new URL(…, import.meta.url)`
+rather than imported — a Worker's script — is read the same way and held to the
+same rule.
 
 Only *choosing* the files is shared. What a tool does with them afterwards — the
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
