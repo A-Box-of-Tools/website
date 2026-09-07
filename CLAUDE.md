@@ -26,6 +26,32 @@ No dependencies, no lockfile, no build step for the JavaScript. What is in
 `?v=<hash>` on every relative import so a deploy never pairs a new page with a
 cached old module (`sitelib.version_imports`); nothing else is transformed.
 
+## Branches
+
+**Open your pull request against `dev`, not `main`.**
+
+```
+your branch  ->  pull request  ->  dev  ->  pull request  ->  main  ->  live
+```
+
+`dev` holds everything merged since the last release. `main` is what is live:
+a push to it builds, publishes to the `dist` branch, tags a version and tells
+IndexNow, and nothing else does any of those. Releasing is opening a pull
+request from `dev` to `main` and merging it — that one gets a preview and a
+full QA run on the whole bundle, which is the last gate before production.
+
+The reason is the version and the deploy rather than ceremony: every merge
+used to be a release of its own, and most changes do not deserve one. See
+[docs/deploying.md](docs/deploying.md).
+
+Two things follow that will otherwise surprise you:
+
+- **A pull request is built and previewed on top of `dev`**, not on top of
+  what is live, so a preview can differ from production in ways your diff does
+  not explain.
+- **`--check` cannot pass on `dev`** — see below, and do not read it as
+  breakage.
+
 ## Commands
 
 ```bash
@@ -82,7 +108,8 @@ that do not exist on the branch under test. It looks exactly like "main is
 broken".
 
 `--check` diffs against the deployed `dist` branch, which tracks `main`
-exactly. On any feature branch it exits 1 by construction. CI does not run it.
+exactly. On `dev` and on any working branch it exits 1 by construction — both
+are ahead of what is deployed. CI does not run it.
 
 ## Layout
 
