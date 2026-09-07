@@ -83,6 +83,7 @@ class WhatAVisitorCanSee(unittest.TestCase):
                      'docs/deploying.md',
                      '.claude/skills/tool-development/SKILL.md',
                      'workers/rendezvous/worker.js',
+                     'cloudflare/response-headers.json',
                      'README.md',
                      'CLAUDE.md'):
             self.assertFalse(version.visible(path), path)

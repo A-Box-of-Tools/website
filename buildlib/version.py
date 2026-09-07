@@ -65,6 +65,7 @@ INVISIBLE = (
     'docs/',
     '.claude/',
     'workers/',          # deployed by hand, and not part of a page
+    'cloudflare/',       # the edge rules, applied by hand the same way
     'media/',            # artwork for profiles and press; the build never copies it
 )
 
