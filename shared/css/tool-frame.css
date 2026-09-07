@@ -786,6 +786,20 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 .card-head > h2 { margin-bottom: 0; }
 
+/* On a card whose explanation is folded behind its heading, what sits in the
+   row is the whole fold - the heading is inside a <summary> and cannot be
+   taken out of it, for the reasons in liftToHeading. `1 1 0` rather than the
+   `auto` a flex item defaults to, because the paragraph inside the fold is as
+   wide as its own text: on `auto` the row would rather wrap the button onto a
+   line of its own than let that paragraph be narrower. */
+.card-head > .card-note { flex: 1 1 0; min-width: 0; margin-bottom: 0; }
+
+/* Closed, the fold is exactly as tall as its heading and the two centre on one
+   line. Opened, it is a paragraph or three, and centring puts the button
+   halfway down them - so the row stops centring and the button stays up on the
+   heading it belongs to. */
+.card-head:has(> .card-note[open]) { align-items: start; }
+
 /* `auto` rather than `space-between`, so the button still sits right when the
    row wraps and the heading is alone on the line above it. */
 .dropzone-example { margin: 0 0 0 auto; }
