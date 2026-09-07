@@ -146,6 +146,16 @@ export function planRun({ width, height, frames, mode, budget = DEFAULT_BUDGET }
   // is a fifth of the budget and would be a fifth missing from the figure the
   // page shows. So it comes off the top, and the bands are sized in what is
   // left rather than in the whole.
+  //
+  // The pipeline is handed the box the frames covered and crops at the end, so
+  // the canvas it really allocates is the crop and this term is an
+  // over-estimate of it - by the pixel or two a side the refinement moved
+  // them, and by the radius a focus stack gives up. Over is the safe direction
+  // for a figure whose job is to keep a tab alive, and quoting the crop would
+  // mean knowing the crop, which is not known until every frame has been
+  // refined. The slack pays for the one thing the run allocates that is not
+  // counted here: the refinement's nine reference windows, which are held
+  // while the first band is stacked and dropped when it is done.
   const canvas = width * height * 4;
   const forBands = Math.max(0, budget - canvas);
 
@@ -244,17 +254,26 @@ export function outputSize(frames, scale = 1) {
  * what somebody would blame the stacking for. Cropping to what they all cover
  * is what every stacker does and is the only answer that invents nothing.
  *
- * Each frame's content filled the output box before it was moved, so the region
- * it covers afterwards is that box under its own transform. The rectangle
- * returned is the largest axis-aligned one inside all of them: for a rotated
- * quad, that means taking the inner of each pair of corners on every side,
- * which is conservative rather than exact and errs towards cropping slightly
- * too much.
+ * Each frame's content filled its own placement box before it was moved, so
+ * the region it covers afterwards is that box under its own transform. The
+ * box is the whole output for the ordinary set of frames that are all one
+ * size and shape, and is smaller for a frame of another shape, which
+ * `placement` letterboxes: a 4:3 frame in a 3:2 output never covered the
+ * columns either side of it, whether or not it moved, and a crop that assumed
+ * the whole output would leave those columns in with nothing behind them. A
+ * move that names no spot is taken to have filled the output, which is what
+ * every caller before the letterboxing was noticed meant.
  *
- * With no alignment every transform is the identity and this returns the whole
- * output, so nothing is cropped and nothing is lost.
+ * The rectangle returned is the largest axis-aligned one inside all of them:
+ * for a rotated quad, that means taking the inner of each pair of corners on
+ * every side, which is conservative rather than exact and errs towards
+ * cropping slightly too much.
  *
- * @param {{dx: number, dy: number, angle: number, scale: number}[]} moves
+ * With no alignment every transform is the identity and this returns whatever
+ * the frames covered, so a set of one shape is not cropped and nothing is lost.
+ *
+ * @param {{dx: number, dy: number, angle: number, scale: number,
+ *   spot?: {x: number, y: number, width: number, height: number}}[]} moves
  * @param {{width: number, height: number}} output
  * @returns {{x: number, y: number, width: number, height: number}}
  */
@@ -276,10 +295,11 @@ export function commonArea(moves, output) {
       y: cy + (x - cx) * sin + (y - cy) * cos + (move.dy ?? 0),
     });
 
-    const topLeft = at(0, 0);
-    const topRight = at(output.width, 0);
-    const bottomRight = at(output.width, output.height);
-    const bottomLeft = at(0, output.height);
+    const box = move.spot ?? { x: 0, y: 0, width: output.width, height: output.height };
+    const topLeft = at(box.x, box.y);
+    const topRight = at(box.x + box.width, box.y);
+    const bottomRight = at(box.x + box.width, box.y + box.height);
+    const bottomLeft = at(box.x, box.y + box.height);
 
     left = Math.max(left, topLeft.x, bottomLeft.x);
     right = Math.min(right, topRight.x, bottomRight.x);
@@ -301,50 +321,64 @@ export function commonArea(moves, output) {
   return { x, y, width, height };
 }
 
+/** How many windows across the refinement lays its grid. */
+export const REFINE_GRID = 3;
+
 /**
- * The square the alignment's refinement pass measures in, or 0 when the crop
- * has no room for one worth trusting.
+ * How far the grid stays off the edge of the crop, in output pixels.
+ *
+ * Not because the frames move afterwards - they do, but the windows are drawn
+ * through the coarse moves the crop was worked out from, so every one of them
+ * is inside every frame's coverage at the moment it is measured. It is because
+ * that edge is only NEARLY the edge of the coverage: `commonArea` approximates
+ * each rotated quad by the inner of each pair of corners and then rounds, and
+ * a resample at the boundary takes its samples from just outside it either
+ * way. A window flush against the edge can catch the transparent ground there,
+ * which correlates as an edge both frames share wherever they went and pins
+ * the window to a shift that is not the frame's. Eight pixels of margin keeps
+ * it off, and eight pixels of a crop that has room for this grid at all is
+ * nothing given up.
+ */
+export const REFINE_INSET = 8;
+
+/**
+ * The grid of squares the alignment's refinement measures in, or null when the
+ * crop has no room for one worth trusting.
  *
  * The coarse measurement happens in a small square and is multiplied back up,
  * which multiplies its sub-pixel error with it - at 6000 pixels across, a
  * twentieth of a pixel of estimation error comes back as more than one whole
- * pixel of blur. The refinement corrects that by correlating a window cut from
+ * pixel of blur. The refinement corrects that by correlating windows cut from
  * the frames at output resolution, where an error of a twentieth of a pixel is
- * an error of a twentieth of a pixel. 512 is plenty of texture to lock onto;
- * below 64 there is too little for the peak to mean anything, and no window is
- * the honest answer.
+ * an error of a twentieth of a pixel.
  *
- * The 16 the window keeps back from the crop is the two margins the caller
- * shrinks the crop by; asking for a window the margin then makes impossible
- * would be answering a different question than the one asked.
+ * Nine of them rather than one, because one window measures a shift and nine
+ * measure a field, and a field is what a rotation is. A frame turned a third
+ * of a degree moves the middle of a 6000 by 4000 picture by nothing and each
+ * of its corners by nineteen pixels, so a single window at the middle finds
+ * nothing to correct and reports honestly that the frame did not move.
+ *
+ * `cover` is how much of the output one window spans and `size` is the square
+ * it is drawn into, which is half of it: the residual being looked for is a
+ * pixel or two, the correlation resolves a fraction of a pixel of ITS OWN
+ * square, and drawing at half scale halves the reading and the cost of every
+ * transform in the run behind it. 512 is plenty of texture to lock onto and is
+ * the first size tried; the grid falls to 256 and then 128 on a crop that
+ * cannot fit three of them, and below a 3x3 grid of 64-pixel covers there is
+ * too little in each window for a peak to mean anything and no grid is the
+ * honest answer - the coarse move then stands.
  */
 export function refineWindow({ width, height }) {
-  const room = Math.min(width, height) - 16;
-  if (room < 64) return 0;
-  let size = 64;
-  while (size * 2 <= Math.min(room, 512)) size *= 2;
-  return size;
-}
-
-/**
- * How far the refinement may move a frame beyond its coarse answer, in output
- * pixels. Also how much the crop must shrink on every side, because a frame
- * moved after the crop was decided stops covering ground the crop assumed.
- *
- * The bound is the coarse pass's own error budget: its sub-pixel mistake is a
- * fraction of one alignment-square pixel, which the multiply-up turns into a
- * handful of output pixels. Eight covers that with room to spare. A set whose
- * frames barely moved cannot have been mismeasured by much - the error lives
- * in the sub-pixel fraction of the shift - so it keeps a one-pixel allowance
- * and a tripod burst is not charged sixteen rows for a correction it does not
- * need.
- */
-export function refineMargin(moves) {
-  let most = 0;
-  for (const move of moves) {
-    most = Math.max(most, Math.abs(move.dx ?? 0), Math.abs(move.dy ?? 0));
-  }
-  return most < 0.5 ? 1 : 8;
+  const room = Math.min(width, height) - REFINE_INSET * 2;
+  let cover = 512;
+  while (cover > 64 && REFINE_GRID * cover > room) cover /= 2;
+  if (REFINE_GRID * cover > room) return null;
+  // Half the cover, held inside what a correlation square may usefully be:
+  // 256 is where the transform stops being cheap and 64 is where the surface
+  // stops having a peak on it. A cover of 64 is drawn at 1:1 rather than at
+  // half, which is the floor doing its job rather than an exception to it.
+  const size = Math.min(256, Math.max(64, cover / 2));
+  return { cover, size, grid: REFINE_GRID };
 }
 
 /**

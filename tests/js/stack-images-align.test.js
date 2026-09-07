@@ -612,10 +612,10 @@ test('the gate holds at the refinement windows', () => {
   // floor refused it there. But the window is too small for the junk to
   // read as junk: this unrelated pair is refused at 0.896, and the same
   // pair on seeds 11 and 12 reads 0.788 and passes. The comment on N_MAX
-  // says why that is accepted - plan.js gives the 64 window only to crops
-  // under 272 pixels on the short side, and refineMargin caps what a
-  // residual can move a frame that did not move at one pixel. What is
-  // pinned is the pair the fixture table has.
+  // says why that is accepted - the refinement measures nine windows and
+  // applies nothing four of them do not agree on, so one small square
+  // passing this floor is a window dropped rather than a frame moved. What
+  // is pinned is the pair the fixture table has.
   const small64 = gateFixture(
     noisy(field(64, lowScene), 13.5, 3), noisy(field(64, lowScene, 2.4, -1.7), 13.5, 4), 64,
   );
@@ -720,9 +720,9 @@ test('two unrelated pictures locked on a JPEG lattice are refused by uniqueness'
   // apart, inside the ten-pixel box, so what next reads is the noise beyond
   // them (0.46-0.93 at quality 75, 0.27-0.40 at 20) and not the lattice.
   // What refuses it at most qualities is the plateau, by a coincidence
-  // rather than by design: its radius is eight because that is the
-  // refinement's margin, and eight is also the block pitch, so the shoulder
-  // is read on the lattice's first alias and spikes there. At quality 75
+  // rather than by design: its radius is eight because that is where a peak
+  // has stopped placing anything, and eight is also the block pitch, so the
+  // shoulder is read on the lattice's first alias and spikes there. At quality 75
   // that reads 0.71-0.98 over ten seed pairs and the lock is refused on
   // every one; the same at 95 and 50. plateauRadius in align.js records the
   // coincidence, and this is the assertion that would fail if the radius
@@ -760,7 +760,8 @@ test('a wall at output resolution is a plateau the refinement refuses', () => {
   // light is at output resolution. Its peak is sixty pixels wide too, so
   // eight pixels out the surface is still at three quarters of the peak or
   // more, and the argmax is one to seven pixels off a shift of (2.4, -1.7)
-  // - inside the eight-pixel margin, so nothing else would have refused it.
+  // - small enough that nothing else would have refused it, and consistent
+  // enough across the grid that the consensus would not have either.
   // Over ten seeds the plateau ran 0.77-0.96 at fifteen per cent noise and
   // 0.82-0.90 at five, every seed refused; at the sixteen-pixel radius the
   // first version read at 512, the five per cent wall stood at 0.59-0.71 and

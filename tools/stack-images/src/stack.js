@@ -55,6 +55,17 @@ const SORT_DIRECTLY_UP_TO = 512;
  */
 
 /**
+ * How far around a pixel focus stacking looks, when the caller does not say.
+ *
+ * Exported because the pipeline has to know it too, and for a reason that is
+ * not obvious: the blur below spreads a false edge inward from the frame's own
+ * boundary by exactly this much, so the crop is inset by it before the answer
+ * is cut. Two copies of the number would be two chances for the inset to stop
+ * matching the blur it is there to outrun.
+ */
+export const DEFAULT_RADIUS = 3;
+
+/**
  * @param {string} mode
  * @param {object} options
  * @param {number} options.width    the band's width in pixels
@@ -82,7 +93,7 @@ export function createStack(mode, options) {
   for (const [key, value] of Object.entries(options)) {
     if (value !== undefined) given[key] = value;
   }
-  return build({ kappa: 2, gain: 1, radius: 3, ...given, pixels: width * height });
+  return build({ kappa: 2, gain: 1, radius: DEFAULT_RADIUS, ...given, pixels: width * height });
 }
 
 /**

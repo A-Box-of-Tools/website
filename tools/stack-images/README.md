@@ -214,16 +214,102 @@ the coarse answer alone was off by one to two output pixels per frame and the
 stack came out *worse* than a single input frame.
 
 So the answer is finished during the stack itself: when each frame's full-size
-decode is first in hand — a decode the stack was going to pay for anyway — a
-512-pixel window from the middle of the crop is correlated against the same
-window of the reference at output resolution, and the residual corrects the
-coarse answer in place. At output resolution there is nothing to multiply up,
-so a twentieth of a pixel of error stays a twentieth of a pixel. The same
-synthetic bursts land within a quarter of a pixel per frame. The residual is
-gated — a peak that is not a peak, or a correction larger than the coarse pass
-could plausibly have been wrong by, leaves the coarse answer alone — and the
-crop gives up a small margin on every side up front, because a frame that
-moves after the crop was decided stops covering ground the crop assumed.
+decode is first in hand — a decode the stack was going to pay for anyway — the
+frame is correlated against the reference at output resolution and the residual
+corrects the coarse answer in place. At output resolution there is nothing to
+multiply up, so a twentieth of a pixel of error stays a twentieth of a pixel.
+The same synthetic bursts land within a quarter of a pixel per frame.
+
+**The refinement is a grid of nine windows, a gate on each of them, one
+consensus fit, and a ladder to fall down.** It was one window in the middle
+for a week, and one window measures a shift. Nine measure a *field*, and a
+field is what a rotation is: a frame turned a third of a degree moves the
+middle of a 6000×4000 picture by nothing at all and each of its corners by
+nineteen pixels, so the middle window reports honestly that the frame did not
+move while the corners stay as soft as no alignment would have left them.
+Measured in the browser on a synthetic burst rotated by 0.3°, shift-only
+refinement left the corners at a sharpness ratio of 0.47 against 0.48 for no
+alignment at all, where the middle reached 0.64.
+
+The grid is three windows by three over the region the frames covered under
+their coarse moves, inset from its edge. Each covers 512 output pixels and is
+drawn at half scale into a 256 square — `plan.js`'s `refineWindow` decides
+both, halving the cover on a crop too small for three of them and giving up
+below a grid of 64s, where the coarse answer simply stands. Half scale costs
+nothing in accuracy, because the residual being looked for is a pixel or two
+of output and a correlation resolves a fraction of a pixel of its own square
+either way, and it costs a quarter of the readback. Each window is drawn with
+one `drawImage` carrying a **source rectangle**, worked out by inverting the
+transform already on the context: in the browser, on a real 6000×4000 bitmap,
+the whole grid cost 12 ms a frame that way (16 ms with a sub-pixel transform)
+against 21 ms drawing the bitmap nine times over and 100 ms reading nine
+squares out of one full-size draw. The single 512 window it replaces cost 6 ms.
+The whole grid is cheaper than one decode.
+
+Every window goes through `isMeasured`, the same gate as everything else here,
+and one that reports a shift larger than a quarter of what it covers is
+dropped as well — a correlation surface wraps, and no residual of a coarse
+move is that large. What survives goes to `similarity.js`: every pair of
+surviving windows is taken as a proposal, scored by how many of the others it
+explains within two output pixels, and the largest agreeing set is refitted by
+least squares. Exhaustive rather than sampled, because nine points have
+thirty-six pairs and a test can then pin the answer exactly. The browser's
+table, on 3000×2000 frames with the transform known:
+
+| scene | fitted angle | fitted scale | fit RMS | per-window `next` |
+|---|---|---|---|---|
+| texture, 0.3° | 0.2972 | 1.00005 | 0.14 px | 0.06–0.09 |
+| texture, −0.25°, scale 1.01 | −0.2504 | 1.00994 | 0.22 px | 0.06–0.09 |
+| stars 6%, 0.15° | 0.1457 | 0.99981 | 0.34 px | 0.26–0.63 |
+| low texture 15%, 0° | −0.0211 | 0.99749 | 17.6 px | 0.27–0.98 |
+| featureless gradient | 0.47–0.73 | 0.99–1.01 | 35–42 px | 0.85–0.96 |
+| two unrelated pictures | — | — | — | 0.78–0.99 |
+
+The first three are right to about five thousandths of a degree. The last three
+are not right at all, and the per-window gate is what separates them: on the
+low-texture scene exactly one window read 0.27 and the other eight 0.83–0.98,
+and on the two junk families every window failed. That is the whole design —
+gate every window, fit from the survivors, and fall back rather than guess.
+
+**The ladder, in order.** Four or more windows agreeing on one similarity is
+the answer, composed onto the coarse move about the uncropped output centre —
+the angles add, the scales multiply, and the coarse shift is turned and scaled
+by the refinement before the refinement's own shift is added. Below that, two
+windows agreeing on one shift within the same tolerance give their mean
+translation and nothing about rotation, and the move is marked `partial` —
+but only where fewer than four windows survived the gate at all, because with
+four or more in hand a consensus that came back empty has already said they
+disagree, and the two that happen to coincide are the two that sat on the same
+moving subject. Nothing is applied from either rung that would move the frame
+further than the coarse pass could plausibly have been wrong, which is a
+bound quoted in the coarse square's own pixels: nine windows unanimously
+reporting a hundred pixels is a periodic texture whose every window found the
+same wrong lattice period, not a residual. Below that the coarse move stands.
+Below *that* — a frame the coarse pass
+could not measure — the identity stands and the frame is not refined at all,
+because a residual measured from the identity is not a residual but the whole
+shift, which was just refused. Which rung a frame came off is recorded on its
+move as `refine`, so a test and the page can both see it.
+
+In **translate** mode the same consensus runs and only its translation is
+applied. Not a median of the nine windows, which is the obvious
+generalisation: a rotated burst makes the windows disagree *by design*, and
+the median of nine disagreeing shifts describes no part of the frame.
+
+What this cannot do is the honest half of it. A moving subject or a parallax
+makes the windows disagree because they are each right about a different
+thing, no single transform describes that, and the frame drops to a
+translation or to its coarse answer rather than being dragged by whichever
+window shouted loudest. The size at which that holds is the tolerance: a
+depth split that moves one column of windows two pixels or more relative to
+another drops that column, and a smaller one is absorbed into the fit as a
+fraction of a pixel of invented scale — which is inside the error the
+refinement is there to remove, so it is a limit to state rather than a
+failure to catch. And where two disjoint sets of windows are the same size —
+a subject on four of them and the background on the other four — there is no
+majority to find and the frame drops to its coarse answer rather than to a
+coin toss. The reference frame supplies the reference windows and is never
+itself refined.
 
 **Whether a peak is a peak is decided by two of four statistics — `plateau`
 and `next`, with `live` as the guard under them and `coherence` reported for
@@ -284,11 +370,13 @@ the surface eight pixels from the peak, at every window size, in the eight
 compass directions — eight along the axes, eight times root two on the
 diagonals; a true ring at eight reads 0.05–0.15 higher on real peaks and
 would need its own floor — as a fraction of the peak, and the gate refuses
-anything over 0.7. Eight because it is the refinement's own margin: a peak
-still standing eight pixels out cannot place the frame within the margin
-whatever its argmax says, and on the coarse square eight alignment pixels is
-already tens of output pixels. The gradients measured 0.93–0.99 in the
-browser and 0.95–1.00 on the letterboxed fixture at every noise level tried;
+anything over 0.7. Eight because that is where a peak has stopped placing
+anything: the refinement is looking for a residual of a pixel or two, so a
+peak still standing eight pixels out cannot say which of nine pixels the
+frame belongs at whatever its argmax says, and on the coarse square eight
+alignment pixels is already tens of output pixels. The gradients measured
+0.93–0.99 in the browser and 0.95–1.00 on the letterboxed fixture at every
+noise level tried;
 the weakest real match, a low-texture scene at thirty per cent noise, 0.60 in
 the browser and 0.65–0.68 over ten seeds depending on the seeds; a star field
 0.03–0.10, a textured scene 0.1–0.5. The same reading refuses the letterboxed
@@ -297,8 +385,9 @@ coherence of 0.22 that is no longer asked), which
 similarity mode had been applying as a scale of 0.95–1.01, and the
 refinement's own version of the sky: a low-texture 512 window whose features
 are sixty pixels across measures 0.77–0.96 with its peak one to seven pixels
-off, inside the margin, and is refused on every seed at both noise levels
-tried — nothing else would have refused it, and a radius that followed the
+off — close enough to pass for a residual — and is refused on every seed at
+both noise levels tried — nothing else would have refused it, and a radius
+that followed the
 side, sixteen at 512, read it at 0.59–0.71 and let nine seeds in ten
 through. The comment on `P_MAX` in `align.js` has the browser table and the
 fixture table side by side, the log-polar and other-window readings, and the
@@ -423,28 +512,67 @@ Two limits, both on the page:
 - rotation is only ever recovered within half a turn, because the magnitude
   spectrum of a real picture is symmetric and 175° looks exactly like −5°.
 
-The refinement corrects translation only. The angle and the scale keep the
-coarse pass's answer — good to roughly a tenth of a degree — and a tenth of a
-degree is a pixel and a half at the corner of a 24-megapixel frame, so a
-similarity stack keeps a corner softness its middle does not have. Refining
-them too would mean correlating the window at a spread of candidate angles,
-which is a different cost class, and the translation-only refinement already
-removes the error that affected every pixel equally.
+The coarse log-polar step stays, and it is what finds a *large* turn. Its
+square resolves about 0.7° a row, so two or three degrees comes back within
+0.03° and a third of a degree comes back as a tenth — which is why the
+refinement exists and why the coarse step is still worth its transform. The
+two answer different questions: the log-polar pass finds the turn nothing else
+could search for, and the grid measures what is left of it at output
+resolution.
 
-**Aligning means cropping, and the crop is not cosmetic.** A frame moved twenty
-pixels left stops covering the right-hand edge, whatever is not covered is
-transparent, and transparent reads as zero to an accumulator — so without the
-crop an averaged hand-held burst comes back with a dark border, which somebody
-would reasonably blame on the stacking. `commonArea` in `plan.js` returns the
-largest rectangle every frame still covers, taking the inner of each pair of
-corners so a rotated quad is handled conservatively. When the refinement is
-running, the crop then gives up `refineMargin`'s allowance on every side —
-eight pixels for a set that really moved, one for a set that did not — which is
-the room the refined corrections spend. With no alignment every transform is
-the identity, nothing is refined and nothing is cropped. A set that overlaps in almost
-nothing falls back to the whole frame rather than a sliver: a stack with visible
-edges is something a person can look at and understand, and a postage stamp is
-not.
+**Aligning means cropping, and the crop happens at the end.** A frame moved
+twenty pixels left stops covering the right-hand edge, whatever is not covered
+is transparent, and transparent reads as zero to an accumulator — so without
+the crop an averaged hand-held burst comes back with a dark border, which
+somebody would reasonably blame on the stacking. `commonArea` in `plan.js`
+returns the largest rectangle every frame still covers, taking the inner of
+each pair of corners so a rotated quad is handled conservatively, and using
+each frame's own placement box rather than the whole output so that a frame of
+another shape, letterboxed into the middle, is not credited with columns it
+never had.
+
+It is decided **after** the moves are final rather than before, which is what
+lets the refinement move a frame freely: the accumulator covers everything the
+frames covered under their *coarse* moves, every frame is refined on its first
+full-size decode — so the moves are settled by the end of the first band's
+first pass — and the output canvas is allocated at the crop's size the moment
+the crop is known, with each band's rows cut on their way out of the
+accumulator. No second canvas and no copy. The cost is that `plan.peak`'s
+canvas term is now an over-estimate of the canvas actually allocated, by the
+pixel or two a side the refinement moved things, which is the safe direction
+for a figure whose job is to keep a tab alive — and the slack pays for the
+nine reference windows, which are the one thing a run allocates that the
+figure does not count. The accumulator is that box rather than the whole
+output box because the band arithmetic is not indifferent to the difference: a
+run planned on the full box can gain a whole band over a run planned on the
+crop, and a band is a re-read of every frame, so a five-frame stack that read
+each frame once would have read each of them twice. The old arrangement
+decided the crop first and then gave up a fixed margin on every side for the
+refinement to spend, which meant the refinement could not correct more than
+the margin allowed and the margin had to be guessed before anything was
+measured.
+
+Focus stacking gives up a little more: the accumulator has transparent ground
+inside it wherever a refined frame no longer reaches its own coarse boundary,
+`stack.js` reads transparent as a luma of zero, the Laplacian scores that as
+the strongest edge in the picture and the blur spreads it inward by its own
+radius — so the crop is inset by the radius and two more before it is cut, or
+the pixels along its edge take their colour from whichever frame happened to
+end there. That is a black fringe with a plausible explanation, which is the
+worst kind. The inset is per axis and only where there is ground beside that
+axis to catch, so a burst that drifted only downwards keeps its full width.
+`tests/js/stack-images-stack.test.js` pins how far the false edge reaches.
+
+With no alignment every transform is the identity, nothing is refined, and the
+run reports itself cropped only if frames of two shapes were letterboxed into
+one box — which is not a movement, so the page does not call it one. A set
+that overlaps in almost nothing falls back to the whole frame rather than a
+sliver: a stack with visible edges is something a person can look at and
+understand, and a postage stamp is not. That one answer is the only rectangle
+`commonArea` returns that nobody covered, so the refinement is skipped for
+such a run — a grid laid over it would put windows where a frame has nothing,
+and a half-empty window correlates confidently against a full one — and a
+focus stack of it is inset on both axes rather than neither.
 
 A rotation past 30° or a scale outside 0.8–1.25 is refused and the frame falls
 back to translation alone. That is not tidiness: two unrelated pictures still
@@ -489,10 +617,12 @@ biases every real low-texture answer the survey square accepts: letterboxed,
 the low-texture fixture lands 1.3–1.9 alignment pixels off at fifteen per
 cent noise and 1.0–2.0 at thirty, pulled towards the ridge, where the full
 square lands it within 0.1–0.7 and 0.3–1.9; on a 3000-pixel frame that is
-15–22 output pixels, beyond the refinement's 8-pixel margin, so the 512
-residual — itself within half a pixel there — is refused by the margin test
-and the coarse error stands. That is a cost of the survey square, not of the
-gate, and the fix is the same one that would remove the ridge under the
+15–22 output pixels — a coarse error the refinement now does correct, because
+its windows all see the same one and agree on it and it is well inside the
+two coarse pixels a correction is allowed, where the old single-window
+version refused any residual over eight output pixels and left it standing.
+That is a cost of the survey square, not of the gate, and the fix is the same
+one that would remove the ridge under the
 gradients and the unrelated pairs: taper the picture's own box in
 `lumaSquare` — a window over `fit`'s rectangle, or fill outside it with the
 picture's mean before windowing — so the edge is not a feature both frames
@@ -518,18 +648,19 @@ the nearest sit eight pixels from the peak, inside the ten-pixel box, so what
 is read is the pair sixteen or seventeen pixels out, and those fall away with
 the scene's own smooth envelope where the near ones stand level with the
 peak. It is harmless as the pipeline is arranged — the survey square
-letterboxes the same pairs to 0.91–0.99 and refuses every one, and at 512 an
-argmax on a random lattice peak is outside the refinement's 8-pixel margin
-and discarded there — but the consensus check is what should be catching it.
+letterboxes the same pairs to 0.91–0.99 and refuses every one, and at the
+refinement an argmax on a random lattice peak is one window disagreeing with
+the other eight — but it is the consensus that catches it, not either floor.
 
 The refinement's own scenario is the same lattice between two frames of *one*
 smooth scene: the coarse move a third of a pixel short, and the residual
-landing on the lattice's alias at +3 pixels, inside the margin. Uniqueness
+landing on the lattice's alias at +3 pixels, which is small enough to look
+like a residual. Uniqueness
 cannot see that one at all, for the same reason — it reads 0.46–0.93 at
 quality 75 and 0.27–0.40 at 20, the noise beyond the lattice rather than the
 lattice. What refuses it is the plateau, by a coincidence nobody chose: its
-radius is eight because that is the refinement's margin, and eight is also
-the block pitch, so the shoulder is read on the lattice's first alias and
+radius is eight because that is where a peak has stopped placing anything,
+and eight is also the block pitch, so the shoulder is read on the alias and
 spikes there — 0.71–0.96 at a radius of eight against 0.50–0.69 at six and
 0.47–0.74 at ten. At qualities 95, 75 and 50 that refuses the lock on every
 seed pair tried. Only at quality 20, where the blocking buries the alias,
@@ -557,11 +688,12 @@ real pairs read 0.04–0.45 and the junk 0.67–1.00. At 64 the surface has too
 few bins for junk to read as junk — an 8-bit gradient at one per cent noise
 reads 0.41–0.70 and passes eight seeds in ten, an unrelated pair 0.63–0.97 —
 where the old floor at 0.60 refused both, and every noisy real pair with
-them. That is accepted rather than fixed: `plan.js` gives the 64 window only
-to crops under 272 pixels on the short side, where the coarse square is
-within a factor of 1.6 of output resolution, and `refineMargin` caps what an
-applied residual can move a frame that did not move at one pixel. The
-comment on `N_MAX` has the numbers at every size.
+them. That is accepted rather than fixed, and what carries it is the
+consensus rather than a cap on any one window's correction: the refinement
+measures nine windows and applies nothing that four of them do not agree on,
+so a 64-pixel square that read junk has to be joined by three more reading the
+same junk in the same direction before any of it reaches a frame. The comment
+on `N_MAX` has the numbers at every size.
 
 **Focus stacking needs its bands to overlap.** Sharpness is measured from a
 pixel's neighbours, so a band edge scored without them draws a seam across the

@@ -18,8 +18,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  DEFAULT_BUDGET, MIN_BAND_ROWS, MODES, MODE_IDS, SCALES,
-  bands, bytesPerPixel, commonArea, isMode, outputSize, placement, planRun, refineMargin,
+  DEFAULT_BUDGET, MIN_BAND_ROWS, MODES, MODE_IDS, REFINE_GRID, REFINE_INSET, SCALES,
+  bands, bytesPerPixel, commonArea, isMode, outputSize, placement, planRun,
   refineWindow, scaleThatFits, workingSize,
 } from '../../tools/stack-images/src/plan.js';
 
@@ -281,6 +281,30 @@ test('a rotated frame crops on every side', () => {
   assert.ok(area.width > 80, `cropped harder than a five degree turn warrants: ${area.width}`);
 });
 
+test('a frame of another shape is cropped to the box it was letterboxed into', () => {
+  // A 4:3 frame in a 3:2 output never covered the columns either side of it,
+  // whether or not it moved. Cropping to the whole output would leave those
+  // columns in the answer with nothing behind them, which is the dark border
+  // the crop exists to prevent, arriving by a different route.
+  const output = { width: 600, height: 400 };
+  const spot = placement({ width: 400, height: 300 }, output);
+  const still = { dx: 0, dy: 0, angle: 0, scale: 1, spot };
+
+  assert.deepEqual(commonArea([still], output), { x: 34, y: 0, width: 532, height: 400 });
+  // And it composes with the movement rather than replacing it: a frame that
+  // also went ten pixels right gives up ten more on the left.
+  assert.deepEqual(
+    commonArea([still, { ...still, dx: 10 }], output),
+    { x: 44, y: 0, width: 522, height: 400 },
+  );
+  // A move with no spot on it is still the whole output, which is what a set
+  // of frames all one shape means.
+  assert.deepEqual(
+    commonArea([{ dx: 0, dy: 0, angle: 0, scale: 1 }], output),
+    { x: 0, y: 0, width: 600, height: 400 },
+  );
+});
+
 test('frames that barely overlap are not cropped to a sliver', () => {
   // Better to hand back a stack with visible edges, which somebody can look at
   // and understand, than a postage stamp with no explanation.
@@ -307,30 +331,44 @@ test('the crop never leaves the output, whatever it is handed', () => {
   }
 });
 
-test('the refinement window is the largest power of two the crop leaves room for', () => {
-  // The 16 held back is the two margins the crop gives up so that a refined
-  // frame still covers what the crop assumed; a window that ignored them would
-  // be measuring rows the run is about to throw away.
-  assert.equal(refineWindow({ width: 1575, height: 1179 }), 512);
-  assert.equal(refineWindow({ width: 4000, height: 3000 }), 512);
-  assert.equal(refineWindow({ width: 300, height: 528 }), 256);
-  assert.equal(refineWindow({ width: 100, height: 90 }), 64);
+test('the refinement grid is the widest cover three of them fit across', () => {
+  // A 24-megapixel burst, cropped: three 512-pixel covers and the inset fit
+  // the short side comfortably, so the grid is the one the browser was
+  // measured on - nine windows of 512 output pixels drawn into 256 squares.
+  assert.deepEqual(refineWindow({ width: 4000, height: 3000 }), { cover: 512, size: 256, grid: 3 });
+
+  // 1179 short: 1536 of cover will not fit inside it, 768 will.
+  assert.deepEqual(refineWindow({ width: 1575, height: 1179 }), { cover: 256, size: 128, grid: 3 });
+  assert.deepEqual(refineWindow({ width: 900, height: 900 }), { cover: 256, size: 128, grid: 3 });
+  assert.deepEqual(refineWindow({ width: 300, height: 528 }), { cover: 64, size: 64, grid: 3 });
+  assert.equal(refineWindow({ width: 4000, height: 3000 }).grid, REFINE_GRID);
 });
 
-test('a crop too small to refine gets no window rather than a tiny one', () => {
-  // 64 minus the margins is the floor: below it the correlation peak is noise
-  // with a coordinate, and applying that is worse than keeping the coarse
-  // answer.
-  assert.equal(refineWindow({ width: 79, height: 200 }), 0);
-  assert.equal(refineWindow({ width: 16, height: 16 }), 0);
+test('a crop too small for a grid gets none rather than a useless one', () => {
+  // Three 64-pixel covers and the inset is the floor: below it the correlation
+  // peak is noise with a coordinate, and applying that is worse than keeping
+  // the coarse answer.
+  const floor = 64 * REFINE_GRID + REFINE_INSET * 2;
+  assert.equal(refineWindow({ width: floor - 1, height: 4000 }), null);
+  assert.deepEqual(refineWindow({ width: floor, height: 4000 }), { cover: 64, size: 64, grid: 3 });
+  assert.equal(refineWindow({ width: 100, height: 90 }), null);
+  assert.equal(refineWindow({ width: 16, height: 16 }), null);
 });
 
-test('the margin matches how wrong the coarse answer can be', () => {
-  // The coarse error lives in the sub-pixel fraction of the shift, so a set
-  // that barely moved cannot have been mismeasured by much: it keeps a
-  // one-pixel allowance instead of being charged sixteen rows for nothing.
-  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 0.2, dy: -0.3 }]), 1);
-  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 7.3, dy: -4.6 }]), 8);
-  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 0, dy: 0.6 }]), 8);
-  assert.equal(refineMargin([{}]), 1);
+test('a window is drawn at half the ground it covers, and never below 64', () => {
+  // The residual being looked for is a pixel or two and the correlation
+  // resolves a fraction of its own square, so half scale costs nothing and
+  // saves a quarter of every readback. The one exception is the smallest
+  // grid, where halving would take the square under what a peak needs.
+  for (const crop of [{ width: 4000, height: 3000 }, { width: 900, height: 900 },
+    { width: 300, height: 528 }]) {
+    const grid = refineWindow(crop);
+    assert.ok(grid.size >= 64 && grid.size <= 256, `a square of ${grid.size}`);
+    assert.equal(grid.size, Math.min(256, Math.max(64, grid.cover / 2)));
+    assert.ok(Number.isInteger(Math.log2(grid.size)), 'the transform needs a power of two');
+    assert.ok(
+      grid.cover * REFINE_GRID + REFINE_INSET * 2 <= Math.min(crop.width, crop.height),
+      'a grid that does not fit the crop it was asked about',
+    );
+  }
 });

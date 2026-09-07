@@ -3,7 +3,17 @@
  *
  * The pipeline is written for a worker and touches no DOM at module scope, so
  * it loads here; what it does with a decoder and a surface is exercised in a
- * browser and not in this file. Two things are worth pinning without either.
+ * browser and not in this file. What it works out BEFORE it touches either is
+ * pinned here, and there is more of that than the shape of the module
+ * suggests: the whole refinement ladder is arithmetic over nine measured
+ * shifts, and the crop is arithmetic over the moves it ends with.
+ *
+ * `compose` earns its place at the top of that list. It is the one step that
+ * has to be right for a rotated burst rather than merely for a shifted one,
+ * and a negated sine in it does not throw and does not look wrong in review -
+ * it turns every frame the wrong way and doubles the blur the refinement was
+ * added to remove. So it is checked against the composition it claims to be,
+ * by pushing points through the two transforms in turn.
  *
  * `declaredSize`, because every later stage plans from the number it returns
  * and the number has to be the size the decode will actually have. That is
@@ -27,7 +37,12 @@ import {
   EXIF_ID, IHDR, PNG_SIGNATURE, TIFF_LE, TIFF_TYPE, ascii, concat, segment, tiffEntry, tiffOf,
   u16be, u32be,
 } from './helpers.js';
-import { declaredSize, openFrame } from '../../tools/stack-images/src/pipeline.js';
+import { NO_MOVE } from '../../tools/stack-images/src/align.js';
+import { REFINE_GRID, REFINE_INSET, refineWindow } from '../../tools/stack-images/src/plan.js';
+import { apply } from '../../tools/stack-images/src/similarity.js';
+import {
+  REFINED, compose, declaredSize, fellBack, finalCrop, openFrame, refineGrid, refineMove,
+} from '../../tools/stack-images/src/pipeline.js';
 
 const sof = (width, height) => concat(
   [0xff, 0xc0], u16be(17), [8], u16be(height), u16be(width),
@@ -174,4 +189,233 @@ test('a preview whose frame header lay past the head declares no size, not a siz
   assert.equal(frame.height, null);
   assert.equal(frame.decoded, null);
   assert.equal(frame.turn, 1, 'the RAF preview\'s own Exif, read off the head, does the turning');
+});
+
+/* ------------------------------------------------------- the refinement */
+
+const OUTPUT = { width: 3000, height: 2000 };
+const CENTRE = { x: 1500, y: 1000 };
+const BOX = { x: 0, y: 0, width: OUTPUT.width, height: OUTPUT.height };
+/** Two coarse pixels of a 256 square laid over a 3000-pixel output. */
+const LIMIT = 2 / (256 / 3000);
+
+/** The nine window centres of a 3x3 grid, near enough for the arithmetic. */
+const GRID = [];
+for (const y of [500, 1000, 1500]) for (const x of [750, 1500, 2250]) GRID.push({ x, y });
+
+/**
+ * The shifts nine windows would measure of a frame that arrived transformed.
+ *
+ * Forwards, as in the similarity tests: the transform is what happened to the
+ * frame and the shift is what it takes to undo it, so nothing here assumes the
+ * sign the module uses.
+ */
+function fieldFrom({ angle = 0, scale = 1, dx = 0, dy = 0 }) {
+  const radians = (angle * Math.PI) / 180;
+  const cos = Math.cos(radians) * scale;
+  const sin = Math.sin(radians) * scale;
+  return GRID.map(({ x, y }) => {
+    const at = {
+      x: CENTRE.x + (x - CENTRE.x) * cos - (y - CENTRE.y) * sin + dx,
+      y: CENTRE.y + (x - CENTRE.x) * sin + (y - CENTRE.y) * cos + dy,
+    };
+    return { x, y, dx: x - at.x, dy: y - at.y };
+  });
+}
+
+const coarse = (over = {}) => ({ ...NO_MOVE, measured: true, clamped: false, ...over });
+
+test('a refinement laid on a coarse move is the two of them in order', () => {
+  // The composition rule written out, checked against doing it the long way.
+  // A negated sine here is a stack blurred by twice the shake, and nothing
+  // else in the repository would notice.
+  const move = { ...NO_MOVE, angle: 1.7, scale: 1.02, dx: -14, dy: 9 };
+  const fit = { angle: -0.31, scale: 0.9985, dx: 2.4, dy: -1.1 };
+  const both = compose(move, fit, true);
+
+  for (const point of [{ x: 0, y: 0 }, { x: 3000, y: 0 }, { x: 2250, y: 1500 }, CENTRE]) {
+    const first = apply(move, point.x, point.y, CENTRE);
+    const long = apply(fit, first.x, first.y, CENTRE);
+    const short = apply(both, point.x, point.y, CENTRE);
+    assert.ok(
+      Math.hypot(long.x - short.x, long.y - short.y) < 1e-9,
+      `at ${point.x},${point.y}: ${JSON.stringify(long)} against ${JSON.stringify(short)}`,
+    );
+  }
+});
+
+test('in translate mode a refinement contributes its shift and nothing else', () => {
+  const move = { ...NO_MOVE, angle: 1.7, scale: 1.02, dx: -14, dy: 9 };
+  const both = compose(move, { angle: -0.31, scale: 0.9985, dx: 2.4, dy: -1.1 }, false);
+  assert.equal(both.angle, 1.7);
+  assert.equal(both.scale, 1.02);
+  assert.ok(Math.abs(both.dx - (-14 + 2.4)) < 1e-12);
+  assert.ok(Math.abs(both.dy - (9 - 1.1)) < 1e-12);
+});
+
+test('nine windows that agree are applied, and land the frame where they say', () => {
+  // The coarse pass left the frame a third of a degree out and two pixels
+  // adrift; the grid sees exactly that and the composed move has to undo it.
+  const move = coarse({ dx: 5, dy: -3, angle: 0.4 });
+  const refined = refineMove(move, fieldFrom({ angle: 0.3, dx: 2, dy: -1 }), true, CENTRE, LIMIT);
+  assert.equal(refined.refine, REFINED.fit);
+
+  const wrong = { angle: 0.3, scale: 1, dx: 2, dy: -1 };
+  for (const { x, y } of GRID) {
+    const arrived = apply(wrong, x, y, CENTRE);
+    const put = apply(refined, arrived.x, arrived.y, CENTRE);
+    // The coarse move is in the fixture too: what is checked is that the
+    // refinement finished it, not that it threw it away.
+    const meant = apply(move, x, y, CENTRE);
+    assert.ok(Math.hypot(put.x - meant.x, put.y - meant.y) < 0.05, `at ${x},${y}`);
+  }
+});
+
+test('nine windows that disagree leave the coarse move alone', () => {
+  // The moving-subject frame with every window surviving the gate. Two of them
+  // agree exactly, which is what the mean-of-the-agreeing rung would seize on;
+  // with four windows in hand the consensus has already reported that the
+  // frame cannot be described, and the coarse answer is the honest one.
+  const move = coarse({ dx: 5, dy: -3 });
+  const scattered = GRID.map(({ x, y }, index) => ({
+    x,
+    y,
+    dx: [9, 9, -23, 14, -31, 26, -12, 33, -18][index],
+    dy: [-7, -7, 18, -25, 11, -34, 29, 6, -21][index],
+  }));
+
+  const refined = refineMove(move, scattered, true, CENTRE, LIMIT);
+  assert.equal(refined.refine, REFINED.coarse);
+  assert.equal(refined.dx, 5);
+  assert.equal(refined.dy, -3);
+  assert.equal(refined.partial, undefined);
+});
+
+test('below the floor, two windows agreeing are a shift and nothing more', () => {
+  const move = coarse({ dx: 5, dy: -3, angle: 0.4 });
+  const points = [
+    { x: 750, y: 500, dx: 3, dy: -2 },
+    { x: 2250, y: 1500, dx: 3.4, dy: -1.7 },
+    { x: 1500, y: 1000, dx: -20, dy: 15 },
+  ];
+  const refined = refineMove(move, points, true, CENTRE, LIMIT);
+  assert.equal(refined.refine, REFINED.partial);
+  assert.equal(refined.partial, true);
+  assert.equal(refined.angle, 0.4, 'a pair of windows says nothing about rotation');
+  assert.ok(Math.abs(refined.dx - (5 + 3.2)) < 1e-9);
+  assert.ok(Math.abs(refined.dy - (-3 - 1.85)) < 1e-9);
+});
+
+test('below the floor with nothing agreeing, the coarse move stands', () => {
+  const move = coarse({ dx: 5, dy: -3 });
+  const points = [
+    { x: 750, y: 500, dx: 3, dy: -2 },
+    { x: 2250, y: 1500, dx: -19, dy: 24 },
+  ];
+  assert.equal(refineMove(move, points, true, CENTRE, LIMIT).refine, REFINED.coarse);
+  assert.equal(refineMove(move, [], true, CENTRE, LIMIT).refine, REFINED.coarse);
+});
+
+test('a shift too large to be a residual is refused however many windows agree', () => {
+  // A globally periodic texture: every window's argmax lands on the same wrong
+  // lattice period, the consensus is unanimous, and the answer is a hundred
+  // pixels of nonsense. Nothing about the fit itself can see that.
+  const move = coarse({ dx: 5, dy: -3 });
+  const unanimous = fieldFrom({ dx: -100 });
+  assert.equal(refineMove(move, unanimous, true, CENTRE, LIMIT).refine, REFINED.coarse);
+  assert.equal(
+    refineMove(move, unanimous, true, CENTRE, 200).refine, REFINED.fit,
+    'the same field inside a wider bound is applied, so it is the bound refusing it',
+  );
+
+  const pair = [
+    { x: 750, y: 500, dx: 60, dy: 0 },
+    { x: 2250, y: 1500, dx: 60, dy: 0 },
+  ];
+  assert.equal(refineMove(move, pair, true, CENTRE, LIMIT).refine, REFINED.coarse);
+});
+
+test('a frame reported as shifted alone stops being one when a turn is applied to it', () => {
+  // The page says of a clamped frame that it was corrected by shifting alone.
+  // In similarity mode the fit's angle reaches it, so the flag has to come off
+  // with the movement that makes it untrue - and stay on in translate mode,
+  // where nothing turned.
+  const move = coarse({ clamped: true });
+  const field = fieldFrom({ angle: 0.3 });
+  assert.equal(refineMove(move, field, true, CENTRE, LIMIT).clamped, false);
+  assert.equal(refineMove(move, field, false, CENTRE, LIMIT).clamped, true);
+  assert.equal(refineMove(move, [], true, CENTRE, LIMIT).clamped, true);
+});
+
+test('the grid is nine windows and every one of them is inside the crop', () => {
+  for (const crop of [
+    { x: 100, y: 50, width: 4000, height: 3000 },
+    { x: 0, y: 0, width: REFINE_GRID * 64 + REFINE_INSET * 2, height: 900 },
+    { x: 7, y: 11, width: 1575, height: 1179 },
+  ]) {
+    const windows = refineWindow(crop);
+    const grid = refineGrid(crop, windows);
+    assert.equal(grid.length, REFINE_GRID * REFINE_GRID);
+    for (const at of grid) {
+      assert.ok(at.x >= crop.x, `${at.x} left of ${crop.x}`);
+      assert.ok(at.y >= crop.y, `${at.y} above ${crop.y}`);
+      assert.ok(at.x + windows.cover <= crop.x + crop.width, `${at.x} plus cover past the crop`);
+      assert.ok(at.y + windows.cover <= crop.y + crop.height, `${at.y} plus cover past the crop`);
+      assert.equal(at.centre.x, at.x + windows.cover / 2);
+      assert.equal(at.centre.y, at.y + windows.cover / 2);
+    }
+  }
+});
+
+/* ------------------------------------------------------------- the crop */
+
+test('a whole box that nobody covered is told apart from one everybody did', () => {
+  const still = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, spot: BOX }];
+  assert.equal(fellBack(BOX, still, OUTPUT), false);
+  const apart = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, dx: 2400, spot: BOX }];
+  assert.equal(fellBack(BOX, apart, OUTPUT), true);
+  assert.equal(
+    fellBack({ x: 0, y: 0, width: 2000, height: 2000 }, apart, OUTPUT), false,
+    'an answer smaller than the box is an answer, not a fallback',
+  );
+});
+
+test('the crop never leaves the box the accumulator holds', () => {
+  const covered = { x: 20, y: 10, width: 2900, height: 1900 };
+  const crop = finalCrop([{ ...NO_MOVE, spot: BOX }], OUTPUT, covered, false, 'mean');
+  assert.deepEqual(crop, covered);
+});
+
+test('focus stacking gives up the radius, and only beside an edge that has ground', () => {
+  const covered = { ...BOX };
+  const moves = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, dy: 8, spot: BOX }];
+  const inset = 3 + 2;
+
+  assert.deepEqual(
+    finalCrop(moves, OUTPUT, covered, false, 'focus', 3),
+    { x: 0, y: 8 + inset, width: 3000, height: 1992 - inset * 2 },
+    'a burst that drifted downwards keeps its full width',
+  );
+  assert.deepEqual(
+    finalCrop(moves, OUTPUT, covered, false, 'mean', 3),
+    { x: 0, y: 8, width: 3000, height: 1992 },
+    'no other mode measures a pixel from its neighbours, so none of them pays for this',
+  );
+
+  const sideways = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, dx: 8, dy: 8, spot: BOX }];
+  const both = finalCrop(sideways, OUTPUT, covered, false, 'focus', 3);
+  assert.equal(both.x, 8 + inset);
+  assert.equal(both.y, 8 + inset);
+});
+
+test('a set that never moved is not inset, and a set nobody covered is inset on both sides', () => {
+  const still = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, spot: BOX }];
+  assert.deepEqual(finalCrop(still, OUTPUT, { ...BOX }, false, 'focus', 3), BOX);
+  // The sliver fallback: the box came back whole and the frames overlap in
+  // almost none of it, which is the case with the most transparent ground of
+  // all and the one a width test alone would wave through.
+  const apart = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, dx: 2400, spot: BOX }];
+  assert.deepEqual(finalCrop(apart, OUTPUT, { ...BOX }, true, 'focus', 3), {
+    x: 5, y: 5, width: 2990, height: 1990,
+  });
 });

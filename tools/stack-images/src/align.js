@@ -118,9 +118,9 @@ export const WHITEN = 128;
  * the bare 8-bit slope measures 0.016 at 128 and 0.079 at 64, because the
  * window's own spectrum is a larger share of so few bins, so a rendered
  * gradient with no noise on it at all is refined there by its contour lattice,
- * within the margin. Sensor noise at one per cent is enough for the other
- * two floors to refuse it instead - at 256 on every seed, at 128 on nine in
- * ten.
+ * by a shift small enough to pass for a residual. Sensor noise at one per cent
+ * is enough for the other two floors to refuse it instead - at 256 on every
+ * seed, at 128 on nine in ten.
  *
  * WHY COHERENCE IS REPORTED AND NOT READ
  *
@@ -233,10 +233,13 @@ export const L_MIN = 0.004;
  * gradients passing one seed in ten; at 64 the noisy textured pair reaches
  * 0.80 on one seed, the 8-bit gradient at one per cent noise reads 0.41-0.70
  * and passes eight seeds in ten where the old floor refused it, and the
- * unrelated pairs 0.63-0.97. That window is not gated by this either, then:
- * plan.js hands it only to crops whose short side is under 272 pixels, and
- * refineMargin caps what an applied residual can move such a frame at one
- * pixel for a set that did not move.
+ * unrelated pairs 0.63-0.97. That window is not gated by this either, then,
+ * and what carries it is no longer a cap on the correction: the refinement
+ * measures nine windows and applies nothing that four of them do not agree
+ * on, so a 64-pixel square that read junk has to be joined by three more
+ * reading the same junk in the same direction before any of it reaches a
+ * frame. One window passing this floor when it should not is now a window
+ * dropped by the consensus rather than a frame moved.
  *
  * The floor is 0.8. The real side's last case is the noisy sparse sky at the
  * survey square: the browser read it at 0.76 with the right answer, the
@@ -287,10 +290,11 @@ export const L_MIN = 0.004;
  * with the scene's own smooth envelope rather than standing level with the
  * peak the way the near ones do. It is harmless as the pipeline is arranged:
  * on the survey square the same pairs are letterboxed and read 0.91-0.99,
- * refused on all eighteen seeds tried, and at 512 an argmax that landed on a
- * random lattice peak is outside the refinement's eight-pixel margin and
- * discarded there. Harmless is not invisible, and the number is recorded
- * because the consensus check is what should be catching this.
+ * refused on all eighteen seeds tried, and at the refinement an argmax that
+ * landed on a random lattice peak is one window disagreeing with the other
+ * eight, which the consensus drops. Harmless is not invisible, and the number
+ * is recorded because the consensus is what catches this rather than either
+ * floor.
  *
  * The reach was measured at 6, 8, 10, 12, 16 and 20. None of them moves the
  * unrelated pairs or the star fields, whose next peak is far away - a sparse
@@ -457,9 +461,9 @@ const NEXT_REACH = 10;
  * refinement exists to refuse are all over it: a wall with sixty-pixel
  * features at 0.77-0.96 (fifteen per cent noise) and 0.82-0.90 (five), the
  * same wall with thirty-pixel features 0.77-0.87, and the textured sky
- * 0.82-0.91, every one with its peak 0.6-7.5 pixels off, inside the margin,
- * at a next of 0.64-0.92 that is partly under N_MAX, so this is the floor
- * that refuses them. At sixteen, the radius the side/32 rule gave
+ * 0.82-0.91, every one with its peak 0.6-7.5 pixels off - close enough to pass
+ * for a residual - at a next of 0.64-0.92 that is partly under N_MAX, so this
+ * is the floor that refuses them. At sixteen, the radius the side/32 rule gave
  * 512, the wall at five per cent read 0.59-0.71 and passed nine seeds in ten
  * with 0.6-5.1 pixels of error applied. At 128 the low-texture pair at
  * fifteen per cent reads 0.33-0.47 and is kept, as is the vignette-over-low
@@ -692,17 +696,17 @@ export function phaseCorrelate(a, b, size) {
 /**
  * How far from the peak the plateau is read: eight pixels, at every size.
  *
- * Eight is the refinement's margin. A residual is only applied when it is
- * within eight output pixels of the coarse answer, so a peak still standing
- * eight pixels out cannot place the frame within the margin whatever its
- * argmax says; and at the coarse square eight alignment pixels is already
- * tens of output pixels on any frame the survey shrank. The first version
- * scaled the radius with the side - a thirty-second of it, sixteen at 512 -
- * reasoning from the multiply-up, which the refinement window does not have:
- * at sixteen the wall at output resolution the refinement exists to refuse
- * passed nine seeds in ten, and at four the low-texture pair at 128 was
- * refused with its peak in the right place. The comment on P_MAX has the
- * readings at both.
+ * Eight is the scale at which a peak has stopped placing anything. The
+ * refinement is looking for a residual of a pixel or two, so a peak still
+ * standing at eight cannot say which of nine pixels the frame belongs at,
+ * whatever its argmax reports; and at the coarse square eight alignment
+ * pixels is already tens of output pixels on any frame the survey shrank.
+ * The first version scaled the radius with the side - a thirty-second of it,
+ * sixteen at 512 - reasoning from the multiply-up, which the refinement
+ * window does not have: at sixteen the wall at output resolution the
+ * refinement exists to refuse passed nine seeds in ten, and at four the
+ * low-texture pair at 128 was refused with its peak in the right place. The
+ * comment on P_MAX has the readings at both.
  *
  * Eight is also the pitch of a JPEG's block grid, and that coincidence is
  * doing work nobody chose. Two frames of one smooth scene compressed at
@@ -711,9 +715,10 @@ export function phaseCorrelate(a, b, size) {
  * against 0.50-0.69 at 6, 0.56-0.81 at 9 and 0.47-0.74 at 10 - and refuses
  * the lock on every seed at both qualities, where next does not. Only at
  * quality 20, where the alias is buried in the blocking, does the lock get
- * through. So a change to this radius, or to the margin it is drawn from,
- * silently gives that lock back; the lattice test in
- * tests/js/stack-images-align.test.js pins both sides so it cannot go
+ * through. So a change to this radius silently gives that lock back, and what
+ * must not be broken is the pair of numbers - a reach of eight, read at eight
+ * - rather than any reasoning about where either came from; the lattice test
+ * in tests/js/stack-images-align.test.js pins both sides so it cannot go
  * quietly.
  */
 function plateauRadius() {

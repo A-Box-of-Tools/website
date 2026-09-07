@@ -38,11 +38,12 @@
 
 import { NO_MOVE, estimate, isMeasured, phaseCorrelate, window2d } from './align.js';
 import {
-  bands, commonArea, outputSize, placement, planRun, refineMargin, refineWindow, workingSize,
+  REFINE_INSET, bands, commonArea, outputSize, placement, planRun, refineWindow, workingSize,
 } from './plan.js';
 import { jpegOrientation, orientationMatrix, orientedSize } from './orient.js';
 import { findPreview, jpegSize, looksRaw } from './raw.js';
-import { createStack } from './stack.js';
+import { MIN_INLIERS, consensus } from './similarity.js';
+import { DEFAULT_RADIUS, createStack } from './stack.js';
 
 /**
  * The square the alignment works in. A power of two because the transform needs
@@ -217,7 +218,8 @@ function surface(width, height) {
 }
 
 /**
- * Draw one frame's bitmap into a box, the right way up.
+ * The transform that maps one frame's own pixels into a box the right way up,
+ * and the plain draw through it.
  *
  * Every drawImage of a frame in this file goes through here, because a frame
  * the browser did not orient - a RAW preview whose orientation lives in the
@@ -231,18 +233,32 @@ function surface(width, height) {
  * already on the context - the alignment, in drawAligned - as the innermost
  * step, which is what makes it a property of the frame rather than of the
  * output.
+ *
+ * It is in two halves because the refinement needs the transform without the
+ * draw. Knowing where a destination sits in the frame's own pixels is what
+ * lets it ask the browser for that rectangle and no more, rather than handing
+ * over a 24-megapixel bitmap and a 256-pixel canvas to clip it against, nine
+ * times a frame. Written as a transform and a draw at the natural size, the
+ * two are the same arithmetic as the scaled draw they replace.
  */
-function drawFrame(context, bitmap, spot, turn) {
+function frameTransform(context, bitmap, spot, turn) {
   if (turn === 1) {
-    context.drawImage(bitmap, spot.x, spot.y, spot.width, spot.height);
+    context.translate(spot.x, spot.y);
+    context.scale(spot.width / bitmap.width, spot.height / bitmap.height);
     return;
   }
   const stored = orientedSize(spot.width, spot.height, turn);
   const [a, b, c, d] = orientationMatrix(turn);
-  context.save();
   context.translate(spot.x + spot.width / 2, spot.y + spot.height / 2);
   context.transform(a, b, c, d, 0, 0);
-  context.drawImage(bitmap, -stored.width / 2, -stored.height / 2, stored.width, stored.height);
+  context.translate(-stored.width / 2, -stored.height / 2);
+  context.scale(stored.width / bitmap.width, stored.height / bitmap.height);
+}
+
+function drawFrame(context, bitmap, spot, turn) {
+  context.save();
+  frameTransform(context, bitmap, spot, turn);
+  context.drawImage(bitmap, 0, 0);
   context.restore();
 }
 
@@ -374,25 +390,345 @@ function lumaSquare(bitmap, spot, output, fit, turn) {
 }
 
 /**
- * The luma window the refinement correlates, cut from the middle of the crop
- * at output resolution, with the frame's coarse correction already applied.
+ * How far apart two windows' answers may be and still be counted as one
+ * answer, in output pixels.
  *
- * Drawn through drawAligned exactly as the stack will draw it - the window's
- * corner standing in for the crop - so what the correlation sees is what the
- * accumulator would have seen, and the residual it reports is in output pixels
- * with nothing to multiply back up. That is the whole point of measuring
- * twice: here, an error of a twentieth of a pixel is a twentieth of a pixel.
+ * The refinement exists to remove errors of a pixel or two, so a tolerance of
+ * two is as wide as it can be and still mean anything: a window that disagrees
+ * by more than the whole error being corrected is not measuring the same
+ * movement as its neighbours. It is also comfortably above what a correct
+ * window is off by - the browser's fit RMS over nine correct windows was 0.14
+ * to 0.34 pixels on every scene that worked at all, and 17 to 42 pixels on
+ * every scene that did not, so nothing measured sits near this number.
  */
-function refineSquare(bitmap, spot, output, move, at, size, turn) {
-  const { canvas, context } = surface(size, size);
-  drawAligned(context, bitmap, spot, output, move, at, 0, turn);
-  const pixels = context.getImageData(0, 0, size, size).data;
-  const out = new Float64Array(size * size);
+const REFINE_TOLERANCE = 2;
+
+/**
+ * How far the refinement may move a frame, in the COARSE pass's own pixels.
+ *
+ * The refinement exists to finish a measurement, not to make another one, and
+ * the measurement it is finishing was located to a fraction of a pixel of the
+ * 256 square it was read in. So a residual worth applying is under a pixel of
+ * that square - which is why it is quoted in them rather than in output
+ * pixels, where the same error is one number on a 3000-pixel picture and
+ * another on a 6000-pixel one. Two is a factor of two of slack over what the
+ * peak's own interpolation can be wrong by, and anything past it means the
+ * coarse pass locked onto a DIFFERENT peak, which is not a thing to correct by
+ * a couple of pixels but a thing to refuse.
+ *
+ * A bound of some kind has to be here. The windows have their own wrap check -
+ * a quarter of what one covers - but that is a question about one window's
+ * reading and it is 128 output pixels wide; nine windows agreeing on a shift
+ * of a hundred pixels pass it unanimously, which is exactly the shape a
+ * globally periodic texture gives when every window's argmax lands on the same
+ * wrong lattice period. The single-window refinement this replaced refused any
+ * residual over eight output pixels and so refused that outright.
+ */
+const REFINE_LIMIT = 2;
+
+/** Which rung of the refinement's ladder a frame's answer came off. */
+export const REFINED = Object.freeze({
+  reference: 'reference',
+  fit: 'fit',
+  partial: 'partial',
+  coarse: 'coarse',
+  none: 'none',
+});
+
+/**
+ * A few pixels of the frame beyond what a window can see, so that the edge of
+ * the source rectangle is never the edge of what gets resampled.
+ */
+const SOURCE_SLACK = 4;
+
+/**
+ * Where the refinement's windows sit inside the crop.
+ *
+ * The crop is divided into a grid of equal cells, inset from its edge, and a
+ * window of `cover` output pixels is centred in each. Equal cells rather than
+ * the corners and the middle, because a window's job is to sample the movement
+ * field and an evenly spread sample is what a least-squares fit wants; and
+ * inset, because the crop's own edge is where the frames stop covering, and a
+ * window flush against it can see the transparent ground outside.
+ */
+export function refineGrid(crop, windows) {
+  const width = crop.width - REFINE_INSET * 2;
+  const height = crop.height - REFINE_INSET * 2;
+  const out = [];
+  for (let row = 0; row < windows.grid; row += 1) {
+    for (let column = 0; column < windows.grid; column += 1) {
+      const x = Math.round(
+        crop.x + REFINE_INSET + (width * (column + 0.5)) / windows.grid - windows.cover / 2,
+      );
+      const y = Math.round(
+        crop.y + REFINE_INSET + (height * (row + 0.5)) / windows.grid - windows.cover / 2,
+      );
+      // The corner is rounded because a window is cut at whole pixels, and the
+      // centre is taken from the corner rather than the other way about, so
+      // that the place the fit is told about is the place that was measured.
+      out.push({ x, y, centre: { x: x + windows.cover / 2, y: y + windows.cover / 2 } });
+    }
+  }
+  return out;
+}
+
+/**
+ * Draw only as much of the bitmap as the destination can possibly show.
+ *
+ * The transform on the context already maps the frame's own pixels onto the
+ * canvas, so inverting it and putting the canvas's four corners through it
+ * gives the rectangle of the frame the canvas is looking at. Everything
+ * outside that rectangle would be drawn and immediately clipped away, and at
+ * nine windows a frame over a 24-megapixel bitmap that is most of the work:
+ * the whole grid measured 12 ms a frame this way, against 21 ms drawing the
+ * bitmap nine times over and 100 ms reading nine squares out of one full-size
+ * draw. Drawing a source rectangle into the same rectangle under the same
+ * transform is the same picture as drawing all of it, save at the rectangle's
+ * own edge - which is why it is taken a few pixels larger than it needs to be,
+ * and why the correlation's Hann window fading the square's edges to nothing
+ * makes even that moot.
+ */
+function drawSource(context, bitmap, size) {
+  const inverse = context.getTransform().inverse();
+  let left = Infinity;
+  let top = Infinity;
+  let right = -Infinity;
+  let bottom = -Infinity;
+  for (const [x, y] of [[0, 0], [size, 0], [size, size], [0, size]]) {
+    const at = inverse.transformPoint({ x, y });
+    left = Math.min(left, at.x);
+    right = Math.max(right, at.x);
+    top = Math.min(top, at.y);
+    bottom = Math.max(bottom, at.y);
+  }
+  const x = Math.max(0, Math.floor(left) - SOURCE_SLACK);
+  const y = Math.max(0, Math.floor(top) - SOURCE_SLACK);
+  const width = Math.min(bitmap.width, Math.ceil(right) + SOURCE_SLACK) - x;
+  const height = Math.min(bitmap.height, Math.ceil(bottom) + SOURCE_SLACK) - y;
+  // A window that lands entirely off the frame - a badly mismeasured coarse
+  // move, or a frame letterboxed into a corner of a much larger output - draws
+  // nothing, and the empty square it leaves fails the gate rather than
+  // reporting the shift between two pieces of nothing.
+  if (width <= 0 || height <= 0) return;
+  context.drawImage(bitmap, x, y, width, height, x, y, width, height);
+}
+
+/**
+ * The luma of one refinement window, with the frame's coarse correction
+ * already applied.
+ *
+ * Drawn through the same transform the stack will draw it through - the
+ * window's corner standing in for the crop - so what the correlation sees is
+ * what the accumulator would have seen, and the residual it reports is in
+ * output pixels with nothing to multiply back up. That is the whole point of
+ * measuring twice: here, an error of a twentieth of a pixel is a twentieth of
+ * a pixel.
+ *
+ * The one difference from the stack's draw is the zoom, which puts `cover`
+ * output pixels into a `size` square. Half scale costs a quarter of the
+ * readback and of the transform behind it, and costs nothing in accuracy: the
+ * residual being looked for is a pixel or two of output, and a correlation
+ * resolves a fraction of a pixel of its own square either way. The caller
+ * multiplies the answer back up by the same number.
+ */
+function windowSquare(bitmap, spot, output, move, at, windows, turn) {
+  const { canvas, context } = surface(windows.size, windows.size);
+  const zoom = windows.size / windows.cover;
+  const cx = output.width / 2;
+  const cy = output.height / 2;
+
+  context.setTransform(zoom, 0, 0, zoom, -at.x * zoom, -at.y * zoom);
+  context.translate(cx + move.dx, cy + move.dy);
+  context.rotate((move.angle * Math.PI) / 180);
+  context.scale(move.scale, move.scale);
+  context.translate(-cx, -cy);
+  frameTransform(context, bitmap, spot, turn);
+  drawSource(context, bitmap, windows.size);
+
+  const pixels = context.getImageData(0, 0, windows.size, windows.size).data;
+  const out = new Float64Array(windows.size * windows.size);
   for (let i = 0, p = 0; i < out.length; i += 1, p += 4) {
     out[i] = pixels[p] * 0.299 + pixels[p + 1] * 0.587 + pixels[p + 2] * 0.114;
   }
   canvas.width = 0;
-  return window2d(out, size);
+  return window2d(out, windows.size);
+}
+
+/**
+ * One refinement laid on top of a coarse move, about the uncropped output
+ * centre.
+ *
+ * Both are scale, then rotation, then shift about that centre, and applying
+ * one after the other gives another of the same shape: the angles add, the
+ * scales multiply, and the coarse shift is itself turned and scaled by the
+ * refinement before the refinement's own shift is added. Writing that out is
+ * cheaper than carrying a matrix through the drawing code, and it is the only
+ * arithmetic here that has to be right for a rotated burst rather than merely
+ * for a shifted one.
+ */
+export function compose(move, fit, turning) {
+  const angle = turning ? fit.angle : 0;
+  const scale = turning ? fit.scale : 1;
+  const radians = (angle * Math.PI) / 180;
+  const cos = Math.cos(radians) * scale;
+  const sin = Math.sin(radians) * scale;
+  return {
+    ...move,
+    angle: move.angle + angle,
+    scale: move.scale * scale,
+    dx: cos * move.dx - sin * move.dy + fit.dx,
+    dy: sin * move.dx + cos * move.dy + fit.dy,
+  };
+}
+
+/**
+ * The largest group of windows reporting much the same shift as one of them.
+ *
+ * The fallback for a frame whose windows will not support a similarity: two
+ * that agree are still two independent measurements of one translation, and
+ * their mean is better than the coarse answer, which was read in a 256-pixel
+ * square and multiplied up. Agreement with a member rather than with every
+ * member, which is a cheaper question and the same answer whenever the group
+ * is a real one.
+ */
+function agreeing(points) {
+  let best = [];
+  for (const seed of points) {
+    const near = points.filter(
+      (point) => Math.hypot(point.dx - seed.dx, point.dy - seed.dy) <= REFINE_TOLERANCE,
+    );
+    if (near.length > best.length) best = near;
+  }
+  return best;
+}
+
+/**
+ * Whether a `commonArea` answer is its own sliver fallback rather than a
+ * region every frame really covered.
+ *
+ * `commonArea` hands back the whole box when the true overlap is under a
+ * quarter of either side, because a stack with visible edges is something
+ * somebody can look at and a postage stamp is not. That answer is the only one
+ * it gives that nobody covers, so everything downstream that reasons from "the
+ * area is the whole box, therefore every frame reached every pixel" has to ask
+ * this first. The test is that the box came back whole although something
+ * moved or was letterboxed: any real shift, turn or scale gives up at least
+ * one row or column to the rounding, so the two cannot be confused.
+ */
+export function fellBack(area, moves, output) {
+  if (area.width !== output.width || area.height !== output.height) return false;
+  return moves.some((move) => {
+    // The same default commonArea takes, so the two read one set of moves the
+    // same way.
+    const box = move.spot ?? { x: 0, y: 0, width: output.width, height: output.height };
+    return move.dx !== 0 || move.dy !== 0 || move.angle !== 0 || move.scale !== 1
+      || box.x !== 0 || box.y !== 0
+      || box.width !== output.width || box.height !== output.height;
+  });
+}
+
+/**
+ * The rectangle the answer is cut to, once every frame has been refined.
+ *
+ * `commonArea` on the final moves, held inside the box the accumulator covers
+ * - which is what the frames covered under their COARSE moves, and the
+ * refinement only ever moves them a pixel or two off that - and for focus
+ * stacking a little less again. The accumulator has transparent ground inside
+ * it wherever a frame did not reach, and stack.js reads transparent as a luma
+ * of zero, which the Laplacian scores as the strongest edge in the picture and
+ * the blur then spreads inward by its own radius. The pixels along the crop's
+ * edge would take their colour from whichever frame happened to have its own
+ * boundary there, which is a black fringe with a plausible explanation. So the
+ * crop gives up the radius and two more: one for the Laplacian's own reach
+ * past the boundary, one because a fringe is a fringe and a couple of pixels
+ * of a 24-megapixel picture is nothing.
+ *
+ * Per axis, and only on an axis that has ground beside it. A crop already
+ * spanning the whole accumulator on one axis has nothing outside it on that
+ * axis to be transparent, so a burst that drifted only downwards keeps its
+ * full width - fourteen columns at the radius slider's top. The exception is
+ * the sliver fallback, where the box is whole and nobody covered it, and that
+ * is the case with the most transparent ground of all.
+ */
+export function finalCrop(moves, output, covered, slivered, mode, radius) {
+  const found = commonArea(moves, output);
+  const x = Math.max(found.x, covered.x);
+  const y = Math.max(found.y, covered.y);
+  const width = Math.min(found.x + found.width, covered.x + covered.width) - x;
+  const height = Math.min(found.y + found.height, covered.y + covered.height) - y;
+  const area = width > 0 && height > 0 ? { x, y, width, height } : { ...covered };
+  if (mode !== 'focus') return area;
+
+  const inset = (radius ?? DEFAULT_RADIUS) + 2;
+  const insetX = slivered || area.width < covered.width ? inset : 0;
+  const insetY = slivered || area.height < covered.height ? inset : 0;
+  if (area.width <= insetX * 2 || area.height <= insetY * 2) return area;
+  return {
+    x: area.x + insetX,
+    y: area.y + insetY,
+    width: area.width - insetX * 2,
+    height: area.height - insetY * 2,
+  };
+}
+
+/**
+ * What a frame's surviving windows add up to: the ladder, in order.
+ *
+ * Four or more windows agreeing on one similarity is the answer the grid was
+ * built for, and it is good to about five thousandths of a degree wherever it
+ * is available. Below that - and only below it, counted in windows that
+ * SURVIVED the gate - two of them agreeing on a shift is a shift worth
+ * applying and nothing worth saying about rotation, and the move is marked
+ * `partial` so that which happened is not a guess. That count is the whole
+ * distinction between a frame nobody could measure much of and a frame
+ * everybody measured differently: with four or more windows in hand, a
+ * consensus that came back empty has already reported that they disagree, and
+ * the two of them that happen to coincide are the two that sat on the same
+ * moving subject. Below that the coarse move stands, which is the honest
+ * outcome for such a frame: no single transform describes a walking figure and
+ * the ground behind it, and leaving the frame where the first measurement put
+ * it beats taking the loudest window's word for the whole picture.
+ *
+ * Nothing is applied that moves the frame further than `limit`, whichever rung
+ * proposed it, and the rung below is tried instead. REFINE_LIMIT says why a
+ * bound has to be here at all.
+ *
+ * A frame the coarse pass clamped was reported to the visitor as one corrected
+ * by shifting alone, and in similarity mode the fit's angle and scale are
+ * about to be applied to it, so the flag comes off with the same movement that
+ * makes it untrue.
+ *
+ * In translate mode the same consensus runs and only its translation is
+ * applied. Not a median of the windows, which is what the single-window
+ * refinement's obvious generalisation would have been: a rotated burst makes
+ * the windows disagree BY DESIGN, and the median of nine disagreeing shifts is
+ * a number that describes no part of the frame.
+ */
+export function refineMove(move, points, turning, centre, limit) {
+  const found = consensus(points, REFINE_TOLERANCE, centre);
+  if (found && Math.hypot(found.fit.dx, found.fit.dy) <= limit) {
+    return {
+      ...compose(move, found.fit, turning),
+      refine: REFINED.fit,
+      clamped: turning ? false : move.clamped,
+    };
+  }
+
+  const together = points.length < MIN_INLIERS ? agreeing(points) : [];
+  if (together.length >= 2) {
+    let dx = 0;
+    let dy = 0;
+    for (const point of together) {
+      dx += point.dx;
+      dy += point.dy;
+    }
+    const shift = { angle: 0, scale: 1, dx: dx / together.length, dy: dy / together.length };
+    if (Math.hypot(shift.dx, shift.dy) <= limit) {
+      return { ...compose(move, shift, false), refine: REFINED.partial, partial: true };
+    }
+  }
+
+  return { ...move, refine: REFINED.coarse };
 }
 
 /* -------------------------------------------------------------------- run */
@@ -452,7 +788,16 @@ export async function runStack(request, hooks) {
   // The square every frame is correlated in, sized so that one number converts
   // a shift in it back to a shift in the output.
   const fit = placement(output, { width: ALIGN_SIZE, height: ALIGN_SIZE });
+  // Where each frame sits in the output box. Constant for the whole run and
+  // wanted by every stage after this one, so it is worked out once: the crop
+  // needs it to know what a letterboxed frame ever covered, and the stack and
+  // the refinement need it on every draw.
+  const spots = frames.map((frame) => placement(frame, output));
+  const centre = { x: output.width / 2, y: output.height / 2 };
   const moves = [];
+  // The moves as commonArea wants them: each one carrying the box its frame
+  // filled before it was moved.
+  const placed = () => moves.map((move, index) => ({ ...move, spot: spots[index] }));
   let reference = null;
 
   for (const [index, frame] of frames.entries()) {
@@ -463,7 +808,7 @@ export async function runStack(request, hooks) {
     }
     report({ stage: 'measure', done: index, total: frames.length, name: frame.name });
 
-    const spot = placement(frame, output);
+    const spot = spots[index];
     // The thumbnail is drawn as if it were the full frame, which it is a scaled
     // copy of. Its own size never enters the arithmetic.
     const square = lumaSquare(frame.thumb, {
@@ -476,6 +821,7 @@ export async function runStack(request, hooks) {
       reference = square;
       moves.push({
         ...NO_MOVE, measured: true, clamped: false, live: 1, coherence: 1, plateau: 0, next: 0,
+        refine: REFINED.reference,
       });
       continue;
     }
@@ -490,6 +836,10 @@ export async function runStack(request, hooks) {
       // Back out of the alignment square and into the output's own pixels.
       dx: found.dx / fit.scale,
       dy: found.dy / fit.scale,
+      // Overwritten during the stack, when the frame is refined. A frame that
+      // never reaches a full-size decode - a run cancelled part way - keeps
+      // this, which is what actually happened to it.
+      refine: REFINED.coarse,
     } : {
       ...NO_MOVE,
       measured: false,
@@ -498,6 +848,7 @@ export async function runStack(request, hooks) {
       coherence: found.coherence,
       plateau: found.plateau,
       next: found.next,
+      refine: REFINED.none,
     });
   }
 
@@ -506,55 +857,73 @@ export async function runStack(request, hooks) {
 
   /* --- stack ----------------------------------------------------------- */
 
-  // What every frame covers once moved. With no alignment this is the whole
-  // output; with alignment it is the output less however far the frames went.
-  const crop = commonArea(moves, output);
-
   // The refinement the measure stage promised. The moves above were read in a
   // small square and multiplied back up to output pixels, and the multiply-up
   // scales their sub-pixel error with them - enough to blur the stack by more
   // than it blurs a frame. So during the stack, when each frame's full-size
-  // decode is in hand anyway, a window of it is correlated against the same
-  // window of the reference at output resolution and the answer is corrected in
-  // place. It costs no extra decode, which is why it happens there and not
-  // here. The margin is the room those corrections need: a frame moved after
-  // the crop was decided stops covering ground the crop assumed, so the crop
-  // gives up that much on every side up front.
-  const refine = align === 'none' ? 0 : refineWindow(crop);
-  const margin = refine ? refineMargin(moves) : 0;
-  crop.x += margin;
-  crop.y += margin;
-  crop.width -= margin * 2;
-  crop.height -= margin * 2;
-  const refineAt = refine ? {
-    x: Math.round(crop.x + (crop.width - refine) / 2),
-    y: Math.round(crop.y + (crop.height - refine) / 2),
-  } : null;
-  let referenceWindow = null;
+  // decode is in hand anyway, windows of it are correlated against the same
+  // windows of the reference at output resolution and the answer is corrected
+  // in place. It costs no extra decode, which is why it happens there and not
+  // here.
+  //
+  // The grid is laid out over what the frames covered under their COARSE
+  // moves, which is also the box everything below accumulates into. That is
+  // not the crop the run finishes with - the refinement is about to move them
+  // again, and the crop is settled afterwards from where they ended up - but
+  // it is the right region to sample: the part of the output every frame has
+  // something in.
+  const covered = commonArea(placed(), output);
+  // Except when it is not, because `commonArea` gave up and handed back the
+  // whole box for a set that overlaps in almost nothing. A grid laid over that
+  // puts windows where a frame has nothing, and a half-empty window correlates
+  // confidently against a full one and reports a shift that is neither frame's;
+  // the coarse move standing is the honest answer for such a set.
+  const slivered = fellBack(covered, placed(), output);
+  const windows = align === 'none' || slivered ? null : refineWindow(covered);
+  const grid = windows ? refineGrid(covered, windows) : [];
+  let referenceWindows = null;
   const refined = frames.map(() => false);
+  // How far the refinement may move a frame, out of the coarse pass's square
+  // and into the output's own pixels.
+  const limit = REFINE_LIMIT / fit.scale;
 
+  // The accumulator covers `covered` and the crop is taken at the end, out of
+  // the finished rows. It has to be that way round now: the moves are not
+  // final until every frame has been refined, which happens on each one's
+  // first full-size decode, which is inside this loop. It is `covered` rather
+  // than the whole output box because the band arithmetic is not free of the
+  // difference - a run planned on the box instead of on what the frames cover
+  // can gain a whole band, and a band is a re-read of every frame, so a
+  // five-frame run that read each frame once would read each of them twice.
+  // The refinement's corrections are a pixel or two, so the crop settled below
+  // is inside this box in any case.
   const plan = planRun({
-    width: crop.width, height: crop.height, frames: frames.length, mode,
+    width: covered.width, height: covered.height, frames: frames.length, mode,
     budget: request.budget,
   });
-  report({ stage: 'planned', plan, output: crop, frames: frames.map(describe) });
+  report({ stage: 'planned', plan, output, frames: frames.map(describe) });
 
-  const { canvas: out, context: outContext } = surface(crop.width, crop.height);
-  const list = bands(crop.height, plan.rows, plan.context);
+  // Allocated at the crop's size the moment the crop is known, which is when
+  // the first band has been stacked. No second canvas and no copy: the rows
+  // are cut on their way out of the accumulator.
+  let crop = null;
+  let out = null;
+  let outContext = null;
+  const list = bands(covered.height, plan.rows, plan.context);
   const totalSteps = plan.decodes;
   let step = 0;
 
   for (const [bandIndex, band] of list.entries()) {
     stop();
     const stack = createStack(mode, {
-      width: crop.width,
+      width: covered.width,
       height: band.readRows,
       frames: frames.length,
       kappa: request.kappa,
       gain: request.gain,
       radius: request.radius,
     });
-    const { canvas: scratch, context } = surface(crop.width, band.readRows);
+    const { canvas: scratch, context } = surface(covered.width, band.readRows);
 
     for (let pass = 0; pass < stack.passes; pass += 1) {
       stack.beginPass(pass);
@@ -566,67 +935,113 @@ export async function runStack(request, hooks) {
           band: bandIndex + 1, bands: list.length, pass: pass + 1, passes: stack.passes,
         });
 
-        const spot = placement(frame, output);
+        const spot = spots[index];
         const working = workingSize(frame.decoded.width, frame.decoded.height, 1);
         const bitmap = await decodeAt(frame.blob, working, spot, frame.turn);
 
         // Each frame's first full-size appearance settles its final position.
         // Later bands and passes reuse the answer, so a banded run stays
-        // consistent with itself. The gates keep a bad peak from undoing a
-        // good coarse answer: a window without enough texture to correlate, a
-        // window whose peak is a plateau - a wall, a sky - so that its
-        // position is the noise's choice, a window whose peak is one of
-        // several of much the same height - two unrelated pictures, a sky too
-        // sparse for its noise - so that which one the argmax took is the
-        // noise's choice instead, or a residual larger than the coarse pass
-        // could plausibly have been wrong by, leaves the frame where the
-        // coarse measurement put it. A frame the coarse pass could
-        // not measure is not refined at all: it is sitting at the identity,
-        // and a residual measured from there is not a residual but a whole
-        // shift, which is the measurement that was already refused.
-        if (refine && !refined[index]) {
+        // consistent with itself, and it is what lets the crop be taken from
+        // the finished moves: every one of them is final by the end of the
+        // first band's first pass.
+        //
+        // Every window goes through the same gate the coarse pass does, and
+        // for the same reasons: a window without enough texture to correlate,
+        // one whose peak is a plateau - a wall, a sky - so that its position
+        // is the noise's choice, or one whose peak is merely the tallest of
+        // several, so that which one the argmax took is the noise's choice
+        // instead. A window that reports a shift larger than a quarter of what
+        // it covers is refused as well, and that one is arithmetic rather than
+        // judgement: a correlation surface wraps, so a shift approaching half
+        // the square is as likely to be the same feature coming round the
+        // other side as a real residual, and no residual of a coarse move is
+        // that large. What survives goes to the consensus. A frame the coarse
+        // pass could not measure is not refined at all: it is sitting at the
+        // identity, and a residual measured from there is not a residual but a
+        // whole shift, which is the measurement that was already refused.
+        if (windows && !refined[index]) {
           refined[index] = true;
           if (index === 0) {
-            referenceWindow = refineSquare(
-              bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
-            );
-          } else if (referenceWindow && moves[index].measured) {
-            const square = refineSquare(
-              bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
-            );
-            const residual = phaseCorrelate(referenceWindow, square, refine);
-            if (isMeasured(residual)
-                && Math.abs(residual.dx) <= margin && Math.abs(residual.dy) <= margin) {
-              moves[index].dx += residual.dx;
-              moves[index].dy += residual.dy;
+            referenceWindows = grid.map((at) => windowSquare(
+              bitmap, spot, output, moves[index], at, windows, frame.turn,
+            ));
+          } else if (referenceWindows && moves[index].measured) {
+            const points = [];
+            for (const [which, at] of grid.entries()) {
+              const square = windowSquare(
+                bitmap, spot, output, moves[index], at, windows, frame.turn,
+              );
+              const residual = phaseCorrelate(referenceWindows[which], square, windows.size);
+              if (!isMeasured(residual)) continue;
+              // Out of the window's own square and back into output pixels,
+              // which is the one number the half-scale draw costs.
+              const back = windows.cover / windows.size;
+              const dx = residual.dx * back;
+              const dy = residual.dy * back;
+              if (Math.hypot(dx, dy) > windows.cover / 4) continue;
+              points.push({ x: at.centre.x, y: at.centre.y, dx, dy });
             }
+            moves[index] = refineMove(
+              moves[index], points, align === 'similarity', centre, limit,
+            );
           }
         }
 
         context.setTransform(1, 0, 0, 1, 0, 0);
-        context.clearRect(0, 0, crop.width, band.readRows);
-        drawAligned(context, bitmap, spot, output, moves[index], crop, band.readY, frame.turn);
+        context.clearRect(0, 0, covered.width, band.readRows);
+        drawAligned(context, bitmap, spot, output, moves[index], covered, band.readY, frame.turn);
         bitmap.close();
 
-        stack.add(context.getImageData(0, 0, crop.width, band.readRows).data, index, pass);
+        stack.add(context.getImageData(0, 0, covered.width, band.readRows).data, index, pass);
       }
       stack.endPass(pass);
     }
 
-    // Only the rows this band owns are written. The overlap above and below was
-    // read so that focus stacking could measure across the seam, and it belongs
-    // to the neighbouring bands.
+    // The crop, the first time there is anything to crop. Every frame was
+    // refined during the pass just finished, so this is the earliest moment it
+    // can be asked for and the last one at which it is needed.
+    if (!crop) {
+      crop = finalCrop(placed(), output, covered, slivered, mode, request.radius);
+      ({ canvas: out, context: outContext } = surface(crop.width, crop.height));
+      // The reference windows can never be read again - every frame was
+      // refined during the pass that just finished - and at the 512/256 grid
+      // they are nine 256-squares of doubles, which is more memory than the
+      // single window they replaced and more than plan.peak counts.
+      referenceWindows = null;
+    }
+
+    // Only the rows this band owns are written, and only the columns the crop
+    // kept. The overlap above and below was read so that focus stacking could
+    // measure across the seam, and it belongs to the neighbouring bands; the
+    // rows outside the crop were stacked because the accumulator covers
+    // everything the frames covered, and they are thrown away here rather than
+    // in a second canvas. The bands are cut from that box, so the crop has to
+    // come into its coordinates to be compared with them.
     const finished = stack.result();
-    const keep = new ImageData(crop.width, band.rows);
-    keep.data.set(finished.subarray(
-      band.offset * crop.width * 4,
-      (band.offset + band.rows) * crop.width * 4,
-    ));
-    outContext.putImageData(keep, 0, band.y);
+    const top = crop.y - covered.y;
+    const from = Math.max(band.y, top);
+    const to = Math.min(band.y + band.rows, top + crop.height);
+    if (to > from) {
+      const keep = new ImageData(crop.width, to - from);
+      for (let row = 0; row < to - from; row += 1) {
+        const at = (band.offset + from - band.y + row) * covered.width + (crop.x - covered.x);
+        keep.data.set(
+          finished.subarray(at * 4, (at + crop.width) * 4),
+          row * crop.width * 4,
+        );
+      }
+      outContext.putImageData(keep, 0, from - top);
+    }
     scratch.width = 0;
   }
 
   /* --- encode ---------------------------------------------------------- */
+
+  // What the frames covered before any of them was moved. Measuring the crop
+  // against the output box instead would call a set of two shapes cropped for
+  // the letterboxing alone, and the page's note for that run says the frames
+  // were stacked exactly as given - two sentences that cannot both be true.
+  const base = commonArea(spots.map((spot) => ({ ...NO_MOVE, spot })), output);
 
   stop();
   report({ stage: 'encode', done: totalSteps, total: totalSteps });
@@ -641,9 +1056,9 @@ export async function runStack(request, hooks) {
     blob,
     width: crop.width,
     height: crop.height,
-    // How much the alignment cost at the edges, so the page can say so when it
-    // is more than a trim.
-    cropped: crop.width !== output.width || crop.height !== output.height,
+    // Whether MOVING the frames cost anything at the edges, so the page can
+    // say so when it is more than a trim.
+    cropped: crop.width !== base.width || crop.height !== base.height,
     plan,
     frames: frames.map(describe),
     moves,
