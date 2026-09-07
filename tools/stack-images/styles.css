@@ -19,6 +19,7 @@
 }
 
 .frame-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -28,12 +29,66 @@
   background: var(--surface-2);
 }
 
-/* The first row is the reference every other frame is aligned to, so it is
-   marked rather than merely first. Somebody who has just pressed "use as
-   reference" needs to see that it took. */
-.frame-row:first-child {
+/* The reference is the frame every other one is aligned to, and it is no
+   longer the first row - choosing it leaves the order alone - so the row says
+   so twice: the badge inside it, and this. Somebody who has just pressed "use
+   as reference" needs to see that it took, in a list they may have to scroll. */
+.frame-row.is-reference {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
 }
+
+.frame-row.dragging {
+  opacity: 0.4;
+}
+
+/* A bar where the frame will land, rather than a tint on the row it is over,
+   which would read as "swap with this one". */
+.frame-row.insert-before::after,
+.frame-row.insert-after::after {
+  content: '';
+  position: absolute;
+  inset-inline: -2px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.frame-row.insert-before::after { top: -5px; }
+.frame-row.insert-after::after { bottom: -5px; }
+
+.drag-handle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: grab;
+  font-size: 0.9rem;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.drag-handle:hover {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.drag-handle:active { cursor: grabbing; }
+
+.reorder-hint {
+  margin: 0.8rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.reorder-hint .grip { letter-spacing: -2px; font-weight: 700; color: var(--accent); }
 
 .frame-thumb {
   flex: none;
@@ -91,7 +146,8 @@
 
 @media (width <= 34rem) {
   .frame-row { flex-wrap: wrap; }
-  .frame-body { flex-basis: calc(100% - 5rem); }
+  /* The thumbnail, the grip and the two gaps beside them. */
+  .frame-body { flex-basis: calc(100% - 7.3rem); }
   .frame-actions { flex-basis: 100%; justify-content: flex-start; }
 }
 

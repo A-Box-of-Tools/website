@@ -196,6 +196,16 @@ comfortably.
 
 ## The alignment, and the sign
 
+**The reference is the first file in the request, and only that.** The measure
+loop takes the first frame's square as the one everything else is correlated
+against, and the stack loop takes its windows the first time it is decoded, so
+both want it before any other frame — which is what "first" buys and why the
+pipeline has no reference index to be told. Which frame that is belongs to the
+page: the list has a badge that can be moved to any row, and `main.js` puts
+that frame at the head of the request without disturbing the order on screen.
+Nothing else about the order reaches the result, because every method in
+`stack.js` combines the frames as a set.
+
 Phase correlation. Shifting a picture does not change the magnitude of its
 spectrum, only the phase, so multiplying one frame's spectrum by the conjugate
 of another's and transforming back gives a surface with a single spike at the
