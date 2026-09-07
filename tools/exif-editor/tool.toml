@@ -36,8 +36,8 @@ css_parts = ["file-list", "form", "checks", "notes"]
 # batch of cleaned files comes back in, and crc32 is the checksum both it and
 # the PNG writer need. This tool carried its own copy of those two until the
 # tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "example-photo", "example-exif"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -301,3 +301,7 @@ accept = "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
 multiple = true
 title = "Drop photos here"
 hint = "or click to browse &mdash; JPEG, PNG and WebP"
+# A JPEG carrying a hand-written EXIF block - camera, lens, exposure,
+# date and GPS. A picture with an empty header would say nothing, which is the
+# one thing this tool is for reading.
+example = true

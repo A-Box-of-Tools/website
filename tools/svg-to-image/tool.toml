@@ -32,8 +32,8 @@ css_parts = ["file-list", "progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "format"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-mark"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -378,3 +378,6 @@ accept = "image/svg+xml,.svg"
 multiple = true
 title = "Drop an SVG here"
 hint = "or click to browse &mdash; several at once is fine"
+# A hand-written SVG with a viewBox and no pixel size, because
+# having no size of its own is the thing this tool is about.
+example = true

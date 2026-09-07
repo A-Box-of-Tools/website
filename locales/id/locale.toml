@@ -460,6 +460,9 @@ md_note = """
     kata-kata; untuk memakainya, buka alamat tersebut."""
 
 card_waiting = "Terbuka begitu Anda memilih berkas di atas."
+example_load = "Coba sebuah contoh"
+example_busy = "Membuat contoh&hellip;"
+example_failed = "Peramban ini tidak dapat membuat contoh. Silakan pilih berkas saja."
 pledge_line = """
     {{ tool.words.plural }} Anda <strong>tidak pernah diunggah</strong>.
     Tidak ada server."""

@@ -9,6 +9,7 @@ import { describeRanges, parseRanges } from './plan.js';
 import { produce } from './produce.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -93,6 +94,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 /**

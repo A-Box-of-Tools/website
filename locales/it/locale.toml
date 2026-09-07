@@ -428,6 +428,9 @@ md_note = """
     strumento a parole; per usarlo, apri l'indirizzo."""
 
 card_waiting = "Si apre appena scegli un file qui sopra."
+example_load = "Prova un esempio"
+example_busy = "Creazione di un esempio&hellip;"
+example_failed = "Questo browser non è riuscito a creare l'esempio. Scegli un file."
 # Il nome che sta in mezzo cambia genere da uno strumento all'altro - le
 # immagini, i documenti, i video - e un participio concordato sarebbe
 # sbagliato su metà del sito. Il "si" impersonale con il plurale nudo li regge

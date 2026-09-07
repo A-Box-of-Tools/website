@@ -11,6 +11,7 @@ import { cropExact, grabFrame } from './transcode.js';
 import { cropByRecording } from './record.js';
 import { Cropper } from './shared/cropper.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './shared/video-support.js';
+import { makeExample } from './example.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for
@@ -134,6 +135,7 @@ const picker = wireFilePicker({
     const [file] = files;
     if (file) loadFile(file);
   },
+  example: makeExample,
 });
 
 /* ------------------------------------------------------------------ loading */

@@ -452,6 +452,9 @@ md_note = """
     en mots&nbsp;; pour l'utiliser, ouvrez l'adresse."""
 
 card_waiting = "S'ouvre dès que vous choisissez un fichier ci-dessus."
+example_load = "Essayer un exemple"
+example_busy = "Création d'un exemple&hellip;"
+example_failed = "Ce navigateur n'a pas pu créer l'exemple. Choisissez plutôt un fichier."
 # Tournée à l'actif : le participe passé s'accorderait avec
 # {{ tool.words.plural }}, qui est tantôt masculin ("documents") tantôt féminin
 # ("images"), et aucune forme écrite ici ne pourrait convenir aux deux.

@@ -278,6 +278,9 @@ md_note = """
     本頁是一個完全在你的瀏覽器裡執行的互動式工具，地址是 {{ tool.url }}。你交給它的任何內容都不會被上傳。下面是這個頁面用文字對該工具的全部說明；要使用它，請開啟這個地址。"""
 
 card_waiting = "在上方選擇檔案後就會開啟。"
+example_load = "試個例子"
+example_busy = "正在產生示例&hellip;"
+example_failed = "此瀏覽器無法產生示例。請改為選擇檔案。"
 pledge_line = """
     你的{{ tool.words.plural }}<strong>不會上傳</strong>。這裡根本沒有伺服器。"""
 

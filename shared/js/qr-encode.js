@@ -18,7 +18,7 @@
 import { remainder } from './gf256.js';
 import {
   blockLayout, countBits, dataCapacity, remainderBits,
-} from './shared/qr-tables.js';
+} from './qr-tables.js';
 
 /**
  * The 45 characters alphanumeric mode can hold, in the order that gives each

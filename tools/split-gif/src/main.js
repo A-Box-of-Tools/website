@@ -11,6 +11,7 @@ import {
 } from './frames.js';
 import { makeZip } from './shared/zip.js';
 import { cellAt, sheetName, sheetPlan } from './sheet.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -82,6 +83,7 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
+  example: makeExample,
 });
 
 /* ----------------------------------------------------------------- loading */

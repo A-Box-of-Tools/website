@@ -32,8 +32,8 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "format"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-gif", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -317,3 +317,6 @@ accept = "image/gif"
 multiple = false
 title = "Drop a GIF here"
 hint = "or click to browse &mdash; animated or still, any size"
+# Ten frames that visibly differ from one another. Handed ten
+# identical frames a splitter appears to have done nothing.
+example = true

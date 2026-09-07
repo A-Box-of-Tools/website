@@ -18,6 +18,7 @@ import {
 } from './segments.js';
 import { keyframeTimes, keyframeBefore, invertRanges, totalSeconds } from './ranges.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './shared/video-support.js';
+import { makeExample } from './example.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer and the writer are
@@ -144,6 +145,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { addFiles(files); },
+  example: makeExample,
 });
 
 async function addFiles(files) {

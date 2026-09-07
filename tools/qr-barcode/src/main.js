@@ -3,8 +3,8 @@
 import { phrase } from './shared/phrases.js';
 import { saveBlob } from './shared/download.js';
 import { KINDS, compose, missing } from './payload.js';
-import { makeQr } from './qr.js';
-import { capacityFor } from './qr-encode.js';
+import { makeQr } from './shared/qr.js';
+import { capacityFor } from './shared/qr-encode.js';
 import { SYMBOLOGIES, makeBarcode } from './barcode.js';
 import {
   barcodeSvg, qrSvg, sizeOfSvg, svgToPng,
@@ -64,6 +64,26 @@ const BARCODE_FIELD = {
  * the menu and changing it back does not lose what was in the boxes.
  */
 const typed = new Map();
+
+/**
+ * What the address box starts with.
+ *
+ * This tool has no drop zone, so it never got the "Try an example" button the
+ * file tools have - and it opened on an empty form under a red line telling
+ * the visitor to fill something in, which is a poor first thing for a page to
+ * say. Starting with an address in the box means the page draws a real code on
+ * load and the whole job can be understood before anything is typed, which is
+ * what the height chart has always done.
+ *
+ * A URL and not a sentence, so it is the same in all fifteen languages - the
+ * one kind of example content that needs no translating. It matches the box's
+ * own placeholder deliberately: two different addresses would read as an
+ * oversight.
+ *
+ * Nothing is persisted, so clearing the box clears it for good; this only ever
+ * seeds the first render.
+ */
+const EXAMPLE_URL = 'https://abox.tools/';
 
 /** The SVG on screen, kept so the downloads are the picture that is shown. */
 let current = null;
@@ -418,6 +438,11 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 for (const kind of KINDS) el.format.append(new Option(phrase(kind.name), kind.id));
+
+// Before the first render, and only for the format the page opens on: a
+// visitor who switches to Wi-Fi or a barcode gets empty boxes, because an
+// address prefilled into a network name would be nonsense rather than a hint.
+setFieldValue('text', EXAMPLE_URL);
 
 switchSymbology();
 

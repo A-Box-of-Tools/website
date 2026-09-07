@@ -37,8 +37,8 @@ css_parts = ["notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "message-box", "example-gif", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -365,3 +365,7 @@ accept = "image/gif,.gif"
 multiple = false
 title = "Drop a GIF here"
 hint = "or click to browse &mdash; animated or still, any size"
+# Ten frames, genuinely LZW-coded by shared/js/example-gif.js. This
+# page reports where a GIF spent its bytes, so an example whose compression
+# had been defeated for convenience would make the report a lie.
+example = true

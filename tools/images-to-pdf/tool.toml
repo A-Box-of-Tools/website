@@ -32,13 +32,13 @@ css_parts = ["progress", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "pdf-page-writer", "message-box", "format"]
+js_parts = ["file-picker", "pdf-page-writer", "message-box", "format", "example-photo"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["merge-pdf", "compress-pdf"]
-lastmod = "2026-09-02"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -289,5 +289,9 @@ hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
 # blob: URL before parking it for the next tool (see shared/handoff.js), and
 # reading a blob: URL is a fetch the policy has to permit. blob: names bytes
 # inside this page; nothing here gains any reach over the network.
+# Three photographs, one of them portrait, so the page-fitting
+# settings have something to visibly act on.
+example = true
+
 [csp]
 "connect-src" = ["blob:"]

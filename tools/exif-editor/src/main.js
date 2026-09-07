@@ -9,6 +9,7 @@ import { makeZip } from './shared/zip.js';
 import { readImage, readBytes, serialize, exifBytes, outputType, KIND_NAMES } from './container.js';
 import { serializeExif, setEntryValue, createEntry, TYPE } from './tiff.js';
 import { describeTag } from './tags.js';
+import { makeExample } from './example.js';
 import {
   formatValue, readPosition, buildFindings, badges, bytes as humanBytes,
   countTags, metadataSize, hasMetadata, tagGroups,
@@ -88,6 +89,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {

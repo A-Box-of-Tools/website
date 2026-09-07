@@ -32,8 +32,8 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "codec-support", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "codec-support", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -314,6 +314,10 @@ hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
 # honest here because the pictures are headed into a lossy video codec anyway,
 # so arriving as a re-encoded JPEG costs nothing a viewer could see. A tool that
 # would have to tell the truth about the bytes it was given must go without.
+# Twelve frames panning across one scene, so the frame rate and
+# the order are both checkable by eye.
+example = true
+
 [picker.urls]
 summary = "Add from a web address"
 button = "Download images"

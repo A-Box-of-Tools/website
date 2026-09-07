@@ -186,6 +186,14 @@ NOT_PROSE = (
     re.compile(r'^[a-z-]+\s*:\s*[^;]+(?:;|$)'),
     # Markup a module builds, rather than words it shows.
     re.compile(r'^<[a-z!/]'),
+    # A run of base64. Two tools carry a real file as bytes because it is the
+    # one example on the site that cannot be drawn - nothing in a browser
+    # encodes HEIC, and a passport photo needs a face - and a hundred
+    # characters of base64 will sooner or later contain "to" or "is" with one
+    # of the alphabet's own +/ either side of it, which is a word boundary as
+    # far as PROSE is concerned. A string of that length with no space
+    # anywhere in it is not a sentence anybody reads.
+    re.compile(r'^[A-Za-z0-9+/]{40,}={0,2}$'),
 )
 
 MIN_LENGTH = 6

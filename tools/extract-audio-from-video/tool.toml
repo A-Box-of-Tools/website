@@ -72,13 +72,13 @@ roadmap_group = "audio"
 css_parts = ["progress", "results", "form", "notes", "modes", "checks"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "message-box", "format"]
+js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "message-box", "format", "example-photo", "example-audio", "example-video", "example-video-sound", "video-support", "codec-support", "mp4-muxer", "mp4-boxes", "mp4-writer", "aac"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. The sound
 # out of a video is very often wanted shorter, or louder, which is the next two
 # tools exactly.
 handoff = ["trim-audio", "edit-audio"]
-lastmod = "2026-09-02"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -394,3 +394,7 @@ accept = "video/*,audio/*"
 multiple = false
 title = "Drop a video here"
 hint = "or click to browse &mdash; MP4, MOV, M4V or WebM"
+# Eight seconds of video with a real AAC track, because this tool's
+# whole job is pulling the sound out and a silent clip would have it correctly
+# report that there is nothing there.
+example = true

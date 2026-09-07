@@ -32,13 +32,13 @@ css_parts = ["progress", "results", "form", "notes", "checks"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "mp4-reader", "message-box", "media", "format", "webcodecs", "errors", "frame-canvas"]
+js_parts = ["file-picker", "mp4-reader", "message-box", "media", "format", "webcodecs", "errors", "frame-canvas", "example-photo", "example-video", "video-support", "mp4-muxer", "codec-support", "mp4-boxes"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["gif-analyzer", "split-gif"]
-lastmod = "2026-08-28"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -327,3 +327,6 @@ accept = "video/*"
 multiple = false
 title = "Drop a video here"
 hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"
+# Six seconds at 960 by 540, which is long enough for the frame
+# rate and the palette settings to visibly cost something.
+example = true

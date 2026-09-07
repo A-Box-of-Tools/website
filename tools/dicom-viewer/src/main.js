@@ -13,6 +13,7 @@ import { describeInstance, organise, sliceSpacing } from './series.js';
 import { identifiers } from './identity.js';
 import { report } from './report.js';
 import { count, fileSize, exact, millimetres, quantity, windowLabel } from './format.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -144,6 +145,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFiles(files); },
+  example: makeExample,
 });
 
 async function openFiles(files) {

@@ -7,6 +7,7 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { loadImages, releaseItem, rotateItem, sortItems, moveItem } from './images.js';
 import { layoutPage, seenSize, PAGE_SIZES } from './layout.js';
 import { buildDocument } from './document.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -97,6 +98,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {

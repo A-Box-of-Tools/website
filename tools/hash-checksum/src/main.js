@@ -6,6 +6,7 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { ALGORITHMS, ORDER, Stopped, Unreadable, hashFile } from './hash.js';
 import { algorithmsIn, readExpected, verdict } from './expected.js';
 import { exact, fileSize, percent, rate, remaining, smooth } from './format.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -77,6 +78,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFile(files[0]); },
+  example: makeExample,
 });
 
 function openFile(file) {

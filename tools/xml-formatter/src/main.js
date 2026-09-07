@@ -161,10 +161,17 @@ function run() {
   updateOptionVisibility();
 
   const text = el.input.value;
+  // The last step is dimmed until there is something for it to act on, and
+  // text arrives here by typing, by pasting and from the example button - none
+  // of which go through the file picker, which is where the waking up used to
+  // live. Without these two the result rendered underneath a greyed-out card
+  // whose Copy and Download buttons could not be pressed.
   if (text.trim() === '') {
+    picker.waiting();
     el.resultNote.textContent = phrase('out.nothing');
     return;
   }
+  picker.arrived();
 
   try {
     if (mode === 'format') runFormat(text);

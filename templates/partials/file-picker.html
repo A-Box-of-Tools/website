@@ -14,3 +14,17 @@
   <span class="dropzone-title">{{ tool.picker.title }}</span>
   <span class="dropzone-hint">{{ tool.picker.hint }}</span>
 </label>
+{% if tool.picker.example %}
+<!--
+  For a visitor who wants to see what the tool does before deciding whether to
+  hand it anything of their own. Rendered only where `example = true` in the
+  [picker] table, which is also where the build looks for src/example.js.
+
+  Outside the <label>, deliberately: a <button> nested in a label for a file
+  input opens the file dialog on every click, which is the one thing this
+  button must not do.
+-->
+<p class="dropzone-example">
+  <button type="button" id="example-button" class="ghost">{{ ui.tool.example_load }}</button>
+</p>
+{% endif %}

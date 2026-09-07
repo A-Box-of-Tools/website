@@ -11,6 +11,7 @@ import {
   stemOf, strengthNote,
 } from './files.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -183,6 +184,7 @@ const wired = wireFilePicker({
   onFiles(files) {
     if (files.length > 0) load(files[0]);
   },
+  example: makeExample,
 });
 
 el.clearImage.addEventListener('click', () => {

@@ -1081,6 +1081,32 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     js_v = sitelib.text_hash(''.join(text for _, text in sources))
     module_hrefs = [f'{name}?v={js_v}' for name, _ in assets]
 
+    # An example's data is shipped, and never asked for until it is wanted.
+    #
+    # Two tools cannot draw their example - nothing in a browser encodes HEIC,
+    # and a passport photo needs a face - so those two carry a real file as
+    # bytes in an `example-data` module, which is megabytes where a drawn
+    # example is hundreds of bytes.
+    #
+    # It is kept out of BOTH lists below, and it has to be both. The service
+    # worker's precache runs inside `install`, and templates/tool.html emits a
+    # modulepreload for everything in `modules` - so leaving it in either one
+    # has every visitor to those pages fetch the whole thing before they have
+    # pressed anything, in every language, to demonstrate something most of
+    # them never will. Taking it out of the manifest alone was the first
+    # attempt, and the deployed preview still fetched it: the preload tag was
+    # doing it instead.
+    #
+    # The file is still emitted beside its tool, and main.js reaches it with a
+    # dynamic import() on the press. That works where a fetch would not,
+    # because a module load answers to script-src - which names 'self' - and
+    # not to connect-src, which names no origin of ours. What it costs is the
+    # example alone with the network unplugged, which is the right thing to
+    # lose: the tool still works offline, and an example is for somebody
+    # deciding whether to hand over a file of their own.
+    eager_hrefs = [href for href in module_hrefs
+                   if not Path(href.split('?')[0]).name.startswith('example-data')]
+
     emitted = []
     for name, text in sources:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
@@ -1179,7 +1205,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'guide': guide,
             'related': related,
             'ui': ui,
-            'modules': module_hrefs,
+            'modules': eager_hrefs,
             'js_v': js_v,
             'footer': footer,
             'csp': sitelib.render_csp(root['csp'], root.get('app_csp', {}),
@@ -1245,7 +1271,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'words': tool['words'],
         'assets': (['index.html', 'index.md', css_href, 'manifest.json']
-                   + module_hrefs + vendored),
+                   + eager_hrefs + vendored),
         'cache_scope': f'/{locale["prefix"]}{tool["out_slug"]}/',
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')

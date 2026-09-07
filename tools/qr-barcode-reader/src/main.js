@@ -4,6 +4,7 @@ import * as camera from './camera.js';
 import { scan } from './scan.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { phrase } from './shared/phrases.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -276,6 +277,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { void readFiles(files); },
+  example: makeExample,
 });
 
 async function readFiles(files) {

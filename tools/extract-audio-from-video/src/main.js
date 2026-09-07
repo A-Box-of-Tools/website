@@ -7,6 +7,7 @@ import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import { writeWav } from './shared/wav.js';
 import { mixToMono } from './mono.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -51,6 +52,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { load(files[0]); },
+  example: makeExample,
 });
 
 async function load(file) {

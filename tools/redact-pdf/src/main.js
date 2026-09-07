@@ -27,6 +27,7 @@ import { redact } from './redact.js';
 import { pagesOf, readPage } from './text.js';
 import { harvestAll, verify } from './verify.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -118,6 +119,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     open(files[0]);
   },
+  example: makeExample,
 });
 
 async function open(file) {

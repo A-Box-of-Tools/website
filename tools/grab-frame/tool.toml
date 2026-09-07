@@ -32,8 +32,8 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "mp4-reader", "message-box", "download", "media", "format", "webcodecs", "errors"]
-lastmod = "2026-09-02"
+js_parts = ["file-picker", "zip", "crc32", "mp4-reader", "message-box", "download", "media", "format", "webcodecs", "errors", "example-photo", "example-video", "video-support", "mp4-muxer", "codec-support", "mp4-boxes"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -314,3 +314,7 @@ accept = "video/*"
 multiple = false
 title = "Drop a video here"
 hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"
+# Six seconds at 720p. Every frame carries a bar and a
+# once-a-second marker, because "the still at 3.2 seconds" means nothing
+# against footage where every frame looks the same.
+example = true

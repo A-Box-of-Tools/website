@@ -507,6 +507,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
    wherever a card opens with a `card-lede`, so a rule that only knew the first
    shape would leave half the tools with an unstyled heading. */
 .card > h2,
+.card-head > h2,
 .card-note > summary > h2 {
   margin: 0 0 1rem;
   font-size: 1.05rem;
@@ -768,6 +769,37 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 /* Spans rather than paragraphs, because <label> may only contain phrasing content. */
 .dropzone-title { display: block; font-weight: 600; }
 .dropzone-hint { display: block; margin-top: 0.3rem; color: var(--text-dim); font-size: 0.88rem; }
+
+/* The "Try an example" button sits on the step's heading row, pushed to the
+   right - shared/js/file-picker.js moves it there, because the heading is each
+   tool's own markup and the button is written once for all of them.
+
+   It is quiet on purpose: the visitor's own file is the point of the page, and
+   an example that competed with the drop zone for attention would be selling
+   the demo over the tool. */
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.card-head > h2 { margin-bottom: 0; }
+
+/* `auto` rather than `space-between`, so the button still sits right when the
+   row wraps and the heading is alone on the line above it. */
+.dropzone-example { margin: 0 0 0 auto; }
+.dropzone-example button { font-size: 0.88rem; padding: 0.35rem 0.9rem; }
+
+/* Only ever filled in when building the example failed, and a block of its own
+   so the sentence does not sit awkwardly beside the button on a narrow screen. */
+.example-note {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+.example-note:empty { display: none; }
 
 /* ----------------------------------------------------------------- toolbar */
 

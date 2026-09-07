@@ -4,10 +4,10 @@ This site has no dependencies and no build step for its JavaScript. What is in
 `shared/` and each tool's `src/` is byte for byte what the browser runs, and
 almost all of it is written here.
 
-There are two exceptions, listed below. The first is an icon whose licence
+There are four exceptions, listed below. The first is an icon whose licence
 requires that the notice travel with the copy, which is what this file is for.
-The second asks for nothing at all, and is here because artwork somebody else
-drew should be credited whether or not a licence insists on it.
+The rest ask for nothing at all, and are here because work somebody else made
+should be credited whether or not a licence insists on it.
 
 ---
 
@@ -115,6 +115,50 @@ original is a hand-traced photograph with a visibly shaky edge. A test
 re-derives that smoothing from the vendored file on every run. Both are
 explained in
 [`tools/compare-heights/vendor/LICENSE.md`](tools/compare-heights/vendor/LICENSE.md).
+
+---
+
+## A portrait — the passport photo tool's worked example
+
+[`tools/id-photo/src/example-data.js`](tools/id-photo/src/example-data.js)
+carries one photograph as bytes: the head-and-shoulders portrait behind that
+tool's "Try an example" button.
+
+| File | Photographer | Source | Licence |
+|---|---|---|---|
+| `example-data.js` | Abet Llacer | [Pexels 33499873](https://www.pexels.com/photo/33499873/) | [Pexels licence](https://www.pexels.com/license/) |
+
+It is the only photograph shipped with this site, and it is here because it is
+the one example that could not be drawn. Every other tool's example is
+generated in the page by `shared/js/example-photo.js` or its own `example.js` -
+see the note at the top of that file for why nothing here is ever fetched - but
+a passport photo tool measures a face, and a drawn face has nothing in it to
+measure.
+
+The Pexels licence asks for nothing: no attribution, no fee, and commercial use
+is allowed. It is credited here anyway, on the same principle as the figures
+above.
+
+The photograph carries no GPS: its EXIF was parsed before it was committed and
+there is no GPS IFD in it. That matters more here than it would elsewhere,
+because this file ships to every visitor of a site whose whole subject is what
+a photograph quietly says about the person in it.
+
+---
+
+## A HEIC photograph — the converter's worked example
+
+[`tools/heic-to-jpg/src/example-data.js`](tools/heic-to-jpg/src/example-data.js)
+carries a `.heic` file as bytes, for the same reason: no browser will *encode*
+HEIC, which is the whole reason that tool exists, so its example is the only
+other one on the site that could not be drawn.
+
+It was taken on an iPad and is shipped exactly as the camera wrote it -
+container, tiling and EXIF intact - because a re-saved copy would not exercise
+the reader the way a real file does. It was checked the same way as the
+portrait above and has no GPS IFD either. Its EXIF does name the device and the
+date it was taken, which the tool reads back and shows; that is the point of
+the example.
 
 ---
 

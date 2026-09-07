@@ -33,7 +33,7 @@ glyph = "scan-line"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
-lastmod = "2026-09-01"
+lastmod = "2026-09-07"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
@@ -42,7 +42,7 @@ css_parts = ["form", "checks", "notes"]
 # The drop zone brings in shared/js/file-picker.js. Several files at once is
 # deliberate: a folder of screenshots, or a photograph of a page of codes, is a
 # real thing people have, and reading them one at a time is the annoying way.
-js_parts = ["file-picker", "qr-tables"]
+js_parts = ["file-picker", "qr-tables", "gf256", "qr-encode", "qr"]
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -115,6 +115,11 @@ hint = "or click to browse &mdash; a photograph, a screenshot, a PNG, anything y
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
 # setting rather than three copies of the same word in three files.
+# A QR code made by this site's own generator, so the reader is
+# shown something the writer produced - the one pairing where the two
+# disagreeing would show up here rather than in somebody's scanner.
+example = true
+
 [words]
 plural = "pictures and the codes in them"
 choose = "the picture to read"

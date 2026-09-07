@@ -428,6 +428,9 @@ md_note = """
     ferramenta em palavras; para usá-la, abra o endereço."""
 
 card_waiting = "Abre assim que você escolher um arquivo acima."
+example_load = "Testar um exemplo"
+example_busy = "Criando um exemplo&hellip;"
+example_failed = "Este navegador não conseguiu criar o exemplo. Escolha um arquivo."
 # O inglês escreve "Your {{ plural }} are never uploaded", e o particípio
 # concorda em gênero: "enviadas" para imagens e fotos, "enviados" para vídeos
 # e documentos. Como o substantivo vem de cada ferramenta, nenhuma das duas

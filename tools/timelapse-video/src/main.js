@@ -17,6 +17,7 @@ import {
   outputSize, chooseBitrate, estimateBytes, decodeRuns, decodeCost,
 } from './plan.js';
 import { said } from './shared/errors.js';
+import { makeExample } from './example.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for
@@ -110,6 +111,7 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
+  example: makeExample,
 });
 
 /* ----------------------------------------------------------------- loading */
