@@ -11,6 +11,16 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      जो अंदर गया, वही वापस खींचकर। फ़ाइल नहीं &mdash; वह तस्वीर जिस पर पढ़ने
+      वाला काम कर रहा था: वही डिकोड, वही पैमाना, वही सफ़ेद पृष्ठभूमि। इसलिए जो
+      थंबनेल गलत दिखे, वही जवाब के गलत होने की वजह है।
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">कैमरा इस्तेमाल कीजिए</button>
       <button type="button" id="stop-camera" class="ghost" hidden>कैमरा रोकिए</button>
@@ -132,6 +142,19 @@
   </template>
 
   <!--
+    उस झलक की एक तस्वीर। हर फ़ाइल के लिए क्लोन होती है, और इसका हर शब्द
+    यहीं मार्कअप में है, क्योंकि यह फ़ाइल हर भाषा में अनूदित होती है और
+    src/*.js सबके लिए एक ही है।
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     स्क्रिप्ट को जिन शब्दों की ज़रूरत है, वे मार्कअप में रखे हैं ताकि अनुवाद
     करने वाले को वे वहीं मिलें जहाँ बाकी पन्ना मिलता है। इनमें आया {host} पढ़े
     गए होस्ट से भरा जाता है; और कुछ नहीं बदला जाता।
@@ -220,6 +243,11 @@
     <span data-phrase="how.global">पूरी तस्वीर के लिए एक ही थ्रेशोल्ड</span>
     <span data-phrase="how.softened">तस्वीर को पहले हल्का धुँधला करना</span>
     <span data-phrase="how.dense">, हर पंक्ति जाँचते हुए</span>
+
+    <span data-phrase="preview.one">जिस तस्वीर को देखा गया</span>
+    <span data-phrase="preview.many">जिन {n} तस्वीरों को देखा गया</span>
+    <span data-phrase="preview.nothing">कोई कोड नहीं मिला</span>
+    <span data-phrase="preview.broken">खुल नहीं सकी</span>
 
     <span data-phrase="status.reading">तस्वीर पढ़ी जा रही है&hellip;</span>
     <span data-phrase="status.nothing">उस तस्वीर में कोई कोड नहीं मिला। पूरा

@@ -11,6 +11,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Ce qui est entré, redessiné. Pas le fichier, mais l'image sur laquelle
+      le lecteur a travaillé : le même décodage, la même mise à l'échelle, le
+      même fond blanc. Une vignette qui paraît fausse est donc la raison pour
+      laquelle la réponse l'est.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Utiliser la caméra</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Arrêter la caméra</button>
@@ -133,6 +144,19 @@
   </template>
 
   <!--
+    Une image de cet aperçu. Clonée par fichier, et chaque mot est ici
+    dans le balisage, parce que ce fichier est traduit par langue alors que
+    src/*.js est un seul fichier pour toutes.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     Les mots dont le script a besoin, placés dans le balisage pour qu'un
     traducteur les rencontre là où il rencontre le reste de la page. Un {host}
     est remplacé par l'hôte qui a été lu ; rien d'autre n'est substitué.
@@ -225,6 +249,11 @@
     <span data-phrase="how.global">un seul seuil pour toute l'image</span>
     <span data-phrase="how.softened">un adoucissement préalable de l'image</span>
     <span data-phrase="how.dense">, en examinant chaque ligne</span>
+
+    <span data-phrase="preview.one">L'image qui a été examinée</span>
+    <span data-phrase="preview.many">Les {n} images qui ont été examinées</span>
+    <span data-phrase="preview.nothing">Aucun code trouvé</span>
+    <span data-phrase="preview.broken">Impossible à ouvrir</span>
 
     <span data-phrase="status.reading">Lecture de l'image&hellip;</span>
     <span data-phrase="status.nothing">Aucun code trouvé dans cette image. Il faut
