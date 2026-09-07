@@ -33,8 +33,8 @@ css_parts = ["file-list", "form", "checks", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box", "format"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "message-box", "format", "example-mark", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -373,6 +373,6 @@ accept = "image/*,.png,.jpg,.jpeg,.svg,.webp,.gif,.bmp,.ico,.avif"
 multiple = true
 title = "Drop images here"
 hint = "or click to browse &mdash; PNG, JPEG, SVG, WebP, GIF, ICO and more"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A 64-pixel mark, not a photograph: encoding grows a file by a
+# third, so a data URI is only ever worth writing for something small.
+example = true

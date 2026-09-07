@@ -12,6 +12,7 @@ import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { SCALES, outputSize, planRun, scaleThatFits } from './plan.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -164,6 +165,7 @@ const picker = wireFilePicker({
     }
     addFiles(chosen);
   },
+  example: makeExample,
 });
 
 let batch = 0;

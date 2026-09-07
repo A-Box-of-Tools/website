@@ -12,6 +12,7 @@ import {
   bytes as humanBytes, count, overhead, verdict, metadataNote, dimensions,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -76,6 +77,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {

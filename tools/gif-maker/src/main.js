@@ -10,6 +10,7 @@ import {
 } from './images.js';
 import { drawFrame, resolveOutputSize, MAX_SIDE } from './compose.js';
 import { encodeGif, loopValue } from './encode.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -87,6 +88,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {

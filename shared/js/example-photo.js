@@ -66,8 +66,14 @@ function ridge(x, width, base, amplitude, phase) {
  * @param {number} [options.seed]   same seed, same picture
  * @param {number} [options.shift]  moves the scene sideways, for callers that
  *   want several frames of one place rather than several different places
+ * @param {number} [options.grainSeed]  re-seeds the grain alone. A burst of
+ *   photographs is one scene with different noise on each frame, and that is
+ *   exactly what the image stacker exists to average away - so the stacker's
+ *   example varies this and nothing else.
  */
-export function drawPhoto(ctx, width, height, { seed = 20260907, shift = 0 } = {}) {
+export function drawPhoto(ctx, width, height, {
+  seed = 20260907, shift = 0, grainSeed,
+} = {}) {
   const random = rng(seed);
   const horizon = height * 0.52;
 
@@ -161,7 +167,7 @@ export function drawPhoto(ctx, width, height, { seed = 20260907, shift = 0 } = {
     ctx.stroke();
   }
 
-  grain(ctx, width, height, random);
+  grain(ctx, width, height, grainSeed === undefined ? random : rng(grainSeed));
 }
 
 /**

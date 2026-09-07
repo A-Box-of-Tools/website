@@ -42,8 +42,8 @@ roadmap_group = "images"
 css_parts = ["checks"]
 # Shared modules this tool asks for. file-picker brings in the drop zone;
 # phrases arrives on its own, for every tool.
-js_parts = ["file-picker", "download"]
-lastmod = "2026-09-02"
+js_parts = ["file-picker", "download", "example-mark", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -373,6 +373,6 @@ accept = "image/*"
 multiple = false
 title = "Drop a picture here"
 hint = "or click to browse &mdash; PNG, JPEG, WebP, GIF, AVIF"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# The mark as a silhouette on transparency. A photograph traced to
+# vector is thousands of paths and a worse file than the JPEG it came from.
+example = true

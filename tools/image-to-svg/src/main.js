@@ -8,6 +8,7 @@ import { subjectMask } from './subject.js';
 import { traceMask } from './trace.js';
 import { labelRegions, selectRegion, outlineOfSelection, MaskEdits } from './regions.js';
 import { Viewport, clamp } from './view.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -129,6 +130,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     if (files.length > 0) load(files[0]);
   },
+  example: makeExample,
 });
 
 async function load(file) {

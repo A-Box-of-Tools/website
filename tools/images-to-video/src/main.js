@@ -10,6 +10,7 @@ import { encodeToMp4, countFrames } from './encoder.js';
 import { recordToWebm } from './recorder.js';
 import { hasWebCodecs, hasMediaRecorder } from './support.js';
 import { wireUrlImport } from './shared/url-import.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -94,6 +95,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {
