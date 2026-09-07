@@ -82,13 +82,65 @@ surface in the pipeline is one. A document canvas cannot go to a worker.
 | `src/worker.js` | a shim around the pipeline, and the cancel flag |
 | `src/pipeline.js` | the run — open, survey, measure, stack, encode |
 | `src/raw.js` | finding the preview inside a RAW file. Reads offsets; never a pixel |
+| `src/orient.js` | the EXIF orientation: reading it off a JPEG head, and the turn that applies it |
 | `src/plan.js` | how much memory and how many decodes, before anything runs |
 | `src/stack.js` | the seven methods, as accumulators over plain RGBA |
 | `src/align.js` | phase correlation, and log-polar for rotation and scale |
 | `src/fft.js` | the transform the alignment is built on |
 
-`plan.js`, `stack.js`, `align.js`, `fft.js` and `raw.js` hold no DOM and no
-canvas, which is what lets them be tested without either.
+`plan.js`, `stack.js`, `align.js`, `fft.js`, `raw.js` and `orient.js` hold no
+DOM and no canvas, which is what lets them be tested without either.
+
+## Which way up a frame is
+
+A phone held upright stores its JPEG sideways and writes an EXIF orientation
+saying which way to turn it. The browser's decoder honours that tag:
+`createImageBitmap` hands back the upright picture, 3000 tall, from a file
+whose frame header says 3000 wide. So **every size the pipeline holds is the
+size the decode will actually have**, not the size the header declares.
+`declaredSize` swaps the header's numbers for the four quarter-turn values
+before anything plans from them, because everything downstream — the survey
+resize, the output box, the placement, the full-size decode — is asking what
+the bitmap will be. Before it did, three portrait frames came back as one
+landscape stack the shape of the reference forced sideways.
+
+A RAW file's embedded preview is the awkward case, because the orientation
+lives in the RAW's own IFD0, where the decoder never looks, and the preview
+JPEG usually carries no EXIF of its own. That frame arrives sideways and the
+pipeline has to turn it: `openFrame` gives it a `turn` (the IFD0 value) and a
+`decoded` size (the stored one), and a single `drawFrame` helper — the only
+`drawImage` of a frame bitmap in the file — applies `orientationMatrix` about
+the box's centre with the sides swapped, as the innermost step of whatever
+alignment transform is already on the context. The turn is synthesised **only
+when the preview has no EXIF of its own**: when it does, the browser will
+apply that, and applying the RAW's tag as well would turn the frame twice.
+
+That decision needs the reader to distinguish three answers, which is why
+`jpegOrientation` is tri-state. It walks the head of a JPEG over the same
+segment walker `jpegSize` uses — one walker, so the two cannot disagree about
+where a preamble ends — and returns the value when an Exif APP1 says so,
+`null` when the frame header or the scan is reached without one, and
+`undefined` when the bytes ran out first. It reads IFD0 from whatever of the
+Exif block the head holds, because the tag sits in the block's first few
+dozen bytes and the maker-note behind it can run to sixty kilobytes: a 4 KB
+head that ends inside the block has almost always already passed the answer.
+`undefined` is left for the head ending inside the directory itself, or before
+a segment that might still hold the tag. It is not a failure, and a reader
+that said "none" there would turn every such preview sideways. On `undefined`
+the pipeline reads a 64 KB head of the preview — enough to reach an Exif block
+written at the front, which is where every camera puts it — once, and only on
+that path; a preview whose Exif sits behind more than that of other segments
+is treated as having none.
+
+A CR3 is the one RAW whose preview never carries Exif and whose directory is
+not at the front of the file: its IFD0 sits whole in a `CMT1` box, and
+`walkBmff` reads the orientation out of it for the same rule to apply. A RAF
+needs nothing of the kind, because the JPEG it embeds carries its own.
+
+`tests/js/stack-images-orient.test.js` pins each of the eight matrices by
+where it sends the corners, against the specification's own wording of each
+value, because a rotation the wrong way round does not throw or look wrong in
+review: it puts one frame into the stack a half turn from the rest.
 
 ## Why six of the seven methods are free and one is not
 

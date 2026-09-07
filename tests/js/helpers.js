@@ -151,6 +151,70 @@ export const TIFF_BE = new Uint8Array([
   0x41, 0x63, 0x6d, 0x65, 0x00,
 ]);
 
+export const TIFF_TYPE = { ASCII: 2, SHORT: 3, LONG: 4, UNDEFINED: 7 };
+const TIFF_WIDTHS = { 2: 1, 3: 2, 4: 4, 7: 1 };
+
+/**
+ * Lay out a TIFF: a header, a run of directories, then the data too long to sit
+ * inside an entry.
+ *
+ * An entry's value is a number when it fits in the four bytes the entry has,
+ * and an offset into the data area when it does not. That indirection is the
+ * only awkward part of the format and it is the part worth exercising, so the
+ * fixtures built on this deliberately use both.
+ *
+ * `dirs` is a list of `{ entries, next }`. An entry's value may be a plain
+ * number, `{ blob: i }` for the offset of a data block, or `{ dir: i }` for the
+ * offset of another directory.
+ */
+export function tiffOf({ little = true, magic = 42, dirs, blobs = [] }) {
+  const dirSizes = dirs.map((dir) => 2 + dir.entries.length * 12 + 4);
+  const dirAt = [];
+  let at = 8;
+  for (const size of dirSizes) { dirAt.push(at); at += size; }
+
+  const blobAt = [];
+  for (const blob of blobs) { blobAt.push(at); at += blob.length; }
+
+  const out = new Uint8Array(at);
+  const view = new DataView(out.buffer);
+  const resolve = (value) => {
+    if (typeof value === 'number') return value;
+    if (value.blob !== undefined) return blobAt[value.blob];
+    return dirAt[value.dir];
+  };
+
+  out.set(ascii(little ? 'II' : 'MM'), 0);
+  view.setUint16(2, magic, little);
+  view.setUint32(4, dirAt[0], little);
+
+  dirs.forEach((dir, index) => {
+    let cursor = dirAt[index];
+    view.setUint16(cursor, dir.entries.length, little);
+    cursor += 2;
+    for (const entry of dir.entries) {
+      view.setUint16(cursor, entry.tag, little);
+      view.setUint16(cursor + 2, entry.type, little);
+      view.setUint32(cursor + 4, entry.count, little);
+      const needed = TIFF_WIDTHS[entry.type] * entry.count;
+      if (needed <= 4) {
+        // Left-justified inside the entry, whichever way round the file is.
+        if (entry.type === TIFF_TYPE.SHORT) view.setUint16(cursor + 8, resolve(entry.value), little);
+        else view.setUint32(cursor + 8, resolve(entry.value), little);
+      } else {
+        view.setUint32(cursor + 8, resolve(entry.value), little);
+      }
+      cursor += 12;
+    }
+    view.setUint32(cursor, dir.next === undefined ? 0 : dirAt[dir.next], little);
+  });
+
+  blobs.forEach((blob, index) => out.set(blob, blobAt[index]));
+  return out;
+}
+
+export const tiffEntry = (tag, type, count, value) => ({ tag, type, count, value });
+
 /** Read a Blob back as bytes, which is how every writer here hands over. */
 export async function blobBytes(blob) {
   return new Uint8Array(await blob.arrayBuffer());

@@ -40,6 +40,7 @@ import { WEAK_PEAK, estimate, phaseCorrelate, window2d } from './align.js';
 import {
   bands, commonArea, outputSize, placement, planRun, refineMargin, refineWindow, workingSize,
 } from './plan.js';
+import { jpegOrientation, orientationMatrix, orientedSize } from './orient.js';
 import { findPreview, jpegSize, looksRaw } from './raw.js';
 import { createStack } from './stack.js';
 
@@ -78,6 +79,15 @@ class Cancelled extends Error {}
  * actually use it - which on a set of twenty 24-megapixel frames is twenty
  * decodes thrown away. Anything neither of these recognises falls back to a
  * decode, so this is an optimisation rather than a restriction.
+ *
+ * For a JPEG the size returned is the ORIENTED one. The frame header says how
+ * the rows are stored; the browser's decoder reads the Exif orientation and
+ * hands back the picture turned upright, so a portrait phone photograph is
+ * 3000 wide in the header and 3000 tall in the bitmap. Every consumer of this
+ * number - the survey resize, the output box, the placement, the full-size
+ * decode - is asking what the decode will be, so that is what it gets. The
+ * orientation itself rides along (a value, null for none, undefined when the
+ * head ended before it could be settled) for the caller that wants to know.
  */
 export function declaredSize(bytes) {
   if (bytes.length > 24 && PNG_SIGNATURE.every((byte, i) => bytes[i] === byte)) {
@@ -87,9 +97,29 @@ export function declaredSize(bytes) {
       return { width: view.getUint32(16, false), height: view.getUint32(20, false) };
     }
   }
-  if (bytes[0] === 0xff && bytes[1] === 0xd8) return jpegSize(bytes);
+  if (bytes[0] === 0xff && bytes[1] === 0xd8) {
+    const stored = jpegSize(bytes);
+    if (!stored) return null;
+    const orientation = jpegOrientation(bytes);
+    return { ...orientedSize(stored.width, stored.height, orientation ?? 1), orientation };
+  }
   return null;
 }
+
+/** An IFD0 orientation a camera could have written; anything else means upright. */
+const validTurn = (value) => (value >= 1 && value <= 8 ? value : 1);
+
+/**
+ * How much of a RAW preview to read when 4 KB was not enough to tell whether
+ * it carries an orientation of its own. The reader takes IFD0 from whatever
+ * of the Exif block it has, so this path is reached only when something
+ * longer than the head sits *before* the Exif block, or when the preview has
+ * no Exif and a long segment before its frame header. Sixty-four kilobytes is
+ * enough to reach an Exif block written at the front of the preview, which is
+ * where every camera puts it; a preview whose Exif sits behind more than that
+ * of other segments is treated as having none.
+ */
+const PREVIEW_HEAD_RETRY = 65536;
 
 /**
  * What to decode for one chosen file.
@@ -98,6 +128,19 @@ export function declaredSize(bytes) {
  * file - the camera's own preview - and finding it costs a few reads of a few
  * kilobytes each. Either way the result is a Blob the browser's own decoder can
  * open, and at no point is a whole RAW file pulled into memory.
+ *
+ * Two fields describe which way up the frame is, and the rest of the pipeline
+ * holds them apart. `width` and `height` are always the upright size. `turn`
+ * is an EXIF orientation the pipeline must apply itself, 1 meaning none, and
+ * `decoded` is the size of the bitmap the decoder will hand back - which is
+ * the upright size when the browser does the turning and the stored size when
+ * this code does. For an ordinary picture the browser always does: it reads
+ * the file's own Exif. A RAW preview is the case that needs the second pair.
+ * The orientation lives in the RAW's IFD0, where the decoder never looks, and
+ * the preview JPEG usually carries no Exif of its own, so the sideways preview
+ * arrives sideways and the turn has to be made here. When the preview *does*
+ * carry Exif the browser applies that and the RAW's tag is left alone - two
+ * turns would be one too many.
  */
 export async function openFrame(file) {
   const read = async (offset, length) => new Uint8Array(
@@ -106,14 +149,36 @@ export async function openFrame(file) {
 
   const raw = looksRaw(file.name) ? await findPreview(read, file.size, MIN_PREVIEW_PIXELS) : null;
   if (raw) {
+    let fromPreview = raw.previewOrientation;
+    let bytesRead = raw.read;
+    if (fromPreview === undefined) {
+      // The 4 KB that confirmed the preview ended before its Exif block, or
+      // before the frame header that would have said there is none. One
+      // longer read settles it; still kilobytes, and only on this path.
+      const more = Math.min(raw.length, PREVIEW_HEAD_RETRY);
+      fromPreview = jpegOrientation(await read(raw.offset, more)) ?? null;
+      bytesRead += more;
+    }
+    const turn = fromPreview === null ? validTurn(raw.orientation) : 1;
+    // A preview found through a track or a RAF header, whose frame header
+    // lay past the 4 KB head, arrives with no size at all; then there is no
+    // upright size to give and no decoded one either, and the survey fills
+    // both from the bitmap. A pair of nulls in `decoded` would not be filled,
+    // and would ask the decoder for a 1 by 1 working size on every band.
+    const known = Boolean(raw.width && raw.height);
+    const upright = known ? orientedSize(raw.width, raw.height, fromPreview ?? turn) : null;
+    let decoded = null;
+    if (known) decoded = turn === 1 ? upright : { width: raw.width, height: raw.height };
     return {
       name: file.name,
       blob: file.slice(raw.offset, raw.offset + raw.length, 'image/jpeg'),
-      width: raw.width,
-      height: raw.height,
+      width: upright?.width ?? null,
+      height: upright?.height ?? null,
+      turn,
+      decoded,
       kind: 'raw',
       camera: [raw.make, raw.model].filter(Boolean).join(' ') || null,
-      bytesRead: raw.read,
+      bytesRead,
       sourceBytes: file.size,
     };
   }
@@ -128,6 +193,8 @@ export async function openFrame(file) {
     blob: file,
     width: declared?.width ?? null,
     height: declared?.height ?? null,
+    turn: 1,
+    decoded: declared ? { width: declared.width, height: declared.height } : null,
     kind: looksRaw(file.name) ? 'raw-unreadable' : 'image',
     camera: null,
     bytesRead: head.length,
@@ -150,6 +217,36 @@ function surface(width, height) {
 }
 
 /**
+ * Draw one frame's bitmap into a box, the right way up.
+ *
+ * Every drawImage of a frame in this file goes through here, because a frame
+ * the browser did not orient - a RAW preview whose orientation lives in the
+ * RAW's directory rather than in the preview - has to be turned by whoever
+ * draws it, and a draw that forgot would put one sideways frame into a stack
+ * of upright ones without anything failing. With no turn it is exactly the
+ * plain draw into the box. With one, the bitmap is drawn about the box's
+ * centre through the orientation's matrix, at the box's size with its sides
+ * swapped where the turn is a quarter one, so the stored rows land where the
+ * upright picture has them. The turn composes with whatever transform is
+ * already on the context - the alignment, in drawAligned - as the innermost
+ * step, which is what makes it a property of the frame rather than of the
+ * output.
+ */
+function drawFrame(context, bitmap, spot, turn) {
+  if (turn === 1) {
+    context.drawImage(bitmap, spot.x, spot.y, spot.width, spot.height);
+    return;
+  }
+  const stored = orientedSize(spot.width, spot.height, turn);
+  const [a, b, c, d] = orientationMatrix(turn);
+  context.save();
+  context.translate(spot.x + spot.width / 2, spot.y + spot.height / 2);
+  context.transform(a, b, c, d, 0, 0);
+  context.drawImage(bitmap, -stored.width / 2, -stored.height / 2, stored.width, stored.height);
+  context.restore();
+}
+
+/**
  * Draw one frame into a destination box, with its alignment applied.
  *
  * The three parts of the transform are applied about the middle of the output -
@@ -163,7 +260,7 @@ function surface(width, height) {
  * is about to read. The centre the transform turns about stays the *uncropped*
  * output's, because that is the space the movement was measured in.
  */
-function drawAligned(context, bitmap, spot, output, move, crop, bandY) {
+function drawAligned(context, bitmap, spot, output, move, crop, bandY, turn) {
   const cx = output.width / 2;
   const cy = output.height / 2;
   context.setTransform(1, 0, 0, 1, -crop.x, -crop.y - bandY);
@@ -171,7 +268,7 @@ function drawAligned(context, bitmap, spot, output, move, crop, bandY) {
   context.rotate((move.angle * Math.PI) / 180);
   context.scale(move.scale, move.scale);
   context.translate(-cx, -cy);
-  context.drawImage(bitmap, spot.x, spot.y, spot.width, spot.height);
+  drawFrame(context, bitmap, spot, turn);
 }
 
 /**
@@ -183,12 +280,16 @@ function drawAligned(context, bitmap, spot, output, move, crop, bandY) {
  * the next thing it does is correlate it.
  */
 async function surveyFrame(frame) {
+  const known = Boolean(frame.width && frame.height);
   let bitmap;
-  if (frame.width && frame.height) {
+  if (known) {
+    // The resize is asked for in the decoder's own terms - the stored size,
+    // for a frame this code turns itself - or a sideways preview would be
+    // squeezed into an upright box before it was ever turned.
     const fit = Math.min(1, THUMB_SIZE / Math.max(frame.width, frame.height));
     bitmap = await createImageBitmap(frame.blob, {
-      resizeWidth: Math.max(1, Math.round(frame.width * fit)),
-      resizeHeight: Math.max(1, Math.round(frame.height * fit)),
+      resizeWidth: Math.max(1, Math.round(frame.decoded.width * fit)),
+      resizeHeight: Math.max(1, Math.round(frame.decoded.height * fit)),
       resizeQuality: 'medium',
     });
   } else {
@@ -197,16 +298,23 @@ async function surveyFrame(frame) {
     bitmap = await createImageBitmap(frame.blob);
   }
 
-  const shown = surface(bitmap.width, bitmap.height);
-  shown.context.drawImage(bitmap, 0, 0);
+  // The list shows the picture upright, whichever of the two did the turning.
+  const upright = orientedSize(bitmap.width, bitmap.height, frame.turn);
+  const shown = surface(upright.width, upright.height);
+  drawFrame(shown.context, bitmap, { x: 0, y: 0, ...upright }, frame.turn);
   const thumb = await shown.canvas.convertToBlob({ type: 'image/jpeg', quality: 0.8 });
   shown.canvas.width = 0;
 
+  // A frame that declared no size gets all three from the bitmap, in the same
+  // terms as the rest: the upright size for the box it will occupy, and the
+  // bitmap's own for what the decoder hands back. A frame that declared one
+  // keeps it, because a survey decode that was resized is no witness to it.
   return {
     described: {
       ...frame,
-      width: frame.width ?? bitmap.width,
-      height: frame.height ?? bitmap.height,
+      width: known ? frame.width : upright.width,
+      height: known ? frame.height : upright.height,
+      decoded: known ? frame.decoded : { width: bitmap.width, height: bitmap.height },
     },
     bitmap,
     thumb,
@@ -250,11 +358,11 @@ export async function inspect(files, hooks) {
  * separately would make that number different per frame, and different in each
  * axis for any frame of a different shape.
  */
-function lumaSquare(bitmap, spot, output, fit) {
+function lumaSquare(bitmap, spot, output, fit, turn) {
   const { canvas, context } = surface(ALIGN_SIZE, ALIGN_SIZE);
   context.setTransform(1, 0, 0, 1, fit.x, fit.y);
   context.scale(fit.scale, fit.scale);
-  context.drawImage(bitmap, spot.x, spot.y, spot.width, spot.height);
+  drawFrame(context, bitmap, spot, turn);
 
   const pixels = context.getImageData(0, 0, ALIGN_SIZE, ALIGN_SIZE).data;
   const out = new Float64Array(ALIGN_SIZE * ALIGN_SIZE);
@@ -275,9 +383,9 @@ function lumaSquare(bitmap, spot, output, fit) {
  * with nothing to multiply back up. That is the whole point of measuring
  * twice: here, an error of a twentieth of a pixel is a twentieth of a pixel.
  */
-function refineSquare(bitmap, spot, output, move, at, size) {
+function refineSquare(bitmap, spot, output, move, at, size, turn) {
   const { canvas, context } = surface(size, size);
-  drawAligned(context, bitmap, spot, output, move, at, 0);
+  drawAligned(context, bitmap, spot, output, move, at, 0, turn);
   const pixels = context.getImageData(0, 0, size, size).data;
   const out = new Float64Array(size * size);
   for (let i = 0, p = 0; i < out.length; i += 1, p += 4) {
@@ -360,7 +468,7 @@ export async function runStack(request, hooks) {
     // copy of. Its own size never enters the arithmetic.
     const square = lumaSquare(frame.thumb, {
       x: spot.x, y: spot.y, width: spot.width, height: spot.height,
-    }, output, fit);
+    }, output, fit, frame.turn);
 
     if (!reference) {
       reference = square;
@@ -442,8 +550,8 @@ export async function runStack(request, hooks) {
         });
 
         const spot = placement(frame, output);
-        const working = workingSize(frame.width, frame.height, 1);
-        const bitmap = await decodeAt(frame.blob, working, spot);
+        const working = workingSize(frame.decoded.width, frame.decoded.height, 1);
+        const bitmap = await decodeAt(frame.blob, working, spot, frame.turn);
 
         // Each frame's first full-size appearance settles its final position.
         // Later bands and passes reuse the answer, so a banded run stays
@@ -453,7 +561,9 @@ export async function runStack(request, hooks) {
         // wrong by, leaves the frame where the coarse measurement put it.
         if (refine && !refined[index]) {
           refined[index] = true;
-          const square = refineSquare(bitmap, spot, output, moves[index], refineAt, refine);
+          const square = refineSquare(
+            bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
+          );
           if (index === 0) {
             referenceWindow = square;
           } else if (referenceWindow) {
@@ -468,7 +578,7 @@ export async function runStack(request, hooks) {
 
         context.setTransform(1, 0, 0, 1, 0, 0);
         context.clearRect(0, 0, crop.width, band.readRows);
-        drawAligned(context, bitmap, spot, output, moves[index], crop, band.readY);
+        drawAligned(context, bitmap, spot, output, moves[index], crop, band.readY, frame.turn);
         bitmap.close();
 
         stack.add(context.getImageData(0, 0, crop.width, band.readRows).data, index, pass);
@@ -520,10 +630,16 @@ export async function runStack(request, hooks) {
  * scaling afterwards, is the cheapest resampling available: it happens inside
  * the browser's own decoder, and for a JPEG being halved or quartered it can be
  * done in the frequency domain without ever building the full-size image.
+ *
+ * `natural` is the size the decoder will produce and `spot` is the upright box
+ * the frame is going into, so for a frame this code turns itself the request
+ * is the box with its sides swapped: the decoder does not know about the turn
+ * and would otherwise be asked for a portrait picture from a landscape stream.
  */
-function decodeAt(blob, natural, spot) {
-  const width = Math.max(1, Math.round(spot.width));
-  const height = Math.max(1, Math.round(spot.height));
+function decodeAt(blob, natural, spot, turn) {
+  const wanted = orientedSize(spot.width, spot.height, turn);
+  const width = Math.max(1, Math.round(wanted.width));
+  const height = Math.max(1, Math.round(wanted.height));
   if (width >= natural.width && height >= natural.height) {
     // Upscaling, or no change. Let the draw do it rather than the decoder, so
     // nothing is resampled twice.
