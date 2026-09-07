@@ -786,6 +786,20 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 .card-head > h2 { margin-bottom: 0; }
 
+/* The same row on a card whose explanation the build folded behind its heading:
+   what sits in it is the whole <details>, because the heading itself is inside
+   the control that opens the fold. Baselines rather than centres, so the button
+   stays on the summary's line instead of sliding down the middle of the prose
+   each time a reader opens it. */
+.card-head-fold { align-items: baseline; }
+.card-head > .card-note {
+  flex: 1 1 auto;
+  /* A flex item will not shrink below the width of its own text without this,
+     and the summary of a long heading is exactly that. */
+  min-width: 0;
+  margin-bottom: 0;
+}
+
 /* `auto` rather than `space-between`, so the button still sits right when the
    row wraps and the heading is alone on the line above it. */
 .dropzone-example { margin: 0 0 0 auto; }

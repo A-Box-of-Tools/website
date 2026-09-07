@@ -16,7 +16,9 @@ that would have caught the gap in the first place.
 """
 
 import re
+import tomllib
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 
 from buildlib import cards
@@ -110,3 +112,84 @@ class EveryTool(unittest.TestCase):
 
         self.assertEqual([], loose, '\nstill on the page:\n' + '\n'.join(loose))
         self.assertEqual([], lost, '\nfolded but is a status:\n' + '\n'.join(lost))
+
+
+# The tags HTML never closes, which a parser counting depth has to know about
+# or it spends the rest of the document one level too deep.
+VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
+        'meta', 'param', 'source', 'track', 'wbr'}
+
+
+class CardChildren(HTMLParser):
+    """What each card holds directly, and which card holds the drop zone."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.depth = None
+        self.children = []
+        self.cards = []
+
+    def handle_starttag(self, tag, attrs):
+        classes = dict(attrs).get('class', '').split()
+        if self.depth is None:
+            if tag == 'section' and 'card' in classes:
+                self.depth = 0
+                self.children = []
+            return
+        if self.depth == 0:
+            self.children.append((tag, tuple(classes)))
+        if tag not in VOID:
+            self.depth += 1
+
+    def handle_endtag(self, tag):
+        if self.depth is None or tag in VOID:
+            return
+        if self.depth == 0:
+            self.cards.append(self.children)
+            self.depth = None
+        else:
+            self.depth -= 1
+
+    def handle_data(self, data):
+        if self.depth is not None and 'partials/file-picker.html' in data:
+            self.picker = len(self.cards)
+
+    picker = None
+
+
+class TheExampleButtonsRow(unittest.TestCase):
+    """This fold and shared/js/file-picker.js have to agree about the heading.
+
+    `liftToHeading` moves the "Try an example" button up onto the step's own
+    heading row, and it finds that row as a direct child of the card holding
+    the drop zone: an `<h2>`, or - once this file has been over it - the
+    `<details>` the `<h2>` now sits inside. For as long as it knew only the
+    first shape, the five tools whose first card opens with a lede kept their
+    button down under the drop zone while the other twenty-seven had it up on
+    the heading, and nothing anywhere failed: the button was simply somewhere
+    else on a sixth of the site.
+
+    So the two shapes are asserted together, on every tool that has the button.
+    A third shape arriving here - a heading wrapped in something new - is a
+    change to that file as well as to this one.
+    """
+
+    def test_every_example_tool_offers_a_heading_to_lift_the_button_onto(self):
+        missing = []
+        for toml in sorted(TOOLS.glob('*/tool.toml')):
+            config = tomllib.loads(toml.read_text(encoding='utf-8'))
+            if not config.get('picker', {}).get('example'):
+                continue
+
+            parser = CardChildren()
+            parser.feed(cards.fold_ledes(
+                (toml.parent / 'body.html').read_text(encoding='utf-8')))
+            children = parser.cards[parser.picker] if parser.picker is not None else []
+
+            if not any(tag == 'h2' or (tag == 'details' and 'card-note' in classes)
+                       for tag, classes in children):
+                missing.append(f'{toml.parent.name}: {children}')
+
+        self.assertEqual([], missing,
+                         '\nthe button has nowhere to go but under the drop zone:\n'
+                         + '\n'.join(missing))
