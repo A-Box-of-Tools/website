@@ -40,8 +40,8 @@ css_parts = ["progress", "form", "checks", "notes"]
 # travel together, because the reader and the writer import the other two;
 # the compressor and the merger ask for the same four. Everything this tool
 # does to a page's drawing instructions is its own and stays in src/.
-js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box"]
-lastmod = "2026-09-01"
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "example-pdf", "pdf-page-writer"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -418,6 +418,7 @@ accept = "application/pdf,.pdf"
 multiple = false
 title = "Drop your PDF here"
 hint = "or click to browse &mdash; one document at a time"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A three-page statement of dates, reference codes, names and
+# amounts - what people actually redact. Its text is real text, because a
+# picture of text would have nothing in it for this tool to delete.
+example = true

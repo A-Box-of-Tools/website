@@ -8,6 +8,7 @@ import {
 import { takeInventory, verdict } from './inventory.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 import {
   bytes as humanBytes, change, count, dimensions, dpi, outName, share,
 } from './format.js';
@@ -78,6 +79,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     load(files[0]);
   },
+  example: makeExample,
 });
 
 /**
