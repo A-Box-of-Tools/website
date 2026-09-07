@@ -63,6 +63,15 @@ reaches `dev`; and the pull request from `dev` to `main` builds the bundle,
 previews it, and runs the QA suite against that preview before any of it is
 live. See [cloudflare/README.md](../cloudflare/README.md), "Previews".
 
+**`main` stays this repository's default branch**, and that is load-bearing
+rather than inertia. The QA suite reads the tool list and the CSP out of a
+checkout of this repository rather than keeping its own copy, and a run that
+was told no commit reads the default branch — which is every production run.
+Point the default at `dev` and each of those would count the bundle's tools
+against the live site's cards and fail, correctly, about two different sites.
+The cost of leaving it is that a pull request opened by hand in the GitHub UI
+arrives based on `main`, and the base has to be changed to `dev`.
+
 **`python build.py --check` cannot pass on `dev`.** It diffs a fresh build
 against `dist`, `dist` tracks `main` exactly, and `dev` is ahead of `main` by
 construction whenever it is holding anything at all. That is not a failure to

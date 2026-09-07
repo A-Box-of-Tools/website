@@ -576,6 +576,18 @@ jobs:
   # commit, with the run as its link. Report-only for now; once it has been
   # green for a while, branch protection can require it.
   #
+  # THAT HEAD COMMIT IS DOING TWO JOBS, and the second one is why this
+  # arrangement depends on a change over there. It is where the status is
+  # written; it is also the tree the suite reads this repository's tool list
+  # and CSP out of, because it keeps no copy of either. Basing pull requests
+  # on `dev` makes that second job load-bearing. A preview used to differ from
+  # `main` by one pull request, so a suite reading `main` miscounted the hub's
+  # cards only on a pull request that shipped a tool; a preview now differs by
+  # the whole bundle, so it would miscount on every pull request opened
+  # between one release and the next. A-Box-of-Tools/qa#94 is what makes the
+  # suite read the commit it was given rather than a branch, and this
+  # arrangement wants it merged.
+  #
   # SETUP, ONCE: a Cloudflare Pages project (direct upload) and two secrets
   # here, CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID; a WEBSITE_STATUS_TOKEN
   # in the qa repository for the status; QA_DISPATCH_TOKEN as before. The

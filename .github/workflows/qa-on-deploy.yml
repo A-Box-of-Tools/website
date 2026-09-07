@@ -125,6 +125,21 @@ jobs:
           echo "::error::abox.tools never responded after 5 minutes."
           exit 1
 
+      # Dispatched with no inputs at all, which is what makes it a production
+      # run over there: `base_url` falls back to https://abox.tools/, and `pr`
+      # and `sha` stay empty.
+      #
+      # THAT EMPTY `sha` IS WHY THIS REPOSITORY'S DEFAULT BRANCH HAS TO STAY
+      # `main`. The suite does not keep its own copy of the tool list or the
+      # CSP - it reads them out of a checkout of this repository - and a run
+      # that was told no commit takes this repository's default branch, which
+      # is every production run. That fallback is right only while the default
+      # branch is the one production was built from. Point it at `dev` and
+      # every production run would count the bundle's tools against the live
+      # site's cards: four assertions failing on the hub and the 404, each
+      # right about its own numbers and about two different sites. The same
+      # trap on the preview side, where the commit IS known, is
+      # A-Box-of-Tools/qa#94.
       - name: Ask the QA repo to run its suite
         if: steps.deployed.outputs.deployed == 'true'
         env:
