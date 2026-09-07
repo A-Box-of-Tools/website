@@ -199,8 +199,8 @@ function buildItemNode(item, index) {
   const name = document.createElement('p');
   name.className = 'frame-name';
   name.textContent = item.name;
-  const size = ltr(`${item.width}×${item.height}`);
-  name.title = `${item.name} — ${size}`;
+  const dimensions = ltr(`${item.width}×${item.height}`);
+  name.title = `${item.name} — ${dimensions}`;
   meta.append(name);
 
   const controls = document.createElement('div');
