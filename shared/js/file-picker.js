@@ -278,19 +278,36 @@ function wireExample({ example, hand, busy, done, dropzone }) {
 /**
  * Move the button up onto the step's heading row.
  *
- * Quietly does nothing if the shape is not what it expects - a tool whose
- * first card has no heading keeps the button under the drop zone, which is
- * where it already was and is not wrong, only lower.
+ * There are two shapes to find that row in, because the build makes the second
+ * one. A card that opens with a paragraph explaining the step has had that
+ * paragraph - and its heading with it - folded into a <details> by
+ * buildlib/cards.py, so the <h2> is no longer the card's child and the row the
+ * reader sees is the fold's <summary>. Looking only for the child <h2> found
+ * nothing on those cards and left the button under the drop zone, between it
+ * and the step's own controls, on five tools: document-scanner, heic-to-jpg,
+ * id-photo, qr-barcode-reader and redact-image.
+ *
+ * The whole <details> moves in that case rather than the heading inside it.
+ * Taking the <h2> out of the summary would leave the fold unnamed and the
+ * button on a row of its own, which is the bug over again one line lower.
+ *
+ * Quietly does nothing if the shape is neither - a tool whose first card has
+ * no heading at all keeps the button under the drop zone, which is where it
+ * already was and is not wrong, only lower.
  */
 function liftToHeading(holder, dropzone) {
   const card = dropzone?.closest('.card');
-  const heading = card?.querySelector(':scope > h2');
-  if (!heading || !holder) return;
+  if (!card || !holder) return;
+
+  const fold = card.querySelector(':scope > details.card-note');
+  const head = card.querySelector(':scope > h2')
+    ?? (fold?.querySelector(':scope > summary > h2') ? fold : null);
+  if (!head) return;
 
   const row = document.createElement('div');
   row.className = 'card-head';
-  heading.before(row);
-  row.append(heading, holder);
+  head.before(row);
+  row.append(head, holder);
 }
 
 /**
