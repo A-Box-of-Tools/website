@@ -257,8 +257,9 @@ a = """
         middle of the head &mdash; a comparison that is local, so nothing in it
         depends on what colour a face is. The chin is the one that cannot be found
         this way, because a jaw against a neck is a soft edge with no colour change
-        across it; it is worked out from the pupils, which sit at almost exactly
-        half the height of a head, and then checked against the outline. All of it
+        across it; it is worked out from the pupils, which sit a little below the
+        middle of a head once the hair on top of it is counted, and then checked
+        against the outline. All of it
         is arithmetic in <code>src/detect.js</code>: no weights, no inference
         runtime, nothing fetched, and the same arithmetic for every face put through
         it. That last part is the one that matters, because a shipped detector is

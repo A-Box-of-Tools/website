@@ -210,8 +210,9 @@ a = """
         de la tête&nbsp;: une comparaison purement locale, donc rien n&rsquo;y dépend
         de la couleur d&rsquo;un visage. Le menton est le seul qui ne se trouve pas
         ainsi, car une mâchoire devant un cou est un bord doux sans changement de
-        couleur&nbsp;; il est déduit des pupilles, qui se situent à presque exactement
-        la moitié de la hauteur d&rsquo;une tête, puis confronté au contour. Tout cela
+        couleur&nbsp;; il est déduit des pupilles, qui se situent un peu en dessous du
+        milieu d&rsquo;une tête, une fois comptés les cheveux qui la surmontent,
+        puis confronté au contour. Tout cela
         est du calcul, dans <code>src/detect.js</code>&nbsp;: pas de poids, pas de
         moteur d&rsquo;inférence, rien de récupéré, et le même calcul pour chaque
         visage. C&rsquo;est ce dernier point qui compte, car un détecteur livré avec

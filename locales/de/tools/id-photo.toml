@@ -207,8 +207,9 @@ a = """
         beiderseits der Kopfmitte &mdash; ein rein örtlicher Vergleich, an dem nichts
         von der Farbe eines Gesichts abhängt. Das Kinn ist das eine, was sich so nicht
         finden lässt, denn ein Kiefer vor einem Hals ist eine weiche Kante ohne
-        Farbwechsel; es wird aus den Pupillen errechnet, die fast genau auf halber
-        Kopfhöhe sitzen, und dann an der Kontur geprüft. Alles davon ist Rechnerei in
+        Farbwechsel; es wird aus den Pupillen errechnet, die etwas unterhalb der Mitte
+        eines Kopfes sitzen, sobald das Haar darüber mitgezählt wird, und dann an
+        der Kontur geprüft. Alles davon ist Rechnerei in
         <code>src/detect.js</code>: keine Gewichte, keine Laufzeitumgebung, nichts
         Abgerufenes &mdash; und dieselbe Rechnerei für jedes Gesicht. Das Letzte ist
         der Punkt, denn ein mitgeliefertes Modell liegt ungleichmäßig falsch, bei

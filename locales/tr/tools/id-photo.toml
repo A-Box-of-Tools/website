@@ -204,8 +204,8 @@ a = """
         yerel bir karşılaştırmadır, yani içindeki hiçbir şey bir yüzün ne renk
         olduğuna bağlı değildir. Bu yolla bulunamayan tek nokta çenedir; çünkü bir
         çene hattı ile boyun arasındaki sınır, üzerinde renk değişimi olmayan
-        yumuşak bir kenardır. O, neredeyse tam olarak bir kafanın yarı
-        yüksekliğinde duran bebeklerden hesaplanır ve sonra dış hatta karşı
+        yumuşak bir kenardır. O, üstündeki saç da sayıldığında bir kafanın
+        ortasının biraz altında duran bebeklerden hesaplanır ve sonra dış hatta karşı
         denetlenir. Hepsi <code>src/detect.js</code> içinde aritmetiktir: ağırlık
         yok, çıkarım çalışma zamanı yok, getirilen bir şey yok ve içinden geçen
         her yüz için aynı aritmetik. Asıl önemli olan da o son kısımdır; çünkü
