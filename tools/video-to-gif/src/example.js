@@ -1,12 +1,13 @@
 /**
  * The clip behind the "Try an example" button.
  *
- * Six seconds at 960 by 540 - long enough that the frame rate and the
- * palette settings visibly cost something, which is the trade this tool is
- * for.
+ * 960 by 540, where the cropper's is 720p. This tool's whole subject is the
+ * trade between size and quality: a GIF pays for every pixel of every frame,
+ * and its own size readout is the thing worth watching. Starting from a 720p
+ * source would push every sensible answer to "make it much smaller", which
+ * hides the trade rather than showing it.
  *
- * Encoded here, on the press, by shared/js/example-video.js - which is also
- * where the reason nothing is fetched is written down.
+ * See shared/js/example-video.js for the clip itself.
  */
 
 import { exampleVideoFile } from './shared/example-video.js';

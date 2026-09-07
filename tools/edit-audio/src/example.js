@@ -1,10 +1,14 @@
 /**
  * The recording behind the "Try an example" button.
  *
- * The same eight seconds the trimmer gets. Speed, reverse and volume are all
- * changes you have to be able to hear happening to something, and a piece with
- * bars and a loud half is something; a sine tone reversed sounds exactly like
- * a sine tone. See shared/js/example-audio.js.
+ * Four bars, where the trimmer gets six. Speed, reverse and volume act on the
+ * whole file rather than a chosen part of it, so length buys nothing here and
+ * costs a wait: every one of those controls re-renders the entire recording.
+ * Eight seconds is long enough to hear the loud half arrive and short enough
+ * that the result is back immediately.
+ *
+ * A sine tone played backwards sounds like a sine tone, which is why this is
+ * music - see shared/js/example-audio.js.
  */
 
 import { exampleAudioFile } from './shared/example-audio.js';

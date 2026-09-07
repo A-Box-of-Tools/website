@@ -1,16 +1,17 @@
 /**
  * The clip behind the "Try an example" button.
  *
- * A clip with a soundtrack. This tool's job is taking the sound out of a
- * video, so a silent example would have it correctly report that there is
- * nothing to take - which demonstrates the tool by defeating it.
+ * A clip with a soundtrack: this tool's whole job is pulling the sound out,
+ * and handed a silent one it would correctly report there is nothing there -
+ * which demonstrates the tool by defeating it.
  *
- * Encoded here, on the press, by shared/js/example-video-sound.js - which is
- * also where the reason nothing on this site is fetched is written down.
+ * Smaller in the frame than the other video examples, at 640x360. Nothing here
+ * ever decodes the picture, so its size buys the demonstration nothing and
+ * only costs the wait while it is encoded. The sound is the subject.
  */
 
 import { exampleVideoWithSound } from './shared/example-video-sound.js';
 
 export function makeExample() {
-  return exampleVideoWithSound('example.mp4', { width: 854, height: 480, seconds: 8 });
+  return exampleVideoWithSound('example.mp4', { width: 640, height: 360, seconds: 8 });
 }
