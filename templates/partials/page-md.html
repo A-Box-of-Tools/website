@@ -1,0 +1,41 @@
+<!--
+  The page as Markdown, for a reader that is not a person - or for the person
+  about to hand it to one. buildlib/markdown.py says why every page has a twin
+  and why the text is carried here rather than fetched; the short version is
+  that a button fetching a file would be the first code path on a tool page
+  to reach the network, and the page's own Content-Security-Policy would
+  refuse it. Six kilobytes in the page is cheaper than widening that.
+
+  `index.md` is the same text at the page's own address, which is what the
+  <link rel="alternate" type="text/markdown"> in the head points at too. The
+  <pre> is what the button copies: hidden, so it is neither on screen nor in
+  the accessibility tree, and escaped, so a page that mentions a tag in a
+  code span cannot end the block early. shared/page-md.js does the copying,
+  and takes the button away where there is no clipboard to write - the link
+  needs no script and stays.
+
+  The button names the reader and the tooltip names the format: "Copy for
+  LLM" is what somebody about to paste a page into a chat is looking for,
+  and "Copies the page as Markdown" is the answer to the question they have
+  once they have found it. The link beside it names the format outright,
+  because a link's text is its promise.
+
+  The mark is Lucide's `copy`, drawn inline like the GitHub mark on the
+  header; shared/icons/LICENSE covers it.
+-->
+<p class="page-md">
+  <button type="button" class="page-md-copy" title="{{ ui.md_copy_title }}">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true" focusable="false">
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+    </svg>
+    {{ ui.md_copy }}
+  </button>
+  <span class="page-md-status" role="status"
+        data-copied="{{ ui.md_copied }}" data-failed="{{ ui.md_failed }}"></span>
+  <a class="page-md-view" href="index.md">{{ ui.md_view }}</a>
+</p>
+<pre id="page-markdown" hidden>{{ markdown | e }}</pre>
+<script src="{{ md_href }}" defer></script>

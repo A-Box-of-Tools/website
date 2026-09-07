@@ -258,6 +258,12 @@ footer_sitemap = "サイトマップ"
 footer_source = "GitHubでコードを読む"
 footer_x = "abox.toolsのXアカウント"
 
+md_copy = "LLM用にコピー"
+md_copy_title = "ページをMarkdownでコピーします"
+md_copied = "コピーしました"
+md_failed = "コピーできませんでした"
+md_view = "Markdownで表示"
+
 guarantees_note = """
     以上のどれも、鵜呑みにする必要はありません。\
     <a href="{{ base }}{{ links.safety_guide }}/">\
@@ -290,6 +296,9 @@ guide_heading = "詳しい解説"
 related_heading = "箱の中のほかのツール"
 handoff_lead = "結果をそのまま次へ："
 privacy_heading = "この主張を確かめる方法"
+
+md_note = """
+    このページは、ブラウザの中だけで動く対話型のツールです（{{ tool.url }}）。渡したものが送信されることはありません。以下は、このページがツールについて言葉で説明している内容のすべてです。使うには、このアドレスを開いてください。"""
 
 card_waiting = "上でファイルを選ぶとすぐに開きます。"
 pledge_line = """

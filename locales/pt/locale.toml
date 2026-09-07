@@ -380,6 +380,12 @@ footer_sitemap = "Mapa do site"
 footer_source = "Ler o código no GitHub"
 footer_x = "abox.tools no X"
 
+md_copy = "Copiar para LLM"
+md_copy_title = "Copia a página como Markdown"
+md_copied = "Copiado"
+md_failed = "Não foi possível copiar"
+md_view = "Ver como Markdown"
+
 guarantees_note = """
     Nada disso você precisa aceitar na fé.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -414,6 +420,12 @@ guide_heading = "A versão longa"
 related_heading = "Também na caixa"
 handoff_lead = "Leve o resultado direto para:"
 privacy_heading = "Como dá para conferir a promessa de privacidade"
+
+md_note = """
+    Esta página é uma ferramenta interativa que funciona inteiramente no seu
+    navegador, em {{ tool.url }} &mdash; nada do que você entrega a ela é
+    enviado para lugar algum. O que segue é tudo o que a página diz sobre a
+    ferramenta em palavras; para usá-la, abra o endereço."""
 
 card_waiting = "Abre assim que você escolher um arquivo acima."
 # O inglês escreve "Your {{ plural }} are never uploaded", e o particípio

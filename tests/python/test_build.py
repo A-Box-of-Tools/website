@@ -488,6 +488,64 @@ class BuildTheSite(unittest.TestCase):
                 # manifest-src falls back to default-src, which is 'none'.
                 self.assertIn("manifest-src 'self'", page)
 
+    # -- the page as Markdown -------------------------------------------------
+    #
+    # Every tool page and every prose page is written twice, index.html and
+    # index.md beside it, and the page carries the twin's text for the copy
+    # button. Three ways for that to be wrong that nothing else would catch:
+    # a twin missing where the page links one, a twin where nothing links it,
+    # and a page whose embedded copy has drifted from the file - which is the
+    # one a visitor would notice last, after pasting it somewhere.
+
+    def index_pages(self):
+        """The hub, the guides index and the roadmap, in every language: the
+        pages that list other pages, and the only ones without a twin."""
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        return ({buildmod.i18n.locale_path(locale, site['guides']['slug']).strip('/')
+                 for locale in self.locales}
+                | {name.strip('/') for name in self.roadmap_pages}
+                | {locale['prefix'].strip('/') for locale in self.locales})
+
+    def test_every_page_but_an_index_has_a_markdown_twin_and_carries_it(self):
+        import html as htmllib
+        indexes = self.index_pages()
+        for name in self.written:
+            if not name.endswith('index.html'):
+                continue
+            folder = name[:-len('index.html')]
+            expected = folder.strip('/') not in indexes
+            page = (self.out / name).read_text(encoding='utf-8')
+            twin = self.out / folder / 'index.md'
+            with self.subTest(page=folder or '/'):
+                self.assertEqual(twin.is_file(), expected)
+                self.assertEqual('type="text/markdown" href="index.md"' in page, expected)
+                self.assertEqual('class="page-md-copy"' in page, expected)
+                if not expected:
+                    continue
+                block = re.search(r'<pre id="page-markdown" hidden>(.*?)</pre>', page, re.S)
+                self.assertIsNotNone(block, 'no embedded twin')
+                self.assertEqual(htmllib.unescape(block.group(1)),
+                                 twin.read_text(encoding='utf-8'))
+
+    def test_a_twin_is_a_document_whose_links_are_absolute(self):
+        """It is meant to be pasted somewhere the page is not, so it opens
+        with the page's heading and every link in it can be followed from
+        anywhere - none of the `../` a page uses to reach its neighbours."""
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        slug = self.a_tool()
+        twin = (self.out / slug / 'index.md').read_text(encoding='utf-8')
+        self.assertTrue(twin.startswith('# '))
+        self.assertIn(f'{site["domain"]}{slug}/', twin)
+        for target in re.findall(r'\]\(([^)]+)\)', twin):
+            with self.subTest(link=target):
+                self.assertTrue(target.startswith(('https://', 'mailto:')), target)
+
+    def test_a_twin_is_precached_with_its_tool(self):
+        # So that "View as Markdown" is a link that works with the network
+        # unplugged, like every other link that stays inside the folder.
+        worker = (self.out / self.a_tool() / 'sw.js').read_text(encoding='utf-8')
+        self.assertIn("'index.md'", worker)
+
     def test_a_page_of_prose_carries_neither(self):
         """There is nothing to install on a privacy policy.
 

@@ -543,6 +543,56 @@ code {
   color: var(--text-dim);
 }
 
+/* The date and, on the same line, the page as Markdown: a button that copies
+   it, the word it says afterwards, and a link to the same text at its own
+   address. One row, because a reader looking for either looks in the same
+   place for both; it wraps under the date where the column is narrow. The
+   row's own rules are the ones the tool frame carries for the same row,
+   because it is the same partial on both kinds of page -
+   templates/partials/page-md.html renders it and shared/page-md.js works it. */
+
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin: 1rem 0 0;
+}
+
+.page-meta .legal-date { margin: 0; }
+
+.page-md {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.8rem;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.page-md-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  font: inherit;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.page-md-copy:hover { border-color: var(--accent); color: var(--accent); }
+.page-md-copy svg { flex: none; }
+
+.page-md-status:empty { display: none; }
+
+.page-md-view { color: var(--text-dim); }
+.page-md-view:hover { color: var(--accent); }
+
 /* ---- the guides index --------------------------------------------------- */
 
 /* One column rather than the hub's grid of cards. A tool card is a name and an

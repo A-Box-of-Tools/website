@@ -13,7 +13,7 @@ lede = """
     dahinter: Wenn Sie eine Dateiarbeit an einen Agenten abgeben, wohin
     geht die Datei? Die Antwort hängt allein davon ab, wo der Browser des
     Agenten läuft."""
-updated = "27. August 2026"
+updated = "6. September 2026"
 og_title = "Kann ein KI-Agent diese Werkzeuge nutzen?"
 og_description = "Gewöhnliche Webseiten mit beschrifteten Bedienelementen und ohne Konten - also ja. Was zählt, ist, wo der Browser des Agenten läuft: Das entscheidet, ob Ihre Datei auf Ihrer Maschine bleibt."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

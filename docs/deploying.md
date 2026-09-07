@@ -324,3 +324,49 @@ has finished the frame, and it has finished its own hub. Offering a half-English
 page to something that will go on to quote it is the one failure worth avoiding
 here.
 
+## Every page as Markdown
+
+`/llms.txt` says what is on the site; this says what is on a page. Every tool
+page and every prose page — the guides, About, Contact, the legal pages — in
+every language is written twice: `index.html`, and beside it `index.md`, the
+same page as Markdown at the same address with `index.md` on the end.
+[`/compress-image/index.md`](https://abox.tools/compress-image/index.md) is
+the image compressor's, `/de/bild-komprimieren/index.md` the German one. The
+hub, the guides index and the roadmap have none: they are lists of pages that
+each have their own.
+
+A tool's twin is the written half of its page — the pledge, the steps, the
+questions, the privacy panel, the guide and the neighbouring tools — rendered
+from the same `tool.toml` and `[ui.tool]` strings through
+[`templates/tool.md`](../templates/tool.md), so it cannot say anything the page
+does not. A prose page's is its body, converted. Every link in either comes out
+absolute, because the file is meant to be pasted somewhere the page is not.
+[`buildlib/markdown.py`](../buildlib/markdown.py) is the converter and says
+what it does and does not handle.
+
+Three things point at it. The page's head carries
+`<link rel="alternate" type="text/markdown" href="index.md">`, which is how a
+crawler or an agent finds it without guessing. A row on the page — at the head
+of the written part on a tool page, beside the date on a prose page — offers
+**Copy for LLM**, whose tooltip says the format is Markdown, and **View as
+Markdown**. And the tool's service
+worker precaches it with the rest of the folder, so the link works offline like
+every other link that stays inside it.
+
+The copy button reads the text out of the page itself: the build embeds the
+twin in a hidden `<pre>`, and [`shared/page-md.js`](../shared/page-md.js)
+writes it to the clipboard. It does not fetch `index.md`, and that is the
+whole design rather than a shortcut. Nothing on a tool page reaches the
+network, `connect-src` names nothing under this site's control, and a fetch
+for a convenience button would have been the first thing to widen that. The
+cost is the words twice in one page, a few kilobytes that brotli at the edge
+prices at almost nothing, because they are a copy.
+
+The twins are not in the sitemap and should not be indexed: they are the same
+words as the pages beside them, and a search engine ranking the text copy over
+the page would be ranking the version with no tool on it. The page's `<link
+rel="alternate">` says which is the original; the Cloudflare response header
+rule in [`cloudflare/response-headers.json`](../cloudflare/response-headers.json)
+adds `X-Robots-Tag: noindex` to every `.md` address, and has to be applied by
+hand — see [cloudflare/README.md](../cloudflare/README.md).
+

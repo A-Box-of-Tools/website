@@ -30,6 +30,20 @@
           }
         }
       }
+    },
+    {
+      "description": "Every page's Markdown twin (index.md) is the same words as the page beside it and must not outrank it; the page's <link rel=alternate> names the original. See docs/deploying.md.",
+      "expression": "ends_with(http.request.uri.path, \".md\")",
+      "action": "rewrite",
+      "enabled": true,
+      "action_parameters": {
+        "headers": {
+          "X-Robots-Tag": {
+            "operation": "set",
+            "value": "noindex"
+          }
+        }
+      }
     }
   ]
 }

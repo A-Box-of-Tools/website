@@ -13,6 +13,7 @@ buildlib/
   site.py                config loading, the CSP, the structured data, the checks
   emit.py                the one function that writes a file, and what it minifies
   catalogue.py           the whole site as one file: sitemap.xml, llms.txt, the feeds
+  markdown.py            every page as Markdown: the index.md beside each index.html
   deployed.py            --check: diffing a build against the branch being served
 config/
   site.toml              everything true of every page: the CSP, the ids, the hub
@@ -21,7 +22,10 @@ templates/
   hub.html               the hub page
   roadmap.html           the roadmap: what is built, then what is planned
   tool.html              the frame every tool page wears
+  tool.md                the same page as Markdown - its index.md, and what the
+                         copy button copies; buildlib/markdown.py says why
   page.html              the frame a prose page wears - the legal ones
+  page.md                and that page as Markdown
   404.html               what GitHub Pages returns for an address that is not here
   sw.js                  the offline service worker, one per installable folder
   offline.js             registers that worker, for the front page only

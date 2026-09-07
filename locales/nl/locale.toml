@@ -389,6 +389,12 @@ footer_sitemap = "Sitemap"
 footer_source = "Lees de code op GitHub"
 footer_x = "abox.tools op X"
 
+md_copy = "Kopiëren voor LLM"
+md_copy_title = "Kopieert de pagina als Markdown"
+md_copied = "Gekopieerd"
+md_failed = "Kopiëren mislukt"
+md_view = "Als Markdown bekijken"
+
 guarantees_note = """
     Je hoeft daar niets van op ons woord aan te nemen.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -424,6 +430,12 @@ guide_heading = "De uitgebreide versie"
 related_heading = "Ook in de gereedschapskist"
 handoff_lead = "Neem het resultaat rechtstreeks mee naar:"
 privacy_heading = "Hoe je de privacybelofte controleert"
+
+md_note = """
+    Deze pagina is een interactief hulpmiddel dat volledig in je browser
+    draait, op {{ tool.url }} &mdash; niets van wat je het geeft wordt
+    geüpload. Hieronder staat alles wat de pagina er in woorden over zegt; om
+    het te gebruiken, open je het adres."""
 
 card_waiting = "Gaat open zodra je hierboven een bestand kiest."
 pledge_line = """

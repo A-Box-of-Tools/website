@@ -31,9 +31,9 @@ lede = """
     you hand a file chore to an agent, where does the file go? The answer
     turns entirely on where the agent's browser is running."""
 
-updated = "27 August 2026"
+updated = "6 September 2026"
 published = "2026-08-27"
-lastmod = "2026-08-27"
+lastmod = "2026-09-06"
 
 og_title = "Can an AI agent use these tools?"
 og_description = "They are ordinary web pages with labelled controls and no accounts, so yes. The question that matters is where the agent's browser runs - that decides whether your file still stays on your machine."

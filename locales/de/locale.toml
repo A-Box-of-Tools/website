@@ -440,6 +440,12 @@ footer_sitemap = "Sitemap"
 footer_source = "Den Quellcode auf GitHub lesen"
 footer_x = "abox.tools auf X"
 
+md_copy = "Für LLM kopieren"
+md_copy_title = "Kopiert die Seite als Markdown"
+md_copied = "Kopiert"
+md_failed = "Kopieren fehlgeschlagen"
+md_view = "Als Markdown ansehen"
+
 guarantees_note = """
     Nichts davon müssen Sie uns glauben.
     <a href="{{ base }}{{ links.safety_guide }}/">
@@ -474,6 +480,12 @@ guide_heading = "Die ausführliche Fassung"
 related_heading = "Auch im Werkzeugkasten"
 handoff_lead = "Das Ergebnis direkt weiterreichen an:"
 privacy_heading = "So lässt sich das Datenschutzversprechen nachprüfen"
+
+md_note = """
+    Diese Seite ist ein interaktives Werkzeug, das vollständig in Ihrem Browser
+    läuft, unter {{ tool.url }} &mdash; nichts, was Sie ihm geben, wird
+    hochgeladen. Es folgt alles, was die Seite in Worten über das Werkzeug
+    sagt; um es zu benutzen, öffnen Sie die Adresse."""
 
 card_waiting = "Öffnet sich, sobald Sie oben eine Datei auswählen."
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,
