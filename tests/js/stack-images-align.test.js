@@ -22,9 +22,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  ALIGN_MODES, MAX_ROTATION, NO_MOVE, N_MAX, P_MAX,
+  ALIGN_MODES, L_MIN, MAX_ROTATION, NO_MOVE, N_MAX, N_MAX_SURVEY, P_MAX,
   estimate, isMeasured, logPolar, logSpectrum, phaseCorrelate, rotateScale, window2d,
 } from '../../tools/stack-images/src/align.js';
+import { placement } from '../../tools/stack-images/src/plan.js';
 
 const close = (actual, expected, tolerance, what) => assert.ok(
   Math.abs(actual - expected) <= tolerance,
@@ -116,8 +117,11 @@ const otherLow = (u, v) => 90 * octave(u + 1000, v + 777, 11.3);
 const diagonal = (u, v) => 150 + 0.15 * u + 0.09 * v;
 const horizontal = (u, v) => 150 + 0.235 * u;
 
-/** A night sky: small bright spots on a dark ground, a few hundred unless asked. */
-function starField(size, count = 300) {
+/**
+ * The stars themselves, so that a fixture too large to ask every star about
+ * every pixel can walk them instead. `surveyStars` below is the one that does.
+ */
+function starList(size, count = 300) {
   let state = 99;
   const next = () => {
     state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
@@ -130,6 +134,12 @@ function starField(size, count = 300) {
       brightness: 60 + 190 * next(), spread: 0.8 + 1.2 * next(),
     });
   }
+  return stars;
+}
+
+/** A night sky: small bright spots on a dark ground, a few hundred unless asked. */
+function starField(size, count = 300) {
+  const stars = starList(size, count);
   return (u, v) => {
     let out = 8;
     for (const star of stars) {
@@ -311,12 +321,24 @@ function eightBit(values) {
 }
 
 /**
- * What lumaSquare does to every 3:2 frame: the picture fills 256 by 171 of
- * the square and the rest is the canvas's transparent black. The hard edge
- * along row 171 is shared by both frames wherever the camera moved, and it
- * is the difference between a gradient that measures 0.08 coherence and one
- * that measures 0.56 - the edge pins the vertical, and the slope, which
- * matches itself at any offset, leaves a ridge along the other axis.
+ * A 3:2 picture over 256 by 171 of the square with the rest left transparent
+ * black, ANCHORED AT THE TOP - which is not where the pipeline puts it.
+ * `placement` centres the box, so a real 3:2 picture's two horizontal edges
+ * land at row 43 and row 212, where the square's own Hann has already faded to
+ * about a quarter; this one's single edge lands at row 171, at three-quarters
+ * weight. Its letterbox step is therefore about three times the pipeline's,
+ * and every fixture built on it overstates what the letterbox does.
+ *
+ * It is kept because the tables on P_MAX and N_MAX were calibrated on it and
+ * the tests that pin those readings have to be able to reproduce them. Nothing
+ * new should be measured here: `surveyBox` below is the box the pipeline
+ * builds, and the tests that measure the change to `window2d` use that.
+ *
+ * Windowed whole, the edge is left standing, shared by both frames wherever
+ * the camera moved, and is the difference between a gradient that measures
+ * 0.08 coherence and one that measures 0.56: it pins the vertical, and the
+ * slope, which matches itself at any offset, leaves a ridge along the other
+ * axis.
  */
 function letterbox(values, size, rows = 171) {
   for (let y = rows; y < size; y += 1) {
@@ -324,6 +346,54 @@ function letterbox(values, size, rows = 171) {
   }
   return values;
 }
+
+/**
+ * The rectangle `lumaSquare` draws an output of this shape into, and now
+ * windows over: `placement`'s own answer, imported rather than restated so
+ * that a fixture cannot describe a square the pipeline does not build. A 3:2
+ * output is 256 by 170.67 centred at y 42.67; a 2:3 output is the same turned
+ * on its side; a square output fills the square and has no letterbox at all,
+ * which is the control every one of these measurements is read against.
+ */
+const surveyBox = (width, height) => placement(
+  { width, height }, { width: GATE_SIZE, height: GATE_SIZE },
+);
+const WHOLE_SQUARE = { x: 0, y: 0, width: GATE_SIZE, height: GATE_SIZE };
+
+/** Transparent black everywhere the picture is not, which is what the canvas leaves. */
+function clip(values, size, box) {
+  const left = Math.round(box.x);
+  const top = Math.round(box.y);
+  const right = Math.round(box.x + box.width);
+  const bottom = Math.round(box.y + box.height);
+  for (let y = 0; y < size; y += 1) {
+    const inside = y >= top && y < bottom;
+    for (let x = 0; x < size; x += 1) {
+      if (!inside || x < left || x >= right) values[y * size + x] = 0;
+    }
+  }
+  return values;
+}
+
+/**
+ * A photographic black level, added to a scene before it is letterboxed.
+ *
+ * The letterbox step is as tall as the picture's own mean above black, and
+ * these scenes start at zero where a photograph starts at whatever its shadows
+ * are. Without this the fixture has a third of a real ridge and does not
+ * reproduce the browser at all: the low-texture 3:2 pair below reads 0.10-1.42
+ * alignment pixels off with the whole square tapered against 0.08-1.37 with
+ * its box, which is no difference. Lifted, it reads 1.36-1.96 against
+ * 0.08-1.37 and `next` falls from 0.20-0.31 to 0.12-0.20, which is the
+ * direction and roughly the size of what the browser measured on the real
+ * path. It is the same trap as the letterbox's own geometry: a fixture that
+ * gets the surface's proportions wrong measures a different question.
+ */
+const BLACK_LEVEL = 75;
+const lit = (values) => {
+  for (let i = 0; i < values.length; i += 1) values[i] += BLACK_LEVEL;
+  return values;
+};
 
 test('identical textured frames pass the gate', () => {
   const found = gateFixture(field(GATE_SIZE, scene), field(GATE_SIZE, scene));
@@ -387,14 +457,14 @@ test('the noisiest real scenes keep their peaks under the plateau floor', () => 
   close(texture.dx, -3.3, 0.5, 'horizontal correction');
   close(texture.dy, 2.6, 0.5, 'vertical correction');
 
-  // The same two with the survey square's letterbox under them, since its
-  // edge lifts every plateau: the textured pair to 0.488 and the low-texture
-  // pair to 0.589, both still measured. The letterbox is not free on the
-  // low-texture pair - the ridge pulls its vertical towards zero, to 0.41
-  // against 1.7 - which is a cost of the survey square, not of the gate, and
-  // is recorded here rather than asserted away. It lifts the uniqueness
-  // reading too, to 0.46 and 0.37 from 0.29 and 0.27, because the ridge is
-  // a second place the surface stands high.
+  // The same two over the historical top-anchored letterbox with the whole
+  // square tapered, which is the surface P_MAX and N_MAX were calibrated on:
+  // its edge lifts every plateau, the textured pair to 0.488 and the
+  // low-texture pair to 0.589, both still measured. The ridge is not free on
+  // the low-texture pair - it pulls the vertical towards zero, to 0.41 against
+  // 1.7 - and the test below takes that out on the box the pipeline really
+  // builds. It lifts the uniqueness reading too, to 0.46 and 0.37 from 0.29
+  // and 0.27, because a ridge is a second place the surface stands high.
   const boxedTexture = gateFixture(
     letterbox(noisy(field(GATE_SIZE, scene), 56, 1), GATE_SIZE),
     letterbox(noisy(field(GATE_SIZE, scene, 3.3, -2.6), 56, 2), GATE_SIZE),
@@ -410,6 +480,497 @@ test('the noisiest real scenes keep their peaks under the plateau floor', () => 
   // (-2.809, 0.414)
   assert.ok(isMeasured(boxedLow), `plateau ${boxedLow.plateau}, next ${boxedLow.next}`);
   assert.ok(boxedLow.plateau < P_MAX, 'the nearest real fixture to the plateau floor');
+});
+
+test('a letterboxed pair lands nearer the truth when its own box is tapered', () => {
+  // What the letterbox costs a real answer, and what taking it out gives back,
+  // on the box the pipeline builds rather than the historical fixture above.
+  // The pair is the low-texture scene at fifteen per cent noise over a
+  // photographic black level, moved 2.4 left and 1.7 up.
+  //
+  // With the whole square tapered, the letterbox's hard edge is a line both
+  // frames share at every offset along itself, so the surface is a ridge along
+  // that line and the other axis is pulled towards zero. Which axis depends on
+  // which way the picture is letterboxed, and both are here because both are
+  // wrong in the same way: the 3:2 pair reads its vertical as 0.28 against a
+  // truth of 1.7, and the 2:3 pair reads its horizontal as -0.25 against -2.4.
+  //
+  // The third shape is the control and the point of the whole change. A square
+  // output has no letterbox, so this function does nothing to it and it lands
+  // 0.10-0.72 pixels off over the same ten seeds - which is where the boxed
+  // letterboxed pairs land too. The box does not make the coarse pass better
+  // than it was; it stops the letterbox making it worse.
+  const pair = (box, over, seedA, seedB) => phaseCorrelate(
+    window2d(clip(lit(noisy(field(GATE_SIZE, lowScene), 13.5, seedA)), GATE_SIZE, box),
+      GATE_SIZE, over),
+    window2d(clip(lit(noisy(field(GATE_SIZE, lowScene, 2.4, -1.7), 13.5, seedB)), GATE_SIZE, box),
+      GATE_SIZE, over),
+    GATE_SIZE,
+  );
+  const off = (found) => Math.hypot(found.dx + 2.4, found.dy - 1.7);
+  const spread = (box, over) => {
+    let worst = 0;
+    let best = Infinity;
+    for (let seed = 3; seed < 23; seed += 2) {
+      const found = off(pair(box, over, seed, seed + 1));
+      worst = Math.max(worst, found);
+      best = Math.min(best, found);
+    }
+    return { worst, best };
+  };
+
+  const wide = surveyBox(3000, 2000);
+  const wideSquare = pair(wide, null, 3, 4);
+  // plateau 0.446, next 0.212, at (-2.491, 0.276) - 1.43 px off
+  close(wideSquare.dy, 0.28, 0.05, 'the vertical the letterbox pins');
+  const wideBoxed = pair(wide, wide, 3, 4);
+  // plateau 0.370, next 0.122, at (-2.300, 1.169) - 0.54 px off, and the
+  // uniqueness reading has fallen because the ridge is where the surface stood
+  // high away from the peak
+  close(wideBoxed.dy, 1.17, 0.05, 'the vertical, unpinned');
+  assert.ok(wideBoxed.next < wideSquare.next, `next ${wideBoxed.next} against ${wideSquare.next}`);
+
+  const tall = surveyBox(2000, 3000);
+  const tallSquare = pair(tall, null, 3, 4);
+  // plateau 0.539, next 0.267, at (-0.251, 1.735) - 2.15 px off: the whole of
+  // a 2.4-pixel horizontal move lost to a vertical letterbox
+  close(tallSquare.dx, -0.25, 0.05, 'the horizontal the letterbox pins');
+  const tallBoxed = pair(tall, tall, 3, 4);
+  // plateau 0.422, next 0.139, at (-2.709, 1.734) - 0.31 px off
+  close(tallBoxed.dx, -2.71, 0.05, 'the horizontal, unpinned');
+
+  // Over ten seeds every boxed answer is nearer than every whole-square one, at
+  // both shapes: 0.29-1.09 against 1.36-1.96 for the 3:2 pair and 0.13-1.05
+  // against 2.05-2.37 for the 2:3 one.
+  const wideBoxes = spread(wide, wide);
+  const wideWhole = spread(wide, null);
+  assert.ok(wideBoxes.worst < wideWhole.best, `3:2 ${wideBoxes.worst} against ${wideWhole.best}`);
+  const tallBoxes = spread(tall, tall);
+  const tallWhole = spread(tall, null);
+  assert.ok(tallBoxes.worst < tallWhole.best, `2:3 ${tallBoxes.worst} against ${tallWhole.best}`);
+
+  // The control: 0.10-0.72 over the same seeds, whichever window is asked for,
+  // because there is no letterbox to leave a rectangle.
+  const control = spread(WHOLE_SQUARE, null);
+  assert.ok(control.worst < 0.8, `an output that is square: ${control.worst}`);
+});
+
+test('the box hands a letterboxed output the gate a square output already had', () => {
+  // The half of the change that costs something, pinned so it cannot move
+  // quietly. The letterbox's edge stood high away from the peak on every
+  // surface it was in, real and junk alike, and `next` is a reading of exactly
+  // that - so it was refusing junk by accident, and only on outputs that were
+  // not square. Taking it out gives every output shape the leak a square
+  // output has always had, which the comment on N_MAX records and the
+  // consensus check is left to catch. The counts below are that sentence: the
+  // boxed column is the square column, and the whole-square column is the
+  // accident.
+  //
+  // Ten seeds each, admitted by isMeasured. A square output is one column
+  // because this function does nothing to it.
+  //
+  //                        whole square   the box   square output
+  //   8-bit sky, 3:2           0/10         0/10        0/10
+  //   8-bit sky, 2:3           0/10         1/10        0/10
+  //   unrelated tex/low, 3:2   1/10         3/10        7/10
+  //   unrelated tex/low, 2:3   1/10         6/10        7/10
+  //
+  // The sky is the case the whole gate exists for, and the one seed in ten it
+  // now lets through at 2:3 is the rate a square output has always leaked at
+  // over the wider sweep in the N_MAX comment - not a new failure, but a real
+  // one, and the browser check is where a near-clean sky has to be looked at.
+  const admitted = (make, box, over) => {
+    let count = 0;
+    for (let seed = 1; seed < 21; seed += 2) {
+      const found = phaseCorrelate(
+        window2d(clip(make(seed, false), GATE_SIZE, box), GATE_SIZE, over),
+        window2d(clip(make(seed + 1, true), GATE_SIZE, box), GATE_SIZE, over),
+        GATE_SIZE,
+      );
+      if (isMeasured(found)) count += 1;
+    }
+    return count;
+  };
+  const sky = (seed) => eightBit(noisy(field(GATE_SIZE, diagonal), 1.3, seed));
+  const unrelated = (seed, second) => lit(
+    noisy(field(GATE_SIZE, second ? otherLow : scene), 28, seed),
+  );
+
+  const wide = surveyBox(3000, 2000);
+  const tall = surveyBox(2000, 3000);
+
+  assert.equal(admitted(sky, wide, null), 0, 'the 3:2 sky, whole square');
+  assert.equal(admitted(sky, wide, wide), 0, 'the 3:2 sky, its own box');
+  assert.equal(admitted(sky, tall, null), 0, 'the 2:3 sky, whole square');
+  assert.equal(admitted(sky, tall, tall), 1, 'the 2:3 sky, its own box');
+  assert.equal(admitted(sky, WHOLE_SQUARE, null), 0, 'the sky as a square output');
+
+  assert.equal(admitted(unrelated, wide, null), 1, 'the 3:2 junk pair, whole square');
+  assert.equal(admitted(unrelated, wide, wide), 3, 'the 3:2 junk pair, its own box');
+  assert.equal(admitted(unrelated, tall, null), 1, 'the 2:3 junk pair, whole square');
+  assert.equal(admitted(unrelated, tall, tall), 6, 'the 2:3 junk pair, its own box');
+  assert.equal(admitted(unrelated, WHOLE_SQUARE, null), 7, 'the junk pair as a square output');
+});
+/**
+ * The survey square as the pipeline really builds it, the resize included.
+ *
+ * Every fixture above is drawn straight into the 256 square, and that is a
+ * different subject from the one the coarse pass sees. The pipeline shrinks a
+ * whole frame into a 256 long edge first, and the resize averages a
+ * photograph's noise down about twelvefold before anything is correlated: what
+ * reaches the correlation is a scene whose peak is far sharper than the same
+ * scene rendered at 256 with its noise still on it. Reading the coarse gate on
+ * a 256-native fixture therefore reads a real answer much nearer the junk than
+ * the browser ever puts it, which is how this file once concluded that no
+ * floor could sit between the two.
+ *
+ * So these scenes are rendered at SURVEY_SCALE times the picture's rectangle,
+ * given their noise and their 8 bits there, box-averaged down into the
+ * rectangle and drawn into the centred box - the order the pipeline does it
+ * in, with the resize standing in for createImageBitmap's.
+ *
+ * THE RATIO IS DERIVED AND NOT CHOSEN. The rectangle's long edge is GATE_SIZE
+ * whatever shape the output is, so rendering it at SURVEY_SOURCE / GATE_SIZE
+ * puts a SURVEY_SOURCE-pixel frame in front of the same resize the pipeline
+ * performs, and 3072 is a phone's frame to a rounding: the browser's own
+ * measurements were made at 3000 into 256, which is 11.7. Getting this wrong
+ * is not a detail, and the first version of these fixtures got it wrong. At a
+ * scale of 6 the low-texture scene at fifteen per cent reads 0.035-0.037 where
+ * the browser reads 0.07-0.11, a sparse field reads about half what it reads
+ * here, and a floor calibrated on that sits too high to be safe by that much.
+ * The comment on N_MAX_SURVEY has the sweep at 4, 6, 8, 10 and 12 against the
+ * browser column, and the family-by-family comparison at 12.
+ */
+const SURVEY_SOURCE = 3072;
+const SURVEY_SCALE = SURVEY_SOURCE / GATE_SIZE;
+const SURVEY_SEEDS = [1, 3, 5, 7];
+
+/** The picture's rectangle in whole pixels, beside the box `lumaSquare` windows over. */
+function surveyRect(width, height) {
+  const box = surveyBox(width, height);
+  const left = Math.round(box.x);
+  const top = Math.round(box.y);
+  return {
+    box,
+    left,
+    top,
+    width: Math.round(box.x + box.width) - left,
+    height: Math.round(box.y + box.height) - top,
+  };
+}
+
+/** The scene at that size, before the camera has seen it. */
+function surveyScene(rect, fn, { dx = 0, dy = 0, level = 0 } = {}) {
+  const width = rect.width * SURVEY_SCALE;
+  const height = rect.height * SURVEY_SCALE;
+  const out = new Float64Array(width * height);
+  const cx = (width - 1) / 2;
+  const cy = (height - 1) / 2;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) out[y * width + x] = fn(x - cx - dx, y - cy - dy);
+  }
+  return out;
+}
+
+/**
+ * A star field at the survey scale, drawn star by star rather than pixel by
+ * pixel. `starField` asks every star about every pixel, which is fine over a
+ * 256 square and is six billion questions over a 3072 one; a star reaches
+ * about five pixels, so walking the stars and touching only what each covers
+ * is the same picture for a thousandth of the work. The same picture exactly:
+ * the base and then each star in list order is the order `starField` adds them
+ * in, so the sums are bit for bit identical, measured at a worst difference of
+ * zero over a window of the two.
+ */
+function surveyStars(rect, stars, { dx = 0, dy = 0, level = 0 } = {}) {
+  const width = rect.width * SURVEY_SCALE;
+  const height = rect.height * SURVEY_SCALE;
+  const out = new Float64Array(width * height).fill(8 + level);
+  const cx = (width - 1) / 2;
+  const cy = (height - 1) / 2;
+  const reach = Math.ceil(Math.sqrt(30));
+  for (const star of stars) {
+    const px = star.x + cx + dx;
+    const py = star.y + cy + dy;
+    const x0 = Math.max(0, Math.floor(px - reach));
+    const x1 = Math.min(width - 1, Math.ceil(px + reach));
+    const y0 = Math.max(0, Math.floor(py - reach));
+    const y1 = Math.min(height - 1, Math.ceil(py + reach));
+    const spread = 2 * star.spread ** 2;
+    for (let y = y0; y <= y1; y += 1) {
+      const down = (y - py) ** 2;
+      for (let x = x0; x <= x1; x += 1) {
+        const d2 = (x - px) ** 2 + down;
+        if (d2 < 30) out[y * width + x] += star.brightness * Math.exp(-d2 / spread);
+      }
+    }
+  }
+  for (let i = 0; i < out.length; i += 1) if (out[i] > 255) out[i] = 255;
+  return out;
+}
+
+/** One frame of it: noise and 8 bits at full size, averaged down, drawn into the square. */
+function surveyFrame(scene, rect, sigma, seed) {
+  const width = rect.width * SURVEY_SCALE;
+  const shot = eightBit(noisy(Float64Array.from(scene), sigma, seed));
+  const out = new Float64Array(GATE_SIZE * GATE_SIZE);
+  for (let y = 0; y < rect.height; y += 1) {
+    for (let x = 0; x < rect.width; x += 1) {
+      let sum = 0;
+      for (let j = 0; j < SURVEY_SCALE; j += 1) {
+        const row = (y * SURVEY_SCALE + j) * width + x * SURVEY_SCALE;
+        for (let i = 0; i < SURVEY_SCALE; i += 1) sum += shot[row + i];
+      }
+      out[(rect.top + y) * GATE_SIZE + rect.left + x] = sum / (SURVEY_SCALE * SURVEY_SCALE);
+    }
+  }
+  return eightBit(out);
+}
+
+/** The pair of them, windowed over the picture's box the way `lumaSquare` does. */
+function surveySquares(rect, first, second, sigma, seed) {
+  return [
+    window2d(surveyFrame(first, rect, sigma, seed), GATE_SIZE, rect.box),
+    window2d(surveyFrame(second, rect, sigma, seed + 500), GATE_SIZE, rect.box),
+  ];
+}
+
+function surveyPair(rect, first, second, sigma, seed) {
+  const [a, b] = surveySquares(rect, first, second, sigma, seed);
+  return phaseCorrelate(a, b, GATE_SIZE);
+}
+
+/** The same pair over SURVEY_SEEDS, which is what every reading below is a range of. */
+function surveySeeds(rect, first, second, sigma) {
+  return SURVEY_SEEDS.map((seed) => surveyPair(rect, first, second, sigma, seed));
+}
+
+test('a clear sky is refused at the survey square, where the whole square let it through', () => {
+  // The regression this floor exists to stop, reproduced. Over the whole
+  // square the letterbox's edge stood high away from the peak and lifted this
+  // reading to 0.96, so N_MAX refused a sky on every seed of every shape.
+  // Over the picture's box the ridge is gone, the sky reads under 0.8, and the
+  // seeds the old gate admits below are moved 1.77 to 2.07 alignment pixels
+  // from an identity that was the truth - which the multiply-up from a 256
+  // square to a 3000-pixel frame turns into about twenty-five output ones. In
+  // the browser the same thing happened at 3:2, on eleven seeds in twelve at
+  // 0.62-0.74 and up to 38 output pixels.
+  const wide = surveyRect(3000, 2000);
+  const tall = surveyRect(2000, 3000);
+  const slope = (rect) => surveyScene(rect, diagonal);
+
+  // A sky with five per cent noise is the junk family that comes nearest this
+  // floor, and the one where the floor does the work rather than watching the
+  // other two do it: live is 0.0120, well over L_MIN, and the plateau runs
+  // 0.650-0.736 at 3:2 and 0.671-0.750 at 2:3, so P_MAX lets some of these
+  // through and this floor has to catch them. 3:2 reads next 0.578-0.674 and
+  // N_MAX admits two seeds of the four, moved 0.72-2.07 alignment pixels from
+  // an identity that was the truth; 2:3 reads 0.647-0.708 and N_MAX admits
+  // one, moved 1.00-2.43.
+  for (const [rect, what, leaks] of [[wide, '3:2', 2], [tall, '2:3', 1]]) {
+    const noisySky = slope(rect);
+    let admitted = 0;
+    let reached = 0;
+    for (const found of surveySeeds(rect, noisySky, noisySky, 12.75)) {
+      assert.ok(!isMeasured(found, N_MAX_SURVEY), `${what} noisy sky at ${found.next}`);
+      if (found.live >= L_MIN && found.plateau <= P_MAX) reached += 1;
+      if (isMeasured(found)) admitted += 1;
+    }
+    assert.ok(reached > 0, `${what}: no seed reaches this floor, so it decides nothing here`);
+    assert.equal(admitted, leaks, `${what}: the seeds the floor this replaced would have moved`);
+  }
+
+  // And the clean sky the browser measured: 3:2 next 0.672-0.674 at a plateau
+  // of 0.566-0.571, 2:3 next 0.637-0.644 at 0.543-0.549. Both are refused by
+  // live as well in this fixture - a slope with 0.4% noise on it leaves 0.0038
+  // against L_MIN's 0.004, where the browser's JPEG leaves enough for it to
+  // pass - so what is pinned here is the uniqueness reading itself.
+  for (const [rect, what] of [[wide, '3:2'], [tall, '2:3']]) {
+    const clean = slope(rect);
+    for (const found of surveySeeds(rect, clean, clean, 1)) {
+      assert.ok(found.next > N_MAX_SURVEY, `${what} clear sky at ${found.next}`);
+      assert.ok(!isMeasured(found, N_MAX_SURVEY), `${what} clear sky: plateau ${found.plateau}`);
+    }
+  }
+
+  // And the junk family the coarse square has always leaked, for which this
+  // floor changes nothing: two unrelated low-texture pictures read 0.939-0.962
+  // at a plateau of 0.351-0.427 and are refused either way, with 18.2
+  // alignment pixels of movement behind them. This is here because a floor
+  // that refuses a sky and stops refusing junk would be no gate at all.
+  const unrelated = surveySeeds(
+    wide, surveyScene(wide, lowScene, { level: BLACK_LEVEL }),
+    surveyScene(wide, otherLow, { level: BLACK_LEVEL }), 13.5,
+  );
+  for (const found of unrelated) {
+    assert.ok(found.next > N_MAX, `the unrelated pair at ${found.next}`);
+    assert.ok(!isMeasured(found, N_MAX_SURVEY));
+  }
+});
+
+test('the survey floor is the one estimate asks for the translation peak', () => {
+  // The floor above is only worth having if it is passed where it belongs, and
+  // a defaulted argument is exactly the kind of thing a refactor drops without
+  // any test noticing. So this drives the whole of estimate() rather than
+  // phaseCorrelate and isMeasured separately: a five per cent sky is refused
+  // at both shapes, and it is refused by nothing but this floor, because with
+  // the argument dropped N_MAX admits three of these eight squares.
+  for (const [width, height, what] of [[3000, 2000, '3:2'], [2000, 3000, '2:3']]) {
+    const rect = surveyRect(width, height);
+    const sky = surveyScene(rect, diagonal);
+    for (const seed of SURVEY_SEEDS) {
+      const [a, b] = surveySquares(rect, sky, sky, 12.75, seed);
+      const found = estimate(a, b, GATE_SIZE, 'translate');
+      assert.equal(found.measured, false, `${what} sky through estimate: next ${found.next}`);
+    }
+  }
+});
+
+test('the real families are measured at the survey square', () => {
+  // The other side of the floor, on the same path: what a photograph reads
+  // once the resize has averaged its noise down. Every one of these is right
+  // to a fifth of a pixel and every one is admitted, and the widest of them
+  // is what decides how low the floor can go.
+  const wide = surveyRect(3000, 2000);
+  const tall = surveyRect(2000, 3000);
+  const moved = { dx: 2.4 * SURVEY_SCALE, dy: -1.7 * SURVEY_SCALE };
+  const off = (found) => Math.hypot(found.dx + 2.4, found.dy - 1.7);
+
+  const admits = (rect, first, second, sigma, worst, what) => {
+    for (const found of surveySeeds(rect, first, second, sigma)) {
+      assert.ok(isMeasured(found, N_MAX_SURVEY), `${what}: next ${found.next}`);
+      assert.ok(off(found) < worst, `${what}: ${off(found)} pixels off`);
+    }
+  };
+
+  // The textured scene at fifty per cent noise - the family a 256-native
+  // fixture reads at 0.71, and the reason this file used to say no floor
+  // could sit under 0.8. Through the resize it reads 0.057-0.067, right to
+  // 0.115-0.139 of a pixel.
+  admits(wide, surveyScene(wide, scene, { level: BLACK_LEVEL }),
+    surveyScene(wide, scene, { ...moved, level: BLACK_LEVEL }), 92, 0.3, 'textured, 50% noise');
+
+  // A low-texture scene at fifteen per cent, letterboxed the other way:
+  // next 0.080-0.084, right to 0.106-0.108 of a pixel.
+  admits(tall, surveyScene(tall, lowScene, { level: BLACK_LEVEL }),
+    surveyScene(tall, lowScene, { ...moved, level: BLACK_LEVEL }), 13.5, 0.3, 'low texture 15%');
+
+  // A night sky as the survey square really sees one: four hundred stars over
+  // a 3000-pixel frame, each of them a sub-pixel dot by the time the resize is
+  // done. next 0.157-0.180 against a floor of 0.45, right to 0.199-0.215 of a
+  // pixel. This is the real family that comes nearest the floor, and the
+  // browser reads the same field at 0.12-0.29.
+  const dense = starList(wide.width * SURVEY_SCALE, 400);
+  admits(wide, surveyStars(wide, dense), surveyStars(wide, dense, moved), 15, 0.3, 'four hundred stars');
+
+  // And a pair eight times apart in brightness, which is a bracket rather than
+  // a burst but is the same alignment question. The dim frame is quantised to
+  // 8 bits at an eighth of the level and carries the same read noise as the
+  // bright one, which is the harsher of the two ways to model it: next
+  // 0.073-0.087, right to 0.115-0.135 of a pixel. Eight *stops* apart - 256 to
+  // one - is a different case and not a real family: it reads 0.77-1.00 with
+  // its answer anywhere between a fifth of a pixel and fifty-eight, and both
+  // floors refuse it, correctly.
+  admits(wide, surveyScene(wide, scene, { level: BLACK_LEVEL }),
+    surveyScene(wide, (u, v) => (scene(u, v) + BLACK_LEVEL) / 8, moved), 28, 0.3,
+    'textured, frame eight times dimmer');
+});
+
+test('a sparse star field is refused at the survey square, and its answer was right', () => {
+  // What the floor costs, pinned rather than argued away. Thirty-four stars
+  // over a 3:2 output read next 0.497-0.587 - inside the band where a clear
+  // sky lives, and above the floor - with their answer 0.45-0.61 of a pixel
+  // from the truth. So these frames stack at the identity, and are not
+  // refined either, because a frame the coarse pass refused is not refined.
+  //
+  // There is no floor that avoids this. Over five draws each of twenty,
+  // thirty-four and fifty stars at three shapes and seven seeds - 315 pairs,
+  // 296 of them right to within a pixel - a floor of 0.45 admits 151 of the
+  // right ones, 0.5 admits 199 and 0.8 admits 274, and the family reads
+  // 0.223-0.999 across the whole of that. It overlaps every junk family
+  // measured, because a sparse field's peak genuinely is one of several and at
+  // the survey square that is what a clear sky looks like too. The comment on
+  // N_MAX_SURVEY has the counts and why the line sits where it does.
+  const wide = surveyRect(3000, 2000);
+  const moved = { dx: 2.4 * SURVEY_SCALE, dy: -1.7 * SURVEY_SCALE };
+  const sparse = starList(wide.width * SURVEY_SCALE, 34);
+  for (const found of surveySeeds(wide, surveyStars(wide, sparse), surveyStars(wide, sparse, moved), 15)) {
+    const off = Math.hypot(found.dx + 2.4, found.dy - 1.7);
+    assert.ok(off < 1, `thirty-four stars: ${off} pixels off, so the answer is right`);
+    assert.ok(!isMeasured(found, N_MAX_SURVEY), `thirty-four stars at ${found.next}`);
+    assert.ok(isMeasured(found), `thirty-four stars: N_MAX admits it at ${found.next}`);
+  }
+});
+
+test('the refinement keeps the peak the survey floor would refuse', () => {
+  // The two floors are one statistic read on two surfaces, and this is the
+  // window that proves they cannot be swapped. Seventeen stars in a 512
+  // refinement window at six per cent noise - a full square of picture at the
+  // resolution the frame was shot at, no box and no resize - read 0.578 with
+  // their answer 0.20 of a pixel from the truth. N_MAX admits it, which is
+  // what the refinement needs; the survey floor refuses it, which is what the
+  // coarse square needs. Neither is wrong about its own surface: a sparse
+  // window's peak is genuinely one of several, and at the survey square that
+  // is what a clear sky looks like too.
+  const sky = starField(512, 17);
+  const found = gateFixture(
+    noisy(field(512, sky), 15, 7),
+    noisy(field(512, sky, 5.4, -3.2), 15, 8),
+    512,
+  );
+  // live 0.010, coherence 0.036, plateau 0.135, next 0.578; found
+  // (-5.22, 3.12), 0.20 px off
+  assert.ok(isMeasured(found), `live ${found.live}, plateau ${found.plateau}, next ${found.next}`);
+  assert.ok(!isMeasured(found, N_MAX_SURVEY), `next ${found.next} against ${N_MAX_SURVEY}`);
+  close(found.dx, -5.4, 0.3, 'horizontal correction');
+  close(found.dy, 3.2, 0.3, 'vertical correction');
+
+  // And the function's own default, which is what every caller but one gets.
+  // Which caller is which is not asserted here - a hand-built statistics
+  // object cannot tell - and the two tests that do assert it are the estimate
+  // one above and the log-polar one below.
+  assert.equal(isMeasured({ live: L_MIN, plateau: 0, next: 0.6 }), true);
+  assert.equal(isMeasured({ live: L_MIN, plateau: 0, next: 0.6 }, N_MAX_SURVEY), false);
+});
+
+test('the log-polar peak keeps N_MAX, and a real turn needs it to', () => {
+  // The other half of "only the coarse translation peak is judged there". The
+  // log-polar surface is a whole square of spectrum whatever shape the output
+  // has, its readings sit where the table on N_MAX puts them, and giving it
+  // the survey floor would stop similarity mode reading real turns - quietly,
+  // because a refused log-polar peak falls back to translation and reports no
+  // rotation rather than a wrong one.
+  const turn = (fn, degrees) => {
+    const radians = (degrees * Math.PI) / 180;
+    return (u, v) => fn(
+      u * Math.cos(radians) + v * Math.sin(radians),
+      -u * Math.sin(radians) + v * Math.cos(radians),
+    );
+  };
+  // The textured scene at thirty per cent noise turned twelve degrees.
+  // estimate() is handed squares that are already windowed - lumaSquare does
+  // that - and takes the spectrum of those, so the surface has to be built the
+  // same way here or it is not the one the gate sees.
+  const reference = window2d(noisy(field(GATE_SIZE, scene), 55.5, 7), GATE_SIZE);
+  const turned = window2d(noisy(field(GATE_SIZE, turn(scene, 12)), 55.5, 8), GATE_SIZE);
+
+  // Its log-polar peak reads live 0.0852, plateau 0.403, next 0.625 - between
+  // the two floors, which is the whole point of the fixture - and the angle
+  // comes back as -12.00 for a turn of twelve.
+  const surface = phaseCorrelate(
+    window2d(logPolar(logSpectrum(reference, GATE_SIZE), GATE_SIZE).values, GATE_SIZE),
+    window2d(logPolar(logSpectrum(turned, GATE_SIZE), GATE_SIZE).values, GATE_SIZE),
+    GATE_SIZE,
+  );
+  assert.ok(surface.next > N_MAX_SURVEY, `the turn's log-polar peak at ${surface.next}`);
+  assert.ok(isMeasured(surface), `the turn's log-polar peak: plateau ${surface.plateau}`);
+  assert.ok(!isMeasured(surface, N_MAX_SURVEY), 'the survey floor would refuse this turn');
+
+  const found = estimate(
+    Float64Array.from(reference), Float64Array.from(turned), GATE_SIZE, 'similarity',
+  );
+  assert.equal(found.clamped, false);
+  close(found.angle, -12, 1, 'the angle, as the correction it is');
 });
 
 test('a featureless frame fails the gate', () => {
@@ -916,6 +1477,85 @@ test('the window removes the mean and fades the edges to nothing', () => {
     close(values[x], 0, 1e-9, `top edge at ${x}`);
     close(values[(size - 1) * size + x], 0, 1e-9, `bottom edge at ${x}`);
     close(values[x * size], 0, 1e-9, `left edge at ${x}`);
+  }
+});
+
+test('the boxed window over the whole square is the window it always was', () => {
+  // The control the browser survey used: an output that is square has no
+  // letterbox, so there is no rectangle to speak of and every variant must be
+  // the same window. Asserted exactly rather than closely - it is the same
+  // arithmetic in the same order, not an approximation of it.
+  const size = 32;
+  const whole = window2d(field(size, scene), size);
+  const boxed = window2d(field(size, scene), size, { x: 0, y: 0, width: size, height: size });
+  for (let i = 0; i < whole.length; i += 1) assert.equal(boxed[i], whole[i], `at ${i}`);
+});
+
+test("the boxed window fades to nothing at the picture's own edges", () => {
+  const size = 32;
+  const box = { x: 4, y: 6, width: 20, height: 14 };
+  const values = window2d(field(size, scene), size, box);
+
+  let inside = 0;
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const value = values[y * size + x];
+      const edge = x === box.x || y === box.y
+        || x === box.x + box.width - 1 || y === box.y + box.height - 1;
+      const within = x >= box.x && x < box.x + box.width && y >= box.y && y < box.y + box.height;
+      if (!within) assert.equal(value, 0, `outside the picture at ${x},${y}`);
+      else if (edge) close(value, 0, 1e-9, `the picture's own edge at ${x},${y}`);
+      else if (value !== 0) inside += 1;
+    }
+  }
+  // The taper is the picture's, so what is left standing is its middle: the
+  // whole of the rectangle bar its border ring, 18 by 12.
+  assert.equal(inside, 18 * 12, 'the picture inside the taper');
+});
+
+test('the boxed window takes the mean out of the picture and not of the ground', () => {
+  // The half of this that matters as much as the taper. A picture of one
+  // constant value has nothing in it, and must come back as nothing - even
+  // though the ground it sits on is a whole picture darker, which is what the
+  // mean of the square would be dragged down by, leaving the flat rectangle
+  // standing as a bright block with an edge all round it.
+  const size = 32;
+  const box = { x: 8, y: 8, width: 16, height: 16 };
+  const flat = () => {
+    const out = field(size, scene);
+    for (let y = box.y; y < box.y + box.height; y += 1) {
+      for (let x = box.x; x < box.x + box.width; x += 1) out[y * size + x] = 200;
+    }
+    return out;
+  };
+
+  for (const value of window2d(flat(), size, box)) close(value, 0, 1e-9, 'a flat picture');
+
+  const square = window2d(flat(), size);
+  let standing = 0;
+  for (let y = box.y + 1; y < box.y + box.height - 1; y += 1) {
+    for (let x = box.x + 1; x < box.x + box.width - 1; x += 1) {
+      if (Math.abs(square[y * size + x]) > 1) standing += 1;
+    }
+  }
+  assert.ok(standing > 100, `the square's mean leaves the block standing: ${standing}`);
+});
+
+test('a rectangle too small to taper comes back empty rather than NaN', () => {
+  // The Hann divides by one less than the side, so a rectangle a pixel across
+  // would be a square full of NaN, and NaN spreads through the transform into
+  // every bin. A rectangle that thin has nothing to correlate in any case.
+  const size = 32;
+  const boxes = [
+    { x: 5, y: 5, width: 1, height: 20 },
+    { x: 5, y: 5, width: 20, height: 1 },
+    { x: 5, y: 5, width: 0, height: 0 },
+    { x: 40, y: 40, width: 10, height: 10 },
+  ];
+  for (const box of boxes) {
+    for (const value of window2d(field(size, scene), size, box)) {
+      assert.equal(value, 0, `${box.width}x${box.height} at ${box.x},${box.y}`);
+    }
   }
 });
 
