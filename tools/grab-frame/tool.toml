@@ -314,3 +314,6 @@ accept = "video/*"
 multiple = false
 title = "Drop a video here"
 hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

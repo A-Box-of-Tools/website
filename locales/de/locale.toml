@@ -488,6 +488,9 @@ md_note = """
     sagt; um es zu benutzen, öffnen Sie die Adresse."""
 
 card_waiting = "Öffnet sich, sobald Sie oben eine Datei auswählen."
+example_load = "Ein Beispiel probieren"
+example_busy = "Beispiel wird erstellt&hellip;"
+example_failed = "Dieser Browser konnte das Beispiel nicht erstellen. Wählen Sie stattdessen eine Datei."
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,
 # warum dieser Satz als Ganzes übersetzt wird und nicht in zwei Hälften.
 pledge_line = """

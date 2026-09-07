@@ -115,6 +115,10 @@ hint = "or click to browse &mdash; a photograph, a screenshot, a PNG, anything y
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
 # setting rather than three copies of the same word in three files.
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false
+
 [words]
 plural = "pictures and the codes in them"
 choose = "the picture to read"

@@ -179,11 +179,18 @@ function run() {
 }
 
 function runDiff(aText, bText) {
+  // The last step is dimmed until there is something for it to act on, and
+  // both texts arrive here by typing, by pasting and from the example button -
+  // none of which go through the file picker, which is where the waking up
+  // used to live. Without these two the difference was drawn inside a greyed
+  // out card whose Copy and Download buttons could not be pressed.
   if (aText === '' && bText === '') {
+    picker.waiting();
     el.resultNote.textContent = phrase('result.waiting');
     el.diffView.replaceChildren();
     return;
   }
+  picker.arrived();
 
   const options = {
     ignoreWhitespace: el.ignoreWhitespace.checked,

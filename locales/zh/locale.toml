@@ -299,6 +299,9 @@ md_note = """
     本页是一个完全在你的浏览器里运行的交互式工具，地址是 {{ tool.url }}。你交给它的任何内容都不会被上传。下面是这个页面用文字对该工具的全部说明；要使用它，请打开这个地址。"""
 
 card_waiting = "在上方选择文件后就会打开。"
+example_load = "试个例子"
+example_busy = "正在生成示例&hellip;"
+example_failed = "此浏览器无法生成示例。请改为选择文件。"
 pledge_line = """
     你的{{ tool.words.plural }}<strong>不会上传</strong>。这里根本没有服务器。"""
 

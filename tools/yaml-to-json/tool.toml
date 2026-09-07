@@ -61,7 +61,7 @@ css_parts = ["form", "panes", "checks", "notes"]
 # is here for the config file that is easier to drop than to open, select all
 # and copy.
 js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml", "message-box", "download", "format"]
-lastmod = "2026-09-02"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -357,3 +357,6 @@ accept = ".yaml,.yml,.json,.txt,.conf,.cfg,text/*,application/json,application/y
 multiple = false
 title = "Drop a file here"
 hint = "or click to browse &mdash; a .yaml, .yml or .json file"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

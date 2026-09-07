@@ -448,6 +448,9 @@ md_note = """
     adresi açın."""
 
 card_waiting = "Yukarıdan bir dosya seçtiğinizde açılır."
+example_load = "Bir örnek dene"
+example_busy = "Örnek oluşturuluyor&hellip;"
+example_failed = "Bu tarayıcı örneği oluşturamadı. Bunun yerine bir dosya seçin."
 pledge_line = """
     {{ tool.words.plural }} <strong>asla yüklenmez</strong>. Sunucu yoktur."""
 

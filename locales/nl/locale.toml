@@ -438,6 +438,9 @@ md_note = """
     het te gebruiken, open je het adres."""
 
 card_waiting = "Gaat open zodra je hierboven een bestand kiest."
+example_load = "Een voorbeeld proberen"
+example_busy = "Voorbeeld wordt gemaakt&hellip;"
+example_failed = "Deze browser kon het voorbeeld niet maken. Kies in plaats daarvan een bestand."
 pledge_line = """
     Je {{ tool.words.plural }} worden <strong>nooit geüpload</strong>. Er is geen server."""
 

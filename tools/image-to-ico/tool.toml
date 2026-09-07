@@ -403,3 +403,6 @@ accept = "image/*,.png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,.svg"
 multiple = true
 title = "Drop a picture here"
 hint = "or click to browse &mdash; PNG, SVG, JPEG, WebP and anything else your browser can open"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

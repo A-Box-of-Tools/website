@@ -410,3 +410,6 @@ accept = "audio/*,video/*"
 multiple = false
 title = "Drop an audio file or a video here"
 hint = "or click to browse &mdash; MP3, WAV, FLAC, M4A, Ogg, and the sound inside MP4, MOV or WebM"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

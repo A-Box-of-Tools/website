@@ -16,6 +16,7 @@ import {
   bytes, targetBytes, dimensions, outName, change, matchText, psnrText,
 } from './files.js';
 import { makeZip } from './shared/zip.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -100,6 +101,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
+  example: makeExample,
 });
 
 async function addFiles(files) {

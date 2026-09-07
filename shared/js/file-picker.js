@@ -40,9 +40,12 @@ import { phrase } from './phrases.js';
  * @param {(files: File[]) => void} options.onFiles  called with what was chosen
  * @param {string} [options.idleTitle]  resting label; taken from the markup if
  *   left out, so the wording lives in one place rather than two
+ * @param {() => Promise<File[]|File>} [options.example]  builds this tool's
+ *   worked example, for the button the partial renders when the tool's [picker]
+ *   table says `example = true`. See wireExample below.
  * @returns {Picker}
  */
-export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
+export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example }) {
   const titleEl = dropzone.querySelector('.dropzone-title');
   const idle = idleTitle ?? titleEl?.textContent ?? '';
 
@@ -73,15 +76,20 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
     }
   };
 
-  const hand = (files) => {
-    const picked = Array.from(files ?? []);
-    if (!picked.length) return;
-    // The last step of a tool is on the page from the start but inert, so the
-    // whole job can be read before anything is handed over. This is the moment
-    // it stops waiting, and it is done here because this is the one place every
-    // tool's files arrive through - from the input or from a drop - so no tool
-    // has to remember to do it. `inert` is used for nothing else on these
-    // pages; see .card[inert] in tool-frame.css.
+  /**
+   * The last step of a tool is on the page from the start but inert, so the
+   * whole job can be read before anything is handed over. This is the moment it
+   * stops waiting.
+   *
+   * Split out of `hand` because files are not the only way input arrives. The
+   * five text tools take theirs by typing, by pasting, and from their own "Try
+   * an example" button, and for as long as this lived inside `hand` all three
+   * of those left the last card dimmed - with its Copy and Download buttons
+   * unclickable and a line underneath saying it would open as soon as a file
+   * was chosen - directly above the finished result. `inert` is used for
+   * nothing else on these pages; see .card[inert] in tool-frame.css.
+   */
+  const wake = () => {
     for (const card of document.querySelectorAll('main .card[inert]')) {
       // Remembered, so a tool that turns the file away can put the card back
       // the way it found it. See waiting() below.
@@ -90,6 +98,12 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
     }
     // The card is not waiting any more, so it stops saying so.
     for (const line of document.querySelectorAll('main .card .card-waiting')) line.remove();
+  };
+
+  const hand = (files) => {
+    const picked = Array.from(files ?? []);
+    if (!picked.length) return;
+    wake();
     onFiles(picked);
   };
 
@@ -127,15 +141,36 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
   window.addEventListener('dragover', (event) => event.preventDefault());
   window.addEventListener('drop', (event) => event.preventDefault());
 
+  const busy = (text) => {
+    dropzone.classList.add('busy');
+    if (titleEl && text) titleEl.textContent = text;
+  };
+
+  const done = () => {
+    dropzone.classList.remove('busy');
+    if (titleEl) titleEl.textContent = idle;
+  };
+
+  // The example goes in through `hand` like any other file, which is the whole
+  // reason it is wired here rather than in each tool: everything that happens
+  // when a visitor drops a file - the last card waking up, its waiting line
+  // going away, onFiles being called with a real File - happens for the example
+  // too, and no tool has to remember any of it.
+  if (example) wireExample({ example, hand, busy, done });
+
   return {
-    busy(text) {
-      dropzone.classList.add('busy');
-      if (titleEl && text) titleEl.textContent = text;
-    },
-    done() {
-      dropzone.classList.remove('busy');
-      if (titleEl) titleEl.textContent = idle;
-    },
+    busy,
+    done,
+    /**
+     * Input arrived by a route this module does not own - typed into a box,
+     * pasted, or put there by the tool's own example button - so wake the last
+     * step as though a file had been dropped.
+     *
+     * The counterpart of `waiting()` below, and tools that take text call the
+     * pair from wherever they already know whether there is anything to work
+     * on.
+     */
+    arrived: wake,
     /**
      * Put the last step back to waiting.
      *
@@ -161,6 +196,69 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
       sayWaiting();
     },
   };
+}
+
+/**
+ * The "Load example" button, for the visitor who wants to see what a tool does
+ * before deciding whether to hand it anything of their own.
+ *
+ * WHY THE EXAMPLE IS BUILT AND NOT FETCHED
+ *
+ * `connect-src` in config/site.toml names no origin belonging to this site, so
+ * `fetch('/examples/whatever')` is refused by the page's own policy. That is
+ * not an oversight to work around: the live check in trust.js reads every
+ * resource the page pulled, and a sample file would show up in it as a request
+ * the visitor never asked for, on the one line of the page whose job is to be
+ * checked. So a tool's example.js assembles its file out of what the browser
+ * already has - a canvas, an encoder, one of the writers under shared/js - and
+ * hands back a File. blob: and data: are not fetches; trust.js leaves them out
+ * of everything, and the panel stays as green as it was.
+ *
+ * Building one can take a moment - an MP4 goes through a real encoder - so the
+ * drop zone says it is working, and the button is out of action until it is.
+ */
+function wireExample({ example, hand, busy, done }) {
+  const button = document.getElementById('example-button');
+  // The markup is only rendered where the tool's [picker] table asks for it, so
+  // a tool that passes `example` without setting `example = true` gets nothing
+  // rather than a crash on load.
+  if (!button) return;
+
+  const holder = button.parentElement;
+
+  const say = (text) => {
+    let note = holder.querySelector('.example-note');
+    if (!note) {
+      note = document.createElement('span');
+      note.className = 'example-note';
+      // Announced, because the button that failed is nowhere near the eye when
+      // the failure lands: a visitor who pressed it may already be reading the
+      // step below.
+      note.setAttribute('role', 'status');
+      holder.append(note);
+    }
+    note.textContent = text;
+  };
+
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    say('');
+    busy(phrase('example.busy'));
+    try {
+      const made = await example();
+      const files = (Array.isArray(made) ? made : [made]).filter(Boolean);
+      done();
+      hand(files);
+    } catch (error) {
+      done();
+      say(phrase('example.failed'));
+      // What went wrong is for whoever opens the console, not for the visitor:
+      // the message above already names the only thing they can do about it.
+      console.info('Example unavailable:', error);
+    } finally {
+      button.disabled = false;
+    }
+  });
 }
 
 /**

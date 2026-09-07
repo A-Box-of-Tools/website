@@ -194,8 +194,10 @@ STRUCTURAL_KEYS = frozenset({
     'analytics_extra',
     # The file input's own attributes. A MIME type and a boolean are the same
     # in every language, and a locale that translated "image/*" would produce a
-    # picker that accepts nothing.
-    'accept', 'multiple',
+    # picker that accepts nothing. `example` is here for the same reason: it is
+    # a boolean saying whether this tool ships a worked example, and the words
+    # on the button that loads it are the frame's, in [ui.tool].
+    'accept', 'multiple', 'example',
 })
 
 # The list above is matched on the key name, which is what keeps it short enough

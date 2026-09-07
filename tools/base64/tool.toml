@@ -45,7 +45,7 @@ css_parts = ["form", "panes", "modes", "notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the file that is easier to drop than to open, select all and copy.
 js_parts = ["file-picker", "message-box", "download", "format"]
-lastmod = "2026-09-02"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -321,3 +321,6 @@ accept = ".txt,.json,.xml,.html,.htm,.css,.yaml,.yml,.md,.csv,.log,.svg,.sql,.js
 multiple = false
 title = "Drop a file here"
 hint = "or click to browse &mdash; any text file"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

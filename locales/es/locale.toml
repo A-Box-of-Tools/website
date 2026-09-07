@@ -433,6 +433,9 @@ md_note = """
     palabras; para usarla, abre la dirección."""
 
 card_waiting = "Se abre en cuanto eliges un archivo arriba."
+example_load = "Probar un ejemplo"
+example_busy = "Creando un ejemplo&hellip;"
+example_failed = "Este navegador no ha podido crear el ejemplo. Elige un archivo en su lugar."
 pledge_line = """
     Tus {{ tool.words.plural }} <strong>nunca se suben</strong>. No hay ningún servidor."""
 

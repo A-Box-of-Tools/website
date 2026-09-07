@@ -314,6 +314,10 @@ hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
 # honest here because the pictures are headed into a lossy video codec anyway,
 # so arriving as a re-encoded JPEG costs nothing a viewer could see. A tool that
 # would have to tell the truth about the bytes it was given must go without.
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false
+
 [picker.urls]
 summary = "Add from a web address"
 button = "Download images"

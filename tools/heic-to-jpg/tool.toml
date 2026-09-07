@@ -379,3 +379,6 @@ accept = "image/*,.heic,.heif"
 multiple = true
 title = "Drop HEIC photos here"
 hint = "or click to browse &mdash; .heic and .heif, whatever they happen to be named"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

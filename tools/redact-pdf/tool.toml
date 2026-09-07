@@ -418,3 +418,6 @@ accept = "application/pdf,.pdf"
 multiple = false
 title = "Drop your PDF here"
 hint = "or click to browse &mdash; one document at a time"
+# No worked example yet. When one is written it goes in src/example.js and
+# this becomes true, which is what renders the button under the drop zone.
+example = false

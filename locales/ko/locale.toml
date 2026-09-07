@@ -462,6 +462,9 @@ md_note = """
     글로 설명하는 내용 전부입니다. 도구를 쓰려면 이 주소를 여세요."""
 
 card_waiting = "위에서 파일을 고르면 바로 열립니다."
+example_load = "예시로 해 보기"
+example_busy = "예시를 만드는 중&hellip;"
+example_failed = "이 브라우저에서는 예시를 만들지 못했습니다. 대신 파일을 골라 주세요."
 pledge_line = """
     {{ tool.words.plural }} <strong>절대 업로드되지 않습니다</strong>. 서버가 아예 없으니까요."""
 
