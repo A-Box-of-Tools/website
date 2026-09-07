@@ -10,17 +10,10 @@
  *
  * WHAT IS IN THE PICTURE
  *
- * The landscape from example-photo.js, panned sideways a little on every
- * frame, with two things drawn over it that no still frame has: a bar that
- * fills as the clip runs, and a marker that steps once a second. Those are
- * there so the tools can be judged rather than merely operated - a trim is
- * only demonstrably a trim if you can see which part of the clip came back,
- * and "grab the frame at 3.2 seconds" means nothing against footage where
- * every frame looks the same.
- *
- * They are drawn as shapes and never as text. A caption would be English in
- * the fourteen languages this module is copied into unchanged, which is the
- * rule phrases.js exists to keep; a bar has no language.
+ * The landscape from example-photo.js, painted once across a canvas wide
+ * enough for the whole pan and then blitted a window at a time - see
+ * clipPainter below for why it is not drawn per frame - with a progress bar
+ * and a once-a-second marker over the top.
  *
  * WHAT IT DOES NOT HAVE
  *
@@ -33,29 +26,75 @@ import { drawPhoto } from './example-photo.js';
 import { pickH264Codec } from './video-support.js';
 import { Mp4Muxer } from './mp4-muxer.js';
 
-/** Frames encoded between yields, so a long clip cannot lock the page up. */
-const BREATH = 12;
+/** How deep the encoder's queue may get before we let the page breathe. */
+const BREATH = 24;
 
 /**
- * Draw one frame of the clip: the scene, then the two moving marks.
+ * Hand the event loop one turn, without setTimeout.
  *
- * Exported because example-video-sound.js draws the same clip and must draw
- * exactly the same one - two examples of the same footage that did not match
- * would be a puzzle for anybody comparing two tools on it.
- *
- * @param {CanvasRenderingContext2D} ctx
- * @param {number} width
- * @param {number} height
- * @param {number} index    which frame this is
- * @param {number} total    how many there are
- * @param {number} fps
+ * setTimeout(0) is clamped to a full second in a background tab, and encoding
+ * yields dozens of times - which turned a clip that takes about a second into
+ * one that took twenty-two whenever the tab was not in front. A visitor who
+ * presses the button and then goes to read something else is the normal case,
+ * not an edge one. A MessageChannel message is not clamped.
  */
-export function drawClipFrame(ctx, width, height, index, total, fps) {
-  drawPhoto(ctx, width, height, { shift: index * 6, grainSeed: 900 + index });
+function turn() {
+  return new Promise((settle) => {
+    const channel = new MessageChannel();
+    channel.port1.onmessage = () => { channel.port1.close(); settle(); };
+    channel.port2.postMessage(0);
+  });
+}
 
+
+/** How far the view moves between one frame and the next, in pixels. */
+const PAN = 6;
+
+/**
+ * Paint the scene once and hand back something that draws any frame of it.
+ *
+ * The first version of this called drawPhoto for every frame, and a
+ * two-hundred-frame clip took twenty-two seconds to encode - because that
+ * function scatters several thousand blades of grass and then walks every
+ * pixel to lay grain over them, which is the right cost to pay once and an
+ * absurd one to pay two hundred times. So the scene is painted once, wide
+ * enough to cover the whole pan, and each frame is a window blitted out of it.
+ *
+ * What that changes in the result is that the grain travels with the scene
+ * instead of being redrawn per frame. Nobody is going to grade this footage;
+ * what matters is that the encoder still has detail to spend bits on and the
+ * button answers in about a second.
+ *
+ * @returns {(ctx: CanvasRenderingContext2D, index: number) => void}
+ */
+export function clipPainter(width, height, total, fps) {
+  const wide = document.createElement('canvas');
+  wide.width = width + PAN * Math.max(1, total);
+  wide.height = height;
+  drawPhoto(wide.getContext('2d', { willReadFrequently: true }), wide.width, height);
+
+  return (ctx, index) => {
+    ctx.drawImage(wide, index * PAN, 0, width, height, 0, 0, width, height);
+    drawMarks(ctx, width, height, index, total, fps);
+  };
+}
+
+/**
+ * The two things drawn over every frame that a still picture has not: a bar
+ * that fills as the clip runs, and a marker that steps once a second.
+ *
+ * They are there so the tools can be judged rather than merely operated - a
+ * trim is only demonstrably a trim if you can see which part came back, and
+ * "the frame at 3.2 seconds" means nothing against footage where every frame
+ * looks the same.
+ *
+ * Shapes and never text: a caption would be English at fourteen of the
+ * addresses this module is copied to, which is the rule phrases.js exists to
+ * keep. A bar has no language.
+ */
+function drawMarks(ctx, width, height, index, total, fps) {
   const done = index / Math.max(1, total - 1);
 
-  // The progress bar, across the foot of the frame.
   const barHeight = Math.max(4, Math.round(height * 0.018));
   const barY = height - barHeight * 3;
   ctx.fillStyle = 'rgba(0,0,0,0.45)';
@@ -63,8 +102,6 @@ export function drawClipFrame(ctx, width, height, index, total, fps) {
   ctx.fillStyle = '#f2b134';
   ctx.fillRect(0, barY, Math.round(width * done), barHeight);
 
-  // A marker that steps once a second, so a still can be placed in the clip by
-  // counting rather than by reading a clock that would have to be in words.
   const second = Math.floor(index / fps);
   const seconds = Math.max(1, Math.ceil(total / fps));
   const pitch = width / (seconds + 1);
@@ -108,6 +145,7 @@ export async function exampleVideoFile(name, {
   canvas.height = height;
   const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
 
+  const paint = clipPainter(width, height, total, fps);
   const muxer = new Mp4Muxer({ width, height });
   let failure = null;
 
@@ -144,7 +182,7 @@ export async function exampleVideoFile(name, {
   try {
     for (let i = 0; i < total; i += 1) {
       if (failure) throw failure;
-      drawClipFrame(ctx, width, height, i, total, fps);
+      paint(ctx, i);
 
       const frame = new VideoFrame(canvas, {
         timestamp: Math.round(i * frameDurationUs),
@@ -158,12 +196,9 @@ export async function exampleVideoFile(name, {
         frame.close();
       }
 
-      // The encoder is given room to drain, and the page room to paint.
-      if (i % BREATH === BREATH - 1) {
-        while (encoder.encodeQueueSize > BREATH) {
-          await new Promise((settle) => setTimeout(settle, 0));
-        }
-      }
+      // Room for the encoder to drain and the page to paint - but only when
+      // the queue has actually grown, rather than on a fixed count.
+      while (encoder.encodeQueueSize > BREATH) await turn();
     }
 
     await encoder.flush();

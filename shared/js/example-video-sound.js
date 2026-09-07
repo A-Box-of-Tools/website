@@ -13,7 +13,7 @@
  * Imports here are static and a tool ships every module it imports, so putting
  * the audio path into example-video.js would make the four tools that want a
  * silent clip carry an AAC encoder and a second MP4 writer they never call.
- * The picture is drawn by example-video.js all the same - `drawClipFrame` is
+ * The picture is drawn by example-video.js all the same - `clipPainter` is
  * exported for exactly this - so there is one scene, not two.
  *
  * WHY A DIFFERENT WRITER
@@ -26,7 +26,7 @@
  * the audio encoder's.
  */
 
-import { drawClipFrame } from './example-video.js';
+import { clipPainter } from './example-video.js';
 import { exampleAudio } from './example-audio.js';
 import { Mp4Writer, avcSampleEntry } from './mp4-writer.js';
 import { mp4aSampleEntry } from './aac.js';
@@ -38,14 +38,29 @@ const VIDEO_TIMESCALE = 90000;
 /** An AAC frame is 1024 samples, always. */
 const AAC_FRAME = 1024;
 
-/** Frames encoded between yields, so a long clip cannot lock the page up. */
-const BREATH = 12;
+/** How deep an encoder's queue may get before we let the page breathe. */
+const BREATH = 24;
+
+/**
+ * Hand the event loop one turn, without setTimeout.
+ *
+ * setTimeout(0) is clamped to a full second in a background tab, and encoding
+ * yields dozens of times - which turned a clip that takes about a second into
+ * one that took twenty-two whenever the tab was not in front. A visitor who
+ * presses the button and then goes to read something else is the normal case,
+ * not an edge one. A MessageChannel message is not clamped.
+ */
+function turn() {
+  return new Promise((settle) => {
+    const channel = new MessageChannel();
+    channel.port1.onmessage = () => { channel.port1.close(); settle(); };
+    channel.port2.postMessage(0);
+  });
+}
 
 /** Let the event loop turn while an encoder's queue drains. */
 async function drain(encoder, limit = BREATH) {
-  while (encoder.encodeQueueSize > limit) {
-    await new Promise((settle) => setTimeout(settle, 0));
-  }
+  while (encoder.encodeQueueSize > limit) await turn();
 }
 
 /**
@@ -62,6 +77,7 @@ async function encodeVideo({ width, height, fps, total }) {
   canvas.height = height;
   const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
 
+  const paint = clipPainter(width, height, total, fps);
   const samples = [];
   let description = null;
   let failure = null;
@@ -97,7 +113,7 @@ async function encodeVideo({ width, height, fps, total }) {
   try {
     for (let i = 0; i < total; i += 1) {
       if (failure) throw failure;
-      drawClipFrame(ctx, width, height, i, total, fps);
+      paint(ctx, i);
       const frame = new VideoFrame(canvas, {
         timestamp: Math.round(i * frameDurationUs),
         duration: Math.round(frameDurationUs),
@@ -107,7 +123,7 @@ async function encodeVideo({ width, height, fps, total }) {
       } finally {
         frame.close();
       }
-      if (i % BREATH === BREATH - 1) await drain(encoder);
+      await drain(encoder);
     }
     await encoder.flush();
     if (failure) throw failure;
@@ -182,7 +198,7 @@ async function encodeAudio({ seconds }) {
       } finally {
         data.close();
       }
-      if ((at / AAC_FRAME) % BREATH === BREATH - 1) await drain(encoder);
+      await drain(encoder);
     }
     await encoder.flush();
     if (failure) throw failure;

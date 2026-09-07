@@ -11,6 +11,7 @@ import { reverseExact } from './reverse.js';
 import { measureFps, reverseByPlayback } from './playback.js';
 import { gopRanges } from './timeline.js';
 import { hasWebCodecs, hasEncoder, canDecode } from './shared/video-support.js';
+import { makeExample } from './example.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer and the writer are
@@ -110,6 +111,7 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
+  example: makeExample,
 });
 
 /* ------------------------------------------------------------------ loading */
