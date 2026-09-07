@@ -51,9 +51,10 @@
       <button type="button" id="range-turn" class="ghost">Bunları döndür</button>
     </div>
     <p id="range-note" class="field-note">
-      Aşağıdaki numaralara göre; onlar da siz ilerledikçe yeniden verilir.
-      <code>odd</code>, <code>even</code>, <code>all</code> ve
-      <code>last</code> de çalışır.
+      Aşağıdaki her sayfanın köşesindeki küçük numaraya göre; o numara siz
+      çalıştıkça yeniden verilir &mdash; büyük olana göre değil, o sayfanın
+      kendi dosyasındaki numarasıdır. <code>odd</code>, <code>even</code>,
+      <code>all</code> ve <code>last</code> da çalışır.
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -220,6 +221,7 @@
     <span data-phrase="page.remove">{n}. sayfayı çıkar</span>
     <span data-phrase="page.from">{name}, sayfa {n}</span>
     <span data-phrase="page.origin">{n}. sayfadan</span>
+    <span data-phrase="page.at">Sıradaki {n}. numara</span>
     <span data-phrase="page.anticlockwise">{n}. sayfayı saat yönünün tersine döndür</span>
     <span data-phrase="page.clockwise">{n}. sayfayı saat yönünde döndür</span>
     <span data-phrase="page.earlier">{n}. sayfayı öne al</span>

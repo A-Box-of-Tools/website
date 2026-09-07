@@ -190,10 +190,36 @@
   box-shadow: 0 1px 3px rgb(16 24 40 / 25%);
 }
 
+/* The page's own number, which is the page. */
 .page-number {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #333;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Where it currently sits, which is the slot rather than the page. Small, and
+   drawn as a label rather than as part of the sheet, because the two numbers
+   on a tile read the same until something is moved and a person has to be able
+   to tell which is which the moment they diverge.
+
+   Inside the paper's top-left corner, not outside it: the grip sits just off
+   that corner on the tile, and a pill hung over the edge lands underneath it.
+   The other three are taken - the x is opposite, the rotation badge is below -
+   and this one is the corner the eye reaches first. */
+.page-at {
+  position: absolute;
+  top: 0.2rem;
+  inset-inline-start: 0.2rem;
+  min-width: 1.05rem;
+  padding: 0 0.2rem;
+  border-radius: 999px;
+  background: var(--text-dim);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
@@ -253,7 +279,6 @@
 .page-meta { padding: 0 0.5rem 0.55rem; min-width: 0; }
 
 .page-from,
-.page-origin,
 .page-dims {
   margin: 0 0 0.25rem;
   font-size: 0.72rem;
@@ -264,7 +289,6 @@
 }
 
 .page-from { color: var(--text); }
-.page-origin { font-variant-numeric: tabular-nums; }
 
 .page-controls { display: flex; align-items: center; gap: 0.2rem; }
 

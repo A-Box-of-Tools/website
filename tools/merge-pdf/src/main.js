@@ -248,10 +248,34 @@ function buildPageNode(entry, index) {
   shape.className = 'page-shape';
   shape.style.aspectRatio = `${Math.max(1, width)} / ${Math.max(1, height)}`;
 
+  /*
+    The big number is the page's own - the page it was in the file it came out
+    of - and not where it currently sits, which is the other way round from how
+    this started and is the whole of what was wrong.
+
+    A position cannot move. It is 1, 2, 3 down the list whatever is in the list,
+    so a tile dragged three places to the left still read "1" when it landed
+    and every number on screen was where it had been a moment before. With no
+    thumbnail to go by, the only available reading was that the drag had not
+    worked - which is exactly how it was reported. What a page *is* moves with
+    it, so that is what the paper now says, and dragging visibly rearranges the
+    numbers.
+
+    Where it sits is still worth showing, because the box above takes those
+    numbers, so it is the small pill in the corner: a label on the slot rather
+    than on the page.
+  */
   const number = document.createElement('span');
   number.className = 'page-number';
-  number.textContent = String(index + 1);
+  number.textContent = String(entry.index + 1);
+  number.title = phrase('page.origin', { n: entry.index + 1 });
   shape.append(number);
+
+  const at = document.createElement('span');
+  at.className = 'page-at';
+  at.textContent = String(index + 1);
+  at.title = phrase('page.at', { n: index + 1 });
+  shape.append(at);
 
   if (entry.rotate % 360 !== 0) {
     const turn = document.createElement('span');
@@ -287,21 +311,6 @@ function buildPageNode(entry, index) {
       { name: entry.source.label, n: entry.index + 1 });
     meta.append(from);
   }
-
-  /*
-    Which page of the original this tile is, which is the one thing about it
-    that does not change as the list is worked on. The big number on the paper
-    is a position: it is 1, 2, 3 down the list whatever is in the list, so with
-    no thumbnail to tell tiles apart, removing page 3 of twelve and removing
-    page 12 leave the screen looking exactly the same - eleven tiles numbered 1
-    to 11 - and the tool cannot show which page it just took out. This line
-    holds still while the numbers renumber, and is the difference between
-    "it removed something" and "it removed that one".
-  */
-  const origin = document.createElement('p');
-  origin.className = 'page-origin';
-  origin.textContent = phrase('page.origin', { n: entry.index + 1 });
-  meta.append(origin);
 
   const dims = document.createElement('p');
   dims.className = 'page-dims';
