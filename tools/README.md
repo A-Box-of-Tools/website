@@ -28,6 +28,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
+| [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
