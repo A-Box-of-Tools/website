@@ -220,10 +220,184 @@ window of the reference at output resolution, and the residual corrects the
 coarse answer in place. At output resolution there is nothing to multiply up,
 so a twentieth of a pixel of error stays a twentieth of a pixel. The same
 synthetic bursts land within a quarter of a pixel per frame. The residual is
-gated — a weak peak, or a correction larger than the coarse pass could
-plausibly have been wrong by, leaves the coarse answer alone — and the crop
-gives up a small margin on every side up front, because a frame that moves
-after the crop was decided stops covering ground the crop assumed.
+gated — a peak that is not a peak, or a correction larger than the coarse pass
+could plausibly have been wrong by, leaves the coarse answer alone — and the
+crop gives up a small margin on every side up front, because a frame that
+moves after the crop was decided stops covering ground the crop assumed.
+
+**Whether a peak is a peak is decided by two of four statistics — `plateau`
+and `next`, with `live` as the guard under them and `coherence` reported for
+the record — and one gate, `isMeasured`.** Every correlation returns the four
+beside the shift. `plateau` asks whether the peak has a position at all;
+`next` asks whether it is the answer or merely the tallest of several; the
+two paragraphs after this one take each in turn. `live` is the mean weight
+the whitening gave the bins, the share of the spectrum that stood above the
+noise floor at all, and is there only to catch a square whose spectrum is
+numerically empty. The gate is `plateau` at most 0.7, `next` at most 0.8 and
+`live` at least 0.004, at every window size — both floors are ratios of the
+surface to its own peak, and neither scales with the side — and the same
+function decides the log-polar peak, the translation peak and the
+refinement's residual, so there is one place to calibrate. The measurements
+it was calibrated on — identical frames, a noisy textured shift, a noisy
+low-texture shift, a noisy gradient and the same rounded to 8 bits, two
+unrelated pictures, a dense star field and a sparse one, a wall at output
+resolution, two JPEGs sharing a lattice, and a low-texture scene turned a few
+degrees for the log-polar surface — are the fixtures in
+`tests/js/stack-images-align.test.js`, with what each measured written beside
+its assertion, and the comments on `P_MAX` and `N_MAX` in `align.js` carry
+the ranges over ten seeds at every window size, with what each floor refuses
+knowingly and why.
+
+`coherence` — the peak divided by the height every weighted bin agreeing on
+one offset would have produced, 1 for a perfect match — was the gate for a
+week, at 0.15 on the 256 square scaled by the side, and it is reported now
+and not read. It did the job on every fixture family but the tool's own
+subject. A star field is sparse in the spectrum as well as in the picture: a
+few hundred points put their energy into a few hundred bins, and under the
+whitening floor every one of the thousands of noise bins still carries a
+small weight, so the denominator belongs to the noise and a perfect match of
+a sparse field reads as a poor one. In the browser, on the built refinement
+path, a field of four hundred stars at fifteen per cent noise read 0.042
+against a floor of 0.075 and was refused, its frames left 1–2.7 pixels off
+where the code without the floor refined them to under 0.3 — while two
+unrelated smooth pictures locked on their shared JPEG lattice read 0.088 and
+passed. No floor separates those two, and the z-score does not either; the
+comment on `L_MIN` in `align.js` has the browser's whole table.
+
+**`plateau` is the shape of the peak: junk that correlates perfectly well and
+still has no position.**
+A smooth gradient — a clear sky — is refused although it correlates with
+itself, and it does correlate: what the survey square holds of it is the
+slope's 8-bit banding over a letterbox, and the letterbox's hard edge along
+row 171 is shared by both frames wherever the camera moved, so the correlation
+is pinned vertically by the edge and free along the slope, which matches
+itself at any offset. That is a ridge, not a peak. Its height is real —
+coherence 0.47–0.51 in the browser, three times what was then the floor — but
+its position
+is wherever the noise tipped the argmax along the ridge, and the sub-pixel fit
+is a parabola through the top of a plateau. Before this test, four frames of
+one gradient with twelve per cent noise came back measured and were moved by
+−12.9, +35.6 and −0.4 output pixels from an identity that was the truth: one
+to three alignment pixels, multiplied up, and a heavier crop for a set that
+had not moved at all. So `phaseCorrelate` also reports the highest point of
+the surface eight pixels from the peak, at every window size, in the eight
+compass directions — eight along the axes, eight times root two on the
+diagonals; a true ring at eight reads 0.05–0.15 higher on real peaks and
+would need its own floor — as a fraction of the peak, and the gate refuses
+anything over 0.7. Eight because it is the refinement's own margin: a peak
+still standing eight pixels out cannot place the frame within the margin
+whatever its argmax says, and on the coarse square eight alignment pixels is
+already tens of output pixels. The gradients measured 0.93–0.99 in the
+browser and 0.95–1.00 on the letterboxed fixture at every noise level tried;
+the weakest real match, a low-texture scene at thirty per cent noise, 0.60 in
+the browser and 0.65–0.68 over ten seeds depending on the seeds; a star field
+0.03–0.10, a textured scene 0.1–0.5. The same reading refuses the letterboxed
+gradient's log-polar peak (0.78, at a `next` of 0.39–0.56 that passes and a
+coherence of 0.22 that is no longer asked), which
+similarity mode had been applying as a scale of 0.95–1.01, and the
+refinement's own version of the sky: a low-texture 512 window whose features
+are sixty pixels across measures 0.77–0.96 with its peak one to seven pixels
+off, inside the margin, and is refused on every seed at both noise levels
+tried — nothing else would have refused it, and a radius that followed the
+side, sixteen at 512, read it at 0.59–0.71 and let nine seeds in ten
+through. The comment on `P_MAX` in `align.js` has the browser table and the
+fixture table side by side, the log-polar and other-window readings, and the
+two pairs the gate knowingly lets through on the letterboxed square: two
+unrelated textured pictures (coherence 0.18–0.20, plateau 0.59–0.73, nine
+seeds in ten, moved by one to four alignment pixels) and two unrelated
+low-texture scenes at fifteen per cent noise (0.15–0.17 and 0.59–0.83, about
+half). Both are the letterbox ridge with the unrelated texture's bumps along
+it, both are refused by `next` alone on a full square (0.82–0.99 and
+0.70–0.91, the second passing five seeds in ten), and both are left to
+the consensus check the way the JPEG lattice below is. Note that a
+full-square gradient fixture does *not* reproduce the browser: it measures
+coherence 0.04–0.10 and `next` 0.87–0.99, and is refused by uniqueness
+alone. The letterbox is what the browser case is made of.
+
+**`next` is whether the peak is alone, for the junk `plateau` cannot see.**
+It is the tallest point of the surface outside a box of ten pixels around
+the peak, as a fraction of the peak: the peak-to-sidelobe ratio, the oldest
+test of a correlation peak there is. A genuine match has one peak and the
+rest of the surface is noise; two unrelated pictures have many noise peaks
+of much the same height, and the argmax is whichever happened to be tallest;
+a lattice has a row of equal peaks. The box is ten because the plateau is
+read at eight — inside eight the shape of the peak is the other floor's
+question — and it was measured at 6, 8, 12, 16 and 20 too. A real broad peak's
+skirt is wider than the box, reaching eleven or twelve pixels, so at ten the
+reading is still partly the peak itself: that costs 0.03–0.10 against a reach
+past the skirt, and moves neither the unrelated pairs nor the star fields,
+whose next peak is far away. The browser's table at the 512 window separates
+every right answer (`next` at most 0.69) from every wrong or junk one (at
+least 0.83); on the fixtures every photograph and every dense field is under
+0.65 at every size, and the junk at 0.70–1.00 — gradients 0.76–0.99,
+unrelated pairs 0.75–0.99 at 512, two unrelated JPEGs 0.72–1.00. The floor
+is 0.8, and the case that set it is the noisy sparse sky at the survey
+square: the browser's 400-star field, shrunk twelvefold into the 256×171
+thumbnail with fifteen per cent noise averaged down with it, read 0.76 with
+the right answer in the browser and 0.63–0.89 with the right answer on every
+seed in node; 0.8 admits the browser's and six seeds in ten — about what the
+old floor admitted, at coherence 0.14–0.17 against 0.15 — where 0.75 admits
+two. It sits nearer the junk than the middle for the reason the plateau
+floor does: a coarse move refused is a frame stacked at the identity,
+unaligned by its whole shift, and a junk frame admitted was junk in the
+stack already. It is also the sparse sky and nothing else that spends this
+margin: which draw of the sky a window caught, not how much noise is on it,
+decides how near the floor a real answer lands, and over ten draws a
+twenty-star window at six per cent noise reached 0.72 and a seventeen-star
+one 0.96 — the second refused on one draw in ten although its answer was
+right. What the floor lets through, with the numbers, is in the comment on
+`N_MAX`: a seed here and there of the unrelated pairs, about one seed in ten
+of two unrelated JPEGs (eight of eighty over four qualities, worst at 50 on
+smooth content, where the lattice's nearest aliases sit inside the box and
+the pair sixteen pixels out falls with the scene's own envelope), and the one
+family the old floor caught and
+this does not — two unrelated pictures of which one has little texture,
+whose surface is a few broad bumps rather than many sharp ones (0.67–0.84 at
+512, eight seeds in ten under the floor, at a plateau of 0.43–0.70 the other
+floor does not catch either). The letterbox refuses that pair on the survey
+square (0.82–0.95), so it reaches the refinement only from a square frame.
+The log-polar surface goes through the same floor and is given none of its
+own: real turns read 0.20–0.81 and all but one seed in forty are admitted,
+where the old floor refused fourteen seeds in twenty of a textured
+scene turned nine degrees at thirty per cent noise. The one refused is a
+third of a degree at thirty per cent noise, reading 0.811 — the smaller the
+turn, the nearer its peak sits to the surface's own junk peak at zero shift,
+and the two read as one crowd — and what that costs is the rotation, not the
+frame, which is still aligned by translation. A floor of 0.85 for this
+surface alone would admit it and would also admit the unrelated pairs sitting
+at 0.71–0.86 there, one of which reads a seven-degree turn between two
+pictures that share nothing; that trade was not taken. What neither floor sees
+there is the surface's own junk peak at zero shift — the structure every
+spectrum shares, its axes and its window — which a small turn of a
+low-texture scene lands on one seed in four or five and reads as no turn;
+for a turn under seven degrees the true peak is inside the box of it.
+Coherence did not see it either (the wrong angles read 0.12–0.18, the right
+ones 0.11–0.21), and the test pins one such seed as what happens.
+
+The statistic it replaced was a z-score, the peak over the surface's standard
+deviation, and it did not measure what it seemed to. After whitening every
+live bin has unit magnitude, so a perfect match peaks at *k/n* over a floor of
+about *√k/n* by Parseval, and the score was *√k* — a count of the bins that
+survived the whitening, not a measure of whether the two pictures agreed. It
+read 27 on a featureless gradient and 150 on a textured scene, the gate was set
+at 4, and no frame ever failed it: featureless frames were moved by up to nine
+pixels, with a spurious rotation in similarity mode, while the page reported
+that they had been left where they were.
+
+**A frame the gate refuses is left at the identity.** Not at the shift the
+peak reported — that is the tallest point of a featureless surface, and
+applying it is what the old gate did by never firing. The pipeline discards
+the coarse `dx`, `dy`, angle and scale, records the frame as `measured: false`
+with its four statistics, skips its refinement (a residual measured from the
+identity is not a residual but the whole shift, which was just refused), and
+`commonArea` runs over the final moves with that identity among them. The
+page's "left where they were" is then a description of what happened. The
+reference frame is always `measured: true`: it is what everything else is
+measured against. A log-polar peak the gate refuses is a smaller event: the
+frame is aligned by translation alone and `clamped` stays false, because
+"reported a rotation too large to be a burst" would be untrue of a frame that
+reported no rotation at all — `clamped` is kept for the plausibility bounds
+only.
 
 Rotation and scale come from the same trick applied twice: in log-polar
 coordinates a rotation *is* a shift along one axis and a scale *is* a shift
@@ -279,14 +453,115 @@ applying it is worse than doing nothing.
 
 ## Things that will bite
 
-**The correlation is whitened, so a picture with a narrow spectrum is all
-rounding error.** Dividing by the magnitude of each frequency is what makes
-phase correlation immune to one frame being brighter than another, and it also
-amplifies bins the picture put nothing into. Bins below a millionth of the
-strongest are dropped rather than normalised. This costs nothing on a
-photograph and is the difference between an answer and noise on anything
-smooth — which is also why the test fixtures are value noise over three
-octaves rather than a few sinusoids.
+**The whitening is regularised, and the constant is large on purpose.**
+Dividing each frequency by its magnitude is what makes phase correlation
+immune to one frame being brighter than another, and it also lifts the
+thousands of bins a photograph put nothing into — sensor noise, whose phases
+say nothing about the shift — to the same vote as a real edge. On a
+low-texture scene with fifteen per cent noise that put the coarse answer 1.3
+to 2.8 pixels off. So each bin is divided by its magnitude *plus* a floor of
+`WHITEN` times the median bin: a bin well above the floor is whitened, a bin
+below it fades in proportion to how far below it is, and the noise barely
+votes. The median rather than the mean because the mean belongs to the handful
+of low-frequency bins. The constant is 128, not the 0.1–0.3 a regularisation
+constant usually is, because the median of a noisy square *is* the noise
+floor: a small constant leaves the noise bins at nine-tenths of the weight of
+a real one, which measured as no help at all. The comment on `WHITEN` in
+`align.js` has the table; the exponent |X|^0.75 was tried as the alternative
+and was no better than full whitening. The old millionth-of-the-strongest cut
+survives only as a guard against dividing by nothing on a square whose whole
+spectrum is numerically empty: on a picture no bin is zeroed any more, it is
+faded by the floor instead. This is also why the test fixtures are value noise
+over three octaves rather than a few sinusoids: a fixture that puts nothing
+into most of its bins is all rounding error by the time it reaches the peak.
+
+**A sky correlates with itself and still cannot be aligned, and the
+letterbox is why.** Every 3:2 frame reaches the coarse square as 256 by 171
+of picture over transparent black, so two frames of a smooth gradient share a
+hard edge that did not move with the camera and a slope that matches itself at
+any offset — coherence 0.5, a ridge for a peak, and an argmax that wanders by
+one to three alignment pixels, which the multiply-up turned into tens of
+output pixels of movement on frames that had not moved. `coherence` cannot
+see it, because the content genuinely correlates; the `plateau` reading in
+`phaseCorrelate` — how much of the peak is still standing eight pixels away —
+can, and `isMeasured` refuses anything over `P_MAX`. The same edge also
+biases every real low-texture answer the survey square accepts: letterboxed,
+the low-texture fixture lands 1.3–1.9 alignment pixels off at fifteen per
+cent noise and 1.0–2.0 at thirty, pulled towards the ridge, where the full
+square lands it within 0.1–0.7 and 0.3–1.9; on a 3000-pixel frame that is
+15–22 output pixels, beyond the refinement's 8-pixel margin, so the 512
+residual — itself within half a pixel there — is refused by the margin test
+and the coarse error stands. That is a cost of the survey square, not of the
+gate, and the fix is the same one that would remove the ridge under the
+gradients and the unrelated pairs: taper the picture's own box in
+`lumaSquare` — a window over `fit`'s rectangle, or fill outside it with the
+picture's mean before windowing — so the edge is not a feature both frames
+share. It is a follow-up. Two things follow for anyone extending the gate
+meanwhile. A fixture of the gradient over the whole square measures a tenth
+of the coherence and is refused without the plateau's help, so a fixture that
+does not letterbox does not reproduce the browser; the tests' `letterbox`
+helper exists for that. And the plateau radius is eight at every window size,
+not a fraction of the side: a radius of four at 128 refused the low-texture
+pair with its peak in the right place, and a radius of sixteen at 512 kept
+the wall with its peak five pixels wrong. `plateauRadius` in `align.js` says
+why, and the comment on `P_MAX` has the readings at both.
+
+**The gate mostly catches a JPEG's block lattice, and where it does is not
+where it was designed to.** Every frame of a phone burst is a JPEG, and every
+JPEG carries the same 8-pixel grid, so two frames share a feature that did
+not move with the picture. Two unrelated smooth pictures both compressed
+correlate on nothing else, and `next` reads the row of equal peaks for what
+it is — 0.72–1.00 at 512 over eighty seed pairs at qualities 95, 75, 50 and
+20 — but eight of those eighty are admitted, about one in ten, worst on
+smooth content at quality 50. The leak is where the lattice puts its aliases:
+the nearest sit eight pixels from the peak, inside the ten-pixel box, so what
+is read is the pair sixteen or seventeen pixels out, and those fall away with
+the scene's own smooth envelope where the near ones stand level with the
+peak. It is harmless as the pipeline is arranged — the survey square
+letterboxes the same pairs to 0.91–0.99 and refuses every one, and at 512 an
+argmax on a random lattice peak is outside the refinement's 8-pixel margin
+and discarded there — but the consensus check is what should be catching it.
+
+The refinement's own scenario is the same lattice between two frames of *one*
+smooth scene: the coarse move a third of a pixel short, and the residual
+landing on the lattice's alias at +3 pixels, inside the margin. Uniqueness
+cannot see that one at all, for the same reason — it reads 0.46–0.93 at
+quality 75 and 0.27–0.40 at 20, the noise beyond the lattice rather than the
+lattice. What refuses it is the plateau, by a coincidence nobody chose: its
+radius is eight because that is the refinement's margin, and eight is also
+the block pitch, so the shoulder is read on the lattice's first alias and
+spikes there — 0.71–0.96 at a radius of eight against 0.50–0.69 at six and
+0.47–0.74 at ten. At qualities 95, 75 and 50 that refuses the lock on every
+seed pair tried. Only at quality 20, where the blocking buries the alias,
+does it get through: eight of ten seed pairs, applying the alias. Textured
+content is immune (0.77–0.91, correct to 0.03 pixels), and so is the coarse
+pass — the thumbnail averages the blocks away. This is a peak of the wrong
+thing, not a weak one; full whitening landed on the same alias, so it is
+inherited rather than introduced by the gate. The tests pin both sides, so a
+plateau radius moved off eight cannot quietly hand the lock back, and
+whatever finally catches it has to say so there.
+
+**A sparse sky is refined at 512 again, and the 64 window is not gated at
+all.** Twenty stars in a 512 window at six per cent noise read `next`
+0.40–0.53 and `plateau` 0.05–0.30 and are refined to within 0.2 pixels,
+where the coherence floor refused them at 0.04 — level with junk, for the
+reason above. That range is one draw of the sky over ten noise seeds; over
+ten different draws the same window reads 0.32–0.72, and a seventeen-star
+one 0.37–0.96, so it is which stars the window caught rather than how much
+noise is on them that decides how near the floor a right answer lands. At
+fifteen per cent the same twenty stars are wrong by 10–105
+pixels and `next` refuses every seed at 0.80–0.99; the browser's own field
+keeps twenty-two stars in its window and is right at fifteen per cent, at
+0.36–0.57. Neither floor scales with the side, and at 128 both hold: the
+real pairs read 0.04–0.45 and the junk 0.67–1.00. At 64 the surface has too
+few bins for junk to read as junk — an 8-bit gradient at one per cent noise
+reads 0.41–0.70 and passes eight seeds in ten, an unrelated pair 0.63–0.97 —
+where the old floor at 0.60 refused both, and every noisy real pair with
+them. That is accepted rather than fixed: `plan.js` gives the 64 window only
+to crops under 272 pixels on the short side, where the coarse square is
+within a factor of 1.6 of output resolution, and `refineMargin` caps what an
+applied residual can move a frame that did not move at one pixel. The
+comment on `N_MAX` has the numbers at every size.
 
 **Focus stacking needs its bands to overlap.** Sharpness is measured from a
 pixel's neighbours, so a band edge scored without them draws a seam across the
