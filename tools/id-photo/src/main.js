@@ -25,6 +25,7 @@ import {
   tiltText, verdictText,
 } from './files.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -341,6 +342,7 @@ const picker = wireFilePicker({
   onFiles(files) {
     load(files[0]);
   },
+  example: makeExample,
 });
 
 async function load(file) {

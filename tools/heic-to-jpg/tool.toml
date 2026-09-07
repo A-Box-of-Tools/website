@@ -34,7 +34,7 @@ roadmap_group = "images"
 css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "format", "errors"]
-lastmod = "2026-08-27"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -379,6 +379,7 @@ accept = "image/*,.heic,.heif"
 multiple = true
 title = "Drop HEIC photos here"
 hint = "or click to browse &mdash; .heic and .heif, whatever they happen to be named"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A real .heic, in src/example-data.js, because no browser will
+# encode one - which is the whole reason this tool exists. It is the only
+# example on the site that could not be drawn.
+example = true

@@ -30,7 +30,7 @@ css_parts = ["progress", "form", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-08-27"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -408,6 +408,7 @@ accept = "image/*,.jpg,.jpeg,.png,.webp,.heic"
 multiple = false
 title = "Drop a photo here"
 hint = "or click to browse &mdash; one photograph, JPEG, PNG, WebP or anything else your browser can open"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A real portrait, in src/example-data.js. This tool measures a
+# face - the eye line, the chin, the crown - and a drawn one has nothing to
+# measure. From Pexels; recorded in THIRD-PARTY-NOTICES.md.
+example = true
