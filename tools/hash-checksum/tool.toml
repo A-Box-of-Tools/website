@@ -38,8 +38,8 @@ roadmap_group = "beyond"
 css_parts = ["progress", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "message-box", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -417,6 +417,6 @@ accept = "*/*"
 multiple = false
 title = "Drop a file here"
 hint = "or click to browse &mdash; any file, any size, nothing is uploaded"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A two-megapixel photograph, so the reading is a real read rather
+# than an instant one, which is the part of this tool worth watching.
+example = true

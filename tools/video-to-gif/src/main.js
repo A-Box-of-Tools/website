@@ -12,6 +12,7 @@ import { encodeGif, ColorHistogram, MAX_COLORS } from './encode.js';
 import { RangeBar, formatTime, parseTime } from './range.js';
 import { frameTimes, frameDelays, outputSize, workingBytes, estimateBytes, MAX_FPS } from './plan.js';
 import { hasWebCodecs, canDecode } from './support.js';
+import { makeExample } from './example.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for
@@ -136,6 +137,7 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
+  example: makeExample,
 });
 
 /* ----------------------------------------------------------------- loading */

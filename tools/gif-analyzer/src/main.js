@@ -10,6 +10,7 @@ import { budget, distinctColors, paletteWaste } from './budget.js';
 import { findings } from './findings.js';
 import { report } from './report.js';
 import { clock, count, delay, exact, fileSize, hex, percent, plural, rate } from './format.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -98,6 +99,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles(files) { openFile(files[0]); },
+  example: makeExample,
 });
 
 async function openFile(file) {

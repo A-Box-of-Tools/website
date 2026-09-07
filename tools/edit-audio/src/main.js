@@ -9,6 +9,7 @@ import { render, lengthAfter } from './edit.js';
 import { peak, dbToGain, gainToDb, normalizeGain } from './effects.js';
 import { writeWav, wavSize } from './shared/wav.js';
 import { drawWaveform } from './waveform.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -95,6 +96,7 @@ const picker = wireFilePicker({
     const [picked] = files;
     if (picked) loadFile(picked);
   },
+  example: makeExample,
 });
 
 async function loadFile(picked) {

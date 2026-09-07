@@ -32,13 +32,13 @@ css_parts = ["progress", "results", "form", "notes", "modes", "checks"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "message-box", "format"]
+js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "message-box", "format", "example-audio"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["trim-audio"]
-lastmod = "2026-09-02"
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -361,6 +361,7 @@ accept = "audio/*,video/*"
 multiple = false
 title = "Drop an audio file or a video here"
 hint = "or click to browse &mdash; MP3, WAV, FLAC, M4A, Ogg, and the sound inside MP4, MOV or WebM"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# Eight seconds of music, synthesised by shared/js/example-audio.js.
+# A sine tone played backwards sounds like a sine tone, which would
+# demonstrate the reverse control by hiding it.
+example = true
