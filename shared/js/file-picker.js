@@ -156,7 +156,7 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example })
   // when a visitor drops a file - the last card waking up, its waiting line
   // going away, onFiles being called with a real File - happens for the example
   // too, and no tool has to remember any of it.
-  if (example) wireExample({ example, hand, busy, done });
+  if (example) wireExample({ example, hand, busy, done, dropzone });
 
   return {
     busy,
@@ -216,8 +216,21 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle, example })
  *
  * Building one can take a moment - an MP4 goes through a real encoder - so the
  * drop zone says it is working, and the button is out of action until it is.
+ *
+ * WHERE THE BUTTON ENDS UP
+ *
+ * On the step's own heading row, over on the right. The partial renders it
+ * under the drop zone because that is where it can be written once for every
+ * tool - the heading is each tool's own markup, in its own body.html, in
+ * fifteen languages - so it is moved here instead of being declared there
+ * thirty-seven times over.
+ *
+ * It is put beside the <h2> rather than inside it. A <button> is valid
+ * phrasing content within a heading and it would lay out identically, but the
+ * heading's accessible name would become "1 Choose images Try an example",
+ * which is a worse heading and a worse button.
  */
-function wireExample({ example, hand, busy, done }) {
+function wireExample({ example, hand, busy, done, dropzone }) {
   const button = document.getElementById('example-button');
   // The markup is only rendered where the tool's [picker] table asks for it, so
   // a tool that passes `example` without setting `example = true` gets nothing
@@ -225,6 +238,7 @@ function wireExample({ example, hand, busy, done }) {
   if (!button) return;
 
   const holder = button.parentElement;
+  liftToHeading(holder, dropzone);
 
   const say = (text) => {
     let note = holder.querySelector('.example-note');
@@ -259,6 +273,24 @@ function wireExample({ example, hand, busy, done }) {
       button.disabled = false;
     }
   });
+}
+
+/**
+ * Move the button up onto the step's heading row.
+ *
+ * Quietly does nothing if the shape is not what it expects - a tool whose
+ * first card has no heading keeps the button under the drop zone, which is
+ * where it already was and is not wrong, only lower.
+ */
+function liftToHeading(holder, dropzone) {
+  const card = dropzone?.closest('.card');
+  const heading = card?.querySelector(':scope > h2');
+  if (!heading || !holder) return;
+
+  const row = document.createElement('div');
+  row.className = 'card-head';
+  heading.before(row);
+  row.append(heading, holder);
 }
 
 /**
