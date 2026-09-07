@@ -24,7 +24,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { ascii, concat, u16be, u32be, u32le } from './helpers.js';
+import {
+  EXIF_ID, TIFF_LE, TIFF_TYPE as TYPE, ascii, concat, segment, tiffEntry as entry, tiffOf,
+  u16be, u32be, u32le,
+} from './helpers.js';
 import {
   RAW_EXTENSIONS, findPreview, jpegSize, looksRaw, paged, tiffHeader,
 } from '../../tools/stack-images/src/raw.js';
@@ -53,70 +56,6 @@ const jpegOf = (width, height, filler = 64, marker = 0xc0) => concat(
 
 /** Bytes that are not a JPEG, for the cases where a tag lies about what it points at. */
 const notJpeg = (length) => new Uint8Array(length).fill(0x77);
-
-const TYPE = { ASCII: 2, SHORT: 3, LONG: 4, UNDEFINED: 7 };
-const WIDTHS = { 2: 1, 3: 2, 4: 4, 7: 1 };
-
-/**
- * Lay out a TIFF: a header, a run of directories, then the data too long to sit
- * inside an entry.
- *
- * An entry's value is a number when it fits in the four bytes the entry has,
- * and an offset into the data area when it does not. That indirection is the
- * only awkward part of the format and it is the part worth exercising, so the
- * fixtures below deliberately use both.
- *
- * `dirs` is a list of `{ entries, next }`. An entry's value may be a plain
- * number, `{ blob: i }` for the offset of a data block, or `{ dir: i }` for the
- * offset of another directory.
- */
-function tiffOf({ little = true, magic = 42, dirs, blobs = [] }) {
-  const dirSizes = dirs.map((dir) => 2 + dir.entries.length * 12 + 4);
-  const dirAt = [];
-  let at = 8;
-  for (const size of dirSizes) { dirAt.push(at); at += size; }
-
-  const blobAt = [];
-  for (const blob of blobs) { blobAt.push(at); at += blob.length; }
-
-  const out = new Uint8Array(at);
-  const view = new DataView(out.buffer);
-  const resolve = (value) => {
-    if (typeof value === 'number') return value;
-    if (value.blob !== undefined) return blobAt[value.blob];
-    return dirAt[value.dir];
-  };
-
-  out.set(ascii(little ? 'II' : 'MM'), 0);
-  view.setUint16(2, magic, little);
-  view.setUint32(4, dirAt[0], little);
-
-  dirs.forEach((dir, index) => {
-    let cursor = dirAt[index];
-    view.setUint16(cursor, dir.entries.length, little);
-    cursor += 2;
-    for (const entry of dir.entries) {
-      view.setUint16(cursor, entry.tag, little);
-      view.setUint16(cursor + 2, entry.type, little);
-      view.setUint32(cursor + 4, entry.count, little);
-      const needed = WIDTHS[entry.type] * entry.count;
-      if (needed <= 4) {
-        // Left-justified inside the entry, whichever way round the file is.
-        if (entry.type === TYPE.SHORT) view.setUint16(cursor + 8, resolve(entry.value), little);
-        else view.setUint32(cursor + 8, resolve(entry.value), little);
-      } else {
-        view.setUint32(cursor + 8, resolve(entry.value), little);
-      }
-      cursor += 12;
-    }
-    view.setUint32(cursor, dir.next === undefined ? 0 : dirAt[dir.next], little);
-  });
-
-  blobs.forEach((blob, index) => out.set(blob, blobAt[index]));
-  return out;
-}
-
-const entry = (tag, type, count, value) => ({ tag, type, count, value });
 
 /** Read a whole in-memory fixture, counting what was asked for. */
 function readerFor(bytes) {
@@ -187,8 +126,37 @@ test('a CR2 gives up its full-size preview, not its thumbnail', () => {
     assert.equal(found.make, 'Canon');
     assert.equal(found.model, 'EOS 5D');
     assert.equal(found.orientation, 6, 'a sideways camera is worth knowing about');
+    assert.equal(found.previewOrientation, null,
+      'the preview carries no Exif of its own, and the pipeline must be told so');
     assert.deepEqual(Array.from(bytes.subarray(found.offset, found.offset + 3)),
       [0xff, 0xd8, 0xff], 'the offset does not land on a JPEG');
+  });
+});
+
+test('a preview that carries its own Exif reports its own orientation', () => {
+  // The two orientations answer different questions and both come back. The
+  // browser's decoder honours the preview's tag and never sees the RAW's, so
+  // which one the pipeline applies itself depends on knowing which was there.
+  const preview = concat(
+    [0xff, 0xd8], segment(0xe1, concat(EXIF_ID, TIFF_LE)), sof(0xc0, 6000, 4000),
+    [0xff, 0xda], u16be(2048 + 2), new Uint8Array(2048).fill(0x5a),
+  );
+  const bytes = tiffOf({
+    dirs: [{
+      entries: [
+        entry(0x0103, TYPE.SHORT, 1, 6),
+        entry(0x0111, TYPE.LONG, 1, { blob: 0 }),
+        entry(0x0117, TYPE.LONG, 1, preview.length),
+        entry(0x0112, TYPE.SHORT, 1, 8),
+      ],
+    }],
+    blobs: [preview],
+  });
+
+  return findIn(bytes).then((found) => {
+    assert.equal(found.width, 6000, 'the size is still the stored one; the pipeline orients it');
+    assert.equal(found.orientation, 8, 'the RAW says one thing');
+    assert.equal(found.previewOrientation, 6, 'and the preview says another');
   });
 });
 
@@ -224,6 +192,7 @@ test('a NEF gives up the preview hidden in a sub-directory', () => {
     assert.equal(found.width, 4928);
     assert.equal(found.from, 'sub');
     assert.equal(found.make, 'NIKON');
+    assert.equal(found.previewOrientation, null);
   });
 });
 
@@ -368,6 +337,8 @@ test('a Fujifilm RAF is read from the two numbers in its header', () => {
     assert.equal(found.offset, offset);
     assert.equal(found.width, 4896);
     assert.equal(found.make, 'FUJIFILM');
+    assert.equal(found.orientation, 1, 'a RAF has no directory to read one from');
+    assert.equal(found.previewOrientation, null, 'so the preview is the only place it could be');
   });
 });
 
@@ -406,6 +377,35 @@ test('a CR3 gives up the track whose sample turns out to be a JPEG', () => {
     assert.equal(found.offset, mdatAt);
     assert.equal(found.width, 6000);
     assert.equal(found.make, 'Canon');
+    assert.equal(found.orientation, 1, 'no CMT1 box, so upright is the only honest answer');
+  });
+});
+
+test('a CR3 reads its orientation out of the CMT1 box', () => {
+  // The JPEGs a CR3 embeds carry no Exif of their own, so the camera's IFD0,
+  // written whole into a CMT1 box behind the uuid, is the only place the
+  // orientation is. Without it a portrait CR3 stacks sideways and nothing says
+  // why - the preview-orientation rule reports null, honestly, and there is no
+  // directory value to fall back on.
+  const preview = jpegOf(6000, 4000, 2048);
+  const ftyp = box('ftyp', concat(ascii('crx '), u32be(1), ascii('crx isom')));
+  const mdat = box('mdat', preview);
+  const mdatAt = ftyp.length + 8;
+  const ifd0 = tiffOf({
+    dirs: [{ entries: [entry(0x010f, TYPE.ASCII, 6, { blob: 0 }), entry(0x0112, TYPE.SHORT, 1, 6)] }],
+    blobs: [ascii('Canon\0')],
+  });
+  const uuid = box('uuid', concat(new Uint8Array(16), box('CMT1', ifd0)));
+  const trak = box('trak', box('mdia', box('minf', box('stbl', concat(
+    box('stco', concat(u32be(0), u32be(1), u32be(mdatAt))),
+    box('stsz', concat(u32be(0), u32be(0), u32be(1), u32be(preview.length))),
+  )))));
+  const bytes = concat(ftyp, mdat, box('moov', concat(uuid, trak)));
+
+  return findIn(bytes).then((found) => {
+    assert.equal(found.from, 'trak');
+    assert.equal(found.orientation, 6);
+    assert.equal(found.previewOrientation, null, 'the preview itself still says nothing');
   });
 });
 

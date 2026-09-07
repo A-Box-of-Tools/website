@@ -35,6 +35,8 @@
  * decoder a slice of packed sensor data and believing whatever it says.
  */
 
+import { jpegOrientation, jpegSegments } from './orient.js';
+
 /** Where a preview was found, used to break ties between equal-looking ones. */
 const FULL_SIZE_FIRST = ['ifd0', 'sub', 'jpgfromraw', 'raf', 'trak', 'ifd', 'prvw'];
 
@@ -334,6 +336,9 @@ async function walkRaf(file) {
   const offset = view.getUint32(84, false);
   const length = view.getUint32(88, false);
   if (!offset || !length || offset + length > file.size) return null;
+  // No directory to read an orientation from, and none is needed: the JPEG a
+  // RAF embeds carries its own Exif block, so it reaches the pipeline through
+  // the preview-orientation rule in findPreview rather than through this one.
   return {
     candidates: [{ offset, length, width: null, height: null, from: 'raf', scan: true }],
     make: 'FUJIFILM',
@@ -384,6 +389,7 @@ async function walkBmff(file) {
   if (new TextDecoder('latin1').decode(head.subarray(4, 8)) !== 'ftyp') return null;
 
   const found = [];
+  let orientation = 1;
 
   /** Descend, filling `tables` for the track being walked. */
   async function descend(start, end, depth, tables) {
@@ -399,6 +405,11 @@ async function walkBmff(file) {
         await descend(box.body + 16, box.end, depth + 1, tables);
       } else if (tables && (box.type === 'stco' || box.type === 'co64' || box.type === 'stsz')) {
         tables[box.type] = box.body;
+      } else if (box.type === 'CMT1') {
+        // The camera's IFD0, as a whole TIFF block in a box of its own. The
+        // JPEGs a CR3 embeds carry no Exif, so unlike a RAF this is the only
+        // place the orientation is written, and the pipeline has to be told.
+        orientation = await ifd0Orientation(file, box.body) ?? orientation;
       } else if (box.type === 'PRVW' || box.type === 'THMB') {
         // Both hold a whole JPEG behind a short fixed header. Rather than pin
         // that header's length per box and per firmware, the candidate starts
@@ -438,7 +449,23 @@ async function walkBmff(file) {
   }
 
   if (!found.length) return null;
-  return { candidates: found, make: 'Canon', model: null, orientation: 1 };
+  return { candidates: found, make: 'Canon', model: null, orientation };
+}
+
+/** The orientation tag out of a TIFF block found at `at`, or null. */
+async function ifd0Orientation(file, at) {
+  if (at + 8 > file.size) return null;
+  const header = tiffHeader(await file.at(at, 8));
+  if (!header) return null;
+  let dir = null;
+  try {
+    dir = await readDirectory(file, at, header.first, header.little);
+  } catch {
+    return null;
+  }
+  if (!dir) return null;
+  const value = await number(file, dir.entries.get(TAG.ORIENTATION), header.little);
+  return value >= 1 && value <= 8 ? value : null;
 }
 
 /** Where a track's first sample is, and how long. */
@@ -483,32 +510,22 @@ async function firstSample(file, tables) {
  * no tags beside it, and ranking previews by byte length alone picks the wrong
  * one the moment a camera writes a small preview at high quality. Every frame
  * marker - baseline, progressive, lossless, arithmetic - carries the same two
- * numbers in the same two places, so which one it is does not matter.
+ * numbers in the same two places, so which one it is does not matter. The walk
+ * to the frame header is orient.js's, shared with the orientation reader that
+ * runs on the same head, so the two cannot disagree about where it is.
  */
 export function jpegSize(bytes) {
-  let at = 2;
-  while (at + 9 < bytes.length) {
-    if (bytes[at] !== 0xff) { at += 1; continue; }
-    const marker = bytes[at + 1];
-    if (marker === 0xff) { at += 1; continue; }
-    if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
-      at += 2;
+  for (const seg of jpegSegments(bytes)) {
+    if (!seg.frame) {
+      if (seg.final || seg.length < 2) return null;
       continue;
     }
-    if (marker === 0xda || marker === 0xd9) return null;
-    const length = (bytes[at + 2] << 8) | bytes[at + 3];
-    if (length < 2) return null;
-    // C4 is the Huffman tables, C8 is a JPEG extension and CC is arithmetic
-    // conditioning. Everything else in C0..CF starts a frame.
-    const frame = marker >= 0xc0 && marker <= 0xcf
-      && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc;
-    if (frame) {
-      return {
-        height: (bytes[at + 5] << 8) | bytes[at + 6],
-        width: (bytes[at + 7] << 8) | bytes[at + 8],
-      };
-    }
-    at += 2 + length;
+    const { at } = seg;
+    if (at + 9 > bytes.length) return null;
+    return {
+      height: (bytes[at + 5] << 8) | bytes[at + 6],
+      width: (bytes[at + 7] << 8) | bytes[at + 8],
+    };
   }
   return null;
 }
@@ -549,7 +566,16 @@ export function looksRaw(name) {
  * @param {number} [minimumPixels]  below this a preview is not worth stacking
  * @returns {Promise<null | {offset: number, length: number, width: number|null,
  *   height: number|null, from: string, make: string|null, model: string|null,
- *   orientation: number, read: number}>}
+ *   orientation: number, previewOrientation: number|null|undefined, read: number}>}
+ *
+ * Two orientations come back and they answer different questions. `orientation`
+ * is the RAW's own, from IFD0, and is how the camera was held. `previewOrientation`
+ * is what the preview JPEG says about itself, read off the same head that
+ * confirmed it: a value when it carries Exif, null when it reaches its frame
+ * header without any, and undefined when 4 KB was not enough to tell. The
+ * distinction matters because the browser's decoder honours the second and
+ * never sees the first, so whichever of the two the pipeline applies itself
+ * depends on what the preview already had.
  */
 export async function findPreview(read, size, minimumPixels = 640 * 480) {
   const file = paged(read, size);
@@ -586,6 +612,7 @@ export async function findPreview(read, size, minimumPixels = 640 * 480) {
       width: declared?.width ?? candidate.width ?? null,
       height: declared?.height ?? candidate.height ?? null,
       from: candidate.from,
+      previewOrientation: jpegOrientation(head.subarray(start)),
     });
   }
 
