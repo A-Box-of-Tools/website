@@ -3,8 +3,8 @@
 import { phrase } from './shared/phrases.js';
 import { saveBlob } from './shared/download.js';
 import { KINDS, compose, missing } from './payload.js';
-import { makeQr } from './qr.js';
-import { capacityFor } from './qr-encode.js';
+import { makeQr } from './shared/qr.js';
+import { capacityFor } from './shared/qr-encode.js';
 import { SYMBOLOGIES, makeBarcode } from './barcode.js';
 import {
   barcodeSvg, qrSvg, sizeOfSvg, svgToPng,

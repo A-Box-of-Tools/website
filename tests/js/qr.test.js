@@ -17,15 +17,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { generator, multiply, remainder } from '../../tools/qr-barcode/src/gf256.js';
+import { generator, multiply, remainder } from '../../shared/js/gf256.js';
 import {
   blockLayout, countBits, dataCapacity, LEVELS, remainderBits, sizeOf,
   totalCodewords,
 } from '../../shared/js/qr-tables.js';
 import {
   capacityFor, chooseMode, encodeText, fitVersion,
-} from '../../tools/qr-barcode/src/qr-encode.js';
-import { makeQr } from '../../tools/qr-barcode/src/qr.js';
+} from '../../shared/js/qr-encode.js';
+import { makeQr } from '../../shared/js/qr.js';
 
 /**
  * The stand-in for phrase(). The encoder's refusal is a key and its blanks now;

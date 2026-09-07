@@ -45,8 +45,8 @@ css_parts = ["notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone; it is
 # set to accept many files because a CT is three hundred of them and dropping a
 # folder is the only sane way to open one.
-js_parts = ["file-picker", "message-box"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "message-box", "example-dicom"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -453,6 +453,7 @@ accept = "*/*"
 multiple = true
 title = "Drop a scan here"
 hint = "or click to browse &mdash; one .dcm file, or a whole folder of them"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A CT phantom, built byte by byte by shared/js/example-dicom.js.
+# This tool is the hardest here to try: nobody has a .dcm unless they were
+# given one, and that one is a scan of a real person.
+example = true

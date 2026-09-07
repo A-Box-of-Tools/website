@@ -15,36 +15,19 @@
  * font, and the only fonts a PDF can use without embedding megabytes are the
  * base fourteen - Helvetica here - whose repertoire is Latin.
  *
- * So the page is a statement: reference codes, dates, amounts, and two names.
- * That is a deliberate choice and not a shrug. It is what people actually
- * redact, it reads the same in every language this site is published in, and
- * it avoids the alternative - a paragraph of English prose sitting inside a
- * Japanese page - which is the thing shared/js/phrases.js exists to prevent.
- * Embedding a CJK font to do better would cost several megabytes on a page
- * whose subject is not typography.
+ * So the page is a statement, and the argument for that content - along with
+ * the content itself - lives in shared/js/example-statement.js, because the
+ * image tools draw the same document and should not have to ship a PDF writer
+ * to get the words.
  */
 
 import { PdfWriter, num, textString, PT_PER_MM } from './pdf-page-writer.js';
+import { HEADINGS, rowsFor } from './example-statement.js';
 
 const A4 = { width: Math.round(210 * PT_PER_MM), height: Math.round(297 * PT_PER_MM) };
 
 /** Escape for a PDF literal string: backslash, and the two parentheses. */
 const literal = (s) => s.replace(/([\\()])/g, '\\$1');
-
-/**
- * The rows on the statement. Codes, dates and amounts - see the header.
- *
- * Fixed rather than random, so that two people comparing what a tool did to
- * the example are looking at the same document.
- */
-const ROWS = [
-  ['2026-01-04', 'INV-2026-0184', 'A. Moreau', '1,240.00'],
-  ['2026-01-11', 'INV-2026-0191', 'K. Tanaka', '318.50'],
-  ['2026-01-18', 'INV-2026-0207', 'A. Moreau', '2,905.75'],
-  ['2026-02-02', 'INV-2026-0233', 'L. Okafor', '87.20'],
-  ['2026-02-15', 'INV-2026-0248', 'K. Tanaka', '1,015.00'],
-  ['2026-02-27', 'INV-2026-0262', 'L. Okafor', '640.40'],
-];
 
 const COLUMNS = [56, 150, 260, 420];
 
@@ -65,10 +48,9 @@ function pageStream(page, pages, rows) {
   out.push(`56 ${top + 14} m ${A4.width - 56} ${top + 14} l S`);
 
   out.push('0.35 0.35 0.35 rg');
-  out.push(`BT /F1 9 Tf ${COLUMNS[0]} ${top - 10} Td (Date) Tj ET`);
-  out.push(`BT /F1 9 Tf ${COLUMNS[1]} ${top - 10} Td (Reference) Tj ET`);
-  out.push(`BT /F1 9 Tf ${COLUMNS[2]} ${top - 10} Td (Account) Tj ET`);
-  out.push(`BT /F1 9 Tf ${COLUMNS[3]} ${top - 10} Td (Amount) Tj ET`);
+  HEADINGS.forEach((heading, c) => {
+    out.push(`BT /F1 9 Tf ${COLUMNS[c]} ${top - 10} Td (${literal(heading)}) Tj ET`);
+  });
 
   out.push('0 0 0 rg');
   rows.forEach((row, i) => {
@@ -117,10 +99,7 @@ export function examplePdfFile(name, { pages = 3, jpegs = null, jpegSize = null 
     '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
 
   for (let i = 0; i < pages; i += 1) {
-    // A different slice of the rows per page, so no two pages are identical.
-    const start = (i * 2) % ROWS.length;
-    const rows = [...ROWS.slice(start), ...ROWS.slice(0, start)].slice(0, 5);
-    let stream = pageStream(i + 1, pages, rows);
+    let stream = pageStream(i + 1, pages, rowsFor(i + 1));
 
     if (jpegs) {
       const w = A4.width - 112;

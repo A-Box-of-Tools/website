@@ -32,8 +32,8 @@ css_parts = ["results", "form", "checks", "notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone; the
 # list of boxes underneath the picture is this tool's own, because it is a list
 # of rectangles rather than a list of files.
-js_parts = ["file-picker", "message-box"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "message-box", "example-document", "example-statement", "example-photo"]
+lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -320,6 +320,7 @@ accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
 multiple = false
 title = "Drop an image here"
 hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open"
-# No worked example yet. When one is written it goes in src/example.js and
-# this becomes true, which is what renders the button under the drop zone.
-example = false
+# A printed statement rather than a landscape: a redactor needs
+# something with information on it worth covering, and nobody has ever wanted
+# to black out a hillside.
+example = true

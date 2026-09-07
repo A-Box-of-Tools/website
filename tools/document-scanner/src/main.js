@@ -16,6 +16,7 @@ import {
   coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, stemOf,
 } from './pages.js';
 import { Corners } from './stage.js';
+import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -788,6 +789,7 @@ const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
   onFiles: (files) => addFiles(files),
+  example: makeExample,
 });
 
 el.detectOne.addEventListener('click', () => {

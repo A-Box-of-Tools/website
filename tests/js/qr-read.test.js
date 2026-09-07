@@ -22,12 +22,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { makeQr } from '../../tools/qr-barcode/src/qr.js';
+import { makeQr } from '../../shared/js/qr.js';
 
 // The generator next door asks its caller for the words. These tests only read
 // the bars back, so they hand it a resolver that echoes the key.
 const say = (key) => key;
-import { remainder } from '../../tools/qr-barcode/src/gf256.js';
+import { remainder } from '../../shared/js/gf256.js';
 import { LEVELS, sizeOf } from '../../shared/js/qr-tables.js';
 
 import { correct } from '../../tools/qr-barcode-reader/src/reed-solomon.js';
