@@ -7,6 +7,7 @@ import { bytes, count as countOf, shortName } from './format.js';
 import { sizeLabel } from './pages.js';
 import { describeRanges, parseRanges } from './plan.js';
 import { produce } from './produce.js';
+import { wireReorder } from './reorder.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeExample } from './example.js';
@@ -213,16 +214,6 @@ function renderSources() {
 
 /* --------------------------------------------------------------- the pages */
 
-let dragIndex = null;
-/** Where the dragged page would land: { index, after } */
-let dropAt = null;
-
-function clearDropMarkers() {
-  for (const node of el.pageList.querySelectorAll('.insert-before, .insert-after')) {
-    node.classList.remove('insert-before', 'insert-after');
-  }
-}
-
 /**
  * One page, as a tile.
  *
@@ -242,14 +233,12 @@ function buildPageNode(entry, index) {
   const handle = document.createElement('button');
   handle.type = 'button';
   handle.className = 'drag-handle';
-  handle.draggable = true;
   handle.textContent = '⋮⋮';
   handle.title = phrase('page.drag', { n: index + 1 });
   handle.setAttribute('aria-label', handle.title);
 
   const shapeWrap = document.createElement('div');
   shapeWrap.className = 'shape-wrap';
-  shapeWrap.draggable = true;
 
   const turned = entry.rotate % 180 !== 0;
   const width = turned ? page.height : page.width;
@@ -299,6 +288,21 @@ function buildPageNode(entry, index) {
     meta.append(from);
   }
 
+  /*
+    Which page of the original this tile is, which is the one thing about it
+    that does not change as the list is worked on. The big number on the paper
+    is a position: it is 1, 2, 3 down the list whatever is in the list, so with
+    no thumbnail to tell tiles apart, removing page 3 of twelve and removing
+    page 12 leave the screen looking exactly the same - eleven tiles numbered 1
+    to 11 - and the tool cannot show which page it just took out. This line
+    holds still while the numbers renumber, and is the difference between
+    "it removed something" and "it removed that one".
+  */
+  const origin = document.createElement('p');
+  origin.className = 'page-origin';
+  origin.textContent = phrase('page.origin', { n: entry.index + 1 });
+  meta.append(origin);
+
   const dims = document.createElement('p');
   dims.className = 'page-dims';
   dims.textContent = sizeLabel(width, height);
@@ -324,7 +328,6 @@ function buildPageNode(entry, index) {
   meta.append(controls);
 
   li.append(handle, shapeWrap, meta);
-  wireDrag(li, [handle, shapeWrap], index);
   return li;
 }
 
@@ -353,82 +356,17 @@ function move(from, to) {
   render();
 }
 
-function wireDrag(li, handles, index) {
-  const startDrag = (event) => {
-    if (running) { event.preventDefault(); return; }
-    dragIndex = index;
-    li.classList.add('dragging');
-    event.dataTransfer.effectAllowed = 'move';
-    // Firefox refuses to start a drag unless some data is set.
-    event.dataTransfer.setData('text/plain', String(index));
-  };
-
-  const endDrag = () => {
-    dragIndex = null;
-    dropAt = null;
-    li.classList.remove('dragging');
-    clearDropMarkers();
-  };
-
-  for (const source of handles) {
-    source.addEventListener('dragstart', startDrag);
-    source.addEventListener('dragend', endDrag);
-  }
-
-  li.addEventListener('dragover', (event) => {
-    if (dragIndex === null) return;
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-
-    // Which side of the tile the pointer is on decides where it lands, so the
-    // marker always reads as "it goes here", not "it swaps with this".
-    const rect = li.getBoundingClientRect();
-    const after = event.clientX > rect.left + rect.width / 2;
-
-    clearDropMarkers();
-    li.classList.add(after ? 'insert-after' : 'insert-before');
-    dropAt = { index, after };
-  });
-
-  li.addEventListener('drop', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    applyDrop();
-  });
-}
-
-/** Move the dragged page to wherever the marker currently sits. */
-function applyDrop() {
-  if (dragIndex === null || dropAt === null) {
-    clearDropMarkers();
-    return;
-  }
-
-  let target = dropAt.after ? dropAt.index + 1 : dropAt.index;
-  // Removing the item first shifts everything after it down by one.
-  if (dragIndex < target) target -= 1;
-
-  const from = dragIndex;
-  dragIndex = null;
-  dropAt = null;
-
-  if (from === target) {
-    clearDropMarkers();
-    return;
-  }
-
-  move(from, target);
-}
-
-// Dropping in the gaps between tiles should still land somewhere sensible
-// rather than being swallowed by the window-level handler.
-el.pageList.addEventListener('dragover', (event) => {
-  if (dragIndex !== null) event.preventDefault();
-});
-el.pageList.addEventListener('drop', (event) => {
-  if (dragIndex === null) return;
-  event.preventDefault();
-  applyDrop();
+/*
+  Wired once, to the list rather than to each tile, because render() throws
+  every tile away and builds it again: a listener per node would be reattached
+  a hundred times for a hundred-page document and, worse, would be attached to
+  a node the drag in progress no longer refers to.
+*/
+const cancelReorder = wireReorder(el.pageList, {
+  item: '.page-item',
+  handle: '.drag-handle',
+  blocked: () => Boolean(running),
+  onMove: move,
 });
 
 /* ------------------------------------------------------------ bulk actions */
@@ -578,6 +516,9 @@ function countOutputs(split) {
 /* --------------------------------------------------------------- rendering */
 
 function render() {
+  // Every tile below is about to be replaced, so a drag still holding one is
+  // holding a node that will not be on the page a line from now.
+  cancelReorder();
   renderSources();
 
   const has = entries.length > 0;

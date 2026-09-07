@@ -199,6 +199,16 @@ If that ever changes it will be because a renderer got small enough to vendor
 under the rules in [What can be built here](../../docs/what-can-be-built-here.md),
 not because the thumbnails were worth an upload.
 
+What that argument missed for a while is that one of those facts is not a fact
+about the page at all. The big number on the paper is a **position** — 1, 2, 3
+down the list, renumbered on every change — so with nothing else to tell two
+tiles apart, taking page 3 out of twelve and taking page 12 out leave the same
+screen behind: eleven tiles numbered 1 to 11. It was reported as the × removing
+the wrong page, and it was not; the tool simply could not show which page it had
+removed. Every tile now also carries the page it came from, which is the one
+thing about it that holds still while the numbers move, and is what makes a
+removal or a reorder legible without a picture of the page.
+
 ## Limitations
 
 - **Encrypted documents are refused**, empty password included.

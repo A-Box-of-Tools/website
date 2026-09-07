@@ -90,9 +90,25 @@
   background: var(--surface-2);
   display: flex;
   flex-direction: column;
+  /* The whole tile can be picked up, so the whole tile says so. And a surface
+     that is dragged is not a surface whose words are selected: without this a
+     mouse drag across a tile paints "A4 portrait" blue on the way past, which
+     the drag API used to suppress for us. */
+  cursor: grab;
+  user-select: none;
 }
 
-.page-item.dragging { opacity: 0.35; transform: scale(0.97); }
+/* The tile being carried. It follows the pointer on a transform set from
+   src/reorder.js, so nothing here may set one of its own; it lifts off the
+   page instead, and takes itself out of the hit test so the tile underneath
+   is the one the drop lands beside. */
+.page-item.dragging {
+  z-index: 4;
+  cursor: grabbing;
+  pointer-events: none;
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px rgb(16 24 40 / 28%);
+}
 
 /* A bar showing exactly where the dragged page will land, rather than just
    tinting the tile it is over. */
@@ -130,6 +146,11 @@
   letter-spacing: -2px;
   cursor: grab;
   opacity: 0.85;
+  /* The one part of a tile a finger may drag. Everything else on it scrolls
+     the list, which a list taller than the screen has to be able to do, and
+     a touch that has begun a drag can no longer be a scroll - so the grip
+     tells the browser not to pan from here, and only from here. */
+  touch-action: none;
 }
 
 .drag-handle:hover {
@@ -185,26 +206,54 @@
   color: var(--accent-deep);
 }
 
+/*
+  The × in the corner of a tile.
+
+  `padding: 0` is not tidiness. tool-frame.css gives every button on the site
+  0.5rem by 0.9rem, which a 1.5rem box cannot hold: the width floors at the
+  padding it has to fit, so the circle came out 28.8 by 24 - an ellipse, with
+  the glyph sitting off its centre because a 14.4px line box does not fit in
+  what is left of the height either. The three sibling tools that draw the same
+  control all say `padding: 0` and this one had lost it.
+*/
 .remove-btn {
   position: absolute;
   top: 0.35rem;
   inset-inline-end: 0.35rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
   border: none;
   border-radius: 50%;
   background: rgb(0 0 0 / 55%);
   color: #fff;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
 .remove-btn:hover { background: var(--danger); }
 
+/* A thumb needs a target, and the frame's floor for one is a minimum height of
+   44px on every button. Left alone that stretches these two the other way -
+   a 24px-wide control 44px tall - so where the pointer is coarse they are
+   square about the frame's own number rather than fighting it. The grip has
+   the most to gain: on a touch screen it is the only place a drag can start,
+   and it was 25 pixels across. */
+@media (pointer: coarse) {
+  .remove-btn,
+  .drag-handle {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
 .page-meta { padding: 0 0.5rem 0.55rem; min-width: 0; }
 
 .page-from,
+.page-origin,
 .page-dims {
   margin: 0 0 0.25rem;
   font-size: 0.72rem;
@@ -215,6 +264,7 @@
 }
 
 .page-from { color: var(--text); }
+.page-origin { font-variant-numeric: tabular-nums; }
 
 .page-controls { display: flex; align-items: center; gap: 0.2rem; }
 
