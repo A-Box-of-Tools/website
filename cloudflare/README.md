@@ -67,6 +67,13 @@ tool and prose page has a Markdown twin beside it at `index.md` — see
 the twin is the same words as the page, so a search engine must not be left
 to pick the copy with no tool on it. The page's `<link rel="alternate">` says
 which is the original; this header says the other one is not a page to list.
+The script's verify step asks the site root, where this rule never fires, so
+it lists the rule as "not checked" rather than missing; ask a twin directly
+once one is deployed:
+
+```powershell
+curl -sI https://abox.tools/compress-image/index.md | findstr /i x-robots-tag
+```
 
 Deliberately **not** set here: a full `Content-Security-Policy`. Each page ships
 its own policy in a `<meta>` tag, and when two policies apply the browser enforces

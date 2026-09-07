@@ -127,16 +127,29 @@ try {
   throw "response-headers.json is not valid JSON: $($_.Exception.Message)"
 }
 
+# What the root of the site should answer with: the headers of every rule
+# whose expression is "true". A rule scoped to a path - the noindex on every
+# page's Markdown twin - never fires on "/", so looking for its header there
+# would report a rule that is working as missing. Those are listed here and
+# left to a request that actually matches them, which the verify step says.
 $expected = @{}
+$scoped = @()
 foreach ($rule in $payload.rules) {
+  if ($rule.expression -ne "true") { $scoped += $rule; continue }
   foreach ($h in $rule.action_parameters.headers.PSObject.Properties) {
     if ($h.Value.operation -eq "set") { $expected[$h.Name] = $h.Value.value }
   }
 }
 
-Write-Step "Payload: $($payload.rules.Count) rule(s), $($expected.Count) header(s)"
+Write-Step "Payload: $($payload.rules.Count) rule(s), $($expected.Count) header(s) on every response"
 foreach ($name in ($expected.Keys | Sort-Object)) {
   Write-Host ("  {0,-27} {1}" -f $name, $expected[$name])
+}
+foreach ($rule in $scoped) {
+  Write-Host ("  only where {0}:" -f $rule.expression)
+  foreach ($h in $rule.action_parameters.headers.PSObject.Properties) {
+    Write-Host ("    {0,-25} {1}" -f $h.Name, $h.Value.value)
+  }
 }
 
 # ---- export: what is live right now --------------------------------------
@@ -207,6 +220,16 @@ foreach ($name in ($expected.Keys | Sort-Object)) {
   } else {
     Write-Host ("  ok       {0}" -f $name) -ForegroundColor Green
   }
+}
+
+# The scoped rules cannot be judged from "/". Say which address to ask
+# instead of staying quiet, so a rule that was never applied is not mistaken
+# for one that was.
+foreach ($rule in $scoped) {
+  $names = ($rule.action_parameters.headers.PSObject.Properties | ForEach-Object { $_.Name }) -join ", "
+  Write-Host ("  not checked: {0} fires only where {1}" -f $names, $rule.expression) -ForegroundColor Yellow
+  Write-Host  "             ask an address that matches it, once the site has one:"
+  Write-Host  "             curl -sI https://$Domain/<that address> | findstr /i `"$names`""
 }
 
 if ($wrong -gt 0) {
