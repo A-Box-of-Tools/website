@@ -36,7 +36,7 @@
  * and neither the fill nor the readback pays for rows nobody is looking at.
  */
 
-import { WEAK_PEAK, estimate, phaseCorrelate, window2d } from './align.js';
+import { NO_MOVE, estimate, isMeasured, phaseCorrelate, window2d } from './align.js';
 import {
   bands, commonArea, outputSize, placement, planRun, refineMargin, refineWindow, workingSize,
 } from './plan.js';
@@ -458,7 +458,7 @@ export async function runStack(request, hooks) {
   for (const [index, frame] of frames.entries()) {
     stop();
     if (align === 'none') {
-      moves.push({ dx: 0, dy: 0, angle: 0, scale: 1, confidence: 0, clamped: false });
+      moves.push({ ...NO_MOVE, measured: true, clamped: false });
       continue;
     }
     report({ stage: 'measure', done: index, total: frames.length, name: frame.name });
@@ -471,16 +471,33 @@ export async function runStack(request, hooks) {
     }, output, fit, frame.turn);
 
     if (!reference) {
+      // Everything else is measured against this frame, so it is the one move
+      // known exactly.
       reference = square;
-      moves.push({ dx: 0, dy: 0, angle: 0, scale: 1, confidence: Infinity, clamped: false });
+      moves.push({
+        ...NO_MOVE, measured: true, clamped: false, live: 1, coherence: 1, plateau: 0, next: 0,
+      });
       continue;
     }
     const found = estimate(reference, square, ALIGN_SIZE, align);
-    moves.push({
+    // A peak the gate refused is the tallest point of a featureless surface,
+    // not a shift, and the page says such a frame was left where it was. The
+    // identity makes that literally true, and it is what the crop and the
+    // stack below see for this frame; the statistics travel with it so the
+    // page can count it.
+    moves.push(found.measured ? {
       ...found,
       // Back out of the alignment square and into the output's own pixels.
       dx: found.dx / fit.scale,
       dy: found.dy / fit.scale,
+    } : {
+      ...NO_MOVE,
+      measured: false,
+      clamped: false,
+      live: found.live,
+      coherence: found.coherence,
+      plateau: found.plateau,
+      next: found.next,
     });
   }
 
@@ -556,19 +573,29 @@ export async function runStack(request, hooks) {
         // Each frame's first full-size appearance settles its final position.
         // Later bands and passes reuse the answer, so a banded run stays
         // consistent with itself. The gates keep a bad peak from undoing a
-        // good coarse answer: a window without enough texture to correlate, or
-        // a residual larger than the coarse pass could plausibly have been
-        // wrong by, leaves the frame where the coarse measurement put it.
+        // good coarse answer: a window without enough texture to correlate, a
+        // window whose peak is a plateau - a wall, a sky - so that its
+        // position is the noise's choice, a window whose peak is one of
+        // several of much the same height - two unrelated pictures, a sky too
+        // sparse for its noise - so that which one the argmax took is the
+        // noise's choice instead, or a residual larger than the coarse pass
+        // could plausibly have been wrong by, leaves the frame where the
+        // coarse measurement put it. A frame the coarse pass could
+        // not measure is not refined at all: it is sitting at the identity,
+        // and a residual measured from there is not a residual but a whole
+        // shift, which is the measurement that was already refused.
         if (refine && !refined[index]) {
           refined[index] = true;
-          const square = refineSquare(
-            bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
-          );
           if (index === 0) {
-            referenceWindow = square;
-          } else if (referenceWindow) {
+            referenceWindow = refineSquare(
+              bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
+            );
+          } else if (referenceWindow && moves[index].measured) {
+            const square = refineSquare(
+              bitmap, spot, output, moves[index], refineAt, refine, frame.turn,
+            );
             const residual = phaseCorrelate(referenceWindow, square, refine);
-            if (residual.confidence >= WEAK_PEAK
+            if (isMeasured(residual)
                 && Math.abs(residual.dx) <= margin && Math.abs(residual.dy) <= margin) {
               moves[index].dx += residual.dx;
               moves[index].dy += residual.dy;

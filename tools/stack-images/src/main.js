@@ -574,7 +574,9 @@ function finished(result) {
 function movesNote(moves) {
   if (el.align.value === 'none') return phrase('result.moves-none');
   const measurable = moves.slice(1);
-  const weak = measurable.filter((move) => !(move.confidence > 4)).length;
+  // The pipeline decided, and an unmeasured frame is sitting at the identity,
+  // so "left where they were" is a report and not a hope.
+  const weak = measurable.filter((move) => move.measured === false).length;
   const clamped = measurable.filter((move) => move.clamped).length;
 
   if (weak) {
