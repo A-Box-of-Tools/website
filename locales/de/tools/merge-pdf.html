@@ -36,7 +36,7 @@
 
     <div class="range-row">
       <label for="range">Seiten</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">Nur diese behalten</button>
       <button type="button" id="range-drop" class="ghost">Diese entfernen</button>
@@ -84,7 +84,7 @@
             <strong>Bei Seite&hellip; teilen</strong>
             <span class="preset-note">
               Schneiden vor
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Seitenzahlen, vor denen geschnitten wird">
               &mdash; jede davon beginnt eine neue Datei.
             </span>
@@ -217,7 +217,7 @@
     <span data-phrase="page.earlier">Seite {n} nach vorn</span>
     <span data-phrase="page.later">Seite {n} nach hinten</span>
     <span data-phrase="range.none">keine</span>
-    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">Das ist keine Seitenzahl und kein Bereich von Seiten: {list}. {total} Schreiben Sie
       sie als 1-3, 8, 12-.</span>

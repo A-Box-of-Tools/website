@@ -35,7 +35,7 @@
 
     <div class="range-row">
       <label for="range">الصفحات</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">أبقِ هذه وحدها</button>
       <button type="button" id="range-drop" class="ghost">أزِل هذه</button>
@@ -83,7 +83,7 @@
             <strong>قسِّم عند الصفحة&hellip;</strong>
             <span class="preset-note">
               اقطع قبل
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="أرقام الصفحات التي يُقطَع قبلها">
               &mdash; وكل واحدة منها تبدأ ملفاً جديداً.
             </span>
@@ -212,7 +212,7 @@
     <span data-phrase="page.earlier">قدِّم الصفحة {n}</span>
     <span data-phrase="page.later">أخِّر الصفحة {n}</span>
     <span data-phrase="range.none">لا شيء</span>
-    <span data-phrase="range.pair">{from}، {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}، {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">هذا ليس رقم صفحة ولا مدى صفحات: {list}. {total} اكتبها هكذا: 1-3، 8، -12.</span>
     <span data-phrase="range.bad.many">هذه ليست أرقام صفحات ولا مديات صفحات: {list}. {total} اكتبها هكذا: 1-3، 8، -12.</span>

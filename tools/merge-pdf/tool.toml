@@ -216,7 +216,7 @@ title = "Put the pages in the order you want."
 body = """
 
       Drag a page by its handle, or nudge it with the arrows. Turn one that was
-      scanned sideways, take one out, or type <code>1-3, 8, 12-</code> in the
+      scanned sideways, take one out, or type <code dir="ltr">1-3, 8, 12-</code> in the
       box to keep, remove or turn a run of them at once. The numbers renumber
       as you go, so what you see is always what the finished file will be."""
 

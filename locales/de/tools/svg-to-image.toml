@@ -217,7 +217,7 @@ a = """
         Zahlen in der Datei, und ein Browser behandelt sie als natürliche Größe
         der Zeichnung. Gibt es auch keine viewBox, schreibt die Seite
         <em>angenommen</em> neben die Zeile und nimmt
-        300&nbsp;&times;&nbsp;150, also das, womit ein <code>&lt;img&gt;</code>
+        &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, also das, womit ein <code>&lt;img&gt;</code>
         sie gezeichnet hätte. So oder so können Sie die gewünschte Größe nennen,
         und die Datei wird in dieser gezeichnet."""
 
@@ -249,7 +249,7 @@ a = """
         Die des Browsers, nicht unsere. Ein Canvas gibt irgendwo jenseits von
         16.384 Pixeln Seitenlänge auf, und Safari auf einem iPhone oder iPad hört
         bei etwa 16,7 Megapixeln Fläche auf, also bei
-        4096&nbsp;&times;&nbsp;4096. Darüber warnt die Seite, statt Ihnen ein
+        &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Darüber warnt die Seite, statt Ihnen ein
         leeres Bild zurückzugeben, und genau das tut ein Browser, wenn ihm die
         Luft ausgeht: <code>toBlob</code> gibt überhaupt nichts zurück, ohne eine
         Fehlermeldung, die sich erklärte. Jenseits von 100 Megapixeln weigert

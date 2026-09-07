@@ -36,7 +36,7 @@
 
     <div class="range-row">
       <label for="range">Pagine</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">Tieni solo queste</button>
       <button type="button" id="range-drop" class="ghost">Togli queste</button>
@@ -83,7 +83,7 @@
             <strong>Dividi alla pagina&hellip;</strong>
             <span class="preset-note">
               Taglia prima di
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Numeri di pagina prima dei quali tagliare">
               &mdash; ognuna di queste comincia un file nuovo.
             </span>
@@ -214,7 +214,7 @@
     <span data-phrase="page.earlier">Sposta la pagina {n} prima</span>
     <span data-phrase="page.later">Sposta la pagina {n} dopo</span>
     <span data-phrase="range.none">nessuna</span>
-    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">Questo non è un numero di pagina né un intervallo di pagine: {list}. {total}
       Scrivile come 1-3, 8, 12-.</span>

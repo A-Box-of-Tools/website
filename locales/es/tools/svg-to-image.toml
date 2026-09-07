@@ -211,7 +211,7 @@ a = """
         usuario y no píxeles, pero son los únicos números del archivo y un
         navegador los trata como el tamaño natural del dibujo. Si tampoco hay
         viewBox, la página pone <em>supuesto</em> junto a la fila y usa
-        300&nbsp;&times;&nbsp;150, que es a lo que lo habría dibujado un
+        &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, que es a lo que lo habría dibujado un
         <code>&lt;img&gt;</code>. En cualquier caso puedes decir el tamaño que
         quieras y el archivo se dibuja a ese."""
 
@@ -243,7 +243,7 @@ a = """
         El del navegador, no el nuestro. Un lienzo se rinde en algún punto pasados
         los 16&nbsp;384 píxeles de lado, y Safari en un iPhone o un iPad se planta
         alrededor de los 16,7 megapíxeles de superficie, o sea
-        4096&nbsp;&times;&nbsp;4096. Por encima de eso la página te avisa en vez
+        &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Por encima de eso la página te avisa en vez
         de devolverte una imagen en blanco, que es lo que hace un navegador cuando
         se ha quedado sin recursos: <code>toBlob</code> no devuelve nada, y sin
         ningún error que lo explique. Pasados los 100 megapíxeles la herramienta

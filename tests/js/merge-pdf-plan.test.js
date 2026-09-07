@@ -15,6 +15,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { ltr } from '../../shared/js/phrases.js';
+
 import {
   archiveName, describeRanges, outputNames, parseRanges, splitInto,
 } from '../../tools/merge-pdf/src/plan.js';
@@ -223,7 +225,7 @@ test('the named paper sizes, and what to say when there is no name', () => {
   assert.equal(sizeLabel(612, 792), 'Letter portrait');
   assert.equal(sizeLabel(612, 1008), 'Legal portrait');
   // 8.5 x 13 inches is nothing with a name, and was designed in inches.
-  assert.equal(sizeLabel(612, 936), '8.5 × 13 in');
+  assert.equal(sizeLabel(612, 936), ltr('8.5 × 13 in'));
 });
 
 /* =============================================================== the text */

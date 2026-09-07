@@ -170,7 +170,7 @@ q = "Was heißt &bdquo;volle Qualität&ldquo; eigentlich?"
 a = """
         Zweierlei. Das Standbild wird in der Auflösung des Videos gespeichert und
         nicht in der Größe der Vorschau auf der Seite. Ein 4K-Clip ergibt also ein
-        Bild von 3840 x 2160. Und mit PNG wird das Einzelbild genau so abgelegt,
+        Bild von &#x2066;3840 x 2160&#x2069;. Und mit PNG wird das Einzelbild genau so abgelegt,
         wie es aus dem Dekoder kam, die Datei enthält also das Bild, das auch im
         Video steht, ohne eine zweite Runde Kompression darüber. Ein Bildschirmfoto
         eines Abspielfensters gibt Ihnen keines von beidem: Es hat die Größe des

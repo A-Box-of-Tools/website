@@ -9,12 +9,13 @@
 
 import { FORMATS } from './codecs.js';
 import { sizeText } from './shared/format.js';
+import { ltr } from './shared/phrases.js';
 
 export const bytes = (n, t) => sizeText(n, t, { under: 'size.bytes', kb: 'auto', mb: 2 });
 
 /** "4032 × 3024", with a real multiplication sign. */
 export function dimensions(width, height) {
-  return `${width} × ${height}`;
+  return ltr(`${width} × ${height}`);
 }
 
 /**

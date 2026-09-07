@@ -45,7 +45,7 @@ export function dpi(value) {
 
 /** "2480 × 3508", with a real multiplication sign. */
 export function dimensions(width, height) {
-  return `${width} × ${height}`;
+  return ltr(`${width} × ${height}`);
 }
 
 /** What to call the finished file. The original extension is kept, because it

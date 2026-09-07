@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { PIXEL_DATA, parseDataset, parseFile, walk } from './dicom.js';
@@ -732,7 +732,7 @@ function renderOverlays() {
   el.overlayTR.textContent = [
     series.modality,
     series.description,
-    info ? `${info.columns} × ${info.rows}` : '',
+    info ? ltr(`${info.columns} × ${info.rows}`) : '',
   ].filter(Boolean).join('\n');
 
   el.overlayBL.textContent = shown && shown.samples === 1
@@ -998,7 +998,7 @@ function renderFacts(file) {
   el.factSyntax.textContent = file.syntax.name;
   el.factSyntax.title = file.syntax.uid;
   el.factSpacing.textContent = info?.spacing
-    ? `${info.spacing.column} × ${info.spacing.row} mm`
+    ? ltr(`${info.spacing.column} × ${info.spacing.row} mm`)
     : phrase('facts.nospacing');
   el.factFile.textContent = fileSize(file.size);
   el.factFile.title = exact(file.size);

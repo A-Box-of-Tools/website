@@ -159,7 +159,7 @@ title = "Pon las páginas en el orden que quieras."
 body = """
 
       Arrastra una página por su asa, o muévela con las flechas. Gira una que se
-      escaneó de lado, quita otra, o escribe <code>1-3, 8, 12-</code> en la caja
+      escaneó de lado, quita otra, o escribe <code dir="ltr">1-3, 8, 12-</code> en la caja
       para conservar, quitar o girar una tanda de golpe. Los números se renumeran
       sobre la marcha, así que lo que ves es siempre lo que será el archivo
       terminado."""

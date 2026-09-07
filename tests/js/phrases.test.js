@@ -16,7 +16,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { phrase, fill } from '../../shared/js/phrases.js';
+import { phrase, fill, ltr } from '../../shared/js/phrases.js';
 import { readingLabel } from '../../shared/js/file-picker.js';
 
 const SELECTOR = /^#(phrases|frame-phrases) \[data-phrase="(.+)"\]$/;
@@ -99,6 +99,18 @@ test('readingLabel picks the singular for one file and the plural for any other'
     assert.equal(readingLabel(0), 'Reading 0 files');
     assert.equal(readingLabel(12), 'Reading 12 files');
   });
+
+test('ltr wraps an expression in the two marks that hold it left to right', () => {
+  // The one place the actual code points are written down. Everywhere else
+  // says ltr('1280 x 960'), which reads as the thing on the screen; if these
+  // two marks were ever wrong, every one of those tests would agree with the
+  // mistake and this one would not.
+  assert.equal(ltr('1280 x 960'), '\u20661280 x 960\u2069');
+  // Nothing is inspected, so anything can be wrapped - and an empty string
+  // still comes back wrapped rather than empty, because a caller that got
+  // there had a value.
+  assert.equal(ltr(''), '\u2066\u2069');
+});
 
 test('fill looks up the values that are keys and leaves the rest alone', () => {
   // A leaf that cannot reach the page hands back {key, values} for the part

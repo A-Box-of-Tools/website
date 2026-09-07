@@ -202,8 +202,8 @@ q = "Waarom is het bestand groter dan het plaatje waarmee ik begon?"
 a = """
         Omdat een .ico niet één plaatje is maar meerdere, en de kleine daarvan
         ongecomprimeerd worden opgeslagen zodat alles ze kan lezen. Een item van
-        32&times;32 is precies 4.264 bytes, wat er ook in zit, en een ongecomprimeerd
-        item van 256&times;256 is 264 KB. Daarom worden formaten boven 64 standaard
+        &#x2066;32&times;32&#x2069; is precies 4.264 bytes, wat er ook in zit, en een ongecomprimeerd
+        item van &#x2066;256&times;256&#x2069; is 264 KB. Daarom worden formaten boven 64 standaard
         als PNG opgeslagen. Kies je &ldquo;PNG voor elk formaat&rdquo;, dan krijg je
         het kleinste bestand; kies je ongecomprimeerd voor elk formaat, dan krijg je
         het best leesbare."""

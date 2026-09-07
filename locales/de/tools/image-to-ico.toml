@@ -209,8 +209,8 @@ q = "Warum ist die Datei größer als das Bild, mit dem ich angefangen habe?"
 a = """
         Weil eine .ico nicht ein Bild ist, sondern mehrere, und weil die kleinen
         unkomprimiert gespeichert werden, damit alles sie lesen kann. Ein
-        32&times;32-Eintrag ist exakt 4.264 Byte groß, was auch so darin steht,
-        und ein unkomprimierter 256&times;256-Eintrag bringt es auf 264&nbsp;KB.
+        &#x2066;32&times;32&#x2069;-Eintrag ist exakt 4.264 Byte groß, was auch so darin steht,
+        und ein unkomprimierter &#x2066;256&times;256&#x2069;-Eintrag bringt es auf 264&nbsp;KB.
         Deshalb werden Größen über 64 standardmäßig als PNG gespeichert. &bdquo;PNG
         für jede Größe&ldquo; ergibt die kleinstmögliche Datei, unkomprimiert für
         jede Größe die verträglichste."""

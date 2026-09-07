@@ -244,7 +244,7 @@ description = "Transformez un dossier d'images en un diaporama vidéo MP4. Chaqu
 features = [
   "Convertit des images JPG, PNG, WebP, GIF et AVIF en vidéo",
   "Sortie MP4 (H.264), avec le WebM comme repli",
-  "Résolutions jusqu'à 3840 × 2160, cadences de 12 à 60 images par seconde",
+  "Résolutions jusqu'à &#x2066;3840 × 2160&#x2069;, cadences de 12 à 60 images par seconde",
   "Durée d'affichage par image, en images ou en secondes",
   "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]

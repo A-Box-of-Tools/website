@@ -201,7 +201,7 @@
     <span data-phrase="frame.delay">延時</span>
     <span data-phrase="frame.clamped">{delay} &rarr; 0.10 秒</span>
     <span data-phrase="frame.rectangle">矩形</span>
-    <span data-phrase="frame.rect">{width} &times; {height}，位於 {left}, {top}</span>
+    <span data-phrase="frame.rect">&#x2066;{width} &times; {height}&#x2069;，位於 &#x2066;{left}, {top}&#x2069;</span>
     <span data-phrase="frame.palette">調色盤</span>
     <span data-phrase="palette.own">內建 {n}</span>
     <span data-phrase="palette.global">全域性那張</span>
@@ -280,7 +280,7 @@
     <span data-phrase="report.file">這個檔案</span>
     <span data-phrase="report.version">版本</span>
     <span data-phrase="report.canvas">畫布</span>
-    <span data-phrase="report.pixels">{width} x {height} 畫素</span>
+    <span data-phrase="report.pixels">&#x2066;{width} x {height}&#x2069; 畫素</span>
     <span data-phrase="report.size">大小</span>
     <span data-phrase="report.bothsizes">{rounded}（{exact}）</span>
     <span data-phrase="report.frames">幀數</span>
@@ -324,7 +324,7 @@
     <span data-phrase="find.loopcount.title.many">這個播 {count} 次就停。</span>
     <span data-phrase="find.loopcount.body">循環塊寫的是一個次數，而不是通常的零——零表示一直循環。有些舊檢視器會忽略這個次數，照樣無限循環。</span>
     <span data-phrase="find.allfull.title">每一幀都重畫了整塊畫布。</span>
-    <span data-phrase="find.allfull.body">GIF 允許一幀只存下相對上一幀變化了的那個矩形，所以錄一個幾乎不動的視窗，檔案可以很小。這裡沒有一幀這麼做：每一幀都是整塊畫布，{width}&times;{height}。如果這些幀本來就是互不相干的圖片，那是對的；可要是拍攝或錄製來的東西——畫面大部分在幀與幀之間根本不動——那就是白扔的體積。</span>
+    <span data-phrase="find.allfull.body">GIF 允許一幀只存下相對上一幀變化了的那個矩形，所以錄一個幾乎不動的視窗，檔案可以很小。這裡沒有一幀這麼做：每一幀都是整塊畫布，&#x2066;{width}&times;{height}&#x2069;。如果這些幀本來就是互不相干的圖片，那是對的；可要是拍攝或錄製來的東西——畫面大部分在幀與幀之間根本不動——那就是白扔的體積。</span>
     <span data-phrase="find.somefull.title.one">{total} 幀裡有 1 幀重畫了整塊畫布，其餘的只存變化的部分。</span>
     <span data-phrase="find.somefull.title.many">{total} 幀裡有 {count} 幀重畫了整塊畫布，其餘的只存變化的部分。</span>
     <span data-phrase="find.somefull.body">最佳化過的 GIF 就是這個樣子。整塊畫布的那幾幀，通常是第一幀，以及畫面整個換掉的地方。</span>
@@ -332,8 +332,8 @@
     <span data-phrase="find.nonefull.body">第一幀之後的每一幀都只存變化了的矩形，這才是把這個格式用對了，也正是這個檔案能這麼小的原因。</span>
     <span data-phrase="find.outside.title.one">有 1 幀越出了畫布。</span>
     <span data-phrase="find.outside.title.many">有 {count} 幀越出了畫布。</span>
-    <span data-phrase="find.outside.body.one">畫布是 {width}&times;{height}，而有一幀聲稱的矩形跑出了邊界。解碼器對超出的部分處理並不一致：有的裁掉，有的乾脆拒收這個檔案。</span>
-    <span data-phrase="find.outside.body.many">畫布是 {width}&times;{height}，而有幾幀聲稱的矩形跑出了邊界。解碼器對超出的部分處理並不一致：有的裁掉，有的乾脆拒收這個檔案。</span>
+    <span data-phrase="find.outside.body.one">畫布是 &#x2066;{width}&times;{height}&#x2069;，而有一幀聲稱的矩形跑出了邊界。解碼器對超出的部分處理並不一致：有的裁掉，有的乾脆拒收這個檔案。</span>
+    <span data-phrase="find.outside.body.many">畫布是 &#x2066;{width}&times;{height}&#x2069;，而有幾幀聲稱的矩形跑出了邊界。解碼器對超出的部分處理並不一致：有的裁掉，有的乾脆拒收這個檔案。</span>
     <span data-phrase="find.localpal.title.one">有 1 幀內建一份顏色表，代價是 {bytes} &mdash; 佔檔案的 {share}。</span>
     <span data-phrase="find.localpal.title.many">有 {count} 幀各內建著一份顏色表，代價是 {bytes} &mdash; 佔檔案的 {share}。</span>
     <span data-phrase="find.localpal.body">內建調色盤能讓一幀用上共享表裡沒有的顏色，代價是每寫一次、每個條目三個位元組。如果這些幀本來就是同一個場景，全部共用一份表既更小，看著也更穩：調色盤在幀與幀之間來回跳，正是所謂的 GIF 閃爍。</span>

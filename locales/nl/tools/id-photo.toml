@@ -42,7 +42,7 @@ howto_heading = "Zo maak je een pasfoto die niet teruggestuurd wordt"
 card = """
             Kies een land en een document, en het uitsnedekader neemt de hoofdhoogte
             en de ooglijn van die regel over. Print op de exacte millimeter en
-            resolutie, met een vel van 10&nbsp;&times;&nbsp;15, en perst de upload in
+            resolutie, met een vel van &#x2066;10&nbsp;&times;&nbsp;15&#x2069;, en perst de upload in
             de KB-band van het portaal."""
 
 [words]
@@ -156,7 +156,7 @@ title = "Neem de drie bestanden mee."
 body = """
  De print, op de exacte millimeter, met de
       resolutie in het bestand geschreven zodat een winkel hem op het juiste formaat
-      afdrukt. Het vel, met zo veel kopieën als er op een 10&nbsp;&times;&nbsp;15
+      afdrukt. Het vel, met zo veel kopieën als er op een &#x2066;10&nbsp;&times;&nbsp;15&#x2069;
       passen en snijtekens in de tussenruimtes. En de upload, op het pixelformaat dat
       het portaal eist en binnen de KB-band die het aan beide kanten afdwingt."""
 
@@ -178,7 +178,7 @@ a = """
         Staten (paspoort en de inschrijving voor de visumloterij, die verschillende
         uploadregels hebben), het Verenigd Koninkrijk, het Schengenvisum, Duitsland,
         Canada, Australië, India (paspoort, de afdruk van
-        35&nbsp;&times;&nbsp;45&nbsp;mm en de formulierfoto en handtekening voor SSC en
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm en de formulierfoto en handtekening voor SSC en
         UPSC), China en Japan. Elke ingang noemt de instantie waar hij vandaan komt en
         de datum waarop hij gelezen is. Al het andere vul je in onder &ldquo;Ergens
         anders&rdquo;, waar elk cijfer van jou is; en omdat het grootste deel van de
@@ -240,7 +240,7 @@ a = """
         Indiase examenportalen, het Chinese visumformulier en de upload voor het Britse
         paspoort noemen naast een maximum ook een minimum bestandsgrootte, omdat een
         bestand daaronder meestal een miniatuur is die iemand per ongeluk uploadde. Een
-        foto van 200&nbsp;&times;&nbsp;230 is 46.000 pixels, en op de beste kwaliteit
+        foto van &#x2066;200&nbsp;&times;&nbsp;230&#x2069; is 46.000 pixels, en op de beste kwaliteit
         die een browser wegschrijft kan hij nog steeds op 15&nbsp;KB uitkomen, zonder
         mogelijkheid om hem groter te maken door minder te comprimeren. Dus voegt de
         tool een JPEG-commentaarsegment vol spaties toe. Dat hoort bij de JPEG-standaard,
@@ -263,12 +263,12 @@ a = """
         meer van op dan welk filter ook."""
 
 [[faq]]
-q = "Waar is dat vel van 10 x 15 voor?"
+q = "Waar is dat vel van &#x2066;10 x 15&#x2069; voor?"
 a = """
         Een fotohokje rekent een paar euro voor zes foto's. Een fotobalie print een
-        10&nbsp;&times;&nbsp;15 voor centen, en dat kan er eentje. Dus legt de tool zo
+        &#x2066;10&nbsp;&times;&nbsp;15&#x2069; voor centen, en dat kan er eentje. Dus legt de tool zo
         veel kopieën van je foto op het papier als erop passen &mdash; acht, voor een
-        35&nbsp;&times;&nbsp;45 op een 10&nbsp;&times;&nbsp;15 &mdash; met snijtekens in
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069; op een &#x2066;10&nbsp;&times;&nbsp;15&#x2069; &mdash; met snijtekens in
         de tussenruimtes en niets over een plaatje heen gedrukt. Er wordt niets
         geschaald: elke kopie heeft precies het formaat dat de regel vraagt, want een vel
         dat ze twee procent kleiner maakte om er nog eentje bij te proppen zou acht
@@ -282,8 +282,8 @@ a = """
         wat hem afdrukt. De resolutie staat in de JFIF-kop, en een browsercanvas
         schrijft die kop met het eenhedenveld op &ldquo;dit is een beeldverhouding, geen
         resolutie&rdquo;. Deze tool herschrijft die paar bytes zodat het bestand
-        300&nbsp;dpi meldt, en dat is wat 413&nbsp;&times;&nbsp;531 pixels tot een foto
-        van 35&nbsp;&times;&nbsp;45&nbsp;mm maakt in plaats van een plaatje van geen
+        300&nbsp;dpi meldt, en dat is wat &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pixels tot een foto
+        van &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm maakt in plaats van een plaatje van geen
         bepaald formaat. Er wordt daarvoor niets gedecodeerd en er gaat geen kwaliteit
         verloren."""
 
@@ -291,7 +291,7 @@ a = """
 q = "Kan hij ook het handtekeningbestand doen?"
 a = """
         Ja &mdash; de SSC- en UPSC-formulieren willen er een van
-        140&nbsp;&times;&nbsp;60 pixels tussen 10 en 20&nbsp;KB, en die staat als eigen
+        &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixels tussen 10 en 20&nbsp;KB, en die staat als eigen
         specificatie op de lijst. De gezichtshulplijnen gaan daarvoor uit, want een
         handtekening heeft geen ooglijn; wat er in plaats daarvan gecontroleerd wordt is
         dat het papier licht is, dat er inkt op staat, en dat de uitsnede geen liniaal
@@ -340,9 +340,9 @@ features = [
   "Hoofdhoogte, ooglijn, centrering en scheefstand meelopend, elk met de kant om te corrigeren",
   "Achtergrondkleur en gelijkmatigheid gemeten in CIE Lab, en apart gerapporteerd",
   "Print op de exacte millimeter, met de resolutie in de JPEG-kop geschreven",
-  "Een vel van 10 x 15, 13 x 18, A4 of Letter, getegeld met snijtekens in de tussenruimtes en niets over een plaatje",
+  "Een vel van &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 of Letter, getegeld met snijtekens in de tussenruimtes en niets over een plaatje",
   "Een uploadbestand op het voorgeschreven pixelformaat, aan beide kanten binnen de KB-band van het portaal gebracht",
-  "SSC- en UPSC-formulierfoto's op 200 x 230 in 20-50 KB, en handtekeningen op 140 x 60 in 10-20 KB",
+  "SSC- en UPSC-formulierfoto's op &#x2066;200 x 230&#x2069; in 20-50 KB, en handtekeningen op &#x2066;140 x 60&#x2069; in 10-20 KB",
   "Werkt offline; geen upload, geen account, geen gezichtsmodel",
 ]
 

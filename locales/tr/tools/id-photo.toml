@@ -47,7 +47,7 @@ howto_heading = "Geri gönderilmeyecek bir pasaport fotoğrafı nasıl yapılır
 card = """
             Bir ülke ve bir belge seçin; kırpma kutusu o kuralın kafa
             yüksekliğini ve göz hattını alsın. Tam mm ve DPI'da,
-            4&nbsp;&times;&nbsp;6 sayfayla birlikte basar ve yüklemeyi portalın
+            &#x2066;4&nbsp;&times;&nbsp;6&#x2069; sayfayla birlikte basar ve yüklemeyi portalın
             KB aralığına sıkıştırır."""
 
 [words]
@@ -163,7 +163,7 @@ title = "Üç dosyayı alın."
 body = """
  Baskı; tam milimetrelerinde ve çözünürlüğü
       dosyanın içine yazılmış hâlde, böylece bir dükkân onu doğru boyutta
-      bassın. Sayfa; bir 4&nbsp;&times;&nbsp;6'nın aldığı kadar kopya ve
+      bassın. Sayfa; bir &#x2066;4&nbsp;&times;&nbsp;6&#x2069;'nın aldığı kadar kopya ve
       aralarında kesim işaretleriyle. Ve yükleme; portalın dayattığı piksel
       boyutunda ve iki ucundan da dayattığı KB aralığının içinde."""
 
@@ -184,7 +184,7 @@ a = """
         Şimdiye kadar aktarılan şartnameler: ICAO standardının kendisi, Amerika
         Birleşik Devletleri (pasaport ve farklı yükleme kuralları olan Diversity
         Visa başvurusu), Birleşik Krallık, Schengen vizesi, Almanya, Kanada,
-        Avustralya, Hindistan (pasaport, 35&nbsp;&times;&nbsp;45&nbsp;mm baskı ve
+        Avustralya, Hindistan (pasaport, &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm baskı ve
         SSC/UPSC form fotoğrafı ile imzası), Çin ve Japonya. Her kayıt, geldiği
         kurumu ve okunduğu tarihi adıyla belirtir. Başka her şey &laquo;Başka bir
         yer&raquo; altına girer; orada her rakamı siz yazarsınız &mdash; ve
@@ -248,7 +248,7 @@ a = """
         Hindistan sınav portalları, Çin vize formu ve Birleşik Krallık pasaport
         yüklemesinin hepsi bir azami dosya boyutunun yanı sıra bir asgari boyut da
         belirtir; çünkü bunun altındaki bir dosya genellikle birinin yanlışlıkla
-        yüklediği bir küçük resimdir. 200&nbsp;&times;&nbsp;230'luk bir fotoğraf
+        yüklediği bir küçük resimdir. &#x2066;200&nbsp;&times;&nbsp;230&#x2069;'luk bir fotoğraf
         46.000 pikseldir ve bir tarayıcının yazacağı en iyi kalitede bile
         15&nbsp;KB'ye düşebilir; daha az sıkıştırarak onu büyütmenin de yolu
         yoktur. Bu yüzden araç, boşluklarla dolu bir JPEG yorum bölümü ekler. Bu,
@@ -270,12 +270,12 @@ a = """
         uzakta durmak, bunların hiçbir filtreden daha fazlasını düzeltir."""
 
 [[faq]]
-q = "4 x 6 sayfa ne işe yarıyor?"
+q = "&#x2066;4 x 6&#x2069; sayfa ne işe yarıyor?"
 a = """
         Bir kabin, altı fotoğraf için birkaç yüz lira alır. Bir fotoğraf bayisi
-        6&nbsp;&times;&nbsp;4 basar, üstelik kuruşlara ve her biri bunu yapar. Bu
+        &#x2066;6&nbsp;&times;&nbsp;4&#x2069; basar, üstelik kuruşlara ve her biri bunu yapar. Bu
         yüzden araç, kâğıdın aldığı kadar kopyayı yan yana dizer &mdash; bir
-        6&nbsp;&times;&nbsp;4 üzerinde 35&nbsp;&times;&nbsp;45 için sekiz &mdash;
+        &#x2066;6&nbsp;&times;&nbsp;4&#x2069; üzerinde &#x2066;35&nbsp;&times;&nbsp;45&#x2069; için sekiz &mdash;
         aralarında kesim işaretleriyle ve hiçbir resmin üzerine bir şey basmadan.
         Hiçbir şey sığdırmak için ölçeklenmez: her kopya tam olarak kuralın
         istediği boyuttadır; çünkü bir tane daha sığsın diye onları yüzde iki
@@ -290,15 +290,15 @@ a = """
         her ne ise tahmin eder. Çözünürlük JFIF başlığında durur ve bir tarayıcı
         tuvali o başlığı, birim alanı &laquo;bu bir en boy oranıdır, çözünürlük
         değil&raquo; olarak ayarlanmış hâlde yazar. Bu araç o birkaç baytı yeniden
-        yazar, böylece dosya 300&nbsp;dpi der; 413&nbsp;&times;&nbsp;531 pikseli,
+        yazar, böylece dosya 300&nbsp;dpi der; &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pikseli,
         belirli bir boyutu olmayan bir görüntü yerine
-        35&nbsp;&times;&nbsp;45&nbsp;mm'lik bir fotoğrafa çeviren de budur. Bunu
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm'lik bir fotoğrafa çeviren de budur. Bunu
         yapmak için hiçbir şey çözülmez ve hiçbir kalite harcanmaz."""
 
 [[faq]]
 q = "İmza dosyasını da yapabilir mi?"
 a = """
-        Evet &mdash; SSC ve UPSC formları 140&nbsp;&times;&nbsp;60 piksel ve 10 ila
+        Evet &mdash; SSC ve UPSC formları &#x2066;140&nbsp;&times;&nbsp;60&#x2069; piksel ve 10 ila
         20&nbsp;KB arasında bir tane ister ve o da kendi şartnamesi olarak listede
         yer alır. Onun için yüz yerleşimi kapatılır, çünkü bir imzanın göz hattı
         yoktur; onun yerine denetlenen şey kâğıdın açık renk olduğu, üzerinde
@@ -347,9 +347,9 @@ features = [
   "Canlı kafa yüksekliği, göz hattı, ortalama ve eğiklik; her biri hangi yöne düzeltileceğini söyler",
   "Arka plan rengi ve eşitliği CIE Lab'da ölçülür ve ikisi ayrı ayrı bildirilir",
   "Tam milimetrelerinde basar; çözünürlük JPEG başlığının içine yazılır",
-  "4 x 6, 5 x 7, A4 ya da Letter sayfa; aralarında kesim işaretleriyle dizilir ve hiçbir resmin üzerine bir şey basılmaz",
+  "&#x2066;4 x 6&#x2069;, &#x2066;5 x 7&#x2069;, A4 ya da Letter sayfa; aralarında kesim işaretleriyle dizilir ve hiçbir resmin üzerine bir şey basılmaz",
   "Zorunlu piksel boyutunda, portalın KB aralığına iki ucundan da aranarak sığdırılmış bir yükleme dosyası",
-  "20-50 KB aralığında 200 x 230 SSC ve UPSC form fotoğrafları ve 10-20 KB aralığında 140 x 60 imzalar",
+  "20-50 KB aralığında &#x2066;200 x 230&#x2069; SSC ve UPSC form fotoğrafları ve 10-20 KB aralığında &#x2066;140 x 60&#x2069; imzalar",
   "Çevrimdışı çalışır; yükleme yok, hesap yok, yüz modeli yok",
 ]
 

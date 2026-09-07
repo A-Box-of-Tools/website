@@ -201,7 +201,7 @@
     <span data-phrase="frame.delay">延时</span>
     <span data-phrase="frame.clamped">{delay} &rarr; 0.10 秒</span>
     <span data-phrase="frame.rectangle">矩形</span>
-    <span data-phrase="frame.rect">{width} &times; {height}，位于 {left}, {top}</span>
+    <span data-phrase="frame.rect">&#x2066;{width} &times; {height}&#x2069;，位于 &#x2066;{left}, {top}&#x2069;</span>
     <span data-phrase="frame.palette">调色板</span>
     <span data-phrase="palette.own">自带 {n}</span>
     <span data-phrase="palette.global">全局那张</span>
@@ -280,7 +280,7 @@
     <span data-phrase="report.file">这个文件</span>
     <span data-phrase="report.version">版本</span>
     <span data-phrase="report.canvas">画布</span>
-    <span data-phrase="report.pixels">{width} x {height} 像素</span>
+    <span data-phrase="report.pixels">&#x2066;{width} x {height}&#x2069; 像素</span>
     <span data-phrase="report.size">大小</span>
     <span data-phrase="report.bothsizes">{rounded}（{exact}）</span>
     <span data-phrase="report.frames">帧数</span>
@@ -324,7 +324,7 @@
     <span data-phrase="find.loopcount.title.many">这个播 {count} 次就停。</span>
     <span data-phrase="find.loopcount.body">循环块写的是一个次数，而不是通常的零——零表示一直循环。有些旧查看器会忽略这个次数，照样无限循环。</span>
     <span data-phrase="find.allfull.title">每一帧都重画了整块画布。</span>
-    <span data-phrase="find.allfull.body">GIF 允许一帧只存下相对上一帧变化了的那个矩形，所以录一个几乎不动的窗口，文件可以很小。这里没有一帧这么做：每一帧都是整块画布，{width}&times;{height}。如果这些帧本来就是互不相干的图片，那是对的；可要是拍摄或录制来的东西——画面大部分在帧与帧之间根本不动——那就是白扔的体积。</span>
+    <span data-phrase="find.allfull.body">GIF 允许一帧只存下相对上一帧变化了的那个矩形，所以录一个几乎不动的窗口，文件可以很小。这里没有一帧这么做：每一帧都是整块画布，&#x2066;{width}&times;{height}&#x2069;。如果这些帧本来就是互不相干的图片，那是对的；可要是拍摄或录制来的东西——画面大部分在帧与帧之间根本不动——那就是白扔的体积。</span>
     <span data-phrase="find.somefull.title.one">{total} 帧里有 1 帧重画了整块画布，其余的只存变化的部分。</span>
     <span data-phrase="find.somefull.title.many">{total} 帧里有 {count} 帧重画了整块画布，其余的只存变化的部分。</span>
     <span data-phrase="find.somefull.body">优化过的 GIF 就是这个样子。整块画布的那几帧，通常是第一帧，以及画面整个换掉的地方。</span>
@@ -332,8 +332,8 @@
     <span data-phrase="find.nonefull.body">第一帧之后的每一帧都只存变化了的矩形，这才是把这个格式用对了，也正是这个文件能这么小的原因。</span>
     <span data-phrase="find.outside.title.one">有 1 帧越出了画布。</span>
     <span data-phrase="find.outside.title.many">有 {count} 帧越出了画布。</span>
-    <span data-phrase="find.outside.body.one">画布是 {width}&times;{height}，而有一帧声称的矩形跑出了边界。解码器对超出的部分处理并不一致：有的裁掉，有的干脆拒收这个文件。</span>
-    <span data-phrase="find.outside.body.many">画布是 {width}&times;{height}，而有几帧声称的矩形跑出了边界。解码器对超出的部分处理并不一致：有的裁掉，有的干脆拒收这个文件。</span>
+    <span data-phrase="find.outside.body.one">画布是 &#x2066;{width}&times;{height}&#x2069;，而有一帧声称的矩形跑出了边界。解码器对超出的部分处理并不一致：有的裁掉，有的干脆拒收这个文件。</span>
+    <span data-phrase="find.outside.body.many">画布是 &#x2066;{width}&times;{height}&#x2069;，而有几帧声称的矩形跑出了边界。解码器对超出的部分处理并不一致：有的裁掉，有的干脆拒收这个文件。</span>
     <span data-phrase="find.localpal.title.one">有 1 帧自带一份颜色表，代价是 {bytes} &mdash; 占文件的 {share}。</span>
     <span data-phrase="find.localpal.title.many">有 {count} 帧各自带着一份颜色表，代价是 {bytes} &mdash; 占文件的 {share}。</span>
     <span data-phrase="find.localpal.body">自带调色板能让一帧用上共享表里没有的颜色，代价是每写一次、每个条目三个字节。如果这些帧本来就是同一个场景，全部共用一份表既更小，看着也更稳：调色板在帧与帧之间来回跳，正是所谓的 GIF 闪烁。</span>

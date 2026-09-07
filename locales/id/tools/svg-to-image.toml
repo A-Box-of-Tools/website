@@ -214,7 +214,7 @@ a = """
         satuan pengguna alih-alih piksel, tapi itulah satu-satunya angka di dalam
         file dan peramban memperlakukannya sebagai ukuran alami gambarnya. Kalau
         viewBox-nya juga tidak ada, halaman ini menulis <em>diandaikan</em> di
-        sebelah barisnya dan memakai 300&nbsp;&times;&nbsp;150, yang akan dipakai
+        sebelah barisnya dan memakai &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, yang akan dipakai
         sebuah <code>&lt;img&gt;</code> untuk menggambarnya. Bagaimanapun Anda bisa
         menyebut ukuran yang Anda mau dan file-nya digambar pada ukuran itu."""
 
@@ -247,7 +247,7 @@ a = """
         Batas peramban, bukan batas kami. Sebuah kanvas menyerah di suatu titik
         melewati 16.384 piksel di satu sisi, dan Safari di iPhone atau iPad
         berhenti pada sekitar 16,7 megapiksel luas &mdash;
-        4096&nbsp;&times;&nbsp;4096. Di atas itu halaman ini memperingatkan Anda
+        &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Di atas itu halaman ini memperingatkan Anda
         alih-alih menyerahkan gambar kosong, yang justru dilakukan peramban ketika
         ia kehabisan: <code>toBlob</code> tidak mengembalikan apa pun, tanpa galat
         yang menjelaskan dirinya. Melewati 100 megapiksel alat ini menolak, karena

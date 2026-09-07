@@ -163,7 +163,7 @@ body = """
 
       Trascina una pagina per la sua maniglia, oppure spostala con le frecce. Gira
       quella che è stata scansionata di traverso, togline una, oppure scrivi
-      <code>1-3, 8, 12-</code> nella casella per tenere, togliere o girare tutta una
+      <code dir="ltr">1-3, 8, 12-</code> nella casella per tenere, togliere o girare tutta una
       serie in un colpo solo. I numeri si rinumerano man mano, quindi quello che vedi
       è sempre quello che sarà il file finito."""
 

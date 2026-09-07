@@ -165,7 +165,7 @@ body = """
 
       Faites glisser une page par sa poignée, ou déplacez-la avec les flèches.
       Tournez-en une qui a été scannée de travers, retirez-en une, ou tapez
-      <code>1-3, 8, 12-</code> dans le champ pour garder, retirer ou tourner toute une
+      <code dir="ltr">1-3, 8, 12-</code> dans le champ pour garder, retirer ou tourner toute une
       série d'un coup. Les numéros se renumérotent au fur et à mesure, si bien que ce
       que vous voyez est toujours ce que sera le fichier fini."""
 

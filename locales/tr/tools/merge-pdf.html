@@ -43,7 +43,7 @@
 
     <div class="range-row">
       <label for="range">Sayfalar</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">Yalnızca bunları tut</button>
       <button type="button" id="range-drop" class="ghost">Bunları kaldır</button>
@@ -91,7 +91,7 @@
             <strong>Şu sayfada böl&hellip;</strong>
             <span class="preset-note">
               Şunlardan önce kes:
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Öncesinde kesilecek sayfa numaraları">
               &mdash; her biri yeni bir dosya başlatır.
             </span>
@@ -223,7 +223,7 @@
     <span data-phrase="page.earlier">{n}. sayfayı öne al</span>
     <span data-phrase="page.later">{n}. sayfayı geriye al</span>
     <span data-phrase="range.none">hiçbiri</span>
-    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">Bu bir sayfa numarası ya da sayfa aralığı değil: {list}. {total} Şöyle yazın: 1-3,
       8, 12-.</span>

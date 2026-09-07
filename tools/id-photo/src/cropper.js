@@ -303,7 +303,7 @@ export class Cropper {
     this.#box.style.top = `${(y / sh) * 100}%`;
     this.#box.style.width = `${(width / sw) * 100}%`;
     this.#box.style.height = `${(height / sh) * 100}%`;
-    this.#label.textContent = `${width} x ${height}`;
+    this.#label.textContent = ltr(`${width} x ${height}`);
     this.#paintGuides();
   }
 

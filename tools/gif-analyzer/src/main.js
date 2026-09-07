@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase, fill } from './shared/phrases.js';
+import { phrase, fill, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { DISPOSALS, NotAGif, frameData, parseGif } from './gif.js';
@@ -297,7 +297,7 @@ function renderSummary(gif, view) {
 
   el.fileName.textContent = view.name;
   el.factVersion.textContent = `GIF${gif.version}`;
-  el.factCanvas.textContent = `${gif.width} × ${gif.height}`;
+  el.factCanvas.textContent = ltr(`${gif.width} × ${gif.height}`);
   el.factSize.textContent = fileSize(gif.size);
   el.factSize.title = exact(gif.size, phrase);
   el.factFrames.textContent = count(gif.frames.length);
