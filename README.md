@@ -50,7 +50,9 @@ lockfile, no dependency to fetch. Both test suites run in CI on every push and
 every pull request, and nothing is published if either fails.
 
 Pull requests are opened against **`dev`**, which is where changes are bundled;
-`main` is what is live, and a release is a pull request from `dev` to `main`.
+`main` is what is live, and a release is a pull request from `dev` to `main`,
+opened and merged by hand when somebody decides the bundle is ready. Nothing
+merges it on a schedule.
 [Deploying](docs/deploying.md) has the whole path and why there is a branch in
 the middle of it.
 

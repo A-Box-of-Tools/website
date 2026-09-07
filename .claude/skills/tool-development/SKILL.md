@@ -39,7 +39,9 @@ read the message; it is the fastest route to done.
 - **Open the pull request against `dev`.** `main` is what is live, and a push
   to it deploys, tags a version and tells the search engines; `dev` is where
   changes are bundled until somebody opens the pull request from `dev` to
-  `main` that releases them. `docs/deploying.md` has the rest.
+  `main` that releases them. Your change is done when it is on `dev` — never
+  open or merge that release pull request unless you were asked to by name.
+  `docs/deploying.md` has the rest.
 - **Match the prose voice.** Commit messages, comments and `tool.toml` prose
   here explain *why*, in full sentences, and assume the reader can see the
   code. A comment that restates the line below it does not belong.

@@ -32,6 +32,15 @@ Work is opened against `dev`. **Releasing is opening a pull request from `dev`
 to `main`** and merging it — there is no other step, and no file in the tree has
 to be edited to do it.
 
+**That merge is done by hand, on purpose, and nothing here will ever do it for
+you.** No schedule opens the pull request, no workflow merges it, and nothing
+fast-forwards `main` on to `dev`. Auto-merge is not to be enabled on it either.
+Deciding that what is on `dev` is ready to be live is the one judgement this
+arrangement exists to make room for: `main` moving is a deploy, a version tag
+and a submission to five search engines, and it should happen because somebody
+looked at the bundle and its QA run and said yes. Everything upstream of that
+merge is automatic so that this one step can be deliberate.
+
 `main` used to be where pull requests landed, which made every merge a release:
 its own deploy, its own version tag, its own IndexNow submission. Most changes
 do not deserve one — a phrase in one language, a colour, a fix to one tool — and

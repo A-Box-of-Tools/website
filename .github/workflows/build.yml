@@ -24,6 +24,12 @@
 # than fifteen of each. What it costs is that `main` is now two merges away
 # from a change rather than one, which is the trade being made.
 #
+# The second of those two merges is made by hand, and nothing in this file
+# will ever make it: no schedule, no auto-merge, and no step anywhere here
+# pushes `main`. A release is somebody deciding the bundle is ready, having
+# read its preview and its QA run - and that decision is the one thing
+# everything else is automated in order to leave room for.
+#
 # So this workflow has three destinations rather than two. The `build` job
 # names them once in its `env`, because the four steps that read them have to
 # agree with each other:

@@ -40,6 +40,12 @@ IndexNow, and nothing else does any of those. Releasing is opening a pull
 request from `dev` to `main` and merging it — that one gets a preview and a
 full QA run on the whole bundle, which is the last gate before production.
 
+**Never open or merge the `dev` → `main` pull request unless you were asked
+to, by name.** It is the release, and it is meant to be a person's decision
+rather than a step at the end of a task: merging it deploys, tags a version
+and tells five search engines. Finishing a change means getting it on to
+`dev`. Nothing automates the rest, and you are not the exception.
+
 The reason is the version and the deploy rather than ceremony: every merge
 used to be a release of its own, and most changes do not deserve one. See
 [docs/deploying.md](docs/deploying.md).
