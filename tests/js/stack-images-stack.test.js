@@ -236,6 +236,59 @@ test('focus stacking takes each pixel from the frame it was sharp in', () => {
   assert.notEqual(at(26, 16), 128, 'the right half came from the blurred frame');
 });
 
+test('transparent ground reads as an edge, and wins the pixels around it', () => {
+  // Why the pipeline insets the crop by the radius and two more before it cuts
+  // a focus stack. The accumulator covers the whole output and a frame that
+  // was moved does not reach all of it, so what the run hands this mode along
+  // that boundary is transparent - which arrives here as a luma of zero, is
+  // the strongest edge in the picture, and is spread inward by the blur.
+  //
+  // Two frames, both flat, so neither has any real sharpness to offer. One of
+  // them stops at x = 4 and is transparent to the left of it. If the boundary
+  // meant nothing, every pixel would come from the frame that was added first.
+  const width = 20;
+  const height = 5;
+  const radius = 2;
+  const boundary = 4;
+
+  const even = new Uint8ClampedArray(width * height * 4);
+  const stopping = new Uint8ClampedArray(width * height * 4);
+  for (let i = 0; i < width * height; i += 1) {
+    const at = i * 4;
+    even[at] = 100;
+    even[at + 1] = 100;
+    even[at + 2] = 100;
+    even[at + 3] = 255;
+    if (i % width >= boundary) {
+      stopping[at] = 200;
+      stopping[at + 1] = 200;
+      stopping[at + 2] = 200;
+      stopping[at + 3] = 255;
+    }
+  }
+
+  const stack = createStack('focus', { width, height, frames: 2, radius });
+  stack.beginPass(0);
+  stack.add(even, 0, 0);
+  stack.add(stopping, 1, 0);
+  stack.endPass(0);
+  const out = stack.result();
+  const at = (x) => out[((2 * width) + x) * 4];
+
+  // The frame that stops wins everything the blur reached, which is its own
+  // boundary give or take the radius - so the answer is black where that frame
+  // had nothing at all, which is the fringe with a plausible explanation.
+  assert.equal(at(boundary - 1), 0, 'the transparent side did not win, so the inset is unneeded');
+  assert.equal(at(boundary + radius), 200, 'the false edge did not reach as far as expected');
+
+  // And it reaches exactly that far: radius and one more for the Laplacian's
+  // own step past the boundary is what the pipeline gives up, plus one so that
+  // the number is not the edge of the thing it is measuring.
+  for (let x = boundary + radius + 1; x < width; x += 1) {
+    assert.equal(at(x), 100, `x=${x} was still contaminated by the transparent ground`);
+  }
+});
+
 test('the laplacian is large on an edge and zero on flat ground', () => {
   const width = 5;
   const height = 5;
