@@ -373,8 +373,22 @@ export async function inspect(files, hooks) {
  * everywhere, divided by one number. Fitting each frame to the square
  * separately would make that number different per frame, and different in each
  * axis for any frame of a different shape.
+ *
+ * The window is told that same box - `fit` describes both the draw and the
+ * taper, so the two cannot drift apart - and it is the output's box rather
+ * than this frame's spot in it for the same reason the draw is: the rectangle
+ * has to be identical in every frame or one number no longer converts a shift
+ * here into a shift in the output. So a frame of a different shape from the
+ * output, letterboxed inside the box, keeps a hard edge of its own where its
+ * picture stops. That is the edge `commonArea` is about, and it is a mixed
+ * set's cost rather than every set's; tapering it per frame would buy it back
+ * at the price of the constant.
+ *
+ * What the box removes is the edge every frame of every set had, the output
+ * box's own. window2d says what that edge did to the answer and what taking it
+ * out costs the gate.
  */
-function lumaSquare(bitmap, spot, output, fit, turn) {
+function lumaSquare(bitmap, spot, fit, turn) {
   const { canvas, context } = surface(ALIGN_SIZE, ALIGN_SIZE);
   context.setTransform(1, 0, 0, 1, fit.x, fit.y);
   context.scale(fit.scale, fit.scale);
@@ -386,7 +400,7 @@ function lumaSquare(bitmap, spot, output, fit, turn) {
     out[i] = pixels[at] * 0.299 + pixels[at + 1] * 0.587 + pixels[at + 2] * 0.114;
   }
   canvas.width = 0;
-  return window2d(out, ALIGN_SIZE);
+  return window2d(out, ALIGN_SIZE, fit);
 }
 
 /**
@@ -813,7 +827,7 @@ export async function runStack(request, hooks) {
     // copy of. Its own size never enters the arithmetic.
     const square = lumaSquare(frame.thumb, {
       x: spot.x, y: spot.y, width: spot.width, height: spot.height,
-    }, output, fit, frame.turn);
+    }, fit, frame.turn);
 
     if (!reference) {
       // Everything else is measured against this frame, so it is the one move
@@ -945,8 +959,15 @@ export async function runStack(request, hooks) {
         // the finished moves: every one of them is final by the end of the
         // first band's first pass.
         //
-        // Every window goes through the same gate the coarse pass does, and
-        // for the same reasons: a window without enough texture to correlate,
+        // Every window goes through the same gate the coarse pass does, for
+        // the same reasons but on its own floor: these are full squares of
+        // picture at the resolution the frame was shot at, so `isMeasured`
+        // below is asked with no floor and gets N_MAX, where the coarse peak
+        // is asked with N_MAX_SURVEY because a thumbnail tapered to the
+        // picture's box is a different surface and the same statistic reads on
+        // a different scale there. The comment on N_MAX_SURVEY has both
+        // distributions; do not make the two "consistent". The reasons
+        // themselves are shared: a window without enough texture to correlate,
         // one whose peak is a plateau - a wall, a sky - so that its position
         // is the noise's choice, or one whose peak is merely the tallest of
         // several, so that which one the argmax took is the noise's choice

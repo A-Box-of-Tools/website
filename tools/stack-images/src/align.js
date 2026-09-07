@@ -204,7 +204,7 @@ export const L_MIN = 0.004;
  *   unrelated texture/stars, stars/stars     0.89-0.99     0.06-0.68   junk
  *   unrelated texture/low                    0.67-0.84     0.43-0.70   junk, 8 of 10 pass
  *
- *   at 256, the survey square, letterboxed   next          plateau     answer
+ *   at 256, top-anchored, tapered whole      next          plateau     answer
  *   textured, 15% and 30%                    0.28-0.50     0.23-0.55   right
  *   low-texture, 15% and 30%                 0.20-0.41     0.43-0.62   right
  *   four hundred stars, 6% and 10%           0.45-0.69     0.14-0.31   right
@@ -222,7 +222,84 @@ export const L_MIN = 0.004;
  *   unrelated texture/stars                  0.72-0.98     0.50-0.74   junk, 7 of 10 pass
  *   unrelated stars/stars                    0.82-1.00     0.22-0.73   junk
  *
- * On the full 256 square, without the letterbox, every real family reads
+ * That table, and every reading in it, is the top-anchored letterbox with the
+ * whole square tapered - the fixture, not the square the pipeline builds. It
+ * is kept because these constants were chosen on it and it is what reproduces
+ * them. `placement` centres the box, so a real letterbox's edges sit where the
+ * square's own taper has already faded them to a quarter and the fixture's sit
+ * at three-quarters; the fixture's ridge is about three times the pipeline's,
+ * and anything measured on it overstates what the letterbox does.
+ *
+ * SINCE lumaSquare HANDS window2d THE PICTURE'S BOX
+ *
+ * Re-measured on the CENTRED box, twenty seeds a family, 3:2 and 2:3 together,
+ * the scenes lifted to a photographic black level so that the letterbox step
+ * is the height a photograph's is. The third column is the same family as a
+ * SQUARE output, which has no letterbox and which this function has never
+ * treated any differently:
+ *
+ *                                     whole square   the box    square output
+ *   textured, 15% / 30% / 50% noise    0.18-0.64     0.13-0.71    0.13-0.60
+ *   low-texture, 15% and 30%           0.20-0.44     0.12-0.44    0.11-0.36
+ *   four hundred stars, 6% and 15%     0.07-0.15     0.08-0.20    0.07-0.14
+ *   8-bit gradient and skies, 1%-1.3%  0.94-1.00     0.76-1.00    0.79-1.00
+ *   unrelated texture/texture, 5%      0.80-0.95     0.80-0.99    0.78-1.00
+ *   unrelated texture/texture, 15%     0.74-1.00     0.71-1.00    0.81-0.99
+ *   unrelated low/low, 5%              0.88-1.00     0.71-1.00    0.88-1.00
+ *   unrelated low/low, 15%             0.80-1.00     0.71-1.00    0.72-0.96
+ *   unrelated texture/low, 5%          0.84-1.00     0.68-1.00    0.68-0.94
+ *   unrelated texture/low, 15%         0.74-0.99     0.60-0.97    0.64-0.90
+ *   unrelated texture against stars    0.78-1.00     0.74-1.00    0.84-0.99
+ *
+ * and the same eleven junk families counted rather than ranged, admitted by
+ * isMeasured AT THIS FLOOR over twenty seeds each - which is the floor the
+ * coarse square asked while the ridge was doing its gating, and not the floor
+ * it asks now:
+ *
+ *                       whole square   the box   square output
+ *   3:2 output             5/220        31/220      36/220
+ *   2:3 output             1/220        39/220      36/220
+ *
+ * The third column is the answer to both of the other two. The letterbox's
+ * edge stood high away from the peak on every surface it was in, and this
+ * statistic reads how high the surface stands away from the peak - so the
+ * letterbox was refusing junk, by accident, on exactly the outputs that were
+ * not square. Taking it out does not open a hole; it gives every output shape
+ * the hole a square output has always had, and it is the same hole: the
+ * unrelated texture/low and low/low pairs whose surfaces are a few broad bumps
+ * rather than many sharp ones. The paragraph on the JPEG lattice below is
+ * where that leak is already recorded, and the consensus check is what is left
+ * to catch it. Nothing downstream can veto a coarse peak that passed - the
+ * refinement can only decline to improve it - so what the consensus catches is
+ * the refinement's own windows, and a junk coarse move that got through is
+ * applied.
+ *
+ * Those counts are what this floor lets through, and they are the reason the
+ * coarse square stopped asking it. N_MAX_SURVEY judges that square now, and
+ * refuses every one of these eleven families on every seed of every shape;
+ * what it costs instead is on its own comment.
+ *
+ * There is no room to lower THIS floor for it, and the coarse-only floor that
+ * answers it is N_MAX_SURVEY. This paragraph used to say there was no such
+ * floor to split off, and what it was reading when it said so was a fixture
+ * rather than the pipeline: at 256 with nothing resized on the way in, the
+ * real side reached 0.71 on the textured scene at fifty per cent noise against
+ * a junk side starting at 0.60, and no line separated them. A fixture that
+ * resizes the way the survey does - the scene drawn several times larger, its
+ * noise averaged down with the picture - reads that same scene at 0.04-0.13,
+ * and the browser reads it at 0.04-0.06. The noise a 256-native fixture leaves
+ * on a real scene is noise the pipeline has already thrown away, and it was
+ * the whole of what hid the gap. What decides 0.8 meanwhile is
+ * unchanged and is nothing to do with the coarse square: the sparse sky at the
+ * refinement window, 0.72-0.96 over ten draws, and the log-polar turn too
+ * small to separate from the surface's own junk peak, 0.81 - both full
+ * squares, windowed with no box at all.
+ *
+ * On the full 256 square, without the letterbox - the square-output column
+ * above, and nothing else: the box column beside it is a different reading of
+ * the same scene, 0.13-0.71 against 0.13-0.60 on the row that decides this
+ * range, and what the coarse square reads is on N_MAX_SURVEY's own comment
+ * rather than here. Every real family reads
  * 0.07-0.62 - the textured scene at fifty per cent noise is the 0.62, and is
  * 0.3-2.4 pixels off - and the junk 0.59-1.00: gradients 0.76-0.99 over forty
  * seeds with none admitted, the seeds that dip under this floor being refused
@@ -249,9 +326,11 @@ export const L_MIN = 0.004;
  * twenty per cent the same field is wrong on two seeds in ten, so past that
  * refusing is right, and the floor refuses nine. It is the sparse sky and
  * nothing else that spends this margin. Every photograph, and every dense
- * field, is under 0.65 at every size on every seed - the highest of them is
- * the letterboxed textured scene at fifty per cent noise, 0.64 - so the floor
- * could sit at 0.7 for them. The sparse windows are where it is close: over
+ * field, is under 0.65 at every size on every seed but one: the textured scene
+ * at fifty per cent noise, which read 0.64 over the letterbox and reads 0.71
+ * over the picture's box, aligned correctly on every seed at both. That one
+ * row is why the floor could not simply be dropped to 0.7 for the coarse
+ * square once the ridge went. The sparse windows are where it is close: over
  * ten different draws of a sparse sky the twenty-star window at six per cent
  * reaches 0.72 and a seventeen-star one 0.96, the second refused on one draw
  * in ten although its answer was right. Which draw of the sky the window
@@ -275,9 +354,12 @@ export const L_MIN = 0.004;
  * catch either. Coherence read it at 0.05-0.06, a quarter of the real
  * low-texture scene's, and it was the one junk family where coherence had a
  * margin; the sparse skies sit at 0.04-0.05 in the same place, which is why
- * that floor could not stay. On the survey square the letterbox refuses the
- * pair (0.82-0.95), so it reaches the refinement only from a square frame,
- * and only once the survey has admitted it.
+ * that floor could not stay. The survey square used to refuse the pair on
+ * every seed of a letterboxed output and no longer does: over the picture's
+ * box it reads 0.78-1.00 at 3:2 and 0.68-0.92 at 2:3, admitted on three seeds
+ * of twenty and fifteen, against a square output's own 0.68-0.94 and eleven.
+ * So this pair now reaches the refinement from a frame of any shape, which is
+ * the leak the table above is about and this is one family of it.
  *
  * The two unrelated JPEGs are the widest of the junk families that this
  * reading is meant to catch and does not always. Over eighty seed pairs -
@@ -288,13 +370,16 @@ export const L_MIN = 0.004;
  * puts its aliases. The nearest sit eight pixels from the peak, inside the
  * box, so what is read is the pair at sixteen or seventeen, and those fall
  * with the scene's own smooth envelope rather than standing level with the
- * peak the way the near ones do. It is harmless as the pipeline is arranged:
- * on the survey square the same pairs are letterboxed and read 0.91-0.99,
- * refused on all eighteen seeds tried, and at the refinement an argmax that
- * landed on a random lattice peak is one window disagreeing with the other
- * eight, which the consensus drops. Harmless is not invisible, and the number
- * is recorded because the consensus is what catches this rather than either
- * floor.
+ * peak the way the near ones do. At the survey square the same pairs used to
+ * be refused on every seed by the letterbox rather than by anything here -
+ * next 0.97-0.98 at a plateau of 0.99 - and over the picture's box they read
+ * next 0.69-0.99 at a plateau of 0.16-0.79 and pass on two seeds in ten at
+ * 3:2 and three at 2:3, where the same pair as a square output passes none.
+ * That is the widest the box's cost gets on any family measured, and it is
+ * left standing rather than gated because the frame it admits is one window
+ * disagreeing with the other eight at the refinement, which the consensus
+ * drops. The consensus is what catches this rather than either floor, which is
+ * why the number is recorded.
  *
  * The reach was measured at 6, 8, 10, 12, 16 and 20. None of them moves the
  * unrelated pairs or the star fields, whose next peak is far away - a sparse
@@ -321,13 +406,24 @@ export const L_MIN = 0.004;
  * 0.41-0.61 at thirty; turned four degrees, 0.31-0.61; the textured scene
  * turned four degrees 0.20-0.27, nine degrees at thirty per cent 0.48-0.72,
  * twenty degrees 0.22-0.34, scaled by 1.12 0.23-0.38; a star field turned
- * five degrees 0.07-0.22; and the letterboxed textured and low-texture turns
- * 0.26-0.42. Every seed of every one is admitted, and estimate() reads the
- * angle on all ten seeds of each. The junk there: the gradient at fifteen
- * per cent noise 0.83-0.95, unrelated pairs 0.70-1.00 (one to three seeds in
- * ten pass), and the letterboxed 8-bit gradient 0.39-0.56 - admitted, as it
- * was under the old floor, and discarded when the translation peak it
- * leads to is refused.
+ * five degrees 0.07-0.22. Every seed of every one is admitted here, and
+ * estimate() reads the angle on all ten seeds of each. The junk there: the
+ * gradient at fifteen per cent noise 0.83-0.95 and unrelated pairs 0.70-1.00,
+ * one to three seeds in ten passing.
+ *
+ * The letterbox is the one place this reading moved when lumaSquare began
+ * handing window2d the picture's box, and it moved the right way. On the
+ * centred 3:2 box over twenty seeds, the 8-bit gradient's log-polar peak read
+ * 0.20-0.54 with the whole square tapered and was admitted on every seed -
+ * nothing refused it, and similarity mode was applying it as a scale of
+ * 0.95-1.01 - where over the picture's box it reads 0.74-1.00 and is refused
+ * on eighteen. Two seeds still pass, so this is a rate and not a rule, and
+ * what they buy is discarded when the translation peak they lead to is
+ * refused. Real turns are a wash or better: the textured scene turned nine
+ * degrees at thirty per cent goes from fifteen seeds in twenty admitted to
+ * twenty, the low-texture scene turned three degrees at twenty per cent from
+ * twenty to nineteen, and estimate() reads both angles to within a degree or
+ * two either way.
  *
  * The margin there is 0.01, not the 0.08 those rows suggest, and the case
  * that spends it is a turn too small to matter. Ten further seeds of the
@@ -341,11 +437,172 @@ export const L_MIN = 0.004;
  * admit the unrelated pairs that sit at 0.71-0.86 there, one of which reads
  * a 7.2-degree turn between two pictures that share nothing; the trade is
  * one refused third of a degree against a wrong turn applied to a frame the
- * translation gate may well admit, and it was not taken. One floor is also
- * one floor to calibrate, which is the whole reason isMeasured is a function
- * rather than three comparisons in two places.
+ * translation gate may well admit, and it was not taken.
+ *
+ * This floor decides every surface but one, and N_MAX_SURVEY says which one
+ * and why. The two are the same reading of two different surfaces, not two
+ * opinions about one: everything gated here is a full square of picture at the
+ * resolution it was shot at, and the exception is a thumbnail of the whole
+ * frame with a taper cut to the picture's own box.
  */
 export const N_MAX = 0.8;
+
+/**
+ * The same reading at the coarse survey square, where it lands elsewhere.
+ *
+ * `next` is a ratio of a surface to its own peak and so does not scale with
+ * the side - the tables above hold from 128 to 512 - but it does depend on
+ * what is in the square, and the coarse square holds something no refinement
+ * window does. Two things separate the regimes, and both arrived together.
+ *
+ * The survey square is a thumbnail. The whole frame is resized to a 256 long
+ * edge before it is correlated, so a photograph's noise is averaged down about
+ * twelvefold on the way in and the peak that comes back is sharper than the
+ * same scene's at a full-resolution window: the textured scene at fifty per
+ * cent noise reads 0.04-0.06 here in the browser, where a sparse sky at the
+ * 512 window - the family that set N_MAX - reads 0.32-0.96 with its answer
+ * right. And since lumaSquare hands window2d the picture's box, the letterbox
+ * ridge is gone from this square. That ridge stood high away from the peak on
+ * every surface it was in, junk and real alike, which is exactly what this
+ * statistic reads, so removing it moved the whole distribution down - the junk
+ * with it, which is the point. A clear sky at 3:2 that read 0.96 over the
+ * whole square reads 0.62-0.74 over the box, and 0.8 no longer refuses it.
+ *
+ * WHAT THE BROWSER MEASURED, on the built survey path - a scene rendered at
+ * 3000x2000 or 2000x3000, JPEG at quality 0.92, createImageBitmap resized to
+ * the 256-long-edge thumbnail, drawn into the square through the fit
+ * transform, then this reading - twelve seeds a family, as the peak-uniqueness
+ * reading and as the count isMeasured admitted at 0.8:
+ *
+ *                                   whole square   the box    admitted
+ *   textured 3:2                     0.06-0.09     0.03-0.04   12 -> 12
+ *   textured, 50% noise, 3:2         0.13-0.16     0.04-0.06   12 -> 12
+ *   low texture 15%, 2:3             0.24-0.27     0.05-0.07   12 -> 12
+ *   low texture 15%, 3:2             0.36-0.39     0.07-0.11   12 -> 12
+ *   four hundred stars, 6%, 3:2      0.41-0.51     0.12-0.29   12 -> 12
+ *   clear sky, 3:2                   0.96          0.62-0.74    0 -> 11
+ *   clear sky, 2:3                   0.96          0.75-0.91    0 -> 0
+ *   noisy sky, 3:2                   0.94-0.97     0.73-0.99    0 -> 1
+ *   unrelated low/low, 3:2           0.89-1.00     0.71-0.99    0 -> 2
+ *   unrelated texture/texture, 3:2   0.82-0.99     0.80-1.00    0 -> 0
+ *
+ * The separation is wider than the letterbox ever gave - a real answer at
+ * worst 0.29 against junk at best 0.62, where the letterbox had 0.51 against
+ * 0.82 - and it is in the wrong place for a floor of 0.8, which a clear sky at
+ * 3:2 now walks under on eleven seeds in twelve, moved by up to 38 output
+ * pixels from an identity that was the truth. That is the failure the plateau
+ * and this reading exist to prevent, so the box needed a floor of its own.
+ *
+ * WHERE THE LINE IS, measured in node on fixtures that reproduce that path -
+ * the scene rendered large, given its noise and its 8 bits there,
+ * box-averaged down into the picture's rectangle and drawn into the centred
+ * box - at 3:2, 2:3 and square outputs, twenty-one seeds a family.
+ *
+ * THE RESIZE RATIO IS THE FIXTURE. The pipeline shrinks a whole frame into a
+ * 256 long edge, so a 3000-pixel frame is averaged 11.7 to one before anything
+ * is correlated, and a fixture that renders smaller leaves noise on a real
+ * scene that the pipeline has already thrown away. The scenes below are
+ * therefore rendered at twelve times the rectangle inside the square - 3072
+ * into 256, the browser's own ratio to a rounding - and the tests derive that
+ * multiplier from the two sizes rather than stating it. The scale is not a
+ * detail: swept at 4, 6, 8, 10 and 12 against the browser column above, only
+ * the last reproduces it. At 6, which is what the first version of this floor
+ * was measured on, the low-texture scene at fifteen per cent reads 0.035-0.037
+ * where the browser reads 0.07-0.11 and the fixture at twelve reads
+ * 0.073-0.077; the sparse fields read about half what they read at twelve, and
+ * the floor that came out of it was too high to be safe by that much.
+ *
+ * How the fixtures then compare with the browser, family by family, box
+ * column, the browser's number second:
+ *
+ *   textured, 3:2                  0.057-0.063   0.03-0.04   fixture high
+ *   textured 50% noise, 3:2        0.057-0.073   0.04-0.06   fixture high
+ *   low texture 15%, 2:3           0.080-0.085   0.05-0.07   fixture high
+ *   low texture 15%, 3:2           0.073-0.077   0.07-0.11   inside
+ *   four hundred stars 6%, 3:2     0.151-0.201   0.12-0.29   inside
+ *   clear sky, 3:2                 0.671-0.674   0.62-0.74   inside
+ *   clear sky, 2:3                 0.637-0.645   0.75-0.91   fixture LOW
+ *   noisy sky, 3:2                 0.577-0.716   0.73-0.99   fixture LOW
+ *   unrelated low/low, 3:2         0.906-1.000   0.71-0.99   fixture high
+ *   unrelated texture/texture      0.875-0.999   0.80-1.00   inside
+ *
+ * So the real side agrees to about two hundredths and the junk side reads LOW
+ * on the skies - by a tenth at 2:3 and by fifteen hundredths on the noisy one.
+ * That is the conservative direction and the reason the fixtures are worth
+ * trusting for a floor: they put the junk nearer the real side than the
+ * browser does, so a line that clears the fixtures' junk clears the browser's
+ * by more. It is not licence to trust them upward. Where a fixture family
+ * reads higher than the browser on the real side, the browser is the number
+ * this floor is calibrated against, and any family the browser never measured
+ * is marked below as what it is.
+ *
+ *                                          next        answer
+ *   textured, clean to 50% noise          0.053-0.084  right, 0.11-0.14 px
+ *   textured, frame eight times dimmer    0.073-0.087  right, 0.11-0.14 px
+ *   low texture, 15% and 30%              0.066-0.087  right, 0.10-0.12 px
+ *   four hundred stars, 6%                0.127-0.201  right, 0.15-0.24 px
+ *   twenty to fifty stars, five draws     0.223-0.999  FIXTURE ONLY, below
+ *   skies: three slopes, 0.4% to 5%       0.577-0.998  junk, moved 0.0-2.7 px
+ *   unrelated low/low                     0.869-1.000  junk, moved 18 px
+ *   unrelated texture/texture             0.813-0.999  junk
+ *   texture against stars                 0.737-0.999  junk
+ *   two unrelated JPEGs, Q95 to Q20       0.840-0.999  junk
+ *
+ * The brightness row is eight TIMES - three stops - with the dim frame
+ * quantised to 8 bits at an eighth of the level and carrying the bright
+ * frame's read noise, which is the harsher of the two ways to model a bracket;
+ * scale its noise down with it and the same pair reads 0.054-0.079. Eight
+ * STOPS, 256 to one, is not that family and is not a real one: it reads
+ * 0.77-1.00 with its answer between a fifth of a pixel and fifty-eight, and
+ * both floors refuse it, which is right.
+ *
+ * THE FLOOR IS 0.45, and it is the middle of the band the browser measured:
+ * every real family it read is under 0.29 and every junk family over 0.62. The
+ * fixtures narrow that band rather than widen it - real to 0.20, junk to 0.577
+ * - and 0.45 sits inside both, 0.16 above the highest real reading either path
+ * gives and 0.13 below the lowest junk one. The two closest families are the
+ * four-hundred-star field, which the browser reads at 0.12-0.29 and the
+ * fixtures at 0.127-0.201 over three shapes, and a sky at five per cent noise,
+ * which the fixtures read at 0.577-0.716 with live and plateau both passing
+ * and which moves a frame 0.7-2.7 alignment pixels; the browser's own nearest
+ * junk is the clear 3:2 sky at 0.62-0.74.
+ *
+ * WHAT IT COSTS IS SPARSE STAR FIELDS, and there is no floor that does not.
+ * A field of twenty to fifty stars in the thumbnail is the one family that
+ * spans the whole band: over five draws each at three shapes and seven seeds,
+ * 315 pairs, it reads 0.223-0.999. The browser never measured one on this
+ * path, so this row is the fixtures' alone, and it overlaps every junk family
+ * in the table - a sparse field's peak genuinely is one of several, which at
+ * the survey square is also what a clear sky looks like. Of the 296 of those
+ * pairs whose answer is right to within a pixel, 0.45 admits 151, 0.5 admits
+ * 199 and 0.8 admits 274; of the 19 that are wrong, 0.45 admits one and 0.8
+ * admits two. So the trade is stated rather than claimed away: raising the
+ * floor towards the junk buys sparse fields back a few at a time and never all
+ * of them, and a field this floor refuses stacks at the identity and is not
+ * refined either, because a frame the coarse pass refused is not refined at
+ * all; the comment in the stack says why. A dense field - the four hundred
+ * stars a real night sky leaves in a 256 thumbnail - is admitted on every seed
+ * of every shape, with 0.16 to spare against the browser's own reading of it
+ * and 0.25 against the fixtures'.
+ *
+ * It leans the opposite way to N_MAX, and deliberately. A junk pair N_MAX
+ * admits is two pictures that share nothing, in a set that was never going to
+ * stack; a sky this floor admits is a set that was perfectly good until the
+ * alignment invented a move for it. Admitting costs more here than there, so
+ * this floor sits at the middle of its band where N_MAX sits nearer the junk,
+ * and the sparse fields are what pays for that.
+ *
+ * Only the coarse translation peak is judged here. The refinement's windows
+ * are full squares of picture with no box, at the resolution the frame was
+ * shot at, and the table on N_MAX is theirs; so is the log-polar surface,
+ * which logPolar builds as a whole square and window2d tapers whole whatever
+ * shape the output has. Both halves of that are pinned by tests that fail if
+ * the floor is passed where it should not be or dropped where it should: a
+ * real twelve-degree turn's log-polar peak reads 0.625 and has to be admitted,
+ * and a five per cent sky at the survey square reads 0.578-0.708 through
+ * estimate() and has to be refused.
+ */
+export const N_MAX_SURVEY = 0.45;
 const NEXT_REACH = 10;
 
 /**
@@ -380,13 +637,14 @@ const NEXT_REACH = 10;
  *   textured, clean and 30% noise   0.92-0.96   0.11-0.17
  *
  * and in node on the fixtures in tests/js/stack-images-align.test.js, ten
- * seeds each at 256, with the picture letterboxed to 256x171 over black the
- * way lumaSquare letterboxes a 3:2 frame - which is what reproduces the
- * browser: a full-square gradient measures coherence 0.04-0.10 and next
- * 0.87-0.99, and so do the vignette and textured-sky rows below (next
- * 0.76-0.99), all refused without the plateau's help, and it is the
- * letterbox's hard edge, shared by both frames, that pins the vertical,
- * lifts the coherence over what was then its floor, and leaves the ridge:
+ * seeds each at 256, over the tests' TOP-ANCHORED letterbox with the whole
+ * square tapered. That is a stronger letterbox than `placement` builds and it
+ * is what these readings were taken on; it is also what reproduces the browser
+ * rows above, where a full-square gradient measures coherence 0.04-0.10 and
+ * next 0.87-0.99, and so do the vignette and textured-sky rows below (next
+ * 0.76-0.99), all refused without the plateau's help. It is the letterbox's
+ * hard edge, shared by both frames, that pins the vertical, lifts the
+ * coherence over what was then its floor, and leaves the ridge:
  *
  *                                        coherence    plateau     refused
  *   gradient, 8-bit, 0.3-3% noise        0.43-0.60    0.95-0.996  all
@@ -408,8 +666,8 @@ const NEXT_REACH = 10;
  *   twenty stars, 6% noise               0.20-0.23    0.02-0.12   none
  *
  * The floor is 0.7. Against the browser it has 0.1 of margin on both sides;
- * against the fixtures the real side is thinner, 0.02-0.05, because the
- * letterbox ridge sits under every real pair too: the low-texture scene at
+ * against those fixtures the real side is thinner, 0.02-0.05, because the
+ * ridge sat under every real pair too: the low-texture scene at
  * thirty per cent noise reaches 0.65-0.68 depending on the seeds, and the
  * scene that straddles the floor is a low-texture one under a lens vignette
  * that did not move with it, refused on half its seeds although its peak was
@@ -424,21 +682,34 @@ const NEXT_REACH = 10;
  * 0.55-0.67, with 0.4-2.4 pixels of error, which is the small blur a
  * doubtful coarse move on a real scene costs.
  *
- * Two pairs the gate knowingly lets through, on the letterboxed square only,
- * both to be caught by the consensus check the way the JPEG lattice will be:
- * two unrelated textured pictures pass nine seeds in ten and are moved by one
- * to four alignment pixels, and two unrelated low-texture pictures at fifteen
- * per cent noise pass about half. The surface is the letterbox ridge with the
- * unrelated texture's noise bumps along it, so the argmax sits on a bump and
- * the ridge reads 0.6-0.7 of it eight pixels away - a noisy ridge measures
- * lower than the gradient's clean one. On a full square both pairs read next
- * 0.82-0.99 (texture/texture) and 0.70-0.91 (low/low, admitted on five seeds
- * in ten) at a coherence of 0.04-0.10. The structural fix is
- * to taper the picture's own box in lumaSquare rather than the whole square,
- * so the letterbox edge is not a feature both frames share; that would remove
- * the ridge under the gradients, the unrelated pairs and the real low-texture
- * answers at once, and is a follow-up rather than part of this gate. The
+ * That table is a surface the coarse pass no longer builds, because
+ * lumaSquare now hands window2d the output box and the taper follows the
+ * picture's own edge. Re-measured on the CENTRED box, twenty seeds a family
+ * over 3:2 and 2:3, this floor's readings all fall and so do the answers'
+ * distance from it: the 8-bit gradients and skies read 0.56-0.93 here where
+ * the whole-square taper read 0.96-1.00, the two unrelated textured pictures
+ * 0.23-0.87, the two unrelated low-texture ones 0.37-0.81, the low-texture
+ * scene at thirty per cent 0.39-0.58 and the textured at fifty 0.28-0.52.
+ *
+ * What that means for the gradient is the point, and it is not that this floor
+ * catches it. Over the whole square it was refused by plateau AND by next,
+ * with a wide margin on both; over the box its plateau alone would admit it on
+ * some seeds and only next still refuses, at 0.81-1.00 - the same numbers the
+ * gradient reads as a square output (plateau 0.61-0.85, next 0.80-1.00, one
+ * seed in twenty admitted), because the box is what a square output has always
+ * been. The two junk pairs this floor knowingly let through go the same way:
+ * they read 0.23-0.87 and 0.37-0.81 here, under the floor, and it is next that
+ * decides them. The comment on N_MAX has that whole trade counted, and the
  * browser's own reading of a low/low pair, 0.28 and 0.81, is refused.
+ *
+ * Which `next` decides them is N_MAX_SURVEY rather than N_MAX, and the
+ * difference is not academic: in the browser, where the sky is a photograph of
+ * one rather than a fixture, the plateau over the box reads under this floor
+ * AND the uniqueness reads 0.62-0.74, so 0.8 admitted a clear sky on eleven
+ * seeds in twelve. Neither floor catches that alone. What this one still
+ * catches, and was calibrated for, is the plateau of a scene that cannot be
+ * located: the wall and the textured sky at the refinement windows, in the
+ * paragraph below, which are full squares and untouched.
  *
  * One row the two tables do not agree on: the browser's star field reads
  * 0.35-0.48, ten times the fixture's, and flat across radii of three, five
@@ -449,8 +720,22 @@ const NEXT_REACH = 10;
  * The same floor decides the log-polar peak. Real turns measured 0.02-0.57
  * there (the low-texture scene turned three degrees at twenty per cent noise
  * is the 0.57), and the letterboxed gradient 0.78 at a coherence of 0.22 and
- * a next of 0.39-0.56 - nothing else refuses it, so before this it was
+ * a next of 0.39-0.56 - nothing else refused it, so before this it was
  * applied as a scale of 0.95-1.01.
+ *
+ * On the centred box the pipeline builds, twenty seeds, that gradient's
+ * log-polar peak is the one place the change helps the gate rather than
+ * costing it: over the whole square it reads plateau 0.19-0.57 at a next of
+ * 0.19-0.54 and is admitted on every seed, and over the picture's box it
+ * reads plateau 0.07-0.85 at a next of 0.74-1.00 and is refused on eighteen,
+ * mostly by next. Real turns are unharmed and slightly better: the textured
+ * scene turned nine degrees at thirty per cent noise reads plateau 0.13-0.59
+ * here against 0.13-0.87 over the whole square, which is one seed in twenty
+ * that this floor used to refuse and no longer does, and the low-texture
+ * scene turned three degrees reads 0.18-0.69 against 0.10-0.62, under the
+ * floor either way. A refused log-polar peak is a frame reporting no
+ * rotation, not a frame refused, which is why either direction is
+ * affordable.
  *
  * The radius is eight at every size, and plateauRadius says why it does not
  * follow the side. What it reads at the refinement windows, full square, ten
@@ -480,16 +765,25 @@ export const P_MAX = 0.7;
  *
  * Takes what phaseCorrelate returned, and is the one place the decision is
  * made: the log-polar peak, the translation peak and the refinement's residual
- * all come through here, so there is one gate to calibrate and one to explain.
+ * all come through here, so there is one gate to explain and one place to
+ * change how any of them is decided.
  * Without a plateau the peak is taken to be a point and without a next it is
  * taken to be alone, so a statistics object built by hand - the reference
  * move, a consensus check - is answered rather than silently refused on a
- * NaN. The size of the square no longer enters: the two floors that decide
- * are ratios of the surface to its own peak, and the tables on P_MAX and
- * N_MAX show them holding from 128 to 512 without scaling.
+ * NaN. The size of the square does not enter: the floors that decide are
+ * ratios of the surface to its own peak, and the tables on P_MAX and N_MAX
+ * show them holding from 128 to 512 without scaling.
+ *
+ * What the square holds does enter, in one place, which is what `floor` is
+ * for. Every caller but one is judging a full square of picture at the
+ * resolution the frame was shot at and wants N_MAX; the coarse survey square
+ * is a thumbnail with a taper cut to the picture's box, its whole distribution
+ * sits lower, and it passes N_MAX_SURVEY. The floor travels as an argument
+ * rather than as a second function so that the two cannot drift apart, and
+ * because a caller that says nothing gets the floor the tables above describe.
  */
-export function isMeasured({ live, plateau = 0, next = 0 }) {
-  return live >= L_MIN && plateau <= P_MAX && next <= N_MAX;
+export function isMeasured({ live, plateau = 0, next = 0 }, floor = N_MAX) {
+  return live >= L_MIN && plateau <= P_MAX && next <= floor;
 }
 
 /** The identity, for a frame that needs no moving or could not be measured. */
@@ -498,7 +792,8 @@ export const NO_MOVE = Object.freeze({ dx: 0, dy: 0, angle: 0, scale: 1 });
 /* ------------------------------------------------------------- preparation */
 
 /**
- * A Hann window over the square, with the mean taken out first.
+ * A Hann window over the square, or over a rectangle inside it, with the mean
+ * taken out first.
  *
  * Both halves matter and both are about the edges. A Fourier transform treats
  * the square as one tile of an infinite repeating pattern, so the right-hand
@@ -507,20 +802,171 @@ export const NO_MOVE = Object.freeze({ dx: 0, dy: 0, angle: 0, scale: 1 });
  * feature that both frames share regardless of how they moved. The window fades
  * the edges to nothing so there is no seam, and subtracting the mean first
  * stops the fade itself becoming the brightest structure in the frame.
+ *
+ * WHY A RECTANGLE, AND WHEN
+ *
+ * The coarse square is the output box letterboxed into 256, so unless the
+ * output is square the picture fills a sub-rectangle of it and the rest is the
+ * canvas's transparent black, which reads back as a luma of zero. Fading the
+ * square's own edges leaves that inner edge untouched: a hard step from picture
+ * values straight down to nothing, in exactly the same place in every frame,
+ * and therefore the strongest thing the two frames share however the camera
+ * moved. It matches itself at every offset along its own direction, which is a
+ * ridge in the correlation surface rather than a peak. Given the picture's
+ * rectangle, the mean and the taper are taken over that rectangle alone and
+ * everything outside it is left at zero, so the picture's own edge fades out
+ * the way the square's edges do and the step is gone. `box` is in pixels of
+ * the square and is rounded to whole ones; the whole square is the same window
+ * as before, to the last bit.
+ *
+ * WHAT THE STEP WAS DOING, WHICH IS TWO THINGS
+ *
+ * It pulled the answer along the letterboxed axis, and it stood high away from
+ * the peak on every surface it was in - which is what `next` reads, so it was
+ * also gating. Both are the same feature and neither can be had without the
+ * other; everything below is that trade, measured.
+ *
+ * In the browser, on the built survey path - JPEG at quality 0.92,
+ * createImageBitmap resized to the 256-long-edge thumbnail, drawn into the
+ * square through the same fit transform - as the error of the coarse move in
+ * output pixels. One pair per scene, so these are single readings rather than
+ * ranges. "Centre square" is the alternative of cropping the output's middle
+ * square to fill the alignment square and letterboxing nothing, measured and
+ * not taken because it is inconsistent across the real scenes.
+ *
+ *                            square window   this   centre square
+ *   texture 3:2                   0.84       0.78      1.03
+ *   texture 2:3                   1.17       0.94      1.00
+ *   low texture 15%, 3:2          1.98       1.48      2.18
+ *   low texture 15%, 2:3          2.64       1.46      1.49
+ *   low texture 30%, 3:2          1.81       0.76      1.29
+ *   stars 6%, 3:2                 2.03       2.04      1.71
+ *   low texture 15%, square       0.77       0.77      0.77
+ *
+ * The last row is the control: with no letterbox there is no rectangle and all
+ * three are the same window.
+ *
+ * THE SAME THING OVER SEEDS, AND THE REST OF IT
+ *
+ * On the fixtures in tests/js/stack-images-align.test.js, at the box
+ * `placement` actually builds - CENTRED in the square, rows 43 to 212 for a
+ * 3:2 output and columns 43 to 212 for a 2:3 one - twenty seeds a family, the
+ * error of the coarse move in alignment pixels. The right-hand column is the
+ * same scene as a SQUARE output, where there is no letterbox and this function
+ * is unchanged, and it is the column that explains the other two:
+ *
+ *                          whole square   the box     square output
+ *   low texture 15%, 3:2    1.36-1.96     0.08-1.37     0.10-1.10
+ *   low texture 15%, 2:3    2.03-2.37     0.13-1.21     0.10-1.10
+ *   low texture 30%, 3:2    0.65-2.14     0.12-2.24     0.22-1.56
+ *   low texture 30%, 2:3    0.44-2.54     0.26-1.63     0.22-1.56
+ *   textured 15%, 3:2       0.03-0.43     0.07-0.44     0.03-0.39
+ *   textured 50%, 3:2       0.37-2.51     0.38-3.57     0.39-1.54
+ *   four hundred stars 6%   0.00-0.06     0.01-0.07     0.00-0.06
+ *
+ * A letterboxed low-texture pair was landing a pixel and a half to two and a
+ * half out where the same scene as a square output lands inside one, and with
+ * the box it lands where the square output does. That is the whole of the
+ * accuracy claim: the box does not make the coarse pass better than it was, it
+ * stops the letterbox making it worse. The test in the align suite pins the
+ * first ten of those seeds, where the boxed rows read 0.29-1.09 and 0.13-1.05.
+ * The stars have a black ground, so their step is the size of a night sky's
+ * mean and there was nothing there to remove. The textured scene at fifty per
+ * cent noise is the one row where the box is worse than either neighbour, and
+ * the reason is that it is the picture and not the square that is being
+ * correlated now - 256 by 170 rather than 256 by 256 - so the noisiest scene
+ * has a third less to average over.
+ *
+ * The junk side moves the same way and for the same reason. Over eleven junk
+ * families - the 8-bit gradient and two skies at three noise levels, unrelated
+ * texture/texture, low/low and texture/low at two each, and texture against
+ * stars - twenty seeds each, admitted by isMeasured AT N_MAX, which is the
+ * floor the coarse square was being judged against when the ridge came out and
+ * is no longer the floor it is judged against at all:
+ *
+ *                       whole square   the box   square output
+ *   3:2 output             5/220        31/220      36/220
+ *   2:3 output             1/220        39/220      36/220
+ *
+ * So the ridge was a gate that only letterboxed outputs had, and taking it out
+ * leaves every output shape with the leak a square output has always had and
+ * the README already records - the unrelated texture/low and low/low pairs,
+ * left to the consensus check. That is a real cost and it is the reason this
+ * change is a trade rather than a fix; what it is not is a new failure, and the
+ * right-hand column is how to tell the difference.
+ *
+ * THE TWO FIXTURE TRAPS UNDER THOSE NUMBERS
+ *
+ * The height of the step is the picture's own mean above black, so a fixture
+ * whose scene starts at zero has a third of a photograph's ridge and does not
+ * reproduce the browser at all: at the fixtures' own levels the low-texture
+ * 3:2 pair reads 0.10-1.42 with the whole square against 0.08-1.37 with the
+ * box, which is no difference. Lifted to a photographic black level it reads
+ * 1.36-1.96 against 0.08-1.37, and `next` falls from 0.20-0.31 to 0.12-0.20
+ * against the browser's own 0.26 to 0.08. The tests lift it, and say so.
+ *
+ * The other is the geometry. `placement` centres the box, so a 3:2 picture's
+ * two horizontal edges land where the square's own taper has already faded to
+ * a quarter; a fixture that anchors the letterbox at the top instead puts its
+ * one edge at three-quarters weight and shows an effect three times the size.
+ * The tests' `letterbox` helper is the top-anchored one and is kept only
+ * because the tables on P_MAX and N_MAX were read on it.
+ *
+ * Filling outside the box with the box's mean and tapering the whole square -
+ * the alternative this file used to name as the fix - was measured on the same
+ * families and is the same trade, not a way round it: 39/220 and 35/220 of the
+ * junk against the box's 31 and 39, with the low-texture pair at 0.16-1.09.
+ * It is the step that was doing the gating, not the size of the picture under
+ * it, and nothing that removes the step keeps it.
+ *
+ * So the gate work the step was doing by accident is done on purpose instead,
+ * by a floor calibrated on the surface that is left. Taking the ridge out
+ * lowered every reading on this square, real and junk together, and the junk
+ * further than the real: N_MAX_SURVEY is where the two now separate, and its
+ * comment carries the distribution both sides of it. That is the shape of this
+ * whole change - the letterbox was buying accuracy away to pay for a gate, and
+ * the accuracy is bought back with a number that can be looked at.
+ *
+ * @param {Float64Array} values     size*size, modified in place
+ * @param {number} size             the side of the square
+ * @param {?{x: number, y: number, width: number, height: number}} box
+ *   the picture's rectangle inside the square, or nothing for all of it
  */
-export function window2d(values, size) {
-  let total = 0;
-  for (let i = 0; i < values.length; i += 1) total += values[i];
-  const mean = total / values.length;
+export function window2d(values, size, box = null) {
+  const left = box ? Math.min(size, Math.max(0, Math.round(box.x))) : 0;
+  const top = box ? Math.min(size, Math.max(0, Math.round(box.y))) : 0;
+  const right = box ? Math.min(size, Math.max(left, Math.round(box.x + box.width))) : size;
+  const bottom = box ? Math.min(size, Math.max(top, Math.round(box.y + box.height))) : size;
+  const width = right - left;
+  const height = bottom - top;
 
-  const taper = new Float64Array(size);
-  for (let i = 0; i < size; i += 1) {
-    taper[i] = 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (size - 1));
+  // A rectangle a pixel or less on a side has no taper to speak of - the Hann
+  // divides by one less than the side - and nothing in it to correlate either.
+  if (width < 2 || height < 2) {
+    values.fill(0);
+    return values;
   }
 
+  let total = 0;
+  for (let y = top; y < bottom; y += 1) {
+    for (let x = left; x < right; x += 1) total += values[y * size + x];
+  }
+  const mean = total / (width * height);
+
+  const taper = (span) => {
+    const out = new Float64Array(span);
+    for (let i = 0; i < span; i += 1) out[i] = 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (span - 1));
+    return out;
+  };
+  const across = taper(width);
+  const down = taper(height);
+
   for (let y = 0; y < size; y += 1) {
+    const inside = y >= top && y < bottom;
     for (let x = 0; x < size; x += 1) {
-      values[y * size + x] = (values[y * size + x] - mean) * taper[y] * taper[x];
+      values[y * size + x] = inside && x >= left && x < right
+        ? (values[y * size + x] - mean) * down[y - top] * across[x - left]
+        : 0;
     }
   }
   return values;
@@ -899,7 +1345,10 @@ export function rotateScale(values, size, degrees, scale) {
  *
  * `measured` says whether the translation peak passed the gate. When it did
  * not, the shift returned beside it is whatever the tallest point of a
- * featureless surface happened to be, and the caller should not apply it.
+ * featureless surface happened to be, and the caller should not apply it. This
+ * is the pipeline's coarse survey and nothing else calls it, so that gate is
+ * the survey's: N_MAX_SURVEY for the translation peak, and N_MAX for the
+ * log-polar one, which is a full square whatever shape the output is.
  * `clamped` is a different report and says only one thing: the rotation or
  * scale read off the log-polar peak was too large to be a burst. A log-polar
  * peak the gate refused is not that - the frame reported no rotation at all,
@@ -971,7 +1420,11 @@ export function estimate(reference, frame, size, mode) {
     dy: shift.dy,
     angle,
     scale,
-    measured: isMeasured(shift),
+    // A thumbnail of the whole frame, tapered to the picture rather than to
+    // the square: a different surface from anything the refinement correlates,
+    // and N_MAX_SURVEY is where this statistic separates on it. The log-polar
+    // peak above is a whole square of spectrum and keeps N_MAX.
+    measured: isMeasured(shift, N_MAX_SURVEY),
     clamped,
     live: shift.live,
     coherence: shift.coherence,
