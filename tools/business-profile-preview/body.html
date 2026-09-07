@@ -77,23 +77,239 @@
         <label for="category">Primary category</label>
         <input type="text" id="category" autocomplete="off" list="category-list"
                value="Coffee shop">
+        <!--
+          A shortlist, and deliberately not the whole thing. Google's own
+          category list runs to about four thousand entries, it is Google's
+          data rather than ours, and it changes several times a year - so a
+          copy of it here would be a hundred and sixty kilobytes in each of
+          fifteen translated bodies and would start going stale the day it
+          landed, which on a closed list is worse than saying nothing. These
+          are the everyday trades, as suggestions; the box is ordinary text
+          and takes whatever Google's picker gave you.
+
+          Grouped by comment rather than by <optgroup>: browsers ignore
+          optgroup inside a datalist, so it would be markup nobody sees.
+          Translated per locale, because a category is Google's own wording
+          in each language and not a name that travels.
+        -->
         <datalist id="category-list">
-          <option value="Coffee shop"></option>
+          <!-- Food and drink -->
           <option value="Restaurant"></option>
+          <option value="Cafe"></option>
+          <option value="Coffee shop"></option>
+          <option value="Bakery"></option>
+          <option value="Bar"></option>
+          <option value="Pub"></option>
+          <option value="Wine bar"></option>
+          <option value="Brewery"></option>
+          <option value="Pizza restaurant"></option>
+          <option value="Italian restaurant"></option>
+          <option value="Chinese restaurant"></option>
+          <option value="Indian restaurant"></option>
+          <option value="Mexican restaurant"></option>
+          <option value="Japanese restaurant"></option>
+          <option value="Thai restaurant"></option>
+          <option value="Vietnamese restaurant"></option>
+          <option value="Greek restaurant"></option>
+          <option value="Turkish restaurant"></option>
+          <option value="Sushi restaurant"></option>
+          <option value="Seafood restaurant"></option>
+          <option value="Steak house"></option>
+          <option value="Barbecue restaurant"></option>
+          <option value="Vegan restaurant"></option>
+          <option value="Vegetarian restaurant"></option>
+          <option value="Breakfast restaurant"></option>
+          <option value="Fast food restaurant"></option>
+          <option value="Sandwich shop"></option>
+          <option value="Deli"></option>
+          <option value="Ice cream shop"></option>
+          <option value="Juice shop"></option>
+          <option value="Tea house"></option>
+          <option value="Caterer"></option>
+          <option value="Night club"></option>
+          <!-- Beauty and wellbeing -->
           <option value="Hair salon"></option>
+          <option value="Barber shop"></option>
+          <option value="Beauty salon"></option>
+          <option value="Nail salon"></option>
+          <option value="Spa"></option>
+          <option value="Day spa"></option>
+          <option value="Massage therapist"></option>
+          <option value="Tattoo shop"></option>
+          <option value="Waxing hair removal service"></option>
+          <option value="Skin care clinic"></option>
+          <!-- Health -->
           <option value="Dentist"></option>
+          <option value="Dental clinic"></option>
+          <option value="Orthodontist"></option>
+          <option value="Doctor"></option>
+          <option value="Medical clinic"></option>
+          <option value="Physical therapist"></option>
+          <option value="Chiropractor"></option>
+          <option value="Optometrist"></option>
+          <option value="Pharmacy"></option>
+          <option value="Veterinarian"></option>
+          <option value="Animal hospital"></option>
+          <option value="Psychologist"></option>
+          <option value="Psychotherapist"></option>
+          <option value="Nutritionist"></option>
+          <option value="Podiatrist"></option>
+          <option value="Audiologist"></option>
+          <option value="Medical laboratory"></option>
+          <option value="Home health care service"></option>
+          <!-- Home and trade -->
           <option value="Plumber"></option>
           <option value="Electrician"></option>
+          <option value="Roofing contractor"></option>
+          <option value="General contractor"></option>
+          <option value="HVAC contractor"></option>
+          <option value="Painter"></option>
+          <option value="Carpenter"></option>
+          <option value="Landscaper"></option>
+          <option value="Lawn care service"></option>
+          <option value="Locksmith"></option>
+          <option value="Handyman"></option>
+          <option value="Pest control service"></option>
+          <option value="Cleaning service"></option>
+          <option value="House cleaning service"></option>
+          <option value="Window cleaning service"></option>
+          <option value="Moving company"></option>
+          <option value="Flooring contractor"></option>
+          <option value="Kitchen remodeler"></option>
+          <option value="Bathroom remodeler"></option>
+          <option value="Fence contractor"></option>
+          <option value="Garage door supplier"></option>
+          <option value="Solar energy contractor"></option>
+          <option value="Tree service"></option>
+          <option value="Appliance repair service"></option>
+          <option value="Waste management service"></option>
+          <!-- Vehicles -->
+          <option value="Auto repair shop"></option>
+          <option value="Car dealer"></option>
+          <option value="Used car dealer"></option>
+          <option value="Tire shop"></option>
+          <option value="Car wash"></option>
+          <option value="Auto body shop"></option>
+          <option value="Car detailing service"></option>
+          <option value="Gas station"></option>
+          <option value="Towing service"></option>
+          <option value="Motorcycle dealer"></option>
+          <option value="Car rental agency"></option>
+          <option value="Driving school"></option>
+          <option value="Auto glass shop"></option>
+          <!-- Professional services -->
+          <option value="Lawyer"></option>
           <option value="Law firm"></option>
           <option value="Accountant"></option>
+          <option value="Bookkeeping service"></option>
+          <option value="Tax preparation service"></option>
+          <option value="Insurance agency"></option>
+          <option value="Real estate agency"></option>
+          <option value="Real estate agent"></option>
+          <option value="Bank"></option>
+          <option value="Credit union"></option>
+          <option value="Financial planner"></option>
+          <option value="Mortgage broker"></option>
+          <option value="Notary public"></option>
+          <option value="Marketing agency"></option>
+          <option value="Advertising agency"></option>
+          <option value="Web designer"></option>
+          <option value="Software company"></option>
+          <option value="Graphic designer"></option>
+          <option value="Architect"></option>
+          <option value="Interior designer"></option>
+          <option value="Land surveyor"></option>
+          <option value="Recruiter"></option>
+          <option value="Translator"></option>
+          <option value="Business management consultant"></option>
+          <option value="Printing shop"></option>
+          <option value="Photographer"></option>
+          <option value="Videographer"></option>
+          <option value="Security service"></option>
+          <!-- Fitness and leisure -->
           <option value="Gym"></option>
+          <option value="Fitness center"></option>
+          <option value="Yoga studio"></option>
+          <option value="Pilates studio"></option>
+          <option value="Personal trainer"></option>
+          <option value="Martial arts school"></option>
+          <option value="Dance school"></option>
+          <option value="Boxing gym"></option>
+          <option value="Sports club"></option>
+          <option value="Golf course"></option>
+          <option value="Bowling alley"></option>
+          <!-- Shops -->
+          <option value="Grocery store"></option>
+          <option value="Supermarket"></option>
+          <option value="Convenience store"></option>
+          <option value="Butcher shop"></option>
+          <option value="Liquor store"></option>
+          <option value="Health food store"></option>
+          <option value="Clothing store"></option>
+          <option value="Shoe store"></option>
+          <option value="Jewelry store"></option>
+          <option value="Furniture store"></option>
+          <option value="Home goods store"></option>
+          <option value="Hardware store"></option>
+          <option value="Garden center"></option>
+          <option value="Book store"></option>
+          <option value="Florist"></option>
+          <option value="Pet store"></option>
+          <option value="Toy store"></option>
+          <option value="Gift shop"></option>
+          <option value="Electronics store"></option>
+          <option value="Mobile phone repair shop"></option>
+          <option value="Computer repair service"></option>
+          <option value="Sporting goods store"></option>
+          <option value="Antique store"></option>
+          <option value="Thrift store"></option>
+          <option value="Optician"></option>
+          <option value="Musical instrument store"></option>
+          <!-- Hospitality and travel -->
           <option value="Hotel"></option>
-          <option value="Car repair shop"></option>
-          <option value="Veterinarian"></option>
+          <option value="Motel"></option>
+          <option value="Bed &amp; breakfast"></option>
+          <option value="Guest house"></option>
+          <option value="Hostel"></option>
+          <option value="Campground"></option>
+          <option value="Travel agency"></option>
+          <option value="Event venue"></option>
+          <option value="Wedding venue"></option>
+          <option value="Banquet hall"></option>
+          <option value="Tour operator"></option>
+          <!-- Learning and community -->
+          <option value="Preschool"></option>
+          <option value="Elementary school"></option>
+          <option value="Tutoring service"></option>
+          <option value="Language school"></option>
+          <option value="Music school"></option>
+          <option value="Art school"></option>
+          <option value="Day care center"></option>
+          <option value="Library"></option>
+          <option value="Museum"></option>
+          <option value="Art gallery"></option>
+          <option value="Church"></option>
+          <option value="Community center"></option>
+          <option value="Funeral home"></option>
+          <option value="Non-profit organization"></option>
+          <!-- Other services -->
+          <option value="Storage facility"></option>
+          <option value="Courier service"></option>
+          <option value="Dry cleaner"></option>
+          <option value="Laundry service"></option>
+          <option value="Tailor"></option>
+          <option value="Shoe repair shop"></option>
+          <option value="Watch repair service"></option>
+          <option value="Sign shop"></option>
+          <option value="Recycling center"></option>
+          <option value="Employment agency"></option>
         </datalist>
         <p class="field-note">
-          One line, in Google's own words for it. This is the phrase most
-          searches actually match against.
+          One line, in Google's own words for it &mdash; this is the phrase most
+          searches actually match against. The box suggests about two hundred of
+          the everyday ones as you type, and takes anything: Google's own list
+          runs to roughly four thousand and is the only authority on which of
+          them you may pick.
         </p>
       </div>
     </div>
@@ -164,6 +380,13 @@
              aria-label="Choose a cover photo for the listing">
       <p class="path-note" id="photo-note" role="status" hidden></p>
     </fieldset>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Try an example</button>
+        <button type="button" id="clear" class="ghost danger">Clear every field</button>
+      </div>
+    </div>
   </section>
 
   <!-- Step 2 &mdash; the three fields that turn into buttons -->
@@ -389,6 +612,17 @@
     <span data-phrase="photo.unreadable">That file is not a picture this browser can read.</span>
     <span data-phrase="photo.tiny">That picture is too small to put on a card.</span>
     <span data-phrase="photo.gone">Removed. The card shows the grey tile a listing without a photo shows.</span>
+
+    <span data-phrase="sample.done">Filled in with an example, cover photo included &mdash; and the photograph was drawn here, on this page, rather than downloaded. Type over any of it.</span>
+    <span data-phrase="clear.done">Cleared. That is what a listing with nothing in it looks like, which is worth seeing once.</span>
+
+    <span data-phrase="sample.name">Ashgrove Bakehouse</span>
+    <span data-phrase="sample.category">Bakery</span>
+    <span data-phrase="sample.address">42 Mill Lane, Bristol BS1 4RN</span>
+    <span data-phrase="sample.phone">+44 117 496 0142</span>
+    <span data-phrase="sample.website">https://ashgrove.example.com</span>
+    <span data-phrase="sample.description">Sourdough and pastries baked through the night and sold from seven in the morning until they are gone. Long-fermented loaves, a short menu, and coffee to take away.</span>
+    <span data-phrase="sample.attributes">Takeaway, Wheelchair accessible, Vegetarian options</span>
 
     <span data-phrase="stage.panel">Knowledge panel, {width} by {height} pixels.</span>
     <span data-phrase="stage.mobile">Phone, {width} by {height} pixels.</span>

@@ -288,19 +288,24 @@ export function mobile(view, measure) {
   body += actions.markup;
   cursor += actions.height + 12;
 
-  body += rule(pad, cursor, inner);
-  cursor += 12;
-
+  // The rows are drawn before the rule above them, because all three can be
+  // empty - a profile with no address, no phone and no website - and a divider
+  // with nothing under it is exactly the hole this file is written to avoid.
+  let rows = '';
+  let below = cursor + 13;
   for (const [mark, value, colour] of [
     ['pin', view.addressText, INK.text],
     ['phone', view.phone, INK.text],
     ['globe', view.host, INK.link],
   ]) {
-    const drawn = infoRow(mark, value, pad, cursor, inner, measure, { colour });
-    body += drawn.markup;
-    cursor += drawn.height;
+    const drawn = infoRow(mark, value, pad, below, inner, measure, { colour });
+    rows += drawn.markup;
+    below += drawn.height;
   }
-  cursor += 4;
+  if (rows) {
+    body += rule(pad, cursor, inner) + rows;
+    cursor = below + 4;
+  }
 
   if (view.description) {
     body += rule(pad, cursor, inner);

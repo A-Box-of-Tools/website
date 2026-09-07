@@ -68,6 +68,50 @@ action buttons, the attribute pills — and differ only in width and in what the
 have room for. `src/surfaces.js` walks a cursor down each card and every block
 reports how far it moved it, which is what stops an empty field leaving a hole.
 
+### The example button exists for the one field the opening state cannot have
+
+The form arrives with a coffee shop already typed into it, so a "Try an
+example" that merely filled the boxes would do nothing anybody could see. This
+one fills in a *different* business — a bakery, shut on Mondays and open at
+seven, so the status line says something the nine-to-five default never does —
+and, more to the point, gives the card a **cover photo**. A picture cannot be
+written into `body.html` as an input's value, so until somebody chooses a file
+the card shows the grey tile, and the grey tile is the least representative
+thing on the page: a real listing is mostly photograph.
+
+The photograph is drawn on a canvas in `src/samples.js` a moment before it is
+used. There is nowhere to fetch one from and there should not be — `connect-src`
+names no address this page could load an image from — and an example that
+needed a download would be an example that stopped working with the network
+unplugged. It is deterministic, so an example that looks wrong is an example of
+something that changed.
+
+Its words are phrase keys rather than strings, the way `base64/src/samples.js`
+does it: a name, an address and a telephone number are not the same shape in
+every language, and an example written in English would be an English example
+on fourteen pages out of fifteen. What is *not* a key is a number, a time or a
+price band, because those are the same wherever the page is published.
+
+`Clear every field` is the other half of the pair. It is worth its space here
+more than on most tools, because the form arrives full: somebody starting their
+own profile wants it empty, and the empty card — grey placeholder name, "No
+reviews yet", and only the two buttons that need no field behind them — is
+worth seeing once.
+
+### The categories are a shortlist, and say so
+
+Google's category list runs to about four thousand entries. It is Google's data
+rather than ours, it changes several times a year, and a copy of it here would
+be about a hundred and sixty kilobytes in each of fifteen translated bodies —
+starting to go stale the day it landed, which on a *closed* list is worse than
+saying nothing. The `<datalist>` therefore carries around two hundred of the
+everyday trades as suggestions, the field is ordinary text that takes whatever
+Google's own picker gave you, and the note under it says which of those two
+things is the authority.
+
+They are grouped by comment rather than by `<optgroup>`, because browsers
+ignore an optgroup inside a datalist — it would be markup nobody sees.
+
 ### The stars are a fraction, and an unrated profile has none
 
 A 4.6 is drawn as four stars and three fifths of a fifth: the grey row is drawn,
@@ -163,6 +207,22 @@ photograph and it is being embedded into a string that is rebuilt on every
 keystroke. The same cover photo is about 300 KB of JPEG and four megabytes of
 PNG.
 
+### A value set as a property is not a value the markup wrote
+
+The week's twenty-one controls are built in `main.js` rather than written out
+in the markup, and the times were first set with `input.value = '09:00'`. That
+is the wrong door. `shared/lang-keep.js` carries across a language switch every
+control inside `<main>` whose value differs from **the one written in the
+markup** — `value !== defaultValue` — so fourteen untouched time boxes read as
+fourteen settings somebody had changed, and the switcher stopped being the
+plain link it is built as on a page nobody had touched. The QA suite caught it
+as *"switching an untouched page opened the store anyway"*.
+
+`defaultValue` is the fix, and it changes nothing on screen: setting the default
+on an input that has never been dirtied shows the same time. The importers still
+set `.value`, because a profile somebody pasted in *is* a change and should
+travel.
+
 ### The mock-up keeps its own colours in dark mode
 
 A knowledge panel is white at midnight too. The drawing carries Google's ink
@@ -180,6 +240,7 @@ mock-up that changed colour with the page would be a mock-up of nothing.
 | `src/surfaces.js` | the three cards, every coordinate written out |
 | `src/parse-listing.js` | the recognisers a pasted listing is read with, and what it refuses |
 | `src/saved.js` | the JSON this page writes, and the Business Profile export it also reads |
+| `src/samples.js` | the example profile behind the button, and the shopfront it draws |
 | `src/photo.js` | the bound a cover photo is redrawn to, and the only href the picture may carry |
 | `src/raster.js` | the SVG blob and the canvas rasterisation |
 | `src/main.js` | the form, the week rows, the surface switcher and the downloads |

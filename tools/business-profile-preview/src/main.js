@@ -24,9 +24,10 @@ import { saveBlob } from './shared/download.js';
 import { phrase } from './shared/phrases.js';
 import { readPhoto } from './photo.js';
 import { parseListing } from './parse-listing.js';
-import { DAY_KEYS, FORM_DAYS, normalise } from './profile.js';
+import { DAY_KEYS, FORM_DAYS, empty, normalise } from './profile.js';
 import { FONT } from './render.js';
 import { toPng, svgBlob } from './raster.js';
+import { EXAMPLE, coverPhoto } from './samples.js';
 import { fromJson, toJson } from './saved.js';
 import { SURFACES } from './surfaces.js';
 import { describe } from './view.js';
@@ -41,7 +42,7 @@ const ui = {
   description: el('description'), descriptionNote: el('description-note'),
   attributes: el('attributes'),
   pickPhoto: el('pick-photo'), dropPhoto: el('drop-photo'), photoFile: el('photo-file'),
-  photoNote: el('photo-note'),
+  photoNote: el('photo-note'), sample: el('sample'), clear: el('clear'),
   address: el('address'), serviceArea: el('service-area'),
   phone: el('phone'), website: el('website'),
   status: el('status'), clock: el('clock'), week: el('week'), weekNote: el('week-note'),
@@ -113,7 +114,14 @@ function buildWeek() {
     const from = document.createElement('input');
     from.type = 'time';
     from.className = 'day-open';
-    from.value = '09:00';
+    // `defaultValue`, not `value`. shared/lang-keep.js carries across a
+    // language switch every control inside <main> whose value differs from the
+    // one written in the markup, and a value set as a PROPERTY leaves the
+    // default empty - so fourteen untouched time boxes read as fourteen
+    // settings somebody had changed, and the switcher stopped being the plain
+    // link it is built as on a page nobody has touched. Setting the default on
+    // an input that has never been dirtied shows the same time.
+    from.defaultValue = '09:00';
     from.setAttribute('aria-label', phrase('week.open', { day: longDays[day] }));
 
     const dash = document.createElement('span');
@@ -124,7 +132,7 @@ function buildWeek() {
     const to = document.createElement('input');
     to.type = 'time';
     to.className = 'day-close';
-    to.value = '17:00';
+    to.defaultValue = '17:00';
     to.setAttribute('aria-label', phrase('week.close', { day: longDays[day] }));
 
     row.append(name, shutLabel, from, dash, to);
@@ -314,6 +322,37 @@ async function readSaved(file) {
   }
 }
 
+/* ------------------------------------------------- the example, and the empty */
+
+/**
+ * The example profile, with its words looked up and its photograph drawn.
+ *
+ * samples.js holds keys rather than sentences, so this is where they become
+ * words; `coverPhoto` is the reason the button is worth pressing at all, since
+ * a picture is the one field the opening state cannot carry.
+ */
+function fillExample() {
+  clearImport();
+  const words = ['name', 'category', 'address', 'phone', 'website', 'description',
+    'attributes'];
+  const profile = { ...EXAMPLE };
+  for (const field of words) profile[field] = phrase(EXAMPLE[field]);
+
+  setPhoto(coverPhoto());
+  write(normalise({ ...profile, clock: read().clock, photo }));
+  draw();
+  say(ui.photoNote, phrase('sample.done'));
+}
+
+/** Every field empty, which is what a listing nobody has filled in looks like. */
+function clearAll() {
+  clearImport();
+  setPhoto(null);
+  write(empty());
+  draw();
+  say(ui.photoNote, phrase('clear.done'));
+}
+
 /* ------------------------------------------------------------------- saving */
 
 async function savePng() {
@@ -397,6 +436,9 @@ function wire() {
     setPhoto(null, phrase('photo.gone'));
     draw();
   });
+
+  ui.sample.addEventListener('click', fillExample);
+  ui.clear.addEventListener('click', clearAll);
 
   ui.readPaste.addEventListener('click', readPaste);
   ui.openJson.addEventListener('click', () => ui.jsonFile.click());
