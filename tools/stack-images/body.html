@@ -26,6 +26,17 @@
       </div>
     </div>
 
+    <!--
+      Only shown once there are two frames, because with one there is nothing
+      to reorder and nothing to align against either.
+    -->
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Drag a frame by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> handle to
+      reorder the list, or press the up and down arrow keys while the handle has focus. The
+      order is yours to keep: it is only how the frames are listed here, and the one the
+      others are aligned to is whichever is marked <strong>Reference</strong>.
+    </p>
+
     <ul id="frame-list" class="frame-list"></ul>
   </section>
 
@@ -175,6 +186,7 @@
 
     <span data-phrase="frame.reference">Reference</span>
     <span data-phrase="frame.make-reference">Use as reference</span>
+    <span data-phrase="frame.move">Move {name} &mdash; drag, or use the up and down arrow keys</span>
     <span data-phrase="frame.remove">Remove</span>
     <span data-phrase="frame.size">{width} &times; {height}</span>
     <span data-phrase="frame.raw">RAW &mdash; the camera's own {width} &times; {height} preview</span>

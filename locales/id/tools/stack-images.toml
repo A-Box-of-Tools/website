@@ -153,8 +153,10 @@ body = """
  Dipegang tangan: ya,
       geser saja. Dipegang tangan dan Anda juga berputar: geser, rotasi, dan
       skala. Tripod terkunci atau sebuah intervalometer: tidak, dan ia akan lebih
-      cepat. Setiap bingkai diukur terhadap yang pertama di daftarnya, dan itulah
-      sebabnya bingkai mana pun bisa dinaikkan menjadi yang pertama itu."""
+      cepat. Setiap bingkai diukur terhadap bingkai yang bertanda rujukan, dan
+      itu yang pertama sampai Anda berkata lain: &ldquo;Pakai sebagai
+      rujukan&rdquo; memindahkan tandanya dan meninggalkan daftarnya pada urutan
+      yang Anda susun."""
 
 [[howto]]
 title = "Baca keempat angkanya, lalu tekan tombolnya."
@@ -234,8 +236,9 @@ a = """
 [[faq]]
 q = "Apa sebenarnya yang dilakukan penyejajaran bingkainya?"
 a = """
-        Ia menemukan seberapa jauh setiap bingkai bergerak relatif terhadap yang
-        pertama lalu memindahkannya kembali, sampai sepersekian piksel. Metodenya
+        Ia menemukan seberapa jauh setiap bingkai bergerak relatif terhadap
+        bingkai rujukannya lalu memindahkannya kembali, sampai sepersekian
+        piksel. Metodenya
         adalah korelasi fase: pergeseran antara dua gambar muncul sebagai
         perbedaan fase antara spektrumnya, jadi satu transformasi Fourier
         masing-masing menemukan pergeseran dua ratus piksel semurah pergeseran

@@ -155,8 +155,10 @@ body = """
  Aus der Hand: ja, nur
       verschieben. Aus der Hand und dabei gedreht: verschieben, drehen und
       skalieren. Festes Stativ oder Intervallauslöser: nein, und es geht
-      schneller. Jede Aufnahme wird gegen die erste in der Liste vermessen, und
-      deshalb lässt sich jede Aufnahme zu dieser ersten machen."""
+      schneller. Jede Aufnahme wird gegen die als Bezug markierte vermessen, und das
+      ist die erste, solange Sie nichts anderes sagen: &bdquo;Als Bezug
+      nehmen&ldquo; versetzt die Markierung und lässt die Liste in der
+      Reihenfolge, in die Sie sie gebracht haben."""
 
 [[howto]]
 title = "Lesen Sie die vier Zahlen und drücken Sie dann den Knopf."
@@ -230,8 +232,9 @@ a = """
 [[faq]]
 q = "Was macht das Ausrichten der Aufnahmen eigentlich?"
 a = """
-        Es findet heraus, wie weit jede Aufnahme sich gegenüber der ersten bewegt
-        hat, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Die
+        Es findet heraus, wie weit jede Aufnahme sich gegenüber der
+        Bezugsaufnahme bewegt hat, und schiebt sie zurück, auf Bruchteile eines
+        Pixels genau. Die
         Methode ist Phasenkorrelation: Die Verschiebung zwischen zwei Bildern
         zeigt sich als Phasenunterschied zwischen ihren Spektren, eine
         Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln
