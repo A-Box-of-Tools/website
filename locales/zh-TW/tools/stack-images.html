@@ -33,6 +33,10 @@
       </div>
     </div>
 
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      抓住某一幀的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖動就能重排，把手上有焦點時也可以按上下方向鍵。這裡的順序只是清單的順序，其餘各幀對齊的是標著<strong>基準</strong>的那一幀。
+    </p>
+
     <ul id="frame-list" class="frame-list"></ul>
   </section>
 
@@ -178,6 +182,7 @@
     <span data-phrase="count.many">{count} 幀</span><span data-phrase="count.none">還沒有幀</span>
 
     <span data-phrase="frame.reference">基準</span><span data-phrase="frame.make-reference">拿它當基準</span><span data-phrase="frame.remove">移除</span>
+    <span data-phrase="frame.move">移動 {name} &mdash; 拖動，或用上下方向鍵</span>
     <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw">RAW | 相機自己的預覽圖，&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw-camera">{camera} | &#x2066;{width} &times; {height}&#x2069; 的預覽圖</span><span data-phrase="frame.raw-unreadable">這個 RAW 檔案裡沒找到預覽圖</span><span data-phrase="frame.read">讀了 {total} 裡的 {read}</span>

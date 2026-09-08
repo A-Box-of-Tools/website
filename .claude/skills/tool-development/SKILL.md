@@ -36,6 +36,12 @@ read the message; it is the fastest route to done.
   copied unchanged into every language, so a string written there is English
   at all of its addresses but one. Put it in the markup and read it back with
   `phrase()` — the full pattern is under "Job: update an existing tool" below.
+- **Open the pull request against `dev`.** `main` is what is live, and a push
+  to it deploys, tags a version and tells the search engines; `dev` is where
+  changes are bundled until somebody opens the pull request from `dev` to
+  `main` that releases them. Your change is done when it is on `dev` — never
+  open or merge that release pull request unless you were asked to by name.
+  `docs/deploying.md` has the rest.
 - **Match the prose voice.** Commit messages, comments and `tool.toml` prose
   here explain *why*, in full sentences, and assume the reader can see the
   code. A comment that restates the line below it does not belong.
@@ -54,6 +60,7 @@ the change:
 | the legal pages, what Privacy claims | `docs/prose-pages.md` |
 | anything under `locales/` | `docs/languages.md` |
 | build flags, tests, serving locally | `docs/running.md` |
+| the branches, previews, what a deploy does | `docs/deploying.md` |
 
 Every tool also documents itself: `tools/<slug>/README.md` says how that tool
 works and why it works that way, and the header comment of its `tool.toml`
@@ -226,8 +233,8 @@ the code rather than over the site it made. `--clean` matters: building
 several branches into one output directory leaves pages from all of them, and
 the link checker then reports dozens of broken links that look exactly like
 "main is broken". `python build.py --check` compares against the deployed
-`dist` branch, which tracks `main` — on a feature branch it exits 1 by
-construction, so do not read that as failure.
+`dist` branch, which tracks `main` — on `dev` and on any working branch it
+exits 1 by construction, so do not read that as failure.
 
 While iterating on one tool, scope the build instead:
 

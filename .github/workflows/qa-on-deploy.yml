@@ -20,6 +20,14 @@
 # that pushes nothing, and re-testing an unchanged site is a full run of the
 # suite for nothing. The first step below asks the dist branch.
 #
+# Nor when the Build was a `dev` one. Work is merged to `dev` and released
+# from there to `main`; only `main` publishes, so only a Build on `main` can
+# have deployed anything. That is a condition on the job below rather than
+# something left to the dist check inside it - the check would catch it, since
+# a `dev` build pushes nothing and the head of dist would not name its commit,
+# but only after a runner had started, and every merge in the repository is a
+# push to `dev`.
+#
 # This only dispatches; it does not run the suite itself. The qa repo's own
 # report.yml runs it and publishes the result to that repo's gh-pages
 # branch, so there is one place the suite runs and one report to read -
@@ -57,13 +65,14 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
-    # Only a build that succeeded and actually published. build.yml runs on
-    # pull requests too and skips its publish step there, so a pull request
-    # build finishing is not a deploy and there is nothing new to check.
+    # Only a build that succeeded on `main` and actually published. build.yml
+    # runs on pull requests and on `dev` as well and publishes on neither, so
+    # neither of those finishing is a deploy and there is nothing new to check.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.event == 'push')
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
     steps:
       # A Build that finished is not a deploy. The publish step pushes to dist
       # only when the built site differs from what is there, and says
@@ -116,6 +125,21 @@ jobs:
           echo "::error::abox.tools never responded after 5 minutes."
           exit 1
 
+      # Dispatched with no inputs at all, which is what makes it a production
+      # run over there: `base_url` falls back to https://abox.tools/, and `pr`
+      # and `sha` stay empty.
+      #
+      # THAT EMPTY `sha` IS WHY THIS REPOSITORY'S DEFAULT BRANCH HAS TO STAY
+      # `main`. The suite does not keep its own copy of the tool list or the
+      # CSP - it reads them out of a checkout of this repository - and a run
+      # that was told no commit takes this repository's default branch, which
+      # is every production run. That fallback is right only while the default
+      # branch is the one production was built from. Point it at `dev` and
+      # every production run would count the bundle's tools against the live
+      # site's cards: four assertions failing on the hub and the 404, each
+      # right about its own numbers and about two different sites. The same
+      # trap on the preview side, where the commit IS known, is
+      # A-Box-of-Tools/qa#94.
       - name: Ask the QA repo to run its suite
         if: steps.deployed.outputs.deployed == 'true'
         env:

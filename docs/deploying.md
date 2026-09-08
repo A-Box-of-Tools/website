@@ -6,19 +6,116 @@ The site is one domain, `abox.tools`. It is served by **GitHub Pages** from the
 `dist` branch of this repository, behind **Cloudflare's proxy**.
 
 ```
-push to main  ->  GitHub Action runs build.py  ->  dist branch
+a change  ->  pull request  ->  dev  ->  pull request  ->  main  ->  dist  ->  Pages
 
 visitor  ->  Cloudflare (DNS, TLS, response headers)  ->  GitHub Pages (dist branch)
 ```
 
-`main` holds the sources. `dist` holds the built site, and nothing else: it is
-written only by [the Build workflow](../.github/workflows/build.yml), never by
-hand. A pull request builds without publishing, so a change that breaks the
-build is caught before it can reach `main`.
+`main` holds the sources of what is live. `dist` holds the built site, and
+nothing else: it is written only by
+[the Build workflow](../.github/workflows/build.yml), never by hand.
 
 To see what would be deployed before pushing, run `python build.py` and look at
 `dist/`. To check that what *is* deployed matches these sources, run
 `python build.py --check`, which diffs a fresh build against the `dist` branch.
+
+## The branches, and why there is one in the middle
+
+| Branch | What it holds | What a push to it does |
+|---|---|---|
+| a working branch | one change | builds and checks it; previews it once a pull request is open |
+| `dev` | everything merged since the last release | builds it, and previews it twice: at `dev.abox-preview.pages.dev`, and at `dev-pr-<n>.abox-preview.pages.dev` for the merge that caused it |
+| `main` | what is live | builds, publishes to `dist`, tags the version, tells IndexNow |
+| `dist` | the built site, and nothing else | GitHub Pages serves it |
+
+Work is opened against `dev`. **Releasing is opening a pull request from `dev`
+to `main`** and merging it — there is no other step, and no file in the tree has
+to be edited to do it.
+
+**That merge is done by hand, on purpose, and nothing here will ever do it for
+you.** No schedule opens the pull request, no workflow merges it, and nothing
+fast-forwards `main` on to `dev`. Auto-merge is not to be enabled on it either.
+Deciding that what is on `dev` is ready to be live is the one judgement this
+arrangement exists to make room for: `main` moving is a deploy, a version tag
+and a submission to five search engines, and it should happen because somebody
+looked at the bundle and its QA run and said yes. Everything upstream of that
+merge is automatic so that this one step can be deliberate.
+
+`main` used to be where pull requests landed, which made every merge a release:
+its own deploy, its own version tag, its own IndexNow submission. Most changes
+do not deserve one — a phrase in one language, a colour, a fix to one tool — and
+on 27 August thirty-seven of them went out in a day. The cost is not runner
+time. It is that a version tag then names the last change rather than a set of
+them; that thirty-seven deploys are thirty-seven chances to be the one that
+broke something; and that finding which one did means bisecting a day instead
+of reading a pull request.
+
+Bundling on `dev` changes that and nothing else. Production moves once, with
+everything reviewed and previewed since the last time, under one version tag
+that names the whole set. What it costs is one more merge between a change and
+the visitor, and a `dev` that has to be merged forward whenever `main` moves
+without it — a hotfix taken straight to `main`, which is the one occasion to go
+round this rather than through it.
+
+The gates are unchanged in kind and doubled in number. A pull request builds
+without publishing, so a change that breaks the build is caught before it
+reaches `dev`; and the pull request from `dev` to `main` builds the bundle,
+previews it, and runs the QA suite against that preview before any of it is
+live. See [cloudflare/README.md](../cloudflare/README.md), "Previews".
+
+**A pull request into `dev` runs only the browser tests that could see it.**
+The QA suite is twelve runners and about fourteen minutes, and a change to one
+tool spent all of it re-testing forty others its diff cannot touch. A change
+confined to `tools/<slug>/` now asks for that tool's cases and no more — a slug
+is enough to find them, because every case about a tool carries the slug in its
+title, and over the tools the site ships a slug selects between 29 and 71 cases
+of the 1573 a project runs.
+
+Everything else runs the whole suite, and the list is meant to read as *what
+can reach a page the diff does not name*: a tool added or removed (the footer,
+the hub, the 404, the sitemap and `llms.txt` all list every tool, and the cases
+that count that list name no slug); anything outside one tool's folder —
+`shared/`, `templates/`, `config/`, `build.py`, `buildlib/`, `locales/`; a diff
+too long for the compare endpoint to list; and the `dev` → `main` pull request,
+which is the release and is never scoped. Anything unrecognised runs
+everything, so the failure mode is a suite that ran when it need not have and
+never a change that shipped untested.
+
+**A tool may reach `dev` without its QA spec, but not a release.** The tool
+lives here and the spec that tests what it *does* lives in the QA repository,
+so the two cannot land in one change. On a pull request into `dev` the coverage
+check reports the missing spec instead of failing — otherwise every tool would
+need two pull requests in two repositories in a fixed order, with the first red
+until the second merged. The `dev` → `main` pull request is not excused it, so
+nothing ships untested, and the QA repository opens an issue for a missing spec
+daily regardless.
+
+The build and the unit tests are **not** scoped. They are nine minutes on one
+runner between them, and they are what catches a change that breaks every page
+— which a build of one tool, by construction, cannot see.
+
+**Every merge into `dev` is kept at an address of its own.** The stable
+`dev.abox-preview.pages.dev` is replaced by the next merge, which makes it
+useless for the question you actually ask of a bundle — *which of these
+changes did that?* So each merge is also deployed to
+`dev-pr-<n>.abox-preview.pages.dev`, named after the pull request behind it.
+They accumulate deliberately; opening the two either side of a merge is how
+you see what it did. A commit that came from no pull request — a direct push,
+a merge forward from `main` after a hotfix — gets the stable address only.
+
+**`main` stays this repository's default branch**, and that is load-bearing
+rather than inertia. The QA suite reads the tool list and the CSP out of a
+checkout of this repository rather than keeping its own copy, and a run that
+was told no commit reads the default branch — which is every production run.
+Point the default at `dev` and each of those would count the bundle's tools
+against the live site's cards and fail, correctly, about two different sites.
+The cost of leaving it is that a pull request opened by hand in the GitHub UI
+arrives based on `main`, and the base has to be changed to `dev`.
+
+**`python build.py --check` cannot pass on `dev`.** It diffs a fresh build
+against `dist`, `dist` tracks `main` exactly, and `dev` is ahead of `main` by
+construction whenever it is holding anything at all. That is not a failure to
+investigate, and CI does not run it.
 
 ## GitHub Pages
 

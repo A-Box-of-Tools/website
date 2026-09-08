@@ -17,10 +17,11 @@
 
     <p class="card-lede">
       Every page of every file you chose, in the order they will come out.
-      Drag one by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span>
-      handle to move it, turn it with the arrows, or take it out with the
-      &times;. Nothing here has been written yet &mdash; the document is
-      assembled when you press the button in step 4.
+      Drag a tile anywhere on it to move that page &mdash; on a touch screen,
+      by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> grip,
+      so the list still scrolls. Turn a page with the arrows, or take it out
+      with the &times;. Nothing here has been written yet &mdash; the document
+      is assembled when you press the button in step 4.
     </p>
 
     <div class="toolbar">
@@ -42,8 +43,10 @@
       <button type="button" id="range-turn" class="ghost">Turn these</button>
     </div>
     <p id="range-note" class="field-note">
-      By the numbers below, which renumber as you go. <code>odd</code>,
-      <code>even</code>, <code>all</code> and <code>last</code> work too.
+      By the small number in the corner of each page below, which renumbers as
+      you go &mdash; not the big one, which is the page it was in its own file.
+      <code>odd</code>, <code>even</code>, <code>all</code> and
+      <code>last</code> work too.
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -208,6 +211,8 @@
     <span data-phrase="page.turned">Turned by this tool</span>
     <span data-phrase="page.remove">Remove page {n}</span>
     <span data-phrase="page.from">{name}, page {n}</span>
+    <span data-phrase="page.origin">From page {n}</span>
+    <span data-phrase="page.at">Number {n} in the running order</span>
     <span data-phrase="page.anticlockwise">Turn page {n} anticlockwise</span>
     <span data-phrase="page.clockwise">Turn page {n} clockwise</span>
     <span data-phrase="page.earlier">Move page {n} earlier</span>

@@ -199,6 +199,23 @@ If that ever changes it will be because a renderer got small enough to vendor
 under the rules in [What can be built here](../../docs/what-can-be-built-here.md),
 not because the thumbnails were worth an upload.
 
+What that argument missed for a while is that the number on the paper was not a
+fact about the page at all. It was a **position** — 1, 2, 3 down the list,
+renumbered on every change — and a position cannot move. Drag a page three
+places and it still reads the number of the slot it landed in; take page 3 out
+of twelve and the screen left behind is the one taking page 12 out would leave,
+eleven tiles numbered 1 to 11. Both were reported as bugs, first as the drag not
+working and then as the × removing the wrong page, and neither was: the tool
+could not show what it had done.
+
+So the big number on the paper is now the page's own — the page it was in the
+file it came out of — which moves with the tile and makes a reorder or a removal
+legible at a glance. Where it currently sits is the small pill in the sheet's
+corner, because that is what the range box counts, and it is drawn as a label
+rather than as part of the paper: the two numbers read alike until something is
+moved, and a person has to be able to tell which is which the moment they
+diverge.
+
 ## Limitations
 
 - **Encrypted documents are refused**, empty password included.

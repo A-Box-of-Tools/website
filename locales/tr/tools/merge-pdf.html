@@ -24,9 +24,10 @@
     <h2><span class="step">2</span> Sayfaları düzenleyin</h2>
 
     <p class="card-lede">
-      Seçtiğiniz her dosyanın her sayfası, çıkacakları sırayla. Taşımak için
-      birini <span class="grip" aria-hidden="true">&#8942;&#8942;</span>
-      tutamağından sürükleyin, oklarla döndürün ya da &times; ile çıkarın.
+      Seçtiğiniz her dosyanın her sayfası, çıkacakları sırayla. O sayfayı taşımak
+      için kartı herhangi bir yerinden sürükleyin &mdash; dokunmatik ekranda
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> tutamağından, ki liste
+      kaymaya devam etsin. Sayfayı oklarla döndürün ya da &times; ile çıkarın.
       Burada henüz hiçbir şey yazılmadı &mdash; belge, 4. adımda düğmeye
       bastığınızda kurulur.
     </p>
@@ -50,9 +51,10 @@
       <button type="button" id="range-turn" class="ghost">Bunları döndür</button>
     </div>
     <p id="range-note" class="field-note">
-      Aşağıdaki numaralara göre; onlar da siz ilerledikçe yeniden verilir.
-      <code>odd</code>, <code>even</code>, <code>all</code> ve
-      <code>last</code> de çalışır.
+      Aşağıdaki her sayfanın köşesindeki küçük numaraya göre; o numara siz
+      çalıştıkça yeniden verilir &mdash; büyük olana göre değil, o sayfanın
+      kendi dosyasındaki numarasıdır. <code>odd</code>, <code>even</code>,
+      <code>all</code> ve <code>last</code> da çalışır.
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -218,6 +220,8 @@
     <span data-phrase="page.turned">Bu araç tarafından döndürüldü</span>
     <span data-phrase="page.remove">{n}. sayfayı çıkar</span>
     <span data-phrase="page.from">{name}, sayfa {n}</span>
+    <span data-phrase="page.origin">{n}. sayfadan</span>
+    <span data-phrase="page.at">Sıradaki {n}. numara</span>
     <span data-phrase="page.anticlockwise">{n}. sayfayı saat yönünün tersine döndür</span>
     <span data-phrase="page.clockwise">{n}. sayfayı saat yönünde döndür</span>
     <span data-phrase="page.earlier">{n}. sayfayı öne al</span>

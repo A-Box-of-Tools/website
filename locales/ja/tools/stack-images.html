@@ -31,6 +31,10 @@
       </div>
     </div>
 
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      フレームの <span class="grip" aria-hidden="true">&#8942;&#8942;</span> つまみを持ってドラッグすれば並べ替えられます。つまみにフォーカスがあれば上下の矢印キーでも動きます。並び順は一覧の見た目だけのもので、ほかのフレームが位置を合わせる相手は<strong>基準</strong>と付いた一枚です。
+    </p>
+
     <ul id="frame-list" class="frame-list"></ul>
   </section>
 
@@ -176,6 +180,7 @@
     <span data-phrase="count.many">{count}枚</span><span data-phrase="count.none">まだフレームがありません</span>
 
     <span data-phrase="frame.reference">基準</span><span data-phrase="frame.make-reference">これを基準にする</span><span data-phrase="frame.remove">削除</span>
+    <span data-phrase="frame.move">{name} を動かす &mdash; ドラッグ、または上下の矢印キー</span>
     <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw">RAW｜カメラ自身のプレビュー、&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw-camera">{camera}｜&#x2066;{width} &times; {height}&#x2069;のプレビュー</span><span data-phrase="frame.raw-unreadable">このRAWファイルにはプレビューが見つかりませんでした</span>

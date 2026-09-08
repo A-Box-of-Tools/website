@@ -19,6 +19,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Apa yang masuk, digambar kembali. Bukan filenya, melainkan gambar yang
+      dipakai pembacanya: dari dekode yang sama, skala yang sama, di atas dasar
+      putih yang sama. Jadi gambar kecil yang terlihat salah adalah alasan
+      jawabannya juga salah.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Pakai kameranya</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Hentikan kameranya</button>
@@ -141,6 +152,19 @@
   </template>
 
   <!--
+    Satu gambar di pratinjau itu. Diklon per file, dan setiap katanya ada
+    di sini dalam markup, karena file ini diterjemahkan per bahasa sedangkan
+    src/*.js satu file untuk semuanya.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     The words script needs, sitting in the markup so that a translator meets
     them where they meet the rest of the page. A `{host}` in one of these is
     filled in with the host that was read; nothing else is substituted.
@@ -232,6 +256,11 @@
     <span data-phrase="how.global">satu ambang untuk seluruh gambar</span>
     <span data-phrase="how.softened">melembutkan gambarnya lebih dulu</span>
     <span data-phrase="how.dense">, memeriksa setiap baris</span>
+
+    <span data-phrase="preview.one">Gambar yang diperiksa</span>
+    <span data-phrase="preview.many">{n} gambar yang diperiksa</span>
+    <span data-phrase="preview.nothing">Tidak ditemukan kode</span>
+    <span data-phrase="preview.broken">Tidak bisa dibuka</span>
 
     <span data-phrase="status.reading">Membaca gambarnya&hellip;</span>
     <span data-phrase="status.nothing">Tidak ada kode yang ditemukan di gambar

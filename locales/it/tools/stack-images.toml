@@ -147,8 +147,10 @@ body = """
  A mano libera: sì,
       solo traslazione. A mano libera e stavi anche ruotando: traslazione,
       rotazione e scala. Treppiede bloccato o intervallometro: no, e sarà più
-      veloce. Ogni fotogramma viene misurato rispetto al primo dell'elenco, ed è
-      per questo che qualsiasi fotogramma può essere promosso a primo."""
+      veloce. Ogni fotogramma viene misurato rispetto a quello segnato come
+      riferimento, che è il primo finché non dici altro: &laquo;Prendi come
+      riferimento&raquo; sposta il segno e lascia l'elenco nell'ordine in cui
+      l'hai messo."""
 
 [[howto]]
 title = "Leggi le quattro cifre, poi premi il pulsante."
@@ -224,8 +226,9 @@ a = """
 [[faq]]
 q = "Che cosa fa davvero l'allineamento dei fotogrammi?"
 a = """
-        Trova di quanto si è spostato ogni fotogramma rispetto al primo e lo rimette
-        a posto, con la precisione di una frazione di pixel. Il metodo è la
+        Trova di quanto si è spostato ogni fotogramma rispetto al fotogramma di
+        riferimento e lo rimette a posto, con la precisione di una frazione di
+        pixel. Il metodo è la
         correlazione di fase: lo spostamento tra due immagini compare come una
         differenza di fase tra i loro spettri, quindi una trasformata di Fourier per
         ciascuna trova uno scarto di duecento pixel al prezzo di uno da due pixel. La

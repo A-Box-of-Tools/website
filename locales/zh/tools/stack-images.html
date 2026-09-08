@@ -33,6 +33,10 @@
       </div>
     </div>
 
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      抓住某一帧的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能重排，把手上有焦点时也可以按上下方向键。这里的顺序只是列表的顺序，其余各帧对齐的是标着<strong>基准</strong>的那一帧。
+    </p>
+
     <ul id="frame-list" class="frame-list"></ul>
   </section>
 
@@ -178,6 +182,7 @@
     <span data-phrase="count.many">{count} 帧</span><span data-phrase="count.none">还没有帧</span>
 
     <span data-phrase="frame.reference">基准</span><span data-phrase="frame.make-reference">拿它当基准</span><span data-phrase="frame.remove">移除</span>
+    <span data-phrase="frame.move">移动 {name} &mdash; 拖动，或用上下方向键</span>
     <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw">RAW | 相机自己的预览图，&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw-camera">{camera} | &#x2066;{width} &times; {height}&#x2069; 的预览图</span><span data-phrase="frame.raw-unreadable">这个 RAW 文件里没找到预览图</span><span data-phrase="frame.read">读了 {total} 里的 {read}</span>

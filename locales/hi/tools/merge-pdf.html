@@ -16,9 +16,10 @@
     <h2><span class="step">2</span> पेज लगाइए</h2>
 
     <p class="card-lede">
-      आपकी चुनी हर फ़ाइल का हर पेज, उसी क्रम में जिसमें वे बाहर आएँगे। किसी पेज को
-      उसके <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से
-      खींचकर हटाइए, तीरों से घुमाइए, या &times; से निकाल दीजिए। यहाँ अभी कुछ लिखा
+      आपकी चुनी हर फ़ाइल का हर पेज, उसी क्रम में जिसमें वे बाहर आएँगे। किसी टाइल को
+      कहीं से भी खींचकर उस पेज को सरकाइए &mdash; छूने वाली स्क्रीन पर उसके
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से, ताकि सूची स्क्रॉल
+      होती रहे। पेज को तीरों से घुमाइए, या &times; से निकाल दीजिए। यहाँ अभी कुछ लिखा
       नहीं गया है, दस्तावेज़ तब बनता है जब आप चरण 4 का बटन दबाते हैं।
     </p>
 
@@ -41,9 +42,10 @@
       <button type="button" id="range-turn" class="ghost">ये घुमाइए</button>
     </div>
     <p id="range-note" class="field-note">
-      नीचे दिखने वाले नंबरों के हिसाब से, जो आपके काम के साथ दोबारा लगते जाते हैं।
-      <code>odd</code>, <code>even</code>, <code>all</code> और <code>last</code>
-      भी चलते हैं।
+      नीचे हर पेज के कोने में दिख रहे छोटे नंबर से, जो चलते-चलते फिर से लगते
+      रहते हैं &mdash; बड़े नंबर से नहीं, वह उसकी अपनी फ़ाइल का पन्ना है।
+      <code>odd</code>, <code>even</code>, <code>all</code> और
+      <code>last</code> भी चलते हैं।
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -207,6 +209,8 @@
     <span data-phrase="page.turned">इस टूल ने घुमाया</span>
     <span data-phrase="page.remove">पन्ना {n} हटाइए</span>
     <span data-phrase="page.from">{name}, पन्ना {n}</span>
+    <span data-phrase="page.origin">पन्ना {n} से</span>
+    <span data-phrase="page.at">क्रम में नंबर {n}</span>
     <span data-phrase="page.anticlockwise">पन्ना {n} वामावर्त घुमाइए</span>
     <span data-phrase="page.clockwise">पन्ना {n} दक्षिणावर्त घुमाइए</span>
     <span data-phrase="page.earlier">पन्ना {n} पहले ले जाइए</span>
