@@ -135,12 +135,15 @@ jobs:
       #   serve.ps1   tests/python/test_serve.py reads its MIME table
       #   tests/      the suites are the thing being changed
       #
-      # `.github/` is on the list, which costs something worth naming: a change
-      # to this file no longer gets a run of its own to prove its steps work.
-      # What still holds is that GitHub parses the workflow before it can skip
-      # anything, so a file that will not load is still refused - and a change
-      # here that needs exercising can be pushed with a one-line change beside
-      # it, or dispatched by hand.
+      # `.github/` is OFF the list, and for a different reason from the three
+      # above - it would qualify under the rule, because no test opens a
+      # workflow. A workflow exempt from the run it defines never gets one:
+      # the first thing to exercise a step edited here would be the deploy
+      # that needed it, and the first sign of a mistake a release that did not
+      # happen. GitHub parsing the file is not the same assurance, because a
+      # workflow can load perfectly and still hold a condition that never
+      # fires - which is most of what this file is made of. So a change here
+      # builds and runs both suites like any other.
       - name: Is there anything here a test could see?
         id: covered
         env:
@@ -168,7 +171,7 @@ jobs:
                 case "$path" in
                   README.md|CLAUDE.md|ROADMAP.md) continue ;;
                   LICENSE|LICENSE-CONTENT|LICENSE-BRAND) continue ;;
-                  docs/*|.claude/*|.github/*|media/*|cloudflare/*) continue ;;
+                  docs/*|.claude/*|media/*|cloudflare/*) continue ;;
                 esac
                 code=true
                 why="\`$path\` is a file a test could see"

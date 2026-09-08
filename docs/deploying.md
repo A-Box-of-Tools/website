@@ -91,8 +91,8 @@ nothing ships untested, and the QA repository opens an issue for a missing spec
 daily regardless.
 
 **A change that reaches no page is not built at all.** If everything a pull
-request touches is on a short allowlist — `docs/`, `.claude/`, `.github/`,
-`media/`, `cloudflare/`, and the root markdown files — then the build, both
+request touches is on a short allowlist — `docs/`, `.claude/`, `media/`,
+`cloudflare/`, and the root markdown files — then the build, both
 unit suites, the preview and the QA run are all skipped, because the site it
 would produce is the one already deployed. Anything else, anything new,
 anything unrecognised, builds and runs everything.
@@ -103,11 +103,13 @@ are deliberately absent, each checked rather than assumed: `workers/`, which
 `tests/js/rendezvous.test.js` imports outright; `serve.ps1`, which
 `tests/python/test_serve.py` reads; and `tests/` itself.
 
-`.github/` being on the list has a cost worth naming: a change to a workflow
-no longer gets a run of its own to prove its steps work. GitHub still parses
-the file before it can skip anything, so one that will not load is still
-refused — but a change that needs exercising should be pushed with a one-line
-change beside it, or dispatched by hand.
+`.github/` is deliberately **not** on the list, though it would qualify under
+that rule — no test opens a workflow. A workflow exempt from the run it defines
+never gets one: the first thing to exercise an edited step would be the deploy
+that needed it, and the first sign of a mistake a release that did not happen.
+GitHub parsing the file is not the same assurance, since a workflow can load
+perfectly and still hold a condition that never fires. So a change to CI builds
+and runs both suites like any other.
 
 The build and the unit tests are **not** scoped by tool. They are nine minutes on one
 runner between them, and they are what catches a change that breaks every page
