@@ -1088,9 +1088,19 @@ class BuildTheSite(unittest.TestCase):
         templates render that state the way the functions describe it. The pair
         above covers the other half - a page that DOES name alternates - and
         skips exactly the pages this one looks at.
+
+        A page in a language the site does not offer also names no alternate,
+        and it is not this state: it belongs to no cluster, so it annotates
+        none, but it is fully translated and it offers every language the site
+        does have, because the reader who landed on it has to be able to
+        leave. "No alternates" stopped meaning "nobody has translated this" the
+        day that list existed - so those pages are skipped here and checked by
+        test_a_page_the_site_does_not_offer_still_offers_a_way_out instead.
         """
         for name in self.written:
             if not name.endswith('.html') or name == '404.html':
+                continue
+            if name.split('/')[0] in self.unadvertised:
                 continue
             text = (self.out / name).read_text(encoding='utf-8')
             if '<link rel="alternate" hreflang=' in text:
@@ -1108,11 +1118,25 @@ class BuildTheSite(unittest.TestCase):
                     self.assertNotIn(absent, switch)
 
     def test_the_switcher_links_this_page_and_not_the_front_door(self):
-        """Somebody reading about compressing an image who asks for German
-        wants that page in German. The German hub is reached from the English
-        hub; the German privacy page is reached from the English one."""
+        """Somebody reading the privacy page who asks for another language
+        wants the privacy page in it. The other hub is reached from this hub;
+        the other privacy page is reached from this one.
+
+        The language is taken off the published list rather than named here.
+        This used to spell out German, and it broke the day German came off
+        that list - the same failure mode the test above records, a test naming
+        a thing the site is free to change its mind about.
+        """
         page = (self.out / 'privacy' / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('<a href="/de/datenschutz/" lang="de" hreflang="de">Deutsch</a>', page)
+        others = [locale for locale in buildmod.i18n.published(self.locales)
+                  if not locale['is_base']]
+        self.assertTrue(others, 'no language but English is offered')
+        for other in others:
+            href = buildmod.i18n.locale_path(other, 'privacy').strip('/')
+            with self.subTest(lang=other['lang']):
+                self.assertIn(
+                    f'<a href="/{href}/" lang="{other["hreflang"]}" '
+                    f'hreflang="{other["hreflang"]}">{other["endonym"]}</a>', page)
 
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
@@ -1300,6 +1324,25 @@ class BuildTheSite(unittest.TestCase):
         for lang in sorted(self.unadvertised):
             with self.subTest(lang=lang):
                 self.assertNotIn(f'{self.site["domain"]}{lang}/', sitemap)
+
+    def test_a_page_the_site_does_not_offer_still_offers_a_way_out(self):
+        """Naming no alternate is not the same as having nowhere to go.
+
+        The head is an annotation for a search engine about a cluster this page
+        is not in. The switcher is a control for a reader who has landed on a
+        page in a language the site no longer advertises, and taking it away
+        would strand them on it - which is a different and much worse thing
+        than not being indexed.
+        """
+        offered = buildmod.i18n.published(self.locales)
+        for lang in sorted(self.unadvertised):
+            name = f'{lang}/index.html'
+            with self.subTest(page=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertNotIn('<link rel="alternate" hreflang=', text)
+                switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
+                for locale in offered:
+                    self.assertIn(f'hreflang="{locale["hreflang"]}"', switch)
 
     def test_a_language_the_site_does_offer_is_left_indexable(self):
         """The other side of it, so a bug that noindexed everything would show.
