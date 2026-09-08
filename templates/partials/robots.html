@@ -1,0 +1,17 @@
+{% if noindex %}<!--
+  This language is built, readable at its own addresses, and advertised
+  nowhere - config/site.toml's `unadvertised_languages` says which languages
+  those are and why. Leaving them out of the sitemap keeps them from being
+  found; this is the half that deals with the pages already in the index, or
+  linked to from somewhere that is not us. Neither half works without the
+  other.
+
+  `follow` rather than `nofollow`: everything this page links to is indexed,
+  and stranding it would cost the pages that ARE read.
+
+  The roadmap and the 404 carry their own robots meta, in every language and
+  for their own reasons, so neither includes this - two of them on one page
+  would be a rule arguing with itself.
+-->
+<meta name="robots" content="noindex, follow">
+{% endif %}

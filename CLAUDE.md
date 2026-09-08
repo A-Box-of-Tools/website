@@ -256,6 +256,15 @@ is still built and readable, and is kept out of the sitemap, the hreflang sets
 and the switcher. `complete = true` claims only that the frame is translated,
 so shipping a tool does not break the finished languages.
 
+**Thirteen of the fourteen translations are deliberately not offered**, and
+that is not a bug to fix. `unadvertised_languages` in `config/site.toml` names
+them: finished, readable at every address they always had, and kept out of the
+sitemap, the hreflang sets, the switcher and the feeds, with `noindex` on every
+page. The traffic is the reason and the comment on that list has it — 99% of
+arrivals land on an English page. `i18n.offered` is where that decision and
+"not translated yet" meet, so the three lists still cannot disagree. Taking a
+language off the list is one line; nothing else about it has to change.
+
 Lists whose English entries carry an `id` are merged **by id**; lists of plain
 strings are still positional. That distinction is the whole reason
 `locales/*/planned.toml` needs care and `[[hub.categories]]` no longer does.
