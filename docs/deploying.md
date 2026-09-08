@@ -81,6 +81,15 @@ which is the release and is never scoped. Anything unrecognised runs
 everything, so the failure mode is a suite that ran when it need not have and
 never a change that shipped untested.
 
+**A tool may reach `dev` without its QA spec, but not a release.** The tool
+lives here and the spec that tests what it *does* lives in the QA repository,
+so the two cannot land in one change. On a pull request into `dev` the coverage
+check reports the missing spec instead of failing — otherwise every tool would
+need two pull requests in two repositories in a fixed order, with the first red
+until the second merged. The `dev` → `main` pull request is not excused it, so
+nothing ships untested, and the QA repository opens an issue for a missing spec
+daily regardless.
+
 The build and the unit tests are **not** scoped. They are nine minutes on one
 runner between them, and they are what catches a change that breaks every page
 — which a build of one tool, by construction, cannot see.
