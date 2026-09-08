@@ -1,0 +1,179 @@
+#
+# Takes down the Cloudflare Pages previews that nothing needs any more.
+#
+# The `preview` job in build.yml uploads two kinds of address, and they stop
+# being useful at different moments:
+#
+#   pr-<n>       one pull request, as it currently stands. Finished with the
+#                moment that pull request closes - merged or not, there is
+#                nothing left to review and the branch behind it is usually
+#                gone too.
+#   dev-pr-<n>   the bundle as it stood just after one merge into `dev`, kept
+#                so that the state before the next merge is still there to
+#                compare against. Finished with once that change is in `main`,
+#                because from then on the thing to compare against is
+#                production itself.
+#
+# So a closed pull request takes its own preview down, and a push to `main`
+# takes down every `dev-pr-<n>` whose merge has arrived there. NOT all of them:
+# `dev` carries on while a release is in flight, and a merge that is on `dev`
+# but not yet in `main` is exactly the case those addresses exist for. Each is
+# asked about by commit rather than assumed, which is the reason the upload
+# passes `--commit-hash` in the first place.
+#
+# Nothing here gates anything. It runs after the fact, on addresses nobody is
+# reading, so it reports rather than fails: a tidy that goes wrong must not put
+# a red mark on a release that went out perfectly well. There are two things it
+# will fail for, both of the same kind - being unable to list the deployments,
+# and listing them without being able to tell one branch from another. A tidy
+# that has quietly stopped working looks exactly like a tidy with nothing to
+# do, and the only other place that would ever say so is the bill.
+#
+# A pull request from a fork carries no secrets and therefore never had a
+# preview; the gate below finds no token and stops, as it does in build.yml.
+#
+name: Tidy the previews
+
+on:
+  pull_request:
+    types: [closed]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One at a time. Two releases close together would otherwise both list the
+# deployments, both decide the same ones are finished with, and the second
+# would spend its time being told they are already gone.
+concurrency:
+  group: preview-tidy
+  cancel-in-progress: false
+
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT || 'abox-preview' }}
+    steps:
+      - name: Is there anything to tidy with?
+        id: gate
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo '::notice::Nothing to tidy: the Cloudflare secrets are not set, so no preview was ever uploaded.'
+          fi
+
+      - name: Take down what nothing needs any more
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -uo pipefail
+          api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/deployments"
+          auth="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          # Every deployment the project holds, as `id<TAB>branch<TAB>commit`.
+          # Paged, because a busy month is more than a hundred of them and the
+          # oldest are the ones most likely to be finished with.
+          : > all.tsv
+          page=1
+          while [ "$page" -le 20 ]; do
+            body=$(curl -sS -H "$auth" "$api?per_page=100&page=$page") || body=''
+            if [ "$(printf '%s' "$body" | jq -r '.success // false')" != 'true' ]; then
+              echo "::error::Could not list the deployments of $PROJECT."
+              printf '%s' "$body" | head -c 800
+              exit 1
+            fi
+            n=$(printf '%s' "$body" | jq '.result | length')
+            if [ "$n" -eq 0 ]; then break; fi
+            # The branch and the commit are the ones `wrangler pages deploy`
+            # was given as --branch and --commit-hash. Read back defensively:
+            # this part of the API has been renamed before, and the failure it
+            # would cause here is a tidy that matches nothing and says nothing.
+            printf '%s' "$body" | jq -r '.result[] | [
+                .id,
+                (.deployment_trigger.metadata.branch // "?"),
+                (.deployment_trigger.metadata.commit_hash // "?")
+              ] | @tsv' >> all.tsv
+            if [ "$n" -lt 100 ]; then break; fi
+            page=$((page + 1))
+          done
+
+          total=$(wc -l < all.tsv)
+          echo "The project holds $total deployment(s)."
+
+          # If not one of them came back with a branch, the shape has moved and
+          # every decision below would be "nothing to do" - which is also what
+          # a healthy run says. Better to be loud once than quiet for ever.
+          named=$(cut -f2 all.tsv | grep -cv '^?$' || true)
+          if [ "$total" -gt 0 ] && [ "$named" -eq 0 ]; then
+            echo '::error::No deployment came back with a branch name, so this cannot tell them apart. The API shape has moved; see the jq above.'
+            exit 1
+          fi
+
+          # WHICH ARE FINISHED WITH
+          : > doomed.tsv
+          while IFS="$(printf '\t')" read -r id branch commit; do
+            case "$EVENT:$branch" in
+              "pull_request:pr-$PR")
+                printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                ;;
+              push:dev-pr-*|workflow_dispatch:dev-pr-*)
+                # Only once the merge it holds has reached `main`. `behind` and
+                # `identical` are the two answers meaning "already there";
+                # `ahead` and `diverged` mean `dev` has moved on without a
+                # release, which is the state these addresses are for.
+                if [ "$commit" = '?' ]; then
+                  echo "  $branch: no commit recorded; left alone."
+                  continue
+                fi
+                where=$(gh api "repos/$REPO/compare/main...$commit" --jq '.status' 2>/dev/null) || where=''
+                case "$where" in
+                  behind|identical)
+                    printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv ;;
+                  '')
+                    echo "  $branch: could not ask about ${commit:0:7}; left alone." ;;
+                  *)
+                    echo "  $branch: ${commit:0:7} is not in main yet ($where); left alone." ;;
+                esac
+                ;;
+            esac
+          done < all.tsv
+
+          count=$(wc -l < doomed.tsv)
+          echo '### Previews taken down' >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$count" -eq 0 ]; then
+            echo 'Nothing was finished with.'
+            echo 'Nothing was finished with.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # A failure to delete one is a warning and not an error. The address
+          # is unreachable from the pull request either way, it will be offered
+          # again on the next run, and a release must not go red over a
+          # deployment that has outlived its usefulness.
+          gone=0
+          while IFS="$(printf '\t')" read -r id branch; do
+            if curl -sS -X DELETE -H "$auth" "$api/$id?force=true" | jq -e '.success' > /dev/null; then
+              echo "  deleted $branch ($id)"
+              echo "- \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
+              gone=$((gone + 1))
+            else
+              echo "::warning::Could not delete $branch ($id). It will be offered again next time."
+            fi
+          done < doomed.tsv
+          echo "Deleted $gone of $count."
