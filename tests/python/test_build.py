@@ -1345,6 +1345,39 @@ class BuildTheSite(unittest.TestCase):
             with self.subTest(lang=locale['lang']):
                 self.assertEqual(offered, locale['lang'] in self.advertised)
 
+    # -- the advertising --------------------------------------------------
+    #
+    # AdSense is asked for from analytics.js, in the branch that runs when the
+    # visit is one worth counting, and never by a <script> tag in the markup.
+    # A tag in the head fires on every load there is, and this site's own QA
+    # suite opens every page against production several times a day: an ad
+    # requested by a runner that could never see one is invalid traffic
+    # against this site's own account, which is how an approved account gets
+    # disabled. Putting the tag back is a one-line change that reads as
+    # harmless, and nothing else here would notice it.
+
+    def test_no_page_asks_for_ads_from_its_markup(self):
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                # The bare host is in the Content-Security-Policy on every one
+                # of these pages and belongs there; the path is what only a
+                # request for the script has.
+                self.assertNotIn('pagead2.googlesyndication.com/pagead/js', page)
+
+    def test_the_ad_script_is_asked_for_only_when_the_visit_is_counted(self):
+        """The request and the decision to count it sit in one file on purpose.
+
+        Split across two they would be two statements of one rule to keep in
+        step, and the one that drifted would be the one nobody could see."""
+        script = (self.out / self.a_tool() / 'analytics.js').read_text(encoding='utf-8')
+        self.assertIn('var notAVisit = navigator.webdriver ||', script)
+        self.assertIn('if (!notAVisit) {', script)
+        self.assertLess(script.index('if (!notAVisit) {'),
+                        script.index('pagead2.googlesyndication.com/pagead/js'))
+
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)
         self.assertTrue((self.out / '404.html').is_file())
