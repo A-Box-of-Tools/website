@@ -50,7 +50,7 @@ howto_heading = "Cara membuat pas foto paspor yang tidak dikembalikan"
 card = """
             Pilih sebuah negara dan sebuah dokumen, dan kotak pangkasnya
             mengambil tinggi kepala dan garis mata aturan itu. Mencetak pada mm
-            dan DPI yang tepat, dengan lembar 4&nbsp;&times;&nbsp;6, dan
+            dan DPI yang tepat, dengan lembar &#x2066;4&nbsp;&times;&nbsp;6&#x2069;, dan
             memadatkan unggahannya ke dalam rentang KB milik portalnya."""
 
 [words]
@@ -172,7 +172,7 @@ body = """
  Cetakannya, pada milimeter yang tepat
       dengan resolusinya tertulis di dalam file sehingga sebuah kios mencetaknya
       pada ukuran yang benar. Lembarnya, dengan sebanyak mungkin salinan yang
-      muat di 4&nbsp;&times;&nbsp;6 dan tanda potong di sela-selanya. Dan
+      muat di &#x2066;4&nbsp;&times;&nbsp;6&#x2069; dan tanda potong di sela-selanya. Dan
       unggahannya, pada ukuran piksel yang dituntut portalnya dan di dalam
       rentang KB yang ditegakkannya di kedua ujung."""
 
@@ -196,7 +196,7 @@ a = """
         sendiri, Amerika Serikat (paspor dan pendaftaran Diversity Visa, yang
         aturan unggahannya berbeda), Britania Raya, visa Schengen, Jerman,
         Kanada, Australia, India (paspor, cetakan
-        35&nbsp;&times;&nbsp;45&nbsp;mm, serta foto dan tanda tangan formulir
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm, serta foto dan tanda tangan formulir
         SSC/UPSC), Tiongkok, dan Jepang. Setiap entri menyebutkan lembaga
         asalnya dan tanggal ia dibaca. Selain itu masuk lewat &ldquo;Di tempat
         lain&rdquo;, tempat setiap angkanya Anda ketik sendiri &mdash; dan
@@ -265,7 +265,7 @@ a = """
         Portal ujian India, formulir visa Tiongkok, dan unggahan paspor Britania
         Raya sama-sama menyatakan ukuran file minimum di samping maksimumnya,
         karena file di bawahnya biasanya sebuah gambar mini yang diunggah orang
-        karena keliru. Foto 200&nbsp;&times;&nbsp;230 adalah 46.000 piksel, dan
+        karena keliru. Foto &#x2066;200&nbsp;&times;&nbsp;230&#x2069; adalah 46.000 piksel, dan
         pada kualitas terbaik yang bisa ditulis sebuah peramban ia masih bisa
         mendarat di 15&nbsp;KB, tanpa cara membuatnya lebih besar dengan
         mengompres lebih sedikit. Jadi alat ini menambahkan sebuah segmen komentar
@@ -290,13 +290,13 @@ a = """
         daripada filter mana pun."""
 
 [[faq]]
-q = "Lembar 4 x 6 itu untuk apa?"
+q = "Lembar &#x2066;4 x 6&#x2069; itu untuk apa?"
 a = """
         Sebuah studio foto memungut biaya lumayan untuk enam lembar. Sebuah gerai
-        cetak foto mencetak 6&nbsp;&times;&nbsp;4 dengan harga receh dan semuanya
+        cetak foto mencetak &#x2066;6&nbsp;&times;&nbsp;4&#x2069; dengan harga receh dan semuanya
         bisa melakukannya. Jadi alat ini menata sebanyak mungkin salinan foto Anda
-        yang muat di kertasnya &mdash; delapan, untuk 35&nbsp;&times;&nbsp;45 di
-        atas 6&nbsp;&times;&nbsp;4 &mdash; dengan tanda potong di sela-selanya dan
+        yang muat di kertasnya &mdash; delapan, untuk &#x2066;35&nbsp;&times;&nbsp;45&#x2069; di
+        atas &#x2066;6&nbsp;&times;&nbsp;4&#x2069; &mdash; dengan tanda potong di sela-selanya dan
         tidak ada yang tercetak di atas sebuah gambar. Tidak ada yang diskalakan
         agar muat: setiap salinan tepat seukuran yang diminta aturannya, karena
         lembar yang mengecilkannya dua persen supaya satu lagi muat akan menjadi
@@ -312,8 +312,8 @@ a = """
         dan sebuah kanvas peramban menulis header itu dengan kolom satuannya
         disetel ke &ldquo;ini rasio aspek, bukan resolusi&rdquo;. Alat ini menulis
         ulang beberapa byte itu sehingga file-nya menyatakan 300&nbsp;dpi, dan
-        itulah yang mengubah 413&nbsp;&times;&nbsp;531 piksel menjadi foto
-        35&nbsp;&times;&nbsp;45&nbsp;mm alih-alih sebuah gambar tanpa ukuran
+        itulah yang mengubah &#x2066;413&nbsp;&times;&nbsp;531&#x2069; piksel menjadi foto
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm alih-alih sebuah gambar tanpa ukuran
         tertentu. Tidak ada yang didekodekan untuk melakukannya dan tidak ada
         kualitas yang dikorbankan."""
 
@@ -321,7 +321,7 @@ a = """
 q = "Bisakah ia membuat file tanda tangannya juga?"
 a = """
         Bisa &mdash; formulir SSC dan UPSC meminta satu pada
-        140&nbsp;&times;&nbsp;60 piksel dan antara 10 sampai 20&nbsp;KB, dan itu
+        &#x2066;140&nbsp;&times;&nbsp;60&#x2069; piksel dan antara 10 sampai 20&nbsp;KB, dan itu
         ada di daftarnya sebagai spesifikasinya sendiri. Hamparan wajahnya
         dimatikan untuk itu, karena sebuah tanda tangan tidak punya garis mata, dan
         yang diperiksa sebagai gantinya adalah bahwa kertasnya terang, bahwa ada
@@ -371,9 +371,9 @@ features = [
   "Tinggi kepala, garis mata, pemusatan, dan kemiringan secara langsung, masing-masing mengatakan ke arah mana harus dibetulkan",
   "Warna dan kerataan latar diukur dalam CIE Lab, dengan keduanya dilaporkan terpisah",
   "Mencetak pada milimeter yang tepat, dengan resolusinya tertulis di dalam header JPEG",
-  "Lembar 4 x 6, 5 x 7, A4, atau Letter, berjajar dengan tanda potong di sela-selanya dan tidak ada yang menimpa gambar",
+  "Lembar &#x2066;4 x 6&#x2069;, &#x2066;5 x 7&#x2069;, A4, atau Letter, berjajar dengan tanda potong di sela-selanya dan tidak ada yang menimpa gambar",
   "File unggahan pada ukuran piksel yang diwajibkan, dicari sampai masuk rentang KB portalnya di kedua ujung",
-  "Foto formulir SSC dan UPSC pada 200 x 230 dalam 20-50 KB, dan tanda tangan pada 140 x 60 dalam 10-20 KB",
+  "Foto formulir SSC dan UPSC pada &#x2066;200 x 230&#x2069; dalam 20-50 KB, dan tanda tangan pada &#x2066;140 x 60&#x2069; dalam 10-20 KB",
   "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa model wajah",
 ]
 

@@ -43,7 +43,7 @@ howto_heading = "Como fazer uma foto de documento que não volta"
 card = """
             Escolha um país e um documento, e o quadro de corte assume a altura da
             cabeça e a linha dos olhos daquela regra. Imprime nos milímetros e na
-            resolução exatos, com uma folha 10&nbsp;&times;&nbsp;15, e espreme o envio
+            resolução exatos, com uma folha &#x2066;10&nbsp;&times;&nbsp;15&#x2069;, e espreme o envio
             para dentro da faixa em KB do portal."""
 
 [words]
@@ -158,7 +158,7 @@ title = "Leve os três arquivos."
 body = """
  A impressão, nos milímetros exatos, com a
       resolução escrita dentro do arquivo para que uma loja imprima no tamanho certo. A
-      folha, com quantas cópias couberem num 10&nbsp;&times;&nbsp;15 e marcas de corte
+      folha, com quantas cópias couberem num &#x2066;10&nbsp;&times;&nbsp;15&#x2069; e marcas de corte
       nos vãos. E o envio, no tamanho em pixels que o portal exige e dentro da faixa em
       KB que ele cobra dos dois lados."""
 
@@ -178,7 +178,7 @@ a = """
         As especificações transcritas até agora são o próprio padrão da OACI, os Estados
         Unidos (passaporte e a inscrição na loteria de vistos, que têm regras de envio
         diferentes), o Reino Unido, o visto Schengen, a Alemanha, o Canadá, a
-        Austrália, a Índia (passaporte, a cópia de 35&nbsp;&times;&nbsp;45&nbsp;mm e a
+        Austrália, a Índia (passaporte, a cópia de &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm e a
         foto e a assinatura dos formulários SSC e UPSC), a China e o Japão. Cada entrada
         nomeia a autoridade de onde veio e a data em que foi lida. Qualquer outra coisa
         entra em &ldquo;Qualquer outro lugar&rdquo;, onde cada número é você que
@@ -238,7 +238,7 @@ a = """
         Os portais de concurso indianos, o formulário de visto chinês e o envio do
         passaporte britânico indicam um tamanho mínimo além de um máximo, porque um
         arquivo abaixo disso costuma ser uma miniatura que alguém subiu por engano. Uma
-        fotografia de 200&nbsp;&times;&nbsp;230 tem 46.000 pixels, e na melhor qualidade
+        fotografia de &#x2066;200&nbsp;&times;&nbsp;230&#x2069; tem 46.000 pixels, e na melhor qualidade
         que um navegador vai escrever ainda pode parar em 15&nbsp;KB, sem jeito de
         deixá-la maior comprimindo menos. Então a ferramenta acrescenta um segmento de
         comentário JPEG cheio de espaços. Isso faz parte do padrão JPEG, todo
@@ -259,12 +259,12 @@ a = """
         casos do que qualquer filtro."""
 
 [[faq]]
-q = "Para que serve a folha 10 x 15?"
+q = "Para que serve a folha &#x2066;10 x 15&#x2069;?"
 a = """
         Uma cabine cobra alguns reais por seis fotografias. Um balcão de fotos imprime um
-        10&nbsp;&times;&nbsp;15 por centavos, e qualquer um faz. Então a ferramenta
+        &#x2066;10&nbsp;&times;&nbsp;15&#x2069; por centavos, e qualquer um faz. Então a ferramenta
         distribui na folha quantas cópias da sua foto couberem &mdash; oito, para um
-        35&nbsp;&times;&nbsp;45 num 10&nbsp;&times;&nbsp;15 &mdash; com marcas de corte
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069; num &#x2066;10&nbsp;&times;&nbsp;15&#x2069; &mdash; com marcas de corte
         nos vãos e nada impresso por cima de uma imagem. Nada é redimensionado para
         caber: cada cópia tem exatamente o tamanho que a regra pede, porque uma folha que
         encolhesse todas em dois por cento para caber mais uma seriam oito fotografias
@@ -279,14 +279,14 @@ a = """
         esse cabeçalho com o campo de unidades em &ldquo;isto é uma proporção, não uma
         resolução&rdquo;. Esta ferramenta reescreve esses poucos bytes para que o
         arquivo diga 300&nbsp;dpi, que é o que transforma
-        413&nbsp;&times;&nbsp;531 pixels numa fotografia de
-        35&nbsp;&times;&nbsp;45&nbsp;mm em vez de uma imagem de tamanho nenhum. Nada é
+        &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pixels numa fotografia de
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm em vez de uma imagem de tamanho nenhum. Nada é
         decodificado para isso e nenhuma qualidade é gasta."""
 
 [[faq]]
 q = "Ele também faz o arquivo da assinatura?"
 a = """
-        Faz &mdash; os formulários SSC e UPSC querem uma de 140&nbsp;&times;&nbsp;60
+        Faz &mdash; os formulários SSC e UPSC querem uma de &#x2066;140&nbsp;&times;&nbsp;60&#x2069;
         pixels e entre 10 e 20&nbsp;KB, e ela está na lista como especificação própria. A
         marcação de rosto é desligada para ela, já que uma assinatura não tem linha dos
         olhos, e o que se confere no lugar é que o papel esteja claro, que haja tinta
@@ -333,9 +333,9 @@ features = [
   "Altura da cabeça, linha dos olhos, centralização e inclinação ao vivo, cada uma dizendo para que lado corrigir",
   "Cor e uniformidade do fundo medidas em CIE Lab, e relatadas separadamente",
   "Imprime nos milímetros exatos, com a resolução escrita no cabeçalho JPEG",
-  "Uma folha 10 x 15, 13 x 18, A4 ou Carta, ladrilhada com marcas de corte nos vãos e nada por cima de uma imagem",
+  "Uma folha &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 ou Carta, ladrilhada com marcas de corte nos vãos e nada por cima de uma imagem",
   "Um arquivo de envio no tamanho em pixels exigido, ajustado à faixa em KB do portal dos dois lados",
-  "Fotos de formulário SSC e UPSC em 200 x 230 entre 20 e 50 KB, e assinaturas em 140 x 60 entre 10 e 20 KB",
+  "Fotos de formulário SSC e UPSC em &#x2066;200 x 230&#x2069; entre 20 e 50 KB, e assinaturas em &#x2066;140 x 60&#x2069; entre 10 e 20 KB",
   "Funciona offline; sem envio, sem conta, sem modelo de rostos",
 ]
 

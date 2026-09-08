@@ -178,7 +178,7 @@ a = """
         Das hängt vollständig davon ab, was darin steckt, und genau deshalb misst
         das Werkzeug es und zeigt es Ihnen, bevor es irgendetwas komprimiert. Ein
         gescanntes Dokument besteht fast nur aus Fotografien und wird
-        üblicherweise 60&ndash;90&nbsp;% kleiner. Ein Vertrag oder eine
+        üblicherweise &#x2066;60&ndash;90&#x2069;&nbsp;% kleiner. Ein Vertrag oder eine
         Abschlussarbeit besteht dagegen aus Text, Vektorzeichnung und
         eingebetteten Schriften, die das erzeugende Programm alle längst
         komprimiert hat. Dort liegt die Ersparnis meist bei wenigen Prozent und

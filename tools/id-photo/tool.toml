@@ -87,7 +87,7 @@ howto_heading = "How to make a passport photo that is not sent back"
 card = """
             Pick a country and a document, and the crop box takes that rule's
             head height and eye line. Prints at the exact mm and DPI, with a
-            4&nbsp;&times;&nbsp;6 sheet, and squeezes the upload into the
+            &#x2066;4&nbsp;&times;&nbsp;6&#x2069; sheet, and squeezes the upload into the
             portal's KB band."""
 
 # The nouns this tool uses for the things it works on. They appear in the boot
@@ -212,7 +212,7 @@ title = "Take the three files."
 body = """
  The print, at the exact millimetres
       with the resolution written into the file so a shop prints it at the right
-      size. The sheet, with as many copies as a 4&nbsp;&times;&nbsp;6 holds and
+      size. The sheet, with as many copies as a &#x2066;4&nbsp;&times;&nbsp;6&#x2069; holds and
       cut marks in the gaps. And the upload, at the pixel size the portal demands
       and inside the KB band it enforces at both ends."""
 
@@ -237,7 +237,7 @@ a = """
         The specifications transcribed so far are the ICAO standard itself, the
         United States (passport and the Diversity Visa entry, which have different
         upload rules), the United Kingdom, the Schengen visa, Germany, Canada,
-        Australia, India (passport, the 35&nbsp;&times;&nbsp;45&nbsp;mm print, and
+        Australia, India (passport, the &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm print, and
         the SSC/UPSC form photo and signature), China and Japan. Every entry names
         the authority it came from and the date it was read. Anything else goes in
         under &ldquo;Anywhere else&rdquo;, where every figure is yours to type &mdash;
@@ -299,7 +299,7 @@ q = "Why does the file have to be at least 20 KB, and how can it be padded?"
 a = """
         Indian examination portals, the Chinese visa form and the UK passport upload
         all state a minimum file size as well as a maximum, because a file under it
-        is usually a thumbnail somebody uploaded by mistake. A 200&nbsp;&times;&nbsp;230
+        is usually a thumbnail somebody uploaded by mistake. A &#x2066;200&nbsp;&times;&nbsp;230&#x2069;
         photograph is 46,000 pixels, and at the best quality a browser will write it
         can still land at 15&nbsp;KB, with no way to make it larger by compressing
         less. So the tool adds a JPEG comment segment full of spaces. That is part of
@@ -321,12 +321,12 @@ a = """
         more of these than any filter would."""
 
 [[faq]]
-q = "What is the 4 x 6 sheet for?"
+q = "What is the &#x2066;4 x 6&#x2069; sheet for?"
 a = """
         A booth charges several pounds for six photographs. A photo counter prints a
-        6&nbsp;&times;&nbsp;4 for pennies and every one of them will do it. So the
+        &#x2066;6&nbsp;&times;&nbsp;4&#x2069; for pennies and every one of them will do it. So the
         tool lays as many copies of your photo as the paper holds &mdash; eight, for a
-        35&nbsp;&times;&nbsp;45 on a 6&nbsp;&times;&nbsp;4 &mdash; with cut marks in
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069; on a &#x2066;6&nbsp;&times;&nbsp;4&#x2069; &mdash; with cut marks in
         the gaps and nothing printed over a picture. Nothing is scaled to fit: every
         copy is exactly the size the rule asks for, because a sheet that shrank them
         by two per cent to fit one more on would be eight photographs that are all the
@@ -340,14 +340,14 @@ a = """
         guesses. The resolution lives in the JFIF header, and a browser canvas writes
         that header with the units field set to &ldquo;this is an aspect ratio, not a
         resolution&rdquo;. This tool rewrites those few bytes so the file says
-        300&nbsp;dpi, which is what turns 413&nbsp;&times;&nbsp;531 pixels into a
-        35&nbsp;&times;&nbsp;45&nbsp;mm photograph rather than an image of no
+        300&nbsp;dpi, which is what turns &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pixels into a
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm photograph rather than an image of no
         particular size. Nothing is decoded to do it and no quality is spent."""
 
 [[faq]]
 q = "Can it do the signature file as well?"
 a = """
-        Yes &mdash; the SSC and UPSC forms want one at 140&nbsp;&times;&nbsp;60 pixels
+        Yes &mdash; the SSC and UPSC forms want one at &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixels
         and between 10 and 20&nbsp;KB, and it is on the list as its own specification.
         The face overlay is switched off for it, since a signature has no eye line, and
         what is checked instead is that the paper is light, that there is ink on it, and
@@ -395,9 +395,9 @@ features = [
   "Live head height, eye line, centring and tilt, each saying which way to correct",
   "Background colour and evenness measured in CIE Lab, with the two reported separately",
   "Prints at the exact millimetres, with the resolution written into the JPEG header",
-  "A 4 x 6, 5 x 7, A4 or Letter sheet, tiled with cut marks in the gaps and nothing over a picture",
+  "A &#x2066;4 x 6&#x2069;, &#x2066;5 x 7&#x2069;, A4 or Letter sheet, tiled with cut marks in the gaps and nothing over a picture",
   "An upload file at the mandated pixel size, searched into the portal's KB band at both ends",
-  "SSC and UPSC form photos at 200 x 230 in 20-50 KB, and signatures at 140 x 60 in 10-20 KB",
+  "SSC and UPSC form photos at &#x2066;200 x 230&#x2069; in 20-50 KB, and signatures at &#x2066;140 x 60&#x2069; in 10-20 KB",
   "Runs offline; no upload, no account, no face model",
 ]
 

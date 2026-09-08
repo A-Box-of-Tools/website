@@ -32,7 +32,7 @@
 
     <div class="range-row">
       <label for="range">ページ</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">これだけ残す</button>
       <button type="button" id="range-drop" class="ghost">これを外す</button>
@@ -76,7 +76,7 @@
           <span class="preset-body">
             <strong>指定ページで分ける</strong>
             <span class="preset-note">
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="この番号の直前で切る">
               の直前で切ります。指定した各ページが新しいファイルの先頭になります。
             </span>

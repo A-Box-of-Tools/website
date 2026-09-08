@@ -31,6 +31,8 @@
  * 1001-pixel-wide crop is 1001 pixels wide.
  */
 
+import { ltr } from './phrases.js';
+
 /** Which point of the box stays still while a handle is dragged. */
 const ANCHORS = {
   n: [0.5, 1], s: [0.5, 0], e: [0, 0.5], w: [1, 0.5],
@@ -340,7 +342,7 @@ export class Cropper {
     this.#box.style.top = `${(y / sh) * 100}%`;
     this.#box.style.width = `${(width / sw) * 100}%`;
     this.#box.style.height = `${(height / sh) * 100}%`;
-    this.#label.textContent = `${width} x ${height}`;
+    this.#label.textContent = ltr(`${width} x ${height}`);
   }
 
   #emit() {

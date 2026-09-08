@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, ltr } from './shared/phrases.js';
 import { measureImage } from './shared/media.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
@@ -353,7 +353,7 @@ function renderInspector() {
   const size = item.doc?.canvas;
   el.inspectSub.textContent = [
     KIND_NAMES[item.kind],
-    size ? `${size.width} × ${size.height}` : null,
+    size ? ltr(`${size.width} × ${size.height}`) : null,
     humanBytes(item.size),
     hasMetadata(item)
       ? phrase('inspect.metadata', { size: humanBytes(metadataSize(item)) })

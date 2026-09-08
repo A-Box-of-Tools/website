@@ -1,17 +1,19 @@
 /**
  * Names, sizes and the target, as words a person would use.
  *
- * The words themselves are not here. This module is imported by the tests
- * straight off the disk, which is exactly the reason it cannot import
- * `./shared/phrases.js` - that path only exists inside a built tool - so
- * everything with a sentence in it hands back the *key* of a phrase and the
- * blanks to fill it with, and main.js, which can reach the page, resolves it.
- * The phrases themselves are in body.html, where a translator can reach them.
+ * The words themselves are not here. Nothing in this module can reach the
+ * page - the tests import it straight off the disk, with no document around
+ * it - so everything with a sentence in it hands back the *key* of a phrase
+ * and the blanks to fill it with, and main.js, which can reach the page,
+ * resolves it. The phrases themselves are in body.html, where a translator can
+ * reach them. `ltr` is the exception that proves the rule: it reads nothing
+ * and says nothing, it only marks a number as running left to right.
  *
  * @typedef {{ key: string, values?: Record<string, string|number> }} Saying
  */
 
 import { FORMATS } from './codecs.js';
+import { ltr } from './shared/phrases.js';
 
 /** Sizes on this page are read against a target, so they are never rounded up
  *  past it: 511.6 KB shown as "512 KB" beside a 512 KB target reads as a miss.
@@ -40,7 +42,7 @@ export function targetBytes(value, unit) {
 
 /** "4032 × 3024", with a real multiplication sign. */
 export function dimensions(width, height) {
-  return `${width} × ${height}`;
+  return ltr(`${width} × ${height}`);
 }
 
 /**

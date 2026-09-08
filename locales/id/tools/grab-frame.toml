@@ -167,7 +167,7 @@ q = "Apa sebenarnya arti &quot;kualitas penuh&quot;?"
 a = """
         Dua hal. Gambar diamnya disimpan pada resolusi asli videonya, bukan pada
         ukuran pratinjau di halaman &mdash; klip 4K memberi gambar
-        3840&nbsp;x&nbsp;2160. Dan dengan PNG dipilih, bingkainya disimpan persis
+        &#x2066;3840&nbsp;x&nbsp;2160&#x2069;. Dan dengan PNG dipilih, bingkainya disimpan persis
         seperti keluar dari dekoder, jadi file itu memuat gambar yang dimuat
         videonya, tanpa putaran kompresi kedua di atasnya. Tangkapan layar
         jendela pemutar tidak memberi keduanya: ia seukuran jendela, diambil

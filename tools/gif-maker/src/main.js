@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, ltr } from './shared/phrases.js';
 import { sizeText, durationText } from './shared/format.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
@@ -199,7 +199,8 @@ function buildItemNode(item, index) {
   const name = document.createElement('p');
   name.className = 'frame-name';
   name.textContent = item.name;
-  name.title = `${item.name} — ${item.width}×${item.height}`;
+  const dimensions = ltr(`${item.width}×${item.height}`);
+  name.title = `${item.name} — ${dimensions}`;
   meta.append(name);
 
   const controls = document.createElement('div');

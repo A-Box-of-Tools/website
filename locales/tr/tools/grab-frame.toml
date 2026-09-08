@@ -161,7 +161,7 @@ a = """
 q = "&quot;Tam kalite&quot; tam olarak ne demek?"
 a = """
         İki şey. Kare, sayfadaki ön izlemenin boyutunda değil videonun kendi
-        çözünürlüğünde kaydedilir &mdash; 4K bir klip 3840 x 2160 bir görsel
+        çözünürlüğünde kaydedilir &mdash; 4K bir klip &#x2066;3840 x 2160&#x2069; bir görsel
         verir. Ve PNG seçiliyken kare, çözücüden çıktığı hâliyle tam olarak
         saklanır; yani dosya, videonun taşıdığı görüntüyü, üzerine ikinci bir
         sıkıştırma turu binmeden taşır. Bir oynatıcı penceresinin ekran

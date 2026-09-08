@@ -214,8 +214,8 @@ q = "Pourquoi le fichier est-il plus gros que l'image de départ&nbsp;?"
 a = """
         Parce qu'un .ico n'est pas une image mais plusieurs, et que les petites y sont
         stockées sans compression pour que n'importe quoi puisse les lire. Une entrée
-        32&times;32 fait exactement 4&nbsp;264 octets quel qu'en soit le contenu, et
-        une entrée 256&times;256 non compressée fait 264&nbsp;KB&nbsp;: c'est pourquoi
+        &#x2066;32&times;32&#x2069; fait exactement 4&nbsp;264 octets quel qu'en soit le contenu, et
+        une entrée &#x2066;256&times;256&#x2069; non compressée fait 264&nbsp;KB&nbsp;: c'est pourquoi
         les tailles au-dessus de 64 sont stockées en PNG par défaut. Choisir
         &laquo;&nbsp;PNG pour toutes les tailles&nbsp;&raquo; donne le plus petit
         fichier possible&nbsp;; choisir le non compressé partout donne le plus

@@ -201,7 +201,7 @@
     <span data-phrase="frame.delay">表示時間</span>
     <span data-phrase="frame.clamped">{delay} &rarr; 0.10秒</span>
     <span data-phrase="frame.rectangle">矩形</span>
-    <span data-phrase="frame.rect">{left}, {top}に{width} &times; {height}</span>
+    <span data-phrase="frame.rect">&#x2066;{left}, {top}&#x2069;に&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.palette">パレット</span>
     <span data-phrase="palette.own">独自の{n}</span>
     <span data-phrase="palette.global">全体のもの</span>
@@ -280,7 +280,7 @@
     <span data-phrase="report.file">ファイル</span>
     <span data-phrase="report.version">バージョン</span>
     <span data-phrase="report.canvas">キャンバス</span>
-    <span data-phrase="report.pixels">{width} x {height}ピクセル</span>
+    <span data-phrase="report.pixels">&#x2066;{width} x {height}&#x2069;ピクセル</span>
     <span data-phrase="report.size">サイズ</span>
     <span data-phrase="report.bothsizes">{rounded}（{exact}）</span>
     <span data-phrase="report.frames">コマ数</span>
@@ -324,7 +324,7 @@
     <span data-phrase="find.loopcount.title.many">これは{count}回再生して止まります。</span>
     <span data-phrase="find.loopcount.body">ループブロックが、いつもの0 &mdash; 無限を意味します——ではなく回数を書いています。古いビューアーの中には回数を無視して回り続けるものもあります。</span>
     <span data-phrase="find.allfull.title">どのコマもキャンバス全体を描き直しています。</span>
-    <span data-phrase="find.allfull.body">GIFはコマを、前のコマから変わった長方形だけとして保存できます。ほとんど動かない窓の画面録画が小さくなりうるのはそのためです。ここではどのコマもそうしていません。すべてのコマが{width}&times;{height}のキャンバス全体です。互いに関係のない絵から作ったコマならそれで正しく、撮影や録画したもの——絵の大部分がコマ間で動かないもの——では捨てている容量です。</span>
+    <span data-phrase="find.allfull.body">GIFはコマを、前のコマから変わった長方形だけとして保存できます。ほとんど動かない窓の画面録画が小さくなりうるのはそのためです。ここではどのコマもそうしていません。すべてのコマが&#x2066;{width}&times;{height}&#x2069;のキャンバス全体です。互いに関係のない絵から作ったコマならそれで正しく、撮影や録画したもの——絵の大部分がコマ間で動かないもの——では捨てている容量です。</span>
     <span data-phrase="find.somefull.title.one">{total}コマのうち1コマがキャンバス全体を描き直し、残りは変わった部分だけを保存しています。</span>
     <span data-phrase="find.somefull.title.many">{total}コマのうち{count}コマがキャンバス全体を描き直し、残りは変わった部分だけを保存しています。</span>
     <span data-phrase="find.somefull.body">最適化されたGIFはこう見えます。全面のものはたいてい最初のコマと、絵がすっかり変わった箇所です。</span>
@@ -332,8 +332,8 @@
     <span data-phrase="find.nonefull.body">最初のコマ以降はどれも変わった長方形だけを保存しています。形式を正しく使った形であり、このファイルがこれだけ小さい理由です。</span>
     <span data-phrase="find.outside.title.one">1コマがキャンバスの外にはみ出しています。</span>
     <span data-phrase="find.outside.title.many">{count}コマがキャンバスの外にはみ出しています。</span>
-    <span data-phrase="find.outside.body.one">キャンバスは{width}&times;{height}で、あるコマが縁を越える長方形を主張しています。はみ出した部分をどう扱うかはデコーダーによって違い、切り落とすものもあれば、ファイルごと拒むものもあります。</span>
-    <span data-phrase="find.outside.body.many">キャンバスは{width}&times;{height}で、いくつかのコマが縁を越える長方形を主張しています。はみ出した部分をどう扱うかはデコーダーによって違い、切り落とすものもあれば、ファイルごと拒むものもあります。</span>
+    <span data-phrase="find.outside.body.one">キャンバスは&#x2066;{width}&times;{height}&#x2069;で、あるコマが縁を越える長方形を主張しています。はみ出した部分をどう扱うかはデコーダーによって違い、切り落とすものもあれば、ファイルごと拒むものもあります。</span>
+    <span data-phrase="find.outside.body.many">キャンバスは&#x2066;{width}&times;{height}&#x2069;で、いくつかのコマが縁を越える長方形を主張しています。はみ出した部分をどう扱うかはデコーダーによって違い、切り落とすものもあれば、ファイルごと拒むものもあります。</span>
     <span data-phrase="find.localpal.title.one">1コマが自前の色表を持っていて、{bytes}かかっています——ファイルの{share}です。</span>
     <span data-phrase="find.localpal.title.many">{count}コマが自前の色表を持っていて、{bytes}かかっています——ファイルの{share}です。</span>
     <span data-phrase="find.localpal.body">自前のパレットがあると、共有の表にない色をそのコマで使えますが、書かれるたびに1項目あたり3バイトかかります。コマが同じ場面のものなら、全部で一つの表にしたほうが小さく、見た目も落ち着きます。コマごとにパレットが跳ねること、それがGIFのちらつきそのものです。</span>

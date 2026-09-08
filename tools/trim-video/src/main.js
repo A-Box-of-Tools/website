@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, ltr } from './shared/phrases.js';
 import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
@@ -316,7 +316,7 @@ function renderClips() {
     const facts = document.createElement('p');
     facts.className = 'clip-facts';
     facts.textContent = [
-      `${entry.source.width} x ${entry.source.height}`,
+      ltr(`${entry.source.width} x ${entry.source.height}`),
       formatDuration(entry.duration),
       marked
         ? phrase(marked === 1 ? 'clip.segments.one' : 'clip.segments.many', { n: marked })
@@ -1079,7 +1079,7 @@ function updateSummary() {
     }).fits).length;
     el.sumPicture.textContent = phrase(
       bars ? 'sum.picture.exact.bars' : 'sum.picture.exact',
-      { size: `${frame.width} x ${frame.height}`, n: bars });
+      { size: ltr(`${frame.width} x ${frame.height}`), n: bars });
   } else {
     el.sumPicture.textContent = phrase('sum.picture.record');
   }

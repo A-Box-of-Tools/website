@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeGif, GifFormatError, playedDelay, totalDuration } from './gif.js';
@@ -126,7 +126,7 @@ function describe() {
 
   el.srcName.textContent = file.name;
   el.srcSize.textContent = formatBytes(file.size, phrase);
-  el.srcPicture.textContent = `${gif.width} x ${gif.height}`;
+  el.srcPicture.textContent = ltr(`${gif.width} x ${gif.height}`);
   el.srcFrames.textContent = String(gif.frames.length);
   el.srcDuration.textContent = formatSeconds(totalDuration(gif.frames), phrase);
   el.srcLoop.textContent = loopLabel(gif.loopCount);

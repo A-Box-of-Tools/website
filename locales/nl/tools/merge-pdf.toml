@@ -162,7 +162,7 @@ title = "Zet de pagina's in de volgorde die je wilt."
 body = """
 
       Sleep een pagina aan zijn handvat, of duw hem met de pijltjes. Draai er een die
-      scheef gescand is, haal er een weg, of typ <code>1-3, 8, 12-</code> in het vak
+      scheef gescand is, haal er een weg, of typ <code dir="ltr">1-3, 8, 12-</code> in het vak
       om er in één keer een hele reeks te bewaren, te verwijderen of te draaien. De
       nummers worden onderweg hernummerd, dus wat je ziet is altijd wat het
       klaargemaakte bestand wordt."""

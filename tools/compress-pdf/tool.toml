@@ -217,7 +217,7 @@ q = "How much smaller will my PDF get?"
 a = """
         It depends entirely on what is in it, which is why the tool measures and
         shows you before it compresses anything. A scanned document is almost
-        all photographs and commonly comes out 60&ndash;90% smaller. A contract
+        all photographs and commonly comes out &#x2066;60&ndash;90&#x2069;% smaller. A contract
         or a thesis is text, vector drawing and embedded fonts, all of which
         were already compressed by whatever produced them; there the saving is
         usually a few per cent, from repacking the file and dropping what is no

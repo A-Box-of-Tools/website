@@ -21,6 +21,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { ltr } from '../../shared/js/phrases.js';
+
 import {
   UNITS, bytes, change, dimensions, matchText, outName, psnrText, targetBytes,
 } from '../../tools/compress-image/src/files.js';
@@ -86,7 +88,7 @@ test('targetBytes: a trailing unit in the field is ignored', () => {
 });
 
 test('dimensions: a real multiplication sign', () => {
-  assert.equal(dimensions(4032, 3024), '4032 × 3024');
+  assert.equal(dimensions(4032, 3024), ltr('4032 × 3024'));
 });
 
 /* ================================================================= names */

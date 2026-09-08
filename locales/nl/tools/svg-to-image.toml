@@ -215,7 +215,7 @@ a = """
         bestand en een browser behandelt ze als het natuurlijke formaat van de
         tekening. Is er ook geen viewBox, dan zet de pagina <em>aangenomen</em> naast
         de regel en gebruikt ze
-        300&nbsp;&times;&nbsp;150, en dat is waarop een <code>&lt;img&gt;</code>
+        &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, en dat is waarop een <code>&lt;img&gt;</code>
         hem getekend zou hebben. Hoe dan ook kun je zelf het gewenste formaat
         noemen en wordt het bestand op dat formaat getekend."""
 
@@ -246,7 +246,7 @@ q = "Zit er een groottelimiet op?"
 a = """
         Die van de browser, niet die van ons. Een canvas geeft het ergens voorbij
         16.384 pixels op een zijde op, en Safari op een iPhone of iPad stopt al bij
-        zo'n 16,7 megapixel oppervlak, oftewel 4096&nbsp;&times;&nbsp;4096. Daarboven
+        zo'n 16,7 megapixel oppervlak, oftewel &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Daarboven
         waarschuwt de pagina je in plaats van je een leeg plaatje te geven, want dat
         is wat een browser doet zodra hij op is. <code>toBlob</code> geeft dan
         helemaal niets terug, zonder foutmelding die zichzelf uitlegt. Voorbij 100

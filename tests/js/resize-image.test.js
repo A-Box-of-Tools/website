@@ -17,6 +17,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { ltr } from '../../shared/js/phrases.js';
+
 import {
   FITS, RATIOS, fromFractions, isUntouched, parseRatio, plan, ratioCrop,
   toFractions, wholeOf,
@@ -354,7 +356,7 @@ test('bytes: the units people expect', () => {
 });
 
 test('dimensions: a real multiplication sign, not the letter x', () => {
-  assert.equal(dimensions(1920, 1080), '1920 × 1080');
+  assert.equal(dimensions(1920, 1080), ltr('1920 × 1080'));
 });
 
 test('outName: the new size goes in the name, and the old extension goes', () => {
@@ -394,7 +396,7 @@ test('describePlan: says what happened, in the order it happened', () => {
   const result = plan(crop, { mode: 'pixels', width: 1000, height: 1000, fit: 'contain' });
   assert.equal(
     describePlan(PHOTO, result.source, result, WEBP, say),
-    'plan.written what=plan.cropresize crop=3000 × 3000 size=1000 × 1000 format=WebP',
+    `plan.written what=plan.cropresize crop=${ltr('3000 × 3000')} size=${ltr('1000 × 1000')} format=WebP`,
   );
 });
 
@@ -402,7 +404,7 @@ test('describePlan: a picture that only changes format says so and nothing more'
   const result = plan(whole(PHOTO), { mode: 'none' });
   assert.equal(
     describePlan(PHOTO, result.source, result, PNG, say),
-    'plan.written what=plan.keep size=4000 × 3000 format=PNG',
+    `plan.written what=plan.keep size=${ltr('4000 × 3000')} format=PNG`,
   );
 });
 

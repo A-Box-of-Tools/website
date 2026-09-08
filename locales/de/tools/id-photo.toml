@@ -45,7 +45,7 @@ card = """
             Wählen Sie Land und Dokument, und der Zuschnittrahmen übernimmt
             Kopfhöhe und Augenlinie dieser Vorschrift. Druckt auf den exakten
             Millimeter und in der richtigen Auflösung, mit einem
-            10&nbsp;&times;&nbsp;15-Bogen, und presst den Upload in das KB-Band des
+            &#x2066;10&nbsp;&times;&nbsp;15&#x2069;-Bogen, und presst den Upload in das KB-Band des
             Portals."""
 
 [words]
@@ -164,7 +164,7 @@ title = "Nehmen Sie die drei Dateien mit."
 body = """
  Den Druck, auf den exakten
       Millimeter, mit der Auflösung in der Datei, damit ein Laden ihn in der richtigen
-      Größe druckt. Den Bogen, mit so vielen Abzügen, wie auf ein 10&nbsp;&times;&nbsp;15
+      Größe druckt. Den Bogen, mit so vielen Abzügen, wie auf ein &#x2066;10&nbsp;&times;&nbsp;15&#x2069;
       passen, und Schnittmarken in den Zwischenräumen. Und den Upload, in der
       Pixelgröße, die das Portal verlangt, und innerhalb des KB-Bandes, das es an
       beiden Enden durchsetzt."""
@@ -187,7 +187,7 @@ a = """
         und die Bewerbung um die Diversity-Visa-Lotterie, die unterschiedliche
         Upload-Regeln haben), das Vereinigte Königreich, das Schengen-Visum,
         Deutschland, Kanada, Australien, Indien (Pass, der Abzug in
-        35&nbsp;&times;&nbsp;45&nbsp;mm sowie das Formularfoto und die Unterschrift für
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm sowie das Formularfoto und die Unterschrift für
         SSC und UPSC), China und Japan. Jeder Eintrag nennt die Behörde, aus der er
         stammt, und das Datum, an dem er abgelesen wurde. Alles andere kommt unter
         &bdquo;Irgendwo anders&ldquo; hinein, wo Sie jede Zahl selbst eintippen. Da der
@@ -251,7 +251,7 @@ a = """
         Indische Prüfungsportale, das chinesische Visumformular und der britische
         Pass-Upload nennen neben einer Höchstgröße auch eine Mindestgröße, denn eine
         Datei darunter ist meist ein versehentlich hochgeladenes Vorschaubild. Ein Foto
-        mit 200&nbsp;&times;&nbsp;230 hat 46.000 Pixel und kann selbst bei der besten
+        mit &#x2066;200&nbsp;&times;&nbsp;230&#x2069; hat 46.000 Pixel und kann selbst bei der besten
         Qualität, die ein Browser schreibt, bei 15&nbsp;KB landen, ohne dass sich durch
         weniger Kompression etwas machen ließe. Also fügt das Werkzeug ein
         JPEG-Kommentarsegment voller Leerzeichen an. Das gehört zum JPEG-Standard, jeder
@@ -278,9 +278,9 @@ a = """
 q = "Wozu ist der 10-x-15-Bogen da?"
 a = """
         Ein Automat nimmt für sechs Fotos ein paar Euro. Ein Fotoschalter druckt ein
-        10&nbsp;&times;&nbsp;15 für Cents, und das kann jeder. Also legt das Werkzeug
+        &#x2066;10&nbsp;&times;&nbsp;15&#x2069; für Cents, und das kann jeder. Also legt das Werkzeug
         so viele Abzüge Ihres Fotos auf das Papier, wie darauf passen, bei
-        35&nbsp;&times;&nbsp;45 auf 10&nbsp;&times;&nbsp;15 sind das acht, mit
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069; auf &#x2066;10&nbsp;&times;&nbsp;15&#x2069; sind das acht, mit
         Schnittmarken in den Zwischenräumen und ohne dass etwas über ein Bild gedruckt
         wird. Skaliert wird nichts: Jeder Abzug hat genau die Größe, die die Vorschrift
         verlangt, denn ein Bogen, der sie um zwei Prozent schrumpfte, um einen mehr
@@ -296,14 +296,14 @@ a = """
         schreibt diesen Kopf mit dem Einheitenfeld auf &bdquo;das ist ein
         Seitenverhältnis, keine Auflösung&ldquo;. Dieses Werkzeug schreibt diese
         wenigen Bytes um, sodass die Datei 300&nbsp;dpi angibt, und erst das macht aus
-        413&nbsp;&times;&nbsp;531 Pixeln ein Foto von 35&nbsp;&times;&nbsp;45&nbsp;mm
+        &#x2066;413&nbsp;&times;&nbsp;531&#x2069; Pixeln ein Foto von &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm
         statt eines Bildes ohne bestimmte Größe. Dafür wird nichts dekodiert und keine
         Qualität ausgegeben."""
 
 [[faq]]
 q = "Kann es auch die Unterschriftsdatei?"
 a = """
-        Ja. Die SSC- und UPSC-Formulare wollen eine mit 140&nbsp;&times;&nbsp;60 Pixeln
+        Ja. Die SSC- und UPSC-Formulare wollen eine mit &#x2066;140&nbsp;&times;&nbsp;60&#x2069; Pixeln
         und zwischen 10 und 20&nbsp;KB, und sie steht als eigene Vorschrift auf der
         Liste. Die Gesichtsüberlagerung ist dafür abgeschaltet, denn eine Unterschrift
         hat keine Augenlinie. Geprüft wird stattdessen, dass das Papier hell ist, dass
@@ -351,9 +351,9 @@ features = [
   "Kopfhöhe, Augenlinie, Zentrierung und Neigung mitlaufend, jeweils mit Korrekturrichtung",
   "Hintergrundfarbe und Gleichmäßigkeit in CIE Lab gemessen und getrennt ausgewiesen",
   "Druckt auf den exakten Millimeter, mit der Auflösung im JPEG-Kopf",
-  "Ein Bogen in 10 x 15, 13 x 18, A4 oder Letter, gekachelt mit Schnittmarken in den Lücken",
+  "Ein Bogen in &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 oder Letter, gekachelt mit Schnittmarken in den Lücken",
   "Eine Upload-Datei in der vorgeschriebenen Pixelgröße, an beiden Enden ins KB-Band des Portals gebracht",
-  "SSC- und UPSC-Formularfotos in 200 x 230 mit 20 bis 50 KB und Unterschriften in 140 x 60 mit 10 bis 20 KB",
+  "SSC- und UPSC-Formularfotos in &#x2066;200 x 230&#x2069; mit 20 bis 50 KB und Unterschriften in &#x2066;140 x 60&#x2069; mit 10 bis 20 KB",
   "Läuft offline; kein Upload, kein Konto, kein Gesichtsmodell",
 ]
 

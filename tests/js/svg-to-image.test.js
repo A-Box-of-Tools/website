@@ -18,6 +18,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { ltr } from '../../shared/js/phrases.js';
+
 import {
   DEFAULT_HEIGHT, DEFAULT_WIDTH, decodeSvgText, intrinsicSize, looksLikeSvg,
   parseLength, parseViewBox, readRoot, sizedSvg,
@@ -511,5 +513,5 @@ test('sourceKey: a size that was assumed is named apart from one that was found'
 });
 
 test('dimensions: said the same way wherever it appears', () => {
-  assert.equal(dimensions(16, 9), '16 × 9');
+  assert.equal(dimensions(16, 9), ltr('16 × 9'));
 });

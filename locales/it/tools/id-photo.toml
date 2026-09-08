@@ -43,7 +43,7 @@ card = """
             Scegli un paese e un documento, e il riquadro di ritaglio prende
             l'altezza della testa e la linea degli occhi di quella norma. Stampa ai
             millimetri e alla risoluzione esatti, con un foglio
-            10&nbsp;&times;&nbsp;15, e schiaccia il file da caricare dentro la fascia
+            &#x2066;10&nbsp;&times;&nbsp;15&#x2069;, e schiaccia il file da caricare dentro la fascia
             in KB del portale."""
 
 [words]
@@ -160,7 +160,7 @@ title = "Prenditi i tre file."
 body = """
  La stampa, ai millimetri esatti e con la
       risoluzione scritta dentro il file, così un negozio la stampa nella misura giusta.
-      Il foglio, con tante copie quante ne tiene un 10&nbsp;&times;&nbsp;15 e i segni di
+      Il foglio, con tante copie quante ne tiene un &#x2066;10&nbsp;&times;&nbsp;15&#x2069; e i segni di
       taglio negli spazi. E il caricamento, alla dimensione in pixel che il portale
       pretende e dentro la fascia in KB che impone da entrambe le parti."""
 
@@ -181,7 +181,7 @@ a = """
         Le specifiche trascritte finora sono lo standard ICAO stesso, gli Stati Uniti
         (passaporto e iscrizione alla lotteria dei visti, che hanno regole di
         caricamento diverse), il Regno Unito, il visto Schengen, la Germania, il Canada,
-        l'Australia, l'India (passaporto, la stampa 35&nbsp;&times;&nbsp;45&nbsp;mm e la
+        l'Australia, l'India (passaporto, la stampa &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm e la
         foto e la firma per i moduli SSC e UPSC), la Cina e il Giappone. Ogni voce nomina
         l'autorità da cui viene e la data in cui è stata letta. Tutto il resto si
         inserisce sotto «Da qualunque altra parte», dove ogni numero lo scrivi tu; e
@@ -244,7 +244,7 @@ a = """
         I portali degli esami indiani, il modulo del visto cinese e il caricamento del
         passaporto britannico indicano una dimensione minima oltre a una massima, perché
         un file sotto quella soglia di solito è una miniatura caricata per sbaglio. Una
-        fotografia da 200&nbsp;&times;&nbsp;230 ha 46.000 pixel, e alla qualità migliore
+        fotografia da &#x2066;200&nbsp;&times;&nbsp;230&#x2069; ha 46.000 pixel, e alla qualità migliore
         che un browser scriverà può ancora fermarsi a 15&nbsp;KB, senza nessun modo di
         farla più grande comprimendo di meno. Quindi lo strumento aggiunge un segmento di
         commento JPEG pieno di spazi. Fa parte dello standard JPEG, ogni decodificatore
@@ -265,12 +265,12 @@ a = """
         centimetri dal muro risolve più casi di questi di qualunque filtro."""
 
 [[faq]]
-q = "A cosa serve il foglio 10 x 15?"
+q = "A cosa serve il foglio &#x2066;10 x 15&#x2069;?"
 a = """
         Una cabina si fa pagare qualche euro per sei fotografie. Un banco fotografico
-        stampa un 10&nbsp;&times;&nbsp;15 per pochi centesimi, e lo fa chiunque. Così lo
+        stampa un &#x2066;10&nbsp;&times;&nbsp;15&#x2069; per pochi centesimi, e lo fa chiunque. Così lo
         strumento dispone sul foglio tante copie della tua foto quante ne entrano
-        &mdash; otto, per un 35&nbsp;&times;&nbsp;45 su un 10&nbsp;&times;&nbsp;15
+        &mdash; otto, per un &#x2066;35&nbsp;&times;&nbsp;45&#x2069; su un &#x2066;10&nbsp;&times;&nbsp;15&#x2069;
         &mdash; con i segni di taglio negli spazi e niente stampato sopra un'immagine.
         Non viene ridimensionato niente: ogni copia ha esattamente la misura che la norma
         chiede, perché un foglio che le rimpicciolisse del due per cento per farcene
@@ -286,14 +286,14 @@ a = """
         scrive quell'intestazione con il campo delle unità impostato su «questo è un
         rapporto d'aspetto, non una risoluzione». Questo strumento riscrive quei pochi
         byte perché il file dichiari 300&nbsp;dpi, ed è quello a trasformare
-        413&nbsp;&times;&nbsp;531 pixel in una fotografia da
-        35&nbsp;&times;&nbsp;45&nbsp;mm invece che in un'immagine di nessuna dimensione
+        &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pixel in una fotografia da
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm invece che in un'immagine di nessuna dimensione
         precisa. Per farlo non viene decodificato niente e non si spende qualità."""
 
 [[faq]]
 q = "Riesce a fare anche il file della firma?"
 a = """
-        Sì: i moduli SSC e UPSC ne vogliono una da 140&nbsp;&times;&nbsp;60 pixel e tra
+        Sì: i moduli SSC e UPSC ne vogliono una da &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixel e tra
         10 e 20&nbsp;KB, ed è nell'elenco come specifica a sé. La guida del volto viene
         spenta, perché una firma non ha una linea degli occhi, e quello che si controlla
         al suo posto è che la carta sia chiara, che ci sia inchiostro sopra e che il
@@ -342,9 +342,9 @@ features = [
   "Altezza della testa, linea degli occhi, centratura e inclinazione dal vivo, ognuna con la direzione in cui correggere",
   "Colore e uniformità dello sfondo misurati in CIE Lab, e riportati separatamente",
   "Stampa ai millimetri esatti, con la risoluzione scritta nell'intestazione JPEG",
-  "Un foglio 10 x 15, 13 x 18, A4 o Letter, affiancato con i segni di taglio negli spazi e niente sopra un'immagine",
+  "Un foglio &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 o Letter, affiancato con i segni di taglio negli spazi e niente sopra un'immagine",
   "Un file da caricare alla dimensione in pixel prevista, portato dentro la fascia in KB del portale da entrambe le parti",
-  "Foto per i moduli SSC e UPSC a 200 x 230 tra 20 e 50 KB, e firme a 140 x 60 tra 10 e 20 KB",
+  "Foto per i moduli SSC e UPSC a &#x2066;200 x 230&#x2069; tra 20 e 50 KB, e firme a &#x2066;140 x 60&#x2069; tra 10 e 20 KB",
   "Funziona offline; niente caricamenti, niente account, nessun modello di volti",
 ]
 

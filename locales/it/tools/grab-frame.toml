@@ -169,7 +169,7 @@ q = "Cosa vuol dire davvero «piena qualità»?"
 a = """
         Due cose. Il fermo immagine viene salvato alla risoluzione del video, non
         alla dimensione dell'anteprima sulla pagina: da un video 4K esce
-        un'immagine da 3840 x 2160. E scegliendo il PNG, il fotogramma viene salvato
+        un'immagine da &#x2066;3840 x 2160&#x2069;. E scegliendo il PNG, il fotogramma viene salvato
         esattamente com'è uscito dal decodificatore, quindi il file contiene
         l'immagine che contiene il video, senza un secondo giro di compressione
         sopra. Uno screenshot della finestra di un lettore non ti dà né l'una né

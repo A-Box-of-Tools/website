@@ -14,6 +14,7 @@
 
 import { describeTag, GROUP_LABELS } from './tags.js';
 import { GROUP_ORDER } from './tiff.js';
+import { ltr } from './shared/phrases.js';
 
 /** Show at most this many numbers before saying how many more there are. */
 const MAX_LIST = 8;
@@ -77,7 +78,7 @@ export function readPosition(gps) {
   return {
     lat,
     lon,
-    text: `${Math.abs(lat).toFixed(6)}${DEG} ${lat < 0 ? 'S' : 'N'}, ${Math.abs(lon).toFixed(6)}${DEG} ${lon < 0 ? 'W' : 'E'}`,
+    text: ltr(`${Math.abs(lat).toFixed(6)}${DEG} ${lat < 0 ? 'S' : 'N'}, ${Math.abs(lon).toFixed(6)}${DEG} ${lon < 0 ? 'W' : 'E'}`),
     altitude: typeof altitude === 'number' ? `${Math.round(altitude)} m ${belowSea ? 'below' : 'above'} sea level` : null,
   };
 }

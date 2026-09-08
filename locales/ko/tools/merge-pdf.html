@@ -35,7 +35,7 @@
 
     <div class="range-row">
       <label for="range">페이지</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">이것만 남기기</button>
       <button type="button" id="range-drop" class="ghost">이것 빼기</button>
@@ -83,7 +83,7 @@
           <span class="preset-body">
             <strong>지정한 페이지에서 나누기</strong>
             <span class="preset-note">
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="이 번호 앞에서 자릅니다">
               앞에서 자릅니다. 지정한 각 페이지가 새 파일의 첫 장이 됩니다.
             </span>
@@ -213,7 +213,7 @@
     <span data-phrase="page.earlier">{n}번째 쪽을 앞으로</span>
     <span data-phrase="page.later">{n}번째 쪽을 뒤로</span>
     <span data-phrase="range.none">없음</span>
-    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">이것은 쪽 번호도 쪽 범위도 아닙니다: {list}. {total} 1-3, 8, 12- 처럼 써 주세요.</span>
     <span data-phrase="range.bad.many">이것들은 쪽 번호도 쪽 범위도 아닙니다: {list}. {total} 1-3, 8, 12- 처럼 써 주세요.</span>

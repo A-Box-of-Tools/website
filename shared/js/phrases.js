@@ -43,6 +43,33 @@
  */
 
 /**
+ * A technical expression, marked as reading left to right.
+ *
+ * "1280 x 960" says nothing about its own direction. Digits carry none, and
+ * the separator between them is neutral, so the bidi algorithm hands the whole
+ * pair to the paragraph it sits in - which on the Arabic pages runs the other
+ * way. The two numbers come out swapped, and the result is not a mangled
+ * string a reader can spot but a plausible one they cannot: a 1280 x 960 frame
+ * is shown to an Arabic reader as 960 x 1280, beside a thumbnail that is
+ * plainly wider than it is tall.
+ *
+ * The isolate says the part between these two marks is its own left-to-right
+ * run, and settles it wherever the text lands: alone in a cell, inside an
+ * Arabic sentence, or in a title attribute. It is invisible, and in a
+ * left-to-right language it does nothing at all.
+ *
+ * Wrap the expression, not each number in it. Two isolates side by side are
+ * still two neutral objects to the paragraph around them, and swap exactly as
+ * the bare numbers did.
+ *
+ * @param {string} text  a number, or an expression made of numbers
+ * @returns {string}
+ */
+export function ltr(text) {
+  return `\u2066${text}\u2069`;
+}
+
+/**
  * One phrase, with its blanks filled in.
  *
  * The whitespace is collapsed because the source is indented markup: a phrase

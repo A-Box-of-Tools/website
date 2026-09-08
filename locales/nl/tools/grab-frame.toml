@@ -165,7 +165,7 @@ q = "Wat betekent &ldquo;volle kwaliteit&rdquo; nu eigenlijk?"
 a = """
         Twee dingen. Het beeld wordt opgeslagen in de resolutie van de video zelf,
         niet op de grootte van het voorbeeld op de pagina: een 4K-clip geeft een
-        plaatje van 3840 x 2160. En met PNG gekozen wordt het frame opgeslagen
+        plaatje van &#x2066;3840 x 2160&#x2069;. En met PNG gekozen wordt het frame opgeslagen
         precies zoals het uit de decoder kwam, dus het bestand bevat het beeld dat de
         video bevat, zonder een tweede ronde compressie eroverheen. Een schermafdruk
         van een spelervenster geeft je geen van beide: die heeft de grootte van het

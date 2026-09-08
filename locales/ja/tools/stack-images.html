@@ -181,9 +181,9 @@
 
     <span data-phrase="frame.reference">基準</span><span data-phrase="frame.make-reference">これを基準にする</span><span data-phrase="frame.remove">削除</span>
     <span data-phrase="frame.move">{name} を動かす &mdash; ドラッグ、または上下の矢印キー</span>
-    <span data-phrase="frame.size">{width} &times; {height}</span>
-    <span data-phrase="frame.raw">RAW｜カメラ自身のプレビュー、{width} &times; {height}</span>
-    <span data-phrase="frame.raw-camera">{camera}｜{width} &times; {height}のプレビュー</span><span data-phrase="frame.raw-unreadable">このRAWファイルにはプレビューが見つかりませんでした</span>
+    <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
+    <span data-phrase="frame.raw">RAW｜カメラ自身のプレビュー、&#x2066;{width} &times; {height}&#x2069;</span>
+    <span data-phrase="frame.raw-camera">{camera}｜&#x2066;{width} &times; {height}&#x2069;のプレビュー</span><span data-phrase="frame.raw-unreadable">このRAWファイルにはプレビューが見つかりませんでした</span>
     <span data-phrase="frame.read">{total}のうち{read}を読み込み</span>
 
     <span data-phrase="mode.mean">各フレームの平均を取ります。ランダムなノイズは高く出るのと同じだけ低くも出るので、{count}枚の平均を取るとおよそ{factor}倍に下がります。静かな一組のための手法であり、通りかかった鳥1羽で台無しになる手法でもあります。</span><span data-phrase="mode.median">各画素の真ん中の値を取ります。一部のフレームにしかいなかったもの、たとえば観光客や車や飛行機は消えます。すべてのフレームを同時に抱えなければならない唯一の手法で、だからこそ下で帯に分けられます。</span><span data-phrase="mode.sigma">各画素がふだん何であるかを学び、そのあとそれと合う値だけを平均します。中央値の結果に、平均のノイズ低減を足したものです。フレームを2回読みます。</span><span data-phrase="mode.max">各画素がこれまでに持ったいちばん明るい値を残します。短い露光の連なりを星の軌跡にするのも、花火をそれ自身のフレームから組み直すのもこれです。</span><span data-phrase="mode.min">各画素がこれまでに持ったいちばん暗い値を残します。画素が明るいまま残るのはすべてのフレームで明るかったときだけなので、窓の映り込みも通り過ぎるヘッドライトもストロボに光る雨粒も消えます。</span><span data-phrase="mode.sum">割らずにフレームを足します。{count}倍長い露光が集めたはずの量です。その露光がそうなるのと同じように白飛びします。露出のスライダーで戻してください。</span><span data-phrase="mode.focus">画像の各部分を、そこにピントが合っていたフレームから取ります。小さな被写体をフォーカスリングを回しながら撮ると、これが鋭い部分をつなぎ合わせます。</span>
@@ -193,7 +193,7 @@
     <span data-phrase="scale.note">各フレームはブラウザ自身のデコーダーがこの大きさでデコードするので、小さい設定はメモリだけでなく処理そのものが減ります。</span><span data-phrase="gain.note">計算のあと、丸める前に、いちばん最後に結果へ掛けます。</span>
     <span data-phrase="gain.sum-note">{count}枚を足すとほぼ確実に白飛びします。何が集まったのかを見るには{suggested}あたりまで下げてください。</span>
 
-    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">およそ{mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}回、1フレームにつき1回</span>
     <span data-phrase="plan.decodes.passes">{count}回｜各フレームを{passes}回</span>
@@ -205,7 +205,7 @@
     <span data-phrase="progress.measure">{name}がどれだけ動いたかを測っています&hellip;</span>
     <span data-phrase="progress.stack">スタック中｜{total}枚のうち{done}枚を読み込み</span><span data-phrase="progress.stack-banded">スタック中｜{bands}本のうち{band}本目の帯、{total}枚のうち{done}枚を読み込み</span><span data-phrase="progress.encode">画像を書き出しています&hellip;</span>
 
-    <span data-phrase="result.info">{width} &times; {height}、{size}｜{count}枚を{seconds}秒でまとめました</span><span data-phrase="result.moves">各フレームを測り、あるべき場所へ寄せました。</span>
+    <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;、{size}｜{count}枚を{seconds}秒でまとめました</span><span data-phrase="result.moves">各フレームを測り、あるべき場所へ寄せました。</span>
     <span data-phrase="result.moves-some">{total}枚のうち{count}枚は確かに測れなかったので、元の位置のままにしました。</span><span data-phrase="result.moves-none">フレームを届いたそのままスタックしました。</span>
     <span data-phrase="result.moves-clamped">{count}枚が連写にしては大きすぎる回転を返したので、平行移動だけで直しました。</span><span data-phrase="result.cropped">互いに寄せた結果、すべてのフレームが届かない縁が残ったので、そこは切り落としました。</span>
 

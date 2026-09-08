@@ -220,7 +220,7 @@ a = """
         sont des unités utilisateur plutôt que des pixels, mais ce sont les seuls
         nombres du fichier et un navigateur les traite comme la taille naturelle du
         dessin. S'il n'y a pas de viewBox non plus, la page affiche <em>supposée</em> à
-        côté de la ligne et utilise 300&nbsp;&times;&nbsp;150, ce à quoi un
+        côté de la ligne et utilise &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, ce à quoi un
         <code>&lt;img&gt;</code> l'aurait dessiné. Dans les deux cas, vous pouvez nommer
         la taille voulue et le fichier est dessiné à celle-là."""
 
@@ -251,7 +251,7 @@ q = "Y a-t-il une limite de taille&nbsp;?"
 a = """
         Celle du navigateur, pas la nôtre. Un canvas abandonne quelque part au-delà de
         16&nbsp;384 pixels de côté, et Safari sur un iPhone ou un iPad s'arrête à
-        environ 16,7 mégapixels de surface, soit 4096&nbsp;&times;&nbsp;4096. Au-dessus,
+        environ 16,7 mégapixels de surface, soit &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Au-dessus,
         la page vous prévient plutôt que de vous rendre une image vide, ce que fait un
         navigateur à court de ressources&nbsp;: <code>toBlob</code> ne rend rien du
         tout, sans la moindre erreur pour s'expliquer. Passé 100 mégapixels, l'outil

@@ -30,6 +30,8 @@
  * survives the window being resized and a phone being turned.
  */
 
+import { ltr } from './shared/phrases.js';
+
 /** The smallest crop, in source pixels. Below this nothing is being framed. */
 const MIN_SIZE = 24;
 
@@ -303,7 +305,7 @@ export class Cropper {
     this.#box.style.top = `${(y / sh) * 100}%`;
     this.#box.style.width = `${(width / sw) * 100}%`;
     this.#box.style.height = `${(height / sh) * 100}%`;
-    this.#label.textContent = `${width} x ${height}`;
+    this.#label.textContent = ltr(`${width} x ${height}`);
     this.#paintGuides();
   }
 
