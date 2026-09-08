@@ -24,7 +24,7 @@ To see what would be deployed before pushing, run `python build.py` and look at
 | Branch | What it holds | What a push to it does |
 |---|---|---|
 | a working branch | one change | builds and checks it; previews it once a pull request is open |
-| `dev` | everything merged since the last release | builds it, and previews it at `dev.abox-preview.pages.dev` |
+| `dev` | everything merged since the last release | builds it, and previews it twice: at `dev.abox-preview.pages.dev`, and at `dev-pr-<n>.abox-preview.pages.dev` for the merge that caused it |
 | `main` | what is live | builds, publishes to `dist`, tags the version, tells IndexNow |
 | `dist` | the built site, and nothing else | GitHub Pages serves it |
 
@@ -62,6 +62,15 @@ without publishing, so a change that breaks the build is caught before it
 reaches `dev`; and the pull request from `dev` to `main` builds the bundle,
 previews it, and runs the QA suite against that preview before any of it is
 live. See [cloudflare/README.md](../cloudflare/README.md), "Previews".
+
+**Every merge into `dev` is kept at an address of its own.** The stable
+`dev.abox-preview.pages.dev` is replaced by the next merge, which makes it
+useless for the question you actually ask of a bundle — *which of these
+changes did that?* So each merge is also deployed to
+`dev-pr-<n>.abox-preview.pages.dev`, named after the pull request behind it.
+They accumulate deliberately; opening the two either side of a merge is how
+you see what it did. A commit that came from no pull request — a direct push,
+a merge forward from `main` after a hotfix — gets the stable address only.
 
 **`main` stays this repository's default branch**, and that is load-bearing
 rather than inertia. The QA suite reads the tool list and the CSP out of a
