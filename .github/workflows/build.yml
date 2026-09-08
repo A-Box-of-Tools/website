@@ -560,6 +560,17 @@ jobs:
   # the same project, so it costs no second project, no second token and no
   # standing server.
   #
+  # AND A SECOND ADDRESS PER MERGE, `dev-pr-<n>.<project>.pages.dev`. The
+  # stable one has the fault that comes with being stable: the next merge
+  # replaces it, so the state somebody was looking at an hour ago is gone and
+  # there is nothing to compare against. Each merge therefore also goes to an
+  # address named after the pull request that caused it, and those accumulate
+  # on purpose - they are the visual history of the bundle, and the way to
+  # find which merge changed something is to open the two either side of it.
+  # A second upload rather than a second alias, because Pages gives a
+  # deployment one branch and one alias; wrangler has the files already, so
+  # what it costs is seconds.
+  #
   # The QA suite is NOT run against that one, and that is a decision rather
   # than an oversight. Every pull request into `dev` has already been through
   # the suite, and the pull request from `dev` to `main` goes through it again
@@ -666,6 +677,79 @@ jobs:
             --commit-message "Preview of $what at ${SHA:0:7}" \
             --commit-dirty=true
           echo "url=https://$ALIAS.$PROJECT.pages.dev/" >> "$GITHUB_OUTPUT"
+
+      # WHICH PULL REQUEST THIS MERGE CAME FROM, for the address below.
+      #
+      # Asked of the API rather than read out of the commit subject. A squash
+      # merge writes "Title (#379)" and would parse, but a merge commit and a
+      # direct push would not, and a number guessed out of prose is a wrong
+      # address rather than no address - `dev-pr-42` holding something that
+      # has nothing to do with pull request 42 is worse than there being no
+      # copy at all. The subject is the fallback for the one case the API
+      # cannot answer: a commit that reached `dev` before its pull request
+      # was recorded against it.
+      #
+      # Empty is an ordinary answer, not a failure. A commit that came from no
+      # pull request - a direct push, a merge forward from `main` after a
+      # hotfix - gets the stable address and nothing else, and the step after
+      # this one is skipped. `set -e` is deliberately absent: neither lookup
+      # may take the job down over an address that is a convenience.
+      - name: Which pull request this merge came from
+        id: merged
+        if: steps.gate.outputs.ready == 'true' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+
+          n=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '.[0].number') || n=''
+          if [ -z "$n" ] || [ "$n" = 'null' ]; then
+            subject=$(gh api "repos/$REPO/commits/$SHA" --jq '.commit.message' | head -n1) || subject=''
+            n=$(printf '%s' "$subject" | sed -n 's/.*(#\([0-9][0-9]*\))[[:space:]]*$/\1/p')
+          fi
+
+          if [ -n "$n" ]; then
+            echo "This merge came from pull request #$n."
+          else
+            echo 'This commit names no pull request, so only the stable address is written.'
+          fi
+          echo "pr=$n" >> "$GITHUB_OUTPUT"
+
+      # The same bytes again, at an address that the next merge will not
+      # replace. Its failure to answer is a warning and not an error: the
+      # stable address above has already been deployed and waited for, and
+      # this one is a convenience that must not turn a good build red.
+      - name: Keep this state at an address of its own
+        id: keep
+        if: steps.merged.outputs.pr != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          N: ${{ steps.merged.outputs.pr }}
+        run: |
+          set -euo pipefail
+          kept="dev-pr-$N"
+          npx --yes wrangler@3 pages deploy _site \
+            --project-name "$PROJECT" \
+            --branch "$kept" \
+            --commit-hash "$SHA" \
+            --commit-message "The dev branch after pull request #$N, at ${SHA:0:7}" \
+            --commit-dirty=true
+
+          url="https://$kept.$PROJECT.pages.dev/"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+          answered=no
+          for _ in $(seq 1 18); do
+            if curl -fsS -o /dev/null "$url"; then answered=yes; break; fi
+            sleep 10
+          done
+          if [ "$answered" = yes ]; then
+            echo "Answering: $url"
+          else
+            echo "::warning::$url has not answered yet. The deployment is made; Cloudflare usually catches the alias up within a few minutes."
+          fi
 
       # The alias takes a moment to answer after the first upload for a
       # branch. Waiting here, as QA (post-deploy) waits for production, keeps
@@ -841,6 +925,7 @@ jobs:
         if: always()
         env:
           URL: ${{ steps.upload.outputs.url }}
+          KEPT: ${{ steps.keep.outputs.url }}
         run: |
           {
             echo '### Preview'
@@ -851,7 +936,10 @@ jobs:
               echo "- $URL"
               echo '- The QA suite runs against it in [A-Box-of-Tools/qa](https://github.com/A-Box-of-Tools/qa/actions); the result is the `qa/preview` status on this commit.'
             else
-              echo "- $URL - the bundle as \`dev\` currently stands."
-              echo '- The QA suite is not run against this one. It runs on the pull request from `dev` to `main`, on the same bundle, which is the run that gates production.'
+              echo "- $URL - the bundle as \`dev\` currently stands, which the next merge replaces."
+              if [ -n "$KEPT" ]; then
+                echo "- $KEPT - this same state, kept at an address the next merge will not touch."
+              fi
+              echo '- The QA suite is not run against these. It runs on the pull request from `dev` to `main`, on the same bundle, which is the run that gates production.'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
