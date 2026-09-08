@@ -197,8 +197,8 @@ a = """
         &mdash; een vergelijking die plaatselijk is, dus niets erin hangt af van welke
         kleur een gezicht heeft. De kin is de enige die zo niet te vinden is, want een
         kaak tegen een hals is een zachte rand zonder kleurverschil; die wordt afgeleid
-        uit de pupillen, die op vrijwel precies de halve hoogte van een hoofd zitten, en
-        daarna tegen de omtrek gehouden. Het is allemaal rekenwerk, in
+        uit de pupillen, die net onder het midden van een hoofd zitten zodra
+        het haar erboven wordt meegeteld, en daarna tegen de omtrek gehouden. Het is allemaal rekenwerk, in
         <code>src/detect.js</code>: geen gewichten, geen inferentie-omgeving, niets
         opgehaald, en hetzelfde rekenwerk voor elk gezicht. Dat laatste is wat telt,
         want een meegeleverde detector heeft het ongelijk mis &mdash; slechter bij

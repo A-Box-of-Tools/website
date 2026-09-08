@@ -218,7 +218,8 @@ a = """
         dalamnya yang bergantung pada warna sebuah wajah. Dagulah yang tidak bisa
         ditemukan dengan cara ini, karena rahang terhadap leher adalah tepi lunak
         tanpa perubahan warna di seberangnya; ia diperhitungkan dari pupilnya,
-        yang duduk hampir persis di setengah tinggi sebuah kepala, lalu
+        yang duduk sedikit di bawah tengah sebuah kepala begitu rambut di
+        atasnya ikut dihitung, lalu
         dicocokkan dengan siluetnya. Semuanya hitungan di
         <code>src/detect.js</code>: tanpa bobot, tanpa runtime inferensi, tanpa
         apa pun yang diambil, dan hitungan yang sama untuk setiap wajah yang

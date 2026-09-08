@@ -79,13 +79,33 @@ const SMALLEST_HEAD = 24;
 /**
  * How far down a head its pupils sit, crown to chin.
  *
- * Adult anthropometry puts the pupils within a couple of millimetres of the
- * halfway point of the head, and hair moves the crown up without moving the
- * ratio much: 0.49 is the middle of the range the published figures give, and
- * being a per cent out on it costs about two millimetres of chin on a 45 mm
- * photograph - which the page then measures and reports rather than hiding.
+ * The figure everybody quotes is a half: on a bare skull the pupils are within
+ * a couple of millimetres of the midpoint between the vertex and the chin. But
+ * the crown this file measures is not the vertex. It is the top of the HAIR,
+ * because that is what an outline contains and what every specification in
+ * specs.js measures head height to - and hair only adds at the top. It moves
+ * the crown up without moving either the pupils or the chin, so the ratio goes
+ * up with it: a couple of centimetres of hair on a 23 cm head is about 0.53,
+ * and a thick head of hair is nearer 0.58.
+ *
+ * This was 0.49, the bare-skull figure, and it made every head with hair too
+ * tall. On the two real portraits it was checked against - the one this tool
+ * ships as its example, and the one it used to - it put the chin 15 and 29 per
+ * cent of head height below the jaw, which on a 45 mm photograph is a
+ * centimetre down somebody's collar. And the outline
+ * check below, which exists to catch exactly that, could never agree with a
+ * number so far out: it was silently switched off by the same error, so every
+ * real photograph came back saying the chin was a proportion rather than a
+ * finding, which is the tool reporting its own bug and being believed.
+ *
+ * 0.55 is the middle of what a crown with hair on it gives. It is still a
+ * proportion and it is still wrong for somebody - the child in the older of
+ * those two measures 0.64, because a child's cranium is large and their face
+ * is small, and no one number covers both. That is what the outline check, the
+ * caveat and the draggable dot are for. The difference is that it is now wrong
+ * the way an average is wrong, rather than wrong for everybody with hair.
  */
-const EYE_LEVEL = 0.49;
+const EYE_LEVEL = 0.55;
 
 /** Head height as a multiple of head width, hair included in both. */
 const HEAD_SHAPE = 1.45;

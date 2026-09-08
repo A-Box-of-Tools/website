@@ -126,7 +126,7 @@ tool's "Try an example" button.
 
 | File | Photographer | Source | Licence |
 |---|---|---|---|
-| `example-data.js` | Abet Llacer | [Pexels 33499873](https://www.pexels.com/photo/33499873/) | [Pexels licence](https://www.pexels.com/license/) |
+| `example-data.js` | Maksim Goncharenok | [Pexels 5506141](https://www.pexels.com/photo/5506141/) | [Pexels licence](https://www.pexels.com/license/) |
 
 It is the only photograph shipped with this site, and it is here because it is
 the one example that could not be drawn. Every other tool's example is

@@ -115,8 +115,9 @@ the same scene — one person, facing the camera, against a plain evenly-lit wal
   beat eyes at everything except being where eyes are;
 * **the chin** cannot honestly be found this way — a jaw against a neck is a
   soft edge with no colour change across it. It is worked out from the pupils,
-  which sit at almost exactly half the height of a head, and then checked
-  against the point where the outline falls away into the neck.
+  which sit a little below the middle of a head once the hair on top of it is
+  counted, and then checked against the point where the outline falls away into
+  the neck.
 
 ### Four things the first real photograph did that no fixture had
 
@@ -129,6 +130,7 @@ each has a test now because the fixture that would have caught it did not exist.
 | **Hair beside a cheek** outscored the eyes | It is a narrow dark band with the wall on one side and a face on the other, which is exactly what an eye looks like locally | An eye is well inside the outline; anything whose neighbourhood strays off the silhouette is not one |
 | The eyes were **not found at all** on a white background | The white of an eye is close enough to a pale wall to be cut out of the mask, so both eyes were holes punched through the head and every candidate sat on the edge of one | Fill what the outline encloses: paint inward from the border and keep whatever is left |
 | The head came out **twice its real width** | Where a head stops was assumed to be a fraction of the picture. In the photograph this tool asks for — taken a metre and a half away — the shoulders start well inside that fraction, and the widest row was one | Walk down and find the neck: a head narrows, then the shoulders widen again, and that turn is the only honest mark |
+| The **chin landed on the collar**, on every photograph | The pupils were taken to sit at 0.49 of the way down a head. That is the figure for a bare skull, and the crown this tool measures is the top of the *hair* — which moves the crown up without moving the pupils, so the real ratio is nearer 0.55. Worse, the outline check that exists to catch exactly this could never agree with a number that far out, so it was switched off by the same error and every photograph came back saying the chin was assumed | 0.55, and a fixture whose eye level is a parameter rather than a copy of the constant the code uses. Every face here was drawn with its eyes at 0.49, so the chin worked out from them was right by construction and no test in the file could disagree with it |
 
 The eyes are looked for at three box sizes, the smallest about the size of an
 iris. That one is doing most of the work: an eye is not a dark patch, it is a

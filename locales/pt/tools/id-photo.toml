@@ -197,8 +197,9 @@ a = """
         na mesma altura e uma de cada lado do meio da cabeça &mdash; uma comparação
         local, então nada nela depende da cor que um rosto tenha. O queixo é o único que
         não se acha assim, porque uma mandíbula contra um pescoço é uma borda suave sem
-        mudança de cor; ele é deduzido das pupilas, que ficam a quase exatamente metade
-        da altura de uma cabeça, e depois conferido contra o contorno. Tudo isso é conta,
+        mudança de cor; ele é deduzido das pupilas, que ficam um pouco abaixo do meio de
+        uma cabeça, uma vez contado o cabelo que fica em cima, e depois conferido
+        contra o contorno. Tudo isso é conta,
         em <code>src/detect.js</code>: sem pesos, sem motor de inferência, sem baixar
         nada, e a mesma conta para qualquer rosto. Essa última parte é a que importa,
         porque um detector embutido erra de forma desigual &mdash; pior em uns rostos do

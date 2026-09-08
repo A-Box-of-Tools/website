@@ -61,11 +61,19 @@ function portrait({
   centreX = 180,
   neck = true,
   shoulders = 0.30,         // where they start, below the chin, in head heights
+  // How far down the head the pupils sit. A parameter, and the reason it is
+  // one is the bug it hid: every fixture here used to be drawn at exactly the
+  // ratio detect.js assumes, so the chin it worked out from the eye line was
+  // right by construction and no test in this file could disagree with the
+  // constant. The constant was the bare-skull 0.49 while the crown being
+  // measured is the top of the hair, and on a real photograph that put the
+  // chin a centimetre down the collar - passing every test on the way.
+  eyeLevel = 0.55,
 } = {}) {
   const data = new Uint8ClampedArray(width * height * 4);
   const headH = chinY - crownY;
   const headCy = crownY + headH / 2;
-  const eyeY = crownY + 0.49 * headH;
+  const eyeY = crownY + eyeLevel * headH;
   const browY = eyeY - headH * 0.085;
   const inside = (x, y, cx, cy, rx, ry) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1;
 
@@ -305,6 +313,40 @@ test('findMarks: wide shoulders are not measured as the width of a head', () => 
   const found = findMarks(image);
   assert.equal(found.quality, 'measured', `notes were ${found.notes.join(',')}`);
   near(found, truth, 0.04, 'a small head over wide shoulders');
+});
+
+test('findMarks: a face whose pupils are not at the average still gets a chin', () => {
+  // The one this file was blind to for as long as every fixture in it was
+  // drawn at exactly the ratio detect.js assumes. 0.55 is an adult with hair;
+  // a shaved head is nearer 0.49 and a child nearer 0.63, because a child's
+  // cranium is large and their face is small. Neither of those is a rare
+  // photograph and neither may be a centimetre wrong.
+  //
+  // The tolerance is much wider than the rest of the file allows, and it is
+  // meant to be: outside the average the chin is genuinely half a measurement -
+  // what the eye line implies, corrected as far as the outline is allowed to
+  // move it - and 9% of head height is about 4 mm on a 45 mm photograph. That
+  // is not a good answer, it is an honest one, and the page says so by leaving
+  // the dot draggable. What this catches is the answer that is out by a
+  // QUARTER of a head, which is where the bare-skull 0.49 put it: a chin below
+  // the collar, on a page that reported it as a rough finding rather than as a
+  // number nobody should trust.
+  for (const [who, eyeLevel] of [['a shaved head', 0.49], ['a child', 0.63]]) {
+    const { image, truth } = portrait({ eyeLevel });
+    const found = findMarks(image);
+    const off = Math.abs(found.marks.chin.y - truth.chinY) / truth.headH;
+    assert.ok(
+      off <= 0.09,
+      `${who}: the chin is ${(off * 100).toFixed(1)}% of head height out, which is `
+      + 'more than the 9% allowed',
+    );
+    // The eye line is measured on either of them, so it has no such excuse.
+    const eyeY = (found.marks.leftEye.y + found.marks.rightEye.y) / 2;
+    assert.ok(
+      Math.abs(eyeY - truth.eyeY) < truth.headH * 0.03,
+      `${who}: the eye line is out by more than 3% of head height`,
+    );
+  }
 });
 
 test('findMarks: the white of an eye is not mistaken for the wall behind it', () => {
