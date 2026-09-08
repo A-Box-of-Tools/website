@@ -1288,6 +1288,10 @@ button, .as-button {
    the only route to the legal pages - a centred line of prose had nowhere to
    put them.
 
+   Two rows of it. The first says who this is and where the rest of the site
+   is; the second is every tool there is, grouped - see .footer-tools below for
+   why those are no longer a column of the first.
+
    Flex rather than grid, so the columns fall to two-up and then one-up on a
    narrow screen without a media query. The brand column gets twice the basis of
    a link column, because it carries a sentence rather than a list. */
@@ -1307,7 +1311,20 @@ footer {
 }
 
 .footer-col { flex: 1 1 150px; min-width: 0; }
-.footer-brand { flex: 2 1 240px; }
+
+/* Two link columns and the gap between them, 2 x 150px + 2.5rem, growing twice
+   as fast to match. That is what puts the two rows on one grid rather than
+   near one: both rows then have the same basis in total and the same grow in
+   total, so the free space lands in the same places and a tool column below
+   starts exactly where a column above it does. The three numbers are one
+   number - change any of them and work the others out again.
+
+   They also decide where the whole footer folds, which is why 150px rather
+   than something rounder: four columns and three gaps need 720px, and a tablet
+   held upright has 736px of footer to give them. A wider column would fold
+   that reader to three-up and leave the fourth group stranded on a line of its
+   own. */
+.footer-brand { flex: 2 1 340px; }
 
 .footer-col strong {
   display: block;
@@ -1328,6 +1345,25 @@ footer {
 }
 
 .footer-brand p { margin: 0.55rem 0 0; max-width: 34ch; }
+
+/* The tool directory: every tool the site has, across the foot of the footer
+   in the four groups the front page already sorts them into.
+
+   It was one of the columns above and it was one flat list, so a footer four
+   columns wide stood forty-two lines tall - the legal links finishing a third
+   of the way down it, and the space either side of them empty the rest of the
+   way. The same names in their groups are four columns and fourteen lines.
+   Nothing was dropped to get there: a link here is how a tool is reached from
+   the far end of the site, and the height was never the tools' fault.
+
+   Same gap and same basis as the row above, which is arithmetic rather than
+   coincidence - see .footer-brand. */
+.footer-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+  margin-top: 1.75rem;
+}
 
 /* "Get in touch" is the one column that is a row: three marks side by side
    rather than three lines of text. It is still a <ul>, because it is still a

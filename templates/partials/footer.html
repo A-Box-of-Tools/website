@@ -11,8 +11,9 @@
 
   The tool list and the legal-page list are passed in by build.py from the
   folders that exist, so a new tool or a new page appears here without anybody
-  remembering to add it. The guides are reached through their index rather than
-  listed one by one - see the comment above that link.
+  remembering to add it. The tools come already grouped the way the front page
+  groups them - see footer_tool_groups. The guides are reached through their
+  index rather than listed one by one - see the comment above that link.
 -->
 <footer>
   <div class="footer-cols">
@@ -24,13 +25,6 @@
       <p>
 {{ site.footer.blurb }}
       </p>
-    </div>
-
-    <div class="footer-col">
-      <strong>{{ ui.footer_tools }}</strong>
-      <ul>
-{% for t in footer.tools %}        <li><a href="{{ base }}{{ t.slug }}/">{{ t.name | e }}</a></li>
-{% endfor %}      </ul>
     </div>
 
     <!--
@@ -105,6 +99,37 @@
       </ul>
     </div>
   </div>
+
+  <!--
+    The tool directory: every tool the site has, across the foot of the footer
+    in the groups the front page already sorts them into.
+
+    It used to be one of the columns above and it was one flat list, so the
+    footer was as tall as that list - forty-two names down the second column,
+    the legal links beside them finishing a third of the way down, and nine
+    hundred pixels of white space either side of the rest. Grouped, the same
+    names are four columns and fourteen lines. Nothing was dropped to get
+    there: a link here is how a tool is reached from the far end of the site,
+    and the height was never the tools' fault.
+
+    A <nav>, because that is what it is, and the heading it used to carry is
+    its label rather than a line of its own - the four category names are the
+    headings now, and "Tools" over the top of them would be a second level of
+    one. The word is still translated and still read out, to anybody who lands
+    on the landmark.
+
+    It comes last in the source as well as at the bottom of the page, so a
+    reader tabbing into the footer for the privacy policy reaches it before the
+    forty links rather than after them.
+  -->
+  <nav class="footer-tools" aria-label="{{ ui.footer_tools }}">
+{% for group in footer.groups %}    <div class="footer-col">
+      <strong>{{ group.name }}</strong>
+      <ul>
+{% for t in group.tools %}        <li><a href="{{ base }}{{ t.slug }}/">{{ t.name | e }}</a></li>
+{% endfor %}      </ul>
+    </div>
+{% endfor %}  </nav>
 
 {% include "partials/languages.html" %}
 

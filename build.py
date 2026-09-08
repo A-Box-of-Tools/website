@@ -755,7 +755,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     # The slugs in it are localized, because a footer is a set of addresses.
     #
     footer = {
-        'tools': [{'name': tool['name'], 'slug': tool['out_slug']} for tool in here],
+        'groups': footer_tool_groups(root, here, 'out_slug'),
         'pages': [{'nav': page['nav'], 'slug': page['out_slug']}
                   for page in about + legal],
     }
@@ -1034,6 +1034,46 @@ def tie_guides_to_tools(guides, by_slug):
 # out of the page and few enough that the block stays a suggestion rather than
 # a second copy of the hub halfway down every tool.
 RELATED_COUNT = 4
+
+
+def footer_tool_groups(root, tools, address):
+    """The footer's tool list, in the groups the hub already sorts it into.
+
+    It used to be one flat column of every tool a language has, which read well
+    at a dozen and stopped reading at all somewhere in the thirties: forty-two
+    names down the second column of a footer four columns wide, with the
+    privacy link finishing a third of the way down beside them and nine hundred
+    pixels of nothing either side of the rest. Every name is still here - a
+    footer link is how a tool is reached from the far end of the site, and
+    buying the height back by dropping half of them would be paying in the
+    wrong currency - but they arrive in the categories the front page already
+    sorts them into, so the block is four short columns rather than one long
+    one and each name sits under a heading saying what kind of thing it is.
+
+    Nothing new is written down, and nothing is second-guessed. `tools` is the
+    list the caller has already settled - hub order, and for a locale the tools
+    that language actually HAS - and each tool names its own category, which
+    build_hub has already checked against the [[hub.categories]] it is listed
+    under. So a tool that moves between categories moves here, and one a
+    language is still waiting for is as absent here as it is from the hub.
+
+    A category with nothing under it is dropped rather than drawn, which is not
+    hypothetical twice over: a [[hub.categories]] table can be added before the
+    tool that goes in it, and a language can be waiting on every tool in one.
+    Either way the alternative is a heading over nothing, on every page of that
+    language.
+
+    `address` is the key holding the address to link to, because the two
+    callers disagree about which one that is: every page but the 404 links to
+    this language's slug, and the 404 links to the English one - see build_404.
+    """
+    held = {}
+    for tool in tools:
+        held.setdefault(tool['category'], []).append(tool)
+    return [{'name': category['name'],
+             'tools': [{'name': tool['name'], 'slug': tool[address]}
+                       for tool in held[category['id']]]}
+            for category in root['hub']['categories'] if held.get(category['id'])]
 
 
 def related_tools(ordered, count=RELATED_COUNT):
@@ -1806,7 +1846,7 @@ def build_404(out, templates, locale, locales, site, tools, pages, css_v, lang_v
     # link on it is root-absolute for the reason in the docstring above. `base`
     # is '/', so a slug appended to it is already the English address.
     footer = {
-        'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in tools],
+        'groups': footer_tool_groups(root, tools, 'slug'),
         'pages': [{'nav': page['nav'], 'slug': page['slug']}
                   for page in pages if page['kind'] in ('site', 'legal')],
     }
