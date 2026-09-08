@@ -207,6 +207,15 @@ photograph and it is being embedded into a string that is rebuilt on every
 keystroke. The same cover photo is about 300 KB of JPEG and four megabytes of
 PNG.
 
+### The frame leaves one thing for the tool to finish
+
+`templates/tool.html` writes the privacy panel and the button that opens it,
+and wires neither: every tool's own `main.js` attaches the click handler that
+flips `#privacy-panel`'s `hidden` and the toggle's `aria-expanded`. Forty-one
+tools do it; this one did not, and shipped a button that did nothing. Nothing
+in this repository would have caught that — the QA suite in
+`A-Box-of-Tools/qa` presses it, on every tool, in four engines.
+
 ### A value set as a property is not a value the markup wrote
 
 The week's twenty-one controls are built in `main.js` rather than written out

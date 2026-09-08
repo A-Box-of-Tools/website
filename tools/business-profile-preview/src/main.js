@@ -47,6 +47,7 @@ const ui = {
   phone: el('phone'), website: el('website'),
   status: el('status'), clock: el('clock'), week: el('week'), weekNote: el('week-note'),
   copyMonday: el('copy-monday'), weekdaysOnly: el('weekdays-only'),
+  privacyToggle: el('privacy-toggle'), privacyPanel: el('privacy-panel'),
   stage: el('stage'), stageNote: el('stage-note'), scale: el('scale'),
   savePng: el('save-png'), saveSvg: el('save-svg'), saveJson: el('save-json'),
   saveNote: el('save-note'), saveError: el('save-error'),
@@ -446,6 +447,16 @@ function wire() {
     const file = ui.jsonFile.files?.[0];
     ui.jsonFile.value = '';
     if (file) readSaved(file);
+  });
+
+  // The frame writes the privacy panel and its toggle; every tool wires the
+  // one to the other in its own main.js. It is the frame's only half-finished
+  // part, and a tool that forgets it ships a button that does nothing - which
+  // is what this one did until the QA suite pressed it.
+  ui.privacyToggle.addEventListener('click', () => {
+    const open = ui.privacyPanel.hidden;
+    ui.privacyPanel.hidden = !open;
+    ui.privacyToggle.setAttribute('aria-expanded', String(open));
   });
 
   ui.savePng.addEventListener('click', savePng);
