@@ -85,12 +85,21 @@ jobs:
           auth="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
 
           # Every deployment the project holds, as `id<TAB>branch<TAB>commit`.
-          # Paged, because a busy month is more than a hundred of them and the
+          # Paged, because a busy month is more than one page of them and the
           # oldest are the ones most likely to be finished with.
+          #
+          # NO `per_page`, and that is not an oversight. Asking for 100 is
+          # refused outright - `Invalid list options provided. Review the page
+          # or per_page parameter.`, error 8000024 - and the endpoint does not
+          # document what it will accept, so any number here would be a guess
+          # that fails the same way the day it changes. Taking the page size
+          # the API chooses and reading until it hands back an empty page
+          # needs no such number. The cap below is a runaway guard, not a
+          # limit anybody should meet.
           : > all.tsv
           page=1
-          while [ "$page" -le 20 ]; do
-            body=$(curl -sS -H "$auth" "$api?per_page=100&page=$page") || body=''
+          while [ "$page" -le 40 ]; do
+            body=$(curl -sS -H "$auth" "$api?page=$page") || body=''
             if [ "$(printf '%s' "$body" | jq -r '.success // false')" != 'true' ]; then
               echo "::error::Could not list the deployments of $PROJECT."
               printf '%s' "$body" | head -c 800
@@ -107,7 +116,6 @@ jobs:
                 (.deployment_trigger.metadata.branch // "?"),
                 (.deployment_trigger.metadata.commit_hash // "?")
               ] | @tsv' >> all.tsv
-            if [ "$n" -lt 100 ]; then break; fi
             page=$((page + 1))
           done
 
