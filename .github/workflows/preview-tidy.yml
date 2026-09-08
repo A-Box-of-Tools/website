@@ -167,6 +167,41 @@ jobs:
           if [ "$count" -eq 0 ]; then
             echo 'Nothing was finished with.'
             echo 'Nothing was finished with.' >> "$GITHUB_STEP_SUMMARY"
+
+            # WHY NOTHING MATCHED, said out loud.
+            #
+            # "Nothing was finished with" is the ordinary answer on most runs
+            # and is also what a broken match looks like, which is the whole
+            # difficulty with this workflow - the first version listed the
+            # deployments perfectly and took down nothing, and it took a curl
+            # against a preview that should have been gone to notice. So when
+            # there was something to look for and none of it matched, this
+            # says which names it did see, and shows one deployment whole. A
+            # single run then answers the question instead of a guess at an
+            # endpoint that has already been guessed at once.
+            # A run looking for one exact name asks whether that name is
+            # there; a release looking for a shape asks whether the shape is.
+            # Getting this the other way round would dump a deployment on
+            # every healthy release, because `dev-pr-<n>` is a description and
+            # never a name.
+            case "$EVENT" in
+              pull_request)
+                looked="pr-$PR"
+                seen=$(cut -f2 all.tsv | grep -cxF "$looked" || true) ;;
+              *)
+                looked='dev-pr-<n>'
+                seen=$(cut -f2 all.tsv | grep -c '^dev-pr-' || true) ;;
+            esac
+            {
+              echo
+              echo "Looked for: $looked"
+              echo 'Branches the project actually reports:'
+              cut -f2 all.tsv | sort | uniq -c | sort -rn | head -40
+            } >&2
+            if [ "$seen" -eq 0 ]; then
+              echo 'Nothing of that shape is there at all, which is a match that has stopped working rather than a quiet week. One deployment in full, to show where the name lives:' >&2
+              curl -sS -H "$auth" "$api?page=1" | jq '.result[0]' >&2
+            fi
             exit 0
           fi
 
