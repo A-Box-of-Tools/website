@@ -353,6 +353,12 @@ class BuildTheSite(unittest.TestCase):
         # files rather than written down here, so adding a language - or
         # finishing one - does not also mean remembering to edit a test.
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        cls.site = site
+        # Finished languages the site deliberately does not offer. Read off the
+        # config rather than listed here, for the same reason as `unfinished`
+        # below: taking a language off that list should not also mean
+        # remembering to edit a test.
+        cls.unadvertised = set(site.get('unadvertised_languages', []))
         cls.locales = buildmod.i18n.load_locales(ROOT / 'locales', site)
         cls.unfinished = [locale['lang'] for locale in cls.locales
                           if not locale['is_base'] and not locale['complete']]
@@ -1269,6 +1275,46 @@ class BuildTheSite(unittest.TestCase):
                     text = (self.out / name).read_text(encoding='utf-8')
                     self.assertNotIn(f'hreflang="{locale}"', text)
                     self.assertNotIn(f'href="/{locale}/"', text)
+
+    # -- languages the site does not offer ---------------------------------
+    #
+    # A finished translation nobody reads is still built and still readable at
+    # its own address; what it stops doing is asking to be found. Two halves,
+    # and neither works alone: out of the sitemap so it is not discovered, and
+    # noindex so the pages already in the index - or linked from somewhere that
+    # is not us - come back out of it.
+
+    def test_a_language_the_site_does_not_offer_asks_not_to_be_indexed(self):
+        self.assertTrue(self.unadvertised, 'nothing is held back; test is moot')
+        for name in self.written:
+            if not name.endswith('index.html'):
+                continue
+            if name.split('/')[0] not in self.unadvertised:
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertIn('name="robots" content="noindex', page)
+
+    def test_a_language_the_site_does_not_offer_is_out_of_the_sitemap(self):
+        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        for lang in sorted(self.unadvertised):
+            with self.subTest(lang=lang):
+                self.assertNotIn(f'{self.site["domain"]}{lang}/', sitemap)
+
+    def test_a_language_the_site_does_offer_is_left_indexable(self):
+        """The other side of it, so a bug that noindexed everything would show.
+
+        English and any language still on the list keep asking to be found, and
+        say nothing about robots at all - the absence of the tag is the claim.
+        """
+        offered = [locale for locale in self.locales
+                   if locale['complete'] and locale['advertised']]
+        pages = ['index.html', f'{self.a_tool()}/index.html']
+        pages += [f'{locale["prefix"]}index.html' for locale in offered]
+        for name in pages:
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertNotIn('name="robots"', page)
 
     # -- /llms.txt ------------------------------------------------------
     #

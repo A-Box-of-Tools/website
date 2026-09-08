@@ -332,6 +332,7 @@ def base_locale(site):
         'hreflang': site['lang'],
         'dir': 'ltr',
         'complete': True,
+        'advertised': True,
         'is_base': True,
         'prefix': '',
         'fallback': None,
@@ -376,6 +377,12 @@ def load_locale(path, site):
         'hreflang': config.get('hreflang', config['lang']),
         'dir': config.get('dir', 'ltr'),
         'complete': bool(config.get('complete', False)),
+        # Whether the site offers this language at all, which is a decision
+        # about readers rather than a fact about the translation - so it is
+        # named in config/site.toml, where the whole set can be seen and
+        # weighed at once, and not thirteen times over in the folders it
+        # judges. A locale never says of itself that it is not worth showing.
+        'advertised': config['lang'] not in site.get('unadvertised_languages', []),
         'is_base': False,
         'prefix': f'{config["lang"]}/',
         # A name, not the locale itself - locales/*/locale.toml files are
@@ -1002,16 +1009,34 @@ def check_complete(locale):
           'the sitemap, the hreflang tags and the switcher until it is ready.')
 
 
-def translated(locale, slug):
-    """Is this one page finished in this one language?
+def offered(locale):
+    """Is this language one the site holds out to a reader at all?
 
-    English is finished by definition. A locale that has not finished its frame
-    publishes nothing at all, however many of its pages are done, because every
-    one of them would be wearing an English nav.
+    Two ways to answer no, and they are different facts about different things.
+    A locale that has not finished its frame is not ready, and every page in it
+    would be wearing an English nav. A locale named in `unadvertised_languages`
+    is finished and is deliberately not offered, because the traffic said
+    nobody was reading it - see the comment on that list in config/site.toml.
+
+    Both answers arrive here so that the sitemap, the hreflang sets, the
+    switcher and the feeds cannot come to different conclusions, which is the
+    same reason `published` below exists.
+    """
+    return locale['is_base'] or (locale['complete'] and locale['advertised'])
+
+
+def translated(locale, slug):
+    """Is this one page fit to be advertised in this one language?
+
+    English is finished by definition. A language the site does not offer
+    publishes nothing at all, however many of its pages are done - see
+    `offered` above for the two reasons that happens. Past that it is a
+    question about the one page: a language can be finished and still owe this
+    particular body.
     """
     if locale['is_base']:
         return True
-    if not locale['complete']:
+    if not offered(locale):
         return False
     return not locale['debt'].get(slug)
 
@@ -1028,7 +1053,7 @@ def published(locales, slug=None):
     which is what the language switcher on the 404 has to work from. With one,
     it is the narrower set that has also finished that page.
     """
-    ready = [locale for locale in locales if locale['is_base'] or locale['complete']]
+    ready = [locale for locale in locales if offered(locale)]
     if slug is None:
         return ready
     return [locale for locale in ready if translated(locale, slug)]

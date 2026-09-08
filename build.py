@@ -831,7 +831,14 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
         'base': base,
         'links': links,
         'canonical': i18n.locale_url(locale, slug, site),
-        'alternates': i18n.alternates(locales, slug, site),
+        # A page in a language the site does not offer belongs to no cluster,
+        # so it claims no alternates either. The set below is reciprocal by
+        # construction - each page in it names the same set back - and this
+        # page is not in it, so pointing at them from here would be exactly the
+        # annotation Google discards: an alternate that is not named back. The
+        # canonical above still stands and still points at this page.
+        'alternates': (i18n.alternates(locales, slug, site)
+                       if i18n.offered(locale) else []),
         'languages': i18n.switcher(locales, locale, slug, site),
         # Root-absolute, and the same URL on every page in every language, so
         # that crossing from one language to another is not also a second copy
@@ -842,8 +849,16 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
         # unpublished one would point at a file that is not there - the same
         # trap the hreflang set avoids by being built from published() too.
         'feed_href': (f'/{locale["prefix"]}feed.xml'
-                      if locale['is_base'] or locale['complete'] else ''),
+                      if i18n.offered(locale) else ''),
         'feed_title': locale['site']['name'],
+        # A language the site does not offer asks not to be indexed, which is
+        # the half that keeping it out of the sitemap cannot do on its own: a
+        # page already in the index, or linked from outside, stays there until
+        # the page itself says otherwise. `follow` rather than `nofollow`,
+        # because the links out of it go to pages that ARE indexed and there is
+        # nothing to gain by stranding them. The roadmap and the 404 say this
+        # for themselves and in every language, so their templates do not ask.
+        'noindex': not i18n.offered(locale),
     }
     context.update(extra or {})
     return context

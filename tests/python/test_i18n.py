@@ -36,7 +36,8 @@ SITE = {
 def locale(**over):
     base = {
         'lang': 'de', 'name': 'German', 'endonym': 'Deutsch', 'hreflang': 'de',
-        'dir': 'ltr', 'complete': False, 'is_base': False, 'prefix': 'de/',
+        'dir': 'ltr', 'complete': False, 'advertised': True, 'is_base': False,
+        'prefix': 'de/',
         'fallback': None, 'fallback_locale': None,
         'slugs': {}, 'site': SITE, 'tools': {}, 'pages': {}, 'bodies': {},
         'planned': {}, 'frame': [], 'debt': {},
@@ -519,6 +520,32 @@ class Advertising(unittest.TestCase):
         self.assertNotIn('fr', langs)
         self.assertNotIn('fr', [entry['lang'] for entry in
                                 i18n.switcher(locales, self.english, 'widget', SITE)])
+
+    def test_a_finished_language_the_site_does_not_offer_is_never_advertised(self):
+        """The other way to be absent, and a different fact from being unfinished.
+
+        These pages are translated and readable. They are held back because
+        nobody was arriving on them, and thirteen unread languages were seven
+        eighths of what the site was asking to have indexed - see
+        `unadvertised_languages` in config/site.toml."""
+        quiet = locale(lang='it', hreflang='it', prefix='it/',
+                       complete=True, advertised=False)
+        locales = [self.english, self.german, quiet]
+        self.assertNotIn('it', [entry['hreflang'] for entry in
+                                i18n.alternates(locales, 'widget', SITE)])
+        self.assertNotIn('it', [entry['lang'] for entry in
+                                i18n.switcher(locales, self.english, 'widget', SITE)])
+        self.assertNotIn(quiet, i18n.published(locales))
+        self.assertFalse(i18n.translated(quiet, 'widget'))
+
+    def test_offered_tells_not_ready_apart_from_not_wanted(self):
+        """Both keep a language out of all three lists, and they are not one
+        state: the first is waiting on a translator, and the second is a
+        decision that comes undone by deleting a line."""
+        self.assertTrue(i18n.offered(self.english))
+        self.assertTrue(i18n.offered(self.german))
+        self.assertFalse(i18n.offered(self.draft))
+        self.assertFalse(i18n.offered(locale(complete=True, advertised=False)))
 
     def test_the_switcher_stays_on_the_same_page(self):
         """Not on the front door of the other language.
