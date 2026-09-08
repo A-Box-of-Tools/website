@@ -16,6 +16,16 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      入ってきたものを、そのまま描き戻したもの。ファイルではなく、読み取りが実際に使った画像です。
+      同じデコード、同じ縮尺、同じ白い下地。だから、ここのサムネイルがおかしければ、
+      それが答えのおかしい理由です。
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">カメラを使う</button>
       <button type="button" id="stop-camera" class="ghost" hidden>カメラを止める</button>
@@ -124,6 +134,18 @@
   </template>
 
   <!--
+    その一覧の画像ひとつ分。ファイルごとに複製し、ここにある語がすべて記述されているのは、
+    このファイルが言語ごとに翻訳される一方で、src/*.js は共通の一つのファイルだからです。
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     スクリプトが必要とする語です。翻訳する人がページの他の部分と同じ場所で
     出会えるように記述の中に置いてあります。中の {host} は読み取ったホストで
     埋められます。それ以外は置き換わりません。
@@ -146,6 +168,11 @@
     <span data-phrase="mode.numeric">数字のみ</span><span data-phrase="mode.alphanumeric">英大文字と数字</span><span data-phrase="mode.byte">バイト</span><span data-phrase="mode.kanji">漢字</span>
 
     <span data-phrase="how.local">区画ごとに求めたしきい値</span><span data-phrase="how.inverted">濃淡の入れ替え</span><span data-phrase="how.global">画像全体で一つのしきい値</span><span data-phrase="how.softened">先に画像をなめらかにする方法</span><span data-phrase="how.dense">（全行を調べたうえで）</span>
+
+    <span data-phrase="preview.one">調べた画像</span>
+    <span data-phrase="preview.many">調べた画像{n}枚</span>
+    <span data-phrase="preview.nothing">コードは見つかりませんでした</span>
+    <span data-phrase="preview.broken">開けませんでした</span>
 
     <span data-phrase="status.reading">画像を読んでいます&hellip;</span>
     <span data-phrase="status.nothing">この画像にコードは見つかりませんでした。白い余白まで含めてシンボル全体が画面に入っていること、そして濃い四角がきちんと濃く写る明るさが必要です。</span><span data-phrase="status.broken">このファイルは画像として開けませんでした。</span><span data-phrase="status.looking">探しています&hellip;コードを動かさず、画面の半分ほどを埋めてください。</span><span data-phrase="status.on">カメラが動いています。記録はされていません。</span>

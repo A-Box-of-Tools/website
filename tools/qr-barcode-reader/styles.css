@@ -88,6 +88,95 @@ kbd {
   min-width: 0;
 }
 
+/* ------------------------------------------------------------ the preview */
+
+/*
+  The pictures that went in, under the box they went into.
+
+  Sized to be checked rather than admired: what somebody is looking for here is
+  whether the thing they meant to hand over is the thing that arrived, and
+  which of four files the one answer below came from. A thumbnail large enough
+  to read a code off would be a second copy of their picture on the page and
+  would push the answer under the fold, which is the wrong way round.
+*/
+.preview { margin-top: 1.2rem; }
+
+.preview-caption {
+  margin: 0 0 0.55rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.preview-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.preview-item {
+  flex: none;
+  width: 8.5rem;
+  min-width: 0;
+}
+
+/* White, and not the page's own surface: white is the ground the picture was
+   read on - pixelsOf fills it before it draws, so a transparent PNG of a code
+   is not thresholded as black on black - and a preview on a different ground
+   would be a different picture from the one the answer came from. */
+.preview-shot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #fff;
+}
+
+.preview-shot canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* One line, cut off at the end. A phone camera's file names are long, alike,
+   and only distinguishable at the end, so the whole name is on the element as
+   its title for anybody who needs it. */
+.preview-name {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-state {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+/* Amber, for the same reason the warnings are and the errors are not: a
+   picture with no code in it is not a fault, it is an answer - but it is the
+   answer somebody is hunting for when four went in and three came back. */
+.preview-item.nothing .preview-state,
+.preview-item.broken .preview-state { color: var(--warn); }
+
+/* A file that never opened has no picture to show, and an empty white box
+   would say something untrue about it: that it opened and was blank. */
+.preview-item.broken .preview-shot {
+  background: var(--surface-2);
+  border-style: dashed;
+}
+
 /* ------------------------------------------------------------ the results */
 
 .result {

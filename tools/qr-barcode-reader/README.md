@@ -64,12 +64,26 @@ misread rather than a long string; and on the linear side, a format with no
 check digit has to be read identically from two different scan lines before it
 counts.
 
-### It shows what it sampled
+### It shows what it sampled, and what it was given
 
 Under every QR result is a canvas holding the modules that were actually read
 off the picture. It is not decoration. It is the one thing that lets somebody
 check the answer rather than believe it: if that grid looks like the code they
 photographed, the string came from the right pixels.
+
+Step 1 does the same job one stage earlier. Every picture handed over is drawn
+back out under the drop zone with its name and what came of it — the symbology,
+or that no code was found in it, or that the file never opened as a picture at
+all. Four files in and one answer out is otherwise a page that cannot be
+checked: nothing on it says which of the four the answer came from, or whether
+the other three were even opened. The thumbnail is drawn from the decoded
+picture rather than from the file, on the same white ground `pixelsOf` lays
+down, so what is shown is what the reader worked from and not a second opinion
+about it.
+
+The camera has no entry there on purpose: its preview is the viewfinder, and a
+still of a frame that has already been thrown away would contradict the card it
+would sit under.
 
 ## Things that took a second attempt
 

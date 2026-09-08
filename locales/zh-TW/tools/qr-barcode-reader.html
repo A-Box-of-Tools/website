@@ -16,6 +16,15 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      進去的東西，再畫出來。不是那個檔案，而是讀碼時真正用的那張圖：同一次解碼、
+      同樣的縮放、同樣的白底。所以這裡的縮圖看起來不對，就是答案不對的原因。
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">用鏡頭</button>
       <button type="button" id="stop-camera" class="ghost" hidden>停止鏡頭</button>
@@ -123,6 +132,18 @@
   </template>
 
   <!--
+    預覽裡的一張圖。按檔案複製，裡面每一個字都寫在這份標記裡，因為這份檔案
+    按語言翻譯，而 src/*.js 是所有語言共用的一份。
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     指令碼要用的那些詞，放在標記裡，讓翻譯的人在遇到這一頁其餘部分的地方就能
     遇到它們。裡面的 {host} 會被讀到的主機填上，別的都不替換。
   -->
@@ -140,6 +161,11 @@
     <span data-phrase="mode.numeric">只有數字</span><span data-phrase="mode.alphanumeric">大寫字母和數字</span><span data-phrase="mode.byte">位元組</span><span data-phrase="mode.kanji">漢字</span>
 
     <span data-phrase="how.local">一塊一塊算出來的閾值</span><span data-phrase="how.inverted">把深淺對調</span><span data-phrase="how.global">整張圖共用一個閾值</span><span data-phrase="how.softened">先把圖片放柔一點</span><span data-phrase="how.dense">，並且逐行都查了一遍</span>
+
+    <span data-phrase="preview.one">它看過的圖</span>
+    <span data-phrase="preview.many">它看過的 {n} 張圖</span>
+    <span data-phrase="preview.nothing">沒找到碼</span>
+    <span data-phrase="preview.broken">打不開</span>
 
     <span data-phrase="status.reading">正在讀這張圖&hellip;</span>
     <span data-phrase="status.nothing">這張圖裡沒找到碼。需要整個符號連同白色留白都在畫面裡，光也要夠，讓深色方塊真的是深的。</span><span data-phrase="status.broken">這個檔案打不開成圖片。</span><span data-phrase="status.looking">正在找&hellip;把碼拿穩，讓它佔到畫面一半左右。</span><span data-phrase="status.on">鏡頭開著。什麼都沒有在錄。</span>

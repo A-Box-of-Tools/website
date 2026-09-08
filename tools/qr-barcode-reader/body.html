@@ -11,6 +11,22 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      What went in, drawn back out.
+
+      A reader that hands back a string and nothing else asks to be believed:
+      four files in and one answer out, and nothing on the page says which of
+      the four it came from or whether the other three were even opened. What
+      is drawn here is not the file - it is the picture the reader worked from,
+      off the same decode, scaled the same way, on the same white ground a
+      transparent PNG is flattened onto. So a thumbnail that looks wrong is the
+      reason the answer is.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Use the camera</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Stop the camera</button>
@@ -129,6 +145,20 @@
   </template>
 
   <!--
+    One picture in that preview. Cloned per file, filled in from script, and
+    here for the same reason the result template is: every word in it is in
+    the markup, because this file is translated per language and src/*.js is
+    one file serving them all.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     The words script needs, sitting in the markup so that a translator meets
     them where they meet the rest of the page. A `{host}` in one of these is
     filled in with the host that was read; nothing else is substituted.
@@ -217,6 +247,11 @@
     <span data-phrase="how.global">one threshold for the whole picture</span>
     <span data-phrase="how.softened">softening the picture first</span>
     <span data-phrase="how.dense">, checking every row</span>
+
+    <span data-phrase="preview.one">The picture it looked at</span>
+    <span data-phrase="preview.many">The {n} pictures it looked at</span>
+    <span data-phrase="preview.nothing">No code found</span>
+    <span data-phrase="preview.broken">Could not be opened</span>
 
     <span data-phrase="status.reading">Reading the picture&hellip;</span>
     <span data-phrase="status.nothing">No code found in that picture. It needs
