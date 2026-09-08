@@ -79,6 +79,7 @@ INVISIBLE_FILES = (
     'LICENSE-BRAND',
     '.gitignore',
     '.gitattributes',
+    'serve.ps1',         # the local server; it serves a build, and ships in none
 )
 
 #: A tool announces itself by its configuration file and nothing else.
