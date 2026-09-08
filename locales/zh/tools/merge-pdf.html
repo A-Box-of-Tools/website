@@ -16,8 +16,7 @@
     <h2><span class="step">2</span> 安排页面</h2>
 
     <p class="card-lede">
-      你选的每个文件的每一页，都按出来的顺序排在这里。抓住
-      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能挪，用箭头可以转，用 &times; 可以删。这里还什么都没写出去，文档要等你在第四步按下按钮才会拼起来。
+      你选的每个文件的每一页，都按出来的顺序排在这里。卡片抓哪儿都能拖动这一页；触摸屏上只能抓 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手，这样列表还能滚。用箭头可以转，用 &times; 可以删。这里还什么都没写出去，文档要等你在第四步按下按钮才会拼起来。
     </p>
 
     <div class="toolbar">
@@ -39,7 +38,7 @@
       <button type="button" id="range-turn" class="ghost">旋转这些</button>
     </div>
     <p id="range-note" class="field-note">
-      按下面显示的编号来写，编号会随着你的操作重新编排。<code>odd</code>、<code>even</code>、<code>all</code> 和 <code>last</code> 也能用。
+      按下面每一页角上的小编号来写，这个编号会随着你的操作重新编排；大的那个不是，那是它在自己文件里的页码。<code>odd</code>、<code>even</code>、<code>all</code> 和 <code>last</code> 也能用。
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -195,6 +194,8 @@
     <span data-phrase="page.turned">这个工具转过</span>
     <span data-phrase="page.remove">去掉第 {n} 页</span>
     <span data-phrase="page.from">{name}，第 {n} 页</span>
+    <span data-phrase="page.origin">原第 {n} 页</span>
+    <span data-phrase="page.at">排在第 {n} 位</span>
     <span data-phrase="page.anticlockwise">把第 {n} 页逆时针转</span>
     <span data-phrase="page.clockwise">把第 {n} 页顺时针转</span>
     <span data-phrase="page.earlier">把第 {n} 页往前挪</span>
