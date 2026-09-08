@@ -105,7 +105,16 @@ git integration:
 | What | Address | Is the QA suite run against it |
 |---|---|---|
 | a pull request | `https://pr-<number>.abox-preview.pages.dev/` | yes, and the result is the `qa/preview` check on the pull request |
-| the `dev` branch | `https://dev.abox-preview.pages.dev/` | no |
+| the `dev` branch, as it stands | `https://dev.abox-preview.pages.dev/` | no |
+| `dev` after one merge, kept | `https://dev-pr-<number>.abox-preview.pages.dev/` | no |
+
+The third of those is the second address every merge into `dev` writes, named
+after the pull request that caused the merge. The stable address has the fault
+that comes with being stable - the next merge replaces it, so the state
+somebody was looking at an hour ago is gone and there is nothing left to
+compare against. These accumulate on purpose: they are the bundle's visual
+history, and finding which merge changed something is opening the two either
+side of it.
 
 The pull request previews are the gate: the suite runs against one before the
 change reaches `dev`, and against the `dev` -> `main` pull request before the
