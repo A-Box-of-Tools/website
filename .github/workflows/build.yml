@@ -106,6 +106,7 @@ jobs:
     # suites, the build, and the preview and QA run that follow it.
     outputs:
       site: ${{ steps.covered.outputs.code }}
+      generator: ${{ steps.covered.outputs.generator }}
     steps:
       # What this actually changed, asked of the API rather than worked out
       # from a clone: it is one request, and fetching enough history to diff
@@ -180,6 +181,31 @@ jobs:
             fi
           fi
 
+          # IS EVERYTHING HERE THE GENERATOR RATHER THAN THE SITE?
+          #
+          # `build.py`, `buildlib/`, `scripts/` and `indexnow.py` produce the
+          # site and are never served from it. A change to one of them may
+          # alter every page or no page at all, and no rule about paths can
+          # tell which: a rewritten template and a corrected `print` look
+          # identical from here, and the safe answer - assume every page - is
+          # what sends twelve runners of browser tests after a change to a log
+          # line. So the question is only ASKED here. The build answers it
+          # below, by building both sides and comparing, which is the one
+          # method that cannot be wrong about it.
+          generator=false
+          if [ "$code" = true ] && [ -n "$files" ]; then
+            generator=true
+            while IFS= read -r path; do
+              case "$path" in
+                build.py|indexnow.py) continue ;;
+                buildlib/*|scripts/*) continue ;;
+              esac
+              generator=false
+              break
+            done <<< "$files"
+          fi
+          echo "generator=$generator" >> "$GITHUB_OUTPUT"
+
           if [ "$code" = true ]; then
             said="Building and running both suites, because $why."
           else
@@ -247,8 +273,13 @@ jobs:
     # and the job is not, for the reason given over that job: a skipped job
     # skips everything that needs it, and `needs: test` is the only thing
     # standing between a broken test and the deployed branch.
+    outputs:
+      # Whether the site this change builds differs from the one the base
+      # builds. Empty unless it was worth asking; the preview job reads it.
+      moved: ${{ steps.moved.outputs.moved }}
     env:
       BUILDS: ${{ needs.test.outputs.site }}
+      GENERATOR: ${{ needs.test.outputs.generator }}
       DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
       PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
     steps:
@@ -308,6 +339,51 @@ jobs:
       - name: Build (deployed)
         if: env.BUILDS == 'true'
         run: python build.py --out _site --clean
+
+      # DID THIS CHANGE THE SITE AT ALL?
+      #
+      # Asked only when everything the change touched is generator code, and
+      # then it is worth a whole build to answer. A change to `build.py` can
+      # reach every page, so the path rule has to assume it did and run the
+      # browser suite over the lot - twelve runners and a quarter of an hour
+      # after a corrected log line. Building the base and diffing settles it
+      # for about four minutes on this one runner, and unlike any rule about
+      # paths it cannot be wrong: identical bytes are an identical site, and
+      # no browser test can see a difference that is not there.
+      #
+      # A base that will not build, or a build that differs for a reason as
+      # dull as a date, both answer "it moved" and everything runs. The only
+      # mistake available here is the cheap one.
+      - name: Did this change the site at all?
+        id: moved
+        if: env.BUILDS == 'true' && env.GENERATOR == 'true' && github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -uo pipefail
+          moved=true
+          if git fetch --depth=1 origin "$BASE" 2>/dev/null &&
+             git worktree add .base "$BASE" > /dev/null 2>&1 &&
+             (cd .base && python build.py --out "$GITHUB_WORKSPACE/_base" --clean --quiet); then
+            if diff -r _site "$GITHUB_WORKSPACE/_base" > /dev/null 2>&1; then
+              moved=false
+              echo 'The site this builds is byte-identical to the one the base builds.'
+            else
+              echo 'The site this builds differs from the one the base builds.'
+            fi
+          else
+            echo '::notice::The base could not be built for comparison, so this runs everything.'
+          fi
+          echo "moved=$moved" >> "$GITHUB_OUTPUT"
+          {
+            echo '### The site itself'
+            echo
+            if [ "$moved" = false ]; then
+              echo 'Unchanged: this builds the same bytes as the base, so the browser suite is not asked to run.'
+            else
+              echo 'Changed, so the browser suite runs.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       # Minifying is the one step here that could break the site quietly, so
       # it is checked rather than assumed. buildlib/minify.py already compares
@@ -971,8 +1047,16 @@ jobs:
       # decides what to do about it. That is the opposite of the split above,
       # where the scope is judged here because this is the end that can see the
       # diff - each decision sits with whoever can actually answer it.
+      # Not when the build proved the site did not move. The suite tests a
+      # deployed site, and this one is byte-for-byte the site the base already
+      # builds - so every case would be re-testing a page that is not the
+      # subject of this change. The preview is still uploaded and still
+      # comment-ed, because a reviewer may want to look at it; what is skipped
+      # is a quarter of an hour of browser tests that cannot see the diff.
       - name: Ask the QA suite to run against it
-        if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
+        if: >-
+          steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
+          && needs.build.outputs.moved != 'false'
         env:
           GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
           URL: ${{ steps.upload.outputs.url }}
@@ -994,12 +1078,16 @@ jobs:
         env:
           URL: ${{ steps.upload.outputs.url }}
           KEPT: ${{ steps.keep.outputs.url }}
+          MOVED: ${{ needs.build.outputs.moved }}
         run: |
           {
             echo '### Preview'
             echo
             if [ -z "$URL" ]; then
               echo 'Not deployed: the Cloudflare secrets are not set. See cloudflare/README.md, "Previews".'
+            elif [ -n "$PR" ] && [ "$MOVED" = 'false' ]; then
+              echo "- $URL"
+              echo '- The QA suite is not run: this builds the same bytes as the base, so there is nothing on the page for it to see.'
             elif [ -n "$PR" ]; then
               echo "- $URL"
               echo '- The QA suite runs against it in [A-Box-of-Tools/qa](https://github.com/A-Box-of-Tools/qa/actions); the result is the `qa/preview` status on this commit.'
