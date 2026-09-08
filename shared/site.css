@@ -799,19 +799,53 @@ footer {
 
 .footer-col { flex: 1 1 150px; min-width: 0; }
 
-/* Two link columns and the gap between them, 2 x 150px + 2.5rem, growing twice
-   as fast to match. That is what puts the two rows on one grid rather than
-   near one: both rows then have the same basis in total and the same grow in
-   total, so the free space lands in the same places and a tool column below
-   starts exactly where a column above it does. The three numbers are one
-   number - change any of them and work the others out again.
+/* "This site" is the wide one: two link columns and the gap between them,
+   2 x 150px + 2.5rem, growing twice as fast to match. The brand and the marks
+   keep one column each, so the row is 1 + 2 + 1 = the four the tools below it
+   have, and that is what puts the two rows on one grid rather than near one -
+   both then have the same basis in total and the same grow in total, so the
+   free space lands in the same places and a tool column below starts exactly
+   where a column above it does. The three numbers are one number: change any
+   of them and work the others out again.
 
    They also decide where the whole footer folds, which is why 150px rather
    than something rounder: four columns and three gaps need 720px, and a tablet
    held upright has 736px of footer to give them. A wider column would fold
    that reader to three-up and leave the fourth group stranded on a line of its
    own. */
-.footer-brand { flex: 2 1 340px; }
+.footer-site { flex: 2 1 340px; }
+
+/* "This site" is eight links and was one column of eight, which set the height
+   of the whole row: a sentence beside it, three icons beside that, and the
+   rest of both of those columns empty down to the eighth. Two columns of four
+   is the same eight links and half the row. It takes the width for the second
+   from the brand column beside it, which was two columns wide to hold a
+   sentence that `max-width: 34ch` was capping well inside one.
+
+   Named through `.footer-col` as well, for the reason `.footer-marks` below
+   is: the rule it is overriding is `.footer-col ul`, which is exactly as
+   specific, so on a bare class the one that wins is whichever is written
+   second - and the symptom of losing is a list that quietly stays in one
+   column, because a grid box takes no notice of `columns` at all.
+
+   `columns` rather than a second <ul> or a media query, because the list is
+   built from the folders that exist and nothing here should have to know how
+   many there are - it balances whatever it is given. And the count is a
+   MAXIMUM sitting on a minimum width, so the split undoes itself: below about
+   340px, which is where the footer has already folded to one column a phone's
+   width, two columns of five characters would be worse than one of ten, and
+   there is one. */
+.footer-col.footer-site ul {
+  display: block;
+  columns: 150px 2;
+  column-gap: 2.5rem;
+}
+
+/* The gap the grid above was giving these, put back by hand: a multi-column
+   box is not a grid and does not take one. On the last item too, which costs a
+   third of a line at the foot of the column and saves knowing which item is
+   last in either of them. */
+.footer-col.footer-site li { margin-bottom: 0.35rem; }
 
 .footer-col strong {
   display: block;

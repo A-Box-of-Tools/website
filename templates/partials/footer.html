@@ -39,7 +39,7 @@
       It sits directly under "All tools" because the two are the same kind of
       thing - the front door to each half of the site.
     -->
-    <div class="footer-col">
+    <div class="footer-col footer-site">
       <strong>{{ ui.footer_site }}</strong>
       <ul>
         <li><a href="{{ base }}">{{ ui.all_tools }}</a></li>
@@ -51,22 +51,22 @@
     </div>
 
     <!--
-      The one column that is drawn rather than written. A repository, an account
-      and an address are recognised by their marks in a way that no other link
-      here is, and three sentences stacked in a column - "Read the code on
-      GitHub", a handle, an email address - were three lines saying the same
-      thing three times. The marks fit on one row.
+      The one column that is drawn rather than written. A repository, an
+      account and an address are recognised by their marks in a way that no
+      other link here is, and three sentences stacked in a column - "Read the
+      code on GitHub", a handle, an email address - were three lines saying the
+      same thing three times. The marks fit on one row.
 
-      Each link still carries the sentence, as `aria-label` for a screen reader
-      and `title` for a pointer, so nothing is lost by not being able to see the
-      drawing. The <svg>s are hidden from the accessibility tree rather than
-      labelled themselves: the name belongs on the link, which is the thing that
-      is focused and announced.
+      Each link still carries the sentence, as `aria-label` for a screen
+      reader and `title` for a pointer, so nothing is lost by not being able
+      to see the drawing. The <svg>s are hidden from the accessibility tree
+      rather than labelled themselves: the name belongs on the link, which is
+      the thing that is focused and announced.
 
       The two brand marks are their owners' - GitHub's Octicon and X's logo -
       and are drawn here as those companies publish them, because a redrawn
-      logo is a wrong logo. They are outside shared/icons/ for that reason: that
-      folder is Lucide's, byte for byte, and is checkable against it.
+      logo is a wrong logo. They are outside shared/icons/ for that reason:
+      that folder is Lucide's, byte for byte, and is checkable against it.
     -->
     <div class="footer-col">
       <strong>{{ ui.footer_contact }}</strong>
