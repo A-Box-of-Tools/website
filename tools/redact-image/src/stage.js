@@ -146,7 +146,13 @@ export class Stage {
 
   /** An existing box: move it, or drag one of its edges. */
   #dragBox(id, handle, start) {
-    const from = this.#handlers.regionOf(id);
+    // A copy of where the box was when the drag began: every step below
+    // measures from the press, and `onChange` writes the answer into the very
+    // rectangle the caller just handed over. A `from` that was that rectangle
+    // would move with the box, so each pointer report would add the whole drag
+    // again to a box already moved by it - and the box would run away from the
+    // pointer, further the more moves the pointer sent.
+    const from = { ...this.#handlers.regionOf(id) };
     let moved = false;
 
     this.#follow((point) => {
