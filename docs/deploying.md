@@ -90,7 +90,28 @@ until the second merged. The `dev` → `main` pull request is not excused it, so
 nothing ships untested, and the QA repository opens an issue for a missing spec
 daily regardless.
 
-The build and the unit tests are **not** scoped. They are nine minutes on one
+**A change that reaches no page is not built at all.** If everything a pull
+request touches is on a short allowlist — `docs/`, `.claude/`, `media/`,
+`cloudflare/`, and the root markdown files — then the build, both
+unit suites, the preview and the QA run are all skipped, because the site it
+would produce is the one already deployed. Anything else, anything new,
+anything unrecognised, builds and runs everything.
+
+The standard for being on that list is that **no test opens the file**, which
+is not the same as no test mentioning it. Three that look like they belong
+are deliberately absent, each checked rather than assumed: `workers/`, which
+`tests/js/rendezvous.test.js` imports outright; `serve.ps1`, which
+`tests/python/test_serve.py` reads; and `tests/` itself.
+
+`.github/` is deliberately **not** on the list, though it would qualify under
+that rule — no test opens a workflow. A workflow exempt from the run it defines
+never gets one: the first thing to exercise an edited step would be the deploy
+that needed it, and the first sign of a mistake a release that did not happen.
+GitHub parsing the file is not the same assurance, since a workflow can load
+perfectly and still hold a condition that never fires. So a change to CI builds
+and runs both suites like any other.
+
+The build and the unit tests are **not** scoped by tool. They are nine minutes on one
 runner between them, and they are what catches a change that breaks every page
 — which a build of one tool, by construction, cannot see.
 
