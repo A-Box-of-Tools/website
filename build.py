@@ -477,11 +477,15 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # look identical in a directory listing, and the difference is the only
     # thing anybody wants to know about it.
     #
-    # Two different states are worth two different sentences. A locale that has
-    # not finished its frame is not published at all. A locale that has is
+    # Three different states are worth three different sentences. A locale that
+    # has not finished its frame is not published at all. A locale that has is
     # published, and owes a number of PAGES - which is the unit that decides
     # anything now, since a page with one string left is as held back as a page
-    # with four hundred.
+    # with four hundred. And a locale on `unadvertised_languages` is finished
+    # and is not offered anyway, which was reported as "published" until this
+    # said otherwise - a build that calls a language published while keeping it
+    # out of the sitemap is the one reader of this output nobody can correct.
+    unoffered = []
     for locale in targets:
         if locale['is_base']:
             continue
@@ -493,6 +497,14 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
             left = len(set(i18n.all_debt(locale)))
             print(f'  {locale["lang"]}: {left} strings still in English '
                   f'(not advertised until complete = true)')
+            continue
+        if not locale['advertised']:
+            # Named together below rather than a line each. That they are held
+            # back is one fact about thirteen languages, not thirteen facts,
+            # and thirteen lines of it would bury the ones still being worked
+            # on. What each of them owes page by page stops mattering while
+            # nothing is offering them.
+            unoffered.append(locale['lang'])
             continue
         behind = i18n.debt_report(locale, tools, prose)
         if behind:
@@ -507,6 +519,12 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
                   f'(built and readable, kept out of the sitemap): '
                   + ', '.join(sorted(behind)[:4])
                   + (' ...' if len(behind) > 4 else ''))
+
+    if unoffered:
+        print(f'  not offered: {", ".join(unoffered)} - translated, built and '
+              f'readable at their own addresses, and kept out of the sitemap, '
+              f'the hreflang sets and the switcher '
+              f'(unadvertised_languages in config/site.toml)')
 
     # One 404 for the whole domain, in English, because GitHub Pages serves one
     # file for every address it cannot find and has no way to know which
