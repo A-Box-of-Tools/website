@@ -1,0 +1,621 @@
+<main id="main">
+  <!--
+    The import fold sits above step 1 rather than being a step of its own,
+    because it is an alternative to the whole form rather than a stage in it.
+    Somebody with an existing listing starts here; somebody opening a new one
+    never has to see it.
+  -->
+  <details class="card card-note" id="import-card">
+    <summary><h2>已经有一份资料了？从它开始</h2></summary>
+
+    <p class="card-lede">
+      这个页面没法去把你的资料取回来——它压根没有联系任何人的办法，而这正是它的用意。所以换个方向，把资料带过来：在 Google 上打开你的商家，选中，复制，粘贴到下面。凡是认出来的都会填进去，并且一项一项回报给你，好让猜错的地方看得见，而不是悄悄就算数了。
+    </p>
+
+    <div class="field">
+      <label for="paste">把资料粘贴进来</label>
+      <textarea id="paste" rows="6" spellcheck="false"
+                placeholder="Blue Bottle Coffee&#10;4.5 (1,284)&#10;咖啡店&#10;123 King St W, Toronto, ON M5V 1J5"></textarea>
+      <p class="field-note">
+        名称、评分、类别、地址、电话号码、网站，以及一整周的营业时间，都能认出来。照片不行：一张图没法以文字的形式穿过剪贴板，所以照片请在第&nbsp;1&nbsp;步里加。
+      </p>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="read-paste" class="primary">读一读我粘贴的内容</button>
+        <button type="button" id="open-json" class="ghost">打开存下来的资料&hellip;</button>
+      </div>
+    </div>
+
+    <p class="field-note">
+      存下来的资料，就是这个页面在第&nbsp;4&nbsp;步写出来的那份 JSON。它也能直接从 Google Business Profile API 的导出文件里读出一个地点——就是 <code>title</code>、<code>storefrontAddress</code>、<code>regularHours</code> 那种结构——而那正是你自己那份资料导出来的样子。
+    </p>
+
+    <!-- Driven by the button above rather than shown, and named anyway: a
+         control a visitor can reach needs a name whether or not it is the
+         thing they clicked. -->
+    <input type="file" id="json-file" accept="application/json,.json" hidden
+           aria-label="选择一份存下来的资料，或者一个 Business Profile 导出文件">
+
+    <p class="path-note" id="import-note" role="status" hidden></p>
+    <p class="error" id="import-error" role="alert" hidden></p>
+  </details>
+
+  <!-- Step 1 &mdash; who the business is -->
+  <section class="card">
+    <h2><span class="step">1</span> 说说这家商家</h2>
+
+    <p class="card-lede">
+      这里的每一个框，都是 Google 会在某处显示的字段，而页脚那张预览图会随着你打字重画。最值得花心思的是名称和类别：名称是三个版面上唯一都会被截断的字段，而类别是搜索结果在放不下别的东西时唯一还容得下的那一行。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="name">商家名称</label>
+        <input type="text" id="name" autocomplete="off" spellcheck="false"
+               value="Blue Bottle Coffee">
+        <p class="field-note" id="name-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="category">主要类别</label>
+        <input type="text" id="category" autocomplete="off" list="category-list"
+               value="咖啡店">
+        <!--
+          A shortlist, and deliberately not the whole thing. Google's own
+          category list runs to about four thousand entries, it is Google's
+          data rather than ours, and it changes several times a year - so a
+          copy of it here would be a hundred and sixty kilobytes in each of
+          fifteen translated bodies and would start going stale the day it
+          landed, which on a closed list is worse than saying nothing. These
+          are the everyday trades, as suggestions; the box is ordinary text
+          and takes whatever Google's picker gave you.
+
+          Grouped by comment rather than by <optgroup>: browsers ignore
+          optgroup inside a datalist, so it would be markup nobody sees.
+          Translated per locale, because a category is Google's own wording
+          in each language and not a name that travels.
+        -->
+        <datalist id="category-list">
+          <!-- Food and drink -->
+          <option value="餐厅"></option>
+          <option value="咖啡馆"></option>
+          <option value="咖啡店"></option>
+          <option value="面包店"></option>
+          <option value="酒吧"></option>
+          <option value="小酒馆"></option>
+          <option value="葡萄酒吧"></option>
+          <option value="啤酒厂"></option>
+          <option value="比萨餐厅"></option>
+          <option value="意大利餐厅"></option>
+          <option value="中餐厅"></option>
+          <option value="印度餐厅"></option>
+          <option value="墨西哥餐厅"></option>
+          <option value="日本料理店"></option>
+          <option value="泰国餐厅"></option>
+          <option value="越南餐厅"></option>
+          <option value="希腊餐厅"></option>
+          <option value="土耳其餐厅"></option>
+          <option value="寿司店"></option>
+          <option value="海鲜餐厅"></option>
+          <option value="牛排馆"></option>
+          <option value="烧烤餐厅"></option>
+          <option value="纯素餐厅"></option>
+          <option value="素食餐厅"></option>
+          <option value="早餐店"></option>
+          <option value="快餐店"></option>
+          <option value="三明治店"></option>
+          <option value="熟食店"></option>
+          <option value="冰淇淋店"></option>
+          <option value="果汁店"></option>
+          <option value="茶馆"></option>
+          <option value="餐饮承办服务"></option>
+          <option value="夜店"></option>
+          <!-- Beauty and wellbeing -->
+          <option value="美发沙龙"></option>
+          <option value="理发店"></option>
+          <option value="美容院"></option>
+          <option value="美甲店"></option>
+          <option value="水疗中心"></option>
+          <option value="日间水疗"></option>
+          <option value="按摩师"></option>
+          <option value="纹身店"></option>
+          <option value="脱毛服务"></option>
+          <option value="皮肤护理诊所"></option>
+          <!-- Health -->
+          <option value="牙医"></option>
+          <option value="牙科诊所"></option>
+          <option value="正畸医生"></option>
+          <option value="医生"></option>
+          <option value="医疗诊所"></option>
+          <option value="理疗师"></option>
+          <option value="脊椎按摩师"></option>
+          <option value="验光师"></option>
+          <option value="药房"></option>
+          <option value="兽医"></option>
+          <option value="宠物医院"></option>
+          <option value="心理学家"></option>
+          <option value="心理治疗师"></option>
+          <option value="营养师"></option>
+          <option value="足病医生"></option>
+          <option value="听力师"></option>
+          <option value="医学检验实验室"></option>
+          <option value="居家护理服务"></option>
+          <!-- Home and trade -->
+          <option value="管道工"></option>
+          <option value="电工"></option>
+          <option value="屋顶工程承包商"></option>
+          <option value="综合工程承包商"></option>
+          <option value="暖通空调承包商"></option>
+          <option value="油漆工"></option>
+          <option value="木工"></option>
+          <option value="园林绿化工"></option>
+          <option value="草坪养护服务"></option>
+          <option value="锁匠"></option>
+          <option value="家庭维修工"></option>
+          <option value="害虫防治服务"></option>
+          <option value="清洁服务"></option>
+          <option value="住宅保洁服务"></option>
+          <option value="擦窗服务"></option>
+          <option value="搬家公司"></option>
+          <option value="地板工程承包商"></option>
+          <option value="厨房翻新公司"></option>
+          <option value="卫浴翻新公司"></option>
+          <option value="围栏工程承包商"></option>
+          <option value="车库门供应商"></option>
+          <option value="太阳能工程承包商"></option>
+          <option value="树木养护服务"></option>
+          <option value="家电维修服务"></option>
+          <option value="废弃物处理服务"></option>
+          <!-- Vehicles -->
+          <option value="汽车修理厂"></option>
+          <option value="汽车经销商"></option>
+          <option value="二手车经销商"></option>
+          <option value="轮胎店"></option>
+          <option value="洗车店"></option>
+          <option value="汽车钣金喷漆店"></option>
+          <option value="汽车美容服务"></option>
+          <option value="加油站"></option>
+          <option value="拖车服务"></option>
+          <option value="摩托车经销商"></option>
+          <option value="租车公司"></option>
+          <option value="驾驶培训学校"></option>
+          <option value="汽车玻璃店"></option>
+          <!-- Professional services -->
+          <option value="律师"></option>
+          <option value="律师事务所"></option>
+          <option value="会计师"></option>
+          <option value="记账服务"></option>
+          <option value="报税服务"></option>
+          <option value="保险代理机构"></option>
+          <option value="房地产中介公司"></option>
+          <option value="房地产经纪人"></option>
+          <option value="银行"></option>
+          <option value="信用合作社"></option>
+          <option value="理财规划师"></option>
+          <option value="抵押贷款经纪人"></option>
+          <option value="公证员"></option>
+          <option value="营销公司"></option>
+          <option value="广告公司"></option>
+          <option value="网页设计师"></option>
+          <option value="软件公司"></option>
+          <option value="平面设计师"></option>
+          <option value="建筑师"></option>
+          <option value="室内设计师"></option>
+          <option value="土地测量师"></option>
+          <option value="招聘顾问"></option>
+          <option value="翻译"></option>
+          <option value="企业管理顾问"></option>
+          <option value="印刷店"></option>
+          <option value="摄影师"></option>
+          <option value="摄像师"></option>
+          <option value="安保服务"></option>
+          <!-- Fitness and leisure -->
+          <option value="健身房"></option>
+          <option value="健身中心"></option>
+          <option value="瑜伽馆"></option>
+          <option value="普拉提工作室"></option>
+          <option value="私人教练"></option>
+          <option value="武术学校"></option>
+          <option value="舞蹈学校"></option>
+          <option value="拳击馆"></option>
+          <option value="体育俱乐部"></option>
+          <option value="高尔夫球场"></option>
+          <option value="保龄球馆"></option>
+          <!-- Shops -->
+          <option value="食品杂货店"></option>
+          <option value="超市"></option>
+          <option value="便利店"></option>
+          <option value="肉铺"></option>
+          <option value="酒类专卖店"></option>
+          <option value="健康食品店"></option>
+          <option value="服装店"></option>
+          <option value="鞋店"></option>
+          <option value="珠宝店"></option>
+          <option value="家具店"></option>
+          <option value="家居用品店"></option>
+          <option value="五金店"></option>
+          <option value="园艺中心"></option>
+          <option value="书店"></option>
+          <option value="花店"></option>
+          <option value="宠物用品店"></option>
+          <option value="玩具店"></option>
+          <option value="礼品店"></option>
+          <option value="电子产品商店"></option>
+          <option value="手机维修店"></option>
+          <option value="电脑维修服务"></option>
+          <option value="体育用品店"></option>
+          <option value="古董店"></option>
+          <option value="二手商店"></option>
+          <option value="眼镜店"></option>
+          <option value="乐器行"></option>
+          <!-- Hospitality and travel -->
+          <option value="酒店"></option>
+          <option value="汽车旅馆"></option>
+          <option value="住宿加早餐旅馆"></option>
+          <option value="民宿"></option>
+          <option value="青年旅舍"></option>
+          <option value="露营地"></option>
+          <option value="旅行社"></option>
+          <option value="活动场地"></option>
+          <option value="婚礼场地"></option>
+          <option value="宴会厅"></option>
+          <option value="旅游线路运营商"></option>
+          <!-- Learning and community -->
+          <option value="幼儿园"></option>
+          <option value="小学"></option>
+          <option value="课外辅导服务"></option>
+          <option value="语言学校"></option>
+          <option value="音乐学校"></option>
+          <option value="美术学校"></option>
+          <option value="日托中心"></option>
+          <option value="图书馆"></option>
+          <option value="博物馆"></option>
+          <option value="美术馆"></option>
+          <option value="教堂"></option>
+          <option value="社区中心"></option>
+          <option value="殡仪馆"></option>
+          <option value="非营利组织"></option>
+          <!-- Other services -->
+          <option value="仓储设施"></option>
+          <option value="快递服务"></option>
+          <option value="干洗店"></option>
+          <option value="洗衣服务"></option>
+          <option value="裁缝"></option>
+          <option value="修鞋店"></option>
+          <option value="钟表维修服务"></option>
+          <option value="广告标识制作店"></option>
+          <option value="回收站"></option>
+          <option value="职业介绍所"></option>
+        </datalist>
+        <p class="field-note">
+          一行，用 Google 自己的说法——这是大多数搜索真正会去匹配的那个词。你打字时，这个框会给出大约两百个日常行当作为建议，但它什么都收：Google 自己的清单大约有四千条，而你能挑哪一条，只有它说了算。
+        </p>
+      </div>
+    </div>
+
+    <div class="settings numbers">
+      <div class="field">
+        <label for="rating">星级评分</label>
+        <input type="number" id="rating" min="0" max="5" step="0.1" inputmode="decimal"
+               value="4.5">
+      </div>
+
+      <div class="field">
+        <label for="reviews">评价数</label>
+        <input type="number" id="reviews" min="0" step="1" inputmode="numeric"
+               value="1284">
+      </div>
+
+      <div class="field">
+        <label for="price">价格档次</label>
+        <select id="price">
+          <option value="">不显示</option>
+          <option value="$">$ &mdash; 便宜</option>
+          <option value="$$" selected>$$ &mdash; 适中</option>
+          <option value="$$$">$$$ &mdash; 偏贵</option>
+          <option value="$$$$">$$$$ &mdash; 很贵</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="field-summary">
+      把评分和评价数都留空，卡片显示的就是一份新资料该显示的东西：一行「还没有评价」，而不是五颗空星。这是刻意的——五颗空星一眼看过去跟一颗星没什么两样，而这个页面存在的意义，就是让你自己那份资料不会有任何地方让你意外。
+    </p>
+
+    <div class="field">
+      <label for="description">商家简介</label>
+      <textarea id="description" rows="3">小批量烘焙的咖啡烘焙商兼咖啡馆，一周七天供应单一产地的意式浓缩和手冲。豆子在隔着两条街的地方烘好，也按袋出售。</textarea>
+      <p class="field-note" id="description-note"></p>
+    </div>
+
+    <div class="field">
+      <label for="attributes">属性</label>
+      <input type="text" id="attributes" autocomplete="off"
+             value="堂食, 外带, 无障碍通道">
+      <p class="field-note">
+        用逗号隔开——<code>堂食, 外带, 无障碍通道</code>。一张卡片最多显示六个。
+      </p>
+    </div>
+
+    <fieldset class="options">
+      <legend>封面照片</legend>
+      <p class="field-note">
+        在这里、在这个页面里读取，并重画到小得能放进图里的尺寸。它从来不会离开你的机器，而文件里记录的拍摄地点和时间，在被重画的那一刻就没了。
+      </p>
+      <div class="toolbar">
+        <div class="toolbar-actions">
+          <button type="button" id="pick-photo" class="ghost">选一张照片&hellip;</button>
+          <button type="button" id="drop-photo" class="ghost danger" hidden>去掉这张照片</button>
+        </div>
+      </div>
+      <input type="file" id="photo-file" accept="image/*" hidden
+             aria-label="为这份资料选一张封面照片">
+      <p class="path-note" id="photo-note" role="status" hidden></p>
+    </fieldset>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">试个例子</button>
+        <button type="button" id="clear" class="ghost danger">清空所有字段</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the three fields that turn into buttons -->
+  <section class="card">
+    <h2><span class="step">2</span> 它在哪儿，怎么联系</h2>
+
+    <p class="card-lede">
+      这三项决定了这份资料能拿到哪几个按钮。没有地址，就没有<em>路线</em>；没有网站，就没有<em>网站</em>；没有电话号码，就没有<em>拨打电话</em>。这是预览上最快能查的一件事，也是真实资料里最常缺的一件事。
+    </p>
+
+    <div class="field">
+      <label for="address">地址</label>
+      <input type="text" id="address" autocomplete="off"
+             value="123 King St W, Toronto, ON M5V 1J5">
+      <p class="field-note">
+        写成一行，就像一份资料印出来的那样。
+      </p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="service-area">
+      <span>
+        <strong>这家商家是上门服务的</strong>
+        <span class="check-note">
+          管道工、上门宠物美容、只做外送的厨房。Google 显示的会是服务范围而不是街道地址，上面那个框也就变成那个范围。
+        </span>
+      </span>
+    </label>
+
+    <div class="settings">
+      <div class="field">
+        <label for="phone">电话号码</label>
+        <input type="tel" id="phone" autocomplete="off" value="(416) 555-0134">
+      </div>
+
+      <div class="field">
+        <label for="website">网站</label>
+        <input type="url" id="website" autocomplete="off" spellcheck="false"
+               value="https://www.example.com">
+        <p class="field-note">
+          显示时不带 <code>https://</code>，也不带 <code>www.</code>，一份资料就是这么印的。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the hours, and the sentence they produce -->
+  <section class="card">
+    <h2><span class="step">3</span> 什么时候开门</h2>
+
+    <p class="card-lede">
+      这是一份资料上唯一会自己变的一行。把一周填满，预览就会按你自己的钟算出此刻它说的是什么——<em>营业中 &middot; 21:00 关门</em>，或者 <em>已关门 &middot; 周二 09:00 开门</em>——而这是弄清楚「周日傍晚来查你的人被告知了什么」的唯一办法。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="status">把这家商家显示为</label>
+        <select id="status">
+          <option value="auto" selected>由下面的营业时间推算</option>
+          <option value="open24">24 小时营业</option>
+          <option value="temporary">暂停营业</option>
+          <option value="permanent">已永久停业</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="clock">时间制</label>
+        <select id="clock">
+          <option value="12" selected>12 小时制 &mdash; 9 PM</option>
+          <option value="24">24 小时制 &mdash; 21:00</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="week" id="week"></div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="copy-monday" class="ghost">把周一复制到每一天</button>
+        <button type="button" id="weekdays-only" class="ghost">只开工作日</button>
+      </div>
+    </div>
+
+    <p class="field-summary" id="week-note"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">4</span> 看看它，然后把它带走</h2>
+
+    <p class="card-lede">
+      同一份资料，裁成三种长度。在它们之间切换看看：放得进知识面板的，未必放得进搜索结果，而搜索结果正是那些原本不知道你名字的人找到一家商家的地方。
+    </p>
+
+    <div class="chips" role="group" aria-label="要预览哪个版面">
+      <button type="button" class="chip" data-surface="panel" aria-pressed="true">
+        知识面板
+      </button>
+      <button type="button" class="chip" data-surface="mobile" aria-pressed="false">
+        手机上
+      </button>
+      <button type="button" class="chip" data-surface="listing" aria-pressed="false">
+        搜索结果
+      </button>
+    </div>
+
+    <div class="stage" id="stage"></div>
+
+    <p class="field-summary" id="stage-note"></p>
+
+    <div class="export-row">
+      <label for="scale">尺寸</label>
+      <select id="scale">
+        <option value="1" selected>原始尺寸</option>
+        <option value="2">两倍</option>
+        <option value="3">三倍</option>
+      </select>
+      <button type="button" id="save-png" class="primary big">下载 PNG</button>
+      <button type="button" id="save-svg" class="ghost">下载 SVG</button>
+      <button type="button" id="save-json" class="ghost">保存资料</button>
+    </div>
+
+    <p class="path-note" id="save-note" role="status" hidden></p>
+    <p class="error" id="save-error" role="alert" hidden></p>
+
+    <!--
+      Deliberately a plain paragraph rather than a field-summary. Everything in
+      that class is folded behind the card's heading by buildlib/cards.py,
+      which is right for an explanation and wrong for this one: a page drawing
+      somebody else's interface this recognisably has to say on sight that it
+      is a drawing and that Google had nothing to do with it. A disclaimer
+      behind a fold is a disclaimer nobody read. The longer version of the same
+      point is a field-summary below, and folds like everything else.
+    -->
+    <p class="mock-note">
+      这是一幅画，不是截图。并非由 Google 制作、认可，也与 Google 无关。
+    </p>
+
+    <p class="field-summary">
+      真东西上用的字体是 Google Sans，那不是你机器上会有的字体，而版式会随着每一次改版而变——所以间距当个近似看就好。真正精确的，是值得预览的那一部分：每个字段在它被给到的宽度里，还能剩下多少。
+    </p>
+  </section>
+
+  <!--
+    Sentences the JavaScript puts on the page. They live here rather than in
+    src/ so that they arrive in the page's language: shared/js/phrases.js reads
+    them back, and a {name} is filled in by the caller. See the note at the top
+    of that file for why a string in a module is English on fourteen pages out
+    of fifteen.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="label.reviews">{count} 条 Google 评价</span>
+    <span data-phrase="label.review1">1 条 Google 评价</span>
+    <span data-phrase="label.reviewsshort">({count})</span>
+    <span data-phrase="label.noreviews">还没有评价</span>
+    <span data-phrase="label.website">网站</span>
+    <span data-phrase="label.directions">路线</span>
+    <span data-phrase="label.call">拨打电话</span>
+    <span data-phrase="label.save">保存</span>
+    <span data-phrase="label.share">分享</span>
+    <span data-phrase="label.from">来自商家</span>
+    <span data-phrase="label.serves">服务范围：{area}</span>
+    <span data-phrase="sample.placeholder">你的商家名称</span>
+
+    <span data-phrase="status.open">营业中</span>
+    <span data-phrase="status.closed">已关门</span>
+    <span data-phrase="status.closes">{at} 关门</span>
+    <span data-phrase="status.opens">{at} 开门</span>
+    <span data-phrase="status.opensday">{day} {at} 开门</span>
+    <span data-phrase="status.open24">24 小时营业</span>
+    <span data-phrase="status.temporary">暂停营业</span>
+    <span data-phrase="status.permanent">已永久停业</span>
+
+    <span data-phrase="time.am">上午</span>
+    <span data-phrase="time.pm">下午</span>
+
+    <span data-phrase="day.sun">周日</span>
+    <span data-phrase="day.mon">周一</span>
+    <span data-phrase="day.tue">周二</span>
+    <span data-phrase="day.wed">周三</span>
+    <span data-phrase="day.thu">周四</span>
+    <span data-phrase="day.fri">周五</span>
+    <span data-phrase="day.sat">周六</span>
+
+    <span data-phrase="day.long.sun">星期日</span>
+    <span data-phrase="day.long.mon">星期一</span>
+    <span data-phrase="day.long.tue">星期二</span>
+    <span data-phrase="day.long.wed">星期三</span>
+    <span data-phrase="day.long.thu">星期四</span>
+    <span data-phrase="day.long.fri">星期五</span>
+    <span data-phrase="day.long.sat">星期六</span>
+
+    <span data-phrase="week.open">{day} 开门时间</span>
+    <span data-phrase="week.close">{day} 关门时间</span>
+    <span data-phrase="week.shut">{day} 休息</span>
+    <span data-phrase="week.copied">周一的营业时间已经复制到一周的每一天。</span>
+    <span data-phrase="week.weekdays">周一到周五营业，周末休息。</span>
+    <span data-phrase="week.reads">此刻这里读出来是{status}。它是按你自己的钟算的，所以在另一个时区的同事看到的会是另一行。</span>
+
+    <span data-phrase="name.length">{count} 个字符。搜索结果只给名称一行，行到哪儿就从哪儿截断——看看第三个预览。</span>
+    <span data-phrase="description.length">{count} 个字符。面板大约显示它的前四行。</span>
+
+    <span data-phrase="photo.added">已添加，并在这个页面里重画成 {width} × {height}。为了读它，什么都没有上传。</span>
+    <span data-phrase="photo.toobig">这张图太大了。上限是二十兆字节。</span>
+    <span data-phrase="photo.unreadable">这个文件不是这个浏览器能读的图片。</span>
+    <span data-phrase="photo.tiny">这张图太小了，放不到卡片上。</span>
+    <span data-phrase="photo.gone">已去掉。卡片现在显示的，是一份没有照片的资料会显示的那块灰色方块。</span>
+
+    <span data-phrase="sample.done">已经用一个例子填好了，连封面照片也有——而那张照片是在这里、在这个页面上画出来的，不是下载来的。哪一项都可以直接盖着改。</span>
+    <span data-phrase="clear.done">已清空。一份什么都没填的资料就长这样，这个值得看一次。</span>
+
+    <span data-phrase="sample.name">Ashgrove Bakehouse</span>
+    <span data-phrase="sample.category">面包店</span>
+    <span data-phrase="sample.address">42 Mill Lane, Bristol BS1 4RN</span>
+    <span data-phrase="sample.phone">+44 117 496 0142</span>
+    <span data-phrase="sample.website">https://ashgrove.example.com</span>
+    <span data-phrase="sample.description">酸面包和各式点心通宵烤好，从早上七点开始卖，卖完为止。长时间发酵的面包，一份短短的菜单，还有可以带走的咖啡。</span>
+    <span data-phrase="sample.attributes">外带, 无障碍通道, 有素食选择</span>
+
+    <span data-phrase="stage.panel">知识面板，{width} × {height} 像素。</span>
+    <span data-phrase="stage.mobile">手机，{width} × {height} 像素。</span>
+    <span data-phrase="stage.listing">搜索结果，{width} × {height} 像素。</span>
+    <span data-phrase="stage.alt">{name} 的 Google 资料模拟图：{status}，{reviews}。</span>
+
+    <span data-phrase="save.done">已保存——{name}，{width} × {height} 像素。为了画它，什么都没有往外送。</span>
+    <span data-phrase="save.svgdone">已存成 SVG。它是一个文件，照片就在里面，所以不带指向任何地方的链接。</span>
+    <span data-phrase="save.jsondone">已保存。下次在这里再打开这个文件，就能把这份资料接着做下去。</span>
+    <span data-phrase="save.failed">{detail}。SVG 仍然会下载。</span>
+    <span data-phrase="save.nosvg">这个浏览器画不出这张图</span>
+    <span data-phrase="save.nopng">这个浏览器写不出 PNG</span>
+
+    <span data-phrase="paste.empty">框里没有东西可读。</span>
+    <span data-phrase="paste.nothing">那里面没有哪一部分像是一份资料。请把整张卡片复制下来——名称、星星，以及底下那几行——而不是只复制其中一行。</span>
+    <span data-phrase="paste.read">读到了{fields}。其余的都原样留着，而这里面每一项都是值得核对一下的猜测。</span>
+
+    <span data-phrase="field.name">名称</span>
+    <span data-phrase="field.category">类别</span>
+    <span data-phrase="field.rating">评分</span>
+    <span data-phrase="field.reviews">评价数</span>
+    <span data-phrase="field.address">地址</span>
+    <span data-phrase="field.phone">电话号码</span>
+    <span data-phrase="field.website">网站</span>
+    <span data-phrase="field.price">价格档次</span>
+    <span data-phrase="field.hours">营业时间</span>
+    <span data-phrase="field.description">商家简介</span>
+    <span data-phrase="field.list">{first}和{last}</span>
+
+    <span data-phrase="load.own">已载入。这就是这个页面当初存下来的那份资料。</span>
+    <span data-phrase="load.google">已按 Business Profile 导出文件读取。评分、评价数和照片不在导出文件里，所以这三项还得你自己填。</span>
+    <span data-phrase="load.notjson">这个文件不是这里能读的 JSON。</span>
+    <span data-phrase="load.unknown">这份 JSON 既不是这个页面存下来的资料，也不是一个 Business Profile 地点。</span>
+
+    <span data-phrase="net.clean">你打进去的关于这家商家的内容，哪儿都没去。已加载 {total} 个文件。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从来不这么做。{platform}</span>
+    <span data-phrase="net.platform.one">这个页面自己的广告、统计和捐赠按钮脚本来自 {hosts} 个主机；它们谁也没拿到过一个字段、一张照片或者一个营业时间。</span>
+    <span data-phrase="net.platform.many">这个页面自己的广告、统计和捐赠按钮脚本来自 {hosts} 个主机；它们谁也没拿到过一个字段、一张照片或者一个营业时间。</span>
+  </div>
+</main>
