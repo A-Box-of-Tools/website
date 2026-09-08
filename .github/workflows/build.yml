@@ -102,6 +102,10 @@ jobs:
   # still cannot happen without it.
   test:
     runs-on: ubuntu-latest
+    # Read by `build` and `preview` below. One decision, three consumers: the
+    # suites, the build, and the preview and QA run that follow it.
+    outputs:
+      site: ${{ steps.covered.outputs.code }}
     steps:
       # What this actually changed, asked of the API rather than worked out
       # from a clone: it is one request, and fetching enough history to diff
@@ -115,9 +119,31 @@ jobs:
       # failure mode is a suite that ran when it need not have, and never a
       # change that shipped untested.
       #
-      # The exempt list is an allowlist, and short on purpose: prose the build
+      # The exempt list is an allowlist, and short on purpose: files the build
       # never reads and no test opens. Anything else - anything new, anything
-      # unrecognised - runs the suites until somebody decides otherwise here.
+      # unrecognised - builds and runs the suites until somebody decides
+      # otherwise here.
+      #
+      # THE STANDARD AN ENTRY HAS TO MEET is that no test OPENS it, which is
+      # not the same as no test mentioning it. Nearly every path on this list
+      # appears in tests/python/test_version.py, as a string in the fixture
+      # asserting the version rule cannot see it; naming a path is not reading
+      # one. Three that look like they belong here do not, and each was checked
+      # rather than assumed:
+      #
+      #   workers/    tests/js/rendezvous.test.js imports worker.js outright
+      #   serve.ps1   tests/python/test_serve.py reads its MIME table
+      #   tests/      the suites are the thing being changed
+      #
+      # `.github/` is OFF the list, and for a different reason from the three
+      # above - it would qualify under the rule, because no test opens a
+      # workflow. A workflow exempt from the run it defines never gets one:
+      # the first thing to exercise a step edited here would be the deploy
+      # that needed it, and the first sign of a mistake a release that did not
+      # happen. GitHub parsing the file is not the same assurance, because a
+      # workflow can load perfectly and still hold a condition that never
+      # fires - which is most of what this file is made of. So a change here
+      # builds and runs both suites like any other.
       - name: Is there anything here a test could see?
         id: covered
         env:
@@ -143,8 +169,9 @@ jobs:
               code=false
               while IFS= read -r path; do
                 case "$path" in
-                  README.md|CLAUDE.md|ROADMAP.md|LICENSE|LICENSE-CONTENT) continue ;;
-                  docs/*|.claude/*) continue ;;
+                  README.md|CLAUDE.md|ROADMAP.md) continue ;;
+                  LICENSE|LICENSE-CONTENT|LICENSE-BRAND) continue ;;
+                  docs/*|.claude/*|media/*|cloudflare/*) continue ;;
                 esac
                 code=true
                 why="\`$path\` is a file a test could see"
@@ -154,9 +181,9 @@ jobs:
           fi
 
           if [ "$code" = true ]; then
-            said="Running both suites, because $why."
+            said="Building and running both suites, because $why."
           else
-            said="Skipping both suites: everything this changed is prose the build never reads and no test opens. The build still runs."
+            said="Nothing here reaches the site: everything this changed is a file the build never reads and no test opens, so the build and both suites are skipped."
           fi
 
           # Twice on purpose. The summary is where somebody looks to find out
@@ -214,9 +241,16 @@ jobs:
     # already publish an unreviewed branch straight to production. Naming the
     # branch is what makes both impossible, and it is why these are conditions
     # on the ref rather than on the event.
+    #
+    # All three rest on the `test` job's answer, so a change that reaches no
+    # page is not built, not published and not previewed. The steps are skipped
+    # and the job is not, for the reason given over that job: a skipped job
+    # skips everything that needs it, and `needs: test` is the only thing
+    # standing between a broken test and the deployed branch.
     env:
-      DEPLOYS: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
-      PREVIEWS: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/dev' }}
+      BUILDS: ${{ needs.test.outputs.site }}
+      DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+      PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -243,13 +277,16 @@ jobs:
       # refuses to name the first version while the remote holds one, so if
       # this fetch ever stops working the step fails instead of agreeing.
       - uses: actions/checkout@v4
+        if: env.BUILDS == 'true'
       - name: Fetch the version tags the checkout leaves behind
+        if: env.BUILDS == 'true'
         run: git fetch --depth=1 origin '+refs/tags/*:refs/tags/*'
 
       # The build uses tomllib, which is standard library from 3.11 onwards.
       # Python alone produces a working, readable site: that is what plain
       # `python build.py` does, and it needs nothing installed.
       - uses: actions/setup-python@v5
+        if: env.BUILDS == 'true'
         with:
           python-version: '3.12'
 
@@ -257,6 +294,7 @@ jobs:
       # installed from npm: the build itself is Python and the standard
       # library, start to finish.
       - uses: actions/setup-node@v4
+        if: env.BUILDS == 'true'
         with:
           node-version: '20'
 
@@ -264,9 +302,11 @@ jobs:
       # against. Cheap, and it means a file that went missing has something to
       # go missing from.
       - name: Build (readable)
+        if: env.BUILDS == 'true'
         run: python build.py --out _plain --clean --no-minify
 
       - name: Build (deployed)
+        if: env.BUILDS == 'true'
         run: python build.py --out _site --clean
 
       # Minifying is the one step here that could break the site quietly, so
@@ -281,6 +321,7 @@ jobs:
       # filename, so a module that vanished is caught even if everything left
       # behind parses.
       - name: Check the minified output
+        if: env.BUILDS == 'true'
         run: |
           set -euo pipefail
           work=$(mktemp -d)
@@ -524,9 +565,13 @@ jobs:
           {
             echo '### Build'
             echo
-            echo '```'
-            find _site -type f | sort | sed 's|^_site/|  |'
-            echo '```'
+            if [ -d _site ]; then
+              echo '```'
+              find _site -type f | sort | sed 's|^_site/|  |'
+              echo '```'
+            else
+              echo 'Not built: nothing this changed reaches a page. See the Tests section above.'
+            fi
           } >> "$GITHUB_STEP_SUMMARY"
 
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
@@ -609,8 +654,15 @@ jobs:
   # is GitHub's rule, and the right one: a fork's workflow must not be able to
   # deploy with this repository's credentials.
   preview:
-    needs: build
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev'
+    needs: [test, build]
+    # There is no artifact to take when the build did not run, and nothing to
+    # look at or test if there were: the site it would have made is the one
+    # already deployed. A pull request that changes only prose therefore gets
+    # no preview and no `qa/preview` check - worth knowing before that check is
+    # ever made a required one.
+    if: >-
+      needs.test.outputs.site == 'true' &&
+      (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
     permissions:
       contents: read
