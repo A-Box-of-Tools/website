@@ -8,6 +8,8 @@
  * and for the same reason.
  */
 
+import { ltr } from './shared/phrases.js';
+
 /** KB and MB mean 1024 and 1024*1024, which is what a file manager shows and
  *  what people mean when they say "under 5 MB". */
 export function bytes(n) {

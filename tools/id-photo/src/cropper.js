@@ -30,6 +30,8 @@
  * survives the window being resized and a phone being turned.
  */
 
+import { ltr } from './shared/phrases.js';
+
 /** The smallest crop, in source pixels. Below this nothing is being framed. */
 const MIN_SIZE = 24;
 
