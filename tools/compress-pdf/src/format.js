@@ -8,6 +8,8 @@
  * and for the same reason.
  */
 
+import { ltr } from './shared/phrases.js';
+
 /** KB and MB mean 1024 and 1024*1024, which is what a file manager shows and
  *  what people mean when they say "under 5 MB". */
 export function bytes(n) {
@@ -45,7 +47,7 @@ export function dpi(value) {
 
 /** "2480 × 3508", with a real multiplication sign. */
 export function dimensions(width, height) {
-  return `${width} × ${height}`;
+  return ltr(`${width} × ${height}`);
 }
 
 /** What to call the finished file. The original extension is kept, because it

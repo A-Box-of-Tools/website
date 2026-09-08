@@ -18,6 +18,7 @@
  */
 
 import { isName, PdfString, Ref } from './shared/pdf-objects.js';
+import { ltr } from './shared/phrases.js';
 
 /** The keys a page inherits from the nodes above it. There are exactly four,
  *  and they are named in the specification's table of page tree attributes. */
@@ -161,9 +162,9 @@ export function sizeLabel(width, height) {
 
   const inches = [width / 72, height / 72];
   if (inches.every((value) => Math.abs(value - Math.round(value * 2) / 2) < 0.02)) {
-    return `${trim(inches[0])} × ${trim(inches[1])} in`;
+    return ltr(`${trim(inches[0])} × ${trim(inches[1])} in`);
   }
-  return `${Math.round((width / 72) * 25.4)} × ${Math.round((height / 72) * 25.4)} mm`;
+  return ltr(`${Math.round((width / 72) * 25.4)} × ${Math.round((height / 72) * 25.4)} mm`);
 }
 
 function trim(value) {

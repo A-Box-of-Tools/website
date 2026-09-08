@@ -167,7 +167,7 @@ body = """
 
       Ziehen Sie eine Seite am Griff, oder schubsen Sie sie mit den Pfeilen. Drehen
       Sie eine, die quer eingescannt wurde, nehmen Sie eine heraus, oder tippen Sie
-      <code>1-3, 8, 12-</code> in das Feld, um gleich eine ganze Folge zu behalten,
+      <code dir="ltr">1-3, 8, 12-</code> in das Feld, um gleich eine ganze Folge zu behalten,
       zu entfernen oder zu drehen. Die Nummern werden dabei laufend neu vergeben,
       was Sie sehen, ist also immer das, was in der fertigen Datei steht."""
 

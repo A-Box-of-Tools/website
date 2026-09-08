@@ -31,7 +31,7 @@
 
     <div class="range-row">
       <label for="range">页码</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">只保留这些</button>
       <button type="button" id="range-drop" class="ghost">删掉这些</button>
@@ -76,7 +76,7 @@
             <strong>在指定页码处拆</strong>
             <span class="preset-note">
               在
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="在这些页码之前切开">
               之前切开——这些页各自成为新文件的第一页。
             </span>

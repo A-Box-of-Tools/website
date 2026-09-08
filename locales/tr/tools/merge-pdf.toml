@@ -160,7 +160,7 @@ body = """
 
       Bir sayfayı tutamağından sürükleyin ya da oklarla kaydırın. Yan taranmış
       birini döndürün, birini çıkarın ya da bir dizisini bir seferde tutmak,
-      kaldırmak veya döndürmek için kutuya <code>1-3, 8, 12-</code> yazın.
+      kaldırmak veya döndürmek için kutuya <code dir="ltr">1-3, 8, 12-</code> yazın.
       Numaralar siz ilerledikçe yeniden verilir; yani gördüğünüz şey her zaman
       bitmiş dosyanın kendisidir."""
 

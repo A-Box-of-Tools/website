@@ -12,6 +12,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { ltr } from '../../shared/js/phrases.js';
+
 import { Cropper } from '../../shared/js/cropper.js';
 
 /** An element that records what the cropper does to it. */
@@ -50,7 +52,7 @@ test('the box opens on the whole picture, and says how big it is', () => {
   const { cropper, box, seen, label } = build({ label: 'Crop area' });
   cropper.setSource(400, 300);
   assert.deepEqual(cropper.rect, { x: 0, y: 0, width: 400, height: 300 });
-  assert.equal(label(), '400 x 300');
+  assert.equal(label(), ltr('400 x 300'));
   assert.equal(box['@aria-label'], 'Crop area');
   assert.equal(box.style.width, '100%');
   assert.deepEqual(seen.at(-1), { x: 0, y: 0, width: 400, height: 300 });
@@ -67,7 +69,7 @@ test('the video cropper: every side even, never smaller than sixteen', () => {
   // 33 becomes 32, 21 becomes 20, and the box is pushed back inside the
   // picture - the picture itself is still 101 x 75, only the box is even.
   assert.deepEqual(cropper.rect, { x: 69, y: 55, width: 32, height: 20 });
-  assert.equal(label(), '32 x 20');
+  assert.equal(label(), ltr('32 x 20'));
 });
 
 test('the image resizer: any size down to eight, odd ones included', () => {

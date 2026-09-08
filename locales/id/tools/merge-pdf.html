@@ -44,7 +44,7 @@
 
     <div class="range-row">
       <label for="range">Halaman</label>
-      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+      <input type="text" id="range" dir="ltr" placeholder="1-3, 8, 12-" autocomplete="off"
              spellcheck="false" aria-describedby="range-note">
       <button type="button" id="range-keep" class="ghost">Simpan hanya ini</button>
       <button type="button" id="range-drop" class="ghost">Buang yang ini</button>
@@ -93,7 +93,7 @@
             <strong>Pisah pada halaman&hellip;</strong>
             <span class="preset-note">
               Potong sebelum
-              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Nomor halaman yang dipotong sebelumnya">
               &mdash; masing-masing memulai file baru.
             </span>
@@ -226,7 +226,7 @@
     <span data-phrase="page.earlier">Majukan halaman {n}</span>
     <span data-phrase="page.later">Mundurkan halaman {n}</span>
     <span data-phrase="range.none">tidak ada</span>
-    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
     <span data-phrase="range.bad.one">Ini bukan nomor halaman ataupun rentang halaman: {list}. {total} Tulis begini: 1-3,
       8, 12-.</span>

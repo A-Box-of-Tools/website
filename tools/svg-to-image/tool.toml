@@ -270,7 +270,7 @@ a = """
         are user units rather than pixels, but they are the only numbers in the
         file and a browser treats them as the drawing's natural size. If there is
         no viewBox either, the page says <em>assumed</em> beside the row and uses
-        300&nbsp;&times;&nbsp;150, which is what an <code>&lt;img&gt;</code> would
+        &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, which is what an <code>&lt;img&gt;</code> would
         have drawn it at. Either way you can name the size you want and the file
         is drawn at that."""
 
@@ -301,7 +301,7 @@ q = "Is there a size limit?"
 a = """
         The browser's, not ours. A canvas gives up somewhere past 16,384 pixels
         on a side, and Safari on an iPhone or iPad stops at about 16.7 megapixels
-        of area &mdash; 4096&nbsp;&times;&nbsp;4096. Above that the page warns you
+        of area &mdash; &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Above that the page warns you
         rather than handing back a blank image, which is what a browser does when
         it has run out: <code>toBlob</code> returns nothing at all, with no error
         to explain itself. Past 100 megapixels the tool refuses, because that is

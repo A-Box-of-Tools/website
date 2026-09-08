@@ -19,6 +19,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
+import { ltr } from '../../shared/js/phrases.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { reachable, stripMetadata, writeDocument } from '../../shared/js/pdf-writer.js';
 import { Ref, PdfStream } from '../../shared/js/pdf-objects.js';
@@ -305,7 +306,7 @@ test('dpi: rounded, and empty when there is nothing to say', () => {
 });
 
 test('dimensions: a real multiplication sign', () => {
-  assert.equal(dimensions(2480, 3508), '2480 × 3508');
+  assert.equal(dimensions(2480, 3508), ltr('2480 × 3508'));
 });
 
 test('outName: the extension is kept, because it is still a PDF', () => {

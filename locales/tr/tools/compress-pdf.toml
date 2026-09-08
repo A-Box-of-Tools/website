@@ -172,7 +172,7 @@ q = "PDF'im ne kadar küçülecek?"
 a = """
         Tamamen içinde ne olduğuna bağlı; araç da bu yüzden hiçbir şeyi
         sıkıştırmadan önce ölçüp size gösteriyor. Taranmış bir belge neredeyse
-        baştan sona fotoğraftır ve genellikle %60&ndash;90 küçülür. Bir sözleşme
+        baştan sona fotoğraftır ve genellikle %&#x2066;60&ndash;90&#x2069; küçülür. Bir sözleşme
         ya da bir tez ise metin, vektör çizim ve gömülü yazı tiplerinden oluşur;
         bunların hepsi onları üreten yazılım tarafından zaten sıkıştırılmıştır.
         Oradaki tasarruf genellikle yüzde birkaçtır ve dosyayı yeniden

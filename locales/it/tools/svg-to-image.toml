@@ -217,7 +217,7 @@ a = """
         altezza sono unità utente e non pixel, ma sono gli unici numeri che stanno
         nel file, e un browser li tratta come la dimensione naturale del disegno.
         Se non c'è nemmeno un viewBox, la pagina scrive <em>presunta</em> accanto
-        alla riga e usa 300&nbsp;&times;&nbsp;150, che è la dimensione a cui
+        alla riga e usa &#x2066;300&nbsp;&times;&nbsp;150&#x2069;, che è la dimensione a cui
         l'avrebbe disegnato un <code>&lt;img&gt;</code>. In un caso e nell'altro
         puoi indicare la dimensione che vuoi e il file viene disegnato a
         quella."""
@@ -249,7 +249,7 @@ q = "C'è un limite di dimensione?"
 a = """
         Quello del browser, non il nostro. Un canvas si arrende da qualche parte
         oltre i 16.384 pixel per lato, e Safari su iPhone o iPad si ferma attorno
-        ai 16,7 megapixel di area, cioè 4096&nbsp;&times;&nbsp;4096. Sopra quella
+        ai 16,7 megapixel di area, cioè &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Sopra quella
         soglia la pagina ti avverte, invece di restituirti un'immagine vuota, che
         è quello che fa un browser quando è a corto: <code>toBlob</code> non
         restituisce proprio niente, senza nemmeno un errore che si spieghi. Oltre

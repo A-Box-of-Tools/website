@@ -210,7 +210,7 @@ a = """
         kullanıcı birimidir, ama dosyadaki tek sayılar onlardır ve bir tarayıcı
         onları çizimin doğal boyutu olarak kabul eder. viewBox da yoksa sayfa,
         satırın yanında <em>varsayılan</em> der ve bir <code>&lt;img&gt;</code>'in
-        onu çizeceği boyut olan 300&nbsp;&times;&nbsp;150'yi kullanır. Her iki
+        onu çizeceği boyut olan &#x2066;300&nbsp;&times;&nbsp;150&#x2069;'yi kullanır. Her iki
         durumda da istediğiniz boyutu söyleyebilirsiniz ve dosya o boyutta
         çizilir."""
 
@@ -240,7 +240,7 @@ q = "Bir boyut sınırı var mı?"
 a = """
         Bizim değil tarayıcının sınırı. Bir tuval, bir kenarda 16.384 pikselin
         biraz ötesinde pes eder ve iPhone ya da iPad'deki Safari yaklaşık 16,7
-        megapiksel alanda durur &mdash; 4096&nbsp;&times;&nbsp;4096. Bunun
+        megapiksel alanda durur &mdash; &#x2066;4096&nbsp;&times;&nbsp;4096&#x2069;. Bunun
         üstünde sayfa, size boş bir görüntü vermek yerine uyarır; çünkü bir
         tarayıcı tükendiğinde yaptığı şey budur: <code>toBlob</code> kendini
         açıklayan bir hata bile vermeden hiçbir şey döndürür. 100 megapikselin

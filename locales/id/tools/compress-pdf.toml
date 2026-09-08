@@ -175,7 +175,7 @@ q = "Seberapa kecil PDF saya nanti?"
 a = """
         Sepenuhnya tergantung isinya, dan itulah sebabnya alat ini mengukur dan
         menunjukkannya kepada Anda sebelum mengompres apa pun. Dokumen hasil
-        pindaian hampir seluruhnya berupa foto dan biasanya menjadi 60&ndash;90%
+        pindaian hampir seluruhnya berupa foto dan biasanya menjadi &#x2066;60&ndash;90&#x2069;%
         lebih kecil. Sebuah kontrak atau skripsi berisi teks, gambar vektor, dan
         font tertanam, yang semuanya sudah dikompres oleh apa pun yang
         membuatnya; di situ penghematannya biasanya beberapa persen saja, dari

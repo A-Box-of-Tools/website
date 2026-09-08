@@ -6,11 +6,12 @@
  * language. See shared/js/phrases.js.
  */
 import { sizeText } from './shared/format.js';
+import { ltr } from './shared/phrases.js';
 
 export const bytes = (n, t) => sizeText(n, t, { under: 'size.bytes', kb: 'auto', mb: 2 });
 
 /** "16 × 16", with a real multiplication sign. */
-export const dimensions = (width, height) => `${width} × ${height}`;
+export const dimensions = (width, height) => ltr(`${width} × ${height}`);
 
 /**
  * "1 image" / "4 images" / "3 sizes" / "10 slots".

@@ -285,3 +285,55 @@ Two decisions already taken, so they need not be taken again:
 This is the one part of the translation that cannot be checked by reading the
 output. It has to be exercised in a browser.
 
+## Numbers in a right-to-left page
+
+Arabic is the one language here that runs right to left, and a pair of numbers
+in an Arabic sentence is the one thing on these pages that can be wrong without
+looking wrong.
+
+`1280 x 960` says nothing about its own direction. Digits are neutral, and so
+is the separator between them, so the bidi algorithm hands the whole pair to
+the paragraph it sits in — and that paragraph runs the other way. The frame is
+still 1280 wide, the markup still says so, and the reader is shown
+`960 x 1280` beside a thumbnail that is plainly wider than it is tall. Nothing
+is garbled; the sentence around it is perfect; the two numbers have simply
+swapped places. That is worse than mojibake, which at least announces itself.
+
+So a numeric expression says which way it reads, with a left-to-right isolate
+around **the whole pair**:
+
+```html
+<span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
+<p>A 4K clip gives a &#x2066;3840 &times; 2160&#x2069; picture.</p>
+```
+
+`&#x2066;` is U+2066 LEFT-TO-RIGHT ISOLATE and `&#x2069;` is U+2069 POP
+DIRECTIONAL ISOLATE. In the fourteen left-to-right languages they do nothing at
+all, which is why they are written into every locale rather than into `ar`
+alone: the marks belong to the expression, not to Arabic, and a translation
+that loses them loses them silently.
+
+Where JavaScript builds the expression instead — a cropper's label, the
+dimensions on `compress-image` — `ltr()` from `shared/js/phrases.js` does the
+same job at the point the string is made, so every consumer gets it, a `title`
+attribute included.
+
+Three things worth knowing:
+
+* **wrap the pair, never each number.** Two isolates side by side are two
+  neutral objects to the paragraph around them and swap exactly as the bare
+  numbers did. `&#x2066;{width}&#x2069; &times; &#x2066;{height}&#x2069;` is
+  the fix that looks right and is not;
+* **leave the unit outside.** `&#x2066;35 &times; 45&#x2069; مم` reads
+  correctly, because the millimetres are Arabic and belong to the Arabic;
+* **not every pair is broken, and the untouched ones are untouched on
+  purpose.** A tight `1280x960` survives on its own — the letter is a strong
+  left-to-right character — and so does a tight `8-12`, because the hyphen is
+  absorbed into the number. Two numbers separated by an Arabic word are correct
+  as they are: `{done} من {total}` reads right to left because it is a
+  sentence, and forcing it left to right would break it. What reorders is a
+  neutral separator between two bare numbers: a multiplication sign, a spaced
+  `x`, an en dash, a comma and a space.
+
+None of this can be checked by reading the output either. Build the page, open
+it in Arabic, and look at the numbers next to the picture they describe.

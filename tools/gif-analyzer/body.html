@@ -207,7 +207,7 @@
     <span data-phrase="frame.delay">Delay</span>
     <span data-phrase="frame.clamped">{delay} &rarr; 0.10s</span>
     <span data-phrase="frame.rectangle">Rectangle</span>
-    <span data-phrase="frame.rect">{width} &times; {height} at {left}, {top}</span>
+    <span data-phrase="frame.rect">&#x2066;{width} &times; {height}&#x2069; at &#x2066;{left}, {top}&#x2069;</span>
     <span data-phrase="frame.palette">Palette</span>
     <span data-phrase="palette.own">{n} of its own</span>
     <span data-phrase="palette.global">the global one</span>
@@ -300,7 +300,7 @@
     <span data-phrase="report.file">The file</span>
     <span data-phrase="report.version">Version</span>
     <span data-phrase="report.canvas">Canvas</span>
-    <span data-phrase="report.pixels">{width} x {height} pixels</span>
+    <span data-phrase="report.pixels">&#x2066;{width} x {height}&#x2069; pixels</span>
     <span data-phrase="report.size">Size</span>
     <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
     <span data-phrase="report.frames">Frames</span>
@@ -344,7 +344,7 @@
     <span data-phrase="find.loopcount.title.many">This plays {count} times and then stops.</span>
     <span data-phrase="find.loopcount.body">The loop block names a count rather than the usual zero, which means forever. Some older viewers ignore the count and loop anyway.</span>
     <span data-phrase="find.allfull.title">Every frame redraws the whole canvas.</span>
-    <span data-phrase="find.allfull.body">A GIF may store a frame as only the rectangle that changed since the last one, which is why a screen recording of a mostly-still window can be small. Nothing here does: every frame is the full {width}&times;{height}. That is correct for frames made from unrelated pictures, and is money left on the table for anything filmed or recorded, where most of the picture does not move between frames.</span>
+    <span data-phrase="find.allfull.body">A GIF may store a frame as only the rectangle that changed since the last one, which is why a screen recording of a mostly-still window can be small. Nothing here does: every frame is the full &#x2066;{width}&times;{height}&#x2069;. That is correct for frames made from unrelated pictures, and is money left on the table for anything filmed or recorded, where most of the picture does not move between frames.</span>
     <span data-phrase="find.somefull.title.one">One frame of {total} redraws the whole canvas; the rest store only the part that changed.</span>
     <span data-phrase="find.somefull.title.many">{count} frames of {total} redraw the whole canvas; the rest store only the part that changed.</span>
     <span data-phrase="find.somefull.body">That is what an optimised GIF looks like. The full-canvas ones are usually the first frame and any point where the picture changed completely.</span>
@@ -352,8 +352,8 @@
     <span data-phrase="find.nonefull.body">Every frame after the first stores only the rectangle that changed, which is the format used properly and is why this file is as small as it is.</span>
     <span data-phrase="find.outside.title.one">One frame reaches outside the canvas.</span>
     <span data-phrase="find.outside.title.many">{count} frames reach outside the canvas.</span>
-    <span data-phrase="find.outside.body.one">The canvas is {width}&times;{height} and a frame claims a rectangle that runs off the edge of it. Decoders disagree about what to do with the overhang: some clip it, some refuse the file.</span>
-    <span data-phrase="find.outside.body.many">The canvas is {width}&times;{height} and some frames claim a rectangle that runs off the edge of it. Decoders disagree about what to do with the overhang: some clip it, some refuse the file.</span>
+    <span data-phrase="find.outside.body.one">The canvas is &#x2066;{width}&times;{height}&#x2069; and a frame claims a rectangle that runs off the edge of it. Decoders disagree about what to do with the overhang: some clip it, some refuse the file.</span>
+    <span data-phrase="find.outside.body.many">The canvas is &#x2066;{width}&times;{height}&#x2069; and some frames claim a rectangle that runs off the edge of it. Decoders disagree about what to do with the overhang: some clip it, some refuse the file.</span>
     <span data-phrase="find.localpal.title.one">One frame carries a colour table of its own, costing {bytes} &mdash; {share} of the file.</span>
     <span data-phrase="find.localpal.title.many">{count} frames carry a colour table of their own, costing {bytes} &mdash; {share} of the file.</span>
     <span data-phrase="find.localpal.body">A palette of its own lets a frame use colours the shared table does not have, and costs three bytes per entry every time it is written. Where the frames are of the same scene, one table for all of them is both smaller and steadier to watch: a palette that lurches between frames is what GIF flicker actually is.</span>

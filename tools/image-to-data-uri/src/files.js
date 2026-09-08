@@ -1,5 +1,6 @@
 /** Sizes, counts and the one judgement this tool is in a position to make. */
 import { sizeText } from './shared/format.js';
+import { ltr } from './shared/phrases.js';
 
 export const bytes = (n, t) => sizeText(n, t, { under: 'size.b', kb: 'auto', mb: 2 });
 
@@ -76,5 +77,5 @@ export function list(items, t) {
 
 /** "4032 x 3024", with a real multiplication sign. */
 export function dimensions(width, height) {
-  return `${width} × ${height}`;
+  return ltr(`${width} × ${height}`);
 }

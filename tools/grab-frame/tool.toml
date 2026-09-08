@@ -223,7 +223,7 @@ a = """
 q = "What does &quot;full quality&quot; actually mean?"
 a = """
         Two things. The still is saved at the video's own resolution, not at the
-        size of the preview on the page &mdash; a 4K clip gives a 3840 x 2160
+        size of the preview on the page &mdash; a 4K clip gives a &#x2066;3840 x 2160&#x2069;
         picture. And with PNG chosen, the frame is stored exactly as it came out
         of the decoder, so the file holds the picture the video holds, with no
         second round of compression on top of it. A screenshot of a player

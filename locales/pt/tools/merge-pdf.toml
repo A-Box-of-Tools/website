@@ -161,7 +161,7 @@ title = "Ponha as páginas na ordem que você quer."
 body = """
 
       Arraste uma página pela alça, ou empurre com as setas. Gire uma que foi
-      digitalizada de lado, tire outra, ou digite <code>1-3, 8, 12-</code> na caixa
+      digitalizada de lado, tire outra, ou digite <code dir="ltr">1-3, 8, 12-</code> na caixa
       para manter, remover ou girar uma sequência de uma vez. Os números são
       renumerados conforme você mexe, então o que você vê é sempre o que o arquivo
       pronto vai ser."""

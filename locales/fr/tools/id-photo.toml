@@ -45,7 +45,7 @@ card = """
             Choisissez un pays et un document&nbsp;: le cadre de recadrage reprend la
             hauteur de tête et la ligne des yeux de cette règle. Impression au
             millimètre et à la résolution exacts, avec une planche
-            10&nbsp;&times;&nbsp;15, et fichier d'envoi calibré sur la fourchette en
+            &#x2066;10&nbsp;&times;&nbsp;15&#x2069;, et fichier d'envoi calibré sur la fourchette en
             Ko du portail."""
 
 [words]
@@ -165,7 +165,7 @@ title = "Prenez les trois fichiers."
 body = """
  L'impression, au millimètre exact, avec
       la résolution inscrite dans le fichier pour qu'un magasin l'imprime à la bonne
-      taille. La planche, avec autant de copies qu'un 10&nbsp;&times;&nbsp;15 en
+      taille. La planche, avec autant de copies qu'un &#x2066;10&nbsp;&times;&nbsp;15&#x2069; en
       contient et des repères de coupe dans les intervalles. Et le fichier d'envoi, à
       la taille en pixels que le portail impose et dans la fourchette en Ko qu'il fait
       respecter aux deux extrémités."""
@@ -188,7 +188,7 @@ a = """
         Les spécifications transcrites à ce jour sont la norme de l'OACI elle-même, les
         États-Unis (passeport et inscription à la loterie des visas, qui ont des règles
         d'envoi différentes), le Royaume-Uni, le visa Schengen, l'Allemagne, le Canada,
-        l'Australie, l'Inde (passeport, tirage 35&nbsp;&times;&nbsp;45&nbsp;mm, ainsi
+        l'Australie, l'Inde (passeport, tirage &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm, ainsi
         que la photo de formulaire et la signature SSC/UPSC), la Chine et le Japon.
         Chaque entrée nomme l'autorité dont elle vient et la date à laquelle elle a été
         relevée. Tout le reste se saisit sous &laquo;&nbsp;Ailleurs dans le
@@ -253,7 +253,7 @@ a = """
         Les portails d'examen indiens, le formulaire de visa chinois et l'envoi du
         passeport britannique indiquent une taille minimale en plus d'une taille
         maximale, parce qu'un fichier en dessous est le plus souvent une vignette
-        envoyée par erreur. Une photographie de 200&nbsp;&times;&nbsp;230 fait 46 000
+        envoyée par erreur. Une photographie de &#x2066;200&nbsp;&times;&nbsp;230&#x2069; fait 46 000
         pixels et, à la meilleure qualité qu'un navigateur écrira, peut encore tomber à
         15&nbsp;Ko, sans aucun moyen de l'agrandir en compressant moins. L'outil ajoute
         donc un segment de commentaire JPEG rempli d'espaces. Cela fait partie de la
@@ -276,13 +276,13 @@ a = """
         n'importe quel filtre."""
 
 [[faq]]
-q = "À quoi sert la planche 10 x 15&nbsp;?"
+q = "À quoi sert la planche &#x2066;10 x 15&#x2069;&nbsp;?"
 a = """
         Une cabine facture plusieurs euros six photographies. Un comptoir photo imprime
-        un 10&nbsp;&times;&nbsp;15 pour quelques centimes, et tous savent le faire.
+        un &#x2066;10&nbsp;&times;&nbsp;15&#x2069; pour quelques centimes, et tous savent le faire.
         L'outil dispose donc sur la feuille autant de copies de votre photo qu'elle en
-        contient &mdash; huit, pour un 35&nbsp;&times;&nbsp;45 sur un
-        10&nbsp;&times;&nbsp;15 &mdash; avec des repères de coupe dans les intervalles
+        contient &mdash; huit, pour un &#x2066;35&nbsp;&times;&nbsp;45&#x2069; sur un
+        &#x2066;10&nbsp;&times;&nbsp;15&#x2069; &mdash; avec des repères de coupe dans les intervalles
         et rien d'imprimé par-dessus une image. Rien n'est mis à l'échelle&nbsp;: chaque
         copie fait exactement la taille exigée par la règle, car une planche qui les
         réduirait de deux pour cent pour en caser une de plus donnerait huit
@@ -298,15 +298,15 @@ a = """
         navigateur écrit cet en-tête avec le champ d'unités réglé sur
         &laquo;&nbsp;ceci est un rapport d'aspect, pas une résolution&nbsp;&raquo;. Cet
         outil réécrit ces quelques octets pour que le fichier annonce 300&nbsp;dpi, ce
-        qui transforme 413&nbsp;&times;&nbsp;531 pixels en une photographie de
-        35&nbsp;&times;&nbsp;45&nbsp;mm plutôt qu'en une image sans taille particulière.
+        qui transforme &#x2066;413&nbsp;&times;&nbsp;531&#x2069; pixels en une photographie de
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm plutôt qu'en une image sans taille particulière.
         Rien n'est décodé pour cela et aucune qualité n'est dépensée."""
 
 [[faq]]
 q = "Peut-il faire aussi le fichier de signature&nbsp;?"
 a = """
         Oui&nbsp;: les formulaires SSC et UPSC en veulent une à
-        140&nbsp;&times;&nbsp;60 pixels et entre 10 et 20&nbsp;Ko, et elle figure dans
+        &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixels et entre 10 et 20&nbsp;Ko, et elle figure dans
         la liste comme spécification à part entière. Les repères de visage sont coupés
         pour elle, puisqu'une signature n'a pas de ligne des yeux&nbsp;; ce qui est
         vérifié à la place, c'est que le papier est clair, qu'il y a de l'encre dessus
@@ -356,9 +356,9 @@ features = [
   "Hauteur de tête, ligne des yeux, centrage et inclinaison en direct, chacun indiquant le sens de correction",
   "Couleur et régularité du fond mesurées en CIE Lab, et rapportées séparément",
   "Impression au millimètre exact, avec la résolution inscrite dans l'en-tête JPEG",
-  "Une planche 10 x 15, 13 x 18, A4 ou Letter, pavée avec repères de coupe dans les intervalles et rien par-dessus une image",
+  "Une planche &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 ou Letter, pavée avec repères de coupe dans les intervalles et rien par-dessus une image",
   "Un fichier d'envoi à la taille en pixels imposée, calibré sur la fourchette en Ko du portail aux deux extrémités",
-  "Photos de formulaire SSC et UPSC en 200 x 230 entre 20 et 50 Ko, et signatures en 140 x 60 entre 10 et 20 Ko",
+  "Photos de formulaire SSC et UPSC en &#x2066;200 x 230&#x2069; entre 20 et 50 Ko, et signatures en &#x2066;140 x 60&#x2069; entre 10 et 20 Ko",
   "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans modèle de visage",
 ]
 

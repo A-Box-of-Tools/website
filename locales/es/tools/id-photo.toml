@@ -42,7 +42,7 @@ howto_heading = "Cómo hacer una foto de pasaporte que no te devuelvan"
 card = """
             Elige un país y un documento, y el recuadro de recorte toma la altura de
             cabeza y la línea de ojos de esa norma. Imprime a los milímetros y la
-            resolución exactos, con una hoja de 10&nbsp;&times;&nbsp;15, y aprieta la
+            resolución exactos, con una hoja de &#x2066;10&nbsp;&times;&nbsp;15&#x2069;, y aprieta la
             subida hasta la banda de KB del portal."""
 
 [words]
@@ -160,7 +160,7 @@ body = """
  La impresión, a los milímetros exactos y
       con la resolución escrita dentro del archivo para que una tienda la imprima al
       tamaño correcto. La hoja, con tantas copias como quepan en un
-      10&nbsp;&times;&nbsp;15 y marcas de corte en los huecos. Y la subida, al tamaño
+      &#x2066;10&nbsp;&times;&nbsp;15&#x2069; y marcas de corte en los huecos. Y la subida, al tamaño
       en píxeles que exige el portal y dentro de la banda de KB que impone por los dos
       extremos."""
 
@@ -182,7 +182,7 @@ a = """
         Estados Unidos (pasaporte y la inscripción en la lotería de visados, que tienen
         reglas de subida distintas), el Reino Unido, el visado Schengen, Alemania,
         Canadá, Australia, la India (pasaporte, la copia de
-        35&nbsp;&times;&nbsp;45&nbsp;mm y la foto y la firma de los formularios SSC y
+        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm y la foto y la firma de los formularios SSC y
         UPSC), China y Japón. Cada entrada nombra la autoridad de la que salió y la
         fecha en que se leyó. Todo lo demás entra por «En cualquier otro sitio», donde
         cada cifra la escribes tú; y como casi todo el mundo emite siguiendo la
@@ -243,7 +243,7 @@ a = """
         Los portales de exámenes de la India, el formulario de visado chino y la subida
         del pasaporte británico indican un tamaño mínimo además de un máximo, porque un
         archivo por debajo suele ser una miniatura que alguien subió por error. Una
-        fotografía de 200&nbsp;&times;&nbsp;230 tiene 46.000 píxeles, y con la mejor
+        fotografía de &#x2066;200&nbsp;&times;&nbsp;230&#x2069; tiene 46.000 píxeles, y con la mejor
         calidad que un navegador vaya a escribir todavía puede quedarse en 15&nbsp;KB,
         sin forma de hacerla más grande comprimiendo menos. Así que la herramienta añade
         un segmento de comentario JPEG lleno de espacios. Eso forma parte del estándar
@@ -266,12 +266,12 @@ a = """
         filtro."""
 
 [[faq]]
-q = "¿Para qué es la hoja de 10 x 15?"
+q = "¿Para qué es la hoja de &#x2066;10 x 15&#x2069;?"
 a = """
         Una cabina cobra varios euros por seis fotografías. Un mostrador de fotos
-        imprime un 10&nbsp;&times;&nbsp;15 por céntimos, y eso lo hace cualquiera. Así
+        imprime un &#x2066;10&nbsp;&times;&nbsp;15&#x2069; por céntimos, y eso lo hace cualquiera. Así
         que la herramienta coloca tantas copias de tu foto como quepan en el papel
-        &mdash; ocho, para un 35&nbsp;&times;&nbsp;45 en un 10&nbsp;&times;&nbsp;15
+        &mdash; ocho, para un &#x2066;35&nbsp;&times;&nbsp;45&#x2069; en un &#x2066;10&nbsp;&times;&nbsp;15&#x2069;
         &mdash; con marcas de corte en los huecos y sin imprimir nada encima de una
         imagen. No se escala nada: cada copia tiene exactamente el tamaño que pide la
         norma, porque una hoja que las encogiera un dos por ciento para meter una más
@@ -285,14 +285,14 @@ a = """
         se lo inventa. La resolución vive en la cabecera JFIF, y un lienzo de navegador
         escribe esa cabecera con el campo de unidades puesto en «esto es una proporción,
         no una resolución». Esta herramienta reescribe esos pocos bytes para que el
-        archivo diga 300&nbsp;dpi, que es lo que convierte 413&nbsp;&times;&nbsp;531
-        píxeles en una fotografía de 35&nbsp;&times;&nbsp;45&nbsp;mm y no en una imagen
+        archivo diga 300&nbsp;dpi, que es lo que convierte &#x2066;413&nbsp;&times;&nbsp;531&#x2069;
+        píxeles en una fotografía de &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm y no en una imagen
         sin tamaño determinado. Para eso no se decodifica nada y no se gasta calidad."""
 
 [[faq]]
 q = "¿Puede hacer también el archivo de la firma?"
 a = """
-        Sí: los formularios SSC y UPSC la quieren a 140&nbsp;&times;&nbsp;60 píxeles y
+        Sí: los formularios SSC y UPSC la quieren a &#x2066;140&nbsp;&times;&nbsp;60&#x2069; píxeles y
         entre 10 y 20&nbsp;KB, y está en la lista como especificación propia. La guía de
         la cara se apaga para ella, porque una firma no tiene línea de ojos, y lo que se
         comprueba en su lugar es que el papel sea claro, que haya tinta encima y que el
@@ -340,9 +340,9 @@ features = [
   "Altura de cabeza, línea de ojos, centrado e inclinación en vivo, cada uno diciendo hacia dónde corregir",
   "Color y uniformidad del fondo medidos en CIE Lab, con los dos informados por separado",
   "Imprime a los milímetros exactos, con la resolución escrita en la cabecera JPEG",
-  "Una hoja de 10 x 15, 13 x 18, A4 o Carta, mosaicada con marcas de corte en los huecos y sin nada encima de una imagen",
+  "Una hoja de &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 o Carta, mosaicada con marcas de corte en los huecos y sin nada encima de una imagen",
   "Un archivo de subida al tamaño en píxeles obligatorio, ajustado a la banda de KB del portal por los dos extremos",
-  "Fotos de formulario SSC y UPSC a 200 x 230 en 20-50 KB, y firmas a 140 x 60 en 10-20 KB",
+  "Fotos de formulario SSC y UPSC a &#x2066;200 x 230&#x2069; en 20-50 KB, y firmas a &#x2066;140 x 60&#x2069; en 10-20 KB",
   "Funciona sin conexión; sin subidas, sin cuenta, sin modelo de caras",
 ]
 

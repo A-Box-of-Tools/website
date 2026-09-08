@@ -1,10 +1,11 @@
 /** Names, sizes and counts, as words a person would use. */
 import { sizeText } from './shared/format.js';
+import { ltr } from './shared/phrases.js';
 
 export const bytes = (n, t) => sizeText(n, t, { under: 'size.b', kb: 'auto', mb: 2 });
 
 /** "512 × 512", with a real multiplication sign. */
-export const dimensions = (width, height) => `${width} × ${height}`;
+export const dimensions = (width, height) => ltr(`${width} × ${height}`);
 
 /** "1 file" / "4 files", said the same way everywhere on the page. */
 
@@ -74,8 +75,8 @@ export function uniqueNames(names) {
  * to override.
  *
  * A key rather than the sentence itself, because this module is a leaf the
- * tests load straight off the disk and so cannot reach the markup the words
- * live in. main.js resolves it. See shared/js/phrases.js.
+ * tests load straight off the disk, with no document around it to hold the
+ * markup the words live in. main.js resolves it. See shared/js/phrases.js.
  */
 export function sourceKey(intrinsic) {
   switch (intrinsic.source) {

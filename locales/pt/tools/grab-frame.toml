@@ -163,7 +163,7 @@ a = """
 q = "O que &ldquo;qualidade cheia&rdquo; quer dizer de verdade?"
 a = """
         Duas coisas. A imagem é salva na resolução do próprio vídeo, não no tamanho
-        da prévia da página: um vídeo em 4K dá uma imagem de 3840 x 2160. E com PNG
+        da prévia da página: um vídeo em 4K dá uma imagem de &#x2066;3840 x 2160&#x2069;. E com PNG
         escolhido, o quadro é guardado exatamente como saiu do decodificador, então o
         arquivo tem a imagem que o vídeo tem, sem uma segunda rodada de compressão em
         cima. Uma captura de tela da janela de um player não te dá nenhuma das duas

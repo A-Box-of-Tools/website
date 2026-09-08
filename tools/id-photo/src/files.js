@@ -8,6 +8,7 @@
  */
 
 import { trim } from './specs.js';
+import { ltr } from './shared/phrases.js';
 
 /** A filename with its extension taken off, and nothing else changed. */
 export function stemOf(name) {
@@ -107,8 +108,8 @@ export function centreText(centre, t) {
  */
 export function resamplingText(check, t) {
   const sizes = {
-    have: `${check.have.width} x ${check.have.height}`,
-    need: `${check.need.width} x ${check.need.height}`,
+    have: ltr(`${check.have.width} x ${check.have.height}`),
+    need: ltr(`${check.need.width} x ${check.need.height}`),
   };
   if (!check.enlarging) return t('resample.enough', sizes);
   return t(check.severe ? 'resample.severe' : 'resample.slight', sizes);
