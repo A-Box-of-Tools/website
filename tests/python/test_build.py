@@ -1154,6 +1154,13 @@ class BuildTheSite(unittest.TestCase):
         entry for every page it has - it is the source, not a language that
         owes anything - so the filter has to let the base through before it
         reads that dict. Nothing here noticed a front page with no tools on it.
+
+        And this test, written to catch exactly that, did not either - because
+        it read the whole file for the slug, and the FOOTER of a hub links
+        every tool the language has whether or not a single card was drawn.
+        The half of the guard build_hub was missing shipped to dev under a
+        green suite. So what it looks for now is the card's own anchor, which
+        nothing but a card writes.
         """
         slugs = sorted(path.parent.name for path in (ROOT / 'tools').glob('*/tool.toml'))
         self.assertGreater(len(slugs), 1)
@@ -1161,9 +1168,11 @@ class BuildTheSite(unittest.TestCase):
             hub = (self.out / locale['prefix'] / 'index.html').read_text(encoding='utf-8')
             for slug in slugs:
                 has = locale['is_base'] or not locale['debt'].get(slug)
-                # The href the hub writes is relative, so the localized slug and
-                # the closing quote are what identify it.
-                linked = f'{locale["slugs"].get(slug, slug)}/"' in hub
+                # The card's anchor, not the slug: the href the hub writes is
+                # relative, so a bare `<slug>/"` matches the footer link too
+                # and a hub with no cards at all passes.
+                linked = (f'class="tool-card" href="'
+                          f'{locale["slugs"].get(slug, slug)}/"') in hub
                 with self.subTest(lang=locale['lang'], tool=slug):
                     self.assertEqual(
                         linked, has,
