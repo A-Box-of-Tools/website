@@ -904,6 +904,21 @@ jobs:
 
       # The same token QA (post-deploy) uses; see that workflow's header for
       # why the default token cannot start a run in another repository.
+      #
+      # `pr_base` is the branch this pull request is against, and it decides
+      # one thing over there: whether a tool may exist without a functional
+      # spec. A tool and its spec live in different repositories and cannot
+      # land in one change, so on a pull request into `dev` the qa repository
+      # reports that rather than failing, and on the `dev` -> `main` pull
+      # request - the release - it fails as it always did. A tool reaches
+      # `dev` without a spec; it does not reach production without one. See
+      # tests/coverage.spec.ts there, and A-Box-of-Tools/qa#97.
+      #
+      # It is a fact sent from here rather than a policy decided here: this end
+      # knows what the pull request is against, and the end that owns the check
+      # decides what to do about it. That is the opposite of the split above,
+      # where the scope is judged here because this is the end that can see the
+      # diff - each decision sits with whoever can actually answer it.
       - name: Ask the QA suite to run against it
         if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
         env:
@@ -911,6 +926,7 @@ jobs:
           URL: ${{ steps.upload.outputs.url }}
           TOOLS: ${{ steps.scope.outputs.tools }}
           WHY: ${{ steps.scope.outputs.why }}
+          BASE: ${{ github.event.pull_request.base.ref }}
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN}" ]; then
@@ -918,7 +934,7 @@ jobs:
             exit 1
           fi
           gh workflow run report.yml --repo A-Box-of-Tools/qa \
-            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA" -f "tools=$TOOLS"
+            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA" -f "tools=$TOOLS" -f "pr_base=$BASE"
           echo "Dispatched against $URL - $WHY"
 
       - name: Summary
