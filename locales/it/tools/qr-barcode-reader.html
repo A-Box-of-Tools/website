@@ -12,6 +12,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Quel che è entrato, ridisegnato. Non il file, ma l'immagine su cui ha
+      lavorato il lettore: la stessa decodifica, la stessa scala, lo stesso
+      fondo bianco. Perciò una miniatura che sembra sbagliata è il motivo per
+      cui lo è la risposta.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Usa la fotocamera</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Ferma la fotocamera</button>
@@ -132,6 +143,19 @@
   </template>
 
   <!--
+    Un'immagine di quell'anteprima. Clonata per file, e ogni parola sta
+    qui nel markup, perché questo file è tradotto per lingua mentre src/*.js è
+    uno solo per tutte.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     Le parole che servono allo script, messe nel markup perché chi traduce le
     incontri dove incontra il resto della pagina. Un {host} viene riempito con
     l'host che è stato letto; nient'altro viene sostituito.
@@ -223,6 +247,11 @@
     <span data-phrase="how.global">una soglia sola per tutta l'immagine</span>
     <span data-phrase="how.softened">un ammorbidimento dell'immagine prima</span>
     <span data-phrase="how.dense">, controllando ogni riga</span>
+
+    <span data-phrase="preview.one">L'immagine esaminata</span>
+    <span data-phrase="preview.many">Le {n} immagini esaminate</span>
+    <span data-phrase="preview.nothing">Nessun codice trovato</span>
+    <span data-phrase="preview.broken">Non si è potuto aprire</span>
 
     <span data-phrase="status.reading">Sto leggendo l'immagine&hellip;</span>
     <span data-phrase="status.nothing">In quell'immagine non è stato trovato

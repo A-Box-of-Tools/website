@@ -17,11 +17,12 @@
 
     <p class="card-lede">
       Jede Seite jeder ausgewählten Datei, in der Reihenfolge, in der sie
-      herauskommen wird. Ziehen Sie eine am
-      <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-Griff, um sie zu
-      verschieben, drehen Sie sie mit den Pfeilen, oder nehmen Sie sie mit dem
-      &times; heraus. Geschrieben ist hier noch nichts. Das Dokument wird erst
-      zusammengesetzt, wenn Sie in Schritt 4 auf den Knopf drücken.
+      herauskommen wird. Ziehen Sie eine Kachel an einer beliebigen Stelle, um
+      die Seite zu verschieben &mdash; auf einem Touchscreen am
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-Griff, damit die Liste
+      weiter scrollt. Drehen Sie eine Seite mit den Pfeilen, oder nehmen Sie sie
+      mit dem &times; heraus. Geschrieben ist hier noch nichts. Das Dokument wird
+      erst zusammengesetzt, wenn Sie in Schritt 4 auf den Knopf drücken.
     </p>
 
     <div class="toolbar">
@@ -43,9 +44,10 @@
       <button type="button" id="range-turn" class="ghost">Diese drehen</button>
     </div>
     <p id="range-note" class="field-note">
-      Nach den Nummern unten, die sich laufend neu vergeben. <code>odd</code>,
-      <code>even</code>, <code>all</code> und <code>last</code> funktionieren
-      ebenfalls.
+      Nach der kleinen Nummer in der Ecke jeder Seite unten, die sich laufend
+      neu vergibt &mdash; nicht nach der großen, das ist die Seite in ihrer
+      eigenen Datei. <code>odd</code>, <code>even</code>, <code>all</code> und
+      <code>last</code> funktionieren ebenfalls.
     </p>
     <p id="range-error" class="error" role="alert" hidden></p>
 
@@ -212,6 +214,8 @@
     <span data-phrase="page.turned">Von diesem Werkzeug gedreht</span>
     <span data-phrase="page.remove">Seite {n} entfernen</span>
     <span data-phrase="page.from">{name}, Seite {n}</span>
+    <span data-phrase="page.origin">Von Seite {n}</span>
+    <span data-phrase="page.at">Nummer {n} in der Reihenfolge</span>
     <span data-phrase="page.anticlockwise">Seite {n} gegen den Uhrzeigersinn drehen</span>
     <span data-phrase="page.clockwise">Seite {n} im Uhrzeigersinn drehen</span>
     <span data-phrase="page.earlier">Seite {n} nach vorn</span>

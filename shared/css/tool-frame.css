@@ -786,23 +786,40 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 .card-head > h2 { margin-bottom: 0; }
 
-/* On a card whose explanation is folded behind its heading, what sits in the
-   row is the whole fold - the heading is inside a <summary> and cannot be
-   taken out of it, for the reasons in liftToHeading. `1 1 0` rather than the
-   `auto` a flex item defaults to, because the paragraph inside the fold is as
-   wide as its own text: on `auto` the row would rather wrap the button onto a
-   line of its own than let that paragraph be narrower. */
-.card-head > .card-note { flex: 1 1 0; min-width: 0; margin-bottom: 0; }
+/* The other shape of that row. Where buildlib/cards.py has folded the card's
+   explanation behind its heading, what sits in the row is the whole <details>:
+   its <summary> is the heading line and the paragraphs under it are what
+   opens.
+
+   `1 1 0` rather than the `auto` a flex item defaults to, because a fold's
+   basis on `auto` is the width its paragraphs would like to be - wide enough
+   that this row would sooner wrap the button onto a line of its own than let
+   them be narrower. */
+.card-head > .card-note {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-bottom: 0;
+}
 
 /* Closed, the fold is exactly as tall as its heading and the two centre on one
-   line. Opened, it is a paragraph or three, and centring puts the button
-   halfway down them - so the row stops centring and the button stays up on the
-   heading it belongs to. */
-.card-head:has(> .card-note[open]) { align-items: start; }
+   line, which is the same row every unfolded card has. Opened, it is a
+   paragraph or three, and centring would carry the button halfway down them -
+   so the row stops centring and the button stays up on the heading it belongs
+   to. */
+.card-head:has(> .card-note[open]) { align-items: flex-start; }
 
-/* `auto` rather than `space-between`, so the button still sits right when the
-   row wraps and the heading is alone on the line above it. */
-.dropzone-example { margin: 0 0 0 auto; }
+/* An auto margin rather than `space-between`, so the button still sits at the
+   end when the row wraps and the heading is alone on the line above it.
+
+   Logical and not `margin-left`, which is the same thing in English and the
+   opposite of it in Arabic: an auto margin absorbs the free space beside the
+   item rather than the space at the end of the row, so a left one in a
+   right-to-left row left the button tucked against the heading with the whole
+   width of the card empty beside it. */
+.dropzone-example {
+  margin: 0;
+  margin-inline-start: auto;
+}
 .dropzone-example button { font-size: 0.88rem; padding: 0.35rem 0.9rem; }
 
 /* Only ever filled in when building the example failed, and a block of its own

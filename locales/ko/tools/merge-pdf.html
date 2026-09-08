@@ -17,9 +17,10 @@
 
     <p class="card-lede">
       고른 모든 파일의 모든 페이지가, 나올 순서대로 놓여 있습니다.
-      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 손잡이를 잡고
-      끌면 옮겨지고, 화살표로 돌리고, &times;로 빼냅니다. 여기서는 아직 아무것도
-      쓰이지 않았습니다. 문서는 4단계의 버튼을 누를 때 조립됩니다.
+      타일은 어디를 잡고 끌어도 그 쪽이 옮겨집니다. 터치 화면에서는 목록이 계속
+      스크롤되도록 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 손잡이에서만
+      끌 수 있습니다. 쪽은 화살표로 돌리고, &times;로 빼냅니다. 여기서는 아직
+      아무것도 쓰이지 않았습니다. 문서는 4단계의 버튼을 누를 때 조립됩니다.
     </p>
 
     <div class="toolbar">
@@ -41,7 +42,8 @@
       <button type="button" id="range-turn" class="ghost">이것 돌리기</button>
     </div>
     <p id="range-note" class="field-note">
-      아래에 보이는 번호 기준이고, 번호는 움직일 때마다 다시 매겨집니다.
+      아래 각 쪽 모서리의 작은 번호 기준이고, 이 번호는 움직일 때마다 다시
+      매겨집니다. 큰 번호는 원래 파일에서 몇 쪽이었는지라 그쪽이 아닙니다.
       <code>odd</code>, <code>even</code>, <code>all</code>, <code>last</code>도
       됩니다.
     </p>
@@ -204,6 +206,8 @@
     <span data-phrase="page.turned">이 도구가 돌렸습니다</span>
     <span data-phrase="page.remove">{n}번째 쪽 빼기</span>
     <span data-phrase="page.from">{name}, {n}쪽</span>
+    <span data-phrase="page.origin">원본 {n}쪽</span>
+    <span data-phrase="page.at">순서에서 {n}번째</span>
     <span data-phrase="page.anticlockwise">{n}번째 쪽을 시계 반대 방향으로 돌리기</span>
     <span data-phrase="page.clockwise">{n}번째 쪽을 시계 방향으로 돌리기</span>
     <span data-phrase="page.earlier">{n}번째 쪽을 앞으로</span>

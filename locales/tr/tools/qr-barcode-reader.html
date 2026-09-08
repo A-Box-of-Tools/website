@@ -18,6 +18,16 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      İçeri gireni geri çizmek. Dosyanın kendisi değil, okuyucunun üzerinde
+      çalıştığı resim: aynı çözme, aynı ölçek, aynı beyaz zemin. Yani burada
+      yanlış görünen bir küçük resim, cevabın da neden yanlış olduğudur.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Kamerayı kullan</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Kamerayı durdur</button>
@@ -138,6 +148,19 @@
   </template>
 
   <!--
+    O önizlemedeki bir resim. Dosya başına klonlanır ve içindeki her söz
+    burada, biçimlemede durur; çünkü bu dosya her dile çevrilir, src/*.js ise
+    hepsine hizmet eden tek dosyadır.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     The words script needs, sitting in the markup so that a translator meets
     them where they meet the rest of the page. A `{host}` in one of these is
     filled in with the host that was read; nothing else is substituted.
@@ -228,6 +251,11 @@
     <span data-phrase="how.global">resmin tamamı için tek bir eşik</span>
     <span data-phrase="how.softened">resmin önce yumuşatılması</span>
     <span data-phrase="how.dense">, her satır denetlenerek</span>
+
+    <span data-phrase="preview.one">Baktığı resim</span>
+    <span data-phrase="preview.many">Baktığı {n} resim</span>
+    <span data-phrase="preview.nothing">Kod bulunamadı</span>
+    <span data-phrase="preview.broken">Açılamadı</span>
 
     <span data-phrase="status.reading">Resim okunuyor&hellip;</span>
     <span data-phrase="status.nothing">O resimde kod bulunamadı. Simgenin

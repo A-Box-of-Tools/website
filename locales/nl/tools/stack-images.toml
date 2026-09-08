@@ -151,8 +151,9 @@ body = """
  Uit de hand: ja,
       alleen verschuiven. Uit de hand en je draaide ook: verschuiven, draaien en
       schalen. Vast statief of intervalmeter: nee, en het gaat sneller. Elk frame
-      wordt gemeten tegen het eerste in de lijst, en daarom kan elk frame tot dat
-      eerste gepromoveerd worden."""
+      wordt gemeten tegen het frame dat als referentie gemarkeerd is, en dat is
+      het eerste tot je iets anders zegt: &ldquo;Als referentie nemen&rdquo;
+      verzet de markering en laat de lijst in de volgorde staan die je gaf."""
 
 [[howto]]
 title = "Lees de vier getallen, druk dan op de knop."
@@ -229,8 +230,8 @@ a = """
 [[faq]]
 q = "Wat doet het uitlijnen van de frames nu eigenlijk?"
 a = """
-        Het zoekt uit hoe ver elk frame ten opzichte van het eerste verschoven is en
-        schuift het terug, tot op een fractie van een pixel. De methode is
+        Het zoekt uit hoe ver elk frame ten opzichte van het referentieframe
+        verschoven is en schuift het terug, tot op een fractie van een pixel. De methode is
         fasecorrelatie: de verschuiving tussen twee beelden komt naar voren als een
         faseverschil tussen hun spectra, dus &eacute;&eacute;n Fouriertransformatie
         per beeld vindt een verschuiving van tweehonderd pixels net zo goedkoop als

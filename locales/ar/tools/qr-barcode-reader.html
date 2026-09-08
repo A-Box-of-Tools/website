@@ -11,6 +11,16 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      ما دخل، معروضًا من جديد. وليس الملف نفسه، بل الصورة التي عمل عليها
+      القارئ: عن الفكّ نفسه، وبالقياس نفسه، وعلى الأرضية البيضاء نفسها. فصورة
+      مصغّرة تبدو خاطئة هي سبب أن يكون الجواب خاطئًا.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">استعمل الكاميرا</button>
       <button type="button" id="stop-camera" class="ghost" hidden>أوقِف الكاميرا</button>
@@ -129,6 +139,18 @@
   </template>
 
   <!--
+    صورة واحدة في ذلك المعرض. تُنسخ لكل ملف، وكل كلمة فيها هنا في الترميز،
+    لأن هذا الملف يُترجم لكل لغة بينما src/*.js ملف واحد يخدمها جميعًا.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     The words script needs, sitting in the markup so that a translator meets
     them where they meet the rest of the page. A `{host}` in one of these is
     filled in with the host that was read; nothing else is substituted.
@@ -214,6 +236,11 @@
     <span data-phrase="how.global">عتبة واحدة للصورة كلها</span>
     <span data-phrase="how.softened">تليين الصورة أولاً</span>
     <span data-phrase="how.dense">، مع فحص كل صف</span>
+
+    <span data-phrase="preview.one">الصورة التي نظر فيها</span>
+    <span data-phrase="preview.many">الصور التي نظر فيها، وعددها {n}</span>
+    <span data-phrase="preview.nothing">لم يُوجَد رمز</span>
+    <span data-phrase="preview.broken">تعذّر فتح الملف</span>
 
     <span data-phrase="status.reading">تجري قراءة الصورة&hellip;</span>
     <span data-phrase="status.nothing">لم يُوجَد رمز في تلك الصورة. فهي تحتاج

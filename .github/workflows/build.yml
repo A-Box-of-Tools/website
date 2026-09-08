@@ -11,11 +11,45 @@
 # that is being served. `python build.py --check` does exactly that. That is
 # only meaningful if the served files are committed somewhere a reader can see.
 #
-# On a pull request this builds but does not publish, so a change that breaks
-# the build is caught before it reaches main. It does put the build somewhere
-# a browser can reach - a preview of its own on Cloudflare Pages, see the
-# `preview` job - and asks the QA suite to run against that, so the browser
-# tests see a change before visitors do rather than twenty minutes after.
+# WHERE A CHANGE GOES, AND IN WHAT ORDER
+#
+# Work is opened against `dev`, `dev` is opened against `main`, and `main` is
+# production:
+#
+#   pull request  ->  dev  ->  pull request  ->  main  ->  dist  ->  Pages
+#
+# The middle branch is the point of the arrangement. A fix no longer has to be
+# a release on its own: a week of them are bundled on `dev` and reach
+# production as one deploy, one version tag and one IndexNow submission rather
+# than fifteen of each. What it costs is that `main` is now two merges away
+# from a change rather than one, which is the trade being made.
+#
+# The second of those two merges is made by hand, and nothing in this file
+# will ever make it: no schedule, no auto-merge, and no step anywhere here
+# pushes `main`. A release is somebody deciding the bundle is ready, having
+# read its preview and its QA run - and that decision is the one thing
+# everything else is automated in order to leave room for.
+#
+# So this workflow has three destinations rather than two. The `build` job
+# names them once in its `env`, because the four steps that read them have to
+# agree with each other:
+#
+#   a pull request    builds, is checked, and goes to a preview of its own at
+#                     pr-<number>.abox-preview.pages.dev, which the QA suite
+#                     is then run against
+#   a push to `dev`   the same, to a preview at dev.abox-preview.pages.dev -
+#                     one stable address holding the bundle as it currently
+#                     stands, for looking at between releases
+#   a push to `main`  publishes to `dist`, tags the version, and tells
+#                     IndexNow. Nothing else does any of those
+#
+# Anything else - a manual run against a feature branch - builds, is checked,
+# and goes nowhere at all.
+#
+# On none of them but the last is anything published, so a change that breaks
+# the build is caught twice before it can reach production. The preview is why
+# the browser suite sees a change before visitors do rather than twenty
+# minutes after; see the `preview` job for the rest of that.
 #
 # The unit tests run first, in their own job, and the build waits on them. They
 # cover the hand-written code on both sides: the generator in Python and the
@@ -26,7 +60,7 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
   workflow_dispatch:
 
@@ -168,6 +202,21 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    # The two questions the steps below ask, answered in one place. Here
+    # rather than four times over because the four answers have to agree: a
+    # run that published to `dist` without tagging the version, or tagged one
+    # without publishing, would be worse than either on its own.
+    #
+    # DEPLOYS used to read `github.event_name != 'pull_request'`, which was
+    # right while `main` was the only branch this ran on and is wrong now for
+    # two separate reasons. A push to `dev` is not a pull request; neither is
+    # a `workflow_dispatch` against a feature branch, which could therefore
+    # already publish an unreviewed branch straight to production. Naming the
+    # branch is what makes both impossible, and it is why these are conditions
+    # on the ref rather than on the event.
+    env:
+      DEPLOYS: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+      PREVIEWS: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/dev' }}
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -255,11 +304,12 @@ jobs:
 
           exit $status
 
-      # On a pull request the deployed build goes to the preview job instead
-      # of the dist branch. A day is plenty: the preview is uploaded within
-      # minutes, and the next push to the pull request builds again.
+      # A build bound for a preview rather than for `dist` - a pull request,
+      # or a push to `dev` - reaches the job below through an artifact. A day
+      # is plenty: the preview is uploaded within minutes, and the next push
+      # builds again.
       - name: Hand the build to the preview
-        if: github.event_name == 'pull_request'
+        if: env.PREVIEWS == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: site-preview
@@ -269,7 +319,7 @@ jobs:
 
       - name: Publish to the dist branch
         id: publish
-        if: github.event_name != 'pull_request'
+        if: env.DEPLOYS == 'true'
         env:
           SHA: ${{ github.sha }}
         run: |
@@ -338,8 +388,17 @@ jobs:
       # After the publish and not before: a tag is a claim that this version is
       # live, and a tag pushed ahead of a deploy that then failed would be a
       # claim about something that never happened.
+      #
+      # Bundling through `dev` does not disturb any of this, and it is worth
+      # saying why rather than leaving it to be rediscovered. The span
+      # measured is the last version tag to what is being deployed, not the
+      # previous commit - so a merge from `dev` carrying fifteen changes is
+      # counted exactly the way fifteen merges from fifteen branches were, and
+      # moves the number once. A bundle that adds a tool still earns the
+      # middle digit, because `next_version.py` sees every added `tool.toml`
+      # in the span whatever order they arrived in.
       - name: Tag the version, if this deploy moved it
-        if: github.event_name != 'pull_request'
+        if: env.DEPLOYS == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -423,7 +482,7 @@ jobs:
       # announce if nothing was published, and `_site/sitemap.xml` might not
       # even exist.
       - name: Tell IndexNow what changed
-        if: ${{ !cancelled() && github.event_name != 'pull_request' && steps.publish.outcome == 'success' }}
+        if: ${{ !cancelled() && env.DEPLOYS == 'true' && steps.publish.outcome == 'success' }}
         continue-on-error: true
         run: |
           set -uo pipefail
@@ -470,7 +529,8 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-  # A PREVIEW OF EVERY PULL REQUEST, AND THE QA SUITE RUN AGAINST IT
+  # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
+  # AGAINST THE PULL REQUESTS
   #
   # Until this job existed the browser suite only ever saw a change after it
   # was live: merge, build, push to dist, Pages, and then QA (post-deploy)
@@ -492,11 +552,52 @@ jobs:
   # job made - the same `_site` that would have gone to dist - which is the
   # point: what is tested is what ships.
   #
+  # `dev` gets one too, at `dev.<project>.pages.dev`. Every other address here
+  # belongs to a pull request and goes away with it; this one stays, and it is
+  # the only place the bundle as it currently stands can be looked at -
+  # `main` is the last release, and a pull request's preview is one change
+  # against `dev` rather than the sum of them. It is one more branch alias in
+  # the same project, so it costs no second project, no second token and no
+  # standing server.
+  #
+  # AND A SECOND ADDRESS PER MERGE, `dev-pr-<n>.<project>.pages.dev`. The
+  # stable one has the fault that comes with being stable: the next merge
+  # replaces it, so the state somebody was looking at an hour ago is gone and
+  # there is nothing to compare against. Each merge therefore also goes to an
+  # address named after the pull request that caused it, and those accumulate
+  # on purpose - they are the visual history of the bundle, and the way to
+  # find which merge changed something is to open the two either side of it.
+  # A second upload rather than a second alias, because Pages gives a
+  # deployment one branch and one alias; wrangler has the files already, so
+  # what it costs is seconds.
+  #
+  # The QA suite is NOT run against that one, and that is a decision rather
+  # than an oversight. Every pull request into `dev` has already been through
+  # the suite, and the pull request from `dev` to `main` goes through it again
+  # on the whole bundle - which is the run that decides whether production
+  # gets it. A third run on every merge into `dev` would re-test what was
+  # tested minutes earlier, twelve runners at a time, and gate nothing. To
+  # change that, drop the `github.event_name == 'pull_request'` from the
+  # dispatch step below: the qa repository is handed a `base_url` and does not
+  # care where it came from.
+  #
   # The suite itself runs in the qa repository, as it does after a deploy,
   # dispatched with the preview's address and this pull request's head
   # commit. Its result comes back as a commit status, `qa/preview`, on that
   # commit, with the run as its link. Report-only for now; once it has been
   # green for a while, branch protection can require it.
+  #
+  # THAT HEAD COMMIT IS DOING TWO JOBS, and the second one is why this
+  # arrangement depends on a change over there. It is where the status is
+  # written; it is also the tree the suite reads this repository's tool list
+  # and CSP out of, because it keeps no copy of either. Basing pull requests
+  # on `dev` makes that second job load-bearing. A preview used to differ from
+  # `main` by one pull request, so a suite reading `main` miscounted the hub's
+  # cards only on a pull request that shipped a tool; a preview now differs by
+  # the whole bundle, so it would miscount on every pull request opened
+  # between one release and the next. A-Box-of-Tools/qa#94 is what makes the
+  # suite read the commit it was given rather than a branch, and this
+  # arrangement wants it merged.
   #
   # SETUP, ONCE: a Cloudflare Pages project (direct upload) and two secrets
   # here, CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID; a WEBSITE_STATUS_TOKEN
@@ -509,15 +610,25 @@ jobs:
   # deploy with this repository's credentials.
   preview:
     needs: build
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # For the sticky comment that carries the preview's address.
+      # For the sticky comment that carries the preview's address. A push to
+      # `dev` has no pull request to write one on, and the step that would is
+      # skipped rather than the permission being made conditional.
       pull-requests: write
     env:
+      # Empty on a push to `dev`, which is how the steps that only make sense
+      # for a pull request tell the two apart.
       PR: ${{ github.event.pull_request.number }}
-      SHA: ${{ github.event.pull_request.head.sha }}
+      SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      # The Pages branch alias, which is the whole of the address. Never
+      # `main`: that is the preview project's own production branch, and
+      # deploying to it would turn a build from here into that project's
+      # production deployment - losing the noindex Pages puts on every other
+      # deployment, and pointing the project's bare address at it.
+      ALIAS: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'dev' }}
       PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT || 'abox-preview' }}
     steps:
       - name: Is there somewhere to put it?
@@ -545,12 +656,11 @@ jobs:
         with:
           node-version: '20'
 
-      # `--branch pr-<n>` is what makes this a preview rather than the
-      # project's production: Pages gives every non-production branch an
-      # alias of its own, <branch>.<project>.pages.dev, stable across the
-      # pull request's pushes, which is the address the comment and the QA
-      # run use. There is no git checkout in this job, so the commit is
-      # named by hand.
+      # `--branch` is what makes this a preview rather than the project's
+      # production: Pages gives every non-production branch an alias of its
+      # own, <branch>.<project>.pages.dev, stable across the pushes that
+      # follow it, which is the address the comment and the QA run use. There
+      # is no git checkout in this job, so the commit is named by hand.
       - name: Upload it to Cloudflare Pages
         if: steps.gate.outputs.ready == 'true'
         id: upload
@@ -559,13 +669,87 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
+          if [ -n "$PR" ]; then what="pull request #$PR"; else what='the dev branch'; fi
           npx --yes wrangler@3 pages deploy _site \
             --project-name "$PROJECT" \
-            --branch "pr-$PR" \
+            --branch "$ALIAS" \
             --commit-hash "$SHA" \
-            --commit-message "Preview of pull request #$PR at ${SHA:0:7}" \
+            --commit-message "Preview of $what at ${SHA:0:7}" \
             --commit-dirty=true
-          echo "url=https://pr-$PR.$PROJECT.pages.dev/" >> "$GITHUB_OUTPUT"
+          echo "url=https://$ALIAS.$PROJECT.pages.dev/" >> "$GITHUB_OUTPUT"
+
+      # WHICH PULL REQUEST THIS MERGE CAME FROM, for the address below.
+      #
+      # Asked of the API rather than read out of the commit subject. A squash
+      # merge writes "Title (#379)" and would parse, but a merge commit and a
+      # direct push would not, and a number guessed out of prose is a wrong
+      # address rather than no address - `dev-pr-42` holding something that
+      # has nothing to do with pull request 42 is worse than there being no
+      # copy at all. The subject is the fallback for the one case the API
+      # cannot answer: a commit that reached `dev` before its pull request
+      # was recorded against it.
+      #
+      # Empty is an ordinary answer, not a failure. A commit that came from no
+      # pull request - a direct push, a merge forward from `main` after a
+      # hotfix - gets the stable address and nothing else, and the step after
+      # this one is skipped. `set -e` is deliberately absent: neither lookup
+      # may take the job down over an address that is a convenience.
+      - name: Which pull request this merge came from
+        id: merged
+        if: steps.gate.outputs.ready == 'true' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -uo pipefail
+
+          n=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '.[0].number') || n=''
+          if [ -z "$n" ] || [ "$n" = 'null' ]; then
+            subject=$(gh api "repos/$REPO/commits/$SHA" --jq '.commit.message' | head -n1) || subject=''
+            n=$(printf '%s' "$subject" | sed -n 's/.*(#\([0-9][0-9]*\))[[:space:]]*$/\1/p')
+          fi
+
+          if [ -n "$n" ]; then
+            echo "This merge came from pull request #$n."
+          else
+            echo 'This commit names no pull request, so only the stable address is written.'
+          fi
+          echo "pr=$n" >> "$GITHUB_OUTPUT"
+
+      # The same bytes again, at an address that the next merge will not
+      # replace. Its failure to answer is a warning and not an error: the
+      # stable address above has already been deployed and waited for, and
+      # this one is a convenience that must not turn a good build red.
+      - name: Keep this state at an address of its own
+        id: keep
+        if: steps.merged.outputs.pr != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          N: ${{ steps.merged.outputs.pr }}
+        run: |
+          set -euo pipefail
+          kept="dev-pr-$N"
+          npx --yes wrangler@3 pages deploy _site \
+            --project-name "$PROJECT" \
+            --branch "$kept" \
+            --commit-hash "$SHA" \
+            --commit-message "The dev branch after pull request #$N, at ${SHA:0:7}" \
+            --commit-dirty=true
+
+          url="https://$kept.$PROJECT.pages.dev/"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+          answered=no
+          for _ in $(seq 1 18); do
+            if curl -fsS -o /dev/null "$url"; then answered=yes; break; fi
+            sleep 10
+          done
+          if [ "$answered" = yes ]; then
+            echo "Answering: $url"
+          else
+            echo "::warning::$url has not answered yet. The deployment is made; Cloudflare usually catches the alias up within a few minutes."
+          fi
 
       # The alias takes a moment to answer after the first upload for a
       # branch. Waiting here, as QA (post-deploy) waits for production, keeps
@@ -590,7 +774,7 @@ jobs:
       # to, so the address is always at the top of the conversation and never
       # repeated down it.
       - name: Say where it is, on the pull request
-        if: steps.gate.outputs.ready == 'true'
+        if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           URL: ${{ steps.upload.outputs.url }}
@@ -608,13 +792,141 @@ jobs:
             gh api --method POST "repos/$REPO/issues/$PR/comments" -f body="$body" > /dev/null
           fi
 
+      # WHAT THIS PULL REQUEST CAN REACH, and therefore how much of the suite
+      # has to see it.
+      #
+      # The suite is twelve runners and about fourteen minutes, and a pull
+      # request that edits one tool spends all of it re-testing forty others
+      # that its diff cannot touch. So a change confined to `tools/<slug>/`
+      # asks the qa repository for that tool's cases and no more: a slug is
+      # enough to find them, because every case about a tool carries the slug
+      # in its title. Measured over the forty-one tools the site ships, a slug
+      # selects between 29 and 71 cases of the 1573 a project runs - 37 on
+      # average, and never none of that tool's own functional spec.
+      #
+      # EVERYTHING ELSE RUNS EVERYTHING, and the list of reasons is meant to
+      # be read as "what can reach a page this diff does not name":
+      #
+      #   the base is not `dev`   The `dev` -> `main` pull request is the
+      #                           release. It is one per release and the last
+      #                           gate before production, so it is never
+      #                           scoped, whatever it happens to contain.
+      #   a tool.toml added or    The footer, the hub, the 404, the sitemap
+      #   deleted                 and llms.txt all list every tool, so a tool
+      #                           arriving or leaving rewrites every page -
+      #                           and the cases that count the list say
+      #                           "lists every shipped tool", naming no slug,
+      #                           so a scoped run would be exactly blind to
+      #                           what changed. This is the failure
+      #                           A-Box-of-Tools/qa#94 was written for, met
+      #                           from the other direction.
+      #   anything outside one    `shared/`, `templates/`, `config/`,
+      #   tool's folder           `build.py`, `buildlib/`, `locales/`, a
+      #                           script, the root of `tools/` - all of them
+      #                           reach pages this diff does not name.
+      #   the diff could not be   The compare endpoint stops listing at 300
+      #   listed                  files, and a reply that was cut short is
+      #                           missing exactly the path this is looking
+      #                           for.
+      #
+      # The exempt list is short and is an allowlist: prose that cannot reach
+      # a page at all. Anything unrecognised runs the whole suite. This is the
+      # same bargain the `test` job makes above and for the same reason - the
+      # failure mode has to be a suite that ran when it need not have, and
+      # never a change that shipped untested.
+      #
+      # A pull request that changes only prose still runs the whole suite,
+      # deliberately: it builds a site identical to `dev`'s, so the run is
+      # wasted either way, and inventing a third answer here to save it would
+      # be a rule to get wrong for no gain.
+      #
+      # The judgement lives here because this is the end that can see the
+      # diff. The qa repository is handed a list and filters; it does not
+      # second-guess it.
+      - name: What the suite has to cover
+        id: scope
+        if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -uo pipefail
+
+          everything() {
+            echo 'tools=' >> "$GITHUB_OUTPUT"
+            echo "why=$1" >> "$GITHUB_OUTPUT"
+            echo "The whole suite, because $1."
+            exit 0
+          }
+
+          if [ "$BASE" != 'dev' ]; then
+            everything "this pull request is against \`$BASE\` rather than \`dev\`, so it is the release"
+          fi
+
+          listed=$(gh api "repos/$REPO/compare/$BASE_SHA...$SHA" --jq '.files[] | .status + " " + .filename') || listed=''
+          count=$(grep -c . <<< "$listed" || true)
+          if [ "$count" -eq 0 ] || [ "$count" -ge 300 ]; then
+            everything 'what this changed could not be listed in full'
+          fi
+
+          slugs=''
+          while read -r status path; do
+            [ -n "$path" ] || continue
+            case "$path" in
+              tools/*/tool.toml)
+                if [ "$status" != 'modified' ]; then
+                  everything "\`$path\` was $status, so every page that lists the tools changed with it"
+                fi ;;
+            esac
+            case "$path" in
+              tools/*/*)
+                slug=${path#tools/}
+                slug=${slug%%/*}
+                case " $slugs " in
+                  *" $slug "*) ;;
+                  *) slugs="${slugs:+$slugs }$slug" ;;
+                esac ;;
+              README.md|CLAUDE.md|ROADMAP.md|LICENSE|LICENSE-CONTENT|LICENSE-BRAND) ;;
+              docs/*|.claude/*|.github/*) ;;
+              *) everything "\`$path\` is not inside one tool, so it can reach pages this diff does not name" ;;
+            esac
+          done <<< "$listed"
+
+          if [ -z "$slugs" ]; then
+            everything 'nothing here is a tool, and a run that covers everything is the safe answer'
+          fi
+
+          echo "tools=$slugs" >> "$GITHUB_OUTPUT"
+          echo "why=only these tools changed: $slugs" >> "$GITHUB_OUTPUT"
+          echo "Only the cases naming: $slugs"
+
       # The same token QA (post-deploy) uses; see that workflow's header for
       # why the default token cannot start a run in another repository.
+      #
+      # `pr_base` is the branch this pull request is against, and it decides
+      # one thing over there: whether a tool may exist without a functional
+      # spec. A tool and its spec live in different repositories and cannot
+      # land in one change, so on a pull request into `dev` the qa repository
+      # reports that rather than failing, and on the `dev` -> `main` pull
+      # request - the release - it fails as it always did. A tool reaches
+      # `dev` without a spec; it does not reach production without one. See
+      # tests/coverage.spec.ts there, and A-Box-of-Tools/qa#97.
+      #
+      # It is a fact sent from here rather than a policy decided here: this end
+      # knows what the pull request is against, and the end that owns the check
+      # decides what to do about it. That is the opposite of the split above,
+      # where the scope is judged here because this is the end that can see the
+      # diff - each decision sits with whoever can actually answer it.
       - name: Ask the QA suite to run against it
-        if: steps.gate.outputs.ready == 'true'
+        if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
           URL: ${{ steps.upload.outputs.url }}
+          TOOLS: ${{ steps.scope.outputs.tools }}
+          WHY: ${{ steps.scope.outputs.why }}
+          BASE: ${{ github.event.pull_request.base.ref }}
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN}" ]; then
@@ -622,21 +934,28 @@ jobs:
             exit 1
           fi
           gh workflow run report.yml --repo A-Box-of-Tools/qa \
-            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA"
-          echo "Dispatched against $URL"
+            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA" -f "tools=$TOOLS" -f "pr_base=$BASE"
+          echo "Dispatched against $URL - $WHY"
 
       - name: Summary
         if: always()
         env:
           URL: ${{ steps.upload.outputs.url }}
+          KEPT: ${{ steps.keep.outputs.url }}
         run: |
           {
             echo '### Preview'
             echo
-            if [ -n "$URL" ]; then
+            if [ -z "$URL" ]; then
+              echo 'Not deployed: the Cloudflare secrets are not set. See cloudflare/README.md, "Previews".'
+            elif [ -n "$PR" ]; then
               echo "- $URL"
               echo '- The QA suite runs against it in [A-Box-of-Tools/qa](https://github.com/A-Box-of-Tools/qa/actions); the result is the `qa/preview` status on this commit.'
             else
-              echo 'Not deployed: the Cloudflare secrets are not set. See cloudflare/README.md, "Previews".'
+              echo "- $URL - the bundle as \`dev\` currently stands, which the next merge replaces."
+              if [ -n "$KEPT" ]; then
+                echo "- $KEPT - this same state, kept at an address the next merge will not touch."
+              fi
+              echo '- The QA suite is not run against these. It runs on the pull request from `dev` to `main`, on the same bundle, which is the run that gates production.'
             fi
           } >> "$GITHUB_STEP_SUMMARY"

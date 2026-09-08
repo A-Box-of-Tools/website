@@ -65,6 +65,7 @@ INVISIBLE = (
     'docs/',
     '.claude/',
     'workers/',          # deployed by hand, and not part of a page
+    'cloudflare/',       # the edge rules, applied by hand the same way
     'media/',            # artwork for profiles and press; the build never copies it
 )
 
@@ -78,6 +79,7 @@ INVISIBLE_FILES = (
     'LICENSE-BRAND',
     '.gitignore',
     '.gitattributes',
+    'serve.ps1',         # the local server; it serves a build, and ships in none
 )
 
 #: A tool announces itself by its configuration file and nothing else.

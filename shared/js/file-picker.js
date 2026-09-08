@@ -278,31 +278,32 @@ function wireExample({ example, hand, busy, done, dropzone }) {
 /**
  * Move the button up onto the step's heading row.
  *
- * A CARD'S HEADING IS IN ONE OF TWO PLACES. It is a direct child of the card
- * until buildlib/cards.py folds the step's explanation behind it, and from then
- * on it is the <summary> of a <details>. Looking only for the first shape left
- * the five tools whose first card opens with a lede - document-scanner,
- * heic-to-jpg, id-photo, qr-barcode-reader, redact-image - with the button
- * still sitting under their drop zone, which is the position this exists to
- * move it out of.
+ * There are two shapes to find that row in, because the build makes the second
+ * one. A card that opens with a paragraph explaining the step has had that
+ * paragraph - and its heading with it - folded into a <details> by
+ * buildlib/cards.py, so the <h2> is no longer the card's child and the row the
+ * reader sees is the fold's <summary>. Looking only for the child <h2> found
+ * nothing on those cards and left the button under the drop zone, between it
+ * and the step's own controls, on five tools: document-scanner, heic-to-jpg,
+ * id-photo, qr-barcode-reader and redact-image.
  *
- * When it is folded, what goes in the row is the whole <details> rather than
- * the heading pulled out of it. A <summary> may hold the heading and nothing
- * else here: a button inside one opens the fold on every click, and its words
- * join the summary's accessible name - the same two objections as putting it
- * inside the <h2>, and the click one is fatal rather than untidy.
+ * The whole <details> moves in that case rather than the heading inside it.
+ * Taking the <h2> out of the summary would leave the fold unnamed and the
+ * button on a row of its own, which is the bug over again one line lower.
  *
- * Quietly does nothing if the shape is neither - a tool whose first card has no
- * heading keeps the button under the drop zone, which is where it already was
- * and is not wrong, only lower.
+ * Quietly does nothing if the shape is neither - a tool whose first card has
+ * no heading at all keeps the button under the drop zone, which is where it
+ * already was and is not wrong, only lower.
  */
 function liftToHeading(holder, dropzone) {
   const card = dropzone?.closest('.card');
-  const heading = card?.querySelector(
-    ':scope > h2, :scope > details.card-note > summary > h2');
-  if (!heading || !holder) return;
+  if (!card || !holder) return;
 
-  const head = heading.closest('details.card-note') ?? heading;
+  const fold = card.querySelector(':scope > details.card-note');
+  const head = card.querySelector(':scope > h2')
+    ?? (fold?.querySelector(':scope > summary > h2') ? fold : null);
+  if (!head) return;
+
   const row = document.createElement('div');
   row.className = 'card-head';
   head.before(row);

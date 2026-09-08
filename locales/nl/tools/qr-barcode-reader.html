@@ -12,6 +12,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Wat erin ging, teruggetekend. Niet het bestand, maar de afbeelding
+      waar de lezer mee werkte: dezelfde decodering, dezelfde schaal, dezelfde
+      witte ondergrond. Een miniatuur die er verkeerd uitziet, is dus de reden
+      dat het antwoord dat ook is.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Camera gebruiken</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Camera stoppen</button>
@@ -134,6 +145,19 @@
   </template>
 
   <!--
+    Eén afbeelding in dat voorbeeld. Per bestand gekloond, en elk woord
+    erin staat hier in de markup, omdat dit bestand per taal vertaald wordt en
+    src/*.js één bestand voor alle talen is.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     De woorden die het script nodig heeft, hier in de markup zodat een vertaler
     ze tegenkomt waar hij de rest van de pagina tegenkomt. Een {host} hierin
     wordt ingevuld met de host die gelezen is; verder wordt er niets vervangen.
@@ -224,6 +248,11 @@
     <span data-phrase="how.global">één drempelwaarde voor de hele afbeelding</span>
     <span data-phrase="how.softened">de afbeelding eerst verzachten</span>
     <span data-phrase="how.dense">, met controle van elke rij</span>
+
+    <span data-phrase="preview.one">De afbeelding die bekeken is</span>
+    <span data-phrase="preview.many">De {n} afbeeldingen die bekeken zijn</span>
+    <span data-phrase="preview.nothing">Geen code gevonden</span>
+    <span data-phrase="preview.broken">Kon niet geopend worden</span>
 
     <span data-phrase="status.reading">Bezig met lezen&hellip;</span>
     <span data-phrase="status.nothing">In die afbeelding is geen code gevonden. Er

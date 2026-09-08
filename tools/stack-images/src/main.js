@@ -23,6 +23,7 @@ const el = {
   countLabel: $('count-label'),
   sortName: $('sort-name'),
   clearAll: $('clear-all'),
+  reorderHint: $('reorder-hint'),
   list: $('frame-list'),
 
   mode: $('mode'),
@@ -72,6 +73,22 @@ const { show: showError } = messageBox(el.error);
 
 /** @type {{file: File, info: object|null, thumb: string|null, ok: boolean}[]} */
 let frames = [];
+
+/**
+ * The frame everything else is measured against, held as the slot itself
+ * rather than as a position in the list.
+ *
+ * It used to be whichever frame was first, and "use as reference" moved the
+ * row it was pressed on to the top - so choosing what to align against
+ * silently rearranged a list somebody had just sorted, and a set of forty
+ * frames lost the order it was added in to a single click. The two are
+ * separate now: this says which frame it is, and the order is the visitor's,
+ * changed by dragging and by the sort button and by nothing else.
+ *
+ * Null until somebody chooses, which is most runs; `referenceSlot` reads that
+ * as the first frame, which is what this tool has always done by default.
+ */
+let reference = null;
 let busy = false;
 let inspecting = 0;
 let resultUrl = null;
@@ -246,19 +263,37 @@ function inspected(id, found) {
 function removeAt(index) {
   const [gone] = frames.splice(index, 1);
   if (gone?.thumb) URL.revokeObjectURL(gone.thumb);
+  // Dropping the pointer as well as the row keeps the removed frame's File out
+  // of memory; `referenceSlot` would have fallen back without this.
+  if (gone === reference) reference = null;
   render();
 }
 
-/** Move a frame to the front, which is what makes it the reference. */
+/** Mark a frame as the reference. The list keeps the order it had. */
 function makeReference(index) {
-  const [chosen] = frames.splice(index, 1);
-  frames.unshift(chosen);
+  reference = frames[index] ?? null;
   render();
+}
+
+/**
+ * Move a frame within the list. Nothing else reorders it.
+ *
+ * The keyboard reaches this through the handle's arrow keys, so the handle in
+ * the row's new position is focused afterwards: `render` has replaced every
+ * row, and the element the key was pressed on no longer exists.
+ */
+function moveFrame(from, to) {
+  if (to < 0 || to >= frames.length || from === to) return;
+  const [moved] = frames.splice(from, 1);
+  frames.splice(to, 0, moved);
+  render();
+  el.list.children[to]?.querySelector('.drag-handle')?.focus();
 }
 
 function clearAll() {
   for (const slot of frames) if (slot.thumb) URL.revokeObjectURL(slot.thumb);
   frames = [];
+  reference = null;
   render();
 }
 
@@ -282,18 +317,36 @@ function render() {
 /** The frames that are opened and usable. */
 const ready = () => frames.filter((slot) => slot.ok && slot.info?.width);
 
+/**
+ * Which frame is the reference right now.
+ *
+ * A chosen one can be removed, or turn out not to be a picture and be taken
+ * out of the list by the survey, and the first frame is the answer until
+ * somebody chooses at all. Both cases land on the same fallback rather than on
+ * a badge that has gone missing.
+ */
+const referenceSlot = () => (
+  reference && frames.includes(reference) ? reference : frames[0] ?? null
+);
+
 function renderList() {
   el.toolbar.hidden = frames.length === 0;
+  el.reorderHint.hidden = frames.length < 2;
   el.countLabel.textContent = frames.length === 0
     ? phrase('count.none')
     : phrase(frames.length === 1 ? 'count.one' : 'count.many', { count: frames.length });
 
-  el.list.replaceChildren(...frames.map((slot, index) => row(slot, index)));
+  const chosen = referenceSlot();
+  el.list.replaceChildren(...frames.map((slot, index) => row(slot, index, slot === chosen)));
 }
 
-function row(slot, index) {
+function row(slot, index, isReference) {
   const item = document.createElement('li');
   item.className = 'frame-row';
+  if (isReference) item.classList.add('is-reference');
+
+  const label = slot.info?.name ?? slot.file.name;
+  item.append(dragHandle(label, index));
 
   const thumb = document.createElement('img');
   thumb.className = 'frame-thumb';
@@ -306,7 +359,7 @@ function row(slot, index) {
 
   const name = document.createElement('p');
   name.className = 'frame-name';
-  name.textContent = slot.info?.name ?? slot.file.name;
+  name.textContent = label;
   body.append(name);
 
   const detail = document.createElement('p');
@@ -328,7 +381,7 @@ function row(slot, index) {
   const actions = document.createElement('div');
   actions.className = 'frame-actions';
 
-  if (index === 0) {
+  if (isReference) {
     const badge = document.createElement('span');
     badge.className = 'frame-badge';
     badge.textContent = phrase('frame.reference');
@@ -350,7 +403,111 @@ function row(slot, index) {
   actions.append(remove);
 
   item.append(actions);
+  wireDrag(item, index);
   return item;
+}
+
+/* -------------------------------------------------------------- reordering */
+
+/** The row being dragged, and where it would land: `{ index, after }`. */
+let dragIndex = null;
+let dropAt = null;
+
+function clearDropMarkers() {
+  for (const node of el.list.querySelectorAll('.insert-before, .insert-after')) {
+    node.classList.remove('insert-before', 'insert-after');
+  }
+}
+
+/**
+ * The grip, which is both what a pointer drags and how a keyboard reorders.
+ *
+ * A handle rather than the whole row: each row carries two buttons, and a row
+ * that is itself draggable turns pressing one into a gamble on whether the
+ * pointer moved a few pixels first. Dragging is also the one gesture that has
+ * no keyboard at all, which is why this is a button and answers the arrow
+ * keys - a list nobody can reorder without a mouse is not reorderable.
+ */
+function dragHandle(label, index) {
+  const handle = document.createElement('button');
+  handle.type = 'button';
+  handle.className = 'drag-handle';
+  handle.draggable = true;
+  handle.textContent = '⋮⋮'; // two vertical ellipses, a grip
+  const said = phrase('frame.move', { name: label });
+  handle.title = said;
+  handle.setAttribute('aria-label', said);
+
+  handle.addEventListener('keydown', (event) => {
+    if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+    // Otherwise the page scrolls as well, and the row being moved walks off
+    // the screen a keypress at a time.
+    event.preventDefault();
+    moveFrame(index, event.key === 'ArrowUp' ? index - 1 : index + 1);
+  });
+
+  return handle;
+}
+
+function wireDrag(item, index) {
+  const handle = item.querySelector('.drag-handle');
+
+  handle.addEventListener('dragstart', (event) => {
+    dragIndex = index;
+    item.classList.add('dragging');
+    event.dataTransfer.effectAllowed = 'move';
+    // Firefox refuses to start a drag unless some data is set.
+    event.dataTransfer.setData('text/plain', String(index));
+    // The whole row follows the pointer. Without this it is the grip that
+    // does, which says nothing about what is being moved.
+    event.dataTransfer.setDragImage(item, 24, item.offsetHeight / 2);
+  });
+
+  handle.addEventListener('dragend', () => {
+    dragIndex = null;
+    dropAt = null;
+    item.classList.remove('dragging');
+    clearDropMarkers();
+  });
+
+  item.addEventListener('dragover', (event) => {
+    if (dragIndex === null) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+
+    // Which half of the row the pointer is in decides where the frame lands,
+    // so the marker reads as "it goes here" rather than "it swaps with this".
+    const rect = item.getBoundingClientRect();
+    const after = event.clientY > rect.top + rect.height / 2;
+
+    clearDropMarkers();
+    item.classList.add(after ? 'insert-after' : 'insert-before');
+    dropAt = { index, after };
+  });
+
+  item.addEventListener('drop', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    applyDrop();
+  });
+}
+
+/** Move the dragged frame to wherever the marker sits. */
+function applyDrop() {
+  if (dragIndex === null || dropAt === null) {
+    clearDropMarkers();
+    return;
+  }
+
+  let target = dropAt.after ? dropAt.index + 1 : dropAt.index;
+  // Taking the row out first shifts everything below it up by one.
+  if (dragIndex < target) target -= 1;
+
+  const from = dragIndex;
+  dragIndex = null;
+  dropAt = null;
+  clearDropMarkers();
+  moveFrame(from, target);
 }
 
 function describe(slot) {
@@ -459,6 +616,18 @@ function start() {
     return;
   }
 
+  // The pipeline measures every frame against the first file it is handed and
+  // refines against that one's windows, so the reference is what goes first -
+  // whatever position its row occupies here. Nothing else about the order
+  // reaches the result: every method combines the frames as a set, so a
+  // median is a median whichever way round they arrive.
+  //
+  // A frame still being opened cannot be the reference, because a run wants
+  // its size, so the fallback is the same one `referenceSlot` uses.
+  const chosen = referenceSlot();
+  const first = usable.includes(chosen) ? chosen : usable[0];
+  const ordered = [first, ...usable.filter((slot) => slot !== first)];
+
   busy = true;
   cancelled = false;
   startedAt = performance.now();
@@ -473,7 +642,7 @@ function start() {
   send({
     type: 'run',
     request: {
-      files: usable.map((slot) => slot.file),
+      files: ordered.map((slot) => slot.file),
       mode: el.mode.value,
       align: el.align.value,
       scale: SCALES[el.scale.value] ?? 1,
@@ -600,6 +769,18 @@ function finishRun() {
 el.run.addEventListener('click', start);
 el.cancel.addEventListener('click', stopWork);
 el.clearAll.addEventListener('click', clearAll);
+
+// Dropping in the gaps between rows should still land somewhere sensible
+// rather than being swallowed by the window, which navigates to a dropped file.
+el.list.addEventListener('dragover', (event) => {
+  if (dragIndex !== null) event.preventDefault();
+});
+el.list.addEventListener('drop', (event) => {
+  if (dragIndex === null) return;
+  event.preventDefault();
+  applyDrop();
+});
+
 el.sortName.addEventListener('click', () => {
   frames.sort((a, b) => (a.info?.name ?? a.file.name)
     .localeCompare(b.info?.name ?? b.file.name, undefined, { numeric: true }));
