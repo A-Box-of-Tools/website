@@ -16,6 +16,15 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      进去的东西，再画出来。不是那个文件，而是读码时真正用的那张图：同一次解码、
+      同样的缩放、同样的白底。所以这里的缩略图看着不对，就是答案不对的原因。
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">用摄像头</button>
       <button type="button" id="stop-camera" class="ghost" hidden>停止摄像头</button>
@@ -123,6 +132,18 @@
   </template>
 
   <!--
+    预览里的一张图。按文件复制，里面每一个字都写在这份标记里，因为这份文件
+    按语言翻译，而 src/*.js 是所有语言共用的一份。
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     脚本要用的那些词，放在标记里，让翻译的人在遇到这一页其余部分的地方就能
     遇到它们。里面的 {host} 会被读到的主机填上，别的都不替换。
   -->
@@ -140,6 +161,11 @@
     <span data-phrase="mode.numeric">只有数字</span><span data-phrase="mode.alphanumeric">大写字母和数字</span><span data-phrase="mode.byte">字节</span><span data-phrase="mode.kanji">汉字</span>
 
     <span data-phrase="how.local">一块一块算出来的阈值</span><span data-phrase="how.inverted">把深浅对调</span><span data-phrase="how.global">整张图共用一个阈值</span><span data-phrase="how.softened">先把图片放柔一点</span><span data-phrase="how.dense">，并且逐行都查了一遍</span>
+
+    <span data-phrase="preview.one">它看过的图</span>
+    <span data-phrase="preview.many">它看过的 {n} 张图</span>
+    <span data-phrase="preview.nothing">没找到码</span>
+    <span data-phrase="preview.broken">打不开</span>
 
     <span data-phrase="status.reading">正在读这张图&hellip;</span>
     <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span><span data-phrase="status.broken">这个文件打不开成图片。</span><span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span><span data-phrase="status.on">摄像头开着。什么都没有在录。</span>

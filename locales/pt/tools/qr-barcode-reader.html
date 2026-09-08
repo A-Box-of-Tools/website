@@ -11,6 +11,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      O que entrou, desenhado de volta. Não o arquivo, e sim a imagem com que
+      o leitor trabalhou: a mesma decodificação, a mesma escala, o mesmo fundo
+      branco. Então uma miniatura que parece errada é a razão de a resposta
+      estar.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Usar a câmera</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Parar a câmera</button>
@@ -131,6 +142,19 @@
   </template>
 
   <!--
+    Uma imagem dessa prévia. Clonada por arquivo, e cada palavra está aqui
+    na marcação, porque este arquivo é traduzido por idioma e src/*.js é um só
+    para todos.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     As palavras de que o script precisa, postas na marcação para quem traduz
     encontrá-las onde encontra o resto da página. Um {host} é preenchido com o
     host que foi lido; nada mais é substituído.
@@ -222,6 +246,11 @@
     <span data-phrase="how.global">um limiar só para a imagem inteira</span>
     <span data-phrase="how.softened">suavizar a imagem antes</span>
     <span data-phrase="how.dense">, conferindo cada linha</span>
+
+    <span data-phrase="preview.one">A imagem que foi examinada</span>
+    <span data-phrase="preview.many">As {n} imagens que foram examinadas</span>
+    <span data-phrase="preview.nothing">Nenhum código encontrado</span>
+    <span data-phrase="preview.broken">Não deu para abrir</span>
 
     <span data-phrase="status.reading">Lendo a imagem&hellip;</span>
     <span data-phrase="status.nothing">Nenhum código encontrado nessa imagem.

@@ -16,6 +16,7 @@ that would have caught the gap in the first place.
 """
 
 import re
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -23,6 +24,15 @@ from buildlib import cards
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOLS = ROOT / 'tools'
+LOCALES = ROOT / 'locales'
+
+PICKER = '{% include "partials/file-picker.html" %}'
+
+# A <details> and everything in it, so what is left is the card's own children.
+DETAILS = re.compile(r'<details\b.*?</details>', re.S)
+
+# The fold this module makes, as shared/js/file-picker.js looks for it.
+FOLD_HEADING = re.compile(r'<details class="card-note">\s*<summary>\s*<h2\b', re.S)
 
 FOLD = re.compile(r'<details class="card-note">.*?</details>', re.S)
 SUMMARY = re.compile(r'<p class="field-summary"([^>]*)>((?:(?!</p>).)*)</p>', re.S)
@@ -110,3 +120,47 @@ class EveryTool(unittest.TestCase):
 
         self.assertEqual([], loose, '\nstill on the page:\n' + '\n'.join(loose))
         self.assertEqual([], lost, '\nfolded but is a status:\n' + '\n'.join(lost))
+
+    def test_a_worked_example_keeps_a_heading_its_button_can_sit_on(self):
+        """The fold leaves a heading row the "Try an example" button can find.
+
+        shared/js/file-picker.js moves that button out of the drop zone and onto
+        the step's heading row, and it knows the two shapes a heading is left in
+        here: the card's own <h2>, or the <summary> this module moved that <h2>
+        into. A third shape would fail nothing and stop nothing - the button
+        would quietly stay where the partial renders it, under the drop zone and
+        above the step's own controls, which is where it sat on five tools for
+        as long as only the first shape was looked for.
+
+        Every language, because the fold runs on every language and a translated
+        body is a whole file, free to drift from the English one it came from.
+        """
+        astray = []
+        for slug, body in _bodies_with_an_example():
+            inner = _picker_card(cards.fold_ledes(body.read_text(encoding='utf-8')))
+            if inner is None:
+                astray.append(f'{slug}: {body.name} - no card holds the drop zone')
+            elif not (FOLD_HEADING.search(inner) or '<h2' in DETAILS.sub('', inner)):
+                astray.append(f'{slug}: {body.name} - no heading the button can reach')
+
+        self.assertEqual([], astray, '\n' + '\n'.join(astray))
+
+
+def _bodies_with_an_example():
+    """Every body of a tool that renders the button, English and translated."""
+    for config in sorted(TOOLS.glob('*/tool.toml')):
+        tool = tomllib.loads(config.read_text(encoding='utf-8'))
+        if not tool.get('picker', {}).get('example'):
+            continue
+        slug = config.parent.name
+        yield slug, config.parent / 'body.html'
+        for body in sorted(LOCALES.glob(f'*/tools/{slug}.html')):
+            yield slug, body
+
+
+def _picker_card(html):
+    """The inside of the card the drop zone is in, or None if there is not one."""
+    for match in cards.CARD.finditer(html):
+        if PICKER in match.group('inner'):
+            return match.group('inner')
+    return None

@@ -12,6 +12,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Was hineinging, wieder herausgezeichnet. Nicht die Datei, sondern das
+      Bild, mit dem der Leser gearbeitet hat: aus derselben Dekodierung, gleich
+      skaliert, auf demselben weißen Grund. Ein Vorschaubild, das falsch
+      aussieht, ist der Grund, warum die Antwort es ist.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Kamera verwenden</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Kamera stoppen</button>
@@ -133,6 +144,19 @@
   </template>
 
   <!--
+    Ein Bild in dieser Vorschau. Pro Datei geklont, und jedes Wort darin
+    steht hier im Markup, weil diese Datei je Sprache übersetzt wird und
+    src/*.js eine einzige Datei für alle ist.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     Die Wörter, die das Skript braucht, hier im Markup, damit eine Übersetzerin
     sie dort antrifft, wo sie auch dem Rest der Seite begegnet. Ein {host} darin
     wird durch den gelesenen Host ersetzt; sonst wird nichts eingesetzt.
@@ -224,6 +248,11 @@
     <span data-phrase="how.global">einen Schwellwert fürs ganze Bild</span>
     <span data-phrase="how.softened">vorheriges Weichzeichnen des Bildes</span>
     <span data-phrase="how.dense">, mit Prüfung jeder Zeile</span>
+
+    <span data-phrase="preview.one">Das Bild, das geprüft wurde</span>
+    <span data-phrase="preview.many">Die {n} Bilder, die geprüft wurden</span>
+    <span data-phrase="preview.nothing">Kein Code gefunden</span>
+    <span data-phrase="preview.broken">Ließ sich nicht öffnen</span>
 
     <span data-phrase="status.reading">Bild wird gelesen&hellip;</span>
     <span data-phrase="status.nothing">In diesem Bild wurde kein Code gefunden. Es
