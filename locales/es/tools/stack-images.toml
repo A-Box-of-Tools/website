@@ -149,8 +149,9 @@ body = """
  A pulso: sí, solo
       desplazamiento. A pulso y además girando: desplazamiento, rotación y
       escala. Trípode fijo o intervalómetro: no, y así irá más rápido. Cada toma
-      se mide contra la primera de la lista, y por eso cualquier toma puede
-      ascender a ser esa primera."""
+      se mide contra la que lleva la marca de referencia, que es la primera
+      mientras no digas otra cosa: &laquo;Usar como referencia&raquo; mueve la
+      marca y deja la lista en el orden en que la pusiste."""
 
 [[howto]]
 title = "Lee las cuatro cifras y después pulsa el botón."
@@ -224,8 +225,9 @@ a = """
 [[faq]]
 q = "¿Qué hace exactamente alinear las tomas?"
 a = """
-        Encuentra cuánto se ha movido cada toma respecto a la primera y la
-        devuelve a su sitio, con precisión de fracciones de píxel. El método es
+        Encuentra cuánto se ha movido cada toma respecto a la toma de
+        referencia y la devuelve a su sitio, con precisión de fracciones de
+        píxel. El método es
         la correlación de fase: el desplazamiento entre dos imágenes aparece como
         una diferencia de fase entre sus espectros, así que una transformada de
         Fourier de cada una encuentra un desplazamiento de doscientos píxeles tan

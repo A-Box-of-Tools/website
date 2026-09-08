@@ -11,6 +11,17 @@
 
     {% include "partials/file-picker.html" %}
 
+    <!--
+      Lo que entró, dibujado de vuelta. No el archivo, sino la imagen con la
+      que trabajó el lector: de la misma descodificación, a la misma escala y
+      sobre el mismo fondo blanco. Así, una miniatura que se ve mal es la razón
+      de que la respuesta lo esté.
+    -->
+    <div id="preview" class="preview" hidden>
+      <p id="preview-caption" class="preview-caption" role="status"></p>
+      <ul id="preview-list" class="preview-list"></ul>
+    </div>
+
     <div class="run-row">
       <button type="button" id="start-camera" class="primary">Usar la cámara</button>
       <button type="button" id="stop-camera" class="ghost" hidden>Parar la cámara</button>
@@ -131,6 +142,19 @@
   </template>
 
   <!--
+    Una imagen de esa vista previa. Se clona por archivo, y cada palabra
+    está aquí en el marcado, porque este archivo se traduce por idioma y
+    src/*.js es uno solo para todos.
+  -->
+  <template id="preview-template">
+    <li class="preview-item">
+      <span class="preview-shot"></span>
+      <span class="preview-name"></span>
+      <span class="preview-state"></span>
+    </li>
+  </template>
+
+  <!--
     Las palabras que necesita el script, aquí en el marcado para que quien
     traduzca se las encuentre donde se encuentra el resto de la página. Un
     {host} se rellena con el host leído; no se sustituye nada más.
@@ -222,6 +246,11 @@
     <span data-phrase="how.global">un solo umbral para toda la imagen</span>
     <span data-phrase="how.softened">suavizar antes la imagen</span>
     <span data-phrase="how.dense">, revisando cada fila</span>
+
+    <span data-phrase="preview.one">La imagen que se examinó</span>
+    <span data-phrase="preview.many">Las {n} imágenes que se examinaron</span>
+    <span data-phrase="preview.nothing">No se encontró ningún código</span>
+    <span data-phrase="preview.broken">No se pudo abrir</span>
 
     <span data-phrase="status.reading">Leyendo la imagen&hellip;</span>
     <span data-phrase="status.nothing">No se encontró ningún código en esa

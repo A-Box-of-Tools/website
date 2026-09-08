@@ -96,13 +96,33 @@ rule fights that control. Same for **Always Use HTTPS**.
 - **Editing in the dashboard is fine, but temporary.** The next apply overwrites
   it. Change the JSON and re-run instead, so the change survives and gets reviewed.
 
-## Previews, for a pull request
+## Previews, for a pull request and for `dev`
 
-Production stays on GitHub Pages. A pull request, though, gets a build of its
+Production stays on GitHub Pages. Everything upstream of it gets a build of its
 own on **Cloudflare Pages** - a second, separate project, direct upload, no
-git integration - at `https://pr-<number>.abox-preview.pages.dev/`, and the QA
-suite is run against that before anything reaches `main`. See the `preview`
-job in `.github/workflows/build.yml` for what it does and why.
+git integration:
+
+| What | Address | Is the QA suite run against it |
+|---|---|---|
+| a pull request | `https://pr-<number>.abox-preview.pages.dev/` | yes, and the result is the `qa/preview` check on the pull request |
+| the `dev` branch, as it stands | `https://dev.abox-preview.pages.dev/` | no |
+| `dev` after one merge, kept | `https://dev-pr-<number>.abox-preview.pages.dev/` | no |
+
+The third of those is the second address every merge into `dev` writes, named
+after the pull request that caused the merge. The stable address has the fault
+that comes with being stable - the next merge replaces it, so the state
+somebody was looking at an hour ago is gone and there is nothing left to
+compare against. These accumulate on purpose: they are the bundle's visual
+history, and finding which merge changed something is opening the two either
+side of it.
+
+The pull request previews are the gate: the suite runs against one before the
+change reaches `dev`, and against the `dev` -> `main` pull request before the
+bundle reaches production. `dev`'s own address is not a gate but a place to
+look - one stable URL that always holds everything merged since the last
+release, which neither `main` nor any single pull request shows. See the
+`preview` job in `.github/workflows/build.yml` for what it does and why, and
+[docs/deploying.md](../docs/deploying.md) for why `dev` is there at all.
 
 Pages reads `_headers`, so a preview carries the same security headers as
 production without the transform rule above; and Pages marks every deployment
@@ -116,9 +136,11 @@ visits either.
 1. In the Cloudflare dashboard, **Workers & Pages → Create application**, then
    the **Pages** tab rather than Workers, then **Upload assets**. Name the
    project `abox-preview` and upload anything - the first deployment from the
-   workflow replaces it. Leave the production branch as `main`: the workflow
-   deploys to branches named `pr-<number>`, which is what makes each one a
-   preview rather than the project's production.
+   workflow replaces it. Leave the production branch as `main`, and note that
+   the workflow never deploys to it: it deploys to `pr-<number>` and to `dev`,
+   and a branch that is not the project's production branch is what makes a
+   deployment a preview - noindex, and at an alias of its own rather than at
+   the project's bare address.
 
    The same from a terminal, with no placeholder to upload, once the token
    below exists:

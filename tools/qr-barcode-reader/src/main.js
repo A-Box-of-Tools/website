@@ -24,6 +24,10 @@ const el = {
   resultsCard: $('results-card'),
   results: $('results'),
   resultTemplate: $('result-template'),
+  preview: $('preview'),
+  previewCaption: $('preview-caption'),
+  previewList: $('preview-list'),
+  previewTemplate: $('preview-template'),
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
@@ -94,11 +98,50 @@ async function pictureFrom(file) {
   }
 }
 
+/**
+ * The longest side a picture is drawn at for the preview.
+ *
+ * Twice the width the tile shows it at, so it is not soft on a screen with two
+ * device pixels to the CSS pixel, and nothing like large enough to be a second
+ * copy of somebody's photograph sitting in the page.
+ */
+const PREVIEW_SIDE = 260;
+
+/**
+ * The picture as the reader saw it, small.
+ *
+ * Drawn from the decoded picture rather than from the file, and on the same
+ * white ground pixelsOf lays down, because the file is not what was read: a
+ * transparent PNG of a code is flattened onto white before it is thresholded,
+ * and a preview that showed it any other way would be a picture of something
+ * the answer did not come from.
+ */
+function thumbnailOf(picture, width, height) {
+  const scale = Math.min(1, PREVIEW_SIDE / Math.max(width, height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(width * scale));
+  canvas.height = Math.max(1, Math.round(height * scale));
+  // Decoration, and declared as such: the file's name and what came of it sit
+  // beside this as text, so there is nothing here a screen reader is missing.
+  canvas.setAttribute('aria-hidden', 'true');
+
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(picture, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
+
 /** Read one file, at the working size and then, if that found nothing, whole. */
 async function readFile(file) {
   const picture = await pictureFrom(file);
   const width = picture.width ?? picture.naturalWidth;
   const height = picture.height ?? picture.naturalHeight;
+
+  // Before the scan rather than after it: a picture that opened is a picture
+  // worth showing whatever the search makes of it, and the scan is the half
+  // that can throw.
+  const thumbnail = thumbnailOf(picture, width, height);
 
   let found = scan(pixelsOf(picture, width, height, WORKING_SIDE));
   if (!found && Math.max(width, height) > WORKING_SIDE) {
@@ -106,7 +149,7 @@ async function readFile(file) {
   }
 
   picture.close?.();
-  return found;
+  return { found, thumbnail };
 }
 
 /* -------------------------------------------------------------- the results */
@@ -271,6 +314,55 @@ function fail(key) {
   el.pickError.textContent = phrase(key);
 }
 
+/* -------------------------------------------------------------- the preview
+ *
+ * What went in, beside what came of it.
+ *
+ * The results are cumulative and this is not: it is the batch that was just
+ * handed over, cleared when the next one arrives. That is the question it
+ * answers - is the picture I chose the picture that arrived, and which of the
+ * four did the one answer come from - and a preview that kept growing would
+ * stop answering it after the second drop.
+ *
+ * The camera has no entry here on purpose. Its preview is the viewfinder,
+ * which is live, and a still of a frame that has already been thrown away
+ * would say the opposite of what the card underneath it says.
+ */
+
+/** Start again: the preview is this batch, not the last one. */
+function clearPreview() {
+  el.previewList.replaceChildren();
+  el.preview.hidden = true;
+}
+
+/** One picture, whatever came of it. */
+function showPicture(file, thumbnail, found) {
+  const node = el.previewTemplate.content.firstElementChild.cloneNode(true);
+
+  // Absent only for a file that would not open as a picture at all, where the
+  // name and the reason are the whole of what there is to say.
+  if (thumbnail) node.querySelector('.preview-shot').append(thumbnail);
+
+  const name = node.querySelector('.preview-name');
+  name.textContent = file.name;
+  // A phone's file names are long, alike, and different only near the end,
+  // which is the end the ellipsis eats.
+  name.title = file.name;
+
+  const state = node.querySelector('.preview-state');
+  if (found) {
+    state.textContent = symbologyName(found.symbology);
+  } else {
+    state.textContent = phrase(thumbnail ? 'preview.nothing' : 'preview.broken');
+    node.classList.add(thumbnail ? 'nothing' : 'broken');
+  }
+
+  el.previewList.append(node);
+  const count = el.previewList.children.length;
+  el.previewCaption.textContent = phrase(count === 1 ? 'preview.one' : 'preview.many', { n: count });
+  el.preview.hidden = false;
+}
+
 /* --------------------------------------------------------------- the files */
 
 const picker = wireFilePicker({
@@ -283,15 +375,18 @@ const picker = wireFilePicker({
 async function readFiles(files) {
   el.pickError.hidden = true;
   picker.busy(readingLabel(files.length));
+  clearPreview();
 
   let any = false;
   let broken = false;
   for (const file of files) {
     try {
-      const found = await readFile(file);
+      const { found, thumbnail } = await readFile(file);
       if (found) any = report(found) || any;
+      showPicture(file, thumbnail, found);
     } catch {
       broken = true;
+      showPicture(file, null, null);
     }
   }
 

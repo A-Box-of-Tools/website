@@ -19,6 +19,7 @@
 }
 
 .frame-row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.7rem;
@@ -28,12 +29,66 @@
   background: var(--surface-2);
 }
 
-/* The first row is the reference every other frame is aligned to, so it is
-   marked rather than merely first. Somebody who has just pressed "use as
-   reference" needs to see that it took. */
-.frame-row:first-child {
+/* The reference is the frame every other one is aligned to, and it is no
+   longer the first row - choosing it leaves the order alone - so the row says
+   so twice: the badge inside it, and this. Somebody who has just pressed "use
+   as reference" needs to see that it took, in a list they may have to scroll. */
+.frame-row.is-reference {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
 }
+
+.frame-row.dragging {
+  opacity: 0.4;
+}
+
+/* A bar where the frame will land, rather than a tint on the row it is over,
+   which would read as "swap with this one". */
+.frame-row.insert-before::after,
+.frame-row.insert-after::after {
+  content: '';
+  position: absolute;
+  inset-inline: -2px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.frame-row.insert-before::after { top: -5px; }
+.frame-row.insert-after::after { bottom: -5px; }
+
+.drag-handle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.9rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: grab;
+  font-size: 0.9rem;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.drag-handle:hover {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.drag-handle:active { cursor: grabbing; }
+
+.reorder-hint {
+  margin: 0.8rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.reorder-hint .grip { letter-spacing: -2px; font-weight: 700; color: var(--accent); }
 
 .frame-thumb {
   flex: none;
@@ -89,10 +144,43 @@
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
+/* On a phone the row becomes a grid rather than a wrapping flex line. Wrapping
+   put the name under the picture and the buttons under that, on a line of their
+   own, while the whole width beside a 72-pixel thumbnail sat empty - three
+   stacked lines where two fit. The grip and the picture hold the left column
+   for both rows, and everything else stacks in the space that was going
+   spare. */
 @media (width <= 34rem) {
-  .frame-row { flex-wrap: wrap; }
-  .frame-body { flex-basis: calc(100% - 5rem); }
-  .frame-actions { flex-basis: 100%; justify-content: flex-start; }
+  .frame-row {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas:
+      "grip thumb body"
+      "grip thumb actions";
+    column-gap: 0.45rem;
+    row-gap: 0.35rem;
+  }
+
+  .drag-handle { grid-area: grip; }
+
+  /* Smaller here, and the buttons below are smaller with it, so that the two
+     of them fit on one line in the column beside the picture: they do from
+     about 368 pixels of viewport up, which covers every phone this side of the
+     first SE. Narrower than that, or in a language with a longer label, they
+     take a second line - which is why the sizes here are not shaved any finer.
+     Both buttons keep the 44-pixel height every button on the site has, so
+     nothing here touches the size of the thing being tapped. */
+  .frame-thumb {
+    grid-area: thumb;
+    width: 52px;
+    height: 39px;
+  }
+  /* Pushed together across the gap between the two rows, so the name and the
+     buttons read as one column rather than as two things that happen to be
+     stacked. */
+  .frame-body { grid-area: body; align-self: end; }
+  .frame-actions { grid-area: actions; align-self: start; justify-content: flex-start; }
+  .frame-actions .ghost { font-size: 0.8rem; padding: 0.3rem 0.5rem; }
 }
 
 /* ----------------------------------------------------------- the settings */

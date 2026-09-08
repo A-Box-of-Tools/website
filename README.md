@@ -49,6 +49,13 @@ Python 3.11 or newer, Node 22.15 or newer, nothing to install for either — no
 lockfile, no dependency to fetch. Both test suites run in CI on every push and
 every pull request, and nothing is published if either fails.
 
+Pull requests are opened against **`dev`**, which is where changes are bundled;
+`main` is what is live, and a release is a pull request from `dev` to `main`,
+opened and merged by hand when somebody decides the bundle is ready. Nothing
+merges it on a schedule.
+[Deploying](docs/deploying.md) has the whole path and why there is a branch in
+the middle of it.
+
 See [Running it](docs/running.md) for `--check` (does the deployed site match
 these sources) and the double-click failure that is worth knowing about before
 it surprises you.
@@ -67,7 +74,7 @@ finding the part you need does not mean scrolling through the parts you don't:
 | [The prose pages](docs/prose-pages.md) | `pages/`, the legal pages, About and Contact, and what Privacy does and does not claim |
 | [The guides](docs/guides.md) | the longer answer behind each tool, why tool pages link to each other, and the feedback panel |
 | [Languages](docs/languages.md) | what a locale is and is not, half-translated pages, and adding a language |
-| [Deploying](docs/deploying.md) | GitHub Pages behind Cloudflare, cache lifetimes, the 404 page, `/llms.txt`, and every page's `index.md` |
+| [Deploying](docs/deploying.md) | the branches a change passes through, GitHub Pages behind Cloudflare, cache lifetimes, the 404 page, `/llms.txt`, and every page's `index.md` |
 | [What can be built here](docs/what-can-be-built-here.md) | the test a new tool has to pass, what needs a vendored engine, and what was ruled out |
 | [Licence](docs/licence.md) | MIT for the code, CC BY 4.0 for the words, and why it is split that way |
 

@@ -278,36 +278,36 @@ function wireExample({ example, hand, busy, done, dropzone }) {
 /**
  * Move the button up onto the step's heading row.
  *
- * The heading is a direct child of the card - unless the build folded that
- * card's explanation behind it, which leaves the heading inside a <summary>
- * inside a <details> and no <h2> for a card to have. Five tools are in that
- * shape (buildlib/cards.py folds any card that opens with a `card-lede`), and
- * for as long as this looked only for the first one they were the five whose
- * button stayed down under the drop zone while the other twenty-seven had it
- * up on the heading row. A silent skip is the right behaviour for a shape
- * nobody planned; it is the wrong behaviour for the shape a third of the site
- * is in.
+ * There are two shapes to find that row in, because the build makes the second
+ * one. A card that opens with a paragraph explaining the step has had that
+ * paragraph - and its heading with it - folded into a <details> by
+ * buildlib/cards.py, so the <h2> is no longer the card's child and the row the
+ * reader sees is the fold's <summary>. Looking only for the child <h2> found
+ * nothing on those cards and left the button under the drop zone, between it
+ * and the step's own controls, on five tools: document-scanner, heic-to-jpg,
+ * id-photo, qr-barcode-reader and redact-image.
  *
- * What goes in the row is then the whole fold rather than the heading, because
- * the heading is inside the control that opens it: a button in there would be
- * read out as part of that control's name - "1 Choose the image Try an
- * example" - which is the same objection that keeps it out of the <h2>. The
- * row is told which shape it holds so the stylesheet can keep the button on
- * the summary's own line as the prose under it opens and closes.
+ * The whole <details> moves in that case rather than the heading inside it.
+ * Taking the <h2> out of the summary would leave the fold unnamed and the
+ * button on a row of its own, which is the bug over again one line lower.
  *
- * Quietly does nothing if the shape is not what it expects - a tool whose
- * first card has no heading keeps the button under the drop zone, which is
- * where it already was and is not wrong, only lower.
+ * Quietly does nothing if the shape is neither - a tool whose first card has
+ * no heading at all keeps the button under the drop zone, which is where it
+ * already was and is not wrong, only lower.
  */
 function liftToHeading(holder, dropzone) {
   const card = dropzone?.closest('.card');
-  const heading = card?.querySelector(':scope > h2, :scope > details.card-note');
-  if (!heading || !holder) return;
+  if (!card || !holder) return;
+
+  const fold = card.querySelector(':scope > details.card-note');
+  const head = card.querySelector(':scope > h2')
+    ?? (fold?.querySelector(':scope > summary > h2') ? fold : null);
+  if (!head) return;
 
   const row = document.createElement('div');
-  row.className = heading.matches('h2') ? 'card-head' : 'card-head card-head-fold';
-  heading.before(row);
-  row.append(heading, holder);
+  row.className = 'card-head';
+  head.before(row);
+  row.append(head, holder);
 }
 
 /**
