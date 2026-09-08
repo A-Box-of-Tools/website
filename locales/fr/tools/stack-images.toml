@@ -155,9 +155,10 @@ body = """
  À main levée&nbsp;: oui,
       décalage seul. À main levée et en tournant aussi&nbsp;: décalage, rotation
       et échelle. Trépied fixe ou intervallomètre&nbsp;: non, et ce sera plus
-      rapide. Chaque prise est mesurée par rapport à la première de la liste,
-      et c'est pourquoi n'importe quelle prise peut être promue à cette
-      place."""
+      rapide. Chaque prise est mesurée par rapport à celle qui porte la marque
+      de référence, la première tant que vous n'en décidez pas autrement&nbsp;:
+      &laquo;&nbsp;Prendre comme référence&nbsp;&raquo; déplace la marque et
+      laisse la liste dans l'ordre où vous l'avez mise."""
 
 [[howto]]
 title = "Lisez les quatre chiffres, puis appuyez sur le bouton."
@@ -234,8 +235,8 @@ a = """
 [[faq]]
 q = "Que fait réellement l'alignement des prises&nbsp;?"
 a = """
-        Il trouve de combien chaque prise a bougé par rapport à la première et la
-        remet en place, à une fraction de pixel près. La méthode est la corrélation
+        Il trouve de combien chaque prise a bougé par rapport à la prise de
+        référence et la remet en place, à une fraction de pixel près. La méthode est la corrélation
         de phase&nbsp;: le décalage entre deux images apparaît comme une différence
         de phase entre leurs spectres, si bien qu'une transformée de Fourier
         chacune trouve un décalage de deux cents pixels aussi bon marché qu'un

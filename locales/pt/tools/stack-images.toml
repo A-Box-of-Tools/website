@@ -145,8 +145,9 @@ body = """
  Na mão: sim,
       só deslocamento. Na mão e você também girava: deslocamento, rotação e escala.
       Tripé travado ou intervalômetro: não, e vai ser mais rápido. Cada quadro é
-      medido contra o primeiro da lista, e é por isso que qualquer quadro pode ser
-      promovido a primeiro."""
+      medido contra o que estiver marcado como referência, que é o primeiro
+      enquanto você não disser outra coisa: &ldquo;Usar como referência&rdquo;
+      muda a marca e deixa a lista na ordem em que você a pôs."""
 
 [[howto]]
 title = "Leia os quatro números, e então aperte o botão."
@@ -218,8 +219,8 @@ a = """
 [[faq]]
 q = "O que o alinhamento dos quadros faz de fato?"
 a = """
-        Ele descobre quanto cada quadro se deslocou em relação ao primeiro e o
-        desloca de volta, com precisão de fração de pixel. O método é a correlação de
+        Ele descobre quanto cada quadro se deslocou em relação ao quadro de
+        referência e o desloca de volta, com precisão de fração de pixel. O método é a correlação de
         fase: o deslocamento entre duas imagens aparece como uma diferença de fase
         entre os seus espectros, então uma transformada de Fourier em cada uma acha
         um desvio de duzentos pixels tão barato quanto um de dois. O segundo ajuste

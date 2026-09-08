@@ -202,8 +202,9 @@ body = """
  Hand-held: yes,
       shift only. Hand-held and you were also turning: shift, rotation and scale.
       Locked-off tripod or an intervalometer: no, and it will be quicker. Every
-      frame is measured against the first one in the list, which is why any frame
-      can be promoted to be that one."""
+      frame is measured against the one marked as the reference, which is the
+      first one until you say otherwise: &ldquo;use as reference&rdquo; moves the
+      mark and leaves the list in the order you put it in."""
 
 [[howto]]
 title = "Read the four figures, then press the button."
@@ -279,9 +280,9 @@ a = """
 [[faq]]
 q = "What does aligning the frames actually do?"
 a = """
-        It finds how far each frame moved relative to the first one and moves it
-        back, to a fraction of a pixel. The method is phase correlation: the
-        shift between two pictures shows up as a phase difference between their
+        It finds how far each frame moved relative to the reference frame and
+        moves it back, to a fraction of a pixel. The method is phase correlation:
+        the shift between two pictures shows up as a phase difference between their
         spectra, so one Fourier transform each finds a two-hundred-pixel offset as
         cheaply as a two-pixel one. The second setting also recovers rotation and
         scale, by the same trick applied to the spectrum in log-polar coordinates.
