@@ -5,7 +5,7 @@
 # the icon, the CSP and the list of shared parts stay where they are.
 #
 
-name = "Encodeur &amp; décodeur Base64"
+name = "Encodeur & décodeur Base64"
 heading = "Encodeur&nbsp;&amp;&nbsp;décodeur&nbsp;Base64 <span class=\"h1-kw\">&mdash; et URL, entités HTML, hexadécimal et échappements</span>"
 tagline = "Base64, encodage pourcent, entités HTML, hexadécimal et échappements antislash, dans les deux sens. Rien n'est collé dans le serveur de quelqu'un d'autre."
 

@@ -5,7 +5,7 @@
 # the icon, the CSP and the list of shared parts stay where they are.
 #
 
-name = "Pengode &amp; Pengurai Base64"
+name = "Pengode & Pengurai Base64"
 heading = "Pengode&nbsp;&amp;&nbsp;Pengurai&nbsp;Base64 <span class=\"h1-kw\">&mdash; dan URL, entitas HTML, heksadesimal, dan escape</span>"
 tagline = "Base64, pengodean persen, entitas HTML, heksadesimal, dan escape garis miring terbalik, dua arah. Tidak ada yang ditempelkan ke server orang lain."
 
