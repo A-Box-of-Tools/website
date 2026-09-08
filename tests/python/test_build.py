@@ -1138,6 +1138,40 @@ class BuildTheSite(unittest.TestCase):
                     f'<a href="/{href}/" lang="{other["hreflang"]}" '
                     f'hreflang="{other["hreflang"]}">{other["endonym"]}</a>', page)
 
+    def test_every_hub_lists_the_tools_that_language_has(self):
+        """A hub lists what its language has: all of them, or all but the ones
+        held back.
+
+        Both halves matter, and the first is the one that was missing. A page
+        held back until it is translated stays out of the sitemap, the hreflang
+        set and the switcher, and it has to stay off the hub too - it was
+        appearing on /zh/ as a card among the Chinese ones, under an English
+        name, leading to a page serving English under `lang="zh-Hans"`.
+
+        The other half is here because leaving it out cost an afternoon. The
+        first attempt at that filter emptied the ENGLISH hub of all forty-two
+        tools and the whole of this file still passed: English carries a debt
+        entry for every page it has - it is the source, not a language that
+        owes anything - so the filter has to let the base through before it
+        reads that dict. Nothing here noticed a front page with no tools on it.
+        """
+        slugs = sorted(path.parent.name for path in (ROOT / 'tools').glob('*/tool.toml'))
+        self.assertGreater(len(slugs), 1)
+        for locale in self.locales:
+            hub = (self.out / locale['prefix'] / 'index.html').read_text(encoding='utf-8')
+            for slug in slugs:
+                has = locale['is_base'] or not locale['debt'].get(slug)
+                # The href the hub writes is relative, so the localized slug and
+                # the closing quote are what identify it.
+                linked = f'{locale["slugs"].get(slug, slug)}/"' in hub
+                with self.subTest(lang=locale['lang'], tool=slug):
+                    self.assertEqual(
+                        linked, has,
+                        f'{locale["lang"]} '
+                        + ('has' if has else 'does not have')
+                        + f' {slug} and its hub '
+                        + ('does not link it' if has else 'links it anyway'))
+
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
             if not name.endswith('.html'):

@@ -477,11 +477,15 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # look identical in a directory listing, and the difference is the only
     # thing anybody wants to know about it.
     #
-    # Two different states are worth two different sentences. A locale that has
-    # not finished its frame is not published at all. A locale that has is
+    # Three different states are worth three different sentences. A locale that
+    # has not finished its frame is not published at all. A locale that has is
     # published, and owes a number of PAGES - which is the unit that decides
     # anything now, since a page with one string left is as held back as a page
-    # with four hundred.
+    # with four hundred. And a locale on `unadvertised_languages` is finished
+    # and is not offered anyway, which was reported as "published" until this
+    # said otherwise - a build that calls a language published while keeping it
+    # out of the sitemap is the one reader of this output nobody can correct.
+    unoffered = []
     for locale in targets:
         if locale['is_base']:
             continue
@@ -493,6 +497,14 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
             left = len(set(i18n.all_debt(locale)))
             print(f'  {locale["lang"]}: {left} strings still in English '
                   f'(not advertised until complete = true)')
+            continue
+        if not locale['advertised']:
+            # Named together below rather than a line each. That they are held
+            # back is one fact about thirteen languages, not thirteen facts,
+            # and thirteen lines of it would bury the ones still being worked
+            # on. What each of them owes page by page stops mattering while
+            # nothing is offering them.
+            unoffered.append(locale['lang'])
             continue
         behind = i18n.debt_report(locale, tools, prose)
         if behind:
@@ -507,6 +519,12 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
                   f'(built and readable, kept out of the sitemap): '
                   + ', '.join(sorted(behind)[:4])
                   + (' ...' if len(behind) > 4 else ''))
+
+    if unoffered:
+        print(f'  not offered: {", ".join(unoffered)} - translated, built and '
+              f'readable at their own addresses, and kept out of the sitemap, '
+              f'the hreflang sets and the switcher '
+              f'(unadvertised_languages in config/site.toml)')
 
     # One 404 for the whole domain, in English, because GitHub Pages serves one
     # file for every address it cannot find and has no way to know which
@@ -691,9 +709,38 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                for category in root['hub']['categories']
                for slug in category['order'] if slug in by_slug]
 
+    # THE TOOLS THIS LANGUAGE ACTUALLY HAS.
+    #
+    # A page held back until it is translated is "built and readable at its
+    # own address" and stays out of the sitemap, the hreflang set and the
+    # switcher. Everywhere the site LISTS its tools belongs in that sentence
+    # too, and did not, because until a tool shipped untranslated for the
+    # first time this list was every tool in every language and the filter
+    # would have removed nothing.
+    #
+    # What it looked like when the case finally arrived: on /zh/ a card among
+    # the Chinese ones under an English name, the same name in the hub's
+    # ItemList, a footer link on all hundred and five pages, and a "工具箱里还有"
+    # strip on every tool page - each leading to a page that serves English
+    # under `lang="zh-Hans"`.
+    #
+    # `debt` rather than `translated()`: the latter is false for every page of
+    # a language the site does not advertise, so it would empty thirteen
+    # languages instead of removing one entry from each. Whether a language is
+    # OFFERED and whether it HAS this page are different questions.
+    # `is_base` first, exactly as translated() does it, and for the reason
+    # that function does not spell out: English carries a debt entry for every
+    # page it has - it is the source every other language is measured against,
+    # not a language that owes anything - so consulting the dict without this
+    # guard empties the English hub, footer and related strips of all
+    # forty-two tools. Which is what the first draft of this did, and what no
+    # test caught.
+    here = [tool for tool in ordered
+            if locale['is_base'] or not locale['debt'].get(tool['slug'])]
+
     # The few other tools each tool page points at, off the same hub order. See
     # related_tools: one ring over every tool, siblings first.
-    related_of = related_tools(ordered)
+    related_of = related_tools(here)
 
     # What the footer on every page is built from. Derived from the folders that
     # exist rather than written down anywhere, so a new tool or a new legal page
@@ -706,8 +753,9 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     # already built from the folders that exist.
     #
     # The slugs in it are localized, because a footer is a set of addresses.
+    #
     footer = {
-        'tools': [{'name': tool['name'], 'slug': tool['out_slug']} for tool in ordered],
+        'tools': [{'name': tool['name'], 'slug': tool['out_slug']} for tool in here],
         'pages': [{'nav': page['nav'], 'slug': page['out_slug']}
                   for page in about + legal],
     }
@@ -1562,9 +1610,36 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
                 raise sitelib.ConfigError(
                     f'{slug} says category = {tool["category"]!r} but is listed under '
                     f'{category["id"]!r} in config/site.toml')
-            chosen.append(tool)
+            # Only if THIS language has the page. A held-back page is
+            # "built and readable at its own address" and stays out of the
+            # sitemap, the hreflang set and the switcher until it is
+            # translated - and the hub belongs in that list, which nothing
+            # noticed until a tool shipped untranslated for the first time.
+            # Until then every tool existed in every language and the filter
+            # would have removed nothing, so its absence looked like a
+            # decision rather than a case never met.
+            #
+            # What it looked like when it was met: a reader on /zh/ saw a card
+            # among the Chinese ones, headed with an English name, that led to
+            # a page serving English under `lang="zh-Hans"`. The hub's
+            # ItemList carried the English name too.
+            #
+            # `debt` and not `translated()`, deliberately. `translated()` is
+            # false for every page of a language the site does not advertise,
+            # so using it here would empty thirteen hubs instead of removing
+            # one card from each. Whether a language is OFFERED and whether it
+            # HAS this page are different questions, and this is the second.
+            # `listed` is still told about every slug, because it answers the
+            # config's question - is any tool listed nowhere - which is about
+            # the site and not about one language.
+            if not locale['debt'].get(slug):
+                chosen.append(tool)
             listed.add(slug)
-        categories.append({**category, 'tools': chosen})
+        # A category nobody in this language can use is not a heading worth
+        # rendering. It cannot happen today - no language is missing a whole
+        # category - but an empty one would render as a title over nothing.
+        if chosen:
+            categories.append({**category, 'tools': chosen})
 
     stray = sorted(set(by_slug) - listed)
     if stray:
