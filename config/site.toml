@@ -18,6 +18,32 @@ source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
 
+# Languages built and readable at their own addresses, and advertised nowhere:
+# no sitemap entry, no hreflang, no switcher link, no feed, and `noindex` on
+# every page. A reader who has one of these bookmarked still gets it, and it is
+# still translated; the site simply stops offering it.
+#
+# Not a judgement on the translations, which are finished. It is a judgement on
+# who reads them. Over the 28 days to 6 September 2026 the site was landed on
+# 56,713 times: 99.05% of those arrivals were on an English page and 0.95% on
+# all fourteen translations put together. Only Chinese had a readership worth
+# the name - 395, from China, Hong Kong and Singapore. The best of the rest was
+# Arabic on 35, the worst were Italian, Indonesian and Traditional Chinese on
+# one apiece, and zh-TW's single reader was in Canada while Hong Kong and
+# Taiwan were landing on the Simplified pages anyway.
+#
+# What makes that worth acting on rather than noting: at 102 URLs a locale,
+# these thirteen were 1,326 of the site's 1,530 indexed pages. Google's spam
+# policy names translation among the "automated transformations" that turn into
+# many pages of little value, and a site that is seven-eighths unread
+# translation has that shape whether or not it was built with that intent.
+#
+# Reversible, and meant to be. A language comes off this list the day it has
+# readers, and nothing else about it changes - the pages were never taken away.
+unadvertised_languages = [
+  "ar", "de", "es", "fr", "hi", "id", "it", "ja", "ko", "nl", "pt", "tr", "zh-TW",
+]
+
 # The account the site posts from. It is here rather than in the footer markup
 # because it is the same fact twice: the link a reader follows, and the `sameAs`
 # a search engine reads off the Organization node to decide that the profile and

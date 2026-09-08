@@ -86,6 +86,29 @@ the one to read before starting another. Which locales are actually finished is
 not written here on purpose: every build prints it, and a sentence in a README
 goes stale the first time a tool ships.
 
+## Finished, and still not offered
+
+There is a second way for a language to be absent from those three lists, and
+it is a different fact about a different thing. `unadvertised_languages` in
+`config/site.toml` names languages whose translations are **finished** and
+which the site does not offer anyway, because too few people were reading them
+to justify asking Google to index them. Thirteen of the fourteen are on it; the
+comment beside the list has the traffic that decided it.
+
+A language on that list is built and readable at every address it always had.
+What changes is that it is not claimed: no hreflang, no sitemap entry, no
+switcher link, no feed — and, unlike an unfinished locale, every one of its
+pages carries `<meta name="robots" content="noindex, follow">`. That last part
+is the half that keeping a page out of the sitemap cannot do on its own. A page
+already in the index, or linked to from outside, stays indexed until the page
+itself says otherwise, so the two have to happen together or the change does
+nothing it was made for.
+
+`i18n.offered` is where the two reasons meet, and `i18n.published` is built on
+it, so the three lists still cannot disagree. Taking a language off the list is
+one line and needs nothing else: the pages were never taken away, so they
+simply start being advertised again.
+
 ## The language a first-time visitor gets
 
 Somebody who types `abox.tools` and reads German used to be shown English and
