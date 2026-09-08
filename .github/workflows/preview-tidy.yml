@@ -14,12 +14,28 @@
 #                because from then on the thing to compare against is
 #                production itself.
 #
+# There is a third, and it is the same upload as the second wearing the branch
+# `dev`: the stable dev.<project>.pages.dev that a release is read at. Only the
+# newest of those is that address. Every earlier one is reachable by its own
+# hash and by nothing else, and holds bytes that `dev-pr-<n>` is already
+# keeping, so it is finished with on exactly the terms that one is.
+#
 # So a closed pull request takes its own preview down, and a push to `main`
-# takes down every `dev-pr-<n>` whose merge has arrived there. NOT all of them:
-# `dev` carries on while a release is in flight, and a merge that is on `dev`
-# but not yet in `main` is exactly the case those addresses exist for. Each is
-# asked about by commit rather than assumed, which is the reason the upload
-# passes `--commit-hash` in the first place.
+# takes down every `dev-pr-<n>` whose merge has arrived there, and every
+# superseded `dev` beside it. NOT all of them: `dev` carries on while a release
+# is in flight, and a merge that is on `dev` but not yet in `main` is exactly
+# the case those addresses exist for. Each is asked about by commit rather than
+# assumed, which is the reason the upload passes `--commit-hash` in the first
+# place.
+#
+# RUN BY HAND, it does all of that and one thing more: it takes down every
+# `pr-<n>` whose pull request has closed, however long ago that was. Those two
+# events only ever see what is in front of them - a pull request closing knows
+# one number, and a release knows the merges below it - so a preview uploaded
+# before this workflow existed, or while it was broken, is invisible to both
+# for ever. A dispatch is how that backlog is swept, and asking GitHub the
+# state of every pull request it finds a preview for is worth doing on demand
+# and not on every release.
 #
 # Nothing here gates anything. It runs after the fact, on addresses nobody is
 # reading, so it reports rather than fails: a tidy that goes wrong must not put
@@ -84,7 +100,8 @@ jobs:
           api="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/deployments"
           auth="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
 
-          # Every deployment the project holds, as `id<TAB>branch<TAB>commit`.
+          # Every deployment the project holds, as
+          # `id<TAB>branch<TAB>commit<TAB>created`.
           # Paged, because a busy month is more than one page of them and the
           # oldest are the ones most likely to be finished with.
           #
@@ -114,7 +131,8 @@ jobs:
             printf '%s' "$body" | jq -r '.result[] | [
                 .id,
                 (.deployment_trigger.metadata.branch // "?"),
-                (.deployment_trigger.metadata.commit_hash // "?")
+                (.deployment_trigger.metadata.commit_hash // "?"),
+                (.created_on // "")
               ] | @tsv' >> all.tsv
             page=$((page + 1))
           done
@@ -131,31 +149,87 @@ jobs:
             exit 1
           fi
 
+          # Has the merge this one holds reached `main`? `behind` and
+          # `identical` are the two answers meaning "already there"; `ahead`
+          # and `diverged` mean `dev` has moved on without a release, which is
+          # the state these addresses are for. Not being able to ask is its own
+          # answer and is not one of those two: it leaves the deployment alone
+          # and says which one and why, because a tidy that deletes on a
+          # question it could not get an answer to is worse than one that waits
+          # for the next run.
+          arrived_in_main() {
+            local branch=$1 commit=$2 where
+            if [ "$commit" = '?' ]; then
+              echo "  $branch: no commit recorded; left alone."
+              return 1
+            fi
+            where=$(gh api "repos/$REPO/compare/main...$commit" --jq '.status' 2>/dev/null) || where=''
+            case "$where" in
+              behind|identical) return 0 ;;
+              '') echo "  $branch: could not ask about ${commit:0:7}; left alone." ;;
+              *)  echo "  $branch: ${commit:0:7} is not in main yet ($where); left alone." ;;
+            esac
+            return 1
+          }
+
+          # The one `dev` deployment that IS dev.<project>.pages.dev, and so
+          # the one address a release is being read at while this runs. Chosen
+          # by date rather than by the position it came back in: the API hands
+          # them back newest first today, and a tidy that took the live one
+          # down the day that changed would be the single worst thing this
+          # workflow could do. `created_on` is ISO-8601 in UTC, so the newest
+          # is the largest as text.
+          keep_dev=$(awk -F'\t' 'BEGIN { newest = "" }
+            $2 == "dev" && $4 > newest { newest = $4; keep = $1 }
+            END { print keep }' all.tsv)
+
+          # And if that question came back empty while `dev` deployments exist,
+          # the live one cannot be told from the copies - so none of them is
+          # touched. Deleting the address a release is being read at, to save a
+          # few megabytes, is not a trade this workflow is allowed to make.
+          if [ -z "$keep_dev" ] && cut -f2 all.tsv | grep -qx dev; then
+            echo '::warning::No dev deployment came back with a date, so the stable address cannot be told from the superseded copies. Leaving every dev deployment alone.'
+          fi
+
           # WHICH ARE FINISHED WITH
           : > doomed.tsv
-          while IFS="$(printf '\t')" read -r id branch commit; do
+          while IFS="$(printf '\t')" read -r id branch commit created; do
             case "$EVENT:$branch" in
               "pull_request:pr-$PR")
                 printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
                 ;;
-              push:dev-pr-*|workflow_dispatch:dev-pr-*)
-                # Only once the merge it holds has reached `main`. `behind` and
-                # `identical` are the two answers meaning "already there";
-                # `ahead` and `diverged` mean `dev` has moved on without a
-                # release, which is the state these addresses are for.
-                if [ "$commit" = '?' ]; then
-                  echo "  $branch: no commit recorded; left alone."
-                  continue
-                fi
-                where=$(gh api "repos/$REPO/compare/main...$commit" --jq '.status' 2>/dev/null) || where=''
-                case "$where" in
-                  behind|identical)
+              workflow_dispatch:pr-*)
+                # The backlog sweep, and the only place any pull request but
+                # the one that just closed is asked about. `state` is `closed`
+                # for a merged pull request as well as an abandoned one, which
+                # is the whole point: neither has anything left to review.
+                n=${branch#pr-}
+                state=$(gh api "repos/$REPO/pulls/$n" --jq '.state' 2>/dev/null) || state=''
+                case "$state" in
+                  closed)
                     printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv ;;
-                  '')
-                    echo "  $branch: could not ask about ${commit:0:7}; left alone." ;;
+                  open)
+                    echo "  $branch: still open; left alone." ;;
                   *)
-                    echo "  $branch: ${commit:0:7} is not in main yet ($where); left alone." ;;
+                    echo "  $branch: could not ask what became of #$n; left alone." ;;
                 esac
+                ;;
+              push:dev-pr-*|workflow_dispatch:dev-pr-*)
+                if arrived_in_main "$branch" "$commit"; then
+                  printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                fi
+                ;;
+              push:dev|workflow_dispatch:dev)
+                # Superseded copies only, on the same terms as the `dev-pr-<n>`
+                # holding the same commit. The newest is the stable address and
+                # is never touched.
+                if [ -z "$keep_dev" ]; then
+                  : # Said once above, for all of them rather than each.
+                elif [ "$id" = "$keep_dev" ]; then
+                  echo "  dev: the stable address; left alone."
+                elif arrived_in_main "dev (${created:0:10})" "$commit"; then
+                  printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                fi
                 ;;
             esac
           done < all.tsv
