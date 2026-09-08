@@ -58,6 +58,17 @@ TOOLS = ROOT / 'tools'
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
     'base64': 0,
+    # Not one of these is a sentence. Six are fragments of the SVG the three
+    # mock-ups are written out of, one is a canvas font shorthand, one is the
+    # `${hour} ${AM}` of a clock whose meridiem came from the markup, and one
+    # is a key template of the kind dicom-viewer carries. The tenth is the
+    # word list a pasted week is split on - `to`, `bis`, `hasta` - which is
+    # language in a module and is deliberately there: it is what the parser
+    # reads, not what a visitor is shown, and it is nine languages rather
+    # than English. Every word this tool DRAWS comes out of #phrases; main.js
+    # reads the whole block into one object and hands it to view.js, and
+    # surfaces.js and profile.js never see one.
+    'business-profile-preview': 10,
     # Not one of these is a sentence: three are fragments of the SVG the chart
     # writes and one is the filename of a vendored drawing. Everything this tool
     # says to a visitor is already in its #phrases block. It was five until the

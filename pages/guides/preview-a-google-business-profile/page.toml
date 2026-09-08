@@ -1,0 +1,40 @@
+#
+# Guide: previewing a Google Business Profile.
+#
+# Written for the person who has filled the form in on Google and cannot tell
+# what it will look like until it is live - which is the whole problem, because
+# by then it is live. Four decisions get made in that form and three of them
+# are hard to undo: the name, the category, and whether the fields that turn
+# into buttons are there at all.
+#
+# The half that is not about the tool is the half worth having: what Google
+# actually does with a name it does not like, why the local pack is the surface
+# that matters and the knowledge panel is the one everybody looks at, and what
+# the status line does on a Sunday evening when nobody is watching.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/preview-a-google-business-profile"
+kind = "guide"
+nav = "Previewing a business profile"
+group = "doing-the-job"
+tool = "business-profile-preview"
+
+title = "How to Preview a Google Business Profile Before It Goes Live"
+description = "What your Google listing will look like on a desktop search, on a phone and in the local pack: how long a name survives, why the category does more work than the description, which fields turn into buttons, and what the Open or Closed line says when nobody is watching."
+
+heading = "How to preview a Google Business Profile before it goes live"
+lede = """
+    You fill in a form on Google's side and find out what it looks like when
+    somebody else searches for you. That is the wrong way round, and it is the
+    reason listings go out with the town bolted onto the end of the name and no
+    phone number on them. Here is how to see it first, and what to look at."""
+
+updated = "7 September 2026"
+published = "2026-09-07"
+lastmod = "2026-09-07"
+
+og_title = "Previewing a Google Business Profile"
+og_description = "How much of your name survives, why the category does more work than the description, and which fields turn into buttons."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -1,0 +1,399 @@
+#
+# Business Profile Preview
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The second tool here whose input is typed rather than dropped, after the QR
+# generator, and the first whose subject is a page on somebody else's site. Two
+# consequences worth writing down.
+#
+# It needs no [csp] table. The PNG is the page's own SVG painted onto a canvas
+# through a blob: URL, and img-src already carries blob: on every tool page -
+# see [tool_csp] in config/site.toml. The cover photograph is embedded as a
+# data: URI this page's own canvas produced, so the finished picture has no
+# reference to anywhere else in it and rasterises with the network unplugged.
+#
+# It names Google throughout, because the thing being previewed is a Google
+# Business Profile and there is no way to say that without saying it. What the
+# page must never do is imply that Google had anything to do with this one, so
+# the FAQ says outright that it is unaffiliated and that the drawing is a
+# drawing rather than a screenshot. That sentence is not decoration; it is the
+# condition on which the rest of the page's language is honest.
+#
+
+slug = "business-profile-preview"
+name = "Business Profile Preview"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Business Profile Preview <span class=\"h1-kw\">&mdash; see your Google listing before it goes live</span>"
+tagline = "Type it, and it becomes the card Google would draw. Nothing is sent to draw it."
+icon = "&#127978;"          # the mark beside the page heading
+favicon = "&#127978;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "store"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+# Shared stylesheet parts this tool asks for, put before its own rules by
+# the build so that its own can override them.
+css_parts = ["form", "checks", "notes", "chips"]
+js_parts = ["download"]
+lastmod = "2026-09-07"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Google Business Profile Preview &mdash; Free, No Sign-Up, Nothing Uploaded"
+description = "See how your Google Business Profile will look before it goes live: the knowledge panel, the phone card and the search result, drawn from the name, category, hours, rating and photo you type. Import an existing listing by pasting it. Download as PNG or SVG. It all happens in your browser."
+og_title = "Preview a Google Business Profile without giving anyone your details"
+og_description = "The knowledge panel, the place card on a phone and the local search result, drawn in your own browser from what you type. Paste an existing listing to start from it. No account, no watermark, nothing uploaded."
+og_image_alt = "Business Profile Preview - see your Google listing before it goes live"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+# Two lines is what the card has room for; the first draft ran to three and
+# arrived with "machine." missing off the end.
+og_card = "The knowledge panel, the phone card and the search result - drawn on your own machine."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every field you type is drawn into a picture by about a thousand lines of
+    JavaScript in this page that you can read, and there is no step in that
+    which contacts anybody. Not to look your business up, not to check an
+    address, not to draw a star. This tool has no network feature of any kind
+    &mdash; which matters here because a business profile is a home address as
+    often as it is a shopfront, and a telephone number that goes to somebody's
+    own phone."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and type
+      your address and phone number into the boxes. Not one request carries a
+      character of them. Or unplug from the internet and make the whole mock-up
+      anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/surfaces.js</code>
+      for the three cards themselves &mdash; every coordinate in them is
+      written out &mdash; <code>src/profile.js</code> for the one piece of
+      arithmetic on the page, which is whether the place is open at this
+      moment, and <code>src/parse-listing.js</code> for what happens to a
+      listing you paste in."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to preview a Google Business Profile before it goes live"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            How your Google listing will look: the knowledge panel, the card on
+            a phone, and the local search result. Paste an existing one to
+            start from it."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "profiles and the pictures of them"
+# The boot warning reads "nothing will happen when you choose ...". The one
+# control on this page that opens without any JavaScript is the photo
+# picker, so naming it makes that sentence literally true rather than
+# nearly so.
+choose = "a cover photo"
+analytics_extra = """, and not a
+  character of what you type"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "There is nowhere for what you type to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that an
+      address or a phone number could be collected at, and nothing in the code
+      that would send it if there were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. That is also why
+      the tool cannot look your listing up for you, and why importing one means
+      pasting it in: the ability to go and get it is exactly the ability to send
+      something away."""
+
+[[privacy]]
+title = "The photograph is read here and stripped on the way in."
+body = """
+ A cover
+      photo is decoded in this page and redrawn onto a canvas before it reaches
+      the picture, which bounds its size and drops everything the file recorded
+      about where and when it was taken. What ends up inside the mock-up is the
+      picture, not the file you chose."""
+
+[[privacy]]
+title = "The download is the thing on screen."
+body = """
+ The PNG is not a second
+      rendering that might disagree with the preview: the same markup is handed
+      to the browser and painted onto a canvas. It is also why the download
+      works with the network unplugged &mdash; there is no font to fetch and no
+      linked image inside it, so the picture is one self-contained file."""
+
+[[privacy]]
+title = "A saved profile is a file, not an account."
+body = """
+ The JSON this page
+      writes goes to your disk and nowhere else, and opening it again is the
+      only way this tool remembers anything. Nothing is stored in the browser
+      between visits, because a business's address and opening hours are not
+      ours to keep."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything you type &mdash; the irony is
+      noted, and the separation is real: every line that turns your fields into
+      a picture is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Start from the listing you already have, if there is one."
+body = """
+ Open your
+      business on Google, select the whole card &mdash; the name, the stars, and
+      the lines under them &mdash; copy it, and paste it into the fold at the
+      top of this page. The name, category, rating, review count, address, phone
+      number, website and a full week of opening hours are all recognised, and
+      the page reports back exactly which of them it filled in so that a wrong
+      guess is visible rather than quietly signed off. A Business Profile API
+      export opens too, if you have one."""
+
+[[howto]]
+title = "Get the name and the category right first."
+body = """
+ They carry more weight
+      than everything else together. The name is the only field cut short on all
+      three surfaces, and the search result is where it is cut shortest &mdash;
+      so a name with the town and the trade bolted onto the end reads as an
+      ellipsis to the people most likely to be looking. The category is the line
+      a local result has room for when it has room for nothing else, and it is
+      the phrase a search actually matches against."""
+
+[[howto]]
+title = "Fill the week in, and look at what it says."
+body = """
+ The status line is the
+      one part of a listing that changes by itself: <em>Open &middot; Closes
+      9&nbsp;PM</em> becomes <em>Closed &middot; Opens 9&nbsp;AM Tue</em> without
+      anybody touching it. This page works it out from the hours and your own
+      clock, so switching a day to closed shows you immediately what somebody
+      looking you up that evening is told. A window that ends before it starts
+      &mdash; 22:00 to 02:00 &mdash; is read as running past midnight, which is
+      what a bar means by it."""
+
+[[howto]]
+title = "Check which buttons you have earned."
+body = """
+ No address, no
+      <em>Directions</em>. No website, no <em>Website</em>. No phone number, no
+      <em>Call</em>. Those three fields turn into the row of buttons under the
+      name, and a profile missing one is a profile a reader cannot act on
+      without going somewhere else first. It is the fastest thing to check on
+      the preview and the most common thing missing from a real listing."""
+
+[[howto]]
+title = "Look at all three surfaces, not the first one."
+body = """
+ The same profile is cut
+      to three different lengths. The knowledge panel is generous and is what
+      people see when they already know your name; the phone card is what most
+      of your visitors actually get; the local pack entry is the narrow one, and
+      it is where somebody who has never heard of you decides between you and
+      two competitors. A description that reads well in the first is invisible
+      in the third."""
+
+[[howto]]
+title = "Take the picture away."
+body = """
+ The PNG comes out at the surface's own
+      size, or at twice or three times it, which is the only enlargement that
+      cannot move where a line broke. Take the SVG as well if it is going into a
+      document &mdash; it is one self-contained file with the photograph inside
+      it, so it prints sharp and carries no link to anywhere. The saved profile
+      is the third download, and it is what to keep if you are going to come
+      back to this."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is this made by Google?"
+a = """
+        No. This site is not affiliated with, endorsed by or connected to Google
+        in any way, and Google Business Profile is Google's trademark, used here
+        only to say what the page is a preview of. What you are looking at is a
+        drawing made in your own browser out of what you typed &mdash; not a
+        screenshot, not a live view of your listing, and not connected to your
+        Google account. Nothing you do here changes your real profile; to do
+        that you have to go to Google."""
+
+[[faq]]
+q = "Can it import my existing profile automatically?"
+a = """
+        No, and it is worth being clear about why: fetching your listing would
+        mean this page could contact a server, and a page that can contact a
+        server is a page that can send your fields to one. That ability is the
+        thing this whole site is built to not have. So the import works the
+        other way round &mdash; you copy your listing and paste it in, and the
+        page reads what it can out of the text and tells you which fields it
+        filled. A Business Profile API export in JSON opens directly."""
+
+[[faq]]
+q = "Is anything I type sent anywhere?"
+a = """
+        No. There is no <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+        <code>sendBeacon</code> anywhere in this tool's code, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. That matters more here than on most
+        pages: a business profile is very often somebody's home address and a
+        phone number that rings in their pocket."""
+
+[[faq]]
+q = "How accurate is the mock-up?"
+a = """
+        Accurate about what fits and approximate about how it looks. The type on
+        the real thing is Google Sans, which is not a font on your machine, and
+        the spacing moves with every release of Search and Maps &mdash; so treat
+        the exact pixels as an impression. What is exact is the part worth
+        previewing: how much of your name survives at each width, whether the
+        category still reads on the narrowest surface, and which buttons your
+        fields have earned."""
+
+[[faq]]
+q = "Why does my brand-new listing show no stars at all?"
+a = """
+        Because that is what Google shows, and because five empty stars is what
+        one star looks like at a glance. Leave the rating and the review count
+        empty and the card says there are no reviews yet, which is the honest
+        preview of a profile nobody has reviewed. Put a number in both and the
+        stars appear, filled by the fraction the number actually is &mdash; a
+        4.6 is four stars and three fifths of a fifth, not five."""
+
+[[faq]]
+q = "What does the Open or Closed line actually depend on?"
+a = """
+        The week you filled in, and the clock on the machine you are reading
+        this on. There is no time zone field, because a listing does not have
+        one either: Google shows a visitor the status in the business's own local
+        time, and the closest this page can get to that without asking anybody
+        anything is your clock. So the line here is exactly right if you are in
+        the same time zone as the business, and shifted if you are not &mdash;
+        which the page says under the week rather than leaving you to find
+        out."""
+
+[[faq]]
+q = "Can I use the picture in a proposal, a pitch deck or a client report?"
+a = """
+        Yes. There is no watermark, no account, no limit on how many you make,
+        and nothing in the file that points back here. It is your own fields
+        drawn into a picture on your own machine. The one thing worth saying to
+        whoever receives it is what it is &mdash; a mock-up of how a listing
+        would look &mdash; because a drawing this recognisable is easy to mistake
+        for a screenshot of something that already exists."""
+
+[[faq]]
+q = "What is the difference between the three previews?"
+a = """
+        Width, and therefore how much survives. The <strong>knowledge
+        panel</strong> is the tall card on the right of a desktop search for
+        your name: the most generous, and the one you see when you look yourself
+        up. The <strong>phone</strong> card is what most of your visitors
+        actually get. The <strong>search result</strong> is one entry of the
+        local pack, the three-business block with a map above it, which is the
+        narrowest and is where somebody who has never heard of you chooses
+        between you and two competitors."""
+
+[[faq]]
+q = "Does the photo I add get uploaded?"
+a = """
+        No. It is decoded in this page, redrawn onto a canvas at a size the card
+        can use, and embedded in the picture as data. Two things fall out of
+        that: the file never leaves your machine, and everything it recorded
+        about where and when it was taken is gone, because a canvas has no
+        metadata. If the original matters to you, keep the original &mdash; what
+        goes into the mock-up is a copy."""
+
+[[faq]]
+q = "Can I save what I typed and come back to it?"
+a = """
+        Yes, as a file. <em>Save the profile</em> writes JSON to your disk with
+        every field and the photograph in it, and opening that file here again
+        puts it all back. Nothing is stored in this browser between visits and
+        there is no account to log into, which is deliberate: a business's
+        address, phone number and opening hours are not ours to keep."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working &mdash; the fields, the drawing, the PNG, all of it. That is also
+        the simplest way to prove nothing is being uploaded: a tool that sent
+        your details away to have a card drawn would stop the moment you
+        unplugged."""
+
+[schema]
+category = "BusinessApplication"
+description = "Preview a Google Business Profile in the browser. Draws the knowledge panel, the place card on a phone and the local search result from a business name, category, rating, review count, address, phone number, website, description, attributes, opening hours and cover photo, works out the Open or Closed status line from the hours, and downloads the result as a PNG or an SVG. An existing listing can be imported by pasting it, or from a Business Profile API export. Nothing is uploaded."
+features = [
+  "Three surfaces from one profile: the knowledge panel, the card on a phone, and a local search result",
+  "The Open or Closed status line worked out from a full week of hours, including windows that run past midnight",
+  "Stars filled by the fraction the rating actually is, and no stars at all on a profile with no reviews",
+  "Action buttons that appear only when the profile has the field behind them",
+  "Import an existing listing by pasting it, with a report of which fields were read",
+  "Opens a Google Business Profile API location export directly",
+  "A cover photo read in the page, stripped of its metadata and embedded in the picture",
+  "PNG at one, two or three times the surface's own size, and a self-contained SVG",
+  "The profile saved to disk as JSON and reopened later; no account and nothing kept in the browser",
+  "Runs offline; no upload, no watermark, no sign-up",
+]
