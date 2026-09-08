@@ -201,8 +201,9 @@ a = """
         e ai due lati del centro della testa: un confronto locale, quindi niente in esso
         dipende dal colore di un viso. Il mento è l&rsquo;unico che così non si trova,
         perché una mascella davanti a un collo è un bordo morbido senza cambio di
-        colore; viene ricavato dalle pupille, che stanno quasi esattamente a metà
-        dell&rsquo;altezza di una testa, e poi confrontato con il contorno. È tutta
+        colore; viene ricavato dalle pupille, che stanno un po&rsquo; sotto la metà
+        di una testa, una volta contati i capelli che ha sopra, e poi confrontato
+        con il contorno. È tutta
         aritmetica, in <code>src/detect.js</code>: nessun peso, nessun motore di
         inferenza, niente scaricato, e la stessa aritmetica per ogni volto.
         Quest&rsquo;ultima parte è quella che conta, perché un riconoscitore
