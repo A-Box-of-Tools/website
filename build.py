@@ -1632,7 +1632,16 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
             # `listed` is still told about every slug, because it answers the
             # config's question - is any tool listed nowhere - which is about
             # the site and not about one language.
-            if not locale['debt'].get(slug):
+            #
+            # And `is_base` first, exactly as translated() does it and as the
+            # same filter over in build_locale does. English carries a debt
+            # entry for every page it has - it is the source every other
+            # language is measured against, not a language that owes anything
+            # - so reading that dict without this guard takes every card off
+            # the English front page. It did: this line shipped to dev without
+            # it and /index.html went out with four headings and no tools
+            # under any of them.
+            if locale['is_base'] or not locale['debt'].get(slug):
                 chosen.append(tool)
             listed.add(slug)
         # A category nobody in this language can use is not a heading worth
