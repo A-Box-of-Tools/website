@@ -15,18 +15,31 @@
 #                production itself.
 #
 # There is a third, and it is the same upload as the second wearing the branch
-# `dev`: the stable dev.<project>.pages.dev that a release is read at. Only the
-# newest of those is that address. Every earlier one is reachable by its own
-# hash and by nothing else, and holds bytes that `dev-pr-<n>` is already
-# keeping, so it is finished with on exactly the terms that one is.
+# `dev`: the stable dev.<project>.pages.dev that a release is read at. Exactly
+# one of those is that address - the newest - and it is the only one worth
+# keeping. Every copy under it is reachable by its own hash and by nothing
+# else, and the `dev-pr-<n>` at the same commit is holding the same bytes for
+# as long as anybody could want them, so the next push to `dev` is what
+# finishes with it.
 #
 # So a closed pull request takes its own preview down, and a push to `main`
-# takes down every `dev-pr-<n>` whose merge has arrived there, and every
-# superseded `dev` beside it. NOT all of them: `dev` carries on while a release
-# is in flight, and a merge that is on `dev` but not yet in `main` is exactly
-# the case those addresses exist for. Each is asked about by commit rather than
-# assumed, which is the reason the upload passes `--commit-hash` in the first
-# place.
+# takes down every `dev-pr-<n>` whose change has been released, and every `dev`
+# but the newest. NOT all of the first: `dev` carries on while a release is in
+# flight, and a merge that is on `dev` and not yet released is exactly the case
+# those addresses exist for. The copies under `dev` are asked nothing, because
+# the question has only one answer: one of them is the address and the rest are
+# unreachable.
+#
+# WHICH ONES HAVE BEEN RELEASED IS ASKED BY NUMBER, and that is the whole of
+# what this gets right. A release replays the commits it carries - `main` holds
+# `... (#371)` at a hash of its own - and `dev` is rebased on to `main`
+# afterwards, so the hash a `dev-pr-<n>` was uploaded with belongs to no branch
+# at all within minutes of the release that shipped it. Asking
+# `compare/main...<that hash>` then answers `diverged`, which is
+# indistinguishable from "still waiting for a release" and kept every one of
+# them for ever. The number is in the subject of the commit wherever the change
+# is replayed, so the pull requests on `dev` and not in `main` are the
+# unreleased ones, and every `dev-pr-<n>` outside that set has shipped.
 #
 # RUN BY HAND, it does all of that and one thing more: it takes down every
 # `pr-<n>` whose pull request has closed, however long ago that was. Those two
@@ -101,7 +114,7 @@ jobs:
           auth="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
 
           # Every deployment the project holds, as
-          # `id<TAB>branch<TAB>commit<TAB>created`.
+          # `id<TAB>branch<TAB>created`.
           # Paged, because a busy month is more than one page of them and the
           # oldest are the ones most likely to be finished with.
           #
@@ -124,14 +137,13 @@ jobs:
             fi
             n=$(printf '%s' "$body" | jq '.result | length')
             if [ "$n" -eq 0 ]; then break; fi
-            # The branch and the commit are the ones `wrangler pages deploy`
-            # was given as --branch and --commit-hash. Read back defensively:
+            # The branch is the one `wrangler pages deploy` was given as
+            # --branch. Read back defensively:
             # this part of the API has been renamed before, and the failure it
             # would cause here is a tidy that matches nothing and says nothing.
             printf '%s' "$body" | jq -r '.result[] | [
                 .id,
                 (.deployment_trigger.metadata.branch // "?"),
-                (.deployment_trigger.metadata.commit_hash // "?"),
                 (.created_on // "")
               ] | @tsv' >> all.tsv
             page=$((page + 1))
@@ -149,28 +161,33 @@ jobs:
             exit 1
           fi
 
-          # Has the merge this one holds reached `main`? `behind` and
-          # `identical` are the two answers meaning "already there"; `ahead`
-          # and `diverged` mean `dev` has moved on without a release, which is
-          # the state these addresses are for. Not being able to ask is its own
-          # answer and is not one of those two: it leaves the deployment alone
-          # and says which one and why, because a tidy that deletes on a
-          # question it could not get an answer to is worse than one that waits
-          # for the next run.
-          arrived_in_main() {
-            local branch=$1 commit=$2 where
-            if [ "$commit" = '?' ]; then
-              echo "  $branch: no commit recorded; left alone."
-              return 1
-            fi
-            where=$(gh api "repos/$REPO/compare/main...$commit" --jq '.status' 2>/dev/null) || where=''
-            case "$where" in
-              behind|identical) return 0 ;;
-              '') echo "  $branch: could not ask about ${commit:0:7}; left alone." ;;
-              *)  echo "  $branch: ${commit:0:7} is not in main yet ($where); left alone." ;;
-            esac
-            return 1
+          # What became of pull request #n - `open`, `closed`, or nothing at
+          # all when the question could not be asked. `closed` covers a merged
+          # pull request as well as an abandoned one, which is the point:
+          # neither has anything left to review.
+          pull_state() {
+            gh api "repos/$REPO/pulls/$1" --jq '.state' 2>/dev/null || true
           }
+
+          # THE PULL REQUESTS THAT ARE ON `dev` AND NOT YET RELEASED, one
+          # number per line. Read out of the subjects rather than the hashes,
+          # for the reason at the top of this file: the hashes do not survive a
+          # release and the numbers do.
+          #
+          # One question for the whole run, not one per deployment. An empty
+          # answer is a true and ordinary one - it is what `dev` looks like the
+          # moment a release lands - so the failure to ask has to be told apart
+          # from it, and is: nothing is taken down on a question that went
+          # unanswered.
+          if unreleased=$(gh api "repos/$REPO/compare/main...dev" \
+               --jq '.commits[].commit.message | split("\n")[0]' 2>/dev/null \
+               | sed -n 's/.*(#\([0-9][0-9]*\))[[:space:]]*$/\1/p'); then
+            asked=yes
+            echo "Unreleased on dev: $(printf '%s' "${unreleased:-none}" | tr '\n' ' ')"
+          else
+            asked=no
+            echo '::warning::Could not ask which merges are still unreleased, so every dev-pr is being left alone.'
+          fi
 
           # The one `dev` deployment that IS dev.<project>.pages.dev, and so
           # the one address a release is being read at while this runs. Chosen
@@ -180,7 +197,7 @@ jobs:
           # workflow could do. `created_on` is ISO-8601 in UTC, so the newest
           # is the largest as text.
           keep_dev=$(awk -F'\t' 'BEGIN { newest = "" }
-            $2 == "dev" && $4 > newest { newest = $4; keep = $1 }
+            $2 == "dev" && $3 > newest { newest = $3; keep = $1 }
             END { print keep }' all.tsv)
 
           # And if that question came back empty while `dev` deployments exist,
@@ -193,18 +210,16 @@ jobs:
 
           # WHICH ARE FINISHED WITH
           : > doomed.tsv
-          while IFS="$(printf '\t')" read -r id branch commit created; do
+          while IFS="$(printf '\t')" read -r id branch created; do
             case "$EVENT:$branch" in
               "pull_request:pr-$PR")
                 printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
                 ;;
               workflow_dispatch:pr-*)
                 # The backlog sweep, and the only place any pull request but
-                # the one that just closed is asked about. `state` is `closed`
-                # for a merged pull request as well as an abandoned one, which
-                # is the whole point: neither has anything left to review.
+                # the one that just closed is asked about.
                 n=${branch#pr-}
-                state=$(gh api "repos/$REPO/pulls/$n" --jq '.state' 2>/dev/null) || state=''
+                state=$(pull_state "$n")
                 case "$state" in
                   closed)
                     printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv ;;
@@ -215,19 +230,38 @@ jobs:
                 esac
                 ;;
               push:dev-pr-*|workflow_dispatch:dev-pr-*)
-                if arrived_in_main "$branch" "$commit"; then
-                  printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
+                n=${branch#dev-pr-}
+                if [ "$asked" = no ]; then
+                  : # Said once above, for all of them rather than each.
+                elif printf '%s\n' "$unreleased" | grep -qx "$n"; then
+                  echo "  $branch: #$n is on dev and not released yet; left alone."
+                else
+                  # The number on one of these is not always the merge that
+                  # made it: a commit on `dev` is claimed by any open pull
+                  # request whose branch contains it, the release itself
+                  # included, so `dev-pr-392` can be the state after #391. A
+                  # number that names something still open is therefore about
+                  # work in flight whatever it is, and stays.
+                  case "$(pull_state "$n")" in
+                    closed)
+                      printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv ;;
+                    open)
+                      echo "  $branch: #$n is still open; left alone." ;;
+                    *)
+                      echo "  $branch: could not ask what became of #$n; left alone." ;;
+                  esac
                 fi
                 ;;
               push:dev|workflow_dispatch:dev)
-                # Superseded copies only, on the same terms as the `dev-pr-<n>`
-                # holding the same commit. The newest is the stable address and
-                # is never touched.
+                # One is kept - the newest, which is the address - and every
+                # copy under it goes, whatever commit it holds. Nothing is
+                # asked about them: `main` is the wrong question for a
+                # deployment nobody can reach and nothing points at.
                 if [ -z "$keep_dev" ]; then
                   : # Said once above, for all of them rather than each.
                 elif [ "$id" = "$keep_dev" ]; then
-                  echo "  dev: the stable address; left alone."
-                elif arrived_in_main "dev (${created:0:10})" "$commit"; then
+                  echo "  dev: the stable address (${created:0:10}); left alone."
+                else
                   printf '%s\t%s\n' "$id" "$branch" >> doomed.tsv
                 fi
                 ;;
