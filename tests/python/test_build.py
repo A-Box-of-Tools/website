@@ -353,6 +353,12 @@ class BuildTheSite(unittest.TestCase):
         # files rather than written down here, so adding a language - or
         # finishing one - does not also mean remembering to edit a test.
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        cls.site = site
+        # Finished languages the site deliberately does not offer. Read off the
+        # config rather than listed here, for the same reason as `unfinished`
+        # below: taking a language off that list should not also mean
+        # remembering to edit a test.
+        cls.unadvertised = set(site.get('unadvertised_languages', []))
         cls.locales = buildmod.i18n.load_locales(ROOT / 'locales', site)
         cls.unfinished = [locale['lang'] for locale in cls.locales
                           if not locale['is_base'] and not locale['complete']]
@@ -1270,6 +1276,46 @@ class BuildTheSite(unittest.TestCase):
                     self.assertNotIn(f'hreflang="{locale}"', text)
                     self.assertNotIn(f'href="/{locale}/"', text)
 
+    # -- languages the site does not offer ---------------------------------
+    #
+    # A finished translation nobody reads is still built and still readable at
+    # its own address; what it stops doing is asking to be found. Two halves,
+    # and neither works alone: out of the sitemap so it is not discovered, and
+    # noindex so the pages already in the index - or linked from somewhere that
+    # is not us - come back out of it.
+
+    def test_a_language_the_site_does_not_offer_asks_not_to_be_indexed(self):
+        self.assertTrue(self.unadvertised, 'nothing is held back; test is moot')
+        for name in self.written:
+            if not name.endswith('index.html'):
+                continue
+            if name.split('/')[0] not in self.unadvertised:
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertIn('name="robots" content="noindex', page)
+
+    def test_a_language_the_site_does_not_offer_is_out_of_the_sitemap(self):
+        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        for lang in sorted(self.unadvertised):
+            with self.subTest(lang=lang):
+                self.assertNotIn(f'{self.site["domain"]}{lang}/', sitemap)
+
+    def test_a_language_the_site_does_offer_is_left_indexable(self):
+        """The other side of it, so a bug that noindexed everything would show.
+
+        English and any language still on the list keep asking to be found, and
+        say nothing about robots at all - the absence of the tag is the claim.
+        """
+        offered = [locale for locale in self.locales
+                   if locale['complete'] and locale['advertised']]
+        pages = ['index.html', f'{self.a_tool()}/index.html']
+        pages += [f'{locale["prefix"]}index.html' for locale in offered]
+        for name in pages:
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertNotIn('name="robots"', page)
+
     # -- /llms.txt ------------------------------------------------------
     #
     # The plain-text index, for a reader that fetches one address and decides
@@ -1344,6 +1390,39 @@ class BuildTheSite(unittest.TestCase):
             offered = locale['lang'] in listed
             with self.subTest(lang=locale['lang']):
                 self.assertEqual(offered, locale['lang'] in self.advertised)
+
+    # -- the advertising --------------------------------------------------
+    #
+    # AdSense is asked for from analytics.js, in the branch that runs when the
+    # visit is one worth counting, and never by a <script> tag in the markup.
+    # A tag in the head fires on every load there is, and this site's own QA
+    # suite opens every page against production several times a day: an ad
+    # requested by a runner that could never see one is invalid traffic
+    # against this site's own account, which is how an approved account gets
+    # disabled. Putting the tag back is a one-line change that reads as
+    # harmless, and nothing else here would notice it.
+
+    def test_no_page_asks_for_ads_from_its_markup(self):
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                # The bare host is in the Content-Security-Policy on every one
+                # of these pages and belongs there; the path is what only a
+                # request for the script has.
+                self.assertNotIn('pagead2.googlesyndication.com/pagead/js', page)
+
+    def test_the_ad_script_is_asked_for_only_when_the_visit_is_counted(self):
+        """The request and the decision to count it sit in one file on purpose.
+
+        Split across two they would be two statements of one rule to keep in
+        step, and the one that drifted would be the one nobody could see."""
+        script = (self.out / self.a_tool() / 'analytics.js').read_text(encoding='utf-8')
+        self.assertIn('var notAVisit = navigator.webdriver ||', script)
+        self.assertIn('if (!notAVisit) {', script)
+        self.assertLess(script.index('if (!notAVisit) {'),
+                        script.index('pagead2.googlesyndication.com/pagead/js'))
 
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)

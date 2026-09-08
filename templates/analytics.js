@@ -55,9 +55,32 @@ window.gtag = gtag;
 // production - which is what makes testing them worth anything - so the file
 // cannot be built differently there; it has to notice where it is. A visit
 // to a preview is a developer checking their work, not a visitor.
-if (navigator.webdriver || location.origin + '/' !== '{{ site.domain }}') {
+var notAVisit = navigator.webdriver || location.origin + '/' !== '{{ site.domain }}';
+
+if (notAVisit) {
   window['ga-disable-{{ site.analytics_id }}'] = true;
 }
 
 gtag('js', new Date());
 gtag('config', '{{ site.analytics_id }}');
+
+// AdSense, behind the same test, for a sharper version of the same reason. It
+// used to be a plain async <script> in the head, so every one of those
+// automated loads asked Google for an ad as well: noise while the account is
+// unapproved, and invalid traffic against our own account the moment it is
+// not - thousands of requests a day from a runner that is not a person who
+// could ever see one, which is how an approved account gets disabled.
+//
+// A <script> tag cannot test anything, and the Content-Security-Policy forbids
+// the inline script that would test it for them, so the decision lives here
+// beside the one it has to agree with. Verification does not run through this
+// and is unaffected: that is the inert <meta name="google-adsense-account">
+// tag the hub, the guides and the prose pages carry, and the ads.txt entry -
+// neither of which is script, which is why they work here at all.
+if (!notAVisit) {
+  var ad = document.createElement('script');
+  ad.async = true;
+  ad.crossOrigin = 'anonymous';
+  ad.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_client }}';
+  document.head.appendChild(ad);
+}
