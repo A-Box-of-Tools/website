@@ -63,6 +63,28 @@ reaches `dev`; and the pull request from `dev` to `main` builds the bundle,
 previews it, and runs the QA suite against that preview before any of it is
 live. See [cloudflare/README.md](../cloudflare/README.md), "Previews".
 
+**A pull request into `dev` runs only the browser tests that could see it.**
+The QA suite is twelve runners and about fourteen minutes, and a change to one
+tool spent all of it re-testing forty others its diff cannot touch. A change
+confined to `tools/<slug>/` now asks for that tool's cases and no more — a slug
+is enough to find them, because every case about a tool carries the slug in its
+title, and over the tools the site ships a slug selects between 29 and 71 cases
+of the 1573 a project runs.
+
+Everything else runs the whole suite, and the list is meant to read as *what
+can reach a page the diff does not name*: a tool added or removed (the footer,
+the hub, the 404, the sitemap and `llms.txt` all list every tool, and the cases
+that count that list name no slug); anything outside one tool's folder —
+`shared/`, `templates/`, `config/`, `build.py`, `buildlib/`, `locales/`; a diff
+too long for the compare endpoint to list; and the `dev` → `main` pull request,
+which is the release and is never scoped. Anything unrecognised runs
+everything, so the failure mode is a suite that ran when it need not have and
+never a change that shipped untested.
+
+The build and the unit tests are **not** scoped. They are nine minutes on one
+runner between them, and they are what catches a change that breaks every page
+— which a build of one tool, by construction, cannot see.
+
 **Every merge into `dev` is kept at an address of its own.** The stable
 `dev.abox-preview.pages.dev` is replaced by the next merge, which makes it
 useless for the question you actually ask of a bundle — *which of these

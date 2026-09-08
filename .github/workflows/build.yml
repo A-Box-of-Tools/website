@@ -792,6 +792,116 @@ jobs:
             gh api --method POST "repos/$REPO/issues/$PR/comments" -f body="$body" > /dev/null
           fi
 
+      # WHAT THIS PULL REQUEST CAN REACH, and therefore how much of the suite
+      # has to see it.
+      #
+      # The suite is twelve runners and about fourteen minutes, and a pull
+      # request that edits one tool spends all of it re-testing forty others
+      # that its diff cannot touch. So a change confined to `tools/<slug>/`
+      # asks the qa repository for that tool's cases and no more: a slug is
+      # enough to find them, because every case about a tool carries the slug
+      # in its title. Measured over the forty-one tools the site ships, a slug
+      # selects between 29 and 71 cases of the 1573 a project runs - 37 on
+      # average, and never none of that tool's own functional spec.
+      #
+      # EVERYTHING ELSE RUNS EVERYTHING, and the list of reasons is meant to
+      # be read as "what can reach a page this diff does not name":
+      #
+      #   the base is not `dev`   The `dev` -> `main` pull request is the
+      #                           release. It is one per release and the last
+      #                           gate before production, so it is never
+      #                           scoped, whatever it happens to contain.
+      #   a tool.toml added or    The footer, the hub, the 404, the sitemap
+      #   deleted                 and llms.txt all list every tool, so a tool
+      #                           arriving or leaving rewrites every page -
+      #                           and the cases that count the list say
+      #                           "lists every shipped tool", naming no slug,
+      #                           so a scoped run would be exactly blind to
+      #                           what changed. This is the failure
+      #                           A-Box-of-Tools/qa#94 was written for, met
+      #                           from the other direction.
+      #   anything outside one    `shared/`, `templates/`, `config/`,
+      #   tool's folder           `build.py`, `buildlib/`, `locales/`, a
+      #                           script, the root of `tools/` - all of them
+      #                           reach pages this diff does not name.
+      #   the diff could not be   The compare endpoint stops listing at 300
+      #   listed                  files, and a reply that was cut short is
+      #                           missing exactly the path this is looking
+      #                           for.
+      #
+      # The exempt list is short and is an allowlist: prose that cannot reach
+      # a page at all. Anything unrecognised runs the whole suite. This is the
+      # same bargain the `test` job makes above and for the same reason - the
+      # failure mode has to be a suite that ran when it need not have, and
+      # never a change that shipped untested.
+      #
+      # A pull request that changes only prose still runs the whole suite,
+      # deliberately: it builds a site identical to `dev`'s, so the run is
+      # wasted either way, and inventing a third answer here to save it would
+      # be a rule to get wrong for no gain.
+      #
+      # The judgement lives here because this is the end that can see the
+      # diff. The qa repository is handed a list and filters; it does not
+      # second-guess it.
+      - name: What the suite has to cover
+        id: scope
+        if: steps.gate.outputs.ready == 'true' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -uo pipefail
+
+          everything() {
+            echo 'tools=' >> "$GITHUB_OUTPUT"
+            echo "why=$1" >> "$GITHUB_OUTPUT"
+            echo "The whole suite, because $1."
+            exit 0
+          }
+
+          if [ "$BASE" != 'dev' ]; then
+            everything "this pull request is against \`$BASE\` rather than \`dev\`, so it is the release"
+          fi
+
+          listed=$(gh api "repos/$REPO/compare/$BASE_SHA...$SHA" --jq '.files[] | .status + " " + .filename') || listed=''
+          count=$(grep -c . <<< "$listed" || true)
+          if [ "$count" -eq 0 ] || [ "$count" -ge 300 ]; then
+            everything 'what this changed could not be listed in full'
+          fi
+
+          slugs=''
+          while read -r status path; do
+            [ -n "$path" ] || continue
+            case "$path" in
+              tools/*/tool.toml)
+                if [ "$status" != 'modified' ]; then
+                  everything "\`$path\` was $status, so every page that lists the tools changed with it"
+                fi ;;
+            esac
+            case "$path" in
+              tools/*/*)
+                slug=${path#tools/}
+                slug=${slug%%/*}
+                case " $slugs " in
+                  *" $slug "*) ;;
+                  *) slugs="${slugs:+$slugs }$slug" ;;
+                esac ;;
+              README.md|CLAUDE.md|ROADMAP.md|LICENSE|LICENSE-CONTENT|LICENSE-BRAND) ;;
+              docs/*|.claude/*|.github/*) ;;
+              *) everything "\`$path\` is not inside one tool, so it can reach pages this diff does not name" ;;
+            esac
+          done <<< "$listed"
+
+          if [ -z "$slugs" ]; then
+            everything 'nothing here is a tool, and a run that covers everything is the safe answer'
+          fi
+
+          echo "tools=$slugs" >> "$GITHUB_OUTPUT"
+          echo "why=only these tools changed: $slugs" >> "$GITHUB_OUTPUT"
+          echo "Only the cases naming: $slugs"
+
       # The same token QA (post-deploy) uses; see that workflow's header for
       # why the default token cannot start a run in another repository.
       - name: Ask the QA suite to run against it
@@ -799,6 +909,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
           URL: ${{ steps.upload.outputs.url }}
+          TOOLS: ${{ steps.scope.outputs.tools }}
+          WHY: ${{ steps.scope.outputs.why }}
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN}" ]; then
@@ -806,8 +918,8 @@ jobs:
             exit 1
           fi
           gh workflow run report.yml --repo A-Box-of-Tools/qa \
-            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA"
-          echo "Dispatched against $URL"
+            -f "base_url=$URL" -f "pr=$PR" -f "sha=$SHA" -f "tools=$TOOLS"
+          echo "Dispatched against $URL - $WHY"
 
       - name: Summary
         if: always()
