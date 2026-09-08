@@ -1089,6 +1089,15 @@ class BuildTheSite(unittest.TestCase):
         above covers the other half - a page that DOES name alternates - and
         skips exactly the pages this one looks at.
         """
+        # By `hreflang` and not by `lang`: the switcher renders the hreflang
+        # into both attributes, and the two differ wherever a language is
+        # written in more than one script - `zh` is served as `zh-Hans`. Every
+        # entry German ever had made the two look interchangeable.
+        offered_langs = {
+            locale['hreflang'] for locale in buildmod.i18n.published(self.locales)
+        }
+        base_lang = next(
+            locale['hreflang'] for locale in self.locales if locale['is_base'])
         for name in self.written:
             if not name.endswith('.html') or name == '404.html':
                 continue
@@ -1098,21 +1107,47 @@ class BuildTheSite(unittest.TestCase):
             switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
             with self.subTest(page=name):
                 self.assertIn('<details class="lang-pick">', text)
-                self.assertEqual(switch.count('<li>'), 1)
-                # And that one entry is English, whatever language the frame
-                # around it is in. `lang` rather than `hreflang`, because the
-                # entry for the language you are already in is a span with no
-                # href to describe.
-                self.assertIn('lang="en"', switch)
+                # Every entry is a language the site offers, and English is
+                # always one of them. This used to assert a single entry, which
+                # was the same statement while the only page naming no
+                # alternates was an English one nobody had translated. It is
+                # not any more: a page in a language the site has stopped
+                # offering names no alternate either - it is in no cluster, so
+                # claiming one would point at pages that do not point back -
+                # and it still carries a switcher, because a reader who cannot
+                # read the page needs the way out more than anybody. What must
+                # never happen is the switcher naming a language the site does
+                # not offer, and that is what is asserted instead of a count.
+                #
+                # `lang` rather than `hreflang`: the entry for the language you
+                # are already in is a span with no href to describe.
+                listed = set(re.findall(r'\blang="([^"]+)"', switch))
+                self.assertIn(base_lang, listed)
+                self.assertLessEqual(listed, offered_langs)
                 for absent in ('lang-partial', 'data-lang'):
                     self.assertNotIn(absent, switch)
 
     def test_the_switcher_links_this_page_and_not_the_front_door(self):
-        """Somebody reading about compressing an image who asks for German
-        wants that page in German. The German hub is reached from the English
-        hub; the German privacy page is reached from the English one."""
+        """Somebody reading about compressing an image who asks for another
+        language wants that page in it. The German hub is reached from the
+        English hub; the German privacy page is reached from the English one.
+
+        Asked of whichever languages the site actually offers rather than of
+        German, which it named until German stopped being offered - a test that
+        names one language is a test that has to be edited every time the list
+        moves, and this one was found by a release rather than by the change
+        that moved it.
+        """
         page = (self.out / 'privacy' / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('<a href="/de/datenschutz/" lang="de" hreflang="de">Deutsch</a>', page)
+        others = [locale for locale in buildmod.i18n.published(self.locales)
+                  if not locale['is_base']]
+        self.assertTrue(others, 'the site offers no translation to switch to')
+        for locale in others:
+            with self.subTest(lang=locale['lang']):
+                href = buildmod.i18n.locale_path(locale, 'privacy')
+                # The page, not the front door it would be easiest to link.
+                self.assertNotEqual(href, f'/{locale["prefix"]}')
+                self.assertIn(f'<a href="{href}" lang="{locale["hreflang"]}"', page)
 
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
