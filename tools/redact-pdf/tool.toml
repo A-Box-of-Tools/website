@@ -47,7 +47,7 @@ css_parts = ["progress", "form", "checks", "notes"]
 # nothing about placing a glyph is particular to redaction. What stays in src/
 # is what this tool does once it knows: choosing, editing and proving.
 js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-content", "pdf-base14", "pdf-fonts", "pdf-strings", "pdf-text", "message-box", "example-pdf", "pdf-page-writer", "example-statement"]
-lastmod = "2026-09-07"
+lastmod = "2026-09-09"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -79,7 +79,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/text.js</code> for how every word on a
+, <code>src/shared/pdf-text.js</code> for how every word on a
       page is found and located, and <code>src/edit.js</code> for the deletion
       itself &mdash; what is cut out of the page's instructions and what is put
       back so the rest of the line does not move. None of them can reach the

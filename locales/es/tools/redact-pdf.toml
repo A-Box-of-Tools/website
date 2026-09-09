@@ -38,7 +38,7 @@ live_hint = """
       de archivo. O desconéctate de internet y censúralo igualmente."""
 
 read_first = """
-, <code>src/text.js</code> para cómo se encuentra y
+, <code>src/shared/pdf-text.js</code> para cómo se encuentra y
       se sitúa cada palabra de una página, y <code>src/edit.js</code> para el
       borrado en sí: qué se recorta de las instrucciones de la página y qué se
       pone en su lugar para que el resto de la línea no se mueva. Ninguno de los

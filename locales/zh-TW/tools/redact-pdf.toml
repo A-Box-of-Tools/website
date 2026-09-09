@@ -30,7 +30,7 @@ live_hint = """
 
 read_first = """
 ，一頁上的每個詞是怎麼找到、怎麼定位的，\
-      看 <code>src/text.js</code>；刪除本身在 <code>src/edit.js</code>，從頁面指令裡\
+      看 <code>src/shared/pdf-text.js</code>；刪除本身在 <code>src/edit.js</code>，從頁面指令裡\
       切掉了什麼、為了讓這一行的其餘部分不移位又放回了什麼，都在那裡。這幾個都夠不著\
       網路，旁邊負責讀和寫的部分也一樣。"""
 

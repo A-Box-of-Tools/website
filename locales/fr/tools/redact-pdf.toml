@@ -39,7 +39,7 @@ live_hint = """
       caviardez quand même."""
 
 read_first = """
-, <code>src/text.js</code> pour la façon dont
+, <code>src/shared/pdf-text.js</code> pour la façon dont
       chaque mot d'une page est trouvé et situé, et <code>src/edit.js</code> pour
       la suppression elle-même&nbsp;: ce qui est découpé dans les instructions de
       la page et ce qui y est remis pour que le reste de la ligne ne bouge pas.
