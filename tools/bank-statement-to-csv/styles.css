@@ -5,6 +5,47 @@
  * cards, fields, the error line, the result row - comes from shared/css.
  */
 
+/* The chosen file, and the two lines about it. Not a shared part: .file-name
+ * and .file-sub come from results.css, but the row around them is each tool's
+ * own, and six tools already carry their own .result-facts. */
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.file-facts {
+  flex: 1;
+  min-width: 0;
+}
+
+/* How many rows came out of how many pages: the first thing to read, so it is
+ * set as a statement rather than as a note. */
+.verdict {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 72ch;
+}
+
+.verdict:empty {
+  display: none;
+}
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
 /* The reconstructed table.
  *
  * It scrolls sideways inside its own box rather than widening the page,
