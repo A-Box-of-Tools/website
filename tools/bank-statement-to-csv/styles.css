@@ -1,0 +1,120 @@
+/*
+ * What this page needs beyond the shared parts.
+ *
+ * Two things, really: the table, and the line under it. Everything else -
+ * cards, fields, the error line, the result row - comes from shared/css.
+ */
+
+/* The reconstructed table.
+ *
+ * It scrolls sideways inside its own box rather than widening the page,
+ * because a statement can have eight columns and the page is read on phones.
+ */
+.preview-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.preview {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview-caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+.preview th,
+.preview td {
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+  border-top: 1px solid var(--border);
+}
+
+.preview th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  font-weight: 600;
+  border-top: 0;
+}
+
+.preview tbody tr:nth-child(even) {
+  background: var(--accent-pale);
+}
+
+/* The verdict line: the whole reason the table above is trustworthy or not. */
+.check-line {
+  margin: 0.5rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--accent-pale);
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.check-line.held {
+  border-color: color-mix(in srgb, var(--ok) 45%, var(--border));
+  background: color-mix(in srgb, var(--ok) 10%, transparent);
+  color: var(--text);
+}
+
+.check-line.broke {
+  border-color: color-mix(in srgb, var(--warn) 55%, var(--border));
+  background: color-mix(in srgb, var(--warn) 12%, transparent);
+  color: var(--text);
+}
+
+.check-line:empty {
+  display: none;
+}
+
+/* The two panels that appear only when a statement cannot be read: the
+ * password and the photograph. They are help rather than error, so they sit
+ * quieter than .error and carry their own heading. */
+.help {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--accent-pale);
+}
+
+.help h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.98rem;
+}
+
+.help p,
+.help li {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.help ul {
+  margin: 0 0 0.25rem;
+  padding-left: 1.15rem;
+}
+
+.help li:last-child,
+.help p:last-child {
+  margin-bottom: 0;
+}
+
+.help-warn {
+  color: var(--text);
+  font-weight: 500;
+}

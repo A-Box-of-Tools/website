@@ -1,0 +1,195 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a statement</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Choose another</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The two documents this tool cannot read, each with the way out of it.
+      Revealed by main.js when the matching failure happens, rather than sitting
+      open on a page most people arrive at with a statement that works.
+
+      Both routes are deliberately ones that run on your own machine. Sending
+      somebody to a website that strips the password would undo, in the sentence
+      after the failure, the promise the rest of the page makes.
+    -->
+    <div id="locked-help" class="help" hidden>
+      <h3>Taking the password off, on your own machine</h3>
+      <p>
+        Banks often lock a statement with your date of birth or the last digits
+        of an account number. Opening it once with the password and saving a
+        fresh copy is enough &mdash; the copy has no password and still has its
+        text, which is what this tool needs.
+      </p>
+      <ul>
+        <li>
+          <strong>Windows</strong> &mdash; open the PDF in Chrome or Edge, type
+          the password, then <strong>Print</strong> and choose
+          <strong>Save as PDF</strong> as the printer.
+        </li>
+        <li>
+          <strong>macOS</strong> &mdash; open it in Preview, type the password,
+          then <strong>File &rarr; Export as PDF</strong>.
+        </li>
+      </ul>
+      <p class="help-warn">
+        Do not use a website that offers to unlock it. That means uploading the
+        statement, which is the one thing this page exists to avoid.
+      </p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>This one is a photograph, and what to do instead</h3>
+      <p>
+        There is no text in the file &mdash; its pages are pictures, from a
+        scanner or a phone. Reading letters out of a picture is a different job
+        from reading a table out of text, and this tool does not pretend to do
+        it. In rough order of how well they work:
+      </p>
+      <ul>
+        <li>
+          <strong>Ask your bank for the data instead of the paper.</strong>
+          Nearly every online bank will hand you the same statement as CSV, OFX
+          or QIF. That skips this page altogether and is more accurate than any
+          conversion of any picture could be.
+        </li>
+        <li>
+          <strong>Ask whoever sent it for the original PDF</strong> rather than
+          a scan of the printout.
+        </li>
+        <li>
+          <strong>Or read the picture on your own machine.</strong> Windows'
+          Snipping Tool, the Live Text built into macOS, and Acrobat's
+          <em>Recognise Text</em> all do it without uploading anything. Then
+          check every amount by eye: a misread digit does not look like an
+          error, it looks like a number.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the screen that matters, because everything before it was inference -->
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span> Check what it read</h2>
+
+    <p class="card-lede">
+      A statement looks like a table and is not one: it is text placed at
+      positions on a page, and the columns are strips of paper nobody printed
+      in. So the table below was worked out rather than read, and the line under
+      it is the tool checking its own work &mdash; if your statement carries a
+      running balance, every row can be proved against the row above it.
+    </p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field inline" id="order-field" hidden>
+      <label for="date-order">Dates are written</label>
+      <select id="date-order">
+        <option value="dmy">day / month / year</option>
+        <option value="mdy">month / day / year</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+    <div class="preview-wrap">
+      <table id="preview" class="preview">
+        <caption id="preview-caption" class="preview-caption"></caption>
+        <thead><tr id="preview-head"></tr></thead>
+        <tbody id="preview-body"></tbody>
+      </table>
+    </div>
+
+    <p id="preview-more" class="field-summary" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Take the CSV</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="button primary" download>Download the CSV</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen, held in the markup
+    rather than in src/ because src/ is copied byte for byte into every
+    language. shared/js/phrases.js reads them back; a {name} is filled in by
+    the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">That is not a PDF. This tool reads the table out of a PDF statement.</span>
+    <span data-phrase="load.encrypted">This statement has a password on it. Taking that off is a different job from
+      reading the table out of it, and this tool will not do it behind your back.</span>
+    <span data-phrase="error.broke">Something on this page stopped working ({detail}). Reload and try again.</span>
+    <span data-phrase="load.broken">This file could not be opened as a PDF ({detail}).</span>
+    <span data-phrase="load.nopages">This opened, but no pages could be found in it.</span>
+    <span data-phrase="scan.notext">There is no text in this PDF: its pages are pictures of a statement.</span>
+    <span data-phrase="scan.nocolumns">The text on these pages is not laid out in columns, so there is no table here
+      to take apart.</span>
+    <span data-phrase="scan.norows">There are columns here, but no row of them starts with a date, so nothing on
+      these pages looks like a list of transactions.</span>
+    <span data-phrase="sum.rows.one">{rows} transaction, read from {pages}.</span>
+    <span data-phrase="sum.rows.many">{rows} transactions, read from {pages}.</span>
+    <span data-phrase="sum.skipped">{n} more lines were headings, page numbers or carried totals, and were left
+      out.</span>
+    <span data-phrase="sum.wrapped">{n} wrapped lines were folded into the row above.</span>
+    <span data-phrase="check.held">The running balance adds up on every row, so the amounts were read correctly
+      and no row was missed or counted twice.</span>
+    <span data-phrase="check.broke">The running balance adds up on {held} of {links} rows. Check {where} against
+      the PDF before you use this.</span>
+    <span data-phrase="check.none">This statement prints no running balance, so there was nothing to check the
+      rows against. They are what the pages say; nothing here proves it.</span>
+    <span data-phrase="check.row">row {n}</span>
+    <span data-phrase="check.rows">rows {list}</span>
+    <span data-phrase="order.found">Worked out from a day past the twelfth on this statement, so this is what it
+      says rather than a guess.</span>
+    <span data-phrase="order.guessed">Every date on this statement falls on or before the twelfth, so nothing in it
+      says which way round they go. Change this if the dates below look wrong.</span>
+    <span data-phrase="preview.caption">The first {shown} of {rows} rows</span>
+    <span data-phrase="preview.all">All {rows} rows</span>
+    <span data-phrase="preview.more">Only the first {shown} are shown here. The download has all {rows}.</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.columns">{n} columns</span>
+    <span data-phrase="fact.dates">Dates written as YYYY-MM-DD</span>
+    <span data-phrase="fact.amounts">Amounts as plain signed numbers</span>
+    <span data-phrase="fact.encoding">UTF-8, RFC 4180 quoting</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="pdf.flate">a Flate stream would not decompress ({detail})</span>
+    <span data-phrase="pdf.nocompression">this browser has no CompressionStream</span>
+    <span data-phrase="pdf.lzw">an LZW stream starts with an undefined code</span>
+    <span data-phrase="pdf.cryptfilter">this stream is encrypted</span>
+    <span data-phrase="pdf.unknownfilter">an unknown filter, /{name}</span>
+    <span data-phrase="pdf.deep">nested too deeply</span>
+    <span data-phrase="pdf.short">ran off the end</span>
+    <span data-phrase="pdf.unexpected">unexpected {found} at {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">unexpected byte 0x{hex} at {at}</span>
+    <span data-phrase="pdf.noendstream">a stream with no endstream</span>
+    <span data-phrase="pdf.noobj">no obj keyword at {at}</span>
+    <span data-phrase="pdf.nostartxref">no startxref</span>
+    <span data-phrase="pdf.noxref">not an xref section</span>
+    <span data-phrase="pdf.now">an xref stream with no /W</span>
+    <span data-phrase="pdf.zerowidth">an xref stream with zero-width fields</span>
+    <span data-phrase="read.noheader">This does not start like a PDF: there is no %PDF- header.</span>
+    <span data-phrase="read.encrypted">This PDF is encrypted.</span>
+    <span data-phrase="read.nocatalogue">This file has no document catalogue. It is either not a PDF or damaged past
+      what can be repaired here.</span>
+  </div>
+</main>

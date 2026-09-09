@@ -57,6 +57,7 @@ TOOLS = ROOT / 'tools'
 # Sentences left in each tool's JavaScript. Lower these as they are moved into
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
+    'bank-statement-to-csv': 2,
     'base64': 0,
     # Not one of these is a sentence. Six are fragments of the SVG the three
     # mock-ups are written out of, one is a canvas font shorthand, one is the

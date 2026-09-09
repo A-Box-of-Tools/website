@@ -1,0 +1,393 @@
+#
+# Bank statement PDF to CSV
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The thing to hold on to while editing the prose below: this tool infers. It
+# is not reading a table out of the file, because there is no table in the
+# file - there is text at positions, and the columns are strips of paper
+# nobody printed in. Every sentence here has to leave that true. The tool's
+# answer to it is the balance check, which is a proof and is described as one;
+# where there is no balance to check against, the page says so plainly instead
+# of implying the rows are verified. Do not let a rewrite quietly upgrade
+# "this is what the pages say" into "this is correct".
+#
+
+slug = "bank-statement-to-csv"
+name = "Bank Statement Converter"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Bank&nbsp;Statement to&nbsp;CSV <span class=\"h1-kw\">&mdash; and it checks its own arithmetic</span>"
+tagline = "Every row is proved against the running balance printed on your statement."
+icon = "&#128202;"                  # the bar chart, beside the page heading
+favicon = "&#128202;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "table"
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "documents"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules.
+css_parts = ["form", "notes", "results"]
+
+# file-picker brings in the drop zone. The rest is the PDF reading stack, which
+# this tool shares with the redactor: the object grammar, the stream filters
+# and the reader open the file; pdf-content, pdf-base14, pdf-fonts and
+# pdf-strings resolve a page's fonts and encodings; pdf-text on top of them all
+# says where every word landed on the paper. No pdf-writer - nothing here
+# writes a PDF, and listing a part a tool never calls would ship it to every
+# visitor for nothing.
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-content", "pdf-base14", "pdf-fonts", "pdf-strings", "pdf-text", "message-box", "download", "format", "example-pdf", "pdf-page-writer", "example-statement"]
+lastmod = "2026-09-09"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Bank Statement PDF to CSV &mdash; Free, No Upload, Checks Itself"
+description = "Turn a PDF bank statement into a CSV your spreadsheet can open. It works out the columns from where the text sits on the page, folds wrapped descriptions back into their row, and then proves every row against the running balance. Nothing is uploaded."
+og_title = "Bank statement PDF to CSV, without uploading the statement"
+og_description = "Converting a statement means handing your account history to somebody's server. This one runs in your browser, and it checks its own work against the running balance rather than asking you to."
+og_image_alt = "Convert a bank statement PDF to CSV in your browser"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Statement to spreadsheet, checked against its own running balance."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The statement you choose is opened and read in memory on this machine, by
+    code served from this address, and the CSV is written the same way. Nothing
+    here can make an upload, and there is no server on the other end of this
+    page to receive one. Your account number, your balance and every payee on
+    it stay in the tab."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert a statement. Not one request carries a page, a row, an amount or
+      a filename. Or unplug from the internet and convert it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/layout.js</code> for how the columns
+      are found without a single ruled line to go on, <code>src/rows.js</code>
+      for which lines become transactions and which are dropped, and
+      <code>src/check.js</code> for the arithmetic that proves it. None of them
+      can reach the network, and neither can the reader underneath them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to turn a PDF bank statement into a CSV"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Turn a PDF statement into a spreadsheet. The columns are worked out
+            from where the text sits on the page, wrapped descriptions are put
+            back on their own row, and then every row is checked against the
+            running balance the statement printed &mdash; so you find out here
+            whether it was read correctly, rather than in your accounts."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "statements"
+choose = "a statement"
+analytics_extra = """, and nothing about
+  your balance, your payees or what the rows say"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "A statement is the document least survivable as an upload."
+body = """
+
+      It is a list of everybody you paid, what for, when, and how much was left
+      afterwards, with your account number at the top. Handing that to a
+      stranger's server to have it turned into a spreadsheet means they have it,
+      keep it, and are now a target worth attacking because of it. Accountants'
+      own client-data policies forbid it, which is why the paid tools in this
+      corner advertise the browser rather than the conversion. This page has no
+      other half: there is nothing to send it to."""
+
+[[privacy]]
+title = "It checks its own work, and tells you when it could not."
+body = """
+
+      Finding a table in a PDF is inference, not reading &mdash; which strip of
+      paper was a gutter, whether a wrapped line belonged to the row above. Any
+      of that can be wrong on a layout nobody here has seen. So when your
+      statement prints a running balance, every row is checked against it: the
+      balance on each row has to be the one above it plus that row's amount, and
+      a single misread digit, dropped row or duplicated row breaks the chain at
+      exactly the row where it happened. The page says how many rows held. When
+      there is no balance column, it says that instead of implying the rows were
+      verified."""
+
+[[privacy]]
+title = "The columns come from the paper, not from a template per bank."
+body = """
+
+      There is no list of banks in this tool and no layout to be missing from.
+      A statement's columns are found by projecting every line of every page
+      onto the horizontal axis and looking for the strips nothing is ever
+      printed in &mdash; the same gaps that make the page readable to you. That
+      is why it works on a statement from a bank nobody has heard of, and why it
+      can fail on one whose columns genuinely run into each other."""
+
+[[privacy]]
+title = "Passwords are not taken off, and the page says how to do it yourself."
+body = """
+
+      A statement with a password on it is refused rather than opened. Taking a
+      document's protection off is a different job from reading a table out of
+      it, and doing it quietly would be a surprising thing for a tool to do on
+      your behalf. What the page does instead is show you the two ways to make
+      an unlocked copy on your own machine &mdash; printing it back to PDF from
+      a browser, or exporting it from Preview &mdash; and say, in as many words,
+      not to hand it to a website that offers to unlock it."""
+
+[[privacy]]
+title = "It cannot read a photograph of a statement, and does not pretend to."
+body = """
+
+      A scan is a picture: the rows are pixels, and there is no text in the file
+      to line up into columns. That is reported as what it is, with the ways
+      round it that do not involve uploading anything &mdash; starting with the
+      one most people have and do not think of, which is that the bank will
+      almost certainly hand you the same statement as CSV directly. Reading
+      letters out of a picture is OCR, and it is a different tool from this
+      one."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your statement: not a file, not a row, not a payee, an amount, a balance,
+      a filename or a page count. Every line that reads a PDF or writes a CSV is
+      served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your statements. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your statement away to be converted would stop."""
+
+[[howto]]
+title = "Choose the statement."
+body = """
+ One PDF at a time. It is read straight
+      off your disk by the browser &mdash; every page of it, before anything is
+      decided, because whether this statement writes 1.240,00 or 1,240.00 and
+      which way round its dates go are facts about the document rather than
+      about any one page."""
+
+[[howto]]
+title = "Look at the table it worked out."
+body = """
+ The columns are found from
+      where the text sits, the statement's own headings are used where it
+      printed any, wrapped descriptions are folded back into the row above, and
+      page numbers, repeated headings and carried totals are left out. Dates
+      come out as YYYY-MM-DD and amounts as plain signed numbers, which is what
+      a spreadsheet wants; every other column is left exactly as the page had
+      it."""
+
+[[howto]]
+title = "Read the line under the table &mdash; it is the point."
+body = """
+
+      If your statement prints a running balance, the tool has just checked
+      every row against it and says how many held. That single line is worth
+      more than reading the table: it is the difference between rows that look
+      right and rows that are proved. If the dates came out the wrong way round,
+      the control above the table switches them and everything is redone."""
+
+[[howto]]
+title = "Take the CSV."
+body = """
+ It is written to RFC 4180 &mdash; proper
+      quoting, CRLF line endings &mdash; as UTF-8 with a byte order mark, so
+      Excel opens it with the currency symbols intact instead of turning them
+      into letters. Nothing was uploaded to produce it."""
+
+[[faq]]
+q = "How does it know where the columns are without any lines on the page?"
+a = """
+        From the gaps. Every line of every page is projected onto the horizontal
+        axis, and the strips of paper that stay empty across nearly all of them
+        are the gutters between columns &mdash; which is the same thing that
+        makes the page readable to a person. Lines set in a different size from
+        the body, like a title or a big page number, are left out of that
+        measurement, because otherwise one heading lying across every column
+        would erase the gutters underneath it. There is no per-bank template,
+        so there is no bank it has not been taught."""
+
+[[faq]]
+q = "What happens to a description too long for its column?"
+a = """
+        It is folded back into the row above, which is the failure that makes
+        most PDF-to-CSV output unusable. A payee wrapped onto a second line has
+        no date and no amount beside it, so a converter that treats every line
+        as a row produces a half-empty row and a row missing half its
+        description. Here a line with no date and no amount is a continuation
+        and is joined to the transaction it belongs to; a line with an amount
+        but no date is a carried total and is dropped."""
+
+[[faq]]
+q = "How can it possibly know whether it read my statement correctly?"
+a = """
+        Because most statements carry a running balance, and a running balance
+        is a proof rather than a decoration. If the balance printed on every row
+        really is the balance on the row above plus that row's amount, then the
+        amounts were read correctly, the rows were separated correctly and none
+        was dropped or counted twice &mdash; any of those mistakes breaks the
+        chain at the row where it happened. The tool does that subtraction on
+        every row and tells you the result. It also finds the balance column
+        that way rather than by reading a heading, so a statement that passes
+        has necessarily had its columns identified correctly."""
+
+[[faq]]
+q = "What if my statement has no balance column?"
+a = """
+        Then you get the rows and a line saying plainly that there was nothing
+        to check them against. That is deliberate. The rows are still what the
+        pages say, and they are still worth having &mdash; but calling them
+        verified when nothing verified them would train you to ignore the line
+        that matters on the statements where it does mean something."""
+
+[[faq]]
+q = "My dates came out wrong. 03/04 is the fourth of March, not the third of April."
+a = """
+        Change the control above the table and everything is redone instantly.
+        A numeric date is genuinely ambiguous, and the tool settles it from the
+        document rather than from your location: if any date anywhere on the
+        statement has a day past the twelfth, that one row settles the order for
+        all of them, and the page says so. When every date falls on or before
+        the twelfth there is nothing in the file that could tell them apart, so
+        it says <em>that</em>, and picks day-first until you say otherwise."""
+
+[[faq]]
+q = "Does it work on a scanned statement?"
+a = """
+        No, and it says so rather than handing you an empty file. A scan is a
+        photograph: the rows are pixels and there is no text to line up. The
+        page then shows you what to do instead, and the first suggestion is the
+        one most people overlook &mdash; nearly every online bank will give you
+        the same statement as CSV, OFX or QIF directly, which needs no
+        conversion and is more accurate than reading any picture could be."""
+
+[[faq]]
+q = "Can it open a password-protected statement?"
+a = """
+        No, and that is deliberate. Banks lock a lot of statements, usually with
+        a date of birth or the last digits of an account number. Taking that
+        protection off is a different job from reading a table, so the tool
+        refuses and shows you how to make an unlocked copy yourself: open it in
+        Chrome or Edge with the password and print it back to PDF, or export it
+        from Preview on a Mac. Both happen entirely on your machine. Do not use
+        a website that offers to unlock it &mdash; that is an upload of the
+        exact document this page exists to keep off the internet."""
+
+[[faq]]
+q = "Is my statement uploaded anywhere?"
+a = """
+        No. The file is read and the CSV is written by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. The simplest proof is to
+        unplug from the internet and convert a statement anyway."""
+
+[[faq]]
+q = "Why is there a strange character at the start of the CSV?"
+a = """
+        That is a byte order mark, and it is there on purpose. Excel on Windows
+        reads a CSV without one using the system's legacy code page, so a
+        statement in pounds or euros arrives with the currency symbol replaced
+        by a letter. The mark tells it the file is UTF-8. Every reader that
+        matters skips it silently; a parser strict enough to show it will hand
+        back a first column heading with an invisible character on the front,
+        which is the cost of the trade."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        There is no limit written into the tool. The limit is your own machine:
+        the statement is held in memory while it is read, which a laptop will
+        do with several hundred pages without complaint. It is free, there is no
+        account, no sign-in and no trial. The site carries advertising, which is
+        what pays for it; the ads are not given anything about your
+        statements."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your statement away to be converted would
+        stop the moment you unplugged."""
+
+[schema]
+category = "FinanceApplication"
+description = "Convert a PDF bank statement to CSV in your browser. The columns are found from where the text sits on the page, wrapped descriptions are folded back into their rows, and every row is checked against the statement's running balance. Nothing is uploaded."
+features = [
+  "Finds the columns from the layout, with no per-bank template",
+  "Checks every row against the statement's own running balance",
+  "Folds a wrapped description back into the transaction it belongs to",
+  "Drops repeated headings, page numbers and carried totals",
+  "Writes dates as YYYY-MM-DD and amounts as plain signed numbers",
+  "Reads 1.240,00 and 1,240.00, and settles ambiguous dates from the document",
+  "Says when a statement is a scan or has a password, and what to do instead",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Drop your statement here"
+hint = "or click to browse &mdash; one PDF at a time"
+# The shared example statement, drawn as a ledger: signed amounts and a running
+# balance, which no other tool's example needs and this one cannot do without.
+# An example with no balance column would demonstrate this tool with its only
+# claim about correctness switched off.
+example = true
