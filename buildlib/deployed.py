@@ -43,16 +43,37 @@ def check_against_branch(out, branch='dist'):
     A fresh clone has the branch only as origin/dist, so try that too rather
     than shrugging and reporting success.
     """
-    for ref_name in (branch, f'origin/{branch}'):
+    def tree_of(ref_name):
         # utf-8 for the same reason as the call in compare() below. This one
         # reads back a hex id and would survive any codec, but it captures
         # git's stderr too, and a git that has been translated writes that in
         # whatever it likes.
         found = subprocess.run(['git', 'rev-parse', '--verify', f'{ref_name}^{{tree}}'],
                                capture_output=True, encoding='utf-8', cwd=ROOT)
-        if found.returncode == 0:
-            branch = ref_name
-            break
+        return found.stdout.strip() if found.returncode == 0 else None
+
+    local, remote = branch, f'origin/{branch}'
+    trees = {name: tree_of(name) for name in (local, remote)}
+
+    # THE REMOTE REF WINS WHEN THE TWO DISAGREE, and that is not a general
+    # preference for freshness - it is because `dist` is force-pushed. Every
+    # deploy replaces it with a root commit holding one build, so a local
+    # branch left from an earlier fetch does not fast-forward on the next one:
+    # it simply stays where it was, and `git fetch` updates origin/dist around
+    # it. Checking against the stale one would compare this build with a site
+    # that is no longer served and report every page that has moved since as a
+    # difference - a wrong answer delivered with complete confidence, which is
+    # the one failure this command exists to prevent. See "Publish to the dist
+    # branch" in .github/workflows/build.yml.
+    if trees[local] and trees[remote] and trees[local] != trees[remote]:
+        print(f'  {local} is behind {remote}, which is what is deployed - '
+              f'checking against that instead')
+        print(f'  (git branch -f {local} {remote}, to catch the local one up)')
+        branch = remote
+    elif trees[local]:
+        branch = local
+    elif trees[remote]:
+        branch = remote
     else:
         print(f'\n  no {branch} branch here to check against '
               f'(try: git fetch origin {branch})', file=sys.stderr)

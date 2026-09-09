@@ -26,7 +26,7 @@ To see what would be deployed before pushing, run `python build.py` and look at
 | a working branch | one change | builds and checks it; previews it once a pull request is open |
 | `dev` | everything merged since the last release | builds it, and previews it twice: at `dev.abox-preview.pages.dev`, and at `dev-pr-<n>.abox-preview.pages.dev` for the merge that caused it |
 | `main` | what is live | builds, publishes to `dist`, tags the version, tells IndexNow |
-| `dist` | the built site, and nothing else | GitHub Pages serves it |
+| `dist` | the built site, and nothing else — one commit, replaced every deploy | GitHub Pages serves it |
 
 Work is opened against `dev`. **Releasing is opening a pull request from `dev`
 to `main`** and merging it — there is no other step, and no file in the tree has
@@ -158,6 +158,35 @@ output instead buys one specific thing: a reader can run `python build.py` on
 their own machine and diff the result against the branch that is actually being
 served. A site whose entire pitch is "check this rather than believe it" should
 not ask anyone to take the deployment on trust either.
+
+### `dist` keeps no history
+
+Every deploy replaces the branch with a **root commit** — one commit, no
+parent — and force-pushes it. `dist` therefore holds the site as it stands and
+no record of how it got there.
+
+The record is `main`'s history, which is the sources and is kept forever; each
+build commit still names the `main` commit it was built from, so the tip points
+back into it. Nothing reads the deploy history: `--check` asks for
+`dist^{tree}`, and the IndexNow baseline reads the checked-out worktree rather
+than a commit range.
+
+What it saves is repository size, and the branch was the whole of the problem.
+A frame-wide change — a footer, a hub listing — rewrites all 19,672 built
+files, so those deploys were adding 1,600 to 3,000 new blobs each, 59 to 102 MB
+apiece before compression, to a repository already at 449 MB of the 1 GB
+GitHub recommends for a Pages source.
+
+Two things follow for anyone who has fetched the branch:
+
+- **A local `dist` will not fast-forward.** `git fetch origin dist` still moves
+  `origin/dist` — the default refspec is forced — but a local branch left from
+  an earlier fetch stays where it was. `--check` notices when the two disagree,
+  says so, and checks against `origin/dist`; `git branch -f dist origin/dist`
+  catches the local one up.
+- **The published size will not drop the day this changes.** Unreachable
+  objects are GitHub's to reclaim, on their own schedule. What changes
+  immediately is that the branch stops growing.
 
 ## DNS at Cloudflare
 

@@ -445,16 +445,21 @@ jobs:
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-          # Check out the dist branch beside the working tree, creating it as an
-          # orphan the first time. A worktree rather than a second clone, so the
-          # push reuses the credentials actions/checkout already configured.
+          # The deployed tree, beside the working tree. A worktree rather than
+          # a second clone, so the push reuses the credentials actions/checkout
+          # already configured; --depth=1 because one commit is all there is to
+          # fetch - see the root commit at the bottom of this step.
+          #
+          # `deployed` is the tree id of what is live, and it is wanted for the
+          # comparison below rather than for the commit. Empty on the first
+          # deploy, when there is no branch yet and everything is new.
+          deployed=
           if git ls-remote --exit-code --heads origin dist >/dev/null 2>&1; then
-            git fetch origin dist
-            git worktree add .publish FETCH_HEAD
-            git -C .publish switch -C dist
+            git fetch --depth=1 origin dist
+            git worktree add --detach .publish FETCH_HEAD
+            deployed=$(git rev-parse 'FETCH_HEAD^{tree}')
           else
             git worktree add --detach .publish
-            git -C .publish checkout --orphan dist
           fi
 
           # A fingerprint of every deployed page's <main>, taken before
@@ -474,14 +479,48 @@ jobs:
           cp -a _site/. .publish/
 
           git -C .publish add -A
-          if git -C .publish diff --cached --quiet; then
+
+          # Two trees compared, rather than the index against HEAD. The commit
+          # below has no parent for an index to be diffed against, and a tree
+          # id is the same question asked of the thing itself: equal ids are
+          # equal sites, whatever history stands either side of them.
+          built=$(git -C .publish write-tree)
+          if [ "$built" = "$deployed" ]; then
             echo 'The build is identical to what is already deployed; nothing to push.'
             exit 0
           fi
 
+          # A ROOT COMMIT EVERY TIME, force-pushed over the last one, so `dist`
+          # holds one build and never a history of them.
+          #
+          # It used to accumulate. Every deploy committed on top of the last,
+          # and a frame-wide change - a footer, a hub listing - rewrites all
+          # 19,672 files, so those deploys added 1,600 to 3,000 new blobs each,
+          # 59 to 102 MB of content apiece before compression. The repository
+          # was 449 MB of a GitHub Pages source limit that is recommended at
+          # 1 GB, and nothing was reading a byte of what it was spending that
+          # on.
+          #
+          # NOTHING READS THE HISTORY, which is what makes this safe rather
+          # than merely cheap. `--check` asks for `dist^{tree}` and compares
+          # blob ids against a fresh build (buildlib/deployed.py); the IndexNow
+          # baseline a few lines up reads the checked-out worktree, not a
+          # commit range. The record of how the site got here is `main`'s
+          # history, which is the sources and is kept forever - and each build
+          # commit still names the `main` commit it was built from, so the tip
+          # points back into that record.
+          #
+          # WHAT IT COSTS a reader: `dist` is force-pushed, so a fetched copy
+          # will not fast-forward. `git fetch origin dist` still updates
+          # `origin/dist` - the default refspec is forced - but a local `dist`
+          # branch has to be reset onto it rather than pulled. The published
+          # size will not drop the day this lands either; unreachable objects
+          # are GitHub's to reclaim, on their schedule. What changes today is
+          # that the branch stops growing.
           subject=$(git log -1 --pretty=%s "$SHA")
-          git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
-          git -C .publish push origin dist
+          commit=$(git -C .publish commit-tree "$built" \
+            -m "Build ${SHA:0:7}: ${subject}")
+          git -C .publish push --force origin "$commit:refs/heads/dist"
 
       # The version, as a tag on the commit that shipped it.
       #
