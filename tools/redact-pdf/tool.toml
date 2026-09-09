@@ -35,13 +35,19 @@ roadmap_group = "documents"
 # tool's own rules. progress is the bar this tool draws while it works.
 css_parts = ["progress", "form", "checks", "notes"]
 
-# file-picker brings in the drop zone. The four pdf-* parts are the PDF itself
-# - the object grammar, the stream filters, the reader and the writer - and
-# travel together, because the reader and the writer import the other two;
-# the compressor and the merger ask for the same four. Everything this tool
-# does to a page's drawing instructions is its own and stays in src/.
-js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "example-pdf", "pdf-page-writer", "example-statement"]
-lastmod = "2026-09-07"
+# file-picker brings in the drop zone. The four pdf-* parts the compressor and
+# the merger also ask for are the PDF itself - the object grammar, the stream
+# filters, the reader and the writer - and travel together, because the reader
+# and the writer import the other two.
+#
+# The five that follow them are the reading stack: the content-stream grammar,
+# the base-14 metrics, the fonts, the string codec, and pdf-text on top, which
+# is what says where every word on a page is. They were this tool's own until
+# the statement converter needed the same answer to the same question, and
+# nothing about placing a glyph is particular to redaction. What stays in src/
+# is what this tool does once it knows: choosing, editing and proving.
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-content", "pdf-base14", "pdf-fonts", "pdf-strings", "pdf-text", "message-box", "example-pdf", "pdf-page-writer", "example-statement"]
+lastmod = "2026-09-09"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -73,7 +79,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/text.js</code> for how every word on a
+, <code>src/shared/pdf-text.js</code> for how every word on a
       page is found and located, and <code>src/edit.js</code> for the deletion
       itself &mdash; what is cut out of the page's instructions and what is put
       back so the rest of the line does not move. None of them can reach the

@@ -40,7 +40,7 @@ live_hint = """
       Internetverbindung und schwärzen Sie es trotzdem."""
 
 read_first = """
-, <code>src/text.js</code> dafür, wie jedes Wort
+, <code>src/shared/pdf-text.js</code> dafür, wie jedes Wort
       einer Seite gefunden und verortet wird, und <code>src/edit.js</code> für
       das Löschen selbst: was aus den Anweisungen der Seite herausgeschnitten
       wird und was wieder hineinkommt, damit der Rest der Zeile stehen bleibt.

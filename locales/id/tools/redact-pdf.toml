@@ -39,7 +39,7 @@ live_hint = """
       sensor."""
 
 read_first = """
-, <code>src/text.js</code> untuk cara setiap kata
+, <code>src/shared/pdf-text.js</code> untuk cara setiap kata
       di sebuah halaman ditemukan dan dipetakan, dan <code>src/edit.js</code>
       untuk penghapusannya sendiri &mdash; apa yang dipotong dari instruksi
       halamannya dan apa yang ditaruh kembali supaya sisa barisnya tidak

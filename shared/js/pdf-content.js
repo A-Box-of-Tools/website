@@ -29,9 +29,15 @@
  * There is no way to tell an operator from a keyword operand by shape, so the
  * rule used here is the one every reader uses - a token that begins like a
  * value is a value, and anything else is the operator that ends the line.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-content.js
+ * and the build copies it to <tool>/src/shared/pdf-content.js. The half
+ * that writes operators back is only wanted by a tool that edits a page;
+ * a tool that only reads one ships it unused, which is cheaper than
+ * splitting a grammar in two.
  */
 
-import { Name, Parser, PdfString } from './shared/pdf-objects.js';
+import { Name, Parser, PdfString } from './pdf-objects.js';
 
 /** Bytes that begin an operand: a name, a string, an array, a dictionary, a
  *  number. Everything else at that position is the operator. */

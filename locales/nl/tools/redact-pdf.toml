@@ -33,7 +33,7 @@ live_hint = """
       bestandsnaam mee. Of trek de stekker uit het internet en doe het toch."""
 
 read_first = """
-, <code>src/text.js</code> voor hoe elk woord op
+, <code>src/shared/pdf-text.js</code> voor hoe elk woord op
       een pagina gevonden en gelokaliseerd wordt, en <code>src/edit.js</code> voor
       het wissen zelf &mdash; wat er uit de instructies van de pagina geknipt
       wordt en wat er teruggezet wordt zodat de rest van de regel niet verschuift.

@@ -396,13 +396,6 @@ The cards now say MP4, which is also the format they actually needed.
 Written down so that "why isn't X on the roadmap" has an answer, and so the
 answer can be revisited rather than re-argued.
 
-- **Bank statement PDF → CSV.** The highest-value gap found so far. It has a
-  whole paid industry, and one competitor's entire pitch is that it runs in the
-  browser so the statement is never uploaded — accountants' client-data policies
-  forbid the alternative. It is not on the list only because it is the largest
-  build of any candidate: text extraction with `ToUnicode` and CMap handling,
-  then table reconstruction from glyph positions. It goes on the list the day
-  somebody is ready to start it, not before.
 - **PDF page to PNG.** Asked for constantly, and it needs a renderer rather
   than a reader — a font engine and a full graphics model, which is a vendored
   engine on the scale of the FFmpeg argument. This entry used to end by saying

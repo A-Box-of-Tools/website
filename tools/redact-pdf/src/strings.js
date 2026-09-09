@@ -29,6 +29,12 @@
  */
 
 import { PdfStream, PdfString } from './shared/pdf-objects.js';
+import { decodeText, encodeText } from './shared/pdf-strings.js';
+
+// Re-exported because a caller wanting one text string decoded and a
+// caller wanting every string in the document swept are the same two
+// files here, and neither should have to know which module holds which.
+export { decodeText, encodeText };
 
 /**
  * Keys whose value is text a reader will show.
@@ -43,41 +49,6 @@ const TEXT_KEYS = [
   'Contents', 'RC', 'Subj', 'T', 'V', 'DV', 'TU', 'Alt', 'ActualText', 'E',
   'Desc', 'F', 'UF',
 ];
-
-/** A text string as characters. UTF-16 when it says so, and otherwise the
- *  byte-per-character encoding that covers everything else a reader meets. */
-export function decodeText(bytes) {
-  if (bytes.length >= 2 && bytes[0] === 0xfe && bytes[1] === 0xff) {
-    let text = '';
-    for (let at = 2; at + 1 < bytes.length; at += 2) {
-      text += String.fromCharCode((bytes[at] << 8) | bytes[at + 1]);
-    }
-    return text;
-  }
-  let text = '';
-  for (const byte of bytes) text += String.fromCharCode(byte);
-  return text;
-}
-
-/**
- * And back again, always as UTF-16.
- *
- * A string that has had something cut out of it is rewritten rather than
- * patched, and rewriting it in the encoding it arrived in would mean deciding
- * whether every surviving character still fits. UTF-16 with the mark in front
- * of it is legal wherever a text string is legal and can hold anything.
- */
-export function encodeText(text) {
-  const out = new Uint8Array(2 + text.length * 2);
-  out[0] = 0xfe;
-  out[1] = 0xff;
-  for (let at = 0; at < text.length; at += 1) {
-    const code = text.charCodeAt(at);
-    out[2 + at * 2] = (code >> 8) & 0xff;
-    out[3 + at * 2] = code & 0xff;
-  }
-  return out;
-}
 
 /**
  * Run `remove` over every text string in the document.

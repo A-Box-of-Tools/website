@@ -32,13 +32,18 @@
  * angle defeats that, and is sorted as though it were level - it will look
  * wrong in the panel that lists the page's text, and it is removed just as
  * exactly, because removal works off the glyph and not off the ordering.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-text.js and
+ * the build copies it to <tool>/src/shared/pdf-text.js. It imports
+ * pdf-content, pdf-fonts and pdf-strings, which each import more; a tool
+ * that wants the text off a page lists all of them.
  */
 
-import { lex } from './content.js';
-import { decodeStream } from './shared/pdf-filters.js';
-import { glyphsOf, readFonts } from './fonts.js';
-import { isName, Name, PdfStream, PdfString, Ref } from './shared/pdf-objects.js';
-import { decodeText } from './strings.js';
+import { lex } from './pdf-content.js';
+import { decodeStream } from './pdf-filters.js';
+import { glyphsOf, readFonts } from './pdf-fonts.js';
+import { isName, Name, PdfStream, PdfString, Ref } from './pdf-objects.js';
+import { decodeText } from './pdf-strings.js';
 
 /**
  * How far apart two glyphs have to be, as a fraction of the font size, before
@@ -98,7 +103,7 @@ function numbers(args, count) {
 /**
  * Read one page.
  *
- * @param {import('./shared/pdf-reader.js').PdfDocument} doc
+ * @param {import('./pdf-reader.js').PdfDocument} doc
  * @param {Map} page the page dictionary
  * @param {number} number the page number, one-based, for reporting
  * @returns {Promise<Page>}

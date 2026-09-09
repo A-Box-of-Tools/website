@@ -27,7 +27,7 @@
  * the rewrite has the same problem one level up.
  */
 
-import { applySplices, encode } from './content.js';
+import { applySplices, encode } from './shared/pdf-content.js';
 import { planEdits } from './edit.js';
 import { PdfStream, Ref } from './shared/pdf-objects.js';
 import { removeCarriedFiles, scrubStrings } from './strings.js';
@@ -35,7 +35,7 @@ import { stripMetadata, writeDocument } from './shared/pdf-writer.js';
 
 /**
  * @param {import('./shared/pdf-reader.js').PdfDocument} doc
- * @param {import('./text.js').Page[]} pages
+ * @param {import('./shared/pdf-text.js').Page[]} pages
  * @param {Map<number, Set<number>>} chosen  page index to glyph indices
  * @param {object} options
  * @param {{onProgress?: Function, signal?: AbortSignal}} hooks

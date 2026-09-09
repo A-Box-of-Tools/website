@@ -57,6 +57,7 @@ TOOLS = ROOT / 'tools'
 # Sentences left in each tool's JavaScript. Lower these as they are moved into
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
+    'bank-statement-to-csv': 2,
     'base64': 0,
     # Not one of these is a sentence. Six are fragments of the SVG the three
     # mock-ups are written out of, one is a canvas font shorthand, one is the
@@ -128,7 +129,7 @@ BASELINE = {
     'redact-image': 2,
     # Three Base-14 glyph tables from the PDF specification, four lines of
     # PDF syntax, three internal range keys and one key template.
-    'redact-pdf': 9,
+    'redact-pdf': 6,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,

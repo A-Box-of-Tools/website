@@ -30,7 +30,7 @@ live_hint = """
 
 read_first = """
 ，一页上的每个词是怎么找到、怎么定位的，\
-      看 <code>src/text.js</code>；删除本身在 <code>src/edit.js</code>，从页面指令里\
+      看 <code>src/shared/pdf-text.js</code>；删除本身在 <code>src/edit.js</code>，从页面指令里\
       切掉了什么、为了让这一行的其余部分不移位又放回了什么，都在那里。这几个都够不着\
       网络，旁边负责读和写的部分也一样。"""
 

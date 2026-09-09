@@ -24,7 +24,7 @@ import {
 } from './matches.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { redact } from './redact.js';
-import { pagesOf, readPage } from './text.js';
+import { pagesOf, readPage } from './shared/pdf-text.js';
 import { harvestAll, verify } from './verify.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeExample } from './example.js';
@@ -96,7 +96,7 @@ const MAX_ROWS = 400;
 /** The file as it arrived, kept so that a second run starts from the original
  *  rather than from a document this tool has already edited in memory. */
 let source = null;
-/** @type {import('./text.js').Page[]} */
+/** @type {import('./shared/pdf-text.js').Page[]} */
 let pages = [];
 /**
  * What is to be removed: for each page, the character ranges somebody has

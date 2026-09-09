@@ -33,15 +33,15 @@
  * into somebody else's page.
  */
 
-import { formatNumber, formatString, formatValue } from './content.js';
+import { formatNumber, formatString, formatValue } from './shared/pdf-content.js';
 import { PdfString } from './shared/pdf-objects.js';
 import { decodeText, encodeText } from './strings.js';
-import { cornersOf, endOf } from './text.js';
+import { cornersOf, endOf } from './shared/pdf-text.js';
 
 /**
  * What to change, for one page.
  *
- * @param {import('./text.js').Page} page
+ * @param {import('./shared/pdf-text.js').Page} page
  * @param {Set<number>} removing  indices into page.glyphs
  * @param {{boxes?: boolean, remove?: (text: string) => string}} options
  *   `remove` is the same text-removing function the rest of the document is

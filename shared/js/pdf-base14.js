@@ -28,6 +28,11 @@
  * The encodings are the other half. A simple font's /Encoding names glyphs -
  * `quoteright`, `eacute` - and a name is not a character, so a table has to
  * turn one into the other before the word "Müller" can be searched for.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-base14.js
+ * and the build copies it to <tool>/src/shared/pdf-base14.js. Read by
+ * pdf-fonts.js; see the header of pdf-text.js for what the reading stack
+ * is for.
  */
 
 /* ------------------------------------------------------------- encodings */
