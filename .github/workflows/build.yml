@@ -282,6 +282,19 @@ jobs:
       GENERATOR: ${{ needs.test.outputs.generator }}
       DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
       PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
+      # Which previews are cut down to English. A full build is over
+      # Cloudflare Pages' 20,000-file limit per deployment, and 71% of those
+      # files are byte-identical copies of each other across the fifteen
+      # languages - so a preview of the whole bundle is refused outright.
+      #
+      # An ALLOWLIST rather than "anything that is not main", because on a push
+      # to main `github.base_ref` is empty and a negative test would strip the
+      # languages out of production. Read it as: the day-to-day previews of dev
+      # and of the pull requests into it. The release preview - the pull
+      # request from dev to main - is deliberately NOT in this list: it is the
+      # last gate before production and the whole bundle is what it exists to
+      # show.
+      ENGLISH_PREVIEW: ${{ (github.event_name == 'pull_request' && github.base_ref == 'dev') || (github.event_name == 'push' && github.ref == 'refs/heads/dev') }}
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -425,12 +438,33 @@ jobs:
       # or a push to `dev` - reaches the job below through an artifact. A day
       # is plenty: the preview is uploaded within minutes, and the next push
       # builds again.
+      # Hard links rather than a copy, so this costs no bytes and - the part
+      # that matters - the `rm -rf` below removes links out of _preview and
+      # leaves _site, which is what goes to dist, whole. The two are never both
+      # in play on one run, but a directory that publishes production is not
+      # somewhere to rely on that.
+      - name: Assemble the preview
+        if: env.PREVIEWS == 'true'
+        run: |
+          set -euo pipefail
+          mkdir _preview
+          cp -al _site/. _preview/
+
+          if [ "$ENGLISH_PREVIEW" = 'true' ]; then
+            # The locale directories, named from locales/ rather than from a
+            # list here, so adding a language does not silently stop working.
+            for dir in locales/*/; do
+              rm -rf "_preview/$(basename "$dir")"
+            done
+            echo "::notice::Preview narrowed to English: $(find _preview -type f | wc -l) files, from $(find _site -type f | wc -l). The other languages are built and tested, just not uploaded here."
+          fi
+
       - name: Hand the build to the preview
         if: env.PREVIEWS == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: site-preview
-          path: _site/
+          path: _preview/
           include-hidden-files: true
           retention-days: 1
 
@@ -652,6 +686,20 @@ jobs:
 
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
   # AGAINST THE PULL REQUESTS
+  #
+  # WHAT IS IN A PREVIEW IS NOT ALWAYS THE WHOLE SITE. A full build is over
+  # Cloudflare Pages' 20,000-file limit per deployment, so the previews of
+  # `dev` and of the pull requests into it carry the English pages only - see
+  # ENGLISH_PREVIEW in the build job for how that is decided and why it is an
+  # allowlist. The pages themselves are byte for byte the ones that would go to
+  # dist; what is missing is the other fourteen languages' copies of them, so
+  # the language switcher and the hreflang links point at addresses that are
+  # not on the preview host. That is the cost, it is only on the preview, and
+  # production is untouched.
+  #
+  # The release preview - the pull request from `dev` to `main` - is NOT cut
+  # down, because the whole bundle is what it exists to show. It is therefore
+  # the one preview that still exceeds the limit and still fails to upload.
   #
   # Until this job existed the browser suite only ever saw a change after it
   # was live: merge, build, push to dist, Pages, and then QA (post-deploy)
