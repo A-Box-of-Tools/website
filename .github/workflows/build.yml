@@ -282,19 +282,34 @@ jobs:
       GENERATOR: ${{ needs.test.outputs.generator }}
       DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
       PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
-      # Which previews are cut down to English. A full build is over
-      # Cloudflare Pages' 20,000-file limit per deployment, and 71% of those
-      # files are byte-identical copies of each other across the fifteen
-      # languages - so a preview of the whole bundle is refused outright.
+      # WHICH LANGUAGES A PREVIEW CARRIES BESIDES ENGLISH. A full build is
+      # 19,672 files and Cloudflare Pages refuses a deployment over 20,000 -
+      # 73% of those files are byte-identical copies of each other across the
+      # fifteen languages, so a preview of the whole bundle is refused
+      # outright. English is the site root and is always there; these are the
+      # locale directories kept beside it.
       #
-      # An ALLOWLIST rather than "anything that is not main", because on a push
-      # to main `github.base_ref` is empty and a negative test would strip the
-      # languages out of production. Read it as: the day-to-day previews of dev
-      # and of the pull requests into it. The release preview - the pull
-      # request from dev to main - is deliberately NOT in this list: it is the
-      # last gate before production and the whole bundle is what it exists to
-      # show.
-      ENGLISH_PREVIEW: ${{ (github.event_name == 'pull_request' && github.base_ref == 'dev') || (github.event_name == 'push' && github.ref == 'refs/heads/dev') }}
+      # PRODUCTION IS NOT SUBJECT TO ANY OF THIS and never was. It deploys
+      # through the `dist` branch to GitHub Pages, which limits a published
+      # site by size and not by file count - 300 MB of a permitted 1 GB. The
+      # 20,000 belongs to Cloudflare Pages, which serves previews and nothing
+      # else; Cloudflare's part in production is DNS, TLS and response headers.
+      # Confirm it rather than believe it:
+      #
+      #   gh api repos/A-Box-of-Tools/website/pages
+      #     -> "build_type": "legacy", "source": {"branch": "dist"}
+      #
+      # WHY THESE TWO. Chinese is the only translation with readers - 395
+      # arrivals in the 28 days to 6 September, against 35 for the next best -
+      # and Arabic is the one that is right to left, which is where the faults
+      # that only a rendered page shows have actually turned up. Every preview
+      # gets the same three, the release one included: a bundle nobody can look
+      # at because it was refused upload is worth less than a narrow one that
+      # uploads.
+      #
+      # The other twelve are still built, still checked from source and still
+      # deployed. What they do not get is a copy on the preview host.
+      PREVIEW_LOCALES: zh ar
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -450,14 +465,31 @@ jobs:
           mkdir _preview
           cp -al _site/. _preview/
 
-          if [ "$ENGLISH_PREVIEW" = 'true' ]; then
-            # The locale directories, named from locales/ rather than from a
-            # list here, so adding a language does not silently stop working.
-            for dir in locales/*/; do
-              rm -rf "_preview/$(basename "$dir")"
-            done
-            echo "::notice::Preview narrowed to English: $(find _preview -type f | wc -l) files, from $(find _site -type f | wc -l). The other languages are built and tested, just not uploaded here."
-          fi
+          # A name in PREVIEW_LOCALES that is not a language is a typo, and a
+          # typo here is invisible in the worst way: the preview simply comes
+          # out missing a language, and nothing says so until somebody reads a
+          # QA run and misreads it as a fault in their own change. So it stops
+          # the build instead.
+          for keep in $PREVIEW_LOCALES; do
+            if [ ! -d "locales/$keep" ]; then
+              echo "::error::PREVIEW_LOCALES names \`$keep\`, which is not a directory under locales/."
+              exit 1
+            fi
+          done
+
+          # The languages are named from locales/ rather than from a list
+          # here, so adding one does not silently stop working: a new language
+          # is dropped from the preview until it is named above, which is the
+          # safe direction to be wrong in.
+          for dir in locales/*/; do
+            lang=$(basename "$dir")
+            case " $PREVIEW_LOCALES " in
+              *" $lang "*) continue ;;
+            esac
+            rm -rf "_preview/$lang"
+          done
+
+          echo "::notice::Preview carries English${PREVIEW_LOCALES:+ and $PREVIEW_LOCALES}: $(find _preview -type f | wc -l) files, from $(find _site -type f | wc -l). The other languages are built and checked, just not uploaded here."
 
       - name: Hand the build to the preview
         if: env.PREVIEWS == 'true'
@@ -687,19 +719,32 @@ jobs:
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
   # AGAINST THE PULL REQUESTS
   #
-  # WHAT IS IN A PREVIEW IS NOT ALWAYS THE WHOLE SITE. A full build is over
-  # Cloudflare Pages' 20,000-file limit per deployment, so the previews of
-  # `dev` and of the pull requests into it carry the English pages only - see
-  # ENGLISH_PREVIEW in the build job for how that is decided and why it is an
-  # allowlist. The pages themselves are byte for byte the ones that would go to
-  # dist; what is missing is the other fourteen languages' copies of them, so
-  # the language switcher and the hreflang links point at addresses that are
-  # not on the preview host. That is the cost, it is only on the preview, and
-  # production is untouched.
+  # A PREVIEW IS NEVER THE WHOLE SITE. A full build is over Cloudflare Pages'
+  # 20,000-file limit per deployment, so every preview - the release one
+  # included - carries English, Chinese and Arabic and leaves the other twelve
+  # languages behind. See PREVIEW_LOCALES in the build job for which and why,
+  # and for why production is not subject to the same limit. The pages that are
+  # there are byte for byte the ones that would go to dist; what is missing is
+  # the other twelve languages' copies of them, so the language switcher and
+  # the hreflang links point at some addresses that are not on the preview
+  # host.
   #
-  # The release preview - the pull request from `dev` to `main` - is NOT cut
-  # down, because the whole bundle is what it exists to show. It is therefore
-  # the one preview that still exceeds the limit and still fails to upload.
+  # THAT COSTS A CHECK, AND IT IS WORTH KNOWING BEFORE YOU READ ONE. The QA
+  # suite takes its list of languages from the website checkout rather than
+  # from the host it is pointed at - `locales()` in lib/locales.ts over in
+  # A-Box-of-Tools/qa is a readdir of `locales/`. So it asks a preview for
+  # twelve languages that are not on it and calls every one a fault: a preview
+  # run comes back with something like 120 extra failures, all of them either
+  # a locale page that 404ed or the switcher "throwing away" a page's state
+  # because the language it switched to is not there. None of them are faults
+  # in the change under review. For scale, a full preview ran 4053 passed and
+  # 1 failed on #401; the first narrowed one ran 3905 passed and 124 failed.
+  #
+  # So `qa/preview` is red for a reason that has nothing to do with the pull
+  # request carrying it, and it stays that way until the suite is taught which
+  # languages its host actually has - which is a change in that repository,
+  # not this one. The post-deploy run, against production, is the one that
+  # tests all fifteen and can be believed unreservedly.
   #
   # Until this job existed the browser suite only ever saw a change after it
   # was live: merge, build, push to dist, Pages, and then QA (post-deploy)
