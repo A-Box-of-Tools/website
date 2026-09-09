@@ -42,6 +42,8 @@ const el = {
   resultCard: $('result-card'),
   download: $('download'),
   resultFacts: $('result-facts'),
+  privacyToggle: $('privacy-toggle'),
+  privacyPanel: $('privacy-panel'),
 };
 
 const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
@@ -347,6 +349,14 @@ const size = (n) => sizeText(n, phrase, { under: 'size.bytes' });
 function baseName(name) {
   return name.replace(/\.[^.]+$/, '') || 'statement';
 }
+
+// The frame draws the privacy panel but leaves the opening of it to the tool,
+// as it does on the other forty-one.
+el.privacyToggle.addEventListener('click', () => {
+  const open = el.privacyPanel.hidden;
+  el.privacyPanel.hidden = !open;
+  el.privacyToggle.setAttribute('aria-expanded', String(open));
+});
 
 /* -------------------------------------------------------------------- boot */
 
