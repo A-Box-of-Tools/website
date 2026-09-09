@@ -128,7 +128,7 @@ BASELINE = {
     'redact-image': 2,
     # Three Base-14 glyph tables from the PDF specification, four lines of
     # PDF syntax, three internal range keys and one key template.
-    'redact-pdf': 9,
+    'redact-pdf': 6,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,

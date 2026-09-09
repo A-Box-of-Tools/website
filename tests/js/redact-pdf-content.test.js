@@ -1,5 +1,5 @@
 /**
- * tools/redact-pdf/src/content.js - the content-stream grammar.
+ * shared/js/pdf-content.js - the content-stream grammar.
  *
  * A page's drawing instructions are the one part of a PDF neither the merger
  * nor the compressor ever had to open, and the whole of this tool depends on
@@ -22,7 +22,7 @@ import assert from 'node:assert/strict';
 
 import {
   applySplices, encode, formatNumber, formatString, formatValue, lex,
-} from '../../tools/redact-pdf/src/content.js';
+} from '../../shared/js/pdf-content.js';
 import { Name, PdfString } from '../../shared/js/pdf-objects.js';
 import { ascii, concat } from './pdf-fixtures.js';
 

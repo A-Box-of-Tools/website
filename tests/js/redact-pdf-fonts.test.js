@@ -18,8 +18,8 @@ import assert from 'node:assert/strict';
 import {
   base14Name, base14Widths, encodingByName, glyphText,
   MAC_ROMAN, STANDARD, WIN_ANSI,
-} from '../../tools/redact-pdf/src/base14.js';
-import { glyphsOf, readFont } from '../../tools/redact-pdf/src/fonts.js';
+} from '../../shared/js/pdf-base14.js';
+import { glyphsOf, readFont } from '../../shared/js/pdf-fonts.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';
 

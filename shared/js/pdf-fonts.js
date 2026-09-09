@@ -30,12 +30,16 @@
  * offered as something this tool can find. A redaction tool that quietly
  * mapped an unknown glyph to a plausible letter would be inviting somebody to
  * search for a name, see no matches, and conclude the document is clean.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-fonts.js and
+ * the build copies it to <tool>/src/shared/pdf-fonts.js. It imports
+ * pdf-base14 and pdf-content, so a tool listing this must list those.
  */
 
-import { base14Widths, encodingByName, glyphText, STANDARD, WIN_ANSI } from './base14.js';
-import { lex } from './content.js';
-import { decodeStream } from './shared/pdf-filters.js';
-import { Name, PdfStream, PdfString } from './shared/pdf-objects.js';
+import { base14Widths, encodingByName, glyphText, STANDARD, WIN_ANSI } from './pdf-base14.js';
+import { lex } from './pdf-content.js';
+import { decodeStream } from './pdf-filters.js';
+import { Name, PdfStream, PdfString } from './pdf-objects.js';
 
 /** Text-space units are thousandths of the font size, throughout. */
 const UNITS = 1000;
@@ -43,7 +47,7 @@ const UNITS = 1000;
 /**
  * Read one font dictionary.
  *
- * @param {import('./shared/pdf-reader.js').PdfDocument} doc
+ * @param {import('./pdf-reader.js').PdfDocument} doc
  * @param {Map} dict the font
  * @returns {Promise<Font>}
  */

@@ -23,7 +23,7 @@ import { PdfStream } from '../../shared/js/pdf-objects.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { redact, remover } from '../../tools/redact-pdf/src/redact.js';
 import { decodeText, encodeText } from '../../tools/redact-pdf/src/strings.js';
-import { pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';
+import { pagesOf, readPage } from '../../shared/js/pdf-text.js';
 import { countOf, harvestAll, verify } from '../../tools/redact-pdf/src/verify.js';
 import { ascii, buildPdf, streamObject, text as latin1 } from './pdf-fixtures.js';
 

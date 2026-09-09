@@ -105,6 +105,11 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote |
 | `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
 | `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out |
+| `shared/js/pdf-content.js` | `js_parts = ["pdf-content"]` | a page's drawing instructions, read as operators and written back |
+| `shared/js/pdf-base14.js` | `js_parts = ["pdf-base14"]` | the widths and encodings of the fourteen fonts every reader is assumed to have |
+| `shared/js/pdf-strings.js` | `js_parts = ["pdf-strings"]` | a text string as characters, and back again |
+| `shared/js/pdf-fonts.js` | `js_parts = ["pdf-fonts"]` | a page's fonts: which bytes are which characters, and how wide each one is; imports `pdf-base14` and `pdf-content` |
+| `shared/js/pdf-text.js` | `js_parts = ["pdf-text"]` | where every word on a page is — the text in reading order, and for each character the glyph that drew it and where on the paper it landed; imports `pdf-content`, `pdf-fonts` and `pdf-strings` |
 | `shared/js/mp4-reader.js` | `js_parts = ["mp4-reader"]` | the MP4/MOV reader: every sample, where it is and when it shows |
 | `shared/js/mp4-boxes.js` | `js_parts = ["mp4-boxes"]` | the bytes an MP4 is built out of: big-endian integers, four-character types, a box round a payload; both writers import it |
 | `shared/js/mp4-writer.js` | `js_parts = ["mp4-writer"]` | the MP4 writer for tracks being copied: two tracks, interleaved, sample entries as bytes; imports `mp4-boxes` |
@@ -134,9 +139,19 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 
 `zip` needs `crc32` listed as well — it is a separate part because a PNG writer
-wants the checksum without the archive. The four `pdf-*` parts travel
-together: the reader and the writer both import the grammar and the filters,
-and `buildlib/imports.py` refuses a tool that lists some and not the rest.
+wants the checksum without the archive. The four `pdf-*` parts every PDF tool
+starts from travel together: the reader and the writer both import the grammar
+and the filters, and `buildlib/imports.py` refuses a tool that lists some and
+not the rest.
+
+The five reading parts stack on top of those and are worth taking as a set too.
+A tool wants `pdf-text` — where the words are — and gets `pdf-content`,
+`pdf-fonts`, `pdf-base14` and `pdf-strings` because that is what answering the
+question takes: a page's text is a stream of operators, drawn in fonts whose
+encodings have to be resolved before a byte means a character. Two tools ask
+for the whole stack today, for jobs that could hardly be less alike — one
+deletes the words it finds, the other lines them up into columns — which is the
+argument for the parts being shared rather than either tool's.
 
 `phrases` and `trust` are the two parts no tool asks for. Every tool page wears
 the frame, the frame has sentences its JavaScript puts on screen, and the
