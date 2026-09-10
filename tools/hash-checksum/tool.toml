@@ -38,7 +38,13 @@ roadmap_group = "beyond"
 css_parts = ["progress", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box", "example-photo"]
+#
+# md5 and hash-blocks were this tool's own until /unlock-pdf/ needed an MD5 -
+# every version of PDF encryption before 2017 derives its key through one - and
+# a second copy of a compression function is exactly the kind of copy that gets
+# fixed once. hash-blocks travels with it because md5.js imports it; the three
+# SHA implementations beside it stay here and reach it through ./shared/.
+js_parts = ["file-picker", "message-box", "example-photo", "md5", "hash-blocks"]
 lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------

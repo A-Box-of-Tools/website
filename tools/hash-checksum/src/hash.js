@@ -27,7 +27,7 @@
  * pages on the internet still print one.
  */
 
-import { md5 } from './md5.js';
+import { md5 } from './shared/md5.js';
 import { sha1 } from './sha1.js';
 import { sha256 } from './sha256.js';
 import { sha384, sha512 } from './sha512.js';

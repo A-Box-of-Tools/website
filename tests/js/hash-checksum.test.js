@@ -23,8 +23,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomBytes } from 'node:crypto';
 
-import { bitLength } from '../../tools/hash-checksum/src/blocks.js';
-import { md5 } from '../../tools/hash-checksum/src/md5.js';
+import { bitLength } from '../../shared/js/hash-blocks.js';
+import { md5 } from '../../shared/js/md5.js';
 import { sha1 } from '../../tools/hash-checksum/src/sha1.js';
 import { sha256 } from '../../tools/hash-checksum/src/sha256.js';
 import { sha384, sha512 } from '../../tools/hash-checksum/src/sha512.js';

@@ -35,6 +35,7 @@ const el = {
   dropzone: $('dropzone'),
   fileInput: $('file-input'),
   loadError: $('load-error'),
+  unlockHint: $('unlock-hint'),
   loadNote: $('load-note'),
   docFacts: $('doc-facts'),
   docName: $('doc-name'),
@@ -127,6 +128,7 @@ async function open(file) {
 
   picker.busy(readingLabel(1));
   el.loadError.hidden = true;
+  sayWhereToUnlock(false);
   el.loadNote.hidden = true;
   reset();
 
@@ -160,6 +162,7 @@ async function open(file) {
     pages = [];
     source = null;
     fail(messageFor(error));
+    sayWhereToUnlock(error instanceof EncryptedPdfError);
   }
 
   picker.done();
@@ -168,6 +171,20 @@ async function open(file) {
 
 function looksLikePdf(file) {
   return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+}
+
+/**
+ * Say where a password can be taken off, when a password is what stopped the
+ * file being read.
+ *
+ * Null-tolerant on purpose. The line is in this tool's body.html and in the
+ * translations that have caught up with it; a locale that has not simply goes
+ * on showing the refusal by itself, which is what every locale did before. A
+ * missing line is a page with one sentence fewer, not a page with an exception
+ * thrown on it.
+ */
+function sayWhereToUnlock(locked) {
+  if (el.unlockHint) el.unlockHint.hidden = !locked;
 }
 
 function messageFor(error) {

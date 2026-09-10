@@ -6,6 +6,11 @@
 
 .error { max-width: 72ch; }
 
+/* The line that says where a password comes off, under the refusal that
+   prompted it. `.field-note` sits flush by default, which reads as part of the
+   red box rather than as the answer to it. */
+#unlock-hint { margin-top: 0.55rem; }
+
 /* ------------------------------------------------------------- the file row */
 
 .file-row {

@@ -1,6 +1,14 @@
 /**
  * The bookkeeping all four of these algorithms do identically.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/hash-blocks.js and
+ * the build copies it to <tool>/src/shared/hash-blocks.js. It travels with
+ * md5.js, which is the only one of the four that has left the checksum tool -
+ * the PDF unlocker needs an MD5 because that is what a document's encryption
+ * key is derived through, and the SHA family it needs comes from
+ * crypto.subtle. So the three SHA implementations stay in
+ * tools/hash-checksum/src/ and import this from ./shared/.
+ *
  * MD5, SHA-1, SHA-256 and SHA-512 differ entirely in what they do to a block
  * and hardly at all in how they get one. Every one of them fills a fixed block,
  * compresses it, counts the bytes that went by, and finishes by appending a

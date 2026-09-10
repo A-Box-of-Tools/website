@@ -25,7 +25,7 @@
  * carry out of that sum is the whole part of it divided by 2^32.
  */
 
-import { bitLength, blocks } from './blocks.js';
+import { bitLength, blocks } from './shared/hash-blocks.js';
 
 /** First 64 bits of the fractional parts of the cube roots of the first 80 primes. */
 const K_HI = new Int32Array([

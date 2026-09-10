@@ -6,6 +6,17 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      密码可以在哪里取下来，只在文件正是因为密码而读不了的时候才显示。
+
+      给的是一个链接而不是一句劝告，因为答案现在就是本站的一页：它在这个浏览器里把密码取下来，什么都不上传，页面上也什么都不改写，所以指过去不会让这一页失掉它承诺的任何东西。
+
+      main.js 容得下这个元素不存在，因为还没跟上的译文里没有它。没有它的语言就照旧只显示那句拒绝。
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      密码可以用本站的 <a href="../unlock-pdf/">PDF 解锁工具</a>在这个浏览器里取下来，什么都不会上传，取完把没有密码的那一份拿回这里来。
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <ul id="source-list" class="source-list" hidden></ul>
