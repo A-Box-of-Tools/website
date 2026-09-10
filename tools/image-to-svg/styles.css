@@ -14,6 +14,22 @@
 .option-row > label:first-child { min-width: 12ch; color: var(--text-dim); }
 .option-row.wrap { gap: 0.5rem 1rem; }
 .option-row input[type="range"] { flex: 1 1 9rem; max-width: 18rem; }
+
+/* The three selects on this page carry whole sentences - "Light and dark - a
+   drawing, a logo, a scan" is one option - and a flex item's min-width is
+   `auto`, which means its smallest size is its longest line. So the row wraps
+   as designed and the select still sticks out of it: 339px of control in a
+   296px row, and the document 27px wider than a 393px phone. Letting it
+   shrink is the whole fix; the text ellipsises, which is what a narrow screen
+   is for.
+
+   The same two properties are in shared/css/form.css, which this tool does
+   not ask for - it needs two lines of that file and not the thirty rules
+   around them, and `.option-row` is deliberately each tool's own there. */
+.option-row select {
+  max-width: 100%;
+  min-width: 0;
+}
 .option-row output {
   min-width: 8ch;
   font-variant-numeric: tabular-nums;

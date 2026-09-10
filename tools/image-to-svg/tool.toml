@@ -43,7 +43,7 @@ css_parts = ["checks"]
 # Shared modules this tool asks for. file-picker brings in the drop zone;
 # phrases arrives on its own, for every tool.
 js_parts = ["file-picker", "download", "example-mark", "example-photo"]
-lastmod = "2026-09-07"
+lastmod = "2026-09-09"
 
 # --- what search engines and chat apps are told ------------------------------
 
