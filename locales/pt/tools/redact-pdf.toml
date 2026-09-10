@@ -32,7 +32,7 @@ live_hint = """
       assim."""
 
 read_first = """
-, <code>src/text.js</code> para como cada palavra
+, <code>src/shared/pdf-text.js</code> para como cada palavra
       de uma página é encontrada e localizada, e <code>src/edit.js</code> para o
       apagamento em si &mdash; o que é recortado das instruções da página e o que é
       reposto para que o resto da linha não se desloque. Nenhum deles consegue

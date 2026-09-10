@@ -34,7 +34,7 @@ live_hint = """
 
 read_first = """
 , bir sayfadaki her kelimenin nasıl bulunup
-      konumlandırıldığı için <code>src/text.js</code> ve silme işleminin kendisi
+      konumlandırıldığı için <code>src/shared/pdf-text.js</code> ve silme işleminin kendisi
       için <code>src/edit.js</code> &mdash; sayfanın talimatlarından neyin
       kesildiği ve satırın geri kalanı kaymasın diye neyin geri konduğu.
       Hiçbiri ağa erişemez; yanlarındaki okuyucu ve yazıcı da erişemez."""

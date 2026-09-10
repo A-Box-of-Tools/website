@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 , 한 장의 낱말을 하나하나 찾고 위치를 잡는 일은
-      <code>src/text.js</code>, 지우는 일 자체는 <code>src/edit.js</code>입니다.
+      <code>src/shared/pdf-text.js</code>, 지우는 일 자체는 <code>src/edit.js</code>입니다.
       그 장의 명령에서 무엇을 잘라 내고, 줄의 나머지가 밀리지 않도록 무엇을
       되돌려 넣는지가 거기 있습니다. 그 어느 것도 네트워크에 닿을 수 없고, 옆의
       읽기와 쓰기 쪽도 마찬가지입니다."""

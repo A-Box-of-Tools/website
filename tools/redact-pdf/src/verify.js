@@ -26,7 +26,7 @@
 
 import { PdfDocument } from './shared/pdf-reader.js';
 import { harvestStrings } from './strings.js';
-import { pagesOf, readPage } from './text.js';
+import { pagesOf, readPage } from './shared/pdf-text.js';
 
 /**
  * Everything a reader could get out of a document as text.
@@ -36,7 +36,7 @@ import { pagesOf, readPage } from './text.js';
  * that survives in either is a word that survives.
  *
  * @param {import('./shared/pdf-reader.js').PdfDocument} doc
- * @param {import('./text.js').Page[]} [pages] already read, to save reading again
+ * @param {import('./shared/pdf-text.js').Page[]} [pages] already read, to save reading again
  * @returns {Promise<string>}
  */
 export async function harvestAll(doc, pages = null) {

@@ -22,7 +22,7 @@
  */
 
 import { PdfWriter, num, textString, PT_PER_MM } from './pdf-page-writer.js';
-import { HEADINGS, rowsFor } from './example-statement.js';
+import { HEADINGS, LEDGER_HEADINGS, ledgerRows, rowsFor } from './example-statement.js';
 
 const A4 = { width: Math.round(210 * PT_PER_MM), height: Math.round(297 * PT_PER_MM) };
 
@@ -30,6 +30,10 @@ const A4 = { width: Math.round(210 * PT_PER_MM), height: Math.round(297 * PT_PER
 const literal = (s) => s.replace(/([\\()])/g, '\\$1');
 
 const COLUMNS = [56, 150, 260, 420];
+
+// Five columns need more of the sheet, and the two money columns sit where a
+// statement puts them: out to the right, away from the words.
+const LEDGER_COLUMNS = [56, 132, 250, 372, 470];
 
 /**
  * One page's content stream: a rule, a row of column headings, and the rows.
@@ -39,7 +43,7 @@ const COLUMNS = [56, 150, 260, 420];
  * those two tools answer, and it cannot be answered against six pages that
  * look identical.
  */
-function pageStream(page, pages, rows) {
+function pageStream(page, pages, rows, headings = HEADINGS, columns = COLUMNS) {
   const top = A4.height - 90;
   const out = [];
 
@@ -48,15 +52,15 @@ function pageStream(page, pages, rows) {
   out.push(`56 ${top + 14} m ${A4.width - 56} ${top + 14} l S`);
 
   out.push('0.35 0.35 0.35 rg');
-  HEADINGS.forEach((heading, c) => {
-    out.push(`BT /F1 9 Tf ${COLUMNS[c]} ${top - 10} Td (${literal(heading)}) Tj ET`);
+  headings.forEach((heading, c) => {
+    out.push(`BT /F1 9 Tf ${columns[c]} ${top - 10} Td (${literal(heading)}) Tj ET`);
   });
 
   out.push('0 0 0 rg');
   rows.forEach((row, i) => {
     const y = top - 34 - i * 22;
     row.forEach((cell, c) => {
-      out.push(`BT /F1 11 Tf ${COLUMNS[c]} ${y} Td (${literal(cell)}) Tj ET`);
+      out.push(`BT /F1 11 Tf ${columns[c]} ${y} Td (${literal(cell)}) Tj ET`);
     });
   });
 
@@ -77,9 +81,15 @@ function pageStream(page, pages, rows) {
  *   under the table. The compressor's example needs them - a document of text
  *   alone has almost nothing in it to squeeze - and the other two do not.
  * @param {{width: number, height: number}} [options.jpegSize]
+ * @param {boolean} [options.ledger]  draw the statement with signed amounts
+ *   and a running balance instead of a list of receipts. The converter's
+ *   example needs it: that tool checks its reading of a statement against
+ *   the balance printed on it, and a document without one would show the
+ *   tool working with its main claim switched off.
  * @returns {File}
  */
-export function examplePdfFile(name, { pages = 3, jpegs = null, jpegSize = null } = {}) {
+export function examplePdfFile(name,
+  { pages = 3, jpegs = null, jpegSize = null, ledger = false } = {}) {
   const writer = new PdfWriter();
 
   const catalog = writer.reserve();
@@ -98,8 +108,14 @@ export function examplePdfFile(name, { pages = 3, jpegs = null, jpegSize = null 
   writer.object(font,
     '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
 
+  const rows = ledger ? ledgerRows() : null;
+  const perPage = rows ? Math.ceil(rows.length / pages) : 0;
+
   for (let i = 0; i < pages; i += 1) {
-    let stream = pageStream(i + 1, pages, rowsFor(i + 1));
+    let stream = rows
+      ? pageStream(i + 1, pages, rows.slice(i * perPage, (i + 1) * perPage),
+        LEDGER_HEADINGS, LEDGER_COLUMNS)
+      : pageStream(i + 1, pages, rowsFor(i + 1));
 
     if (jpegs) {
       const w = A4.width - 112;

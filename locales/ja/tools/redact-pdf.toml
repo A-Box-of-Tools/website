@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 、ページ上の各語をどう見つけて位置を決めるのかは\
-      <code>src/text.js</code>、消す処理そのものは<code>src/edit.js</code>です。ページの\
+      <code>src/shared/pdf-text.js</code>、消す処理そのものは<code>src/edit.js</code>です。ページの\
       命令から何を切り取り、行の残りがずれないように何を戻すのかがそこにあります。\
       どれもネットワークに届きませんし、隣の読み手と書き手も同じです。"""
 

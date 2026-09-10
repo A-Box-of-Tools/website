@@ -282,6 +282,34 @@ jobs:
       GENERATOR: ${{ needs.test.outputs.generator }}
       DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
       PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
+      # WHICH LANGUAGES A PREVIEW CARRIES BESIDES ENGLISH. A full build is
+      # 19,672 files and Cloudflare Pages refuses a deployment over 20,000 -
+      # 73% of those files are byte-identical copies of each other across the
+      # fifteen languages, so a preview of the whole bundle is refused
+      # outright. English is the site root and is always there; these are the
+      # locale directories kept beside it.
+      #
+      # PRODUCTION IS NOT SUBJECT TO ANY OF THIS and never was. It deploys
+      # through the `dist` branch to GitHub Pages, which limits a published
+      # site by size and not by file count - 300 MB of a permitted 1 GB. The
+      # 20,000 belongs to Cloudflare Pages, which serves previews and nothing
+      # else; Cloudflare's part in production is DNS, TLS and response headers.
+      # Confirm it rather than believe it:
+      #
+      #   gh api repos/A-Box-of-Tools/website/pages
+      #     -> "build_type": "legacy", "source": {"branch": "dist"}
+      #
+      # WHY THESE TWO. Chinese is the only translation with readers - 395
+      # arrivals in the 28 days to 6 September, against 35 for the next best -
+      # and Arabic is the one that is right to left, which is where the faults
+      # that only a rendered page shows have actually turned up. Every preview
+      # gets the same three, the release one included: a bundle nobody can look
+      # at because it was refused upload is worth less than a narrow one that
+      # uploads.
+      #
+      # The other twelve are still built, still checked from source and still
+      # deployed. What they do not get is a copy on the preview host.
+      PREVIEW_LOCALES: zh ar
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -425,12 +453,50 @@ jobs:
       # or a push to `dev` - reaches the job below through an artifact. A day
       # is plenty: the preview is uploaded within minutes, and the next push
       # builds again.
+      # Hard links rather than a copy, so this costs no bytes and - the part
+      # that matters - the `rm -rf` below removes links out of _preview and
+      # leaves _site, which is what goes to dist, whole. The two are never both
+      # in play on one run, but a directory that publishes production is not
+      # somewhere to rely on that.
+      - name: Assemble the preview
+        if: env.PREVIEWS == 'true'
+        run: |
+          set -euo pipefail
+          mkdir _preview
+          cp -al _site/. _preview/
+
+          # A name in PREVIEW_LOCALES that is not a language is a typo, and a
+          # typo here is invisible in the worst way: the preview simply comes
+          # out missing a language, and nothing says so until somebody reads a
+          # QA run and misreads it as a fault in their own change. So it stops
+          # the build instead.
+          for keep in $PREVIEW_LOCALES; do
+            if [ ! -d "locales/$keep" ]; then
+              echo "::error::PREVIEW_LOCALES names \`$keep\`, which is not a directory under locales/."
+              exit 1
+            fi
+          done
+
+          # The languages are named from locales/ rather than from a list
+          # here, so adding one does not silently stop working: a new language
+          # is dropped from the preview until it is named above, which is the
+          # safe direction to be wrong in.
+          for dir in locales/*/; do
+            lang=$(basename "$dir")
+            case " $PREVIEW_LOCALES " in
+              *" $lang "*) continue ;;
+            esac
+            rm -rf "_preview/$lang"
+          done
+
+          echo "::notice::Preview carries English${PREVIEW_LOCALES:+ and $PREVIEW_LOCALES}: $(find _preview -type f | wc -l) files, from $(find _site -type f | wc -l). The other languages are built and checked, just not uploaded here."
+
       - name: Hand the build to the preview
         if: env.PREVIEWS == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: site-preview
-          path: _site/
+          path: _preview/
           include-hidden-files: true
           retention-days: 1
 
@@ -445,16 +511,21 @@ jobs:
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-          # Check out the dist branch beside the working tree, creating it as an
-          # orphan the first time. A worktree rather than a second clone, so the
-          # push reuses the credentials actions/checkout already configured.
+          # The deployed tree, beside the working tree. A worktree rather than
+          # a second clone, so the push reuses the credentials actions/checkout
+          # already configured; --depth=1 because one commit is all there is to
+          # fetch - see the root commit at the bottom of this step.
+          #
+          # `deployed` is the tree id of what is live, and it is wanted for the
+          # comparison below rather than for the commit. Empty on the first
+          # deploy, when there is no branch yet and everything is new.
+          deployed=
           if git ls-remote --exit-code --heads origin dist >/dev/null 2>&1; then
-            git fetch origin dist
-            git worktree add .publish FETCH_HEAD
-            git -C .publish switch -C dist
+            git fetch --depth=1 origin dist
+            git worktree add --detach .publish FETCH_HEAD
+            deployed=$(git rev-parse 'FETCH_HEAD^{tree}')
           else
             git worktree add --detach .publish
-            git -C .publish checkout --orphan dist
           fi
 
           # A fingerprint of every deployed page's <main>, taken before
@@ -474,14 +545,48 @@ jobs:
           cp -a _site/. .publish/
 
           git -C .publish add -A
-          if git -C .publish diff --cached --quiet; then
+
+          # Two trees compared, rather than the index against HEAD. The commit
+          # below has no parent for an index to be diffed against, and a tree
+          # id is the same question asked of the thing itself: equal ids are
+          # equal sites, whatever history stands either side of them.
+          built=$(git -C .publish write-tree)
+          if [ "$built" = "$deployed" ]; then
             echo 'The build is identical to what is already deployed; nothing to push.'
             exit 0
           fi
 
+          # A ROOT COMMIT EVERY TIME, force-pushed over the last one, so `dist`
+          # holds one build and never a history of them.
+          #
+          # It used to accumulate. Every deploy committed on top of the last,
+          # and a frame-wide change - a footer, a hub listing - rewrites all
+          # 19,672 files, so those deploys added 1,600 to 3,000 new blobs each,
+          # 59 to 102 MB of content apiece before compression. The repository
+          # was 449 MB of a GitHub Pages source limit that is recommended at
+          # 1 GB, and nothing was reading a byte of what it was spending that
+          # on.
+          #
+          # NOTHING READS THE HISTORY, which is what makes this safe rather
+          # than merely cheap. `--check` asks for `dist^{tree}` and compares
+          # blob ids against a fresh build (buildlib/deployed.py); the IndexNow
+          # baseline a few lines up reads the checked-out worktree, not a
+          # commit range. The record of how the site got here is `main`'s
+          # history, which is the sources and is kept forever - and each build
+          # commit still names the `main` commit it was built from, so the tip
+          # points back into that record.
+          #
+          # WHAT IT COSTS a reader: `dist` is force-pushed, so a fetched copy
+          # will not fast-forward. `git fetch origin dist` still updates
+          # `origin/dist` - the default refspec is forced - but a local `dist`
+          # branch has to be reset onto it rather than pulled. The published
+          # size will not drop the day this lands either; unreachable objects
+          # are GitHub's to reclaim, on their schedule. What changes today is
+          # that the branch stops growing.
           subject=$(git log -1 --pretty=%s "$SHA")
-          git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
-          git -C .publish push origin dist
+          commit=$(git -C .publish commit-tree "$built" \
+            -m "Build ${SHA:0:7}: ${subject}")
+          git -C .publish push --force origin "$commit:refs/heads/dist"
 
       # The version, as a tag on the commit that shipped it.
       #
@@ -652,6 +757,33 @@ jobs:
 
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
   # AGAINST THE PULL REQUESTS
+  #
+  # A PREVIEW IS NEVER THE WHOLE SITE. A full build is over Cloudflare Pages'
+  # 20,000-file limit per deployment, so every preview - the release one
+  # included - carries English, Chinese and Arabic and leaves the other twelve
+  # languages behind. See PREVIEW_LOCALES in the build job for which and why,
+  # and for why production is not subject to the same limit. The pages that are
+  # there are byte for byte the ones that would go to dist; what is missing is
+  # the other twelve languages' copies of them, so the language switcher and
+  # the hreflang links point at some addresses that are not on the preview
+  # host.
+  #
+  # THAT COSTS A CHECK, AND IT IS WORTH KNOWING BEFORE YOU READ ONE. The QA
+  # suite takes its list of languages from the website checkout rather than
+  # from the host it is pointed at - `locales()` in lib/locales.ts over in
+  # A-Box-of-Tools/qa is a readdir of `locales/`. So it asks a preview for
+  # twelve languages that are not on it and calls every one a fault: a preview
+  # run comes back with something like 120 extra failures, all of them either
+  # a locale page that 404ed or the switcher "throwing away" a page's state
+  # because the language it switched to is not there. None of them are faults
+  # in the change under review. For scale, a full preview ran 4053 passed and
+  # 1 failed on #401; the first narrowed one ran 3905 passed and 124 failed.
+  #
+  # So `qa/preview` is red for a reason that has nothing to do with the pull
+  # request carrying it, and it stays that way until the suite is taught which
+  # languages its host actually has - which is a change in that repository,
+  # not this one. The post-deploy run, against production, is the one that
+  # tests all fifteen and can be believed unreservedly.
   #
   # Until this job existed the browser suite only ever saw a change after it
   # was live: merge, build, push to dist, Pages, and then QA (post-deploy)

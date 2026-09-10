@@ -1,5 +1,5 @@
 /**
- * tools/redact-pdf/src/text.js - where every word on a page is.
+ * shared/js/pdf-text.js - where every word on a page is.
  *
  * Two things have to come out of a page and they have to agree exactly: the
  * text as a reader would copy it, and, for each character of it, the glyph
@@ -19,7 +19,7 @@ import assert from 'node:assert/strict';
 
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { glyphsIn } from '../../tools/redact-pdf/src/matches.js';
-import { cornersOf, pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';
+import { cornersOf, pagesOf, readPage } from '../../shared/js/pdf-text.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';
 
 const HELVETICA = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';

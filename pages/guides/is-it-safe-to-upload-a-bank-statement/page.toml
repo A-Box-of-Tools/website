@@ -1,0 +1,45 @@
+#
+# Guide: is it safe to upload a bank statement?
+#
+# The guide for /bank-statement-to-csv/, and the one on this site where the
+# honest answer is furthest from "it depends". A statement is the densest
+# personal document most people own - every payee, every amount, the balance,
+# the account number - and the conversion industry around it is almost
+# entirely upload-based.
+#
+# The argument that had to be got right: this is not a scare piece. The
+# services are mostly not villains, and saying so is what makes the rest
+# credible. What the page does instead is name what you are handing over, what
+# the reputable ones actually do with it, and the two questions that decide
+# whether the upload had to happen at all - which is the same shape as the
+# other guides in this group.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-upload-a-bank-statement"
+kind = "guide"
+nav = "Is it safe to upload a bank statement?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+# The tool this guide is about. That one key produces the link in both
+# directions; never add a second by hand.
+tool = "bank-statement-to-csv"
+
+title = "Is It Safe to Upload a Bank Statement to Convert It?"
+description = "A statement is every payee, every amount and your balance in one file. Here is what a converter receives, what the careful ones do with it, and how to tell whether the upload needed to happen at all."
+
+heading = "Is it safe to upload a bank statement?"
+lede = """
+    Usually nothing bad happens. That is not the same as safe, and it is
+    not the question worth asking - because a statement is the densest
+    personal document most people own, and converting one is a job that
+    never needed a server in the first place."""
+
+updated = "9 September 2026"
+published = "2026-09-09"
+lastmod = "2026-09-09"
+
+og_title = "Is it safe to upload a bank statement?"
+og_description = "Every payee, every amount, your balance and your account number, in one file. What a converter receives, what the careful ones do with it, and why the upload was never necessary."
+og_image_alt = "abox.tools - tools that never touch a server"

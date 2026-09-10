@@ -34,7 +34,7 @@ live_hint = """
       o un nome di file. Oppure stacca la rete e oscuralo lo stesso."""
 
 read_first = """
-, <code>src/text.js</code> per come ogni parola di
+, <code>src/shared/pdf-text.js</code> per come ogni parola di
       una pagina viene trovata e localizzata, e <code>src/edit.js</code> per la
       cancellazione vera e propria &mdash; che cosa viene tagliato dalle istruzioni
       della pagina e che cosa viene rimesso perché il resto della riga non si

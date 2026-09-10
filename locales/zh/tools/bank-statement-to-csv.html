@@ -1,0 +1,172 @@
+<!--
+  tools/bank-statement-to-csv/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  count.pages.one / count.pages.many 那一对照旧留成两条。中文不分单复数，两条会写成同一句话，但键是 JavaScript 要找的，两条都得在。sum.rows.one 和 sum.rows.many 同理。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+
+  pdf.* 那一批是 PDF 读取失败的原因，会被填进 load.broken 的 {detail} 里，所以每一条都写成一个短语而不是一句话，跟英文一样。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一份对账单</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一份</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      这个工具读不了的两种文件，各自附上出路。由 main.js 在对应的失败发生时才显示，而不是一直摊在页面上，毕竟大多数人带来的对账单是能用的。
+
+      两条路都是故意选在你自己机器上跑的。在失败的下一句话里把人指去一个替你解锁的网站，等于当场推翻这一页其余部分做出的承诺。
+    -->
+    <div id="locked-help" class="help" hidden>
+      <h3>在你自己的机器上把密码取下来</h3>
+      <p>
+        银行常常用你的出生日期或者账号的后几位给对账单上锁。用密码打开它一次，再另存一份新的副本就够了，副本没有密码，文字还在，而文字正是这个工具要的东西。
+      </p>
+      <ul>
+        <li>
+          <strong>Windows</strong>，用 Chrome 或者 Edge 打开这份 PDF，输入密码，然后<strong>打印</strong>，打印机选<strong>另存为 PDF</strong>。
+        </li>
+        <li>
+          <strong>macOS</strong>，用「预览」打开它，输入密码，然后<strong>文件 &rarr; 导出为 PDF</strong>。
+        </li>
+      </ul>
+      <p class="help-warn">
+        不要用那些说能替你解锁的网站。那意味着把对账单传上去，而这正是这一页存在的意义所要挡住的事。
+      </p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>这一份是照片，以及可以怎么办</h3>
+      <p>
+        文件里没有文字，它的每一页都是图片，来自扫描仪或者手机。从图里认字，跟从文字里读出一张表是两回事，这个工具不假装能做。按大致的效果排序：
+      </p>
+      <ul>
+        <li>
+          <strong>问银行要数据，而不是要那张纸。</strong>几乎每一家网上银行都可以直接给你同一份对账单的 CSV、OFX 或者 QIF。那把这一页整个跳过了，而且比任何一张图的任何转换都更准确。
+        </li>
+        <li>
+          <strong>向发给你的人要原始 PDF</strong>，而不是打印件的扫描版。
+        </li>
+        <li>
+          <strong>或者在你自己的机器上读这张图。</strong>Windows 的截图工具、
+          macOS 内置的「实况文本」、Acrobat 的<em>识别文本</em>，都能在不上传任何东西的情况下做到。然后把每一笔金额用眼睛核一遍：读错的数字看着不像错误，看着就是个数字。
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 第 2 步 | 最要紧的一屏，因为在它之前的每一步都是推断 -->
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span> 核对它读出来的内容</h2>
+
+    <p class="card-lede">
+      对账单看着像一张表，其实不是：它是落在纸面各个位置上的文字，那几道栏是没人印过的空白。所以下面这张表是推出来的，不是读出来的，而表格下面那一行是工具在核对自己的结果，只要你的对账单带着余额，每一行都可以拿上一行证明。
+    </p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="order-field" hidden>
+      <label for="date-order">日期的写法是</label>
+      <select id="date-order">
+        <option value="dmy">日 / 月 / 年</option>
+        <option value="mdy">月 / 日 / 年</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+    <div class="preview-wrap">
+      <table id="preview" class="preview">
+        <caption id="preview-caption" class="preview-caption"></caption>
+        <thead><tr id="preview-head"></tr></thead>
+        <tbody id="preview-body"></tbody>
+      </table>
+    </div>
+
+    <p id="preview-more" class="field-summary" hidden></p>
+  </section>
+
+  <!-- 第 3 步 | 文件 -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> 把 CSV 拿走</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="primary as-button" download>下载 CSV</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要放到屏幕上的句子，放在标记里而不是 src/ 里，因为
+    src/ 是按字节原样复制进每一种语言的。shared/js/phrases.js 把它们读回去；
+    {name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">这不是 PDF。这个工具从 PDF 对账单里读出那张表。</span>
+    <span data-phrase="load.encrypted">这份对账单带着密码。把密码取掉跟从里面读出那张表是两回事，这个工具不会背着你去做。</span>
+    <span data-phrase="error.broke">这一页上有东西不工作了（{detail}）。刷新之后再试一次。</span>
+    <span data-phrase="load.broken">这个文件没能作为 PDF 打开（{detail}）。</span>
+    <span data-phrase="load.nopages">它打开了，但是里面找不到任何页面。</span>
+    <span data-phrase="scan.notext">这份 PDF 里没有文字：它的每一页都是对账单的图片。</span>
+    <span data-phrase="scan.nocolumns">这几页上的文字不是按栏排的，所以这里没有一张表可以拆开。</span>
+    <span data-phrase="scan.norows">这里是有栏位，但是没有哪一行是以日期开头的，所以这几页上没有任何东西看起来像一份交易清单。</span>
+    <span data-phrase="sum.rows.one">{rows} 笔交易，读自 {pages}。</span>
+    <span data-phrase="sum.rows.many">{rows} 笔交易，读自 {pages}。</span>
+    <span data-phrase="sum.skipped">另有 {n} 行是表头、页码或者结转合计，没有算进来。</span>
+    <span data-phrase="sum.wrapped">{n} 个折行并进了上面那一行。</span>
+    <span data-phrase="check.held">余额在每一行上都对得上，所以金额读对了，没有哪一行被漏掉或者算了两遍。</span>
+    <span data-phrase="check.broke">余额在 {links} 行里对上了 {held} 行。用之前先拿 PDF 核一下 {where}。</span>
+    <span data-phrase="check.none">这份对账单没有印余额，所以没有任何东西可以拿来核对这些行。它们是页面上写的内容；这里没有东西能证明它。</span>
+    <span data-phrase="check.row">第 {n} 行</span>
+    <span data-phrase="check.rows">第 {list} 行</span>
+    <span data-phrase="order.found">是从这份对账单上一个大于 12 的日子推出来的，所以这是它自己写的，不是猜的。</span>
+    <span data-phrase="order.guessed">这份对账单上每一个日期都在 12 号或者更早，所以它里面没有任何东西说明顺序是哪一种。要是下面的日期看着不对，就改这里。</span>
+    <span data-phrase="preview.caption">{rows} 行里的前 {shown} 行</span>
+    <span data-phrase="preview.all">全部 {rows} 行</span>
+    <span data-phrase="preview.more">这里只显示前 {shown} 行。下载的文件里是全部 {rows} 行。</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.columns">{n} 栏</span>
+    <span data-phrase="fact.dates">日期写成 YYYY-MM-DD</span>
+    <span data-phrase="fact.amounts">金额是带正负号的普通数字</span>
+    <span data-phrase="fact.encoding">UTF-8，按 RFC 4180 加引号</span>
+    <span data-phrase="count.pages.one">{n} 页</span>
+    <span data-phrase="count.pages.many">{n} 页</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="pdf.flate">一个 Flate 流解不开（{detail}）</span>
+    <span data-phrase="pdf.nocompression">这个浏览器没有 CompressionStream</span>
+    <span data-phrase="pdf.lzw">一个 LZW 流以未定义的编码开头</span>
+    <span data-phrase="pdf.cryptfilter">这个流是加密的</span>
+    <span data-phrase="pdf.unknownfilter">一个未知的过滤器，/{name}</span>
+    <span data-phrase="pdf.deep">嵌套太深</span>
+    <span data-phrase="pdf.short">读到了末尾之外</span>
+    <span data-phrase="pdf.unexpected">在 {at} 处遇到意外的 {found}</span>
+    <span data-phrase="pdf.unexpectedbyte">在 {at} 处遇到意外的字节 0x{hex}</span>
+    <span data-phrase="pdf.noendstream">一个没有 endstream 的流</span>
+    <span data-phrase="pdf.noobj">{at} 处没有 obj 关键字</span>
+    <span data-phrase="pdf.nostartxref">没有 startxref</span>
+    <span data-phrase="pdf.noxref">不是一个 xref 区段</span>
+    <span data-phrase="pdf.now">一个没有 /W 的 xref 流</span>
+    <span data-phrase="pdf.zerowidth">一个字段宽度为零的 xref 流</span>
+    <span data-phrase="read.noheader">它的开头不像 PDF：没有 %PDF- 头。</span>
+    <span data-phrase="read.encrypted">这份 PDF 是加密的。</span>
+    <span data-phrase="read.nocatalogue">这个文件没有文档目录。它要么不是 PDF，要么损坏得超出了这里能修复的程度。</span>
+  </div>
+</main>

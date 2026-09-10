@@ -16,7 +16,7 @@ import {
   contextOf, findPattern, findTerm, glyphsIn, luhn, mergeRanges, mod97, wordsOf,
 } from '../../tools/redact-pdf/src/matches.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
-import { pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';
+import { pagesOf, readPage } from '../../shared/js/pdf-text.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';
 
 const hits = (text, term, how) => findTerm(text, term, how).map((r) => text.slice(r.from, r.to));
