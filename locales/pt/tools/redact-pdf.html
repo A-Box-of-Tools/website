@@ -16,6 +16,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Onde uma senha pode ser retirada; só aparece quando foi uma senha que impediu a leitura do ficheiro. main.js tolera a ausência deste elemento.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Uma senha pode ser retirada neste navegador, sem enviar nada, com o <a href="../unlock-pdf/">Desbloqueador de PDF</a> deste site &mdash; depois traga aqui a cópia desbloqueada.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>

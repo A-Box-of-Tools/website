@@ -13,6 +13,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Dónde se puede quitar una contraseña; solo se muestra cuando fue una contraseña lo que impidió leer el archivo. main.js tolera que este elemento falte.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Una contraseña puede quitarse en este navegador, sin subir nada, con el <a href="../unlock-pdf/">Desbloqueador de PDF</a> de este sitio &mdash; luego trae aquí la copia desbloqueada.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>

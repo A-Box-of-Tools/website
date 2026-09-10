@@ -16,6 +16,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Wo ein Passwort abgenommen werden kann, nur sichtbar, wenn eines die Datei am Lesen gehindert hat. main.js verträgt das Fehlen dieses Elements.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Ein Passwort lässt sich in diesem Browser entfernen, ohne dass etwas hochgeladen wird, mit dem <a href="../unlock-pdf/">PDF-Entsperrer</a> auf dieser Seite &mdash; bringen Sie die entsperrte Kopie dann hierher zurück.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>
