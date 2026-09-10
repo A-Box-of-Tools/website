@@ -13,6 +13,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Di mana kata sandi bisa dilepas; hanya tampil ketika kata sandilah yang membuat berkas tidak terbaca. main.js menoleransi elemen ini tidak ada.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Kata sandi bisa dilepas di peramban ini, tanpa mengunggah apa pun, dengan <a href="../unlock-pdf/">Pembuka Kunci PDF</a> di situs ini &mdash; lalu bawa kembali salinan yang sudah terbuka ke sini.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <ul id="source-list" class="source-list" hidden></ul>

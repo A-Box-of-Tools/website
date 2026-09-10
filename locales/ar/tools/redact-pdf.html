@@ -6,6 +6,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      أين تُنزَع كلمة المرور. لا يُعرض إلا حين تكون هي ما منع قراءة الملف. main.js يحتمل غياب هذا العنصر.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      يمكن نزع كلمة المرور داخل هذا المتصفح، دون رفع أي شيء، عبر <a href="../unlock-pdf/">فاتح أقفال PDF</a> على هذا الموقع &mdash; ثم أعد النسخة المفتوحة إلى هنا.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>
