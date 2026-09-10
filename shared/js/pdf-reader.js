@@ -24,20 +24,30 @@
  *
  * Two things this deliberately does not do:
  *
- *   - **Decrypt.** A document with an /Encrypt dictionary is turned away with a
- *     message saying so. Even the empty-password kind that scanners emit, which
- *     is technically openable, because a tool that quietly stripped a
- *     document's protection would be a different and more surprising tool.
+ *   - **Decrypt on its own.** A document with an /Encrypt dictionary is turned
+ *     away with a message saying so - even the empty-password kind that
+ *     scanners emit, which is technically openable - unless the caller passes
+ *     an `unlock` function to `open`. One tool does: /unlock-pdf/, whose whole
+ *     job is taking that protection off and which asks the visitor before it
+ *     does. Everything else here still refuses, because a tool that quietly
+ *     stripped a document's protection on the way to doing something else
+ *     would be a surprising tool.
+ *
+ *     What this file knows about encryption is only how to *apply* a cipher:
+ *     which strings and streams are covered by one, which are exempt, and when
+ *     the key has to exist. The ciphers, the key derivation and the password
+ *     itself are the caller's, in tools/unlock-pdf/src/crypt.js, so the four
+ *     tools that refuse encrypted files carry no crypto to refuse them with.
  *   - **Lazily.** Every object is parsed at open. A reader that renders one page
  *     wants the opposite, but this rewrites the whole file, so it needs all of
  *     them anyway, and having them means `resolve` can be an ordinary function
  *     instead of spreading `await` through every caller.
  */
 
-import { decodeStream } from './pdf-filters.js';
+import { decodeStream, filterNames } from './pdf-filters.js';
 import {
-  ascii, indexOfAscii, isName, lastIndexOfAscii, Parser, parseIndirectObject,
-  PdfStream, PdfSyntaxError, Ref,
+  ascii, indexOfAscii, isName, lastIndexOfAscii, Name, Parser, parseIndirectObject,
+  PdfStream, PdfString, PdfSyntaxError, Ref,
 } from './pdf-objects.js';
 
 export class NotAPdfError extends Error {}
@@ -59,6 +69,20 @@ export class PdfDocument {
     this.version = '1.4';
     /** @type {number[]} objects that were being parsed, for the cycle guard. */
     this.parsing = new Set();
+
+    /** The caller's `unlock`, or null when it did not offer one. */
+    this.unlock = null;
+    /**
+     * The cipher this document is under: null once it is known there is none,
+     * and undefined until the question has been asked. The difference matters -
+     * `setUpCrypt` is called from three places and must do its work once.
+     * @type {{decryptString: Function, decryptStream: Function,
+     *         encryptMetadata: boolean, filter: Function}|null|undefined}
+     */
+    this.crypt = undefined;
+    /** The /Encrypt dictionary's own object number: the one thing in an
+     *  encrypted file that is not itself encrypted. */
+    this.encryptNum = -1;
   }
 
   /**
@@ -67,13 +91,19 @@ export class PdfDocument {
    * @param {Uint8Array} bytes
    * @returns {Promise<PdfDocument>}
    */
-  static async open(bytes) {
+  static async open(bytes, { unlock = null } = {}) {
     const doc = new PdfDocument(bytes);
+    doc.unlock = unlock;
     doc.readHeader();
 
     try {
       await doc.readXref();
-    } catch {
+    } catch (error) {
+      // "This is encrypted" and "the password was wrong" are answers, not
+      // damage. Falling through to the repair below would scan the whole file,
+      // find exactly the same objects, fail to read them for exactly the same
+      // reason, and tell the visitor their document was broken.
+      if (error instanceof EncryptedPdfError || error?.fromUnlock) throw error;
       doc.entries.clear();
       doc.trailer = new Map();
     }
@@ -81,12 +111,17 @@ export class PdfDocument {
     if (!doc.looksUsable()) {
       doc.rebuildByScanning();
       doc.repaired = true;
+      // Before the object streams rather than after: an /ObjStm in an
+      // encrypted file is encrypted, so unpacking one without the key gives a
+      // page tree full of nulls instead of an error.
+      await doc.setUpCrypt();
       await doc.expandObjectStreams({ discover: true });
     }
 
-    if (doc.trailer.get('Encrypt')) {
-      throw new EncryptedPdfError('read.encrypted');
-    }
+    // The single refusal point. Reached already in both paths above when the
+    // file is encrypted; still here because a file whose xref chain read
+    // cleanly and whose catalogue looked fine has been through neither.
+    await doc.setUpCrypt();
 
     doc.loadAll();
 
@@ -164,6 +199,7 @@ export class PdfDocument {
     }
 
     this.incremental = sections > 1;
+    await this.setUpCrypt();
     await this.expandObjectStreams();
   }
 
@@ -329,6 +365,145 @@ export class PdfDocument {
     }
   }
 
+  /* ----------------------------------------------------------- encryption */
+
+  /**
+   * Work out whether this document is encrypted, and if so get the key.
+   *
+   * Called three times on the way through `open` and does its work on the
+   * first, because the answer decides whether the steps after it can read
+   * anything at all. The order it sits in is the whole subtlety here: an
+   * object stream in an encrypted file is encrypted as a stream, so it has to
+   * be decrypted before it is unpacked, and the objects that come out of it
+   * are then already in the clear and must not be decrypted a second time.
+   */
+  async setUpCrypt() {
+    if (this.crypt !== undefined) return;
+
+    // The presence of the entry decides this, not what it resolves to. An
+    // /Encrypt pointing at an object that is not there is a broken encrypted
+    // file, and the strings and streams in it are still ciphertext - treating
+    // it as unencrypted would hand every caller a document full of noise
+    // instead of refusing it.
+    const ref = this.trailer.get('Encrypt');
+    if (!ref) {
+      this.crypt = null;
+      return;
+    }
+
+    if (!this.unlock) throw new EncryptedPdfError('read.encrypted');
+
+    this.encryptNum = ref instanceof Ref ? ref.num : -1;
+
+    try {
+      // Possibly not a dictionary, per the paragraph above. What to say about
+      // that belongs to the caller, which is the half that has a page to say
+      // it on.
+      this.crypt = await this.unlock(this.resolve(ref), this);
+    } catch (error) {
+      // Marked so `open` can tell a refused password from a damaged file and
+      // not answer the first with the second. Nothing else reads this.
+      if (error instanceof Error) error.fromUnlock = true;
+      throw error;
+    }
+
+    // Anything parsed while looking for the key was read as ciphertext - the
+    // /Length values the xref chain resolved, and whatever they dragged in.
+    // Working out which of them mattered costs more than parsing them again.
+    this.objects.clear();
+  }
+
+  /**
+   * Undo the document's encryption on one object, in place.
+   *
+   * Every string and every stream in an encrypted PDF is enciphered under a
+   * key derived from the document key and the *object's own number*, so that
+   * two identical strings in different objects do not encipher alike. That is
+   * why this takes the number and the generation, and why it can only be done
+   * to an object whose number is known - which top-level objects have in their
+   * header, and objects unpacked from an /ObjStm do not need, because the
+   * container was decrypted whole.
+   *
+   * Four things in an encrypted file are not encrypted, and each of them
+   * corrupts the document quietly if this gets it wrong:
+   *
+   *   - the /Encrypt dictionary, whose /O and /U are what the password is
+   *     checked against;
+   *   - cross-reference streams, which a reader has to find the file with
+   *     before it could possibly have a key;
+   *   - the XMP metadata packet, when /EncryptMetadata is false - which is how
+   *     a document says "index me, but do not read me";
+   *   - any stream whose filter chain names /Crypt with /Identity, which is
+   *     the format's way of exempting one stream by hand.
+   */
+  decryptObject(value, num, gen) {
+    if (!this.crypt || num === this.encryptNum) return value;
+
+    if (value instanceof PdfStream) {
+      const filter = this.streamFilterName(value.dict);
+      if (filter !== null) {
+        value.raw = this.crypt.decryptStream(value.raw, num, gen, filter);
+      }
+    }
+
+    // The strings go through whatever the document's string filter is, which
+    // is a separate choice from the stream one and is usually the same.
+    const seen = new Set();
+    const walk = (item, depth) => {
+      if (depth > 200) return item;
+
+      if (item instanceof PdfString) {
+        return new PdfString(this.crypt.decryptString(item.bytes, num, gen));
+      }
+
+      if (Array.isArray(item)) {
+        for (let i = 0; i < item.length; i += 1) item[i] = walk(item[i], depth + 1);
+        return item;
+      }
+
+      const dict = item instanceof PdfStream ? item.dict : item;
+      if (dict instanceof Map && !seen.has(dict)) {
+        seen.add(dict);
+        // Safe to write back while iterating: every key already exists.
+        for (const [key, entry] of dict) dict.set(key, walk(entry, depth + 1));
+      }
+
+      return item;
+    };
+
+    return walk(value, 0);
+  }
+
+  /**
+   * Which crypt filter covers this stream's bytes, or null for "none".
+   *
+   * A name rather than a boolean because a document may define several - /CF
+   * is a table of them - and a stream may name the one it wants in its own
+   * filter chain. In practice files define StdCF and use it for everything,
+   * and the only other value anybody writes is /Identity.
+   *
+   * The /Crypt entry is taken out of the chain on the way past. Undoing it is
+   * this file's job and it has now been done; leaving it there would hand
+   * pdf-filters.js a filter it is right to refuse.
+   */
+  streamFilterName(dict) {
+    if (isName(dict.get('Type'), 'XRef')) return null;
+    if (isName(dict.get('Type'), 'Metadata') && !this.crypt.encryptMetadata) return null;
+
+    const names = filterNames(dict, (v) => this.resolve(v));
+    const at = names.indexOf('Crypt');
+    if (at < 0) return this.crypt.streamFilter;
+
+    const parms = this.resolve(dict.get('DecodeParms') ?? dict.get('DP'));
+    const entry = this.resolve(Array.isArray(parms) ? parms[at] : parms);
+    const named = entry instanceof Map ? this.resolve(entry.get('Name')) : null;
+
+    dropFilterAt(dict, at);
+    // The default when a /Crypt filter names nothing is /Identity: the entry
+    // exists precisely to say "not this one".
+    return named instanceof Name && named.value !== 'Identity' ? named.value : null;
+  }
+
   /* ---------------------------------------------------------- the repair */
 
   /**
@@ -407,8 +582,12 @@ export class PdfDocument {
       const parsed = parseIndirectObject(this.bytes, entry.offset, (ref) => this.resolve(ref));
       // The table said object 12 is here. If the file says otherwise, the
       // table is the thing that is wrong, and the whole document is suspect.
-      if (parsed.num === num) value = parsed.value;
-      else this.repaired = true;
+      if (parsed.num === num) {
+        // Here rather than in a pass afterwards: this is the one place an
+        // object's generation is known, and the key depends on it. The header
+        // is believed over the table, which throws the generation away.
+        value = this.decryptObject(parsed.value, num, parsed.gen);
+      } else this.repaired = true;
     } catch {
       value = null;
     } finally {
@@ -525,6 +704,33 @@ export function scanObjectHeaders(bytes) {
   }
 
   return found;
+}
+
+/**
+ * Take entry `at` out of a stream's /Filter and its /DecodeParms together.
+ *
+ * The two lists are positional, so removing from one without the other shifts
+ * every later filter on to the wrong parameters - which on a Flate stream with
+ * a predictor is a picture full of diagonal streaks rather than an error.
+ */
+function dropFilterAt(dict, at) {
+  const filter = dict.get('Filter');
+  if (Array.isArray(filter)) {
+    filter.splice(at, 1);
+    if (filter.length === 1) dict.set('Filter', filter[0]);
+    else if (filter.length === 0) dict.delete('Filter');
+  } else {
+    dict.delete('Filter');
+  }
+
+  const key = dict.has('DecodeParms') ? 'DecodeParms' : 'DP';
+  const parms = dict.get(key);
+  if (Array.isArray(parms)) {
+    parms.splice(at, 1);
+    if (parms.length === 0) dict.delete(key);
+  } else if (parms !== undefined) {
+    dict.delete(key);
+  }
 }
 
 function isSpace(code) {

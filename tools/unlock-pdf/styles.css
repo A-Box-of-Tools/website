@@ -1,0 +1,166 @@
+/*
+  Only the rules this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the FAQ, the footer - is shared/css/tool-frame.css,
+  which the build puts in front of this file, followed by the shared parts named
+  in css_parts.
+*/
+
+.error { max-width: 72ch; }
+
+/* ------------------------------------------------------------- the file row */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.file-facts { flex: 1; min-width: 0; }
+
+/*
+  shared/css/results.css gives these the ellipsis rules and not the display box
+  they need for them: `text-overflow` does nothing to an inline element, and
+  this tool hangs them off a <strong> and a <span>. Without this a long
+  filename ran straight out under the "Choose another" button beside it -
+  measured at 17px of overlap on a 375px viewport, which is a phone.
+*/
+.file-name,
+.file-sub { display: block; }
+
+/* ------------------------------------------------------ what is on the file */
+
+/*
+  The one-line answer, set large. It is the sentence the visitor came for -
+  whether this document needs a password at all - and everything under it is
+  detail supporting it.
+*/
+.verdict {
+  margin: 0.4rem 0 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 64ch;
+}
+
+.verdict:empty { display: none; }
+
+.scheme {
+  display: grid;
+  gap: 0.55rem 1.4rem;
+  margin: 1.1rem 0 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+/* Each pair on its own row, the term in a fixed column so the answers line up.
+   Below that width the term goes above its answer rather than squeezing it. */
+.scheme > div {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 0.2rem 1rem;
+}
+
+.scheme dt {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.scheme dd {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+.restriction-list {
+  margin: 0.5rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 60ch;
+}
+
+/* ---------------------------------------------------------- the password box */
+
+.password-row {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.password-row .field { margin: 0; }
+
+.password-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.password-input input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  /* A document password is frequently a reference number or a date, and the
+     proportional face makes an l and a 1 the same shape. */
+  font-family: var(--mono, ui-monospace, monospace);
+  letter-spacing: 0.02em;
+}
+
+.password-input .ghost { flex: 0 0 auto; }
+
+/* ------------------------------------------------------------- the result */
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.result-size { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.result-sub { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--text-dim); max-width: 52ch; }
+
+a.primary { text-decoration: none; display: inline-block; }
+
+/* The line that says the finished file was opened again, with no password, by
+   the reader that refuses encrypted documents. It is the whole argument for
+   trusting the result, so it is not small print. */
+.check-line {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.check-line.good { color: var(--ok); }
+.check-line.bad { color: var(--danger); }
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+@media (max-width: 560px) {
+  .result-head { flex-direction: column; align-items: stretch; }
+  .scheme > div { grid-template-columns: 1fr; }
+}

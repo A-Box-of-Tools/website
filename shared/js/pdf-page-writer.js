@@ -132,7 +132,7 @@ export class PdfWriter {
    * five digits, a space, one letter, and a two byte ending - because readers
    * are allowed to seek straight to `first + 20 * n` rather than parse it.
    */
-  finish({ root, info }) {
+  finish({ root, info, extra = '' }) {
     const start = this.length;
     const count = this.offsets.length + 1;
 
@@ -146,9 +146,15 @@ export class PdfWriter {
     // updated incrementally, and the usual way to fill it - a hash of the time
     // and the file name - would put something in the document that this tool
     // has spent the rest of its existence keeping out of it.
+    //
+    // `extra` is the exception, and there is exactly one caller: /unlock-pdf/
+    // builds its example as a genuinely protected document, and a protected
+    // document is required to carry both an /Encrypt and an /ID. Passing the
+    // text through rather than growing a parameter per key keeps every
+    // sentence above true of every other document this writes.
     const trailer = info
-      ? `<< /Size ${count} /Root ${root} 0 R /Info ${info} 0 R >>`
-      : `<< /Size ${count} /Root ${root} 0 R >>`;
+      ? `<< /Size ${count} /Root ${root} 0 R /Info ${info} 0 R${extra} >>`
+      : `<< /Size ${count} /Root ${root} 0 R${extra} >>`;
     this.ascii(`trailer\n${trailer}\nstartxref\n${start}\n%%EOF\n`);
 
     return new Blob(this.chunks, { type: 'application/pdf' });

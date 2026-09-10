@@ -9,7 +9,7 @@
  * no collision has ever been produced for the full sixty-four rounds.
  */
 
-import { bitLength, blocks } from './blocks.js';
+import { bitLength, blocks } from './shared/hash-blocks.js';
 
 /** First 32 bits of the fractional parts of the cube roots of the first 64 primes. */
 const K = new Int32Array([
