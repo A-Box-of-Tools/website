@@ -162,16 +162,19 @@ body = """
       can fail on one whose columns genuinely run into each other."""
 
 [[privacy]]
-title = "Passwords are not taken off, and the page says how to do it yourself."
+title = "Passwords are not taken off here, and the page says where they can be."
 body = """
 
       A statement with a password on it is refused rather than opened. Taking a
       document's protection off is a different job from reading a table out of
       it, and doing it quietly would be a surprising thing for a tool to do on
-      your behalf. What the page does instead is show you the two ways to make
-      an unlocked copy on your own machine &mdash; printing it back to PDF from
-      a browser, or exporting it from Preview &mdash; and say, in as many words,
-      not to hand it to a website that offers to unlock it."""
+      your behalf. What the page does instead is name the routes that make an
+      unlocked copy without the file leaving your machine: the
+      <a href=\"../unlock-pdf/\">PDF unlocker</a> on this site, which takes the
+      password off in your own browser and rewrites nothing on the page, or
+      printing it back to PDF from a browser or Preview. And it still says, in
+      as many words, not to hand the statement to any other website that offers
+      to unlock it &mdash; that is the upload this page exists to avoid."""
 
 [[privacy]]
 title = "It cannot read a photograph of a statement, and does not pretend to."
@@ -320,12 +323,16 @@ q = "Can it open a password-protected statement?"
 a = """
         No, and that is deliberate. Banks lock a lot of statements, usually with
         a date of birth or the last digits of an account number. Taking that
-        protection off is a different job from reading a table, so the tool
-        refuses and shows you how to make an unlocked copy yourself: open it in
-        Chrome or Edge with the password and print it back to PDF, or export it
-        from Preview on a Mac. Both happen entirely on your machine. Do not use
-        a website that offers to unlock it &mdash; that is an upload of the
-        exact document this page exists to keep off the internet."""
+        protection off is a different job from reading a table, so this tool
+        refuses and points you at the ways to do it without the file leaving
+        your machine. The best of them is the
+        <a href=\"../unlock-pdf/\">PDF unlocker</a> on this site: it takes the
+        password off in your own browser and changes nothing on the pages, so
+        the text arrives here exactly where your bank put it. Printing the
+        document back to PDF from Chrome or Edge, or exporting it from Preview
+        on a Mac, also works. Do not use any other website that offers to
+        unlock it &mdash; that is an upload of the exact document this page
+        exists to keep off the internet."""
 
 [[faq]]
 q = "Is my statement uploaded anywhere?"

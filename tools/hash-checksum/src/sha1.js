@@ -12,7 +12,7 @@
  * message in memory at once, and this tool exists to have no size ceiling.
  */
 
-import { bitLength, blocks } from './blocks.js';
+import { bitLength, blocks } from './shared/hash-blocks.js';
 
 /**
  * A running SHA-1.

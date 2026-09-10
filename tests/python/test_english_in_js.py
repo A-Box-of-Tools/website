@@ -146,6 +146,11 @@ BASELINE = {
     # names the timeline builds.
     'trim-audio': 2,
     'trim-video': 5,
+    # Five, and none of them is a sentence: four are PDF object syntax in the
+    # module that writes the locked example, and the fifth is a RangeError for
+    # a key length no caller can reach. Everything a visitor reads on that
+    # page is in body.html already.
+    'unlock-pdf': 5,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
     'xml-formatter': 0,

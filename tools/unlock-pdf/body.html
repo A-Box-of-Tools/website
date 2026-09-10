@@ -1,0 +1,269 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the protected PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Choose another</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what the file's protection actually is.
+
+    This card is the one worth keeping if only one could be kept. "Protected"
+    covers two entirely different situations - a document nobody can open, and
+    a document anybody can open that merely asks readers not to print it - and
+    which of the two you have decides whether a password is needed at all. So
+    the page says which, before anything is done to the file.
+  -->
+  <section class="card" id="report-card">
+    <h2><span class="step">2</span> See what is on it</h2>
+
+    <p class="card-lede">
+      A PDF can be locked in two ways that look alike and are not. One is an
+      <em>open password</em>, which nobody can get past without the password.
+      The other is a set of <em>restrictions</em> &mdash; no printing, no
+      copying, no editing &mdash; on a file that opens for everybody, where the
+      lock is a request your reader has agreed to honour rather than anything
+      cryptographic. This says which of the two this document has.
+    </p>
+
+    <!--
+      With a sentence in it, because this card is on the page before there is
+      a file and an empty card reads as a broken one. main.js keeps a copy and
+      puts it back whenever the file is cleared - which is why the words are
+      here, where a translation can reach them, rather than in src/.
+    -->
+    <p id="verdict" class="verdict">
+      Nothing chosen yet. Once a document is here, this will say which of the
+      two it has, what the encryption is worth, and whether a password is
+      needed at all.
+    </p>
+
+    <dl id="scheme" class="scheme" hidden>
+      <div><dt>Protection</dt><dd id="scheme-what"></dd></div>
+      <div><dt>What that is worth</dt><dd id="scheme-strength"></dd></div>
+      <div><dt>What opened it</dt><dd id="scheme-open"></dd></div>
+      <div><dt>The document</dt><dd id="scheme-pages"></dd></div>
+    </dl>
+
+    <div id="restrictions" hidden>
+      <p id="restrictions-lede" class="field-summary"></p>
+      <ul id="restriction-list" class="restriction-list"></ul>
+    </div>
+
+    <!--
+      Shown only when the blank password did not open the file, which is the
+      only time a password is any use. Asking for one up front would suggest
+      the commonest case needs one, and it does not.
+    -->
+    <div id="password-row" class="password-row" hidden>
+      <label class="field" for="password">
+        <span id="password-label">The password that opens this document</span>
+        <span id="password-note" class="field-note">
+          Typed here and used here. It is never sent anywhere, because there is
+          nowhere on this page for it to be sent to.
+        </span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password" autocomplete="off" spellcheck="false"
+               autocapitalize="off" enterkeyhint="go">
+        <button type="button" id="reveal" class="ghost" aria-pressed="false">Show</button>
+        <button type="button" id="try-password" class="primary">Open it</button>
+      </div>
+      <p id="password-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Take the protection off</h2>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta">
+      <span>
+        <strong>Also take out what the file remembers about where it came from</strong>
+        <span class="check-note">
+          The name of the program that locked it, when it was made and last
+          edited, the XMP packet and the private blocks a layout application
+          leaves behind. This is a separate job from removing the protection
+          and it is off unless you ask for it &mdash; everything else about
+          your document comes through untouched either way.
+        </span>
+      </span>
+    </label>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Remove the protection</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Download</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at fourteen of its fifteen addresses.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.password">This opens once the document above has been opened.</span>
+    <span data-phrase="waiting.nothing">There is nothing on this document to remove.</span>
+    <span data-phrase="password.show">Show</span>
+    <span data-phrase="password.hide">Hide</span>
+    <span data-phrase="verdict.none">There is no protection on this document. Nothing here has anything to
+      remove &mdash; it opens, prints and copies already.</span>
+    <span data-phrase="verdict.restricted">This document is not locked shut. It opens for anybody, and what it
+      carries is a set of restrictions that readers are asked to honour. No
+      password is needed to take them off.</span>
+    <span data-phrase="verdict.locked">This document needs a password to open. Nothing on this page can find
+      one, so it has to be typed in below.</span>
+    <span data-phrase="verdict.open">Opened. The protection can come off now.</span>
+    <span data-phrase="scheme.rc4">RC4, {bits}-bit &mdash; revision {r}</span>
+    <span data-phrase="scheme.aes">AES-{bits} &mdash; revision {r}</span>
+    <span data-phrase="scheme.age.weak">The encryption on this file has been considered broken for years:
+      a {bits}-bit RC4 key is short enough to be searched outright.</span>
+    <span data-phrase="scheme.age.dated">RC4 is long superseded, though a 128-bit key is not something anyone
+      searches by brute force.</span>
+    <span data-phrase="scheme.age.aes128">A modern cipher with a key derivation from 1994. AES itself is sound;
+      the password behind it is hashed the old way, which makes guessing one
+      far cheaper than the cipher suggests.</span>
+    <span data-phrase="scheme.age.old256">AES-256 as Adobe first published it in 2008, and later withdrew: the
+      password hash turned out to be cheap enough to attack at speed.</span>
+    <span data-phrase="scheme.age.current">The current scheme, and the only one here still considered strong. A
+      document locked this way is as good as the password on it.</span>
+    <span data-phrase="open.blank">No password. The document was never closed &mdash; only restricted.</span>
+    <span data-phrase="open.user">The password you typed, which is this document&rsquo;s open password.</span>
+    <span data-phrase="open.owner">The password you typed, which is this document&rsquo;s owner password
+      &mdash; the one that lifts its restrictions.</span>
+    <span data-phrase="open.keyconfirmed">The key was checked against the document&rsquo;s own check value and
+      matched.</span>
+    <span data-phrase="scheme.sizepages">{size} &middot; {pages}</span>
+    <span data-phrase="restrictions.some">Readers of this document are asked to refuse the following:</span>
+    <span data-phrase="restrictions.none">This document restricts nothing. Everything it protected was the
+      password to open it.</span>
+    <span data-phrase="perm.print">Printing it</span>
+    <span data-phrase="perm.modify">Changing anything on a page</span>
+    <span data-phrase="perm.copy">Copying text or pictures out of it</span>
+    <span data-phrase="perm.annotate">Adding a comment or a highlight</span>
+    <span data-phrase="perm.forms">Filling in its form fields</span>
+    <span data-phrase="perm.accessibility">Reading it aloud to somebody who cannot see it</span>
+    <span data-phrase="perm.assemble">Adding, deleting, rotating or reordering pages</span>
+    <span data-phrase="perm.printhq">Printing it at full quality rather than as a coarse picture</span>
+    <span data-phrase="crypt.wrongpassword">That is not the password for this document. Both the password that
+      opens it and the owner password that lifts its restrictions are accepted
+      here, and neither of those was it.</span>
+    <span data-phrase="crypt.handler">This document is locked to a certificate rather than a password
+      (/{name}). Opening it needs the private key it was issued to, which is
+      held by whoever set it up and is not something a password box can
+      stand in for.</span>
+    <span data-phrase="crypt.version">This document uses a version of PDF encryption this tool does not
+      implement (V{v}, R{r}). Every published scheme is handled; this one is
+      either an undocumented variant or newer than this page.</span>
+    <span data-phrase="crypt.malformed">This document says it is encrypted but its encryption dictionary is
+      incomplete, so there is nothing here to work from. The file is
+      damaged.</span>
+    <span data-phrase="read.notpdf">That is not a PDF. This tool only works on PDF files.</span>
+    <span data-phrase="read.encrypted">This PDF is encrypted.</span>
+    <span data-phrase="read.nocatalogue">This file has no document catalogue, so there is nothing to unlock. It
+      is either not a PDF or damaged past what can be repaired here.</span>
+    <span data-phrase="read.noheader">This does not start like a PDF: there is no %PDF- header.</span>
+    <span data-phrase="read.failed">This PDF could not be read: {detail}</span>
+    <span data-phrase="pdf.flate">a Flate stream would not decompress ({detail})</span>
+    <span data-phrase="pdf.nocompression">this browser has no CompressionStream</span>
+    <span data-phrase="pdf.lzw">an LZW stream starts with an undefined code</span>
+    <span data-phrase="pdf.cryptfilter">this stream is encrypted</span>
+    <span data-phrase="pdf.unknownfilter">an unknown filter, /{name}</span>
+    <span data-phrase="pdf.deep">nested too deeply</span>
+    <span data-phrase="pdf.short">ran off the end</span>
+    <span data-phrase="pdf.unexpected">unexpected {found} at {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">unexpected byte 0x{hex} at {at}</span>
+    <span data-phrase="pdf.noendstream">a stream with no endstream</span>
+    <span data-phrase="pdf.noobj">no obj keyword at {at}</span>
+    <span data-phrase="pdf.nostartxref">no startxref</span>
+    <span data-phrase="pdf.noxref">not an xref section</span>
+    <span data-phrase="pdf.now">an xref stream with no /W</span>
+    <span data-phrase="pdf.zerowidth">an xref stream with zero-width fields</span>
+    <span data-phrase="note.repaired">This file&rsquo;s cross-reference table did not match its contents, so it
+      was read by scanning for objects instead. That is a repair, and it
+      worked, but check the result before you send it anywhere.</span>
+    <span data-phrase="note.incremental">This document has been edited and re-saved at least once, so it is
+      carrying older copies of objects that nothing points at any more. Those
+      are left out of the file you get back.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="stage.writing">Writing it back out without the encryption</span>
+    <span data-phrase="stage.checking">Opening it again to check</span>
+    <span data-phrase="run.cancelled">Cancelled. Nothing was changed; press the button to start again.</span>
+    <span data-phrase="result.ready">{size} &mdash; no password, no restrictions.</span>
+    <span data-phrase="result.sub">Every page, every font and every picture is the one that arrived. What
+      is gone is the encryption around them.</span>
+    <span data-phrase="check.passed">Checked: {found}</span>
+    <span data-phrase="check.failed">This run did not check out &mdash; {found}. Keep your original.</span>
+    <span data-phrase="check.ok.one">opened again from memory with no password at all, and it is 1 page,
+      the same as the original.</span>
+    <span data-phrase="check.ok.many">opened again from memory with no password at all, and it is {pages}
+      pages, the same as the original.</span>
+    <span data-phrase="check.pages">the finished file came back with {pages} pages instead of
+      {expected}</span>
+    <span data-phrase="check.stilllocked">the finished file still asks for a password, which means the
+      encryption was not removed</span>
+    <span data-phrase="check.reopen">the finished file would not reopen ({detail})</span>
+    <span data-phrase="facts.lifted">{n} restrictions lifted.</span>
+    <span data-phrase="facts.lifted.one">1 restriction lifted.</span>
+    <span data-phrase="facts.decrypted">The document was decrypted with its own key and written back out with
+      no encryption dictionary at all.</span>
+    <span data-phrase="facts.metadata">What the file remembered about where it came from was removed as
+      well.</span>
+    <span data-phrase="facts.signature">This document carried a digital signature. Rewriting a file breaks
+      any signature on it, so the copy you get back is unsigned &mdash; the
+      original is still the signed one.</span>
+    <span data-phrase="facts.incremental">Older, superseded copies of objects from earlier edits were not copied
+      over.</span>
+    <span data-phrase="facts.repaired">The original&rsquo;s cross-reference table was broken and had to be
+      rebuilt by scanning. Check this file before sending it on.</span>
+    <span data-phrase="net.clean">your document has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a document or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a document or a byte of one.</span>
+  </div>
+</main>

@@ -14,6 +14,13 @@
     </div>
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      パスワードをどこで外せるか。ファイルが読めなかった原因がパスワードだったときにだけ表示されます。main.js はこの要素が無くても動きます。
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      パスワードは何もアップロードせずにこのブラウザーで外せます。このサイトの<a href="../unlock-pdf/">PDFロック解除</a>を使って、外したものをここに持ってきてください。
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 

@@ -1,0 +1,254 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../unlock-pdf/">PDF Unlocker</a> and drop the
+      document in. Within a second it will tell you which of two situations you
+      are in, and they are not close to each other:
+    </p>
+    <ul>
+      <li>
+        <strong>The document opens, but will not print or copy.</strong> No
+        password is needed. Press the button and the restrictions are gone.
+        This is by far the commoner case.
+      </li>
+      <li>
+        <strong>The document asks for a password before it will open.</strong>
+        You need that password. Nothing on that page &mdash; or on any honest
+        page &mdash; will find it for you.
+      </li>
+    </ul>
+    <p>
+      The rest of this explains why those two are so different, which is worth
+      knowing before you hand a document to anything that offers to unlock it.
+    </p>
+  </section>
+
+  <section>
+    <h2>The two locks, and why only one of them is a lock</h2>
+    <p>
+      A PDF has room for two passwords, and readers present them almost
+      identically, which is where all the confusion comes from.
+    </p>
+    <p>
+      The <strong>user password</strong> &mdash; usually called the open
+      password &mdash; is real. The contents of the file are genuinely
+      enciphered, the key is derived from that password, and the password is
+      not written down anywhere in the document. Without it, nobody reads the
+      file: not you, not a website, not the program that made it.
+    </p>
+    <p>
+      The <strong>owner password</strong> is a different thing wearing similar
+      clothes. It controls the <em>restrictions</em>: no printing, no copying,
+      no editing, no filling in the form. And a document very commonly has an
+      owner password with no user password at all &mdash; which is exactly the
+      file that opens the moment you double-click it and then refuses to
+      print.
+    </p>
+    <p>
+      Here is the part almost nobody is told. A file that opens without asking
+      you for anything <em>must contain everything needed to derive its own
+      key</em>, because your reader just derived it, without asking you for
+      anything. So the contents are encrypted with a key that anybody can work
+      out. What stops your reader printing is a separate field inside the
+      document &mdash; a row of permission bits &mdash; that readers honour
+      because they have agreed to. Adobe documented it that way from the
+      beginning. It is a request, not a barrier.
+    </p>
+    <p>
+      That is why removing restrictions is instant and removing an open
+      password is impossible. They are not two strengths of the same lock. One
+      is a lock and one is a note on the door.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to tell which one you have, without any tool at all</h2>
+    <p>
+      Double-click the file.
+    </p>
+    <ul>
+      <li>
+        <strong>It asks you for a password.</strong> That is a user password.
+        You need it.
+      </li>
+      <li>
+        <strong>It opens, and something is greyed out</strong> &mdash; the
+        print button, or copy, or the form fields &mdash; and the title bar or
+        the document properties say something like &ldquo;Secured&rdquo;. That
+        is restrictions only, and they come off.
+      </li>
+    </ul>
+    <p>
+      In most readers you can see the detail: open the document properties and
+      look at the Security tab, which lists every permission as Allowed or Not
+      Allowed. The <a href="../../unlock-pdf/">PDF Unlocker</a> shows the same
+      list, and adds the thing no reader shows you &mdash; which encryption
+      scheme the file uses, and what that scheme is worth today.
+    </p>
+  </section>
+
+  <section>
+    <h2>What &ldquo;encrypted&rdquo; is worth depends entirely on when it was done</h2>
+    <p>
+      Two documents can both report &ldquo;password protected&rdquo; and be
+      thirty years apart in what that means. The format has been through five
+      generations:
+    </p>
+    <ul>
+      <li>
+        <strong>RC4, 40-bit</strong> (PDF 1.1, 1994). Built to fit inside the American
+        export limits of the day. The key is short enough to be searched
+        outright on ordinary hardware.
+      </li>
+      <li>
+        <strong>RC4, 128-bit</strong> (PDF 1.4, 2001). Nobody searches a
+        128-bit key, but RC4 itself has been considered broken since 2013; it
+        was prohibited in TLS in 2015 and browsers dropped it early the year
+        after.
+      </li>
+      <li>
+        <strong>AES-128</strong> (PDF 1.6, 2005). A modern cipher with a key
+        derivation from 1994 still bolted to the front of it. The encryption is
+        sound; the
+        step that turns your password into a key is cheap enough that guessing
+        passwords is far easier than the cipher suggests.
+      </li>
+      <li>
+        <strong>AES-256, first attempt</strong> (2008). Adobe's own extension,
+        later withdrawn: the password hash turned out to be cheap enough to
+        attack at the speed a graphics card can hash.
+      </li>
+      <li>
+        <strong>AES-256, PDF 2.0</strong> (2017). Deliberately expensive to
+        compute, and the one still worth something. A document locked this way
+        is as good as the password on it.
+      </li>
+    </ul>
+    <p>
+      If somebody has sent you a document and told you it is safe because it is
+      password protected, this is the question to ask. A twenty-year-old
+      workflow can still be emitting the first entry on that list.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you have lost the open password</h2>
+    <p>
+      Then the document is lost, and it is worth hearing that plainly rather
+      than working through a series of sites that will each take your file
+      first.
+    </p>
+    <p>
+      Search results for this are full of &ldquo;PDF password recovery&rdquo;
+      tools. What they do is guess: a dictionary, then patterns, then every
+      combination, which is fast for a short password and never finishes for a
+      long one. Some of them run on your machine, most of them upload your
+      document to a server that guesses for you, and a great many take payment
+      before telling you whether it worked. If the file was made in the last
+      few years with a real password, none of them will get in.
+    </p>
+    <p>
+      The <a href="../../unlock-pdf/">PDF Unlocker</a> does not guess, and does
+      not offer to. There is no dictionary and no loop in it anywhere &mdash;
+      you can read the source. That is a deliberate line rather than a missing
+      feature: for the oldest documents a search really would work, which is
+      exactly why the refusal is written down instead of left to be assumed.
+    </p>
+    <p>
+      What is worth trying first, before anything else: whoever sent it to you
+      usually still has it. Corporate documents are very often locked with the
+      same password across a whole department, or with something predictable
+      like your date of birth or the last digits of an account number &mdash;
+      banks and payroll systems do this routinely, and the password is nearly
+      always described in the covering email you have already deleted.
+    </p>
+  </section>
+
+  <section>
+    <h2>Should you upload it?</h2>
+    <p>
+      Consider what is actually in the documents people need unlocked. Bank
+      statements that will not print. Payslips. Medical letters. A contract
+      that will not copy. Tax paperwork. Almost by definition, a protected
+      document is one somebody thought was worth protecting.
+    </p>
+    <p>
+      Handing that to a website means the private thing arrives at their server
+      first, intact, and &mdash; if it has an open password &mdash; you have
+      helpfully sent the password along with it. What they keep, how long for
+      and who has access to it is not something you can check from the outside,
+      whatever the page says.
+    </p>
+    <p>
+      None of it needs to happen. Every step in unlocking a PDF is arithmetic
+      on bytes: derive a key, run a cipher, write the file back out. A browser
+      does all three perfectly well, which is what
+      <a href="../../unlock-pdf/">the tool here</a> does &mdash; the document
+      and the password stay in the tab, and the page keeps working with the
+      network unplugged. If you want to prove that rather than take our word
+      for it, that is the test: disconnect, and use it anyway.
+    </p>
+    <p>
+      There is a more general version of this argument in
+      <a href="../is-it-safe-to-upload-files/">is it safe to upload files</a>,
+      and the same question about the documents people most regret sending in
+      <a href="../is-it-safe-to-upload-a-bank-statement/">is it safe to upload
+      a bank statement</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Two things that will happen to the file, and one that will not</h2>
+    <p>
+      <strong>A signature will stop being valid.</strong> If the document was
+      digitally signed, removing the encryption breaks the signature &mdash;
+      not because of anything careless, but because a signature covers the
+      exact bytes of the file it was applied to, and unlocking writes a new
+      file. Any program that did this would have the same effect. Keep your
+      original; it is still the signed one.
+    </p>
+    <p>
+      <strong>The file usually gets slightly smaller.</strong> Rewriting a
+      document leaves behind the superseded copies of objects that earlier
+      edits appended to it. That is a side effect, not the point.
+    </p>
+    <p>
+      <strong>The pages themselves do not change.</strong> Nothing is
+      re-rendered, re-encoded or reflowed: the drawing instructions, the
+      embedded fonts and the images come through exactly as they arrived. Text
+      stays selectable, scans stay at the resolution they were scanned at, and
+      nothing moves on the page. If a tool hands you back a document that looks
+      softer or where the text has become a picture, it has done something
+      other than unlock it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Is it allowed?</h2>
+    <p>
+      That is a question about your rights in the document rather than about
+      the technology, and the answer depends on the file and on where you are.
+    </p>
+    <p>
+      What can be said without any hedging is what the format does. The
+      restrictions are a field inside the document that readers honour by
+      agreement; they are not a cryptographic barrier and have never been
+      presented as one. The everyday uses are the obvious ones: your own
+      statement that will not print, a report you paid for that will not copy,
+      a scan whose pages you need to reorder, a form you are supposed to fill
+      in. If the document is not yours to use, removing a permission bit does
+      not make it yours.
+    </p>
+  </section>
+
+  <section>
+    <h2>Afterwards</h2>
+    <p>
+      An unlocked document is an ordinary one, so the rest of the box works on
+      it: <a href="../../merge-pdf/">merge or split it</a>,
+      <a href="../../compress-pdf/">make it smaller</a>, or
+      <a href="../../redact-pdf/">take a name out of it properly</a> &mdash;
+      which, if the reason it was locked was that it contains something
+      private, is very likely the next thing you actually want.
+    </p>
+  </section>

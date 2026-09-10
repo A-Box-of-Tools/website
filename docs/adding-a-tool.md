@@ -101,8 +101,10 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
 | `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
 | `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+| `shared/js/md5.js` | `js_parts = ["md5", "hash-blocks"]` | MD5, which `crypto.subtle` does not implement: the checksum tool prints one because half the download pages on the internet still do, and the PDF unlocker derives a document's key through one; imports `hash-blocks` |
+| `shared/js/hash-blocks.js` | `js_parts = ["hash-blocks"]` | the block filling, padding and length counting every hash function does identically; `md5` imports it, and the checksum tool's three SHA implementations reach it from `src/` |
 | `shared/js/pdf-objects.js` | `js_parts = ["pdf-objects"]` | the PDF object grammar |
-| `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote |
+| `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote. An encrypted one is refused &mdash; unless the caller hands `open` an `unlock` function, which only `/unlock-pdf/` does; the reader knows how to *apply* a cipher and holds none of its own |
 | `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
 | `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out |
 | `shared/js/pdf-content.js` | `js_parts = ["pdf-content"]` | a page's drawing instructions, read as operators and written back |

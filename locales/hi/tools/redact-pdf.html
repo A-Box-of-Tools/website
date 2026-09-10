@@ -16,6 +16,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      पासवर्ड कहाँ हटाया जा सकता है; यह तभी दिखता है जब फ़ाइल पासवर्ड की वजह से न पढ़ी जा सकी हो। main.js इस तत्व की अनुपस्थिति सह लेता है।
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      पासवर्ड इसी ब्राउज़र में हटाया जा सकता है, बिना कुछ अपलोड किए, इस साइट के <a href="../unlock-pdf/">PDF अनलॉकर</a> से &mdash; फिर अनलॉक की हुई कॉपी यहाँ वापस लाएँ।
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>

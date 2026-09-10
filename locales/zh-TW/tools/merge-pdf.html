@@ -6,6 +6,17 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      密碼可以在哪裡取下來，只在檔案正是因為密碼而讀不了的時候才顯示。
+
+      給的是一個連結而不是一句勸告，因為答案現在就是本站的一頁：它在這個瀏覽器裡把密碼取下來，什麼都不上傳，頁面上也什麼都不改寫，所以指過去不會讓這一頁失掉它承諾的任何東西。
+
+      main.js 容得下這個元素不存在，因為還沒跟上的譯文裡沒有它。沒有它的語言就照舊只顯示那句拒絕。
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      密碼可以用本站的 <a href="../unlock-pdf/">PDF 解鎖工具</a>在這個瀏覽器裡取下來，什麼都不會上傳，取完把沒有密碼的那一份拿回這裡來。
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <ul id="source-list" class="source-list" hidden></ul>
@@ -16,7 +27,7 @@
     <h2><span class="step">2</span> 安排頁面</h2>
 
     <p class="card-lede">
-      你選的每個檔案的每一頁，都按出來的順序排在這裡。卡片抓哪裡都能拖動這一頁；觸控螢幕上只能抓 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手，這樣列表還能捲動。用箭頭可以轉，用 &times; 可以刪。這裡還什麼都沒寫出去，文件要等你在第四步按下按鈕才會拼起來。
+      你選的每個檔案的每一頁，都按出來的順序排在這裡。卡片抓哪裡都能拖動這一頁；觸控式螢幕上只能抓 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手，這樣列表還能滾。用箭頭可以轉，用 &times; 可以刪。這裡還什麼都沒寫出去，文件要等你在第四步按下按鈕才會拼起來。
     </p>
 
     <div class="toolbar">

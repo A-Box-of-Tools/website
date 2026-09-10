@@ -20,19 +20,33 @@
       Revealed by main.js when the matching failure happens, rather than sitting
       open on a page most people arrive at with a statement that works.
 
-      Both routes are deliberately ones that run on your own machine. Sending
-      somebody to a website that strips the password would undo, in the sentence
-      after the failure, the promise the rest of the page makes.
+      Every route here runs on the visitor's own machine, which is why this list
+      used to name no website at all: sending somebody to a site that strips the
+      password would have undone, in the sentence after the failure, the promise
+      the rest of this page makes. /unlock-pdf/ is why that is no longer the
+      choice. It takes the password off in the visitor's own browser and uploads
+      nothing, so it is the same promise rather than a hole in it - and it is
+      first in the list because it is the only route that leaves the page
+      untouched, which for a tool that reads columns by where the text sits is
+      not a small thing. The warning underneath still stands, and now says what
+      it is excepting.
     -->
     <div id="locked-help" class="help" hidden>
       <h3>Taking the password off, on your own machine</h3>
       <p>
         Banks often lock a statement with your date of birth or the last digits
-        of an account number. Opening it once with the password and saving a
-        fresh copy is enough &mdash; the copy has no password and still has its
-        text, which is what this tool needs.
+        of an account number. Any of these gives you an unlocked copy; bring it
+        back here and it will still have its text, which is what this tool
+        needs.
       </p>
       <ul>
+        <li>
+          <strong>The <a href="../unlock-pdf/">PDF Unlocker</a> on this
+          site</strong> &mdash; type the password there and it comes off in this
+          browser, with nothing uploaded. It is the only one of these that
+          rewrites nothing on the page, so the words stay exactly where your
+          bank put them.
+        </li>
         <li>
           <strong>Windows</strong> &mdash; open the PDF in Chrome or Edge, type
           the password, then <strong>Print</strong> and choose
@@ -44,8 +58,10 @@
         </li>
       </ul>
       <p class="help-warn">
-        Do not use a website that offers to unlock it. That means uploading the
-        statement, which is the one thing this page exists to avoid.
+        Do not use any <em>other</em> website that offers to unlock it. That
+        means uploading the statement, which is the one thing this page exists
+        to avoid. The page linked above is not one of those: it has no server to
+        upload anything to, and it keeps working with the network unplugged.
       </p>
     </div>
 

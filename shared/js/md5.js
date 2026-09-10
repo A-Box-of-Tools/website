@@ -1,6 +1,14 @@
 /**
  * MD5, RFC 1321.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/md5.js and the build
+ * copies it to <tool>/src/shared/md5.js for every tool that asks for it with
+ * `js_parts = ["md5", "hash-blocks"]`. Two tools want it, for reasons that
+ * have nothing to do with each other: /hash-checksum/ computes one because
+ * half the download pages on the internet still print one, and /unlock-pdf/
+ * computes several because every version of PDF encryption before 2017
+ * derives its key by feeding the password through this a few dozen times.
+ *
  * It is broken as a signature - two different files with the same MD5 can be
  * produced on a laptop in seconds, and have been since 2004 - and it is still
  * the checksum printed beside half the downloads on the internet, because
@@ -14,7 +22,7 @@
  * this. So it is sixty lines, and they are these.
  */
 
-import { bitLength, blocks } from './blocks.js';
+import { bitLength, blocks } from './hash-blocks.js';
 
 /**
  * floor(abs(sin(i + 1)) * 2^32), the table RFC 1321 calls T.

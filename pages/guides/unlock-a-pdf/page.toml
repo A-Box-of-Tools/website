@@ -1,0 +1,44 @@
+#
+# Guide: removing a password or the restrictions from a PDF.
+#
+# Written for somebody holding a document that will not print, or will not
+# copy, or will not open - three complaints that arrive under one word,
+# "protected", and have almost nothing to do with each other. The page leads
+# with telling them apart, because which one you have decides whether the job
+# takes one click or is impossible without a password you do not have.
+#
+# The half worth getting right is the honest one. The restrictions are not
+# cryptography and never were - Adobe documented them as an agreement between
+# well-behaved programs from the day they were introduced - and a guide that
+# implied otherwise would be either scaremongering or selling something. But
+# the open password IS real, and the page has to say that just as plainly,
+# because the person who has lost one needs to hear "no" rather than be sold a
+# recovery tool.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/unlock-a-pdf"
+kind = "guide"
+nav = "Unlocking a PDF"
+group = "doing-the-job"
+tool = "unlock-pdf"
+
+title = "How to Unlock a PDF: Password vs Restrictions"
+description = "A PDF that will not print and a PDF that will not open are two different problems with one name. What each of them actually is, why one comes off in a click and the other cannot come off at all, and how to tell which you have."
+
+heading = "How to unlock a PDF, and which kind of locked it is"
+lede = """
+    &ldquo;Protected&rdquo; covers two completely different things. One is a
+    password that genuinely keeps everybody out. The other is a note inside the
+    file asking your reader not to print it, which your reader has agreed to
+    honour. Telling them apart takes a second and decides everything that
+    follows."""
+
+updated = "10 September 2026"
+published = "2026-09-10"
+lastmod = "2026-09-10"
+
+og_title = "How to unlock a PDF: password vs restrictions"
+og_description = "Why most \"protected\" PDFs need no password at all, why a lost open password is genuinely lost, and how to tell which kind you are holding."
+og_image_alt = "abox.tools - tools that never touch a server"
