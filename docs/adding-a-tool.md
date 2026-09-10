@@ -237,6 +237,83 @@ Only *choosing* the files is shared. What a tool does with them afterwards — t
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
 tool that sharing it would cost more than it saved.
 
+## Carrying a result into the next tool
+
+A result made on one page here so often wants to be the input of another: the
+scanned pages join the emailed contract, the compressed photos become the PDF,
+the trimmed clip becomes the GIF. Without help the route is download, find the
+file, drop it on the next page — three manual steps carrying a file the browser
+was already holding.
+
+One line in `tool.toml` replaces them with a link:
+
+```toml
+handoff = ["compress-image", "resize-image"]
+```
+
+That renders a row of links under the finished result — "Carry the result
+straight into:" — and `shared/handoff.js` does the rest: it reads the bytes back
+out of the page's own `blob:` URL, parks them in IndexedDB under the receiving
+tool's slug, and navigates. The next page finds them, feeds them through the
+same file input a dropped file goes through, and deletes the record. Records are
+consumed exactly once and swept after ten minutes, so an abandoned handoff is
+not still holding somebody's contract at the end of the day.
+
+**The receiving tool needs nothing at all.** It is not listed anywhere, it
+imports nothing, and it has no idea it is being fed: the files arrive through
+its own `#file-input` with a `DataTransfer` and a synthetic `change` event, so
+every tool keeps exactly one way of accepting a file. Being a *target* is free.
+Being a *sender* costs the two things below.
+
+**One directive.** Reading a `blob:` URL back is a `fetch`, and the policy has
+to permit it:
+
+```toml
+[csp]
+"connect-src" = ["blob:"]
+```
+
+`blob:` names bytes inside this page, so this gains no reach over the network —
+but say so in `csp_note`, which is where the generated policy comment explains
+itself, and which no locale translates.
+
+**And a page that can still make its promise.** This is the part to check
+before writing the line. Several tools argue on their own pages that
+`connect-src` is shut — `/heic-to-jpg/` explains that its engine embeds its
+binary rather than fetching one *because* connect-src is untouched, and
+`/images-to-video/` tells the reader "`img-src` is opened, `connect-src` is
+not". Those sentences sit in `[[privacy]]`, which **is** translated, so opening
+the directive would mean rewriting a promise in fifteen languages. A carry-on
+row is a convenience; it does not outrank a claim the page already makes. Where
+the no-fetch prose is scoped to `src/` — "no `fetch` ... anywhere in
+`src/`", which is how most tools word it — it stays true, because `handoff.js`
+is a frame script and not part of any tool's `src/`.
+
+**Two shapes are carried, and a batch travels whole.** A tool that makes one
+thing reveals the single `#download` anchor its `body.html` declares. A tool
+that works through a batch has no such anchor: it builds a row per result
+inside `.result-list`, each with its own link. `handoff.js` looks for both, and
+a batch tool hands over everything it finished — twelve compressed photos
+arrive as twelve files, which is the detour most worth skipping, because saving
+twelve files and handing twelve back is the part nobody does twice. A tool that
+lists results under some other class is not seen; give it `.result-list` from
+`css_parts = ["results"]` rather than widening the selector.
+
+The build checks each target names a tool that exists and that no tool names
+itself. It does **not** check that the target can open what the sender makes —
+nothing declares what a tool produces, and the output format is usually the
+visitor's choice anyway — so that pairing is a judgement, made against the
+receiving tool's `[picker]`. Two questions, and the build will ship a wrong
+answer to either without complaint:
+
+- would its `accept` take the file? Point an image tool at a PDF tool and the
+  row is a link to a page that refuses what it is handed;
+- if this tool finishes a **batch**, is the target `multiple = true`? All of
+  them arrive at once. A single-file picker takes a `DataTransfer` of twelve
+  happily — `multiple` constrains the picker dialog, not an assignment — and
+  what the visitor then sees depends on what that tool does with a list it was
+  never written to expect.
+
 ## A vendored engine
 
 A codec nobody here wrote goes in `tools/<slug>/vendor/`, and only one tool has

@@ -62,6 +62,12 @@ css_parts = ["progress", "form", "checks", "notes", "results"]
 # pdf-page-writer and example-statement are for the example alone: it has to be
 # a document that really is locked, which means writing one.
 js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "format", "md5", "hash-blocks", "pdf-page-writer", "example-statement"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. This
+# tool is the way IN to the PDF chain - every tool that refuses a locked file
+# sends its reader here - so it needs a way out, or the journey ends on a
+# download and a second upload to the tool they wanted in the first place.
+handoff = ["merge-pdf", "compress-pdf", "redact-pdf"]
 lastmod = "2026-09-10"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -76,6 +82,14 @@ og_image_alt = "Unlock a PDF in your browser, without uploading it"
 # card's heading is `name` above and its footer is the same line on every
 # card, so this is the only part of it that belongs to this tool.
 og_card = "Take off the password and the restrictions, without the document leaving your machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  connect-src carries blob: because the carry-on row reads the unlocked file
+  back out of this page before parking it for the next tool. blob: names
+  bytes inside this page; it gains no reach over the network, and nothing
+  else here is widened."""
 
 # --- the pledge block --------------------------------------------------------
 
@@ -452,3 +466,10 @@ hint = "or click to browse &mdash; one document at a time"
 # with no open password and printing and copying switched off, which is the
 # commonest protected file in the world. See src/example.js.
 example = true
+
+# The carry-on row reads the finished result back out of this page's own
+# blob: URL before parking it for the next tool (see shared/handoff.js), and
+# reading a blob: URL is a fetch the policy has to permit. blob: names bytes
+# inside this page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]

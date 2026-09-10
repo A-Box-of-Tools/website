@@ -33,7 +33,14 @@ css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
 js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "example-photo"]
-lastmod = "2026-09-07"
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the results once there are any.
+# This tool finishes a whole batch at once and the row carries all of it,
+# which is the detour worth skipping here - saving twelve files and handing
+# twelve back is the part nobody does twice. Checked against the tools that
+# exist by the build.
+handoff = ["images-to-pdf"]
+lastmod = "2026-09-10"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -53,7 +60,10 @@ og_card = "Name the size you need and it finds the least compression that gets t
 csp_note = """
   img-src needs blob: for the previews and the compressed results this page
   draws from the files you chose, and https: because ad creatives come from
-  anywhere."""
+  anywhere. connect-src carries blob: because the carry-on row reads the
+  finished result back out of this page before parking it for the next
+  tool. blob: names bytes inside this page; neither gains any reach over
+  the network."""
 
 # --- the pledge block --------------------------------------------------------
 
@@ -307,3 +317,10 @@ hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browse
 # shapes would compress to nothing and make this tool look like it works
 # miracles, which is the one thing an example must not do.
 example = true
+
+# The carry-on row reads the finished result back out of this page's own
+# blob: URL before parking it for the next tool (see shared/handoff.js), and
+# reading a blob: URL is a fetch the policy has to permit. blob: names bytes
+# inside this page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]

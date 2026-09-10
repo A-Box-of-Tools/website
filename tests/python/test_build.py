@@ -966,6 +966,36 @@ class BuildTheSite(unittest.TestCase):
                         folder = by_slug[target].split('/')[-1]
                         self.assertIn(f'href="../{folder}/"', page)
 
+    def test_a_tool_that_offers_a_handoff_has_a_result_the_row_can_find(self):
+        """A sender needs somewhere for shared/handoff.js to look.
+
+        The row reads the page's finished work out of the DOM, because it is a
+        frame script and has no access to the tool's own variables. It knows
+        two shapes: the single `#download` anchor a one-result tool declares,
+        and the per-result links a batch tool builds inside `.result-list`. A
+        tool with neither renders the row and then never reveals it - the
+        offer is in the markup, in fifteen languages, and no visitor ever sees
+        it, which is the failure this catches. It is exactly how the row came
+        to be missing from the compressor, the resizer and the rest for as
+        long as the script looked for `#download` alone.
+
+        Checked in each tool's own body.html rather than the built page,
+        because that is where the answer would have to be fixed, and a batch
+        tool's rows do not exist until it has run.
+        """
+        senders = {tool.parent.name
+                   for tool in ROOT.glob('tools/*/tool.toml')
+                   if buildmod.sitelib.load_toml(tool).get('handoff')}
+        self.assertTrue(senders, 'no tool declares handoff targets')
+
+        for slug in sorted(senders):
+            body = (ROOT / 'tools' / slug / 'body.html').read_text(encoding='utf-8')
+            with self.subTest(tool=slug):
+                self.assertTrue(
+                    'id="download"' in body or 'result-list' in body,
+                    f'{slug} offers a handoff but has neither a #download '
+                    'anchor nor a .result-list for the row to read')
+
     def test_a_tool_page_carries_its_work_across_a_language_switch(self):
         """shared/lang-keep.js, on every tool page and nowhere else.
 

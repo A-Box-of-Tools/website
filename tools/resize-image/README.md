@@ -232,3 +232,21 @@ then
   333 result for its 1200 x 1600 original in place;
 - and the whole of the above again against the **minified** build, which is what
   actually deploys.
+
+## Carrying the result on
+
+The resized pictures can go straight into `/compress-image/` without
+being saved first — resize to the dimensions you want, then squeeze the
+file down to a byte budget, which is the order those two jobs actually
+happen in. `handoff` in `tool.toml` names the target and
+`shared/handoff.js` puts a row of links under the results; the whole
+batch travels, not the first row.
+
+What that costs the policy is one directive: `connect-src` carries `blob:`,
+because the row reads the finished result back out of this page before
+parking it for the next tool. So this page does permit `fetch()` of a
+`blob:` URL, and a result can be read back in the page's own console. That
+is the one place this tool's policy differs from a tool with no carry-on
+row, and it is worth knowing before concluding that a `blob:` fetch failing
+somewhere else on the site is a bug. Nothing else is widened, and `blob:`
+names bytes inside this page — it gains no reach over the network.
