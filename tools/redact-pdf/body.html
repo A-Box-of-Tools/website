@@ -6,6 +6,26 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where a password can be taken off, shown only when one is what stopped
+      the file being read.
+
+      A link rather than a sentence of advice because the answer is now a page
+      on this site: it takes the password off in this browser, uploads nothing
+      and rewrites nothing, so pointing at it costs this page none of what it
+      promises. Before that existed the honest answer was "print it back to PDF
+      yourself", which is still in the FAQ and is still true.
+
+      main.js tolerates this element being absent, because the translations
+      that have not caught up do not have it. A locale without it shows the
+      refusal on its own, exactly as every locale did before.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      A password can come off in this browser, with nothing uploaded, using the
+      <a href="../unlock-pdf/">PDF Unlocker</a> on this site &mdash; then bring
+      the unlocked copy back here.
+    </p>
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
 
     <div id="doc-facts" class="doc-facts" hidden>

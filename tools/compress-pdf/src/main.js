@@ -23,6 +23,7 @@ const el = {
   fileFacts: $('file-facts'),
   clearFile: $('clear-file'),
   loadError: $('load-error'),
+  unlockHint: $('unlock-hint'),
   loadNote: $('load-note'),
   inventoryCard: $('inventory-card'),
   verdict: $('verdict'),
@@ -123,6 +124,7 @@ async function load(file) {
     }
   } catch (error) {
     showLoadError(messageFor(error));
+    sayWhereToUnlock(error instanceof EncryptedPdfError);
   } finally {
     picker.done();
   }
@@ -143,6 +145,20 @@ function looksLikePdf(file) {
   return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
 }
 
+/**
+ * Say where a password can be taken off, when a password is what stopped the
+ * file being read.
+ *
+ * Null-tolerant on purpose. The line is in this tool's body.html and in the
+ * translations that have caught up with it; a locale that has not simply goes
+ * on showing the refusal by itself, which is what every locale did before. A
+ * missing line is a page with one sentence fewer, not a page with an exception
+ * thrown on it.
+ */
+function sayWhereToUnlock(locked) {
+  if (el.unlockHint) el.unlockHint.hidden = !locked;
+}
+
 function messageFor(error) {
   // All of them carry a phrase key rather than a sentence: the two below say
   // what kind of file it is, and the reader's own refusals go inside a
@@ -157,6 +173,7 @@ function messageFor(error) {
 
 function reset() {
   loaded = null;
+  sayWhereToUnlock(false);
   el.fileRow.hidden = true;
   el.result.hidden = true;
   el.progress.hidden = true;
