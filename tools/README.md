@@ -43,7 +43,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Most locked PDFs need no password at all. This one says which kind you have before it touches it. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
-| [Bank Statement Converter](bank-statement-to-csv/) | `/bank-statement-to-csv/` | Every row is proved against the running balance printed on your statement. |
+| [PDF to CSV](bank-statement-to-csv/) | `/bank-statement-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
 | [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Extract Audio from Video](extract-audio-from-video/) | `/extract-audio-from-video/` | Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded. |
