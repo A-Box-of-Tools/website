@@ -1,7 +1,7 @@
 <main id="main">
   <!-- Step 1 &mdash; the file -->
   <section class="card">
-    <h2><span class="step">1</span> Choose a statement</h2>
+    <h2><span class="step">1</span> Choose a PDF</h2>
 
     {% include "partials/file-picker.html" %}
 
@@ -100,15 +100,21 @@
     <h2><span class="step">2</span> Check what it read</h2>
 
     <p class="card-lede">
-      A statement looks like a table and is not one: it is text placed at
-      positions on a page, and the columns are strips of paper nobody printed
-      in. So the table below was worked out rather than read, and the line under
-      it is the tool checking its own work &mdash; if your statement carries a
-      running balance, every row can be proved against the row above it.
+      A PDF looks as though it holds tables and does not: it holds text
+      placed at positions on a page, and the columns are strips of paper
+      nobody printed in. So every table below was worked out rather than
+      read. Where one of them carries a running balance, the line above the
+      tables is the tool checking its own work &mdash; every row proved
+      against the row before it.
     </p>
 
     <p id="summary" class="verdict" role="status" aria-live="polite"></p>
     <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">Which table</label>
+      <select id="table-pick"></select>
+    </div>
 
     <div class="field" id="order-field" hidden>
       <label for="date-order">Dates are written</label>
@@ -119,15 +125,9 @@
       <p class="field-note" id="order-note"></p>
     </div>
 
-    <div class="preview-wrap">
-      <table id="preview" class="preview">
-        <caption id="preview-caption" class="preview-caption"></caption>
-        <thead><tr id="preview-head"></tr></thead>
-        <tbody id="preview-body"></tbody>
-      </table>
-    </div>
-
-    <p id="preview-more" class="field-summary" hidden></p>
+    <!-- One captioned table per table found, built by main.js: how many there
+         are is not known until the file is read. -->
+    <div id="previews" class="previews"></div>
   </section>
 
   <!-- Step 3 &mdash; the file -->
@@ -147,40 +147,42 @@
     the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="load.notpdf">That is not a PDF. This tool reads the table out of a PDF statement.</span>
-    <span data-phrase="load.encrypted">This statement has a password on it. Taking that off is a different job from
-      reading the table out of it, and this tool will not do it behind your back.</span>
+    <span data-phrase="load.notpdf">That is not a PDF. This tool reads the tables out of a PDF.</span>
+    <span data-phrase="load.encrypted">This PDF has a password on it. Taking that off is a different job from
+      reading its tables, and this tool will not do it behind your back.</span>
     <span data-phrase="error.broke">Something on this page stopped working ({detail}). Reload and try again.</span>
     <span data-phrase="load.broken">This file could not be opened as a PDF ({detail}).</span>
     <span data-phrase="load.nopages">This opened, but no pages could be found in it.</span>
-    <span data-phrase="scan.notext">There is no text in this PDF: its pages are pictures of a statement.</span>
-    <span data-phrase="scan.nocolumns">The text on these pages is not laid out in columns, so there is no table here
-      to take apart.</span>
-    <span data-phrase="scan.norows">There are columns here, but no row of them starts with a date, so nothing on
-      these pages looks like a list of transactions.</span>
-    <span data-phrase="sum.rows.one">{rows} transaction, read from {pages}.</span>
-    <span data-phrase="sum.rows.many">{rows} transactions, read from {pages}.</span>
-    <span data-phrase="sum.skipped">{n} more lines were headings, page numbers or carried totals, and were left
-      out.</span>
-    <span data-phrase="sum.wrapped">{n} wrapped lines were folded into the row above.</span>
+    <span data-phrase="scan.notext">There is no text in this PDF: its pages are pictures of pages.</span>
+    <span data-phrase="scan.notables">Nothing on these pages is laid out as a table &mdash; no two lines line up
+      into columns &mdash; so there is nothing here to turn into rows.</span>
+    <span data-phrase="sum.one">One table, {rows}, read from {pages}.</span>
+    <span data-phrase="sum.many">{tables}, {rows} in all, read from {pages}.</span>
+    <span data-phrase="table.label">Table {n} &middot; page {page} &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">All {tables}, one after another</span>
+    <span data-phrase="check.intable">Table {n}: {verdict}</span>
+    <span data-phrase="fact.shape">{rows} in {columns}</span>
+    <span data-phrase="fact.tables">{rows} in {tables}, one after another</span>
+    <span data-phrase="count.rows.one">{n} row</span>
+    <span data-phrase="count.rows.many">{n} rows</span>
+    <span data-phrase="count.columns.one">{n} column</span>
+    <span data-phrase="count.columns.many">{n} columns</span>
+    <span data-phrase="count.tables.one">{n} table</span>
+    <span data-phrase="count.tables.many">{n} tables</span>
     <span data-phrase="check.held">The running balance adds up on every row, so the amounts were read correctly
       and no row was missed or counted twice.</span>
     <span data-phrase="check.broke">The running balance adds up on {held} of {links} rows. Check {where} against
       the PDF before you use this.</span>
-    <span data-phrase="check.none">This statement prints no running balance, so there was nothing to check the
-      rows against. They are what the pages say; nothing here proves it.</span>
     <span data-phrase="check.row">row {n}</span>
     <span data-phrase="check.rows">rows {list}</span>
-    <span data-phrase="order.found">Worked out from a day past the twelfth on this statement, so this is what it
+    <span data-phrase="order.found">Worked out from a day past the twelfth in this document, so this is what it
       says rather than a guess.</span>
-    <span data-phrase="order.guessed">Every date on this statement falls on or before the twelfth, so nothing in it
+    <span data-phrase="order.guessed">Every date in this document falls on or before the twelfth, so nothing in it
       says which way round they go. Change this if the dates below look wrong.</span>
-    <span data-phrase="preview.caption">The first {shown} of {rows} rows</span>
-    <span data-phrase="preview.all">All {rows} rows</span>
-    <span data-phrase="preview.more">Only the first {shown} are shown here. The download has all {rows}.</span>
+    <span data-phrase="preview.more">Only the first {shown} rows of this table are shown here. The download has
+      all of them.</span>
     <span data-phrase="result.name">{name}.csv</span>
-    <span data-phrase="fact.columns">{n} columns</span>
-    <span data-phrase="fact.dates">Dates written as YYYY-MM-DD</span>
+    <span data-phrase="fact.dates">Dates with a year written as YYYY-MM-DD</span>
     <span data-phrase="fact.amounts">Amounts as plain signed numbers</span>
     <span data-phrase="fact.encoding">UTF-8, RFC 4180 quoting</span>
     <span data-phrase="count.pages.one">{n} page</span>

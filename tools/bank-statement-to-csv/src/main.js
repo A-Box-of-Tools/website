@@ -7,7 +7,8 @@ import { sizeText } from './shared/format.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { pagesOf, readPage } from './shared/pdf-text.js';
-import { findColumns, intoCells, pageRuns } from './layout.js';
+import { pageRuns } from './layout.js';
+import { cellsOf, findTables } from './tables.js';
 import { buildTable } from './rows.js';
 import { checkBalance } from './check.js';
 import { columnLetter, toCsv } from './csv.js';
@@ -32,13 +33,12 @@ const el = {
   tableCard: $('table-card'),
   summary: $('summary'),
   checkLine: $('check-line'),
+  tableField: $('table-field'),
+  tablePick: $('table-pick'),
   orderField: $('order-field'),
   dateOrder: $('date-order'),
   orderNote: $('order-note'),
-  previewCaption: $('preview-caption'),
-  previewHead: $('preview-head'),
-  previewBody: $('preview-body'),
-  previewMore: $('preview-more'),
+  previews: $('previews'),
   resultCard: $('result-card'),
   download: $('download'),
   resultFacts: $('result-facts'),
@@ -49,22 +49,26 @@ const el = {
 const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 const offerCsv = downloadLink(el.download, 'text/csv;charset=utf-8');
 
-/** How many rows the page draws. The download always has all of them; this is
- *  only how much of the check a person is shown without scrolling for a
+/** How many rows each table draws on the page. The download always has all of
+ *  them; this is only how much a person is shown without scrolling for a
  *  minute. */
 const PREVIEW_ROWS = 25;
 
+/** The picker's value for every table at once. */
+const ALL = 'all';
+
 /**
- * @typedef {object} Statement
+ * @typedef {object} Document
  * @property {File} file
- * @property {{number: number, lines: object[]}[]} pages
- * @property {{x0: number, x1: number}[]} columns
+ * @property {number} pages
+ * @property {import('./tables.js').Table[]} tables
  * @property {string} mark    the decimal point this document uses
  * @property {'dmy'|'mdy'} order
+ * @property {string} pick    ALL, or the index of one table
  */
 
-/** @type {Statement|null} */
-let statement = null;
+/** @type {Document|null} */
+let current = null;
 
 /* ------------------------------------------------------------------ loading */
 
@@ -82,17 +86,24 @@ el.clearFile.addEventListener('click', () => {
   picker.waiting();
 });
 
-// Re-reading rather than re-parsing: the pages are already in memory, and only
-// what a date means changes. It is instant, which is what lets this be a
-// control rather than a question asked before anything is shown.
+// Re-reading rather than re-parsing, for both controls: the tables are already
+// found, and only which of them to show or what a date means has changed. It is
+// instant, which is what lets these be controls rather than questions asked
+// before anything is shown.
 el.dateOrder.addEventListener('change', () => {
-  if (!statement) return;
-  statement.order = el.dateOrder.value === 'mdy' ? 'mdy' : 'dmy';
+  if (!current) return;
+  current.order = el.dateOrder.value === 'mdy' ? 'mdy' : 'dmy';
+  render();
+});
+
+el.tablePick.addEventListener('change', () => {
+  if (!current) return;
+  current.pick = el.tablePick.value;
   render();
 });
 
 function reset() {
-  statement = null;
+  current = null;
   clearLoadError();
   offerCsv.clear();
   el.lockedHelp.hidden = true;
@@ -100,17 +111,18 @@ function reset() {
   el.fileRow.hidden = true;
   el.tableCard.hidden = true;
   el.resultCard.hidden = true;
+  el.tableField.hidden = true;
   el.orderField.hidden = true;
+  el.previews.replaceChildren();
 }
 
 /**
- * Read a statement and take it apart.
+ * Read a PDF and find the tables in it.
  *
  * Every page is read before anything is decided, because both conventions this
- * tool has to settle - which character is the decimal point, and which way
- * round the dates go - are properties of the document rather than of a page,
- * and a first page that happened to be unanimous would settle them wrongly for
- * the rest.
+ * tool settles - which character is the decimal point, and which way round the
+ * dates go - are properties of the document rather than of a page, and a first
+ * page that happened to be unanimous would settle them wrongly for the rest.
  */
 async function load(file) {
   if (!file) return;
@@ -138,36 +150,39 @@ async function load(file) {
     }
 
     picker.done();
-    el.fileFacts.textContent = `${countPages(pageDicts.length)} · ${size(bytes.length)}`;
+    el.fileFacts.textContent = `${countOf('pages', pageDicts.length)} · ${size(bytes.length)}`;
 
-    const all = pages.flatMap((page) => page.lines);
-    if (!all.length) {
+    if (!pages.some((page) => page.lines.length)) {
       refuse(phrase('scan.notext'));
       el.scannedHelp.hidden = false;
       return;
     }
 
-    const columns = findColumns(all);
-    if (columns.length < 2) {
-      refuse(phrase('scan.nocolumns'));
+    const tables = findTables(pages);
+    if (!tables.length) {
+      refuse(phrase('scan.notables'));
       return;
     }
 
-    const cells = all.map((line) => intoCells(line, columns));
-    const mark = decimalMark(cells.flat().filter(looksNumeric));
-    const found = dateOrder(cells.flat());
+    const cells = tables.flatMap((table) => table.blocks
+      .flatMap((block) => block.lines.flatMap((line) => cellsOf(line, table.columns))));
+    const found = dateOrder(cells);
 
-    statement = {
-      file, pages, columns, mark,
+    current = {
+      file,
+      pages: pages.length,
+      tables,
+      mark: decimalMark(cells.filter(looksNumeric)),
       order: found ?? 'dmy',
+      pick: ALL,
     };
 
-    // The control is offered only where it would change something. A statement
-    // written in ISO, or with its months spelled out, has already said which
-    // way round its dates are on every row, and asking about it would invite
-    // somebody to "fix" dates that were never in doubt.
-    if (hasAmbiguousDates(cells.flat())) {
-      el.dateOrder.value = statement.order;
+    // The date control is offered only where it would change something. A
+    // document written in ISO, or with its months spelled out, has already
+    // said which way round its dates are, and asking would invite somebody to
+    // "fix" dates that were never in doubt.
+    if (hasAmbiguousDates(cells)) {
+      el.dateOrder.value = current.order;
       el.orderNote.textContent = phrase(found ? 'order.found' : 'order.guessed');
       el.orderField.hidden = false;
     }
@@ -183,14 +198,15 @@ async function load(file) {
  *
  * `waiting()` is the half worth remembering: the picker wakes the later cards
  * the moment files are handed over, which is right for a file that works and
- * wrong for one that does not - without this, the table and the download sit
- * live and empty under a line saying the statement could not be read.
+ * wrong for one that does not - without this, the tables and the download sit
+ * live and empty under a line saying the file could not be read.
  */
 function refuse(message) {
   picker.done();
   picker.waiting();
   el.tableCard.hidden = true;
   el.resultCard.hidden = true;
+  el.tableField.hidden = true;
   el.orderField.hidden = true;
   offerCsv.clear();
   showLoadError(message);
@@ -212,19 +228,21 @@ function fail(error) {
   refuse(phrase('load.broken', { detail: error?.message ?? '' }));
 }
 
-/* ----------------------------------------------------------------- the table */
+/* ---------------------------------------------------------------- the tables */
 
-/** Build the table from what is already parsed, and show it. */
+/** Build every table from what is already found, and show the ones picked. */
 function render() {
-  const { pages, columns, order, mark } = statement;
-  const cellsOf = (line) => intoCells(line, columns);
-  const table = buildTable(pages, cellsOf, { order, mark });
+  const { tables, order, mark, pages } = current;
 
-  if (!table.rows.length) {
-    el.tableCard.hidden = true;
-    el.resultCard.hidden = true;
-    offerCsv.clear();
-    showLoadError(phrase('scan.norows'));
+  // Numbered after the empty ones are dropped, so the labels count the tables
+  // a person can actually see.
+  const built = tables
+    .map((table) => buildTable(table, { order, mark }))
+    .filter((table) => table.rows.length)
+    .map((table, index) => ({ ...table, n: index + 1 }));
+
+  if (!built.length) {
+    refuse(phrase('scan.notables'));
     return;
   }
 
@@ -232,34 +250,82 @@ function render() {
   el.tableCard.hidden = false;
   el.resultCard.hidden = false;
 
-  const proof = checkBalance(table.rows, table.moneyColumns, mark);
-  const out = normalise(table, proof, order, mark);
+  offerPicks(built);
+  const shown = current.pick === ALL
+    ? built
+    : built.filter((table) => String(table.n) === current.pick);
 
-  el.summary.textContent = phrase(
-    table.rows.length === 1 ? 'sum.rows.one' : 'sum.rows.many',
-    { rows: table.rows.length, pages: countPages(pages.length) });
+  const rows = built.reduce((sum, table) => sum + table.rows.length, 0);
+  el.summary.textContent = built.length === 1
+    ? phrase('sum.one', { rows: countOf('rows', rows), pages: countOf('pages', pages) })
+    : phrase('sum.many', {
+      tables: countOf('tables', built.length),
+      rows: countOf('rows', rows),
+      pages: countOf('pages', pages),
+    });
 
-  sayCheck(proof);
-  drawPreview(out);
+  const outputs = shown.map((table) => {
+    const proof = checkBalance(table.rows, table.moneyColumns, mark);
+    return { table, proof, grid: normalise(table, proof, order, mark) };
+  });
 
-  const csv = toCsv(out);
-  offerCsv.offer(csv, phrase('result.name', { name: baseName(statement.file.name) }));
-  facts(out, csv);
+  sayCheck(outputs, shown.length > 1);
+  drawPreviews(outputs);
+
+  // Every table's own heading row, one table after another with an empty line
+  // between: the shape a spreadsheet opens as blocks, and the one a person
+  // splitting the file by hand would choose.
+  const grid = outputs.flatMap(({ grid: g }, index) => (index ? [[], ...g] : g));
+  const csv = toCsv(grid);
+  offerCsv.offer(csv, phrase('result.name', { name: baseName(current.file.name) }));
+  facts(outputs, csv);
+}
+
+/** The picker: every table at once, or any one of them. Hidden when there is
+ *  only one, because a choice of one is not a choice. */
+function offerPicks(built) {
+  el.tableField.hidden = built.length < 2;
+  if (built.length < 2) {
+    current.pick = ALL;
+    return;
+  }
+
+  const options = [
+    [ALL, phrase('pick.all', { tables: countOf('tables', built.length) })],
+    ...built.map((table) => [String(table.n), labelOf(table)]),
+  ];
+  el.tablePick.replaceChildren(...options.map(([value, text]) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = text;
+    return option;
+  }));
+
+  if (!options.some(([value]) => value === current.pick)) current.pick = ALL;
+  el.tablePick.value = current.pick;
+}
+
+function labelOf(table) {
+  return phrase('table.label', {
+    n: table.n,
+    page: table.page,
+    rows: countOf('rows', table.rows.length),
+    columns: countOf('columns', table.headers.length),
+  });
 }
 
 /**
- * The rows as they will be written: dates as ISO, money as plain signed
- * numbers, and everything else exactly as the page had it.
+ * The rows as they will be written: dates with a year as ISO, money as plain
+ * signed numbers, and everything else exactly as the page had it.
  *
  * Only columns the arithmetic identified as money are rewritten. A column of
  * digits this tool merely *could* parse - an account number, a cheque number -
  * is left alone, because turning 0001234 into 1234.00 would be destroying data
- * to make it look tidier.
+ * to make it look tidier. A date with no year is left alone for the same
+ * reason: the year it belongs to would be a guess.
  */
 function normalise(table, proof, order, mark) {
-  const money = new Set(proof
-    ? [proof.balance, ...proof.amounts]
-    : table.moneyColumns);
+  const money = new Set(proof ? [proof.balance, ...proof.amounts] : table.moneyColumns);
 
   const headers = table.headers.map((given, at) => given || columnLetter(at));
   const rows = table.rows.map((row) => row.cells.map((cell, at) => {
@@ -272,66 +338,107 @@ function normalise(table, proof, order, mark) {
   return [headers, ...rows];
 }
 
-/** The line that says whether any of this is proven. */
-function sayCheck(proof) {
+/**
+ * The line that says whether any of this is proven.
+ *
+ * Only said where there is something to prove it against: a table with a
+ * running balance. Most tables have none, and a line on every one of them
+ * saying so would be a line people learn to skip - including on the tables
+ * where it matters.
+ */
+function sayCheck(outputs, several) {
   el.checkLine.classList.remove('held', 'broke');
+  el.checkLine.textContent = '';
 
-  if (!proof) {
-    el.checkLine.textContent = phrase('check.none');
-    return;
-  }
+  const proven = outputs.filter(({ proof }) => proof);
+  if (!proven.length) return;
 
-  if (!proof.broken.length) {
+  const broken = proven.find(({ proof }) => proof.broken.length);
+  const { table, proof } = broken ?? proven[0];
+
+  let verdict;
+  if (broken) {
+    const where = proof.broken.length === 1
+      ? phrase('check.row', { n: proof.broken[0] })
+      : phrase('check.rows', { list: proof.broken.join(', ') });
+    verdict = phrase('check.broke', { held: proof.held, links: proof.links, where });
+    el.checkLine.classList.add('broke');
+  } else {
+    verdict = phrase('check.held');
     el.checkLine.classList.add('held');
-    el.checkLine.textContent = phrase('check.held');
-    return;
   }
 
-  const where = proof.broken.length === 1
-    ? phrase('check.row', { n: proof.broken[0] })
-    : phrase('check.rows', { list: proof.broken.join(', ') });
-
-  el.checkLine.classList.add('broke');
-  el.checkLine.textContent = phrase('check.broke', {
-    held: proof.held, links: proof.links, where,
-  });
+  el.checkLine.textContent = several ? phrase('check.intable', { n: table.n, verdict }) : verdict;
 }
 
-function drawPreview([headers, ...rows]) {
-  el.previewHead.replaceChildren(...headers.map((name) => {
-    const cell = document.createElement('th');
-    cell.scope = 'col';
-    cell.textContent = name;
-    return cell;
-  }));
+function drawPreviews(outputs) {
+  el.previews.replaceChildren(...outputs.map(({ table, grid: [headers, ...rows] }) => {
+    const block = document.createElement('div');
+    block.className = 'preview-block';
+    const wrap = document.createElement('div');
+    wrap.className = 'preview-wrap';
+    block.append(wrap);
 
-  const shown = rows.slice(0, PREVIEW_ROWS);
-  el.previewBody.replaceChildren(...shown.map((row) => {
-    const line = document.createElement('tr');
-    line.replaceChildren(...row.map((value) => {
-      const cell = document.createElement('td');
-      cell.textContent = value;
+    const element = document.createElement('table');
+    element.className = 'preview';
+
+    const caption = document.createElement('caption');
+    caption.className = 'preview-caption';
+    caption.textContent = labelOf(table);
+
+    const head = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    headRow.replaceChildren(...headers.map((name) => {
+      const cell = document.createElement('th');
+      cell.scope = 'col';
+      cell.textContent = name;
       return cell;
     }));
-    return line;
+    head.append(headRow);
+
+    const body = document.createElement('tbody');
+    body.replaceChildren(...rows.slice(0, PREVIEW_ROWS).map((row) => {
+      const line = document.createElement('tr');
+      line.replaceChildren(...row.map((value) => {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        return cell;
+      }));
+      return line;
+    }));
+
+    element.append(caption, head, body);
+    wrap.append(element);
+
+    // Outside the scrolling box, so a wide table does not carry it away.
+    if (rows.length > PREVIEW_ROWS) {
+      const more = document.createElement('p');
+      more.className = 'field-summary';
+      more.textContent = phrase('preview.more', { shown: PREVIEW_ROWS });
+      block.append(more);
+    }
+
+    return block;
   }));
-
-  el.previewCaption.textContent = rows.length > shown.length
-    ? phrase('preview.caption', { shown: shown.length, rows: rows.length })
-    : phrase('preview.all', { rows: rows.length });
-
-  el.previewMore.hidden = rows.length <= shown.length;
-  el.previewMore.textContent = phrase('preview.more',
-    { shown: shown.length, rows: rows.length });
 }
 
-function facts([headers], csv) {
-  const lines = [
-    phrase('fact.columns', { n: headers.length }),
-    phrase('fact.dates'),
-    phrase('fact.amounts'),
-    `${phrase('fact.encoding')} · ${size(new Blob([csv]).size)}`,
-  ];
+function facts(outputs, csv) {
+  const rows = outputs.reduce((sum, { table }) => sum + table.rows.length, 0);
+  const lines = [outputs.length === 1
+    ? phrase('fact.shape', {
+      rows: countOf('rows', rows),
+      columns: countOf('columns', outputs[0].table.headers.length),
+    })
+    : phrase('fact.tables', {
+      rows: countOf('rows', rows),
+      tables: countOf('tables', outputs.length),
+    })];
+
+  if (outputs.some(({ table }) => table.dateColumn >= 0)) lines.push(phrase('fact.dates'));
+  if (outputs.some(({ table, proof }) => proof || table.moneyColumns.length)) {
+    lines.push(phrase('fact.amounts'));
+  }
+  lines.push(`${phrase('fact.encoding')} · ${size(new Blob([csv]).size)}`);
 
   el.resultFacts.replaceChildren(...lines.map((text) => {
     const item = document.createElement('li');
@@ -342,12 +449,25 @@ function facts([headers], csv) {
 
 /* ---------------------------------------------------------------- the words */
 
-const countPages = (n) => phrase(n === 1 ? 'count.pages.one' : 'count.pages.many', { n });
+/** Every key spelled out, so that searching for one finds where it is used. */
+const COUNTS = {
+  pages: ['count.pages.one', 'count.pages.many'],
+  rows: ['count.rows.one', 'count.rows.many'],
+  columns: ['count.columns.one', 'count.columns.many'],
+  tables: ['count.tables.one', 'count.tables.many'],
+};
+
+/** "1 page", "3 tables": a count in the words for the thing it counts. */
+function countOf(thing, n) {
+  const [one, many] = COUNTS[thing];
+  return phrase(n === 1 ? one : many, { n });
+}
+
 const size = (n) => sizeText(n, phrase, { under: 'size.bytes' });
 
-/** The statement's name without its extension, for the CSV beside it. */
+/** The document's name without its extension, for the CSV beside it. */
 function baseName(name) {
-  return name.replace(/\.[^.]+$/, '') || 'statement';
+  return name.replace(/\.[^.]+$/, '') || 'tables';
 }
 
 // The frame draws the privacy panel but leaves the opening of it to the tool,

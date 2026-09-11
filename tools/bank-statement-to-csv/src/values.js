@@ -144,6 +144,61 @@ export function parseAmount(text, mark = '.') {
   return Number.isFinite(number) ? sign * number : null;
 }
 
+/** A month by name and a day beside it, in either order, with no year - the
+ *  way a card statement writes every date on it. */
+const PARTIAL_DATE = /^(?:(\d{1,2})[\s-]([A-Za-z]{3,9})\.?|([A-Za-z]{3,9})\.?\s(\d{1,2}))$/;
+
+const PERCENT = /^[-+(]?\d[\d.,\s]*%\)?$/;
+
+/**
+ * Does this read as a date at all, year or no year?
+ *
+ * Only ever asked in order to tell a row of data from a row of headings, never
+ * to rewrite anything: a date with no year is left exactly as it was written,
+ * because the year it belongs to is a guess, and a converter has no business
+ * putting a guess in somebody's spreadsheet.
+ */
+export function looksLikeDate(text) {
+  const value = String(text).trim();
+  if (parseDate(value) !== null) return true;
+  if (/^\d{1,2}[/.-]\d{1,2}$/.test(value)) return true;
+  const partial = PARTIAL_DATE.exec(value);
+  if (!partial) return false;
+  const name = (partial[2] ?? partial[3]).toLowerCase();
+  return MONTHS.has(name.slice(0, 4)) || MONTHS.has(name.slice(0, 3));
+}
+
+/**
+ * Is this a value - a number, a percentage, a date - rather than a word?
+ *
+ * What tells a table's headings from its rows: headings are words, and the
+ * first line with a value in it is where the data starts.
+ */
+export function isValue(text) {
+  const value = String(text).trim();
+  return value !== '' && (looksNumeric(value) || PERCENT.test(value) || looksLikeDate(value));
+}
+
+/**
+ * Is this data rather than a word of a heading?
+ *
+ * Wider than a value. A phone number, an account number and an invoice
+ * reference are none of them numbers anyone would add up, and all of them are
+ * rows rather than headings - a contact list or an account box read its first
+ * rows as a stacked heading before this. A run of three digits or more says
+ * data, unless it is a year: "Total on May 15, 2025" is a heading, and so is
+ * a column called 2024.
+ */
+export function isData(text) {
+  const value = String(text).trim();
+  // Checked before anything that parses it as a number, which a bare year also
+  // is: an annual report's columns are headed 2023 and 2024, and a table whose
+  // headings read as data has no headings at all.
+  if (/^(?:19|20)\d\d$/.test(value)) return false;
+  if (isValue(value)) return true;
+  return (value.match(/\d{3,}/g) ?? []).some((digits) => !/^(?:19|20)\d\d$/.test(digits));
+}
+
 /** An amount as a spreadsheet wants it: a plain signed decimal, point first,
  *  no grouping, and the cents kept even when they are zero. */
 export function formatAmount(value) {
