@@ -1,7 +1,7 @@
 #
 # Guide: is it safe to upload a bank statement?
 #
-# The guide for /bank-statement-to-csv/, and the one on this site where the
+# The guide for /pdf-to-csv/, and the one on this site where the
 # honest answer is furthest from "it depends". A statement is the densest
 # personal document most people own - every payee, every amount, the balance,
 # the account number - and the conversion industry around it is almost
@@ -24,7 +24,7 @@ nav = "Is it safe to upload a bank statement?"
 group = "before-you-upload"
 # The tool this guide is about. That one key produces the link in both
 # directions; never add a second by hand.
-tool = "bank-statement-to-csv"
+tool = "pdf-to-csv"
 
 title = "Is It Safe to Upload a Bank Statement to Convert It?"
 description = "A statement is every payee, every amount and your balance in one file. Here is what a converter receives, what the careful ones do with it, and how to tell whether the upload needed to happen at all."

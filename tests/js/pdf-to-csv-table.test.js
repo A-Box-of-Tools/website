@@ -17,10 +17,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { findTables } from '../../tools/bank-statement-to-csv/src/tables.js';
-import { buildTable } from '../../tools/bank-statement-to-csv/src/rows.js';
-import { checkBalance } from '../../tools/bank-statement-to-csv/src/check.js';
-import { pageRuns } from '../../tools/bank-statement-to-csv/src/layout.js';
+import { findTables } from '../../tools/pdf-to-csv/src/tables.js';
+import { buildTable } from '../../tools/pdf-to-csv/src/rows.js';
+import { checkBalance } from '../../tools/pdf-to-csv/src/check.js';
+import { pageRuns } from '../../tools/pdf-to-csv/src/layout.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { pagesOf, readPage } from '../../shared/js/pdf-text.js';
 import { base14Widths, WIN_ANSI } from '../../shared/js/pdf-base14.js';

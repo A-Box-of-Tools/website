@@ -6,11 +6,14 @@
 # footer - comes from templates/tool.html, and the parts that are true of the
 # whole site, the Content-Security-Policy among them, from config/site.toml.
 #
-# It began as a bank statement converter and became a PDF table converter when
-# the first real statement that went through it had two transactions, five
-# other tables and a sidebar of small print, and a tool that only wanted the
-# transactions found nothing at all. The slug stayed: it is the address the
-# page has always had, and a statement is still the document most people bring.
+# It began as a bank statement converter at /bank-statement-to-csv/ and became
+# a PDF table converter when the first real statement that went through it had
+# two transactions, five other tables and a sidebar of small print, and a tool
+# that only wanted the transactions found nothing at all. The address followed
+# the name a release later: "pdf to csv" is what somebody holding any table
+# searches for, and a page named for one kind of document was telling everyone
+# else it was not for them. The old address is in [redirects] in
+# config/site.toml, so every link and bookmark to it still arrives here.
 #
 # The thing to hold on to while editing the prose below: this tool infers. It
 # is not reading tables out of the file, because there are no tables in the
@@ -21,7 +24,7 @@
 # what the pages say" into "this is correct".
 #
 
-slug = "bank-statement-to-csv"
+slug = "pdf-to-csv"
 name = "PDF to CSV"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
