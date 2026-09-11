@@ -18,31 +18,40 @@ source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
 
-# Languages built and readable at their own addresses, and advertised nowhere:
-# no sitemap entry, no hreflang, no switcher link, no feed, and `noindex` on
-# every page. A reader who has one of these bookmarked still gets it, and it is
-# still translated; the site simply stops offering it.
+# Languages that are no longer built here, and are still served: frozen as they
+# were deployed in 1.4.2 and kept in A-Box-of-Tools/translations, whose folders
+# the deploy copies into the site at the commit named below. English and
+# Simplified Chinese are the languages the site is maintained in.
 #
-# Not a judgement on the translations, which are finished. It is a judgement on
-# who reads them. Over the 28 days to 6 September 2026 the site was landed on
-# 56,713 times: 99.05% of those arrivals were on an English page and 0.95% on
-# all fourteen translations put together. Only Chinese had a readership worth
-# the name - 395, from China, Hong Kong and Singapore. The best of the rest was
-# Arabic on 35, the worst were Italian, Indonesian and Traditional Chinese on
-# one apiece, and zh-TW's single reader was in Canada while Hong Kong and
-# Taiwan were landing on the Simplified pages anyway.
+# Why. Every change to a tool in English had to be made again in each
+# translated copy of its page, or the build refused it, and nearly nobody was
+# reading the copies. Over the 28 days to 6 September 2026 the site was landed
+# on 56,713 times: 99.05% of arrivals were on an English page and 0.95% on all
+# fourteen translations together. Only Chinese had a readership worth the name
+# - 395, from China, Hong Kong and Singapore. The best of the rest was Arabic on
+# 35, and Italian, Indonesian and Traditional Chinese had one apiece. These
+# thirteen were already out of the sitemap, the hreflang sets and the switcher,
+# with `noindex` on every page, because at 102 URLs a locale they were 1,326 of
+# the site's 1,530 indexed pages and translation at that scale is what Google's
+# spam policy calls an automated transformation. So the work is kept and the
+# upkeep is not: every frozen page still answers at its address, in its
+# language, and nothing written in English after the freeze reaches it.
 #
-# What makes that worth acting on rather than noting: at 102 URLs a locale,
-# these thirteen were 1,326 of the site's 1,530 indexed pages. Google's spam
-# policy names translation among the "automated transformations" that turn into
-# many pages of little value, and a site that is seven-eighths unread
-# translation has that shape whether or not it was built with that intent.
-#
-# Reversible, and meant to be. A language comes off this list the day it has
-# readers, and nothing else about it changes - the pages were never taken away.
-unadvertised_languages = [
+# What a name here does. The build refuses a folder under locales/ for it, so a
+# language cannot be built and copied in over itself; `--check` leaves its
+# folder out of the comparison, since the dist branch holds a copy the build
+# never writes; and the deploy refuses an archive that does not hold exactly
+# these folders. To bring one back, move its sources out of the archive's
+# source/locales/ into locales/, drop it from this list, and translate what
+# English has gained since - see the archive's README.
+frozen_languages = [
   "ar", "de", "es", "fr", "hi", "id", "it", "ja", "ko", "nl", "pt", "tr", "zh-TW",
 ]
+
+# Where the frozen languages are kept, and at which commit. A commit rather
+# than a branch, so a push to the archive reaches abox.tools only through a pull
+# request here that moves this line.
+frozen_archive = { repository = "A-Box-of-Tools/translations", commit = "33407b76dc0a0c5c90cce116d5c1b6e8fc61e38f" }
 
 # The account the site posts from. It is here rather than in the footer markup
 # because it is the same fact twice: the link a reader follows, and the `sameAs`

@@ -282,34 +282,6 @@ jobs:
       GENERATOR: ${{ needs.test.outputs.generator }}
       DEPLOYS: ${{ needs.test.outputs.site == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
       PREVIEWS: ${{ needs.test.outputs.site == 'true' && (github.event_name == 'pull_request' || github.ref == 'refs/heads/dev') }}
-      # WHICH LANGUAGES A PREVIEW CARRIES BESIDES ENGLISH. A full build is
-      # 19,672 files and Cloudflare Pages refuses a deployment over 20,000 -
-      # 73% of those files are byte-identical copies of each other across the
-      # fifteen languages, so a preview of the whole bundle is refused
-      # outright. English is the site root and is always there; these are the
-      # locale directories kept beside it.
-      #
-      # PRODUCTION IS NOT SUBJECT TO ANY OF THIS and never was. It deploys
-      # through the `dist` branch to GitHub Pages, which limits a published
-      # site by size and not by file count - 300 MB of a permitted 1 GB. The
-      # 20,000 belongs to Cloudflare Pages, which serves previews and nothing
-      # else; Cloudflare's part in production is DNS, TLS and response headers.
-      # Confirm it rather than believe it:
-      #
-      #   gh api repos/A-Box-of-Tools/website/pages
-      #     -> "build_type": "legacy", "source": {"branch": "dist"}
-      #
-      # WHY THESE TWO. Chinese is the only translation with readers - 395
-      # arrivals in the 28 days to 6 September, against 35 for the next best -
-      # and Arabic is the one that is right to left, which is where the faults
-      # that only a rendered page shows have actually turned up. Every preview
-      # gets the same three, the release one included: a bundle nobody can look
-      # at because it was refused upload is worth less than a narrow one that
-      # uploads.
-      #
-      # The other twelve are still built, still checked from source and still
-      # deployed. What they do not get is a copy on the preview host.
-      PREVIEW_LOCALES: zh ar
     steps:
       # The version is a tag, so the deploy has to be able to see the tags. The
       # default checkout brings none: it fetches the one commit being deployed
@@ -441,58 +413,63 @@ jobs:
       # or a push to `dev` - reaches the job below through an artifact. A day
       # is plenty: the preview is uploaded within minutes, and the next push
       # builds again.
-      # Hard links rather than a copy, so this costs no bytes and - the part
-      # that matters - the `rm -rf` below removes links out of _preview and
-      # leaves _site, which is what goes to dist, whole. The two are never both
-      # in play on one run, but a directory that publishes production is not
-      # somewhere to rely on that.
-      - name: Assemble the preview
-        if: env.PREVIEWS == 'true'
-        run: |
-          set -euo pipefail
-          mkdir _preview
-          cp -al _site/. _preview/
-
-          # A name in PREVIEW_LOCALES that is not a language is a typo, and a
-          # typo here is invisible in the worst way: the preview simply comes
-          # out missing a language, and nothing says so until somebody reads a
-          # QA run and misreads it as a fault in their own change. So it stops
-          # the build instead.
-          for keep in $PREVIEW_LOCALES; do
-            if [ ! -d "locales/$keep" ]; then
-              echo "::error::PREVIEW_LOCALES names \`$keep\`, which is not a directory under locales/."
-              exit 1
-            fi
-          done
-
-          # The languages are named from locales/ rather than from a list
-          # here, so adding one does not silently stop working: a new language
-          # is dropped from the preview until it is named above, which is the
-          # safe direction to be wrong in.
-          for dir in locales/*/; do
-            lang=$(basename "$dir")
-            case " $PREVIEW_LOCALES " in
-              *" $lang "*) continue ;;
-            esac
-            rm -rf "_preview/$lang"
-          done
-
-          echo "::notice::Preview carries English${PREVIEW_LOCALES:+ and $PREVIEW_LOCALES}: $(find _preview -type f | wc -l) files, from $(find _site -type f | wc -l). The other languages are built and checked, just not uploaded here."
-
+      #
+      # The whole build, as it would go to dist. Previews used to carry
+      # English and two of the fourteen translations, because a build of
+      # fifteen languages was over the 20,000 files Cloudflare Pages accepts in
+      # one deployment. The build is English and Chinese now, a few thousand
+      # files, and the thirteen frozen languages are not built at all - they
+      # are copied into production from A-Box-of-Tools/translations by the
+      # publish step below, and nothing a build writes links to them.
       - name: Hand the build to the preview
         if: env.PREVIEWS == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: site-preview
-          path: _preview/
+          path: _site/
           include-hidden-files: true
           retention-days: 1
+
+      # THE FROZEN LANGUAGES. Thirteen translations are no longer built here:
+      # they are kept as they were deployed in 1.4.2, in the archive that
+      # config/site.toml names, and copied into production at the commit it
+      # names - see `frozen_languages` there for why. Read out of the config
+      # rather than written into this file, so that the list the build refuses,
+      # the list `--check` leaves out and the list copied into production are
+      # one list.
+      - name: Which translations are frozen, and where they are kept
+        id: frozen
+        if: env.DEPLOYS == 'true'
+        run: |
+          python - >> "$GITHUB_OUTPUT" <<'EOF'
+          import tomllib
+          with open('config/site.toml', 'rb') as handle:
+              site = tomllib.load(handle)
+          archive = site['frozen_archive']
+          print(f"repository={archive['repository']}")
+          print(f"commit={archive['commit']}")
+          print(f"languages={' '.join(site['frozen_languages'])}")
+          EOF
+
+      # Only site/: the archive's source/ is the translations' sources, kept
+      # there for the record and never deployed.
+      - name: Fetch the frozen languages
+        if: env.DEPLOYS == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.frozen.outputs.repository }}
+          ref: ${{ steps.frozen.outputs.commit }}
+          path: _frozen
+          sparse-checkout: site
+          persist-credentials: false
 
       - name: Publish to the dist branch
         id: publish
         if: env.DEPLOYS == 'true'
         env:
           SHA: ${{ github.sha }}
+          FROZEN: ${{ steps.frozen.outputs.languages }}
+          FROZEN_COMMIT: ${{ steps.frozen.outputs.commit }}
         run: |
           set -euo pipefail
 
@@ -531,6 +508,29 @@ jobs:
           git -C .publish rm -rq --cached . --ignore-unmatch
           find .publish -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
           cp -a _site/. .publish/
+
+          # The frozen languages beside the build, each exactly as the archive
+          # holds it. Every one has to be there, none may have been built as
+          # well - the build refuses that already, and a copy over a folder it
+          # wrote would undo somebody's revival without a word - and the
+          # archive may hold nothing else, since whatever it holds goes live.
+          [ -n "$FROZEN" ] || { echo '::error::config/site.toml names no frozen languages.'; exit 1; }
+          for lang in $FROZEN; do
+            if [ ! -d "_frozen/site/$lang" ]; then
+              echo "::error::The archive at $FROZEN_COMMIT has no site/$lang."
+              exit 1
+            fi
+            if [ -e "_site/$lang" ]; then
+              echo "::error::$lang is frozen and was built as well."
+              exit 1
+            fi
+            cp -a "_frozen/site/$lang" .publish/
+          done
+          extra=$(comm -13 <(printf '%s\n' $FROZEN | sort) <(ls _frozen/site | sort))
+          if [ -n "$extra" ]; then
+            echo "::error::The archive holds folders that are not frozen languages: $extra"
+            exit 1
+          fi
 
           git -C .publish add -A
 
@@ -746,32 +746,20 @@ jobs:
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
   # AGAINST THE PULL REQUESTS
   #
-  # A PREVIEW IS NEVER THE WHOLE SITE. A full build is over Cloudflare Pages'
-  # 20,000-file limit per deployment, so every preview - the release one
-  # included - carries English, Chinese and Arabic and leaves the other twelve
-  # languages behind. See PREVIEW_LOCALES in the build job for which and why,
-  # and for why production is not subject to the same limit. The pages that are
-  # there are byte for byte the ones that would go to dist; what is missing is
-  # the other twelve languages' copies of them, so the language switcher and
-  # the hreflang links point at some addresses that are not on the preview
-  # host.
+  # A PREVIEW IS THE WHOLE BUILD: English and Chinese, byte for byte what
+  # would go to dist. What it does not have is the thirteen frozen languages,
+  # which no build writes - production gets them from A-Box-of-Tools/
+  # translations in the publish step above - and nothing a build writes links
+  # to them, so no page on a preview points anywhere the preview is missing.
+  # The QA suite takes its languages from `locales/` in the checkout it is
+  # given (`locales()` in A-Box-of-Tools/qa's lib/locales.ts), which is now
+  # Chinese alone, so it asks a preview for exactly what the preview has.
   #
-  # THAT COSTS A CHECK, AND IT IS WORTH KNOWING BEFORE YOU READ ONE. The QA
-  # suite takes its list of languages from the website checkout rather than
-  # from the host it is pointed at - `locales()` in lib/locales.ts over in
-  # A-Box-of-Tools/qa is a readdir of `locales/`. So it asks a preview for
-  # twelve languages that are not on it and calls every one a fault: a preview
-  # run comes back with something like 120 extra failures, all of them either
-  # a locale page that 404ed or the switcher "throwing away" a page's state
-  # because the language it switched to is not there. None of them are faults
-  # in the change under review. For scale, a full preview ran 4053 passed and
-  # 1 failed on #401; the first narrowed one ran 3905 passed and 124 failed.
-  #
-  # So `qa/preview` is red for a reason that has nothing to do with the pull
-  # request carrying it, and it stays that way until the suite is taught which
-  # languages its host actually has - which is a change in that repository,
-  # not this one. The post-deploy run, against production, is the one that
-  # tests all fifteen and can be believed unreservedly.
+  # It used to be otherwise. A fifteen-language build was over Cloudflare
+  # Pages' 20,000 files per deployment, previews carried three languages of
+  # fifteen, and until the suite learned to ask the host which languages it
+  # had, a preview run came back with about 120 failures that were all
+  # missing locale pages.
   #
   # Until this job existed the browser suite only ever saw a change after it
   # was live: merge, build, push to dist, Pages, and then QA (post-deploy)
