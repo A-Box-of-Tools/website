@@ -1,0 +1,26 @@
+{
+  "id": "/zh/dicom-viewer/",
+  "name": "DICOM \u9605\u7247\u5668",
+  "short_name": "DICOM \u9605\u7247\u5668",
+  "description": "CT\u3001MR\u3001X \u5149\u548c\u8d85\u58f0\uff0c\u8fde\u7a97\u5bbd\u7a97\u4f4d\u3001\u5934\u4fe1\u606f\u548c\u6d4b\u91cf\u4e00\u8d77\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

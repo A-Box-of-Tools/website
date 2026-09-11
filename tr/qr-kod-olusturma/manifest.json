@@ -1,0 +1,26 @@
+{
+  "id": "/tr/qr-kod-olusturma/",
+  "name": "QR ve Barkod \u00dcreteci",
+  "short_name": "QR ve Barkod \u00dcreteci",
+  "description": "Yaz\u0131n, koda d\u00f6n\u00fc\u015fs\u00fcn. Bir tane \u00fcretmek i\u00e7in hi\u00e7bir \u015fey g\u00f6nderilmez.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

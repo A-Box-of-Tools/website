@@ -1,0 +1,26 @@
+{
+  "id": "/fr/decouper-un-gif-en-images/",
+  "name": "D\u00e9coupeur de GIF",
+  "short_name": "D\u00e9coupeur de GIF",
+  "description": "Chaque image du GIF ressort en PNG.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

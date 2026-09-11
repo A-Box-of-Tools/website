@@ -1,0 +1,26 @@
+{
+  "id": "/it/dividere-gif-in-fotogrammi/",
+  "name": "Divisore di GIF",
+  "short_name": "Divisore di GIF",
+  "description": "Ogni fotogramma fuori, nel suo PNG.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

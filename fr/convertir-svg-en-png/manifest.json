@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-svg-en-png/",
+  "name": "SVG en image",
+  "short_name": "SVG en image",
+  "description": "Vous donnez la taille. Un vectoriel n'en a aucune \u00e0 perdre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

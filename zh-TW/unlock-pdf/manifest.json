@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/unlock-pdf/",
+  "name": "PDF \u89e3\u9396",
+  "short_name": "PDF \u89e3\u9396",
+  "description": "\u5927\u591a\u6578\u300c\u52a0\u4e86\u5bc6\u300d\u7684 PDF \u5176\u5be6\u6839\u672c\u4e0d\u7528\u5bc6\u78bc\u3002\u9019\u4e00\u9801\u6703\u5148\u544a\u8a34\u4f60\u624b\u4e0a\u662f\u54ea\u4e00\u7a2e\uff0c\u518d\u52d5\u5b83\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

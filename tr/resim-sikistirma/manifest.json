@@ -1,0 +1,26 @@
+{
+  "id": "/tr/resim-sikistirma/",
+  "name": "G\u00f6rsel S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "short_name": "G\u00f6rsel S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "description": "Boyutu siz s\u00f6yleyin, gerisini o hesaplas\u0131n.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

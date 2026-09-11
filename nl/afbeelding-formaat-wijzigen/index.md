@@ -1,0 +1,93 @@
+# Afbeeldingsformaat wijzigen — schalen, bijsnijden, omzetten
+
+Noem het formaat. Sleep het kader. Kies het bestandstype.
+
+> Schaal, snijd bij en zet JPEG-, PNG- en WebP-afbeeldingen om in je browser. Exacte pixels, een percentage of een lange zijde - één afbeelding of een hele map. Er wordt niets geüpload.
+
+Deze pagina is een interactief hulpmiddel dat volledig in je browser draait, op https://abox.tools/nl/afbeelding-formaat-wijzigen/ — niets van wat je het geeft wordt geüpload. Hieronder staat alles wat de pagina er in woorden over zegt; om het te gebruiken, open je het adres.
+
+## Je afbeeldingen worden **nooit geüpload**. Er is geen server.
+
+Het schalen, het bijsnijden en het wijzigen van het bestandstype gebeuren alle drie in je eigen browser, op je eigen hardware, met de beeldencoders die daar toch al in zitten. Deze tool heeft geen enkele netwerkfunctie, dus er valt niets op te halen en niets te versturen. En al was die er wel, dan stond aan de andere kant van deze pagina nog steeds geen server om een plaatje naartoe te sturen.
+
+- ✗ Geen upload
+- ✗ Geen account
+- ✗ Geen watermerk
+- ✓ Werkt offline
+- ✓ Open source
+
+## Zo schaal je een afbeelding zonder hem te uploaden
+
+1. **Kies je afbeeldingen.** Sleep ze het vak in of kies ze met de hand. De browser leest ze rechtstreeks van je schijf, en er gaat ondertussen niets ergens heen.
+2. **Snijd bij, als je dat wilt.** Het kader begint op het hele plaatje, dus laat je het met rust, dan wordt er niets bijgesneden. Sleep het, of zet het vast op een vorm: 1:1 voor een profielfoto, 9:16 voor een verhaal, 16:9 voor een miniatuur. Met “Grootst” krijg je het grootste kader dat erin past. Elke afbeelding houdt zijn eigen kader, dus klik op een regel in de lijst om op die afbeelding te tekenen. Moeten ze allemaal hetzelfde ingekaderd worden, dan doet één knop dat ook.
+3. **Zeg welk formaat eruit moet komen.** Geef een breedte op, een hoogte of allebei. Geef je een lange zijde op, dan worden staande en liggende foto's even groot, en anders volstaat een percentage. Laat je een van de twee vakjes leeg, dan houdt het plaatje zijn eigen verhouding.
+4. **Kies het bestandstype en druk op de knop.** Hou het bestandstype aan waarmee elk bestand binnenkwam, of schrijf alles als JPEG, PNG of WebP. Bij elk resultaat staat wat het geworden is en hoeveel kleiner het werd. Klik erop om het op volle grootte te openen, met alle cijfers erachter en het origineel ernaast om tegen af te zetten. Een stapel komt binnen als één zip.
+
+## De uitgebreide versie
+
+[Het formaat van een afbeelding wijzigen zonder hem te verpesten](https://abox.tools/nl/gidsen/formaat-van-een-afbeelding-wijzigen/): Wat er met een plaatje gebeurt als je zijn pixelafmetingen verandert: waarom krimpen veilig is en vergroten niet, wat je doet als het kader de verkeerde vorm heeft, en wanneer je beter bijsnijdt.
+
+## Ook in de gereedschapskist
+
+- [HEIC naar JPG](https://abox.tools/nl/heic-naar-jpg/): De foto's die een iPhone maakt, in een formaat dat overal opengaat.
+- [Pasfotomaker](https://abox.tools/nl/pasfoto-maken/): Kies het land. Hij past die regel toe, precies.
+- [Afbeeldingen stacken](https://abox.tools/nl/afbeeldingen-stacken/): Twintig frames tot één, zonder twintig uploads en zonder RAW-converter.
+- [Afbeelding onleesbaar maken](https://abox.tools/nl/afbeelding-onleesbaar-maken/): Wat je afdekt wordt uit het bestand gewist, niet erin verstopt.
+
+## Vragen
+
+### Wordt mijn afbeelding ergens heen geüpload?
+
+Nee. Je eigen browser decodeert, snijdt, schaalt en schrijft het bestand op je eigen hardware, met de JPEG-, PNG- en WebP-encoders die de browser al meelevert. Deze tool heeft geen enkele netwerkfunctie en haalt dus nooit iets op en verstuurt nooit iets. In de `Content-Security-Policy` van de pagina staat bovendien elk adres dat hij mag benaderen, en geen daarvan hoort bij deze site.
+
+### Wat gebeurt er als ik wel een breedte maar geen hoogte opgeef?
+
+De hoogte volgt dan uit de eigen verhouding van het plaatje, en vrijwel altijd is dat ook wat er bedoeld werd. “1920 breed” betekent nu eenmaal “1920 breed en zo hoog als dat uitkomt”. Vul je ze allebei in, dan kunnen die twee de verhouding van het plaatje tegenspreken, en alleen dan verschijnt de keuze “als de verhoudingen niet kloppen”. Je kunt het dan binnen laten passen, laten vullen en de overloop afsnijden, opvullen met een achtergrond, of uitrekken en de vervorming accepteren.
+
+### Kost schalen kwaliteit?
+
+Een plaatje kleiner maken niet, op geen enkele zichtbare manier, want er gaan meer pixels in dan eruit komen en het detail dat blijft is dus echt detail. Er een groter maken kan niet toevoegen wat nooit gefotografeerd is. Je krijgt een zachtere kopie van hetzelfde plaatje terug en geen scherpere, en daarom staat “maak een plaatje nooit groter dan het begon” standaard aan. Wat wel een beetje kost is het hercoderen daarna, als het formaat JPEG of WebP is, en met de kwaliteitsschuif bepaal je hoeveel je daaraan uitgeeft.
+
+### Kan ik elke afbeelding anders bijsnijden?
+
+Ja, en dat is de standaard. Elke afbeelding op de lijst draagt zijn eigen kader, in zijn eigen pixels, en klik je op een regel, dan komt die afbeelding in de voorvertoning te staan met zijn eigen kader en zijn eigen vaste vorm er weer op. Wat je met de een doet raakt de ander niet. Elk kader begint bovendien op het hele plaatje, dus een afbeelding waarop je nooit tekent wordt helemaal niet bijgesneden.
+
+### Kan hij een hele stapel in één keer hetzelfde bijsnijden?
+
+Ja, met de knop onder de voorvertoning. Die geeft elke andere afbeelding hetzelfde relatieve gebied, oftewel dezelfde breuken van zijn eigen breedte en hoogte. Bij een set schermafbeeldingen of exports die allemaal even groot zijn komt dat op precies hetzelfde kader neer, en de pagina zegt dat er ook bij. Staat er een vaste vorm ingesteld, dan krijgt elke afbeelding het grootste kader van die vorm binnen dat gebied. Druk je dus eerst 1:1 in en dan die knop, dan haal je vierkanten uit een map met staande en liggende foto's door elkaar. Elk kader blijft daarna gewoon bewerkbaar.
+
+### Welke formaten kan hij lezen en schrijven?
+
+Hij leest alles wat je browser kan decoderen, in de praktijk dus JPEG, PNG, WebP, GIF, BMP en in de meeste browsers van nu ook AVIF. Schrijven doet hij in JPEG, PNG en WebP, want dat zijn de encoders die browsers meeleveren. Op “hou het formaat” blijft een JPEG een JPEG en een PNG een PNG. Alles wat de browser niet kan schrijven, zoals een GIF of een BMP, komt eruit als PNG, en dat is nu juist het formaat dat transparantie en vlakke kleur intact houdt.
+
+### Wat gebeurt er met transparantie als ik als JPEG opsla?
+
+Die wordt met de achtergrondkleur opgevuld, omdat JPEG geen alfakanaal heeft om hem in op te slaan. De kleur kies je zelf en hij begint op wit, wat de meeste mensen willen en wat vrijwel elke andere tool doet zonder het erbij te zeggen. Achter een opgevuld kader wordt dezelfde kleur gebruikt. Sla je in plaats daarvan op als PNG of WebP, dan komt de transparantie onaangeroerd door.
+
+### Haalt hij de EXIF- en gps-gegevens eruit?
+
+Bij alles wat hij werkelijk verwerkt wel, als bijwerking. Bijsnijden of schalen betekent namelijk dat het plaatje tot pixels wordt gedecodeerd en dat die pixels opnieuw worden gecodeerd, en een canvas vol pixels draagt geen tags. De locatie, het cameramodel en de tijdstempels belanden daardoor domweg niet in het nieuwe bestand. Bij een bestand dat je helemaal niet wijzigt ligt het anders, want dat krijg je byte voor byte terug, tags en al. Wil je de metagegevens kwijt maar het plaatje onaangeroerd houden, gebruik dan de [EXIF-lezer & -wisser](https://abox.tools/nl/exif-gegevens-verwijderen/), die de container herschrijft zonder ook maar iets opnieuw te comprimeren.
+
+### Hoe verschilt dit van de afbeeldingscompressor?
+
+Deze gaat over afmetingen. Je zegt hoeveel pixels je wilt en die krijg je. De [Afbeeldingscompressor](https://abox.tools/nl/afbeelding-comprimeren/) gaat over bestandsgrootte. Daar zeg je hoeveel kilobytes je mag hebben, waarna hij de hoogste kwaliteit zoekt die daarin past en alleen schaalt wanneer kwaliteit alleen er niet komt. Is je gezegd “1200 pixels breed”, dan zit je hier goed. Is je gezegd “onder 500 KB”, dan brengt de andere je verder.
+
+### Is het gratis, en heb ik een account nodig?
+
+Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen watermerk aan te pas. Er zit ook geen limiet op het aantal bestanden of op de grootte ervan, omdat er geen server is die daarvoor betaalt: het werk gebeurt op je eigen apparaat. De site draait op advertenties, en die betalen hem. Die advertenties krijgen niets over je afbeeldingen mee.
+
+### Werkt het offline?
+
+Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er niets geüpload wordt, want een tool die je afbeeldingen wegstuurde om ze te laten schalen zou ermee ophouden zodra je de stekker eruit trok.
+
+## Hoe je de privacybelofte controleert
+
+- **Je afbeeldingen kunnen nergens heen.** In de Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen daarvan hoort bij deze site. Er is hier geen eindpunt waar je bestanden verzameld zouden kunnen worden, en in de code staat niets wat ze zou versturen als dat eindpunt er wel was.
+- **Niets hier haalt iets op.** In `src/` staat nergens een `fetch`, een `XMLHttpRequest` of een `sendBeacon`. Het schalen is één `drawImage` op een canvas plus één `canvas.toBlob`, oftewel de schaler en de encoder die al in je browser zitten.
+- **Een bestand waar niemand om wijziging vroeg, wordt niet gewijzigd.** Snijd je niet bij, schaal je niet en wijzig je het bestandstype niet, dan krijg je het bestand dat je koos byte voor byte terug in plaats van opnieuw opgeslagen. Dat is niet alleen netjes, want juist daardoor kan deze tool niet stiekem een plaatje hercoderen, en evenmin stiekem de metagegevens weglaten van iets waar je alleen naar wilde kijken.
+- **Wat Google laadt, en wat het niet te zien krijgt.** De advertentie- en meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle krijgt iets over je plaatjes mee. Elke regel die een bestand leest, bijsnijdt, schaalt of schrijft, wordt vanaf deze herkomst geserveerd en staat in de repository.
+- **Het werkt offline.** Verbreek de verbinding en de tool werkt onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger bewijs bestaat er niet.
+
+**Controleer het zelf.** Je hoeft niets van het bovenstaande op ons woord aan te nemen. Een buildscript maakt deze pagina uit de sjablonen en de configuratie in de repository, en dat script kun je lezen en zelf draaien. Het resultaat staat vastgelegd op de branch `dist`, dus je kunt wat er geserveerd wordt vergelijken met wat een build van de bronnen oplevert: https://github.com/A-Box-of-Tools/website
+
+De bestanden die je als eerste wilt lezen zijn `config/site.toml` voor de Content-Security-Policy, `src/geometry.js` voor het rekenwerk dat bepaalt wat er blijft en hoe groot het eruit komt, en `src/codecs.js` voor de ene `drawImage`-aanroep die het bijsnijden en het schalen tegelijk doet.

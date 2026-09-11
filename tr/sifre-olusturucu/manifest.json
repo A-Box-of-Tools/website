@@ -1,0 +1,26 @@
+{
+  "id": "/tr/sifre-olusturucu/",
+  "name": "\u015eifre ve Parola C\u00fcmlesi \u00dcreteci",
+  "short_name": "\u015eifre ve Parola C\u00fcmlesi \u00dcreteci",
+  "description": "Burada, kendi taray\u0131c\u0131n\u0131z taraf\u0131ndan \u00fcretilir ve hi\u00e7bir yere g\u00f6nderilmez. Hi\u00e7bir \u015fey saklanmaz ve ge\u00e7mi\u015f yoktur.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

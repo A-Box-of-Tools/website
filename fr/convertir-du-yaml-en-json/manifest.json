@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-du-yaml-en-json/",
+  "name": "Convertisseur YAML vers JSON",
+  "short_name": "Convertisseur YAML vers JSON",
+  "description": "Les deux sens, et il dit ce que chacun co\u00fbte. Rien de tout cela n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

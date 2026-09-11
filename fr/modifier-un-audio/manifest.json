@@ -1,0 +1,26 @@
+{
+  "id": "/fr/modifier-un-audio/",
+  "name": "\u00c9diteur audio",
+  "short_name": "\u00c9diteur audio",
+  "description": "La passer \u00e0 l'envers, changer la vitesse, relever un enregistrement trop faible : tout cela ici, sur votre machine.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

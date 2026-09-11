@@ -1,0 +1,26 @@
+{
+  "id": "/tr/qr-kod-okuma/",
+  "name": "QR ve Barkod Okuyucu",
+  "short_name": "QR ve Barkod Okuyucu",
+  "description": "Bir koda do\u011frultun ya da onun bir resmini b\u0131rak\u0131n. Burada okunur, ba\u015fka hi\u00e7bir yerde.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

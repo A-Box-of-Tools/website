@@ -1,0 +1,26 @@
+{
+  "id": "/fr/encoder-base64/",
+  "name": "Encodeur & d\u00e9codeur Base64",
+  "short_name": "Encodeur & d\u00e9codeur Base64",
+  "description": "Base64, encodage pourcent, entit\u00e9s HTML, hexad\u00e9cimal et \u00e9chappements antislash, dans les deux sens. Rien n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

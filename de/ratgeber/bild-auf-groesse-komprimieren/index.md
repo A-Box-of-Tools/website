@@ -1,0 +1,93 @@
+# So komprimieren Sie ein Bild auf eine exakte Dateigröße
+
+Irgendjemand hat Ihnen eine Zahl genannt, 100 KB, 500 KB oder 2 MB, und Ihr Foto liegt weit darüber. Hier steht, was diese Zahl an Bildqualität kostet, wofür Sie sie am besten ausgeben und woran Sie merken, ob das Ergebnis noch verschickbar ist.
+
+[Bildkompressor öffnen](https://abox.tools/de/bild-komprimieren/): Sie nennen die Größe. Den Rest rechnet es aus.
+
+Zuletzt aktualisiert 26. August 2026
+
+## Die kurze Antwort
+
+Öffnen Sie den [Bildkompressor](https://abox.tools/de/bild-komprimieren/), ziehen Sie das Foto hinein, tippen Sie die geforderte Zahl ein und klicken Sie auf die Schaltfläche. Das Werkzeug kodiert das Bild mehrfach, behält das beste Ergebnis, das noch unter Ihre Grenze passt, und zeigt Ihnen, was das gekostet hat. Bei den meisten Fotos und den meisten Zielgrößen lautet die ehrliche Auskunft: Sie werden den Unterschied nicht sehen.
+
+Der Rest dieser Seite ist für den Fall, dass es anders kommt: wenn das Ergebnis weich wirkt, wenn ein PNG sich kaum bewegt, oder wenn Sie einfach wissen wollen, was da mit Ihrem Bild geschieht, bevor Sie es aus der Hand geben.
+
+![Die Zielgrößen-Karte: 200 kB eingetragen, Schaltflächen für gängige Grenzen, ein Format-Menü und ein Hinweis darauf, was das Werkzeug versuchen wird.](https://abox.tools/screens/compress-an-image-to-a-target-size/target.webp)
+
+Nennen Sie die Zahl, die man Ihnen genannt hat. Alles darunter ist das Werkzeug auf dem Weg dorthin, statt Ihres Ratens an einem Qualitätsregler.
+
+## Was eine Größengrenze in Wirklichkeit von Ihnen verlangt
+
+Ein JPEG oder ein WebP speichert nicht Ihr Foto, sondern eine Beschreibung davon, und die Qualitätseinstellung legt fest, wie genau diese Beschreibung ausfallen darf. Drehen Sie sie herunter, schrumpft die Datei, weil die Beschreibung ungenauer wird: Feine Textur wird weggemittelt, Verläufe bekommen Streifen, und um Kanten legt sich ein blasser Kranz aus Blöcken.
+
+Eine Größengrenze ist damit nichts anderes als ein Budget für Bilddetail. Ob Sie 500 KB treffen, ist dabei nicht die interessante Frage, denn treffen lässt sich jede Zahl. Interessant ist, wie viel Bild der Weg dorthin kostet und ob das bei Ihrem Verwendungszweck überhaupt auffällt.
+
+Zwei Faustregeln helfen. Aufnahmen einer realen Szene, also Gesichter, Laub oder Stoff, verkraften Kompression gut, weil dem Auge die glatte Fläche fehlt, an der ihm der Schaden auffiele. Screenshots, Diagramme, Logos und überhaupt alles mit großen einfarbigen Flächen und harten Textkanten verraten ihn dagegen sofort, und sie gehören meist ohnehin ins PNG oder WebP statt ins JPEG.
+
+## Warum es dafür keine Formel gibt
+
+Die Qualitätseinstellung, die genau 500 KB ergibt, lässt sich nicht ausrechnen. Wie beides zusammenhängt, entscheidet allein der Bildinhalt: Bei identischer Einstellung landet die glatte Hauswand womöglich bei einem Zehntel dessen, was der Wald braucht. Wer Ihnen „Qualität: 60“ vorsetzt und auf das Beste hofft, rät an Ihrer Stelle.
+
+Verlässlich ist nur Ausprobieren: kodieren, Größe ansehen, nachjustieren, wieder kodieren. Von Hand ist das eine Fleißarbeit, und genau die schieben Kompressoren Ihnen zu, wenn sie nach einer Qualitätszahl fragen statt nach einer Größe. Automatisch sind es rund acht Durchgänge, und die dauern über einem Handyfoto auf jedem halbwegs aktuellen Gerät den Bruchteil einer Sekunde. Deshalb fragt das Werkzeug hier nach der Größe und sucht selbst.
+
+Jede Größe, die dabei angezeigt wird, stammt aus einer wirklich kodierten Datei und ist keine Hochrechnung. Das zählt, sobald ein Formular eine harte Obergrenze hat. Eine Schätzung, die um 2 % zu optimistisch ausfällt, ist ein abgelehnter Upload.
+
+## Erst Qualität ausgeben, dann Pixel
+
+Eine Bilddatei lässt sich auf genau zwei Arten verkleinern. Entweder beschreiben Sie dasselbe Bild ungenauer, das ist die Qualität. Oder Sie beschreiben weniger Pixel, das ist die Skalierung. Gleichwertig ist beides nicht, und auf die Reihenfolge kommt es an.
+
+Die Qualität kommt zuerst dran, denn die ersten rund 30 % sind bei einer Fotografie tatsächlich unsichtbar: Sie werfen Detail weg, das das Format sorgfältiger aufbewahrt hat, als ein Auge es je nachprüfen könnte. Die Pixel kommen danach, denn sobald die Qualität so weit fällt, dass Artefakte auftauchen, sieht ein kleineres Bild in ordentlicher Qualität besser aus als ein ruiniertes in voller Größe. Wenige gute Pixel schlagen viele kaputte.
+
+Mehr Strategie steckt nicht dahinter, und mit einem anderen Programm gilt sie genauso: Qualität herunterdrehen, bis es anfängt, falsch auszusehen, und ab da lieber das Bild verkleinern als weiter zu drehen.
+
+### Wann sich Skalieren von vornherein lohnt
+
+Manchmal wurden die Pixel nie gebraucht. Ein 4000 Pixel breites Foto, das auf einer Webseite in einer 600 Pixel breiten Spalte steht, schleppt das Sechsfache dessen mit, was jemals zu sehen sein wird. Wenn Sie wissen, wo das Bild am Ende landet, skalieren Sie zuerst darauf. Oft löst sich das Größenproblem dann von allein, ohne einen Deut Qualität. Dafür ist der [Bildskalierer](https://abox.tools/de/bildgroesse-aendern/) da, und wie Sie die passende Größe finden, steht in [dessen Ratgeber](https://abox.tools/de/ratgeber/bild-skalieren/).
+
+## Das richtige Format
+
+Drei Formate sollten Sie kennen, und Browser schreiben alle drei.
+
+- **JPEG** ist das Format für Fotos. Verlustbehaftet, aber von wirklich jedem Gerät verstanden, und für eine reale Szene nach wie vor eine ausgezeichnete Wahl. Transparenz kann es nicht.
+- **WebP** macht dieselbe Arbeit besser: bei nicht unterscheidbarer Qualität rund ⁦25–35⁩ % kleiner als JPEG, und Transparenz bleibt erhalten. Jeder aktuelle Browser liest es. Dass ein paar ältere Desktop-Programme und manche Upload-Formulare in Unternehmen noch streiken, ist der einzige ernsthafte Grund, darauf zu verzichten.
+- **PNG** ist verlustfrei, also exakt und groß. Richtig für Screenshots, Logos, Strichzeichnungen und alles mit scharfen Kanten oder einfarbigen Flächen, falsch für eine Fotografie.
+
+Wenn Ihnen niemand ein Format vorschreibt, kommen Sie mit WebP bei weniger sichtbarem Schaden an die Zielgröße als mit JPEG. Geht die Datei dagegen in ein altes Programm oder in ein System, das Sie nicht ausprobieren können, ist JPEG die sichere Wahl.
+
+## Warum Ihr PNG kaum kleiner wird
+
+Das ist die häufigste Überraschung, und schuld ist nicht das Werkzeug. PNG ist verlustfrei: Es speichert die exakten Pixel und hat gar keinen Qualitätsregler, denn einen zu haben würde es zu einem anderen Format machen. Ein PNG-Kompressor kann nichts weiter tun, als dieselben Pixel geschickter zu packen, und das bringt in der Regel ein paar Prozent.
+
+Muss die Datei also deutlich kleiner werden und muss es ein PNG bleiben, hilft nur noch die Größe: weniger Pixel oder weniger Farben. Darf es das PNG hinter sich lassen, kommt es darauf an, was drinsteckt:
+
+- **Ein Foto, das als PNG gespeichert wurde.** Passiert ständig und meist versehentlich, und es ist der leichteste Gewinn auf dieser Seite: Als JPEG oder WebP wird es oft fünf- bis zehnmal kleiner, ohne dass sich sichtbar etwas ändert.
+- **Ein Screenshot oder ein Diagramm.** Nach WebP umwandeln; das kann auf Wunsch ebenfalls verlustfrei und fällt bei gleichen Pixeln meist kleiner aus als PNG. JPEG würde die Textkanten matschig machen.
+- **Ein Logo mit Transparenz.** WebP behält sie, JPEG füllt sie mit einer Volltonfarbe auf, und das wollte fast nie jemand.
+
+## Woran Sie erkennen, ob das Ergebnis taugt
+
+Ein Blick auf die Vorschau beweist gar nichts, denn in Briefmarkengröße sieht alles gut aus. Zwei bessere Proben:
+
+**Sehen Sie es in voller Größe an, und zwar an der glattesten Stelle im Bild.** Himmel, Haut, eine gestrichene Wand. Kompressionsschäden zeigen sich zuerst in weichen Verläufen, als blasse Blöcke oder Streifen, lange bevor sie die detailreichen Stellen erreichen.
+
+**Lesen Sie die Messwerte, sofern das Werkzeug welche liefert.** Der Kompressor hier dekodiert sein eigenes Ergebnis, hält es gegen das Original und nennt den SSIM-Wert. Das ist eine Zahl, die lokale Helligkeit, Kontrast und Struktur vergleicht, statt veränderte Pixel zu zählen, und die damit sehr viel näher an dem liegt, woran sich ein Auge stört. Ab etwa 0,98 sind beide Bilder nebeneinander kaum auseinanderzuhalten. Unter etwa 0,95 sollten Sie hinsehen, bevor Sie die Datei verschicken. Wer den klassischen Dezibelwert bevorzugt, findet daneben auch PSNR.
+
+Berechnet wird beides auf Ihrem Gerät, und angezeigt wird es Ihnen. Genau darin liegt der Sinn: Aus „minimaler Qualitätsverlust“ wird statt einer Behauptung eine nachprüfbare Zahl.
+
+![Eine Ergebniszeile: das Original mit 1,4 MB, die komprimierte Kopie mit 196 kB, die dafür nötige Qualität und ein Link zum Vergleich.](https://abox.tools/screens/compress-an-image-to-a-target-size/results.webp)
+
+Was wirklich herauskam, neben dem, was hineinging. Über den Vergleich finden Sie heraus, ob die Zahl Sie etwas Sichtbares gekostet hat.
+
+## Drei Dinge, bevor die Datei aus dem Haus geht
+
+**Komprimieren löscht die Metadaten.** Neu kodieren heißt, das Bild zu Pixeln zu dekodieren und diese Pixel erneut zu kodieren, und ein Canvas voller Pixel trägt keine Tags. GPS-Position, Kameramodell, Zeitstempel und der ganze Rest werden also schlicht nicht mitgeschrieben. Meistens ist das ein willkommener Nebeneffekt. Sollen dagegen die Tags verschwinden und das Bild unangetastet bleiben, ist das eine andere Aufgabe. Der [EXIF-Betrachter & -Entferner](https://abox.tools/de/exif-daten-entfernen/) schreibt nur den Container neu, ohne irgendetwas neu zu komprimieren, und was da alles drinsteht, erklärt [sein Ratgeber](https://abox.tools/de/ratgeber/exif-und-gps-daten-entfernen/).
+
+**Komprimieren Sie dieselbe Datei nie zweimal.** Jede verlustbehaftete Kodierung wirft Detail unwiederbringlich weg, und ein bereits komprimiertes Bild noch einmal zu kodieren wirft sogar mehr weg als beim ersten Mal, denn die Artefakte des ersten Durchgangs werden treu mitgespeichert, und zwar auf Kosten echten Details. Gehen Sie immer aufs Original zurück und komprimieren Sie einmal.
+
+**Behalten Sie das Original.** Aus einer verlustbehafteten Kodierung führt kein Weg zurück. Was Sie auch verschicken, heben Sie die Ausgangsdatei irgendwo auf.
+
+## Nichts davon braucht einen Upload
+
+Einen JPEG-, PNG- und WebP-Encoder bringt jeder Browser seit Jahren mit, und es ist derselbe Code, der ein Bild aus einem Canvas speichert. Ein Bild zu komprimieren gehört damit zu den Aufgaben, für die es technisch überhaupt keinen Grund gibt, einen Server einzuschalten. Deshalb hat das Werkzeug hier keinen. Dekodiert, kodiert und gemessen wird auf Ihrem eigenen Gerät, und in der `Content-Security-Policy` der Seite steht keine einzige Adresse, die uns gehört und an die etwas gehen könnte.
+
+Am einfachsten überzeugen Sie sich selbst davon, hier wie anderswo, indem Sie die Seite laden, die Internetverbindung trennen und trotzdem etwas komprimieren. Geht es weiter, wurde nie etwas hochgeladen. Drei weitere Proben dieser Art stehen in [Ist es sicher, Dateien zu Online-Konvertern hochzuladen?](https://abox.tools/de/ratgeber/ist-das-hochladen-von-dateien-sicher/)

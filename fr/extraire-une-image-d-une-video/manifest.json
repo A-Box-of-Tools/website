@@ -1,0 +1,26 @@
+{
+  "id": "/fr/extraire-une-image-d-une-video/",
+  "name": "Extracteur d'image",
+  "short_name": "Extracteur d'image",
+  "description": "Un arr\u00eat sur image en pleine qualit\u00e9, \u00e0 n'importe quel instant.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

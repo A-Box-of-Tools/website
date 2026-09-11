@@ -1,0 +1,36 @@
+# Bagaimana halaman web bisa bekerja tanpa Wi-Fi?
+
+Karena peramban menyimpan salinan lengkapnya, dan sebuah program kecil yang ikut terkirim bersama halaman menyajikan salinan itu setiap kali jaringan tidak bisa. Mesinnya standar dan layak dipahami, karena alat yang bekerja dalam keadaan terputus sedang memperlihatkan sesuatu yang tidak bisa diperlihatkan kebijakan privasi mana pun.
+
+Terakhir diperbarui 26 Agustus 2026
+
+## Jawaban singkatnya
+
+Halaman web biasanya hidup dan mati bersama koneksinya, karena tiap kunjungan mengambilnya ulang. Tapi sebuah halaman boleh membawa serta program kecil bernama *service worker*, yang dipasang peramban di samping halaman dan diberi kendali atas lalu lintas jaringannya. Pada kunjungan pertama, worker itu menyimpan salinan lengkap semua penyusun halaman — markah, gaya, skrip — di sebuah cache di mesin Anda. Sejak itu, permintaan dijawab dari salinan tersebut. Ketika Wi-Fi mati, tidak ada yang berubah, karena memang tidak ada yang sedang diambil.
+
+Tidak ada sulap dan tidak ada izin istimewa di sini: ini mesin standar peramban, hadir di semua peramban besar sejak sekitar sepuluh tahun. Yang tidak biasa adalah sebuah situs yang bersandar padanya sekeras situs ini — karena bagi situs yang seluruh janjinya adalah berkas Anda tidak pernah pergi, offline bukanlah kenyamanan. Ia buktinya.
+
+## Apa yang dibuktikan oleh selamat dari cabut colokan
+
+Pemeriksaan terkuat dalam panduan unggah adalah [cabut colokannya](https://abox.tools/id/panduan/apakah-aman-mengunggah-file/): muat alatnya, putuskan koneksi, pakai. Pantas dijelaskan persis mengapa itu berhasil. Alat yang mengonversi berkas Anda di server butuh jaringan tepat pada saat ia bekerja — putus kabelnya dan pekerjaan berhenti. Alat yang terus berjalan telah membuktikan, bukan mengklaim, bahwa pekerjaannya terjadi di mesin Anda; dan halaman yang tak bisa mencapai jaringan tak bisa mengirim berkas Anda ke mana pun, apa pun yang diinginkan kodenya.
+
+Tidak ada kebijakan privasi yang bisa menawarkan itu. Kebijakan menggambarkan niat dan bisa berubah; halaman yang mengerjakan tugasnya dalam mode pesawat adalah fisika. Karena itulah setiap alat di situs ini bekerja offline dan membawa penunjuk langsung yang mengatakan apakah saat ini Anda offline — supaya Anda bisa melihatnya berbalik saat koneksi dimatikan, dan menjalankan pemeriksaan terkuat yang ada dalam sekitar sepuluh detik.
+
+## Bagaimana salinan itu tetap jujur
+
+Dua pertanyaan menentukan apakah tersimpan-selamanya itu hadiah atau jebakan, dan mesinnya menjawab keduanya:
+
+- **Apakah salinannya menua?** Worker memeriksa versi yang lebih baru saat koneksi tersedia dan menukarnya utuh-utuh. Versi ditukar utuh karena salinan harus selalu koheren — separuh lama separuh baru adalah satu-satunya keadaan yang tak boleh pernah disajikan.
+- **Apa persisnya yang disalin?** Semua yang dibutuhkan halaman dan tidak lebih — dan tiap alat di sini menyimpan salinannya di kotaknya sendiri. Cache sebuah alat berisi alat itu; memasang satu tidak diam-diam memasang sepuluh. Salinan itu juga bisa diperiksa: alat pengembang peramban Anda menyenaraikan setiap berkas yang tersimpan, dan senarainya sama dengan yang diambil halaman itu secara terbuka.
+
+Hasilnya sebuah halaman yang berperilaku seperti aplikasi yang kebetulan Anda pasang dengan mengunjunginya — dan itu juga benar-benar ditawarkan: bilah alamat peramban bisa memasang alat mana pun di sini sebagai aplikasi, dengan ikon milik alat itu, terbuka langsung ke alatnya, tanpa tombol di halaman dan tanpa skrip yang meminta-minta. Mesin yang sama, mengenakan baju pintasan.
+
+## Apa yang tidak dibuktikan offline
+
+Pemeriksaan ini kuat, bukan sakti, dan batas-batasnya pantas disebut segamblang kekuatannya:
+
+- **Ia membuktikan saat itu, bukan masa depan.** Pekerjaan yang dilakukan offline tinggal di mesin Anda, titik. Sebuah halaman pada dasarnya bisa saja menahan data dan mengirimkannya begitu koneksi kembali — maka untuk berkas yang paling tajam, tutup tabnya sebelum menyambung ulang, atau periksa juga arah sebaliknya: awasi tab Jaringan saat koneksi kembali.
+- **Ia membuktikan halaman ini, bukan situsnya.** Tiap halaman menjawab untuk dirinya sendiri. Satu-satunya halaman di sini yang memakai jaringan mengatakannya di halamannya sendiri: alat [berbagi teks](https://abox.tools/id/berbagi-teks/), yang seluruh pekerjaannya memindahkan sesuatu antara dua perangkat, dan yang menjelaskan persis apa yang dibawa satu-satunya koneksinya.
+- **Ia tidak menyembunyikan Anda.** Memuat halaman itu sendiri sudah memberi tahu situs alamat Anda, seperti setiap pemuatan halaman di web. Offline adalah soal ke mana berkas Anda pergi, bukan soal anonimitas.
+
+Batas-batas itulah alasan panduan unggah mengajarkan empat pemeriksaan, bukan satu — tab Jaringan, kebijakan keamanan di kode sumber halaman, dan kode yang terbaca menutup apa yang tak bisa ditutup cabut colokan. Tapi sebagai saringan pertama, tak ada yang lebih cepat: kalau sebuah alat tak bisa mengerjakan tugasnya saat jaringan hilang, Anda sudah tahu di mana pekerjaan itu terjadi, dan tak perlu membaca lebih jauh.

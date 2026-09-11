@@ -1,0 +1,26 @@
+{
+  "id": "/id/bandingkan-tinggi-badan/",
+  "name": "Pembanding Tinggi Badan",
+  "short_name": "Pembanding Tinggi Badan",
+  "description": "Ketik tingginya, bawa gambarnya. Tidak ada yang dikirim untuk menggambarnya.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

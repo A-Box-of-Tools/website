@@ -1,0 +1,31 @@
+{
+  "id": "/tr/",
+  "name": "A Box of Tools",
+  "short_name": "A Box of Tools",
+  "description": "Tamamen taray\u0131c\u0131n\u0131zda \u00e7al\u0131\u015fan, tek i\u015fe \u00f6zel k\u00fc\u00e7\u00fck ara\u00e7lar. Dosyalar\u0131n\u0131z cihaz\u0131n\u0131zdan asla \u00e7\u0131kmaz.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

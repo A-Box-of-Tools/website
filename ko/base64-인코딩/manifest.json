@@ -1,0 +1,26 @@
+{
+  "id": "/ko/base64-\uc778\ucf54\ub529/",
+  "name": "Base64 \uc778\ucf54\ub354 \u00b7 \ub514\ucf54\ub354",
+  "short_name": "Base64 \uc778\ucf54\ub354 \u00b7 \ub514\ucf54\ub354",
+  "description": "Base64, \ud37c\uc13c\ud2b8 \uc778\ucf54\ub529, HTML \uc5d4\ud2f0\ud2f0, 16\uc9c4\uc218, \uc5ed\uc2ac\ub798\uc2dc \uc774\uc2a4\ucf00\uc774\ud504\ub97c \uc591\ubc29\ud5a5\uc73c\ub85c. \ub0a8\uc758 \uc11c\ubc84\uc5d0 \ubd99\uc5ec \ub123\ub294 \uac83\uc740 \uc5c6\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

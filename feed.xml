@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-09-10T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF Viewer &amp; Remover</title>
+    <id>https://abox.tools/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. In your browser: nothing uploaded, and the photo is never re-encoded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to unlock a PDF, and which kind of locked it is</title>
+    <id>https://abox.tools/guides/unlock-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/unlock-a-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">A PDF that will not print and a PDF that will not open are two different problems with one name. What each of them actually is, why one comes off in a click and the other cannot come off at all, and how to tell which you have.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Compressor</title>
+    <id>https://abox.tools/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Redactor</title>
+    <id>https://abox.tools/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Resizer</title>
+    <id>https://abox.tools/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/resize-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Resize, crop and convert JPEG, PNG and WebP images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Merger &amp; Splitter</title>
+    <id>https://abox.tools/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/merge-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Combine PDFs, split one into several, and drag pages into the order you want &amp;mdash; all inside your own browser. Nothing is uploaded, there is no account, and the finished file is opened again and counted before it is offered to you.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Redactor</title>
+    <id>https://abox.tools/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Take words out of a PDF instead of drawing a black rectangle over them. The letters are deleted from the page's own drawing instructions, the finished file is opened again and searched to prove they have gone, and nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Unlocker</title>
+    <id>https://abox.tools/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/unlock-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Take the password and the printing, copying and editing restrictions off a PDF in your browser. Most protected files need no password at all, and this one tells you which kind you have. Nothing is uploaded, and it never guesses a password.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF to CSV</title>
+    <id>https://abox.tools/pdf-to-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pdf-to-csv/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Turn the tables in a PDF into a CSV: bank and card statements, invoices, price lists, reports. Every table on every page is found from where its text sits, and a running balance is checked row by row where there is one. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG to Image</title>
+    <id>https://abox.tools/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/svg-to-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Convert an SVG to a PNG, JPEG or WebP at any size, in your browser. Say the width, a multiple, or a box; get @2x and @3x copies as well. Transparency kept, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to SVG</title>
+    <id>https://abox.tools/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
+    <updated>2026-09-09T00:00:00Z</updated>
+    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Is it safe to upload a bank statement?</title>
+    <id>https://abox.tools/guides/is-it-safe-to-upload-a-bank-statement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/is-it-safe-to-upload-a-bank-statement/"/>
+    <updated>2026-09-09T00:00:00Z</updated>
+    <summary type="html">A statement is every payee, every amount and your balance in one file. Here is what a converter receives, what the careful ones do with it, and how to tell whether the upload needed to happen at all.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Editor</title>
+    <id>https://abox.tools/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio Trimmer</title>
+    <id>https://abox.tools/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/trim-audio/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64 Encoder &amp; Decoder</title>
+    <id>https://abox.tools/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Business Profile Preview</title>
+    <id>https://abox.tools/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/business-profile-preview/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">See how your Google Business Profile will look before it goes live: the knowledge panel, the phone card and the search result, drawn from the name, category, hours, rating and photo you type. Import an existing listing by pasting it. Download as PNG or SVG. It all happens in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM Viewer</title>
+    <id>https://abox.tools/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Open CT, MR, X-ray and ultrasound scans in your browser. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract Audio from Video</title>
+    <id>https://abox.tools/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/extract-audio-from-video/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Analyzer</title>
+    <id>https://abox.tools/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Maker</title>
+    <id>https://abox.tools/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Splitter</title>
+    <id>https://abox.tools/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC to JPG</title>
+    <id>https://abox.tools/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/heic-to-jpg/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Convert iPhone HEIC photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hash &amp; Checksum</title>
+    <id>https://abox.tools/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to preview a Google Business Profile before it goes live</title>
+    <id>https://abox.tools/guides/preview-a-google-business-profile/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/preview-a-google-business-profile/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">What your Google listing will look like on a desktop search, on a phone and in the local pack: how long a name survives, why the category does more work than the description, which fields turn into buttons, and what the Open or Closed line says when nobody is watching.</summary>
+  </entry>
+  <entry>
+    <title type="html">ID Photo Maker</title>
+    <id>https://abox.tools/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Stacker</title>
+    <id>https://abox.tools/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to Data URI</title>
+    <id>https://abox.tools/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-data-uri/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to ICO</title>
+    <id>https://abox.tools/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-ico/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Convert a PNG, JPEG or SVG into a real multi-size .ico or a macOS .icns in your browser. Favicon, Windows app icon, Mac app icon, plus the Apple and Android files a site needs. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images to PDF</title>
+    <id>https://abox.tools/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded.</summary>
+  </entry>
+</feed>

@@ -1,0 +1,104 @@
+# Tekst & bestanden delen — rechtstreeks van jouw browser naar de hunne, zonder upload
+
+Wat je deelt leeft in dit open tabblad. Lezers halen het versleuteld rechtstreeks uit je browser, en het tabblad sluiten beëindigt het - geen server bewaart iets.
+
+> Stuur tekst of bestanden van de ene browser naar de andere over een rechtstreekse, versleutelde verbinding. Een uitspreekbare linknaam, live bijgewerkt terwijl je typt, goedkeuring per lezer - en nooit iets op een server. Gratis, zonder account.
+
+Deze pagina is een interactief hulpmiddel dat volledig in je browser draait, op https://abox.tools/nl/tekst-delen/ — niets van wat je het geeft wordt geüpload. Hieronder staat alles wat de pagina er in woorden over zegt; om het te gebruiken, open je het adres.
+
+## Je gedeelde teksten en bestanden worden **nooit geüpload**. Er is geen server.
+
+Wat je hier deelt reist van jouw browser naar die van elke lezer over een eind-tot-eind versleuteld WebRTC-kanaal, en nergens anders heen. De ene betrokken server — genoemd in de `Content-Security-Policy` van deze pagina, broncode in de repository — stelt de twee browsers aan elkaar voor en stapt dan opzij: hij slaat niets op, en de inhoud passeert hem nooit. Er is geen geschiedenis en geen account. Sluit dit tabblad en het delen stopt overal tegelijk, ook op de open pagina's van de lezers.
+
+- ✗ Niets opgeslagen
+- ✗ Geen account
+- ✓ Eind-tot-eind versleuteld
+- ✓ Stopt met je tabblad
+- ✓ Open source
+
+## Zo deel je tekst en bestanden zonder ze ergens te uploaden
+
+1. **Schrijf de tekst, of voeg de bestanden bij.** De editor ís wat je deelt: wat erin staat wanneer een lezer verbindt, is wat hij krijgt, en alles daarna bereikt verbonden lezers live, terwijl je typt. Bestanden reizen over hetzelfde kanaal, tot 200 MB per stuk; lezers zien de lijst en halen alleen op wat ze vragen — niemands bandbreedte gaat op aan een bestand dat hij niet wilde.
+2. **Zet Markdown aan als de tekst opmaak verdient.** Eén schakelaar. Koppen, vet, lijsten, code en links worden live gerenderd naast de editor terwijl je typt, en lezers krijgen standaard de opgemaakte weergave, met een knop terug naar de brontekst. De renderer reist met deze pagina mee en escapet alles: gedeelde tekst kan op de machine van een lezer geen script worden, wie hem ook schreef.
+3. **Geef de link een naam, of hou de suggestie.** De naam is het adres: `brave-otter-42` roep je door een kamer, lees je voor door de telefoon, schrijf je over van een whiteboard. Het is ook het enige geheim: kies voor iets privés óf een naam die niemand zou raden, óf vertrouw op de privéschakelaar. Een naam waaronder iemand anders al deelt wordt geweigerd, en de jouwe komt vrij zodra je stopt.
+4. **Bepaal wie er binnenkomt.** Privé is de standaard: elke lezer wordt gevraagd zich voor te stellen — een naam, een hint, iets wat jij herkent — en jij ziet het bericht met een knop om hem te laten lezen of weg te sturen. De introductie reist over het rechtstreekse kanaal, dus zelfs de tussenpersoon weet niet wie er klopte. Vink het uit voor open delen dat iedereen met de naam kan lezen.
+5. **Begin met delen, en laat het tabblad open.** Het tabblad is de server: het gedeelde is bereikbaar zolang het open en wakker is, en geen moment langer. Een dichtgeklapte laptop beëindigt het ook. Kopieer de link, of zeg gewoon de naam — een lezer kan hem als `#naam` achter het adres van deze pagina typen.
+6. **Aan de andere kant: eerst toestemmen, dan aankloppen.** Wie de link opent hoort dat er iemand deelt, wordt gewaarschuwd dat een rechtstreekse verbinding elke kant het netwerkadres van de ander laat zien, en verbindt alleen uit eigen keuze. Bij privé delen stelt hij zich voor en wacht op jou. Wat hij krijgt wordt live bijgewerkt terwijl jij schrijft, en verdwijnt wanneer je het tabblad sluit.
+
+## De uitgebreide versie
+
+[Zo deel je tekst en bestanden tussen apparaten zonder ze te uploaden](https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/): Tekst of bestanden van de ene browser naar de andere brengen over een rechtstreekse, versleutelde verbinding - zonder jezelf te mailen, zonder chatgeschiedenis, zonder account, en zonder server die een kopie houdt.
+
+## Ook in de gereedschapskist
+
+- [QR- & barcodegenerator](https://abox.tools/nl/qr-code-maken/): Tik het in, en het wordt een code. Er wordt niets verstuurd om er een te maken.
+- [Qr- & barcodescanner](https://abox.tools/nl/qr-code-scannen/): Richt je camera erop, of sleep er een foto van hierheen. Het wordt hier gelezen, en nergens anders.
+- [Hash en checksum](https://abox.tools/nl/checksum-controleren/): Controleer een download tegen het getal dat de maker erbij zette, zonder hem naar iemand te sturen.
+- [Wachtwoord- & wachtwoordzingenerator](https://abox.tools/nl/wachtwoord-generator/): Hier gemaakt, door je eigen browser, en nergens naartoe gestuurd. Er wordt niets opgeslagen en er is geen geschiedenis.
+
+## Vragen
+
+### Wordt er iets geüpload, waarheen dan ook?
+
+Nee. Tekst en bestanden gaan van jouw browser naar die van elke lezer over een versleuteld WebRTC-kanaal, rechtstreeks. De ene betrokken server draagt de introductie — een paar kilobyte verbindingsonderhandeling — en nooit de inhoud. Er valt bij hem niets te lekken, te vorderen of te verliezen: hij houdt geen byte van je vast, en een kamer houdt op te bestaan zodra je de verbinding verbreekt.
+
+### Waarom praat dit gereedschap dan überhaupt met een server, juist op deze site?
+
+Omdat twee browsers elkaar niet zelf kunnen vinden: iets moet degene die `brave-otter-42` intypte samenbrengen met degene die onder die naam deelt, en het verbindingsaanbod tussen hen vervoeren. Dat iets is de tussenpersoon, de enige netwerkafhankelijkheid van deze pagina, genoemd in zijn `Content-Security-Policy` en gepubliceerd in dezelfde repository als de pagina. Het is de kleinste server die het werk kan doen: hij slaat niets op, leest niets en stapt opzij zodra de twee browsers een rechtstreeks kanaal hebben.
+
+### Wat kan die server precies zien?
+
+Dat een linknaam in gebruik is, wanneer de deler en lezers verbinden en vertrekken, hun IP-adressen, en de opbouw van de versleutelde verbinding die ze uitwisselen. Niet de tekst, niet de bestanden, niet hun namen of groottes, niet wie er bij privé delen werd binnengelaten, en niet wat iemand bij het voorstellen schreef — dat alles reist over het rechtstreekse, eind-tot-eind versleutelde kanaal, dat niet langs de server loopt. Cloudflare, dat de server draait, bewaart zeven dagen lang een logboek van elke verbinding: de linknaam, het adres en het tijdstip. Verder overleeft niets het delen.
+
+### Wat gebeurt er als ik het tabblad sluit?
+
+Het delen stopt overal tegelijk. De link werkt binnen een seconde of twee niet meer, en lezers die de pagina nog open hebben zien hun kopie verdwijnen, met de melding dat het delen is beëindigd. Het is geen verwijderverzoek aan een server — er is geen serverkopie om te verwijderen. Het tabblad was de enige plek waar het gedeelde bestond, en het sluiten is de hele opruiming.
+
+### Kan een lezer houden wat ik deelde?
+
+Zolang het delen open is, ja — dat is wat delen is. Een lezer kan de tekst kopiëren of een bestand downloaden, en wat hij meenam is van hem, precies alsof je het op elke andere manier had overhandigd. Wat stoppen garandeert is de toekomst: niemand nieuw kan erbij, en open pagina's tonen het niet meer. Geen gereedschap kan terughalen wat al is aangekomen, en deze pagina doet niet alsof.
+
+### Wat is de privémodus?
+
+De standaard. Elke lezer die aankomt hoort dat het delen privé is en wordt gevraagd zich voor te stellen; jij ziet het bericht — “ik ben het, Alice van de stand-up” — met knoppen om hem te laten lezen of weg te sturen, en er wordt niets verstuurd voordat jij beslist. De introductie reist over het al versleutelde rechtstreekse kanaal, dus de server weet nooit wie er klopte of wat je besloot. Uitgevinkt vóór het delen wordt het open delen.
+
+### Waarom ziet de lezer mijn IP-adres?
+
+Omdat de verbinding echt rechtstreeks is, en een rechtstreekse verbinding tussen twee adressen loopt: elk uiteinde leert noodzakelijkerwijs dat van de ander, zoals bij een telefoongesprek. De lezer wordt gewaarschuwd voordat er enige verbinding bestaat en verbindt alleen uit eigen keuze; tot dan weet jij niet eens dat hij de link opende. Past die ruil niet bij een bepaald delen, dan is een dienst die via een server doorstuurt het alternatief — met de omgekeerde ruil.
+
+### Hoe groot mogen de bestanden zijn, en hoe snel is het?
+
+Tot 200 MB per bestand, elk type, en zo snel als de traagste van de twee verbindingen — er zit geen server tussen om af te remmen of te tellen. Twee machines op dezelfde wifi dragen over op lokale netwerksnelheid, en de bytes verlaten het gebouw niet. Lezers halen elk bestand op verzoek op, dus iets groots bijvoegen kost niets totdat iemand er echt om vraagt.
+
+### Werkt het offline?
+
+De helft, eerlijk gezegd: de editor wel — de pagina laadt, je concept staat er, Markdown rendert, en schrijven en opslaan kan zonder enig netwerk. Delen niet, en dat kan ook niet: de browser van iemand anders bereiken is een netwerkhandeling, en de introductie heeft de tussenpersoon nodig. Dit is het enige gereedschap op deze site waarvan de taak offline onmogelijk is, en anders doen voorkomen zou oneerlijk zijn.
+
+### En als we geen verbinding krijgen?
+
+De meeste browserparen bereiken elkaar rechtstreeks zodra ze zijn voorgesteld; een minderheid niet, meestal wanneer één kant op het netwerk met gedeelde adressen van een mobiele provider zit of achter een streng bedrijfsnetwerk. Deze pagina schakelt nooit stiekem over op een tussenstation — dat zou veranderen wat dit gereedschap is zonder het te zeggen —: na twintig seconden zegt hij ronduit dat een rechtstreekse verbinding niet lukte, en biedt de lezer er een aan: een door Cloudflare gedraaid tussenstation dat de versleutelde bytes tussen de twee browsers doorgeeft en ze niet kan lezen, omdat de sleutel de twee uiteinden nooit verlaat. De lezer kiest het bewust, op de eigen pagina, nadat verteld is wat het ziet — beide adressen, zoals de rechtstreekse verbinding ook —, en ook daar wordt niets opgeslagen. Jouw kant van het delen verandert niet: je browser stuurt nog steeds naar die ene lezer, zoals hij dat ook zou doen als die achter een VPN zat.
+
+### Is Markdown renderen veilig, als iedereen alles kan delen?
+
+Die vraag is de reden dat de renderer tachtig regels in de broncode van deze pagina is en geen bibliotheek. Elk teken wordt ge-escapet voordat er ook maar één tag wordt uitgestuurd, alleen een vaste set onschuldige tags kan ontstaan, en links accepteren alleen `http`, `https` en `mailto` — een `javascript:`-link blijft dode tekst. Gedeelde tekst kan op jouw machine geen script worden, wie hem ook schreef, en die tachtig regels kun je lezen.
+
+### Kunnen twee mensen onder dezelfde naam delen?
+
+Niet tegelijk. Eén levend delen per naam, afgedwongen bij de tussenpersoon: wie als tweede komt wordt geweigerd en gevraagd een andere naam te kiezen. Zodra een delen stopt is de naam weer vrij — wat ook betekent dat een bewaarde link maar zo vers is als het delen erachter: dezelfde naam kan volgende week van iemand anders zijn. Behandel een link als iets van een moment, niet van een persoon.
+
+### Is het gratis, en heb ik een account nodig?
+
+Gratis, geen account, geen registratie, en geen limiet die het noemen waard is — zestien gelijktijdige lezers per delen. De site draagt advertenties, die hem betalen; de advertenties krijgen niets over wat deze pagina deelt, en de tussenpersoon past ruim in een gratis abonnement, juist omdat hij niets opslaat en bijna niets doet.
+
+## Hoe je de privacybelofte controleert
+
+- **De inhoud gaat naar je lezer, en nergens anders heen.** Tekst en bestanden reizen over een WebRTC-datakanaal: een rechtstreekse, met DTLS versleutelde verbinding tussen jouw browser en die van elke lezer. Op dat pad staat geen server. Op hetzelfde netwerk verlaten de bytes niet eens het gebouw — twee laptops op dezelfde wifi geven ze lokaal door. De ene uitzondering is een lezer wiens netwerk niet rechtstreeks te bereiken is en die dan, op de eigen pagina, een versleuteld tussenstation kiest: dat geeft dezelfde versleutelde tekst door en kan hem niet lezen.
+- **Wat de tussenpersoon is, en alles wat hij ziet.** Een rechtstreekse verbinding vraagt om een introductie, dus opent deze pagina — als enige op deze site — één WebSocket naar een server van ons. Die brengt degene die een linknaam intypte samen met degene die eronder deelt, geeft een paar kilobyte onderhandeling door en houdt niets vast: er wordt nooit opslag beschreven, en een kamer houdt op te bestaan zodra de deler de verbinding verbreekt. Hij kan zien dat een naam in gebruik is, wanneer iemand komt en gaat, en de IP-adressen. Hij kan niet zien: de tekst, de bestanden, wie werd binnengelaten of wat iemand schreef — zelfs het aankloppen bij privé delen reist over het versleutelde rechtstreekse kanaal. Zijn volledige broncode staat in de repository, naast die van dit gereedschap. Wat een deelsessie overleeft, is één ding: Cloudflare, dat de server draait, bewaart zeven dagen lang een logboek van elke verbinding, met de linknaam, het adres en het tijdstip, nooit de inhoud.
+- **Niets wordt opgeslagen - het tabblad sluiten ís het wissen.** Het delen bestaat alleen zolang je tabblad open is. Sluit het en nieuwe lezers vinden niets meer, en wie zat te lezen ziet zijn kopie verdwijnen — al is wat iemand eerder kopieerde of downloadde van hem, zoals alles wat je iemand in handen hebt gegeven. Het concept dat je typt staat in de opslag van je eigen browser, zodat het er de volgende keer nog is, en alleen daar; als eenmalig gemarkeerd staat het nergens.
+- **De linknaam is het enige geheim, en de privéschakelaar het slot.** Wie een naam kent of raadt, kan openen wat erachter zit. Daarom zijn de suggesties drie willekeurige woorden, daarom verdient alles wat gevoelig ligt een onraadbare naam — of de privéschakelaar, die standaard aanstaat: elke lezer die aankomt moet zich voorstellen, over het rechtstreekse kanaal, en er wordt niets verstuurd voordat jij hem binnenlaat.
+- **Een rechtstreekse verbinding toont elke kant het adres van de ander.** Dat is wat peer-to-peer betekent, en de lezer weet het voordat het gebeurt: een deellink openen vraagt alleen aan de tussenpersoon of er iemand deelt; daarna zegt de pagina duidelijk dat verbinden elke kant het IP-adres van de ander laat zien, en wacht op een klik. Tot die klik weet de deler niet eens dat de lezer bestaat.
+- **Wat Google laadt, en wat het niet krijgt.** De advertentie- en meetscripts komen van Google, de donatieknop van Buy Me a Coffee. Geen van beide krijgt de tekst, de bestanden, hun namen of groottes, of wie er verbond. De uitzondering is het adres van deze pagina zelf: de link van een lezer bevat de linknaam, en het advertentiescript leest het adres. Een deling die privé moet blijven wil de privéschakelaar. Elke regel die de inhoud raakt wordt vanaf deze oorsprong geserveerd en staat in de repository.
+
+**Controleer het zelf.** Je hoeft niets van het bovenstaande op ons woord aan te nemen. Een buildscript maakt deze pagina uit de sjablonen en de configuratie in de repository, en dat script kun je lezen en zelf draaien. Het resultaat staat vastgelegd op de branch `dist`, dus je kunt wat er geserveerd wordt vergelijken met wat een build van de bronnen oplevert: https://github.com/A-Box-of-Tools/website
+
+De bestanden die je als eerste wilt lezen zijn `config/site.toml` voor de Content-Security-Policy, `src/main.js` voor beide helften van de uitwisseling — het tabblad van de deler en dat van de lezer zijn hetzelfde bestand — en `src/markdown.js` voor de renderer die draait op tekst van de andere kant van de lijn, en die daarom alles escapet voordat hij iets uitstuurt. De volledige broncode van de server is `workers/rendezvous/worker.js`, in dezelfde repository: één kamer per linknaam, die niets vasthoudt behalve de open verbindingen.

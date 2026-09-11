@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/xml-formatter/",
+  "name": "XML \u683c\u5f0f\u5316",
+  "short_name": "XML \u683c\u5f0f\u5316",
+  "description": "\u6392\u958b\u4e86\u597d\u8b80\u7684 XML\uff0c\u58d3\u5e73\u4e86\u597d\u767c\u7684 XML\uff0c\u9084\u6709\u5169\u500b\u65b9\u5411\u7684 JSON \u8f49\u63db\u3002\u9019\u4e9b\u90fd\u4e0d\u6703\u8cbc\u9032\u5225\u4eba\u7684\u4f3a\u670d\u5668\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

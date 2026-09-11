@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="abox.tools">
+  <title>abox.tools</title>
+  <!--
+    The site mark in one colour. Generated from shared/logo.svg - do not edit
+    the shapes here, edit them there and emit this again, or the two will say
+    different things about the same logo.
+
+    One flat colour and nothing else, which is what a print shop, an embroiderer
+    or any single-plate job will ask for. Everything the colour mark separates
+    by hue is separated here by a hole instead: the drawing goes into a mask
+    with the tiles and the box in white and the glyphs and the ribbon in black,
+    then every tile is outlined and the open rim is cut, both last so that they
+    also bite into the box.
+
+    Black, and light on a dark scheme so it stays visible in a tab strip.
+
+    The music glyph is Lucide's; see THIRD-PARTY-NOTICES.md.
+  -->
+  <style>
+    .ink { fill: #16191d; }
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #e8eaed; }
+    }
+  </style>
+  <mask id="abox-ink" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+    <style>
+    .logo-app-a, .logo-app-b, .logo-app-c, .logo-app-d,
+    .logo-box, .logo-band { fill: #fff; }
+    .logo-glyph, .logo-latch { fill: #000; }
+    .logo-stroke { stroke: #000; }
+    </style>
+      <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3"
+            transform="rotate(18 54.5 21.5)"/>
+      <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1"
+            transform="rotate(-28 41.5 5.5)"/>
+      <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1"
+            transform="rotate(42 56.5 8.5)"/>
+
+      <g transform="rotate(-12 34.8 26.7)">
+        <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/>
+        <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/>
+      </g>
+
+      <g transform="rotate(24 35.3 13.1)">
+        <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/>
+        <g transform="translate(31.6 9.4) scale(0.3083)">
+          <path class="logo-stroke" fill="none" stroke-width="3.081"
+                stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/>
+          <circle class="logo-glyph" cx="6" cy="18" r="3.9"/>
+          <circle class="logo-glyph" cx="18" cy="16" r="3.9"/>
+        </g>
+      </g>
+
+      <g transform="rotate(-20 48.55 29.75)">
+        <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/>
+        <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/>
+        <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/>
+      </g>
+
+      <g transform="rotate(34 46.65 14.25)">
+        <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/>
+        <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/>
+        <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/>
+        <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/>
+      </g>
+
+      <g transform="rotate(38 22 42)">
+        <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/>
+        <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/>
+        <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/>
+      </g>
+    <g fill="none" stroke="#000" stroke-width="1.6">
+      <rect x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3"/>
+      <rect x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1"/>
+      <rect x="54.9" y="6.9" width="3.2" height="3.2" rx="1"/>
+      <g transform="rotate(-12 34.8 26.7)"><rect x="27.8" y="19.7" width="14" height="14" rx="4"/></g>
+      <g transform="rotate(24 35.3 13.1)"><rect x="30.3" y="8.1" width="10" height="10" rx="3"/></g>
+      <g transform="rotate(-20 48.55 29.75)"><rect x="44.05" y="25.25" width="9" height="9" rx="2.7"/></g>
+      <g transform="rotate(34 46.65 14.25)"><rect x="43.15" y="10.75" width="7" height="7" rx="2.2"/></g>
+    </g>
+    <g transform="rotate(38 22 42)">
+      <rect fill="#000" x="6.4" y="35.3" width="31.2" height="1.4"/>
+    </g>
+  </mask>
+  <rect class="ink" width="64" height="64" mask="url(#abox-ink)"/>
+</svg>

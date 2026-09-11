@@ -1,0 +1,26 @@
+{
+  "id": "/it/leggere-qr-code/",
+  "name": "Lettore di QR code e codici a barre",
+  "short_name": "Lettore di QR code e codici a barre",
+  "description": "Punta la fotocamera, o trascina qui una foto. Si legge qui, e da nessun'altra parte.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

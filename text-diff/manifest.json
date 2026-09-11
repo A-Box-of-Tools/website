@@ -1,0 +1,26 @@
+{
+  "id": "/text-diff/",
+  "name": "Text Diff",
+  "short_name": "Text Diff",
+  "description": "Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/base64/",
+  "name": "Base64 \u7de8\u78bc\u89e3\u78bc",
+  "short_name": "Base64 \u7de8\u78bc\u89e3\u78bc",
+  "description": "Base64\u3001\u767e\u5206\u865f\u7de8\u78bc\u3001HTML \u5be6\u9ad4\u3001\u5341\u516d\u9032\u4f4d\u548c\u53cd\u659c\u69d3\u8f49\u7fa9\uff0c\u96d9\u5411\u90fd\u884c\u3002\u6c92\u6709\u4e00\u500b\u5b57\u88ab\u8cbc\u9032\u5225\u4eba\u7684\u4f3a\u670d\u5668\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

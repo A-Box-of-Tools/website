@@ -1,0 +1,26 @@
+{
+  "id": "/id/sensor-gambar/",
+  "name": "Penyensor Gambar",
+  "short_name": "Penyensor Gambar",
+  "description": "Apa yang Anda tutup dihapus dari file-nya, bukan ditutupi di dalamnya.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

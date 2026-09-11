@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/redact-image/",
+  "name": "\u5716\u7247\u5857\u9ed1\u8207\u6253\u78bc",
+  "short_name": "\u5716\u7247\u5857\u9ed1\u8207\u6253\u78bc",
+  "description": "\u4f60\u906e\u4f4f\u7684\u90a3\u584a\u662f\u5f9e\u6a94\u6848\u88e1\u522a\u6389\u7684\uff0c\u4e0d\u662f\u85cf\u5728\u6a94\u6848\u88e1\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

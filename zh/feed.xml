@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hans">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">全部免费，文件不用上传。图片拼成 PDF 或 MP4、把图压到指定大小、裁视频、清 EXIF，都在你自己的浏览器里做完。</subtitle>
+  <id>https://abox.tools/zh/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
+  <updated>2026-09-10T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/zh/</uri>
+  </author>
+  <entry>
+    <title type="html">EXIF 查看与清除</title>
+    <id>https://abox.tools/zh/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/exif-editor/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">看清一张照片里藏着的 EXIF 和 GPS 信息，改它，或者一键清光。在浏览器里跑，什么都不上传，画面也从不重新编码。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 合并与拆分</title>
+    <id>https://abox.tools/zh/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/merge-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 涂黑</title>
+    <id>https://abox.tools/zh/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把字从 PDF 里拿掉，而不是在上面画个黑块。字是从绘制这一页的指令里删掉的，做好的文件会被重新打开搜一遍，证明它们真的没了，而且什么都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 解锁</title>
+    <id>https://abox.tools/zh/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/unlock-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">在浏览器里去掉 PDF 的密码，以及不许打印、不许复制、不许编辑这些限制。大多数被保护的文件根本不用密码，这一页会告诉你手上是哪一种。什么都不上传，也从不猜密码。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 转 CSV</title>
+    <id>https://abox.tools/zh/pdf-to-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/pdf-to-csv/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把 PDF 里的表格变成 CSV：银行和信用卡对账单、发票、价目表、报告。每一页上的每一张表都按文字落在纸上的位置找出来，带余额的表还会一行一行核对。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG 转图片</title>
+    <id>https://abox.tools/zh/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/svg-to-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 SVG 转成 PNG、JPEG 或 WebP，尺寸随你定。给宽度、给倍数，或者给一个框，还能顺手出 @2x 和 @3x。透明保住，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片压缩</title>
+    <id>https://abox.tools/zh/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把 JPEG、PNG 或 WebP 压到你要的大小，100 KB、2 MB 都行。全程在浏览器里跑，不上传，不注册，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片涂黑与打码</title>
+    <id>https://abox.tools/zh/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把照片或截图里的姓名、地址、账号遮住再存一份，被遮的像素是从文件里没了，不是压在一个矩形下面。全程在浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片缩放</title>
+    <id>https://abox.tools/zh/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/resize-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">在浏览器里给 JPEG、PNG 和 WebP 改尺寸、裁切、转格式。精确到像素、按百分比，或者定长边，一张也行，一整个文件夹也行。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">文档扫描</title>
+    <id>https://abox.tools/zh/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/document-scanner/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把手机拍的纸张照片变成一份摆正、亮度均匀的 PDF。四个角替你找好，透视给你掰正，阴影除掉。全部在你的浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 SVG</title>
+    <id>https://abox.tools/zh/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-svg/"/>
+    <updated>2026-09-09T00:00:00Z</updated>
+    <summary type="html">在浏览器里把黑白图片描成真正的 SVG 轮廓。logo、镂空模板、签名、线稿和剪影都变成能放大到任意尺寸的曲线。描多了的部分，点一下就去掉。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64 编码解码</title>
+    <id>https://abox.tools/zh/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/base64/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM 阅片器</title>
+    <id>https://abox.tools/zh/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/dicom-viewer/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在浏览器里打开 CT、MR、X 光和超声影像。调窗宽窗位，翻整套序列，按毫米测量，读遍每一个 DICOM 标签，还能看清这个文件里究竟什么在指认病人。什么都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 分析</title>
+    <id>https://abox.tools/zh/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-analyzer/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 GIF 拆开看：每一帧的延时和处置方式、颜色表、循环次数，以及体积去了哪里的逐字节明细。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 制作</title>
+    <id>https://abox.tools/zh/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-maker/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 拆帧</title>
+    <id>https://abox.tools/zh/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/split-gif/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把动图 GIF 拆成一帧一帧，每帧单独存成 PNG，免费，全程在浏览器里完成。透明和时长都保留下来。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC 转 JPG</title>
+    <id>https://abox.tools/zh/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/heic-to-jpg/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 iPhone 的 HEIC 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/json-formatter/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 压缩</title>
+    <id>https://abox.tools/zh/compress-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-pdf/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">不上传也能给 PDF 瘦身。读取、重新压缩、重新写出，全由你自己的浏览器完成，而且动手之前先告诉你这份文件的体积到底压在哪儿。</summary>
+  </entry>
+  <entry>
+    <title type="html">XML 格式化</title>
+    <id>https://abox.tools/zh/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/xml-formatter/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">格式化、缩进和压缩 XML，把 XML 转成 JSON 或者把 JSON 转回 XML。解析器在你的浏览器里跑，什么都不上传，所以一个订阅源、一张发票或者一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML 转 JSON</title>
+    <id>https://abox.tools/zh/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/yaml-to-json/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码生成</title>
+    <id>https://abox.tools/zh/qr-barcode/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码识读</title>
+    <id>https://abox.tools/zh/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">从视频里提取音频</title>
+    <id>https://abox.tools/zh/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/extract-audio-from-video/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 里的声音取出来，存成 WAV。视频不会离开你的设备，画面也从不解码，整个过程都在你自己的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">哈希与校验和</title>
+    <id>https://abox.tools/zh/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/hash-checksum/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">计算任意文件的 MD5、SHA-1、SHA-256、SHA-384 或 SHA-512，并和下载页面上公布的校验和对照。文件在浏览器里读取，多大都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">商家资料预览</title>
+    <id>https://abox.tools/zh/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/business-profile-preview/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在上线之前就看到你的 Google 商家资料长什么样：知识面板、手机上的地点卡片和本地搜索结果，全部由你打进去的名称、类别、营业时间、评分和照片画出来。已有的商家资料可以粘贴进来导入。做好的图能下载成 PNG 或 SVG。整个过程都发生在你的浏览器里。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片堆栈</title>
+    <id>https://abox.tools/zh/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 Data URI</title>
+    <id>https://abox.tools/zh/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-data-uri/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 ICO</title>
+    <id>https://abox.tools/zh/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-ico/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 PNG、JPEG 或 SVG 做成一个真正多尺寸的 .ico，或者一个 macOS 的 .icns。网站图标、Windows 应用图标、Mac 应用图标，加上网站需要的苹果和安卓那几个文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 PDF</title>
+    <id>https://abox.tools/zh/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
+  </entry>
+</feed>

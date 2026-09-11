@@ -1,0 +1,26 @@
+{
+  "id": "/ja/dicom-viewer/",
+  "name": "DICOM\u30d3\u30e5\u30fc\u30a2",
+  "short_name": "DICOM\u30d3\u30e5\u30fc\u30a2",
+  "description": "CT\u30fbMRI\u30fb\u30ec\u30f3\u30c8\u30b2\u30f3\u30fb\u8d85\u97f3\u6ce2\u3092\u3001\u30a6\u30a3\u30f3\u30c9\u30a6\u3068\u30d8\u30c3\u30c0\u30fc\u3068\u8a08\u6e2c\u3064\u304d\u3067\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

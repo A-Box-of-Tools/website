@@ -1,0 +1,87 @@
+# Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is
+
+Een zwarte rechthoek over een naam en een naam die gewist is, zien er op het scherm hetzelfde uit. Een van de twee overleeft het om geselecteerd en gekopieerd te worden. Dit is het verschil, dit zijn de plekken waar een woord zich verstopt die helemaal niet op de pagina staan, en dit is de controle van dertig seconden die je vertelt welke van de twee je hebt.
+
+[Open de tool PDF onleesbaar maken](https://abox.tools/nl/pdf-onleesbaar-maken/): De letters worden uit het bestand gewist, en daarna wordt het bestand doorzocht om het te bewijzen.
+
+Laatst bijgewerkt 26 augustus 2026
+
+## Het korte antwoord
+
+Open [PDF onleesbaar maken](https://abox.tools/nl/pdf-onleesbaar-maken/), sleep het document erin, typ de woorden die weg moeten, vink aan welke je bedoelt, en druk op „Weghalen”. De letters worden gewist uit de eigen tekeninstructies van de pagina, dezelfde woorden worden uit de bladwijzers, opmerkingen, formuliervakken en documenteigenschappen gehaald, en het klare bestand wordt waar je bij staat opnieuw geopend en doorzocht voordat het je aangeboden wordt.
+
+Alles hieronder gaat over waarom die laatste zin de belangrijke is, en hoe je kunt zien of het gereedschap dat je al gebruikt hetzelfde kan zeggen.
+
+## De fout waar dit over gaat
+
+Teken een zwarte rechthoek over een naam in een PDF-lezer. Wat je ziet is een naam met een zwarte rechthoek erover. Wat de meeste lezers *opslaan* is een document dat de naam bevat en, apart daarvan, een rechthoek met een positie, een formaat en een kleur.
+
+Een rechthoek die zo getekend is, is een **annotatie**: een object dat naast de pagina ligt in plaats van erin. De tekst eronder is precies zoals hij was. Selecteer het gebied en druk op kopiëren, of haal er een willekeurige tekstextractor overheen, of open het in een programma dat annotaties anders tekent, en de naam komt terug. Niets op het scherm onderscheidt dat van een echte onleesbaarmaking, en precies daarom blijft het gebeuren bij organisaties die juristen in dienst hebben.
+
+Het heeft rechtbankstukken, inlichtingenanalyses, contracten en — in december 2025 — zwartgemaakte namen in een massale vrijgave van documenten van het Amerikaanse ministerie van Justitie gepubliceerd, die binnen enkele uren na publicatie leesbaar waren. Het patroon is altijd hetzelfde. De rechthoek was de annotatie, en de annotatie was nooit de tekst.
+
+## Wat een echte onleesbaarmaking in plaats daarvan doet
+
+Een pagina in een PDF is een lijst instructies: zet dit lettertype, verplaats de pen hierheen, teken deze glyphen. De woorden op de pagina bestaan op precies één plek, als de operanden van die tekeninstructies:
+
+```
+BT /F1 12 Tf 72 700 Td (Geachte heer Jansen) Tj ET
+```
+
+De naam onleesbaar maken betekent **die letters uit die instructie wissen** en de pagina weer wegschrijven. Daarna valt er niets meer terug te halen, niet omdat het bestand het goed verstopt maar omdat de letters niet in het bestand staan. Er is geen rechthoek met iets eronder, want er is niets eronder.
+
+Eén ding moet teruggezet worden, anders is het resultaat zichtbaar verkeerd. Tekst wordt getekend door een pen over de pagina te laten opschuiven, dus vijf letters wissen trekt de rest van de regel vijf letters naar links: kolommen lopen niet meer uit en totalen schuiven onder de verkeerde koppen. Een gereedschap dat dit goed doet meet hoe ver de weggehaalde letters de pen zouden hebben verplaatst en zet die afstand terug als een afstandsinstructie, die de pen verplaatst zonder iets te tekenen.
+
+De zwarte balk wordt, als hij er is, *daarna* getekend, over een gat dat al leeg is. Het is een beleefdheid tegenover wie het document leest — een teken dat er iets is weggehaald — en niet de onleesbaarmaking. Dat is het hele onderscheid in één zin: bij een echte onleesbaarmaking is de balk versiering; bij een valse *is* de balk de onleesbaarmaking.
+
+![De zoekkaart: twee termen ingetypt, met een telling van de treffers en een lijst van elke plek waar ze in het document voorkomen.](https://abox.tools/screens/redact-a-pdf/find.webp)
+
+Jij zegt wat weg moet en de tool vindt elk voorkomen, ook die op pagina drie waar niemand meer aan dacht.
+
+## De vier plekken waar een woord zich verstopt die niet de pagina zijn
+
+Dit is het deel dat mensen te grazen neemt die het eerste deel goed gedaan hebben. Een PDF draagt tekst op meerdere plekken tegelijk, en een lezer toont, doorzoekt of kopieert ze allemaal. Een naam van de pagina halen en hem in een van deze laten staan, is hem niet weggehaald hebben.
+
+- **De documenteigenschappen.** Titel, auteur, en de naam van het bestand waaruit dit geëxporteerd is. Een document waaruit de pagina's een naam is gehaald en waarvan de eigenschappen nog steeds `Jansen schikking versie 3.docx` luiden, is niet onleesbaar gemaakt. Meestal staat er een tweede kopie van dezelfde informatie in een XMP-pakket, en dat moet er ook uit.
+- **Bladwijzers.** Het overzicht langs de zijkant van een lezer is een lijst koppen met paginanummers eraan — en een kop is een regel tekst waar niets op de pagina zeggenschap over heeft.
+- **Formuliervakken en opmerkingen.** Wat iemand in een formulier getypt heeft wordt twee keer opgeslagen: één keer als de waarde van het vak en één keer als de weergave die de lezer tekent. Allebei moeten ze weg. Een plaknotitie draagt zijn tekst en de naam van wie hem geschreven heeft.
+- **De vervangtekst.** Een PDF mag verklaren dat een reeks glyphen iets anders „spelt”, zodat een ligatuur of een met een koppelteken afgebroken regel kopieert als het woord waar hij voor staat. Het betekent dat een document het ene kan tonen en een lezer bij Ctrl+C het andere kan aanreiken, en een onleesbaarmaking die alleen weghaalde wat er getekend was, zou de zin intact laten voor iedereen die de alinea selecteert.
+
+Bijlagen zijn de vijfde. Een PDF kan hele andere bestanden in zich dragen, en niets wat je met de pagina's doet raakt ze aan.
+
+![De paginakaart: de tekst van één pagina, uitgelezen en selecteerbaar, met de gevonden termen gemarkeerd.](https://abox.tools/screens/redact-a-pdf/page.webp)
+
+Dit is het deel dat mensen verrast. Een pdf is geen afbeelding: de woorden erin kan iedereen die hem krijgt selecteren, doorzoeken en kopiëren.
+
+## Hoe je een bestand nakijkt, in dertig seconden
+
+Doe dit met alles wat je op het punt staat te versturen, welk gereedschap het ook gemaakt heeft. Het is de controle die elk van de gepubliceerde fouten gepakt zou hebben.
+
+1. **Open het klare bestand en druk op Ctrl+F** (Cmd+F op een Mac). Zoek naar het woord dat je hebt weggehaald. Een echte onleesbaarmaking geeft niets terug. Springt de lezer naar een zwarte rechthoek, dan staat het woord er nog steeds in en ligt de rechthoek er bovenop.
+2. **Selecteer het zwartgemaakte gebied en kopieer het.** Sleep over de rechthoek, druk op Ctrl+C, en plak in een tekstvak. Komt er iets aan, dan heb je dezelfde fout van de andere kant gevonden.
+3. **Selecteer het hele document en kopieer dat.** Ctrl+A en dan Ctrl+C, plak in een willekeurige teksteditor, en lees wat eruit komt. Dit is veruit de nuttigste van de drie, want het laat je het document zien zoals een tekstextractor het ziet — inclusief tekst waarvan je niet wist dat hij er was, wat op een gescande pagina gewoon is.
+4. **Kijk naar de eigenschappen** — Bestand → Eigenschappen in de meeste lezers — en naar het bladwijzerpaneel. Allebei zijn het plekken waar een naam een pagina-perfecte onleesbaarmaking overleeft.
+
+[PDF onleesbaar maken](https://abox.tools/nl/pdf-onleesbaar-maken/) voert de eerste en de derde daarvan voor je uit en laat het aantal zien, want een gereedschap dat beweert iets weggehaald te hebben is geen bewijs, en een zoekopdracht in het klare bestand wel.
+
+## Gescande documenten zijn een ander probleem
+
+Een scan is een foto van een pagina. De woorden erop zijn pixels, geen tekst, en hoeveel je ook aan de tekstlaag sleutelt, je raakt ze niet aan — omdat er geen tekstlaag is, of omdat de tekstlaag die er is het beeld beschrijft in plaats van het te zíjn.
+
+De meeste moderne scanners en PDF-gereedschappen leggen een onzichtbare tekstlaag over het beeld, geschreven door optische tekenherkenning, zodat de pagina doorzoekbaar is. Die laag is echte tekst en is weg te halen. Het is de moeite waard om te doen: het is wat een zoekopdracht, een kopieeractie en elk geautomatiseerd systeem dat documenten leest gevonden zou hebben. Het verandert niets aan het beeld, waarin de woorden nog steeds prima leesbaar zijn voor wie naar de pagina kijkt.
+
+Dus voor een scan is de eerlijke volgorde: haal de woorden uit de tekstlaag, en pak het beeld daarna apart aan — en dat betekent pixels overschrijven. Dat is wat de [afbeelding onleesbaar maken](https://abox.tools/nl/gidsen/een-afbeelding-onleesbaar-maken/) doet, en de gids ernaast legt uit waarom vervagen of een mozaiek niet goed genoeg is voor tekst.
+
+## Waarom niet gewoon afdrukken en opnieuw scannen
+
+Omdat het werkt, en je al het andere kost. Een onleesbaar gemaakte pagina afdrukken en weer inscannen levert inderdaad een document op zonder tekstlaag om uit te lekken — en een document dat niemand kan doorzoeken, dat geen schermlezer kan lezen, dat vijf tot vijftig keer zo groot is, en waarvan de kwaliteit is wat de kantoorscanner ervan vond. Het steunt ook op de aanname dat de pagina is afgedrukt zoals hij eruitzag: een annotatie kan gemarkeerd zijn als zichtbaar op het scherm en niet op papier, en als dat je zwarte balk was, staat de naam op het vel dat uit de printer komt.
+
+Hetzelfde argument geldt voor „platslaan tot een afbeelding”, wat sommige gereedschappen als onleesbaarmaking aanbieden. Het verandert elke pagina in een foto van zichzelf. Waren de woorden afgedekt in plaats van gewist, dan is de afdekking nu permanent — maar al het andere aan het document is er samen mee verdwenen, en het bestand dat je verstuurt is er één waar niemand mee kan werken.
+
+## Waarom dit de klus is die uploaden het minst waard is
+
+Een onleesbaarmakingsdienst moet het niet-onleesbare bestand krijgen. Dat is de hele transactie: de privé-versie komt eerst aan, ongeschonden, en is de versie op de schijf van iemand anders. Wat de privacyverklaring ook zegt, over de volgorde valt niet te twisten — het document waar je voorzichtig mee was is het document dat je hebt afgegeven.
+
+Wat mensen onleesbaar maken maakt dit erger dan het klinkt. Getuigenverklaringen, brieven van de arts, bankafschriften die naar een verhuurder gaan, een contract met de naam van de ene klant erin dat naar een andere gaat, een stuk met een woonadres erop. Dat zijn de documenten, en precies daarom zou het gereedschap ervoor geen server aan de andere kant moeten hebben.
+
+Alles aan [het gereedschap op deze site](https://abox.tools/nl/pdf-onleesbaar-maken/) gebeurt in je eigen browser: het bestand wordt op jouw machine gelezen, bewerkt, geschreven en nagekeken, en de woorden waar je op zoekt verlaten het tabblad ook nooit. Trek de stekker uit het internet en het blijft werken, en dat is het eenvoudigste bewijs dat er bestaat dat er nergens iets heen gestuurd wordt. Zie [is het veilig om bestanden te uploaden](https://abox.tools/nl/gidsen/is-bestanden-uploaden-veilig/) voor wat een upload werkelijk inhoudt.

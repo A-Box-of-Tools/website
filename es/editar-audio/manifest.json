@@ -1,0 +1,26 @@
+{
+  "id": "/es/editar-audio/",
+  "name": "Editor de audio",
+  "short_name": "Editor de audio",
+  "description": "Ponla del rev\u00e9s, c\u00e1mbiale la velocidad o levanta una grabaci\u00f3n floja, y todo aqu\u00ed mismo.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

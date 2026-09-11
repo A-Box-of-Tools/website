@@ -1,0 +1,26 @@
+{
+  "id": "/id/penampil-dicom/",
+  "name": "Penampil DICOM",
+  "short_name": "Penampil DICOM",
+  "description": "CT, MR, rontgen, dan USG, lengkap dengan jendela, headernya, dan pengukurannya.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+# How to trim a video without re-encoding it
+
+Trimming does not change what any frame looks like, so a good trimmer does not touch them — it moves them into a new file exactly as they were. This explains what that buys you, and the one place it shows.
+
+[Open the Video Cutter](https://abox.tools/trim-video/): Mark the parts worth keeping as it plays. Get them back as one video.
+
+Last updated 26 August 2026
+
+## The short answer
+
+Open the [Video Cutter](https://abox.tools/trim-video/), drop the clip in, press `I` and `O` to mark each part you want — as many as you like — and export. On an MP4, MOV or M4V the frames you keep are moved into the new file exactly as they were — the same bytes, the same encoder settings, the same everything — and the sound is copied across sample by sample without being decoded.
+
+That means a trim costs you nothing in quality, and it is fast: cutting a minute out of a four-gigabyte recording costs about what writing that minute to disk costs, because the frames are pointed at rather than loaded. The one place this shows is where your cut actually lands, which is the rest of this page.
+
+## Why a trim need not lose quality at all
+
+Trimming does not change what any frame looks like. Every frame you keep is meant to come out identical to how it went in, so there is no reason to decode it and encode it again — and every reason not to, since a re-encode is lossy and would make the whole clip slightly worse in order to shorten it.
+
+So a good trimmer does not re-encode. It reads the file's index, works out which encoded frames fall in your range, and writes those bytes into a new container with a new index in front of them. Nothing is decoded at all on that path.
+
+Plenty of tools re-encode anyway, because decoding and re-encoding is much simpler to implement than parsing the container format. You can usually tell which kind you are using by how long it takes: a copy is limited by how fast your disk writes, and a re-encode is limited by how fast your machine encodes video, which is a hundred times slower.
+
+## Keyframes, and why your cut may land early
+
+Here is the constraint that everything about trimming follows from.
+
+Video is not stored as a sequence of complete pictures. That would be enormous. Most frames are stored as a description of how they differ from their neighbours, which means they cannot be decoded on their own — you need the frames around them. Only a **keyframe** stands alone as a complete picture, and keyframes are typically one to ten seconds apart.
+
+So if you mark a cut two seconds after the last keyframe, a trimmer that copies frames cannot start there. The frames at your mark are unreadable without the run that leads up to them. It has to carry the whole stretch from the keyframe in front of your mark.
+
+What it does about that is the interesting part. The file format has a standard way to say *start playing at this point* — the extra frames are in the file but the container instructs the player to skip them. Every mainstream player honours it, and the clip begins exactly where you said. A player that ignores it will start early, by up to the keyframe gap.
+
+The tool here tells you which case you are in and by how much before you export, so it is a decision rather than a surprise.
+
+## When to accept a re-encode
+
+There is an exact cut, and it works by re-encoding the opening stretch — decoding from the keyframe, and writing out a new run of frames that genuinely begins where you marked. It is slower, and it costs a little quality on that opening stretch only.
+
+Choose it when the clip is going somewhere that will not honour the container's instruction, or where you cannot control the player: some video editors, some broadcast and conferencing systems, some older hardware players. Choose the copy for everything else, which is nearly everything — a browser, a phone, a social platform, a media player.
+
+A third option that costs nothing: move your mark. If the tool shows you where the keyframes are, nudging the cut to the nearest one gives you an exact cut with no re-encoding at all. It is rarely worth a second of difference to give up on a copy.
+
+![The export card: the method, a quality slider, a switch for the sound, and a summary counting the pieces, the length and the size.](https://abox.tools/screens/trim-a-video/summary.webp)
+
+The summary is where the decision in this section is made: what the copy will cost, and what the re-encode would cost instead.
+
+## Taking a piece out of the middle
+
+Cutting a section out is a different operation from keeping one, and worth knowing is supported, because a lot of trimmers only do the second. Mark the part you do not want, choose to cut it out, and what is left on either side is joined into one clip with the sound carried across in step.
+
+The join has the same keyframe constraint at the point where the second half resumes, for the same reason. It works on both MP4 paths here. It is the one thing the recording fallback below cannot do, because a recording is made in one pass from one playhead.
+
+![The timeline with two segments marked, and a table under it giving each one’s start, end and length, with the total kept.](https://abox.tools/screens/trim-a-video/marks.webp)
+
+Two pieces kept out of one clip. The table is editable, so a mark that landed a fifth of a second late can be typed rather than re-marked.
+
+## Formats, and the fallback
+
+**MP4, M4V and MOV** are read directly, whatever codec is inside them — H.264, HEVC, AV1, VP9. Copying frames does not involve decoding them, so this path works even for a codec your browser has no decoder for at all, which is a pleasant consequence of not looking at the pictures.
+
+**Anything else your browser can play**, WebM most obviously, is trimmed by playing it and recording the result. That works, and it has two costs: it takes as long as the section is long, and the picture and sound are encoded again.
+
+**AVI, WMV, FLV and most MKVs** the browser can neither read nor play, and the tool says so rather than failing halfway through. Convert those to MP4 first with something that handles them.
+
+## Two things that quietly go wrong elsewhere
+
+**Rotation.** A phone films in landscape and writes a rotation instruction into the file rather than turning the pixels. A trimmer that copies frames has to carry that instruction across, or your portrait clip comes out on its side — which is the classic way a trimmed video is ruined. The exact path here turns the frames as it re-encodes them and writes a file that needs no rotation at all.
+
+**Audio sync.** Audio and video are stored as separate streams with their own timing, and they are not chopped at the same points. If the two are not lined up deliberately at the cut, the sound drifts. On the copy path here the audio is copied sample by sample without being decoded, so it is byte for byte what was in the file, and an edit mark keeps it in step with the picture to within a thousandth of a second.
+
+## Trimming is not cropping
+
+Two words that get used for each other. Trimming changes the length of the clip; cropping changes the shape of the picture. If what you want is a square version of a landscape video, or the black bars gone from the sides, that is the [Video Cropper](https://abox.tools/crop-video/) — and unlike trimming it does have to re-encode, for the reason [its guide](https://abox.tools/guides/crop-a-video/) explains.
+
+## Why this does not need an upload — especially this
+
+Video is the file type people most expect to have to upload, because the files are large and the work sounds heavy. Trimming is the case where that is least true: on the copy path the file is barely read at all. The tool walks the index, works out which byte ranges to keep, and writes them out. Uploading a four-gigabyte file to a server so it can do that would be the slowest possible way to arrange it.
+
+It is also the file type where uploading costs the most if you would rather not: video carries faces, voices, homes and locations in a way a document does not. The tool here has no network feature of any kind, and the page's `Content-Security-Policy` names every address it may contact, none of which belongs to this site.
+
+Unplug from the internet and trim a clip anyway if you would rather check than be told. [Is it safe to upload files to online converters?](https://abox.tools/guides/is-it-safe-to-upload-files/) sets out three more checks like it.

@@ -1,0 +1,26 @@
+{
+  "id": "/nl/audio-uit-video-halen/",
+  "name": "Audio uit video halen",
+  "short_name": "Audio uit video halen",
+  "description": "Sleep er een video in en haal het geluid eruit. Het beeld wordt nooit gedecodeerd en er wordt niets ge\u00fcpload.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

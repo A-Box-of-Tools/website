@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-image-en-svg/",
+  "name": "Image en SVG",
+  "short_name": "Image en SVG",
+  "description": "Une forme, un contour. Pointez ce qui ne devrait pas y \u00eatre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
