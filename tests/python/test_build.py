@@ -46,6 +46,30 @@ def warm(tree):
             pass
 
 
+# The two whole builds this file reads, made once each and kept until the
+# module is done with them. Three classes used to build for themselves - the
+# readable site for BuildTheSite, the deployed one for BuildDeployed, and
+# both again for BuildMinified to compare their file lists - five whole
+# builds where two say everything, and on CI the three spare ones were about
+# a minute of the job. Nothing that reads these writes into them; the one
+# test that needs a build of its own, test_building_twice_gives_the_same_bytes,
+# makes it, because a second copy is the thing it is checking.
+_BUILDS = {}
+
+
+def site_build(minify):
+    """The readable (`minify=False`) or the deployed build, as the pair
+    (out, written) that `buildmod.build` produced, built on first ask."""
+    if minify not in _BUILDS:
+        tmp = tempfile.TemporaryDirectory()
+        unittest.addModuleCleanup(tmp.cleanup)
+        out = Path(tmp.name) / ('deployed' if minify else 'dist')
+        written = buildmod.build(out, clean=True, minify_output=minify)
+        warm(out)
+        _BUILDS[minify] = (out, written)
+    return _BUILDS[minify]
+
+
 
 
 
@@ -344,10 +368,7 @@ class BuildTheSite(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.tmp = tempfile.TemporaryDirectory()
-        cls.out = Path(cls.tmp.name) / 'dist'
-        cls.written = buildmod.build(cls.out, clean=True, minify_output=False)
-        warm(cls.out)
+        cls.out, cls.written = site_build(minify=False)
 
         # Which languages are built but not yet advertised. Read off the locale
         # files rather than written down here, so adding a language - or
@@ -392,10 +413,6 @@ class BuildTheSite(unittest.TestCase):
             for locale in cls.locales for slug in slugs
             if buildmod.i18n.translated(locale, slug)
         }
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.tmp.cleanup()
 
     def unpublished(self, name):
         """Whether a written page is one the site does not advertise.
@@ -1790,14 +1807,11 @@ class BuildMinified(unittest.TestCase):
     def test_a_minified_build_produces_the_same_file_list(self):
         """The readable build is the reference the minified one is judged
         against - the same check CI runs against the deployed output."""
-        with tempfile.TemporaryDirectory() as tmp:
-            plain = Path(tmp) / 'plain'
-            small = Path(tmp) / 'small'
-            buildmod.build(plain, clean=True, minify_output=False)
-            buildmod.build(small, clean=True, minify_output=True)
-            self.assertEqual(
-                sorted(p.relative_to(plain).as_posix() for p in plain.rglob('*')),
-                sorted(p.relative_to(small).as_posix() for p in small.rglob('*')))
+        plain, _ = site_build(minify=False)
+        small, _ = site_build(minify=True)
+        self.assertEqual(
+            sorted(p.relative_to(plain).as_posix() for p in plain.rglob('*')),
+            sorted(p.relative_to(small).as_posix() for p in small.rglob('*')))
 
 
 class BuildDeployed(unittest.TestCase):
@@ -1819,13 +1833,7 @@ class BuildDeployed(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.tmp = tempfile.TemporaryDirectory()
-        cls.out = Path(cls.tmp.name) / 'deployed'
-        buildmod.build(cls.out, clean=True, minify_output=True)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.tmp.cleanup()
+        cls.out, _ = site_build(minify=True)
 
     def test_the_measurement_global_keeps_its_name(self):
         """`gtag` is an interface, not an internal.
