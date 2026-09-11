@@ -37,8 +37,8 @@ js_parts = ["file-picker", "zip", "crc32", "pdf-page-writer", "message-box", "ex
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
-handoff = ["merge-pdf", "compress-pdf"]
-lastmod = "2026-09-07"
+handoff = ["merge-pdf", "compress-pdf", "redact-pdf"]
+lastmod = "2026-09-10"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -56,10 +56,12 @@ og_card = "Photograph a page. The corners are found, the angle undone, the shado
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """
-  This tool widens nothing. The photo and the straightened page are drawn
-  straight into a canvas rather than loaded through a URL, and the finished
-  document is a blob: link you download rather than anything this page
-  fetches."""
+  connect-src carries blob:, and that is the whole of what this tool widens.
+  The photo and the straightened page are drawn straight into a canvas rather
+  than loaded through a URL; what the policy has to permit is the carry-on row
+  reading the finished document back out of this page before parking it for the
+  next tool. blob: names bytes inside this page and gains no reach over the
+  network."""
 
 # --- the pledge block --------------------------------------------------------
 

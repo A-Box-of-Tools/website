@@ -244,3 +244,20 @@ Tests are in [`tests/js/`](../../tests/js/): `redact-pdf-content`,
 `redact-pdf-fonts`, `redact-pdf-text`, `redact-pdf-matches` and
 `redact-pdf-edit`. The last of those is the one that matters — it writes whole
 documents, opens them again, and searches them.
+
+## Carrying the result on
+
+The redacted file can go straight into `/compress-pdf/` or
+`/merge-pdf/` without being saved first — a redacted document is
+usually one part of something about to be sent. `handoff` in
+`tool.toml` names them and `shared/handoff.js` puts a row of links
+under the result.
+
+What that costs the policy is one directive: `connect-src` carries `blob:`,
+because the row reads the finished result back out of this page before
+parking it for the next tool. So this page does permit `fetch()` of a
+`blob:` URL, and a result can be read back in the page's own console. That
+is the one place this tool's policy differs from a tool with no carry-on
+row, and it is worth knowing before concluding that a `blob:` fetch failing
+somewhere else on the site is a bug. Nothing else is widened, and `blob:`
+names bytes inside this page — it gains no reach over the network.
