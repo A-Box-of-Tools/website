@@ -3,8 +3,8 @@
 Finds every table in a PDF and turns it into a CSV, in the browser, and checks
 a statement's running balance where one is printed.
 
-It lives at `/bank-statement-to-csv/` because that is what it was first: a
-bank statement converter. The first real statement put through it had two
+It was first a bank statement converter at `/bank-statement-to-csv/`, which
+now redirects here. The first real statement put through it had two
 transactions, five other tables — an account summary, a rewards table, payment
 details, interest rates, a column of small print — and printed its dates with
 no year. The converter only kept lines that started with a dated transaction,

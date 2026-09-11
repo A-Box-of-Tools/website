@@ -1,5 +1,5 @@
 /**
- * tools/bank-statement-to-csv/src/values.js - dates and amounts.
+ * tools/pdf-to-csv/src/values.js - dates and amounts.
  *
  * The risk here is silent and expensive: every failure in this file produces a
  * number that looks like a number. `1.240,00` read with the wrong decimal mark
@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import {
   dateOrder, decimalMark, formatAmount, hasAmbiguousDates, isData, isValue, looksLikeDate,
   looksNumeric, parseAmount, parseDate,
-} from '../../tools/bank-statement-to-csv/src/values.js';
+} from '../../tools/pdf-to-csv/src/values.js';
 
 test('an amount is recognised in the shapes a statement writes it', () => {
   for (const text of ['1,240.00', '318.50', '(87.20)', '-40.00', '40.00-',

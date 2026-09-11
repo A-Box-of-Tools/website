@@ -43,7 +43,7 @@ export function rowsFor(page, count = 5) {
 
 /* ------------------------------------------------------- the same as a ledger
  *
- * One tool needs more than the rows above: /bank-statement-to-csv/ checks its
+ * One tool needs more than the rows above: /pdf-to-csv/ checks its
  * own reading of a statement against the running balance printed on it, so an
  * example with no balance column would demonstrate the tool with its best
  * feature switched off.
