@@ -59,7 +59,12 @@ csp_note = """
   worker-src is named explicitly because this is the only tool here that runs
   its work in a Worker, and a directive that is merely inherited is one nobody
   reading the policy can see was intended. It is 'self' and nothing else: the
-  worker is a file in this folder, cached by the service worker beside it."""
+  worker is a file in this folder, cached by the service worker beside it.
+
+  connect-src carries blob: for the other reason a directive is named here: the
+  carry-on row reads the stacked image back out of this page before parking it
+  for the next tool. blob: names bytes inside this page; neither directive
+  gains any reach over the network."""
 
 # --- the pledge block --------------------------------------------------------
 

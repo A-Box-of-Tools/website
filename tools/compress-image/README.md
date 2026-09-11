@@ -162,3 +162,21 @@ under the target coming back as the identical `File` object; PNG output reaching
 a target by resizing alone; `compare()` returning SSIM 1 and an infinite PSNR for
 a picture against itself, and dropping to ~0.83 at quality 0.05; and the zip
 carrying a valid local-file header.
+
+## Carrying the result on
+
+The compressed pictures can go straight into `/images-to-pdf/` without
+being saved first: `handoff` in `tool.toml` names it, and
+`shared/handoff.js` puts a row of links under the results. This tool
+finishes a whole batch, and the row carries **all** of it — twelve
+compressed photos arrive as twelve files, which is the point, because
+saving twelve and handing twelve back is the part nobody does twice.
+
+What that costs the policy is one directive: `connect-src` carries `blob:`,
+because the row reads the finished result back out of this page before
+parking it for the next tool. So this page does permit `fetch()` of a
+`blob:` URL, and a result can be read back in the page's own console. That
+is the one place this tool's policy differs from a tool with no carry-on
+row, and it is worth knowing before concluding that a `blob:` fetch failing
+somewhere else on the site is a bug. Nothing else is widened, and `blob:`
+names bytes inside this page — it gains no reach over the network.

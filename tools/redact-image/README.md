@@ -126,3 +126,19 @@ undoing: the picture itself is untouched until the button is pressed.
 **The output filename always ends `-redacted`.** Two files called `scan.jpg` in
 a downloads folder is exactly how the original gets attached to the email
 instead of the copy, and nothing this page does can undo that one.
+
+## Carrying the result on
+
+The redacted picture can go straight into `/compress-image/` or
+`/resize-image/` without being saved first — the file is usually on its
+way into an email. `handoff` in `tool.toml` names them and
+`shared/handoff.js` puts a row of links under the result.
+
+What that costs the policy is one directive: `connect-src` carries `blob:`,
+because the row reads the finished result back out of this page before
+parking it for the next tool. So this page does permit `fetch()` of a
+`blob:` URL, and a result can be read back in the page's own console. That
+is the one place this tool's policy differs from a tool with no carry-on
+row, and it is worth knowing before concluding that a `blob:` fetch failing
+somewhere else on the site is a bug. Nothing else is widened, and `blob:`
+names bytes inside this page — it gains no reach over the network.
