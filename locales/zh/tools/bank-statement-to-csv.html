@@ -14,7 +14,7 @@
 <main id="main">
   <!-- 第 1 步 | 文件 -->
   <section class="card">
-    <h2><span class="step">1</span> 选一份对账单</h2>
+    <h2><span class="step">1</span> 选一份 PDF</h2>
 
     {% include "partials/file-picker.html" %}
 
@@ -79,11 +79,16 @@
     <h2><span class="step">2</span> 核对它读出来的内容</h2>
 
     <p class="card-lede">
-      对账单看着像一张表，其实不是：它是落在纸面各个位置上的文字，那几道栏是没人印过的空白。所以下面这张表是推出来的，不是读出来的，而表格下面那一行是工具在核对自己的结果，只要你的对账单带着余额，每一行都可以拿上一行证明。
+      PDF 看着像装着表格，其实没有：它装的是落在纸面各个位置上的文字，那几道栏是没人印过的空白。所以下面每一张表都是推出来的，不是读出来的。要是其中一张带着余额，表格上面那一行就是工具在核对自己的结果，每一行都拿上一行来证明。
     </p>
 
     <p id="summary" class="verdict" role="status" aria-live="polite"></p>
     <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">哪一张表</label>
+      <select id="table-pick"></select>
+    </div>
 
     <div class="field" id="order-field" hidden>
       <label for="date-order">日期的写法是</label>
@@ -94,15 +99,9 @@
       <p class="field-note" id="order-note"></p>
     </div>
 
-    <div class="preview-wrap">
-      <table id="preview" class="preview">
-        <caption id="preview-caption" class="preview-caption"></caption>
-        <thead><tr id="preview-head"></tr></thead>
-        <tbody id="preview-body"></tbody>
-      </table>
-    </div>
-
-    <p id="preview-more" class="field-summary" hidden></p>
+    <!-- One captioned table per table found, built by main.js: how many there
+         are is not known until the file is read. -->
+    <div id="previews" class="previews"></div>
   </section>
 
   <!-- 第 3 步 | 文件 -->
@@ -121,31 +120,35 @@
     {name} 这样的占位由调用方填。
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="load.notpdf">这不是 PDF。这个工具从 PDF 对账单里读出那张表。</span>
-    <span data-phrase="load.encrypted">这份对账单带着密码。把密码取掉跟从里面读出那张表是两回事，这个工具不会背着你去做。</span>
+    <span data-phrase="load.notpdf">这不是 PDF。这个工具从 PDF 里读出表格。</span>
+    <span data-phrase="load.encrypted">这份 PDF 带着密码。把密码取掉跟从里面读出表格是两回事，这个工具不会背着你去做。</span>
     <span data-phrase="error.broke">这一页上有东西不工作了（{detail}）。刷新之后再试一次。</span>
     <span data-phrase="load.broken">这个文件没能作为 PDF 打开（{detail}）。</span>
     <span data-phrase="load.nopages">它打开了，但是里面找不到任何页面。</span>
-    <span data-phrase="scan.notext">这份 PDF 里没有文字：它的每一页都是对账单的图片。</span>
-    <span data-phrase="scan.nocolumns">这几页上的文字不是按栏排的，所以这里没有一张表可以拆开。</span>
-    <span data-phrase="scan.norows">这里是有栏位，但是没有哪一行是以日期开头的，所以这几页上没有任何东西看起来像一份交易清单。</span>
-    <span data-phrase="sum.rows.one">{rows} 笔交易，读自 {pages}。</span>
-    <span data-phrase="sum.rows.many">{rows} 笔交易，读自 {pages}。</span>
-    <span data-phrase="sum.skipped">另有 {n} 行是表头、页码或者结转合计，没有算进来。</span>
-    <span data-phrase="sum.wrapped">{n} 个折行并进了上面那一行。</span>
+    <span data-phrase="scan.notext">这份 PDF 里没有文字：它的每一页都是一张图片。</span>
+    <span data-phrase="scan.notables">这几页上没有排成表格的内容——没有哪两行对得成栏——所以这里没有东西可以变成一行一行。</span>
+    <span data-phrase="sum.one">一张表，{rows}，读自 {pages}。</span>
+    <span data-phrase="sum.many">{tables}，一共 {rows}，读自 {pages}。</span>
+    <span data-phrase="table.label">第 {n} 张表 &middot; 第 {page} 页 &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">全部 {tables}，一张接一张</span>
+    <span data-phrase="check.intable">第 {n} 张表：{verdict}</span>
+    <span data-phrase="fact.shape">{rows}，{columns}</span>
+    <span data-phrase="fact.tables">{tables}，一共 {rows}，一张接一张</span>
+    <span data-phrase="count.rows.one">{n} 行</span>
+    <span data-phrase="count.rows.many">{n} 行</span>
+    <span data-phrase="count.columns.one">{n} 栏</span>
+    <span data-phrase="count.columns.many">{n} 栏</span>
+    <span data-phrase="count.tables.one">{n} 张表</span>
+    <span data-phrase="count.tables.many">{n} 张表</span>
     <span data-phrase="check.held">余额在每一行上都对得上，所以金额读对了，没有哪一行被漏掉或者算了两遍。</span>
     <span data-phrase="check.broke">余额在 {links} 行里对上了 {held} 行。用之前先拿 PDF 核一下 {where}。</span>
-    <span data-phrase="check.none">这份对账单没有印余额，所以没有任何东西可以拿来核对这些行。它们是页面上写的内容；这里没有东西能证明它。</span>
     <span data-phrase="check.row">第 {n} 行</span>
     <span data-phrase="check.rows">第 {list} 行</span>
-    <span data-phrase="order.found">是从这份对账单上一个大于 12 的日子推出来的，所以这是它自己写的，不是猜的。</span>
-    <span data-phrase="order.guessed">这份对账单上每一个日期都在 12 号或者更早，所以它里面没有任何东西说明顺序是哪一种。要是下面的日期看着不对，就改这里。</span>
-    <span data-phrase="preview.caption">{rows} 行里的前 {shown} 行</span>
-    <span data-phrase="preview.all">全部 {rows} 行</span>
-    <span data-phrase="preview.more">这里只显示前 {shown} 行。下载的文件里是全部 {rows} 行。</span>
+    <span data-phrase="order.found">是从这份文件里一个大于 12 的日子推出来的，所以这是它自己写的，不是猜的。</span>
+    <span data-phrase="order.guessed">这份文件里每一个日期都在 12 号或者更早，所以它里面没有任何东西说明顺序是哪一种。要是下面的日期看着不对，就改这里。</span>
+    <span data-phrase="preview.more">这张表这里只显示前 {shown} 行。下载的文件里是全部的行。</span>
     <span data-phrase="result.name">{name}.csv</span>
-    <span data-phrase="fact.columns">{n} 栏</span>
-    <span data-phrase="fact.dates">日期写成 YYYY-MM-DD</span>
+    <span data-phrase="fact.dates">带年份的日期写成 YYYY-MM-DD</span>
     <span data-phrase="fact.amounts">金额是带正负号的普通数字</span>
     <span data-phrase="fact.encoding">UTF-8，按 RFC 4180 加引号</span>
     <span data-phrase="count.pages.one">{n} 页</span>
