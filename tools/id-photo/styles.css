@@ -91,6 +91,61 @@
   padding-inline-start: 0.7rem;
 }
 
+/* The reader. A quote from the pasted text on one line and the boxes it filled
+   under it, so the check it asks for - does this say what the rule says - is
+   made by reading down, not by matching across. */
+.read-rules {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+}
+
+.read-rules textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.read-rules button { justify-self: start; }
+
+.read-list {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  max-width: 74ch;
+}
+
+.read-list li {
+  padding: 0.45rem 0.7rem;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  line-height: 1.5;
+}
+
+.read-notes li { border-inline-start-color: var(--border); color: var(--text-dim); }
+/* Not italic: Chinese has no italic, and the browser's slanted stand-in for
+   one is harder to read than the quotation marks alone. */
+.read-list q { overflow-wrap: anywhere; }
+.read-list q + q { margin-inline-start: 0.5rem; }
+
+.read-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin-top: 0.15rem;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+}
+
+.read-fields b { color: var(--text); font-variant-numeric: tabular-nums; }
+
 .custom-panel {
   margin-top: 1rem;
   padding: 0.7rem 0.9rem;

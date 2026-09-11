@@ -43,6 +43,23 @@
     <p class="spec-source" id="spec-source"></p>
 
     <!--
+      The same boxes, filled in from the rule's own words, and only for
+      "Anywhere else", like the boxes. src/requirements.js says what it reads
+      and why it quotes every figure back rather than asking to be trusted.
+    -->
+    <div class="read-rules" id="read-rules" hidden>
+      <label for="read-text">Have the rules as text? Paste them here and the boxes below are filled in
+        from them. It reads English and Chinese; in any other language it still finds the sizes.</label>
+      <textarea id="read-text" rows="4" spellcheck="false"></textarea>
+      <button type="button" id="read-button" class="ghost">Read the rules</button>
+      <div id="read-result" class="read-result" hidden>
+        <p id="read-status" class="hint-line" role="status"></p>
+        <ul id="read-found" class="read-list"></ul>
+        <ul id="read-notes" class="read-list read-notes"></ul>
+      </div>
+    </div>
+
+    <!--
       Only the "Anywhere else" entry unlocks these. A country's own numbers are
       not editable on purpose: an editable rule is a rule somebody can quietly
       break and then believe they met.
@@ -348,6 +365,26 @@
     <span data-phrase="source.line">Transcribed from {authority} &mdash; {document}. Checked {checked}. Rules change;
       the figures above are what to check against the form in front of you.</span>
     <span data-phrase="source.own">Your own figures. Nothing here is checked against anything.</span>
+    <span data-phrase="read.done">Filled in from what you pasted. Each figure is listed under the words it was read
+      from, so check the two against each other. A box the text does not mention keeps what it had.</span>
+    <span data-phrase="read.none">Nothing in that text reads as a photo size, a head height, a background, an upload
+      size or a file size, so no box was changed. Type the figures in below instead.</span>
+    <span data-phrase="read.kept">No box was changed. What it did find, and why each was left alone:</span>
+    <span data-phrase="read.sizes">It gives more than one photo size, so the size was left alone. Type in the one
+      your document asks for:</span>
+    <span data-phrase="read.named">It names the size rather than measuring it, and studios do not agree on what those
+      names measure, so the size was left alone. Type in the millimetres your document asks for:</span>
+    <span data-phrase="read.colour">It asks for a background this page has no check for - it checks white, off-white,
+      light grey and cream - so the background was left alone:</span>
+    <span data-phrase="read.pxrange">It allows more than one upload size, and the smallest was filled in:</span>
+    <span data-phrase="read.unused.headwidth">a head width, which is not used: this page measures the head from chin to
+      crown, not across</span>
+    <span data-phrase="read.unused.eye">an eye position, which is not used: this page takes the eye line from the ICAO
+      standard</span>
+    <span data-phrase="read.unused.margin">a margin, which is not used: this page frames the photo by the head's
+      height, and the margins follow from it</span>
+    <span data-phrase="read.unused.paper">a paper size to print on, not the size of the photo</span>
+    <span data-phrase="read.unused.other">a measurement that matched none of the boxes</span>
     <span data-phrase="lede.signature">A signature is checked differently: that the paper is light, that there is ink on
       it, and that the crop has not taken in a ruled line or the edge of the page.</span>
     <span data-phrase="lede.portrait">Read from a band across the top of the crop and down each side, above the shoulders
