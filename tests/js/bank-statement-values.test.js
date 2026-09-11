@@ -13,8 +13,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  dateOrder, decimalMark, formatAmount, hasAmbiguousDates, looksNumeric,
-  parseAmount, parseDate,
+  dateOrder, decimalMark, formatAmount, hasAmbiguousDates, isData, isValue, looksLikeDate,
+  looksNumeric, parseAmount, parseDate,
 } from '../../tools/bank-statement-to-csv/src/values.js';
 
 test('an amount is recognised in the shapes a statement writes it', () => {
@@ -116,4 +116,41 @@ test('an impossible date is not a date', () => {
 test('a two-digit year is this century until that would be the future', () => {
   assert.equal(parseDate('04/01/26', 'dmy'), '2026-01-04');
   assert.equal(parseDate('04/01/99', 'dmy'), '1999-01-04');
+});
+
+test('a date with no year still reads as a date, in either order', () => {
+  for (const text of ['May 06', 'Apr 22', '06 May', '6-JUN', 'Sept 3', '03/04']) {
+    assert.equal(looksLikeDate(text), true, text);
+  }
+  // A word of four letters and a number is not a month and a day.
+  for (const text of ['Page 2', 'Card 5446', 'Fees', 'Total']) {
+    assert.equal(looksLikeDate(text), false, text);
+  }
+});
+
+test('a date with no year is never given one', () => {
+  // Deciding which year "May 06" belongs to is a guess, and a converter has
+  // no business putting a guess in somebody's spreadsheet.
+  assert.equal(parseDate('May 06'), null);
+});
+
+test('a value is a number, a percentage or a date', () => {
+  for (const text of ['-527.61', '21.99%', '0.06024%', 'May 06', '2026-01-04']) {
+    assert.equal(isValue(text), true, text);
+  }
+  for (const text of ['', 'Purchases', 'AMOUNT ($)', 'TRANSACTION DATE']) {
+    assert.equal(isValue(text), false, text);
+  }
+});
+
+test('phone and account numbers are data, and so are references', () => {
+  for (const text of ['1-800-555-0100', '5446 14XX XXXX 8053', 'INV-2026-0184', '905-555-0199']) {
+    assert.equal(isData(text), true, text);
+  }
+});
+
+test('a year in a heading does not make the heading data', () => {
+  for (const text of ['Total on May 15, 2025', '2024', 'TRANSACTION DATE', 'Balance']) {
+    assert.equal(isData(text), false, text);
+  }
 });

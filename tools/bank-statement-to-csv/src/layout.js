@@ -1,61 +1,82 @@
 /**
- * Finding the table on a page nobody drew a table on.
+ * A page's text as lines, the lines as pieces, and the page as regions.
  *
- * A statement looks like a grid and almost never is one. There are usually no
- * ruled lines - and this tool could not see them if there were, because
- * shared/js/pdf-text.js reads text and ignores paths, which is what keeps it
- * small. What there is instead is the thing that made the grid readable to a
- * person in the first place: vertical strips of paper down which nothing is
- * ever printed.
+ * Everything here is about where text sits, and nothing is about what it says.
+ * tables.js decides which of these lines make a table; this file only gets the
+ * page into a shape where that question can be asked one region at a time.
  *
- * So the columns are found by looking for the gaps rather than the content.
- * Every line of every page is projected onto the horizontal axis, and the
- * strips that stay empty are the gutters between columns. It is the oldest
- * trick in document analysis and it holds up here because a statement's
- * columns are its whole reason for existing: whoever printed it kept them
- * apart on purpose.
+ * WHY REGIONS COME FIRST
  *
- * WHY A LINE MAY INTRUDE INTO A GUTTER
+ * Because a page is rarely one thing. A statement puts its transactions down
+ * the left and a column of small print down the right; a report sets a table
+ * beside a paragraph. Those two halves have nothing to do with each other,
+ * but they share baselines by accident, so a line of the table and a line of
+ * the prose arrive from the reader as one line. Looking for columns across the
+ * whole page then finds the prose as one more column, and the prose's words
+ * land on the end of every transaction that happens to share its baseline.
  *
- * Because the page is not only the table. A title across the top, a page
- * number at the foot, an address block, a pale watermark of the page number -
- * each is one line lying across every column at once, and a gutter test that
- * demanded complete emptiness would find no gutters at all on most statements.
+ * So the page is split first, at a vertical strip of paper that nearly every
+ * line leaves empty, that has lines of its own on both sides, and that hardly
+ * any single line crosses. The last test is the one that matters, and it took
+ * a wrong answer to find. The first version chose the widest qualifying strip,
+ * and on the statement this was written against the widest was the gap before
+ * the amount column: the sidebar sat to the right of every gutter in the table,
+ * so every gutter had lines wholly on both sides, and the page was cut between
+ * descriptions and their amounts.
  *
- * Two things keep those lines out of the way. The first is type size: a
- * statement sets its table in one size and its furniture in others, so only
- * lines near the document's median height are projected at all. That is what
- * removes a heading twice the size of a row and a page number eight times it,
- * and it is stronger evidence than anything about position, because a title
- * that happens to be short is still a title. The second is TOLERANCE, for the
- * furniture that is set in the body size after all: a strip is a gutter when
- * nearly every line leaves it alone. What survives both is dropped later by
- * rows.js, on evidence about what a line says rather than how it looks.
+ * What separates them is what crosses them - measured, on that statement. A
+ * row's cells are laid out together and share a baseline to the hundredth of a
+ * point: all 38 lines lying on one side had a spread of exactly 0.00. A line of
+ * the sidebar only ever sat beside a row by accident, 0.66 to 5 points off. So
+ * a line whose two halves are on different baselines counts as two lines, and
+ * the edge between regions is the strip that no row crosses, where a gutter
+ * inside a table is crossed by every row it has.
  *
- * WHY COLUMNS ARE SPANS AND NOT CUT LINES
+ * WHY LINES ARE CUT INTO CHUNKS
  *
- * Because a gutter can be wide - the empty right-hand half of a description
- * column runs into the real gutter beside it - and cutting such a gutter down
- * the middle would slice the ends off long descriptions. Keeping the columns
- * as the *occupied* spans and assigning each run to the span it overlaps most
- * has no midpoint to get wrong.
+ * The reader splits a line into runs at every space. That is the right unit for
+ * searching and the wrong one for a table, where "Total payments received" is
+ * one cell and its three words are not three columns. A chunk is what is left
+ * after joining runs that sit closer together than about the width of a letter:
+ * a phrase, a date, an amount - the thing a person would call a cell.
  */
 
 import { endOf } from './shared/pdf-text.js';
 
-/** How many of a page's lines may print inside a strip and leave it still
- *  counting as a gutter. */
-const TOLERANCE = 0.12;
-
-/** And how wide a strip has to be before it is a gutter rather than the space
- *  between two words. A word space is about a quarter of the type size; no
- *  statement sets its columns that close. */
-const MIN_GUTTER = 7;
+/** How far apart two runs have to be, as a fraction of the type size, before
+ *  they are two cells rather than two words of one. A word space is about a
+ *  quarter of the size; the gap between two columns is almost never less than
+ *  the width of a letter, which is what this is. */
+const CHUNK_GAP = 0.9;
 
 /** How far a line's type size may be from the document's median and still be
- *  taken for part of the table. Wide, because a statement often sets its
- *  column headings a point or two smaller than the rows under them. */
+ *  taken for part of a table. Wide, because a statement often sets its column
+ *  headings a point or two smaller than the rows under them. */
 const SIZE_RANGE = [0.6, 1.6];
+
+/** A strip has to be at least this wide, in points, to split a page. */
+const RIVER_WIDTH = 9;
+
+/** How many lines must sit wholly on each side of a strip before it counts as
+ *  the edge between two regions rather than a gutter inside one table. */
+const RIVER_SIDE = 3;
+
+/** And how many lines may cross it anyway - a title set across the top of the
+ *  page, a running header - as a share of the page's lines. */
+const RIVER_CROSSING = 0.06;
+
+/** Two runs are on the same baseline when they are this close, in points.
+ *
+ * The reader groups glyphs into lines with a generous tolerance, which is right
+ * for reading and wrong for this one question. Measured on the statement this
+ * was written against: every one of 38 lines lying wholly on one side of the
+ * page had a baseline spread of exactly 0.00 - a table's cells are laid out
+ * together and share a baseline to the hundredth - while the lines a sidebar
+ * shared with the table by accident were 0.66 to 5 points apart. */
+const SAME_BASELINE = 0.3;
+
+/** Recursion guard: a page split more often than this is split into noise. */
+const MAX_REGIONS_DEPTH = 3;
 
 /**
  * A page's text as lines of runs, each run knowing where it sits.
@@ -66,12 +87,19 @@ const SIZE_RANGE = [0.6, 1.6];
  * drew each character. A character with no glyph behind it is one of those
  * invented spaces, and it is exactly where one run ends and the next begins.
  *
+ * Text placed outside the page's own box is dropped. Some producers write an
+ * index or a routing code at a position no viewer will ever show, and a line
+ * nobody can see is not a row of anything.
+ *
  * @param {object} page  what shared/js/pdf-text.js `readPage` returned
- * @returns {{y: number, runs: {text: string, x0: number, x1: number}[]}[]}
+ * @returns {{y: number, height: number, runs: {text: string, x0: number, x1: number, y: number}[]}[]}
  */
 export function pageRuns(page) {
   const byOrder = new Map();
   for (const glyph of page.glyphs) byOrder.set(glyph.order, glyph);
+
+  const box = page.box;
+  const onPage = (y) => !box || (y >= box.y - 1 && y <= box.y + box.height + 1);
 
   const lines = [];
 
@@ -94,7 +122,7 @@ export function pageRuns(page) {
       heights.push(glyph.height);
 
       if (!run) {
-        run = { text: '', x0: glyph.origin.x, x1: glyph.origin.x };
+        run = { text: '', x0: glyph.origin.x, x1: glyph.origin.x, y: glyph.origin.y };
         runs.push(run);
       }
 
@@ -102,7 +130,7 @@ export function pageRuns(page) {
       run.x1 = Math.max(run.x1, endOf(glyph).x);
     }
 
-    if (runs.length) lines.push({ y, runs, height: median(heights) });
+    if (runs.length && onPage(y)) lines.push({ y, runs, height: median(heights) });
   }
 
   return lines;
@@ -111,26 +139,103 @@ export function pageRuns(page) {
 /** The middle value, which is the size to compare against when a line has a
  *  word of another size in it - a bold reference in a sentence, a currency
  *  symbol set small - and a mean would be dragged off by it. */
-function median(values) {
+export function median(values) {
   if (!values.length) return 0;
   const sorted = [...values].sort((a, b) => a - b);
   return sorted[sorted.length >> 1];
 }
 
 /**
- * The columns, as the spans of paper that are printed on.
+ * The lines set at something near the document's usual size.
  *
- * Taken over every line of every page at once rather than page by page: a
- * statement's columns do not move between pages, and a short last page has too
- * few lines to find them from on its own.
- *
- * @param {{runs: {x0: number, x1: number}[]}[]} lines
- * @returns {{x0: number, x1: number}[]}
+ * A statement sets its table in one size and its furniture in others, so this
+ * is what removes a heading twice the height of a row and a page number eight
+ * times it - stronger evidence than anything about position, because a title
+ * that happens to be short is still a title.
  */
-export function findColumns(allLines) {
-  const lines = bodySized(allLines);
-  if (!lines.length) return [];
+export function bodySized(lines, usual = median(lines.map((line) => line.height))) {
+  if (!usual) return lines;
+  return lines.filter((line) => isBodySized(line, usual));
+}
 
+export function isBodySized(line, usual) {
+  return line.height >= usual * SIZE_RANGE[0] && line.height <= usual * SIZE_RANGE[1];
+}
+
+/**
+ * One line's runs, joined into the pieces a person would call cells.
+ *
+ * @returns {{text: string, x0: number, x1: number, runs: object[]}[]}
+ */
+export function chunksOf(line) {
+  const gap = Math.max(line.height, 1) * CHUNK_GAP;
+  const chunks = [];
+  let chunk = null;
+
+  for (const run of [...line.runs].sort((a, b) => a.x0 - b.x0)) {
+    if (chunk && run.x0 - chunk.x1 < gap) {
+      chunk.text += ` ${run.text}`;
+      chunk.x1 = Math.max(chunk.x1, run.x1);
+      chunk.runs.push(run);
+    } else {
+      chunk = { text: run.text, x0: run.x0, x1: run.x1, runs: [run] };
+      chunks.push(chunk);
+    }
+  }
+
+  return chunks;
+}
+
+/**
+ * A page's lines, split into regions that have nothing to do with each other.
+ *
+ * Returned in reading order - left region before right - with each region's
+ * lines still top to bottom. A line that straddles a split is cut at it, each
+ * run going to the side its middle falls on.
+ *
+ * @param {object[]} lines  one page's lines, top to bottom
+ * @returns {object[][]}
+ */
+export function splitRegions(lines, depth = 0) {
+  if (depth >= MAX_REGIONS_DEPTH || lines.length < RIVER_SIDE * 2) return [lines];
+
+  const river = findRiver(lines);
+  if (!river) return [lines];
+
+  const middle = (river.from + river.to) / 2;
+  const left = [];
+  const right = [];
+
+  for (const line of lines) {
+    const west = line.runs.filter((run) => (run.x0 + run.x1) / 2 < middle);
+    const east = line.runs.filter((run) => (run.x0 + run.x1) / 2 >= middle);
+    if (west.length) left.push({ ...line, runs: west });
+    if (east.length) right.push({ ...line, runs: east });
+  }
+
+  return [...splitRegions(left, depth + 1), ...splitRegions(right, depth + 1)];
+}
+
+/**
+ * The strip that divides the page into two regions, or null.
+ *
+ * Every strip nearly every line leaves empty is a candidate, and one needs
+ * lines of its own on both sides to qualify - otherwise it is a gutter inside
+ * a table. Of those, the strip crossed by the fewest *real* lines wins.
+ *
+ * Not the widest, which was the first rule and was wrong in the case it was
+ * written for. A sidebar of small print sits to the right of every gutter in
+ * the table beside it, so every gutter has lines wholly on each side; the gap
+ * before the amount column was wider than the gap before the sidebar, and the
+ * page was cut between descriptions and their amounts. What tells them apart
+ * is what crosses them. A row of the table crosses every gutter inside it on a
+ * single baseline, because its cells were laid out together; a line of small
+ * print only ever sits beside a row by accident, a fraction of a point off.
+ * So a line whose two sides sit on different baselines is counted as two lines,
+ * one on each side, and the true edge between regions is the one hardly any
+ * single line crosses.
+ */
+function findRiver(lines) {
   let left = Infinity;
   let right = -Infinity;
   for (const line of lines) {
@@ -139,14 +244,10 @@ export function findColumns(allLines) {
       right = Math.max(right, run.x1);
     }
   }
-  if (!Number.isFinite(left) || right <= left) return [];
+  if (!Number.isFinite(left) || right - left < RIVER_WIDTH * 3) return null;
 
   const width = Math.ceil(right - left) + 1;
   const printed = new Int32Array(width);
-
-  // Counted once per line, not once per run: a column of six-digit references
-  // and a column of one long sentence should weigh the same, and counting runs
-  // would let the wordy column vote against every gutter beside it.
   for (const line of lines) {
     const seen = new Uint8Array(width);
     for (const run of line.runs) {
@@ -157,77 +258,57 @@ export function findColumns(allLines) {
     for (let x = 0; x < width; x += 1) printed[x] += seen[x];
   }
 
-  const allowed = Math.floor(lines.length * TOLERANCE);
-  const columns = [];
+  const allowed = Math.max(2, Math.floor(lines.length * RIVER_CROSSING));
+  const candidates = [];
   let start = null;
-
-  for (let x = 0; x < width; x += 1) {
-    const empty = printed[x] <= allowed;
-    if (!empty && start === null) start = x;
-    if (empty && start !== null) {
-      // Only a strip wide enough to be a gutter ends a column; a narrower one
-      // is the gap between two words and the column continues through it.
-      let run = x;
-      while (run < width && printed[run] <= allowed) run += 1;
-      if (run - x >= MIN_GUTTER || run === width) {
-        columns.push({ x0: left + start, x1: left + x - 1 });
-        start = null;
+  for (let x = 0; x <= width; x += 1) {
+    const empty = x < width && printed[x] <= allowed;
+    if (empty && start === null) start = x;
+    if (!empty && start !== null) {
+      // Interior strips only: the margins of the page are not between anything.
+      if (x - start >= RIVER_WIDTH && start > 0 && x < width) {
+        candidates.push({ from: left + start, to: left + x - 1 });
       }
-      x = run - 1;
+      start = null;
     }
   }
 
-  if (start !== null) columns.push({ x0: left + start, x1: left + width - 1 });
-  return columns;
-}
-
-/**
- * The lines set at something near the document's usual size.
- *
- * Exported because rows.js wants the same judgement for a different reason: a
- * line in a size of its own is furniture whether it is being projected or
- * being turned into a transaction.
- */
-export function bodySized(lines) {
-  const usual = median(lines.map((line) => line.height));
-  if (!usual) return lines;
-  return lines.filter((line) => line.height >= usual * SIZE_RANGE[0]
-    && line.height <= usual * SIZE_RANGE[1]);
-}
-
-/**
- * One line's runs, dealt out into the columns.
- *
- * By overlap rather than by which side of a line the run falls on, so a run
- * that leans into a gutter still lands in the column it shares most paper
- * with. A run overlapping nothing - a footnote out in a margin - goes to the
- * nearest column rather than being dropped: this is not the place to decide
- * that something is not part of the table.
- *
- * @returns {string[]} one cell per column, in order, trimmed and possibly empty
- */
-export function intoCells(line, columns) {
-  const cells = columns.map(() => []);
-  if (!columns.length) return [];
-
-  for (const run of line.runs) {
-    let best = 0;
-    let bestOverlap = -Infinity;
-
-    for (let index = 0; index < columns.length; index += 1) {
-      const { x0, x1 } = columns[index];
-      const overlap = Math.min(run.x1, x1) - Math.max(run.x0, x0);
-      // A run to one side of everything overlaps nothing; the negative width
-      // of the gap then ranks the columns by distance, which is what "nearest"
-      // means here and costs no second pass.
-      if (overlap > bestOverlap) {
-        bestOverlap = overlap;
-        best = index;
-      }
+  let best = null;
+  for (const strip of candidates) {
+    const tally = sides(lines, strip);
+    if (tally.west < RIVER_SIDE || tally.east < RIVER_SIDE) continue;
+    const width = strip.to - strip.from;
+    if (!best || tally.crossing < best.crossing
+      || (tally.crossing === best.crossing && width > best.width)) {
+      best = { ...strip, crossing: tally.crossing, width };
     }
-
-    cells[best].push(run);
   }
 
-  return cells.map((runs) => runs.map((run) => run.text).join(' ').trim());
+  return best;
+}
+
+/** How many lines sit wholly west of a strip, wholly east, and across it. */
+function sides(lines, strip) {
+  let west = 0;
+  let east = 0;
+  let crossing = 0;
+
+  for (const line of lines) {
+    const w = line.runs.filter((run) => run.x1 <= strip.from + 1);
+    const e = line.runs.filter((run) => run.x0 >= strip.to - 1);
+    const over = line.runs.length - w.length - e.length;
+
+    if (over > 0 || (w.length && e.length && Math.abs(baseline(w) - baseline(e)) <= SAME_BASELINE)) {
+      crossing += 1;
+    } else {
+      if (w.length) west += 1;
+      if (e.length) east += 1;
+    }
+  }
+
+  return { west, east, crossing };
+}
+
+function baseline(runs) {
+  return median(runs.map((run) => run.y ?? 0));
 }

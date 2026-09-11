@@ -46,14 +46,33 @@
   max-width: 72ch;
 }
 
-/* The reconstructed table.
+/* The tables found, one after another. A document can hold several, each
+ * with its own columns, so each gets its own box and caption. */
+.previews {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1rem 0 0;
+}
+
+/* A grid item will not shrink below its content by default, so a wide table
+ * stretched its box past the edge of the card on a phone instead of scrolling
+ * inside it. Zero lets the box be as narrow as the card and the table scroll. */
+.preview-block {
+  min-width: 0;
+}
+
+.preview-block .field-summary {
+  margin-top: 0.4rem;
+}
+
+/* One reconstructed table.
  *
  * It scrolls sideways inside its own box rather than widening the page,
- * because a statement can have eight columns and the page is read on phones.
+ * because a table can have eight columns and the page is read on phones.
  */
 .preview-wrap {
   overflow-x: auto;
-  margin: 1rem 0 0;
+  margin: 0;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
@@ -121,7 +140,7 @@
   display: none;
 }
 
-/* The two panels that appear only when a statement cannot be read: the
+/* The two panels that appear only when a PDF cannot be read: the
  * password and the photograph. They are help rather than error, so they sit
  * quieter than .error and carry their own heading. */
 .help {
