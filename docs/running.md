@@ -58,7 +58,16 @@ python build.py --no-minify
 
 A full build writes about twelve hundred pages, in every language the site has,
 and takes a couple of minutes. While the change in hand is to one tool, most of
-that is pages nobody is about to look at:
+that is pages nobody is about to look at.
+
+Those minutes are the machine's, not the generator's. CI builds all fifteen
+languages in about fifteen seconds; on Windows the same build takes eight
+minutes, English alone a minute, and `--clean` on a tree it wrote earlier
+can take three minutes just to delete it. That is Windows Defender pricing
+every file the build writes at some tens of milliseconds, and nothing in
+`build.py` can spend it any faster. An exclusion for the output folders -
+`dist`, `_plain`, `_site` - is the whole fix, and needs an administrator;
+until then, narrow the build to what you are looking at:
 
 ```bash
 python build.py --only trim-video --locale en --quiet

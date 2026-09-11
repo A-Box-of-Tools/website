@@ -419,33 +419,21 @@ jobs:
       # the second opinion, from a real parser rather than the one that did the
       # work.
       #
-      # Every emitted script is parsed by Node as a real ES module - copied to
-      # .mjs first, because a bare .js is read as CommonJS and `import` would be
-      # a syntax error for the wrong reason. Then the two builds are compared by
-      # filename, so a module that vanished is caught even if everything left
-      # behind parses.
+      # Every emitted script is parsed by Node as a real ES module, all of them
+      # in one process - see .github/scripts/parse-modules.mjs for why not one
+      # `node --check` each: there are thirteen thousand of them, and the
+      # start-ups were six minutes of this job. Then the two builds are
+      # compared by filename, so a module that vanished is caught even if
+      # everything left behind parses.
       - name: Check the minified output
         if: env.BUILDS == 'true'
         run: |
           set -euo pipefail
-          work=$(mktemp -d)
           status=0
 
-          count=0
-          while IFS= read -r script; do
-            cp "$script" "$work/check.mjs"
-            if ! node --check "$work/check.mjs" 2>"$work/err"; then
-              echo "::error file=$script::does not parse after minifying"
-              sed 's/^/    /' "$work/err"
-              status=1
-            fi
-            count=$((count + 1))
-          done < <(find _site -name '*.js' | sort)
-          echo "parsed $count scripts"
+          node --experimental-vm-modules .github/scripts/parse-modules.mjs _site             || status=1
 
-          diff <(cd _plain && find . -type f | sort) \
-               <(cd _site  && find . -type f | sort) \
-            || { echo '::error::the two builds do not contain the same files'; status=1; }
+          diff <(cd _plain && find . -type f | sort)                <(cd _site  && find . -type f | sort)             || { echo '::error::the two builds do not contain the same files'; status=1; }
 
           exit $status
 
