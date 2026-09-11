@@ -1,6 +1,6 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { ltr, phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import {
   SPECS, backgroundOf, pixelLabel, portalBytes, portalPixels, printLabel,
@@ -26,6 +26,7 @@ import {
 } from './files.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { makeExample } from './example.js';
+import { readRequirements } from './requirements.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -42,6 +43,13 @@ const el = {
   specNotes: $('spec-notes'),
   specSource: $('spec-source'),
   customPanel: $('custom-panel'),
+  readRules: $('read-rules'),
+  readText: $('read-text'),
+  readButton: $('read-button'),
+  readResult: $('read-result'),
+  readStatus: $('read-status'),
+  readFound: $('read-found'),
+  readNotes: $('read-notes'),
 
   frameEmpty: $('frame-empty'),
   frameControls: $('frame-controls'),
@@ -266,6 +274,7 @@ function renderSpec() {
     : phrase('source.own');
 
   el.customPanel.hidden = spec.id !== 'custom';
+  el.readRules.hidden = spec.id !== 'custom';
 
   // The signature specification is not a portrait and does not get a portrait's
   // overlay. Saying so on the page is better than showing an eye line for a
@@ -679,6 +688,105 @@ function renderBackground() {
     ? phrase('bg.signature.note')
     : phrase('bg.note', { colour: wanted.note });
 }
+
+/* ------------------------------------------------------ the rule, as text */
+
+/** A box's name as the page already shows it: the words of its own label,
+ *  which are in the reader's language without a phrase of their own. */
+function boxName(input) {
+  return input.closest('label')?.firstChild?.textContent.replace(/\s+/g, ' ').trim() ?? '';
+}
+
+/** What a box now holds: the option's words for the background, the figure
+ *  isolated for the rest so that Arabic does not turn "31.5" around. */
+function boxValue(input) {
+  return input instanceof HTMLSelectElement
+    ? input.selectedOptions[0]?.textContent.trim() ?? input.value
+    : ltr(input.value);
+}
+
+/** A stretch of what was pasted, quoted back in its own direction. */
+function quote(text, { from, to }) {
+  const q = document.createElement('q');
+  q.dir = 'auto';
+  q.textContent = text.slice(from, to).replace(/\s+/g, ' ').trim();
+  return q;
+}
+
+function fieldsLine(...children) {
+  const line = document.createElement('span');
+  line.className = 'read-fields';
+  line.append(...children);
+  return line;
+}
+
+/**
+ * Fill the boxes from the pasted rule, and show where every figure came from.
+ *
+ * The boxes are filled first and the list drawn from them afterwards, so what
+ * the list says is what the boxes hold, in the words and number format the
+ * boxes themselves use.
+ */
+function readRules() {
+  const text = el.readText.value;
+  if (!text.trim()) {
+    el.readResult.hidden = true;
+    el.readText.focus();
+    return;
+  }
+  const reading = readRequirements(text);
+  for (const { field, value } of reading.found) CUSTOM_FIELDS[field].value = String(value);
+
+  // One entry per stretch of the text, with every box it filled: "35 x 45 mm"
+  // is the width and the height.
+  const stretches = new Map();
+  for (const found of reading.found) {
+    const at = [found.from, found.to].join(':');
+    if (!stretches.has(at)) stretches.set(at, { from: found.from, to: found.to, fields: [] });
+    stretches.get(at).fields.push(found.field);
+  }
+  el.readFound.replaceChildren(...[...stretches.values()]
+    .sort((a, b) => a.from - b.from)
+    .map((stretch) => {
+      const li = document.createElement('li');
+      li.append(quote(text, stretch), fieldsLine(...stretch.fields.map((field) => {
+        const box = document.createElement('span');
+        const value = document.createElement('b');
+        value.textContent = boxValue(CUSTOM_FIELDS[field]);
+        box.append(`${boxName(CUSTOM_FIELDS[field])} `, value);
+        return box;
+      })));
+      return li;
+    }));
+
+  el.readNotes.replaceChildren(
+    ...reading.notes.map((note) => {
+      const li = document.createElement('li');
+      li.append(`${phrase(note.key)} `, ...note.spans.map((s) => quote(text, s)));
+      return li;
+    }),
+    ...reading.unused.map((unused) => {
+      const li = document.createElement('li');
+      li.append(quote(text, unused), fieldsLine(phrase(unused.key)));
+      return li;
+    }),
+  );
+
+  const anything = reading.notes.length || reading.unused.length;
+  el.readStatus.textContent = phrase(reading.found.length ? 'read.done'
+    : anything ? 'read.kept' : 'read.none');
+  el.readFound.hidden = !reading.found.length;
+  el.readNotes.hidden = !anything;
+  el.readResult.hidden = false;
+
+  if (reading.found.length) {
+    el.customPanel.open = true;
+    renderSpec();
+    readBackgroundNow();
+  }
+}
+
+el.readButton.addEventListener('click', readRules);
 
 /* --------------------------------------------------------------- the files */
 

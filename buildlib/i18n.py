@@ -264,9 +264,24 @@ def load_locales(root, site):
     if not root.is_dir():
         return locales
 
+    # A frozen language is served from A-Box-of-Tools/translations and copied
+    # into the site by the deploy, so building it here as well would put two
+    # copies of one folder in the same place and let the later one win without
+    # a word. Bringing one back is a decision with two halves - its sources back
+    # in locales/, its name off the list - and refusing one half without the
+    # other is what makes it one decision. See `frozen_languages`.
+    frozen = set(site.get('frozen_languages', []))
     for path in sorted(root.iterdir()):
         if path.is_dir():
-            locales.append(load_locale(path, site))
+            locale = load_locale(path, site)
+            if path.name in frozen or locale['lang'] in frozen:
+                archive = site.get('frozen_archive', {}).get('repository', 'the translations archive')
+                raise LocaleError(
+                    f'locales/{path.name} is a frozen language: it is served from '
+                    f'{archive} and not built here. '
+                    'To build it again, take it off frozen_languages in '
+                    'config/site.toml as well.')
+            locales.append(locale)
 
     seen = set()
     for locale in locales:

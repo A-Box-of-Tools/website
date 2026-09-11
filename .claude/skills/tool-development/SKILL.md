@@ -206,21 +206,22 @@ English. Two standing constraints:
 
 ## Locales: what a code change owes them
 
-Usually nothing: which tools exist and what they do is not language, so a new
-tool gets a page in every language the same day, in English until translated
-and unadvertised until then. What a change does owe them:
+The site is built in English and Simplified Chinese; the other thirteen
+languages are frozen in A-Box-of-Tools/translations and owe nothing - see
+"Languages" in CLAUDE.md. So "the locales" means `locales/zh/`. Which tools
+exist and what they do is not language, so a new tool gets a Chinese page the
+same day, in English until translated and unadvertised until then. What a
+change does owe it:
 
-- a line removed from `config/planned.toml` comes out of every
-  `locales/*/planned.toml` at the same index (see step 4 above). Lists whose
+- a line removed from `config/planned.toml` comes out of
+  `locales/zh/planned.toml` at the same index (see step 4 above). Lists whose
   English entries carry an `id` merge by id and need no such care;
-- a `ja` or `zh` phrase stays on one line — those languages have no spaces
-  between words, so a wrapped phrase ships a visible hole mid-sentence;
-- translation itself follows `docs/languages.md`, with `locales/de/` as the
-  worked example;
+- a `zh` phrase stays on one line — Chinese has no spaces between words, so a
+  wrapped phrase ships a visible hole mid-sentence;
+- translation itself follows `docs/languages.md`;
 - anything edited under `locales/` gets `python scripts/check_locales.py`
-  run over it, and a `zh` or `ja` file gets `python scripts/cjk_fix.py
-  <lang> --apply` first, then `python zh-tw-sync.py` — see "Checking a
-  translation" in `docs/languages.md`.
+  run over it, and gets `python scripts/cjk_fix.py zh --apply` first — see
+  "Checking a translation" in `docs/languages.md`.
 
 ## Verify before you call it done
 
@@ -243,7 +244,7 @@ python build.py --only <slug> --locale en --quiet
 ```
 
 Seconds rather than a couple of minutes, because it does not write any tool but
-the one named, or the fifteen languages' worth of guides. The page it writes is
+the one named, or both languages' worth of guides. The page it writes is
 byte for byte the page a full build writes, so it is worth looking at; what
 it does not write is everything that lists other pages — hub, guides, roadmap,
 404, sitemap, feeds — and it does not check links, since every link out of the

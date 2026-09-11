@@ -37,6 +37,22 @@
     <p class="spec-source" id="spec-source"></p>
 
     <!--
+      The same boxes, filled in from the rule's own words, and only for
+      "Anywhere else", like the boxes. src/requirements.js says what it reads
+      and why it quotes every figure back rather than asking to be trusted.
+    -->
+    <div class="read-rules" id="read-rules" hidden>
+      <label for="read-text">要求是一段文字？贴在这里，下面的格子会照着它填好。它读得懂中文和英文；别的语言也照样认得出里面的尺寸。</label>
+      <textarea id="read-text" rows="4" spellcheck="false"></textarea>
+      <button type="button" id="read-button" class="ghost">读取要求</button>
+      <div id="read-result" class="read-result" hidden>
+        <p id="read-status" class="hint-line" role="status"></p>
+        <ul id="read-found" class="read-list"></ul>
+        <ul id="read-notes" class="read-list read-notes"></ul>
+      </div>
+    </div>
+
+    <!--
       Only the "Anywhere else" entry unlocks these. A country's own numbers are
       not editable on purpose: an editable rule is a rule somebody can quietly
       break and then believe they met.
@@ -287,6 +303,18 @@
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="source.line">转录自 {authority} &mdash; {document}。{checked} 核对。规定会变；上面的数字是拿去跟你面前那张表格对照的。</span>
     <span data-phrase="source.own">你自己填的数字。这里不跟任何东西对照。</span>
+    <span data-phrase="read.done">已照你贴的文字填好。每个数字都列在它读出来的那几个字下面，请对照着核一遍。文字里没提到的格子保持原样。</span>
+    <span data-phrase="read.none">这段文字里读不出照片尺寸、头高、背景、上传尺寸或文件大小，所以没有改动任何格子。请直接在下面填写数字。</span>
+    <span data-phrase="read.kept">没有改动任何格子。下面是它读到的内容，以及每一项为什么没有填：</span>
+    <span data-phrase="read.sizes">文字里给了不止一种照片尺寸，所以尺寸没有填。请填上你的证件要的那一种：</span>
+    <span data-phrase="read.named">文字只说了尺寸的叫法，没给具体数字，而各家照相馆对这些叫法的尺寸说法不一，所以尺寸没有填。请按你的证件要求填入毫米数：</span>
+    <span data-phrase="read.colour">文字要的背景色，这个页面没法检查（它只检查白、米白、浅灰和奶油色），所以背景没有改：</span>
+    <span data-phrase="read.pxrange">文字允许不止一种上传尺寸，已填入最小的那一种：</span>
+    <span data-phrase="read.unused.headwidth">头部宽度，没有用上：这个页面量的是从下巴到头顶的高度，不量宽度</span>
+    <span data-phrase="read.unused.eye">眼睛位置，没有用上：这个页面的眼睛线按 ICAO 标准来定</span>
+    <span data-phrase="read.unused.margin">边距，没有用上：这个页面按头高来裁切，边距跟着头高走</span>
+    <span data-phrase="read.unused.paper">用来打印的相纸尺寸，不是照片本身的尺寸</span>
+    <span data-phrase="read.unused.other">一个对不上任何格子的尺寸</span>
     <span data-phrase="lede.signature">签名的检查方式不一样：纸是不是浅色、上面有没有墨、以及裁的时候有没有把横线或者纸边框进来。</span>
     <span data-phrase="lede.portrait">从裁切框顶部横过去的一条带，以及两侧往下、肩膀以上的部分读出来——画面里本该只有背景的地方。用 CIE Lab 而不是 RGB 来量，因为相差四十个 RGB 单位的两种灰根本分不出来，而四十个单位的蓝已经是另一种颜色了。</span>
     <span data-phrase="dpi.note">这条规格的下限是 {floor} dpi。在 {chosen} dpi 下文件出来是 {size}，而且 JPEG 会把这个分辨率写在自己的头里，这样冲印店就按正确尺寸出片，而不是靠猜。</span>

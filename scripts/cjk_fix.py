@@ -10,8 +10,9 @@ are rewritten. `--only` takes paths relative to `locales/<locale>/` -
 whole locale. It is idempotent: a second run over what the first wrote
 changes nothing, which is what makes it safe to run after every edit.
 
-`zh-TW` is generated from `zh` by `zh-tw-sync.py`, so run this on `zh` and
-then the sync, never on `zh-TW` itself.
+`zh` is the one CJK locale still built here. `ja` and `zh-TW` are frozen in
+A-Box-of-Tools/translations - see "Languages" in CLAUDE.md - and the `ja`
+rules are kept for the day one of them comes back.
 
 WHAT IT CHANGES
 
@@ -328,7 +329,7 @@ def process_toml(text):
 def main():
     global RULESET, counts, spaced_file
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0].strip())
-    ap.add_argument('locale', help='zh or ja (zh-TW is generated from zh by zh-tw-sync.py)')
+    ap.add_argument('locale', help='zh, or ja if it is ever built here again')
     ap.add_argument('--apply', action='store_true', help='write the changes instead of printing them')
     ap.add_argument('--only', nargs='+', metavar='PATH', help='paths relative to locales/<locale>/')
     args = ap.parse_args()

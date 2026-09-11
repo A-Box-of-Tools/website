@@ -29,6 +29,7 @@ run when somebody is verifying a deploy.
 import hashlib
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,7 +80,7 @@ def check_against_branch(out, branch='dist'):
               f'(try: git fetch origin {branch})', file=sys.stderr)
         return 0
 
-    differences = compare(out, branch)
+    differences = compare(out, branch, frozen_languages())
     if differences:
         print(f'\n  {branch} is not this build ({len(differences)} files differ):',
               file=sys.stderr)
@@ -92,7 +93,19 @@ def check_against_branch(out, branch='dist'):
     return 0
 
 
-def compare(built, branch):
+def frozen_languages():
+    """The language folders on `dist` that no build of these sources writes.
+
+    They are copied in by the deploy from A-Box-of-Tools/translations - see
+    `frozen_languages` in config/site.toml - so a fresh build never has them,
+    and counting their seventeen thousand files as missing would bury the one
+    difference that matters under every file that is supposed to be absent.
+    """
+    with open(ROOT / 'config' / 'site.toml', 'rb') as handle:
+        return frozenset(tomllib.load(handle).get('frozen_languages', []))
+
+
+def compare(built, branch, frozen=frozenset()):
     """Which files differ between the build and a branch, by content.
 
     Read out of the object store rather than checked out into a worktree.
@@ -119,6 +132,8 @@ def compare(built, branch):
         if not entry:
             continue
         info, path = entry.split('\t', 1)
+        if path.split('/', 1)[0] in frozen:
+            continue
         committed[path] = info.split()[2]
 
     fresh = {path.relative_to(built).as_posix(): blob_id(path)

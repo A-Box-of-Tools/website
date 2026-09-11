@@ -7,6 +7,17 @@ translated. English keeps the addresses it has always had - `/compress-image/`
 - and every other language sits under a prefix with slugs of its own:
 `/de/bild-komprimieren/`.
 
+**Two of those languages are built from here: English and Simplified Chinese.**
+The other thirteen - `ar de es fr hi id it ja ko nl pt tr zh-TW` - were frozen
+as they were deployed in 1.4.2 and are kept in
+[A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
+whose folders the deploy copies in beside the build. Their pages all still
+answer; they just stopped following English, because keeping thirteen copies
+of every page in step was work nearly nobody was reading the result of. See
+"Frozen languages" below. Everything else on this page is about how a language
+that IS built works, which today means `locales/zh/`, and is what a frozen one
+would need again to come back.
+
 The slug is translated on purpose, and it is the reason this is not simply
 `/de/compress-image/`. A slug is the one part of a page's markup that is also a
 keyword, and a German reader looking for this tool types "bild komprimieren".
@@ -81,10 +92,32 @@ each language has to go:
 
     es: 834 strings still in English (not advertised until complete = true)
 
-`locales/de/` is the worked example — the fullest translation in the tree, and
-the one to read before starting another. Which locales are actually finished is
-not written here on purpose: every build prints it, and a sentence in a README
-goes stale the first time a tool ships.
+German is the worked example — the fullest translation there was, and the one
+to read before starting another. It is frozen now, so it is read in the
+archive, at `source/locales/de/` in A-Box-of-Tools/translations. Which locales
+are actually finished is not written here on purpose: every build prints it,
+and a sentence in a README goes stale the first time a tool ships.
+
+## Frozen languages
+
+`frozen_languages` in `config/site.toml` names the thirteen, and
+`frozen_archive` beside it names the repository and the commit they are served
+from. Three things read the list, so it cannot say one thing while the site
+does another: the build refuses a folder under `locales/` for a frozen language
+(two copies of one folder, and the later one winning silently, is the failure
+it prevents); `--check` leaves their folders out when it compares a build with
+`dist`, since no build writes them; and the publish step in
+`.github/workflows/build.yml` refuses an archive that does not hold exactly
+those folders.
+
+A frozen page is the page as it was deployed, with one change: it loads its own
+copies of the seven frame scripts it used to load from the site root
+(`/de/lang.js` rather than `/lang.js`), so a change to those in English cannot
+reach it. The archive's `verify_freeze.py` proves nothing else differs.
+
+Bringing one back is the archive's README: its sources back from
+`source/locales/<lang>/` into `locales/`, its name off the list, and a
+translation of what English gained in the meantime.
 
 ## Finished, and still not offered
 
@@ -92,8 +125,10 @@ There is a second way for a language to be absent from those three lists, and
 it is a different fact about a different thing. `unadvertised_languages` in
 `config/site.toml` names languages whose translations are **finished** and
 which the site does not offer anyway, because too few people were reading them
-to justify asking Google to index them. Thirteen of the fourteen are on it; the
-comment beside the list has the traffic that decided it.
+to justify asking Google to index them. No built language is on it today: the
+thirteen that were are frozen, and were already unadvertised when they froze,
+which is why their pages carry `noindex`. The mechanism stays for the day a
+built language needs it.
 
 A language on that list is built and readable at every address it always had.
 What changes is that it is not claimed: no hreflang, no sitemap entry, no
@@ -208,7 +243,7 @@ against this locale's own work, exactly as without `fallback`. See
 ## Checking a translation
 
 Two scripts read the translations, so that finding the one place a body
-drifted does not mean reading fourteen languages:
+drifted does not mean reading the whole of one:
 
     python scripts/check_locales.py                  # every language, into _checks/locales/
     python scripts/check_locales.py --locale ja --built _plain
@@ -227,15 +262,15 @@ the minifier put inside a Chinese or Japanese sentence.
 
     python scripts/cjk_fix.py zh                     # show what would change
     python scripts/cjk_fix.py zh --apply
-    python scripts/cjk_fix.py ja --apply --only tools/image-to-svg.toml tools/image-to-svg.html
-    python zh-tw-sync.py                             # zh-TW is generated from zh
+    python scripts/cjk_fix.py zh --apply --only tools/image-to-svg.toml tools/image-to-svg.html
 
 `cjk_fix.py` rewrites a Chinese or Japanese locale to its typography — the
 spacing round Latin, the double 破折号, full-width quotes and brackets, and
 sentences wrapped across source lines closed up again — and prints the diff
-first. It is idempotent, so the order after any edit to `zh` or `ja` is: the
-normaliser, then the sync, then the checker. The reasons behind each rule are
-in the two files' docstrings.
+first. It is idempotent, so the order after any edit to `zh` is: the
+normaliser, then the checker. The reasons behind each rule are in the two
+files' docstrings. (There was a third step, `zh-tw-sync.py`, which generated
+Traditional Chinese from Simplified; it went when zh-TW was frozen.)
 
 Run the checker on whatever locale file you touch before the build rather
 than after: it takes seconds where the build takes minutes.

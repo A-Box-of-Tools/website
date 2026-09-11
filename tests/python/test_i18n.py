@@ -776,6 +776,19 @@ class LoadingALocale(unittest.TestCase):
             i18n.load_locales(self.root, SITE)
         self.assertIn('domain', str(caught.exception))
 
+    def test_a_frozen_language_is_refused_as_a_folder(self):
+        """A frozen language is served from the archive and copied in by the
+        deploy, so a folder for it here would be built and then copied over.
+        Bringing it back is two edits, and the build insists on both."""
+        self.write('de', 'lang = "de"\nname = "German"\nendonym = "Deutsch"\n')
+        site = {**SITE, 'frozen_languages': ['de'],
+                'frozen_archive': {'repository': 'A-Box-of-Tools/translations'}}
+        with self.assertRaises(ConfigError) as caught:
+            i18n.load_locales(self.root, site)
+        self.assertIn('frozen_languages', str(caught.exception))
+        self.assertEqual([entry['lang'] for entry in i18n.load_locales(self.root, SITE)],
+                         ['en', 'de'])
+
     def test_hreflang_defaults_to_the_language_and_can_be_set(self):
         # pt-BR is a language and a region, and hreflang is where that is said.
         self.write('de', 'lang = "de"\nname = "German"\nendonym = "Deutsch"\n')
