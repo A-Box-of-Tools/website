@@ -70,7 +70,7 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
 
 **Scope the build while you are working on one tool.** The third line above is
-the loop: a full build writes about twelve hundred pages in fifteen languages
+the loop: a full build writes every page in English and Chinese
 and takes a couple of minutes, and `--only` cuts that to seconds by not writing
 any tool but the one named. The pages it writes are byte for byte the pages a
 full build writes — that is tested — so what you look at is what ships. What it
@@ -250,20 +250,28 @@ three are generated.
 
 ## Languages
 
-One folder under `locales/` per language. Publishing is judged **per page**: a
-page that is not translated
-is still built and readable, and is kept out of the sitemap, the hreflang sets
-and the switcher. `complete = true` claims only that the frame is translated,
-so shipping a tool does not break the finished languages.
+**The site is maintained in English and Simplified Chinese.** `locales/zh/`
+is the one translation built from source; a change to a tool owes Chinese its
+translation and nothing else.
 
-**Thirteen of the fourteen translations are deliberately not offered**, and
-that is not a bug to fix. `unadvertised_languages` in `config/site.toml` names
-them: finished, readable at every address they always had, and kept out of the
-sitemap, the hreflang sets, the switcher and the feeds, with `noindex` on every
-page. The traffic is the reason and the comment on that list has it — 99% of
-arrivals land on an English page. `i18n.offered` is where that decision and
-"not translated yet" meet, so the three lists still cannot disagree. Taking a
-language off the list is one line; nothing else about it has to change.
+**The other thirteen languages are frozen, not missing.** They were deployed
+in 1.4.2 and are kept exactly as deployed in
+[A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
+which the deploy copies into the site at the commit `frozen_archive` in
+`config/site.toml` names. Every one of their pages still answers at its
+address; nothing written after the freeze reaches them, and nothing you change
+here has to be made again in them. `frozen_languages` names them, and three
+things read it: the build refuses a `locales/` folder for one, `--check` leaves
+their folders out, and the deploy refuses an archive that does not hold
+exactly them. Previews carry the build alone - English and Chinese - and no
+built page links into a frozen folder, which `test_build.py` holds. The
+reasons are in the comment on that list, and bringing a language back is in
+the archive's README.
+
+Publishing is still judged **per page**: a Chinese page that is not translated
+yet is built and readable in English, and kept out of the sitemap, the
+hreflang sets and the switcher until it is. `complete = true` claims only that
+the frame is translated, so shipping a tool does not break Chinese.
 
 Lists whose English entries carry an `id` are merged **by id**; lists of plain
 strings are still positional. That distinction is the whole reason

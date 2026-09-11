@@ -1071,7 +1071,7 @@ class BuildTheSite(unittest.TestCase):
         page it has just sent somebody to. With the script blocked it is markup
         and nothing else.
         """
-        page = (self.out / 'de' / 'index.html').read_text(encoding='utf-8')
+        page = (self.out / 'zh' / 'index.html').read_text(encoding='utf-8')
         self.assertIn('<div class="lang-auto" id="lang-auto" role="status" hidden>',
                       page)
 
@@ -1390,49 +1390,33 @@ class BuildTheSite(unittest.TestCase):
                     self.assertNotIn(f'hreflang="{locale}"', text)
                     self.assertNotIn(f'href="/{locale}/"', text)
 
-    # -- languages the site does not offer ---------------------------------
+    # -- the frozen languages ---------------------------------------------
     #
-    # A finished translation nobody reads is still built and still readable at
-    # its own address; what it stops doing is asking to be found. Two halves,
-    # and neither works alone: out of the sitemap so it is not discovered, and
-    # noindex so the pages already in the index - or linked from somewhere that
-    # is not us - come back out of it.
+    # Thirteen translations are no longer built: they are served as they were
+    # deployed, from A-Box-of-Tools/translations, and the deploy copies them in
+    # beside the build. Two things have to stay true for that to work, and a
+    # build is the only place either can be seen. It must not write any of
+    # their folders, or the deploy would find the same folder twice. And no page
+    # it writes may link into them, because a preview carries the build alone:
+    # a link from a built page into a frozen folder would be a broken link on
+    # every preview and a link nobody tested anywhere else.
 
-    def test_a_language_the_site_does_not_offer_asks_not_to_be_indexed(self):
-        self.assertTrue(self.unadvertised, 'nothing is held back; test is moot')
-        for name in self.written:
-            if not name.endswith('index.html'):
-                continue
-            if name.split('/')[0] not in self.unadvertised:
-                continue
-            with self.subTest(page=name):
-                page = (self.out / name).read_text(encoding='utf-8')
-                self.assertIn('name="robots" content="noindex', page)
-
-    def test_a_language_the_site_does_not_offer_is_out_of_the_sitemap(self):
-        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
-        for lang in sorted(self.unadvertised):
+    def test_a_frozen_language_is_not_built(self):
+        frozen = self.site.get('frozen_languages', [])
+        self.assertTrue(frozen, 'nothing is frozen; test is moot')
+        for lang in frozen:
             with self.subTest(lang=lang):
-                self.assertNotIn(f'{self.site["domain"]}{lang}/', sitemap)
+                self.assertFalse((self.out / lang).exists())
+                self.assertFalse(any(name.startswith(f'{lang}/') for name in self.written))
 
-    def test_a_page_the_site_does_not_offer_still_offers_a_way_out(self):
-        """Naming no alternate is not the same as having nowhere to go.
-
-        The head is an annotation for a search engine about a cluster this page
-        is not in. The switcher is a control for a reader who has landed on a
-        page in a language the site no longer advertises, and taking it away
-        would strand them on it - which is a different and much worse thing
-        than not being indexed.
-        """
-        offered = buildmod.i18n.published(self.locales)
-        for lang in sorted(self.unadvertised):
-            name = f'{lang}/index.html'
+    def test_no_page_the_build_writes_links_into_a_frozen_language(self):
+        prefixes = [f'"/{lang}/' for lang in self.site.get('frozen_languages', [])]
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            text = (self.out / name).read_text(encoding='utf-8')
             with self.subTest(page=name):
-                text = (self.out / name).read_text(encoding='utf-8')
-                self.assertNotIn('<link rel="alternate" hreflang=', text)
-                switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
-                for locale in offered:
-                    self.assertIn(f'hreflang="{locale["hreflang"]}"', switch)
+                self.assertEqual([p for p in prefixes if p in text], [])
 
     def test_a_language_the_site_does_offer_is_left_indexable(self):
         """The other side of it, so a bug that noindexed everything would show.
@@ -1787,7 +1771,7 @@ class ScopedBuildRefusals(unittest.TestCase):
         with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
             self.scoped(langs=['xx'])
         self.assertIn('xx', str(caught.exception))
-        self.assertIn('de', str(caught.exception))
+        self.assertIn('zh', str(caught.exception))
 
     def test_check_will_not_run_against_a_scoped_build(self):
         """--check diffs against the whole deployed branch, so half a build
@@ -1796,7 +1780,7 @@ class ScopedBuildRefusals(unittest.TestCase):
         a temporary directory that stays empty."""
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / 'dist'
-            for scope in (['--only', 'trim-video'], ['--locale', 'de']):
+            for scope in (['--only', 'trim-video'], ['--locale', 'zh']):
                 with self.subTest(scope=scope[0]):
                     code = buildmod.main(['--out', str(out), '--check'] + scope)
                     self.assertEqual(code, 1)

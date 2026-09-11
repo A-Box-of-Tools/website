@@ -60,7 +60,7 @@ Three things to know before changing any of it:
 
 - **The file lives with the guide and is published away from it.**
   `pages/guides/<guide>/screens/<name>.webp` is served at
-  `/screens/<guide>/<name>.webp`, once, for all fifteen languages, and the
+  `/screens/<guide>/<name>.webp`, once, for every language, and the
   bodies address it from the root. Under the guide's own folder it would have
   to be copied into every locale to be reachable from one. See
   `buildlib/screens.py`.
