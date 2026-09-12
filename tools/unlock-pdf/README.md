@@ -17,8 +17,8 @@ almost identically.
 
 **An open password** — the *user* password — is real. Without it the document
 cannot be read by anybody, including this tool. Nothing here will find one:
-there is no dictionary, no word list and no search. `src/crypt.js` has no loop
-in it anywhere, which is a claim you can check by reading it, and the page makes
+there is no dictionary, no word list and no search. `shared/js/pdf-crypt.js`
+has no loop in it anywhere, which is a claim you can check by reading it, and the page makes
 it out loud rather than leaving it to be inferred. That matters most for the
 oldest documents, where a 40-bit RC4 key genuinely *would* fall to a search — a
 tool that quietly did that would be a different tool with a different name.
@@ -42,20 +42,27 @@ If it does not, the password box appears, and only then.
 | File | What it does |
 |---|---|
 | `main.js` | the page: loading, the password box, the report, the run |
-| `crypt.js` | the standard security handler — the whole of PDF encryption |
-| `aes.js` | AES-128 and AES-256 in CBC, written out |
-| `rc4.js` | RC4, for every document written before about 2008 |
-| `permissions.js` | `/P` as the list of things the document asks readers to refuse |
 | `format.js` | the few things this tool turns into words |
 | `example.js` | builds the example — a document that really is locked |
 
-The reading and writing of the PDF itself is not here: it is the four shared
-parts under `shared/js/` that the compressor, the merger and the redactor also
-use.
+The encryption itself is not here any more. It was, until
+[`protect-pdf`](../protect-pdf/) needed the other half of the same file, and
+a second copy is what `tests/python/test_duplicates.py` exists to refuse:
+
+| Part | What it does |
+|---|---|
+| `shared/js/pdf-crypt.js` | the standard security handler — the whole of PDF encryption, in both directions |
+| `shared/js/aes.js` | AES-128 and AES-256 in CBC, written out |
+| `shared/js/rc4.js` | RC4, for every document written before about 2008 |
+| `shared/js/pdf-permissions.js` | `/P` as the list of things the document asks readers to refuse |
+
+The reading and writing of the PDF itself is the four shared parts under
+`shared/js/` that the compressor, the merger and the redactor also use.
 
 ## The four generations, and why the revision decides everything
 
-`crypt.js` implements every published version of the standard security handler.
+`shared/js/pdf-crypt.js` implements every published version of the standard
+security handler.
 Which one a document uses is decided by `/R`, the *revision*, not by `/V`:
 
 | | | |
@@ -133,19 +140,20 @@ not write is a *locked* one — and demonstrating that restrictions come off a
 document that never had any would be demonstrating nothing.
 
 So `src/example.js` writes a two-page statement and then encrypts it, using the
-one export in `crypt.js` that goes the other way. What comes out is the
+one export in `pdf-crypt.js` that goes the other way. What comes out is the
 commonest protected file in the world: AES-128, no password to open it, an
 owner password nobody has typed in, and printing and copying switched off. Open
 it in a reader before using the tool and the print button will be greyed out.
 
-A tool that removes protection has no business adding any, and that one export
-is the exception, with one caller. It is also why the tests do not lean on it:
-see below.
+A tool that removes protection has no business adding any, and on this page
+that export has one caller. Its other caller is the whole of
+[`protect-pdf`](../protect-pdf/), which is why it lives in `shared/js/` now. It
+is also why the tests here do not lean on it: see below.
 
 ## How this is tested
 
-The round trip — encrypt with `example.js`, decrypt with `crypt.js` — proves
-only that the two agree with each other, so it is not what the read side rests
+The round trip — encrypt with `example.js`, decrypt with `pdf-crypt.js` —
+proves only that the two agree with each other, so it is not what the read side rests
 on. `tests/js/unlock-pdf-crypt.test.js` carries fixtures produced by a
 completely separate implementation (pypdf), one per scheme, and checks that
 this code opens them, gets the right text out, reads the right permissions, and

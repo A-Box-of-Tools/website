@@ -1,0 +1,37 @@
+#
+# Guide: putting a password on a PDF, or restrictions, and knowing which.
+#
+# Written for somebody about to send a document they would rather not have
+# read by the wrong person - a statement, a contract, a medical letter - who
+# has typed "password protect pdf" and been offered a page that wants the
+# document uploaded first. The guide's first job is to say that the upload is
+# the odd part of that arrangement, and its second is the one the unlocker's
+# guide makes from the other side: a password and a restriction are not two
+# strengths of one lock, and a guide that let them blur would be selling
+# something.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/protect-a-pdf"
+kind = "guide"
+nav = "Protecting a PDF"
+group = "doing-the-job"
+tool = "protect-pdf"
+
+title = "How to Password Protect a PDF, and What the Password Actually Does"
+description = "A password on a PDF is a real lock. A restriction on printing is a request. What each one does, which encryption to choose, why the upload is the strange part of every online tool, and what happens if you forget the password."
+
+heading = "How to password-protect a PDF, and what it is actually worth"
+lede = """
+    A password on a PDF genuinely keeps people out. A restriction on printing
+    or copying asks them nicely. Both are worth having, and the difference
+    decides what you can promise the person you send the file to."""
+
+updated = "12 September 2026"
+published = "2026-09-12"
+lastmod = "2026-09-12"
+
+og_title = "How to password-protect a PDF, and what it is worth"
+og_description = "The password is a lock, the restrictions are a request, and the upload every online tool asks for is the strange part. How to do it in your browser instead."
+og_image_alt = "abox.tools - tools that never touch a server"

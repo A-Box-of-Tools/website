@@ -108,7 +108,7 @@ function formatString(bytes) {
  * @param {*} value
  * @param {Map<number, number>} renumber old object number to new
  */
-function serialize(value, renumber, depth = 0) {
+function serialize(value, renumber, depth = 0, cipher = null) {
   if (depth > 200) return 'null';
 
   if (value === null || value === undefined) return 'null';
@@ -116,7 +116,9 @@ function serialize(value, renumber, depth = 0) {
   if (value === false) return 'false';
   if (typeof value === 'number') return formatNumber(value);
   if (value instanceof Name) return formatName(value.value);
-  if (value instanceof PdfString) return formatString(value.bytes);
+  if (value instanceof PdfString) {
+    return formatString(cipher ? cipher(value.bytes) : value.bytes);
+  }
 
   if (value instanceof Ref) {
     const renamed = renumber.get(value.num);
@@ -126,19 +128,28 @@ function serialize(value, renumber, depth = 0) {
   }
 
   if (Array.isArray(value)) {
-    return `[${value.map((item) => serialize(item, renumber, depth + 1)).join(' ')}]`;
+    return `[${value.map((item) => serialize(item, renumber, depth + 1, cipher)).join(' ')}]`;
   }
 
-  if (value instanceof PdfStream) return serializeDict(value.dict, renumber, depth);
-  if (value instanceof Map) return serializeDict(value, renumber, depth);
+  if (value instanceof PdfStream) return serializeDict(value.dict, renumber, depth, cipher);
+  if (value instanceof Map) return serializeDict(value, renumber, depth, cipher);
 
   return 'null';
 }
 
-function serializeDict(dict, renumber, depth) {
+/**
+ * @param {Map} dict
+ * @param {Map<number, number>} renumber
+ * @param {number} depth
+ * @param {((bytes: Uint8Array) => Uint8Array)|null} cipher  what every string
+ *   below goes through on the way out, when the document is being encrypted:
+ *   the cipher bound to this object's own number, or null inside an object
+ *   stream, whose contents are enciphered as one stream and never twice
+ */
+function serializeDict(dict, renumber, depth, cipher = null) {
   let out = '<<';
   for (const [key, item] of dict) {
-    out += `${formatName(key)} ${serialize(item, renumber, depth + 1)} `;
+    out += `${formatName(key)} ${serialize(item, renumber, depth + 1, cipher)} `;
   }
   return `${out.trimEnd()}>>`;
 }
@@ -223,10 +234,25 @@ export function stripMetadata(doc) {
 /**
  * @param {import('./pdf-reader.js').PdfDocument} doc
  * @param {{onProgress?: (done: number, total: number) => void,
- *          recompress?: boolean, signal?: AbortSignal}} options
+ *          recompress?: boolean, signal?: AbortSignal,
+ *          security?: Security|null}} options
  * @returns {Promise<Blob>}
+ *
+ * @typedef {object} Security  what shared/js/pdf-crypt.js's `protect` hands
+ *   back: the document is written encrypted to match it. Every string and
+ *   every stream goes through `encrypt` under its object's own number, an
+ *   object stream as one stream with its contents left alone inside it, and
+ *   three things stay in the clear because a reader has to read them before
+ *   it can have a key - the /Encrypt dictionary, the cross-reference stream,
+ *   and the trailer's /ID, which the older key is derived from.
+ * @property {string} dictionary  the /Encrypt dictionary, as PDF text
+ * @property {Uint8Array} id  the first half of /ID
+ * @property {string} minVersion  the header the scheme needs, '1.6' or '1.7'
+ * @property {(bytes: Uint8Array, num: number, gen: number) => Uint8Array} encrypt
  */
-export async function writeDocument(doc, { onProgress, recompress = true, signal } = {}) {
+export async function writeDocument(doc, {
+  onProgress, recompress = true, signal, security = null,
+} = {}) {
   const roots = [doc.trailer.get('Root')];
   if (doc.trailer.has('Info')) roots.push(doc.trailer.get('Info'));
 
@@ -251,7 +277,10 @@ export async function writeDocument(doc, { onProgress, recompress = true, signal
   // 1.5 or better, because the output uses object streams. Claiming a lower
   // version than the file actually needs is how a document opens everywhere
   // except in the one reader that believed the header.
-  const version = doc.version >= '1.5' ? doc.version : '1.5';
+  // And no lower than the encryption asks for: AES-128 arrived in 1.6 and
+  // AES-256 in 1.7, and a header claiming less is the same lie the other way.
+  const floor = security?.minVersion > '1.5' ? security.minVersion : '1.5';
+  const version = doc.version >= floor ? doc.version : floor;
   writer.ascii(`%PDF-${version}\n`);
   writer.raw(new Uint8Array([0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]));
 
@@ -280,9 +309,13 @@ export async function writeDocument(doc, { onProgress, recompress = true, signal
         // Compression is an optimisation. The stream goes out as it came in.
       }
     }
+    // Enciphered after it is compressed, never before: a cipher's output does
+    // not compress, and a reader undoes the two in the opposite order.
+    if (security) raw = security.encrypt(raw, id, 0);
     value.dict.set('Length', raw.length);
 
-    writer.ascii(`${id} 0 obj\n${serializeDict(value.dict, renumber, 0)}\nstream\n`);
+    const cipher = security ? (bytes) => security.encrypt(bytes, id, 0) : null;
+    writer.ascii(`${id} 0 obj\n${serializeDict(value.dict, renumber, 0, cipher)}\nstream\n`);
     writer.raw(raw);
     writer.ascii('\nendstream\nendobj\n');
 
@@ -296,9 +329,22 @@ export async function writeDocument(doc, { onProgress, recompress = true, signal
   await packObjects(writer, packable, renumber, located, spare, () => {
     done += 1;
     if (done % 200 === 0) onProgress?.(done, total);
-  });
+  }, security);
 
-  await writeXrefStream(writer, located, renumber, doc, spare);
+  // The /Encrypt dictionary is the one object in an encrypted file that is
+  // not encrypted, and it is written as an object of its own rather than
+  // packed: a reader has to find it before it can unpack anything, and the
+  // shared reader's setUpCrypt runs exactly there - after the cross-reference
+  // chain and before the object streams are opened.
+  let encryptId;
+  if (security) {
+    encryptId = spare.next;
+    spare.next += 1;
+    located.set(encryptId, { offset: writer.length });
+    writer.ascii(`${encryptId} 0 obj\n${security.dictionary}\nendobj\n`);
+  }
+
+  await writeXrefStream(writer, located, renumber, doc, spare, security, encryptId);
 
   onProgress?.(total, total);
   return new Blob(writer.chunks, { type: 'application/pdf' });
@@ -325,7 +371,7 @@ function shouldDeflate(doc, stream) {
  * before deflate even runs, and deflate then has every dictionary in the batch
  * to find repetition in.
  */
-async function packObjects(writer, packable, renumber, located, spare, tick) {
+async function packObjects(writer, packable, renumber, located, spare, tick, security = null) {
   for (let start = 0; start < packable.length; start += PACK_SIZE) {
     const batch = packable.slice(start, start + PACK_SIZE);
 
@@ -362,6 +408,10 @@ async function packObjects(writer, packable, renumber, located, spare, tick) {
     } catch {
       // An uncompressed object stream is still a valid object stream.
     }
+    // The container is enciphered as one stream, under its own number. The
+    // strings inside it were written in the clear above, which is why the
+    // reader decrypts an object stream before it unpacks it and never after.
+    if (security) data = security.encrypt(data, id, 0);
 
     located.set(id, { offset: writer.length });
     writer.ascii(`${id} 0 obj\n<< /Type /ObjStm /N ${batch.length} `
@@ -382,7 +432,8 @@ async function packObjects(writer, packable, renumber, located, spare, tick) {
  * four for the offset covers a file up to four gigabytes, which is past what a
  * browser tab can hold in memory anyway.
  */
-async function writeXrefStream(writer, located, renumber, doc, spare) {
+async function writeXrefStream(writer, located, renumber, doc, spare, security = null,
+  encryptId = undefined) {
   const id = spare.next;
   spare.next += 1;
   const offset = writer.length;
@@ -434,10 +485,16 @@ async function writeXrefStream(writer, located, renumber, doc, spare) {
 
   // No /ID, for the same reason images-to-pdf leaves it out: the usual way to
   // fill it is a hash of the time and the file name, and neither belongs in a
-  // document this tool has spent its whole run taking things out of.
+  // document this tool has spent its whole run taking things out of. The one
+  // exception is a document being encrypted, whose /ID is random bytes the
+  // key is tied to, and has to be there for the older scheme to open at all.
   let entries = `<< /Type /XRef /Size ${count} /W [1 4 2] `
     + `/Root ${root} 0 R`;
   if (info !== undefined) entries += ` /Info ${info} 0 R`;
+  if (security) {
+    entries += ` /Encrypt ${encryptId} 0 R`
+      + ` /ID [${formatString(security.id)} ${formatString(security.id)}]`;
+  }
   entries += `${filter} /Length ${data.length} >>`;
 
   writer.ascii(`${id} 0 obj\n${entries}\nstream\n`);

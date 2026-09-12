@@ -42,8 +42,8 @@ live_hint = """
 
 read_first = """
 ，一个密码是怎么变成文档密钥的，\
-      以及那里面根本没有循环这件事，看 <code>src/crypt.js</code>；两种密码算法\
-      本身在 <code>src/aes.js</code> 和 <code>src/rc4.js</code>。这几个都够不着\
+      以及那里面根本没有循环这件事，看 <code>src/shared/pdf-crypt.js</code>；两种密码算法\
+      本身在 <code>src/shared/aes.js</code> 和 <code>src/shared/rc4.js</code>。这几个都够不着\
       网络，旁边负责读和写的部分也一样。"""
 
 howto_heading = "怎么去掉 PDF 的密码或者那些限制"
@@ -218,7 +218,7 @@ a = """
 q = "我没有密码的 PDF，它能打开吗？"
 a = """
         不能，而且它根本不去试。这个工具里没有字典、没有词表，也没有任何暴力搜索，\
-        你可以自己读 <code>src/crypt.js</code>，里面连一个循环都没有。对最老的那批 \
+        你可以自己读 <code>src/shared/pdf-crypt.js</code>，里面连一个循环都没有。对最老的那批 \
         40 位密钥的文档来说，搜索确实是奏效的，正因为如此，这条拒绝才必须写下来，\
         而不是留给人去假定。如果你把自己文档的密码弄丢了，这一页帮不了你，任何一个\
         诚实的页面也帮不了。"""

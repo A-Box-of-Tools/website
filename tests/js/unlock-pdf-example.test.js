@@ -20,8 +20,8 @@ import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { writeDocument } from '../../shared/js/pdf-writer.js';
 import { makeExample } from '../../tools/unlock-pdf/src/example.js';
-import { standardSecurity } from '../../tools/unlock-pdf/src/crypt.js';
-import { refusedIn } from '../../tools/unlock-pdf/src/permissions.js';
+import { standardSecurity } from '../../shared/js/pdf-crypt.js';
+import { refusedIn } from '../../shared/js/pdf-permissions.js';
 
 const latin1 = (bytes) => Buffer.from(bytes).toString('latin1');
 
@@ -36,7 +36,7 @@ async function contentsOf(doc) {
   return all;
 }
 
-const bytesOf = async (file) => new Uint8Array(await file.arrayBuffer());
+const bytesOf = async (file) => new Uint8Array(await (await file).arrayBuffer());
 
 test('the example is encrypted, and any reader without a key is turned away', async () => {
   const bytes = await bytesOf(makeExample());

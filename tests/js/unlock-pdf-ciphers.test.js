@@ -17,8 +17,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 
-import { Aes, cbcDecrypt, cbcEncrypt } from '../../tools/unlock-pdf/src/aes.js';
-import { rc4 } from '../../tools/unlock-pdf/src/rc4.js';
+import { Aes, cbcDecrypt, cbcEncrypt } from '../../shared/js/aes.js';
+import { rc4 } from '../../shared/js/rc4.js';
 
 const un = (hex) => new Uint8Array(Buffer.from(hex, 'hex'));
 const hex = (bytes) => Buffer.from(bytes).toString('hex');
