@@ -94,7 +94,7 @@ export function stampDocument(doc, image, settings) {
     // The page's own streams, if any, sit between the `q` and the `Q` that
     // opens the stamp's stream; a page with none needs neither.
     const closing = list.length ? '\nQ\n' : '';
-    const drawRef = addObject(doc, textStream(`${closing}${drawing}`));
+    const drawRef = addObject(doc, textStream(closing + drawing));
     page.dict.set('Contents', list.length ? [openRef, ...list, drawRef] : [drawRef]);
 
     const resources = ownResources(doc, page);

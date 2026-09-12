@@ -227,8 +227,8 @@ function drawPreview() {
   const padded = { width: measured.width * 1.3, height: (ascent + descent) * 1.3 };
   const aspect = padded.width / Math.max(padded.height, 1);
 
-  const colour = COLOURS[choice.colour] ?? COLOURS.grey;
-  ctx.fillStyle = `rgb(${colour.r} ${colour.g} ${colour.b})`;
+  const { r, g, b } = COLOURS[choice.colour] ?? COLOURS.grey;
+  ctx.fillStyle = `rgb(${r} ${g} ${b})`;
   ctx.globalAlpha = el.words.value.trim() ? Number(el.opacity.value) / 100 : 0.15;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
@@ -400,7 +400,7 @@ function renderFacts({ chosen, done, words, signed }) {
   facts.push(phrase('facts.words', { words }));
 
   const values = {
-    size: phrase(`size.${chosen.size}`),
+    size: phrase('size.' + chosen.size),
     angle: phrase(chosen.diagonal ? 'angle.diagonal' : 'angle.flat'),
     opacity: Math.round(chosen.opacity * 100),
     n: done.pages ? Math.round(done.stamps / done.pages) : 0,

@@ -77,7 +77,8 @@ export function renderStamp(text, colour) {
   ctx.font = `bold ${fontSize}px ${family}`;
   ctx.textBaseline = 'alphabetic';
   ctx.textAlign = 'center';
-  ctx.fillStyle = `rgb(${colour.r} ${colour.g} ${colour.b})`;
+  const { r, g, b } = colour;
+  ctx.fillStyle = `rgb(${r} ${g} ${b})`;
   const baseline = height - descent * (fontSize / 100) - height * PADDING / (1 + 2 * PADDING);
   ctx.fillText(words, width / 2, baseline);
 
