@@ -35,7 +35,6 @@ const el = {
   loadError: $('load-error'),
   unlockHint: $('unlock-hint'),
   loadNote: $('load-note'),
-  settingsCard: $('settings-card'),
   password: $('password'),
   reveal: $('reveal'),
   passwordAgain: $('password-again'),
@@ -218,9 +217,10 @@ function refresh() {
  * Dim the last card until there is something to do, and say why.
  *
  * The picker wakes every inert card the moment a file arrives, which is
- * right for the settings card and early for this one: a file has been chosen,
- * and nothing can yet be done to it. So this card is managed here, with the
- * same line the frame draws and a sentence of this tool's own.
+ * early for this one: a file has been chosen, and nothing can yet be done to
+ * it. So this card is managed here, with the same line the frame draws and a
+ * sentence of this tool's own. It is the only card that waits - the settings
+ * can be filled in before the file is chosen, and the page lets them be.
  */
 function gate(ready) {
   const line = el.runCard.querySelector('.card-waiting');

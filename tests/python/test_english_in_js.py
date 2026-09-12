@@ -118,6 +118,7 @@ BASELINE = {
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'pdf-to-csv': 2,
+    'protect-pdf': 0,
     'qr-barcode': 2,
     # None of these thirteen reaches a reader. Six are qr-decode.js's
     # diagnostics, which detect.js catches and turns into a null; two are
@@ -150,7 +151,7 @@ BASELINE = {
     # module that writes the locked example, and the fifth is a RangeError for
     # a key length no caller can reach. Everything a visitor reads on that
     # page is in body.html already.
-    'unlock-pdf': 5,
+    'unlock-pdf': 4,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
     'xml-formatter': 0,
