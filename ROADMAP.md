@@ -196,13 +196,6 @@ is the frame-by-frame decode of the GIF going in, which
 
 ## Video
 
-### Resize
-
-The most-wanted video job there is, and the reason is always the same: the file
-will not send. `VideoDecoder` and `VideoEncoder` do the work, behind the reader
-that [`crop-video`](tools/crop-video/) and five other tools already ship as
-[`mp4-reader.js`](shared/js/mp4-reader.js).
-
 ### Rotate
 
 The cheapest thing on this entire list, and it should be built first for that

@@ -1,0 +1,444 @@
+#
+# Compress a video
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is that this page is about a number, not a preference. People
+# arrive because a file will not send - a chat app's limit, an email's, a
+# form's - and what they want is the file under that number with as little
+# lost as the number allows. So the page asks for the number, says what it
+# buys before anything is encoded, and measures what came out against it.
+# Every sentence here keeps the number in front.
+#
+# The second is that a compressed video is a re-encoded video, and the page
+# says so rather than letting "compress" suggest the lossless thing it means
+# for a zip file. The picture is decoded and written again, a generation
+# further from the camera; the sound is copied through untouched; the
+# result is H.264 in an MP4, because that is the one thing every phone,
+# browser and chat app plays and the site has already ruled out promising
+# WebM. Nothing here claims the picture is unchanged.
+#
+
+slug = "compress-video"
+name = "Video Compressor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Compress&nbsp;Video <span class=\"h1-kw\">&mdash; down to a size that will actually send</span>"
+tagline = "Say how big it may be. The tool works out the rest, and measures the result before you get it."
+icon = "&#128230;"                  # the package, beside the page heading
+favicon = "&#128230;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "film"
+category = "video-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works, chips
+# is the rows of limits and frame sizes, and results carries the file name
+# and size lines the other tools use.
+css_parts = ["progress", "form", "chips", "checks", "notes", "results"]
+
+# file-picker brings in the drop zone. mp4-reader is the demuxer six other
+# tools ship, mp4-writer and mp4-boxes the writer that puts a re-encoded
+# picture beside a copied sound track, and video-support, codec-support and
+# webcodecs the questions asked of the browser's codecs and the wait that
+# keeps a feed loop behind them. frame-canvas is the canvas each frame is
+# drawn smaller into. format is sizes and durations as words, and errors is
+# the cancellation every page ignores by name.
+#
+# example-photo, example-video, example-audio, example-video-sound, mp4-muxer,
+# aac and wav are for the example alone: a clip with sound, built in the page,
+# whose frames are drawn from the shared photograph and whose sound is the
+# shared recording, the same set the trimmer asks for.
+js_parts = ["file-picker", "mp4-reader", "mp4-writer", "mp4-boxes", "video-support", "codec-support", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "example-video-sound", "mp4-muxer", "aac", "wav"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. A
+# clip made small enough to send is often then cut, or turned into a GIF.
+handoff = ["trim-video", "video-to-gif"]
+lastmod = "2026-09-12"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Compress a Video to a Target Size &mdash; MP4, Free, No Upload"
+description = "Shrink a video to under 8, 16, 25 or any number of megabytes, in your browser. Say the size; the tool picks the frame size and bitrate, encodes it, and measures the result. Nothing is uploaded, and the sound is copied through untouched."
+og_title = "Compress a video to a size that will send, without uploading it"
+og_description = "A 900 MB clip does not have to go up to a server to come back small. Say how big it may be and the tool works out the rest, in your browser."
+og_image_alt = "Compress a video in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Say the size it has to be. Encoded on your machine; the file never goes up."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src carries blob: because the finished video is played from memory
+  on this page so that you can see it survived. connect-src carries blob:
+  because the carry-on row reads the result back out of this page before
+  parking it for the next tool. blob: names bytes inside this page; neither
+  gains any reach over the network, and nothing else here is widened."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The video you choose is decoded, drawn smaller, encoded again and written
+    back out in memory on this machine, by your own browser's codecs and code
+    served from this address. Nothing here can make an upload, and there is
+    no server on the other end of this page to receive one. A gigabyte never
+    goes up to come back small."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      compress something. Not one request carries a video, a frame, or a
+      filename. Or unplug from the internet and compress it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/plan.js</code> for how a number becomes a
+      frame size and a bitrate, and <code>src/encode.js</code> for the
+      decode, the drawing and the encode, and the sound copied round them.
+      None of them can reach the network, and neither can the reader or the
+      writer beside them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to compress a video to a size that will send"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Say how big the file may be &mdash; 8 MB, 25 MB, half what it is
+            &mdash; and the tool picks the frame size and bitrate, encodes the
+            picture on your machine, copies the sound through, and measures
+            the result against the number before you download it."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and nothing about
+  the size you asked for"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "The upload is the slow part, and it is the part that does not happen."
+body = """
+
+      A video is the largest file most people ever try to send, which is why
+      it will not send. Every online compressor asks for the whole thing
+      first &mdash; the 900 MB goes up on your connection so that 25 MB can
+      come back &mdash; and that upload is usually longer than the encoding
+      it pays for, before any question of who keeps the file. This page
+      encodes with the codecs already inside your browser, on your own
+      machine, so the only bytes that move are from your disk to your
+      memory and back. The page's <code>Content-Security-Policy</code> names
+      every address it may contact &mdash; not one of them belongs to this
+      site &mdash; and it works with the network unplugged."""
+
+[[privacy]]
+title = "It starts from the number, because the number is the point."
+body = """
+
+      A chat app allows 8 MB, or 25; an email 25; a form whatever it says.
+      What you want is the file under that, with as little lost as the number
+      allows. So the page asks for the number and works out the rest: the
+      sound is copied as it is, the container takes a little, and what is
+      left over the length of the clip is what the picture may spend. That
+      bitrate is only worth something relative to how many pixels it has to
+      paint, so the frame is stepped down a ladder of the sizes people know
+      until each frame gets enough of it to look like a picture &mdash; and
+      never up. The page says all of this before it starts, and you can
+      overrule the frame size."""
+
+[[privacy]]
+title = "A compressed video is an encoded-again video, and the page says so."
+body = """
+
+      &ldquo;Compress&rdquo; means something lossless for a zip file and
+      nothing of the kind for a video. The picture is decoded, drawn smaller,
+      and encoded again with H.264 at the bitrate the number allows, which
+      leaves it one generation further from the camera than the file you
+      started with. The sound is not: its samples are copied into the new
+      file exactly as they were. The result is an MP4, because that is the
+      one container every phone, browser and chat app plays, and this site
+      has already ruled out promising a format half its visitors could not
+      have made."""
+
+[[privacy]]
+title = "The result is measured, and tightened once if it missed."
+body = """
+
+      An encoder lands near a bitrate rather than on it, so the file is
+      asked for a little under the number and then measured. If it still
+      came out over, the bitrate is worked out again from how far it missed
+      and the clip is encoded a second time; two passes are always enough,
+      and the page says when it took two. Then the finished file is opened
+      again here and has to be the length it was: a compressor that dropped
+      the last second, or the sound, would still be a smaller file, and only
+      reading the result back can tell the difference."""
+
+[[privacy]]
+title = "What it costs on your machine, honestly."
+body = """
+
+      Encoding takes as long as your machine takes. With a hardware encoder
+      &mdash; most laptops and every phone made in the last decade &mdash;
+      it is faster than the clip is long; without one it is slower, and a
+      long 4K clip is a long wait either way. The whole file is read from
+      your disk in pieces, so a clip larger than your memory is fine, but
+      the finished file is held in memory until you download it, which is
+      where a laptop's limit is. Cancel is always live."""
+
+[[privacy]]
+title = "Which files it reads, and which it does not."
+body = """
+
+      MP4 and MOV &mdash; what phones, cameras and screen recorders write
+      &mdash; with H.264, HEVC, VP9 or AV1 inside, whichever your browser
+      will decode. An iPhone HEVC clip opens wherever the machine has a
+      licence for it, which is most of them. WebM, MKV and AVI are not read
+      here yet, and the page says so rather than failing vaguely."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your video: not a file, not a frame, not a name, a size, a length, or
+      the number you asked for. Every line that reads, encodes or writes a
+      video is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your videos. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your video away to be compressed would stop."""
+
+[[howto]]
+title = "Choose the video."
+body = """
+ One clip at a time, MP4 or MOV. It is read
+      straight off your disk by the browser, and the page says what it is:
+      how long, how big, what frame size, and what it spends per second."""
+
+[[howto]]
+title = "Say how big it may be."
+body = """
+ Type a number of megabytes, or press
+      the limit you were given &mdash; 8, 16, 25, 50, 100 &mdash; or half or
+      a quarter of what the file is. The line underneath says what that buys:
+      the frame size and bitrate the clip's length and sound leave room for,
+      and what the result should come out at. Leave the sound out if you
+      would rather all of the number went to the picture."""
+
+[[howto]]
+title = "Overrule the frame size if you want to."
+body = """
+
+      The number picks a rung of the ladder on its own. Pick one yourself
+      when you know better &mdash; a screen recording that must stay readable
+      at 1080p, a clip that only needs to be watched on a phone &mdash; and
+      the bitrate is spread over that instead. A rung is a ceiling: the
+      picture is never made larger than it came."""
+
+[[howto]]
+title = "Compress it, and read the line that says it was measured."
+body = """
+
+      The picture is decoded, drawn smaller and encoded again, frame by frame,
+      with a bar that says where it is. Then the finished file is measured
+      against the number and opened again here to check its length; if it
+      came out over, it is encoded once more, tighter, and the page says so.
+      The result plays from memory under the download, so you can see it
+      survived."""
+
+[[faq]]
+q = "How small can a video get?"
+a = """
+        As small as the number you type, down to the point where nothing
+        watchable fits &mdash; and the page tells you where that is. The
+        sound is copied as it is, so it costs what it costs (about a
+        megabyte a minute for ordinary stereo), and the picture needs a few
+        hundred kilobits a second at the smallest frame size to be a picture
+        at all. Leaving the sound out gives its share to the picture, which
+        for a short clip with a tight limit is often the difference."""
+
+[[faq]]
+q = "Why did the frame size change?"
+a = """
+        Because a bitrate only means something relative to how many pixels it
+        has to paint. Two megabits a second is generous at 720p and mud at 4K,
+        so once the number has decided the bitrate, the frame is stepped down
+        the ladder until each frame gets enough bits to look like a picture.
+        A smaller clear picture beats a large smeared one, and it is what
+        every service that compresses uploads does silently. Here it is said
+        before it starts, and you can pick the rung yourself."""
+
+[[faq]]
+q = "Will the quality be worse?"
+a = """
+        Yes, by exactly as much as the number requires and no more. A
+        compressed video is a re-encoded video: the picture is written again
+        at a lower bitrate, one generation further from the camera. The sound
+        is not touched. What you lose is decided by the number you typed
+        &mdash; a 900 MB clip made 25 MB has lost most of its bits, and a
+        clip made half its size has lost few &mdash; and the page says the
+        bitrate and frame size it chose so that the trade is visible rather
+        than hidden."""
+
+[[faq]]
+q = "What format does it write?"
+a = """
+        MP4 with H.264 video, and the sound track copied through as it was.
+        That is the one combination every phone, browser, chat app and email
+        client plays, which is what a file that has to send needs. It does
+        not write WebM, HEVC or AV1: smaller for the same quality, and not
+        something half of the people you would send it to could open."""
+
+[[faq]]
+q = "Which files does it read?"
+a = """
+        MP4 and MOV &mdash; what phones, cameras and screen recorders write
+        &mdash; with H.264, HEVC, VP9 or AV1 inside, as long as your browser
+        will decode them. An iPhone HEVC clip opens wherever the machine has a
+        licence for HEVC, which is most machines. WebM, MKV and AVI are not
+        read here yet; the page says so when it meets one rather than
+        failing vaguely."""
+
+[[faq]]
+q = "How long does it take?"
+a = """
+        As long as your machine takes to encode the clip. With a hardware
+        encoder &mdash; most laptops and every recent phone &mdash; it is
+        faster than the clip is long; a minute of 1080p usually takes less
+        than a minute. Without one it is slower, and a long 4K clip is a long
+        wait either way. The bar says which frame it is on, and cancelling
+        stops it at once and writes nothing."""
+
+[[faq]]
+q = "Why did it take two passes?"
+a = """
+        Because an encoder lands near the bitrate it is asked for rather than
+        on it, and on a busy clip it can land over. The file is asked for a
+        little under the number and measured; if it still came out over, the
+        bitrate is worked out again from how far it missed and the clip is
+        encoded once more. Two passes are always enough, and the page says
+        when it took two."""
+
+[[faq]]
+q = "Are my videos uploaded anywhere?"
+a = """
+        No. The clip is read, decoded, encoded and written by your own browser
+        on your own hardware, and the page's <code>Content-Security-Policy</code>
+        names every address it may contact &mdash; none of them belongs to
+        this site. The simplest way to satisfy yourself is to unplug from the
+        network and use the page anyway. On a tool for files this size, that
+        is also the fastest way: the upload is usually longer than the
+        encoding."""
+
+[[faq]]
+q = "Does it work on a phone?"
+a = """
+        On a phone whose browser can encode video, yes, and a phone's own
+        hardware encoder is quick. What a phone lacks is memory: the finished
+        file is held in memory until you save it, so a very long clip may be
+        more than a phone can hold. Cut it first with the
+        <a href=\"../trim-video/\">Video Trimmer</a>, or compress it on a
+        laptop."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        There is no limit written into the tool. The clip is read from your
+        disk in pieces, so a file larger than your memory is fine going in;
+        the limit is the finished file, which is held in memory until you
+        download it, and a laptop will take a few hundred megabytes of result
+        without complaint. It is free, there is no account, no sign-in and no
+        trial. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your videos."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your video away to be compressed would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Compress a video to under a chosen number of megabytes in your browser. The tool picks the frame size and bitrate the number allows, encodes H.264 into an MP4 on your machine, copies the sound through, and measures the result. Nothing is uploaded."
+features = [
+  "Takes a target size in megabytes, or a preset limit, or half or a quarter of the file",
+  "Works out the bitrate the target leaves the picture once the sound and the container have taken theirs",
+  "Steps the frame down a ladder of known sizes until each frame can afford its bits, never up",
+  "Lets you overrule the frame size",
+  "Copies the sound through untouched, or leaves it out to give the picture more",
+  "Measures the result and encodes once more, tighter, if it missed",
+  "Reopens the finished file to check it is the length it was, and plays it from memory",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: a target size belongs to one clip, and a queue that
+# gave twelve clips one number would give eleven of them the wrong one.
+[picker]
+accept = "video/mp4,video/quicktime,.mp4,.mov,.m4v"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4 or MOV, one at a time"
+# An eight-second clip with sound, built in the page. See src/example.js.
+example = true
+
+# blob: on media-src, because the finished result is played from memory on
+# this page so that it can be looked at; blob: on connect-src, because the
+# carry-on row reads the finished result back out of this page before parking
+# it for the next tool (see shared/handoff.js). blob: names bytes inside this
+# page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]
+"media-src" = ["'self'", "blob:"]
