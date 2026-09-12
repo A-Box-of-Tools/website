@@ -8,8 +8,9 @@
  * PDF. What it does not write is a *locked* one - and a page demonstrating
  * that restrictions come off a document that never had any would be
  * demonstrating nothing at all. So this writes the same kind of statement and
- * then encrypts it, with the encryption side of crypt.js and its own /Encrypt
- * dictionary, exactly as a word processor's "restrict editing" box would.
+ * then encrypts it, with the writing side of shared/js/pdf-crypt.js and its
+ * own /Encrypt dictionary, exactly as a word processor's "restrict editing"
+ * box would - at revision 4, AES-128, because that is what such boxes write.
  *
  * What comes out is the commonest protected file in the world and the case
  * this tool answers with one click: no password to open it, an owner password
@@ -24,7 +25,7 @@
 
 import { PdfWriter, PT_PER_MM } from './shared/pdf-page-writer.js';
 import { HEADINGS, rowsFor } from './shared/example-statement.js';
-import { protect } from './crypt.js';
+import { protect } from './shared/pdf-crypt.js';
 
 const A4 = { width: Math.round(210 * PT_PER_MM), height: Math.round(297 * PT_PER_MM) };
 const COLUMNS = [56, 150, 260, 420];
@@ -79,13 +80,15 @@ function pageStream(page, rows) {
 
 /**
  * @param {string} name the filename the picker will show
- * @returns {File}
+ * @returns {Promise<File>}
  */
-export function makeExample(name = 'protected-statement.pdf') {
+export async function makeExample(name = 'protected-statement.pdf') {
   // The document's /ID goes into the key, so it has to exist before anything
   // is encrypted and be written into the trailer unchanged afterwards.
   const id = crypto.getRandomValues(new Uint8Array(16));
-  const security = protect({ ownerPassword: OWNER_PASSWORD, permissions: PERMISSIONS, id });
+  const security = await protect({
+    ownerPassword: OWNER_PASSWORD, permissions: PERMISSIONS, id, revision: 4,
+  });
 
   const writer = new PdfWriter();
   const catalog = writer.reserve();

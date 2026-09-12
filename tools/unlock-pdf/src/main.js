@@ -15,8 +15,8 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { sizeText } from './shared/format.js';
 import { NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { stripMetadata, writeDocument } from './shared/pdf-writer.js';
-import { standardSecurity, WrongPasswordError } from './crypt.js';
-import { refusedIn } from './permissions.js';
+import { standardSecurity, WrongPasswordError } from './shared/pdf-crypt.js';
+import { refusedIn } from './shared/pdf-permissions.js';
 import { outName, pages, scheme, strength } from './format.js';
 import { makeExample } from './example.js';
 
