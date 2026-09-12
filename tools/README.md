@@ -43,6 +43,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Most locked PDFs need no password at all. This one says which kind you have before it touches it. |
 | [PDF Protector](protect-pdf/) | `/protect-pdf/` | Lock a document you would rather not hand to a website in order to lock it. |
+| [PDF Watermark](watermark-pdf/) | `/watermark-pdf/` | A scan that says where it went is a scan that cannot quietly go somewhere else. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
 | [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |

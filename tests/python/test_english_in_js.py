@@ -154,6 +154,7 @@ BASELINE = {
     'unlock-pdf': 4,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
+    'watermark-pdf': 0,
     'xml-formatter': 0,
     # Both are inside the sample document, not the interface: the comment
     # the YAML example carries so that losing it can be seen, and a value

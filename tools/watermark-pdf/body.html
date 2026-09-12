@@ -1,0 +1,251 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Choose another</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where a password can be taken off, shown only when one is what stopped
+      the file being read. Stamping a document means opening it, and this
+      page does not ask for passwords; the page that takes one off is next
+      door, and the one that puts it back is next door to that.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      This document is locked. Take the protection off first, in this browser,
+      with the <a href="../unlock-pdf/">PDF Unlocker</a> &mdash; then bring the
+      unlocked copy back here, and put a password on the stamped copy with the
+      <a href="../protect-pdf/">PDF Protector</a> afterwards if you want one.
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the stamp.
+
+    The words first, because they are the whole point; then how the stamp
+    sits, with a preview beside the controls. The preview is a blank page the
+    shape of the first page with the placement drawn on it by the same
+    arithmetic that writes the file - never the document itself, which this
+    site cannot draw and says so.
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> Say what the stamp should say, and how it sits</h2>
+
+    <label class="field" for="words">
+      <span>The words</span>
+      <span class="field-note">
+        Who the copy is for, and when. Any language: the words are drawn by
+        your own browser, so whatever you can type, the stamp can say.
+      </span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="For Acme Bank only &middot; 12 September 2026">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>Size</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">Small</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">Medium</button>
+            <button type="button" class="chip" data-size="large">Large</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Angle</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">Diagonal</button>
+            <button type="button" class="chip" data-diagonal="no">Flat</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Placement</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">Once, in the middle</button>
+            <button type="button" class="chip" data-tiled="yes">Repeated across the page</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Colour</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">Grey</button>
+            <button type="button" class="chip" data-colour="red">Red</button>
+            <button type="button" class="chip" data-colour="blue">Blue</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>How faint</span>
+          <span class="field-note">
+            <span id="opacity-value">30</span>% opaque. Faint enough to read
+            through, dark enough to survive a photocopy.
+          </span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>First page only</strong>
+            <span class="check-note">Every page gets the stamp unless this is ticked.</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        The preview. A blank page the size and shape of the first page with
+        the stamp laid on it; the words are drawn live so the visitor sees
+        their own text, not a placeholder. Described for a screen reader by
+        the sentence below it, which says what is and is not shown.
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">
+          The stamp on a blank page the shape of your first page, placed
+          exactly where the file will put it. Your page's own contents are
+          not drawn: this site has no PDF renderer, on purpose.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Stamp it</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Watermark the document</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Download</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">This opens once there is a document above and words on the stamp.</span>
+    <span data-phrase="note.repaired">This file&rsquo;s cross-reference table did not match its contents, so it
+      was read by scanning for objects instead. That is a repair, and it
+      worked, but check the result before you send it anywhere.</span>
+    <span data-phrase="note.incremental">This document has been edited and re-saved at least once, so it is
+      carrying older copies of objects that nothing points at any more. Those
+      are left out of the file you get back.</span>
+    <span data-phrase="note.pages.one">1 page, {size}.</span>
+    <span data-phrase="note.pages.many">{n} pages, {size}.</span>
+    <span data-phrase="read.notpdf">That is not a PDF. This tool only works on PDF files.</span>
+    <span data-phrase="read.encrypted">This PDF is encrypted.</span>
+    <span data-phrase="read.nocatalogue">This file has no document catalogue, so there is nothing to stamp. It
+      is either not a PDF or damaged past what can be repaired here.</span>
+    <span data-phrase="read.noheader">This does not start like a PDF: there is no %PDF- header.</span>
+    <span data-phrase="read.nopages">This document has no pages to stamp.</span>
+    <span data-phrase="read.failed">This PDF could not be read: {detail}</span>
+    <span data-phrase="pdf.flate">a Flate stream would not decompress ({detail})</span>
+    <span data-phrase="pdf.nocompression">this browser has no CompressionStream</span>
+    <span data-phrase="pdf.lzw">an LZW stream starts with an undefined code</span>
+    <span data-phrase="pdf.cryptfilter">this stream is encrypted</span>
+    <span data-phrase="pdf.unknownfilter">an unknown filter, /{name}</span>
+    <span data-phrase="pdf.deep">nested too deeply</span>
+    <span data-phrase="pdf.short">ran off the end</span>
+    <span data-phrase="pdf.unexpected">unexpected {found} at {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">unexpected byte 0x{hex} at {at}</span>
+    <span data-phrase="pdf.noendstream">a stream with no endstream</span>
+    <span data-phrase="pdf.noobj">no obj keyword at {at}</span>
+    <span data-phrase="pdf.nostartxref">no startxref</span>
+    <span data-phrase="pdf.noxref">not an xref section</span>
+    <span data-phrase="pdf.now">an xref stream with no /W</span>
+    <span data-phrase="pdf.zerowidth">an xref stream with zero-width fields</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="stage.drawing">Drawing the stamp</span>
+    <span data-phrase="stage.writing">Writing the document back out with the stamp on every page</span>
+    <span data-phrase="stage.checking">Opening it again to check</span>
+    <span data-phrase="run.cancelled">Cancelled. Nothing was changed; press the button to start again.</span>
+    <span data-phrase="result.ready">{size} &mdash; stamped.</span>
+    <span data-phrase="result.sub">Every page, every font and every picture is the one that arrived, with
+      the stamp drawn over it. Keep your original as well.</span>
+    <span data-phrase="check.passed">Checked: {found}</span>
+    <span data-phrase="check.failed">This run did not check out &mdash; {found}. Keep your original.</span>
+    <span data-phrase="check.ok.all">opened again from memory, and every one of its {pages} carries the
+      stamp.</span>
+    <span data-phrase="check.ok.first">opened again from memory, and the first of its {pages} carries the
+      stamp, as asked.</span>
+    <span data-phrase="check.ok.single">opened again from memory, and its one page carries the stamp.</span>
+    <span data-phrase="check.pages">the finished file came back with {pages} pages instead of
+      {expected}</span>
+    <span data-phrase="check.missing">page {n} of the finished file does not carry the stamp</span>
+    <span data-phrase="check.reopen">the finished file would not reopen ({detail})</span>
+    <span data-phrase="facts.words">The stamp says &ldquo;{words}&rdquo;.</span>
+    <span data-phrase="facts.placement.once">Once on each page, {size}, {angle}, at {opacity}% opacity.</span>
+    <span data-phrase="facts.placement.tiled">Repeated {n} times across each page, {size}, {angle}, at
+      {opacity}% opacity.</span>
+    <span data-phrase="facts.firstonly">Only the first page carries it; the other {n} were left as they
+      were.</span>
+    <span data-phrase="facts.picture">The words are drawn as a picture, so they show in any reader and cannot
+      be selected or searched for. Anybody with an editor can remove a
+      watermark; this one says where a copy went, and does not lock the
+      document.</span>
+    <span data-phrase="facts.signature">This document carried a digital signature. Rewriting a file breaks
+      any signature on it, so the copy you get back is unsigned &mdash; the
+      original is still the signed one.</span>
+    <span data-phrase="facts.incremental">Older, superseded copies of objects from earlier edits were not copied
+      over.</span>
+    <span data-phrase="facts.repaired">The original&rsquo;s cross-reference table was broken and had to be
+      rebuilt by scanning. Check this file before sending it on.</span>
+    <span data-phrase="size.small">small</span>
+    <span data-phrase="size.medium">medium</span>
+    <span data-phrase="size.large">large</span>
+    <span data-phrase="angle.diagonal">along the diagonal</span>
+    <span data-phrase="angle.flat">lying flat</span>
+    <span data-phrase="net.clean">your document has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a document or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a document or a byte of one.</span>
+  </div>
+</main>

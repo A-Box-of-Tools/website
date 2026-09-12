@@ -1,0 +1,467 @@
+#
+# Watermark a PDF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is what a watermark is and is not. It is words laid over every
+# page so that a copy of the document says where it went and what it was for
+# - "for Acme Bank only", a date, a name - which is a real defence against a
+# scan being reused somewhere it was never meant to go, because the reuse is
+# visible. It is not protection: anybody with an editor can take it off
+# again, and this page never suggests otherwise. The tool that locks a
+# document is next door, and the page points at it.
+#
+# The second is that the stamp is a picture, not text. The browser draws the
+# words with its own fonts, in any script, and the picture is placed on each
+# page with its transparency in a soft mask. That is why a Chinese or Arabic
+# watermark works without a font being embedded, and why the words cannot be
+# selected or searched afterwards. The page says both halves of that, and
+# the preview it shows is the placement the file will get, computed by the
+# same arithmetic, on a blank page the size of the visitor's first page -
+# never a rendering of their document, which this site cannot do.
+#
+
+slug = "watermark-pdf"
+name = "PDF Watermark"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Watermark&nbsp;PDF <span class=\"h1-kw\">&mdash; stamp every page with who it is for</span>"
+tagline = "A scan that says where it went is a scan that cannot quietly go somewhere else."
+icon = "&#127991;"                  # the label tag, beside the page heading
+favicon = "&#127991;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "tags"
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "documents"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works, chips
+# is the rows of small choices - size, angle, colour - and results carries
+# the file name and size lines the other PDF tools use.
+css_parts = ["progress", "form", "chips", "checks", "notes", "results"]
+
+# file-picker brings in the drop zone. The four pdf-* parts every PDF tool
+# starts from are the PDF itself - the object grammar, the stream filters,
+# the reader and the writer - and travel together, because the reader and the
+# writer import the other two. pdf-pages is the page walk the merger wrote:
+# a page's box, its rotation and the resources it inherits from the nodes
+# above it, which is everything placing a stamp on it takes.
+#
+# example-pdf, pdf-page-writer and example-statement are for the example
+# alone: an ordinary two-page statement, which is what somebody arriving here
+# is holding.
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-pages", "message-box", "format", "example-pdf", "pdf-page-writer", "example-statement"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. A
+# stamped document usually wants locking next, and often shrinking.
+handoff = ["protect-pdf", "compress-pdf"]
+lastmod = "2026-09-12"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Watermark a PDF &mdash; Stamp Every Page, Free, No Upload"
+description = "Put a watermark on every page of a PDF in your browser: who it is for, a date, a name, at any angle and opacity, in any language. Nothing is uploaded, the pages themselves are not touched, and the result is checked before you download it."
+og_title = "Watermark a PDF without uploading it anywhere"
+og_description = "Stamp \"for Acme Bank only\" across every page of a scan before you send it, so a copy cannot quietly be used somewhere else. Done in your browser; the document never leaves it."
+og_image_alt = "Watermark a PDF in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Stamp every page with who it is for, without the document leaving your machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  connect-src carries blob: because the carry-on row reads the stamped file
+  back out of this page before parking it for the next tool. blob: names
+  bytes inside this page; it gains no reach over the network, and nothing
+  else here is widened."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The document you choose is opened, stamped and written back out in memory
+    on this machine, by code served from this address. The words on the stamp
+    are drawn by your own browser. Nothing here can make an upload, and there
+    is no server on the other end of this page to receive one."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      watermark something. Not one request carries a document, the words you
+      typed, or a filename. Or unplug from the internet and stamp it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/stamp.js</code> for where the stamp goes on a
+      page, <code>src/render.js</code> for how the words become a picture,
+      and <code>src/apply.js</code> for the three objects that are added to
+      the document and the two that are added to each page. None of them can
+      reach the network, and neither can the reader or the writer beside
+      them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to put a watermark on a PDF"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Stamp every page of a PDF with who it is for, a date or a name,
+            at any angle and opacity, in any language, without the document
+            going anywhere. The pages themselves are not touched, and the
+            result is opened again here to prove every page carries it."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "documents"
+choose = "a PDF"
+analytics_extra = """, and nothing about
+  the words you put on the stamp"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "The document people watermark is the one they least want to upload."
+body = """
+
+      A passport scan for a landlord. A statement for a mortgage broker. A
+      contract draft that must not leak. The reason to stamp a document with
+      who it is for is that it is about to leave your hands, and every
+      online tool that offers to stamp it asks you to hand it to a stranger's
+      server first &mdash; the very thing the stamp is meant to guard
+      against. This page cannot do that. The file is read by your own
+      browser, the words are drawn by your own browser, the stamped copy is
+      written in memory, and the page's <code>Content-Security-Policy</code>
+      names every address it may contact &mdash; not one of them belongs to
+      this site. Unplug from the network and it keeps working."""
+
+[[privacy]]
+title = "A watermark says where a copy went. It does not stop a copy being made."
+body = """
+
+      That is the honest size of what this does. \"For Acme Bank only, 12
+      September 2026\" across every page means a scan that turns up somewhere
+      else carries the name of the place it leaked from, which is why banks,
+      lawyers and landlords ask for it and why it is worth doing. It is not
+      protection: anybody with a PDF editor can lift a watermark off again,
+      and a page that told you otherwise would be selling something. If the
+      document must not be read by the wrong person at all, put a password
+      on it with the <a href=\"../protect-pdf/\">PDF Protector</a> &mdash; the
+      carry-on row under the result goes straight there."""
+
+[[privacy]]
+title = "The stamp is a picture, so it works in any language and any font."
+body = """
+
+      A PDF can only draw text in a font it carries or in the fourteen every
+      reader is assumed to have, and those fourteen are Latin. Rather than
+      embed a font &mdash; megabytes, and an engine this site has chosen not
+      to carry &mdash; the words are drawn once by your browser, with the
+      fonts on your own machine, in whatever script you type, and placed on
+      each page as a picture with its transparency in a soft mask. It is
+      drawn at a resolution a printer will not notice. What that costs is
+      that the words cannot be selected or searched for afterwards, which
+      for a watermark is the right way round: it is there to be seen, not
+      copied out."""
+
+[[privacy]]
+title = "The pages themselves are not read, re-rendered or reflowed."
+body = """
+
+      What the tool adds is three small objects to the document &mdash; the
+      picture, its mask and an opacity setting &mdash; and to each page two
+      tiny drawing instructions, one before everything the page already draws
+      and one after. The page's own content is not decoded, let alone
+      changed: every drawing instruction, every embedded font and every image
+      is written back out exactly as it arrived, so a scan stays at the
+      resolution it was scanned at, text stays selectable and searchable, and
+      nothing moves. The one thing that does change is what a rewrite always
+      changes: older superseded copies of objects left behind by earlier
+      edits are not carried over."""
+
+[[privacy]]
+title = "The preview is the placement, not a rendering of your document."
+body = """
+
+      This site has no PDF renderer, deliberately, and it does not pretend
+      to. What the preview shows is a blank page the exact size and shape of
+      your first page with the stamp laid on it where the file will put it
+      &mdash; computed by the same arithmetic that writes the file, so the two
+      cannot disagree. Your own page's contents are not drawn, because
+      drawing them would take an engine the size of a browser's, and a
+      preview that guessed at them would be worse than none."""
+
+[[privacy]]
+title = "The finished file is opened again, here, before you are offered it."
+body = """
+
+      Everything above is this tool marking its own homework until that
+      happens. So the bytes that are about to become your download are handed
+      to the same reader every PDF tool on this site uses, and every page has
+      to come back naming the stamp in its resources and ending with the
+      instruction that draws it, with the same number of pages as the
+      original. A file that failed that would be reported as failed, with no
+      download offered."""
+
+[[privacy]]
+title = "A digital signature cannot survive this, and the page says when there is one."
+body = """
+
+      A signature covers the exact bytes of the file it was applied to, so any
+      rewrite invalidates it &mdash; that is what a signature is for. This tool
+      writes a new file, so the copy you get back is unsigned, and it says so
+      on the results when it finds a signature to warn about. Your original is
+      still the signed one."""
+
+[[privacy]]
+title = "A locked document is sent next door first."
+body = """
+
+      A file that needs a password to open cannot be stamped without opening
+      it, and this page does not ask for passwords. It turns such a file away
+      with a link to the <a href=\"../unlock-pdf/\">PDF Unlocker</a>, which
+      takes the protection off in the same browser; the unlocked copy comes
+      back here for the stamp, and the <a href=\"../protect-pdf/\">PDF
+      Protector</a> puts a password back on afterwards."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your document: not a file, not a page, not a name, a size, a page count,
+      or the words on the stamp. Every line that reads, stamps or writes a PDF
+      is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your documents. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your document away to be stamped would stop."""
+
+[[howto]]
+title = "Choose the PDF."
+body = """
+ One document at a time. It is read
+      straight off your disk by the browser and opened here. A document that
+      needs a password is turned away with a link to the unlocker; everything
+      else, scans included, is accepted as it is."""
+
+[[howto]]
+title = "Type the words."
+body = """
+ Who the copy is for, and when: \"For
+      Acme Bank only &middot; 12 September 2026\" is the shape that does the
+      job. Any language, any script &mdash; the words are drawn by your own
+      browser, so whatever you can type, the stamp can say."""
+
+[[howto]]
+title = "Set how it sits, and watch the preview."
+body = """
+
+      Size, whether it runs along the page's diagonal or lies flat, whether
+      it appears once in the middle or repeats across the page, how faint it
+      is, its colour, and whether every page gets it or only the first. The
+      preview is a blank page the shape of your first page with the stamp
+      placed exactly where the file will put it."""
+
+[[howto]]
+title = "Stamp it, and read the line that says it was checked."
+body = """
+
+      The picture is added to the document once and each page gains the
+      instruction that draws it. Then the finished file is opened again here,
+      and every page has to come back carrying the stamp with the same page
+      count as the original &mdash; or you get no download and a message
+      saying so."""
+
+[[faq]]
+q = "Can a watermark be removed?"
+a = """
+        Yes, by anybody with a PDF editor, and this page will not tell you
+        otherwise. A watermark is not protection. What it does is make a copy
+        say where it went: a scan stamped \"for Acme Bank only\" that turns up
+        at a different lender carries the name of the place it leaked from,
+        which is exactly why lenders, landlords and lawyers ask for one. If
+        the document must not be read by the wrong person at all, that is a
+        password, and the <a href=\"../protect-pdf/\">PDF Protector</a> on
+        this site puts one on."""
+
+[[faq]]
+q = "Can the watermark be in Chinese, Arabic or any other language?"
+a = """
+        Yes, in anything you can type. The words are drawn by your browser
+        with the fonts on your own machine and placed on each page as a
+        picture, so the stamp is not limited to the Latin alphabet the way
+        text in a PDF is without an embedded font. The cost is that the words
+        cannot be selected or searched for afterwards, which for a watermark
+        is the right way round."""
+
+[[faq]]
+q = "Why can't I see my document in the preview?"
+a = """
+        Because this site has no PDF renderer, on purpose. Drawing a PDF page
+        faithfully takes a font engine and a full graphics model &mdash; an
+        engine the size of a browser's &mdash; and carrying one would change
+        what every tool here is. So the preview shows the thing it can show
+        honestly: a blank page the exact size and shape of your first page,
+        with the stamp placed where the file will put it, computed by the same
+        code that writes the file. Open the result in any reader to see the
+        two together."""
+
+[[faq]]
+q = "Will the document look any different underneath the stamp?"
+a = """
+        No. The page's own drawing is not read, let alone changed: every
+        instruction, every embedded font and every image is copied through
+        exactly as it arrived, and the stamp is drawn over the top with the
+        opacity you chose. Text stays selectable and searchable, scans stay at
+        their original resolution, and nothing moves. The file grows by the
+        size of one picture, shared by every page, which for a stamp of a few
+        words is a few tens of kilobytes."""
+
+[[faq]]
+q = "Does it work on scanned documents and on pages that are turned sideways?"
+a = """
+        Yes to both. A scan is a page with a picture on it, and the stamp
+        goes over the picture like anything else. A page saved sideways
+        &mdash; the kind that shows landscape because it carries a rotation
+        &mdash; is stamped the way it is shown: diagonal on the screen means
+        diagonal on the screen, not diagonal to the paper the scanner thought
+        it had."""
+
+[[faq]]
+q = "What happens to a signed document?"
+a = """
+        Its signature stops being valid, and there is no way round that. A
+        signature covers the exact bytes of the file it was applied to, so any
+        change at all &mdash; by any program &mdash; invalidates it. This tool
+        writes a new file, notices when the original was signed, and says so
+        on the results. Keep your original: it is still the signed one."""
+
+[[faq]]
+q = "Can I watermark a PDF that has a password?"
+a = """
+        Not directly, and not by typing the password here: this page does not
+        ask for one. Take the password off first with the
+        <a href=\"../unlock-pdf/\">PDF Unlocker</a>, in the same browser, then
+        stamp the unlocked copy here, then put a password back on with the
+        <a href=\"../protect-pdf/\">PDF Protector</a> if you want one. A file
+        that only carries restrictions &mdash; opens for everybody, refuses to
+        print &mdash; is turned away the same way, because stamping it means
+        rewriting it and rewriting it drops the restrictions."""
+
+[[faq]]
+q = "Are my documents or the words I type uploaded anywhere?"
+a = """
+        No. The file is read, stamped and written by your own browser on your
+        own hardware, and the words are drawn by it too. There is no server
+        side to this tool, and the page's <code>Content-Security-Policy</code>
+        names every address it may contact &mdash; none of them belongs to
+        this site. The simplest way to satisfy yourself is to unplug from the
+        network and use the page anyway."""
+
+[[faq]]
+q = "How do I know every page really got the stamp?"
+a = """
+        Because the tool checks, on your machine, and shows you the result.
+        When the file has been written it is handed back to the same reader
+        the other PDF tools on this site use, and every page has to come back
+        naming the stamp in its resources and ending with the instruction that
+        draws it, with the same page count as the original. If any page does
+        not, the run is reported as failed and nothing is offered for
+        download."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        There is no limit written into the tool. The limit is your own machine:
+        the document is held in memory while it is worked on, so a laptop will
+        take a few hundred megabytes without complaint and will struggle
+        somewhere above that. It is free, there is no account, no sign-in and no
+        trial. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your documents."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your document away to be stamped would stop
+        the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Put a watermark on every page of a PDF in your browser: who the copy is for, a date, a name, at any angle, size and opacity, in any language. The pages are not touched, nothing is uploaded, and the result is reopened to prove every page carries the stamp."
+features = [
+  "Stamps every page, or the first page only, with the words you type",
+  "Any language and any script, drawn by the browser's own fonts",
+  "Diagonal or flat, once in the middle or repeated across the page",
+  "Size, opacity and colour to choose, with a preview of the placement",
+  "Handles scans and pages saved sideways the way a reader shows them",
+  "Never reads or rewrites the page's own content",
+  "Reopens the finished file to prove every page carries the stamp",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: a stamp names who a copy is for, and a queue that
+# put one name on twelve documents is a queue that put the wrong name on
+# eleven of them.
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Drop the PDF to watermark here"
+hint = "or click to browse &mdash; one document at a time"
+# An ordinary two-page statement, written in the page. See src/example.js.
+example = true
+
+# The carry-on row reads the finished result back out of this page's own
+# blob: URL before parking it for the next tool (see shared/handoff.js), and
+# reading a blob: URL is a fetch the policy has to permit. blob: names bytes
+# inside this page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]
