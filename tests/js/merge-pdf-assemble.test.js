@@ -22,7 +22,7 @@ import assert from 'node:assert/strict';
 
 import { assemble, readSource } from '../../tools/merge-pdf/src/assemble.js';
 import { namedDestinations, resolveDestination } from '../../tools/merge-pdf/src/dests.js';
-import { readPages } from '../../tools/merge-pdf/src/pages.js';
+import { readPages } from '../../shared/js/pdf-pages.js';
 import { produce } from '../../tools/merge-pdf/src/produce.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { decodeStream } from '../../shared/js/pdf-filters.js';

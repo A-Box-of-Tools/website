@@ -110,6 +110,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/pdf-permissions.js` | `js_parts = ["pdf-permissions"]` | `/P` as the list of things a document asks readers to refuse |
 | `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
 | `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out; encrypted to match a `security` from `pdf-crypt`, when one is passed |
+| `shared/js/pdf-pages.js` | `js_parts = ["pdf-pages"]` | every page in reading order with its box, its rotation and the four entries it inherits from the nodes above it; the merger's walk, which the watermark tool places its stamp by |
 | `shared/js/pdf-content.js` | `js_parts = ["pdf-content"]` | a page's drawing instructions, read as operators and written back |
 | `shared/js/pdf-base14.js` | `js_parts = ["pdf-base14"]` | the widths and encodings of the fourteen fonts every reader is assumed to have |
 | `shared/js/pdf-strings.js` | `js_parts = ["pdf-strings"]` | a text string as characters, and back again |

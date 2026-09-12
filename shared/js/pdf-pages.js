@@ -1,6 +1,12 @@
 /**
  * The page list of a document somebody else wrote.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-pages.js and the
+ * build copies it to <tool>/src/shared/pdf-pages.js. It was the merger's own
+ * until the watermark tool needed the same walk - a page's box, its rotation
+ * and the resources it inherits are what placing anything on it takes - and
+ * a second copy is what tests/python/test_duplicates.py exists to refuse.
+ *
  * A PDF does not store its pages as a list. It stores a tree, and four of the
  * things a page needs - its size, its crop, its rotation and its resources -
  * may be written on any node above it and inherited by everything underneath.
@@ -17,8 +23,8 @@
  * except a sanity check.
  */
 
-import { isName, PdfString, Ref } from './shared/pdf-objects.js';
-import { ltr } from './shared/phrases.js';
+import { isName, PdfString, Ref } from './pdf-objects.js';
+import { ltr } from './phrases.js';
 
 /** The keys a page inherits from the nodes above it. There are exactly four,
  *  and they are named in the specification's table of page tree attributes. */

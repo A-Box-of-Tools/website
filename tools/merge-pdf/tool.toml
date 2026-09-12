@@ -36,12 +36,12 @@ css_parts = ["progress", "form", "checks", "notes"]
 # reader and the writer import the other two; the compressor and the redactor
 # ask for the same four. This tool carried its own copy of all six until the
 # tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "format", "example-pdf", "pdf-page-writer", "example-statement"]
+js_parts = ["file-picker", "zip", "crc32", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-pages", "message-box", "format", "example-pdf", "pdf-page-writer", "example-statement"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
-handoff = ["compress-pdf", "redact-pdf", "protect-pdf"]
+handoff = ["compress-pdf", "redact-pdf", "watermark-pdf", "protect-pdf"]
 lastmod = "2026-09-10"
 
 # --- what search engines and chat apps are told ------------------------------
