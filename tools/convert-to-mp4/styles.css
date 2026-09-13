@@ -1,0 +1,109 @@
+/*
+  Only the rules this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the FAQ, the footer - is shared/css/tool-frame.css,
+  which the build puts in front of this file, followed by the shared parts named
+  in css_parts.
+*/
+
+.error { max-width: 72ch; }
+
+/* ------------------------------------------------------------- the file row */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.file-facts { flex: 1; min-width: 0; }
+
+/*
+  shared/css/results.css gives these the ellipsis rules and not the display box
+  they need for them: `text-overflow` does nothing to an inline element, and
+  this tool hangs them off a <strong> and a <span>. Without this a long
+  filename runs straight out under the "Choose another" button beside it.
+*/
+.file-name,
+.file-sub { display: block; }
+
+/* ---------------------------------------------------------------- the plan */
+
+/* The two sentences that say what will happen. They are what the visitor
+   came to read before pressing anything, so they are not small print. */
+.plan {
+  margin: 0.9rem 0 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  max-width: 68ch;
+}
+
+.plan-line {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.plan-line + .plan-line { margin-top: 0.35rem; }
+
+.plan .field-note { margin: 0.6rem 0 0; }
+
+#plan-card .check { margin-top: 1.1rem; }
+
+/* ------------------------------------------------------------- the result */
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.result-size { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.result-sub { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--text-dim); max-width: 52ch; }
+
+a.primary { text-decoration: none; display: inline-block; }
+
+/* The line that says the finished file was opened again and measured. It is
+   the whole argument for trusting the file, so it is not small print. */
+.check-line {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.check-line.good { color: var(--ok); }
+.check-line.bad { color: var(--danger); }
+
+.player {
+  display: block;
+  width: 100%;
+  max-height: 24rem;
+  margin-top: 0.9rem;
+  border-radius: var(--radius);
+  background: #000;
+}
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+@media (max-width: 560px) {
+  .result-head { flex-direction: column; align-items: stretch; }
+}

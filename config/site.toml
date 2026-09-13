@@ -381,7 +381,7 @@ order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-ima
 id = "video-and-animation"
 name = "Video &amp; animation"
 note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
-order = ["compress-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+order = ["compress-video", "convert-to-mp4", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -564,6 +564,7 @@ order = [
   "make-a-gif-from-images",
   "trim-a-video",
   "compress-a-video",
+  "convert-a-video-to-mp4",
   "crop-a-video",
   "reverse-a-video",
   "grab-a-frame-from-a-video",
