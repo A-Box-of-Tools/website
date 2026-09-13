@@ -1,0 +1,234 @@
+<main id="main">
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Das Video auswählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Ein anderes auswählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Schritt 2 &mdash; was passieren wird.
+
+    There is no setting to choose here, and that is the point of the card:
+    the file decides. Each of its two tracks is either already what an MP4
+    wants, and is copied as it is, or is not, and is encoded again. The card
+    says which, before anything is done, so that "convert" is never a word
+    that hides a re-encode.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span> Sehen, was sich ändert und was nicht</h2>
+
+    <p class="card-lede">
+      Ein MP4, das sich überall hochladen lässt, ist H.264-Bild und AAC-Ton.
+      Was von beidem Ihre Datei schon hat, wird unangetastet übernommen; was
+      sie nicht hat, wird auf Ihrem Gerät neu kodiert. Nichts wird neu
+      kodiert, was es nicht sein muss.
+    </p>
+
+    <div class="plan" role="status" aria-live="polite">
+      <p id="plan-picture" class="plan-line"></p>
+      <p id="plan-sound" class="plan-line"></p>
+      <p id="plan-note" class="field-note" hidden></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Den Ton weglassen</strong>
+        <span class="check-note">
+          Für einen Clip, der irgendwohin geht, wo er ohnehin stumm abgespielt
+          wird, oder für eine Tonspur, die der Browser nicht lesen kann.
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Schritt 3 &mdash; der eine Klick -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Umwandeln</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">In MP4 umwandeln</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="Das umgewandelte Video, aus dem Arbeitsspeicher abgespielt"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Öffnet sich, sobald oben ein Video liegt, das dieser Browser lesen kann.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {container}</span>
+    <span data-phrase="plan.nofile">Wählen Sie oben ein Video aus, dann steht hier, was sich ändern muss.</span>
+    <span data-phrase="plan.picture.copy">Bild: schon {codec}, also wird jedes Einzelbild übernommen, wie es ist
+      &mdash; nicht neu kodiert, nichts verloren.</span>
+    <span data-phrase="plan.picture.encode">Bild: {codec}, wird mit etwa {rate} als H.264 neu kodiert,
+      {frame}.</span>
+    <span data-phrase="plan.picture.nodecode">Bild: {codec}, und das dekodiert dieser Browser nicht, hier lässt es
+      sich also nicht umwandeln. Ein anderer Browser auf demselben Gerät kann es oft.</span>
+    <span data-phrase="plan.sound.none">Keine Tonspur.</span>
+    <span data-phrase="plan.sound.copy">Ton: schon AAC, wird übernommen, wie er ist.</span>
+    <span data-phrase="plan.sound.encode">Ton: {codec}, wird mit 160 kbit/s als AAC neu kodiert.</span>
+    <span data-phrase="plan.sound.unknown">Ton: {codec}, und das kann dieser Browser nicht dekodieren. Er wird
+      weggelassen; das Bild wird trotzdem umgewandelt.</span>
+    <span data-phrase="plan.sound.dropped">Ton: weggelassen, wie gewünscht.</span>
+    <span data-phrase="plan.already">Beide Spuren sind schon das, was ein MP4 haben möchte, es wird also nichts
+      neu kodiert: Dieselben Einzelbilder und derselbe Ton werden noch einmal in ein schlichtes, unfragmentiertes
+      MP4 mit dem Index am Anfang geschrieben &mdash; und genau das hat ein wählerischer Uploader verlangt, als er
+      das {container} abgelehnt hat.</span>
+    <span data-phrase="plan.reencoded">Was kopiert wird, verliert nichts. Was neu kodiert wird, ist eine Generation
+      weiter von der Kamera entfernt; behalten Sie Ihr Original.</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="codec.h264">H.264</span>
+    <span data-phrase="codec.hevc">HEVC (H.265)</span>
+    <span data-phrase="codec.vp8">VP8</span>
+    <span data-phrase="codec.vp9">VP9</span>
+    <span data-phrase="codec.av1">AV1</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&bdquo;{name}&ldquo;</span>
+    <span data-phrase="container.webm">WebM</span>
+    <span data-phrase="container.mkv">MKV</span>
+    <span data-phrase="container.mov">MOV</span>
+    <span data-phrase="container.m4v">M4V</span>
+    <span data-phrase="container.mp4">MP4</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.sound">Ton: Paket {done} von {total}&hellip;</span>
+    <span data-phrase="progress.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="progress.frame">Einzelbild {done} von {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Die letzten Einzelbilder werden abgeschlossen&hellip;</span>
+    <span data-phrase="progress.writing">Die Datei wird geschrieben&hellip;</span>
+    <span data-phrase="progress.checking">Wird zur Prüfung erneut geöffnet&hellip;</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Es wurde nichts geschrieben; drücken Sie die Schaltfläche, um neu zu beginnen.</span>
+    <span data-phrase="run.failed">Dieser Durchgang ist fehlgeschlagen: {detail}</span>
+    <span data-phrase="result.ready">{size} MP4, aus dem {from}-{container}, das es war.</span>
+    <span data-phrase="result.sub">H.264-Bild, AAC-Ton, Index am Anfang: die Datei, die alles abspielt.</span>
+    <span data-phrase="check.passed">Geprüft: {found}</span>
+    <span data-phrase="check.failed">Dieser Durchgang ging nicht auf &mdash; {found}. Behalten Sie Ihr Original.</span>
+    <span data-phrase="check.ok">aus dem Speicher wieder geöffnet, wie zuvor {length} lang, H.264, {sound}.</span>
+    <span data-phrase="check.sound.aac">mit AAC-Ton</span>
+    <span data-phrase="check.sound.none">ohne Tonspur</span>
+    <span data-phrase="check.length">die fertige Datei ist {got} lang statt {want}</span>
+    <span data-phrase="check.reopen">die fertige Datei ließ sich nicht wieder öffnen ({detail})</span>
+    <span data-phrase="check.codec">das Bild kam als {codec} heraus, nicht als H.264</span>
+    <span data-phrase="check.sound">in der fertigen Datei fehlt die Tonspur</span>
+    <span data-phrase="facts.picture.copied">Das Bild wurde Bild für Bild kopiert: {codec}, {frame}, nicht neu
+      kodiert und kein Bit anders.</span>
+    <span data-phrase="facts.picture.encoded">Das Bild war {from} und wurde mit {rate} als H.264 neu kodiert,
+      {frame}, {fps} Bilder pro Sekunde. Es ist eine Generation weiter von der Kamera entfernt als die Datei, mit
+      der Sie begonnen haben; behalten Sie Ihr Original.</span>
+    <span data-phrase="facts.sound.copied">Der Ton wurde übernommen, wie er war, nicht neu kodiert.</span>
+    <span data-phrase="facts.sound.encoded">Der Ton wurde mit 160 kbit/s als AAC neu kodiert.</span>
+    <span data-phrase="facts.sound.none">Keine Tonspur: Die Datei hatte keine, oder Sie haben sie weggelassen.</span>
+    <span data-phrase="facts.time">{frames} Einzelbilder in {seconds}.</span>
+    <span data-phrase="support.nowebcodecs">Dieser Browser kann kein Video kodieren, hier lässt sich also nur eine
+      Datei umwandeln, die schon H.264 ist. Chrome, Edge und Safari können kodieren; Firefox ab Version 130.</span>
+    <span data-phrase="stall.both">Der Video-Codec des Browsers hat aufgehört zu antworten. Laden Sie die Seite neu
+      und versuchen Sie es noch einmal; ein Gerät, dessen Hardware-Encoder beschäftigt ist oder fehlt, macht das.</span>
+    <span data-phrase="stall.sound">Der Audio-Codec des Browsers hat aufgehört zu antworten. Laden Sie die Seite neu
+      und versuchen Sie es noch einmal, oder lassen Sie den Ton weg.</span>
+    <span data-phrase="encode.toobig">Dieser Browser kodiert H.264 nicht in {size}. Verkleinern Sie den Clip zuerst
+      mit dem Videokompressor.</span>
+    <span data-phrase="encode.noconfig">Der Encoder hat nie eine Decoder-Konfiguration gemeldet.</span>
+    <span data-phrase="decode.none">Aus diesem Clip konnten keine Einzelbilder dekodiert werden.</span>
+    <span data-phrase="sound.noaac">Dieser Browser kodiert AAC nicht mit der Abtastrate und Kanalzahl dieses Tons.
+      Lassen Sie den Ton weg und wandeln Sie nur das Bild um.</span>
+    <span data-phrase="sound.noencode">Der Audio-Encoder hat nichts erzeugt.</span>
+    <span data-phrase="write.noframes">Es gab keine Einzelbilder zu schreiben.</span>
+    <span data-phrase="write.toobig">Die fertige Datei wäre größer als 4 GB, und das kann ein hier geschriebenes
+      MP4 nicht fassen. Schneiden Sie den Clip zuerst.</span>
+    <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
+    <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.av1short">Der AV1-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.compactsizes">Die Sample-Größen stehen in einer kompakten Tabelle, die dieser Leser nicht dekodiert.</span>
+    <span data-phrase="read.sampletables">Die Sample-Tabellen sind unvollständig.</span>
+    <span data-phrase="read.chunktable">Die Chunk-Tabelle ist leer.</span>
+    <span data-phrase="read.nosamples">Die Videospur enthält keine Einzelbilder.</span>
+    <span data-phrase="read.nostbl">Der Videospur fehlen ihre Sample-Tabellen.</span>
+    <span data-phrase="read.nostsd">Die Videospur hat keine Sample-Beschreibung.</span>
+    <span data-phrase="read.emptystsd">Die Sample-Beschreibung des Videos ist leer.</span>
+    <span data-phrase="read.encrypted">Die Videospur ist verschlüsselt.</span>
+    <span data-phrase="read.unknowncodec">Das Video liegt als &bdquo;{type}&ldquo; vor, und das kennt dieser Leser nicht.</span>
+    <span data-phrase="read.noconfig">Die Spur &bdquo;{type}&ldquo; führt keine Decoder-Konfiguration mit sich.</span>
+    <span data-phrase="read.notmp4">Das ist keine MP4-, MOV-, WebM- oder MKV-Datei. AVI, WMV, FLV und MPEG-2 werden
+      hier nicht gelesen.</span>
+    <span data-phrase="read.nomoov">Die Datei hat keinen Film-Header.</span>
+    <span data-phrase="read.novideo">Die Datei hat keine Videospur, mit der dieser Leser etwas anfangen kann.</span>
+    <span data-phrase="read.notimescale">Die Videospur hat keine Zeitskala.</span>
+    <span data-phrase="read.nofragments">Die Fragmente in dieser Datei enthalten keine Einzelbilder für ihre Videospur.</span>
+    <span data-phrase="read.unreadable">Die Datei ließ sich nicht als MP4 lesen.</span>
+    <span data-phrase="read.notplayed">Dieses Format spielt dieser Browser nicht ab.</span>
+    <span data-phrase="read.layout">Der Aufbau dieser Datei ist keiner, den der Leser hier versteht.</span>
+    <span data-phrase="read.notmkv">Das ist keine WebM- oder MKV-Datei.</span>
+    <span data-phrase="read.nosegment">Die Datei hat nach ihrem Header kein Segment.</span>
+    <span data-phrase="read.mkvtracks">Die Datei nennt keine Spuren.</span>
+    <span data-phrase="read.mkvcodec">Das Video liegt als &bdquo;{type}&ldquo; vor, und das kennt dieser Leser nicht.</span>
+    <span data-phrase="read.mkvencoded">Eine Spur in dieser Datei ist auf Container-Ebene komprimiert oder verschlüsselt,
+      und das macht dieser Leser nicht rückgängig.</span>
+    <span data-phrase="read.mkvaudio">Die Tonspur &bdquo;{type}&ldquo; führt keine Konfiguration mit sich, und ihre
+      Abtastrate ist keine, die sich ohne eine beschreiben lässt.</span>
+    <span data-phrase="read.lacing">Ein Block in dieser Datei ist auf eine Weise verschachtelt, der dieser Leser nicht folgen konnte.</span>
+    <span data-phrase="net.clean">Ihr Video ist nirgendwohin gegangen. {total} Dateien
+      geladen, allesamt eigene dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
+      dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}</span>
+    <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines
+      davon hat ein Video oder ein Byte davon bekommen.</span>
+    <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
+      davon hat ein Video oder ein Byte davon bekommen.</span>
+  </div>
+</main>

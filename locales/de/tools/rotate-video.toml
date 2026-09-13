@@ -1,0 +1,318 @@
+#
+# Video-Rotator - German.
+#
+# Overrides for tools/rotate-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Zwei Dinge, die beim Bearbeiten jedes Satzes hier festzuhalten sind, genau
+# wie im Englischen: Eine Drehung ist eine Änderung am Header der Datei, nicht
+# an ihren Einzelbildern, und "kein einziges Einzelbild wird dekodiert" ist das
+# Versprechen der Seite. Und der Header wird von jedem Handy, Browser und
+# modernen Player beachtet und von ein paar alten Desktop-Playern ignoriert;
+# das "Einbrennen" ist für die da, kodiert neu, kostet eine Generation und
+# heißt hier ausdrücklich die zweite Wahl.
+#
+
+name = "Video-Rotator"
+heading = "Video&nbsp;drehen <span class=\"h1-kw\">&mdash; für den Clip, der quer gefilmt wurde</span>"
+tagline = "Eine Vierteldrehung, eine halbe Drehung, in die andere Richtung. In den Header der Datei geschrieben, sodass kein einziges Einzelbild dekodiert wird und nichts verloren geht."
+
+title = "Video drehen &mdash; kostenlos, verlustfrei, im Browser, ohne Upload"
+description = "Ein quer oder kopfüber gefilmtes Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung wird in den Header der Datei geschrieben, sodass kein Einzelbild neu kodiert wird und nichts verloren geht; oder sie wird für alte Player ins Bild eingebrannt. MP4, MOV, WebM und MKV hinein, MP4 heraus. Nichts wird hochgeladen."
+og_title = "Ein Video drehen, ohne es hochzuladen und ohne es neu zu kodieren"
+og_description = "Bei einem quer gefilmten Clip müssen neun Zahlen im Header geändert werden, nicht das Video neu kodiert. Drehen Sie ihn in Sekunden im Browser; die Datei verlässt Ihr Gerät nie."
+og_image_alt = "Ein Video im Browser drehen, ohne es hochzuladen"
+
+pledge = """
+    Das Video, das Sie auswählen, wird von Code, der von dieser Adresse
+    ausgeliefert wird, gelesen, mit einem neuen Header versehen und im
+    Arbeitsspeicher dieses Geräts neu geschrieben; soll die Drehung ins Bild
+    eingebrannt werden, zeichnen die Codecs Ihres eigenen Browsers. Einen
+    Upload kann hier nichts auslösen, und am anderen Ende dieser Seite steht
+    kein Server, der einen entgegennehmen könnte. Kein Gigabyte geht hinauf,
+    um gedreht zurückzukommen."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und drehen Sie etwas. Keine einzige Anfrage
+      trägt ein Video, ein Einzelbild oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und drehen Sie es trotzdem."""
+
+read_first = """
+, <code>src/plan.js</code> für die neun Zahlen, auf die
+      eine Drehung hinausläuft, <code>src/rotate.js</code> für das Kopieren
+      und das Schreiben, und <code>src/shared/copy-tracks.js</code> dafür, wie
+      ein Einzelbild hinüberwandert, ohne gelesen zu werden. Keines davon
+      erreicht das Netz, und die Leser und der Schreiber daneben ebenso
+      wenig."""
+
+howto_heading = "So drehen Sie ein Video"
+
+card = """
+            Den quer gefilmten Clip drehen: eine Vierteldrehung nach rechts
+            oder links, oder auf den Kopf. Die Drehung wird in den Header der
+            Datei geschrieben, und jedes Einzelbild wird übernommen, wie es
+            ist: nichts dekodiert, nichts verloren, Sekunden für ein Gigabyte.
+            Oder sie wird für die alten Player, die Header ignorieren, ins
+            Bild eingebrannt."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+analytics_extra = """, und nichts darüber,
+  in welche Richtung Sie es gedreht haben"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Eine Drehung sind neun Zahlen im Header, und die Seite ändert nur diese."
+body = """
+
+      Ein Handy, das quer filmt, dreht seine Pixel nicht. Es speichert die
+      Einzelbilder so, wie der Sensor sie gesehen hat, und schreibt eine
+      Vierteldrehung in den Header der Spur, eine Anzeigematrix aus neun
+      Zahlen, die jeder Player auf dem Weg zum Bildschirm anwendet. Ein
+      Video, das quer erscheint, braucht also eine andere Matrix, kein
+      anderes Bild. Diese Seite schreibt die Matrix für die gewählte Drehung
+      und übernimmt jedes Einzelbild und jedes Paket genau so, wie es war,
+      ohne ein einziges zu dekodieren. Deshalb dauert ein Gigabyte Sekunden,
+      deshalb ist das Bild Bit für Bit, was es war, und deshalb kommt die
+      Datei fast genau so groß heraus, wie sie hineinging."""
+
+[[privacy]]
+title = "Der Upload ist der langsame Teil, und er ist der Teil, der nicht stattfindet."
+body = """
+
+      Jeder Online-Rotator verlangt zuerst die ganze Datei: Das Gigabyte
+      geht über Ihre Verbindung hinauf, damit ein gedrehtes Gigabyte
+      zurückkommen kann, und der Upload dauert meist länger als die Arbeit,
+      die er bezahlt, noch vor jeder Frage danach, wer die Datei behält. Die
+      meisten kodieren sie dann auch noch neu, was eine Generation Qualität
+      kostet, für eine Aufgabe, die neun Zahlen brauchte. Diese Seite liest
+      die Datei mit Code, der von dieser Adresse ausgeliefert wird, und
+      schreibt die neue im Arbeitsspeicher. Die einzigen Bytes, die sich
+      bewegen, gehen also von Ihrer Festplatte in Ihren Arbeitsspeicher und
+      zurück. In der <code>Content-Security-Policy</code> der Seite steht
+      jede Adresse, die sie kontaktieren darf, und keine einzige davon gehört
+      dieser Seite. Und sie funktioniert bei getrennter Netzverbindung."""
+
+[[privacy]]
+title = "Wer den Header beachtet, und was bei den wenigen zu tun ist, die es nicht tun."
+body = """
+
+      Jedes Handy, jeder Browser, jeder moderne Player und jedes
+      Schnittprogramm wendet die Anzeigematrix an; so werden Handyaufnahmen
+      seit 2010 richtig herum gezeigt. Ein paar alte Desktop-Player
+      ignorieren sie und zeigen die gespeicherten Einzelbilder, quer. Für
+      sie, und für einen Clip, der irgendwohin geht, wo Sie es nicht
+      nachprüfen können, bietet die Seite an, die Drehung einzubrennen:
+      Jedes Einzelbild wird gedreht auf ein Canvas gezeichnet und als H.264
+      neu kodiert. Das kostet eine Generation Qualität und dauert so lange
+      wie eine Kodierung, es ist also die zweite Wahl und heißt auch so."""
+
+[[privacy]]
+title = "Das Ergebnis wird erneut geöffnet und geprüft."
+body = """
+
+      Ein Rotator, der die falsche Matrix schreibt, oder die richtige bei
+      der falschen Größe, liefert trotzdem eine Datei, die sich öffnen
+      lässt. Deshalb wird die fertige Datei hier erneut geöffnet, von
+      demselben Leser, der auch liest, was Sie mitbringen, und sie muss so
+      lang sein wie vorher, so angezeigt werden, wie Sie es verlangt haben,
+      in der Größe, die daraus folgt, und den Ton tragen, den sie tragen
+      sollte. Sie wird unter dem Download aus dem Arbeitsspeicher
+      abgespielt, damit Sie sie richtig herum sehen, bevor Sie sie
+      speichern."""
+
+[[privacy]]
+title = "Welche Dateien es liest, und was es schreibt."
+body = """
+
+      MP4, MOV und M4V mit beliebigem Bild darin, ob H.264, HEVC, VP9 oder
+      AV1, denn einer in den Header geschriebenen Drehung ist egal, was die
+      Einzelbilder sind; und WebM und MKV, deren Einzelbilder kopiert werden,
+      wenn sie H.264 sind, und sonst eingebrannt, weil sich um nichts anderes
+      ein MP4-Header bauen lässt. AAC-Ton wird kopiert; Opus, Vorbis, MP3
+      oder FLAC wird als AAC neu kodiert; ein Ton, den der Browser nicht
+      dekodieren kann, wird benannt und weggelassen. Das Ergebnis ist immer
+      ein MP4, weil das der eine Container ist, den alles abspielt."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine
+      Größe, eine Länge oder die Richtung, in die Sie es gedreht haben. Jede
+      Zeile, die ein Video liest, dreht oder schreibt, kommt von dieser Domain
+      selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht: Er meldet keinen Besuch, und
+      über Sie oder Ihre Videos bekommt er nichts. Solange Sie ihn nicht
+      anklicken, passiert nichts, und wohin Sie dann kämen, ist die Seite von
+      jemand anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihr Video zum Drehen wegschickt, bliebe stehen."""
+
+[[howto]]
+title = "Wählen Sie das Video aus."
+body = """
+ Eine Datei auf einmal: MP4, MOV, M4V, WebM oder
+      MKV. Der Browser liest sie direkt von Ihrer Festplatte, und die Seite
+      sagt, was sie ist und in welcher Lage sie derzeit angezeigt wird."""
+
+[[howto]]
+title = "Wählen Sie die Drehung, und sehen Sie sich die Vorschau an."
+body = """
+ Eine Vierteldrehung nach
+      rechts, eine Vierteldrehung nach links, oder auf den Kopf. Das erste
+      Einzelbild wird so gedreht gezeichnet, wie gewählt, und zwar mit
+      derselben Rechnung, die auch die Datei tragen wird. Was Sie sehen, ist also
+      das, was ein Player tun wird. Setzen Sie das Häkchen bei
+      &bdquo;Einbrennen&ldquo; nur, wenn ein Player Ihnen den Clip quer gezeigt
+      hat; lassen Sie den Ton weg, wenn der Clip lieber stumm sein soll."""
+
+[[howto]]
+title = "Drehen Sie es, und lesen Sie die Zeile, die sagt, dass es geprüft wurde."
+body = """
+
+      Der Header wird geschrieben und jedes Einzelbild übernommen, das dauert
+      Sekunden; ein Einbrennen dauert so lange wie eine Kodierung, mit einem
+      Balken, der sagt, wo es steht. Dann wird die fertige Datei hier erneut
+      geöffnet und muss so lang sein wie vorher, so angezeigt werden, wie Sie
+      es verlangt haben, und ihren Ton tragen. Sie wird unter dem Download aus
+      dem Arbeitsspeicher abgespielt, damit Sie sie richtig herum sehen."""
+
+[[faq]]
+q = "Kostet das Drehen Qualität?"
+a = """
+        Nein, auf dem normalen Weg nicht. Die Drehung wird in den Header der
+        Datei geschrieben, und jedes Einzelbild wird Byte für Byte übernommen,
+        das Bild ist also genau, was es war, und die Datei fast genau so groß,
+        wie sie war. Nur &bdquo;Einbrennen&ldquo; kodiert neu, und die Seite
+        sagt das, bevor Sie das Häkchen setzen. Ein Rotator, der
+        standardmäßig neu kodiert, und das tun die meisten im Netz, macht eine
+        Neukodierung für eine Aufgabe, die neun Zahlen brauchte."""
+
+[[faq]]
+q = "Warum sieht die Datei in einem Player immer noch quer aus?"
+a = """
+        Weil dieser Player die Anzeigematrix ignoriert. Jedes Handy, jeder
+        Browser, jeder moderne Player und jedes Schnittprogramm beachtet sie;
+        ein paar alte Desktop-Player tun es nicht und zeigen die Einzelbilder
+        so, wie sie gespeichert sind. Setzen Sie das Häkchen bei &bdquo;Die
+        Drehung ins Bild einbrennen&ldquo;, dann werden die Einzelbilder selbst
+        gedreht und als H.264 neu kodiert, was jeder Player gleich zeigt, um
+        den Preis einer Generation Qualität."""
+
+[[faq]]
+q = "Welche Richtung ist eine Vierteldrehung nach rechts?"
+a = """
+        Im Uhrzeigersinn, so, wie sich die Oberkante des Bildes bewegen würde,
+        wenn Sie Ihr Handy nach rechts drehen. Die Vorschau zeigt das erste
+        Einzelbild so gedreht, wie gewählt. Nehmen Sie also die Schaltfläche,
+        mit der es richtig aussieht, und drücken Sie die große."""
+
+[[faq]]
+q = "Welche Dateien liest es?"
+a = """
+        MP4, MOV und M4V mit beliebigem Bild darin, weil einer in den Header
+        geschriebenen Drehung egal ist, was die Einzelbilder sind. WebM und
+        MKV, bei denen H.264-Einzelbilder kopiert werden und alles andere
+        eingebrannt wird, da sich um nichts anderes ein MP4-Header bauen
+        lässt. AAC-Ton wird kopiert; Opus, Vorbis, MP3 und FLAC werden als AAC
+        neu kodiert; Ton, den der Browser nicht dekodieren kann, wird benannt
+        und weggelassen. Das Ergebnis ist immer ein MP4."""
+
+[[faq]]
+q = "Wie lange dauert es?"
+a = """
+        Sekunden, bei der normalen Drehung: Die Datei wird einmal für ihren
+        Aufbau gelesen und noch einmal, während der Browser das Ergebnis
+        schreibt, und ein Gigabyte geht so schnell wie Ihre Festplatte. Das
+        Einbrennen dauert so lange, wie Ihr Gerät zum Kodieren des Clips
+        braucht: mit Hardware-Encoder, also auf den meisten Laptops und jedem
+        neueren Handy, schneller, als der Clip lang ist; ohne einen
+        langsamer."""
+
+[[faq]]
+q = "Werden meine Videos irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, mit einem neuen Header versehen und neu geschrieben,
+        und in der <code>Content-Security-Policy</code> der Seite steht jede
+        Adresse, die sie kontaktieren darf; keine davon gehört dieser Seite.
+        Am einfachsten überzeugen Sie sich, indem Sie die Netzverbindung
+        trennen und die Seite trotzdem benutzen. Bei einem Werkzeug für
+        Dateien dieser Größe ist das auch der schnellste Weg: Der Upload
+        dauert länger als die ganze Arbeit."""
+
+[[faq]]
+q = "Funktioniert es auf dem Handy?"
+a = """
+        Ja. Die normale Drehung dekodiert nichts, ein Handy erledigt sie also
+        so schnell wie ein Laptop; die fertige Datei wird bis zum Speichern im
+        Arbeitsspeicher gehalten, und das ist die einzige Grenze, wobei ein
+        Handy ein paar hundert Megabyte Ergebnis ohne Klagen hält. Das
+        Einbrennen ist eine Kodierung, und der eigene Hardware-Encoder eines
+        Handys ist darin schnell."""
+
+[[faq]]
+q = "Gibt es eine Größengrenze, und kostet es etwas?"
+a = """
+        Die Datei wird in Häppchen von Ihrer Festplatte gelesen, eine Datei
+        größer als Ihr Arbeitsspeicher geht also problemlos hinein; die
+        fertige Datei wird bis zum Download im Arbeitsspeicher gehalten, und
+        ein hier geschriebenes MP4 kann nicht größer als 4 GB sein. Es ist
+        kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Bezahlt wird die Seite über Werbung, und den Anzeigen wird
+        nichts über Ihre Videos übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die
+        Internetverbindung, und sie arbeitet weiter. Das ist auch der
+        einfachste Beweis dafür, dass nichts hochgeladen wird: Ein Werkzeug,
+        das Ihr Video zum Drehen wegschickt, bliebe in dem Moment stehen, in
+        dem Sie die Verbindung trennen."""
+
+[schema]
+description = "Ein Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung wird in den Header der Datei geschrieben und jedes Einzelbild unangetastet übernommen, es wird also nichts neu kodiert und nichts geht verloren; oder sie wird für alte Player ins Bild eingebrannt. Nichts wird hochgeladen."
+features = [
+  "Eine Vierteldrehung nach rechts, eine Vierteldrehung nach links oder auf den Kopf",
+  "Schreibt die Drehung in die Anzeigematrix und übernimmt jedes Einzelbild und jedes Paket, wie es ist",
+  "Zeigt das erste Einzelbild so gedreht wie gewählt, mit derselben Rechnung, die auch die Datei tragen wird",
+  "Brennt die Drehung auf Wunsch ins Bild ein, für die wenigen Player, die den Header ignorieren",
+  "Liest MP4, MOV, M4V, WebM und MKV; schreibt MP4",
+  "Öffnet die fertige Datei erneut, um Länge, Drehung und Ton zu prüfen, und spielt sie aus dem Arbeitsspeicher ab",
+  "Läuft offline; kein Upload, kein Konto, keine Größengrenze",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken und auswählen &mdash; MP4, MOV, WebM oder MKV, eines auf einmal"

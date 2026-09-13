@@ -1,0 +1,249 @@
+<main id="main">
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Das Video auswählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Ein anderes auswählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Schritt 2 &mdash; die Drehung.
+
+    Three buttons and a preview. The preview is the clip's first frame drawn
+    through the same arithmetic the file will carry, so what it shows is what
+    a player will do with the header, not a CSS turn that could disagree.
+  -->
+  <section class="card" id="turn-card">
+    <h2><span class="step">2</span> Die Drehung wählen</h2>
+
+    <p class="card-lede">
+      Ein Handy, das quer gefilmt hat, hat seine Pixel nicht gedreht: Es hat
+      eine Vierteldrehung in den Header der Datei geschrieben, und jeder Player
+      wendet sie an. Einen Clip zu drehen ist also eine Änderung an diesem
+      Header und sonst nichts. Kein einziges Einzelbild wird dekodiert, und das
+      Bild bleibt genau, was es war.
+    </p>
+
+    <div class="chips" role="group" aria-label="Wie weit gedreht wird">
+      <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; Eine Vierteldrehung nach rechts</button>
+      <button type="button" class="chip" data-turn="270" aria-pressed="false">&#8634; Eine Vierteldrehung nach links</button>
+      <button type="button" class="chip" data-turn="180" aria-pressed="false">Auf den Kopf</button>
+    </div>
+
+    <div class="preview-box">
+      <canvas id="preview" class="preview" aria-label="Das erste Einzelbild, gedreht wie gewählt" hidden></canvas>
+      <p id="preview-line" class="preview-line" role="status" aria-live="polite"></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="bake">
+      <span>
+        <strong>Die Drehung ins Bild einbrennen</strong>
+        <span class="check-note">
+          Zeichnet jedes Einzelbild gedreht und kodiert es als H.264 neu, für
+          die wenigen alten Desktop-Player, die den Header ignorieren. Kostet
+          eine Generation Qualität und dauert so lange wie eine Kodierung.
+          Lassen Sie es aus, solange kein Player Ihnen den Clip quer gezeigt
+          hat.
+        </span>
+        <span id="bake-note" class="check-note" hidden></span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Den Ton weglassen</strong>
+        <span id="sound-note" class="check-note" hidden></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Schritt 3 &mdash; der eine Klick -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Video drehen</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Das Video drehen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="Das gedrehte Video, aus dem Arbeitsspeicher abgespielt"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Öffnet sich, sobald oben ein Video liegt, das dieser Browser lesen kann.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; Anzeige: {shown}</span>
+    <span data-phrase="note.nopreview">Dieser Browser dekodiert das Bild nicht, es gibt also keine Vorschau; die
+      Drehung wird trotzdem in die Datei geschrieben.</span>
+    <span data-phrase="preview.nofile">Wählen Sie oben ein Video aus, um zu sehen, in welcher Lage es ist.</span>
+    <span data-phrase="preview.copy">Derzeit angezeigt: {now}. Nach der Drehung: {after}, {frame}.
+      Jedes Einzelbild wird übernommen, wie es ist.</span>
+    <span data-phrase="preview.bake">Derzeit angezeigt: {now}. Nach der Drehung: {after}, {frame}, wobei
+      jedes Einzelbild gedreht gezeichnet und mit etwa {rate} als H.264 neu kodiert wird.</span>
+    <span data-phrase="bake.must">Dieses Bild in einem WebM oder MKV ist kein H.264, also lässt sich kein
+      MP4-Header darum schreiben, wie es ist: Die Drehung wird eingebrannt.</span>
+    <span data-phrase="bake.cannot">Dieser Browser kann dieses Bild weder dekodieren noch kodieren, die Drehung
+      lässt sich also nur in den Header schreiben, den jedes Handy, jeder Browser und jeder moderne Player beachtet.</span>
+    <span data-phrase="sound.none">Dieser Clip hat keinen Ton.</span>
+    <span data-phrase="sound.copy">Der Ton ist AAC und wird übernommen, wie er ist.</span>
+    <span data-phrase="sound.encode">Der Ton ist {codec}, und das kann ein MP4 nicht tragen; er wird mit
+      160 kbit/s als AAC neu kodiert.</span>
+    <span data-phrase="sound.unknown">Der Ton ist {codec}, und das kann dieser Browser nicht dekodieren, er
+      wird also weggelassen; das Bild wird trotzdem gedreht.</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&bdquo;{name}&ldquo;</span>
+    <span data-phrase="rotation.0">aufrecht</span>
+    <span data-phrase="rotation.90">auf der Seite, nach rechts gedreht</span>
+    <span data-phrase="rotation.180">auf dem Kopf</span>
+    <span data-phrase="rotation.270">auf der Seite, nach links gedreht</span>
+    <span data-phrase="turn.90">eine Vierteldrehung nach rechts</span>
+    <span data-phrase="turn.180">eine halbe Drehung</span>
+    <span data-phrase="turn.270">eine Vierteldrehung nach links</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.sound">Ton: Paket {done} von {total}&hellip;</span>
+    <span data-phrase="progress.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="progress.frame">Einzelbild {done} von {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Die letzten Einzelbilder werden abgeschlossen&hellip;</span>
+    <span data-phrase="progress.writing">Die Datei wird geschrieben&hellip;</span>
+    <span data-phrase="progress.checking">Wird zur Prüfung erneut geöffnet&hellip;</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Es wurde nichts geschrieben; drücken Sie die Schaltfläche, um neu zu beginnen.</span>
+    <span data-phrase="run.failed">Dieser Durchgang ist fehlgeschlagen: {detail}</span>
+    <span data-phrase="result.ready">{size} MP4, {turn} gedreht.</span>
+    <span data-phrase="result.sub.copy">Jedes Einzelbild und jedes Paket übernommen, wie es war; nur der Header
+      hat sich geändert.</span>
+    <span data-phrase="result.sub.bake">Jedes Einzelbild gedreht gezeichnet und als H.264 neu kodiert; der Header
+      sagt nichts, weil er es nicht mehr muss.</span>
+    <span data-phrase="check.passed">Geprüft: {found}</span>
+    <span data-phrase="check.failed">Dieser Durchgang ging nicht auf &mdash; {found}. Behalten Sie Ihr Original.</span>
+    <span data-phrase="check.ok">aus dem Speicher wieder geöffnet, wie zuvor {length} lang, Anzeige {shown}
+      bei {frame}.</span>
+    <span data-phrase="check.length">die fertige Datei ist {got} lang statt {want}</span>
+    <span data-phrase="check.reopen">die fertige Datei ließ sich nicht wieder öffnen ({detail})</span>
+    <span data-phrase="check.turn">die fertige Datei gibt als Anzeige {got} bei {frame} an, nicht das, was verlangt war</span>
+    <span data-phrase="check.sound">in der fertigen Datei fehlt die Tonspur</span>
+    <span data-phrase="facts.picture.copied">{frames} Einzelbilder mit {frame} Byte für Byte kopiert, nicht dekodiert,
+      nicht neu kodiert. Der Header nennt jetzt die Drehung; jedes Handy, jeder Browser und jeder moderne Player liest ihn.</span>
+    <span data-phrase="facts.picture.baked">Jedes Einzelbild gedreht gezeichnet und mit {rate} als H.264 neu kodiert,
+      {frame}, {fps} Bilder pro Sekunde. Es ist eine Generation weiter von der Kamera entfernt als die Datei, mit
+      der Sie begonnen haben; behalten Sie Ihr Original.</span>
+    <span data-phrase="facts.sound.copied">Der Ton wurde übernommen, wie er war, nicht neu kodiert.</span>
+    <span data-phrase="facts.sound.encoded">Der Ton wurde mit 160 kbit/s als AAC neu kodiert.</span>
+    <span data-phrase="facts.sound.none">Keine Tonspur: Die Datei hatte keine, oder Sie haben sie weggelassen.</span>
+    <span data-phrase="facts.time">Fertig in {seconds}.</span>
+    <span data-phrase="support.nodecode">Dieser Browser dekodiert dieses Bild ({codec}) nicht, und die Datei bietet
+      nichts, worum sich ein MP4-Header schreiben ließe, wie es ist. Ein anderer Browser auf demselben Gerät kann es oft.</span>
+    <span data-phrase="stall.both">Der Video-Codec des Browsers hat aufgehört zu antworten. Laden Sie die Seite neu
+      und versuchen Sie es noch einmal; ein Gerät, dessen Hardware-Encoder beschäftigt ist oder fehlt, macht das.</span>
+    <span data-phrase="stall.sound">Der Audio-Codec des Browsers hat aufgehört zu antworten. Laden Sie die Seite neu
+      und versuchen Sie es noch einmal, oder lassen Sie den Ton weg.</span>
+    <span data-phrase="encode.toobig">Dieser Browser kodiert H.264 nicht in {size}. Schalten Sie
+      &bdquo;Einbrennen&ldquo; aus und schreiben Sie die Drehung stattdessen in den Header.</span>
+    <span data-phrase="encode.noconfig">Der Encoder hat nie eine Decoder-Konfiguration gemeldet.</span>
+    <span data-phrase="decode.none">Aus diesem Clip konnten keine Einzelbilder dekodiert werden.</span>
+    <span data-phrase="copy.notavc">Aus einem WebM oder MKV lässt sich nur H.264 kopieren; brennen Sie die Drehung stattdessen ein.</span>
+    <span data-phrase="rotate.badturn">Diese Drehung kennt diese Seite nicht.</span>
+    <span data-phrase="sound.noaac">Dieser Browser kodiert AAC nicht mit der Abtastrate und Kanalzahl dieses Tons.
+      Lassen Sie den Ton weg und drehen Sie nur das Bild.</span>
+    <span data-phrase="sound.noencode">Der Audio-Encoder hat nichts erzeugt.</span>
+    <span data-phrase="write.noframes">Es gab keine Einzelbilder zu schreiben.</span>
+    <span data-phrase="write.toobig">Die fertige Datei wäre größer als 4 GB, und das kann ein hier geschriebenes
+      MP4 nicht fassen. Schneiden Sie den Clip zuerst.</span>
+    <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
+    <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.av1short">Der AV1-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.compactsizes">Die Sample-Größen stehen in einer kompakten Tabelle, die dieser Leser nicht dekodiert.</span>
+    <span data-phrase="read.sampletables">Die Sample-Tabellen sind unvollständig.</span>
+    <span data-phrase="read.chunktable">Die Chunk-Tabelle ist leer.</span>
+    <span data-phrase="read.nosamples">Die Videospur enthält keine Einzelbilder.</span>
+    <span data-phrase="read.nostbl">Der Videospur fehlen ihre Sample-Tabellen.</span>
+    <span data-phrase="read.nostsd">Die Videospur hat keine Sample-Beschreibung.</span>
+    <span data-phrase="read.emptystsd">Die Sample-Beschreibung des Videos ist leer.</span>
+    <span data-phrase="read.encrypted">Die Videospur ist verschlüsselt.</span>
+    <span data-phrase="read.unknowncodec">Das Video liegt als &bdquo;{type}&ldquo; vor, und das kennt dieser Leser nicht.</span>
+    <span data-phrase="read.noconfig">Die Spur &bdquo;{type}&ldquo; führt keine Decoder-Konfiguration mit sich.</span>
+    <span data-phrase="read.notmp4">Das ist keine MP4-, MOV-, WebM- oder MKV-Datei. AVI, WMV, FLV und MPEG-2 werden
+      hier nicht gelesen.</span>
+    <span data-phrase="read.nomoov">Die Datei hat keinen Film-Header.</span>
+    <span data-phrase="read.novideo">Die Datei hat keine Videospur, mit der dieser Leser etwas anfangen kann.</span>
+    <span data-phrase="read.notimescale">Die Videospur hat keine Zeitskala.</span>
+    <span data-phrase="read.nofragments">Die Fragmente in dieser Datei enthalten keine Einzelbilder für ihre Videospur.</span>
+    <span data-phrase="read.unreadable">Die Datei ließ sich nicht als MP4 lesen.</span>
+    <span data-phrase="read.notplayed">Dieses Format spielt dieser Browser nicht ab.</span>
+    <span data-phrase="read.layout">Der Aufbau dieser Datei ist keiner, den der Leser hier versteht.</span>
+    <span data-phrase="read.notmkv">Das ist keine WebM- oder MKV-Datei.</span>
+    <span data-phrase="read.nosegment">Die Datei hat nach ihrem Header kein Segment.</span>
+    <span data-phrase="read.mkvtracks">Die Datei nennt keine Spuren.</span>
+    <span data-phrase="read.mkvcodec">Das Video liegt als &bdquo;{type}&ldquo; vor, und das kennt dieser Leser nicht.</span>
+    <span data-phrase="read.mkvencoded">Eine Spur in dieser Datei ist auf Container-Ebene komprimiert oder verschlüsselt,
+      und das macht dieser Leser nicht rückgängig.</span>
+    <span data-phrase="read.mkvaudio">Die Tonspur &bdquo;{type}&ldquo; führt keine Konfiguration mit sich, und ihre
+      Abtastrate ist keine, die sich ohne eine beschreiben lässt.</span>
+    <span data-phrase="read.lacing">Ein Block in dieser Datei ist auf eine Weise verschachtelt, der dieser Leser nicht folgen konnte.</span>
+    <span data-phrase="net.clean">Ihr Video ist nirgendwohin gegangen. {total} Dateien
+      geladen, allesamt eigene dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
+      dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}</span>
+    <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines
+      davon hat ein Video oder ein Byte davon bekommen.</span>
+    <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
+      davon hat ein Video oder ein Byte davon bekommen.</span>
+  </div>
+</main>

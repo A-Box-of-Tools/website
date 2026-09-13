@@ -1,0 +1,436 @@
+#
+# PDF-Schutz - German.
+#
+# Overrides for tools/protect-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Zwei Dinge, die beim Bearbeiten dieser Prosa nicht verloren gehen dürfen,
+# dieselben wie im englischen Original und wie beim Entsperrer nebenan.
+#
+# Erstens: "Geschützt" heißt bei einem PDF zweierlei, und diese Seite darf die
+# beiden nie ineinanderlaufen lassen. Ein Öffnungspasswort ist echt: Das
+# Dokument ist wirklich chiffriert, und ohne das Passwort liest es niemand.
+# Einschränkungen, also kein Drucken, kein Kopieren, kein Bearbeiten, sind eine
+# Bitte, die sich gut benehmende Leseprogramme beachten und jedes Leseprogramm
+# ablehnen darf; Adobe hat das von Anfang an so dokumentiert, und die Seite,
+# die ablehnt, steht auf dieser Website gleich nebenan. Ein Werkzeug, das
+# beides anbietet, muss neben den Kästchen sagen, welches von beiden es
+# schreibt und was jedes davon wert ist.
+#
+# Zweitens: Ein hier gesetztes Passwort ist der einzige Weg zurück hinein.
+# Nichts auf dieser Website errät Passwörter, und nichts Ehrliches anderswo tut
+# es. Deshalb verlangt die Seite das Passwort zweimal, sagt einmal in klaren
+# Worten, dass ein vergessenes Passwort ein verlorenes Dokument bedeutet, und
+# schreibt nie versehentlich eine Datei, die niemand öffnen könnte.
+#
+# Begriffe: "user password" heißt hier Öffnungspasswort, wo es um seine Wirkung
+# geht, und Benutzerpasswort, wo die FAQ die beiden Passwörter des Formats
+# einander gegenüberstellt; "owner password" heißt Besitzerpasswort;
+# "restrictions" heißt Einschränkungen; "scheme" heißt Verfahren; "reader"
+# heißt Leseprogramm. Der Entsperrer nebenan verwendet dieselben Wörter.
+#
+
+name = "PDF-Schutz"
+heading = "PDF&nbsp;schützen <span class=\"h1-kw\">&mdash; mit einem Passwort, und mit Einschränkungen, wenn Sie möchten</span>"
+tagline = "Ein Dokument sperren, das Sie zum Sperren lieber keiner Website in die Hand geben."
+
+title = "PDF mit Passwort schützen &mdash; verschlüsseln &amp; einschränken, kostenlos, ohne Upload"
+description = "Ein PDF mit einem Passwort versehen oder Drucken und Kopieren einschränken, im eigenen Browser. AES-256 als Voreinstellung, es wird nichts hochgeladen, und die fertige Datei wird hier noch einmal geöffnet, um zu belegen, dass das Passwort hält, bevor sie Ihnen angeboten wird."
+og_title = "Ein PDF mit Passwort schützen, ohne es irgendwohin hochzuladen"
+og_description = "Ein Dokument, das eine Sperre verdient, ist eines, das man vorher keiner Website in die Hand gibt. Dieses Werkzeug verschlüsselt es in Ihrem Browser mit AES-256 und prüft seine eigene Arbeit, bevor Sie herunterladen."
+og_image_alt = "Ein PDF im Browser mit Passwort schützen, ohne es hochzuladen"
+
+pledge = """
+    Das Dokument, das Sie wählen, wird im Arbeitsspeicher dieses Geräts
+    geöffnet, verschlüsselt und wieder hinausgeschrieben, von Code, der von
+    dieser Adresse stammt. Einen Upload kann hier nichts auslösen, und am
+    anderen Ende dieser Seite steht kein Server, der einen entgegennähme.
+    Weder die Datei noch das Passwort, das Sie eintippen, verlässt den Tab."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und schützen Sie etwas. Keine einzige Anfrage
+      trägt ein Dokument, ein Passwort oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und schützen Sie es trotzdem."""
+
+read_first = """
+, <code>src/shared/pdf-crypt.js</code> dafür, wie aus einem Passwort
+      der Schlüssel eines Dokuments wird und wie daraus das /Encrypt-Wörterbuch
+      entsteht, und <code>src/shared/aes.js</code> für die Chiffre selbst.
+      Keine dieser Dateien kommt ins Netz, und der Leser und der Schreiber
+      daneben auch nicht."""
+
+howto_heading = "So versehen Sie ein PDF mit einem Passwort oder schränken es ein"
+
+card = """
+            Ein PDF mit einem Passwort versehen oder Leseprogramme bitten, es
+            nicht zu drucken oder zu kopieren, ohne dass das Dokument irgendwohin
+            geht. AES-256 als Voreinstellung, ein älteres Verfahren für ältere
+            Leseprogramme, und die fertige Datei wird hier noch einmal geöffnet,
+            um zu belegen, dass die Sperre hält, bevor Sie sie bekommen."""
+
+[words]
+plural = "Dokumente"
+choose = "ein PDF"
+analytics_extra = """, und nichts über
+  das Passwort, das Sie eingetippt haben, oder darüber, womit die Datei geschützt war"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Das eine Werkzeug, bei dem ein Upload den Zweck zunichtemachte."
+body = """
+
+      Ein Dokument, das ein Passwort verdient, ist per Definition eines, das
+      Sie nicht in fremden Händen sehen möchten. Jedes Online-Werkzeug, das
+      anbietet, es zu schützen, verlangt zuerst, dass Sie es abgeben, erst das
+      ungeschützte Original und dann das Passwort, das Sie gewählt haben, an
+      einen Server, dessen Aufbewahrung Sie nicht einsehen können. Diese Seite
+      kann das nicht. Die Datei wird von Ihrem eigenen Browser gelesen, der
+      Schlüssel wird in diesem Tab abgeleitet, die verschlüsselte Kopie wird im
+      Arbeitsspeicher geschrieben, und in der
+      <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+      sie kontaktieren darf; keine davon gehört dieser Website. Trennen Sie
+      die Netzverbindung, und es arbeitet weiter, und einen einfacheren Beweis
+      gibt es nicht."""
+
+[[privacy]]
+title = "Ein Passwort ist echt. Eine Einschränkung ist eine Bitte. Die Seite hält beides auseinander."
+body = """
+
+      Ein <em>Öffnungspasswort</em> sperrt das Dokument wirklich: Der Inhalt
+      wird mit einem daraus abgeleiteten Schlüssel chiffriert, das Passwort
+      steht nirgends in der Datei, und wer es nicht hat, liest kein Wort.
+      <em>Einschränkungen</em>, also kein Drucken, kein Kopieren, kein
+      Bearbeiten, sind etwas anderes. Ein Dokument, das sich ohne Passwort
+      öffnet, muss alles enthalten, was zum Ableiten seines eigenen Schlüssels
+      nötig ist. Was ein Leseprogramm also vom Drucken abhält, ist ein
+      Berechtigungsfeld, das es zu beachten verspricht, und jedes Leseprogramm
+      darf das ablehnen. Adobe hat das von Anfang an so dokumentiert, und der
+      <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a> auf dieser Website ist
+      eines der Programme, die ablehnen. Einschränkungen lohnen sich trotzdem:
+      Mit ihnen sagen Sie, was Sie sich wünschen, und die meisten Leseprogramme
+      hören darauf. Sie sind nur keine Sperre, und diese Seite behauptet das
+      auch nicht."""
+
+[[privacy]]
+title = "AES-256, das aktuelle Verfahren, es sei denn, Sie wählen das ältere."
+body = """
+
+      Die PDF-Verschlüsselung hat fünf Generationen hinter sich, und
+      Leseprogramme melden sie alle als &bdquo;passwortgeschützt&ldquo;. Die
+      Voreinstellung hier ist die neueste: AES-256 mit dem Passwort-Hash von
+      PDF 2.0, der absichtlich teuer zu berechnen ist, und das einzige
+      Verfahren der Familie, das noch als stark gilt. Ein so gesperrtes
+      Dokument ist so gut wie das Passwort darauf. Der eine Grund, die andere
+      Option zu wählen, AES-128 mit der Schlüsselableitung von 1994, ist ein
+      Leseprogramm von vor 2010, das die Datei öffnen muss, und die Seite sagt
+      das neben der Auswahl, statt das schwächere Verfahren als gleichwertig
+      neben das stärkere zu stellen."""
+
+[[privacy]]
+title = "Das Passwort wird zweimal verlangt, weil es keinen Weg zurück gibt."
+body = """
+
+      Nichts auf dieser Website errät Passwörter, und nichts Ehrliches anderswo
+      tut es: Ein Dokument, das mit einem starken Verfahren und einem Passwort
+      gesperrt ist, an das sich niemand erinnert, ist ein Dokument, das niemand
+      mehr lesen wird. Deshalb wird das Öffnungspasswort zweimal eingetippt,
+      die beiden müssen übereinstimmen, und die Seite sagt einmal in klaren
+      Worten, dass ein vergessenes Passwort eine verlorene Datei bedeutet.
+      Heben Sie Ihr Original auf. Daran ändert sich hier nichts."""
+
+[[privacy]]
+title = "Die fertige Datei wird hier noch einmal geöffnet, bevor sie Ihnen angeboten wird."
+body = """
+
+      Bis das geschieht, korrigiert dieses Werkzeug mit allem oben nur seine
+      eigene Hausaufgabe. Also werden die Bytes, die gleich Ihr Download
+      werden, demselben Leser übergeben, den jedes PDF-Werkzeug dieser Website
+      benutzt, und zwar zweimal: einmal ohne Passwort, wo er ablehnen muss, und
+      einmal mit dem Passwort, das Sie gesetzt haben, wo er öffnen und mit
+      derselben Seitenzahl und den gewünschten Einschränkungen zurückkommen
+      muss. Eine Datei, die eine der beiden Prüfungen nicht besteht, wird als
+      gescheitert gemeldet, ohne Download."""
+
+[[privacy]]
+title = "Die Seiten selbst werden nicht neu gerendert, neu kodiert oder neu umbrochen."
+body = """
+
+      Was sich ändert, ist die Verschlüsselung um das Dokument herum, nicht das
+      Dokument. Die Zeichenanweisungen jeder Seite, jede eingebettete Schrift
+      und jedes Bild werden genau so hinausgeschrieben, wie sie ankamen, nur
+      chiffriert. Text bleibt also markierbar und durchsuchbar für alle, die
+      das Passwort haben, Scans behalten die Auflösung, mit der sie gescannt
+      wurden, und auf keiner Seite verrutscht etwas. Das eine, was sich doch
+      ändert, ändert jedes Neuschreiben: Ältere, überholte Kopien von
+      Objekten, die frühere Bearbeitungen zurückgelassen haben, werden nicht
+      übernommen."""
+
+[[privacy]]
+title = "Eine digitale Signatur übersteht das nicht, und die Seite sagt es, wenn eine da ist."
+body = """
+
+      Eine Signatur deckt genau die Bytes der Datei ab, auf die sie angewendet
+      wurde, jedes Neuschreiben macht sie also ungültig; genau dafür ist eine
+      Signatur da. Dieses Werkzeug schreibt eine neue Datei, die Kopie, die
+      Sie zurückbekommen, ist also unsigniert, und es sagt das beim Ergebnis,
+      wenn es eine Signatur findet, vor der es warnen muss. Ihr Original ist
+      weiterhin das signierte. Wenn Sie beides brauchen, signieren Sie nach
+      dem Schützen, nicht davor."""
+
+[[privacy]]
+title = "Ein Dokument, das schon gesperrt ist, wird erst nebenan geschickt."
+body = """
+
+      Eine Datei, die zum Öffnen ein Passwort braucht, wird hier nicht mit
+      einem Passwort über dem Passwort noch einmal gesperrt. Sie wird
+      abgewiesen, mit einem Link zum
+      <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a>, der den alten Schutz
+      im selben Browser abnimmt, und die entsperrte Kopie kommt für den neuen
+      hierher zurück. Eine Datei, die sich für jeden öffnet und nur
+      Einschränkungen trägt, wird angenommen, und Sie erfahren klar, dass das,
+      was Sie setzen, das Vorhandene ersetzt."""
+
+[[privacy]]
+title = "Was Google lädt und was es nicht bekommt."
+body = """
+ Die Skripte für Werbung
+      und Messung kommen von Google. Keines von beiden bekommt irgendetwas über
+      Ihr Dokument: keine Datei, keine Seite, keinen Namen, keine Größe, keine
+      Seitenzahl, kein Passwort und nicht, womit die Datei geschützt war. Jede
+      Zeile, die ein PDF liest, verschlüsselt oder schreibt, wird von dieser
+      Domain ausgeliefert und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Knopf lädt und was er nicht bekommt."
+body = """
+
+      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und sonst nichts: Er meldet keinen Besuch,
+      und er bekommt nichts über Sie oder Ihre Dokumente. Es passiert nichts,
+      bis Sie ihn anklicken, und dann sind Sie auf einer fremden Seite."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihr Dokument zum Verschlüsseln wegschickt, bliebe
+      stehen."""
+
+[[howto]]
+title = "Wählen Sie das PDF."
+body = """
+ Ein Dokument nach dem anderen. Der Browser
+      liest es direkt von Ihrer Festplatte, und es wird hier geöffnet. Ein
+      Dokument, das schon ein Passwort braucht, wird mit einem Link zum
+      Entsperrer abgewiesen; eines, das nur Einschränkungen trägt, wird
+      angenommen, und was Sie unten setzen, ersetzt sie."""
+
+[[howto]]
+title = "Setzen Sie das Passwort zum Öffnen, und tippen Sie es noch einmal."
+body = """
+
+      Das ist die eigentliche Sperre. Wer dieses Passwort hat, liest das
+      Dokument; sonst niemand, und nichts hier oder sonst irgendwo Ehrliches
+      stellt es wieder her, wenn es vergessen ist. Die beiden Felder müssen
+      übereinstimmen, bevor der Knopf freigegeben wird. Lassen Sie beide leer,
+      wenn Sie nur Einschränkungen für ein Dokument möchten, das sich
+      weiterhin für jeden öffnet."""
+
+[[howto]]
+title = "Haken Sie die Einschränkungen an, wenn Sie welche möchten."
+body = """
+
+      Drucken, Text und Bilder herauskopieren und das Dokument verändern. Das
+      sind Bitten, die sich gut benehmende Leseprogramme beachten, keine
+      Verschlüsselung, und die Seite sagt das neben den Kästchen. Ein
+      Besitzerpasswort hebt sie auf; lassen Sie dieses Feld leer, übernimmt
+      das Öffnungspasswort beide Aufgaben, und setzen Sie gar kein Passwort,
+      wird ein zufälliges verwendet und weggeworfen, damit sich die
+      Einschränkungen nicht aufheben lassen, indem man einfach nichts
+      eingibt."""
+
+[[howto]]
+title = "Schützen Sie es, und lesen Sie die Zeile, die sagt, dass geprüft wurde."
+body = """
+
+      Das Dokument wird unter einem frischen Schlüssel chiffriert
+      hinausgeschrieben. Dann wird die fertige Datei hier zweimal noch einmal
+      geöffnet, einmal ohne Passwort, wo sie abgelehnt werden muss, und einmal
+      mit Ihrem, wo sie sich mit derselben Seitenzahl öffnen muss. Schlägt
+      eine der beiden Prüfungen fehl, bekommen Sie keinen Download und eine
+      Meldung, die das sagt."""
+
+[[faq]]
+q = "Ist ein passwortgeschütztes PDF wirklich sicher?"
+a = """
+        Mit der Voreinstellung hier ja, genau so sicher wie das Passwort:
+        AES-256 mit dem Passwort-Hash von PDF 2.0 ist das aktuelle Verfahren,
+        und es gibt keine Abkürzung hindurch. Wissenswert ist, dass nicht jedes
+        &bdquo;passwortgeschützte&ldquo; PDF so entstanden ist. Das Format hat
+        fünf Generationen hinter sich, von einem 40-Bit-Schlüssel aus dem Jahr
+        1994, den ein Laptop schlicht durchsuchen kann, bis zu diesem hier,
+        und Leseprogramme melden sie alle mit denselben Worten. Diese Seite
+        schreibt das stärkste und nennt das andere, das sie schreiben kann,
+        beim Namen."""
+
+[[faq]]
+q = "Was ist der Unterschied zwischen dem Passwort und den Einschränkungen?"
+a = """
+        Ein PDF hat Platz für zwei Passwörter. Das <em>Benutzerpasswort</em>
+        ist das, nach dem ein Leseprogramm fragt; ohne es öffnet sich die Datei
+        nicht, und das ist echt. Das <em>Besitzerpasswort</em> hebt die
+        <em>Einschränkungen</em> auf, also Drucken, Kopieren, Bearbeiten, und
+        die sind eine Bitte. Ein Dokument, das sich ohne Passwort öffnet, muss
+        alles enthalten, was zum Ableiten seines eigenen Schlüssels nötig ist.
+        Das Einzige, was ein Leseprogramm also vom Drucken abhält, ist ein
+        Feld, das es zu beachten versprochen hat, und jedes Leseprogramm darf
+        das ablehnen. Der <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a>
+        auf dieser Website ist eines, das ablehnt. Setzen Sie Einschränkungen,
+        um zu sagen, was Sie sich wünschen; setzen Sie ein Passwort, um
+        sicherzugehen."""
+
+[[faq]]
+q = "Was ist, wenn ich das Passwort vergesse?"
+a = """
+        Dann ist das Dokument verloren, und das hören Sie besser hier als von
+        einer Website zur &bdquo;Passwort-Wiederherstellung&ldquo;, die zuerst
+        Ihre Datei nimmt. Nichts auf dieser Website errät Passwörter, Sie
+        können <code>src/shared/pdf-crypt.js</code> lesen und sehen, dass
+        darin keine Schleife ist, und bei einem Dokument, das mit dem
+        voreingestellten Verfahren gesperrt ist, hätte nichts Ehrliches
+        irgendwo Erfolg. Deshalb verlangt die Seite das Passwort zweimal.
+        Heben Sie Ihr Original auf: Es wird hierdurch nicht verändert, und es
+        ist die Kopie, die Sie brauchen, falls das Passwort je verloren
+        geht."""
+
+[[faq]]
+q = "Soll ich AES-256 oder AES-128 wählen?"
+a = """
+        AES-256, es sei denn, ein Leseprogramm von vor 2010 muss die Datei
+        öffnen. Die 256-Bit-Option ist das Verfahren von PDF 2.0, das Acrobat
+        X und neuer, jeder Browser, jedes Telefon und jedes aktuelle
+        Leseprogramm verstehen. Die 128-Bit-Option ist das Verfahren von 2005,
+        das diese älteren Leseprogramme kennen, und sie ist schwächer, nicht
+        wegen der Chiffre, sondern wegen der Schlüsselableitung von 1994 davor,
+        die das Erraten eines Passworts weit billiger macht, als die Chiffre
+        vermuten lässt. Wenn Sie nicht wissen, welches Leseprogramm die Datei
+        öffnen wird, wählen Sie 256."""
+
+[[faq]]
+q = "Kann ich ein PDF schützen, das schon geschützt ist?"
+a = """
+        Wenn es sich ohne Passwort öffnet und nur Einschränkungen trägt, ja:
+        Legen Sie es ab, und was Sie setzen, ersetzt das Vorhandene. Wenn es
+        zum Öffnen ein Passwort verlangt, weist diese Seite es ab und zeigt auf
+        den <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a>, der den alten
+        Schutz im selben Browser abnimmt; bringen Sie die entsperrte Kopie für
+        den neuen hierher zurück. Zwei Sperren auf einem Dokument kann das
+        Format nicht ausdrücken, ein Passwort zu ändern heißt also immer: erst
+        abnehmen, dann neu setzen."""
+
+[[faq]]
+q = "Sieht das Dokument danach anders aus?"
+a = """
+        Nein. Nichts wird neu gerendert, neu kodiert oder neu umbrochen: Die
+        Zeichenanweisungen jeder Seite, jede eingebettete Schrift und jedes
+        Bild werden genau so übernommen, wie sie ankamen, nur chiffriert. Für
+        alle, die das Passwort haben, bleibt Text markierbar, Scans behalten
+        ihre ursprüngliche Auflösung, und nichts verrutscht. Die Datei kann
+        etwas kleiner herauskommen, weil ein Neuschreiben die überholten
+        Kopien von Objekten zurücklässt, die frühere Bearbeitungen darin
+        hinterlassen haben, und etwas größer, wo die Verschlüsselung jedem
+        Stream sechzehn Bytes hinzufügt."""
+
+[[faq]]
+q = "Was passiert mit einem signierten Dokument?"
+a = """
+        Seine Signatur ist danach nicht mehr gültig, und daran führt kein Weg
+        vorbei. Eine Signatur deckt genau die Bytes der Datei ab, auf die sie
+        angewendet wurde, jede Änderung überhaupt, durch jedes Programm, auch
+        das, das signiert hat, macht sie also ungültig. Dieses Werkzeug
+        schreibt eine neue Datei, bemerkt, wenn das Original signiert war, und
+        sagt es beim Ergebnis. Wenn Sie ein Dokument brauchen, das signiert
+        und geschützt ist, schützen Sie es zuerst und signieren Sie die
+        geschützte Kopie."""
+
+[[faq]]
+q = "Werden meine Dokumente oder Passwörter irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, verschlüsselt und geschrieben, und das Passwort geht
+        in eine Schlüsselableitung, die in diesem Tab läuft. Dieses Werkzeug
+        hat keine Serverseite, und in der <code>Content-Security-Policy</code>
+        der Seite steht jede Adresse, die sie kontaktieren darf; keine davon
+        gehört dieser Website. Am einfachsten überzeugen Sie sich, indem Sie
+        die Netzverbindung trennen und die Seite trotzdem benutzen. Bei diesem
+        Werkzeug von allen ist das der Punkt: Ein Dokument, das Sie sperren,
+        ist eines, das Sie vorher lieber nicht herumreichen."""
+
+[[faq]]
+q = "Woher weiß ich, dass der Schutz wirklich drauf ist?"
+a = """
+        Weil das Werkzeug es auf Ihrem Gerät prüft und Ihnen das Ergebnis
+        zeigt. Ist die Datei geschrieben, wird sie demselben Leser übergeben,
+        den die anderen PDF-Werkzeuge dieser Website benutzen, und zwar
+        zweimal. Ohne Passwort muss er sie rundheraus ablehnen; mit dem
+        Passwort, das Sie gesetzt haben, muss sie sich öffnen, mit derselben
+        Seitenzahl zurückkommen und die Einschränkungen melden, die Sie
+        angehakt haben. Schlägt eine der beiden Prüfungen fehl, gilt der
+        Durchlauf als gescheitert, und es wird nichts zum Herunterladen
+        angeboten. Nachprüfen können Sie es anschließend auch selbst: Öffnen
+        Sie die Datei in einem beliebigen Leseprogramm, das nach dem Passwort
+        fragen wird, und sehen Sie in den Dokumenteigenschaften nach den
+        Berechtigungen."""
+
+[[faq]]
+q = "Gibt es eine Größenbeschränkung, und kostet es etwas?"
+a = """
+        In das Werkzeug ist keine Grenze geschrieben. Die Grenze ist Ihr
+        eigenes Gerät: Das Dokument liegt während der Bearbeitung im Speicher,
+        ein Laptop nimmt also ein paar hundert Megabyte klaglos hin und kommt
+        irgendwo darüber ins Straucheln. Es ist kostenlos, es gibt kein Konto,
+        keine Anmeldung und keine Testphase. Die Seite trägt Werbung, und die
+        bezahlt sie; die Werbung bekommt nichts über Ihre Dokumente."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie danach die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Weg zu prüfen, dass nichts hochgeladen wird: Ein Werkzeug,
+        das Ihr Dokument zum Verschlüsseln wegschickt, bliebe in dem Moment
+        stehen, in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "Ein PDF im Browser mit einem Passwort schützen oder Drucken, Kopieren und Bearbeiten einschränken. AES-256 als Voreinstellung, ein älteres Verfahren für ältere Leseprogramme, nichts wird hochgeladen, und die fertige Datei wird hier noch einmal geöffnet, um zu belegen, dass die Sperre hält."
+features = [
+  "Versieht ein PDF mit einem Öffnungspasswort unter AES-256, dem aktuellen Verfahren von PDF 2.0",
+  "AES-128 für Leseprogramme von vor 2010, beim Namen genannt",
+  "Schränkt Drucken, Kopieren und Bearbeiten ein, mit eigenem Besitzerpasswort oder ohne",
+  "Verlangt das Passwort zweimal und sagt klar, dass ein vergessenes ein verlorenes Dokument bedeutet",
+  "Sagt, welche der beiden Schutzarten eine Sperre ist und welche eine Bitte",
+  "Öffnet die fertige Datei mit und ohne Passwort noch einmal, um zu belegen, dass der Schutz hält",
+  "Schickt eine bereits gesperrte Datei zum Entsperrer, statt Passwörter zu stapeln",
+  "Läuft offline; kein Upload, kein Konto, keine Größenbeschränkung",
+]
+
+[picker]
+title = "PDF zum Schützen hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; ein Dokument nach dem anderen"
