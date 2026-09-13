@@ -69,6 +69,15 @@ complete = true
 
 [slugs]
 # The tools.
+"protect-pdf" = "pdf-schuetzen"
+"unlock-pdf" = "pdf-entsperren"
+"watermark-pdf" = "pdf-wasserzeichen"
+"rotate-video" = "video-drehen"
+"convert-to-mp4" = "in-mp4-umwandeln"
+"compress-video" = "video-komprimieren"
+"gif-to-mp4" = "gif-in-mp4-umwandeln"
+"pdf-to-csv" = "pdf-in-csv-umwandeln"
+"business-profile-preview" = "google-unternehmensprofil-vorschau"
 "compress-image" = "bild-komprimieren"
 "compress-pdf" = "pdf-verkleinern"
 "crop-video" = "video-zuschneiden"
