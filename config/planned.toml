@@ -35,7 +35,6 @@ items = [
 id = "gif"
 name = "GIF &amp; animation"
 items = [
-  ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
   ["Edit a GIF", "resize, crop, rotate, reverse it, or change how fast it plays"],
   ["Animated WebP", "the same animation at a fraction of the size, transparency and all"],
 ]

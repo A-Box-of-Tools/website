@@ -1,0 +1,384 @@
+#
+# GIF to MP4
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is that the video keeps the GIF's timing frame for frame. A GIF
+# has no frame rate, only a delay on each frame, and those delays vary; a
+# converter that resamples on to a fixed rate doubles some frames and drops
+# others, and a slideshow comes out wrong. Here each frame is one sample
+# whose duration is its delay, and the check counts the frames back.
+#
+# The second is honesty about what changes: a GIF loops by itself and a
+# video does not (the player decides), and a GIF can let what is under it
+# show through where a video cannot (the page asks what colour goes there).
+# Both are said on the page rather than discovered afterwards.
+#
+
+slug = "gif-to-mp4"
+name = "GIF to MP4"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "GIF&nbsp;to&nbsp;MP4 <span class=\"h1-kw\">&mdash; the same animation at a tenth of the size</span>"
+tagline = "Every frame, with the delay the GIF gave it, as H.264 in an MP4. Converted on your machine; the file never goes up."
+icon = "&#127902;"                  # the film frames, beside the page heading
+favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "film"
+category = "video-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "gif"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works, and
+# results carries the file name and size lines the other tools use.
+css_parts = ["progress", "form", "notes", "results"]
+
+# file-picker brings in the drop zone. gif-decode and gif-compose are the
+# splitter's reader and its replay of the disposal rules, moved to shared
+# parts for this tool; mp4-muxer and mp4-boxes write the one H.264 track a
+# GIF becomes, mp4-reader reads it back for the check, and video-support,
+# codec-support and webcodecs are the questions asked of the browser's
+# encoder and the wait that keeps the feed loop behind it. format is sizes
+# and durations as words, and errors is the cancellation every page ignores
+# by name.
+#
+# example-gif and example-photo are for the example alone: the animated GIF
+# the splitter and the analyser demonstrate on, drawn in the page.
+js_parts = ["file-picker", "gif-decode", "gif-compose", "mp4-muxer", "mp4-boxes", "mp4-reader", "video-support", "codec-support", "webcodecs", "message-box", "format", "errors", "example-gif", "example-photo"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. A
+# GIF made into a video is often then too big for where it is going, or
+# wants a piece cut out.
+handoff = ["compress-video", "trim-video"]
+lastmod = "2026-09-13"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "GIF to MP4 Converter &mdash; Free, in Your Browser, No Upload"
+description = "Turn an animated GIF into an MP4 in your browser, at a fraction of the size. Every frame keeps the GIF's own timing; nothing is resampled. H.264 in an MP4, the file every platform takes. Nothing is uploaded."
+og_title = "Turn a GIF into an MP4 without uploading it"
+og_description = "The same animation as H.264 in an MP4, usually a tenth of the size, with every frame's timing kept. Converted in your browser; the file never leaves your machine."
+og_image_alt = "Convert a GIF to MP4 in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "The same animation at a tenth of the size. Converted on your machine; the file never goes up."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src carries blob: because the finished video is played from memory
+  on this page so that you can see it survived. connect-src carries blob:
+  because the carry-on row reads the result back out of this page before
+  parking it for the next tool. blob: names bytes inside this page; neither
+  gains any reach over the network, and nothing else here is widened."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The GIF you choose is decoded, drawn frame by frame, encoded and written
+    into an MP4 in memory on this machine, by your own browser's encoder and
+    code served from this address. Nothing here can make an upload, and
+    there is no server on the other end of this page to receive one."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert something. Not one request carries a GIF, a frame, or a
+      filename. Or unplug from the internet and convert it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/plan.js</code> for how the GIF's delays become
+      the video's timing, <code>src/encode.js</code> for the drawing and the
+      encode, and <code>src/shared/gif-decode.js</code> for the reader. None of
+      them can reach the network, and neither can the writer beside them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert a GIF to MP4"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            The same animation as an MP4, usually a tenth of the size, for
+            everywhere that refuses a big GIF. Every frame keeps the delay
+            the GIF gave it, nothing is resampled, and the picture stays
+            its own size. Encoded on your machine."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "GIFs"
+choose = "a GIF"
+analytics_extra = """, and nothing about
+  what was in it"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Why an MP4 is a tenth of the size, and why every platform prefers it."
+body = """
+
+      A GIF stores each frame as a picture, with at most 256 colours and no
+      idea what the frame before it looked like. A video codec stores what
+      changed, at full colour, and H.264 has thirty years of practice at it;
+      the same animation comes out at a tenth of the size, often less, and
+      looks better. That is why every social platform, chat app and content
+      system either refuses a large GIF or quietly turns it into an MP4 on
+      upload &mdash; and why, when something says &ldquo;GIF too big&rdquo;,
+      the MP4 is what it wanted all along."""
+
+[[privacy]]
+title = "The upload is the slow part, and it is the part that does not happen."
+body = """
+
+      Every online converter asks for the file first: the 30 MB goes up on
+      your connection so that 3 MB can come back, before any question of who
+      keeps the file. This page reads the GIF with code served from this
+      address and writes the MP4 with the encoder already inside your
+      browser, so the only bytes that move are from your disk to your memory
+      and back. The page's <code>Content-Security-Policy</code> names every
+      address it may contact &mdash; not one of them belongs to this site
+      &mdash; and it works with the network unplugged."""
+
+[[privacy]]
+title = "The timing is kept frame for frame, which most converters get wrong."
+body = """
+
+      A GIF has no frame rate. Each frame says how long it stays, and the
+      delays vary: a slideshow holds a picture for two seconds and then
+      flicks through ten. A converter that picks a frame rate and resamples
+      on to it doubles some frames and drops others, and the slideshow comes
+      out jerky or short. Here each frame of the GIF is one frame of video
+      whose duration is exactly its delay &mdash; the one liberty taken is
+      the one every browser takes, playing a delay under two hundredths of a
+      second as ten &mdash; and the finished file is opened again to count
+      that every frame is there and that it plays for as long as the GIF
+      does."""
+
+[[privacy]]
+title = "Two things a video cannot do that a GIF can, said up front."
+body = """
+
+      A GIF can let what is under it show through; a video is a solid
+      rectangle. Where the GIF is transparent, a colour has to go, and the
+      page asks which &mdash; only for a GIF that has such places, with
+      white as the default because that is what most pages are. And a GIF
+      carries its own instruction to loop; an MP4 does not, and whether the
+      video loops is up to whatever plays it. Most feeds and chat apps loop
+      a short one. The preview here loops so you can see the join."""
+
+[[privacy]]
+title = "What it costs on your machine, honestly."
+body = """
+
+      Encoding takes as long as your machine takes: with a hardware encoder
+      &mdash; most laptops and every phone made in the last decade &mdash;
+      a few seconds for an ordinary GIF; without one, longer. Every frame of
+      the GIF is decoded into memory first, which is where the limit is: a
+      GIF is a few megabytes that expand to one byte per pixel per frame,
+      and the page stops reading at half a gigabyte of that and says so
+      rather than crashing the tab. Cancel is always live."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your GIF: not a file, not a frame, not a name, a size or a length.
+      Every line that reads, encodes or writes it is served from this origin
+      and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your GIFs. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your GIF away to be converted would stop."""
+
+[[howto]]
+title = "Choose the GIF."
+body = """
+ One at a time. It is read straight off your disk by
+      the browser, and the page says what it is: how big, how many frames,
+      how long it plays, and its size in pixels."""
+
+[[howto]]
+title = "Read what will be written."
+body = """
+ One line: the size, the frames and
+      their timing, the length, and the bitrate. There is nothing to set
+      unless the GIF has transparent places, in which case a colour field
+      appears for what goes there."""
+
+[[howto]]
+title = "Convert it, and read the line that says it was checked."
+body = """
+
+      Every frame is drawn and encoded, with a bar that says where it is.
+      Then the finished file is opened again here and has to play for as
+      long as the GIF does with every frame present. It plays from memory
+      under the download, looping, so you can see the join."""
+
+[[faq]]
+q = "Why is the MP4 so much smaller?"
+a = """
+        Because a GIF stores every frame as a picture with at most 256
+        colours and no memory of the frame before it, and a video codec
+        stores only what changed. H.264 has had thirty years of practice at
+        that. The same animation usually comes out at a tenth of the size,
+        often less, and looks better, because it is no longer limited to 256
+        colours. A tiny or a very still GIF can come out larger; the page
+        says so when it happens."""
+
+[[faq]]
+q = "Will the timing be the same?"
+a = """
+        Yes, frame for frame. A GIF has no frame rate, only a delay on each
+        frame, and the video keeps every delay as it is: each frame of the
+        GIF is one frame of video that lasts exactly as long. Nothing is
+        resampled, doubled or dropped. The one liberty taken is the one every
+        browser takes, playing a delay under two hundredths of a second as
+        ten, so the video plays for as long as the GIF plays in a browser.
+        The finished file is opened again to check both."""
+
+[[faq]]
+q = "Will it loop?"
+a = """
+        That is up to whatever plays it. A GIF carries its own instruction
+        to loop; an MP4 carries no such thing, and the player decides. Most
+        feeds and chat apps loop a short video, and the preview on this page
+        loops so you can see the join. A video player on a desktop usually
+        plays it once."""
+
+[[faq]]
+q = "What happens to the transparent parts?"
+a = """
+        They get a colour, because a video is a solid rectangle. For a GIF
+        that has transparent places the page shows a colour field, white by
+        default because that is what most pages are; for one that has none
+        the field is not shown. The colour is drawn behind the frames before
+        they are encoded, so it is part of the picture."""
+
+[[faq]]
+q = "Does it change the size of the picture?"
+a = """
+        Only by a pixel, and only when it has to. H.264 needs both edges even,
+        so a GIF with an odd width or height gets one line of the background
+        colour added; nothing is resampled. A GIF wider than 3840 pixels is
+        drawn down to that, since that is what encoders can be relied on to
+        take. The page says the size it will write before it starts."""
+
+[[faq]]
+q = "How long does it take?"
+a = """
+        A few seconds for an ordinary GIF on a machine with a hardware
+        encoder, which is most laptops and every recent phone; longer without
+        one. The GIF is decoded into memory first, and a very long one can be
+        more than the page is willing to hold &mdash; it stops at half a
+        gigabyte of frames and says so. The bar says which frame it is on,
+        and cancelling stops it at once and writes nothing."""
+
+[[faq]]
+q = "Are my GIFs uploaded anywhere?"
+a = """
+        No. The GIF is read, decoded, encoded and written by your own browser
+        on your own hardware, and the page's <code>Content-Security-Policy</code>
+        names every address it may contact &mdash; none of them belongs to
+        this site. The simplest way to satisfy yourself is to unplug from the
+        network and use the page anyway."""
+
+[[faq]]
+q = "Does it work on a phone?"
+a = """
+        On a phone whose browser can encode video, yes, and a phone's own
+        hardware encoder is quick. What a phone lacks is memory: the GIF's
+        frames are decoded into memory first, so a very long one may be more
+        than a phone can hold."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        The page stops reading a GIF at half a gigabyte of decoded frames,
+        which is a great many frames, and says so. It is free, there is no
+        account, no sign-in and no trial. The site carries advertising, which
+        is what pays for it; the ads are not given anything about your
+        GIFs."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your GIF away to be converted would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert an animated GIF to an MP4 in your browser. Every frame keeps the GIF's own delay, the picture stays its own size, and the result is H.264 in an MP4 at a fraction of the GIF's size. Nothing is uploaded."
+features = [
+  "Reads any animated GIF, with disposal rules and transparency handled the way a browser draws them",
+  "Keeps every frame and every delay; nothing is resampled on to a fixed frame rate",
+  "Asks what colour goes behind transparent parts, only when the GIF has any",
+  "Writes H.264 in an MP4, usually a tenth of the size",
+  "Reopens the finished file to count the frames and check the length, and plays it looping from memory",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/gif,.gif"
+multiple = false
+title = "Drop a GIF here"
+hint = "or click to browse &mdash; one animated GIF at a time"
+# An animated GIF, drawn in the page. See src/example.js.
+example = true
+
+# blob: on media-src, because the finished result is played from memory on
+# this page so that it can be looked at; blob: on connect-src, because the
+# carry-on row reads the finished result back out of this page before parking
+# it for the next tool (see shared/handoff.js). blob: names bytes inside this
+# page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]
+"media-src" = ["'self'", "blob:"]

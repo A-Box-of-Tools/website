@@ -1,4 +1,13 @@
 /**
+ * The GIF reader.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/gif-decode.js and
+ * the build copies it to <tool>/src/shared/gif-decode.js for the tools that
+ * ask for it with `js_parts = ["gif-decode", ...]`: the splitter, which
+ * hands frames back as pictures, and the MP4 converter, which hands them to
+ * an encoder. It imports nothing. shared/js/gif-compose.js is its other
+ * half - putting the frames it reads back on top of each other.
+ *
  * The GIF reader: the container, and the LZW coder underneath it.
  *
  * This is the mirror image of the writer in `/gif-maker/`, and it is written

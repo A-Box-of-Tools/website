@@ -141,18 +141,6 @@ separate tool and not a button on the viewer.
 
 ## GIF & animation
 
-### GIF to MP4 or WebM
-
-Same animation, usually a tenth of the size, and every platform that rejects a
-30 MB GIF accepts the MP4. The muxer is a shared part already:
-[`mp4-muxer.js`](shared/js/mp4-muxer.js) writes the one H.264 track an encoder
-just produced, with no audio, and [`images-to-video`](tools/images-to-video/) and
-the time-lapse maker both ship it. It was five copies of `mp4.js` declared as
-duplicate groups until every one moved to `shared/js/`, which is why the group
-list in `tests/python/test_duplicates.py` is empty now. A GIF has no sound to
-carry, so that is the writer this wants, and the work is the decode side and
-the encoder settings.
-
 ### Edit a GIF
 
 One tool, not four. Resizing, cropping, rotating, reversing and retiming a GIF

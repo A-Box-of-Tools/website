@@ -5,8 +5,9 @@
 Reads an animated GIF, hands back one PNG per frame, and tells you what each
 frame actually is: how long it was held, where it sits, how big it is, and what
 happens to its rectangle before the next one lands. The reader is written out
-here — the container in `src/gif.js`, the LZW decompressor in the same file, and
-the disposal rules in `src/compose.js` — and the PNGs are written by the
+here — the container in `shared/js/gif-decode.js`, the LZW decompressor in the same file,
+and the disposal rules in `shared/js/gif-compose.js` (both shared parts since the
+MP4 converter needed them too) — and the PNGs are written by the
 browser's own encoder.
 
 It is the mirror of [GIF Maker](../gif-maker/), and the two share a
@@ -53,7 +54,7 @@ patches, each with a rule about what to do with the canvas afterwards. So
   everything it does not carry transparent. Nothing else will show you this, and
   it is the only view that explains why a 400-frame GIF is 900 KB.
 
-Splitting them apart is also why `src/gif.js` and `src/compose.js` are separate
+Splitting them apart is also why `gif-decode.js` and `gif-compose.js` are separate
 files. Parsing is about bytes and is either right or wrong. Composition is about
 what a renderer *chooses* to do with an under-specified rule, and there is more
 than one defensible answer — see below.
