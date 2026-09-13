@@ -1,4 +1,11 @@
 /**
+ * Putting the frames of a GIF back on top of each other.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/gif-compose.js and
+ * the build copies it to <tool>/src/shared/gif-compose.js for the tools that
+ * ask for it with `js_parts = ["gif-compose", "gif-decode", ...]`. It
+ * imports nothing; it takes the frames shared/js/gif-decode.js reads.
+ *
  * Putting the frames back on top of each other.
  *
  * A GIF is not a stack of pictures. It is a first picture and then a series of

@@ -29,12 +29,16 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
+| [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
+| [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
+| [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. Written into the file's header, so not one frame is decoded and nothing is lost. |
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
 | [Video Reverser](reverse-video/) | `/reverse-video/` | Last frame first, sound and all. |
 | [Time-Lapse Maker](timelapse-video/) | `/timelapse-video/` | An hour of footage, in twenty seconds. |
 | [Video Frame Grabber](grab-frame/) | `/grab-frame/` | A full-quality still from any point. |
+| [GIF to MP4](gif-to-mp4/) | `/gif-to-mp4/` | Every frame, with the delay the GIF gave it, as H.264 in an MP4. Converted on your machine; the file never goes up. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [GIF Maker](gif-maker/) | `/gif-maker/` | Turn a set of pictures into one animation. |
 | [GIF Splitter](split-gif/) | `/split-gif/` | Every frame out as its own PNG. |
@@ -42,6 +46,8 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Most locked PDFs need no password at all. This one says which kind you have before it touches it. |
+| [PDF Protector](protect-pdf/) | `/protect-pdf/` | Lock a document you would rather not hand to a website in order to lock it. |
+| [PDF Watermark](watermark-pdf/) | `/watermark-pdf/` | A scan that says where it went is a scan that cannot quietly go somewhere else. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
 | [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |

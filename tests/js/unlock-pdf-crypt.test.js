@@ -27,8 +27,8 @@ import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { writeDocument } from '../../shared/js/pdf-writer.js';
 import {
   standardSecurity, UnsupportedEncryptionError, WrongPasswordError,
-} from '../../tools/unlock-pdf/src/crypt.js';
-import { permissionsIn, refusedIn } from '../../tools/unlock-pdf/src/permissions.js';
+} from '../../shared/js/pdf-crypt.js';
+import { permissionsIn, refusedIn } from '../../shared/js/pdf-permissions.js';
 import {
   MARKER, OWNER_PASSWORD, SECOND_PAGE, TITLE, USER_PASSWORD, fixture,
 } from './unlock-pdf-fixtures.js';

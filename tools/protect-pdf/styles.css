@@ -1,0 +1,141 @@
+/*
+  Only the rules this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the FAQ, the footer - is shared/css/tool-frame.css,
+  which the build puts in front of this file, followed by the shared parts named
+  in css_parts.
+*/
+
+.error { max-width: 72ch; }
+
+/* ------------------------------------------------------------- the file row */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.file-facts { flex: 1; min-width: 0; }
+
+/*
+  shared/css/results.css gives these the ellipsis rules and not the display box
+  they need for them: `text-overflow` does nothing to an inline element, and
+  this tool hangs them off a <strong> and a <span>. Without this a long
+  filename runs straight out under the "Choose another" button beside it.
+*/
+.file-name,
+.file-sub { display: block; }
+
+/* ------------------------------------------------------------ the passwords */
+
+.password-box {
+  margin-top: 1.1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.password-box .field { margin: 0; }
+.password-box .field + .password-input + .field { margin-top: 0.9rem; }
+
+.password-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.password-input input {
+  flex: 1 1 16rem;
+  min-width: 0;
+  /* A password is going to be typed twice and compared by eye once it is
+     shown, and the proportional face makes an l and a 1 the same shape. */
+  font-family: var(--mono, ui-monospace, monospace);
+  letter-spacing: 0.02em;
+}
+
+.password-input .ghost { flex: 0 0 auto; }
+
+/* The running commentary under the two boxes. It is the one sentence on the
+   card that has to be read, so it is set as words rather than as a note, and
+   it turns the error colour only while the two boxes disagree. */
+.password-status {
+  margin-top: 0.8rem;
+  max-width: 64ch;
+}
+
+.password-status.bad { color: var(--danger); }
+
+/* ---------------------------------------------------------- the restrictions */
+
+.restrictions {
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.restrictions legend {
+  padding: 0 0.3rem;
+  font-weight: 600;
+}
+
+.restrictions-note {
+  margin: 0 0 0.6rem;
+  max-width: 64ch;
+}
+
+.restrictions .check + .check { margin-top: 0.4rem; }
+
+.owner-field { margin-top: 1rem; }
+
+/* ------------------------------------------------------------- the result */
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.result-size { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.result-sub { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--text-dim); max-width: 52ch; }
+
+a.primary { text-decoration: none; display: inline-block; }
+
+/* The line that says the finished file was refused without the password and
+   opened with it. It is the whole argument for trusting the result, so it is
+   not small print. */
+.check-line {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.check-line.good { color: var(--ok); }
+.check-line.bad { color: var(--danger); }
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+@media (max-width: 560px) {
+  .result-head { flex-direction: column; align-items: stretch; }
+}

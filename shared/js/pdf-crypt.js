@@ -52,10 +52,10 @@
  * everything below branches on /R.
  */
 
-import { md5 } from './shared/md5.js';
+import { md5 } from './md5.js';
 import { rc4 } from './rc4.js';
 import { Aes, cbcDecrypt, cbcEncrypt } from './aes.js';
-import { permissionsIn } from './permissions.js';
+import { permissionsIn } from './pdf-permissions.js';
 
 /** The password was not the user's or the owner's. Carries a phrase key. */
 export class WrongPasswordError extends Error {}
@@ -307,57 +307,149 @@ function userPasswordFromOwner(password, owner, revision, length) {
 /* ------------------------------------------------------- the other direction */
 
 /**
- * Build an /Encrypt dictionary, and something that will encipher to match it.
+ * Build an /Encrypt dictionary, and a cipher that writes to match it.
  *
- * A tool that removes protection has no business adding any, and this is the
- * one exception, with one caller: the "Try an example" button. The example has
- * to be a genuinely restricted document - a file that really is enciphered and
- * really does tell readers not to print it - because a page that demonstrated
- * unlocking on a document that was never locked would be demonstrating nothing.
- * Every other example on this site is built in the page for the same reason,
- * and this is what building *this* one takes.
+ * The only export here that goes this way, and two pages call it. For
+ * /protect-pdf/ it is the tool: a password, or a set of restrictions, put on
+ * to a document that had none. /unlock-pdf/ uses it for its example alone,
+ * because a page demonstrating that restrictions come off has to show them
+ * coming off a file that really carries some.
  *
- * It is AES-128 at revision 4, which is what the "restrict editing" box in
- * Word and Acrobat has produced for the last fifteen years, so the example is
- * the kind of file people actually arrive with.
+ * Two revisions are written. Both are ones the reading half of this file is
+ * checked against files somebody else's implementation wrote, which is what
+ * makes writing them here worth anything:
  *
- * Note what is deliberately not general about it: the user password is always
- * blank. Writing a document nobody could open is not a thing this tool should
- * be able to do by accident.
+ *   R6  AES-256 under the PDF 2.0 password hash - the default, and the only
+ *       scheme in the table at the top of this file still worth having. Every
+ *       reader since Acrobat X, in 2010, opens it.
+ *   R4  AES-128 with the 1994 key derivation in front of it. What "restrict
+ *       editing" in an office suite has produced for fifteen years, and what
+ *       a reader older than 2010 needs.
  *
- * @param {{ownerPassword: string, permissions: number, id: Uint8Array}} settings
- * @returns {{dictionary: string, encrypt: (bytes: Uint8Array, num: number,
- *            gen: number) => Uint8Array}}
+ * THE OWNER PASSWORD IS NEVER LEFT BLANK. A document may carry restrictions
+ * and no open password, and that means something only if the owner password
+ * that lifts the restrictions is not blank too: with both blank, the file
+ * would say "please do not print this" and let any reader lift the request by
+ * trying the empty string. So a caller that sets no owner password gets the
+ * open password used in its place - one password doing both jobs, which is
+ * what most people mean - and a caller that sets neither gets a random one,
+ * made here and never seen by anybody. That random password never guards the
+ * opening of a document, only the request not to print it, so nothing here
+ * can hand back a file that nobody can read.
+ *
+ * @param {object} settings
+ * @param {string} [settings.userPassword]  what a reader asks for; '' for a
+ *   document that opens for anybody and is only restricted
+ * @param {string} [settings.ownerPassword]  what lifts the restrictions
+ * @param {number} [settings.permissions]  /P, where -1 restricts nothing
+ * @param {Uint8Array} settings.id  the first half of the trailer's /ID. The
+ *   R4 key is derived from it, so it has to exist before anything is
+ *   encrypted and go into the trailer unchanged afterwards
+ * @param {4|6} [settings.revision]
+ * @returns {Promise<{dictionary: string, id: Uint8Array, revision: number,
+ *   bits: number, minVersion: string,
+ *   encrypt: (bytes: Uint8Array, num: number, gen: number) => Uint8Array}>}
  */
-export function protect({ ownerPassword, permissions, id }) {
+export async function protect({
+  userPassword = '', ownerPassword = '', permissions = -1, id, revision = 6,
+}) {
+  const owner = ownerPassword || userPassword || randomPassword();
+  const p = permissions | 0;
+  const made = revision === 4
+    ? protect128(userPassword, owner, p, id)
+    : await protect256(userPassword, owner, p);
+  return { ...made, id };
+}
+
+/** Revision 4: the 1994 shape, with AES-128 as the cipher. */
+function protect128(userPassword, ownerPassword, permissions, id) {
   const revision = 4;
   const length = 16;
+  const user = latin1(userPassword);
 
-  // The order matters and is not obvious: /O is computed from the owner
-  // password alone, the file key is computed from /O, and /U is computed from
-  // the file key. Each depends on the one before it.
-  const owner = ownerEntry(ownerPassword, revision, length);
-  const key = deriveKey(EMPTY, {
+  // The order matters and is not obvious: /O is computed from the two
+  // passwords, the file key from /O, and /U from the file key. Each depends
+  // on the one before it.
+  const owner = ownerEntry(latin1(ownerPassword), user, revision, length);
+  const key = deriveKey(user, {
     owner, permissions, id, revision, length, encryptMetadata: true,
   });
-  const user = userEntry(key, id);
+  const check = userEntry(key, id);
 
   const dictionary = '<< /Filter /Standard /V 4 /R 4 /Length 128'
     + ' /CF << /StdCF << /CFM /AESV2 /AuthEvent /DocOpen /Length 16 >> >>'
     + ' /StmF /StdCF /StrF /StdCF'
-    + ` /O ${hex(owner)} /U ${hex(user)} /P ${permissions | 0} >>`;
+    + ` /O ${hex(owner)} /U ${hex(check)} /P ${permissions} >>`;
 
   return {
     dictionary,
+    revision,
+    bits: 128,
+    minVersion: '1.6',
     encrypt: (bytes, num, gen) => aesEncrypt(objectKey(key, num, gen, true), bytes),
   };
 }
 
-/** Algorithm 3, with a blank user password: /O is the padding string
- *  encrypted under a key made from the owner password. */
-function ownerEntry(ownerPassword, revision, length) {
+/**
+ * Revision 6: the file key is random, and each password only wraps it.
+ *
+ * Algorithms 8, 9 and 10, run forwards, and the mirror of key256 below: /U
+ * is the hash of the password and a validation salt with both salts behind
+ * it, /UE is the file key wrapped under a hash over the other salt, and /O
+ * and /OE are the same with the whole of /U hashed in. /Perms is the
+ * permissions again under the file key, which is what lets a reader prove
+ * the key it derived is the one the document was written with rather than
+ * merely one that decrypts to something.
+ */
+async function protect256(userPassword, ownerPassword, permissions) {
+  const key = random(32);
+  // At most 127 bytes of UTF-8, which is what the format says and what the
+  // reading side truncates to as well.
+  const user = utf8(userPassword).subarray(0, 127);
+  const owner = utf8(ownerPassword).subarray(0, 127);
+
+  const userValidation = random(8);
+  const userKey = random(8);
+  const U = join(await hash2B(user, userValidation, EMPTY, 6), userValidation, userKey);
+  const UE = cbcEncrypt(new Aes(await hash2B(user, userKey, EMPTY, 6)), NO_IV, key);
+
+  const ownerValidation = random(8);
+  const ownerKey = random(8);
+  const O = join(await hash2B(owner, ownerValidation, U, 6), ownerValidation, ownerKey);
+  const OE = cbcEncrypt(new Aes(await hash2B(owner, ownerKey, U, 6)), NO_IV, key);
+
+  // /P little-endian, four 0xff, 'T' for "the metadata is encrypted too",
+  // then 'adb', then four bytes of anything. One block under a zero IV is
+  // ECB, which is what permsAgree undoes.
+  const perms = new Uint8Array(16);
+  perms.set(int32le(permissions), 0);
+  perms.fill(0xff, 4, 8);
+  perms.set([0x54, 0x61, 0x64, 0x62], 8);
+  perms.set(random(4), 12);
+  const Perms = cbcEncrypt(new Aes(key), NO_IV, perms);
+
+  const dictionary = '<< /Filter /Standard /V 5 /R 6 /Length 256'
+    + ' /CF << /StdCF << /CFM /AESV3 /AuthEvent /DocOpen /Length 32 >> >>'
+    + ' /StmF /StdCF /StrF /StdCF'
+    + ` /O ${hex(O)} /U ${hex(U)} /OE ${hex(OE)} /UE ${hex(UE)}`
+    + ` /P ${permissions} /Perms ${hex(Perms)} >>`;
+
+  return {
+    dictionary,
+    revision: 6,
+    bits: 256,
+    minVersion: '1.7',
+    // The file key is used as it is: from R5 the object's number is no
+    // longer folded in, and the two arguments are ignored on purpose.
+    encrypt: (bytes) => aesEncrypt(key, bytes),
+  };
+}
+
+/** Algorithm 3: /O is the padded user password encrypted under a key made
+ *  from the owner password. */
+function ownerEntry(ownerPassword, userPassword, revision, length) {
   const hash = md5();
-  hash.update(padded(latin1(ownerPassword)));
+  hash.update(padded(ownerPassword));
   let digest = hash.digest();
 
   // The whole digest each round here, where algorithm 2 uses only the first n
@@ -369,7 +461,7 @@ function ownerEntry(ownerPassword, revision, length) {
   }
 
   const key = digest.slice(0, clamp(length, 5, 16));
-  let x = rc4(key, PAD);
+  let x = rc4(key, padded(userPassword));
   for (let i = 1; i <= 19; i += 1) x = rc4(xorEach(key, i), x);
   return x;
 }
@@ -392,7 +484,7 @@ function userEntry(key, id) {
 
 /** A random IV in front, PKCS#7 padding behind - the mirror of aesDecrypt. */
 function aesEncrypt(key, bytes) {
-  const iv = crypto.getRandomValues(new Uint8Array(16));
+  const iv = random(16);
 
   // Always at least one byte of padding, even when the length already fits,
   // so that stripping it is never ambiguous.
@@ -409,6 +501,15 @@ function hex(bytes) {
   let out = '<';
   for (const byte of bytes) out += byte.toString(16).padStart(2, '0');
   return `${out}>`;
+}
+
+const random = (n) => crypto.getRandomValues(new Uint8Array(n));
+
+/** An owner password for a document whose caller set none: 192 bits of
+ *  randomness, spelt as hex so that it is a password in every revision's
+ *  encoding. It is used once, here, and never shown to anybody. */
+function randomPassword() {
+  return hex(random(24)).slice(1, -1);
 }
 
 /* -------------------------------------------------------- AES-256 (R5, R6) */

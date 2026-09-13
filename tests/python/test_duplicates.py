@@ -146,6 +146,11 @@ SINGLETONS = {
         'the YAML pair alone, so the tool ships no XML parser it never calls',
     ('convert.js', 'xml-formatter'):
         'the XML pair alone, so the tool ships no YAML parser it never calls',
+    # A video, not a document: the MP4 converter's convert.js copies or
+    # re-encodes two media tracks and writes an MP4, and is related to the
+    # three text converters above by name only.
+    ('convert.js', 'convert-to-mp4'):
+        'copies or re-encodes video and sound into an MP4; a namesake of the text converters and nothing more',
 }
 
 

@@ -21,7 +21,7 @@ notices until the document is somewhere else:
 - **A page inherits.** Its size, its crop, its rotation and its resources may be
   written on any node above it in the page tree. Copy the leaf on its own and
   the page has no `/MediaBox`, so every reader falls back to US Letter, and no
-  `/Resources`, so the fonts and images it draws with are gone. `src/pages.js`
+  `/Resources`, so the fonts and images it draws with are gone. `shared/js/pdf-pages.js` (the merger's own until the watermark tool needed it)
   carries those four down the tree during the walk and `src/assemble.js` writes
   them onto the copy explicitly — the new parent is a flat node shared by pages
   from several documents and cannot carry any of them.

@@ -1,5 +1,6 @@
 /**
- * tools/split-gif/src/gif.js and compose.js - the GIF reader.
+ * shared/js/gif-decode.js and gif-compose.js - the GIF reader, which began
+ * as tools/split-gif/src/gif.js and compose.js.
  *
  * The reader is checked two ways, and the difference between them matters.
  *
@@ -24,10 +25,10 @@ import assert from 'node:assert/strict';
 
 import {
   decodeGif, deinterlace, GifFormatError, lzwDecode, playedDelay, totalDuration,
-} from '../../tools/split-gif/src/gif.js';
+} from '../../shared/js/gif-decode.js';
 import {
   GifCanvas, flatten, parseColour, patchPixels,
-} from '../../tools/split-gif/src/compose.js';
+} from '../../shared/js/gif-compose.js';
 import {
   baseName, formatBytes, formatSeconds, frameName, timingList, zipName,
 } from '../../tools/split-gif/src/frames.js';

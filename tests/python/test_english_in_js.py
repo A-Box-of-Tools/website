@@ -76,6 +76,9 @@ BASELINE = {
     'compare-heights': 4,
     'compress-image': 2,
     'compress-pdf': 4,
+    'compress-video': 0,
+    'convert-to-mp4': 0,
+    'rotate-video': 0,
     'crop-video': 0,
     # Two internal keys, a DOM id, a clock format, one key template and the
     # fixed-width layout of a line in the text report.
@@ -91,6 +94,7 @@ BASELINE = {
     'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
+    'gif-to-mp4': 0,
     # Six invariant checks the writer makes about its own arguments - a bug
     # here rather than anything a file can cause - and a CSS class name.
     'gif-maker': 7,
@@ -118,6 +122,7 @@ BASELINE = {
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'pdf-to-csv': 2,
+    'protect-pdf': 0,
     'qr-barcode': 2,
     # None of these thirteen reaches a reader. Six are qr-decode.js's
     # diagnostics, which detect.js catches and turns into a null; two are
@@ -136,7 +141,7 @@ BASELINE = {
     'share-text': 1,
     # A filename template, one line of a template literal, and three markers the
     # reader throws internally and never shows.
-    'split-gif': 5,
+    'split-gif': 2,
     'stack-images': 7,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
@@ -150,9 +155,10 @@ BASELINE = {
     # module that writes the locked example, and the fifth is a RangeError for
     # a key length no caller can reach. Everything a visitor reads on that
     # page is in body.html already.
-    'unlock-pdf': 5,
+    'unlock-pdf': 4,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
+    'watermark-pdf': 0,
     'xml-formatter': 0,
     # Both are inside the sample document, not the interface: the comment
     # the YAML example carries so that losing it can be seen, and a value

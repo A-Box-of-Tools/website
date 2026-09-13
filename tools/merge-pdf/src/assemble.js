@@ -7,7 +7,7 @@
  *
  *   - A page inherits its size, its crop, its rotation and its resources from
  *     the tree above it. Copy the leaf alone and the page has no size, no
- *     fonts and no pictures. pages.js carries those four down; this file
+ *     fonts and no pictures. shared/pdf-pages.js carries those four down; this file
  *     writes them onto the copy.
  *   - A page dictionary is the top of a graph, not a record. Its /Contents is
  *     a stream, its /Resources name fonts, which name descriptors, which name
@@ -30,7 +30,7 @@
 
 import { isGoTo, namedDestinations, resolveDestination } from './dests.js';
 import { count } from './format.js';
-import { decodeText, normalizeRotation, readPages } from './pages.js';
+import { decodeText, normalizeRotation, readPages } from './shared/pdf-pages.js';
 import { pruneOutline, readOutline, writeOutline } from './outline.js';
 import {
   isName, name, Name, PdfStream, Ref,

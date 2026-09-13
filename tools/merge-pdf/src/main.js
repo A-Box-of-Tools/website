@@ -4,7 +4,7 @@ import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { readSource } from './assemble.js';
 import { bytes, count as countOf, shortName } from './format.js';
-import { sizeLabel } from './pages.js';
+import { sizeLabel } from './shared/pdf-pages.js';
 import { describeRanges, parseRanges } from './plan.js';
 import { produce } from './produce.js';
 import { wireReorder } from './reorder.js';

@@ -20,7 +20,7 @@
  */
 
 import { isGoTo, resolveDestination } from './dests.js';
-import { decodeText } from './pages.js';
+import { decodeText } from './shared/pdf-pages.js';
 import { name, PdfString, Ref } from './shared/pdf-objects.js';
 
 /** Enough for any real document, and a stop for one built to be a bomb. */

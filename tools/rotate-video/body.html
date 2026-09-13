@@ -1,0 +1,247 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the video</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Choose another</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the turn.
+
+    Three buttons and a preview. The preview is the clip's first frame drawn
+    through the same arithmetic the file will carry, so what it shows is what
+    a player will do with the header, not a CSS turn that could disagree.
+  -->
+  <section class="card" id="turn-card">
+    <h2><span class="step">2</span> Turn it</h2>
+
+    <p class="card-lede">
+      A phone that filmed sideways did not turn its pixels: it wrote a
+      quarter turn into the file's header, and every player applies it. So
+      turning a clip is a change to that header and nothing else. Not one
+      frame is decoded, and the picture stays exactly what it was.
+    </p>
+
+    <div class="chips" role="group" aria-label="How far to turn">
+      <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; A quarter turn right</button>
+      <button type="button" class="chip" data-turn="270" aria-pressed="false">&#8634; A quarter turn left</button>
+      <button type="button" class="chip" data-turn="180" aria-pressed="false">Upside down</button>
+    </div>
+
+    <div class="preview-box">
+      <canvas id="preview" class="preview" aria-label="The first frame, turned as chosen" hidden></canvas>
+      <p id="preview-line" class="preview-line" role="status" aria-live="polite"></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="bake">
+      <span>
+        <strong>Bake the turn into the picture</strong>
+        <span class="check-note">
+          Draw every frame turned and encode it again as H.264, for the
+          few old desktop players that ignore the header. Costs a
+          generation of quality and takes as long as an encode; leave it off
+          unless a player has shown you the clip sideways.
+        </span>
+        <span id="bake-note" class="check-note" hidden></span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Leave the sound out</strong>
+        <span id="sound-note" class="check-note" hidden></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Rotate it</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Rotate the video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Download</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="The rotated video, played from memory"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">This opens once there is a video above that this browser can read.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; shown {shown}</span>
+    <span data-phrase="note.nopreview">This browser will not decode the picture, so there is no preview; the
+      turn is still written into the file.</span>
+    <span data-phrase="preview.nofile">Choose a video above to see which way up it is.</span>
+    <span data-phrase="preview.copy">Shown {now} at the moment; after the turn it will be shown {after},
+      {frame}. Every frame is copied across as it is.</span>
+    <span data-phrase="preview.bake">Shown {now} at the moment; after the turn it will be {after}, {frame},
+      with every frame drawn turned and encoded again as H.264 at about {rate}.</span>
+    <span data-phrase="bake.must">This picture is not H.264 inside a WebM or MKV, so no MP4 header can be
+      written round it as it is: the turn is baked in.</span>
+    <span data-phrase="bake.cannot">This browser cannot decode or encode this picture, so the turn can only
+      be written into the header, which every phone, browser and modern player honours.</span>
+    <span data-phrase="sound.none">This clip has no sound.</span>
+    <span data-phrase="sound.copy">The sound is AAC and is copied across as it is.</span>
+    <span data-phrase="sound.encode">The sound is {codec}, which an MP4 cannot carry; it is encoded again as
+      AAC at 160 kbit/s.</span>
+    <span data-phrase="sound.unknown">The sound is {codec}, which this browser cannot decode, so it is left
+      out; the picture still turns.</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&ldquo;{name}&rdquo;</span>
+    <span data-phrase="rotation.0">upright</span>
+    <span data-phrase="rotation.90">on its side, turned right</span>
+    <span data-phrase="rotation.180">upside down</span>
+    <span data-phrase="rotation.270">on its side, turned left</span>
+    <span data-phrase="turn.90">a quarter turn right</span>
+    <span data-phrase="turn.180">a half turn</span>
+    <span data-phrase="turn.270">a quarter turn left</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.sound">Sound: packet {done} of {total}&hellip;</span>
+    <span data-phrase="progress.preparing">Preparing&hellip;</span>
+    <span data-phrase="progress.frame">Frame {done} of {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Finishing the last frames&hellip;</span>
+    <span data-phrase="progress.writing">Writing the file&hellip;</span>
+    <span data-phrase="progress.checking">Opening it again to check&hellip;</span>
+    <span data-phrase="run.cancelled">Cancelled. Nothing was written; press the button to start again.</span>
+    <span data-phrase="run.failed">This run failed: {detail}</span>
+    <span data-phrase="result.ready">{size} MP4, turned {turn}.</span>
+    <span data-phrase="result.sub.copy">Every frame and every packet copied across as it was; only the header
+      changed.</span>
+    <span data-phrase="result.sub.bake">Every frame drawn turned and encoded again as H.264; the header says
+      nothing, because it no longer has to.</span>
+    <span data-phrase="check.passed">Checked: {found}</span>
+    <span data-phrase="check.failed">This run did not check out &mdash; {found}. Keep your original.</span>
+    <span data-phrase="check.ok">opened again from memory, {length} long as before, shown {shown} at
+      {frame}.</span>
+    <span data-phrase="check.length">the finished file is {got} long instead of {want}</span>
+    <span data-phrase="check.reopen">the finished file would not reopen ({detail})</span>
+    <span data-phrase="check.turn">the finished file says it is shown {got} at {frame}, not what was asked</span>
+    <span data-phrase="check.sound">the sound track is missing from the finished file</span>
+    <span data-phrase="facts.picture.copied">{frames} frames of {frame} copied byte for byte, not decoded, not
+      re-encoded. The header now says the turn; every phone, browser and modern player reads it.</span>
+    <span data-phrase="facts.picture.baked">Every frame drawn turned and encoded again as H.264 at {rate},
+      {frame}, {fps} frames a second. It is one generation further from the camera than the file you
+      started with; keep your original.</span>
+    <span data-phrase="facts.sound.copied">The sound was copied as it was, not re-encoded.</span>
+    <span data-phrase="facts.sound.encoded">The sound was encoded again as AAC at 160 kbit/s.</span>
+    <span data-phrase="facts.sound.none">No sound track: the file had none, or you left it out.</span>
+    <span data-phrase="facts.time">Done in {seconds}.</span>
+    <span data-phrase="support.nodecode">This browser will not decode this picture ({codec}) and the file gives
+      nothing an MP4 header can be written round as it is. Another browser on the same machine often will.</span>
+    <span data-phrase="stall.both">The browser's video codec stopped answering. Reload the page and try
+      again; a machine whose hardware encoder is busy or missing does this.</span>
+    <span data-phrase="stall.sound">The browser's audio codec stopped answering. Reload the page and try
+      again, or leave the sound out.</span>
+    <span data-phrase="encode.toobig">This browser will not encode H.264 at {size}. Turn off &ldquo;bake&rdquo;
+      and write the turn into the header instead.</span>
+    <span data-phrase="encode.noconfig">The encoder never reported a decoder configuration.</span>
+    <span data-phrase="decode.none">No frames could be decoded from this clip.</span>
+    <span data-phrase="copy.notavc">Only H.264 can be copied out of a WebM or MKV; bake the turn in instead.</span>
+    <span data-phrase="rotate.badturn">That is not a turn this page knows.</span>
+    <span data-phrase="sound.noaac">This browser will not encode AAC at this sound's rate and channel count.
+      Leave the sound out and turn the picture alone.</span>
+    <span data-phrase="sound.noencode">The audio encoder produced nothing.</span>
+    <span data-phrase="write.noframes">There were no frames to write.</span>
+    <span data-phrase="write.toobig">The finished file would be over 4 GB, which an MP4 written here cannot
+      hold. Cut the clip first.</span>
+    <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
+    <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
+    <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>
+    <span data-phrase="read.av1short">The AV1 configuration record is too short.</span>
+    <span data-phrase="read.compactsizes">The sample sizes are in a compact table this reader does not decode.</span>
+    <span data-phrase="read.sampletables">The sample tables are incomplete.</span>
+    <span data-phrase="read.chunktable">The chunk table is empty.</span>
+    <span data-phrase="read.nosamples">The video track holds no frames.</span>
+    <span data-phrase="read.nostbl">The video track is missing its sample tables.</span>
+    <span data-phrase="read.nostsd">The video track has no sample description.</span>
+    <span data-phrase="read.emptystsd">The video sample description is empty.</span>
+    <span data-phrase="read.encrypted">The video track is encrypted.</span>
+    <span data-phrase="read.unknowncodec">The video is stored as &ldquo;{type}&rdquo;, which this reader does not know.</span>
+    <span data-phrase="read.noconfig">The &ldquo;{type}&rdquo; track carries no decoder configuration.</span>
+    <span data-phrase="read.notmp4">This is not an MP4, MOV, WebM or MKV file. AVI, WMV, FLV and MPEG-2 are
+      not read here.</span>
+    <span data-phrase="read.nomoov">The file has no movie header.</span>
+    <span data-phrase="read.novideo">The file has no video track this reader can use.</span>
+    <span data-phrase="read.notimescale">The video track has no timescale.</span>
+    <span data-phrase="read.nofragments">The fragments in this file hold no frames for its video track.</span>
+    <span data-phrase="read.unreadable">The file could not be read as an MP4.</span>
+    <span data-phrase="read.notplayed">The format is not one this browser plays.</span>
+    <span data-phrase="read.layout">The layout of this file is not one the reader here understands.</span>
+    <span data-phrase="read.notmkv">This is not a WebM or MKV file.</span>
+    <span data-phrase="read.nosegment">The file has no segment after its header.</span>
+    <span data-phrase="read.mkvtracks">The file names no tracks.</span>
+    <span data-phrase="read.mkvcodec">The video is stored as &ldquo;{type}&rdquo;, which this reader does not know.</span>
+    <span data-phrase="read.mkvencoded">A track in this file is compressed or encrypted at the container level,
+      which this reader does not undo.</span>
+    <span data-phrase="read.mkvaudio">The &ldquo;{type}&rdquo; sound track carries no configuration and its
+      sample rate is not one that can be described without.</span>
+    <span data-phrase="read.lacing">A block in this file is laced in a way this reader could not follow.</span>
+    <span data-phrase="net.clean">your video has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a video or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a video or a byte of one.</span>
+  </div>
+</main>

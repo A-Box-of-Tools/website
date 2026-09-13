@@ -141,18 +141,6 @@ separate tool and not a button on the viewer.
 
 ## GIF & animation
 
-### GIF to MP4 or WebM
-
-Same animation, usually a tenth of the size, and every platform that rejects a
-30 MB GIF accepts the MP4. The muxer is a shared part already:
-[`mp4-muxer.js`](shared/js/mp4-muxer.js) writes the one H.264 track an encoder
-just produced, with no audio, and [`images-to-video`](tools/images-to-video/) and
-the time-lapse maker both ship it. It was five copies of `mp4.js` declared as
-duplicate groups until every one moved to `shared/js/`, which is why the group
-list in `tests/python/test_duplicates.py` is empty now. A GIF has no sound to
-carry, so that is the writer this wants, and the work is the decode side and
-the encoder settings.
-
 ### Edit a GIF
 
 One tool, not four. Resizing, cropping, rotating, reversing and retiming a GIF
@@ -196,26 +184,6 @@ is the frame-by-frame decode of the GIF going in, which
 
 ## Video
 
-### Resize
-
-The most-wanted video job there is, and the reason is always the same: the file
-will not send. `VideoDecoder` and `VideoEncoder` do the work, behind the reader
-that [`crop-video`](tools/crop-video/) and five other tools already ship as
-[`mp4-reader.js`](shared/js/mp4-reader.js).
-
-### Rotate
-
-The cheapest thing on this entire list, and it should be built first for that
-reason. A sideways MP4 does not need re-encoding — it needs a different display
-matrix in `tkhd`, which is a few bytes. Both halves of that are shared parts:
-[`mp4-reader.js`](shared/js/mp4-reader.js) carries the sample entry and the
-display matrix out of the file whole, and reads the quarter turn the matrix
-asks for, and [`mp4-writer.js`](shared/js/mp4-writer.js) writes the matrix it
-is handed back into `tkhd`, because the trimmer and the reverser need a clip
-filmed on a phone to come out the right way up. So the hard part is already
-sitting in the repository being used for something else, and this tool is the
-line between the two that changes the matrix.
-
 ### Mute a video
 
 Dropping the audio track from an MP4 is a remux: the video samples are copied
@@ -225,15 +193,6 @@ saving a video's audio on its own already ships, as a page of its own at
 [`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/) take a
 video too; none of the three decodes its picture. Half of the old
 "Mute, or save the audio" line was a promise to build something that existed.
-
-### Convert to MP4
-
-The direction that matters. Whatever came off the screen recorder, the camera
-or the messaging app, MP4 is the file that uploads, and `VideoEncoder` writes
-H.264 where the browser supports it. The old card said "MP4 or WebM": WebM
-encoding through WebCodecs is not dependable outside Chromium, and promising a
-format half the visitors' browsers cannot write is worse than promising
-nothing.
 
 ### Burn in subtitles
 

@@ -36,8 +36,9 @@
  *     What this file knows about encryption is only how to *apply* a cipher:
  *     which strings and streams are covered by one, which are exempt, and when
  *     the key has to exist. The ciphers, the key derivation and the password
- *     itself are the caller's, in tools/unlock-pdf/src/crypt.js, so the four
- *     tools that refuse encrypted files carry no crypto to refuse them with.
+ *     itself are the caller's, in shared/js/pdf-crypt.js, which only the two
+ *     tools that deal in encryption ask for, so the four that refuse encrypted
+ *     files carry no crypto to refuse them with.
  *   - **Lazily.** Every object is parsed at open. A reader that renders one page
  *     wants the opposite, but this rewrites the whole file, so it needs all of
  *     them anyway, and having them means `resolve` can be an ordinary function

@@ -1,0 +1,218 @@
+<!--
+  tools/watermark-pdf/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key, data-* attribute and brace placeholder below is what the JavaScript reaches for, so they are the same in every language. Only the words change.
+
+  count.pages.one / count.pages.many 和 note.pages.one / note.pages.many 照旧留成两条。中文不分单复数，两条会写成同一句话，但键是 JavaScript 要找的，两条都得在。check.ok.* 那三条会被填进 check.passed，是短语。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+
+  pdf.* 那一批是 PDF 读取失败的原因，会被填进 read.failed 的 {detail} 里，所以每一条都写成一个短语而不是一句话，跟英文一样。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选那份 PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一份</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      密码可以在哪里去掉，只在文件正是因为一个密码而读不了的时候显示。盖章意味着要打开文档，而这一页不问密码；去掉密码的那一页在隔壁，把密码加回去的那一页在隔壁的隔壁。
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      这份文档是锁着的。先在这个浏览器里用 <a href="../unlock-pdf/">PDF 解锁</a>把保护去掉，再把解锁后的副本拿回这里；想要的话，之后用 <a href="../protect-pdf/">PDF 加密</a>给盖好章的副本加上密码。
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    第 2 步 | 水印。
+
+    字放最前面，因为它就是全部的意义；然后是它怎么放，控件旁边有预览。预览是一张跟第一页一样形状的空白页，位置由写文件的同一套算法画出来，从来不是文档本身，本站画不了它，也这么说了。
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> 说水印该写什么、怎么放</h2>
+
+    <label class="field" for="words">
+      <span>那行字</span>
+      <span class="field-note">
+        这份副本是给谁的、什么时候给的。任何语言：字是你自己的浏览器画的，你能打出来的，水印就能说出来。
+      </span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="仅供某某银行使用 · 2026 年 9 月 12 日">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>大小</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">小</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">中</button>
+            <button type="button" class="chip" data-size="large">大</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>角度</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">对角线</button>
+            <button type="button" class="chip" data-diagonal="no">平放</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>位置</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">中间一次</button>
+            <button type="button" class="chip" data-tiled="yes">铺满整页</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>颜色</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">灰</button>
+            <button type="button" class="chip" data-colour="red">红</button>
+            <button type="button" class="chip" data-colour="blue">蓝</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>有多淡</span>
+          <span class="field-note">
+            不透明度 <span id="opacity-value">30</span>%。淡到能透过它读字，深到复印一次还在。
+          </span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>只盖第一页</strong>
+            <span class="check-note">不勾的话每一页都盖。</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        预览。一张跟第一页大小形状一样的空白页，水印压在上面；字是实时画的，访客看到的是自己打的字，不是占位符。屏幕阅读器靠下面那句话理解它，那句话说了画了什么、没画什么。
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">
+          水印压在一张跟你第一页一样形状的空白页上，位置就是文件会放的位置。你页面自己的内容不会画出来：本站没有 PDF 渲染器，这是有意的。
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 第 3 步 | 那一下点击 -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 盖上去</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">给文档加水印</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">这一步会在上面有了文档、水印上有了字之后开放。</span>
+    <span data-phrase="note.repaired">这个文件的交叉引用表跟它的内容对不上，所以是靠扫描对象把它读出来的。那是一次修复，而且成功了，不过在把结果发给别人之前先检查一下。</span>
+    <span data-phrase="note.incremental">这份文档至少被编辑并重新保存过一次，所以它里面还带着一些已经没有任何东西指向的旧对象副本。那些不会出现在你拿回去的文件里。</span>
+    <span data-phrase="note.pages.one">1 页，{size}。</span>
+    <span data-phrase="note.pages.many">{n} 页，{size}。</span>
+    <span data-phrase="read.notpdf">这不是 PDF。这个工具只处理 PDF 文件。</span>
+    <span data-phrase="read.encrypted">这份 PDF 是加密的。</span>
+    <span data-phrase="read.nocatalogue">这个文件没有文档目录，所以没有什么可盖章的。它要么不是 PDF，要么损坏得超出了这里能修复的程度。</span>
+    <span data-phrase="read.noheader">它的开头不像 PDF：没有 %PDF- 头。</span>
+    <span data-phrase="read.nopages">这份文档没有可以盖章的页面。</span>
+    <span data-phrase="read.failed">这份 PDF 读不了：{detail}</span>
+    <span data-phrase="pdf.flate">一个 Flate 流解不开（{detail}）</span>
+    <span data-phrase="pdf.nocompression">这个浏览器没有 CompressionStream</span>
+    <span data-phrase="pdf.lzw">一个 LZW 流以未定义的编码开头</span>
+    <span data-phrase="pdf.cryptfilter">这个流是加密的</span>
+    <span data-phrase="pdf.unknownfilter">一个未知的过滤器，/{name}</span>
+    <span data-phrase="pdf.deep">嵌套太深</span>
+    <span data-phrase="pdf.short">读到了末尾之外</span>
+    <span data-phrase="pdf.unexpected">在 {at} 处遇到意外的 {found}</span>
+    <span data-phrase="pdf.unexpectedbyte">在 {at} 处遇到意外的字节 0x{hex}</span>
+    <span data-phrase="pdf.noendstream">一个没有 endstream 的流</span>
+    <span data-phrase="pdf.noobj">{at} 处没有 obj 关键字</span>
+    <span data-phrase="pdf.nostartxref">没有 startxref</span>
+    <span data-phrase="pdf.noxref">不是一个 xref 区段</span>
+    <span data-phrase="pdf.now">一个没有 /W 的 xref 流</span>
+    <span data-phrase="pdf.zerowidth">一个字段宽度为零的 xref 流</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} 页</span>
+    <span data-phrase="count.pages.many">{n} 页</span>
+    <span data-phrase="stage.drawing">正在画水印</span>
+    <span data-phrase="stage.writing">正在把文档写回去，每一页都带着水印</span>
+    <span data-phrase="stage.checking">正在重新打开它来核对</span>
+    <span data-phrase="run.cancelled">已取消。什么都没有被改动；按那个按钮可以重新开始。</span>
+    <span data-phrase="result.ready">{size}，已盖章。</span>
+    <span data-phrase="result.sub">每一页、每一个字体、每一张图片，都还是当初进来的那一个，水印画在它们上面。把你的原件也留着。</span>
+    <span data-phrase="check.passed">已核对：{found}</span>
+    <span data-phrase="check.failed">这次运行没有通过核对，{found}。把你的原件留着。</span>
+    <span data-phrase="check.ok.all">从内存里重新打开了，{pages}，每一页都带着水印。</span>
+    <span data-phrase="check.ok.first">从内存里重新打开了，{pages}，按要求只有第一页带着水印。</span>
+    <span data-phrase="check.ok.single">从内存里重新打开了，它唯一的一页带着水印。</span>
+    <span data-phrase="check.pages">做好的文件回来时是 {pages} 页，而不是 {expected} 页</span>
+    <span data-phrase="check.missing">做好的文件第 {n} 页没有带着水印</span>
+    <span data-phrase="check.reopen">做好的文件没能重新打开（{detail}）</span>
+    <span data-phrase="facts.words">水印写着「{words}」。</span>
+    <span data-phrase="facts.placement.once">每一页一次，{size}，{angle}，不透明度 {opacity}%。</span>
+    <span data-phrase="facts.placement.tiled">每一页重复 {n} 次，{size}，{angle}，不透明度 {opacity}%。</span>
+    <span data-phrase="facts.firstonly">只有第一页带着它；其余 {n} 页保持原样。</span>
+    <span data-phrase="facts.picture">这些字是作为一张图画上去的，所以任何阅读器都能显示，但不能被选中或者搜索。任何一个有编辑器的人都能去掉水印；这个水印说的是一份副本去了哪里，并不锁住文档。</span>
+    <span data-phrase="facts.signature">这份文档带着数字签名。重写一个文件会破坏它上面的任何签名，所以你拿回去的这份是没有签名的，原件仍然是签过名的那一份。</span>
+    <span data-phrase="facts.incremental">早先编辑留下的、已经被取代的旧对象副本没有复制过来。</span>
+    <span data-phrase="facts.repaired">原件的交叉引用表是坏的，只能靠扫描重建。把这个文件转给别人之前先检查一下。</span>
+    <span data-phrase="size.small">小号</span>
+    <span data-phrase="size.medium">中号</span>
+    <span data-phrase="size.large">大号</span>
+    <span data-phrase="angle.diagonal">沿对角线</span>
+    <span data-phrase="angle.flat">平放</span>
+    <span data-phrase="net.clean">你的文档哪儿都没去。一共加载了 {total} 个文件，全都是这一页自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从来不这么做。把它当成值得查一查的事。{platform}</span>
+    <span data-phrase="net.platform.one">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一份文档，或者文档里的一个字节。</span>
+    <span data-phrase="net.platform.many">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一份文档，或者文档里的一个字节。</span>
+  </div>
+</main>

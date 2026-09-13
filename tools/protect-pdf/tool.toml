@@ -1,0 +1,482 @@
+#
+# Protect a PDF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is the same one /unlock-pdf/ holds on to, seen from the other
+# side: "protected" means two different things and this page must never let
+# them blur. An *open password* is real - the document is genuinely enciphered
+# and nobody without the password reads it. *Restrictions* - no printing, no
+# copying, no editing - are a request that well-behaved readers honour and any
+# reader may decline, documented as such by Adobe from the beginning, and this
+# site publishes the page that declines them. So a tool that offers both has
+# to say, beside the checkboxes, which of the two it is writing and what each
+# is worth. Every sentence here is written so that somebody who knows the
+# format cannot catch it overstating either.
+#
+# The second is that a password set here is the only way back in. Nothing on
+# this site guesses passwords, and neither does anything honest elsewhere, so
+# the page asks for the password twice, says once in plain words that a
+# forgotten one means a lost document, and never writes a file nobody could
+# open by accident: an owner password left blank is filled in, never left
+# empty, and a document is only ever closed by the password the visitor typed
+# twice.
+#
+
+slug = "protect-pdf"
+name = "PDF Protector"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Protect&nbsp;PDF <span class=\"h1-kw\">&mdash; put a password on it, and restrictions if you want them</span>"
+tagline = "Lock a document you would rather not hand to a website in order to lock it."
+icon = "&#128274;"                  # the padlock, beside the page heading
+favicon = "&#128274;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "file-lock"
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "documents"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works, modes
+# is the choice between the two encryption schemes, checks is the row of
+# restrictions, and results carries the file name and size lines the other
+# PDF tools use.
+css_parts = ["progress", "form", "checks", "modes", "notes", "results"]
+
+# file-picker brings in the drop zone. The four pdf-* parts the compressor, the
+# merger, the redactor and the unlocker also ask for are the PDF itself - the
+# object grammar, the stream filters, the reader and the writer - and travel
+# together, because the reader and the writer import the other two.
+#
+# pdf-crypt is the standard security handler, shared with /unlock-pdf/ since
+# this tool needed the other half of it: the same file that derives a key from
+# a password to open a document builds the dictionary and the cipher that lock
+# one. aes and rc4 are its two ciphers, pdf-permissions is /P as a list, and
+# md5 with hash-blocks is the checksum tool's MD5, which every version of PDF
+# encryption before 2017 runs a password through and no browser offers.
+#
+# example-pdf, pdf-page-writer and example-statement are for the example alone:
+# an ordinary two-page statement with nothing on it, which is what somebody
+# arriving here is holding.
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-crypt", "aes", "rc4", "pdf-permissions", "md5", "hash-blocks", "message-box", "format", "example-pdf", "pdf-page-writer", "example-statement"]
+lastmod = "2026-09-11"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Password Protect a PDF &mdash; Encrypt &amp; Restrict, Free, No Upload"
+description = "Put a password on a PDF, or restrict printing and copying, in your browser. AES-256 by default, nothing is uploaded, and the finished file is opened again here to prove the password holds before you are offered it."
+og_title = "Password-protect a PDF without uploading it anywhere"
+og_description = "A document worth locking is a document worth not handing to a website first. This encrypts it in your browser, with AES-256, and checks its own work before you download."
+og_image_alt = "Password-protect a PDF in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Put a password on a document without the document, or the password, leaving your machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing is widened. This page has no carry-on row - a locked document is
+  where a chain of PDF tools ends, and the way back in is /unlock-pdf/ - so
+  connect-src stays exactly as the site sets it, with no origin of ours in
+  it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The document you choose is opened, encrypted and written back out in
+    memory on this machine, by code served from this address. Nothing here can
+    make an upload, and there is no server on the other end of this page to
+    receive one. Neither the file nor the password you type leaves the tab."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      protect something. Not one request carries a document, a password, or a
+      filename. Or unplug from the internet and protect it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/shared/pdf-crypt.js</code> for how a password becomes a
+      document's key and how the /Encrypt dictionary is built from it, and
+      <code>src/shared/aes.js</code> for the cipher itself. None of them can
+      reach the network, and neither can the reader or the writer beside
+      them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to put a password on a PDF, or restrict it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Put a password on a PDF, or ask readers not to print or copy it,
+            without the document going anywhere. AES-256 by default, an older
+            scheme for older readers, and the finished file is opened again
+            here to prove the lock holds before you get it."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "documents"
+choose = "a PDF"
+analytics_extra = """, and nothing about
+  the password you typed or what the file was protected with"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "The one tool where uploading would defeat the point."
+body = """
+
+      A document worth putting a password on is, by definition, one you do not
+      want in other people's hands. Every online tool that offers to protect
+      it asks you to hand it over first &mdash; the unlocked original, and then
+      the password you chose &mdash; to a server whose retention you cannot
+      see. This page cannot do that. The file is read by your own browser, the
+      key is derived in this tab, the encrypted copy is written in memory, and
+      the page's <code>Content-Security-Policy</code> names every address it
+      may contact &mdash; not one of them belongs to this site. Unplug from
+      the network and it keeps working, which is the simplest proof there
+      is."""
+
+[[privacy]]
+title = "A password is real. A restriction is a request. The page says which is which."
+body = """
+
+      An <em>open password</em> genuinely locks the document: the contents are
+      enciphered with a key derived from it, the password is written nowhere
+      in the file, and nobody without it reads a word. <em>Restrictions</em>
+      &mdash; no printing, no copying, no editing &mdash; are different. A
+      document that opens without a password has to carry everything needed
+      to derive its own key, so what stops a reader printing is a permissions
+      field the reader agrees to honour, and any reader may decline. Adobe
+      documented that from the beginning, and the
+      <a href=\"../unlock-pdf/\">PDF Unlocker</a> on this site is one of the
+      programs that declines. Restrictions are still worth setting: they are
+      how you say what you would like, and most readers listen. They are just
+      not a lock, and this page will not tell you they are."""
+
+[[privacy]]
+title = "AES-256, the current scheme, unless you ask for the older one."
+body = """
+
+      PDF encryption has been through five generations, and readers report
+      all of them as \"password protected\". The default here is the newest:
+      AES-256 with the PDF 2.0 password hash, which is deliberately expensive
+      to compute and is the only scheme in the family still considered
+      strong. A document locked this way is as good as the password on it.
+      The one reason to choose the other option, AES-128 with the 1994 key
+      derivation, is a reader older than 2010 that has to open the file, and
+      the page says so beside the choice rather than offering the weaker
+      scheme as a peer of the stronger one."""
+
+[[privacy]]
+title = "The password is asked for twice, because there is no way back."
+body = """
+
+      Nothing on this site guesses passwords, and nothing honest anywhere
+      does either: a document locked with a strong scheme and a password
+      nobody remembers is a document nobody will read again. So the open
+      password is typed twice and the two have to agree, and the page says
+      plainly, once, that a forgotten password is a lost file. Keep your
+      original. Nothing about it is changed by this."""
+
+[[privacy]]
+title = "The finished file is opened again, here, before you are offered it."
+body = """
+
+      Everything above is this tool marking its own homework until that
+      happens. So the bytes that are about to become your download are handed
+      to the same reader every PDF tool on this site uses, twice: once with
+      no password, where it has to be refused, and once with the password you
+      set, where it has to open and come back with the same number of pages
+      and the restrictions you asked for. A file that failed either test
+      would be reported as failed, with no download offered."""
+
+[[privacy]]
+title = "The pages themselves are not re-rendered, re-encoded or reflowed."
+body = """
+
+      What changes is the encryption around the document, not the document.
+      Every page's drawing instructions, every embedded font and every picture
+      is written back out exactly as it arrived, enciphered, so text stays
+      selectable and searchable for whoever has the password, scans stay at
+      the resolution they were scanned at, and nothing shifts on a page. The
+      one thing that does change is what a rewrite always changes: older
+      superseded copies of objects left behind by earlier edits are not
+      carried over."""
+
+[[privacy]]
+title = "A digital signature cannot survive this, and the page says when there is one."
+body = """
+
+      A signature covers the exact bytes of the file it was applied to, so any
+      rewrite invalidates it &mdash; that is what a signature is for. This tool
+      writes a new file, so the copy you get back is unsigned, and it says so
+      on the results when it finds a signature to warn about. Your original is
+      still the signed one. If you need both, sign after you protect, not
+      before."""
+
+[[privacy]]
+title = "A document that is already locked is sent next door first."
+body = """
+
+      A file that needs a password to open is not re-locked here with a
+      password on top of a password. It is turned away with a link to the
+      <a href=\"../unlock-pdf/\">PDF Unlocker</a>, which takes the old
+      protection off in the same browser, and the unlocked copy comes back
+      here for the new one. A file that opens for anybody and only carries
+      restrictions is accepted, and told plainly that what you set replaces
+      what was there."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your document: not a file, not a page, not a name, a size, a page count,
+      a password, or what the file was protected with. Every line that reads,
+      encrypts or writes a PDF is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your documents. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your document away to be encrypted would stop."""
+
+[[howto]]
+title = "Choose the PDF."
+body = """
+ One document at a time. It is read
+      straight off your disk by the browser and opened here. A document that
+      already needs a password is turned away with a link to the unlocker;
+      one that only carries restrictions is accepted, and what you set below
+      replaces them."""
+
+[[howto]]
+title = "Set the password to open it, and type it again."
+body = """
+
+      This is the real lock. Whoever has this password reads the document;
+      nobody else does, and nothing here or anywhere honest will recover it
+      if it is forgotten. The two boxes have to agree before the button
+      wakes. Leave both blank if all you want is restrictions on a document
+      that still opens for everybody."""
+
+[[howto]]
+title = "Tick the restrictions, if you want any."
+body = """
+
+      Printing, copying text and pictures out, and changing the document.
+      These are requests that well-behaved readers honour, not encryption,
+      and the page says so beside the boxes. An owner password lifts them; if
+      you leave that box blank the open password does both jobs, and if you
+      set no password at all a random one is used and thrown away, so the
+      restrictions cannot be lifted by trying nothing."""
+
+[[howto]]
+title = "Protect it, and read the line that says it was checked."
+body = """
+
+      The document is written back out enciphered under a fresh key. Then the
+      finished file is opened again here twice &mdash; once with no password,
+      where it has to be refused, and once with yours, where it has to open
+      with the same number of pages &mdash; and if either check fails you get
+      no download and a message saying so."""
+
+[[faq]]
+q = "Is a password-protected PDF actually secure?"
+a = """
+        With the default here, yes, exactly as secure as the password: AES-256
+        under the PDF 2.0 password hash is the current scheme and there is no
+        shortcut through it. What is worth knowing is that not every
+        \"password protected\" PDF was made this way. The format has been
+        through five generations, from a 40-bit key in 1994 that a laptop can
+        search outright to this one, and readers report them all with the
+        same words. This page writes the strongest, and names the other one
+        it can write for what it is."""
+
+[[faq]]
+q = "What is the difference between the password and the restrictions?"
+a = """
+        A PDF has room for two passwords. The <em>user</em> password is the
+        one a reader asks for; without it the file does not open, and that is
+        real. The <em>owner</em> password lifts the <em>restrictions</em>
+        &mdash; printing, copying, editing &mdash; and those are a request. A
+        document that opens without a password must contain everything needed
+        to derive its own key, so the only thing stopping a reader from
+        printing it is a field it has agreed to honour, and any reader may
+        decline. The <a href=\"../unlock-pdf/\">PDF Unlocker</a> on this site
+        is one that declines. Set restrictions to say what you would like;
+        set a password to make sure."""
+
+[[faq]]
+q = "What if I forget the password?"
+a = """
+        Then the document is lost, and it is better to hear that here than
+        from a \"password recovery\" site that takes your file first. Nothing
+        on this site guesses passwords &mdash; you can read
+        <code>src/shared/pdf-crypt.js</code> and see there is no loop in it
+        &mdash; and for a document locked with the default scheme, nothing
+        honest anywhere would succeed. That is why the page asks for the
+        password twice. Keep your original: it is not changed by this, and
+        it is the copy you will want if the password is ever gone."""
+
+[[faq]]
+q = "Should I choose AES-256 or AES-128?"
+a = """
+        AES-256, unless a reader from before 2010 has to open the file. The
+        256-bit option is the PDF 2.0 scheme &mdash; Acrobat X and later,
+        every browser, every phone, every current reader. The 128-bit option
+        is the 2005 scheme, which those older readers understand, and it is
+        weaker not because of the cipher but because of the 1994 key
+        derivation in front of it, which makes guessing a password far
+        cheaper than the cipher suggests. If you do not know which reader will
+        open the file, choose 256."""
+
+[[faq]]
+q = "Can I protect a PDF that is already protected?"
+a = """
+        If it opens without a password and only carries restrictions, yes:
+        drop it in, and what you set replaces what was there. If it asks for
+        a password to open, this page turns it away and points at the
+        <a href=\"../unlock-pdf/\">PDF Unlocker</a>, which takes the old
+        protection off in the same browser; bring the unlocked copy back here
+        for the new one. Two locks on one document is not something the format
+        can express, so changing a password is always take-off-then-put-on."""
+
+[[faq]]
+q = "Will the document look any different afterwards?"
+a = """
+        No. Nothing is re-rendered, re-encoded or reflowed: every page's
+        drawing instructions, every embedded font and every image is copied
+        through exactly as it arrived, enciphered. For whoever has the
+        password, text stays selectable, scans stay at their original
+        resolution, and nothing moves. The file may come out slightly
+        smaller, because a rewrite leaves behind the superseded copies of
+        objects that earlier edits left in it, and slightly larger where
+        encryption adds sixteen bytes to every stream."""
+
+[[faq]]
+q = "What happens to a signed document?"
+a = """
+        Its signature stops being valid, and there is no way round that. A
+        signature covers the exact bytes of the file it was applied to, so
+        any change at all &mdash; by any program, including the one that
+        signed it &mdash; invalidates it. This tool writes a new file,
+        notices when the original was signed, and says so on the results.
+        If you need a document that is both signed and protected, protect it
+        first and sign the protected copy."""
+
+[[faq]]
+q = "Are my documents or passwords uploaded anywhere?"
+a = """
+        No. The file is read, encrypted and written by your own browser on
+        your own hardware, and the password goes into a key derivation
+        running in this tab. There is no server side to this tool, and the
+        page's <code>Content-Security-Policy</code> names every address it
+        may contact &mdash; none of them belongs to this site. The simplest
+        way to satisfy yourself is to unplug from the network and use the page
+        anyway. On this tool of all tools, that is the point: a document you
+        are locking is one you would rather not hand round first."""
+
+[[faq]]
+q = "How do I know the protection is really on?"
+a = """
+        Because the tool checks, on your machine, and shows you the result.
+        When the file has been written it is handed back to the same reader
+        that the other PDF tools on this site use, twice. With no password it
+        has to be refused outright; with the password you set it has to open,
+        come back with the same number of pages, and report the restrictions
+        you ticked. If either check fails, the run is reported as failed and
+        nothing is offered for download. You can check it yourself afterwards
+        too: open it in any reader, which will ask for the password, and look
+        at the document properties for the permissions."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        There is no limit written into the tool. The limit is your own machine:
+        the document is held in memory while it is worked on, so a laptop will
+        take a few hundred megabytes without complaint and will struggle
+        somewhere above that. It is free, there is no account, no sign-in and no
+        trial. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your documents."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your document away to be encrypted would
+        stop the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Password-protect a PDF, or restrict printing, copying and editing, in your browser. AES-256 by default, an older scheme for older readers, nothing uploaded, and the finished file is reopened here to prove the lock holds."
+features = [
+  "Puts an open password on a PDF with AES-256, the current PDF 2.0 scheme",
+  "AES-128 for readers older than 2010, named for what it is",
+  "Restricts printing, copying and editing, with a separate owner password or without one",
+  "Asks for the password twice and says plainly that a forgotten one is a lost document",
+  "Says which of the two protections is a lock and which is a request",
+  "Reopens the finished file with and without the password to prove the protection holds",
+  "Turns an already-locked file away to the unlocker rather than stacking passwords",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: a password belongs to one document, and a queue
+# that gave twelve files one password would be exactly the tool that mails
+# the wrong statement to the wrong customer.
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Drop the PDF to protect here"
+hint = "or click to browse &mdash; one document at a time"
+# An ordinary two-page statement with nothing on it, written in the page.
+# See src/example.js.
+example = true

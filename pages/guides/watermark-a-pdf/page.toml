@@ -1,0 +1,37 @@
+#
+# Guide: putting a watermark on a PDF, and knowing what it is worth.
+#
+# Written for somebody about to send a scan of something personal - an ID, a
+# statement, a contract - to an agency, a lender or a landlord, who has been
+# told to "watermark it" and wants to know why, how, and whether it does what
+# they hope. The honest half is the important one: a watermark makes a copy
+# say where it went, which is a real and useful thing, and it stops nobody
+# from copying the document. The guide says both, and points at the
+# protector for the case that needs a lock.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/watermark-a-pdf"
+kind = "guide"
+nav = "Watermarking a PDF"
+group = "doing-the-job"
+tool = "watermark-pdf"
+
+title = "How to Watermark a PDF, and What a Watermark Actually Does"
+description = "Why lenders and landlords ask for a scan to be stamped with their name, what the stamp does and does not prevent, how to do it in your browser without uploading the document, and what to write on it."
+
+heading = "How to watermark a PDF, and what the stamp is actually for"
+lede = """
+    A scan stamped with who it is for cannot quietly be used somewhere else.
+    That is the whole job, it is worth doing, and it is not the same thing as
+    locking the document. Here is what to write, how to put it on, and where
+    the line is."""
+
+updated = "12 September 2026"
+published = "2026-09-12"
+lastmod = "2026-09-12"
+
+og_title = "How to watermark a PDF, and what it is for"
+og_description = "What to write on a scan before you send it, why it stops a copy being reused and does not stop it being copied, and how to stamp it in your browser."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -1,0 +1,37 @@
+#
+# Guide: getting a video under a size limit.
+#
+# Written for somebody whose clip has just been refused - by a chat app, an
+# email, a form - and who wants it to send, not to learn video encoding. So
+# the guide starts from the number, says what the number costs and where it
+# is spent, and only then explains why the upload every online compressor
+# asks for is both the slow part and the strange part. The honest half is
+# that a compressed video is a re-encoded one; the guide says what is lost
+# and how to lose as little as the number allows.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/compress-a-video"
+kind = "guide"
+nav = "Compressing a video"
+group = "doing-the-job"
+tool = "compress-video"
+
+title = "How to Compress a Video to Under 8, 25 or 100 MB"
+description = "What a size limit actually costs a video, where the megabytes go, why the frame size drops before the picture goes to mud, how to lose as little as the number allows, and how to do it in your browser without the upload."
+
+heading = "How to compress a video to a size that will send"
+lede = """
+    A clip that will not send has one problem: it is over a number. Here is
+    where the megabytes go, what giving them up costs, and how to get under
+    the number without first uploading the thing that was too big to
+    upload."""
+
+updated = "12 September 2026"
+published = "2026-09-12"
+lastmod = "2026-09-12"
+
+og_title = "How to compress a video to a size that will send"
+og_description = "Where a video's megabytes go, what a size limit costs, and how to get under it in your browser without uploading the file."
+og_image_alt = "abox.tools - tools that never touch a server"

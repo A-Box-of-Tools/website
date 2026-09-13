@@ -32,7 +32,7 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-gif", "example-photo"]
+js_parts = ["file-picker", "gif-decode", "gif-compose", "zip", "crc32", "message-box", "format", "example-gif", "example-photo"]
 lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -63,8 +63,8 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/gif.js</code> for the reader that
-      decompresses the frames, and <code>src/compose.js</code> for the rules that
+, <code>src/shared/gif-decode.js</code> for the reader that
+      decompresses the frames, and <code>src/shared/gif-compose.js</code> for the rules that
       lay them on top of each other &mdash; neither of which has a line that could
       reach the network."""
 
@@ -123,8 +123,8 @@ title = "The GIF reader is two files in this repository."
 body = """
  A browser will
       play a GIF but will not hand you its parts, so the format is read out here:
-      <code>src/gif.js</code> is the container and the LZW decompressor,
-      <code>src/compose.js</code> is the disposal rules that decide what each frame
+      <code>src/shared/gif-decode.js</code> is the container and the LZW decompressor,
+      <code>src/shared/gif-compose.js</code> is the disposal rules that decide what each frame
       looks like once the ones before it are underneath. Nothing is fetched to
       open a file, and there is no engine downloaded on first use."""
 

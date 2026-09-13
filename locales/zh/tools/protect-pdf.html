@@ -1,0 +1,249 @@
+<!--
+  tools/protect-pdf/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key and brace placeholder below is what the JavaScript reaches for, so they are the same in every language. Only the words change.
+
+  count.pages.one / count.pages.many 照旧留成两条。中文不分单复数，两条会写成同一句话，但键是 JavaScript 要找的，两条都得在。list.two / list.three 是 facts.restrictions 里那个清单的连接方式，中文全用顿号：填进去的是汉字词，而 cjk_fix.py 会在汉字和 {blank} 之间强行加空格，写「和」就会渲染成「打印 和 复制」。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+
+  pdf.* 那一批是 PDF 读取失败的原因，会被填进 read.failed 的 {detail} 里，所以每一条都写成一个短语而不是一句话，跟英文一样。check.ok.* 和 check.* 那几条会被填进 check.passed / check.failed，同样是短语。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选那份 PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一份</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      旧密码可以在哪里去掉，只在文件正是因为一个密码而读不了的时候显示。一份文档上叠两个密码不是这个格式能表达的东西，所以换密码永远是先去掉、再加上，而去掉它的那一页就在隔壁。
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      这份文档已经要密码才能打开。先在这个浏览器里用 <a href="../unlock-pdf/">PDF 解锁</a>把那个密码去掉，再把解锁后的副本拿回这里加新的。
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    第 2 步 | 要加上去的是什么。
+
+    这张卡片以密码开头，因为密码才是锁；限制放在它下面，旁边写一句它们是什么、不是什么。一个把「不许打印」和「密码」当成两个等重的框并排摆出来的页面，等于在告诉访客这两样是同一种东西，而隔壁那一页存在的意义就是说它们不是。
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> 选密码和限制</h2>
+
+    <p class="card-lede">
+      密码是锁：文档用从它推导出来的密钥加密，没有它谁也读不了一个字。下面的限制是另一回事，它是阅读器按约定遵守的一个请求，任何一个阅读器都可以不理。两样可以只设一样，也可以都设。
+    </p>
+
+    <div class="password-box">
+      <label class="field" for="password">
+        <span>打开这份文档的密码</span>
+        <span class="field-note">
+          在这里打进去，也在这里用掉；它不会被发到任何地方，因为这一页上根本没有可以发过去的地方。留空的话，就只给一份仍然谁都打得开的文档加限制。
+        </span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal" class="ghost" aria-pressed="false">显示</button>
+      </div>
+
+      <label class="field" for="password-again">
+        <span>再打一遍同一个密码</span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+      </div>
+
+      <!--
+        这一页上唯一一句必须被读到的话，所以它不在常见问题里。一个强方案加一个忘掉的密码，就是一份丢掉的文档，本站和别处任何诚实的地方都找不回来。
+      -->
+      <p id="password-status" class="field-summary password-status" role="status" aria-live="polite">
+        没有这个密码就没有回头路。这里不猜密码，别处任何诚实的东西也不猜。把你的原件留着。
+      </p>
+    </div>
+
+    <fieldset class="restrictions">
+      <legend>限制</legend>
+      <p class="field-note restrictions-note">
+        这些是请阅读器别做某件事。大多数阅读器会听；没有哪一个是被迫的，而一份不用密码就能打开的文档，限制总是能被解除的。勾上它们是为了说出你的希望，不是为了锁死。
+      </p>
+
+      <label class="check">
+        <input type="checkbox" id="restrict-print">
+        <span>
+          <strong>不许打印</strong>
+          <span class="check-note">按完整质量打不了，打成一张粗糙的图也不行。</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-copy">
+        <span>
+          <strong>不许复制</strong>
+          <span class="check-note">文字和图片不能被选中复制出去。朗读给看不见它的人听仍然是允许的。</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-change">
+        <span>
+          <strong>不许改动</strong>
+          <span class="check-note">不许编辑，不许加批注或者高亮，不许填表单，不许增删或者重排页面。</span>
+        </span>
+      </label>
+
+      <label class="field owner-field" for="owner-password">
+        <span>权限密码，以后用来解除这些限制</span>
+        <span class="field-note">
+          选填。留空的话，打开密码兼两份工；要是一个密码都没设，就会用一个随机的、然后扔掉，这样限制不会被「什么都不输」解除。
+        </span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">显示</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="modes">
+      <legend>用哪种加密</legend>
+      <label class="mode">
+        <input type="radio" name="scheme" value="6" checked>
+        <span><strong>AES-256</strong> 当前的方案，来自 PDF 2.0。2010 年之后的每一个阅读器都打得开，也是唯一一个仍然被认为是强的。</span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="scheme" value="4">
+        <span><strong>AES-128</strong> 2005 年的方案，给必须能打开这个文件的、2010 年之前的老阅读器用。算法本身没问题；它前面那个 1994 年的密码哈希让猜密码便宜得多。</span>
+      </label>
+    </fieldset>
+
+  </section>
+
+  <!-- 第 3 步 | 那一下点击 -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 加密</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">给文档加密</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.settings">这一步会在上面两个密码一致、并且有东西要加的时候开放。</span>
+    <span data-phrase="password.show">显示</span>
+    <span data-phrase="password.hide">隐藏</span>
+    <span data-phrase="status.blank">没有这个密码就没有回头路。这里不猜密码，别处任何诚实的东西也不猜。把你的原件留着。</span>
+    <span data-phrase="status.mismatch">两个密码还不一致。</span>
+    <span data-phrase="status.short">{n} 个字符。密码太短是当前方案唯一的弱点；一句话比一个词好。</span>
+    <span data-phrase="status.ok">{n} 个字符，两遍打得一样。没有它就没有回头路，所以把你的原件留着。</span>
+    <span data-phrase="status.nothing">还什么都没要：设一个密码，勾一条限制，或者两样都来。</span>
+    <span data-phrase="status.restrictonly">没有打开密码。这份文档仍然谁都打得开，只带着下面勾上的限制。</span>
+    <span data-phrase="note.restricted">这份文档已经带着限制，但没有打开密码。它在这里不用密码就打开了，你在下面设的会替换掉它原来带的。</span>
+    <span data-phrase="note.repaired">这个文件的交叉引用表跟它的内容对不上，所以是靠扫描对象把它读出来的。那是一次修复，而且成功了，不过在把结果发给别人之前先检查一下。</span>
+    <span data-phrase="note.incremental">这份文档至少被编辑并重新保存过一次，所以它里面还带着一些已经没有任何东西指向的旧对象副本。那些不会出现在你拿回去的文件里。</span>
+    <span data-phrase="crypt.handler">这份文档锁的是一张证书而不是一个密码（/{name}）。这里打不开它，所以也没法重新给它加锁。</span>
+    <span data-phrase="crypt.version">这份文档用的是一个本工具读不了的 PDF 加密版本（V{v}，R{r}），所以没法在这里打开它来重新加密。</span>
+    <span data-phrase="crypt.malformed">这份文档说自己是加密的，但它的加密字典不完整，所以打不开。这个文件损坏了。</span>
+    <span data-phrase="crypt.wrongpassword">这份文档要密码才能打开。</span>
+    <span data-phrase="read.notpdf">这不是 PDF。这个工具只处理 PDF 文件。</span>
+    <span data-phrase="read.encrypted">这份 PDF 是加密的。</span>
+    <span data-phrase="read.nocatalogue">这个文件没有文档目录，所以没有什么可加密的。它要么不是 PDF，要么损坏得超出了这里能修复的程度。</span>
+    <span data-phrase="read.noheader">它的开头不像 PDF：没有 %PDF- 头。</span>
+    <span data-phrase="read.failed">这份 PDF 读不了：{detail}</span>
+    <span data-phrase="pdf.flate">一个 Flate 流解不开（{detail}）</span>
+    <span data-phrase="pdf.nocompression">这个浏览器没有 CompressionStream</span>
+    <span data-phrase="pdf.lzw">一个 LZW 流以未定义的编码开头</span>
+    <span data-phrase="pdf.cryptfilter">这个流是加密的</span>
+    <span data-phrase="pdf.unknownfilter">一个未知的过滤器，/{name}</span>
+    <span data-phrase="pdf.deep">嵌套太深</span>
+    <span data-phrase="pdf.short">读到了末尾之外</span>
+    <span data-phrase="pdf.unexpected">在 {at} 处遇到意外的 {found}</span>
+    <span data-phrase="pdf.unexpectedbyte">在 {at} 处遇到意外的字节 0x{hex}</span>
+    <span data-phrase="pdf.noendstream">一个没有 endstream 的流</span>
+    <span data-phrase="pdf.noobj">{at} 处没有 obj 关键字</span>
+    <span data-phrase="pdf.nostartxref">没有 startxref</span>
+    <span data-phrase="pdf.noxref">不是一个 xref 区段</span>
+    <span data-phrase="pdf.now">一个没有 /W 的 xref 流</span>
+    <span data-phrase="pdf.zerowidth">一个字段宽度为零的 xref 流</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} 页</span>
+    <span data-phrase="count.pages.many">{n} 页</span>
+    <span data-phrase="stage.keys">正在从密码推导密钥</span>
+    <span data-phrase="stage.writing">正在把它加密后写回去</span>
+    <span data-phrase="stage.checking">正在重新打开它来核对</span>
+    <span data-phrase="run.cancelled">已取消。什么都没有被改动；按那个按钮可以重新开始。</span>
+    <span data-phrase="result.locked">{size}，要密码才能打开。</span>
+    <span data-phrase="result.restricted">{size}，谁都打得开，带着限制。</span>
+    <span data-phrase="result.sub">每一页、每一个字体、每一张图片，都还是当初进来的那一个，只是加密了。把你的原件也留着。</span>
+    <span data-phrase="check.passed">已核对：{found}</span>
+    <span data-phrase="check.failed">这次运行没有通过核对，{found}。把你的原件留着。</span>
+    <span data-phrase="check.ok.locked">不给密码时被拒绝了，然后用你的密码从内存里重新打开了，而且是 {pages}，跟原来一样。</span>
+    <span data-phrase="check.ok.restricted">不给密码就从内存里重新打开了，本该如此，带着你要的那些限制，而且是 {pages}，跟原来一样。</span>
+    <span data-phrase="check.open">做好的文件不给密码就打开了，这说明锁没有加上</span>
+    <span data-phrase="check.stillshut">做好的文件用你设的密码打不开（{detail}）</span>
+    <span data-phrase="check.pages">做好的文件回来时是 {pages} 页，而不是 {expected} 页</span>
+    <span data-phrase="check.permissions">做好的文件没有带着你要的那些限制</span>
+    <span data-phrase="check.reopen">做好的文件没能重新打开（{detail}）</span>
+    <span data-phrase="facts.scheme.aes256">用配上 PDF 2.0 密码哈希的 AES-256 加密，当前的方案。2010 年之后的每一个阅读器都打得开。</span>
+    <span data-phrase="facts.scheme.aes128">用 2005 年方案的 AES-128 加密，给老阅读器用。它前面的密码哈希是 1994 年的那个，所以短密码在这里比在 AES-256 下更容易被猜到。</span>
+    <span data-phrase="facts.userpassword">打开它需要你设的那个密码。没有别的进去的路。</span>
+    <span data-phrase="facts.nouserpassword">它谁都打得开。它带着的是一个请求，不是一把锁。</span>
+    <span data-phrase="facts.restrictions">请阅读器拒绝：{list}。</span>
+    <span data-phrase="facts.norestrictions">没有限制。拿着密码的人可以打印、复制和编辑。</span>
+    <span data-phrase="facts.owner.same">打开密码也能解除这些限制。</span>
+    <span data-phrase="facts.owner.own">你设的权限密码能解除这些限制。</span>
+    <span data-phrase="facts.owner.random">权限密码是一个谁也没有的随机密码，所以这些限制没法靠输一个空密码解除。任何一个阅读器仍然可以不理它们。</span>
+    <span data-phrase="facts.replaced">这份文档原来带着的限制被换成了这些。</span>
+    <span data-phrase="facts.signature">这份文档带着数字签名。重写一个文件会破坏它上面的任何签名，所以你拿回去的这份是没有签名的，原件仍然是签过名的那一份。</span>
+    <span data-phrase="facts.incremental">早先编辑留下的、已经被取代的旧对象副本没有复制过来。</span>
+    <span data-phrase="facts.repaired">原件的交叉引用表是坏的，只能靠扫描重建。把这个文件转给别人之前先检查一下。</span>
+    <span data-phrase="perm.print">打印</span>
+    <span data-phrase="perm.copy">复制</span>
+    <span data-phrase="perm.change">改动它</span>
+    <span data-phrase="list.two">{a}、{b}</span>
+    <span data-phrase="list.three">{a}、{b}、{c}</span>
+    <span data-phrase="net.clean">你的文档哪儿都没去。一共加载了 {total} 个文件，全都是这一页自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从来不这么做。把它当成值得查一查的事。{platform}</span>
+    <span data-phrase="net.platform.one">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一份文档，或者文档里的一个字节。</span>
+    <span data-phrase="net.platform.many">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一份文档，或者文档里的一个字节。</span>
+  </div>
+</main>

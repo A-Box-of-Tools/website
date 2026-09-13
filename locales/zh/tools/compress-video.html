@@ -1,0 +1,198 @@
+<!--
+  tools/compress-video/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key, data-* attribute and brace placeholder below is what the JavaScript reaches for, so they are the same in every language. Only the words change.
+
+  time.seconds / time.minutes 是 shared/js/format.js 要找的两条键；size.* 那几条同理。check.ok / check.over / check.length / check.reopen 会被填进 check.passed / check.failed，是短语。read.* 那一批是 MP4 读取失败的原因，跟视频剪辑那一页保持同一套译法。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选那段视频</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一段</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    第 2 步 | 那个数字。
+
+    人们带着的是一个上限，不是一种偏好：文件必须压到聊天软件、邮件或者表单允许的大小以下。所以这张卡片问那个数字，并在编码之前就回答它能买到什么，也就是视频的时长和声音给画面留下的尺寸和码率。
+  -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> 说它最多能有多大</h2>
+
+    <p class="card-lede">
+      声音原样复制，容器占一点，剩下的摊到视频的时长上，就是画面可以花的。然后画面会沿着一架大家熟悉的尺寸阶梯往下缩，直到每一帧分到的足够让它看起来像一幅画面，并且从不往上。
+    </p>
+
+    <label class="field" for="target-mb">
+      <span>不超过</span>
+      <span class="field-note">单位是兆字节。下面的小按钮是大家真正会撞上的那几个上限。</span>
+    </label>
+    <div class="target-row">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <span class="target-unit">MB</span>
+    </div>
+    <div class="chips" role="group" aria-label="常见上限">
+      <button type="button" class="chip" data-mb="8">8 MB</button>
+      <button type="button" class="chip" data-mb="16">16 MB</button>
+      <button type="button" class="chip" data-mb="25">25 MB</button>
+      <button type="button" class="chip" data-mb="50">50 MB</button>
+      <button type="button" class="chip" data-mb="100">100 MB</button>
+      <button type="button" class="chip" data-fraction="0.5">一半大小</button>
+      <button type="button" class="chip" data-fraction="0.25">四分之一</button>
+    </div>
+
+    <p id="estimate" class="estimate" role="status" aria-live="polite"></p>
+
+    <fieldset class="chip-group">
+      <legend>画面尺寸</legend>
+      <div class="chips" role="group">
+        <button type="button" class="chip" data-edge="auto" aria-pressed="true">让数字来定</button>
+        <button type="button" class="chip" data-edge="1920">1080p</button>
+        <button type="button" class="chip" data-edge="1280">720p</button>
+        <button type="button" class="chip" data-edge="854">480p</button>
+        <button type="button" class="chip" data-edge="640">360p</button>
+      </div>
+      <p class="field-note">
+        阶梯是上限：画面从不会被放得比进来时更大，而一个小数字配一个大画面，就是一个糊掉的画面。
+      </p>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>不要声音</strong>
+        <span class="check-note">
+          不勾的话，声音会原样复制过去，花它本来就花的那些。去掉它，整个数字都归画面。
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- 第 3 步 | 那一下点击 -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 压缩</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">压缩这段视频</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="压缩后的视频，从内存里播放"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.target">这一步会在上面有了视频、并且有了一个压得到的数字之后开放。</span>
+    <span data-phrase="file.facts">{size} · {length} · {frame} · {rate}</span>
+    <span data-phrase="note.silent">这段视频没有声音，所以整个数字都归画面。</span>
+    <span data-phrase="estimate.nofile">在上面选一段视频，这里会说那个数字能买到什么。</span>
+    <span data-phrase="estimate.notarget">打一个兆字节数，或者按下面的一个按钮。</span>
+    <span data-phrase="estimate.already">这段视频是 {size}，已经在 {target} 以下了。数字不往下调的话，没有什么可做的。</span>
+    <span data-phrase="estimate.nofit">光是声音就不止这些。把声音去掉，或者至少允许 {least}。</span>
+    <span data-phrase="estimate.toosmall">这么点大小装不下任何能看的画面。至少允许 {least}。</span>
+    <span data-phrase="estimate.plan">{frame}，码率大约 {rate}，结果应该在 {estimate} 上下，在 {target} 以下，做完再量一遍确认。</span>
+    <span data-phrase="frame.named">{name}（{width}×{height}）</span>
+    <span data-phrase="frame.plain">{width}×{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="time.seconds">{n} 秒</span>
+    <span data-phrase="time.minutes">{minutes} 分 {seconds} 秒</span>
+    <span data-phrase="progress.preparing">准备中…</span>
+    <span data-phrase="progress.again">出来超了那个数字。再紧一点重新编码…</span>
+    <span data-phrase="progress.frame">第 {done} 帧，共 {total} 帧（{percent}%）</span>
+    <span data-phrase="progress.finishing">正在收尾最后几帧…</span>
+    <span data-phrase="progress.checking">正在重新打开它来核对…</span>
+    <span data-phrase="run.cancelled">已取消。什么都没有写出来；按那个按钮可以重新开始。</span>
+    <span data-phrase="run.failed">这次运行失败了：{detail}</span>
+    <span data-phrase="result.ready">{size}，比原来的 {from} 小了 {percent}%。</span>
+    <span data-phrase="result.sub">时长一样，声音一样。画面为了装下重新编码了一遍。</span>
+    <span data-phrase="check.passed">已量过：{found}</span>
+    <span data-phrase="check.failed">这次运行没有通过核对，{found}。把你的原件留着。</span>
+    <span data-phrase="check.ok">从内存里重新打开了，时长 {length} 跟原来一样，{size} 在 {target} 以下。</span>
+    <span data-phrase="check.over">从内存里重新打开了，时长 {length} 跟原来一样，但 {size} 仍然超过 {target}。这个画面尺寸下编码器已经压不下去了；试试更小的画面，或者把声音去掉。</span>
+    <span data-phrase="check.length">做好的文件时长是 {got}，而不是 {want}</span>
+    <span data-phrase="check.reopen">做好的文件没能重新打开（{detail}）</span>
+    <span data-phrase="facts.picture">{frame}，原来是 {from}，码率 {rate}，每秒 {fps} 帧。</span>
+    <span data-phrase="facts.sound.kept">声音原样复制过去，没有重新编码。</span>
+    <span data-phrase="facts.sound.none">没有声音轨：要么视频本来就没有，要么你去掉了。</span>
+    <span data-phrase="facts.passes.one">一遍：第一次编码就落在了数字以下。</span>
+    <span data-phrase="facts.passes.two">两遍：第一次出来超了数字，所以按超了多少重新算了码率再编码了一遍。</span>
+    <span data-phrase="facts.time">{frames} 帧，用了 {seconds}。</span>
+    <span data-phrase="facts.reencoded">画面比你一开始的那个文件离相机又远了一代。把你的原件留着。</span>
+    <span data-phrase="support.nowebcodecs">这个浏览器不能编码视频。Chrome、Edge 和 Safari 可以；Firefox 从 130 版起可以。</span>
+    <span data-phrase="support.nodecode">这个浏览器解不开这段视频（{codec}）。同一台机器上的另一个浏览器往往可以。</span>
+    <span data-phrase="stall.both">浏览器的视频编解码器不再响应了。刷新页面再试一次，或者试试更小的画面；硬件编码器被占用或者缺失的机器会这样。</span>
+    <span data-phrase="encode.toobig">这个浏览器不会在 {size} 下编码 H.264。选一个更小的画面。</span>
+    <span data-phrase="encode.noconfig">编码器始终没有报告解码器配置。</span>
+    <span data-phrase="decode.none">这段视频里没有解得出来的帧。</span>
+    <span data-phrase="read.midframe">文件在一帧的中间结束了。</span>
+    <span data-phrase="read.avcshort">H.264 配置记录太短。</span>
+    <span data-phrase="read.hevcshort">HEVC 配置记录太短。</span>
+    <span data-phrase="read.av1short">AV1 配置记录太短。</span>
+    <span data-phrase="read.compactsizes">采样大小放在一张这个读取器不解码的紧凑表里。</span>
+    <span data-phrase="read.sampletables">采样表不完整。</span>
+    <span data-phrase="read.chunktable">块表是空的。</span>
+    <span data-phrase="read.nosamples">这条轨道没有采样。</span>
+    <span data-phrase="read.nostbl">视频轨道缺少采样表。</span>
+    <span data-phrase="read.nostsd">视频轨道没有采样描述。</span>
+    <span data-phrase="read.emptystsd">视频采样描述是空的。</span>
+    <span data-phrase="read.encrypted">视频轨道是加密的。</span>
+    <span data-phrase="read.unknowncodec">视频以「{type}」存储，这个读取器不认识它。</span>
+    <span data-phrase="read.noconfig">「{type}」轨道没有带解码器配置。</span>
+    <span data-phrase="read.notmp4">这不是 MP4 或 MOV 文件。WebM 和其他格式这里还不读。</span>
+    <span data-phrase="read.nomoov">文件没有影片头。</span>
+    <span data-phrase="read.novideo">文件里没有这个读取器能用的视频轨道。</span>
+    <span data-phrase="read.notimescale">视频轨道没有时间刻度。</span>
+    <span data-phrase="read.nofragments">这个文件的分片里没有视频轨道的帧。</span>
+    <span data-phrase="read.unreadable">这个文件没法按 MP4 读取。</span>
+    <span data-phrase="read.notplayed">这个格式不是这个浏览器能播放的。</span>
+    <span data-phrase="read.layout">这个文件的布局不是这里的读取器理解的那种。</span>
+    <span data-phrase="net.clean">你的视频哪儿都没去。一共加载了 {total} 个文件，全都是这一页自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从来不这么做。把它当成值得查一查的事。{platform}</span>
+    <span data-phrase="net.platform.one">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一段视频，或者视频里的一个字节。</span>
+    <span data-phrase="net.platform.many">这一页自己的广告、统计和打赏按钮脚本来自 {hosts} 个主机；它们没有一个拿到过一段视频，或者视频里的一个字节。</span>
+  </div>
+</main>

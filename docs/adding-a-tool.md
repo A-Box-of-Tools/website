@@ -104,9 +104,13 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/md5.js` | `js_parts = ["md5", "hash-blocks"]` | MD5, which `crypto.subtle` does not implement: the checksum tool prints one because half the download pages on the internet still do, and the PDF unlocker derives a document's key through one; imports `hash-blocks` |
 | `shared/js/hash-blocks.js` | `js_parts = ["hash-blocks"]` | the block filling, padding and length counting every hash function does identically; `md5` imports it, and the checksum tool's three SHA implementations reach it from `src/` |
 | `shared/js/pdf-objects.js` | `js_parts = ["pdf-objects"]` | the PDF object grammar |
-| `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote. An encrypted one is refused &mdash; unless the caller hands `open` an `unlock` function, which only `/unlock-pdf/` does; the reader knows how to *apply* a cipher and holds none of its own |
+| `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote. An encrypted one is refused &mdash; unless the caller hands `open` an `unlock` function, which only `/unlock-pdf/` and `/protect-pdf/` do; the reader knows how to *apply* a cipher and holds none of its own |
+| `shared/js/pdf-crypt.js` | `js_parts = ["pdf-crypt", "aes", "rc4", "pdf-permissions", "md5", "hash-blocks"]` | the standard security handler in both directions: a password to a key for the reader's `unlock`, and an `/Encrypt` dictionary with a cipher for the writer's `security`; imports the two ciphers, the permissions table and MD5 |
+| `shared/js/aes.js`, `shared/js/rc4.js` | `js_parts = ["aes", "rc4"]` | the two ciphers, written out rather than taken from `crypto.subtle`, which is asynchronous and always pads; `pdf-crypt` says why |
+| `shared/js/pdf-permissions.js` | `js_parts = ["pdf-permissions"]` | `/P` as the list of things a document asks readers to refuse |
 | `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
-| `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out |
+| `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out; encrypted to match a `security` from `pdf-crypt`, when one is passed |
+| `shared/js/pdf-pages.js` | `js_parts = ["pdf-pages"]` | every page in reading order with its box, its rotation and the four entries it inherits from the nodes above it; the merger's walk, which the watermark tool places its stamp by |
 | `shared/js/pdf-content.js` | `js_parts = ["pdf-content"]` | a page's drawing instructions, read as operators and written back |
 | `shared/js/pdf-base14.js` | `js_parts = ["pdf-base14"]` | the widths and encodings of the fourteen fonts every reader is assumed to have |
 | `shared/js/pdf-strings.js` | `js_parts = ["pdf-strings"]` | a text string as characters, and back again |

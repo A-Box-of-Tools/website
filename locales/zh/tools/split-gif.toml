@@ -25,8 +25,8 @@ live_hint = """
       哪个请求带上图片、某一帧，或者文件名。嫌麻烦就直接拔掉网线，照样拆。"""
 
 read_first = """\
-，<code>src/gif.js</code> 是负责解压出每一帧的读取器，\
-      <code>src/compose.js</code> 是把它们一层层叠起来的规则。两者里都没有\
+，<code>src/shared/gif-decode.js</code> 是负责解压出每一帧的读取器，\
+      <code>src/shared/gif-compose.js</code> 是把它们一层层叠起来的规则。两者里都没有\
       一行能碰到网络的代码。"""
 
 howto_heading = "GIF 拆帧的步骤"
@@ -68,7 +68,7 @@ body = """\
 title = "读 GIF 的就是仓库里的两个文件。"
 body = """\
       浏览器会放 GIF，却不会把它的零件交给你，所以格式是在这里自己读的：\
-      <code>src/gif.js</code> 是容器和 LZW 解压，<code>src/compose.js</code> \
+      <code>src/shared/gif-decode.js</code> 是容器和 LZW 解压，<code>src/shared/gif-compose.js</code> \
       是处置规则，决定前面几帧垫在下面之后，这一帧看起来是什么样。打开文件\
       不需要去取任何东西，第一次用也不会下载什么引擎。"""
 

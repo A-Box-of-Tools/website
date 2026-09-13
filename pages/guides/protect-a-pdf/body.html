@@ -1,0 +1,213 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../protect-pdf/">PDF Protector</a>, drop the
+      document in, type a password twice, and press the button. The file is
+      encrypted in your browser with AES-256, and the page opens the result
+      again &mdash; once without the password, where it has to be refused, and
+      once with it &mdash; before it offers you the download. Nothing is
+      uploaded; unplug from the internet and it works the same.
+    </p>
+    <p>
+      The rest of this is about what you have just done, because a password
+      and a restriction are not the same thing, and the difference is the
+      difference between a promise you can make and one you cannot.
+    </p>
+  </section>
+
+  <section>
+    <h2>The two things you can put on a PDF</h2>
+    <p>
+      A PDF has room for two passwords, and readers present them so alike that
+      most people never learn they are different.
+    </p>
+    <p>
+      The <strong>open password</strong> &mdash; the <em>user</em> password
+      &mdash; is a lock. The contents of the file are genuinely enciphered, the
+      key is derived from the password, and the password is not written down
+      anywhere in the document. Without it nobody reads the file: not the
+      person you sent it to, not a website, not the program that made it.
+    </p>
+    <p>
+      The <strong>restrictions</strong> &mdash; no printing, no copying, no
+      editing, controlled by the <em>owner</em> password &mdash; are a
+      request. Here is the part almost nobody is told: a document that opens
+      without asking for a password <em>must contain everything needed to
+      derive its own key</em>, because your reader just derived it. So what
+      stops the reader printing is a separate field inside the file, a row of
+      permission bits, that readers honour because they have agreed to. Adobe
+      documented it that way from the beginning, and any reader may decline.
+      The <a href="../unlock-a-pdf/">unlocker on this site</a> is one that
+      does.
+    </p>
+    <p>
+      That is not a reason to skip the restrictions. Most readers do honour
+      them, and ticking &ldquo;no printing&rdquo; is how you say what you would
+      like to happen to the file. It is a reason not to <em>rely</em> on them.
+      If the file must not be read by the wrong person, set an open password.
+      If you would rather it were not printed, tick the box, and know that you
+      have asked rather than made sure.
+    </p>
+  </section>
+
+  <section>
+    <h2>Which encryption to choose</h2>
+    <p>
+      The tool offers two, and the default is the right one unless you have a
+      specific reason.
+    </p>
+    <ul>
+      <li>
+        <strong>AES-256</strong>, the PDF 2.0 scheme from 2017, is the
+        default. The password goes through a hash that is deliberately
+        expensive to compute and runs a different number of rounds depending
+        on the data, which is what makes it awkward to build hardware to guess
+        against. Every reader since Acrobat X in 2010 opens it &mdash; every
+        browser, every phone, every current desktop reader. A document locked
+        this way is as good as the password on it.
+      </li>
+      <li>
+        <strong>AES-128</strong>, the 2005 scheme, is there for one reason: a
+        reader older than 2010 that has to open the file. The cipher is fine.
+        What is weaker is the step in front of it that turns your password
+        into a key, which dates from 1994 and is cheap enough that guessing
+        passwords is far easier than the cipher suggests. If you do not know
+        which reader will open the file, choose 256.
+      </li>
+    </ul>
+    <p>
+      Both of these are worlds away from the first generation of PDF
+      encryption, a 40-bit key from 1994 that a laptop can search outright,
+      and readers report all of them with the same two words. If somebody has
+      told you a document is safe because it is password protected, which
+      generation is the question to ask. The
+      <a href="../../unlock-pdf/">PDF Unlocker</a> answers it for any file you
+      drop on it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the password is worth more than the scheme</h2>
+    <p>
+      With AES-256 there is no shortcut through the encryption, so the only
+      way in without the password is to guess it, and the hash is built to
+      make each guess slow. Slow is not the same as impossible. A six-character
+      word is a few million guesses; a sentence you can remember is not. The
+      page counts the characters as you type and says so when the count is
+      short, but the rule is simple enough to carry in your head: the
+      document is exactly as safe as the password, and a long one costs
+      nothing.
+    </p>
+    <p>
+      Two things follow. Type it twice &mdash; the page insists, because a typo
+      in a strong password is a document nobody will ever open. And keep your
+      original. Protecting a file writes a new one and leaves the original
+      exactly as it was, and the original is the copy you will want if the
+      password is ever lost.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you forget it</h2>
+    <p>
+      Then the document is lost, and it is better to hear that here than from
+      a &ldquo;PDF password recovery&rdquo; site that takes your file first.
+      What those sites do is guess &mdash; a dictionary, then patterns, then
+      everything &mdash; and against a real password on the current scheme
+      they do not finish. Most upload your document to a server that guesses
+      for you, and a good many charge before saying whether it worked.
+    </p>
+    <p>
+      Nothing on this site guesses. There is no loop in the unlocker that
+      could, and the protector asks for the password twice precisely because
+      there is no way back. That is a deliberate line rather than a missing
+      feature.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the upload is the strange part</h2>
+    <p>
+      Think about what you are protecting. A bank statement. A contract. A
+      medical letter. Tax paperwork. A scan of your passport for a landlord.
+      Almost by definition, a document you are about to put a password on is
+      one you would rather not have lying around in other people's hands.
+    </p>
+    <p>
+      Every online tool that offers to protect it asks you to hand it over
+      first: the unlocked original, and then the password you chose, to a
+      server whose retention you cannot see. However well-meaning the page,
+      you have just sent the private thing, intact, together with the key, to
+      somebody you do not know, in order to make it private.
+    </p>
+    <p>
+      None of it needs to happen. Every step in protecting a PDF is arithmetic
+      on bytes &mdash; derive a key, run a cipher, write the file back out
+      &mdash; and a browser does all three perfectly well. That is what
+      <a href="../../protect-pdf/">the tool here</a> does. The document and the
+      password stay in the tab, the page's own policy names every address it
+      may contact and none of them is this site's, and it keeps working with
+      the network unplugged. If you would rather prove that than take our
+      word for it, that is the test: disconnect, and use it anyway.
+    </p>
+    <p>
+      There is a more general version of this argument in
+      <a href="../is-it-safe-to-upload-files/">is it safe to upload files</a>,
+      and the same question asked of the document people most regret sending
+      in <a href="../is-it-safe-to-upload-a-bank-statement/">is it safe to
+      upload a bank statement</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Two things that will happen to the file, and one that will not</h2>
+    <p>
+      <strong>A signature will stop being valid.</strong> If the document was
+      digitally signed, protecting it breaks the signature &mdash; not through
+      carelessness, but because a signature covers the exact bytes of the
+      file it was applied to, and protecting writes a new file. Any program
+      would have the same effect. If you need both, protect first and sign the
+      protected copy.
+    </p>
+    <p>
+      <strong>The size will change a little.</strong> Encryption adds sixteen
+      bytes to every stream and string, and a rewrite leaves behind the
+      superseded copies of objects that earlier edits appended. Which of the
+      two wins depends on the file, and neither is the point.
+    </p>
+    <p>
+      <strong>The pages themselves do not change.</strong> Nothing is
+      re-rendered, re-encoded or reflowed: the drawing instructions, the
+      embedded fonts and the images are enciphered exactly as they arrived.
+      For whoever has the password, text stays selectable, scans stay at the
+      resolution they were scanned at, and nothing moves on the page.
+    </p>
+  </section>
+
+  <section>
+    <h2>Changing a password that is already there</h2>
+    <p>
+      The format has room for one lock, so a document that already needs a
+      password cannot have a second one put on top. The tool turns such a file
+      away and points at the <a href="../../unlock-pdf/">PDF Unlocker</a>,
+      which takes the old protection off in the same browser; bring the
+      unlocked copy back and put the new password on. A document that only
+      carries restrictions &mdash; the kind that opens for everybody and
+      refuses to print &mdash; is accepted as it is, and told that what you
+      set replaces what was there.
+    </p>
+  </section>
+
+  <section>
+    <h2>Before you protect it</h2>
+    <p>
+      A locked document is the end of the line for the rest of the box: once
+      it needs a password, nothing else here will open it without going
+      through the unlocker first. So do the other jobs before this one
+      &mdash; <a href="../../merge-pdf/">merge or split it</a>,
+      <a href="../../compress-pdf/">make it smaller</a>, and above all
+      <a href="../../redact-pdf/">take out anything that should not be in it
+      at all</a>, because a password protects the file from strangers and does
+      nothing about what the person you send it to can read.
+    </p>
+  </section>

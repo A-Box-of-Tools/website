@@ -1,0 +1,38 @@
+#
+# Guide: turning a GIF into a video.
+#
+# Written for somebody whose GIF has just been refused - too big for the
+# chat app, not accepted by the form, rejected by the editor - and who has
+# been told "make it an MP4" without being told why that is not a loss. So
+# the guide says why the MP4 is a tenth of the size and looks better, what
+# a video cannot do that a GIF can (loop by itself, show through), why the
+# timing is the thing most converters get wrong, and how to do it in the
+# browser without the upload.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-a-gif-to-mp4"
+kind = "guide"
+nav = "Converting a GIF to MP4"
+group = "doing-the-job"
+tool = "gif-to-mp4"
+
+title = "How to Convert a GIF to MP4 (and Why It Gets So Much Smaller)"
+description = "Why an MP4 of the same animation is a tenth of the size of the GIF, what a video cannot do that a GIF can, why the frame timing is what most converters get wrong, and how to convert a GIF in your browser without uploading it."
+
+heading = "How to convert a GIF to MP4, and why it gets so much smaller"
+lede = """
+    A GIF that was refused for its size is not a GIF that needs to be
+    smaller. It needs to be a video, which is what every platform turns it
+    into anyway. Here is why the MP4 is a tenth of the size and looks
+    better, what changes on the way, and how to do it without first
+    uploading the file that was too big."""
+
+updated = "13 September 2026"
+published = "2026-09-13"
+lastmod = "2026-09-13"
+
+og_title = "How to convert a GIF to MP4, and why it gets so much smaller"
+og_description = "Why an MP4 of the same animation is a tenth of the size, what changes on the way, and how to do it in your browser without uploading the file."
+og_image_alt = "abox.tools - tools that never touch a server"

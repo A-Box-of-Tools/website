@@ -1,0 +1,113 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../gif-to-mp4/">GIF to MP4</a> converter, drop
+      the GIF in, and press the button. Every frame is encoded with the
+      delay the GIF gave it, the result is opened again to count the frames
+      and check the length, and it plays under the download, looping, so
+      you can see the join. Nothing is uploaded. The MP4 is usually a tenth
+      of the size.
+    </p>
+    <p>
+      The rest of this is about why that is not a loss, and about the two
+      things that do change on the way.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the MP4 is a tenth of the size</h2>
+    <p>
+      A GIF stores each frame as a complete picture, with at most 256
+      colours, and has no idea what the frame before it looked like. A
+      video codec stores what changed between frames, at full colour, and
+      H.264 has had thirty years of practice at that. The same animation
+      comes out at a tenth of the size, often much less, and looks better,
+      because it is no longer limited to 256 colours and no longer dithered
+      to hide that it was.
+    </p>
+    <p>
+      That is why every social platform, chat app and content system either
+      refuses a large GIF or quietly converts it to an MP4 on upload, and
+      why, when something says &ldquo;GIF too big&rdquo;, the MP4 is what it
+      wanted all along. A tiny GIF, or one that barely moves, can come out
+      larger as a video; the tool says so when that happens rather than
+      pretending.
+    </p>
+  </section>
+
+  <section>
+    <h2>The thing most converters get wrong: the timing</h2>
+    <p>
+      A GIF has no frame rate. Each frame carries its own delay, and the
+      delays vary: a slideshow holds a picture for two seconds and then
+      flicks through ten, a reaction GIF freezes on the punchline. A
+      converter that picks a frame rate &mdash; and most do, because a
+      video has one &mdash; resamples the GIF on to it, doubling some frames
+      and dropping others, and the slideshow comes out jerky or the freeze
+      comes out short.
+    </p>
+    <p>
+      The <a href="../../gif-to-mp4/">converter here</a> keeps every delay.
+      Each frame of the GIF becomes one frame of video that lasts exactly as
+      long as the GIF said, and the MP4's own timing table is the GIF's
+      delay table. The one liberty it takes is the one every browser takes:
+      a delay under two hundredths of a second is played as ten, because
+      that is what browsers have done since the nineties and a video that
+      honoured the stored number would run ten times faster than the GIF
+      ever played. The finished file is then opened again and has to have
+      one frame per GIF frame and play for as long as the GIF does.
+    </p>
+  </section>
+
+  <section>
+    <h2>Two things a video cannot do that a GIF can</h2>
+    <p>
+      <strong>Loop by itself.</strong> A GIF carries an instruction to
+      loop; an MP4 carries no such thing, and whether the video loops is up
+      to whatever plays it. Most feeds and chat apps loop a short video, a
+      desktop player usually plays it once, and a web page loops it only if
+      told to. The tool's preview loops so you can see the join, and the
+      result line says whether the GIF was set to loop.
+    </p>
+    <p>
+      <strong>Show through.</strong> A GIF can be transparent in places; a
+      video is a solid rectangle. Where the GIF let the page show through, a
+      colour has to go, and the tool asks which &mdash; only for a GIF that
+      has such places, with white as the default because that is what most
+      pages are. If the GIF is going on a dark background, pick the dark
+      colour before you convert.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the upload is the strange part</h2>
+    <p>
+      Every online GIF converter asks for the file first. The whole thing
+      goes up on your connection &mdash; the 30 MB that was too big to send
+      &mdash; so that 3 MB can come back, before any question of who keeps
+      the GIF and for how long. It is strange because the encoder that does
+      the work is already inside your browser, the same one it uses for
+      video calls, and reading a GIF is a few hundred lines of code.
+    </p>
+    <p>
+      The <a href="../../gif-to-mp4/">converter here</a> uses that encoder
+      and nothing else. The GIF is read from your disk, decoded, drawn frame
+      by frame, encoded and written again into memory; the page's own
+      security policy names every address it may contact, and none of them
+      is this site's. Unplug from the network and it keeps working, which is
+      the simplest proof there is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Check it before you send it</h2>
+    <p>
+      The tool opens its own result again, with the same reader it uses on
+      any MP4, and holds it to two things: as many frames as the GIF had,
+      and the length the GIF plays for. It then plays the result from
+      memory, looping. Watch one loop &mdash; the join and the freeze are
+      where a converter's timing goes wrong &mdash; and then save it. Keep
+      the GIF too, if it is the only copy; the video is a different file,
+      not a smaller one.
+    </p>
+  </section>
