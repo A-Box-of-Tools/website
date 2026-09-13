@@ -141,7 +141,7 @@ BASELINE = {
     'share-text': 1,
     # A filename template, one line of a template literal, and three markers the
     # reader throws internally and never shows.
-    'split-gif': 5,
+    'split-gif': 2,
     'stack-images': 7,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
