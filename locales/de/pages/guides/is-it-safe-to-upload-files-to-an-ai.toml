@@ -1,0 +1,20 @@
+#
+# Ratgeber: Ist das Hochladen von Dateien zu einer KI sicher? - German.
+#
+
+nav = "Ist das Hochladen zu einer KI sicher?"
+title = "Ist es sicher, Dateien zu einer KI hochzuladen?"
+description = "Ein Chatfenster ist ein Upload-Formular, das nicht so aussieht. Wohin eine Datei wirklich geht, die Sie einer KI geben, was eine KI von einem Konverter unterscheidet, und wie Sie weniger schicken - und es sauber schicken -, wenn die Sache es wert ist."
+heading = "Ist es sicher, Dateien zu einer KI hochzuladen?"
+lede = """
+    Dieselbe Frage, die der erste Ratgeber dieser Website über Konverter
+    stellte, gerichtet auf den Ort, an den Dateien heute tatsächlich gehen.
+    Die ehrliche Antwort hat dieselbe Gestalt: Meistens passiert nichts
+    Schlimmes, und nachprüfen können Sie nichts davon &mdash; plus ein
+    Unterschied, der zählt. Ein Konverter wandelt Ihre Datei um, ohne sich
+    für den Inhalt zu interessieren. Einer KI wird die Datei genau deshalb
+    geschickt, damit etwas sie liest."""
+updated = "27. August 2026"
+og_title = "Ist es sicher, Dateien zu einer KI hochzuladen?"
+og_description = "Ein Chatfenster ist ein Upload-Formular, das nicht so aussieht. Wohin die Datei wirklich geht, was eine KI von einem Konverter unterscheidet, und wie man weniger schickt - und es sauber schickt."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

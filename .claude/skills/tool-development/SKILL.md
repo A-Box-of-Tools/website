@@ -206,10 +206,11 @@ English. Two standing constraints:
 
 ## Locales: what a code change owes them
 
-The site is built in English and Simplified Chinese; the other thirteen
+The site is built in English, Simplified Chinese and German; the other twelve
 languages are frozen in A-Box-of-Tools/translations and owe nothing - see
-"Languages" in CLAUDE.md. So "the locales" means `locales/zh/`. Which tools
-exist and what they do is not language, so a new tool gets a Chinese page the
+"Languages" in CLAUDE.md. So "the locales" means `locales/zh/` and
+`locales/de/`. Which tools exist and what they do is not language, so a new
+tool gets a Chinese and a German page the
 same day, in English until translated and unadvertised until then. What a
 change does owe it:
 

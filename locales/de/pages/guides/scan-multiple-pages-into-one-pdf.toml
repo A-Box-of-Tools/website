@@ -1,0 +1,21 @@
+#
+# Ratgeber: mehrere Seiten in ein PDF scannen - German.
+#
+
+nav = "Seiten in ein PDF scannen"
+title = "Mehrere Seiten in ein PDF scannen &mdash; und unter das Größenlimit bringen"
+description = "Jede Seite fotografieren, ein PDF bekommen, mit vorhandenen Dokumenten zusammenführen und schrumpfen, bis es sich versenden lässt. Drei Browser-Werkzeuge nacheinander, und die Unterlagen verlassen das Telefon nie."
+
+heading = "So scannen Sie mehrere Seiten in ein kleines PDF"
+lede = """
+    Der Botengang ist selten eine Seite. Es ist ein Vertrag samt
+    Unterschriftenseite, oder ein Jahr Belege, und am Ende ein Postfach, das
+    nichts über ein paar Megabyte annimmt. Drei Werkzeuge decken den ganzen
+    Weg ab, und die Unterlagen bleiben dabei durchgehend auf Ihrem eigenen
+    Gerät."""
+
+updated = "26. August 2026"
+
+og_title = "Einen Stapel Seiten in ein PDF scannen, das wirklich ankommt"
+og_description = "Die Seiten fotografieren, ein PDF bekommen, hineinmischen, was schon als PDF existiert, und das Ergebnis unter das Anhanglimit schrumpfen, alles im Browser."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"
