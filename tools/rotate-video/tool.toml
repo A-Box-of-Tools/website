@@ -121,8 +121,8 @@ howto_heading = "How to rotate a video"
 # --- the card on the hub page ------------------------------------------------
 
 card = """
-            A quarter turn right or left, or upside down, for the clip that
-            was filmed sideways. The turn is written into the file's header
+            Rotate the clip that was filmed sideways: a quarter turn right or
+            left, or upside down. The turn is written into the file's header
             and every frame is copied across as it is &mdash; nothing
             decoded, nothing lost, seconds for a gigabyte &mdash; or baked
             into the picture for the old players that ignore headers."""
