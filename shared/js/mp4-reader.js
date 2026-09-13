@@ -195,7 +195,7 @@ async function topLevel(file) {
 const hex = (n) => n.toString(16).padStart(2, '0');
 
 /** avcC -> "avc1.640028", the string VideoDecoder wants. */
-function avcCodec(prefix, config) {
+export function avcCodec(prefix, config) {
   if (config.length < 4) throw new UnsupportedFile('read.avcshort');
   return `${prefix}.${hex(config[1])}${hex(config[2])}${hex(config[3])}`;
 }
@@ -208,7 +208,7 @@ function avcCodec(prefix, config) {
  * getting either wrong produces a string the browser rejects outright - which
  * at least fails loudly rather than decoding something else.
  */
-function hevcCodec(prefix, config) {
+export function hevcCodec(prefix, config) {
   if (config.length < 13) throw new UnsupportedFile('read.hevcshort');
 
   const space = ['', 'A', 'B', 'C'][(config[1] >> 6) & 0x3];
@@ -233,7 +233,7 @@ function hevcCodec(prefix, config) {
 }
 
 /** av1C -> "av01.0.08M.08". */
-function av1Codec(config) {
+export function av1Codec(config) {
   if (config.length < 3) throw new UnsupportedFile('read.av1short');
   const profile = (config[1] >> 5) & 0x7;
   const level = config[1] & 0x1f;

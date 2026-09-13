@@ -219,15 +219,6 @@ saving a video's audio on its own already ships, as a page of its own at
 video too; none of the three decodes its picture. Half of the old
 "Mute, or save the audio" line was a promise to build something that existed.
 
-### Convert to MP4
-
-The direction that matters. Whatever came off the screen recorder, the camera
-or the messaging app, MP4 is the file that uploads, and `VideoEncoder` writes
-H.264 where the browser supports it. The old card said "MP4 or WebM": WebM
-encoding through WebCodecs is not dependable outside Chromium, and promising a
-format half the visitors' browsers cannot write is worse than promising
-nothing.
-
 ### Burn in subtitles
 
 Silent autoplay is the default on every feed, so subtitles drawn into the

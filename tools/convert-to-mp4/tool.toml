@@ -1,0 +1,423 @@
+#
+# Convert to MP4
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is that "MP4" here means one specific thing: H.264 picture and
+# AAC sound in a plain MP4 container, because that is the file every phone,
+# browser, chat app and upload form takes without argument. A WebM, an MKV,
+# or an MP4 with HEVC or VP9 inside is refused by enough of them that people
+# arrive here with one. The page never writes anything else, and never
+# copies a picture codec that is not H.264 into the result, however good it
+# is: a file that opens in fewer places than the original is not a
+# conversion.
+#
+# The second is that a conversion is not always a re-encode, and the page
+# says which it is, track by track, before it starts. H.264 in an MKV is
+# copied frame for frame; VP9 in a WebM is decoded and encoded again. The
+# word "convert" is not allowed to hide the difference, because one of them
+# loses nothing and the other loses a generation.
+#
+
+slug = "convert-to-mp4"
+name = "MP4 Converter"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Convert&nbsp;to&nbsp;MP4 <span class=\"h1-kw\">&mdash; WebM, MKV and MOV into the file that uploads</span>"
+tagline = "Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must."
+icon = "&#127916;"                  # the clapper board, beside the page heading
+favicon = "&#127916;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "clapperboard"
+category = "video-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works,
+# checks is the checkbox row, and results carries the file name and size
+# lines the other tools use.
+css_parts = ["progress", "form", "checks", "notes", "results"]
+
+# file-picker brings in the drop zone. mp4-reader is the demuxer the video
+# tools ship and mkv-reader its Matroska twin, which imports it. mp4-writer
+# and mp4-boxes write the result; aac opens and writes the AAC description;
+# reencode-video is the decode-draw-encode loop the compressor runs too, and
+# video-support, codec-support, webcodecs and frame-canvas are what it is
+# built from. format is sizes and durations as words, and errors is the
+# cancellation every page ignores by name.
+#
+# example-photo, example-video, example-audio, mp4-muxer, wav and mkv-writer
+# are for the example alone: a WebM with sound, built in the page, whose
+# frames are drawn from the shared photograph and whose sound is the shared
+# recording, encoded as VP8 and Opus and written by the Matroska writer.
+js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "reencode-video", "video-support", "codec-support", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "mp4-muxer", "wav", "mkv-writer"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. A
+# file converted so that it will upload is often then too big to, or wants
+# cutting.
+handoff = ["compress-video", "trim-video"]
+lastmod = "2026-09-12"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Convert WebM, MKV or MOV to MP4 &mdash; Free, in Your Browser, No Upload"
+description = "Turn a WebM, MKV, MOV or any MP4 into an MP4 with H.264 and AAC, the file every phone, browser and upload form takes. H.264 and AAC are copied across untouched; anything else is re-encoded on your machine. Nothing is uploaded."
+og_title = "Convert a video to MP4 without uploading it"
+og_description = "A screen recording, a ripped MKV, a camera's MOV: in your browser, as the MP4 that uploads. What is already H.264 or AAC is copied, not re-encoded."
+og_image_alt = "Convert a video to MP4 in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "WebM, MKV and MOV into the MP4 that uploads. Converted on your machine; the file never goes up."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src carries blob: because the finished video is played from memory
+  on this page so that you can see it survived. connect-src carries blob:
+  because the carry-on row reads the result back out of this page before
+  parking it for the next tool. blob: names bytes inside this page; neither
+  gains any reach over the network, and nothing else here is widened."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The video you choose is read, taken apart, and written again as an MP4
+    in memory on this machine, by your own browser's codecs and code served
+    from this address. Nothing here can make an upload, and there is no
+    server on the other end of this page to receive one. A gigabyte never
+    goes up to come back as a different gigabyte."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert something. Not one request carries a video, a frame, or a
+      filename. Or unplug from the internet and convert it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/plan.js</code> for which track is
+      copied and which is encoded again, <code>src/convert.js</code> for the
+      copy and the writing, and <code>src/shared/mkv-reader.js</code> for
+      how a WebM or MKV is read. None of them can reach the network, and
+      neither can the readers or the writer beside them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert a video to MP4"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            A WebM off a screen recorder, an MKV off a ripper, a MOV off a
+            camera &mdash; written again as H.264 and AAC in an MP4, the file
+            everything takes. Whatever is already H.264 or AAC is copied
+            across untouched; only what is not is re-encoded, on your
+            machine."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and nothing about
+  what it was converted from"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "The upload is the slow part, and it is the part that does not happen."
+body = """
+
+      A video is the largest file most people ever try to move, and every
+      online converter asks for the whole thing first: the gigabyte goes up
+      on your connection so that a different gigabyte can come back, and the
+      upload is usually longer than the conversion it pays for, before any
+      question of who keeps the file. This page reads the file with code
+      served from this address and writes the new one with the codecs
+      already inside your browser, so the only bytes that move are from your
+      disk to your memory and back. The page's
+      <code>Content-Security-Policy</code> names every address it may contact
+      &mdash; not one of them belongs to this site &mdash; and it works with
+      the network unplugged."""
+
+[[privacy]]
+title = "What &ldquo;MP4&rdquo; means here, and why nothing else is written."
+body = """
+
+      The file that uploads anywhere is H.264 picture and AAC sound in a
+      plain MP4 container. That is what phones record, what every browser
+      plays, and what chat apps, mail clients and upload forms accept
+      without argument. A WebM, an MKV, or an MP4 with HEVC, VP9 or AV1
+      inside is refused by enough of them that people arrive here with one.
+      So the page writes that and only that. It never copies a picture codec
+      other than H.264 into the result however good it is, because a file
+      that opens in fewer places than the original is not a conversion."""
+
+[[privacy]]
+title = "It copies what it can and re-encodes only what it must, and says which."
+body = """
+
+      A conversion is not always a re-encode. H.264 frames in an MKV are
+      the same bytes an MP4 wants, so they are copied across, frame for
+      frame, and lose nothing; the same for AAC. VP9 or VP8 in a WebM, HEVC
+      in an iPhone MOV, Opus or Vorbis for the sound: those are decoded and
+      encoded again, and the result is one generation further from the
+      camera. The page works out which of the two each track needs before
+      you press anything and says so in two sentences, so that
+      &ldquo;convert&rdquo; is never a word that hides a re-encode."""
+
+[[privacy]]
+title = "The result is opened again and checked."
+body = """
+
+      A converter that dropped the last second, or wrote the sound track
+      without the sound, would still produce an MP4. So the finished file is
+      opened again here, by the same reader that reads what you upload, and
+      has to be the length it was, H.264, and carrying the sound it was
+      meant to. It plays from memory under the download, so you can see it
+      survived before you save it."""
+
+[[privacy]]
+title = "What it costs on your machine, honestly."
+body = """
+
+      A copy is fast: the file is read once for its layout and once more as
+      it is written. A re-encode takes as long as your machine takes to
+      encode the clip &mdash; with a hardware encoder, most laptops and
+      every recent phone, faster than the clip is long; without one, slower,
+      and a long 4K clip is a long wait. The file is read from disk in
+      pieces, so a clip larger than your memory is fine going in, but the
+      finished file is held in memory until you download it, which is where
+      a laptop's limit is. Cancel is always live."""
+
+[[privacy]]
+title = "Which files it reads, and which it does not."
+body = """
+
+      WebM and MKV, which are the same format under two names, with VP8,
+      VP9, AV1, H.264 or HEVC inside and Opus, Vorbis, AAC, MP3 or FLAC for
+      the sound; and MP4, MOV and M4V with H.264, HEVC, VP9 or AV1 inside
+      and AAC for the sound. A picture the browser will not decode &mdash;
+      HEVC on a machine without the licence, most often &mdash; is named
+      and refused; a sound it will not decode is named and left out, and the
+      picture still converts. AVI, WMV, FLV and MPEG-2 are not read here,
+      and the page says so rather than failing vaguely."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your video: not a file, not a frame, not a name, a size, a length, or
+      what it was converted from. Every line that reads, encodes or writes a
+      video is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your videos. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your video away to be converted would stop."""
+
+[[howto]]
+title = "Choose the video."
+body = """
+ One file at a time: WebM, MKV, MOV, M4V or
+      MP4. It is read straight off your disk by the browser, and the page
+      says what it is: how long, how big, what frame size, and what
+      container it came in."""
+
+[[howto]]
+title = "Read the two sentences."
+body = """
+ One for the picture, one for the sound.
+      Each says either that the track is already what an MP4 wants and will
+      be copied across untouched, or what it is and what it will be encoded
+      again as. There is nothing to set; the file decides. If the sound is
+      something the browser cannot read, or you would rather the clip went
+      silent, tick the box to leave it out."""
+
+[[howto]]
+title = "Convert it, and read the line that says it was checked."
+body = """
+
+      What is copied is copied; what is encoded again is encoded again,
+      frame by frame, with a bar that says where it is. Then the finished
+      file is opened again here and has to be the length it was, H.264, and
+      carrying the sound it promised. It plays from memory under the
+      download, so you can see it survived."""
+
+[[faq]]
+q = "Will the quality be worse?"
+a = """
+        Not for anything copied, and the page says what was. H.264 frames
+        and AAC packets go across byte for byte, so an MKV with H.264 inside
+        comes out as an MP4 with exactly the same picture. A track that had
+        to be encoded again &mdash; VP9, VP8, AV1 or HEVC picture; Opus,
+        Vorbis, MP3 or FLAC sound &mdash; is one generation further from the
+        camera, at a bitrate chosen to match what the source spent, so that
+        the loss is small rather than none. Keep your original either way."""
+
+[[faq]]
+q = "Why not keep HEVC or VP9 in the MP4? They are smaller."
+a = """
+        Because the file would open in fewer places than the one you
+        started with, and the point of converting was that it opens
+        everywhere. HEVC in an MP4 needs a licence the machine may not have;
+        VP9 or AV1 in an MP4 is refused by most upload forms and every mail
+        client. H.264 and AAC are the one combination nothing refuses, so
+        that is what the page writes, and it says the cost up front rather
+        than hiding it."""
+
+[[faq]]
+q = "My WebM is a screen recording. Will the sound survive?"
+a = """
+        Yes. A browser records Opus, which an MP4 cannot carry, so it is
+        decoded and encoded again as AAC at 160 kbit/s &mdash; more than a
+        microphone ever needed. The picture, VP8 or VP9, is encoded again
+        as H.264. Both happen on your machine, and the finished file is
+        opened again here to check it is the length it was and still has
+        its sound."""
+
+[[faq]]
+q = "Why does my MOV need converting at all? Isn't it already MP4?"
+a = """
+        Nearly. MOV and MP4 are the same design, and a MOV with H.264 and
+        AAC inside is copied across in seconds without a frame re-encoded
+        &mdash; what changes is the container, which is what a form that
+        checks the extension was refusing. An iPhone MOV with HEVC inside is
+        the other case: the picture is re-encoded as H.264, wherever the
+        browser can decode HEVC, which is most machines but not all."""
+
+[[faq]]
+q = "Which files does it read?"
+a = """
+        WebM and MKV with VP8, VP9, AV1, H.264 or HEVC picture and Opus,
+        Vorbis, AAC, MP3 or FLAC sound; MP4, MOV and M4V with H.264, HEVC,
+        VP9 or AV1 picture and AAC sound. What the browser will not decode
+        is named: a picture it cannot read stops the conversion, a sound it
+        cannot read is left out and the picture still converts. AVI, WMV,
+        FLV and MPEG-2 are not read here."""
+
+[[faq]]
+q = "How long does it take?"
+a = """
+        A copy takes about as long as reading the file twice: seconds for
+        most clips. A re-encode takes as long as your machine takes to
+        encode the picture &mdash; with a hardware encoder, most laptops and
+        every recent phone, faster than the clip is long; without one,
+        slower, and a long 4K clip is a long wait. The bar says which frame
+        it is on, and cancelling stops it at once and writes nothing."""
+
+[[faq]]
+q = "Are my videos uploaded anywhere?"
+a = """
+        No. The file is read, decoded where it must be, encoded and written
+        by your own browser on your own hardware, and the page's
+        <code>Content-Security-Policy</code> names every address it may
+        contact &mdash; none of them belongs to this site. The simplest way
+        to satisfy yourself is to unplug from the network and use the page
+        anyway. On a tool for files this size, that is also the fastest
+        way: the upload is usually longer than the conversion."""
+
+[[faq]]
+q = "Does it work on a phone?"
+a = """
+        On a phone whose browser can decode and encode video, yes, and a
+        phone's own hardware encoder is quick. What a phone lacks is memory:
+        the finished file is held in memory until you save it, so a very
+        long clip may be more than a phone can hold. Cut it first with the
+        <a href=\"../trim-video/\">Video Trimmer</a>, or convert it on a
+        laptop."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        The file is read from your disk in pieces, so a file larger than
+        your memory is fine going in; the finished file is held in memory
+        until you download it, and an MP4 written here cannot be over 4 GB.
+        It is free, there is no account, no sign-in and no trial. The site
+        carries advertising, which is what pays for it; the ads are not
+        given anything about your videos."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your video away to be converted would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert a WebM, MKV, MOV or MP4 into an MP4 with H.264 picture and AAC sound in your browser. Tracks that are already H.264 or AAC are copied across untouched; the rest are re-encoded on your machine. Nothing is uploaded."
+features = [
+  "Reads WebM and MKV with VP8, VP9, AV1, H.264 or HEVC picture and Opus, Vorbis, AAC, MP3 or FLAC sound",
+  "Reads MP4, MOV and M4V with H.264, HEVC, VP9 or AV1 picture and AAC sound",
+  "Copies H.264 frames and AAC packets across untouched, and says so",
+  "Re-encodes only the tracks that are not H.264 or AAC, at a bitrate matched to what the source spent",
+  "Writes a plain MP4 with the index at the front, the file every upload form takes",
+  "Reopens the finished file to check its length, its codec and its sound, and plays it from memory",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: the plan is spoken for one file, and a queue would
+# have to speak it twelve times or not at all.
+[picker]
+accept = "video/mp4,video/quicktime,video/webm,video/x-matroska,.mp4,.mov,.m4v,.webm,.mkv"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; WebM, MKV, MOV or MP4, one at a time"
+# An eight-second WebM with sound, built in the page. See src/example.js.
+example = true
+
+# blob: on media-src, because the finished result is played from memory on
+# this page so that it can be looked at; blob: on connect-src, because the
+# carry-on row reads the finished result back out of this page before parking
+# it for the next tool (see shared/handoff.js). blob: names bytes inside this
+# page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]
+"media-src" = ["'self'", "blob:"]
