@@ -1,0 +1,217 @@
+<!--
+  tools/rotate-video/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key, data-* attribute and brace placeholder below is what the JavaScript reaches for, so they are the same in every language. Only the words change.
+
+  time.seconds / time.minutes 是 shared/js/format.js 要找的两条键；size.* 那几条同理。rotation.* 是「现在朝哪边显示」的名词，会被填进 file.facts、preview.* 和 check.ok；turn.* 是按下的那个按钮的名字，填进 result.ready。check.ok / check.length / check.reopen / check.turn / check.sound 会被填进 check.passed / check.failed，是短语。read.* 那一批跟 MP4 转换那一页保持同一套译法。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选那段视频</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一段</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    第 2 步 | 方向。
+
+    三个按钮和一个预览。预览是第一帧按文件将要写进去的同一套算法画出来的，所以它展示的是播放器会怎么处理这个文件头，而不是一个可能跟它不一致的 CSS 旋转。
+  -->
+  <section class="card" id="turn-card">
+    <h2><span class="step">2</span> 转一下</h2>
+
+    <p class="card-lede">
+      手机拍横了的时候并没有把像素转过来：它往文件头里写了一个四分之一转，每个播放器都会照着转。所以旋转一段视频改的是那个文件头，别的什么都不动。一帧都不用解码，画面跟原来一模一样。
+    </p>
+
+    <div class="chips" role="group" aria-label="转多少">
+      <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; 往右转四分之一圈</button>
+      <button type="button" class="chip" data-turn="270" aria-pressed="false">&#8634; 往左转四分之一圈</button>
+      <button type="button" class="chip" data-turn="180" aria-pressed="false">倒过来</button>
+    </div>
+
+    <div class="preview-box">
+      <canvas id="preview" class="preview" aria-label="第一帧，按所选方向转过" hidden></canvas>
+      <p id="preview-line" class="preview-line" role="status" aria-live="polite"></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="bake">
+      <span>
+        <strong>把旋转烧进画面</strong>
+        <span class="check-note">
+          把每一帧转好画出来，再重新编码成 H.264，给少数不认文件头的老桌面播放器。会丢一代画质，要花一次编码的时间；除非有播放器把片段放横了，否则别勾。
+        </span>
+        <span id="bake-note" class="check-note" hidden></span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>把声音去掉</strong>
+        <span id="sound-note" class="check-note" hidden></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- 第 3 步 | 那一下点击 -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 旋转</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">旋转这段视频</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="旋转后的视频，从内存里播放"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">这一步会在上面有了一段这个浏览器读得了的视频之后开放。</span>
+    <span data-phrase="file.facts">{size} · {length} · {frame} · 显示为 {shown}</span>
+    <span data-phrase="note.nopreview">这个浏览器解不开这段画面，所以没有预览；旋转照样会写进文件。</span>
+    <span data-phrase="preview.nofile">在上面选一段视频，就能看到它朝哪边。</span>
+    <span data-phrase="preview.copy">现在显示为 {now}；转过之后会显示为 {after}，{frame}。每一帧原样复制过去。</span>
+    <span data-phrase="preview.bake">现在显示为 {now}；转过之后会是 {after}，{frame}，每一帧转好画出来再重新编码成 H.264，大约 {rate}。</span>
+    <span data-phrase="bake.must">这段画面是 WebM 或 MKV 里的非 H.264 编码，没法就着它原样搭一个 MP4 文件头：旋转会烧进画面。</span>
+    <span data-phrase="bake.cannot">这个浏览器不能解码或编码这段画面，所以旋转只能写进文件头，每一部手机、每一个浏览器和现代播放器都认它。</span>
+    <span data-phrase="sound.none">这段视频没有声音。</span>
+    <span data-phrase="sound.copy">声音是 AAC，原样复制过去。</span>
+    <span data-phrase="sound.encode">声音是 {codec}，MP4 装不下它；会重新编码成 160 kbit/s 的 AAC。</span>
+    <span data-phrase="sound.unknown">声音是 {codec}，这个浏览器解不开，所以会去掉；画面照样转。</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">杜比 AC-3</span>
+    <span data-phrase="codec.eac3">杜比 E-AC-3</span>
+    <span data-phrase="codec.other">「{name}」</span>
+    <span data-phrase="rotation.0">正的</span>
+    <span data-phrase="rotation.90">侧着的，往右转过</span>
+    <span data-phrase="rotation.180">倒着的</span>
+    <span data-phrase="rotation.270">侧着的，往左转过</span>
+    <span data-phrase="turn.90">往右四分之一圈</span>
+    <span data-phrase="turn.180">半圈</span>
+    <span data-phrase="turn.270">往左四分之一圈</span>
+    <span data-phrase="frame.named">{name}（{width}×{height}）</span>
+    <span data-phrase="frame.plain">{width}×{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="time.seconds">{n} 秒</span>
+    <span data-phrase="time.minutes">{minutes} 分 {seconds} 秒</span>
+    <span data-phrase="progress.sound">声音：第 {done} 包，共 {total} 包…</span>
+    <span data-phrase="progress.preparing">准备中…</span>
+    <span data-phrase="progress.frame">第 {done} 帧，共 {total} 帧（{percent}%）</span>
+    <span data-phrase="progress.finishing">正在收尾最后几帧…</span>
+    <span data-phrase="progress.writing">正在写文件…</span>
+    <span data-phrase="progress.checking">正在重新打开核对…</span>
+    <span data-phrase="run.cancelled">已取消。什么都没写；按按钮重新开始。</span>
+    <span data-phrase="run.failed">这次旋转失败了：{detail}</span>
+    <span data-phrase="result.ready">{size} 的 MP4，转了 {turn}。</span>
+    <span data-phrase="result.sub.copy">每一帧、每一个声音包原样复制过去；只有文件头变了。</span>
+    <span data-phrase="result.sub.bake">每一帧转好画出来，重新编码成了 H.264；文件头什么都不用说了。</span>
+    <span data-phrase="check.passed">已核对：{found}</span>
+    <span data-phrase="check.failed">这次旋转没通过核对：{found}。留着你的原文件。</span>
+    <span data-phrase="check.ok">从内存里重新打开，跟原来一样是 {length}，显示为 {shown}，{frame}。</span>
+    <span data-phrase="check.length">做好的文件长 {got}，而不是 {want}</span>
+    <span data-phrase="check.reopen">做好的文件打不开（{detail}）</span>
+    <span data-phrase="check.turn">做好的文件说自己显示为 {got}，{frame}，不是你要的</span>
+    <span data-phrase="check.sound">做好的文件里少了声音轨道</span>
+    <span data-phrase="facts.picture.copied">{frame} 的 {frames} 帧一个字节不差地复制过去，没有解码，没有重新编码。文件头现在写着这个旋转；每一部手机、每一个浏览器和现代播放器都会读它。</span>
+    <span data-phrase="facts.picture.baked">每一帧转好画出来，重新编码成了 {rate} 的 H.264，{frame}，每秒 {fps} 帧。它比你拿来的文件离相机又远了一代；留着你的原文件。</span>
+    <span data-phrase="facts.sound.copied">声音原样复制，没有重新编码。</span>
+    <span data-phrase="facts.sound.encoded">声音重新编码成了 160 kbit/s 的 AAC。</span>
+    <span data-phrase="facts.sound.none">没有声音轨道：文件本来就没有，或者你把它去掉了。</span>
+    <span data-phrase="facts.time">用了 {seconds}。</span>
+    <span data-phrase="support.nodecode">这个浏览器解不开这段画面（{codec}），文件里也没有能原样搭 MP4 文件头的东西。同一台机器上换个浏览器往往可以。</span>
+    <span data-phrase="stall.both">浏览器的视频编解码器没有回应。刷新页面再试一次；硬件编码器正忙或者缺失的机器会这样。</span>
+    <span data-phrase="stall.sound">浏览器的音频编解码器没有回应。刷新页面再试一次，或者把声音去掉。</span>
+    <span data-phrase="encode.toobig">这个浏览器不能以 {size} 编码 H.264。关掉「烧进画面」，改为写进文件头。</span>
+    <span data-phrase="encode.noconfig">编码器始终没有报告解码配置。</span>
+    <span data-phrase="decode.none">这段视频解不出任何一帧。</span>
+    <span data-phrase="copy.notavc">WebM 或 MKV 里只有 H.264 能原样复制；请改为烧进画面。</span>
+    <span data-phrase="rotate.badturn">这不是这一页认识的旋转。</span>
+    <span data-phrase="sound.noaac">这个浏览器不能以这段声音的采样率和声道数编码 AAC。把声音去掉，只转画面。</span>
+    <span data-phrase="sound.noencode">音频编码器什么都没产出。</span>
+    <span data-phrase="write.noframes">没有可写的帧。</span>
+    <span data-phrase="write.toobig">做好的文件会超过 4 GB，这里写出的 MP4 装不下。先把视频剪短。</span>
+    <span data-phrase="read.midframe">文件在一帧的中间就结束了。</span>
+    <span data-phrase="read.avcshort">H.264 配置记录太短。</span>
+    <span data-phrase="read.hevcshort">HEVC 配置记录太短。</span>
+    <span data-phrase="read.av1short">AV1 配置记录太短。</span>
+    <span data-phrase="read.compactsizes">样本大小存在一张这个读取器不解码的紧凑表里。</span>
+    <span data-phrase="read.sampletables">样本表不完整。</span>
+    <span data-phrase="read.chunktable">块表是空的。</span>
+    <span data-phrase="read.nosamples">视频轨道里没有帧。</span>
+    <span data-phrase="read.nostbl">视频轨道缺少样本表。</span>
+    <span data-phrase="read.nostsd">视频轨道没有样本描述。</span>
+    <span data-phrase="read.emptystsd">视频样本描述是空的。</span>
+    <span data-phrase="read.encrypted">视频轨道被加密了。</span>
+    <span data-phrase="read.unknowncodec">视频是以「{type}」存的，这个读取器不认识。</span>
+    <span data-phrase="read.noconfig">「{type}」轨道没有带解码配置。</span>
+    <span data-phrase="read.notmp4">这不是 MP4、MOV、WebM 或 MKV 文件。AVI、WMV、FLV 和 MPEG-2 这里不读。</span>
+    <span data-phrase="read.nomoov">文件没有影片头。</span>
+    <span data-phrase="read.novideo">文件里没有这个读取器能用的视频轨道。</span>
+    <span data-phrase="read.notimescale">视频轨道没有时间刻度。</span>
+    <span data-phrase="read.nofragments">这个文件的分片里没有它视频轨道的帧。</span>
+    <span data-phrase="read.unreadable">文件无法作为 MP4 读取。</span>
+    <span data-phrase="read.notplayed">这种格式不是这个浏览器能播的。</span>
+    <span data-phrase="read.layout">这个文件的布局不是这里的读取器认识的。</span>
+    <span data-phrase="read.notmkv">这不是 WebM 或 MKV 文件。</span>
+    <span data-phrase="read.nosegment">文件头后面没有段。</span>
+    <span data-phrase="read.mkvtracks">文件没有列出任何轨道。</span>
+    <span data-phrase="read.mkvcodec">视频是以「{type}」存的，这个读取器不认识。</span>
+    <span data-phrase="read.mkvencoded">这个文件里有一条轨道在容器层被压缩或加密了，这个读取器不解。</span>
+    <span data-phrase="read.mkvaudio">「{type}」声音轨道没有带配置，而它的采样率也不是没有配置就能描述的那几种。</span>
+    <span data-phrase="read.lacing">这个文件里有一个块的拼接方式，这个读取器跟不上。</span>
+    <span data-phrase="net.clean">你的视频哪儿都没去。加载了 {total} 个文件，全是这一页自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，这个工具从不这么做。值得查一查。{platform}</span>
+    <span data-phrase="net.platform.one">这一页自己的广告、统计和打赏按钮脚本从 {hosts} 个主机加载；没有一个拿到过视频或者它的一个字节。</span>
+    <span data-phrase="net.platform.many">这一页自己的广告、统计和打赏按钮脚本从 {hosts} 个主机加载；没有一个拿到过视频或者它的一个字节。</span>
+  </div>
+</main>
