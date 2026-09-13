@@ -1,0 +1,139 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Text in eine Webseite einzufügen kann exakt so folgenreich sein wie
+      eine Datei hochzuladen. Dass es sich nicht so anfühlt, liegt daran,
+      dass die Geste aus einer sicheren Gegend stammt: Zwischen zwei
+      eigenen Fenstern bewegt Einfügen Text von einem Ort unter Ihrer
+      Kontrolle an einen anderen. Auf einer Webseite ist der zweite Ort
+      ein Textfeld, das ein Skript lesen kann &mdash; und was danach
+      passiert, entscheidet allein die Seite, nicht die Geste.
+    </p>
+    <p>
+      Etliche Werkzeuge in Einfüge-Gestalt arbeiten auf einem Server: Die
+      Seite schickt Ihren Text fort, der Server formatiert, prüft oder
+      vergleicht, das Ergebnis kommt zurück. Nichts am Bildschirm verrät,
+      welche Sorte Sie gerade benutzen. Das Textfeld sieht gleich aus, der
+      &bdquo;Formatieren&ldquo;-Knopf auch. Der Unterschied ist eine
+      einzige Netzwerkanfrage, unsichtbar, solange niemand nachsieht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was ein eingefügter Text wirklich trägt</h2>
+    <p>
+      Was in Online-Werkzeugen landet, ist selten Prosa. Es ist der
+      Arbeitstext von jemandes Beruf, und die Gattung zählt, denn einige
+      der empfindlichsten Zeichenketten der Informatik sind genau die, die
+      um Mitternacht in Formatierer eingefügt werden:
+    </p>
+    <ul>
+      <li>
+        <strong>Konfigurationsdateien</strong> existieren, um zu halten,
+        was ein Programm nicht fest einbauen darf &mdash; und das sind
+        Datenbankpasswörter, API-Schlüssel und Signatur-Geheimnisse. Eine
+        im Ganzen eingefügte Config trägt jeden davon.
+      </li>
+      <li>
+        <strong>Logs und Stacktraces</strong> tragen Sitzungs-Tokens in
+        URLs, E-Mail-Adressen, interne Hostnamen und gelegentlich einen
+        Request-Body mit den persönlichen Daten von irgendwem.
+      </li>
+      <li>
+        <strong>API-Antworten</strong> sind Momentaufnahmen von
+        Produktionsdaten &mdash; echte Kunden, echte Salden &mdash;,
+        irgendwohin Bequemes eingefügt, um gelesen zu werden.
+      </li>
+      <li>
+        <strong>Alles Base64-Förmige</strong>, das in einen Dekodierer
+        wandert, wurde meist kodiert, weil es zählte: ein Token beim
+        Debuggen, ein Zertifikat, ein Auth-Header.
+      </li>
+    </ul>
+    <p>
+      Ein Schlüssel, der über den Server eines Fremden gereist ist, muss
+      in dem Moment als offengelegt gelten, in dem es auffällt &mdash;
+      widerrufen und neu ausgestellt, was auf einem Produktivsystem ein
+      Nachmittag ist, den niemand geplant hatte. Der Punkt ist nicht, dass
+      Formatierer-Seiten Zugangsdaten ernten. Der Punkt ist, dass Sie
+      nicht wissen können, was ein Server protokolliert &mdash; und ein
+      Geheimnis, dessen Offenlegung Sie nicht ausschließen können, ist ein
+      Geheimnis, das Sie rotieren müssen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das Werkzeug Ihren Text nicht braucht</h2>
+    <p>
+      Hier ist die technische Tatsache, die die Frage erledigt:
+      Formatieren, Prüfen, Umwandeln und Vergleichen von Text gehören zu
+      den leichtesten Aufgaben der Informatik. JSON parsen, XML einrücken,
+      zwei Dateien vergleichen, Base64 kodieren &mdash; ein Browser tut
+      das in Millisekunden, lokal, und kann das seit Jahren. Ein Server
+      trägt zur Aufgabe nichts bei. Wenn ein Einfüge-Werkzeug Ihren Text
+      hochlädt, ist das ein Architektur-Überbleibsel oder eine
+      Bequemlichkeit des Betreibers &mdash; nie eine Notwendigkeit der
+      Arbeit.
+    </p>
+    <p>
+      Genau dafür sind die Textwerkzeuge dieser Seite das Gegenbeispiel.
+      Der <a href="../../json-formatieren/">JSON-Formatierer</a> parst,
+      formatiert und konvertiert JSON, XML, HTML, CSS und YAML; der
+      <a href="../../text-vergleichen/">Text-Vergleich</a> markiert jeden
+      Unterschied zwischen zwei Texten, Zeile für Zeile und Wort für Wort;
+      der <a href="../../base64-kodieren/">Base64-Kodierer und
+      -Dekodierer</a> geht beide Richtungen zwischen Text und seinen
+      Kodierungen. Alle drei laufen auf Ihrer Maschine, und was Sie
+      einfügen, hat keinen Ort, an den es gehen könnte &mdash; die Seiten
+      tragen keinen Code-Pfad, der es senden würde.
+    </p>
+    <p>
+      Zwei davon haben bereits eigene Ratgeber:
+      <a href="../json-formatieren/">JSON formatieren, ohne es
+      hochzuladen</a> und
+      <a href="../zwei-json-dateien-vergleichen/">zwei JSON-Dateien
+      vergleichen</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Woran Sie erkennen, welche Sorte Sie benutzen</h2>
+    <p>
+      Die Prüfungen sind dieselben wie bei einem Datei-Werkzeug, und sie
+      stehen vollständig im
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ratgeber zum
+      Hochladen</a>. Die Einfüge-Kurzfassung:
+    </p>
+    <ul>
+      <li>
+        <strong>Ziehen Sie den Stecker.</strong> Seite laden, Verbindung
+        trennen, einfügen, Knopf drücken. Ein lokales Werkzeug macht
+        weiter; ein Server-Werkzeug bleibt stehen. Dreißig Sekunden, keine
+        Vorkenntnisse, nicht zu fälschen.
+      </li>
+      <li>
+        <strong>Beobachten Sie den Netzwerk-Tab, während Sie auf
+        Formatieren drücken.</strong> Eine Anfrage, die in diesem Moment
+        abgeht und ungefähr so groß ist wie Ihr eingefügter Text,
+        <em>ist</em> Ihr eingefügter Text beim Abgehen. Keine Anfrage,
+        kein Upload.
+      </li>
+      <li>
+        <strong>Misstrauen Sie den hilfreichen Extras.</strong> Ein
+        &bdquo;Snippet teilen&ldquo;-Knopf, ein geräteübergreifender
+        Verlauf Ihrer letzten Einfügungen, ein Link für die Kollegin
+        &mdash; jedes davon ist nur möglich, wenn der Text auf einem
+        Server gespeichert wurde. Funktionen sind Behauptungen: Eine
+        Seite, die Ihre Einfügung jemand anderem zeigen kann, hat sie
+        behalten.
+      </li>
+    </ul>
+    <p>
+      Und eine Gewohnheit schlägt alle drei Prüfungen: weniger einfügen.
+      Ein Validator braucht nicht das echte Passwort, um die Form einer
+      Config zu prüfen &mdash; <code>"REDACTED"</code> parst identisch.
+      Und für die Einfügung, die selbst das Geheimnis ist, schrumpft die
+      Regel auf etwas noch Einfacheres: Die einzige Seite, die je ein
+      Passwort empfangen sollte, ist die Anmeldeseite, zu der es gehört.
+    </p>
+  </section>

@@ -1,0 +1,21 @@
+#
+# Ratgeber: GIF Bild für Bild bearbeiten - German.
+#
+
+nav = "GIF Bild für Bild bearbeiten"
+title = "Ein GIF Bild für Bild bearbeiten &mdash; zerlegen, richten, neu bauen, ohne Upload"
+description = "Ein GIF in seine Einzelbilder zerlegen, Bilder streichen oder umsortieren und es mit erhaltenem Timing neu bauen. Was die Rundreise übersteht, was die Palette kostet, und wie man sieht, warum ein GIF schwer ist."
+
+heading = "So bearbeiten Sie ein GIF Bild für Bild"
+lede = """
+    Einen GIF-Editor gibt es hier nicht, und es braucht auch keinen: Ein
+    Zerleger, der die Animation in Einzelbilder auseinandernimmt, und ein
+    Macher, der aus Einzelbildern eines baut, sind ein Editor mit einem
+    Ordner in der Mitte. Und der Ordner ist der Teil, in dem Sie bearbeiten,
+    mit dem, was Sie für Bilder ohnehin benutzen."""
+
+updated = "26. August 2026"
+
+og_title = "Ein GIF auseinandernehmen, die Bilder richten, wieder zusammensetzen"
+og_description = "Ein GIF in PNGs zerlegen, das Timing gesichert, Bilder streichen oder retuschieren und neu bauen, alles im Browser, mit ehrlich aufgeschriebenen Kosten der Rundreise."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

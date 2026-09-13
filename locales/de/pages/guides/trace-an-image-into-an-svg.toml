@@ -1,0 +1,18 @@
+#
+# Ratgeber: Ein Bild als SVG nachzeichnen - German.
+#
+
+nav = "Ein Bild als SVG nachzeichnen"
+title = "So zeichnen Sie ein Bild als SVG nach &mdash; ohne es hochzuladen"
+description = "Ein Logo, eine Schablone, eine Unterschrift oder eine Silhouette im Browser in eine echte Vektorkontur verwandeln. Welche Bilder sich gut nachzeichnen lassen, welche nie, und wie Sie korrigieren, was der Tracer falsch versteht."
+heading = "So zeichnen Sie ein Bild als SVG nach"
+lede = """
+    Ein vergrößertes PNG ist eine Treppe. Ein SVG ist eine Zeichenanweisung
+    und deshalb in jeder Größe scharf, und das eine in das andere zu
+    verwandeln heißt Nachzeichnen. Bei Formen gelingt das wunderbar und bei
+    Fotos schlecht, und den Unterschied sollte man kennen, bevor man
+    anfängt."""
+updated = "31. August 2026"
+og_title = "Ein Logo oder eine Silhouette als SVG nachzeichnen, im Browser"
+og_description = "Welche Bilder zu sauberen Kurven werden, welche als viertausend Kleckse zurückkommen, und wie Sie wegklicken, was nicht hineingehört. Nichts wird hochgeladen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

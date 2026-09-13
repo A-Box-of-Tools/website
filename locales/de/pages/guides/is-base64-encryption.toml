@@ -1,0 +1,18 @@
+#
+# Ratgeber: Ist Base64 eine Verschlüsselung? - German.
+#
+
+nav = "Ist Base64 Verschlüsselung?"
+title = "Ist Base64 eine Verschlüsselung?"
+description = "Nein - und der Unterschied zählt in der Praxis. Kodierung, Verschlüsselung und Hashing lösen drei verschiedene Probleme: eines macht jeder rückgängig, eines nur der Schlüsselinhaber, eines niemand. Was was ist, und woran man es erkennt."
+heading = "Ist Base64 eine Verschlüsselung?"
+lede = """
+    Nein. Base64 ist ein Kostümwechsel, kein Schloss: Wer es erkennt, macht
+    es in Millisekunden rückgängig, ganz ohne Schlüssel. Aber die Frage
+    verdient eine richtige Antwort, denn Kodierung, Verschlüsselung und
+    Hashing sehen auf dem Bildschirm gleich aus und könnten in dem, was
+    sie versprechen, kaum verschiedener sein."""
+updated = "26. August 2026"
+og_title = "Ist Base64 eine Verschlüsselung?"
+og_description = "Nein - jeder kann es rückgängig machen, ohne Schlüssel. Kodierung, Verschlüsselung und Hashing sehen gleich aus und versprechen drei völlig verschiedene Dinge. Was was ist."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

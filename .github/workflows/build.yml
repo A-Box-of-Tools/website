@@ -417,8 +417,8 @@ jobs:
       # The whole build, as it would go to dist. Previews used to carry
       # English and two of the fourteen translations, because a build of
       # fifteen languages was over the 20,000 files Cloudflare Pages accepts in
-      # one deployment. The build is English and Chinese now, a few thousand
-      # files, and the thirteen frozen languages are not built at all - they
+      # one deployment. The build is English, Chinese and German now, a few
+      # thousand files, and the twelve frozen languages are not built at all - they
       # are copied into production from A-Box-of-Tools/translations by the
       # publish step below, and nothing a build writes links to them.
       - name: Hand the build to the preview
@@ -430,7 +430,7 @@ jobs:
           include-hidden-files: true
           retention-days: 1
 
-      # THE FROZEN LANGUAGES. Thirteen translations are no longer built here:
+      # THE FROZEN LANGUAGES. Twelve translations are no longer built here:
       # they are kept as they were deployed in 1.4.2, in the archive that
       # config/site.toml names, and copied into production at the commit it
       # names - see `frozen_languages` there for why. Read out of the config
@@ -746,8 +746,8 @@ jobs:
   # A PREVIEW OF EVERY PULL REQUEST AND OF `dev`, AND THE QA SUITE RUN
   # AGAINST THE PULL REQUESTS
   #
-  # A PREVIEW IS THE WHOLE BUILD: English and Chinese, byte for byte what
-  # would go to dist. What it does not have is the thirteen frozen languages,
+  # A PREVIEW IS THE WHOLE BUILD: English, Chinese and German, byte for byte
+  # what would go to dist. What it does not have is the twelve frozen languages,
   # which no build writes - production gets them from A-Box-of-Tools/
   # translations in the publish step above - and nothing a build writes links
   # to them, so no page on a preview points anywhere the preview is missing.
