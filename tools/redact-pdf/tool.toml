@@ -51,7 +51,7 @@ js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writ
 # of links shared/handoff.js shows under the result once there is one. Slugs
 # of tools whose picker takes what this page produces; checked against the
 # tools that exist by the build.
-handoff = ["compress-pdf", "merge-pdf"]
+handoff = ["compress-pdf", "merge-pdf", "watermark-pdf", "protect-pdf"]
 lastmod = "2026-09-10"
 
 # --- what search engines and chat apps are told ------------------------------

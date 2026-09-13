@@ -1,0 +1,39 @@
+#
+# Guide: turning a video into the MP4 that uploads.
+#
+# Written for somebody whose file has just been refused - by an upload
+# form, a chat app, a mail client, a video editor - and who has been told
+# "it needs to be MP4" without being told what that means. So the guide
+# says what an MP4 that uploads actually is (a container, a picture codec
+# and a sound codec, and all three have to be right), which files people
+# actually arrive with and what each needs, why a conversion is sometimes a
+# copy and sometimes a re-encode, and how to do it in the browser without
+# the upload every online converter asks for first.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-a-video-to-mp4"
+kind = "guide"
+nav = "Converting to MP4"
+group = "doing-the-job"
+tool = "convert-to-mp4"
+
+title = "How to Convert WebM, MKV or MOV to MP4 (and Why It Was Refused)"
+description = "What an MP4 that uploads actually is, why a WebM, an MKV or an iPhone MOV gets refused, which conversions lose nothing and which cost a generation, and how to do it in your browser without uploading the file."
+
+heading = "How to convert a video to the MP4 that uploads"
+lede = """
+    A file that was refused as &ldquo;not MP4&rdquo; has one of three
+    things wrong with it, and only one of them costs anything to fix. Here
+    is what the refusal means, what each kind of file needs, and how to get
+    the file everything takes without first uploading the one that was
+    refused."""
+
+updated = "12 September 2026"
+published = "2026-09-12"
+lastmod = "2026-09-12"
+
+og_title = "How to convert a video to the MP4 that uploads"
+og_description = "Why a WebM, MKV or MOV gets refused, which conversions lose nothing, and how to do it in your browser without uploading the file."
+og_image_alt = "abox.tools - tools that never touch a server"

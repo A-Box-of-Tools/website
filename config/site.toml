@@ -381,7 +381,7 @@ order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-ima
 id = "video-and-animation"
 name = "Video &amp; animation"
 note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
-order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+order = ["compress-video", "convert-to-mp4", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -391,7 +391,7 @@ order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timela
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "unlock-pdf", "redact-pdf", "pdf-to-csv", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
+order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -554,6 +554,8 @@ order = [
   "convert-heic-to-jpg",
   "merge-and-split-pdf-files",
   "unlock-a-pdf",
+  "protect-a-pdf",
+  "watermark-a-pdf",
   "redact-a-pdf",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
@@ -561,6 +563,8 @@ order = [
   "turn-images-into-a-video",
   "make-a-gif-from-images",
   "trim-a-video",
+  "compress-a-video",
+  "convert-a-video-to-mp4",
   "crop-a-video",
   "reverse-a-video",
   "grab-a-frame-from-a-video",

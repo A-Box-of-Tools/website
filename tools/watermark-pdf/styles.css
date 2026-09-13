@@ -1,0 +1,145 @@
+/*
+  Only the rules this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the FAQ, the footer - is shared/css/tool-frame.css,
+  which the build puts in front of this file, followed by the shared parts named
+  in css_parts.
+*/
+
+.error { max-width: 72ch; }
+
+/* ------------------------------------------------------------- the file row */
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.file-facts { flex: 1; min-width: 0; }
+
+/*
+  shared/css/results.css gives these the ellipsis rules and not the display box
+  they need for them: `text-overflow` does nothing to an inline element, and
+  this tool hangs them off a <strong> and a <span>. Without this a long
+  filename runs straight out under the "Choose another" button beside it.
+*/
+.file-name,
+.file-sub { display: block; }
+
+/* --------------------------------------------------------------- the words */
+
+.words {
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+}
+
+/* ---------------------------------------------------- controls and preview */
+
+.stamp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+  gap: 1.4rem;
+  margin-top: 1.2rem;
+  align-items: start;
+}
+
+.stamp-controls { display: grid; gap: 0.9rem; }
+
+.chip-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.chip-group legend {
+  padding: 0;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.stamp-controls input[type="range"] {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+/*
+  The page is drawn at its own aspect ratio inside a fixed-width column, so a
+  landscape first page comes out short and a portrait one tall; main.js sets
+  the canvas's pixel size and this only says how wide it may be on screen.
+*/
+.stamp-preview {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.stamp-preview canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 24rem;
+  object-fit: contain;
+  /* The drawn page is white with a hairline round it; the surface behind is
+     the panel, so the sheet reads as a sheet in both themes. */
+  background: transparent;
+}
+
+.stamp-preview figcaption {
+  margin: 0.7rem 0 0;
+  max-width: 40ch;
+}
+
+/* ------------------------------------------------------------- the result */
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.result-size { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.result-sub { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--text-dim); max-width: 52ch; }
+
+a.primary { text-decoration: none; display: inline-block; }
+
+/* The line that says the finished file was opened again and every page found
+   carrying the stamp. It is the whole argument for trusting the result, so it
+   is not small print. */
+.check-line {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.check-line.good { color: var(--ok); }
+.check-line.bad { color: var(--danger); }
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+@media (max-width: 720px) {
+  .stamp-layout { grid-template-columns: 1fr; }
+  .result-head { flex-direction: column; align-items: stretch; }
+}

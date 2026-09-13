@@ -29,6 +29,8 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
+| [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
+| [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
@@ -42,6 +44,8 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [PDF Unlocker](unlock-pdf/) | `/unlock-pdf/` | Most locked PDFs need no password at all. This one says which kind you have before it touches it. |
+| [PDF Protector](protect-pdf/) | `/protect-pdf/` | Lock a document you would rather not hand to a website in order to lock it. |
+| [PDF Watermark](watermark-pdf/) | `/watermark-pdf/` | A scan that says where it went is a scan that cannot quietly go somewhere else. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
 | [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |

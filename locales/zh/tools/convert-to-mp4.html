@@ -1,0 +1,206 @@
+<!--
+  tools/convert-to-mp4/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key, data-* attribute and brace placeholder below is what the JavaScript reaches for, so they are the same in every language. Only the words change.
+
+  time.seconds / time.minutes 是 shared/js/format.js 要找的两条键；size.* 那几条同理。check.ok / check.length / check.reopen / check.codec / check.sound 会被填进 check.passed / check.failed，是短语。codec.* 和 container.* 是被填进句子里的名词，格式名不译。read.* 那一批是读取失败的原因，MP4 那些跟视频压缩那一页保持同一套译法，read.mkv* 那几条是 WebM/MKV 读取器新加的。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main id="main">
+  <!-- 第 1 步 | 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选那段视频</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一段</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    第 2 步 | 会发生什么。
+
+    这里没有什么可选，这正是这张卡片的意思：文件自己决定。它的两条轨道，要么已经是 MP4 要的样子、原样复制，要么不是、重新编码。卡片在动手之前就说清是哪一种，好让「转换」这个词从来不用来遮住一次重新编码。
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span> 看看什么会变，什么不会</h2>
+
+    <p class="card-lede">
+      到哪都传得上去的 MP4，是 H.264 的画面加 AAC 的声音。你的文件已经有的那一样原样复制过去；没有的那一样在你的机器上重新编码。不该重新编码的，一样都不动。
+    </p>
+
+    <div class="plan" role="status" aria-live="polite">
+      <p id="plan-picture" class="plan-line"></p>
+      <p id="plan-sound" class="plan-line"></p>
+      <p id="plan-note" class="field-note" hidden></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>把声音去掉</strong>
+        <span class="check-note">
+          给那些反正会静音播放的视频，或者浏览器读不了的声音轨道。
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- 第 3 步 | 那一下点击 -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 转换</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">转成 MP4</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="转换后的视频，从内存里播放"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">这一步会在上面有了一段这个浏览器读得了的视频之后开放。</span>
+    <span data-phrase="file.facts">{size} · {length} · {frame} · {container}</span>
+    <span data-phrase="plan.nofile">在上面选一段视频，这里会说什么要变。</span>
+    <span data-phrase="plan.picture.copy">画面：已经是 {codec}，所以每一帧原样复制过去，不重新编码，什么都不丢。</span>
+    <span data-phrase="plan.picture.encode">画面：{codec}，会重新编码成 H.264，大约 {rate}，{frame}。</span>
+    <span data-phrase="plan.picture.nodecode">画面：{codec}，这个浏览器解不开，所以在这里转不了。同一台机器上换个浏览器往往可以。</span>
+    <span data-phrase="plan.sound.none">没有声音轨道。</span>
+    <span data-phrase="plan.sound.copy">声音：已经是 AAC，原样复制过去。</span>
+    <span data-phrase="plan.sound.encode">声音：{codec}，会重新编码成 160 kbit/s 的 AAC。</span>
+    <span data-phrase="plan.sound.unknown">声音：{codec}，这个浏览器解不开。它会被去掉；画面照样转。</span>
+    <span data-phrase="plan.sound.dropped">声音：按你的要求去掉。</span>
+    <span data-phrase="plan.already">两条轨道都已经是 MP4 要的样子，所以什么都不重新编码：同样的帧、同样的声音会重新写进一个索引在前面的普通、不分片的 MP4，而这正是那个挑剔的上传表单拒绝这个 {container} 时想要的东西。</span>
+    <span data-phrase="plan.reencoded">复制的部分什么都不丢。重新编码的部分离相机又远了一代；留着你的原文件。</span>
+    <span data-phrase="frame.named">{name}（{width}×{height}）</span>
+    <span data-phrase="frame.plain">{width}×{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="codec.h264">H.264</span>
+    <span data-phrase="codec.hevc">HEVC（H.265）</span>
+    <span data-phrase="codec.vp8">VP8</span>
+    <span data-phrase="codec.vp9">VP9</span>
+    <span data-phrase="codec.av1">AV1</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">杜比 AC-3</span>
+    <span data-phrase="codec.eac3">杜比 E-AC-3</span>
+    <span data-phrase="codec.other">「{name}」</span>
+    <span data-phrase="container.webm">WebM</span>
+    <span data-phrase="container.mkv">MKV</span>
+    <span data-phrase="container.mov">MOV</span>
+    <span data-phrase="container.m4v">M4V</span>
+    <span data-phrase="container.mp4">MP4</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="time.seconds">{n} 秒</span>
+    <span data-phrase="time.minutes">{minutes} 分 {seconds} 秒</span>
+    <span data-phrase="progress.sound">声音：第 {done} 包，共 {total} 包…</span>
+    <span data-phrase="progress.preparing">准备中…</span>
+    <span data-phrase="progress.frame">第 {done} 帧，共 {total} 帧（{percent}%）</span>
+    <span data-phrase="progress.finishing">正在收尾最后几帧…</span>
+    <span data-phrase="progress.writing">正在写文件…</span>
+    <span data-phrase="progress.checking">正在重新打开核对…</span>
+    <span data-phrase="run.cancelled">已取消。什么都没写；按按钮重新开始。</span>
+    <span data-phrase="run.failed">这次转换失败了：{detail}</span>
+    <span data-phrase="result.ready">{size} 的 MP4，原来是 {from} 的 {container}。</span>
+    <span data-phrase="result.sub">H.264 画面，AAC 声音，索引在前面：什么都能播的那种文件。</span>
+    <span data-phrase="check.passed">已核对：{found}</span>
+    <span data-phrase="check.failed">这次转换没通过核对：{found}。留着你的原文件。</span>
+    <span data-phrase="check.ok">从内存里重新打开，跟原来一样是 {length}，H.264，{sound}。</span>
+    <span data-phrase="check.sound.aac">带 AAC 声音</span>
+    <span data-phrase="check.sound.none">没有声音轨道</span>
+    <span data-phrase="check.length">做好的文件长 {got}，而不是 {want}</span>
+    <span data-phrase="check.reopen">做好的文件打不开（{detail}）</span>
+    <span data-phrase="check.codec">画面出来是 {codec}，不是 H.264</span>
+    <span data-phrase="check.sound">做好的文件里少了声音轨道</span>
+    <span data-phrase="facts.picture.copied">画面一帧一帧原样复制：{codec}，{frame}，没有重新编码，一个比特都没变。</span>
+    <span data-phrase="facts.picture.encoded">画面原来是 {from}，重新编码成了 {rate} 的 H.264，{frame}，每秒 {fps} 帧。它比你拿来的文件离相机又远了一代；留着你的原文件。</span>
+    <span data-phrase="facts.sound.copied">声音原样复制，没有重新编码。</span>
+    <span data-phrase="facts.sound.encoded">声音重新编码成了 160 kbit/s 的 AAC。</span>
+    <span data-phrase="facts.sound.none">没有声音轨道：文件本来就没有，或者你把它去掉了。</span>
+    <span data-phrase="facts.time">{frames} 帧，用了 {seconds}。</span>
+    <span data-phrase="support.nowebcodecs">这个浏览器不能编码视频，所以这里只能转已经是 H.264 的文件。Chrome、Edge 和 Safari 可以编码；Firefox 从 130 版起可以。</span>
+    <span data-phrase="stall.both">浏览器的视频编解码器没有回应。刷新页面再试一次；硬件编码器正忙或者缺失的机器会这样。</span>
+    <span data-phrase="stall.sound">浏览器的音频编解码器没有回应。刷新页面再试一次，或者把声音去掉。</span>
+    <span data-phrase="encode.toobig">这个浏览器不能以 {size} 编码 H.264。先用视频压缩把它缩小。</span>
+    <span data-phrase="encode.noconfig">编码器始终没有报告解码配置。</span>
+    <span data-phrase="decode.none">这段视频解不出任何一帧。</span>
+    <span data-phrase="sound.noaac">这个浏览器不能以这段声音的采样率和声道数编码 AAC。把声音去掉，只转画面。</span>
+    <span data-phrase="sound.noencode">音频编码器什么都没产出。</span>
+    <span data-phrase="write.noframes">没有可写的帧。</span>
+    <span data-phrase="write.toobig">做好的文件会超过 4 GB，这里写出的 MP4 装不下。先把视频剪短。</span>
+    <span data-phrase="read.midframe">文件在一帧的中间就结束了。</span>
+    <span data-phrase="read.avcshort">H.264 配置记录太短。</span>
+    <span data-phrase="read.hevcshort">HEVC 配置记录太短。</span>
+    <span data-phrase="read.av1short">AV1 配置记录太短。</span>
+    <span data-phrase="read.compactsizes">样本大小存在一张这个读取器不解码的紧凑表里。</span>
+    <span data-phrase="read.sampletables">样本表不完整。</span>
+    <span data-phrase="read.chunktable">块表是空的。</span>
+    <span data-phrase="read.nosamples">视频轨道里没有帧。</span>
+    <span data-phrase="read.nostbl">视频轨道缺少样本表。</span>
+    <span data-phrase="read.nostsd">视频轨道没有样本描述。</span>
+    <span data-phrase="read.emptystsd">视频样本描述是空的。</span>
+    <span data-phrase="read.encrypted">视频轨道被加密了。</span>
+    <span data-phrase="read.unknowncodec">视频是以「{type}」存的，这个读取器不认识。</span>
+    <span data-phrase="read.noconfig">「{type}」轨道没有带解码配置。</span>
+    <span data-phrase="read.notmp4">这不是 MP4、MOV、WebM 或 MKV 文件。AVI、WMV、FLV 和 MPEG-2 这里不读。</span>
+    <span data-phrase="read.nomoov">文件没有影片头。</span>
+    <span data-phrase="read.novideo">文件里没有这个读取器能用的视频轨道。</span>
+    <span data-phrase="read.notimescale">视频轨道没有时间刻度。</span>
+    <span data-phrase="read.nofragments">这个文件的分片里没有它视频轨道的帧。</span>
+    <span data-phrase="read.unreadable">文件无法作为 MP4 读取。</span>
+    <span data-phrase="read.notplayed">这种格式不是这个浏览器能播的。</span>
+    <span data-phrase="read.layout">这个文件的布局不是这里的读取器认识的。</span>
+    <span data-phrase="read.notmkv">这不是 WebM 或 MKV 文件。</span>
+    <span data-phrase="read.nosegment">文件头后面没有段。</span>
+    <span data-phrase="read.mkvtracks">文件没有列出任何轨道。</span>
+    <span data-phrase="read.mkvcodec">视频是以「{type}」存的，这个读取器不认识。</span>
+    <span data-phrase="read.mkvencoded">这个文件里有一条轨道在容器层被压缩或加密了，这个读取器不解。</span>
+    <span data-phrase="read.mkvaudio">「{type}」声音轨道没有带配置，而它的采样率也不是没有配置就能描述的那几种。</span>
+    <span data-phrase="read.lacing">这个文件里有一个块的拼接方式，这个读取器跟不上。</span>
+    <span data-phrase="net.clean">你的视频哪儿都没去。加载了 {total} 个文件，全是这一页自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，这个工具从不这么做。值得查一查。{platform}</span>
+    <span data-phrase="net.platform.one">这一页自己的广告、统计和打赏按钮脚本从 {hosts} 个主机加载；没有一个拿到过视频或者它的一个字节。</span>
+    <span data-phrase="net.platform.many">这一页自己的广告、统计和打赏按钮脚本从 {hosts} 个主机加载；没有一个拿到过视频或者它的一个字节。</span>
+  </div>
+</main>

@@ -52,23 +52,28 @@ css_parts = ["progress", "form", "checks", "notes", "results"]
 # the stream filters, the reader and the writer - and travel together, because
 # the reader and the writer import the other two.
 #
+# pdf-crypt is the standard security handler, aes and rc4 its two ciphers, and
+# pdf-permissions is /P as a list. All four were this tool's own until
+# /protect-pdf/ needed the other half of the same file - the export that
+# builds an /Encrypt dictionary rather than reading one - and a second copy
+# is what tests/python/test_duplicates.py exists to refuse, so they moved.
+#
 # md5 and hash-blocks are the checksum tool's MD5, which moved to shared/js
 # when this tool needed one: every version of PDF encryption before 2017
 # derives its key by running the password through MD5 a few dozen times, and no
 # browser offers one. The SHA family this needs for PDF 2.0 comes from
-# crypto.subtle instead, and the two ciphers - RC4 and AES - are in src/,
-# because nothing else here has any business with them.
+# crypto.subtle instead.
 #
 # pdf-page-writer and example-statement are for the example alone: it has to be
 # a document that really is locked, which means writing one.
-js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "message-box", "format", "md5", "hash-blocks", "pdf-page-writer", "example-statement"]
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer", "pdf-crypt", "aes", "rc4", "pdf-permissions", "message-box", "format", "md5", "hash-blocks", "pdf-page-writer", "example-statement"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the result once there is one. This
 # tool is the way IN to the PDF chain - every tool that refuses a locked file
 # sends its reader here - so it needs a way out, or the journey ends on a
 # download and a second upload to the tool they wanted in the first place.
 handoff = ["merge-pdf", "compress-pdf", "redact-pdf"]
-lastmod = "2026-09-10"
+lastmod = "2026-09-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -107,10 +112,10 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/crypt.js</code> for how a password becomes a
-      document's key &mdash; and for the fact that there is no loop in it
-      anywhere &mdash; and <code>src/aes.js</code> and
-      <code>src/rc4.js</code> for the two ciphers themselves. None of them can
+, <code>src/shared/pdf-crypt.js</code> for how a password becomes
+      a document's key &mdash; and for the fact that there is no loop in it
+      anywhere &mdash; and <code>src/shared/aes.js</code> and
+      <code>src/shared/rc4.js</code> for the two ciphers themselves. None of them can
       reach the network, and neither can the reader or the writer beside
       them."""
 
@@ -335,7 +340,8 @@ q = "Can it open a PDF whose password I do not have?"
 a = """
         No, and it does not try. There is no dictionary, no word list and no
         brute-force search anywhere in this tool &mdash; you can read
-        <code>src/crypt.js</code> and see that there is no loop in it. For the
+        <code>src/shared/pdf-crypt.js</code> and see that there is no loop in
+        it. For the
         oldest documents, with 40-bit keys, a search would in fact work, which
         is exactly why the refusal is written down rather than left to be
         assumed. If you have lost the password to your own document, this page
