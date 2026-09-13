@@ -1,0 +1,381 @@
+#
+# PDF zu CSV - German.
+#
+# Overrides for tools/pdf-to-csv/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Was beim Ändern der Texte hier festgehalten bleiben muss, wie im englischen
+# Original: Dieses Werkzeug schließt. Es liest keine Tabellen aus der Datei,
+# denn in der Datei gibt es keine Tabellen, nur Text an Positionen, und die
+# Spalten sind die Stellen, an denen mehrere Zeilen sich einig sind, dass dort
+# eine Zelle beginnt oder endet. Jeder Satz hier muss das wahr lassen. Die
+# Saldoprüfung ist ein Beweis und wird als einer beschrieben, aber nur manche
+# Tabellen führen einen Saldo; keine Umformulierung darf aus "das steht auf
+# den Seiten" stillschweigend "das ist richtig" machen.
+#
+# Es begann als Umwandler für Kontoauszüge und findet heute jede Tabelle in
+# einem Dokument. "Kontoauszug" ist das Wort dieser Seite für bank statement
+# und steht nur dort, wo vom Auszug selbst die Rede ist.
+#
+
+name = "PDF zu CSV"
+heading = "PDF&nbsp;zu&nbsp;CSV <span class=\"h1-kw\">&mdash; jede Tabelle darin, Kontoauszüge eingeschlossen</span>"
+tagline = "Findet jede Tabelle in einem PDF und macht daraus Zeilen, die eine Tabellenkalkulation öffnen kann."
+
+title = "PDF in CSV umwandeln &mdash; jede Tabelle, auch Kontoauszüge, kostenlos, ohne Upload"
+description = "Die Tabellen in einem PDF in eine CSV verwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten, Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und ein laufender Saldo wird Zeile für Zeile geprüft, wo es einen gibt. Es wird nichts hochgeladen."
+og_title = "PDF zu CSV, jede Tabelle darin, ohne die Datei hochzuladen"
+og_description = "Die meisten PDF-zu-CSV-Umwandler wollen Ihre Datei auf ihrem Server. Dieser findet jede Tabelle im Dokument in Ihrem eigenen Browser und prüft den laufenden Saldo eines Kontoauszugs selbst, statt Sie darum zu bitten."
+og_image_alt = "Die Tabellen in einem PDF im Browser in CSV umwandeln"
+
+pledge = """
+    Das PDF, das Sie wählen, wird auf diesem Gerät im Arbeitsspeicher geöffnet
+    und gelesen, von Code, der von dieser Adresse kommt, und die CSV wird auf
+    demselben Weg geschrieben. Nichts hier kann etwas hochladen, und am anderen
+    Ende dieser Seite steht kein Server, der es annehmen könnte. Was in den
+    Tabellen steht, eine Kontonummer, ein Saldo, eine Liste von
+    Zahlungsempfängern, die Preise eines Kunden, bleibt im Tab."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und wandeln Sie ein PDF um. Keine einzige
+      Anfrage trägt eine Seite, eine Zeile, eine Zahl oder einen Dateinamen.
+      Oder trennen Sie die Internetverbindung und wandeln Sie es trotzdem um."""
+
+read_first = """
+, <code>src/layout.js</code> dafür, wie eine Seite
+      ohne eine einzige gezogene Linie in Bereiche geteilt wird,
+      <code>src/tables.js</code> dafür, wie die Tabellen und ihre Spalten
+      gefunden werden, <code>src/rows.js</code> dafür, wie aus Textzeilen
+      Tabellenzeilen werden, und <code>src/check.js</code> für die Rechnung,
+      die einen Kontoauszug beweist. Keines davon kann das Netz erreichen, und
+      der Leser darunter auch nicht."""
+
+howto_heading = "So verwandeln Sie die Tabellen in einem PDF in eine CSV"
+
+card = """
+            Die Tabellen in einem PDF in eine Tabellenkalkulation verwandeln,
+            ob Konto- oder Kreditkartenauszug, Rechnung, Preisliste oder
+            Bericht. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr
+            Text sitzt, eine Zelle, die in eine zweite Zeile umgebrochen ist,
+            wird wieder zusammengesetzt, und der laufende Saldo eines
+            Kontoauszugs wird auf jeder Zeile geprüft."""
+
+[words]
+plural = "Dokumente"
+choose = "ein PDF"
+analytics_extra = """, und nichts darüber,
+  was in seinen Tabellen steht"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Die PDFs, die Menschen umwandeln, sind genau die, die einen Upload am wenigsten vertragen."
+body = """
+
+      Für eine Tabelle, die man abtippen könnte, braucht niemand einen
+      Umwandler. Was hierher kommt, sind Kontoauszüge, Rechnungen,
+      Gehaltsabrechnungen und Berichte: eine Liste aller, an die jemand gezahlt
+      hat, und was danach übrig war, die Preise eines Kunden, die Zahlen eines
+      Unternehmens. Das dem Server eines Fremden zu geben, damit er eine
+      Tabellenkalkulation daraus macht, heißt, dass er es hat, es behält und
+      deswegen nun ein lohnendes Ziel für einen Angriff ist. Diese Seite hat
+      keine andere Hälfte: Es gibt nichts, an das man es schicken könnte."""
+
+[[privacy]]
+title = "Wo eine Tabelle einen laufenden Saldo führt, wird jede Zeile daran geprüft."
+body = """
+
+      Eine Tabelle in einem PDF zu finden ist Schließen, nicht Lesen: welche
+      Zeilen zusammengehören, wo eine Spalte endet, ob eine Zeile eine neue
+      Tabellenzeile ist oder der Rest der darüber. Bei einem Layout, das hier
+      noch niemand gesehen hat, kann jeder dieser Schlüsse falsch sein. Der
+      laufende Saldo eines Kontoauszugs ist ein Beweis dagegen: Der Saldo auf
+      jeder Zeile muss der Saldo darüber plus der Betrag dieser Zeile sein,
+      und eine einzige falsch gelesene Ziffer, eine weggefallene oder eine
+      doppelte Zeile reißt die Kette genau an der Zeile, an der es passiert
+      ist. Die Seite sagt, wie viele Zeilen standgehalten haben. Die meisten
+      Tabellen haben keinen Saldo, und zu denen sagt die Seite nichts: Die
+      Zeilen sind das, was auf den Seiten steht, und mehr behauptet hier
+      nichts."""
+
+[[privacy]]
+title = "Die Tabellen kommen vom Papier, nicht aus einer Vorlage je Bank oder Formular."
+body = """
+
+      In diesem Werkzeug gibt es keine Liste von Banken oder Layouts, und also
+      auch kein Layout, das darin fehlen könnte. Eine Seite wird dort geteilt,
+      wo eine Spalte Kleingedrucktes neben dem eigentlichen Inhalt läuft, und
+      jeder Teil wird nach Folgen von Zeilen durchsucht, deren Zellen in einer
+      Flucht stehen. Deshalb funktioniert es bei einem Auszug von einer Bank,
+      von der niemand je gehört hat, oder bei einem Bericht, den niemand je
+      gesehen hat, und deshalb kann es an einer Tabelle scheitern, deren
+      Spalten wirklich ineinanderlaufen."""
+
+[[privacy]]
+title = "Passwörter werden hier nicht entfernt, und die Seite sagt, wo sie es werden können."
+body = """
+
+      Ein PDF mit Passwort wird abgewiesen statt geöffnet. Den Schutz eines
+      Dokuments zu entfernen ist eine andere Aufgabe, als seine Tabellen zu
+      lesen, und es stillschweigend zu tun wäre eine überraschende Sache für
+      ein Werkzeug, das in Ihrem Namen handelt. Stattdessen nennt die Seite
+      die Wege, die eine entsperrte Kopie ergeben, ohne dass die Datei Ihr
+      Gerät verlässt: den <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a>
+      auf dieser Seite, der das Passwort in Ihrem eigenen Browser entfernt und
+      auf der Seite nichts neu schreibt, oder den Druck zurück in ein PDF aus
+      einem Browser oder aus der Vorschau. Und sie sagt nach wie vor
+      ausdrücklich, das Dokument keiner anderen Website zu geben, die anbietet,
+      es zu entsperren; das wäre genau der Upload, den es mit dieser Seite zu
+      vermeiden gilt."""
+
+[[privacy]]
+title = "Das Foto einer Seite kann es nicht lesen, und es tut auch nicht so."
+body = """
+
+      Ein Scan ist ein Bild: Die Zeilen sind Pixel, und in der Datei gibt es
+      keinen Text, der sich zu Spalten ausrichten ließe. Das wird als das
+      gemeldet, was es ist, samt den Auswegen, bei denen nichts hochgeladen
+      wird. Bei einem Kontoauszug beginnt das mit dem einen, den die meisten
+      haben und an den sie nicht denken: Die Bank gibt Ihnen denselben Auszug
+      fast sicher direkt als CSV. Buchstaben aus einem Bild zu lesen ist OCR,
+      und das ist ein anderes Werkzeug als dieses."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über
+      Ihr Dokument übergeben: keine Datei, keine Tabelle, keine Zeile, keine
+      Zahl, kein Dateiname und keine Seitenzahl. Jede Zeile, die ein PDF liest
+      oder eine CSV schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht: Er meldet keinen Besuch,
+      und über Sie oder Ihre Dokumente bekommt er nichts. Es passiert nichts,
+      solange Sie ihn nicht anklicken, und wohin Sie dann kämen, ist die Seite
+      eines anderen."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht:
+      Ein Werkzeug, das Ihr Dokument zum Umwandeln wegschickt, bliebe stehen."""
+
+[[howto]]
+title = "Wählen Sie das PDF aus."
+body = """
+ Eines nach dem anderen. Der Browser liest es
+      direkt von Ihrer Festplatte, und zwar jede Seite davon, bevor irgendetwas
+      entschieden wird, denn ob ein Dokument 1.240,00 oder 1,240.00 schreibt
+      und in welcher Reihenfolge seine Daten stehen, sind Tatsachen über das
+      Dokument und nicht über eine einzelne Seite."""
+
+[[howto]]
+title = "Sehen Sie sich die Tabellen an, die es gefunden hat."
+body = """
+ Jede Tabelle auf jeder
+      Seite, jede mit ihren eigenen Spalten und ihren eigenen Überschriften,
+      wo die Seite welche gedruckt hat. Eine Tabelle, die unter denselben
+      Überschriften über zwei Abschnitte oder zwei Seiten läuft, ist eine
+      Tabelle, und die Überschriften werden mittendrin nicht wiederholt. Eine
+      Zelle, die in eine zweite Zeile umgebrochen ist, wird in ihre Zeile
+      zurückgefaltet. Summen, Zwischensummen und Beschriftungen kommen als die
+      Zeilen durch, die sie auf der Seite sind."""
+
+[[howto]]
+title = "Nehmen Sie eine, oder nehmen Sie alle."
+body = """
+ Gibt es mehr als eine Tabelle,
+      wählt das Feld über ihnen, welche in die CSV kommt: alle nacheinander
+      oder nur die, wegen der Sie gekommen sind. Führt eine Tabelle einen
+      laufenden Saldo, sagt die Zeile über den Tabellen, ob jede Zeile
+      aufgegangen ist. Daten mit Jahr kommen als YYYY-MM-DD heraus und Beträge
+      als schlichte Zahlen mit Vorzeichen; ein Datum ohne Jahr bleibt genau
+      so, wie es gedruckt war, denn das Jahr, zu dem es gehört, wäre
+      geraten."""
+
+[[howto]]
+title = "Nehmen Sie die CSV mit."
+body = """
+ Sie wird nach RFC 4180 geschrieben, mit
+      korrekten Anführungszeichen und CRLF-Zeilenenden, als UTF-8 mit
+      Byte-Order-Mark, damit Excel sie mit unversehrten Währungszeichen
+      öffnet, statt Buchstaben daraus zu machen. Stehen alle Tabellen in einer
+      Datei, behält jede ihre eigene Überschriftenzeile, und zwischen ihnen
+      steht eine Leerzeile. Um sie zu erzeugen, wurde nichts hochgeladen."""
+
+[[faq]]
+q = "Wie findet es Tabellen, wenn im PDF gar keine Tabelle steckt?"
+a = """
+        Daran, wo der Text sitzt. Eine Seite wird zuerst überall dort geteilt,
+        wo eine Spalte Kleingedrucktes neben dem eigentlichen Inhalt läuft; von
+        einer Spalte der Tabelle unterscheidet sie sich dadurch, dass die
+        Zellen der Tabelle exakt eine Grundlinie teilen und das Kleingedruckte
+        nur zufällig daneben sitzt. Dann wird jeder Teil von oben nach unten
+        durchlaufen und an Überschriften und Lücken in Blöcke geschnitten, und
+        die Spalten jedes Blocks sind die Stellen, an denen mehrere Zeilen sich
+        einig sind, dass dort eine Zelle beginnt oder endet. Blöcke mit
+        denselben Spalten werden wieder zu einer Tabelle zusammengefügt. Es
+        gibt keine Vorlage je Bank oder Formular, und darum auch kein Layout,
+        das ihm nie beigebracht wurde."""
+
+[[faq]]
+q = "Funktioniert es nur bei Kontoauszügen?"
+a = """
+        Nein. Es begann als Umwandler für Kontoauszüge und wurde so umgebaut,
+        dass es jede Tabelle in einem Dokument findet, denn der erste echte
+        Auszug, der hindurchging, hatte zwei Buchungen und fünf andere
+        Tabellen, und ein Werkzeug, das nur die Buchungen wollte, fand gar
+        nichts. Rechnungen, Preislisten, Fahrpläne, Ergebnisse und Berichte
+        sind auf dieselbe Weise Tabellen. Was ein Kontoauszug hinzufügt, ist
+        ein laufender Saldo, und wo einer da ist, prüft das Werkzeug jede
+        Zeile daran."""
+
+[[faq]]
+q = "Was passiert mit einem Buchungstext, der zu lang für seine Spalte ist?"
+a = """
+        Er wird in seine Zeile zurückgefaltet, und genau daran scheitert die
+        meiste PDF-zu-CSV-Ausgabe. Eine Zeile mit einer einzigen Zelle voller
+        Wörter, dicht an einer Tabellenzeile gesetzt, ist die Fortsetzung der
+        Zelle dieser Tabellenzeile; sie wird in die Zeile darunter statt in
+        die darüber gefaltet, wenn sie näher an jener sitzt, denn so wird eine
+        lange Beschriftung über ihrem Wert gedruckt. Eine Zeile mit mehr als
+        einer Zelle oder mit einer Zahl darin ist eine eigene Zeile."""
+
+[[faq]]
+q = "Wie kann es überhaupt wissen, ob es meinen Kontoauszug richtig gelesen hat?"
+a = """
+        Weil die meisten Kontoauszüge einen laufenden Saldo führen, und ein
+        laufender Saldo ist ein Beweis und keine Zierde. Wenn der auf jeder
+        Zeile gedruckte Saldo wirklich der Saldo der Zeile darüber plus der
+        Betrag dieser Zeile ist, dann wurden die Beträge richtig gelesen, die
+        Zeilen richtig getrennt und keine weggelassen oder doppelt gezählt;
+        jeder dieser Fehler reißt die Kette an der Zeile, an der er passiert
+        ist. Das Werkzeug macht diese Subtraktion auf jeder Zeile und sagt
+        Ihnen das Ergebnis. Es findet auf diese Weise auch die Saldospalte,
+        statt eine Überschrift zu lesen, eine Tabelle, die besteht, hat ihre
+        Spalten also zwangsläufig richtig erkannt bekommen. Eine Tabelle ohne
+        Saldo lässt sich so nicht prüfen, und die Seite tut nicht so, als wäre
+        sie es."""
+
+[[faq]]
+q = "Meine Daten sind falsch herausgekommen. 03/04 ist der vierte März, nicht der dritte April."
+a = """
+        Ändern Sie das Feld über den Tabellen, und alles wird sofort neu
+        gemacht. Ein numerisches Datum ist wirklich mehrdeutig, und das
+        Werkzeug entscheidet es aus dem Dokument und nicht aus Ihrem Standort:
+        Hat irgendein Datum irgendwo darin einen Tag über dem Zwölften,
+        entscheidet diese eine Zeile die Reihenfolge für alle, und die Seite
+        sagt das. Fällt jedes Datum auf den Zwölften oder davor, steht nichts
+        in der Datei, was sie auseinanderhalten könnte, also sagt sie
+        <em>das</em> und nimmt den Tag zuerst, bis Sie es anders sagen. Ein
+        Datum, das ohne Jahr gedruckt ist, wie Kreditkartenabrechnungen es
+        tun, bleibt genau so, wie es geschrieben war."""
+
+[[faq]]
+q = "Funktioniert es bei einem gescannten PDF?"
+a = """
+        Nein, und es sagt das, statt Ihnen eine leere Datei zu geben. Ein Scan
+        ist ein Foto: Die Zeilen sind Pixel, und es gibt keinen Text, der sich
+        ausrichten ließe. Die Seite zeigt Ihnen dann, was Sie stattdessen tun
+        können, und bei einem Kontoauszug ist der erste Vorschlag der, den die
+        meisten übersehen: Fast jede Online-Bank gibt Ihnen denselben Auszug
+        direkt als CSV, OFX oder QIF, und das braucht keine Umwandlung und ist
+        genauer, als jedes Lesen aus einem Bild sein könnte."""
+
+[[faq]]
+q = "Kann es ein passwortgeschütztes PDF öffnen?"
+a = """
+        Nein, und das ist Absicht. Banken sperren viele Auszüge, meist mit
+        einem Geburtsdatum oder den letzten Ziffern einer Kontonummer. Diesen
+        Schutz zu entfernen ist eine andere Aufgabe, als eine Tabelle zu
+        lesen, also weigert sich dieses Werkzeug und zeigt Ihnen die Wege, es
+        zu tun, ohne dass die Datei Ihr Gerät verlässt. Der beste davon ist
+        der <a href=\"../pdf-entsperren/\">PDF-Entsperrer</a> auf dieser
+        Seite: Er entfernt das Passwort in Ihrem eigenen Browser und ändert
+        nichts auf den Seiten, der Text kommt hier also genau dort an, wo er
+        gedruckt war. Das Dokument aus Chrome oder Edge zurück in ein PDF zu
+        drucken oder es auf einem Mac aus der Vorschau zu exportieren
+        funktioniert ebenfalls. Benutzen Sie keine andere Website, die
+        anbietet, es zu entsperren; das wäre der Upload genau des Dokuments,
+        das diese Seite vom Internet fernhalten soll."""
+
+[[faq]]
+q = "Wird mein PDF irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, und die CSV wird dort geschrieben. Eine Serverseite
+        hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Der einfachste Beweis
+        ist, die Internetverbindung zu trennen und trotzdem ein PDF
+        umzuwandeln."""
+
+[[faq]]
+q = "Warum steht am Anfang der CSV ein seltsames Zeichen?"
+a = """
+        Das ist eine Byte-Order-Mark, und sie steht dort mit Absicht. Excel
+        unter Windows liest eine CSV ohne sie mit der alten Codepage des
+        Systems, eine Tabelle in Pfund oder Euro kommt also mit einem
+        Buchstaben anstelle des Währungszeichens an. Die Marke sagt ihm, dass
+        die Datei UTF-8 ist. Jeder Leser, der zählt, überspringt sie
+        stillschweigend; ein Parser, der streng genug ist, sie zu zeigen, gibt
+        eine erste Spaltenüberschrift mit einem unsichtbaren Zeichen davor
+        zurück, und das ist der Preis dieses Tauschs."""
+
+[[faq]]
+q = "Gibt es eine Größengrenze, und kostet es etwas?"
+a = """
+        Eine Grenze ist im Werkzeug nicht festgeschrieben. Die Grenze ist Ihr
+        eigenes Gerät: Das Dokument liegt im Arbeitsspeicher, während es
+        gelesen wird, und das schafft ein Laptop bei mehreren hundert Seiten
+        ohne Klagen. Es ist kostenlos, und es gibt kein Konto, keine Anmeldung
+        und keine Testphase. Bezahlt wird die Seite über Werbung, und den
+        Anzeigen wird nichts über Ihre Dokumente übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihr Dokument zum
+        Umwandeln wegschickt, bliebe in dem Moment stehen, in dem Sie die
+        Verbindung trennen."""
+
+[schema]
+description = "Die Tabellen in einem PDF im Browser in CSV umwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten und Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und der laufende Saldo eines Kontoauszugs wird auf jeder Zeile geprüft. Es wird nichts hochgeladen."
+features = [
+  "Findet jede Tabelle in einem PDF, jede mit ihren eigenen Spalten und Überschriften",
+  "Trennt eine Randspalte mit Kleingedrucktem ab, statt sie in die Tabelle zu mischen",
+  "Fügt eine Tabelle zusammen, die über Abschnitte oder Seiten läuft, ohne ihre Überschriften zu wiederholen",
+  "Faltet eine Zelle, die in eine zweite Zeile umgebrochen ist, in ihre Zeile zurück",
+  "Prüft jede Zeile am laufenden Saldo des Kontoauszugs selbst",
+  "Liest 1.240,00 und 1,240.00 und entscheidet mehrdeutige Daten aus dem Dokument",
+  "Sagt, wenn ein PDF ein Scan ist oder ein Passwort hat, und was stattdessen zu tun ist",
+  "Läuft offline; kein Upload, kein Konto, keine Größengrenze",
+]
+
+[picker]
+title = "PDF hierher ziehen"
+hint = "oder klicken und auswählen &mdash; ein PDF auf einmal"

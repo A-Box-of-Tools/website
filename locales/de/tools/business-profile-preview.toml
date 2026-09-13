@@ -1,0 +1,362 @@
+#
+# Unternehmensprofil-Vorschau - German.
+#
+# Overrides for tools/business-profile-preview/tool.toml. Only words: the slug,
+# the category, the icon and the list of shared parts stay where they are.
+#
+# Google wird auf dieser Seite überall genannt, denn das, was in der Vorschau
+# steht, ist ein Google Unternehmensprofil, und das lässt sich nicht sagen,
+# ohne es zu sagen. Was die Seite nie tun darf, ist den Eindruck zu erwecken,
+# Google habe mit dieser hier etwas zu tun; darum sagen die FAQ rundheraus,
+# dass keine Verbindung besteht und dass die Zeichnung eine Zeichnung ist und
+# kein Screenshot. "Google Unternehmensprofil" ist der amtliche deutsche Name
+# des Produkts und steht deshalb im Fließtext; "Knowledge Panel" bleibt, weil
+# Google es auf Deutsch so nennt.
+#
+
+name = "Unternehmensprofil-Vorschau"
+heading = "Unternehmensprofil-Vorschau <span class=\"h1-kw\">&mdash; Ihren Google-Eintrag sehen, bevor er live geht</span>"
+tagline = "Tippen Sie es ein, und es wird die Karte, die Google zeichnen würde. Zum Zeichnen wird nichts verschickt."
+
+title = "Google Unternehmensprofil Vorschau &mdash; kostenlos, ohne Anmeldung, ohne Upload"
+description = "Sehen Sie, wie Ihr Google Unternehmensprofil aussehen wird, bevor es live geht: das Knowledge Panel, die Karte auf dem Telefon und das Suchergebnis, gezeichnet aus Name, Kategorie, Öffnungszeiten, Bewertung und Foto, die Sie eintippen. Einen bestehenden Eintrag importieren Sie durch Einfügen. Download als PNG oder SVG. Alles passiert in Ihrem Browser."
+og_title = "Ein Google Unternehmensprofil in der Vorschau sehen, ohne jemandem Ihre Daten zu geben"
+og_description = "Das Knowledge Panel, die Ortskarte auf einem Telefon und das lokale Suchergebnis, gezeichnet in Ihrem eigenen Browser aus dem, was Sie eintippen. Fügen Sie einen bestehenden Eintrag ein, um von ihm auszugehen. Kein Konto, kein Wasserzeichen, kein Upload."
+og_image_alt = "Unternehmensprofil-Vorschau - Ihren Google-Eintrag sehen, bevor er live geht"
+
+pledge = """
+    Jedes Feld, das Sie eintippen, wird von rund tausend Zeilen JavaScript auf
+    dieser Seite, die Sie lesen können, in ein Bild gezeichnet, und kein
+    Schritt darin kontaktiert irgendjemanden. Nicht, um Ihr Unternehmen
+    nachzuschlagen, nicht, um eine Adresse zu prüfen, nicht, um einen Stern zu
+    zeichnen. Eine Netzfunktion hat dieses Werkzeug überhaupt nicht, und das
+    zählt hier, denn ein Unternehmensprofil ist so oft eine Privatadresse wie
+    ein Ladenlokal, und eine Telefonnummer, die auf jemandes eigenem Telefon
+    klingelt."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und tippen Sie Ihre Adresse und Telefonnummer
+      in die Felder. Keine einzige Anfrage trägt ein Zeichen davon. Oder
+      trennen Sie die Internetverbindung und erstellen Sie die ganze Vorschau
+      trotzdem."""
+
+read_first = """
+, <code>src/surfaces.js</code>
+      für die drei Karten selbst, in denen jede Koordinate ausgeschrieben ist,
+      <code>src/profile.js</code> für die eine Rechnung auf der Seite, nämlich
+      ob der Ort in diesem Moment geöffnet ist, und
+      <code>src/parse-listing.js</code> dafür, was mit einem Eintrag geschieht,
+      den Sie einfügen."""
+
+howto_heading = "So sehen Sie ein Google Unternehmensprofil in der Vorschau, bevor es live geht"
+
+card = """
+            Wie Ihr Google-Eintrag aussehen wird: das Knowledge Panel, die
+            Karte auf einem Telefon und das lokale Suchergebnis. Fügen Sie
+            einen bestehenden ein, um von ihm auszugehen."""
+
+[words]
+plural = "Profile und die Bilder davon"
+choose = "ein Titelfoto"
+analytics_extra = """, und kein
+  Zeichen dessen, was Sie eintippen"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Was Sie eintippen, hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt,
+      an dem eine Adresse oder eine Telefonnummer eingesammelt werden könnte,
+      und im Code steht auch nichts, das sie dorthin schicken würde, gäbe es
+      einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends ein
+      <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Genau deshalb kann das Werkzeug Ihren Eintrag
+      auch nicht für Sie nachschlagen, und deshalb heißt Importieren hier
+      Einfügen: Die Fähigkeit, etwas zu holen, ist genau die Fähigkeit, etwas
+      wegzuschicken."""
+
+[[privacy]]
+title = "Das Foto wird hier gelesen und auf dem Weg herein bereinigt."
+body = """
+ Ein Titelfoto
+      wird auf dieser Seite dekodiert und auf ein Canvas neu gezeichnet, bevor
+      es ins Bild kommt. Das begrenzt seine Größe und lässt alles zurück, was
+      die Datei darüber festgehalten hat, wo und wann sie aufgenommen wurde.
+      Was in der Nachbildung landet, ist das Bild, nicht die Datei, die Sie
+      gewählt haben."""
+
+[[privacy]]
+title = "Der Download ist das, was auf dem Bildschirm steht."
+body = """
+ Das PNG ist keine
+      zweite Darstellung, die von der Vorschau abweichen könnte: Dieselbe
+      Auszeichnung wird dem Browser übergeben und auf ein Canvas gemalt.
+      Deshalb funktioniert der Download auch mit getrennter Netzverbindung; es
+      gibt keine Schrift abzurufen und kein verlinktes Bild darin, das Bild
+      ist also eine einzige, in sich geschlossene Datei."""
+
+[[privacy]]
+title = "Ein gespeichertes Profil ist eine Datei, kein Konto."
+body = """
+ Das JSON, das
+      diese Seite schreibt, geht auf Ihre Festplatte und sonst nirgendwohin,
+      und es wieder zu öffnen ist der einzige Weg, auf dem sich dieses
+      Werkzeug an irgendetwas erinnert. Zwischen zwei Besuchen wird im Browser
+      nichts gespeichert, denn die Adresse und die Öffnungszeiten eines
+      Unternehmens sind nichts, was wir aufbewahren sollten."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem davon wird irgendetwas übergeben, das Sie eintippen. Die Ironie
+      ist uns bewusst, und die Trennung ist echt: Jede Zeile, die aus Ihren
+      Feldern ein Bild macht, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz
+      vorgesehen war. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Gehen Sie von dem Eintrag aus, den Sie schon haben, falls es einen gibt."
+body = """
+ Öffnen Sie
+      Ihr Unternehmen auf Google, markieren Sie die ganze Karte, den Namen,
+      die Sterne und die Zeilen darunter, kopieren Sie sie und fügen Sie sie
+      in den Ausklappbereich oben auf dieser Seite ein. Name, Kategorie,
+      Bewertung, Anzahl der Rezensionen, Adresse, Telefonnummer, Website und
+      eine ganze Woche Öffnungszeiten werden erkannt, und die Seite meldet
+      genau zurück, welche davon sie ausgefüllt hat, damit ein falscher
+      Schluss sichtbar ist, statt stillschweigend abgenickt zu werden. Ein
+      Export aus der Business Profile API öffnet sich ebenfalls, falls Sie
+      einen haben."""
+
+[[howto]]
+title = "Bringen Sie zuerst Name und Kategorie in Ordnung."
+body = """
+ Sie wiegen mehr als
+      alles andere zusammen. Der Name ist das einzige Feld, das auf allen drei
+      Ansichten gekürzt wird, und im Suchergebnis wird er am kürzesten
+      geschnitten; ein Name, an dessen Ende Ort und Gewerbe angehängt sind,
+      kommt bei denen, die am ehesten suchen, als Auslassungspunkte an. Die
+      Kategorie ist die Zeile, für die ein lokales Ergebnis Platz hat, wenn es
+      für nichts anderes Platz hat, und sie ist die Wendung, mit der eine
+      Suche tatsächlich abgeglichen wird."""
+
+[[howto]]
+title = "Füllen Sie die Woche aus, und sehen Sie, was sie sagt."
+body = """
+ Die Statuszeile ist
+      der eine Teil eines Eintrags, der sich von selbst ändert: Aus
+      <em>Geöffnet &middot; Schließt um 21:00</em> wird <em>Geschlossen
+      &middot; Öffnet Di um 09:00</em>, ohne dass jemand etwas anfasst. Diese
+      Seite rechnet das aus den Öffnungszeiten und Ihrer eigenen Uhr aus, wer
+      also einen Tag auf geschlossen stellt, sieht sofort, was jemandem gesagt
+      wird, der an dem Abend nach ihm sucht. Ein Zeitfenster, das endet, bevor
+      es beginnt, 22:00 bis 02:00, wird als über Mitternacht hinaus gelesen,
+      und genau das meint eine Bar damit."""
+
+[[howto]]
+title = "Prüfen Sie, welche Buttons Sie sich verdient haben."
+body = """
+ Keine Adresse, keine
+      <em>Route</em>. Keine Website, keine <em>Website</em>. Keine
+      Telefonnummer, kein <em>Anrufen</em>. Diese drei Felder werden zu der
+      Reihe von Buttons unter dem Namen, und ein Profil, dem eines fehlt, ist
+      ein Profil, auf das ein Leser nicht reagieren kann, ohne erst woandershin
+      zu gehen. Es ist das Schnellste, was sich an der Vorschau prüfen lässt,
+      und das, was in einem echten Eintrag am häufigsten fehlt."""
+
+[[howto]]
+title = "Sehen Sie sich alle drei Ansichten an, nicht nur die erste."
+body = """
+ Dasselbe Profil wird
+      auf drei verschiedene Längen geschnitten. Das Knowledge Panel ist
+      großzügig und ist das, was Menschen sehen, die Ihren Namen schon kennen;
+      die Karte auf dem Telefon ist das, was die meisten Ihrer Besucher
+      tatsächlich bekommen; der Eintrag im lokalen Ergebnisblock ist der
+      schmale, und dort entscheidet sich jemand, der noch nie von Ihnen gehört
+      hat, zwischen Ihnen und zwei Mitbewerbern. Eine Beschreibung, die sich
+      in der ersten gut liest, ist in der dritten unsichtbar."""
+
+[[howto]]
+title = "Nehmen Sie das Bild mit."
+body = """
+ Das PNG kommt in der eigenen Größe der
+      Ansicht heraus oder in der doppelten oder dreifachen, und das ist die
+      einzige Vergrößerung, die keinen Zeilenumbruch verschieben kann. Nehmen
+      Sie auch das SVG, wenn es in ein Dokument soll; es ist eine einzige, in
+      sich geschlossene Datei mit dem Foto darin, druckt also scharf und trägt
+      keinen Link irgendwohin. Das gespeicherte Profil ist der dritte
+      Download, und es ist das, was Sie behalten sollten, wenn Sie hierher
+      zurückkommen wollen."""
+
+[[faq]]
+q = "Ist das von Google?"
+a = """
+        Nein. Diese Seite ist in keiner Weise mit Google verbunden, von Google
+        unterstützt oder Google zugehörig, und Google Business Profile, auf
+        Deutsch Google Unternehmensprofil, ist eine Marke von Google, die hier
+        nur genannt wird, um zu sagen, wovon die Seite eine Vorschau ist. Was
+        Sie sehen, ist eine Zeichnung, die in Ihrem eigenen Browser aus dem
+        entstanden ist, was Sie eingetippt haben: kein Screenshot, keine
+        Live-Ansicht Ihres Eintrags und nicht mit Ihrem Google-Konto
+        verbunden. Nichts, was Sie hier tun, ändert Ihr echtes Profil; dafür
+        müssen Sie zu Google."""
+
+[[faq]]
+q = "Kann es mein bestehendes Profil automatisch importieren?"
+a = """
+        Nein, und es lohnt sich, klar zu sagen, warum: Ihren Eintrag abzurufen
+        hieße, dass diese Seite einen Server kontaktieren kann, und eine Seite,
+        die einen Server kontaktieren kann, ist eine Seite, die Ihre Felder an
+        einen schicken kann. Genau diese Fähigkeit ist es, die diese ganze
+        Website nicht haben soll. Der Import läuft deshalb andersherum: Sie
+        kopieren Ihren Eintrag und fügen ihn ein, und die Seite liest aus dem
+        Text, was sie kann, und sagt Ihnen, welche Felder sie ausgefüllt hat.
+        Ein Export aus der Business Profile API als JSON öffnet sich direkt."""
+
+[[faq]]
+q = "Wird irgendetwas, das ich eintippe, irgendwohin geschickt?"
+a = """
+        Nein. Es gibt kein <code>fetch</code>, kein <code>XMLHttpRequest</code>
+        und kein <code>sendBeacon</code> irgendwo im Code dieses Werkzeugs,
+        und in der <code>Content-Security-Policy</code> der Seite steht jede
+        Adresse, die sie kontaktieren darf; keine davon gehört uns. Das zählt
+        hier mehr als auf den meisten Seiten: Ein Unternehmensprofil ist sehr
+        oft jemandes Privatadresse und eine Telefonnummer, die in seiner
+        Tasche klingelt."""
+
+[[faq]]
+q = "Wie genau ist die Vorschau?"
+a = """
+        Genau in dem, was hineinpasst, und ungefähr in dem, wie es aussieht.
+        Die Schrift des Originals ist Google Sans, und die gibt es auf Ihrem
+        Gerät nicht, und die Abstände verschieben sich mit jeder Version von
+        Suche und Maps; nehmen Sie die exakten Pixel also als Eindruck. Exakt
+        ist der Teil, für den sich eine Vorschau lohnt: wie viel von Ihrem
+        Namen bei jeder Breite übrig bleibt, ob die Kategorie auf der
+        schmalsten Ansicht noch lesbar ist und welche Buttons sich Ihre Felder
+        verdient haben."""
+
+[[faq]]
+q = "Warum zeigt mein brandneuer Eintrag gar keine Sterne?"
+a = """
+        Weil Google es so zeigt, und weil fünf leere Sterne auf den ersten
+        Blick aussehen wie ein Stern. Lassen Sie Bewertung und Anzahl der
+        Rezensionen leer, und die Karte sagt, dass es noch keine Rezensionen
+        gibt, und das ist die ehrliche Vorschau eines Profils, das niemand
+        bewertet hat. Tragen Sie in beides eine Zahl ein, und die Sterne
+        erscheinen, gefüllt nach dem Bruchteil, den die Zahl tatsächlich
+        ausmacht: Eine 4,6 sind vier Sterne und drei Fünftel eines fünften,
+        nicht fünf."""
+
+[[faq]]
+q = "Wovon hängt die Zeile Geöffnet oder Geschlossen eigentlich ab?"
+a = """
+        Von der Woche, die Sie ausgefüllt haben, und von der Uhr des Geräts,
+        auf dem Sie das hier lesen. Ein Feld für die Zeitzone gibt es nicht,
+        denn ein Eintrag hat auch keines: Google zeigt einem Besucher den
+        Status in der Ortszeit des Unternehmens, und das Nächste, was diese
+        Seite dem kommen kann, ohne irgendjemanden irgendetwas zu fragen, ist
+        Ihre Uhr. Die Zeile hier stimmt also genau, wenn Sie in derselben
+        Zeitzone sind wie das Unternehmen, und ist verschoben, wenn nicht; das
+        sagt die Seite unter der Woche, statt Sie es herausfinden zu lassen."""
+
+[[faq]]
+q = "Darf ich das Bild in einem Angebot, einer Präsentation oder einem Kundenbericht verwenden?"
+a = """
+        Ja. Es gibt kein Wasserzeichen, kein Konto, keine Grenze dafür, wie
+        viele Sie erstellen, und nichts in der Datei, das hierher
+        zurückverweist. Es sind Ihre eigenen Felder, auf Ihrem eigenen Gerät
+        in ein Bild gezeichnet. Das Einzige, was sich dem Empfänger gegenüber
+        sagen lässt, ist, was es ist, nämlich eine Nachbildung davon, wie ein
+        Eintrag aussähe; denn eine so wiedererkennbare Zeichnung hält man
+        leicht für den Screenshot von etwas, das schon existiert."""
+
+[[faq]]
+q = "Was ist der Unterschied zwischen den drei Vorschauen?"
+a = """
+        Die Breite, und damit, wie viel übrig bleibt. Das <strong>Knowledge
+        Panel</strong> ist die hohe Karte rechts in einer Desktop-Suche nach
+        Ihrem Namen: die großzügigste, und die, die Sie sehen, wenn Sie sich
+        selbst nachschlagen. Die <strong>Telefon</strong>-Karte ist das, was
+        die meisten Ihrer Besucher tatsächlich bekommen. Das
+        <strong>Suchergebnis</strong> ist ein Eintrag im lokalen
+        Ergebnisblock, dem Block aus drei Unternehmen mit einer Karte darüber;
+        es ist das schmalste und der Ort, an dem sich jemand, der noch nie von
+        Ihnen gehört hat, zwischen Ihnen und zwei Mitbewerbern entscheidet."""
+
+[[faq]]
+q = "Wird das Foto, das ich hinzufüge, hochgeladen?"
+a = """
+        Nein. Es wird auf dieser Seite dekodiert, auf ein Canvas in einer
+        Größe neu gezeichnet, mit der die Karte etwas anfangen kann, und als
+        Daten ins Bild eingebettet. Zwei Dinge folgen daraus: Die Datei verlässt Ihr
+        Gerät nie, und alles, was sie darüber festgehalten hat, wo und wann
+        sie aufgenommen wurde, ist weg, denn ein Canvas hat keine Metadaten.
+        Ist Ihnen das Original wichtig, behalten Sie das Original; was in die
+        Nachbildung kommt, ist eine Kopie."""
+
+[[faq]]
+q = "Kann ich speichern, was ich eingetippt habe, und später darauf zurückkommen?"
+a = """
+        Ja, als Datei. <em>Profil speichern</em> schreibt ein JSON mit jedem
+        Feld und dem Foto auf Ihre Festplatte, und diese Datei hier wieder zu
+        öffnen stellt alles wieder her. Zwischen zwei Besuchen wird in diesem
+        Browser nichts gespeichert, und es gibt kein Konto, in das man sich
+        einloggen könnte, und das ist Absicht: Die Adresse, die Telefonnummer
+        und die Öffnungszeiten eines Unternehmens sind nichts, was wir
+        aufbewahren sollten."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter, die Felder, die Zeichnung, das PNG, alles.
+        Das ist zugleich der einfachste Beweis dafür, dass nichts hochgeladen
+        wird: Ein Werkzeug, das Ihre Daten wegschickt, um eine Karte zeichnen
+        zu lassen, bliebe in dem Moment stehen, in dem Sie die Verbindung
+        trennen."""
+
+[schema]
+description = "Ein Google Unternehmensprofil im Browser in der Vorschau sehen. Zeichnet das Knowledge Panel, die Ortskarte auf einem Telefon und das lokale Suchergebnis aus Unternehmensname, Kategorie, Bewertung, Anzahl der Rezensionen, Adresse, Telefonnummer, Website, Beschreibung, Attributen, Öffnungszeiten und Titelfoto, rechnet die Statuszeile Geöffnet oder Geschlossen aus den Öffnungszeiten aus und lädt das Ergebnis als PNG oder SVG herunter. Ein bestehender Eintrag lässt sich durch Einfügen importieren oder aus einem Export der Business Profile API. Es wird nichts hochgeladen."
+features = [
+  "Drei Ansichten aus einem Profil: das Knowledge Panel, die Karte auf einem Telefon und ein lokales Suchergebnis",
+  "Die Statuszeile Geöffnet oder Geschlossen, ausgerechnet aus einer ganzen Woche Öffnungszeiten, auch mit Zeitfenstern über Mitternacht hinaus",
+  "Sterne, gefüllt nach dem Bruchteil, den die Bewertung tatsächlich ausmacht, und gar keine Sterne bei einem Profil ohne Rezensionen",
+  "Aktionsbuttons, die nur erscheinen, wenn das Profil das Feld dahinter hat",
+  "Einen bestehenden Eintrag durch Einfügen importieren, mit einer Meldung, welche Felder gelesen wurden",
+  "Öffnet einen Standort-Export der Google Business Profile API direkt",
+  "Ein Titelfoto, auf der Seite gelesen, von seinen Metadaten befreit und ins Bild eingebettet",
+  "PNG in einfacher, doppelter oder dreifacher Größe der Ansicht und ein in sich geschlossenes SVG",
+  "Das Profil als JSON auf der Festplatte gespeichert und später wieder geöffnet; kein Konto, und im Browser bleibt nichts",
+  "Läuft offline; kein Upload, kein Wasserzeichen, keine Anmeldung",
+]

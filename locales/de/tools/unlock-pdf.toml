@@ -1,0 +1,418 @@
+#
+# PDF-Entsperrer - German.
+#
+# Overrides for tools/unlock-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Zwei Dinge, die beim Bearbeiten dieser Prosa nicht verloren gehen dürfen,
+# dieselben wie im englischen Original.
+#
+# Erstens: "Geschützt" heißt bei einem PDF zweierlei, und diese Seite darf die
+# beiden nie ineinanderlaufen lassen. Ein Dokument mit Öffnungspasswort kann
+# niemand lesen, der es nicht hat, und nichts hier findet eines. Ein Dokument
+# mit Einschränkungen öffnet sich für jeden und bittet Leseprogramme nur, es
+# nicht zu drucken oder zu kopieren; diese Bitte beruht auf einer Übereinkunft
+# zwischen sich gut benehmenden Programmen, nicht auf Kryptographie, und Adobe
+# hat das von Anfang an so dokumentiert. Der zweite Fall ist bei weitem der
+# häufigere, und er ist der, den dieses Werkzeug mit einem Klick und ganz ohne
+# Passwort erledigt.
+#
+# Zweitens: Dieses Werkzeug errät keine Passwörter. Nirgends in src/ gibt es
+# eine Schleife dafür, und die Seite sagt das, statt es erraten zu lassen. Ein
+# 40-Bit-RC4-Schlüssel fiele einer Suche tatsächlich zum Opfer, und genau
+# deshalb muss die Weigerung ausgesprochen werden statt bloß mitgemeint.
+#
+# Begriffe: "user password" heißt Öffnungspasswort, wo es um seine Wirkung
+# geht, und Benutzerpasswort, wo die FAQ die beiden Passwörter des Formats
+# einander gegenüberstellt; "owner password" heißt Besitzerpasswort;
+# "restrictions" heißt Einschränkungen; "scheme" heißt Verfahren; "revision"
+# bleibt Revision, weil es /R entspricht; "reader" heißt Leseprogramm. Der
+# Schutz nebenan verwendet dieselben Wörter.
+#
+
+name = "PDF-Entsperrer"
+heading = "PDF&nbsp;entsperren <span class=\"h1-kw\">&mdash; Passwort und Einschränkungen abnehmen</span>"
+tagline = "Die meisten gesperrten PDFs brauchen gar kein Passwort. Dieses Werkzeug sagt Ihnen, welche Sorte Sie haben, bevor es sie anrührt."
+
+title = "PDF entsperren &mdash; Passwort &amp; Einschränkungen entfernen, kostenlos, ohne Upload"
+description = "Das Passwort und die Einschränkungen für Drucken, Kopieren und Bearbeiten im Browser von einem PDF abnehmen. Die meisten geschützten Dateien brauchen gar kein Passwort, und dieses Werkzeug sagt Ihnen, welche Sorte Sie haben. Es wird nichts hochgeladen, und ein Passwort wird nie erraten."
+og_title = "Ein PDF entsperren, ohne es irgendwohin hochzuladen"
+og_description = "Die meisten &bdquo;geschützten&ldquo; PDFs öffnen sich für jeden und bitten Leseprogramme nur, sie nicht zu drucken oder zu kopieren. Dieses Werkzeug entfernt das in Ihrem Browser und sagt Ihnen, was der Schutz tatsächlich wert war."
+og_image_alt = "Ein PDF im Browser entsperren, ohne es hochzuladen"
+
+pledge = """
+    Das Dokument, das Sie wählen, wird im Arbeitsspeicher dieses Geräts
+    geöffnet, entschlüsselt und wieder hinausgeschrieben, von Code, der von
+    dieser Adresse stammt. Einen Upload kann hier nichts auslösen, und am
+    anderen Ende dieser Seite steht kein Server, der einen entgegennähme.
+    Weder die Datei noch das Passwort, das Sie eintippen, verlässt den Tab."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und entsperren Sie etwas. Keine einzige Anfrage
+      trägt ein Dokument, ein Passwort oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und entsperren Sie es trotzdem."""
+
+read_first = """
+, <code>src/shared/pdf-crypt.js</code> dafür, wie aus einem Passwort
+      der Schlüssel eines Dokuments wird, und dafür, dass darin nirgends eine
+      Schleife steht, und <code>src/shared/aes.js</code> und
+      <code>src/shared/rc4.js</code> für die beiden Chiffren selbst. Keine
+      dieser Dateien kommt ins Netz, und der Leser und der Schreiber daneben
+      auch nicht."""
+
+howto_heading = "So entfernen Sie ein Passwort oder die Einschränkungen von einem PDF"
+
+card = """
+            Das Passwort und die Einschränkungen für Drucken, Kopieren und
+            Bearbeiten von einem PDF abnehmen. Die meisten geschützten Dateien
+            öffnen sich ohnehin für jeden und brauchen gar kein Passwort. Dieses
+            Werkzeug sagt, welche Sorte Sie haben und was der Schutz wert war,
+            und entfernt ihn hier."""
+
+[words]
+plural = "Dokumente"
+choose = "ein PDF"
+analytics_extra = """, und nichts über
+  das Passwort, das Sie eingetippt haben, oder darüber, womit die Datei geschützt war"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Die meisten geschützten PDFs sind gar nicht gesperrt, und diese Seite sagt das, bevor sie irgendetwas tut."
+body = """
+
+      Ein PDF kann zwei recht verschiedene Dinge tragen. Ein
+      <em>Öffnungspasswort</em> ist echt: Ohne es lässt sich die Datei nicht
+      lesen, und nichts hier findet eines. <em>Einschränkungen</em>, also kein
+      Drucken, kein Kopieren, kein Bearbeiten, sind es nicht. Eine Datei, die
+      nur diese trägt, öffnet sich für jeden, und das heißt, sie muss alles
+      enthalten, was zum Ableiten ihres eigenen Schlüssels nötig ist, denn Ihr
+      Leseprogramm hat ihn abgeleitet. Was das Leseprogramm vom Drucken
+      abhält, ist ein Berechtigungsfeld im Dokument, das sich gut benehmende
+      Programme aus Übereinkunft beachten. Adobe hat das von Anfang an so
+      dokumentiert. Es zu entfernen bricht nichts auf; es ist die Weigerung,
+      sich freiwillig zu melden. Die Seite sagt Ihnen, welche der beiden
+      Sorten Sie haben, und fragt nur dann nach einem Passwort, wenn es
+      wirklich eines zu erfragen gibt."""
+
+[[privacy]]
+title = "Es errät keine Passwörter, und es gibt darin keine Schleife, die das könnte."
+body = """
+
+      Hat ein Dokument ein Öffnungspasswort, geben Sie es an, oder das
+      Dokument bleibt zu. Hier gibt es kein Wörterbuch, keine Wortliste und
+      keinen Versuch an den 40-Bit-Schlüsseln der 1990er, die einer Suche
+      tatsächlich zum Opfer fielen. Das ist eine bewusst gezogene Linie und
+      keine Lücke, zu der niemand gekommen ist: Eine Seite, die stillschweigend
+      ein paar Millionen Passwörter für Sie probierte, wäre ein anderes
+      Werkzeug mit einem anderen Namen, und es ist nicht dieses. Angenommen
+      werden sowohl das Passwort, das ein Dokument öffnet, als auch das
+      Besitzerpasswort, das seine Einschränkungen aufhebt, denn beides ist ein
+      Passwort, das man Ihnen gegeben hat."""
+
+[[privacy]]
+title = "Das Passwort wird hier eingetippt und hier verwendet."
+body = """
+
+      Was Sie eintippen, geht in eine Schlüsselableitung, die in diesem Tab
+      läuft, und sonst nirgendwohin. Es wird nicht gespeichert, nicht von
+      einer Datei zur nächsten gemerkt und nicht in die Adressleiste
+      geschrieben, und in der <code>Content-Security-Policy</code> der Seite
+      steht jede Adresse, die diese Seite kontaktieren darf; keine davon
+      gehört dieser Website. Ein Werkzeug, das nach einem Dokumentpasswort
+      fragte und dann eine Netzanfrage stellte, täte das Schlimmste, was ein
+      Werkzeug dieser Art tun kann."""
+
+[[privacy]]
+title = "Die fertige Datei wird hier noch einmal geöffnet, bevor sie Ihnen angeboten wird."
+body = """
+
+      Bis das geschieht, korrigiert dieses Werkzeug mit allem oben nur seine
+      eigene Hausaufgabe. Also werden die Bytes, die gleich Ihr Download
+      werden, demselben Leser übergeben, den
+      <a href=\"../pdf-verkleinern/\">der Kompressor</a>,
+      <a href=\"../pdf-zusammenfuegen/\">das Zusammenfügen</a> und
+      <a href=\"../pdf-schwaerzen/\">der Schwärzer</a> benutzen, einem Leser,
+      der ein verschlüsseltes Dokument rundheraus ablehnt, und die Datei muss
+      sich ohne Passwort öffnen und mit derselben Seitenzahl zurückkommen.
+      Eine Datei, auf der noch irgendeine Verschlüsselung läge, könnte das
+      nicht bestehen. Besteht sie es nicht, gilt der Durchlauf als
+      gescheitert, und es gibt keinen Download."""
+
+[[privacy]]
+title = "Die Seiten selbst werden nicht neu gerendert, neu kodiert oder neu umbrochen."
+body = """
+
+      Was sich ändert, ist die Verschlüsselung um das Dokument herum, nicht das
+      Dokument. Die Zeichenanweisungen jeder Seite, jede eingebettete Schrift
+      und jedes Bild werden genau so hinausgeschrieben, wie sie ankamen. Text
+      bleibt also markierbar und durchsuchbar, Scans behalten die Auflösung,
+      mit der sie gescannt wurden, und auf keiner Seite verrutscht etwas. Das
+      eine, was sich doch ändert, ändert jedes Neuschreiben: Ältere, überholte
+      Kopien von Objekten, die frühere Bearbeitungen zurückgelassen haben,
+      werden nicht übernommen, was die Datei meist ein wenig kleiner
+      macht."""
+
+[[privacy]]
+title = "Eine digitale Signatur übersteht das nicht, und die Seite sagt es, wenn eine da ist."
+body = """
+
+      Eine Signatur deckt genau die Bytes der Datei ab, auf die sie angewendet
+      wurde, jedes Neuschreiben macht sie also ungültig; genau dafür ist eine
+      Signatur da. Dieses Werkzeug schreibt eine neue Datei, die Kopie, die
+      Sie zurückbekommen, ist also unsigniert, und es sagt das beim Ergebnis,
+      wenn es eine Signatur findet, vor der es warnen muss. Ihr Original ist
+      weiterhin das signierte. Daran führt kein Weg vorbei, und kein Werkzeug
+      hat einen."""
+
+[[privacy]]
+title = "Es sagt, was der Schutz tatsächlich wert war."
+body = """
+
+      Ein Dokument, das 1998 mit 40-Bit-RC4 gesperrt wurde, und eines, das
+      letztes Jahr mit AES-256 gesperrt wurde, heißen im Leseprogramm beide
+      &bdquo;passwortgeschützt&ldquo;, und zwischen ihnen liegen Jahrzehnte.
+      Die Seite nennt das Verfahren, die Schlüssellänge und die Revision und
+      sagt klar, welche davon gebrochen sind, welche bloß überholt und welche
+      aktuell ist. Das ist bei einer Datei, die man Ihnen als sicher
+      beschrieben hat, wissenswert, und kein Leseprogramm zeigt es Ihnen."""
+
+[[privacy]]
+title = "An ein Zertifikat gebundene Dokumente werden abgewiesen statt halb geöffnet."
+body = """
+
+      Manche Dokumente sind an ein Zertifikat verschlüsselt statt an ein
+      Passwort, die Sorte aus Unternehmen, wo der Schlüssel auf einer
+      Smartcard oder in einem Schlüsselspeicher liegt. Die werden mit einer
+      Meldung abgewiesen, die sagt, was sie sind. Nichts, was man in ein
+      Passwortfeld tippt, kann einen privaten Schlüssel ersetzen, und etwas
+      anderes vorzugeben, würde nur Ihre Zeit verschwenden."""
+
+[[privacy]]
+title = "Was Google lädt und was es nicht bekommt."
+body = """
+ Die Skripte für Werbung
+      und Messung kommen von Google. Keines von beiden bekommt irgendetwas über
+      Ihr Dokument: keine Datei, keine Seite, keinen Namen, keine Größe, keine
+      Seitenzahl, kein Passwort und nicht, womit die Datei geschützt war. Jede
+      Zeile, die ein PDF liest, entschlüsselt oder schreibt, wird von dieser
+      Domain ausgeliefert und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Knopf lädt und was er nicht bekommt."
+body = """
+
+      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und sonst nichts: Er meldet keinen Besuch,
+      und er bekommt nichts über Sie oder Ihre Dokumente. Es passiert nichts,
+      bis Sie ihn anklicken, und dann sind Sie auf einer fremden Seite."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihr Dokument zum Entsperren wegschickt, bliebe
+      stehen."""
+
+[[howto]]
+title = "Wählen Sie das PDF."
+body = """
+ Ein Dokument nach dem anderen. Der Browser
+      liest es direkt von Ihrer Festplatte, und als Erstes wird es mit einem
+      leeren Passwort probiert, denn das öffnet die Mehrheit der geschützten
+      Dateien, weil die Mehrheit von ihnen nie verschlossen war."""
+
+[[howto]]
+title = "Lesen Sie, was die Seite gefunden hat."
+body = """
+ Sie sagt, welche der beiden
+      Schutzarten diese Datei trägt, welches Verfahren verwendet wurde und was
+      dieses Verfahren heute wert ist, und sie listet jede Einschränkung auf,
+      um deren Beachtung das Dokument die Leseprogramme bittet: Drucken,
+      Kopieren, Bearbeiten, Kommentieren, das Ausfüllen von Formularen, das
+      Umsortieren von Seiten, sogar das Vorlesen für jemanden, der es nicht
+      sehen kann."""
+
+[[howto]]
+title = "Tippen Sie das Passwort ein, aber nur, wenn Sie danach gefragt werden."
+body = """
+
+      Das Feld erscheint nur, wenn das leere Passwort das Dokument nicht
+      geöffnet hat, und das ist der einzige Moment, in dem ein Passwort
+      überhaupt etwas nützt. Jedes der beiden Passwörter des Dokuments
+      funktioniert, das, das es öffnet, oder das Besitzerpasswort, das seine
+      Einschränkungen aufhebt. Es wird nichts erraten, und was Sie eintippen,
+      bleibt in diesem Tab."""
+
+[[howto]]
+title = "Nehmen Sie ihn ab, und lesen Sie die Zeile, die sagt, dass geprüft wurde."
+body = """
+
+      Das Dokument wird mit seinem eigenen Schlüssel entschlüsselt und ganz
+      ohne Verschlüsselungs-Wörterbuch hinausgeschrieben. Dann wird die
+      fertige Datei hier noch einmal geöffnet, ohne Passwort, von einem Leser,
+      der verschlüsselte Dokumente ablehnt. Öffnet sie sich nicht oder kommt
+      sie mit einer anderen Seitenzahl zurück, bekommen Sie keinen Download
+      und eine Meldung, die das sagt."""
+
+[[faq]]
+q = "Brauche ich das Passwort?"
+a = """
+        Meistens nicht, und die Seite sagt es Ihnen innerhalb einer Sekunde
+        nach der Auswahl der Datei. Die meisten &bdquo;geschützten&ldquo;
+        PDFs, Kontoauszüge, Gehaltsabrechnungen, exportierte Berichte, alles
+        aus dem Kästchen &bdquo;Bearbeitung einschränken&ldquo; einer
+        Office-Suite, öffnen sich für jeden und tragen bloß eine Liste von
+        Dingen, um deren Unterlassung Leseprogramme gebeten werden. Die gehen
+        mit einem Klick und ohne Passwort ab. Ein Dokument, das Sie beim
+        Öffnen tatsächlich nach einem Passwort fragt, ist die andere Sorte,
+        und für die brauchen Sie das Passwort."""
+
+[[faq]]
+q = "Kann es ein PDF öffnen, dessen Passwort ich nicht habe?"
+a = """
+        Nein, und es versucht es nicht. Es gibt in diesem Werkzeug kein
+        Wörterbuch, keine Wortliste und nirgends eine Brute-Force-Suche; Sie
+        können <code>src/shared/pdf-crypt.js</code> lesen und sehen, dass darin
+        keine Schleife ist. Bei den ältesten Dokumenten, mit 40-Bit-Schlüsseln,
+        würde eine Suche tatsächlich funktionieren, und genau deshalb steht
+        die Weigerung geschrieben, statt dass man sie annehmen muss. Wenn Sie
+        das Passwort zu Ihrem eigenen Dokument verloren haben, kann diese Seite
+        Ihnen nicht helfen, und keine ehrliche kann es."""
+
+[[faq]]
+q = "Was ist der Unterschied zwischen den beiden Passwörtern?"
+a = """
+        Ein PDF hat Platz für zwei. Das <em>Benutzerpasswort</em> ist das,
+        nach dem ein Leseprogramm Sie fragt; ohne es öffnet sich die Datei
+        nicht. Das <em>Besitzerpasswort</em> hebt die Einschränkungen auf,
+        also Drucken, Kopieren, Bearbeiten, und sehr oft hat ein Dokument ein
+        Besitzerpasswort und gar kein Benutzerpasswort, weshalb es sich für
+        jeden öffnet und sich trotzdem nicht drucken lässt. Dieses Werkzeug
+        nimmt beide an und sagt Ihnen, mit welchem von beiden das Dokument es
+        tatsächlich hineingelassen hat."""
+
+[[faq]]
+q = "Ist es legal, die Einschränkungen zu entfernen?"
+a = """
+        Das hängt vom Dokument ab und davon, wo Sie sind, und es ist eine
+        Frage nach Ihren Rechten an der Datei, nicht nach der Technik. Was sich
+        klar sagen lässt, ist, was das Format tut: Die Einschränkungen sind
+        ein Feld im Dokument, das Leseprogramme aus Übereinkunft beachten,
+        keine kryptographische Barriere, und Adobe hat sie seit ihrer
+        Einführung so dokumentiert. Dieses Werkzeug ist für Dokumente, die Sie
+        nutzen dürfen: Ihr eigener Kontoauszug, der sich nicht drucken lässt,
+        ein Bericht, den Sie bezahlt haben und der sich nicht kopieren lässt,
+        ein Scan, dessen Seiten Sie umsortieren müssen. Wenn Ihnen die Datei
+        nicht zusteht, ändert nichts hier etwas daran."""
+
+[[faq]]
+q = "Welche Arten von Verschlüsselung beherrscht es?"
+a = """
+        Jede veröffentlichte: RC4 mit 40 und 128 Bit (Revisionen 2 und 3),
+        AES-128 (Revision 4) und AES-256 sowohl in der zurückgezogenen Form von
+        2008 als auch in der aktuellen von PDF 2.0 (Revisionen 5 und 6). Was es
+        nicht beherrscht, ist die zertifikatsbasierte Verschlüsselung, wo der
+        Schlüssel zu einer Smartcard oder einem Schlüsselspeicher gehört statt
+        zu einem Passwort, und die eine unveröffentlichte Variante von
+        Adobe. Beide werden mit einer Meldung abgewiesen, die sagt, welche es
+        sind, statt vage zu scheitern."""
+
+[[faq]]
+q = "Sieht das Dokument danach anders aus?"
+a = """
+        Nein. Nichts wird neu gerendert, neu kodiert oder neu umbrochen: Die
+        Zeichenanweisungen jeder Seite, jede eingebettete Schrift und jedes
+        Bild werden genau so übernommen, wie sie ankamen. Text bleibt
+        markierbar, Scans behalten ihre ursprüngliche Auflösung, und nichts
+        verrutscht. Die Datei kann etwas kleiner herauskommen, weil ein
+        Neuschreiben die überholten Kopien von Objekten zurücklässt, die
+        frühere Bearbeitungen darin hinterlassen haben."""
+
+[[faq]]
+q = "Was passiert mit einem signierten Dokument?"
+a = """
+        Seine Signatur ist danach nicht mehr gültig, und daran führt kein Weg
+        vorbei. Eine Signatur deckt genau die Bytes der Datei ab, auf die sie
+        angewendet wurde, jede Änderung überhaupt, durch jedes Programm, auch
+        das, das signiert hat, macht sie also ungültig. Das ist der ganze Sinn
+        einer Signatur. Dieses Werkzeug schreibt eine neue Datei, bemerkt, wenn
+        das Original signiert war, und sagt es beim Ergebnis. Heben Sie Ihr
+        Original auf: Es ist weiterhin das signierte."""
+
+[[faq]]
+q = "Werden meine Dokumente oder Passwörter irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, entschlüsselt und geschrieben, und das Passwort geht
+        in eine Schlüsselableitung, die in diesem Tab läuft. Dieses Werkzeug
+        hat keine Serverseite, und in der <code>Content-Security-Policy</code>
+        der Seite steht jede Adresse, die sie kontaktieren darf; keine davon
+        gehört dieser Website. Am einfachsten überzeugen Sie sich, indem Sie
+        die Netzverbindung trennen und die Seite trotzdem benutzen."""
+
+[[faq]]
+q = "Woher weiß ich, dass der Schutz wirklich weg ist?"
+a = """
+        Weil das Werkzeug es auf Ihrem Gerät prüft und Ihnen das Ergebnis
+        zeigt. Ist die Datei geschrieben, wird sie demselben Leser übergeben,
+        den die anderen PDF-Werkzeuge dieser Website benutzen, einem, der ein
+        verschlüsseltes Dokument rundheraus ablehnt, und sie muss sich ohne
+        Passwort öffnen und mit derselben Seitenzahl zurückkommen. Tut sie das
+        nicht, gilt der Durchlauf als gescheitert, und es wird nichts zum
+        Herunterladen angeboten. Nachprüfen können Sie es anschließend auch
+        selbst: Öffnen Sie die Datei in einem beliebigen Leseprogramm und
+        sehen Sie in den Dokumenteigenschaften nach, wo jetzt bei jeder
+        Berechtigung &bdquo;Zulässig&ldquo; stehen sollte."""
+
+[[faq]]
+q = "Gibt es eine Größenbeschränkung, und kostet es etwas?"
+a = """
+        In das Werkzeug ist keine Grenze geschrieben. Die Grenze ist Ihr
+        eigenes Gerät: Das Dokument liegt während der Bearbeitung im Speicher,
+        ein Laptop nimmt also ein paar hundert Megabyte klaglos hin und kommt
+        irgendwo darüber ins Straucheln. Es ist kostenlos, es gibt kein Konto,
+        keine Anmeldung und keine Testphase. Die Seite trägt Werbung, und die
+        bezahlt sie; die Werbung bekommt nichts über Ihre Dokumente."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie danach die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Weg zu prüfen, dass nichts hochgeladen wird: Ein Werkzeug,
+        das Ihr Dokument zum Entsperren wegschickt, bliebe in dem Moment
+        stehen, in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "Das Passwort und die Einschränkungen für Drucken, Kopieren und Bearbeiten im Browser von einem PDF entfernen. Es sagt, welche Art von Schutz die Datei trägt und was er wert war, errät nie ein Passwort, und nichts wird hochgeladen."
+features = [
+  "Entfernt die Einschränkungen für Drucken, Kopieren und Bearbeiten",
+  "Entfernt das Öffnungspasswort, wenn Sie es angeben",
+  "Sagt, ob das Dokument überhaupt ein Passwort brauchte, bevor es nach einem fragt",
+  "Nennt Verschlüsselungsverfahren, Schlüssellänge und Revision und sagt, was sie wert sind",
+  "Beherrscht RC4 mit 40 und 128 Bit, AES-128 und AES-256 in beiden Revisionen",
+  "Errät nie ein Passwort und probiert nie eines durch",
+  "Öffnet die fertige Datei ohne Passwort noch einmal, um zu belegen, dass der Schutz weg ist",
+  "Läuft offline; kein Upload, kein Konto, keine Größenbeschränkung",
+]
+
+[picker]
+title = "Ihr geschütztes PDF hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; ein Dokument nach dem anderen"

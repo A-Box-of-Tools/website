@@ -1,0 +1,258 @@
+<main id="main">
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Das PDF auswählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Ein anderes wählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Wo ein Passwort abgenommen werden kann, nur sichtbar, wenn eines die
+      Datei am Lesen gehindert hat. Ein Dokument zu stempeln heißt, es zu
+      öffnen, und diese Seite fragt nicht nach Passwörtern; die Seite, die
+      eines abnimmt, liegt nebenan, und die, die es wieder daraufsetzt,
+      daneben.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Dieses Dokument ist gesperrt. Nehmen Sie den Schutz zuerst ab, in diesem
+      Browser, mit dem <a href="../pdf-entsperren/">PDF-Entsperrer</a> &mdash;
+      bringen Sie die entsperrte Kopie dann hierher zurück, und setzen Sie mit
+      dem <a href="../pdf-schuetzen/">PDF-Schutz</a> danach ein Passwort auf
+      die gestempelte Kopie, wenn Sie eines möchten.
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Schritt 2 &mdash; der Stempel.
+
+    Zuerst die Wörter, weil sie der ganze Zweck sind; dann, wie der Stempel
+    sitzt, mit einer Vorschau neben den Reglern. Die Vorschau ist eine leere
+    Seite in der Form der ersten Seite, auf die dieselbe Rechnung, die die
+    Datei schreibt, die Platzierung zeichnet, nie das Dokument selbst, das
+    diese Website nicht zeichnen kann und das auch sagt.
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> Sagen, was der Stempel sagen soll und wie er sitzt</h2>
+
+    <label class="field" for="words">
+      <span>Die Wörter</span>
+      <span class="field-note">
+        Für wen die Kopie ist, und wann. Jede Sprache: Die Wörter zeichnet Ihr
+        eigener Browser, was Sie also tippen können, kann der Stempel sagen.
+      </span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="Nur für die Musterbank &middot; 12. September 2026">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>Größe</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">Klein</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">Mittel</button>
+            <button type="button" class="chip" data-size="large">Groß</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Winkel</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">Diagonal</button>
+            <button type="button" class="chip" data-diagonal="no">Flach</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Platzierung</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">Einmal, in der Mitte</button>
+            <button type="button" class="chip" data-tiled="yes">Wiederholt über die Seite</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Farbe</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">Grau</button>
+            <button type="button" class="chip" data-colour="red">Rot</button>
+            <button type="button" class="chip" data-colour="blue">Blau</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>Wie blass</span>
+          <span class="field-note">
+            <span id="opacity-value">30</span>&nbsp;% Deckkraft. Blass genug, um
+            hindurchzulesen, dunkel genug, um eine Fotokopie zu überstehen.
+          </span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>Nur die erste Seite</strong>
+            <span class="check-note">Jede Seite bekommt den Stempel, solange das hier nicht angehakt ist.</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        Die Vorschau. Eine leere Seite in Größe und Form der ersten Seite, mit
+        dem Stempel darauf; die Wörter werden live gezeichnet, damit der
+        Besucher seinen eigenen Text sieht und keinen Platzhalter. Für einen
+        Screenreader beschrieben durch den Satz darunter, der sagt, was
+        gezeigt wird und was nicht.
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">
+          Der Stempel auf einer leeren Seite in der Form Ihrer ersten Seite,
+          genau dort, wo die Datei ihn hinsetzen wird. Der eigene Inhalt Ihrer
+          Seite wird nicht gezeichnet: Diese Website hat keinen PDF-Renderer,
+          mit Absicht.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Schritt 3 &mdash; der eine Klick -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Stempeln</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Das Dokument mit dem Wasserzeichen versehen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    Die Sätze, die das JavaScript dieses Werkzeugs braucht, im Markup gehalten
+    statt in src/, weil src/ Byte für Byte in jede Sprache kopiert wird und
+    eine dort geschriebene Zeichenkette an allen Adressen bis auf eine
+    Englisch wäre. shared/js/phrases.js liest sie zurück; ein {name} wird vom
+    Aufrufer eingesetzt.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">Das wird frei, sobald oben ein Dokument liegt und Wörter auf dem Stempel stehen.</span>
+    <span data-phrase="note.repaired">Die Querverweistabelle dieser Datei passte nicht zu ihrem Inhalt, sie wurde
+      deshalb durch Absuchen nach Objekten gelesen. Das ist eine Reparatur, und sie
+      hat funktioniert, aber prüfen Sie das Ergebnis, bevor Sie es irgendwohin
+      schicken.</span>
+    <span data-phrase="note.incremental">Dieses Dokument wurde mindestens einmal bearbeitet und neu gespeichert, es
+      trägt also ältere Kopien von Objekten mit sich, auf die nichts mehr zeigt. Die
+      bleiben aus der Datei, die Sie zurückbekommen, draußen.</span>
+    <span data-phrase="note.pages.one">1 Seite, {size}.</span>
+    <span data-phrase="note.pages.many">{n} Seiten, {size}.</span>
+    <span data-phrase="read.notpdf">Das ist kein PDF. Dieses Werkzeug arbeitet nur mit PDF-Dateien.</span>
+    <span data-phrase="read.encrypted">Dieses PDF ist verschlüsselt.</span>
+    <span data-phrase="read.nocatalogue">Diese Datei hat keinen Dokumentkatalog, es gibt also nichts zu stempeln.
+      Entweder ist sie kein PDF, oder sie ist über das hinaus beschädigt, was sich
+      hier reparieren lässt.</span>
+    <span data-phrase="read.noheader">Das fängt nicht wie ein PDF an: Es gibt keinen %PDF--Kopf.</span>
+    <span data-phrase="read.nopages">Dieses Dokument hat keine Seiten, die sich stempeln ließen.</span>
+    <span data-phrase="read.failed">Dieses PDF ließ sich nicht lesen: {detail}</span>
+    <span data-phrase="pdf.flate">ein Flate-Stream ließ sich nicht entpacken ({detail})</span>
+    <span data-phrase="pdf.nocompression">dieser Browser hat kein CompressionStream</span>
+    <span data-phrase="pdf.lzw">ein LZW-Stream beginnt mit einem undefinierten Code</span>
+    <span data-phrase="pdf.cryptfilter">dieser Stream ist verschlüsselt</span>
+    <span data-phrase="pdf.unknownfilter">ein unbekannter Filter, /{name}</span>
+    <span data-phrase="pdf.deep">zu tief verschachtelt</span>
+    <span data-phrase="pdf.short">über das Ende hinausgelaufen</span>
+    <span data-phrase="pdf.unexpected">unerwartet {found} bei {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">unerwartetes Byte 0x{hex} bei {at}</span>
+    <span data-phrase="pdf.noendstream">ein Stream ohne endstream</span>
+    <span data-phrase="pdf.noobj">kein obj-Schlüsselwort bei {at}</span>
+    <span data-phrase="pdf.nostartxref">kein startxref</span>
+    <span data-phrase="pdf.noxref">kein xref-Abschnitt</span>
+    <span data-phrase="pdf.now">ein xref-Stream ohne /W</span>
+    <span data-phrase="pdf.zerowidth">ein xref-Stream mit Feldern der Breite null</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} Seite</span>
+    <span data-phrase="count.pages.many">{n} Seiten</span>
+    <span data-phrase="stage.drawing">Der Stempel wird gezeichnet</span>
+    <span data-phrase="stage.writing">Das Dokument wird mit dem Stempel auf jeder Seite hinausgeschrieben</span>
+    <span data-phrase="stage.checking">Wird zur Prüfung noch einmal geöffnet</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Nichts wurde geändert; drücken Sie den Knopf, um von vorn zu beginnen.</span>
+    <span data-phrase="result.ready">{size} &mdash; gestempelt.</span>
+    <span data-phrase="result.sub">Jede Seite, jede Schrift und jedes Bild ist das, das ankam, mit dem
+      Stempel darüber gezeichnet. Heben Sie Ihr Original trotzdem auf.</span>
+    <span data-phrase="check.passed">Geprüft: {found}</span>
+    <span data-phrase="check.failed">Dieser Durchlauf ging nicht auf &mdash; {found}. Behalten Sie Ihr Original.</span>
+    <span data-phrase="check.ok.all">aus dem Speicher noch einmal geöffnet, und jede einzelne seiner {pages}
+      trägt den Stempel.</span>
+    <span data-phrase="check.ok.first">aus dem Speicher noch einmal geöffnet, und die erste seiner {pages} trägt
+      den Stempel, wie verlangt.</span>
+    <span data-phrase="check.ok.single">aus dem Speicher noch einmal geöffnet, und seine eine Seite trägt den Stempel.</span>
+    <span data-phrase="check.pages">die fertige Datei kam mit {pages} Seiten zurück statt mit
+      {expected}</span>
+    <span data-phrase="check.missing">Seite {n} der fertigen Datei trägt den Stempel nicht</span>
+    <span data-phrase="check.reopen">die fertige Datei ließ sich nicht wieder öffnen ({detail})</span>
+    <span data-phrase="facts.words">Der Stempel sagt &bdquo;{words}&ldquo;.</span>
+    <span data-phrase="facts.placement.once">Einmal auf jeder Seite, {size}, {angle}, mit {opacity}&nbsp;% Deckkraft.</span>
+    <span data-phrase="facts.placement.tiled">{n}-mal über jede Seite wiederholt, {size}, {angle}, mit
+      {opacity}&nbsp;% Deckkraft.</span>
+    <span data-phrase="facts.firstonly">Nur die erste Seite trägt ihn; die anderen {n} blieben, wie sie
+      waren.</span>
+    <span data-phrase="facts.picture">Die Wörter sind als Bild gezeichnet, sie erscheinen also in jedem
+      Leseprogramm und lassen sich weder markieren noch suchen. Wer einen Editor
+      hat, kann ein Wasserzeichen entfernen; dieses sagt, wohin eine Kopie gegangen
+      ist, und sperrt das Dokument nicht.</span>
+    <span data-phrase="facts.signature">Dieses Dokument trug eine digitale Signatur. Das Neuschreiben einer Datei
+      macht jede Signatur darauf ungültig, die Kopie, die Sie zurückbekommen, ist
+      also unsigniert &mdash; das Original ist weiterhin das signierte.</span>
+    <span data-phrase="facts.incremental">Ältere, überholte Kopien von Objekten aus früheren Bearbeitungen wurden
+      nicht übernommen.</span>
+    <span data-phrase="facts.repaired">Die Querverweistabelle des Originals war defekt und musste durch Absuchen
+      neu aufgebaut werden. Prüfen Sie diese Datei, bevor Sie sie weitergeben.</span>
+    <span data-phrase="size.small">klein</span>
+    <span data-phrase="size.medium">mittel</span>
+    <span data-phrase="size.large">groß</span>
+    <span data-phrase="angle.diagonal">entlang der Diagonale</span>
+    <span data-phrase="angle.flat">flach liegend</span>
+    <span data-phrase="net.clean">Ihr Dokument ist nirgendwohin gegangen. {total} Dateien
+      geladen, allesamt eigene dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
+      dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}</span>
+    <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines
+      davon hat ein Dokument oder ein Byte davon bekommen.</span>
+    <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
+      davon hat ein Dokument oder ein Byte davon bekommen.</span>
+  </div>
+</main>
