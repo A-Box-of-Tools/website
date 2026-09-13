@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="de">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 zusammenfügen, exakt komprimieren, Videos zuschneiden, EXIF entfernen.</subtitle>
+  <id>https://abox.tools/de/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/de/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/de/"/>
+  <updated>2026-09-13T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/de/</uri>
+  </author>
+  <entry>
+    <title type="html">GIF zu MP4</title>
+    <id>https://abox.tools/de/gif-in-mp4-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-in-mp4-umwandeln/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Ein animiertes GIF im Browser in ein MP4 verwandeln, bei einem Bruchteil der Größe. Jedes Einzelbild behält die eigenen Zeiten des GIFs; nichts wird neu abgetastet. H.264 in einem MP4, die Datei, die jede Plattform annimmt. Es wird nichts hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video-Rotator</title>
+    <id>https://abox.tools/de/video-drehen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-drehen/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Ein quer oder kopfüber gefilmtes Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung wird in den Header der Datei geschrieben, sodass kein Einzelbild neu kodiert wird und nichts verloren geht; oder sie wird für alte Player ins Bild eingebrannt. MP4, MOV, WebM und MKV hinein, MP4 heraus. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">MP4-Konverter</title>
+    <id>https://abox.tools/de/in-mp4-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/in-mp4-umwandeln/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Ein WebM, MKV, MOV oder beliebiges MP4 in ein MP4 mit H.264 und AAC umwandeln, die Datei, die jedes Handy, jeder Browser und jedes Upload-Formular annimmt. H.264 und AAC werden unangetastet übernommen; alles andere wird auf Ihrem Gerät neu kodiert. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Entsperrer</title>
+    <id>https://abox.tools/de/pdf-entsperren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-entsperren/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Das Passwort und die Einschränkungen für Drucken, Kopieren und Bearbeiten im Browser von einem PDF abnehmen. Die meisten geschützten Dateien brauchen gar kein Passwort, und dieses Werkzeug sagt Ihnen, welche Sorte Sie haben. Es wird nichts hochgeladen, und ein Passwort wird nie erraten.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Wasserzeichen</title>
+    <id>https://abox.tools/de/pdf-wasserzeichen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-wasserzeichen/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Ein Wasserzeichen auf jede Seite eines PDFs setzen, im eigenen Browser: für wen es ist, ein Datum, ein Name, in jedem Winkel und jeder Deckkraft, in jeder Sprache. Es wird nichts hochgeladen, die Seiten selbst werden nicht angerührt, und das Ergebnis wird geprüft, bevor Sie es herunterladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videokompressor</title>
+    <id>https://abox.tools/de/video-komprimieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-komprimieren/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Ein Video im Browser auf unter 8, 16, 25 oder beliebig viele Megabyte verkleinern. Nennen Sie die Größe; das Werkzeug wählt Bildgröße und Bitrate, kodiert und misst das Ergebnis. Nichts wird hochgeladen, und der Ton wird unangetastet übernommen.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Schutz</title>
+    <id>https://abox.tools/de/pdf-schuetzen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-schuetzen/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary type="html">Ein PDF mit einem Passwort versehen oder Drucken und Kopieren einschränken, im eigenen Browser. AES-256 als Voreinstellung, es wird nichts hochgeladen, und die fertige Datei wird hier noch einmal geöffnet, um zu belegen, dass das Passwort hält, bevor sie Ihnen angeboten wird.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bild-Schwärzer</title>
+    <id>https://abox.tools/de/bild-schwaerzen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-schwaerzen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Namen, Adressen oder Kontonummern in einem Foto oder Screenshot abdecken und das Bild neu speichern, sodass die verdeckten Pixel wirklich weg sind und nicht unter einem Rechteck liegen. Läuft komplett im Browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bildkompressor</title>
+    <id>https://abox.tools/de/bild-komprimieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-komprimieren/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">JPEG, PNG oder WebP auf eine exakte Größe komprimieren, ob 100 KB oder 2 MB. Läuft komplett im Browser: kein Upload, kein Konto, auch offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bildskalierer</title>
+    <id>https://abox.tools/de/bildgroesse-aendern/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bildgroesse-aendern/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Exakte Pixel, ein Prozentwert oder die lange Kante, für ein Bild oder einen ganzen Ordner. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Dokumentenscanner</title>
+    <id>https://abox.tools/de/dokumente-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/dokumente-scannen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Machen Sie aus einem Handyfoto einer Seite ein geradegerücktes, gleichmäßig ausgeleuchtetes PDF. Die Ecken werden für Sie gefunden, die Perspektive herausgerechnet, der Schatten herausgeteilt. Läuft komplett im Browser: nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF-Betrachter &amp; -Entferner</title>
+    <id>https://abox.tools/de/exif-daten-entfernen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/exif-daten-entfernen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF zu CSV</title>
+    <id>https://abox.tools/de/pdf-in-csv-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-in-csv-umwandeln/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Die Tabellen in einem PDF in eine CSV verwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten, Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und ein laufender Saldo wird Zeile für Zeile geprüft, wo es einen gibt. Es wird nichts hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Schwärzer</title>
+    <id>https://abox.tools/de/pdf-schwaerzen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-schwaerzen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Wörter aus einem PDF entfernen, statt ein schwarzes Rechteck darüber zu legen. Die Buchstaben werden aus den Zeichenanweisungen der Seite gelöscht, die fertige Datei wird erneut geöffnet und durchsucht, um zu belegen, dass sie weg sind, und nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Zusammenfügen &amp; Teilen</title>
+    <id>https://abox.tools/de/pdf-zusammenfuegen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-zusammenfuegen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">PDFs zusammenfügen, eines in mehrere teilen und Seiten in die gewünschte Reihenfolge ziehen, alles im eigenen Browser. Es wird nichts hochgeladen, ein Konto brauchen Sie nicht, und die fertige Datei wird noch einmal geöffnet und nachgezählt, bevor sie Ihnen angeboten wird.</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG zu Bild</title>
+    <id>https://abox.tools/de/svg-in-png-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/svg-in-png-umwandeln/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Ein SVG im Browser in beliebiger Größe in ein PNG, JPEG oder WebP umwandeln. Nennen Sie die Breite, einen Faktor oder einen Rahmen; @2x- und @3x-Kopien gibt es dazu. Transparenz bleibt, nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bild zu SVG</title>
+    <id>https://abox.tools/de/bild-in-svg-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-in-svg-umwandeln/"/>
+    <updated>2026-09-09T00:00:00Z</updated>
+    <summary type="html">Ein Schwarz-Weiß-Bild im Browser in eine echte SVG-Kontur nachzeichnen. Logos, Schablonen, Unterschriften, Strichzeichnungen und Silhouetten werden zu Kurven, die sich in jede Größe skalieren lassen. Ein Klick entfernt, was der Tracer falsch verstanden hat. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio-Editor</title>
+    <id>https://abox.tools/de/audio-bearbeiten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-bearbeiten/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio-Schneider</title>
+    <id>https://abox.tools/de/audio-schneiden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-schneiden/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
+    <id>https://abox.tools/de/base64-kodieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bild als Data-URI</title>
+    <id>https://abox.tools/de/bild-als-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-als-base64/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser, nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bild zu ICO</title>
+    <id>https://abox.tools/de/favicon-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/favicon-erstellen/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Ein PNG, JPEG oder SVG im Browser in eine echte .ico mit mehreren Größen oder eine macOS-.icns umwandeln. Favicon, Windows-App-Symbol, Mac-App-Symbol, dazu die Apple- und Android-Dateien, die eine Website braucht. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bild-Stacker</title>
+    <id>https://abox.tools/de/bilder-stacken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-stacken/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Eine Serie von Fotos zu einem Bild zusammenrechnen: mitteln gegen das Rauschen, den Median nehmen, um Passanten aus einer Szene zu entfernen, aufhellen für Sternspuren oder eine Makroaufnahme fokusstacken. Liest CR2, NEF, ARW, DNG, RAF und CR3, indem es die Vorschau der Kamera selbst herausholt. Läuft komplett im Browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bilder in PDF</title>
+    <id>https://abox.tools/de/bilder-in-pdf-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-pdf-umwandeln/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">JPG-, PNG- oder WebP-Bilder zu einem PDF zusammenfügen, kostenlos und vollständig in Ihrem Browser. Fotos kommen hinein, ohne neu kodiert zu werden, und nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bilder in Video</title>
+    <id>https://abox.tools/de/bilder-in-video-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-video-umwandeln/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">JPG-, PNG- oder WebP-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und offline geht es auch.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM-Viewer</title>
+    <id>https://abox.tools/de/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/dicom-viewer/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Öffnen Sie CT-, MRT-, Röntgen- und Ultraschallaufnahmen im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF-Analyse</title>
+    <id>https://abox.tools/de/gif-analysieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-analysieren/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen, die Wiederholungen und eine Byte-für-Byte-Aufstellung, wohin die Dateigröße gegangen ist. Es wird nichts hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF-Ersteller</title>
+    <id>https://abox.tools/de/gif-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-erstellen/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">JPG-, PNG- oder WebP-Bilder in ein animiertes GIF verwandeln, kostenlos und vollständig im Browser. Reihenfolge, Tempo und Größe bestimmen Sie. Es wird nichts hochgeladen, und es geht auch offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF-Zerleger</title>
+    <id>https://abox.tools/de/gif-in-einzelbilder-zerlegen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-in-einzelbilder-zerlegen/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">Ein animiertes GIF in seine Einzelbilder zerlegen und jedes davon als PNG speichern, kostenlos und vollständig im Browser. Transparenz und Timing bleiben erhalten. Es wird nichts hochgeladen, und es geht auch offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC zu JPG</title>
+    <id>https://abox.tools/de/heic-in-jpg-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/heic-in-jpg-umwandeln/"/>
+    <updated>2026-09-07T00:00:00Z</updated>
+    <summary type="html">HEIC-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, auch offline, und Datum und Kameradaten dürfen mitkommen.</summary>
+  </entry>
+</feed>

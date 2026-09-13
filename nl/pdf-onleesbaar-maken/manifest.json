@@ -1,0 +1,26 @@
+{
+  "id": "/nl/pdf-onleesbaar-maken/",
+  "name": "PDF onleesbaar maken",
+  "short_name": "PDF onleesbaar maken",
+  "description": "De letters worden uit het bestand gewist, en daarna wordt het bestand doorzocht om het te bewijzen.",
+  "lang": "nl",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

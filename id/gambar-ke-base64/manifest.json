@@ -1,0 +1,26 @@
+{
+  "id": "/id/gambar-ke-base64/",
+  "name": "Gambar ke Data URI",
+  "short_name": "Gambar ke Data URI",
+  "description": "Seluruh gambar sebagai satu baris teks. Tempelkan langsung ke CSS atau HTML.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

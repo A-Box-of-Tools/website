@@ -1,0 +1,26 @@
+{
+  "id": "/zh/rotate-video/",
+  "name": "\u89c6\u9891\u65cb\u8f6c",
+  "short_name": "\u89c6\u9891\u65cb\u8f6c",
+  "description": "\u8f6c\u56db\u5206\u4e4b\u4e00\u5708\u3001\u534a\u5708\uff0c\u6216\u8005\u5f80\u53e6\u4e00\u8fb9\u8f6c\u3002\u5199\u8fdb\u6587\u4ef6\u5934\uff0c\u6240\u4ee5\u4e00\u5e27\u90fd\u4e0d\u7528\u89e3\u7801\uff0c\u4ec0\u4e48\u90fd\u4e0d\u4f1a\u4e22\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

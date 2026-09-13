@@ -1,0 +1,26 @@
+{
+  "id": "/tr/resimleri-videoya-donusturme/",
+  "name": "G\u00f6rsellerden Videoya",
+  "short_name": "G\u00f6rsellerden Videoya",
+  "description": "Bir g\u00f6rsel klas\u00f6r\u00fcn\u00fc videoya \u00e7evirin.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

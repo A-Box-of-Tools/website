@@ -1,0 +1,26 @@
+{
+  "id": "/pt/digitalizar-documentos/",
+  "name": "Digitalizador de documentos",
+  "short_name": "Digitalizador de documentos",
+  "description": "Fotografe a p\u00e1gina. Voc\u00ea recebe de volta algo com cara de digitaliza\u00e7\u00e3o.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

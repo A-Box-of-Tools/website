@@ -1,0 +1,26 @@
+{
+  "id": "/pt/comparar-alturas/",
+  "name": "Comparador de alturas",
+  "short_name": "Comparador de alturas",
+  "description": "Digite as alturas, leve a imagem. Nada \u00e9 enviado para desenh\u00e1-la.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

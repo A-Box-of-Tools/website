@@ -1,0 +1,26 @@
+{
+  "id": "/exif-editor/",
+  "name": "EXIF Viewer & Remover",
+  "short_name": "EXIF Viewer & Remover",
+  "description": "See what a photo says about you. Then take it out.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
