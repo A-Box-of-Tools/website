@@ -1,0 +1,313 @@
+#
+# GIF zu MP4 - German.
+#
+# Overrides for tools/gif-to-mp4/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Zwei Dinge, die beim Ändern der Texte hier festgehalten bleiben müssen, wie
+# im englischen Original: Das Video behält die Zeiten des GIFs Bild für Bild.
+# Ein GIF hat keine Bildrate, nur eine Verzögerung auf jedem Einzelbild, und
+# die sind verschieden; ein Umwandler, der auf eine feste Rate neu abtastet,
+# verdoppelt manche Bilder und lässt andere weg. Und ehrlich sagen, was sich
+# ändert: Ein GIF wiederholt sich von selbst, ein Video nicht (der Player
+# entscheidet), und ein GIF kann durchscheinen lassen, was unter ihm liegt,
+# ein Video nicht (die Seite fragt, welche Farbe dorthin kommt).
+#
+
+name = "GIF zu MP4"
+heading = "GIF&nbsp;zu&nbsp;MP4 <span class=\"h1-kw\">&mdash; dieselbe Animation bei einem Zehntel der Größe</span>"
+tagline = "Jedes Einzelbild, mit der Verzögerung, die das GIF ihm gibt, als H.264 in einem MP4. Umgewandelt auf Ihrem Gerät; die Datei geht nie hinauf."
+
+title = "GIF in MP4 umwandeln &mdash; kostenlos, im Browser, ohne Upload"
+description = "Ein animiertes GIF im Browser in ein MP4 verwandeln, bei einem Bruchteil der Größe. Jedes Einzelbild behält die eigenen Zeiten des GIFs; nichts wird neu abgetastet. H.264 in einem MP4, die Datei, die jede Plattform annimmt. Es wird nichts hochgeladen."
+og_title = "Ein GIF in ein MP4 verwandeln, ohne es hochzuladen"
+og_description = "Dieselbe Animation als H.264 in einem MP4, meist ein Zehntel so groß, und jedes Einzelbild behält seine Zeit. Umgewandelt in Ihrem Browser; die Datei verlässt Ihr Gerät nie."
+og_image_alt = "Ein GIF im Browser in MP4 umwandeln, ohne es hochzuladen"
+
+pledge = """
+    Das GIF, das Sie wählen, wird auf diesem Gerät im Arbeitsspeicher
+    dekodiert, Bild für Bild gezeichnet, kodiert und in ein MP4 geschrieben,
+    vom Encoder Ihres eigenen Browsers und von Code, der von dieser Adresse
+    kommt. Nichts hier kann etwas hochladen, und am anderen Ende dieser Seite
+    steht kein Server, der es annehmen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und wandeln Sie etwas um. Keine einzige Anfrage
+      trägt ein GIF, ein Einzelbild oder einen Dateinamen. Oder trennen Sie die
+      Internetverbindung und wandeln Sie es trotzdem um."""
+
+read_first = """
+, <code>src/plan.js</code> dafür, wie aus den
+      Verzögerungen des GIFs die Zeiten des Videos werden,
+      <code>src/encode.js</code> für das Zeichnen und das Kodieren und
+      <code>src/shared/gif-decode.js</code> für den Leser. Keines davon kann
+      das Netz erreichen, und der Schreiber daneben auch nicht."""
+
+howto_heading = "So wandeln Sie ein GIF in ein MP4 um"
+
+card = """
+            Dieselbe Animation als MP4, meist ein Zehntel so groß, für alle
+            Orte, die ein großes GIF nicht annehmen. Jedes Einzelbild behält
+            die Verzögerung, die das GIF ihm gibt, nichts wird neu abgetastet,
+            und das Bild bleibt so groß, wie es ist. Kodiert auf Ihrem Gerät."""
+
+[words]
+plural = "GIFs"
+choose = "ein GIF"
+analytics_extra = """, und nichts darüber,
+  was darin war"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Warum ein MP4 ein Zehntel so groß ist, und warum jede Plattform es lieber nimmt."
+body = """
+
+      Ein GIF speichert jedes Einzelbild als Bild, mit höchstens 256 Farben
+      und ohne zu wissen, wie das Bild davor aussah. Ein Videocodec speichert,
+      was sich geändert hat, in voller Farbe, und H.264 hat darin dreißig
+      Jahre Übung; dieselbe Animation kommt bei einem Zehntel der Größe heraus,
+      oft weniger, und sieht besser aus. Deshalb weist jede Social-Media-Plattform,
+      jede Chat-App und jedes Content-System ein großes GIF entweder ab oder
+      macht beim Hochladen stillschweigend ein MP4 daraus. Und wenn irgendwo
+      &bdquo;GIF zu groß&ldquo; steht, war das MP4 die ganze Zeit das, was
+      gewollt war."""
+
+[[privacy]]
+title = "Der Upload ist der langsame Teil, und er ist der Teil, der hier nicht stattfindet."
+body = """
+
+      Jeder Online-Umwandler verlangt zuerst die Datei: 30 MB gehen über Ihre
+      Verbindung hinauf, damit 3 MB zurückkommen können, noch bevor sich die
+      Frage stellt, wer die Datei behält. Diese Seite liest das GIF mit Code,
+      der von dieser Adresse kommt, und schreibt das MP4 mit dem Encoder, der
+      ohnehin in Ihrem Browser steckt. Die einzigen Bytes, die sich bewegen,
+      gehen somit von Ihrer Festplatte in Ihren Arbeitsspeicher und zurück. In
+      der <code>Content-Security-Policy</code> der Seite steht jede Adresse,
+      die sie kontaktieren darf, und keine einzige davon gehört uns. Und sie
+      arbeitet auch mit getrennter Netzverbindung."""
+
+[[privacy]]
+title = "Die Zeiten bleiben Bild für Bild erhalten, und das machen die meisten Umwandler falsch."
+body = """
+
+      Ein GIF hat keine Bildrate. Jedes Einzelbild sagt selbst, wie lange es
+      stehen bleibt, und diese Verzögerungen sind verschieden: Eine Diaschau
+      hält ein Bild zwei Sekunden und blättert dann durch zehn. Ein Umwandler,
+      der eine Bildrate wählt und darauf neu abtastet, verdoppelt manche Bilder
+      und lässt andere weg, und die Diaschau kommt ruckelig oder zu kurz
+      heraus. Hier ist jedes Einzelbild des GIFs ein Einzelbild des Videos,
+      und es dauert genau so lange wie seine Verzögerung. Die einzige
+      Freiheit, die sich die Seite nimmt, nimmt sich jeder Browser auch: Eine
+      Verzögerung unter zwei Hundertstelsekunden wird als zehn abgespielt. Und
+      die fertige Datei wird noch einmal geöffnet, um nachzuzählen, dass jedes
+      Bild da ist und dass sie so lange spielt wie das GIF."""
+
+[[privacy]]
+title = "Zwei Dinge, die ein GIF kann und ein Video nicht, vorab gesagt."
+body = """
+
+      Ein GIF kann durchscheinen lassen, was unter ihm liegt; ein Video ist
+      ein gefülltes Rechteck. Wo das GIF transparent ist, muss eine Farbe hin,
+      und die Seite fragt, welche. Sie fragt nur bei einem GIF, das solche
+      Stellen hat, und schlägt Weiß vor, weil die meisten Seiten weiß sind.
+      Und ein GIF trägt seine eigene Anweisung mit sich, sich zu wiederholen;
+      ein MP4 tut das nicht, und ob das Video in Schleife läuft, entscheidet,
+      was es abspielt. Die meisten Feeds und Chat-Apps wiederholen ein kurzes.
+      Die Vorschau hier läuft in Schleife, damit Sie den Übergang sehen."""
+
+[[privacy]]
+title = "Was es auf Ihrem Gerät kostet, ehrlich gesagt."
+body = """
+
+      Das Kodieren dauert so lange, wie Ihr Gerät braucht: mit einem
+      Hardware-Encoder, und den haben die meisten Laptops und jedes Telefon
+      aus den letzten zehn Jahren, ein paar Sekunden für ein gewöhnliches GIF;
+      ohne einen länger. Jedes Einzelbild des GIFs wird zuerst in den
+      Arbeitsspeicher dekodiert, und dort liegt die Grenze: Ein GIF sind ein
+      paar Megabyte, die sich auf ein Byte pro Pixel und Bild ausdehnen, und
+      die Seite hört bei einem halben Gigabyte davon auf zu lesen und sagt es,
+      statt den Tab abstürzen zu lassen. Abbrechen geht jederzeit."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über
+      Ihr GIF übergeben: keine Datei, kein Einzelbild, kein Name, keine Größe
+      und keine Länge. Jede Zeile, die es liest, kodiert oder schreibt, kommt
+      von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht: Er meldet keinen Besuch,
+      und über Sie oder Ihre GIFs bekommt er nichts. Es passiert nichts,
+      solange Sie ihn nicht anklicken, und wohin Sie dann kämen, ist die Seite
+      eines anderen."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht:
+      Ein Werkzeug, das Ihr GIF zum Umwandeln wegschickt, bliebe stehen."""
+
+[[howto]]
+title = "Wählen Sie das GIF aus."
+body = """
+ Eines nach dem anderen. Der Browser liest es
+      direkt von Ihrer Festplatte, und die Seite sagt, was es ist: wie groß,
+      wie viele Einzelbilder, wie lange es spielt und welche Maße in Pixeln
+      es hat."""
+
+[[howto]]
+title = "Lesen Sie, was geschrieben wird."
+body = """
+ Eine Zeile: die Maße, die Einzelbilder
+      und ihre Zeiten, die Länge und die Bitrate. Einzustellen gibt es nichts,
+      es sei denn, das GIF hat transparente Stellen; dann erscheint ein
+      Farbfeld für das, was dorthin kommt."""
+
+[[howto]]
+title = "Wandeln Sie es um, und lesen Sie die Zeile, die sagt, dass es geprüft wurde."
+body = """
+
+      Jedes Einzelbild wird gezeichnet und kodiert, und ein Balken sagt, wie
+      weit es ist. Dann wird die fertige Datei hier noch einmal geöffnet und
+      muss so lange spielen wie das GIF, mit jedem Bild an seinem Platz. Sie
+      spielt unter dem Download aus dem Arbeitsspeicher, in Schleife, damit
+      Sie den Übergang sehen."""
+
+[[faq]]
+q = "Warum ist das MP4 so viel kleiner?"
+a = """
+        Weil ein GIF jedes Einzelbild als Bild mit höchstens 256 Farben
+        speichert, ohne sich an das Bild davor zu erinnern, und ein Videocodec
+        nur speichert, was sich geändert hat. H.264 hat darin dreißig Jahre
+        Übung. Dieselbe Animation kommt meist bei einem Zehntel der Größe
+        heraus, oft weniger, und sieht besser aus, weil sie nicht mehr auf 256
+        Farben beschränkt ist. Ein winziges oder ein sehr stilles GIF kann
+        größer herauskommen; die Seite sagt es, wenn das passiert."""
+
+[[faq]]
+q = "Bleiben die Zeiten gleich?"
+a = """
+        Ja, Bild für Bild. Ein GIF hat keine Bildrate, nur eine Verzögerung auf
+        jedem Einzelbild, und das Video behält jede Verzögerung so, wie sie
+        ist: Jedes Einzelbild des GIFs ist ein Einzelbild des Videos, das genau
+        so lange dauert. Nichts wird neu abgetastet, verdoppelt oder
+        weggelassen. Die einzige Freiheit, die sich die Seite nimmt, nimmt sich
+        jeder Browser auch: Eine Verzögerung unter zwei Hundertstelsekunden
+        wird als zehn abgespielt, das Video spielt also so lange, wie das GIF
+        in einem Browser spielt. Die fertige Datei wird noch einmal geöffnet,
+        um beides zu prüfen."""
+
+[[faq]]
+q = "Läuft es in Schleife?"
+a = """
+        Das entscheidet, was es abspielt. Ein GIF trägt seine eigene Anweisung
+        zum Wiederholen mit sich; ein MP4 kennt so etwas nicht, und der Player
+        entscheidet. Die meisten Feeds und Chat-Apps wiederholen ein kurzes
+        Video, und die Vorschau auf dieser Seite läuft in Schleife, damit Sie
+        den Übergang sehen. Ein Videoplayer auf dem Desktop spielt es meist
+        einmal ab."""
+
+[[faq]]
+q = "Was passiert mit den transparenten Stellen?"
+a = """
+        Sie bekommen eine Farbe, denn ein Video ist ein gefülltes Rechteck. Bei
+        einem GIF mit transparenten Stellen zeigt die Seite ein Farbfeld, mit
+        Weiß als Vorgabe, weil die meisten Seiten weiß sind; bei einem ohne
+        wird das Feld nicht gezeigt. Die Farbe wird hinter die Einzelbilder
+        gezeichnet, bevor sie kodiert werden, sie ist also Teil des Bildes."""
+
+[[faq]]
+q = "Ändert es die Größe des Bildes?"
+a = """
+        Nur um ein Pixel, und nur wenn es sein muss. H.264 braucht auf beiden
+        Seiten eine gerade Kantenlänge, ein GIF mit ungerader Breite oder Höhe
+        bekommt also eine Linie in der Hintergrundfarbe dazu; neu abgetastet
+        wird nichts. Ein GIF, das breiter als 3840 Pixel ist, wird darauf
+        verkleinert gezeichnet, denn darauf ist bei Encodern Verlass. Die
+        Seite nennt die Größe, die sie schreiben wird, bevor sie anfängt."""
+
+[[faq]]
+q = "Wie lange dauert es?"
+a = """
+        Ein paar Sekunden für ein gewöhnliches GIF auf einem Gerät mit
+        Hardware-Encoder, und das sind die meisten Laptops und jedes neuere
+        Telefon; ohne einen länger. Das GIF wird zuerst in den Arbeitsspeicher
+        dekodiert, und ein sehr langes kann mehr sein, als die Seite halten
+        will: Bei einem halben Gigabyte an Einzelbildern hört sie auf und sagt
+        es. Der Balken sagt, bei welchem Bild sie ist, und Abbrechen hält
+        sofort an und schreibt nichts."""
+
+[[faq]]
+q = "Werden meine GIFs irgendwohin hochgeladen?"
+a = """
+        Nein. Das GIF wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, dekodiert, kodiert und geschrieben, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Am einfachsten
+        überzeugen Sie sich, indem Sie die Netzverbindung trennen und die Seite
+        trotzdem benutzen."""
+
+[[faq]]
+q = "Funktioniert es auf dem Telefon?"
+a = """
+        Auf einem Telefon, dessen Browser Video kodieren kann, ja, und der
+        eigene Hardware-Encoder eines Telefons ist schnell. Was einem Telefon
+        fehlt, ist Arbeitsspeicher: Die Einzelbilder des GIFs werden zuerst in
+        den Speicher dekodiert, ein sehr langes kann also mehr sein, als ein
+        Telefon halten kann."""
+
+[[faq]]
+q = "Gibt es eine Größengrenze, und kostet es etwas?"
+a = """
+        Die Seite hört bei einem halben Gigabyte an dekodierten Einzelbildern
+        auf, ein GIF zu lesen, und das sind sehr viele Bilder; sie sagt es
+        dann. Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und
+        keine Testphase. Bezahlt wird die Seite über Werbung, und den Anzeigen
+        wird nichts über Ihre GIFs übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihr GIF zum Umwandeln
+        wegschickt, bliebe in dem Moment stehen, in dem Sie die Verbindung
+        trennen."""
+
+[schema]
+description = "Ein animiertes GIF im Browser in ein MP4 umwandeln. Jedes Einzelbild behält die eigene Verzögerung des GIFs, das Bild bleibt so groß, wie es ist, und das Ergebnis ist H.264 in einem MP4 bei einem Bruchteil der Größe des GIFs. Es wird nichts hochgeladen."
+features = [
+  "Liest jedes animierte GIF, mit Disposal-Regeln und Transparenz so behandelt, wie ein Browser sie zeichnet",
+  "Behält jedes Einzelbild und jede Verzögerung; nichts wird auf eine feste Bildrate neu abgetastet",
+  "Fragt, welche Farbe hinter die transparenten Stellen kommt, und nur, wenn das GIF welche hat",
+  "Schreibt H.264 in ein MP4, meist ein Zehntel so groß",
+  "Öffnet die fertige Datei noch einmal, zählt die Einzelbilder, prüft die Länge und spielt sie in Schleife aus dem Arbeitsspeicher",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "GIF hierher ziehen"
+hint = "oder klicken und auswählen &mdash; ein animiertes GIF auf einmal"

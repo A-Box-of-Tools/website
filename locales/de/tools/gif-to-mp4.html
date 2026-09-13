@@ -1,0 +1,188 @@
+<main id="main">
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Das GIF auswählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Ein anderes wählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Schritt 2 &mdash; was geschrieben wird.
+
+    There is almost nothing to choose. A GIF's frames have their own timing
+    and the video keeps every delay as it is; the size stays the GIF's own,
+    made even. The one question a video needs answered that a GIF does not
+    is what colour goes where the GIF was transparent, and the field for it
+    appears only for a GIF that has such places.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span> Sehen, was geschrieben wird</h2>
+
+    <p class="card-lede">
+      Jedes Einzelbild des GIFs wird ein Einzelbild des Videos und steht genau
+      so lange, wie das GIF es zeigt. Nichts wird neu abgetastet, weggelassen
+      oder verdoppelt, und das Video spielt so lange wie das GIF. Das Bild
+      bleibt so groß, wie es ist.
+    </p>
+
+    <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+
+    <div id="background-row" class="background-row" hidden>
+      <label class="field" for="background">
+        <span>Hinter den transparenten Stellen</span>
+        <span id="background-note" class="field-note"></span>
+      </label>
+      <input type="color" id="background" value="#ffffff">
+    </div>
+
+    <p class="field-note">
+      Ein Video wiederholt sich nicht von selbst, wie ein GIF es tut: Das
+      entscheidet der Player. Die Vorschau unten läuft in Schleife; eine
+      Chat-App oder ein Feed tut das meist auch.
+    </p>
+  </section>
+
+  <!-- Schritt 3 &mdash; der eine Klick -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Umwandeln</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">In MP4 umwandeln</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls loop muted playsinline preload="metadata" hidden
+             aria-label="Das umgewandelte Video, aus dem Arbeitsspeicher abgespielt"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Das öffnet sich, sobald oben ein GIF liegt.</span>
+    <span data-phrase="file.facts">{size} &middot; {frames} Bilder &middot; {length} &middot; {frame}</span>
+    <span data-phrase="plan.nofile">Wählen Sie oben ein GIF aus, und hier steht, was das Video sein wird.</span>
+    <span data-phrase="plan.same">{frame}, {frames} Bilder {timing}, {length} lang, H.264 mit etwa {rate}.</span>
+    <span data-phrase="plan.resized">{frame} (das GIF ist {from}; H.264 braucht gerade Kanten, also kommt eine Linie
+      des Hintergrunds dazu), {frames} Bilder {timing}, {length} lang, H.264 mit etwa {rate}.</span>
+    <span data-phrase="timing.steady">mit gleichmäßig {fps} pro Sekunde</span>
+    <span data-phrase="timing.varies">mit ihren eigenen Zeiten, rund {fps} pro Sekunde, Bild für Bild erhalten</span>
+    <span data-phrase="background.some">Dieses GIF lässt an manchen Stellen durchscheinen, was unter ihm liegt. Ein
+      Video kann das nicht, wählen Sie also die Farbe, die dorthin kommt.</span>
+    <span data-phrase="background.none">In diesem GIF scheint nichts durch, es braucht also keine Farbe.</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="progress.frame">Bild {done} von {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Die letzten Bilder werden abgeschlossen&hellip;</span>
+    <span data-phrase="progress.checking">Wird zur Prüfung noch einmal geöffnet&hellip;</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Es wurde nichts geschrieben; drücken Sie den Button, um neu zu beginnen.</span>
+    <span data-phrase="run.failed">Dieser Durchlauf ist fehlgeschlagen: {detail}</span>
+    <span data-phrase="result.ready">{size} MP4 &mdash; {percent}% kleiner als das {from} große GIF.</span>
+    <span data-phrase="result.bigger">{size} MP4 &mdash; {percent}% größer als das {from} große GIF, was bei einem
+      winzigen oder einem sehr stillen vorkommt.</span>
+    <span data-phrase="result.sub">Dieselben Bilder, dieselben Zeiten, H.264 in einem MP4: die Datei, die jede Plattform annimmt.</span>
+    <span data-phrase="check.passed">Geprüft: {found}</span>
+    <span data-phrase="check.failed">Dieser Durchlauf hat die Prüfung nicht bestanden &mdash; {found}. Behalten Sie Ihr GIF.</span>
+    <span data-phrase="check.ok">aus dem Arbeitsspeicher noch einmal geöffnet, {length} lang, wie das GIF spielt,
+      alle {frames} Bilder vorhanden.</span>
+    <span data-phrase="check.length">die fertige Datei ist {got} lang statt {want}</span>
+    <span data-phrase="check.frames">die fertige Datei hat {got} Bilder statt {want}</span>
+    <span data-phrase="check.reopen">die fertige Datei ließ sich nicht noch einmal öffnen ({detail})</span>
+    <span data-phrase="facts.picture">{frames} Bilder mit {frame}, kodiert als H.264 mit {rate}.</span>
+    <span data-phrase="facts.timing">Jedes Bild behält die eigene Verzögerung des GIFs: {timing}.</span>
+    <span data-phrase="facts.loop.gif">Das GIF war auf Wiederholung gestellt. Ein MP4 kennt keine solche Einstellung;
+      der Player entscheidet, und die meisten Feeds und Chat-Apps wiederholen ein kurzes.</span>
+    <span data-phrase="facts.loop.none">Das GIF war auf einmaliges Abspielen gestellt. Ein MP4 kennt keine solche
+      Einstellung; der Player entscheidet.</span>
+    <span data-phrase="facts.time">Fertig in {seconds}.</span>
+    <span data-phrase="support.nowebcodecs">Dieser Browser kann kein Video kodieren. Chrome, Edge und Safari können es;
+      Firefox ab Version 130.</span>
+    <span data-phrase="stall.encoder">Der Video-Encoder des Browsers antwortet nicht mehr. Laden Sie die Seite neu und
+      versuchen Sie es noch einmal; ein Gerät, dessen Hardware-Encoder beschäftigt ist oder fehlt, tut das.</span>
+    <span data-phrase="encode.noh264">Dieser Browser kodiert kein H.264 in {size}.</span>
+    <span data-phrase="mp4.noconfig">Der Encoder hat nie eine Decoder-Konfiguration gemeldet.</span>
+    <span data-phrase="mp4.noframes">Es gab keine Bilder zu schreiben.</span>
+    <span data-phrase="mp4.toobig">Die fertige Datei wäre über 4 GB groß, und das kann ein hier geschriebenes MP4 nicht fassen.</span>
+    <span data-phrase="gif.tooshort">Diese Datei ist zu kurz, um ein GIF zu sein.</span>
+    <span data-phrase="gif.notagif">Das ist kein GIF. Die Datei beginnt nicht mit GIF87a oder GIF89a.</span>
+    <span data-phrase="gif.enormous">Dieses GIF ist riesig: Schon die ersten {n} Bilder haben den Speicher gefüllt, den
+      diese Seite auf einmal halten will, und der Rest wurde nicht gelesen.</span>
+    <span data-phrase="gif.midframe">Dieses GIF endet mitten in einem Bild, das letzte ist also womöglich unvollständig.</span>
+    <span data-phrase="gif.damaged">Dieses GIF ist beschädigt: Es endet, bevor das erste Bild vollständig ist.</span>
+    <span data-phrase="gif.noframes">Dieses GIF enthält keine Bilder, die dieser Leser öffnen könnte.</span>
+    <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
+    <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.av1short">Der AV1-Konfigurationsdatensatz ist zu kurz.</span>
+    <span data-phrase="read.compactsizes">Die Sample-Größen stehen in einer kompakten Tabelle, die dieser Leser nicht dekodiert.</span>
+    <span data-phrase="read.sampletables">Die Sample-Tabellen sind unvollständig.</span>
+    <span data-phrase="read.chunktable">Die Chunk-Tabelle ist leer.</span>
+    <span data-phrase="read.nosamples">Die Videospur enthält keine Bilder.</span>
+    <span data-phrase="read.nostbl">Der Videospur fehlen ihre Sample-Tabellen.</span>
+    <span data-phrase="read.nostsd">Die Videospur hat keine Sample-Beschreibung.</span>
+    <span data-phrase="read.emptystsd">Die Sample-Beschreibung des Videos ist leer.</span>
+    <span data-phrase="read.encrypted">Die Videospur ist verschlüsselt.</span>
+    <span data-phrase="read.unknowncodec">Das Video liegt als &bdquo;{type}&ldquo; vor, und das kennt dieser Leser nicht.</span>
+    <span data-phrase="read.noconfig">Die Spur &bdquo;{type}&ldquo; führt keine Decoder-Konfiguration mit sich.</span>
+    <span data-phrase="read.notmp4">Die fertige Datei ließ sich nicht als MP4 zurücklesen.</span>
+    <span data-phrase="read.nomoov">Die Datei hat keinen Film-Header.</span>
+    <span data-phrase="read.novideo">Die Datei hat keine Videospur, mit der dieser Leser etwas anfangen kann.</span>
+    <span data-phrase="read.notimescale">Die Videospur hat keine Zeitskala.</span>
+    <span data-phrase="read.nofragments">Die Fragmente in dieser Datei enthalten keine Einzelbilder für ihre Videospur.</span>
+    <span data-phrase="read.unreadable">Die Datei ließ sich nicht als MP4 lesen.</span>
+    <span data-phrase="read.notplayed">Dieses Format spielt dieser Browser nicht ab.</span>
+    <span data-phrase="read.layout">Der Aufbau dieser Datei ist keiner, den der Leser hier versteht.</span>
+    <span data-phrase="net.clean">Ihr GIF ist nirgendwohin gegangen. {total}
+      Dateien geladen, alle von dieser Seite selbst. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
+      dieses Werkzeug nie. Dem sollten Sie nachgehen. {platform}</span>
+    <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Button kamen von {hosts} Host; keines
+      davon hat ein GIF oder ein Byte davon bekommen.</span>
+    <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
+      Werbung, Messung und den Spenden-Button kamen von {hosts} Hosts; keines
+      davon hat ein GIF oder ein Byte davon bekommen.</span>
+  </div>
+</main>
