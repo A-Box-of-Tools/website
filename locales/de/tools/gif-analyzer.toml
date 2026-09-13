@@ -1,0 +1,324 @@
+#
+# GIF-Analyse - German.
+#
+# Overrides for tools/gif-analyzer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "GIF-Analyse"
+heading = "GIF&nbsp;analysieren <span class=\"h1-kw\">&mdash; was wirklich in einem GIF steckt</span>"
+tagline = "Einzelbilder, Anzeigedauern, Farbtabellen und wohin jedes Byte gegangen ist."
+
+title = "GIF analysieren &mdash; Einzelbilder, Anzeigedauern, Farben, Dateigröße"
+description = "Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen, die Wiederholungen und eine Byte-für-Byte-Aufstellung, wohin die Dateigröße gegangen ist. Es wird nichts hochgeladen."
+og_title = "GIF-Analyse &mdash; ein GIF im Browser auseinandernehmen"
+og_description = "Jedes Einzelbild, jede Anzeigedauer, jede Farbtabelle und eine ehrliche Rechnung, wohin die Bytes gegangen sind. Die Datei wird auf Ihrem eigenen Gerät gelesen und nie hochgeladen."
+og_image_alt = "GIF-Analyse - Einzelbilder, Anzeigedauern, Farbtabellen und wohin die Bytes gegangen sind"
+
+pledge = """
+    Geöffnet und auseinandergenommen wird die Datei von Ihrem eigenen Browser. Die
+    Blockstruktur, die LZW-Entpackung und jedes auf dieser Seite gezeichnete
+    Einzelbild entstehen auf diesem Gerät. Am anderen Ende dieser Seite steht gar
+    kein Server, an den eine Datei gehen könnte, selbst wenn hier irgendetwas das
+    wollte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und analysieren Sie ein GIF. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild oder einen Dateinamen. Oder trennen Sie die
+      Internetverbindung und analysieren Sie trotzdem eines."""
+
+read_first = """
+, <code>src/gif.js</code> für den Blockleser, der
+      die Datei durchgeht, <code>src/lzw.js</code> für den Entpacker und
+      <code>src/budget.js</code> für die Byte-Rechnung. In keinem davon steht eine
+      Zeile, die ins Netz greifen könnte."""
+
+howto_heading = "So analysieren Sie ein GIF"
+
+card = """
+            Öffnen Sie ein GIF und sehen Sie, was wirklich darin steht: jedes
+            Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen und
+            eine ehrliche Rechnung, wohin die Dateigröße gegangen ist."""
+
+[words]
+plural = "GIFs"
+choose = "ein GIF"
+analytics_extra = """, und kein
+  Einzelbild, keine Farbtabelle und kein Kommentar aus Ihrer Datei"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihr GIF hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei eingesammelt werden könnte, und im Code steht auch nichts,
+      das sie dorthin schicken würde, gäbe es einen. Früher stand hier
+      <code>connect-src 'none'</code>, was keine Ausnahme kannte. Die Werbung hat
+      das gekostet, und das gehört dazugesagt."""
+
+[[privacy]]
+title = "Der Leser sind vier Dateien in diesem Repository."
+body = """
+ Nichts hier benutzt
+      den GIF-Dekoder des Browsers, um herauszufinden, was in der Datei steht,
+      denn der sagt nicht, wohin ein Byte gegangen ist. Also wird das Format von
+      Hand gelesen: <code>src/gif.js</code> geht die Blöcke durch,
+      <code>src/lzw.js</code> entpackt die Pixel, <code>src/frames.js</code>
+      stapelt sie, und <code>src/budget.js</code> zählt die Teile wieder zusammen
+      und prüft, ob sie die Größe der Datei ergeben."""
+
+[[privacy]]
+title = "Kommentare und Metadaten sehen Sie, und sonst niemand."
+body = """
+
+      Ein GIF kann einen Kommentarblock enthalten, ein XMP-Paket, das eine
+      Bearbeitung beschreibt, oder ein Farbprofil, und diese Seite druckt alles
+      davon aus. Es steht vor Ihnen auf dem Bildschirm und geht sonst nirgendwo
+      hin. In diesem Repository gibt es kein Analytics-Ereignis, das davon etwas
+      mitträgt, und die Seite könnte es auch nicht senden, gäbe es eines."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
+      Datei übergeben, weder die Datei noch ein Vorschaubild, ein Name, eine
+      Größe, eine Anzahl von Einzelbildern oder ein Kommentar. Jede Zeile, die ein
+      GIF liest, entpackt oder zeichnet, kommt von dieser Domain selbst und steht
+      im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Dateien bekommt er nichts. Es passiert nichts, solange
+      Sie nicht klicken, und was Sie dann öffnen, ist die Seite von jemand
+      anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihr GIF zum Analysieren wegschickt, bliebe in dem Moment
+      stehen, in dem Sie den Stecker ziehen."""
+
+[[howto]]
+title = "Wählen Sie ein GIF aus."
+body = """
+ Ziehen Sie es auf das Auswahlfeld oder
+      suchen Sie es von Hand heraus. Der Browser liest es direkt von Ihrer
+      Festplatte, und dabei geht nichts nach draußen."""
+
+[[howto]]
+title = "Lesen Sie zuerst die Übersicht."
+body = """
+ Die Leinwandgröße, die Zahl
+      der Einzelbilder, wie lange die Animation laut Datei läuft und wie lange sie
+      tatsächlich spielt. Die letzten beiden gehen häufiger auseinander, als man
+      denkt, und der Grund steht im nächsten Abschnitt."""
+
+[[howto]]
+title = "Sehen Sie sich an, was auffällt."
+body = """
+ Jede Zeile dort ist an Ihrer
+      Datei gemessen: Anzeigedauern, an die sich kein Browser hält, ein fehlender
+      Wiederholungsblock, Farbtabellen, auf die nichts verweist, Metadaten, die
+      größer sind als manche Einzelbilder. Nichts davon ist eine Vermutung
+      darüber, was Sie vorhatten."""
+
+[[howto]]
+title = "Sehen Sie, wohin die Bytes gegangen sind."
+body = """
+ Jedes Byte der Datei
+      steht in genau einer Zeile, und die Zeilen ergeben zusammen die Datei. Wenn
+      das meiste davon nicht bei &bdquo;komprimierte Pixel&ldquo; steht, sagt Ihnen
+      der Rest der Tabelle, wo es stattdessen liegt."""
+
+[[howto]]
+title = "Gehen Sie die Einzelbilder durch."
+body = """
+ Jedes zeigt seine
+      Anzeigedauer, sein Rechteck, seine Entsorgungsart und seine Größe. Schalten
+      Sie zwischen &bdquo;die Leinwand nach jedem Einzelbild&ldquo; und
+      &bdquo;nur, was jedes Einzelbild speichert&ldquo; um. Am zweiten sehen Sie,
+      ob die Datei optimiert ist, denn ein gut gemachtes GIF speichert winzige
+      Rechtecke und ein schlecht gemachtes jedes Mal das ganze Bild."""
+
+[[howto]]
+title = "Nehmen Sie den Bericht mit, wenn Sie ihn brauchen."
+body = """
+ Die ganze Analyse
+      als reiner Text, zum Einfügen in eine Nachricht oder zum Aufheben neben der
+      Datei. Er entsteht auf der Seite aus dem, was ohnehin schon auf Ihrem
+      Bildschirm steht."""
+
+[[faq]]
+q = "Wird mein GIF irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, entpackt und zeichnet die Datei auf Ihrer
+        eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Trennen Sie die
+        Netzverbindung, und es analysiert weiter GIFs."""
+
+[[faq]]
+q = "Warum läuft mein GIF langsamer, als die Anzeigedauern sagen?"
+a = """
+        Weil jeder Browser sich weigert, eine Dauer unter zwei Hundertstelsekunden
+        einzuhalten, und das Einzelbild stattdessen eine Zehntelsekunde stehen
+        lässt. Diese Regel wurde 1996 in Netscape geschrieben, für die rotierenden
+        Globen und Baustellenschilder jener Zeit, und seither in jeden Browser
+        übernommen. Entfernt hat sie nie jemand.
+        <br><br>
+        Ein GIF, dessen Einzelbilder alle 0,01 s angeben, läuft also nicht mit 100
+        Bildern je Sekunde, sondern mit 10, und damit fünf- bis zehnmal langsamer,
+        als das erzeugende Programm es vorhatte. Diese Seite zeigt beide Zahlen,
+        also was die Datei sagt und was sie wirklich tut, und markiert die
+        betroffenen Einzelbilder. Der Ausweg liegt im Programm, das die Datei
+        geschrieben hat: 0,02 statt 0,01 schreiben."""
+
+[[faq]]
+q = "Was bedeutet &bdquo;Entsorgung&ldquo;?"
+a = """
+        Was auf dem Bildschirm stehen bleibt, wenn die Zeit eines Einzelbildes
+        abgelaufen ist. Dieses Feld entscheidet darüber, ob eine Animation richtig
+        aussieht oder schmiert.
+        <br><br>
+        <strong>Stehen lassen</strong> heißt, das nächste Einzelbild malt darüber,
+        und das will man, wenn die Einzelbilder deckend sind und einander
+        verdecken. <strong>Auf den Hintergrund zurücksetzen</strong> wischt zuerst
+        das Rechteck des Einzelbildes frei, und genau das braucht Transparenz.
+        Ohne das zeigen die durchsichtigen Stellen des nächsten Einzelbildes das
+        vorherige darunter. <strong>Wiederherstellen, was darunter war</strong>
+        legt zurück, was vor diesem Einzelbild dort stand, und so wird ein kleines
+        bewegtes Objekt vor ruhigem Hintergrund gespeichert. Und
+        <strong>nicht angegeben</strong> heißt, die Datei hat nichts dazu gesagt;
+        jedes Anzeigeprogramm behandelt das als &bdquo;stehen lassen&ldquo;."""
+
+[[faq]]
+q = "Warum ist mein GIF so groß?"
+a = """
+        Die Tabelle &bdquo;Wohin die Bytes gegangen sind&ldquo; beantwortet das
+        für Ihre konkrete Datei statt im Allgemeinen, und es gibt nur wenige
+        mögliche Antworten.
+        <br><br>
+        Steckt fast alles in <strong>komprimierten Pixeln</strong>, ist die Datei
+        schlicht viel Bild. Ein GIF speichert jedes Einzelbild als vollständige
+        Pixel, ohne Bewegungsausgleich und ohne Qualitätsregler, die Größe ist
+        also ungefähr die Fläche mal die Zahl der Einzelbilder. Weniger
+        Einzelbilder, kleinere Maße oder weniger Farben sind die einzigen Hebel.
+        <br><br>
+        Steckt ein großer Teil in <strong>Farbtabellen</strong>, schreibt die
+        Datei je Einzelbild eine eigene Palette zu je 768 Byte. Steckt ein großer
+        Teil in <strong>Metadaten</strong>, hat ein Bearbeitungsprogramm ein
+        XMP-Paket hinterlassen, und das lässt sich entfernen, ohne das Bild
+        anzurühren. Und wenn alle Einzelbilder die ganze Leinwand bedecken, hat
+        der Kodierer nie herausgearbeitet, welcher Teil sich wirklich geändert
+        hat. Bei allem Gefilmten oder Aufgezeichneten ist das der größte Teil der
+        Datei."""
+
+[[faq]]
+q = "Was ist der Unterschied zwischen den beiden Ansichten?"
+a = """
+        <strong>Die Leinwand nach jedem Einzelbild</strong> ist das, was ein
+        Anzeigeprogramm in diesem Moment zeigt: dieses Einzelbild über allem, was
+        die vorherigen hinterlassen haben. <strong>Nur, was jedes Einzelbild
+        speichert</strong> ist das Rechteck, das die Datei für dieses Einzelbild
+        wirklich enthält, für sich allein und ohne etwas darunter.
+        <br><br>
+        Interessant ist das zweite. Ein GIF darf ein Einzelbild als nur den
+        veränderten Teil des Bildes speichern, und deshalb kann eine
+        Bildschirmaufnahme eines weitgehend stillen Fensters klein sein. Ist in
+        Ihrer Datei jedes Einzelbild die volle Leinwand, hat diese Arbeit niemand
+        geleistet. Ansehen kann man der Animation das nicht, man muss nachsehen,
+        was gespeichert ist."""
+
+[[faq]]
+q = "Es sagt, in meiner Datei stehe ein Kommentar oder XMP. Was ist das?"
+a = """
+        Text, der neben dem Bild mitreist und den kein Anzeigeprogramm zeichnet.
+        Ein Kommentarblock ist meist der Name des Programms, das die Datei
+        geschrieben hat. Ein XMP-Paket ist das XML, in dem ein
+        Bildbearbeitungsprogramm festhält, was es getan hat, und es kann den
+        Bearbeitungsverlauf, die Programmversion und manchmal den Namen des Autors
+        enthalten.
+        <br><br>
+        Diese Seite druckt beides vollständig aus, denn die interessante Frage bei
+        Metadaten ist, was darin steht, und nicht, dass es sie gibt. Zu sehen
+        bekommen es Sie, und sonst niemand: Nichts in diesem Repository liest
+        davon etwas an irgendwen aus."""
+
+[[faq]]
+q = "Öffnet es auch ein beschädigtes GIF?"
+a = """
+        Es versucht es und sagt Ihnen, wo es aufgegeben hat. Eine Datei, die
+        mitten in einem Block endet, an der Stelle einer Blockmarke ein anderes
+        Byte hat oder ein Einzelbild trägt, dessen komprimierte Daten vorzeitig
+        ausgehen, zeigt trotzdem alles, was bis dahin lesbar war, mit dem Problem
+        obenan benannt. Genau dafür will man eine Analyse am dringendsten, deshalb
+        wäre es falsch, wegen eines schlechten Bytes die ganze Datei
+        wegzuwerfen."""
+
+[[faq]]
+q = "Verändert es meine Datei?"
+a = """
+        Nein. Dieses Werkzeug liest nur. Es gibt keine Ausgabedatei, keine
+        Neukodierung und keinen Knopf, der ein GIF schreibt. Herunterladen können
+        Sie einzig eine Textfassung der Analyse. Ihr Original liegt unangetastet
+        auf Ihrer Festplatte, was zugleich die ehrliche Antwort darauf ist, was
+        passiert, wenn Sie den Tab schließen."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Für die Dateigröße gibt es keine Grenze außer dem
+        Arbeitsspeicher Ihres Geräts. Bezahlt wird die Seite über Werbung, und den
+        Anzeigen wird nichts über Ihre Datei übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird. Ein Werkzeug, das Ihr GIF zum Analysieren
+        wegschickt, bliebe in dem Moment stehen, in dem Sie den Stecker
+        ziehen."""
+
+[schema]
+description = "Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer, Rechteck und Entsorgungsart, die Farbtabellen, die Wiederholungen, alle Metadaten und eine Byte-für-Byte-Rechnung der Dateigröße. Es wird nichts hochgeladen."
+features = [
+  "Jedes Einzelbild mit Anzeigedauer, Rechteck, Entsorgungsart und komprimierter Größe",
+  "Beide Ansichten eines Einzelbildes: was es speichert und was ein Betrachter sieht",
+  "Eine Byte-Rechnung, die die Datei ergibt, damit nichts unerklärt bleibt",
+  "Farbtabellen ausgezeichnet, mit markierten Einträgen, auf die kein Pixel verweist",
+  "Liest Kommentare, XMP-Pakete, ICC-Profile und den Netscape-Wiederholungsblock",
+  "Meldet Anzeigedauern, an die sich kein Browser hält, und was die Animation wirklich spielt",
+  "Öffnet beschädigte und abgeschnittene Dateien und sagt, wo sie aufhören",
+  "Läuft offline; kein Upload, kein Konto, keine Änderung an Ihrer Datei",
+]
+
+[picker]
+title = "GIF hierher ziehen"
+hint = "oder klicken und auswählen &mdash; animiert oder nicht, jede Größe"
