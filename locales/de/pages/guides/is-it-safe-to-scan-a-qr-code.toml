@@ -1,0 +1,17 @@
+#
+# Ratgeber: Ist das Scannen von QR-Codes sicher? - German.
+#
+
+nav = "Ist das Scannen von QR-Codes sicher?"
+title = "Ist es sicher, einen QR-Code zu scannen?"
+description = "Scannen ist Lesen, nicht Öffnen - die Gefahr beginnt einen Fingertipp später. Was ein QR-Code wirklich enthält, wie der Aufkleber-Trick funktioniert und die drei Arten, auf die eine Adresse lügt."
+heading = "Ist es sicher, einen QR-Code zu scannen?"
+lede = """
+    Das Scannen selbst ist es. Ein QR-Code ist ein Stück Text, und eine Kamera
+    darauf zu richten tut nichts weiter, als diesen Text zu lesen. Alles, was
+    schiefgehen kann, passiert einen Fingertipp später, wenn etwas das
+    Gelesene öffnet &mdash; und diesen Tipp können Sie sich sparen."""
+updated = "26. August 2026"
+og_title = "Ist es sicher, einen QR-Code zu scannen?"
+og_description = "Scannen ist Lesen, nicht Öffnen. Was ein QR-Code wirklich enthält, wie der Trick mit dem überklebten Code funktioniert und wie Sie sehen, wohin einer führt, bevor Sie dort sind."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

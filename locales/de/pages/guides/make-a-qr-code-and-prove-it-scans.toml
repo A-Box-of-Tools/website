@@ -1,0 +1,21 @@
+#
+# Ratgeber: QR-Code erstellen und Scan beweisen - German.
+#
+
+nav = "QR-Code-Scan beweisen"
+title = "Einen QR-Code erstellen und beweisen, dass er scannt &mdash; vor den 200 Plakaten"
+description = "Den Code erzeugen, dann mit dem Leser derselben Seite prüfen: die genaue Nutzlast, den echten Link, in Druckgröße und vom Foto, vor der Auflage. Alles im Browser, nichts hochgeladen."
+
+heading = "So erstellen Sie einen QR-Code und beweisen, dass er scannt"
+lede = """
+    Der teure QR-Fehler ist nicht, den Code zu machen. Er ist, am
+    Veranstaltungsort festzustellen, dass die Plakate in einen Tippfehler
+    scannen. Erzeugen und Prüfen sind hier zwei Werkzeuge, und das zweite vor
+    der Auflage laufen zu lassen kostet eine Minute und fängt fast alles ab,
+    was die Auflage sonst ausgeliefert hätte."""
+
+updated = "26. August 2026"
+
+og_title = "Beweisen, dass das Plakat scannt, bevor zweihundert gedruckt sind"
+og_description = "Den Code erzeugen, den Testdruck fotografieren und mit dem Leser derselben Seite zurücklesen, Nutzlast, Link und alles, vor der Druckfreigabe."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

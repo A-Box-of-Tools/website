@@ -1,0 +1,279 @@
+#
+# Bild-Schwärzer - German.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Schwärzen" ist der Begriff, den deutsche Behörden und Gerichte für genau
+# diese Sache verwenden, und er trägt die Bedeutung mit, auf die es hier
+# ankommt: entfernt, nicht verdeckt. "Unkenntlich machen" steht daneben, weil
+# das der Ausdruck ist, den Leute in die Suche tippen.
+#
+
+name = "Bild-Schwärzer"
+heading = "Bild&nbsp;schwärzen <span class=\"h1-kw\">&mdash; unkenntlich machen oder verpixeln</span>"
+tagline = "Was Sie abdecken, wird aus der Datei gelöscht und nicht darin versteckt."
+
+title = "Bild schwärzen &mdash; unkenntlich machen, verpixeln, ohne Upload"
+description = "Namen, Adressen oder Kontonummern in einem Foto oder Screenshot abdecken und das Bild neu speichern, sodass die verdeckten Pixel wirklich weg sind und nicht unter einem Rechteck liegen. Läuft komplett im Browser."
+og_title = "Ein Bild so schwärzen, dass das Verdeckte wirklich weg ist"
+og_description = "Ziehen Sie Kästen über das, was niemand sehen soll. Die Pixel darunter werden überschrieben, bevor die Datei geschrieben wird. Es bleibt keine Ebene, die sich verschieben ließe. Nichts wird hochgeladen."
+og_image_alt = "Bild-Schwärzer - die verdeckten Pixel werden überschrieben, nicht versteckt"
+
+pledge = """
+    Das Bild wird von Ihrem eigenen Browser dekodiert, übermalt und wieder
+    kodiert, mit den Codecs, die er ohnehin mitbringt. Netzfunktionen hat
+    dieses Werkzeug keine, weder zum Abrufen noch zum Senden. Das wiegt hier
+    schwerer als fast überall sonst auf dieser Seite: Wer ein Bild schwärzen
+    will, hat meist eines vor sich, auf dem noch ein Name, eine Adresse oder
+    eine Kontonummer zu lesen ist."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und schwärzen Sie einen Screenshot. Keine
+      einzige Anfrage trägt ein Bild, ein Vorschaubild, einen Dateinamen oder
+      die Position eines einzigen Kastens. Oder trennen Sie die
+      Internetverbindung und schwärzen Sie trotzdem eines."""
+
+read_first = """
+, <code>src/redact.js</code> für die drei
+      Funktionen, die die Pixel überschreiben, und <code>src/preview.js</code>
+      dafür, warum die Vorschau auf dem Bildschirm von genau diesen drei
+      Funktionen gezeichnet wird."""
+
+howto_heading = "So schwärzen Sie ein Bild, damit das Verdeckte wirklich weg ist"
+
+card = """
+            Teile eines Bildes schwärzen, verpixeln oder weichzeichnen. Die
+            verdeckten Pixel werden überschrieben, bevor die Datei entsteht.
+            Es bleibt keine Ebene, die sich beiseiteschieben ließe."""
+
+[words]
+plural = "Bilder"
+choose = "ein Bild"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ihre Bilder haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Die verdeckten Pixel verschwinden hier, nicht erst auf dem Weg hinaus."
+body = """
+ Das Bild wird
+      in einen Puffer aus Pixeln dekodiert, die Kästen werden in diesen Puffer
+      geschrieben, und der Puffer geht an den Encoder. Eine Fassung des Bildes
+      mit den Kästen als eigener Ebene gibt es auf dieser Seite nicht, weil eine
+      solche Fassung nie entsteht. Nachzulesen in
+      <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Es gibt weder
+      <code>fetch</code> noch <code>XMLHttpRequest</code> noch
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Die Arbeit besteht
+      aus <code>getImageData</code>, drei Schleifen über die Bytes und
+      <code>canvas.toBlob</code>, und all das ist in Ihrem Browser bereits
+      eingebaut."""
+
+[[privacy]]
+title = "Die Kästen werden nirgendwohin gemeldet."
+body = """
+ Wo Sie gezogen
+      haben, wie viele Kästen es sind, wie groß sie sind und welche Art Sie
+      gewählt haben, bleibt im Arbeitsspeicher dieser Seite, bis Sie sie
+      schließen. In diesem Repository gibt es kein Analytics-Ereignis, das
+      irgendetwas davon mitnimmt, und die eine Frage, die diese Seite nach einem
+      Download stellt, sendet Daumen hoch oder runter und den Namen des
+      Werkzeugs, sonst nichts."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Internetverbindung, und das
+      Werkzeug bleibt dasselbe, weil nie ein Netzschritt darin war. Das ist der
+      einfachste Beweis von allen. Und der, den man laufen lassen sollte, bevor
+      man einen Reisepass schwärzt."""
+
+[[howto]]
+title = "Wählen Sie das Bild aus."
+body = """
+ Ein Screenshot, ein Scan oder ein
+      Foto, alles, was Ihr Browser öffnen kann. Es wird direkt von Ihrer
+      Festplatte gelesen, dabei geht nichts irgendwohin."""
+
+[[howto]]
+title = "Ziehen Sie einen Kasten über das, was niemand sehen soll."
+body = """
+ Und
+      dann den nächsten. Ein Kasten lässt sich verschieben, an seinen Griffen in
+      der Größe ändern oder mit der Tabulatortaste ansteuern und mit den
+      Pfeiltasten bewegen. Was unter dem Kasten erscheint, ist das echte
+      Ergebnis, gezeichnet von demselben Code, der später die Datei
+      schreibt."""
+
+[[howto]]
+title = "Wählen Sie Schwarz, Verpixeln oder Weichzeichnen &mdash; und nehmen Sie Schwarz."
+body = """
+ Eine
+      schwarze Fläche lässt gar nichts übrig. Verpixeln und Weichzeichnen
+      ersetzen die Pixel durch Mittelwerte ihrer selbst, und das genügt für ein
+      Gesicht im Hintergrund, nicht aber für irgendetwas, das sich als Text
+      lesen lässt."""
+
+[[howto]]
+title = "Auf &bdquo;Schwärzen und speichern&ldquo; klicken, dann die Datei prüfen."
+body = """
+ Das Bild,
+      das danach zu sehen ist, ist die fertige Datei, noch einmal dekodiert.
+      Öffnen Sie sie in einem Bildbearbeitungsprogramm und suchen Sie nach einer
+      Ebene, oder versuchen Sie, den verdeckten Text zu markieren: Es gibt nur
+      ein flaches Bild, und die abgedeckten Stellen wurden überschrieben, bevor
+      es geschrieben wurde."""
+
+[[faq]]
+q = "Wird mein Bild irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        dekodiert, geschwärzt und wieder kodiert. Netzfunktionen hat dieses
+        Werkzeug keine, es ruft nie etwas ab und sendet nie etwas, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf. Keine davon gehört uns. Laden Sie die Seite
+        einmal, trennen Sie die Internetverbindung, und sie arbeitet
+        weiter."""
+
+[[faq]]
+q = "Ist der verdeckte Teil wirklich aus der Datei verschwunden?"
+a = """
+        Ja, und genau dafür gibt es dieses Werkzeug. Das Bild wird in einen Puffer
+        aus Pixeln dekodiert, die Kästen überschreiben die Pixel in ihrem Inneren,
+        und der Puffer wird als neue Datei kodiert. Die ursprünglichen Werte sind
+        aus dem Speicher verschwunden, bevor der Encoder überhaupt etwas bekommt.
+        Es gibt also keine Ebene zum Verstecken, keine Anmerkung zum Entfernen und
+        keinen Verlauf zum Rückgängigmachen. Prüfen können Sie das so, wie Sie
+        jede fremde Behauptung prüfen würden: Öffnen Sie das Ergebnis in einem
+        Bildbearbeitungsprogramm und suchen Sie nach einer zweiten Ebene, oder
+        versuchen Sie, den abgedeckten Text zu markieren."""
+
+[[faq]]
+q = "Lässt sich eine verpixelte oder weichgezeichnete Stelle wiederherstellen?"
+a = """
+        Manchmal, und das ist der eine Punkt, den man vor der Auswahl gelesen
+        haben sollte. Eine schwarze Fläche ersetzt alles darunter durch eine
+        einzige Farbe, es bleibt also nichts übrig: keine Kante, kein Mittelwert,
+        nicht einmal die Anzahl der Zeichen. Verpixeln ersetzt jeden Block durch
+        den Mittelwert dieses Blocks, und ein Raster aus Mittelwerten ist immer
+        noch eine Messung dessen, was darunter lag. Bei Text in einer gewöhnlichen
+        Schrift in vorhersagbarer Größe hat das in veröffentlichten Arbeiten
+        gereicht, um das Original zu rekonstruieren: Man rendert Kandidaten,
+        verpixelt sie genauso und vergleicht. Weichzeichnen ist eine Faltung, und
+        Faltungen lassen sich im Prinzip umkehren. Verpixeln Sie also ruhig ein
+        Gesicht im Hintergrund, und schwärzen Sie alles, was sich als Text lesen
+        lässt."""
+
+[[faq]]
+q = "Warum ist ein schwarzes Rechteck aus einem Textprogramm nicht dasselbe?"
+a = """
+        Weil die meisten Programme das Rechteck neben dem Bild speichern und nicht
+        darin. Eine Form, die in einem PDF-Betrachter, einer Präsentation, einer
+        Textverarbeitung oder einem Bildeditor mit Ebenen gezeichnet wird, ist ein
+        Objekt mit einer Position, das auf der Seite liegt. Wer es verschiebt,
+        löscht oder die Datei in einem anderen Programm öffnet, bekommt genau das
+        zurück, was es verdeckt hat. Zeitungen, Gerichte und Ministerien haben auf
+        diesem Weg schon Dokumente veröffentlicht. Hier wird das Rechteck
+        überhaupt nicht gespeichert. Es ist eine Menge von Pixelwerten, geschrieben
+        über die, die vorher da waren."""
+
+[[faq]]
+q = "Entfernt es auch die EXIF- und GPS-Daten?"
+a = """
+        Ja, als Nebenwirkung. Speichern heißt hier, eine Fläche voller Pixel zu
+        kodieren, und eine solche Fläche trägt keine Tags. Ort, Kameramodell,
+        Zeitstempel und das eingebettete Vorschaubild werden also schlicht nicht
+        in die neue Datei geschrieben. Das Vorschaubild ist hier besonders wichtig:
+        Es ist eine kleine zweite Kopie des Bildes, es wird beim Bearbeiten nicht
+        immer neu erzeugt, und ein geschwärztes Foto mit einem ungeschwärzten
+        Vorschaubild macht die ganze Arbeit zunichte. Wenn die Metadaten weg
+        sollen, ohne dass das Bild überhaupt neu kodiert wird, schreibt der
+        <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
+        stattdessen den Container neu."""
+
+[[faq]]
+q = "Welche Formate kann es lesen und schreiben?"
+a = """
+        Es liest alles, was Ihr Browser dekodieren kann, in der Praxis also JPEG,
+        PNG, WebP, GIF, BMP und in den meisten aktuellen Browsern auch AVIF.
+        Geschrieben werden JPEG, PNG und WebP, weil das die Encoder sind, die
+        Browser mitbringen. Bei &bdquo;Automatisch&ldquo; kommt ein JPEG als JPEG
+        zurück und alles andere als PNG. So bleibt ein Foto so groß wie ein Foto,
+        und der übrige Text auf einem Screenshot bleibt scharf. Für die Schwärzung
+        macht die Wahl keinen Unterschied: Die Pixel sind schon weg, bevor der
+        Encoder sie zu sehen bekommt."""
+
+[[faq]]
+q = "Geht das auch ohne Maus?"
+a = """
+        Ja. &bdquo;Kasten in der Mitte hinzufügen&ldquo; setzt einen auf das Bild,
+        mit der Tabulatortaste wechseln Sie zwischen den Kästen, die Pfeiltasten
+        bewegen den ausgewählten und Alt mit den Pfeiltasten ändert seine Größe.
+        Mit Umschalt sind es zehn Pixel pro Schritt, und Entf entfernt ihn. Zu
+        jedem Kasten gibt es außerdem unter dem Bild eine Zeile mit Größe,
+        Position, Wirkung und einer Schaltfläche zum Entfernen. Das ganze Werkzeug
+        ist also mit der Tastatur bedienbar und für einen Screenreader
+        lesbar."""
+
+[[faq]]
+q = "Funktioniert es auf dem Handy?"
+a = """
+        Ja. Zeichnen, Verschieben und Größenänderung laufen über Pointer-Ereignisse
+        statt über Mausereignisse, ein Finger arbeitet also genauso, und die Griffe
+        werden auf einem Touchscreen größer gezeichnet. Das Bild auf dem Bildschirm
+        wird beim Arbeiten in Bildschirmgröße neu gezeichnet. Die Datei selbst wird
+        immer in voller Auflösung geschwärzt, sobald Sie die Schaltfläche
+        drücken."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Auch für die Bildgröße gibt es keine
+        Grenze, weil kein Server dafür bezahlt: Die Arbeit passiert auf Ihrem
+        eigenen Gerät. Finanziert wird die Seite über Werbung, und die Anzeigen
+        bekommen nichts über Ihre Bilder zu sehen."""
+
+[schema]
+description = "Ein Bild im Browser schwärzen: Kästen über das ziehen, was niemand sehen soll, und es schwärzen, verpixeln oder weichzeichnen. Die verdeckten Pixel werden überschrieben, bevor die Datei kodiert wird, das Ergebnis trägt also keine Ebene, keine Anmerkung und keine Metadaten. Nichts wird hochgeladen."
+features = [
+  "Schwarze Fläche, Verpixeln und Weichzeichnen, pro Kasten wählbar",
+  "Die verdeckten Pixel werden vor dem Kodieren überschrieben, es bleibt keine Ebene zum Beiseiteschieben",
+  "Die Vorschau wird von demselben Code gezeichnet, der die Datei schreibt",
+  "Nennt die Anzahl der Blöcke eines Rasters, statt es &bdquo;stark&ldquo; zu nennen",
+  "Tastatur und Touch ebenso wie Maus: jeder Kasten lässt sich ohne sie anlegen, bewegen, ändern und entfernen",
+  "Entfernt EXIF, GPS und das eingebettete Vorschaubild als Nebenwirkung des Neukodierens",
+  "JPEG, PNG und WebP als Ausgabe, mit automatischer Wahl",
+  "Läuft offline, ohne Upload und ohne Konto",
+]
+
+[picker]
+title = "Bild hierher ziehen"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"

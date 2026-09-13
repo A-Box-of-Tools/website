@@ -1,0 +1,18 @@
+#
+# Ratgeber: Ist das Einfügen in Online-Tools sicher? - German.
+#
+
+nav = "Text in Online-Tools einfügen?"
+title = "Ist es sicher, Text in ein Online-Tool einzufügen?"
+description = "Einfügen fühlt sich an wie Text zwischen den eigenen Fenstern bewegen - bei vielen Web-Tools ist es ein stiller Upload. Was eingefügter Text alles trägt, wohin er geht, und wie Sie erkennen, ob ein Formatierer ihn behält."
+heading = "Ist es sicher, Text in ein Online-Tool einzufügen?"
+lede = """
+    Einfügen fühlt sich nicht wie Hochladen an, und genau das ist die
+    Falle: Dieselben Bytes verlassen Ihre Maschine so oder so, wenn die
+    Seite sie sendet. Hier steht, was eine eingefügte Config oder ein Log
+    wirklich trägt &mdash; und wie Sie erkennen, ob das Werkzeug vor Ihnen
+    überhaupt irgendwohin senden kann."""
+updated = "26. August 2026"
+og_title = "Ist es sicher, Text in ein Online-Tool einzufügen?"
+og_description = "Einfügen kann ein stiller Upload sein. Was eine Config, ein Log oder eine Abfrage wirklich trägt, und wie Sie erkennen, ob der Formatierer eine Kopie behält."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

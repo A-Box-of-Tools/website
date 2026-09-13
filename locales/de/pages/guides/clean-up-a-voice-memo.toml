@@ -1,0 +1,21 @@
+#
+# Ratgeber: Sprachmemo aufräumen - German.
+#
+
+nav = "Sprachmemo aufräumen"
+title = "Ein Sprachmemo aufräumen, bevor Sie es verschicken &mdash; ohne Upload"
+description = "Die tote Luft und die Fehlstarts wegschneiden, dann den Pegel auf Vollaussteuerung heben. Zwei Browser-Werkzeuge nacheinander, in der Reihenfolge, die die Qualität bewahrt, und die Aufnahme verlässt Ihr Gerät nie."
+
+heading = "So räumen Sie ein Sprachmemo auf, bevor Sie es verschicken"
+lede = """
+    Ein Sprachmemo kommt mit dreißig Sekunden Taschenrauschen, zwei
+    Fehlstarts und einem Pegel, den der Abstand zum Telefon bestimmt hat. Es
+    versandfertig zu machen sind zwei Schritte, schneiden, dann anheben, und
+    beide laufen in Ihrem Browser, wo eine Aufnahme der eigenen Stimme mit
+    privaten Dingen darin hingehört."""
+
+updated = "26. August 2026"
+
+og_title = "Tote Luft weg, Pegel hoch, Memo verschicken"
+og_description = "Die Fehlstarts nach Augenmaß auf der Wellenform wegschneiden, dann die Lautstärke normalisieren, zwei Werkzeuge, die richtige Reihenfolge, und die Aufnahme bleibt auf Ihrem Gerät."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"
