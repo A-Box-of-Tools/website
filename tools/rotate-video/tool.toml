@@ -1,0 +1,401 @@
+#
+# Rotate a video
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# TWO THINGS TO HOLD ON TO WHILE EDITING ANY OF THE PROSE BELOW.
+#
+# The first is that a turn is a change to the file's header, not to its
+# frames. A phone that films sideways writes a quarter turn into the display
+# matrix and every player applies it; this page writes a different matrix
+# and copies every frame and every packet across untouched. That is why it
+# is fast, why it loses nothing, and why the page keeps saying "not one
+# frame is decoded" - it is the claim, and it is true.
+#
+# The second is that the header is honoured by every phone, browser and
+# modern player and ignored by a few old desktop ones, and the page says so
+# rather than pretending either half away. "Bake it in" exists for those
+# players and for a WebM or MKV whose picture is not H.264; it re-encodes,
+# costs a generation, and is named as the second choice it is.
+#
+
+slug = "rotate-video"
+name = "Video Rotator"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Rotate&nbsp;Video <span class=\"h1-kw\">&mdash; for the clip that was filmed sideways</span>"
+tagline = "A quarter turn, a half turn, the other way. Written into the file's header, so not one frame is decoded and nothing is lost."
+icon = "&#128260;"                  # the arrows going round, beside the page heading
+favicon = "&#128260;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "rotate-cw"
+category = "video-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works, chips
+# the row of turns, checks the checkbox rows, and results carries the file
+# name and size lines the other tools use.
+css_parts = ["progress", "form", "chips", "checks", "notes", "results"]
+
+# file-picker brings in the drop zone. mp4-reader is the demuxer the video
+# tools ship and mkv-reader its Matroska twin, which imports it. mp4-writer
+# and mp4-boxes write the result; aac opens and writes the AAC description;
+# copy-tracks carries a track across as it is, reencode-video is the
+# decode-draw-encode loop behind "bake it in", reencode-sound the streamed
+# AAC re-encode for a sound an MP4 cannot carry - all three shared with the
+# converter - and video-support, codec-support, webcodecs and frame-canvas
+# are what they are built from. format is sizes and durations as words, and
+# errors is the cancellation every page ignores by name.
+#
+# example-photo, example-video, example-audio, example-video-sound, mp4-muxer
+# and wav are for the example alone: a clip with sound, built in the page,
+# the same set the trimmer and the compressor ask for.
+js_parts = ["file-picker", "mp4-reader", "mkv-reader", "mp4-writer", "mp4-boxes", "aac", "copy-tracks", "reencode-video", "reencode-sound", "video-support", "codec-support", "webcodecs", "frame-canvas", "message-box", "format", "errors", "example-photo", "example-video", "example-audio", "example-video-sound", "mp4-muxer", "wav"]
+# Where a finished result can be carried without being saved first: the row
+# of links shared/handoff.js shows under the result once there is one. A
+# clip turned the right way up is then often cut, or made small enough to
+# send.
+handoff = ["trim-video", "compress-video"]
+lastmod = "2026-09-13"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Rotate a Video &mdash; Free, Lossless, in Your Browser, No Upload"
+description = "Turn a sideways or upside-down video a quarter or half turn in your browser. The turn is written into the file's header, so no frame is re-encoded and nothing is lost; or bake it into the picture for old players. MP4, MOV, WebM and MKV in, MP4 out. Nothing is uploaded."
+og_title = "Rotate a video without uploading it, and without re-encoding it"
+og_description = "A clip filmed sideways needs nine numbers changed in its header, not a re-encode. Turn it in your browser in seconds; the file never leaves your machine."
+og_image_alt = "Rotate a video in your browser, without uploading it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "For the clip filmed sideways. Not one frame decoded; the file never goes up."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src carries blob: because the finished video is played from memory
+  on this page so that you can see it the right way up. connect-src carries
+  blob: because the carry-on row reads the result back out of this page
+  before parking it for the next tool. blob: names bytes inside this page;
+  neither gains any reach over the network, and nothing else here is
+  widened."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The video you choose is read, given a new header and written again in
+    memory on this machine, by code served from this address; if you ask for
+    the turn to be baked in, your own browser's codecs do the drawing.
+    Nothing here can make an upload, and there is no server on the other end
+    of this page to receive one. A gigabyte never goes up to come back
+    turned."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      turn something. Not one request carries a video, a frame, or a
+      filename. Or unplug from the internet and turn it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/plan.js</code> for the nine numbers a turn
+      comes to, <code>src/rotate.js</code> for the copy and the writing, and
+      <code>src/shared/copy-tracks.js</code> for how a frame is carried across
+      without being read. None of them can reach the network, and neither can
+      the readers or the writer beside them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to rotate a video"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            A quarter turn right or left, or upside down, for the clip that
+            was filmed sideways. The turn is written into the file's header
+            and every frame is copied across as it is &mdash; nothing
+            decoded, nothing lost, seconds for a gigabyte &mdash; or baked
+            into the picture for the old players that ignore headers."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and nothing about
+  which way you turned it"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "A turn is nine numbers in the header, and the page changes only those."
+body = """
+
+      A phone that films sideways does not turn its pixels. It stores the
+      frames as the sensor saw them and writes a quarter turn into the track
+      header &mdash; a display matrix of nine numbers &mdash; which every
+      player applies on the way to the screen. So a video that shows
+      sideways needs a different matrix, not a different picture. This page
+      writes the matrix for the turn you chose and copies every frame and
+      every packet across exactly as they were, without decoding one. That
+      is why a gigabyte takes seconds, why the picture is bit for bit what
+      it was, and why the file comes out almost exactly the size it went
+      in."""
+
+[[privacy]]
+title = "The upload is the slow part, and it is the part that does not happen."
+body = """
+
+      Every online rotator asks for the whole file first: the gigabyte goes
+      up on your connection so that a turned gigabyte can come back, and the
+      upload is usually longer than the work it pays for, before any
+      question of who keeps the file. Most of them then re-encode it, which
+      costs a generation of quality for a job that needed nine numbers.
+      This page reads the file with code served from this address and
+      writes the new one in memory, so the only bytes that move are from
+      your disk to your memory and back. The page's
+      <code>Content-Security-Policy</code> names every address it may
+      contact &mdash; not one of them belongs to this site &mdash; and it
+      works with the network unplugged."""
+
+[[privacy]]
+title = "Who honours the header, and what to do about the few who do not."
+body = """
+
+      Every phone, every browser, every modern player and every editor
+      applies the display matrix; it is how phone footage has been shown the
+      right way up since 2010. A few old desktop players ignore it and show
+      the stored frames, sideways. For them, and for a clip that is going
+      somewhere you cannot check, the page offers to bake the turn in: every
+      frame is drawn turned on to a canvas and encoded again as H.264. That
+      costs a generation of quality and takes as long as an encode, so it is
+      the second choice and is named as one."""
+
+[[privacy]]
+title = "The result is opened again and checked."
+body = """
+
+      A rotator that wrote the wrong matrix, or the right one at the wrong
+      size, would still produce a file that opens. So the finished file is
+      opened again here, by the same reader that reads what you bring, and
+      has to be the length it was, shown the way you asked at the size that
+      implies, and carrying the sound it was meant to. It plays from memory
+      under the download, so you can see it the right way up before you
+      save it."""
+
+[[privacy]]
+title = "Which files it reads, and what it writes."
+body = """
+
+      MP4, MOV and M4V with any picture inside &mdash; H.264, HEVC, VP9 or
+      AV1 &mdash; since a turn written into the header does not care what
+      the frames are; and WebM and MKV, where the frames are copied if they
+      are H.264 and baked in otherwise, because an MP4 header can be built
+      round nothing else. AAC sound is copied; Opus, Vorbis, MP3 or FLAC is
+      encoded again as AAC; a sound the browser cannot decode is named and
+      left out. The result is always an MP4, because it is the one container
+      everything plays."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your video: not a file, not a frame, not a name, a size, a length, or
+      which way you turned it. Every line that reads, turns or writes a
+      video is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your videos. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your video away to be turned would stop."""
+
+[[howto]]
+title = "Choose the video."
+body = """
+ One file at a time: MP4, MOV, M4V, WebM or MKV. It
+      is read straight off your disk by the browser, and the page says what
+      it is and which way up it is shown at the moment."""
+
+[[howto]]
+title = "Pick the turn, and look at the preview."
+body = """
+ A quarter turn right, a
+      quarter turn left, or upside down. The first frame is drawn turned as
+      chosen through the same arithmetic the file will carry, so what you
+      see is what a player will do. Tick &ldquo;bake&rdquo; only if a
+      player has shown you the clip sideways; leave the sound out if you
+      would rather the clip went silent."""
+
+[[howto]]
+title = "Rotate it, and read the line that says it was checked."
+body = """
+
+      The header is written and every frame copied across, which takes
+      seconds; a bake takes as long as an encode, with a bar that says where
+      it is. Then the finished file is opened again here and has to be the
+      length it was, shown the way you asked, and carrying its sound. It
+      plays from memory under the download, so you can see it the right way
+      up."""
+
+[[faq]]
+q = "Does rotating lose quality?"
+a = """
+        No, not the ordinary way. The turn is written into the file's header
+        and every frame is copied across byte for byte, so the picture is
+        exactly what it was and the file is almost exactly the size it was.
+        Only &ldquo;bake it in&rdquo; re-encodes, and the page says so
+        before you tick it. A rotator that re-encodes by default &mdash; most
+        online ones &mdash; is doing a re-encode for a job that needed nine
+        numbers."""
+
+[[faq]]
+q = "Why does the file still look sideways in one player?"
+a = """
+        Because that player ignores the display matrix. Every phone,
+        browser, modern player and editor honours it; a few old desktop
+        players do not, and show the frames as stored. Tick &ldquo;bake the
+        turn into the picture&rdquo; and the frames themselves are turned
+        and encoded again as H.264, which every player shows the same way at
+        the cost of a generation of quality."""
+
+[[faq]]
+q = "Which way is a quarter turn right?"
+a = """
+        Clockwise, the way the top of the picture would move if you turned
+        your phone to the right. The preview shows the first frame turned
+        as chosen, so pick the button that makes it look right and press
+        the big one."""
+
+[[faq]]
+q = "Which files does it read?"
+a = """
+        MP4, MOV and M4V with any picture inside, because a turn written
+        into the header does not care what the frames are. WebM and MKV,
+        where H.264 frames are copied and anything else is baked in, since
+        an MP4 header can be built round nothing else. AAC sound is copied;
+        Opus, Vorbis, MP3 and FLAC are encoded again as AAC; sound the
+        browser cannot decode is named and left out. The result is always an
+        MP4."""
+
+[[faq]]
+q = "How long does it take?"
+a = """
+        Seconds, for the ordinary turn: the file is read once for its layout
+        and once more as the browser writes the result out, and a gigabyte
+        goes at the speed of your disk. Baking the turn in takes as long as
+        your machine takes to encode the clip &mdash; with a hardware
+        encoder, most laptops and every recent phone, faster than the clip is
+        long; without one, slower."""
+
+[[faq]]
+q = "Are my videos uploaded anywhere?"
+a = """
+        No. The file is read, given a new header and written again by your
+        own browser on your own hardware, and the page's
+        <code>Content-Security-Policy</code> names every address it may
+        contact &mdash; none of them belongs to this site. The simplest way
+        to satisfy yourself is to unplug from the network and use the page
+        anyway. On a tool for files this size, that is also the fastest way:
+        the upload is longer than the whole job."""
+
+[[faq]]
+q = "Does it work on a phone?"
+a = """
+        Yes. The ordinary turn decodes nothing, so a phone does it as fast
+        as a laptop; the finished file is held in memory until you save it,
+        which is the only limit, and a phone will hold a few hundred
+        megabytes of result without complaint. Baking in is an encode, and a
+        phone's own hardware encoder is quick at it."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        The file is read from your disk in pieces, so a file larger than your
+        memory is fine going in; the finished file is held in memory until
+        you download it, and an MP4 written here cannot be over 4 GB. It is
+        free, there is no account, no sign-in and no trial. The site carries
+        advertising, which is what pays for it; the ads are not given
+        anything about your videos."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your video away to be turned would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Rotate a video a quarter or half turn in your browser. The turn is written into the file's header and every frame is copied across untouched, so nothing is re-encoded and nothing is lost; or bake it into the picture for old players. Nothing is uploaded."
+features = [
+  "A quarter turn right, a quarter turn left, or upside down",
+  "Writes the turn into the display matrix and copies every frame and packet across as it is",
+  "Shows the first frame turned as chosen, through the same arithmetic the file will carry",
+  "Bakes the turn into the picture on request, for the few players that ignore the header",
+  "Reads MP4, MOV, M4V, WebM and MKV; writes MP4",
+  "Reopens the finished file to check its length, its turn and its sound, and plays it from memory",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: a turn is chosen by looking at the preview, and
+# twelve clips would want twelve looks.
+[picker]
+accept = "video/mp4,video/quicktime,video/webm,video/x-matroska,.mp4,.mov,.m4v,.webm,.mkv"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, WebM or MKV, one at a time"
+# A six-second landscape clip with sound, built in the page. See src/example.js.
+example = true
+
+# blob: on media-src, because the finished result is played from memory on
+# this page so that it can be looked at; blob: on connect-src, because the
+# carry-on row reads the finished result back out of this page before parking
+# it for the next tool (see shared/handoff.js). blob: names bytes inside this
+# page; nothing here gains any reach over the network.
+[csp]
+"connect-src" = ["blob:"]
+"media-src" = ["'self'", "blob:"]

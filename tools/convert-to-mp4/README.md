@@ -88,16 +88,19 @@ that it runs in Node and the page can speak it first:
   between a floor and a ceiling per pixel per frame, so a starved source is
   not kept starved and a lavish one is not copied byte for byte into a file
   the size of the original.
-- **`compositionShift`** and **`rescale`**: the clock arithmetic a copy
-  needs, tested by hand.
+- **`compositionShift`** and **`rescale`**, re-exported from
+  `shared/js/copy-tracks.js`: the clock arithmetic a copy needs, tested by
+  hand.
 
 ## The conversion
 
-`src/convert.js` does the sound first — it is the short job, and a refusal
+`src/convert.js` does the sound first - the copying itself, and the placing
+of a track on the movie's clock, live in `shared/js/copy-tracks.js`, which
+the rotator shares - — it is the short job, and a refusal
 from the audio encoder is better met before minutes of picture have been
 encoded — then the picture, then writes both with `shared/js/mp4-writer.js`.
 
-- **Picture copied** (`copyPicture`): a `Blob` slice of the file for every
+- **Picture copied** (`copyPicture`, in the shared part): a `Blob` slice of the file for every
   frame, never read until the browser writes the result out, so a copy of a
   four-gigabyte MKV never holds four gigabytes. An MP4 source hands over its
   sample entry and display matrix whole, so what came in rotated goes out
@@ -109,15 +112,15 @@ encoded — then the picture, then writes both with `shared/js/mp4-writer.js`.
   both call one copy. The frame is the source's display size, capped at 3840
   on the long edge because that is what H.264 encoders can be relied on to
   take.
-- **Sound copied** (`copySound`): the AAC packets as they are, retimed on to
+- **Sound copied** (`copySound`, in the shared part): the AAC packets as they are, retimed on to
   the sample-rate clock when they came from a Matroska file.
-- **Sound encoded** (`src/sound.js`): streamed, packet by packet, from an
+- **Sound encoded** (`shared/js/reencode-sound.js`, shared with the rotator): streamed, packet by packet, from an
   `AudioDecoder` straight into an `AudioEncoder` inside the decoder's own
   callback, because an hour of screen recording decoded to floats is more
   than a tab should hold. More than two channels are folded to stereo — the
   mix every player does silently — since an MP4 that uploads is stereo and
   the AAC encoder in most browsers takes nothing wider.
-- **Placing** (`place`): a track that starts later than the other on the
+- **Placing** (`place`, in the shared part): a track that starts later than the other on the
   file's clock gets an empty edit for the gap, and a copied picture whose
   first frame decoded is not its first frame shown gets an edit starting
   that far in. Neither is written when neither is needed, which is nearly

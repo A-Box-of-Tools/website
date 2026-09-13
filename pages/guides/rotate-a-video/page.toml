@@ -1,0 +1,37 @@
+#
+# Guide: turning a video that was filmed sideways.
+#
+# Written for somebody whose clip plays on its side and who has been told
+# to "rotate it" - by an editor, a form, a friend. The useful thing to know
+# is that the clip was never turned in the first place: the phone wrote a
+# note in the header and something is ignoring the note. So the guide
+# explains the header, why re-encoding to rotate is a waste, when baking
+# the turn in is the right call anyway, and how to do it in the browser
+# without the upload.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/rotate-a-video"
+kind = "guide"
+nav = "Rotating a video"
+group = "doing-the-job"
+tool = "rotate-video"
+
+title = "How to Rotate a Video Without Losing Quality"
+description = "Why a phone clip plays sideways, what the nine numbers in its header do, why most rotators re-encode for nothing, when to bake the turn in instead, and how to turn a video in your browser without uploading it."
+
+heading = "How to rotate a video without losing quality"
+lede = """
+    A clip that plays on its side was never turned in the first place: the
+    phone wrote a note in the file's header, and something is ignoring the
+    note. Here is what the note says, why fixing it should take seconds and
+    cost nothing, and when it is worth paying for the other way."""
+
+updated = "13 September 2026"
+published = "2026-09-13"
+lastmod = "2026-09-13"
+
+og_title = "How to rotate a video without losing quality"
+og_description = "A sideways clip needs nine numbers changed in its header, not a re-encode. What the header does, when to bake the turn in, and how to do it in your browser without the upload."
+og_image_alt = "abox.tools - tools that never touch a server"

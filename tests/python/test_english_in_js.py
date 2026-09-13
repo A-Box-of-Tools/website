@@ -78,6 +78,7 @@ BASELINE = {
     'compress-pdf': 4,
     'compress-video': 0,
     'convert-to-mp4': 0,
+    'rotate-video': 0,
     'crop-video': 0,
     # Two internal keys, a DOM id, a clock format, one key template and the
     # fixed-width layout of a line in the text report.

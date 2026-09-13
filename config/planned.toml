@@ -44,7 +44,6 @@ items = [
 id = "video"
 name = "Video"
 items = [
-  ["Rotate", "for the clip that was filmed sideways &mdash; and not one frame is decoded to do it"],
   ["Mute a video", "drop the sound and leave the picture untouched"],
   ["Burn in subtitles", "an SRT file drawn into the picture"],
   ["Subtitle converter", "SRT, VTT, ASS, SBV and LRC in any direction, and timings that can be shifted"],
