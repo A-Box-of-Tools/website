@@ -1,0 +1,128 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Manchmal. Ein Foto umzuwandeln, zu verkleinern oder zu komprimieren
+      entfernt seine Metadaten, wenn das Werkzeug das Bild aus Pixeln neu
+      aufbaut &mdash; und behält sie, wenn das Werkzeug sie absichtlich
+      hinüberträgt. Und nichts auf dem Bildschirm sagt Ihnen, welches von
+      beidem geschah. Das Bild sieht in beiden Fällen gleich aus, denn
+      Metadaten waren nie Teil des Bildes.
+    </p>
+    <p>
+      Beide Ausgänge überraschen, in entgegengesetzte Richtungen. Jemand
+      verlässt sich darauf, dass &bdquo;bloßes Verkleinern&ldquo; den
+      Aufnahmeort tilgt &mdash; und er überlebt. Jemand anderes verlässt
+      sich darauf, dass das Aufnahmedatum einen Formatwechsel übersteht
+      &mdash; und es ist fort. Beide Fehler haben dieselbe Kur: aufhören
+      vorherzusagen, was ein Werkzeug vermutlich tat, und nachsehen, was
+      die Datei tatsächlich enthält.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was da mitreist, und warum es getrennt ist</h2>
+    <p>
+      Eine Fotodatei ist zwei Dinge in einem Behälter: das kodierte Bild
+      und ein Block von Angaben darüber &mdash; EXIF, oft dazu XMP und ein
+      Farbprofil. Die Angaben umfassen typischerweise Aufnahmezeitpunkt,
+      Kamera und Objektiv, Belichtung, die GPS-Koordinaten Ihres
+      Standorts, und häufig ein kleines eingebettetes Vorschaubild &mdash;
+      manchmal des Bildes, wie es <em>vor</em> einer Bearbeitung war,
+      weshalb ein Zuschnitt verfehlen kann, was er abschnitt. Die volle
+      Führung durch diesen Block steht im
+      <a href="../exif-und-gps-daten-entfernen/">EXIF-Ratgeber</a>.
+    </p>
+    <p>
+      Der Punkt, der alles entscheidet: Die Angaben liegen <em>neben</em>
+      den Pixeln, nicht in ihnen. Ein Werkzeug, das das Bild dekodiert,
+      bekommt Pixel und keine Angaben; was es hinausschreibt, enthält nur,
+      was es zurücklegt. Ein Werkzeug, das die Datei ohne Neukodieren
+      bearbeitet, kann die Angaben unberührt lassen &mdash; oder genau sie
+      entfernen und sonst nichts.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum Neukodieren abstreift und Kopieren behält</h2>
+    <p>
+      Die meiste Bildarbeit im Browser läuft über eine Leinwand: Datei zu
+      rohen Pixeln dekodieren, verwandeln, frische Datei kodieren. Eine
+      Leinwand trägt keine Angaben, also hat die frische Datei keine
+      &mdash; nicht aus Politik, sondern aus Bauart. Darum erzeugen der
+      <a href="../../bild-komprimieren/">Bildkompressor</a> und das
+      Werkzeug zum <a href="../../bildgroesse-aendern/">Ändern der
+      Bildgröße</a> hier Ausgaben ohne EXIF, GPS und XMP, und ihre Seiten
+      sagen es: Es ist unvermeidlich &mdash; und wissenswert, wenn Sie das
+      Aufnahmedatum behalten wollten.
+    </p>
+    <p>
+      Ein Konverter dagegen kann sich Mühe geben zu bewahren. Der
+      <a href="../../heic-in-jpg-umwandeln/">HEIC-zu-JPG-Konverter</a>
+      dieser Seite tut genau das: Er hebt den Metadatenblock aus dem
+      HEIC-Behälter und setzt ihn ins JPEG ein, Daten, GPS und alles
+      &mdash; denn eine Umwandlung soll dasselbe Foto in anderem Mantel
+      sein. (Ein Eintrag wird bewusst umgeschrieben: die Ausrichtung,
+      damit das Bild nicht kippt; und der Block passt nur in die
+      JPEG-Ausgabe &mdash; das Formatmenü sagt es dazu.) Zwei ehrliche
+      Werkzeuge, entgegengesetztes Verhalten, jedes für seine Aufgabe
+      richtig &mdash; und genau darum taugt das Raten nach Werkzeugsorte
+      nichts.
+    </p>
+    <p>
+      Jenseits des Browsers ist das Bild genauso gemischt, mit derselben
+      Logik darunter. Bildschirmfotos und Exporte sind frische
+      Kodierungen: keine Kamera-Angaben. Messenger komprimieren kräftig
+      nach, also verlieren als Fotos verschickte Fotos meist ihre Angaben
+      &mdash; dieselbe Datei &bdquo;als Dokument&ldquo; verschickt reist
+      aber Byte für Byte, Angaben inklusive. E-Mail-Anhänge und
+      Cloud-Laufwerke bewegen Dateien unverändert. Das Muster hält: neu
+      aufgebaut heißt abgestreift, kopiert heißt behalten.
+    </p>
+  </section>
+
+  <section>
+    <h2>Prüfen statt annehmen</h2>
+    <p>
+      Die Prüfung dauert keine Minute: Öffnen Sie die Ausgabedatei &mdash;
+      nicht das Original &mdash; im
+      <a href="../../exif-daten-entfernen/">EXIF-Betrachter und
+      -Entferner</a> und lesen Sie, was da ist. Er zerlegt die Datei auf
+      Ihrer eigenen Maschine und zeigt jeden Eintrag, das eingebettete
+      Vorschaubild eingeschlossen. Nichts da, nichts geleckt. Noch da, und
+      Sie sehen genau was.
+    </p>
+    <p>
+      Drei Gewohnheiten folgen aus alldem:
+    </p>
+    <ul>
+      <li>
+        <strong>Wenn das Ziel Privatheit ist, entfernen Sie
+        absichtlich.</strong> Nehmen Sie die Angaben mit dem EXIF-Werkzeug
+        heraus &mdash; es bearbeitet die Datei ohne Neukodieren, das Bild
+        verliert also nichts &mdash; und prüfen Sie dann das Ergebnis.
+        Verlassen Sie sich nicht auf ein Verkleinern, das nebenbei
+        zufällig abstreift.
+      </li>
+      <li>
+        <strong>Wenn das Ziel das Bewahren ist, wandeln Sie mit einem
+        Werkzeug um, das Bewahren zusagt</strong> &mdash; und prüfen Sie
+        auch das, denn &bdquo;hat es wohl behalten&ldquo; scheitert in der
+        anderen Richtung: Ein Fotoarchiv mit weggekochten Daten ist auch
+        ein Verlust.
+      </li>
+      <li>
+        <strong>Prüfen Sie die Datei, die Sie wirklich verschicken</strong>,
+        nach dem letzten Schritt Ihrer Kette. Jedes Werkzeug entscheidet
+        für sich, und nur der Inhalt der letzten Datei zählt.
+      </li>
+    </ul>
+    <p>
+      Und wenn das Prüfwerkzeug selbst eine Webseite ist, gilt die übliche
+      Frage auch ihm &mdash; ein Metadaten-Betrachter bekommt Ihr Foto,
+      GPS und alles. Der hiesige läuft vollständig in Ihrem Browser, ohne
+      dass irgendetwas irgendwohin geschickt wird, und
+      <a href="../ist-das-hochladen-von-dateien-sicher/">der Ratgeber zum
+      Hochladen</a> zeigt, wie sich diese Behauptung prüfen lässt, statt
+      sie zu glauben.
+    </p>
+  </section>

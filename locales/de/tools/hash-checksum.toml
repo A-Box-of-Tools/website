@@ -1,0 +1,364 @@
+#
+# Hash & Prüfsumme - German.
+#
+# Overrides for tools/hash-checksum/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Prüfsumme" is the German word and the one people search for; "Hash" is
+# equally current in technical German and is kept beside it rather than
+# translated away. The algorithm names are never translated: MD5 and SHA-256
+# are what is printed on the download page the reader has open.
+#
+
+name = "Hash & Prüfsumme"
+heading = "Hash&nbsp;&amp;&nbsp;Prüfsumme <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Einen Download gegen die Zahl prüfen, die der Anbieter veröffentlicht hat. Ohne sie jemandem zu schicken."
+
+title = "SHA-256- &amp; MD5-Prüfsumme berechnen &mdash; Download prüfen, ohne Upload"
+description = "Die MD5-, SHA-1-, SHA-256-, SHA-384- oder SHA-512-Prüfsumme einer beliebigen Datei berechnen und mit der Angabe der Downloadseite vergleichen. Die Datei wird im Browser gelesen und nie hochgeladen, in jeder Größe."
+og_title = "Einen Download prüfen, ohne ihn irgendwohin zu schicken"
+og_description = "MD5, SHA-1, SHA-256, SHA-384 und SHA-512, berechnet in Ihrem eigenen Browser. Fügen Sie die veröffentlichte Prüfsumme ein, und die Seite sagt Ihnen, ob sie passt. Ohne Größengrenze, denn die Datei wird stückweise gelesen."
+og_image_alt = "Hash & Prüfsumme - einen Download im Browser prüfen, ohne Upload"
+
+pledge = """
+    Eine Prüfsumme ist Rechnerei über den Bytes Ihrer Datei, und gerechnet wird
+    hier, auf dieser Seite, mit Ihrem eigenen Prozessor. Die Datei wird in
+    Stücken von vier Megabyte von Ihrer Festplatte gelesen, und jedes Stück wird
+    verworfen, sobald es verrechnet ist. Nirgendwo entsteht also eine
+    vollständige Kopie, weder im Arbeitsspeicher noch gar auf einem Server. Am
+    anderen Ende dieser Seite sitzt überhaupt kein Server, an den sich etwas
+    schicken ließe, selbst wenn hier irgendetwas das wollte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und prüfen Sie eine Datei. Keine einzige Anfrage
+      trägt ein Byte davon, auch nicht den Namen und nicht die Größe. Oder
+      trennen Sie die Internetverbindung und prüfen Sie trotzdem eine."""
+
+read_first = """
+, <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> und
+      <code>src/sha512.js</code> für die vier Kompressionsfunktionen,
+      <code>src/blocks.js</code> für das Auffüllen, das sie sich teilen, und
+      <code>src/hash.js</code> für die Schleife, die Ihre Datei stückweise
+      liest. In keiner dieser Dateien steht eine Zeile, die ans Netz käme."""
+
+howto_heading = "So prüfen Sie einen Download gegen seine Prüfsumme"
+
+card = """
+            Die MD5, SHA-1, SHA-256, SHA-384 oder SHA-512 einer Datei berechnen
+            und mit der Angabe der Downloadseite vergleichen. In jeder Größe,
+            denn die Datei wird stückweise gelesen und nie ganz gehalten."""
+
+[words]
+plural = "Dateien"
+choose = "eine Datei"
+analytics_extra = """, und keine
+  Prüfsumme aus Ihrer Datei"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Keine Größengrenze"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Für Ihre Datei gibt es keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen. Früher stand hier
+      <code>connect-src 'none'</code>, was absolut war. Die Werbung hat das
+      gekostet, und das gehört gesagt."""
+
+[[privacy]]
+title = "Die Datei liegt nie vollständig irgendwo, in keiner Größe."
+body = """
+
+      Sie wird in Stücken von vier Megabyte gelesen, und jedes Stück wird in den
+      laufenden Zustand verrechnet und verworfen. Diese Seite braucht für ein
+      Festplattenabbild von vierzig Gigabyte also genauso viel Speicher wie für
+      eine Textdatei, und es gibt keine Größe, bei der sie aufgibt. Deshalb wird
+      auch <code>crypto.subtle.digest</code> nicht verwendet, das der Browser
+      mitbringt. Diese Funktion will die ganze Datei auf einmal im Speicher, und
+      genau diese Grenze soll es hier nicht geben."""
+
+[[privacy]]
+title = "Fünf Verfahren, fünf Dateien in diesem Repository."
+body = """
+ In <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> und
+      <code>src/sha512.js</code> stehen die veröffentlichten Spezifikationen
+      ausgeschrieben, je etwa sechzig Zeilen, mit ausgeschriebenen
+      Konstantentabellen statt berechneter. So kann nichts am Ergebnis von Ihrem
+      Browser abhängen. Jedes Verfahren wird bei jedem Build gegen die
+      offiziellen Testvektoren und gegen die Implementierung des Betriebssystems
+      geprüft."""
+
+[[privacy]]
+title = "Auch die eingefügte Prüfsumme geht nirgendwohin."
+body = """
+
+      Verglichen wird hier, auf der Seite, gegen den hier berechneten Wert. Über
+      diesen Vergleich erfährt niemand etwas, weder den Wert noch das Ergebnis
+      noch den Dateinamen. Das wiegt schwerer, als es klingt. Eine Prüfsumme
+      zusammen mit einem Dateinamen verrät demjenigen, der sie einsammelt, genau,
+      welchen Build welcher Software Sie gerade heruntergeladen haben."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keines von beiden bekommt etwas über Ihre
+      Datei, weder die Datei noch ihren Namen, ihre Größe oder eine der
+      berechneten Prüfsummen. Jede Zeile, die ein Byte liest oder verrechnet,
+      kommt von dieser Domain und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Den &bdquo;Buy me a coffee&ldquo;-Button oben zeichnet ein Skript von
+      cdnjs.buymeacoffee.com, und seine Schrift holt er von Google Fonts. Er ist
+      ein Link und sonst nichts. Er meldet keinen Besuch, und er bekommt nichts
+      über Sie oder Ihre Dateien. Es passiert nichts, solange Sie nicht klicken,
+      und was Sie dann öffnen, ist die Seite von jemand anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Internetverbindung, und
+      jeder Teil dieser Seite arbeitet weiter. Das ist der einfachste Beweis von
+      allen. Ein Werkzeug, das Ihre Datei zum Berechnen wegschickt, bliebe in dem
+      Moment stehen, in dem Sie den Stecker ziehen."""
+
+[[howto]]
+title = "Die Datei auswählen."
+body = """
+ Ziehen Sie sie auf das Feld oder
+      wählen Sie sie von Hand. Sie wird stückweise direkt von Ihrer Festplatte
+      gelesen. Dabei geht nichts irgendwohin, und es gibt keine Größe, bei der
+      die Seite aufgibt."""
+
+[[howto]]
+title = "Lesen lassen."
+body = """
+ MD5 und SHA-256 werden standardmäßig
+      berechnet, in einem einzigen Durchgang. Der Balken zeigt, wie weit die
+      Seite in der Datei ist und wie schnell das geht. Ein großes
+      Festplattenabbild dauert etwa so lange wie das Kopieren, denn es ist
+      dieselbe Menge Lesearbeit."""
+
+[[howto]]
+title = "Einfügen, was herauskommen soll."
+body = """
+ Was
+      die Downloadseite Ihnen gegeben hat, in welcher Form auch immer: als bloße
+      Hexzeichen, als Zeile aus <code>sha256sum</code>, als ganze
+      <code>SHA256SUMS</code>-Datei oder als <code>integrity</code>-Attribut aus
+      einem Script-Tag. Welches Verfahren es ist, ergibt sich aus der Länge, und
+      das passende Kästchen setzt sich selbst."""
+
+[[howto]]
+title = "Die Antwort lesen, nicht die Farbe."
+body = """
+
+      Die Seite sagt in einem Satz, ob das die Datei ist, die diese Prüfsumme
+      beschreibt. Passt sie, sind die Bytes identisch mit denen, die der
+      Anbieter gemessen hat. Passt sie nicht, sind sie es nicht, und der Download
+      gehört noch einmal geholt, bevor Sie ihn öffnen."""
+
+[[howto]]
+title = "Die Prüfsummen mitnehmen, falls Sie sie brauchen."
+body = """
+
+      Eine kopieren, alle kopieren oder als kleine Textdatei sichern, in der
+      Form mit vorangestelltem Verfahren, die auch die Kommandozeilenwerkzeuge
+      schreiben. So reist der Name des Verfahrens neben der Zahl mit."""
+
+[[faq]]
+q = "Wird meine Datei irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest sie von Ihrer Festplatte und rechnet auf
+        Ihrem eigenen Prozessor, in Stücken von vier Megabyte. Es gibt zu diesem
+        Werkzeug keine Serverseite, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf. Keine davon gehört uns. Trennen Sie die
+        Internetverbindung, und es arbeitet weiter."""
+
+[[faq]]
+q = "Gibt es eine Größengrenze?"
+a = """
+        Nein. Die Datei liegt nie vollständig irgendwo. Sie wird in Stücken
+        gelesen, und jedes Stück wird verrechnet und verworfen, sodass ein
+        Festplattenabbild von vierzig Gigabyte genauso wenige Megabyte Speicher
+        braucht wie eine Textdatei. Es kostet Zeit, und wie viel, sagt Ihnen die
+        Seite währenddessen.
+        <br><br>
+        Deshalb sind die Verfahren hier ausgeschrieben, statt sie an
+        <code>crypto.subtle.digest</code> des Browsers zu geben, das schneller
+        wäre. Diese Funktion nimmt die ganze Nachricht in einem einzigen Puffer
+        entgegen, und es gibt keinen Weg, ihr eine Datei stückweise zu geben. Sie
+        zu benutzen hieße, die größte prüfbare Datei davon abhängig zu machen,
+        wie viel Speicher dieser Tab gerade bekommt. Auf einem Telefon sind das
+        ein paar hundert Megabyte, und was die Leute am dringendsten prüfen
+        wollen, sind Festplattenabbilder."""
+
+[[faq]]
+q = "Die Prüfsumme passt. Was ist damit eigentlich bewiesen?"
+a = """
+        Dass die Bytes auf Ihrer Festplatte dieselben sind, die jemand gemessen
+        hat, als er diese Zahl aufschrieb. Mehr nicht, und die Grenzen lohnen
+        sich genau.
+        <br><br>
+        Bewiesen ist, dass der Download nicht abgeschnitten wurde, nicht von
+        einer defekten Platte verfälscht und nicht unterwegs ausgetauscht wurde.
+        <strong>Nicht</strong> bewiesen ist, dass die Datei ungefährlich ist,
+        denn ein Anbieter kann Schadsoftware genauso genau messen wie alles
+        andere. Und bewiesen ist sehr wenig, wenn die Prüfsumme von derselben
+        Seite über dieselbe Verbindung kam wie die Datei. Wer das eine ändern
+        konnte, konnte auch das andere ändern. Eine Prüfsumme ist am meisten
+        wert, wenn sie Sie auf einem anderen Weg erreicht: als signierte
+        <code>SHA256SUMS</code>-Datei, über die Release-Ankündigung einer
+        Distribution, über einen zweiten Spiegelserver oder über eine
+        Paketverwaltung, die sie ohnehin schon kennt."""
+
+[[faq]]
+q = "Sie passt nicht. Was jetzt?"
+a = """
+        Laden Sie die Datei zuerst noch einmal herunter, von derselben Stelle.
+        Eine abgebrochene oder fortgesetzte Übertragung ist mit weitem Abstand
+        die häufigste Ursache, und die zweite Kopie klärt es meistens.
+        <br><br>
+        Gibt die zweite Kopie dieselbe falsche Antwort, prüfen Sie, ob Sie gegen
+        die richtige Zeile vergleichen. Auf Releaseseiten stehen mehrere Dateien,
+        und die Prüfsumme des ARM-Builds passt nie zu der des x86-Builds. Prüfen
+        Sie dann die Versionsnummer. Stimmt das alles und passt es immer noch
+        nicht, öffnen Sie die Datei nicht. Holen Sie sie von einem anderen
+        Spiegelserver und vergleichen Sie die beiden Prüfsummen miteinander."""
+
+[[faq]]
+q = "Welches Verfahren soll ich nehmen?"
+a = """
+        Das, was der Anbieter veröffentlicht hat. Der Sinn der Übung ist der
+        Vergleich mit dessen Zahl, und die können Sie nicht für ihn aussuchen.
+        <br><br>
+        Erzeugen Sie selbst eine Prüfsumme, statt eine zu prüfen, nehmen Sie
+        SHA-256. MD5 und SHA-1 sind in dem Sinn gebrochen, auf den es ankommt:
+        Zwei verschiedene Dateien mit demselben Wert lassen sich absichtlich
+        bauen, bei MD5 in Stunden und bei SHA-1 zu überschaubaren Kosten. Gegen
+        Versehen taugen sie trotzdem, denn ein abgebrochener Download trifft
+        nicht zufällig auf denselben Wert. Nur sagen können sie Ihnen nicht mehr,
+        dass niemand nachgeholfen hat. SHA-384 und SHA-512 sind in Ordnung und in
+        der Praxis nicht besser. Sie stehen hier, weil manche Projekte sie
+        veröffentlichen."""
+
+[[faq]]
+q = "Warum ist MD5 überhaupt dabei, wenn es gebrochen ist?"
+a = """
+        Weil es weiterhin gedruckt wird. Spiegelserver, Firmware-Downloads,
+        Hochschulseiten und sehr viele Herstellerseiten haben vor zwanzig Jahren
+        eine MD5 veröffentlicht und die Seite seither nicht angefasst. Ein
+        Werkzeug, das sich weigerte, eine zu berechnen, weigerte sich, die Frage
+        zu beantworten, mit der seine Besucher tatsächlich gekommen sind.
+        <br><br>
+        Sagen kann es stattdessen, was die Antwort wert ist, und genau das steht
+        neben dem Kästchen. Eine passende MD5 schließt einen kaputten Download
+        immer noch aus. Einen absichtlichen schließt sie nicht aus."""
+
+[[faq]]
+q = "Welche Formate kann ich in das Vergleichsfeld einfügen?"
+a = """
+        Alle gebräuchlichen, und die Seite erkennt selbst, welches es ist.
+        <br><br>
+        Bloße Hexzeichen, mit oder ohne Leerzeichen darin. Eine Zeile aus
+        <code>md5sum</code> oder <code>sha256sum</code>, mit dem Dateinamen
+        dahinter. Eine ganze <code>SHA256SUMS</code>-Datei mit vierzig Zeilen; in
+        dem Fall wird die Zeile genommen, die Ihre Datei nennt. Die BSD-Form
+        <code>SHA256 (disk.iso) = &hellip;</code>. Eine Beschriftung davor, wie
+        in <code>SHA-256: &hellip;</code>. Und ein
+        Subresource-Integrity-Attribut, <code>sha384-&hellip;</code>, das in
+        Base64 statt in Hex steht und vor dem Vergleich dekodiert wird.
+        <br><br>
+        Welches Verfahren es ist, ergibt sich aus der Länge: 32 Hexzeichen sind
+        eine MD5, 40 eine SHA-1, 64 eine SHA-256, 96 eine SHA-384 und 128 eine
+        SHA-512. Keine zwei sind gleich lang, es gibt also nichts auszuwählen und
+        nichts falsch zu machen."""
+
+[[faq]]
+q = "Kommt dasselbe heraus wie bei sha256sum oder certutil?"
+a = """
+        Ja, Byte für Byte. Das sind exakte Spezifikationen mit veröffentlichten
+        Testvektoren, und jedes Verfahren hier wird bei jedem Build gegen diese
+        Vektoren und gegen die Implementierung des Betriebssystems geprüft.
+        <br><br>
+        Ein Unterschied bleibt in der Darstellung. Das Windows-Werkzeug
+        <code>certutil -hashfile</code> schreibt in Großbuchstaben und mit
+        Leerzeichen; diese Seite schreibt klein, was fast jeder Anbieter
+        verwendet. Der Vergleich ignoriert beides, eine aus certutil kopierte
+        Prüfsumme passt hier also zu einer kleingeschriebenen."""
+
+[[faq]]
+q = "Kann ich zwei Dateien gegeneinander prüfen?"
+a = """
+        Ja, mit einem Zwischenschritt: die erste prüfen, ihre Prüfsumme
+        kopieren, dann die zweite auswählen und diese Prüfsumme in das Feld
+        einfügen. Sind die beiden Dateien identisch, sagt die Seite es Ihnen.
+        <br><br>
+        Das lohnt sich für den Fall, in dem Prüfsummen unauffällig am besten
+        sind: die Frage, ob die Kopie auf der Sicherungsplatte wirklich dieselbe
+        Datei ist wie die auf dem Rechner, wenn beide dieselbe Größe und
+        dasselbe Datum behaupten."""
+
+[[faq]]
+q = "Verändert es meine Datei?"
+a = """
+        Nein. Dieses Werkzeug liest nur. Es gibt keine Ausgabedatei, keine
+        Neukodierung und nichts, was zurückgeschrieben würde. Herunterladen
+        können Sie allein eine kleine Textdatei mit den Prüfsummen. Ihr Original
+        bleibt unangetastet auf Ihrer Festplatte, was zugleich die ehrliche
+        Antwort darauf ist, was beim Schließen des Tabs passiert."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Es gibt keine Grenze für die Dateigröße und keine dafür, wie
+        viele Dateien Sie prüfen. Die Seite trägt Werbung, die sie bezahlt; die
+        Werbung bekommt nichts über Ihre Datei."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Beweis dafür, dass nichts hochgeladen wird. Ein Werkzeug, das
+        Ihre Datei zum Berechnen wegschickt, bliebe in dem Moment stehen, in dem
+        Sie den Stecker ziehen."""
+
+[schema]
+description = "Die MD5-, SHA-1-, SHA-256-, SHA-384- oder SHA-512-Prüfsumme einer beliebigen Datei im Browser berechnen und mit dem Wert vergleichen, den eine Downloadseite veröffentlicht hat. Die Datei wird stückweise gelesen und nie hochgeladen."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384 und SHA-512, in einem Durchgang über die Datei",
+  "Keine Größengrenze: die Datei wird stückweise gelesen und nie ganz gehalten",
+  "Den erwarteten Wert in jeder veröffentlichten Form einfügen; das Verfahren wird selbst erkannt",
+  "Liest sha256sum-Ausgaben, SHA256SUMS-Dateien, die BSD-Form und integrity-Attribute",
+  "Sagt in einem Satz, ob die Datei passt, und nicht nur in einer Farbe",
+  "Eine Prüfsumme kopieren, alle kopieren oder als Textdatei mit Verfahrensnamen sichern",
+  "Läuft offline; kein Upload, kein Konto, keine Änderung an Ihrer Datei",
+]
+
+[picker]
+title = "Datei hierher ziehen"
+hint = "oder klicken und auswählen &mdash; jede Datei, jede Größe, nichts wird hochgeladen"

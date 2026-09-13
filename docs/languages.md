@@ -7,8 +7,8 @@ translated. English keeps the addresses it has always had - `/compress-image/`
 - and every other language sits under a prefix with slugs of its own:
 `/de/bild-komprimieren/`.
 
-**Two of those languages are built from here: English and Simplified Chinese.**
-The other thirteen - `ar de es fr hi id it ja ko nl pt tr zh-TW` - were frozen
+**Three of those languages are built from here: English, Simplified Chinese and
+German.** The other twelve - `ar es fr hi id it ja ko nl pt tr zh-TW` - were frozen
 as they were deployed in 1.4.2 and are kept in
 [A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
 whose folders the deploy copies in beside the build. Their pages all still
@@ -100,7 +100,7 @@ and a sentence in a README goes stale the first time a tool ships.
 
 ## Frozen languages
 
-`frozen_languages` in `config/site.toml` names the thirteen, and
+`frozen_languages` in `config/site.toml` names the twelve, and
 `frozen_archive` beside it names the repository and the commit they are served
 from. Three things read the list, so it cannot say one thing while the site
 does another: the build refuses a folder under `locales/` for a frozen language
@@ -126,9 +126,10 @@ it is a different fact about a different thing. `unadvertised_languages` in
 `config/site.toml` names languages whose translations are **finished** and
 which the site does not offer anyway, because too few people were reading them
 to justify asking Google to index them. No built language is on it today: the
-thirteen that were are frozen, and were already unadvertised when they froze,
-which is why their pages carry `noindex`. The mechanism stays for the day a
-built language needs it.
+twelve that were are frozen, and were already unadvertised when they froze,
+which is why their pages carry `noindex`. German was one of them until it came
+back, and came back advertised: it is built, in the sitemap and in the hreflang
+sets like Chinese. The mechanism stays for the day a built language needs it.
 
 A language on that list is built and readable at every address it always had.
 What changes is that it is not claimed: no hreflang, no sitemap entry, no
