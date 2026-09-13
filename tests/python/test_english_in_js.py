@@ -94,6 +94,7 @@ BASELINE = {
     'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
+    'gif-to-mp4': 0,
     # Six invariant checks the writer makes about its own arguments - a bug
     # here rather than anything a file can cause - and a CSS class name.
     'gif-maker': 7,

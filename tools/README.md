@@ -38,6 +38,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Video Reverser](reverse-video/) | `/reverse-video/` | Last frame first, sound and all. |
 | [Time-Lapse Maker](timelapse-video/) | `/timelapse-video/` | An hour of footage, in twenty seconds. |
 | [Video Frame Grabber](grab-frame/) | `/grab-frame/` | A full-quality still from any point. |
+| [GIF to MP4](gif-to-mp4/) | `/gif-to-mp4/` | Every frame, with the delay the GIF gave it, as H.264 in an MP4. Converted on your machine; the file never goes up. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [GIF Maker](gif-maker/) | `/gif-maker/` | Turn a set of pictures into one animation. |
 | [GIF Splitter](split-gif/) | `/split-gif/` | Every frame out as its own PNG. |

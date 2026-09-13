@@ -3,8 +3,8 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { decodeGif, GifFormatError, playedDelay, totalDuration } from './gif.js';
-import { GifCanvas, flatten, parseColour, patchPixels } from './compose.js';
+import { decodeGif, GifFormatError, playedDelay, totalDuration } from './shared/gif-decode.js';
+import { GifCanvas, flatten, parseColour, patchPixels } from './shared/gif-compose.js';
 import {
   disposalLabel, encodePng, formatBytes, formatSeconds,
   baseName, frameName, thumbnail, timingList, zipName,
