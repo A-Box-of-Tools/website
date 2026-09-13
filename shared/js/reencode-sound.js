@@ -3,6 +3,13 @@
  * Vorbis or MP3 or FLAC out of an MKV, decoded and encoded again as AAC so
  * that the MP4 carries the one sound every player expects.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/reencode-sound.js
+ * and the build copies it to <tool>/src/shared/reencode-sound.js for the
+ * tools that ask for it with `js_parts = ["reencode-sound", "mp4-reader",
+ * "aac", "mp4-boxes", "codec-support", "webcodecs", "errors", ...]`: the MP4
+ * converter and the rotator, both of which write an MP4 from a file whose
+ * sound may be anything.
+ *
  * It streams. The trimmer's re-encode, which this began as, decodes a whole
  * clip's sound into memory and then encodes it, and for a join of a few
  * clips that is fine; a converter is handed an hour of screen recording, and
@@ -24,12 +31,79 @@
  *     nothing wider.
  */
 
-import { FileWindow } from './shared/mp4-reader.js';
-import { mp4aSampleEntry } from './shared/aac.js';
-import { askSupported } from './shared/codec-support.js';
-import { micros, settle } from './shared/webcodecs.js';
-import { throwIfAborted } from './shared/errors.js';
-import { closeGaps } from './plan.js';
+import { FileWindow } from './mp4-reader.js';
+import { audioDecoderConfig, mp4aSampleEntry } from './aac.js';
+import { askSupported } from './codec-support.js';
+import { micros, settle } from './webcodecs.js';
+import { throwIfAborted } from './errors.js';
+
+/* ---------------------------------------------------------- the description */
+
+/**
+ * The sound of a file, described the same way whichever reader found it.
+ *
+ * An MP4 names its sound with a sample entry, which the AAC helper opens; a
+ * Matroska file names it in words, and the reader has already turned those
+ * into a codec string. Out of either comes one shape: what the decoder
+ * would be told, whether the samples can be copied as they are (only AAC
+ * can - it is the sound an MP4 is expected to carry), and the entry to write
+ * them under if so.
+ *
+ * @returns {object|null} null when the file has no sound
+ */
+export function describeSound(audio) {
+  if (!audio || !audio.samples.length) return null;
+
+  if (audio.sampleEntry) {
+    const config = audioDecoderConfig(audio);
+    if (config) {
+      return {
+        codec: config.codec,
+        description: config.description,
+        sampleRate: config.sampleRate,
+        channels: config.numberOfChannels,
+        copyable: true,
+        sampleEntry: audio.sampleEntry,
+        name: audio.entryType,
+      };
+    }
+    return {
+      codec: null,
+      description: null,
+      sampleRate: audio.sampleRate,
+      channels: audio.channels,
+      copyable: false,
+      sampleEntry: null,
+      name: audio.entryType,
+    };
+  }
+
+  return {
+    codec: audio.codec,
+    description: audio.description,
+    sampleRate: audio.sampleRate,
+    channels: audio.channels,
+    copyable: Boolean(audio.aac),
+    sampleEntry: audio.aac
+      ? mp4aSampleEntry({ channels: audio.channels, sampleRate: Math.round(audio.sampleRate), asc: audio.description })
+      : null,
+    name: audio.codecId,
+  };
+}
+
+/**
+ * 'none' for a silent file, 'copy' for AAC, 'encode' for a sound the
+ * browser can decode, 'unknown' for one it cannot name - which a page turns
+ * into "leave the sound out", the one thing it can still do.
+ */
+export function soundJob(sound, { decodable = true } = {}) {
+  if (!sound) return 'none';
+  if (sound.copyable) return 'copy';
+  if (sound.codec && decodable) return 'encode';
+  return 'unknown';
+}
+
+/* ------------------------------------------------------------ re-encoding */
 
 /** AAC-LC, which is the only thing in an MP4 that every player reads. */
 const AAC_CODEC = 'mp4a.40.2';
@@ -239,4 +313,15 @@ export async function reencodeSound({ file, audio, sound, onProgress, signal }) 
     samples,
     start: samples[0].dts / sampleRate,
   };
+}
+
+/** Each sample lasts until the next one starts; the last as long as told. */
+function closeGaps(samples, tail) {
+  for (let i = 0; i < samples.length; i += 1) {
+    const next = samples[i + 1];
+    samples[i].duration = next
+      ? Math.max(1, next.dts - samples[i].dts)
+      : Math.max(1, tail);
+  }
+  return samples;
 }

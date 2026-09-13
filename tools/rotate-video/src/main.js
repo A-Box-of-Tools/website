@@ -1,13 +1,14 @@
 /**
  * UI wiring and application state.
  *
- * The shape of this file follows from what people arrive here with: a file
- * something refused - a WebM off a screen recorder, an MKV off a ripper, a
- * MOV off a camera - and the wish for the one file everything takes, which
- * is H.264 and AAC in an MP4. So the page reads the file, says which of its
- * two tracks can be copied as they are and which will have to be encoded
- * again, does exactly that, and opens the result again here to check it is
- * the length it was and is what it promised to be.
+ * The shape of this file follows from what a turn is: a change to nine
+ * numbers in the file's header, not to a single frame. So the page reads
+ * the file, shows its first frame the way it is shown now and the way it
+ * will be, writes the file again with the new header and every frame and
+ * packet copied across, and opens the result to check it says what was
+ * asked. "Bake it in" - drawing the frames turned and encoding them again -
+ * is offered for the few players that ignore the header and required for a
+ * WebM or MKV whose picture is not H.264, and the page says which.
  */
 
 import { ltr, phrase } from './shared/phrases.js';
@@ -18,12 +19,13 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { demuxMatroska, isMatroska } from './shared/mkv-reader.js';
 import { hasWebCodecs, hasEncoder, canDecode } from './shared/video-support.js';
 import { averageFps, decoderConfig } from './shared/webcodecs.js';
-import { convert } from './convert.js';
-import { canDecodeSound, canEncodeAac } from './shared/reencode-sound.js';
+import { canDecodeSound, canEncodeAac, describeSound, soundJob } from './shared/reencode-sound.js';
+import { rotate } from './rotate.js';
+import { drawPreview, firstFrame } from './preview.js';
 import {
-  containerOf, describeSound, isH264, outputFrame, pictureBitrate, pictureJob, soundJob,
+  bakeBitrate, bakeFrame, canCopy, shownSize, turned,
 } from './plan.js';
-import { bitrateText, codecText, containerText, frameText, outName } from './format.js';
+import { bitrateText, codecText, frameText, outName, rotationText, turnText } from './format.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -37,10 +39,13 @@ const el = {
   clearFile: $('clear-file'),
   loadError: $('load-error'),
   loadNote: $('load-note'),
-  planPicture: $('plan-picture'),
-  planSound: $('plan-sound'),
-  planNote: $('plan-note'),
+  turns: document.querySelectorAll('.chip[data-turn]'),
+  preview: $('preview'),
+  previewLine: $('preview-line'),
+  bake: $('bake'),
+  bakeNote: $('bake-note'),
   dropAudio: $('drop-audio'),
+  soundNote: $('sound-note'),
   runCard: $('run-card'),
   run: $('run'),
   cancel: $('cancel'),
@@ -62,20 +67,25 @@ const el = {
 const { show: showLoadError } = messageBox(el.loadError);
 const { show: note } = messageBox(el.loadNote);
 
+/** The most the preview may be, in CSS pixels. */
+const PREVIEW_BOX = { width: 480, height: 360 };
+
 /**
  * @typedef {object} Loaded
  * @property {File} file
  * @property {{video: object, audio: object|null, duration: number}} media
- * @property {string} container
- * @property {object|null} sound  describeSound() of the audio track
- * @property {boolean} pictureDecodable
+ * @property {object|null} sound
+ * @property {boolean} copyable  the frames can go across untouched
+ * @property {boolean} decodable  the browser can draw them, for a bake
  * @property {boolean} soundDecodable
+ * @property {ImageBitmap|null} frame  the first frame as stored
  * @property {number} fps
- * @property {number} sourceBitrate  what the picture spent, bits a second
+ * @property {number} sourceBitrate
  */
 
 /** @type {Loaded|null} */
 let loaded = null;
+let turn = 90;
 let downloadUrl = '';
 let running = null;
 
@@ -100,26 +110,24 @@ async function load(file) {
     const matroska = await isMatroska(file);
     const media = matroska ? await demuxMatroska(file) : await demux(file);
     const { video, audio } = media;
-    const container = containerOf(file.name, matroska);
     const sound = describeSound(audio);
-
-    // Whether each track's encode path is open is a question for the
-    // browser, asked once here so the plan can be spoken before the button.
     const codecs = hasWebCodecs();
-    const pictureDecodable = isH264(video.codec)
-      || (codecs && await canDecode(decoderConfig(video)));
+
+    const copyable = canCopy(video);
+    const decodable = codecs && await canDecode(decoderConfig(video));
+    if (!copyable && !(decodable && hasEncoder())) {
+      const refused = new Error('support.nodecode');
+      refused.values = { codec: video.codec };
+      throw refused;
+    }
     const soundDecodable = Boolean(sound && !sound.copyable && sound.codec)
       && codecs && await canDecodeSound(sound)
       && await canEncodeAac({ sampleRate: Math.round(sound.sampleRate), channels: Math.min(2, sound.channels) });
 
+    const frame = decodable ? await firstFrame(file, video) : null;
     const videoBytes = video.samples.reduce((sum, s) => sum + s.size, 0);
     loaded = {
-      file,
-      media,
-      container,
-      sound,
-      pictureDecodable,
-      soundDecodable,
+      file, media, sound, copyable, decodable, soundDecodable, frame,
       fps: averageFps(video),
       sourceBitrate: videoBytes * 8 / Math.max(0.1, media.duration),
     };
@@ -129,19 +137,44 @@ async function load(file) {
       size: size(file.size),
       length: durationText(media.duration, phrase),
       frame: say(frameText({ width: video.displayWidth, height: video.displayHeight })),
-      container: say(containerText(container)),
+      shown: say(rotationText(video.rotation)),
     });
     el.fileRow.hidden = false;
 
-    if (sound && !sound.copyable && !soundDecodable) {
-      el.dropAudio.checked = true;
-      el.dropAudio.disabled = true;
-    } else if (!sound) {
+    // A picture that cannot be copied has to be baked, and the box says so
+    // instead of offering a choice that is not one.
+    if (!copyable) {
+      el.bake.checked = true;
+      el.bake.disabled = true;
+      el.bakeNote.textContent = phrase('bake.must');
+      el.bakeNote.hidden = false;
+    } else if (!decodable || !hasEncoder()) {
+      el.bake.checked = false;
+      el.bake.disabled = true;
+      el.bakeNote.textContent = phrase('bake.cannot');
+      el.bakeNote.hidden = false;
+    } else {
+      el.bake.disabled = false;
+      el.bakeNote.hidden = true;
+    }
+
+    if (!sound) {
       el.dropAudio.checked = false;
       el.dropAudio.disabled = true;
+      el.soundNote.textContent = phrase('sound.none');
+      el.soundNote.hidden = false;
+    } else if (!sound.copyable && !soundDecodable) {
+      el.dropAudio.checked = true;
+      el.dropAudio.disabled = true;
+      el.soundNote.textContent = phrase('sound.unknown', { codec: say(codecText(sound.codec, sound.name)) });
+      el.soundNote.hidden = false;
     } else {
       el.dropAudio.disabled = false;
+      el.soundNote.textContent = phrase(sound.copyable ? 'sound.copy' : 'sound.encode', { codec: say(codecText(sound.codec, sound.name)) });
+      el.soundNote.hidden = false;
     }
+
+    if (!frame) note(phrase('note.nopreview'));
 
     refresh();
   } catch (error) {
@@ -152,89 +185,64 @@ async function load(file) {
   }
 }
 
-/* --------------------------------------------------------------- the plan */
+/* ---------------------------------------------------------------- the turn */
 
+for (const chip of el.turns) {
+  chip.addEventListener('click', () => {
+    turn = Number(chip.dataset.turn);
+    for (const other of el.turns) other.setAttribute('aria-pressed', String(other === chip));
+    refresh();
+  });
+}
+el.bake.addEventListener('change', refresh);
 el.dropAudio.addEventListener('change', refresh);
 
-/**
- * What will happen to each track, worked out from the file and the one
- * checkbox, or null while there is nothing loaded or the picture cannot be
- * had at all.
- */
+/** What the file will say after the turn, and what a bake would be asked for. */
 function planned() {
   if (!loaded) return null;
-  const { media, sound, pictureDecodable, soundDecodable, fps, sourceBitrate } = loaded;
+  const { media, sound, soundDecodable, fps, sourceBitrate } = loaded;
   const { video } = media;
-  const picture = pictureJob(video);
-  if (picture === 'encode' && !pictureDecodable) return null;
-  if (picture === 'encode' && !hasEncoder()) return null;
-
-  let soundPlan = soundJob(sound, { decodable: soundDecodable });
-  if (el.dropAudio.checked && soundPlan !== 'none') soundPlan = 'dropped';
-
-  const frame = outputFrame(video);
-  const bitrate = pictureBitrate({
-    width: frame.width, height: frame.height, fps, codec: video.codec, sourceBitrate,
-  });
-  return { picture, sound: soundPlan, frame, bitrate, fps };
+  const rotation = turned(video.rotation, turn);
+  const shown = shownSize(video, rotation);
+  const bake = el.bake.checked;
+  let job = soundJob(sound, { decodable: soundDecodable });
+  if (el.dropAudio.checked && job !== 'none') job = 'dropped';
+  const frame = bakeFrame(shown);
+  return {
+    rotation,
+    shown,
+    bake,
+    soundJob: job,
+    frame,
+    bitrate: bakeBitrate({ width: frame.width, height: frame.height, fps, sourceBitrate }),
+    fps,
+  };
 }
 
 /**
- * Say what will happen, and wake or dim the last card.
- *
- * Two sentences, one a track: copied as it is, or encoded again and at
- * what, or left out and why. The visitor reads them before pressing
- * anything, which is the point of working it out first.
+ * Redraw the preview turned as chosen and say, in one line, which way up
+ * the clip is shown now and which way up it will be.
  */
 function refresh() {
-  if (!loaded) {
-    el.planPicture.textContent = phrase('plan.nofile');
-    el.planSound.textContent = '';
-    el.planNote.hidden = true;
-    gate(false);
-    return;
-  }
-
-  const { media, sound, container, pictureDecodable } = loaded;
-  const { video } = media;
   const plan = planned();
-
   if (!plan) {
-    el.planPicture.textContent = phrase(
-      pictureDecodable ? 'support.nowebcodecs' : 'plan.picture.nodecode',
-      { codec: say(codecText(video.codec, video.entryType)) },
-    );
-    el.planSound.textContent = '';
-    el.planNote.hidden = true;
+    el.previewLine.textContent = phrase('preview.nofile');
+    el.preview.hidden = true;
     gate(false);
     return;
   }
 
-  el.planPicture.textContent = plan.picture === 'copy'
-    ? phrase('plan.picture.copy', { codec: say(codecText(video.codec)) })
-    : phrase('plan.picture.encode', {
-      codec: say(codecText(video.codec, video.entryType)),
-      rate: say(bitrateText(plan.bitrate)),
-      frame: say(frameText(plan.frame)),
-    });
-
-  const soundName = sound ? say(codecText(sound.codec, sound.name)) : '';
-  el.planSound.textContent = {
-    none: () => phrase('plan.sound.none'),
-    copy: () => phrase('plan.sound.copy'),
-    encode: () => phrase('plan.sound.encode', { codec: soundName }),
-    unknown: () => phrase('plan.sound.unknown', { codec: soundName }),
-    dropped: () => phrase('plan.sound.dropped'),
-  }[plan.sound]();
-
-  // A file that needs nothing done to it is still written again, and the
-  // page says why that is not nothing.
-  const already = plan.picture === 'copy' && (plan.sound === 'copy' || plan.sound === 'none');
-  el.planNote.textContent = phrase(already ? 'plan.already' : 'plan.reencoded', {
-    container: say(containerText(container)),
+  const { video } = loaded.media;
+  if (loaded.frame) {
+    drawPreview(el.preview, loaded.frame, plan.rotation, PREVIEW_BOX);
+    el.preview.hidden = false;
+  }
+  el.previewLine.textContent = phrase(plan.bake ? 'preview.bake' : 'preview.copy', {
+    now: say(rotationText(video.rotation)),
+    after: say(rotationText(plan.rotation)),
+    frame: say(frameText(plan.bake ? plan.frame : plan.shown)),
+    rate: say(bitrateText(plan.bitrate)),
   });
-  el.planNote.hidden = false;
-
   gate(true);
 }
 
@@ -242,9 +250,8 @@ function refresh() {
  * Dim the last card until there is something to do, and say why.
  *
  * The picker wakes every inert card the moment a file arrives, which is
- * early for this one: a picture the browser will not decode has nowhere
- * to go. So this card is managed here, with the same line the frame draws
- * and a sentence of this tool's own. It is the only card that waits.
+ * right for this one: a file that could be read is a file that can be
+ * turned. The card is still managed here so a refused file dims it again.
  */
 function gate(ready) {
   const line = el.runCard.querySelector('.card-waiting');
@@ -288,27 +295,19 @@ async function run() {
 
   try {
     const { file, media, sound } = loaded;
-    const jobs = {
-      picture: plan.picture,
-      sound: plan.sound === 'copy' || plan.sound === 'encode' ? plan.sound : 'none',
-    };
+    const job = plan.soundJob === 'copy' || plan.soundJob === 'encode' ? plan.soundJob : 'none';
+    setProgress({ phase: plan.bake ? 'preparing' : 'writing', done: 0, total: 1 });
 
-    const out = await convert({
-      file,
-      media,
-      sound,
-      jobs,
-      frame: plan.frame,
-      bitrate: plan.bitrate,
-      fps: plan.fps,
-      signal: running.signal,
-      onProgress: setProgress,
+    const out = await rotate({
+      file, media, sound, turn, bake: plan.bake, soundJob: job,
+      bitrate: plan.bitrate, frame: plan.frame, fps: plan.fps,
+      signal: running.signal, onProgress: setProgress,
     });
 
     setProgress({ phase: 'checking', done: 1, total: 1 });
-    const check = await verify(out.blob, media.duration, jobs.sound !== 'none');
+    const check = await verify(out.blob, media.duration, plan, job !== 'none');
 
-    showResult({ out, check, plan, jobs, seconds: (performance.now() - started) / 1000 });
+    showResult({ out, check, plan, job, seconds: (performance.now() - started) / 1000 });
   } catch (error) {
     if (error?.name === 'AbortError' || error?.message === 'aborted') {
       cancelled = true;
@@ -328,14 +327,11 @@ async function run() {
 
 /**
  * Open the finished file again, here, and hold it to three things: that it
- * is as long as the original, that its picture is H.264, and that it has
- * the sound it was meant to have.
- *
- * The length is the claim that matters. A converter that dropped the last
- * second, or the sound, would still be an MP4, and nothing but reading the
- * result back can tell the difference.
+ * is as long as the original, that it is shown the way that was asked - a
+ * header that says the turn, or frames that no longer need one - and that
+ * it has the sound it was meant to have.
  */
-async function verify(blob, expectedSeconds, expectSound) {
+async function verify(blob, expectedSeconds, plan, expectSound) {
   let again;
   try {
     again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }));
@@ -353,8 +349,22 @@ async function verify(blob, expectedSeconds, expectSound) {
       },
     };
   }
-  if (!isH264(again.video.codec)) {
-    return { ok: false, text: { key: 'check.codec', values: { codec: again.video.codec } } };
+
+  const want = plan.bake ? 0 : plan.rotation;
+  const shownWidth = plan.bake ? plan.frame.width : plan.shown.width;
+  const shownHeight = plan.bake ? plan.frame.height : plan.shown.height;
+  if (again.video.rotation !== want
+    || again.video.displayWidth !== shownWidth || again.video.displayHeight !== shownHeight) {
+    return {
+      ok: false,
+      text: {
+        key: 'check.turn',
+        values: {
+          got: say(rotationText(again.video.rotation)),
+          frame: say(frameText({ width: again.video.displayWidth, height: again.video.displayHeight })),
+        },
+      },
+    };
   }
   if (expectSound && !again.audio?.samples.length) {
     return { ok: false, text: { key: 'check.sound' } };
@@ -366,38 +376,36 @@ async function verify(blob, expectedSeconds, expectSound) {
       key: 'check.ok',
       values: {
         length: durationText(again.duration, phrase),
-        sound: phrase(again.audio?.samples.length ? 'check.sound.aac' : 'check.sound.none'),
+        shown: say(rotationText(plan.rotation)),
+        frame: say(frameText({ width: shownWidth, height: shownHeight })),
       },
     },
   };
 }
 
-function showResult({ out, check, plan, jobs, seconds }) {
-  const { file, media, container, fps } = loaded;
+function showResult({ out, check, plan, job, seconds }) {
+  const { file, media, fps } = loaded;
   const { video } = media;
 
   el.resultSize.textContent = phrase('result.ready', {
-    size: size(out.blob.size), from: size(file.size), container: say(containerText(container)),
+    size: size(out.blob.size), turn: say(turnText(turn)),
   });
-  el.resultSub.textContent = phrase('result.sub');
+  el.resultSub.textContent = phrase(plan.bake ? 'result.sub.bake' : 'result.sub.copy');
 
   el.checkLine.textContent = phrase(check.ok ? 'check.passed' : 'check.failed', { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
 
   const facts = [
-    plan.picture === 'copy'
-      ? phrase('facts.picture.copied', {
-        codec: say(codecText(video.codec)),
-        frame: say(frameText({ width: video.displayWidth, height: video.displayHeight })),
+    plan.bake
+      ? phrase('facts.picture.baked', {
+        rate: say(bitrateText(plan.bitrate)), frame: say(frameText(plan.frame)), fps: Math.round(fps),
       })
-      : phrase('facts.picture.encoded', {
-        from: say(codecText(video.codec, video.entryType)),
-        rate: say(bitrateText(plan.bitrate)),
-        frame: say(frameText(plan.frame)),
-        fps: Math.round(fps),
+      : phrase('facts.picture.copied', {
+        frame: say(frameText({ width: video.displayWidth, height: video.displayHeight })),
+        frames: out.frames.toLocaleString(),
       }),
-    phrase({ copy: 'facts.sound.copied', encode: 'facts.sound.encoded', none: 'facts.sound.none' }[jobs.sound]),
-    phrase('facts.time', { seconds: durationText(seconds, phrase), frames: out.frames }),
+    phrase({ copy: 'facts.sound.copied', encode: 'facts.sound.encoded', none: 'facts.sound.none' }[job]),
+    phrase('facts.time', { seconds: durationText(seconds, phrase) }),
   ];
   el.resultFacts.replaceChildren(...facts.map((text) => {
     const row = document.createElement('li');
@@ -410,8 +418,8 @@ function showResult({ out, check, plan, jobs, seconds }) {
   el.download.download = outName(file.name);
   el.download.hidden = !check.ok;
 
-  // The result played from memory, so "did it survive" is a thing that can
-  // be looked at rather than inferred from a number.
+  // The result played from memory: a turn is the one change a person can
+  // see at a glance, so the player is the check that matters most.
   el.player.src = downloadUrl;
   el.player.hidden = !check.ok;
 
@@ -456,11 +464,12 @@ function messageFor(error) {
   if (error instanceof UnsupportedFile) return phrase(error.message, error.values);
   if (error?.name === 'AbortError') return phrase('run.cancelled');
   const key = String(error?.message ?? '');
-  if (/^(support|stall|encode|decode|read|sound|write)\./.test(key)) return phrase(key, error.values);
+  if (/^(support|stall|encode|decode|read|sound|write|copy|rotate)\./.test(key)) return phrase(key, error.values);
   return phrase('run.failed', { detail: key || String(error) });
 }
 
 function reset() {
+  if (loaded?.frame) loaded.frame.close();
   loaded = null;
   el.fileRow.hidden = true;
   el.result.hidden = true;
@@ -468,8 +477,12 @@ function reset() {
   el.loadError.hidden = true;
   el.loadNote.hidden = true;
   el.runError.hidden = true;
+  el.bake.disabled = false;
+  el.bake.checked = false;
+  el.bakeNote.hidden = true;
   el.dropAudio.disabled = false;
   el.dropAudio.checked = false;
+  el.soundNote.hidden = true;
   releaseDownload();
   refresh();
 }

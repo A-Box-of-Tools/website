@@ -196,19 +196,6 @@ is the frame-by-frame decode of the GIF going in, which
 
 ## Video
 
-### Rotate
-
-The cheapest thing on this entire list, and it should be built first for that
-reason. A sideways MP4 does not need re-encoding — it needs a different display
-matrix in `tkhd`, which is a few bytes. Both halves of that are shared parts:
-[`mp4-reader.js`](shared/js/mp4-reader.js) carries the sample entry and the
-display matrix out of the file whole, and reads the quarter turn the matrix
-asks for, and [`mp4-writer.js`](shared/js/mp4-writer.js) writes the matrix it
-is handed back into `tkhd`, because the trimmer and the reverser need a clip
-filmed on a phone to come out the right way up. So the hard part is already
-sitting in the repository being used for something else, and this tool is the
-line between the two that changes the matrix.
-
 ### Mute a video
 
 Dropping the audio track from an MP4 is a remux: the video samples are copied

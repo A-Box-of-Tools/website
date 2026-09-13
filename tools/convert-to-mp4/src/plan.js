@@ -10,7 +10,8 @@
  * will do before doing any of it.
  */
 
-import { audioDecoderConfig, mp4aSampleEntry } from './shared/aac.js';
+export { describeSound, soundJob } from './shared/reencode-sound.js';
+export { closeGaps, compositionShift, rescale } from './shared/copy-tracks.js';
 
 /* --------------------------------------------------------------- the jobs */
 
@@ -27,70 +28,6 @@ export function isH264(codec) {
 /** 'copy' when the frames can go across untouched, 'encode' otherwise. */
 export function pictureJob(video) {
   return isH264(video.codec) ? 'copy' : 'encode';
-}
-
-/**
- * The sound of a file, described the same way whichever reader found it.
- *
- * An MP4 names its sound with a sample entry, which the AAC helper opens; a
- * Matroska file names it in words, and the reader has already turned those
- * into a codec string. Out of either comes one shape: what the decoder
- * would be told, whether the samples can be copied as they are (only AAC
- * can - it is the sound an MP4 is expected to carry), and the entry to write
- * them under if so.
- *
- * @returns {object|null} null when the file has no sound
- */
-export function describeSound(audio) {
-  if (!audio || !audio.samples.length) return null;
-
-  if (audio.sampleEntry) {
-    const config = audioDecoderConfig(audio);
-    if (config) {
-      return {
-        codec: config.codec,
-        description: config.description,
-        sampleRate: config.sampleRate,
-        channels: config.numberOfChannels,
-        copyable: true,
-        sampleEntry: audio.sampleEntry,
-        name: audio.entryType,
-      };
-    }
-    return {
-      codec: null,
-      description: null,
-      sampleRate: audio.sampleRate,
-      channels: audio.channels,
-      copyable: false,
-      sampleEntry: null,
-      name: audio.entryType,
-    };
-  }
-
-  return {
-    codec: audio.codec,
-    description: audio.description,
-    sampleRate: audio.sampleRate,
-    channels: audio.channels,
-    copyable: Boolean(audio.aac),
-    sampleEntry: audio.aac
-      ? mp4aSampleEntry({ channels: audio.channels, sampleRate: Math.round(audio.sampleRate), asc: audio.description })
-      : null,
-    name: audio.codecId,
-  };
-}
-
-/**
- * 'none' for a silent file, 'copy' for AAC, 'encode' for a sound the
- * browser can decode, 'unknown' for one it cannot name - which the page
- * turns into "leave the sound out", the one thing it can still do.
- */
-export function soundJob(sound, { decodable = true } = {}) {
-  if (!sound) return 'none';
-  if (sound.copyable) return 'copy';
-  if (sound.codec && decodable) return 'encode';
-  return 'unknown';
 }
 
 /* ------------------------------------------------------------ the picture */
@@ -146,45 +83,6 @@ export function outputFrame({ displayWidth, displayHeight }) {
     height = Math.round(height * scale);
   }
   return { width: Math.max(2, width - (width % 2)), height: Math.max(2, height - (height % 2)) };
-}
-
-/* ------------------------------------------------------------- the clocks */
-
-/** A time in one track's ticks as a time in another's. */
-export function rescale(ticks, from, to) {
-  return from === to ? ticks : Math.round(ticks * to / from);
-}
-
-/**
- * How far the first frame shown sits after the first frame decoded.
- *
- * Zero for a file without B-frames. Otherwise the decode clock starts before
- * the presentation clock by this much, and the MP4 says so with an edit
- * that starts playing this far into the track, so the sound does not run a
- * frame or two ahead of the picture.
- *
- * @param {{dts: number, pts: number}[]} samples
- */
-export function compositionShift(samples) {
-  if (!samples.length) return 0;
-  let minPts = Infinity;
-  let minDts = Infinity;
-  for (const sample of samples) {
-    if (sample.pts < minPts) minPts = sample.pts;
-    if (sample.dts < minDts) minDts = sample.dts;
-  }
-  return Math.max(0, minPts - minDts);
-}
-
-/** Each sample lasts until the next one starts; the last as long as told. */
-export function closeGaps(samples, tail) {
-  for (let i = 0; i < samples.length; i += 1) {
-    const next = samples[i + 1];
-    samples[i].duration = next
-      ? Math.max(1, next.dts - samples[i].dts)
-      : Math.max(1, tail);
-  }
-  return samples;
 }
 
 /**
