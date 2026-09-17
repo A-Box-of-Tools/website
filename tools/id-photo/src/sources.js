@@ -35,6 +35,12 @@
 export const ENDONYMS = {
   'country.us': 'United States',
   'country.uk': 'United Kingdom',
+  'country.fr': 'France',
+  'country.it': 'Italia',
+  'country.nl': 'Nederland',
+  'country.es': 'España',
+  'country.ie': 'Éire',
+  'country.pl': 'Polska',
   'country.de': 'Deutschland',
   'country.ca': 'Canada',
   'country.au': 'Australia',
@@ -60,8 +66,8 @@ export const SOURCES = {
   },
   'us-passport': {
     authority: 'U.S. Department of State',
-    document: 'travel.state.gov, Photo Requirements',
-    checked: '2026-08-20',
+    document: 'travel.state.gov, Passport Photos / Uploading a Digital Photo',
+    checked: '2026-09-17',
   },
   'us-dv': {
     authority: 'U.S. Department of State',
@@ -87,6 +93,42 @@ export const SOURCES = {
     authority: 'Bundesministerium des Innern',
     document: 'Passbildschablone / biometric photo template',
     checked: '2026-08-20',
+  },
+  'fr-passport': {
+    native: 'Passeport, carte nationale d’identité',
+    authority: 'Service-Public.fr / Ministère chargé de l’intérieur',
+    document: 'Quelle photo fournir pour un titre d’identité ?',
+    checked: '2026-09-17',
+  },
+  'it-passport': {
+    native: 'Passaporto',
+    authority: 'Polizia di Stato',
+    document: 'Le fotografie per il passaporto, conformi allo standard ICAO',
+    checked: '2026-09-17',
+  },
+  'nl-passport': {
+    native: 'Paspoort, identiteitskaart, rijbewijs',
+    authority: 'Rijksdienst voor Identiteitsgegevens',
+    document: 'Fotomatrix 2020, photo specification guidelines',
+    checked: '2026-09-17',
+  },
+  'es-passport': {
+    native: 'Pasaporte, Documento Nacional de Identidad',
+    authority: 'Ministerio del Interior',
+    document: 'Pasaporte, procedimiento de expedición',
+    checked: '2026-09-17',
+  },
+  'ie-passport': {
+    native: 'Pas',
+    authority: 'Department of Foreign Affairs',
+    document: 'ireland.ie, Passport photo guidelines',
+    checked: '2026-09-17',
+  },
+  'pl-passport': {
+    native: 'Paszport, dowód osobisty',
+    authority: 'Ministerstwo Spraw Wewnętrznych i Administracji',
+    document: 'Nowe zdjęcia do paszportu, instrukcja wykonywania zdjęć',
+    checked: '2026-09-17',
   },
   'ca-passport': {
     native: 'Passeport',

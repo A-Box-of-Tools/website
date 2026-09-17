@@ -144,6 +144,28 @@ test('specsByCountry: groups without losing or duplicating anything', () => {
   assert.equal(new Set(groups.map((group) => group.country)).size, groups.length);
 });
 
+test('specs: no photograph is wider than it is tall, except the square ones', () => {
+  // The one transcription error that arithmetic can catch. Spain publishes its
+  // photograph as "32 x 26 mm" and means 26 wide by 32 tall; written down the
+  // way it is printed, every Spanish crop would come out on its side.
+  for (const spec of SPECS) {
+    if (!spec.print) continue;
+    assert.ok(spec.print.widthMm <= spec.print.heightMm,
+      `${spec.id} is ${spec.print.widthMm} x ${spec.print.heightMm} mm, which is `
+      + 'a landscape photograph of a face');
+  }
+});
+
+test('specs: a crown is measured to the hair or to the skull, and says which', () => {
+  for (const spec of SPECS) {
+    if (spec.crown === undefined) continue;
+    assert.equal(spec.crown, 'skull', spec.id);
+    assert.ok(spec.notes.includes('note.crown-skull'),
+      `${spec.id} measures to the skull and does not say so on the page. The `
+      + 'dots find the top of the hair, so the reading is high and silent');
+  }
+});
+
 test('orderedCountries: the reader\'s own alphabet, with two places kept', () => {
   // A collator that sorts on the key would hide the bug this is here for: the
   // list has to come out in the order of the NAMES the page is showing.
@@ -527,6 +549,31 @@ test('checkBackground: the right colour passes and a wrong one does not', () => 
   const blue = checkBackground(readBackground(flatImage([70, 110, 200]), { stride: 1 }), grey);
   assert.equal(blue.status, 'bad');
   assert.equal(blue.findings.find((one) => one.key === 'colour').status, 'bad');
+});
+
+/** A flat wall of one colour, read the way the page reads one. */
+const wall = (hex) => readBackground(flatImage(hexToRgb(hex)), { stride: 1 });
+
+test('checkBackground: a rule naming several colours passes on the nearest', () => {
+  const several = backgroundOf(specById('nl-passport'), say);
+  for (const hex of ['#ffffff', '#dcdcdc', '#cfdcea']) {
+    assert.equal(checkBackground(wall(hex), several).status, 'good',
+      `${hex} is one of the three colours the Netherlands names`);
+  }
+  assert.notEqual(checkBackground(wall('#7a4b12'), several).status, 'good');
+});
+
+test('checkBackground: a rule that refuses white refuses it whatever else passes', () => {
+  const french = backgroundOf(specById('fr-passport'), say);
+
+  const white = checkBackground(wall('#ffffff'), french);
+  assert.equal(white.status, 'bad');
+  assert.equal(white.findings[0].phrase, 'bg.forbid.white',
+    'a white wall was measured against light grey and passed, which is exactly '
+    + 'what one hex and one tolerance cannot help doing');
+
+  assert.equal(checkBackground(wall('#dcdcdc'), french).status, 'good');
+  assert.equal(checkBackground(wall('#cfdcea'), french).status, 'good');
 });
 
 test('checkBackground: a shadow down one side is reported separately from the colour', () => {

@@ -60,11 +60,41 @@ import { ENDONYMS, SOURCES } from './sources.js';
  * "plain light grey" is a description, not a hex code, and a photo booth's
  * grey is not a stationer's grey.
  */
+const WHITE = { hex: '#ffffff', tolerance: 16 };
+const GREY = { hex: '#dcdcdc', tolerance: 20 };
+const BLUE = { hex: '#cfdcea', tolerance: 20 };
+const CREAM = { hex: '#ebe4d7', tolerance: 22 };
+
 export const BACKGROUNDS = {
   white: { id: 'white', hex: '#ffffff', tolerance: 14 },
   'off-white': { id: 'off-white', hex: '#f6f4f0', tolerance: 18 },
   'light-grey': { id: 'light-grey', hex: '#dcdcdc', tolerance: 20 },
   cream: { id: 'cream', hex: '#ebe4d7', tolerance: 22 },
+
+  // A rule that names several colours. `hex` is still what the swatch shows and
+  // what a transparent picture is flattened onto; `accepts` is what the reading
+  // is measured against, nearest first. Averaging the three into one hex would
+  // be a fourth colour nobody published, and it would fail all three.
+  'white-or-grey': {
+    id: 'white-or-grey', hex: '#eeeeee', tolerance: 20, accepts: [WHITE, GREY],
+  },
+  'white-grey-blue': {
+    id: 'white-grey-blue', hex: '#e8ebef', tolerance: 22, accepts: [WHITE, GREY, BLUE],
+  },
+  'white-grey-cream': {
+    id: 'white-grey-cream', hex: '#eeece8', tolerance: 22, accepts: [WHITE, GREY, CREAM],
+  },
+
+  // Light, and specifically not white. One hex and one tolerance cannot say
+  // that: white sits nearer to light grey than the tolerance a description like
+  // "light grey" has to carry, so a rule that refuses white refuses it by name.
+  'grey-or-blue-not-white': {
+    id: 'grey-or-blue-not-white',
+    hex: '#dfe3e8',
+    tolerance: 22,
+    accepts: [GREY, BLUE],
+    forbidden: [{ hex: '#ffffff', tolerance: 11, key: 'bg.forbid.white' }],
+  },
 };
 
 /* -------------------------------------------------------------- geometries */
@@ -80,11 +110,12 @@ export const BACKGROUNDS = {
  * @param {number} maxMm
  * @param {number} frameMm  the height of the finished photograph
  */
-const mmBand = (minMm, maxMm, frameMm) => ({
+const mmBand = (minMm, maxMm, frameMm, advisory = false) => ({
   min: minMm / frameMm,
   max: maxMm / frameMm,
   minMm,
   maxMm,
+  ...(advisory ? { advisory } : {}),
 });
 
 /** A band that was published as a fraction, or that nobody published at all. */
@@ -166,13 +197,16 @@ const RULES = [
     kind: 'portrait',
     print: { widthMm: 51, heightMm: 51, dpi: 300 },
     head: mmBand(25, 35, 51),
-    eye: mmBand(28, 35, 51),
+    // Published until 2026 and not published now - see note3. Kept, because a
+    // band somebody's last photograph was accepted against is worth more than
+    // no band at all, and marked so that missing it is never painted red.
+    eye: mmBand(28, 35, 51, true),
     background: 'off-white',
     digital: {
       label: 'spec.us-passport.upload',
-      width: { min: 600, max: 1200 },
-      height: { min: 600, max: 1200 },
-      bytes: { max: 240 * 1024 },
+      width: { min: 600 },
+      height: { min: 600 },
+      bytes: { min: 54 * 1024, max: 10 * 1024 * 1024 },
       format: 'image/jpeg',
     },
     notes: [
@@ -244,6 +278,93 @@ const RULES = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.de-passport.note1', 'spec.de-passport.note2'],
+  },
+
+  {
+    id: 'fr-passport',
+    country: 'country.fr',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45),
+    // Published as a fraction too - "soit 70 a 80% de la photo" - and the two
+    // agree, which is the only place in this table where the source states both.
+    eye: ICAO_EYE,
+    background: 'grey-or-blue-not-white',
+    crown: 'skull',
+    digital: null,
+    notes: ['note.crown-skull', 'spec.fr-passport.note1'],
+  },
+
+  {
+    id: 'it-passport',
+    country: 'country.it',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: ICAO_HEAD,
+    eye: band(0.50, 0.60, true),
+    background: 'white-grey-blue',
+    digital: null,
+    notes: ['spec.it-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'nl-passport',
+    country: 'country.nl',
+    document: 'doc.passport-id-licence',
+    kind: 'portrait',
+    // 400, not 300: the Netherlands is the one rule here that states a
+    // resolution of its own, and printPixels takes the higher of the two.
+    print: { widthMm: 35, heightMm: 45, dpi: 400 },
+    head: mmBand(26, 30, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'white-grey-blue',
+    digital: null,
+    notes: ['spec.nl-passport.note1', 'spec.nl-passport.note2', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'es-passport',
+    country: 'country.es',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 26, heightMm: 32, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.es-passport.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'ie-passport',
+    country: 'country.ie',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white-grey-cream',
+    digital: null,
+    notes: ['spec.ie-passport.note1', 'spec.ie-passport.note2', 'note.head-advisory'],
+  },
+
+  {
+    id: 'pl-passport',
+    country: 'country.pl',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(31, 36, 45),
+    // The only eye line in this table published in millimetres from the bottom
+    // edge, which is how every authority describes one and how geometry.js
+    // measures it.
+    eye: mmBand(20, 30, 45),
+    background: 'white-or-grey',
+    crown: 'skull',
+    digital: null,
+    notes: ['note.crown-skull', 'spec.pl-passport.note1'],
   },
 
   {

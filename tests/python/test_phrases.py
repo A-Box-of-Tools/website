@@ -67,7 +67,7 @@ FAMILIES = ('country.', 'spec.', 'note.', 'doc.', 'upload.', 'bg.', 'source.')
 # cannot be read off the literal, so the thing they are built from is
 # checked instead.
 BUILT = (
-    ('id-photo', 'specs.js', re.compile(r"id: '([a-z-]+)', hex:"),
+    ('id-photo', 'specs.js', re.compile(r"id: '([a-z-]+)',\s*hex:"),
      ('bg.{}.label', 'bg.{}.inline', 'bg.{}.note')),
 )
 

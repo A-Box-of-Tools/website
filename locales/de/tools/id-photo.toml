@@ -185,16 +185,19 @@ a = """
 [[faq]]
 q = "Welche Länder sind abgedeckt?"
 a = """
-        Bisher übertragen sind der ICAO-Standard selbst, die Vereinigten Staaten (Pass
-        und die Bewerbung um die Diversity-Visa-Lotterie, die unterschiedliche
-        Upload-Regeln haben), das Vereinigte Königreich, das Schengen-Visum,
-        Deutschland, Kanada, Australien, Indien (Pass, der Abzug in
-        &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm sowie das Formularfoto und die Unterschrift für
-        SSC und UPSC), China und Japan. Jeder Eintrag nennt die Behörde, aus der er
-        stammt, und das Datum, an dem er abgelesen wurde. Alles andere kommt unter
-        &bdquo;Irgendwo anders&ldquo; hinein, wo Sie jede Zahl selbst eintippen. Da der
-        größte Teil der Welt nach der ICAO-Geometrie ausstellt, beginnt dieser Eintrag
-        auch mit ihr."""
+        Genug davon, dass eine Namensliste an dieser Stelle eine Liste w&auml;re, die bei
+        jedem neuen Eintrag ge&auml;ndert werden m&uuml;sste. Also: Jeder Eintrag ist von der
+        Beh&ouml;rde &uuml;bertragen, die ihn ver&ouml;ffentlicht hat, und jeder Eintrag nennt diese
+        Beh&ouml;rde und das Datum, an dem er abgelesen wurde, direkt unter den Zahlen. Die
+        Auswahl ist die Liste &mdash; tippen Sie ein Land in das Feld dar&uuml;ber,
+        und Sie wissen in einer Sekunde, ob es dabei ist. Was nicht dabei ist, kommt
+        unter &bdquo;Irgendwo anders&ldquo; hinein, wo Sie jede Zahl selbst eintippen; da
+        der gr&ouml;&szlig;te Teil der Welt nach der ICAO-Geometrie ausstellt, beginnt dieser
+        Eintrag auch mit ihr.
+
+        Bewusst <em>nicht</em> hier ist ein Land, dessen Zahlen niemand ver&ouml;ffentlicht.
+        Mehrere wurden daf&uuml;r nachgeschlagen und aus genau diesem Grund weggelassen,
+        statt sie aus dem zu f&uuml;llen, was andere Werkzeuge behaupten."""
 
 [[faq]]
 q = "Wie findet es Scheitel, Kinn und Augen ohne Gesichtsmodell?"
