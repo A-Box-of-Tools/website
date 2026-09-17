@@ -268,10 +268,17 @@ export async function decode(file) {
  * two hand the scaler subtly different surfaces. An answer that depends on
  * which decode path the caller happened to take is not an answer.
  *
- * So the alpha channel is walked at full size. The bands keep a large
- * photograph from needing a second whole copy of itself in memory beside the
- * canvas, and the early exit means a picture that really is transparent
- * usually stops in the first band.
+ * So the alpha channel is walked at full size, a band of rows at a time. The
+ * canvas is the height of one band rather than of the picture, and the picture
+ * is drawn into it shifted up - which matters twice over. A browser caps how
+ * much canvas it will give you, around 268 megapixels in Chromium, and a
+ * full-size canvas past that quietly fails to allocate: `drawImage` does
+ * nothing, `getImageData` reads back zeros, and every pixel of a solid picture
+ * looks transparent. A band is a few megapixels whatever the picture is, so
+ * there is no cap to hit and no 576 MB held to answer a yes-or-no question.
+ *
+ * The early exit means a picture that really is transparent usually stops in
+ * the first band; it is a solid one that pays for the whole walk.
  *
  * @param {ImageBitmap|HTMLImageElement} bitmap
  * @param {number} width
@@ -279,19 +286,25 @@ export async function decode(file) {
  * @returns {boolean}
  */
 export function hasAlpha(bitmap, width, height) {
+  const w = Math.max(1, width);
+  const full = Math.max(1, height);
+  // About four megapixels a band, whatever shape the picture is.
+  const band = Math.max(1, Math.min(full, Math.floor(4194304 / w)));
+
   const canvas = document.createElement('canvas');
-  canvas.width = Math.max(1, width);
-  canvas.height = Math.max(1, height);
+  canvas.width = w;
+  canvas.height = band;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.drawImage(bitmap, 0, 0);
 
-  // About a megapixel a band, whatever shape the picture is.
-  const band = Math.max(1, Math.floor(1048576 / canvas.width));
   let found = false;
+  for (let top = 0; top < full && !found; top += band) {
+    const rows = Math.min(band, full - top);
+    // Cleared first so that the tail of the last band - which is shorter than
+    // the canvas - cannot show rows left over from the band before it.
+    ctx.clearRect(0, 0, w, band);
+    ctx.drawImage(bitmap, 0, -top);
 
-  for (let top = 0; top < canvas.height && !found; top += band) {
-    const rows = Math.min(band, canvas.height - top);
-    const { data } = ctx.getImageData(0, top, canvas.width, rows);
+    const { data } = ctx.getImageData(0, 0, w, rows);
     for (let at = 3; at < data.length; at += 4) {
       if (data[at] !== 255) {
         found = true;
