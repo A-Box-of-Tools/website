@@ -1,0 +1,173 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../png-to-webp/">PNG to WebP converter</a>, drop the
+      files in, and choose one of two things:
+    </p>
+    <ul>
+      <li>
+        <strong>Lossless</strong> if the picture has text, flat colour or sharp
+        edges in it &mdash; a screenshot, a diagram, a logo, a chart, anything
+        drawn rather than photographed. Every solid pixel stays exactly as it
+        was and the file still gets smaller.
+      </li>
+      <li>
+        <strong>Smaller</strong> if it is a photograph. The saving is enormous
+        and nobody can see the difference.
+      </li>
+    </ul>
+    <p>
+      Nothing is uploaded either way. Your browser has written WebP since 2020,
+      so the encoder is already on your machine.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why a PNG is so big in the first place</h2>
+    <p>
+      PNG is lossless: it throws nothing away, ever. To do that it looks for
+      repetition &mdash; runs of identical pixels, rows that resemble the row
+      above &mdash; and describes them compactly.
+    </p>
+    <p>
+      That works beautifully on the things PNG was designed for. A screenshot is
+      mostly flat panels and repeated text; a logo is a handful of solid colours.
+      Both compress enormously.
+    </p>
+    <p>
+      It works terribly on a photograph, where almost nothing repeats. Every
+      patch of grass, every bit of sky gradient, every grain of sensor noise is
+      slightly different from its neighbour, and PNG dutifully records all of it.
+      A phone photo saved as a PNG is routinely ten times the size of the JPEG of
+      the same picture &mdash; not because PNG is bad, but because you have asked
+      a lossless format to store something nobody needs stored losslessly.
+    </p>
+    <p>
+      That is the whole reason the choice below has a right answer that depends
+      on the picture.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lossless WebP: the straight swap</h2>
+    <p>
+      WebP has a lossless mode, and it is simply a better lossless compressor
+      than PNG &mdash; newer, with more tricks. On the kind of picture PNG is
+      good at, it typically takes another fifth to a third off, and it gives up
+      nothing to do it.
+    </p>
+    <p>
+      This is the mode for anything with text or hard edges. Screenshots for
+      documentation, UI mock-ups, diagrams, line art, logos, charts, pixel art.
+      The result is the same picture, smaller, and there is no case against it
+      except software that cannot read WebP.
+    </p>
+    <p>
+      It is also the mode where the word &ldquo;lossless&rdquo; deserves
+      checking rather than trusting, and the tool checks it: a WebP stores its
+      pixels in one of two chunks, and the converter reads the finished file back
+      to see which one actually came out. If a browser ever stopped honouring the
+      request, the row would say so rather than handing you a lossy file
+      described as lossless. On every current browser it does honour it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lossy WebP: for photographs</h2>
+    <p>
+      The other mode throws away detail you were unlikely to notice, the way
+      JPEG does but considerably better. On a photograph it will commonly take a
+      2&nbsp;MB PNG to under 200&nbsp;KB, and you will not be able to tell which
+      is which side by side.
+    </p>
+    <p>
+      The quality slider starts at 80, which is WebP's own default and is hard to
+      fault on a photograph. Below about 60 it begins to show.
+    </p>
+    <p>
+      What this mode is <em>not</em> for is the flat-colour case above. Lossy
+      compression works by smoothing, and smoothing is exactly wrong on text and
+      hard edges &mdash; you get a faint halo around lettering that looks like a
+      bad scan. If the picture has words in it, use lossless.
+    </p>
+  </section>
+
+  <section>
+    <h2>The transparency survives either way</h2>
+    <p>
+      This is the usual worry and the answer is simple: WebP has a real alpha
+      channel exactly as PNG does, so a logo with a see-through background
+      arrives with a see-through background. There is no colour to choose and
+      nothing gets flattened.
+    </p>
+    <p>
+      It is worth contrasting with the other direction. Converting a picture
+      <em>to</em> a JPEG does destroy transparency, because JPEG has no alpha
+      channel at all &mdash; there is a whole section about it in
+      <a href="../convert-webp-to-jpg/">converting WebP to JPG</a>. WebP does not
+      have that problem, which is one of the reasons it is the better target
+      format when you have the choice.
+    </p>
+    <p>
+      One measured footnote, because the tool's page makes a precise claim and
+      precise claims deserve their asterisks: a pixel that is <em>partly</em>
+      transparent can have the colour stored underneath it shift very slightly.
+      That is a property of moving a picture through a browser canvas at all
+      &mdash; the canvas stores colour multiplied by transparency and cannot undo
+      the multiplication exactly &mdash; rather than anything WebP does. It is
+      invisible, because the pixels whose stored colour moves most are the ones
+      showing least of it. Solid pixels come through bit for bit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Will a WebP actually open everywhere?</h2>
+    <p>
+      On the web, yes. Chrome, Edge, Firefox and Safari have all displayed WebP
+      since 2020, so if the destination is a website there is no longer a
+      fallback to arrange. That is the main reason to do this conversion at all:
+      smaller pages, same picture.
+    </p>
+    <p>
+      Away from the browser it is patchier. Windows and macOS both preview them
+      now, but some older desktop software, a number of upload forms and most
+      e-readers still refuse one. If you are converting for something that will
+      not take a WebP, you want the opposite tool &mdash;
+      <a href="../../webp-to-jpg/">WebP to JPG</a> &mdash; and its
+      <a href="../convert-webp-to-jpg/">guide</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>What does not come along</h2>
+    <p>
+      The pixels survive; the things stored around them do not. Converting
+      through a canvas means any text chunks, ICC colour profile or XMP block in
+      the PNG are left behind.
+    </p>
+    <p>
+      For most PNGs that is nothing of consequence &mdash; they rarely carry
+      camera data, and a screenshot carries none. If you need to know what a file
+      holds, the <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a> reads
+      and writes it without re-compressing anything.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why there is no upload</h2>
+    <p>
+      Both halves of this job are already on your machine. Your browser decodes
+      PNG, obviously, and it has encoded WebP since 2020 &mdash; which is the
+      same browser capability that made websites able to serve WebP in the first
+      place.
+    </p>
+    <p>
+      So a converter that sends your files to a server is running its own copy of
+      software you already have, and holding your pictures while it does. The
+      <a href="../../png-to-webp/">tool here</a> does the work in the page, which
+      is why it keeps working with the network unplugged &mdash; the simplest
+      proof there is that nothing left. There is a general version of this
+      argument in <a href="../is-it-safe-to-upload-files/">is it safe to upload
+      files</a>.
+    </p>
+  </section>

@@ -1,0 +1,171 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../avif-to-jpg/">AVIF to JPG converter</a>, drop the
+      files in, and press &ldquo;Convert&rdquo;. Leave the quality slider at 92.
+      You get JPEGs back, one download button each, or a zip if there are
+      several.
+    </p>
+    <p>
+      Nothing is uploaded, and there is nothing to download first either. The
+      decoder is already in the browser you are reading this in &mdash; which is
+      the part most worth understanding, so it has a section of its own below.
+    </p>
+  </section>
+
+  <section>
+    <h2>What AVIF is, and why you have one</h2>
+    <p>
+      AVIF is a still picture stored the way a modern video frame is stored: a
+      single keyframe of <strong>AV1</strong>, the video codec, wrapped in the
+      same box container an MP4 uses. That sounds like an odd way to build an
+      image format and it turns out to work extremely well &mdash; AV1 has had
+      far more engineering poured into it than any still-image codec ever got,
+      because video is where the money is.
+    </p>
+    <p>
+      The result is a format that is dramatically smaller than a JPEG at the same
+      visible quality. Often three to five times smaller. So websites started
+      serving it, and when you save a picture from one, what lands on your disk
+      is whatever the site was serving. You did not choose AVIF.
+    </p>
+    <p>
+      And then nothing on your computer will open it:
+    </p>
+    <ul>
+      <li>Windows needs an extension from the Store before Photos will show one;</li>
+      <li>a great deal of desktop editing software still refuses it outright;</li>
+      <li>upload forms that check extensions have mostly never heard of it;</li>
+      <li>printers, e-readers and camera software are years behind.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Your browser reads it. That is the whole trick</h2>
+    <p>
+      Open the file you cannot open in a browser tab &mdash; drag it onto the
+      window &mdash; and it displays perfectly. Chrome and Firefox have decoded
+      AVIF since 2021, Safari since 2023.
+    </p>
+    <p>
+      That is not a curiosity; it is the reason this conversion needs no server.
+      A converter has to do two things: read an AVIF and write a JPEG. Your
+      browser already does both. The
+      <a href="../../avif-to-jpg/">tool here</a> is that decoder with a save
+      button attached &mdash; it opens the file the way the browser already can,
+      draws it, and asks for a JPEG back.
+    </p>
+    <p>
+      So when a converter asks you to upload an AVIF, it is running its own copy
+      of software you already own, and holding your picture while it does.
+    </p>
+  </section>
+
+  <section>
+    <h2>The comparison that explains which converters need a server</h2>
+    <p>
+      AVIF has a near-twin: <strong>HEIC</strong>, the format an iPhone saves in.
+      They are almost the same design &mdash; the same box container, a still
+      frame of a video codec inside, HEVC instead of AV1. And the software
+      situation is exactly reversed.
+    </p>
+    <table>
+      <thead>
+        <tr><th></th><th>HEIC</th><th>AVIF</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Browsers that decode it</td><td>Safari only</td><td>all of them</td></tr>
+        <tr><td>Browsers that encode it</td><td>none</td><td>none</td></tr>
+        <tr><td>So a converter must ship</td><td>a decoder, about 1.4 MB</td><td>nothing at all</td></tr>
+      </tbody>
+    </table>
+    <p>
+      This is why our <a href="../../heic-to-jpg/">HEIC converter</a> downloads a
+      codec on first use and spends most of its page explaining that, and why
+      this one downloads nothing and says so. Same company, same promise,
+      different honest answer &mdash; because the formats genuinely differ.
+    </p>
+    <p>
+      It also gives you a question to ask of any converter: <em>does my browser
+      already do this?</em> If it does, an upload is a choice the site made, not
+      a requirement of the job.
+    </p>
+  </section>
+
+  <section>
+    <h2>The JPG will be several times bigger</h2>
+    <p>
+      Expect it, and do not read it as a failure. A picture that is 40&nbsp;KB as
+      an AVIF can easily be 200&nbsp;KB as a JPEG of the same visible quality
+      &mdash; the example on the tool's own page comes out around five times
+      larger, and the result line tells you so rather than hiding it.
+    </p>
+    <p>
+      The reason is the same as everywhere else on this subject: AVIF is one of
+      the best still-image codecs in existence and JPEG is one of the oldest. You
+      are trading bytes for compatibility. That is exactly the right trade when
+      the thing at the other end will not take an AVIF, and it is still a trade.
+    </p>
+    <p>
+      If the size matters afterwards, the
+      <a href="../../compress-image/">Image Compressor</a> takes a JPEG down to a
+      figure you name, and the tool offers it on the row under your result.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a JPEG cannot carry over</h2>
+    <p>
+      Two things, and neither affects most pictures:
+    </p>
+    <p>
+      <strong>Transparency.</strong> AVIF can have a see-through background and a
+      JPEG cannot, so something has to go underneath. The tool asks which colour
+      and defaults to white, and only asks when a file on your list really has
+      transparency in it. Most AVIFs saved off web pages are photographs with
+      nothing see-through in them, so the question usually never comes up. If you
+      need the transparency kept, convert to PNG or WebP instead with the
+      <a href="../../compress-image/">Image Compressor</a>, which reads AVIF and
+      writes both.
+    </p>
+    <p>
+      <strong>HDR and deep colour.</strong> AVIF can store ten or twelve bits a
+      channel and describe highlights brighter than an ordinary screen shows. A
+      JPEG is eight bits with no notion of HDR at all, so a picture using any of
+      that arrives flattened to ordinary range. Almost nothing saved from a normal
+      web page uses it, and if yours does not &mdash; which is very likely &mdash;
+      this costs you nothing.
+    </p>
+  </section>
+
+  <section>
+    <h2>Going the other way is a different problem</h2>
+    <p>
+      There is no JPG-to-AVIF tool here, and the reason is worth stating because
+      it is the same fact from the other side: <strong>no browser will write an
+      AVIF</strong>. Ask a browser canvas for one and it quietly hands back a PNG
+      with the wrong label on it.
+    </p>
+    <p>
+      So any page claiming to make AVIFs in your browser is either mistaken or is
+      sending your picture to a server to be encoded there. Doing it properly
+      without a server means building the encoder, which is real work and sits on
+      <a href="../../roadmap/">the roadmap</a> rather than being pretended at.
+    </p>
+  </section>
+
+  <section>
+    <h2>The metadata does not come along</h2>
+    <p>
+      The picture is decoded and redrawn, so it arrives as pixels and nothing
+      else: EXIF, GPS, colour profiles and XMP are left behind. For a picture
+      saved off a web page there is usually nothing there to begin with.
+    </p>
+    <p>
+      If you want to see what a file carries before deciding, the
+      <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a> does that without
+      re-compressing anything, and
+      <a href="../does-converting-a-photo-remove-its-metadata/">does converting a
+      photo remove its metadata</a> is the longer answer.
+    </p>
+  </section>

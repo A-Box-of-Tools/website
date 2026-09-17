@@ -1,0 +1,37 @@
+#
+# Guide: the format the web saves in, and how to get out of it.
+#
+# The reader arriving here has right-clicked a picture on a web page, got a
+# .webp, and found that the thing they wanted to put it into will not take one.
+# So the page answers that first. What it spends its length on afterwards is
+# the two things every other WebP converter is quiet about: that the JPEG will
+# usually be BIGGER, which surprises people into thinking the tool failed, and
+# that transparency has to go somewhere, which is where the black-background
+# logo comes from.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-webp-to-jpg"
+kind = "guide"
+nav = "WebP to JPG"
+group = "doing-the-job"
+tool = "webp-to-jpg"
+
+title = "How to Convert WebP to JPG (and Why the JPG Is Bigger)"
+description = "Saved a picture from a website and got a .webp nothing will open? What WebP is, why converting makes the file larger rather than smaller, what happens to transparency, and how to do it without uploading anything."
+
+heading = "The picture the web saved, and the format everything still takes"
+lede = """
+    Right-click a picture on almost any website today and you get a
+    <code>.webp</code> &mdash; a format your browser reads perfectly and a
+    great deal of other software still refuses. This is what it is, what
+    converting costs, and why the JPEG usually comes out bigger."""
+
+updated = "17 September 2026"
+published = "2026-09-17"
+lastmod = "2026-09-17"
+
+og_title = "How to convert WebP to JPG"
+og_description = "Why websites serve WebP, what converting costs the picture, and how to do it without handing the file to anybody."
+og_image_alt = "abox.tools - tools that never touch a server"

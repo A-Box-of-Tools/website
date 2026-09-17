@@ -1,0 +1,369 @@
+#
+# AVIF to JPG
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# AVIF is the exact mirror of HEIC, and the two pages should be read together.
+# HEIC cannot be decoded by anything but Safari, so heic-to-jpg ships 1.4 MB of
+# libheif and spends its words justifying the download. AVIF is decoded by
+# everything current and encoded by nothing at all - `canvas.toBlob` asked for
+# image/avif hands back a PNG, silently, with the wrong type on the blob - so
+# this page ships no engine and the honest claim is the absence of one.
+#
+# That asymmetry has one consequence worth stating in the config rather than
+# leaving to be discovered: this is the only tool on the site whose example
+# could not be drawn in the page, apart from the HEIC one, and for the opposite
+# reason. Nothing here can write an AVIF, so the example is committed bytes.
+# See src/example-data.js.
+#
+# The roadmap's "AVIF" line is NOT this tool and is not resolved by it. That
+# line is about *writing* AVIF, which is real container work on top of
+# VideoEncoder's AV1 - see the AVIF section of ROADMAP.md. This page only
+# reads, which the browser already does.
+#
+
+slug = "avif-to-jpg"
+name = "AVIF to JPG"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "AVIF&nbsp;to&nbsp;JPG <span class=\"h1-kw\">&mdash; open the picture that will not open</span>"
+tagline = "The format websites save now, in the one everything has always taken."
+icon = "&#127912;"          # the artist's palette, beside the page heading
+favicon = "&#127912;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1 rasterises
+# for the share card and the two installed-app icons, which want a filled
+# colourful mark rather than a line drawing.
+glyph = "arrow-right-left"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules.
+css_parts = ["file-list", "progress", "results", "form", "notes"]
+# Shared modules this tool asks for. image-convert is the decode-and-encode
+# engine the three format converters share. There is no example-photo here:
+# this tool's example is real bytes in src/example-data.js, because nothing in
+# a browser can draw an AVIF.
+js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "download", "format"]
+# The tool to offer next, on the carry-on row under the result.
+handoff = ["compress-image", "resize-image"]
+lastmod = "2026-09-17"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "AVIF to JPG Converter &mdash; Free, No Upload"
+description = "Convert AVIF images to JPG in your browser. Your browser already decodes AVIF, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose."
+og_title = "Turn AVIF images into JPGs without uploading them"
+og_description = "Saved a picture from a website and nothing will open it? Your browser reads AVIF already. This turns it into a JPG on your own machine, without the file going anywhere."
+og_image_alt = "AVIF to JPG - the format websites save now, in the one everything takes"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every card,
+# so this is the only part of it that belongs to this tool.
+og_card = "The format websites save now, in the one everything takes - converted on your own machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing is widened here, which is worth contrasting with the HEIC converter:
+  that page is the only one on this site that adds anything to the policy, and
+  it adds 'wasm-unsafe-eval' because it has a codec to start. This tool has
+  none, so it asks for nothing, and connect-src is exactly what the site set.
+
+  img-src needs blob: for the pictures this page draws from the files you chose,
+  and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The converting runs in your own browser, on your own hardware. There is no
+    decoder to download and nothing to wait for &mdash; your browser has read
+    AVIF since 2021, which is precisely why the picture you cannot open in
+    anything else displays perfectly well in a browser tab. This page uses that
+    decoder, draws the picture, and writes a JPEG beside it. There is no network
+    feature here at all, and no server on the other end to send a photo to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert a picture. You will see this page's own files load and not one
+      request carrying an image, a thumbnail, a filename, or a byte of what you
+      chose. Or load the page once, unplug from the internet, and convert a
+      folder of them anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and
+      <code>src/shared/image-convert.js</code> for the conversion &mdash; the
+      brand sniffing that decides a file really is an AVIF, the decode, and the
+      canvas the JPEG is written from. It is the same file the other two format
+      converters use and there is no codec in it."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert an AVIF to JPG"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Saved a picture from a website and found nothing will open
+            it? Your browser reads AVIF already &mdash; this turns it into a JPG
+            on your own machine, without the file going anywhere."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment.
+[words]
+plural = "pictures"
+choose = "a picture"
+analytics_extra = """, and nothing about
+  what is in them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your pictures have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your
+      files could be collected at, and nothing in the code that would send them
+      if there were."""
+
+[[privacy]]
+title = "The decoder is already in your browser, which is the whole trick."
+body = """
+ An AVIF that
+      will not open in your photo viewer opens fine in a browser tab, because
+      Chrome and Firefox have decoded AVIF since 2021 and Safari since 2023.
+      This page is that decoder with a save button: it opens the file the way
+      the browser already can, draws it, and writes a JPEG. So there is no
+      engine to download, nothing to wait for on the first conversion, and no
+      reason for a server to be involved &mdash; which is exactly what the
+      converters asking you to upload are not telling you."""
+
+[[privacy]]
+title = "The see-through parts, and what goes behind them."
+body = """
+ AVIF can carry an
+      alpha channel and a JPEG cannot, so something has to go underneath. This
+      page asks which colour and defaults to white, and it only asks when a file
+      on the list really has transparency in it &mdash; which is read off the
+      decoded pixels rather than guessed. Most AVIFs saved from websites are
+      photographs with nothing see-through in them at all, so the field usually
+      stays out of the way."""
+
+[[privacy]]
+title = "What a JPEG cannot carry over from an AVIF."
+body = """
+ AVIF can hold more
+      colours than a JPEG can and can describe brighter highlights &mdash; ten
+      or twelve bits a channel, and HDR. A JPEG is eight bits and no HDR, so a
+      picture that used any of that arrives flattened to ordinary range. On the
+      overwhelming majority of pictures there is nothing to flatten and you will
+      see no difference; on a screenshot of an HDR photo you may. It is said
+      here rather than discovered later."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line
+      that reads, decodes or writes a file is served from this origin and listed
+      in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Load the page once and disconnect from the
+      network, and the tool is unchanged. That is the simplest proof of all: a
+      converter that sent your pictures away to be converted could not possibly
+      manage it."""
+
+[[howto]]
+title = "Choose your AVIF files."
+body = """
+ Drop them onto the picker or select
+      them by hand. Every file is identified by its first bytes rather than by
+      its name, so an AVIF that a download renamed still works, and a file that
+      is genuinely a PNG is turned away with a line saying what it actually
+      is."""
+
+[[howto]]
+title = "Set the quality, and the colour behind any transparency."
+body = """
+ The
+      slider starts at 92, which is where a photograph is hard to tell from the
+      original. The colour field appears only if something on the list is
+      see-through, because a JPEG has to put something there."""
+
+[[howto]]
+title = "Press &ldquo;Convert&rdquo;, and download."
+body = """
+ Each result says what it came
+      from, what it weighs now and how that compares &mdash; usually a good deal
+      more, because AVIF is a much better codec and you are trading bytes for
+      compatibility. One file gives you a download button; several give you a zip
+      as well."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree.
+
+[[faq]]
+q = "Is my picture uploaded anywhere?"
+a = """
+        No. The file is read, decoded and written by your own browser on your own
+        hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. There is not even a decoder to load
+        first: your browser already had one."""
+
+[[faq]]
+q = "Why will nothing on my computer open this file?"
+a = """
+        Because AVIF is new where it counts. Websites started serving it because
+        it is dramatically smaller than a JPEG at the same quality, so saving a
+        picture from one now hands you a <code>.avif</code> &mdash; and the
+        software you then open it in is often older than the format. Windows
+        needs an extension for it, a lot of desktop editors still refuse it, and
+        most e-readers, printers and upload forms have never heard of it. Your
+        browser, meanwhile, reads it perfectly, which is why this page can help
+        and is also why the file arrived in the first place."""
+
+[[faq]]
+q = "Will the JPG be bigger than the AVIF?"
+a = """
+        Almost certainly, often by several times, and the result says by how much
+        rather than hiding it. AVIF is one of the best still-image codecs there
+        is and JPEG is one of the oldest, so a picture that is 40 KB as an AVIF
+        can easily be 200 KB as a JPEG of the same visible quality. That is the
+        trade: bytes for compatibility. If the size matters afterwards, the
+        <a href="../compress-image/">Image Compressor</a> will take the JPEG down
+        to a figure you name."""
+
+[[faq]]
+q = "What happens to transparency?"
+a = """
+        It is filled with a colour you choose, and the page says so before you
+        press anything. AVIF has an alpha channel and a JPEG does not, so there
+        is no version of this where the transparency survives &mdash; only a
+        question of what goes underneath, which is your decision rather than the
+        converter's. In practice most AVIFs are photographs with nothing
+        see-through in them, so the field never appears. If you need the
+        transparency kept, convert to PNG or WebP with the
+        <a href="../compress-image/">Image Compressor</a>, which reads AVIF and
+        writes both."""
+
+[[faq]]
+q = "What about HDR and 10-bit colour?"
+a = """
+        They do not survive, because a JPEG cannot hold them. AVIF can store ten
+        or twelve bits a channel and describe highlights brighter than a normal
+        screen shows; a JPEG is eight bits with no such notion. So an HDR AVIF
+        comes out as an ordinary picture &mdash; which is what you wanted if the
+        goal was a file that opens everywhere, and a real loss if you were
+        archiving. Almost nothing saved from an ordinary web page is HDR, so for
+        almost everybody this costs nothing."""
+
+[[faq]]
+q = "Is the picture re-compressed?"
+a = """
+        Yes, and it has to be: AVIF and JPEG are different codecs, so there is no
+        way to move from one to the other without decoding the picture and
+        encoding it again. That is true of every AVIF converter there is,
+        including the ones that ask you to upload. What you control is how much
+        it costs, and the slider defaults to 92, where a photograph is very hard
+        to tell from the original."""
+
+[[faq]]
+q = "Can you convert the other way, JPG to AVIF?"
+a = """
+        Not here, and the reason is worth knowing: no browser will write one. Ask
+        a canvas for an AVIF and it quietly hands back a PNG with the wrong type
+        on it &mdash; so a page claiming to write AVIF in your browser is either
+        wrong or is sending your picture to a server to be encoded. Doing it
+        properly without a server means shipping an encoder, and that is a real
+        piece of work that is on <a href=\"../../roadmap/\">the roadmap</a> rather
+        than pretended at here."""
+
+[[faq]]
+q = "Does it keep the date, camera and location?"
+a = """
+        No. The picture is drawn onto a canvas and a canvas holds pixels and
+        nothing else, so EXIF, GPS, colour profiles and XMP are left behind. For
+        a picture saved off a web page there is usually nothing there anyway. If
+        you need to see or edit what a file carries, the
+        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> does that without
+        re-compressing the picture."""
+
+[[faq]]
+q = "Can it do a whole folder at once?"
+a = """
+        Yes. Drop in as many as you like &mdash; there is no limit on the number
+        or the size, because there is no server paying for them. Each one gets
+        its own row and its own download, and two or more give you a zip of the
+        lot."""
+
+[[faq]]
+q = "Is it free, and does it work offline?"
+a = """
+        It is free, with no account, no sign-in, no trial and no watermark; the
+        site carries advertising, which is what pays for it, and the ads are not
+        given anything about your pictures. And yes &mdash; load the page once,
+        then disconnect from the internet and it keeps working exactly as before,
+        which is also the strongest proof available that nothing is being
+        uploaded."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert AVIF images to JPG in the browser. The browser's own AVIF decoder reads the file and its own encoder writes the JPEG, so nothing is uploaded and no codec is downloaded. Transparency is filled with a colour of your choosing, and batches come back as a zip."
+features = [
+  "Converts AVIF to JPEG using the decoder the browser already has",
+  "Nothing is uploaded, and the tool works with the network unplugged",
+  "Asks which colour goes behind transparency, and only when a file has any",
+  "Identifies files by their contents, so a renamed AVIF still works",
+  "Quality slider, defaulting to 92",
+  "Reports what each file weighed before and after",
+  "Says plainly when a browser is too old to read AVIF at all",
+  "Batches, with all results in one zip",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+# Wider than ".avif" on purpose: every file is identified by its first bytes
+# anyway, and a narrow accept list hides a misnamed file inside the browser's
+# own dialog, where no message this page writes could reach it.
+accept = "image/*,.avif"
+multiple = true
+title = "Drop AVIF pictures here"
+hint = "or click to browse &mdash; .avif files, whatever they happen to be named"
+# Real AVIF bytes in src/example-data.js, because no browser will encode one -
+# which is the whole reason this tool exists. Only the HEIC converter's example
+# is the same kind of thing, and for the opposite reason.
+example = true

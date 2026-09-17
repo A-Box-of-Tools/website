@@ -1,0 +1,160 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose your PNG files</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">Remove all</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the only decision, and it is the whole tool.
+
+    A PNG is lossless, so the question is whether the WebP stays that way.
+    Lossless WebP is the like-for-like swap - the same pixels, a smaller file -
+    and lossy WebP is the one that makes a photograph a fraction of the size at
+    a cost. Both keep the alpha channel, which is the reason this converter
+    needs no background colour and the WebP-to-JPG one does.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> Lossless, or smaller</h2>
+
+    <p class="card-lede">
+      Either way the transparency comes across &mdash; WebP has an alpha
+      channel just as PNG does, so nothing has to be flattened onto a
+      background.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <fieldset class="modes">
+          <legend>How to encode it</legend>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossless" checked>
+            <span><strong>Lossless</strong> Every solid pixel identical to the
+              PNG, in a smaller file. The straight swap, and the right answer for
+              screenshots, diagrams, logos and line art.</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossy">
+            <span><strong>Smaller</strong> Far smaller again, at a cost you
+              choose. Worth it for photographs; usually not for flat colour and
+              text, where it smudges the edges.</span>
+          </label>
+        </fieldset>
+      </div>
+
+      <div id="quality-field" hidden>
+        <label class="field" for="quality">
+          <span>WebP quality &mdash; <output id="quality-value" for="quality">80</output></span>
+          <span class="field-note">80 is WebP's own default and is hard to fault
+            on a photograph. Below about 60 it starts to show.</span>
+        </label>
+        <input type="range" id="quality" min="30" max="99" step="1" value="80">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Convert them</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Convert to WebP</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>Download all as a zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 file</span>
+    <span data-phrase="chosen.many">{count} files</span>
+    <span data-phrase="row.remove">Remove {name}</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">Has see-through parts &mdash; WebP keeps them</span>
+    <span data-phrase="read.notpng">{name} is not a PNG &mdash; it is {found}. This tool converts PNG files.</span>
+    <span data-phrase="read.unknown">{name} is not a PNG, and its first bytes match no picture format this page knows.</span>
+    <span data-phrase="read.failed">{name} could not be opened: {why}</span>
+    <span data-phrase="found.webp">a WebP</span>
+    <span data-phrase="found.jpeg">a JPEG</span>
+    <span data-phrase="found.avif">an AVIF</span>
+    <span data-phrase="found.gif">a GIF</span>
+    <span data-phrase="found.bmp">a BMP</span>
+    <span data-phrase="support.nowebp">This browser will not write WebP files, so there is nothing this page
+      can do for you. Chrome, Edge, Firefox and Safari have all written WebP since 2020.</span>
+    <span data-phrase="settings.lossless">One PNG, losslessly.</span>
+    <span data-phrase="settings.lossless.many">{count} PNG files, losslessly.</span>
+    <span data-phrase="settings.lossy">One PNG at quality {quality}.</span>
+    <span data-phrase="settings.lossy.many">{count} PNG files at quality {quality}.</span>
+    <span data-phrase="settings.none">Choose a PNG above and this will say what will be written.</span>
+    <span data-phrase="run.one">Convert to WebP</span>
+    <span data-phrase="run.many">Convert {count} files to WebP</span>
+    <span data-phrase="progress.each">Converting {name}&hellip;</span>
+    <span data-phrase="progress.done">Done.</span>
+    <span data-phrase="run.failed">This run failed: {detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count} WebP files written, {size} in total &mdash; {change} than the PNGs.</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">From {name} &mdash; {dimensions}, {was} before.</span>
+    <span data-phrase="result.lossless">Lossless: every pixel is the one the PNG had.</span>
+    <span data-phrase="result.lossless.alpha">Lossless where it shows: every solid pixel is the PNG's exactly. The
+      colour stored under the near-transparent edges can shift a little, which is a canvas doing it rather than
+      WebP &mdash; see the questions below.</span>
+    <span data-phrase="result.lossy">Lossy, at quality {quality}.</span>
+    <span data-phrase="result.askedlossless">Asked for lossless, but this browser wrote a lossy WebP. The file
+      is good; it is not pixel-for-pixel the PNG.</span>
+    <span data-phrase="result.alpha">The see-through parts came across unchanged.</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="change.smaller">{percent}% smaller</span>
+    <span data-phrase="change.larger">{percent}% larger</span>
+    <span data-phrase="change.same">the same size</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">the browser would not decode it</span>
+    <span data-phrase="error.encode">the browser would not write a {format}</span>
+    <span data-phrase="error.wrongtype">the browser handed back something that was not a {format}</span>
+    <span data-phrase="error.broke">Something went wrong: {detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">your files have gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a picture or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a picture or a byte of one.</span>
+  </div>
+</main>

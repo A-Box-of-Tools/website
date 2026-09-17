@@ -1,0 +1,407 @@
+#
+# PNG to WebP
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This is the one of the three format converters that has a real decision on
+# its page, and the decision is the tool: a PNG is lossless, so the only
+# question worth asking is whether the WebP stays that way. Lossless WebP is
+# the straight swap - same pixels, smaller file - and lossy WebP is the one
+# that takes a photograph down by an order of magnitude at a cost.
+#
+# "Same pixels" carries one measured footnote, and the FAQ entry about
+# half-transparent pixels is where it is spelled out: a canvas stores colour
+# premultiplied by alpha, so a solid pixel survives bit for bit and the colour
+# stored under a nearly-invisible one does not. That is the canvas rather than
+# WebP - it is true of every browser converter, and of the two JPEG converters
+# here as well - and it is invisible, because the pixels whose colour moves
+# most are the ones showing least of it. It is written down because a claim
+# of "lossless" that turns out to have an asterisk is worse than one that
+# never made the claim.
+#
+# The awkward fact underneath it, recorded here because it is not visible in
+# the code: a canvas has no flag for lossless WebP. Chromium switches codings
+# at quality 1.0 exactly and that is how encodeWebp asks for one, but it is the
+# behaviour of an engine rather than a promise of the HTML specification. So
+# every result is read back out of its own bytes - VP8L means lossless, `VP8 `
+# means not - and the row says which coding actually came out. If a browser
+# ever stops honouring 1.0, this page will say so on the day rather than
+# quietly handing people lossy files they were told were lossless.
+#
+
+slug = "png-to-webp"
+name = "PNG to WebP"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "PNG&nbsp;to&nbsp;WebP <span class=\"h1-kw\">&mdash; smaller, transparency and all</span>"
+tagline = "The same picture, often a third off, with the see-through parts intact."
+icon = "&#128200;"          # the falling chart, beside the page heading
+favicon = "&#128200;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1 rasterises
+# for the share card and the two installed-app icons, which want a filled
+# colourful mark rather than a line drawing.
+glyph = "arrow-right-left"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. modes is the pair of radio rows the one decision is drawn
+# as.
+css_parts = ["file-list", "progress", "results", "form", "modes", "notes"]
+# Shared modules this tool asks for. image-convert is the decode-and-encode
+# engine the three format converters share; example-photo and example-mark draw
+# the two files behind the "Try an example" button.
+js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "download", "format", "example-photo", "example-mark"]
+# The tool to offer next, on the carry-on row under the result.
+handoff = ["compress-image", "resize-image"]
+lastmod = "2026-09-17"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "PNG to WebP Converter &mdash; Free, No Upload"
+description = "Convert PNG images to WebP in your browser, losslessly or smaller still. Transparency is kept either way. Nothing is uploaded, there is no account, and it works offline."
+og_title = "Turn PNG images into WebP without uploading them"
+og_description = "Lossless WebP keeps every solid pixel in a smaller file; the lossy setting takes a photograph down by an order of magnitude. Transparency survives both. Converted on your own machine."
+og_image_alt = "PNG to WebP - the same picture, smaller, with the transparency intact"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every card,
+# so this is the only part of it that belongs to this tool.
+og_card = "The same picture, often a third off, with the see-through parts intact."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing is widened here. This tool has no codec to instantiate, so it does not
+  ask for 'wasm-unsafe-eval' the way the HEIC converter has to, and it fetches
+  nothing, so connect-src is exactly what the site set.
+
+  img-src needs blob: for the pictures this page draws from the files you chose,
+  and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The converting runs in your own browser, on your own hardware. Every browser
+    has written WebP since 2020, so the encoder was already on your machine
+    before you arrived &mdash; there is nothing to download and nothing to wait
+    for. That is why this page can promise what it promises: there is no network
+    feature on it at all, and no server on the other end to send a picture
+    to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert a picture. You will see this page's own files load and not one
+      request carrying an image, a thumbnail, a filename, or a byte of what you
+      chose. Or load the page once, unplug from the internet, and convert a
+      folder of them anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and
+      <code>src/shared/image-convert.js</code> for the conversion &mdash; in
+      particular <code>encodeWebp</code>, which writes the file and then reads
+      its own RIFF chunks back to find out whether the browser really wrote the
+      lossless coding it was asked for."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert a PNG to WebP"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            The same picture, often a third off &mdash; losslessly if you want
+            the pixels kept, or far smaller if you do not. The see-through parts
+            survive either way."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment.
+[words]
+plural = "pictures"
+choose = "a picture"
+analytics_extra = """, and nothing about
+  what is in them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your pictures have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your
+      files could be collected at, and nothing in the code that would send them
+      if there were."""
+
+[[privacy]]
+title = "The transparency survives, which is the usual reason people ask."
+body = """
+ WebP has an alpha
+      channel exactly as PNG does, so a logo with a see-through background comes
+      out with a see-through background and there is no colour to choose and
+      nothing to flatten. That is the difference between this page and the
+      <a href="../webp-to-jpg/">WebP to JPG</a> one next door, which has to ask,
+      because a JPEG has no alpha channel at all."""
+
+[[privacy]]
+title = "Lossless is checked, not claimed."
+body = """
+ A canvas has no
+      switch for lossless WebP &mdash; the browser picks the coding from the
+      quality it is handed, and every current one writes the lossless coding at
+      the top of the range. That is engine behaviour rather than a guarantee in
+      the specification, so this page does not take it on trust: every file it
+      writes is read back, and the row tells you whether the bytes are really
+      the lossless coding. If a browser ever stops honouring it, you will be
+      told on the day instead of finding out later."""
+
+[[privacy]]
+title = "What a canvas does not carry across."
+body = """
+ The picture is
+      decoded and drawn onto a canvas, and a canvas holds pixels and nothing
+      else, so any text chunks, ICC colour profile or XMP block in the PNG do not
+      survive. The pixels do &mdash; that is what lossless means here &mdash; but
+      the metadata around them does not. If that matters, the
+      <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> is the tool that
+      reads and writes it."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line
+      that reads, decodes or writes a file is served from this origin and listed
+      in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Load the page once and disconnect from the
+      network, and the tool is unchanged. That is the simplest proof of all: a
+      converter that sent your pictures away to be converted could not possibly
+      manage it."""
+
+[[howto]]
+title = "Choose your PNG files."
+body = """
+ Drop them onto the picker or select
+      them by hand. Every file is identified by its first bytes rather than by
+      its name, so a file that is really a JPEG is turned away with a line saying
+      so rather than converted into a copy of itself. A row that has see-through
+      parts says so, because that is the part people are most worried about
+      losing."""
+
+[[howto]]
+title = "Pick lossless, or pick smaller."
+body = """
+ Lossless keeps every solid pixel
+      the PNG had and still comes out smaller &mdash; the right answer for
+      screenshots, diagrams, logos and anything with text in it. Smaller turns on
+      a quality slider and is the right answer for photographs, where nobody can
+      see the difference and the saving is enormous."""
+
+[[howto]]
+title = "Press &ldquo;Convert&rdquo;, and read what it says it did."
+body = """
+ Each result
+      gives the new size and how it compares, and then says which coding the
+      browser actually wrote &mdash; lossless, or lossy at the quality you chose.
+      That line is read out of the finished file rather than repeated back from
+      the setting."""
+
+[[howto]]
+title = "Download, one at a time or all at once."
+body = """
+ One file gives you a
+      download button; two or more give you a zip of the lot as well. Files that
+      share a name get a number added before the extension, so nothing quietly
+      replaces anything else in the archive."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree.
+
+[[faq]]
+q = "Is my picture uploaded anywhere?"
+a = """
+        No. The file is read, decoded and written by your own browser on your own
+        hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site."""
+
+[[faq]]
+q = "Does the transparency survive?"
+a = """
+        Yes, in both modes, and that is the main reason people convert a PNG to
+        WebP rather than to a JPEG. WebP has a real alpha channel, so a logo with
+        a see-through background arrives with a see-through background &mdash;
+        there is no colour to pick and nothing gets flattened. The row for each
+        file says whether it has any transparency in it before you convert, and
+        the result says the transparency came across."""
+
+[[faq]]
+q = "What is the difference between lossless and smaller?"
+a = """
+        Lossless means every solid pixel in the WebP is the pixel the PNG had,
+        and the file is smaller anyway &mdash; usually by a fifth to a third,
+        because WebP's lossless coding is simply better than PNG's. The one
+        footnote is about half-transparent pixels, and it has a question of its
+        own below.
+        Smaller means WebP's lossy coding, which throws away detail you were
+        unlikely to notice and can take a photograph to a tenth of its size. The
+        rule of thumb: anything with text, flat colour or sharp edges wants
+        lossless, and photographs want the other one."""
+
+[[faq]]
+q = "You say &ldquo;every solid pixel&rdquo;. What about the half-transparent ones?"
+a = """
+        They can shift very slightly, and it is a canvas that does it rather than
+        WebP. A browser stores a picture on a canvas with its colour already
+        multiplied by its transparency, and that multiplication cannot be undone
+        exactly &mdash; the fainter a pixel is, the less of its original colour
+        survives the arithmetic. Every browser-based converter has this property,
+        including this one, because the canvas is how the picture gets from one
+        format to the other.
+        <br><br>
+        What it means in practice: a pixel that is fully solid comes through bit
+        for bit, and so does one that is fully invisible. In between, the colour
+        stored underneath can move &mdash; measured here at up to 63 out of 255
+        on pixels that are less than a quarter opaque, and at most 4 on the rest.
+        You cannot see any of it, because the pixels whose colour moves most are
+        the ones showing least of it: a nearly-invisible pixel contributes
+        nearly-invisible colour whatever number is stored in it. The anti-aliased
+        edge of a logo is the only place this exists at all, and it looks the
+        same afterwards.
+        <br><br>
+        If you need a PNG kept as an exact archival copy, keep the PNG. If you
+        need one to look identical and weigh a third less, that is what this
+        does."""
+
+[[faq]]
+q = "How do you know it was really lossless?"
+a = """
+        Because the finished file is read back and checked, rather than the
+        setting being repeated to you. A WebP stores its pixels in one of two
+        chunks &mdash; <code>VP8L</code> for the lossless coding and
+        <code>VP8&nbsp;</code> for the lossy one &mdash; and this page looks at
+        which chunk came out and says so on the row. It has to work that way:
+        a canvas has no lossless flag, so asking for it means asking for the top
+        of the quality range and trusting the browser to take the hint. Every
+        current browser does. This page checks anyway."""
+
+[[faq]]
+q = "Will a WebP actually open everywhere?"
+a = """
+        On the web, yes &mdash; Chrome, Edge, Firefox and Safari have all shown
+        WebP since 2020, so there is no longer a fallback to think about for a
+        website. Away from the browser it is patchier: Windows and macOS both
+        preview them now, but some older desktop software, a few upload forms and
+        a lot of e-readers still will not take one. If you are converting for
+        something that refuses a WebP, you want the
+        <a href="../webp-to-jpg/">WebP to JPG</a> converter, which is this tool
+        pointed the other way."""
+
+[[faq]]
+q = "Why is my PNG so big in the first place?"
+a = """
+        Because PNG is lossless and photographs are not compressible that way. A
+        PNG is excellent for a screenshot or a logo, where large areas repeat,
+        and terrible for a photograph, where almost nothing does &mdash; a phone
+        photo saved as a PNG is routinely ten times the JPEG of the same picture.
+        That is exactly the case where the lossy setting here earns its place. If
+        the file needs to come in under a particular figure, the
+        <a href="../compress-image/">Image Compressor</a> takes a target size
+        rather than a quality."""
+
+[[faq]]
+q = "Does it keep the date, camera and location?"
+a = """
+        No. The picture is drawn onto a canvas and a canvas holds pixels and
+        nothing else, so any metadata around them is left behind. For a PNG that
+        is usually nothing of consequence &mdash; most carry no camera data at
+        all &mdash; but if you need to see what a file holds, the
+        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> reads and writes
+        it without re-compressing the picture."""
+
+[[faq]]
+q = "Can it do a whole folder at once?"
+a = """
+        Yes. Drop in as many as you like &mdash; there is no limit on the number
+        or the size, because there is no server paying for them. Each one gets
+        its own row and its own download, and two or more give you a zip of the
+        lot with the total saving at the top."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your pictures."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working exactly as before. That is also the strongest proof available
+        that nothing is being uploaded: a converter that sent your files away to
+        be processed would stop the moment you unplugged, and this one does
+        not."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert PNG images to WebP in the browser, losslessly or with a quality setting. Transparency is preserved either way, and each result reports which coding the browser actually wrote. Nothing is uploaded and no codec is downloaded."
+features = [
+  "Converts PNG to WebP using the encoder the browser already has",
+  "Lossless WebP: every solid pixel kept, in a smaller file",
+  "Lossy WebP with a quality slider, for photographs",
+  "Keeps the alpha channel, so transparency survives",
+  "Reads the finished file back to confirm which coding was written",
+  "Nothing is uploaded, and the tool works with the network unplugged",
+  "Identifies files by their contents rather than their extension",
+  "Reports the size saved per file and across the batch",
+  "Batches, with all results in one zip",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+# Wider than ".png" on purpose: every file is identified by its first bytes
+# anyway, and a narrow accept list hides a misnamed file inside the browser's
+# own dialog, where no message this page writes could reach it.
+accept = "image/*,.png"
+multiple = true
+title = "Drop PNG pictures here"
+hint = "or click to browse &mdash; .png files, whatever they happen to be named"
+# Two files, drawn in the page: a transparent mark, where lossless is the right
+# answer, and a photograph, where it is the wrong one. Pressing the example and
+# then flipping the radio button makes the page's argument by itself. See
+# src/example.js.
+example = true

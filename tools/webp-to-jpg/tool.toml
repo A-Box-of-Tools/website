@@ -1,0 +1,378 @@
+#
+# WebP to JPG
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This tool is the opposite of heic-to-jpg in the one way that matters to the
+# promise. That one carries 1.4 MB of libheif because HEIC is the format no
+# browser but Safari will open; this one carries nothing at all, because every
+# browser has decoded WebP since 2020 and every canvas has written JPEG since
+# long before that. So the honest claim here is not "we brought the decoder" -
+# it is that there was never anything to bring, and that a converter asking you
+# to upload a WebP is asking for something it does not need.
+#
+# The two facts the page keeps returning to are the two a WebP has and a JPEG
+# does not: transparency and more than one frame. Both are read off the file
+# before anything is converted and both are said out loud, because the failure
+# this tool is most likely to be blamed for is a logo whose background came out
+# black, and the tool that caused it was the one that never mentioned it.
+#
+
+slug = "webp-to-jpg"
+name = "WebP to JPG"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "WebP&nbsp;to&nbsp;JPG <span class=\"h1-kw\">&mdash; convert without uploading</span>"
+tagline = "The pictures the web saves, in the format everything still takes."
+icon = "&#128444;&#65039;"  # the framed picture, beside the page heading
+favicon = "&#128444;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1 rasterises
+# for the share card and the two installed-app icons, which want a filled
+# colourful mark rather than a line drawing.
+glyph = "arrow-right-left"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules.
+css_parts = ["file-list", "progress", "results", "form", "notes"]
+# Shared modules this tool asks for. image-convert is the decode-and-encode
+# engine the three format converters share; example-photo and example-mark draw
+# the two files behind the "Try an example" button.
+js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "download", "format", "example-photo", "example-mark"]
+# The tool to offer next, on the carry-on row under the result. A JPEG that has
+# just been written is the thing people most often need smaller.
+handoff = ["compress-image", "resize-image"]
+lastmod = "2026-09-17"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "WebP to JPG Converter &mdash; Free, No Upload"
+description = "Convert WebP images to JPG in your browser. Your browser already decodes WebP, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose."
+og_title = "Turn WebP images into JPGs without uploading them"
+og_description = "The converter that does not want your pictures. Your browser already reads WebP and writes JPEG, so the files never leave your machine."
+og_image_alt = "WebP to JPG - the pictures the web saves, in the format everything takes"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every card,
+# so this is the only part of it that belongs to this tool.
+og_card = "The pictures the web saves, in the format everything takes - converted on your own machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing is widened here, and that is worth saying rather than leaving to be
+  noticed: this tool needs no policy of its own. It has no codec to instantiate,
+  so it does not ask for 'wasm-unsafe-eval' the way the HEIC converter has to,
+  and it fetches nothing, so connect-src is exactly what the site set.
+
+  img-src needs blob: for the pictures this page draws from the files you chose,
+  and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The converting runs in your own browser, on your own hardware. There is no
+    decoder to download and no engine to wait for &mdash; your browser has read
+    WebP since 2020 and has written JPEG for as long as it has existed, so
+    everything this page needs was already on your machine before you arrived.
+    That is the whole reason it can promise what it promises: there is no
+    network feature on this page, and no server on the other end of it to send
+    a picture to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert a picture. You will see this page's own files load and not one
+      request carrying an image, a thumbnail, a filename, or a byte of what you
+      chose. Or load the page once, unplug from the internet, and convert a
+      folder of them anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and
+      <code>src/shared/image-convert.js</code> for the conversion itself &mdash;
+      the sniffing that decides what a file really is, the decode, and the
+      canvas the JPEG is written from. It is the same file the other two format
+      converters use, and it is about three hundred lines with no codec in it."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert a WebP to JPG"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            The pictures the web saves, in the format everything still
+            takes &mdash; converted on your own machine, with the see-through
+            parts filled in a colour you pick."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment.
+[words]
+plural = "pictures"
+choose = "a picture"
+analytics_extra = """, and nothing about
+  what is in them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your pictures have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your
+      files could be collected at, and nothing in the code that would send them
+      if there were."""
+
+[[privacy]]
+title = "There is no decoder to ship, which is why there is no server."
+body = """
+ Every browser
+      released since 2020 decodes WebP, and every one of them has written JPEG
+      since long before that. So this tool carries no engine, downloads nothing
+      on first use, and has no reason to exist on a server &mdash; which is
+      exactly what the converters that ask you to upload are not telling you.
+      The one tool here that does carry a codec is the
+      <a href="../heic-to-jpg/">HEIC converter</a>, because HEIC genuinely is a
+      format no browser but Safari will open, and it says so on its own page."""
+
+[[privacy]]
+title = "The see-through parts, and what goes behind them."
+body = """
+ A WebP can be
+      transparent and a JPEG cannot &mdash; there is no alpha channel in the
+      format, so something has to go underneath. This page asks which colour and
+      defaults to white, and it only asks when a file on the list actually has
+      transparency in it, which is read off the decoded pixels rather than
+      guessed from the format. A converter that does not ask is not keeping your
+      transparency; it is choosing black for you, which is where the
+      black-background logo comes from."""
+
+[[privacy]]
+title = "What a canvas does not carry across."
+body = """
+ The picture is
+      decoded and drawn onto a canvas, and a canvas holds pixels and nothing
+      else, so EXIF, ICC colour profiles, XMP and any copyright block do not
+      survive the trip. For most people that is a bonus and for some it is a
+      loss, so it is said here rather than discovered later. If what you wanted
+      was the metadata, the <a href="../exif-editor/">EXIF Viewer &amp;
+      Remover</a> reads and writes it without re-compressing anything."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line
+      that reads, decodes or writes a file is served from this origin and listed
+      in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Load the page once and disconnect from the
+      network, and the tool is unchanged. That is the simplest proof of all: a
+      converter that sent your pictures away to be converted could not possibly
+      manage it."""
+
+[[howto]]
+title = "Choose your WebP files."
+body = """
+ Drop them onto the picker or select
+      them by hand. Every file is identified by its first bytes rather than by
+      its name, so a WebP that arrived called &ldquo;.jpg&rdquo; still works
+      &mdash; and a file that is genuinely a PNG is turned away with a line
+      saying what it actually is, rather than converted into a copy of
+      itself."""
+
+[[howto]]
+title = "Read what each row says about the file."
+body = """
+ The list names the size and
+      the dimensions, and then the three things worth knowing before you convert:
+      whether the WebP is lossless, whether it has see-through parts, and whether
+      it is animated. Each one only appears when it is true of that file."""
+
+[[howto]]
+title = "Set the quality, and the colour behind the transparency."
+body = """
+ The
+      slider starts at 92, which is where a photograph is hard to tell from the
+      original. The colour field appears only if something on the list is
+      see-through, because a JPEG has to put something there."""
+
+[[howto]]
+title = "Press &ldquo;Convert&rdquo;, and download."
+body = """
+ Each result says what it
+      came from, what it weighs now and how that compares, and carries a note if
+      its transparency was filled in or if only the first frame of an animation
+      was written. One file gives you a download button; several give you a zip
+      as well."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree.
+
+[[faq]]
+q = "Is my picture uploaded anywhere?"
+a = """
+        No. The file is read, decoded and written by your own browser on your own
+        hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. Unlike the HEIC converter next door,
+        there is not even a decoder to load first: your browser already had
+        one."""
+
+[[faq]]
+q = "Why would I convert a WebP to a JPG at all?"
+a = """
+        Because the software you are handing it to has not caught up. WebP is
+        what a browser saves when you right-click a picture on the web, and it is
+        excellent at being small &mdash; but plenty of things still will not take
+        one: older versions of Office and Photoshop, some print shops, a good
+        number of upload forms that check the extension, most e-readers, and a
+        surprising amount of software that came with a camera or a printer. A JPG
+        is the format that has never been turned away."""
+
+[[faq]]
+q = "What happens to the transparent parts?"
+a = """
+        They are filled with a colour you choose, and the page tells you it is
+        going to before you press anything. A JPEG has no alpha channel, so there
+        is no version of this where the transparency survives &mdash; the only
+        question is what goes underneath, and the honest answer is that it is
+        your decision rather than the converter's. White is the default because
+        it is right for a logo going into a document. If you need the
+        transparency kept, keep the WebP, or convert it to a PNG with the
+        <a href="../compress-image/">Image Compressor</a>, which writes PNG and
+        WebP as well as JPEG."""
+
+[[faq]]
+q = "Can it convert an animated WebP?"
+a = """
+        It converts the first frame, and it says so on the row before you press
+        anything and again on the result afterwards. A JPEG holds one picture, so
+        there is nothing else it could do with the other frames. If what you want
+        is every frame as a separate file, or the animation as a video, the tools
+        for that are <a href="../split-gif/">Split a GIF</a> and
+        <a href="../gif-to-mp4/">GIF to MP4</a> once the animation is a GIF."""
+
+[[faq]]
+q = "Is the picture re-compressed?"
+a = """
+        Yes, and it has to be: WebP and JPEG are different codecs, so there is no
+        way to move from one to the other without decoding the picture and
+        encoding it again. That is true of every WebP-to-JPG converter there is,
+        including the ones that ask you to upload. What you control is how much
+        it costs &mdash; the slider defaults to 92, where a photograph is very
+        hard to tell from the original. A lossless WebP is the case worth knowing
+        about: the JPEG made from one will be the first lossy copy that picture
+        has ever had, and the row on the list says when a file is lossless so
+        that is not a surprise."""
+
+[[faq]]
+q = "Will the JPG be bigger than the WebP?"
+a = """
+        Often, yes, and the result says by how much rather than hiding it. WebP
+        is simply a better codec than JPEG at the same visual quality &mdash;
+        that is why the web moved to it &mdash; so converting the other way
+        usually costs you some size back. You are trading bytes for
+        compatibility, which is a perfectly good trade when the thing on the
+        other end will not take a WebP. If the size matters afterwards, the
+        <a href="../compress-image/">Image Compressor</a> will take the JPEG down
+        to a figure you name."""
+
+[[faq]]
+q = "Does it keep the date, camera and location?"
+a = """
+        No. The picture is drawn onto a canvas and a canvas holds pixels and
+        nothing else, so EXIF, GPS, colour profiles and XMP are all left behind.
+        In practice most WebPs on the web have already had that stripped, and for
+        anybody converting a picture to send somewhere it is usually the outcome
+        they wanted. If you need to see or edit what a file carries, the
+        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> does that without
+        re-compressing the picture."""
+
+[[faq]]
+q = "Can it do a whole folder at once?"
+a = """
+        Yes. Drop in as many as you like &mdash; there is no limit on the number
+        or the size, because there is no server paying for them. Each one gets
+        its own row and its own download, and two or more give you a zip of the
+        lot. Files that share a name get a number added before the extension, so
+        nothing quietly replaces anything else in the archive."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your pictures."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working exactly as before. That is also the strongest proof available
+        that nothing is being uploaded: a converter that sent your files away to
+        be processed would stop the moment you unplugged, and this one does
+        not."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert WebP images to JPG in the browser. The browser's own decoder reads the WebP and its own encoder writes the JPEG, so nothing is uploaded and no codec is downloaded. Transparency is filled with a colour of your choosing, animated WebP files give their first frame, and batches come back as a zip."
+features = [
+  "Converts WebP to JPEG using the decoder the browser already has",
+  "Nothing is uploaded, and the tool works with the network unplugged",
+  "Asks which colour goes behind transparency, and only when a file has any",
+  "Says which files are lossless, see-through or animated before converting",
+  "Identifies files by their contents, so a WebP named .jpg still works",
+  "Quality slider, defaulting to 92",
+  "Reports what each file weighed before and after",
+  "Batches, with all results in one zip",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+# Deliberately wider than ".webp". A WebP that arrived called ".jpg" is one of
+# the commonest reasons somebody is on this page, and an accept list of the one
+# extension would hide that file in the browser's own dialog. Every file is
+# identified by its first bytes anyway, and anything that is not a WebP is
+# refused with a message saying what it actually is.
+accept = "image/*,.webp"
+multiple = true
+title = "Drop WebP pictures here"
+hint = "or click to browse &mdash; .webp files, whatever they happen to be named"
+# Two files, drawn in the page: a photograph and a transparent mark. The second
+# is what makes the background colour appear, which is the half of this tool
+# worth demonstrating. See src/example.js.
+example = true

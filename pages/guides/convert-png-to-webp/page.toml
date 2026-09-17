@@ -1,0 +1,40 @@
+#
+# Guide: the one decision, and how to make it.
+#
+# Unlike the two JPEG converters' guides, the reader here usually is not stuck.
+# They have working PNGs and want them smaller - for a website, usually - so
+# this page is about a choice rather than a rescue. The choice is lossless
+# against lossy, it has a right answer that depends entirely on what is in the
+# picture, and nobody explains it: every other page on this subject says "WebP
+# is smaller" and stops.
+#
+# The second half is the honesty the tool's own page carries: "lossless" is
+# read back out of the written file rather than claimed, and it has a measured
+# footnote about half-transparent pixels.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-png-to-webp"
+kind = "guide"
+nav = "PNG to WebP"
+group = "doing-the-job"
+tool = "png-to-webp"
+
+title = "How to Convert PNG to WebP (Lossless or Not)"
+description = "WebP is smaller than PNG even without losing anything - and far smaller if you let it. Which of the two you want depends on what is in the picture. What each mode does, what it saves, and how to convert without uploading."
+
+heading = "The same picture, a third smaller, with the transparency intact"
+lede = """
+    WebP's lossless mode keeps every pixel a PNG had and still comes out
+    smaller. Its lossy mode takes a photograph to a tenth of the size. Which one
+    you want depends entirely on what is in the picture, and this is how to
+    tell."""
+
+updated = "17 September 2026"
+published = "2026-09-17"
+lastmod = "2026-09-17"
+
+og_title = "How to convert PNG to WebP"
+og_description = "Lossless or lossy, what each one saves, and why the transparency survives either way."
+og_image_alt = "abox.tools - tools that never touch a server"
