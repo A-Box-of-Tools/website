@@ -46,6 +46,8 @@ export const ENDONYMS = {
   'country.au': 'Australia',
   'country.in': 'भारत',
   'country.cn': '中国',
+  'country.kr': '대한민국',
+  'country.nz': 'New Zealand',
   'country.jp': '日本',
 };
 
@@ -168,5 +170,21 @@ export const SOURCES = {
     authority: 'Ministry of Foreign Affairs of Japan',
     document: 'Passport photograph standards',
     checked: '2026-08-20',
+  },
+  'kr-passport': {
+    native: '여권',
+    authority: '외교부 (Ministry of Foreign Affairs)',
+    document: '여권안내 — 여권사진 규격 안내 <2022. 10. 개정>',
+    checked: '2026-09-17',
+  },
+  'sg-passport': {
+    authority: 'Immigration & Checkpoints Authority',
+    document: 'ica.gov.sg, Photo Guidelines',
+    checked: '2026-09-17',
+  },
+  'nz-passport': {
+    authority: 'Department of Internal Affairs',
+    document: 'passports.govt.nz, Passport photos',
+    checked: '2026-09-17',
   },
 };
