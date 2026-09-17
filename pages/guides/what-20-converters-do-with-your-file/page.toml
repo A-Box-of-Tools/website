@@ -1,0 +1,43 @@
+#
+# Guide: what 20 online converters do with your file.
+#
+# The measured companion to is-it-safe-to-upload-files, which sets out four
+# checks a reader can run and then asks them to go and run them. This one runs
+# the second of those checks - watch the network - against twenty named sites
+# and publishes the numbers, because "most converters upload your file" was an
+# assertion this site kept making and had never actually counted.
+#
+# Everything in the table was measured in a browser on one afternoon and every
+# number in it is a byte count taken off the wire, not an estimate. The dates
+# matter more here than on any other page: a site can change its uploader or
+# its policy the week after, so the page says when it was measured, says what
+# the method could not reach, and tells the reader how to redo it rather than
+# asking to be believed. That is also why the method section is long enough to
+# be repeated by somebody who does not trust us.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/what-20-converters-do-with-your-file"
+kind = "guide"
+nav = "What 20 converters do with your file"
+group = "before-you-upload"
+
+title = "What 20 Online Converters Do With Your File"
+description = "We sent the same file to 20 free online converters and watched the network. 19 uploaded it. Which ones, where to, how soon, and what their privacy policies promise."
+
+heading = "What 20 online converters do with your file"
+lede = """
+    We handed the same 542&nbsp;KB image to twenty free online converters and
+    measured every byte that left the browser. Nineteen of them sent it to a
+    server. Eleven sent it before we pressed a single button, and every result
+    file we went looking for afterwards was still sitting on a public
+    address."""
+
+updated = "17 September 2026"
+published = "2026-09-17"
+lastmod = "2026-09-17"
+
+og_title = "What 20 online converters do with your file"
+og_description = "The same file, twenty converters, every byte measured. 19 of 20 uploaded it - and 11 did it before the Convert button was pressed."
+og_image_alt = "abox.tools - tools that never touch a server"
