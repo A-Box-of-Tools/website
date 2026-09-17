@@ -101,6 +101,48 @@ class Lists(unittest.TestCase):
                          '- **Name the outcome.** Say the number.\n')
 
 
+class Tables(unittest.TestCase):
+    """A table is the one block whose twin is worth more than its prose.
+
+    The measurements guide is a table and nothing else - a reader who takes
+    the Markdown instead of the page is taking the data - so the cells have
+    to stay in their columns. Before this, `th` and `td` were transparent and
+    a row arrived as `SquooshNo0nothing to keep`, which is not a worse table,
+    it is not a table.
+    """
+
+    def test_a_table_becomes_a_pipe_table(self):
+        html = ('<table><thead><tr><th>Site</th><th>Sent</th></tr></thead>'
+                '<tbody><tr><td>Squoosh</td><td>No</td></tr>'
+                '<tr><td>TinyPNG</td><td>Yes</td></tr></tbody></table>')
+        self.assertEqual(md(html),
+                         '| Site | Sent |\n'
+                         '| --- | --- |\n'
+                         '| Squoosh | No |\n'
+                         '| TinyPNG | Yes |\n')
+
+    def test_the_first_row_heads_a_table_with_no_thead(self):
+        html = ('<table><tr><td>a</td><td>b</td></tr>'
+                '<tr><td>c</td><td>d</td></tr></table>')
+        self.assertEqual(md(html),
+                         '| a | b |\n| --- | --- |\n| c | d |\n')
+
+    def test_inline_markup_survives_inside_a_cell(self):
+        html = ('<table><tr><th>Where</th></tr>'
+                '<tr><td><code>a.example/b</code></td></tr></table>')
+        self.assertEqual(md(html),
+                         '| Where |\n| --- |\n| `a.example/b` |\n')
+
+    def test_a_pipe_in_a_cell_is_escaped(self):
+        html = '<table><tr><td>a|b</td></tr></table>'
+        self.assertEqual(md(html), '| a\\|b |\n| --- |\n')
+
+    def test_a_table_sits_between_paragraphs(self):
+        html = '<p>Before.</p><table><tr><td>x</td></tr></table><p>After.</p>'
+        self.assertEqual(md(html),
+                         'Before.\n\n| x |\n| --- |\n\nAfter.\n')
+
+
 class Inline(unittest.TestCase):
     def test_links_are_absolute(self):
         html = '<p>Open the <a href="../../compress-image/">compressor</a>.</p>'

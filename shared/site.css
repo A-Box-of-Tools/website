@@ -760,11 +760,77 @@ code {
   background: var(--surface);
 }
 
-.prose figure.shot figcaption {
+.prose figure.shot figcaption,
+.prose figure.data figcaption {
   margin-top: 0.5rem;
   font-size: 0.85rem;
   line-height: 1.5;
   color: var(--text-dim);
+}
+
+/* A table of measurements in a guide.
+
+   It breaks out of the 68ch column exactly as figure.shot above does, and for
+   the same reason and with the same custom property: 68ch is a comfortable
+   line of prose and a hopeless width for five columns, which arrive as a
+   stack of wrapped fragments with a word on each line. Both halves of the
+   width are one property because the day they disagree is the day the table
+   hangs off the side of a narrow window.
+
+   Below that width it scrolls sideways inside its own box rather than making
+   the article do it - the same bargain `pre` strikes a few rules up. A table
+   is the one thing on this site that genuinely cannot be reflowed to a phone:
+   the columns only mean anything read against each other, so a row that wraps
+   into six lines has lost the comparison the table was drawn to make. */
+.prose figure.data {
+  --shot: min(52rem, calc(100vw - 2rem));
+  width: var(--shot);
+  margin: 1.5rem 0 1.6rem;
+  margin-inline-start: min(0px, calc((100% - var(--shot)) / 2));
+}
+
+.prose figure.data .scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.prose figure.data table {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.prose figure.data th,
+.prose figure.data td {
+  padding: 0.5rem 0.7rem;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose figure.data thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.prose figure.data tbody tr:last-child td { border-bottom: 0; }
+
+/* The endpoints are the evidence, so they are set to be read rather than
+   skimmed past: a URL wraps anywhere, because these are long and there is no
+   sensible break in one, and it is authored left-to-right whatever language
+   is reading the row around it. */
+.prose figure.data td code {
+  font-size: 0.95em;
+  overflow-wrap: anywhere;
+  direction: ltr;
+  unicode-bidi: embed;
 }
 
 /* ---- footer ------------------------------------------------------------ */

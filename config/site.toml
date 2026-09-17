@@ -608,6 +608,7 @@ name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."
 order = [
   "is-it-safe-to-upload-files",
+  "what-20-converters-do-with-your-file",
   "is-it-safe-to-scan-a-qr-code",
   "is-it-safe-to-upload-a-photo-of-your-id",
   "is-it-safe-to-upload-a-bank-statement",
