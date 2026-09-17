@@ -1,0 +1,143 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose your WebP files</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">Remove all</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the two decisions.
+
+    A JPEG has no alpha channel, so the colour behind the see-through parts is
+    not an option this tool can leave open: something goes there whatever
+    happens. The field appears only when a file on the list actually has
+    transparency in it, which is read off the decoded pixels rather than
+    assumed from the format - plenty of WebPs are fully opaque, and a colour
+    picker that changes nothing is worse than no colour picker.
+  -->
+  <section class="card" id="settings-card" inert>
+    <h2><span class="step">2</span> Choose the quality</h2>
+
+    <p class="card-lede">
+      WebP and JPEG are different codecs, so the picture has to be decoded and
+      encoded again &mdash; there is no way to move between them without it.
+      What you choose here is how much that costs.
+    </p>
+
+    <div class="settings">
+      <label class="field" for="quality">
+        <span>JPEG quality &mdash; <output id="quality-value" for="quality">92</output></span>
+        <span class="field-note">92 is where a photograph is hard to tell from
+          the original. Below about 75 the edges start to show it.</span>
+      </label>
+      <input type="range" id="quality" min="40" max="100" step="1" value="92">
+
+      <div id="background-row" class="background-row" hidden>
+        <label class="field" for="background">
+          <span>Behind the see-through parts</span>
+          <span id="background-note" class="field-note"></span>
+        </label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Convert them</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Convert to JPG</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>Download all as a zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 file</span>
+    <span data-phrase="chosen.many">{count} files</span>
+    <span data-phrase="row.remove">Remove {name}</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.lossless">Lossless WebP</span>
+    <span data-phrase="file.animated">Animated &mdash; the first frame is what a JPEG can hold</span>
+    <span data-phrase="file.alpha">Has see-through parts</span>
+    <span data-phrase="read.notwebp">{name} is not a WebP &mdash; it is {found}. This tool converts WebP files.</span>
+    <span data-phrase="read.unknown">{name} is not a WebP, and its first bytes match no picture format this page knows.</span>
+    <span data-phrase="read.failed">{name} could not be opened: {why}</span>
+    <span data-phrase="found.png">a PNG</span>
+    <span data-phrase="found.jpeg">a JPEG</span>
+    <span data-phrase="found.avif">an AVIF</span>
+    <span data-phrase="found.gif">a GIF</span>
+    <span data-phrase="found.bmp">a BMP</span>
+    <span data-phrase="background.some">One of these has see-through parts and a JPEG cannot keep them.
+      Pick the colour that goes underneath.</span>
+    <span data-phrase="background.none">Nothing on the list has see-through parts, so no colour is needed.</span>
+    <span data-phrase="settings.one">One WebP at quality {quality}.</span>
+    <span data-phrase="settings.many">{count} WebP files at quality {quality}.</span>
+    <span data-phrase="settings.none">Choose a WebP above and this will say what will be written.</span>
+    <span data-phrase="run.one">Convert to JPG</span>
+    <span data-phrase="run.many">Convert {count} files to JPG</span>
+    <span data-phrase="progress.each">Converting {name}&hellip;</span>
+    <span data-phrase="progress.done">Done.</span>
+    <span data-phrase="run.failed">This run failed: {detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count} JPEGs written, {size} in total.</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">From {name} &mdash; {dimensions}, {was} before.</span>
+    <span data-phrase="result.flattened">The see-through parts were filled with {colour}.</span>
+    <span data-phrase="result.firstframe">This WebP is animated; the first frame is what was written.</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="change.smaller">{percent}% smaller</span>
+    <span data-phrase="change.larger">{percent}% larger</span>
+    <span data-phrase="change.same">the same size</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">the browser would not decode it</span>
+    <span data-phrase="error.encode">the browser would not write a {format}</span>
+    <span data-phrase="error.wrongtype">the browser handed back something that was not a {format}</span>
+    <span data-phrase="error.broke">Something went wrong: {detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">your files have gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a picture or a byte of one.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a picture or a byte of one.</span>
+  </div>
+</main>

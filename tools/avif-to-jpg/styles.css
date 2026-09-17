@@ -1,0 +1,123 @@
+/*
+  The rules only this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the cards, the buttons and the drop zone - is
+  shared/css/tool-frame.css, which the build puts in front of this file,
+  followed by the shared parts named in css_parts: the file list, the form
+  controls, the progress bar, the results and the error line.
+*/
+
+/* A batch can turn several files away at once, and each refusal is its own
+   line. Left to grow, the list pushes the rest of the page off the screen. */
+.error {
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+/* ------------------------------------------------------------- the file list */
+
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.count-label {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.file-thumb { object-fit: cover; }
+
+/*
+  The checkerboard is worth a false positive and not worth a false negative, so
+  it is put on by main.js only for a file that really has transparency - the
+  same `hasAlpha` answer the rest of the page is built on. Showing it behind an
+  opaque photograph would be claiming see-through parts on the one page whose
+  whole subject is whether a file has any.
+
+  `contain` comes with it: a transparent file here is nearly always a logo, and
+  a logo cropped to a square tile loses the half of it that says what the
+  company is called.
+*/
+.file-thumb.see-through {
+  object-fit: contain;
+  padding: 3px;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #d2d6dc 25%, transparent 25%, transparent 75%, #d2d6dc 75%),
+    linear-gradient(45deg, #d2d6dc 25%, transparent 25%, transparent 75%, #d2d6dc 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 5px 5px;
+}
+
+.file-main { padding: 0.6rem 0.2rem 0.6rem 0; }
+
+/* The one thing worth knowing about the file beyond its name and size, and
+   only when it is true of that file: that a JPEG is about to lose it. */
+.file-out {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+/* -------------------------------------------------------------- the settings */
+
+.background-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.background-row .field { flex: 1; min-width: 0; }
+
+.background-row input[type="color"] {
+  flex: none;
+  width: 3.2rem;
+  height: 2.2rem;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------- the results */
+
+.result-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--ok) 6%, var(--surface));
+}
+
+.result-text { min-width: 0; flex: 1 1 22rem; }
+
+.result-headline {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-detail {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 68ch;
+}

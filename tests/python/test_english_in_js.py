@@ -57,6 +57,7 @@ TOOLS = ROOT / 'tools'
 # Sentences left in each tool's JavaScript. Lower these as they are moved into
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
+    'avif-to-jpg': 0,
     'base64': 0,
     # Not one of these is a sentence. Six are fragments of the SVG the three
     # mock-ups are written out of, one is a canvas font shorthand, one is the
@@ -120,6 +121,7 @@ BASELINE = {
     'json-formatter': 3,
     'merge-pdf': 3,
     'password-generator': 8,
+    'png-to-webp': 0,
     # The two left are a symbology's own name and a line of SVG markup.
     'pdf-to-csv': 2,
     'protect-pdf': 0,
@@ -159,6 +161,7 @@ BASELINE = {
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
     'watermark-pdf': 0,
+    'webp-to-jpg': 0,
     'xml-formatter': 0,
     # Both are inside the sample document, not the interface: the comment
     # the YAML example carries so that losing it can be seen, and a value
