@@ -84,9 +84,12 @@ one structural difference between this tool and the two that write JPEG, where
 `encode()` paints a background first for any format whose `FORMATS` entry says
 `alpha: false` and the caller cannot turn it off. Here that branch never runs.
 
-The row still reports transparency — `hasAlpha()` decodes and samples the
-alpha channel — but only to say that it survived, which is the thing people
-converting a logo are actually worried about.
+The row still reports transparency — `hasAlpha()` decodes and walks the alpha
+channel — but only to say that it survived, which is the thing people
+converting a logo are actually worried about. That walk is exact and runs on a
+band-sized canvas; the module explains why both halves of that had to be fixed,
+and the wrong answer in each case was "this has transparency", which here would
+have qualified a lossless claim that needed no qualifying.
 
 ## The example makes the argument
 

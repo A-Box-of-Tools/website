@@ -41,9 +41,16 @@ background now" complaint about every other converter comes from.
 The colour field appears only when a file on the list actually has
 transparency, and that is a question about the *pixels*, not the container:
 `webpFacts()` reads the `ALPH` chunk and the `VP8X` alpha flag, and then
-`hasAlpha()` decodes and samples the alpha channel to confirm it. A WebP can
+`hasAlpha()` decodes and walks the alpha channel to confirm it. A WebP can
 perfectly well carry an alpha channel that is opaque corner to corner, and
 offering a matte colour for one is a control that does nothing.
+
+That walk is exact rather than sampled, and on a band-sized canvas rather than
+a picture-sized one. Both were bugs found by measuring: scaling into a 256-pixel
+box averages a few thousand nearly-opaque pixels back to solid (and answered
+differently through `createImageBitmap` than through an `<img>`), and a canvas
+the size of a 400-megapixel picture is past what a browser will allocate, so it
+silently reads back as entirely transparent. See the note in the module.
 
 **More than one frame.** An animated WebP decodes to its first frame through
 `createImageBitmap`, which is the only thing a still format could be given.
