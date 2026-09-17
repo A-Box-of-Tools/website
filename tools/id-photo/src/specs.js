@@ -34,13 +34,20 @@
  * FOURTH, THE WORDS ARE KEYS AND THE CITATION IS NOT. `country`, `document`,
  * the upload's `label` and every note are this site's own writing about
  * somebody else's numbers, and this file is copied byte for byte into fifteen
- * languages - so they are phrase keys and main.js resolves them. `source` is
- * left as it is published: an authority's name and a document's title are what
- * a reader searches for to check the transcription, and translating them is
- * how a citation stops being one. The two entries that cite nothing - common
- * practice, and the figures you typed in yourself - are keys like the rest of
- * the prose, because there is no publication there to be faithful to.
+ * languages - so they are phrase keys and main.js resolves them. A citation is
+ * the other thing: an authority's name and a document's title are what a reader
+ * searches for to check the transcription, and translating them is how a
+ * citation stops being one. Those live in sources.js, keyed by the same ids and
+ * kept in the same order, and are attached to this table at the bottom of this
+ * file so that `spec.source` is still just a field. They are a separate file
+ * because they are a separate kind of writing, and because a table of them
+ * fifty entries long would otherwise be most of what a reader of this one saw.
+ * The two rules that cite nothing - common practice, and the figures you typed
+ * in yourself - keep their source here, as keys like the rest of the prose,
+ * because there is no publication there to be faithful to.
  */
+
+import { ENDONYMS, SOURCES } from './sources.js';
 
 /* ------------------------------------------------------------ backgrounds */
 
@@ -114,7 +121,10 @@ export const ICAO_EYE = band(0.50, 0.60);
  * @property {string} background    a key of BACKGROUNDS
  * @property {Digital|null} digital the web form's rule, where there is one
  * @property {string[]} notes       shown under the specification, verbatim
+ * @property {string|null} native   the document's own name for itself, where
+ *   that is a different word from the one this site prints. From sources.js.
  * @property {{authority: string, document: string, checked: string}} source
+ *   from sources.js, except on the two rules that cite nothing
  *
  * @typedef {object} Digital
  * @property {string} label
@@ -124,8 +134,12 @@ export const ICAO_EYE = band(0.50, 0.60);
  * @property {string} format        a MIME type
  */
 
-/** @type {Spec[]} */
-export const SPECS = [
+/**
+ * The rules themselves. Not the export: see SPECS at the foot of the file.
+ *
+ * @type {Omit<Spec, 'native'>[]}
+ */
+const RULES = [
   {
     id: 'icao',
     country: 'country.icao',
@@ -143,11 +157,6 @@ export const SPECS = [
       format: 'image/jpeg',
     },
     notes: ['spec.icao.note1', 'spec.icao.note2'],
-    source: {
-      authority: 'International Civil Aviation Organization',
-      document: 'Doc 9303, Machine Readable Travel Documents, Part 3',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -171,11 +180,6 @@ export const SPECS = [
       'spec.us-passport.note2',
       'spec.us-passport.note3',
     ],
-    source: {
-      authority: 'U.S. Department of State',
-      document: 'travel.state.gov, Photo Requirements',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -195,11 +199,6 @@ export const SPECS = [
       format: 'image/jpeg',
     },
     notes: ['spec.us-dv.note1', 'spec.us-dv.note2'],
-    source: {
-      authority: 'U.S. Department of State',
-      document: 'dvprogram.state.gov, Photo Requirements',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -219,11 +218,6 @@ export const SPECS = [
       format: 'image/jpeg',
     },
     notes: ['spec.uk-passport.note1', 'spec.uk-passport.note2'],
-    source: {
-      authority: 'HM Passport Office',
-      document: 'gov.uk, Passport photo requirements',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -237,11 +231,6 @@ export const SPECS = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.schengen.note1', 'spec.schengen.note2'],
-    source: {
-      authority: 'European Commission',
-      document: 'Visa Code, common photograph standards (ICAO-aligned)',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -255,11 +244,6 @@ export const SPECS = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.de-passport.note1', 'spec.de-passport.note2'],
-    source: {
-      authority: 'Bundesministerium des Innern',
-      document: 'Passbildschablone / biometric photo template',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -277,11 +261,6 @@ export const SPECS = [
       'spec.ca-passport.note2',
       'spec.ca-passport.note3',
     ],
-    source: {
-      authority: 'Immigration, Refugees and Citizenship Canada',
-      document: 'canada.ca, Photo requirements for passports',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -295,11 +274,6 @@ export const SPECS = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.au-passport.note1', 'spec.au-passport.note2'],
-    source: {
-      authority: 'Australian Passport Office',
-      document: 'passports.gov.au, Photo guidelines',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -313,11 +287,6 @@ export const SPECS = [
     background: 'white',
     digital: null,
     notes: ['spec.in-passport.note1', 'spec.in-passport.note2'],
-    source: {
-      authority: 'Ministry of External Affairs',
-      document: 'Passport Seva, photo specifications',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -359,11 +328,6 @@ export const SPECS = [
       'spec.in-exam-photo.note2',
       'spec.in-exam-photo.note3',
     ],
-    source: {
-      authority: 'Staff Selection Commission / UPSC',
-      document: 'Notice of Examination, photograph and signature specifications',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -387,11 +351,6 @@ export const SPECS = [
       'spec.in-exam-signature.note2',
       'spec.in-exam-signature.note3',
     ],
-    source: {
-      authority: 'Staff Selection Commission / UPSC',
-      document: 'Notice of Examination, photograph and signature specifications',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -411,11 +370,6 @@ export const SPECS = [
       format: 'image/jpeg',
     },
     notes: ['spec.cn-passport.note1', 'spec.cn-passport.note2'],
-    source: {
-      authority: 'National Immigration Administration',
-      document: 'Published photograph standard for exit and entry documents',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -429,11 +383,6 @@ export const SPECS = [
     background: 'off-white',
     digital: null,
     notes: ['spec.jp-passport.note1', 'spec.jp-passport.note2'],
-    source: {
-      authority: 'Ministry of Foreign Affairs of Japan',
-      document: 'Passport photograph standards',
-      checked: '2026-08-20',
-    },
   },
 
   {
@@ -461,6 +410,23 @@ export const SPECS = [
   },
 ];
 
+/**
+ * The rulebook, with each rule's citation and native name attached.
+ *
+ * Attached here rather than looked up at the call site so that `spec.source` is
+ * a field exactly as it always was: everything downstream, and every test, goes
+ * on reading it without knowing the file was ever split. A rule that cites
+ * nothing brought its own `source` with it and keeps it.
+ *
+ * @type {Spec[]}
+ */
+export const SPECS = RULES.map((rule) => {
+  const cited = SOURCES[rule.id];
+  if (!cited) return { ...rule, native: null };
+  const { native = null, ...source } = cited;
+  return { ...rule, native, source };
+});
+
 /** @type {Map<string, Spec>} */
 const BY_ID = new Map(SPECS.map((spec) => [spec.id, spec]));
 
@@ -484,6 +450,28 @@ export function specsByCountry() {
   }
   return groups;
 }
+
+/**
+ * A name, and the name the thing has for itself where that is a different word.
+ *
+ * The guard is not a nicety. Without it the German page reads "Deutschland
+ * (Deutschland)" and the Chinese one "中国 (中国)": these two names are the
+ * same word in the language they belong to, and differ only from the English
+ * page's reading of them. Containment rather than equality, because the page
+ * can also have said it already as part of something longer - China's rule
+ * covers the passport and the visa, and "护照和签证 (护照)" is the page
+ * translating a word into itself. One phrase key carries every pairing.
+ */
+const withNative = (name, native, t) => (
+  native && !name.includes(native) ? t('name.native', { name, native }) : name);
+
+/** "Germany (Deutschland)", and plain "Deutschland" on the German page. */
+export const countryLabel = (country, t) => (
+  withNative(t(country), ENDONYMS[country], t));
+
+/** "Passport (旅券（パスポート）)", and plain "旅券（パスポート）" in Japanese. */
+export const documentLabel = (spec, t) => (
+  withNative(t(spec.document), spec.native, t));
 
 /**
  * The background a rule asks for, in the reader's language.

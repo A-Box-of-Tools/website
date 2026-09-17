@@ -32,8 +32,8 @@ live_hint = """
 
 read_first = """
 , <code>src/specs.js</code> für das Regelwerk, also die
-      veröffentlichten Zahlen jedes Landes samt Behörde und Datum, an dem sie
-      abgelesen wurden, <code>src/detect.js</code> dafür, wie die vier Punkte gefunden werden &mdash; eine Kontur und zwei dunkle Flecken, ohne jedes Modell &mdash;,
+      veröffentlichten Zahlen jedes Landes, <code>src/sources.js</code> für Behörde
+      und Datum hinter jeder einzelnen, <code>src/detect.js</code> dafür, wie die vier Punkte gefunden werden &mdash; eine Kontur und zwei dunkle Flecken, ohne jedes Modell &mdash;,
       <code>src/geometry.js</code> für die Rechnung, die aus vier
       gesetzten Punkten einen Zuschnitt macht, und <code>src/jpeg.js</code> für die
       zwei Kopfänderungen, die die Druckauflösung in die Datei schreiben und einen zu

@@ -70,8 +70,8 @@ live_hint = """
 
 read_first = """
 , <code>src/specs.js</code> for the rulebook &mdash;
-      every country's published figures, with the authority and the date each one
-      was read &mdash; <code>src/detect.js</code> for how the four
+      every country's published figures &mdash; <code>src/sources.js</code> for the
+      authority and the date behind each one, <code>src/detect.js</code> for how the four
       points are found &mdash; an outline and two dark patches, with no model in
       it anywhere &mdash; <code>src/geometry.js</code> for the arithmetic that turns
       those four points into a crop, and <code>src/jpeg.js</code> for the two
