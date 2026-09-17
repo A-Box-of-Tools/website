@@ -346,7 +346,7 @@ function renderSpec() {
   // that cite nothing are keys instead - see specs.js - and phrase() hands
   // back the eight real citations unchanged because it has no entry for them.
   el.specSource.textContent = spec.source.checked
-    ? phrase('source.line', {
+    ? phrase(spec.published === 'words' ? 'source.line.words' : 'source.line', {
       authority: phrase(spec.source.authority),
       document: phrase(spec.source.document),
       checked: spec.source.checked,

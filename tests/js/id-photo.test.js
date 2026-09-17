@@ -554,6 +554,17 @@ test('checkBackground: the right colour passes and a wrong one does not', () => 
 /** A flat wall of one colour, read the way the page reads one. */
 const wall = (hex) => readBackground(flatImage(hexToRgb(hex)), { stride: 1 });
 
+test('specs: a rule whose authority gave no numbers says so on the page', () => {
+  for (const spec of SPECS) {
+    if (spec.published !== 'words') continue;
+    assert.ok(spec.notes.includes('note.no-measurements'),
+      `${spec.id} took its figures from nowhere and does not say so. The `
+      + 'citation line alone would read as though they had been transcribed');
+    assert.ok(spec.head.advisory && spec.eye.advisory,
+      `${spec.id} shows a band nobody published as though it were a rule`);
+  }
+});
+
 test('checkBackground: a rule naming several colours passes on the nearest', () => {
   const several = backgroundOf(specById('nl-passport'), say);
   for (const hex of ['#ffffff', '#dcdcdc', '#cfdcea']) {
