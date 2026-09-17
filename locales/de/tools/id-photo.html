@@ -32,9 +32,27 @@
       einzelne stammt, mit der Seite ausgeliefert.
     </p>
 
-    <div class="option-row">
-      <label for="spec">Vorschrift</label>
-      <select id="spec"></select>
+    <div class="picker">
+      <div class="option-row">
+        <label for="country-filter">Land suchen</label>
+        <input type="search" id="country-filter" class="country-filter"
+               autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="option-row">
+        <label for="country">Land</label>
+        <select id="country"></select>
+      </div>
+
+      <p id="doc-label" class="doc-label">Dokument</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
     </div>
 
     <dl class="spec-facts" id="spec-facts"></dl>
@@ -353,6 +371,12 @@
       richten sich danach.</span>
     <span data-phrase="spec.custom.note2">Er beginnt mit der ICAO-Geometrie, weil ein Land, das oben nicht in der Liste steht,
       weit eher diese verwendet als irgendetwas anderes.</span>
+    <span data-phrase="filter.one">Ein Land passt.</span>
+    <span data-phrase="filter.count">{n} Länder passen.</span>
+    <span data-phrase="filter.none">Dazu passt nichts. In der Liste steht nur noch das Land, das Sie schon gewählt haben.</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Übliche Praxis</span>
     <span data-phrase="source.common.doc">Der Schreibwarenstandard &#x2066;35 x 45&#x2069; mm, keine veröffentlichte Vorschrift</span>

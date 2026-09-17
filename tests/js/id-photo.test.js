@@ -26,8 +26,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  BACKGROUNDS, ICAO_EYE, ICAO_HEAD, SPECS, backgroundOf, pixelLabel, portalBytes,
-  portalPixels, printLabel, specById, specsByCountry, trim, withCustom,
+  BACKGROUNDS, ICAO_EYE, ICAO_HEAD, SPECS, backgroundOf, countryLabel,
+  documentLabel, orderedCountries, pixelLabel, portalBytes, portalPixels,
+  printLabel, specById, specsByCountry, specsOf, trim, withCustom,
 } from '../../tools/id-photo/src/specs.js';
 import {
   checkBand, containIn, faceOf, fitFrame, frameAspect, guideLines, measure,
@@ -44,8 +45,8 @@ import {
   headerSegments, isJpeg, padTo, readComments, readDensity, setDensity,
 } from '../../tools/id-photo/src/jpeg.js';
 import {
-  bandText, centreText, outName, percent, readyText, resamplingText, statusClass,
-  stemOf, tiltText, verdictText,
+  bandText, centreText, docSize, outName, percent, readyText, resamplingText,
+  statusClass, stemOf, tiltText, verdictText,
 } from '../../tools/id-photo/src/files.js';
 
 import { JFIF_SEGMENT, ascii, concat, jpeg, segment } from './helpers.js';
@@ -141,6 +142,56 @@ test('specsByCountry: groups without losing or duplicating anything', () => {
   const flat = groups.flatMap((group) => group.specs.map((spec) => spec.id));
   assert.deepEqual(flat, SPECS.map((spec) => spec.id));
   assert.equal(new Set(groups.map((group) => group.country)).size, groups.length);
+});
+
+test('orderedCountries: the reader\'s own alphabet, with two places kept', () => {
+  // A collator that sorts on the key would hide the bug this is here for: the
+  // list has to come out in the order of the NAMES the page is showing.
+  const compare = (a, b) => a.localeCompare(b, 'en');
+  const groups = orderedCountries(say, compare);
+
+  assert.equal(groups[0].country, 'country.icao',
+    'the standard every rule below it varies is not first');
+  assert.equal(groups.at(-1).country, 'country.other',
+    '"anywhere else" is not last, which is the one thing it means');
+
+  const middle = groups.slice(1, -1).map((group) => group.label);
+  assert.deepEqual(middle, [...middle].sort(compare));
+
+  assert.deepEqual(
+    new Set(groups.map((group) => group.country)),
+    new Set(specsByCountry().map((group) => group.country)),
+    'a country was lost or invented on the way through');
+});
+
+test('specsOf: one country\'s documents, in the table\'s order', () => {
+  const indian = specsOf('country.in').map((spec) => spec.id);
+  assert.deepEqual(indian, SPECS.filter((spec) => spec.country === 'country.in')
+    .map((spec) => spec.id));
+  assert.ok(indian.length > 1, 'India has one document, so this proves nothing');
+  assert.deepEqual(specsOf('country.nowhere'), []);
+});
+
+test('countryLabel and documentLabel: the native name, once at most', () => {
+  // The reader's own language is what `say` stands in for here: it echoes the
+  // key back, so a name the page has already said is the key itself.
+  assert.equal(countryLabel('country.de', say), 'name.native country.de Deutschland');
+  assert.equal(countryLabel('country.icao', say), 'country.icao',
+    'a standard was given a name for itself');
+
+  // The guard is containment, not equality: a page whose reading of the
+  // document already holds the native word must not repeat it.
+  const said = (key) => (key === 'spec.cn-passport.doc' ? '护照和签证' : say(key));
+  assert.equal(documentLabel(specById('cn-passport'), said), '护照和签证');
+});
+
+test('docSize: the shape of the thing, and the pixels where a form wants them', () => {
+  assert.equal(docSize(specById('uk-passport'), say),
+    'doc.size.both doc.size.mm 35 45 doc.size.px 600 750');
+  assert.equal(docSize(specById('schengen'), say), 'doc.size.mm 35 45',
+    'a rule with no upload should not claim a pixel size');
+  assert.equal(docSize(specById('in-exam-photo'), say), 'doc.size.px 200 230',
+    'a rule with nothing to print should not claim a print size');
 });
 
 test('withCustom: applies the typed figures and never writes into the table', () => {

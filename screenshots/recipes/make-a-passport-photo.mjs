@@ -16,8 +16,12 @@ export const shots = [
     name: 'spec',
     clip: '#spec-card',
     run: async (k) => {
-      await k.wait('#spec');
-      await k.set('#spec', 'us-passport');
+      // A country, then one of its documents. The radios are built when the
+      // country changes, so the wait between the two is not padding.
+      await k.wait('#country');
+      await k.set('#country', 'country.us');
+      await k.wait('#doc-us-passport');
+      await k.click('#doc-us-passport');
       await k.settle(900);
     },
   },

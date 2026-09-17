@@ -7,8 +7,38 @@
  * plain functions on plain values, so the tests can check them.
  */
 
-import { trim } from './specs.js';
+import { portalPixels, trim } from './specs.js';
 import { ltr } from './shared/phrases.js';
+
+/**
+ * A rule's size in one short line, for the list of documents to choose from.
+ *
+ * Not printLabel: that sentence carries the resolution as well, and twelve of
+ * them stacked under a country is a wall rather than a list. What somebody
+ * choosing between a country's documents is comparing is the shape of the
+ * thing - 35 x 45 against 50 x 70 - and, where the rule is a web form's, the
+ * pixels instead.
+ *
+ * The keys are looked up rather than built. `doc.size.${kind}` would be a
+ * template literal containing the word "size", which is what the count in
+ * tests/python/test_english_in_js.py reads as a sentence.
+ */
+const SIZE_KEYS = { print: 'doc.size.mm', upload: 'doc.size.px', both: 'doc.size.both' };
+
+export function docSize(spec, t) {
+  const print = spec.print
+    ? t(SIZE_KEYS.print, {
+      width: trim(spec.print.widthMm),
+      height: trim(spec.print.heightMm),
+    })
+    : null;
+  const pixels = portalPixels(spec);
+  const upload = pixels
+    ? t(SIZE_KEYS.upload, { width: pixels.width, height: pixels.height })
+    : null;
+  if (print && upload) return t(SIZE_KEYS.both, { print, upload });
+  return print ?? upload ?? '';
+}
 
 /** A filename with its extension taken off, and nothing else changed. */
 export function stemOf(name) {

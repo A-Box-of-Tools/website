@@ -3,8 +3,9 @@
 import { ltr, phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  SPECS, backgroundOf, countryLabel, documentLabel, pixelLabel, portalBytes,
-  portalPixels, printLabel, specById, specsByCountry, trim, withCustom,
+  SPECS, backgroundOf, countryLabel, documentLabel, orderedCountries,
+  pixelLabel, portalBytes, portalPixels, printLabel, specById, specsOf, trim,
+  withCustom,
 } from './specs.js';
 import {
   fitFrame, frameAspect, guideLines, measure, passes, printPixels, resampling,
@@ -21,8 +22,8 @@ import { WORKING_EDGE, findMarks } from './detect.js';
 import { Cropper } from './cropper.js';
 import { Marks } from './marks.js';
 import {
-  bandText, centreText, outName, readyText, resamplingText, statusClass, stemOf,
-  tiltText, verdictText,
+  bandText, centreText, docSize, outName, readyText, resamplingText,
+  statusClass, stemOf, tiltText, verdictText,
 } from './files.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { makeExample } from './example.js';
@@ -38,7 +39,10 @@ const el = {
   clearPhoto: $('clear-photo'),
   loadError: $('load-error'),
 
-  specSelect: $('spec'),
+  countryFilter: $('country-filter'),
+  filterNote: $('filter-note'),
+  country: $('country'),
+  docList: $('doc-list'),
   specFacts: $('spec-facts'),
   specNotes: $('spec-notes'),
   specSource: $('spec-source'),
@@ -186,19 +190,92 @@ function currentSpec() {
   return withCustom(spec, values);
 }
 
-function buildSpecSelect() {
-  for (const group of specsByCountry()) {
-    const optgroup = document.createElement('optgroup');
-    optgroup.label = countryLabel(group.country, phrase);
-    for (const spec of group.specs) {
-      const option = document.createElement('option');
-      option.value = spec.id;
-      option.textContent = documentLabel(spec, phrase);
-      optgroup.append(option);
-    }
-    el.specSelect.append(optgroup);
-  }
-  el.specSelect.value = specId;
+/** The page's own language, for sorting country names by it. */
+const collator = new Intl.Collator(document.documentElement.lang || 'en');
+
+/** Diacritics folded away, so "turkiye" finds Türkiye. */
+const fold = (text) => text.normalize('NFD')
+  .replace(/\p{Diacritic}/gu, '').toLowerCase();
+
+/**
+ * The country list, narrowed to what was typed.
+ *
+ * Rebuilt rather than hidden option by option: `option[hidden]` is honoured
+ * unevenly and stays reachable from the keyboard in some builds, and thirty
+ * options is nothing to build again. The chosen country is emitted whatever the
+ * text says - a filter that quietly moved the selection would change which
+ * rule the crop box is obeying, silently, while somebody was still typing.
+ *
+ * Both the rendered name and the endonym are searched, so "Deutschland" finds
+ * Germany on the Chinese page and "护照" finds China on the English one.
+ */
+function buildCountrySelect() {
+  const want = fold(el.countryFilter.value.trim());
+  const chosen = currentSpec().country;
+  const countries = orderedCountries(phrase, collator.compare);
+  const matches = want
+    ? countries.filter((one) => fold(one.label).includes(want)
+      || one.specs.some((spec) => fold(documentLabel(spec, phrase)).includes(want)))
+    : countries;
+
+  const shown = matches.some((one) => one.country === chosen)
+    ? matches
+    : [...matches, ...countries.filter((one) => one.country === chosen)];
+
+  el.country.replaceChildren(...shown.map((one) => {
+    const option = document.createElement('option');
+    option.value = one.country;
+    option.textContent = one.label;
+    return option;
+  }));
+  el.country.value = chosen;
+
+  el.filterNote.textContent = want
+    ? phrase(matches.length === 0 ? 'filter.none'
+      : matches.length === 1 ? 'filter.one' : 'filter.count',
+    { n: matches.length })
+    : '';
+}
+
+/**
+ * One country's documents, as the radio rows under the chooser.
+ *
+ * A radio each rather than a second menu: a country's documents are two or
+ * three things worth reading side by side - 35 x 45 against 50 x 70 - and a
+ * menu hides the comparison behind a click. They share a name, so moving
+ * between them with the arrow keys is the browser's own behaviour.
+ */
+function buildDocList() {
+  const chosen = currentSpec().country;
+  el.docList.replaceChildren(...specsOf(chosen).map((spec) => {
+    const label = document.createElement('label');
+    label.className = 'mode doc-choice';
+
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'document';
+    radio.id = `doc-${spec.id}`;
+    radio.value = spec.id;
+    radio.checked = spec.id === specId;
+    radio.addEventListener('change', () => {
+      if (!radio.checked) return;
+      specId = spec.id;
+      renderSpec();
+      readBackgroundNow();
+    });
+
+    const name = document.createElement('strong');
+    name.textContent = documentLabel(spec, phrase);
+
+    const size = document.createElement('span');
+    size.className = 'doc-size';
+    size.textContent = docSize(spec, phrase);
+
+    const text = document.createElement('span');
+    text.append(name, size);
+    label.append(radio, text);
+    return label;
+  }));
 }
 
 function buildPaperSelect() {
@@ -793,8 +870,14 @@ el.readButton.addEventListener('click', readRules);
 el.make.addEventListener('click', run);
 el.printDpi.addEventListener('change', () => { renderSpec(); });
 el.paper.addEventListener('change', renderPaperNote);
-el.specSelect.addEventListener('change', () => {
-  specId = el.specSelect.value;
+el.countryFilter.addEventListener('input', buildCountrySelect);
+el.country.addEventListener('change', () => {
+  // Picking a country picks its first document, so the panel is never showing
+  // a country whose rule nothing is being measured against.
+  const [first] = specsOf(el.country.value);
+  if (!first) return;
+  specId = first.id;
+  buildDocList();
   renderSpec();
   readBackgroundNow();
 });
@@ -951,7 +1034,8 @@ window.addEventListener('unhandledrejection', (event) => {
   showLoadError(phrase('error.broke', { detail: event.reason?.message ?? event.reason }));
 });
 
-buildSpecSelect();
+buildCountrySelect();
+buildDocList();
 buildPaperSelect();
 renderSpec();
 
