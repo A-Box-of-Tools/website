@@ -15,14 +15,22 @@ using the lossy coding for everything below it. That is how `encodeWebp()` in
 the shared module asks for lossless, and it works on every browser tested.
 
 It is also engine behaviour rather than anything the HTML specification
-promises, and this tool's central claim — *every pixel identical to the PNG* —
-rests entirely on it. So the claim is not made on trust. `encodeWebp()` writes
-the file and then reads its own first 64 bytes back through `webpFacts()`:
+promises, and this tool's central claim — *every solid pixel identical to the
+PNG* — rests entirely on it. So the claim is not made on trust. `encodeWebp()`
+writes the file and then reads back which chunk the pixels landed in:
 
 | chunk | means |
 |---|---|
 | `VP8L` | the lossless coding — the claim holds |
 | `VP8 ` | the lossy coding — the claim does not hold |
+
+**That readback cannot use a head of the file**, which is a trap worth naming:
+a browser writes an `ICCP` colour profile of a few hundred bytes in front of
+the pixels, so the first 64 bytes of a genuinely lossless WebP contain no
+`VP8L` at all. Reading only a head reported every lossless file as lossy, on
+the example, on the first run. `webpPixelChunk()` walks the chunk list eight
+bytes at a time — a type and a length, skipping each payload — so it costs
+nothing and cannot be fooled by whatever the encoder puts in front.
 
 and hands the caller a `lossless` boolean read out of the bytes rather than
 echoed back from the request. `resultRow()` in `src/main.js` has three cases
