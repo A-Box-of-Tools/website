@@ -75,8 +75,22 @@ export function release(bitmap) {
  * @param {{width: number, height: number}} out
  * @returns {HTMLCanvasElement}
  */
-export function drawCrop(source, rect, out, { background = '#ffffff' } = {}) {
-  const canvas = document.createElement('canvas');
+export function drawCrop(source, rect, out, options) {
+  return drawCropInto(document.createElement('canvas'), source, rect, out, options);
+}
+
+/**
+ * The same crop, into a canvas that already exists.
+ *
+ * The live preview redraws on every pointer move, and a canvas allocated per
+ * frame is a canvas the collector has to take back per frame. Everything else
+ * about it is drawCrop, which is why this is the body and that is the wrapper
+ * rather than the two being written out twice.
+ *
+ * @param {HTMLCanvasElement} canvas
+ * @returns {HTMLCanvasElement} the same canvas, drawn on
+ */
+export function drawCropInto(canvas, source, rect, out, { background = '#ffffff' } = {}) {
   canvas.width = Math.max(1, Math.round(out.width));
   canvas.height = Math.max(1, Math.round(out.height));
 

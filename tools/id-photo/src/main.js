@@ -15,8 +15,8 @@ import {
   checkBackground, checkSignature, readBackground, readSignature,
 } from './background.js';
 import {
-  decode, drawCrop, drawSheet, encodePrint, encodeToBand, free, release,
-  samplePixels, sizeText,
+  decode, drawCrop, drawCropInto, drawSheet, encodePrint, encodeToBand, free,
+  release, samplePixels, sizeText,
 } from './encode.js';
 import { WORKING_EDGE, findMarks } from './detect.js';
 import { Cropper } from './cropper.js';
@@ -43,6 +43,9 @@ const el = {
   filterNote: $('filter-note'),
   country: $('country'),
   docList: $('doc-list'),
+  outcome: $('outcome'),
+  outcomeCanvas: $('outcome-canvas'),
+  outcomeSize: $('outcome-size'),
   specFacts: $('spec-facts'),
   specNotes: $('spec-notes'),
   specSource: $('spec-source'),
@@ -439,6 +442,7 @@ async function load(file) {
   try {
     if (!looksLikeImage(file)) throw new Error('load.notimage');
     const decoded = await decode(file);
+    clearResults();
     dropPhoto();
 
     photo = {
@@ -491,12 +495,13 @@ function dropPhoto() {
 }
 
 el.clearPhoto.addEventListener('click', () => {
+  clearResults();
   dropPhoto();
   el.preview.removeAttribute('src');
   el.loaded.hidden = true;
   el.frameControls.hidden = true;
   el.frameEmpty.hidden = false;
-  el.results.hidden = true;
+  el.outcome.hidden = true;
   el.make.disabled = true;
   reading = null;
   lastFinding = null;
@@ -615,8 +620,53 @@ function onCropChange() {
 }
 
 /** Redraw the overlay, the checks and everything downstream of the crop box. */
+/**
+ * The longest side of the live preview, in CSS pixels.
+ *
+ * A picture of the result rather than the result: 413 x 531 of it on a phone is
+ * four times the pixels of the box it is shown in, for a picture nobody is
+ * going to measure with a ruler.
+ */
+const PREVIEW_EDGE = 220;
+
+let previewPending = 0;
+
+/**
+ * Redraw the finished photograph, at most once a frame.
+ *
+ * The cropper reports on every pointer move, so this has to be cheap and it has
+ * to coalesce. One drawImage into a canvas that already exists: nothing here
+ * encodes, makes an object URL or reads pixels back, which is why it can run
+ * during a drag when the background reading two lines below it cannot - that
+ * one guards a getImageData and keeps its own debounce.
+ */
+function drawPreview() {
+  if (!photo || previewPending) return;
+  previewPending = requestAnimationFrame(() => {
+    previewPending = 0;
+    if (!photo) return;
+    const spec = currentSpec();
+    const aspect = frameAspect(spec);
+    const height = PREVIEW_EDGE * (window.devicePixelRatio || 1);
+    drawCropInto(el.outcomeCanvas, photo.bitmap, cropper.rect, {
+      width: Math.round(height * aspect),
+      height: Math.round(height),
+    }, { background: backgroundOf(spec, phrase).hex });
+
+    // The backing store is in device pixels and the box is in CSS pixels, and
+    // the two are only the same number on a screen nobody has any more: left to
+    // itself a canvas lays out at its own width, so on a phone the preview came
+    // out at two or three times the size it was drawn for.
+    el.outcomeCanvas.style.width = `${Math.round(PREVIEW_EDGE * aspect)}px`;
+    el.outcomeCanvas.style.height = `${PREVIEW_EDGE}px`;
+    el.outcomeSize.textContent = docSize(spec, phrase);
+    el.outcome.hidden = false;
+  });
+}
+
 function refreshFrame() {
   if (!photo) return;
+  drawPreview();
   const spec = currentSpec();
   const rect = cropper.rect;
 
@@ -889,11 +939,8 @@ async function run() {
   if (!photo || busy) return;
   busy = true;
   el.make.disabled = true;
-  el.results.hidden = true;
+  clearResults();
   showProgress(0, 'cropping');
-
-  for (const url of resultUrls) URL.revokeObjectURL(url);
-  resultUrls = [];
 
   const spec = currentSpec();
   const rect = cropper.rect;
@@ -912,6 +959,7 @@ async function run() {
       const { blob } = await encodePrint(printCanvas, { dpi });
       made.push({
         blob,
+        pixels: size,
         name: outName(stem, spec, 'print'),
         title: phrase('out.print',
           { width: trim(spec.print.widthMm), height: trim(spec.print.heightMm) }),
@@ -928,6 +976,7 @@ async function run() {
         free(sheetCanvas);
         made.push({
           blob: sheet.blob,
+          pixels: plan.canvas,
           name: outName(stem, spec, 'sheet', { paper: paperById(el.paper.value).id }),
           title: phrase('out.sheet', { paper: phrase(paperById(el.paper.value).label) }),
           detail: phrase('out.sheet.detail', {
@@ -948,6 +997,7 @@ async function run() {
       free(canvas);
       made.push({
         blob: new Blob([result.bytes], { type: 'image/jpeg' }),
+        pixels: size,
         name: outName(stem, spec, 'upload', size),
         title: phrase('out.upload', { width: size.width, height: size.height }),
         detail: phrase(result.encodes === 1 ? 'out.upload.detail.one' : 'out.upload.detail.many', {
@@ -970,6 +1020,21 @@ async function run() {
   }
 }
 
+/**
+ * The rows, and the object URLs behind them, dropped together.
+ *
+ * Before this existed the rows outlived the photograph they were made from:
+ * load() revokes the old picture's URL through dropPhoto, and the moment a row
+ * holds a picture of its own that left three blank boxes under a heading
+ * saying "Finished".
+ */
+function clearResults() {
+  for (const url of resultUrls) URL.revokeObjectURL(url);
+  resultUrls = [];
+  el.resultList.replaceChildren();
+  el.results.hidden = true;
+}
+
 function renderResults(made) {
   el.resultList.replaceChildren(...made.map((item) => {
     const url = URL.createObjectURL(item.blob);
@@ -977,6 +1042,18 @@ function renderResults(made) {
 
     const li = document.createElement('li');
     li.className = `result-row${item.warn ? ' result-warn' : ''}`;
+
+    // The file itself, at its own proportions. The attributes are the real
+    // pixel sizes and the CSS normalises on HEIGHT, so a 51 x 51 square and a
+    // 35 x 45 portrait are visibly different shapes beside each other - which
+    // is the whole of what looking at them is for.
+    const thumb = document.createElement('img');
+    thumb.className = 'result-thumb';
+    thumb.src = url;
+    thumb.width = item.pixels.width;
+    thumb.height = item.pixels.height;
+    thumb.alt = phrase('thumb.alt', { title: item.title });
+    thumb.loading = 'lazy';
 
     const head = document.createElement('p');
     head.className = 'result-title';
@@ -990,7 +1067,7 @@ function renderResults(made) {
     link.className = 'primary as-button';
     link.href = url;
     link.download = item.name;
-    link.textContent = 'Download';
+    link.textContent = phrase('out.download');
 
     const name = document.createElement('p');
     name.className = 'result-name';
@@ -1000,7 +1077,7 @@ function renderResults(made) {
     text.className = 'result-text';
     text.append(head, detail, name);
 
-    li.append(text, link);
+    li.append(thumb, text, link);
     return li;
   }));
 

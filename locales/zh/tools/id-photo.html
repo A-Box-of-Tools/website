@@ -139,11 +139,28 @@
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
            shape, so everything on it can be positioned in percentages. -->
-      <div class="stage-wrap">
-        <div class="stage" id="stage">
-          <img id="preview" alt="">
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
         </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>最后得到的样子</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
       </div>
+
+      <p class="stage-hint">照片旁边那块就是裁切结果本身，按规定要的形状，上面什么都不画。文件就长这个样子；取景不对的话，在那里就已经看得出来，用不着等下载完。</p>
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="ghost">按规定套用裁切框</button>
@@ -305,6 +322,10 @@
     <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; 毫米</span>
     <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
     <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">眼睛</span>
+    <span data-phrase="guide.chin">下巴</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">下载</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">通行做法</span>
     <span data-phrase="source.common.doc">文具店的 &#x2066;35 x 45&#x2069; 毫米标准，不是公布的规定</span>
