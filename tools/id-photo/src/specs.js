@@ -494,6 +494,34 @@ const RULES = [
   },
 
   {
+    id: 'cn-1inch',
+    country: 'country.cn',
+    document: 'spec.cn-1inch.doc',
+    kind: 'portrait',
+    print: { widthMm: 25, heightMm: 35, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.cn-1inch.note1', 'note.studio-size'],
+    source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
+    id: 'cn-2inch',
+    country: 'country.cn',
+    document: 'spec.cn-2inch.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 49, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.cn-2inch.note1', 'note.studio-size'],
+    source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
     id: 'jp-passport',
     country: 'country.jp',
     document: 'spec.jp-passport.doc',
@@ -504,6 +532,95 @@ const RULES = [
     background: 'off-white',
     digital: null,
     notes: ['spec.jp-passport.note1', 'spec.jp-passport.note2'],
+  },
+
+  {
+    id: 'jp-resume',
+    country: 'country.jp',
+    document: 'spec.jp-resume.doc',
+    kind: 'portrait',
+    print: { widthMm: 30, heightMm: 40, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.jp-resume.note1', 'note.studio-size'],
+    source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
+    id: 'kr-passport',
+    country: 'country.kr',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    crown: 'skull',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 413 },
+      height: { exact: 531 },
+      bytes: {},
+      format: 'image/jpeg',
+    },
+    notes: ['note.crown-skull', 'spec.kr-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'kr-banmyeongham',
+    country: 'country.kr',
+    document: 'spec.kr-banmyeongham.doc',
+    kind: 'portrait',
+    print: { widthMm: 30, heightMm: 40, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.kr-banmyeongham.note1', 'note.studio-size'],
+    source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
+    id: 'sg-passport',
+    country: 'country.sg',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 400 },
+      height: { exact: 514 },
+      bytes: { max: 8 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.sg-passport.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'nz-passport',
+    country: 'country.nz',
+    document: 'doc.passport',
+    kind: 'portrait',
+    // No print size is published: New Zealand's own guidance is a digital
+    // photograph, and it says in as many words that a scan of a printed one is
+    // not accepted. So there is nothing here to print and the sheet is off.
+    print: null,
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white-or-grey',
+    digital: {
+      label: 'upload.online',
+      width: { min: 900, max: 4500 },
+      height: { min: 1200, max: 6000 },
+      bytes: { min: 250 * 1024, max: 5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.nz-passport.note1', 'spec.nz-passport.note2', 'note.head-advisory'],
   },
 
   {
