@@ -452,6 +452,31 @@ export function specsByCountry() {
 }
 
 /**
+ * Every country, in the order the reader's own alphabet puts them.
+ *
+ * Sorted on the rendered name rather than on the key, because a list sorted
+ * once in English is a list only an English reader can scan: Germany sorts
+ * under G in English, Deutschland under D in German, and 德国 where Chinese
+ * puts it. The comparator is the caller's - an Intl.Collator wants the page's
+ * language and this file has no way to know it.
+ *
+ * Two entries are placed rather than sorted. The ICAO standard is first because
+ * every rule below it is a variation on it, and it is what a country not on the
+ * list is most likely to be issuing against; "anywhere else" is last because
+ * that is what it means.
+ */
+export function orderedCountries(t, compare) {
+  const place = (key) => (key === 'country.icao' ? 0 : key === 'country.other' ? 2 : 1);
+  return specsByCountry()
+    .map((group) => ({ ...group, label: countryLabel(group.country, t) }))
+    .sort((a, b) => place(a.country) - place(b.country)
+      || compare(a.label, b.label));
+}
+
+/** One country's documents, in the order the table lists them. */
+export const specsOf = (country) => SPECS.filter((spec) => spec.country === country);
+
+/**
  * A name, and the name the thing has for itself where that is a different word.
  *
  * The guard is not a nicety. Without it the German page reads "Deutschland

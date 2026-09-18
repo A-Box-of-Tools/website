@@ -26,11 +26,11 @@ roadmap_group = "images"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress", "form", "notes"]
+css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-09-07"
+lastmod = "2026-09-17"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -180,7 +180,9 @@ body = """
 [[howto]]
 title = "Pick the country and the document."
 body = """
- The panel then shows
+ Type into the box if the country is
+      a long way down the list, then pick which of that country’s documents you
+      are applying for. The panel then shows
       that rule's print size, head-height band, eye line, background colour and
       upload limits &mdash; along with the authority each figure came from and the
       date it was read. Nothing on that list is guessed at, and anything you were

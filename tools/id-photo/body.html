@@ -32,9 +32,27 @@
       from, served with the page.
     </p>
 
-    <div class="option-row">
-      <label for="spec">Specification</label>
-      <select id="spec"></select>
+    <div class="picker">
+      <div class="option-row">
+        <label for="country-filter">Find a country</label>
+        <input type="search" id="country-filter" class="country-filter"
+               autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="option-row">
+        <label for="country">Country</label>
+        <select id="country"></select>
+      </div>
+
+      <p id="doc-label" class="doc-label">Document</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
     </div>
 
     <dl class="spec-facts" id="spec-facts"></dl>
@@ -343,6 +361,12 @@
       the overlay, the print and the file-size search all follow it.</span>
     <span data-phrase="spec.custom.note2">It starts on the ICAO geometry, because a country not on the list above is far more
       likely to be using that than anything else.</span>
+    <span data-phrase="filter.one">One country matches.</span>
+    <span data-phrase="filter.count">{n} countries match.</span>
+    <span data-phrase="filter.none">Nothing matches that. Only the country you have already chosen is left in the list.</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Common practice</span>
     <span data-phrase="source.common.doc">The &#x2066;35 x 45&#x2069; mm stationer standard, not a published rule</span>

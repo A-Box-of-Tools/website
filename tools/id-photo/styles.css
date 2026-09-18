@@ -28,6 +28,37 @@
    for a <select> that is its longest option - a whole sentence here. */
 .option-row select { flex: 1 1 20rem; }
 
+/* ------------------------------------------------------------- the chooser */
+
+/* A country, then that country's documents. The filter box narrows the menu
+   rather than replacing it: the menu is the OS's own picker on a phone and
+   already types ahead on a keyboard, and thirty entries is only a long scroll
+   on a desktop. Nothing here is behind JavaScript that was not behind it
+   before - with the box left alone the menu still holds every country. */
+
+.picker { margin-bottom: 0.4rem; }
+
+.option-row input[type="search"] { flex: 1 1 14rem; }
+
+.picker .hint-line:empty { display: none; }
+
+.doc-label {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin: 0 0 0.45rem;
+}
+
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+/* `.mode` from shared/css/modes.css draws the row; the size is the dim second
+   line it already styles, and only needs its figures to line up. */
+.doc-size { font-variant-numeric: tabular-nums; }
+
 /* --------------------------------------------------------- the chosen file */
 
 .loaded-row {

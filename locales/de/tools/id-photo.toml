@@ -130,7 +130,9 @@ body = """
 [[howto]]
 title = "Wählen Sie Land und Dokument."
 body = """
- Die Tafel zeigt dann Druckgröße,
+ Tippen Sie in das Feld, wenn das Land
+      weit unten in der Liste steht, und wählen Sie dann, welches Dokument dieses
+      Landes Sie beantragen. Die Tafel zeigt dann Druckgröße,
       Kopfhöhenband, Augenlinie, Hintergrundfarbe und Upload-Grenzen dieser
       Vorschrift, jeweils mit der Behörde, aus der die Zahl stammt, und dem Datum, an
       dem sie abgelesen wurde. Nichts auf dieser Liste ist geraten, und alles, was Sie

@@ -25,9 +25,27 @@
       下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜的，也没有一条是去网上取的：它是两张表，<code>src/specs.js</code> 放数字，<code>src/sources.js</code> 放每一条的出处，随页面一起送来。
     </p>
 
-    <div class="option-row">
-      <label for="spec">规格</label>
-      <select id="spec"></select>
+    <div class="picker">
+      <div class="option-row">
+        <label for="country-filter">找国家地区</label>
+        <input type="search" id="country-filter" class="country-filter"
+               autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="option-row">
+        <label for="country">国家地区</label>
+        <select id="country"></select>
+      </div>
+
+      <p id="doc-label" class="doc-label">证件</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
     </div>
 
     <dl class="spec-facts" id="spec-facts"></dl>
@@ -281,6 +299,12 @@
     <span data-phrase="spec.custom.upload">表格要什么就是什么</span>
     <span data-phrase="spec.custom.note1">这一条里每个数字都能改。照着你面前那张表格填，叠加图、相纸和文件大小的搜索都会跟着它走。</span>
     <span data-phrase="spec.custom.note2">它从 ICAO 的几何起步，因为上面清单里没有的国家用它的可能性远高于别的任何一种。</span>
+    <span data-phrase="filter.one">有一个国家地区符合。</span>
+    <span data-phrase="filter.count">有 {n} 个国家地区符合。</span>
+    <span data-phrase="filter.none">没有符合的。列表里只剩下你已经选中的那个。</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; 毫米</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">通行做法</span>
     <span data-phrase="source.common.doc">文具店的 &#x2066;35 x 45&#x2069; 毫米标准，不是公布的规定</span>
