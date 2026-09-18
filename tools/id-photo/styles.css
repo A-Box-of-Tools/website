@@ -28,6 +28,22 @@
    for a <select> that is its longest option - a whole sentence here. */
 .option-row select { flex: 1 1 20rem; }
 
+/* A closed <select> is as wide as its box, and in WebKit its TEXT is as wide as
+   its longest option - and that text counts toward how far the page scrolls
+   sideways even though nothing can be seen sticking out. "300 dpi - the floor
+   almost every rule states" is wider than a phone, and so is "Switzerland
+   (Schweiz / Suisse / Svizzera)". Every box on the page measured inside the
+   viewport while the document ran seventeen pixels past it, on Linux WebKit
+   only, because that is where the fonts are widest.
+
+   Nothing set on the select cures it - not overflow, not text-overflow, not a
+   min-width of nought; each was tried against a widened font. Clipping at the
+   card does, and `clip` rather than `hidden` so that no scroll container is
+   made and a focus ring, which sits well inside the card's padding, is left
+   alone. */
+#spec-card,
+#save-card { overflow-x: clip; }
+
 /* ------------------------------------------------------------- the chooser */
 
 /* A country, then that country's documents. The filter box narrows the menu

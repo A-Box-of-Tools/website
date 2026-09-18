@@ -85,6 +85,17 @@ export const BACKGROUNDS = {
     id: 'white-grey-cream', hex: '#eeece8', tolerance: 22, accepts: [WHITE, GREY, CREAM],
   },
 
+  // For a rule that asks for a plain, evenly lit background and never says
+  // which colour. Wide on purpose: refusing a wall the authority has not
+  // refused would be this tool inventing a requirement, which is the one thing
+  // the whole table exists not to do.
+  'light-unstated': {
+    id: 'light-unstated',
+    hex: '#e9eaec',
+    tolerance: 26,
+    accepts: [WHITE, GREY, BLUE, CREAM],
+  },
+
   // Light, and specifically not white. One hex and one tolerance cannot say
   // that: white sits nearer to light grey than the tolerance a description like
   // "light grey" has to carry, so a rule that refuses white refuses it by name.
@@ -149,6 +160,10 @@ export const ICAO_EYE = band(0.50, 0.60);
  * @property {{min: number, max: number, minMm?: number, maxMm?: number, advisory?: boolean}} eye
  *   the pupil line, as a fraction of the frame's height measured UP from the
  *   bottom edge. Published that way by every authority here, so kept that way.
+ * @property {'words'} [published]  set where the authority describes the
+ *   photograph and never gives a measurement, so that the citation under the
+ *   figures does not claim they were transcribed from it. Such a rule owes the
+ *   reader `note.no-measurements`, and a test checks that it carries it.
  * @property {string} background    a key of BACKGROUNDS
  * @property {Digital|null} digital the web form's rule, where there is one
  * @property {string[]} notes       shown under the specification, verbatim
@@ -365,6 +380,62 @@ const RULES = [
     crown: 'skull',
     digital: null,
     notes: ['note.crown-skull', 'spec.pl-passport.note1'],
+  },
+
+  {
+    id: 'ch-passport',
+    country: 'country.ch',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.ch-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'se-passport',
+    country: 'country.se',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.se-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'no-passport',
+    country: 'country.no',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.no-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'pt-passport',
+    country: 'country.pt',
+    document: 'doc.passport-id',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.pt-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
   },
 
   {

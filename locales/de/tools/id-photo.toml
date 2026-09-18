@@ -195,9 +195,13 @@ a = """
         der gr&ouml;&szlig;te Teil der Welt nach der ICAO-Geometrie ausstellt, beginnt dieser
         Eintrag auch mit ihr.
 
-        Bewusst <em>nicht</em> hier ist ein Land, dessen Zahlen niemand ver&ouml;ffentlicht.
-        Mehrere wurden daf&uuml;r nachgeschlagen und aus genau diesem Grund weggelassen,
-        statt sie aus dem zu f&uuml;llen, was andere Werkzeuge behaupten."""
+        Ein Land, dessen Zahlen niemand ver&ouml;ffentlicht, steht trotzdem auf der Liste
+        und sagt es im eigenen Eintrag: Der Rahmen ist das &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm,
+        gegen das der gr&ouml;&szlig;te Teil Europas ausstellt, die B&auml;nder sind die von ICAO und
+        werden nie als Fehler markiert, und die Anmerkung sagt, was die Beh&ouml;rde
+        stattdessen festh&auml;lt &mdash; oft, dass sie Sie am Schalter fotografiert. Was hier
+        nirgends passiert, ist eine Zahl aus dem zu f&uuml;llen, was andere Werkzeuge
+        behaupten."""
 
 [[faq]]
 q = "Wie findet es Scheitel, Kinn und Augen ohne Gesichtsmodell?"
