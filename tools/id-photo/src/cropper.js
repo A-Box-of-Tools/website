@@ -90,9 +90,12 @@ export class Cropper {
       this.#box.append(element);
     }
 
-    for (const key of ['eyeBand', 'chinBand']) {
+    // Written once: which band is which never changes, and the word for it is
+    // a word a visitor reads, so it comes from the markup like the rest.
+    for (const [key, label] of [['eyeBand', 'guide.eyes'], ['chinBand', 'guide.chin']]) {
       const caption = document.createElement('span');
       caption.className = 'guide-caption';
+      caption.textContent = t(label);
       this.#parts[`${key}Caption`] = caption;
       this.#parts[key].append(caption);
     }
@@ -329,7 +332,6 @@ export class Cropper {
     parts.eyeBand.style.top = `${guides.eye.from * 100}%`;
     parts.eyeBand.style.height = `${(guides.eye.to - guides.eye.from) * 100}%`;
     parts.eyeBand.classList.toggle('guide-pass', guides.pass?.eye === true);
-    parts.eyeBandCaption.textContent = 'eyes';
 
     const marks = guides.marks;
     if (!marks) {
@@ -344,7 +346,6 @@ export class Cropper {
     parts.chinBand.style.top = `${(marks.crown + guides.head.min) * 100}%`;
     parts.chinBand.style.height = `${(guides.head.max - guides.head.min) * 100}%`;
     parts.chinBand.classList.toggle('guide-pass', guides.pass?.head === true);
-    parts.chinBandCaption.textContent = 'chin';
 
     parts.crownLine.hidden = false;
     parts.crownLine.style.top = `${marks.crown * 100}%`;

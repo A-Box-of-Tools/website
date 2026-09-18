@@ -154,11 +154,28 @@
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
            shape, so everything on it can be positioned in percentages. -->
-      <div class="stage-wrap">
-        <div class="stage" id="stage">
-          <img id="preview" alt="">
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
         </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>What you will get</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
       </div>
+
+      <p class="stage-hint">The panel beside the photograph is the crop itself, at the shape the rule asks for and with nothing drawn over it. It is what the file will look like, so a framing that is wrong is wrong there before it is downloaded.</p>
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="ghost">Fit the box to the rule</button>
@@ -367,6 +384,10 @@
     <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
     <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
     <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">eyes</span>
+    <span data-phrase="guide.chin">chin</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">Download</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Common practice</span>
     <span data-phrase="source.common.doc">The &#x2066;35 x 45&#x2069; mm stationer standard, not a published rule</span>
