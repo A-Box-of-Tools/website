@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """\
 ，<code>src/specs.js</code> 是那本规格册，里头是各国公布的\
-      数字，每一条都写着出自哪个机构、哪天读的；<code>src/detect.js</code> 是四个点怎么找出来的——一条轮廓加两块暗斑，哪儿也没有模型——；<code>src/geometry.js</code> 是把\
+      数字；<code>src/sources.js</code> 写着每一条出自哪个机构、哪天读的；<code>src/detect.js</code> 是四个点怎么找出来的——一条轮廓加两块暗斑，哪儿也没有模型——；<code>src/geometry.js</code> 是把\
       四个标记点算成一个裁切框的那套算术；<code>src/jpeg.js</code> 是两处文件头\
       改写，负责把打印分辨率写进文件，以及把偏小的上传文件抬到表单坚持的大小。"""
 

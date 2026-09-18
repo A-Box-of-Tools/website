@@ -26,7 +26,15 @@ So the rules are:
     arrives on screen with its braces on. Leaving one *out* is allowed and is
     sometimes right: Arabic says "one line" without the numeral;
   - a key is defined once per block, because the second copy is dead text that
-    nobody can tell from the live one.
+    nobody can tell from the live one;
+  - a key a tool keeps in a TABLE, rather than writing at the point it is
+    shown, is defined in the English block. Everywhere else in the repository a
+    key is a literal a few lines from the phrase() that resolves it, and the
+    two are read together. A rulebook is different: id-photo's specs.js holds
+    two or three key names per country and the nearest phrase() is in another
+    file, so a country added with one note key missing renders that note as
+    `spec.xx-passport.note2`, on the page, in every language, and nothing
+    anywhere says so. The other two rules then carry it to the translations.
 
 Regex rather than an HTML parser, for the reason test_accessibility.py gives:
 these files carry template syntax that no parser accepts, and the pattern
@@ -37,7 +45,31 @@ import re
 import unittest
 from pathlib import Path
 
+from buildlib import minify
+
 ROOT = Path(__file__).resolve().parents[2]
+
+# Modules that hold phrase keys as DATA - a table of them, read by code in
+# another file. Add one here when a tool grows a table of its own; do not add a
+# module that merely calls phrase(), because a key written at the point it is
+# used is already next to the call that resolves it.
+RULEBOOKS = (
+    ('id-photo', 'specs.js'),
+    ('id-photo', 'sources.js'),
+)
+
+# The families those tables name. Restricted on purpose: a module also holds
+# filenames, MIME types and codec strings, and 'example.gif' has the shape of a
+# key without being one.
+FAMILIES = ('country.', 'spec.', 'note.', 'doc.', 'upload.', 'bg.', 'source.')
+
+# A family whose keys are built rather than written - `bg.${id}.label` -
+# cannot be read off the literal, so the thing they are built from is
+# checked instead.
+BUILT = (
+    ('id-photo', 'specs.js', re.compile(r"id: '([a-z-]+)', hex:"),
+     ('bg.{}.label', 'bg.{}.inline', 'bg.{}.note')),
+)
 
 BLOCK = re.compile(r'<div id="phrases".*?</div>', re.S)
 SPAN = re.compile(r'<span data-phrase="([^"]+)"\s*>(.*?)</span>', re.S)
@@ -103,6 +135,40 @@ class Phrases(unittest.TestCase):
                         wrong.append(f'{lang}/{slug}: {key} fills in a blank the '
                                      f'caller never passes, so {{{name}}} reaches '
                                      'the page with its braces on')
+        self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
+
+    def test_a_rulebook_names_no_key_the_markup_lacks(self):
+        wrong = []
+        for slug, module in RULEBOOKS:
+            body = ROOT / 'tools' / slug / 'body.html'
+            defined = {key for key, _ in phrases(read(body)) or []}
+            source = ROOT / 'tools' / slug / 'src' / module
+            self.assertTrue(source.exists(), f'{slug}/{module} is in RULEBOOKS '
+                            'and not on disk')
+            for line, token in minify.tokenize_js(read(source), str(source)):
+                if token[:1] not in ('"', "'", '`'):
+                    continue
+                key = token[1:-1]
+                # A blank in it means the key is built as the page runs;
+                # BUILT checks what it is built from instead.
+                if '${' in key or not key.startswith(FAMILIES) or key in defined:
+                    continue
+                wrong.append(f'{slug}/{module}:{line}: {key} is named here and '
+                             f'not defined in body.html, so it reaches the page '
+                             f'as the literal text "{key}"')
+        for slug, module, finder, shapes in BUILT:
+            defined = {key for key, _ in
+                       phrases(read(ROOT / 'tools' / slug / 'body.html')) or []}
+            found = finder.findall(read(ROOT / 'tools' / slug / 'src' / module))
+            self.assertTrue(found, f'{slug}/{module}: BUILT matched nothing, '
+                            'so this rule is checking an empty list')
+            for name in found:
+                for shape in shapes:
+                    key = shape.format(name)
+                    if key not in defined:
+                        wrong.append(f'{slug}/{module}: {name} is built '
+                                     f'into {key}, which body.html does '
+                                     'not define')
         self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
 
     def test_no_key_is_defined_twice(self):

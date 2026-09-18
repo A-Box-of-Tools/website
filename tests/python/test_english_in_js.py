@@ -104,11 +104,13 @@ BASELINE = {
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
-    # All thirteen are accounted for and none of them moves: a filename
-    # template, a dimension pair, a CSS percentage, a phrase key, the note
-    # written into a padded JPEG, and the eight published citations, which
-    # stay as published so that somebody can search for them.
-    'id-photo': 13,
+    # A filename template, a dimension pair, a CSS percentage, a phrase key
+    # and the note written into a padded JPEG. It was thirteen until the eight
+    # published citations moved to src/sources.js, which is exempt below - a
+    # rulebook that grows by a country a week cannot have its citations
+    # counted here, or this number becomes a tally of how many countries are
+    # covered and stops being a ratchet on anything.
+    'id-photo': 5,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
     'image-to-ico': 6,
@@ -187,6 +189,12 @@ NOT_OURS = {
         'the PS3.6 attribute names, which every DICOM tool prints in English',
     ('dicom-viewer', 'uids.js'):
         'the PS3.5 transfer syntax and PS3.4 SOP class names, likewise',
+    ('id-photo', 'sources.js'):
+        'the authority and title behind every rule in that tool, and what each '
+        'country and document is called in its own language - a citation '
+        'translated finds nothing, and "Reisepass" is the word on the cover '
+        'rather than a reading of "passport". tests/js/id-photo-sources.test.js '
+        'holds the module to that: every value short, and not one a sentence',
 }
 
 # A word here makes a string prose rather than a name. Deliberately ordinary

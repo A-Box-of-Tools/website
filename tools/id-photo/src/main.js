@@ -3,8 +3,8 @@
 import { ltr, phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  SPECS, backgroundOf, pixelLabel, portalBytes, portalPixels, printLabel,
-  specById, specsByCountry, trim, withCustom,
+  SPECS, backgroundOf, countryLabel, documentLabel, pixelLabel, portalBytes,
+  portalPixels, printLabel, specById, specsByCountry, trim, withCustom,
 } from './specs.js';
 import {
   fitFrame, frameAspect, guideLines, measure, passes, printPixels, resampling,
@@ -189,11 +189,11 @@ function currentSpec() {
 function buildSpecSelect() {
   for (const group of specsByCountry()) {
     const optgroup = document.createElement('optgroup');
-    optgroup.label = phrase(group.country);
+    optgroup.label = countryLabel(group.country, phrase);
     for (const spec of group.specs) {
       const option = document.createElement('option');
       option.value = spec.id;
-      option.textContent = phrase(spec.document);
+      option.textContent = documentLabel(spec, phrase);
       optgroup.append(option);
     }
     el.specSelect.append(optgroup);
