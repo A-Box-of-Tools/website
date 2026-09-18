@@ -253,8 +253,21 @@ The rule needs:
   a web form's rule;
 - `head` and `eye` as `mmBand(min, max, frameHeight)` where the authority
   publishes millimetres, or `band(min, max, true)` where it publishes nothing and
-  the figures are guidance — the page labels those, and never paints them red;
-- a `background` key from `BACKGROUNDS`;
+  the figures are guidance — the page labels those, and never paints them red.
+  `mmBand` takes the same flag for a figure that *was* published and is not any
+  more, which is what happened to the American eye line in 2026;
+- `crown: 'skull'` where the authority measures the head with the hair left out,
+  as France and Poland do. It changes no arithmetic — nothing can find a skull
+  under hair, and a guessed constant for it is the mistake `EYE_LEVEL` already
+  made once — but the rule then owes the reader `note.crown-skull`, and a test
+  checks that it carries it;
+- a `background` key from `BACKGROUNDS`. An entry there may name several
+  colours with `accepts`, because plenty of rules do — the reading is
+  measured against whichever of them the wall is nearest, since averaging
+  three colours into one gives a fourth that fails all three. It may also
+  `forbid` one: France's background must be light and must not be white, and
+  a single hex with a tolerance wide enough to mean “light grey” passes a
+  white wall every time;
 - `digital`, where the form states pixel or file-size limits;
 - `notes`, which are shown verbatim. A note is for a trap, not a restatement:
   if the figure is already in the panel above it, it is not a note. Most of what

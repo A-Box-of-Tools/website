@@ -236,15 +236,18 @@ a = """
 [[faq]]
 q = "Which countries are covered?"
 a = """
-        The specifications transcribed so far are the ICAO standard itself, the
-        United States (passport and the Diversity Visa entry, which have different
-        upload rules), the United Kingdom, the Schengen visa, Germany, Canada,
-        Australia, India (passport, the &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm print, and
-        the SSC/UPSC form photo and signature), China and Japan. Every entry names
-        the authority it came from and the date it was read. Anything else goes in
-        under &ldquo;Anywhere else&rdquo;, where every figure is yours to type &mdash;
-        and since most of the world issues against the ICAO geometry, that entry
-        starts on it."""
+        Enough of them that listing the names here would be a list needing an edit
+        every time one is added, so: every entry is transcribed from the authority
+        that published it, and every entry prints that authority and the date it was
+        read underneath the figures. The chooser is the list &mdash; type a country
+        into the box above it and you will know in a second whether it is there.
+        Anything that is not goes under &ldquo;Anywhere else&rdquo;, where every figure
+        is yours to type; since most of the world issues against the ICAO geometry,
+        that entry starts on it.
+
+        What is deliberately <em>not</em> here is a country whose figures nobody
+        publishes. Several were looked up for this and left out for that reason
+        rather than filled in from what other tools say."""
 
 [[faq]]
 q = "How does it find the crown, the chin and the eyes without a face model?"
