@@ -753,6 +753,72 @@ const RULES = [
   },
 
   {
+    id: 'pk-passport',
+    country: 'country.pk',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(29, 34, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    // A ceiling on the file and nothing on its pixels, so the size written is
+    // the print at 300 dpi - the same answer the American rule gets, for the
+    // same reason.
+    digital: {
+      label: 'upload.online',
+      width: { min: 413 },
+      height: { min: 531 },
+      bytes: { max: 5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.pk-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'bd-passport',
+    country: 'country.bd',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.bd-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'bd-passport-child',
+    country: 'country.bd',
+    document: 'spec.bd-passport-child.doc',
+    kind: 'portrait',
+    // 3R: three and a half inches by five. The office crops the face out of it
+    // itself, so the head is nowhere near the 70 per cent of a finished
+    // passport photograph and the band is wide to match.
+    print: { widthMm: 89, heightMm: 127, dpi: 300 },
+    head: band(0.35, 0.70, true),
+    eye: band(0.45, 0.70, true),
+    background: 'light-grey',
+    digital: null,
+    notes: ['spec.bd-passport-child.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'id-passport',
+    country: 'country.id',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    published: 'words',
+    digital: null,
+    notes: ['spec.id-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
     id: 'nz-passport',
     country: 'country.nz',
     document: 'doc.passport',
@@ -838,6 +904,52 @@ const RULES = [
     background: 'light-unstated',
     digital: null,
     notes: ['spec.ae-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'il-passport',
+    country: 'country.il',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 50, heightMm: 50, dpi: 300 },
+    head: band(0.50, 0.70, true),
+    eye: band(0.50, 0.65, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.il-passport.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'eg-passport',
+    country: 'country.eg',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    published: 'words',
+    digital: null,
+    notes: ['spec.eg-passport.note1', 'note.no-measurements'],
+  },
+
+  {
+    id: 'ng-passport',
+    country: 'country.ng',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: null,
+    head: band(0.60, 0.80, true),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 600 },
+      height: { exact: 800 },
+      bytes: { max: 2 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.ng-passport.note1', 'note.head-advisory'],
   },
 
   {

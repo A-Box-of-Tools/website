@@ -55,12 +55,18 @@ export const ENDONYMS = {
   'country.tw': '臺灣',
   'country.vn': 'Việt Nam',
   'country.ph': 'Pilipinas',
+  'country.pk': 'پاکستان',
+  'country.bd': 'বাংলাদেশ',
+  'country.id': 'Indonesia',
   'country.nz': 'New Zealand',
   'country.br': 'Brasil',
   'country.mx': 'México',
   'country.tr': 'Türkiye',
   'country.za': 'South Africa',
   'country.ae': 'الإمارات',
+  'country.il': 'ישראל',
+  'country.eg': 'مصر',
+  'country.ng': 'Nigeria',
   'country.jp': '日本',
 };
 
@@ -247,6 +253,29 @@ export const SOURCES = {
     document: 'consular.dfa.gov.ph, Passport — General Information',
     checked: '2026-09-19',
   },
+  'pk-passport': {
+    native: 'پاسپورٹ',
+    authority: 'Directorate General of Immigration & Passports',
+    document: 'e-Services Portal, Photograph Requirements',
+    checked: '2026-09-19',
+  },
+  'bd-passport': {
+    native: 'পাসপোর্ট',
+    authority: 'Department of Immigration & Passports',
+    document: 'epassport.gov.bd, Instructions',
+    checked: '2026-09-19',
+  },
+  'bd-passport-child': {
+    authority: 'Department of Immigration & Passports',
+    document: 'epassport.gov.bd, Instructions',
+    checked: '2026-09-19',
+  },
+  'id-passport': {
+    native: 'Paspor',
+    authority: 'Direktorat Jenderal Imigrasi, Kantor Imigrasi Kelas I TPI Malang',
+    document: 'Kata Siapa Foto Paspor Nggak Boleh Diulang?',
+    checked: '2026-09-19',
+  },
   'nz-passport': {
     authority: 'Department of Internal Affairs',
     document: 'passports.govt.nz, Passport photos',
@@ -278,6 +307,23 @@ export const SOURCES = {
   'ae-passport': {
     authority: 'Federal Authority for Identity, Citizenship, Customs & Port Security',
     document: 'Personal Photo Specifications',
+    checked: '2026-09-19',
+  },
+  'il-passport': {
+    native: 'דרכון',
+    authority: 'Ministry of Foreign Affairs, Embassy of Israel in London',
+    document: 'Issuance of travel documents (passport) for citizens and residents',
+    checked: '2026-09-19',
+  },
+  'eg-passport': {
+    native: 'جواز سفر',
+    authority: 'Consulate General of Egypt in London',
+    document: 'egyptconsulate.co.uk, Egyptian Passport',
+    checked: '2026-09-19',
+  },
+  'ng-passport': {
+    authority: 'Nigeria Immigration Service',
+    document: 'Passport Application Portal, Passport Photo Dimensions Instructions',
     checked: '2026-09-19',
   },
 };
