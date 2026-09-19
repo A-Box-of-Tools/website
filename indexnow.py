@@ -62,7 +62,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from urllib.parse import quote, urlsplit, urlunsplit
 
 # The key, and the name of the file it is served from. The two cannot be
