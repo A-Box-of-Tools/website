@@ -58,12 +58,16 @@ export const ENDONYMS = {
   'country.pk': 'پاکستان',
   'country.bd': 'বাংলাদেশ',
   'country.id': 'Indonesia',
+  'country.my': 'Malaysia',
+  'country.th': 'ประเทศไทย',
   'country.nz': 'New Zealand',
   'country.br': 'Brasil',
   'country.mx': 'México',
+  'country.ar': 'Argentina',
   'country.tr': 'Türkiye',
   'country.za': 'South Africa',
   'country.ae': 'الإمارات',
+  'country.sa': 'السعودية',
   'country.il': 'ישראל',
   'country.eg': 'مصر',
   'country.ng': 'Nigeria',
@@ -276,6 +280,28 @@ export const SOURCES = {
     document: 'Kata Siapa Foto Paspor Nggak Boleh Diulang?',
     checked: '2026-09-19',
   },
+  'my-passport': {
+    native: 'Pasport Malaysia',
+    authority: 'Kementerian Luar Negeri, Suruhanjaya Tinggi Malaysia Islamabad',
+    document: 'Passport Renewal',
+    checked: '2026-09-19',
+  },
+  'my-expat-pass': {
+    authority: 'Jabatan Imigresen Malaysia, Expatriate Services Division',
+    document: 'ESD Online, Passport Photo Requirements',
+    checked: '2026-09-19',
+  },
+  'th-passport': {
+    native: 'หนังสือเดินทาง',
+    authority: 'Royal Thai Embassy, Washington DC',
+    document: 'Thai Passport',
+    checked: '2026-09-19',
+  },
+  'th-evisa': {
+    authority: 'Ministry of Foreign Affairs of the Kingdom of Thailand',
+    document: 'Photograph Specifications (e-Visa), Guide to Thailand E-Visa Application',
+    checked: '2026-09-19',
+  },
   'nz-passport': {
     authority: 'Department of Internal Affairs',
     document: 'passports.govt.nz, Passport photos',
@@ -293,6 +319,18 @@ export const SOURCES = {
     document: 'Ejemplos de cómo deben ser las fotografías para trámite de pasaporte',
     checked: '2026-09-19',
   },
+  'ar-passport': {
+    native: 'Pasaporte',
+    authority: 'Consulado General de la República Argentina en Roma',
+    document: 'Requisitos para la tramitación de pasaporte argentino',
+    checked: '2026-09-19',
+  },
+  'ar-emergency': {
+    native: 'Pasaporte de emergencia, pasaporte provisorio',
+    authority: 'Consulado General de la República Argentina en Roma',
+    document: 'Requisitos para la tramitación de pasaporte argentino',
+    checked: '2026-09-19',
+  },
   'tr-passport': {
     native: 'Pasaport, kimlik kartı, sürücü belgesi',
     authority: 'Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü',
@@ -307,6 +345,11 @@ export const SOURCES = {
   'ae-passport': {
     authority: 'Federal Authority for Identity, Citizenship, Customs & Port Security',
     document: 'Personal Photo Specifications',
+    checked: '2026-09-19',
+  },
+  'sa-evisa': {
+    authority: 'Saudi eVisa, visa.visitsaudi.com',
+    document: 'Photo Specifications',
     checked: '2026-09-19',
   },
   'il-passport': {
