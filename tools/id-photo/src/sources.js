@@ -45,6 +45,7 @@ export const ENDONYMS = {
   'country.se': 'Sverige',
   'country.no': 'Norge',
   'country.pt': 'Portugal',
+  'country.ru': 'Россия',
   'country.de': 'Deutschland',
   'country.ca': 'Canada',
   'country.au': 'Australia',
@@ -182,6 +183,18 @@ export const SOURCES = {
     authority: 'Instituto dos Registos e do Notariado',
     document: 'irn.justica.gov.pt, Cartão de Cidadão',
     checked: '2026-09-17',
+  },
+  'ru-passport': {
+    native: 'Загранпаспорт 10-летнего образца',
+    authority: 'Посольство Российской Федерации в США',
+    document: 'Оформление загранпаспорта, Приказ МИД России от 9 января 2025 г. N 01',
+    checked: '2026-09-19',
+  },
+  'ru-passport-5': {
+    native: 'Загранпаспорт 5-летнего образца',
+    authority: 'Посольство Российской Федерации в США',
+    document: 'Оформление загранпаспорта, Приказ МИД России от 9 января 2025 г. N 02',
+    checked: '2026-09-19',
   },
   'ca-passport': {
     native: 'Passeport',
