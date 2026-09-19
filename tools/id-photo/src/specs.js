@@ -471,6 +471,33 @@ const RULES = [
   },
 
   {
+    id: 'ru-passport',
+    country: 'country.ru',
+    document: 'spec.ru-passport.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.ru-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'ru-passport-5',
+    country: 'country.ru',
+    document: 'spec.ru-passport-5.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.ru-passport-5.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'ca-passport',
     country: 'country.ca',
     document: 'spec.ca-passport.doc',
