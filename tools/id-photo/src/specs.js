@@ -703,7 +703,7 @@ const RULES = [
       bytes: { max: 5 * 1024 * 1024 },
       format: 'image/jpeg',
     },
-    notes: ['spec.hk-passport-online.note1', 'note.head-advisory'],
+    notes: ['spec.hk-passport-online.note1', 'note.head-loose'],
   },
 
   {
@@ -801,7 +801,7 @@ const RULES = [
     eye: band(0.45, 0.70, true),
     background: 'light-grey',
     digital: null,
-    notes: ['spec.bd-passport-child.note1', 'note.head-advisory'],
+    notes: ['spec.bd-passport-child.note1', 'note.head-loose'],
   },
 
   {
@@ -965,7 +965,7 @@ const RULES = [
     eye: band(0.50, 0.65, true),
     background: 'white',
     digital: null,
-    notes: ['spec.ar-emergency.note1', 'note.head-advisory'],
+    notes: ['spec.ar-emergency.note1', 'note.head-loose'],
   },
 
   {
@@ -1036,7 +1036,7 @@ const RULES = [
     eye: band(0.50, 0.65, true),
     background: 'white',
     digital: null,
-    notes: ['spec.il-passport.note1', 'note.head-advisory'],
+    notes: ['spec.il-passport.note1', 'note.head-loose'],
   },
 
   {
@@ -1069,7 +1069,7 @@ const RULES = [
       bytes: { max: 2 * 1024 * 1024 },
       format: 'image/jpeg',
     },
-    notes: ['spec.ng-passport.note1', 'note.head-advisory'],
+    notes: ['spec.ng-passport.note1', 'note.head-loose'],
   },
 
   {
