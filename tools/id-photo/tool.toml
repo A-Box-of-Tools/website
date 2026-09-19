@@ -30,7 +30,7 @@ css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-09-17"
+lastmod = "2026-09-19"
 
 # --- what search engines and chat apps are told ------------------------------
 
