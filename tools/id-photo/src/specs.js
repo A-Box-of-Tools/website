@@ -248,7 +248,8 @@ const RULES = [
     kind: 'portrait',
     print: { widthMm: 51, heightMm: 51, dpi: 300 },
     head: mmBand(25, 35, 51),
-    eye: mmBand(28, 35, 51, true),
+    // Still published for a visa, where the passport rule has dropped it.
+    eye: mmBand(28, 35, 51),
     background: 'off-white',
     // Not the passport's upload: a square between 600 and 1200 pixels and
     // 240 kB at most, where online renewal takes anything up to 10 MB.
@@ -259,7 +260,7 @@ const RULES = [
       bytes: { max: 240 * 1024 },
       format: 'image/jpeg',
     },
-    notes: ['spec.us-visa.note1', 'note.eye-advisory'],
+    notes: ['spec.us-visa.note1'],
   },
 
   {

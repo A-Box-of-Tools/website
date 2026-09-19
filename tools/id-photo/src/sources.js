@@ -96,7 +96,7 @@ export const SOURCES = {
   },
   'us-visa': {
     authority: 'U.S. Department of State',
-    document: 'travel.state.gov, Photo Requirements / Digital Image Requirements',
+    document: 'travel.state.gov, Photo Requirements / Digital Image Requirements / Composition Template',
     checked: '2026-09-19',
   },
   'us-dv': {
