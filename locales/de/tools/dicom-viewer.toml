@@ -16,12 +16,12 @@
 #
 
 name = "DICOM-Viewer"
-heading = "DICOM-Viewer <span class=\"h1-kw\">&mdash; eine .dcm-Aufnahme im Browser öffnen</span>"
+heading = "DICOM-Viewer <span class=\"h1-kw\">&mdash; DCM-Dateien im Browser öffnen</span>"
 tagline = "CT, MRT, Röntgen und Ultraschall, mit Fenster, Header und Messungen."
 
-title = "DICOM-Viewer &mdash; .dcm-Datei im Browser öffnen, ohne Upload"
-description = "Öffnen Sie CT-, MRT-, Röntgen- und Ultraschallaufnahmen im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen."
-og_title = "DICOM-Viewer &mdash; eine Aufnahme öffnen, ohne sie hochzuladen"
+title = "DCM-Datei öffnen &mdash; DICOM-Viewer im Browser, ohne Upload"
+description = "DCM-Datei öffnen, kostenlos und ohne Installation: CT-, MRT-, Röntgen- und Ultraschallaufnahmen (.dcm) direkt im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen."
+og_title = "DCM-Datei öffnen &mdash; eine .dcm-Aufnahme ansehen, ohne sie hochzuladen"
 og_description = "Eine .dcm-Datei, geöffnet auf Ihrem eigenen Gerät: Fenster und Zentrum, die ganze Serie in der richtigen Reihenfolge, Messungen in Millimetern und jeder Tag im Header. Kein Upload, kein Konto."
 og_image_alt = "DICOM-Viewer - eine CT-, MRT- oder Röntgenaufnahme im Browser öffnen"
 
@@ -46,11 +46,11 @@ read_first = """
       Klinik-Exporte verwenden, und <code>src/window.js</code> für Fenster und
       Zentrum. In keiner dieser Dateien steht eine Zeile, die ins Netz käme."""
 
-howto_heading = "So öffnen Sie eine DICOM-Datei"
+howto_heading = "So öffnen Sie eine DCM-Datei (DICOM)"
 
 card = """
-            Öffnen Sie eine CT-, MRT-, Röntgen- oder Ultraschallaufnahme auf
-            Ihrem eigenen Gerät. Fenster und Zentrum einstellen, die ganze Serie
+            DCM-Dateien öffnen: eine CT-, MRT-, Röntgen- oder
+            Ultraschallaufnahme, geöffnet auf Ihrem eigenen Gerät. Fenster und Zentrum einstellen, die ganze Serie
             durchblättern, in Millimetern messen und jeden Tag im Header
             lesen."""
 
@@ -233,6 +233,44 @@ a = """
         Krankenakte, kein Bild."""
 
 [[faq]]
+q = "Wie öffne ich eine .dcm-Datei?"
+a = """
+        Ziehen Sie sie auf das Feld oben auf dieser Seite. Eine
+        <code>.dcm</code>-Datei ist eine DICOM-Datei, also das Format, das jedes
+        Gerät in der Radiologie schreibt, und diese Seite öffnet DCM-Dateien:
+        Sie liest die Datei in Ihrem Browser und zeigt die Aufnahme, ohne
+        Installation und ohne Upload. Das geht unter Windows, auf dem Mac, unter
+        Linux, auf einem Chromebook und auf dem Handy gleich, denn das einzige
+        beteiligte Programm ist der Browser, den Sie ohnehin haben.
+        <br><br>
+        Haben Sie keine einzelne Datei bekommen, sondern eine CD oder einen
+        Ordner, dann ziehen Sie den ganzen Ordner herüber. Ein CT oder ein MRT
+        ist eine Datei pro Schicht, oft ganz ohne <code>.dcm</code> am Ende des
+        Namens, und erst zusammen geöffnet kommt die Aufnahme wieder in ihre
+        Reihenfolge. Die Datei <code>DICOMDIR</code> und der Windows-Viewer, der
+        auf der CD mitkam, können bleiben, wo sie sind. Gebraucht wird keines
+        von beiden."""
+
+[[faq]]
+q = "Was ist eine .dcm-Datei, und warum passiert beim Doppelklick nichts?"
+a = """
+        Sie ist ein Bild oder eine Bildfolge aus einem medizinischen Gerät im
+        DICOM-Format: ein Header mit mehreren hundert Feldern (wer die Patientin
+        ist, welches Gerät die Aufnahme gemacht hat, wie die Pixel angeordnet
+        sind) und danach die Pixel selbst. Sie ist kein umbenanntes JPEG.
+        Deshalb lehnen eine Foto-App, ein Bildbearbeitungsprogramm und ein
+        Browser-Tab sie ab, und deshalb ist auf einem Rechner, auf dem nie ein
+        medizinischer Viewer installiert war, kein Programm für sie
+        eingetragen.
+        <br><br>
+        Nicht jede Datei mit der Endung <code>.dcm</code> ist eine Aufnahme.
+        Dieselben drei Buchstaben verwenden auch ein Programm zum Katalogisieren
+        von Datenträgern und Kalibrierdateien für Motorsteuergeräte in der
+        Autoindustrie. Diese Seite prüft die Datei selbst und nicht ihren
+        Namen, und sie sagt es klar, wenn das, was sie bekommen hat, kein DICOM
+        ist."""
+
+[[faq]]
 q = "Welche DICOM-Dateien kann er öffnen?"
 a = """
         Unkomprimierte Dateien in allen drei Basis-Transfersyntaxen, also
@@ -385,8 +423,9 @@ a = """
         den Stecker ziehen."""
 
 [schema]
-description = "DICOM-Dateien (.dcm) im Browser öffnen: CT, MRT, Röntgen und Ultraschall, mit Fenster und Zentrum, einer ganzen Serie in der richtigen Reihenfolge, Messungen in Millimetern und jedem Tag im Header. Nichts wird hochgeladen."
+description = "DCM-Dateien öffnen mit einem DICOM-Viewer, der im Browser läuft: CT, MRT, Röntgen und Ultraschall, mit Fenster und Zentrum, einer ganzen Serie in der richtigen Reihenfolge, Messungen in Millimetern und jedem Tag im Header. Nichts wird hochgeladen."
 features = [
+  "Öffnet .dcm-Dateien und DICOM-Dateien ganz ohne Endung",
   "Öffnet CT, MRT, Röntgen, Ultraschall, PET und Secondary Capture",
   "Fenster und Zentrum durch Ziehen, durch Eingabe oder über ein benanntes CT-Preset",
   "Ein ganzer Ordner wird zu Serien gebündelt und nach der Lage im Körper sortiert",
