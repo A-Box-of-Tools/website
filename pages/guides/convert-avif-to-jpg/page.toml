@@ -1,0 +1,41 @@
+#
+# Guide: the file that will not open, and the decoder already on the machine.
+#
+# The reader has downloaded something from a web page, got a .avif, and found
+# that Windows Photos, Photoshop or an upload form will not take it. The thing
+# they have not noticed is that the file opens perfectly in the browser tab
+# they are reading this in - which is both why they have it and why no upload
+# is needed to convert it.
+#
+# The contrast with HEIC is the spine of the page and is worth keeping: the two
+# formats are near-identical containers and the software situation is exactly
+# reversed, which is why one of our converters ships 1.4 MB of codec and the
+# other ships none. A reader who understands that pair can work out for
+# themselves which converters need a server.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-avif-to-jpg"
+kind = "guide"
+nav = "AVIF to JPG"
+group = "doing-the-job"
+tool = "avif-to-jpg"
+
+title = "How to Convert AVIF to JPG (and Why Nothing Will Open It)"
+description = "Downloaded a picture and got a .avif that no program will open? Your browser reads it perfectly, which is why converting needs no upload. What AVIF is, what a JPEG cannot carry over, and why the JPG comes out several times larger."
+
+heading = "The file nothing will open, except the thing you are reading this in"
+lede = """
+    A picture saved from a website arrives as <code>.avif</code> and your photo
+    viewer refuses it &mdash; while the browser displays it without complaint.
+    That gap is the whole story, and it is also why this conversion never needs
+    to leave your machine."""
+
+updated = "17 September 2026"
+published = "2026-09-17"
+lastmod = "2026-09-17"
+
+og_title = "How to convert AVIF to JPG"
+og_description = "Why your browser opens an AVIF when nothing else will, what a JPEG cannot carry over, and how to convert without uploading."
+og_image_alt = "abox.tools - tools that never touch a server"

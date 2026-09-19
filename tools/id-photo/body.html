@@ -27,13 +27,32 @@
     <p class="card-lede">
       Every figure below is the published requirement, transcribed from the
       authority named under it. Nothing about this list is guessed at, and nothing
-      about it is fetched &mdash; it is a table in
-      <code>src/specs.js</code>, served with the page.
+      about it is fetched &mdash; it is two tables, <code>src/specs.js</code>
+      for the figures and <code>src/sources.js</code> for where each one came
+      from, served with the page.
     </p>
 
-    <div class="option-row">
-      <label for="spec">Specification</label>
-      <select id="spec"></select>
+    <div class="picker">
+      <div class="option-row">
+        <label for="country-filter">Find a country</label>
+        <input type="search" id="country-filter" class="country-filter"
+               autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="option-row">
+        <label for="country">Country</label>
+        <select id="country"></select>
+      </div>
+
+      <p id="doc-label" class="doc-label">Document</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
     </div>
 
     <dl class="spec-facts" id="spec-facts"></dl>
@@ -135,11 +154,28 @@
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
            shape, so everything on it can be positioned in percentages. -->
-      <div class="stage-wrap">
-        <div class="stage" id="stage">
-          <img id="preview" alt="">
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
         </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>What you will get</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
       </div>
+
+      <p class="stage-hint">The panel beside the photograph is the crop itself, at the shape the rule asks for and with nothing drawn over it. It is what the file will look like, so a framing that is wrong is wrong there before it is downloaded.</p>
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="ghost">Fit the box to the rule</button>
@@ -242,14 +278,13 @@
       stored image, which a &#x2066;413 x 531&#x2069; crop of a modern phone photograph clears
       comfortably.</span>
     <span data-phrase="country.us">United States</span>
-    <span data-phrase="spec.us-passport.doc">Passport, visa and green card</span>
+    <span data-phrase="spec.us-passport.doc">Passport and green card</span>
     <span data-phrase="spec.us-passport.upload">Online photo upload</span>
     <span data-phrase="spec.us-passport.note1">Square, and the only square passport photograph in wide use: &#x2066;2 x 2&#x2069; inches, which is
       &#x2066;51 x 51&#x2069; mm.</span>
     <span data-phrase="spec.us-passport.note2">The head may sit anywhere from 25 to 35 mm, a far wider window than the ICAO rule,
       and the eye line is measured from the bottom edge rather than as a proportion.</span>
-    <span data-phrase="spec.us-passport.note3">The uploaded file must be square as well, between 600 and 1200 pixels a side, and
-      240 KB is the ceiling the form enforces.</span>
+    <span data-phrase="spec.us-passport.note3">The upload rule is a file size and nothing else now: 54 KB to 10 MB, as a JPEG, PNG or HEIC. The pixel size and the 240 KB ceiling it used to state are both gone, and so is the eye line - the square written here is the printed &#x2066;2 x 2&#x2069; inches at 300 dpi, and a larger square inside the band is just as acceptable.</span>
     <span data-phrase="spec.us-dv.doc">Diversity Visa lottery entry</span>
     <span data-phrase="spec.us-dv.upload">Entrant Status Check upload</span>
     <span data-phrase="spec.us-dv.note1">The same photograph as the passport rule above, but the entry form takes one size
@@ -342,6 +377,154 @@
       the overlay, the print and the file-size search all follow it.</span>
     <span data-phrase="spec.custom.note2">It starts on the ICAO geometry, because a country not on the list above is far more
       likely to be using that than anything else.</span>
+    <span data-phrase="filter.one">One country matches.</span>
+    <span data-phrase="filter.count">{n} countries match.</span>
+    <span data-phrase="filter.none">Nothing matches that. Only the country you have already chosen is left in the list.</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">eyes</span>
+    <span data-phrase="guide.chin">chin</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">Download</span>
+    <span data-phrase="country.fr">France</span>
+    <span data-phrase="country.it">Italy</span>
+    <span data-phrase="country.nl">Netherlands</span>
+    <span data-phrase="country.es">Spain</span>
+    <span data-phrase="country.ie">Ireland</span>
+    <span data-phrase="country.pl">Poland</span>
+    <span data-phrase="doc.passport">Passport</span>
+    <span data-phrase="doc.passport-id">Passport and identity card</span>
+    <span data-phrase="doc.passport-id-licence">Passport, identity card and driving licence</span>
+    <span data-phrase="bg.forbid.white">The background reads {hex}, which is white or near enough to it &mdash; and this rule turns a white background down.</span>
+    <span data-phrase="bg.white-or-grey.label">Plain white or light grey</span>
+    <span data-phrase="bg.white-or-grey.inline">plain white or light grey</span>
+    <span data-phrase="bg.white-or-grey.note">Either one passes. What is being measured is the wall rather than the paper, and an evenly lit white wall photographs light grey anyway, which is why both are on the list.</span>
+    <span data-phrase="bg.white-grey-blue.label">White, light grey or light blue</span>
+    <span data-phrase="bg.white-grey-blue.inline">white, light grey or light blue</span>
+    <span data-phrase="bg.white-grey-blue.note">Any of the three, as long as it is one flat tone across the whole frame. Light blue is on the list because it separates fair hair from the background, which is the job the rule is really doing.</span>
+    <span data-phrase="bg.white-grey-cream.label">White, light grey or cream</span>
+    <span data-phrase="bg.white-grey-cream.inline">white, light grey or cream</span>
+    <span data-phrase="bg.white-grey-cream.note">Any of the three. Cream reads as a warm off-white; what fails is not the shade but a wall with a shadow, a texture or a door frame in it.</span>
+    <span data-phrase="bg.grey-or-blue-not-white.label">Light grey or light blue &mdash; not white</span>
+    <span data-phrase="bg.grey-or-blue-not-white.inline">light grey or light blue, and not white</span>
+    <span data-phrase="bg.grey-or-blue-not-white.note">The only rule here that refuses a colour rather than asking for one. A white background is turned down outright, so the usual advice about standing against a white wall is the wrong advice for this one.</span>
+    <span data-phrase="note.crown-skull">This rule measures the head to the top of the skull, with the hair left out of it. The dots here find the top of the hair, because that is what a photograph has in it, so on a full head of hair the measurement reads high &mdash; aim at the lower half of the band.</span>
+    <span data-phrase="note.head-advisory">No head-height band is published for this one, so the ICAO figures are shown in its place and are never marked as a failure. Frame it the way the rule describes in words and the numbers follow.</span>
+    <span data-phrase="note.head-loose">No head-height band is published for this one, and its frame is not the usual one, so ICAO&rsquo;s figures do not carry over. The band shown is a loose one read out of what the rule says in words; it is guidance and is never marked as a failure.</span>
+    <span data-phrase="note.eye-advisory">No eye line is published, so the band shown is where the eyes fall on a head sitting centred in the frame. It is guidance rather than a requirement, and is never painted red.</span>
+    <span data-phrase="spec.fr-passport.note1">The photograph has to be taken by an approved photographer or in an approved booth, so a print made here is for checking that theirs is right rather than for handing in.</span>
+    <span data-phrase="spec.it-passport.note1">Italy publishes a width and nothing else: 35 to 40 mm, with the face filling 70 to 80 per cent of it. No height is stated anywhere, so this uses the &#x2066;35 x 45&#x2069; that Italian booths and photo shops sell.</span>
+    <span data-phrase="spec.nl-passport.note1">The head band is 26 to 30 mm, which is shorter than it sounds: 58 to 67 per cent of the frame, where ICAO asks for 70 to 80. A crop made to the ICAO rule is too tight for a Dutch application, and this is the entry that catches it.</span>
+    <span data-phrase="spec.nl-passport.note2">Two more published figures are read and not used: the face must be 16 to 20 mm wide with the ears left out, and a child under 11 may go down to 19 mm of head height. The 400 dpi floor is the reason this one prints larger than the rest.</span>
+    <span data-phrase="spec.es-passport.note1">Not a &#x2066;35 x 45&#x2069; at all. Spain&rsquo;s photograph is 26 mm wide by 32 mm tall, written &ldquo;&#x2066;32 x 26&#x2069; mm&rdquo; in the regulations, and a European passport photo taken to a Spanish counter is the wrong size.</span>
+    <span data-phrase="spec.ie-passport.note1">A paper application takes four identical prints, and the witness signs and stamps the back of two of them. Anything from &#x2066;35 x 45&#x2069; up to &#x2066;38 x 50&#x2069; mm is accepted; this uses the smaller, which is what a booth produces.</span>
+    <span data-phrase="spec.ie-passport.note2">Applying online is a different job. That form takes a wider photograph &mdash; head to mid torso, at least &#x2066;715 x 951&#x2069; pixels &mdash; and crops it for you, so what it wants is the picture you started with rather than anything cropped here.</span>
+    <span data-phrase="spec.pl-passport.note1">Poland publishes the eye line in millimetres up from the bottom edge, which almost nobody does: 20 to 30 mm. It also says that on a full head of hair some of the hairstyle may fall outside the frame, so long as the face itself is not made smaller.</span>
+    <span data-phrase="country.kr">South Korea</span>
+    <span data-phrase="country.sg">Singapore</span>
+    <span data-phrase="country.nz">New Zealand</span>
+    <span data-phrase="upload.online">Online application photo</span>
+    <span data-phrase="source.studio">Photo studios</span>
+    <span data-phrase="source.studio.doc">A size studios sell under this name, not a published rule</span>
+    <span data-phrase="note.studio-size">Nobody publishes this one. It is what a studio, a form or an employer means when it asks for the size by name, so the frame is right and the head band is the ICAO one, shown as guidance and never marked as a failure.</span>
+    <span data-phrase="spec.kr-passport.note1">Korea checks two things almost nobody else states outright: the background may not be cut out or replaced in software, and the head is measured to the top of the skull with the hair excluded. The online form recommends &#x2066;413 x 531&#x2069; pixels, which is this print at 300 dpi.</span>
+    <span data-phrase="spec.sg-passport.note1">What Singapore publishes is the upload: &#x2066;400 x 514&#x2069; pixels, up to 8 MB, on a white background and taken in the last three months rather than the usual six. No millimetres are stated anywhere &mdash; &#x2066;400 x 514&#x2069; is the &#x2066;35 x 45&#x2069; proportion exactly, which is where this print size comes from.</span>
+    <span data-phrase="spec.nz-passport.note1">There is no print here on purpose. New Zealand asks for a digital photograph and says plainly that a scan of a printed one will not be accepted, so the sheet is switched off for this one.</span>
+    <span data-phrase="spec.nz-passport.note2">The shape is 3:4, not the &#x2066;35 x 45&#x2069; of a European print, and the file has both a floor and a ceiling: 250 KB to 5 MB, at least &#x2066;900 x 1200&#x2069; pixels and at most &#x2066;4500 x 6000&#x2069;.</span>
+    <span data-phrase="spec.cn-1inch.doc">One-inch print (&#x2066;一寸&#x2069;)</span>
+    <span data-phrase="spec.cn-1inch.note1">The size a Chinese form means by &#x2066;一寸&#x2069;: &#x2066;25 x 35&#x2069; mm. It is not a travel-document size and will not do for a passport &mdash; it is for school forms, work passes and the things that ask for a photograph to be glued on.</span>
+    <span data-phrase="spec.cn-2inch.doc">Two-inch print (&#x2066;二寸&#x2069;)</span>
+    <span data-phrase="spec.cn-2inch.note1">The other one a Chinese form asks for by name: &#x2066;35 x 49&#x2069; mm. Note that the passport size, &#x2066;33 x 48&#x2069; mm, is often called &#x2066;小二寸&#x2069; and is a different size again; it has its own entry above.</span>
+    <span data-phrase="spec.jp-resume.doc">Résumé photo (&#x2066;履歴書&#x2069;)</span>
+    <span data-phrase="spec.jp-resume.note1">The &#x2066;30 x 40&#x2069; mm photograph a Japanese résumé has a box for. Not a passport size &mdash; that one is &#x2066;35 x 45&#x2069; and has its own entry above.</span>
+    <span data-phrase="spec.kr-banmyeongham.doc">Half-card print (&#x2066;반명함&#x2069;)</span>
+    <span data-phrase="spec.kr-banmyeongham.note1">The &#x2066;30 x 40&#x2069; mm print Korean forms and applications ask for by name. The passport size is &#x2066;35 x 45&#x2069; and is a different thing; it has its own entry above.</span>
+    <span data-phrase="country.ch">Switzerland</span>
+    <span data-phrase="country.se">Sweden</span>
+    <span data-phrase="country.no">Norway</span>
+    <span data-phrase="country.pt">Portugal</span>
+    <span data-phrase="bg.light-unstated.label">Plain and light &mdash; no colour is published</span>
+    <span data-phrase="bg.light-unstated.inline">plain and light</span>
+    <span data-phrase="bg.light-unstated.note">This rule asks for a plain, evenly lit background and never says which colour, so the check here is wide: white, light grey, light blue and cream all pass. Refusing a wall the authority has not refused would be this tool inventing a requirement.</span>
+    <span data-phrase="note.no-measurements">Nobody publishes millimetres for this one. The frame here is the &#x2066;35 x 45&#x2069; mm most of the world issues against and the bands are ICAO’s, shown as guidance and never marked as a failure. Use it to see whether a photograph looks right, not to satisfy a rule that does not exist in numbers.</span>
+    <span data-phrase="note.taken-at-the-office">The photograph is taken where you apply rather than brought with you, so a print made here is for checking &mdash; and for the forms, visas and applications that do still take one.</span>
+    <span data-phrase="spec.ch-passport.note1">What fedpol publishes is a sheet of examples, right and wrong, with no measurement anywhere on it: overexposure, a face too small, an open mouth, a hand across the face, a head turned, eyes closed, hair over the face.</span>
+    <span data-phrase="spec.se-passport.note1">Sweden photographs you at the passport office when you apply, and says so as law rather than preference: it keeps the quality up and stops one person using another’s photograph to get a passport.</span>
+    <span data-phrase="spec.no-passport.note1">Norway photographs you in a biometric kiosk and will not accept one from a photographer or a booth &mdash; with one exception, an emergency passport, which you do bring your own for. Its published requirements are unusually specific about the face without giving a size: the head should cover about 70 per cent of the picture, both ears must be visible, and glasses come off.</span>
+    <span data-phrase="spec.pt-passport.note1">Portugal publishes no dimensions at all, for the Cart&atilde;o de Cidad&atilde;o or the passport, and both are applied for in person. The passport-size print is what the consulates ask for when they ask for a photograph at all.</span>
+    <span data-phrase="country.hk">Hong Kong</span>
+    <span data-phrase="country.tw">Taiwan</span>
+    <span data-phrase="country.vn">Vietnam</span>
+    <span data-phrase="country.ph">Philippines</span>
+    <span data-phrase="country.br">Brazil</span>
+    <span data-phrase="country.mx">Mexico</span>
+    <span data-phrase="country.tr">T&uuml;rkiye</span>
+    <span data-phrase="country.za">South Africa</span>
+    <span data-phrase="country.ae">United Arab Emirates</span>
+    <span data-phrase="spec.hk-passport.note1">Wider and taller than almost anybody else&rsquo;s: &#x2066;40 x 50&#x2069; mm, with the usual 32 to 36 mm head inside it, so there is more room around the face than a &#x2066;35 x 45&#x2069; leaves. The photograph is laser-engraved, which is why very dark and very light clothing are both advised against.</span>
+    <span data-phrase="spec.hk-passport-online.doc">Passport, applied for online</span>
+    <span data-phrase="spec.hk-passport-online.note1">Not the print at some resolution. The online form wants at least &#x2066;1200 x 1600&#x2069; pixels, which is 3:4 where the print is 4:5, in a JPEG of 5 MB or less &mdash; so this is a rule of its own with nothing to put on paper.</span>
+    <span data-phrase="spec.tw-passport.note1">The rule says outright what most only imply: a phone selfie comes out mirrored and wide-angled and is sent back, the image may not be resampled before it is printed, and both ears have to show. The upload takes a JPEG of at least &#x2066;413 x 531&#x2069; pixels and no more than 5 MB.</span>
+    <span data-phrase="spec.vn-passport.note1">A &#x2066;4 x 6&#x2069; cm print &mdash; taller in proportion than a &#x2066;35 x 45&#x2069;, so a crop made for another country will not fit it &mdash; on white, head bare, no tinted glasses. Two are asked for, and the rule says they should come from a studio the immigration authority permits.</span>
+    <span data-phrase="spec.ph-passport.note1">The Philippines photographs you at the counter and publishes what to wear rather than what size to be: a collared top or a higher neckline in a colour that stands out from the backdrop, nothing that casts a shadow across the face, and no coloured contact lenses.</span>
+    <span data-phrase="spec.br-passport.note1">Brazil&rsquo;s &#x2066;5 x 7&#x2069; cm is for consulates abroad and for children under five. Inside Brazil the Pol&iacute;cia Federal photographs everybody older than that at the counter, and a photograph already used in an earlier passport is refused.</span>
+    <span data-phrase="spec.mx-passport.note1">Three things here are stricter than the usual: the photograph may be no more than thirty days old, glasses come off altogether, and a grey background is named as a reason for refusal &mdash; it has to be white.</span>
+    <span data-phrase="spec.tr-passport.note1">Not a &#x2066;35 x 45&#x2069;, and the authority says so in as many words: the biometric photograph is &#x2066;50 x 60&#x2069; mm and photographers are to be reminded not to cut it down. A different size or background stops the application, or gets the card cancelled at quality control afterwards.</span>
+    <span data-phrase="spec.za-passport.note1">The same 29 to 34 mm head the United Kingdom asks for, shorter than most of Europe&rsquo;s &mdash; and the photograph may be no more than one month old. Offices that issue the smart ID card photograph you themselves; the prints are for the ones that do not, and the leaflet warns that a print made at home is unlikely to be good enough.</span>
+    <span data-phrase="spec.ae-passport.note1">The Emirates publish a width and no height &mdash; 35 to 40 mm, with the face filling 70 to 80 per cent of the photograph &mdash; so this uses the &#x2066;35 x 45&#x2069; that a studio there sells. The background is described only as plain and light-coloured.</span>
+    <span data-phrase="country.pk">Pakistan</span>
+    <span data-phrase="country.bd">Bangladesh</span>
+    <span data-phrase="country.id">Indonesia</span>
+    <span data-phrase="country.il">Israel</span>
+    <span data-phrase="country.eg">Egypt</span>
+    <span data-phrase="country.ng">Nigeria</span>
+    <span data-phrase="spec.pk-passport.note1">Read this one before using anything made here. Pakistan asks for a professionally taken photograph and says in so many words that one &ldquo;cut down from larger pictures&rdquo; or edited in software will not do &mdash; which is what a crop is. Use this to check that a studio&rsquo;s photograph meets the 29 to 34 mm head and the white background; the upload may be up to 5 MB and no pixel size is stated, so the one written is the print at 300 dpi.</span>
+    <span data-phrase="spec.bd-passport.note1">Bangladesh attaches no photograph to an e-passport application at all: the portal says none is needed and none has to be attested, because the photograph is part of the biometric enrolment at the passport office. The one exception is a child under six, which has its own entry.</span>
+    <span data-phrase="spec.bd-passport-child.doc">Passport, child under six</span>
+    <span data-phrase="spec.bd-passport-child.note1">A child under six is not enrolled at the office, so a photograph is sent instead &mdash; and not a passport-size one. The rule asks for a 3R lab print, three and a half inches by five, on a grey background; the office takes the face out of it itself, which is why the head band here is wide.</span>
+    <span data-phrase="spec.id-passport.note1">Indonesia photographs you at the immigration office and will take it again if you ask &mdash; a blink or a tilted head is reason enough. What it publishes is how to arrive: facing the camera straight, no wide smile, hair off the face and brows, and a dark collared top so that you stand out from a plain, bright white background.</span>
+    <span data-phrase="spec.il-passport.note1">Square, like the American one, and smaller: &#x2066;5 x 5&#x2069; cm on white. It is for a passport applied for abroad or a temporary one &mdash; inside Israel the photograph is taken at the passport office, and bringing prints is only suggested for children up to six, who are hard to photograph there.</span>
+    <span data-phrase="spec.eg-passport.note1">Egypt&rsquo;s missions agree on three photographs and a white background, and not on a size. The consulate in London asks for passport photographs without giving one; the embassy in Washington asks for &#x2066;2 x 2&#x2069; inches, which is the United States entry in this list. Ask the mission you are applying to before printing.</span>
+    <span data-phrase="spec.ng-passport.note1">Nigeria&rsquo;s rule is the upload and nothing else: exactly &#x2066;600 x 800&#x2069; pixels, under 2 MB, on white, with the hair clear of the face and ears. The portal has a Check Image button that tests a photograph before you apply, and it is worth pressing &mdash; the official photograph is still taken at the immigration office afterwards.</span>
+    <span data-phrase="country.my">Malaysia</span>
+    <span data-phrase="country.th">Thailand</span>
+    <span data-phrase="country.ar">Argentina</span>
+    <span data-phrase="country.sa">Saudi Arabia</span>
+    <span data-phrase="doc.evisa">e-Visa</span>
+    <span data-phrase="spec.my-passport.note1">Malaysia&rsquo;s frame is five millimetres taller than the usual one and the face in it is smaller: &#x2066;35 x 50&#x2069; mm, with a face of 25 to 30 mm &mdash; half to six tenths of the height, where most of the world asks for seven to eight tenths. A photograph cropped for anywhere else fails on both counts. Two prints, on white with no shadow.</span>
+    <span data-phrase="spec.my-expat-pass.doc">Expatriate pass (ESD Online)</span>
+    <span data-phrase="spec.my-expat-pass.note1">The same &#x2066;35 x 50&#x2069; mm frame as the Malaysian passport and a bigger head in it &mdash; 30 to 35 mm against the passport&rsquo;s 25 to 30 &mdash; so one crop does not serve both. The upload may be no larger than 25 KB, which is little enough that the file written here is squeezed until it fits. White is accepted for both kinds of application the page names and blue for only one of them, so white is what is checked.</span>
+    <span data-phrase="spec.th-passport.note1">Thailand takes the photograph itself, with fingerprints and an iris scan, at the passport office or the embassy, so there is no print to bring and no size is published. The one instruction its embassy gives for the day is not to wear coloured contact lenses.</span>
+    <span data-phrase="spec.th-evisa.note1">Thailand&rsquo;s e-Visa publishes a head of around 70 per cent of the height, a vertical photograph on plain white or off-white, and a JPEG of at most 3 MB &mdash; and no size in pixels or millimetres. The shape written here is the usual &#x2066;35 x 45&#x2069; at 300 dpi, because some shape has to be; the portal offers an example photograph to compare against.</span>
+    <span data-phrase="spec.ar-passport.note1">Argentina&rsquo;s passport is issued by RENAPER from biometric data taken at the appointment &mdash; its consulates do it at the counter &mdash; so nothing is brought and no size is published. A print is asked for only with an emergency or provisional passport, which has its own entry.</span>
+    <span data-phrase="spec.ar-emergency.doc">Emergency or provisional passport</span>
+    <span data-phrase="spec.ar-emergency.note1">Square and small: &#x2066;4 x 4&#x2069; cm, facing front on white, and &ldquo;medio busto&rdquo; &mdash; the shoulders are in the picture, so the head is smaller than in a passport crop. No hat and no glasses at all. It is what a consulate asks for when a passport has been lost or stolen abroad; the consulate in Asunci&oacute;n adds that it be in colour and on matt paper.</span>
+    <span data-phrase="spec.sa-evisa.note1">The Saudi tourist e-Visa wants a square of exactly &#x2066;200 x 200&#x2069; pixels, between 5 and 100 KB, on white, with the face filling 70 to 80 per cent of it and both ears showing. The same sentence also gives the head in inches, which a file of 200 pixels has none of; the percentage is what is applied here. At that size nothing survives but the face, so start from a sharp photograph.</span>
+    <span data-phrase="doc.visa">Visa</span>
+    <span data-phrase="bg.white-or-light.label">White or a plain light colour</span>
+    <span data-phrase="bg.white-or-light.inline">white or a plain light colour</span>
+    <span data-phrase="bg.white-or-light.note">This rule takes white or any plain light colour and names no particular one, so the check here is wide: white, light grey, light blue and cream all pass.</span>
+    <span data-phrase="spec.us-visa.note1">The print is the passport&rsquo;s &#x2066;2 x 2&#x2069; inches, and two things are not. Glasses are no longer allowed in a visa photograph at all, short of a signed medical statement. And the DS-160 upload is a square of 600 to 1200 pixels and 240 kB at most &mdash; where online passport renewal takes up to 10 MB, so a file made for one is refused by the other. The page gives the head as &ldquo;22 mm&rdquo; beside one inch; its own composition template says 25, and still publishes the eye line the passport rule has dropped &mdash; 28 to 35 mm from the bottom.</span>
+    <span data-phrase="spec.ca-pr-card.doc">Permanent residence and PR card</span>
+    <span data-phrase="spec.ca-pr-card.note1">The photograph may be twelve months old here, where nearly every other rule says six, and the background is white only &mdash; the page warns against white clothing, which disappears into it. Online it is one file of &#x2066;715 x 1000&#x2069; to &#x2066;2000 x 2800&#x2069; pixels and 4 MB at most, and a phone picture of a paper photograph is refused where a proper scan is not. On paper it is two prints, and ones printed at home are not accepted.</span>
+    <span data-phrase="spec.ca-citizenship.doc">Citizenship</span>
+    <span data-phrase="spec.ca-citizenship.note1">Read this before using the upload. For an online application Canada asks for a file &ldquo;saved directly from the camera without any changes&rdquo; &mdash; and a crop is a change, so use this to check a photographer&rsquo;s file and to make the paper prints. The minimum it states, &#x2066;420 x 540&#x2069; pixels, is not the shape of its own &#x2066;50 x 70&#x2069; mm frame; &#x2066;420 x 588&#x2069; is, and clears both figures. About 240 kB is suggested and 4 MB is the ceiling.</span>
+    <span data-phrase="spec.ca-visa.doc">Visitor visa (temporary resident visa)</span>
+    <span data-phrase="spec.ca-visa.note1">The one Canadian photograph in the ordinary frame: the passport, the PR card and citizenship are all &#x2066;50 x 70&#x2069; mm and this is &#x2066;35 x 45&#x2069; &mdash; &ldquo;at least&rdquo;, in the rule&rsquo;s words &mdash; with the same 31 to 36 mm head, which therefore fills far more of it. Two identical prints; black and white is accepted as well as colour.</span>
+    <span data-phrase="spec.au-visa.note1">Home Affairs asks for a recent passport photograph of &#x2066;45 x 35&#x2069; mm, head and shoulders against a plain background, under six months old, with the person&rsquo;s name printed on the back &mdash; and publishes no head size or colour for it. The Australian passport entry in this list does, and a photograph that meets it meets this.</span>
+    <span data-phrase="spec.au-citizenship.doc">Citizenship, paper application</span>
+    <span data-phrase="spec.au-citizenship.note1">Glasses come off: poor eyesight alone is not accepted as a reason to keep them on. The frame may be anything from &#x2066;35 x 45&#x2069; to &#x2066;40 x 50&#x2069; mm with the same 32 to 36 mm face in it. Home Affairs also says it does not recommend online passport-photo services or mobile apps for this, on image quality &mdash; so check what is made here against its examples before sending it.</span>
+    <span data-phrase="spec.au-citizenship-online.doc">Citizenship, online application</span>
+    <span data-phrase="spec.au-citizenship-online.note1">Online the photograph is a JPEG between 70 KB and 3.5 MB, with &#x2066;1200 x 1600&#x2069; pixels preferred &mdash; three to four, where the paper print is seven to nine, so it is a rule of its own with nothing to put on paper. A scan or a photograph of a printed photo is not accepted, glasses come off, and Home Affairs says it does not recommend online photo services or apps for this: check the result against its examples.</span>
+    <span data-phrase="spec.in-visa.note1">A square JPEG between 10 and 300 KB, on white or a plain light colour, with no border. The rule gives the head as 25 to 35 mm without saying of what: those are the figures of a &#x2066;2 x 2&#x2069; inch photograph, the passport entry in this list, so that proportion is what is applied. Its sentence on the eye line breaks off half way through on the official page, so the eye band shown is the passport&rsquo;s, as guidance, and is never painted red. No pixel size is stated; the one written is two inches at 300 dpi.</span>
+    <span data-phrase="spec.in-evisa.note1">The e-Visa takes a square JPEG between 10 KB and 1 MB &mdash; a higher ceiling than the regular visa&rsquo;s 300 KB &mdash; on white or a plain light colour, with no border, and without spectacles. No head size or pixel size is stated; the square written is two inches at 300 dpi.</span>
+    <span data-phrase="country.ru">Russia</span>
+    <span data-phrase="spec.ru-passport.doc">Passport, ten-year biometric</span>
+    <span data-phrase="spec.ru-passport.note1">For the ten-year biometric passport no photographs are handed in at all: the consular section takes the photograph itself. What is published is what not to wear &mdash; no tinted glasses and no uniform &mdash; and that a head covering is allowed only where religion requires it and the oval of the face stays clear. A child under six has to let themselves be photographed there, which is why the five-year passport is suggested for them.</span>
+    <span data-phrase="spec.ru-passport-5.doc">Passport, five-year</span>
+    <span data-phrase="spec.ru-passport-5.note1">The older five-year passport is the one that still takes prints: three identical photographs of &#x2066;35 x 45&#x2069; mm, strictly full face, on white with no stripes, marks or shadows, the face and the top of the shoulders centred and the face filling 70 to 80 per cent. Black and white is accepted as well as colour. No tinted glasses and no uniform.</span>
+    <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Common practice</span>
     <span data-phrase="source.common.doc">The &#x2066;35 x 45&#x2069; mm stationer standard, not a published rule</span>
     <span data-phrase="source.you">You</span>
@@ -364,6 +547,7 @@
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="source.line">Transcribed from {authority} &mdash; {document}. Checked {checked}. Rules change;
       the figures above are what to check against the form in front of you.</span>
+    <span data-phrase="source.line.words">Read from {authority} &mdash; {document}, on {checked}. That document describes the photograph without ever giving a measurement, so the figures above are not its own &mdash; see the note.</span>
     <span data-phrase="source.own">Your own figures. Nothing here is checked against anything.</span>
     <span data-phrase="read.done">Filled in from what you pasted. Each figure is listed under the words it was read
       from, so check the two against each other. A box the text does not mention keeps what it had.</span>

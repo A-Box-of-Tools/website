@@ -37,7 +37,8 @@ So there are three separate problems here, and each has its own module.
 
 | File | What it holds |
 |---|---|
-| `src/specs.js` | The rulebook. Every country's published figures, with the authority and the date each was read. |
+| `src/specs.js` | The rulebook. Every country's published figures. |
+| `src/sources.js` | Where each of them came from, and what the country and the document are called in their own language. |
 | `src/detect.js` | Where the four points come from: an outline against the wall, and the dark patches where eyes are. No model. |
 | `src/geometry.js` | The arithmetic: four marked points in, one crop rectangle out, and every measurement back again. |
 | `src/sheet.js` | The 4 × 6 layout: how many copies fit, where they go, and where the cut marks go. |
@@ -243,18 +244,49 @@ at 4 and 3 the same sheet holds six photographs instead of eight.
 
 ## Adding a country
 
-One entry in `SPECS` in `src/specs.js`, and nothing else — the chooser, the
-figures panel, the overlay, the crop, the sheet and the file-size search are all
-driven from it. The entry needs:
+One entry in `RULES` in `src/specs.js` and one in `SOURCES` in
+`src/sources.js`, and nothing else — the chooser, the figures panel, the
+overlay, the crop, the sheet and the file-size search are all driven from them.
+The rule needs:
 
 - `print` in millimetres with a DPI floor, or `null` where the rule is only ever
   a web form's rule;
 - `head` and `eye` as `mmBand(min, max, frameHeight)` where the authority
   publishes millimetres, or `band(min, max, true)` where it publishes nothing and
-  the figures are guidance — the page labels those, and never paints them red;
-- a `background` key from `BACKGROUNDS`;
+  the figures are guidance — the page labels those, and never paints them red.
+  `mmBand` takes the same flag for a figure that *was* published and is not any
+  more, which is what happened to the American eye line in 2026;
+- `crown: 'skull'` where the authority measures the head with the hair left out,
+  as France and Poland do. It changes no arithmetic — nothing can find a skull
+  under hair, and a guessed constant for it is the mistake `EYE_LEVEL` already
+  made once — but the rule then owes the reader `note.crown-skull`, and a test
+  checks that it carries it;
+- a `background` key from `BACKGROUNDS`. An entry there may name several
+  colours with `accepts`, because plenty of rules do — the reading is
+  measured against whichever of them the wall is nearest, since averaging
+  three colours into one gives a fourth that fails all three. It may also
+  `forbid` one: France's background must be light and must not be white, and
+  a single hex with a tolerance wide enough to mean “light grey” passes a
+  white wall every time;
 - `digital`, where the form states pixel or file-size limits;
-- `notes`, which are shown verbatim, and `source`, which is shown too.
+- `notes`, which are shown verbatim. A note is for a trap, not a restatement:
+  if the figure is already in the panel above it, it is not a note. Most of what
+  a new country would otherwise repeat — the neutral expression, the plain even
+  background, the six months — is already a shared `note.` key, and reaching for
+  one of those is the usual answer.
 
-The tests will then check it: that it can be cropped to, that its bands are
-bands, and that its millimetres and fractions agree.
+Everything the rule names is a phrase key and has to be defined in
+`body.html`'s `#phrases` block, **and in the German and Chinese copies of it**,
+or it reaches the page as its own key. `tests/python/test_phrases.py` fails on a
+key the English block lacks and on a key a translation lacks, in that order.
+
+The citation is the other half, and it is a separate file because it is
+somebody else's writing rather than ours: the authority, the title of the
+document, the date it was read, and `native` where the document's own name for
+itself is a different word from the one this site prints.
+`tests/js/id-photo-sources.test.js` keeps that file a table of names — nothing
+long, nothing that reads like a sentence — which is what pays for its exemption
+from the count in `tests/python/test_english_in_js.py`.
+
+The tests will then check the rest: that it can be cropped to, that its bands
+are bands, and that its millimetres and fractions agree.

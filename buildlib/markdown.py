@@ -93,6 +93,15 @@ class _Converter(HTMLParser):
         self.first_in_item = False
         self.raw = None
         self.skip = 0
+        # A table being read: how deep in one we are, the cells of the row
+        # being assembled, and whether this table still owes the `---` line
+        # that turns its first row into a header. A cell holds inline content
+        # only, so it is collected straight out of the buffer rather than
+        # through flush(), which knows about lists and prefixes a cell has
+        # no use for.
+        self.table = 0
+        self.row = None
+        self.delim = False
 
     # -- output -------------------------------------------------------------
 
@@ -124,13 +133,34 @@ class _Converter(HTMLParser):
         text = '\n'.join(indent + prefix + line for line in text.split('\n'))
         self.blocks.append((text, 'more' if self.lists else 'plain'))
 
+    def cell(self):
+        text = ''.join(self.buf)
+        self.buf = []
+        self.open = []
+        # A literal pipe would end the cell it is sitting in.
+        return re.sub(r'\s+', ' ', text).strip().replace('|', r'\|')
+
+    def end_row(self):
+        cells, self.row = self.row, None
+        if not cells:
+            return
+        self.blocks.append(('| ' + ' | '.join(cells) + ' |', 'row'))
+        # Markdown has no headerless table: the first row is the header
+        # whatever the markup called it, so the separator goes after it
+        # whether or not the HTML bothered with a <thead>.
+        if self.delim:
+            self.blocks.append(
+                ('|' + '|'.join([' --- '] * len(cells)) + '|', 'row'))
+            self.delim = False
+
     def result(self):
         self.flush()
         out = []
         previous = 'plain'
         for text, kind in self.blocks:
             if out:
-                out.append('\n' if kind == previous == 'item' else '\n\n')
+                tight = kind == previous and kind in ('item', 'row')
+                out.append('\n' if tight else '\n\n')
             out.append(text)
             previous = kind
         return ''.join(out).strip() + '\n'
@@ -158,6 +188,16 @@ class _Converter(HTMLParser):
             self.flush()
             if tag == 'blockquote':
                 self.prefix = '> '
+        elif tag == 'table':
+            self.flush()
+            self.table += 1
+            self.delim = True
+        elif tag == 'tr' and self.table:
+            self.flush()
+            self.row = []
+        elif tag in ('th', 'td') and self.row is not None:
+            self.buf = []
+            self.open = []
         elif tag in BOUNDARIES or tag == 'hr':
             self.flush()
             if tag == 'hr':
@@ -193,6 +233,15 @@ class _Converter(HTMLParser):
 
         if tag in INLINE:
             self.close_inline(tag)
+        elif tag in ('th', 'td') and self.row is not None:
+            self.row.append(self.cell())
+        elif tag == 'tr' and self.row is not None:
+            self.end_row()
+        elif tag == 'table':
+            self.flush()
+            self.table = max(0, self.table - 1)
+            self.row = None
+            self.delim = False
         elif tag in HEADINGS or tag in PARAGRAPHS or tag in BOUNDARIES:
             self.flush()
         elif tag in ('ul', 'ol'):

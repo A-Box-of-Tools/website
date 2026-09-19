@@ -24,7 +24,7 @@ slug = "dicom-viewer"
 name = "DICOM Viewer"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
-heading = "DICOM&nbsp;Viewer <span class=\"h1-kw\">&mdash; open a .dcm scan in your browser</span>"
+heading = "DICOM&nbsp;Viewer <span class=\"h1-kw\">&mdash; a DCM file opener that runs in your browser</span>"
 tagline = "CT, MR, X-ray and ultrasound, with the window, the header and the measurements."
 icon = "&#129659;"         # the mark beside the page heading
 favicon = "&#129659;"      # the tab icon, drawn into an inline SVG
@@ -46,13 +46,17 @@ css_parts = ["notes"]
 # set to accept many files because a CT is three hundred of them and dropping a
 # folder is the only sane way to open one.
 js_parts = ["file-picker", "message-box", "example-dicom"]
-lastmod = "2026-09-07"
+lastmod = "2026-09-19"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "DICOM Viewer &mdash; Open a .dcm File in Your Browser, No Upload"
-description = "Open CT, MR, X-ray and ultrasound scans in your browser. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded."
-og_title = "DICOM Viewer &mdash; open a scan without uploading it"
+# "DCM file opener" leads because that is what the person holding the file
+# types: they know the three letters on the end of its name and not the name of
+# the standard. "DICOM viewer" is what somebody who already knows types, and
+# the page's own name carries that half.
+title = "DCM File Opener &amp; DICOM Viewer &mdash; Open .dcm Online, No Upload"
+description = "A free DCM file opener: open .dcm scans &mdash; CT, MR, X-ray and ultrasound &mdash; in your browser, with nothing to install. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded."
+og_title = "DCM file opener &mdash; open a .dcm scan without uploading it"
 og_description = "A .dcm file opened on your own machine: window and level, the whole series stacked in order, measurements in millimetres, and every tag in the header. No upload, no account."
 og_image_alt = "DICOM Viewer - open a CT, MR or X-ray scan in the browser"
 
@@ -86,12 +90,13 @@ read_first = """
 
 # --- the written half of the page --------------------------------------------
 
-howto_heading = "How to open a DICOM file"
+howto_heading = "How to open a DCM (DICOM) file"
 
 # --- the card on the hub page ------------------------------------------------
 
 card = """
-            Open a CT, MR, X-ray or ultrasound scan on your own machine.
+            A DCM file opener: a CT, MR, X-ray or ultrasound scan, opened on
+            your own machine.
             Window and level it, scroll the whole series, measure in
             millimetres, and read every tag in the header."""
 
@@ -280,6 +285,41 @@ a = """
         record, not a picture."""
 
 [[faq]]
+q = "How do I open a .dcm file?"
+a = """
+        Drop it on the box at the top of this page. A <code>.dcm</code> file is
+        a DICOM file &mdash; the format every hospital scanner writes &mdash;
+        and this page is a DCM file opener: it reads the file in your browser
+        and shows the scan, with nothing to install and nothing uploaded. It
+        works the same on Windows, on a Mac, on Linux, on a Chromebook and on a
+        phone, because the only program involved is the browser you already
+        have.
+        <br><br>
+        If what you were given is a disc or a folder rather than one file, drop
+        the whole folder. A CT or an MR is one file per slice, often with no
+        <code>.dcm</code> on the end of the names at all, and opening them
+        together is what puts the scan back in order. The <code>DICOMDIR</code>
+        file and the Windows viewer that came on the disc can be left where
+        they are; neither is needed."""
+
+[[faq]]
+q = "What is a .dcm file, and why does double-clicking it do nothing?"
+a = """
+        It is one image, or one loop of images, from a medical scanner, in the
+        DICOM format: a header of several hundred fields &mdash; who the patient
+        is, which machine took it, how the pixels are laid out &mdash; followed
+        by the pixels themselves. It is not a JPEG with a different name, which
+        is why a photo app, an image editor and a browser tab all refuse it, and
+        why a computer that has never had a medical viewer installed has nothing
+        registered to open one.
+        <br><br>
+        Not every file ending in <code>.dcm</code> is a scan, either: the same
+        three letters are used by a disk-cataloguing program and by engine
+        calibration files in the car industry. This page checks the file itself
+        rather than its name, and says so plainly when what it was given is not
+        DICOM."""
+
+[[faq]]
 q = "Which DICOM files can it open?"
 a = """
         Uncompressed files in any of the three basic transfer syntaxes &mdash;
@@ -425,8 +465,9 @@ a = """
 
 [schema]
 category = "HealthApplication"
-description = "Open DICOM (.dcm) scans in the browser: CT, MR, X-ray and ultrasound, with window and level, a whole series stacked in order, measurements in millimetres, and every tag in the header. Nothing is uploaded."
+description = "A DCM file opener and DICOM viewer that runs in the browser: CT, MR, X-ray and ultrasound, with window and level, a whole series stacked in order, measurements in millimetres, and every tag in the header. Nothing is uploaded."
 features = [
+  "Opens .dcm files, and DICOM files with no extension at all",
   "Opens CT, MR, X-ray, ultrasound, PET and secondary capture files",
   "Window and level by dragging, by typing, or by named CT preset",
   "A whole folder stacked into series and ordered by position in the patient",

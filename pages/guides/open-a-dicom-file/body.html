@@ -1,8 +1,8 @@
   <section>
     <h2>The short answer</h2>
     <p>
-      Open the <a href="../../dicom-viewer/">DICOM Viewer</a> and drag the whole
-      folder of files onto it. They are read on your own machine, put back into
+      Open the <a href="../../dicom-viewer/">DICOM Viewer</a> and drag the
+      <code>.dcm</code> file onto it, or the whole folder of them. They are read on your own machine, put back into
       the series they came from, and stacked in the order the scanner took them
       in. Nothing is uploaded, and nothing is written back to your files.
     </p>
@@ -10,6 +10,31 @@
       If you have been given a disc and are wondering which of the files to
       open: all of them, at once. A CT or an MR is not one file. It is one file
       per slice, and a chest study is three hundred of them.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a DCM file is, and what opens one</h2>
+    <p>
+      A file ending in <code>.dcm</code> is a DICOM file: the format every
+      medical scanner writes, and the three letters are simply the extension it
+      is usually given. Double-click one on a computer that has never had a
+      medical viewer installed and you are asked what to open it with, because
+      nothing that came with the machine is registered for it. A photo app will
+      not do. The pixels inside are not a JPEG under another name; they are
+      twelve or sixteen bits deep, and they need a header read before anybody
+      can say how wide the picture is.
+    </p>
+    <p>
+      So a &ldquo;DCM file opener&rdquo; is a DICOM viewer by the name people
+      search for it under, and there are three kinds. The program on the disc,
+      if it still runs. A desktop viewer you install, which is the right answer
+      for somebody who reads scans every week and a lot of trouble for somebody
+      with one disc. And a web page, of which there are two sorts that look
+      identical: the ones that upload your file to a server and send a picture
+      back, and the ones that read it in the browser. The way to tell them
+      apart is to load the page, disconnect from the internet, and then open
+      the file. Only the second sort still works.
     </p>
   </section>
 

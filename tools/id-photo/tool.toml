@@ -26,11 +26,11 @@ roadmap_group = "images"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress", "form", "notes"]
+css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-09-07"
+lastmod = "2026-09-19"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -70,8 +70,8 @@ live_hint = """
 
 read_first = """
 , <code>src/specs.js</code> for the rulebook &mdash;
-      every country's published figures, with the authority and the date each one
-      was read &mdash; <code>src/detect.js</code> for how the four
+      every country's published figures &mdash; <code>src/sources.js</code> for the
+      authority and the date behind each one, <code>src/detect.js</code> for how the four
       points are found &mdash; an outline and two dark patches, with no model in
       it anywhere &mdash; <code>src/geometry.js</code> for the arithmetic that turns
       those four points into a crop, and <code>src/jpeg.js</code> for the two
@@ -180,7 +180,9 @@ body = """
 [[howto]]
 title = "Pick the country and the document."
 body = """
- The panel then shows
+ Type into the box if the country is
+      a long way down the list, then pick which of that country’s documents you
+      are applying for. The panel then shows
       that rule's print size, head-height band, eye line, background colour and
       upload limits &mdash; along with the authority each figure came from and the
       date it was read. Nothing on that list is guessed at, and anything you were
@@ -234,15 +236,21 @@ a = """
 [[faq]]
 q = "Which countries are covered?"
 a = """
-        The specifications transcribed so far are the ICAO standard itself, the
-        United States (passport and the Diversity Visa entry, which have different
-        upload rules), the United Kingdom, the Schengen visa, Germany, Canada,
-        Australia, India (passport, the &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm print, and
-        the SSC/UPSC form photo and signature), China and Japan. Every entry names
-        the authority it came from and the date it was read. Anything else goes in
-        under &ldquo;Anywhere else&rdquo;, where every figure is yours to type &mdash;
-        and since most of the world issues against the ICAO geometry, that entry
-        starts on it."""
+        Enough of them that listing the names here would be a list needing an edit
+        every time one is added, so: every entry is transcribed from the authority
+        that published it, and every entry prints that authority and the date it was
+        read underneath the figures. The chooser is the list &mdash; type a country
+        into the box above it and you will know in a second whether it is there.
+        Anything that is not goes under &ldquo;Anywhere else&rdquo;, where every figure
+        is yours to type; since most of the world issues against the ICAO geometry,
+        that entry starts on it.
+
+        A country whose figures nobody publishes is still on the list, and says so
+        on its own entry: the frame is the &#x2066;35&nbsp;&times;&nbsp;45&#x2069;&nbsp;mm most of
+        the world issues against, the bands are ICAO&rsquo;s and are never marked as a
+        failure, and the note tells you what the authority actually says instead
+        &mdash; often that it photographs you at the counter. What is not done
+        anywhere here is filling a figure in from what other tools say."""
 
 [[faq]]
 q = "How does it find the crown, the chin and the eyes without a face model?"

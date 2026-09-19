@@ -213,19 +213,45 @@ export function checkBackground(reading, required) {
     return { status: 'unknown', findings: [], distance: 0 };
   }
 
-  const wanted = rgbToLab(hexToRgb(required.hex));
-  const distance = deltaE(reading.lab, wanted);
+  // A rule that names several colours is measured against whichever of them the
+  // wall is nearest: "light grey, light blue or white" is three ways to pass,
+  // not an average of three colours, and the average of those three is a
+  // fourth colour nobody asked for.
+  const nearest = (required.accepts ?? [{ hex: required.hex, tolerance: required.tolerance }])
+    .map((one) => ({
+      distance: deltaE(reading.lab, rgbToLab(hexToRgb(one.hex))),
+      tolerance: one.tolerance,
+    }))
+    .reduce((best, one) => (
+      one.distance / one.tolerance < best.distance / best.tolerance ? one : best));
+
+  const { distance } = nearest;
+  const tolerance = nearest.tolerance;
 
   const findings = [];
 
-  if (distance > required.tolerance * 2) {
+  // A colour a rule REFUSES, checked before the one it asks for: France's
+  // background must be light and must not be white, and "light" on its own
+  // passes a white wall every time - the two colours are closer to each other
+  // than the tolerance a description like "light grey" has to carry.
+  const refused = (required.forbidden ?? []).find((one) => (
+    deltaE(reading.lab, rgbToLab(hexToRgb(one.hex))) <= one.tolerance));
+
+  if (refused) {
+    findings.push({
+      key: 'colour',
+      status: 'bad',
+      phrase: refused.key,
+      values: { hex: reading.hex, wanted: required.inline },
+    });
+  } else if (distance > tolerance * 2) {
     findings.push({
       key: 'colour',
       status: 'bad',
       phrase: 'bg.colour.bad',
       values: { hex: reading.hex, wanted: required.inline },
     });
-  } else if (distance > required.tolerance) {
+  } else if (distance > tolerance) {
     findings.push({
       key: 'colour',
       status: 'warn',

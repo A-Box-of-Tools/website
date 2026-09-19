@@ -20,10 +20,10 @@ nav = "Opening a DICOM file"
 group = "doing-the-job"
 tool = "dicom-viewer"
 
-title = "How to Open a DICOM File (.dcm) Without Installing Anything"
-description = "What is on a hospital disc, why the files have no extension, how to open a .dcm scan in a browser, what window and level actually does, and what a scan carries about the patient besides the picture."
+title = "How to Open a DCM File (DICOM) Without Installing Anything"
+description = "What a .dcm file is and what opens one, what is on a hospital disc, why the files have no extension, how to open a DCM file in a browser, what window and level actually does, and what a scan carries about the patient besides the picture."
 
-heading = "How to open a DICOM file, and what is in one"
+heading = "How to open a DCM file, and what is in one"
 lede = """
     A hospital disc is a folder of files with no extensions and a viewer written
     for Windows XP. The files are DICOM, and there is nothing exotic about
@@ -31,10 +31,10 @@ lede = """
     to look at one, what the controls mean, and what else the file is carrying
     besides the picture."""
 
-updated = "26 August 2026"
+updated = "19 September 2026"
 published = "2026-08-25"
-lastmod = "2026-08-26"
+lastmod = "2026-09-19"
 
-og_title = "How to open a DICOM file without installing anything"
+og_title = "How to open a DCM file without installing anything"
 og_description = "What is on a hospital disc, why the files have no extension, and what a .dcm scan carries about the patient besides the picture."
 og_image_alt = "abox.tools - tools that never touch a server"

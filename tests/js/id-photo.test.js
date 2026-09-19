@@ -26,8 +26,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  BACKGROUNDS, ICAO_EYE, ICAO_HEAD, SPECS, backgroundOf, pixelLabel, portalBytes,
-  portalPixels, printLabel, specById, specsByCountry, trim, withCustom,
+  BACKGROUNDS, ICAO_EYE, ICAO_HEAD, SPECS, backgroundOf, countryLabel,
+  documentLabel, orderedCountries, pixelLabel, portalBytes, portalPixels,
+  printLabel, specById, specsByCountry, specsOf, trim, withCustom,
 } from '../../tools/id-photo/src/specs.js';
 import {
   checkBand, containIn, faceOf, fitFrame, frameAspect, guideLines, measure,
@@ -44,8 +45,8 @@ import {
   headerSegments, isJpeg, padTo, readComments, readDensity, setDensity,
 } from '../../tools/id-photo/src/jpeg.js';
 import {
-  bandText, centreText, outName, percent, readyText, resamplingText, statusClass,
-  stemOf, tiltText, verdictText,
+  bandText, centreText, docSize, outName, percent, readyText, resamplingText,
+  statusClass, stemOf, tiltText, verdictText,
 } from '../../tools/id-photo/src/files.js';
 
 import { JFIF_SEGMENT, ascii, concat, jpeg, segment } from './helpers.js';
@@ -141,6 +142,78 @@ test('specsByCountry: groups without losing or duplicating anything', () => {
   const flat = groups.flatMap((group) => group.specs.map((spec) => spec.id));
   assert.deepEqual(flat, SPECS.map((spec) => spec.id));
   assert.equal(new Set(groups.map((group) => group.country)).size, groups.length);
+});
+
+test('specs: no photograph is wider than it is tall, except the square ones', () => {
+  // The one transcription error that arithmetic can catch. Spain publishes its
+  // photograph as "32 x 26 mm" and means 26 wide by 32 tall; written down the
+  // way it is printed, every Spanish crop would come out on its side.
+  for (const spec of SPECS) {
+    if (!spec.print) continue;
+    assert.ok(spec.print.widthMm <= spec.print.heightMm,
+      `${spec.id} is ${spec.print.widthMm} x ${spec.print.heightMm} mm, which is `
+      + 'a landscape photograph of a face');
+  }
+});
+
+test('specs: a crown is measured to the hair or to the skull, and says which', () => {
+  for (const spec of SPECS) {
+    if (spec.crown === undefined) continue;
+    assert.equal(spec.crown, 'skull', spec.id);
+    assert.ok(spec.notes.includes('note.crown-skull'),
+      `${spec.id} measures to the skull and does not say so on the page. The `
+      + 'dots find the top of the hair, so the reading is high and silent');
+  }
+});
+
+test('orderedCountries: the reader\'s own alphabet, with two places kept', () => {
+  // A collator that sorts on the key would hide the bug this is here for: the
+  // list has to come out in the order of the NAMES the page is showing.
+  const compare = (a, b) => a.localeCompare(b, 'en');
+  const groups = orderedCountries(say, compare);
+
+  assert.equal(groups[0].country, 'country.icao',
+    'the standard every rule below it varies is not first');
+  assert.equal(groups.at(-1).country, 'country.other',
+    '"anywhere else" is not last, which is the one thing it means');
+
+  const middle = groups.slice(1, -1).map((group) => group.label);
+  assert.deepEqual(middle, [...middle].sort(compare));
+
+  assert.deepEqual(
+    new Set(groups.map((group) => group.country)),
+    new Set(specsByCountry().map((group) => group.country)),
+    'a country was lost or invented on the way through');
+});
+
+test('specsOf: one country\'s documents, in the table\'s order', () => {
+  const indian = specsOf('country.in').map((spec) => spec.id);
+  assert.deepEqual(indian, SPECS.filter((spec) => spec.country === 'country.in')
+    .map((spec) => spec.id));
+  assert.ok(indian.length > 1, 'India has one document, so this proves nothing');
+  assert.deepEqual(specsOf('country.nowhere'), []);
+});
+
+test('countryLabel and documentLabel: the native name, once at most', () => {
+  // The reader's own language is what `say` stands in for here: it echoes the
+  // key back, so a name the page has already said is the key itself.
+  assert.equal(countryLabel('country.de', say), 'name.native country.de Deutschland');
+  assert.equal(countryLabel('country.icao', say), 'country.icao',
+    'a standard was given a name for itself');
+
+  // The guard is containment, not equality: a page whose reading of the
+  // document already holds the native word must not repeat it.
+  const said = (key) => (key === 'spec.cn-passport.doc' ? '护照和签证' : say(key));
+  assert.equal(documentLabel(specById('cn-passport'), said), '护照和签证');
+});
+
+test('docSize: the shape of the thing, and the pixels where a form wants them', () => {
+  assert.equal(docSize(specById('uk-passport'), say),
+    'doc.size.both doc.size.mm 35 45 doc.size.px 600 750');
+  assert.equal(docSize(specById('schengen'), say), 'doc.size.mm 35 45',
+    'a rule with no upload should not claim a pixel size');
+  assert.equal(docSize(specById('in-exam-photo'), say), 'doc.size.px 200 230',
+    'a rule with nothing to print should not claim a print size');
 });
 
 test('withCustom: applies the typed figures and never writes into the table', () => {
@@ -476,6 +549,42 @@ test('checkBackground: the right colour passes and a wrong one does not', () => 
   const blue = checkBackground(readBackground(flatImage([70, 110, 200]), { stride: 1 }), grey);
   assert.equal(blue.status, 'bad');
   assert.equal(blue.findings.find((one) => one.key === 'colour').status, 'bad');
+});
+
+/** A flat wall of one colour, read the way the page reads one. */
+const wall = (hex) => readBackground(flatImage(hexToRgb(hex)), { stride: 1 });
+
+test('specs: a rule whose authority gave no numbers says so on the page', () => {
+  for (const spec of SPECS) {
+    if (spec.published !== 'words') continue;
+    assert.ok(spec.notes.includes('note.no-measurements'),
+      `${spec.id} took its figures from nowhere and does not say so. The `
+      + 'citation line alone would read as though they had been transcribed');
+    assert.ok(spec.head.advisory && spec.eye.advisory,
+      `${spec.id} shows a band nobody published as though it were a rule`);
+  }
+});
+
+test('checkBackground: a rule naming several colours passes on the nearest', () => {
+  const several = backgroundOf(specById('nl-passport'), say);
+  for (const hex of ['#ffffff', '#dcdcdc', '#cfdcea']) {
+    assert.equal(checkBackground(wall(hex), several).status, 'good',
+      `${hex} is one of the three colours the Netherlands names`);
+  }
+  assert.notEqual(checkBackground(wall('#7a4b12'), several).status, 'good');
+});
+
+test('checkBackground: a rule that refuses white refuses it whatever else passes', () => {
+  const french = backgroundOf(specById('fr-passport'), say);
+
+  const white = checkBackground(wall('#ffffff'), french);
+  assert.equal(white.status, 'bad');
+  assert.equal(white.findings[0].phrase, 'bg.forbid.white',
+    'a white wall was measured against light grey and passed, which is exactly '
+    + 'what one hex and one tolerance cannot help doing');
+
+  assert.equal(checkBackground(wall('#dcdcdc'), french).status, 'good');
+  assert.equal(checkBackground(wall('#cfdcea'), french).status, 'good');
 });
 
 test('checkBackground: a shadow down one side is reported separately from the colour', () => {

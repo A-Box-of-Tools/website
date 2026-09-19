@@ -57,6 +57,7 @@ TOOLS = ROOT / 'tools'
 # Sentences left in each tool's JavaScript. Lower these as they are moved into
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
+    'avif-to-jpg': 0,
     'base64': 0,
     # Not one of these is a sentence. Six are fragments of the SVG the three
     # mock-ups are written out of, one is a canvas font shorthand, one is the
@@ -103,11 +104,13 @@ BASELINE = {
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
-    # All thirteen are accounted for and none of them moves: a filename
-    # template, a dimension pair, a CSS percentage, a phrase key, the note
-    # written into a padded JPEG, and the eight published citations, which
-    # stay as published so that somebody can search for them.
-    'id-photo': 13,
+    # A filename template, a dimension pair, a CSS percentage, a phrase key
+    # and the note written into a padded JPEG. It was thirteen until the eight
+    # published citations moved to src/sources.js, which is exempt below - a
+    # rulebook that grows by a country a week cannot have its citations
+    # counted here, or this number becomes a tally of how many countries are
+    # covered and stops being a ratchet on anything.
+    'id-photo': 5,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
     'image-to-ico': 6,
@@ -120,6 +123,7 @@ BASELINE = {
     'json-formatter': 3,
     'merge-pdf': 3,
     'password-generator': 8,
+    'png-to-webp': 0,
     # The two left are a symbology's own name and a line of SVG markup.
     'pdf-to-csv': 2,
     'protect-pdf': 0,
@@ -159,6 +163,7 @@ BASELINE = {
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
     'watermark-pdf': 0,
+    'webp-to-jpg': 0,
     'xml-formatter': 0,
     # Both are inside the sample document, not the interface: the comment
     # the YAML example carries so that losing it can be seen, and a value
@@ -184,6 +189,12 @@ NOT_OURS = {
         'the PS3.6 attribute names, which every DICOM tool prints in English',
     ('dicom-viewer', 'uids.js'):
         'the PS3.5 transfer syntax and PS3.4 SOP class names, likewise',
+    ('id-photo', 'sources.js'):
+        'the authority and title behind every rule in that tool, and what each '
+        'country and document is called in its own language - a citation '
+        'translated finds nothing, and "Reisepass" is the word on the cover '
+        'rather than a reading of "passport". tests/js/id-photo-sources.test.js '
+        'holds the module to that: every value short, and not one a sentence',
 }
 
 # A word here makes a string prose rather than a name. Deliberately ordinary

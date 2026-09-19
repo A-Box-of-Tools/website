@@ -28,6 +28,53 @@
    for a <select> that is its longest option - a whole sentence here. */
 .option-row select { flex: 1 1 20rem; }
 
+/* A closed <select> is as wide as its box, and in WebKit its TEXT is as wide as
+   its longest option - and that text counts toward how far the page scrolls
+   sideways even though nothing can be seen sticking out. "300 dpi - the floor
+   almost every rule states" is wider than a phone, and so is "Switzerland
+   (Schweiz / Suisse / Svizzera)". Every box on the page measured inside the
+   viewport while the document ran seventeen pixels past it, on Linux WebKit
+   only, because that is where the fonts are widest.
+
+   Nothing set on the select cures it - not overflow, not text-overflow, not a
+   min-width of nought; each was tried against a widened font. Clipping at the
+   card does, and `clip` rather than `hidden` so that no scroll container is
+   made and a focus ring, which sits well inside the card's padding, is left
+   alone. */
+#spec-card,
+#save-card { overflow-x: clip; }
+
+/* ------------------------------------------------------------- the chooser */
+
+/* A country, then that country's documents. The filter box narrows the menu
+   rather than replacing it: the menu is the OS's own picker on a phone and
+   already types ahead on a keyboard, and thirty entries is only a long scroll
+   on a desktop. Nothing here is behind JavaScript that was not behind it
+   before - with the box left alone the menu still holds every country. */
+
+.picker { margin-bottom: 0.4rem; }
+
+.option-row input[type="search"] { flex: 1 1 14rem; }
+
+.picker .hint-line:empty { display: none; }
+
+.doc-label {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin: 0 0 0.45rem;
+}
+
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+/* `.mode` from shared/css/modes.css draws the row; the size is the dim second
+   line it already styles, and only needs its figures to line up. */
+.doc-size { font-variant-numeric: tabular-nums; }
+
 /* --------------------------------------------------------- the chosen file */
 
 .loaded-row {
@@ -256,6 +303,50 @@
 }
 
 .mark-why:empty { display: none; }
+
+/* The photograph and the crop taken out of it, beside each other while the box
+   is being moved. They stack on a narrow screen, which is the right way round:
+   the thing being adjusted comes first and the answer follows it. */
+.stage-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.stage-row .stage-wrap { flex: 1 1 22rem; min-width: 0; }
+
+.outcome {
+  flex: 0 0 auto;
+  margin: 0;
+  max-width: 100%;
+}
+
+/* A border and a light backing, or a white print on a white card has no edge
+   and reads as a hole rather than a photograph. */
+/* main.js sets the box in CSS pixels; `object-fit` is what keeps the picture
+   honest when a narrow screen takes the width back off it. */
+.outcome-frame {
+  display: block;
+  max-width: 100%;
+  object-fit: contain;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.outcome-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.outcome-caption strong { color: var(--text); }
+
+.outcome-caption output { font-variant-numeric: tabular-nums; }
 
 .stage-wrap {
   display: flex;
@@ -578,3 +669,19 @@
 }
 
 .result-row .as-button { flex: none; text-decoration: none; }
+
+/* Normalised on HEIGHT, never on width: a 51 x 51 square and a 35 x 45
+   portrait have to come out visibly different shapes beside each other, and
+   two pictures of equal width are two pictures the eye reads as one size. The
+   width and height attributes are the file's real pixels, so the row does not
+   jump as each one decodes. */
+.result-thumb {
+  flex: none;
+  height: 5.5rem;
+  width: auto;
+  max-width: 9rem;
+  object-fit: contain;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) / 2);
+}

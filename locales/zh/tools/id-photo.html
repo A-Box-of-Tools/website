@@ -22,12 +22,30 @@
     <h2><span class="step">2</span> 选好国家和证件</h2>
 
     <p class="card-lede">
-      下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜的，也没有一条是去网上取的：它是 <code>src/specs.js</code> 里的一张表，随页面一起送来。
+      下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜的，也没有一条是去网上取的：它是两张表，<code>src/specs.js</code> 放数字，<code>src/sources.js</code> 放每一条的出处，随页面一起送来。
     </p>
 
-    <div class="option-row">
-      <label for="spec">规格</label>
-      <select id="spec"></select>
+    <div class="picker">
+      <div class="option-row">
+        <label for="country-filter">找国家地区</label>
+        <input type="search" id="country-filter" class="country-filter"
+               autocomplete="off" spellcheck="false" enterkeyhint="search">
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="option-row">
+        <label for="country">国家地区</label>
+        <select id="country"></select>
+      </div>
+
+      <p id="doc-label" class="doc-label">证件</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
     </div>
 
     <dl class="spec-facts" id="spec-facts"></dl>
@@ -121,11 +139,28 @@
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
            shape, so everything on it can be positioned in percentages. -->
-      <div class="stage-wrap">
-        <div class="stage" id="stage">
-          <img id="preview" alt="">
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
         </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>最后得到的样子</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
       </div>
+
+      <p class="stage-hint">照片旁边那块就是裁切结果本身，按规定要的形状，上面什么都不画。文件就长这个样子；取景不对的话，在那里就已经看得出来，用不着等下载完。</p>
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="ghost">按规定套用裁切框</button>
@@ -219,11 +254,11 @@
     <span data-phrase="spec.icao.note1">&#x2066;35 x 45&#x2069; 毫米这个画幅是世界上大部分地方签发证件所依照的，头部高度占七到八成、眼睛落在画面高度一半到五分之三之间，则是下面每一条规格都由此变化而来的几何。</span>
     <span data-phrase="spec.icao.note2">Doc 9303 还要求存下来的图里两眼中心之间至少 90 像素，从现在的手机照片里裁出 &#x2066;413 x 531&#x2069; 轻松就能达到。</span>
     <span data-phrase="country.us">美国</span>
-    <span data-phrase="spec.us-passport.doc">护照、签证和绿卡</span>
+    <span data-phrase="spec.us-passport.doc">护照和绿卡</span>
     <span data-phrase="spec.us-passport.upload">在线上传照片</span>
     <span data-phrase="spec.us-passport.note1">正方形，而且是广泛使用的唯一一种正方形护照照片：&#x2066;2 x 2&#x2069; 英寸，也就是 &#x2066;51 x 51&#x2069; 毫米。</span>
     <span data-phrase="spec.us-passport.note2">头部可以落在 25 到 35 毫米之间的任何位置，比 ICAO 的规定宽松得多；眼睛的位置也是从下边缘量起，而不是按比例。</span>
-    <span data-phrase="spec.us-passport.note3">上传的文件也得是正方形，每边 600 到 1200 像素，表单强制的上限是 240 KB。</span>
+    <span data-phrase="spec.us-passport.note3">上传那条现在只管文件大小：54 KB 到 10 MB，JPEG、PNG 或 HEIC 都行。以前写的像素尺寸和 240 KB 上限都没了，眼线也没了——这里写出的正方形就是 300 dpi 下的 &#x2066;2 x 2&#x2069; 英寸打印尺寸，区间内更大的正方形一样可以。</span>
     <span data-phrase="spec.us-dv.doc">多元化签证抽签报名</span>
     <span data-phrase="spec.us-dv.upload">Entrant Status Check 上传</span>
     <span data-phrase="spec.us-dv.note1">跟上面护照那条是同一张照片，但报名表只收一个尺寸，别的都不行：正好 &#x2066;600 x 600&#x2069; 像素，最多 240 KB。</span>
@@ -281,6 +316,154 @@
     <span data-phrase="spec.custom.upload">表格要什么就是什么</span>
     <span data-phrase="spec.custom.note1">这一条里每个数字都能改。照着你面前那张表格填，叠加图、相纸和文件大小的搜索都会跟着它走。</span>
     <span data-phrase="spec.custom.note2">它从 ICAO 的几何起步，因为上面清单里没有的国家用它的可能性远高于别的任何一种。</span>
+    <span data-phrase="filter.one">有一个国家地区符合。</span>
+    <span data-phrase="filter.count">有 {n} 个国家地区符合。</span>
+    <span data-phrase="filter.none">没有符合的。列表里只剩下你已经选中的那个。</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; 毫米</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">眼睛</span>
+    <span data-phrase="guide.chin">下巴</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">下载</span>
+    <span data-phrase="country.fr">法国</span>
+    <span data-phrase="country.it">意大利</span>
+    <span data-phrase="country.nl">荷兰</span>
+    <span data-phrase="country.es">西班牙</span>
+    <span data-phrase="country.ie">爱尔兰</span>
+    <span data-phrase="country.pl">波兰</span>
+    <span data-phrase="doc.passport">护照</span>
+    <span data-phrase="doc.passport-id">护照和身份证</span>
+    <span data-phrase="doc.passport-id-licence">护照、身份证和驾照</span>
+    <span data-phrase="bg.forbid.white">背景读出来是 {hex}，就是白色或跟白色差不多——而这条规定不收白底。</span>
+    <span data-phrase="bg.white-or-grey.label">素白或浅灰</span>
+    <span data-phrase="bg.white-or-grey.inline">素白或浅灰</span>
+    <span data-phrase="bg.white-or-grey.note">两种都算过。这里量的是墙，不是相纸；一面光线均匀的白墙拍出来本来就是浅灰，所以两种都在单子上。</span>
+    <span data-phrase="bg.white-grey-blue.label">白、浅灰或浅蓝</span>
+    <span data-phrase="bg.white-grey-blue.inline">白、浅灰或浅蓝</span>
+    <span data-phrase="bg.white-grey-blue.note">三种都行，只要整张图里是同一个平匀的色调。浅蓝在单子上，是因为它能把浅色头发跟背景分开——这才是这条规定真正在做的事。</span>
+    <span data-phrase="bg.white-grey-cream.label">白、浅灰或米白</span>
+    <span data-phrase="bg.white-grey-cream.inline">白、浅灰或米白</span>
+    <span data-phrase="bg.white-grey-cream.note">三种都行。米白读起来是偏暖的调白；不合格的从来不是色调，而是墙上有影子、有纹理或者有道门框。</span>
+    <span data-phrase="bg.grey-or-blue-not-white.label">浅灰或浅蓝——不能是白</span>
+    <span data-phrase="bg.grey-or-blue-not-white.inline">浅灰或浅蓝，且不能是白</span>
+    <span data-phrase="bg.grey-or-blue-not-white.note">这是这里唯一一条拒绝某种颜色、而不是要求某种颜色的规定。白底直接被退，所以“找面白墙站着拍”这句常见的建议，对这一条来说是错的。</span>
+    <span data-phrase="note.crown-skull">这条规定量的是到头颇顶端的高度，不算头发。这里的标记点找的是头发的顶端，因为照片上有的就是头发；所以头发多的人量出来会偏高——往区间的下半段取。</span>
+    <span data-phrase="note.head-advisory">这一条没公布头高区间，所以这里放的是 ICAO 的数字，且从不当作不合格标红。按规定的文字描述取景，数字自然就对了。</span>
+    <span data-phrase="note.head-loose">这一条没公布头高区间，画幅也不是常见的那种，所以 ICAO 的数字套不上。这里显示的是根据规定的文字描述读出来的一个宽松区间；它只是参考，从不当作不合格标红。</span>
+    <span data-phrase="note.eye-advisory">没公布眼线。这里显示的区间，是头部居中时眼睛会落在的位置——是参考，不是要求，也从不标红。</span>
+    <span data-phrase="spec.fr-passport.note1">照片必须由持证摄影师拍，或者在持证的自助拍照亨里拍。所以这里出的相纸，是用来核对人家拍的那张对不对，而不是拿去交的。</span>
+    <span data-phrase="spec.it-passport.note1">意大利只公布了宽度，别的都没：35 到 40 毫米，脸占其中的 70% 到 80%。高度哪里都没写，所以这里用的是意大利自助拍照亨和照相店在卖的 &#x2066;35 x 45&#x2069;。</span>
+    <span data-phrase="spec.nl-passport.note1">头高区间是 26 到 30 毫米，比听上去短：只占画面的 58% 到 67%，而 ICAO 要 70% 到 80%。按 ICAO 裁出来的图，对荷兰的申请来说太紧了——这一条就是拦这个的。</span>
+    <span data-phrase="spec.nl-passport.note2">还有两个公布的数字只读不用：脸宽要 16 到 20 毫米（不算耳朵），11 岁以下的孩子头高可以低到 19 毫米。400 dpi 的下限，就是这一条比其他打得大的原因。</span>
+    <span data-phrase="spec.es-passport.note1">根本不是 &#x2066;35 x 45&#x2069;。西班牙的照片是宽 26 毫米、高 32 毫米，法规里写作“&#x2066;32 x 26&#x2069; 毫米”——拿一张欧洲护照照到西班牙窗口，尺寸是错的。</span>
+    <span data-phrase="spec.ie-passport.note1">纸质申请要四张一模一样的相纸，其中两张背面要由见证人签字盖章。&#x2066;35 x 45&#x2069; 到 &#x2066;38 x 50&#x2069; 毫米之间都收；这里用小的那个，因为自助拍照亨出的就是它。</span>
+    <span data-phrase="spec.ie-passport.note2">网上办是另一回事。那个表单要的是一张更宽的照片——从头到胸，至少 &#x2066;715 x 951&#x2069; 像素——并且它自己会裁；所以它要的是你最初那张图，不是这里裁过的。</span>
+    <span data-phrase="spec.pl-passport.note1">波兰把眼线按距下边缘的毫米数公布出来，这么写的几乎没别家：20 到 30 毫米。它还写明，头发多的时候发型可以有一部分落在画面外，只要脸本身没因此变小。</span>
+    <span data-phrase="country.kr">韩国</span>
+    <span data-phrase="country.sg">新加坡</span>
+    <span data-phrase="country.nz">新西兰</span>
+    <span data-phrase="upload.online">网上申请用照片</span>
+    <span data-phrase="source.studio">照相馆</span>
+    <span data-phrase="source.studio.doc">照相馆按这个名字卖的尺寸，不是公布的规定</span>
+    <span data-phrase="note.studio-size">这个尺寸没有人公布。它就是照相馆、表单或单位报名字要的那个，所以画面尺寸是对的；头高区间用的是 ICAO 的，只作参考，从不当作不合格标红。</span>
+    <span data-phrase="spec.kr-passport.note1">韩国查两件别处几乎不明写的事：背景不允许用软件抠掉或换掉，以及头高量到头颇顶端、不算头发。网上表单建议 &#x2066;413 x 531&#x2069; 像素，就是这个尺寸在 300 dpi 下的像素数。</span>
+    <span data-phrase="spec.sg-passport.note1">新加坡公布的是上传那一项：&#x2066;400 x 514&#x2069; 像素，最大 8 MB，白底，而且要求三个月内拍的——不是通常的六个月。毫米数哪里都没写；&#x2066;400 x 514&#x2069; 正好是 &#x2066;35 x 45&#x2069; 的比例，这个打印尺寸就是这么来的。</span>
+    <span data-phrase="spec.nz-passport.note1">这一条故意没有打印尺寸。新西兰要的是数字照片，并且明写扫描的相纸不收，所以整版输出在这一条上关掉了。</span>
+    <span data-phrase="spec.nz-passport.note2">形状是 3:4，不是欧洲相纸的 &#x2066;35 x 45&#x2069;；文件两头都有限：250 KB 到 5 MB，至少 &#x2066;900 x 1200&#x2069; 像素，最多 &#x2066;4500 x 6000&#x2069;。</span>
+    <span data-phrase="spec.cn-1inch.doc">一寸照片</span>
+    <span data-phrase="spec.cn-1inch.note1">表单上说的“一寸”就是这个：&#x2066;25 x 35&#x2069; 毫米。它不是旅行证件的尺寸，办护照用不了——它是给学校表格、工作证以及那些要贴照片的表单用的。</span>
+    <span data-phrase="spec.cn-2inch.doc">二寸照片</span>
+    <span data-phrase="spec.cn-2inch.note1">表单上另一个按名字要的尺寸：&#x2066;35 x 49&#x2069; 毫米。注意护照用的 &#x2066;33 x 48&#x2069; 毫米常被叫作“小二寸”，又是另一个尺寸；它在上面有自己的一条。</span>
+    <span data-phrase="spec.jp-resume.doc">日本简历照（&#x2066;履歴書&#x2069;）</span>
+    <span data-phrase="spec.jp-resume.note1">日本简历上那个贴照框用的 &#x2066;30 x 40&#x2069; 毫米照片。不是护照尺寸——护照是 &#x2066;35 x 45&#x2069;，在上面有自己的一条。</span>
+    <span data-phrase="spec.kr-banmyeongham.doc">韩国半名片照（&#x2066;반명함&#x2069;）</span>
+    <span data-phrase="spec.kr-banmyeongham.note1">韩国表单和求职按名字要的 &#x2066;30 x 40&#x2069; 毫米相纸。护照是 &#x2066;35 x 45&#x2069;，是另一回事；它在上面有自己的一条。</span>
+    <span data-phrase="country.ch">瑞士</span>
+    <span data-phrase="country.se">瑞典</span>
+    <span data-phrase="country.no">挪威</span>
+    <span data-phrase="country.pt">葡萄牙</span>
+    <span data-phrase="bg.light-unstated.label">素净而浅——没公布颜色</span>
+    <span data-phrase="bg.light-unstated.inline">素净而浅</span>
+    <span data-phrase="bg.light-unstated.note">这条规定只要求背景素净、光线均匀，从没说是哪个颜色，所以这里的检查放得很宽：白、浅灰、浅蓝、米白都算过。拒一面人家并没拒的墙，就是这个工具在自己编要求。</span>
+    <span data-phrase="note.no-measurements">这一条没有任何人公布毫米数。这里的画幅用的是世界上大多数地方签发所用的 &#x2066;35 x 45&#x2069; 毫米，区间用的是 ICAO 的，只作参考，从不当作不合格标红。拿它看一张照片像不像样就行，别拿它去满足一条根本没有数字的规定。</span>
+    <span data-phrase="note.taken-at-the-office">照片是在你递申请的地方当场拍的，不是自己带去的。所以这里出的相纸是用来核对的——以及给那些确实还要照片的表单、签证和申请用。</span>
+    <span data-phrase="spec.ch-passport.note1">fedpol 公布的是一张例图表，对的错的都有，上面没有任何一个尺寸：过曝、脸太小、张嘴、手挡脸、头偏过去、闭眼、头发遮脸。</span>
+    <span data-phrase="spec.se-passport.note1">瑞典是在你递申请时由护照办公室当场拍，而且明说这是法律而不是偏好：这样质量有保障，也杠死了拿别人的照片去办护照这条路。</span>
+    <span data-phrase="spec.no-passport.note1">挪威是在生物特征自助机上拍，不收照相馆或自助拍照亨拍的照片——只有一个例外，应急护照反而要你自己带。它公布的要求在不给尺寸的前提下反而很具体：头部大约占画面的 70%，两只耳朵都要看得见，眼镜要摘掉。</span>
+    <span data-phrase="spec.pt-passport.note1">葡萄牙根本没公布尺寸，公民卡和护照都没有，而且两样都要人到场办。这里的护照尺寸相纸，就是领事馆在确实要照片时要的那个。</span>
+    <span data-phrase="country.hk">香港</span>
+    <span data-phrase="country.tw">台湾</span>
+    <span data-phrase="country.vn">越南</span>
+    <span data-phrase="country.ph">菲律宾</span>
+    <span data-phrase="country.br">巴西</span>
+    <span data-phrase="country.mx">墨西哥</span>
+    <span data-phrase="country.tr">土耳其</span>
+    <span data-phrase="country.za">南非</span>
+    <span data-phrase="country.ae">阿联酋</span>
+    <span data-phrase="spec.hk-passport.note1">比几乎所有地方的都更宽更高：&#x2066;40 x 50&#x2069; 毫米，里面还是通常的 32 到 36 毫米头高，所以脸周围留的空间比 &#x2066;35 x 45&#x2069; 多。照片是激光雕刻上去的，所以太深和太浅的衣服都不建议穿。</span>
+    <span data-phrase="spec.hk-passport-online.doc">护照（网上申请）</span>
+    <span data-phrase="spec.hk-passport-online.note1">这不是把相纸换个分辨率。网上表单要至少 &#x2066;1200 x 1600&#x2069; 像素，是 3:4，而相纸是 4:5；JPEG，不超过 5 MB——所以它是单独一条规定，没有东西可打印。</span>
+    <span data-phrase="spec.tw-passport.note1">这条规定把别处只是暗示的事明说了：手机自拍会镜像、会因广角变形，会被退回补件；影像在打印前不得重新取样；两只耳朵的轮廓都要看得见。上传要 JPEG，至少 &#x2066;413 x 531&#x2069; 像素，不超过 5 MB。</span>
+    <span data-phrase="spec.vn-passport.note1">&#x2066;4 x 6&#x2069; 厘米的相纸——比例上比 &#x2066;35 x 45&#x2069; 更高，按别国裁的图放不进去——白底，不戴帽，不戴有色眼镜。要两张，而且规定写明应在出入境管理机关认可的照相馆拍。</span>
+    <span data-phrase="spec.ph-passport.note1">菲律宾是在窗口当场拍，公布的是穿什么，而不是拍多大：有领或领口较高的上衣，颜色要跟背景布分得开；不能有会在脸上投下阴影的东西；不能戴有色隐形眼镜。</span>
+    <span data-phrase="spec.br-passport.note1">巴西的 &#x2066;5 x 7&#x2069; 厘米是给国外领事馆和五岁以下的孩子用的。在巴西国内，联邦警察会在窗口给五岁以上的人当场拍；以前护照用过的照片不收。</span>
+    <span data-phrase="spec.mx-passport.note1">这里有三点比一般严：照片不能超过三十天；眼镜一律摘掉；灰色背景被明确列为拒收理由——必须是白底。</span>
+    <span data-phrase="spec.tr-passport.note1">不是 &#x2066;35 x 45&#x2069;，而且机构自己就这么写：生物特征照片是 &#x2066;50 x 60&#x2069; 毫米，要提醒摄影师不要裁小。尺寸或背景不对，申请就办不完，或者证件在事后质检时被作废。</span>
+    <span data-phrase="spec.za-passport.note1">头高 29 到 34 毫米，跟英国要的一样，比欧洲大多数地方短——而且照片不能超过一个月。办智能身份证的办事处会自己拍；相纸是给其余办事处用的，宣传单还提醒家里打印的多半质量不够。</span>
+    <span data-phrase="spec.ae-passport.note1">阿联酋只公布了宽度、没有高度——35 到 40 毫米，脸占照片的 70% 到 80%——所以这里用的是当地照相馆在卖的 &#x2066;35 x 45&#x2069;。背景只描述为素净的浅色。</span>
+    <span data-phrase="country.pk">巴基斯坦</span>
+    <span data-phrase="country.bd">孟加拉国</span>
+    <span data-phrase="country.id">印度尼西亚</span>
+    <span data-phrase="country.il">以色列</span>
+    <span data-phrase="country.eg">埃及</span>
+    <span data-phrase="country.ng">尼日利亚</span>
+    <span data-phrase="spec.pk-passport.note1">用这里做出来的任何东西之前，先读这一条。巴基斯坦要的是专业拍摄的照片，并且明写“从大图里裁下来的”或用软件编辑过的不行——而裁切恰恰就是这个。拿它来核对照相馆拍的那张是否满足 29 到 34 毫米的头高和白底；上传最大 5 MB，没有写像素尺寸，所以写出的是 300 dpi 下的打印尺寸。</span>
+    <span data-phrase="spec.bd-passport.note1">孟加拉国的电子护照申请根本不贴照片：门户网站写明不需要照片，也不需要认证，因为照片是在护照办公室做生物特征采集时当场拍的。唯一的例外是六岁以下的孩子，它有单独的一条。</span>
+    <span data-phrase="spec.bd-passport-child.doc">护照（六岁以下儿童）</span>
+    <span data-phrase="spec.bd-passport-child.note1">六岁以下的孩子不在办公室采集，所以改为交一张照片——而且不是护照尺寸的。规定要的是 3R 冲印相纸，三英寸半乘五英寸，灰色背景；脸由办公室自己裁出来，所以这里的头高区间放得很宽。</span>
+    <span data-phrase="spec.id-passport.note1">印尼是在移民局当场拍，而且你提出来就会重拍——眨了眼、头歪了都算理由。它公布的是你该怎么去：正对镜头，不要大笑露齿，头发不要遮脸和眉毛，穿深色有领的上衣，好跟素净明亮的白背景分开。</span>
+    <span data-phrase="spec.il-passport.note1">跟美国的一样是正方形，只是更小：&#x2066;5 x 5&#x2069; 厘米，白底。它用于在国外申请的护照或临时护照——在以色列国内，照片是在护照办公室当场拍的，只建议给六岁以下的孩子带相纸，因为他们在那里不好拍。</span>
+    <span data-phrase="spec.eg-passport.note1">埃及各使领馆在“三张照片、白底”上一致，在尺寸上并不一致。伦敦领事馆只说要护照照片，没给尺寸；华盛顿使馆要 &#x2066;2 x 2&#x2069; 英寸，也就是这份清单里美国那一条。打印之前，先问你要递交的那个使领馆。</span>
+    <span data-phrase="spec.ng-passport.note1">尼日利亚的规定只管上传：正好 &#x2066;600 x 800&#x2069; 像素，小于 2 MB，白底，头发不能遮脸和耳朵。门户网站有一个在申请前检测照片的按钮，值得点一下——正式照片之后还是要在移民局拍。</span>
+    <span data-phrase="country.my">马来西亚</span>
+    <span data-phrase="country.th">泰国</span>
+    <span data-phrase="country.ar">阿根廷</span>
+    <span data-phrase="country.sa">沙特阿拉伯</span>
+    <span data-phrase="doc.evisa">电子签证</span>
+    <span data-phrase="spec.my-passport.note1">马来西亚的相框比常见的高五毫米，里面的脸却更小：&#x2066;35 x 50&#x2069; 毫米，脸长 25 到 30 毫米——占高度的五成到六成，而世界上大多数地方要的是七成到八成。按别的国家裁好的照片，这两项都过不了。两张相纸，白底，不能有阴影。</span>
+    <span data-phrase="spec.my-expat-pass.doc">外籍人士准证（ESD Online）</span>
+    <span data-phrase="spec.my-expat-pass.note1">跟马来西亚护照一样是 &#x2066;35 x 50&#x2069; 毫米的相框，头却更大——30 到 35 毫米，护照是 25 到 30——所以一次裁切不能两用。上传文件不得超过 25 KB，这很小，所以这里写出的文件会一直压缩到放得下为止。该页面列出的两种申请都接受白底，蓝底只有其中一种接受，所以这里按白底检查。</span>
+    <span data-phrase="spec.th-passport.note1">泰国是自己拍：在护照办公室或使馆，连同指纹和虹膜扫描一起采集，所以不用带相纸，也没有公布尺寸。使馆对当天只提了一条要求：不要戴彩色隐形眼镜。</span>
+    <span data-phrase="spec.th-evisa.note1">泰国电子签证公布的是：头高约占高度的 70%，竖版照片，素净的白色或米白色背景，JPEG 不超过 3 MB——没有像素或毫米尺寸。这里写出的是常见的 &#x2066;35 x 45&#x2069;、300 dpi，因为总得有个形状；门户网站提供一张示例照片可供对照。</span>
+    <span data-phrase="spec.ar-passport.note1">阿根廷护照由 RENAPER 根据预约当天采集的生物特征签发——领事馆就在柜台当场采集——所以什么都不用带，也没有公布尺寸。只有紧急护照或临时护照才要相纸，它有单独的一条。</span>
+    <span data-phrase="spec.ar-emergency.doc">紧急护照或临时护照</span>
+    <span data-phrase="spec.ar-emergency.note1">正方形，而且小：&#x2066;4 x 4&#x2069; 厘米，正面，白底，“medio busto”——肩膀要入镜，所以头比护照裁切里的小。不能戴帽子，眼镜一律不行。这是护照在国外遗失或被盗时领事馆要的照片；亚松森领事馆还补充：要彩色、哑光相纸。</span>
+    <span data-phrase="spec.sa-evisa.note1">沙特旅游电子签证要的是正好 &#x2066;200 x 200&#x2069; 像素的正方形，5 到 100 KB，白底，脸占画面的 70% 到 80%，两只耳朵都要露出来。同一句话里还用英寸给了头的大小，而一个 200 像素的文件谈不上英寸；这里按百分比来。这么小的尺寸只剩下一张脸，所以请从一张清晰的照片开始。</span>
+    <span data-phrase="doc.visa">签证</span>
+    <span data-phrase="bg.white-or-light.label">白色或素净的浅色</span>
+    <span data-phrase="bg.white-or-light.inline">白色或素净的浅色</span>
+    <span data-phrase="bg.white-or-light.note">这条规定接受白色或任何素净的浅色，没有指定哪一种，所以这里的检查放得很宽：白、浅灰、浅蓝、米白都算过。</span>
+    <span data-phrase="spec.us-visa.note1">相纸跟护照一样是 &#x2066;2 x 2&#x2069; 英寸，有两点不一样。签证照片现在完全不许戴眼镜，除非有签了字的医疗证明。DS-160 的上传是 600 到 1200 像素的正方形，最大 240 kB——而网上换发护照最大可以到 10 MB，所以给其中一个做的文件会被另一个拒收。该页面在“一英寸”旁边把头高写成了“22 毫米”；它自己的构图模板写的是 25，而且仍然公布了护照规定已经删掉的眼睛高度——距底边 28 到 35 毫米。</span>
+    <span data-phrase="spec.ca-pr-card.doc">永久居留与枫叶卡</span>
+    <span data-phrase="spec.ca-pr-card.note1">这里的照片可以是十二个月内的，而几乎所有别的规定都是六个月；背景只能是白色——页面特别提醒不要穿白衣服，会融进背景里。网上申请交一个文件，&#x2066;715 x 1000&#x2069; 到 &#x2066;2000 x 2800&#x2069; 像素，最大 4 MB；用手机翻拍纸质照片会被拒，正经扫描的则可以。纸质申请交两张相纸，在家打印的不收。</span>
+    <span data-phrase="spec.ca-citizenship.doc">入籍</span>
+    <span data-phrase="spec.ca-citizenship.note1">用上传文件之前先读这一条。网上申请时，加拿大要的是“直接从相机保存、未经任何改动”的文件——而裁切就是改动，所以请用这里来核对摄影师给的文件，以及制作纸质相纸。它写的最低 &#x2066;420 x 540&#x2069; 像素，跟它自己 &#x2066;50 x 70&#x2069; 毫米的画幅不是一个形状；&#x2066;420 x 588&#x2069; 才是，而且两个数字都满足。建议大小约 240 kB，上限 4 MB。</span>
+    <span data-phrase="spec.ca-visa.doc">访客签证（临时居民签证）</span>
+    <span data-phrase="spec.ca-visa.note1">加拿大唯一用普通画幅的照片：护照、枫叶卡和入籍都是 &#x2066;50 x 70&#x2069; 毫米，这一条是 &#x2066;35 x 45&#x2069;——规定的原话是“至少”——头高同样是 31 到 36 毫米，所以头在画面里占得多得多。两张相同的相纸；黑白和彩色都收。</span>
+    <span data-phrase="spec.au-visa.note1">澳大利亚内政部要的是一张近期的护照照片，&#x2066;45 x 35&#x2069; 毫米，头肩，素净背景，六个月以内，背面写上本人姓名——没有公布头部大小，也没有公布颜色。这份清单里的澳大利亚护照那一条有，照片满足它，也就满足这一条。</span>
+    <span data-phrase="spec.au-citizenship.doc">入籍（纸质申请）</span>
+    <span data-phrase="spec.au-citizenship.note1">眼镜要摘：仅仅视力不好不算保留眼镜的理由。画幅从 &#x2066;35 x 45&#x2069; 到 &#x2066;40 x 50&#x2069; 毫米都可以，里面的脸同样是 32 到 36 毫米。内政部还写明，出于图像质量的考虑，它不建议用网上证件照服务或手机应用来做这张照片——所以交之前，请把这里做出来的照片跟它给的示例对一对。</span>
+    <span data-phrase="spec.au-citizenship-online.doc">入籍（网上申请）</span>
+    <span data-phrase="spec.au-citizenship-online.note1">网上申请的照片是 70 KB 到 3.5 MB 的 JPEG，首选 &#x2066;1200 x 1600&#x2069; 像素——三比四，而纸质相纸是七比九，所以它单独成一条，也没有可打印的东西。扫描件或翻拍的纸质照片不收，眼镜要摘；内政部也不建议用网上照片服务或应用来做：请把结果跟它给的示例对一对。</span>
+    <span data-phrase="spec.in-visa.note1">10 到 300 KB 的正方形 JPEG，白色或素净的浅色背景，不带边框。规定把头高写成 25 到 35 毫米，却没说是多大画幅里的：这是 &#x2066;2 x 2&#x2069; 英寸照片的数字，也就是这份清单里护照那一条，所以这里按这个比例来。官方页面上讲眼睛高度的那句话写到一半就断了，所以这里显示的眼睛区间用的是护照那一条的，只是参考，从不标红。没有写像素尺寸；这里写出的是 300 dpi 下的两英寸。</span>
+    <span data-phrase="spec.in-evisa.note1">电子签证收 10 KB 到 1 MB 的正方形 JPEG——上限比普通签证的 300 KB 高——白色或素净的浅色背景，不带边框，不戴眼镜。没有写头部大小，也没有写像素尺寸；这里写出的是 300 dpi 下两英寸见方。</span>
+    <span data-phrase="country.ru">俄罗斯</span>
+    <span data-phrase="spec.ru-passport.doc">护照（十年期，生物识别）</span>
+    <span data-phrase="spec.ru-passport.note1">十年期生物识别护照根本不用交照片：照片由领事处当场拍摄。公布的只是不能怎么穿戴——不能戴有色眼镜，不能穿制服——以及只有出于宗教原因、且不遮住脸部轮廓时才可以戴头巾或帽子。六岁以下的孩子也得在那里配合拍照，所以建议给他们办五年期护照。</span>
+    <span data-phrase="spec.ru-passport-5.doc">护照（五年期）</span>
+    <span data-phrase="spec.ru-passport-5.note1">还要交相纸的是旧式的五年期护照：三张相同的 &#x2066;35 x 45&#x2069; 毫米照片，严格正面，白底，不能有条纹、污点或阴影，脸和肩膀上部居中，脸占 70% 到 80%。黑白和彩色都收。不能戴有色眼镜，不能穿制服。</span>
+    <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">通行做法</span>
     <span data-phrase="source.common.doc">文具店的 &#x2066;35 x 45&#x2069; 毫米标准，不是公布的规定</span>
     <span data-phrase="source.you">你</span>
@@ -302,6 +485,7 @@
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="source.line">转录自 {authority} &mdash; {document}。{checked} 核对。规定会变；上面的数字是拿去跟你面前那张表格对照的。</span>
+    <span data-phrase="source.line.words">{checked} 读自 {authority} —— {document}。那份文件只描述照片，从头到尾没给过一个尺寸，所以上面的数字不是它的——详见注释。</span>
     <span data-phrase="source.own">你自己填的数字。这里不跟任何东西对照。</span>
     <span data-phrase="read.done">已照你贴的文字填好。每个数字都列在它读出来的那几个字下面，请对照着核一遍。文字里没提到的格子保持原样。</span>
     <span data-phrase="read.none">这段文字里读不出照片尺寸、头高、背景、上传尺寸或文件大小，所以没有改动任何格子。请直接在下面填写数字。</span>
