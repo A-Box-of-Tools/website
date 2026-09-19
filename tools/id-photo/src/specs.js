@@ -703,7 +703,7 @@ const RULES = [
       bytes: { max: 5 * 1024 * 1024 },
       format: 'image/jpeg',
     },
-    notes: ['spec.hk-passport-online.note1', 'note.head-advisory'],
+    notes: ['spec.hk-passport-online.note1', 'note.head-loose'],
   },
 
   {
@@ -801,7 +801,7 @@ const RULES = [
     eye: band(0.45, 0.70, true),
     background: 'light-grey',
     digital: null,
-    notes: ['spec.bd-passport-child.note1', 'note.head-advisory'],
+    notes: ['spec.bd-passport-child.note1', 'note.head-loose'],
   },
 
   {
@@ -816,6 +816,78 @@ const RULES = [
     published: 'words',
     digital: null,
     notes: ['spec.id-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'my-passport',
+    country: 'country.my',
+    document: 'doc.passport',
+    kind: 'portrait',
+    // Five millimetres taller than the usual frame and a smaller face in it:
+    // 25 to 30 mm, which the rule itself calls 50 to 60 per cent.
+    print: { widthMm: 35, heightMm: 50, dpi: 300 },
+    head: mmBand(25, 30, 50),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.my-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'my-expat-pass',
+    country: 'country.my',
+    document: 'spec.my-expat-pass.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 50, dpi: 300 },
+    head: mmBand(30, 35, 50),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    // A ceiling of 25 KB and nothing on the pixels, so the size written is the
+    // print at 300 dpi and the squeeze does the rest.
+    digital: {
+      label: 'upload.online',
+      width: { min: 413 },
+      height: { min: 591 },
+      bytes: { max: 25 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.my-expat-pass.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'th-passport',
+    country: 'country.th',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.th-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'th-evisa',
+    country: 'country.th',
+    document: 'doc.evisa',
+    kind: 'portrait',
+    // "Around 70 per cent" and "vertical" are the whole of the geometry, and
+    // 3 MB the whole of the file. The shape written is 35 x 45 at 300 dpi
+    // because a shape has to be written, not because Thailand asks for it.
+    print: null,
+    head: band(0.65, 0.75),
+    eye: band(0.50, 0.62, true),
+    background: 'off-white',
+    digital: {
+      label: 'upload.online',
+      width: { min: 413 },
+      height: { min: 531 },
+      bytes: { max: 3 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.th-evisa.note1', 'note.eye-advisory'],
   },
 
   {
@@ -868,6 +940,35 @@ const RULES = [
   },
 
   {
+    id: 'ar-passport',
+    country: 'country.ar',
+    document: 'doc.passport',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    published: 'words',
+    digital: null,
+    notes: ['spec.ar-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'ar-emergency',
+    country: 'country.ar',
+    document: 'spec.ar-emergency.doc',
+    kind: 'portrait',
+    // "Medio busto": the shoulders are in the picture, so the head is nowhere
+    // near the 70 per cent of an ICAO crop.
+    print: { widthMm: 40, heightMm: 40, dpi: 300 },
+    head: band(0.50, 0.70, true),
+    eye: band(0.50, 0.65, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.ar-emergency.note1', 'note.head-loose'],
+  },
+
+  {
     id: 'tr-passport',
     country: 'country.tr',
     document: 'doc.passport-id-licence',
@@ -907,6 +1008,25 @@ const RULES = [
   },
 
   {
+    id: 'sa-evisa',
+    country: 'country.sa',
+    document: 'doc.evisa',
+    kind: 'portrait',
+    print: null,
+    head: band(0.70, 0.80),
+    eye: band(0.50, 0.65, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 200 },
+      height: { exact: 200 },
+      bytes: { min: 5 * 1024, max: 100 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.sa-evisa.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'il-passport',
     country: 'country.il',
     document: 'doc.passport',
@@ -916,7 +1036,7 @@ const RULES = [
     eye: band(0.50, 0.65, true),
     background: 'white',
     digital: null,
-    notes: ['spec.il-passport.note1', 'note.head-advisory'],
+    notes: ['spec.il-passport.note1', 'note.head-loose'],
   },
 
   {
@@ -949,7 +1069,7 @@ const RULES = [
       bytes: { max: 2 * 1024 * 1024 },
       format: 'image/jpeg',
     },
-    notes: ['spec.ng-passport.note1', 'note.head-advisory'],
+    notes: ['spec.ng-passport.note1', 'note.head-loose'],
   },
 
   {
