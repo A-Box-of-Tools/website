@@ -51,7 +51,16 @@ export const ENDONYMS = {
   'country.in': 'भारत',
   'country.cn': '中国',
   'country.kr': '대한민국',
+  'country.hk': '香港',
+  'country.tw': '臺灣',
+  'country.vn': 'Việt Nam',
+  'country.ph': 'Pilipinas',
   'country.nz': 'New Zealand',
+  'country.br': 'Brasil',
+  'country.mx': 'México',
+  'country.tr': 'Türkiye',
+  'country.za': 'South Africa',
+  'country.ae': 'الإمارات',
   'country.jp': '日本',
 };
 
@@ -209,9 +218,66 @@ export const SOURCES = {
     document: 'ica.gov.sg, Photo Guidelines',
     checked: '2026-09-17',
   },
+  'hk-passport': {
+    native: '特區護照',
+    authority: 'Immigration Department, HKSAR',
+    document: 'Photograph Requirements for Travel Document',
+    checked: '2026-09-19',
+  },
+  'hk-passport-online': {
+    authority: 'Immigration Department, HKSAR',
+    document: 'Photograph Requirements for Travel Document',
+    checked: '2026-09-19',
+  },
+  'tw-passport': {
+    native: '護照',
+    authority: '外交部領事事務局',
+    document: '晶片護照照片規格',
+    checked: '2026-09-19',
+  },
+  'vn-passport': {
+    native: 'Hộ chiếu',
+    authority: 'Cục Quản lý xuất nhập cảnh, Bộ Công an',
+    document: 'Tờ khai điện tử đề nghị cấp hộ chiếu',
+    checked: '2026-09-19',
+  },
+  'ph-passport': {
+    native: 'Pasaporte',
+    authority: 'Department of Foreign Affairs, Office of Consular Affairs',
+    document: 'consular.dfa.gov.ph, Passport — General Information',
+    checked: '2026-09-19',
+  },
   'nz-passport': {
     authority: 'Department of Internal Affairs',
     document: 'passports.govt.nz, Passport photos',
     checked: '2026-09-17',
+  },
+  'br-passport': {
+    native: 'Passaporte',
+    authority: 'Ministério das Relações Exteriores',
+    document: 'Especificações da Fotografia para o Pedido de Passaporte',
+    checked: '2026-09-19',
+  },
+  'mx-passport': {
+    native: 'Pasaporte',
+    authority: 'Secretaría de Relaciones Exteriores',
+    document: 'Ejemplos de cómo deben ser las fotografías para trámite de pasaporte',
+    checked: '2026-09-19',
+  },
+  'tr-passport': {
+    native: 'Pasaport, kimlik kartı, sürücü belgesi',
+    authority: 'Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü',
+    document: 'Biyometrik Fotoğraf Özellikleri',
+    checked: '2026-09-19',
+  },
+  'za-passport': {
+    authority: 'Department of Home Affairs',
+    document: 'Passport & ID Photograph Specifications',
+    checked: '2026-09-19',
+  },
+  'ae-passport': {
+    authority: 'Federal Authority for Identity, Citizenship, Customs & Port Security',
+    document: 'Personal Photo Specifications',
+    checked: '2026-09-19',
   },
 };
