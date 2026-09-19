@@ -94,6 +94,11 @@ export const SOURCES = {
     document: 'travel.state.gov, Passport Photos / Uploading a Digital Photo',
     checked: '2026-09-17',
   },
+  'us-visa': {
+    authority: 'U.S. Department of State',
+    document: 'travel.state.gov, Photo Requirements / Digital Image Requirements',
+    checked: '2026-09-19',
+  },
   'us-dv': {
     authority: 'U.S. Department of State',
     document: 'dvprogram.state.gov, Photo Requirements',
@@ -184,16 +189,59 @@ export const SOURCES = {
     document: 'canada.ca, Photo requirements for passports',
     checked: '2026-08-20',
   },
+  'ca-pr-card': {
+    native: 'Résidents permanents',
+    authority: 'Immigration, Refugees and Citizenship Canada',
+    document: 'canada.ca, Permanent resident photos',
+    checked: '2026-09-19',
+  },
+  'ca-citizenship': {
+    native: 'Citoyenneté',
+    authority: 'Immigration, Refugees and Citizenship Canada',
+    document: 'canada.ca, Citizenship photo specifications',
+    checked: '2026-09-19',
+  },
+  'ca-visa': {
+    native: 'Visa de résident temporaire',
+    authority: 'Immigration, Refugees and Citizenship Canada',
+    document: 'canada.ca, Temporary Resident Visa application photograph specifications',
+    checked: '2026-09-19',
+  },
   'au-passport': {
     authority: 'Australian Passport Office',
     document: 'passports.gov.au, Photo guidelines',
     checked: '2026-08-20',
+  },
+  'au-visa': {
+    authority: 'Department of Home Affairs',
+    document: 'immi.homeaffairs.gov.au, Photograph - Passport',
+    checked: '2026-09-19',
+  },
+  'au-citizenship': {
+    authority: 'Department of Home Affairs',
+    document: 'immi.homeaffairs.gov.au, Photo requirements for citizenship applications',
+    checked: '2026-09-19',
+  },
+  'au-citizenship-online': {
+    authority: 'Department of Home Affairs',
+    document: 'immi.homeaffairs.gov.au, Photo requirements for citizenship applications',
+    checked: '2026-09-19',
   },
   'in-passport': {
     native: 'पासपोर्ट',
     authority: 'Ministry of External Affairs',
     document: 'Passport Seva, photo specifications',
     checked: '2026-08-20',
+  },
+  'in-visa': {
+    authority: 'Government of India, Bureau of Immigration',
+    document: 'India Visa Online, Instructions, Photo Requirements',
+    checked: '2026-09-19',
+  },
+  'in-evisa': {
+    authority: 'Government of India, Bureau of Immigration',
+    document: 'indianvisaonline.gov.in, e-Visa',
+    checked: '2026-09-19',
   },
   'in-exam-photo': {
     authority: 'Staff Selection Commission / UPSC',

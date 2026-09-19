@@ -96,6 +96,16 @@ export const BACKGROUNDS = {
     accepts: [WHITE, GREY, BLUE, CREAM],
   },
 
+  // "Plain white or light-coloured": a colour is published, and it is any
+  // light one. The same wide check as the rule that names none, under a label
+  // that does not claim nothing was said.
+  'white-or-light': {
+    id: 'white-or-light',
+    hex: '#f4f4f4',
+    tolerance: 26,
+    accepts: [WHITE, GREY, BLUE, CREAM],
+  },
+
   // Light, and specifically not white. One hex and one tolerance cannot say
   // that: white sits nearer to light grey than the tolerance a description like
   // "light grey" has to carry, so a rule that refuses white refuses it by name.
@@ -229,6 +239,27 @@ const RULES = [
       'spec.us-passport.note2',
       'spec.us-passport.note3',
     ],
+  },
+
+  {
+    id: 'us-visa',
+    country: 'country.us',
+    document: 'doc.visa',
+    kind: 'portrait',
+    print: { widthMm: 51, heightMm: 51, dpi: 300 },
+    head: mmBand(25, 35, 51),
+    eye: mmBand(28, 35, 51, true),
+    background: 'off-white',
+    // Not the passport's upload: a square between 600 and 1200 pixels and
+    // 240 kB at most, where online renewal takes anything up to 10 MB.
+    digital: {
+      label: 'upload.online',
+      width: { min: 600 },
+      height: { min: 600 },
+      bytes: { max: 240 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.us-visa.note1', 'note.eye-advisory'],
   },
 
   {
@@ -456,6 +487,61 @@ const RULES = [
   },
 
   {
+    id: 'ca-pr-card',
+    country: 'country.ca',
+    document: 'spec.ca-pr-card.doc',
+    kind: 'portrait',
+    print: { widthMm: 50, heightMm: 70, dpi: 300 },
+    head: mmBand(31, 36, 70),
+    eye: band(0.55, 0.72, true),
+    background: 'white',
+    crown: 'skull',
+    digital: {
+      label: 'upload.online',
+      width: { min: 715 },
+      height: { min: 1000 },
+      bytes: { max: 4 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.ca-pr-card.note1', 'note.crown-skull', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'ca-citizenship',
+    country: 'country.ca',
+    document: 'spec.ca-citizenship.doc',
+    kind: 'portrait',
+    print: { widthMm: 50, heightMm: 70, dpi: 300 },
+    head: mmBand(31, 36, 70),
+    eye: band(0.55, 0.72, true),
+    background: 'white-or-light',
+    // "At least 420 by 540" is not the shape of a 50 x 70 frame. 420 wide at
+    // five to seven is 588 tall, which clears both figures.
+    digital: {
+      label: 'upload.online',
+      width: { min: 420 },
+      height: { min: 588 },
+      bytes: { max: 4 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.ca-citizenship.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'ca-visa',
+    country: 'country.ca',
+    document: 'spec.ca-visa.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(31, 36, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'white-or-light',
+    crown: 'skull',
+    digital: null,
+    notes: ['spec.ca-visa.note1', 'note.crown-skull', 'note.eye-advisory'],
+  },
+
+  {
     id: 'au-passport',
     country: 'country.au',
     document: 'spec.au-passport.doc',
@@ -469,6 +555,53 @@ const RULES = [
   },
 
   {
+    id: 'au-visa',
+    country: 'country.au',
+    document: 'doc.visa',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.au-visa.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'au-citizenship',
+    country: 'country.au',
+    document: 'spec.au-citizenship.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'light-grey',
+    digital: null,
+    notes: ['spec.au-citizenship.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'au-citizenship-online',
+    country: 'country.au',
+    document: 'spec.au-citizenship-online.doc',
+    kind: 'portrait',
+    // Three to four, where the print is seven to nine: the same split Hong
+    // Kong needs, for the same reason.
+    print: null,
+    head: band(0.60, 0.75, true),
+    eye: band(0.50, 0.62, true),
+    background: 'light-grey',
+    digital: {
+      label: 'upload.online',
+      width: { min: 1200 },
+      height: { min: 1600 },
+      bytes: { min: 70 * 1024, max: 3.5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.au-citizenship-online.note1', 'note.head-loose'],
+  },
+
+  {
     id: 'in-passport',
     country: 'country.in',
     document: 'spec.in-passport.doc',
@@ -479,6 +612,48 @@ const RULES = [
     background: 'white',
     digital: null,
     notes: ['spec.in-passport.note1', 'spec.in-passport.note2'],
+  },
+
+  {
+    id: 'in-visa',
+    country: 'country.in',
+    document: 'doc.visa',
+    kind: 'portrait',
+    // The head is published in millimetres and the frame is not. 25 to 35 mm
+    // is the head of a two-inch square, which is the passport entry above, so
+    // that is the proportion applied - as a fraction, since no print is asked
+    // for here.
+    print: null,
+    head: band(25 / 51, 35 / 51),
+    eye: band(28 / 51, 35 / 51, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { min: 600 },
+      height: { min: 600 },
+      bytes: { min: 10 * 1024, max: 300 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.in-visa.note1'],
+  },
+
+  {
+    id: 'in-evisa',
+    country: 'country.in',
+    document: 'doc.evisa',
+    kind: 'portrait',
+    print: null,
+    head: band(0.50, 0.70, true),
+    eye: band(0.52, 0.68, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { min: 600 },
+      height: { min: 600 },
+      bytes: { min: 10 * 1024, max: 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.in-evisa.note1', 'note.head-loose'],
   },
 
   {
