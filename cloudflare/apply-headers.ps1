@@ -65,56 +65,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-# Windows PowerShell 5.1 still defaults to TLS 1.0 for outbound requests, which
-# the Cloudflare API refuses.
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# The API call, the zone lookup and the TLS setting, shared with
+# apply-redirects.ps1.
+. (Join-Path $PSScriptRoot "cf-api.ps1")
 
 $phase       = "http_response_headers_transform"
 $payloadPath = Join-Path $PSScriptRoot "response-headers.json"
-
-function Write-Step($text) { Write-Host "`n$text" -ForegroundColor Cyan }
-
-function Get-ApiError($errorRecord) {
-  # Cloudflare explains what it rejected in the response body, which
-  # Invoke-RestMethod throws away. Dig it back out.
-  try {
-    $stream = $errorRecord.Exception.Response.GetResponseStream()
-    $reader = New-Object System.IO.StreamReader($stream)
-    return $reader.ReadToEnd()
-  } catch {
-    return $errorRecord.Exception.Message
-  }
-}
-
-function Invoke-Cf($Method, $Url, $BodyBytes) {
-  $headers = @{ Authorization = "Bearer $Token" }
-  try {
-    if ($null -eq $BodyBytes) {
-      return Invoke-RestMethod -Method $Method -Uri $Url -Headers $headers
-    }
-    return Invoke-RestMethod -Method $Method -Uri $Url -Headers $headers `
-      -ContentType "application/json" -Body $BodyBytes
-  } catch {
-    throw "$Method $Url failed:`n$(Get-ApiError $_)"
-  }
-}
-
-function Resolve-ZoneId {
-  if ($ZoneId) { return $ZoneId }
-  Write-Step "Looking up the zone ID for $Domain"
-  $zones = Invoke-Cf "GET" "https://api.cloudflare.com/client/v4/zones?name=$Domain" $null
-  if (-not $zones.result -or $zones.result.Count -eq 0) {
-    throw "No zone named $Domain on this account. Pass -ZoneId explicitly."
-  }
-  Write-Host "  $($zones.result[0].id)"
-  return $zones.result[0].id
-}
-
-function Assert-Token {
-  if (-not $Token) {
-    throw "No API token. Set `$env:CLOUDFLARE_API_TOKEN or pass -Token. Never commit it."
-  }
-}
 
 # ---- what the payload asks for -------------------------------------------
 
@@ -239,3 +195,7 @@ if ($wrong -gt 0) {
 } else {
   Write-Host "`nAll headers present and correct." -ForegroundColor Green
 }
+
+# The other thing the edge decides that no file here can set: which crawlers
+# it lets in. It drifted once with nobody looking, so every verify looks.
+& (Join-Path $PSScriptRoot "check-crawlers.ps1") -Domain $Domain

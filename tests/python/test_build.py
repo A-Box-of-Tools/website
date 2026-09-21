@@ -14,6 +14,7 @@ stopped rendering, a tool.toml that lost a key, or a page that quietly stopped
 being written. It needs nothing installed - the plain build is pure Python.
 """
 
+import importlib.util
 import json
 import re
 import tempfile
@@ -470,6 +471,36 @@ class BuildTheSite(unittest.TestCase):
         digests = indexnow.hashes(self.out, self.out / 'sitemap.xml')
         self.assertEqual(sorted(digests), sorted(urls))
         self.assertTrue(digests)
+
+    def test_the_edge_redirects_are_the_stubs_the_build_wrote(self):
+        """cloudflare/redirects.py works out, from the configuration alone,
+        which old addresses have a stub and where each one points - the same
+        question build_locale answers while writing them. Two answers to one
+        question drift, and this one would drift silently in the expensive
+        direction: a rule at an address that is still a tool's real page
+        redirects that page away, and nothing in any build would say so. So
+        every address a rule names must be a stub on disk, whose canonical is
+        the rule's target.
+        """
+        spec = importlib.util.spec_from_file_location(
+            'cloudflare_redirects', ROOT / 'cloudflare' / 'redirects.py')
+        generator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(generator)
+        payload, _ = generator.current()
+        self.assertTrue(payload['rules'])
+
+        for rule in payload['rules']:
+            target = rule['action_parameters']['from_value']['target_url']['value']
+            sources = re.findall(r'"(/[^"]*/)"', rule['expression'])
+            self.assertTrue(sources, rule['expression'])
+            for source in sources:
+                with self.subTest(address=source):
+                    stub = self.out / source.strip('/') / 'index.html'
+                    self.assertTrue(stub.is_file(), f'{source} is not on disk')
+                    text = stub.read_text(encoding='utf-8')
+                    self.assertIn('http-equiv="refresh"', text,
+                                  f'{source} is a real page, not a stub')
+                    self.assertIn(f'<link rel="canonical" href="{target}">', text)
 
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)

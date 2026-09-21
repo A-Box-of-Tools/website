@@ -15,8 +15,13 @@ agree.
 
 | File | What it is |
 |---|---|
-| `response-headers.json` | The rules, in the exact shape Cloudflare's API expects. The source of truth |
+| `response-headers.json` | The header rules, in the exact shape Cloudflare's API expects. The source of truth |
 | `apply-headers.ps1` | Sends that file to the API, then checks the live site really returns the headers |
+| `redirects.py` | Works out a 301 for every address a tool used to answer at, from `[redirects]` in `config/site.toml` |
+| `redirects.json` | What it wrote: the redirect rules, committed so they can be read and reviewed |
+| `apply-redirects.ps1` | Sends that file to the API, then asks the live site for every old address |
+| `check-crawlers.ps1` | Asks the live site for a page as each crawler, and says which the edge refused. No token, changes nothing |
+| `cf-api.ps1` | What the scripts share: the API call, the zone lookup, and a request that does not follow redirects |
 
 ## Applying it
 
@@ -85,6 +90,83 @@ nothing else, on purpose.
 Also not set here: `Strict-Transport-Security`. Cloudflare manages HSTS itself
 under **SSL/TLS → Edge Certificates → HSTS Settings**; setting it from a transform
 rule fights that control. Same for **Always Use HTTPS**.
+
+## Addresses that moved
+
+A renamed tool leaves a stub at its old address: a meta refresh, a canonical
+and `noindex`, because GitHub Pages cannot answer 301. That moves a reader and
+drops a ranking. Cloudflare can answer 301 before the request reaches the stub,
+and `redirects.json` is the list of those answers.
+
+It is **generated, and then committed**. `[redirects]` and each language's
+`[slugs]` already say where every old address goes, so a list kept by hand
+would be a third copy; and it is committed for the reason the headers are -
+what reaches Cloudflare should be a file anybody can read. After moving a slug:
+
+```powershell
+python cloudflare/redirects.py
+```
+
+`tests/python/test_cloudflare.py` fails until that has been run and the result
+committed, and `tests/python/test_build.py` checks that every address a rule
+names is a stub the build really wrote, pointing where the rule points.
+
+Applying it is the headers' routine with a different token permission -
+**Zone → Single Redirect → Edit**. That is a row in the token form, not a place
+in the dashboard: three dropdowns, of which *Zone* is the first. Write-ups
+elsewhere call the permission "Dynamic Redirect", after the phase; the form
+lists it as *Single Redirect*. An existing token can be edited to add it
+without its secret changing:
+
+```powershell
+.\cloudflare\apply-redirects.ps1 -Export
+.\cloudflare\apply-redirects.ps1
+```
+
+`-Export` first, for the same reason: the apply **replaces every Redirect Rule
+in the zone**, so one made in the dashboard disappears. `-VerifyOnly` needs no
+token and asks the live site for every old address; before the first apply
+every line reads "still the stub".
+
+The Free plan allows ten of these rules, which is why addresses are grouped by
+destination and why **German is left to its stubs**: English and Chinese fill
+eight, and German would need four more. It costs German nothing it had - its
+addresses never moved, so the old English slugs under `/de/` were never pages
+anybody linked to. The top of `redirects.py` has the whole argument, and
+`BUDGET` there is the one number to change on a larger plan. The twelve frozen
+languages keep their stubs too; they are `noindex`, so there is no ranking for
+a 301 to carry.
+
+## Which crawlers get in
+
+```powershell
+.\cloudflare\check-crawlers.ps1
+```
+
+`robots.txt` says everything here is meant to be found, and `/llms.txt` is
+written to language models. Neither decides who gets in: Cloudflare's **AI bot
+policies** - one switch called *Block AI bots* until 15 September 2026 - answer
+403 by user agent before `robots.txt` is read, block by default on a zone made
+since mid-2025, and live in the dashboard where nothing in this repository can
+set them or see them. They refused GPTBot,
+ClaudeBot and CCBot - Common Crawl, which most models are trained on - for
+nobody knows how long, until somebody thought to ask as one of them.
+
+So the script asks, as seventeen of them, and `apply-headers.ps1` runs it at
+the end of every verify. A 403 is conclusive, because the real crawler sends
+the same user agent into the same rule. A 200 is not - Cloudflare can still
+challenge a crawler on its address, which an impostor cannot reproduce - so
+**Security → Events** in the dashboard remains the only record of what the real
+ones were given.
+
+The setting is **Security → Settings → Configure AI bot policies**, and it takes
+an action for each of three kinds of bot: *Search*, *Agent* and *Training*. The
+script's "answers" is the first two and its "learns" is the third, and what was
+found blocked was exactly Training. One crawler can also be blocked by itself
+from **AI Crawl Control → Security → Crawlers**, which works by writing a WAF
+custom rule, so a crawler refused while its kind is allowed is there or under
+**Security → Security rules**. Whether to let all of them in is a decision; the
+script only reports against what the site has published, which is all of them.
 
 ## Things that will catch you out
 

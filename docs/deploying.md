@@ -98,10 +98,12 @@ would produce is the one already deployed. Anything else, anything new,
 anything unrecognised, builds and runs everything.
 
 The standard for being on that list is that **no test opens the file**, which
-is not the same as no test mentioning it. Three that look like they belong
+is not the same as no test mentioning it. Four that look like they belong
 are deliberately absent, each checked rather than assumed: `workers/`, which
 `tests/js/rendezvous.test.js` imports outright; `serve.ps1`, which
-`tests/python/test_serve.py` reads; and `tests/` itself.
+`tests/python/test_serve.py` reads; `cloudflare/redirects.py` and the
+`redirects.json` it writes, which `tests/python/test_cloudflare.py` holds to
+each other while the rest of that folder stays exempt; and `tests/` itself.
 
 `.github/` is deliberately **not** on the list, though it would qualify under
 that rule — no test opens a workflow. A workflow exempt from the run it defines
@@ -221,6 +223,14 @@ Check what is actually being served, from anywhere, with no credentials:
 
 Two configurations to keep in step: if you change `_headers`, change
 `cloudflare/response-headers.json` too, or the two deployments stop agreeing.
+
+The same run ends by asking the site for a page as each crawler that matters,
+because which of them Cloudflare lets in is a dashboard switch that no file
+here sets and that has been wrong before without anybody seeing it. And an
+address a tool used to answer at gets a real 301 from the same folder -
+`cloudflare/redirects.json`, generated from `[redirects]` in `config/site.toml`
+and applied with `apply-redirects.ps1`. Both are in
+[cloudflare/README.md](../cloudflare/README.md).
 
 ## Cache lifetimes, and why the stylesheet URLs carry a hash
 
