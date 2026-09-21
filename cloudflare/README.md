@@ -140,10 +140,11 @@ a 301 to carry.
 ```
 
 `robots.txt` says everything here is meant to be found, and `/llms.txt` is
-written to language models. Neither decides who gets in: Cloudflare's **Block
-AI bots** switch answers 403 by user agent before `robots.txt` is read, it is
-on by default for a zone made since mid-2025, and it lives in the dashboard
-where nothing in this repository can set it or see it. It refused GPTBot,
+written to language models. Neither decides who gets in: Cloudflare's **AI bot
+policies** - one switch called *Block AI bots* until 15 September 2026 - answer
+403 by user agent before `robots.txt` is read, block by default on a zone made
+since mid-2025, and live in the dashboard where nothing in this repository can
+set them or see them. They refused GPTBot,
 ClaudeBot and CCBot - Common Crawl, which most models are trained on - for
 nobody knows how long, until somebody thought to ask as one of them.
 
@@ -152,8 +153,15 @@ the end of every verify. A 403 is conclusive, because the real crawler sends
 the same user agent into the same rule. A 200 is not - Cloudflare can still
 challenge a crawler on its address, which an impostor cannot reproduce - so
 **Security → Events** in the dashboard remains the only record of what the real
-ones were given. The switch itself is under **Security → Bots**, or **AI Crawl
-Control** in newer dashboards. Whether to let all of them in is a decision; the
+ones were given.
+
+The setting is **Security → Settings → Configure AI bot policies**, and it takes
+an action for each of three kinds of bot: *Search*, *Agent* and *Training*. The
+script's "answers" is the first two and its "learns" is the third, and what was
+found blocked was exactly Training. One crawler can also be blocked by itself
+from **AI Crawl Control → Security → Crawlers**, which works by writing a WAF
+custom rule, so a crawler refused while its kind is allowed is there or under
+**Security → Security rules**. Whether to let all of them in is a decision; the
 script only reports against what the site has published, which is all of them.
 
 ## Things that will catch you out

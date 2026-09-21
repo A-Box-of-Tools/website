@@ -6,7 +6,8 @@
 .DESCRIPTION
   robots.txt says everything here is meant to be found, and /llms.txt is a page
   written to language models. Neither decides who gets in. Cloudflare has a
-  setting of its own - "Block AI bots", on by default for a zone created since
+  setting of its own - "Configure AI bot policies", which was "Block AI bots"
+  until 15 September 2026, and blocks by default on a zone created since
   mid-2025 - that answers 403 by user agent before robots.txt is ever read, and
   it lives in the dashboard where nothing in this repository can see it. On
   21 September 2026 it was found refusing GPTBot, ClaudeBot, CCBot, Amazonbot,
@@ -26,8 +27,13 @@
   The dashboard's Security > Events log is the only place that shows what the
   real ones were given.
 
-  The switch is under Security > Bots ("Block AI bots") or AI Crawl Control,
-  depending on the dashboard's vintage. Whether to let every one of these in is
+  WHERE THE SETTING IS. Security > Settings > Configure AI bot policies. It
+  sorts AI bots into three kinds and takes an action for each: Search, Agent
+  and Training. Those are this script's "answers" (the first two) and "learns",
+  and what was found blocked was exactly Training. A single crawler can also be
+  blocked from AI Crawl Control > Security > Crawlers, which does it by writing
+  a WAF custom rule - so a crawler refused while its kind is allowed is there,
+  or under Security > Security rules. Whether to let every one of these in is
   the owner's decision, not this script's; it reports against the policy the
   site has published, which is "all of them".
 
@@ -108,7 +114,8 @@ if ($refused.Count -eq 0) {
 }
 
 Write-Host "`n$($refused.Count) crawler(s) refused, while robots.txt and /llms.txt invite them." -ForegroundColor Yellow
-Write-Host "No rule in this repository does that. Look in the Cloudflare dashboard under"
-Write-Host "Security > Bots for 'Block AI bots' (or AI Crawl Control), and under"
-Write-Host "Security > WAF for a custom rule that matches on the user agent."
+Write-Host "No rule in this repository does that. In the Cloudflare dashboard, look at"
+Write-Host "Security > Settings > Configure AI bot policies (the action for Training, if"
+Write-Host "the refused ones all say 'learns'), then AI Crawl Control > Security > Crawlers,"
+Write-Host "then Security > Security rules for a custom rule that matches on the user agent."
 exit 1
