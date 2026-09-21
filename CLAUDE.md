@@ -221,6 +221,17 @@ translations of it in an index is fifteen chances to be judged on the half of
 the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
+**`tools/id-photo/landing/pages.json` is generated, and a rule changed without
+regenerating it is a red build.** Each of that tool's cited rules has a page of
+its own - `/id-photo/us-passport/` - which the Python build writes from that
+file, and the file is written from `src/specs.js` by a Node script because the
+build runs without Node. After touching `specs.js` or `sources.js`:
+`node --import ./tests/js/resolve-shared.mjs tools/id-photo/landing/emit.mjs`,
+and commit the result. The file holds phrase *keys*, resolved per language
+against the body's `#phrases`, so there is nothing to translate; only `[landing]`
+in `tool.toml` is prose. `buildlib/landing.py` says what these pages are and why
+they are not the tool forty-nine times over.
+
 **No module is copied between tools any more, and a test keeps it so.** There
 used to be twenty-one declared groups of byte-identical copies — the MP4
 reader six times over, the PDF grammar three — because a shared part could

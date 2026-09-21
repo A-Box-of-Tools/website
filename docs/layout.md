@@ -14,6 +14,8 @@ buildlib/
   emit.py                the one function that writes a file, and what it minifies
   catalogue.py           the whole site as one file: sitemap.xml, llms.txt, the feeds
   markdown.py            every page as Markdown: the index.md beside each index.html
+  landing.py             a page for each rule a tool applies - /id-photo/us-passport/ -
+                         written from that tool's landing/pages.json
   deployed.py            --check: diffing a build against the branch being served
 config/
   site.toml              everything true of every page: the CSP, the ids, the hub
@@ -26,6 +28,7 @@ templates/
                          copy button copies; buildlib/markdown.py says why
   page.html              the frame a prose page wears - the legal ones
   page.md                and that page as Markdown
+  landing-body.html      the body of one of those rule pages; page.html is its frame
   404.html               what GitHub Pages returns for an address that is not here
   sw.js                  the offline service worker, one per installable folder
   offline.js             registers that worker, for the front page only

@@ -261,3 +261,31 @@ features = [
 [picker]
 title = "把照片拖到这里"
 hint = "也可以点击选择——一张照片，JPEG、PNG、WebP，或者你浏览器能打开的任何格式"
+
+# 每条规定自己的页面：/zh/id-photo/us-passport/。只有框架写在这里，数值、备注和出处
+# 都来自 body 里的 #phrases，和工具本身读的是同一份。见 tools/id-photo/tool.toml。
+[landing]
+title = "{country}{document}照片尺寸与要求"
+heading = "照片要求：{country}{document}"
+nav = "{country}{document}"
+description = "{size}，背景为{background}：{authority} 公布的数值，{checked} 核对；附一个在你浏览器里按这些数值裁剪照片的免费工具，什么都不上传。"
+lede = "{authority} 对这种证件的照片有什么要求，以 {checked} 读到的为准；以及一个不用把脸交给任何人、就能做出合格照片的办法。"
+updated = "{checked}"
+facts_heading = "具体数值"
+facts_term = "测量的项目"
+facts_value = "这条规定公布的数值"
+make = "按这条规定制作照片"
+make_note = "打开证件照工具，并且已经选好这条规定。它在你的浏览器里运行：照片不会上传，不用注册，也没有水印。"
+notes_heading = "这条规定还说了什么"
+source_heading = "这些数值从哪里来"
+how_heading = "工具拿这些数值做什么"
+how = [
+  "把裁剪框锁定成这种证件的形状，并在框里画出头部和眼线的区间，让你在自己的照片上直接看到规定，而不是只读到它。",
+  "通过测量画面找出头顶、下巴和两只瞳孔，不下载任何人脸模型，并用毫米告诉你，按这条规定头是偏大还是偏小。",
+  "读取背景的颜色，以及光线是否均匀；有问题的时候，说明是两者中的哪一个。",
+  "按精确的毫米写出打印文件，分辨率写在文件里；再生成一张带裁切标记的拼版，以及符合这条规定的像素和体积的上传文件。",
+]
+siblings_heading = "{country}的其他证件"
+all_link = "在证件照工具里查看所有国家和证件"
+index_heading = "各国照片规定"
+index_lede = "每条公布了具体数值的规定都有自己的页面，写明这些数值、公布它的机构，以及核对的日期。"

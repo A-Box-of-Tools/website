@@ -1,0 +1,51 @@
+  <!--
+    One rule, read out. Rendered by build_landings in build.py from the tool's
+    landing/pages.json; buildlib/landing.py says what these pages are for and
+    why they are not the tool over again.
+
+    The figures are a table and not a definition list for the Markdown twin's
+    sake as much as the page's: a table of two columns survives being copied
+    into a chat window as a table, and a reader - or a model - quoting "head
+    25 to 35 mm" wants the row it came from beside it.
+  -->
+  <h2>{{ strings.facts_heading }}</h2>
+  <figure class="data pairs">
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">{{ strings.facts_term }}</th>
+            <th scope="col">{{ strings.facts_value }}</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for fact in rule.facts %}          <tr><th scope="row">{{ fact.term }}</th><td>{{ fact.value }}</td></tr>
+{% endfor %}        </tbody>
+      </table>
+    </div>
+  </figure>
+
+  <p class="guide-cta">
+    <a class="guide-cta-link" href="{{ make_href }}">{{ strings.make }}</a>
+    <span class="guide-cta-note">{{ strings.make_note }}</span>
+  </p>
+
+{% if rule.notes %}  <h2>{{ strings.notes_heading }}</h2>
+  <ul>
+{% for note in rule.notes %}    <li>{{ note }}</li>
+{% endfor %}  </ul>
+
+{% endif %}  <h2>{{ strings.source_heading }}</h2>
+  <p>{{ rule.source }}</p>
+
+  <h2>{{ strings.how_heading }}</h2>
+  <ul>
+{% for step in strings.how %}    <li>{{ step }}</li>
+{% endfor %}  </ul>
+
+{% if rule.siblings %}  <h2>{{ siblings_heading }}</h2>
+  <ul>
+{% for other in rule.siblings %}    <li><a href="../{{ other.id }}/">{{ other.document }}</a> &mdash; {{ other.size }}</li>
+{% endfor %}  </ul>
+
+{% endif %}  <p><a href="../">{{ strings.all_link }}</a></p>

@@ -49,6 +49,8 @@ So there are three separate problems here, and each has its own module.
 | `src/marks.js` | The four dots on the face: placing them, and dragging them. |
 | `src/files.js` | Names, and the sentences the page reads out. |
 | `src/main.js` | The wiring, and nothing else. |
+| `landing/emit.mjs` | Writes `landing/pages.json` from the rulebook: every rule that gets a page of its own, and the figures that page prints. |
+| `landing/pages.json` | What it wrote. Generated, committed, and read by the build. |
 
 `geometry.js`, `sheet.js`, `background.js`, `jpeg.js`, `specs.js` and `files.js`
 are pure functions on numbers and byte arrays, which is why
@@ -242,6 +244,44 @@ at 4 and 3 the same sheet holds six photographs instead of eight.
 
 ---
 
+## The page each rule has to itself
+
+`/id-photo/us-passport/`, `/id-photo/de-passport/` and forty-seven like them,
+in every language the tool is published in. The tool's own page is one address
+holding sixty-seven rules behind a menu, so it can answer "Canada passport photo
+size" for nobody who has not already opened it. A landing page is that answer
+somewhere it can be found: the figures, the notes, who published them and the
+day they were read - and then a button to `../#ca-passport`, which
+`specFromHash` in `src/specs.js` turns into the tool opening on Canada.
+
+It is deliberately not the tool over again, and `buildlib/landing.py` says why.
+What matters here is that **the figures are not written twice**:
+
+- `specFacts()` and `sourceLine()` in `src/files.js` build the rows and the
+  citation. The panel under the chooser calls them with `phrase`; the emitter
+  calls them with a `t` that hands back the key and its values instead of a
+  sentence. So `pages.json` holds phrase *keys*, and the build resolves them
+  against the `#phrases` of each language's body - the table the tool itself
+  reads. A landing page in German says what the German tool says.
+- Only the frame is new writing: `[landing]` in `tool.toml`, translated in
+  `locales/*/tools/id-photo.toml` like the rest of that file.
+- A rule gets a page when it is a portrait, has a citation in `sources.js`,
+  and its authority publishes figures. Not the signature, not the sizes that
+  are common practice, not the form you fill in yourself, and not the
+  `published: 'words'` countries - "Sweden publishes no measurements" is a true
+  sentence and a thin page.
+
+**After touching `specs.js` or `sources.js`, run the emitter and commit what it
+writes:**
+
+```bash
+node --import ./tests/js/resolve-shared.mjs tools/id-photo/landing/emit.mjs
+```
+
+`tests/js/id-photo-landing.test.js` fails until that has been done, which is
+the point: the alternative is a page quoting last month's numbers under this
+month's date. The build itself runs without Node and only ever reads the file.
+
 ## Adding a country
 
 One entry in `RULES` in `src/specs.js` and one in `SOURCES` in
@@ -287,6 +327,9 @@ itself is a different word from the one this site prints.
 `tests/js/id-photo-sources.test.js` keeps that file a table of names — nothing
 long, nothing that reads like a sentence — which is what pays for its exemption
 from the count in `tests/python/test_english_in_js.py`.
+
+Then run `landing/emit.mjs` - see the section above - so the country's page
+is written from the entry you have just made.
 
 The tests will then check the rest: that it can be cropped to, that its bands
 are bands, and that its millimetres and fractions agree.

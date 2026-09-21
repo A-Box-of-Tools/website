@@ -149,6 +149,9 @@ TRANSLATABLE_TOOL_KEYS = (
     'title', 'description', 'og_title', 'og_description', 'og_image_alt',
     'pledge', 'live_hint', 'read_first', 'howto_heading', 'card',
     'words', 'facts', 'privacy', 'howto', 'faq', 'schema',
+    # The frame of the pages a tool's rules have to themselves - a title
+    # pattern, a few headings, a button. See buildlib/landing.py.
+    'landing',
     # The drop zone, and the importer panel on the tools that have one. Its
     # `accept` and `multiple` are structural and stay put; what a locale
     # supplies is the two lines a visitor actually reads off it, and the noun
@@ -1086,7 +1089,7 @@ def debt_report(locale, tools, prose):
     return behind
 
 
-def alternates(locales, slug, site):
+def alternates(locales, slug, site, tail=''):
     """The <link rel="alternate" hreflang> set for one page, in every language
     it is published in.
 
@@ -1111,13 +1114,14 @@ def alternates(locales, slug, site):
     if len(ready) < 2:
         return []
 
-    entries = [{'hreflang': locale['hreflang'], 'href': locale_url(locale, slug, site)}
+    entries = [{'hreflang': locale['hreflang'],
+                'href': locale_url(locale, slug, site, tail)}
                for locale in ready]
     entries.append({'hreflang': 'x-default', 'href': entries[0]['href']})
     return entries
 
 
-def switcher(locales, current, slug, site):
+def switcher(locales, current, slug, site, tail=''):
     """What the language switcher on one page offers.
 
     Every published language, linked to this same page in that language rather
@@ -1169,19 +1173,28 @@ def switcher(locales, current, slug, site):
             # is the one set of links that leaves the language it is written
             # in, so it cannot be resolved against a folder whose name is
             # itself localized.
-            'href': locale_path(locale, slug),
+            'href': locale_path(locale, slug, tail),
             'current': locale['lang'] == current['lang'],
         }
         for locale in ready
     ]
 
 
-def locale_path(locale, slug):
-    """Where one page lives in one language, as a root-absolute path."""
+def locale_path(locale, slug, tail=''):
+    """Where one page lives in one language, as a root-absolute path.
+
+    `tail` is for a page that lives BELOW another and is translated with it -
+    a tool's landing pages, /id-photo/us-passport/. The folder above is the
+    tool's and is renamed by [slugs] like any other; the last step is a rule's
+    id, which is the same in every language, so it is carried past the lookup
+    rather than through it. Whether such a page is published in a language is
+    asked of `slug`, the page it belongs to, and that is the point: a rule page
+    is translated exactly when its tool is.
+    """
     localized = locale['slugs'].get(slug, slug)
-    return f'/{locale["prefix"]}' + (f'{localized}/' if localized else '')
+    return f'/{locale["prefix"]}' + (f'{localized}/' if localized else '') + tail
 
 
-def locale_url(locale, slug, site):
+def locale_url(locale, slug, site, tail=''):
     """The same, as the absolute URL a canonical or an hreflang needs."""
-    return site['domain'].rstrip('/') + locale_path(locale, slug)
+    return site['domain'].rstrip('/') + locale_path(locale, slug, tail)

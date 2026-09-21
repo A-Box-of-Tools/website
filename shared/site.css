@@ -669,6 +669,13 @@ code {
 
 .guide-cta-link:hover { filter: brightness(1.08); }
 
+/* The same button inside a page's prose, which is where a tool's landing pages
+   carry it - the header's is there to leave the page, and theirs has to land
+   on one particular rule. `.prose a` colours every link in the body with the
+   accent and outranks a single class, so without this the label is the accent
+   on the accent: a blue lozenge with nothing written on it. */
+.prose .guide-cta-link { color: var(--accent-text); }
+
 .guide-cta-note { font-size: 0.85rem; color: var(--text-dim); }
 
 .legal, .prose { max-width: 68ch; }
@@ -820,7 +827,28 @@ code {
   white-space: nowrap;
 }
 
-.prose figure.data tbody tr:last-child td { border-bottom: 0; }
+.prose figure.data tbody tr:last-child td,
+.prose figure.data tbody tr:last-child th { border-bottom: 0; }
+
+/* The exception to everything said above: a table of PAIRS - a name and its
+   value, which is what a landing page's figures are. Two columns read across
+   perfectly well when the second one wraps, so this one stays in the column
+   of prose, gives up the 46rem floor, and never scrolls. On a phone the wide
+   rule hid the value column behind a scrollbar, and the value is the page. */
+.prose figure.data.pairs {
+  width: 100%;
+  margin-inline-start: 0;
+}
+
+.prose figure.data.pairs table {
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.prose figure.data.pairs tbody th {
+  width: 42%;
+  font-weight: 600;
+}
 
 /* The endpoints are the evidence, so they are set to be read rather than
    skimmed past: a URL wraps anywhere, because these are long and there is no
