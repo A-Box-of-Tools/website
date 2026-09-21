@@ -24,9 +24,12 @@
 
 .PARAMETER Token
   Cloudflare API token. Defaults to $env:CLOUDFLARE_API_TOKEN.
-  Needs Zone / Single Redirect / Edit, plus Zone / Zone / Read if you want the
-  zone ID looked up from the domain name rather than passing it in. The
-  headers' token does not carry the first of those; one token may hold both.
+  Needs Zone / Dynamic Redirect / Edit, plus Zone / Zone / Read if you want the
+  zone ID looked up from the domain name rather than passing it in. The token
+  editor says "Dynamic Redirect" where the documentation says "Single
+  Redirect" - it is the phase's name, and searching the list for the product's
+  finds nothing. The headers' token does not carry it; one token may hold both.
+  -Export is the way to find out whether a token does: it only reads.
 
 .PARAMETER ZoneId
   Zone ID. Defaults to $env:CLOUDFLARE_ZONE_ID, and is otherwise looked up from

@@ -112,7 +112,10 @@ committed, and `tests/python/test_build.py` checks that every address a rule
 names is a stub the build really wrote, pointing where the rule points.
 
 Applying it is the headers' routine with a different token permission -
-**Zone → Single Redirect → Edit**:
+**Zone → Dynamic Redirect → Edit**. That is what the token editor calls it;
+Cloudflare's documentation says "Single Redirect", which is the product's name
+and is not in the list. An existing token can be edited to add it without its
+secret changing:
 
 ```powershell
 .\cloudflare\apply-redirects.ps1 -Export
