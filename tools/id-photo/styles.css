@@ -131,7 +131,14 @@
 /* A list with nothing in it is the line underneath saying so, not a box. */
 .combo-list:empty { display: none; }
 
+/* Under a thumb the arrow is a target like any other button, and the frame's
+   floor for those is forty-four pixels. It was taken off above so that the
+   arrow could be as short as the field; here the field is made tall enough
+   instead, and the arrow fills it. The QA suite's tap-target check is what
+   noticed: 38 pixels, on both phones. */
 @media (pointer: coarse) {
+  .combo-input { min-height: 46px; }
+  .combo-toggle { width: 2.75rem; min-height: 44px; }
   .combo-list [role="option"] { padding-block: 0.7rem; }
 }
 
