@@ -101,6 +101,7 @@ from buildlib import cssmin
 from buildlib import i18n
 from buildlib import icons as iconlib
 from buildlib import imports
+from buildlib import landing
 from buildlib import markdown as mdlib
 from buildlib import minify
 from buildlib import screens
@@ -766,12 +767,22 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     for tool in ltools:
         if only and tool['slug'] not in only:
             continue
+        # The pages its rules have to themselves, where it has any: worked out
+        # once, because the tool's own page lists them and then each is written.
+        rules = landing_pages(tool, locale)
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
                    links, lang_v, feedback_v, handoff_v, keep_v, md_v,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
-                   [by_slug[s] for s in tool.get('handoff', [])], emit)
+                   [by_slug[s] for s in tool.get('handoff', [])], emit,
+                   landings=rules)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
+        # Written here and not further down, so that --only writes them with
+        # the tool they belong to - they are the tool's, and the only pages
+        # they link to are the tool and each other.
+        written += build_landings(
+            dest_root, templates, locale, locales, site, tool, rules, footer,
+            links, css_v, lang_v, md_v, emit)
 
     # Everything below is the language's own pages rather than its tools, and
     # --only asked for a tool. The guides alone outnumber the tools, so this is
@@ -858,7 +869,7 @@ def locale_links(locale, site, pages):
     }
 
 
-def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
+def frame(locale, locales, site, slug, base, links, lang_v, extra=None, tail=''):
     """The context every page shares: which language it is in, what the words of
     the frame around it are, and where its own address is in every other
     language.
@@ -878,16 +889,16 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
         },
         'base': base,
         'links': links,
-        'canonical': i18n.locale_url(locale, slug, site),
+        'canonical': i18n.locale_url(locale, slug, site, tail),
         # A page in a language the site does not offer belongs to no cluster,
         # so it claims no alternates either. The set below is reciprocal by
         # construction - each page in it names the same set back - and this
         # page is not in it, so pointing at them from here would be exactly the
         # annotation Google discards: an alternate that is not named back. The
         # canonical above still stands and still points at this page.
-        'alternates': (i18n.alternates(locales, slug, site)
+        'alternates': (i18n.alternates(locales, slug, site, tail)
                        if i18n.offered(locale) else []),
-        'languages': i18n.switcher(locales, locale, slug, site),
+        'languages': i18n.switcher(locales, locale, slug, site, tail),
         # Root-absolute, and the same URL on every page in every language, so
         # that crossing from one language to another is not also a second copy
         # of this file to fetch. shared/lang.js says what it does.
@@ -1162,7 +1173,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
                lang_v, feedback_v, handoff_v, keep_v, md_v, guide, related,
-               handoff, emit):
+               handoff, emit, landings=()):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -1325,6 +1336,11 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             # through the picker. See shared/handoff.js.
             'handoff': handoff,
             'handoff_href': f'/handoff.js?v={handoff_v}',
+            # The pages this tool's rules have to themselves, grouped by
+            # country, for the list at the foot of the page. Empty for every
+            # tool but one, and the template writes nothing for empty.
+            'landings': landing.index(landings),
+            'landing_strings': tool.get('landing', {}),
             # The work already on the page when somebody changes the language.
             # Every tool page, in every language, because either side of a
             # switch can be the one doing the carrying. See shared/lang-keep.js.
@@ -1405,6 +1421,108 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
                 'browser would refuse to install the tool; draw it with '
                 f'.\\og-image.ps1 -Icons -Only {tool["slug"]}')
         shutil.copy2(source, dest / icon['src'])
+
+
+def landing_pages(tool, locale):
+    """One tool's landing pages in one language, or none. See buildlib/landing.py.
+
+    The words come from the #phrases of the body this language serves - its own
+    where it has one, English where it does not - which is the table the tool
+    itself reads at run time, so the page and the tool cannot say different
+    things about the same rule.
+    """
+    if not landing.wanted(tool):
+        return []
+    body = i18n.body_for(locale, 'tools', tool['slug'],
+                         (tool['dir'] / 'body.html').read_text(encoding='utf-8'))
+    return landing.pages(tool, landing.load(tool), landing.phrases(body))
+
+
+def build_landings(out, templates, locale, locales, site, tool, rules, footer,
+                   links, css_v, lang_v, md_v, emit):
+    """The page each of a tool's rules has to itself: /id-photo/us-passport/.
+
+    A prose page in every respect but where its body comes from. It wears
+    templates/page.html, the site policy and no service worker of its own,
+    gets a Markdown twin, and sits in the sitemap - and its body is rendered
+    from the rule rather than read from a file, because forty-nine files a
+    language would be forty-nine chances to disagree with the rulebook.
+
+    It lives in the tool's folder, one step down, so the way back to the tool
+    is `../` in every language and the rule's id never needs translating. That
+    folder is inside the tool's service worker's scope; the worker answers from
+    its cache or falls through to the network, and these are not in its cache,
+    so it lets them by.
+
+    Whether one is published in a language is the tool's answer: `frame` is
+    asked about the tool's slug with the rule's id as a tail, so the hreflang
+    set, the switcher and the sitemap all follow the tool's translation.
+    """
+    root = locale['site']
+    up = '../../'
+    strings = tool.get('landing', {})
+    written = []
+    for rule in rules:
+        tail = f'{rule["id"]}/'
+        dest = out / tool['out_slug'] / rule['id']
+        dest.mkdir(parents=True, exist_ok=True)
+
+        text = rule['text']
+        page = {
+            'slug': f'{tool["slug"]}/{rule["id"]}',
+            'out_slug': f'{tool["out_slug"]}/{rule["id"]}',
+            'url': i18n.locale_url(locale, tool['slug'], site, tail),
+            'kind': 'landing',
+            'nav': text['nav'],
+            'title': text['title'],
+            'description': text['description'],
+            'heading': text['heading'],
+            'lede': f'    {text["lede"]}',
+            'updated': text['updated'],
+            'lastmod': rule['checked'],
+            'og_title': text['heading'],
+            'og_description': text['description'],
+            'og_image_alt': root['hub']['og_image_alt'],
+        }
+
+        body = templates.render('landing-body.html', {
+            'rule': rule,
+            'strings': strings,
+            'siblings_heading': text['siblings_heading'],
+            'make_href': f'../#{rule["id"]}',
+        }).rstrip('\n')
+
+        context = frame(locale, locales, site, tool['slug'], up, links, lang_v, {
+            'page': page,
+            # No {% if tool %} call to action from the frame: the button in the
+            # body is that, and it has to land on this rule rather than on the
+            # tool's front door.
+            'tool': {},
+            'crumbs': [
+                {'name': root['ui']['all_tools'], 'href': up},
+                {'name': tool['name'], 'href': '../'},
+            ],
+            'main_class': 'prose',
+            'footer': footer,
+            'css_href': f'{up}site.css?v={css_v}',
+            'jsonld': sitelib.landing_jsonld(root, tool, page),
+            'csp': sitelib.render_csp(root['csp']),
+            'body': body,
+        }, tail=tail)
+        context['ui'] = i18n.render_ui(
+            templates, root['ui'], context, f'ui [{locale["lang"]}]')
+
+        context['markdown'] = write(dest / 'index.md', mdlib.prose_page(
+            templates, root, page, {}, context['ui'], body))
+        context['md_href'] = f'/page-md.js?v={md_v}'
+
+        emit.html(dest / 'index.html', templates.render('page.html', context))
+        emit.js(dest / 'analytics.js', templates.render('analytics.js', {
+            'site': root,
+            'words': {'plural': 'files', 'analytics_extra': ''},
+        }), where=f'{locale["prefix"]}{page["out_slug"]}/analytics.js')
+        written.append(f'{locale["prefix"]}{page["out_slug"]}/index.html')
+    return written
 
 
 def vendor_files(tool, dest):

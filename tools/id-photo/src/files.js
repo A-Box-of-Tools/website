@@ -7,7 +7,10 @@
  * plain functions on plain values, so the tests can check them.
  */
 
-import { portalPixels, trim } from './specs.js';
+import {
+  backgroundOf, pixelLabel, portalBytes, portalPixels, printLabel, trim,
+} from './specs.js';
+import { sizeText } from './encode.js';
 import { ltr } from './shared/phrases.js';
 
 /**
@@ -86,6 +89,73 @@ export function bandText(band, heightMm, t) {
     });
   }
   return fractions;
+}
+
+/**
+ * One rule's figures, as the rows of a table: [term, value] pairs, in the order
+ * they are read.
+ *
+ * Here rather than in main.js because two things draw this table and they must
+ * not be able to disagree. The panel under the chooser is one. The other is the
+ * page each rule has to itself - /id-photo/us-passport/ - which the build
+ * writes from landing/pages.json, and landing/emit.mjs fills that file by
+ * calling this with a `t` that hands back the key and the values instead of a
+ * sentence. So nothing here may look inside what `t` returns: a row is put
+ * together out of whole answers and never out of pieces of one.
+ *
+ * A signature has no head and no eye line, and showing it "0% to 100%" for both
+ * would be the panel filling a row rather than stating a rule.
+ */
+export function specFacts(spec, t) {
+  const heightMm = spec.print?.heightMm ?? null;
+  // A band, with the note that nobody published it as a requirement.
+  const guidance = (text, advisory) => (advisory ? t('band.guidance', { band: text }) : text);
+
+  const rows = [[t('facts.print'), printLabel(spec, t)]];
+  if (spec.kind !== 'signature') {
+    rows.push(
+      [t('facts.head'), guidance(bandText(spec.head, heightMm, t), spec.head.advisory)],
+      [t('facts.eye'), guidance(bandText(spec.eye, heightMm, t), spec.eye.advisory)],
+    );
+  }
+  rows.push([t('facts.background'), backgroundOf(spec, t).label]);
+
+  if (!spec.digital) {
+    rows.push([t('facts.upload'), t('facts.upload.print')]);
+    return rows;
+  }
+
+  // Not every rule states both ends, and one that states neither must not be
+  // reported as "up to Infinity".
+  const bytes = portalBytes(spec);
+  const size = Number.isFinite(bytes.max)
+    ? (bytes.min
+      ? t('bytes.band', { min: sizeText(bytes.min, t), max: sizeText(bytes.max, t) })
+      : t('bytes.upto', { max: sizeText(bytes.max, t) }))
+    : (bytes.min ? t('bytes.from', { min: sizeText(bytes.min, t) }) : t('bytes.none'));
+  rows.push([t(spec.digital.label),
+    t('facts.upload.value', { pixels: pixelLabel(spec, t), size })]);
+  return rows;
+}
+
+/**
+ * Where a rule's figures came from, as the line printed under them.
+ *
+ * A published authority and document keep the wording they were published in: a
+ * citation is what a reader searches for to check the transcription, and one
+ * translated is one that no longer finds anything. The two entries that cite
+ * nothing are keys instead - see specs.js - and `t` hands a real citation back
+ * unchanged because it has no entry for it.
+ */
+const SOURCE_KEYS = { figures: 'source.line', words: 'source.line.words', own: 'source.own' };
+
+export function sourceLine(spec, t) {
+  if (!spec.source.checked) return t(SOURCE_KEYS.own);
+  return t(spec.published === 'words' ? SOURCE_KEYS.words : SOURCE_KEYS.figures, {
+    authority: t(spec.source.authority),
+    document: t(spec.source.document),
+    checked: spec.source.checked,
+  });
 }
 
 /**

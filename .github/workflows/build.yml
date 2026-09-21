@@ -129,14 +129,19 @@ jobs:
       # not the same as no test mentioning it. Nearly every path on this list
       # appears in tests/python/test_version.py, as a string in the fixture
       # asserting the version rule cannot see it; naming a path is not reading
-      # one. Three that look like they belong here do not, and each was checked
+      # one. Four that look like they belong here do not, and each was checked
       # rather than assumed:
       #
       #   workers/    tests/js/rendezvous.test.js imports worker.js outright
       #   serve.ps1   tests/python/test_serve.py reads its MIME table
+      #   cloudflare/redirects.py and redirects.json
+      #               tests/python/test_cloudflare.py runs the first and holds
+      #               the second to what it would write today. The rest of
+      #               that folder is still exempt, so the two are named ahead
+      #               of the pattern that would otherwise excuse them
       #   tests/      the suites are the thing being changed
       #
-      # `.github/` is OFF the list, and for a different reason from the three
+      # `.github/` is OFF the list, and for a different reason from the four
       # above - it would qualify under the rule, because no test opens a
       # workflow. A workflow exempt from the run it defines never gets one:
       # the first thing to exercise a step edited here would be the deploy
@@ -170,6 +175,7 @@ jobs:
               code=false
               while IFS= read -r path; do
                 case "$path" in
+                  cloudflare/redirects.py|cloudflare/redirects.json) ;;
                   README.md|CLAUDE.md|ROADMAP.md) continue ;;
                   LICENSE|LICENSE-CONTENT|LICENSE-BRAND) continue ;;
                   docs/*|.claude/*|media/*|cloudflare/*) continue ;;

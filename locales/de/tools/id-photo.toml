@@ -370,3 +370,32 @@ features = [
 [picker]
 title = "Foto hierher ziehen"
 hint = "oder klicken und auswählen &mdash; ein Foto, JPEG, PNG, WebP oder alles andere, was Ihr Browser öffnen kann"
+
+# Eine Seite je Vorschrift: /de/biometrisches-passbild/us-passport/. Hier steht nur
+# der Rahmen; Maße, Hinweise und Quelle kommen aus den #phrases des Bodys, aus
+# denen auch das Werkzeug selbst liest. Siehe tools/id-photo/tool.toml.
+[landing]
+title = "Fotogröße und Anforderungen: {document}, {country}"
+heading = "Fotoanforderungen: {document}, {country}"
+nav = "{document}, {country}"
+description = "{size}, Hintergrund {background}: die Vorgaben laut {authority}, gelesen am {checked} &mdash; und ein kostenloses Werkzeug, das ein Foto im Browser danach zuschneidet. Nichts wird hochgeladen."
+lede = "Die veröffentlichte Vorschrift für das Foto zu diesem Dokument (Quelle: {authority}, Stand {checked}) &mdash; und ein Weg, eines zu erstellen, das ihr entspricht, ohne Ihr Gesicht irgendwohin zu schicken."
+updated = "{checked}"
+facts_heading = "Die Vorgaben"
+facts_term = "Was gemessen wird"
+facts_value = "Was diese Vorschrift veröffentlicht"
+make = "Dieses Foto erstellen"
+make_note = "Öffnet den Passbild-Ersteller mit dieser Vorschrift bereits ausgewählt. Er läuft in Ihrem Browser: Das Foto wird nie hochgeladen, es gibt kein Konto und kein Wasserzeichen."
+notes_heading = "Was die Vorschrift sonst noch sagt"
+source_heading = "Woher diese Angaben stammen"
+how_heading = "Was das Werkzeug damit macht"
+how = [
+  "Sperrt den Zuschnitt auf das Format dieses Dokuments und zeichnet die Bereiche für Kopfhöhe und Augenlinie hinein &mdash; so sehen Sie die Vorschrift auf Ihrem eigenen Foto, statt nur von ihr zu lesen.",
+  "Findet Scheitel, Kinn und beide Pupillen, indem es das Bild vermisst &mdash; es wird kein Gesichtsmodell heruntergeladen &mdash; und sagt in Millimetern, ob der Kopf für diese Vorschrift zu groß oder zu klein ist.",
+  "Liest die Hintergrundfarbe und wie gleichmäßig sie ausgeleuchtet ist, und sagt, welches von beiden das Problem ist, wenn es eines gibt.",
+  "Schreibt den Abzug in exakten Millimetern mit der Auflösung in der Datei, einen Bogen davon mit Schnittmarken und die Upload-Datei in der Pixel- und Dateigröße, die diese Vorschrift nennt.",
+]
+siblings_heading = "Weitere Dokumente, {country}"
+all_link = "Alle Länder und Dokumente im Passbild-Ersteller"
+index_heading = "Fotovorschriften nach Land"
+index_lede = "Jede Vorschrift mit veröffentlichten Maßen hat eine eigene Seite, die sie nennt &mdash; mit der Behörde, die sie veröffentlicht hat, und dem Datum, an dem sie gelesen wurden."

@@ -258,6 +258,43 @@ def page_jsonld(site, page):
     return dumps_ld(graph)
 
 
+def landing_jsonld(site, tool, page):
+    """Structured data for one of a tool's landing pages.
+
+    A WebPage that is part of this site and is about the tool, and the trail a
+    visitor can see at the top of it: the hub, the tool, this page. Not an
+    Article - nobody wrote it, it is a rule read out - and not a second
+    SoftwareApplication, because the application is one page up and claiming
+    forty-nine of them would be describing a page as something it is not.
+    """
+    graph = [
+        {
+            '@type': 'WebPage',
+            '@id': page['url'],
+            'url': page['url'],
+            'name': to_text(page['heading']),
+            'description': to_text(page['description']),
+            'inLanguage': site['lang'],
+            'dateModified': page['lastmod'],
+            'isPartOf': {'@id': site['home'] + '#website'},
+            'about': {'@type': 'SoftwareApplication', 'name': to_text(tool['name']),
+                      'url': tool['url']},
+        },
+        {
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {'@type': 'ListItem', 'position': 1,
+                 'name': site['name'], 'item': site['home']},
+                {'@type': 'ListItem', 'position': 2,
+                 'name': to_text(tool['name']), 'item': tool['url']},
+                {'@type': 'ListItem', 'position': 3,
+                 'name': to_text(page['nav']), 'item': page['url']},
+            ],
+        },
+    ]
+    return dumps_ld(graph)
+
+
 def guides_jsonld(site, guides):
     """CollectionPage + ItemList for the guides index.
 

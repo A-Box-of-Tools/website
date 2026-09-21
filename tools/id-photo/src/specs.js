@@ -1363,6 +1363,28 @@ export function orderedCountries(t, compare) {
       || compare(a.label, b.label));
 }
 
+/**
+ * The rule an address asks for: "#us-passport" is the United States passport.
+ *
+ * Every rule with figures of its own has a page of its own, and the button on
+ * that page has to open this one with the rule already chosen - somebody who
+ * has just read Canada's numbers should not be handed the ICAO standard and a
+ * list of forty-four countries to find Canada in again. A fragment rather than
+ * a query, because a fragment is never sent to a server and so cannot turn one
+ * page into sixty-seven addresses for a crawler to find.
+ *
+ * Anything else comes back null - "#main" is where the skip link lands - and
+ * so does `custom`, which is a form to fill in rather than a rule to arrive at.
+ *
+ * @param {string} hash  location.hash, with or without its "#"
+ * @returns {string|null}
+ */
+export function specFromHash(hash) {
+  const id = String(hash ?? '').replace(/^#/, '');
+  if (!id || id === 'custom') return null;
+  return SPECS.some((spec) => spec.id === id) ? id : null;
+}
+
 /** One country's documents, in the order the table lists them. */
 export const specsOf = (country) => SPECS.filter((spec) => spec.country === country);
 
