@@ -302,6 +302,22 @@ const RULES = [
   },
 
   {
+    id: 'uk-ni-driving-licence',
+    country: 'country.uk',
+    document: 'spec.uk-ni-driving-licence.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // No head size is published, only a shaded band for the eyes in a diagram.
+    // The passport's band is what a booth will have used, so it is shown, and
+    // marked as guidance.
+    head: mmBand(29, 34, 45, true),
+    eye: band(0.50, 0.62, true),
+    background: 'cream',
+    digital: null,
+    notes: ['spec.uk-ni-driving-licence.note1', 'note.head-loose'],
+  },
+
+  {
     id: 'schengen',
     country: 'country.schengen',
     document: 'spec.schengen.doc',
@@ -325,6 +341,19 @@ const RULES = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.de-passport.note1', 'spec.de-passport.note2'],
+  },
+
+  {
+    id: 'de-health-card',
+    country: 'country.de',
+    document: 'doc.health-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.de-health-card.note1', 'note.head-advisory'],
   },
 
   {
@@ -357,6 +386,35 @@ const RULES = [
   },
 
   {
+    id: 'it-id-card',
+    country: 'country.it',
+    document: 'doc.id-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80),
+    eye: mmBand(23, 31, 45),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.it-id-card.note1'],
+  },
+
+  {
+    id: 'it-driving-licence',
+    country: 'country.it',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // The circular gives the head twice and the two do not agree: 60 to 90 per
+    // cent in its text, 28 to 32 mm under its figure. The millimetres are the
+    // narrower claim and sit inside the percentages, so they are what is held.
+    head: mmBand(28, 32, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.it-driving-licence.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'nl-passport',
     country: 'country.nl',
     document: 'doc.passport-id-licence',
@@ -385,6 +443,19 @@ const RULES = [
   },
 
   {
+    id: 'es-driving-licence',
+    country: 'country.es',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 26, heightMm: 32, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.es-driving-licence.note1', 'note.head-advisory'],
+  },
+
+  {
     id: 'ie-passport',
     country: 'country.ie',
     document: 'doc.passport',
@@ -410,8 +481,33 @@ const RULES = [
     eye: mmBand(20, 30, 45),
     background: 'white-or-grey',
     crown: 'skull',
-    digital: null,
-    notes: ['note.crown-skull', 'spec.pl-passport.note1'],
+    digital: {
+      label: 'upload.online',
+      width: { min: 492 },
+      height: { min: 633 },
+      bytes: { max: 2.5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['note.crown-skull', 'spec.pl-passport.note1', 'spec.pl-passport.note2'],
+  },
+
+  {
+    id: 'pl-driving-licence',
+    country: 'country.pl',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80),
+    eye: band(0.50, 0.60, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 480 },
+      height: { exact: 615 },
+      bytes: { max: 100 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.pl-driving-licence.note1', 'note.eye-advisory'],
   },
 
   {
@@ -429,6 +525,20 @@ const RULES = [
   },
 
   {
+    id: 'ch-driving-licence',
+    country: 'country.ch',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(29, 34, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'light-unstated',
+    crown: 'skull',
+    digital: null,
+    notes: ['spec.ch-driving-licence.note1', 'note.crown-skull', 'note.eye-advisory'],
+  },
+
+  {
     id: 'se-passport',
     country: 'country.se',
     document: 'doc.passport-id',
@@ -440,6 +550,35 @@ const RULES = [
     published: 'words',
     digital: null,
     notes: ['spec.se-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'se-driving-licence',
+    country: 'country.se',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // Sweden measures pupil to chin, 14 to 17 mm, which is neither of the two
+    // things this tool measures. On most faces that is a head of 31 to 37 mm,
+    // so the ICAO band shown lands inside it; it stays guidance.
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.se-driving-licence.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'dk-driving-licence',
+    country: 'country.dk',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(30, 36, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.dk-driving-licence.note1', 'note.eye-advisory'],
   },
 
   {

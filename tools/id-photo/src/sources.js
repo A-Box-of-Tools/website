@@ -46,6 +46,7 @@ export const ENDONYMS = {
   'country.no': 'Norge',
   'country.pt': 'Portugal',
   'country.ru': 'Россия',
+  'country.dk': 'Danmark',
   'country.de': 'Deutschland',
   'country.ca': 'Canada',
   'country.au': 'Australia',
@@ -110,6 +111,11 @@ export const SOURCES = {
     document: 'gov.uk, Passport photo requirements',
     checked: '2026-08-20',
   },
+  'uk-ni-driving-licence': {
+    authority: 'nidirect, for the Driver & Vehicle Agency',
+    document: 'The photo for your driving licence',
+    checked: '2026-09-21',
+  },
   schengen: {
     authority: 'European Commission',
     document: 'Visa Code, common photograph standards (ICAO-aligned)',
@@ -125,6 +131,12 @@ export const SOURCES = {
     document: 'Passbildschablone / biometric photo template',
     checked: '2026-08-20',
   },
+  'de-health-card': {
+    native: 'Gesundheitskarte',
+    authority: 'Techniker Krankenkasse',
+    document: 'Wie muss das Bild für die Versichertenkarte aussehen?',
+    checked: '2026-09-21',
+  },
   'fr-passport': {
     native: 'Passeport, carte nationale d’identité',
     authority: 'Service-Public.fr / Ministère chargé de l’intérieur',
@@ -136,6 +148,18 @@ export const SOURCES = {
     authority: 'Polizia di Stato',
     document: 'Le fotografie per il passaporto, conformi allo standard ICAO',
     checked: '2026-09-17',
+  },
+  'it-id-card': {
+    native: 'Carta d’identità elettronica',
+    authority: 'Ministero dell’Interno',
+    document: 'Carta d’identità elettronica, Modalità di acquisizione delle foto',
+    checked: '2026-09-21',
+  },
+  'it-driving-licence': {
+    native: 'Patente di guida',
+    authority: 'Ministero delle Infrastrutture e dei Trasporti, Motorizzazione',
+    document: 'Fotografie da apporre sulla patente di guida, protocollo 23176/8.3 del 20 ottobre 2016',
+    checked: '2026-09-21',
   },
   'nl-passport': {
     native: 'Paspoort, identiteitskaart, rijbewijs',
@@ -149,6 +173,12 @@ export const SOURCES = {
     document: 'Pasaporte, procedimiento de expedición',
     checked: '2026-09-17',
   },
+  'es-driving-licence': {
+    native: 'Permiso de conducir',
+    authority: 'Dirección General de Tráfico',
+    document: 'sede.dgt.gob.es, Renovación de permiso próximo a caducar',
+    checked: '2026-09-21',
+  },
   'ie-passport': {
     native: 'Pas',
     authority: 'Department of Foreign Affairs',
@@ -161,16 +191,40 @@ export const SOURCES = {
     document: 'Nowe zdjęcia do paszportu, instrukcja wykonywania zdjęć',
     checked: '2026-09-17',
   },
+  'pl-driving-licence': {
+    native: 'Prawo jazdy',
+    authority: 'Ministerstwo Infrastruktury',
+    document: 'gov.pl, Zdjęcie do prawa jazdy',
+    checked: '2026-09-21',
+  },
   'ch-passport': {
     authority: 'fedpol',
     document: 'Kriterien für die Annahme von Fotos für Pässe und Identitätskarten',
     checked: '2026-09-17',
+  },
+  'ch-driving-licence': {
+    native: 'Führerausweis',
+    authority: 'asa, Vereinigung der Strassenverkehrsämter',
+    document: 'Qualitätskriterien für das Foto im neuen Führerausweis',
+    checked: '2026-09-21',
   },
   'se-passport': {
     native: 'Pass, nationellt id-kort',
     authority: 'Polismyndigheten',
     document: 'polisen.se, Svar på vanliga frågor om pass',
     checked: '2026-09-17',
+  },
+  'se-driving-licence': {
+    native: 'Körkort',
+    authority: 'Transportstyrelsen',
+    document: 'Fotot på körkortet',
+    checked: '2026-09-21',
+  },
+  'dk-driving-licence': {
+    native: 'Kørekort',
+    authority: 'Færdselsstyrelsen',
+    document: 'Foto til kørekort',
+    checked: '2026-09-21',
   },
   'no-passport': {
     native: 'Pass, nasjonalt ID-kort',
