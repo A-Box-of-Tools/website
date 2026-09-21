@@ -2725,6 +2725,115 @@
       "checked": "2026-09-19"
     },
     {
+      "id": "ru-internal-passport",
+      "country": "country.ru",
+      "endonym": "Россия",
+      "document": "spec.ru-internal-passport.doc",
+      "native": "Паспорт гражданина Российской Федерации",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "35",
+          "height": "45"
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "60.0%",
+                  "max": "80.0%"
+                }
+              },
+              "min": "27",
+              "max": "36"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.ru-internal-passport.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Министерство внутренних дел Российской Федерации"
+          },
+          "document": {
+            "key": "Приказ МВД России от 16.11.2020 N 773, пункт 36"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Министерство внутренних дел Российской Федерации",
+      "checked": "2026-09-21"
+    },
+    {
       "id": "ca-passport",
       "country": "country.ca",
       "endonym": "Canada",
@@ -3226,6 +3335,153 @@
       },
       "authority": "Immigration, Refugees and Citizenship Canada",
       "checked": "2026-09-19"
+    },
+    {
+      "id": "ca-firearms-licence",
+      "country": "country.ca",
+      "endonym": "Canada",
+      "document": "spec.ca-firearms-licence.doc",
+      "native": null,
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "45",
+              "height": "57"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 531,
+              "height": 673
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.white-or-light.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "45",
+              "height": "57",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "52.6%",
+                  "max": "78.9%"
+                }
+              },
+              "min": "30",
+              "max": "45"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "68.0%"
+                    }
+                  },
+                  "min": "28.5",
+                  "max": "38.8"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white-or-light.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.least",
+                "values": {
+                  "width": 531,
+                  "height": 673
+                }
+              },
+              "size": {
+                "key": "bytes.band",
+                "values": {
+                  "min": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "200.0"
+                    }
+                  },
+                  "max": {
+                    "key": "size.mb",
+                    "values": {
+                      "n": "6.00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.ca-firearms-licence.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Royal Canadian Mounted Police"
+          },
+          "document": {
+            "key": "Photo requirements for a firearms licence"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Royal Canadian Mounted Police",
+      "checked": "2026-09-21"
     },
     {
       "id": "au-passport",
@@ -4016,6 +4272,158 @@
       "checked": "2026-09-19"
     },
     {
+      "id": "in-driving-licence",
+      "country": "country.in",
+      "endonym": "भारत",
+      "document": "doc.driving-licence",
+      "native": null,
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "35",
+              "height": "45"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 420,
+              "height": 525
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.white-or-light.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "70.0%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "31.5",
+                  "max": "36"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white-or-light.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.least",
+                "values": {
+                  "width": 420,
+                  "height": 525
+                }
+              },
+              "size": {
+                "key": "bytes.band",
+                "values": {
+                  "min": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "10.0"
+                    }
+                  },
+                  "max": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "20.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.in-driving-licence.note1",
+        "note.head-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Ministry of Road Transport & Highways, Sarathi Parivahan"
+          },
+          "document": {
+            "key": "Photo and Signature Scan & Upload Process"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Ministry of Road Transport & Highways, Sarathi Parivahan",
+      "checked": "2026-09-21"
+    },
+    {
       "id": "in-exam-photo",
       "country": "country.in",
       "endonym": "भारत",
@@ -4285,6 +4693,229 @@
       "checked": "2026-08-20"
     },
     {
+      "id": "cn-id-card",
+      "country": "country.cn",
+      "endonym": "中国",
+      "document": "doc.id-card",
+      "native": "居民身份证",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "26",
+          "height": "32"
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "26",
+              "height": "32",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "60.0%",
+                      "max": "72.0%"
+                    }
+                  },
+                  "min": "19.2",
+                  "max": "23"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "62.0%"
+                    }
+                  },
+                  "min": "16",
+                  "max": "19.8"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.cn-id-card.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "北京市公安局"
+          },
+          "document": {
+            "key": "居民身份证照片标准，引《居民身份证制证用数字相片技术要求》GA461—2004"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "北京市公安局",
+      "checked": "2026-09-21"
+    },
+    {
+      "id": "cn-driving-licence",
+      "country": "country.cn",
+      "endonym": "中国",
+      "document": "doc.driving-licence",
+      "native": "机动车驾驶证",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "22",
+          "height": "32"
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "22",
+              "height": "32",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "59.4%",
+                  "max": "68.8%"
+                }
+              },
+              "min": "19",
+              "max": "22"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "62.0%"
+                    }
+                  },
+                  "min": "16",
+                  "max": "19.8"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.cn-driving-licence.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "北京市公安局公安交通管理局"
+          },
+          "document": {
+            "key": "驾驶人相片要求"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "北京市公安局公安交通管理局",
+      "checked": "2026-09-21"
+    },
+    {
       "id": "jp-passport",
       "country": "country.jp",
       "endonym": "日本",
@@ -4392,6 +5023,381 @@
       },
       "authority": "Ministry of Foreign Affairs of Japan",
       "checked": "2026-08-20"
+    },
+    {
+      "id": "jp-mynumber",
+      "country": "country.jp",
+      "endonym": "日本",
+      "document": "spec.jp-mynumber.doc",
+      "native": "マイナンバーカード",
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "35",
+              "height": "45"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 480,
+              "height": 617
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.light-unstated.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "71.1%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "32",
+                  "max": "36"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.light-unstated.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.least",
+                "values": {
+                  "width": 480,
+                  "height": 617
+                }
+              },
+              "size": {
+                "key": "bytes.band",
+                "values": {
+                  "min": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "20.0"
+                    }
+                  },
+                  "max": {
+                    "key": "size.mb",
+                    "values": {
+                      "n": "7.00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.jp-mynumber.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "地方公共団体情報システム機構"
+          },
+          "document": {
+            "key": "マイナンバーカード総合サイト、顔写真のチェックポイント"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "地方公共団体情報システム機構",
+      "checked": "2026-09-21"
+    },
+    {
+      "id": "jp-residence-card",
+      "country": "country.jp",
+      "endonym": "日本",
+      "document": "doc.residence-card",
+      "native": "在留カード",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "30",
+          "height": "40"
+        }
+      },
+      "background": {
+        "key": "bg.light-unstated.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "30",
+              "height": "40",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "55.0%",
+                  "max": "70.0%"
+                }
+              },
+              "min": "22",
+              "max": "28"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "45.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "18",
+                  "max": "24"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.light-unstated.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.jp-residence-card.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "出入国在留管理庁"
+          },
+          "document": {
+            "key": "提出写真の規格"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "出入国在留管理庁",
+      "checked": "2026-09-21"
+    },
+    {
+      "id": "jp-driving-licence",
+      "country": "country.jp",
+      "endonym": "日本",
+      "document": "doc.driving-licence",
+      "native": "運転免許証",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "24",
+          "height": "30"
+        }
+      },
+      "background": {
+        "key": "bg.light-unstated.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "24",
+              "height": "30",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "55.0%",
+                      "max": "75.0%"
+                    }
+                  },
+                  "min": "16.5",
+                  "max": "22.5"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "65.0%"
+                    }
+                  },
+                  "min": "15",
+                  "max": "19.5"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.light-unstated.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.jp-driving-licence.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "警視庁"
+          },
+          "document": {
+            "key": "申請用写真及び持参写真のご案内"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "警視庁",
+      "checked": "2026-09-21"
     },
     {
       "id": "kr-passport",
@@ -4526,6 +5532,261 @@
       },
       "authority": "외교부 (Ministry of Foreign Affairs)",
       "checked": "2026-09-17"
+    },
+    {
+      "id": "kr-driving-licence",
+      "country": "country.kr",
+      "endonym": "대한민국",
+      "document": "doc.driving-licence",
+      "native": "운전면허증",
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "35",
+              "height": "45"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 413,
+              "height": 531
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "71.1%",
+                  "max": "80.0%"
+                }
+              },
+              "min": "32",
+              "max": "36"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.exact",
+                "values": {
+                  "width": 413,
+                  "height": 531
+                }
+              },
+              "size": {
+                "key": "bytes.upto",
+                "values": {
+                  "max": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "500.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.kr-driving-licence.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "한국도로교통공단"
+          },
+          "document": {
+            "key": "안전운전 통합민원, 허용되는 사진 규격"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "한국도로교통공단",
+      "checked": "2026-09-21"
+    },
+    {
+      "id": "kr-id-card",
+      "country": "country.kr",
+      "endonym": "대한민국",
+      "document": "doc.id-card",
+      "native": "주민등록증",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "35",
+          "height": "45"
+        }
+      },
+      "background": {
+        "key": "bg.white-or-light.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "70.0%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "31.5",
+                  "max": "36"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white-or-light.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.kr-id-card.note1",
+        "note.head-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "행정안전부"
+          },
+          "document": {
+            "key": "주민등록증, 사진"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "행정안전부",
+      "checked": "2026-09-21"
     },
     {
       "id": "sg-passport",
@@ -5039,6 +6300,147 @@
       "checked": "2026-09-19"
     },
     {
+      "id": "tw-id-card",
+      "country": "country.tw",
+      "endonym": "臺灣",
+      "document": "doc.id-card",
+      "native": "國民身分證",
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "35",
+              "height": "45"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 413,
+              "height": 531
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.mm",
+            "values": {
+              "range": {
+                "key": "band.range",
+                "values": {
+                  "min": "71.1%",
+                  "max": "80.0%"
+                }
+              },
+              "min": "32",
+              "max": "36"
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.least",
+                "values": {
+                  "width": 413,
+                  "height": 531
+                }
+              },
+              "size": {
+                "key": "bytes.upto",
+                "values": {
+                  "max": {
+                    "key": "size.mb",
+                    "values": {
+                      "n": "5.00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.tw-id-card.note1",
+        "note.eye-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "內政部戶政司"
+          },
+          "document": {
+            "key": "國民身分證相片規格"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "內政部戶政司",
+      "checked": "2026-09-21"
+    },
+    {
       "id": "vn-passport",
       "country": "country.vn",
       "endonym": "Việt Nam",
@@ -5151,6 +6553,152 @@
       },
       "authority": "Cục Quản lý xuất nhập cảnh, Bộ Công an",
       "checked": "2026-09-19"
+    },
+    {
+      "id": "vn-driving-licence",
+      "country": "country.vn",
+      "endonym": "Việt Nam",
+      "document": "doc.driving-licence",
+      "native": "Giấy phép lái xe",
+      "size": {
+        "key": "doc.size.both",
+        "values": {
+          "print": {
+            "key": "doc.size.mm",
+            "values": {
+              "width": "30",
+              "height": "40"
+            }
+          },
+          "upload": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 473,
+              "height": 630
+            }
+          }
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "30",
+              "height": "40",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "65.0%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "26",
+                  "max": "32"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "62.0%"
+                    }
+                  },
+                  "min": "20",
+                  "max": "24.8"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.least",
+                "values": {
+                  "width": 473,
+                  "height": 630
+                }
+              },
+              "size": {
+                "key": "bytes.upto",
+                "values": {
+                  "max": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "700.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.vn-driving-licence.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Cục Cảnh sát giao thông, Bộ Công an"
+          },
+          "document": {
+            "key": "Cổng dịch vụ công cấp đổi, cấp lại giấy phép lái xe"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Cục Cảnh sát giao thông, Bộ Công an",
+      "checked": "2026-09-21"
     },
     {
       "id": "pk-passport",
@@ -5408,6 +6956,121 @@
       "checked": "2026-09-19"
     },
     {
+      "id": "id-driving-licence",
+      "country": "country.id",
+      "endonym": "Indonesia",
+      "document": "doc.driving-licence",
+      "native": "Surat Izin Mengemudi",
+      "size": {
+        "key": "doc.size.px",
+        "values": {
+          "width": 480,
+          "height": 640
+        }
+      },
+      "background": {
+        "key": "bg.blue.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.none"
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.range",
+                "values": {
+                  "min": "55.0%",
+                  "max": "75.0%"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.range",
+                "values": {
+                  "min": "50.0%",
+                  "max": "65.0%"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.blue.label"
+          }
+        ],
+        [
+          {
+            "key": "upload.online"
+          },
+          {
+            "key": "facts.upload.value",
+            "values": {
+              "pixels": {
+                "key": "px.exact",
+                "values": {
+                  "width": 480,
+                  "height": 640
+                }
+              },
+              "size": {
+                "key": "bytes.upto",
+                "values": {
+                  "max": {
+                    "key": "size.kb",
+                    "values": {
+                      "n": "100.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      ],
+      "notes": [
+        "spec.id-driving-licence.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Korps Lalu Lintas Polri"
+          },
+          "document": {
+            "key": "Digital Korlantas, perpanjangan SIM"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Korps Lalu Lintas Polri",
+      "checked": "2026-09-21"
+    },
+    {
       "id": "my-passport",
       "country": "country.my",
       "endonym": "Malaysia",
@@ -5656,6 +7319,120 @@
       },
       "authority": "Jabatan Imigresen Malaysia, Expatriate Services Division",
       "checked": "2026-09-19"
+    },
+    {
+      "id": "my-driving-licence",
+      "country": "country.my",
+      "endonym": "Malaysia",
+      "document": "doc.driving-licence",
+      "native": "Lesen memandu",
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "25",
+          "height": "32"
+        }
+      },
+      "background": {
+        "key": "bg.white.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "25",
+              "height": "32",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "65.0%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "20.8",
+                  "max": "25.6"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "62.0%"
+                    }
+                  },
+                  "min": "16",
+                  "max": "19.8"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.white.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.my-driving-licence.note1",
+        "note.head-loose"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Jabatan Pengangkutan Jalan Malaysia"
+          },
+          "document": {
+            "key": "Pembaharuan Lesen Memandu Kompeten"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Jabatan Pengangkutan Jalan Malaysia",
+      "checked": "2026-09-21"
     },
     {
       "id": "th-evisa",
@@ -6451,6 +8228,120 @@
       },
       "authority": "Department of Home Affairs",
       "checked": "2026-09-19"
+    },
+    {
+      "id": "za-driving-licence",
+      "country": "country.za",
+      "endonym": "South Africa",
+      "document": "doc.driving-licence",
+      "native": null,
+      "size": {
+        "key": "doc.size.mm",
+        "values": {
+          "width": "35",
+          "height": "45"
+        }
+      },
+      "background": {
+        "key": "bg.light-unstated.inline"
+      },
+      "facts": [
+        [
+          {
+            "key": "facts.print"
+          },
+          {
+            "key": "print.size",
+            "values": {
+              "width": "35",
+              "height": "45",
+              "dpi": 300
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.head"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "70.0%",
+                      "max": "80.0%"
+                    }
+                  },
+                  "min": "31.5",
+                  "max": "36"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.eye"
+          },
+          {
+            "key": "band.guidance",
+            "values": {
+              "band": {
+                "key": "band.mm",
+                "values": {
+                  "range": {
+                    "key": "band.range",
+                    "values": {
+                      "min": "50.0%",
+                      "max": "60.0%"
+                    }
+                  },
+                  "min": "22.5",
+                  "max": "27"
+                }
+              }
+            }
+          }
+        ],
+        [
+          {
+            "key": "facts.background"
+          },
+          {
+            "key": "bg.light-unstated.label"
+          }
+        ],
+        [
+          {
+            "key": "facts.upload"
+          },
+          {
+            "key": "facts.upload.print"
+          }
+        ]
+      ],
+      "notes": [
+        "spec.za-driving-licence.note1",
+        "note.head-advisory"
+      ],
+      "source": {
+        "key": "source.line",
+        "values": {
+          "authority": {
+            "key": "Western Cape Government, Mobility"
+          },
+          "document": {
+            "key": "Driving licence"
+          },
+          "checked": "2026-09-21"
+        }
+      },
+      "authority": "Western Cape Government, Mobility",
+      "checked": "2026-09-21"
     },
     {
       "id": "ae-passport",
