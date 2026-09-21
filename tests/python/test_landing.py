@@ -153,7 +153,9 @@ class TheRealPages(unittest.TestCase):
         by_id = {page['id']: page for page in self.pages}
         others = {other['id'] for other in by_id['us-passport']['siblings']}
         self.assertEqual(others, {'us-visa', 'us-dv'})
-        self.assertEqual(by_id['pl-passport']['siblings'], [])
+        # A country with one rule has nobody to point at. The Netherlands, since
+        # its one entry already covers the passport, the card and the licence.
+        self.assertEqual(by_id['nl-passport']['siblings'], [])
 
     def test_the_index_groups_them_by_country_in_the_rulebooks_order(self):
         groups = landing.index(self.pages)
