@@ -161,6 +161,13 @@ if (-not $VerifyOnly) {
     throw "Cloudflare rejected the ruleset: $($result.errors | ConvertTo-Json -Depth 5)"
   }
   Write-Host "  Applied. Ruleset $($result.result.id), version $($result.result.version)." -ForegroundColor Green
+
+  # The API answers before the edge has the rules. Asked the same second, all
+  # twenty addresses were still the stub, and twenty seconds later all twenty
+  # answered 301 - a verify that cries wolf on every successful apply teaches
+  # whoever runs it to ignore the verify.
+  Write-Host "  Giving the edge twenty seconds to pick them up before asking."
+  Start-Sleep -Seconds 20
 }
 
 # ---- verify against the live site ----------------------------------------
