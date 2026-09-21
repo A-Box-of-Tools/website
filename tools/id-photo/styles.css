@@ -46,17 +46,104 @@
 
 /* ------------------------------------------------------------- the chooser */
 
-/* A country, then that country's documents. The filter box narrows the menu
-   rather than replacing it: the menu is the OS's own picker on a phone and
-   already types ahead on a keyboard, and thirty entries is only a long scroll
-   on a desktop. Nothing here is behind JavaScript that was not behind it
-   before - with the box left alone the menu still holds every country. */
+/* A country, then that country's documents. The country is one control - a
+   box that is typed into and the list it narrows - and src/combo.js says why
+   it stopped being a search box over a menu. What is here is how it looks: a
+   text field from the frame, an arrow laid over its end so that it reads as
+   something that opens, and the list hung under it. */
 
 .picker { margin-bottom: 0.4rem; }
 
-.option-row input[type="search"] { flex: 1 1 14rem; }
+.combo {
+  position: relative;
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.combo-input {
+  width: 100%;
+  /* Room for the arrow, on whichever side the language ends a line. */
+  padding-inline-end: 2.6rem;
+  text-overflow: ellipsis;
+}
+
+/* The frame gives every button padding, a radius and, under a thumb, a height
+   of forty-four pixels. This one is a mark on the end of a field rather than a
+   button beside it, so it takes the field's height and none of the rest. */
+.combo-toggle {
+  position: absolute;
+  inset-block: 1px;
+  inset-inline-end: 1px;
+  width: 2.5rem;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0 5px 5px 0;
+  background: none;
+  color: var(--text-dim);
+  display: grid;
+  place-items: center;
+}
+
+.combo-toggle:hover { color: var(--text); }
+[dir="rtl"] .combo-toggle { border-radius: 5px 0 0 5px; }
+.combo-input[aria-expanded="true"] + .combo-toggle svg { transform: rotate(180deg); }
+
+/* Over whatever follows rather than pushing it down: a list that opened by
+   moving the documents out from under the pointer would be a list nobody could
+   aim at. Seven rows and a half, so that the cut-off row says there are more.
+   The card clips sideways (see above) and not downwards, which is what lets
+   this hang out of the bottom of it. */
+.combo-list {
+  position: absolute;
+  z-index: 5;
+  inset-inline: 0;
+  top: calc(100% + 4px);
+  max-height: 17.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.combo-list [role="option"] {
+  padding: 0.45rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+/* The row the arrows are on, and the row under the pointer, look the same:
+   both are "Enter, or a press, takes this one". */
+.combo-list [role="option"].active,
+.combo-list [role="option"]:hover {
+  background: var(--accent-pale);
+  color: #16191d;
+}
+
+.combo-list [role="option"][aria-selected="true"] { font-weight: 600; }
+
+/* A list with nothing in it is the line underneath saying so, not a box. */
+.combo-list:empty { display: none; }
+
+/* Under a thumb the arrow is a target like any other button, and the frame's
+   floor for those is forty-four pixels. It was taken off above so that the
+   arrow could be as short as the field; here the field is made tall enough
+   instead, and the arrow fills it. The QA suite's tap-target check is what
+   noticed: 38 pixels, on both phones. */
+@media (pointer: coarse) {
+  .combo-input { min-height: 46px; }
+  .combo-toggle { width: 2.75rem; min-height: 44px; }
+  .combo-list [role="option"] { padding-block: 0.7rem; }
+}
 
 .picker .hint-line:empty { display: none; }
+.picker .hint-line { margin: -0.3rem 0 0.7rem; }
 
 .doc-label {
   color: var(--text-dim);

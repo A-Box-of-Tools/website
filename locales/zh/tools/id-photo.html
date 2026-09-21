@@ -26,10 +26,29 @@
     </p>
 
     <div class="picker">
+      <!--
+        One control: the box is typed into and the list under it narrows. The
+        list is empty here and filled by src/main.js, so no copy of this file
+        ever lists a country. src/combo.js says why it is not a <select>.
+      -->
       <div class="option-row">
-        <label for="country-filter">找国家地区</label>
-        <input type="search" id="country-filter" class="country-filter"
-               autocomplete="off" spellcheck="false" enterkeyhint="search">
+        <label for="country" id="country-label">国家地区</label>
+        <div class="combo" id="country-combo">
+          <input type="text" id="country" class="combo-input" role="combobox"
+                 aria-autocomplete="list" aria-expanded="false"
+                 aria-controls="country-list" placeholder="输入以查找国家地区"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="done">
+          <button type="button" id="country-toggle" class="combo-toggle"
+                  tabindex="-1" aria-label="显示全部国家地区">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                 focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round"/></svg>
+          </button>
+          <ul id="country-list" class="combo-list" role="listbox"
+              aria-labelledby="country-label" hidden></ul>
+        </div>
       </div>
       <!--
         Written into as the list narrows, so it is empty here: buildlib/cards.py
@@ -37,11 +56,6 @@
         and it tells the two apart by whether the markup has anything in it.
       -->
       <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
-
-      <div class="option-row">
-        <label for="country">国家地区</label>
-        <select id="country"></select>
-      </div>
 
       <p id="doc-label" class="doc-label">证件</p>
       <div id="doc-list" class="doc-list" role="radiogroup"
@@ -318,7 +332,7 @@
     <span data-phrase="spec.custom.note2">它从 ICAO 的几何起步，因为上面清单里没有的国家用它的可能性远高于别的任何一种。</span>
     <span data-phrase="filter.one">有一个国家地区符合。</span>
     <span data-phrase="filter.count">有 {n} 个国家地区符合。</span>
-    <span data-phrase="filter.none">没有符合的。列表里只剩下你已经选中的那个。</span>
+    <span data-phrase="filter.none">没有符合的。试试这个国家地区自己的叫法，或者选“别的任何地方”再自己填数字。</span>
     <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; 毫米</span>
     <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
     <span data-phrase="doc.size.both">{print} &middot; {upload}</span>

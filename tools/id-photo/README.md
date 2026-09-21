@@ -46,6 +46,7 @@ So there are three separate problems here, and each has its own module.
 | `src/jpeg.js` | The two byte-level header edits a canvas cannot make: the print resolution, and the padding. |
 | `src/encode.js` | Canvas drawing, and the search that lands a file inside a KB band at both ends. |
 | `src/cropper.js` | The crop box and the overlay drawn inside it. |
+| `src/combo.js` | The country chooser: one box that is typed into and the list it narrows. Its header says why it is not a `<select>` with a search box over it, which it used to be. |
 | `src/marks.js` | The four dots on the face: placing them, and dragging them. |
 | `src/files.js` | Names, and the sentences the page reads out. |
 | `src/main.js` | The wiring, and nothing else. |

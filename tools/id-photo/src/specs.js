@@ -1363,6 +1363,45 @@ export function orderedCountries(t, compare) {
       || compare(a.label, b.label));
 }
 
+/** Diacritics folded away and case with them, so "turkiye" finds Türkiye. */
+const folded = (text) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+
+/**
+ * The countries that answer what has been typed, best answer first.
+ *
+ * Both the rendered name and the endonym are searched - they are one label -
+ * and so is every document the country lists, so "Deutschland" finds Germany on
+ * the Chinese page and "PR card" finds Canada on any of them.
+ *
+ * Ranked rather than left in the alphabet's order, because the first row is the
+ * one the Enter key takes. "in" is inside Argentina, China and the Philippines
+ * and is the start of India and Indonesia; somebody typing it means the last
+ * two. A name that begins with the text comes first, then a name with a word
+ * that does, then a name that merely contains it, then a country found only
+ * through one of its documents. Inside a rank the order is the caller's, which
+ * is the page's own alphabet.
+ *
+ * @param {ReturnType<typeof orderedCountries>} countries
+ * @param {string} typed
+ * @param {(key: string, values?: object) => string} t
+ */
+export function matchCountries(countries, typed, t) {
+  const want = folded(typed.trim());
+  if (!want) return countries;
+  const rank = (one) => {
+    const label = folded(one.label);
+    if (label.startsWith(want)) return 0;
+    if (label.split(/[\s(/,-]+/).some((word) => word.startsWith(want))) return 1;
+    if (label.includes(want)) return 2;
+    return one.specs.some((spec) => folded(documentLabel(spec, t)).includes(want)) ? 3 : 4;
+  };
+  return countries
+    .map((one, index) => ({ one, index, rank: rank(one) }))
+    .filter((entry) => entry.rank < 4)
+    .sort((a, b) => a.rank - b.rank || a.index - b.index)
+    .map((entry) => entry.one);
+}
+
 /**
  * The rule an address asks for: "#us-passport" is the United States passport.
  *
