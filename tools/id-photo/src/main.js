@@ -4,7 +4,7 @@ import { ltr, phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import {
   SPECS, backgroundOf, countryLabel, documentLabel, orderedCountries,
-  pixelLabel, portalBytes, portalPixels, printLabel, specById, specsOf, trim,
+  portalBytes, portalPixels, specById, specFromHash, specsOf, trim,
   withCustom,
 } from './specs.js';
 import {
@@ -22,8 +22,8 @@ import { WORKING_EDGE, findMarks } from './detect.js';
 import { Cropper } from './cropper.js';
 import { Marks } from './marks.js';
 import {
-  bandText, centreText, docSize, outName, readyText, resamplingText,
-  statusClass, stemOf, tiltText, verdictText,
+  centreText, docSize, outName, readyText, resamplingText, sourceLine,
+  specFacts, statusClass, stemOf, tiltText, verdictText,
 } from './files.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { makeExample } from './example.js';
@@ -132,7 +132,9 @@ const CUSTOM_FIELDS = {
 /** @type {Photo|null} One photograph at a time. An ID photo is not a batch. */
 let photo = null;
 
-let specId = SPECS[0].id;
+// The rule the address names, where it names one: that is how the page a rule
+// has to itself hands somebody on to this one. See specFromHash.
+let specId = specFromHash(window.location.hash) ?? SPECS[0].id;
 let busy = false;
 
 /**
@@ -290,41 +292,13 @@ function buildPaperSelect() {
   }
 }
 
-/** A band, with the note that nobody published it as a requirement. */
-const guidance = (text, advisory) => (advisory ? phrase('band.guidance', { band: text }) : text);
-
 /** The table of figures under the chooser. */
 function renderSpec() {
   const spec = currentSpec();
-  const background = backgroundOf(spec, phrase);
-  const heightMm = spec.print?.heightMm ?? null;
 
-  const facts = [[phrase('facts.print'), printLabel(spec, phrase)]];
-
-  // A signature has no head and no eye line, and showing it "0% to 100%" for
-  // both would be the panel filling a row rather than stating a rule.
-  if (spec.kind !== 'signature') {
-    facts.push(
-      [phrase('facts.head'), guidance(bandText(spec.head, heightMm, phrase), spec.head.advisory)],
-      [phrase('facts.eye'), guidance(bandText(spec.eye, heightMm, phrase), spec.eye.advisory)],
-    );
-  }
-  facts.push([phrase('facts.background'), background.label]);
-
-  if (spec.digital) {
-    const bytes = portalBytes(spec);
-    // Not every rule states both ends, and one that states neither must not be
-    // reported as "up to Infinity".
-    const size = Number.isFinite(bytes.max)
-      ? (bytes.min
-        ? phrase('bytes.band', { min: bytesText(bytes.min), max: bytesText(bytes.max) })
-        : phrase('bytes.upto', { max: bytesText(bytes.max) }))
-      : (bytes.min ? phrase('bytes.from', { min: bytesText(bytes.min) }) : phrase('bytes.none'));
-    facts.push([phrase(spec.digital.label),
-      phrase('facts.upload.value', { pixels: pixelLabel(spec, phrase), size })]);
-  } else {
-    facts.push([phrase('facts.upload'), phrase('facts.upload.print')]);
-  }
+  // The rows are files.js's, because the page each rule has to itself prints
+  // the same table and the two must not be able to disagree.
+  const facts = specFacts(spec, phrase);
 
   el.specFacts.replaceChildren(...facts.flatMap(([term, value]) => {
     const dt = document.createElement('dt');
@@ -340,18 +314,7 @@ function renderSpec() {
     return li;
   }));
 
-  // A published authority and document keep the wording they were published
-  // in: a citation is what a reader searches for to check the transcription,
-  // and one translated is one that no longer finds anything. The two entries
-  // that cite nothing are keys instead - see specs.js - and phrase() hands
-  // back the eight real citations unchanged because it has no entry for them.
-  el.specSource.textContent = spec.source.checked
-    ? phrase(spec.published === 'words' ? 'source.line.words' : 'source.line', {
-      authority: phrase(spec.source.authority),
-      document: phrase(spec.source.document),
-      checked: spec.source.checked,
-    })
-    : phrase('source.own');
+  el.specSource.textContent = sourceLine(spec, phrase);
 
   el.customPanel.hidden = spec.id !== 'custom';
   el.readRules.hidden = spec.id !== 'custom';

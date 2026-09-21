@@ -685,3 +685,63 @@
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) / 2);
 }
+
+/* ------------------------------------------------ the rules, as addresses */
+
+/* The list of pages each cited rule has to itself, under the steps. It is this
+   tool's and nobody else's, so it is styled here rather than in the frame -
+   but it sits in the frame's column, among the frame's sections, so it takes
+   the measure and the panel they take. See templates/tool.html. */
+.tool-rules {
+  max-width: 940px;
+  margin: 2rem auto 0;
+  padding: 1.3rem 1.5rem 1.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tool-rules h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.tool-rules-lede {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+/* Columns rather than a grid, because the entries are not the same height: the
+   United States has three documents and Poland has one, and a grid row is as
+   tall as its tallest cell. */
+.tool-rules-list {
+  columns: 15rem;
+  column-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.tool-rules-list li {
+  break-inside: avoid;
+  padding: 0.25rem 0;
+}
+
+.tool-rules-country {
+  display: block;
+  font-weight: 600;
+}
+
+/* The frame colours its links where it knows about them - the guide, the
+   questions - and this list is not the frame's, so left alone it comes out in
+   the browser's own blue and purple. */
+.tool-rules-list a {
+  display: block;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.tool-rules-list a:hover { text-decoration: underline; }

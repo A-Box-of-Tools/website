@@ -414,6 +414,18 @@ class BuildTheSite(unittest.TestCase):
             for locale in cls.locales for slug in slugs
             if buildmod.i18n.translated(locale, slug)
         }
+        # And the pages a tool's rules have to themselves, which are advertised
+        # exactly where their tool is: the tool's localized folder, then the
+        # rule's id. See buildlib/landing.py.
+        for tool in tools:
+            if not buildmod.landing.wanted(tool):
+                continue
+            cls.advertised |= {
+                buildmod.i18n.locale_path(locale, tool['slug'], f'{rule["id"]}/').strip('/')
+                for locale in cls.locales
+                if buildmod.i18n.translated(locale, tool['slug'])
+                for rule in buildmod.landing.load(tool)
+            }
 
     def unpublished(self, name):
         """Whether a written page is one the site does not advertise.
@@ -501,6 +513,70 @@ class BuildTheSite(unittest.TestCase):
                     self.assertIn('http-equiv="refresh"', text,
                                   f'{source} is a real page, not a stub')
                     self.assertIn(f'<link rel="canonical" href="{target}">', text)
+
+    # -- the page each rule has to itself ----------------------------------
+    #
+    # buildlib/landing.py writes /id-photo/us-passport/ and forty-eight like
+    # it, in every language the tool is published in. tests/python/
+    # test_landing.py holds what is on them; what is held here is where they
+    # are, and that the ways in and out of them lead somewhere.
+
+    def rule_pages(self):
+        entries = json.loads((ROOT / 'tools' / 'id-photo' / 'landing' / 'pages.json')
+                             .read_text(encoding='utf-8'))['pages']
+        self.assertTrue(entries)
+        return [entry['id'] for entry in entries]
+
+    def test_a_rule_page_is_published_wherever_its_tool_is(self):
+        """In the sitemap, at the tool's own localized address plus the rule's
+        id, for every language that has translated the tool - and written for
+        the rest, because a page held back is still a page."""
+        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        for locale in self.locales:
+            folder = buildmod.i18n.locale_path(locale, 'id-photo')
+            for rule in self.rule_pages():
+                address = f'{folder}{rule}/'
+                with self.subTest(page=address):
+                    self.assertIn(f'{address.lstrip("/")}index.html', self.written)
+                    listed = f'<loc>{self.site["domain"].rstrip("/")}{address}</loc>' in sitemap
+                    self.assertEqual(
+                        listed, buildmod.i18n.translated(locale, 'id-photo'))
+
+    def test_a_rule_page_opens_the_tool_with_its_rule_chosen(self):
+        """The button is the page's whole reason to sit beside a tool, and the
+        fragment is what src/specs.js reads: the rule's own id."""
+        for rule in self.rule_pages():
+            with self.subTest(rule=rule):
+                page = (self.out / 'id-photo' / rule / 'index.html').read_text(encoding='utf-8')
+                self.assertIn(f'href="../#{rule}"', page)
+                self.assertIn(f'<link rel="canonical" href="{self.site["domain"]}id-photo/{rule}/">',
+                              page)
+
+    def test_the_tool_lists_every_rule_page_and_no_other_tool_lists_any(self):
+        """A page nothing links to is a page nothing finds, so the tool's own
+        page carries the list - and it is the tool's, so nobody else's does."""
+        page = (self.out / 'id-photo' / 'index.html').read_text(encoding='utf-8')
+        for rule in self.rule_pages():
+            self.assertIn(f'href="{rule}/"', page)
+        other = (self.out / 'compress-image' / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('class="tool-rules"', other)
+
+    def test_a_rule_pages_languages_name_each_other(self):
+        """The hreflang set on a rule page is the tool's set with the rule's id
+        on the end of each address - localized folder, unlocalized id - and it
+        is the same set on every page in it, which is what reciprocal means."""
+        published = buildmod.i18n.published(self.locales, 'id-photo')
+        self.assertGreater(len(published), 1)
+        wanted = sorted(
+            f'hreflang="{locale["hreflang"]}" '
+            f'href="{buildmod.i18n.locale_url(locale, "id-photo", self.site, "de-passport/")}"'
+            for locale in published)
+        for locale in published:
+            folder = buildmod.i18n.locale_path(locale, 'id-photo', 'de-passport/').lstrip('/')
+            page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+            found = sorted(re.findall(r'hreflang="(?!x-default)[^"]+" href="[^"]+"', page))
+            with self.subTest(lang=locale['lang']):
+                self.assertEqual(found, wanted)
 
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)

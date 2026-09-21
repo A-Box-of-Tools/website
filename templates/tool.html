@@ -415,6 +415,29 @@
 </section>
 
 <!--
+  The pages this tool's rules have to themselves, where it has any - which is
+  one tool, the passport photo maker, whose forty-nine cited rules each have an
+  address stating their figures. buildlib/landing.py says what those pages are.
+
+  They are listed here because a page nothing links to is a page nothing
+  finds: the sitemap tells a crawler an address exists, and a link from the
+  page it belongs to is what tells it the address matters. For a reader it is
+  the rulebook's table of contents - every country at a glance, before the
+  menu above has been opened. Plain links, grouped by country, in the order
+  the rulebook lists them. Every other tool renders nothing.
+-->
+{% if landings %}<section class="tool-rules" aria-labelledby="rules-h">
+  <h2 id="rules-h">{{ landing_strings.index_heading }}</h2>
+  <p class="tool-rules-lede">{{ landing_strings.index_lede }}</p>
+  <ul class="tool-rules-list">
+{% for group in landings %}    <li>
+      <span class="tool-rules-country">{{ group.country }}</span>
+{% for page in group.pages %}      <a href="{{ page.id }}/">{{ page.document }}</a>
+{% endfor %}    </li>
+{% endfor %}  </ul>
+</section>
+{% endif %}
+<!--
   The way out of this page that is not the footer and not the back button.
   Everything above is about one tool; a reader who has just finished with it
   usually wants the neighbouring one, and until this block existed the only

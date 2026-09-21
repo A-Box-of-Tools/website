@@ -22,6 +22,7 @@ these three were sitting in the middle of it answering a different question.
 """
 
 from buildlib import i18n
+from buildlib import landing
 from buildlib import site as sitelib
 from buildlib.emit import write
 
@@ -43,10 +44,17 @@ def build_sitemap(out, templates, site, locales, tools, prose):
     hub is as much a front door as the English one, and marking it lower would
     be saying the opposite of what the hreflang tags beside it say.
     """
+    # The pages a tool's rules have to themselves - buildlib/landing.py. They
+    # are published with their tool, in every language the tool is, so they
+    # follow it in the list; and the date on each is the day its rule was last
+    # read against the source, which is the only date such a page has.
+    rule_pages = {tool['slug']: landing.load(tool)
+                  for tool in tools if landing.wanted(tool)}
+
     entries = []
     for locale in i18n.published(locales):
-        def url(slug, locale=locale):
-            return i18n.locale_url(locale, slug, site)
+        def url(slug, locale=locale, tail=''):
+            return i18n.locale_url(locale, slug, site, tail)
 
         # A page this language has not translated yet is built and readable,
         # but it is not listed here. Inviting a crawler to index an English
@@ -59,9 +67,15 @@ def build_sitemap(out, templates, site, locales, tools, prose):
         if ready(''):
             entries.append({'url': url(''), 'lastmod': site['lastmod'],
                             'changefreq': 'weekly', 'priority': '1.0'})
-        entries += [{'url': url(tool['slug']), 'lastmod': tool['lastmod'],
-                     'changefreq': 'monthly', 'priority': '0.8'}
-                    for tool in tools if ready(tool['slug'])]
+        for tool in tools:
+            if not ready(tool['slug']):
+                continue
+            entries.append({'url': url(tool['slug']), 'lastmod': tool['lastmod'],
+                            'changefreq': 'monthly', 'priority': '0.8'})
+            entries += [{'url': url(tool['slug'], tail=f'{rule["id"]}/'),
+                         'lastmod': rule['checked'],
+                         'changefreq': 'monthly', 'priority': '0.6'}
+                        for rule in rule_pages.get(tool['slug'], [])]
         # Guides below the tools and above the legal pages. A tool is what
         # somebody came for; a guide is how they find out this site exists. The
         # index they are listed on goes first and slightly higher: it is the
@@ -174,6 +188,27 @@ def build_feeds(out, templates, site, locales, tools, prose):
               templates.render('feed.xml', {'feed': feed}))
 
 
+def rule_pages_note(tool):
+    """One sentence for /llms.txt about a tool's landing pages, or nothing.
+
+    One sentence and one address, not forty-nine lines: the tool's own page
+    lists them all, and everything past the first screenful of this file is
+    weight on a reader that gets a single fetch.
+    """
+    if not landing.wanted(tool):
+        return ''
+    said = tool.get('landing_llms')
+    if not said:
+        return ''
+    rules = landing.load(tool)
+    example = next((rule for rule in rules if rule['id'] == said['example']),
+                   rules[0])
+    return ' ' + sitelib.to_text(landing.fill(said['note'], {
+        'count': str(len(rules)),
+        'example': f'{tool["url"]}{example["id"]}/',
+    }))
+
+
 def build_llms(out, templates, site, locales, tools, prose):
     """/llms.txt: the whole site as plain text, for a reader that gets one fetch.
 
@@ -224,7 +259,8 @@ def build_llms(out, templates, site, locales, tools, prose):
             # it is the one that lets a task be matched to an address.
             'tools': [{'name': text(tool['name']),
                        'url': tool['url'],
-                       'description': text(tool['schema']['description'])}
+                       'description': text(tool['schema']['description'])
+                                      + rule_pages_note(tool)}
                       for tool in listed],
         })
 

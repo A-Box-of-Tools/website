@@ -30,7 +30,7 @@ css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-09-19"
+lastmod = "2026-09-21"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -409,6 +409,63 @@ features = [
   "SSC and UPSC form photos at &#x2066;200 x 230&#x2069; in 20-50 KB, and signatures at &#x2066;140 x 60&#x2069; in 10-20 KB",
   "Runs offline; no upload, no account, no face model",
 ]
+
+# ---------------------------------------------------------------------------
+# A page for each rule: /id-photo/us-passport/, /id-photo/de-passport/ ...
+#
+# This tool holds sixty-seven rules behind one address, and that address can
+# tell a search engine about none of them - which rule is on the screen depends
+# on a menu nobody has opened. Somebody asking "Canada passport photo size"
+# wants Canada's figures, who published them and when they were read, so every
+# rule with published figures and a citation has a page saying exactly that and
+# a button that opens this tool with the rule chosen. buildlib/landing.py says
+# why the page is not the tool over again.
+#
+# Only the frame is written here. The figures, the notes and the citation are
+# landing/pages.json, which landing/emit.mjs generates from src/specs.js, and
+# their words are the #phrases of body.html - so these pages say what the tool
+# says, in each language it says it in.
+#
+# The patterns take {country}, {document}, {size}, {background}, {authority}
+# and {checked}. A colon rather than a sentence, because {document} is
+# "Passport" on one page and "SSC / UPSC online form photo" on another, and a
+# pattern that reads naturally around the first reads "photo photo" around the
+# second - and is translated into languages where the noun would need a case.
+# ---------------------------------------------------------------------------
+[landing]
+title = "Photo size and requirements: {document}, {country}"
+heading = "Photo requirements: {document}, {country}"
+nav = "{document}, {country}"
+description = "{size}, on a {background} background: the figures published by {authority}, as read on {checked}, and a free tool that crops a photo to them in your browser. Nothing is uploaded."
+lede = "The published rule for this document&rsquo;s photograph &mdash; from {authority}, as it was read on {checked} &mdash; and a way to make one that meets it without sending your face to anybody."
+updated = "{checked}"
+facts_heading = "The figures"
+facts_term = "What is measured"
+facts_value = "What this rule publishes"
+make = "Make this photo"
+make_note = "Opens the photo tool with this rule already chosen. It runs in your browser: the photograph is never uploaded, and there is no account and no watermark."
+notes_heading = "What else this rule says"
+source_heading = "Where these figures come from"
+how_heading = "What the tool does with them"
+how = [
+  "Locks the crop to this document&rsquo;s shape, and draws the head and eye bands inside it, so you can see the rule on your own photograph instead of reading about it.",
+  "Finds the crown, the chin and both pupils by measuring the picture &mdash; no face model is downloaded &mdash; and says in millimetres whether the head is too large or too small for this rule.",
+  "Reads the background colour and how evenly it is lit, and says which of the two is the problem when there is one.",
+  "Writes the print at the exact millimetres with the resolution in the file, a sheet of them with cut marks, and the upload file at the pixel and file size this rule states.",
+]
+siblings_heading = "Other documents, {country}"
+all_link = "Every country and document in the photo tool"
+index_heading = "Photo rules by country"
+index_lede = "Every rule with published figures has a page of its own that states them, with the authority that published them and the date they were read."
+
+# For /llms.txt: one sentence on the end of this tool's line there. A table
+# of its own rather than two more keys of [landing], because that file is
+# English and is read by a machine - so this is not something a language
+# owes a translation of, and everything under [landing] is. {count} is how
+# many pages there are, {example} the address of the rule `example` names.
+[landing_llms]
+note = "Each of {count} rules with published figures also has a page of its own stating them, with the authority and the date it was read - {example} is the United States passport - and the tool's page lists them all."
+example = "us-passport"
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
