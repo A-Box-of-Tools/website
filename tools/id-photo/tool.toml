@@ -180,8 +180,8 @@ body = """
 [[howto]]
 title = "Pick the country and the document."
 body = """
- Type into the box if the country is
-      a long way down the list, then pick which of that country’s documents you
+ Type the country’s name into the box, or
+      open its list, then pick which of that country’s documents you
       are applying for. The panel then shows
       that rule's print size, head-height band, eye line, background colour and
       upload limits &mdash; along with the authority each figure came from and the
@@ -240,7 +240,7 @@ a = """
         every time one is added, so: every entry is transcribed from the authority
         that published it, and every entry prints that authority and the date it was
         read underneath the figures. The chooser is the list &mdash; type a country
-        into the box above it and you will know in a second whether it is there.
+        into it and you will know in a second whether it is there.
         Anything that is not goes under &ldquo;Anywhere else&rdquo;, where every figure
         is yours to type; since most of the world issues against the ICAO geometry,
         that entry starts on it.
