@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-09-21T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">ID Photo Maker</title>
+    <id>https://abox.tools/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
+    <updated>2026-09-21T00:00:00Z</updated>
+    <summary type="html">Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM Viewer</title>
+    <id>https://abox.tools/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">A free DCM file opener: open .dcm scans &amp;mdash; CT, MR, X-ray and ultrasound &amp;mdash; in your browser, with nothing to install. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to open a DCM file, and what is in one</title>
+    <id>https://abox.tools/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/open-a-dicom-file/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">What a .dcm file is and what opens one, what is on a hospital disc, why the files have no extension, how to open a DCM file in a browser, what window and level actually does, and what a scan carries about the patient besides the picture.</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIF to JPG</title>
+    <id>https://abox.tools/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convert AVIF images to JPG in your browser. Your browser already decodes AVIF, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose.</summary>
+  </entry>
+  <entry>
+    <title type="html">PNG to WebP</title>
+    <id>https://abox.tools/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convert PNG images to WebP in your browser, losslessly or smaller still. Transparency is kept either way. Nothing is uploaded, there is no account, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">The file nothing will open, except the thing you are reading this in</title>
+    <id>https://abox.tools/guides/convert-avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Downloaded a picture and got a .avif that no program will open? Your browser reads it perfectly, which is why converting needs no upload. What AVIF is, what a JPEG cannot carry over, and why the JPG comes out several times larger.</summary>
+  </entry>
+  <entry>
+    <title type="html">The picture the web saved, and the format everything still takes</title>
+    <id>https://abox.tools/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Saved a picture from a website and got a .webp nothing will open? What WebP is, why converting makes the file larger rather than smaller, what happens to transparency, and how to do it without uploading anything.</summary>
+  </entry>
+  <entry>
+    <title type="html">The same picture, a third smaller, with the transparency intact</title>
+    <id>https://abox.tools/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">WebP is smaller than PNG even without losing anything - and far smaller if you let it. Which of the two you want depends on what is in the picture. What each mode does, what it saves, and how to convert without uploading.</summary>
+  </entry>
+  <entry>
+    <title type="html">WebP to JPG</title>
+    <id>https://abox.tools/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convert WebP images to JPG in your browser. Your browser already decodes WebP, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose.</summary>
+  </entry>
+  <entry>
+    <title type="html">What 20 online converters do with your file</title>
+    <id>https://abox.tools/guides/what-20-converters-do-with-your-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/what-20-converters-do-with-your-file/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">We sent the same file to 20 free online converters and watched the network. 19 uploaded it. Which ones, where to, how soon, and what their privacy policies promise.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF to MP4</title>
+    <id>https://abox.tools/gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Turn an animated GIF into an MP4 in your browser, at a fraction of the size. Every frame keeps the GIF's own timing; nothing is resampled. H.264 in an MP4, the file every platform takes. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to convert a GIF to MP4, and why it gets so much smaller</title>
+    <id>https://abox.tools/guides/convert-a-gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-a-gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Why an MP4 of the same animation is a tenth of the size of the GIF, what a video cannot do that a GIF can, why the frame timing is what most converters get wrong, and how to convert a GIF in your browser without uploading it.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to rotate a video without losing quality</title>
+    <id>https://abox.tools/guides/rotate-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/rotate-a-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Why a phone clip plays sideways, what the nine numbers in its header do, why most rotators re-encode for nothing, when to bake the turn in instead, and how to turn a video in your browser without uploading it.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Rotator</title>
+    <id>https://abox.tools/rotate-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/rotate-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Turn a sideways or upside-down video a quarter or half turn in your browser. The turn is written into the file's header, so no frame is re-encoded and nothing is lost; or bake it into the picture for old players. MP4, MOV, WebM and MKV in, MP4 out. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to compress a video to a size that will send</title>
+    <id>https://abox.tools/guides/compress-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/compress-a-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">What a size limit actually costs a video, where the megabytes go, why the frame size drops before the picture goes to mud, how to lose as little as the number allows, and how to do it in your browser without the upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to convert a video to the MP4 that uploads</title>
+    <id>https://abox.tools/guides/convert-a-video-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-a-video-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">What an MP4 that uploads actually is, why a WebM, an MKV or an iPhone MOV gets refused, which conversions lose nothing and which cost a generation, and how to do it in your browser without uploading the file.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to password-protect a PDF, and what it is actually worth</title>
+    <id>https://abox.tools/guides/protect-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/protect-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">A password on a PDF is a real lock. A restriction on printing is a request. What each one does, which encryption to choose, why the upload is the strange part of every online tool, and what happens if you forget the password.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to watermark a PDF, and what the stamp is actually for</title>
+    <id>https://abox.tools/guides/watermark-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/watermark-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Why lenders and landlords ask for a scan to be stamped with their name, what the stamp does and does not prevent, how to do it in your browser without uploading the document, and what to write on it.</summary>
+  </entry>
+  <entry>
+    <title type="html">MP4 Converter</title>
+    <id>https://abox.tools/convert-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/convert-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Turn a WebM, MKV, MOV or any MP4 into an MP4 with H.264 and AAC, the file every phone, browser and upload form takes. H.264 and AAC are copied across untouched; anything else is re-encoded on your machine. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Unlocker</title>
+    <id>https://abox.tools/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/unlock-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Take the password and the printing, copying and editing restrictions off a PDF in your browser. Most protected files need no password at all, and this one tells you which kind you have. Nothing is uploaded, and it never guesses a password.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Watermark</title>
+    <id>https://abox.tools/watermark-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/watermark-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Put a watermark on every page of a PDF in your browser: who it is for, a date, a name, at any angle and opacity, in any language. Nothing is uploaded, the pages themselves are not touched, and the result is checked before you download it.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Compressor</title>
+    <id>https://abox.tools/compress-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Shrink a video to under 8, 16, 25 or any number of megabytes, in your browser. Say the size; the tool picks the frame size and bitrate, encodes it, and measures the result. Nothing is uploaded, and the sound is copied through untouched.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Protector</title>
+    <id>https://abox.tools/protect-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/protect-pdf/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary type="html">Put a password on a PDF, or restrict printing and copying, in your browser. AES-256 by default, nothing is uploaded, and the finished file is opened again here to prove the password holds before you are offered it.</summary>
+  </entry>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF Viewer &amp; Remover</title>
+    <id>https://abox.tools/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. In your browser: nothing uploaded, and the photo is never re-encoded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to unlock a PDF, and which kind of locked it is</title>
+    <id>https://abox.tools/guides/unlock-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/unlock-a-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">A PDF that will not print and a PDF that will not open are two different problems with one name. What each of them actually is, why one comes off in a click and the other cannot come off at all, and how to tell which you have.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Compressor</title>
+    <id>https://abox.tools/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Redactor</title>
+    <id>https://abox.tools/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Resizer</title>
+    <id>https://abox.tools/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/resize-image/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Resize, crop and convert JPEG, PNG and WebP images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Merger &amp; Splitter</title>
+    <id>https://abox.tools/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/merge-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Combine PDFs, split one into several, and drag pages into the order you want &amp;mdash; all inside your own browser. Nothing is uploaded, there is no account, and the finished file is opened again and counted before it is offered to you.</summary>
+  </entry>
+</feed>

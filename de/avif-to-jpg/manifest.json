@@ -1,0 +1,26 @@
+{
+  "id": "/de/avif-to-jpg/",
+  "name": "AVIF to JPG",
+  "short_name": "AVIF to JPG",
+  "description": "The format websites save now, in the one everything has always taken.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

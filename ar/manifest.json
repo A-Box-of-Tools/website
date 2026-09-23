@@ -1,0 +1,31 @@
+{
+  "id": "/ar/",
+  "name": "A Box of Tools",
+  "short_name": "A Box of Tools",
+  "description": "\u0623\u062f\u0648\u0627\u062a \u0635\u063a\u064a\u0631\u0629\u060c \u0643\u0644 \u0648\u0627\u062d\u062f\u0629 \u0644\u0645\u0647\u0645\u0629 \u0648\u0627\u062d\u062f\u0629\u060c \u062a\u0639\u0645\u0644 \u0628\u0627\u0644\u0643\u0627\u0645\u0644 \u062f\u0627\u062e\u0644 \u0645\u062a\u0635\u0641\u062d\u0643. \u0645\u0644\u0641\u0627\u062a\u0643 \u0644\u0627 \u062a\u063a\u0627\u062f\u0631 \u062c\u0647\u0627\u0632\u0643 \u0623\u0628\u062f\u0627.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/pt/extrair-audio-de-video/",
+  "name": "Extrair o \u00e1udio de um v\u00eddeo",
+  "short_name": "Extrair o \u00e1udio de um v\u00eddeo",
+  "description": "Arraste um v\u00eddeo e leve o som embora. A imagem nunca \u00e9 decodificada, e nada \u00e9 enviado.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

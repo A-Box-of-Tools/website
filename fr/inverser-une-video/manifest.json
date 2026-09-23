@@ -1,0 +1,26 @@
+{
+  "id": "/fr/inverser-une-video/",
+  "name": "Inverseur de vid\u00e9o",
+  "short_name": "Inverseur de vid\u00e9o",
+  "description": "La derni\u00e8re image en premier, le son avec.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

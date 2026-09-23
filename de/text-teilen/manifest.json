@@ -1,0 +1,26 @@
+{
+  "id": "/de/text-teilen/",
+  "name": "Text & Dateien teilen",
+  "short_name": "Text & Dateien teilen",
+  "description": "Die Freigabe lebt in diesem offenen Tab. Leser holen sie verschl\u00fcsselt direkt aus Ihrem Browser, und mit dem Schlie\u00dfen des Tabs endet sie - auf keinem Server ist irgendetwas gespeichert.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

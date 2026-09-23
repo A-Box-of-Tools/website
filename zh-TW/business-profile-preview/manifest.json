@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/business-profile-preview/",
+  "name": "\u5546\u5bb6\u8d44\u6599\u9884\u89c8",
+  "short_name": "\u5546\u5bb6\u8d44\u6599\u9884\u89c8",
+  "description": "\u628a\u5185\u5bb9\u6253\u8fdb\u53bb\uff0c\u5b83\u5c31\u53d8\u6210 Google \u4f1a\u753b\u7684\u90a3\u5f20\u5361\u7247\u3002\u4e3a\u4e86\u753b\u5b83\uff0c\u4e0d\u4f1a\u5f80\u5916\u9001\u4efb\u4f55\u4e1c\u897f\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

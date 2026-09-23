@@ -1,0 +1,26 @@
+{
+  "id": "/tr/biyometrik-vesikalik-fotograf/",
+  "name": "Vesikal\u0131k Foto\u011fraf Yap\u0131c\u0131",
+  "short_name": "Vesikal\u0131k Foto\u011fraf Yap\u0131c\u0131",
+  "description": "\u00dclkeyi se\u00e7in. O \u00fclkenin kural\u0131n\u0131 tam olarak uygular.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

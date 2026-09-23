@@ -1,0 +1,26 @@
+{
+  "id": "/zh/share-text/",
+  "name": "\u6587\u672c\u4e0e\u6587\u4ef6\u5206\u4eab",
+  "short_name": "\u6587\u672c\u4e0e\u6587\u4ef6\u5206\u4eab",
+  "description": "\u5206\u4eab\u53ea\u6d3b\u5728\u8fd9\u4e2a\u6253\u5f00\u7684\u6807\u7b7e\u9875\u91cc\u3002\u8bfb\u7684\u4eba\u4ece\u4f60\u7684\u6d4f\u89c8\u5668\u76f4\u63a5\u53d6\u8d70\u52a0\u5bc6\u5185\u5bb9\uff0c\u5173\u6389\u6807\u7b7e\u9875\u5c31\u7ed3\u675f--\u4efb\u4f55\u670d\u52a1\u5668\u4e0a\u90fd\u4e0d\u7559\u4e00\u70b9\u4e1c\u897f\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

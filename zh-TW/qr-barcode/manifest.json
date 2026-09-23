@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/qr-barcode/",
+  "name": "QR Code \u8207\u689d\u78bc\u7522\u751f",
+  "short_name": "QR Code \u8207\u689d\u78bc\u7522\u751f",
+  "description": "\u6253\u9032\u53bb\uff0c\u5c31\u8b8a\u6210\u4e00\u500b\u78bc\u3002\u7522\u751f\u904e\u7a0b\u4e0d\u5f80\u5916\u9001\u4efb\u4f55\u6771\u897f\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
