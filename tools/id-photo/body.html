@@ -33,10 +33,29 @@
     </p>
 
     <div class="picker">
+      <!--
+        One control: the box is typed into and the list under it narrows. The
+        list is empty here and filled by src/main.js, so no copy of this file
+        ever lists a country. src/combo.js says why it is not a <select>.
+      -->
       <div class="option-row">
-        <label for="country-filter">Find a country</label>
-        <input type="search" id="country-filter" class="country-filter"
-               autocomplete="off" spellcheck="false" enterkeyhint="search">
+        <label for="country" id="country-label">Country</label>
+        <div class="combo" id="country-combo">
+          <input type="text" id="country" class="combo-input" role="combobox"
+                 aria-autocomplete="list" aria-expanded="false"
+                 aria-controls="country-list" placeholder="Type to find a country"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="done">
+          <button type="button" id="country-toggle" class="combo-toggle"
+                  tabindex="-1" aria-label="Show every country">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                 focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round"/></svg>
+          </button>
+          <ul id="country-list" class="combo-list" role="listbox"
+              aria-labelledby="country-label" hidden></ul>
+        </div>
       </div>
       <!--
         Written into as the list narrows, so it is empty here: buildlib/cards.py
@@ -44,11 +63,6 @@
         and it tells the two apart by whether the markup has anything in it.
       -->
       <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
-
-      <div class="option-row">
-        <label for="country">Country</label>
-        <select id="country"></select>
-      </div>
 
       <p id="doc-label" class="doc-label">Document</p>
       <div id="doc-list" class="doc-list" role="radiogroup"
@@ -379,7 +393,7 @@
       likely to be using that than anything else.</span>
     <span data-phrase="filter.one">One country matches.</span>
     <span data-phrase="filter.count">{n} countries match.</span>
-    <span data-phrase="filter.none">Nothing matches that. Only the country you have already chosen is left in the list.</span>
+    <span data-phrase="filter.none">Nothing matches that. Try the country&rsquo;s own name for itself, or pick &ldquo;Anywhere else&rdquo; and type the figures in.</span>
     <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
     <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
     <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
@@ -524,6 +538,43 @@
     <span data-phrase="spec.ru-passport.note1">For the ten-year biometric passport no photographs are handed in at all: the consular section takes the photograph itself. What is published is what not to wear &mdash; no tinted glasses and no uniform &mdash; and that a head covering is allowed only where religion requires it and the oval of the face stays clear. A child under six has to let themselves be photographed there, which is why the five-year passport is suggested for them.</span>
     <span data-phrase="spec.ru-passport-5.doc">Passport, five-year</span>
     <span data-phrase="spec.ru-passport-5.note1">The older five-year passport is the one that still takes prints: three identical photographs of &#x2066;35 x 45&#x2069; mm, strictly full face, on white with no stripes, marks or shadows, the face and the top of the shoulders centred and the face filling 70 to 80 per cent. Black and white is accepted as well as colour. No tinted glasses and no uniform.</span>
+    <span data-phrase="country.dk">Denmark</span>
+    <span data-phrase="doc.driving-licence">Driving licence</span>
+    <span data-phrase="doc.id-card">Identity card</span>
+    <span data-phrase="doc.health-card">Health insurance card</span>
+    <span data-phrase="spec.uk-ni-driving-licence.doc">Driving licence, Northern Ireland</span>
+    <span data-phrase="spec.uk-ni-driving-licence.note1">Northern Ireland publishes its own rule; Great Britain&rsquo;s DVLA asks only for &ldquo;a recent printed passport type photo&rdquo;, which is the passport entry. Here the photograph may be no more than a month old, on light grey or cream, in colour, and the page says not to trim a print down to &#x2066;45 x 35&#x2069; mm and that one printed at home is unlikely to be good enough. Applying online is different again: &ldquo;don&rsquo;t crop your photo &mdash; it will be done for you&rdquo;, so send that one as it came off the camera.</span>
+    <span data-phrase="spec.de-health-card.note1">The photograph on a German health card does not have to be biometric, and every statutory insurer publishes its own wording; this is the Techniker Krankenkasse&rsquo;s. &#x2066;35 x 45&#x2069; mm, colour or black and white, a background &ldquo;as neutral as possible&rdquo;, no hat or cap, and a digital picture of at least &#x2066;300 x 400&#x2069; pixels as a JPG, PNG or BMP. Check your own insurer&rsquo;s page before uploading: some take the picture in their app instead.</span>
+    <span data-phrase="spec.it-id-card.note1">The electronic identity card publishes what the Italian passport does not: a face of 70 to 80 per cent and an eye line 23 to 31 mm above the bottom edge, on a plain background that is preferably light blue, beige, light brown, light grey or white. It also says the photograph must not be cropped to cut the background away or to straighten the head, nor retouched &mdash; so frame it square in the camera and let this only trim the edges.</span>
+    <span data-phrase="spec.it-driving-licence.note1">The ministry&rsquo;s circular states the size as a range, 40 to 45 mm high by 32 to 35 wide, and the head twice over: 60 to 90 per cent of the height in its text and 28 to 32 mm under its figure. The millimetres sit inside the percentages and are what is applied here. Background light grey, cream or light blue for preference, or white; matt paper is advised; several photographs for one application must be identical.</span>
+    <span data-phrase="spec.es-driving-licence.note1">The same small &#x2066;32 x 26&#x2069; mm as the DNI, in colour, on a plain background &mdash; the DNI&rsquo;s has to be white and this one only has to be plain. Since 6 November 2024 no photograph is asked for where the DGT already holds one, and a medical centre that does the renewal takes it there; this is for the cases that are left.</span>
+    <span data-phrase="spec.pl-driving-licence.note1">Read this before using the upload. Poland lets a photograph be handed in as a file, and specifies it to the pixel: &#x2066;480 x 615&#x2069;, 100 KB at most, a compression quality of at least 80 &mdash; and a JPEG with an EXIF header carrying the date it was taken. The file written here has the size and the weight and no EXIF header, so use it to see what fits and hand in the print, or a file from a camera that writes the date.</span>
+    <span data-phrase="spec.pl-passport.note2">An identity card can be applied for online with a file of at least &#x2066;492 x 633&#x2069; pixels and 2.5 MB at most, which is the upload written here. A passport cannot, except for a child under twelve, and that one asks for &#x2066;768 x 1004&#x2069;.</span>
+    <span data-phrase="spec.ch-driving-licence.note1">Switzerland publishes no figures for its passport and does for its driving licence: a face of 29 to 34 mm, on a plain, neutral background, in colour although the licence prints it in grey, and no more than a year old. Borderless, on smooth glossy or semi-matt photo paper, and with square corners &mdash; a print with rounded ones is refused.</span>
+    <span data-phrase="spec.se-driving-licence.note1">Sweden measures this one from the pupil to the tip of the chin, 14 to 17 mm, which is neither of the distances this tool measures; on most faces it is a head of 31 to 37 mm, so the band shown lands inside it. One print, cleanly cut to &#x2066;35 x 45&#x2069; mm with round or sharp corners, on a light background with no shadow. Black and white is accepted &mdash; the licence prints it that way whatever is sent &mdash; and no headwear or tinted glasses.</span>
+    <span data-phrase="spec.dk-driving-licence.note1">Denmark measures the head to the top of the hair, 30 to 36 mm, which is how this tool measures it, so there is no correction to make. A plain light background &mdash; light blue or light grey are its examples &mdash; and one in sharp contrast for white or fair hair or a light headscarf. Colour or black and white.</span>
+    <span data-phrase="doc.residence-card">Residence card</span>
+    <span data-phrase="bg.blue.label">Plain blue</span>
+    <span data-phrase="bg.blue.inline">plain blue</span>
+    <span data-phrase="bg.blue.note">Blue is what this rule asks for, and no particular blue is published, so the check is wide. It also wants the real background and not one edited in; nothing here changes a background, so stand in front of a blue wall or cloth.</span>
+    <span data-phrase="spec.cn-id-card.note1">The identity card is smaller than any passport size: &#x2066;26 x 32&#x2069; mm, on white with no border, the head about two thirds of the picture and the face 15 mm wide, give or take one, between the roots of the ears. No uniform and no white top; somebody who always wears glasses wears them. Most police stations take this photograph themselves or send you to a studio they appoint &mdash; ask before printing one.</span>
+    <span data-phrase="spec.cn-driving-licence.note1">The &ldquo;one-inch&rdquo; licence photograph is &#x2066;22 x 32&#x2069; mm, narrower than the studio one-inch in this list: head 19 to 22 mm long and 14 to 16 wide, on white, in colour, taken within six months, no uniform. These are the Beijing traffic police&rsquo;s figures; other cities publish the same size.</span>
+    <span data-phrase="spec.jp-mynumber.doc">My Number card</span>
+    <span data-phrase="spec.jp-mynumber.note1">By post it is a &#x2066;45 x 35&#x2069; mm print with your name and date of birth written on the back; online it is a JPEG in RGB between 20 KB and 7 MB, each side from 480 to 6000 pixels, and no shape is stated &mdash; the one written here is the print&rsquo;s. The diagram&rsquo;s 34 mm face, give or take two, is labelled a guide, so it is shown as guidance. Black and white is accepted. A picture run through editing software may be refused, so check it against the examples on the site.</span>
+    <span data-phrase="spec.jp-residence-card.note1">Smaller than the passport&rsquo;s and with its own figures: &#x2066;30 x 40&#x2069; mm, a head of 25 mm, give or take three, measured from the top of the hair to the chin, and 5 mm clear above it. No hat, no background and no shadow, taken within six months, your name on the back. Retouching is refused in every case, and so is a mirror-image photograph &mdash; which is what a phone&rsquo;s front camera saves unless told not to.</span>
+    <span data-phrase="spec.jp-driving-licence.note1">The photograph on the licence itself is taken by the staff. This one, &#x2066;24 x 30&#x2069; mm, goes on the application form: no hat, facing front, upper body, no background, within six months. A licence centre will use a photograph you bring only at certain test centres and only on photo paper.</span>
+    <span data-phrase="spec.kr-driving-licence.note1">The print is the passport&rsquo;s, 32 to 36 mm from the top of the head to the chin, on white, on photo paper only, with no teeth showing and nothing edited. Online the rule is unusually exact: a JPG of 500 KB at most, &#x2066;413 x 531&#x2069; pixels asked for and nothing outside 395 to 431 by 507 to 550 accepted at all.</span>
+    <span data-phrase="spec.kr-id-card.note1">The resident registration card takes the passport&rsquo;s &#x2066;3.5 x 4.5&#x2069; cm and says a photograph made for one serves the other. Its background rule is the looser of the two &mdash; none, or white for preference, with a pale single colour allowed &mdash; and no face size is given in millimetres.</span>
+    <span data-phrase="spec.tw-id-card.note1">The same 32 to 36 mm head as the Taiwanese passport, on white &mdash; but it may be up to two years old, where the passport says six months. One thin glossy print with your name, ID number and the date on the back, or a JPG of at least &#x2066;413 x 531&#x2069; pixels and 5 MB at most. No tinted contact lenses, nothing retouched, and no mirror-image photograph.</span>
+    <span data-phrase="spec.vn-driving-licence.note1">For exchanging or replacing a licence online: a &#x2066;3 x 4&#x2069; cm photograph on white &mdash; the police portal says white, whatever a provincial page says about blue &mdash; of at least &#x2066;473 x 630&#x2069; pixels and 700 KB at most. Avoid white and black clothes, keep the head within five degrees of upright, and take thick-rimmed or dark glasses off.</span>
+    <span data-phrase="spec.id-driving-licence.note1">Renewing a SIM online takes exactly &#x2066;480 x 640&#x2069; pixels and 100 KB at most, on blue. No glasses or contact lenses, no head covering, no blue hijab &mdash; it would vanish into the background &mdash; and the original file, not a picture of a print. A first licence is photographed at the office.</span>
+    <span data-phrase="spec.my-driving-licence.note1">One colour photograph of &#x2066;25 x 32&#x2069; mm on white &mdash; nothing like the &#x2066;35 x 50&#x2069; of the Malaysian passport. The road transport department&rsquo;s English page says &ldquo;black background&rdquo;; its Malay page says putih, white, and the Malay is the original.</span>
+    <span data-phrase="spec.in-driving-licence.note1">The Sarathi portal wants a passport-shaped photograph of at least &#x2066;420 x 525&#x2069; pixels in a file of 10 to 20 KB, which is very small: the upload written here is squeezed hard to fit, and a plain, evenly lit background is what leaves room for the face. Light-coloured background, white for preference; religious headwear is allowed, caps and dark glasses are not.</span>
+    <span data-phrase="spec.ca-firearms-licence.doc">Firearms licence (PAL)</span>
+    <span data-phrase="spec.ca-firearms-licence.note1">A size of its own, &#x2066;45 x 57&#x2069; mm, with a head of at least 30 mm and no maximum published &mdash; the upper end of the band here is this tool&rsquo;s. The file must be a JPG between 200 KB and 6 MB. It may be a year old and in black and white, tinted prescription lenses are refused even when the eyes show, and on a first application a guarantor signs the back of the print.</span>
+    <span data-phrase="spec.ru-internal-passport.doc">Internal passport</span>
+    <span data-phrase="spec.ru-internal-passport.note1">Two prints of &#x2066;35 x 45&#x2069; mm on white, colour or black and white. The regulation caps the head at 80 per cent of the height and leaves 5 mm, give or take one, clear above it; the lower end of the band here is this tool&rsquo;s. Somebody who always wears glasses must be photographed in them, without tinted lenses; no uniform, no coat, no scarf over the chin, and nothing edited to improve how anyone looks. Read from the published text of the interior ministry&rsquo;s order, whose own site does not answer from here.</span>
+    <span data-phrase="spec.za-driving-licence.note1">South Africa asks for black-and-white photographs: two identical prints of &#x2066;45 x 35&#x2069; mm in the Western Cape, four at some centres &mdash; ask yours how many before paying for them. Nothing here removes the colour, so have the shop print it in black and white. No head size is published.</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Common practice</span>
     <span data-phrase="source.common.doc">The &#x2066;35 x 45&#x2069; mm stationer standard, not a published rule</span>

@@ -130,8 +130,8 @@ body = """
 [[howto]]
 title = "Wählen Sie Land und Dokument."
 body = """
- Tippen Sie in das Feld, wenn das Land
-      weit unten in der Liste steht, und wählen Sie dann, welches Dokument dieses
+ Tippen Sie den Namen des Landes in das Feld oder
+      öffnen Sie dessen Liste, und wählen Sie dann, welches Dokument dieses
       Landes Sie beantragen. Die Tafel zeigt dann Druckgröße,
       Kopfhöhenband, Augenlinie, Hintergrundfarbe und Upload-Grenzen dieser
       Vorschrift, jeweils mit der Behörde, aus der die Zahl stammt, und dem Datum, an
@@ -189,7 +189,7 @@ a = """
         jedem neuen Eintrag ge&auml;ndert werden m&uuml;sste. Also: Jeder Eintrag ist von der
         Beh&ouml;rde &uuml;bertragen, die ihn ver&ouml;ffentlicht hat, und jeder Eintrag nennt diese
         Beh&ouml;rde und das Datum, an dem er abgelesen wurde, direkt unter den Zahlen. Die
-        Auswahl ist die Liste &mdash; tippen Sie ein Land in das Feld dar&uuml;ber,
+        Auswahl ist die Liste &mdash; tippen Sie ein Land hinein,
         und Sie wissen in einer Sekunde, ob es dabei ist. Was nicht dabei ist, kommt
         unter &bdquo;Irgendwo anders&ldquo; hinein, wo Sie jede Zahl selbst eintippen; da
         der gr&ouml;&szlig;te Teil der Welt nach der ICAO-Geometrie ausstellt, beginnt dieser

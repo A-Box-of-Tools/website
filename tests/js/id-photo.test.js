@@ -27,8 +27,8 @@ import assert from 'node:assert/strict';
 
 import {
   BACKGROUNDS, ICAO_EYE, ICAO_HEAD, SPECS, backgroundOf, countryLabel,
-  documentLabel, orderedCountries, pixelLabel, portalBytes, portalPixels,
-  printLabel, specById, specsByCountry, specsOf, trim, withCustom,
+  documentLabel, matchCountries, orderedCountries, pixelLabel, portalBytes,
+  portalPixels, printLabel, specById, specsByCountry, specsOf, trim, withCustom,
 } from '../../tools/id-photo/src/specs.js';
 import {
   checkBand, containIn, faceOf, fitFrame, frameAspect, guideLines, measure,
@@ -184,6 +184,55 @@ test('orderedCountries: the reader\'s own alphabet, with two places kept', () =>
     new Set(groups.map((group) => group.country)),
     new Set(specsByCountry().map((group) => group.country)),
     'a country was lost or invented on the way through');
+});
+
+test('matchCountries: the row Enter takes is the one that was meant', () => {
+  // Hand-built rather than read from the rulebook: what is under test is the
+  // ranking, and a list that changes every time a country is added would make
+  // the expected order somebody's guess.
+  const names = { 'doc.passport': 'Passport', 'doc.card': 'PR card' };
+  const t = (key, values) => (values ? `${values.name} (${values.native})` : names[key] ?? key);
+  const one = (country, label, ...documents) => ({
+    country,
+    label,
+    specs: documents.map((document) => ({ document, native: null })),
+  });
+  const list = [
+    one('ar', 'Argentina', 'doc.passport'),
+    one('ca', 'Canada', 'doc.passport', 'doc.card'),
+    one('cn', 'China (中国)', 'doc.passport'),
+    one('in', 'India (भारत)', 'doc.passport'),
+    one('id', 'Indonesia', 'doc.passport'),
+    one('uk', 'United Kingdom', 'doc.passport'),
+    one('tr', 'Türkiye', 'doc.passport'),
+  ];
+  const found = (typed) => matchCountries(list, typed, t).map((entry) => entry.country);
+
+  assert.deepEqual(found(''), list.map((entry) => entry.country), 'nothing typed is not every row');
+  assert.deepEqual(found('   '), list.map((entry) => entry.country));
+
+  // A name that starts with the text, then a word that does, then the rest -
+  // and inside a rank the order the list came in, which is the page's alphabet.
+  assert.deepEqual(found('in'), ['in', 'id', 'ar', 'cn', 'uk']);
+  assert.deepEqual(found('king'), ['uk']);
+
+  // The endonym is part of the label, diacritics and case fold away, and a
+  // country is found through a document only it lists.
+  assert.deepEqual(found('中国'), ['cn']);
+  assert.deepEqual(found('TURKIYE'), ['tr']);
+  assert.deepEqual(found('pr card'), ['ca']);
+  assert.equal(found('passport').length, list.length);
+
+  assert.deepEqual(found('zzz'), []);
+});
+
+test('matchCountries: every real country is found by its own name', () => {
+  const compare = (a, b) => a.localeCompare(b, 'en');
+  const groups = orderedCountries(say, compare);
+  for (const group of groups) {
+    const [first] = matchCountries(groups, group.label, say);
+    assert.equal(first.country, group.country, `${group.label} does not find itself first`);
+  }
 });
 
 test('specsOf: one country\'s documents, in the table\'s order', () => {

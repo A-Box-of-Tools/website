@@ -71,6 +71,10 @@ export const BACKGROUNDS = {
   'light-grey': { id: 'light-grey', hex: '#dcdcdc', tolerance: 20 },
   cream: { id: 'cream', hex: '#ebe4d7', tolerance: 22 },
 
+  // Indonesia asks for blue, and no particular blue, so the check is wide. The
+  // hex is the swatch and what a transparent picture is flattened onto.
+  blue: { id: 'blue', hex: '#2f6fc4', tolerance: 38 },
+
   // A rule that names several colours. `hex` is still what the swatch shows and
   // what a transparent picture is flattened onto; `accepts` is what the reading
   // is measured against, nearest first. Averaging the three into one hex would
@@ -302,6 +306,22 @@ const RULES = [
   },
 
   {
+    id: 'uk-ni-driving-licence',
+    country: 'country.uk',
+    document: 'spec.uk-ni-driving-licence.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // No head size is published, only a shaded band for the eyes in a diagram.
+    // The passport's band is what a booth will have used, so it is shown, and
+    // marked as guidance.
+    head: mmBand(29, 34, 45, true),
+    eye: band(0.50, 0.62, true),
+    background: 'cream',
+    digital: null,
+    notes: ['spec.uk-ni-driving-licence.note1', 'note.head-loose'],
+  },
+
+  {
     id: 'schengen',
     country: 'country.schengen',
     document: 'spec.schengen.doc',
@@ -325,6 +345,19 @@ const RULES = [
     background: 'light-grey',
     digital: null,
     notes: ['spec.de-passport.note1', 'spec.de-passport.note2'],
+  },
+
+  {
+    id: 'de-health-card',
+    country: 'country.de',
+    document: 'doc.health-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.de-health-card.note1', 'note.head-advisory'],
   },
 
   {
@@ -357,6 +390,35 @@ const RULES = [
   },
 
   {
+    id: 'it-id-card',
+    country: 'country.it',
+    document: 'doc.id-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80),
+    eye: mmBand(23, 31, 45),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.it-id-card.note1'],
+  },
+
+  {
+    id: 'it-driving-licence',
+    country: 'country.it',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // The circular gives the head twice and the two do not agree: 60 to 90 per
+    // cent in its text, 28 to 32 mm under its figure. The millimetres are the
+    // narrower claim and sit inside the percentages, so they are what is held.
+    head: mmBand(28, 32, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.it-driving-licence.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'nl-passport',
     country: 'country.nl',
     document: 'doc.passport-id-licence',
@@ -385,6 +447,19 @@ const RULES = [
   },
 
   {
+    id: 'es-driving-licence',
+    country: 'country.es',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 26, heightMm: 32, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.es-driving-licence.note1', 'note.head-advisory'],
+  },
+
+  {
     id: 'ie-passport',
     country: 'country.ie',
     document: 'doc.passport',
@@ -410,8 +485,33 @@ const RULES = [
     eye: mmBand(20, 30, 45),
     background: 'white-or-grey',
     crown: 'skull',
-    digital: null,
-    notes: ['note.crown-skull', 'spec.pl-passport.note1'],
+    digital: {
+      label: 'upload.online',
+      width: { min: 492 },
+      height: { min: 633 },
+      bytes: { max: 2.5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['note.crown-skull', 'spec.pl-passport.note1', 'spec.pl-passport.note2'],
+  },
+
+  {
+    id: 'pl-driving-licence',
+    country: 'country.pl',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80),
+    eye: band(0.50, 0.60, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 480 },
+      height: { exact: 615 },
+      bytes: { max: 100 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.pl-driving-licence.note1', 'note.eye-advisory'],
   },
 
   {
@@ -429,6 +529,20 @@ const RULES = [
   },
 
   {
+    id: 'ch-driving-licence',
+    country: 'country.ch',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(29, 34, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'light-unstated',
+    crown: 'skull',
+    digital: null,
+    notes: ['spec.ch-driving-licence.note1', 'note.crown-skull', 'note.eye-advisory'],
+  },
+
+  {
     id: 'se-passport',
     country: 'country.se',
     document: 'doc.passport-id',
@@ -440,6 +554,35 @@ const RULES = [
     published: 'words',
     digital: null,
     notes: ['spec.se-passport.note1', 'note.no-measurements', 'note.taken-at-the-office'],
+  },
+
+  {
+    id: 'se-driving-licence',
+    country: 'country.se',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // Sweden measures pupil to chin, 14 to 17 mm, which is neither of the two
+    // things this tool measures. On most faces that is a head of 31 to 37 mm,
+    // so the ICAO band shown lands inside it; it stays guidance.
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.se-driving-licence.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'dk-driving-licence',
+    country: 'country.dk',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(30, 36, 45),
+    eye: band(0.50, 0.62, true),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.dk-driving-licence.note1', 'note.eye-advisory'],
   },
 
   {
@@ -495,6 +638,22 @@ const RULES = [
     background: 'white',
     digital: null,
     notes: ['spec.ru-passport-5.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'ru-internal-passport',
+    country: 'country.ru',
+    document: 'spec.ru-internal-passport.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    // Only the ceiling is published: "no more than eighty per cent", with
+    // 5 mm, give or take one, clear above the head. The floor is this table's
+    // and is set low, so that nothing the regulation allows is painted red.
+    head: band(0.60, 0.80),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.ru-internal-passport.note1', 'note.eye-advisory'],
   },
 
   {
@@ -567,6 +726,25 @@ const RULES = [
     crown: 'skull',
     digital: null,
     notes: ['spec.ca-visa.note1', 'note.crown-skull', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'ca-firearms-licence',
+    country: 'country.ca',
+    document: 'spec.ca-firearms-licence.doc',
+    kind: 'portrait',
+    print: { widthMm: 45, heightMm: 57, dpi: 300 },
+    head: mmBand(30, 45, 57),
+    eye: band(0.50, 0.68, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { min: 531 },
+      height: { min: 673 },
+      bytes: { min: 200 * 1024, max: 6 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.ca-firearms-licence.note1', 'note.eye-advisory'],
   },
 
   {
@@ -685,6 +863,25 @@ const RULES = [
   },
 
   {
+    id: 'in-driving-licence',
+    country: 'country.in',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white-or-light',
+    digital: {
+      label: 'upload.online',
+      width: { min: 420 },
+      height: { min: 525 },
+      bytes: { min: 10 * 1024, max: 20 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.in-driving-licence.note1', 'note.head-advisory'],
+  },
+
+  {
     id: 'in-print-35x45',
     country: 'country.in',
     document: 'spec.in-print-35x45.doc',
@@ -796,6 +993,32 @@ const RULES = [
   },
 
   {
+    id: 'cn-id-card',
+    country: 'country.cn',
+    document: 'doc.id-card',
+    kind: 'portrait',
+    print: { widthMm: 26, heightMm: 32, dpi: 300 },
+    head: band(0.60, 0.72, true),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.cn-id-card.note1', 'note.head-loose'],
+  },
+
+  {
+    id: 'cn-driving-licence',
+    country: 'country.cn',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 22, heightMm: 32, dpi: 300 },
+    head: mmBand(19, 22, 32),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.cn-driving-licence.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'jp-passport',
     country: 'country.jp',
     document: 'spec.jp-passport.doc',
@@ -820,6 +1043,51 @@ const RULES = [
     digital: null,
     notes: ['spec.jp-resume.note1', 'note.studio-size'],
     source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
+    id: 'jp-mynumber',
+    country: 'country.jp',
+    document: 'spec.jp-mynumber.doc',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: {
+      label: 'upload.online',
+      width: { min: 480 },
+      height: { min: 617 },
+      bytes: { min: 20 * 1024, max: 7 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.jp-mynumber.note1', 'note.head-loose'],
+  },
+
+  {
+    id: 'jp-residence-card',
+    country: 'country.jp',
+    document: 'doc.residence-card',
+    kind: 'portrait',
+    print: { widthMm: 30, heightMm: 40, dpi: 300 },
+    head: mmBand(22, 28, 40),
+    eye: band(0.45, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.jp-residence-card.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'jp-driving-licence',
+    country: 'country.jp',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 24, heightMm: 30, dpi: 300 },
+    head: band(0.55, 0.75, true),
+    eye: band(0.50, 0.65, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.jp-driving-licence.note1', 'note.head-loose'],
   },
 
   {
@@ -854,6 +1122,38 @@ const RULES = [
     digital: null,
     notes: ['spec.kr-banmyeongham.note1', 'note.studio-size'],
     source: { authority: 'source.studio', document: 'source.studio.doc', checked: '2026-09-17' },
+  },
+
+  {
+    id: 'kr-driving-licence',
+    country: 'country.kr',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 413 },
+      height: { exact: 531 },
+      bytes: { max: 500 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.kr-driving-licence.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'kr-id-card',
+    country: 'country.kr',
+    document: 'doc.id-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'white-or-light',
+    digital: null,
+    notes: ['spec.kr-id-card.note1', 'note.head-advisory'],
   },
 
   {
@@ -929,6 +1229,25 @@ const RULES = [
   },
 
   {
+    id: 'tw-id-card',
+    country: 'country.tw',
+    document: 'doc.id-card',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: mmBand(32, 36, 45),
+    eye: band(0.50, 0.60, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { min: 413 },
+      height: { min: 531 },
+      bytes: { max: 5 * 1024 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.tw-id-card.note1', 'note.eye-advisory'],
+  },
+
+  {
     id: 'vn-passport',
     country: 'country.vn',
     document: 'doc.passport',
@@ -939,6 +1258,25 @@ const RULES = [
     background: 'white',
     digital: null,
     notes: ['spec.vn-passport.note1', 'note.head-advisory'],
+  },
+
+  {
+    id: 'vn-driving-licence',
+    country: 'country.vn',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 30, heightMm: 40, dpi: 300 },
+    head: band(0.65, 0.80, true),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: {
+      label: 'upload.online',
+      width: { min: 473 },
+      height: { min: 630 },
+      bytes: { max: 700 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.vn-driving-licence.note1', 'note.head-loose'],
   },
 
   {
@@ -1022,6 +1360,25 @@ const RULES = [
   },
 
   {
+    id: 'id-driving-licence',
+    country: 'country.id',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: null,
+    head: band(0.55, 0.75, true),
+    eye: band(0.50, 0.65, true),
+    background: 'blue',
+    digital: {
+      label: 'upload.online',
+      width: { exact: 480 },
+      height: { exact: 640 },
+      bytes: { max: 100 * 1024 },
+      format: 'image/jpeg',
+    },
+    notes: ['spec.id-driving-licence.note1', 'note.head-loose'],
+  },
+
+  {
     id: 'my-passport',
     country: 'country.my',
     document: 'doc.passport',
@@ -1055,6 +1412,19 @@ const RULES = [
       format: 'image/jpeg',
     },
     notes: ['spec.my-expat-pass.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'my-driving-licence',
+    country: 'country.my',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 25, heightMm: 32, dpi: 300 },
+    head: band(0.65, 0.80, true),
+    eye: band(0.50, 0.62, true),
+    background: 'white',
+    digital: null,
+    notes: ['spec.my-driving-licence.note1', 'note.head-loose'],
   },
 
   {
@@ -1195,6 +1565,19 @@ const RULES = [
     background: 'cream',
     digital: null,
     notes: ['spec.za-passport.note1', 'note.eye-advisory'],
+  },
+
+  {
+    id: 'za-driving-licence',
+    country: 'country.za',
+    document: 'doc.driving-licence',
+    kind: 'portrait',
+    print: { widthMm: 35, heightMm: 45, dpi: 300 },
+    head: band(0.70, 0.80, true),
+    eye: band(0.50, 0.60, true),
+    background: 'light-unstated',
+    digital: null,
+    notes: ['spec.za-driving-licence.note1', 'note.head-advisory'],
   },
 
   {
@@ -1361,6 +1744,45 @@ export function orderedCountries(t, compare) {
     .map((group) => ({ ...group, label: countryLabel(group.country, t) }))
     .sort((a, b) => place(a.country) - place(b.country)
       || compare(a.label, b.label));
+}
+
+/** Diacritics folded away and case with them, so "turkiye" finds Türkiye. */
+const folded = (text) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+
+/**
+ * The countries that answer what has been typed, best answer first.
+ *
+ * Both the rendered name and the endonym are searched - they are one label -
+ * and so is every document the country lists, so "Deutschland" finds Germany on
+ * the Chinese page and "PR card" finds Canada on any of them.
+ *
+ * Ranked rather than left in the alphabet's order, because the first row is the
+ * one the Enter key takes. "in" is inside Argentina, China and the Philippines
+ * and is the start of India and Indonesia; somebody typing it means the last
+ * two. A name that begins with the text comes first, then a name with a word
+ * that does, then a name that merely contains it, then a country found only
+ * through one of its documents. Inside a rank the order is the caller's, which
+ * is the page's own alphabet.
+ *
+ * @param {ReturnType<typeof orderedCountries>} countries
+ * @param {string} typed
+ * @param {(key: string, values?: object) => string} t
+ */
+export function matchCountries(countries, typed, t) {
+  const want = folded(typed.trim());
+  if (!want) return countries;
+  const rank = (one) => {
+    const label = folded(one.label);
+    if (label.startsWith(want)) return 0;
+    if (label.split(/[\s(/,-]+/).some((word) => word.startsWith(want))) return 1;
+    if (label.includes(want)) return 2;
+    return one.specs.some((spec) => folded(documentLabel(spec, t)).includes(want)) ? 3 : 4;
+  };
+  return countries
+    .map((one, index) => ({ one, index, rank: rank(one) }))
+    .filter((entry) => entry.rank < 4)
+    .sort((a, b) => a.rank - b.rank || a.index - b.index)
+    .map((entry) => entry.one);
 }
 
 /**

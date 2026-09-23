@@ -3,10 +3,11 @@
 import { ltr, phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  SPECS, backgroundOf, countryLabel, documentLabel, orderedCountries,
-  portalBytes, portalPixels, specById, specFromHash, specsOf, trim,
-  withCustom,
+  SPECS, backgroundOf, countryLabel, documentLabel, matchCountries,
+  orderedCountries, portalBytes, portalPixels, specById, specFromHash, specsOf,
+  trim, withCustom,
 } from './specs.js';
+import { createCombo } from './combo.js';
 import {
   fitFrame, frameAspect, guideLines, measure, passes, printPixels, resampling,
 } from './geometry.js';
@@ -39,9 +40,11 @@ const el = {
   clearPhoto: $('clear-photo'),
   loadError: $('load-error'),
 
-  countryFilter: $('country-filter'),
   filterNote: $('filter-note'),
+  countryCombo: $('country-combo'),
   country: $('country'),
+  countryList: $('country-list'),
+  countryToggle: $('country-toggle'),
   docList: $('doc-list'),
   outcome: $('outcome'),
   outcomeCanvas: $('outcome-canvas'),
@@ -198,49 +201,58 @@ function currentSpec() {
 /** The page's own language, for sorting country names by it. */
 const collator = new Intl.Collator(document.documentElement.lang || 'en');
 
-/** Diacritics folded away, so "turkiye" finds Türkiye. */
-const fold = (text) => text.normalize('NFD')
-  .replace(/\p{Diacritic}/gu, '').toLowerCase();
-
 /**
- * The country list, narrowed to what was typed.
+ * The country chooser: one box, typed into, and the list it narrows.
  *
- * Rebuilt rather than hidden option by option: `option[hidden]` is honoured
- * unevenly and stays reachable from the keyboard in some builds, and thirty
- * options is nothing to build again. The chosen country is emitted whatever the
- * text says - a filter that quietly moved the selection would change which
- * rule the crop box is obeying, silently, while somebody was still typing.
- *
- * Both the rendered name and the endonym are searched, so "Deutschland" finds
- * Germany on the Chinese page and "护照" finds China on the English one.
+ * combo.js is the control and says why it is one control rather than the two
+ * it used to be; specs.js ranks the answers. What is left here is what only
+ * this page knows - which country is chosen, what choosing another one sets
+ * off, and the sentence that counts the matches.
  */
-function buildCountrySelect() {
-  const want = fold(el.countryFilter.value.trim());
-  const chosen = currentSpec().country;
-  const countries = orderedCountries(phrase, collator.compare);
-  const matches = want
-    ? countries.filter((one) => fold(one.label).includes(want)
-      || one.specs.some((spec) => fold(documentLabel(spec, phrase)).includes(want)))
-    : countries;
+const countries = orderedCountries(phrase, collator.compare);
+// Each row says which rules are behind it. Nothing on the page reads that: it
+// is for the browser suite in the QA repository, which has to reach a rule by
+// its id and would otherwise need either a rulebook of its own, with nothing
+// to keep it in step with this one, or to open every country in turn until
+// the right radio appears - which it did, and which took longer than a test
+// is given once the list passed forty.
+const asRow = (one) => ({
+  value: one.country,
+  label: one.label,
+  data: { rules: one.specs.map((spec) => spec.id).join(' ') },
+});
 
-  const shown = matches.some((one) => one.country === chosen)
-    ? matches
-    : [...matches, ...countries.filter((one) => one.country === chosen)];
-
-  el.country.replaceChildren(...shown.map((one) => {
-    const option = document.createElement('option');
-    option.value = one.country;
-    option.textContent = one.label;
-    return option;
-  }));
-  el.country.value = chosen;
-
-  el.filterNote.textContent = want
-    ? phrase(matches.length === 0 ? 'filter.none'
-      : matches.length === 1 ? 'filter.one' : 'filter.count',
-    { n: matches.length })
-    : '';
-}
+const countryCombo = createCombo({
+  root: el.countryCombo,
+  input: el.country,
+  list: el.countryList,
+  toggle: el.countryToggle,
+  rowsFor: (typed) => matchCountries(countries, typed, phrase).map(asRow),
+  chosen: () => {
+    const key = currentSpec().country;
+    return { value: key, label: countryLabel(key, phrase) };
+  },
+  onChoose: (key) => {
+    if (key === currentSpec().country) return;
+    // Picking a country picks its first document, so the panel is never
+    // showing a country whose rule nothing is being measured against.
+    const [first] = specsOf(key);
+    if (!first) return;
+    specId = first.id;
+    buildDocList();
+    renderSpec();
+    readBackgroundNow();
+  },
+  onNarrow: (count) => {
+    // Said aloud every time, shown only when it is news: with rows on screen
+    // the count is the rows, and the open list would be lying over the line
+    // anyway. "Nothing matches" has no rows to say it, so that one is seen.
+    el.filterNote.classList.toggle('visually-hidden', count !== null && count > 0);
+    el.filterNote.textContent = count === null ? ''
+      : phrase(count === 0 ? 'filter.none' : count === 1 ? 'filter.one' : 'filter.count',
+        { n: count });
+  },
+});
 
 /**
  * One country's documents, as the radio rows under the chooser.
@@ -883,17 +895,6 @@ el.readButton.addEventListener('click', readRules);
 el.make.addEventListener('click', run);
 el.printDpi.addEventListener('change', () => { renderSpec(); });
 el.paper.addEventListener('change', renderPaperNote);
-el.countryFilter.addEventListener('input', buildCountrySelect);
-el.country.addEventListener('change', () => {
-  // Picking a country picks its first document, so the panel is never showing
-  // a country whose rule nothing is being measured against.
-  const [first] = specsOf(el.country.value);
-  if (!first) return;
-  specId = first.id;
-  buildDocList();
-  renderSpec();
-  readBackgroundNow();
-});
 for (const input of Object.values(CUSTOM_FIELDS)) {
   input.addEventListener('change', () => { renderSpec(); readBackgroundNow(); });
 }
@@ -1074,7 +1075,7 @@ window.addEventListener('unhandledrejection', (event) => {
   showLoadError(phrase('error.broke', { detail: event.reason?.message ?? event.reason }));
 });
 
-buildCountrySelect();
+countryCombo.refresh();
 buildDocList();
 buildPaperSelect();
 renderSpec();

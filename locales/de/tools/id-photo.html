@@ -33,10 +33,29 @@
     </p>
 
     <div class="picker">
+      <!--
+        One control: the box is typed into and the list under it narrows. The
+        list is empty here and filled by src/main.js, so no copy of this file
+        ever lists a country. src/combo.js says why it is not a <select>.
+      -->
       <div class="option-row">
-        <label for="country-filter">Land suchen</label>
-        <input type="search" id="country-filter" class="country-filter"
-               autocomplete="off" spellcheck="false" enterkeyhint="search">
+        <label for="country" id="country-label">Land</label>
+        <div class="combo" id="country-combo">
+          <input type="text" id="country" class="combo-input" role="combobox"
+                 aria-autocomplete="list" aria-expanded="false"
+                 aria-controls="country-list" placeholder="Tippen, um ein Land zu finden"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="done">
+          <button type="button" id="country-toggle" class="combo-toggle"
+                  tabindex="-1" aria-label="Alle Länder zeigen">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                 focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round"/></svg>
+          </button>
+          <ul id="country-list" class="combo-list" role="listbox"
+              aria-labelledby="country-label" hidden></ul>
+        </div>
       </div>
       <!--
         Written into as the list narrows, so it is empty here: buildlib/cards.py
@@ -44,11 +63,6 @@
         and it tells the two apart by whether the markup has anything in it.
       -->
       <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
-
-      <div class="option-row">
-        <label for="country">Land</label>
-        <select id="country"></select>
-      </div>
 
       <p id="doc-label" class="doc-label">Dokument</p>
       <div id="doc-list" class="doc-list" role="radiogroup"
@@ -389,7 +403,7 @@
       weit eher diese verwendet als irgendetwas anderes.</span>
     <span data-phrase="filter.one">Ein Land passt.</span>
     <span data-phrase="filter.count">{n} Länder passen.</span>
-    <span data-phrase="filter.none">Dazu passt nichts. In der Liste steht nur noch das Land, das Sie schon gewählt haben.</span>
+    <span data-phrase="filter.none">Dazu passt nichts. Versuchen Sie den Namen, den das Land sich selbst gibt, oder wählen Sie &bdquo;Irgendwo anders&ldquo; und tippen Sie die Zahlen ein.</span>
     <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
     <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
     <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
@@ -534,6 +548,43 @@
     <span data-phrase="spec.ru-passport.note1">Für den zehnjährigen biometrischen Pass werden gar keine Fotos abgegeben: Die Konsularabteilung nimmt das Foto selbst auf. Veröffentlicht ist, was man nicht tragen darf &mdash; keine getönte Brille und keine Uniform &mdash; und dass eine Kopfbedeckung nur erlaubt ist, wo die Religion sie verlangt und das Gesichtsoval frei bleibt. Ein Kind unter sechs muss sich dort fotografieren lassen, weshalb für solche Kinder der fünfjährige Pass empfohlen wird.</span>
     <span data-phrase="spec.ru-passport-5.doc">Reisepass, fünf Jahre</span>
     <span data-phrase="spec.ru-passport-5.note1">Der ältere fünfjährige Pass ist der, für den noch Abzüge verlangt werden: drei identische Fotos von &#x2066;35 x 45&#x2069; mm, streng frontal, auf Weiß ohne Streifen, Flecken oder Schatten, Gesicht und oberer Schulterbereich mittig, wobei das Gesicht 70 bis 80 Prozent füllt. Schwarzweiß wird ebenso angenommen wie Farbe. Keine getönte Brille und keine Uniform.</span>
+    <span data-phrase="country.dk">Dänemark</span>
+    <span data-phrase="doc.driving-licence">Führerschein</span>
+    <span data-phrase="doc.id-card">Personalausweis</span>
+    <span data-phrase="doc.health-card">Gesundheitskarte</span>
+    <span data-phrase="spec.uk-ni-driving-licence.doc">Führerschein, Nordirland</span>
+    <span data-phrase="spec.uk-ni-driving-licence.note1">Nordirland veröffentlicht eine eigene Vorschrift; die DVLA in Großbritannien verlangt nur &bdquo;ein aktuelles gedrucktes Foto im Passformat&ldquo;, also den Passeintrag. Hier darf das Foto höchstens einen Monat alt sein, auf Hellgrau oder Creme, in Farbe, und die Seite sagt, man solle einen Abzug nicht auf &#x2066;45 x 35&#x2069; mm zurechtschneiden und ein zu Hause gedruckter sei kaum gut genug. Online ist es wieder anders: &bdquo;Schneiden Sie Ihr Foto nicht zu &mdash; das wird für Sie erledigt&ldquo;, schicken Sie dort also die Aufnahme, wie sie aus der Kamera kam.</span>
+    <span data-phrase="spec.de-health-card.note1">Das Foto auf der Gesundheitskarte muss nicht biometrisch sein, und jede gesetzliche Kasse formuliert es selbst; das hier ist die Fassung der Techniker Krankenkasse. &#x2066;35 x 45&#x2069; mm, farbig oder schwarz-weiß, Hintergrund &bdquo;möglichst neutral&ldquo;, kein Hut und keine Mütze, und ein digitales Bild von mindestens &#x2066;300 x 400&#x2069; Pixeln als JPG, PNG oder BMP. Schauen Sie vor dem Hochladen auf die Seite Ihrer eigenen Kasse: Manche nehmen das Bild stattdessen in ihrer App auf.</span>
+    <span data-phrase="spec.it-id-card.note1">Der elektronische Personalausweis veröffentlicht, was der italienische Pass nicht nennt: ein Gesicht von 70 bis 80 Prozent und eine Augenlinie 23 bis 31 mm über der Unterkante, auf einfarbigem Hintergrund, vorzugsweise Hellblau, Beige, Hellbraun, Hellgrau oder Weiß. Außerdem heißt es, das Foto dürfe weder zugeschnitten werden, um den Hintergrund zu entfernen oder den Kopf gerade zu richten, noch retuschiert &mdash; richten Sie es also schon in der Kamera gerade aus und lassen Sie hier nur die Ränder beschneiden.</span>
+    <span data-phrase="spec.it-driving-licence.note1">Das Rundschreiben des Ministeriums nennt das Format als Spanne, 40 bis 45 mm hoch und 32 bis 35 breit, und den Kopf gleich zweimal: 60 bis 90 Prozent der Höhe im Text und 28 bis 32 mm unter der Abbildung. Die Millimeter liegen innerhalb der Prozente und werden hier angewendet. Hintergrund vorzugsweise Hellgrau, Creme oder Hellblau, sonst Weiß; mattes Papier wird empfohlen; mehrere Fotos für einen Antrag müssen identisch sein.</span>
+    <span data-phrase="spec.es-driving-licence.note1">Dieselben kleinen &#x2066;32 x 26&#x2069; mm wie beim DNI, in Farbe, auf einfarbigem Hintergrund &mdash; beim DNI muss er weiß sein, hier nur schlicht. Seit dem 6. November 2024 wird kein Foto mehr verlangt, wenn der DGT schon eines vorliegt, und ein ärztliches Zentrum, das die Verlängerung abwickelt, nimmt es vor Ort auf; der Eintrag ist für die Fälle, die übrig bleiben.</span>
+    <span data-phrase="spec.pl-driving-licence.note1">Lesen Sie das, bevor Sie den Upload verwenden. Polen erlaubt, das Foto als Datei abzugeben, und legt sie auf das Pixel genau fest: &#x2066;480 x 615&#x2069;, höchstens 100 KB, Kompressionsqualität mindestens 80 &mdash; und ein JPEG mit EXIF-Kopf, der das Aufnahmedatum trägt. Die hier geschriebene Datei hat Größe und Gewicht, aber keinen EXIF-Kopf. Nutzen Sie sie, um zu sehen, was passt, und geben Sie den Abzug ab oder eine Datei aus einer Kamera, die das Datum schreibt.</span>
+    <span data-phrase="spec.pl-passport.note2">Ein Personalausweis lässt sich online beantragen, mit einer Datei von mindestens &#x2066;492 x 633&#x2069; Pixeln und höchstens 2,5 MB &mdash; das ist der Upload, der hier geschrieben wird. Ein Reisepass nicht, außer für ein Kind unter zwölf, und dafür sind &#x2066;768 x 1004&#x2069; verlangt.</span>
+    <span data-phrase="spec.ch-driving-licence.note1">Die Schweiz veröffentlicht für den Pass keine Zahlen, für den Führerausweis schon: ein Gesicht von 29 bis 34 mm, vor einfarbigem, neutralem Hintergrund, in Farbe, obwohl der Ausweis es grau druckt, und höchstens ein Jahr alt. Randlos, auf glattem Hochglanz- oder Halbmatt-Fotopapier und mit eckigen Ecken &mdash; ein Abzug mit abgerundeten wird abgelehnt.</span>
+    <span data-phrase="spec.se-driving-licence.note1">Schweden misst hier von der Pupille bis zur Kinnspitze, 14 bis 17 mm, und das ist keine der beiden Strecken, die dieses Werkzeug misst; bei den meisten Gesichtern entspricht es einem Kopf von 31 bis 37 mm, das gezeigte Band liegt also darin. Ein Abzug, sauber auf &#x2066;35 x 45&#x2069; mm geschnitten, mit runden oder scharfen Ecken, vor hellem Hintergrund ohne Schatten. Schwarz-weiß wird angenommen &mdash; der Führerschein druckt es ohnehin so &mdash;, Kopfbedeckung und getönte Brille nicht.</span>
+    <span data-phrase="spec.dk-driving-licence.note1">Dänemark misst den Kopf bis zur Oberkante der Haare, 30 bis 36 mm, und genau so misst dieses Werkzeug; es gibt also nichts zu korrigieren. Ein einfarbiger heller Hintergrund &mdash; als Beispiele nennt es Hellblau und Hellgrau &mdash; und ein deutlich kontrastierender bei weißem oder hellem Haar oder hellem Kopftuch. Farbe oder schwarz-weiß.</span>
+    <span data-phrase="doc.residence-card">Aufenthaltskarte</span>
+    <span data-phrase="bg.blue.label">Schlichtes Blau</span>
+    <span data-phrase="bg.blue.inline">schlichtes Blau</span>
+    <span data-phrase="bg.blue.note">Blau ist, was diese Vorschrift verlangt, und ein bestimmtes Blau ist nicht veröffentlicht; die Prüfung ist deshalb weit. Verlangt ist außerdem der echte Hintergrund und kein hineinbearbeiteter; hier wird kein Hintergrund verändert, stellen Sie sich also vor eine blaue Wand oder ein blaues Tuch.</span>
+    <span data-phrase="spec.cn-id-card.note1">Der Personalausweis ist kleiner als jedes Passformat: &#x2066;26 x 32&#x2069; mm, auf Weiß ohne Rand, der Kopf etwa zwei Drittel des Bildes und das Gesicht 15 mm breit, plus oder minus einen, zwischen den Ohransätzen. Keine Uniform und kein weißes Oberteil; wer immer eine Brille trägt, trägt sie. Die meisten Polizeiwachen nehmen dieses Foto selbst auf oder schicken Sie in ein von ihnen benanntes Studio &mdash; fragen Sie, bevor Sie eines drucken.</span>
+    <span data-phrase="spec.cn-driving-licence.note1">Das &bdquo;Ein-Zoll&ldquo;-Foto für den Führerschein misst &#x2066;22 x 32&#x2069; mm und ist schmaler als das Ein-Zoll-Studioformat in dieser Liste: Kopf 19 bis 22 mm lang und 14 bis 16 breit, auf Weiß, in Farbe, höchstens sechs Monate alt, keine Uniform. Das sind die Zahlen der Pekinger Verkehrspolizei; andere Städte veröffentlichen dasselbe Format.</span>
+    <span data-phrase="spec.jp-mynumber.doc">My-Number-Karte</span>
+    <span data-phrase="spec.jp-mynumber.note1">Per Post ist es ein Abzug von &#x2066;45 x 35&#x2069; mm mit Namen und Geburtsdatum auf der Rückseite; online ein JPEG in RGB zwischen 20 KB und 7 MB, jede Seite 480 bis 6000 Pixel, und eine Form ist nicht genannt &mdash; geschrieben wird die des Abzugs. Die 34 mm Gesichtshöhe der Skizze, plus oder minus zwei, sind als Anhaltspunkt bezeichnet und werden auch so gezeigt. Schwarz-weiß wird angenommen. Ein mit Bildbearbeitung behandeltes Foto kann abgelehnt werden; vergleichen Sie es mit den Beispielen auf der Seite.</span>
+    <span data-phrase="spec.jp-residence-card.note1">Kleiner als das Passfoto und mit eigenen Zahlen: &#x2066;30 x 40&#x2069; mm, ein Kopf von 25 mm, plus oder minus drei, gemessen von der Oberkante der Haare bis zum Kinn, und 5 mm frei darüber. Kein Hut, kein Hintergrund und kein Schatten, höchstens sechs Monate alt, der Name auf der Rückseite. Retusche wird in jedem Fall abgelehnt, ebenso ein spiegelverkehrtes Foto &mdash; und genau das speichert die Frontkamera eines Handys, wenn man es ihr nicht abgewöhnt.</span>
+    <span data-phrase="spec.jp-driving-licence.note1">Das Foto auf dem Führerschein selbst machen die Mitarbeitenden. Dieses hier, &#x2066;24 x 30&#x2069; mm, kommt auf das Antragsformular: kein Hut, frontal, Oberkörper, kein Hintergrund, höchstens sechs Monate alt. Ein mitgebrachtes Foto verwendet eine Führerscheinstelle nur in bestimmten Prüfzentren und nur auf Fotopapier.</span>
+    <span data-phrase="spec.kr-driving-licence.note1">Der Abzug ist der des Reisepasses, 32 bis 36 mm vom Scheitel bis zum Kinn, auf Weiß, nur auf Fotopapier, ohne sichtbare Zähne und unbearbeitet. Online ist die Vorschrift ungewöhnlich genau: ein JPG von höchstens 500 KB, verlangt sind &#x2066;413 x 531&#x2069; Pixel, und außerhalb von 395 bis 431 mal 507 bis 550 wird gar nichts angenommen.</span>
+    <span data-phrase="spec.kr-id-card.note1">Der Einwohnerausweis übernimmt die &#x2066;3,5 x 4,5&#x2069; cm des Reisepasses und sagt selbst, dass ein Foto für das eine auch für das andere taugt. Seine Hintergrundregel ist die lockerere der beiden &mdash; keiner oder vorzugsweise Weiß, eine blasse Einzelfarbe ist erlaubt &mdash;, und eine Gesichtsgröße in Millimetern nennt er nicht.</span>
+    <span data-phrase="spec.tw-id-card.note1">Derselbe Kopf von 32 bis 36 mm wie beim taiwanischen Reisepass, auf Weiß &mdash; aber das Foto darf bis zu zwei Jahre alt sein, wo der Pass sechs Monate sagt. Ein dünner Hochglanzabzug mit Name, Ausweisnummer und Datum auf der Rückseite oder ein JPG von mindestens &#x2066;413 x 531&#x2069; Pixeln und höchstens 5 MB. Keine getönten Kontaktlinsen, nichts retuschiert und kein spiegelverkehrtes Foto.</span>
+    <span data-phrase="spec.vn-driving-licence.note1">Für den Umtausch oder Ersatz eines Führerscheins online: ein Foto von &#x2066;3 x 4&#x2069; cm auf Weiß &mdash; das Portal der Polizei sagt Weiß, was immer eine Provinzseite über Blau schreibt &mdash;, mindestens &#x2066;473 x 630&#x2069; Pixel und höchstens 700 KB. Weiße und schwarze Kleidung vermeiden, den Kopf höchstens fünf Grad neigen und dickrandige oder dunkle Brillen abnehmen.</span>
+    <span data-phrase="spec.id-driving-licence.note1">Die Online-Verlängerung einer SIM verlangt genau &#x2066;480 x 640&#x2069; Pixel und höchstens 100 KB, auf Blau. Keine Brille und keine Kontaktlinsen, keine Kopfbedeckung, kein blauer Hidschab &mdash; er würde im Hintergrund verschwinden &mdash;, und die Originaldatei, kein abfotografierter Abzug. Für den ersten Führerschein wird im Amt fotografiert.</span>
+    <span data-phrase="spec.my-driving-licence.note1">Ein Farbfoto von &#x2066;25 x 32&#x2069; mm auf Weiß &mdash; nichts, was den &#x2066;35 x 50&#x2069; des malaysischen Passes ähnelt. Die englische Seite der Straßenverkehrsbehörde sagt &bdquo;black background&ldquo;; die malaiische sagt putih, weiß, und die malaiische ist das Original.</span>
+    <span data-phrase="spec.in-driving-licence.note1">Das Sarathi-Portal verlangt ein Foto in Passform mit mindestens &#x2066;420 x 525&#x2069; Pixeln in einer Datei von 10 bis 20 KB, und das ist sehr wenig: Der hier geschriebene Upload wird stark komprimiert, und ein schlichter, gleichmäßig ausgeleuchteter Hintergrund lässt dem Gesicht den Platz. Heller Hintergrund, vorzugsweise Weiß; religiöse Kopfbedeckung ist erlaubt, Kappen und dunkle Brillen nicht.</span>
+    <span data-phrase="spec.ca-firearms-licence.doc">Waffenschein (PAL)</span>
+    <span data-phrase="spec.ca-firearms-licence.note1">Ein eigenes Format, &#x2066;45 x 57&#x2069; mm, mit einem Kopf von mindestens 30 mm und ohne veröffentlichtes Maximum &mdash; das obere Ende des Bandes stammt von diesem Werkzeug. Die Datei muss ein JPG zwischen 200 KB und 6 MB sein. Das Foto darf ein Jahr alt und schwarz-weiß sein, getönte Korrekturgläser werden abgelehnt, auch wenn die Augen zu sehen sind, und beim Erstantrag unterschreibt ein Bürge die Rückseite des Abzugs.</span>
+    <span data-phrase="spec.ru-internal-passport.doc">Inlandspass</span>
+    <span data-phrase="spec.ru-internal-passport.note1">Zwei Abzüge von &#x2066;35 x 45&#x2069; mm auf Weiß, in Farbe oder schwarz-weiß. Die Verordnung begrenzt den Kopf auf 80 Prozent der Höhe und lässt darüber 5 mm frei, plus oder minus einen; das untere Ende des Bandes stammt von diesem Werkzeug. Wer immer eine Brille trägt, muss mit ihr fotografiert werden, ohne getönte Gläser; keine Uniform, kein Mantel, kein Schal über dem Kinn, und nichts, was bearbeitet wurde, um jemanden besser aussehen zu lassen. Gelesen im veröffentlichten Text der Verordnung des Innenministeriums, dessen eigene Seite von hier aus nicht antwortet.</span>
+    <span data-phrase="spec.za-driving-licence.note1">Südafrika verlangt Schwarz-weiß-Fotos: im Westkap zwei identische Abzüge von &#x2066;45 x 35&#x2069; mm, in manchen Zentren vier &mdash; fragen Sie Ihres nach der Zahl, bevor Sie dafür bezahlen. Hier wird keine Farbe entfernt, lassen Sie den Laden also schwarz-weiß drucken. Eine Kopfgröße ist nicht veröffentlicht.</span>
     <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
     <span data-phrase="source.common">Übliche Praxis</span>
     <span data-phrase="source.common.doc">Der Schreibwarenstandard &#x2066;35 x 45&#x2069; mm, keine veröffentlichte Vorschrift</span>

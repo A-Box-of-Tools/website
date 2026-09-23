@@ -46,6 +46,7 @@ export const ENDONYMS = {
   'country.no': 'Norge',
   'country.pt': 'Portugal',
   'country.ru': 'Россия',
+  'country.dk': 'Danmark',
   'country.de': 'Deutschland',
   'country.ca': 'Canada',
   'country.au': 'Australia',
@@ -110,6 +111,11 @@ export const SOURCES = {
     document: 'gov.uk, Passport photo requirements',
     checked: '2026-08-20',
   },
+  'uk-ni-driving-licence': {
+    authority: 'nidirect, for the Driver & Vehicle Agency',
+    document: 'The photo for your driving licence',
+    checked: '2026-09-21',
+  },
   schengen: {
     authority: 'European Commission',
     document: 'Visa Code, common photograph standards (ICAO-aligned)',
@@ -125,6 +131,12 @@ export const SOURCES = {
     document: 'Passbildschablone / biometric photo template',
     checked: '2026-08-20',
   },
+  'de-health-card': {
+    native: 'Gesundheitskarte',
+    authority: 'Techniker Krankenkasse',
+    document: 'Wie muss das Bild für die Versichertenkarte aussehen?',
+    checked: '2026-09-21',
+  },
   'fr-passport': {
     native: 'Passeport, carte nationale d’identité',
     authority: 'Service-Public.fr / Ministère chargé de l’intérieur',
@@ -136,6 +148,18 @@ export const SOURCES = {
     authority: 'Polizia di Stato',
     document: 'Le fotografie per il passaporto, conformi allo standard ICAO',
     checked: '2026-09-17',
+  },
+  'it-id-card': {
+    native: 'Carta d’identità elettronica',
+    authority: 'Ministero dell’Interno',
+    document: 'Carta d’identità elettronica, Modalità di acquisizione delle foto',
+    checked: '2026-09-21',
+  },
+  'it-driving-licence': {
+    native: 'Patente di guida',
+    authority: 'Ministero delle Infrastrutture e dei Trasporti, Motorizzazione',
+    document: 'Fotografie da apporre sulla patente di guida, protocollo 23176/8.3 del 20 ottobre 2016',
+    checked: '2026-09-21',
   },
   'nl-passport': {
     native: 'Paspoort, identiteitskaart, rijbewijs',
@@ -149,6 +173,12 @@ export const SOURCES = {
     document: 'Pasaporte, procedimiento de expedición',
     checked: '2026-09-17',
   },
+  'es-driving-licence': {
+    native: 'Permiso de conducir',
+    authority: 'Dirección General de Tráfico',
+    document: 'sede.dgt.gob.es, Renovación de permiso próximo a caducar',
+    checked: '2026-09-21',
+  },
   'ie-passport': {
     native: 'Pas',
     authority: 'Department of Foreign Affairs',
@@ -161,16 +191,40 @@ export const SOURCES = {
     document: 'Nowe zdjęcia do paszportu, instrukcja wykonywania zdjęć',
     checked: '2026-09-17',
   },
+  'pl-driving-licence': {
+    native: 'Prawo jazdy',
+    authority: 'Ministerstwo Infrastruktury',
+    document: 'gov.pl, Zdjęcie do prawa jazdy',
+    checked: '2026-09-21',
+  },
   'ch-passport': {
     authority: 'fedpol',
     document: 'Kriterien für die Annahme von Fotos für Pässe und Identitätskarten',
     checked: '2026-09-17',
+  },
+  'ch-driving-licence': {
+    native: 'Führerausweis',
+    authority: 'asa, Vereinigung der Strassenverkehrsämter',
+    document: 'Qualitätskriterien für das Foto im neuen Führerausweis',
+    checked: '2026-09-21',
   },
   'se-passport': {
     native: 'Pass, nationellt id-kort',
     authority: 'Polismyndigheten',
     document: 'polisen.se, Svar på vanliga frågor om pass',
     checked: '2026-09-17',
+  },
+  'se-driving-licence': {
+    native: 'Körkort',
+    authority: 'Transportstyrelsen',
+    document: 'Fotot på körkortet',
+    checked: '2026-09-21',
+  },
+  'dk-driving-licence': {
+    native: 'Kørekort',
+    authority: 'Færdselsstyrelsen',
+    document: 'Foto til kørekort',
+    checked: '2026-09-21',
   },
   'no-passport': {
     native: 'Pass, nasjonalt ID-kort',
@@ -196,6 +250,12 @@ export const SOURCES = {
     document: 'Оформление загранпаспорта, Приказ МИД России от 9 января 2025 г. N 02',
     checked: '2026-09-19',
   },
+  'ru-internal-passport': {
+    native: 'Паспорт гражданина Российской Федерации',
+    authority: 'Министерство внутренних дел Российской Федерации',
+    document: 'Приказ МВД России от 16.11.2020 N 773, пункт 36',
+    checked: '2026-09-21',
+  },
   'ca-passport': {
     native: 'Passeport',
     authority: 'Immigration, Refugees and Citizenship Canada',
@@ -219,6 +279,11 @@ export const SOURCES = {
     authority: 'Immigration, Refugees and Citizenship Canada',
     document: 'canada.ca, Temporary Resident Visa application photograph specifications',
     checked: '2026-09-19',
+  },
+  'ca-firearms-licence': {
+    authority: 'Royal Canadian Mounted Police',
+    document: 'Photo requirements for a firearms licence',
+    checked: '2026-09-21',
   },
   'au-passport': {
     authority: 'Australian Passport Office',
@@ -256,6 +321,11 @@ export const SOURCES = {
     document: 'indianvisaonline.gov.in, e-Visa',
     checked: '2026-09-19',
   },
+  'in-driving-licence': {
+    authority: 'Ministry of Road Transport & Highways, Sarathi Parivahan',
+    document: 'Photo and Signature Scan & Upload Process',
+    checked: '2026-09-21',
+  },
   'in-exam-photo': {
     authority: 'Staff Selection Commission / UPSC',
     document: 'Notice of Examination, photograph and signature specifications',
@@ -272,17 +342,59 @@ export const SOURCES = {
     document: 'Published photograph standard for exit and entry documents',
     checked: '2026-08-20',
   },
+  'cn-id-card': {
+    native: '居民身份证',
+    authority: '北京市公安局',
+    document: '居民身份证照片标准，引《居民身份证制证用数字相片技术要求》GA461—2004',
+    checked: '2026-09-21',
+  },
+  'cn-driving-licence': {
+    native: '机动车驾驶证',
+    authority: '北京市公安局公安交通管理局',
+    document: '驾驶人相片要求',
+    checked: '2026-09-21',
+  },
   'jp-passport': {
     native: '旅券（パスポート）',
     authority: 'Ministry of Foreign Affairs of Japan',
     document: 'Passport photograph standards',
     checked: '2026-08-20',
   },
+  'jp-mynumber': {
+    native: 'マイナンバーカード',
+    authority: '地方公共団体情報システム機構',
+    document: 'マイナンバーカード総合サイト、顔写真のチェックポイント',
+    checked: '2026-09-21',
+  },
+  'jp-residence-card': {
+    native: '在留カード',
+    authority: '出入国在留管理庁',
+    document: '提出写真の規格',
+    checked: '2026-09-21',
+  },
+  'jp-driving-licence': {
+    native: '運転免許証',
+    authority: '警視庁',
+    document: '申請用写真及び持参写真のご案内',
+    checked: '2026-09-21',
+  },
   'kr-passport': {
     native: '여권',
     authority: '외교부 (Ministry of Foreign Affairs)',
     document: '여권안내 — 여권사진 규격 안내 <2022. 10. 개정>',
     checked: '2026-09-17',
+  },
+  'kr-driving-licence': {
+    native: '운전면허증',
+    authority: '한국도로교통공단',
+    document: '안전운전 통합민원, 허용되는 사진 규격',
+    checked: '2026-09-21',
+  },
+  'kr-id-card': {
+    native: '주민등록증',
+    authority: '행정안전부',
+    document: '주민등록증, 사진',
+    checked: '2026-09-21',
   },
   'sg-passport': {
     authority: 'Immigration & Checkpoints Authority',
@@ -306,11 +418,23 @@ export const SOURCES = {
     document: '晶片護照照片規格',
     checked: '2026-09-19',
   },
+  'tw-id-card': {
+    native: '國民身分證',
+    authority: '內政部戶政司',
+    document: '國民身分證相片規格',
+    checked: '2026-09-21',
+  },
   'vn-passport': {
     native: 'Hộ chiếu',
     authority: 'Cục Quản lý xuất nhập cảnh, Bộ Công an',
     document: 'Tờ khai điện tử đề nghị cấp hộ chiếu',
     checked: '2026-09-19',
+  },
+  'vn-driving-licence': {
+    native: 'Giấy phép lái xe',
+    authority: 'Cục Cảnh sát giao thông, Bộ Công an',
+    document: 'Cổng dịch vụ công cấp đổi, cấp lại giấy phép lái xe',
+    checked: '2026-09-21',
   },
   'ph-passport': {
     native: 'Pasaporte',
@@ -341,6 +465,12 @@ export const SOURCES = {
     document: 'Kata Siapa Foto Paspor Nggak Boleh Diulang?',
     checked: '2026-09-19',
   },
+  'id-driving-licence': {
+    native: 'Surat Izin Mengemudi',
+    authority: 'Korps Lalu Lintas Polri',
+    document: 'Digital Korlantas, perpanjangan SIM',
+    checked: '2026-09-21',
+  },
   'my-passport': {
     native: 'Pasport Malaysia',
     authority: 'Kementerian Luar Negeri, Suruhanjaya Tinggi Malaysia Islamabad',
@@ -351,6 +481,12 @@ export const SOURCES = {
     authority: 'Jabatan Imigresen Malaysia, Expatriate Services Division',
     document: 'ESD Online, Passport Photo Requirements',
     checked: '2026-09-19',
+  },
+  'my-driving-licence': {
+    native: 'Lesen memandu',
+    authority: 'Jabatan Pengangkutan Jalan Malaysia',
+    document: 'Pembaharuan Lesen Memandu Kompeten',
+    checked: '2026-09-21',
   },
   'th-passport': {
     native: 'หนังสือเดินทาง',
@@ -402,6 +538,11 @@ export const SOURCES = {
     authority: 'Department of Home Affairs',
     document: 'Passport & ID Photograph Specifications',
     checked: '2026-09-19',
+  },
+  'za-driving-licence': {
+    authority: 'Western Cape Government, Mobility',
+    document: 'Driving licence',
+    checked: '2026-09-21',
   },
   'ae-passport': {
     authority: 'Federal Authority for Identity, Citizenship, Customs & Port Security',
