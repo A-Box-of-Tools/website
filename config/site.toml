@@ -563,6 +563,7 @@ order = [
   "watermark-a-pdf",
   "redact-a-pdf",
   "make-a-pdf-smaller",
+  "check-a-bank-statement-csv",
   "combine-images-into-a-pdf",
   "scan-a-document-with-your-phone",
   "turn-images-into-a-video",
