@@ -1,39 +1,16 @@
 /**
- * Proving the extraction, by making the statement check itself.
+ * Checking a statement's net changes against its printed balances.
  *
- * Everything before this file is inference. Which strip of paper was a gutter,
- * which line was a heading, whether the wrapped line belonged to the row above
- * - each is a decision made on evidence, and any of them can be wrong on a
- * statement laid out in a way nobody here has seen. A tool that stopped there
- * would be asking its user to check forty rows by eye against the PDF, which
- * nobody does, which is how a wrong number ends up in a tax return.
+ * The columns and rows are inferred from layout. A matching balance is useful
+ * evidence about the amounts between two balances, but not a proof that every
+ * value is right: two mistakes may cancel, and amounts before the first or
+ * after the last balance have no pair to compare against. Coverage is returned
+ * alongside the arithmetic so the page can say exactly what was checked.
  *
- * But most statements carry a running balance, and a running balance is a
- * proof. If the balance on each row really is the balance on the row above
- * plus that row's amount, then the amounts were read correctly, the rows were
- * separated correctly, and none was dropped or duplicated - because any of
- * those mistakes breaks the chain at the row where it happened. One subtraction
- * per row turns the whole reconstruction from a hope into a checked claim, and
- * it costs nothing.
- *
- * WHICH COLUMN IS THE BALANCE IS DECIDED BY THE SAME ARITHMETIC
- *
- * Rather than guessed from the heading, which would only work in English. Every
- * money column is tried as the balance against every other as the amount, and
- * the pairing that satisfies the arithmetic is the answer. A statement with
- * separate debit and credit columns is one more candidate in the same search:
- * the amount is then the credit less the debit. So the check and the
- * classification are one step, and a statement that passes has necessarily had
- * its columns identified correctly.
- *
- * WHAT A FAILURE MEANS, AND WHAT IT DOES NOT
- *
- * It does not mean the rows are wrong. A statement may simply not print a
- * balance, or print one only at the end of each day, or carry a balance this
- * cannot line up for a reason that is nobody's fault. So a failed check never
- * suppresses the CSV: it is reported as "not checked" rather than "wrong", and
- * the page says which of the two happened. Claiming the rows are wrong when
- * they are merely unproven would train people to ignore the line that matters.
+ * The same arithmetic finds the balance column without reading a heading.
+ * Every money column is tried against each amount column and each debit/credit
+ * pair. A failed comparison never suppresses the CSV; it tells the reader
+ * which rows need checking against the PDF.
  */
 
 import { parseAmount } from './values.js';
@@ -71,6 +48,8 @@ const MIN_LINKS = 3;
  * @property {number} links     how many pairs of rows were compared
  * @property {number} held      how many of them agreed
  * @property {number[]} broken  the row numbers where the chain broke
+ * @property {number[]} checked rows included in a numerical comparison
+ * @property {number[]} unchecked rows without a complete, readable comparison
  */
 
 /**
@@ -136,29 +115,47 @@ function follow(rows, balance, amounts, credited, mark) {
   let links = 0;
   let held = 0;
   const broken = [];
+  const checked = [];
+  const unchecked = [];
+  let pending = [];
+  let readable = true;
 
   for (let at = 0; at < rows.length; at += 1) {
     const cells = rows[at].cells;
 
-    const value = credited
-      ? (parseAmount(cells[amounts[1]], mark) ?? 0) - (parseAmount(cells[amounts[0]], mark) ?? 0)
-      : parseAmount(cells[amounts[0]], mark) ?? 0;
-
-    carried += value;
+    const parts = amounts.map((column) => String(cells[column] ?? '').trim());
+    // An unused debit or credit cell is zero, but a missing signed amount or
+    // an unreadable nonempty cell is unknown. Substituting zero for either
+    // would let a damaged extraction pass whenever the balances stayed flat.
+    const values = parts.map((part) => part === '' && credited ? 0 : parseAmount(part, mark));
+    const value = values.some((part) => part === null) || parts.every((part) => part === '')
+      ? null : credited ? values[1] - values[0] : values[0];
+    pending.push(at + 1);
+    if (value === null) readable = false;
+    else carried += value;
 
     const here = parseAmount(cells[balance], mark);
-    if (here === null) continue;
+    if (here === null) {
+      if (String(cells[balance] ?? '').trim()) readable = false;
+      continue;
+    }
 
-    if (previous !== null) {
+    if (previous !== null && readable) {
       links += 1;
+      checked.push(...pending);
       if (Math.abs(here - previous - carried) <= EPSILON) held += 1;
       else broken.push(at + 1);
+    } else {
+      unchecked.push(...pending);
     }
 
     previous = here;
     carried = 0;
+    pending = [];
+    readable = true;
   }
+  unchecked.push(...pending);
 
   if (links < MIN_LINKS) return null;
-  return { balance, amounts, credited, links, held, broken };
+  return { balance, amounts, credited, links, held, broken, checked, unchecked };
 }

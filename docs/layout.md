@@ -143,6 +143,16 @@ caches. Without that prefix it deleted *everyone's*: for a long time, visiting a
 second tool dropped the first tool's offline copy, and only the last tool you
 had opened still worked with the network off.
 
+Reads are confined to that same cache too: an old tool page once visited
+through the hub must not override the tool's own newer copy. Navigation and
+unversioned resources ask the network first, revalidating the browser's HTTP
+cache, and use the saved response when offline. A guide can change without
+changing the hub's worker, so keeping every visited page until that worker
+changes would hide the update indefinitely. Only non-navigation URLs carrying
+the build's content hash are served from cache first. Installing a worker
+reloads its precache addresses so old HTTP-cache entries cannot seed the new
+offline copy.
+
 ## What the build does to the output
 
 There is one build, and that is the point.

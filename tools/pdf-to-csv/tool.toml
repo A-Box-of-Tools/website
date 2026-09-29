@@ -19,9 +19,9 @@
 # is not reading tables out of the file, because there are no tables in the
 # file - there is text at positions, and the columns are the places where
 # several lines agree a cell starts or ends. Every sentence here has to leave
-# that true. The balance check is a proof and is described as one, but only
-# some tables carry a balance; do not let a rewrite quietly upgrade "this is
-# what the pages say" into "this is correct".
+# that true. The balance check compares net changes between readable balances,
+# not every value. Boundary rows and unreadable intervals stay unchecked, and
+# offsetting errors can pass; do not turn agreement into a proof of accuracy.
 #
 
 slug = "pdf-to-csv"
@@ -59,9 +59,9 @@ lastmod = "2026-09-10"
 # --- what search engines and chat apps are told ------------------------------
 
 title = "PDF to CSV &mdash; Every Table, Bank Statements Too, Free, No Upload"
-description = "Turn the tables in a PDF into a CSV: bank and card statements, invoices, price lists, reports. Every table on every page is found from where its text sits, and a running balance is checked row by row where there is one. Nothing is uploaded."
+description = "Turn the tables in a PDF into a CSV: bank and card statements, invoices, price lists, reports. Every table on every page is found from where its text sits, and printed running balances are compared where possible. Nothing is uploaded."
 og_title = "PDF to CSV, every table in it, without uploading the file"
-og_description = "Most PDF-to-CSV converters want your file on their server. This one finds every table in the document in your own browser, and checks a statement's running balance rather than asking you to."
+og_description = "Most PDF-to-CSV converters want your file on their server. This one finds every table in the document in your own browser, and reports which comparisons of a statement's running balance agree."
 og_image_alt = "Convert the tables in a PDF to CSV in your browser"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -90,7 +90,7 @@ read_first = """
       split into regions without a single ruled line to go on,
       <code>src/tables.js</code> for how the tables and their columns are found,
       <code>src/rows.js</code> for how lines become rows, and
-      <code>src/check.js</code> for the arithmetic that proves a statement.
+      <code>src/check.js</code> for the arithmetic that compares a statement's balances.
       None of them can reach the network, and neither can the reader underneath
       them."""
 
@@ -105,7 +105,7 @@ card = """
             statement, an invoice, a price list, a report. Every table on every
             page is found from where its text sits, a cell that wrapped onto a
             second line is put back together, and a statement's running balance
-            is checked on every row."""
+            is compared where the amounts and balances are readable."""
 
 # The nouns this tool uses for the things it works on.
 [words]
@@ -147,18 +147,16 @@ body = """
       is nothing to send it to."""
 
 [[privacy]]
-title = "Where a table carries a running balance, every row is checked against it."
+title = "A running balance checks net changes, with its limits shown."
 body = """
-
-      Finding a table in a PDF is inference, not reading &mdash; which lines
-      belong together, where one column ends, whether a line is a new row or
-      the rest of the one above. Any of that can be wrong on a layout nobody
-      here has seen. A statement's running balance is a proof against that: the
-      balance on each row has to be the one above it plus that row's amount,
-      and a single misread digit, dropped row or duplicated row breaks the
-      chain at exactly the row where it happened. The page says how many rows
-      held. Most tables have no balance, and for those the page says nothing
-      &mdash; the rows are what the pages say, and nothing here claims more."""
+      Finding a table in a PDF is inference: where its columns end and which
+      lines belong together can be wrong. The tool compares the amounts between
+      two readable balances with the change in that balance. It reports how many
+      comparisons agree and which rows could not be checked, including amounts
+      before the first balance, after the last one, or in an unreadable interval.
+      Agreement is useful evidence, not proof that every value is right: errors
+      that cancel each other can pass. Tables without a recognised balance have
+      no balance check."""
 
 [[privacy]]
 title = "The tables come from the paper, not from a template per bank or form."
@@ -249,8 +247,8 @@ body = """
  When there is more than one
       table, the control above them chooses which goes into the CSV &mdash; all
       of them, one after another, or just the one you came for. If a table
-      carries a running balance, the line above the tables says whether every
-      row added up. Dates that carry their year come out as YYYY-MM-DD and
+      carries a running balance, the line above the tables reports agreeing
+      comparisons and rows it could not check. Dates that carry their year come out as YYYY-MM-DD and
       amounts as plain signed numbers; a date with no year is left exactly as
       it was printed, because the year it belongs to would be a guess."""
 
@@ -286,7 +284,7 @@ a = """
         the transactions found nothing at all. Invoices, price lists,
         timetables, results and reports are tables the same way. What a
         statement adds is a running balance, and where one is there the tool
-        checks every row against it."""
+        compares the net changes between readable balances."""
 
 [[faq]]
 q = "What happens to a description too long for its column?"
@@ -299,19 +297,17 @@ a = """
         more than one cell, or with a number in it, is a row of its own."""
 
 [[faq]]
-q = "How can it possibly know whether it read my statement correctly?"
+q = "What does the running balance check tell me?"
 a = """
-        Because most statements carry a running balance, and a running balance
-        is a proof rather than a decoration. If the balance printed on every row
-        really is the balance on the row above plus that row's amount, then the
-        amounts were read correctly, the rows were separated correctly and none
-        was dropped or counted twice &mdash; any of those mistakes breaks the
-        chain at the row where it happened. The tool does that subtraction on
-        every row and tells you the result. It also finds the balance column
-        that way rather than by reading a heading, so a table that passes has
-        necessarily had its columns identified correctly. A table without a
-        balance cannot be checked this way, and the page does not pretend it
-        was."""
+        It compares the sum of the amounts between two readable balances with
+        the change in that balance, and reports how many comparisons agree.
+        The same arithmetic identifies likely balance and amount columns without
+        relying on their headings. The page lists rows that could not be checked:
+        amounts before the first balance or after the last one, and intervals
+        with missing or unreadable amounts. A missing unused debit or credit
+        cell counts as zero; an unreadable value does not. Matching balances
+        cannot rule out errors that cancel each other, or verify descriptions
+        and dates. Review the CSV against the PDF before relying on it."""
 
 [[faq]]
 q = "My dates came out wrong. 03/04 is the fourth of March, not the third of April."
@@ -393,13 +389,13 @@ a = """
 
 [schema]
 category = "BusinessApplication"
-description = "Convert the tables in a PDF to CSV in your browser - bank and card statements, invoices, price lists and reports. Every table on every page is found from where its text sits, and a statement's running balance is checked on every row. Nothing is uploaded."
+description = "Convert the tables in a PDF to CSV in your browser - bank and card statements, invoices, price lists and reports. Every table on every page is found from where its text sits, and a statement's running balance is compared where the amounts and balances are readable. Nothing is uploaded."
 features = [
   "Finds every table in a PDF, each with its own columns and headings",
   "Splits off a sidebar of small print rather than mixing it into the table",
   "Joins a table that runs across sections or pages, without repeating its headings",
   "Folds a cell that wrapped onto a second line back into its row",
-  "Checks every row against a statement's own running balance",
+  "Compares a statement's running balances and identifies unchecked rows",
   "Reads 1.240,00 and 1,240.00, and settles ambiguous dates from the document",
   "Says when a PDF is a scan or has a password, and what to do instead",
   "Runs offline; no upload, no account, no file size limit",

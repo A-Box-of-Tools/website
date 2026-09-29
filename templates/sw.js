@@ -41,7 +41,12 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
+      // A new worker must not seed its cache with the previous deployment's
+      // HTML from the browser's HTTP cache. The worker's own hash changes
+      // independently of those unversioned addresses.
+      .then((cache) => cache.addAll(ASSETS.map((asset) => (
+        new Request(new URL(asset, self.location.href), { cache: 'reload' })
+      ))))
       .then(() => self.skipWaiting()),
   );
 });
@@ -69,50 +74,51 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
-  // Only ever serve this app's own files. Nothing else should be requested,
-  // and if it somehow is, we do not want to be the thing that fetches it.
+  // Third-party requests never enter the offline cache.
   if (request.method !== 'GET') return;
-  if (new URL(request.url).origin !== self.location.origin) return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
 
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
+  // A guide can change without changing the hub or its worker. So can an
+  // unversioned Markdown page or image that the hub happened to cache. Only
+  // URLs bearing the build's content hash are safe to keep without asking
+  // the network again; a navigation always asks, even with a query string.
+  const immutable = request.mode !== 'navigate'
+    && /^[0-9a-f]{10}$/.test(url.searchParams.get('v') || '');
+  const cached = (key) => caches.match(key, { cacheName: CACHE_NAME })
+    .catch(() => undefined);
 
-      return fetch(request).then((response) => {
-        // Cache successful same-origin responses so first-visit misses are
-        // available offline afterwards.
-        if (response.ok && response.type === 'basic') {
-          const copy = response.clone();
-          // Kept, not awaited: the response goes back to the page whether or
-          // not the copy lands. But a write that fails - the quota is full,
-          // the store is ephemeral, the engine will not keep this response -
-          // rejects a promise nobody is holding, and an unhandled rejection
-          // in a worker is reported through the page it serves. The hub's QA
-          // check saw exactly that on Mobile Safari, as eleven words and no
-          // stack: "Unhandled Promise Rejection: undefined". A cache write
-          // that fails is a missed cache and nothing more, so it may fail
-          // quietly.
-          caches.open(CACHE_NAME)
-            .then((cache) => cache.put(request, copy))
-            .catch(() => {});
-        }
-        return response;
-      }).catch(() => (
-        // Offline and not in the cache. A navigation gets the app shell, which
-        // is the whole point of this worker. Anything else gets the failure,
-        // because handing HTML back to something that asked for a script only
-        // turns "offline" into a MIME-type error in the console - which is
-        // exactly what /lang.js, one of the three root-absolute scripts a tool
-        // page asks for and does not precache, did before this line said
-        // `navigate`.
-        // /feedback.js and /handoff.js are the others, deliberately in the
-        // same position: offline, feedback has no measurement call to carry
-        // the answer, and a missing handoff row leaves the manual journey -
-        // download, then drop - which still works entirely offline.
-        request.mode === 'navigate'
-          ? caches.match('index.html')
-          : Promise.reject(new Error('offline and not cached'))
-      ));
-    }),
-  );
+  event.respondWith((async () => {
+    // CacheStorage is shared by every scope. Looking through all of it lets
+    // an old page in the hub's cache override a tool's newly installed copy.
+    if (immutable) {
+      const hit = await cached(request);
+      if (hit) return hit;
+    }
+
+    try {
+      const response = await fetch(request, {
+        cache: immutable ? 'default' : 'no-cache',
+      });
+      if (response.ok && response.type === 'basic') {
+        const copy = response.clone();
+        // Hold the worker alive until the copy lands, without delaying the
+        // page or turning a full or unavailable cache into a failed request.
+        event.waitUntil(caches.open(CACHE_NAME)
+          .then((cache) => cache.put(request, copy))
+          .catch(() => {}));
+      }
+      return response;
+    } catch (error) {
+      const hit = await cached(request);
+      if (hit) return hit;
+      // Only navigation may fall back to this scope's app shell. A missing
+      // script must fail rather than receive HTML from this or another app.
+      if (request.mode === 'navigate') {
+        const shell = await cached('index.html');
+        if (shell) return shell;
+      }
+      throw error;
+    }
+  })());
 });

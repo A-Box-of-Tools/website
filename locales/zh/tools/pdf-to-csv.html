@@ -79,7 +79,7 @@
     <h2><span class="step">2</span> 核对它读出来的内容</h2>
 
     <p class="card-lede">
-      PDF 看着像装着表格，其实没有：它装的是落在纸面各个位置上的文字，那几道栏是没人印过的空白。所以下面每一张表都是推出来的，不是读出来的。要是其中一张带着余额，表格上面那一行就是工具在核对自己的结果，每一行都拿上一行来证明。
+      PDF 看着像装着表格，其实没有：它装的是落在纸面各个位置上的文字，那几道栏是没人印过的空白。所以下面每一张表都是推出来的，不是读出来的。要是其中一张带着余额，表格上面会说明哪些余额比较相符、哪些行无法核对。余额相符只说明净变动对得上，互相抵消的错误仍可能通过。
     </p>
 
     <p id="summary" class="verdict" role="status" aria-live="polite"></p>
@@ -140,8 +140,10 @@
     <span data-phrase="count.columns.many">{n} 栏</span>
     <span data-phrase="count.tables.one">{n} 张表</span>
     <span data-phrase="count.tables.many">{n} 张表</span>
-    <span data-phrase="check.held">余额在每一行上都对得上，所以金额读对了，没有哪一行被漏掉或者算了两遍。</span>
-    <span data-phrase="check.broke">余额在 {links} 行里对上了 {held} 行。用之前先拿 PDF 核一下 {where}。</span>
+    <span data-phrase="check.held">余额的 {links} 次比较全部相符。</span>
+    <span data-phrase="check.broke">余额的 {links} 次比较中有 {held} 次相符。请对照 PDF 检查截至 {where} 的金额。</span>
+    <span data-phrase="check.unchecked">未核对的行：{where}。请对照 PDF 检查这些行的金额。</span>
+    <span data-phrase="check.summary">{verdict}{note}</span>
     <span data-phrase="check.row">第 {n} 行</span>
     <span data-phrase="check.rows">第 {list} 行</span>
     <span data-phrase="order.found">是从这份文件里一个大于 12 的日子推出来的，所以这是它自己写的，不是猜的。</span>
