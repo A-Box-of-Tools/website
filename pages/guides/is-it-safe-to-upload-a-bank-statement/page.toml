@@ -36,9 +36,9 @@ lede = """
     personal document most people own, and converting one is a job that
     never needed a server in the first place."""
 
-updated = "9 September 2026"
+updated = "29 September 2026"
 published = "2026-09-09"
-lastmod = "2026-09-09"
+lastmod = "2026-09-29"
 
 og_title = "Is it safe to upload a bank statement?"
 og_description = "Every payee, every amount, your balance and your account number, in one file. What a converter receives, what the careful ones do with it, and why the upload was never necessary."
