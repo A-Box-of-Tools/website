@@ -1,0 +1,226 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      A CSV that opens neatly in a spreadsheet can still contain a wrong
+      amount, a missing transaction or a date read backwards. Compare it
+      with the original statement: check the rows, dates and descriptions,
+      then use the printed running balances to test the amounts.
+    </p>
+    <p>
+      Keep the PDF beside the converted file. A successful download tells
+      you that a converter produced a file. These checks help establish
+      whether that file says what the statement says.
+    </p>
+  </section>
+
+  <section>
+    <h2>Before converting, look for an export</h2>
+    <p>
+      If your bank offers a CSV download for the period you need, start
+      there. A direct export avoids reconstructing a table from words
+      positioned on a PDF page. Check the account, date range and column
+      meanings, but there is one fewer stage at which something can go wrong.
+    </p>
+    <p>
+      Sometimes the PDF is all you have: an older statement, a closed
+      account, or a document somebody sent you. That is when conversion
+      earns its place.
+    </p>
+  </section>
+
+  <section>
+    <h2>Work through one small statement</h2>
+    <p>
+      This fictional current-account statement starts at
+      <strong>1,250.00</strong>. Positive amounts add to the money held;
+      negative amounts take it away. The last column is printed on the
+      statement, not calculated in the spreadsheet afterwards.
+    </p>
+
+    <figure class="data">
+      <div class="scroll" tabindex="0" role="region" aria-label="Fictional bank statement">
+        <table>
+          <caption>Four fictional transactions, starting from a balance of 1,250.00</caption>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Description</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Printed balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-08-03</td>
+              <td>Salary payment</td>
+              <td>+800.00</td>
+              <td>2,050.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-04</td>
+              <td>Groceries</td>
+              <td>-43.20</td>
+              <td>2,006.80</td>
+            </tr>
+            <tr>
+              <td>2026-08-05</td>
+              <td>Coffee</td>
+              <td>-6.80</td>
+              <td>2,000.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-06</td>
+              <td>Transfer</td>
+              <td>-125.00</td>
+              <td>1,875.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <p>
+      Each row has a check:
+      <strong>previous balance + signed amount = new balance</strong>.
+      For the groceries, <code>2050.00 + (-43.20) = 2006.80</code>.
+      For the coffee, <code>2006.80 + (-6.80) = 2000.00</code>.
+    </p>
+    <p>
+      Suppose the CSV reads the groceries as <strong>-48.20</strong>.
+      Every cell is filled in, but
+      <code>2050.00 + (-48.20) = 2001.80</code>. That disagrees with
+      the printed balance by <strong>5.00</strong>, giving you a specific
+      row to inspect against the PDF.
+    </p>
+    <p>
+      Keep the printed balances while checking. Replacing them with formulas
+      based on the converted amounts makes the spreadsheet agree with itself,
+      including any mistakes.
+    </p>
+    <p>
+      Check what a balance means before applying the signs. A credit card
+      statement may show debt owed: purchases increase it and repayments
+      reduce it. Do not assume its positive and negative amounts mean the
+      same thing as this current-account example.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the closing total is not enough</h2>
+    <p>
+      Comparing the opening balance plus all the amounts with the closing
+      balance is useful, but errors can cancel. Read one payment as 5.00
+      too large and another as 5.00 too small, and the total still agrees.
+    </p>
+    <p>
+      Checking every available running balance gives you more comparisons.
+      If a balance appears only at the end of a day, compare it with the
+      previous printed balance plus all the intervening amounts.
+    </p>
+    <p>
+      Even that has limits. A missing pair of transactions of
+      <strong>-20.00 and +20.00</strong> leaves the balance unchanged.
+      A check across that gap can pass. Compare the row sequence with the
+      original as well as checking the arithmetic.
+    </p>
+    <p>
+      A matching balance cannot establish that a date or payee was copied
+      correctly, or authenticate the statement. It tests the relationship
+      between the amounts and balances available for comparison.
+    </p>
+  </section>
+
+  <section>
+    <h2>Check the dates before sorting anything</h2>
+    <p>
+      <code>03/04/2026</code> could mean 3 April or March 4. A date such as
+      <code>18/04/2026</code> can settle the convention, but a short statement
+      may contain no such clue. Check the statement period and the bank's
+      presentation rather than accepting a guess.
+    </p>
+    <p>
+      Look again after opening the CSV: your spreadsheet can interpret dates
+      differently from the converter. Keep the original order until the
+      checks are finished. Sorting partly misread dates makes rows harder
+      to compare and disrupts the running-balance sequence.
+    </p>
+    <p>
+      Dates printed without a year need the statement period checked too,
+      especially across December and January. Check number conventions:
+      <code>1,240.00</code> and <code>1.240,00</code> can describe the same
+      amount, and the imported cells must preserve that value.
+    </p>
+  </section>
+
+  <section>
+    <h2>Read the descriptions and separate the totals</h2>
+    <p>
+      A description wrapped onto a second line is still one transaction.
+      Check that its continuation stayed with it. Pay particular attention
+      at page breaks, where repeated headings and brought-forward balances
+      can resemble extra rows.
+    </p>
+    <p>
+      A PDF can also contain account summaries, subtotals and payment details.
+      Those belong in an extraction of the document, but should not be
+      imported as additional transactions. Identify the transaction table
+      and separate any summary rows before preparing an import.
+    </p>
+    <p>
+      Two payments with the same date, payee and amount can both be real.
+      Compare their positions and references with the statement before
+      removing either. A duplicated extraction and a repeated payment need
+      different corrections.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the converter here checks</h2>
+    <p>
+      <a href="../../pdf-to-csv/">PDF to CSV</a> finds tables from the text's
+      alignment, joins wrapped cells, and preserves totals and section labels.
+      Where it finds several tables, choose the one you need. It offers a
+      date-order control for ambiguous dates and leaves dates without a year
+      as printed.
+    </p>
+    <p>
+      When it recognises a running-balance chain, it reports whether the
+      available comparisons agree. Check the amounts up to the first printed
+      balance against the opening balance yourself, and any amounts after the
+      last printed balance. A passing message only covers the comparisons it
+      could make.
+    </p>
+    <p>
+      If no usable chain is recognised, there is no checking verdict.
+      <strong>Silence is not confirmation.</strong> Neither a quiet result
+      nor a passing balance check guarantees that the whole file is correct.
+      The preview shows at most 25 rows per table; inspect the downloaded
+      file for the rest.
+    </p>
+    <p>
+      Scanned pages need text recognition, which this tool does not provide.
+      Conversion runs in your browser; the separate guide to
+      <a href="../is-it-safe-to-upload-a-bank-statement/">uploading a bank
+      statement to a converter</a> covers that privacy question.
+    </p>
+  </section>
+
+  <section>
+    <h2>Before importing the CSV elsewhere</h2>
+    <p>
+      Check the destination's import preview as carefully as the file.
+      Choose the correct bank or credit card account, confirm the date
+      format, and map the date, description and amount columns. These are
+      separate choices from extracting the PDF: see
+      <a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">Intuit's CSV import guidance</a>
+      for one product's requirements.
+    </p>
+    <ul>
+      <li>Confirm the account and statement period.</li>
+      <li>Check dates, signs and number formats after opening the file.</li>
+      <li>Compare transaction rows with the original, including page breaks.</li>
+      <li>Check opening, running and closing balances where available.</li>
+      <li>Investigate differences and repeated rows before changing them.</li>
+      <li>Keep the original statement and a copy of the checked CSV.</li>
+    </ul>
+  </section>
