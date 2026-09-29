@@ -23,9 +23,9 @@ heading = "PDF&nbsp;zu&nbsp;CSV <span class=\"h1-kw\">&mdash; jede Tabelle darin
 tagline = "Findet jede Tabelle in einem PDF und macht daraus Zeilen, die eine Tabellenkalkulation öffnen kann."
 
 title = "PDF in CSV umwandeln &mdash; jede Tabelle, auch Kontoauszüge, kostenlos, ohne Upload"
-description = "Die Tabellen in einem PDF in eine CSV verwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten, Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und ein laufender Saldo wird Zeile für Zeile geprüft, wo es einen gibt. Es wird nichts hochgeladen."
+description = "Die Tabellen in einem PDF in eine CSV verwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten, Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und lesbare laufende Salden werden verglichen, wo es möglich ist. Es wird nichts hochgeladen."
 og_title = "PDF zu CSV, jede Tabelle darin, ohne die Datei hochzuladen"
-og_description = "Die meisten PDF-zu-CSV-Umwandler wollen Ihre Datei auf ihrem Server. Dieser findet jede Tabelle im Dokument in Ihrem eigenen Browser und prüft den laufenden Saldo eines Kontoauszugs selbst, statt Sie darum zu bitten."
+og_description = "Die meisten PDF-zu-CSV-Umwandler wollen Ihre Datei auf ihrem Server. Dieser findet jede Tabelle im Dokument in Ihrem eigenen Browser und zeigt, welche Vergleiche des laufenden Saldos übereinstimmen."
 og_image_alt = "Die Tabellen in einem PDF im Browser in CSV umwandeln"
 
 pledge = """
@@ -48,7 +48,7 @@ read_first = """
       <code>src/tables.js</code> dafür, wie die Tabellen und ihre Spalten
       gefunden werden, <code>src/rows.js</code> dafür, wie aus Textzeilen
       Tabellenzeilen werden, und <code>src/check.js</code> für die Rechnung,
-      die einen Kontoauszug beweist. Keines davon kann das Netz erreichen, und
+      die Salden eines Kontoauszugs vergleicht. Keines davon kann das Netz erreichen, und
       der Leser darunter auch nicht."""
 
 howto_heading = "So verwandeln Sie die Tabellen in einem PDF in eine CSV"
@@ -59,7 +59,7 @@ card = """
             Bericht. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr
             Text sitzt, eine Zelle, die in eine zweite Zeile umgebrochen ist,
             wird wieder zusammengesetzt, und der laufende Saldo eines
-            Kontoauszugs wird auf jeder Zeile geprüft."""
+            Kontoauszugs wird verglichen, wo Beträge und Salden lesbar sind."""
 
 [words]
 plural = "Dokumente"
@@ -96,21 +96,17 @@ body = """
       keine andere Hälfte: Es gibt nichts, an das man es schicken könnte."""
 
 [[privacy]]
-title = "Wo eine Tabelle einen laufenden Saldo führt, wird jede Zeile daran geprüft."
+title = "Ein laufender Saldo prüft Nettoänderungen und zeigt die Grenzen der Prüfung."
 body = """
-
-      Eine Tabelle in einem PDF zu finden ist Schließen, nicht Lesen: welche
-      Zeilen zusammengehören, wo eine Spalte endet, ob eine Zeile eine neue
-      Tabellenzeile ist oder der Rest der darüber. Bei einem Layout, das hier
-      noch niemand gesehen hat, kann jeder dieser Schlüsse falsch sein. Der
-      laufende Saldo eines Kontoauszugs ist ein Beweis dagegen: Der Saldo auf
-      jeder Zeile muss der Saldo darüber plus der Betrag dieser Zeile sein,
-      und eine einzige falsch gelesene Ziffer, eine weggefallene oder eine
-      doppelte Zeile reißt die Kette genau an der Zeile, an der es passiert
-      ist. Die Seite sagt, wie viele Zeilen standgehalten haben. Die meisten
-      Tabellen haben keinen Saldo, und zu denen sagt die Seite nichts: Die
-      Zeilen sind das, was auf den Seiten steht, und mehr behauptet hier
-      nichts."""
+      Tabellen aus einem PDF zu erkennen beruht auf Schlussfolgerungen:
+      Spaltengrenzen und die Zuordnung von Zeilen können falsch sein. Das
+      Werkzeug vergleicht die Summe der Beträge zwischen zwei lesbaren Salden
+      mit deren Differenz. Es zeigt, wie viele Vergleiche übereinstimmen und
+      welche Zeilen nicht geprüft wurden: Beträge vor dem ersten oder nach dem
+      letzten Saldo sowie Abschnitte mit fehlenden oder unlesbaren Beträgen.
+      Übereinstimmung ist ein Hinweis, kein Beweis für jeden einzelnen Wert:
+      Fehler können sich gegenseitig aufheben. Ohne erkannten Saldo gibt es
+      keine Saldoprüfung."""
 
 [[privacy]]
 title = "Die Tabellen kommen vom Papier, nicht aus einer Vorlage je Bank oder Formular."
@@ -209,8 +205,8 @@ body = """
  Gibt es mehr als eine Tabelle,
       wählt das Feld über ihnen, welche in die CSV kommt: alle nacheinander
       oder nur die, wegen der Sie gekommen sind. Führt eine Tabelle einen
-      laufenden Saldo, sagt die Zeile über den Tabellen, ob jede Zeile
-      aufgegangen ist. Daten mit Jahr kommen als YYYY-MM-DD heraus und Beträge
+      laufenden Saldo, zeigt die Zeile über den Tabellen übereinstimmende
+      Vergleiche und nicht geprüfte Zeilen. Daten mit Jahr kommen als YYYY-MM-DD heraus und Beträge
       als schlichte Zahlen mit Vorzeichen; ein Datum ohne Jahr bleibt genau
       so, wie es gedruckt war, denn das Jahr, zu dem es gehört, wäre
       geraten."""
@@ -249,8 +245,8 @@ a = """
         Tabellen, und ein Werkzeug, das nur die Buchungen wollte, fand gar
         nichts. Rechnungen, Preislisten, Fahrpläne, Ergebnisse und Berichte
         sind auf dieselbe Weise Tabellen. Was ein Kontoauszug hinzufügt, ist
-        ein laufender Saldo, und wo einer da ist, prüft das Werkzeug jede
-        Zeile daran."""
+        ein laufender Saldo, und wo einer da ist, vergleicht das Werkzeug die Nettoänderungen
+        zwischen lesbaren Salden."""
 
 [[faq]]
 q = "Was passiert mit einem Buchungstext, der zu lang für seine Spalte ist?"
@@ -264,20 +260,18 @@ a = """
         einer Zelle oder mit einer Zahl darin ist eine eigene Zeile."""
 
 [[faq]]
-q = "Wie kann es überhaupt wissen, ob es meinen Kontoauszug richtig gelesen hat?"
+q = "Was sagt mir die Prüfung des laufenden Saldos?"
 a = """
-        Weil die meisten Kontoauszüge einen laufenden Saldo führen, und ein
-        laufender Saldo ist ein Beweis und keine Zierde. Wenn der auf jeder
-        Zeile gedruckte Saldo wirklich der Saldo der Zeile darüber plus der
-        Betrag dieser Zeile ist, dann wurden die Beträge richtig gelesen, die
-        Zeilen richtig getrennt und keine weggelassen oder doppelt gezählt;
-        jeder dieser Fehler reißt die Kette an der Zeile, an der er passiert
-        ist. Das Werkzeug macht diese Subtraktion auf jeder Zeile und sagt
-        Ihnen das Ergebnis. Es findet auf diese Weise auch die Saldospalte,
-        statt eine Überschrift zu lesen, eine Tabelle, die besteht, hat ihre
-        Spalten also zwangsläufig richtig erkannt bekommen. Eine Tabelle ohne
-        Saldo lässt sich so nicht prüfen, und die Seite tut nicht so, als wäre
-        sie es."""
+        Das Werkzeug vergleicht die Summe der Beträge zwischen zwei lesbaren
+        Salden mit deren Differenz und zeigt, wie viele Vergleiche übereinstimmen.
+        Mit derselben Rechnung erkennt es mögliche Saldo- und Betragsspalten,
+        ohne ihre Überschriften zu lesen. Die Seite nennt nicht geprüfte Zeilen:
+        Beträge vor dem ersten oder nach dem letzten Saldo sowie Abschnitte mit
+        fehlenden oder unlesbaren Beträgen. Eine unbenutzte Soll- oder Habenzelle
+        zählt als null, ein unlesbarer Wert nicht. Übereinstimmende Salden können
+        Fehler, die sich aufheben, nicht ausschließen und bestätigen weder
+        Beschreibungen noch Daten. Prüfen Sie die CSV anhand der PDF, bevor Sie
+        sich darauf verlassen."""
 
 [[faq]]
 q = "Meine Daten sind falsch herausgekommen. 03/04 ist der vierte März, nicht der dritte April."
@@ -364,13 +358,13 @@ a = """
         Verbindung trennen."""
 
 [schema]
-description = "Die Tabellen in einem PDF im Browser in CSV umwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten und Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und der laufende Saldo eines Kontoauszugs wird auf jeder Zeile geprüft. Es wird nichts hochgeladen."
+description = "Die Tabellen in einem PDF im Browser in CSV umwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten und Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und der laufende Saldo eines Kontoauszugs wird verglichen, wo Beträge und Salden lesbar sind. Es wird nichts hochgeladen."
 features = [
   "Findet jede Tabelle in einem PDF, jede mit ihren eigenen Spalten und Überschriften",
   "Trennt eine Randspalte mit Kleingedrucktem ab, statt sie in die Tabelle zu mischen",
   "Fügt eine Tabelle zusammen, die über Abschnitte oder Seiten läuft, ohne ihre Überschriften zu wiederholen",
   "Faltet eine Zelle, die in eine zweite Zeile umgebrochen ist, in ihre Zeile zurück",
-  "Prüft jede Zeile am laufenden Saldo des Kontoauszugs selbst",
+  "Vergleicht laufende Salden und nennt nicht geprüfte Zeilen",
   "Liest 1.240,00 und 1,240.00 und entscheidet mehrdeutige Daten aus dem Dokument",
   "Sagt, wenn ein PDF ein Scan ist oder ein Passwort hat, und was stattdessen zu tun ist",
   "Läuft offline; kein Upload, kein Konto, keine Größengrenze",

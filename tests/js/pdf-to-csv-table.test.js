@@ -284,6 +284,33 @@ test('a column of reference numbers is not mistaken for money', () => {
   assert.deepEqual(table.moneyColumns, [3], 'the cheque numbers have no pence, so they are not money');
 });
 
+for (const flushRight of [false, true]) {
+  test(`one monthly deposit keeps its own column, ${flushRight ? 'right' : 'left'} aligned`, () => {
+    const cell = (x, text) => flushRight ? right(x, text) : [x, text];
+    let balance = 1000;
+    const lines = [line(760, [[40, 'Date'], [125, 'Description'],
+      cell(330, 'Debit'), cell(425, 'Credit'), cell(525, 'Balance')])];
+    for (let at = 0; at < 30; at += 1) {
+      const deposit = at === 10;
+      balance += deposit ? 100 : -10;
+      lines.push(line(740 - at * 20, [
+        [40, `2026-09-${String(at + 1).padStart(2, '0')}`], [125, deposit ? 'SALARY' : 'PAYMENT'],
+        cell(deposit ? 425 : 330, deposit ? '100.00' : '10.00'), cell(525, balance.toFixed(2)),
+      ]));
+    }
+    const tables = tablesIn([page(lines)]);
+    assert.equal(tables.length, 1);
+    const [table] = tables;
+    assert.deepEqual(table.headers, ['Date', 'Description', 'Debit', 'Credit', 'Balance']);
+    assert.equal(table.rows.length, 30);
+    assert.deepEqual(table.rows[10].cells, ['2026-09-11', 'SALARY', '', '100.00', '1000.00']);
+    assert.deepEqual(table.rows[11].cells, ['2026-09-12', 'PAYMENT', '10.00', '', '990.00']);
+    const proof = checkBalance(table.rows, table.moneyColumns, '.');
+    assert.deepEqual(proof.amounts, [2, 3]);
+    assert.equal(proof.held, 29);
+  });
+}
+
 /* -------------------------------------------------------------- the proof */
 
 function ledger() {

@@ -46,6 +46,13 @@ textarea:focus-visible {
 
 .diff:empty { display: none; }
 
+.diff-patch {
+  margin: 0;
+  padding: 0.6rem;
+  font: inherit;
+  white-space: pre;
+}
+
 /* One column of line numbers per side and the text beside it, as a grid: the
    columns then line up down the whole comparison, which is the only reason to
    read one side by side at all. Each row is `display: contents` so that its

@@ -339,7 +339,7 @@ function normalise(table, proof, order, mark) {
 }
 
 /**
- * The line that says whether any of this is proven.
+ * The line that says which balance comparisons agreed and which rows were not checked.
  *
  * Only said where there is something to prove it against: a table with a
  * running balance. Most tables have none, and a line on every one of them
@@ -350,11 +350,12 @@ function sayCheck(outputs, several) {
   el.checkLine.classList.remove('held', 'broke');
   el.checkLine.textContent = '';
 
-  const proven = outputs.filter(({ proof }) => proof);
-  if (!proven.length) return;
+  const checked = outputs.filter(({ proof }) => proof);
+  if (!checked.length) return;
 
-  const broken = proven.find(({ proof }) => proof.broken.length);
-  const { table, proof } = broken ?? proven[0];
+  const broken = checked.find(({ proof }) => proof.broken.length);
+  const partial = checked.find(({ proof }) => proof.unchecked.length);
+  const { table, proof } = broken ?? partial ?? checked[0];
 
   let verdict;
   if (broken) {
@@ -364,8 +365,15 @@ function sayCheck(outputs, several) {
     verdict = phrase('check.broke', { held: proof.held, links: proof.links, where });
     el.checkLine.classList.add('broke');
   } else {
-    verdict = phrase('check.held');
-    el.checkLine.classList.add('held');
+    verdict = phrase('check.held', { links: proof.links });
+    if (!proof.unchecked.length) el.checkLine.classList.add('held');
+  }
+
+  if (proof.unchecked.length) {
+    const where = proof.unchecked.length === 1
+      ? phrase('check.row', { n: proof.unchecked[0] })
+      : phrase('check.rows', { list: proof.unchecked.join(', ') });
+    verdict = phrase('check.summary', { verdict, note: phrase('check.unchecked', { where }) });
   }
 
   el.checkLine.textContent = several ? phrase('check.intable', { n: table.n, verdict }) : verdict;

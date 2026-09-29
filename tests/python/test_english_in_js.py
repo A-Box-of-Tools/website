@@ -210,6 +210,11 @@ PROSE = re.compile(
 
 # Strings that are made of words and are still not prose.
 NOT_PROSE = (
+    # The missing-final-newline marker is unified-diff syntax. Patch readers
+    # require these exact words, so translating them would corrupt the export
+    # rather than translate the interface. Match only this literal; the two
+    # backslashes are the JavaScript source spelling returned by the tokenizer.
+    re.compile(r'^\\\\ No newline at end of file\Z'),
     # A phrase key, which is the fix rather than the fault.
     re.compile(r'^[a-z0-9]+(?:\.[a-z0-9-]+)+$'),
     # Addresses, types and selectors.

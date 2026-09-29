@@ -45,6 +45,7 @@
  */
 
 import { chunksOf, isBodySized, median, splitRegions } from './layout.js';
+import { isData, looksNumeric } from './values.js';
 
 /** Two edges this close, in points, are the same edge. Wider than the rounding
  *  in any real producer, narrower than any gap between two columns. */
@@ -292,6 +293,11 @@ export function columnsOf(lines) {
       lines: votes.size,
       score: [...votes.values()].reduce((sum, vote) => sum + vote, 0),
       spine: members.some((edge) => edge.spine),
+      // One salary deposit can be the credit column's only value in a month.
+      // Its heading and the amount still agree on an edge, even when that
+      // evidence is outvoted by thirty withdrawals in the next column.
+      labelledNumber: members.some((edge) => looksNumeric(edge.chunk.text)
+        && members.some((label) => label.line < edge.line && !isData(label.chunk.text))),
       // What the pieces agree on rather than everything any of them covers:
       // the upper middle of their left edges and the lower middle of their
       // right, which for two pieces is simply their overlap. One piece that
@@ -305,7 +311,7 @@ export function columnsOf(lines) {
 
   const best = Math.max(...clusters.map((c) => c.score));
   const kept = clusters
-    .filter((c) => c.spine || (c.lines >= 2 && c.score >= best * ANCHOR_SHARE))
+    .filter((c) => c.spine || (c.lines >= 2 && (c.score >= best * ANCHOR_SHARE || c.labelledNumber)))
     .sort((a, b) => b.score - a.score || Number(b.spine) - Number(a.spine));
 
   // Strongest first. A candidate overlapping one accepted column is the same
@@ -315,7 +321,7 @@ export function columnsOf(lines) {
   for (const candidate of kept) {
     const touching = columns.filter((column) => overlaps(candidate, column));
     if (touching.length === 0) columns.push({ x0: candidate.x0, x1: candidate.x1 });
-    else if (touching.length === 1) {
+    else if (touching.length === 1 && (candidate.spine || candidate.score >= best * ANCHOR_SHARE)) {
       touching[0].x0 = Math.min(touching[0].x0, candidate.x0);
       touching[0].x1 = Math.max(touching[0].x1, candidate.x1);
     }

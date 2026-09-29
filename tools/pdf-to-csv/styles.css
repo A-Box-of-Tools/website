@@ -113,7 +113,7 @@
   background: var(--accent-pale);
 }
 
-/* The verdict line: the whole reason the table above is trustworthy or not. */
+/* The balance check reports arithmetic agreement and its coverage together. */
 .check-line {
   margin: 0.5rem 0 0;
   padding: 0.6rem 0.75rem;

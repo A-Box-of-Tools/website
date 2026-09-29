@@ -35,7 +35,7 @@ test('lines are split the way a diff means them', () => {
   assert.deepEqual(splitLines('a\nb\n'), { lines: ['a', 'b'], trailing: true });
   assert.deepEqual(splitLines('a\nb'), { lines: ['a', 'b'], trailing: false });
   assert.deepEqual(splitLines('a\r\nb\r\n'), { lines: ['a', 'b'], trailing: true });
-  assert.deepEqual(splitLines(''), { lines: [''], trailing: false });
+  assert.deepEqual(splitLines(''), { lines: [], trailing: false });
 });
 
 test('the same text has no difference at all', () => {
@@ -162,8 +162,7 @@ test('words: punctuation is its own token, so one argument can change alone', ()
 test('a unified diff says where the hunk is and what is in it', () => {
   const a = `${Array.from({ length: 10 }, (_, i) => `line ${i + 1}`).join('\n')}\n`;
   const b = a.replace('line 5', 'line five');
-  const { ops } = compareText(a, b);
-  const patch = formatUnified(ops, { context: 2, aLabel: 'left.txt', bLabel: 'right.txt' });
+  const patch = formatUnified(a, b, { context: 2, aLabel: 'left.txt', bLabel: 'right.txt' });
 
   assert.equal(patch, [
     '--- left.txt',
@@ -180,8 +179,9 @@ test('a unified diff says where the hunk is and what is in it', () => {
 });
 
 test('a unified diff of two identical files is empty', () => {
-  const { ops } = compareText('a\nb\n', 'a\nb\n');
-  assert.equal(formatUnified(ops), '');
+  assert.equal(formatUnified('a\nb\n', 'a\nb\n'), '');
+  assert.equal(formatUnified('a', 'a'), '');
+  assert.equal(formatUnified('', ''), '');
 });
 
 test('diffSequences works on anything comparable, not only lines', () => {
@@ -191,4 +191,118 @@ test('diffSequences works on anything comparable, not only lines', () => {
     { type: 'delete', aStart: 1, bStart: 1, count: 1 },
     { type: 'equal', aStart: 2, bStart: 1, count: 1 },
   ]);
+});
+
+/**
+ * Read the public patch format and apply it against the original text.
+ *
+ * Verifying context, line counts and the reconstructed text catches a patch
+ * that looks plausible but cannot be applied, including one whose omitted
+ * blank lines have shifted its hunk headers.
+ */
+function applyUnified(before, patch) {
+  if (!patch) return before;
+  const source = before.split('\n');
+  const terminated = source.pop();
+  for (let i = 0; i < source.length; i += 1) source[i] += '\n';
+  if (terminated) source.push(terminated);
+  const lines = patch.split('\n');
+  assert.equal(lines.pop(), '', 'the patch itself ends with a newline');
+  assert.ok(lines.shift().startsWith('--- '));
+  assert.ok(lines.shift().startsWith('+++ '));
+  const out = [];
+  let sourceAt = 0;
+  let index = 0;
+  while (index < lines.length) {
+    const header = /^@@ -(\d+),(\d+) \+(\d+),(\d+) @@$/.exec(lines[index++]);
+    assert.ok(header, 'each hunk starts with a valid range');
+    const [, aStart, aCount, bStart, bCount] = header.map(Number);
+    const start = aCount === 0 ? aStart : aStart - 1;
+    assert.ok(start >= sourceAt, 'hunks do not overlap');
+    out.push(...source.slice(sourceAt, start));
+    sourceAt = start;
+    assert.equal(out.length, bCount === 0 ? bStart : bStart - 1);
+    let read = 0;
+    let written = 0;
+    while (index < lines.length && !lines[index].startsWith('@@ ')) {
+      const line = lines[index++];
+      const sign = line[0];
+      assert.ok([' ', '-', '+'].includes(sign));
+      const missing = lines[index] === '\\ No newline at end of file';
+      if (missing) index += 1;
+      const value = line.slice(1) + (missing ? '' : '\n');
+      if (sign !== '+') {
+        assert.equal(source[sourceAt++], value, 'context and deletions match the file exactly');
+        read += 1;
+      }
+      if (sign !== '-') {
+        out.push(value);
+        written += 1;
+      }
+    }
+    assert.equal(read, aCount);
+    assert.equal(written, bCount);
+  }
+  out.push(...source.slice(sourceAt));
+  return out.join('');
+}
+
+test('a patch carries an added or removed final newline as an edit', () => {
+  for (const [a, b] of [['a', 'a\n'], ['a\n', 'a']]) {
+    const patch = formatUnified(a, b);
+    assert.notEqual(patch, '');
+    assert.equal(applyUnified(a, patch), b);
+    assert.equal(patch.split('\\ No newline at end of file').length - 1, 1);
+  }
+});
+
+test('missing final newlines are marked on changed and context lines', () => {
+  for (const [a, b] of [
+    ['before', 'after'],
+    ['before\ntail', 'after\ntail'],
+    ['first\nlast', 'first\nlast\nextra'],
+  ]) {
+    assert.equal(applyUnified(a, formatUnified(a, b)), b);
+  }
+});
+
+test('patches preserve CRLF, mixed line endings and literal carriage returns', () => {
+  for (const [a, b] of [
+    ['one\r\ntwo\r\n', 'one\r\nTWO\r\n'],
+    ['one\r\ntwo\r\n', 'one\ntwo\n'],
+    ['one\r\ntwo\nlast', 'one\nTWO\r\nlast\n'],
+    ['one\rtwo\r', 'one\rTWO\r'],
+  ]) {
+    assert.equal(applyUnified(a, formatUnified(a, b)), b);
+  }
+});
+
+test('empty files and insertions with no context use empty hunk ranges', () => {
+  for (const [a, b] of [
+    ['', 'one\n'], ['one\n', ''], ['', '\n'], ['\n', ''],
+    ['', 'one'], ['one', ''],
+    ['one\n', 'before\none\nafter\n'],
+    ['before\none\nafter\n', 'one\n'],
+  ]) {
+    assert.equal(applyUnified(a, formatUnified(a, b, { context: 0 })), b);
+  }
+  assert.match(formatUnified('', 'one\n'), /@@ -0,0 \+1,1 @@/);
+  assert.match(formatUnified('one\n', ''), /@@ -1,1 \+0,0 @@/);
+});
+
+test('ignore settings filter the view but cannot remove changes from the patch', () => {
+  const a = 'Title\n\n  first  line\n\nlast\n';
+  const b = 'title\nfirst line\nlast\n';
+  const options = { ignoreCase: true, ignoreWhitespace: true, ignoreBlankLines: true };
+  const { stats } = compareText(a, b, options);
+  assert.equal(stats.added + stats.removed, 0, 'the requested view hides these edits');
+  assert.equal(applyUnified(a, formatUnified(a, b, options)), b);
+});
+
+test('a patch keeps ignored blank lines in context around visible changes', () => {
+  const a = 'one\n\ntwo\nthree\nfour\nfive\nsix\nseven\neight\n';
+  const b = 'ONE\n\ntwo\nthree\nfour\nfive\nsix\nseven\nEIGHT\n';
+  const patch = formatUnified(a, b, { context: 1, ignoreBlankLines: true });
+  assert.equal(patch.match(/^@@/gm).length, 2, 'distant changes are separate hunks');
+  assert.equal(applyUnified(a, patch), b);
 });
