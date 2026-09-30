@@ -2,42 +2,40 @@
     <h2>The short answer</h2>
     <p>
       Open the <a href="../../trim-video/">Video Cutter</a>, drop the clip in,
-      press <kbd>I</kbd> and <kbd>O</kbd> to mark each part you want &mdash; as
-      many as you like &mdash; and export. On an MP4, MOV or M4V the frames
-      you keep are moved into the new file exactly as they were &mdash; the same
-      bytes, the same encoder settings, the same everything &mdash; and the
-      sound is copied across sample by sample without being decoded.
+      press <kbd>I</kbd> and <kbd>O</kbd> to mark each part you want, then choose
+      how to export. On an MP4, MOV or M4V, &ldquo;Keep every byte&rdquo; moves
+      the retained frames and sound into the new file unchanged. It is available
+      for one section, or for several when every later section starts on a
+      keyframe. Other selections need the explicitly labelled re-encoding path.
     </p>
     <p>
-      That means a trim costs you nothing in quality, and it is fast: cutting a
-      minute out of a four-gigabyte recording costs about what writing that
-      minute to disk costs, because the frames are pointed at rather than loaded.
-      The one place this shows is where your cut actually lands, which is the
-      rest of this page.
+      Copying costs nothing in quality, and it is fast: cutting a minute out
+      of a four-gigabyte recording costs about what writing that minute to disk
+      costs, because the frames are pointed at rather than loaded. The choice
+      depends on where each retained section begins, which is the rest of this
+      page.
     </p>
   </section>
 
   <section>
     <h2>Why a trim need not lose quality at all</h2>
     <p>
-      Trimming does not change what any frame looks like. Every frame you keep
-      is meant to come out identical to how it went in, so there is no reason to
-      decode it and encode it again &mdash; and every reason not to, since a
-      re-encode is lossy and would make the whole clip slightly worse in order
-      to shorten it.
+      For a selection that Copy can handle, every retained frame can stay
+      exactly as it was encoded. Moving those existing bytes avoids decoding
+      and re-encoding them, so this path shortens the video without adding
+      another lossy encoding step.
     </p>
     <p>
-      So a good trimmer does not re-encode. It reads the file's index, works out
-      which encoded frames fall in your range, and writes those bytes into a new
-      container with a new index in front of them. Nothing is decoded at all on
-      that path.
+      When a copy can preserve the requested timing, the trimmer reads the
+      file's index, works out which encoded frames are needed, and writes those
+      bytes into a new container with a new index in front of them. Nothing is
+      decoded on that path.
     </p>
     <p>
-      Plenty of tools re-encode anyway, because decoding and re-encoding is much
-      simpler to implement than parsing the container format. You can usually
-      tell which kind you are using by how long it takes: a copy is limited by
-      how fast your disk writes, and a re-encode is limited by how fast your
-      machine encodes video, which is a hundred times slower.
+      Re-encoding is useful when the requested timing cannot be preserved
+      reliably by copying. It usually takes longer because the browser has to
+      decode and encode every retained picture; copying is mostly limited by
+      how fast the file can be written.
     </p>
   </section>
 
@@ -61,39 +59,40 @@
       from the keyframe in front of your mark.
     </p>
     <p>
-      What it does about that is the interesting part. The file format has a
-      standard way to say <em>start playing at this point</em> &mdash; the extra
-      frames are in the file but the container instructs the player to skip
-      them. Every mainstream player honours it, and the clip begins exactly
-      where you said. A player that ignores it will start early, by up to the
-      keyframe gap.
+      For the first retained section, the file format can say <em>start playing
+      at this point</em>: the extra frames remain in the file, with an edit mark
+      asking the player to skip them. Players that honour that instruction begin
+      at the mark. A player that ignores it can show the earlier frames too.
     </p>
     <p>
-      The tool here tells you which case you are in and by how much before you
-      export, so it is a decision rather than a surprise.
+      Hidden frames at a later join can make browsers show a section too
+      early, even with a correct edit list. The tool therefore refuses Copy when
+      any section after the first starts between keyframes. It explains why and
+      leaves you to choose the re-encoding method explicitly.
     </p>
   </section>
 
   <section>
     <h2>When to accept a re-encode</h2>
     <p>
-      There is an exact cut, and it works by re-encoding the opening stretch
-      &mdash; decoding from the keyframe, and writing out a new run of frames
-      that genuinely begins where you marked. It is slower, and it costs a
-      little quality on that opening stretch only.
+      &ldquo;Cut exactly here&rdquo; decodes from the preceding keyframe,
+      discards frames outside the marked sections, and re-encodes every retained
+      video frame. It is not limited to the opening stretch. It takes longer
+      than copying and can reduce picture quality throughout the retained video.
+      The sound is copied when its format permits it.
     </p>
     <p>
-      Choose it when the clip is going somewhere that will not honour the
-      container's instruction, or where you cannot control the player: some
-      video editors, some broadcast and conferencing systems, some older
-      hardware players. Choose the copy for everything else, which is nearly
-      everything &mdash; a browser, a phone, a social platform, a media player.
+      Choose it when Copy is unavailable for your selection, or when you
+      need the output to begin at the retained frames without relying on an
+      initial edit mark. Copy remains useful for one section or for several
+      whose later starts fall on keyframes, if the receiving player handles
+      the initial edit mark correctly.
     </p>
     <p>
-      A third option that costs nothing: move your mark. If the tool shows you
-      where the keyframes are, nudging the cut to the nearest one gives you an
-      exact cut with no re-encoding at all. It is rarely worth a second of
-      difference to give up on a copy.
+      You can also move a section's start to a keyframe shown on the timeline.
+      That can make Copy available for a later section without re-encoding.
+      It changes which footage you keep, so make that choice according to the
+      content you need.
     </p>
 
     <figure class="shot">
@@ -114,10 +113,11 @@
       side is joined into one clip with the sound carried across in step.
     </p>
     <p>
-      The join has the same keyframe constraint at the point where the second
-      half resumes, for the same reason. It works on both MP4 paths here. It is
-      the one thing the recording fallback below cannot do, because a recording
-      is made in one pass from one playhead.
+      Copy can join the remaining parts when every part after the first
+      resumes on a keyframe. If a later part needs hidden frames before its
+      start, choose &ldquo;Cut exactly here&rdquo; instead. The recording
+      fallback below cannot join separate parts, because it records one
+      uninterrupted pass from one playhead.
     </p>
 
     <figure class="shot">

@@ -181,12 +181,12 @@ body = """
 [[howto]]
 title = "Córtalo y descárgalo."
 body = """
- «Conservar cada byte» traslada los
-      fotogramas intactos: es rápido y no puede costar calidad, pero cada trozo
-      empieza en el fotograma clave anterior a tu marca. «Cortar exactamente
-      aquí» descodifica y vuelve a escribir la imagen para que cada trozo empiece
-      en el fotograma que elegiste. La página te dice cuál de los dos vas a tener,
-      y lo que cuesta, antes de que pulses el botón."""
+        «Conservar cada byte» traslada los fotogramas intactos. El primer trozo puede
+        incluir fotogramas ocultos desde un fotograma clave anterior; todos los trozos
+        posteriores deben empezar en un fotograma clave. «Cortar exactamente aquí»
+        descodifica y recodifica todos los fotogramas conservados para mantener los
+        tiempos elegidos. La página indica qué método vas a usar y qué implica antes de
+        pulsar el botón."""
 
 [[faq]]
 q = "¿Se sube mi vídeo a alguna parte?"
@@ -213,26 +213,25 @@ a = """
 [[faq]]
 q = "¿Cortar hace perder calidad?"
 a = """
-        Por la vía normal no, y no en lo que importa. Cortar no le cambia el
-        aspecto a ningún fotograma, así que los fotogramas se mueven al archivo
-        nuevo tal y como estaban: los mismos bytes, los mismos ajustes de
-        codificación, lo mismo en todo. La única vía de aquí que recodifica algo
-        es el corte exacto, y lo pone en el botón."""
+        «Conservar cada byte» mantiene los fotogramas codificados y el sonido
+        originales, así que no reduce la calidad. Está disponible para un tramo, o para
+        varios si todos los posteriores empiezan en un fotograma clave. «Cortar
+        exactamente aquí» recodifica todos los fotogramas conservados y copia el sonido
+        cuando es posible. «Grabarlo mientras se reproduce» recodifica tanto la imagen
+        como el sonido. El método seleccionado indica qué ocurrirá antes de exportar."""
 
 [[faq]]
 q = "¿Por qué un trozo empieza antes de donde lo marqué?"
 a = """
-        Por cómo se guarda el vídeo, y solo en reproductores que ignoran una parte
-        estándar del formato. Casi todos los fotogramas se guardan como una
-        descripción de en qué se diferencian de sus vecinos, así que no se pueden
-        descodificar sin ellos; solo un fotograma clave se sostiene solo, y los
-        fotogramas clave suelen ir separados entre uno y diez segundos. Un corte
-        que copia fotogramas tiene que arrastrar por tanto la tirada entera desde
-        el fotograma clave anterior a tu marca, y en el archivo queda escrito
-        <em>empieza a reproducir en tu marca</em>, cosa que respeta cualquier
-        reproductor corriente. Si lo necesitas exacto en todos los reproductores,
-        elige «Cortar exactamente aquí», que recodifica. La página te dice en qué
-        caso estás, y por cuánto, antes de exportar."""
+        El primer tramo copiado puede incluir fotogramas desde el fotograma clave
+        anterior, porque los siguientes los necesitan para descodificarse. Una marca de
+        edición indica al reproductor que omita esos fotogramas iniciales; si la ignora,
+        puede empezar antes. Los navegadores también pueden manejar mal los fotogramas
+        ocultos en una unión interna. Por eso la copia no está disponible si algún tramo
+        posterior empieza entre fotogramas clave. Para esas selecciones, elige «Cortar
+        exactamente aquí». Recodifica todos los fotogramas conservados; la página
+        muestra el método y la duración de los fotogramas iniciales ocultos, si los hay,
+        antes de exportar."""
 
 [[faq]]
 q = "¿Puedo quitar los anuncios en vez de conservarlos?"

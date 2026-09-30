@@ -351,12 +351,7 @@
     <span data-phrase="sum.start.keyframe">exactamente donde marcaste (cae en un fotograma clave)</span>
     <span data-phrase="sum.start.editmark">exactamente donde marcaste, mediante una marca de edición</span>
     <span data-phrase="sum.start.exact">exactamente donde marcaste</span>
-    <span data-phrase="cut.note">El fotograma clave más cercano antes de tu primera marca está {seconds}s antes, y
-      los fotogramas de en medio tienen que quedarse en el archivo &mdash; nada de lo que
-      va después se puede descodificar sin ellos. Están marcados para no reproducirse,
-      cosa que respeta cualquier reproductor corriente. Un reproductor que ignore las
-      marcas de edición enseñará esos {seconds}s al principio. Elige &laquo;Cortar justo
-      aquí&raquo; si eso te importa más que conservar los bytes originales.</span>
+    <span data-phrase="cut.note">El fotograma clave anterior al primer tramo conservado está {seconds}s antes. Esos fotogramas se mantienen en el archivo para poder descodificar el tramo. Una marca de edición indica al reproductor que los omita; si la respeta, empieza en tu marca. Si la ignora, puede mostrar primero esos {seconds}s. Elige «Cortar exactamente aquí» para recodificar todos los fotogramas conservados en lugar de depender de esa marca de edición inicial.</span>
     <span data-phrase="sum.size">unos {size}</span>
     <span data-phrase="sum.picture.copy">copiada, fotograma a fotograma</span>
     <span data-phrase="sum.picture.exact">recodificada a H.264, {size}</span>

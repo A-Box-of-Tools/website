@@ -189,12 +189,11 @@ body = """
 [[howto]]
 title = "Apare, e baixe."
 body = """
- O &ldquo;Manter cada byte&rdquo; move os
-      quadros intocados. É rápido, e não tem como custar qualidade, mas cada trecho
-      começa no keyframe anterior à sua marcação. Já o &ldquo;Cortar exatamente
-      aqui&rdquo; decodifica e escreve a imagem de novo, para que cada trecho
-      comece no quadro que você escolheu. A página diz qual dos dois você está
-      prestes a receber, e o que isso custa, antes de você clicar no botão."""
+        “Manter cada byte” transfere os quadros sem alterá-los. O primeiro trecho pode
+        incluir quadros ocultos a partir de um quadro-chave anterior; todos os trechos
+        seguintes precisam começar em um quadro-chave. “Cortar exatamente aqui”
+        decodifica e recodifica cada quadro mantido para preservar os tempos escolhidos.
+        A página informa o método e o que ele implica antes de você apertar o botão."""
 
 [[faq]]
 q = "Meu vídeo é enviado para algum lugar?"
@@ -219,25 +218,25 @@ a = """
 [[faq]]
 q = "Aparar perde qualidade?"
 a = """
-        No caminho normal não, e não do jeito que importa. Aparar não muda a
-        aparência de quadro nenhum, então os quadros são movidos para o arquivo novo
-        exatamente como estavam: os mesmos bytes, os mesmos ajustes de codificador,
-        tudo igual. O único caminho daqui que recodifica alguma coisa é o corte
-        exato, e ele avisa isso no próprio botão."""
+        “Manter cada byte” preserva os quadros codificados e o som originais, sem
+        reduzir a qualidade. Está disponível para um trecho ou para vários, desde que
+        todos os seguintes comecem em um quadro-chave. “Cortar exatamente aqui”
+        recodifica cada quadro mantido e copia o som quando possível. “Gravar enquanto
+        toca” recodifica tanto a imagem quanto o som. O método selecionado informa o que
+        vai acontecer antes da exportação."""
 
 [[faq]]
 q = "Por que um trecho começa antes de onde eu marquei?"
 a = """
-        Por causa de como o vídeo é guardado, e só em reprodutores que ignoram uma
-        parte padronizada do formato. A maioria dos quadros é guardada como uma
-        descrição de como eles diferem dos vizinhos, então não dá para decodificar um
-        sem os outros. Só um keyframe se sustenta sozinho, e os keyframes costumam
-        ficar de um a dez segundos de distância. Um corte que copia quadros precisa,
-        portanto, carregar a sequência a partir do keyframe anterior à sua marcação,
-        e o arquivo diz <em>comece a tocar na sua marcação</em>, o que todo
-        reprodutor mais usado respeita. Se você precisa que seja exato em todo
-        reprodutor, escolha &ldquo;Cortar exatamente aqui&rdquo;, que recodifica. A
-        página avisa em qual caso você está, e por quanto, antes de exportar."""
+        O primeiro trecho copiado pode incluir quadros desde o quadro-chave anterior,
+        porque os quadros seguintes precisam deles para serem decodificados. Uma marca
+        de edição pede ao reprodutor que pule esses quadros iniciais; se ele ignorar a
+        marca, pode começar antes. Navegadores também podem lidar incorretamente com
+        quadros ocultos em uma emenda interna. Por isso, a cópia fica indisponível se
+        algum trecho posterior começar entre quadros-chave. Nessas seleções, escolha
+        “Cortar exatamente aqui”. O método recodifica cada quadro mantido; antes da
+        exportação, a página informa o método e a duração dos quadros iniciais ocultos,
+        quando houver."""
 
 [[faq]]
 q = "Posso tirar os comerciais em vez disso?"

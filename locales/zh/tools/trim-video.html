@@ -312,7 +312,7 @@
     <span data-phrase="sum.start.keyframe">正好在你标的地方（那儿是个关键帧）</span>
     <span data-phrase="sum.start.editmark">正好在你标的地方，靠一个编辑标记</span>
     <span data-phrase="sum.start.exact">正好在你标的地方</span>
-    <span data-phrase="cut.note">你第一个标记前面最近的关键帧在 {seconds} 秒之前，中间那些帧必须留在文件里——没有它们，后面的什么都解不出来。它们被标成不要播放，主流播放器都认这个。忽略编辑标记的播放器会把那 {seconds} 秒显示在开头。如果这件事比留住原始字节更要紧，就选「就在这里切」。</span>
+    <span data-phrase="cut.note">第一个保留片段之前的关键帧早了{seconds}秒。这些帧留在文件里，才能解码这个片段。编辑标记要求播放器跳过它们；遵循标记的播放器会从你标的位置开始。忽略标记的播放器可能先显示这{seconds}秒。选择“就在这儿下刀”会重新编码每一个保留的画面帧，不再依赖开头这条编辑标记。</span>
     <span data-phrase="sum.size">大约 {size}</span>
     <span data-phrase="sum.picture.copy">照拷，一帧一帧</span>
     <span data-phrase="sum.picture.exact">重新编成 H.264，{size}</span>
