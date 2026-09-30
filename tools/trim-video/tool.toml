@@ -246,11 +246,11 @@ body = """
 title = "Cut it, and download."
 body = """
  "Keep every byte" moves the
-      frames across untouched: quick, and it cannot cost quality, but each part
-      begins at the keyframe before your mark. "Cut exactly here" decodes and
-      writes the picture again so every part starts on the frame you chose. The
-      page says which one you are about to get, and what it costs, before you
-      press the button."""
+      frames across untouched. The first part can carry hidden frames from an
+      earlier keyframe; every later part must start on a keyframe. "Cut exactly
+      here" decodes and re-encodes every retained video frame to preserve the
+      selected timing. The page says which method you are about to use and what
+      it costs before you press the button."""
 
 # Each answer renders twice: as the <details> block at the foot of the page, and
 # as FAQPage structured data in the head. The build derives the plain-text half
@@ -280,25 +280,24 @@ a = """
 [[faq]]
 q = "Does cutting lose quality?"
 a = """
-        Not on the normal path, and not in the way that matters. Cutting does
-        not change what any frame looks like, so the frames are moved into the
-        new file exactly as they were: the same bytes, the same encoder
-        settings, the same everything. The only path here that re-encodes
-        anything is the exact cut, and it says so on the button."""
+        "Keep every byte" preserves the original encoded frames and sound, so
+        that path does not reduce quality. It is available for one section, or
+        for several when every later section starts on a keyframe. "Cut exactly
+        here" re-encodes every retained video frame and copies the sound when
+        possible. "Record it as it plays" re-encodes both picture and sound.
+        The selected method tells you which will happen before you export."""
 
 [[faq]]
 q = "Why does a part start earlier than I marked it?"
 a = """
-        Because of how video is stored, and only on players that ignore a
-        standard part of the format. Most frames are kept as a description of how
-        they differ from their neighbours, so they cannot be decoded without
-        them; only a keyframe stands alone, and keyframes are typically one to
-        ten seconds apart. A cut that copies frames therefore has to carry the
-        run from the keyframe in front of your mark &mdash; and the file says
-        <em>start playing at your mark</em>, which every mainstream player
-        honours. If you need it exact in every player, choose "Cut exactly here",
-        which re-encodes. The page tells you which case you are in, and by how
-        much, before you export."""
+        A copied first section may carry frames from the preceding keyframe
+        because later frames need them to decode. An edit mark asks the player
+        to skip those initial frames; a player that ignores it can begin early.
+        Browsers can also mishandle hidden frames at an internal join, so Copy
+        is unavailable if any later section starts between keyframes. Choose
+        "Cut exactly here" for those selections. It re-encodes every retained
+        video frame; the page states the method and any initial hidden duration
+        before export."""
 
 [[faq]]
 q = "Can I cut the adverts out instead?"

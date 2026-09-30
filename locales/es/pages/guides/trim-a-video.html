@@ -1,44 +1,42 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Abre el <a href="../../cortar-video/">cortador de vídeo</a>, arrastra el
-      clip dentro, pulsa <kbd>I</kbd> y <kbd>O</kbd> para marcar cada trozo que
-      quieras, tantos como te apetezca, y exporta. En un MP4, un MOV o un M4V, los
-      fotogramas que conservas se trasladan al archivo nuevo tal y como estaban,
-      con los mismos bytes y los mismos ajustes de codificación, y el sonido se
-      copia muestra a muestra sin descodificarlo.
+      Abre el <a href="../../cortar-video/">cortador de vídeo</a>, suelta el clip y
+      pulsa <kbd>I</kbd> y <kbd>O</kbd> para marcar cada trozo que quieras. Después,
+      elige cómo exportar. En MP4, MOV o M4V, «Conservar cada byte» traslada los
+      fotogramas conservados y el sonido al archivo nuevo sin modificarlos. Está
+      disponible para un tramo, o para varios si todos los posteriores empiezan en un
+      fotograma clave. Las demás selecciones necesitan la opción identificada
+      expresamente como recodificación.
     </p>
     <p>
-      O sea que un corte no te cuesta nada de calidad, y además va rápido: sacar
-      un minuto de una grabación de cuatro gigabytes viene a costar lo que cuesta
-      escribir ese minuto en disco, porque a los fotogramas se les apunta en vez
-      de cargarlos. Lo único que se nota es dónde cae de verdad tu corte, y de eso
-      va el resto de esta página.
+      La copia no cuesta calidad y es rápida: extraer un minuto de una grabación de
+      cuatro gigabytes cuesta aproximadamente lo mismo que escribir ese minuto en el
+      disco, porque se usan referencias a los fotogramas en lugar de cargarlos. La
+      elección depende de dónde empiece cada tramo conservado. De eso trata el resto de
+      esta página.
     </p>
   </section>
 
   <section>
     <h2>Por qué un corte no tiene por qué perder nada de calidad</h2>
     <p>
-      Cortar no le cambia el aspecto a ningún fotograma. Cada fotograma que
-      conservas tiene que salir idéntico a como entró, así que no hay ninguna
-      razón para descodificarlo y volver a codificarlo, y sí muchas para no
-      hacerlo: una recodificación tiene pérdidas, y te empeoraría un poco el clip
-      entero solo por acortarlo.
+      Si la selección admite la copia, cada fotograma conservado puede mantenerse
+      exactamente como se codificó. Trasladar esos bytes evita descodificarlos y volver
+      a codificarlos, así que esta vía acorta el vídeo sin añadir otra etapa de
+      codificación con pérdida.
     </p>
     <p>
-      Así que un buen cortador no recodifica. Lee el índice del archivo, calcula
-      qué fotogramas codificados caen dentro de tu rango y escribe esos bytes en
-      un contenedor nuevo con un índice nuevo delante. Por esa vía no se
-      descodifica absolutamente nada.
+      Cuando la copia puede respetar los tiempos elegidos, la herramienta lee el índice
+      del archivo, determina qué fotogramas codificados hacen falta y escribe esos bytes
+      en un contenedor nuevo con un índice nuevo delante. Por esa vía no se descodifica
+      nada.
     </p>
     <p>
-      Muchas herramientas recodifican igualmente, porque descodificar y volver a
-      codificar es muchísimo más fácil de programar que analizar el formato del
-      contenedor. Y normalmente sabes cuál te ha tocado por lo que tarda: una
-      copia va tan rápido como escriba tu disco, mientras que una recodificación
-      va tan rápido como codifique vídeo tu dispositivo, que es cien veces más
-      lento.
+      Recodificar resulta útil cuando no se pueden mantener de forma fiable los tiempos
+      elegidos mediante una copia. Suele tardar más porque el navegador tiene que
+      descodificar y codificar cada imagen conservada; la copia depende sobre todo de la
+      velocidad con la que se pueda escribir el archivo.
     </p>
   </section>
 
@@ -64,40 +62,42 @@
       marca.
     </p>
     <p>
-      Lo interesante es qué hace con eso. El formato de archivo tiene una manera
-      estándar de decir <em>empieza a reproducir en este punto</em>: los
-      fotogramas de más siguen en el archivo, pero el contenedor le indica al
-      reproductor que se los salte. Cualquier reproductor corriente lo respeta, y
-      el clip empieza exactamente donde dijiste. Uno que lo ignore empezará antes,
-      hasta el hueco de un fotograma clave.
+      Para el primer tramo conservado, el formato puede indicar <em>empieza a reproducir
+      en este punto</em>: los fotogramas de más siguen en el archivo, con una marca de
+      edición que pide al reproductor que los omita. Los reproductores que respetan esa
+      instrucción empiezan en la marca. Uno que la ignore también puede mostrar los
+      fotogramas anteriores.
     </p>
     <p>
-      La herramienta de aquí te dice en qué caso estás, y por cuánto, antes de
-      exportar. Así es una decisión y no una sorpresa.
+      Los fotogramas ocultos en una unión posterior pueden hacer que el navegador
+      muestre un tramo antes de tiempo, incluso si la lista de edición es correcta. Por
+      eso la herramienta impide copiar cuando cualquier tramo posterior al primero
+      empieza entre fotogramas clave. Explica el motivo y deja que elijas expresamente
+      el método que recodifica.
     </p>
   </section>
 
   <section>
     <h2>Cuándo aceptar una recodificación</h2>
     <p>
-      Existe también el corte exacto, que funciona recodificando el tramo inicial:
-      descodifica desde el fotograma clave y escribe una tirada nueva de
-      fotogramas que sí empieza donde lo marcaste. Es más lento, y cuesta algo de
-      calidad, pero solo en ese tramo inicial.
+      «Cortar exactamente aquí» descodifica desde el fotograma clave anterior, descarta
+      los fotogramas que quedan fuera de los tramos marcados y recodifica todos los
+      fotogramas conservados. No se limita al tramo inicial. Tarda más que copiar y
+      puede reducir la calidad de imagen en todo el vídeo conservado. El sonido se copia
+      cuando su formato lo permite.
     </p>
     <p>
-      Tira de él cuando el clip vaya a parar a un sitio que no vaya a respetar la
-      instrucción del contenedor, o donde no controles el reproductor: algunos
-      editores de vídeo, algunos sistemas de emisión y videoconferencia y algunos
-      reproductores por hardware antiguos. Para todo lo demás, que es casi todo,
-      quédate con la copia: un navegador, un móvil, una plataforma social, un
-      reproductor multimedia.
+      Elige esta opción cuando la copia no esté disponible para tu selección o cuando
+      necesites que el resultado empiece en los fotogramas conservados sin depender de
+      una marca de edición inicial. La copia sigue siendo útil para un tramo o para
+      varios cuyos inicios posteriores coincidan con fotogramas clave, siempre que el
+      reproductor de destino gestione correctamente la marca de edición inicial.
     </p>
     <p>
-      Hay una tercera opción que no cuesta nada: mover tu marca. Si la herramienta
-      te enseña dónde están los fotogramas clave, llevar el corte al más cercano te
-      da un corte exacto sin ninguna recodificación. Pocas veces compensa
-      renunciar a una copia por un segundo de diferencia.
+      También puedes mover el inicio de un tramo a un fotograma clave que aparezca en la
+      línea de tiempo. Así puede quedar disponible la copia de un tramo posterior sin
+      recodificar. Cambia qué imágenes conservas, así que decide según el contenido que
+      necesites.
     </p>
 
     <figure class="shot">
@@ -118,11 +118,11 @@
       une en un solo clip, con el sonido trasladado en sincronía.
     </p>
     <p>
-      La unión arrastra la misma limitación de fotograma clave en el punto donde
-      arranca la segunda mitad, y por el mismo motivo. Funciona por las dos vías
-      de MP4 de aquí, y es lo único que no puede hacer la alternativa por grabación
-      de más abajo, porque una grabación se hace de una pasada y desde un solo
-      cabezal.
+      La copia puede unir los trozos restantes si todos los posteriores al primero se
+      reanudan en un fotograma clave. Si uno posterior necesita fotogramas ocultos antes
+      de su inicio, elige «Cortar exactamente aquí». La alternativa por grabación que se
+      explica más abajo no puede unir trozos separados, porque graba una sola pasada
+      continua desde un único cabezal de reproducción.
     </p>
 
     <figure class="shot">

@@ -86,6 +86,8 @@ let counter = 0;
 let busy = false;
 let resultUrl = null;
 let pending = 0;
+let revision = 0;
+let loadVersion = 0;
 
 const preview = new Preview(el.preview);
 const stage = new Stage(el.stage, {
@@ -135,10 +137,16 @@ async function decode(file) {
 }
 
 async function load(file) {
+  const version = ++loadVersion;
+  invalidateResult();
   clearLoadError();
   wired.busy(readingLabel(1));
   try {
     const decoded = await decode(file);
+    if (version !== loadVersion) {
+      decoded.bitmap.close?.();
+      return;
+    }
     dropPicture();
     picture = { file, ...decoded };
 
@@ -162,9 +170,11 @@ async function load(file) {
   } catch (error) {
     // decode() throws a key; a browser that failed for its own reasons throws
     // a sentence, and phrase() hands back what it does not recognise.
-    showLoadError(phrase('read.failed', { why: phrase(error.message) }));
+    if (version === loadVersion) {
+      showLoadError(phrase('read.failed', { why: phrase(error.message) }));
+    }
   } finally {
-    wired.done();
+    if (version === loadVersion) wired.done();
   }
 }
 
@@ -172,10 +182,18 @@ async function load(file) {
 function dropPicture() {
   if (picture?.bitmap && typeof picture.bitmap.close === 'function') picture.bitmap.close();
   picture = null;
+  invalidateResult();
+}
+
+/** An edit retires both the old download and any encode still making it. */
+function invalidateResult() {
+  revision += 1;
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = null;
   el.result.hidden = true;
   el.resultImage.removeAttribute('src');
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
 }
 
 const wired = wireFilePicker({
@@ -188,6 +206,8 @@ const wired = wireFilePicker({
 });
 
 el.clearImage.addEventListener('click', () => {
+  loadVersion += 1;
+  wired.done();
   dropPicture();
   preview.clear();
   regions = [];
@@ -208,6 +228,7 @@ const snapshot = () => {
 };
 
 function addRegion(rect, { focus = false } = {}) {
+  invalidateResult();
   snapshot();
   counter += 1;
   const region = { id: `r${counter}`, ...clampRect(rect, picture), style };
@@ -220,11 +241,13 @@ function addRegion(rect, { focus = false } = {}) {
 function moveRegion(id, rect) {
   const region = regions.find((item) => item.id === id);
   if (!region) return;
+  invalidateResult();
   Object.assign(region, rect);
   refresh();
 }
 
 function removeRegion(id) {
+  invalidateResult();
   regions = regions.filter((region) => region.id !== id);
   if (selectedId === id) selectedId = regions.at(-1)?.id ?? null;
   refresh();
@@ -240,6 +263,7 @@ function setStyle(next) {
   style = next;
   const region = regions.find((item) => item.id === selectedId);
   if (region && region.style !== next) {
+    invalidateResult();
     snapshot();
     region.style = next;
   }
@@ -262,6 +286,7 @@ el.addBox.addEventListener('click', () => {
 el.undo.addEventListener('click', () => {
   const previous = history.pop();
   if (!previous) return;
+  invalidateResult();
   regions = previous;
   if (!regions.some((region) => region.id === selectedId)) selectedId = regions.at(-1)?.id ?? null;
   refresh();
@@ -269,6 +294,7 @@ el.undo.addEventListener('click', () => {
 
 el.clearBoxes.addEventListener('click', () => {
   if (regions.length === 0) return;
+  invalidateResult();
   snapshot();
   regions = [];
   selectedId = null;
@@ -279,7 +305,7 @@ el.styleGroup.addEventListener('change', (event) => {
   if (event.target.name === 'style') setStyle(event.target.value);
 });
 
-el.strength.addEventListener('change', () => refresh());
+el.strength.addEventListener('change', () => { invalidateResult(); refresh(); });
 
 /* ------------------------------------------------------------- redrawing */
 
@@ -344,6 +370,7 @@ function renderList() {
       choice.append(option);
     }
     choice.addEventListener('change', () => {
+      invalidateResult();
       snapshot();
       region.style = choice.value;
       refresh();
@@ -376,9 +403,10 @@ function showFormatRow() {
   el.qualityRow.hidden = !chooseFormat(el.format.value, picture?.file.type ?? '').lossy;
 }
 
-el.format.addEventListener('change', showFormatRow);
+el.format.addEventListener('change', () => { invalidateResult(); showFormatRow(); });
 
 el.quality.addEventListener('input', () => {
+  invalidateResult();
   el.qualityValue.textContent = `${el.quality.value}%`;
 });
 
@@ -396,21 +424,29 @@ el.save.addEventListener('click', () => save());
 async function save() {
   if (!picture || busy) return;
   busy = true;
+  invalidateResult();
+  const version = revision;
+  const saved = {
+    picture: { ...picture },
+    regions: regions.map((region) => ({ ...region })),
+    strength: el.strength.value,
+  };
+  const format = chooseFormat(el.format.value, saved.picture.file.type);
+  const quality = format.lossy ? Number(el.quality.value) / 100 : undefined;
   el.save.disabled = true;
   el.busy.hidden = false;
-  el.result.hidden = true;
 
-  // Yield once, so the "Redacting" line is painted before the main thread is
-  // taken for however long a large photograph needs. A timer rather than
-  // requestAnimationFrame: a background tab never gets a frame, and the file
-  // has to be written whether or not anybody is looking at the page.
+  // Editing stays available while the encoder works. Its completion belongs
+  // to this revision only: a new box must never be described as applied to
+  // bytes that were already handed to the encoder.
   await new Promise((resolve) => setTimeout(resolve, 0));
 
+  let canvas;
   try {
-    const format = chooseFormat(el.format.value, picture.file.type);
-    const canvas = document.createElement('canvas');
-    canvas.width = picture.width;
-    canvas.height = picture.height;
+    if (version !== revision) return;
+    canvas = document.createElement('canvas');
+    canvas.width = saved.picture.width;
+    canvas.height = saved.picture.height;
     const context = canvas.getContext('2d', { willReadFrequently: true });
 
     // JPEG has no alpha channel. A transparent PNG drawn onto an unpainted
@@ -420,13 +456,12 @@ async function save() {
       context.fillStyle = '#ffffff';
       context.fillRect(0, 0, canvas.width, canvas.height);
     }
-    context.drawImage(picture.bitmap, 0, 0);
+    context.drawImage(saved.picture.bitmap, 0, 0);
 
     const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
-    applyRegions(pixels, regions, el.strength.value);
+    applyRegions(pixels, saved.regions, saved.strength);
     context.putImageData(pixels, 0, 0);
 
-    const quality = format.lossy ? Number(el.quality.value) / 100 : undefined;
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob(
         (made) => (made ? resolve(made) : reject(new Error('write.noencode'))),
@@ -435,15 +470,19 @@ async function save() {
       );
     });
 
-    canvas.width = 0;
-    canvas.height = 0;
-    showResult(blob, format);
+    if (version === revision) showResult(blob, format, saved);
   } catch (error) {
-    showLoadError(phrase('write.failed', { why: phrase(error.message) }));
+    if (version === revision) {
+      showLoadError(phrase('write.failed', { why: phrase(error.message) }));
+    }
   } finally {
+    if (canvas) {
+      canvas.width = 0;
+      canvas.height = 0;
+    }
     busy = false;
     el.busy.hidden = true;
-    el.save.disabled = false;
+    el.save.disabled = !picture;
   }
 }
 
@@ -455,7 +494,7 @@ async function save() {
  * to be downloaded, and if anything had survived the redaction it would be
  * visible here.
  */
-function showResult(blob, format) {
+function showResult(blob, format, { picture, regions }) {
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = URL.createObjectURL(blob);
 

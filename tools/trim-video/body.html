@@ -151,6 +151,7 @@
           <option value="record">Record it as it plays</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -251,6 +252,7 @@
     <span data-phrase="audio.descriptor">Internal error: the audio description is larger than expected.</span>
     <span data-phrase="audio.noencode">The sound was decoded but nothing came back from the encoder.</span>
     <span data-phrase="nothing.selected">There is nothing selected to keep.</span>
+    <span data-phrase="copy.internalpreroll">These sections cannot be copied reliably in browsers. Choose {method} to preserve their timing.</span>
     <span data-phrase="encode.toobig">This browser will not encode H.264 at {size}. Choose a smaller frame, or use
       &ldquo;Keep every byte&rdquo;, which encodes nothing at all.</span>
     <span data-phrase="decode.none">No frames could be decoded from what you chose.</span>
@@ -337,11 +339,11 @@
     <span data-phrase="sum.start.keyframe">exactly where you marked (it is on a keyframe)</span>
     <span data-phrase="sum.start.editmark">exactly where you marked, through an edit mark</span>
     <span data-phrase="sum.start.exact">exactly where you marked</span>
-    <span data-phrase="cut.note">The nearest keyframe before your first mark is {seconds}s earlier, and the frames in
-      between have to stay in the file &mdash; nothing after them can be decoded without
-      them. They are marked not to be played, which every mainstream player honours. A
-      player that ignores edit marks will show those {seconds}s at the front. Choose
-      &ldquo;Cut exactly here&rdquo; if that matters more than keeping the original bytes.</span>
+    <span data-phrase="cut.note">The keyframe before your first retained section is {seconds}s earlier. Those
+      frames stay in the file so the section can be decoded. An edit mark asks the player
+      to skip them; a player that honours it starts at your mark. A player that ignores
+      it may show those {seconds}s first. Choose &ldquo;Cut exactly here&rdquo; to re-encode
+      every retained frame instead of relying on that initial edit mark.</span>
     <span data-phrase="sum.size">about {size}</span>
     <span data-phrase="sum.picture.copy">copied, frame for frame</span>
     <span data-phrase="sum.picture.exact">re-encoded to H.264, {size}</span>

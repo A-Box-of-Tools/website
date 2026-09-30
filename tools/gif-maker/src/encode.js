@@ -54,6 +54,9 @@ export function loopValue(mode, times) {
  * @returns {Promise<{blob: Blob, width: number, height: number, frames: number}>}
  */
 export async function encodeGif({ items, settings, onProgress, signal }) {
+  // The editor stays usable between decodes. This export keeps the order and
+  // delays the reader chose when it started, including when thumbnails go away.
+  items = items.map((item) => ({ ...item }));
   const {
     width, height, fit, background, colors, dither, sharedPalette, transparent, loop,
   } = settings;
@@ -83,6 +86,7 @@ export async function encodeGif({ items, settings, onProgress, signal }) {
   const pixelsFor = async (item) => {
     const bitmap = await decodeFull(item);
     try {
+      throwIfAborted(signal);
       drawFrame(ctx, bitmap, { fit, background: transparent ? null : background });
     } finally {
       bitmap.close();
@@ -133,6 +137,7 @@ export async function encodeGif({ items, settings, onProgress, signal }) {
     await yieldToPage();
   }
 
+  throwIfAborted(signal);
   const bytes = writer.finalize();
   return {
     blob: new Blob([bytes], { type: 'image/gif' }),

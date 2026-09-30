@@ -153,6 +153,7 @@
           <option value="record">Beim Abspielen aufzeichnen</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -328,6 +329,7 @@
     <span data-phrase="method.copy.many">Jeder markierte Teil wird genau so, wie er ist, in die neue Datei verschoben, einer
       nach dem anderen. Es wird nichts dekodiert und nichts kodiert, kein Teil davon
       kostet also Qualität.</span>
+    <span data-phrase="copy.internalpreroll">Diese Abschnitte lassen sich in Browsern nicht zuverlässig kopieren. Wählen Sie „{method}“, um die gewählten Schnittzeiten beizubehalten.</span>
     <span data-phrase="method.exact.one">Jeder Teil beginnt genau bei dem Frame, den Sie markiert haben: dafür wird ab dem
       Keyframe davor dekodiert und das Bild neu kodiert. Der Ton wird weiterhin kopiert
       statt neu kodiert.</span>
@@ -354,12 +356,7 @@
     <span data-phrase="sum.start.keyframe">genau da, wo Sie markiert haben (es liegt auf einem Keyframe)</span>
     <span data-phrase="sum.start.editmark">genau da, wo Sie markiert haben, über eine Schnittmarke</span>
     <span data-phrase="sum.start.exact">genau da, wo Sie markiert haben</span>
-    <span data-phrase="cut.note">Der nächste Keyframe vor Ihrer ersten Markierung liegt {seconds}s früher, und die
-      Frames dazwischen müssen in der Datei bleiben &mdash; ohne sie lässt sich nichts
-      danach dekodieren. Sie sind als nicht abzuspielen markiert, woran sich jeder gängige
-      Player hält. Ein Player, der Schnittmarken ignoriert, zeigt diese {seconds}s am
-      Anfang. Wählen Sie &bdquo;Genau hier schneiden&ldquo;, wenn Ihnen das wichtiger ist,
-      als die ursprünglichen Bytes zu behalten.</span>
+    <span data-phrase="cut.note">Der Keyframe vor Ihrem ersten behaltenen Abschnitt liegt {seconds}s früher. Diese Frames bleiben in der Datei, damit der Abschnitt dekodiert werden kann. Eine Schnittmarke weist den Player an, sie zu überspringen. Befolgt er sie, beginnt er an Ihrer Markierung; ignoriert er sie, zeigt er möglicherweise zuerst diese {seconds}s. Wählen Sie „Genau hier schneiden“, um jeden behaltenen Frame neu zu kodieren, statt sich auf diese anfängliche Schnittmarke zu verlassen.</span>
     <span data-phrase="sum.size">etwa {size}</span>
     <span data-phrase="sum.picture.copy">kopiert, Frame für Frame</span>
     <span data-phrase="sum.picture.exact">neu kodiert zu H.264, {size}</span>

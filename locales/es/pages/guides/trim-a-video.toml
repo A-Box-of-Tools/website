@@ -12,9 +12,9 @@ description = "Cortar un clip no tiene por qué costarte ni un byte de calidad. 
 
 heading = "Cómo cortar un vídeo sin recodificarlo"
 lede = """
-    Cortar no le cambia el aspecto a ningún fotograma, así que un buen cortador
-    ni los toca: los traslada a un archivo nuevo tal y como estaban. Aquí va lo
-    que eso te ahorra, y el único sitio donde se nota."""
+    Copiar permite acortar un vídeo sin cambiar sus fotogramas codificados. Esta
+    guía explica las limitaciones de los fotogramas clave, cuándo se puede copiar
+    con fiabilidad y cuándo conviene recodificar."""
 
 updated = "26 de agosto de 2026"
 

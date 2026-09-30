@@ -522,11 +522,15 @@ function renderPlan() {
 
   // The clauses are run together by a phrase too: a space between two of
   // them is English punctuation and is not how every language does it.
-  el.outputSummary.textContent = phrase('plan.line',
+  const summary = phrase('plan.line',
     { parts: parts.reduce((a, b) => phrase('plan.join', { a, b })) });
-  el.run.textContent = files === 1
+  const label = files === 1
     ? phrase('run.one')
     : phrase('run.many', { n: files });
+  // Blurring a typed split fires change after input already rendered the plan.
+  // Replacing the active button's text during that click loses it in WebKit.
+  if (el.outputSummary.textContent !== summary) el.outputSummary.textContent = summary;
+  if (el.run.textContent !== label) el.run.textContent = label;
 }
 
 /** How many files the current plan produces, without building any of them. */

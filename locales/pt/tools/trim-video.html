@@ -152,6 +152,7 @@
           <option value="record">Gravar enquanto toca</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -321,6 +322,7 @@
     <span data-phrase="method.copy.many">Cada trecho marcado é passado para o arquivo novo exatamente como está, um depois do
       outro. Nada é decodificado e nada é codificado, então nenhuma parte disso custa
       qualidade.</span>
+    <span data-phrase="copy.internalpreroll">Não é possível copiar estes trechos de forma confiável nos navegadores. Escolha “{method}” para manter os cortes nos momentos escolhidos.</span>
     <span data-phrase="method.exact.one">Cada trecho começa no quadro que você marcou, decodificando a partir do quadro-chave
       anterior e codificando a imagem de novo. O som continua sendo copiado em vez de
       recodificado.</span>
@@ -346,12 +348,7 @@
     <span data-phrase="sum.start.keyframe">exatamente onde você marcou (cai num quadro-chave)</span>
     <span data-phrase="sum.start.editmark">exatamente onde você marcou, por uma marca de edição</span>
     <span data-phrase="sum.start.exact">exatamente onde você marcou</span>
-    <span data-phrase="cut.note">O quadro-chave mais próximo antes da sua primeira marcação está {seconds}s antes, e
-      os quadros do meio têm de ficar no arquivo &mdash; nada do que vem depois dá para
-      decodificar sem eles. Eles estão marcados para não serem reproduzidos, coisa que
-      todo reprodutor comum respeita. Um reprodutor que ignora marcas de edição vai
-      mostrar esses {seconds}s no começo. Escolha &laquo;Cortar exatamente aqui&raquo; se
-      isso importa mais do que guardar os bytes originais.</span>
+    <span data-phrase="cut.note">O quadro-chave anterior ao primeiro trecho mantido está {seconds}s antes. Esses quadros ficam no arquivo para que o trecho possa ser decodificado. Uma marca de edição pede ao reprodutor que os pule; se ele respeitar a marca, começa no ponto escolhido. Se a ignorar, pode mostrar esses {seconds}s primeiro. Escolha “Cortar exatamente aqui” para recodificar cada quadro mantido, em vez de depender dessa marca de edição inicial.</span>
     <span data-phrase="sum.size">uns {size}</span>
     <span data-phrase="sum.picture.copy">copiada, quadro a quadro</span>
     <span data-phrase="sum.picture.exact">recodificada para H.264, {size}</span>

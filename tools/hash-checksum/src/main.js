@@ -111,9 +111,16 @@ function outstanding() {
  * first for the progress bar.
  */
 async function start(ids) {
-  if (!chosen || !ids.length) return;
-
   running?.abort();
+  running = null;
+  if (!chosen || !ids.length) {
+    el.progress.hidden = true;
+    el.stopped.hidden = true;
+    picker.done();
+    return;
+  }
+
+  const file = chosen;
   const controller = new AbortController();
   running = controller;
 
@@ -127,9 +134,10 @@ async function start(ids) {
   let speed = null;
 
   try {
-    const found = await hashFile(chosen, ids, {
+    const found = await hashFile(file, ids, {
       signal: controller.signal,
       onProgress(done, total) {
+        if (running !== controller) return;
         const now = performance.now();
         if (done > last.at && now > last.when) {
           speed = smooth(speed, rate(done - last.at, (now - last.when) / 1000));
@@ -138,8 +146,10 @@ async function start(ids) {
         showProgress(done, total, speed);
       },
     });
+    if (running !== controller || controller.signal.aborted || chosen !== file) return;
     Object.assign(digests, found);
   } catch (error) {
+    if (running !== controller || chosen !== file) return;
     if (error instanceof Stopped) {
       // Not a failure. Whatever was already worked out for this file stays on
       // the page, because it is still true of it - and if that is nothing, the
@@ -154,7 +164,7 @@ async function start(ids) {
     }
     if (error instanceof Unreadable) {
       showError(phrase('read.failed', {
-        name: chosen.name, reason: phrase(error.message),
+        name: file.name, reason: phrase(error.message),
       }));
       return;
     }

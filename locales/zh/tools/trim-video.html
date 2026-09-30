@@ -149,6 +149,7 @@
           <option value="record">一边播一边录</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -294,6 +295,7 @@
     <span data-phrase="join.note">这些视频不重新编码就接不起来：{reason} 一条轨道只带一份对里面内容的描述，所以对不上的视频得重写一遍，才能共用一份。</span>
     <span data-phrase="method.copy.one">帧原封不动地搬进新文件，所以既不解码也不编码。快，而且不可能掉画质。每一段从你标记前面最近的关键帧开始。</span>
     <span data-phrase="method.copy.many">每个标记的段落原封不动地一段接一段搬进新文件。既不解码也不编码，所以这里没有哪一步会掉画质。</span>
+    <span data-phrase="copy.internalpreroll">浏览器无法可靠地复制这些片段。请选择“{method}”，以保留准确的剪切时间。</span>
     <span data-phrase="method.exact.one">每一段就从你标的那一帧开始：从它前面的关键帧解出来，再把画面重新编一遍。声音还是照拷，不重新编码。</span>
     <span data-phrase="method.exact.many">每个视频都解出来，重新写进同一条流里，所以尺寸或编码对不上的视频也能接。声音在对得上的地方照拷，对不上的地方重新编码。</span>
     <span data-phrase="method.record">把标记的段落整个放一遍并录下来，所以那段有多长就要多久，而且什么都会重新编码。跑的时候把这个标签页放在前面。</span>
@@ -310,7 +312,7 @@
     <span data-phrase="sum.start.keyframe">正好在你标的地方（那儿是个关键帧）</span>
     <span data-phrase="sum.start.editmark">正好在你标的地方，靠一个编辑标记</span>
     <span data-phrase="sum.start.exact">正好在你标的地方</span>
-    <span data-phrase="cut.note">你第一个标记前面最近的关键帧在 {seconds} 秒之前，中间那些帧必须留在文件里——没有它们，后面的什么都解不出来。它们被标成不要播放，主流播放器都认这个。忽略编辑标记的播放器会把那 {seconds} 秒显示在开头。如果这件事比留住原始字节更要紧，就选「就在这里切」。</span>
+    <span data-phrase="cut.note">第一个保留片段之前的关键帧早了{seconds}秒。这些帧留在文件里，才能解码这个片段。编辑标记要求播放器跳过它们；遵循标记的播放器会从你标的位置开始。忽略标记的播放器可能先显示这{seconds}秒。选择“就在这儿下刀”会重新编码每一个保留的画面帧，不再依赖开头这条编辑标记。</span>
     <span data-phrase="sum.size">大约 {size}</span>
     <span data-phrase="sum.picture.copy">照拷，一帧一帧</span>
     <span data-phrase="sum.picture.exact">重新编成 H.264，{size}</span>

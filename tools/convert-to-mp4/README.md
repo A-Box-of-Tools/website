@@ -166,3 +166,9 @@ line.
   (`ContentEncodings`); such a track is refused by name.
 - Write a file over 4 GB, which the writer's 32-bit offsets rule out and
   the page says so.
+
+
+Clearing the file aborts and retires its export. A codec can finish a pending
+flush after cancellation, and the result check also reads asynchronously, so
+the page checks the run again at both boundaries. Progress, errors and cleanup
+from that retired run cannot overwrite the controls for a replacement file.

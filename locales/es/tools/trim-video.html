@@ -153,6 +153,7 @@
           <option value="record">Grabarlo mientras se reproduce</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -324,6 +325,7 @@
     <span data-phrase="method.copy.many">Cada trozo marcado se pasa al archivo nuevo exactamente como está, uno detrás de
       otro. No se descodifica ni se codifica nada, así que ninguna parte de esto cuesta
       calidad.</span>
+    <span data-phrase="copy.internalpreroll">Estos fragmentos no se pueden copiar de forma fiable en los navegadores. Elige «{method}» para mantener los tiempos de corte.</span>
     <span data-phrase="method.exact.one">Cada trozo empieza en el fotograma que marcaste, descodificando desde el fotograma
       clave anterior y codificando la imagen otra vez. El sonido se sigue copiando en vez
       de recodificarse.</span>
@@ -349,12 +351,7 @@
     <span data-phrase="sum.start.keyframe">exactamente donde marcaste (cae en un fotograma clave)</span>
     <span data-phrase="sum.start.editmark">exactamente donde marcaste, mediante una marca de edición</span>
     <span data-phrase="sum.start.exact">exactamente donde marcaste</span>
-    <span data-phrase="cut.note">El fotograma clave más cercano antes de tu primera marca está {seconds}s antes, y
-      los fotogramas de en medio tienen que quedarse en el archivo &mdash; nada de lo que
-      va después se puede descodificar sin ellos. Están marcados para no reproducirse,
-      cosa que respeta cualquier reproductor corriente. Un reproductor que ignore las
-      marcas de edición enseñará esos {seconds}s al principio. Elige &laquo;Cortar justo
-      aquí&raquo; si eso te importa más que conservar los bytes originales.</span>
+    <span data-phrase="cut.note">El fotograma clave anterior al primer tramo conservado está {seconds}s antes. Esos fotogramas se mantienen en el archivo para poder descodificar el tramo. Una marca de edición indica al reproductor que los omita; si la respeta, empieza en tu marca. Si la ignora, puede mostrar primero esos {seconds}s. Elige «Cortar exactamente aquí» para recodificar todos los fotogramas conservados en lugar de depender de esa marca de edición inicial.</span>
     <span data-phrase="sum.size">unos {size}</span>
     <span data-phrase="sum.picture.copy">copiada, fotograma a fotograma</span>
     <span data-phrase="sum.picture.exact">recodificada a H.264, {size}</span>

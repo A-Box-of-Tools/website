@@ -33,7 +33,7 @@ import {
   perspectiveAspect, project, quadArea, sharpestCorner, wholeFrame,
 } from '../../tools/document-scanner/src/geometry.js';
 import {
-  coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, stemOf,
+  coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, snapshotPages, stemOf,
 } from '../../tools/document-scanner/src/pages.js';
 
 /* ------------------------------------------------------------- the camera */
@@ -324,4 +324,20 @@ test('sizeText and ratioText: the units a person would say', () => {
   assert.equal(sizeText(3 * 1024 * 1024), '3.0 MB');
   assert.equal(ratioText(210 / 297), '1:1.41');
   assert.equal(ratioText(297 / 210), '1:1.41');
+});
+
+test('an export keeps its page order and corners after edits to the strip', () => {
+  const first = { file: new Blob(['A']), name: 'a.png', width: 100, height: 200, quad: wholeFrame(100, 200) };
+  const second = { file: new Blob(['B']), name: 'b.png', width: 300, height: 400, quad: wholeFrame(300, 400) };
+  const pages = [first, second];
+  const exporting = snapshotPages(pages);
+  const originalCorners = exporting[0].quad.map((point) => ({ ...point }));
+  pages.reverse();
+  first.quad[0].x = 50;
+  second.quad = wholeFrame(10, 20);
+  pages.length = 0;
+  assert.deepEqual(exporting.map((page) => page.name), ['a.png', 'b.png']);
+  assert.deepEqual(exporting[0].quad, originalCorners);
+  assert.deepEqual(exporting[1].quad, wholeFrame(300, 400));
+  assert.equal(exporting[0].file, first.file, 'the original file stays available after removal');
 });

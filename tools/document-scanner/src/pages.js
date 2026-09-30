@@ -159,3 +159,13 @@ export function scanQuality(widthPx, aspect) {
   else if (dpi < 200) key = 'quality.fair';
   return { dpi, key };
 }
+
+/**
+ * Keep the export the visitor requested while the editable strip moves on.
+ * Files are immutable browser references; corners and list order are not.
+ */
+export function snapshotPages(pages) {
+  return pages.map(({ file, name, width, height, quad }) => ({
+    file, name, width, height, quad: quad.map(({ x, y }) => ({ x, y })),
+  }));
+}

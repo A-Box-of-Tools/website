@@ -13,7 +13,7 @@ import { cleanPage } from './clean.js';
 import { encodeImage, encodePage } from './encode.js';
 import { buildDocument } from './document.js';
 import {
-  coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, stemOf,
+  coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, snapshotPages, stemOf,
 } from './pages.js';
 import { Corners } from './stage.js';
 import { makeExample } from './example.js';
@@ -650,12 +650,11 @@ async function renderFull(page, options) {
 }
 
 async function savePdf() {
-  await run(async (report) => {
-    const options = settings();
+  await run(async (report, selectedPages, options) => {
     const encoded = [];
 
-    for (const [index, page] of pages.entries()) {
-      report(phrase('busy.page', { done: index + 1, total: pages.length }));
+    for (const [index, page] of selectedPages.entries()) {
+      report(phrase('busy.page', { done: index + 1, total: selectedPages.length }));
       const cleaned = await renderFull(page, options);
       encoded.push(await encodePage(cleaned, options));
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -663,14 +662,14 @@ async function savePdf() {
 
     report(phrase('busy.writing'));
     const blob = buildDocument(encoded, options);
-    const name = outName(stemOf(pages[0].name), 'pdf');
+    const name = outName(stemOf(selectedPages[0].name), 'pdf');
     const mono = options.mode === 'mono';
 
     show(blob, name, [
       phrase('result.pdf', {
         name,
         size: sizeText(blob.size),
-        pages: phrase(pages.length === 1 ? 'page.count' : 'page.counts', { count: pages.length }),
+        pages: phrase(selectedPages.length === 1 ? 'page.count' : 'page.counts', { count: selectedPages.length }),
       }),
       phrase(mono ? 'result.mono' : 'result.jpeg'),
       phrase('result.clean'),
@@ -679,19 +678,18 @@ async function savePdf() {
 }
 
 async function saveImages() {
-  await run(async (report) => {
-    const options = settings();
-    const stem = stemOf(pages[0].name);
+  await run(async (report, selectedPages, options) => {
+    const stem = stemOf(selectedPages[0].name);
     const files = [];
     let extension = 'jpg';
 
-    for (const [index, page] of pages.entries()) {
-      report(phrase('busy.page', { done: index + 1, total: pages.length }));
+    for (const [index, page] of selectedPages.entries()) {
+      report(phrase('busy.page', { done: index + 1, total: selectedPages.length }));
       const cleaned = await renderFull(page, options);
       const written = await encodeImage(cleaned, options);
       extension = written.extension;
       files.push({
-        name: pageName(stem, index, pages.length, written.extension),
+        name: pageName(stem, index, selectedPages.length, written.extension),
         blob: written.blob,
       });
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -737,6 +735,8 @@ async function run(work) {
     return;
   }
 
+  const selectedPages = snapshotPages(pages);
+  const options = settings();
   busy = true;
   el.savePdf.disabled = true;
   el.saveImages.disabled = true;
@@ -754,7 +754,7 @@ async function run(work) {
     // requestAnimationFrame: a background tab never gets a frame, and the file
     // has to be written whether or not anybody is looking at the page.
     await new Promise((resolve) => setTimeout(resolve, 0));
-    await work(report);
+    await work(report, selectedPages, options);
   } catch (error) {
     // The leaf modules throw keys; a browser that failed for its own
     // reasons throws a sentence, and phrase() hands back what it does not

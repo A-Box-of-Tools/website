@@ -91,3 +91,9 @@ build's page and the "Try an example" button are how.
 - Write anything but MP4, for the reason the converter gives.
 - Read AVI, WMV, FLV or MPEG-2, or copy a non-H.264 picture out of a
   Matroska file — that one is baked instead, and the box says so.
+
+
+Clearing the file aborts and retires its export. A codec can finish a pending
+flush after cancellation, and the result check also reads asynchronously, so
+the page checks the run again at both boundaries. Progress, errors and cleanup
+from that retired run cannot overwrite the controls for a replacement file.

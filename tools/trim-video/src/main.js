@@ -6,7 +6,7 @@ import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
-import { joinByCopy, estimateJoinCopy } from './copy.js';
+import { joinByCopy, estimateJoinCopy, copyRefusal } from './copy.js';
 import { decoderConfig, averageFps } from './shared/webcodecs.js';
 import { joinExact, grabFrame, chooseJoinBitrate } from './transcode.js';
 import { trimByRecording, estimateRecording } from './record.js';
@@ -68,6 +68,7 @@ const el = {
   exportCard: $('export-card'),
   method: $('method'),
   methodNote: $('method-note'),
+  copyNote: $('copy-note'),
   frameField: $('frame-field'),
   frame: $('frame'),
   qualityField: $('quality-field'),
@@ -359,7 +360,7 @@ function moveClip(index, by) {
   else if (selected === to) selected = index;
   describeSelection();
   renderClips();
-  updateSummary();
+  updateMethodOptions();
 }
 
 function removeClip(index) {
@@ -688,7 +689,7 @@ function renderSegments() {
   timeline.setSegments(segments, selectedSegment);
   timeline.setPending(openSegment(segments)?.start ?? null);
   renderClips();
-  updateSummary();
+  updateMethodOptions();
 }
 
 /** A start or an end, typed as freely as it is read. */
@@ -926,9 +927,12 @@ document.querySelectorAll('input[name="mode"]').forEach((radio) => {
   radio.addEventListener('change', () => {
     mode = radio.value;
     renderSegments();
-    updateMethodOptions();
   });
 });
+
+function exactMethodLabel() {
+  return el.method.querySelector('option[value="exact"]').textContent.trim();
+}
 
 function updateMethodOptions() {
   const chosen = exportClips();
@@ -938,7 +942,10 @@ function updateMethodOptions() {
     : { copy: false, reason: null, sound: 'none' };
 
   const everyDemuxed = chosen.length > 0 && chosen.every((entry) => entry.media);
-  const canCopy = everyDemuxed && join.copy;
+  const copyReason = everyDemuxed ? copyRefusal(chosen) : null;
+  const canCopy = everyDemuxed && join.copy && !copyReason;
+  el.copyNote.hidden = !copyReason;
+  el.copyNote.textContent = copyReason ? phrase(copyReason, { method: exactMethodLabel() }) : '';
   const canExact = clips.length > 0 && clips.every((entry) => entry.canExact) && chosen.length > 0;
   // A recording is made in one pass from one playhead: it can keep one section
   // of one video and nothing else.
@@ -954,7 +961,11 @@ function updateMethodOptions() {
     canExact ? 'exact' : null,
     canRecord ? 'record' : null,
   ].filter(Boolean);
-  if (!available.includes(el.method.value)) el.method.value = available[0] ?? 'copy';
+  // A newly unsafe copy stays selected and cannot export. Re-encoding changes
+  // the file, so the reader must choose that method rather than inherit it.
+  if (!available.includes(el.method.value) && !(el.method.value === 'copy' && copyReason)) {
+    el.method.value = available[0] ?? 'copy';
+  }
 
   // Why the quick path is unavailable, said once, in terms somebody can act on
   // - which usually means dropping or reordering a video.
@@ -1091,7 +1102,7 @@ function updateSummary() {
     el.sumSound.textContent = phrase('sum.sound.encode');
   } else el.sumSound.textContent = phrase('sum.sound.copy');
 
-  el.exportBtn.disabled = exporting;
+  el.exportBtn.disabled = exporting || Boolean(el.method.selectedOptions[0]?.disabled);
   el.exportBtn.textContent = sections > 1
     ? phrase('export.many', { n: sections })
     : phrase('export.one');
@@ -1141,7 +1152,7 @@ function outputFilename(extension) {
 }
 
 async function runExport() {
-  if (exporting) return;
+  if (exporting || el.method.selectedOptions[0]?.disabled) return;
 
   const chosen = exportClips();
   if (!chosen.length) {
@@ -1223,7 +1234,8 @@ async function runExport() {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
       showError(error?.message
-        ? phrase(error.message, error.values)
+        ? phrase(error.message, error.message === 'copy.internalpreroll'
+          ? { method: exactMethodLabel() } : error.values)
         : phrase('error.generic'));
       console.error(error);
     }

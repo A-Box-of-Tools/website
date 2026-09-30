@@ -1,44 +1,40 @@
   <section>
     <h2>A resposta curta</h2>
     <p>
-      Abra o <a href="../../aparar-video/">Aparador de vídeo</a>, jogue o clipe
-      dentro, aperte <kbd>I</kbd> e <kbd>O</kbd> para marcar cada trecho que
-      você quer, quantos quiser, e exporte. Num MP4, MOV ou M4V os quadros que
-      você mantém são movidos para o arquivo novo exatamente como estavam, com
-      os mesmos bytes e os mesmos ajustes de codificador, e o som é copiado
-      amostra por amostra sem ser decodificado.
+      Abra o <a href="../../aparar-video/">Aparador de vídeo</a>, solte o clipe e
+      pressione <kbd>I</kbd> e <kbd>O</kbd> para marcar cada trecho que deseja. Depois,
+      escolha como exportar. Em MP4, MOV ou M4V, “Manter cada byte” transfere os quadros
+      mantidos e o som para o novo arquivo sem alterá-los. Está disponível para um
+      trecho ou para vários, desde que todos os seguintes comecem em um quadro-chave.
+      Outras seleções precisam da opção identificada explicitamente como recodificação.
     </p>
     <p>
-      Isso significa que aparar não custa qualidade nenhuma a você, e é rápido:
-      tirar um minuto de uma gravação de quatro gigabytes custa mais ou menos o
-      que custa escrever esse minuto no disco, porque os quadros são apontados
-      em vez de carregados. O único lugar onde isso aparece é onde o seu corte de
-      fato cai, que é o resto desta página.
+      Copiar não reduz a qualidade e é rápido: recortar um minuto de uma gravação de
+      quatro gigabytes leva aproximadamente o mesmo tempo que gravar esse minuto no
+      disco, porque os quadros são referenciados em vez de carregados. A escolha depende
+      de onde começa cada trecho mantido. É disso que trata o restante desta página.
     </p>
   </section>
 
   <section>
     <h2>Por que aparar não precisa perder qualidade nenhuma</h2>
     <p>
-      Aparar não muda a aparência de quadro nenhum. Cada quadro que você mantém
-      deve sair idêntico a como entrou, então não há motivo para decodificá-lo e
-      codificá-lo de novo, e há todo motivo para não fazer isso, já que uma
-      recodificação é com perdas e deixaria o clipe inteiro um pouco pior só
-      para encurtá-lo.
+      Quando a seleção permite copiar, cada quadro mantido pode ficar exatamente como
+      foi codificado. Transferir esses bytes evita decodificá-los e recodificá-los.
+      Assim, esse método encurta o vídeo sem acrescentar outra etapa de codificação com
+      perdas.
     </p>
     <p>
-      Então um bom aparador não recodifica. Ele lê o índice do arquivo, descobre
-      quais quadros codificados caem na sua faixa e escreve aqueles bytes num
-      contêiner novo com um índice novo na frente deles. Nada é decodificado
-      nesse caminho.
+      Quando a cópia pode preservar os tempos escolhidos, a ferramenta lê o índice do
+      arquivo, identifica os quadros codificados necessários e grava esses bytes em um
+      novo contêiner, com um novo índice antes deles. Nada é decodificado nesse
+      processo.
     </p>
     <p>
-      Muitas ferramentas recodificam mesmo assim, porque decodificar e recodificar
-      é bem mais simples de implementar do que interpretar o formato do
-      contêiner. Você normalmente descobre com qual das duas está lidando pelo
-      tempo que leva: uma cópia é limitada pela velocidade de escrita do seu
-      disco, e uma recodificação é limitada pela velocidade com que o seu
-      computador codifica vídeo, que é cem vezes mais lenta.
+      Recodificar é útil quando a cópia não consegue preservar os tempos escolhidos de
+      forma confiável. Em geral, demora mais porque o navegador precisa decodificar e
+      codificar cada imagem mantida; na cópia, o principal limite é a velocidade de
+      gravação do arquivo.
     </p>
   </section>
 
@@ -62,40 +58,39 @@
       carregar o trecho inteiro a partir do keyframe anterior ao seu marcador.
     </p>
     <p>
-      O que ele faz a respeito disso é a parte interessante. O formato do arquivo
-      tem uma forma padrão de dizer <em>comece a tocar neste ponto</em>: os
-      quadros extras estão no arquivo, mas o contêiner instrui o reprodutor a
-      pulá-los. Todo reprodutor mais usado respeita isso, e o clipe começa
-      exatamente onde você disse. Um reprodutor que ignore vai começar antes, no
-      máximo pelo intervalo entre keyframes.
+      Para o primeiro trecho mantido, o formato pode indicar <em>comece a reproduzir
+      neste ponto</em>: os quadros extras continuam no arquivo, com uma marca de edição
+      que pede ao reprodutor para pulá-los. Os reprodutores que respeitam essa instrução
+      começam na marcação. Um que a ignore também pode mostrar os quadros anteriores.
     </p>
     <p>
-      A ferramenta daqui diz em qual dos casos você está e por quanto, antes de
-      exportar, para que seja uma decisão em vez de uma surpresa.
+      Quadros ocultos em uma emenda posterior podem fazer o navegador mostrar um trecho
+      antes da hora, mesmo com uma lista de edição correta. Por isso, a ferramenta não
+      permite copiar quando algum trecho depois do primeiro começa entre quadros-chave.
+      Ela explica o motivo e deixa você escolher explicitamente o método que recodifica.
     </p>
   </section>
 
   <section>
     <h2>Quando aceitar uma recodificação</h2>
     <p>
-      Existe o corte exato, e ele funciona recodificando o trecho de abertura:
-      decodifica a partir do keyframe e escreve uma nova sequência de quadros que
-      começa genuinamente onde você marcou. É mais lento, e custa um pouco de
-      qualidade só naquele trecho de abertura.
+      “Cortar exatamente aqui” decodifica a partir do quadro-chave anterior, descarta os
+      quadros fora dos trechos marcados e recodifica cada quadro mantido. Não se limita
+      ao trecho inicial. Demora mais do que copiar e pode reduzir a qualidade da imagem
+      em todo o vídeo mantido. O som é copiado quando o formato permite.
     </p>
     <p>
-      Escolha esse caminho quando o clipe for para algum lugar que não respeite a
-      instrução do contêiner, ou onde você não controla o reprodutor: alguns
-      editores de vídeo, alguns sistemas de transmissão e de videoconferência,
-      alguns reprodutores de hardware mais antigos. Escolha a cópia para todo o
-      resto, que é quase tudo: um navegador, um celular, uma plataforma social,
-      um reprodutor de mídia.
+      Escolha esse método quando a cópia estiver indisponível para sua seleção ou quando
+      precisar que o resultado comece nos quadros mantidos sem depender de uma marca de
+      edição inicial. Copiar continua sendo útil para um trecho ou para vários cujos
+      inícios posteriores coincidam com quadros-chave, desde que o reprodutor de destino
+      interprete corretamente a marca de edição inicial.
     </p>
     <p>
-      Uma terceira opção que não custa nada: mova o seu marcador. Se a ferramenta
-      mostra onde estão os keyframes, empurrar o corte para o mais próximo dá um
-      corte exato sem recodificação nenhuma. Raramente vale a pena abrir mão de
-      uma cópia por um segundo de diferença.
+      Você também pode mover o início de um trecho para um quadro-chave mostrado na
+      linha do tempo. Isso pode liberar a cópia de um trecho posterior sem recodificar.
+      Como muda quais imagens serão mantidas, faça essa escolha de acordo com o conteúdo
+      de que precisa.
     </p>
 
     <figure class="shot">
@@ -116,11 +111,11 @@
       unido num só clipe com o som carregado junto e em sincronia.
     </p>
     <p>
-      A emenda tem a mesma restrição de keyframe no ponto em que a segunda metade
-      recomeça, pelo mesmo motivo. Funciona nos dois caminhos de MP4 daqui. É a
-      única coisa que a alternativa por gravação descrita abaixo não consegue fazer,
-      porque uma gravação é feita numa passada só, a partir de um único cursor de
-      reprodução.
+      A cópia pode unir os trechos restantes quando todos os posteriores ao primeiro
+      recomeçam em um quadro-chave. Se um trecho posterior precisar de quadros ocultos
+      antes do início, escolha “Cortar exatamente aqui”. A alternativa por gravação
+      descrita abaixo não consegue unir trechos separados, porque grava uma única
+      passagem contínua a partir de um só cursor de reprodução.
     </p>
 
     <figure class="shot">

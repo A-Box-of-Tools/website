@@ -383,3 +383,27 @@ test('every algorithm the markup can tick is one hash.js knows', () => {
   }
   assert.deepEqual(Object.keys(ALGORITHMS).sort(), [...ORDER].sort());
 });
+
+// The last read has no next loop iteration in which to notice cancellation.
+test('a stop during the final pending read cannot publish a checksum', async () => {
+  const controller = new AbortController();
+  let release;
+  const delayed = {
+    size: 3,
+    slice: () => ({ arrayBuffer: () => new Promise((resolve) => { release = resolve; }) }),
+  };
+  const pending = hashFile(delayed, ['sha256'], { signal: controller.signal });
+  controller.abort();
+  release(new Uint8Array([97, 98, 99]).buffer);
+  await assert.rejects(pending, Stopped);
+});
+
+test('cancellation at final progress and before an empty read still stops', async () => {
+  const final = new AbortController();
+  await assert.rejects(hashFile(blobOf(new Uint8Array([1])), ['sha256'], {
+    signal: final.signal, onProgress(done) { if (done) final.abort(); },
+  }), Stopped);
+  const empty = new AbortController();
+  empty.abort();
+  await assert.rejects(hashFile(blobOf(new Uint8Array()), ['sha256'], { signal: empty.signal }), Stopped);
+});

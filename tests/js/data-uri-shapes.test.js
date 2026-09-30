@@ -147,3 +147,16 @@ test('downloads are named after the shape they hold', () => {
   assert.equal(bundleName('uri'), 'data-uris.txt');
   assert.equal(fileName('html', result()), 'logo-data-uri.html');
 });
+
+test('generated suffixes cannot collide with real filenames', () => {
+  for (const names of [
+    ['logo.svg', 'logo.png', 'logo-2.png', 'logo-2.svg'],
+    ['logo-2.png', 'logo.svg', 'logo.png', 'logo-3.gif'],
+    ['???.png', '....svg', 'image-2.png'],
+  ]) {
+    const allocated = identifiers(names);
+    assert.equal(new Set(allocated).size, names.length, names.join(', '));
+    const css = bundle('css-var', allocated.map((ident, at) => result({ ident, uri: `data:${at}` })));
+    for (const [at, ident] of allocated.entries()) assert.ok(css.includes(`--${ident}: url("data:${at}")`));
+  }
+});

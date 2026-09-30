@@ -187,13 +187,12 @@ body = """
 [[howto]]
 title = "Schneiden und herunterladen."
 body = """
- &bdquo;Jedes Byte behalten&ldquo;
-      bewegt die Einzelbilder unangetastet hinüber. Das ist schnell und kann
-      keine Qualität kosten, dafür beginnt jeder Teil am Keyframe vor Ihrer
-      Markierung. &bdquo;Genau hier schneiden&ldquo; dekodiert und schreibt das
-      Bild neu, damit jeder Teil auf dem Einzelbild beginnt, das Sie gewählt
-      haben. Was von beidem Sie gleich bekommen und was es kostet, sagt Ihnen die
-      Seite vor dem Klick."""
+        „Jedes Byte behalten“ übernimmt die Frames unverändert. Der erste Teil kann
+        nicht abgespielte Frames ab einem früheren Keyframe enthalten; jeder spätere
+        Teil muss auf einem Keyframe beginnen. „Genau hier schneiden“ dekodiert und
+        kodiert jeden behaltenen Videoframe neu, damit die gewählten Schnittzeiten
+        erhalten bleiben. Die Seite nennt das Verfahren und seine Auswirkungen, bevor
+        Sie die Schaltfläche drücken."""
 
 [[faq]]
 q = "Wird mein Video irgendwohin hochgeladen?"
@@ -220,28 +219,25 @@ a = """
 [[faq]]
 q = "Kostet das Schneiden Qualität?"
 a = """
-        Auf dem normalen Weg nicht, jedenfalls nicht in der Hinsicht, auf die es
-        ankommt. Schneiden ändert nichts daran, wie ein Einzelbild aussieht, also
-        wandern die Einzelbilder genau so in die neue Datei, wie sie waren:
-        dieselben Bytes, dieselben Encoder-Einstellungen, dasselbe alles. Der
-        einzige Weg hier, der überhaupt etwas neu kodiert, ist der exakte
-        Schnitt, und das steht auf der Schaltfläche."""
+        „Jedes Byte behalten“ erhält die ursprünglich kodierten Frames und den Ton, ohne
+        die Qualität zu verringern. Das ist für einen Abschnitt möglich oder für
+        mehrere, wenn jeder spätere Abschnitt auf einem Keyframe beginnt. „Genau hier
+        schneiden“ kodiert jeden behaltenen Videoframe neu und kopiert den Ton, soweit
+        möglich. „Beim Abspielen aufzeichnen“ kodiert Bild und Ton neu. Das gewählte
+        Verfahren zeigt Ihnen vor dem Export, was davon geschieht."""
 
 [[faq]]
 q = "Warum beginnt ein Teil früher, als ich ihn markiert habe?"
 a = """
-        Das liegt daran, wie Video gespeichert wird, und es passiert nur bei
-        Playern, die einen genormten Teil des Formats ignorieren. Die meisten
-        Einzelbilder werden als Beschreibung dessen gehalten, worin sie sich von
-        ihren Nachbarn unterscheiden, und lassen sich ohne diese gar nicht
-        dekodieren. Nur ein Keyframe steht für sich, und Keyframes liegen
-        typischerweise eine bis zehn Sekunden auseinander. Ein Schnitt, der
-        Einzelbilder kopiert, muss deshalb die Strecke ab dem Keyframe vor Ihrer
-        Markierung mitnehmen. In der Datei steht dazu <em>ab Ihrer Markierung
-        abspielen</em>, und daran hält sich jeder gängige Player. Brauchen Sie es
-        in jedem Player exakt, wählen Sie &bdquo;Genau hier schneiden&ldquo;, das
-        neu kodiert. In welchem Fall Sie sind und um wie viel, sagt Ihnen die
-        Seite vor dem Export."""
+        Ein kopierter erster Abschnitt kann Frames ab dem vorherigen Keyframe enthalten,
+        weil spätere Frames sie zum Dekodieren benötigen. Eine Schnittmarke weist den
+        Player an, diese anfänglichen Frames zu überspringen; ignoriert er sie, kann die
+        Wiedergabe zu früh beginnen. Browser können auch nicht abgespielte Frames an
+        einer späteren Schnittstelle falsch behandeln. Deshalb ist Kopieren nicht
+        verfügbar, wenn ein späterer Abschnitt zwischen Keyframes beginnt. Wählen Sie
+        dafür „Genau hier schneiden“. Dieses Verfahren kodiert jeden behaltenen
+        Videoframe neu. Die Seite zeigt vor dem Export das Verfahren und die Dauer
+        eventuell mitgeführter Frames am Anfang an."""
 
 [[faq]]
 q = "Kann ich stattdessen die Werbung herausschneiden?"
