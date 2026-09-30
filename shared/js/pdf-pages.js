@@ -153,16 +153,22 @@ const TOLERANCE = 3;
  *
  * Points are not a unit anybody thinks in, so they never appear. Which of
  * millimetres or inches is used follows the paper: a page that is a whole
- * number of inches across was designed in inches.
+ * number of inches across was designed in inches. The caller supplies the
+ * words around a standard paper name, so its orientation follows the page
+ * language without changing identifiers such as A4 or Letter.
+ *
+ * @param {number} width
+ * @param {number} height
+ * @param {(key: string, values: {name: string}) => string} t
  */
-export function sizeLabel(width, height) {
+export function sizeLabel(width, height, t) {
   const portrait = width <= height;
   const short = Math.min(width, height);
   const long = Math.max(width, height);
 
   for (const [label, w, h] of NAMED) {
     if (Math.abs(short - w) <= TOLERANCE && Math.abs(long - h) <= TOLERANCE) {
-      return `${label} ${portrait ? 'portrait' : 'landscape'}`;
+      return t(portrait ? 'page.size.portrait' : 'page.size.landscape', { name: label });
     }
   }
 

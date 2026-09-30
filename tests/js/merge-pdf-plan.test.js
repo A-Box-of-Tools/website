@@ -220,12 +220,12 @@ test('rotation is a quarter turn between 0 and 270', () => {
 });
 
 test('the named paper sizes, and what to say when there is no name', () => {
-  assert.equal(sizeLabel(595.28, 841.89), 'A4 portrait');
-  assert.equal(sizeLabel(841.89, 595.28), 'A4 landscape');
-  assert.equal(sizeLabel(612, 792), 'Letter portrait');
-  assert.equal(sizeLabel(612, 1008), 'Legal portrait');
+  assert.equal(sizeLabel(595.28, 841.89, say), 'page.size.portrait name=A4');
+  assert.equal(sizeLabel(841.89, 595.28, say), 'page.size.landscape name=A4');
+  assert.equal(sizeLabel(612, 792, say), 'page.size.portrait name=Letter');
+  assert.equal(sizeLabel(612, 1008, say), 'page.size.portrait name=Legal');
   // 8.5 x 13 inches is nothing with a name, and was designed in inches.
-  assert.equal(sizeLabel(612, 936), ltr('8.5 × 13 in'));
+  assert.equal(sizeLabel(612, 936, say), ltr('8.5 × 13 in'));
 });
 
 /* =============================================================== the text */

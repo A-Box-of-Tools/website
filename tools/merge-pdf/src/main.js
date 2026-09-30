@@ -333,7 +333,7 @@ function buildPageNode(entry, index) {
 
   const dims = document.createElement('p');
   dims.className = 'page-dims';
-  dims.textContent = sizeLabel(width, height);
+  dims.textContent = sizeLabel(width, height, phrase);
   meta.append(dims);
 
   const controls = document.createElement('div');
