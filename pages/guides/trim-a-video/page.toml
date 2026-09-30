@@ -20,9 +20,8 @@ description = "Cutting a clip need not lose a single byte of quality. Why a cut 
 
 heading = "How to trim a video without re-encoding it"
 lede = """
-    Trimming does not change what any frame looks like, so a good trimmer does
-    not touch them &mdash; it moves them into a new file exactly as they were.
-    This explains what that buys you, and the one place it shows."""
+    Copying can shorten a video without changing its encoded frames. This guide
+    explains the keyframe limits, when Copy is safe, and when to choose a re-encode."""
 
 updated = "26 August 2026"
 published = "2026-08-20"

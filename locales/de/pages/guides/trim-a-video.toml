@@ -7,10 +7,9 @@ title = "Ein Video kürzen, ohne es neu zu kodieren"
 description = "Einen Clip zu schneiden muss kein einziges Byte Qualität kosten. Warum ein Schnitt manchmal früher sitzt als markiert, was ein Keyframe damit zu tun hat und wann eine Neukodierung die bessere Wahl ist."
 heading = "So kürzen Sie ein Video, ohne es neu zu kodieren"
 lede = """
-    Kürzen ändert nichts daran, wie ein Einzelbild aussieht. Ein gutes Werkzeug
-    rührt die Bilder deshalb gar nicht erst an, sondern schiebt sie unverändert
-    in eine neue Datei. Hier steht, was Ihnen das einbringt und an welcher einen
-    Stelle es sich trotzdem bemerkbar macht."""
+    Durch Kopieren lässt sich ein Video kürzen, ohne seine kodierten Frames zu
+    verändern. Dieser Leitfaden erklärt die Grenzen durch Keyframes, wann sich
+    zuverlässig kopieren lässt und wann Sie eine Neukodierung wählen sollten."""
 updated = "26. August 2026"
 og_title = "So kürzen Sie ein Video, ohne es neu zu kodieren"
 og_description = "Warum ein Schnitt manchmal früher sitzt als markiert, was ein Keyframe damit zu tun hat und wann eine Neukodierung die bessere Wahl ist."
