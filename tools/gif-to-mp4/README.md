@@ -78,3 +78,9 @@ page, press "Try an example", and read the check line.
 - Resize or crop; the picture stays the GIF's own size. The compressor takes
   the result if it has to be smaller.
 - Read APNG or animated WebP.
+
+
+Clearing the file aborts and retires its export. A codec can finish a pending
+flush after cancellation, and the result check also reads asynchronously, so
+the page checks the run again at both boundaries. Progress, errors and cleanup
+from that retired run cannot overwrite the controls for a replacement file.

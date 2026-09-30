@@ -278,7 +278,13 @@ async function run() {
   const planned = chosen && chosen.targetBytes && plan(loaded.source, chosen);
   if (!planned?.ok || running) return;
 
-  running = new AbortController();
+  const controller = new AbortController();
+  running = controller;
+  // Clear can retire this run while a codec or the verification read awaits.
+  // Its progress and cleanup must not change the next file's controls.
+  const report = (progress) => {
+    if (running === controller && !controller.signal.aborted) setProgress(progress);
+  };
   el.run.disabled = true;
   el.cancel.hidden = false;
   el.result.hidden = true;
@@ -304,9 +310,12 @@ async function run() {
         bitrate,
         fps: source.fps,
         keepAudio: chosen.keepAudio,
-        signal: running.signal,
-        onProgress: (progress) => setProgress({ ...progress, pass }),
+        signal: controller.signal,
+        onProgress: (progress) => report({ ...progress, pass }),
       });
+
+      if (running !== controller) return;
+      controller.signal.throwIfAborted();
 
       // Under the number, or a second pass already spent: this is the file.
       // One retune is all that is ever done, because the second encode is
@@ -319,12 +328,15 @@ async function run() {
 
     setProgress({ phase: 'checking', done: 1, total: 1, pass });
     const check = await verify(out.blob, media.duration, chosen.targetBytes);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
 
     showResult({
       out, check, chosen, planned, bitrate, pass,
       seconds: (performance.now() - started) / 1000,
     });
   } catch (error) {
+    if (running !== controller) return;
     if (error?.name === 'AbortError' || error?.message === 'aborted') {
       cancelled = true;
       el.progressLabel.textContent = phrase('run.cancelled');
@@ -333,11 +345,13 @@ async function run() {
       el.runError.hidden = false;
     }
   } finally {
-    running = null;
-    el.run.disabled = false;
-    el.cancel.hidden = true;
-    el.progress.hidden = !cancelled;
-    if (cancelled) el.progressBar.style.width = '0%';
+    if (running === controller) {
+      running = null;
+      el.run.disabled = false;
+      el.cancel.hidden = true;
+      el.progress.hidden = !cancelled;
+      if (cancelled) el.progressBar.style.width = '0%';
+    }
   }
 }
 
@@ -465,6 +479,10 @@ function messageFor(error) {
 }
 
 function reset() {
+  running?.abort();
+  running = null;
+  el.run.disabled = false;
+  el.cancel.hidden = true;
   loaded = null;
   el.fileRow.hidden = true;
   el.result.hidden = true;
