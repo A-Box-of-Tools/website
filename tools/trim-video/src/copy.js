@@ -99,6 +99,41 @@ export function audioSamplesFor({ file, audio, plan, durations, seam, outTimesca
 }
 
 /**
+ * A later edit must not ask a browser to decode hidden frames over movie time
+ * it has already played. Native players can present that later section early,
+ * even when every packet and edit-list entry is correct. The initial section
+ * has no earlier picture to replace, so its normal keyframe preroll is safe.
+ *
+ * Return a phrase key so the UI and the export boundary enforce the same limit.
+ * A keyframe's composition offset is not preroll: only frames before the mark
+ * count. Compare the rounded output media times, including the section offset,
+ * because a sub-tick source offset can become several ticks on another clock.
+ */
+export function copyRefusal(clips) {
+  const firstClip = clips.find((clip) => clip.ranges.length);
+  if (!firstClip) return null;
+  const outTimescale = firstClip.media.video.timescale;
+  let first = true;
+  for (const clip of clips) {
+    if (!clip.ranges.length) continue;
+    const { video } = clip.media;
+    const { plans } = planRanges({ video, audio: null, ranges: clip.ranges, anchor: 'keyframe' });
+    for (const plan of plans) {
+      const keyframe = video.samples[plan.video.from];
+      const mark = Math.round(rescale(
+        plan.video.offset + plan.video.editStart, video.timescale, outTimescale));
+      const entry = Math.round(rescale(
+        plan.video.offset + keyframe.pts - plan.video.base, video.timescale, outTimescale));
+      if (!first && mark > entry) {
+        return 'copy.internalpreroll';
+      }
+      first = false;
+    }
+  }
+  return null;
+}
+
+/**
  * @param {object} args
  * @param {{file: File, media: object, ranges: object[], name?: string}[]} args.clips
  *   in the order they are to be joined. One clip is a trim; several is a join.
@@ -108,6 +143,8 @@ export function audioSamplesFor({ file, audio, plan, durations, seam, outTimesca
 export async function joinByCopy({ clips, keepAudio = true, onProgress, signal }) {
   const usable = clips.filter((clip) => clip.ranges.length);
   if (!usable.length) throw new Error('nothing.selected');
+  const refusal = copyRefusal(usable);
+  if (refusal) throw new Error(refusal);
 
   const firstVideo = usable[0].media.video;
   const firstAudio = usable[0].media.audio;

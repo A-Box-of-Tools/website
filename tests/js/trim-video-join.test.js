@@ -24,7 +24,7 @@ import assert from 'node:assert/strict';
 import {
   audioJoinable, joinability, outputFrame, videoJoinable,
 } from '../../tools/trim-video/src/clips.js';
-import { joinByCopy, estimateJoinCopy } from '../../tools/trim-video/src/copy.js';
+import { joinByCopy, estimateJoinCopy, copyRefusal } from '../../tools/trim-video/src/copy.js';
 import { audioDecoderConfig, mp4aSampleEntry } from '../../tools/trim-video/src/audio.js';
 import { fittedBox } from '../../tools/trim-video/src/draw.js';
 import { ascii, blobBytes } from './helpers.js';
@@ -453,7 +453,7 @@ test('each clip contributes its own edit, so the joined file plays what was mark
   const entry = videoEntry();
   const clips = [clipFixture({ id: 1, entry }), clipFixture({ id: 2, entry })];
   clips[0].ranges = [{ start: 0.2, end: 0.7 }];
-  clips[1].ranges = [{ start: 0.1, end: 0.6 }];
+  clips[1].ranges = [{ start: 0.5, end: 1 }];
 
   const bytes = await blobBytes((await joinByCopy({ clips, keepAudio: false })).blob);
   const edits = readElst(find(bytes, 'elst'));
@@ -463,14 +463,14 @@ test('each clip contributes its own edit, so the joined file plays what was mark
   assert.equal(edits[1].duration, 500);
   // The first section starts 0.2 s in, from the keyframe at 0: 0.2 * 90000.
   assert.equal(edits[0].mediaTime, 18000);
-  // The second starts after the first clip's kept run, plus its own 0.1 s.
-  assert.ok(edits[1].mediaTime > edits[0].mediaTime);
+  // The second begins on a keyframe, immediately after the first stored run.
+  assert.equal(edits[1].mediaTime, 63000);
 });
 
 test('taking a piece out of one clip of a join gives that clip two edits', async () => {
   const entry = videoEntry();
   const clips = [clipFixture({ id: 1, entry }), clipFixture({ id: 2, entry })];
-  clips[0].ranges = [{ start: 0, end: 0.3 }, { start: 0.6, end: 1 }];
+  clips[0].ranges = [{ start: 0, end: 0.3 }, { start: 0.5, end: 1 }];
 
   const bytes = await blobBytes((await joinByCopy({ clips, keepAudio: false })).blob);
   assert.equal(readElst(find(bytes, 'elst')).length, 3);
@@ -532,6 +532,98 @@ test('one clip through the join is still a plain trim', async () => {
   const edits = readElst(find(bytes, 'elst'));
   assert.equal(edits.length, 1);
   assert.equal(edits[0].duration, 600);
+});
+
+/* ---------------------------------------------------------- copy safety */
+
+test('a single copied section can retain its initial hidden frames', async () => {
+  const clip = clipFixture();
+  clip.ranges = [{ start: 0.2, end: 0.7 }];
+  assert.equal(copyRefusal([clip]), null);
+  const bytes = await blobBytes((await joinByCopy({ clips: [clip], keepAudio: false })).blob);
+  assert.deepEqual(readElst(find(bytes, 'elst')), [{ mediaTime: 18000, duration: 500 }]);
+  assert.equal(readStsz(find(bytes, 'stsz')).length, 21);
+});
+
+test('hidden frames in a later section are refused even before they reach movie time zero', async () => {
+  const clip = clipFixture();
+  // The later preroll is only 0.01 s, much less than the 0.25 s already kept.
+  // Rejecting only preroll that reaches before movie zero misses this overlap.
+  clip.ranges = [{ start: 0, end: 0.25 }, { start: 0.51, end: 0.8 }];
+  assert.equal(copyRefusal([clip]), 'copy.internalpreroll');
+  await assert.rejects(joinByCopy({ clips: [clip], keepAudio: false }),
+    { message: 'copy.internalpreroll' });
+});
+
+test('a later clip cannot hide its preroll over a preceding clip either', async () => {
+  const clips = [clipFixture({ id: 1 }), clipFixture({ id: 2 })];
+  clips[1].ranges = [{ start: 0.2, end: 0.7 }];
+  assert.equal(copyRefusal(clips), 'copy.internalpreroll');
+  await assert.rejects(joinByCopy({ clips, keepAudio: false }),
+    { message: 'copy.internalpreroll' });
+});
+
+test('an empty clip does not consume the one initial preroll allowance', () => {
+  const empty = clipFixture({ id: 1 });
+  empty.ranges = [];
+  const selected = clipFixture({ id: 2 });
+  selected.ranges = [{ start: 0.2, end: 0.7 }];
+  assert.equal(copyRefusal([empty, selected]), null);
+});
+
+test('the preroll guard rounds onto the written output clock', () => {
+  const clip = clipFixture({ timescale: 1000, fps: 20, gap: 10 });
+  clip.ranges = [{ start: 0, end: 0.2 }, { start: 0.5001, end: 0.8 }];
+  assert.equal(copyRefusal([clip]), null, 'less than half a tick stays on the keyframe');
+  clip.ranges[1].start = 0.501;
+  assert.equal(copyRefusal([clip]), 'copy.internalpreroll', 'one tick is not rounded away');
+});
+
+test('joining different clocks cannot round away internal hidden frames', async () => {
+  const clips = [clipFixture({ timescale: 90000 }),
+    clipFixture({ timescale: 1000, fps: 20, gap: 10 })];
+  // A tenth of a source tick becomes nine ticks on the first clip's clock.
+  clips[1].ranges = [{ start: 0.5001, end: 0.8 }];
+  assert.equal(copyRefusal(clips), 'copy.internalpreroll');
+  await assert.rejects(joinByCopy({ clips, keepAudio: false }),
+    { message: 'copy.internalpreroll' });
+});
+
+test('the section offset participates in output-clock rounding', () => {
+  const clips = [clipFixture({ timescale: 1000, fps: 20 }), clipFixture()];
+  // The first run lasts 33.333 output ticks. A later 0.2-tick preroll rounds
+  // the edit to tick 34 while its keyframe remains at tick 33.
+  clips[1].ranges = [{ start: 0, end: 0.03 }, { start: 0.5002, end: 0.8 }];
+  assert.equal(copyRefusal(clips), 'copy.internalpreroll');
+});
+
+test('a keyframe composition offset is not hidden preroll', () => {
+  const clip = clipFixture();
+  for (const sample of clip.media.video.samples) sample.pts += 3000;
+  clip.ranges = [{ start: 3000 / 90000, end: 0.3 }, { start: 48000 / 90000, end: 0.8 }];
+  assert.equal(copyRefusal([clip]), null);
+});
+
+test('keyframe-aligned sections keep their encoded bytes and requested order', async () => {
+  const clip = clipFixture({ frames: 60, fps: 20, gap: 10, timescale: 1000 });
+  // Only the first retained part needs preroll. Moving it after the zero-time
+  // part would be unsafe, so this also checks that the guard follows play order.
+  clip.ranges = [{ start: 1.7, end: 2 }, { start: 0, end: 0.5 }, { start: 2.5, end: 3 }];
+  const result = await joinByCopy({ clips: [clip], keepAudio: false });
+  const bytes = await blobBytes(result.blob);
+  const mdat = find(bytes, 'mdat');
+  const samples = bytes.subarray(mdat.body, mdat.end);
+  const indices = [...Array.from({ length: 10 }, (_, i) => i + 30),
+    ...Array.from({ length: 10 }, (_, i) => i),
+    ...Array.from({ length: 10 }, (_, i) => i + 50)];
+  const expected = new Uint8Array(indices.flatMap((index) => Array(8).fill((100 + index) & 0xff)));
+  assert.deepEqual(samples, expected, 'copy keeps every encoded byte of each required decode run');
+  assert.equal(result.frames, 30);
+  assert.deepEqual(readElst(find(bytes, 'elst')), [
+    { mediaTime: 200, duration: 300 },
+    { mediaTime: 500, duration: 500 },
+    { mediaTime: 1000, duration: 500 },
+  ]);
 });
 
 /* -------------------------------------------------------- estimateJoinCopy */

@@ -153,6 +153,7 @@
           <option value="record">Grabarlo mientras se reproduce</option>
         </select>
         <p class="field-note" id="method-note"></p>
+        <p class="path-note" id="copy-note" hidden></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
@@ -324,6 +325,7 @@
     <span data-phrase="method.copy.many">Cada trozo marcado se pasa al archivo nuevo exactamente como está, uno detrás de
       otro. No se descodifica ni se codifica nada, así que ninguna parte de esto cuesta
       calidad.</span>
+    <span data-phrase="copy.internalpreroll">Estos fragmentos no se pueden copiar de forma fiable en los navegadores. Elige «{method}» para mantener los tiempos de corte.</span>
     <span data-phrase="method.exact.one">Cada trozo empieza en el fotograma que marcaste, descodificando desde el fotograma
       clave anterior y codificando la imagen otra vez. El sonido se sigue copiando en vez
       de recodificarse.</span>

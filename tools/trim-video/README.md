@@ -98,7 +98,7 @@ an iPhone clip losslessly; it simply cannot show you a preview of one.
 | Sound | untouched | untouched, unless the clips disagree | re-encoded |
 | Starts | at your mark, through an edit list | at your mark | at your mark |
 | Speed | as fast as the file writes | faster than real time | real time |
-| Sections | any number | any number | one |
+| Sections | later sections must start on keyframes | any number | one |
 | Clips | any number, if they agree | any number | one |
 
 The page picks the leftmost one the files allow, and says which it picked. The
@@ -127,11 +127,11 @@ media:   [K····························]      frames
 elst:          ^--------------------^         "start here, play this long"
 ```
 
-The result is a cut that is exact, in every player that implements edit lists —
-which is every mainstream one — with nothing re-encoded. What it costs is
-honesty about the players that do not: the page names the pre-roll in seconds
-before you export, and offers the exact path for anyone who would rather
-re-encode the opening than carry it.
+For one section, this preserves the requested start in players that honour
+edit lists, with nothing re-encoded. The page names the hidden pre-roll before
+export and offers the exact path for anyone who would rather re-encode than
+carry it. An edit list alone is not sufficient to promise correct playback of
+several arbitrary sections in a browser.
 
 ## Taking a section out of the middle
 
@@ -139,6 +139,25 @@ This is the job people actually want and rarely find, and it falls out of the
 same machinery: the two ends of the clip become two sections, they are written
 into one media timeline one after the other, and the edit list gets two entries
 instead of one.
+
+A later section that needs hidden frames before its mark is refused by Copy.
+Browser playback can present that later section before the preceding one ends,
+even when the packet bytes and edit entries are correct. Storing overlapping
+source frames only once does not avoid it: a player's edit-list reader can
+reconstruct the same overlapping preroll. `copyRefusal` in `src/copy.js` checks
+the planned preroll on every section after the first, across clip boundaries,
+and refuses when the written edit begins after its entry keyframe. Both times
+are rounded on the output clock, including their section offset, so joining
+clips with different clocks cannot round hidden frames out of the check. A keyframe's composition
+offset is not preroll. The UI applies the same check after marks are edited or
+reordered, keeps Copy selected but disables export, and asks the reader to
+choose the explicitly labelled re-encoding path. The export function enforces
+the limit too, so a stale or direct caller cannot write the known-bad result.
+
+Single-section copies and multiple sections whose later starts are on
+keyframes keep their encoded bytes unchanged. The first section may still
+carry its ordinary initial preroll because it has no preceding movie time to
+overlap.
 
 Everything downstream of `src/ranges.js` deals in a *list* of sections for that
 reason alone. "Keep this" is one section; "cut this out" is the two either side
@@ -270,14 +289,15 @@ but the tables.
 
 ## Limitations
 
-- **A copy starts at a keyframe.** Discussed above. It is exact in any player
-  that implements edit lists, and up to a keyframe interval early in one that
-  does not. The page says which case you are in, in seconds, before you export.
-- **Seeking near a join can be loose.** A file with two sections carries a
-  two-entry edit list, and Chrome's *seeking* across the boundary lands within
-  about a tenth of a second rather than exactly. Playback across the join is
-  frame-exact; it is the scrubber that is approximate, and the file itself is
-  correct — `elst`, `stts` and `stss` all check out when it is read back.
+- **A copy starts decoding at a keyframe.** The first section may hide the
+  frames before its mark with an edit list. Every later section must start on
+  a keyframe; Copy refuses internal preroll rather than producing a browser
+  playback that shows a later section early. Exact mode remains an explicit
+  choice and re-encodes the picture.
+- **Seeking is player-dependent.** Correct packet tables and edit entries do
+  not by themselves prove playback or seeking correct. QA therefore checks
+  native sequential playback as well as the selected encoded packets and
+  timeline, rather than treating a successful metadata read as proof.
 - **The exact path re-encodes the picture**, which the copy path never does.
   The sound is untouched either way, unless the clips being joined disagree
   about theirs.
