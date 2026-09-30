@@ -392,6 +392,8 @@ function resultRow(shape, row) {
 
   const pre = document.createElement('pre');
   pre.className = 'result-code';
+  // The bounded code panel needs keyboard focus so every line can be scrolled.
+  pre.tabIndex = 0;
   const holder = document.createElement('code');
   holder.textContent = code.length > SNIPPET ? `${code.slice(0, SNIPPET)}…` : code;
   pre.appendChild(holder);

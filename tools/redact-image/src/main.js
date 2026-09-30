@@ -370,6 +370,7 @@ function renderList() {
       choice.append(option);
     }
     choice.addEventListener('change', () => {
+      invalidateResult();
       snapshot();
       region.style = choice.value;
       refresh();
