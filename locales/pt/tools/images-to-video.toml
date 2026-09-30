@@ -167,7 +167,7 @@ a = """
 q = "Que formato de vídeo ele produz?"
 a = """
         MP4 com vídeo H.264, que toca em basicamente qualquer coisa. Num navegador
-        sem WebCodecs a ferramenta recua para gravar WebM, que são as mesmas imagens
+        sem WebCodecs, a ferramenta usa WebM como alternativa: são as mesmas imagens
         num contêiner que menos editores aceitam."""
 
 [[faq]]
@@ -228,11 +228,11 @@ a = """
         acrescente depois, num editor de vídeo."""
 
 [schema]
-browser_requirements = "Requer JavaScript. A saída em MP4 precisa de um navegador com WebCodecs; os demais recuam para WebM."
+browser_requirements = "Requer JavaScript. A saída em MP4 precisa de um navegador com WebCodecs; os demais usam WebM."
 description = "Transforme uma pasta de imagens numa apresentação em vídeo MP4. Cada etapa roda no seu navegador, então imagem nenhuma é enviada."
 features = [
   "Converte imagens JPG, PNG, WebP, GIF e AVIF em vídeo",
-  "Saída em MP4 (H.264), com WebM como recuo",
+  "Saída em MP4 (H.264), com WebM como alternativa",
   "Resoluções até 3840x2160, taxas de quadros de 12 a 60 fps",
   "Tempo de permanência por imagem, em quadros ou em segundos",
   "Roda offline; sem envio, sem conta",

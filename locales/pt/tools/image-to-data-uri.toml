@@ -251,7 +251,7 @@ a = """
         Porque a extensão pode estar errada e os bytes não podem. Um arquivo chamado
         <code>logo.png</code> que na verdade foi exportado como JPEG é comum o
         bastante para toda ferramenta de imagem ter que lidar com isso, e uma data
-        URI que declara o tipo errado simplesmente não é desenhada, sem recuo e sem
+        URI que declara o tipo errado simplesmente não é desenhada: não há alternativa nem
         mensagem de erro que valha a leitura. Então o tipo é lido dos primeiros bytes
         do arquivo, que dizem o que ele é sem ambiguidade em todos os formatos daqui,
         e a página avisa você quando os dois discordam."""

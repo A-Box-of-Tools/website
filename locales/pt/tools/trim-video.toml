@@ -305,7 +305,7 @@ a = """
         recebem nada sobre o seu vídeo."""
 
 [schema]
-browser_requirements = "Requer JavaScript. Copiar quadros não precisa de suporte a codec de vídeo nenhum; o corte exato precisa de um navegador com WebCodecs, e outros formatos recuam para gravação."
+browser_requirements = "Requer JavaScript. Copiar quadros não precisa de suporte a codec de vídeo nenhum; o corte exato precisa de um navegador com WebCodecs, e outros formatos são cortados por gravação."
 description = "Marque quantos trechos quiser de um vídeo enquanto ele toca, e salve esses trechos como um arquivo só - ou tire-os fora e fique com o resto. MP4, MOV e M4V são aparados movendo os quadros codificados para um arquivo novo, intocados, com o áudio original levado adiante amostra por amostra; nada é enviado e nada é recodificado."
 features = [
   "Marca quantos trechos você quiser, com I e O, enquanto o vídeo toca",

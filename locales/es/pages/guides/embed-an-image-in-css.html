@@ -185,10 +185,10 @@
   <section>
     <h2>El tipo de medio tiene que estar bien</h2>
     <p>
-      Un data URI declara su propio tipo y el navegador se lo cree. Aquí no hay
-      detección de reserva como la hay con un archivo descargado: di
-      <code>image/png</code> de algo que en realidad es un JPEG y la imagen no se
-      dibuja, sin ningún mensaje en ningún sitio útil.
+      Un data URI declara su propio tipo y el navegador se lo cree. A diferencia
+      de un archivo descargado, aquí el navegador no intenta detectar el formato
+      real: declara <code>image/png</code> para algo que en realidad es un JPEG y
+      la imagen no se dibuja, sin ningún mensaje en ningún sitio útil.
     </p>
     <p>
       Y eso importa porque las extensiones de archivo mienten. Una foto exportada

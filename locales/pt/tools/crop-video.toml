@@ -230,7 +230,7 @@ a = """
         recebem nada sobre o seu vídeo."""
 
 [schema]
-browser_requirements = "Requer JavaScript. A saída em MP4 precisa de um navegador com WebCodecs; os demais recuam para gravar WebM."
+browser_requirements = "Requer JavaScript. A saída em MP4 precisa de um navegador com WebCodecs; os demais usam a gravação em WebM como alternativa."
 description = "Corte um vídeo para qualquer formato ou caixa exata em pixels dentro do navegador. MP4, MOV e M4V são decodificados e recodificados quadro a quadro, com o áudio original levado adiante intocado; qualquer outra coisa que o navegador consiga tocar é cortada por gravação. Nada é enviado."
 features = [
   "Corta vídeo em MP4, MOV, M4V e WebM",
