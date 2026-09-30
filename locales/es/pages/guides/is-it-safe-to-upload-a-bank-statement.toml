@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "¿Es seguro subir un extracto bancario?"
+title = "¿Es seguro subir un extracto bancario para convertirlo?"
+description = "Un extracto reúne destinatarios, importes y saldos en un archivo. Qué recibe el convertidor, qué hacen los servicios cuidadosos y cómo comprobar si realmente era necesario subirlo."
+heading = "¿Es seguro subir un extracto bancario?"
+lede = "Normalmente no ocurre nada malo. Eso no elimina la exposición, ni responde a la pregunta más útil: un extracto concentra muchísima información personal, y convertir su texto en una tabla no exige enviarlo a un servidor."
+updated = "29 de septiembre de 2026"
+og_title = "¿Es seguro subir un extracto bancario?"
+og_description = "Destinatarios, importes, saldo y número de cuenta en un archivo. Qué recibe un convertidor, cómo lo tratan los servicios cuidadosos y por qué puede no hacer falta subirlo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

@@ -1,0 +1,133 @@
+name = "PDF a CSV"
+heading = "PDF&nbsp;a&nbsp;CSV <span class=\"h1-kw\">&mdash; tablas de todo tipo, incluidos extractos bancarios</span>"
+tagline = "Encuentra tablas en un PDF y las convierte en filas para una hoja de cálculo."
+title = "PDF a CSV &mdash; tablas y extractos bancarios, gratis y sin subidas"
+description = "Convierte tablas de PDF a CSV: extractos, facturas, listas de precios e informes. Detecta columnas por la posición del texto y compara saldos cuando es posible. Sin subir nada."
+og_title = "Convierte las tablas de un PDF a CSV sin subir el archivo"
+og_description = "Encuentra las tablas del documento en tu navegador e indica qué comparaciones de saldo coinciden en un extracto. El archivo no se envía a un servidor."
+og_image_alt = "Convertir las tablas de un PDF a CSV en el navegador"
+pledge = "El PDF se abre y lee en la memoria del dispositivo con código de esta página. El CSV se escribe del mismo modo. No hay funciones de subida ni un servidor que lo reciba. Números de cuenta, saldos, destinatarios y precios se quedan en la pestaña."
+live_hint = "Abre las herramientas de desarrollo, mira Red y convierte un PDF. Ninguna petición lleva páginas, filas, cifras ni nombres de archivo. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/layout.js</code> para separar regiones de una página, <code>src/tables.js</code> para detectar tablas y columnas, <code>src/rows.js</code> para reunir líneas en filas y <code>src/check.js</code> para comparar los saldos de un extracto. Ninguno accede a la red, ni el lector que usan."
+howto_heading = "Cómo convertir las tablas de un PDF a CSV"
+card = "Pasa tablas de extractos, facturas, precios e informes a una hoja de cálculo. Encuentra columnas por la posición del texto y reúne celdas que ocupan varias líneas. Compara saldos de extractos cuando los importes y saldos son legibles."
+
+[words]
+plural = "documentos"
+choose = "un PDF"
+analytics_extra = ", ni el contenido de sus tablas"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "Los PDF que conviertes suelen contener datos que no quieres entregar."
+body = "Extractos, facturas, recibos e informes contienen pagos, saldos, precios y cifras de una empresa. Subirlos a un conversor entrega una copia a otro servidor. Aquí no hay un servicio al otro lado: no existe un destino al que enviar el documento."
+
+[[privacy]]
+title = "Los saldos permiten comparar cambios netos, con límites claros."
+body = "Detectar columnas y unir líneas exige inferir la estructura y puede fallar. La herramienta suma los importes entre dos saldos legibles y los compara con su diferencia. Indica cuántas comparaciones coinciden y qué filas no se comprobaron: anteriores al primer saldo, posteriores al último o dentro de intervalos ilegibles. Coincidir es información útil, no prueba de que todo sea correcto: los errores que se compensan pueden pasar. Una tabla sin saldo reconocido no tiene esta comprobación."
+
+[[privacy]]
+title = "La estructura se deduce de la página, sin plantillas por banco."
+body = "No hay una lista de bancos ni formatos admitidos. Se separan las notas laterales y se buscan líneas con celdas alineadas en cada región. Puede funcionar con documentos desconocidos, pero puede fallar si las columnas se solapan o no se distinguen bien."
+
+[[privacy]]
+title = "La contraseña se retira en una herramienta separada."
+body = "Un PDF protegido se rechaza. Para retirar la protección sin que salga del dispositivo, usa <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a>, que conserva intacto el contenido de las páginas, o imprime una copia PDF desde el navegador o Vista Previa. Evita servicios que exijan subirlo para desbloquearlo: entregar el documento es justo lo que esta página pretende evitar."
+
+[[privacy]]
+title = "No reconoce texto dentro de fotografías."
+body = "Un escaneo contiene píxeles, no texto que pueda alinearse en columnas. Se detecta y se explican alternativas locales. En un extracto, lo primero es buscar la descarga CSV que suele ofrecer el banco. Reconocer letras en imágenes requiere OCR, una tarea distinta."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben documentos, tablas, filas, cifras, nombres ni número de páginas. Todo el código que lee PDF o escribe CSV se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón &laquo;Buy me a coffee&raquo; de la cabecera lo dibuja un script de cdnjs.buymeacoffee.com y toma su tipografía de Google Fonts. Es un enlace y nada más: no informa de ninguna visita y no se le entrega nada sobre ti ni sobre tus documentos. No pasa nada hasta que lo pulsas, y entonces estás en el sitio de otra gente."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y la página sigue funcionando. Una herramienta que enviara el documento a convertir fuera se detendría."
+
+[[howto]]
+title = "Elige el PDF."
+body = "Un documento cada vez. Se leen todas las páginas antes de decidir el separador decimal y el orden de las fechas, porque son propiedades del documento completo: puede escribir 1.240,00 o 1,240.00."
+
+[[howto]]
+title = "Revisa las tablas encontradas."
+body = "Cada tabla conserva sus columnas y encabezados. Si continúa en otra sección o página con la misma estructura, se reúne sin repetir el encabezado. Las celdas partidas en varias líneas se unen. Totales, subtotales y etiquetas se conservan como filas."
+
+[[howto]]
+title = "Elige una tabla o todas."
+body = "El selector permite exportar una o todas seguidas. Si hay saldos, se muestran las comparaciones coincidentes y las filas no comprobadas. Las fechas con año pasan a YYYY-MM-DD y los importes a números con signo. Las fechas sin año se dejan como estaban: asignar uno sería una suposición."
+
+[[howto]]
+title = "Descarga el CSV."
+body = "Se escribe según RFC 4180, con comillas y saltos CRLF, en UTF-8 con marca de orden de bytes para que Excel reconozca los símbolos. Si exportas todas las tablas, cada una mantiene sus encabezados y se separan con una línea vacía. No se sube nada."
+
+[[faq]]
+q = "¿Cómo encuentra tablas si el PDF no guarda una tabla real?"
+a = "Por la posición del texto. Primero separa las notas laterales: las celdas de una tabla comparten exactamente la línea base; las notas solo coinciden por casualidad. Después divide cada región por títulos y huecos, detecta dónde comienzan o terminan celdas alineadas y reúne bloques de las mismas columnas. No usa plantillas por banco o formulario."
+
+[[faq]]
+q = "¿Solo sirve para extractos bancarios?"
+a = "No. Detecta tablas de facturas, listas de precios, horarios, resultados e informes. Nació para extractos, pero se amplió porque un mismo documento puede tener muchas tablas distintas. En los extractos, además puede comparar cambios netos entre saldos legibles."
+
+[[faq]]
+q = "¿Qué pasa con una descripción que ocupa varias líneas?"
+a = "Se vuelve a unir a su fila. Una línea cercana con una sola celda de texto se considera continuación; si está más cerca de la fila siguiente, se une a ella, como ocurre con etiquetas encima de su valor. Una línea con varias celdas o con un número se conserva como fila propia."
+
+[[faq]]
+q = "¿Qué demuestra la comprobación de saldos?"
+a = "Compara la suma de importes entre dos saldos legibles con la diferencia entre ellos e indica cuántas comparaciones coinciden. También ayuda a identificar columnas de saldo e importe sin depender de sus títulos. Se señalan filas sin comprobar: antes del primer saldo, después del último e intervalos con importes ausentes o ilegibles. Una celda vacía de débito o crédito no utilizado cuenta como cero; un valor ilegible no. Los saldos coincidentes no descartan errores que se compensen ni validan descripciones o fechas. Revisa el CSV frente al PDF antes de usarlo."
+
+[[faq]]
+q = "¿Y si 03/04 significa 4 de marzo, no 3 de abril?"
+a = "Cambia el selector de fechas y se recalcula todo. La herramienta usa el documento, no tu ubicación: una fecha con día mayor de doce permite inferir el orden y la página lo indica. Si todos los días son del uno al doce, es ambiguo; avisa de <em>esa ambigüedad</em> y empieza con día primero hasta que lo cambies. Las fechas sin año se conservan tal como aparecen."
+
+[[faq]]
+q = "¿Funciona con un PDF escaneado?"
+a = "No, y lo avisa en vez de descargar un archivo vacío. Un escaneo es una imagen sin texto que alinear. Para un extracto, busca primero la exportación CSV, OFX o QIF del banco: evita la conversión y es más fiable que reconocer una imagen."
+
+[[faq]]
+q = "¿Puede abrir un PDF protegido con contraseña?"
+a = "No retira contraseñas. Usa primero <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a> en este sitio: lo hace en el navegador y mantiene la posición del texto. También puedes abrirlo con la contraseña y guardar otra copia al imprimir desde Chrome o Edge, o exportar desde Vista Previa en Mac. Evita servicios que pidan subir el documento para desbloquearlo."
+
+[[faq]]
+q = "¿Se sube mi PDF a alguna parte?"
+a = "No. El navegador lee el archivo y escribe el CSV en tu dispositivo. No hay procesamiento en servidor y la <code>Content-Security-Policy</code> enumera los destinos permitidos, ninguno del sitio. Desconéctate y convierte un PDF para comprobarlo."
+
+[[faq]]
+q = "¿Por qué aparece un carácter extraño al principio del CSV?"
+a = "Es la marca de orden de bytes. Indica a Excel en Windows que el archivo usa UTF-8 para conservar símbolos como euros y libras. Los lectores suelen ignorarla, pero algunos analizadores pueden incluir ese carácter invisible al principio del primer encabezado. Es el coste de mejorar la compatibilidad con Excel."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "No hay un límite fijado. El documento se mantiene en memoria y el límite depende del dispositivo; unos cientos de páginas suelen ser manejables. Es gratis, sin cuenta, inicio de sesión ni prueba. La publicidad paga el sitio y no recibe datos del documento."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando, algo que una herramienta que enviara el PDF a un servidor no podría hacer."
+
+[schema]
+description = "Convierte tablas de PDF a CSV en el navegador: extractos, facturas, precios e informes. Detecta la estructura por la posición del texto y compara saldos cuando los importes son legibles. Sin subidas."
+features = ["Detecta tablas con sus propias columnas y encabezados", "Separa las notas laterales en vez de mezclarlas con la tabla", "Une tablas que continúan en otras secciones o páginas sin repetir encabezados", "Reúne celdas partidas en varias líneas", "Compara saldos e identifica filas no comprobadas", "Lee 1.240,00 y 1,240.00 e infiere el orden de fechas del documento", "Avisa si el PDF es un escaneo o está protegido y explica alternativas", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+
+[picker]
+title = "Suelta aquí tu PDF"
+hint = "o haz clic para elegir: un PDF cada vez"

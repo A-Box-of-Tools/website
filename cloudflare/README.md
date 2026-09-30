@@ -133,7 +133,8 @@ destination and why **German is left to its stubs**: English and Chinese fill
 eight, and German would need four more. It costs German nothing it had - its
 addresses never moved, so the old English slugs under `/de/` were never pages
 anybody linked to. The top of `redirects.py` has the whole argument, and
-`BUDGET` there is the one number to change on a larger plan. The twelve frozen
+`BUDGET` there is the one number to change on a larger plan. Spanish and Portuguese also keep their generated stubs: the rule budget
+remains full, so restoring them does not add an edge redirect. The ten frozen
 languages keep their stubs too; they are `noindex`, so there is no ranking for
 a 301 to carry.
 

@@ -1,0 +1,125 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      A veces. Convertir, redimensionar o comprimir una foto quita sus
+      metadatos cuando la herramienta reconstruye la imagen a partir de
+      píxeles, y los conserva cuando la herramienta los traslada a
+      propósito &mdash; y nada en pantalla te dice cuál de las dos cosas
+      pasó. La imagen se ve igual en ambos casos, porque los metadatos
+      nunca fueron parte de la imagen.
+    </p>
+    <p>
+      Los dos desenlaces sorprenden, en direcciones opuestas. Alguien
+      cuenta con que «solo redimensionar» borre la ubicación, y la
+      ubicación sobrevive. Otro cuenta con que la fecha de captura
+      sobreviva a un cambio de formato, y ya no está. Los dos errores
+      tienen la misma cura: dejar de predecir lo que una herramienta
+      probablemente hizo, y mirar lo que el archivo contiene de verdad.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué viaja al lado, y por qué va separado</h2>
+    <p>
+      Un archivo de foto son dos cosas en un mismo contenedor: la imagen
+      codificada, y un bloque de etiquetas sobre ella &mdash; EXIF, muchas
+      veces con XMP y un perfil de color. Las etiquetas suelen decir
+      cuándo se tomó la foto, la cámara y el objetivo, la exposición, las
+      coordenadas GPS de donde estabas, y con frecuencia una miniatura
+      incrustada &mdash; a veces de la imagen tal como era <em>antes</em>
+      de una edición, que es como un recorte puede no quitar lo que
+      recortó. El recorrido completo de ese bloque está en
+      <a href="../eliminar-datos-exif-y-gps/">la guía de EXIF</a>.
+    </p>
+    <p>
+      El punto que lo decide todo: las etiquetas están <em>al lado</em> de
+      los píxeles, no dentro. Una herramienta que decodifica la imagen
+      recibe píxeles y ninguna etiqueta; lo que escriba de salida contiene
+      solo lo que decida devolver. Una herramienta que edita el archivo
+      sin reencodear puede dejar las etiquetas intactas &mdash; o quitar
+      exactamente esas y nada más.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué reencodear arranca, y copiar conserva</h2>
+    <p>
+      Casi todo el trabajo de imagen en un navegador pasa por un lienzo:
+      decodificar el archivo a píxeles crudos, transformarlos, codificar
+      un archivo nuevo. Un lienzo no lleva etiquetas, así que el archivo
+      nuevo no tiene ninguna &mdash; no por política sino por
+      construcción. Por eso el
+      <a href="../../comprimir-imagen/">compresor de imágenes</a> y la
+      herramienta de <a href="../../redimensionar-imagen/">redimensionar
+      imágenes</a> de aquí producen salidas sin EXIF, sin GPS y sin XMP, y
+      sus páginas lo dicen: es inevitable, y conviene saberlo cuando
+      querías conservar la fecha.
+    </p>
+    <p>
+      Un conversor, en cambio, puede esmerarse en preservar. El
+      <a href="../../convertir-heic-a-jpg/">conversor de HEIC a JPG</a> de
+      este sitio hace exactamente eso: levanta el bloque de metadatos del
+      contenedor HEIC y lo instala en el JPEG, fechas, GPS y todo, porque
+      una conversión debe ser la misma foto con otro abrigo. (Una etiqueta
+      se reescribe a propósito: la orientación, para que la imagen no se
+      tumbe; y el bloque solo cabe en la salida JPEG &mdash; el menú de
+      formatos lo dice.) Dos herramientas honradas, comportamientos
+      opuestos, cada una correcta para su trabajo &mdash; y precisamente
+      por eso adivinar por el tipo de herramienta no funciona.
+    </p>
+    <p>
+      Fuera del navegador el panorama está igual de mezclado, con la misma
+      lógica debajo. Las capturas de pantalla y las exportaciones son
+      codificaciones nuevas: sin metadatos de cámara. Las apps de
+      mensajería recomprimen fuerte, así que las fotos enviadas como fotos
+      suelen perder sus etiquetas &mdash; pero el mismo archivo enviado
+      «como documento» viaja byte a byte, etiquetas incluidas. Los
+      adjuntos de correo y las nubes mueven archivos sin cambios. El
+      patrón se sostiene: reconstruido significa arrancado, copiado
+      significa conservado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comprobar en vez de suponer</h2>
+    <p>
+      La comprobación tarda menos de un minuto: abre el archivo de salida
+      &mdash; no el original &mdash; en el
+      <a href="../../eliminar-datos-exif/">visor y eliminador de EXIF</a>
+      y lee lo que hay. Analiza el archivo en tu propia máquina y muestra
+      cada etiqueta, miniatura incrustada incluida. Si no hay nada, nada
+      se filtró. Si sigue ahí, ves exactamente qué.
+    </p>
+    <p>
+      De todo lo anterior salen tres hábitos:
+    </p>
+    <ul>
+      <li>
+        <strong>Cuando el objetivo es la privacidad, quita a
+        propósito.</strong> Arranca las etiquetas con la herramienta EXIF
+        &mdash; edita el archivo sin reencodear, así que la imagen no
+        pierde nada &mdash; y luego comprueba el resultado. No te fíes de
+        un redimensionado que arranca de rebote.
+      </li>
+      <li>
+        <strong>Cuando el objetivo es conservar el registro, convierte con
+        una herramienta que diga que preserva</strong> &mdash; y comprueba
+        eso también, porque «seguramente lo guardó» falla en la otra
+        dirección: un archivo fotográfico con las fechas evaporadas
+        también es una pérdida.
+      </li>
+      <li>
+        <strong>Comprueba el archivo que de verdad envías</strong>, tras
+        el último paso de tu cadena. Cada herramienta decide por su
+        cuenta, y solo cuenta el contenido del archivo final.
+      </li>
+    </ul>
+    <p>
+      Y si la herramienta de comprobar es a su vez una página web, la
+      pregunta de siempre también va por ella: un visor de metadatos
+      recibe tu foto, GPS incluido. El de aquí corre entero en tu
+      navegador, sin enviar nada a ninguna parte, y
+      <a href="../es-seguro-subir-archivos/">la guía sobre subir
+      archivos</a> enseña a verificar esa afirmación en vez de creerla.
+    </p>
+  </section>

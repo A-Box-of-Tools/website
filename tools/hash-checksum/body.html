@@ -188,6 +188,17 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.failed">{name} could not be read to the end: {reason}. A file that changed on disk while it was being read is the usual reason. Nothing partial is shown, because half a file has the wrong checksum rather than a partial one.</span>
+    <span data-phrase="read.unreadable">the file could not be read</span>
+    <span data-phrase="read.short">the file ended sooner than its size said</span>
+    <span data-phrase="progress.remaining">{time} left</span>
+    <span data-phrase="copy.one">One checksum, on your clipboard and nowhere else.</span>
+    <span data-phrase="copy.all">Copied. It is plain text, and it went to your clipboard only.</span>
+    <span data-phrase="copy.failed">This browser would not let the page write to the clipboard. Select the text and copy it, or use “{download}”.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="time.seconds">{n}s</span>
+    <span data-phrase="time.minutes">{n}m</span>
+
     <span data-phrase="net.clean">your file has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

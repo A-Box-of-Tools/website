@@ -811,8 +811,7 @@ window.addEventListener('unhandledrejection', (event) => {
 
 /** The one thing this tool cannot work around, said the same way every time. */
 function showUnsupported() {
-  showError('This browser has no OffscreenCanvas, which this tool does all of its '
-    + 'drawing on. Chrome, Edge, Firefox 105 or Safari 16.4 and newer have it.');
+  showError(phrase('error.unsupported'));
 }
 
 if (typeof OffscreenCanvas !== 'function') {

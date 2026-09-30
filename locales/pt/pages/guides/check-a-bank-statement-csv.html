@@ -1,0 +1,70 @@
+<section>
+  <h2>O que conferir</h2>
+  <p>Um CSV que abre perfeitamente em uma planilha ainda pode ter um valor errado, uma transação ausente ou uma data invertida. Compare-o com o extrato original: confira linhas, datas e descrições e use os saldos impressos para testar os valores.</p>
+  <p>Mantenha o PDF ao lado do arquivo convertido. Um download bem-sucedido só mostra que o conversor gerou um arquivo. As verificações abaixo ajudam a saber se ele reproduz o extrato corretamente.</p>
+</section>
+<section>
+  <h2>Antes de converter, procure uma exportação</h2>
+  <p>Se o banco oferece CSV para o período desejado, comece por ele. A exportação direta dispensa reconstruir a tabela a partir de palavras posicionadas no PDF. Confira conta, período e significado das colunas, mas há uma etapa a menos em que algo pode dar errado.</p>
+  <p>Às vezes, só existe o PDF: um extrato antigo, uma conta encerrada ou um documento recebido de outra pessoa. É nesses casos que a conversão faz sentido.</p>
+</section>
+<section>
+  <h2>Confira um pequeno extrato de exemplo</h2>
+  <p>Este extrato fictício de conta corrente começa com <strong>1.250,00</strong>. Valores positivos aumentam o saldo; negativos o reduzem. A última coluna vem impressa no extrato, não de uma fórmula acrescentada à planilha.</p>
+  <figure class="data">
+    <figcaption id="statement-caption">Quatro transações fictícias, com saldo inicial de 1.250,00</figcaption>
+    <div class="scroll" tabindex="0" role="region" aria-label="Extrato bancário fictício">
+      <table aria-labelledby="statement-caption">
+        <thead><tr><th scope="col">Data</th><th scope="col">Descrição</th><th scope="col">Valor</th><th scope="col">Saldo impresso</th></tr></thead>
+        <tbody>
+          <tr><td>2026-08-03</td><td>Pagamento de salário</td><td>+800,00</td><td>2.050,00</td></tr>
+          <tr><td>2026-08-04</td><td>Supermercado</td><td>-43,20</td><td>2.006,80</td></tr>
+          <tr><td>2026-08-05</td><td>Café</td><td>-6,80</td><td>2.000,00</td></tr>
+          <tr><td>2026-08-06</td><td>Transferência</td><td>-125,00</td><td>1.875,00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>Cada linha permite uma conta: <strong>saldo anterior + valor com sinal = novo saldo</strong>. Para o supermercado, <code>2050,00 + (-43,20) = 2006,80</code>. Para o café, <code>2006,80 + (-6,80) = 2000,00</code>.</p>
+  <p>Suponha que o CSV leia o supermercado como <strong>-48,20</strong>. Todas as células estão preenchidas, mas <code>2050,00 + (-48,20) = 2001,80</code>. A diferença de <strong>5,00</strong> em relação ao saldo impresso aponta uma linha específica para conferir no PDF.</p>
+  <p>Preserve os saldos impressos durante a conferência. Substituí-los por fórmulas calculadas com os valores convertidos faz a planilha concordar consigo mesma, inclusive com os erros.</p>
+  <p>Entenda o significado do saldo antes de aplicar os sinais. Uma fatura de cartão pode mostrar a dívida: compras a aumentam e pagamentos a reduzem. Não presuma que os sinais tenham o mesmo significado deste exemplo de conta corrente.</p>
+</section>
+<section>
+  <h2>Por que o saldo final não basta</h2>
+  <p>Comparar saldo inicial mais movimentações com o saldo final é útil, mas erros podem se anular. Se um pagamento for lido 5,00 acima e outro 5,00 abaixo, o total ainda confere.</p>
+  <p>Use todos os saldos acumulados disponíveis. Se só houver saldo ao fim do dia, compare-o com o saldo impresso anterior mais todos os valores entre eles.</p>
+  <p>Ainda há limites. Duas transações ausentes de <strong>-20,00 e +20,00</strong> deixam o saldo igual, e a conferência desse intervalo pode passar. Compare também a sequência das linhas com o original.</p>
+  <p>Um saldo coincidente não comprova que data ou destinatário foram copiados corretamente nem autentica o extrato. Ele só testa a relação entre os valores e saldos disponíveis.</p>
+</section>
+<section>
+  <h2>Confira as datas antes de ordenar as linhas</h2>
+  <p><code>03/04/2026</code> pode significar 3 de abril ou 4 de março. Uma data como <code>18/04/2026</code> esclarece a convenção, mas um extrato curto pode não conter essa pista. Confira o período e o formato usado pelo banco.</p>
+  <p>Confira novamente depois de abrir o CSV: a planilha pode interpretar as datas de outro jeito. Preserve a ordem original até terminar. Ordenar datas parcialmente invertidas dificulta a comparação e altera a sequência usada na conferência dos saldos.</p>
+  <p>Datas sem ano também exigem conferir o período, principalmente entre dezembro e janeiro. Observe os números: <code>1,240.00</code> e <code>1.240,00</code> podem representar o mesmo valor, que precisa ser preservado nas células importadas.</p>
+</section>
+<section>
+  <h2>Leia as descrições e separe os totais</h2>
+  <p>Uma descrição em duas linhas ainda pertence a uma única transação. Confira se a continuação ficou junto dela. Preste atenção às quebras de página: cabeçalhos repetidos e saldos transportados podem parecer transações adicionais.</p>
+  <p>O PDF também pode ter resumos da conta, subtotais e dados de pagamento. Eles pertencem à extração do documento, mas não devem virar novas transações na importação. Identifique a tabela de movimentações e separe as linhas de resumo.</p>
+  <p>Dois pagamentos com a mesma data, destinatário e valor podem ser reais. Compare posição e referência no extrato antes de remover um deles. Uma extração duplicada e um pagamento repetido exigem correções diferentes.</p>
+</section>
+<section>
+  <h2>O que este conversor verifica</h2>
+  <p><a href="../../pdf-para-csv/">PDF para CSV</a> encontra tabelas pelo alinhamento do texto, reúne células quebradas e preserva totais e rótulos de seção. Se houver várias tabelas, escolha a desejada. Há um seletor para datas ambíguas; datas sem ano permanecem como impressas.</p>
+  <p>Quando reconhece uma sequência de saldos, informa se as comparações disponíveis conferem. Confira por conta própria os valores até o primeiro saldo impresso usando o saldo inicial, assim como os valores após o último saldo. A confirmação cobre apenas as comparações que foram possíveis.</p>
+  <p>Se nenhuma sequência utilizável for reconhecida, não haverá resultado de conferência. <strong>Ausência de aviso não é confirmação.</strong> Nem silêncio nem saldos coincidentes garantem que tudo esteja correto. A prévia mostra no máximo 25 linhas por tabela; confira o restante no arquivo baixado.</p>
+  <p>Páginas digitalizadas precisam de reconhecimento de texto, que esta ferramenta não oferece. A conversão acontece no navegador; o guia sobre <a href="../e-seguro-enviar-um-extrato-bancario/">enviar extratos bancários a conversores</a> trata da privacidade.</p>
+</section>
+<section>
+  <h2>Antes de importar o CSV em outro programa</h2>
+  <p>Confira a prévia de importação com o mesmo cuidado. Escolha a conta bancária ou o cartão correto, confirme o formato de data e associe as colunas de data, descrição e valor. Essas decisões são separadas da extração do PDF. As <a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">orientações de importação CSV da Intuit</a> mostram os requisitos de um produto.</p>
+  <ul>
+    <li>Confirme a conta e o período do extrato.</li>
+    <li>Confira datas, sinais e formatos numéricos após abrir o arquivo.</li>
+    <li>Compare as transações com o original, inclusive nas quebras de página.</li>
+    <li>Confira saldos inicial, intermediários e final quando disponíveis.</li>
+    <li>Investigue diferenças e linhas repetidas antes de alterá-las.</li>
+    <li>Guarde o extrato original e uma cópia do CSV conferido.</li>
+  </ul>
+</section>

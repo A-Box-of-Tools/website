@@ -7,16 +7,16 @@ translated. English keeps the addresses it has always had - `/compress-image/`
 - and every other language sits under a prefix with slugs of its own:
 `/de/bild-komprimieren/`.
 
-**Three of those languages are built from here: English, Simplified Chinese and
-German.** The other twelve - `ar es fr hi id it ja ko nl pt tr zh-TW` - were frozen
-as they were deployed in 1.4.2 and are kept in
+**Five of those languages are built from here: English, Simplified Chinese,
+German, Spanish and Brazilian Portuguese.** The other ten -
+`ar fr hi id it ja ko nl tr zh-TW` - were frozen as they were deployed in 1.4.2
+and are kept in
 [A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
 whose folders the deploy copies in beside the build. Their pages all still
 answer; they just stopped following English, because keeping thirteen copies
 of every page in step was work nearly nobody was reading the result of. See
 "Frozen languages" below. Everything else on this page is about how a language
-that IS built works, which today means `locales/zh/`, and is what a frozen one
-would need again to come back.
+that IS built works, and is what a frozen one would need again to come back.
 
 The slug is translated on purpose, and it is the reason this is not simply
 `/de/compress-image/`. A slug is the one part of a page's markup that is also a
@@ -92,15 +92,15 @@ each language has to go:
 
     es: 834 strings still in English (not advertised until complete = true)
 
-German is the worked example — the fullest translation there was, and the one
-to read before starting another. It is frozen now, so it is read in the
-archive, at `source/locales/de/` in A-Box-of-Tools/translations. Which locales
+German is the worked example and the one to read before starting another,
+at `locales/de/`. Spanish and Brazilian Portuguese retain their existing
+regional choices in their own `locale.toml` house styles. Which locales
 are actually finished is not written here on purpose: every build prints it,
 and a sentence in a README goes stale the first time a tool ships.
 
 ## Frozen languages
 
-`frozen_languages` in `config/site.toml` names the twelve, and
+`frozen_languages` in `config/site.toml` names the ten, and
 `frozen_archive` beside it names the repository and the commit they are served
 from. Three things read the list, so it cannot say one thing while the site
 does another: the build refuses a folder under `locales/` for a frozen language
@@ -117,7 +117,11 @@ reach it. The archive's `verify_freeze.py` proves nothing else differs.
 
 Bringing one back is the archive's README: its sources back from
 `source/locales/<lang>/` into `locales/`, its name off the list, and a
-translation of what English gained in the meantime.
+translation of what English gained in the meantime. Remove its generated
+`site/<lang>/` folder from a new archive revision and pin that commit in
+`frozen_archive` too, so the deploy still sees exactly the remaining frozen
+languages. The original translation sources can stay in the archive as a
+historical reference.
 
 ## Finished, and still not offered
 
@@ -126,10 +130,11 @@ it is a different fact about a different thing. `unadvertised_languages` in
 `config/site.toml` names languages whose translations are **finished** and
 which the site does not offer anyway, because too few people were reading them
 to justify asking Google to index them. No built language is on it today: the
-twelve that were are frozen, and were already unadvertised when they froze,
-which is why their pages carry `noindex`. German was one of them until it came
-back, and came back advertised: it is built, in the sitemap and in the hreflang
-sets like Chinese. The mechanism stays for the day a built language needs it.
+ten that remain are frozen, and were already unadvertised when they froze,
+which is why their pages carry `noindex`. German, Spanish and Brazilian
+Portuguese came back advertised: they are built, in the sitemap and in the
+hreflang sets like Chinese. The mechanism stays for the day a built language
+needs it.
 
 A language on that list is built and readable at every address it always had.
 What changes is that it is not claimed: no hreflang, no sitemap entry, no
@@ -327,9 +332,13 @@ assert on, and a translated sentence is not.
 what the window's error handlers say, and the drop zone's "Reading 3 files…".
 They used to be written out twenty-nine times, once per `main.js`.
 
-**Left:** about 340 sentences, in 454 places, all of them a tool's own. The
-live-check line is the pick of them, because it is nearly the same sentence in
-every tool and differs only in the noun.
+The tools' own progress messages, generated labels and parser failures also
+live in their phrase blocks. `tests/python/test_english_in_js.py` keeps a
+per-tool count of prose-like string literals so new English cannot silently
+arrive in the JavaScript. It is a heuristic, not a translation verdict: file
+format identifiers, CSS fragments and file-authored metadata can look like
+prose to the counter, and short labels can escape it. Review the source and
+exercise the translated controls as well as checking phrase-key parity.
 
 Two decisions already taken, so they need not be taken again:
 

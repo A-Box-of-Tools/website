@@ -1,0 +1,181 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige un PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Elegir otro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The two documents this tool cannot read, each with the way out of it.
+      Revealed by main.js when the matching failure happens, rather than sitting
+      open on a page most people arrive at with a statement that works.
+
+      Every route here runs on the visitor's own machine, which is why this list
+      used to name no website at all: sending somebody to a site that strips the
+      password would have undone, in the sentence after the failure, the promise
+      the rest of this page makes. /unlock-pdf/ is why that is no longer the
+      choice. It takes the password off in the visitor's own browser and uploads
+      nothing, so it is the same promise rather than a hole in it - and it is
+      first in the list because it is the only route that leaves the page
+      untouched, which for a tool that reads columns by where the text sits is
+      not a small thing. The warning underneath still stands, and now says what
+      it is excepting.
+    -->
+    <div id="locked-help" class="help" hidden>
+      <h3>Cómo retirar la contraseña en tu dispositivo</h3>
+      <p>
+        Los bancos suelen proteger extractos con la fecha de nacimiento o parte del número de cuenta. Estas opciones crean una copia abierta; tráela aquí con su texto conservado.
+      </p>
+      <ul>
+        <li>
+          <strong>Usa <a href="/es/desbloquear-pdf/">Desbloquear PDF</a> de este sitio</strong> y escribe allí la contraseña. Todo ocurre en el navegador, sin subidas. Es la opción que conserva intacto el contenido de las páginas y la posición del texto.
+        </li>
+        <li>
+          <strong>Windows</strong> : abre el PDF en Chrome o Edge, escribe la contraseña, pulsa <strong>Imprimir</strong> y elige
+          <strong>Guardar como PDF</strong> como impresora.
+        </li>
+        <li>
+          <strong>macOS</strong> : ábrelo en Vista Previa, escribe la contraseña y elige <strong>Archivo &rarr; Exportar como PDF</strong>.
+        </li>
+      </ul>
+      <p class="help-warn">
+        No lo entregues a <em>otra</em> web que exija subirlo para desbloquearlo. Eso enviaría el extracto fuera, justo lo que evitamos. La página enlazada arriba no tiene servidor de procesamiento y funciona sin red.
+      </p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>Si es una fotografía, estas son las alternativas</h3>
+      <p>
+        El archivo no contiene texto: sus páginas son fotos o escaneos. Reconocer letras en una imagen requiere OCR, algo que esta herramienta no hace. Prueba estas opciones, aproximadamente en este orden:
+      </p>
+      <ul>
+        <li>
+          <strong>Pide al banco los datos, no el papel.</strong>
+          Busca la descarga CSV, OFX o QIF del mismo extracto. Evita cualquier conversión y suele ser más precisa que reconocer una imagen.
+        </li>
+        <li>
+          <strong>Pide el PDF original a quien lo envió</strong> en vez del escaneo de una impresión.
+        </li>
+        <li>
+          <strong>O reconoce el texto en tu dispositivo.</strong> Recortes de Windows, Texto en Vivo de macOS y la función de Acrobat
+          <em>Reconocer texto</em> permiten hacerlo localmente. Después comprueba cada importe: un dígito mal reconocido sigue pareciendo un número válido.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the screen that matters, because everything before it was inference -->
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span> Comprueba lo que se leyó</h2>
+
+    <p class="card-lede">
+      Un PDF guarda texto en posiciones de la página, no tablas estructuradas. Las columnas y filas se infieren y pueden contener errores. Si hay saldos, se indican las comparaciones coincidentes y las filas no comprobadas. Solo se contrastan cambios netos: los errores que se compensan pueden pasar.
+    </p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">Tabla que quieres exportar</label>
+      <select id="table-pick"></select>
+    </div>
+
+    <div class="field" id="order-field" hidden>
+      <label for="date-order">Orden de las fechas</label>
+      <select id="date-order">
+        <option value="dmy">día / mes / año</option>
+        <option value="mdy">mes / día / año</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+    <!-- One captioned table per table found, built by main.js: how many there
+         are is not known until the file is read. -->
+    <div id="previews" class="previews"></div>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Descarga el CSV</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="primary as-button" download>Descargar el CSV</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen, held in the markup
+    rather than in src/ because src/ is copied byte for byte into every
+    language. shared/js/phrases.js reads them back; a {name} is filled in by
+    the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">No es un PDF. Esta herramienta extrae las tablas de archivos PDF.</span>
+    <span data-phrase="load.encrypted">Este PDF tiene protección. Retirarla es una tarea distinta de leer sus tablas y no se hace automáticamente aquí.</span>
+    <span data-phrase="error.broke">Algo dejó de funcionar ({detail}). Recarga e inténtalo de nuevo.</span>
+    <span data-phrase="load.broken">Este archivo no se ha podido abrir como PDF ({detail}).</span>
+    <span data-phrase="load.nopages">Se ha abierto, pero no se han encontrado páginas dentro.</span>
+    <span data-phrase="scan.notext">Este PDF no contiene texto: sus páginas son imágenes.</span>
+    <span data-phrase="scan.notables">No hay texto dispuesto en tablas ni líneas alineadas en columnas. No hay tablas que convertir.</span>
+    <span data-phrase="sum.one">Una tabla, {rows}, extraída de {pages}.</span>
+    <span data-phrase="sum.many">{tables}, con {rows} en total, extraídas de {pages}.</span>
+    <span data-phrase="table.label">Tabla {n} &middot; página {page} &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">Todas las {tables}, una tras otra</span>
+    <span data-phrase="check.intable">Tabla {n}: {verdict}</span>
+    <span data-phrase="fact.shape">{rows} en {columns}</span>
+    <span data-phrase="fact.tables">{rows} en {tables}, una tras otra</span>
+    <span data-phrase="count.rows.one">{n} fila</span>
+    <span data-phrase="count.rows.many">{n} filas</span>
+    <span data-phrase="count.columns.one">{n} columna</span>
+    <span data-phrase="count.columns.many">{n} columnas</span>
+    <span data-phrase="count.tables.one">{n} tabla</span>
+    <span data-phrase="count.tables.many">{n} tablas</span>
+    <span data-phrase="check.held">El saldo coincide en las {links} comparaciones.</span>
+    <span data-phrase="check.broke">El saldo coincide en {held} de {links} comparaciones. Revisa en el PDF los importes del intervalo que termina en {where}.</span>
+    <span data-phrase="check.unchecked">Filas no comprobadas: {where}. Revisa sus importes en el PDF.</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
+    <span data-phrase="check.row">fila {n}</span>
+    <span data-phrase="check.rows">filas {list}</span>
+    <span data-phrase="order.found">Se dedujo de una fecha del documento con día mayor de doce.</span>
+    <span data-phrase="order.guessed">Todas las fechas tienen un día del uno al doce y el orden es ambiguo. Cámbialo si las fechas de abajo no son correctas.</span>
+    <span data-phrase="preview.more">Solo se muestran las primeras {shown} filas de esta tabla. La descarga incluye todas.</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.dates">Fechas con año en formato YYYY-MM-DD</span>
+    <span data-phrase="fact.amounts">Importes como números con signo</span>
+    <span data-phrase="fact.encoding">UTF-8 y comillas según RFC 4180</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="pdf.flate">un flujo Flate no se pudo descomprimir ({detail})</span>
+    <span data-phrase="pdf.nocompression">este navegador no tiene CompressionStream</span>
+    <span data-phrase="pdf.lzw">un flujo LZW empieza con un código sin definir</span>
+    <span data-phrase="pdf.cryptfilter">este flujo está cifrado</span>
+    <span data-phrase="pdf.unknownfilter">un filtro desconocido, /{name}</span>
+    <span data-phrase="pdf.deep">anidado demasiado hondo</span>
+    <span data-phrase="pdf.short">se pasó del final</span>
+    <span data-phrase="pdf.unexpected">inesperado {found} en {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">byte inesperado 0x{hex} en {at}</span>
+    <span data-phrase="pdf.noendstream">un flujo sin endstream</span>
+    <span data-phrase="pdf.noobj">no hay palabra clave obj en {at}</span>
+    <span data-phrase="pdf.nostartxref">no hay startxref</span>
+    <span data-phrase="pdf.noxref">no es una sección xref</span>
+    <span data-phrase="pdf.now">un flujo xref sin /W</span>
+    <span data-phrase="pdf.zerowidth">un flujo xref con campos de anchura cero</span>
+    <span data-phrase="read.noheader">Esto no empieza como un PDF: no hay cabecera %PDF-.</span>
+    <span data-phrase="read.encrypted">Este PDF está cifrado.</span>
+    <span data-phrase="read.nocatalogue">No hay catálogo del documento. No es PDF o está demasiado dañado para repararlo aquí.</span>
+  </div>
+</main>

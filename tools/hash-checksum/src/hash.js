@@ -107,12 +107,12 @@ export async function hashFile(file, ids, { onProgress, signal, chunkSize = CHUN
       // move or unplug the file half way through and this is where it shows up.
       // A digest of the first half of a file is worse than no digest at all, so
       // it is thrown away rather than reported.
-      throw new Unreadable(error?.message ?? 'the file could not be read');
+      throw new Unreadable('read.unreadable', { cause: error });
     }
 
     // The same case again, arriving quietly: the file shrank, so the slice came
     // back short or empty. Without this the loop would never reach the end.
-    if (bytes.length === 0) throw new Unreadable('the file ended sooner than its size said');
+    if (bytes.length === 0) throw new Unreadable('read.short');
 
     for (const one of running) one.state.update(bytes);
     at += bytes.length;

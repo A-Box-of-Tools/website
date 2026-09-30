@@ -313,7 +313,7 @@ export function assemble(entries, { bookmarks = true, t } = {}) {
 
   if (bookmarks) {
     const tree = collectOutlines(entries, placed);
-    const root = writeOutline(build, tree);
+    const root = writeOutline(build, tree, t);
     if (root) {
       catalog.set('Outlines', root);
       catalog.set('PageMode', name('UseOutlines'));

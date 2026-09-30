@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "AVIF a JPG"
+title = "Cómo convertir AVIF a JPG y por qué cuesta abrirlo"
+description = "¿Guardaste una imagen y recibiste un .avif que ningún programa abre? El navegador sí lo lee. Qué es AVIF, qué no puede conservar un JPEG, por qué ocupa más y cómo convertirlo sin subirlo."
+heading = "El archivo que casi nada abre, salvo el navegador donde lees esto"
+lede = "Guardas una imagen de un sitio web y recibes un archivo <code>.avif</code> que el visor de fotos rechaza, mientras el navegador lo muestra sin problemas. Esa diferencia explica tanto el problema como la solución: convertirlo no requiere que salga del dispositivo."
+updated = "17 de septiembre de 2026"
+og_title = "Cómo convertir AVIF a JPG"
+og_description = "Por qué el navegador abre un AVIF cuando otros programas no pueden, qué no conserva un JPEG y cómo convertirlo sin subir el archivo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

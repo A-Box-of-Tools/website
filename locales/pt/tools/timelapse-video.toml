@@ -1,0 +1,257 @@
+#
+# Criador de timelapse - português do Brasil.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Acelerar" é o verbo em toda a tradução, e "timelapse" é o substantivo. As
+# duas coisas aparecem juntas de propósito: quem procura escreve uma ou outra.
+#
+
+name = "Criador de timelapse"
+heading = "Fazer&nbsp;um&nbsp;timelapse <span class=\"h1-kw\">&mdash; acelerar um vídeo online</span>"
+tagline = "Uma hora de gravação em vinte segundos."
+
+title = "Fazer um timelapse online &mdash; grátis, sem envio, funciona offline"
+description = "Transforme um vídeo longo em timelapse: 10x, 60x ou a velocidade que você digitar. Roda no navegador, não envia nada, não põe marca d'água e funciona offline."
+og_title = "Criador de timelapse &mdash; acelere um vídeo sem enviá-lo"
+og_description = "Pegue um quadro a cada poucos segundos de um clipe longo e escreva todos eles de volta como um clipe curto. É o seu próprio navegador que lê, decodifica e codifica o arquivo."
+og_image_alt = "Criador de timelapse - acelere um vídeo longo no navegador, sem nada ser enviado"
+
+pledge = """
+    Cada quadro é escolhido, decodificado e recodificado pelo seu próprio
+    navegador, no seu próprio hardware. Nada aqui consegue buscar nem mandar
+    coisa alguma, porque não existe função de rede nenhuma nesta ferramenta. E do
+    outro lado desta página não existe servidor nenhum para onde mandar um vídeo,
+    mesmo que houvesse caminho."""
+
+live_hint = """
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e faça um timelapse.
+      Nenhuma requisição leva um quadro, um nome de arquivo ou um byte do que você
+      escolheu. Ou então desligue a internet e faça um assim mesmo, já que uma
+      ferramenta que mandasse o seu vídeo embora para ser processado simplesmente
+      pararia."""
+
+read_first = """
+, <code>src/plan.js</code> para a conta que decide de
+      que instante vem cada quadro, e <code>src/decode.js</code> para o laço que
+      lê só os pedaços do arquivo de que esses instantes precisam. Nenhum dos dois
+      importa qualquer coisa que consiga fazer uma requisição."""
+
+howto_heading = "Como fazer um timelapse a partir de um vídeo"
+
+card = """
+            Transforme um clipe longo em um curto, horas em segundos, sem mandar
+            o arquivo para lugar nenhum."""
+
+[words]
+plural = "vídeos"
+choose = "um vídeo"
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "A velocidade que você digitar"
+
+[[facts]]
+text = "Funciona offline"
+
+[[privacy]]
+title = "Seus vídeos não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde o seu
+      arquivo pudesse ser recolhido, e não existe no código nada que o mandaria
+      mesmo que existisse."""
+
+[[privacy]]
+title = "Nada aqui vai buscar coisa alguma."
+body = """
+ Esta ferramenta não tem função de
+      rede nenhuma: nenhum endereço para colar, nada para baixar, nenhum motor
+      buscado no primeiro uso. Cada byte que encosta no seu vídeo veio desta
+      origem quando a página carregou."""
+
+[[privacy]]
+title = "A decodificação e a codificação são locais."
+body = """
+ Os quadros passam pelo
+      WebCodecs no seu próprio navegador, ou pelo mesmo motor de reprodução que
+      exibiria o clipe para você de qualquer jeito. O arquivo pronto é montado na
+      memória deste computador e vai direto para um download."""
+
+[[privacy]]
+title = "A maior parte do arquivo nem chega a ser lida."
+body = """
+ Um timelapse
+      precisa de um quadro a cada poucos segundos, então a ferramenta lê o trecho
+      curto de arquivo em volta de cada um desses instantes e pula o resto. É uma
+      decisão de velocidade e não de privacidade, mas vale saber assim mesmo: até
+      aqui, no seu próprio computador, a maior parte do seu vídeo nunca é
+      aberta."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre o seu vídeo: nem um arquivo, nem um quadro, nem um nome, um tamanho ou
+      uma duração. Toda linha que lê, decodifica, escolhe ou codifica é servida
+      desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um script
+      vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google Fonts. É um
+      link e nada mais: não informa visita nenhuma, e não recebe nada sobre você
+      nem sobre o seu vídeo."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e tudo nesta página continua
+      funcionando. Não existe prova mais simples que essa."""
+
+[[howto]]
+title = "Escolha um vídeo."
+body = """
+ Arraste um MP4, MOV, M4V ou WebM para
+      o seletor, ou procure um à mão. O navegador lê direto do seu disco, e
+      enquanto isso nada sai para lugar nenhum."""
+
+[[howto]]
+title = "Diga quanto mais rápido."
+body = """
+ Aperte uma das velocidades, ou
+      digite a sua. Se preferir dizer quanto o resultado deve durar, algo como
+      &ldquo;que caiba em vinte segundos&rdquo;, digite isso e a velocidade sai
+      sozinha."""
+
+[[howto]]
+title = "Confira o intervalo."
+body = """
+ A linha embaixo da velocidade diz o
+      que vai acontecer de verdade: um quadro a cada tantos segundos do original.
+      É o número que se ajustaria numa câmera, e é o que vale a pena conferir
+      antes de começar."""
+
+[[howto]]
+title = "Faça e baixe."
+body = """
+ O trabalho acontece no seu próprio
+      hardware, então o tempo que leva depende do seu computador e não de uma
+      fila. O vídeo pronto vai direto para os downloads do seu navegador."""
+
+[[faq]]
+q = "Meu vídeo é enviado para algum lugar?"
+a = """
+        Não. É o seu próprio navegador que lê, decodifica, escolhe os quadros e
+        codifica, no seu próprio hardware. Esta ferramenta não tem lado servidor,
+        e a <code>Content-Security-Policy</code> da página lista todos os
+        endereços que ela pode acessar &mdash; nenhum deles é deste site. Se você
+        prefere conferir a acreditar, desligue a internet e faça um timelapse
+        assim mesmo."""
+
+[[faq]]
+q = "O que a velocidade quer dizer exatamente?"
+a = """
+        A razão entre o que entra e o que sai. A 60&times;, uma hora de gravação
+        vira um minuto, seja qual for a taxa de quadros em que você assiste. Por
+        baixo, a ferramenta pega um quadro a cada <em>velocidade &divide; quadros
+        por segundo</em>: 60&times; a 30 quadros por segundo é um a cada dois
+        segundos. A página mostra esse intervalo antes de você começar, porque é o
+        número que diz o que está acontecendo de verdade."""
+
+[[faq]]
+q = "Quais formatos de vídeo posso acelerar?"
+a = """
+        MP4, M4V e MOV são lidos direto, tenham dentro o que tiverem: H.264,
+        HEVC, AV1 ou VP9, desde que o seu navegador saiba decodificar aquele
+        codec. Todo o resto que o seu navegador consegue tocar, WebM na frente, é
+        lido levando o player do próprio navegador até cada instante, o que
+        funciona em qualquer formato que ele abra. Um arquivo que o navegador não
+        consegue nem ler nem tocar, na prática AVI, WMV, FLV e a maioria dos MKV,
+        é recusado com uma mensagem dizendo isso, em vez de falhar no meio do
+        caminho. O que sai é sempre um MP4."""
+
+[[faq]]
+q = "Por que o timelapse não tem som?"
+a = """
+        Porque não há nada que valha a pena guardar. Som a trinta vezes a
+        velocidade não é fala nem música, é um chiado; e a alternativa, deixar o
+        áudio na velocidade original embaixo de uma imagem que disparou na frente,
+        seria um clipe diferente do que você pediu. A trilha cai fora, e é boa
+        parte do motivo de uma hora de vídeo sair com poucos megabytes. Se o que
+        você quer é o áudio sozinho, o
+        <a href="../editar-audio/">Editor de áudio</a> salva ele."""
+
+[[faq]]
+q = "É mais rápido do que converter o vídeo inteiro?"
+a = """
+        Muito mais, e é para isso que o arquivo é lido direto. Um quadro só pode
+        ser decodificado começando pelo quadro-chave que vem antes dele, mas nada
+        obriga a guardar os do meio: um timelapse a 60&times; de uma hora
+        decodifica alguns milhares de quadros em vez de cem mil. O resumo diz
+        exatamente quantos ele vai ler antes de você apertar o botão."""
+
+[[faq]]
+q = "Isso custa qualidade?"
+a = """
+        Os quadros guardados são codificados uma segunda vez, e isso custa um
+        pouco. Não dá para evitar, porque o clipe pronto mostra esses quadros em
+        momentos para os quais nada tinha sido codificado no arquivo original. O
+        que esta ferramenta gasta a mais do que as outras ferramentas de vídeo
+        daqui é o bitrate, e é de propósito: dois quadros separados por dois
+        segundos têm muito menos em comum do que dois separados por um trinta
+        avos de segundo, então o codec tem menos a reaproveitar, e um número
+        pensado para gravação comum sairia quadriculado."""
+
+[[faq]]
+q = "Existe limite de tamanho ou de duração?"
+a = """
+        Não há limite embutido na ferramenta, e o arquivo também não vai inteiro
+        para a memória: são lidos só trechos curtos em volta de cada instante. O
+        teto prático é o timelapse pronto, que é montado na memória antes de você
+        baixar, e um timelapse é curto por definição. O resumo mostra mais ou
+        menos o tamanho dele antes de você começar."""
+
+[[faq]]
+q = "Posso acelerar só um pedaço do clipe?"
+a = """
+        Aqui não. Esta ferramenta pega o clipe inteiro, do primeiro quadro ao
+        último. Corte antes o trecho que você quer com o
+        <a href="../aparar-video/">Aparador de vídeo</a>, que faz isso sem
+        recodificar um único quadro, e acelere o que sair de lá."""
+
+[[faq]]
+q = "É grátis? Preciso de conta?"
+a = """
+        É grátis, e não tem conta, cadastro, período de teste nem marca d'água. O
+        site é pago por publicidade, e os anúncios não recebem nada sobre o seu
+        vídeo."""
+
+[schema]
+browser_requirements = "Precisa de JavaScript e de um navegador que codifique vídeo com WebCodecs: Chrome, Edge, Safari 16.4 ou mais novo, ou Firefox 133 ou mais novo."
+description = "Transformar um vídeo longo em timelapse dentro do navegador. Um quadro é pego a cada poucos segundos do original, e os quadros são escritos de volta como um MP4 curto a 24, 30 ou 60 quadros por segundo. MP4, MOV e M4V são lidos direto, e só em volta dos instantes necessários; todo o resto que o navegador consegue tocar é percorrido aos saltos. Nada é enviado."
+features = [
+  "Acelera vídeos MP4, MOV, M4V e WebM de 1,1x a 1000x",
+  "Diga a velocidade, ou diga quanto o resultado deve durar",
+  "Lê só os pedaços do arquivo de que os instantes escolhidos precisam",
+  "24, 30 ou 60 quadros por segundo, no tamanho original ou reduzido",
+  "Funciona offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um vídeo para cá"
+hint = "ou clique para procurar &mdash; MP4, MOV, M4V, WebM e tudo o mais que este navegador tocar"

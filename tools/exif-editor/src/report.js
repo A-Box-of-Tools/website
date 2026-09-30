@@ -79,7 +79,10 @@ export function readPosition(gps) {
     lat,
     lon,
     text: ltr(`${Math.abs(lat).toFixed(6)}${DEG} ${lat < 0 ? 'S' : 'N'}, ${Math.abs(lon).toFixed(6)}${DEG} ${lon < 0 ? 'W' : 'E'}`),
-    altitude: typeof altitude === 'number' ? `${Math.round(altitude)} m ${belowSea ? 'below' : 'above'} sea level` : null,
+    altitude: typeof altitude === 'number' ? {
+      key: belowSea ? 'gps.altitude.below' : 'gps.altitude.above',
+      values: { metres: Math.round(altitude) },
+    } : null,
   };
 }
 
@@ -140,7 +143,8 @@ export function buildFindings(item, t) {
       level: 'high',
       title: t('find.gps.title'),
       detail: position.altitude
-        ? t('find.gps.detailalt', { position: position.text, altitude: position.altitude })
+        ? t('find.gps.detailalt', { position: position.text,
+            altitude: t(position.altitude.key, position.altitude.values) })
         : t('find.gps.detail', { position: position.text }),
     });
   } else if (groups?.gps?.length) {

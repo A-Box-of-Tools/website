@@ -128,10 +128,7 @@ let playAt = 0;
 let watchUntil = null;
 
 const timeline = new Timeline(el.timeline, {
-  // Still English, as it was in timeline.js before the bar was shared: the
-  // audio trimmer says this through its `tl.band` phrase, and this page
-  // should too, once it has one in fifteen languages.
-  bandTitle: (n, from, to) => `Segment ${n}: ${from} to ${to}`,
+  bandTitle: (n, from, to) => phrase('tl.band', { n, from, to }),
   onSeek: seekTo,
   onSelect: (id) => { selectedSegment = id; renderSegments(); },
   onAdjust: adjustSegment,
@@ -331,9 +328,9 @@ function renderClips() {
     const actions = document.createElement('div');
     actions.className = 'clip-actions';
     actions.append(
-      iconButton('↑', 'Move up', () => moveClip(index, -1), index === 0),
-      iconButton('↓', 'Move down', () => moveClip(index, 1), index === clips.length - 1),
-      iconButton('✕', 'Remove', () => removeClip(index), false, 'danger'),
+      iconButton('↑', phrase('seg.up'), () => moveClip(index, -1), index === 0),
+      iconButton('↓', phrase('seg.down'), () => moveClip(index, 1), index === clips.length - 1),
+      iconButton('✕', phrase('seg.remove'), () => removeClip(index), false, 'danger'),
     );
 
     row.append(shot, body, actions);
@@ -703,9 +700,9 @@ function timeCell(segment, which) {
   input.inputMode = 'decimal';
   input.spellcheck = false;
   input.autocomplete = 'off';
-  input.setAttribute('aria-label', which === 'start' ? 'Start time' : 'End time');
+  input.setAttribute('aria-label', phrase(which === 'start' ? 'time.start' : 'time.end'));
   input.value = segment[which] === null ? '' : formatTime(segment[which]);
-  input.placeholder = which === 'end' ? 'press O' : '';
+  input.placeholder = which === 'end' ? phrase('time.open') : '';
 
   const commit = () => {
     const entry = clip();
@@ -1013,7 +1010,7 @@ function updateSummary() {
   const chosen = exportClips();
   if (!chosen.length) {
     el.exportBtn.disabled = true;
-    el.sumLength.textContent = '0s';
+    el.sumLength.textContent = formatDuration(0);
     el.sumClips.textContent = phrase(
       mode === 'cut' ? 'sum.nothing.cut' : 'sum.nothing.keep');
     return;

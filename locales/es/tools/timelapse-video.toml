@@ -1,0 +1,256 @@
+#
+# Creador de timelapse - Spanish.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Creador de timelapse"
+heading = "Crear&nbsp;un&nbsp;timelapse <span class=\"h1-kw\">&mdash; acelerar un vídeo en línea</span>"
+tagline = "Una hora de grabación en veinte segundos."
+
+title = "Crear un timelapse en línea &mdash; gratis, sin subir nada y sin conexión"
+description = "Convierte un vídeo largo en un timelapse: 10x, 60x o la velocidad que escribas. Todo en el navegador, sin subir nada, sin marca de agua y también sin conexión."
+og_title = "Creador de timelapse &mdash; acelera un vídeo sin subirlo"
+og_description = "Toma un fotograma cada pocos segundos de un clip largo y devuélvelos como uno corto. Tu propio navegador lee, descodifica y codifica el archivo."
+og_image_alt = "Creador de timelapse - acelera un vídeo largo en tu navegador sin subir nada"
+
+pledge = """
+    Cada fotograma lo elige, lo descodifica y lo vuelve a codificar tu propio
+    navegador, en tu propio hardware. Aquí no hay nada que pueda descargar ni
+    enviar, porque esta herramienta no tiene ninguna función de red. Y aunque la
+    tuviera, al otro lado de esta página no hay ningún servidor al que mandar un
+    vídeo."""
+
+live_hint = """
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en
+      la pestaña «Red» y crea un timelapse. No verás ni una petición que lleve un
+      fotograma, un nombre de archivo o un byte de lo que has elegido. O
+      desconéctate de internet y crea uno igualmente: una herramienta que mandara
+      tu vídeo fuera a procesar se pararía en seco."""
+
+read_first = """
+, <code>src/plan.js</code> para las cuentas que
+      deciden de qué instante sale cada fotograma, y <code>src/decode.js</code>
+      para el bucle que lee solo las partes del archivo que esos instantes
+      necesitan. Ninguno de los dos importa nada capaz de hacer una petición."""
+
+howto_heading = "Cómo hacer un timelapse a partir de un vídeo"
+
+card = """
+            Convierte un clip largo en uno corto, horas en segundos, sin
+            mandarlo a ninguna parte."""
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "La velocidad que escribas"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[privacy]]
+title = "Tus vídeos no tienen adónde ir."
+body = """
+ La
+      Content-Security-Policy enumera todas las direcciones a las que esta
+      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
+      destino donde recoger tu archivo, ni una línea de código que lo mandara si
+      lo hubiera."""
+
+[[privacy]]
+title = "Aquí nada le pide nada a la red."
+body = """
+ Esta herramienta no tiene ninguna
+      función de red: no hay dirección que pegar, ni nada que descargar, ni
+      ningún motor que se baje la primera vez que la usas. Cada byte que toca tu
+      vídeo llegó desde este origen al cargarse la página."""
+
+[[privacy]]
+title = "La descodificación y la codificación son locales."
+body = """
+ Los fotogramas pasan
+      por WebCodecs dentro de tu navegador, o por el mismo motor de reproducción
+      que te enseñaría el clip de todas formas. El archivo terminado se monta en
+      la memoria de este dispositivo y va directo a una descarga."""
+
+[[privacy]]
+title = "La mayor parte del archivo ni siquiera se lee."
+body = """
+ Un timelapse
+      necesita un fotograma cada pocos segundos, así que la herramienta lee el
+      tramo corto de archivo que rodea a cada uno y se salta el resto. Es una
+      decisión de velocidad y no de privacidad, pero conviene saberlo igualmente:
+      incluso aquí, en tu dispositivo, la mayor parte de tu vídeo no llega a
+      abrirse."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = """
+ Los scripts de
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada
+      sobre tu vídeo: ni un archivo, ni un fotograma, ni un nombre, ni un tamaño,
+      ni una duración. Cada línea que lee, descodifica, elige o codifica se sirve
+      desde este origen y está en el repositorio."""
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = """
+
+      El botón «Buy me a coffee» de la cabecera lo dibuja un script de
+      cdnjs.buymeacoffee.com y se compone con Google Fonts. No es más que un
+      enlace: no avisa de ninguna visita, y no se le entrega nada sobre ti ni
+      sobre tu vídeo."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y todo lo de esta
+      página sigue funcionando. Es la prueba más sencilla de todas."""
+
+[[howto]]
+title = "Elige un vídeo."
+body = """
+ Arrastra un MP4, MOV, M4V o WebM
+      hasta el selector, o busca uno a mano. El navegador lo lee directamente
+      del disco, y mientras lo haces no sale nada hacia ninguna parte."""
+
+[[howto]]
+title = "Di cuánto más rápido."
+body = """
+ Pulsa una de las velocidades o
+      escribe la tuya. Si prefieres decir cuánto debe durar el resultado, por
+      ejemplo «que quepa en veinte segundos», escríbelo y la velocidad sale
+      sola."""
+
+[[howto]]
+title = "Comprueba el intervalo."
+body = """
+ La línea que hay debajo de la
+      velocidad dice lo que va a pasar de verdad: un fotograma cada tantos
+      segundos del original. Es el número que se pondría en una cámara, y el que
+      conviene mirar dos veces antes de empezar."""
+
+[[howto]]
+title = "Créalo y descárgalo."
+body = """
+ El trabajo ocurre en tu propio
+      hardware, así que lo que tarde depende de tu dispositivo y no de ninguna
+      cola. El vídeo terminado va directo a las descargas del navegador."""
+
+[[faq]]
+q = "¿Se sube mi vídeo a alguna parte?"
+a = """
+        No. Tu propio navegador lo lee, lo descodifica, elige los fotogramas y
+        los codifica en tu propio hardware. Esta herramienta no tiene parte de
+        servidor, y la <code>Content-Security-Policy</code> de la página enumera
+        todas las direcciones a las que puede conectarse: ninguna es de este
+        sitio. Si prefieres comprobarlo a que te lo cuenten, desconéctate de
+        internet y crea un timelapse igualmente."""
+
+[[faq]]
+q = "¿Qué significa exactamente la velocidad?"
+a = """
+        La proporción entre lo que entra y lo que sale. A 60&times; una hora de
+        grabación se queda en un minuto, sea cual sea la cadencia a la que lo
+        reproduzcas. Por debajo, la herramienta toma un fotograma cada
+        <em>velocidad &divide; fotogramas por segundo</em>: 60&times; a 30
+        fotogramas por segundo es uno cada dos segundos. La página te enseña ese
+        intervalo antes de empezar, porque es el número que dice lo que está
+        pasando de verdad."""
+
+[[faq]]
+q = "¿Qué formatos de vídeo puedo acelerar?"
+a = """
+        MP4, M4V y MOV se leen directamente, lleven lo que lleven dentro: H.264,
+        HEVC, AV1 o VP9, siempre que tu navegador sepa descodificar ese códec.
+        Todo lo demás que tu navegador pueda reproducir, sobre todo WebM, se lee
+        llevando el reproductor a cada instante, lo cual funciona con cualquier
+        formato que sepa abrir. Un archivo que el navegador no pueda ni leer ni
+        reproducir, que en la práctica es AVI, WMV, FLV y casi cualquier MKV, se
+        rechaza con un mensaje que lo dice, en lugar de fallar a medio camino. Lo
+        que sale siempre es un MP4."""
+
+[[faq]]
+q = "¿Por qué el timelapse no tiene sonido?"
+a = """
+        Porque no hay nada que merezca la pena conservar. El sonido a treinta
+        veces su velocidad no es voz ni música, es un pitido; y la alternativa,
+        dejar el audio a su velocidad original debajo de una imagen que se le ha
+        adelantado, sería un clip distinto del que has pedido. Así que la pista
+        se descarta, y eso explica buena parte de que una hora de vídeo salga en
+        unos pocos megabytes. Si lo que quieres es el audio por separado, el
+        <a href="../editar-audio/">Editor de audio</a> lo guarda."""
+
+[[faq]]
+q = "¿Es más rápido que convertir el vídeo entero?"
+a = """
+        Mucho más, y para eso se lee el archivo directamente. Un fotograma solo
+        se puede descodificar empezando por el fotograma clave que lo precede,
+        pero nada obliga a conservar los que hay en medio: un timelapse a
+        60&times; de una hora descodifica unos pocos miles de fotogramas en lugar
+        de cien mil. El resumen te dice cuántos leerá exactamente antes de que
+        pulses el botón."""
+
+[[faq]]
+q = "¿Se pierde calidad?"
+a = """
+        Los fotogramas que se conservan se codifican una segunda vez, y eso
+        cuesta algo. No hay forma de evitarlo, porque el clip terminado los
+        enseña en momentos para los que no había nada codificado en el archivo
+        original. En lo que esta herramienta sí gasta más que las demás
+        herramientas de vídeo de aquí es en el bitrate, y a propósito: dos
+        fotogramas separados por dos segundos tienen mucho menos en común que dos
+        separados por una treintava parte de segundo, así que el códec tiene
+        menos que reaprovechar y una cifra pensada para grabaciones normales
+        saldría con bloques."""
+
+[[faq]]
+q = "¿Hay algún límite de tamaño o de duración?"
+a = """
+        La herramienta no lleva ninguno, y el archivo tampoco entra entero en
+        memoria: se leen tramos cortos alrededor de cada instante y nada más. El
+        techo práctico es el timelapse terminado, que se monta en memoria antes
+        de que lo descargues, y un timelapse es corto por definición. El resumen
+        te enseña aproximadamente cuánto va a ocupar antes de empezar."""
+
+[[faq]]
+q = "¿Puedo acelerar solo una parte del clip?"
+a = """
+        Aquí no. Esta herramienta coge el clip entero, del primer fotograma al
+        último. Recorta antes el trozo que quieras con el
+        <a href="../cortar-video/">Cortador de vídeo</a>, que lo hace sin volver
+        a codificar ni un fotograma, y acelera lo que salga de ahí."""
+
+[[faq]]
+q = "¿Es gratis? ¿Hace falta una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni registro, ni prueba, ni marca de agua. El
+        sitio se paga con publicidad, y a los anuncios no se les entrega nada
+        sobre tu vídeo."""
+
+[schema]
+browser_requirements = "Requiere JavaScript y un navegador capaz de codificar vídeo con WebCodecs: Chrome, Edge, Safari 16.4 o posterior, o Firefox 133 o posterior."
+description = "Convierte un vídeo largo en un timelapse dentro del navegador. Se toma un fotograma cada pocos segundos del original y los fotogramas se escriben como un MP4 corto a 24, 30 o 60 fotogramas por segundo. MP4, MOV y M4V se leen directamente y solo alrededor de los instantes necesarios; cualquier otra cosa que el navegador pueda reproducir se recorre con saltos. No se sube nada."
+features = [
+  "Acelera vídeos MP4, MOV, M4V y WebM entre 1,1x y 1000x",
+  "Di la velocidad, o di cuánto debe durar el resultado",
+  "Lee solo las partes del archivo que necesitan los instantes elegidos",
+  "24, 30 o 60 fotogramas por segundo, al tamaño original o reducido",
+  "Funciona sin conexión; sin subidas, sin cuenta y sin marca de agua",
+]
+
+[picker]
+title = "Arrastra aquí un vídeo"
+hint = "o haz clic para buscarlo &mdash; MP4, MOV, M4V, WebM y cualquier otra cosa que este navegador reproduzca"

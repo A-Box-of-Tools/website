@@ -170,6 +170,17 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.failed">未能完整读取 {name}：{reason}。通常是因为读取期间磁盘上的文件发生了变化。这里不会显示部分结果，因为半个文件算出的校验和是错误的校验和，而不是完整校验和的一部分。</span>
+    <span data-phrase="read.unreadable">无法读取文件</span>
+    <span data-phrase="read.short">文件在达到标示大小前就已结束</span>
+    <span data-phrase="progress.remaining">剩余 {time}</span>
+    <span data-phrase="copy.one">校验和已复制到剪贴板，没有发送到其他地方。</span>
+    <span data-phrase="copy.all">已复制为纯文本，仅存入剪贴板。</span>
+    <span data-phrase="copy.failed">浏览器未允许此页面写入剪贴板。请选中文字并复制，或使用“{download}”。</span>
+    <span data-phrase="size.bytes">{n} 字节</span>
+    <span data-phrase="time.seconds">{n} 秒</span>
+    <span data-phrase="time.minutes">{n} 分钟</span>
+
     <span data-phrase="net.clean">你的文件没有去任何地方。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何文件。</span>

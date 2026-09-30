@@ -1,0 +1,67 @@
+<section>
+  <h2>Como começar</h2>
+  <p>Abra <a href="../../desbloquear-pdf/">Desbloquear PDF</a> e escolha o documento. A página identifica rapidamente qual destas situações se aplica:</p>
+  <ul>
+    <li><strong>O documento abre, mas não permite impressão ou cópia.</strong> Não é preciso senha. Aperte o botão para remover as restrições. É um caso comum.</li>
+    <li><strong>O documento exige senha antes de abrir.</strong> Você precisa dela. Esta ferramenta não a descobre nem promete recuperá-la.</li>
+  </ul>
+  <p>Entender essa diferença antes de entregar um documento a um serviço de desbloqueio ajuda a avaliar o que ele realmente pode fazer.</p>
+</section>
+<section>
+  <h2>Senha de abertura e senha de proprietário</h2>
+  <p>Um PDF pode ter duas senhas, apresentadas de forma quase idêntica pelos leitores.</p>
+  <p>A <strong>senha de usuário</strong>, também chamada de senha de abertura, impede a leitura. O conteúdo é criptografado com uma chave derivada da senha, que não fica escrita no documento. Sem a credencial necessária, nem você, nem um site, nem o programa que criou o arquivo consegue ler o conteúdo.</p>
+  <p>A <strong>senha de proprietário</strong> controla as restrições: impressão, cópia, edição e preenchimento de formulários. É comum haver senha de proprietário sem senha de usuário. Esse é o arquivo que abre com um clique duplo, mas não deixa imprimir.</p>
+  <p>Se ele abre sem pedir nada, <em>contém o necessário para derivar a própria chave</em>, como o leitor acabou de fazer. A criptografia usa uma chave que pode ser obtida sem uma credencial secreta. O bloqueio de impressão vem de outro campo, com bits de permissão que os leitores concordam em respeitar. A Adobe documenta isso desde o início. É um pedido, não uma barreira criptográfica.</p>
+  <p>Por isso, remover restrições é imediato, enquanto remover uma senha de abertura desconhecida não é uma função deste desbloqueador. São mecanismos diferentes, não duas intensidades da mesma proteção.</p>
+</section>
+<section>
+  <h2>Como identificar o caso sem ferramenta</h2>
+  <p>Dê um clique duplo no arquivo.</p>
+  <ul>
+    <li><strong>O leitor pede senha.</strong> É a senha de usuário; você precisa fornecê-la.</li>
+    <li><strong>O arquivo abre, mas algum controle está desabilitado</strong>, como impressão, cópia ou formulário, e as propriedades indicam proteção. São restrições, que podem ser removidas.</li>
+  </ul>
+  <p>Na maioria dos leitores, as propriedades do documento têm uma aba Segurança que lista cada ação como permitida ou não permitida. O <a href="../../desbloquear-pdf/">desbloqueador de PDF</a> mostra essa lista e acrescenta o método de criptografia e sua força atual.</p>
+</section>
+<section>
+  <h2>O método de criptografia faz diferença</h2>
+  <p>Dois documentos podem aparecer como protegidos por senha e usar tecnologias separadas por trinta anos. O formato passou por cinco gerações:</p>
+  <ul>
+    <li><strong>RC4 de 40 bits</strong>, PDF 1.1, de 1994. Foi limitado pelas regras de exportação dos Estados Unidos da época. A chave é curta o suficiente para testar todas as possibilidades em equipamento comum.</li>
+    <li><strong>RC4 de 128 bits</strong>, PDF 1.4, de 2001. Não é viável testar todas as chaves de 128 bits, mas o RC4 tem falhas conhecidas há anos. Foi proibido no TLS em 2015 e retirado dos navegadores no início do ano seguinte.</li>
+    <li><strong>AES-128</strong>, PDF 1.6, de 2005. Combina uma cifra moderna com derivação de chave de 1994. A cifra continua adequada, mas a transformação da senha em chave é barata e facilita tentativas de senha.</li>
+    <li><strong>AES-256, primeira versão</strong>, de 2008. Extensão da Adobe posteriormente retirada: o cálculo da senha podia ser atacado rapidamente com placas gráficas.</li>
+    <li><strong>AES-256 do PDF 2.0</strong>, de 2017. Usa cálculo deliberadamente custoso. É o método atual, cuja segurança depende da senha escolhida.</li>
+  </ul>
+  <p>Quando alguém disser que um documento é seguro porque tem senha, pergunte qual método usa. Um fluxo antigo ainda pode gerar arquivos com a primeira opção da lista.</p>
+</section>
+<section>
+  <h2>Se você perdeu a senha de abertura</h2>
+  <p>Você pode perder o acesso ao documento. É importante saber disso antes de tentar uma sequência de sites que recebem o arquivo primeiro.</p>
+  <p>Ferramentas de recuperação fazem tentativas: palavras de dicionário, padrões e combinações. Isso pode funcionar para senhas curtas e ser impraticável para senhas fortes. Algumas rodam localmente, outras enviam o documento a servidores, e há serviços que cobram antes de informar o resultado. Um arquivo recente com método atual e senha forte não tem recuperação garantida.</p>
+  <p>O <a href="../../desbloquear-pdf/">desbloqueador de PDF</a> não faz essa busca. O código não contém dicionário nem laço para testar senhas. Mesmo para documentos antigos em que uma busca seria viável, essa função foi deliberadamente excluída.</p>
+  <p>Antes de qualquer outra coisa, procure quem enviou o documento. A pessoa normalmente ainda tem a senha. Documentos de empresas podem usar uma senha compartilhada pelo setor; bancos e sistemas de folha às vezes usam data de nascimento ou últimos dígitos da conta. As instruções costumam estar no e-mail que acompanhou o arquivo.</p>
+</section>
+<section>
+  <h2>Vale a pena enviar o arquivo?</h2>
+  <p>Extratos que não imprimem, holerites, documentos médicos, contratos que não permitem cópia e documentos fiscais são exemplos comuns. Alguém considerou esse conteúdo digno de proteção.</p>
+  <p>Um serviço que processa no servidor recebe primeiro o documento completo e, quando necessário, a senha. Você não consegue verificar de fora todos os detalhes de retenção e acesso, mesmo com uma política publicada.</p>
+  <p>Desbloquear um PDF envolve derivar uma chave, executar a cifra e gravar bytes. O navegador consegue fazer tudo isso localmente. Na <a href="../../desbloquear-pdf/">ferramenta deste site</a>, documento e senha ficam na aba, e ela continua funcionando com a rede desligada. Esse é um teste que você pode fazer.</p>
+  <p>Veja também <a href="../e-seguro-enviar-arquivos/">é seguro enviar arquivos?</a> e <a href="../e-seguro-enviar-um-extrato-bancario/">é seguro enviar um extrato bancário?</a>.</p>
+</section>
+<section>
+  <h2>O que muda no arquivo</h2>
+  <p><strong>A assinatura digital perde a validade.</strong> Ela cobre os bytes exatos do arquivo, e remover a criptografia gera novos bytes. Qualquer programa que fizesse a alteração teria esse efeito. Guarde o original, que continua sendo a cópia assinada.</p>
+  <p><strong>O arquivo costuma diminuir um pouco.</strong> A regravação descarta objetos antigos substituídos em edições anteriores. Isso é um efeito secundário, não o objetivo.</p>
+  <p><strong>As páginas não mudam.</strong> Instruções de desenho, fontes e imagens são preservadas sem redesenho, recodificação ou reorganização. Texto continua selecionável, digitalizações mantêm a resolução e nada muda de lugar. Se outra ferramenta devolver páginas menos nítidas ou transformar texto em imagem, ela fez mais que remover a proteção.</p>
+</section>
+<section>
+  <h2>É permitido?</h2>
+  <p>Depende dos seus direitos sobre o documento e da legislação aplicável, não apenas da tecnologia.</p>
+  <p>As restrições são campos que os leitores concordam em respeitar, não uma barreira criptográfica. Os usos comuns incluem seu próprio extrato que não imprime, um relatório adquirido que não permite cópia, páginas digitalizadas que precisam ser reorganizadas ou um formulário que você deve preencher. Remover uma permissão técnica não concede direito de usar um documento que não é seu.</p>
+</section>
+<section>
+  <h2>Depois de desbloquear</h2>
+  <p>O arquivo passa a ser um PDF comum, aceito pelas outras ferramentas. Você pode <a href="../../juntar-pdf/">juntar ou dividir páginas</a>, <a href="../../comprimir-pdf/">reduzir o tamanho</a> ou <a href="../../tarjar-pdf/">remover de verdade um nome ou dado privado</a>. Se a proteção existia por causa de informações sensíveis, remover o que não deve ser compartilhado pode ser o próximo passo.</p>
+</section>

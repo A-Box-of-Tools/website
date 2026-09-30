@@ -203,7 +203,7 @@ function makeRow(row) {
   const save = document.createElement('button');
   save.type = 'button';
   save.className = 'ghost';
-  save.textContent = 'Download';
+  save.textContent = phrase('frame.download');
   save.addEventListener('click', () => downloadOne(row));
 
   const body = document.createElement('div');
