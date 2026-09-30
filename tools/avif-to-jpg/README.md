@@ -42,14 +42,14 @@ The only visitor this page genuinely cannot help is one whose browser predates
 AVIF, and it is worth telling them that rather than letting them conclude their
 picture is broken. Two things catch it:
 
-- `checkSupport()` asks `ImageDecoder.isTypeSupported('image/avif')` at boot
-  where that API exists. Where it does not, **nothing is assumed and nothing
-  is said** — guessing out loud would be worse than waiting.
-- `addFiles()` settles it on real evidence: if every file that sniffed as a
-  genuine AVIF was refused by the decoder and none got through, that is a
-  browser without a decoder rather than a batch of damaged files, and
-  `noDecoder()` says so once instead of leaving three identical complaints
-  about files that are perfectly good.
+- `checkSupport()` decodes a known-good, 493-byte AVIF through the same path
+  as the visitor's file. `src/support.js` holds the project's own generated
+  four-quadrant QA fixture, so this check needs neither a network request nor
+  the much larger example photographs.
+- A file whose brand says AVIF but whose pixels cannot be decoded receives a
+  file-specific refusal. A truncated file can have a perfectly valid header;
+  using that failure to disable the tool would also reject every good file
+  chosen afterwards.
 
 ## The example is committed bytes, and has to be
 

@@ -22,7 +22,7 @@ import assert from 'node:assert/strict';
 
 import { lzwEncode } from '../../tools/gif-maker/src/lzw.js';
 import { GifWriter, padPalette } from '../../tools/gif-maker/src/gif.js';
-import { loopValue } from '../../tools/gif-maker/src/encode.js';
+import { encodeGif, loopValue } from '../../tools/gif-maker/src/encode.js';
 import { concat } from './helpers.js';
 
 /* ------------------------------------------------------------- the decoder */
@@ -470,4 +470,80 @@ test('the screen is square-pixel and the background index is written', () => {
 
   assert.equal(file.aspect, 0);
   assert.equal(file.background, 0);
+});
+
+
+// The decode is the asynchronous boundary where an editor action can arrive.
+// Canvas pixels are deliberately tiny; the real writer and independent decoder
+// still decide whether the exported order and delays survived that action.
+async function withCanvas(action) {
+  const previousDocument = globalThis.document;
+  const previousDecode = globalThis.createImageBitmap;
+  const ctx = {
+    save() {}, restore() {}, clearRect() {}, fillRect() {},
+    drawImage(image) { this.colour = image.colour; },
+    getImageData() { return { data: new Uint8ClampedArray([...this.colour, 255]) }; },
+  };
+  globalThis.document = { createElement() {
+    const canvas = { width: 1, height: 1, getContext() { return ctx; } };
+    ctx.canvas = canvas;
+    return canvas;
+  } };
+  try { await action(); } finally {
+    globalThis.document = previousDocument;
+    globalThis.createImageBitmap = previousDecode;
+  }
+}
+
+const exportSettings = { width: 1, height: 1, fit: 'stretch', background: '#fff',
+  colors: 8, dither: false, sharedPalette: false, transparent: false, loop: null };
+
+test('an export keeps its frame order and delays while the editor changes', async () => {
+  await withCanvas(async () => {
+    const items = [
+      { file: [255, 0, 0], delay: 0.1 },
+      { file: [0, 255, 0], delay: 0.2 },
+    ];
+    let release;
+    globalThis.createImageBitmap = async (colour) => {
+      if (!release) await new Promise((resolve) => { release = resolve; });
+      return { width: 1, height: 1, colour, close() {} };
+    };
+    const pending = encodeGif({ items, settings: exportSettings });
+    items.reverse();
+    items[0].delay = 5;
+    items.splice(0, items.length);
+    release();
+    const { blob } = await pending;
+    const gif = readGif(new Uint8Array(await blob.arrayBuffer()));
+    assert.deepEqual(gif.frames.map((frame) => frame.delay), [10, 20]);
+    assert.deepEqual(gif.frames.map((frame) =>
+      Array.from(frame.palette.subarray(frame.indices[0] * 3, frame.indices[0] * 3 + 3))),
+    [[255, 0, 0], [0, 255, 0]]);
+  });
+});
+
+test('cancelling the last decode closes its bitmap and publishes no GIF', async () => {
+  await withCanvas(async () => {
+    const controller = new AbortController();
+    let closed = false;
+    globalThis.createImageBitmap = async () => {
+      controller.abort();
+      return { width: 1, height: 1, colour: [255, 0, 0], close() { closed = true; } };
+    };
+    await assert.rejects(encodeGif({ items: [{ file: null, delay: 0.1 }],
+      settings: exportSettings, signal: controller.signal }), { name: 'AbortError' });
+    assert.equal(closed, true);
+  });
+});
+
+test('cancelling after the last progress event publishes no GIF', async () => {
+  await withCanvas(async () => {
+    const controller = new AbortController();
+    globalThis.createImageBitmap = async () =>
+      ({ width: 1, height: 1, colour: [255, 0, 0], close() {} });
+    await assert.rejects(encodeGif({ items: [{ file: null, delay: 0.1 }],
+      settings: exportSettings, signal: controller.signal,
+      onProgress() { controller.abort(); } }), { name: 'AbortError' });
+  });
 });
