@@ -153,10 +153,9 @@ async function start(ids) {
       return;
     }
     if (error instanceof Unreadable) {
-      showError(`${chosen.name} could not be read to the end: ${error.message}. `
-        + 'A file that changed on disk while it was being read is the usual reason. '
-        + 'Nothing partial is shown, because half a file has the wrong checksum '
-        + 'rather than a partial one.');
+      showError(phrase('read.failed', {
+        name: chosen.name, reason: phrase(error.message),
+      }));
       return;
     }
     throw error;
@@ -186,7 +185,7 @@ function showProgress(done, total, speed) {
   if (speed) {
     parts.push(`${speed.toFixed(0)} MB/s`);
     const left = remaining((total - done) / 1048576 / speed);
-    if (left && done < total) parts.push(`${left} left`);
+    if (left && done < total) parts.push(phrase('progress.remaining', { time: left }));
   }
   el.progressText.textContent = parts.join('  -  ');
 }
@@ -340,12 +339,11 @@ function asText() {
 for (const [id, row] of rows) {
   row.querySelector('[data-slot="copy"]').addEventListener('click', async (event) => {
     event.preventDefault();
-    await copy(digests[id], 'One checksum, on your clipboard and nowhere else.');
+    await copy(digests[id], phrase('copy.one'));
   });
 }
 
-el.copyAll.addEventListener('click', () => copy(asText(),
-  'Copied. It is plain text, and it went to your clipboard only.'));
+el.copyAll.addEventListener('click', () => copy(asText(), phrase('copy.all')));
 
 async function copy(text, said) {
   if (!text) return;
@@ -353,8 +351,9 @@ async function copy(text, said) {
     await navigator.clipboard.writeText(text);
     el.copyStatus.textContent = said;
   } catch {
-    el.copyStatus.textContent = 'This browser would not let the page write to the clipboard. '
-      + 'Select the text and copy it, or use "Save them as a file".';
+    el.copyStatus.textContent = phrase('copy.failed', {
+      download: el.downloadChecksums.textContent.trim(),
+    });
   }
 }
 

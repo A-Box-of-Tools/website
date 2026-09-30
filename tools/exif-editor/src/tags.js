@@ -23,81 +23,85 @@
 /* Enumerations. Written out rather than left as raw numbers because "Flash: 89"
    tells a reader nothing, and this is a page about reading your own files. */
 
+// Values describe what a number means; the tag names below remain the EXIF
+// vocabulary. Returning a phrase descriptor keeps both readable without
+// asking the parser to know the page's language.
+const word = (key) => ({ key });
 const DEG = '°';
 
 const ORIENTATION = {
-  1: 'Normal',
-  2: 'Mirrored horizontally',
-  3: `Rotated 180${DEG}`,
-  4: 'Mirrored vertically',
-  5: `Mirrored, rotated 270${DEG}`,
-  6: `Rotated 90${DEG} clockwise`,
-  7: `Mirrored, rotated 90${DEG}`,
-  8: `Rotated 270${DEG} clockwise`,
+  1: word('enum.normal'),
+  2: word('enum.mirror-horizontal'),
+  3: word('enum.rotate-180'),
+  4: word('enum.mirror-vertical'),
+  5: word('enum.mirror-270'),
+  6: word('enum.rotate-90'),
+  7: word('enum.mirror-90'),
+  8: word('enum.rotate-270'),
 };
 
-const RESOLUTION_UNIT = { 1: 'None', 2: 'Inches', 3: 'Centimetres' };
+const RESOLUTION_UNIT = { 1: word('enum.none'), 2: word('enum.inches'), 3: word('enum.centimetres') };
 
 const EXPOSURE_PROGRAM = {
-  0: 'Not defined',
-  1: 'Manual',
-  2: 'Program',
-  3: 'Aperture priority',
-  4: 'Shutter priority',
-  5: 'Creative (slow speed)',
-  6: 'Action (fast speed)',
-  7: 'Portrait',
-  8: 'Landscape',
+  0: word('enum.undefined'),
+  1: word('enum.manual'),
+  2: word('enum.program'),
+  3: word('enum.aperture'),
+  4: word('enum.shutter'),
+  5: word('enum.creative'),
+  6: word('enum.action'),
+  7: word('enum.portrait'),
+  8: word('enum.landscape'),
 };
 
 const METERING_MODE = {
-  0: 'Unknown',
-  1: 'Average',
-  2: 'Centre-weighted average',
-  3: 'Spot',
-  4: 'Multi-spot',
-  5: 'Pattern',
-  6: 'Partial',
-  255: 'Other',
+  0: word('enum.unknown'),
+  1: word('enum.average'),
+  2: word('enum.centre-average'),
+  3: word('enum.spot'),
+  4: word('enum.multi-spot'),
+  5: word('enum.pattern'),
+  6: word('enum.partial'),
+  255: word('enum.other'),
 };
 
 const LIGHT_SOURCE = {
-  0: 'Unknown',
-  1: 'Daylight',
-  2: 'Fluorescent',
-  3: 'Tungsten',
-  4: 'Flash',
-  9: 'Fine weather',
-  10: 'Cloudy',
-  11: 'Shade',
-  17: 'Standard light A',
-  18: 'Standard light B',
-  19: 'Standard light C',
-  255: 'Other',
+  0: word('enum.unknown'),
+  1: word('enum.daylight'),
+  2: word('enum.fluorescent'),
+  3: word('enum.tungsten'),
+  4: word('enum.flash'),
+  9: word('enum.fine-weather'),
+  10: word('enum.cloudy'),
+  11: word('enum.shade'),
+  17: word('enum.light-a'),
+  18: word('enum.light-b'),
+  19: word('enum.light-c'),
+  255: word('enum.other'),
 };
 
-const COLOR_SPACE = { 1: 'sRGB', 0xfffd: 'Wide gamut sRGB', 0xfffe: 'Adobe RGB', 0xffff: 'Uncalibrated' };
-const EXPOSURE_MODE = { 0: 'Auto', 1: 'Manual', 2: 'Auto bracket' };
-const WHITE_BALANCE = { 0: 'Auto', 1: 'Manual' };
-const SCENE_CAPTURE = { 0: 'Standard', 1: 'Landscape', 2: 'Portrait', 3: 'Night scene' };
-const CONTRAST = { 0: 'Normal', 1: 'Soft', 2: 'Hard' };
-const SATURATION = { 0: 'Normal', 1: 'Low', 2: 'High' };
+const COLOR_SPACE = { 1: 'sRGB', 0xfffd: word('enum.wide-srgb'), 0xfffe: 'Adobe RGB', 0xffff: word('enum.uncalibrated') };
+const EXPOSURE_MODE = { 0: word('enum.auto'), 1: word('enum.manual'), 2: word('enum.auto-bracket') };
+const WHITE_BALANCE = { 0: word('enum.auto'), 1: word('enum.manual') };
+const SCENE_CAPTURE = { 0: word('enum.standard'), 1: word('enum.landscape'), 2: word('enum.portrait'), 3: word('enum.night') };
+const CONTRAST = { 0: word('enum.normal'), 1: word('enum.soft'), 2: word('enum.hard') };
+const SATURATION = { 0: word('enum.normal'), 1: word('enum.low'), 2: word('enum.high') };
 const SENSING_METHOD = {
-  1: 'Not defined',
-  2: 'One-chip colour area',
-  3: 'Two-chip colour area',
-  4: 'Three-chip colour area',
-  5: 'Colour sequential area',
-  7: 'Trilinear',
-  8: 'Colour sequential linear',
+  1: word('enum.undefined'),
+  2: word('enum.sensor-one'),
+  3: word('enum.sensor-two'),
+  4: word('enum.sensor-three'),
+  5: word('enum.sensor-sequential'),
+  7: word('enum.trilinear'),
+  8: word('enum.sensor-linear'),
 };
-const CUSTOM_RENDERED = { 0: 'Normal', 1: 'Custom' };
-const GAIN_CONTROL = { 0: 'None', 1: 'Low gain up', 2: 'High gain up', 3: 'Low gain down', 4: 'High gain down' };
-const SUBJECT_DISTANCE_RANGE = { 0: 'Unknown', 1: 'Macro', 2: 'Close', 3: 'Distant' };
-const YCBCR_POSITIONING = { 1: 'Centred', 2: 'Co-sited' };
-const COMPRESSION = { 1: 'Uncompressed', 6: 'JPEG' };
-const ALTITUDE_REF = { 0: 'Above sea level', 1: 'Below sea level' };
-const GPS_DIFFERENTIAL = { 0: 'No correction', 1: 'Differential correction applied' };
+const CUSTOM_RENDERED = { 0: word('enum.normal'), 1: word('enum.custom') };
+const GAIN_CONTROL = { 0: word('enum.none'), 1: word('enum.gain-up-low'), 2: word('enum.gain-up-high'), 3: word('enum.gain-down-low'), 4: word('enum.gain-down-high') };
+const SUBJECT_DISTANCE_RANGE = { 0: word('enum.unknown'), 1: word('enum.macro'), 2: word('enum.close'), 3: word('enum.distant') };
+const YCBCR_POSITIONING = { 1: word('enum.centred'), 2: word('enum.co-sited') };
+const COMPRESSION = { 1: word('enum.uncompressed'), 6: 'JPEG' };
+const ALTITUDE_REF = { 0: word('enum.above-sea'), 1: word('enum.below-sea') };
+const GPS_DIFFERENTIAL = { 0: word('enum.no-correction'), 1: word('enum.differential') };
 
 /**
  * Flash is a bit field, not a list, so it gets a function rather than a table.
@@ -105,17 +109,17 @@ const GPS_DIFFERENTIAL = { 0: 'No correction', 1: 'Differential correction appli
  */
 function describeFlash(value) {
   if (typeof value !== 'number') return null;
-  if ((value & 0x20) !== 0) return 'No flash on this camera';
-  const parts = [(value & 1) ? 'Fired' : 'Did not fire'];
-  if ((value & 0x18) === 0x18) parts.push('auto');
-  else if ((value & 0x18) === 0x08) parts.push('forced on');
-  else if ((value & 0x18) === 0x10) parts.push('forced off');
-  if ((value & 0x40) !== 0) parts.push('red-eye reduction');
-  return parts.join(', ');
+  if ((value & 0x20) !== 0) return word('flash.absent');
+  const parts = [(value & 1) ? 'flash.fired' : 'flash.not-fired'];
+  if ((value & 0x18) === 0x18) parts.push('flash.auto');
+  else if ((value & 0x18) === 0x08) parts.push('flash.forced-on');
+  else if ((value & 0x18) === 0x10) parts.push('flash.forced-off');
+  if ((value & 0x40) !== 0) parts.push('flash.red-eye');
+  return { parts };
 }
 
-/* Value formatters. Each takes the decoded value and returns a string, or null
-   to fall back to the generic rendering in src/report.js. */
+/* Value formatters return file-neutral text or phrase descriptors; null falls
+   back to the generic rendering in src/report.js. */
 
 const round = (n, places) => Number(n.toFixed(places)).toString();
 
@@ -129,9 +133,9 @@ const asSeconds = (v) => {
  * @property {string} name what to call it on screen
  * @property {'text'|'int'|'rational'|'enum'} [edit] how the value may be changed
  * @property {'high'|'medium'} [risk]
- * @property {string} [note] why it is risky, in one clause
- * @property {Record<number,string>} [values] enumeration, for display and editing
- * @property {(value: any) => (string|null)} [format]
+ * @property {string} [note] phrase key explaining why it is risky
+ * @property {Record<number,string|{key: string}>} [values] labels for display and editing
+ * @property {(value: any) => (string|{key: string}|{parts: string[]}|null)} [format]
  * @property {string} [unit] appended to a plain number
  */
 
@@ -145,7 +149,7 @@ export const IMAGE_TAGS = {
   0x0106: { name: 'Photometric interpretation' },
   0x010e: { name: 'Image description', edit: 'text' },
   0x010f: { name: 'Camera make', edit: 'text' },
-  0x0110: { name: 'Camera model', edit: 'text', risk: 'medium', note: 'names the device the photo came from' },
+  0x0110: { name: 'Camera model', edit: 'text', risk: 'medium', note: 'note.device' },
   0x0111: { name: 'Strip offsets' },
   0x0112: { name: 'Orientation', edit: 'enum', values: ORIENTATION },
   0x0115: { name: 'Samples per pixel' },
@@ -155,9 +159,9 @@ export const IMAGE_TAGS = {
   0x011b: { name: 'Y resolution', edit: 'rational' },
   0x0128: { name: 'Resolution unit', edit: 'enum', values: RESOLUTION_UNIT },
   0x012d: { name: 'Transfer function' },
-  0x0131: { name: 'Software', edit: 'text', risk: 'medium', note: 'names the app, phone or edit history behind the file' },
-  0x0132: { name: 'File changed', edit: 'text', risk: 'medium', note: 'a timestamp of when the file was last written' },
-  0x013b: { name: 'Artist', edit: 'text', risk: 'high', note: 'usually a real name' },
+  0x0131: { name: 'Software', edit: 'text', risk: 'medium', note: 'note.software' },
+  0x0132: { name: 'File changed', edit: 'text', risk: 'medium', note: 'note.written' },
+  0x013b: { name: 'Artist', edit: 'text', risk: 'high', note: 'note.real-name' },
   0x013e: { name: 'White point' },
   0x013f: { name: 'Primary chromaticities' },
   0x0201: { name: 'Thumbnail offset' },
@@ -166,19 +170,19 @@ export const IMAGE_TAGS = {
   0x0212: { name: 'YCbCr sub-sampling' },
   0x0213: { name: 'YCbCr positioning', values: YCBCR_POSITIONING },
   0x0214: { name: 'Reference black/white' },
-  0x02bc: { name: 'XMP packet', risk: 'medium', note: 'a block of XML that often repeats the camera and edit history' },
+  0x02bc: { name: 'XMP packet', risk: 'medium', note: 'note.xmp' },
   0x8298: { name: 'Copyright', edit: 'text' },
-  0x83bb: { name: 'IPTC block', risk: 'high', note: 'the caption and byline fields a photo desk fills in' },
+  0x83bb: { name: 'IPTC block', risk: 'high', note: 'note.iptc' },
   0x8769: { name: 'Exif IFD pointer' },
   0x8773: { name: 'Embedded ICC profile' },
   0x8825: { name: 'GPS IFD pointer' },
   0x9c9b: { name: 'Title (Windows)', edit: 'text' },
   0x9c9c: { name: 'Comment (Windows)', edit: 'text' },
-  0x9c9d: { name: 'Author (Windows)', edit: 'text', risk: 'high', note: 'usually a real name' },
+  0x9c9d: { name: 'Author (Windows)', edit: 'text', risk: 'high', note: 'note.real-name' },
   0x9c9e: { name: 'Keywords (Windows)', edit: 'text' },
   0x9c9f: { name: 'Subject (Windows)', edit: 'text' },
   0xc4a5: { name: 'Print image matching' },
-  0xc614: { name: 'Unique camera model', risk: 'medium', note: 'names the device the photo came from' },
+  0xc614: { name: 'Unique camera model', risk: 'medium', note: 'note.device' },
 };
 
 /** The Exif sub-IFD - how the shot was taken. */
@@ -194,11 +198,11 @@ export const EXIF_TAGS = {
   0x8832: { name: 'Recommended exposure index' },
   0x8833: { name: 'ISO speed' },
   0x9000: { name: 'Exif version' },
-  0x9003: { name: 'Taken', edit: 'text', risk: 'medium', note: 'the moment the shutter fired, to the second' },
-  0x9004: { name: 'Digitised', edit: 'text', risk: 'medium', note: 'when the file was created, to the second' },
-  0x9010: { name: 'Time zone', edit: 'text', risk: 'medium', note: 'narrows down where in the world you were' },
-  0x9011: { name: 'Time zone (taken)', edit: 'text', risk: 'medium', note: 'narrows down where in the world you were' },
-  0x9012: { name: 'Time zone (digitised)', edit: 'text', risk: 'medium', note: 'narrows down where in the world you were' },
+  0x9003: { name: 'Taken', edit: 'text', risk: 'medium', note: 'note.taken' },
+  0x9004: { name: 'Digitised', edit: 'text', risk: 'medium', note: 'note.created' },
+  0x9010: { name: 'Time zone', edit: 'text', risk: 'medium', note: 'note.timezone' },
+  0x9011: { name: 'Time zone (taken)', edit: 'text', risk: 'medium', note: 'note.timezone' },
+  0x9012: { name: 'Time zone (digitised)', edit: 'text', risk: 'medium', note: 'note.timezone' },
   0x9101: { name: 'Components configuration' },
   0x9102: { name: 'Compressed bits per pixel' },
   0x9201: { name: 'Shutter speed value', format: (v) => (typeof v === 'number' ? asSeconds(2 ** -v) : null) },
@@ -215,7 +219,7 @@ export const EXIF_TAGS = {
   0x927c: {
     name: 'Maker note',
     risk: 'high',
-    note: "the manufacturer's private block - serial numbers and lens data live here",
+    note: 'note.maker',
   },
   0x9286: { name: 'User comment', edit: 'text' },
   0x9290: { name: 'Sub-second time' },
@@ -231,7 +235,7 @@ export const EXIF_TAGS = {
   0xa001: { name: 'Colour space', values: COLOR_SPACE },
   0xa002: { name: 'Pixel width', unit: 'px' },
   0xa003: { name: 'Pixel height', unit: 'px' },
-  0xa004: { name: 'Related sound file', risk: 'medium', note: 'names another file that was on the device' },
+  0xa004: { name: 'Related sound file', risk: 'medium', note: 'note.sound' },
   0xa005: { name: 'Interoperability IFD pointer' },
   0xa20b: { name: 'Flash energy' },
   0xa20e: { name: 'Focal plane X resolution' },
@@ -255,13 +259,13 @@ export const EXIF_TAGS = {
   0xa40a: { name: 'Sharpness', values: CONTRAST },
   0xa40b: { name: 'Device setting description' },
   0xa40c: { name: 'Subject distance range', values: SUBJECT_DISTANCE_RANGE },
-  0xa420: { name: 'Image unique ID', edit: 'text', risk: 'high', note: 'a per-photo identifier that links copies of the same file together' },
-  0xa430: { name: 'Camera owner', edit: 'text', risk: 'high', note: 'a name typed into the camera' },
-  0xa431: { name: 'Camera serial number', edit: 'text', risk: 'high', note: 'ties every photo you take to one physical body' },
+  0xa420: { name: 'Image unique ID', edit: 'text', risk: 'high', note: 'note.unique' },
+  0xa430: { name: 'Camera owner', edit: 'text', risk: 'high', note: 'note.owner' },
+  0xa431: { name: 'Camera serial number', edit: 'text', risk: 'high', note: 'note.camera-serial' },
   0xa432: { name: 'Lens specification' },
   0xa433: { name: 'Lens make', edit: 'text' },
   0xa434: { name: 'Lens model', edit: 'text' },
-  0xa435: { name: 'Lens serial number', edit: 'text', risk: 'high', note: 'ties every photo you take to one physical lens' },
+  0xa435: { name: 'Lens serial number', edit: 'text', risk: 'high', note: 'note.lens-serial' },
   0xa460: { name: 'Composite image' },
   0xa461: { name: 'Source image count' },
   0xa462: { name: 'Source exposure times' },
@@ -320,11 +324,11 @@ export const DICTIONARIES = {
 
 /** What each group is called on screen, and one line on what it holds. */
 export const GROUP_LABELS = {
-  ifd0: { title: 'Image', note: 'The camera, the software, and when the file was written.' },
-  exif: { title: 'Camera settings', note: 'How the shot was taken, and when the shutter fired.' },
-  gps: { title: 'Location', note: 'Where the photo was taken, usually to within a few metres.' },
-  interop: { title: 'Interoperability', note: 'Two housekeeping tags. Nothing personal.' },
-  ifd1: { title: 'Thumbnail', note: 'A second, smaller copy of the picture, with tags of its own.' },
+  ifd0: { title: 'group.ifd0.title', note: 'group.ifd0.note' },
+  exif: { title: 'group.exif.title', note: 'group.exif.note' },
+  gps: { title: 'group.gps.title', note: 'group.gps.note' },
+  interop: { title: 'group.interop.title', note: 'group.interop.note' },
+  ifd1: { title: 'group.ifd1.title', note: 'group.ifd1.note' },
 };
 
 /**

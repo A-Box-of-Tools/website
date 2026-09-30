@@ -638,7 +638,7 @@ el.downloadAll.addEventListener('click', async () => {
   if (!shots.length || working) return;
   setWorking(true);
   el.progress.hidden = false;
-  setProgress({ done: 0, total: shots.length, label: 'Packing...' });
+  setProgress({ done: 0, total: shots.length, step: 'step.packing' });
 
   try {
     const used = new Set();
@@ -754,7 +754,7 @@ el.grabSeries.addEventListener('click', async () => {
         video: media.video,
         indexes,
         signal,
-        onProgress: ({ done, total }) => setProgress({ done, total, label: 'Grabbing' }),
+        onProgress: ({ done, total }) => setProgress({ done, total, step: 'step.grabbing' }),
         async onFrame(index, canvas) {
           const blob = await encodeStill(canvas, options);
           addShot({
@@ -769,7 +769,7 @@ el.grabSeries.addEventListener('click', async () => {
     } else {
       const times = [];
       for (let at = 0; at <= duration && times.length < 500; at += every) times.push(at);
-      setProgress({ done: 0, total: times.length, label: 'Grabbing' });
+      setProgress({ done: 0, total: times.length, step: 'step.grabbing' });
 
       for (const [n, at] of times.entries()) {
         if (signal.aborted) break;
@@ -783,7 +783,7 @@ el.grabSeries.addEventListener('click', async () => {
           height: canvas.height,
           type: options.type,
         });
-        setProgress({ done: n + 1, total: times.length, label: 'Grabbing' });
+        setProgress({ done: n + 1, total: times.length, step: 'step.grabbing' });
       }
     }
 

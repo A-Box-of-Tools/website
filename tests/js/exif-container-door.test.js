@@ -20,8 +20,9 @@ import {
 } from '../../tools/exif-editor/src/container.js';
 import {
   badges, bytes as sizeText, buildFindings, countTags, hasMetadata, metadataSize,
-  readPosition, tagGroups,
+  readPosition, tagGroups, formatValue,
 } from '../../tools/exif-editor/src/report.js';
+import { describeFlash, describeTag } from '../../tools/exif-editor/src/tags.js';
 import { TYPE, createEntry } from '../../tools/exif-editor/src/tiff.js';
 import {
   EXIF_ID, TIFF_LE, VP8_CHUNK, ascii, chunk, concat, indexOfBytes,
@@ -193,13 +194,21 @@ test('readPosition: the hemisphere tag decides the sign', () => {
   assert.equal(at('S'), -10);
 });
 
-test('readPosition: altitude is read and said in words', () => {
+test('readPosition: altitude carries its phrase and rounded measurement', () => {
   const gps = [
     { tag: 0x0001, value: 'N' }, { tag: 0x0002, value: [1, 0, 0] },
     { tag: 0x0003, value: 'E' }, { tag: 0x0004, value: [1, 0, 0] },
     { tag: 0x0005, value: 1 }, { tag: 0x0006, value: 12.4 },
   ];
-  assert.equal(readPosition(gps).altitude, '12 m below sea level');
+  assert.deepEqual(readPosition(gps).altitude, {
+    key: 'gps.altitude.below', values: { metres: 12 },
+  });
+  const findings = buildFindings(itemWith({ groups: { gps } }), (key, values) => {
+    if (key === 'gps.altitude.below') return `Tiefe: ${values.metres} m`;
+    if (key === 'find.gps.detailalt') return values.altitude;
+    return key;
+  });
+  assert.equal(findings[0].detail, 'Tiefe: 12 m');
 });
 
 test('readPosition: an incomplete coordinate is no coordinate', () => {
@@ -363,4 +372,18 @@ test('text chunks in a PNG reach the report', async () => {
   const item = await readBytes(makePng([textChunk('Author', 'Jane')]));
   assert.equal(hasMetadata(item), true);
   assert.ok(badges(item).some((b) => b.label === 'badge.text' && b.values.count === 1));
+});
+
+// The same tag table drives readonly values and enum editors. Its own words
+// must be resolvable by the page, while a camera's text and the EXIF tag names
+// remain exactly what the file and the standard call them.
+test('EXIF value descriptions localize without translating file data or tag names', () => {
+  assert.deepEqual(formatValue('ifd0', { tag: 0x0112, value: 6 }), { key: 'enum.rotate-90' });
+  assert.deepEqual(describeTag('ifd0', 0x0112).values[2], { key: 'enum.mirror-horizontal' });
+  assert.equal(describeTag('exif', 0x9209).name, 'Flash');
+  assert.equal(formatValue('ifd0', { tag: 0x010e, value: 'Original caption' }), 'Original caption');
+  assert.deepEqual(describeFlash(0x59), {
+    parts: ['flash.fired', 'flash.auto', 'flash.red-eye'],
+  });
+  assert.deepEqual(describeFlash(0x20), { key: 'flash.absent' });
 });

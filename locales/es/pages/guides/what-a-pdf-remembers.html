@@ -1,0 +1,162 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Un PDF no es una imagen de sus páginas. Es un contenedor, y las
+      páginas son solo la parte de la carga que se muestra. Alrededor de
+      ellas, el formato tiene sitio para un bloque de información del
+      documento, una segunda copia XML de lo mismo, comentarios, datos de
+      formularios, archivos adjuntos &mdash; y, a través de una manera muy
+      común de guardar ediciones, versiones anteriores completas del
+      documento, apiladas bajo la actual.
+    </p>
+    <p>
+      Nada de esto es un defecto. Cada pieza se diseñó para un trabajo
+      razonable, y dentro de una organización casi todo es inofensivo o
+      útil. El problema es el cruce de frontera: en el momento en que un
+      PDF sale &mdash; hacia la otra parte de un contrato, una lista de
+      correo, un expediente público &mdash; todo lo que recuerda se va con
+      él, y lo que recuerda no se muestra en ninguna página. La gente
+      revisa lo que un documento dice y envía lo que el archivo contiene,
+      y son dos cosas distintas.
+    </p>
+  </section>
+
+  <section>
+    <h2>La etiqueta con el nombre: /Info y el paquete XMP</h2>
+    <p>
+      Todo PDF puede llevar un diccionario de información del documento:
+      autor, título, fechas de creación y modificación, y los nombres de
+      los programas que lo crearon y produjeron. La mayoría lleva una
+      segunda copia, más rica, de los mismos datos como XML incrustado,
+      llamada XMP. Ninguna de las dos se muestra con las páginas; ambas
+      están a un panel de propiedades de distancia.
+    </p>
+    <p>
+      Los valores se rellenan solos, y eso es lo que los hace filtrar.
+      <em>Autor</em> suele ser el nombre de cuenta con el que se instaló
+      el sistema operativo: un nombre real y completo, en documentos que
+      sus autores creían anónimos: candidaturas, dictámenes, quejas,
+      ofertas. <em>Título</em> es rutinariamente el nombre del archivo del
+      que se exportó el PDF, así que
+      <code>Borrador-v7-reparos-legales.docx</code> sobrevive dentro del
+      PDF pulido que debía sustituirlo. La línea del productor fecha el
+      programa; las fechas contradicen versiones oficiales. Se han escrito
+      estudios enteros sobre lo que los PDF institucionales confiesan en
+      este bloque.
+    </p>
+  </section>
+
+  <section>
+    <h2>El deshacer eterno: guardados incrementales</h2>
+    <p>
+      La pieza más afilada del contenedor es de la que el formato está más
+      orgulloso. El PDF admite <em>actualizaciones incrementales</em>: en
+      vez de reescribir el archivo, un editor puede añadir sus cambios al
+      final y dejar intacto todo lo anterior. El visor lee el archivo
+      desde el final y muestra la versión más nueva; las viejas siguen
+      ahí, byte a byte, en el mismo archivo.
+    </p>
+    <p>
+      Guardar añadiendo es rápido y a prueba de cuelgues &mdash; y
+      significa que un documento editado así contiene su propia historia.
+      El texto «borrado» no se ha ido: está superado, y recuperarlo es
+      cosa de leer el archivo tal como era antes del último añadido. Un
+      rectángulo negro trazado sobre un nombre en un editor que guarda
+      incrementalmente produce un archivo que contiene el nombre <em>dos
+      veces</em> &mdash; una bajo el rectángulo y otra en la historia
+      &mdash;, lo que duplica el fallo descrito en
+      <a href="../se-puede-recuperar-el-texto-censurado/">la guía del
+      censurado</a>.
+    </p>
+    <p>
+      El remedio es una reescritura completa: abrir el archivo, quedarse
+      con lo que la versión actual usa de verdad, escribir un archivo
+      nuevo sin pasado. Eso hace por construcción el
+      <a href="../../comprimir-pdf/">compresor de PDF</a> de aquí: una
+      reescritura no puede evitar abandonar la historia, y la herramienta
+      cuenta el material superado que dejó atrás en su desglose de
+      tamaños, que es además la manera más fácil de descubrir que tu
+      archivo tenía historia.
+    </p>
+  </section>
+
+  <section>
+    <h2>La bodega: comentarios, campos, adjuntos, capas</h2>
+    <p>
+      El resto de la memoria es más corriente, y se filtra igual:
+    </p>
+    <ul>
+      <li>
+        <strong>Comentarios y anotaciones</strong>: la conversación de la
+        revisión, viajando con el documento revisado, visible para quien
+        sepa mirar.
+      </li>
+      <li>
+        <strong>Los campos de formulario</strong> conservan sus valores
+        rellenados como datos incluso donde una página aplanada ya no los
+        muestra.
+      </li>
+      <li>
+        <strong>Los adjuntos</strong>: un PDF puede incrustar archivos
+        enteros, de cualquier tipo, y los visores los enseñan en un panel
+        lateral que la mayoría de la gente no ha abierto nunca. La hoja de
+        cálculo de detrás del gráfico a veces va adjunta al gráfico.
+      </li>
+      <li>
+        <strong>Las capas de contenido opcional</strong> pueden guardar
+        contenido de página apagado en vez de quitado: presente entero,
+        mostrado nunca.
+      </li>
+    </ul>
+    <p>
+      Cada una de estas cosas son datos que las páginas no enseñan, en un
+      archivo que la gente juzga por sus páginas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Enviar un PDF sin su memoria</h2>
+    <p>
+      El patrón de todo esto: lo que sobrevive lo decide cómo se escribió
+      el archivo, así que el arreglo es pasarlo por algo que escriba con
+      desmemoria, en tu propia máquina &mdash; la historia de un documento
+      es exactamente lo que no hay que subir al servidor de un
+      desconocido, argumento que
+      <a href="../es-seguro-subir-archivos/">la guía sobre subir
+      archivos</a> desarrolla entero. Tres herramientas de este sitio
+      escriben PDF, y las tres se construyeron para dejar la memoria
+      fuera:
+    </p>
+    <ul>
+      <li>
+        La herramienta de <a href="../../unir-pdf/">unir y separar PDF</a>
+        escribe su salida <strong>sin diccionario de información
+        alguno</strong>: sin autor, sin fechas, sin línea que nombre al
+        programa. Lo que copia de tus originales es lo que sus páginas
+        usan, no su equipaje. Hay
+        <a href="../unir-y-separar-archivos-pdf/">una guía</a>.
+      </li>
+      <li>
+        El <a href="../../comprimir-pdf/">compresor de PDF</a> reescribe
+        el archivo por completo &mdash; historia superada abandonada,
+        paquete XMP y datos privados de aplicaciones no conservados
+        &mdash; y detalla lo que quitó. También
+        <a href="../reducir-el-tamano-de-un-pdf/">con guía</a>.
+      </li>
+      <li>
+        La herramienta de <a href="../../censurar-pdf/">censurar PDF</a>,
+        para cuando la memoria es justamente el asunto: en cada pasada
+        limpia el bloque de información, el paquete XMP, los marcadores,
+        los comentarios, los valores de campos y los adjuntos, además del
+        censurado en sí &mdash; <a href="../censurar-un-pdf/">su guía</a>
+        lo recorre todo.
+      </li>
+    </ul>
+    <p>
+      Y la prueba de aceptación refleja la fuga: juzga el archivo, no las
+      páginas. Abre el panel de propiedades y lee lo que queda; busca en
+      el archivo crudo una palabra quitada; mira el desglose del compresor
+      sobre lo que tu documento llevaba encima. Un PDF sin memoria no
+      tiene nada que confesar, lo lea quien lo lea.
+    </p>
+  </section>

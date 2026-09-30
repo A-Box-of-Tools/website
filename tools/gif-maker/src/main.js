@@ -184,8 +184,8 @@ function buildItemNode(item, index) {
   remove.type = 'button';
   remove.className = 'remove-btn';
   remove.textContent = '×';
-  remove.title = `Remove ${item.name}`;
-  remove.setAttribute('aria-label', `Remove ${item.name}`);
+  remove.title = phrase('tile.remove', { name: item.name });
+  remove.setAttribute('aria-label', remove.title);
   remove.addEventListener('click', () => {
     releaseItem(item);
     items.splice(index, 1);
@@ -200,7 +200,7 @@ function buildItemNode(item, index) {
   name.className = 'frame-name';
   name.textContent = item.name;
   const dimensions = ltr(`${item.width}×${item.height}`);
-  name.title = `${item.name} — ${dimensions}`;
+  name.title = phrase('tile.name', { name: item.name, dimensions });
   meta.append(name);
 
   const controls = document.createElement('div');
@@ -222,15 +222,15 @@ function buildItemNode(item, index) {
 
   const unit = document.createElement('span');
   unit.className = 'unit';
-  unit.textContent = 'sec';
+  unit.textContent = phrase('tile.seconds');
   controls.append(unit);
 
   const earlier = document.createElement('button');
   earlier.type = 'button';
   earlier.className = 'move-btn';
   earlier.textContent = '‹';
-  earlier.title = 'Move earlier';
-  earlier.setAttribute('aria-label', `Move ${item.name} earlier`);
+  earlier.title = phrase('tile.earlier', { name: item.name });
+  earlier.setAttribute('aria-label', earlier.title);
   earlier.disabled = index === 0;
   earlier.addEventListener('click', () => { moveItem(items, index, index - 1); render(); });
   controls.append(earlier);
@@ -239,8 +239,8 @@ function buildItemNode(item, index) {
   later.type = 'button';
   later.className = 'move-btn';
   later.textContent = '›';
-  later.title = 'Move later';
-  later.setAttribute('aria-label', `Move ${item.name} later`);
+  later.title = phrase('tile.later', { name: item.name });
+  later.setAttribute('aria-label', later.title);
   later.disabled = index === items.length - 1;
   later.addEventListener('click', () => { moveItem(items, index, index + 1); render(); });
   controls.append(later);

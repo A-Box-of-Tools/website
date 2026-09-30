@@ -369,12 +369,8 @@ function readExtension(reader, gif, label, at) {
     const size = reader.u8();
     head = reader.slice(size);
     block.kind = 'plain-text';
-    block.name = 'Plain text';
   } else if (label === COMMENT) {
     block.kind = 'comment';
-    block.name = 'Comment';
-  } else {
-    block.name = `Extension 0x${label.toString(16).padStart(2, '0')}`;
   }
 
   const runs = [];
@@ -464,3 +460,15 @@ export function frameData(bytes, frame) {
 export const paletteFor = (gif, frame) => frame.palette ?? gif.globalPalette;
 
 export { HEADER_BYTES };
+
+/**
+ * Application identifiers come from the file and must keep their spelling.
+ * Other headings describe the kind of block, so both the page and its saved
+ * report resolve them through the same translator.
+ */
+export function extensionName(extension, t) {
+  if (extension.kind === 'application') return extension.name;
+  if (extension.kind === 'comment') return t('extension.comment');
+  if (extension.kind === 'plain-text') return t('extension.plaintext');
+  return t('extension.unknown', { code: `0x${extension.label.toString(16).padStart(2, '0')}` });
+}

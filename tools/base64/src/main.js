@@ -186,7 +186,7 @@ el.copy.addEventListener('click', async () => {
   if (!result) return;
   try {
     await navigator.clipboard.writeText(result.text);
-    el.copy.textContent = 'Copied';
+    el.copy.textContent = phrase('copy.copied');
   } catch {
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the block is a route that always works.
@@ -195,9 +195,9 @@ el.copy.addEventListener('click', async () => {
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
-    el.copy.textContent = 'Selected - press Ctrl+C';
+    el.copy.textContent = phrase('copy.selected');
   }
-  setTimeout(() => { el.copy.textContent = 'Copy'; }, 2500);
+  setTimeout(() => { el.copy.textContent = phrase('copy.copy'); }, 2500);
 });
 
 function clearResult() {

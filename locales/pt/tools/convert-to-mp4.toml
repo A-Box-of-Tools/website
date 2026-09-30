@@ -1,0 +1,128 @@
+name = "Conversor para MP4"
+heading = "Converter&nbsp;para&nbsp;MP4 <span class=\"h1-kw\">&mdash; WebM, MKV e MOV em um arquivo compatível</span>"
+tagline = "Da gravação de tela, do arquivo extraído ou da câmera para um MP4 com H.264 e AAC. Copia o que pode e só recodifica o necessário."
+title = "Converter WebM, MKV ou MOV para MP4 &mdash; grátis, no navegador, sem envio"
+description = "Converta WebM, MKV, MOV ou MP4 para um MP4 com H.264 e AAC, compatível com celulares, navegadores e formulários de envio. H.264 e AAC são copiados intactos; as outras faixas são recodificadas no seu computador. Nada é enviado."
+og_title = "Converta um vídeo para MP4 sem enviar o arquivo"
+og_description = "Uma gravação de tela, um MKV extraído ou um MOV da câmera vira um MP4 compatível no navegador. O que já está em H.264 ou AAC é copiado sem recodificação."
+og_image_alt = "Converta um vídeo para MP4 no navegador, sem enviar o arquivo"
+pledge = "O vídeo escolhido é lido, separado em faixas e regravado como MP4 na memória deste computador, pelos codecs do navegador e por código servido por este site. Nada aqui pode fazer um upload, e não há servidor para recebê-lo. Um gigabyte não precisa ser enviado para voltar como outro gigabyte."
+live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, observe a aba Rede e converta um vídeo. Nenhuma requisição leva um vídeo, um quadro ou um nome de arquivo. Ou desconecte a internet e converta mesmo assim."
+read_first = ", <code>src/plan.js</code> mostra quais faixas são copiadas e quais são recodificadas; <code>src/convert.js</code> faz a cópia e a gravação; e <code>src/shared/mkv-reader.js</code> lê WebM e MKV. Nenhum deles acessa a rede, nem os outros leitores e o gravador que os acompanham."
+howto_heading = "Como converter um vídeo para MP4"
+card = "Um WebM de gravação de tela, um MKV extraído ou um MOV da câmera, regravado como MP4 com H.264 e AAC para ser aceito no destino. As faixas que já são H.264 ou AAC são copiadas intactas; só as outras são recodificadas, no seu computador."
+
+[words]
+plural = "vídeos"
+choose = "um vídeo"
+
+[[facts]]
+text = "Sem upload"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[facts]]
+text = "Os arquivos ficam no seu aparelho"
+
+[[privacy]]
+title = "O envio é a parte demorada, e aqui ele não acontece."
+body = "Vídeo costuma ser o maior arquivo que as pessoas precisam transferir. Conversores on-line pedem o original inteiro: um gigabyte sobe pela conexão para que outro volte. O envio costuma demorar mais que a conversão, antes mesmo de perguntar quem guarda o arquivo. Esta página lê o arquivo com código servido por este site e grava o resultado com os codecs já presentes no navegador. Os bytes só vão do disco para a memória e de volta. A <code>Content-Security-Policy</code> lista todos os endereços que a página pode acessar, e nenhum pertence a este site. A ferramenta funciona sem conexão à rede."
+
+[[privacy]]
+title = "O que “MP4” significa aqui e por que o resultado usa essa combinação."
+body = "O arquivo aceito de forma mais ampla é um MP4 comum com vídeo H.264 e áudio AAC. Celulares, navegadores, aplicativos de mensagem, clientes de e-mail e formulários aceitam essa combinação. WebM, MKV e MP4 com HEVC, VP9 ou AV1 ainda são recusados em muitos lugares. Por isso esta página grava somente H.264 e AAC. Não copia outro codec de vídeo para o resultado, mesmo que seja eficiente: abrir em menos lugares que o original não resolveria o problema."
+
+[[privacy]]
+title = "Copia o que pode, recodifica só o necessário e informa a diferença."
+body = "Converter nem sempre significa recodificar. Os quadros H.264 de um MKV já são os bytes que o MP4 precisa, então são copiados intactos; o mesmo vale para AAC. VP9 ou VP8 de WebM, HEVC de MOV de iPhone e áudio Opus ou Vorbis precisam ser decodificados e codificados de novo. O resultado fica uma geração mais distante da câmera. Antes de começar, a página explica o que acontecerá com cada faixa em duas frases. Assim, a palavra “converter” não esconde uma recodificação."
+
+[[privacy]]
+title = "O resultado é aberto de novo e conferido."
+body = "Um conversor que perdesse o último segundo ou criasse uma faixa de áudio vazia ainda produziria um MP4. Por isso o resultado é reaberto pelo mesmo leitor usado no original. Ele precisa conservar a duração, usar H.264 e conter o som anunciado. O vídeo toca da memória abaixo do download para você conferir antes de salvar."
+
+[[privacy]]
+title = "Quanto trabalho isso exige do seu computador."
+body = "Copiar é rápido: o arquivo é lido uma vez para entender a estrutura e outra durante a gravação. Recodificar depende do computador. Com codificação por hardware, presente em muitos notebooks e celulares recentes, costuma levar menos que a duração do vídeo; sem ela, pode levar mais, principalmente em vídeos longos em 4K. O original é lido em partes e pode ser maior que a memória. Já o resultado fica na memória até o download, o que limita o tamanho possível. Você pode cancelar a qualquer momento."
+
+[[privacy]]
+title = "Quais arquivos são lidos e quais não são."
+body = "WebM e MKV, duas variantes do mesmo formato, com vídeo VP8, VP9, AV1, H.264 ou HEVC e áudio Opus, Vorbis, AAC, MP3 ou FLAC; e MP4, MOV e M4V com vídeo H.264, HEVC, VP9 ou AV1 e áudio AAC. Se o navegador não decodificar a imagem, geralmente HEVC sem suporte ou licença, o formato é identificado e a conversão é recusada. Se não decodificar o áudio, ele é identificado e omitido; a imagem ainda pode ser convertida. AVI, WMV, FLV e MPEG-2 não são lidos, e a página explica isso."
+
+[[privacy]]
+title = "O que o Google carrega e o que não recebe."
+body = "Os scripts de publicidade e medição vêm do Google. Nenhum recebe dados do vídeo: arquivo, quadro, nome, tamanho, duração ou formato original. Toda linha que lê, codifica ou grava o vídeo é servida por este site e está no repositório."
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = "O botão “Buy me a coffee” do cabeçalho é desenhado por um script de cdnjs.buymeacoffee.com e usa letras do Google Fonts. É apenas um link: não informa visitas nem recebe dados seus ou dos vídeos. Nada acontece sem um clique, que abre o site de outra pessoa."
+
+[[privacy]]
+title = "Funciona offline."
+body = "Desconecte a rede e tudo continua funcionando. É a comprovação mais simples: uma ferramenta que enviasse o vídeo para convertê-lo em outro lugar pararia."
+
+[[howto]]
+title = "Escolha o vídeo."
+body = "Um arquivo por vez: WebM, MKV, MOV, M4V ou MP4. O navegador lê diretamente do disco e mostra a duração, o tamanho, a resolução e o contêiner."
+
+[[howto]]
+title = "Leia as duas frases."
+body = "Uma explica a imagem; a outra, o som. Cada uma indica se a faixa já é compatível com este MP4 e será copiada intacta ou qual formato tem e para qual será recodificada. O próprio arquivo determina o processo. Se o navegador não conseguir ler o áudio, ou se você preferir um vídeo mudo, marque a opção de omiti-lo."
+
+[[howto]]
+title = "Converta e leia a linha de verificação."
+body = "As faixas compatíveis são copiadas. As demais são recodificadas quadro a quadro, com uma barra de progresso. Depois, o resultado é aberto de novo para conferir duração, H.264 e o áudio anunciado. Ele toca da memória abaixo do download para você revisar."
+
+[[faq]]
+q = "A qualidade vai piorar?"
+a = "Nas faixas copiadas, não. A página informa quais foram copiadas. Quadros H.264 e pacotes AAC passam byte por byte, então um MKV com H.264 vira um MP4 com a mesma imagem. Faixas recodificadas — vídeo VP9, VP8, AV1 ou HEVC; áudio Opus, Vorbis, MP3 ou FLAC — passam por mais uma geração de compressão, com taxa de bits ajustada ao original. A perda é pequena, não inexistente. Guarde o original em qualquer caso."
+
+[[faq]]
+q = "Por que não manter HEVC ou VP9 no MP4 se eles ocupam menos?"
+a = "Porque o resultado poderia abrir em menos lugares que o original, e o objetivo é melhorar a compatibilidade. HEVC em MP4 pode exigir uma licença ausente no computador. VP9 ou AV1 em MP4 são recusados por muitos formulários e clientes de e-mail. H.264 e AAC são a combinação mais amplamente aceita. A página usa essa combinação e explica o custo antes de começar."
+
+[[faq]]
+q = "Meu WebM é uma gravação de tela. O som será preservado?"
+a = "Sim. O navegador costuma gravar áudio Opus, incompatível com este MP4, então ele é decodificado e recodificado como AAC a 160 kbit/s, mais que suficiente para um microfone. A imagem VP8 ou VP9 vira H.264. Tudo acontece no seu computador, e o resultado é reaberto para conferir a duração e a presença do som."
+
+[[faq]]
+q = "Por que meu MOV precisa ser convertido? Ele já não é MP4?"
+a = "Quase. MOV e MP4 compartilham o mesmo projeto. Um MOV com H.264 e AAC é copiado em segundos, sem recodificar quadros: só muda o contêiner que o formulário estava recusando pela extensão. Um MOV de iPhone com HEVC é outro caso. A imagem precisa virar H.264, desde que o navegador consiga decodificar HEVC, o que acontece na maioria dos computadores, mas não em todos."
+
+[[faq]]
+q = "Quais arquivos são aceitos?"
+a = "WebM e MKV com vídeo VP8, VP9, AV1, H.264 ou HEVC e áudio Opus, Vorbis, AAC, MP3 ou FLAC; MP4, MOV e M4V com vídeo H.264, HEVC, VP9 ou AV1 e áudio AAC. Se o navegador não decodificar a imagem, a conversão para e informa o formato. Se não decodificar o áudio, ele é omitido e a imagem ainda é convertida. AVI, WMV, FLV e MPEG-2 não são lidos."
+
+[[faq]]
+q = "Quanto tempo leva?"
+a = "Copiar leva aproximadamente o tempo de ler o arquivo duas vezes: segundos para a maioria dos vídeos. Recodificar depende do computador. Com codificação por hardware, presente em muitos notebooks e celulares recentes, costuma levar menos que a duração do vídeo; sem ela, demora mais. Um vídeo longo em 4K pode exigir bastante tempo. A barra mostra o quadro atual, e cancelar interrompe imediatamente sem gravar um resultado."
+
+[[faq]]
+q = "Meus vídeos são enviados para algum lugar?"
+a = "Não. O navegador lê, decodifica quando necessário, codifica e grava no seu próprio computador. A <code>Content-Security-Policy</code> lista os endereços que a página pode acessar, e nenhum pertence a este site. Para conferir, desconecte a rede e continue usando a ferramenta. Com arquivos desse tamanho, evitar o envio também costuma poupar mais tempo que a própria conversão."
+
+[[faq]]
+q = "Funciona no celular?"
+a = "Sim, se o navegador conseguir decodificar e codificar vídeo. O codificador por hardware do celular costuma ser rápido. A limitação é a memória: o resultado fica nela até ser salvo, e um vídeo muito longo pode não caber. Corte antes com o <a href=\"/pt/aparar-video/\">Cortador de vídeo</a> ou converta em um notebook."
+
+[[faq]]
+q = "Há limite de tamanho ou algum custo?"
+a = "O original é lido do disco em partes e pode ser maior que a memória. O resultado fica na memória até o download e, neste gravador MP4, não pode ultrapassar 4 GB. A ferramenta é gratuita, sem conta, login ou período de teste. A publicidade mantém o site, mas não recebe dados dos seus vídeos."
+
+[[faq]]
+q = "Funciona offline?"
+a = "Sim. Carregue a página uma vez, desconecte a internet e ela continua funcionando. É também a forma mais simples de conferir que o arquivo não é enviado: uma ferramenta que dependesse de um servidor para converter pararia sem conexão."
+
+[schema]
+description = "Converta WebM, MKV, MOV ou MP4 para um MP4 com vídeo H.264 e áudio AAC no navegador. Faixas que já são H.264 ou AAC são copiadas intactas; as demais são recodificadas no computador. Nada é enviado."
+features = ["Lê WebM e MKV com vídeo VP8, VP9, AV1, H.264 ou HEVC e áudio Opus, Vorbis, AAC, MP3 ou FLAC", "Lê MP4, MOV e M4V com vídeo H.264, HEVC, VP9 ou AV1 e áudio AAC", "Copia quadros H.264 e pacotes AAC intactos e informa isso", "Recodifica apenas faixas que não sejam H.264 ou AAC, com taxa de bits ajustada ao original", "Grava MP4 comum com índice no início, compatível com formulários de envio", "Reabre o resultado para conferir duração, codec e áudio e o reproduz da memória", "Funciona offline, sem envio, sem conta e sem limite de tamanho do arquivo de entrada"]
+
+[picker]
+title = "Arraste um vídeo para cá"
+hint = "ou clique para procurar &mdash; WebM, MKV, MOV ou MP4, um por vez"

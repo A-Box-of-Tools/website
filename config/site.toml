@@ -21,9 +21,9 @@ contact_email = "hi@abox.tools"
 # Languages that are no longer built here, and are still served: frozen as they
 # were deployed in 1.4.2 and kept in A-Box-of-Tools/translations, whose folders
 # the deploy copies into the site at the commit named below. English, Simplified
-# Chinese and German are the languages the site is maintained in - German was
-# frozen with the rest and brought back a week later, because German searches
-# were the one thing the numbers below had not counted on.
+# Chinese, German, Spanish and Brazilian Portuguese are maintained here. The
+# latter three were restored from the archived sources and brought up to date,
+# so their pages follow the current tools again.
 #
 # Why. Every change to a tool in English had to be made again in each
 # translated copy of its page, or the build refused it, and nearly nobody was
@@ -43,17 +43,18 @@ contact_email = "hi@abox.tools"
 # language cannot be built and copied in over itself; `--check` leaves its
 # folder out of the comparison, since the dist branch holds a copy the build
 # never writes; and the deploy refuses an archive that does not hold exactly
-# these folders. To bring one back, move its sources out of the archive's
-# source/locales/ into locales/, drop it from this list, and translate what
-# English has gained since - see the archive's README.
+# these folders. To bring one back, copy its archived sources into locales/,
+# translate what English has gained since, and drop it from this list. Remove
+# its generated site folder in a new archive revision and pin that revision
+# here too, so the deploy cannot copy an old page over a maintained one.
 frozen_languages = [
-  "ar", "es", "fr", "hi", "id", "it", "ja", "ko", "nl", "pt", "tr", "zh-TW",
+  "ar", "fr", "hi", "id", "it", "ja", "ko", "nl", "tr", "zh-TW",
 ]
 
 # Where the frozen languages are kept, and at which commit. A commit rather
 # than a branch, so a push to the archive reaches abox.tools only through a pull
 # request here that moves this line.
-frozen_archive = { repository = "A-Box-of-Tools/translations", commit = "588f2c732c4b99c0781d5025ed4da64e1127c3b3" }
+frozen_archive = { repository = "A-Box-of-Tools/translations", commit = "e2efd554826a0639b11e38c9ef6bfcf63823382b" }
 
 # The account the site posts from. It is here rather than in the footer markup
 # because it is the same fact twice: the link a reader follows, and the `sameAs`

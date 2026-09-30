@@ -1,0 +1,137 @@
+<main id="main">
+
+  <section class="card">
+    <h2><span class="step">1</span> Escolha um PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+
+    <div id="locked-help" class="help" hidden>
+      <h3>Remova a senha no seu próprio computador</h3>
+      <p>Bancos costumam proteger extratos com a data de nascimento ou os últimos dígitos da conta. Estas opções geram uma cópia desbloqueada. Traga-a de volta: o texto de que esta ferramenta precisa continuará no arquivo.</p>
+      <ul>
+        <li><strong>O <a href="../desbloquear-pdf/">desbloqueador de PDF</a> deste site</strong> &mdash; digite a senha e ela será removida no navegador, sem enviar nada. É a única destas opções que não reescreve o conteúdo das páginas; o texto fica exatamente onde o banco o colocou.</li>
+        <li><strong>Windows</strong> &mdash; abra o PDF no Chrome ou Edge, digite a senha, escolha <strong>Imprimir</strong> e selecione <strong>Salvar como PDF</strong> como impressora.</li>
+        <li><strong>macOS</strong> &mdash; abra no Pré-Visualização, digite a senha e escolha <strong>Arquivo &rarr; Exportar como PDF</strong>.</li>
+      </ul>
+      <p class="help-warn">Não use <em>outro</em> site que ofereça desbloquear o documento. Isso enviaria o extrato, justamente o que esta página evita. A ferramenta indicada acima não tem servidor para receber o arquivo e continua funcionando com a internet desligada.</p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>Este arquivo é uma imagem: veja as alternativas</h3>
+      <p>O arquivo não contém texto: suas páginas são imagens de scanner ou celular. Reconhecer letras em uma imagem é diferente de extrair tabelas de texto, e esta ferramenta não faz OCR. Em ordem aproximada de precisão:</p>
+      <ul>
+        <li><strong>Peça ao banco os dados em vez da versão para impressão.</strong> Quase todo banco on-line oferece o mesmo extrato em CSV, OFX ou QIF. Isso dispensa esta conversão e é mais preciso que interpretar uma imagem.</li>
+        <li><strong>Peça a quem enviou o documento o PDF original</strong>, em vez de uma digitalização da impressão.</li>
+        <li><strong>Ou reconheça o texto no seu computador.</strong> A Ferramenta de Captura do Windows, o Texto ao Vivo do macOS e o recurso <em>Reconhecer texto</em> do Acrobat fazem isso sem enviar nada. Depois, confira cada valor: um dígito lido errado ainda parece um número válido.</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span> Confira o que foi lido</h2>
+
+    <p class="card-lede">Um PDF parece conter tabelas, mas armazena texto posicionado na página; as colunas são espaços sem impressão. Por isso, a estrutura de cada tabela abaixo foi deduzida. Quando há saldo acumulado, a página informa quais comparações conferem e quais linhas ficaram sem verificação. Saldos coincidentes conferem variações líquidas; erros que se anulam ainda podem passar.</p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">Qual tabela</label>
+      <select id="table-pick"></select>
+    </div>
+
+    <div class="field" id="order-field" hidden>
+      <label for="date-order">Ordem das datas</label>
+      <select id="date-order">
+        <option value="dmy">dia / mês / ano</option>
+        <option value="mdy">mês / dia / ano</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+
+    <div id="previews" class="previews"></div>
+  </section>
+
+
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Baixe o CSV</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="primary as-button" download>Baixar o CSV</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Este arquivo não é um PDF. A ferramenta extrai tabelas de arquivos PDF.</span>
+    <span data-phrase="load.encrypted">Este PDF está protegido por senha. Removê-la é uma tarefa diferente de ler tabelas; a ferramenta não fará isso sem avisar.</span>
+    <span data-phrase="error.broke">Algo nesta página parou de funcionar ({detail}). Recarregue e tente de novo.</span>
+    <span data-phrase="load.broken">Não foi possível abrir este arquivo como PDF ({detail}).</span>
+    <span data-phrase="load.nopages">Ele abriu, mas não se encontraram páginas dentro.</span>
+    <span data-phrase="scan.notext">Este PDF não contém texto: as páginas são imagens de páginas.</span>
+    <span data-phrase="scan.notables">Não foi encontrada uma tabela: não há linhas alinhadas em colunas para transformar em dados.</span>
+    <span data-phrase="sum.one">Uma tabela, {rows}, extraída de {pages}.</span>
+    <span data-phrase="sum.many">{tables}, com {rows} no total, extraídas de {pages}.</span>
+    <span data-phrase="table.label">Tabela {n} &middot; página {page} &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">Todas as {tables}, em sequência</span>
+    <span data-phrase="check.intable">Tabela {n}: {verdict}</span>
+    <span data-phrase="fact.shape">{rows} em {columns}</span>
+    <span data-phrase="fact.tables">{rows} em {tables}, em sequência</span>
+    <span data-phrase="count.rows.one">{n} linha</span>
+    <span data-phrase="count.rows.many">{n} linhas</span>
+    <span data-phrase="count.columns.one">{n} coluna</span>
+    <span data-phrase="count.columns.many">{n} colunas</span>
+    <span data-phrase="count.tables.one">{n} tabela</span>
+    <span data-phrase="count.tables.many">{n} tabelas</span>
+    <span data-phrase="check.held">O saldo acumulado confere nas {links} comparações.</span>
+    <span data-phrase="check.broke">O saldo acumulado confere em {held} de {links} comparações. Confira no PDF os valores dos intervalos que terminam em {where}.</span>
+    <span data-phrase="check.unchecked">Linhas não verificadas: {where}. Confira os valores no PDF.</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
+    <span data-phrase="check.row">linha {n}</span>
+    <span data-phrase="check.rows">linhas {list}</span>
+    <span data-phrase="order.found">Ordem identificada por uma data com dia maior que doze neste documento. A interpretação vem do arquivo, não de uma estimativa.</span>
+    <span data-phrase="order.guessed">Todas as datas têm dia até doze, então o documento não permite determinar a ordem. Mude esta opção se as datas abaixo estiverem invertidas.</span>
+    <span data-phrase="preview.more">Só as primeiras {shown} linhas desta tabela aparecem aqui. O arquivo para baixar contém todas.</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.dates">Datas com ano no formato AAAA-MM-DD</span>
+    <span data-phrase="fact.amounts">Valores como números com sinal</span>
+    <span data-phrase="fact.encoding">UTF-8, aspas conforme a RFC 4180</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="pdf.flate">um fluxo Flate não descomprimiu ({detail})</span>
+    <span data-phrase="pdf.nocompression">este navegador não tem CompressionStream</span>
+    <span data-phrase="pdf.lzw">um fluxo LZW começa com um código sem definição</span>
+    <span data-phrase="pdf.cryptfilter">este fluxo está criptografado</span>
+    <span data-phrase="pdf.unknownfilter">um filtro desconhecido, /{name}</span>
+    <span data-phrase="pdf.deep">aninhado fundo demais</span>
+    <span data-phrase="pdf.short">passou do fim</span>
+    <span data-phrase="pdf.unexpected">inesperado {found} em {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">byte inesperado 0x{hex} em {at}</span>
+    <span data-phrase="pdf.noendstream">um fluxo sem endstream</span>
+    <span data-phrase="pdf.noobj">sem a palavra-chave obj em {at}</span>
+    <span data-phrase="pdf.nostartxref">sem startxref</span>
+    <span data-phrase="pdf.noxref">não é uma seção xref</span>
+    <span data-phrase="pdf.now">um fluxo xref sem /W</span>
+    <span data-phrase="pdf.zerowidth">um fluxo xref com campos de largura zero</span>
+    <span data-phrase="read.noheader">Isto não começa como um PDF: não tem cabeçalho %PDF-.</span>
+    <span data-phrase="read.encrypted">Este PDF está criptografado.</span>
+    <span data-phrase="read.nocatalogue">O arquivo não contém um catálogo de documento. Ele não é um PDF ou está danificado além do que esta ferramenta consegue reparar.</span>
+  </div>
+</main>

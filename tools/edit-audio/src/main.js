@@ -244,8 +244,10 @@ function updateSummary() {
 
   el.sumLength.textContent = formatDuration(frames / source.sampleRate);
   el.sumSpeed.textContent = chosen.speed === 1
-    ? 'unchanged'
-    : `${formatSpeed(chosen.speed)}, ${chosen.keepPitch ? 'same pitch' : `pitch ${chosen.speed > 1 ? 'up' : 'down'}`}`;
+    ? phrase('summary.speed.unchanged')
+    : phrase(chosen.keepPitch ? 'summary.speed.same'
+      : chosen.speed > 1 ? 'summary.speed.up' : 'summary.speed.down',
+    { speed: formatSpeed(chosen.speed) });
 
   const gain = chosen.volume.mode === 'normalize'
     ? normalizeGain(sourcePeak, NORMALIZE_TARGET)

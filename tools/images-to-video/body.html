@@ -171,6 +171,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="record.failed">Recording failed.</span>
     <span data-phrase="read.skipped.one">Skipped {n} file that could not be read as an
       image: {names}</span>
     <span data-phrase="read.skipped.many">Skipped {n} files that could not be read as
@@ -244,5 +245,19 @@
     <span data-phrase="net.platform.many">The page's own ad, measurement and
       donate-button scripts loaded from {hosts} hosts; not one of them was given
       a file.</span>
+    <span data-phrase="url.invalid">Not a valid web address: {address}</span>
+    <span data-phrase="url.protocol">Only http and https addresses are supported (got {protocol}).</span>
+    <span data-phrase="url.load">Could not load {host}. The server may not allow other sites to use its images (no CORS header), or the address may be wrong.</span>
+    <span data-phrase="url.timeout">{host} did not respond within 20 seconds.</span>
+    <span data-phrase="url.notimage">{host} returned something that is not a usable image.</span>
+    <span data-phrase="url.copy">Could not copy the image locally.</span>
+    <span data-phrase="url.empty">Paste at least one address first.</span>
+    <span data-phrase="url.nothing">Nothing to download.</span>
+    <span data-phrase="url.progress">Downloading {done} of {total}...</span>
+    <span data-phrase="url.done">Downloaded {done} of {total}.</span>
+    <span data-phrase="url.none">Nothing could be downloaded.</span>
+    <span data-phrase="url.failed">Download failed.</span>
+    <span data-phrase="url.problem">{url}: {reason}</span>
+    <span data-phrase="url.import">Images downloaded, but they could not be added to the tool.</span>
   </div>
 </main>

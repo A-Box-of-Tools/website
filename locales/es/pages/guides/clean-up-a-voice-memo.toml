@@ -1,0 +1,21 @@
+#
+# Guía: limpiar una nota de voz - Spanish.
+#
+
+nav = "Limpiar una nota de voz"
+title = "Limpiar una nota de voz antes de enviarla &mdash; sin subir nada"
+description = "Corta el aire muerto y los comienzos en falso, y sube después el nivel casi a plena escala. Dos herramientas del navegador seguidas, en el orden que conserva la calidad, y la grabación nunca sale de tu equipo."
+
+heading = "Cómo limpiar una nota de voz antes de enviarla"
+lede = """
+    Una nota de voz llega con treinta segundos de ruido de bolsillo, dos
+    comienzos en falso y un nivel que fijó la distancia al teléfono. Dejarla
+    lista para enviar son dos pasos &mdash; cortar y después subir &mdash; y
+    ambos corren en tu navegador, que es donde debe quedarse una grabación de
+    tu propia voz diciendo cosas privadas."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Corta el aire muerto, sube el nivel, envía la nota"
+og_description = "Recorta los comienzos en falso a ojo sobre la forma de onda y normaliza después el volumen: dos herramientas, el orden correcto, y la grabación se queda en tu equipo."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

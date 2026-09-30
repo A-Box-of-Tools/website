@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "Desbloquear un PDF"
+title = "Cómo desbloquear un PDF: contraseña y restricciones"
+description = "Un PDF que no se puede imprimir y uno que no se puede abrir plantean problemas distintos. Qué significa cada protección, cuál se retira con un clic y cuál requiere conocer la contraseña."
+heading = "Cómo desbloquear un PDF y reconocer qué lo bloquea"
+lede = "«Protegido» puede significar dos cosas muy distintas: una contraseña que impide leer el contenido o una instrucción que pide al lector no imprimirlo y que este acepta respetar. Distinguirlas tarda un segundo y determina qué puedes hacer después."
+updated = "10 de septiembre de 2026"
+og_title = "Cómo desbloquear un PDF: contraseña y restricciones"
+og_description = "Por qué muchos PDF protegidos no necesitan contraseña, por qué una contraseña de apertura perdida puede dejar el archivo inaccesible y cómo distinguir los dos casos."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

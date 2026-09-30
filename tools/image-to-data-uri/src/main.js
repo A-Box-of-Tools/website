@@ -383,7 +383,7 @@ function resultRow(shape, row) {
   const download = document.createElement('button');
   download.type = 'button';
   download.className = 'ghost';
-  download.textContent = 'Download';
+  download.textContent = phrase('result.download');
   download.addEventListener('click', () => saveText(code, fileName(shape, row)));
   actions.appendChild(download);
 
@@ -401,7 +401,7 @@ function resultRow(shape, row) {
     const more = document.createElement('button');
     more.type = 'button';
     more.className = 'ghost show-all';
-    more.textContent = `Show all ${count(code.length)} characters`;
+    more.textContent = phrase('result.showall', { n: count(code.length) });
     more.addEventListener('click', () => {
       holder.textContent = code;
       more.remove();
@@ -423,14 +423,14 @@ function copyButton(text, className) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = className;
-  button.textContent = 'Copy';
+  button.textContent = phrase('copy.copy');
 
   button.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(text);
-      flash(button, 'Copied');
+      flash(button, phrase('copy.copied'));
     } catch {
-      flash(button, 'Copy refused - use Download');
+      flash(button, phrase('copy.refused'));
     }
   });
 
@@ -454,9 +454,9 @@ el.copyAll.addEventListener('click', async () => {
   const text = bundle(currentShape(), results());
   try {
     await navigator.clipboard.writeText(text);
-    flash(el.copyAll, 'Copied');
+    flash(el.copyAll, phrase('copy.copied'));
   } catch {
-    flash(el.copyAll, 'Copy refused - use Download');
+    flash(el.copyAll, phrase('copy.refused'));
   }
 });
 

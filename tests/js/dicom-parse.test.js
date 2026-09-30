@@ -30,7 +30,7 @@ import {
 } from '../../tools/dicom-viewer/src/dicom.js';
 import { describe, formatTag, isPrivate } from '../../tools/dicom-viewer/src/dictionary.js';
 import {
-  age, charset, date, display, number, numbers, personName, text, time, values,
+  age, charset, date, dateTime, display, number, numbers, personName, text, time, values,
 } from '../../tools/dicom-viewer/src/values.js';
 import { transferSyntax } from '../../tools/dicom-viewer/src/uids.js';
 import {
@@ -423,9 +423,9 @@ const say = (key, values = {}) => (
   Object.keys(values).length ? `${key}(${Object.values(values).join(',')})` : key);
 
 test('dates, times, ages and names are written out for a person', () => {
-  assert.equal(date('20190314'), '14 March 2019');
-  assert.equal(date('1975.03.14'), '14 March 1975');
-  assert.equal(date('not a date'), null);
+  assert.equal(date('20190314', say), 'date.full(14,date.month.3,2019)');
+  assert.equal(date('1975.03.14', say), 'date.full(14,date.month.3,1975)');
+  assert.equal(date('not a date', say), null);
   assert.equal(time('134522'), '13:45:22');
   assert.equal(time('1345'), '13:45:00');
   // `age` names a sentence and takes a resolver: "45 years" is not one
@@ -457,7 +457,7 @@ test('a sequence and a fragment list say what they are rather than showing bytes
   const bytes = file(EXPLICIT_LE,
     element('00081140', 'SQ', concat(item(element('00081155', 'UI', '1.2', syntax))), syntax));
   const { dataset } = read(bytes);
-  assert.equal(display(dataset.byTag.get('00081140'), latin1).shown, '1 item');
+  assert.equal(display(dataset.byTag.get('00081140'), latin1, say).shown, 'value.item.one(1)');
 });
 
 /* ---------------------------------------------------------- transfer syntaxes */
@@ -477,4 +477,21 @@ test('an unrecognised transfer syntax gets the safe reading and no decoder', () 
   assert.equal(unknown.explicit, true);
   assert.equal(unknown.little, true);
   assert.equal(unknown.pixels, 'no');
+});
+
+// The date formatter receives the same resolver as the rest of display().
+// A reordered template proves that neither the month nor the order is still
+// being supplied by an English-only branch of the value renderer.
+test('DICOM dates and timestamps use translated months and date order', () => {
+  const t = (key, values = {}) => {
+    if (key === 'date.month.3') return '三月';
+    if (key === 'date.full') return `${values.year}年${values.month}${values.day}日`;
+    if (key === 'date.time') return `${values.date} ${values.time}`;
+    return key;
+  };
+  assert.equal(date('20190314', t), '2019年三月14日');
+  assert.equal(dateTime('20190314134522', t), '2019年三月14日 13:45:22');
+  const shown = display({ vr: 'DA', value: ascii('20190314'), length: 8 }, latin1, t);
+  assert.equal(shown.shown, '2019年三月14日');
+  assert.equal(shown.raw, '20190314');
 });

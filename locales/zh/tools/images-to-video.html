@@ -177,6 +177,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="record.failed">录制失败。</span>
     <span data-phrase="read.skipped.one">跳过了 {n} 个读不成图片的文件：{names}</span>
     <span data-phrase="read.skipped.many">跳过了 {n} 个读不成图片的文件：{names}</span>
     <span data-phrase="list.more">{names}&hellip;</span>
@@ -228,5 +229,19 @@
     <span data-phrase="net.dirty">从 {hosts} 获取了图片——这些是你自己粘贴的地址。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何文件。</span>
     <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何文件。</span>
+    <span data-phrase="url.invalid">不是有效的网址：{address}</span>
+    <span data-phrase="url.protocol">只支持 http 和 https 地址（收到的是 {protocol}）。</span>
+    <span data-phrase="url.load">无法加载 {host}。服务器可能不允许其他网站使用它的图片（没有 CORS 标头），也可能是地址有误。</span>
+    <span data-phrase="url.timeout">{host} 在 20 秒内没有响应。</span>
+    <span data-phrase="url.notimage">{host} 返回的内容不是可用的图片。</span>
+    <span data-phrase="url.copy">无法把图片复制到这台机器。</span>
+    <span data-phrase="url.empty">请先粘贴至少一个地址。</span>
+    <span data-phrase="url.nothing">没有可下载的内容。</span>
+    <span data-phrase="url.progress">正在下载第 {done} 张，共 {total} 张…</span>
+    <span data-phrase="url.done">已下载 {done} 张，共 {total} 张。</span>
+    <span data-phrase="url.none">没有下载到任何图片。</span>
+    <span data-phrase="url.failed">下载失败。</span>
+    <span data-phrase="url.problem">{url}：{reason}</span>
+    <span data-phrase="url.import">图片已下载，但无法添加到工具中。</span>
   </div>
 </main>

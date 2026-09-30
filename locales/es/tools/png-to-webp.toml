@@ -1,0 +1,125 @@
+name = "PNG a WebP"
+heading = "PNG&nbsp;a&nbsp;WebP <span class=\"h1-kw\">&mdash; menos tamaño, con toda la transparencia</span>"
+tagline = "La misma imagen, a menudo un tercio más pequeña, con la transparencia intacta."
+title = "Convertir PNG a WebP &mdash; gratis y sin subir nada"
+description = "Convierte PNG a WebP en el navegador, sin pérdida o con mayor compresión. Ambos modos conservan la transparencia. Sin subir nada, sin cuenta y sin conexión."
+og_title = "Convierte PNG a WebP sin subir las imágenes"
+og_description = "WebP sin pérdida conserva cada píxel opaco en menos espacio; el modo con pérdida puede reducir una foto a una décima parte. Ambos conservan la transparencia. Todo ocurre en tu dispositivo."
+og_image_alt = "PNG a WebP: la misma imagen, más pequeña y con la transparencia intacta"
+pledge = "La conversión ocurre en el navegador y en tu dispositivo. Los navegadores escriben WebP desde 2020: el codificador ya estaba instalado antes de llegar aquí. No hay nada que descargar ni esperar. Esta página no tiene funciones de red ni un servidor al que enviar una imagen."
+live_hint = "Compruébalo: abre las herramientas de desarrollo, mira la pestaña Red y convierte una imagen. Verás cargar los archivos de esta página, pero ninguna petición con una imagen, miniatura, nombre de archivo ni un byte de lo que elegiste. O carga la página una vez, desconéctate y convierte una carpeta entera."
+read_first = ", y <code>src/shared/image-convert.js</code> para la conversión. En particular, <code>encodeWebp</code> escribe el archivo y vuelve a leer sus bloques RIFF para comprobar si el navegador generó realmente la codificación sin pérdida solicitada."
+howto_heading = "Cómo convertir PNG a WebP"
+card = "La misma imagen, a menudo un tercio más pequeña. Sin pérdida para conservar los píxeles, o mucho más pequeña si aceptas compresión con pérdida. La transparencia se mantiene en ambos modos."
+
+[words]
+plural = "imágenes"
+choose = "una imagen"
+analytics_extra = ", ni nada sobre su contenido"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin límite de tamaño"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tus imágenes no tienen adónde ir."
+body = "La Content-Security-Policy enumera todas las direcciones a las que esta página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún destino donde recoger tus archivos, ni una línea de código que los mandara si lo hubiera."
+
+[[privacy]]
+title = "La transparencia se conserva."
+body = "WebP tiene canal alfa, igual que PNG. Un logotipo con fondo transparente sigue siendo transparente: no hay color que elegir ni fondo que añadir. Es la diferencia respecto a <a href=\"/es/convertir-webp-a-jpg/\">WebP a JPG</a>, que debe rellenarlo porque JPEG no admite canal alfa."
+
+[[privacy]]
+title = "Se comprueba si es sin pérdida."
+body = "El lienzo no tiene una opción explícita para WebP sin pérdida. El navegador elige la codificación según la calidad; los actuales usan la modalidad sin pérdida en el extremo superior. Como es comportamiento del motor y no una garantía del estándar, aquí se lee cada archivo generado y se indica la codificación real. Si un navegador deja de respetarlo, el resultado lo avisará."
+
+[[privacy]]
+title = "Lo que el lienzo no conserva."
+body = "El lienzo solo guarda píxeles. Los bloques de texto, perfiles ICC o XMP del PNG no pasan al resultado. Los píxeles se conservan en el modo sin pérdida, pero no sus metadatos. Para consultar o editar estos últimos, usa el <a href=\"/es/eliminar-datos-exif/\">Visor y eliminador de EXIF</a>."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google, y el botón de donación, de Buy Me a Coffee. No reciben información sobre tus imágenes. Todo el código que lee, decodifica o escribe un archivo se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Carga la página una vez y desconéctate: funciona igual. Es la comprobación más sencilla. Un conversor que enviara tus imágenes a otro lugar no podría hacerlo."
+
+[[howto]]
+title = "Elige los archivos PNG."
+body = "Suéltalos o búscalos. Se reconocen por sus primeros bytes, no por el nombre: un JPEG se rechaza con un mensaje que explica el formato real. La fila también avisa si hay transparencia, para que sepas qué se va a conservar."
+
+[[howto]]
+title = "Elige sin pérdida o más pequeño."
+body = "Sin pérdida conserva cada píxel opaco y reduce el archivo: útil para capturas, diagramas, logotipos y texto. Más pequeño activa el control de calidad, pensado para fotografías, donde el ahorro puede ser enorme con poca diferencia visible."
+
+[[howto]]
+title = "Pulsa &ldquo;Convertir&rdquo; y lee el resultado."
+body = "Cada resultado muestra el tamaño nuevo, la diferencia y la codificación que realmente escribió el navegador: sin pérdida o con pérdida a la calidad elegida. Se lee del archivo terminado; no se limita a repetir el ajuste."
+
+[[howto]]
+title = "Descarga los archivos por separado o juntos."
+body = "Un archivo tiene su botón; con dos o más también puedes descargar un ZIP. Los nombres repetidos reciben un número antes de la extensión para no reemplazar archivos."
+
+[[faq]]
+q = "¿Se sube mi imagen a alguna parte?"
+a = "No. El navegador lee, decodifica y escribe el archivo en tu dispositivo. La herramienta no pide ni envía nada por la red. La <code>Content-Security-Policy</code> enumera todas las direcciones permitidas y ninguna pertenece a este sitio."
+
+[[faq]]
+q = "¿Se conserva la transparencia?"
+a = "Sí, en ambos modos. Es una de las principales ventajas frente a JPEG. WebP tiene canal alfa: el fondo transparente de un logotipo sigue siendo transparente, sin elegir un color ni aplanarlo. Cada fila avisa si hay transparencia antes de convertir y el resultado confirma que se ha conservado."
+
+[[faq]]
+q = "¿Qué diferencia hay entre sin pérdida y más pequeño?"
+a = "Sin pérdida conserva exactamente cada píxel opaco y suele reducir entre una quinta y una tercera parte, porque WebP comprime mejor que PNG. Los píxeles semitransparentes tienen una salvedad, explicada debajo. Más pequeño usa compresión con pérdida: elimina detalles poco perceptibles y puede dejar una foto en una décima parte. Para texto, colores planos y bordes definidos, elige sin pérdida; para fotos, el otro modo."
+
+[[faq]]
+q = "¿Por qué dice &ldquo;cada píxel opaco&rdquo;? ¿Qué pasa con los semitransparentes?"
+a = "Pueden cambiar ligeramente por el lienzo, no por WebP. El navegador guarda el color multiplicado por la transparencia; esa operación no siempre se puede invertir exactamente. Cuanto menos opaco es un píxel, menos precisión conserva. Esto afecta a los conversores que pasan por un lienzo, incluido este. <br><br> Los píxeles totalmente opacos y los invisibles se conservan exactamente. En los intermedios, el color almacenado puede variar: aquí se han medido hasta 63 unidades de 255 en píxeles con menos de un cuarto de opacidad, y como máximo 4 en el resto. Apenas se ve porque los píxeles que más varían son los menos visibles. Ocurre en los bordes suavizados de un logotipo, que siguen viéndose igual. <br><br> Para conservar una copia exacta de archivo, guarda el PNG. Para que se vea igual y pese menos, usa esta conversión."
+
+[[faq]]
+q = "¿Cómo sabe que el archivo es realmente sin pérdida?"
+a = "Lee y comprueba el archivo terminado. WebP guarda la imagen en un bloque <code>VP8L</code> si es sin pérdida o <code>VP8&nbsp;</code> si es con pérdida. La página identifica ese bloque y muestra el resultado. El lienzo no tiene una bandera de codificación sin pérdida: se pide la máxima calidad y el navegador decide. Los navegadores actuales lo respetan, pero aquí se verifica de todos modos."
+
+[[faq]]
+q = "¿Un WebP se abre en todas partes?"
+a = "En la web, sí: Chrome, Edge, Firefox y Safari lo muestran desde 2020. Fuera del navegador varía: Windows y macOS ya lo previsualizan, pero algunos programas antiguos, formularios y lectores electrónicos no lo aceptan. Si el destino lo rechaza, usa el conversor <a href=\"/es/convertir-webp-a-jpg/\">WebP a JPG</a>."
+
+[[faq]]
+q = "¿Por qué pesa tanto el PNG?"
+a = "PNG es sin pérdida. Comprime bien capturas y logotipos con áreas repetidas, pero mal las fotografías, donde casi ningún píxel se repite. Una foto de teléfono en PNG puede pesar diez veces más que su JPEG. Para eso sirve el modo con pérdida. Si necesitas un límite concreto, el <a href=\"/es/comprimir-imagen/\">Compresor de imágenes</a> permite fijar un tamaño objetivo."
+
+[[faq]]
+q = "¿Conserva la fecha, la cámara y la ubicación?"
+a = "No. El lienzo solo guarda píxeles y deja los metadatos fuera. Los PNG no suelen tener información de cámara, pero para consultar lo que lleven puedes usar el <a href=\"/es/eliminar-datos-exif/\">Visor y eliminador de EXIF</a>, que los lee y escribe sin recomprimir la imagen."
+
+[[faq]]
+q = "¿Puedo convertir una carpeta entera?"
+a = "Sí. No hay límite de cantidad ni tamaño porque no hay un servidor que los procese. Cada archivo tiene su fila y descarga. Con dos o más también puedes descargar un ZIP; arriba aparece el ahorro total."
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = "Es gratis: sin cuenta, inicio de sesión, prueba ni marca de agua. La publicidad paga el sitio y no recibe información sobre tus imágenes."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate: seguirá funcionando igual. Es una comprobación directa de que no se sube nada. Un conversor que enviara los archivos a un servidor dejaría de funcionar sin red."
+
+[schema]
+description = "Convierte PNG a WebP en el navegador, sin pérdida o con calidad ajustable. Conserva la transparencia y comprueba la codificación real del resultado. No se sube nada ni se descarga un códec."
+features = ["Convierte PNG a WebP con el codificador del navegador", "WebP sin pérdida: cada píxel opaco conservado en menos espacio", "WebP con pérdida y control de calidad para fotografías", "Conserva el canal alfa y la transparencia", "Lee el resultado para confirmar su codificación", "No se sube nada, y la herramienta funciona con la red desenchufada", "Reconoce archivos por su contenido, no por la extensión", "Muestra el ahorro por archivo y del lote completo", "Por lotes, con todos los resultados en un zip"]
+
+[picker]
+title = "Suelta aquí las imágenes PNG"
+hint = "o haz clic para elegir: archivos .png, sea cual sea su nombre"

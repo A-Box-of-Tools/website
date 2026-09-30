@@ -217,7 +217,7 @@ function renderSources() {
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'ghost danger';
-    remove.textContent = 'Remove';
+    remove.textContent = phrase('source.remove.button');
     remove.setAttribute('aria-label', phrase('source.remove', { name: item.name }));
     remove.addEventListener('click', () => {
       if (running) return;
@@ -333,7 +333,7 @@ function buildPageNode(entry, index) {
 
   const dims = document.createElement('p');
   dims.className = 'page-dims';
-  dims.textContent = sizeLabel(width, height);
+  dims.textContent = sizeLabel(width, height, phrase);
   meta.append(dims);
 
   const controls = document.createElement('div');

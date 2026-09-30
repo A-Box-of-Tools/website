@@ -1,0 +1,11 @@
+# Localized guide; structural metadata remains in the English source.
+
+nav = "Comprimir um vídeo"
+title = "Como comprimir um vídeo para menos de 8, 25 ou 100 MB"
+description = "O que um limite de tamanho custa à imagem, para onde vão os megabytes, por que reduzir a resolução antes de perder nitidez e como comprimir no navegador sem enviar o arquivo."
+heading = "Como comprimir um vídeo até o tamanho que você consegue enviar"
+lede = "Um vídeo que não pode ser enviado está acima de um limite. Veja para onde vão os megabytes, o que se perde ao reduzi-los e como ficar abaixo desse limite sem enviar primeiro o arquivo que era grande demais."
+updated = "12 de setembro de 2026"
+og_title = "Como comprimir um vídeo até o tamanho que você consegue enviar"
+og_description = "Para onde vão os megabytes, o que um limite de tamanho custa à imagem e como reduzir o vídeo no navegador sem enviar o arquivo."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

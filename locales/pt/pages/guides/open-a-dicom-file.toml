@@ -1,0 +1,21 @@
+#
+# Guia: abrir um arquivo DICOM - Portuguese.
+#
+
+nav = "Abrir um arquivo DICOM"
+title = "Como abrir um arquivo DCM (DICOM) sem instalar nada"
+description = "O que é um arquivo .dcm, como abrir um, o que há no disco do hospital, por que alguns arquivos não têm extensão, como usar janela e nível e quais dados do paciente acompanham a imagem."
+
+heading = "Como abrir um arquivo DCM e o que há dentro dele"
+lede = """
+    Um disco de hospital é uma pasta de arquivos sem extensão e um visualizador
+    escrito para o Windows XP. Os arquivos são DICOM, e não há nada de exótico
+    neles: um exame é um cabeçalho cheio de campos e um bloco de pixels. É assim
+    que se olha para um, é isso que os controles significam, e é isso que o arquivo
+    carrega além da imagem."""
+
+updated = "19 de setembro de 2026"
+
+og_title = "Como abrir um arquivo DCM sem instalar nada"
+og_description = "O que há num disco de hospital, por que os arquivos não têm extensão, e o que um exame .dcm carrega sobre o paciente além da imagem."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

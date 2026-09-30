@@ -1,0 +1,193 @@
+<main id="main">
+
+  <section class="card">
+    <h2><span class="step">1</span> Escolha o PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+
+    <p id="unlock-hint" class="field-note" hidden>Este documento já exige senha para abrir. Remova-a primeiro, neste navegador, com o <a href="../desbloquear-pdf/">desbloqueador de PDF</a>. Depois, traga a cópia desbloqueada para definir a nova senha.</p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> Escolha a senha e as restrições</h2>
+
+    <p class="card-lede">A senha bloqueia o documento: o conteúdo é criptografado com uma chave derivada dela. As restrições são diferentes: um pedido que os leitores costumam respeitar, mas podem ignorar. Você pode definir uma delas ou ambas.</p>
+
+    <div class="password-box">
+      <label class="field" for="password"><span>Senha para abrir o documento</span> <span class="field-note">Digitada e usada aqui, sem envio: esta página não tem para onde enviá-la. Deixe em branco para definir apenas restrições em um documento que continuará abrindo para qualquer pessoa.</span></label>
+      <div class="password-input">
+        <input type="password" id="password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal" class="ghost" aria-pressed="false">Mostrar</button>
+      </div>
+
+      <label class="field" for="password-again"><span>Digite a mesma senha novamente</span></label>
+      <div class="password-input">
+        <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+      </div>
+
+
+      <p id="password-status" class="field-summary password-status" role="status" aria-live="polite">Sem esta senha, você pode perder o acesso ao documento. Esta ferramenta não tenta adivinhá-la nem promete recuperação. Guarde o original.</p>
+    </div>
+
+    <fieldset class="restrictions">
+      <legend>Restrições</legend>
+      <p class="field-note restrictions-note">São pedidos ao leitor. A maioria respeita, mas nenhum é obrigado a fazê-lo. Se o documento abre sem senha, sempre é possível remover as restrições. Marque-as para expressar sua preferência, sem tratá-las como garantia.</p>
+
+      <label class="check"><input type="checkbox" id="restrict-print"> <span><strong>Não permitir impressão</strong> <span class="check-note">Nem em qualidade completa nem como imagem de baixa resolução.</span></span></label>
+      <label class="check"><input type="checkbox" id="restrict-copy"> <span><strong>Não permitir cópia</strong> <span class="check-note">Texto e imagens não podem ser selecionados e copiados. A leitura em voz alta para pessoas com deficiência visual continua permitida.</span></span></label>
+      <label class="check"><input type="checkbox" id="restrict-change"> <span><strong>Não permitir alterações</strong> <span class="check-note">Sem edição, comentários, destaques, preenchimento de formulários ou inclusão, exclusão e reordenação de páginas.</span></span></label>
+
+      <label class="field owner-field" for="owner-password"><span>Senha de proprietário, para remover as restrições depois</span> <span class="field-note">Opcional. Se ficar vazia, a senha de abertura cumpre as duas funções. Sem nenhuma senha, uma senha aleatória é usada e descartada, para que uma tentativa com senha vazia não remova as restrições.</span></label>
+      <div class="password-input">
+        <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">Mostrar</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="modes">
+      <legend>Método de criptografia</legend>
+      <label class="mode"><input type="radio" name="scheme" value="6" checked> <span><strong>AES-256</strong> Método atual do PDF 2.0. Compatível com leitores desde 2010 e o único da família ainda considerado forte.</span></label>
+      <label class="mode"><input type="radio" name="scheme" value="4"> <span><strong>AES-128</strong> Método de 2005, para leitores anteriores a 2010. A cifra é adequada, mas o cálculo de senha de 1994 torna as tentativas de adivinhação muito mais baratas.</span></label>
+    </fieldset>
+
+  </section>
+
+
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Proteja o arquivo</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Proteger o documento</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Baixar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.settings">O botão fica disponível quando as senhas coincidem e há senha ou restrição definida.</span>
+    <span data-phrase="password.show">Mostrar</span>
+    <span data-phrase="password.hide">Ocultar</span>
+    <span data-phrase="status.blank">Sem esta senha, você pode perder o acesso ao documento. Esta ferramenta não tenta adivinhá-la nem promete recuperação. Guarde o original.</span>
+    <span data-phrase="status.mismatch">As duas senhas ainda não coincidem.</span>
+    <span data-phrase="status.short">{n} caracteres. Uma senha curta é o ponto fraco do método atual; uma frase é melhor que uma palavra.</span>
+    <span data-phrase="status.ok">{n} caracteres, digitados da mesma forma duas vezes. Sem a senha, você pode perder o acesso. Guarde o original.</span>
+    <span data-phrase="status.nothing">Nenhuma proteção foi definida: escolha uma senha, marque uma restrição ou faça as duas coisas.</span>
+    <span data-phrase="status.restrictonly">Sem senha de abertura. O documento continuará abrindo para qualquer pessoa, apenas com as restrições marcadas abaixo.</span>
+    <span data-phrase="note.restricted">Este documento já tem restrições, mas não exige senha para abrir. Ele foi aberto sem senha, e suas escolhas abaixo substituirão as anteriores.</span>
+    <span data-phrase="note.repaired">A tabela de referências cruzadas deste arquivo não batia com o conteúdo dele, então
+      ele foi lido procurando os objetos um a um. Isso é um conserto, e deu certo, mas
+      confira o resultado antes de mandar para qualquer lugar.</span>
+    <span data-phrase="note.incremental">Este documento já foi editado e salvo novamente. Ele contém cópias antigas de objetos que não são mais usadas; elas não serão incluídas no resultado.</span>
+    <span data-phrase="crypt.handler">Este documento usa certificado em vez de senha (/{name}). A ferramenta não consegue abri-lo nem aplicar outra proteção.</span>
+    <span data-phrase="crypt.version">Este documento usa uma versão de criptografia PDF não reconhecida pela ferramenta (V{v}, R{r}). Ele não pode ser aberto aqui para receber nova proteção.</span>
+    <span data-phrase="crypt.malformed">O documento informa que está criptografado, mas o dicionário de criptografia está incompleto. O arquivo está danificado e não pode ser aberto.</span>
+    <span data-phrase="crypt.wrongpassword">Este documento exige senha para abrir.</span>
+    <span data-phrase="read.notpdf">Isso não é um PDF. Esta ferramenta só trabalha com arquivos PDF.</span>
+    <span data-phrase="read.encrypted">Este PDF está criptografado.</span>
+    <span data-phrase="read.nocatalogue">O arquivo não contém catálogo de documento. Ele não é um PDF ou está danificado além do que esta ferramenta consegue reparar; não há conteúdo para proteger.</span>
+    <span data-phrase="read.noheader">Isto não começa como um PDF: não tem cabeçalho %PDF-.</span>
+    <span data-phrase="read.failed">Este PDF não pôde ser lido: {detail}</span>
+    <span data-phrase="pdf.flate">um fluxo Flate não descomprimiu ({detail})</span>
+    <span data-phrase="pdf.nocompression">este navegador não tem CompressionStream</span>
+    <span data-phrase="pdf.lzw">um fluxo LZW começa com um código sem definição</span>
+    <span data-phrase="pdf.cryptfilter">este fluxo está criptografado</span>
+    <span data-phrase="pdf.unknownfilter">um filtro desconhecido, /{name}</span>
+    <span data-phrase="pdf.deep">aninhado fundo demais</span>
+    <span data-phrase="pdf.short">passou do fim</span>
+    <span data-phrase="pdf.unexpected">inesperado {found} em {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">byte inesperado 0x{hex} em {at}</span>
+    <span data-phrase="pdf.noendstream">um fluxo sem endstream</span>
+    <span data-phrase="pdf.noobj">sem a palavra-chave obj em {at}</span>
+    <span data-phrase="pdf.nostartxref">sem startxref</span>
+    <span data-phrase="pdf.noxref">não é uma seção xref</span>
+    <span data-phrase="pdf.now">um fluxo xref sem /W</span>
+    <span data-phrase="pdf.zerowidth">um fluxo xref com campos de largura zero</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="stage.keys">Derivando as chaves da senha</span>
+    <span data-phrase="stage.writing">Gravando a cópia criptografada</span>
+    <span data-phrase="stage.checking">Abrindo novamente para conferir</span>
+    <span data-phrase="run.cancelled">Cancelado. Nada foi alterado; aperte o botão para começar novamente.</span>
+    <span data-phrase="result.locked">{size} &mdash; exige senha para abrir.</span>
+    <span data-phrase="result.restricted">{size} &mdash; abre para qualquer pessoa, com restrições.</span>
+    <span data-phrase="result.sub">Todas as páginas, fontes e imagens foram preservadas, agora criptografadas. Guarde também o original.</span>
+    <span data-phrase="check.passed">Conferido: {found}</span>
+    <span data-phrase="check.failed">O resultado não passou na verificação: {found}. Guarde o original.</span>
+    <span data-phrase="check.ok.locked">recusado sem senha e reaberto na memória com a sua senha: {pages}, como no original.</span>
+    <span data-phrase="check.ok.restricted">reaberto na memória sem senha, como esperado, com as restrições escolhidas: {pages}, como no original.</span>
+    <span data-phrase="check.open">o arquivo pronto abriu sem senha, portanto o bloqueio não foi aplicado</span>
+    <span data-phrase="check.stillshut">o arquivo pronto não abriu com a senha escolhida ({detail})</span>
+    <span data-phrase="check.pages">o arquivo pronto tem {pages} páginas, em vez de {expected}</span>
+    <span data-phrase="check.permissions">o arquivo pronto não contém as restrições escolhidas</span>
+    <span data-phrase="check.reopen">não foi possível reabrir o arquivo pronto ({detail})</span>
+    <span data-phrase="facts.scheme.aes256">Criptografado com AES-256 e o cálculo de senha do PDF 2.0, o método atual. Compatível com leitores desde 2010.</span>
+    <span data-phrase="facts.scheme.aes128">Criptografado com AES-128 pelo método de 2005, para leitores antigos. O cálculo de senha é o de 1994; por isso, uma senha curta é mais fácil de adivinhar aqui do que com AES-256.</span>
+    <span data-phrase="facts.userpassword">É preciso usar a senha escolhida para abrir. Não há outro acesso fornecido pela ferramenta.</span>
+    <span data-phrase="facts.nouserpassword">Abre para qualquer pessoa. As restrições são pedidos, não um bloqueio.</span>
+    <span data-phrase="facts.restrictions">Os leitores recebem o pedido de impedir: {list}.</span>
+    <span data-phrase="facts.norestrictions">Sem restrições. Quem tem a senha pode imprimir, copiar e editar.</span>
+    <span data-phrase="facts.owner.same">A senha de abertura também remove as restrições.</span>
+    <span data-phrase="facts.owner.own">A senha de proprietário escolhida remove as restrições.</span>
+    <span data-phrase="facts.owner.random">A senha de proprietário é aleatória e ninguém a guarda; uma senha vazia não remove as restrições. Ainda assim, qualquer leitor pode optar por ignorá-las.</span>
+    <span data-phrase="facts.replaced">As restrições anteriores do documento foram substituídas por estas.</span>
+    <span data-phrase="facts.signature">Este documento tinha assinatura digital. Regravá-lo invalida qualquer assinatura, então a cópia gerada não está assinada. O original continua sendo a cópia assinada.</span>
+    <span data-phrase="facts.incremental">As cópias antigas e substituídas de objetos de edições anteriores não foram
+      copiadas.</span>
+    <span data-phrase="facts.repaired">A tabela de referências cruzadas do original estava quebrada e teve de ser refeita
+      vasculhando o arquivo. Confira este arquivo antes de passar adiante.</span>
+    <span data-phrase="perm.print">impressão</span>
+    <span data-phrase="perm.copy">cópia</span>
+    <span data-phrase="perm.change">alterações</span>
+    <span data-phrase="list.two">{a} e {b}</span>
+    <span data-phrase="list.three">{a}, {b} e {c}</span>
+    <span data-phrase="net.clean">O seu documento não foi a lugar nenhum. {total}
+      arquivos carregados, todos do próprio site. {platform}</span>
+    <span data-phrase="net.dirty">algo contatou {hosts}, o que esta ferramenta nunca faz. Vale investigar. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts do próprio site para
+      publicidade, medição e o botão de doação vieram de {hosts} host; nenhum
+      deles recebeu um documento ou um byte de um.</span>
+    <span data-phrase="net.platform.many">Os scripts do próprio site para
+      publicidade, medição e o botão de doação vieram de {hosts} hosts; nenhum
+      deles recebeu um documento ou um byte de um.</span>
+  </div>
+</main>

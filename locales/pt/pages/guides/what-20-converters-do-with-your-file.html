@@ -1,0 +1,140 @@
+<section>
+  <h2>O resultado</h2>
+  <p>Em 17 de setembro de 2026, entregamos o mesmo arquivo a vinte conversores on-line gratuitos e medimos os bytes que saíram do navegador. <strong>Dezenove enviaram o arquivo.</strong> Um não enviou.</p>
+  <p>Três detalhes chamaram atenção: <strong>onze dos dezenove enviaram o arquivo assim que ele foi escolhido</strong>, antes do clique em Converter; <strong>todos os resultados que procuramos depois continuavam acessíveis por um endereço comum da web</strong>, sem cookie, login ou sessão; e <strong>dois serviços colocaram o nome do arquivo nesse endereço</strong>.</p>
+  <p>Isso não é prova de má conduta. Muitos desses serviços sempre funcionaram por envio, publicam prazos curtos de retenção e dependem de endereços difíceis de adivinhar. A conclusão é mais específica: existe uma diferença mensurável entre <em>o site dizer que apaga meu arquivo</em> e <em>eu conseguir verificar o que aconteceu com ele</em>.</p>
+</section>
+<section>
+  <h2>Como foi feita a medição</h2>
+  <p>O método é simples e pode ser repetido. O objetivo é apresentar medições, não pedir confiança em uma opinião.</p>
+  <h3>O arquivo</h3>
+  <p>Um PNG de 450&nbsp;&times;&nbsp;350 pixels aleatórios, com cerca de 542&nbsp;KB, chamado <code>abox-probe-9471.png</code>. O ruído aleatório comprime pouco e torna o tamanho reconhecível nas requisições. O nome distinto permite encontrá-lo depois em uma URL, o que se mostrou relevante.</p>
+  <h3>A medição</h3>
+  <p>Antes de fornecer o arquivo, substituímos os métodos de envio da página por versões que registravam o tamanho recebido e depois executavam a operação normal: <code>fetch</code>, <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>, <code>WebSocket.send</code> e <code>HTMLFormElement.submit</code>. Colocamos o arquivo no seletor da própria página, esperamos dez segundos e lemos o registro.</p>
+  <p>Observar formulários é importante. Alguns serviços enviam por formulário HTML, sem passar por <code>fetch</code> ou <code>XMLHttpRequest</code>. O PicResize, por exemplo, mostra a imagem localmente por um endereço <code>blob:</code> enquanto faz o envio. Só a prévia parece indicar processamento local; a requisição do formulário revela o contrário.</p>
+  <h3>A conferência posterior</h3>
+  <p>Quando o site devolvia um link para o resultado, buscamos esse endereço pela linha de comando em outro programa, sem cookies, sessão ou dados do navegador. Se o arquivo era devolvido assim, qualquer pessoa com o endereço também podia obtê-lo.</p>
+  <p>Os vinte são os sites que conseguimos operar, não necessariamente os maiores. Tentamos outros nove sem conseguir medi-los. Eles aparecem mais adiante: uma falha de automação não é um resultado favorável.</p>
+</section>
+<section>
+  <h2>As medições</h2>
+  <p>Os números abaixo foram medidos em 17 de setembro de 2026. A última coluna resume a política publicada por cada serviço naquele dia.</p>
+  <figure class="data">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Conversor</th>
+              <th scope="col">O arquivo saiu?</th>
+              <th scope="col">Bytes medidos</th>
+              <th scope="col">Destino</th>
+              <th scope="col">Retenção informada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Squoosh</td><td>Não</td><td>0</td><td>&mdash;</td><td>nada para guardar</td></tr>
+            <tr><td>TinyPNG</td><td>Sim, ao escolher</td><td>542.566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 horas</td></tr>
+            <tr><td>iLoveIMG</td><td>Sim, ao escolher</td><td>542.816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 horas</td></tr>
+            <tr><td>iLovePDF</td><td>Sim, ao escolher</td><td>542.801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 horas</td></tr>
+            <tr><td>Sejda</td><td>Sim, ao escolher</td><td>542.537</td><td><code>sejda.com/api/files/upload</code></td><td>após o processamento; links compartilhados por 7 dias</td></tr>
+            <tr><td>PDF24</td><td>Sim, ao escolher</td><td>542.531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>&ldquo;normalmente&rdquo; 1 hora</td></tr>
+            <tr><td>PDF Candy</td><td>Sim, ao escolher</td><td>542.522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 horas</td></tr>
+            <tr><td>jpg2pdf.com</td><td>Sim, ao escolher</td><td>542.570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 hora, conforme os Termos</td></tr>
+            <tr><td>Img2Go</td><td>Sim, ao escolher</td><td>542.589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 horas</td></tr>
+            <tr><td>Online-Convert</td><td>Sim, ao escolher</td><td>542.423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 horas</td></tr>
+            <tr><td>PDF2Go</td><td>Sim, ao escolher</td><td>542.542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 horas</td></tr>
+            <tr><td>Compress2Go</td><td>Sim, ao escolher</td><td>542.492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 horas</td></tr>
+            <tr><td>PicResize</td><td>Sim, ao escolher</td><td>542.568</td><td><code>picresize.com/en/edit</code>, envio por formulário</td><td>20 minutos</td></tr>
+            <tr><td>ResizePixel</td><td>Sim, ao escolher</td><td>envio por formulário</td><td><code>resizepixel.com/</code></td><td>em até 1 hora</td></tr>
+            <tr><td>CloudConvert</td><td>Sim, ao converter</td><td>543.218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 horas</td></tr>
+            <tr><td>Convertio</td><td>Sim, ao converter</td><td>não capturado</td><td><code>convertio.co/process/&hellip;</code></td><td>24 horas</td></tr>
+            <tr><td>Ezgif</td><td>Sim, ao converter</td><td>542.483</td><td><code>ezgif.com/optimize</code>, envio por formulário</td><td>1 hora após o último uso</td></tr>
+            <tr><td>Aconvert</td><td>Sim, ao converter</td><td>envio por formulário</td><td><code>aconvert.com/results.php</code></td><td>2 horas</td></tr>
+            <tr><td>Online2PDF</td><td>Sim, ao converter</td><td>547.330</td><td><code>online2pdf.com/conversion/frame</code></td><td>&ldquo;imediatamente&rdquo;</td></tr>
+            <tr><td>IMGonline</td><td>Sim, ao converter</td><td>542.633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>política não encontrada</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>Vinte conversores, um arquivo de 542&nbsp;KB, em 17 de setembro de 2026. “Ao escolher” significa que o envio começou na seleção do arquivo; “ao converter”, que esperou pelo botão. O Convertio mudou de página antes da leitura da quantidade de bytes; por isso, o tamanho está marcado como não capturado.</figcaption>
+    </figure>
+</section>
+<section>
+  <h2>Onze enviam antes do clique em Converter</h2>
+  <p>Em onze dos dezenove casos, o arquivo já estava a caminho do servidor enquanto a página ainda mostrava um botão Converter que não tinha sido apertado.</p>
+  <p>No iLoveIMG, o botão ainda dizia <em>Compress IMAGES</em>, mas 542.816 bytes já haviam sido enviados a <code>api9.iloveimg.com</code>. Observamos comportamento semelhante em iLovePDF, PDF24, PDF Candy, Sejda, TinyPNG, jpg2pdf e nos quatro sites da mesma plataforma descrita adiante.</p>
+  <p>Há uma razão técnica: enviar enquanto a pessoa ajusta as opções faz a conversão parecer instantânea depois do clique. Isso melhora a espera, mas elimina uma etapa que muita gente acredita ter. Escolher um arquivo parece apenas abri-lo; apertar Converter parece autorizar o envio. Nesses casos, o envio começa no primeiro momento.</p>
+  <p>A consequência é direta: perceber que você escolheu o rascunho sem tarjas, o holerite ou a foto que pretendia recortar primeiro pode acontecer só depois de o arquivo já ter saído.</p>
+</section>
+<section>
+  <h2>O resultado fica em um endereço público</h2>
+  <p>Quatro sites devolveram links comuns para os arquivos prontos. Buscamos os quatro por outro programa, sem cookies ou sessão. Todos devolveram o arquivo:</p>
+  <ul>
+    <li><strong>Ezgif</strong>: <code>s1.ezgif.com/tmp/&hellip;</code> devolveu 542.483 bytes, exatamente o arquivo de teste.</li>
+    <li><strong>Aconvert</strong>: <code>s6.aconvert.com/convert/&hellip;</code> devolveu um PDF de 474.856 bytes.</li>
+    <li><strong>ResizePixel</strong>: <code>resizepixel.com/Image/&hellip;</code> devolveu 432.111 bytes.</li>
+    <li><strong>IMGonline</strong>: <code>srv2.imgonline.com.ua/result_img/&hellip;</code> devolveu um JPEG de 128.179 bytes.</li>
+  </ul>
+  <p>Esse é um padrão comum da web, não uma invasão. Os endereços têm trechos aleatórios longos, difíceis de adivinhar. Ainda assim, a proteção depende do <strong>sigilo da URL</strong>, não de senha ou conta. URLs podem aparecer no histórico, em capturas da barra de endereço, em cabeçalhos <code>Referer</code> conforme a navegação e a política aplicada, em intermediários de rede e em mensagens que compartilham o link em vez do arquivo.</p>
+  <p>O Aconvert avisa na própria página de resultado que os arquivos ficam por no máximo duas horas e que não devem ser vinculados de outros sites. Entre os quatro observados, foi o único a mostrar esse aviso ali.</p>
+</section>
+<section>
+  <h2>O nome do arquivo também viaja</h2>
+  <p>Um conversor recebe mais que o conteúdo visível, e dois serviços deixaram isso explícito no endereço.</p>
+  <p>O PDF Candy enviou o arquivo a uma URL terminada em <code>/uploadcbc/1789652849416-abox-probe-9471.png</code>: data e hora numéricas seguidas do nome original. O ResizePixel mostrou a prévia em <code>/Image/&lt;id&gt;/Preview/abox-probe-9471.png</code>.</p>
+  <p>Nosso arquivo se chamava <code>abox-probe-9471.png</code> e não revelava nada pessoal. Arquivos reais podem se chamar <code>passport-scan.jpg</code>, <code>contract-signed-final.pdf</code> ou <code>scan-12wk.png</code>. Um nome pode resumir todo o conteúdo. Além disso, o endereço é a parte da requisição que costuma ser registrada, armazenada em cache e mantida por mais tempo, geralmente por mais sistemas que o próprio arquivo.</p>
+  <p>Há também os dados internos que não aparecem na tela. Uma foto de celular pode carregar as coordenadas do local onde foi tirada, o horário, o número de série da câmera e até uma miniatura de como a imagem era <em>antes</em> do recorte. Independentemente do tratamento aplicado à imagem depois, o serviço recebeu esses dados junto com o original.</p>
+</section>
+<section>
+  <h2>Quatro nomes, uma plataforma</h2>
+  <p>Img2Go, Online-Convert, PDF2Go e Compress2Go parecem serviços separados. O arquivo foi enviado a quatro servidores: <code>www21.img2go.com</code>, <code>www8.online-convert.com</code>, <code>www15.pdf2go.com</code> e <code>www6.compress2go.com</code>. Todos usaram o mesmo caminho:</p>
+  <pre><code>/v2/dl/web7/upload-file/&lt;uuid&gt;</code></pre>
+  <p>Mesmo destino funcional, mesmo comportamento de envio, mesmo texto de política e prazo informado de 72 horas. São quatro apresentações de uma plataforma, relação descrita nas políticas para quem as lê.</p>
+  <p>Não há nada de incomum em operar várias marcas sobre a mesma infraestrutura. A consequência prática é que trocar de site por desconfiança pode não trocar quem processa os dados. A mudança só reduz essa dependência se o serviço por trás também for diferente.</p>
+  <p>Outro detalhe: o CloudConvert enviou o arquivo a <code>eu-central.storage.cloudconvert.com</code>. O nome do servidor indica a região usada, informação mais explícita que a de muitos outros serviços medidos.</p>
+</section>
+<section>
+  <h2>O que as políticas prometem</h2>
+  <p>Os prazos publicados eram em geral curtos e específicos: exclusão imediata após a conversão no Online2PDF, vinte minutos no PicResize, duas horas em iLovePDF, iLoveIMG, PDF Candy e Aconvert e 72 horas na plataforma de quatro sites.</p>
+  <p>No <strong>jpg2pdf.com</strong>, não havia política no endereço habitual; o link jurídico da página inicial levava a <code>/terms</code>, onde “Terms and Privacy” informava uma hora. No <strong>IMGonline</strong>, não encontramos política: nem link na página inicial em inglês, nem documento nos dois endereços convencionais, nem informação sobre armazenamento ou exclusão na ferramenta. O resultado continuava acessível a quem tivesse o link.</p>
+  <p>O ponto principal não é a diferença entre uma e duas horas. <strong>Você não consegue observar diretamente toda a exclusão.</strong> Não vê se ela alcançou backup, registro, relatório de erro que capturou o corpo da requisição ou rede de distribuição que guardou o resultado. Também não vê de fora o destino de todas as cópias após uma venda da empresa ou um incidente. Uma política descreve compromissos sobre sistemas que você não controla.</p>
+  <p>Esse é o argumento para preferir processamento que não envie o arquivo. Não é uma acusação de mentira contra as empresas medidas. É uma forma de dispensar a necessidade de confiar no tratamento de uma cópia remota.</p>
+</section>
+<section>
+  <h2>O serviço que não enviou</h2>
+  <p>O Squoosh, compressor de imagens do Google, abriu, mostrou e comprimiu o arquivo sem fazer <strong>nenhuma requisição de rede</strong> no teste. Zero bytes pelo mesmo método que havia registrado 542.566 bytes saindo para o TinyPNG.</p>
+  <p>Ele funciona como controle da medição: o método consegue produzir resultado negativo, então os dezenove positivos não vieram de um procedimento que sempre encontraria envio. Também demonstra que essa tarefa e esses formatos podem ser processados no navegador, sem servidor.</p>
+  <p>Muitos serviços usam servidores por sua história de implementação e pelo modelo de contas, cotas e planos pagos. Um processamento inteiramente local é mais difícil de limitar por uso. Isso não torna o envio uma exigência técnica de toda conversão.</p>
+</section>
+<section>
+  <h2>O que não conseguimos medir</h2>
+  <p>Outros nove sites foram tentados: FreeConvert, Smallpdf, Zamzar, Optimizilla, Photopea, media.io, Bulk Resize Photos, png2jpg.com e SimpleImageResizer.</p>
+  <p>Em oito casos, os controles não aceitaram um arquivo inserido por script e exigiam uma interação real. O teste não chegou à etapa de envio. <strong>Isso não é um resultado sobre a privacidade desses serviços</strong> e não demonstra que processem localmente; significa apenas que a medição não foi executada.</p>
+  <p>O SimpleImageResizer revelou uma armadilha do método. O formulário tinha campo de arquivo, mas declarava <code>enctype="application/x-www-form-urlencoded"</code>. Nessa combinação, o navegador envia <em>apenas o nome</em>, não os bytes do arquivo. A primeira versão da nossa medição somou os dados do formulário e informou incorretamente um envio de 1.085.210 bytes. Excluímos a linha em vez de publicar esse número. Ao repetir o método, confira o <code>enctype</code> antes de concluir que o arquivo foi enviado.</p>
+</section>
+<section>
+  <h2>Como conferir por conta própria</h2>
+  <p>O método é publicado para que outras pessoas possam repetir e corrigir a tabela. Há verificações simples:</p>
+  <ul>
+    <li><strong>Desligue a internet.</strong> Carregue a ferramenta, desligue o Wi-Fi e use-a. O trabalho local continua; o que depende do servidor para. Uma promessa escrita não substitui esse resultado.</li>
+    <li><strong>Observe a aba Rede.</strong> Abra as ferramentas de desenvolvedor, escolha Rede, ordene por tamanho e use a ferramenta. Se uma foto de 4&nbsp;MB foi enviada, haverá uma requisição de 4&nbsp;MB no topo da lista. Observe <em>antes</em> de apertar Converter e também depois: esse é o resultado descrito acima.</li>
+    <li><strong>Leia <code>connect-src</code>.</strong> A <code>Content-Security-Policy</code> no código da página lista destinos permitidos para essas conexões, e o navegador a aplica. Um endereço do próprio serviço nessa lista permite que o código envie dados para ele.</li>
+  </ul>
+  <p>O guia <a href="../e-seguro-enviar-arquivos/">é seguro enviar arquivos a conversores on-line?</a> detalha essas verificações e uma quarta opção.</p>
+</section>
+<section>
+  <h2>Como este site responde às mesmas perguntas</h2>
+  <p>Depois de medir outros sites, precisamos responder pelos mesmos critérios:</p>
+  <ul>
+    <li><strong>Bytes dos arquivos enviados: zero.</strong> As ferramentas processam no navegador, sem enviar arquivo, miniatura, nome, tamanho ou conteúdo extraído.</li>
+    <li><strong>Destino: nenhum servidor de processamento.</strong> O site serve arquivos estáticos. A lista <code>connect-src</code> da política inclui publicidade, medição e contribuição, mas <strong>nenhum servidor deste site para receber arquivos</strong>.</li>
+    <li><strong>Retenção: não se aplica.</strong> Sem receber os arquivos, não há cópia remota nem prazo de exclusão em que confiar.</li>
+    <li><strong>Verificável: sim.</strong> O código é <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">público</a>. A geração reduz comentários e espaços sem transformar a lógica; você pode executá-la e comparar com os arquivos publicados.</li>
+  </ul>
+  <p>As exceções são explícitas. O site usa publicidade e contagem de visitas do Google, sem entregar dados dos arquivos a esses serviços. <a href="../../imagens-para-video/">Imagens para Vídeo</a> pode buscar uma imagem em um endereço colado, cujo servidor verá seu IP. <a href="../../compartilhar-texto/">Compartilhar Texto</a> usa uma conexão para apresentar dois navegadores, sem armazenar ou transportar o conteúdo por esse servidor. A <a href="../../privacidade/">política de privacidade</a> explica os três casos.</p>
+  <p>As alternativas locais incluem <a href="../../comprimir-imagem/">compressão de imagens até um tamanho escolhido</a>, <a href="../../imagens-para-pdf/">imagens para PDF</a>, <a href="../../juntar-pdf/">junção de PDFs</a>, <a href="../../comprimir-pdf/">compressão de PDF</a> e <a href="../../remover-dados-exif/">consulta e remoção de EXIF</a>. São gratuitas, sem conta e sem destino para enviar seus arquivos.</p>
+</section>
+<section>
+  <h2>Usar estes números</h2>
+  <p>Você pode citar as medições e repetir o teste. Ao reproduzi-las, mantenha o contexto: vinte conversores gratuitos, medidos em 17 de setembro de 2026; dezenove enviaram o arquivo; onze enviaram antes do clique em Converter; e quatro de quatro resultados verificados foram obtidos por endereço público, sem sessão.</p>
+  <p>Um link para esta página é bem-vindo, mas não obrigatório. Sites mudam, e este é o registro de uma tarde. Se repetir o método e encontrar outro resultado, use a <a href="../../contato/">página de contato</a>. Correções acompanhadas das medições serão publicadas.</p>
+</section>

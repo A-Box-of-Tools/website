@@ -1,0 +1,120 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Una página web normalmente vive y muere con su conexión, porque cada
+      visita vuelve a traerla. Pero una página puede venir con un pequeño
+      programa llamado <em>service worker</em>, que el navegador instala a
+      su lado y pone al mando de su tráfico de red. En la primera visita,
+      ese worker guarda una copia completa de todo lo que compone la
+      página &mdash; marcado, estilos, scripts &mdash; en una caché de tu
+      máquina. Desde entonces, las peticiones se contestan desde esa
+      copia. Cuando el Wi-Fi muere, nada cambia, porque de todos modos no
+      se estaba trayendo nada.
+    </p>
+    <p>
+      No hay magia ni permiso especial en nada de esto: es maquinaria
+      estándar del navegador, presente en todos los grandes navegadores
+      desde hace como una década. Lo inusual es un sitio que se apoya en
+      ella tan fuerte como este &mdash; porque para un sitio cuya promesa
+      entera es que tus archivos nunca salen, el sin-conexión no es una
+      comodidad. Es la prueba.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué demuestra sobrevivir al tirón de cable</h2>
+    <p>
+      La comprobación más fuerte de la guía de subidas es
+      <a href="../es-seguro-subir-archivos/">tirar del cable</a>: cargar
+      la herramienta, desconectar y usarla. Merece la pena precisar por
+      qué funciona. Una herramienta que convierte tu archivo en un
+      servidor necesita la red en el momento exacto en que hace su trabajo
+      &mdash; corta el cable y el trabajo se para. Una herramienta que
+      sigue funcionando ha demostrado, no afirmado, que el trabajo ocurre
+      en tu máquina; y una página que no puede alcanzar la red no puede
+      enviar tu archivo a ninguna parte, desee lo que desee su código.
+    </p>
+    <p>
+      Ninguna política de privacidad puede ofrecer eso. Una política
+      describe intenciones y puede cambiar; una página haciendo su trabajo
+      en modo avión es física. Por eso cada herramienta de este sitio
+      funciona sin conexión y lleva un indicador en vivo que dice si ahora
+      mismo la tienes &mdash; para que puedas verlo cambiar al apagar la
+      conexión, y ejecutar la comprobación más fuerte que existe en unos
+      diez segundos.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cómo la copia se mantiene honrada</h2>
+    <p>
+      Dos preguntas deciden si lo guardado-para-siempre es regalo o
+      trampa, y la maquinaria responde a ambas:
+    </p>
+    <ul>
+      <li>
+        <strong>¿Se queda vieja la copia?</strong> El worker busca una
+        versión más nueva cuando hay conexión y la cambia entera. Las
+        versiones van enteras porque la copia debe ser siempre coherente:
+        mitad vieja, mitad nueva es el único estado que jamás debe
+        servirse.
+      </li>
+      <li>
+        <strong>¿Qué se copió exactamente?</strong> Todo lo que la página
+        necesita y nada más &mdash; y cada herramienta de aquí guarda su
+        copia en su propio compartimento. La caché de una herramienta
+        contiene esa herramienta; instalar una no instala diez en
+        silencio. La copia además puede inspeccionarse: las herramientas
+        de desarrollo de tu navegador listan cada archivo cacheado, y la
+        lista es la misma que la página trajo a la vista de todos.
+      </li>
+    </ul>
+    <p>
+      El resultado es una página que se comporta como una aplicación que
+      instalaste por el hecho de visitarla &mdash; cosa que además se
+      ofrece literalmente: la barra de direcciones del navegador instala
+      cualquier herramienta de aquí como aplicación, con el icono propio
+      de la herramienta, abriéndose directa en la herramienta, sin botón
+      en la página y sin script que lo pida. La misma maquinaria, vestida
+      de atajo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué no prueba el sin-conexión</h2>
+    <p>
+      La comprobación es fuerte, no mágica, y sus límites merecen decirse
+      tan claro como su fuerza:
+    </p>
+    <ul>
+      <li>
+        <strong>Prueba el momento, no el futuro.</strong> El trabajo hecho
+        sin conexión se quedó en tu máquina, punto. Una página podría en
+        principio retener datos y enviarlos al volver la conexión &mdash;
+        así que, con los archivos más delicados, cierra la pestaña antes
+        de reconectar, o comprueba también la otra dirección: mira la
+        pestaña de Red mientras vuelve la conexión.
+      </li>
+      <li>
+        <strong>Prueba esta página, no el sitio.</strong> Cada página
+        responde por sí misma. La única de aquí que usa la red lo dice en
+        su propia página: la herramienta de
+        <a href="../../compartir-texto/">compartir texto</a>, cuyo
+        oficio entero es mover algo entre dos aparatos, y que explica
+        exactamente qué lleva su única conexión.
+      </li>
+      <li>
+        <strong>No te esconde.</strong> Cargar la página ya le contó al
+        sitio tu dirección, como todo cargado de página en la web. El
+        sin-conexión trata de adónde van tus archivos, no de anonimato.
+      </li>
+    </ul>
+    <p>
+      Esos límites son la razón de que la guía de subidas enseñe cuatro
+      comprobaciones y no una: la pestaña de Red, la política de seguridad
+      en el código de la página y el código legible cubren lo que el tirón
+      de cable no puede. Pero como primer filtro no hay ninguno más
+      rápido: si una herramienta no puede hacer su trabajo sin red, ya
+      aprendiste dónde ocurre el trabajo, y no hace falta leer más.
+    </p>
+  </section>

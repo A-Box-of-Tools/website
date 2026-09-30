@@ -10,15 +10,10 @@ addresses it appears at. The rule is that the words live in the markup, where
 the locale machinery already reaches them, and the JavaScript reads them back
 with `phrase()`.
 
-Most of the site does not do that yet. A sweep of every string literal in every
-tool finds about fifteen hundred sentences that a visitor can be shown, and
-they are not the leftovers - they are the explaining voice of the tools that
-explain most. The GIF analyser's byte budget, the DICOM viewer's header
-diagnostics and the EXIF editor's format refusals are all English, in every
-language.
-
-Moving them is a long job. This file is what stops it getting longer while it
-happens: every tool has a number below, and a tool may go down but not up.
+The count below is a ratchet on what remains: each tool may go down but not
+up. It also counts some technical strings that only resemble prose, and misses
+some short labels. Translation work still needs a source review and a browser
+check; a low count alone cannot establish that a page is translated.
 
 WHAT IS COUNTED
 
@@ -91,7 +86,7 @@ BASELINE = {
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
-    'exif-editor': 30,
+    'exif-editor': 20,
     'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
@@ -101,7 +96,7 @@ BASELINE = {
     'gif-maker': 7,
     # A filename template.
     'grab-frame': 1,
-    'hash-checksum': 10,
+    'hash-checksum': 3,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
     # A filename template, a dimension pair, a CSS percentage, a phrase key
@@ -146,7 +141,7 @@ BASELINE = {
     # A filename template, one line of a template literal, and three markers the
     # reader throws internally and never shows.
     'split-gif': 2,
-    'stack-images': 7,
+    'stack-images': 6,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
     'text-diff': 3,
@@ -154,7 +149,7 @@ BASELINE = {
     # A filename template, a clock format, two CSS percentages and three class
     # names the timeline builds.
     'trim-audio': 2,
-    'trim-video': 5,
+    'trim-video': 4,
     # Five, and none of them is a sentence: four are PDF object syntax in the
     # module that writes the locked example, and the fifth is a RangeError for
     # a key length no caller can reach. Everything a visitor reads on that

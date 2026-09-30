@@ -203,7 +203,13 @@ test('what a file contributes to the stack is read straight out of it', () => {
 
 /* ----------------------------------------------------------- the identifiers */
 
-const identified = (dataset) => identifiers(walk(dataset), (each) => display(each, latin1));
+/* The identifier panel and report ask their caller for every label, because
+   their modules cannot reach the markup. Echoing the key and values checks
+   which translation was requested without hardcoding the English wording. */
+const label = (key, values = {}) => (
+  Object.keys(values).length ? `${key}(${Object.values(values).join(',')})` : key);
+
+const identified = (dataset) => identifiers(walk(dataset), (each) => display(each, latin1, label));
 
 function datasetOf(...parts) {
   const bytes = file(EXPLICIT_LE, concat(...parts));
@@ -237,7 +243,7 @@ test('the identifiers a file carries are found and graded', () => {
 
   // And the value shown is the readable one, because the point of the panel is
   // that somebody can see what is actually in their file.
-  assert.equal(byTag.get('00100030').value, '14 March 1975');
+  assert.equal(byTag.get('00100030').value, 'date.full(14,date.month.3,1975)');
 });
 
 test('a field that has been emptied is not reported as an identifier', () => {
@@ -279,13 +285,6 @@ test('the UIDs and the private elements are counted rather than listed', () => {
 });
 
 /* ---------------------------------------------------------------- the report */
-
-/* The report asks its caller for every label, because report.js cannot reach
-   the markup they live in. Here that caller echoes the key and its values, so
-   an assertion checks which sentence was asked for rather than how the English
-   happens to be worded. */
-const label = (key, values = {}) => (
-  Object.keys(values).length ? `${key}(${Object.values(values).join(',')})` : key);
 
 test('the report holds every element, nesting included', () => {
   const dataset = datasetOf(

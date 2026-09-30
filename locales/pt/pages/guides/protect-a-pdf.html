@@ -1,0 +1,52 @@
+<section>
+  <h2>Como começar</h2>
+  <p>Abra <a href="../../proteger-pdf/">Proteger PDF</a>, escolha o documento, digite a senha duas vezes e aperte o botão. O arquivo é criptografado no navegador com AES-256. Antes de oferecer o download, a página tenta abrir o resultado sem senha, o que deve falhar, e depois com a senha escolhida. Nada é enviado; funciona da mesma forma com a internet desligada.</p>
+  <p>O restante do guia explica o que essa ação faz. Senha e restrição não são equivalentes, e a diferença determina quais garantias você pode dar sobre o arquivo.</p>
+</section>
+<section>
+  <h2>As duas proteções de um PDF</h2>
+  <p>Um PDF pode ter duas senhas, embora os leitores as apresentem de forma tão parecida que a diferença costuma passar despercebida.</p>
+  <p>A <strong>senha de abertura</strong>, ou de <em>usuário</em>, bloqueia a leitura. O conteúdo é criptografado com uma chave derivada dela, e a senha não fica gravada no documento. Sem a credencial necessária, nem o destinatário, nem um site, nem o programa que criou o PDF consegue ler seu conteúdo.</p>
+  <p>As <strong>restrições</strong> de impressão, cópia e edição, controladas pela senha de <em>proprietário</em>, são pedidos. Um documento que abre sem pedir senha <em>precisa conter o necessário para derivar sua própria chave</em>, pois o leitor acabou de fazer isso. O bloqueio de impressão depende de um campo separado de permissões que os programas concordam em respeitar. A Adobe documenta esse funcionamento desde o início. Qualquer leitor pode ignorar o pedido; o <a href="../desbloquear-um-pdf/">desbloqueador deste site</a> é um deles.</p>
+  <p>Isso não torna as restrições inúteis. Muitos leitores as respeitam, e marcar “não permitir impressão” comunica sua preferência. Mas não confie nelas como garantia. Para impedir que a pessoa errada leia o arquivo, defina uma senha de abertura. Para pedir que ele não seja impresso, marque a restrição sabendo que ela é um pedido.</p>
+</section>
+<section>
+  <h2>Qual criptografia escolher</h2>
+  <p>A ferramenta oferece duas opções. Mantenha a padrão, a menos que exista uma necessidade específica.</p>
+  <ul>
+    <li><strong>AES-256</strong>, método do PDF 2.0 de 2017, é o padrão. A senha passa por um cálculo deliberadamente custoso, com número de rodadas dependente dos dados, o que dificulta acelerar tentativas com equipamento dedicado. Leitores desde o Acrobat X, de 2010, navegadores, celulares e leitores atuais conseguem abri-lo. A segurança depende da senha escolhida.</li>
+    <li><strong>AES-128</strong>, método de 2005, serve para um leitor anterior a 2010 que precise abrir o arquivo. A cifra é adequada; o ponto mais fraco é a etapa de 1994 que transforma a senha em chave, barata o bastante para facilitar tentativas. Se não souber qual leitor será usado, escolha 256.</li>
+  </ul>
+  <p>Ambas diferem muito da primeira geração de criptografia PDF, com chave de 40 bits de 1994 que um computador comum consegue testar por completo. Os leitores chamam todas de “protegido por senha”. Se alguém disser que o documento é seguro por ter senha, pergunte qual método foi usado. O <a href="../../desbloquear-pdf/">desbloqueador de PDF</a> identifica isso.</p>
+</section>
+<section>
+  <h2>Por que a senha continua sendo decisiva</h2>
+  <p>No AES-256 atual, não há um atalho conhecido para ignorar a criptografia; tentar senhas é o caminho de ataque, e o cálculo torna cada tentativa lenta. Lento não significa impossível. Uma palavra curta oferece muito menos possibilidades que uma frase longa. A página conta os caracteres e avisa quando a senha é curta. A regra prática é simples: a segurança do documento depende da senha, e usar uma longa não custa nada.</p>
+  <p>Digite-a duas vezes, como a página exige: um erro de digitação pode impedir o acesso ao resultado. E guarde o original. A proteção cria outro arquivo e deixa o primeiro intacto; ele será útil se você perder a senha.</p>
+</section>
+<section>
+  <h2>Se você esquecer a senha</h2>
+  <p>Você pode perder o acesso ao documento. É melhor entender isso antes de entregar o arquivo a um serviço que promete recuperar senhas. Esses serviços fazem tentativas com dicionários, padrões e combinações. Uma senha forte no método atual pode tornar essa busca impraticável. Muitos enviam o arquivo a um servidor e alguns cobram antes de informar se houve resultado.</p>
+  <p>Este site não tenta adivinhar senhas. O desbloqueador não faz esse tipo de busca, e a proteção pede confirmação justamente porque não oferece recuperação. É uma escolha deliberada, não uma função esquecida.</p>
+</section>
+<section>
+  <h2>Por que evitar o envio para proteger</h2>
+  <p>Pense no conteúdo: extrato, contrato, documento médico, declaração de imposto ou cópia de passaporte para alugar um imóvel. Um arquivo que merece senha costuma ser justamente aquele que você não quer deixar com terceiros.</p>
+  <p>Um serviço que processa no servidor precisa receber primeiro o original desbloqueado e, depois, a senha escolhida. Mesmo com boas intenções, ele passa a ter o conteúdo privado e a credencial, e você não consegue verificar de fora todos os detalhes de retenção.</p>
+  <p>Isso não é necessário para a tarefa. Derivar uma chave, executar a cifra e gravar os bytes são operações que o navegador faz localmente. É o que <a href="../../proteger-pdf/">esta ferramenta</a> faz: documento e senha ficam na aba. A política da página lista os endereços permitidos, e nenhum pertence a este site. Desligue a rede e use a ferramenta para conferir.</p>
+  <p>Os guias <a href="../e-seguro-enviar-arquivos/">é seguro enviar arquivos?</a> e <a href="../e-seguro-enviar-um-extrato-bancario/">é seguro enviar um extrato bancário?</a> discutem essa escolha em mais detalhes.</p>
+</section>
+<section>
+  <h2>O que muda no arquivo</h2>
+  <p><strong>Uma assinatura digital perde a validade.</strong> Ela cobre os bytes exatos do arquivo, e a proteção gera novos bytes. Qualquer programa que fizesse essa alteração teria o mesmo efeito. Se precisar de proteção e assinatura, proteja primeiro e assine a cópia protegida.</p>
+  <p><strong>O tamanho muda um pouco.</strong> A criptografia acrescenta bytes a fluxos e strings, enquanto a regravação descarta cópias antigas de objetos substituídos em edições anteriores. O resultado pode aumentar ou diminuir; essa não é a finalidade da operação.</p>
+  <p><strong>As páginas permanecem iguais.</strong> Nada é redesenhado, recodificado ou reorganizado. Instruções, fontes e imagens são criptografadas como chegaram. Para quem tem a senha, o texto continua selecionável, as digitalizações mantêm a resolução e nada muda de lugar.</p>
+</section>
+<section>
+  <h2>Trocar uma senha existente</h2>
+  <p>O formato não permite colocar uma segunda camada de senha sobre a primeira. Um arquivo que já exige senha é encaminhado ao <a href="../../desbloquear-pdf/">desbloqueador de PDF</a>. Remova a proteção antiga no mesmo navegador e traga a cópia para aplicar a nova. Um documento com apenas restrições, que abre para qualquer pessoa, é aceito diretamente; a página avisa que as novas escolhas substituirão as anteriores.</p>
+</section>
+<section>
+  <h2>Faça as outras alterações antes</h2>
+  <p>Depois de protegido com senha, o documento precisa passar pelo desbloqueador antes de ser usado nas outras ferramentas. Portanto, primeiro <a href="../../juntar-pdf/">junte ou divida as páginas</a>, <a href="../../comprimir-pdf/">reduza o tamanho</a> e, principalmente, <a href="../../tarjar-pdf/">remova os dados que não devem aparecer</a>. A senha impede o acesso de quem não a tem; não esconde informações da pessoa que receberá a senha.</p>
+</section>

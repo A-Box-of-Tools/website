@@ -1,0 +1,75 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>Abre el <a href="/es/desbloquear-pdf/">desbloqueador de PDF</a> y arrastra el documento. En un segundo te indicará cuál de estas dos situaciones tienes:</p>
+    <ul>
+      <li><strong>El documento se abre, pero no deja imprimir o copiar.</strong> No hace falta una contraseña. Pulsa el botón para retirar las restricciones. Es el caso más habitual.</li>
+      <li><strong>El documento pide una contraseña para abrirse.</strong> Necesitas esa contraseña. La herramienta no puede encontrarla por ti ni promete hacerlo.</li>
+    </ul>
+    <p>El resto de esta guía explica por qué son situaciones tan distintas. Conviene saberlo antes de entregar un documento a un servicio que ofrece desbloquearlo.</p>
+  </section>
+
+  <section>
+    <h2>Dos protecciones, pero solo una impide leer</h2>
+    <p>Un PDF admite dos contraseñas. Los lectores las presentan casi igual, y de ahí viene buena parte de la confusión.</p>
+    <p>La <strong>contraseña de usuario</strong>, normalmente llamada contraseña de apertura, es una protección real. El contenido está cifrado; la clave se deriva de la contraseña y esta no aparece escrita en el documento. Sin ella no pueden leerlo ni tú, ni un sitio web, ni el programa que lo creó.</p>
+    <p>La <strong>contraseña de propietario</strong> controla las <em>restricciones</em>: impedir imprimir, copiar, editar o rellenar formularios. Es habitual que exista sin una contraseña de usuario. Ese es el archivo que se abre al hacer doble clic, pero después no deja imprimir.</p>
+    <p>Un archivo que se abre sin pedirte nada <em>debe contener todo lo necesario para derivar su propia clave</em>, porque el lector acaba de hacerlo. El contenido está cifrado con una clave que cualquiera puede obtener. Lo que impide imprimir es un campo separado, con bits de permisos que los lectores respetan por acuerdo. Adobe lo documentó así desde el principio. Es una petición, no una barrera criptográfica.</p>
+    <p>Por eso retirar restricciones es inmediato, mientras que retirar una contraseña de apertura desconocida no lo es. No son dos intensidades de la misma cerradura: una cierra la puerta y la otra deja una nota.</p>
+  </section>
+
+  <section>
+    <h2>Cómo distinguirlas sin usar ninguna herramienta</h2>
+    <p>Haz doble clic en el archivo.</p>
+    <ul>
+      <li><strong>Te pide una contraseña.</strong> Es una contraseña de usuario. Necesitas conocerla.</li>
+      <li><strong>Se abre, pero alguna opción está desactivada</strong>, como imprimir, copiar o rellenar campos, y el título o las propiedades indican «Protegido». Son restricciones y pueden retirarse.</li>
+    </ul>
+    <p>La mayoría de los lectores muestra el detalle en las propiedades del documento, dentro de Seguridad: cada permiso aparece como permitido o no permitido. El <a href="/es/desbloquear-pdf/">desbloqueador de PDF</a> muestra esa lista y añade el esquema de cifrado utilizado y qué protección ofrece hoy.</p>
+  </section>
+
+  <section>
+    <h2>Lo que significa «cifrado» depende de la generación</h2>
+    <p>Dos documentos pueden decir «protegido con contraseña» y representar protecciones separadas por treinta años. El formato ha pasado por cinco generaciones:</p>
+    <ul>
+      <li><strong>RC4 de 40 bits</strong> (PDF 1.1, 1994). Se diseñó para ajustarse a las restricciones estadounidenses de exportación de la época. La clave es tan corta que puede probarse exhaustivamente con hardware corriente.</li>
+      <li><strong>RC4 de 128 bits</strong> (PDF 1.4, 2001). Probar todas las claves de 128 bits no es viable, pero RC4 se considera roto desde 2013. Se prohibió en TLS en 2015 y los navegadores lo retiraron a principios del año siguiente.</li>
+      <li><strong>AES-128</strong> (PDF 1.6, 2005). Combina un cifrado moderno con una derivación de clave de 1994. El cifrado es sólido, pero convertir una contraseña en clave resulta tan barato que probar contraseñas es mucho más fácil de lo que sugiere la clave.</li>
+      <li><strong>AES-256, primer intento</strong> (2008). Fue una extensión de Adobe que después se retiró: el hash de la contraseña resultó lo bastante barato como para atacarlo a la velocidad de una tarjeta gráfica.</li>
+      <li><strong>AES-256 de PDF 2.0</strong> (2017). Su cálculo es deliberadamente costoso y sigue ofreciendo una protección útil. La seguridad depende de la contraseña elegida.</li>
+    </ul>
+    <p>Si alguien asegura que un documento es seguro porque tiene contraseña, pregunta qué esquema utiliza. Un proceso de trabajo de hace veinte años puede seguir produciendo el primer tipo de esta lista.</p>
+  </section>
+
+  <section>
+    <h2>Si has perdido la contraseña de apertura</h2>
+    <p>Puedes haber perdido el acceso al documento. Conviene saberlo antes de pasar por varios sitios que te pedirán el archivo para intentarlo.</p>
+    <p>Los buscadores muestran muchas herramientas de «recuperación de contraseñas PDF». Lo que hacen es probar diccionarios, patrones y combinaciones. Puede funcionar con una contraseña corta, pero deja de ser práctico con una larga. Algunas trabajan en tu dispositivo; muchas suben el documento a un servidor y otras cobran antes de decir si funcionó. Una contraseña fuerte en un archivo moderno no se recupera por arte de magia.</p>
+    <p>El <a href="/es/desbloquear-pdf/">desbloqueador de PDF</a> no intenta adivinar contraseñas. No contiene un diccionario ni un bucle de búsqueda; puedes leer el código. Es una decisión deliberada: en archivos antiguos sí sería posible probar claves, por eso este límite se explica en lugar de dejarlo implícito.</p>
+    <p>Antes de nada, pregunta a quien te envió el documento: normalmente conserva la contraseña. En empresas puede ser la misma para un departamento, y bancos o sistemas de nómina a veces usan datos como la fecha de nacimiento o las últimas cifras de una cuenta. Las instrucciones suelen estar en el correo que acompañaba al archivo.</p>
+  </section>
+
+  <section>
+    <h2>¿Conviene subirlo?</h2>
+    <p>Piensa en los documentos que suelen necesitar desbloqueo: extractos bancarios que no se imprimen, recibos de sueldo, cartas médicas, contratos que no permiten copiar o documentos fiscales. Casi por definición, alguien consideró que merecían protección.</p>
+    <p>Entregarlos a un sitio web significa enviar primero el contenido privado a su servidor. Si hay contraseña de apertura, también se la das. No puedes comprobar desde fuera qué guardan, durante cuánto tiempo o quién accede, por mucho que lo explique la página.</p>
+    <p>No hace falta. Desbloquear un PDF consiste en derivar una clave, aplicar el descifrado y escribir otro archivo. El navegador puede hacer los tres pasos. <a href="/es/desbloquear-pdf/">Esta herramienta</a> mantiene el documento y la contraseña en la pestaña y funciona sin conexión. Puedes desconectar la red y comprobarlo.</p>
+    <p>La guía sobre <a href="/es/guias/es-seguro-subir-archivos/">si es seguro subir archivos</a> desarrolla la cuestión general; la de <a href="/es/guias/es-seguro-subir-un-extracto-bancario/">subir un extracto bancario</a> la aplica a documentos especialmente sensibles.</p>
+  </section>
+
+  <section>
+    <h2>Dos cambios en el archivo y algo que se conserva</h2>
+    <p><strong>Una firma digital dejará de ser válida.</strong> La firma cubre los bytes exactos del archivo al que se aplicó. Retirar el cifrado escribe otro archivo y rompe esa correspondencia. Cualquier programa tendría el mismo efecto. Conserva el original: sigue siendo la copia firmada.</p>
+    <p><strong>El archivo suele reducirse un poco.</strong> La reescritura deja fuera las versiones antiguas de objetos que otras ediciones habían añadido. Es un efecto secundario, no el objetivo.</p>
+    <p><strong>Las páginas no cambian.</strong> No se vuelven a dibujar, codificar ni distribuir. Se conservan las instrucciones de dibujo, las fuentes y las imágenes. El texto sigue siendo seleccionable, los escaneos mantienen su resolución y nada se mueve. Si una herramienta devuelve un documento más borroso o convierte el texto en imagen, ha hecho algo más que desbloquearlo.</p>
+  </section>
+
+  <section>
+    <h2>¿Está permitido?</h2>
+    <p>Eso depende de tus derechos sobre el documento, del archivo y del lugar donde estés; no lo decide la tecnología.</p>
+    <p>Lo que sí puede describirse con claridad es el formato. Las restricciones son un campo que los lectores respetan por acuerdo, no una barrera criptográfica. Hay usos cotidianos legítimos: imprimir tu propio extracto, copiar un informe que puedes utilizar, ordenar páginas de un escaneo o rellenar un formulario. Si no tienes derecho a usar el documento, retirar un permiso técnico no te lo concede.</p>
+  </section>
+
+  <section>
+    <h2>Después de desbloquearlo</h2>
+    <p>El archivo queda como un PDF normal y puedes usar las demás herramientas: <a href="/es/unir-pdf/">unir o separar páginas</a>, <a href="/es/comprimir-pdf/">reducir el tamaño</a> o <a href="/es/censurar-pdf/">eliminar un nombre de verdad</a>. Si estaba protegido porque contiene información privada, esa última tarea puede ser el siguiente paso que necesitas.</p>
+  </section>

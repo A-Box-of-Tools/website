@@ -172,6 +172,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="record.failed">Die Aufnahme ist fehlgeschlagen.</span>
     <span data-phrase="read.skipped.one">{n} Datei übersprungen, die sich nicht als Bild
       lesen ließ: {names}</span>
     <span data-phrase="read.skipped.many">{n} Dateien übersprungen, die sich nicht als
@@ -250,5 +251,19 @@
     <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
       Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
       davon hat eine Datei bekommen.</span>
+    <span data-phrase="url.invalid">Keine gültige Webadresse: {address}</span>
+    <span data-phrase="url.protocol">Nur http- und https-Adressen werden unterstützt (erhalten: {protocol}).</span>
+    <span data-phrase="url.load">{host} konnte nicht geladen werden. Der Server erlaubt anderen Websites möglicherweise nicht, seine Bilder zu verwenden (kein CORS-Header), oder die Adresse ist falsch.</span>
+    <span data-phrase="url.timeout">{host} hat innerhalb von 20 Sekunden nicht geantwortet.</span>
+    <span data-phrase="url.notimage">{host} hat kein verwendbares Bild zurückgegeben.</span>
+    <span data-phrase="url.copy">Das Bild konnte nicht auf diesem Gerät kopiert werden.</span>
+    <span data-phrase="url.empty">Fügen Sie zuerst mindestens eine Adresse ein.</span>
+    <span data-phrase="url.nothing">Es gibt nichts herunterzuladen.</span>
+    <span data-phrase="url.progress">{done} von {total} wird heruntergeladen…</span>
+    <span data-phrase="url.done">{done} von {total} heruntergeladen.</span>
+    <span data-phrase="url.none">Es konnte kein Bild heruntergeladen werden.</span>
+    <span data-phrase="url.failed">Der Download ist fehlgeschlagen.</span>
+    <span data-phrase="url.problem">{url}: {reason}</span>
+    <span data-phrase="url.import">Die Bilder wurden heruntergeladen, konnten aber nicht zum Werkzeug hinzugefügt werden.</span>
   </div>
 </main>

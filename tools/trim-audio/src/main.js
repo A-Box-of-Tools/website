@@ -424,9 +424,9 @@ function timeCell(segment, which) {
   input.inputMode = 'decimal';
   input.spellcheck = false;
   input.autocomplete = 'off';
-  input.setAttribute('aria-label', which === 'start' ? 'Start time' : 'End time');
+  input.setAttribute('aria-label', phrase(which === 'start' ? 'time.start' : 'time.end'));
   input.value = segment[which] === null ? '' : formatTime(segment[which]);
-  input.placeholder = which === 'end' ? 'press O' : '';
+  input.placeholder = which === 'end' ? phrase('time.open') : '';
 
   const commit = () => {
     const seconds = parseTime(input.value);

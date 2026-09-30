@@ -1,0 +1,17 @@
+#
+# Guide: tracing an image into an SVG - Spanish.
+#
+
+nav = "Vectorizar una imagen en SVG"
+title = "Cómo vectorizar una imagen en SVG &mdash; sin subirla"
+description = "Convierte un logotipo, una plantilla, una firma o una silueta en un contorno vectorial de verdad en tu navegador. Qué imágenes se vectorizan bien, cuáles nunca lo harán, y cómo arreglar las partes que el trazador toma mal."
+heading = "Cómo vectorizar una imagen en SVG"
+lede = """
+    Un PNG ampliado es una escalera. Un SVG son instrucciones para dibujar,
+    así que es nítido a cualquier tamaño &mdash; y convertir lo uno en lo
+    otro se llama vectorizar. Funciona de maravilla con formas y mal con
+    fotografías, y la diferencia merece entenderse antes de empezar."""
+updated = "31 de agosto de 2026"
+og_title = "Vectorizar un logotipo o una silueta en SVG, en tu navegador"
+og_description = "Qué imágenes se convierten en curvas limpias, cuáles vuelven como cuatro mil borrones, y cómo quitar de un clic las partes que no deberían estar ahí. No se sube nada."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

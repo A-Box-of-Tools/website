@@ -1,0 +1,204 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha o vídeo</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what will happen.
+
+    There is no setting to choose here, and that is the point of the card:
+    the file decides. Each of its two tracks is either already what an MP4
+    wants, and is copied as it is, or is not, and is encoded again. The card
+    says which, before anything is done, so that "convert" is never a word
+    that hides a re-encode.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span> Veja o que será alterado e o que será preservado</h2>
+
+    <p class="card-lede">
+      Um MP4 de ampla compatibilidade usa vídeo H.264 e áudio AAC. As faixas que já estão nesses formatos são copiadas intactas; as demais são recodificadas no seu computador. Nada é recodificado sem necessidade.
+    </p>
+
+    <div class="plan" role="status" aria-live="polite">
+      <p id="plan-picture" class="plan-line"></p>
+      <p id="plan-sound" class="plan-line"></p>
+      <p id="plan-note" class="field-note" hidden></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Omitir o áudio</strong>
+        <span class="check-note">
+          Para um vídeo que será reproduzido sem som ou cuja faixa de áudio o navegador não consegue ler.
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Converta o vídeo</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Converter para MP4</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Baixar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="O vídeo convertido, reproduzido da memória"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Esta etapa fica disponível quando você escolher acima um vídeo que o navegador consiga ler.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {container}</span>
+    <span data-phrase="plan.nofile">Escolha um vídeo acima para ver o que precisa mudar.</span>
+    <span data-phrase="plan.picture.copy">Imagem: já está em {codec}. Cada quadro será copiado como está, sem recodificação nem perda.</span>
+    <span data-phrase="plan.picture.encode">Imagem: {codec}. Será recodificada como H.264 a cerca de {rate}, {frame}.</span>
+    <span data-phrase="plan.picture.nodecode">Imagem: {codec}, que este navegador não decodifica. Não é possível convertê-la aqui. Outro navegador no mesmo computador muitas vezes consegue.</span>
+    <span data-phrase="plan.sound.none">Sem faixa de áudio.</span>
+    <span data-phrase="plan.sound.copy">Áudio: já está em AAC e será copiado como está.</span>
+    <span data-phrase="plan.sound.encode">Áudio: {codec}. Será recodificado como AAC a 160 kbit/s.</span>
+    <span data-phrase="plan.sound.unknown">Áudio: {codec}, que este navegador não decodifica. Será omitido; a imagem ainda será convertida.</span>
+    <span data-phrase="plan.sound.dropped">Áudio: omitido, conforme solicitado.</span>
+    <span data-phrase="plan.already">As duas faixas já são compatíveis com este MP4. Nada será recodificado: os mesmos quadros e o mesmo som serão gravados em um MP4 comum, não fragmentado, com índice no início. É o formato que o destino esperava ao recusar o {container}.</span>
+    <span data-phrase="plan.reencoded">O que é copiado não perde nada. O que é recodificado fica uma geração mais distante da câmera. Guarde o original.</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="codec.h264">H.264</span>
+    <span data-phrase="codec.hevc">HEVC (H.265)</span>
+    <span data-phrase="codec.vp8">VP8</span>
+    <span data-phrase="codec.vp9">VP9</span>
+    <span data-phrase="codec.av1">AV1</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&laquo;{name}&raquo;</span>
+    <span data-phrase="container.webm">WebM</span>
+    <span data-phrase="container.mkv">MKV</span>
+    <span data-phrase="container.mov">MOV</span>
+    <span data-phrase="container.m4v">M4V</span>
+    <span data-phrase="container.mp4">MP4</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.sound">Áudio: pacote {done} de {total}&hellip;</span>
+    <span data-phrase="progress.preparing">Preparando&hellip;</span>
+    <span data-phrase="progress.frame">Quadro {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Finalizando os últimos quadros&hellip;</span>
+    <span data-phrase="progress.writing">Escrevendo o arquivo&hellip;</span>
+    <span data-phrase="progress.checking">Reabrindo para verificar&hellip;</span>
+    <span data-phrase="run.cancelled">Cancelado. Nada foi gravado; clique no botão para começar novamente.</span>
+    <span data-phrase="run.failed">A conversão falhou: {detail}</span>
+    <span data-phrase="result.ready">MP4 de {size}, convertido do {container} de {from}.</span>
+    <span data-phrase="result.sub">Vídeo H.264, áudio AAC e índice no início: a combinação de ampla compatibilidade.</span>
+    <span data-phrase="check.passed">Conferido: {found}</span>
+    <span data-phrase="check.failed">A verificação falhou &mdash; {found}. Guarde o original.</span>
+    <span data-phrase="check.ok">reaberto da memória, com a duração original de {length}, H.264 e {sound}.</span>
+    <span data-phrase="check.sound.aac">áudio AAC</span>
+    <span data-phrase="check.sound.none">nenhuma faixa de áudio</span>
+    <span data-phrase="check.length">o arquivo pronto tem duração de {got} em vez de {want}</span>
+    <span data-phrase="check.reopen">não foi possível reabrir o arquivo pronto ({detail})</span>
+    <span data-phrase="check.codec">a imagem foi gravada como {codec}, não H.264</span>
+    <span data-phrase="check.sound">a faixa de áudio não está no arquivo pronto</span>
+    <span data-phrase="facts.picture.copied">A imagem foi copiada quadro a quadro: {codec}, {frame}, sem recodificação e sem alterar nenhum bit.</span>
+    <span data-phrase="facts.picture.encoded">A imagem era {from} e foi recodificada como H.264 a {rate}, {frame}, {fps} quadros por segundo. O resultado tem uma geração de compressão a mais. Guarde o original.</span>
+    <span data-phrase="facts.sound.copied">O áudio foi copiado como estava, sem recodificação.</span>
+    <span data-phrase="facts.sound.encoded">O áudio foi recodificado em AAC a 160 kbit/s.</span>
+    <span data-phrase="facts.sound.none">Sem faixa de áudio: o arquivo não tinha uma, ou você a omitiu.</span>
+    <span data-phrase="facts.time">{frames} quadros em {seconds}.</span>
+    <span data-phrase="support.nowebcodecs">Este navegador não codifica vídeo, então só arquivos que já estejam em H.264 podem ser convertidos aqui. Chrome, Edge e Safari codificam; Firefox, a partir da versão 130.</span>
+    <span data-phrase="stall.both">O codec de vídeo do navegador parou de responder. Recarregue a página e tente novamente. Isso pode acontecer quando o codificador por hardware está ocupado ou indisponível.</span>
+    <span data-phrase="stall.sound">O codec de áudio do navegador parou de responder. Recarregue a página e tente novamente, ou omita o áudio.</span>
+    <span data-phrase="encode.toobig">Este navegador não codifica H.264 em {size}. Reduza o vídeo primeiro com o compressor de vídeo.</span>
+    <span data-phrase="encode.noconfig">O codificador nunca informou uma configuração de decodificador.</span>
+    <span data-phrase="decode.none">Não foi possível decodificar nenhum quadro deste vídeo.</span>
+    <span data-phrase="sound.noaac">Este navegador não codifica AAC com a taxa e o número de canais deste áudio. Omita o som e converta apenas a imagem.</span>
+    <span data-phrase="sound.noencode">O codificador de áudio não produziu nenhum dado.</span>
+    <span data-phrase="write.noframes">Não havia quadros para gravar.</span>
+    <span data-phrase="write.toobig">O arquivo pronto teria mais de 4 GB, acima do que este gravador MP4 suporta. Corte o vídeo primeiro.</span>
+    <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
+    <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
+    <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>
+    <span data-phrase="read.av1short">O registro de configuração AV1 é curto demais.</span>
+    <span data-phrase="read.compactsizes">Os tamanhos das amostras estão numa tabela compacta que este leitor não decodifica.</span>
+    <span data-phrase="read.sampletables">As tabelas de amostras estão incompletas.</span>
+    <span data-phrase="read.chunktable">A tabela de chunks está vazia.</span>
+    <span data-phrase="read.nosamples">A faixa de vídeo não contém quadros.</span>
+    <span data-phrase="read.nostbl">Faltam à faixa de vídeo as suas tabelas de amostras.</span>
+    <span data-phrase="read.nostsd">A faixa de vídeo não tem descrição de amostra.</span>
+    <span data-phrase="read.emptystsd">A descrição de amostra do vídeo está vazia.</span>
+    <span data-phrase="read.encrypted">A faixa de vídeo está criptografada.</span>
+    <span data-phrase="read.unknowncodec">O vídeo está codificado como &ldquo;{type}&rdquo;, um formato que este leitor não reconhece.</span>
+    <span data-phrase="read.noconfig">A faixa &ldquo;{type}&rdquo; não contém uma configuração de decodificação.</span>
+    <span data-phrase="read.notmp4">Este arquivo não é MP4, MOV, WebM nem MKV. AVI, WMV, FLV e MPEG-2 não são lidos aqui.</span>
+    <span data-phrase="read.nomoov">O arquivo não tem cabeçalho de filme.</span>
+    <span data-phrase="read.novideo">O arquivo não tem nenhuma faixa de vídeo que este leitor consiga usar.</span>
+    <span data-phrase="read.notimescale">A faixa de vídeo não tem escala de tempo.</span>
+    <span data-phrase="read.nofragments">Os fragmentos deste arquivo não contêm nenhum quadro da sua faixa de vídeo.</span>
+    <span data-phrase="read.unreadable">O arquivo não pôde ser lido como MP4.</span>
+    <span data-phrase="read.notplayed">Este navegador não reproduz esse formato.</span>
+    <span data-phrase="read.layout">Este leitor não reconhece a estrutura do arquivo.</span>
+    <span data-phrase="read.notmkv">Este arquivo não é WebM nem MKV.</span>
+    <span data-phrase="read.nosegment">O arquivo não tem segmento após o cabeçalho.</span>
+    <span data-phrase="read.mkvtracks">O arquivo não identifica nenhuma faixa.</span>
+    <span data-phrase="read.mkvcodec">O vídeo está codificado como &ldquo;{type}&rdquo;, um formato que este leitor não reconhece.</span>
+    <span data-phrase="read.mkvencoded">Uma faixa deste arquivo está comprimida ou criptografada no nível do contêiner, algo que este leitor não desfaz.</span>
+    <span data-phrase="read.mkvaudio">A faixa de áudio &ldquo;{type}&rdquo; não contém configuração, e sua taxa de amostragem não pode ser descrita sem ela.</span>
+    <span data-phrase="read.lacing">Um bloco deste arquivo agrupa quadros de uma forma que este leitor não consegue interpretar.</span>
+    <span data-phrase="net.clean">seu vídeo não foi enviado a lugar algum. {total} arquivos carregados, todos da própria página. {platform}</span>
+    <span data-phrase="net.dirty">algo contatou {hosts}, o que esta ferramenta nunca faz. Vale investigar. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereço; nenhum recebeu um vídeo ou qualquer byte dele.</span>
+    <span data-phrase="net.platform.many">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereços; nenhum recebeu um vídeo ou qualquer byte dele.</span>
+  </div>
+</main>

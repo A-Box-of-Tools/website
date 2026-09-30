@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "Comprobar un extracto bancario en CSV"
+title = "Cómo comprobar un extracto bancario en CSV antes de confiar en él"
+description = "Revisa un extracto convertido a CSV para detectar importes incorrectos, filas ausentes y fechas mal interpretadas. Un ejemplo muestra qué pueden comprobar los saldos acumulados y qué no."
+heading = "Cómo comprobar un extracto bancario en CSV antes de confiar en él"
+lede = "Una hoja de cálculo puede parecer perfecta y aun así contener un importe incorrecto o un movimiento ausente. Compárala con el extracto: usa los saldos impresos para comprobar los números y las filas originales para revisar lo demás."
+updated = "29 de septiembre de 2026"
+og_title = "Cómo comprobar un extracto bancario en CSV antes de confiar en él"
+og_description = "Una hoja ordenada puede contener errores. Comprueba los saldos, las fechas y los movimientos, y descubre qué no demuestra un total que coincide."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

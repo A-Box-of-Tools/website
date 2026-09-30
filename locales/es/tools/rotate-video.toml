@@ -1,0 +1,121 @@
+name = "Girar vídeo"
+heading = "Girar&nbsp;vídeo <span class=\"h1-kw\">&mdash; corrige un clip grabado de lado</span>"
+tagline = "Un cuarto de vuelta o media vuelta, escrito en la cabecera: sin decodificar fotogramas ni perder calidad."
+title = "Girar un vídeo &mdash; gratis, sin pérdida y sin subir nada"
+description = "Gira un vídeo de lado o invertido en el navegador. Cambia la cabecera sin recodificar, o aplica el giro a los píxeles para reproductores antiguos. Lee MP4, MOV, WebM y MKV; genera MP4. Sin subidas."
+og_title = "Gira un vídeo sin subirlo ni recodificarlo"
+og_description = "Un clip de lado necesita cambiar nueve números de la cabecera. Gíralo en segundos en el navegador, sin que el archivo salga del dispositivo."
+og_image_alt = "Girar un vídeo en el navegador sin subirlo"
+pledge = "El vídeo se lee, recibe una cabecera nueva y se escribe en la memoria de este dispositivo, con código servido desde esta página. Si aplicas el giro a los píxeles, lo hacen los códecs del navegador. Nada puede subir el archivo y no hay un servidor que lo reciba. No hace falta enviar un gigabyte para recibirlo girado."
+live_hint = "Compruébalo: abre las herramientas de desarrollo, mira Red y gira un vídeo. Ninguna petición lleva el archivo, un fotograma ni su nombre. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/plan.js</code> para los nueve números del giro, <code>src/rotate.js</code> para copiar y escribir, y <code>src/shared/copy-tracks.js</code> para trasladar fotogramas sin leerlos. Ninguno accede a la red, ni los lectores y el escritor que los acompañan."
+howto_heading = "Cómo girar un vídeo"
+card = "Corrige un clip grabado de lado con un cuarto de vuelta a derecha o izquierda, o media vuelta. Cambia la cabecera y copia los fotogramas intactos, sin perder calidad y en segundos. También puede aplicar el giro a los píxeles para reproductores antiguos."
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+analytics_extra = ", ni el giro que hayas elegido"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "El giro son nueve números en la cabecera."
+body = "Un teléfono guarda los fotogramas tal como los vio el sensor y anota el giro en una matriz de nueve números en la cabecera de la pista. El reproductor la aplica al mostrar la imagen. Para corregir un vídeo de lado basta con cambiar esa matriz. Aquí se escribe la elegida y se copian intactos todos los fotogramas y paquetes, sin decodificarlos. Por eso un gigabyte tarda segundos, la imagen es idéntica y el tamaño apenas cambia."
+
+[[privacy]]
+title = "No hay que esperar a subir el archivo."
+body = "Muchos servicios piden el vídeo entero y lo devuelven girado. Enviar un gigabyte suele tardar más que el trabajo, sin contar qué ocurre con la copia. Muchos además recodifican y pierden calidad en una operación que solo necesitaba nueve números. Aquí los bytes van del disco a la memoria y vuelven al disco. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Funciona sin red."
+
+[[privacy]]
+title = "Qué hacer si un reproductor ignora la cabecera."
+body = "Los teléfonos, navegadores, editores y reproductores modernos respetan la matriz de presentación, usada en vídeos de teléfono desde 2010. Algunos reproductores antiguos la ignoran. Para ellos, o si no puedes comprobar el destino, puedes aplicar el giro a los píxeles: cada fotograma se dibuja girado y se recodifica como H.264. Cuesta una generación de calidad y tiempo de codificación, por eso es una opción adicional."
+
+[[privacy]]
+title = "El resultado se vuelve a abrir y comprobar."
+body = "Una matriz incorrecta podría producir un archivo que se abra pero se vea mal. Aquí se vuelve a leer el resultado para comprobar duración, orientación, dimensiones y sonido. Se reproduce desde la memoria junto a la descarga para que lo revises antes de guardarlo."
+
+[[privacy]]
+title = "Qué formatos lee y escribe."
+body = "MP4, MOV y M4V con H.264, HEVC, VP9 o AV1: un giro en la cabecera no depende del códec. En WebM y MKV se copia H.264; los demás se recodifican aplicando el giro porque este escritor no puede envolverlos directamente en MP4. AAC se copia; Opus, Vorbis, MP3 y FLAC pasan a AAC. Si el navegador no decodifica el sonido, se avisa y se omite. El resultado siempre es MP4."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben el vídeo, fotogramas, nombre, tamaño, duración ni giro elegido. Todo el código que lee, gira y escribe el archivo se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón de donación lo dibuja un script de cdnjs.buymeacoffee.com, con letras de Google Fonts. Es solo un enlace: no registra la visita ni recibe datos tuyos o de tus vídeos. Solo pasa algo al pulsarlo, cuando abres un sitio ajeno."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y todo sigue funcionando. Es la comprobación más sencilla: una herramienta que enviara el vídeo fuera para girarlo se detendría."
+
+[[howto]]
+title = "Elige el vídeo."
+body = "Un archivo MP4, MOV, M4V, WebM o MKV. El navegador lo lee del disco y muestra el formato y la orientación actuales."
+
+[[howto]]
+title = "Elige el giro y revisa la vista previa."
+body = "Un cuarto de vuelta a derecha o izquierda, o media vuelta. El primer fotograma muestra el giro con las mismas cuentas que llevará el archivo. Activa la recodificación solo si un reproductor ignora la cabecera. También puedes omitir el sonido."
+
+[[howto]]
+title = "Gíralo y lee la comprobación."
+body = "Cambiar la cabecera y copiar los fotogramas tarda segundos. Aplicar el giro a los píxeles tarda lo que la codificación y muestra el avance. Después se reabre el archivo para comprobar duración, orientación y sonido, y puedes reproducirlo desde la memoria."
+
+[[faq]]
+q = "¿Girar el vídeo reduce la calidad?"
+a = "El giro normal no. Cambia la cabecera y copia cada fotograma byte por byte: la imagen es idéntica y el tamaño casi igual. Solo la opción de aplicar el giro a los píxeles recodifica, y se avisa antes. Recodificar por defecto pierde calidad en una tarea que solo necesitaba nueve números."
+
+[[faq]]
+q = "¿Por qué sigue viéndose de lado en un reproductor?"
+a = "Ese reproductor ignora la matriz de presentación. Los teléfonos, navegadores y programas modernos la respetan; algunos antiguos no. Activa la opción de aplicar el giro a los píxeles: se giran y recodifican como H.264 para que todos lo muestren igual, a costa de una generación de calidad."
+
+[[faq]]
+q = "¿Qué significa un cuarto de vuelta a la derecha?"
+a = "Girar en el sentido de las agujas del reloj. La parte superior se mueve hacia la derecha. Elige el botón que deje bien orientada la vista previa y pulsa el botón de girar."
+
+[[faq]]
+q = "¿Qué archivos admite?"
+a = "MP4, MOV y M4V con cualquier códec de imagen, porque cambiar la cabecera no requiere decodificar. En WebM y MKV se copia H.264 y se recodifican los demás. AAC se copia; Opus, Vorbis, MP3 y FLAC pasan a AAC. El sonido que no pueda decodificarse se omite con un aviso. El resultado es MP4."
+
+[[faq]]
+q = "¿Cuánto tarda?"
+a = "El giro normal tarda segundos: se lee la estructura y después los datos al escribir. Un gigabyte avanza a la velocidad del disco. Aplicar el giro a los píxeles tarda lo que el dispositivo necesite para codificar; con aceleración de hardware suele ser menos que la duración del clip, y sin ella puede ser más."
+
+[[faq]]
+q = "¿Se suben mis vídeos?"
+a = "No. El navegador lee, modifica la cabecera y escribe en tu dispositivo. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Desconéctate para comprobarlo. Con archivos grandes, evitar la subida también es lo que más tiempo ahorra."
+
+[[faq]]
+q = "¿Funciona en el móvil?"
+a = "Sí. El giro normal no decodifica, así que un teléfono puede hacerlo tan rápido como otro equipo. El límite es la memoria para el resultado hasta guardarlo; unos cientos de megabytes suelen caber. Aplicar el giro a los píxeles usa el codificador del teléfono, que puede acelerarlo por hardware."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "El archivo se lee por partes, así que puede ser mayor que la memoria disponible. El resultado sí se mantiene en memoria, y el MP4 generado aquí no puede superar 4 GB. Es gratis, sin cuenta, inicio de sesión ni prueba. La publicidad paga el sitio y no recibe información del vídeo."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando: una herramienta que enviara el vídeo a un servidor se detendría al perder la red."
+
+[schema]
+description = "Gira un vídeo un cuarto o media vuelta en el navegador. Cambia la cabecera y copia los fotogramas sin pérdida, o recodifica el giro en los píxeles para reproductores antiguos. Sin subir nada."
+features = ["Un cuarto de vuelta a derecha o izquierda, o media vuelta", "Modifica la matriz de presentación y copia intactos fotogramas y paquetes", "Vista previa del primer fotograma con el giro elegido", "Opción para aplicar el giro a los píxeles para reproductores que ignoran la cabecera", "Lee MP4, MOV, M4V, WebM y MKV; escribe MP4", "Reabre y comprueba duración, orientación y sonido; reproduce desde memoria", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+
+[picker]
+title = "Arrastra aquí un vídeo"
+hint = "o haz clic para elegir: un MP4, MOV, WebM o MKV"

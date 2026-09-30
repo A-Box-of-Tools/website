@@ -12,7 +12,7 @@
  * is not derived: it is the GIF's own name with `.txt` on the end.
  */
 
-import { DISPOSALS } from './gif.js';
+import { DISPOSALS, extensionName } from './gif.js';
 import { duration, isFullCanvas } from './frames.js';
 import { clock, count, delay, exact, fileSize, hex, percent, rate } from './format.js';
 
@@ -144,7 +144,7 @@ export function report(gif, view, t) {
   if (notes.length > 0) {
     heading(t('report.text'));
     for (const extension of notes) {
-      say(`${extension.name} (${fileSize(extension.bytes)}):`);
+      say(`${extensionName(extension, t)} (${fileSize(extension.bytes)}):`);
       say(wrap(extension.text.replace(/\s+/g, ' ').trim().slice(0, 2000), 4));
       say();
     }

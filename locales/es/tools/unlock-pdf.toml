@@ -1,0 +1,145 @@
+name = "Desbloquear PDF"
+heading = "Desbloquear&nbsp;PDF <span class=\"h1-kw\">&mdash; elimina la contraseña y las restricciones</span>"
+tagline = "Muchos PDF protegidos no necesitan contraseña. Aquí ves qué protección tiene el tuyo antes de cambiarlo."
+title = "Desbloquear un PDF &mdash; quitar contraseña y restricciones gratis, sin subirlo"
+description = "Quita la contraseña y las restricciones de impresión, copia y edición de un PDF en el navegador. Indica si necesita contraseña; no la adivina ni sube el archivo."
+og_title = "Desbloquea un PDF sin subirlo a ninguna parte"
+og_description = "Muchos PDF protegidos se abren sin contraseña y solo piden a los lectores que no permitan imprimir o copiar. Elimina esas restricciones en el navegador y conoce qué protección tenían."
+og_image_alt = "Desbloquear un PDF en el navegador sin subirlo"
+pledge = "El documento se abre, descifra y escribe en la memoria del dispositivo con código servido desde esta página. No hay funciones de subida ni un servidor que lo reciba. Ni el archivo ni la contraseña salen de esta pestaña."
+live_hint = "Abre las herramientas de desarrollo, mira Red y desbloquea un archivo. Ninguna petición lleva un documento, una contraseña ni un nombre. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/shared/pdf-crypt.js</code> para convertir la contraseña en la clave del documento, sin un bucle que pruebe contraseñas, y <code>src/shared/aes.js</code> y <code>src/shared/rc4.js</code> para los algoritmos de cifrado. Ninguno accede a la red, ni el lector y el escritor."
+howto_heading = "Cómo quitar la contraseña o las restricciones de un PDF"
+card = "Quita la contraseña y las restricciones de impresión, copia y edición. Muchos PDF protegidos ya se abren para cualquiera sin contraseña. Aquí ves qué protección tienen, su alcance y cómo retirarla localmente."
+
+[words]
+plural = "documentos"
+choose = "un PDF"
+analytics_extra = ", ni la contraseña escrita ni el tipo de protección del archivo"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "Las restricciones no equivalen a una contraseña de apertura."
+body = "Un PDF puede tener una <em>contraseña de apertura</em>: sin ella no se lee y esta herramienta no la busca. Las <em>restricciones</em> de impresión, copia o edición son distintas. Si el archivo se abre para cualquiera, contiene lo necesario para obtener su clave. Los permisos son un campo que los lectores respetan por acuerdo, como documenta Adobe. Esta página distingue ambos casos y solo pide contraseña cuando realmente hace falta."
+
+[[privacy]]
+title = "No adivina contraseñas."
+body = "Si el documento exige contraseña, debes proporcionarla o seguirá cerrado. No hay diccionarios, listas ni búsqueda de claves, ni siquiera para las antiguas de 40 bits. Es una decisión expresa: no es una herramienta para probar millones de contraseñas. Acepta tanto la contraseña de apertura como la del propietario que retira las restricciones."
+
+[[privacy]]
+title = "La contraseña se escribe y utiliza aquí."
+body = "Se usa para derivar la clave en esta pestaña. No se guarda, no se recuerda entre archivos ni aparece en la dirección. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. La contraseña no se envía por la red."
+
+[[privacy]]
+title = "Se reabre el resultado antes de ofrecerlo."
+body = "El archivo generado se entrega al mismo lector que usan <a href=\"/es/comprimir-pdf/\">el compresor</a>, <a href=\"/es/unir-pdf/\">la herramienta para unir PDF</a> y <a href=\"/es/censurar-pdf/\">la de censura</a>, que rechaza documentos cifrados. Debe abrirse sin contraseña y conservar el número de páginas. Si no cumple, el proceso falla y no hay descarga."
+
+[[privacy]]
+title = "Las páginas no se vuelven a dibujar ni recomprimir."
+body = "Cambia el cifrado que rodea el documento. Las instrucciones de dibujo, fuentes e imágenes se escriben intactas: el texto sigue seleccionable, los escaneos conservan su resolución y nada se desplaza. Al reescribir se omiten versiones antiguas de objetos sustituidos en ediciones anteriores, lo que suele reducir algo el tamaño."
+
+[[privacy]]
+title = "La firma digital no sobrevive a la reescritura."
+body = "Una firma cubre los bytes exactos del archivo. Reescribirlo invalida esa firma. La copia generada queda sin firma válida y el resultado lo avisa si detecta una. Conserva el original: sigue siendo el documento firmado."
+
+[[privacy]]
+title = "Muestra el alcance real de la protección."
+body = "Un PDF con RC4 de 40 bits y otro con AES-256 pueden aparecer como protegidos, aunque su seguridad sea muy distinta. La página indica algoritmo, longitud de clave y revisión, y explica cuáles están rotos, obsoletos o vigentes. Así puedes valorar un archivo que te presentaron como seguro."
+
+[[privacy]]
+title = "Los documentos cifrados con certificado se rechazan claramente."
+body = "Algunos PDF se cifran para un certificado cuya clave privada está en una tarjeta o almacén de claves. Se rechazan con un mensaje específico. Una contraseña no puede sustituir esa clave privada."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben documentos, páginas, nombre, tamaño, cantidad de páginas, contraseña ni tipo de protección. Todo el código que lee, descifra y escribe se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón &laquo;Buy me a coffee&raquo; de la cabecera lo dibuja un script de cdnjs.buymeacoffee.com y toma su tipografía de Google Fonts. Es un enlace y nada más: no informa de ninguna visita y no se le entrega nada sobre ti ni sobre tus documentos. No pasa nada hasta que lo pulsas, y entonces estás en el sitio de otra gente."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y la página sigue funcionando. Una herramienta que enviara el documento a un servidor se detendría."
+
+[[howto]]
+title = "Elige el PDF."
+body = "Un documento cada vez. El navegador lo lee del disco y prueba primero la contraseña vacía, que abre los PDF que solo tienen restricciones."
+
+[[howto]]
+title = "Lee lo que encontró."
+body = "Indica el tipo de protección, algoritmo, seguridad y las restricciones que pide respetar: impresión, copia, edición, comentarios, formularios, reorganización de páginas o lectura accesible."
+
+[[howto]]
+title = "Escribe la contraseña solo si se solicita."
+body = "El campo aparece si la contraseña vacía no abrió el documento. Sirve tanto la de apertura como la del propietario. No se adivina ninguna y lo escrito se queda en la pestaña."
+
+[[howto]]
+title = "Retira la protección y revisa la comprobación."
+body = "El documento se descifra con su clave y se escribe sin diccionario de cifrado. Después se reabre sin contraseña con un lector que rechaza archivos cifrados. Si no se abre o cambia el número de páginas, se avisa y no se ofrece la descarga."
+
+[[faq]]
+q = "¿Necesito la contraseña?"
+a = "A menudo no. Muchos extractos, recibos e informes protegidos se abren para cualquiera y solo tienen restricciones de uso. Estas se retiran sin contraseña. Si el archivo realmente pide una contraseña para abrirse, sí debes conocerla. La página distingue los dos casos al elegirlo."
+
+[[faq]]
+q = "¿Abre un PDF si no conozco su contraseña?"
+a = "No lo intenta. No hay diccionario ni búsqueda por fuerza bruta; puedes comprobarlo en <code>src/shared/pdf-crypt.js</code>. Ni siquiera busca las claves antiguas de 40 bits, aunque sean débiles. Si perdiste la contraseña de apertura, esta herramienta no puede recuperarla."
+
+[[faq]]
+q = "¿Qué diferencia hay entre las dos contraseñas?"
+a = "La contraseña de <em>usuario</em> permite abrir el archivo. La de <em>propietario</em> retira las restricciones de impresión, copia y edición. Es habitual tener contraseña de propietario y ninguna de usuario: el PDF se abre, pero el lector no deja imprimir. Aquí se acepta cualquiera de las dos y se indica cuál funcionó."
+
+[[faq]]
+q = "¿Es legal quitar las restricciones?"
+a = "Depende del documento, tus derechos sobre él y la legislación aplicable. Técnicamente, los permisos son un campo que los lectores respetan por acuerdo, no una barrera criptográfica, como documenta Adobe. La herramienta está pensada para documentos que tienes derecho a usar: tu extracto que no imprime, un informe que necesitas copiar o un escaneo que debes ordenar. Quitar restricciones no te concede derechos que no tenías."
+
+[[faq]]
+q = "¿Qué cifrados admite?"
+a = "RC4 de 40 y 128 bits, revisiones 2 y 3; AES-128, revisión 4; y AES-256 en las revisiones 5 y 6, la forma de 2008 retirada y la actual de PDF 2.0. No admite cifrado con certificado ni una variante no publicada de Adobe. Ambos casos muestran un mensaje específico."
+
+[[faq]]
+q = "¿Cambiará el aspecto del documento?"
+a = "No se redibuja, recodifica ni redistribuye contenido. Las instrucciones, fuentes e imágenes pasan intactas. El texto sigue seleccionable, los escaneos mantienen su resolución y nada se mueve. Puede pesar algo menos porque se omiten objetos antiguos sustituidos."
+
+[[faq]]
+q = "¿Qué ocurre si el documento está firmado?"
+a = "La firma deja de ser válida en la copia reescrita, porque cubre los bytes del original. La herramienta detecta firmas y avisa en el resultado. Conserva el original, que sigue siendo el firmado."
+
+[[faq]]
+q = "¿Se suben los documentos o las contraseñas?"
+a = "No. El navegador lee, descifra y escribe en tu dispositivo. La contraseña deriva la clave en la pestaña. No hay servidor de procesamiento y la <code>Content-Security-Policy</code> enumera los destinos permitidos, ninguno del sitio. Desconéctate para comprobarlo."
+
+[[faq]]
+q = "¿Cómo sé que se retiró la protección?"
+a = "Se reabre el resultado con un lector que rechaza PDF cifrados. Debe abrirse sin contraseña y mantener el número de páginas. Si falla, no hay descarga. Puedes comprobarlo además en otro lector: las propiedades del documento deberían mostrar todos los permisos como permitidos."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "No hay ningún límite escrito en la herramienta. El límite es tu propio equipo: el documento se sostiene en memoria mientras se trabaja con él, así que un portátil aguantará unos cientos de megabytes sin quejarse y empezará a sufrir en algún punto por encima. Es gratis, no hay cuenta, ni registro, ni prueba. El sitio lleva publicidad, que es lo que lo paga; a los anuncios no se les da nada sobre tus documentos."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando; una herramienta que enviara el PDF a otro sitio para desbloquearlo no podría hacerlo."
+
+[schema]
+description = "Retira la contraseña y las restricciones de impresión, copia y edición de un PDF en el navegador. Identifica la protección y su alcance, sin adivinar contraseñas ni subir archivos."
+features = ["Retira restricciones de impresión, copia y edición", "Retira la contraseña de apertura cuando la proporcionas", "Indica si realmente hace falta contraseña antes de pedirla", "Muestra algoritmo, longitud de clave, revisión y seguridad", "Admite RC4 de 40 y 128 bits, AES-128 y ambas revisiones de AES-256", "No adivina contraseñas ni usa fuerza bruta", "Reabre el resultado sin contraseña para comprobar que ya no está cifrado", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+
+[picker]
+title = "Suelta aquí el PDF protegido"
+hint = "o pulsa para elegir &mdash; un documento cada vez"

@@ -1,0 +1,17 @@
+#
+# Guía: ¿es seguro subir una foto de tu documento? - Spanish.
+#
+
+nav = "¿Es seguro subir tu documento?"
+title = "¿Es seguro subir una foto de tu documento de identidad?"
+description = "Un documento de identidad es el único archivo donde «probablemente no pase nada» no basta. Qué cuesta de verdad una filtración, por qué el momento arriesgado es el reajuste de tamaño justo antes del trámite, y cómo hacerlo todo sin que el documento salga de tu máquina."
+heading = "¿Es seguro subir una foto de tu documento de identidad?"
+lede = """
+    Al formulario oficial al que va destinado: sí &mdash; para eso existe el
+    documento. El riesgo vive un paso antes: en el conversor o compresor al
+    que acudes porque el formulario pidió «menos de 300&nbsp;KB, JPEG», y
+    ese paso es el que nunca hace falta dar."""
+updated = "26 de agosto de 2026"
+og_title = "¿Es seguro subir una foto de tu documento de identidad?"
+og_description = "El paso arriesgado no es el formulario del trámite. Es el desvío para reducir y comprimir justo antes - y ese desvío nunca necesita que el documento salga de tu máquina."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

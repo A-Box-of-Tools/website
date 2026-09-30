@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "WebP a JPG"
+title = "Cómo convertir WebP a JPG y por qué el JPG ocupa más"
+description = "¿Guardaste una imagen y recibiste un .webp que otros programas no abren? Qué es WebP, por qué convertirlo suele aumentar el tamaño, qué ocurre con la transparencia y cómo hacerlo sin subir nada."
+heading = "La imagen que guarda la web y el formato que casi todo acepta"
+lede = "Al guardar una imagen de muchos sitios web recibes un <code>.webp</code>: el navegador lo lee perfectamente, pero bastantes programas todavía lo rechazan. Aquí explicamos qué es, qué se pierde al convertirlo y por qué el JPEG suele ocupar más."
+updated = "17 de septiembre de 2026"
+og_title = "Cómo convertir WebP a JPG"
+og_description = "Por qué los sitios usan WebP, qué cambia al convertirlo y cómo hacerlo sin entregar el archivo a nadie."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
