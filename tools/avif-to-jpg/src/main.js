@@ -25,7 +25,7 @@ import {
   change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames,
 } from './shared/image-convert.js';
 import { makeExample } from './example.js';
-import { canReadAvif } from './support.js';
+import { canReadAvif } from './avif-support.js';
 
 const $ = (id) => document.getElementById(id);
 
