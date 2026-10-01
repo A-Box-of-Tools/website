@@ -38,7 +38,7 @@ const DEFAULT_BOX = [0, 0, 612, 792];
  * Every page of `doc`, in reading order.
  *
  * @param {import('./shared/pdf-reader.js').PdfDocument} doc
- * @returns {{ref: object|null, dict: Map, inherited: Map, box: number[],
+ * @returns {{ref: object|null, dict: Map, inherited: Map, box: number[], visibleBox: number[],
  *            rotate: number, width: number, height: number}[]}
  */
 export function readPages(doc) {
@@ -86,6 +86,15 @@ function describe(doc, dict, ref, carried) {
   }
 
   const box = normalizeBox(doc.resolve(dict.get('MediaBox') ?? carried.get('MediaBox')));
+  // Keep the physical sheet for copiers, and expose the part a reader shows
+  // separately. A crop may be inherited and may extend past the physical sheet.
+  const crop = doc.resolve(dict.get('CropBox') ?? carried.get('CropBox'));
+  const cropBox = Array.isArray(crop) && crop.length === 4 && crop.every(Number.isFinite)
+    ? [Math.min(crop[0], crop[2]), Math.min(crop[1], crop[3]),
+      Math.max(crop[0], crop[2]), Math.max(crop[1], crop[3])] : box;
+  const clipped = [Math.max(box[0], cropBox[0]), Math.max(box[1], cropBox[1]),
+    Math.min(box[2], cropBox[2]), Math.min(box[3], cropBox[3])];
+  const visibleBox = clipped[2] > clipped[0] && clipped[3] > clipped[1] ? clipped : box;
   const rotate = normalizeRotation(doc.resolve(dict.get('Rotate') ?? carried.get('Rotate')));
   const turned = rotate === 90 || rotate === 270;
 
@@ -94,6 +103,7 @@ function describe(doc, dict, ref, carried) {
     dict,
     inherited,
     box,
+    visibleBox,
     rotate,
     // What the page looks like on screen, which is the box turned by the
     // rotation. A landscape scan saved as a portrait page with /Rotate 90 is

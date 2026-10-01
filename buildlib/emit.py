@@ -68,6 +68,7 @@ class Emitter:
     def __init__(self, minify_output, site):
         self.enabled = bool(minify_output)
         self.page_links = {}
+        self.offline_generations = {}
         source = site['source_url']
 
         # The same sentence in three comment syntaxes. Each minifier wraps it

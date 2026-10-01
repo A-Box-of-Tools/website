@@ -91,3 +91,12 @@ shared XML parser and the two conversions through `json-formatter`'s
 covers what is particular to this page: that the menu offers exactly the two
 directions, and that a `DOCTYPE` with an external entity in it is returned as
 text.
+
+## Edited input and result actions
+
+The editable boxes carry `data-language-text`: the language switch saves their
+current contents instead of replaying the file they were imported from. A
+cleared box therefore stays clear, and edits are not overwritten by an
+asynchronous file read after navigation. Copy and Download are invalidated as
+soon as typing starts, before the debounced calculation runs; a pending
+clipboard write may only update feedback for the result it actually copied.

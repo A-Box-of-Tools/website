@@ -279,6 +279,59 @@ and for a while the cached `main.js` dialled the old address under a page that
 forbade it. The files in `src/` are untouched; only the deployed copies carry
 the query, and `sitelib.version_imports` is the whole of the rewrite.
 
+### Offline generations and deployment readiness
+
+The HTML also names its offline generation in `data-offline-version`. The
+build hashes the page with a fixed placeholder in that slot, the cached assets and the
+worker template, then fills the same generation into the page and worker.
+Both the tool's trust panel and the hub register `sw.js?v=<generation>` with
+`updateViaCache: 'none'`. The changed address bypasses the CDN's old worker;
+the option prevents the browser's own script cache from overriding the update.
+Cloudflare must keep the query string in its cache key, as it does for the
+versioned stylesheets and modules. A cache rule that ignores it breaks all
+three. No external cache settings are changed by the build.
+
+This fixes a production failure where new HTML named new module URLs but a
+four-hour-old worker installed its earlier module list. Waiting for
+`navigator.serviceWorker.ready` only proved that some registration was active.
+The trust panel now waits for the exact named worker to control this page and
+for that worker to confirm the saved generation and every eager asset. A
+missing module, denied storage or a worker that never confirms leaves the
+existing failure message rather than the offline-ready claim. The handshake
+carries only a build identifier, never a visitor's input or file.
+
+A worker refuses installation when either saved shell address belongs to a
+different generation. While it controls an older open tab, it still returns
+newer HTML online but does not overwrite its coherent offline shell with that
+HTML alone. Guides without an installable generation still refresh online and
+remain available offline. Cache lookups and deletion stay inside the existing
+scope prefix, including nested translated tools. Browser storage can still be
+evicted after readiness; the indicator describes the successful check, not a
+guarantee that the browser will keep data forever.
+
+Post-deploy QA pins the immutable `dist` commit and resolves the source commit
+named by its build receipt. The build emits `offline-generations.json` with
+every rebuilt hub/tool scope, its page generation and the SHA-256 of its
+emitted worker. Scoped builds omit this whole-site receipt; frozen archive
+folders do not participate because they were not rebuilt.
+
+The checker waits for GitHub Pages to report the pinned commit as built, then
+checks every listed live HTML generation and versioned worker digest. Checking
+only the hub would miss a tool-only deploy whose hub stayed unchanged. Page
+generations tolerate Cloudflare's email-link rewriting without accepting an
+older page. Eight scopes are checked in parallel and subsequent polls ask only
+about outstanding mismatches. Scope-specific reasons identify stale HTML,
+wrong worker bytes and HTTP failures. A later dist commit aborts the check.
+
+Receipt lookup, GitHub API reads and live checks share a ten-minute deadline.
+Transport failures, HTTP 5xx and rate limits have bounded retries; Retry-After
+and rate-limit reset times are honoured only when the deadline permits waiting.
+Authentication, permission and other fatal HTTP refusals are reported clearly.
+QA receives the verified source SHA and no tool filter, so its inventory belongs
+to that release and it still runs the complete production suite. This verifies
+the edge reached by CI, not every CDN edge; versioned addresses and per-tool
+readiness protect later visits. The checker never runs in a tool page.
+
 ## The 404 page
 
 `build.py` writes `404.html` to the root of the output, which is where

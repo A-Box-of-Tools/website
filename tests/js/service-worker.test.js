@@ -20,7 +20,7 @@ function response(body, status = 200) {
 
 function worker(scope = '/') {
   const base = `${origin}${scope}sw.js`;
-  const name = `abox:${scope}:current`;
+  const name = `abox:${scope}:0123456789`;
   const stores = new Map([[name, new Map()]]);
   const handlers = new Map();
   const network = new Map();
@@ -46,7 +46,16 @@ function worker(scope = '/') {
       if (state.unavailable) throw new Error('cache unavailable');
       const entries = ensure(cacheName);
       return {
-        async addAll(requests) { precached.push(...requests); },
+        async addAll(requests) {
+          precached.push(...requests);
+          for (const request of requests) {
+            const path = key(request);
+            const body = network.get(path)?.body ?? (/\/(?:index.html)?$/.test(path)
+              ? '<html data-offline-version="0123456789">current</html>' : 'asset');
+            entries.set(path, response(body));
+          }
+        },
+        async match(request) { return entries.get(key(request))?.clone(); },
         async put(request, value) {
           if (state.full) throw new Error('cache full');
           entries.set(key(request), value.clone());
@@ -60,7 +69,7 @@ function worker(scope = '/') {
   const source = template
     .replaceAll('{{ words.plural }}', 'files')
     .replaceAll('{{ cache_scope }}', scope)
-    .replaceAll('{{ cache_hash }}', 'current')
+    .replaceAll('{{ cache_hash }}', '0123456789')
     .replace(/\{% for asset in assets %\}[\s\S]*?\{% endfor %\}/,
       "  'index.html',\n  'src/main.js?v=0123456789',\n");
 
@@ -95,6 +104,17 @@ function worker(scope = '/') {
       const result = await answer;
       await Promise.all(pending);
       return result;
+    },
+    async ready(version = '0123456789') {
+      const pending = [];
+      let answer;
+      handlers.get('message')({
+        data: { type: 'abox-offline-ready', version },
+        ports: [{ postMessage(value) { answer = value; } }],
+        waitUntil(promise) { pending.push(promise); },
+      });
+      await Promise.all(pending);
+      return answer;
     },
     async lifecycle(type) {
       const pending = [];
@@ -214,4 +234,44 @@ test('cross-origin and non-GET requests are left to the browser', async () => {
   assert.equal(await app.read('https://elsewhere.test/file.js', 'cors'), undefined);
   assert.equal(await app.read('/file', 'same-origin', 'POST'), undefined);
   assert.equal(app.fetches.length, 0);
+});
+
+test('an old worker returns fresh HTML online without replacing its coherent offline shell', async () => {
+  const app = worker('/text-diff/');
+  const previous = '<html data-offline-version="0123456789">old page</html>';
+  const current = '<html data-offline-version="9876543210">new page</html>';
+  app.seed('./', previous);
+  app.serve('./', current);
+  assert.equal(await (await app.read('./')).text(), current);
+  app.state.offline = true;
+  assert.equal(await (await app.read('./')).text(), previous);
+});
+
+test('installation refuses stale HTML beside the new module graph, at either shell URL', async () => {
+  for (const path of ['./', 'index.html']) {
+    const app = worker('/text-diff/');
+    app.serve(path, '<html data-offline-version="9876543210">stale</html>');
+    await assert.rejects(app.lifecycle('install'), /different builds/);
+  }
+});
+
+test('readiness requires this page version and every eagerly cached module', async () => {
+  const app = worker('/text-diff/');
+  await app.lifecycle('install');
+  assert.equal((await app.ready()).ready, true);
+  assert.equal((await app.ready('9876543210')).ready, false);
+  app.stores.get(app.name).delete(`${origin}/text-diff/src/main.js?v=0123456789`);
+  assert.equal((await app.ready()).ready, false);
+});
+
+test('legacy HTML without a generation cannot replace either current offline shell address', async () => {
+  for (const path of ['./', 'index.html', './?preferences=1']) {
+    const app = worker('/text-diff/');
+    const current = '<html data-offline-version="0123456789">current</html>';
+    app.seed(path, current);
+    app.serve(path, '<html>legacy CDN response</html>');
+    assert.equal(await (await app.read(path)).text(), '<html>legacy CDN response</html>');
+    app.state.offline = true;
+    assert.equal(await (await app.read(path)).text(), current);
+  }
 });

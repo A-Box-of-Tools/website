@@ -55,6 +55,7 @@ on:
 
 permissions:
   contents: read
+  pages: read
 
 # A second deploy landing while this is still running should not race it -
 # only the newest deploy is worth checking.
@@ -74,6 +75,10 @@ jobs:
        github.event.workflow_run.event == 'push' &&
        github.event.workflow_run.head_branch == 'main')
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
       # A Build that finished is not a deploy. The publish step pushes to dist
       # only when the built site differs from what is there, and says
       # "identical ... nothing to push" otherwise - which is every merge that
@@ -89,61 +94,29 @@ jobs:
         id: deployed
         env:
           GH_TOKEN: ${{ github.token }}
-          EVENT: ${{ github.event_name }}
           SHA: ${{ github.event.workflow_run.head_sha }}
-        run: |
-          set -euo pipefail
-          if [ "$EVENT" = 'workflow_dispatch' ]; then
-            echo 'deployed=true' >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          latest=$(gh api "repos/$GITHUB_REPOSITORY/commits/dist" --jq '.commit.message' | head -n1)
-          if [[ "$latest" == "Build ${SHA:0:7}:"* ]]; then
-            echo "deployed=true" >> "$GITHUB_OUTPUT"
-            echo "dist is at '$latest'; this build deployed."
-          else
-            echo "deployed=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Nothing deployed: the build for ${SHA:0:7} left dist at '$latest'. The site is as it was, so the suite is not asked to run."
-          fi
+        run: python3 scripts/wait_for_deploy.py --repository "$GITHUB_REPOSITORY" --receipt --source "$SHA"
 
-      # GitHub Pages usually publishes within a minute of `dist` moving, but
-      # that isn't guaranteed. Waiting here rather than in the qa repo keeps
-      # that repo's workflow honest about what it tests: by the time it is
-      # asked to run, the deploy it is meant to check is actually live.
+      # The immutable dist commit is the receipt, not an HTTP 200 from the old
+      # homepage. Check Pages' completed revision and every emitted scope's
+      # HTML generation and worker bytes before QA tests that source revision.
       - name: Wait for the deploy to actually be live
         if: steps.deployed.outputs.deployed == 'true'
-        run: |
-          set -euo pipefail
-          for _ in $(seq 1 30); do
-            if curl -fsS -o /dev/null "https://abox.tools/"; then
-              echo "Site responded, continuing."
-              exit 0
-            fi
-            echo "Not live yet, waiting 10s..."
-            sleep 10
-          done
-          echo "::error::abox.tools never responded after 5 minutes."
-          exit 1
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIST: ${{ steps.deployed.outputs.dist }}
+          DEADLINE: ${{ steps.deployed.outputs.deadline }}
+        run: python3 scripts/wait_for_deploy.py --repository "$GITHUB_REPOSITORY" --dist "$DIST" --deadline "$DEADLINE"
 
-      # Dispatched with no inputs at all, which is what makes it a production
-      # run over there: `base_url` falls back to https://abox.tools/, and `pr`
-      # and `sha` stay empty.
-      #
-      # THAT EMPTY `sha` IS WHY THIS REPOSITORY'S DEFAULT BRANCH HAS TO STAY
-      # `main`. The suite does not keep its own copy of the tool list or the
-      # CSP - it reads them out of a checkout of this repository - and a run
-      # that was told no commit takes this repository's default branch, which
-      # is every production run. That fallback is right only while the default
-      # branch is the one production was built from. Point it at `dev` and
-      # every production run would count the bundle's tools against the live
-      # site's cards: four assertions failing on the hub and the 404, each
-      # right about its own numbers and about two different sites. The same
-      # trap on the preview side, where the commit IS known, is
-      # A-Box-of-Tools/qa#94.
+      # Supplying the verified source SHA keeps QA's tool inventory on the
+      # deployment just checked, even if main advances while the suite waits.
+      # No tools/pr/base_url input: this remains the full production run.
       - name: Ask the QA repo to run its suite
         if: steps.deployed.outputs.deployed == 'true'
+        id: dispatch
         env:
           GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
+          SOURCE: ${{ steps.deployed.outputs.source }}
         run: |
           set -euo pipefail
 
@@ -152,7 +125,7 @@ jobs:
             exit 1
           fi
 
-          gh workflow run report.yml --repo A-Box-of-Tools/qa
+          gh workflow run report.yml --repo A-Box-of-Tools/qa -f "sha=$SOURCE"
           echo 'Dispatched. The run and its report:'
           echo '  https://github.com/A-Box-of-Tools/qa/actions'
           echo '  https://a-box-of-tools.github.io/qa/'
@@ -161,10 +134,22 @@ jobs:
         if: always()
         run: |
           {
+            if [ "${{ steps.deployed.outcome }}" != 'success' ]; then
+              echo '### Deployment receipt could not be verified'
+              echo
+              echo 'QA was not dispatched; see the receipt lookup error above.'
+              exit 0
+            fi
             if [ "${{ steps.deployed.outputs.deployed }}" != 'true' ]; then
               echo '### QA not asked to run'
               echo
               echo 'This build deployed nothing - the site is identical to what was already live - so there was nothing new to test.'
+              exit 0
+            fi
+            if [ "${{ steps.dispatch.outcome }}" != 'success' ]; then
+              echo '### QA not dispatched'
+              echo
+              echo 'Deployment verification or dispatch failed; see the failing step.'
               exit 0
             fi
             echo '### QA dispatched'

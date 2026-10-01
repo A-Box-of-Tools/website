@@ -137,6 +137,55 @@ function monitorNetwork() {
   }
 }
 
+/** Confirm the exact worker named by this page, including its saved assets. */
+export async function prepareOffline(container, url, version, {
+  timeout = 45_000, createChannel = () => new MessageChannel(),
+} = {}) {
+  if (!/^[0-9a-f]{10}$/.test(version || '')) throw new Error('offline.build-missing');
+  let registration;
+  try {
+    registration = await container.register(url, { updateViaCache: 'none' });
+  } catch (error) {
+    // An offline revisit can refuse the update fetch even though the exact
+    // installed generation is still intact. The same checks below apply.
+    registration = await container.getRegistration?.(url);
+    if (registration?.active?.scriptURL !== url) throw error;
+  }
+  const worker = await new Promise((resolve, reject) => {
+    const until = Date.now() + timeout;
+    const inspect = () => {
+      const active = registration.active;
+      if (active?.state === 'activated' && active.scriptURL === url
+          && container.controller?.scriptURL === url) {
+        resolve(active);
+      } else if (Date.now() >= until) {
+        reject(new Error('offline.worker-mismatch'));
+      } else {
+        setTimeout(inspect, 100);
+      }
+    };
+    inspect();
+  });
+  await new Promise((resolve, reject) => {
+    const channel = createChannel();
+    const finish = (error) => {
+      clearTimeout(timer);
+      channel.port1.close();
+      channel.port2.close();
+      if (error) reject(error);
+      else resolve();
+    };
+    const timer = setTimeout(() => finish(new Error('offline.cache-unconfirmed')), timeout);
+    channel.port1.onmessage = ({ data }) => {
+      finish(data?.ready === true && data.version === version ? null
+        : new Error('offline.cache-incomplete'));
+    };
+    try {
+      worker.postMessage({ type: 'abox-offline-ready', version }, [channel.port2]);
+    } catch (error) { finish(error); }
+  });
+}
+
 async function registerServiceWorker() {
   const status = document.getElementById('offline-status');
   const dot = document.getElementById('offline-dot');
@@ -146,9 +195,9 @@ async function registerServiceWorker() {
   // browser error dumped there reads worse than it is.
   const fail = (message, detail) => {
     status.textContent = message;
+    status.className = '';
     dot.className = 'live-dot';
     if (detail) {
-      status.title = detail;
       console.info('Offline caching unavailable:', detail);
     }
   };
@@ -163,8 +212,9 @@ async function registerServiceWorker() {
   }
 
   try {
-    await navigator.serviceWorker.register('sw.js');
-    await navigator.serviceWorker.ready;
+    const version = document.documentElement.dataset.offlineVersion;
+    const url = new URL(`sw.js?v=${version}`, location.href).href;
+    await prepareOffline(navigator.serviceWorker, url, version);
     status.textContent = phrase('offline.ready');
     status.className = 'good';
     dot.className = 'live-dot good';

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
+<html data-offline-version="__ABOX_OFFLINE_VERSION__" lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -234,7 +234,7 @@
     </div>
     <ul class="tool-grid">
 {% for tool in category.tools %}      <li>
-        <a class="tool-card" href="{{ tool.out_slug }}/">
+        <a class="tool-card" href="{{ tool.out_slug }}/" data-tool="{{ tool.slug | e }}">
           <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"
                focusable="false">{{ tool.glyph_svg }}</svg>
           <!-- `name` is the tool's plain-text name, the one that also goes into

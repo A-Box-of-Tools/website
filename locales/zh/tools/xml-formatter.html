@@ -72,7 +72,7 @@
           <label for="input">你的 XML</label>
           <span class="count" id="input-count">空的</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="把 XML 粘贴到这里 - 或者在上面放一个 .xml、.svg 或 .rss 文件。"></textarea>
       </div>
@@ -116,6 +116,12 @@
     thing about it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">空的</span>
+    <span data-phrase="n.line.one">{n} 行</span>
+    <span data-phrase="n.line.many">{n} 行</span>
+    <span data-phrase="n.character.one">{n} 个字符</span>
+    <span data-phrase="n.character.many">{n} 个字符</span>
+    <span data-phrase="join.comma">{a}，{b}</span>
     <span data-phrase="parse.at">{reason}（第 {line} 行，第 {column} 列）</span>
     <span data-phrase="char.end">文本的末尾</span>
     <span data-phrase="char.newline">一个换行</span>

@@ -13,7 +13,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { sortHosts, describe, PLATFORM_HOSTS } from '../../shared/js/trust.js';
+import { sortHosts, describe, PLATFORM_HOSTS, prepareOffline } from '../../shared/js/trust.js';
 
 const ORIGIN = 'https://abox.tools';
 const entries = (...names) => names.map((name) => ({ name }));
@@ -130,4 +130,69 @@ test('describe: an external host makes it dirty and names every one', () => {
     hosts: 'example.com, evil.example',
     platform: '<net.platform.one>',
   }]);
+});
+
+function offlineFixture(reply = { ready: true, version: '0123456789' }) {
+  const url = `${ORIGIN}/text-diff/sw.js?v=0123456789`;
+  const calls = [];
+  const active = {
+    state: 'activated', scriptURL: url,
+    postMessage(data, ports) { calls.push(data); queueMicrotask(() => ports[0].reply(reply)); },
+  };
+  const container = {
+    controller: active,
+    async register(href, options) { calls.push({ href, options }); return { active }; },
+  };
+  let closed = 0;
+  const createChannel = () => {
+    const port1 = { onmessage: null, close() { closed += 1; } };
+    return { port1, port2: {
+      reply(data) { port1.onmessage({ data }); }, close() { closed += 1; },
+    } };
+  };
+  return { container, url, calls, createChannel, closed: () => closed };
+}
+
+test('offline readiness registers a versioned URL without the HTTP cache and confirms that generation', async () => {
+  const app = offlineFixture();
+  await prepareOffline(app.container, app.url, '0123456789', { createChannel: app.createChannel });
+  assert.deepEqual(app.calls, [
+    { href: app.url, options: { updateViaCache: 'none' } },
+    { type: 'abox-offline-ready', version: '0123456789' },
+  ]);
+  assert.equal(app.closed(), 2);
+});
+
+test('an older controller cannot make the current page claim offline readiness', async () => {
+  const app = offlineFixture();
+  app.container.controller = { scriptURL: `${ORIGIN}/text-diff/sw.js?v=9876543210` };
+  await assert.rejects(prepareOffline(app.container, app.url, '0123456789', { timeout: 0 }),
+    /offline.worker-mismatch/);
+  assert.equal(app.calls.length, 1);
+});
+
+test('readiness refuses a wrong generation or an incomplete cache and releases its channel', async () => {
+  for (const reply of [{ ready: true, version: '9876543210' }, { ready: false, version: '0123456789' }]) {
+    const app = offlineFixture(reply);
+    await assert.rejects(prepareOffline(app.container, app.url, '0123456789',
+      { createChannel: app.createChannel }), /offline.cache-incomplete/);
+    assert.equal(app.closed(), 2);
+  }
+});
+
+test('an offline update fetch can reuse only the already installed exact generation', async () => {
+  const app = offlineFixture();
+  app.container.getRegistration = async () => ({ active: app.container.controller });
+  app.container.register = async () => { throw new Error('offline'); };
+  await prepareOffline(app.container, app.url, '0123456789', { createChannel: app.createChannel });
+  app.container.controller = { scriptURL: `${ORIGIN}/text-diff/sw.js?v=9876543210` };
+  await assert.rejects(prepareOffline(app.container, app.url, '0123456789'), /offline/);
+});
+
+test('an activated worker which never answers cannot leave an unbounded readiness check', async () => {
+  const app = offlineFixture();
+  app.container.controller.postMessage = () => {};
+  await assert.rejects(prepareOffline(app.container, app.url, '0123456789',
+    { createChannel: app.createChannel, timeout: 0 }), /offline.cache-unconfirmed/);
+  assert.equal(app.closed(), 2);
 });

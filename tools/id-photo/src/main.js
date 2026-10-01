@@ -139,6 +139,9 @@ let photo = null;
 // has to itself hands somebody on to this one. See specFromHash.
 let specId = specFromHash(window.location.hash) ?? SPECS[0].id;
 let busy = false;
+let loading = false;
+let loadGeneration = 0;
+let exportGeneration = 0;
 
 /**
  * Where the four dots come from, and what happened the last time they were put
@@ -411,12 +414,19 @@ const picker = wireFilePicker({
 
 async function load(file) {
   if (!file || busy) return;
+  const generation = ++loadGeneration;
+  loading = true;
+  el.make.disabled = true;
   clearLoadError();
   picker.busy(readingLabel(1));
 
   try {
     if (!looksLikeImage(file)) throw new Error('load.notimage');
     const decoded = await decode(file);
+    if (generation !== loadGeneration) {
+      release(decoded.bitmap);
+      return;
+    }
     clearResults();
     dropPhoto();
 
@@ -450,11 +460,16 @@ async function load(file) {
     }
     refreshFrame();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     // encode.js and geometry.js throw keys; a browser that failed for its own
     // reasons throws a sentence, and phrase() hands back what it does not know.
     showLoadError(phrase('load.failed', { name: file.name, why: phrase(error.message) }));
   } finally {
-    picker.done();
+    if (generation === loadGeneration) {
+      loading = false;
+      picker.done();
+      el.make.disabled = busy || !photo;
+    }
   }
 }
 
@@ -470,6 +485,11 @@ function dropPhoto() {
 }
 
 el.clearPhoto.addEventListener('click', () => {
+  loadGeneration += 1;
+  exportGeneration += 1;
+  el.progress.hidden = true;
+  loading = false;
+  picker.done();
   clearResults();
   dropPhoto();
   el.preview.removeAttribute('src');
@@ -648,7 +668,7 @@ function refreshFrame() {
   if (spec.kind === 'signature' || !marks.placed) {
     cropper.setGuides(null);
     el.geometryChecks.replaceChildren();
-    el.make.disabled = false;
+    el.make.disabled = busy || loading;
     lastMetrics = null;
     renderResample(spec, rect);
     renderReady(spec);
@@ -684,7 +704,7 @@ function refreshFrame() {
 
   renderResample(spec, rect);
   renderReady(spec);
-  el.make.disabled = false;
+  el.make.disabled = busy || loading;
 }
 
 function checkRow(status, text) {
@@ -900,27 +920,34 @@ for (const input of Object.values(CUSTOM_FIELDS)) {
 }
 
 async function run() {
-  if (!photo || busy) return;
+  if (!photo || loading || busy) return;
+  const generation = ++exportGeneration;
   busy = true;
   el.make.disabled = true;
   clearResults();
   showProgress(0, 'cropping');
 
-  const spec = currentSpec();
-  const rect = cropper.rect;
+  const spec = structuredClone(currentSpec());
+  const rect = { ...cropper.rect };
   const stem = stemOf(photo.file.name);
+  const dpi = Number(el.printDpi.value) || spec.print?.dpi || 300;
+  const paper = paperById(el.paper.value);
   const made = [];
+  let printCanvas = null;
+  let digitalCanvas = null;
 
   try {
-    const dpi = Number(el.printDpi.value) || spec.print?.dpi || 300;
-    let printCanvas = null;
+    // Render both crops before encoding yields. Clearing the photo may release
+    // its bitmap, and changing a rule must only affect the next set of files.
+    if (spec.print) printCanvas = drawCrop(photo.bitmap, rect, printPixels(spec, dpi));
+    if (spec.digital) digitalCanvas = drawCrop(photo.bitmap, rect, portalPixels(spec));
 
     if (spec.print) {
       const size = printPixels(spec, dpi);
       showProgress(0.15, phrase('step.print',
         { width: trim(spec.print.widthMm), height: trim(spec.print.heightMm) }));
-      printCanvas = drawCrop(photo.bitmap, rect, size);
       const { blob } = await encodePrint(printCanvas, { dpi });
+      if (generation !== exportGeneration) return;
       made.push({
         blob,
         pixels: size,
@@ -933,16 +960,23 @@ async function run() {
       });
 
       showProgress(0.5, phrase('step.sheet'));
-      const plan = sheetPlan(spec);
+      const plan = bestSheet({
+        photo: { widthMm: spec.print.widthMm, heightMm: spec.print.heightMm }, paper, dpi,
+      });
       if (plan.count > 0) {
         const sheetCanvas = drawSheet(plan, printCanvas);
-        const sheet = await encodePrint(sheetCanvas, { dpi, quality: 0.92 });
-        free(sheetCanvas);
+        let sheet;
+        try {
+          sheet = await encodePrint(sheetCanvas, { dpi, quality: 0.92 });
+        } finally {
+          free(sheetCanvas);
+        }
+        if (generation !== exportGeneration) return;
         made.push({
           blob: sheet.blob,
           pixels: plan.canvas,
-          name: outName(stem, spec, 'sheet', { paper: paperById(el.paper.value).id }),
-          title: phrase('out.sheet', { paper: phrase(paperById(el.paper.value).label) }),
+          name: outName(stem, spec, 'sheet', { paper: paper.id }),
+          title: phrase('out.sheet', { paper: phrase(paper.label) }),
           detail: phrase('out.sheet.detail', {
             sheet: describeSheet(plan, phrase), size: bytesText(sheet.blob.size), dpi,
           }),
@@ -955,10 +989,8 @@ async function run() {
       // The label goes in as it is written. Lowercasing it is an English habit
       // and a German noun loses its capital to it.
       showProgress(0.75, phrase('step.upload', { label: phrase(spec.digital.label) }));
-      const canvas = drawCrop(photo.bitmap, rect, size);
       const band = portalBytes(spec);
-      const result = await encodeToBand(canvas, band, phrase);
-      free(canvas);
+      const result = await encodeToBand(digitalCanvas, band, phrase);
       made.push({
         blob: new Blob([result.bytes], { type: 'image/jpeg' }),
         pixels: size,
@@ -971,16 +1003,19 @@ async function run() {
       });
     }
 
-    if (printCanvas) free(printCanvas);
-
+    if (generation !== exportGeneration) return;
     showProgress(1, phrase('step.done'));
     renderResults(made);
   } catch (error) {
-    showLoadError(phrase('make.failed', { why: phrase(error.message) }));
+    if (generation === exportGeneration) showLoadError(phrase('make.failed', { why: phrase(error.message) }));
   } finally {
+    if (printCanvas) free(printCanvas);
+    if (digitalCanvas) free(digitalCanvas);
     busy = false;
-    el.make.disabled = false;
-    setTimeout(() => { el.progress.hidden = true; }, 600);
+    el.make.disabled = loading || !photo;
+    setTimeout(() => {
+      if (generation === exportGeneration && !busy) el.progress.hidden = true;
+    }, 600);
   }
 }
 

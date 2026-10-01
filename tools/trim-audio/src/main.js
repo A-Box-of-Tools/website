@@ -101,6 +101,8 @@ let nextId = 1;
 let mode = 'keep';
 
 let exporting = false;
+let loading = false;
+let loadGeneration = 0;
 let abortController = null;
 let previewUrl = null;
 let resultUrl = null;
@@ -136,6 +138,9 @@ const picker = wireFilePicker({
 
 async function loadFile(picked) {
   if (exporting) return;
+  const generation = ++loadGeneration;
+  loading = true;
+  el.exportBtn.disabled = true;
   clearError();
   clearResult();
   picker.busy(phrase('read.reading'));
@@ -145,6 +150,7 @@ async function loadFile(picked) {
     // to leave out: the file is handed to the browser's own decoder and the
     // samples come back into this page's memory.
     const decoded = await decodeAudio(picked);
+    if (generation !== loadGeneration) return;
     file = picked;
     source = decoded;
     summary = summarise(decoded.channels);
@@ -160,6 +166,7 @@ async function loadFile(picked) {
     timeline.setEnabled(true);
     renderSegments();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     // shared/audio-decode.js throws a key; a browser that failed for its own reasons
     // throws a sentence, and phrase() hands back what it does not know.
     if (error instanceof UnreadableFile) showError(phrase(error.message));
@@ -168,7 +175,11 @@ async function loadFile(picked) {
       console.error(error);
     }
   } finally {
-    picker.done();
+    if (generation === loadGeneration) {
+      loading = false;
+      picker.done();
+      if (source) updateSummary();
+    }
   }
 }
 
@@ -684,7 +695,7 @@ function updateSummary() {
     return;
   }
 
-  el.exportBtn.disabled = false;
+  el.exportBtn.disabled = loading || exporting;
 
   const frames = sectionFrames(planned);
   const count = planned.length;
@@ -748,7 +759,7 @@ function fadeNote(fadeSeconds, edges) {
 /* ------------------------------------------------------------------ export */
 
 async function runExport() {
-  if (!source || exporting) return;
+  if (!source || loading || exporting) return;
   clearError();
   clearResult();
 
@@ -758,6 +769,10 @@ async function runExport() {
     return;
   }
 
+  // A replacement decode must finish before export can begin. Keep the exact
+  // source and filename together across the asynchronous rendering step too.
+  const input = source;
+  const name = outputName(file.name);
   exporting = true;
   abortController = new AbortController();
   el.exportBtn.disabled = true;
@@ -769,20 +784,20 @@ async function runExport() {
 
   try {
     const started = performance.now();
-    const cut = await trim(source, planned, {
+    const cut = await trim(input, planned, {
       signal: abortController.signal,
       t: phrase,
       onProgress: (done, label) => progress(done, label),
     });
 
     progress(1, phrase('step.writing'));
-    const blob = writeWav(cut.channels, source.sampleRate, { bits });
-    const seconds = cut.frames / source.sampleRate;
+    const blob = writeWav(cut.channels, input.sampleRate, { bits });
+    const seconds = cut.frames / input.sampleRate;
 
     resultUrl = URL.createObjectURL(blob);
     el.resultAudio.src = resultUrl;
     el.download.href = resultUrl;
-    el.download.download = outputName(file.name);
+    el.download.download = name;
     el.result.hidden = false;
     lastOut = summarise(cut.channels);
     drawWaveform(el.outWave, lastOut);
@@ -807,7 +822,7 @@ async function runExport() {
     exporting = false;
     abortController = null;
     el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = false;
+    updateSummary();
   }
 }
 

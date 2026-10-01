@@ -42,6 +42,7 @@ const el = {
   regenerate: $('regenerate'),
   copy: $('copy'),
   copyNote: $('copy-note'),
+  copyFallback: $('copy-fallback'),
 
   strength: $('strength'),
   bits: $('bits'),
@@ -182,7 +183,14 @@ function showStrength(chosen) {
 
 /* ------------------------------------------------------------ making them */
 
+let generation = 0;
+let copyRequest = 0;
+
 function make() {
+  generation += 1;
+  el.copyNote.textContent = '';
+  el.copyFallback.hidden = true;
+  el.copyFallback.textContent = '';
   const chosen = options();
   const empty = chosen.mode === 'password' && classSizes(chosen).length === 0;
 
@@ -217,14 +225,42 @@ function make() {
 /* ---------------------------------------------------------- taking them away */
 
 async function toClipboard(text) {
+  const copiedGeneration = generation;
+  const request = ++copyRequest;
+  const current = () => generation === copiedGeneration && copyRequest === request;
+  el.copyFallback.hidden = true;
+  el.copyFallback.textContent = '';
   try {
     await navigator.clipboard.writeText(text);
+    if (!current()) return;
     el.copyNote.textContent = el.result.dataset.copied;
     el.copyNote.className = 'copy-note good';
   } catch {
+    if (!current()) return;
+    // A selected, focusable output also works when clipboard permission is
+    // refused. The batch gets one contiguous block containing every secret.
+    const target = text === shown[0] ? el.secret : el.copyFallback;
+    if (target === el.copyFallback) {
+      target.textContent = text;
+      target.hidden = false;
+    }
+    target.focus();
+    selectSecret(target);
     el.copyNote.textContent = el.result.dataset.copyFailed;
     el.copyNote.className = 'copy-note warn';
   }
+}
+
+function selectSecret(node) {
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+for (const output of [el.secret, el.copyFallback]) {
+  output.addEventListener('focus', () => selectSecret(output));
 }
 
 /**

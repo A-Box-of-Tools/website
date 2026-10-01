@@ -420,7 +420,7 @@ guarantees_note = """
     outro site."""
 
 hub_filter_label = "Encontrar uma ferramenta"
-hub_filter_none = "Nenhuma ferramenta corresponde."
+hub_filter_none = "Nenhuma ferramenta corresponde. Tente menos palavras ou um formato de arquivo, como PDF ou PNG."
 
 hub_guides_note = """
     Não sabe em qual ajuste mexer, nem o que ele custa?

@@ -425,7 +425,7 @@ guarantees_note = """
     sitio."""
 
 hub_filter_label = "Buscar una herramienta"
-hub_filter_none = "Ninguna herramienta coincide."
+hub_filter_none = "Ninguna herramienta coincide. Prueba con menos palabras o con un formato de archivo, como PDF o PNG."
 
 hub_guides_note = """
     ¿No sabes qué ajuste mover, ni qué cuesta?

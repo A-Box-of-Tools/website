@@ -334,3 +334,9 @@ is written from the entry you have just made.
 
 The tests will then check the rest: that it can be cropped to, that its bands
 are bands, and that its millimetres and fractions agree.
+
+The set of files captures its rule, crop, paper and DPI before the first JPEG
+encode. Both photo crops are rendered at that point, so a setting changed
+while encoding belongs to the next run and cannot mix sheet pixels at one DPI
+with a density tag at another. Clearing the photo discards the pending result;
+a replacement decode must finish before another set can be made.

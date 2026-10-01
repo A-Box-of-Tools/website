@@ -7,8 +7,8 @@
  * entirely and every feature still works, which no design that uploaded your
  * {{ words.plural }} could manage.
  *
- * CACHE_NAME carries a hash of the files listed below, so it changes exactly
- * when one of them changes and never otherwise. That used to be a comment
+ * CACHE_NAME carries a hash of the files listed below and this worker, so a
+ * change to either the app or its caching rules starts a new generation. That used to be a comment
  * asking whoever edited a file to remember to bump a number by hand.
  *
  * It also carries the scope it was registered with, because the cache store is
@@ -27,7 +27,8 @@
  */
 
 const CACHE_PREFIX = 'abox:{{ cache_scope }}:';
-const CACHE_NAME = CACHE_PREFIX + '{{ cache_hash }}';
+const CACHE_VERSION = '{{ cache_hash }}';
+const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
 const ASSETS = [
   './',
@@ -38,17 +39,46 @@ const ASSETS = [
   'analytics.js',
 ];
 
+// A CDN can serve new HTML beside an old worker, or the reverse. Keep the
+// saved shell with the module graph it names; an online response may be newer
+// without being safe to replace this worker's offline copy.
+function pageVersion(text) {
+  return /\bdata-offline-version=["']([0-9a-f]{10})["']/.exec(text)?.[1];
+}
+
+async function completeCache(cache) {
+  const saved = await Promise.all(ASSETS.map((asset) => cache.match(asset)));
+  if (saved.some((response) => !response?.ok)) return false;
+  const pages = await Promise.all([saved[0].clone().text(), saved[1].clone().text()]);
+  return pages.every((text) => pageVersion(text) === CACHE_VERSION);
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      // A new worker must not seed its cache with the previous deployment's
-      // HTML from the browser's HTTP cache. The worker's own hash changes
-      // independently of those unversioned addresses.
-      .then((cache) => cache.addAll(ASSETS.map((asset) => (
-        new Request(new URL(asset, self.location.href), { cache: 'reload' })
-      ))))
-      .then(() => self.skipWaiting()),
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(ASSETS.map((asset) => (
+      new Request(new URL(asset, self.location.href), { cache: 'reload' })
+    )));
+    if (!await completeCache(cache)) {
+      throw new Error('The offline page and worker belong to different builds.');
+    }
+    await self.skipWaiting();
+  })());
+});
+
+// Readiness means this page's entire eager module graph is saved, not merely
+// that some older registration has activated. Only build metadata crosses
+// this channel; visitor files and tool input never enter the worker.
+self.addEventListener('message', (event) => {
+  if (event.data?.type !== 'abox-offline-ready' || !event.ports?.[0]) return;
+  event.waitUntil((async () => {
+    let ready = false;
+    try {
+      ready = event.data.version === CACHE_VERSION
+        && await completeCache(await caches.open(CACHE_NAME));
+    } catch { /* Storage can be unavailable or evicted after installation. */ }
+    event.ports[0].postMessage({ version: CACHE_VERSION, ready });
+  })());
 });
 
 self.addEventListener('activate', (event) => {
@@ -104,9 +134,15 @@ self.addEventListener('fetch', (event) => {
         const copy = response.clone();
         // Hold the worker alive until the copy lands, without delaying the
         // page or turning a full or unavailable cache into a failed request.
-        event.waitUntil(caches.open(CACHE_NAME)
-          .then((cache) => cache.put(request, copy))
-          .catch(() => {}));
+        event.waitUntil((async () => {
+          if (request.mode === 'navigate') {
+            const version = pageVersion(await copy.clone().text());
+            const shell = url.pathname === new URL('./', self.location.href).pathname
+              || url.pathname === new URL('index.html', self.location.href).pathname;
+            if ((shell || version) && version !== CACHE_VERSION) return;
+          }
+          await (await caches.open(CACHE_NAME)).put(request, copy);
+        })().catch(() => {}));
       }
       return response;
     } catch (error) {

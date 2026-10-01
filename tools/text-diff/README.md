@@ -126,3 +126,17 @@ common.
 Nothing here needs a browser, because nothing here needs a canvas, a codec or a
 file: it is all strings in and strings out, which is the same reason the whole
 tool can promise that nothing leaves the machine.
+
+## Edited input and result actions
+
+The editable boxes carry `data-language-text`: the language switch saves their
+current contents instead of replaying the file they were imported from. A
+cleared box therefore stays clear, and edits are not overwritten by an
+asynchronous file read after navigation. Copy and Download are invalidated as
+soon as typing starts, before the debounced calculation runs; a pending
+clipboard write may only update feedback for the result it actually copied.
+
+The `abox:language-text` snapshot supplies `sourceText()` rather than the
+textarea's normalized value. The restoration input event carries that exact
+string back, so untouched CRLF files retain their bytes, while an edited box
+keeps the line endings of the text the visitor actually entered.

@@ -710,6 +710,30 @@ class BuildTheSite(unittest.TestCase):
                 page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
                 self.assertIn('/offline.js?v=', page)
 
+    def test_the_offline_receipt_covers_every_rebuilt_worker(self):
+        import hashlib
+        receipt = json.loads((self.out / 'offline-generations.json').read_text(encoding='utf-8'))
+        self.assertEqual(receipt['format'], 1)
+        workers = sorted(self.out.glob('**/sw.js'))
+        scopes = {'/' if path.parent == self.out else
+                  '/' + path.parent.relative_to(self.out).as_posix() + '/'
+                  for path in workers}
+        self.assertEqual(set(receipt['scopes']), scopes)
+        for scope, entry in receipt['scopes'].items():
+            worker = self.out / scope.strip('/') / 'sw.js'
+            page = worker.with_name('index.html').read_text(encoding='utf-8')
+            self.assertIn(f'data-offline-version="{entry["version"]}"', page)
+            self.assertEqual(entry['worker_sha256'], hashlib.sha256(worker.read_bytes()).hexdigest())
+
+    def test_installable_pages_name_the_exact_worker_generation(self):
+        for worker in sorted(self.out.glob('**/sw.js')):
+            with self.subTest(worker=worker):
+                page = (worker.parent / 'index.html').read_text(encoding='utf-8')
+                version = re.search(r'data-offline-version="([0-9a-f]{10})"', page)
+                self.assertIsNotNone(version)
+                self.assertIn(f"CACHE_VERSION = '{version[1]}'", worker.read_text(encoding='utf-8'))
+                self.assertNotIn('__ABOX_OFFLINE_VERSION__', page)
+
     def test_the_script_that_registers_the_front_page_worker_is_written_once(self):
         self.assertTrue((self.out / 'offline.js').is_file())
         self.assertEqual(sorted(path.as_posix()
@@ -1848,7 +1872,7 @@ class BuildTheSite(unittest.TestCase):
             written = buildmod.build(scoped, clean=True, minify_output=False,
                                      only=[slug], langs=['en'])
             self.assertEqual(written, [f'{slug}/index.html'])
-            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt',
+            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt', 'offline-generations.json',
                          'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())

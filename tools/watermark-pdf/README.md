@@ -64,7 +64,8 @@ And to each page:
 - a content stream that begins with `Q` (closing the `q` above), sets the
   ExtGState, applies the matrix from visible coordinates to the page's own,
   and for each placement pushes a matrix and draws the image;
-- the two resource names, in the page's **own** `/Resources`.
+- two unused resource names, in the page's **own** `/Resources`. Existing
+  bindings are preserved, including watermarks applied in an earlier run.
 
 The page's `/Contents` becomes `[q-stream, ...whatever it was, stamp-stream]`.
 The page's own streams are not decoded, not read and not rewritten — the
@@ -84,7 +85,9 @@ Rather than work the angle and the corners out four times over, `stamp.js`
 computes every placement in visible coordinates — the page as shown, origin
 bottom-left — and `visibleToUser` supplies one matrix from that frame to the
 page's own, worked out from where the corners go. It is the only place
-`/Rotate` is read, and the same placements drive the preview.
+`/Rotate` is read, and the same placements drive the preview. The visible
+rectangle is the inherited `/CropBox`, clipped to `/MediaBox`, so a cropped
+page with an offset origin is stamped where a PDF reader actually shows it.
 
 ## The preview is the placement, not the page
 
