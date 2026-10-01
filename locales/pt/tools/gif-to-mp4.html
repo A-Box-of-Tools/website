@@ -1,0 +1,168 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha o GIF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what will be written.
+
+    There is almost nothing to choose. A GIF's frames have their own timing
+    and the video keeps every delay as it is; the size stays the GIF's own,
+    made even. The one question a video needs answered that a GIF does not
+    is what colour goes where the GIF was transparent, and the field for it
+    appears only for a GIF that has such places.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span> Confira o que será gravado</h2>
+
+    <p class="card-lede">
+      Cada quadro do GIF vira um quadro de vídeo, exibido exatamente pelo mesmo tempo. Nada é reamostrado, descartado ou duplicado, e o vídeo tem a mesma duração do GIF. A imagem mantém suas dimensões.
+    </p>
+
+    <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+
+    <div id="background-row" class="background-row" hidden>
+      <label class="field" for="background">
+        <span>Fundo das áreas transparentes</span>
+        <span id="background-note" class="field-note"></span>
+      </label>
+      <input type="color" id="background" value="#ffffff">
+    </div>
+
+    <p class="field-note">
+      Um vídeo não repete por conta própria como um GIF: o player decide. A prévia abaixo repete; aplicativos de mensagens e feeds normalmente também.
+    </p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Converta o GIF</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Converter para MP4</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Baixar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls loop muted playsinline preload="metadata" hidden
+             aria-label="O vídeo convertido, reproduzido da memória"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Esta etapa fica disponível quando você escolher um GIF acima.</span>
+    <span data-phrase="file.facts">{size} &middot; {frames} quadros &middot; {length} &middot; {frame}</span>
+    <span data-phrase="plan.nofile">Escolha um GIF acima para ver como será o vídeo.</span>
+    <span data-phrase="plan.same">{frame}, {frames} quadros {timing}, duração de {length}, H.264 a cerca de {rate}.</span>
+    <span data-phrase="plan.resized">{frame} (o GIF é {from}; H.264 exige dimensões pares, então uma linha de fundo será acrescentada), {frames} quadros {timing}, duração de {length}, H.264 a cerca de {rate}.</span>
+    <span data-phrase="timing.steady">a uma taxa fixa de {fps} por segundo</span>
+    <span data-phrase="timing.varies">com a duração original de cada um, cerca de {fps} por segundo, preservados quadro a quadro</span>
+    <span data-phrase="background.some">Este GIF tem áreas transparentes. Um vídeo não pode preservá-las: escolha a cor de fundo.</span>
+    <span data-phrase="background.none">Este GIF não tem transparência, então não é preciso escolher uma cor.</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.preparing">Preparando&hellip;</span>
+    <span data-phrase="progress.frame">Quadro {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Finalizando os últimos quadros&hellip;</span>
+    <span data-phrase="progress.checking">Reabrindo para verificar&hellip;</span>
+    <span data-phrase="run.cancelled">Cancelado. Nada foi gravado; clique no botão para começar novamente.</span>
+    <span data-phrase="run.failed">A conversão falhou: {detail}</span>
+    <span data-phrase="result.ready">MP4 de {size} &mdash; {percent}% menor que o GIF de {from}.</span>
+    <span data-phrase="result.bigger">MP4 de {size} &mdash; {percent}% maior que o GIF de {from}, algo que pode acontecer com GIFs muito pequenos ou quase estáticos.</span>
+    <span data-phrase="result.sub">Mesmos quadros, mesma temporização, H.264 em MP4: o arquivo aceito por todas as plataformas.</span>
+    <span data-phrase="check.passed">Conferido: {found}</span>
+    <span data-phrase="check.failed">A verificação desta conversão falhou &mdash; {found}. Mantenha seu GIF.</span>
+    <span data-phrase="check.ok">reaberto da memória, com duração de {length}, igual à reprodução do GIF, e todos os {frames} quadros presentes.</span>
+    <span data-phrase="check.length">o arquivo pronto tem duração de {got} em vez de {want}</span>
+    <span data-phrase="check.frames">o arquivo pronto tem {got} quadros em vez de {want}</span>
+    <span data-phrase="check.reopen">não foi possível reabrir o arquivo pronto ({detail})</span>
+    <span data-phrase="facts.picture">{frames} quadros de {frame}, codificados em H.264 a {rate}.</span>
+    <span data-phrase="facts.timing">Cada quadro mantém sua duração original no GIF: {timing}.</span>
+    <span data-phrase="facts.loop.gif">O GIF estava configurado para repetir. MP4 não guarda essa configuração: o player decide. A maioria dos feeds e aplicativos de mensagens repete vídeos curtos.</span>
+    <span data-phrase="facts.loop.none">O GIF estava configurado para reproduzir uma vez. MP4 não guarda essa configuração: o player decide.</span>
+    <span data-phrase="facts.time">Concluído em {seconds}.</span>
+    <span data-phrase="support.nowebcodecs">Este navegador não consegue codificar vídeo. Chrome, Edge e Safari conseguem; Firefox a partir da versão 130.</span>
+    <span data-phrase="stall.encoder">O codificador de vídeo do navegador parou de responder. Recarregue a página e tente novamente. Isso pode acontecer quando o codificador por hardware está ocupado ou indisponível.</span>
+    <span data-phrase="encode.noh264">Este navegador não codifica H.264 em {size}.</span>
+    <span data-phrase="mp4.noconfig">O codificador nunca informou uma configuração de decodificador.</span>
+    <span data-phrase="mp4.noframes">Não havia quadros para gravar.</span>
+    <span data-phrase="mp4.toobig">O arquivo pronto teria mais de 4 GB, acima do que este gravador MP4 suporta.</span>
+    <span data-phrase="gif.tooshort">Esse arquivo é curto demais para ser um GIF.</span>
+    <span data-phrase="gif.notagif">Isso não é um GIF. O arquivo não começa com GIF87a nem com GIF89a.</span>
+    <span data-phrase="gif.enormous">Este GIF é enorme: os primeiros {n} quadros atingiram o limite de memória desta página, e os restantes não foram lidos.</span>
+    <span data-phrase="gif.midframe">Este GIF termina no meio de um quadro, então o último pode estar incompleto.</span>
+    <span data-phrase="gif.damaged">Este GIF está danificado: termina antes de o primeiro quadro ficar completo.</span>
+    <span data-phrase="gif.noframes">Este GIF não contém nenhum quadro que este leitor consiga abrir.</span>
+    <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
+    <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
+    <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>
+    <span data-phrase="read.av1short">O registro de configuração AV1 é curto demais.</span>
+    <span data-phrase="read.compactsizes">Os tamanhos das amostras estão numa tabela compacta que este leitor não decodifica.</span>
+    <span data-phrase="read.sampletables">As tabelas de amostras estão incompletas.</span>
+    <span data-phrase="read.chunktable">A tabela de chunks está vazia.</span>
+    <span data-phrase="read.nosamples">A faixa de vídeo não contém quadros.</span>
+    <span data-phrase="read.nostbl">Faltam à faixa de vídeo as suas tabelas de amostras.</span>
+    <span data-phrase="read.nostsd">A faixa de vídeo não tem descrição de amostra.</span>
+    <span data-phrase="read.emptystsd">A descrição de amostra do vídeo está vazia.</span>
+    <span data-phrase="read.encrypted">A faixa de vídeo está criptografada.</span>
+    <span data-phrase="read.unknowncodec">O vídeo está codificado como &ldquo;{type}&rdquo;, um formato que este leitor não reconhece.</span>
+    <span data-phrase="read.noconfig">A faixa &ldquo;{type}&rdquo; não contém uma configuração de decodificação.</span>
+    <span data-phrase="read.notmp4">O arquivo pronto não foi reconhecido como MP4 ao ser reaberto.</span>
+    <span data-phrase="read.nomoov">O arquivo não tem cabeçalho de filme.</span>
+    <span data-phrase="read.novideo">O arquivo não tem nenhuma faixa de vídeo que este leitor consiga usar.</span>
+    <span data-phrase="read.notimescale">A faixa de vídeo não tem escala de tempo.</span>
+    <span data-phrase="read.nofragments">Os fragmentos deste arquivo não contêm nenhum quadro da sua faixa de vídeo.</span>
+    <span data-phrase="read.unreadable">O arquivo não pôde ser lido como MP4.</span>
+    <span data-phrase="read.notplayed">Este navegador não reproduz esse formato.</span>
+    <span data-phrase="read.layout">Este leitor não reconhece a estrutura do arquivo.</span>
+    <span data-phrase="net.clean">seu GIF não foi enviado a lugar algum. {total} arquivos carregados, todos da própria página. {platform}</span>
+    <span data-phrase="net.dirty">algo contatou {hosts}, o que esta ferramenta nunca faz. Vale investigar. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereço; nenhum recebeu um GIF ou qualquer byte dele.</span>
+    <span data-phrase="net.platform.many">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereços; nenhum recebeu um GIF ou qualquer byte dele.</span>
+  </div>
+</main>

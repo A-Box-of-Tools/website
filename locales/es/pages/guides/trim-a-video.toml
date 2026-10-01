@@ -1,0 +1,23 @@
+#
+# Guía: cortar un vídeo - Spanish.
+#
+# Overrides for pages/guides/trim-a-video/page.toml. Only words: the slug, the
+# kind, the group and the tool this guide is about stay where they are.
+#
+
+nav = "Cortar un vídeo"
+
+title = "Cómo cortar un vídeo sin recodificarlo"
+description = "Cortar un clip no tiene por qué costarte ni un byte de calidad. Por qué a veces el corte cae antes de donde lo marcaste, qué pinta ahí un fotograma clave, y cuándo conviene aceptar una recodificación."
+
+heading = "Cómo cortar un vídeo sin recodificarlo"
+lede = """
+    Copiar permite acortar un vídeo sin cambiar sus fotogramas codificados. Esta
+    guía explica las limitaciones de los fotogramas clave, cuándo se puede copiar
+    con fiabilidad y cuándo conviene recodificar."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Cómo cortar un vídeo sin recodificarlo"
+og_description = "Por qué a veces el corte cae antes de donde lo marcaste, qué pinta ahí un fotograma clave, y cuándo conviene aceptar una recodificación."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

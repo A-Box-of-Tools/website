@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "Convertir a MP4"
+title = "Cómo convertir WebM, MKV o MOV a MP4 y por qué se rechazó el archivo"
+description = "Qué necesita un MP4 para ser compatible, por qué se rechazan WebM, MKV o MOV de iPhone, cuándo la conversión no pierde nada y cuándo vuelve a codificar, y cómo hacerla sin subir el archivo."
+heading = "Cómo convertir un video a un MP4 compatible"
+lede = "Cuando un archivo se rechaza porque «no es MP4», el problema puede estar en tres lugares. Solo uno exige perder calidad para resolverlo. Aquí explicamos qué significa el rechazo, qué necesita cada archivo y cómo convertirlo sin subir primero el que no aceptaron."
+updated = "12 de septiembre de 2026"
+og_title = "Cómo convertir un video a un MP4 compatible"
+og_description = "Por qué se rechazan WebM, MKV o MOV, qué conversiones no pierden calidad y cómo hacerlas en el navegador sin subir el archivo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

@@ -1,0 +1,16 @@
+#
+# Guia: aparar um vídeo - português do Brasil.
+#
+
+nav = "Aparar um vídeo"
+title = "Como aparar um vídeo sem recodificá-lo"
+description = "Cortar um clipe não precisa perder um único byte de qualidade. Por que um corte às vezes cai antes de onde você marcou, o que um keyframe tem a ver com isso, e quando aceitar uma recodificação."
+heading = "Como aparar um vídeo sem recodificá-lo"
+lede = """
+    A cópia pode encurtar um vídeo sem alterar seus quadros codificados. Este guia
+    explica as limitações dos quadros-chave, quando a cópia funciona de forma
+    confiável e quando escolher a recodificação."""
+updated = "26 de agosto de 2026"
+og_title = "Como aparar um vídeo sem recodificá-lo"
+og_description = "Por que um corte às vezes cai antes de onde você marcou, o que um keyframe tem a ver com isso, e quando aceitar uma recodificação."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -1,0 +1,155 @@
+# Brazilian Portuguese translation. Structural settings come from the English tool.
+
+name = "Marca d’água em PDF"
+heading = "Marca d’água em&nbsp;PDF <span class=\"h1-kw\">&mdash; indique em cada página para quem é a cópia</span>"
+tagline = "Uma cópia com o destinatário identificado não passa despercebida se aparecer em outro lugar."
+title = "Marca d’água em PDF &mdash; todas as páginas, grátis, sem enviar"
+description = "Adicione uma marca d’água às páginas de um PDF no navegador: destinatário, data ou nome, em qualquer idioma, ângulo e opacidade. Sem enviar nada ou alterar o conteúdo original das páginas."
+og_title = "Coloque marca d’água em um PDF sem enviar o arquivo"
+og_description = "Escreva “uso exclusivo do Banco Acme” em cada página antes de enviar a cópia. Tudo é feito no navegador, sem o documento sair do seu computador."
+og_image_alt = "Adicione marca d’água a um PDF no navegador, sem enviar nada"
+pledge = "O documento é aberto, marcado e gravado na memória deste computador por código servido deste endereço. O próprio navegador desenha as palavras da marca. Nada aqui faz envio, e não há servidor do outro lado para recebê-lo."
+live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, acompanhe a aba Rede e adicione uma marca d’água. Nenhuma requisição leva o documento, as palavras digitadas ou o nome do arquivo. Ou desligue a internet e use a ferramenta mesmo assim."
+read_first = ", <code>src/stamp.js</code> para a posição da marca na página, <code>src/render.js</code> para transformar as palavras em imagem, e <code>src/apply.js</code> para os três objetos acrescentados ao documento e os dois acrescentados a cada página. Nenhum deles, nem o leitor ou o gravador usados ao lado, acessa a rede."
+howto_heading = "Como colocar uma marca d’água em um PDF"
+card = "Marque cada página de um PDF com destinatário, data ou nome, em qualquer idioma, ângulo e opacidade, sem enviar o documento. O conteúdo original é preservado, e o resultado é reaberto para conferir se a marca está em todas as páginas."
+
+[words]
+plural = "documentos"
+choose = "um PDF"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem envio"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem conta"
+
+[[facts]]
+mark = "&#10003;"
+text = "Funciona offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Código aberto"
+
+[[facts]]
+mark = "&#10003;"
+text = "Os arquivos ficam no seu aparelho"
+
+[[privacy]]
+title = "O documento que precisa de marca d’água também merece ficar no seu computador."
+body = "Uma cópia de passaporte para alugar um imóvel, um extrato para financiamento ou uma minuta de contrato que não deve vazar. A marca identifica o destinatário porque o arquivo vai sair das suas mãos. Entregá-lo antes a um servidor desconhecido para receber essa marca contraria a intenção. Aqui, o navegador lê o arquivo, desenha as palavras e grava a cópia na memória. A <code>Content-Security-Policy</code> lista todos os endereços permitidos, e nenhum pertence a este site. Desligue a rede e a ferramenta continua funcionando."
+
+[[privacy]]
+title = "A marca identifica o destino da cópia; não impede que ela seja copiada."
+body = "“Uso exclusivo do Banco Acme, 12 de setembro de 2026” em cada página ajuda a identificar a origem de uma cópia que apareça em outro lugar. É por isso que bancos, advogados e locadores a pedem. Mas ela não bloqueia o documento: quem tem um editor de PDF pode removê-la. Para impedir a leitura por quem não deve ter acesso, use uma senha com a ferramenta de <a href=\"../proteger-pdf/\">proteger PDF</a>. O resultado oferece um atalho para ela."
+
+[[privacy]]
+title = "A marca é uma imagem, por isso aceita qualquer idioma e fonte disponível."
+body = "O PDF desenha texto usando fontes incorporadas ou as catorze fontes básicas, limitadas ao alfabeto latino. Em vez de incorporar uma fonte e seu mecanismo de composição, o navegador desenha as palavras uma vez com as fontes do seu computador. A imagem é colocada nas páginas com uma máscara de transparência, em resolução adequada para impressão. As palavras da marca não ficam selecionáveis nem pesquisáveis: servem para serem vistas, não extraídas como texto."
+
+[[privacy]]
+title = "O conteúdo das páginas não é interpretado, redesenhado ou reorganizado."
+body = "A ferramenta acrescenta três pequenos objetos ao documento: imagem, máscara e configuração de opacidade. Cada página recebe duas instruções de desenho, uma antes e outra depois do conteúdo existente. O conteúdo original não é decodificado nem alterado: instruções, fontes e imagens são preservadas, assim como a resolução das digitalizações e a seleção e busca de texto. Nada muda de lugar. A regravação apenas deixa para trás cópias antigas de objetos substituídos por edições anteriores."
+
+[[privacy]]
+title = "A prévia mostra a posição da marca, sem desenhar o documento."
+body = "Este site não inclui um renderizador de PDF. A prévia usa uma página em branco com o tamanho e o formato exatos da primeira página do arquivo. A marca aparece onde será gravada, calculada pelo mesmo código que gera o PDF. O conteúdo original não é mostrado: reproduzi-lo fielmente exigiria um mecanismo gráfico e de fontes comparável ao de um navegador."
+
+[[privacy]]
+title = "O arquivo pronto é aberto novamente antes de ser oferecido."
+body = "Os bytes do download passam pelo mesmo leitor usado pelas outras ferramentas de PDF. Cada página precisa incluir a marca nos recursos e terminar com a instrução que a desenha. A quantidade de páginas deve continuar igual à do original. Se a verificação falhar, a ferramenta informa o problema e não oferece download."
+
+[[privacy]]
+title = "A assinatura digital perde a validade, e a página avisa quando encontra uma."
+body = "Uma assinatura cobre os bytes exatos do arquivo; qualquer regravação a invalida. A ferramenta cria um novo arquivo sem assinatura válida e avisa no resultado quando encontra uma no original. Guarde o original, que continua sendo a cópia assinada."
+
+[[privacy]]
+title = "Um documento bloqueado precisa ser desbloqueado primeiro."
+body = "Não é possível marcar um documento sem abri-lo, e esta página não pede senhas. Ela indica o <a href=\"../desbloquear-pdf/\">desbloqueador de PDF</a>, que remove a proteção no mesmo navegador. Traga a cópia desbloqueada para receber a marca e depois use <a href=\"../proteger-pdf/\">proteger PDF</a> para colocar a senha novamente, se desejar."
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = "Os scripts de publicidade e medição vêm do Google. Eles não recebem arquivo, página, nome, tamanho, quantidade de páginas nem palavras da marca. Todo o código que lê, marca ou grava o PDF é servido desta origem e está no repositório."
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = "O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado por um script de cdnjs.buymeacoffee.com e busca as letras no Google Fonts. É um link e nada mais: não relata visita alguma, e não recebe nada sobre você nem sobre os seus documentos. Nada acontece a menos que você clique, e para onde você iria ao clicar é o site de outra pessoa."
+
+[[privacy]]
+title = "Funciona offline."
+body = "Desligue a rede e tudo continua funcionando. Uma ferramenta que enviasse seu documento para marcá-lo em outro lugar pararia."
+
+[[howto]]
+title = "Escolha o PDF."
+body = "Um documento por vez, lido diretamente do disco pelo navegador. Arquivos protegidos são encaminhados ao desbloqueador; os demais, inclusive digitalizações, são aceitos como estão."
+
+[[howto]]
+title = "Digite o texto da marca."
+body = "Informe para quem é a cópia e a data, por exemplo: “Uso exclusivo do Banco Acme &middot; 12 de setembro de 2026”. O navegador desenha as palavras, então qualquer idioma ou sistema de escrita que você consiga digitar pode aparecer na marca."
+
+[[howto]]
+title = "Ajuste a posição e confira a prévia."
+body = "Escolha tamanho, diagonal ou horizontal, uma marca central ou várias repetições, opacidade, cor e aplicação em todas as páginas ou só na primeira. A prévia é uma página em branco no formato da primeira página do documento, com a marca exatamente onde será gravada."
+
+[[howto]]
+title = "Aplique a marca e confira a confirmação."
+body = "A imagem é incluída uma vez no documento, e cada página recebe a instrução para desenhá-la. O resultado é reaberto para conferir a marca e a quantidade de páginas. Se a verificação falhar, a página informa o problema e não oferece download."
+
+[[faq]]
+q = "Uma marca d’água pode ser removida?"
+a = "Sim, por quem tem um editor de PDF. Ela não bloqueia o documento; identifica para onde uma cópia foi enviada. Se uma digitalização marcada para uso exclusivo de um banco aparecer em outro, a marca aponta a origem da cópia. É por isso que instituições financeiras, locadores e advogados a pedem. Para impedir a leitura por terceiros, use uma senha com a ferramenta de <a href=\"../proteger-pdf/\">proteger PDF</a>."
+
+[[faq]]
+q = "Posso escrever a marca em chinês, árabe ou outro idioma?"
+a = "Sim. O navegador desenha o texto com as fontes do seu computador e o coloca como imagem nas páginas, sem a limitação ao alfabeto latino do texto PDF sem fonte incorporada. Em contrapartida, as palavras da marca não ficam selecionáveis nem pesquisáveis."
+
+[[faq]]
+q = "Por que meu documento não aparece na prévia?"
+a = "O site não inclui um renderizador de PDF. Desenhar a página fielmente exige um mecanismo completo de gráficos e fontes, de porte comparável ao de um navegador. A prévia mostra uma página em branco com o tamanho e o formato exatos da primeira página e a marca na posição calculada pelo mesmo código que grava o arquivo. Abra o resultado em um leitor de PDF para ver a marca sobre o conteúdo."
+
+[[faq]]
+q = "O documento muda por baixo da marca?"
+a = "Não. As instruções de desenho, fontes e imagens originais são preservadas, e a marca é desenhada por cima com a opacidade escolhida. O texto continua selecionável e pesquisável, as digitalizações mantêm a resolução e nada muda de lugar. O arquivo cresce pelo tamanho de uma única imagem compartilhada por todas as páginas, normalmente algumas dezenas de quilobytes para poucas palavras."
+
+[[faq]]
+q = "Funciona com digitalizações e páginas giradas?"
+a = "Sim. Uma digitalização é uma página com uma imagem, e a marca é desenhada sobre ela. Uma página salva com rotação recebe a marca conforme aparece no leitor: a diagonal acompanha a página exibida, não a orientação que o scanner atribuiu originalmente ao papel."
+
+[[faq]]
+q = "O que acontece com um documento assinado?"
+a = "A assinatura perde a validade. Ela cobre os bytes exatos do arquivo, e qualquer alteração os modifica. A ferramenta cria uma cópia e avisa quando encontra assinatura no original. Guarde o original, que continua sendo a cópia assinada."
+
+[[faq]]
+q = "Posso colocar marca d’água em um PDF com senha?"
+a = "Não diretamente: esta página não pede senha. Primeiro, remova a proteção com o <a href=\"../desbloquear-pdf/\">desbloqueador de PDF</a> no mesmo navegador. Marque a cópia desbloqueada aqui e, se quiser, coloque a senha novamente com <a href=\"../proteger-pdf/\">proteger PDF</a>. Um arquivo que só tem restrições também precisa desse passo, pois regravá-lo para aplicar a marca removeria as restrições."
+
+[[faq]]
+q = "O documento ou as palavras digitadas são enviados para algum lugar?"
+a = "Não. Seu navegador lê, marca e grava o arquivo no seu computador, além de desenhar as palavras. Não há processamento em servidor, e nenhum endereço listado na <code>Content-Security-Policy</code> pertence a este site. Desligue a internet e use a página para conferir."
+
+[[faq]]
+q = "Como sei que todas as páginas receberam a marca?"
+a = "A ferramenta reabre o resultado no seu computador. Cada página precisa citar a marca nos recursos e terminar com a instrução que a desenha; a quantidade de páginas deve continuar igual. Se alguma página falhar, a ferramenta informa o erro e não oferece download."
+
+[[faq]]
+q = "Há limite de tamanho, e custa alguma coisa?"
+a = "Não há limite escrito na ferramenta. O limite é o seu próprio computador: o documento fica na memória enquanto se trabalha nele, então um notebook aguenta algumas centenas de megabytes sem reclamar e começa a penar acima disso. É grátis, não há conta, não há login e não há teste. O site exibe publicidade, e é ela que o paga; os anunciantes não recebem nada sobre os seus documentos."
+
+[[faq]]
+q = "Funciona offline?"
+a = "Sim. Abra a página uma vez e desligue a internet: ela continua funcionando. Uma ferramenta que enviasse o documento para marcar em outro lugar pararia ao perder a conexão."
+
+[schema]
+category = "UtilitiesApplication"
+description = "Coloque marca d’água em um PDF no navegador: destinatário, data ou nome, em qualquer idioma, tamanho, ângulo e opacidade. Preserva as páginas, não envia nada e reabre o resultado para conferir a marca."
+features = ["Aplica o texto em todas as páginas ou apenas na primeira", "Aceita qualquer idioma e sistema de escrita com as fontes do navegador", "Marca diagonal ou horizontal, centralizada ou repetida", "Tamanho, opacidade e cor ajustáveis, com prévia da posição", "Funciona com digitalizações e respeita a orientação de páginas giradas", "Não interpreta nem reescreve o conteúdo original das páginas", "Reabre o resultado para conferir a marca em todas as páginas escolhidas", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
+
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Solte aqui o PDF que vai receber a marca d’água"
+hint = "ou clique para procurar &mdash; um documento por vez"
+example = true

@@ -315,7 +315,8 @@ function render() {
 function renderList() {
   el.fileList.replaceChildren();
   el.listToolbar.hidden = items.length === 0;
-  el.countLabel.textContent = `${countOf(items.length)} chosen`;
+  el.countLabel.textContent = phrase(items.length === 1 ? 'count.chosen.one' : 'count.chosen.many',
+    { n: items.length });
   el.clearAll.disabled = busy;
 
   for (const item of items) {

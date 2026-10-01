@@ -111,8 +111,9 @@
       Spalten sind Papierstreifen, die niemand gedruckt hat. Jede Tabelle
       unten wurde also erschlossen und nicht gelesen. Wo eine von ihnen einen
       laufenden Saldo führt, ist die Zeile über den Tabellen das Werkzeug, das
-      seine eigene Arbeit prüft &mdash; jede Zeile bewiesen an der Zeile
-      davor.
+      seine Arbeit prüft: Welche Saldovergleiche stimmen überein, und welche
+      Zeilen konnten nicht geprüft werden? Übereinstimmende Salden prüfen
+      Nettoänderungen; Fehler können sich gegenseitig aufheben.
     </p>
 
     <p id="summary" class="verdict" role="status" aria-live="polite"></p>
@@ -177,10 +178,10 @@
     <span data-phrase="count.columns.many">{n} Spalten</span>
     <span data-phrase="count.tables.one">{n} Tabelle</span>
     <span data-phrase="count.tables.many">{n} Tabellen</span>
-    <span data-phrase="check.held">Der laufende Saldo geht auf jeder Zeile auf, die Beträge wurden also richtig
-      gelesen, und keine Zeile fehlt oder wurde doppelt gezählt.</span>
-    <span data-phrase="check.broke">Der laufende Saldo geht auf {held} von {links} Zeilen auf. Prüfen Sie {where}
-      am PDF, bevor Sie das verwenden.</span>
+    <span data-phrase="check.held">Der laufende Saldo stimmt bei allen {links} Vergleichen überein.</span>
+    <span data-phrase="check.broke">Der laufende Saldo stimmt bei {held} von {links} Vergleichen überein. Prüfen Sie die Beträge bis einschließlich {where} anhand der PDF.</span>
+    <span data-phrase="check.unchecked">Nicht geprüfte Zeilen: {where}. Prüfen Sie deren Beträge anhand der PDF.</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
     <span data-phrase="check.row">Zeile {n}</span>
     <span data-phrase="check.rows">die Zeilen {list}</span>
     <span data-phrase="order.found">Aus einem Tag nach dem Zwölften in diesem Dokument erschlossen, das ist also das,

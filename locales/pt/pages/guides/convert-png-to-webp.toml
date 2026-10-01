@@ -1,0 +1,11 @@
+# Localized guide; structural metadata remains in the English source.
+
+nav = "PNG para WebP"
+title = "Como converter PNG para WebP, com ou sem perdas"
+description = "WebP é menor que PNG mesmo sem descartar informação, e muito menor com uma pequena perda. Qual modo escolher para cada imagem, quanto ele economiza e como converter sem enviar arquivos."
+heading = "A mesma imagem, um terço menor e com a transparência intacta"
+lede = "O modo sem perdas do WebP preserva os pixels do PNG e ainda ocupa menos. O modo com perdas pode reduzir uma foto a um décimo do tamanho. A escolha depende do conteúdo da imagem; veja como decidir."
+updated = "17 de setembro de 2026"
+og_title = "Como converter PNG para WebP"
+og_description = "Com ou sem perdas: quanto cada modo economiza e por que os dois preservam a transparência."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

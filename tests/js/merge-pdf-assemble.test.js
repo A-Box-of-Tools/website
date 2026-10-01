@@ -293,6 +293,22 @@ test('bookmarks whose pages survived are kept, and follow them', async () => {
   assert.equal(build.resolve(titles[0].dest[0]), pages[1]);
 });
 
+test('missing bookmark titles are translated without replacing a source title named Untitled', async () => {
+  const objects = OBJECTS.slice();
+  objects[14] = objects[14].replace('/Title (One)', '/Title ()');
+  objects[15] = objects[15].replace('/Title (Two)', '');
+  objects[16] = objects[16].replace('/Title (Two point one)', '/Title (Untitled)');
+  const source = readSource(await PdfDocument.open(buildPdf(objects)), 'titles.pdf');
+  const { build } = assemble([pick(source, 0), pick(source, 2), pick(source, 3)], {
+    t: (key, values) => key === 'bookmark.untitled' ? 'Sin título' : say(key, values),
+  });
+  const catalog = build.resolve(build.trailer.get('Root'));
+  const titles = walkOutline(build, build.resolve(catalog.get('Outlines')));
+
+  assert.deepEqual(titles.map((entry) => entry.title), ['Sin título', 'Sin título']);
+  assert.equal(titles[1].kids[0].title, 'Untitled');
+});
+
 test('a bookmark whose page is gone but whose chapter is not stays as a heading', async () => {
   const source = await fixture();
   // Page four survives; page three, which "Two" points at, does not.

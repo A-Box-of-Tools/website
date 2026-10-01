@@ -138,7 +138,7 @@ async function addFiles(files) {
           // Kept as text, because once the tags are gone there is nothing left
           // to describe them with, and "location tags, but no position" is the
           // wrong thing to say about a row that used to name a street.
-          where: position ? `${position.text}.` : 'Location tags without a full position.',
+          where: position ? `${position.text}.` : phrase('block.gps.partial'),
         };
 
         // PNG key/value chunks, as a working copy. Editing one means rewriting
@@ -221,7 +221,7 @@ function render() {
   const any = items.length > 0;
   el.listToolbar.hidden = !any;
   el.countLabel.textContent = any
-    ? `${items.length} photo${items.length === 1 ? '' : 's'}`
+    ? phrase(items.length === 1 ? 'list.photos.one' : 'list.photos.many', { count: items.length })
     : '';
 
   renderList();
@@ -320,10 +320,17 @@ el.keepIcc.addEventListener('change', renderKeepSummary);
  * A tag's value, as words where it is words.
  *
  * formatValue hands back a plain string for anything read out of the file and
- * a {key, values} pair for the few things it has to say itself - an empty
- * string, a run of raw bytes, a number no enumeration covers.
+ * phrase descriptors for the tool's own words. Flash is a list of phrase
+ * keys because its independent flags can occur together; even the separator
+ * belongs to the translation, so Chinese does not inherit an English comma.
  */
-const say = (value) => (value && value.key ? phrase(value.key, value.values) : value);
+const say = (value) => {
+  if (value?.parts) {
+    return value.parts.map((key) => phrase(key)).reduce((left, right) =>
+      phrase('value.separator', { left, right }));
+  }
+  return value?.key ? phrase(value.key, value.values) : value;
+};
 
 /* --------------------------------------------------------------- inspector */
 
@@ -536,7 +543,7 @@ function renderBlocks(item) {
     if (block.gone) {
       const pill = document.createElement('span');
       pill.className = 'block-removed';
-      pill.textContent = block.pill ?? 'Removed';
+      pill.textContent = block.pill ?? phrase('block.removed');
       li.appendChild(pill);
     } else {
       const button = document.createElement('button');
@@ -593,16 +600,17 @@ function renderTags(item) {
     section.className = 'tag-group';
 
     const heading = document.createElement('h4');
-    heading.textContent = group.title;
+    heading.textContent = phrase(group.title);
     const count = document.createElement('span');
     count.className = 'group-count';
-    count.textContent = `${group.entries.length} tag${group.entries.length === 1 ? '' : 's'}`;
+    count.textContent = phrase(group.entries.length === 1 ? 'editor.tags.one' : 'editor.tags.many',
+                               { count: group.entries.length });
     heading.appendChild(count);
     section.appendChild(heading);
 
     const note = document.createElement('p');
     note.className = 'group-note';
-    note.textContent = group.note;
+    note.textContent = phrase(group.note);
     section.appendChild(note);
 
     const scroll = document.createElement('div');
@@ -612,7 +620,7 @@ function renderTags(item) {
 
     const head = document.createElement('thead');
     const headRow = document.createElement('tr');
-    for (const label of ['Tag', 'Value', '']) {
+    for (const label of [phrase('editor.tag'), phrase('editor.value'), '']) {
       const th = document.createElement('th');
       th.scope = 'col';
       th.textContent = label;
@@ -666,7 +674,7 @@ function textChunkGroup(item) {
 
   const head = document.createElement('thead');
   const headRow = document.createElement('tr');
-  for (const label of ['Keyword', 'Value', '']) {
+  for (const label of [phrase('editor.keyword'), phrase('editor.value'), '']) {
     const th = document.createElement('th');
     th.scope = 'col';
     th.textContent = label;
@@ -688,7 +696,7 @@ function textChunkGroup(item) {
       key.className = 'tag-input';
       key.value = chunk.keyword;
       key.spellcheck = false;
-      key.setAttribute('aria-label', `Keyword for ${chunk.keyword}`);
+      key.setAttribute('aria-label', phrase('editor.keywordfor', { keyword: chunk.keyword }));
       key.addEventListener('change', () => {
         chunk.keyword = key.value;
         item.textDirty = true;
@@ -730,7 +738,7 @@ function textChunkGroup(item) {
       const remove = document.createElement('button');
       remove.type = 'button';
       remove.className = 'tag-delete';
-      remove.textContent = 'Remove';
+      remove.textContent = phrase('block.remove');
       remove.setAttribute('aria-label', phrase('editor.removechunk', { keyword: chunk.keyword }));
       remove.addEventListener('click', () => {
         const at = item.textChunks.indexOf(chunk);
@@ -767,8 +775,8 @@ function tagRow(item, group, entry) {
   if (spec.risk) {
     const dot = document.createElement('span');
     dot.className = `tag-risk tag-risk-${spec.risk}`;
-    dot.textContent = spec.risk === 'high' ? 'identifying' : 'revealing';
-    if (spec.note) dot.title = spec.note;
+    dot.textContent = phrase(spec.risk === 'high' ? 'risk.high' : 'risk.medium');
+    if (spec.note) dot.title = phrase(spec.note);
     th.appendChild(dot);
   }
 
@@ -787,8 +795,8 @@ function tagRow(item, group, entry) {
   const remove = document.createElement('button');
   remove.type = 'button';
   remove.className = 'tag-delete';
-  remove.textContent = 'Remove';
-  remove.setAttribute('aria-label', `Remove ${spec.name}`);
+  remove.textContent = phrase('block.remove');
+  remove.setAttribute('aria-label', phrase('editor.removetag', { tag: spec.name }));
   remove.addEventListener('click', () => {
     const list = item.exif.groups[group];
     const at = list.indexOf(entry);
@@ -846,12 +854,12 @@ function editorFor(item, group, entry) {
     // A file can hold a value the standard does not define. Offer it as an
     // option rather than silently changing it to whichever one is first.
     if (typeof entry.value === 'number' && !spec.values?.[entry.value]) {
-      known.push([String(entry.value), `Unrecognised value (${entry.value})`]);
+      known.push([String(entry.value), { key: 'value.unknown', values: { value: entry.value } }]);
     }
     for (const [value, label] of known) {
       const option = document.createElement('option');
       option.value = value;
-      option.textContent = label;
+      option.textContent = say(label);
       option.selected = Number(value) === entry.value;
       select.appendChild(option);
     }
@@ -1018,7 +1026,7 @@ el.stripAll.addEventListener('click', () => {
       }
       results.push({ item, data: serialize(item, stripPlan(item, keepOrientation, keepIcc)) });
     } catch (error) {
-      results.push({ item, error: error.message });
+      results.push({ item, error: phrase(error.message, error.values) });
     }
   }
 
@@ -1079,7 +1087,7 @@ function showResults(results) {
       link.className = 'primary as-button';
       link.href = url;
       link.download = outName(result.item, 'clean');
-      link.textContent = 'Download';
+      link.textContent = phrase('result.download');
       li.appendChild(link);
     }
 
@@ -1101,10 +1109,10 @@ el.saveEdits.addEventListener('click', () => {
   try {
     const data = serialize(item, editPlan(item));
     saveBlob(new Blob([data], { type: outputType(item.kind).mime }), outName(item, 'edited'));
-    el.saveStatus.textContent = `Saved as ${outName(item, 'edited')} - ${humanBytes(data.length)}.`;
+    el.saveStatus.textContent = phrase('edit.saved', { name: outName(item, 'edited'), size: humanBytes(data.length) });
     clearEditError();
   } catch (error) {
-    showEditError(error.message);
+    showEditError(phrase(error.message, error.values));
   }
 });
 

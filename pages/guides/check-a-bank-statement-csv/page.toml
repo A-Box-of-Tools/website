@@ -1,0 +1,25 @@
+# A balance check is useful evidence, but it cannot verify a date or a payee.
+# This worked example complements the privacy guide, which keeps the tool's
+# primary guide link, and shows what a reader still needs to check themselves.
+
+slug = "guides/check-a-bank-statement-csv"
+kind = "guide"
+nav = "Check a bank statement CSV"
+group = "doing-the-job"
+
+title = "How to Check a Bank Statement CSV Before You Trust It"
+description = "Check a converted bank statement CSV for wrong amounts, missing rows and misread dates. A worked example shows what running balances can and cannot prove."
+
+heading = "How to check a bank statement CSV before you trust it"
+lede = """
+    A spreadsheet can look perfect and still contain a wrong amount or a
+    missing transaction. Check it against the statement, using the printed
+    balances to test the numbers and the original rows to check the rest."""
+
+updated = "29 September 2026"
+published = "2026-09-29"
+lastmod = "2026-09-29"
+
+og_title = "How to check a bank statement CSV before you trust it"
+og_description = "A tidy spreadsheet can still be wrong. Work through a running-balance check, catch misread dates and missing rows, and know what a matching total cannot prove."
+og_image_alt = "abox.tools - tools that never touch a server"

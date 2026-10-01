@@ -1,0 +1,145 @@
+name = "Proteger PDF"
+heading = "Proteger&nbsp;PDF <span class=\"h1-kw\">&mdash; añade contraseña y las restricciones que necesites</span>"
+tagline = "Protege el documento sin entregárselo primero a una web."
+title = "Proteger PDF con contraseña &mdash; cifrar y restringir gratis, sin subirlo"
+description = "Añade contraseña o restricciones de impresión y copia a un PDF en el navegador. AES-256 por defecto, sin subidas. Se reabre el resultado para comprobar la protección antes de descargarlo."
+og_title = "Protege un PDF con contraseña sin subirlo"
+og_description = "Cifra el documento en el navegador con AES-256 y comprueba el resultado antes de descargarlo. No necesitas entregar el original ni la contraseña a un servidor."
+og_image_alt = "Proteger un PDF con contraseña en el navegador, sin subirlo"
+pledge = "El documento se abre, cifra y escribe en la memoria del dispositivo con código de esta página. No hay funciones de subida ni un servidor que lo reciba. Ni el archivo ni la contraseña salen de esta pestaña."
+live_hint = "Abre las herramientas de desarrollo, mira Red y protege un documento. Ninguna petición lleva el archivo, la contraseña ni su nombre. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/shared/pdf-crypt.js</code> para derivar la clave de la contraseña y construir el diccionario /Encrypt, y <code>src/shared/aes.js</code> para el cifrado. Ninguno accede a la red, ni el lector y el escritor."
+howto_heading = "Cómo añadir contraseña o restricciones a un PDF"
+card = "Añade una contraseña o restricciones de impresión y copia sin enviar el documento fuera. AES-256 por defecto y una opción antigua para lectores antiguos. Se reabre el archivo para comprobar la protección antes de entregarlo."
+
+[words]
+plural = "documentos"
+choose = "un PDF"
+analytics_extra = ", ni la contraseña escrita ni el tipo de protección del archivo"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "Protege el documento sin entregar el original."
+body = "Un documento que quieres proteger no debería pasar primero, sin protección y junto con su contraseña, por un servidor cuya retención desconoces. Aquí lo lee el navegador, deriva la clave en la pestaña y escribe la copia cifrada en memoria. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Desconéctate y seguirá funcionando."
+
+[[privacy]]
+title = "La contraseña bloquea; las restricciones solicitan."
+body = "La <em>contraseña de apertura</em> protege el contenido con cifrado y no se guarda como texto en el archivo. Las <em>restricciones</em> de impresión, copia y edición son distintas. Si el documento se abre sin contraseña, contiene lo necesario para obtener su clave. El lector respeta los permisos por acuerdo y puede ignorarlos. Adobe lo documenta así y <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a> permite retirarlos. Son útiles para expresar lo que permites, pero no equivalen a un bloqueo criptográfico."
+
+[[privacy]]
+title = "AES-256 por defecto; el esquema antiguo solo si lo necesitas."
+body = "Los lectores llaman protegidos a PDF con cifrados de generaciones muy distintas. Aquí se usa AES-256 con el hash de contraseña de PDF 2.0, diseñado para dificultar las pruebas de contraseñas. La seguridad depende de elegir una buena contraseña. AES-128 con derivación de 1994 queda como opción de compatibilidad para lectores anteriores a 2010, con su limitación explicada."
+
+[[privacy]]
+title = "Se pide dos veces porque no hay recuperación."
+body = "Esta página no busca contraseñas. Si olvidas una contraseña fuerte de un documento cifrado con el esquema actual, puedes perder el acceso. Por eso hay que escribirla dos veces y ambas deben coincidir. Conserva el original: esta operación no lo modifica."
+
+[[privacy]]
+title = "Se reabre el resultado antes de ofrecerlo."
+body = "El archivo generado se vuelve a leer: sin contraseña debe rechazarse si pediste bloqueo de apertura; con la contraseña elegida debe abrirse, conservar las páginas y mostrar los permisos solicitados. Si falla una comprobación, no se ofrece la descarga."
+
+[[privacy]]
+title = "Las páginas no se vuelven a dibujar ni recomprimir."
+body = "Cambia el cifrado, no el contenido de las páginas. Instrucciones, fuentes e imágenes se conservan: con la contraseña, el texto sigue seleccionable y los escaneos mantienen su resolución. No se redistribuye nada. La reescritura omite versiones antiguas de objetos sustituidos."
+
+[[privacy]]
+title = "La firma digital no sobrevive a la reescritura."
+body = "Una firma cubre los bytes exactos del original. Reescribirlo la invalida en la copia y se avisa si se detecta. El original sigue firmado. Si necesitas cifrado y firma, protege primero y firma después la copia protegida."
+
+[[privacy]]
+title = "Si ya tiene contraseña, retírala primero."
+body = "No se superponen contraseñas. Un archivo que pide contraseña de apertura se rechaza con un enlace a <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a>. Retira allí la protección y vuelve con la copia. Si solo tiene restricciones y se abre sin contraseña, sí se acepta y los nuevos ajustes sustituyen a los anteriores."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben documentos, páginas, nombre, tamaño, número de páginas, contraseña ni protección. Todo el código que lee, cifra y escribe se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón &laquo;Buy me a coffee&raquo; de la cabecera lo dibuja un script de cdnjs.buymeacoffee.com y toma su tipografía de Google Fonts. Es un enlace y nada más: no informa de ninguna visita y no se le entrega nada sobre ti ni sobre tus documentos. No pasa nada hasta que lo pulsas, y entonces estás en el sitio de otra gente."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y la página sigue funcionando. Una herramienta que enviara el documento a cifrar fuera se detendría."
+
+[[howto]]
+title = "Elige el PDF."
+body = "Un documento cada vez. Se lee y abre en el navegador. Si necesita contraseña, se dirige a la herramienta de desbloqueo; si solo tiene restricciones, se acepta y se sustituyen por las elegidas aquí."
+
+[[howto]]
+title = "Escribe la contraseña de apertura dos veces."
+body = "Es la protección real. Las dos entradas deben coincidir antes de activar el botón. Si la olvidas, esta herramienta no la recuperará. Deja ambos campos vacíos si solo quieres restricciones en un documento que cualquiera pueda abrir."
+
+[[howto]]
+title = "Marca las restricciones que necesites."
+body = "Imprimir, copiar texto e imágenes o modificar. Son peticiones para el lector, no bloqueos criptográficos. La contraseña del propietario las retira. Si se deja vacía, la de apertura cumple ambos papeles; si no hay ninguna, se genera una aleatoria y se descarta para que no pueda retirarse con una contraseña vacía."
+
+[[howto]]
+title = "Protege y revisa la comprobación."
+body = "Se escribe una copia cifrada con una clave nueva y se reabre para comprobar que respeta la contraseña, las páginas y los permisos. Si falla, no hay descarga y se explica el motivo."
+
+[[faq]]
+q = "¿Es seguro un PDF protegido con contraseña?"
+a = "El esquema predeterminado, AES-256 con hash de PDF 2.0, es el actual; la seguridad depende de la contraseña. No todos los PDF que un lector llama protegidos usan lo mismo. El formato incluye desde claves antiguas de 40 bits hasta este esquema. Aquí se usa el actual y se identifica expresamente la opción antigua."
+
+[[faq]]
+q = "¿Qué diferencia hay entre contraseña y restricciones?"
+a = "La contraseña de <em>usuario</em> permite abrir el documento. La del <em>propietario</em> retira las <em>restricciones</em> de impresión, copia y edición. Estas últimas son peticiones: si el archivo se abre sin contraseña, contiene lo necesario para leerlo, y un programa puede ignorar los permisos. <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a> lo hace. Usa restricciones para indicar lo que permites y contraseña para controlar la apertura."
+
+[[faq]]
+q = "¿Qué pasa si olvido la contraseña?"
+a = "Puedes perder el acceso. Esta herramienta no busca contraseñas; <code>src/shared/pdf-crypt.js</code> permite comprobarlo. No cuentes con recuperar un archivo protegido con una contraseña fuerte. Por eso se pide dos veces. Guarda el original sin modificar para poder volver a él."
+
+[[faq]]
+q = "¿Elijo AES-256 o AES-128?"
+a = "AES-256, salvo que deba abrirlo un lector anterior a 2010. Usa el esquema de PDF 2.0, compatible con Acrobat X y lectores actuales. AES-128 usa el esquema de 2005 y una derivación de contraseña de 1994 que facilita probar candidatas, aunque el algoritmo AES sea sólido. Si dudas, elige 256."
+
+[[faq]]
+q = "¿Puedo proteger un PDF que ya tiene protección?"
+a = "Si se abre sin contraseña y solo tiene restricciones, sí: los ajustes nuevos las sustituyen. Si exige contraseña, usa primero <a href=\"/es/desbloquear-pdf/\">Desbloquear PDF</a> y vuelve con la copia sin protección. Cambiar una contraseña requiere retirar el cifrado anterior y aplicar el nuevo."
+
+[[faq]]
+q = "¿Cambiará el aspecto del documento?"
+a = "El contenido no se redibuja, recodifica ni redistribuye. Con la contraseña, el texto sigue seleccionable, las imágenes conservan su resolución y nada se mueve. Puede reducirse algo al omitir objetos antiguos o crecer porque el cifrado añade bytes a los flujos."
+
+[[faq]]
+q = "¿Qué ocurre si el documento está firmado?"
+a = "La firma deja de ser válida en la copia, porque cubre los bytes exactos del original. La herramienta avisa si detecta una. Si necesitas ambas cosas, protege el documento primero y firma después la copia protegida."
+
+[[faq]]
+q = "¿Se suben los documentos o las contraseñas?"
+a = "No. El navegador lee, cifra y escribe en tu dispositivo. La contraseña deriva la clave en esta pestaña. No hay procesamiento de servidor y la <code>Content-Security-Policy</code> no incluye destinos de este sitio. Desconéctate para comprobarlo: no hace falta entregar el original para protegerlo."
+
+[[faq]]
+q = "¿Cómo sé que se aplicó la protección?"
+a = "La herramienta reabre el archivo y muestra la comprobación. Si configuraste contraseña, debe rechazar la apertura sin ella y aceptar la contraseña correcta. También comprueba páginas y restricciones. Si falla, no hay descarga. Puedes abrirlo después en otro lector y revisar la contraseña y los permisos en sus propiedades."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "No hay ningún límite escrito en la herramienta. El límite es tu propio equipo: el documento se sostiene en memoria mientras se trabaja con él, así que un portátil aguantará unos cientos de megabytes sin quejarse y empezará a sufrir en algún punto por encima. Es gratis, no hay cuenta, ni registro, ni prueba. El sitio lleva publicidad, que es lo que lo paga; a los anuncios no se les da nada sobre tus documentos."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando, algo que una herramienta que enviara el PDF a cifrar a un servidor no podría hacer."
+
+[schema]
+description = "Protege un PDF con contraseña o restricciones de impresión, copia y edición en el navegador. AES-256 por defecto y AES-128 para lectores antiguos. Sin subidas y con comprobación del resultado."
+features = ["Contraseña de apertura con AES-256 y el esquema de PDF 2.0", "AES-128 para lectores anteriores a 2010, con sus limitaciones indicadas", "Restricciones de impresión, copia y edición con contraseña de propietario opcional", "Pide dos veces la contraseña y explica el riesgo de perderla", "Distingue el bloqueo de apertura de las peticiones de permisos", "Reabre el resultado con y sin contraseña para comprobar la protección", "Dirige los archivos ya bloqueados a la herramienta de desbloqueo", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+
+[picker]
+title = "Suelta aquí el PDF que quieres proteger"
+hint = "o pulsa para elegir &mdash; un documento cada vez"

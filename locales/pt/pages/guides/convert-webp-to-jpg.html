@@ -1,0 +1,60 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>Abra o <a href="/pt/webp-para-jpg/">conversor de WebP para JPG</a>, arraste os arquivos e aperte “Converter”. Deixe a qualidade em 92, a menos que tenha um motivo para mudar. Você recebe JPEGs, com um download por imagem ou um zip se houver várias.</p>
+    <p>Nada é enviado porque não precisa ser. A razão também explica a rapidez: o decodificador já está no navegador.</p>
+  </section>
+
+  <section>
+    <h2>Por que você recebeu um .webp</h2>
+    <p>WebP é o formato de imagem do Google. Os sites o usam porque ocupa bem menos que JPEG com qualidade visual semelhante: normalmente de um quarto a um terço menos, às vezes mais. Para quem serve milhões de imagens, isso economiza banda e tempo de carregamento. Por isso muitos sites grandes adotaram o formato nos últimos anos.</p>
+    <p>Quando você clica com o botão direito e salva uma imagem, a pasta de downloads recebe o formato que o site estava servindo. Você não escolheu WebP; só salvou uma imagem.</p>
+    <p>Depois descobre que ela não entra onde você precisa. Os obstáculos comuns são:</p>
+    <ul>
+      <li>formulários que comparam a extensão com uma lista feita anos atrás;</li>
+      <li>versões antigas de Word, PowerPoint e Photoshop;</li>
+      <li>muitos leitores digitais e programas de impressoras e câmeras;</li>
+      <li>algumas gráficas que só aceitam JPEG ou TIFF.</li>
+    </ul>
+    <p>Enquanto isso, o navegador abre sem dificuldade: todos leem WebP desde 2020. Essa diferença entre o navegador e os outros programas é a razão desta página.</p>
+  </section>
+
+  <section>
+    <h2>O JPG provavelmente ficará maior; isso não é falha</h2>
+    <p>Vale saber antes de converter: um WebP de 300&nbsp;KB muitas vezes vira um JPEG de 450&nbsp;KB. Nada deu errado.</p>
+    <p>WebP comprime melhor que JPEG. JPEG ficou pronto em 1992; WebP chegou em 2010, com quase vinte anos a mais de pesquisa. Ao passar do formato novo ao antigo, você pede que um compressor menos eficiente descreva a mesma imagem, e ele precisa de mais bytes. É uma troca de tamanho por compatibilidade, válida quando o destino não aceita WebP, mas que o conversor deve explicar.</p>
+    <p>Se precisar reduzir o tamanho depois, o <a href="/pt/comprimir-imagem/">Compressor de imagens</a> ajusta o JPEG ao limite que você indicar. Ele aparece abaixo do resultado para você não precisar procurar.</p>
+  </section>
+
+  <section>
+    <h2>A transparência precisa virar uma cor</h2>
+    <p>Essa é a surpresa que faz logotipos saírem de alguns conversores com um retângulo preto atrás.</p>
+    <p>WebP pode ter transparência. JPEG não tem canal alfa nem como representar “não há nada aqui”. É preciso pintar uma cor por trás da imagem. Conversores que não perguntam não estão preservando a transparência: estão escolhendo por você, e muitos acabam usando preto.</p>
+    <p><a href="/pt/webp-para-jpg/">Este conversor</a> pergunta, sugere branco e só mostra a opção quando algum arquivo realmente tem transparência. Ele verifica a imagem decodificada, não apenas o formato: muitos WebPs têm um canal alfa totalmente opaco. Um seletor de cor que não muda nada só atrapalha.</p>
+    <p>Se você precisa manter a transparência, não converta para JPEG. Guarde o WebP ou transforme em PNG com o <a href="/pt/comprimir-imagem/">Compressor de imagens</a>, que lê WebP e grava PNG.</p>
+  </section>
+
+  <section>
+    <h2>WebP animado vira um único quadro</h2>
+    <p>Um WebP pode conter uma animação, como GIF. JPEG guarda uma única imagem, então não tem como preservar os outros quadros.</p>
+    <p>A ferramenta avisa antes de converter: a linha identifica o arquivo animado, e o resultado repete o aviso. Você recebe o primeiro quadro. Para preservar o movimento, o destino deve ser vídeo, não imagem estática. O guia sobre <a href="/pt/guias/converter-gif-para-mp4/">converter GIF para MP4</a> explica o que essa mudança envolve.</p>
+  </section>
+
+  <section>
+    <h2>A imagem é recomprimida</h2>
+    <p>WebP e JPEG usam codecs diferentes. Não basta trocar o contêiner: a imagem precisa ser decodificada em pixels e codificada de novo. Todo conversor de WebP para JPG faz isso, inclusive os que pedem envio.</p>
+    <p>Você controla quanto se perde. A qualidade padrão é 92, um valor em que uma foto é difícil de distinguir da original. Abaixo de cerca de 75, as perdas começam a aparecer em bordas nítidas e texto.</p>
+    <p>Um caso merece atenção: WebP <strong>sem perdas</strong>. Ferramentas de design usam esse modo para gráficos de cores chapadas. O JPEG será a primeira cópia com perdas dessa imagem. A ferramenta identifica esses arquivos na lista para você decidir antes de converter.</p>
+  </section>
+
+  <section>
+    <h2>Os metadados ficam para trás</h2>
+    <p>Ao converter pelo canvas do navegador, só passam os pixels. EXIF, coordenadas GPS, perfis de cor e blocos de direitos autorais ficam de fora.</p>
+    <p>Para quem vai enviar uma imagem, isso pode ser o resultado desejado. Caso não seja, ou se você quiser conferir os dados antes de decidir, o <a href="/pt/remover-dados-exif/">Visualizador e removedor de EXIF</a> lê e altera esses dados sem recomprimir a imagem. O guia <a href="/pt/guias/converter-uma-foto-remove-os-metadados/">converter uma foto remove os metadados?</a> traz uma explicação mais longa.</p>
+  </section>
+
+  <section>
+    <h2>Por que este conversor não pede envio</h2>
+    <p>Ao procurar um conversor de WebP, quase todos os resultados pedem que você mande o arquivo para um servidor. Vale perguntar para que o servidor é necessário. Neste caso, ele não é.</p>
+    <p>Ler WebP exige um decodificador que o navegador já tem desde 2020; é por isso que mostrava a imagem no site de origem. Gravar JPEG exige um codificador que navegadores incluem há muito tempo. As duas partes do trabalho já estão instaladas. Um site que recebe o arquivo usa a própria cópia desse programa e fica com sua imagem enquanto trabalha.</p>
+    <p>Nem toda conversão é assim. O <a href="/pt/guias/converter-heic-para-jpg/">conversor de HEIC</a> precisa de um decodificador ausente em muitos navegadores, por isso o inclui e explica como funciona. A resposta depende do formato. A pergunta útil é o que aquela conversão realmente exige. O guia <a href="/pt/guias/e-seguro-enviar-arquivos/">é seguro enviar arquivos?</a> desenvolve essa questão.</p>
+  </section>

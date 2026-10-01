@@ -1,0 +1,244 @@
+#
+# Invertidor de vídeo - Spanish.
+#
+# Overrides for tools/reverse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Invertidor de vídeo"
+heading = "Invertir&nbsp;un&nbsp;vídeo <span class=\"h1-kw\">&mdash; reproducirlo al revés</span>"
+tagline = "El último fotograma primero, con sonido y todo."
+
+title = "Invertir un vídeo online &mdash; gratis, sin subir nada, sin conexión"
+description = "Reproduce un MP4, MOV o WebM al revés, con el sonido invertido también. Funciona en el navegador: no se sube nada, no hay marca de agua y va sin conexión."
+og_title = "Invertidor de vídeo &mdash; reproduce un clip al revés sin subirlo"
+og_description = "Invierte un vídeo y el sonido que lleva dentro, fotograma a fotograma, en tu propio dispositivo. El archivo lo lee, lo decodifica y lo escribe tu propio navegador."
+og_image_alt = "Invertidor de vídeo - reproducir un clip al revés en el navegador, sin subir nada"
+
+pledge = """
+    Cada fotograma lo decodifica, lo da la vuelta y lo vuelve a codificar tu propio
+    navegador, en tu propio equipo. Aquí nada puede pedir ni enviar nada, porque
+    esta herramienta no tiene ninguna función de red, y aunque la tuviera, al otro
+    lado de esta página no hay ningún servidor al que mandar un vídeo."""
+
+live_hint = """
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en la
+      pestaña «Red» e invierte un clip. No verás ni una petición que lleve un
+      fotograma, un nombre de archivo o un byte de lo que has elegido. O
+      desconéctate de internet e invierte uno igualmente: una herramienta que
+      mandara tu vídeo fuera a procesar se pararía sin más."""
+
+read_first = """
+, <code>src/timeline.js</code> para las cuentas que
+      deciden qué fotograma sale en cada momento y <code>src/reverse.js</code> para
+      el bucle que recorre el archivo hacia atrás, un grupo de fotogramas cada vez.
+      Ninguno importa nada que pueda hacer una petición."""
+
+howto_heading = "Cómo invertir un vídeo"
+
+card = """
+            Reproduce un clip al revés, la imagen y el sonido, sin mandarlo a
+            ninguna parte."""
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+analytics_extra = """, ni ningún
+  fotograma, duración o nombre de archivo"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Invierte el sonido"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[privacy]]
+title = "Tus vídeos no tienen por dónde salir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún destino donde
+      pudiera recogerse tu archivo, ni nada en el código que lo enviara si lo
+      hubiera."""
+
+[[privacy]]
+title = "Aquí nada pide nada."
+body = """
+ Esta herramienta no tiene ninguna función de
+      red: no hay dirección que pegar, nada que descargar, ningún motor que se baje
+      la primera vez. Cada byte que toca tu vídeo vino de este origen cuando cargó
+      la página."""
+
+[[privacy]]
+title = "La decodificación y la codificación son locales."
+body = """
+ Los fotogramas pasan
+      por WebCodecs en tu propio navegador, o por el mismo motor de reproducción
+      que te enseñaría el vídeo de todos modos. El archivo terminado se construye
+      en la memoria de este equipo y va directo a una descarga."""
+
+[[privacy]]
+title = "El sonido también se da la vuelta aquí."
+body = """
+ Invertir una pista significa
+      decodificarla, y esa decodificación es la del propio navegador, corriendo en
+      este equipo. Nada la escucha, nada la guarda y nada podría pasarla a ninguna
+      parte: aquí no hay ningún camino en el código que envíe un byte."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = """
+ Los scripts de
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada sobre
+      tu vídeo: ni el archivo, ni un fotograma, ni un nombre, un tamaño o una
+      duración. Cada línea que lee, decodifica, invierte o codifica se sirve desde
+      este origen y está en el repositorio."""
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = """
+
+      El botón «Buy me a coffee» de la cabecera lo dibuja un script de
+      cdnjs.buymeacoffee.com y coge su tipografía de Google Fonts. No es más que un
+      enlace: no informa de tu visita y no se le entrega nada sobre ti ni sobre tu
+      vídeo."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y todo lo de esta
+      página sigue funcionando. Es la prueba más sencilla de todas."""
+
+[[howto]]
+title = "Elige un vídeo."
+body = """
+ Suelta un MP4, MOV, M4V o WebM sobre el
+      selector, o búscalo a mano. El navegador lo lee directamente de tu disco, y
+      mientras tanto no sale nada a ninguna parte."""
+
+[[howto]]
+title = "Decide qué hacer con el sonido."
+body = """
+ «Invertir también el sonido» da
+      la vuelta a la pista muestra a muestra, que es lo que hace que el habla salga
+      como habla reproducida al revés y no como silencio. Desactívalo para un clip
+      mudo, que además va más rápido."""
+
+[[howto]]
+title = "Decide cuánta calidad gastar."
+body = """
+ La imagen hay que codificarla otra
+      vez, porque los fotogramas salen en un orden para el que no se codificó nada
+      en el archivo. «Equilibrado» se queda cerca de lo que gastó el original;
+      «Máxima calidad» gasta más."""
+
+[[howto]]
+title = "Inviértelo y descárgalo."
+body = """
+ El trabajo pasa en tu propio equipo, así
+      que lo que tarde depende de tu máquina y no de una cola. El vídeo terminado
+      va directo a las descargas de tu navegador."""
+
+[[faq]]
+q = "¿Se sube mi vídeo a alguna parte?"
+a = """
+        No. Lo lee, lo decodifica, lo invierte y lo codifica tu propio navegador en
+        tu propio equipo. Esta herramienta no tiene lado servidor, y la
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar: ninguna es nuestra. Si prefieres
+        comprobarlo a que te lo cuenten, desconéctate de internet e invierte un
+        clip igualmente."""
+
+[[faq]]
+q = "¿Qué formatos de vídeo puedo invertir?"
+a = """
+        MP4, M4V y MOV se leen directamente, lleven lo que lleven dentro: H.264,
+        HEVC, AV1 o VP9, mientras tu navegador pueda decodificar ese códec.
+        Cualquier otra cosa que tu navegador pueda reproducir, WebM sobre todo, se
+        invierte llevando hacia atrás el reproductor del propio navegador, lo cual
+        funciona pero es más lento. Un archivo que el navegador no puede ni leer ni
+        reproducir, que en la práctica significa AVI, WMV, FLV y casi todos los
+        MKV, se rechaza con un mensaje que lo dice en vez de fallar a medio camino.
+        Lo que sale siempre es un MP4."""
+
+[[faq]]
+q = "¿Se invierte también el sonido?"
+a = """
+        Sí, salvo que lo desactives. La pista entera se decodifica, las muestras se
+        ponen en el otro orden y se vuelve a codificar como AAC. Esa segunda
+        codificación no se puede evitar: un paquete de audio son unas pocas decenas
+        de milisegundos de sonido codificadas contra el paquete anterior, así que
+        escribir los paquetes al revés reproduciría trozos cortos hacia delante en
+        el orden equivocado, y eso suena a avería y no a inversión."""
+
+[[faq]]
+q = "¿Invertir pierde calidad?"
+a = """
+        La imagen se codifica una segunda vez, lo cual cuesta un poco. Aquí no se
+        puede evitar como sí se evita al cortar: un clip invertido enseña sus
+        fotogramas en un orden para el que no se codificó nada en el archivo
+        original, así que cada fotograma hay que escribirlo de nuevo. Lo que la
+        herramienta no hará es gastar más de lo que gastó el original, porque
+        codificar por encima de eso solo hace el archivo más grande sin que se vea
+        mejor."""
+
+[[faq]]
+q = "¿Hay un límite de tamaño o de duración del vídeo?"
+a = """
+        No hay ningún límite metido en la herramienta, y el archivo no se lee
+        entero en memoria: se recorre grupo de fotogramas a grupo de fotogramas,
+        hacia atrás. Los techos prácticos son el vídeo terminado, que se monta en
+        memoria antes de que lo descargues, y el sonido, que hay que tenerlo
+        entero, porque invertir necesita la última muestra antes de poder escribir
+        la primera."""
+
+[[faq]]
+q = "¿Por qué tarda más en unos archivos que en otros?"
+a = """
+        Porque hay dos caminos de entrada. Un MP4 o un MOV los lee esta herramienta
+        directamente y los decodifica un grupo de fotogramas cada vez, y eso va tan
+        rápido como vaya tu equipo. Lo demás se invierte pidiéndole al reproductor
+        del navegador un instante del clip detrás de otro, y cada uno de esos
+        saltos obliga al navegador a decodificar desde el fotograma clave anterior.
+        La página dice cuál de los dos está usando, y por qué, antes de que
+        empieces."""
+
+[[faq]]
+q = "¿Puedo invertir solo un trozo del clip?"
+a = """
+        Aquí no. Esta herramienta invierte el clip entero: lo que sale dura
+        exactamente lo mismo que lo que entró, con el último fotograma primero.
+        Corta antes el trozo que quieras con el
+        <a href="../cortar-video/">Cortador de vídeo</a>, que lo hace sin
+        recodificar ni un fotograma, e invierte lo que salga de ahí."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni
+        marca de agua. El sitio lleva publicidad, que es lo que lo paga, y a los
+        anuncios no se les da nada sobre tu vídeo."""
+
+[schema]
+browser_requirements = "Requiere JavaScript y un navegador con codificación de vídeo por WebCodecs: Chrome, Edge, Safari 16.4 o posterior, o Firefox 133 o posterior."
+description = "Invierte un vídeo en el navegador, con el sonido incluido. MP4, MOV y M4V se decodifican grupo a grupo desde el final y se vuelven a codificar con los tiempos de fotograma originales; cualquier otra cosa que el navegador pueda reproducir se recorre hacia atrás. No se sube nada."
+features = [
+  "Invierte vídeos MP4, MOV, M4V y WebM",
+  "Fuentes H.264, HEVC, AV1 y VP9, decodificadas con WebCodecs",
+  "Invierte el sonido muestra a muestra, o lo deja fuera",
+  "Conserva los tiempos de fotograma originales, incluso con cadencia irregular",
+  "Funciona sin conexión; sin subidas, sin cuenta, sin marca de agua",
+]
+
+[picker]
+title = "Suelta aquí un vídeo"
+hint = "o haz clic para buscarlo &mdash; MP4, MOV, M4V, WebM y cualquier otra cosa que reproduzca este navegador"

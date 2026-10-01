@@ -1,0 +1,261 @@
+#
+# Censor de imagens - Portuguese (Brazil).
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Tarjar" e "tarja preta" são o que se escreve e se procura no Brasil, e o
+# verbo carrega justamente a distinção de que a página inteira trata: tirar, e
+# não cobrir.
+#
+
+name = "Censor de imagens"
+heading = "Tarjar&nbsp;uma&nbsp;imagem <span class=\"h1-kw\">&mdash; tarja preta, pixelar ou desfocar</span>"
+tagline = "O que você cobre é apagado do arquivo, não escondido dentro dele."
+
+title = "Tarjar uma imagem &mdash; tarja preta, pixelar ou desfocar, sem enviar nada"
+description = "Cubra um nome, um endereço ou um número de conta em uma foto ou print e salve a imagem de novo, de modo que os pixels ocultos somem do arquivo em vez de ficarem embaixo de um retângulo. Tudo acontece no navegador."
+og_title = "Tarjar uma imagem para que o que foi coberto suma de verdade"
+og_description = "Desenhe caixas sobre o que ninguém deve ver. Os pixels de baixo são sobrescritos antes de o arquivo ser escrito: não sobra camada nenhuma para arrastar. Nada é enviado."
+og_image_alt = "Censor de imagens - os pixels cobertos são sobrescritos, não escondidos"
+
+pledge = """
+    O seu próprio navegador decodifica a imagem, pinta por cima e codifica de
+    novo, com os codecs que ele já traz. Esta ferramenta não tem nenhuma função
+    de rede, nem para buscar nem para enviar, e aqui isso pesa mais do que em
+    quase qualquer outra página do site: as imagens que chegam a um censor são
+    justamente aquelas em que ainda dá para ler um nome, um endereço ou um número
+    de conta."""
+
+live_hint = """
+      Você não precisa acreditar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, olhe a aba de rede e tarje um print. Nenhuma requisição leva
+      uma imagem, uma miniatura, um nome de arquivo ou a posição de uma única
+      caixa. Ou desconecte da internet e tarje uma assim mesmo."""
+
+read_first = """
+, <code>src/redact.js</code> para as três
+      funções que sobrescrevem os pixels e <code>src/preview.js</code> para
+      entender por que o que aparece na tela é desenhado por essas mesmas três
+      funções."""
+
+howto_heading = "Como tarjar uma imagem para que o que foi coberto suma de verdade"
+
+card = """
+            Cubra com tarja preta, pixele ou desfoque parte de uma imagem. Os
+            pixels cobertos são sobrescritos antes de o arquivo ser escrito, então
+            não sobra camada nenhuma para arrastar."""
+
+[words]
+plural = "imagens"
+choose = "uma imagem"
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca-d'água"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "Suas imagens não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todos os endereços que esta página pode
+      contatar, e nenhum deles é nosso. Não existe aqui um ponto de coleta onde os
+      seus arquivos possam parar, nem nada no código que os enviaria se
+      existisse."""
+
+[[privacy]]
+title = "Os pixels cobertos somem aqui, não no caminho de saída."
+body = """
+ A imagem é
+      decodificada em um buffer de pixels, as caixas são escritas nesse buffer e o
+      buffer vai para o codificador. Não existe nesta página nenhuma versão da
+      imagem com as caixas como camada separada, porque essa versão nunca chega a
+      ser criada. Veja <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Aqui nada busca nada."
+body = """
+ Não há
+      <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. O trabalho é
+      <code>getImageData</code>, três laços sobre os bytes e
+      <code>canvas.toBlob</code>, tudo isso já instalado no seu navegador."""
+
+[[privacy]]
+title = "As caixas não são relatadas a lugar nenhum."
+body = """
+ Onde você
+      desenhou, quantas são, de que tamanho e qual estilo escolheu ficam na
+      memória desta página até você fechá-la. Neste repositório não há nenhum
+      evento de analytics que leve qualquer coisa disso, e a única pergunta que o
+      site faz depois de um download envia um joinha para cima ou para baixo e o
+      nome da ferramenta, nada além."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e a ferramenta continua a
+      mesma, porque nunca houve um passo de rede dentro dela. É a prova mais
+      simples de todas, e é a que vale a pena fazer antes de tarjar um
+      passaporte."""
+
+[[howto]]
+title = "Escolha a imagem."
+body = """
+ Um print, um documento escaneado ou uma
+      foto: qualquer coisa que o seu navegador consiga abrir. Ela é lida direto do
+      seu disco e nada sai para lugar nenhum enquanto isso."""
+
+[[howto]]
+title = "Arraste uma caixa sobre o que ninguém deve ver."
+body = """
+ E depois outra
+      para a próxima coisa. Uma caixa se move arrastando, muda de tamanho pelas
+      alças, ou pode ser alcançada com Tab e movida com as setas. O que aparece
+      embaixo da caixa é o resultado de verdade, desenhado pelo mesmo código que
+      vai escrever o arquivo."""
+
+[[howto]]
+title = "Escolha tarja, pixelar ou desfocar &mdash; e prefira a tarja."
+body = """
+ A tarja
+      preta não deixa absolutamente nada. Pixelar e desfocar trocam os pixels por
+      médias deles mesmos, o que basta para um rosto ao fundo e não basta para
+      nada que se leia como texto."""
+
+[[howto]]
+title = "Clique em &ldquo;Tarjar e salvar&rdquo; e confira o arquivo."
+body = """
+ A imagem que
+      aparece depois é o arquivo pronto, decodificado outra vez. Abra em um editor
+      e procure uma camada, ou tente selecionar o texto coberto: existe uma única
+      imagem achatada, e o que você cobriu foi sobrescrito antes de ela ser
+      escrita."""
+
+[[faq]]
+q = "Minha imagem é enviada para algum lugar?"
+a = """
+        Não. O arquivo é decodificado, tarjado e codificado pelo seu próprio
+        navegador, no seu próprio equipamento. Esta ferramenta não tem nenhuma
+        função de rede, nunca busca nada e nunca envia nada, e a
+        <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode contatar, nenhum dos quais é nosso. Carregue a página uma vez,
+        desconecte da internet e ela continua funcionando."""
+
+[[faq]]
+q = "O que foi coberto sumiu mesmo do arquivo?"
+a = """
+        Sim, e é para isso que esta ferramenta existe. A imagem é decodificada em
+        um buffer de pixels; as caixas sobrescrevem os pixels que estão dentro
+        delas; depois o buffer é codificado como um arquivo novo. Os valores
+        originais já saíram da memória antes de o codificador receber qualquer
+        coisa, então não há camada para esconder, anotação para remover nem
+        histórico para desfazer. Dá para conferir do jeito que você conferiria a
+        afirmação de qualquer outra pessoa: abra o resultado em um editor de
+        imagens e procure uma segunda camada, ou tente selecionar o texto que você
+        cobriu."""
+
+[[faq]]
+q = "Dá para recuperar uma área pixelada ou desfocada?"
+a = """
+        Às vezes, e essa é a única coisa que vale a pena ler antes de escolher. A
+        tarja preta troca tudo o que está embaixo por uma cor chapada, então não
+        sobrevive nada: nem uma borda, nem uma média, nem a quantidade de
+        caracteres. Pixelar troca cada bloco pela média daquele bloco, e uma grade
+        de médias ainda é uma medida do que estava embaixo: para texto em uma fonte
+        comum e de tamanho previsível, trabalhos publicados já reconstruíram o
+        original renderizando candidatos e comparando as médias. Desfocar é uma
+        convolução, e convoluções em princípio podem ser invertidas. Então pixele um
+        rosto ao fundo se quiser, e cubra com tarja tudo o que se lê como texto."""
+
+[[faq]]
+q = "Por que um retângulo preto desenhado num editor de documentos não é a mesma coisa?"
+a = """
+        Porque a maioria dos programas salva o retângulo ao lado da imagem e não
+        dentro dela. Uma forma desenhada num leitor de PDF, numa apresentação, num
+        editor de texto ou num editor de imagens com camadas é um objeto com
+        posição, apoiado sobre a página: movê-lo, apagá-lo ou abrir o arquivo em
+        outro programa devolve exatamente o que ele estava cobrindo. Jornais,
+        tribunais e ministérios já publicaram documentos censurados assim. Aqui o
+        retângulo não é salvo em lugar nenhum: são valores de pixel escritos por
+        cima dos que estavam ali."""
+
+[[faq]]
+q = "Ele também remove os dados EXIF e GPS?"
+a = """
+        Sim, como efeito colateral. Salvar aqui significa codificar uma tela cheia
+        de pixels, e uma tela não carrega etiquetas: a localização, o modelo da
+        câmera, as datas e a miniatura embutida simplesmente não são escritas no
+        arquivo novo. A miniatura importa: é uma segunda cópia pequena da imagem,
+        nem sempre é refeita quando a foto é editada, e uma foto tarjada que viaja
+        com uma miniatura sem tarja desfaz todo o trabalho. Se você quer os
+        metadados fora sem que a imagem seja recodificada, o
+        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a> reescreve o
+        contêiner em vez da imagem."""
+
+[[faq]]
+q = "Quais formatos ele lê e escreve?"
+a = """
+        Ele lê tudo o que o seu navegador souber decodificar, na prática JPEG, PNG,
+        WebP, GIF, BMP e, na maioria dos navegadores atuais, AVIF. Escreve JPEG,
+        PNG e WebP, porque são os codificadores que os navegadores trazem. No modo
+        automático um JPEG volta como JPEG e todo o resto volta como PNG, o que
+        mantém uma foto com tamanho de foto e deixa nítido o texto que ficou à
+        vista num print. A escolha não muda nada da tarja: os pixels já foram
+        embora quando o codificador os vê."""
+
+[[faq]]
+q = "Dá para fazer isso sem mouse?"
+a = """
+        Dá. &ldquo;Adicionar uma caixa no meio&rdquo; coloca uma sobre a imagem,
+        Tab passa de uma caixa para outra, as setas movem a que está em foco e Alt
+        com as setas muda o tamanho; com Shift cada passo é de dez pixels e Delete
+        remove. Cada caixa também tem, abaixo da imagem, uma linha com o tamanho, a
+        posição, o que ela faz e um botão para removê-la, de modo que a ferramenta
+        inteira funciona pelo teclado e é lida por um leitor de tela."""
+
+[[faq]]
+q = "Funciona no celular?"
+a = """
+        Funciona. Desenhar, mover e redimensionar usam eventos de ponteiro e não de
+        mouse, então o dedo funciona igual, e as alças são desenhadas maiores numa
+        tela sensível ao toque. A imagem na tela é redesenhada no tamanho da tela
+        enquanto você trabalha; o arquivo em si é sempre tarjado na resolução
+        original quando você aperta o botão."""
+
+[[faq]]
+q = "É gratuito, e preciso de conta?"
+a = """
+        É gratuito, e não há conta, cadastro, período de teste nem marca-d'água.
+        Também não há limite de tamanho para a imagem, porque não há servidor
+        pagando por isso: o trabalho acontece no seu próprio dispositivo. O site
+        tem publicidade, que é o que o sustenta; os anúncios não recebem nada sobre
+        as suas imagens."""
+
+[schema]
+description = "Tarjar uma imagem no navegador: desenhar caixas sobre o que ninguém deve ver e cobrir com tarja preta, pixelar ou desfocar. Os pixels cobertos são sobrescritos antes de o arquivo ser codificado, então o resultado não carrega camada, anotação nem metadados. Nada é enviado."
+features = [
+  "Tarja preta, pixelação e desfoque, escolhidos caixa a caixa",
+  "Os pixels cobertos são sobrescritos antes da codificação, então não sobra camada para arrastar",
+  "A prévia é desenhada pelo mesmo código que escreve o arquivo",
+  "Diz de quantos blocos uma pixelação é feita em vez de chamá-la de &ldquo;forte&rdquo;",
+  "Teclado e toque além do mouse: toda caixa pode ser criada, movida, redimensionada e removida sem ele",
+  "Tira EXIF, GPS e a miniatura embutida como efeito da recodificação",
+  "Saída em JPEG, PNG e WebP, com escolha automática",
+  "Funciona offline; sem envio e sem conta",
+]
+
+[picker]
+title = "Arraste uma imagem para cá"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP e tudo mais que o seu navegador abrir"

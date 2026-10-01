@@ -29,7 +29,7 @@ import assert from 'node:assert/strict';
 import { GifWriter } from '../../tools/gif-maker/src/gif.js';
 import { lzwEncode } from '../../tools/gif-maker/src/lzw.js';
 
-import { NotAGif, frameData, parseGif } from '../../tools/gif-analyzer/src/gif.js';
+import { NotAGif, extensionName, frameData, parseGif } from '../../tools/gif-analyzer/src/gif.js';
 import { lzwDecode } from '../../tools/gif-analyzer/src/lzw.js';
 import {
   Compositor, duration, interlaceMap, isFullCanvas, paintFrame,
@@ -615,3 +615,32 @@ function noise(width, height, colours) {
   }
   return out;
 }
+
+test('extension headings translate while application identifiers and file text stay intact', () => {
+  const t = (key, values = {}) => ({
+    'extension.comment': 'Comentário',
+    'extension.plaintext': 'Texto simples',
+    'extension.unknown': `Extensão ${values.code}`,
+  })[key];
+  const gif = parseGif(withComment(simple(), 'original file text'));
+  const comment = gif.extensions.find((entry) => entry.kind === 'comment');
+  assert.equal(extensionName(comment, t), 'Comentário');
+  assert.equal(comment.text, 'original file text');
+  assert.equal(extensionName({ kind: 'plain-text', label: 1 }, t), 'Texto simples');
+  assert.equal(extensionName({ kind: 'unknown', label: 0x99 }, t), 'Extensão 0x99');
+  assert.equal(extensionName({ kind: 'application', name: 'MYAPP123' }, t), 'MYAPP123');
+});
+
+test('metadata findings do not require an application name on other extension kinds', () => {
+  const gif = parseGif(simple());
+  // Only application extensions own an identifier. A plaintext or unknown
+  // extension must reach its own description without reading that field.
+  gif.extensions.push(
+    { kind: 'plain-text', label: 1, bytes: 0, dataBytes: 0, text: null },
+    { kind: 'unknown', label: 0x99, bytes: 0, dataBytes: 0, text: null },
+  );
+  const found = findings(gif);
+  assert.ok(found.some((entry) => entry.title === 'find.plaintext.title'));
+  assert.equal(found.some((entry) => entry.title === 'find.xmp.title'), false);
+  assert.equal(found.some((entry) => entry.title === 'find.icc.title'), false);
+});

@@ -1,0 +1,20 @@
+#
+# Guia: é seguro enviar arquivos para uma IA? - Brazilian Portuguese.
+#
+
+nav = "É seguro enviar arquivos para uma IA?"
+title = "É seguro enviar arquivos para uma IA?"
+description = "Uma janela de chat é um formulário de upload que não parece um. Para onde vai de verdade um arquivo entregue a uma IA, no que uma IA difere de um conversor, e como mandar menos - e mandar limpo - quando o trabalho vale a pena."
+heading = "É seguro enviar arquivos para uma IA?"
+lede = """
+    A mesma pergunta que o primeiro guia deste site fez sobre os
+    conversores, apontada para o lugar aonde os arquivos realmente vão
+    agora. A resposta honesta tem o mesmo formato: quase sempre nada de
+    ruim acontece, e você não consegue verificar nada disso &mdash; mais
+    uma diferença que importa. Um conversor transforma o seu arquivo sem
+    se importar com o que há dentro. Para uma IA, o arquivo é enviado
+    justamente para que algo o leia."""
+updated = "27 de agosto de 2026"
+og_title = "É seguro enviar arquivos para uma IA?"
+og_description = "Uma janela de chat é um formulário de upload que não parece um. Para onde o arquivo vai de verdade, no que uma IA difere de um conversor, e como mandar menos e mandar limpo."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

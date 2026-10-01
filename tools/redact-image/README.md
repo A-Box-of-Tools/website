@@ -84,6 +84,13 @@ details keep the two agreeing:
 The result panel goes one step further and shows the finished blob, decoded
 again by the browser. What is on screen there is the file.
 
+Saving captures the picture, boxes and settings together. Editing remains
+available while the browser encodes, but any change retires the previous
+download and invalidates that pending result. Its completion cannot publish
+old pixels under the new box count or a replacement picture's filename.
+Clearing or replacing a picture also retires an outstanding load, so an older
+decode cannot put back an image the visitor has just removed.
+
 ## The modules
 
 | File | What is in it |

@@ -1,0 +1,543 @@
+<main id="main">
+
+  <details class="card card-note" id="import-card">
+    <summary><h2>Já tem um perfil? Comece por ele</h2></summary>
+
+    <p class="card-lede">Esta página não busca seu perfil: ela não tem como contatar um servidor para isso. Traga os dados até aqui. Abra o perfil no Google, selecione, copie e cole abaixo. Os campos reconhecidos são preenchidos e listados para você conferir possíveis erros.</p>
+
+    <div class="field">
+      <label for="paste">Cole o perfil</label>
+      <textarea id="paste" rows="6" spellcheck="false"
+                placeholder="Blue Bottle Coffee&#10;4,5 (1.284)&#10;Cafeteria&#10;123 King St W, Toronto, ON M5V 1J5"></textarea>
+      <p class="field-note">A ferramenta reconhece nome, nota, categoria, endereço, telefone, site e os horários da semana. Fotos não vêm pelo texto copiado; adicione a sua na etapa&nbsp;1.</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="read-paste" class="primary">Ler o texto colado</button>
+        <button type="button" id="open-json" class="ghost">Abrir um perfil salvo&hellip;</button>
+      </div>
+    </div>
+
+    <p class="field-note">O perfil salvo é o JSON gerado na etapa&nbsp;4. A ferramenta também lê um local exportado pela API do Perfil da Empresa no Google, com campos como <code>title</code>, <code>storefrontAddress</code> e <code>regularHours</code>.</p>
+
+
+    <input type="file" id="json-file" accept="application/json,.json" hidden
+           aria-label="Escolha um perfil salvo ou uma exportação do Perfil da Empresa">
+
+    <p class="path-note" id="import-note" role="status" hidden></p>
+    <p class="error" id="import-error" role="alert" hidden></p>
+  </details>
+
+
+  <section class="card">
+    <h2><span class="step">1</span> Descreva a empresa</h2>
+
+    <p class="card-lede">Cada campo corresponde a uma informação que o Google exibe, e a prévia é atualizada enquanto você digita. Dê atenção especial ao nome e à categoria. O nome pode ser cortado nas três apresentações; a categoria é a linha que ainda cabe no resultado de busca quando quase nada mais cabe.</p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="name">Nome da empresa</label>
+        <input type="text" id="name" autocomplete="off" spellcheck="false"
+               value="Blue Bottle Coffee">
+        <p class="field-note" id="name-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="category">Categoria principal</label>
+        <input type="text" id="category" autocomplete="off" list="category-list"
+               value="Cafeteria">
+
+        <datalist id="category-list">
+
+          <option value="Restaurante"></option>
+          <option value="Café"></option>
+          <option value="Cafeteria"></option>
+          <option value="Padaria"></option>
+          <option value="Bar"></option>
+          <option value="Pub"></option>
+          <option value="Bar de vinhos"></option>
+          <option value="Cervejaria"></option>
+          <option value="Pizzaria"></option>
+          <option value="Restaurante italiano"></option>
+          <option value="Restaurante chinês"></option>
+          <option value="Restaurante indiano"></option>
+          <option value="Restaurante mexicano"></option>
+          <option value="Restaurante japonês"></option>
+          <option value="Restaurante tailandês"></option>
+          <option value="Restaurante vietnamita"></option>
+          <option value="Restaurante grego"></option>
+          <option value="Restaurante turco"></option>
+          <option value="Restaurante de sushi"></option>
+          <option value="Restaurante de frutos do mar"></option>
+          <option value="Restaurante especializado em carnes"></option>
+          <option value="Churrascaria"></option>
+          <option value="Restaurante vegano"></option>
+          <option value="Restaurante vegetariano"></option>
+          <option value="Restaurante de café da manhã"></option>
+          <option value="Restaurante de fast-food"></option>
+          <option value="Lanchonete"></option>
+          <option value="Delicatessen"></option>
+          <option value="Sorveteria"></option>
+          <option value="Casa de sucos"></option>
+          <option value="Casa de chá"></option>
+          <option value="Serviço de bufê"></option>
+          <option value="Casa noturna"></option>
+
+          <option value="Cabeleireiro"></option>
+          <option value="Barbearia"></option>
+          <option value="Salão de beleza"></option>
+          <option value="Salão de manicure e pedicure"></option>
+          <option value="Spa"></option>
+          <option value="Spa diurno"></option>
+          <option value="Massoterapeuta"></option>
+          <option value="Estúdio de tatuagem"></option>
+          <option value="Serviço de depilação com cera"></option>
+          <option value="Clínica de cuidados com a pele"></option>
+
+          <option value="Dentista"></option>
+          <option value="Clínica odontológica"></option>
+          <option value="Ortodontista"></option>
+          <option value="Médico"></option>
+          <option value="Clínica médica"></option>
+          <option value="Fisioterapeuta"></option>
+          <option value="Quiropraxista"></option>
+          <option value="Optometrista"></option>
+          <option value="Farmácia"></option>
+          <option value="Veterinário"></option>
+          <option value="Hospital veterinário"></option>
+          <option value="Psicólogo"></option>
+          <option value="Psicoterapeuta"></option>
+          <option value="Nutricionista"></option>
+          <option value="Podólogo"></option>
+          <option value="Audiologista"></option>
+          <option value="Laboratório de análises clínicas"></option>
+          <option value="Serviço de atendimento domiciliar"></option>
+
+          <option value="Encanador"></option>
+          <option value="Eletricista"></option>
+          <option value="Empresa de telhados"></option>
+          <option value="Empreiteira"></option>
+          <option value="Empresa de climatização"></option>
+          <option value="Pintor"></option>
+          <option value="Carpinteiro"></option>
+          <option value="Paisagista"></option>
+          <option value="Serviço de manutenção de gramados"></option>
+          <option value="Chaveiro"></option>
+          <option value="Serviços de manutenção e reparos"></option>
+          <option value="Dedetizadora"></option>
+          <option value="Serviço de limpeza"></option>
+          <option value="Serviço de limpeza residencial"></option>
+          <option value="Serviço de limpeza de janelas"></option>
+          <option value="Empresa de mudanças"></option>
+          <option value="Empresa de instalação de pisos"></option>
+          <option value="Reforma de cozinhas"></option>
+          <option value="Reforma de banheiros"></option>
+          <option value="Empresa de instalação de cercas"></option>
+          <option value="Fornecedor de portões de garagem"></option>
+          <option value="Empresa de energia solar"></option>
+          <option value="Serviço de poda e manejo de árvores"></option>
+          <option value="Conserto de eletrodomésticos"></option>
+          <option value="Serviço de gestão de resíduos"></option>
+
+          <option value="Oficina mecânica"></option>
+          <option value="Concessionária de veículos"></option>
+          <option value="Loja de carros usados"></option>
+          <option value="Loja de pneus"></option>
+          <option value="Lava-rápido"></option>
+          <option value="Oficina de funilaria"></option>
+          <option value="Serviço de estética automotiva"></option>
+          <option value="Posto de combustível"></option>
+          <option value="Serviço de guincho"></option>
+          <option value="Concessionária de motocicletas"></option>
+          <option value="Locadora de veículos"></option>
+          <option value="Autoescola"></option>
+          <option value="Loja de vidros automotivos"></option>
+
+          <option value="Advogado"></option>
+          <option value="Escritório de advocacia"></option>
+          <option value="Contador"></option>
+          <option value="Serviço de escrituração contábil"></option>
+          <option value="Serviço de declaração de impostos"></option>
+          <option value="Corretora de seguros"></option>
+          <option value="Imobiliária"></option>
+          <option value="Corretor de imóveis"></option>
+          <option value="Banco"></option>
+          <option value="Cooperativa de crédito"></option>
+          <option value="Planejador financeiro"></option>
+          <option value="Corretor de crédito imobiliário"></option>
+          <option value="Cartório"></option>
+          <option value="Agência de marketing"></option>
+          <option value="Agência de publicidade"></option>
+          <option value="Web designer"></option>
+          <option value="Empresa de software"></option>
+          <option value="Designer gráfico"></option>
+          <option value="Arquiteto"></option>
+          <option value="Designer de interiores"></option>
+          <option value="Topógrafo"></option>
+          <option value="Recrutador"></option>
+          <option value="Tradutor"></option>
+          <option value="Consultoria em gestão empresarial"></option>
+          <option value="Gráfica"></option>
+          <option value="Fotógrafo"></option>
+          <option value="Videomaker"></option>
+          <option value="Serviço de segurança"></option>
+
+          <option value="Academia"></option>
+          <option value="Centro de treinamento físico"></option>
+          <option value="Estúdio de ioga"></option>
+          <option value="Estúdio de pilates"></option>
+          <option value="Personal trainer"></option>
+          <option value="Escola de artes marciais"></option>
+          <option value="Escola de dança"></option>
+          <option value="Academia de boxe"></option>
+          <option value="Clube esportivo"></option>
+          <option value="Campo de golfe"></option>
+          <option value="Boliche"></option>
+
+          <option value="Mercearia"></option>
+          <option value="Supermercado"></option>
+          <option value="Loja de conveniência"></option>
+          <option value="Açougue"></option>
+          <option value="Loja de bebidas"></option>
+          <option value="Loja de produtos naturais"></option>
+          <option value="Loja de roupas"></option>
+          <option value="Loja de calçados"></option>
+          <option value="Joalheria"></option>
+          <option value="Loja de móveis"></option>
+          <option value="Loja de artigos para casa"></option>
+          <option value="Loja de ferragens"></option>
+          <option value="Loja de jardinagem"></option>
+          <option value="Livraria"></option>
+          <option value="Floricultura"></option>
+          <option value="Pet shop"></option>
+          <option value="Loja de brinquedos"></option>
+          <option value="Loja de presentes"></option>
+          <option value="Loja de eletrônicos"></option>
+          <option value="Assistência técnica de celulares"></option>
+          <option value="Assistência técnica de computadores"></option>
+          <option value="Loja de artigos esportivos"></option>
+          <option value="Antiquário"></option>
+          <option value="Brechó"></option>
+          <option value="Ótica"></option>
+          <option value="Loja de instrumentos musicais"></option>
+
+          <option value="Hotel"></option>
+          <option value="Motel"></option>
+          <option value="Hospedagem com café da manhã"></option>
+          <option value="Pousada"></option>
+          <option value="Hostel"></option>
+          <option value="Área de camping"></option>
+          <option value="Agência de viagens"></option>
+          <option value="Espaço para eventos"></option>
+          <option value="Espaço para casamentos"></option>
+          <option value="Salão de festas"></option>
+          <option value="Operadora de turismo"></option>
+
+          <option value="Pré-escola"></option>
+          <option value="Escola de ensino fundamental"></option>
+          <option value="Serviço de reforço escolar"></option>
+          <option value="Escola de idiomas"></option>
+          <option value="Escola de música"></option>
+          <option value="Escola de artes"></option>
+          <option value="Creche"></option>
+          <option value="Biblioteca"></option>
+          <option value="Museu"></option>
+          <option value="Galeria de arte"></option>
+          <option value="Igreja"></option>
+          <option value="Centro comunitário"></option>
+          <option value="Funerária"></option>
+          <option value="Organização sem fins lucrativos"></option>
+
+          <option value="Guarda-móveis e armazenamento"></option>
+          <option value="Serviço de entregas"></option>
+          <option value="Lavanderia a seco"></option>
+          <option value="Lavanderia"></option>
+          <option value="Alfaiate"></option>
+          <option value="Sapataria de consertos"></option>
+          <option value="Conserto de relógios"></option>
+          <option value="Empresa de comunicação visual"></option>
+          <option value="Centro de reciclagem"></option>
+          <option value="Agência de empregos"></option>
+        </datalist>
+        <p class="field-note">Uma linha com o nome de categoria usado pelo Google, importante para corresponder às buscas. O campo sugere cerca de duzentas categorias comuns enquanto você digita, mas aceita qualquer texto. A lista oficial do Google tem cerca de quatro mil opções e é a referência para quais categorias podem ser escolhidas.</p>
+      </div>
+    </div>
+
+    <div class="settings numbers">
+      <div class="field">
+        <label for="rating">Nota em estrelas</label>
+        <input type="number" id="rating" min="0" max="5" step="0.1" inputmode="decimal"
+               value="4.5">
+      </div>
+
+      <div class="field">
+        <label for="reviews">Avaliações</label>
+        <input type="number" id="reviews" min="0" step="1" inputmode="numeric"
+               value="1284">
+      </div>
+
+      <div class="field">
+        <label for="price">Faixa de preço</label>
+        <select id="price">
+          <option value="">Não mostrar</option>
+          <option value="$">$ &mdash; econômico</option>
+          <option value="$$" selected>$$ &mdash; moderado</option>
+          <option value="$$$">$$$ &mdash; caro</option>
+          <option value="$$$$">$$$$ &mdash; muito caro</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="field-summary">Deixe nota e quantidade de avaliações vazias para mostrar um perfil novo, com a mensagem de que ainda não há avaliações. Cinco estrelas vazias poderiam parecer uma avaliação ruim à primeira vista. A prévia permite conferir esse detalhe antes da publicação.</p>
+
+    <div class="field">
+      <label for="description">Descrição</label>
+      <textarea id="description" rows="3">Torrefação em pequenos lotes e cafeteria, com espresso de origem única e café coado todos os dias. Grãos torrados a duas ruas daqui e vendidos em pacotes.</textarea>
+      <p class="field-note" id="description-note"></p>
+    </div>
+
+    <div class="field">
+      <label for="attributes">Atributos</label>
+      <input type="text" id="attributes" autocomplete="off"
+             value="Consumo no local, Para viagem, Acessível para cadeiras de rodas">
+      <p class="field-note">Separe por vírgulas, por exemplo: <code>Consumo no local, Para viagem, Acessível para cadeiras de rodas</code>. O cartão mostra até seis.</p>
+    </div>
+
+    <fieldset class="options">
+      <legend>Foto de capa</legend>
+      <p class="field-note">A foto é lida nesta página e redesenhada no tamanho necessário. Ela nunca sai do computador, e os metadados sobre local e data são descartados ao redesenhar.</p>
+      <div class="toolbar">
+        <div class="toolbar-actions">
+          <button type="button" id="pick-photo" class="ghost">Escolher uma foto&hellip;</button>
+          <button type="button" id="drop-photo" class="ghost danger" hidden>Remover a foto</button>
+        </div>
+      </div>
+      <input type="file" id="photo-file" accept="image/*" hidden
+             aria-label="Escolha uma foto de capa para o perfil">
+      <p class="path-note" id="photo-note" role="status" hidden></p>
+    </fieldset>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Testar um exemplo</button>
+        <button type="button" id="clear" class="ghost danger">Limpar todos os campos</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="card">
+    <h2><span class="step">2</span> Localização e contato</h2>
+
+    <p class="card-lede">Estes três campos definem os botões do perfil. Sem endereço, não há <em>Rotas</em>; sem site, não há <em>Site</em>; sem telefone, não há <em>Ligar</em>. É uma conferência rápida e uma ausência comum em perfis reais.</p>
+
+    <div class="field">
+      <label for="address">Endereço</label>
+      <input type="text" id="address" autocomplete="off"
+             value="123 King St W, Toronto, ON M5V 1J5">
+      <p class="field-note">Em uma linha, como aparece no perfil.</p>
+    </div>
+
+    <label class="check"><input type="checkbox" id="service-area"> <span><strong>Esta empresa atende no local do cliente</strong> <span class="check-note">Por exemplo, encanador, banho e tosa móvel ou cozinha que só faz entregas. O Google mostra a região atendida em vez do endereço, e o campo acima passa a representar essa região.</span></span></label>
+
+    <div class="settings">
+      <div class="field">
+        <label for="phone">Número de telefone</label>
+        <input type="tel" id="phone" autocomplete="off" value="(416) 555-0134">
+      </div>
+
+      <div class="field">
+        <label for="website">Site</label>
+        <input type="url" id="website" autocomplete="off" spellcheck="false"
+               value="https://www.example.com">
+        <p class="field-note">Exibido sem <code>https://</code> ou <code>www.</code>, como no perfil.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="card">
+    <h2><span class="step">3</span> Horário de funcionamento</h2>
+
+    <p class="card-lede">Esta é a linha do perfil que muda sozinha. Preencha a semana e a prévia calcula o status conforme o relógio do seu computador, como <em>Aberto &middot; Fecha às 21:00</em> ou <em>Fechado &middot; Abre às 09:00 ter.</em>. Assim você confere o que alguém verá ao consultar no domingo à noite, por exemplo.</p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="status">Mostrar a empresa como</label>
+        <select id="status">
+          <option value="auto" selected>Calcular pelos horários abaixo</option>
+          <option value="open24">Aberto 24 horas</option>
+          <option value="temporary">Temporariamente fechado</option>
+          <option value="permanent">Permanentemente fechado</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="clock">Formato do horário</label>
+        <select id="clock">
+          <option value="12" selected>12 horas &mdash; 9 PM</option>
+          <option value="24">24 horas &mdash; 21:00</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="week" id="week"></div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="copy-monday" class="ghost">Copiar segunda-feira para todos os dias</button>
+        <button type="button" id="weekdays-only" class="ghost">Somente dias úteis</button>
+      </div>
+    </div>
+
+    <p class="field-summary" id="week-note"></p>
+  </section>
+
+
+  <section class="card">
+    <h2><span class="step">4</span> Confira e baixe</h2>
+
+    <p class="card-lede">O mesmo perfil em três espaços diferentes. Alterne entre eles: o que cabe no painel de informações pode não caber no resultado de busca, onde a empresa é encontrada por quem ainda não conhece seu nome.</p>
+
+    <div class="chips" role="group" aria-label="Escolha a apresentação da prévia">
+      <button type="button" class="chip" data-surface="panel" aria-pressed="true">Painel de informações</button>
+      <button type="button" class="chip" data-surface="mobile" aria-pressed="false">No celular</button>
+      <button type="button" class="chip" data-surface="listing" aria-pressed="false">Resultado de busca</button>
+    </div>
+
+    <div class="stage" id="stage"></div>
+
+    <p class="field-summary" id="stage-note"></p>
+
+    <div class="export-row">
+      <label for="scale">Tamanho</label>
+      <select id="scale">
+        <option value="1" selected>Tamanho original</option>
+        <option value="2">Dobro</option>
+        <option value="3">Triplo</option>
+      </select>
+      <button type="button" id="save-png" class="primary big">Baixar o PNG</button>
+      <button type="button" id="save-svg" class="ghost">Baixar o SVG</button>
+      <button type="button" id="save-json" class="ghost">Salvar o perfil</button>
+    </div>
+
+    <p class="path-note" id="save-note" role="status" hidden></p>
+    <p class="error" id="save-error" role="alert" hidden></p>
+
+
+    <p class="mock-note">Simulação, não captura de tela. Sem vínculo, aprovação ou conexão com o Google.</p>
+
+    <p class="field-summary">O Google usa Google Sans, que pode não estar no seu computador, e altera o layout nas atualizações. O espaçamento é aproximado. A prévia permite conferir quanto de cada campo cabe na largura disponível.</p>
+  </section>
+
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="label.reviews">{count} avaliações no Google</span>
+    <span data-phrase="label.review1">1 avaliação no Google</span>
+    <span data-phrase="label.reviewsshort">({count})</span>
+    <span data-phrase="label.noreviews">Ainda não há avaliações</span>
+    <span data-phrase="label.website">Site</span>
+    <span data-phrase="label.directions">Rotas</span>
+    <span data-phrase="label.call">Ligar</span>
+    <span data-phrase="label.save">Salvar</span>
+    <span data-phrase="label.share">Compartilhar</span>
+    <span data-phrase="label.from">Da empresa</span>
+    <span data-phrase="label.serves">Atende em {area}</span>
+    <span data-phrase="sample.placeholder">Nome da sua empresa</span>
+
+    <span data-phrase="status.open">Aberto</span>
+    <span data-phrase="status.closed">Fechado</span>
+    <span data-phrase="status.closes">Fecha às {at}</span>
+    <span data-phrase="status.opens">Abre às {at}</span>
+    <span data-phrase="status.opensday">Abre às {at} {day}</span>
+    <span data-phrase="status.open24">Aberto 24 horas</span>
+    <span data-phrase="status.temporary">Temporariamente fechado</span>
+    <span data-phrase="status.permanent">Permanentemente fechado</span>
+
+    <span data-phrase="time.am">AM</span>
+    <span data-phrase="time.pm">PM</span>
+
+    <span data-phrase="day.sun">dom.</span>
+    <span data-phrase="day.mon">seg.</span>
+    <span data-phrase="day.tue">ter.</span>
+    <span data-phrase="day.wed">qua.</span>
+    <span data-phrase="day.thu">qui.</span>
+    <span data-phrase="day.fri">sex.</span>
+    <span data-phrase="day.sat">sáb.</span>
+
+    <span data-phrase="day.long.sun">domingo</span>
+    <span data-phrase="day.long.mon">segunda-feira</span>
+    <span data-phrase="day.long.tue">terça-feira</span>
+    <span data-phrase="day.long.wed">quarta-feira</span>
+    <span data-phrase="day.long.thu">quinta-feira</span>
+    <span data-phrase="day.long.fri">sexta-feira</span>
+    <span data-phrase="day.long.sat">sábado</span>
+
+    <span data-phrase="week.open">Abertura — {day}</span>
+    <span data-phrase="week.close">Fechamento — {day}</span>
+    <span data-phrase="week.shut">Fechado — {day}</span>
+    <span data-phrase="week.copied">Os horários de segunda-feira foram copiados para todos os dias.</span>
+    <span data-phrase="week.weekdays">Aberto de segunda a sexta, fechado no fim de semana.</span>
+    <span data-phrase="week.reads">Agora o status é {status}. O cálculo usa o relógio do seu computador; alguém em outro fuso horário verá um status diferente.</span>
+
+    <span data-phrase="name.length">{count} caracteres. No resultado de busca, o nome ocupa uma linha e é cortado quando o espaço acaba. Confira a terceira prévia.</span>
+    <span data-phrase="description.length">{count} caracteres. O painel mostra aproximadamente as quatro primeiras linhas.</span>
+
+    <span data-phrase="photo.added">Foto adicionada e redesenhada em {width} por {height} nesta página. Nada foi enviado para abri-la.</span>
+    <span data-phrase="photo.toobig">A imagem é grande demais. O limite é de vinte megabytes.</span>
+    <span data-phrase="photo.unreadable">Este navegador não consegue abrir o arquivo como imagem.</span>
+    <span data-phrase="photo.tiny">A imagem é pequena demais para o cartão.</span>
+    <span data-phrase="photo.gone">Foto removida. O cartão mostra o espaço cinza de um perfil sem foto.</span>
+
+    <span data-phrase="sample.done">Exemplo preenchido, com foto de capa desenhada nesta página, sem download. Você pode alterar qualquer campo.</span>
+    <span data-phrase="clear.done">Campos limpos. Esta é a aparência de um perfil sem informações.</span>
+
+    <span data-phrase="sample.name">Ashgrove Bakehouse</span>
+    <span data-phrase="sample.category">Padaria</span>
+    <span data-phrase="sample.address">42 Mill Lane, Bristol BS1 4RN</span>
+    <span data-phrase="sample.phone">+44 117 496 0142</span>
+    <span data-phrase="sample.website">https://ashgrove.example.com</span>
+    <span data-phrase="sample.description">Pães de fermentação natural e doces assados durante a madrugada, à venda a partir das sete até acabarem. Fermentação longa, cardápio enxuto e café para viagem.</span>
+    <span data-phrase="sample.attributes">Para viagem, Acessível para cadeiras de rodas, Opções vegetarianas</span>
+
+    <span data-phrase="stage.panel">Painel de informações, {width} por {height} pixels.</span>
+    <span data-phrase="stage.mobile">Celular, {width} por {height} pixels.</span>
+    <span data-phrase="stage.listing">Resultado de busca, {width} por {height} pixels.</span>
+    <span data-phrase="stage.alt">Simulação do perfil de {name} no Google: {status}, {reviews}.</span>
+
+    <span data-phrase="save.done">Salvo: {name}, {width} por {height} pixels. Nada foi enviado para desenhar a imagem.</span>
+    <span data-phrase="save.svgdone">Salvo como SVG. A foto está dentro do arquivo, sem depender de links externos.</span>
+    <span data-phrase="save.jsondone">Salvo. Reabra este arquivo aqui para continuar o perfil.</span>
+    <span data-phrase="save.failed">{detail}. O SVG ainda vai baixar.</span>
+    <span data-phrase="save.nosvg">Este navegador não conseguiu desenhar a imagem</span>
+    <span data-phrase="save.nopng">Este navegador não conseguiu gerar o PNG</span>
+
+    <span data-phrase="paste.empty">Não há texto no campo para ler.</span>
+    <span data-phrase="paste.nothing">O texto não parece conter um perfil. Copie o cartão inteiro, com nome, estrelas e linhas abaixo, em vez de apenas uma linha.</span>
+    <span data-phrase="paste.read">Campos lidos: {fields}. Os demais foram mantidos. Confira cada campo preenchido, pois a leitura pode ter interpretado algo errado.</span>
+
+    <span data-phrase="field.name">nome</span>
+    <span data-phrase="field.category">categoria</span>
+    <span data-phrase="field.rating">nota</span>
+    <span data-phrase="field.reviews">quantidade de avaliações</span>
+    <span data-phrase="field.address">endereço</span>
+    <span data-phrase="field.phone">telefone</span>
+    <span data-phrase="field.website">site</span>
+    <span data-phrase="field.price">faixa de preço</span>
+    <span data-phrase="field.hours">horários de funcionamento</span>
+    <span data-phrase="field.description">descrição</span>
+    <span data-phrase="field.list">{first} e {last}</span>
+
+    <span data-phrase="load.own">Carregado. O perfil foi restaurado como esta página o salvou.</span>
+    <span data-phrase="load.google">Lido como exportação do Perfil da Empresa. Nota, quantidade de avaliações e fotos não fazem parte da exportação; preencha esses três campos.</span>
+    <span data-phrase="load.notjson">O arquivo não contém um JSON que a ferramenta consiga ler.</span>
+    <span data-phrase="load.unknown">Este JSON não é um perfil salvo por esta página nem um local exportado do Perfil da Empresa.</span>
+
+    <span data-phrase="net.clean">nenhum dado digitado sobre a empresa saiu daqui. {total} arquivos carregados. {platform}</span>
+    <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta
+      ferramenta nunca faz isso. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts de publicidade, medição e contribuição da página vieram de {hosts} servidor. Nenhum recebeu campos, fotos ou horários de funcionamento.</span>
+    <span data-phrase="net.platform.many">Os scripts de publicidade, medição e contribuição da página vieram de {hosts} servidores. Nenhum recebeu campos, fotos ou horários de funcionamento.</span>
+  </div>
+</main>

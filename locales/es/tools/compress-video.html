@@ -1,0 +1,197 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige el vídeo</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Elegir otro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the number.
+
+    People arrive with a limit, not a preference: the file has to be under
+    what a chat app, an email or a form allows. So the card asks for that
+    number and answers with what it buys - the frame size and bitrate the
+    clip's length and sound leave room for - before anything is encoded.
+  -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> Indica el tamaño máximo</h2>
+
+    <p class="card-lede">
+      Se reserva espacio para el sonido intacto y el contenedor. Lo que queda, repartido entre la duración, determina la tasa de imagen. Después se reducen las dimensiones por tamaños habituales hasta que cada fotograma tenga suficientes bits. Nunca se amplía.
+    </p>
+
+    <label class="field" for="target-mb">
+      <span>Tamaño máximo</span>
+      <span class="field-note">En megabytes. Los botones ofrecen límites habituales.</span>
+    </label>
+    <div class="target-row">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <span class="target-unit">MB</span>
+    </div>
+    <div class="chips" role="group" aria-label="Límites habituales">
+      <button type="button" class="chip" data-mb="8">8 MB</button>
+      <button type="button" class="chip" data-mb="16">16 MB</button>
+      <button type="button" class="chip" data-mb="25">25 MB</button>
+      <button type="button" class="chip" data-mb="50">50 MB</button>
+      <button type="button" class="chip" data-mb="100">100 MB</button>
+      <button type="button" class="chip" data-fraction="0.5">La mitad</button>
+      <button type="button" class="chip" data-fraction="0.25">Una cuarta parte</button>
+    </div>
+
+    <p id="estimate" class="estimate" role="status" aria-live="polite"></p>
+
+    <fieldset class="chip-group">
+      <legend>Dimensiones</legend>
+      <div class="chips" role="group">
+        <button type="button" class="chip" data-edge="auto" aria-pressed="true">Según el objetivo</button>
+        <button type="button" class="chip" data-edge="1920">1080p</button>
+        <button type="button" class="chip" data-edge="1280">720p</button>
+        <button type="button" class="chip" data-edge="854">480p</button>
+        <button type="button" class="chip" data-edge="640">360p</button>
+      </div>
+      <p class="field-note">
+        El tamaño elegido es un máximo: nunca se amplía el original. Una imagen grande con pocos bits sale borrosa.
+      </p>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Omitir el sonido</strong>
+        <span class="check-note">
+          Si lo conservas, se copia intacto con su tamaño actual. Omitirlo deja todo el espacio a la imagen.
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Comprimir</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Comprimir el vídeo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Descargar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="El vídeo comprimido, reproducido desde la memoria"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.target">Se activa cuando hay un vídeo y un objetivo de tamaño viable.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
+    <span data-phrase="note.silent">El clip no tiene sonido: todo el espacio disponible se dedica a la imagen.</span>
+    <span data-phrase="estimate.nofile">Elige un vídeo arriba para ver los ajustes posibles.</span>
+    <span data-phrase="estimate.notarget">Escribe los megabytes o elige un límite.</span>
+    <span data-phrase="estimate.already">El clip pesa {size}, menos que {target}. Solo hace falta comprimir si reduces el objetivo.</span>
+    <span data-phrase="estimate.nofit">El sonido por sí solo supera ese tamaño. Omítelo o permite al menos {least}.</span>
+    <span data-phrase="estimate.toosmall">No cabe una imagen utilizable. Permite al menos {least}.</span>
+    <span data-phrase="estimate.plan">{frame} a unos {rate}, con un tamaño estimado de {estimate}, inferior a {target}. Después se medirá para comprobarlo.</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.preparing">Preparando&hellip;</span>
+    <span data-phrase="progress.again">El resultado supera el objetivo. Recodificando con mayor compresión&hellip;</span>
+    <span data-phrase="progress.frame">Fotograma {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Terminando los últimos fotogramas&hellip;</span>
+    <span data-phrase="progress.checking">Reabriendo para comprobar&hellip;</span>
+    <span data-phrase="run.cancelled">Cancelado. No se ha escrito nada. Pulsa el botón para empezar de nuevo.</span>
+    <span data-phrase="run.failed">La conversión ha fallado: {detail}</span>
+    <span data-phrase="result.ready">{size}: {percent}% menos que los {from} originales.</span>
+    <span data-phrase="result.sub">La misma duración y sonido. La imagen se recodificó para reducir el tamaño.</span>
+    <span data-phrase="check.passed">Comprobado: {found}</span>
+    <span data-phrase="check.failed">Esta pasada no ha salido bien &mdash; {found}. Quédate con el original.</span>
+    <span data-phrase="check.ok">se ha reabierto desde memoria: dura {length}, como antes, y {size} es inferior a {target}.</span>
+    <span data-phrase="check.over">se ha reabierto y dura {length}, como antes, pero {size} aún supera {target}. El codificador no pudo reducirlo más con estas dimensiones. Prueba un tamaño de imagen menor u omite el sonido.</span>
+    <span data-phrase="check.length">el resultado dura {got} en vez de {want}</span>
+    <span data-phrase="check.reopen">no se pudo reabrir el resultado ({detail})</span>
+    <span data-phrase="facts.picture">{frame}, antes {from}, a {rate} y {fps} fotogramas por segundo.</span>
+    <span data-phrase="facts.sound.kept">El sonido se copió intacto, sin recodificar.</span>
+    <span data-phrase="facts.sound.none">Sin pista de sonido: no existía o elegiste omitirla.</span>
+    <span data-phrase="facts.passes.one">Una pasada: el primer resultado quedó por debajo del objetivo.</span>
+    <span data-phrase="facts.passes.two">Dos pasadas: la primera superó el objetivo y se calculó una tasa menor según la desviación.</span>
+    <span data-phrase="facts.time">{frames} fotogramas en {seconds}.</span>
+    <span data-phrase="facts.reencoded">La imagen tiene una generación más de compresión que el archivo inicial. Conserva el original.</span>
+    <span data-phrase="support.nowebcodecs">Este navegador no codifica vídeo. Chrome, Edge y Safari pueden hacerlo; Firefox, desde la versión 130.</span>
+    <span data-phrase="support.nodecode">El navegador no decodifica este clip ({codec}). Otro navegador del mismo dispositivo podría hacerlo.</span>
+    <span data-phrase="stall.both">El códec de vídeo dejó de responder. Recarga y prueba de nuevo o reduce las dimensiones. Puede faltar el codificador de hardware o estar ocupado.</span>
+    <span data-phrase="encode.toobig">El navegador no codifica H.264 a {size}. Elige dimensiones menores.</span>
+    <span data-phrase="encode.noconfig">El codificador nunca informó de una configuración de descodificador.</span>
+    <span data-phrase="decode.none">No se pudo decodificar ningún fotograma.</span>
+    <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
+    <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
+    <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>
+    <span data-phrase="read.av1short">El registro de configuración AV1 es demasiado corto.</span>
+    <span data-phrase="read.compactsizes">Los tamaños de las muestras están en una tabla compacta que este lector no
+      decodifica.</span>
+    <span data-phrase="read.sampletables">Las tablas de muestras están incompletas.</span>
+    <span data-phrase="read.chunktable">La tabla de chunks está vacía.</span>
+    <span data-phrase="read.nosamples">La pista no contiene ninguna muestra.</span>
+    <span data-phrase="read.nostbl">A la pista de vídeo le faltan sus tablas de muestras.</span>
+    <span data-phrase="read.nostsd">La pista de vídeo no tiene descripción de muestra.</span>
+    <span data-phrase="read.emptystsd">La descripción de muestra del vídeo está vacía.</span>
+    <span data-phrase="read.encrypted">La pista de vídeo está cifrada.</span>
+    <span data-phrase="read.unknowncodec">El vídeo está guardado como &laquo;{type}&raquo;, y este lector no lo conoce.</span>
+    <span data-phrase="read.noconfig">La pista &laquo;{type}&raquo; no lleva ninguna configuración de decodificador.</span>
+    <span data-phrase="read.notmp4">No es MP4 ni MOV. Aquí aún no se leen WebM ni otros formatos.</span>
+    <span data-phrase="read.nomoov">El archivo no tiene cabecera de película.</span>
+    <span data-phrase="read.novideo">El archivo no tiene ninguna pista de vídeo que este lector pueda usar.</span>
+    <span data-phrase="read.notimescale">La pista de vídeo no tiene escala de tiempo.</span>
+    <span data-phrase="read.nofragments">Los fragmentos de este archivo no contienen ningún fotograma de su pista de vídeo.</span>
+    <span data-phrase="read.unreadable">El archivo no se pudo leer como MP4.</span>
+    <span data-phrase="read.notplayed">Este formato no es de los que reproduce este navegador.</span>
+    <span data-phrase="read.layout">La disposición de este archivo no es de las que entiende el lector de aquí.</span>
+    <span data-phrase="net.clean">tu vídeo no ha salido del dispositivo. Se cargaron {total} archivos, todos de esta página. {platform}</span>
+    <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
+      herramienta no hace nunca. Vale la pena investigarlo. {platform}</span>
+    <span data-phrase="net.platform.one">Los scripts de publicidad, medición y donación se cargaron desde {hosts} host. Ninguno recibió un vídeo ni un byte suyo.</span>
+    <span data-phrase="net.platform.many">Los scripts de publicidad, medición y donación se cargaron desde {hosts} hosts. Ninguno recibió un vídeo ni un byte suyo.</span>
+  </div>
+</main>

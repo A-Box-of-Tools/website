@@ -37,7 +37,24 @@
  * touched again - not during preview, and not during export.
  */
 
+import { phrase } from './phrases.js';
+
 const TIMEOUT_MS = 20000;
+
+// Readers return keys so validation remains usable without a page or a DOM.
+// Only the panel resolves them, using the language of the tool around it.
+function refusal(key, values = {}) {
+  return Object.assign(new Error(key), { values });
+}
+
+function errorText(error, fallback = 'url.failed') {
+  const key = error?.message;
+  if (/^[a-z0-9]+(?:[.-][a-z0-9]+)+$/.test(key)) {
+    const translated = phrase(key, error.values);
+    if (translated !== key) return translated;
+  }
+  return phrase(fallback);
+}
 
 /** Re-encode quality. The result is headed into a lossy video codec regardless. */
 const JPEG_QUALITY = 0.95;
@@ -50,17 +67,17 @@ function filenameFromUrl(url) {
 
 /**
  * Parse and validate one address.
- * @throws {Error} with a message suitable for showing to the user
+ * @throws {Error} with a phrase key and substitution values
  */
 export function parseImageUrl(raw) {
   let url;
   try {
     url = new URL(raw.trim());
   } catch {
-    throw new Error(`Not a valid web address: ${raw.trim().slice(0, 60)}`);
+    throw refusal('url.invalid', { address: raw.trim().slice(0, 60) });
   }
   if (url.protocol !== 'https:' && url.protocol !== 'http:') {
-    throw new Error(`Only http and https addresses are supported (got ${url.protocol}).`);
+    throw refusal('url.protocol', { protocol: url.protocol });
   }
   return url;
 }
@@ -86,11 +103,8 @@ export async function fetchImageAsFile(raw) {
   try {
     await new Promise((resolve, reject) => {
       img.onload = resolve;
-      img.onerror = () => reject(new Error(
-        `Could not load ${url.hostname}. The server may not allow other sites to `
-        + 'use its images (no CORS header), or the address may be wrong.',
-      ));
-      timer = setTimeout(() => reject(new Error(`${url.hostname} did not respond within 20 seconds.`)), TIMEOUT_MS);
+      img.onerror = () => reject(refusal('url.load', { host: url.hostname }));
+      timer = setTimeout(() => reject(refusal('url.timeout', { host: url.hostname })), TIMEOUT_MS);
       img.src = url.href;
     });
   } finally {
@@ -98,7 +112,7 @@ export async function fetchImageAsFile(raw) {
   }
 
   if (!img.naturalWidth || !img.naturalHeight) {
-    throw new Error(`${url.hostname} returned something that is not a usable image.`);
+    throw refusal('url.notimage', { host: url.hostname });
   }
 
   // Copy the pixels into a local blob. From here on the image lives entirely
@@ -110,7 +124,7 @@ export async function fetchImageAsFile(raw) {
 
   const blob = await new Promise((resolve, reject) => {
     canvas.toBlob(
-      (result) => (result ? resolve(result) : reject(new Error('Could not copy the image locally.'))),
+      (result) => (result ? resolve(result) : reject(refusal('url.copy'))),
       'image/jpeg',
       JPEG_QUALITY,
     );
@@ -130,7 +144,7 @@ export async function fetchImageAsFile(raw) {
  *
  * @returns {Promise<{
  *   downloaded: {file: File, url: URL}[],
- *   failures: {url: string, reason: string}[]
+ *   failures: {url: string, reason: string, values?: object}[]
  * }>}
  */
 export async function fetchImages(urls, onProgress) {
@@ -142,7 +156,7 @@ export async function fetchImages(urls, onProgress) {
     try {
       downloaded.push({ file: await fetchImageAsFile(urls[i]), url: parseImageUrl(urls[i]) });
     } catch (error) {
-      failures.push({ url: urls[i], reason: error.message });
+      failures.push({ url: urls[i], reason: error.message, values: error.values });
     }
   }
 
@@ -179,7 +193,7 @@ export function wireUrlImport({ input, button, status, onFiles, onError, onClear
 
     const lines = input.value.split('\n').map((s) => s.trim()).filter(Boolean);
     if (!lines.length) {
-      status.textContent = 'Paste at least one address first.';
+      status.textContent = phrase('url.empty');
       return;
     }
 
@@ -191,13 +205,13 @@ export function wireUrlImport({ input, button, status, onFiles, onError, onClear
         parseImageUrl(line);
         valid.push(line);
       } catch (error) {
-        rejected.push(error.message);
+        rejected.push(errorText(error));
       }
     }
 
     if (!valid.length) {
       onError(rejected.join(' '));
-      status.textContent = 'Nothing to download.';
+      status.textContent = phrase('url.nothing');
       return;
     }
 
@@ -207,23 +221,29 @@ export function wireUrlImport({ input, button, status, onFiles, onError, onClear
 
     try {
       const { downloaded, failures } = await fetchImages(valid, ({ done, total }) => {
-        status.textContent = `Downloading ${Math.min(done + 1, total)} of ${total}...`;
+        status.textContent = phrase('url.progress', { done: Math.min(done + 1, total), total });
       });
 
       status.textContent = downloaded.length
-        ? `Downloaded ${downloaded.length} of ${valid.length}.`
-        : 'Nothing could be downloaded.';
+        ? phrase('url.done', { done: downloaded.length, total: valid.length })
+        : phrase('url.none');
 
+      const problems = [...rejected, ...failures.map((f) => phrase('url.problem', { url: f.url, reason: errorText({ message: f.reason, values: f.values }) }))];
       if (downloaded.length) {
-        await onFiles(downloaded);
-        input.value = '';
+        try {
+          await onFiles(downloaded);
+          input.value = '';
+        } catch (error) {
+          // An import can fail after the downloads succeeded. Keep the addresses
+          // for a retry, and keep the individual download failures alongside it.
+          status.textContent = phrase('url.import');
+          problems.push(errorText(error, 'url.import'));
+        }
       }
-
-      const problems = [...rejected, ...failures.map((f) => `${f.url}: ${f.reason}`)];
       if (problems.length) onError(problems.join('\n'));
     } catch (error) {
-      onError(error.message);
-      status.textContent = 'Download failed.';
+      onError(errorText(error));
+      status.textContent = phrase('url.failed');
     } finally {
       busy = false;
       button.disabled = false;

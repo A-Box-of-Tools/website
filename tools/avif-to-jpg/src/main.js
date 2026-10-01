@@ -22,9 +22,10 @@ import { makeZip } from './shared/zip.js';
 import { saveBlob } from './shared/download.js';
 import {
   AVIF, FORMATS, JPEG,
-  canDecode, change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames,
+  change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames,
 } from './shared/image-convert.js';
 import { makeExample } from './example.js';
+import { canReadAvif } from './avif-support.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -109,7 +110,6 @@ async function addFiles(files) {
 
   picker.busy(readingLabel(files.length));
   const failures = [];
-  let refused = 0;
 
   try {
     for (const file of files) {
@@ -129,10 +129,8 @@ async function addFiles(files) {
       try {
         decoded = await decode(file);
       } catch (error) {
-        // The file IS an AVIF - its brands said so - and the browser would not
-        // open it. On a current browser that means a damaged file; on an old
-        // one it means all of them will fail, which the count below catches.
-        refused += 1;
+        // A correct brand does not make a complete or decodable file. Browser
+        // support is measured separately with a known-good sample.
         failures.push(phrase('read.failed', {
           name: file.name,
           why: phrase(error.message, fill(error.values)),
@@ -159,12 +157,6 @@ async function addFiles(files) {
 
   if (failures.length) showLoadError(failures.join('\n'));
   else clearLoadError();
-
-  // Every real AVIF in the batch was turned down by the decoder and none got
-  // through. One damaged file is bad luck; all of them is a browser that does
-  // not read the format, and saying so is more use than three identical
-  // complaints about files that are perfectly good.
-  if (refused > 0 && items.length === 0) noDecoder();
 
   clearResults();
   render();
@@ -502,17 +494,9 @@ function noDecoder() {
   renderSettings();
 }
 
-/**
- * Find out whether this browser reads AVIF, before anything is chosen.
- *
- * `ImageDecoder.isTypeSupported` answers it outright where it exists, which is
- * every browser new enough for the answer to be yes anyway. Where it does not,
- * nothing is assumed and nothing is said: the question gets settled by the
- * first real file instead, in addFiles above, which is the one place a wrong
- * guess would have cost anything.
- */
+/** A corrupt input must never disable later files that this browser can read. */
 async function checkSupport() {
-  if (await canDecode(AVIF)) return;
+  if (await canReadAvif()) return;
   noDecoder();
 }
 

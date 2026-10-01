@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "Proteger un PDF"
+title = "Cómo proteger un PDF con contraseña y qué protege realmente"
+description = "Una contraseña de apertura cifra un PDF. Una restricción de impresión es una petición. Qué hace cada una, qué cifrado elegir, por qué no necesitas subir el documento y qué ocurre si olvidas la contraseña."
+heading = "Cómo proteger un PDF con contraseña y qué garantía ofrece"
+lede = "Una contraseña de apertura impide leer un PDF sin conocerla. Una restricción de impresión o copia pide al lector que respete una preferencia. Ambas pueden ser útiles, pero la diferencia determina qué protección puedes prometer."
+updated = "12 de septiembre de 2026"
+og_title = "Cómo proteger un PDF con contraseña y qué garantía ofrece"
+og_description = "La contraseña cifra el documento; las restricciones expresan permisos. Cómo aplicarlas en el navegador sin subir primero el archivo privado."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

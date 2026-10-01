@@ -39,6 +39,7 @@ const MAX_STEPS = 2000;
  * a real difference between two files and one that a patch has to carry.
  */
 export function splitLines(text) {
+  if (text === '') return { lines: [], trailing: false };
   const normalised = text.replace(/\r\n?/g, '\n');
   const lines = normalised.split('\n');
   const trailing = lines.length > 1 && lines[lines.length - 1] === '';
@@ -398,19 +399,66 @@ export function unifiedHunks(ops, { context = 3 } = {}) {
     current.lines.push({
       sign: op.type === 'equal' ? ' ' : op.type === 'delete' ? '-' : '+',
       text: op.text,
+      noNewline: op.noNewline,
     });
   });
+  // An empty range names the line before the insertion or deletion, with
+  // zero meaning the start of an empty file. A nonempty range is one-based.
+  for (const hunk of hunks) {
+    if (hunk.aCount === 0) hunk.aStart -= 1;
+    if (hunk.bCount === 0) hunk.bStart -= 1;
+  }
   return hunks;
 }
 
-/** A unified diff as text, ready to be copied into a patch or a review. */
-export function formatUnified(ops, { context = 3, aLabel = 'a', bLabel = 'b' } = {}) {
-  const hunks = unifiedHunks(ops, { context });
+/**
+ * Compare the original text for export, without the display's ignore rules.
+ *
+ * A patch has to find every context line in the original file, including its
+ * blank lines and its carriage returns. Keep LF on each token while comparing
+ * so adding only the final newline is a real edit too. Empty text has no
+ * lines; treating it as one empty line would invent a deletion when creating
+ * a file.
+ */
+function patchOperations(aText, bText) {
+  const a = aText.match(/[^\n]*\n|[^\n]+$/g) ?? [];
+  const b = bText.match(/[^\n]*\n|[^\n]+$/g) ?? [];
+  const out = [];
+  for (const op of diffSequences(a, b)) {
+    for (let i = 0; i < op.count; i += 1) {
+      const aIndex = op.type === 'insert' ? null : op.aStart + i;
+      const bIndex = op.type === 'delete' ? null : op.bStart + i;
+      const line = op.type === 'insert' ? b[bIndex] : a[aIndex];
+      const noNewline = !line.endsWith('\n');
+      out.push({
+        type: op.type, a: aIndex, b: bIndex,
+        text: noNewline ? line : line.slice(0, -1),
+        noNewline,
+      });
+    }
+  }
+  return out;
+}
+
+/**
+ * A unified patch from the two original strings, not the filtered view.
+ *
+ * Keeping the source strings at this boundary prevents a caller from exporting
+ * an apparently unchanged line whose spelling or position was only equal
+ * under the display's ignore settings.
+ */
+export function formatUnified(aText, bText, { context = 3, aLabel = 'a', bLabel = 'b' } = {}) {
+  const hunks = unifiedHunks(patchOperations(aText, bText), { context });
   if (!hunks.length) return '';
   const out = [`--- ${aLabel}`, `+++ ${bLabel}`];
   for (const hunk of hunks) {
     out.push(`@@ -${hunk.aStart},${hunk.aCount} +${hunk.bStart},${hunk.bCount} @@`);
-    for (const line of hunk.lines) out.push(`${line.sign}${line.text}`);
+    for (const line of hunk.lines) {
+      out.push(`${line.sign}${line.text}`);
+      // This is patch syntax, including the English wording: translating it
+      // would make patch readers mistake it for another line of file content.
+      if (line.noNewline) out.push('\\ No newline at end of file');
+    }
   }
   return `${out.join('\n')}\n`;
 }

@@ -1,0 +1,19 @@
+#
+# Guia: dá para recuperar texto tarjado? - Brazilian Portuguese.
+#
+
+nav = "Texto tarjado se recupera?"
+title = "Dá para recuperar um texto coberto de preto?"
+description = "Com frequência, sim - porque a maioria das tarjas pretas é desenhada por cima do texto em vez de tomar o lugar dele. As três maneiras de uma tarja falhar, as cópias que um arquivo guarda do próprio passado, e o que remover precisa significar de verdade."
+heading = "Dá para recuperar um texto coberto de preto?"
+lede = """
+    Desconfortavelmente muitas vezes, sim &mdash; com a ferramenta de
+    selecionar texto, não com um laboratório. A maioria dos retângulos
+    pretos é desenhada <em>por cima</em> das palavras e salva ao lado
+    delas, e as palavras viajam por baixo. Esta página é o catálogo das
+    maneiras de isso acontecer, e do que remover precisa significar no
+    lugar disso."""
+updated = "26 de agosto de 2026"
+og_title = "Dá para recuperar um texto coberto de preto?"
+og_description = "Muitas vezes basta selecionar e copiar. Por que um retângulo desenhado não é uma tarja de verdade, por que um mosaico pode ser lido de volta, e o que de fato é preciso para tirar algo de um arquivo."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

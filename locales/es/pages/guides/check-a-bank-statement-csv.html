@@ -1,0 +1,106 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>Un CSV que se abre correctamente en una hoja de cálculo puede tener un importe equivocado, un movimiento ausente o una fecha interpretada al revés. Compáralo con el extracto original: revisa filas, fechas y descripciones, y después utiliza los saldos impresos para comprobar los importes.</p>
+    <p>Conserva el PDF junto al archivo convertido. Que la descarga termine solo demuestra que el convertidor produjo un archivo. Estas comprobaciones ayudan a saber si dice lo mismo que el extracto.</p>
+  </section>
+
+  <section>
+    <h2>Antes de convertir, busca una exportación</h2>
+    <p>Si el banco ofrece una descarga CSV del período que necesitas, empieza por ahí. Una exportación directa evita reconstruir una tabla a partir de texto colocado en una página PDF. Revisa la cuenta, las fechas y el significado de las columnas; habrá una etapa menos en la que puedan aparecer errores.</p>
+    <p>A veces solo tienes el PDF: un extracto antiguo, una cuenta cerrada o un documento que te enviaron. En esos casos, convertirlo sí resulta útil.</p>
+  </section>
+
+  <section>
+    <h2>Revisa un extracto pequeño paso a paso</h2>
+    <p>Este extracto ficticio de una cuenta corriente empieza con <strong>1,250.00</strong>. Los importes positivos suman dinero y los negativos lo restan. La última columna está impresa en el extracto; no se ha calculado después en la hoja.</p>
+
+    <figure class="data">
+      <figcaption id="statement-caption">Cuatro movimientos ficticios, con un saldo inicial de 1,250.00</figcaption>
+      <div class="scroll" tabindex="0" role="region" aria-label="Extracto bancario ficticio">
+        <table aria-labelledby="statement-caption">
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Importe</th>
+              <th scope="col">Saldo impreso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-08-03</td>
+              <td>Pago de sueldo</td>
+              <td>+800.00</td>
+              <td>2,050.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-04</td>
+              <td>Alimentos</td>
+              <td>-43.20</td>
+              <td>2,006.80</td>
+            </tr>
+            <tr>
+              <td>2026-08-05</td>
+              <td>Café</td>
+              <td>-6.80</td>
+              <td>2,000.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-06</td>
+              <td>Transferencia</td>
+              <td>-125.00</td>
+              <td>1,875.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <p>Cada fila permite comprobar que <strong>saldo anterior + importe con signo = saldo nuevo</strong>. Para la compra de alimentos, <code>2050.00 + (-43.20) = 2006.80</code>. Para el café, <code>2006.80 + (-6.80) = 2000.00</code>.</p>
+    <p>Supón que el CSV interpreta la compra de alimentos como <strong>-48.20</strong>. Todas las celdas están completas, pero <code>2050.00 + (-48.20) = 2001.80</code>. La diferencia con el saldo impreso es de <strong>5.00</strong>, lo que señala una fila concreta que revisar en el PDF.</p>
+    <p>Conserva los saldos impresos durante la revisión. Si los sustituyes por fórmulas basadas en los importes convertidos, la hoja coincidirá consigo misma, incluidos sus errores.</p>
+    <p>Comprueba qué representa el saldo antes de aplicar los signos. Un extracto de tarjeta de crédito puede mostrar deuda: las compras la aumentan y los pagos la reducen. No supongas que sus importes positivos y negativos significan lo mismo que en este ejemplo de cuenta corriente.</p>
+  </section>
+
+  <section>
+    <h2>Por qué el saldo final no basta</h2>
+    <p>Es útil comparar el saldo inicial más todos los importes con el saldo final, pero los errores pueden compensarse. Si un pago se lee 5.00 por encima y otro 5.00 por debajo, el total seguirá coincidiendo.</p>
+    <p>Revisar todos los saldos acumulados disponibles ofrece más comparaciones. Si solo aparece un saldo al final del día, compáralo con el saldo impreso anterior más todos los movimientos intermedios.</p>
+    <p>Incluso eso tiene límites. Si faltan dos movimientos de <strong>-20.00 y +20.00</strong>, el saldo no cambia y la comprobación de ese tramo puede pasar. Compara también la secuencia de filas con el original.</p>
+    <p>Un saldo que coincide no demuestra que la fecha o el destinatario se hayan copiado bien, ni autentica el extracto. Solo comprueba la relación entre los importes y los saldos disponibles.</p>
+  </section>
+
+  <section>
+    <h2>Comprueba las fechas antes de ordenar</h2>
+    <p><code>03/04/2026</code> puede ser el 3 de abril o el 4 de marzo. Una fecha como <code>18/04/2026</code> permite distinguir el orden, pero un extracto corto puede no ofrecer esa pista. Revisa el período del documento y el formato del banco en lugar de aceptar una suposición.</p>
+    <p>Vuelve a revisarlas al abrir el CSV: la hoja de cálculo puede interpretar las fechas de otra manera que el convertidor. Conserva el orden original hasta terminar. Ordenar fechas mal interpretadas dificulta comparar las filas y rompe la secuencia de saldos.</p>
+    <p>Las fechas sin año también exigen revisar el período, sobre todo entre diciembre y enero. Comprueba los separadores numéricos: <code>1,240.00</code> y <code>1.240,00</code> pueden representar el mismo importe, y las celdas importadas deben conservar ese valor.</p>
+  </section>
+
+  <section>
+    <h2>Lee las descripciones y separa los totales</h2>
+    <p>Una descripción que continúa en una segunda línea sigue siendo un único movimiento. Comprueba que ambas partes quedaron juntas. Presta atención a los saltos de página, donde los encabezados repetidos y los saldos arrastrados pueden parecer filas nuevas.</p>
+    <p>El PDF también puede contener resúmenes de cuenta, subtotales y detalles de pago. Forman parte del documento extraído, pero no deben importarse como movimientos adicionales. Identifica la tabla de movimientos y separa las filas de resumen antes de preparar la importación.</p>
+    <p>Dos pagos con la misma fecha, destinatario e importe pueden ser reales. Compara su posición y sus referencias con el extracto antes de borrar uno. Una extracción duplicada y un pago repetido necesitan correcciones distintas.</p>
+  </section>
+
+  <section>
+    <h2>Qué comprueba este convertidor</h2>
+    <p><a href="/es/convertir-pdf-a-csv/">PDF a CSV</a> detecta tablas por la alineación del texto, une celdas que continúan en otra línea y conserva totales y etiquetas de sección. Si encuentra varias tablas, puedes elegir la que necesitas. Ofrece un control para el orden de fechas ambiguas y deja las fechas sin año tal como están impresas.</p>
+    <p>Cuando reconoce una secuencia de saldos acumulados, indica si las comparaciones disponibles coinciden. Debes comprobar por tu cuenta los importes anteriores al primer saldo impreso frente al saldo inicial, y los posteriores al último saldo impreso. Un resultado favorable solo cubre las comparaciones que pudo hacer.</p>
+    <p>Si no reconoce una secuencia utilizable, no emite un veredicto. <strong>La ausencia de un aviso no es una confirmación.</strong> Ni un resultado silencioso ni una comprobación favorable garantizan que todo el archivo sea correcto. La vista previa muestra un máximo de 25 filas por tabla; revisa el archivo descargado para ver el resto.</p>
+    <p>Las páginas escaneadas necesitan reconocimiento de texto, que esta herramienta no ofrece. La conversión ocurre en el navegador. La guía sobre <a href="/es/guias/es-seguro-subir-un-extracto-bancario/">subir un extracto bancario a un convertidor</a> trata la cuestión de privacidad.</p>
+  </section>
+
+  <section>
+    <h2>Antes de importar el CSV en otro programa</h2>
+    <p>Revisa la vista previa de importación con el mismo cuidado que el archivo. Selecciona la cuenta bancaria o tarjeta correcta, confirma el formato de fecha y asigna las columnas de fecha, descripción e importe. Son decisiones distintas de extraer el PDF. La <a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">guía de importación CSV de Intuit</a> muestra los requisitos de un producto concreto.</p>
+    <ul>
+      <li>Confirma la cuenta y el período del extracto.</li>
+      <li>Revisa fechas, signos y formatos numéricos después de abrir el archivo.</li>
+      <li>Compara los movimientos con el original, incluidos los saltos de página.</li>
+      <li>Comprueba los saldos iniciales, acumulados y finales que estén disponibles.</li>
+      <li>Investiga las diferencias y las filas repetidas antes de modificarlas.</li>
+      <li>Conserva el extracto original y una copia del CSV revisado.</li>
+    </ul>
+  </section>

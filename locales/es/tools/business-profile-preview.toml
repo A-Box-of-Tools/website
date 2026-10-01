@@ -1,0 +1,133 @@
+name = "Vista previa del perfil de empresa"
+heading = "Vista previa del perfil de empresa <span class=\"h1-kw\">&mdash; revisa tu ficha de Google antes de publicarla</span>"
+tagline = "Escribe los datos y ve cómo quedaría la ficha. Nada se envía para dibujarla."
+title = "Vista previa del Perfil de Empresa de Google &mdash; gratis, sin cuenta ni subidas"
+description = "Previsualiza tu Perfil de Empresa de Google: panel, ficha de teléfono y resultado de búsqueda. Pega una ficha existente o escribe los datos. Descarga PNG o SVG, todo en el navegador."
+og_title = "Previsualiza un Perfil de Empresa de Google sin entregar tus datos"
+og_description = "El panel de información, la ficha del teléfono y el resultado local, dibujados en el navegador. Pega una ficha para empezar. Sin cuenta, marca de agua ni subidas."
+og_image_alt = "Vista previa del perfil de empresa: revisa tu ficha de Google antes de publicarla"
+pledge = "El código de esta página convierte tus campos en una imagen sin contactar con nadie: no consulta la empresa, no comprueba direcciones ni pide estrellas. La herramienta no tiene funciones de red. Una ficha puede contener una dirección particular y un teléfono personal; esos datos se quedan aquí."
+live_hint = "Abre las herramientas de desarrollo, mira Red y escribe dirección y teléfono. Ninguna petición lleva un solo carácter. O desconéctate y prepara la vista previa igualmente."
+read_first = ", <code>src/surfaces.js</code> para el dibujo de las tres fichas, <code>src/profile.js</code> para calcular si el negocio está abierto según los horarios, y <code>src/parse-listing.js</code> para leer el texto de una ficha pegada."
+howto_heading = "Cómo previsualizar un Perfil de Empresa de Google antes de publicarlo"
+card = "Revisa el panel de información, la ficha en un teléfono y el resultado local de tu empresa. Puedes pegar una ficha existente para empezar."
+
+[words]
+plural = "perfiles e imágenes de ellos"
+choose = "una foto de portada"
+analytics_extra = ", ni un carácter de lo que escribes"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Lo que escribes no tiene adónde ir."
+body = "La Content-Security-Policy enumera los destinos permitidos y ninguno pertenece a este sitio. No hay un servidor donde recoger direcciones o teléfonos ni código que los envíe."
+
+[[privacy]]
+title = "Aquí nada descarga nada."
+body = "En <code>src/</code> no hay <code>fetch</code>, <code>XMLHttpRequest</code> ni <code>sendBeacon</code>. Por eso tampoco se busca tu ficha automáticamente. Importarla requiere pegar el texto: consultar un servidor daría a la página la capacidad de enviar datos fuera."
+
+[[privacy]]
+title = "La foto se lee aquí y se eliminan sus metadatos."
+body = "Se decodifica y redibuja en un lienzo antes de incorporarla, limitando el tamaño y eliminando datos de fecha y ubicación. La vista previa contiene una copia de la imagen, no el archivo original."
+
+[[privacy]]
+title = "La descarga es la imagen que ves."
+body = "El PNG usa el mismo dibujo de la vista previa, pintado en un lienzo. Funciona sin red porque no necesita fuentes externas ni imágenes enlazadas: todo queda en un archivo independiente."
+
+[[privacy]]
+title = "Guardar el perfil crea un archivo, no una cuenta."
+body = "El JSON se descarga en tu dispositivo. Reabrirlo es la única forma de recuperar los datos aquí. No se conserva nada entre visitas en el navegador: la dirección y los horarios de tu empresa no son datos que este sitio deba guardar."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google, y el botón de donación, de Buy Me a Coffee. No reciben los datos que escribes. Todo el código que convierte los campos en una imagen se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconecta la red y la herramienta sigue igual, porque nunca hubo un paso de red en ella. Es la prueba más simple de todas."
+
+[[howto]]
+title = "Empieza con tu ficha actual, si ya tienes una."
+body = "Ábrela en Google, selecciona el nombre, las estrellas y las líneas inferiores, copia y pega en el panel superior. Se reconocen nombre, categoría, valoración, reseñas, dirección, teléfono, web y horarios. Se indica qué campos se rellenaron para que revises las inferencias. También admite una exportación de la API de Perfil de Empresa."
+
+[[howto]]
+title = "Revisa primero el nombre y la categoría."
+body = "El nombre se recorta en las tres vistas, especialmente en el resultado local. Añadir demasiadas palabras puede ocultar lo importante tras puntos suspensivos. La categoría es la línea que sobrevive cuando casi no hay espacio y ayuda a describir qué ofrece el negocio."
+
+[[howto]]
+title = "Completa la semana y mira el estado."
+body = "La línea cambia de <em>Abierto &middot; Cierra a las 21:00</em> a <em>Cerrado &middot; Abre el martes a las 9:00</em> según el horario y el reloj del dispositivo. Así puedes revisar qué se verá en cada momento. Un intervalo de 22:00 a 02:00 se interpreta como abierto después de medianoche."
+
+[[howto]]
+title = "Comprueba qué botones aparecen."
+body = "Sin dirección no hay <em>Cómo llegar</em>; sin web, <em>Sitio web</em>; sin teléfono, <em>Llamar</em>. Estos datos activan los botones de contacto. Revisa la fila para detectar lo que falta."
+
+[[howto]]
+title = "Mira las tres vistas."
+body = "El panel de información tiene más espacio y suele aparecer cuando ya conocen tu nombre. La ficha del teléfono es una vista habitual para visitantes. El resultado local es más estrecho y aparece junto a competidores. Una descripción que cabe en el panel puede no aparecer en el resultado."
+
+[[howto]]
+title = "Descarga la imagen."
+body = "El PNG sale al tamaño de la vista, al doble o al triple, sin cambiar los saltos de línea. El SVG es independiente y lleva la foto dentro, útil para documentos e impresión. Guarda también el perfil JSON si quieres seguir editándolo después."
+
+[[faq]]
+q = "¿Es una herramienta de Google?"
+a = "No. Este sitio no está afiliado, avalado ni conectado con Google. Perfil de Empresa de Google es su marca y solo se usa para identificar lo que se representa. Es un dibujo a partir de tus datos, no una captura ni una consulta de la ficha real. Nada de lo que hagas modifica tu cuenta: para eso debes ir a Google."
+
+[[faq]]
+q = "¿Importa automáticamente mi perfil actual?"
+a = "No. Consultarlo requeriría contactar con un servidor, capacidad que esta herramienta evita. Copia y pega la ficha: se extraen los campos reconocidos y se informa de cuáles se rellenaron. También puedes abrir una exportación JSON de ubicación de la API de Perfil de Empresa."
+
+[[faq]]
+q = "¿Se envía a alguna parte lo que escribo?"
+a = "No. El código no tiene <code>fetch</code>, <code>XMLHttpRequest</code> ni <code>sendBeacon</code>. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Importa especialmente si la ficha contiene tu domicilio o teléfono personal."
+
+[[faq]]
+q = "¿Es exacta la vista previa?"
+a = "Sirve para revisar qué texto cabe; el aspecto es aproximado. Google usa Google Sans y cambia sus diseños, así que las distancias pueden variar. Aquí puedes comparar cuánto nombre se ve a cada ancho, la legibilidad de la categoría y los botones que activan tus campos."
+
+[[faq]]
+q = "¿Por qué una ficha nueva no muestra estrellas?"
+a = "Sin valoración ni número de reseñas se muestra que aún no hay reseñas, en lugar de cinco estrellas vacías que podrían confundirse con una puntuación baja. Si rellenas ambos campos aparecen estrellas con su fracción exacta: 4,6 no se redondea a cinco."
+
+[[faq]]
+q = "¿De qué depende el estado abierto o cerrado?"
+a = "De la semana que introduces y el reloj del dispositivo. La ficha real usa la hora local del negocio; esta vista usa tu reloj sin consultar ubicaciones. Por tanto, coincide si estás en la misma zona horaria y puede desplazarse si no. La advertencia aparece bajo los horarios."
+
+[[faq]]
+q = "¿Puedo usar la imagen en propuestas o informes para clientes?"
+a = "Sí. No hay marca de agua, cuenta ni límite de imágenes. El archivo no enlaza a este sitio: representa tus datos, dibujados localmente. Indica al destinatario que es una simulación, porque puede confundirse con una captura de una ficha ya publicada."
+
+[[faq]]
+q = "¿Qué diferencia hay entre las tres vistas?"
+a = "El ancho y cuánto contenido cabe. El <strong>panel de información</strong> es la ficha alta a la derecha de una búsqueda de escritorio. La vista de <strong>teléfono</strong> representa la ficha móvil. El <strong>resultado de búsqueda</strong> es una entrada del bloque local de tres empresas con mapa, la vista más estrecha para comparar negocios."
+
+[[faq]]
+q = "¿Se sube la foto que añado?"
+a = "No. Se decodifica aquí, redimensiona en un lienzo y se incorpora como datos dentro de la imagen. No sale del dispositivo y pierde los metadatos de fecha y ubicación, porque el lienzo solo guarda píxeles. Conserva el original si lo necesitas; se usa una copia."
+
+[[faq]]
+q = "¿Puedo guardar lo escrito y seguir después?"
+a = "Sí. <em>Guardar el perfil</em> descarga un JSON con los campos y la foto. Al abrirlo aquí recuperas todo. No se guardan datos entre visitas en el navegador ni hay una cuenta: tú conservas el archivo."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Los campos, dibujos y descargas siguen funcionando. Una herramienta que enviara los datos fuera para dibujar no podría hacerlo."
+
+[schema]
+description = "Previsualiza un Perfil de Empresa de Google en el navegador: panel, ficha de teléfono y resultado local con nombre, categoría, valoración, reseñas, contacto, descripción, atributos, horarios y foto. Calcula el estado abierto o cerrado y descarga PNG o SVG. Importa texto pegado o JSON de la API. Sin subir nada."
+features = ["Tres vistas de un perfil: panel de información, teléfono y resultado local", "Calcula abierto o cerrado con horarios semanales, incluidos intervalos tras medianoche", "Estrellas fraccionadas según la valoración y ninguna si no hay reseñas", "Botones que aparecen solo si existe el dato correspondiente", "Importa texto pegado e informa de los campos reconocidos", "Abre exportaciones de ubicación de la API de Perfil de Empresa de Google", "Lee la foto localmente, elimina metadatos y la incorpora a la imagen", "PNG al tamaño original, doble o triple, y SVG independiente", "Guarda el perfil como JSON y permite reabrirlo, sin cuentas ni almacenamiento entre visitas", "Funciona sin conexión, sin subidas, marca de agua ni registro"]

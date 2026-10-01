@@ -111,9 +111,16 @@ function outstanding() {
  * first for the progress bar.
  */
 async function start(ids) {
-  if (!chosen || !ids.length) return;
-
   running?.abort();
+  running = null;
+  if (!chosen || !ids.length) {
+    el.progress.hidden = true;
+    el.stopped.hidden = true;
+    picker.done();
+    return;
+  }
+
+  const file = chosen;
   const controller = new AbortController();
   running = controller;
 
@@ -127,9 +134,10 @@ async function start(ids) {
   let speed = null;
 
   try {
-    const found = await hashFile(chosen, ids, {
+    const found = await hashFile(file, ids, {
       signal: controller.signal,
       onProgress(done, total) {
+        if (running !== controller) return;
         const now = performance.now();
         if (done > last.at && now > last.when) {
           speed = smooth(speed, rate(done - last.at, (now - last.when) / 1000));
@@ -138,8 +146,10 @@ async function start(ids) {
         showProgress(done, total, speed);
       },
     });
+    if (running !== controller || controller.signal.aborted || chosen !== file) return;
     Object.assign(digests, found);
   } catch (error) {
+    if (running !== controller || chosen !== file) return;
     if (error instanceof Stopped) {
       // Not a failure. Whatever was already worked out for this file stays on
       // the page, because it is still true of it - and if that is nothing, the
@@ -153,10 +163,9 @@ async function start(ids) {
       return;
     }
     if (error instanceof Unreadable) {
-      showError(`${chosen.name} could not be read to the end: ${error.message}. `
-        + 'A file that changed on disk while it was being read is the usual reason. '
-        + 'Nothing partial is shown, because half a file has the wrong checksum '
-        + 'rather than a partial one.');
+      showError(phrase('read.failed', {
+        name: file.name, reason: phrase(error.message),
+      }));
       return;
     }
     throw error;
@@ -186,7 +195,7 @@ function showProgress(done, total, speed) {
   if (speed) {
     parts.push(`${speed.toFixed(0)} MB/s`);
     const left = remaining((total - done) / 1048576 / speed);
-    if (left && done < total) parts.push(`${left} left`);
+    if (left && done < total) parts.push(phrase('progress.remaining', { time: left }));
   }
   el.progressText.textContent = parts.join('  -  ');
 }
@@ -340,12 +349,11 @@ function asText() {
 for (const [id, row] of rows) {
   row.querySelector('[data-slot="copy"]').addEventListener('click', async (event) => {
     event.preventDefault();
-    await copy(digests[id], 'One checksum, on your clipboard and nowhere else.');
+    await copy(digests[id], phrase('copy.one'));
   });
 }
 
-el.copyAll.addEventListener('click', () => copy(asText(),
-  'Copied. It is plain text, and it went to your clipboard only.'));
+el.copyAll.addEventListener('click', () => copy(asText(), phrase('copy.all')));
 
 async function copy(text, said) {
   if (!text) return;
@@ -353,8 +361,9 @@ async function copy(text, said) {
     await navigator.clipboard.writeText(text);
     el.copyStatus.textContent = said;
   } catch {
-    el.copyStatus.textContent = 'This browser would not let the page write to the clipboard. '
-      + 'Select the text and copy it, or use "Save them as a file".';
+    el.copyStatus.textContent = phrase('copy.failed', {
+      download: el.downloadChecksums.textContent.trim(),
+    });
   }
 }
 

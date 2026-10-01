@@ -1,0 +1,46 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>Abre el <a href="/es/comprimir-video/">compresor de video</a>, arrastra el archivo y pulsa el límite que te hayan indicado: 8 MB, 16, 25, 50 o 100. También puedes escribir otro número. La línea bajo el campo explica qué permite ese tamaño: las dimensiones y la tasa de bits que caben según la duración. Pulsa el botón y el dispositivo codificará el video, medirá el resultado y volverá a abrirlo para comprobar que conserva la duración. No se sube nada.</p>
+    <p>El resto de esta guía explica qué acabas de sacrificar. «Comprimir» un archivo zip no tiene el mismo costo que comprimir un video.</p>
+  </section>
+
+  <section>
+    <h2>En qué se gastan los megabytes</h2>
+    <p>Casi todo el tamaño de un video corresponde a la imagen. Un minuto a 1080p grabado con un teléfono ocupa entre 60 y 150 MB; el sonido ocupa alrededor de uno. El resto son treinta imágenes por segundo, descritas mediante los cambios respecto a la anterior. Por eso, el tamaño se aproxima a una multiplicación: los bits por segundo asignados a la imagen, la <em>tasa de bits</em>, por la duración.</p>
+    <p>Así se obtiene una tasa de bits a partir de un límite de tamaño. Se resta el espacio del sonido, que se copia tal como está, y un pequeño margen para el contenedor. Lo que queda se divide por la duración. Un límite de 25 MB para dos minutos deja unos 1,6 megabits por segundo para la imagen. Ese es todo el presupuesto; lo demás depende de él.</p>
+  </section>
+
+  <section>
+    <h2>Por qué se reducen las dimensiones antes de empeorar la imagen</h2>
+    <p>Una tasa de bits solo tiene sentido en relación con los píxeles que debe describir. Repartir 1,6 megabits por segundo entre los dos millones de píxeles de 1080p, treinta veces por segundo, deja muy poco para cada uno. El codificador acaba difuminando: los bordes pierden nitidez, las zonas lisas forman bloques y el movimiento se desdibuja. Esos mismos 1,6 megabits a 720p dan una imagen perfectamente aceptable; a 480p, una buena imagen.</p>
+    <p>Por eso la herramienta baja las dimensiones por pasos —1080p, 720p, 480p, 360p— hasta disponer de suficientes bits por fotograma. Lo calcula antes de empezar y te lo indica. Una imagen pequeña y nítida se ve mejor que otra grande y borrosa en cualquier pantalla. Los servicios que reciben videos hacen algo parecido sin explicarlo. La herramienta nunca aumenta las dimensiones por encima de las originales.</p>
+    <p>Puedes cambiar esa decisión. Una grabación de pantalla cuyo texto deba seguir leyéndose puede necesitar 1080p aunque pierda nitidez; un video que solo se verá en un teléfono puede bajar a 480p y dedicar más bits al movimiento.</p>
+  </section>
+
+  <section>
+    <h2>Qué se pierde y cómo perder menos</h2>
+    <p>Comprimir un video implica volver a codificarlo. La imagen se decodifica, se dibuja más pequeña y se escribe de nuevo con la nueva tasa de bits: queda una generación más lejos de la cámara. El sonido no se toca; sus muestras se copian exactamente. La pérdida visual depende del límite: reducir un video a la mitad suele costar poco; pasar de 900 MB a 25 MB elimina casi todos sus bits, y se nota.</p>
+    <ul>
+      <li><strong>Pide el tamaño que necesitas, no uno menor.</strong> Si el límite es 25 MB, usa 25 MB. Elegir 8 MB descarta dos tercios de la información de imagen sin necesidad.</li>
+      <li><strong>Recorta primero.</strong> La duración es la otra mitad de la multiplicación. Diez segundos que sobran consumen bits que podrían repartirse entre los segundos útiles. El <a href="/es/guias/cortar-un-video/">recortador de video</a> corta sin volver a codificar; úsalo antes de comprimir.</li>
+      <li><strong>Quita el sonido si no importa.</strong> Un minuto de audio estéreo ocupa alrededor de un megabyte. En un video corto con un límite ajustado, ese megabyte puede marcar la diferencia entre una imagen nítida y una borrosa.</li>
+      <li><strong>Conserva el original.</strong> No se puede recuperar lo perdido al comprimir. Comprime una copia, envía esa copia y guarda el archivo de la cámara.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Lo extraño es tener que subirlo</h2>
+    <p>Piensa en lo que pide un compresor en línea: subir el archivo que era demasiado grande para subirlo. Envías los 900 MB para recibir 25 MB. En muchas conexiones domésticas, la subida tarda más que la codificación. Después quedan las preguntas que plantean otras guías de este sitio: qué guardan, durante cuánto tiempo y quién puede verlo. Si el video muestra a tus hijos o el interior de tu casa, no son preguntas menores.</p>
+    <p>No hace falta nada de eso. Los navegadores recientes incluyen los mismos códecs de video que un teléfono, y <a href="/es/comprimir-video/">esta herramienta</a> los utiliza. Lee el archivo del disco por partes, decodifica la imagen, la reduce y la vuelve a codificar en tu dispositivo. El resultado queda en memoria hasta que lo guardas. La política de seguridad de la página enumera las direcciones que puede contactar, y ninguna pertenece a este sitio. Sigue funcionando sin conexión. Para comprobarlo, desconecta la red y comprime el video.</p>
+    <p>La guía sobre <a href="/es/guias/es-seguro-subir-archivos/">si es seguro subir archivos</a> desarrolla esta cuestión con más detalle.</p>
+  </section>
+
+  <section>
+    <h2>Qué comprueba la herramienta antes de entregar el archivo</h2>
+    <p>Un codificador se acerca a la tasa de bits pedida, pero no la clava. Por eso se solicita un tamaño algo menor y se mide el resultado. Si supera el límite, se ajusta la tasa según la diferencia y se vuelve a codificar; la página avisa cuando ocurre. Después se abre el archivo terminado en el dispositivo y se comprueba que conserva la duración. Perder el último segundo o el sonido también produciría un archivo más pequeño; volver a leer el resultado permite distinguirlo. Puedes reproducirlo bajo la descarga antes de enviarlo.</p>
+  </section>
+
+  <section>
+    <h2>Qué formatos escribe y cuáles lee</h2>
+    <p>Escribe MP4 con video H.264, la combinación que reproducen teléfonos, navegadores, aplicaciones de mensajería y clientes de correo. Esa compatibilidad es lo que necesita un archivo que se quiere enviar. No escribe WebM, HEVC ni AV1: ocupan menos con la misma calidad, pero muchas personas no podrían abrirlos. Lee MP4 y MOV, habituales en teléfonos, cámaras y grabaciones de pantalla, siempre que el navegador pueda decodificar el códec interior. Los videos HEVC de iPhone se abren en la mayoría de los dispositivos. Todavía no lee WebM, MKV ni AVI; la página lo indica al encontrarlos.</p>
+  </section>

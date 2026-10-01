@@ -1,0 +1,186 @@
+<main id="main">
+
+  <section class="card">
+    <h2><span class="step">1</span> Escolha o PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+
+    <p id="unlock-hint" class="field-note" hidden>Este documento está protegido. Remova a proteção primeiro com o <a href="../desbloquear-pdf/">desbloqueador de PDF</a>, neste navegador. Traga a cópia desbloqueada para receber a marca e, se quiser, use <a href="../proteger-pdf/">proteger PDF</a> para colocar a senha novamente.</p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> Escolha o texto e a aparência da marca</h2>
+
+    <label class="field" for="words"><span>Texto da marca</span> <span class="field-note">Para quem é a cópia e a data. O navegador desenha as palavras: qualquer idioma que você consiga digitar pode aparecer na marca.</span></label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="Uso exclusivo do Banco Acme &middot; 12 de setembro de 2026">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>Tamanho</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">Pequena</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">Médio</button>
+            <button type="button" class="chip" data-size="large">Grande</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Ângulo</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">Diagonal</button>
+            <button type="button" class="chip" data-diagonal="no">Horizontal</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Posição</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">Uma vez, no centro</button>
+            <button type="button" class="chip" data-tiled="yes">Repetida pela página</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Cor</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">Cinza</button>
+            <button type="button" class="chip" data-colour="red">Vermelho</button>
+            <button type="button" class="chip" data-colour="blue">Azul</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity"><span>Opacidade</span> <span class="field-note"><span id="opacity-value">30</span>% de opacidade. Clara o suficiente para ler por baixo, escura o suficiente para aparecer numa fotocópia.</span></label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check"><input type="checkbox" id="first-only"> <span><strong>Somente a primeira página</strong> <span class="check-note">Sem esta opção, todas as páginas recebem a marca.</span></span></label>
+      </div>
+
+
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">A marca aparece numa página em branco no formato da primeira página do arquivo, exatamente onde será gravada. O conteúdo original não é desenhado: este site não inclui um renderizador de PDF.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Aplique a marca</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Adicionar marca d’água</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Baixar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">O botão fica disponível quando há um documento escolhido e texto na marca.</span>
+    <span data-phrase="note.repaired">A tabela de referências cruzadas deste arquivo não batia com o conteúdo dele, então
+      ele foi lido procurando os objetos um a um. Isso é um conserto, e deu certo, mas
+      confira o resultado antes de mandar para qualquer lugar.</span>
+    <span data-phrase="note.incremental">Este documento já foi editado e salvo novamente. Ele contém cópias antigas de objetos que não são mais usadas; elas não serão incluídas no resultado.</span>
+    <span data-phrase="note.pages.one">1 página, {size}.</span>
+    <span data-phrase="note.pages.many">{n} páginas, {size}.</span>
+    <span data-phrase="read.notpdf">Isso não é um PDF. Esta ferramenta só trabalha com arquivos PDF.</span>
+    <span data-phrase="read.encrypted">Este PDF está criptografado.</span>
+    <span data-phrase="read.nocatalogue">O arquivo não contém catálogo de documento. Ele não é um PDF ou está danificado além do que esta ferramenta consegue reparar; não há conteúdo para marcar.</span>
+    <span data-phrase="read.noheader">Isto não começa como um PDF: não tem cabeçalho %PDF-.</span>
+    <span data-phrase="read.nopages">Este documento não tem páginas para marcar.</span>
+    <span data-phrase="read.failed">Este PDF não pôde ser lido: {detail}</span>
+    <span data-phrase="pdf.flate">um fluxo Flate não descomprimiu ({detail})</span>
+    <span data-phrase="pdf.nocompression">este navegador não tem CompressionStream</span>
+    <span data-phrase="pdf.lzw">um fluxo LZW começa com um código sem definição</span>
+    <span data-phrase="pdf.cryptfilter">este fluxo está criptografado</span>
+    <span data-phrase="pdf.unknownfilter">um filtro desconhecido, /{name}</span>
+    <span data-phrase="pdf.deep">aninhado fundo demais</span>
+    <span data-phrase="pdf.short">passou do fim</span>
+    <span data-phrase="pdf.unexpected">inesperado {found} em {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">byte inesperado 0x{hex} em {at}</span>
+    <span data-phrase="pdf.noendstream">um fluxo sem endstream</span>
+    <span data-phrase="pdf.noobj">sem a palavra-chave obj em {at}</span>
+    <span data-phrase="pdf.nostartxref">sem startxref</span>
+    <span data-phrase="pdf.noxref">não é uma seção xref</span>
+    <span data-phrase="pdf.now">um fluxo xref sem /W</span>
+    <span data-phrase="pdf.zerowidth">um fluxo xref com campos de largura zero</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="stage.drawing">Desenhando a marca</span>
+    <span data-phrase="stage.writing">Gravando o documento com a marca nas páginas</span>
+    <span data-phrase="stage.checking">Abrindo novamente para conferir</span>
+    <span data-phrase="run.cancelled">Cancelado. Nada foi alterado; aperte o botão para começar novamente.</span>
+    <span data-phrase="result.ready">{size} &mdash; com marca d’água.</span>
+    <span data-phrase="result.sub">Todas as páginas, fontes e imagens foram preservadas, com a marca desenhada por cima. Guarde também o original.</span>
+    <span data-phrase="check.passed">Conferido: {found}</span>
+    <span data-phrase="check.failed">O resultado não passou na verificação: {found}. Guarde o original.</span>
+    <span data-phrase="check.ok.all">reaberto na memória: todas as {pages} receberam a marca.</span>
+    <span data-phrase="check.ok.first">reaberto na memória: a primeira das {pages} recebeu a marca, conforme solicitado.</span>
+    <span data-phrase="check.ok.single">reaberto na memória: a única página recebeu a marca.</span>
+    <span data-phrase="check.pages">o arquivo pronto tem {pages} páginas, em vez de {expected}</span>
+    <span data-phrase="check.missing">a página {n} do arquivo pronto não contém a marca</span>
+    <span data-phrase="check.reopen">não foi possível reabrir o arquivo pronto ({detail})</span>
+    <span data-phrase="facts.words">Texto da marca: &ldquo;{words}&rdquo;.</span>
+    <span data-phrase="facts.placement.once">Uma vez em cada página, {size}, {angle}, com {opacity}% de opacidade.</span>
+    <span data-phrase="facts.placement.tiled">Repetida {n} vezes em cada página, {size}, {angle}, com {opacity}% de opacidade.</span>
+    <span data-phrase="facts.firstonly">Apenas a primeira página recebeu a marca; as outras {n} foram preservadas.</span>
+    <span data-phrase="facts.picture">As palavras são uma imagem: aparecem em qualquer leitor, mas não podem ser selecionadas nem pesquisadas. Um editor de PDF pode remover a marca. Ela identifica o destino da cópia, sem bloquear o documento.</span>
+    <span data-phrase="facts.signature">Este documento tinha assinatura digital. Regravá-lo invalida qualquer assinatura, então a cópia gerada não está assinada. O original continua sendo a cópia assinada.</span>
+    <span data-phrase="facts.incremental">As cópias antigas e substituídas de objetos de edições anteriores não foram
+      copiadas.</span>
+    <span data-phrase="facts.repaired">A tabela de referências cruzadas do original estava quebrada e teve de ser refeita
+      vasculhando o arquivo. Confira este arquivo antes de passar adiante.</span>
+    <span data-phrase="size.small">pequena</span>
+    <span data-phrase="size.medium">média</span>
+    <span data-phrase="size.large">grande</span>
+    <span data-phrase="angle.diagonal">na diagonal</span>
+    <span data-phrase="angle.flat">na horizontal</span>
+    <span data-phrase="net.clean">O seu documento não foi a lugar nenhum. {total}
+      arquivos carregados, todos do próprio site. {platform}</span>
+    <span data-phrase="net.dirty">algo contatou {hosts}, o que esta ferramenta nunca faz. Vale investigar. {platform}</span>
+    <span data-phrase="net.platform.one">Os scripts do próprio site para
+      publicidade, medição e o botão de doação vieram de {hosts} host; nenhum
+      deles recebeu um documento ou um byte de um.</span>
+    <span data-phrase="net.platform.many">Os scripts do próprio site para
+      publicidade, medição e o botão de doação vieram de {hosts} hosts; nenhum
+      deles recebeu um documento ou um byte de um.</span>
+  </div>
+</main>

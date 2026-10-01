@@ -3,7 +3,7 @@
 import { phrase, fill, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { DISPOSALS, NotAGif, frameData, parseGif } from './gif.js';
+import { DISPOSALS, NotAGif, extensionName, frameData, parseGif } from './gif.js';
 import { lzwDecode } from './lzw.js';
 import { Compositor, duration, isFullCanvas, paintFrame } from './frames.js';
 import { budget, distinctColors, paletteWaste } from './budget.js';
@@ -589,9 +589,9 @@ function renderExtras(gif) {
 
     const head = document.createElement('p');
     head.className = 'extra-head';
-    // textContent, and deliberately: `name` is eight bytes copied out of
-    // somebody else's file.
-    head.textContent = `${extension.name} — ${fileSize(extension.bytes)}`;
+    // Application names are bytes from the file; the other block headings
+    // belong to the page. Both stay textContent, never parsed as markup.
+    head.textContent = `${extensionName(extension, phrase)} — ${fileSize(extension.bytes)}`;
     item.append(head);
 
     const what = document.createElement('p');
@@ -618,8 +618,8 @@ function describe(extension) {
       ? phrase('block.loop.forever')
       : phrase('block.loop.times', { times: plural(extension.loop, 'n.time', phrase) });
   }
-  if (extension.name.startsWith('XMP')) return phrase('block.xmp');
-  if (extension.name.startsWith('ICCRGBG1')) return phrase('block.icc');
+  if (extension.kind === 'application' && extension.name.startsWith('XMP')) return phrase('block.xmp');
+  if (extension.kind === 'application' && extension.name.startsWith('ICCRGBG1')) return phrase('block.icc');
   if (extension.kind === 'plain-text') return phrase('block.plaintext');
   return phrase('block.application');
 }

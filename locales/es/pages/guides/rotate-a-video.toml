@@ -1,0 +1,11 @@
+# Spanish translation of the guide; structure remains in the English source.
+
+nav = "Girar un video"
+title = "Cómo girar un video sin perder calidad"
+description = "Por qué un video del teléfono se ve de lado, qué hacen los nueve números de su encabezado, cuándo basta con cambiarlos y cuándo conviene girar los píxeles, sin subir el archivo."
+heading = "Cómo girar un video sin perder calidad"
+lede = "Un video que se ve de lado puede tener sus fotogramas intactos: el teléfono escribió una indicación en el encabezado y algún programa la ignora. Aquí explicamos qué dice, por qué corregirla debería tardar segundos y cuándo conviene girar la propia imagen."
+updated = "13 de septiembre de 2026"
+og_title = "Cómo girar un video sin perder calidad"
+og_description = "Un video de lado puede necesitar cambiar nueve números del encabezado. Qué hacen, cuándo conviene girar los píxeles y cómo hacerlo en el navegador sin subir el archivo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

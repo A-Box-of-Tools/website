@@ -1,0 +1,125 @@
+name = "GIF a MP4"
+heading = "GIF&nbsp;a&nbsp;MP4 <span class=\"h1-kw\">&mdash; la misma animación con una décima parte del tamaño</span>"
+tagline = "Cada fotograma conserva su duración, en H.264 dentro de un MP4. Se convierte en tu dispositivo, sin subidas."
+title = "Convertir GIF a MP4 &mdash; gratis, en el navegador y sin subir nada"
+description = "Convierte un GIF animado a MP4 en el navegador, con mucho menos tamaño. Conserva cada fotograma y su duración, sin ajustar la animación a una frecuencia fija. H.264 en MP4, sin subidas."
+og_title = "Convierte GIF a MP4 sin subir el archivo"
+og_description = "La misma animación en H.264 y MP4, normalmente con una décima parte del tamaño y los tiempos de cada fotograma intactos. Todo ocurre en el navegador."
+og_image_alt = "Convertir GIF a MP4 en el navegador, sin subirlo"
+pledge = "El GIF se decodifica, dibuja fotograma a fotograma, codifica y escribe en un MP4 en la memoria del dispositivo. Lo hacen el codificador del navegador y el código servido desde esta página. No hay funciones de subida ni un servidor que reciba el archivo."
+live_hint = "Abre las herramientas de desarrollo, mira Red y convierte un GIF. Ninguna petición lleva el archivo, un fotograma ni su nombre. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/plan.js</code> para convertir los retardos del GIF en tiempos de vídeo, <code>src/encode.js</code> para dibujar y codificar, y <code>src/shared/gif-decode.js</code> para leer. Ninguno accede a la red, ni el escritor que los acompaña."
+howto_heading = "Cómo convertir GIF a MP4"
+card = "La misma animación en MP4, normalmente con una décima parte del tamaño. Cada fotograma conserva su duración y la imagen su tamaño, sin ajustar la animación a una frecuencia fija. Se codifica en tu dispositivo."
+
+[words]
+plural = "GIF"
+choose = "un GIF"
+analytics_extra = ", ni nada sobre su contenido"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "Por qué MP4 ocupa tanto menos."
+body = "GIF guarda cada fotograma como una imagen de hasta 256 colores. Un códec de vídeo como H.264 aprovecha los cambios entre fotogramas y admite color completo. La animación suele ocupar una décima parte o menos. Por eso muchas plataformas y aplicaciones rechazan GIF grandes o los convierten a MP4 al recibirlos: cuando el GIF pesa demasiado, suele servir mejor un MP4."
+
+[[privacy]]
+title = "No hay que esperar a subir el archivo."
+body = "Un servicio puede pedirte subir 30 MB para devolverte 3 MB, además de conservar una copia. Aquí el GIF se lee con código local y el MP4 lo escribe el codificador del navegador. Los bytes solo pasan del disco a la memoria y vuelven al disco. La <code>Content-Security-Policy</code> enumera los destinos permitidos; ninguno pertenece al sitio. Funciona sin red."
+
+[[privacy]]
+title = "Se conserva la duración de cada fotograma."
+body = "GIF no tiene frecuencia fija: cada fotograma indica cuánto dura. Una presentación puede mantener una foto dos segundos y después mostrar diez rápidamente. Ajustarla a una frecuencia fija puede duplicar o eliminar fotogramas. Aquí cada fotograma se convierte en uno de vídeo con su duración original. Solo se aplica el ajuste habitual de los navegadores: los retardos inferiores a dos centésimas se reproducen como diez centésimas. El resultado se reabre para contar los fotogramas y comprobar la duración."
+
+[[privacy]]
+title = "La transparencia y la repetición cambian."
+body = "Un vídeo es un rectángulo opaco: la transparencia del GIF se rellena con el color elegido, blanco por defecto. El campo solo aparece si hace falta. Además, MP4 no guarda la orden de repetirse que sí lleva GIF; decide el reproductor. Las aplicaciones de chat y redes suelen repetir clips cortos. La vista previa se repite para revisar la unión."
+
+[[privacy]]
+title = "Tiempo y memoria necesarios."
+body = "Con codificador de hardware, presente en muchos dispositivos, un GIF normal tarda unos segundos; sin él puede tardar más. Primero se decodifican todos los fotogramas en memoria. Unos pocos megabytes pueden expandirse a un byte por píxel y fotograma. La página se detiene al llegar a medio gigabyte y avisa para evitar bloquear la pestaña. Siempre puedes cancelar."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben el GIF, fotogramas, nombre, tamaño ni duración. Todo el código que lee, codifica y escribe se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón de donación usa un script de cdnjs.buymeacoffee.com y Google Fonts. Es solo un enlace: no registra la visita ni recibe información tuya o de tus GIF. Solo al pulsarlo abres un sitio ajeno."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y la página sigue funcionando. Una herramienta que enviara el GIF a un servidor no podría hacerlo."
+
+[[howto]]
+title = "Elige el GIF."
+body = "Uno cada vez. El navegador lo lee del disco y muestra su peso, número de fotogramas, duración y dimensiones."
+
+[[howto]]
+title = "Revisa qué se generará."
+body = "Una línea indica las dimensiones, los fotogramas y sus tiempos, la duración y la tasa de bits. Solo hay que elegir un color si el GIF tiene partes transparentes."
+
+[[howto]]
+title = "Convierte y lee la comprobación."
+body = "Se dibuja y codifica cada fotograma con una barra de progreso. Después se reabre el archivo para comprobar que están todos y que dura lo mismo. Se reproduce en bucle desde la memoria para revisar la unión."
+
+[[faq]]
+q = "¿Por qué pesa mucho menos el MP4?"
+a = "GIF guarda imágenes de hasta 256 colores; H.264 aprovecha los cambios entre fotogramas y admite color completo. La misma animación suele ocupar una décima parte o menos. Un GIF diminuto o casi estático puede producir un MP4 mayor; la página lo avisa."
+
+[[faq]]
+q = "¿Conserva los tiempos de la animación?"
+a = "Sí. Cada fotograma conserva su duración; no se duplica, elimina ni ajusta a una frecuencia fija. Igual que un navegador, los retardos menores de dos centésimas se reproducen como diez centésimas. El vídeo dura lo mismo que el GIF en el navegador. Se reabre el resultado para comprobar duración y cantidad de fotogramas."
+
+[[faq]]
+q = "¿Se repetirá en bucle?"
+a = "Depende del reproductor. GIF guarda una orden de repetición; MP4 no. Las aplicaciones de chat y redes suelen repetir vídeos cortos, y la vista previa de aquí también. Un reproductor convencional suele mostrarlo una vez."
+
+[[faq]]
+q = "¿Qué pasa con las partes transparentes?"
+a = "Se rellenan con un color porque el vídeo es opaco. Si hay transparencia aparece un selector, blanco por defecto; si no, se oculta. El color se dibuja detrás de cada fotograma antes de codificarlo."
+
+[[faq]]
+q = "¿Cambia las dimensiones?"
+a = "Solo cuando hace falta. H.264 necesita dimensiones pares: si un lado es impar, se añade una línea del color de fondo sin remuestrear. Si el GIF supera 3840 píxeles de ancho, se reduce hasta ese límite para que los codificadores lo admitan. La página muestra el tamaño previsto antes de empezar."
+
+[[faq]]
+q = "¿Cuánto tarda?"
+a = "Un GIF normal tarda unos segundos con codificador de hardware, más sin él. Los fotogramas se guardan primero en memoria; al llegar a medio gigabyte se detiene con un aviso. La barra muestra el fotograma actual. Cancelar detiene el proceso y no escribe el resultado."
+
+[[faq]]
+q = "¿Se suben mis GIF?"
+a = "No. El navegador lee, decodifica, codifica y escribe en tu dispositivo. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Desconéctate y usa la página para comprobarlo."
+
+[[faq]]
+q = "¿Funciona en el móvil?"
+a = "Sí, si el navegador del teléfono puede codificar vídeo. Su codificador de hardware suele ser rápido. La limitación principal es la memoria: un GIF muy largo puede necesitar más de la disponible."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "La página detiene la lectura al llegar a medio gigabyte de fotogramas decodificados y lo avisa. Es gratis, sin cuenta, inicio de sesión ni prueba. La publicidad paga el sitio y no recibe datos sobre tus GIF."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando, algo que un conversor que enviara el GIF a un servidor no podría hacer."
+
+[schema]
+description = "Convierte GIF animados a MP4 en el navegador. Conserva los fotogramas, sus retardos y el tamaño de imagen. H.264 en MP4 ocupa una fracción del tamaño del GIF. Sin subir nada."
+features = ["Lee GIF animados y respeta sus reglas de composición y transparencia", "Conserva cada fotograma y retardo, sin ajustar a una frecuencia fija", "Pregunta el color de relleno solo si hay transparencia", "Genera H.264 en MP4, normalmente con una décima parte del tamaño", "Reabre el resultado, comprueba fotogramas y duración y lo reproduce en bucle desde memoria", "Funciona sin conexión; sin subidas, sin cuenta"]
+
+[picker]
+title = "Suelta aquí un GIF"
+hint = "o haz clic para elegir: un GIF animado cada vez"

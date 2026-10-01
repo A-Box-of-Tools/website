@@ -1,0 +1,22 @@
+#
+# Guía: comparar dos archivos JSON - Spanish.
+#
+
+nav = "Comparar dos archivos JSON"
+title = "Comparar dos archivos JSON &mdash; sin el ruido del formato"
+description = "Formatea los dos archivos igual, ordena las claves y compáralos después. Por qué un diff de JSON en crudo es casi todo ruido, cómo canonizar los dos lados en el navegador, y qué sobrevive hasta el parche."
+
+heading = "Cómo comparar dos archivos JSON"
+lede = """
+    Compara dos archivos JSON tal como vienen y casi todo lo que se enciende
+    no es nada: sangría, saltos de línea, claves en otro orden. El arreglo no
+    es un diff más listo &mdash; es pasar antes los dos archivos por el mismo
+    formateador, para que solo queden las diferencias reales. Los dos pasos
+    corren en tu navegador, que es donde deben estar los archivos de
+    configuración con secretos dentro."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Compara dos archivos JSON sin el ruido del formato"
+og_description = "Canoniza los dos archivos, misma sangría, claves ordenadas, y compáralos después. Lo que se enciende entonces es real, y nada se subió."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

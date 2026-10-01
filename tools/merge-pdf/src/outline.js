@@ -54,7 +54,7 @@ export function readOutline(doc, named) {
       if (!(item instanceof Map)) break;
 
       out.push({
-        title: decodeText(doc.resolve(item.get('Title'))) || 'Untitled',
+        title: decodeText(doc.resolve(item.get('Title'))),
         ...place(doc, item, named),
         kids: chain(item.get('First'), depth + 1),
       });
@@ -116,10 +116,14 @@ export function pruneOutline(nodes, locate) {
  * well. Getting one of those wrong does not produce an error anywhere - it
  * produces a bookmarks panel that is missing everything after the mistake.
  *
+ * Empty source titles stay empty until here, so the translated fallback
+ * cannot replace a real bookmark called "Untitled".
+ *
  * @param {{reserve: () => number, put: (num: number, value: any) => Ref}} build
  * @param {any[]} nodes
+ * @param {(key: string) => string} t the caller's phrase resolver
  */
-export function writeOutline(build, nodes) {
+export function writeOutline(build, nodes, t) {
   if (!nodes.length) return null;
 
   const rootNum = build.reserve();
@@ -130,7 +134,7 @@ export function writeOutline(build, nodes) {
 
     items.forEach((item, index) => {
       const dict = new Map([
-        ['Title', textString(item.title)],
+        ['Title', textString(item.title || t('bookmark.untitled'))],
         ['Parent', parentRef],
       ]);
 

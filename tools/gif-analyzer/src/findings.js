@@ -180,11 +180,11 @@ export function findings(gif, stats = {}) {
     if (extension.kind === 'comment') {
       add('note', 'find.comment.title', 'find.comment.body',
         { bytes: bytes(extension.dataBytes) });
-    } else if (extension.name.startsWith('XMP')) {
+    } else if (extension.kind === 'application' && extension.name.startsWith('XMP')) {
       const level = extension.bytes > gif.size * 0.05 ? 'warn' : 'note';
       add(level, 'find.xmp.title', 'find.xmp.body',
         { bytes: bytes(extension.bytes), share: share(extension.bytes, gif.size) });
-    } else if (extension.name.startsWith('ICCRGBG1')) {
+    } else if (extension.kind === 'application' && extension.name.startsWith('ICCRGBG1')) {
       add('note', 'find.icc.title', 'find.icc.body', { bytes: bytes(extension.bytes) });
     } else if (extension.kind === 'plain-text') {
       add('note', 'find.plaintext.title', 'find.plaintext.body');

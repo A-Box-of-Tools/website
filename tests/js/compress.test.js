@@ -229,24 +229,29 @@ test('parseImageUrl: surrounding whitespace is forgiven', () => {
 });
 
 test('parseImageUrl: anything that is not a web address is refused', () => {
-  assert.throws(() => parseImageUrl('not a url'), /Not a valid web address/);
-  assert.throws(() => parseImageUrl(''), /Not a valid web address/);
-  assert.throws(() => parseImageUrl('example.test/a.jpg'), /Not a valid web address/);
+  assert.throws(() => parseImageUrl('not a url'), /url\.invalid/);
+  assert.throws(() => parseImageUrl(''), /url\.invalid/);
+  assert.throws(() => parseImageUrl('example.test/a.jpg'), /url\.invalid/);
 });
 
 test('parseImageUrl: other schemes are named in the refusal', () => {
   // file:, data: and javascript: all have to be turned away by scheme rather
   // than by guesswork.
   for (const raw of ['file:///etc/passwd', 'data:image/png;base64,AAA', 'ftp://x.test/a.jpg']) {
-    assert.throws(() => parseImageUrl(raw), /Only http and https/, raw);
+    assert.throws(() => parseImageUrl(raw), (error) => {
+      assert.equal(error.message, 'url.protocol');
+      assert.equal(error.values.protocol, new URL(raw).protocol);
+      return true;
+    }, raw);
   }
 });
 
-test('parseImageUrl: the refusal message is short enough to show', () => {
+test('parseImageUrl: the invalid address is short enough to show in a translated refusal', () => {
   try {
     parseImageUrl('x'.repeat(500));
     assert.fail('should have thrown');
   } catch (err) {
-    assert.ok(err.message.length < 100);
+    assert.equal(err.message, 'url.invalid');
+    assert.equal(err.values.address.length, 60);
   }
 });

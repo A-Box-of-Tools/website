@@ -157,7 +157,7 @@ export async function cropByRecording({
     recorder.ondataavailable = (event) => { if (event.data.size) parts.push(event.data); };
     const finished = new Promise((resolve, reject) => {
       recorder.onstop = resolve;
-      recorder.onerror = (event) => reject(event.error ?? new Error('Recording failed.'));
+      recorder.onerror = (event) => reject(new Error('record.failed', { cause: event.error }));
     });
 
     const duration = Number.isFinite(video.duration) ? video.duration : 0;

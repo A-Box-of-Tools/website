@@ -1,0 +1,231 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige el PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Elegir otro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where a password can be taken off, shown only when one is what stopped
+      the file being read. Stamping a document means opening it, and this
+      page does not ask for passwords; the page that takes one off is next
+      door, and the one that puts it back is next door to that.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      El documento está protegido. Retira primero la protección en este navegador con <a href="/es/desbloquear-pdf/">Desbloquear PDF</a> y vuelve con la copia abierta. Después puedes añadir contraseña con
+      <a href="/es/proteger-pdf/">Proteger PDF</a> si lo necesitas.
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the stamp.
+
+    The words first, because they are the whole point; then how the stamp
+    sits, with a preview beside the controls. The preview is a blank page the
+    shape of the first page with the placement drawn on it by the same
+    arithmetic that writes the file - never the document itself, which this
+    site cannot draw and says so.
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> Elige el texto y la posición de la marca</h2>
+
+    <label class="field" for="words">
+      <span>Texto</span>
+      <span class="field-note">
+        Destinatario y fecha. Admite cualquier idioma que el navegador pueda dibujar.
+      </span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="Solo para Banco Acme &middot; 12 de septiembre de 2026">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>Tamaño</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">Pequeño</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">Medio</button>
+            <button type="button" class="chip" data-size="large">Grande</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Ángulo</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">Diagonal</button>
+            <button type="button" class="chip" data-diagonal="no">Horizontal</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Distribución</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">Una vez, en el centro</button>
+            <button type="button" class="chip" data-tiled="yes">Repetida por la página</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Color</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">Gris</button>
+            <button type="button" class="chip" data-colour="red">Rojo</button>
+            <button type="button" class="chip" data-colour="blue">Azul</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>Opacidad</span>
+          <span class="field-note">
+            <span id="opacity-value">30</span>% de opacidad. Lo bastante tenue para leer debajo y visible para sobrevivir a una fotocopia.
+          </span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>Solo la primera página</strong>
+            <span class="check-note">Si no se marca, se aplica a todas las páginas.</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        The preview. A blank page the size and shape of the first page with
+        the stamp laid on it; the words are drawn live so the visitor sees
+        their own text, not a placeholder. Described for a screen reader by
+        the sentence below it, which says what is and is not shown.
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">
+          Una hoja en blanco con las dimensiones de tu primera página muestra la posición exacta de la marca. No representa el contenido del PDF: este sitio no incluye un motor para dibujarlo.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Añadir la marca</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Marcar el documento</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Descargar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">Se activa cuando hay un documento y texto para la marca.</span>
+    <span data-phrase="note.repaired">La tabla de referencias cruzadas de este archivo no cuadraba con su contenido, así
+      que se leyó buscando los objetos uno a uno. Eso es una reparación, y ha funcionado,
+      pero comprueba el resultado antes de mandarlo a ningún sitio.</span>
+    <span data-phrase="note.incremental">El documento se ha editado y guardado varias veces. Contiene objetos antiguos que ya no se usan y se omitirán del resultado.</span>
+    <span data-phrase="note.pages.one">1 página, {size}.</span>
+    <span data-phrase="note.pages.many">{n} páginas, {size}.</span>
+    <span data-phrase="read.notpdf">Eso no es un PDF. Esta herramienta solo trabaja con archivos PDF.</span>
+    <span data-phrase="read.encrypted">Este PDF está cifrado.</span>
+    <span data-phrase="read.nocatalogue">No hay catálogo del documento. No es PDF o está demasiado dañado para repararlo aquí.</span>
+    <span data-phrase="read.noheader">Esto no empieza como un PDF: no hay cabecera %PDF-.</span>
+    <span data-phrase="read.nopages">El documento no tiene páginas que marcar.</span>
+    <span data-phrase="read.failed">Este PDF no se ha podido leer: {detail}</span>
+    <span data-phrase="pdf.flate">un flujo Flate no se pudo descomprimir ({detail})</span>
+    <span data-phrase="pdf.nocompression">este navegador no tiene CompressionStream</span>
+    <span data-phrase="pdf.lzw">un flujo LZW empieza con un código sin definir</span>
+    <span data-phrase="pdf.cryptfilter">este flujo está cifrado</span>
+    <span data-phrase="pdf.unknownfilter">un filtro desconocido, /{name}</span>
+    <span data-phrase="pdf.deep">anidado demasiado hondo</span>
+    <span data-phrase="pdf.short">se pasó del final</span>
+    <span data-phrase="pdf.unexpected">inesperado {found} en {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">byte inesperado 0x{hex} en {at}</span>
+    <span data-phrase="pdf.noendstream">un flujo sin endstream</span>
+    <span data-phrase="pdf.noobj">no hay palabra clave obj en {at}</span>
+    <span data-phrase="pdf.nostartxref">no hay startxref</span>
+    <span data-phrase="pdf.noxref">no es una sección xref</span>
+    <span data-phrase="pdf.now">un flujo xref sin /W</span>
+    <span data-phrase="pdf.zerowidth">un flujo xref con campos de anchura cero</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="stage.drawing">Dibujando la marca</span>
+    <span data-phrase="stage.writing">Escribiendo el documento con la marca en las páginas</span>
+    <span data-phrase="stage.checking">Reabriendo para comprobar</span>
+    <span data-phrase="run.cancelled">Cancelado. No se cambió nada. Pulsa el botón para empezar de nuevo.</span>
+    <span data-phrase="result.ready">{size}, con marca de agua.</span>
+    <span data-phrase="result.sub">Se conservan páginas, fuentes e imágenes, con la marca superpuesta. Guarda también el original.</span>
+    <span data-phrase="check.passed">Comprobado: {found}</span>
+    <span data-phrase="check.failed">Esta pasada no ha salido bien &mdash; {found}. Quédate con el original.</span>
+    <span data-phrase="check.ok.all">se ha reabierto desde memoria y sus {pages} llevan la marca.</span>
+    <span data-phrase="check.ok.first">se ha reabierto desde memoria y la primera de sus {pages} lleva la marca, como pediste.</span>
+    <span data-phrase="check.ok.single">se ha reabierto desde memoria y su única página lleva la marca.</span>
+    <span data-phrase="check.pages">el resultado tiene {pages} páginas en vez de {expected}</span>
+    <span data-phrase="check.missing">la página {n} del resultado no contiene la marca</span>
+    <span data-phrase="check.reopen">no se pudo reabrir el resultado ({detail})</span>
+    <span data-phrase="facts.words">La marca dice &ldquo;{words}&rdquo;.</span>
+    <span data-phrase="facts.placement.once">Una vez por página, tamaño {size}, {angle}, con opacidad del {opacity}%.</span>
+    <span data-phrase="facts.placement.tiled">Repetida {n} veces por página, tamaño {size}, {angle}, con opacidad del {opacity}%.</span>
+    <span data-phrase="facts.firstonly">Solo se marcó la primera página; las otras {n} siguen igual.</span>
+    <span data-phrase="facts.picture">El texto es una imagen visible en cualquier lector, no seleccionable ni buscable. Un editor puede retirar la marca: identifica el destino de la copia, pero no bloquea el documento.</span>
+    <span data-phrase="facts.signature">El documento tenía una firma digital. La reescritura la invalida en esta copia. Conserva el original, que sigue siendo el firmado.</span>
+    <span data-phrase="facts.incremental">Las copias viejas y sustituidas de objetos de ediciones anteriores no se han
+      copiado.</span>
+    <span data-phrase="facts.repaired">La tabla de referencias cruzadas del original estaba rota y hubo que reconstruirla
+      rastreando. Comprueba este archivo antes de pasarlo.</span>
+    <span data-phrase="size.small">pequeño</span>
+    <span data-phrase="size.medium">mediano</span>
+    <span data-phrase="size.large">grande</span>
+    <span data-phrase="angle.diagonal">en diagonal</span>
+    <span data-phrase="angle.flat">en horizontal</span>
+    <span data-phrase="net.clean">tu documento no ha ido a ninguna parte. {total}
+      archivos cargados, todos ellos de esta misma página. {platform}</span>
+    <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
+      herramienta no hace nunca. Vale la pena investigarlo. {platform}</span>
+    <span data-phrase="net.platform.one">Los scripts propios de la página para
+      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      host; a ninguno se le ha dado un documento ni un byte de uno.</span>
+    <span data-phrase="net.platform.many">Los scripts propios de la página para
+      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      hosts; a ninguno se le ha dado un documento ni un byte de uno.</span>
+  </div>
+</main>

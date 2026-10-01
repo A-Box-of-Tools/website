@@ -57,6 +57,21 @@ const MAX_ROWS = 4000;
 
 /* ------------------------------------------------------------------- input */
 
+// Textareas normalise CRLF to LF even when a file is assigned from script.
+// Keep the loaded string until the visitor edits that box, or downloading a
+// patch would silently change the file's line endings before comparing it.
+const sourceTexts = new WeakMap();
+
+function setText(box, text) {
+  box.value = text;
+  sourceTexts.set(box, { text, shown: box.value });
+}
+
+function sourceText(box) {
+  const source = sourceTexts.get(box);
+  return source && source.shown === box.value ? source.text : box.value;
+}
+
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
@@ -74,8 +89,8 @@ async function loadFiles(files) {
     // go into the boxes below and never anywhere else.
     const texts = await Promise.all(files.slice(0, 2).map((file) => file.text()));
     if (texts.length > 1) {
-      el.input.value = texts[0];
-      el.inputB.value = texts[1];
+      setText(el.input, texts[0]);
+      setText(el.inputB, texts[1]);
     } else if (!restoring && el.input.value.trim() && !el.inputB.value.trim()) {
       // One file dropped onto a comparison that already has an original fills
       // the empty side, which is the only thing it could sensibly mean.
@@ -85,9 +100,9 @@ async function loadFiles(files) {
       // already restored into that box is what it was read from - so the
       // empty side is not where it belongs, and putting it there turns one
       // document into two identical ones.
-      el.inputB.value = texts[0];
+      setText(el.inputB, texts[0]);
     } else {
-      el.input.value = texts[0];
+      setText(el.input, texts[0]);
     }
     updateCounts();
     run();
@@ -110,7 +125,11 @@ function schedule() {
 }
 
 for (const box of [el.input, el.inputB]) {
-  box.addEventListener('input', () => { updateCounts(); schedule(); });
+  box.addEventListener('input', () => {
+    sourceTexts.delete(box);
+    updateCounts();
+    schedule();
+  });
 }
 
 for (const control of [el.view, el.onlyChanges, el.ignoreWhitespace, el.ignoreCase,
@@ -119,24 +138,24 @@ for (const control of [el.view, el.onlyChanges, el.ignoreWhitespace, el.ignoreCa
 }
 
 el.swap.addEventListener('click', () => {
-  const held = el.input.value;
-  el.input.value = el.inputB.value;
-  el.inputB.value = held;
+  const held = sourceText(el.input);
+  setText(el.input, sourceText(el.inputB));
+  setText(el.inputB, held);
   updateCounts();
   run();
 });
 
 el.clear.addEventListener('click', () => {
-  el.input.value = '';
-  el.inputB.value = '';
+  setText(el.input, '');
+  setText(el.inputB, '');
   updateCounts();
   run();
   el.input.focus();
 });
 
 el.sample.addEventListener('click', () => {
-  el.input.value = SAMPLES.diff.a;
-  el.inputB.value = SAMPLES.diff.b;
+  setText(el.input, SAMPLES.diff.a);
+  setText(el.inputB, SAMPLES.diff.b);
   updateCounts();
   run();
 });
@@ -168,7 +187,7 @@ function run() {
   clearResult();
 
   try {
-    runDiff(el.input.value, el.inputB.value);
+    runDiff(sourceText(el.input), sourceText(el.inputB));
   } catch (error) {
     // The guards in diff.js turn a pathological comparison into a message
     // rather than a hang; anything else is a bug here and goes to the console
@@ -203,7 +222,7 @@ function runDiff(aText, bText) {
   el.diffView.replaceChildren(drawDiff(rows));
   el.diffView.classList.toggle('split', el.view.value === 'split');
 
-  const patch = formatUnified(ops, { aLabel: 'original', bLabel: 'changed' });
+  const patch = formatUnified(aText, bText, { aLabel: 'original', bLabel: 'changed' });
   result = { text: patch, name: 'changes.patch' };
   el.copy.disabled = patch === '';
   download.offer(patch, 'changes.patch');
@@ -212,7 +231,8 @@ function runDiff(aText, bText) {
     el.resultNote.textContent = phrase('result.identical');
     return;
   }
-  const changes = stats.added === 0 && stats.removed === 0
+  const ignored = options.ignoreWhitespace || options.ignoreCase || options.ignoreBlankLines;
+  const changes = stats.added === 0 && stats.removed === 0 && ignored && !stats.trailingDiffers
     ? phrase('result.ignored')
     : phrase('result.counts', {
       added: stats.added.toLocaleString(),
@@ -354,14 +374,20 @@ function side(text, words, where, marked) {
 
 el.copy.addEventListener('click', async () => {
   if (!result) return;
+  const text = result.text;
   try {
-    await navigator.clipboard.writeText(result.text);
+    await navigator.clipboard.writeText(text);
     el.copy.textContent = phrase('copy.done');
   } catch {
-    // Clipboard access can be refused outright, and there is nothing to fix.
-    // Selecting the view is a route that always works.
+    // The view can omit lines or draw both sides beside each other, so it is
+    // never the text a patch reader needs. If automatic copying is refused,
+    // select the actual patch instead and let the visitor copy that by hand.
+    const patch = document.createElement('pre');
+    patch.className = 'diff-patch';
+    patch.textContent = text;
+    el.diffView.replaceChildren(patch);
     const range = document.createRange();
-    range.selectNodeContents(el.diffView);
+    range.selectNodeContents(patch);
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);

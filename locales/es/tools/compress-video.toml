@@ -1,0 +1,137 @@
+name = "Compresor de vídeo"
+heading = "Comprimir&nbsp;vídeo <span class=\"h1-kw\">&mdash; hasta un tamaño que puedas enviar</span>"
+tagline = "Indica el tamaño máximo. La herramienta calcula los ajustes y mide el resultado antes de entregarlo."
+title = "Comprimir un vídeo a un tamaño objetivo &mdash; MP4 gratis y sin subidas"
+description = "Reduce un vídeo a menos de 8, 16, 25 o los megabytes que necesites en el navegador. Calcula dimensiones y tasa de bits, codifica y mide. No sube nada y copia el sonido intacto."
+og_title = "Comprime un vídeo hasta poder enviarlo, sin subirlo"
+og_description = "Un clip de 900 MB no necesita pasar por un servidor para reducirse. Indica el tamaño máximo y la herramienta calcula los ajustes en el navegador."
+og_image_alt = "Comprimir un vídeo en el navegador sin subirlo"
+pledge = "El vídeo se decodifica, reduce, vuelve a codificar y escribe en la memoria del dispositivo. Lo hacen los códecs del navegador y el código de esta página. No hay funciones de subida ni un servidor que lo reciba. No hace falta enviar un gigabyte para recibirlo más pequeño."
+live_hint = "Abre las herramientas de desarrollo, mira Red y comprime un vídeo. Ninguna petición lleva el archivo, un fotograma ni su nombre. O desconéctate y hazlo igualmente."
+read_first = ", <code>src/plan.js</code> para calcular dimensiones y tasa de bits a partir del objetivo, y <code>src/encode.js</code> para decodificar, dibujar y codificar mientras se copia el audio intacto. Ninguno accede a la red, ni el lector y el escritor."
+howto_heading = "Cómo comprimir un vídeo hasta poder enviarlo"
+card = "Indica el máximo: 8 MB, 25 MB o la mitad del tamaño actual. La herramienta elige dimensiones y tasa de bits, codifica la imagen en tu dispositivo, copia el sonido y mide el resultado antes de descargarlo."
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+analytics_extra = ", ni el tamaño que hayas pedido"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu dispositivo"
+
+[[privacy]]
+title = "No hay que esperar a subir el archivo."
+body = "Los vídeos suelen ser los archivos más grandes que enviamos. Subir 900 MB para recibir 25 MB puede tardar más que la compresión, además de entregar una copia. Aquí los códecs del navegador hacen el trabajo y los bytes solo pasan del disco a la memoria y vuelven al disco. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Funciona sin red."
+
+[[privacy]]
+title = "El punto de partida es el límite que necesitas cumplir."
+body = "Un chat, correo o formulario impone un máximo. Aquí introduces ese número y se calcula el resto: primero se reserva lo que ocupa el sonido y el contenedor; el espacio restante, dividido por la duración, da la tasa de bits de la imagen. Se reducen las dimensiones por tamaños habituales hasta dar suficientes bits a cada fotograma. Nunca se amplía. Los ajustes se muestran antes de empezar y puedes elegir otras dimensiones."
+
+[[privacy]]
+title = "Comprimir vídeo implica volver a codificar."
+body = "A diferencia de un ZIP, esta compresión tiene pérdida. La imagen se decodifica, reduce y codifica como H.264 con la tasa que permite el objetivo: otra generación desde la cámara. El sonido no se recodifica; se copia intacto. El resultado es MP4, por su amplia compatibilidad con teléfonos, navegadores y chats."
+
+[[privacy]]
+title = "Se mide el resultado y se ajusta una segunda vez si hace falta."
+body = "El codificador se aproxima a la tasa solicitada, no siempre la cumple exactamente. Se deja un margen y se mide el archivo. Si supera el objetivo, se calcula una tasa menor según la desviación y se hace una segunda pasada. La página indica si fue necesaria. También reabre el resultado para comprobar la duración: reducir el tamaño perdiendo el final o el audio no sería una compresión válida."
+
+[[privacy]]
+title = "Tiempo y memoria necesarios."
+body = "El tiempo depende del dispositivo. Con codificador de hardware suele ser menor que la duración del clip; sin él puede tardar más, especialmente con 4K. La entrada se lee por partes, pero el resultado queda completo en memoria hasta descargarlo. Ese es el límite práctico. Siempre puedes cancelar."
+
+[[privacy]]
+title = "Qué formatos admite."
+body = "Lee MP4 y MOV con H.264, HEVC, VP9 o AV1, siempre que el navegador decodifique el códec. Un clip HEVC de iPhone necesita que el dispositivo lo admita. Aún no lee WebM, MKV ni AVI; lo avisa al encontrarlos."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google. No reciben el vídeo, fotogramas, nombre, tamaño, duración ni objetivo elegido. Todo el código que lee, codifica y escribe se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Qué carga el botón de donación, y qué no llega a ver."
+body = "El botón de donación lo dibuja un script de cdnjs.buymeacoffee.com, con letras de Google Fonts. Es solo un enlace: no registra la visita ni recibe datos tuyos o de tus vídeos. Solo pasa algo al pulsarlo, cuando abres un sitio ajeno."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Desconéctate y todo sigue funcionando. Una herramienta que enviara el vídeo a un servidor para comprimirlo se detendría."
+
+[[howto]]
+title = "Elige el vídeo."
+body = "Un MP4 o MOV cada vez. El navegador lo lee del disco y muestra duración, tamaño, dimensiones y tasa de bits."
+
+[[howto]]
+title = "Indica el tamaño máximo."
+body = "Escribe los megabytes o elige 8, 16, 25, 50, 100, la mitad o una cuarta parte. La línea de abajo muestra las dimensiones, la tasa disponible tras reservar el sonido y el tamaño estimado. Puedes omitir el audio para dedicar todo el espacio a la imagen."
+
+[[howto]]
+title = "Cambia las dimensiones si lo necesitas."
+body = "La herramienta elige un tamaño según el objetivo. Puedes cambiarlo si necesitas texto legible a 1080p o solo ver el clip en un teléfono. Ese tamaño es un máximo: nunca se amplía la imagen original."
+
+[[howto]]
+title = "Comprime y revisa la medición."
+body = "La imagen se decodifica, reduce y codifica fotograma a fotograma con una barra de avance. Después se mide el archivo y se reabre para comprobar la duración. Si supera el objetivo, se intenta una segunda pasada más ajustada. Puedes reproducir el resultado desde memoria antes de descargarlo."
+
+[[faq]]
+q = "¿Cuánto se puede reducir un vídeo?"
+a = "Hasta donde permita mantener una imagen reconocible, y la página avisa si el objetivo es demasiado pequeño. El audio se copia y conserva su tamaño, aproximadamente un megabyte por minuto en estéreo habitual. La imagen necesita al menos unos cientos de kilobits por segundo incluso con dimensiones pequeñas. Omitir el sonido deja más espacio a la imagen."
+
+[[faq]]
+q = "¿Por qué cambiaron las dimensiones?"
+a = "Una tasa de bits solo tiene sentido respecto al número de píxeles. Dos megabits por segundo pueden servir a 720p y verse borrosos a 4K. La herramienta reduce las dimensiones hasta repartir suficientes bits por fotograma. Una imagen pequeña y clara suele ser mejor que una grande y borrosa. Se avisa antes de empezar y puedes elegir el tamaño."
+
+[[faq]]
+q = "¿Empeorará la calidad?"
+a = "Sí. La imagen se recodifica a menor tasa, con otra generación de compresión. El sonido no cambia. Un clip de 900 MB reducido a 25 MB pierde mucho más detalle que uno reducido a la mitad. La página muestra las dimensiones y la tasa para que puedas valorar la diferencia."
+
+[[faq]]
+q = "¿Qué formato genera?"
+a = "MP4 con vídeo H.264 y la pista de audio copiada intacta. Se elige por su amplia compatibilidad. No genera WebM, HEVC ni AV1, que pueden ocupar menos pero no todos los destinatarios podrán abrir."
+
+[[faq]]
+q = "¿Qué archivos admite?"
+a = "MP4 y MOV con H.264, HEVC, VP9 o AV1 si el navegador los decodifica. HEVC necesita soporte en el dispositivo. Aún no admite WebM, MKV ni AVI; se avisa claramente al elegirlos."
+
+[[faq]]
+q = "¿Cuánto tarda?"
+a = "Depende del codificador del dispositivo. Con hardware, un minuto de 1080p suele tardar menos de un minuto; sin él, más. Un clip 4K largo puede tardar bastante. La barra indica el fotograma actual; cancelar detiene el proceso sin escribir el resultado."
+
+[[faq]]
+q = "¿Por qué hizo dos pasadas?"
+a = "La tasa solicitada es aproximada y un vídeo complejo puede superarla. Se deja margen y se mide el resultado. Si pesa demasiado, se calcula otra tasa según la desviación y se codifica de nuevo. Se hacen hasta dos pasadas y la página indica si necesitó la segunda."
+
+[[faq]]
+q = "¿Se suben mis vídeos?"
+a = "No. El navegador lee, decodifica, codifica y escribe en tu dispositivo. La <code>Content-Security-Policy</code> enumera los destinos permitidos y ninguno pertenece al sitio. Desconéctate para comprobarlo. Evitar la subida suele ahorrar más tiempo que la propia codificación."
+
+[[faq]]
+q = "¿Funciona en el móvil?"
+a = "Sí, si su navegador codifica vídeo. El hardware del teléfono suele ser rápido, pero dispone de menos memoria para guardar el resultado. Corta antes un clip largo con <a href=\"/es/cortar-video/\">Cortar vídeo</a> o usa un dispositivo con más memoria."
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = "No hay un límite de entrada fijado: se lee por partes. El resultado se mantiene en memoria hasta descargarlo, así que depende del dispositivo; unos cientos de megabytes suelen ser manejables. Es gratis, sin cuenta, inicio de sesión ni prueba. La publicidad paga el sitio y no recibe datos del vídeo."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando, algo que una herramienta que enviara el vídeo a un servidor no podría hacer."
+
+[schema]
+description = "Comprime un vídeo hasta un objetivo en megabytes en el navegador. Calcula dimensiones y tasa, codifica H.264 en MP4, copia el sonido y mide el resultado. No se sube nada."
+features = ["Objetivo en megabytes, límites habituales, mitad o cuarta parte del tamaño", "Calcula la tasa de imagen tras reservar espacio para audio y contenedor", "Reduce las dimensiones por tamaños habituales y nunca amplía", "Permite elegir manualmente las dimensiones", "Copia el sonido intacto o lo omite para dejar más espacio a la imagen", "Mide el resultado e intenta una segunda pasada si supera el objetivo", "Reabre el archivo para comprobar duración y reproducirlo desde memoria", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+
+[picker]
+title = "Arrastra aquí un vídeo"
+hint = "o haz clic para elegir: un MP4 o MOV"

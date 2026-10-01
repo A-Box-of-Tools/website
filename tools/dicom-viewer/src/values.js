@@ -200,7 +200,10 @@ export function display(element, decoder, t) {
 
   if (element.items) {
     const count = element.items.length;
-    return { shown: count === 1 ? '1 item' : `${count} items`, raw: '', sequence: true };
+    return {
+      shown: t(count === 1 ? 'value.item.one' : 'value.item.many', { n: count }),
+      raw: '', sequence: true,
+    };
   }
   if (element.fragments) {
     const total = element.fragments.reduce((sum, part) => sum + part.length, 0);
@@ -243,9 +246,9 @@ function binary(element, t) {
 }
 
 function pretty(vr, value, t) {
-  if (vr === 'DA') return date(String(value)) ?? String(value);
+  if (vr === 'DA') return date(String(value), t) ?? String(value);
   if (vr === 'TM') return time(String(value)) ?? String(value);
-  if (vr === 'DT') return dateTime(String(value)) ?? String(value);
+  if (vr === 'DT') return dateTime(String(value), t) ?? String(value);
   if (vr === 'PN') return personName(String(value));
   if (vr === 'AS') return age(String(value), t) ?? String(value);
   if (vr === 'UI') {
@@ -256,18 +259,17 @@ function pretty(vr, value, t) {
   return String(value);
 }
 
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-  'August', 'September', 'October', 'November', 'December'];
-
 /** `YYYYMMDD` as a date. PS3.5 allows the old `YYYY.MM.DD` too, and files use it. */
-export function date(value) {
+export function date(value, t) {
   const digits = value.replace(/[.\s]/g, '');
   if (!/^\d{8}$/.test(digits)) return null;
   const year = Number(digits.slice(0, 4));
   const month = Number(digits.slice(4, 6));
   const day = Number(digits.slice(6, 8));
   if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-  return `${day} ${MONTHS[month - 1]} ${year}`;
+  // The translation owns the order as well as the month: a Chinese date
+  // puts the year first, while Spanish and Portuguese need connecting words.
+  return t('date.full', { day, month: t(`date.month.${month}`), year });
 }
 
 /** `HHMMSS.FFFFFF`, to the second. The fraction is kept where the file has one. */
@@ -282,14 +284,16 @@ export function time(value) {
 }
 
 /** `YYYYMMDDHHMMSS`, with an optional offset this deliberately keeps as written. */
-export function dateTime(value) {
+export function dateTime(value, t) {
   const clean = value.trim();
   const match = /^(\d{8})(\d{2})?(\d{2})?(\d{2})?/.exec(clean);
   if (!match) return null;
-  const day = date(match[1]);
+  const day = date(match[1], t);
   if (!day) return null;
   if (!match[2]) return day;
-  return `${day}, ${match[2]}:${match[3] ?? '00'}:${match[4] ?? '00'}`;
+  return t('date.time', {
+    date: day, time: `${match[2]}:${match[3] ?? '00'}:${match[4] ?? '00'}`,
+  });
 }
 
 /**

@@ -70,7 +70,7 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
 
 **Scope the build while you are working on one tool.** The third line above is
-the loop: a full build writes every page in English, Chinese and German
+the loop: a full build writes every page in the five maintained languages
 and takes a couple of minutes, and `--only` cuts that to seconds by not writing
 any tool but the one named. The pages it writes are byte for byte the pages a
 full build writes — that is tested — so what you look at is what ships. What it
@@ -261,15 +261,15 @@ three are generated.
 
 ## Languages
 
-**The site is maintained in English, Simplified Chinese and German.**
-`locales/zh/` and `locales/de/` are the translations built from source; a
-change to a tool owes Chinese and German their translations and nothing else.
-German was frozen with the rest in 1.4.2 and brought back a week later, because
-German searches turned out to be worth the upkeep; what English gained in
-between arrives in German as it is translated, and an untranslated German page
-is built, in English, and kept out of the sitemap until then.
+**The site is maintained in English, Simplified Chinese, German, Spanish and
+Brazilian Portuguese.** Their translations are built from `locales/zh/`,
+`locales/de/`, `locales/es/` and `locales/pt/`. German, Spanish and Portuguese
+were restored from the archived translations and brought up to date with the
+current tools. A new or changed page needs its translation updated in these
+languages; publishing is still judged per page, so an unfinished page remains
+readable in English and is kept out of the sitemap until it is translated.
 
-**The other twelve languages are frozen, not missing.** They were deployed
+**The other ten languages are frozen, not missing.** They were deployed
 in 1.4.2 and are kept exactly as deployed in
 [A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
 which the deploy copies into the site at the commit `frozen_archive` in
@@ -278,8 +278,8 @@ address; nothing written after the freeze reaches them, and nothing you change
 here has to be made again in them. `frozen_languages` names them, and three
 things read it: the build refuses a `locales/` folder for one, `--check` leaves
 their folders out, and the deploy refuses an archive that does not hold
-exactly them. Previews carry the build alone - English, Chinese and German - and no
-built page links into a frozen folder, which `test_build.py` holds. The
+exactly them. Previews carry the five maintained languages, and no built page links into
+a frozen folder, which `test_build.py` holds. The
 reasons are in the comment on that list, and bringing a language back is in
 the archive's README.
 

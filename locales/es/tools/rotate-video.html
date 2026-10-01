@@ -1,0 +1,215 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige el vídeo</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Elegir otro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the turn.
+
+    Three buttons and a preview. The preview is the clip's first frame drawn
+    through the same arithmetic the file will carry, so what it shows is what
+    a player will do with the header, not a CSS turn that could disagree.
+  -->
+  <section class="card" id="turn-card">
+    <h2><span class="step">2</span> Elige el giro</h2>
+
+    <p class="card-lede">
+      Un teléfono que graba de lado no gira los píxeles: lo indica en la cabecera y el reproductor lo aplica. Girar el clip puede limitarse a cambiar esa cabecera, sin decodificar ningún fotograma. La imagen queda idéntica.
+    </p>
+
+    <div class="chips" role="group" aria-label="Cuánto girar">
+      <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; Un cuarto de vuelta a la derecha</button>
+      <button type="button" class="chip" data-turn="270" aria-pressed="false">&#8634; Un cuarto de vuelta a la izquierda</button>
+      <button type="button" class="chip" data-turn="180" aria-pressed="false">Media vuelta</button>
+    </div>
+
+    <div class="preview-box">
+      <canvas id="preview" class="preview" aria-label="El primer fotograma con el giro elegido" hidden></canvas>
+      <p id="preview-line" class="preview-line" role="status" aria-live="polite"></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="bake">
+      <span>
+        <strong>Aplicar el giro a los píxeles</strong>
+        <span class="check-note">
+          Gira cada fotograma y recodifica como H.264 para los reproductores antiguos que ignoran la cabecera. Cuesta tiempo y una generación de calidad. Déjalo desactivado salvo que el reproductor muestre el clip de lado.
+        </span>
+        <span id="bake-note" class="check-note" hidden></span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Omitir el sonido</strong>
+        <span id="sound-note" class="check-note" hidden></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Girar</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Girar el vídeo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Descargar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="El vídeo girado, reproducido desde la memoria"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">Se activa cuando el navegador puede leer el vídeo de arriba.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; se muestra {shown}</span>
+    <span data-phrase="note.nopreview">El navegador no decodifica la imagen, así que no hay vista previa. El giro se escribirá igualmente en la cabecera.</span>
+    <span data-phrase="preview.nofile">Elige un vídeo arriba para ver su orientación.</span>
+    <span data-phrase="preview.copy">Ahora se muestra {now}; después quedará {after}, {frame}. Los fotogramas se copiarán intactos.</span>
+    <span data-phrase="preview.bake">Ahora se muestra {now}; después quedará {after}, {frame}. Cada fotograma se girará y recodificará como H.264 a unos {rate}.</span>
+    <span data-phrase="bake.must">Este WebM o MKV no contiene H.264 y no puede copiarse directamente a MP4. El giro se aplicará a los píxeles.</span>
+    <span data-phrase="bake.cannot">El navegador no puede decodificar o codificar esta imagen. Solo se puede escribir el giro en la cabecera, que respetan los teléfonos, navegadores y reproductores modernos.</span>
+    <span data-phrase="sound.none">Este clip no tiene sonido.</span>
+    <span data-phrase="sound.copy">El sonido es AAC y se copia intacto.</span>
+    <span data-phrase="sound.encode">El sonido es {codec} y se recodifica como AAC a 160 kbit/s para este MP4.</span>
+    <span data-phrase="sound.unknown">El navegador no decodifica el sonido {codec}, así que se omite. La imagen sí se gira.</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&laquo;{name}&raquo;</span>
+    <span data-phrase="rotation.0">en posición normal</span>
+    <span data-phrase="rotation.90">de lado hacia la derecha</span>
+    <span data-phrase="rotation.180">boca abajo</span>
+    <span data-phrase="rotation.270">de lado hacia la izquierda</span>
+    <span data-phrase="turn.90">un cuarto de vuelta a la derecha</span>
+    <span data-phrase="turn.180">media vuelta</span>
+    <span data-phrase="turn.270">un cuarto de vuelta a la izquierda</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.sound">Sonido: paquete {done} de {total}&hellip;</span>
+    <span data-phrase="progress.preparing">Preparando&hellip;</span>
+    <span data-phrase="progress.frame">Fotograma {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.finishing">Terminando los últimos fotogramas&hellip;</span>
+    <span data-phrase="progress.writing">Escribiendo el archivo&hellip;</span>
+    <span data-phrase="progress.checking">Reabriendo para comprobar&hellip;</span>
+    <span data-phrase="run.cancelled">Cancelado. No se ha escrito nada. Pulsa el botón para empezar de nuevo.</span>
+    <span data-phrase="run.failed">La conversión ha fallado: {detail}</span>
+    <span data-phrase="result.ready">MP4 de {size}, girado {turn}.</span>
+    <span data-phrase="result.sub.copy">Todos los fotogramas y paquetes se copiaron intactos. Solo cambió la cabecera.</span>
+    <span data-phrase="result.sub.bake">Cada fotograma se giró y recodificó como H.264. Ya no hace falta indicar un giro en la cabecera.</span>
+    <span data-phrase="check.passed">Comprobado: {found}</span>
+    <span data-phrase="check.failed">Esta pasada no ha salido bien &mdash; {found}. Quédate con el original.</span>
+    <span data-phrase="check.ok">se ha reabierto desde memoria: duración {length}, como antes, orientación {shown} y tamaño {frame}.</span>
+    <span data-phrase="check.length">el resultado dura {got} en vez de {want}</span>
+    <span data-phrase="check.reopen">no se pudo reabrir el resultado ({detail})</span>
+    <span data-phrase="check.turn">el resultado indica orientación {got} y tamaño {frame}, distintos de lo solicitado</span>
+    <span data-phrase="check.sound">falta la pista de sonido en el resultado</span>
+    <span data-phrase="facts.picture.copied">{frames} fotogramas de {frame} copiados byte por byte, sin decodificar ni recodificar. El giro queda en la cabecera, que respetan los teléfonos, navegadores y reproductores modernos.</span>
+    <span data-phrase="facts.picture.baked">Cada fotograma se giró y recodificó como H.264 a {rate}, {frame} y {fps} fotogramas por segundo. Es una generación más de compresión: conserva el original.</span>
+    <span data-phrase="facts.sound.copied">El sonido se copió intacto, sin recodificar.</span>
+    <span data-phrase="facts.sound.encoded">El sonido se recodificó como AAC a 160 kbit/s.</span>
+    <span data-phrase="facts.sound.none">Sin pista de sonido: no existía o elegiste omitirla.</span>
+    <span data-phrase="facts.time">Terminado en {seconds}.</span>
+    <span data-phrase="support.nodecode">El navegador no decodifica esta imagen ({codec}) y no puede copiarse directamente a MP4. Otro navegador del mismo dispositivo podría hacerlo.</span>
+    <span data-phrase="stall.both">El códec de vídeo dejó de responder. Recarga e inténtalo de nuevo; puede ocurrir si falta el codificador de hardware o está ocupado.</span>
+    <span data-phrase="stall.sound">El códec de audio dejó de responder. Recarga e inténtalo de nuevo, o elimina el sonido.</span>
+    <span data-phrase="encode.toobig">El navegador no codifica H.264 a {size}. Desactiva el giro de los píxeles y escríbelo solo en la cabecera.</span>
+    <span data-phrase="encode.noconfig">El codificador nunca informó de una configuración de descodificador.</span>
+    <span data-phrase="decode.none">No se pudo decodificar ningún fotograma.</span>
+    <span data-phrase="copy.notavc">Solo H.264 puede copiarse de WebM o MKV. Aplica el giro a los píxeles.</span>
+    <span data-phrase="rotate.badturn">Ese giro no está admitido.</span>
+    <span data-phrase="sound.noaac">El navegador no codifica AAC con esta frecuencia y número de canales. Omite el sonido y gira solo la imagen.</span>
+    <span data-phrase="sound.noencode">El codificador de audio no generó datos.</span>
+    <span data-phrase="write.noframes">No había fotogramas que escribir.</span>
+    <span data-phrase="write.toobig">El resultado superaría 4 GB, el límite de este escritor MP4. Corta el clip primero.</span>
+    <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
+    <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
+    <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>
+    <span data-phrase="read.av1short">El registro de configuración AV1 es demasiado corto.</span>
+    <span data-phrase="read.compactsizes">Los tamaños de las muestras están en una tabla compacta que este lector no
+      decodifica.</span>
+    <span data-phrase="read.sampletables">Las tablas de muestras están incompletas.</span>
+    <span data-phrase="read.chunktable">La tabla de chunks está vacía.</span>
+    <span data-phrase="read.nosamples">La pista de vídeo no contiene fotogramas.</span>
+    <span data-phrase="read.nostbl">A la pista de vídeo le faltan sus tablas de muestras.</span>
+    <span data-phrase="read.nostsd">La pista de vídeo no tiene descripción de muestra.</span>
+    <span data-phrase="read.emptystsd">La descripción de muestra del vídeo está vacía.</span>
+    <span data-phrase="read.encrypted">La pista de vídeo está cifrada.</span>
+    <span data-phrase="read.unknowncodec">El vídeo está guardado como &laquo;{type}&raquo;, y este lector no lo conoce.</span>
+    <span data-phrase="read.noconfig">La pista &laquo;{type}&raquo; no lleva ninguna configuración de decodificador.</span>
+    <span data-phrase="read.notmp4">No es un archivo MP4, MOV, WebM ni MKV. Aquí no se leen AVI, WMV, FLV ni MPEG-2.</span>
+    <span data-phrase="read.nomoov">El archivo no tiene cabecera de película.</span>
+    <span data-phrase="read.novideo">El archivo no tiene ninguna pista de vídeo que este lector pueda usar.</span>
+    <span data-phrase="read.notimescale">La pista de vídeo no tiene escala de tiempo.</span>
+    <span data-phrase="read.nofragments">Los fragmentos de este archivo no contienen ningún fotograma de su pista de vídeo.</span>
+    <span data-phrase="read.unreadable">El archivo no se pudo leer como MP4.</span>
+    <span data-phrase="read.notplayed">Este formato no es de los que reproduce este navegador.</span>
+    <span data-phrase="read.layout">La disposición de este archivo no es de las que entiende el lector de aquí.</span>
+    <span data-phrase="read.notmkv">No es un archivo WebM ni MKV.</span>
+    <span data-phrase="read.nosegment">No hay un segmento después de la cabecera.</span>
+    <span data-phrase="read.mkvtracks">El archivo no declara pistas.</span>
+    <span data-phrase="read.mkvcodec">El vídeo está guardado como &laquo;{type}&raquo;, y este lector no lo conoce.</span>
+    <span data-phrase="read.mkvencoded">Hay una pista comprimida o cifrada en el contenedor y este lector no puede deshacerlo.</span>
+    <span data-phrase="read.mkvaudio">La pista de sonido &ldquo;{type}&rdquo; no tiene configuración y su frecuencia no permite omitirla.</span>
+    <span data-phrase="read.lacing">Un bloque agrupa los paquetes de una forma que este lector no reconoce.</span>
+    <span data-phrase="net.clean">tu vídeo no ha salido del dispositivo. Se cargaron {total} archivos, todos de esta página. {platform}</span>
+    <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
+      herramienta no hace nunca. Vale la pena investigarlo. {platform}</span>
+    <span data-phrase="net.platform.one">Los scripts de publicidad, medición y donación se cargaron desde {hosts} host. Ninguno recibió un vídeo ni un byte suyo.</span>
+    <span data-phrase="net.platform.many">Los scripts de publicidad, medición y donación se cargaron desde {hosts} hosts. Ninguno recibió un vídeo ni un byte suyo.</span>
+  </div>
+</main>

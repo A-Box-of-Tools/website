@@ -10,7 +10,7 @@ details, interest rates, a column of small print — and printed its dates with
 no year. The converter only kept lines that started with a dated transaction,
 so it found nothing at all. It was rebuilt to find tables wherever they are
 and to keep every row of them; a statement is still the document most people
-bring, and still the only one whose rows can be proved.
+bring, and one whose printed balances can help check the extracted amounts.
 
 ## The problem this tool actually solves
 
@@ -99,6 +99,11 @@ edges and the lower middle of their right — so one piece that ran into its
 neighbour cannot stretch a column over the next. An edge whose pieces lie across
 two surviving columns is a label, not a column.
 
+A column may contain just one number in a long table: one salary deposit among
+thirty withdrawals. If that number and an earlier label agree on an edge, their
+column survives without a share of the busy columns' votes. This weaker evidence
+can add a separate column but cannot widen one that already has stronger support.
+
 ### Where each piece goes
 
 A piece is split between columns only where its own words sit inside different
@@ -146,21 +151,26 @@ spreadsheet.
 
 ## The check
 
-Most statements carry a running balance, and a running balance is a proof: if
-the balance on each row is the balance on the row above plus that row's amount,
-the amounts were read correctly and no row was dropped or counted twice.
+A statement's printed balances let the tool compare net changes. The amounts
+between two readable balances should add up to their difference. Agreement is
+useful evidence, not proof that every amount is correct: two errors can cancel,
+and dates and descriptions are outside that arithmetic altogether.
 
-`check.js` finds the balance column with the same arithmetic — every money
-column tried as the balance against every other as the amount, and the
-debit-and-credit pair too — so nothing reads a heading and nothing depends on it
-being in English. Recognising a balance column and judging it are two separate
-thresholds: they were one, and a four-row statement with one misread amount
-then had its balance column rejected outright, which read as "nothing to check"
-instead of "look at row three".
+`check.js` identifies likely balance and amount columns by trying each pairing,
+including separate debit and credit columns. It reports the number of comparisons
+that agree, the ending row of each numerical mismatch, and the rows whose amounts
+were or were not included in a comparison. Amounts before the first balance and
+after the last one have no complete interval and remain unchecked. A blank balance
+within an interval is allowed: amounts accumulate until the next printed balance.
 
-Where no table has a balance the page says nothing about checking. Most tables
-have none, and a line on every one of them saying so would be a line people
-learn to skip.
+A missing signed amount, two empty debit/credit cells, or an unreadable nonempty
+amount or balance makes the entire interval unchecked. An unused half of a
+readable debit/credit pair is zero. The next readable balance starts a fresh
+interval, so an unreadable value does not prevent later comparisons.
+
+The page distinguishes arithmetic agreement from incomplete coverage, names the
+unchecked rows, and asks the reader to review them against the PDF. Where no table
+has a recognised balance it says nothing about checking; the CSV is still offered.
 
 ## What is deliberately not here
 
@@ -184,7 +194,7 @@ demonstrate this tool with its only claim about correctness switched off.
 
 ## Tests
 
-`tests/js/bank-statement-*.test.js`. Most table tests build pages out of
+`tests/js/pdf-to-csv-*.test.js`. Most table tests build pages out of
 positioned runs, because the geometry is the thing under test: a sidebar a
 fraction of a point off the table's baselines, a heading repeated on page two, a
 one-row table, a label wrapped above its value. The last two build a real PDF

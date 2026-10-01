@@ -1,0 +1,155 @@
+# Brazilian Portuguese translation. Structural settings come from the English tool.
+
+name = "Desbloquear PDF"
+heading = "Desbloquear&nbsp;PDF <span class=\"h1-kw\">&mdash; remova a senha e as restrições</span>"
+tagline = "Muitos PDFs protegidos não exigem senha. Descubra qual tipo você tem antes de alterar o arquivo."
+title = "Desbloquear PDF &mdash; remover senha e restrições, grátis, sem enviar"
+description = "Remova a senha e as restrições de impressão, cópia e edição de um PDF no navegador. A ferramenta identifica o tipo de proteção, não adivinha senhas e não envia nada."
+og_title = "Desbloqueie um PDF sem enviar o arquivo"
+og_description = "Muitos PDFs protegidos abrem para qualquer pessoa e apenas pedem ao leitor que bloqueie impressão e cópia. Remova essas restrições no navegador e entenda o que a proteção realmente fazia."
+og_image_alt = "Desbloqueie um PDF no navegador, sem enviar nada"
+pledge = "O documento é aberto, descriptografado e gravado na memória deste computador por código servido deste endereço. Nada aqui faz envio, e não há servidor do outro lado para recebê-lo. Nem o arquivo nem a senha digitada saem desta aba."
+live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, acompanhe a aba Rede e desbloqueie um PDF. Nenhuma requisição leva documento, senha ou nome de arquivo. Ou desligue a internet e use a ferramenta mesmo assim."
+read_first = ", <code>src/shared/pdf-crypt.js</code> para ver como a senha gera a chave do documento e confirmar que não há busca por senhas, e <code>src/shared/aes.js</code> e <code>src/shared/rc4.js</code> para as duas cifras. Nenhum deles, nem o leitor ou o gravador usados ao lado, acessa a rede."
+howto_heading = "Como remover a senha ou as restrições de um PDF"
+card = "Remova a senha e as restrições de impressão, cópia e edição de um PDF. Muitos arquivos protegidos já abrem para qualquer pessoa e não precisam de senha. A ferramenta identifica o tipo de proteção, explica sua força e a remove no seu computador."
+
+[words]
+plural = "documentos"
+choose = "um PDF"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem envio"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sem conta"
+
+[[facts]]
+mark = "&#10003;"
+text = "Funciona offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Código aberto"
+
+[[facts]]
+mark = "&#10003;"
+text = "Os arquivos ficam no seu aparelho"
+
+[[privacy]]
+title = "Muitos PDFs protegidos já abrem sem senha; a página informa isso antes de agir."
+body = "Um PDF pode ter duas proteções diferentes. A <em>senha de abertura</em> impede a leitura, e esta ferramenta não a descobre. As <em>restrições</em> de impressão, cópia e edição são outra coisa. Um arquivo com apenas restrições abre para qualquer pessoa, portanto contém o necessário para derivar sua própria chave, como o leitor já fez. Impedir a impressão depende de um campo de permissões que os programas concordam em respeitar. A Adobe documenta isso desde o início. Remover esse pedido não quebra a criptografia. A página identifica o tipo de proteção e só pede senha quando ela é realmente necessária."
+
+[[privacy]]
+title = "A ferramenta não tenta adivinhar senhas."
+body = "Se o documento exige senha para abrir, você precisa fornecê-la. Não há dicionário, lista de palavras ou busca exaustiva, nem para chaves de 40 bits dos anos 1990 que poderiam ser testadas por completo. É uma escolha explícita: tentar milhões de senhas seria outra ferramenta, com outra finalidade. São aceitas a senha de abertura e a senha de proprietário que remove as restrições; ambas são credenciais que você recebeu."
+
+[[privacy]]
+title = "A senha é digitada e usada aqui."
+body = "A chave é derivada nesta aba. A senha não é armazenada, lembrada entre arquivos nem colocada na barra de endereço. A <code>Content-Security-Policy</code> lista todos os endereços permitidos, e nenhum pertence a este site. Pedir a senha de um documento e depois enviá-la pela rede contrariaria a finalidade desta ferramenta."
+
+[[privacy]]
+title = "O arquivo pronto é aberto novamente antes de ser oferecido."
+body = "Os bytes do download são entregues ao mesmo leitor usado pelo <a href=\"../comprimir-pdf/\">compressor</a>, pelo <a href=\"../juntar-pdf/\">combinador</a> e pela ferramenta de <a href=\"../tarjar-pdf/\">tarjar PDF</a>. Esse leitor recusa documentos criptografados. O resultado precisa abrir sem senha e ter a mesma quantidade de páginas. Se ainda houver criptografia, ele não passa nessa verificação. Em caso de falha, a ferramenta informa o problema e não oferece download."
+
+[[privacy]]
+title = "As páginas não são redesenhadas, recodificadas ou reorganizadas."
+body = "Muda a criptografia ao redor do documento, não o conteúdo das páginas. Instruções de desenho, fontes incorporadas e imagens são gravadas como chegaram. O texto continua selecionável e pesquisável, as digitalizações mantêm a resolução e nada muda de lugar. A regravação deixa para trás cópias antigas de objetos substituídos por edições anteriores, o que costuma reduzir um pouco o arquivo."
+
+[[privacy]]
+title = "A assinatura digital perde a validade, e a página avisa quando encontra uma."
+body = "Uma assinatura cobre os bytes exatos do arquivo; qualquer regravação a invalida. A ferramenta cria um novo arquivo, sem assinatura válida, e avisa no resultado quando encontra uma no original. Guarde o original, que continua sendo a cópia assinada. Nenhuma ferramenta pode alterar esses bytes e preservar a validade da assinatura sobre eles."
+
+[[privacy]]
+title = "A página explica a força real da proteção."
+body = "Um PDF com RC4 de 40 bits de 1998 e outro com AES-256 recente podem aparecer no leitor com a mesma indicação de proteção por senha. A diferença é de décadas. Esta página informa o método, o tamanho da chave e a revisão, distinguindo os já quebrados, os superados e o atual. São informações úteis para avaliar um arquivo apresentado como seguro, mas raramente mostradas pelo leitor."
+
+[[privacy]]
+title = "Arquivos protegidos por certificado são recusados com uma explicação."
+body = "Alguns documentos corporativos usam certificado em vez de senha, com a chave em um cartão inteligente ou repositório de chaves. A página identifica e recusa esses arquivos. Nenhum texto digitado no campo de senha substitui uma chave privada."
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = "Os scripts de publicidade e medição vêm do Google. Eles não recebem arquivo, página, nome, tamanho, quantidade de páginas, senha nem método de proteção. Todo o código que lê, descriptografa ou grava o PDF é servido desta origem e está no repositório."
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = "O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado por um script de cdnjs.buymeacoffee.com e busca as letras no Google Fonts. É um link e nada mais: não relata visita alguma, e não recebe nada sobre você nem sobre os seus documentos. Nada acontece a menos que você clique, e para onde você iria ao clicar é o site de outra pessoa."
+
+[[privacy]]
+title = "Funciona offline."
+body = "Desligue a rede e tudo continua funcionando. Uma ferramenta que enviasse seu documento para desbloquear em outro lugar pararia."
+
+[[howto]]
+title = "Escolha o PDF."
+body = "Um documento por vez, lido diretamente do disco pelo navegador. Primeiro, a ferramenta tenta abri-lo com senha vazia, o que funciona para muitos arquivos protegidos porque eles têm apenas restrições."
+
+[[howto]]
+title = "Leia o que a página encontrou."
+body = "Ela informa o tipo de proteção, o método usado e sua força atual. Também lista as restrições pedidas ao leitor: impressão, cópia, edição, comentários, preenchimento de formulários, reordenação de páginas e até leitura em voz alta para pessoas com deficiência visual."
+
+[[howto]]
+title = "Digite a senha somente se ela for pedida."
+body = "O campo aparece apenas quando a senha vazia não abre o documento. São aceitas tanto a senha de abertura quanto a de proprietário. A ferramenta não tenta adivinhar nenhuma delas, e o que você digita fica nesta aba."
+
+[[howto]]
+title = "Remova a proteção e confira a confirmação."
+body = "O documento é descriptografado com sua própria chave e gravado sem dicionário de criptografia. Depois, é reaberto sem senha por um leitor que recusa arquivos criptografados. Se não abrir ou apresentar outra quantidade de páginas, a ferramenta informa a falha e não oferece download."
+
+[[faq]]
+q = "Preciso da senha?"
+a = "Muitas vezes, não. A página informa isso logo após a escolha do arquivo. Muitos PDFs protegidos, como extratos, holerites e relatórios com edição restrita, abrem para qualquer pessoa e só contêm uma lista de ações que o leitor deve impedir. Essas restrições saem com um clique, sem senha. Se o documento realmente pede senha para abrir, você precisa fornecê-la."
+
+[[faq]]
+q = "A ferramenta abre um PDF cuja senha eu não tenho?"
+a = "Não, e não tenta. Não há dicionário, lista de palavras nem busca por força bruta; isso pode ser conferido em <code>src/shared/pdf-crypt.js</code>. Mesmo os documentos antigos com chaves de 40 bits, que permitiriam uma busca viável, não são atacados. A recusa é explícita. Se você perdeu a senha, esta ferramenta não a recupera."
+
+[[faq]]
+q = "Qual é a diferença entre as duas senhas?"
+a = "A senha de <em>usuário</em> é pedida para abrir o PDF. A de <em>proprietário</em> remove as restrições de impressão, cópia e edição. Um documento pode ter senha de proprietário sem senha de usuário; por isso, abre para qualquer pessoa, mas impede impressão em leitores que respeitam as restrições. A ferramenta aceita ambas e informa qual delas foi usada para abrir."
+
+[[faq]]
+q = "É legal remover as restrições?"
+a = "Depende do documento e da legislação aplicável: a questão é seu direito de usar o arquivo. Tecnicamente, as restrições são um campo que os leitores concordam em respeitar, não uma barreira criptográfica; a Adobe as documenta assim desde sua criação. Use a ferramenta em documentos que você tem direito de utilizar, como seu extrato que não imprime, um relatório adquirido que não permite cópia ou uma digitalização que precisa ser reorganizada. A ferramenta não concede direitos que você não tenha."
+
+[[faq]]
+q = "Quais métodos de criptografia são aceitos?"
+a = "Todos os métodos publicados: RC4 de 40 e 128 bits, revisões 2 e 3; AES-128, revisão 4; e AES-256 nas revisões 5 e 6, tanto a variante de 2008 retirada de uso quanto a atual do PDF 2.0. Não aceita criptografia por certificado, que depende de chave privada, nem uma variante não publicada da Adobe. Os dois casos são identificados com uma mensagem específica."
+
+[[faq]]
+q = "A aparência do documento muda?"
+a = "Não. Instruções de desenho, fontes e imagens são copiadas sem redesenho, recodificação ou reorganização. O texto continua selecionável, as digitalizações mantêm a resolução e nada muda de lugar. O arquivo pode ficar um pouco menor porque a regravação descarta objetos antigos substituídos por edições anteriores."
+
+[[faq]]
+q = "O que acontece com um documento assinado?"
+a = "A assinatura perde a validade. Ela cobre os bytes exatos do arquivo, portanto qualquer alteração, por qualquer programa, a invalida. A ferramenta cria uma cópia e avisa quando encontra assinatura no original. Guarde o original, que continua sendo a cópia assinada."
+
+[[faq]]
+q = "Meus documentos ou senhas são enviados para algum lugar?"
+a = "Não. Seu navegador lê, descriptografa e grava o arquivo no seu computador. A chave é derivada da senha nesta aba. Não há processamento em servidor, e nenhum endereço listado na <code>Content-Security-Policy</code> pertence a este site. Desligue a internet e use a página para conferir."
+
+[[faq]]
+q = "Como sei que a proteção foi removida?"
+a = "A ferramenta verifica o resultado no seu computador. O mesmo leitor usado pelas outras ferramentas de PDF, que recusa arquivos criptografados, precisa abri-lo sem senha e encontrar a mesma quantidade de páginas. Se falhar, não há download. Você também pode abrir o arquivo em outro leitor e verificar as propriedades: todas as permissões devem aparecer como permitidas."
+
+[[faq]]
+q = "Há limite de tamanho, e custa alguma coisa?"
+a = "Não há limite escrito na ferramenta. O limite é o seu próprio computador: o documento fica na memória enquanto se trabalha nele, então um notebook aguenta algumas centenas de megabytes sem reclamar e começa a penar acima disso. É grátis, não há conta, não há login e não há teste. O site exibe publicidade, e é ela que o paga; os anunciantes não recebem nada sobre os seus documentos."
+
+[[faq]]
+q = "Funciona offline?"
+a = "Sim. Abra a página uma vez e desligue a internet: ela continua funcionando. Uma ferramenta que enviasse o documento para desbloquear em outro lugar pararia ao perder a conexão."
+
+[schema]
+category = "UtilitiesApplication"
+description = "Remova a senha e as restrições de impressão, cópia e edição de um PDF no navegador. A ferramenta identifica o tipo e a força da proteção, não adivinha senhas e não envia nada."
+features = ["Remove restrições de impressão, cópia e edição", "Remove a senha de abertura quando você a fornece", "Informa se a senha é realmente necessária antes de pedi-la", "Identifica método de criptografia, tamanho da chave, revisão e força atual", "Aceita RC4 de 40 e 128 bits, AES-128 e as duas revisões de AES-256", "Não adivinha senhas nem tenta força bruta", "Reabre o resultado sem senha para conferir que a proteção foi removida", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
+
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Solte aqui o PDF protegido"
+hint = "ou clique para procurar &mdash; um documento por vez"
+example = true

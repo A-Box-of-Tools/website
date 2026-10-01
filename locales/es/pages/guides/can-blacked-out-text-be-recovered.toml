@@ -1,0 +1,19 @@
+#
+# Guía: ¿se puede recuperar el texto censurado? - Spanish.
+#
+
+nav = "¿Se recupera el texto tachado?"
+title = "¿Se puede recuperar el texto tapado con negro?"
+description = "A menudo, sí: porque la mayoría de las cajas negras se dibujan encima del texto en vez de ocupar su lugar. Las tres maneras en que falla una censura, las copias que un archivo guarda de su propio pasado, y qué hace falta para borrar algo de verdad."
+heading = "¿Se puede recuperar el texto tapado con negro?"
+lede = """
+    Incómodamente a menudo, sí &mdash; con la herramienta de seleccionar
+    texto, no con un laboratorio. La mayoría de los rectángulos negros se
+    dibujan <em>encima</em> de las palabras y se guardan al lado de ellas,
+    y las palabras viajan debajo. Esta página es el catálogo de las formas
+    en que eso ocurre, y de lo que borrar tiene que significar en su
+    lugar."""
+updated = "26 de agosto de 2026"
+og_title = "¿Se puede recuperar el texto tapado con negro?"
+og_description = "A menudo basta seleccionar y copiar. Por qué un rectángulo dibujado no es una censura, por qué un mosaico puede leerse de vuelta, y qué hace falta de verdad para quitar algo de un archivo."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

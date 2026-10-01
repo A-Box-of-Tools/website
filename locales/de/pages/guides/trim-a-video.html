@@ -1,47 +1,41 @@
   <section>
     <h2>Die kurze Antwort</h2>
     <p>
-      Öffnen Sie den <a href="../../video-schneiden/">Video-Schneider</a>, ziehen
-      Sie den Clip hinein, markieren Sie mit <kbd>I</kbd> und <kbd>O</kbd> jeden
-      Abschnitt, den Sie behalten wollen, so viele Sie mögen, und exportieren
-      Sie. Bei einem MP4, MOV oder M4V wandern die Einzelbilder, die Sie
-      behalten, unverändert in die neue Datei: dieselben Bytes, dieselben
-      Encoder-Einstellungen, alles gleich. Und der Ton wird Sample für Sample
-      übernommen, ohne je dekodiert zu werden.
+      Öffnen Sie den <a href="../../video-schneiden/">Video-Schneider</a>, legen Sie den
+      Clip ab und markieren Sie mit <kbd>I</kbd> und <kbd>O</kbd> jeden gewünschten
+      Teil. Wählen Sie dann das Exportverfahren. Bei MP4, MOV oder M4V übernimmt „Jedes
+      Byte behalten“ die behaltenen Frames und den Ton unverändert in die neue Datei.
+      Das ist für einen Abschnitt möglich oder für mehrere, wenn jeder spätere Abschnitt
+      auf einem Keyframe beginnt. Andere Auswahlen benötigen das ausdrücklich als
+      Neukodierung bezeichnete Verfahren.
     </p>
     <p>
-      Ein Schnitt kostet Sie also keine Qualität, und schnell ist er obendrein.
-      Eine Minute aus einer vier Gigabyte großen Aufnahme herauszuschneiden
-      dauert ungefähr so lange, wie diese Minute auf die Festplatte zu schreiben,
-      denn auf die Einzelbilder wird nur gezeigt, geladen werden sie nicht. An
-      genau einer Stelle macht sich das Verfahren trotzdem bemerkbar, nämlich
-      dort, wo Ihr Schnitt am Ende wirklich sitzt. Davon handelt der Rest dieser
-      Seite.
+      Kopieren kostet keine Qualität und geht schnell: Eine Minute aus einer vier
+      Gigabyte großen Aufnahme herauszuschneiden dauert ungefähr so lange, wie diese
+      Minute auf den Datenträger zu schreiben. Die Frames werden über Verweise
+      übernommen statt geladen. Die Wahl hängt davon ab, wo jeder behaltene Abschnitt
+      beginnt. Darum geht es auf dieser Seite.
     </p>
   </section>
 
   <section>
     <h2>Warum ein Schnitt überhaupt keine Qualität kosten muss</h2>
     <p>
-      Kürzen ändert nichts am Aussehen eines Einzelbildes. Jedes Bild, das Sie
-      behalten, soll genauso herauskommen, wie es hineinging. Es gibt also keinen
-      Grund, es zu dekodieren und neu zu kodieren, und jeden Grund, es bleiben zu
-      lassen. Eine Neukodierung ist verlustbehaftet und würde den ganzen Clip ein
-      wenig schlechter machen, bloß um ihn zu kürzen.
+      Bei einer Auswahl, die sich kopieren lässt, kann jeder behaltene Frame exakt in
+      seiner ursprünglichen Kodierung bleiben. Die vorhandenen Bytes zu übernehmen
+      vermeidet das Dekodieren und erneute Kodieren. So wird das Video gekürzt, ohne
+      einen weiteren verlustbehafteten Kodierungsschritt hinzuzufügen.
     </p>
     <p>
-      Ein gutes Werkzeug kodiert deshalb nicht neu. Es liest den Index der Datei,
-      ermittelt, welche kodierten Einzelbilder in Ihren Bereich fallen, und
-      schreibt diese Bytes in einen neuen Container mit einem neuen Index davor.
-      Dekodiert wird auf diesem Weg überhaupt nichts.
+      Wenn Kopieren die gewünschten Schnittzeiten erhalten kann, liest das Werkzeug den
+      Dateiindex, ermittelt die benötigten kodierten Frames und schreibt deren Bytes mit
+      einem neuen Index in einen neuen Container. Auf diesem Weg wird nichts dekodiert.
     </p>
     <p>
-      Viele Werkzeuge kodieren trotzdem neu, weil Dekodieren und Neukodieren
-      sehr viel leichter umzusetzen ist, als das Containerformat zu zerlegen.
-      Welche Sorte Sie vor sich haben, erkennen Sie an der Dauer. Eine Kopie ist
-      davon begrenzt, wie schnell Ihre Festplatte schreibt, eine Neukodierung
-      davon, wie schnell Ihr Gerät Video kodiert, und das ist hundertmal
-      langsamer.
+      Eine Neukodierung ist sinnvoll, wenn sich die gewünschten Schnittzeiten durch
+      Kopieren nicht zuverlässig erhalten lassen. Sie dauert meist länger, weil der
+      Browser jedes behaltene Bild dekodieren und kodieren muss. Beim Kopieren begrenzt
+      vor allem die Schreibgeschwindigkeit die Dauer.
     </p>
   </section>
 
@@ -65,43 +59,42 @@
       den ganzen Abschnitt ab dem Keyframe vor Ihrer Marke mitnehmen.
     </p>
     <p>
-      Interessant ist, was es damit anstellt. Das Dateiformat kennt eine genormte
-      Art zu sagen: <em>ab hier abspielen</em>. Die zusätzlichen Bilder liegen
-      dann zwar in der Datei, aber der Container weist den Player an, sie zu
-      überspringen. Jeder gängige Player hält sich daran, und der Clip beginnt
-      genau dort, wo Sie es wollten. Ein Player, der die Anweisung ignoriert,
-      beginnt früher, höchstens um den Keyframe-Abstand.
+      Für den ersten behaltenen Abschnitt kann das Dateiformat angeben: <em>ab hier
+      abspielen</em>. Die zusätzlichen Frames bleiben in der Datei, und eine
+      Schnittmarke weist den Player an, sie zu überspringen. Player, die diese Anweisung
+      befolgen, beginnen an der Markierung. Ein Player, der sie ignoriert, kann auch die
+      früheren Frames zeigen.
     </p>
     <p>
-      Das Werkzeug hier sagt Ihnen vor dem Export, welcher Fall vorliegt und um
-      wie viel es geht. So wird daraus eine Entscheidung statt einer
-      Überraschung.
+      Nicht abgespielte Frames an einer späteren Schnittstelle können dazu führen, dass
+      Browser einen Abschnitt zu früh zeigen, selbst wenn die Schnittliste korrekt ist.
+      Deshalb lässt das Werkzeug Kopieren nicht zu, wenn ein Abschnitt nach dem ersten
+      zwischen Keyframes beginnt. Es erklärt den Grund und überlässt Ihnen die
+      ausdrückliche Wahl des Verfahrens mit Neukodierung.
     </p>
   </section>
 
   <section>
     <h2>Wann eine Neukodierung die bessere Wahl ist</h2>
     <p>
-      Es gibt auch den exakten Schnitt. Er funktioniert, indem der
-      Anfangsabschnitt neu kodiert wird: ab dem Keyframe dekodieren und eine neue
-      Folge von Einzelbildern schreiben, die tatsächlich dort beginnt, wo Sie
-      markiert haben. Das dauert länger und kostet ein wenig Qualität,
-      allerdings nur auf diesem Anfangsabschnitt.
+      „Genau hier schneiden“ dekodiert ab dem vorherigen Keyframe, verwirft Frames
+      außerhalb der markierten Abschnitte und kodiert jeden behaltenen Videoframe neu.
+      Das betrifft nicht nur den Anfangsabschnitt. Es dauert länger als Kopieren und
+      kann die Bildqualität im gesamten behaltenen Video verringern. Der Ton wird
+      kopiert, wenn sein Format dies erlaubt.
     </p>
     <p>
-      Nehmen Sie ihn, wenn der Clip dorthin geht, wo die Anweisung des Containers
-      nicht befolgt wird, oder wohin Sie den Player nicht bestimmen können: zu
-      manchen Schnittprogrammen, manchen Sende- und Konferenzsystemen, manchen
-      älteren Hardware-Playern. Für alles andere, und das heißt für einen
-      Browser, ein Handy, eine soziale Plattform oder einen Mediaplayer, nehmen
-      Sie die Kopie.
+      Wählen Sie dieses Verfahren, wenn Kopieren für Ihre Auswahl nicht verfügbar ist
+      oder wenn die Ausgabe mit den behaltenen Frames beginnen soll, ohne sich auf eine
+      anfängliche Schnittmarke zu verlassen. Kopieren bleibt für einen Abschnitt oder
+      für mehrere mit späteren Anfängen auf Keyframes sinnvoll, sofern der empfangende
+      Player die anfängliche Schnittmarke korrekt verarbeitet.
     </p>
     <p>
-      Und es gibt eine dritte Möglichkeit, die gar nichts kostet: die Marke zu
-      verschieben. Zeigt Ihnen das Werkzeug, wo die Keyframes sitzen, bekommen
-      Sie mit einem Stups auf den nächstgelegenen einen exakten Schnitt ganz ohne
-      Neukodierung. Wegen einer Sekunde Unterschied lohnt es sich selten, die
-      Kopie aufzugeben.
+      Sie können den Anfang eines Abschnitts auch auf einen Keyframe verschieben, der
+      auf der Zeitleiste angezeigt wird. Dadurch kann Kopieren für einen späteren
+      Abschnitt ohne Neukodierung möglich werden. Das ändert jedoch, welches Material
+      Sie behalten. Richten Sie die Entscheidung deshalb nach dem benötigten Inhalt.
     </p>
 
     <figure class="shot">
@@ -123,11 +116,11 @@
       zu einem Clip zusammengefügt, mit dem Ton im Takt.
     </p>
     <p>
-      An der Nahtstelle, wo die zweite Hälfte wieder einsetzt, gilt dieselbe
-      Keyframe-Beschränkung, aus demselben Grund. Auf beiden MP4-Wegen
-      funktioniert das hier. Es ist das Einzige, was die weiter unten
-      beschriebene Aufzeichnung nicht kann, denn eine Aufzeichnung entsteht in
-      einem Durchgang aus einem Abspielkopf.
+      Kopieren kann die übrigen Teile verbinden, wenn jeder Teil nach dem ersten auf
+      einem Keyframe wieder einsetzt. Benötigt ein späterer Teil nicht abgespielte
+      Frames vor seinem Anfang, wählen Sie stattdessen „Genau hier schneiden“. Die unten
+      beschriebene Aufzeichnung kann keine getrennten Teile verbinden, weil sie einen
+      ununterbrochenen Durchlauf von einem Abspielkopf aufzeichnet.
     </p>
 
     <figure class="shot">

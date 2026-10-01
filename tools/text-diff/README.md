@@ -55,6 +55,14 @@ it, and only a view: the rows are collapsed to a count where nothing changed,
 and past a few thousand rows the page stops drawing and points at the download,
 because nobody reads the eight thousandth row of a diff.
 
+The view can ignore whitespace, case and blank lines; the exported patch
+always compares the original strings. Otherwise its context would describe a
+filtered file rather than the one somebody wants to patch. Line terminators
+stay in that comparison: CRLF is preserved, empty files have zero lines, and
+an unterminated last line carries the standard missing-newline marker. Files
+loaded into the boxes retain their original strings until the visitor edits
+them, because a textarea itself normalises carriage returns to LF.
+
 ## The view
 
 One CSS grid for the whole comparison rather than a table per row, so the line

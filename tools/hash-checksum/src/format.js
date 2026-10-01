@@ -8,6 +8,8 @@
  * than a division.
  */
 
+import { phrase } from './shared/phrases.js';
+
 /** Bytes, at the precision a person would read them out at. */
 export function fileSize(count) {
   if (count < 1024) return `${count} B`;
@@ -16,7 +18,7 @@ export function fileSize(count) {
   return `${(count / 1073741824).toFixed(2)} GB`;
 }
 
-export const exact = (count) => `${count.toLocaleString()} bytes`;
+export const exact = (count) => phrase('size.bytes', { n: count.toLocaleString() });
 
 export const percent = (fraction) => `${Math.min(100, Math.round(fraction * 100))}%`;
 
@@ -44,9 +46,9 @@ export function rate(bytes, seconds) {
 /** Seconds, as a person would say a wait. */
 export function remaining(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) return null;
-  if (seconds < 90) return `${Math.max(1, Math.round(seconds))}s`;
+  if (seconds < 90) return phrase('time.seconds', { n: Math.max(1, Math.round(seconds)) });
   const minutes = Math.round(seconds / 60);
-  return `${minutes}m`;
+  return phrase('time.minutes', { n: minutes });
 }
 
 /** `1 file` / `2 files`, without a second call to work out which. */

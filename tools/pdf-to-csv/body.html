@@ -104,8 +104,9 @@
       placed at positions on a page, and the columns are strips of paper
       nobody printed in. So every table below was worked out rather than
       read. Where one of them carries a running balance, the line above the
-      tables is the tool checking its own work &mdash; every row proved
-      against the row before it.
+      tables reports which balance comparisons agree and which rows could not
+      be checked. Matching balances check net changes; errors that cancel
+      each other can still pass.
     </p>
 
     <p id="summary" class="verdict" role="status" aria-live="polite"></p>
@@ -169,10 +170,10 @@
     <span data-phrase="count.columns.many">{n} columns</span>
     <span data-phrase="count.tables.one">{n} table</span>
     <span data-phrase="count.tables.many">{n} tables</span>
-    <span data-phrase="check.held">The running balance adds up on every row, so the amounts were read correctly
-      and no row was missed or counted twice.</span>
-    <span data-phrase="check.broke">The running balance adds up on {held} of {links} rows. Check {where} against
-      the PDF before you use this.</span>
+    <span data-phrase="check.held">The running balance agrees in all {links} comparisons.</span>
+    <span data-phrase="check.broke">The running balance agrees in {held} of {links} comparisons. Check the amounts ending at {where} against the PDF.</span>
+    <span data-phrase="check.unchecked">Rows not checked: {where}. Review their amounts against the PDF.</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
     <span data-phrase="check.row">row {n}</span>
     <span data-phrase="check.rows">rows {list}</span>
     <span data-phrase="order.found">Worked out from a day past the twelfth in this document, so this is what it

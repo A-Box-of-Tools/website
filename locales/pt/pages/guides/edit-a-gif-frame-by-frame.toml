@@ -1,0 +1,20 @@
+#
+# Guia: editar um GIF quadro a quadro - Brazilian Portuguese.
+#
+
+nav = "Editar um GIF quadro a quadro"
+title = "Editar um GIF quadro a quadro &mdash; separar, arrumar, reconstruir, sem enviar nada"
+description = "Desmonte um GIF nos quadros dele, tire ou reordene os que precisar, e reconstrua mantendo os tempos. O que sobrevive à ida e volta, o que a paleta custa, e como ver por que um GIF pesa."
+
+heading = "Como editar um GIF quadro a quadro"
+lede = """
+    Não existe editor de GIF aqui, e não precisa: um separador que desmonta
+    a animação em quadros e um criador que monta uma a partir de quadros são
+    um editor com uma pasta no meio &mdash; e a pasta é a parte em que você
+    edita, com o que já usa para imagens."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Desmonte um GIF, arrume os quadros, monte de volta"
+og_description = "Separe um GIF em PNGs com os tempos guardados, tire ou retoque quadros e reconstrua - tudo no navegador, com os custos da ida e volta escritos com honestidade."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

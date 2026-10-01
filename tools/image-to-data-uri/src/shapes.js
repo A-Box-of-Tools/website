@@ -115,12 +115,16 @@ export function fileName(id, result) {
  * @returns {string[]} one identifier per name, in the same order
  */
 export function identifiers(names) {
-  const used = new Map();
+  const used = new Set();
   return names.map((name) => {
     const base = identifier(name);
-    const seen = used.get(base) ?? 0;
-    used.set(base, seen + 1);
-    return seen ? `${base}-${seen + 1}` : base;
+    let chosen = base;
+    let suffix = 2;
+    // A real filename can already end in the suffix another picture needed.
+    // Reserve the emitted name, not just the unsuffixed stem.
+    while (used.has(chosen)) { chosen = `${base}-${suffix}`; suffix += 1; }
+    used.add(chosen);
+    return chosen;
   });
 }
 

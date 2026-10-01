@@ -1,0 +1,20 @@
+#
+# Guia: hacer un grafico de comparacion de alturas - Spanish.
+#
+
+nav = "Hacer un gráfico de alturas"
+title = "Cómo hacer un gráfico de comparación de alturas"
+description = "Convierte una lista de alturas en una imagen lado a lado: cómo escribir las alturas, qué figura elegir para un niño, por qué un objeto familiar hace más que una tercera persona, y cómo sacar el gráfico como PNG o SVG."
+
+heading = "Cómo hacer un gráfico de comparación de alturas"
+lede = """
+    Dos números no te dicen qué aspecto tiene una diferencia de quince
+    centímetros. Una imagen sí, en cosa de un segundo, y para eso existen estos
+    gráficos. Aquí tienes cómo hacer uno que además de convincente sea
+    correcto."""
+
+updated = "30 de agosto de 2026"
+
+og_title = "Hacer un gráfico de comparación de alturas"
+og_description = "Cómo escribir las alturas, qué figura elegir, y por qué un objeto familiar en el gráfico hace más que una tercera persona."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

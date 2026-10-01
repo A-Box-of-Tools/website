@@ -110,3 +110,9 @@ under the number, sound track present, playable.
   have it; Firefox from 130. The page says which.
 - **Keep the picture unchanged.** A compressed video is a re-encoded one, and
   the page says so in the pledge, the results and the FAQ.
+
+
+Clearing the file aborts and retires its export. A codec can finish a pending
+flush after cancellation, and the result check also reads asynchronously, so
+the page checks the run again at both boundaries. Progress, errors and cleanup
+from that retired run cannot overwrite the controls for a replacement file.

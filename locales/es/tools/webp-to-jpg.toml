@@ -1,0 +1,121 @@
+name = "WebP a JPG"
+heading = "WebP&nbsp;a&nbsp;JPG <span class=\"h1-kw\">&mdash; convierte sin subir nada</span>"
+tagline = "Las imágenes que guarda la web, en el formato que todos siguen aceptando."
+title = "Convertir WebP a JPG &mdash; gratis y sin subir nada"
+description = "Convierte WebP a JPG en el navegador. Ya incluye el decodificador: no se sube nada, no hace falta cuenta y funciona sin conexión. Elige el color que sustituirá la transparencia."
+og_title = "Convierte imágenes WebP a JPG sin subirlas"
+og_description = "Un conversor que no necesita tus fotos. El navegador ya lee WebP y escribe JPEG, así que los archivos nunca salen del dispositivo."
+og_image_alt = "WebP a JPG: las imágenes de la web en el formato que todos aceptan"
+pledge = "La conversión ocurre en el navegador y en tu dispositivo. No hay decodificador que descargar ni motor que esperar: los navegadores leen WebP desde 2020 y escriben JPEG desde mucho antes. Todo lo necesario ya estaba en el dispositivo. La página no tiene funciones de red ni un servidor al que enviar una imagen."
+live_hint = "Compruébalo: abre las herramientas de desarrollo, mira la pestaña Red y convierte una imagen. Verás cargar los archivos de esta página, pero ninguna petición con una imagen, miniatura, nombre de archivo ni un byte de lo que elegiste. O carga la página una vez, desconéctate y convierte una carpeta entera."
+read_first = ", y <code>src/shared/image-convert.js</code> para la conversión: identifica el formato real, decodifica la imagen y la dibuja en el lienzo del que sale el JPEG. Es el mismo archivo de los otros dos conversores: unas trescientas líneas sin ningún códec."
+howto_heading = "Cómo convertir WebP a JPG"
+card = "Las imágenes de la web, en el formato que todos aceptan. Se convierten en tu dispositivo y la transparencia se rellena con el color que elijas."
+
+[words]
+plural = "imágenes"
+choose = "una imagen"
+analytics_extra = ", ni nada sobre su contenido"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin límite de tamaño"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tus imágenes no tienen adónde ir."
+body = "La Content-Security-Policy enumera todas las direcciones a las que esta página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún destino donde recoger tus archivos, ni una línea de código que los mandara si lo hubiera."
+
+[[privacy]]
+title = "El decodificador ya está instalado; no hace falta un servidor."
+body = "Los navegadores publicados desde 2020 leen WebP y escriben JPEG desde mucho antes. Esta herramienta no incluye un motor ni descarga nada al estrenarse. No necesita un servidor, aunque otros conversores pidan subir el archivo. El <a href=\"/es/convertir-heic-a-jpg/\">conversor HEIC</a> sí incluye un códec, porque solo Safari abre ese formato de forma nativa, y lo explica en su página."
+
+[[privacy]]
+title = "Las partes transparentes y el color que las sustituye."
+body = "WebP admite transparencia y JPEG no tiene canal alfa, así que hay que poner un color debajo. Aquí lo eliges, con blanco por defecto. Solo se pregunta si los píxeles decodificados tienen transparencia; no se supone por el formato. Un conversor que no pregunta puede elegir negro, de donde salen esos logotipos con fondo negro."
+
+[[privacy]]
+title = "Lo que el lienzo no conserva."
+body = "La imagen se decodifica y dibuja en un lienzo que solo guarda píxeles. EXIF, perfiles ICC, XMP y bloques de derechos de autor se pierden. Para algunas personas es útil y para otras supone una pérdida, por eso se avisa. Para consultar o editar metadatos sin recomprimir, usa el <a href=\"/es/eliminar-datos-exif/\">Visor y eliminador de EXIF</a>."
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = "Los scripts de publicidad y medición vienen de Google, y el botón de donación, de Buy Me a Coffee. No reciben información sobre tus imágenes. Todo el código que lee, decodifica o escribe un archivo se sirve desde este origen y está en el repositorio."
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = "Carga la página una vez y desconéctate: funciona igual. Es la comprobación más sencilla. Un conversor que enviara tus imágenes a otro lugar no podría hacerlo."
+
+[[howto]]
+title = "Elige los archivos WebP."
+body = "Suéltalos o búscalos. Se identifican por sus primeros bytes, no por el nombre: un WebP llamado &ldquo;.jpg&rdquo; funciona; un PNG se rechaza indicando su formato real, en lugar de generar una copia innecesaria."
+
+[[howto]]
+title = "Lee la información de cada archivo."
+body = "La lista muestra tamaño y dimensiones, y avisa si el WebP es sin pérdida, tiene transparencia o es animado. Cada aviso solo aparece cuando corresponde."
+
+[[howto]]
+title = "Elige la calidad y el color que sustituirá la transparencia."
+body = "El control empieza en 92, donde una foto resulta difícil de distinguir del original. El campo de color solo aparece si algún archivo tiene transparencia, porque el JPEG debe rellenarla."
+
+[[howto]]
+title = "Pulsa &ldquo;Convertir&rdquo; y descarga."
+body = "Cada resultado indica el origen, el tamaño nuevo y la diferencia. También avisa si se rellenó la transparencia o solo se guardó el primer fotograma. Un archivo tiene botón de descarga; varios también permiten un ZIP."
+
+[[faq]]
+q = "¿Se sube mi imagen a alguna parte?"
+a = "No. El navegador lee, decodifica y escribe el archivo en tu dispositivo. La herramienta no pide ni envía nada por la red. La <code>Content-Security-Policy</code> enumera las direcciones permitidas y ninguna pertenece a este sitio. A diferencia del conversor HEIC, ni siquiera necesita cargar un decodificador: ya está en el navegador."
+
+[[faq]]
+q = "¿Para qué convertir WebP a JPG?"
+a = "Para usarlo en programas que aún no admiten WebP. Es un formato pequeño y habitual al guardar imágenes de la web, pero versiones antiguas de Office y Photoshop, algunos estudios de impresión, formularios que miran la extensión, lectores electrónicos y programas de cámaras o impresoras pueden rechazarlo. JPG tiene una compatibilidad mucho más amplia."
+
+[[faq]]
+q = "¿Qué pasa con las partes transparentes?"
+a = "Se rellenan con el color que elijas y se avisa antes de convertir. JPEG no tiene canal alfa: la transparencia no puede conservarse. Blanco es el valor inicial porque suele servir para un logotipo en un documento. Si necesitas conservarla, guarda el WebP o conviértelo a PNG con el <a href=\"/es/comprimir-imagen/\">Compresor de imágenes</a>, que escribe PNG, WebP y JPEG."
+
+[[faq]]
+q = "¿Convierte un WebP animado?"
+a = "Convierte el primer fotograma y lo avisa tanto antes como después. JPEG solo contiene una imagen. Para extraer todos los fotogramas o convertir la animación a vídeo, puedes usar <a href=\"/es/separar-gif-en-fotogramas/\">Separar un GIF</a> y <a href=\"/es/convertir-gif-a-mp4/\">GIF a MP4</a> una vez que la animación esté en formato GIF."
+
+[[faq]]
+q = "¿Se vuelve a comprimir la imagen?"
+a = "Sí. WebP y JPEG son códecs distintos, así que hay que decodificar y volver a codificar. Todos los conversores lo hacen, incluidos los que piden subir el archivo. El control empieza en 92, donde una foto es difícil de distinguir del original. Si el WebP era sin pérdida, el JPEG será su primera copia con pérdida; la lista lo avisa para que puedas decidir."
+
+[[faq]]
+q = "¿El JPG pesará más que el WebP?"
+a = "A menudo sí, y el resultado muestra cuánto. WebP comprime mejor que JPEG con calidad visual similar, por eso se usa tanto en la web. Cambias tamaño por compatibilidad. Si después necesitas reducirlo, el <a href=\"/es/comprimir-imagen/\">Compresor de imágenes</a> permite fijar el tamaño objetivo."
+
+[[faq]]
+q = "¿Conserva la fecha, la cámara y la ubicación?"
+a = "No. El lienzo solo guarda píxeles: EXIF, GPS, perfiles de color y XMP quedan fuera. Muchos WebP de la web ya vienen sin esos datos. Para verlos o editarlos sin recomprimir la imagen, usa el <a href=\"/es/eliminar-datos-exif/\">Visor y eliminador de EXIF</a>."
+
+[[faq]]
+q = "¿Puedo convertir una carpeta entera?"
+a = "Sí. No hay límite de cantidad ni tamaño porque no hay un servidor que los procese. Cada archivo tiene su fila y descarga; con dos o más también puedes descargar un ZIP. Si se repiten nombres, se añade un número antes de la extensión para no reemplazar ninguno."
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = "Es gratis: sin cuenta, inicio de sesión, prueba ni marca de agua. La publicidad paga el sitio y no recibe información sobre tus imágenes."
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = "Sí. Carga la página una vez y desconéctate: seguirá funcionando igual. Es una comprobación directa de que no se sube nada. Un conversor que enviara los archivos a un servidor dejaría de funcionar sin red."
+
+[schema]
+description = "Convierte WebP a JPG con el decodificador y codificador del navegador. Sin subir nada ni descargar códecs. Rellena la transparencia con el color elegido, guarda el primer fotograma de las animaciones y reúne lotes en ZIP."
+features = ["Convierte WebP a JPEG con el decodificador del navegador", "No se sube nada, y la herramienta funciona con la red desenchufada", "Pregunta el color de fondo solo si hay transparencia", "Avisa antes de convertir si hay transparencia, animación o codificación sin pérdida", "Reconoce el contenido aunque el WebP se llame .jpg", "Control de calidad con valor inicial de 92", "Muestra el tamaño antes y después de cada archivo", "Por lotes, con todos los resultados en un zip"]
+
+[picker]
+title = "Suelta aquí las imágenes WebP"
+hint = "o haz clic para elegir: archivos .webp, sea cual sea su nombre"
