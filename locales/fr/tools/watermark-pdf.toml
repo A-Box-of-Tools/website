@@ -1,0 +1,144 @@
+name = "Filigrane PDF"
+heading = "Filigrane&nbsp;PDF <span class=\"h1-kw\">&mdash; marquer chaque page avec son destinataire</span>"
+tagline = "Un scan qui indique sa destination ne peut pas être réutilisé ailleurs discrètement."
+title = "Ajouter un filigrane à un PDF &mdash; Chaque page, gratuit, sans envoi"
+description = "Ajoutez destinataire, date ou nom à chaque page d’un PDF dans votre navigateur, dans toute langue, avec angle et opacité choisis. Aucun envoi, contenu intact et résultat vérifié avant téléchargement."
+og_title = "Ajouter un filigrane à un PDF sans l’envoyer"
+og_description = "Marquez chaque page « &nbsp;Pour la banque Acme uniquement&nbsp; » avant de l’envoyer, afin que sa réutilisation ailleurs soit visible. Tout se fait dans le navigateur sans que le document le quitte."
+og_image_alt = "Ajouter un filigrane au PDF dans votre navigateur sans l’envoyer"
+pledge = "Votre document est ouvert, marqué puis écrit en mémoire sur votre appareil par le code de ce site. Votre navigateur dessine le texte. Aucun envoi possible ni serveur pour recevoir le document."
+live_hint = "Regardez l’onglet Réseau des outils de développement pendant l’ajout du filigrane. Aucune requête ne transporte document, texte ou nom de fichier. Ou déconnectez Internet et marquez-le quand même."
+read_first = ", <code>src/stamp.js</code> pour la position, <code>src/render.js</code> pour convertir les mots en image et <code>src/apply.js</code> pour les trois objets ajoutés au document et les deux instructions par page. Aucun de ces fichiers, lecteurs ou rédacteurs ne contacte le réseau."
+howto_heading = "Comment ajouter un filigrane à un PDF"
+card = "Marquez chaque page avec destinataire, date ou nom, dans toute langue, à l’angle et à l’opacité choisis. Aucun envoi, contenu intact, résultat rouvert pour vérifier chaque page."
+
+[words]
+plural = "documents"
+choose = "un PDF"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "Le document à marquer est celui qu’on veut le moins envoyer à un outil."
+body = "Scan de passeport pour un propriétaire, relevé pour un courtier, projet de contrat confidentiel&nbsp;: le filigrane accompagne un document qui va quitter vos mains. L’envoyer d’abord au serveur d’un outil ajouterait un destinataire inconnu. Ici, le navigateur lit, dessine et écrit en mémoire. La <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. L’outil fonctionne déconnecté."
+
+[[privacy]]
+title = "Un filigrane indique une destination. Il n’empêche pas les copies."
+body = "« &nbsp;Pour la banque Acme uniquement, 12 septembre 2026&nbsp; » sur chaque page identifie la destination d’origine si le scan paraît ailleurs. C’est pourquoi banques, avocats et propriétaires le demandent. Ce n’est pas un verrou&nbsp;: un éditeur PDF peut le retirer. Pour contrôler l’ouverture, ajoutez un mot de passe avec le <a href=\"../proteger-un-pdf/\">protecteur PDF</a>, proposé sous le résultat."
+
+[[privacy]]
+title = "Le filigrane est une image, compatible avec toute langue et police."
+body = "Un PDF utilise ses polices intégrées ou les quatorze polices latines supposées disponibles. Pour éviter d’intégrer plusieurs mégaoctets de polices et un moteur, le navigateur dessine les mots avec les polices de votre appareil, puis les place comme image avec un masque de transparence. La résolution convient à l’impression. Le texte du filigrane ne peut ensuite être sélectionné ni recherché&nbsp;: il est destiné à être vu."
+
+[[privacy]]
+title = "Le contenu des pages n’est ni lu, rendu ni réorganisé."
+body = "Trois objets sont ajoutés&nbsp;: image, masque et opacité, puis deux petites instructions par page, avant et après le dessin existant. Le contenu original n’est pas décodé ni changé. Instructions, polices et images restent intacts&nbsp;: texte sélectionnable et recherchable, scans à leur résolution, aucune mise en page déplacée. Les anciennes versions d’objets abandonnées sont retirées à la réécriture."
+
+[[privacy]]
+title = "L’aperçu montre la position, pas le document rendu."
+body = "Le site n’a volontairement aucun moteur de rendu PDF. L’aperçu est une page blanche aux dimensions exactes de votre première page avec le filigrane à sa place finale. Le calcul est celui qui écrit le fichier. Dessiner fidèlement votre contenu demanderait un moteur comparable à celui d’un navigateur&nbsp;; un aperçu approximatif serait trompeur."
+
+[[privacy]]
+title = "Le résultat est rouvert avant téléchargement."
+body = "Les octets du résultat sont remis au lecteur PDF partagé. Chaque page doit référencer le filigrane dans ses ressources et finir par son instruction de dessin, avec le même nombre de pages que l’original. Toute erreur bloque le téléchargement et est annoncée."
+
+[[privacy]]
+title = "Une signature numérique ne survit pas à la réécriture."
+body = "La signature couvre les octets exacts du fichier. Une réécriture l’invalide&nbsp;: la copie obtenue n’est plus signée et le résultat vous avertit si l’original l’était. Gardez l’original signé."
+
+[[privacy]]
+title = "Un document verrouillé doit d’abord être déverrouillé."
+body = "La page ne demande aucun mot de passe. Elle refuse le PDF protégé avec un lien vers le <a href=\"../deverrouiller-un-pdf/\">déverrouilleur PDF</a>. Revenez avec la copie ouverte pour la marquer, puis remettez un mot de passe avec le <a href=\"../proteger-un-pdf/\">protecteur PDF</a>."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = "Les scripts publicitaires et de mesure de Google ne reçoivent ni document, page, nom, poids, nombre de pages ni texte du filigrane. Tout le code de lecture, marquage et écriture vient du site et figure dans le dépôt."
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = "Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par un script de cdnjs.buymeacoffee.com et va chercher sa police chez Google Fonts. C'est un lien et rien de plus&nbsp;: il ne signale aucune visite, et on ne lui donne rien sur vous ni sur vos documents. Rien ne se produit tant que vous ne cliquez pas, et ce vers quoi vous cliquez alors est le site de quelqu'un d'autre."
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = "Déconnectez le réseau&nbsp;: toutes les fonctions restent disponibles. Un outil envoyant votre document ailleurs pour le marquer s’arrêterait."
+
+[[howto]]
+title = "Choisissez le PDF."
+body = "Un document à la fois, lu depuis votre disque. Un PDF demandant un mot de passe est orienté vers le déverrouilleur. Les autres, scans compris, sont acceptés tels quels."
+
+[[howto]]
+title = "Saisissez le texte."
+body = "Destinataire et date&nbsp;: « &nbsp;Pour la banque Acme uniquement &middot; 12 septembre 2026&nbsp; » convient. Toute langue et écriture sont possibles grâce au dessin par votre navigateur."
+
+[[howto]]
+title = "Réglez la disposition et regardez l’aperçu."
+body = "Taille, diagonale ou horizontale, au centre ou répété, opacité, couleur, toutes les pages ou la première. L’aperçu est une page blanche aux dimensions de la première page, avec la position finale exacte."
+
+[[howto]]
+title = "Marquez et lisez la vérification."
+body = "L’image est ajoutée une fois au document et chaque page reçoit son instruction de dessin. Le résultat est rouvert&nbsp;: chaque page doit porter le filigrane et leur nombre rester identique. Sinon, une erreur apparaît et aucun téléchargement n’est proposé."
+
+[[faq]]
+q = "Peut-on retirer un filigrane&nbsp;?"
+a = "Oui, avec un éditeur PDF. Il indique la destination d’une copie, pas une protection&nbsp;: un scan « &nbsp;pour la banque Acme uniquement&nbsp; » retrouvé chez un autre prêteur porte sa destination d’origine. Pour empêcher une ouverture non autorisée, utilisez un mot de passe avec le <a href=\"../proteger-un-pdf/\">protecteur PDF</a>."
+
+[[faq]]
+q = "Le filigrane peut-il être en chinois, arabe ou autre langue&nbsp;?"
+a = "Oui, tout texte que vous pouvez saisir. Le navigateur utilise les polices de votre appareil et place une image par page, sans limite à l’alphabet latin. Les mots ne peuvent ensuite être sélectionnés ni recherchés."
+
+[[faq]]
+q = "Pourquoi le document n’apparaît-il pas dans l’aperçu&nbsp;?"
+a = "Le site n’a aucun moteur de rendu PDF&nbsp;: dessiner fidèlement une page nécessite un moteur de polices et un modèle graphique comparables à ceux du navigateur. L’aperçu montre donc une page blanche aux dimensions exactes avec la position du filigrane calculée par le code d’écriture. Ouvrez le résultat dans un lecteur pour voir les deux ensemble."
+
+[[faq]]
+q = "Le document change-t-il sous le filigrane&nbsp;?"
+a = "Non. Instructions, polices et images sont copiées intactes, puis le filigrane est dessiné par-dessus avec l’opacité choisie. Texte sélectionnable et recherchable, résolution des scans conservée, rien ne bouge. Le poids augmente d’une image partagée, généralement quelques dizaines de kilo-octets pour quelques mots."
+
+[[faq]]
+q = "Fonctionne-t-il sur les scans et les pages de côté&nbsp;?"
+a = "Oui. Le filigrane se dessine sur l’image du scan. Les pages portant une rotation sont marquées selon leur orientation affichée&nbsp;: la diagonale suit ce que le lecteur montre, pas le papier tel que vu par le scanner."
+
+[[faq]]
+q = "Que devient un document signé&nbsp;?"
+a = "Toute modification invalide la signature, qui couvre les octets exacts. L’outil écrit une nouvelle copie et vous avertit si l’original était signé. Gardez cet original, dont la signature reste valide."
+
+[[faq]]
+q = "Puis-je marquer un PDF avec mot de passe&nbsp;?"
+a = "Pas directement&nbsp;: aucun champ de mot de passe ici. Retirez d’abord la protection avec le <a href=\"../deverrouiller-un-pdf/\">déverrouilleur PDF</a>, marquez la copie puis reprotégez-la avec le <a href=\"../proteger-un-pdf/\">protecteur PDF</a>. Les restrictions seules sont aussi refusées&nbsp;: la réécriture les supprimerait, et la page demande de les retirer explicitement."
+
+[[faq]]
+q = "Mes documents ou mon texte sont-ils envoyés&nbsp;?"
+a = "Non. Votre navigateur lit, marque et écrit sur votre appareil, et dessine le texte. Aucun serveur&nbsp;: la <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. Déconnectez le réseau et utilisez la page pour le vérifier."
+
+[[faq]]
+q = "Comment savoir si toutes les pages portent le filigrane&nbsp;?"
+a = "Le résultat est relu sur votre appareil. Chaque page doit référencer le filigrane et finir par son instruction de dessin, avec le même nombre de pages que l’original. Tout échec est annoncé et empêche le téléchargement."
+
+[[faq]]
+q = "Y a-t-il une limite de taille, et cela coûte-t-il quelque chose&nbsp;?"
+a = "Aucune limite n'est écrite dans l'outil. La limite, c'est votre propre machine&nbsp;: le document est tenu en mémoire pendant le travail, un portable encaissera donc quelques centaines de mégaoctets sans broncher et peinera quelque part au-dessus. C'est gratuit, il n'y a ni compte, ni connexion, ni période d'essai. Le site porte de la publicité, et c'est elle qui le paie&nbsp;; on ne donne rien aux annonces sur vos documents."
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = "Oui. Chargez la page une fois puis déconnectez Internet&nbsp;: elle continue. Un outil envoyant votre document ailleurs pour le marquer s’arrêterait."
+
+[schema]
+description = "Ajoutez un filigrane à chaque page PDF avec destinataire, date ou nom, dans toute langue, avec angle, taille et opacité réglables. Contenu intact, aucun envoi, résultat rouvert pour vérifier le marquage."
+features = ["Marque toutes les pages ou la première avec votre texte", "Toute langue et écriture, avec les polices du navigateur", "En diagonale ou horizontal, au centre ou répété", "Taille, opacité et couleur réglables avec aperçu de position", "Suit l’affichage des scans et des pages tournées", "Ne lit ni ne réécrit le contenu original de la page", "Rouvre le résultat pour vérifier le filigrane de chaque page", "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune limite de taille"]
+
+[picker]
+title = "Déposez le PDF à marquer ici"
+hint = "ou cliquez pour parcourir &mdash; un document à la fois"

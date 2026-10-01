@@ -152,11 +152,16 @@ function updateCounts() {
 }
 
 function describe(text) {
-  if (text === '') return 'empty';
+  if (text === '') return phrase('count.empty');
   const lines = text.split('\n').length;
-  return `${lines.toLocaleString()} line${lines === 1 ? '' : 's'}, `
-    + `${text.length.toLocaleString()} character${text.length === 1 ? '' : 's'}, `
-    + humanBytes(byteLength(text));
+  const characters = text.length;
+  return phrase('count.summary', {
+    lines: phrase(lines === 1 ? 'count.lines.one' : 'count.lines.many',
+      { count: lines.toLocaleString() }),
+    characters: phrase(characters === 1 ? 'count.characters.one' : 'count.characters.many',
+      { count: characters.toLocaleString() }),
+    size: humanBytes(byteLength(text)),
+  });
 }
 
 const byteLength = (text) => new TextEncoder().encode(text).length;

@@ -1,0 +1,142 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Coller du texte dans une page web peut porter à conséquence
+      exactement autant qu'y téléverser un fichier. Si cela ne se sent
+      pas, c'est que le geste vient d'un endroit sûr&nbsp;: entre deux de
+      vos fenêtres, coller déplace du texte d'un lieu que vous contrôlez
+      vers un autre lieu que vous contrôlez. Sur une page web, le second
+      lieu est une zone de texte qu'un script peut lire &mdash; et la
+      suite dépend entièrement de la page, pas du geste.
+    </p>
+    <p>
+      Bien des outils à zone de collage font leur travail sur un
+      serveur&nbsp;: la page expédie votre texte, le serveur formate,
+      valide ou compare, le résultat revient. Rien à l'écran ne dit
+      laquelle des deux espèces vous utilisez. La zone de texte est la
+      même dans les deux cas&nbsp;; le bouton
+      &laquo;&nbsp;Formater&nbsp;&raquo; aussi. La différence est une
+      requête réseau, invisible tant qu'on ne la cherche pas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'un collage transporte vraiment</h2>
+    <p>
+      Ce qui atterrit dans les outils en ligne est rarement de la prose.
+      C'est le texte de travail du métier de quelqu'un, et le genre
+      compte, parce que certaines des chaînes les plus sensibles de
+      l'informatique sont précisément celles qu'on colle dans des
+      formateurs à minuit&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Les fichiers de configuration</strong> existent pour tenir
+        ce qu'un programme ne doit pas coder en dur, et ces choses sont
+        des mots de passe de bases de données, des clés d'API et des
+        secrets de signature. Une config collée entière les transporte
+        tous.
+      </li>
+      <li>
+        <strong>Les journaux et les traces d'erreur</strong> transportent
+        des jetons de session dans des URL, des adresses de courriel, des
+        noms d'hôtes internes, et parfois un corps de requête avec les
+        données personnelles de quelqu'un dedans.
+      </li>
+      <li>
+        <strong>Les réponses d'API</strong> sont des instantanés de
+        données de production &mdash; vrais clients, vrais soldes &mdash;
+        collés quelque part de commode pour être lus.
+      </li>
+      <li>
+        <strong>Tout ce qui a la forme du base64</strong> et finit dans un
+        décodeur a généralement été encodé parce que cela comptait&nbsp;:
+        un jeton en cours de débogage, un certificat, un en-tête
+        d'authentification.
+      </li>
+    </ul>
+    <p>
+      Une clé qui a transité par le serveur d'un inconnu doit être tenue
+      pour exposée dès l'instant où l'on s'en aperçoit &mdash; révoquée et
+      réémise, ce qui, sur un système en production, est un après-midi que
+      personne n'avait prévu. Le propos n'est pas que les sites de
+      formatage moissonnent des identifiants. C'est que vous ne pouvez pas
+      savoir ce qu'un serveur journalise, et qu'un secret dont vous ne
+      pouvez pas exclure l'exposition est un secret qu'il faut changer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi l'outil n'a pas besoin que votre texte parte</h2>
+    <p>
+      Voici le fait technique qui tranche la question&nbsp;: formater,
+      valider, convertir et comparer du texte comptent parmi les travaux
+      les plus faciles de l'informatique. Analyser du JSON, indenter du
+      XML, comparer deux fichiers, encoder du base64 &mdash; un navigateur
+      fait cela en quelques millisecondes, localement, et en est capable
+      depuis des années. Un serveur n'apporte rien au travail. Quand un
+      outil à collage téléverse votre texte, c'est un vestige
+      d'architecture ou une commodité pour l'exploitant, jamais une
+      nécessité du travail.
+    </p>
+    <p>
+      C'est ce dont les outils de texte de ce site sont le
+      contre-exemple. Le <a href="../../formater-du-json/">formateur
+      JSON</a> analyse, formate et convertit JSON, XML, HTML, CSS et
+      YAML&nbsp;; le <a href="../../comparer-des-textes/">comparateur de
+      textes</a> marque chaque différence entre deux textes, ligne par
+      ligne et mot par mot&nbsp;; l'<a href="../../encoder-base64/">
+      encodeur-décodeur base64</a> fait les deux sens entre un texte et
+      ses encodages. Tous trois tournent sur votre machine, et ce que
+      vous collez n'a nulle part où aller &mdash; ces pages ne portent
+      aucun chemin de code qui pourrait l'expédier.
+    </p>
+    <p>
+      Deux d'entre eux ont déjà leur guide&nbsp;:
+      <a href="../formater-du-json/">formater du JSON sans l'envoyer</a>
+      et <a href="../comparer-deux-fichiers-json/">comparer deux fichiers
+      JSON</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Savoir laquelle des deux espèces vous utilisez</h2>
+    <p>
+      Les vérifications sont les mêmes que pour un outil à fichiers, et
+      elles sont écrites en entier dans
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">le guide sur l'envoi
+      de fichiers</a>. La version courte, façon collage&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Débranchez.</strong> Chargez la page, coupez la connexion,
+        collez, appuyez sur le bouton. Un outil local continue&nbsp;; un
+        outil serveur s'arrête. Trente secondes, aucune expertise,
+        infalsifiable.
+      </li>
+      <li>
+        <strong>Regardez l'onglet Réseau pendant que vous appuyez sur
+        Formater.</strong> Une requête qui part à cet instant, à peu près
+        de la taille de votre collage, c'est votre collage qui part. Pas
+        de requête, pas d'envoi.
+      </li>
+      <li>
+        <strong>Méfiez-vous des extras serviables.</strong> Un bouton
+        &laquo;&nbsp;partager cet extrait&nbsp;&raquo;, un historique de
+        vos collages synchronisé entre appareils, un lien à envoyer à un
+        collègue &mdash; chacun n'est possible que si le texte a été
+        stocké sur un serveur. Les fonctionnalités sont des aveux&nbsp;:
+        une page qui peut montrer votre collage à quelqu'un d'autre l'a
+        gardé.
+      </li>
+    </ul>
+    <p>
+      Et une habitude vaut mieux que les trois vérifications&nbsp;: coller
+      moins. Un validateur n'a pas besoin du vrai mot de passe pour
+      valider la forme d'une config &mdash; <code>"REDACTED"</code>
+      s'analyse à l'identique. Quant au collage qui est lui-même le
+      secret, la règle se réduit à plus simple encore&nbsp;: la seule page
+      qui devrait jamais recevoir un mot de passe est la page de connexion
+      à laquelle il appartient.
+    </p>
+  </section>

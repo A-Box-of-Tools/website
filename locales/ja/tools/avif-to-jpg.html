@@ -1,0 +1,129 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span>AVIFファイルを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">すべて削除</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the two decisions, same as the WebP converter's.
+
+    A JPEG has no alpha channel, so the colour behind the see-through parts is
+    not an option this tool can leave open. AVIF carries alpha far less often
+    than WebP does - most of the AVIFs people arrive with are photographs saved
+    off a web page - so the field is hidden more often here, and it is still
+    decided by looking at the decoded pixels rather than at the format.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span>画質を選ぶ</h2>
+
+    <p class="card-lede">AVIFとJPEGは異なるコーデックなので、変換には画像のデコードと再エンコードが必要です。ここではそのときの画質の変化を選びます。</p>
+
+    <div class="settings">
+      <label class="field" for="quality">
+        <span>JPEG画質：<output id="quality-value" for="quality">92</output></span>
+        <span class="field-note">92では写真を元の画像と見分けにくくなります。75前後より下では輪郭に劣化が見え始めます。</span>
+      </label>
+      <input type="range" id="quality" min="40" max="100" step="1" value="92">
+
+      <div id="background-row" class="background-row" hidden>
+        <label class="field" for="background">
+          <span>透明な部分の背景色</span>
+          <span id="background-note" class="field-note"></span>
+        </label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>変換する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">JPGに変換</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>すべてZIPでダウンロード</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1個のファイル</span>
+    <span data-phrase="chosen.many">{count}個のファイル</span>
+    <span data-phrase="row.remove">{name}を削除</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">透明な部分があります</span>
+    <span data-phrase="read.notavif">{name}はAVIFではなく{found}です。このツールはAVIFファイルを変換します。</span>
+    <span data-phrase="read.unknown">{name}はAVIFではなく、先頭のバイトもこのページが対応する画像形式に一致しません。</span>
+    <span data-phrase="read.failed">{name}を開けませんでした：{why}</span>
+    <span data-phrase="found.png">PNG</span>
+    <span data-phrase="found.jpeg">JPEG</span>
+    <span data-phrase="found.webp">WebP</span>
+    <span data-phrase="found.gif">GIF</span>
+    <span data-phrase="found.bmp">BMP</span>
+    <span data-phrase="support.noavif">このブラウザはAVIFを開けないので、このページでは変換できません。ChromeとFirefoxは2021年から、Safariは2023年から対応しています。それより古いブラウザには必要なデコーダーがありません。</span>
+    <span data-phrase="background.some">透明な部分のある画像が含まれています。JPEGは透明度を保てないので、そこに置く色を選んでください。</span>
+    <span data-phrase="background.none">リストの画像に透明な部分はないので、背景色は不要です。</span>
+    <span data-phrase="settings.one">1個のAVIFを画質{quality}で変換します。</span>
+    <span data-phrase="settings.many">{count}個のAVIFを画質{quality}で変換します。</span>
+    <span data-phrase="settings.none">上でAVIFを選ぶと、書き出す内容をここに表示します。</span>
+    <span data-phrase="run.one">JPGに変換</span>
+    <span data-phrase="run.many">{count}個のファイルをJPGに変換</span>
+    <span data-phrase="progress.each">{name}を変換中&hellip;</span>
+    <span data-phrase="progress.done">完了しました。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count}個のJPEGを書き出しました。合計{size}です。</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">元のファイル：{name}、{dimensions}、元のサイズは{was}です。</span>
+    <span data-phrase="result.flattened">透明な部分を{colour}で塗りました。</span>
+    <span data-phrase="result.download">ダウンロード</span>
+    <span data-phrase="change.smaller">{percent}%小さく</span>
+    <span data-phrase="change.larger">{percent}%大きく</span>
+    <span data-phrase="change.same">同じサイズ</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">ブラウザが画像をデコードできませんでした</span>
+    <span data-phrase="error.encode">ブラウザが{format}を書き出せませんでした</span>
+    <span data-phrase="error.wrongtype">ブラウザが返した内容は{format}ではありませんでした</span>
+    <span data-phrase="error.broke">問題が起きました：{detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">ファイルはどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+  </div>
+</main>

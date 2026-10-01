@@ -1,0 +1,173 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Désagréablement souvent, oui. Pas par des moyens d'expert&nbsp;: en
+      sélectionnant la zone noircie et en appuyant sur copier. La plupart
+      des outils vers lesquels on se tourne quand quelque chose doit être
+      caché dessinent un rectangle <em>par-dessus</em> le contenu et
+      l'enregistrent <em>à côté</em> de lui, et tout ce qui est dessous
+      voyage dans le fichier, patiemment, jusqu'à ce que quelqu'un
+      regarde.
+    </p>
+    <p>
+      Ce n'est pas une erreur rare commise par des gens négligents. Elle a
+      publié des noms tirés de dossiers judiciaires, des chiffres non
+      caviardés de rapports officiels &mdash; et, dans une publication
+      massive de pièces de dossier en décembre 2025, des noms noircis qui
+      se lisaient au bout de quelques heures. Les gens derrière ces
+      erreurs avaient des avocats et des procédures. Ce qu'ils n'avaient
+      pas, c'est la distinction dont parle cette page&nbsp;: la différence
+      entre couvrir et retirer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le rectangle qui est un objet</h2>
+    <p>
+      Dans un lecteur PDF, un traitement de texte, un logiciel de
+      présentation ou un éditeur d'images à calques, un rectangle noir
+      dessiné n'est pas de la peinture. C'est un <em>objet</em> &mdash;
+      une forme avec une position, une taille et une couleur, rangée dans
+      le fichier comme une chose à part, devant un texte toujours
+      entièrement présent. Le document ne dit pas
+      &laquo;&nbsp;ce mot a disparu&nbsp;&raquo;&nbsp;; il dit
+      &laquo;&nbsp;ce mot est là, et un rectangle est devant&nbsp;&raquo;.
+    </p>
+    <p>
+      Tout découle de là. Sélectionnez la zone et copiez, et le
+      presse-papiers reçoit le texte, parce que copier lit la couche de
+      texte et ignore la décoration devant. Ouvrez le fichier dans un
+      éditeur et le rectangle se déplace, tout simplement. Exportez vers
+      un autre format et les couches peuvent être aplaties dans un autre
+      ordre. À l'écran, la boîte est identique à un vrai caviardage, et
+      c'est exactement pourquoi l'erreur survit aux relectures&nbsp;:
+      l'œil vérifie la page, et la page a l'air correcte.
+    </p>
+    <p>
+      Le PDF ajoute une variante plus discrète. Un PDF peut déclarer
+      qu'une suite de glyphes &laquo;&nbsp;épelle&nbsp;&raquo; autre chose
+      que ce qui est dessiné &mdash; une fonction d'accessibilité nommée
+      <code>/ActualText</code> &mdash; et copier lit la déclaration plutôt
+      que l'encre. Un document peut donc laisser fuir un mot qui n'est
+      même pas visible sur la page.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le flou qui est de l'arithmétique</h2>
+    <p>
+      La pixellisation paraît plus sûre qu'elle ne l'est. Une mosaïque est
+      une grille de moyennes, et une moyenne est une <em>mesure</em> de ce
+      qu'il y avait dessous &mdash; petite et avec perte, mais une mesure
+      quand même. Pour du texte dans une police connue à une taille
+      prévisible, cela a suffi à le relire&nbsp;: prendre chaque chaîne
+      plausible, la rendre, la pixelliser de la même façon, et garder la
+      candidate dont la mosaïque correspond. Rien là-dedans n'exige un
+      laboratoire&nbsp;; c'est une boucle et une comparaison.
+    </p>
+    <p>
+      Le flou est pire en principe. Un flou est une convolution &mdash;
+      chaque pixel de sortie, une moyenne pondérée de ses voisins &mdash;
+      et les convolutions se remontent assez bien, assez souvent, pour que
+      la déconvolution soit un outil standard de la photographie plutôt
+      qu'une attaque exotique. Les deux effets partagent aussi un défaut
+      qui n'a rien de mathématique&nbsp;: ils annoncent que quelque chose
+      est caché, et à peu près sa longueur &mdash; ce qui, pour un mot de
+      passe de six caractères, est déjà un indice.
+    </p>
+    <p>
+      Un aplat n'a aucune de ces propriétés. Une seule couleur, bord à
+      bord, ne transporte la mesure de rien. C'est pourquoi c'est le
+      réglage par défaut de l'outil pour
+      <a href="../../caviarder-une-image/">caviarder une image</a> ici,
+      pourquoi ses options pixelliser et flouter disent sur leur propre
+      étiquette ce qu'elles ne promettent pas, et pourquoi son réglage de
+      force annonce un nombre plutôt qu'un adjectif.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les copies qu'un fichier garde de son passé</h2>
+    <p>
+      La troisième famille d'échecs n'a rien à voir avec le recouvrement.
+      Les fichiers se souviennent, de façons que rien à l'écran ne
+      montre&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Les métadonnées d'une photo incluent souvent une
+        miniature</strong> de l'image telle qu'elle était avant la
+        retouche. Recadrez votre adresse hors d'une photo, et le bloc EXIF
+        peut encore contenir l'original non recadré en réduction. Le
+        <a href="../../supprimer-les-donnees-exif/">lecteur-suppresseur
+        EXIF</a> montre ce bloc et le retire&nbsp;; il y a
+        <a href="../supprimer-les-donnees-exif-et-gps/">un guide</a>.
+      </li>
+      <li>
+        <strong>Certains éditeurs enregistrent sur place sans
+        tronquer.</strong> Une célèbre paire de bogues de 2023 &mdash;
+        dans l'outil d'annotation de captures d'un téléphone et l'outil de
+        capture d'un système de bureau &mdash; laissait les octets de
+        l'image d'origine dans le fichier après recadrage, si bien que la
+        partie &laquo;&nbsp;coupée&nbsp;&raquo; se reconstruisait à partir
+        des restes.
+      </li>
+      <li>
+        <strong>Les PDF peuvent transporter leur propre histoire.</strong>
+        Un PDF modifié par enregistrements incrémentaux ajoute ses
+        changements à la fin du fichier et y laisse la version antérieure
+        intacte, suppressions comprises.
+      </li>
+    </ul>
+    <p>
+      Le fil conducteur&nbsp;: ce qu'un lecteur affiche et ce qu'un
+      fichier contient sont deux questions différentes, et un caviardage
+      vérifié seulement à l'œil n'a répondu qu'à la première.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que retirer exige vraiment</h2>
+    <p>
+      Un vrai caviardage change les données, pas l'affichage, et il se
+      vérifie par le chemin même par lequel il peut échouer&nbsp;: en
+      interrogeant le fichier, pas l'écran.
+    </p>
+    <p>
+      Pour une image, cela veut dire que les pixels sous la boîte cessent
+      d'exister avant qu'un fichier soit écrit. C'est exactement ce que
+      fait l'outil pour
+      <a href="../../caviarder-une-image/">caviarder une image</a> &mdash;
+      les valeurs couvertes sont réécrites en mémoire et seulement ensuite
+      confiées à l'encodeur, si bien que la sortie contient des pixels
+      noirs là où était le contenu, pas de l'encre noire devant. La
+      version pas à pas est dans
+      <a href="../caviarder-une-image/">le guide du caviardage
+      d'image</a>.
+    </p>
+    <p>
+      Pour un PDF, cela veut dire que les glyphes sont supprimés des
+      instructions qui dessinent la page, avec les porteurs cachés &mdash;
+      déclarations <code>/ActualText</code>, signets, commentaires, champs
+      de formulaire. C'est ce que fait l'outil pour
+      <a href="../../caviarder-un-pdf/">caviarder un PDF</a>, qui fait
+      ensuite la chose la plus importante&nbsp;: il rouvre sa propre
+      sortie et y cherche les mots retirés, et <strong>si quoi que ce soit
+      a survécu, il n'y a pas de téléchargement</strong>. La visite
+      guidée est dans <a href="../caviarder-un-pdf/">le guide du
+      caviardage de PDF</a>.
+    </p>
+    <p>
+      Et quel que soit l'outil, où que ce soit, le test de réception vous
+      appartient&nbsp;: sélectionnez par-dessus la zone caviardée et
+      copiez&nbsp;; cherchez le mot retiré dans le fichier&nbsp;;
+      ouvrez-le dans un autre lecteur. Si le contenu a été retiré, rien ne
+      peut le trouver &mdash; et savoir si un outil fait cela dans votre
+      navigateur, sans que votre fichier quitte la machine, est aussi une
+      affirmation qui se vérifie au lieu de se croire&nbsp;:
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">le guide sur l'envoi
+      de fichiers</a> montre comment. Le caviardage est le seul travail où
+      le fichier est sensible par définition, ce qui en fait le dernier
+      qui devrait transiter par le serveur d'un inconnu.
+    </p>
+  </section>

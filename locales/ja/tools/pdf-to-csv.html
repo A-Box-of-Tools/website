@@ -1,0 +1,165 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>PDFを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The two documents this tool cannot read, each with the way out of it.
+      Revealed by main.js when the matching failure happens, rather than sitting
+      open on a page most people arrive at with a statement that works.
+
+      Every route here runs on the visitor's own machine, which is why this list
+      used to name no website at all: sending somebody to a site that strips the
+      password would have undone, in the sentence after the failure, the promise
+      the rest of this page makes. /unlock-pdf/ is why that is no longer the
+      choice. It takes the password off in the visitor's own browser and uploads
+      nothing, so it is the same promise rather than a hole in it - and it is
+      first in the list because it is the only route that leaves the page
+      untouched, which for a tool that reads columns by where the text sits is
+      not a small thing. The warning underneath still stands, and now says what
+      it is excepting.
+    -->
+    <div id="locked-help" class="help" hidden>
+      <h3>手元の端末でパスワードを外す</h3>
+      <p>銀行は生年月日や口座番号の末尾で明細を保護することがあります。次の方法で解除したコピーをここに戻してください。文字が残るので、表を読み取れます。</p>
+      <ul>
+        <li>
+          <strong>このサイトの<a href="../unlock-pdf/">PDF保護解除ツール</a>を使います</strong>。パスワードを入力すると、アップロードせずこのブラウザで解除します。ここで挙げた方法のうち、ページを書き直さず銀行が置いた文字の位置をそのまま保つ唯一の方法です。</li>
+        <li>
+          <strong>Windows</strong>ではChromeかEdgeで開き、パスワードを入力してから<strong>印刷</strong>を選び、プリンターに<strong>PDFに保存</strong>を指定します。</li>
+        <li>
+          <strong>macOS</strong>ではプレビューで開き、パスワードを入力してから<strong>ファイル &rarr; PDFとして書き出す</strong>を選びます。
+        </li>
+      </ul>
+      <p class="help-warn">解除を提供する<em>別の</em>ウェブサイトは使わないでください。明細をアップロードすることになり、このページの目的を失います。上のリンク先は送信先のサーバーがなく、通信を切っても動きます。</p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>画像だけのPDFと、ほかの方法</h3>
+      <p>ファイルに文字はなく、スキャナーや電話で撮ったページの画像です。画像から文字を読む作業と、文字から表を読む作業は違い、このツールは前者を行いません。精度のよい順のおおよその選択肢です。</p>
+      <ul>
+        <li>
+          <strong>銀行に紙ではなくデータを求めます。</strong>多くのオンライン銀行は同じ明細をCSV、OFX、QIFで提供します。この変換を省けて、画像からの変換より正確です。</li>
+        <li>
+          <strong>送った人に元のPDFを求めます</strong>。印刷物のスキャンではなく、原本を使います。</li>
+        <li>
+          <strong>または、手元の端末で画像を読み取ります。</strong>WindowsのSnipping Tool、macOSのテキスト認識表示、Acrobatの<em>テキスト認識</em>ならアップロードせず処理できます。その後、全金額を目で照合してください。誤った数字もエラーではなく数値に見えます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the screen that matters, because everything before it was inference -->
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span>読み取った内容を照合する</h2>
+
+    <p class="card-lede">PDFは表を持つように見えても、実際は座標に置いた文字を持ち、列は文字のない隙間です。下の表は推定で組み立てました。残高がある場合は、その上に比較が一致したか、確認できない行があるか表示します。一致が確認するのは差引きの変化だけで、打ち消し合う誤りは通る場合があります。</p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">表を選ぶ</label>
+      <select id="table-pick"></select>
+    </div>
+
+    <div class="field" id="order-field" hidden>
+      <label for="date-order">日付の順序</label>
+      <select id="date-order">
+        <option value="dmy">日／月／年</option>
+        <option value="mdy">月／日／年</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+    <!-- One captioned table per table found, built by main.js: how many there
+         are is not known until the file is read. -->
+    <div id="previews" class="previews"></div>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span>CSVを保存する</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="primary as-button" download>CSVをダウンロード</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen, held in the markup
+    rather than in src/ because src/ is copied byte for byte into every
+    language. shared/js/phrases.js reads them back; a {name} is filled in by
+    the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">PDFではありません。このツールはPDFの表を読み取ります。</span>
+    <span data-phrase="load.encrypted">このPDFはパスワードで保護されています。保護の解除は表の読み取りとは別の作業なので、勝手には行いません。</span>
+    <span data-phrase="error.broke">ページの機能が停止しました（{detail}）。再読み込みして試してください。</span>
+    <span data-phrase="load.broken">このファイルをPDFとして開けませんでした（{detail}）。</span>
+    <span data-phrase="load.nopages">開くことは開きましたが、中にページが見つかりませんでした。</span>
+    <span data-phrase="scan.notext">このPDFに文字はありません。ページを撮った画像です。</span>
+    <span data-phrase="scan.notables">2行以上が列として並ぶ表がないため、行へ変換するものがありません。</span>
+    <span data-phrase="sum.one">{pages}から1つの表、{rows}を読み取りました。</span>
+    <span data-phrase="sum.many">{pages}から{tables}、合計{rows}を読み取りました。</span>
+    <span data-phrase="table.label">表{n} &middot; {page}ページ &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">{tables}すべてを順番に</span>
+    <span data-phrase="check.intable">表{n}：{verdict}</span>
+    <span data-phrase="fact.shape">{rows} in {columns}</span>
+    <span data-phrase="fact.tables">{tables}の{rows}を順番に</span>
+    <span data-phrase="count.rows.one">{n}行</span>
+    <span data-phrase="count.rows.many">{n}行</span>
+    <span data-phrase="count.columns.one">{n}列</span>
+    <span data-phrase="count.columns.many">{n}列</span>
+    <span data-phrase="count.tables.one">{n}個の表</span>
+    <span data-phrase="count.tables.many">{n}個の表</span>
+    <span data-phrase="check.held">残高は{links}回の比較すべてで一致しました。</span>
+    <span data-phrase="check.broke">残高は{links}回中{held}回で一致しました。{where}までの金額をPDFと照合してください。</span>
+    <span data-phrase="check.unchecked">確認できなかった行：{where}。金額をPDFと照合してください。</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
+    <span data-phrase="check.row">{n}行目</span>
+    <span data-phrase="check.rows">{list}行目</span>
+    <span data-phrase="order.found">この書類に12日を超える日付があるため、推測ではなく書類自身から順序を判断しました。</span>
+    <span data-phrase="order.guessed">日付がすべて12日以前なので、書類から順序を判断できません。下の日付が違う場合は変更してください。</span>
+    <span data-phrase="preview.more">ここではこの表の先頭{shown}行だけを表示しています。ダウンロードには全行が入ります。</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.dates">年を含む日付はYYYY-MM-DDで記録</span>
+    <span data-phrase="fact.amounts">金額は符号付きの通常の数値</span>
+    <span data-phrase="fact.encoding">UTF-8、RFC 4180の引用符</span>
+    <span data-phrase="count.pages.one">{n}ページ</span>
+    <span data-phrase="count.pages.many">{n}ページ</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="pdf.flate">Flateストリームを展開できませんでした（{detail}）</span>
+    <span data-phrase="pdf.nocompression">このブラウザーにはCompressionStreamがありません</span>
+    <span data-phrase="pdf.lzw">LZWストリームが未定義のコードで始まっています</span>
+    <span data-phrase="pdf.cryptfilter">このストリームは暗号化されています</span>
+    <span data-phrase="pdf.unknownfilter">未知のフィルター /{name}</span>
+    <span data-phrase="pdf.deep">入れ子が深すぎます</span>
+    <span data-phrase="pdf.short">終わりを越えました</span>
+    <span data-phrase="pdf.unexpected">{at}に想定外の{found}</span>
+    <span data-phrase="pdf.unexpectedbyte">{at}に想定外のバイト0x{hex}</span>
+    <span data-phrase="pdf.noendstream">endstreamのないストリーム</span>
+    <span data-phrase="pdf.noobj">{at}にobjキーワードがありません</span>
+    <span data-phrase="pdf.nostartxref">startxrefがありません</span>
+    <span data-phrase="pdf.noxref">xrefセクションではありません</span>
+    <span data-phrase="pdf.now">/Wのないxrefストリーム</span>
+    <span data-phrase="pdf.zerowidth">フィールド幅がゼロのxrefストリーム</span>
+    <span data-phrase="read.noheader">これはPDFの始まり方をしていません。%PDF-のヘッダーがありません。</span>
+    <span data-phrase="read.encrypted">このPDFは暗号化されています。</span>
+    <span data-phrase="read.nocatalogue">文書カタログがありません。PDFではないか、ここで修復できないほど破損しています。</span>
+  </div>
+</main>

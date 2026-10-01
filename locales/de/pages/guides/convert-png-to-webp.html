@@ -1,0 +1,56 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>Öffnen Sie den <a href="../../png-in-webp-umwandeln/">PNG-zu-WebP-Konverter</a>, ziehen Sie die Dateien hinein und wählen Sie eine von zwei Möglichkeiten:</p>
+    <ul>
+      <li><strong>Verlustfrei</strong> für Text, flache Farbflächen und scharfe Kanten: Bildschirmfotos, Diagramme, Logos, Schaubilder und alles Gezeichnete. Jeder undurchsichtige Pixel bleibt exakt gleich, und die Datei wird trotzdem kleiner.</li>
+      <li><strong>Kleiner</strong> für Fotos. Die Ersparnis ist enorm, und der Unterschied ist kaum zu erkennen.</li>
+    </ul>
+    <p>In beiden Fällen wird nichts hochgeladen. Ihr Browser schreibt WebP seit 2020; der Encoder steckt bereits auf Ihrem Rechner.</p>
+  </section>
+
+  <section>
+    <h2>Warum PNG überhaupt so groß ist</h2>
+    <p>PNG ist verlustfrei und verwirft nichts. Es sucht nach Wiederholungen, etwa gleichen Pixeln oder ähnlichen Zeilen, und beschreibt sie kompakt.</p>
+    <p>Das funktioniert hervorragend bei den Bildern, für die PNG entwickelt wurde. Bildschirmfotos bestehen meist aus flachen Flächen und wiederholtem Text, Logos aus wenigen Vollfarben. Beides lässt sich stark komprimieren.</p>
+    <p>Bei Fotos funktioniert es schlecht, weil sich fast nichts wiederholt. Gras, Himmelsverläufe und Sensorrauschen unterscheiden sich von Pixel zu Pixel, und PNG hält alles fest. Ein Handyfoto als PNG ist oft zehnmal so groß wie dasselbe Bild als JPEG. PNG ist nicht schlecht; ein verlustfreies Format wurde nur mit etwas beauftragt, das kaum jemand verlustfrei benötigt.</p>
+    <p>Deshalb hängt die richtige Wahl vom Bildinhalt ab.</p>
+  </section>
+
+  <section>
+    <h2>Verlustfreies WebP: der direkte Austausch</h2>
+    <p>WebP hat einen verlustfreien Modus, der effizienter als PNG komprimiert: neuer und mit zusätzlichen Verfahren. Bei den Bildern, für die PNG gut geeignet ist, spart er meist ein weiteres Fünftel bis Drittel, ohne dafür Bildinhalt aufzugeben.</p>
+    <p>Dieser Modus passt zu Text und harten Kanten: Bildschirmfotos für Dokumentation, Entwürfe von Benutzeroberflächen, Diagramme, Strichzeichnungen, Logos, Schaubilder und Pixelgrafik. Das Ergebnis ist dasselbe Bild in einer kleineren Datei. Dagegen spricht nur Software, die WebP nicht lesen kann.</p>
+    <p>„Verlustfrei“ sollte geprüft werden. Das Werkzeug tut das: WebP speichert die Pixel in einem von zwei Blöcken. Der Konverter liest das Ergebnis erneut, um den tatsächlich geschriebenen Block zu bestimmen. Würde ein Browser die Anforderung nicht mehr erfüllen, zeigte die Zeile das an, statt eine verlustbehaftete Datei als verlustfrei auszugeben. Alle aktuellen Browser erfüllen sie.</p>
+  </section>
+
+  <section>
+    <h2>Verlustbehaftetes WebP: für Fotos</h2>
+    <p>Der andere Modus verwirft kaum bemerkte Details, ähnlich wie JPEG, aber deutlich effizienter. Bei Fotos wird aus einem PNG von 2&nbsp;MB häufig weniger als 200&nbsp;KB. Nebeneinander lassen sich die Bilder kaum unterscheiden.</p>
+    <p>Der Qualitätsregler beginnt bei 80, der WebP-Voreinstellung, die für Fotos meist sehr gut ist. Unter etwa 60 werden die Verluste sichtbar.</p>
+    <p>Für flache Farbflächen von oben eignet sich dieser Modus <em>nicht</em>. Verlustbehaftete Komprimierung glättet; bei Text und harten Kanten ist genau das falsch. Um Buchstaben entsteht ein schwacher Saum wie bei einem schlechten Scan. Enthält das Bild Wörter, wählen Sie verlustfrei.</p>
+  </section>
+
+  <section>
+    <h2>Die Transparenz bleibt in beiden Fällen erhalten</h2>
+    <p>Die häufigste Sorge lässt sich einfach beantworten: WebP hat wie PNG einen echten Alphakanal. Ein Logo mit transparentem Hintergrund behält ihn. Keine Hintergrundfarbe muss gewählt und nichts aufgefüllt werden.</p>
+    <p>Anders ist es bei der Umwandlung <em>in</em> JPEG. JPEG hat keinen Alphakanal und verliert die Transparenz. Der Ratgeber <a href="../webp-in-jpg-umwandeln/">WebP in JPG umwandeln</a> erklärt das in einem eigenen Abschnitt. WebP hat dieses Problem nicht und ist deshalb bei freier Wahl oft das bessere Zielformat.</p>
+    <p>Eine gemessene Einschränkung gehört zur genauen Aussage der Werkzeugseite: Bei <em>teilweise</em> transparenten Pixeln kann sich der darunter gespeicherte Farbwert minimal verändern. Das liegt am Browser-Canvas, das Farben mit der Deckkraft multipliziert und die Rechnung nicht exakt rückgängig machen kann, nicht an WebP. Es ist unsichtbar, weil die am stärksten veränderten Farbwerte zugleich am wenigsten zum sichtbaren Bild beitragen. Undurchsichtige Pixel bleiben Bit für Bit gleich.</p>
+  </section>
+
+  <section>
+    <h2>Lässt sich WebP wirklich überall öffnen?</h2>
+    <p>Im Web ja. Chrome, Edge, Firefox und Safari zeigen WebP seit 2020. Für eine Website müssen Sie daher kein Ersatzformat mehr vorsehen. Kleinere Seiten mit demselben Bild sind der wichtigste Grund für diese Umwandlung.</p>
+    <p>Außerhalb des Browsers ist es uneinheitlicher. Windows und macOS zeigen inzwischen Vorschauen, aber ältere Desktopsoftware, manche Uploadformulare und die meisten E-Reader lehnen WebP noch ab. Für solche Ziele benötigen Sie das umgekehrte Werkzeug <a href="../../webp-in-jpg-umwandeln/">WebP zu JPG</a> und seinen <a href="../webp-in-jpg-umwandeln/">Ratgeber</a>.</p>
+  </section>
+
+  <section>
+    <h2>Was nicht mitkommt</h2>
+    <p>Die Pixel bleiben, die umgebenden Informationen nicht. Bei der Umwandlung über ein Canvas gehen Textblöcke, ICC-Farbprofile und XMP-Blöcke des PNGs verloren.</p>
+    <p>Bei den meisten PNGs ist das unbedeutend. Sie enthalten selten Kameradaten, Bildschirmfotos gar keine. Um vorhandene Daten zu sehen, verwenden Sie den <a href="../../exif-daten-entfernen/">EXIF-Betrachter und Entferner</a>, der sie ohne erneute Bildkomprimierung liest und schreibt.</p>
+  </section>
+
+  <section>
+    <h2>Warum es keinen Upload gibt</h2>
+    <p>Beide benötigten Fähigkeiten stecken schon auf Ihrem Rechner. Der Browser dekodiert PNG und kodiert seit 2020 WebP. Dieselbe Unterstützung ermöglicht Websites überhaupt erst die Verwendung von WebP.</p>
+    <p>Ein Konverter, der Ihre Dateien an einen Server schickt, verwendet also seine eigene Kopie einer bereits vorhandenen Software und hält währenddessen Ihre Bilder. Das <a href="../../png-in-webp-umwandeln/">Werkzeug hier</a> arbeitet in der Seite und funktioniert deshalb auch ohne Netzwerk. Das ist der einfachste Beweis, dass nichts versendet wurde. Die allgemeine Erklärung steht in <a href="../../ratgeber/ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien hochzuladen?</a>.</p>
+  </section>

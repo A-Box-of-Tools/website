@@ -1,0 +1,668 @@
+<main id="main">
+  <!-- Step 1 &mdash; the photograph -->
+  <section class="card">
+    <h2><span class="step">1</span>写真を選ぶ</h2>
+
+    <p class="card-lede">ブラウザーが開ける画像なら使えます。多くの規定は、無地の壁の前で昼間に約1.5メートル離れてスマートフォンで撮るような写真を想定しています。画像はディスクから直接読み取り、どこにも送信しません。</p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">別の写真を選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the rule -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span>国と書類を選ぶ</h2>
+
+    <p class="card-lede">以下の数値は公表された要件を、各項目の下に示す当局の資料から転記したものです。推測した数値はなく、取得のための通信もありません。数値を格納する<code>src/specs.js</code>と、出典を格納する<code>src/sources.js</code>の2つの表をページとともに配信しています。</p>
+
+    <div class="picker">
+      <!--
+        One control: the box is typed into and the list under it narrows. The
+        list is empty here and filled by src/main.js, so no copy of this file
+        ever lists a country. src/combo.js says why it is not a <select>.
+      -->
+      <div class="option-row">
+        <label for="country" id="country-label">国</label>
+        <div class="combo" id="country-combo">
+          <input type="text" id="country" class="combo-input" role="combobox"
+                 aria-autocomplete="list" aria-expanded="false"
+                 aria-controls="country-list" placeholder="入力して国を探す"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="done">
+          <button type="button" id="country-toggle" class="combo-toggle"
+                  tabindex="-1" aria-label="すべての国を表示">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                 focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round"/></svg>
+          </button>
+          <ul id="country-list" class="combo-list" role="listbox"
+              aria-labelledby="country-label" hidden></ul>
+        </div>
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <p id="doc-label" class="doc-label">書類</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      The same boxes, filled in from the rule's own words, and only for
+      "Anywhere else", like the boxes. src/requirements.js says what it reads
+      and why it quotes every figure back rather than asking to be trusted.
+    -->
+    <div class="read-rules" id="read-rules" hidden>
+      <label for="read-text">規定の文章があれば、ここに貼り付けて下の欄に読み取った値を入力できます。英語と中国語を読み取れます。ほかの言語でも寸法は見つけられます。</label>
+      <textarea id="read-text" rows="4" spellcheck="false"></textarea>
+      <button type="button" id="read-button" class="ghost">規定を読み取る</button>
+      <div id="read-result" class="read-result" hidden>
+        <p id="read-status" class="hint-line" role="status"></p>
+        <ul id="read-found" class="read-list"></ul>
+        <ul id="read-notes" class="read-list read-notes"></ul>
+      </div>
+    </div>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>数値を自分で入力する</summary>
+      <div class="numbers">
+        <label>幅（mm）<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>高さ（mm）<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>頭の高さ、最小（mm）<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>頭の高さ、最大（mm）<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>背景<select id="custom-background">
+            <option value="white">白一色</option>
+            <option value="off-white">白またはオフホワイト</option>
+            <option value="light-grey" selected>薄いグレー一色</option>
+            <option value="cream">薄いグレーまたはクリーム</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>アップロード幅（px）<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>アップロード高さ（px）<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>最小容量（KB）<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>最大容量（KB）<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">ここでのKBは、申請フォームと同じく1024バイトを意味します。</p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; the framing -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span>顔の位置を指定し、構図を確認する</h2>
+
+    <p id="frame-empty" class="field-summary">写真を選ぶと、ここに切り抜き枠が表示されます。</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">頭頂、あご、左右の瞳。この4点で規定が測る位置をすべて指定し、それらの位置から切り抜きを決めます。誤った位置にある点をドラッグしてから、<strong>枠を合わせる</strong>を押してください。点を見つけるときは、背景の壁と頭の境界、目の暗い部分など、画像自体を読み取ります。モデルは使わず、通信もしません。判定結果ではなく最初の位置なので、自分で修正できます。下のパネルには4点のうち測定できなかったものも表示します。</p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="4つの点の見つけ方">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>自動で点を探す</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>自分で点を置く</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
+        </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>仕上がり</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="stage-hint">写真の横のパネルには、規定の縦横比に切り抜いた画像だけを表示します。点や枠は重ねません。出力ファイルと同じ見た目なので、構図の誤りはダウンロード前にそこで確認できます。</p>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="ghost">規定に枠を合わせる</button>
+        <button type="button" id="reset-marks" class="ghost">もう一度顔を探す</button>
+        <button type="button" id="whole-photo" class="ghost">収まる最大の枠</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the background -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span>背景</h2>
+
+    <p class="card-lede" id="background-lede">切り出しの上端を横切る帯と、肩より上の両側を下る帯から読み取ります。背景以外の何もあってはいけない部分です。RGBではなくCIE Labで測っています。RGBで40離れた二つのグレーは見分けがつかないのに、青が40違えば別の色だからです。</p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">写真の背景の測定結果<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">規定が求める背景<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Step 5 &mdash; the files -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">5</span>保存する</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">印刷解像度</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi。ほぼすべての規定の最低値</option>
+          <option value="600">600 dpi。高品質な写真店で使う値</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">印刷する用紙</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>ファイルを作る</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>完了</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="country.icao">ICAO標準</span>
+    <span data-phrase="spec.icao.doc">あらゆる生体認証旅券類</span>
+    <span data-phrase="spec.icao.upload">機械読み取り用の画像</span>
+    <span data-phrase="spec.icao.note1">&#x2066;35 x 45&#x2069; mmの枠は世界の大半が発給の基準にしているもので、頭部の高さ70〜80パーセント、目の位置が高さの半分から五分の三のあいだ、というのが以下のすべての規格の元になっている形です。</span>
+    <span data-phrase="spec.icao.note2">Doc 9303は保存画像で両目の中心間が90ピクセル以上あることも求めますが、いまのスマホ写真から413 x 531を切り出せば余裕で満たせます。</span>
+    <span data-phrase="country.us">アメリカ合衆国</span>
+    <span data-phrase="spec.us-passport.doc">パスポートとグリーンカード</span>
+    <span data-phrase="spec.us-passport.upload">オンラインでの写真アップロード</span>
+    <span data-phrase="spec.us-passport.note1">正方形で、広く使われている正方形のパスポート写真はこれだけです。&#x2066;2 x 2&#x2069;インチ、つまり51 x 51 mm。</span>
+    <span data-phrase="spec.us-passport.note2">頭部は25から35 mmのどこにあってもよく、ICAOの規則よりずっと幅があります。目の位置も割合ではなく下端からの実寸で測ります。</span>
+    <span data-phrase="spec.us-passport.note3">現在のアップロード規定はファイル容量だけで、54 KB～10 MBのJPEG、PNG、HEICです。以前のピクセル寸法と240 KBの上限、目の位置の指定はなくなりました。ここで作る正方形は印刷用の &#x2066;2 x 2&#x2069; インチを300 dpiにしたものですが、許容範囲内のより大きい正方形も認められます。</span>
+    <span data-phrase="spec.us-dv.doc">多様性ビザ抽選への応募</span>
+    <span data-phrase="spec.us-dv.upload">Entrant Status Checkへのアップロード</span>
+    <span data-phrase="spec.us-dv.note1">上のパスポートの規則と同じ写真ですが、応募フォームが受け付けるサイズはただ一つ。ちょうど600 x 600ピクセル、240 KB以下です。</span>
+    <span data-phrase="spec.us-dv.note2">写真を理由に弾かれた応募は直してもらえるのではなく破棄されます。だからこれはおおよそではなく正確に合わせる価値があります。</span>
+    <span data-phrase="country.uk">イギリス</span>
+    <span data-phrase="spec.uk-passport.doc">パスポート</span>
+    <span data-phrase="spec.uk-passport.upload">オンライン申請用のデジタル写真</span>
+    <span data-phrase="spec.uk-passport.note1">頭部は顎から頭頂までで測り、29から34 mmでなければなりません。ICAOの範囲よりはっきり短いので、ICAOの規則で切り出した写真が頭が大きすぎるとしてここで断られることがあります。</span>
+    <span data-phrase="spec.uk-passport.note2">デジタルの規則には上限だけでなく下限もあります。50 KB未満は小さすぎるとして受け付けられません。</span>
+    <span data-phrase="country.schengen">シェンゲン圏</span>
+    <span data-phrase="spec.schengen.doc">ビザ申請</span>
+    <span data-phrase="spec.schengen.note1">すべてのシェンゲン領事館が使う共通のビザ用書式です。&#x2066;35 x 45&#x2069; mmで、顔が高さの70から80パーセント、つまり32から36 mmを占めます。</span>
+    <span data-phrase="spec.schengen.note2">背景として何を認めるかは領事館によって違います。無地の薄いグレーはどこも断りません。影の落ちた白い壁はたいてい断られます。</span>
+    <span data-phrase="country.de">ドイツ</span>
+    <span data-phrase="spec.de-passport.doc">パスポートと身分証明書</span>
+    <span data-phrase="spec.de-passport.note1">Bundesdruckereiの写真テンプレートは、&#x2066;35 x 45&#x2069; mmの枠に32から36 mmの顔の高さと、上三分の一に目が来ることを求めます。</span>
+    <span data-phrase="spec.de-passport.note2">2025年以降、写真は通常発給窓口で撮影されるか、写真店から電子的に送られます。ここで作る紙焼きは、まだ紙焼きを受け付ける申請のためのものです。</span>
+    <span data-phrase="country.ca">カナダ</span>
+    <span data-phrase="spec.ca-passport.doc">パスポート</span>
+    <span data-phrase="spec.ca-passport.note1">形が唯一の例外です。&#x2066;50 x 70&#x2069; mmで、ここにあるどれよりも縦長で細いので、別の国向けに切り出したものはそのままでは入りません。</span>
+    <span data-phrase="spec.ca-passport.note2">顔の高さは顎から頭頂まで31から36 mm。カナダは目の位置を公表していないので、ここに出る範囲は頭が枠の中央にある場合に導かれるものです。規則ではなく目安として扱ってください。</span>
+    <span data-phrase="spec.ca-passport.note3">写真店が裏面に日付とスタジオ名を印刷する必要があり、これはどんな道具も代わりにはできません。</span>
+    <span data-phrase="country.au">オーストラリア</span>
+    <span data-phrase="spec.au-passport.doc">パスポート</span>
+    <span data-phrase="spec.au-passport.note1">&#x2066;35 x 45&#x2069; mmの紙焼きに、無地の明るい背景と、顎から頭頂まで32から36 mmの顔。</span>
+    <span data-phrase="spec.au-passport.note2">紙の申請では紙焼きが2枚求められます。下のシート書き出しはまさにそのためのものです。</span>
+    <span data-phrase="country.in">インド</span>
+    <span data-phrase="spec.in-passport.doc">パスポート</span>
+    <span data-phrase="spec.in-passport.note1">Passport Sevaは無地の白背景に2 x 2インチの写真を求めます。アメリカと同じ枠です。</span>
+    <span data-phrase="spec.in-passport.note2">インドの多くの書類が「パスポートサイズ」と言うときに指すのは35 x 45 mmの紙焼きで、この一覧では別の項目になっています。二つは取り替えがききません。</span>
+    <span data-phrase="spec.in-print-35x45.doc">書類に貼るパスポートサイズの紙焼き</span>
+    <span data-phrase="spec.in-print-35x45.note1">銀行や大学や役所の書類が貼付用に「パスポートサイズの写真」と言うときの意味はこれです。&#x2066;35 x 45&#x2069; mm、白背景、頭と肩まで。</span>
+    <span data-phrase="spec.in-print-35x45.note2">これについて頭部の高さの範囲を公表している機関はないので、ICAOのものを当てて目安として表示しています。定規で測られることはありません。</span>
+    <span data-phrase="spec.in-exam-photo.doc">SSC / UPSCオンライン願書の写真</span>
+    <span data-phrase="spec.in-exam-photo.upload">オンライン申請用の写真</span>
+    <span data-phrase="spec.in-exam-photo.note1">これらの願書が実際に通すかどうかを決めるのは三つの数字です。&#x2066;200 x 230&#x2069;ピクセル、JPEG、そして20～50 KBの範囲です。両端とも見られます。12 KBのファイルは小さすぎるとして弾かれ、60 KBのものは大きすぎるとして弾かれます。</span>
+    <span data-phrase="spec.in-exam-photo.note2">頭と肩の入れ方は寸法ではなく言葉で書かれているので、ここの範囲は願書の見本画像から起こした目安です。</span>
+    <span data-phrase="spec.in-exam-photo.note3">印刷サイズはありません。印刷するものがないからです。これはウェブ書式用のファイルで、シート書き出しはこの規格では無効になります。</span>
+    <span data-phrase="spec.in-exam-signature.doc">SSC / UPSCオンライン願書の署名</span>
+    <span data-phrase="spec.in-exam-signature.upload">オンライン申請用の署名</span>
+    <span data-phrase="spec.in-exam-signature.note1">これはそもそも肖像ではありません。白い紙に黒か濃い青のインクで書いた署名を撮影またはスキャンし、140 x 60ピクセルに切り出して10から20 KBのJPEGで保存したものです。</span>
+    <span data-phrase="spec.in-exam-signature.note2">これでは頭と目の重ね表示は切られます。代わりに見るのは、紙が明るいこと、インクが載っていること、そしてそのインクが薄すぎて願書に白紙と読まれないことです。</span>
+    <span data-phrase="spec.in-exam-signature.note3">署名の140 x 60の切り出しは8400ピクセルです。この規格で難しいのは20を下回ることではなく10 KBに届かせることで、ページの詰め物についての説明を見てください。</span>
+    <span data-phrase="country.cn">中国</span>
+    <span data-phrase="spec.cn-passport.doc">パスポートとビザ</span>
+    <span data-phrase="spec.cn-passport.upload">オンラインビザ申請へのアップロード</span>
+    <span data-phrase="spec.cn-passport.note1">&#x2066;33 x 48&#x2069; mmの枠で、ほかのほとんどの国で使われる35 x 45より細く、頭部は顎から頭頂まで28から33 mmです。</span>
+    <span data-phrase="spec.cn-passport.note2">アップロードには上限だけでなく下限もあります。ちょうど354 x 472ピクセルで40 KBから120 KB。これは同じ枠を272 dpiにしたものです。</span>
+    <span data-phrase="country.jp">日本</span>
+    <span data-phrase="spec.jp-passport.doc">パスポート</span>
+    <span data-phrase="spec.jp-passport.note1">&#x2066;35 x 45&#x2069; mmの紙焼きで、顔は顎から頭頂まで34 mm、前後2 mmまで、頭の上に4から6 mmの余白。</span>
+    <span data-phrase="spec.jp-passport.note2">頭の上の余白は頭部の高さから導かれるのではなく、それ自体が一つの規則として定められています。表示している目の範囲が目安なのはそのためです。</span>
+    <span data-phrase="country.other">そのほかの国</span>
+    <span data-phrase="spec.custom.doc">数字を自分で入れる</span>
+    <span data-phrase="spec.custom.upload">その書式が求めるもの</span>
+    <span data-phrase="spec.custom.note1">これはすべての数字を編集できます。目の前の書式に書いてあるとおりに入れれば、重ね表示も紙焼きもファイルサイズの探索もそれに従います。</span>
+    <span data-phrase="spec.custom.note2">最初はICAOの形になっています。上の一覧にない国は、ほかの何よりもそれを使っている可能性がずっと高いからです。</span>
+    <span data-phrase="filter.one">1か国が一致しました。</span>
+    <span data-phrase="filter.count">{n}か国が一致しました。</span>
+    <span data-phrase="filter.none">一致する国がありません。その国の現地名で検索するか、「その他の国」を選んで数値を入力してください。</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">目</span>
+    <span data-phrase="guide.chin">あご</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">ダウンロード</span>
+    <span data-phrase="country.fr">フランス</span>
+    <span data-phrase="country.it">イタリア</span>
+    <span data-phrase="country.nl">オランダ</span>
+    <span data-phrase="country.es">スペイン</span>
+    <span data-phrase="country.ie">アイルランド</span>
+    <span data-phrase="country.pl">ポーランド</span>
+    <span data-phrase="doc.passport">パスポート</span>
+    <span data-phrase="doc.passport-id">パスポートと身分証明書</span>
+    <span data-phrase="doc.passport-id-licence">パスポート、身分証明書、運転免許証</span>
+    <span data-phrase="bg.forbid.white">背景の測定値は{hex}で、白または白に近い色ですが、この規定では白い背景は認められません。</span>
+    <span data-phrase="bg.white-or-grey.label">無地の白または薄いグレー</span>
+    <span data-phrase="bg.white-or-grey.inline">無地の白または薄いグレー</span>
+    <span data-phrase="bg.white-or-grey.note">どちらも認められます。測っているのは印刷用紙ではなく壁の色です。均一に照明を当てた白い壁も写真では薄いグレーに写るため、両方が認められています。</span>
+    <span data-phrase="bg.white-grey-blue.label">白、薄いグレー、または薄い青</span>
+    <span data-phrase="bg.white-grey-blue.inline">白、薄いグレー、または薄い青</span>
+    <span data-phrase="bg.white-grey-blue.note">写真全体が均一な単色であれば、どの色でも認められます。薄い青が含まれているのは、明るい髪と背景を区別するためです。それがこの規定の本来の目的です。</span>
+    <span data-phrase="bg.white-grey-cream.label">白、薄いグレー、またはクリーム色</span>
+    <span data-phrase="bg.white-grey-cream.inline">白、薄いグレー、またはクリーム色</span>
+    <span data-phrase="bg.white-grey-cream.note">どの色でも認められます。クリーム色は暖色寄りのオフホワイトと判定されます。不適合になるのは色合いではなく、影、模様、ドアの枠が写り込んだ壁です。</span>
+    <span data-phrase="bg.grey-or-blue-not-white.label">薄いグレーまたは薄い青。白は不可</span>
+    <span data-phrase="bg.grey-or-blue-not-white.inline">薄いグレーまたは薄い青。白は不可</span>
+    <span data-phrase="bg.grey-or-blue-not-white.note">ここにある規定で、特定の色を求めるのではなく禁止する唯一のものです。白い背景は明確に認められていないため、白い壁の前に立つという一般的な助言はこの場合には当てはまりません。</span>
+    <span data-phrase="note.crown-skull">この規定では、髪を含めず頭蓋骨の頂点まで頭の高さを測ります。このツールの点は、写真に見える髪の頂点を検出します。髪にボリュームがあると測定値が大きくなるため、許容範囲の下半分を目安にしてください。</span>
+    <span data-phrase="note.head-advisory">頭の高さの範囲が公表されていないため、代わりにICAOの数値を表示しています。この数値を外れても不適合とは判定しません。規定の文章に沿って構図を合わせれば、数値もそれに応じて決まります。</span>
+    <span data-phrase="note.head-loose">頭の高さの範囲が公表されておらず、写真の縦横比も一般的なものとは異なるため、ICAOの数値はそのまま使えません。表示する範囲は規定の文章から読み取った大まかな目安であり、外れても不適合とは判定しません。</span>
+    <span data-phrase="note.eye-advisory">目の位置が公表されていないため、頭を写真の中央に置いたときの目の位置を範囲として表示します。要件ではなく目安なので、赤く表示することはありません。</span>
+    <span data-phrase="spec.fr-passport.note1">認定された写真店または証明写真機で撮影する必要があります。このツールで作った印刷物は提出用ではなく、そこで撮影された写真の確認用です。</span>
+    <span data-phrase="spec.it-passport.note1">イタリアが公表している寸法は幅だけです。35～40 mmで、顔が写真の70～80%を占めることが求められます。高さは記載されていないため、イタリアの証明写真機や写真店で提供される &#x2066;35 x 45&#x2069; を使っています。</span>
+    <span data-phrase="spec.nl-passport.note1">頭の高さの範囲は26～30 mmで、数値から想像するより小さめです。写真の58～67%に相当し、ICAOの70～80%より小さくなります。ICAO規定に合わせた切り抜きではオランダの申請用として顔が大きすぎるため、この項目で確認できます。</span>
+    <span data-phrase="spec.nl-passport.note2">ほかにも2つの公表値がありますが、このツールでは使いません。耳を除いた顔の幅は16～20 mm、11歳未満の子どもは頭の高さが19 mmでも認められます。最低解像度が400 dpiのため、この写真の出力ピクセル数はほかのものより多くなります。</span>
+    <span data-phrase="spec.es-passport.note1">&#x2066;35 x 45&#x2069; ではありません。スペインの写真は幅26 mm、高さ32 mmで、規則では「&#x2066;32 x 26&#x2069; mm」と表記されています。一般的なヨーロッパのパスポート写真をスペインの窓口に持参すると、サイズが違います。</span>
+    <span data-phrase="spec.ie-passport.note1">紙の申請では同一の写真が4枚必要で、そのうち2枚の裏面に証人が署名と押印をします。&#x2066;35 x 45&#x2069;～&#x2066;38 x 50&#x2069; mmが認められます。このツールでは、証明写真機で作られる小さいほうの寸法を使います。</span>
+    <span data-phrase="spec.ie-passport.note2">オンライン申請は別の要件です。頭から胴体の中央まで入る、少なくとも &#x2066;715 x 951&#x2069; ピクセルの広い構図の写真を提出すると、フォーム側で切り抜かれます。ここで切り抜いた画像ではなく、元の写真を使ってください。</span>
+    <span data-phrase="spec.pl-passport.note1">ポーランドは、珍しく目の位置を写真の下端からの距離で公表しています。20～30 mmです。また、髪にボリュームがある場合は、顔自体を小さくしない限り、髪の一部が写真の外に出てもよいとされています。</span>
+    <span data-phrase="country.kr">韓国</span>
+    <span data-phrase="country.sg">シンガポール</span>
+    <span data-phrase="country.nz">ニュージーランド</span>
+    <span data-phrase="upload.online">オンライン申請用の写真</span>
+    <span data-phrase="source.studio">写真店</span>
+    <span data-phrase="source.studio.doc">公的な規定ではなく、写真店がこの名前で提供するサイズ</span>
+    <span data-phrase="note.studio-size">公的な寸法規定はありません。写真店、申請書、雇用主がサイズ名で指定する寸法です。写真の縦横寸法はそのサイズに合わせ、頭の高さにはICAOの範囲を目安として表示します。外れても不適合とは判定しません。</span>
+    <span data-phrase="spec.kr-passport.note1">韓国は、ほかの国ではあまり明記されない2点を確認します。ソフトウェアで背景を切り抜いたり置き換えたりしないことと、髪を除いた頭蓋骨の頂点まで頭の高さを測ることです。オンライン申請の推奨値は &#x2066;413 x 531&#x2069; ピクセルで、この印刷サイズを300 dpiにした値です。</span>
+    <span data-phrase="spec.sg-passport.note1">シンガポールが公表しているのはアップロード要件です。&#x2066;400 x 514&#x2069; ピクセル、8 MB以下、白い背景で、一般的な6か月ではなく3か月以内に撮影したものを求めています。mm単位の寸法はありません。&#x2066;400 x 514&#x2069; は &#x2066;35 x 45&#x2069; と同じ縦横比なので、その印刷サイズを使います。</span>
+    <span data-phrase="spec.nz-passport.note1">この項目で印刷物を作らないのは意図的です。ニュージーランドはデジタル写真を求め、印刷した写真のスキャンは認めないと明記しているため、印刷用シートを無効にしています。</span>
+    <span data-phrase="spec.nz-passport.note2">縦横比は3:4で、ヨーロッパの印刷写真の &#x2066;35 x 45&#x2069; とは異なります。ファイルには上下限があり、250 KB～5 MB、少なくとも &#x2066;900 x 1200&#x2069; ピクセル、最大 &#x2066;4500 x 6000&#x2069; ピクセルです。</span>
+    <span data-phrase="spec.cn-1inch.doc">一寸の写真（&#x2066;一寸&#x2069;）</span>
+    <span data-phrase="spec.cn-1inch.note1">中国の申請書でいう&#x2066;一寸&#x2069;は、&#x2066;25 x 35&#x2069;mmの寸法です。渡航書類用ではなく、パスポートには使えません。学校の申請書、通行証、写真を貼り付けるよう求める書類に使います。</span>
+    <span data-phrase="spec.cn-2inch.doc">二寸の写真（&#x2066;二寸&#x2069;）</span>
+    <span data-phrase="spec.cn-2inch.note1">中国の申請書が名前で指定するもう1つの寸法は、&#x2066;35 x 49&#x2069;mmです。パスポートの&#x2066;33 x 48&#x2069;mmは&#x2066;小二寸&#x2069;と呼ばれることが多く、また別の寸法なので注意してください。上に専用の項目があります。</span>
+    <span data-phrase="spec.jp-resume.doc">履歴書用写真（&#x2066;履歴書&#x2069;）</span>
+    <span data-phrase="spec.jp-resume.note1">日本の履歴書の写真欄に使う &#x2066;30 x 40&#x2069; mmです。パスポート用は &#x2066;35 x 45&#x2069; で、上に別の項目があります。</span>
+    <span data-phrase="spec.kr-banmyeongham.doc">半名刺サイズ（&#x2066;반명함&#x2069;）</span>
+    <span data-phrase="spec.kr-banmyeongham.note1">韓国の書類や申請でサイズ名を指定される &#x2066;30 x 40&#x2069; mmの写真です。パスポート用の &#x2066;35 x 45&#x2069; とは異なり、パスポートには上に別の項目があります。</span>
+    <span data-phrase="country.ch">スイス</span>
+    <span data-phrase="country.se">スウェーデン</span>
+    <span data-phrase="country.no">ノルウェー</span>
+    <span data-phrase="country.pt">ポルトガル</span>
+    <span data-phrase="bg.light-unstated.label">無地で明るい色。具体的な色の指定なし</span>
+    <span data-phrase="bg.light-unstated.inline">無地で明るい色</span>
+    <span data-phrase="bg.light-unstated.note">規定では、無地で均一に照明を当てた背景を求めていますが、色は指定していません。そのためこのツールは広く判定し、白、薄いグレー、薄い青、クリーム色を認めます。当局が禁止していない壁を不適合にすれば、ツールが要件を勝手に作ることになります。</span>
+    <span data-phrase="note.no-measurements">mm単位の寸法は公表されていません。写真の寸法には多くの国で使われる &#x2066;35 x 45&#x2069; mm、範囲にはICAOの値を目安として使います。外れても不適合とは判定しません。数値で存在しない規定を満たすためではなく、写真の構図が適切かを確認するために使ってください。</span>
+    <span data-phrase="note.taken-at-the-office">写真は持参するのではなく申請場所で撮影されます。ここで作る印刷物は確認用であり、今も写真を受け付ける書類、ビザ、申請にも使えます。</span>
+    <span data-phrase="spec.ch-passport.note1">fedpolが公表しているのは適切な写真と不適切な写真の例で、寸法はありません。不適切な例には露出過多、小さすぎる顔、開いた口、顔にかかった手、横を向いた頭、閉じた目、顔にかかった髪が含まれます。</span>
+    <span data-phrase="spec.se-passport.note1">スウェーデンでは申請時にパスポート事務所で撮影します。任意の方針ではなく法律として定めており、品質を確保し、他人の写真でパスポートを取得することを防いでいます。</span>
+    <span data-phrase="spec.no-passport.note1">ノルウェーでは生体認証用の撮影機で撮影し、写真店や証明写真機の写真は受け付けません。唯一の例外は緊急パスポートで、自分の写真を持参します。寸法は公表していませんが、顔の要件は具体的で、頭が写真の約70%を占め、両耳が見え、眼鏡を外すことが求められます。</span>
+    <span data-phrase="spec.pt-passport.note1">ポルトガルはCartão de Cidadãoにもパスポートにも寸法を公表しておらず、どちらも対面で申請します。領事館が写真を求める場合には、パスポートサイズの印刷写真が使われます。</span>
+    <span data-phrase="country.hk">香港</span>
+    <span data-phrase="country.tw">台湾</span>
+    <span data-phrase="country.vn">ベトナム</span>
+    <span data-phrase="country.ph">フィリピン</span>
+    <span data-phrase="country.br">ブラジル</span>
+    <span data-phrase="country.mx">メキシコ</span>
+    <span data-phrase="country.tr">トルコ</span>
+    <span data-phrase="country.za">南アフリカ</span>
+    <span data-phrase="country.ae">アラブ首長国連邦</span>
+    <span data-phrase="spec.hk-passport.note1">ほとんどの国より幅も高さも大きい &#x2066;40 x 50&#x2069; mmで、頭の高さは一般的な32～36 mmです。&#x2066;35 x 45&#x2069; より顔の周囲に余白ができます。写真をレーザー刻印するため、極端に暗い服も明るい服も避けるよう助言されています。</span>
+    <span data-phrase="spec.hk-passport-online.doc">パスポート、オンライン申請</span>
+    <span data-phrase="spec.hk-passport-online.note1">印刷写真を特定の解像度にしたものではありません。オンライン申請では少なくとも &#x2066;1200 x 1600&#x2069; ピクセル、5 MB以下のJPEGが必要です。印刷用の4:5に対し、こちらは3:4なので、印刷物を作らない独立した規定です。</span>
+    <span data-phrase="spec.tw-passport.note1">多くの国が暗黙に示すことを、この規定は明記しています。スマートフォンの自撮りは左右反転と広角の歪みがあるため返却され、印刷前に画像をリサンプリングしてはならず、両耳が見える必要があります。アップロードは少なくとも &#x2066;413 x 531&#x2069; ピクセル、5 MB以下のJPEGです。</span>
+    <span data-phrase="spec.vn-passport.note1">白い背景の &#x2066;4 x 6&#x2069; cmの印刷写真です。&#x2066;35 x 45&#x2069; より縦長なので、他国用に切り抜いた写真は合いません。帽子なし、色付き眼鏡なしで2枚必要です。入国管理当局が認める写真店で撮影するよう規定されています。</span>
+    <span data-phrase="spec.ph-passport.note1">フィリピンは窓口で撮影するため、サイズではなく服装を公表しています。背景と区別できる色の襟付きの服または首元を覆う服を着用し、顔に影を落とすものやカラーコンタクトレンズは避けてください。</span>
+    <span data-phrase="spec.br-passport.note1">ブラジルの &#x2066;5 x 7&#x2069; cmは、国外の領事館と5歳未満の子ども向けです。ブラジル国内では、それ以上の年齢の人は連邦警察が窓口で撮影します。以前のパスポートに使った写真は認められません。</span>
+    <span data-phrase="spec.mx-passport.note1">一般的な要件より厳しい点が3つあります。撮影から30日以内であること、眼鏡を完全に外すこと、背景を白にすることです。グレーの背景は不受理の理由として明記されています。</span>
+    <span data-phrase="spec.tr-passport.note1">&#x2066;35 x 45&#x2069; ではないことを当局も明記しています。生体認証用の写真は &#x2066;50 x 60&#x2069; mmで、小さく切らないよう撮影者に伝える必要があります。サイズや背景が異なると申請が止まるか、後の品質確認でカードが取り消されます。</span>
+    <span data-phrase="spec.za-passport.note1">頭の高さは英国と同じ29～34 mmで、ヨーロッパの多くの国より小さめです。撮影から1か月以内でなければなりません。スマートIDカードを発行する事務所は自分たちで撮影します。印刷写真はそれ以外の事務所向けで、案内には自宅印刷では十分な品質にならない可能性が高いと書かれています。</span>
+    <span data-phrase="spec.ae-passport.note1">アラブ首長国連邦は幅だけを公表しています。35～40 mmで、顔が写真の70～80%を占めることが求められます。高さはないため、現地の写真店が提供する &#x2066;35 x 45&#x2069; を使います。背景は無地で明るい色とだけ指定されています。</span>
+    <span data-phrase="country.pk">パキスタン</span>
+    <span data-phrase="country.bd">バングラデシュ</span>
+    <span data-phrase="country.id">インドネシア</span>
+    <span data-phrase="country.il">イスラエル</span>
+    <span data-phrase="country.eg">エジプト</span>
+    <span data-phrase="country.ng">ナイジェリア</span>
+    <span data-phrase="spec.pk-passport.note1">ここで作るものを使う前に、この注意を読んでください。パキスタンは専門家が撮影した写真を求め、「大きな写真から切り取ったもの」やソフトウェアで編集したものは認めないと明記しています。切り抜きもこれに当たります。写真店の写真が頭の高さ29～34 mmと白い背景の要件を満たすかの確認に使ってください。アップロードは5 MB以下で、ピクセル寸法は指定されていないため、印刷サイズを300 dpiにした寸法を使います。</span>
+    <span data-phrase="spec.bd-passport.note1">バングラデシュの電子パスポート申請には写真を添付しません。ポータルには写真も認証も不要とあります。パスポート事務所での生体情報登録時に撮影するためです。唯一の例外は6歳未満の子どもで、別の項目があります。</span>
+    <span data-phrase="spec.bd-passport-child.doc">パスポート、6歳未満の子ども</span>
+    <span data-phrase="spec.bd-passport-child.note1">6歳未満の子どもは事務所で生体情報を登録しないため、代わりに写真を送ります。ただしパスポートサイズではありません。グレーの背景で、3.5 x 5インチの3Rサイズの写真店プリントが必要です。事務所がその写真から顔を切り抜くため、ここでは頭の高さの範囲を広くしています。</span>
+    <span data-phrase="spec.id-passport.note1">インドネシアでは入国管理事務所で撮影し、希望すれば撮り直してもらえます。まばたきや頭の傾きも理由になります。公表されているのは撮影時の姿勢と服装です。カメラを正面から見て、大きく笑わず、髪が顔や眉にかからないようにし、無地の明るい白い背景と区別できる濃い色の襟付きの服を着用してください。</span>
+    <span data-phrase="spec.il-passport.note1">米国と同じ正方形ですが、少し小さい &#x2066;5 x 5&#x2069; cmで、背景は白です。国外で申請するパスポートや一時パスポート用です。イスラエル国内ではパスポート事務所で撮影します。そこで撮影しにくい6歳以下の子どもに限り、印刷写真の持参が勧められています。</span>
+    <span data-phrase="spec.eg-passport.note1">エジプトの在外公館は、写真3枚と白い背景については一致していますが、サイズは一致していません。ロンドンの領事館は寸法を示さずパスポート写真を求め、ワシントンの大使館はこの一覧の米国と同じ &#x2066;2 x 2&#x2069; インチを求めています。印刷する前に申請先の公館へ確認してください。</span>
+    <span data-phrase="spec.ng-passport.note1">ナイジェリアが指定するのはアップロード要件だけです。正確に &#x2066;600 x 800&#x2069; ピクセル、2 MB未満、白い背景で、髪が顔や耳にかからないことが必要です。ポータルのCheck Imageボタンで申請前に写真を確認できるので、使うとよいでしょう。その後、正式な写真は入国管理事務所で撮影します。</span>
+    <span data-phrase="country.my">マレーシア</span>
+    <span data-phrase="country.th">タイ</span>
+    <span data-phrase="country.ar">アルゼンチン</span>
+    <span data-phrase="country.sa">サウジアラビア</span>
+    <span data-phrase="doc.evisa">電子ビザ</span>
+    <span data-phrase="spec.my-passport.note1">マレーシアの写真は一般的なサイズより高さが5 mm大きく、顔は小さめです。&#x2066;35 x 50&#x2069; mmの写真に顔の高さ25～30 mm、つまり高さの50～60%が必要です。多くの国の70～80%とは異なり、他国用に切り抜いた写真は寸法も顔の大きさも合いません。影のない白い背景で2枚必要です。</span>
+    <span data-phrase="spec.my-expat-pass.doc">外国人就労パス（ESD Online）</span>
+    <span data-phrase="spec.my-expat-pass.note1">マレーシアのパスポートと同じ &#x2066;35 x 50&#x2069; mmですが、頭の高さはパスポートの25～30 mmに対して30～35 mmと大きいため、同じ切り抜きでは両方に使えません。アップロードの上限は25 KBと小さいので、このツールは収まるまで圧縮します。ページにある両方の申請で白が認められ、青は片方だけで認められるため、白を確認します。</span>
+    <span data-phrase="spec.th-passport.note1">タイではパスポート事務所または大使館で、指紋や虹彩の登録とともに撮影します。印刷写真を持参する必要はなく、寸法も公表されていません。大使館が撮影当日について示している注意は、カラーコンタクトレンズを着けないことです。</span>
+    <span data-phrase="spec.th-evisa.note1">タイの電子ビザは、頭が高さの約70%を占める縦長の写真、無地の白またはオフホワイトの背景、3 MB以下のJPEGを指定しています。ピクセル寸法もmm単位の寸法もありません。出力には縦横寸法が必要なので、一般的な &#x2066;35 x 45&#x2069; を300 dpiにした値を使います。ポータルには比較用の写真例があります。</span>
+    <span data-phrase="spec.ar-passport.note1">アルゼンチンのパスポートは、予約時に採取する生体情報をもとにRENAPERが発行します。領事館も窓口で採取するため、写真を持参する必要はなく、寸法も公表されていません。印刷写真が必要なのは緊急または仮パスポートだけで、別の項目があります。</span>
+    <span data-phrase="spec.ar-emergency.doc">緊急または仮パスポート</span>
+    <span data-phrase="spec.ar-emergency.note1">小さな正方形の &#x2066;4 x 4&#x2069; cmで、正面向き、白い背景、「medio busto」、つまり肩まで入った写真が必要です。そのためパスポート用の切り抜きより頭が小さくなります。帽子も眼鏡も不可です。国外でパスポートを紛失したり盗まれたりした場合に領事館が求める写真で、アスンシオンの領事館はカラーでつや消しの用紙を使うことも指定しています。</span>
+    <span data-phrase="spec.sa-evisa.note1">サウジアラビアの観光電子ビザは、正確に &#x2066;200 x 200&#x2069; ピクセル、5～100 KBの正方形で、白い背景、顔が写真の70～80%を占め、両耳が見える写真を求めています。同じ文章には頭の高さがインチでも示されていますが、200ピクセルのファイルには物理的なインチ寸法がないため、ここでは割合を使います。この小ささでは顔以外の細部は残らないので、鮮明な写真から始めてください。</span>
+    <span data-phrase="doc.visa">ビザ</span>
+    <span data-phrase="bg.white-or-light.label">白または無地の明るい色</span>
+    <span data-phrase="bg.white-or-light.inline">白または無地の明るい色</span>
+    <span data-phrase="bg.white-or-light.note">この規定は白または無地の明るい色を認め、具体的な色は指定していません。そのため広く判定し、白、薄いグレー、薄い青、クリーム色を認めます。</span>
+    <span data-phrase="spec.us-visa.note1">印刷サイズはパスポートと同じ &#x2066;2 x 2&#x2069; インチですが、異なる点が2つあります。ビザ写真では医師の署名入り証明がある場合を除き、眼鏡は認められません。また、DS-160のアップロードは一辺600～1200ピクセルの正方形で、240 kB以下です。オンラインのパスポート更新は10 MBまでなので、一方の要件で作ったファイルは他方で拒否されることがあります。ページは頭の高さを1インチの横に「22 mm」と記載していますが、構図のテンプレートでは25 mmです。また、パスポートの規定からはなくなった目の位置、下端から28～35 mmも指定しています。</span>
+    <span data-phrase="spec.ca-pr-card.doc">永住権とPRカード</span>
+    <span data-phrase="spec.ca-pr-card.note1">ほぼすべてのほかの規定が6か月以内を求めるのに対し、ここでは12か月以内の写真が認められます。背景は白のみで、白い服は背景に溶け込むため避けるよう記載されています。オンラインでは &#x2066;715 x 1000&#x2069;～&#x2066;2000 x 2800&#x2069; ピクセル、4 MB以下のファイル1個です。適切なスキャンは認められますが、印刷写真をスマートフォンで撮ったものは認められません。紙の申請では印刷写真が2枚必要で、自宅印刷は認められません。</span>
+    <span data-phrase="spec.ca-citizenship.doc">市民権</span>
+    <span data-phrase="spec.ca-citizenship.note1">アップロードする前に読んでください。カナダはオンライン申請で「何も変更せずカメラから直接保存した」ファイルを求めます。切り抜きも変更なので、写真店のファイルを確認したり紙の申請用の写真を作ったりするために使ってください。指定される最低値 &#x2066;420 x 540&#x2069; ピクセルは、規定の &#x2066;50 x 70&#x2069; mmと縦横比が合いません。&#x2066;420 x 588&#x2069; なら縦横比が合い、両方の最低値も満たします。約240 kBが推奨され、上限は4 MBです。</span>
+    <span data-phrase="spec.ca-visa.doc">訪問ビザ（一時滞在ビザ）</span>
+    <span data-phrase="spec.ca-visa.note1">カナダの写真で一般的なサイズを使う唯一のものです。パスポート、PRカード、市民権はすべて &#x2066;50 x 70&#x2069; mmですが、こちらは &#x2066;35 x 45&#x2069; で、規定では「少なくとも」とあります。頭の高さは同じ31～36 mmのため、写真に占める割合は大きくなります。同一の印刷写真が2枚必要で、カラーも白黒も認められます。</span>
+    <span data-phrase="spec.au-visa.note1">内務省は、無地の背景に頭と肩が写った &#x2066;45 x 35&#x2069; mmの最近のパスポート写真を求めています。撮影から6か月以内で、裏面に氏名を記載します。頭の寸法や背景色は公表していません。この一覧のオーストラリアのパスポート項目にはそれらの指定があり、それを満たす写真ならこちらも満たします。</span>
+    <span data-phrase="spec.au-citizenship.doc">市民権、紙の申請</span>
+    <span data-phrase="spec.au-citizenship.note1">眼鏡は外します。視力が悪いという理由だけでは着用が認められません。写真は &#x2066;35 x 45&#x2069;～&#x2066;40 x 50&#x2069; mmで、顔の高さは同じ32～36 mmです。内務省は画質を理由にオンラインのパスポート写真サービスやモバイルアプリを推奨しないとも述べています。ここで作った写真を送る前に、同省の例と比較してください。</span>
+    <span data-phrase="spec.au-citizenship-online.doc">市民権、オンライン申請</span>
+    <span data-phrase="spec.au-citizenship-online.note1">オンラインでは70 KB～3.5 MBのJPEGで、&#x2066;1200 x 1600&#x2069; ピクセルが推奨されます。紙の写真の7:9に対して3:4なので、印刷物を作らない独立した規定です。印刷写真のスキャンや撮影画像は認められず、眼鏡を外す必要があります。内務省はオンラインの写真サービスやアプリを推奨しないと述べているため、結果を同省の例と比較してください。</span>
+    <span data-phrase="spec.in-visa.note1">10～300 KBの正方形のJPEGで、白または無地の明るい背景、枠なしです。規定は頭の高さを25～35 mmとしていますが、写真全体の寸法はありません。この値は一覧のパスポート項目の &#x2066;2 x 2&#x2069; インチに対応するため、その割合を使います。公式ページの目の位置の説明は途中で途切れているので、パスポートの目の範囲を目安として表示し、赤くは表示しません。ピクセル寸法はないため、2インチを300 dpiにした寸法を使います。</span>
+    <span data-phrase="spec.in-evisa.note1">電子ビザでは、白または無地の明るい背景、枠なし、眼鏡なしで、10 KB～1 MBの正方形のJPEGが必要です。通常のビザの上限300 KBより大きくなっています。頭の寸法もピクセル寸法も指定されていないため、2インチの正方形を300 dpiにした寸法を使います。</span>
+    <span data-phrase="country.ru">ロシア</span>
+    <span data-phrase="spec.ru-passport.doc">パスポート、10年の生体認証型</span>
+    <span data-phrase="spec.ru-passport.note1">10年の生体認証型パスポートでは写真を提出しません。領事部で撮影します。公表されているのは着用してはいけないものです。色付き眼鏡と制服は禁止で、頭を覆うものは宗教上必要で顔の輪郭が隠れない場合に限り認められます。6歳未満の子どもも現地で撮影に応じる必要があるため、5年パスポートが勧められています。</span>
+    <span data-phrase="spec.ru-passport-5.doc">パスポート、5年</span>
+    <span data-phrase="spec.ru-passport-5.note1">従来の5年パスポートは今も印刷写真を受け付けます。同一の &#x2066;35 x 45&#x2069; mmの写真が3枚必要です。完全に正面向き、筋、汚れ、影のない白い背景で、顔と肩の上部を中央に置き、顔が70～80%を占める構図にします。カラーも白黒も認められます。色付き眼鏡と制服は不可です。</span>
+    <span data-phrase="country.dk">デンマーク</span>
+    <span data-phrase="doc.driving-licence">運転免許証</span>
+    <span data-phrase="doc.id-card">身分証明書</span>
+    <span data-phrase="doc.health-card">健康保険証</span>
+    <span data-phrase="spec.uk-ni-driving-licence.doc">運転免許証、北アイルランド</span>
+    <span data-phrase="spec.uk-ni-driving-licence.note1">北アイルランドには独自の規定があります。グレートブリテンのDVLAは「最近の印刷されたパスポート形式の写真」とだけ指定し、パスポートの項目に相当します。こちらは撮影から1か月以内、薄いグレーまたはクリーム色の背景、カラーです。ページには印刷写真を &#x2066;45 x 35&#x2069; mmに切り詰めないこと、自宅印刷では品質が不十分になりやすいことも記載されています。オンライン申請はさらに異なり、「写真を切り抜かないでください。こちらで行います」とあるため、カメラで撮影した元の画像を送ってください。</span>
+    <span data-phrase="spec.de-health-card.note1">ドイツの健康保険証の写真は生体認証用である必要はなく、公的な健康保険の各社が独自に要件を示しています。これはTechniker Krankenkasseの要件です。&#x2066;35 x 45&#x2069; mm、カラーまたは白黒、「できるだけ中立的な」背景、帽子なしです。デジタル写真は少なくとも &#x2066;300 x 400&#x2069; ピクセルのJPG、PNG、BMPです。アプリで撮影する保険会社もあるため、アップロード前に自分の保険会社のページを確認してください。</span>
+    <span data-phrase="spec.it-id-card.note1">電子身分証明書は、イタリアのパスポートにはない数値を公表しています。顔が70～80%を占め、目の位置は下端から23～31 mmです。背景は無地で、薄い青、ベージュ、薄い茶色、薄いグレー、白が推奨されます。背景を除去したり頭をまっすぐにしたりする切り抜きや、修整も禁止されています。撮影時にまっすぐな構図にして、このツールは周囲を整えるだけに使ってください。</span>
+    <span data-phrase="spec.it-driving-licence.note1">省の通達では、高さ40～45 mm、幅32～35 mmと寸法に範囲を示しています。頭の高さは本文で写真の60～90%、図の下では28～32 mmと2通り示されます。mmの範囲は割合の範囲内に収まるため、ここではmmを使います。背景は薄いグレー、クリーム色、薄い青が推奨され、白も認められます。つや消し用紙が勧められ、同じ申請に使う複数の写真は同一でなければなりません。</span>
+    <span data-phrase="spec.es-driving-licence.note1">DNIと同じ小さな &#x2066;32 x 26&#x2069; mmで、カラー、無地の背景です。DNIは白い背景が必要ですが、こちらは無地であれば構いません。2024年11月6日以降、DGTがすでに写真を保有していれば提出は不要で、更新を行う医療センターでもその場で撮影します。これはそれ以外の場合に使います。</span>
+    <span data-phrase="spec.pl-driving-licence.note1">アップロードする前に読んでください。ポーランドは写真をファイルで提出でき、&#x2066;480 x 615&#x2069; ピクセル、100 KB以下、圧縮品質80以上を指定しています。また、撮影日を記録したEXIFヘッダー付きのJPEGが必要です。ここで作るファイルは寸法と容量を満たしますが、EXIFヘッダーがありません。構図の確認に使い、印刷写真か、撮影日を記録するカメラのファイルを提出してください。</span>
+    <span data-phrase="spec.pl-passport.note2">身分証明書のオンライン申請は、少なくとも &#x2066;492 x 633&#x2069; ピクセル、2.5 MB以下のファイルで行えます。ここで作るアップロード用画像もこの値です。パスポートは12歳未満の子どもを除きオンライン申請できず、その子ども用は &#x2066;768 x 1004&#x2069; を求めています。</span>
+    <span data-phrase="spec.ch-driving-licence.note1">スイスはパスポートの数値は公表していませんが、運転免許証には指定があります。顔の高さ29～34 mm、無地で中立的な背景、撮影から1年以内です。免許証にはグレーで印刷されますが、提出はカラーです。枠なしで、滑らかな光沢または半つや消しの写真用紙、四角い角が必要です。角が丸い印刷写真は認められません。</span>
+    <span data-phrase="spec.se-driving-licence.note1">スウェーデンは瞳からあご先までを14～17 mmと指定しています。このツールが測る2種類の距離とは異なりますが、多くの顔では頭の高さ31～37 mmに相当するため、表示する範囲をその中に設定しています。影のない明るい背景で、&#x2066;35 x 45&#x2069; mmにきれいに切った写真1枚が必要です。角は丸くても四角くてもよく、白黒も認められます。どちらを提出しても免許証は白黒で印刷されます。頭を覆うものと色付き眼鏡は不可です。</span>
+    <span data-phrase="spec.dk-driving-licence.note1">デンマークは髪の頂点まで頭の高さを測り、30～36 mmとしています。このツールと同じ測り方なので補正は不要です。無地の明るい背景で、例には薄い青と薄いグレーがあります。白髪、明るい髪、明るいヘッドスカーフには、はっきり区別できる背景を使います。カラーも白黒も認められます。</span>
+    <span data-phrase="doc.residence-card">在留カード</span>
+    <span data-phrase="bg.blue.label">無地の青</span>
+    <span data-phrase="bg.blue.inline">無地の青</span>
+    <span data-phrase="bg.blue.note">この規定は青を指定していますが、具体的な色合いは公表していないため、広く判定します。また、編集で作った背景ではなく実際の背景が必要です。このツールは背景を変えないので、青い壁や布の前に立ってください。</span>
+    <span data-phrase="spec.cn-id-card.note1">身分証明書はどのパスポートサイズよりも小さい &#x2066;26 x 32&#x2069; mmです。白い背景、枠なしで、頭が写真の約3分の2を占め、両耳の付け根の間で測る顔の幅は15 mm、許容差は1 mmです。制服と白い服は不可で、普段眼鏡をかける人は着用します。多くの警察署は自分たちで撮影するか指定の写真店を案内するので、印刷前に確認してください。</span>
+    <span data-phrase="spec.cn-driving-licence.note1">運転免許証の「1インチ」写真は &#x2066;22 x 32&#x2069; mmで、この一覧の写真店の1インチサイズより幅が狭くなります。頭の高さ19～22 mm、幅14～16 mm、白い背景、カラー、6か月以内の撮影、制服なしです。これは北京の交通警察の数値ですが、ほかの都市も同じ寸法を公表しています。</span>
+    <span data-phrase="spec.jp-mynumber.doc">マイナンバーカード</span>
+    <span data-phrase="spec.jp-mynumber.note1">郵送は &#x2066;45 x 35&#x2069; mmの印刷写真で、裏面に氏名と生年月日を書きます。オンラインはRGBのJPEG、20 KB～7 MB、各辺480～6000ピクセルです。縦横比は指定されていないため、ここでは印刷写真の比率を使います。図の顔の高さ34 mm、許容差2 mmは目安と明記されているので、目安として表示します。白黒も認められます。画像編集ソフトを使った写真は受け付けられない場合があるため、サイトの例と比較してください。</span>
+    <span data-phrase="spec.jp-residence-card.note1">パスポートより小さく、独自の数値があります。&#x2066;30 x 40&#x2069; mm、髪の頂点からあごまで25 mm、許容差3 mm、頭上の余白は5 mmです。帽子なし、背景と影なし、6か月以内の撮影で、裏面に氏名を書きます。修整は常に禁止され、鏡像の写真も認められません。スマートフォンの前面カメラは、設定を変えないと鏡像を保存することがあります。</span>
+    <span data-phrase="spec.jp-driving-licence.note1">免許証そのものに使う写真は職員が撮影します。この &#x2066;24 x 30&#x2069; mmは申請書用です。帽子なし、正面向き、上半身、背景なし、6か月以内の撮影が必要です。持参写真を免許証に使えるのは一部の試験場だけで、写真用紙に印刷する必要があります。</span>
+    <span data-phrase="spec.kr-driving-licence.note1">印刷用はパスポートと同じで、頭頂からあごまで32～36 mm、白い背景、写真用紙のみ、歯を見せず、編集なしです。オンラインは特に厳密で、500 KB以下のJPG、&#x2066;413 x 531&#x2069; ピクセルが指定されます。幅395～431、高さ507～550の範囲外は受け付けられません。</span>
+    <span data-phrase="spec.kr-id-card.note1">住民登録証はパスポートと同じ &#x2066;3.5 x 4.5&#x2069; cmで、一方のために作った写真を他方にも使えると明記しています。背景はパスポートより緩やかで、背景なし、または白が推奨され、淡い単色も認められます。顔の寸法はmmでは示されていません。</span>
+    <span data-phrase="spec.tw-id-card.note1">台湾のパスポートと同じ頭の高さ32～36 mm、白い背景ですが、パスポートの6か月に対して2年以内の写真を使えます。薄い光沢紙の写真1枚の裏に氏名、身分証番号、日付を書くか、少なくとも &#x2066;413 x 531&#x2069; ピクセル、5 MB以下のJPGを提出します。色付きコンタクトレンズ、修整、鏡像は不可です。</span>
+    <span data-phrase="spec.vn-driving-licence.note1">オンラインでの免許証の交換や再交付向けです。白い背景の &#x2066;3 x 4&#x2069; cm、少なくとも &#x2066;473 x 630&#x2069; ピクセル、700 KB以下です。省のページが青を指定していても、警察のポータルは白を指定しています。白と黒の服を避け、頭の傾きを5度以内にし、太いフレームの眼鏡や濃い色の眼鏡は外してください。</span>
+    <span data-phrase="spec.id-driving-licence.note1">SIMのオンライン更新は正確に &#x2066;480 x 640&#x2069; ピクセル、100 KB以下、青い背景です。眼鏡、コンタクトレンズ、頭を覆うものは不可で、背景に溶け込む青いヒジャブも不可です。印刷写真を撮影したものではなく元のファイルを使います。初回の免許証は事務所で撮影します。</span>
+    <span data-phrase="spec.my-driving-licence.note1">白い背景の &#x2066;25 x 32&#x2069; mmのカラー写真1枚で、マレーシアのパスポートの &#x2066;35 x 50&#x2069; とは異なります。道路交通局の英語ページには「黒い背景」とありますが、原文のマレー語ページにはputih、つまり白とあります。</span>
+    <span data-phrase="spec.in-driving-licence.note1">Sarathiポータルはパスポート形の写真で、少なくとも &#x2066;420 x 525&#x2069; ピクセル、10～20 KBを求めています。非常に小さい容量なので、ここで作るアップロード用画像は強く圧縮されます。均一に照明を当てた無地の背景なら、顔に使える容量が残ります。明るい色の背景で白が推奨されます。宗教上の頭を覆うものは認められますが、帽子と濃い色の眼鏡は不可です。</span>
+    <span data-phrase="spec.ca-firearms-licence.doc">銃器免許（PAL）</span>
+    <span data-phrase="spec.ca-firearms-licence.note1">独自の &#x2066;45 x 57&#x2069; mmで、頭の高さは少なくとも30 mmです。上限は公表されていないため、表示する範囲の上端はこのツールで設定しています。ファイルは200 KB～6 MBのJPGです。1年以内の写真で白黒も認められますが、色付きの度付きレンズは目が見えていても不可です。初回申請では保証人が印刷写真の裏面に署名します。</span>
+    <span data-phrase="spec.ru-internal-passport.doc">国内パスポート</span>
+    <span data-phrase="spec.ru-internal-passport.note1">白い背景の &#x2066;35 x 45&#x2069; mmの写真2枚で、カラーも白黒も認められます。規則は頭の高さを写真の80%以下、頭上の余白を5 mm、許容差1 mmとしています。ここで表示する範囲の下端はこのツールで設定しています。普段眼鏡をかける人は色付きではない眼鏡を着用します。制服、コート、あごを覆うスカーフ、容姿をよく見せるための編集は禁止です。内務省の命令の公表文から読み取った要件ですが、同省のサイトにはここから接続できません。</span>
+    <span data-phrase="spec.za-driving-licence.note1">南アフリカは白黒写真を求めます。西ケープでは同一の &#x2066;45 x 35&#x2069; mmの写真2枚、一部のセンターでは4枚です。写真代を払う前に必要な枚数を確認してください。このツールは白黒に変換しないので、写真店で白黒印刷を依頼してください。頭の寸法は公表されていません。</span>
+    <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
+    <span data-phrase="source.common">一般的な慣行</span>
+    <span data-phrase="source.common.doc">文具店の35 x 45 mm標準であって、公表された規則ではありません</span>
+    <span data-phrase="source.you">あなた</span>
+    <span data-phrase="source.you.doc">送られてきたもの</span>
+    <span data-phrase="print.none">印刷サイズなし——この規格はウェブ書式用です</span>
+    <span data-phrase="print.size">&#x2066;{width} x {height}&#x2069; mm、{dpi} dpi</span>
+    <span data-phrase="print.pixels">&#x2066;{width} x {height}&#x2069;ピクセル</span>
+    <span data-phrase="px.exact">ちょうど&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="px.upto">&#x2066;{width} x {height}&#x2069; px、&#x2066;{maxWidth} x {maxHeight}&#x2069;まで</span>
+    <span data-phrase="px.least">&#x2066;{width} x {height}&#x2069; px以上</span>
+    <span data-phrase="bytes.band">{min}から{max}</span>
+    <span data-phrase="bytes.upto">{max}まで</span>
+    <span data-phrase="bytes.from">{min}以上</span>
+    <span data-phrase="bytes.none">ファイルサイズの規定なし</span>
+    <span data-phrase="facts.upload">アップロードの規定</span>
+    <span data-phrase="facts.upload.print">公表なし——これは紙焼き用です</span>
+    <span data-phrase="facts.upload.value">{pixels}、JPEG、{size}</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="source.line">{authority}より書き起こし &mdash; {document}。{checked}に確認。規則は変わります。上の数字は、目の前の書式と突き合わせるためのものです。</span>
+    <span data-phrase="source.line.words">{authority}の「{document}」を{checked}に確認しました。文書は写真について説明していますが寸法は示していないため、上の数値はその文書の指定値ではありません。注記を参照してください。</span>
+    <span data-phrase="source.own">あなた自身の数字です。ここでは何も突き合わせていません。</span>
+    <span data-phrase="read.done">貼り付けた文章から入力しました。各数値の下に読み取った文言を表示しているので、両方を照合してください。文章に指定のない欄は元の値を保ちます。</span>
+    <span data-phrase="read.none">文章から写真のサイズ、頭の高さ、背景、アップロード寸法、ファイル容量を読み取れなかったため、どの欄も変更していません。下に数値を入力してください。</span>
+    <span data-phrase="read.kept">どの欄も変更していません。見つかった内容と、変更しなかった理由は次のとおりです。</span>
+    <span data-phrase="read.sizes">写真のサイズが複数あるため変更していません。自分の書類で求められるサイズを入力してください。</span>
+    <span data-phrase="read.named">寸法ではなくサイズ名が記載されていますが、その名前が示す寸法は写真店によって異なるため、変更していません。自分の書類で求められるmm単位の寸法を入力してください。</span>
+    <span data-phrase="read.colour">このページが確認できない背景を指定しているため、背景は変更していません。このページは白、オフホワイト、薄いグレー、クリーム色を確認します。</span>
+    <span data-phrase="read.pxrange">アップロード寸法が複数認められているため、最小のものを入力しました。</span>
+    <span data-phrase="read.unused.headwidth">頭の幅。このページは左右の幅ではなく、あごから頭頂までを測るため使いません</span>
+    <span data-phrase="read.unused.eye">目の位置。このページはICAO規格の目の位置を使うため使いません</span>
+    <span data-phrase="read.unused.margin">余白。このページは頭の高さに合わせて構図を決め、余白はそれに応じて決まるため使いません</span>
+    <span data-phrase="read.unused.paper">写真のサイズではなく、印刷する用紙のサイズ</span>
+    <span data-phrase="read.unused.other">どの入力欄にも当てはまらない寸法</span>
+    <span data-phrase="lede.signature">署名は別の見方をします。紙が明るいこと、インクが載っていること、そして切り出しに罫線やページの端が入っていないことです。</span>
+    <span data-phrase="lede.portrait">切り出しの上端を横切る帯と、肩より上の両側を下る帯から読み取ります。背景以外の何もあってはいけない部分です。RGBではなくCIE Labで測っています。RGBで40離れた二つのグレーは見分けがつかないのに、青が40違えば別の色だからです。</span>
+    <span data-phrase="dpi.note">この規格の下限は{floor} dpiです。{chosen} dpiならファイルは{size}になり、JPEGはその解像度をヘッダーに持つので、印刷所は推測せずに正しい大きさで刷ります。</span>
+    <span data-phrase="paper.note">{sheet}。すき間には裁断の印が入り、写真の上には何も刷りません。</span>
+    <span data-phrase="paper.4x6">&#x2066;4 x 6&#x2069;インチ判（&#x2066;10 x 15&#x2069; cm）</span>
+    <span data-phrase="paper.5x7">&#x2066;5 x 7&#x2069;インチ判（&#x2066;13 x 18&#x2069; cm）</span>
+    <span data-phrase="paper.a4">A4用紙（&#x2066;210 x 297&#x2069; mm）</span>
+    <span data-phrase="paper.letter">US Letter（&#x2066;8.5 x 11&#x2069;インチ）</span>
+    <span data-phrase="sheet.none">この写真はこの紙にはまったく入りません。</span>
+    <span data-phrase="sheet.one">1枚、横{columns}・縦{rows}</span>
+    <span data-phrase="sheet.many">{n}枚、横{columns}・縦{rows}</span>
+    <span data-phrase="load.notimage">これはこのブラウザーが開ける画像ではありません。</span>
+    <span data-phrase="load.named">{name} &mdash; &#x2066;{width} x {height}&#x2069;ピクセル</span>
+    <span data-phrase="load.failed">{name}: {why}</span>
+    <span data-phrase="short.note">規格が求める範囲が写真に足りませんでした：{list}。代わりに枠を写真の内側にとどめてあります。下の数字がすべて緑にならないことがあるのはそのためです。一歩下がって撮り直すのが確実です。</span>
+    <span data-phrase="short.side">{side}が{value} px</span>
+    <span data-phrase="side.top">上</span>
+    <span data-phrase="side.bottom">下</span>
+    <span data-phrase="side.left">左</span>
+    <span data-phrase="side.right">右</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="mark.crown">頭頂</span>
+    <span data-phrase="mark.crown.hint">髪を含めた頭のいちばん上</span>
+    <span data-phrase="mark.chin">顎</span>
+    <span data-phrase="mark.chin.hint">顎の下端</span>
+    <span data-phrase="mark.lefteye">左目</span>
+    <span data-phrase="mark.lefteye.hint">見た目で左側にある瞳</span>
+    <span data-phrase="mark.righteye">右目</span>
+    <span data-phrase="mark.righteye.hint">もう一方の瞳</span>
+    <span data-phrase="mark.aria">{label}: {hint}。矢印キーで動かせます。Shiftを押しながらなら一度に10ピクセルです。</span>
+    <span data-phrase="crop.aria">切り抜き範囲。矢印キーで動かし、Altと矢印キーで大きさを変えられます。Shiftを押しながらなら1回が10ピクセルです。形は規格で決まっていて変えられません。</span>
+    <span data-phrase="step.print">&#x2066;{width} x {height}&#x2069; mmの紙焼きを書き出しています</span>
+    <span data-phrase="step.sheet">シートを組んでいます</span>
+    <span data-phrase="step.upload">次のサイズに圧縮しています：{label}</span>
+    <span data-phrase="step.done">完了</span>
+    <span data-phrase="out.print">紙焼き &mdash; &#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="out.print.detail">&#x2066;{width} x {height}&#x2069;ピクセル、{size}。ファイル自体に{dpi} dpiが書かれているので、印刷所が正しい大きさで再現します。</span>
+    <span data-phrase="out.sheet">シート &mdash; {paper}</span>
+    <span data-phrase="out.sheet.detail">{sheet}、{size}、{dpi} dpiで記録。100パーセントで印刷してください。シートが違う大きさで出てくる原因は「ページに合わせる」です。</span>
+    <span data-phrase="out.upload">アップロード用 &mdash; &#x2066;{width} x {height}&#x2069;</span>
+    <span data-phrase="out.upload.detail.one">1回の書き出しで{size}。{how}</span>
+    <span data-phrase="out.upload.detail.many">{n}回の書き出しで{size}。{how}</span>
+    <span data-phrase="make.failed">ファイルの作成中に問題が起きました：{why}</span>
+    <span data-phrase="encode.nodecode">このブラウザーは画像をデコードできませんでした。</span>
+    <span data-phrase="encode.nojpeg">このブラウザーはJPEGを書いてくれませんでした。</span>
+    <span data-phrase="encode.gaveup">試行回数が多すぎたため中止しました。</span>
+    <span data-phrase="frame.nosize">印刷サイズもピクセルサイズもない規格には切り抜けません。</span>
+    <span data-phrase="how.toobig">使うに値するいちばん低い品質にしても{size}になり、上限を超えます。書式が想定しているより細かい画像です。</span>
+    <span data-phrase="how.fitted">品質{quality}で書き出し、{size}になりました——書式が受け付ける範囲の中です。</span>
+    <span data-phrase="how.padded">品質を最大にしても画像は{size}にしかならず、書式が要求する{floor}の下限をまだ下回っています。そこへ届かせるためにJPEGコメントを{added}分足しました。画像そのものは手つかずです。</span>
+    <span data-phrase="facts.print">印刷サイズ</span>
+    <span data-phrase="facts.head">頭、あごから頭頂まで</span>
+    <span data-phrase="facts.eye">目の高さ、下から</span>
+    <span data-phrase="facts.background">背景</span>
+    <span data-phrase="band.range">{min}から{max}</span>
+    <span data-phrase="band.mm">{range} (&#x2066;{min}&ndash;{max}&#x2069; mm)</span>
+    <span data-phrase="band.guidance">{band}（目安）</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">頭の高さは{measured}です。規定は{wanted}を求めています。</span>
+    <span data-phrase="verdict.head.low">頭の高さは{measured}で、小さすぎます。規定は{wanted}を求めています。枠を小さくしてください。</span>
+    <span data-phrase="verdict.head.high">頭の高さは{measured}で、大きすぎます。規定は{wanted}を求めています。枠を大きくしてください。</span>
+    <span data-phrase="verdict.eye.ok">目の高さは{measured}です。規定は{wanted}を求めています。</span>
+    <span data-phrase="verdict.eye.low">目の高さは{measured}で、画面の中で低すぎます。規定は{wanted}を求めています。枠を下げてください。</span>
+    <span data-phrase="verdict.eye.high">目の高さは{measured}で、画面の中で高すぎます。規定は{wanted}を求めています。枠を上げてください。</span>
+    <span data-phrase="tilt.level">目の高さは水平です。</span>
+    <span data-phrase="tilt.ok.left">頭が左に{degrees}度傾いていますが、審査で気づかれない数度の範囲に収まっています。</span>
+    <span data-phrase="tilt.ok.right">頭が右に{degrees}度傾いていますが、審査で気づかれない数度の範囲に収まっています。</span>
+    <span data-phrase="tilt.bad.left">頭が左に{degrees}度傾いていて、これは目につきます。カメラを水平にして撮り直すか、先に画像を回して起こしてください。</span>
+    <span data-phrase="tilt.bad.right">頭が右に{degrees}度傾いていて、これは目につきます。カメラを水平にして撮り直すか、先に画像を回して起こしてください。</span>
+    <span data-phrase="centre.ok">顔は画面の中央にあります。</span>
+    <span data-phrase="centre.left">顔が画面の幅の{size}だけ中央より左にあります。枠を反対側へ動かすか、もう一度「合わせる」を押してください。</span>
+    <span data-phrase="centre.right">顔が画面の幅の{size}だけ中央より右にあります。枠を反対側へ動かすか、もう一度「合わせる」を押してください。</span>
+    <span data-phrase="resample.enough">切り抜きは{have}ピクセル、書き出しは{need}なので、作り足すものはありません。</span>
+    <span data-phrase="resample.slight">切り抜きは{have}ピクセルしかなく、書き出しは{need}です。少し拡大され、失うのはわずかな解像感だけです。</span>
+    <span data-phrase="resample.severe">切り抜きは{have}ピクセルしかなく、書き出しは{need}です。まるで足りません。結果は眠くなり、紙にすると画面写真のように見えます。もっと近づいて、あるいはもっと高い解像度で撮り直すほかありません。</span>
+    <span data-phrase="ready.geometry">寸法はまだ規定に届いていません。それでもファイルは保存できます。ここにはあなたの写真を渡さない仕組みはありません。ただ、窓口が測るのは上の数字です。</span>
+    <span data-phrase="ready.background">寸法は規定どおりです。背景はそうではありません。写真が返される理由としてはこちらのほうが多いです。</span>
+    <span data-phrase="ready.good">寸法は規定どおりで、背景も差し支えありません。</span>
+    <span data-phrase="bg.white.label">白一色</span>
+    <span data-phrase="bg.white.inline">白一色</span>
+    <span data-phrase="bg.white.note">白い壁は写真では薄いグレーに写ります。求められているのは、無地で、むらなく明るく、影のない背景であって、塗料の色ではありません。</span>
+    <span data-phrase="bg.off-white.label">白またはオフホワイト</span>
+    <span data-phrase="bg.off-white.inline">白またはオフホワイト</span>
+    <span data-phrase="bg.off-white.note">どちらでもかまいません。実際には、無地で明るければよいということです。柄がなく、家具が写らず、頭の後ろに影がないこと。</span>
+    <span data-phrase="bg.light-grey.label">薄いグレー一色</span>
+    <span data-phrase="bg.light-grey.inline">薄いグレー一色</span>
+    <span data-phrase="bg.light-grey.note">薄いグレーはICAOが勧める色です。色白の顔を背景から切り離し、黒い髪も切り離してくれるからです。真っ白はどちらもしてくれません。</span>
+    <span data-phrase="bg.cream.label">薄いグレーまたはクリーム</span>
+    <span data-phrase="bg.cream.inline">薄いグレーまたはクリーム</span>
+    <span data-phrase="bg.cream.note">イギリスの言い回しです。クリームは暖かいオフホワイトに見えます。規定が求めているのは背景が無地でむらのないことであって、特定の色味ではありません。</span>
+    <span data-phrase="bg.colour.bad">背景は{hex}と測れました。{wanted}からはかなり離れています。</span>
+    <span data-phrase="bg.colour.warn">背景は{hex}と測れました。{wanted}に近いのですが、そのものではありません。</span>
+    <span data-phrase="bg.colour.good">背景は{hex}と測れました。{wanted}として通ります。</span>
+    <span data-phrase="bg.uniform.bad">一色ではありません。うしろに影か、柄か、物があります。</span>
+    <span data-phrase="bg.uniform.warn">わずかにむらがあります。壁から半歩離れて立つだけで、たいていは片づきます。</span>
+    <span data-phrase="bg.uniform.good">むらなく明るく、頭の後ろに影もありません。</span>
+    <span data-phrase="bg.sides.bad">背景の片側がもう一方よりずっと暗く、横からの光のように見えます。</span>
+    <span data-phrase="bg.sides.warn">片側がもう一方より少し暗くなっています。</span>
+    <span data-phrase="bg.note">{colour}この道具は背景を差し替えません。写真から人を切り抜くにはセグメンテーションモデルが要り、出来の悪いものは、ただでさえ写真をはねられることの多い人の髪を食べてしまいます。壁から半歩離れて立つほうが、どんなフィルターよりも多くを解決します。</span>
+    <span data-phrase="bg.signature.note">ここで署名に手は加えません。測って報告するだけで、切り抜く位置はご自分で動かせます。</span>
+    <span data-phrase="sig.ink.bad">切り抜きの中にインクがほとんどありません。枠が署名から外れているか、ペンが薄すぎて写らなかったかのどちらかです。</span>
+    <span data-phrase="sig.ink.warn">暗い画素が非常に多いです。切り抜きが罫線や紙の端を巻き込んでいないか確かめてください。</span>
+    <span data-phrase="sig.ink.good">インクが切り抜きの{coverage}%を覆っていて、署名として読み取れます。</span>
+    <span data-phrase="sig.paper.bad">紙が白ではなく灰色に出ています。紙にもっと光を当てるか、写真ではなくスキャンにしてください。</span>
+    <span data-phrase="sig.paper.warn">紙が少しくすんでいます。多くの書式は、署名の後ろにきれいな白い紙を求めます。</span>
+    <span data-phrase="sig.paper.good">紙はきれいな白です。</span>
+    <span data-phrase="marks.measured">4点とも写真から測りました——頭頂は頭の輪郭から、瞳はその暗さから、あごは下顎が首に入るところから。それでも確かめて、ずれている点はドラッグしてください。切り抜きは4点が最終的にある場所から取られます。</span>
+    <span data-phrase="marks.rough">置きましたが、すべてを測れたわけではありません。枠を合わせる前に4点とも確かめてください。</span>
+    <span data-phrase="marks.none">この写真からは何も測れませんでした。点は代わりに初期位置にあります。頭頂、あご、左右の瞳へドラッグしてください。</span>
+    <span data-phrase="marks.manual">4つの点はあなたのもので、何も動かしません。それぞれを頭頂、あご、瞳へドラッグしてください。</span>
+    <span data-phrase="marks.edited">点を動かしたので、4つともあなたのものになりました。「探してもらう」を選ぶと写真をもう一度測ります。</span>
+
+    <span data-phrase="marks.why.background">背後の壁が無地でなく、頭の輪郭を切り出せません。</span>
+    <span data-phrase="marks.why.top">頭が写真の上に切れていて、探すべき頭頂がありません。</span>
+    <span data-phrase="marks.why.eyes">目を見分けられなかったため、この大きさの頭でよくある位置に両方を置きました。</span>
+    <span data-phrase="marks.why.chin">あごはこの頭の輪郭からではなく、頭の一般的な比率から求めました。</span>
+
+    <span data-phrase="marks.button.again">もう一度顔を探す</span>
+    <span data-phrase="marks.button.back">点を戻す</span>
+
+    <span data-phrase="net.clean">写真はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
+  </div>
+</main>

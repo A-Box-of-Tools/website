@@ -1,0 +1,200 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>動画を選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what will happen.
+
+    There is no setting to choose here, and that is the point of the card:
+    the file decides. Each of its two tracks is either already what an MP4
+    wants, and is copied as it is, or is not, and is encoded again. The card
+    says which, before anything is done, so that "convert" is never a word
+    that hides a re-encode.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span>変わる部分と、そのままの部分を確認する</h2>
+
+    <p class="card-lede">広く使えるMP4はH.264映像とAAC音声です。すでにその形式のトラックはそのままコピーし、違う部分だけを端末で再エンコードします。必要な部分以外は再エンコードしません。</p>
+
+    <div class="plan" role="status" aria-live="polite">
+      <p id="plan-picture" class="plan-line"></p>
+      <p id="plan-sound" class="plan-line"></p>
+      <p id="plan-note" class="field-note" hidden></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>音声を除く</strong>
+        <span class="check-note">無音で再生される場所へ送る場合や、ブラウザが音声を読めない場合に選びます。</span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>変換する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">MP4に変換</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="メモリから再生する変換後の動画"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">上でこのブラウザが読める動画を選ぶと使えます。</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {container}</span>
+    <span data-phrase="plan.nofile">上で動画を選ぶと、変更が必要な部分を表示します。</span>
+    <span data-phrase="plan.picture.copy">映像：すでに{codec}なので各フレームをそのままコピーします。再エンコードも画質の変化もありません。</span>
+    <span data-phrase="plan.picture.encode">映像：{codec}からH.264、約{rate}、{frame}へ再エンコードします。</span>
+    <span data-phrase="plan.picture.nodecode">映像：ブラウザが{codec}をデコードできないので変換できません。同じ端末の別のブラウザで読める場合があります。</span>
+    <span data-phrase="plan.sound.none">音声トラックはありません。</span>
+    <span data-phrase="plan.sound.copy">音声：すでにAACなのでそのままコピーします。</span>
+    <span data-phrase="plan.sound.encode">音声：{codec}からAAC、160kbit/sへ再エンコードします。</span>
+    <span data-phrase="plan.sound.unknown">音声：ブラウザが{codec}をデコードできないので除きます。映像は変換できます。</span>
+    <span data-phrase="plan.sound.dropped">音声：指定どおり除きます。</span>
+    <span data-phrase="plan.already">両方のトラックがMP4に適しているので、再エンコードせず同じ映像と音声を、索引を先頭に置く分割されていない通常のMP4に書き直します。{container}を拒否したフォームが必要とする形式です。</span>
+    <span data-phrase="plan.reencoded">コピーする部分は変化しません。再エンコードする部分には1世代の画質変化があります。原本を残してください。</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="codec.h264">H.264</span>
+    <span data-phrase="codec.hevc">HEVC（H.265）</span>
+    <span data-phrase="codec.vp8">VP8</span>
+    <span data-phrase="codec.vp9">VP9</span>
+    <span data-phrase="codec.av1">AV1</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&ldquo;{name}&rdquo;</span>
+    <span data-phrase="container.webm">WebM</span>
+    <span data-phrase="container.mkv">MKV</span>
+    <span data-phrase="container.mov">MOV</span>
+    <span data-phrase="container.m4v">M4V</span>
+    <span data-phrase="container.mp4">MP4</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
+    <span data-phrase="progress.sound">音声：{total}パケット中{done}&hellip;</span>
+    <span data-phrase="progress.preparing">準備しています&hellip;</span>
+    <span data-phrase="progress.frame">フレーム{total}件中{done}件（{percent}%）</span>
+    <span data-phrase="progress.finishing">最後のフレームを処理中&hellip;</span>
+    <span data-phrase="progress.writing">ファイルを書き出しています&hellip;</span>
+    <span data-phrase="progress.checking">開き直して確認中&hellip;</span>
+    <span data-phrase="run.cancelled">キャンセルしました。書き出しはありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="result.ready">元の{from}の{container}から、{size}のMP4にしました。</span>
+    <span data-phrase="result.sub">H.264映像、AAC音声、索引を先頭に置いた広く再生できるファイルです。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
+    <span data-phrase="check.ok">メモリから開き直し、元と同じ長さ{length}、H.264映像と{sound}を確認しました。</span>
+    <span data-phrase="check.sound.aac">AAC音声</span>
+    <span data-phrase="check.sound.none">音声トラックなし</span>
+    <span data-phrase="check.length">完成したファイルの長さが{want}ではなく{got}です</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="check.codec">映像がH.264ではなく{codec}になっています</span>
+    <span data-phrase="check.sound">完成したファイルに音声トラックがありません</span>
+    <span data-phrase="facts.picture.copied">映像はフレームごとにそのままコピーしました。{codec}、{frame}で、再エンコードも1ビットの変化もありません。</span>
+    <span data-phrase="facts.picture.encoded">映像を{from}からH.264、{rate}、{frame}、毎秒{fps}フレームへ再エンコードしました。元より1世代の画質変化があるため、原本を残してください。</span>
+    <span data-phrase="facts.sound.copied">音声はそのままコピーし、再エンコードしていません。</span>
+    <span data-phrase="facts.sound.encoded">音声はAAC、160kbit/sで再エンコードしました。</span>
+    <span data-phrase="facts.sound.none">音声トラックはありません。元からなかったか、指定で除きました。</span>
+    <span data-phrase="facts.time">{frames}フレームを{seconds}で処理しました。</span>
+    <span data-phrase="support.nowebcodecs">このブラウザは動画をエンコードできないため、すでにH.264のファイルだけ変換できます。Chrome、Edge、Safari、Firefox 130以降はエンコードに対応しています。</span>
+    <span data-phrase="stall.both">ブラウザの動画コーデックが応答しなくなりました。再読み込みして試してください。ハードウェアエンコーダーが使用中、またはない場合に起きます。</span>
+    <span data-phrase="stall.sound">ブラウザの音声コーデックが応答しなくなりました。再読み込みして試すか、音声を除いてください。</span>
+    <span data-phrase="encode.toobig">このブラウザは{size}でH.264をエンコードできません。先に動画圧縮ツールで小さくしてください。</span>
+    <span data-phrase="encode.noconfig">エンコーダーはデコーダー設定を一度も返しませんでした。</span>
+    <span data-phrase="decode.none">この動画からフレームをデコードできませんでした。</span>
+    <span data-phrase="sound.noaac">ブラウザはこの音声のサンプリング周波数とチャンネル数でAACをエンコードできません。音声を除いて映像だけ変換してください。</span>
+    <span data-phrase="sound.noencode">音声エンコーダーから結果が得られませんでした。</span>
+    <span data-phrase="write.noframes">書き出すフレームがありません。</span>
+    <span data-phrase="write.toobig">完成したファイルが4GBを超えます。ここで書き出すMP4は対応しません。先に動画を短くしてください。</span>
+    <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
+    <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
+    <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
+    <span data-phrase="read.av1short">AV1の設定レコードが短すぎます。</span>
+    <span data-phrase="read.compactsizes">サンプルの大きさが、このリーダーの解さない圧縮テーブルに入っています。</span>
+    <span data-phrase="read.sampletables">サンプルテーブルが欠けています。</span>
+    <span data-phrase="read.chunktable">チャンクテーブルが空です。</span>
+    <span data-phrase="read.nosamples">動画トラックにフレームがありません。</span>
+    <span data-phrase="read.nostbl">映像トラックにサンプルテーブルがありません。</span>
+    <span data-phrase="read.nostsd">映像トラックにサンプル記述がありません。</span>
+    <span data-phrase="read.emptystsd">映像のサンプル記述が空です。</span>
+    <span data-phrase="read.encrypted">映像トラックが暗号化されています。</span>
+    <span data-phrase="read.unknowncodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.noconfig">「{type}」トラックはデコーダー設定を持っていません。</span>
+    <span data-phrase="read.notmp4">MP4、MOV、WebM、MKVではありません。AVI、WMV、FLV、MPEG-2は扱えません。</span>
+    <span data-phrase="read.nomoov">ファイルにムービーヘッダーがありません。</span>
+    <span data-phrase="read.novideo">このファイルには、このリーダーが使える映像トラックがありません。</span>
+    <span data-phrase="read.notimescale">映像トラックにタイムスケールがありません。</span>
+    <span data-phrase="read.nofragments">このファイルのフラグメントには、映像トラックのコマが1つも入っていません。</span>
+    <span data-phrase="read.unreadable">このファイルはMP4として読めませんでした。</span>
+    <span data-phrase="read.notplayed">この形式は、このブラウザーが再生できるものではありません。</span>
+    <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
+    <span data-phrase="read.notmkv">WebMまたはMKVファイルではありません。</span>
+    <span data-phrase="read.nosegment">ヘッダーの後にセグメントがありません。</span>
+    <span data-phrase="read.mkvtracks">トラックが指定されていません。</span>
+    <span data-phrase="read.mkvcodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.mkvencoded">トラックがコンテナ内で圧縮または暗号化されており、このリーダーでは解除できません。</span>
+    <span data-phrase="read.mkvaudio">「{type}」の音声トラックに設定がなく、サンプリング周波数も設定なしで表せる値ではありません。</span>
+    <span data-phrase="read.lacing">ブロックのレーシング形式をこのリーダーで読めませんでした。</span>
+    <span data-phrase="net.clean">動画はどこへも送られていません。読み込んだ{total}個のファイルはすべてこのページ自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+  </div>
+</main>

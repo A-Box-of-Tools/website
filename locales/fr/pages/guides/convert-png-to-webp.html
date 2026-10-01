@@ -1,0 +1,49 @@
+<section>
+    <h2>La réponse rapide</h2>
+    <p>Ouvrez le <a href="../../convertir-png-en-webp/">convertisseur PNG en WebP</a>, déposez les fichiers et choisissez l’un des deux modes :</p>
+    <ul>
+      <li><strong>Sans perte</strong> pour une image avec du texte, des aplats ou des contours nets : capture d’écran, schéma, logo, graphique, tout ce qui est dessiné plutôt que photographié. Chaque pixel opaque reste exactement identique et le fichier devient plus petit.</li>
+      <li><strong>Plus petit</strong> pour une photographie. Le gain est énorme et la différence invisible.</li>
+    </ul>
+    <p>Rien n’est envoyé dans les deux cas. Votre navigateur sait écrire WebP depuis 2020 : l’encodeur est déjà sur votre ordinateur.</p>
+  </section>
+  <section>
+    <h2>Pourquoi un PNG est si gros</h2>
+    <p>PNG est sans perte : il ne supprime jamais rien. Il cherche les répétitions — suites de pixels identiques, lignes ressemblant à la précédente — et les décrit de façon compacte.</p>
+    <p>Cela fonctionne très bien pour les images auxquelles PNG était destiné. Une capture d’écran comporte surtout des panneaux unis et du texte répété ; un logo, quelques couleurs unies. Les deux se compressent énormément.</p>
+    <p>Cela fonctionne mal pour une photographie, où presque rien ne se répète. Chaque brin d’herbe, chaque dégradé de ciel, chaque grain de bruit du capteur diffère légèrement de son voisin, et PNG les enregistre tous. Une photo de téléphone en PNG pèse couramment dix fois le JPEG correspondant. Vous demandez simplement à un format sans perte de stocker une image qui n’a pas besoin de l’être ainsi.</p>
+    <p>Voilà pourquoi le bon choix ci-dessous dépend de l’image.</p>
+  </section>
+  <section>
+    <h2>WebP sans perte : le remplacement direct</h2>
+    <p>WebP dispose d’un mode sans perte qui compresse mieux que PNG : il est plus récent et utilise davantage de techniques. Sur les images adaptées au PNG, il retire généralement encore un cinquième à un tiers de la taille sans rien sacrifier.</p>
+    <p>C’est le mode pour le texte et les contours nets : captures de documentation, maquettes d’interface, schémas, dessins au trait, logos, graphiques, pixel art. Le résultat est la même image, plus petite. La seule réserve est un logiciel qui ne sait pas lire WebP.</p>
+    <p>L’affirmation « sans perte » mérite aussi d’être vérifiée, ce que fait l’outil. WebP stocke ses pixels dans l’un de deux blocs, et le convertisseur relit le fichier terminé pour voir lequel a été produit. Si un navigateur cessait de respecter la demande, la ligne le signalerait plutôt que de présenter un fichier avec perte comme sans perte. Tous les navigateurs actuels respectent la demande.</p>
+  </section>
+  <section>
+    <h2>WebP avec perte : pour les photographies</h2>
+    <p>L’autre mode retire des détails que vous remarqueriez peu, comme JPEG mais beaucoup mieux. Sur une photographie, il peut couramment réduire un PNG de 2&nbsp;Mo à moins de 200&nbsp;Ko, sans différence visible côte à côte.</p>
+    <p>Le curseur commence à 80, la valeur par défaut de WebP, généralement convaincante pour une photo. En dessous d’environ 60, la différence commence à se voir.</p>
+    <p>Ce mode ne convient <em>pas</em> aux aplats décrits plus haut. La compression avec perte lisse l’image, ce qui nuit au texte et aux contours nets : un halo apparaît autour des lettres, comme sur une mauvaise numérisation. Si l’image contient des mots, choisissez le mode sans perte.</p>
+  </section>
+  <section>
+    <h2>La transparence reste dans les deux cas</h2>
+    <p>WebP possède un vrai canal alpha, comme PNG : un logo sur fond transparent reste transparent. Aucune couleur à choisir, aucun fond ajouté.</p>
+    <p>La conversion inverse est différente. Convertir <em>vers</em> JPEG détruit la transparence, car JPEG ne possède aucun canal alpha. Une section complète l’explique dans le guide <a href="../convertir-webp-en-jpg/">convertir WebP en JPG</a>. WebP n’a pas ce problème : c’est l’une des raisons de le préférer quand vous avez le choix.</p>
+    <p>Une précision mesurée : un pixel <em>partiellement</em> transparent peut voir sa couleur enregistrée varier très légèrement. C’est une propriété du passage par un canevas de navigateur : il stocke la couleur multipliée par la transparence et ne peut pas inverser exactement cette multiplication. Cela ne vient pas de WebP. C’est invisible, car les pixels dont la couleur varie le plus sont ceux qui en montrent le moins. Les pixels opaques restent identiques bit pour bit.</p>
+  </section>
+  <section>
+    <h2>Un WebP s’ouvre-t-il partout ?</h2>
+    <p>Sur le web, oui. Chrome, Edge, Firefox et Safari affichent tous WebP depuis 2020. Pour un site web, il n’est donc plus nécessaire de prévoir un autre format. C’est l’intérêt principal de cette conversion : des pages plus légères avec la même image.</p>
+    <p>Hors du navigateur, c’est moins uniforme. Windows et macOS les prévisualisent désormais, mais certains anciens logiciels, formulaires et la plupart des liseuses les refusent encore. Dans ce cas, il vous faut l’outil inverse, <a href="../../convertir-webp-en-jpg/">WebP en JPG</a>, et son <a href="../convertir-webp-en-jpg/">guide</a>.</p>
+  </section>
+  <section>
+    <h2>Ce qui ne suit pas</h2>
+    <p>Les pixels restent ; les données autour, non. Le passage par un canevas laisse derrière les blocs de texte, profils de couleur ICC et blocs XMP du PNG.</p>
+    <p>C’est généralement sans conséquence pour un PNG : il contient rarement des données d’appareil photo, et une capture d’écran n’en contient pas. Pour examiner un fichier, l’outil de <a href="../../supprimer-les-donnees-exif/">lecture et suppression EXIF</a> lit et écrit ces données sans recomprimer l’image.</p>
+  </section>
+  <section>
+    <h2>Pourquoi il n’y a aucun envoi</h2>
+    <p>Les deux parties du travail sont déjà sur votre ordinateur. Votre navigateur décode PNG et encode WebP depuis 2020. Cette même capacité a permis aux sites de servir des WebP.</p>
+    <p>Un convertisseur qui envoie les fichiers à un serveur utilise donc sa propre copie d’un logiciel que vous possédez déjà, et garde vos images pendant l’opération. L’<a href="../../convertir-png-en-webp/">outil proposé ici</a> travaille dans la page et fonctionne avec le réseau débranché : c’est la preuve la plus simple que rien n’est parti. Le guide <a href="../est-il-sur-d-envoyer-ses-fichiers/">est-il sûr d’envoyer des fichiers</a> développe cette question.</p>
+  </section>

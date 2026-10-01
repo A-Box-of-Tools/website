@@ -1,0 +1,835 @@
+<main id="main">
+  <!-- Step 1 &mdash; the photograph -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez la photographie</h2>
+
+    <p class="card-lede">
+      N'importe quelle image que votre navigateur sait ouvrir. Une photo de
+      téléphone prise devant un mur uni, à la lumière du jour, à un mètre cinquante
+      environ&nbsp;: c'est autour de cela que la plupart de ces règles ont été
+      écrites. Elle est lue directement sur votre disque, et n'est envoyée nulle
+      part.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">En choisir une autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the rule -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Choisissez le pays et le document</h2>
+
+    <p class="card-lede">
+      Tous les chiffres ci-dessous sont les exigences publiées, transcrites depuis l’autorité indiquée. Rien n’est deviné ni récupéré en ligne &mdash; deux tables, <code>src/specs.js</code>
+      pour les chiffres et <code>src/sources.js</code> pour leurs sources, sont fournies avec la page.
+    </p>
+
+    <div class="picker">
+      <!--
+        One control: the box is typed into and the list under it narrows. The
+        list is empty here and filled by src/main.js, so no copy of this file
+        ever lists a country. src/combo.js says why it is not a <select>.
+      -->
+      <div class="option-row">
+        <label for="country" id="country-label">Pays</label>
+        <div class="combo" id="country-combo">
+          <input type="text" id="country" class="combo-input" role="combobox"
+                 aria-autocomplete="list" aria-expanded="false"
+                 aria-controls="country-list" placeholder="Saisissez un pays pour le trouver"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="done">
+          <button type="button" id="country-toggle" class="combo-toggle"
+                  tabindex="-1" aria-label="Afficher tous les pays">
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                 focusable="false"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                 stroke-linejoin="round"/></svg>
+          </button>
+          <ul id="country-list" class="combo-list" role="listbox"
+              aria-labelledby="country-label" hidden></ul>
+        </div>
+      </div>
+      <!--
+        Written into as the list narrows, so it is empty here: buildlib/cards.py
+        folds an explanation behind the card's heading and leaves a status alone,
+        and it tells the two apart by whether the markup has anything in it.
+      -->
+      <p id="filter-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <p id="doc-label" class="doc-label">Document</p>
+      <div id="doc-list" class="doc-list" role="radiogroup"
+           aria-labelledby="doc-label"></div>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      The same boxes, filled in from the rule's own words, and only for
+      "Anywhere else", like the boxes. src/requirements.js says what it reads
+      and why it quotes every figure back rather than asking to be trusted.
+    -->
+    <div class="read-rules" id="read-rules" hidden>
+      <label for="read-text">Vous avez les règles sous forme de texte&nbsp;? Collez-les pour remplir les champs. L’outil lit l’anglais et le chinois&nbsp;; dans les autres langues, il reconnaît encore les dimensions.</label>
+      <textarea id="read-text" rows="4" spellcheck="false"></textarea>
+      <button type="button" id="read-button" class="ghost">Lire les règles</button>
+      <div id="read-result" class="read-result" hidden>
+        <p id="read-status" class="hint-line" role="status"></p>
+        <ul id="read-found" class="read-list"></ul>
+        <ul id="read-notes" class="read-list read-notes"></ul>
+      </div>
+    </div>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Les chiffres, à saisir vous-même</summary>
+      <div class="numbers">
+        <label>Largeur (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Hauteur (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Tête, minimum (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Tête, maximum (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Fond
+          <select id="custom-background">
+            <option value="white">Blanc uni</option>
+            <option value="off-white">Blanc ou blanc cassé</option>
+            <option value="light-grey" selected>Gris clair uni</option>
+            <option value="cream">Gris clair ou crème</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Largeur d'envoi (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Hauteur d'envoi (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Minimum (Ko)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Maximum (Ko)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        Ko signifie ici 1024 octets, ce que ces formulaires entendent par là.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; the framing -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Marquez le visage et vérifiez le cadrage</h2>
+
+    <p id="frame-empty" class="field-summary">Choisissez une photographie et le cadre de recadrage apparaîtra ici.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Le sommet du crâne, le menton et chaque pupille. Ces quatre points
+        constituent la totalité de ce qu&rsquo;une règle mesure, et le recadrage est
+        pris là où ils finissent&nbsp;: faites glisser celui qui est tombé à côté,
+        puis appuyez sur <strong>Ajuster le cadre</strong>. Les trouver consiste à
+        mesurer la photo elle-même&nbsp;: le bord de votre tête sur le mur derrière
+        vous, et les taches plus sombres où sont les yeux. Il n&rsquo;y a aucun
+        modèle là-dedans et rien n&rsquo;est téléchargé, et c&rsquo;est une position
+        de départ plutôt qu&rsquo;un verdict &mdash; d&rsquo;où le fait qu&rsquo;elle
+        vous appartient et que la ligne ci-dessous dit lequel des quatre elle
+        n&rsquo;a pas pu mesurer.
+      </p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="D&rsquo;où viennent les quatre points">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>Les trouver pour moi</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>Je les place moi-même</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-row">
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="preview" alt="">
+          </div>
+        </div>
+
+        <!-- The finished photograph, redrawn as the box moves. One drawImage
+             and no encoding, so it can keep up with a drag; the caption's
+             heading is markup rather than script so the canvas has a name to
+             be announced by before a photo is ever chosen. -->
+        <figure class="outcome" id="outcome" hidden>
+          <canvas id="outcome-canvas" class="outcome-frame"
+                  role="img" aria-labelledby="outcome-caption"></canvas>
+          <figcaption id="outcome-caption" class="outcome-caption">
+            <strong>Le résultat prévu</strong>
+            <output id="outcome-size"></output>
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="stage-hint">Le panneau à côté de la photo montre le recadrage aux proportions demandées, sans repères dessinés dessus. Il représente le fichier final&nbsp;: un cadrage incorrect s’y voit avant le téléchargement.</p>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="ghost">Ajuster le cadre à la règle</button>
+        <button type="button" id="reset-marks" class="ghost">Rechercher le visage</button>
+        <button type="button" id="whole-photo" class="ghost">Le plus grand cadre possible</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the background -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Le fond</h2>
+
+    <p class="card-lede" id="background-lede">Lu dans une bande en haut du recadrage et le long de chaque côté, au-dessus des
+      épaules &mdash; les parties du cadre qui ne devraient être que du fond. Mesuré en
+      CIE Lab plutôt qu&rsquo;en RVB, parce que deux gris séparés de quarante unités RVB
+      sont indiscernables et que quarante unités de bleu font une autre couleur.</p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Ce que donne le vôtre<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Ce que la règle demande<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Step 5 &mdash; the files -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">5</span> Enregistrez</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Résolution d'impression</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; le plancher qu'annonce presque chaque règle</option>
+          <option value="600">600 dpi &mdash; ce qu'utilisera un bon labo photo</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Planche à imprimer</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Fabriquer les fichiers</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Terminé</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="country.icao">Norme OACI</span>
+    <span data-phrase="spec.icao.doc">Tout document de voyage biométrique</span>
+    <span data-phrase="spec.icao.upload">Capture lisible par machine</span>
+    <span data-phrase="spec.icao.note1">Le format &#x2066;35 x 45&#x2069; mm est celui contre lequel la plus grande partie du monde délivre,
+      et une hauteur de tête de 70 à 80 pour cent avec la ligne des yeux entre la moitié
+      et les trois cinquièmes de la hauteur est la géométrie dont chaque spécification
+      ci-dessous est une variante.</span>
+    <span data-phrase="spec.icao.note2">Le Doc 9303 demande aussi au moins 90 pixels entre les centres des yeux dans
+      l&rsquo;image enregistrée, ce qu&rsquo;un recadrage de &#x2066;413 x 531&#x2069; pris dans une photo
+      de téléphone moderne dépasse largement.</span>
+    <span data-phrase="country.us">États-Unis</span>
+    <span data-phrase="spec.us-passport.doc">Passeport et carte verte</span>
+    <span data-phrase="spec.us-passport.upload">Envoi de la photo en ligne</span>
+    <span data-phrase="spec.us-passport.note1">Carrée, et la seule photo de passeport carrée largement utilisée&nbsp;: &#x2066;2 x 2&#x2069;
+      pouces, soit &#x2066;51 x 51&#x2069; mm.</span>
+    <span data-phrase="spec.us-passport.note2">La tête peut se situer n&rsquo;importe où entre 25 et 35 mm, une fenêtre bien plus
+      large que la règle OACI, et la ligne des yeux se mesure depuis le bord inférieur
+      plutôt qu&rsquo;en proportion.</span>
+    <span data-phrase="spec.us-passport.note3">La règle numérique ne donne plus qu’un poids&nbsp;: 54 Ko à 10 Mo, en JPEG, PNG ou HEIC. Les dimensions en pixels, la limite de 240 Ko et la ligne des yeux ont disparu. Le carré écrit ici correspond à &#x2066;2 x 2&#x2069; pouces à 300 dpi&nbsp;; un carré plus grand respectant la bande convient aussi.</span>
+    <span data-phrase="spec.us-dv.doc">Inscription à la loterie des visas de diversité</span>
+    <span data-phrase="spec.us-dv.upload">Envoi pour l&rsquo;Entrant Status Check</span>
+    <span data-phrase="spec.us-dv.note1">La même photo que pour la règle du passeport ci-dessus, mais le formulaire
+      d&rsquo;inscription ne prend qu&rsquo;une seule taille&nbsp;: exactement &#x2066;600 x 600&#x2069;
+      pixels, 240 Ko au plus.</span>
+    <span data-phrase="spec.us-dv.note2">Une inscription rejetée pour sa photo n&rsquo;est pas corrigée, elle est jetée
+      &mdash; d&rsquo;où l&rsquo;intérêt de viser juste plutôt qu&rsquo;à peu près.</span>
+    <span data-phrase="country.uk">Royaume-Uni</span>
+    <span data-phrase="spec.uk-passport.doc">Passeport</span>
+    <span data-phrase="spec.uk-passport.upload">Photo numérique pour une demande en ligne</span>
+    <span data-phrase="spec.uk-passport.note1">La tête se mesure du menton au sommet du crâne et doit faire entre 29 et 34 mm
+      &mdash; nettement moins que la plage OACI, si bien qu&rsquo;une photo recadrée selon
+      la règle OACI peut être refusée ici pour une tête trop grande.</span>
+    <span data-phrase="spec.uk-passport.note2">La règle numérique a un plancher autant qu&rsquo;un plafond&nbsp;: sous 50 Ko,
+      l&rsquo;envoi est refusé pour cause de fichier trop petit.</span>
+    <span data-phrase="country.schengen">Espace Schengen</span>
+    <span data-phrase="spec.schengen.doc">Demande de visa</span>
+    <span data-phrase="spec.schengen.note1">Le format de visa commun à tous les consulats Schengen&nbsp;: &#x2066;35 x 45&#x2069; mm, le visage
+      occupant 70 à 80 pour cent de la hauteur, soit 32 à 36 mm.</span>
+    <span data-phrase="spec.schengen.note2">Les consulats ne s&rsquo;accordent pas sur le fond qu&rsquo;ils acceptent. Un gris
+      clair uni n&rsquo;est refusé par personne&nbsp;; un mur blanc avec une ombre dessus
+      est refusé par la plupart.</span>
+    <span data-phrase="country.de">Allemagne</span>
+    <span data-phrase="spec.de-passport.doc">Passeport et carte d&rsquo;identité</span>
+    <span data-phrase="spec.de-passport.note1">Le gabarit photo de la Bundesdruckerei demande une hauteur de visage de 32 à 36 mm
+      dans un cadre de &#x2066;35 x 45&#x2069; mm, les yeux dans le tiers supérieur.</span>
+    <span data-phrase="spec.de-passport.note2">Depuis 2025, la photo est normalement prise au guichet ou transmise électroniquement
+      par un photographe&nbsp;; un tirage fait ici sert donc aux demandes qui en acceptent
+      encore un.</span>
+    <span data-phrase="country.ca">Canada</span>
+    <span data-phrase="spec.ca-passport.doc">Passeport</span>
+    <span data-phrase="spec.ca-passport.note1">L&rsquo;exception en matière de forme&nbsp;: &#x2066;50 x 70&#x2069; mm, proportionnellement plus
+      haut et plus étroit que tout le reste ici, si bien qu&rsquo;un recadrage fait pour
+      un autre pays n&rsquo;y entrera pas.</span>
+    <span data-phrase="spec.ca-passport.note2">La hauteur du visage est de 31 à 36 mm, du menton au sommet du crâne. Le Canada ne
+      publie pas de ligne des yeux&nbsp;; la plage indiquée ici découle donc du fait que
+      la tête est centrée dans le cadre&nbsp;: prenez-la comme une indication et non comme
+      une règle.</span>
+    <span data-phrase="spec.ca-passport.note3">Le photographe doit imprimer la date et le nom du studio au dos, ce qu&rsquo;aucun
+      outil ne peut faire pour vous.</span>
+    <span data-phrase="country.au">Australie</span>
+    <span data-phrase="spec.au-passport.doc">Passeport</span>
+    <span data-phrase="spec.au-passport.note1">Un fond uni et clair, avec un visage de 32 à 36 mm du menton au sommet du crâne dans
+      un tirage de &#x2066;35 x 45&#x2069; mm.</span>
+    <span data-phrase="spec.au-passport.note2">Deux tirages sont demandés avec une demande papier, et c&rsquo;est précisément à
+      cela que sert l&rsquo;export en planche ci-dessous.</span>
+    <span data-phrase="country.in">Inde</span>
+    <span data-phrase="spec.in-passport.doc">Passeport</span>
+    <span data-phrase="spec.in-passport.note1">Passport Seva demande une photo de &#x2066;2 x 2&#x2069; pouces sur fond blanc uni, soit le même
+      cadre que les États-Unis.</span>
+    <span data-phrase="spec.in-passport.note2">Un tirage de &#x2066;35 x 45&#x2069; mm est ce que la plupart des formulaires indiens entendent par
+      « &nbsp;format passeport&nbsp; », et il fait l&rsquo;objet d&rsquo;une entrée
+      distincte dans cette liste &mdash; les deux ne sont pas interchangeables.</span>
+    <span data-phrase="spec.in-print-35x45.doc">Tirage format passeport pour un formulaire</span>
+    <span data-phrase="spec.in-print-35x45.note1">Ce qu&rsquo;une banque, une université ou un formulaire administratif veut dire
+      quand il demande une « &nbsp;photo format passeport&nbsp; » à coller&nbsp;: &#x2066;35 x 45&#x2069;
+      mm, fond blanc, tête et épaules.</span>
+    <span data-phrase="spec.in-print-35x45.note2">Aucune autorité ne publie de plage de hauteur de tête pour cela&nbsp;; celle de
+      l&rsquo;OACI est donc appliquée et affichée à titre indicatif. Personne ne mesure
+      ces photos à la règle.</span>
+    <span data-phrase="spec.in-exam-photo.doc">Photo pour formulaire en ligne SSC / UPSC</span>
+    <span data-phrase="spec.in-exam-photo.upload">Photo pour la demande en ligne</span>
+    <span data-phrase="spec.in-exam-photo.note1">Ce que ces formulaires appliquent réellement, ce sont trois nombres&nbsp;: &#x2066;200 x 230&#x2069;
+      pixels, JPEG, et entre 20 et 50 Ko. Les deux bouts sont vérifiés &mdash; un fichier
+      de 12 Ko est refusé comme trop petit exactement comme un de 60 Ko est refusé comme
+      trop gros.</span>
+    <span data-phrase="spec.in-exam-photo.note2">Le cadrage tête et épaules est décrit avec des mots plutôt que mesuré&nbsp;; les
+      plages données ici sont donc des indications tirées des images d&rsquo;exemple des
+      formulaires.</span>
+    <span data-phrase="spec.in-exam-photo.note3">Il n&rsquo;y a pas de taille d&rsquo;impression, parce qu&rsquo;il n&rsquo;y a rien
+      à imprimer&nbsp;: c&rsquo;est un fichier pour un formulaire web. L&rsquo;export en
+      planche est désactivé pour lui.</span>
+    <span data-phrase="spec.in-exam-signature.doc">Signature pour formulaire en ligne SSC / UPSC</span>
+    <span data-phrase="spec.in-exam-signature.upload">Signature pour la demande en ligne</span>
+    <span data-phrase="spec.in-exam-signature.note1">Pas un portrait du tout&nbsp;: une signature tracée à l&rsquo;encre noire ou bleu
+      foncé sur du papier blanc, photographiée ou numérisée, recadrée à &#x2066;140 x 60&#x2069; pixels et
+      enregistrée en JPEG entre 10 et 20 Ko.</span>
+    <span data-phrase="spec.in-exam-signature.note2">Le calque de la tête et des yeux est désactivé ici. Ce qui est vérifié à la place,
+      c&rsquo;est que le papier est clair, qu&rsquo;il y a de l&rsquo;encre dessus, et que
+      cette encre n&rsquo;est pas si pâle que le formulaire la lise comme une page vide.</span>
+    <span data-phrase="spec.in-exam-signature.note3">Un recadrage de &#x2066;140 x 60&#x2069; d&rsquo;une signature fait 8400 pixels. Atteindre 10 Ko est
+      la partie difficile de cette spécification, pas rester sous 20 &mdash; voir la note
+      sur le remplissage, sur la page.</span>
+    <span data-phrase="country.cn">Chine</span>
+    <span data-phrase="spec.cn-passport.doc">Passeport et visa</span>
+    <span data-phrase="spec.cn-passport.upload">Envoi pour la demande de visa en ligne</span>
+    <span data-phrase="spec.cn-passport.note1">Un cadre de &#x2066;33 x 48&#x2069; mm, plus étroit que le &#x2066;35 x 45&#x2069; utilisé presque partout ailleurs,
+      avec une tête de 28 à 33 mm du menton au sommet du crâne.</span>
+    <span data-phrase="spec.cn-passport.note2">L&rsquo;envoi a un plancher autant qu&rsquo;un plafond &mdash; de 40 Ko à 120 Ko, à
+      exactement &#x2066;354 x 472&#x2069; pixels, soit ce même cadre à 272 ppp.</span>
+    <span data-phrase="country.jp">Japon</span>
+    <span data-phrase="spec.jp-passport.doc">Passeport</span>
+    <span data-phrase="spec.jp-passport.note1">Un tirage de &#x2066;35 x 45&#x2069; mm avec un visage de 34 mm du menton au sommet du crâne, à 2 mm
+      près, et 4 à 6 mm d&rsquo;espace libre au-dessus de la tête.</span>
+    <span data-phrase="spec.jp-passport.note2">L&rsquo;espace au-dessus de la tête est énoncé ici comme une règle à part plutôt que
+      déduit de la hauteur de tête&nbsp;: c&rsquo;est pourquoi la plage des yeux affichée
+      est une indication.</span>
+    <span data-phrase="country.other">Ailleurs</span>
+    <span data-phrase="spec.custom.doc">Saisir les nombres vous-même</span>
+    <span data-phrase="spec.custom.upload">Ce que le formulaire demande</span>
+    <span data-phrase="spec.custom.note1">Sur celle-ci, tous les nombres sont modifiables. Mettez ce que dit le formulaire
+      devant vous, et le calque, le tirage et la recherche de taille de fichier suivront.</span>
+    <span data-phrase="spec.custom.note2">Elle démarre sur la géométrie OACI, parce qu&rsquo;un pays absent de la liste
+      ci-dessus a bien plus de chances de l&rsquo;utiliser que n&rsquo;importe quoi
+      d&rsquo;autre.</span>
+    <span data-phrase="filter.one">Un pays correspond.</span>
+    <span data-phrase="filter.count">{n} pays correspondent.</span>
+    <span data-phrase="filter.none">Aucun résultat. Essayez le nom du pays dans sa langue, ou choisissez « &nbsp;Autre pays&nbsp; » et saisissez les chiffres.</span>
+    <span data-phrase="doc.size.mm">&#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="doc.size.px">&#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="doc.size.both">{print} &middot; {upload}</span>
+    <span data-phrase="guide.eyes">yeux</span>
+    <span data-phrase="guide.chin">menton</span>
+    <span data-phrase="thumb.alt">{title}</span>
+    <span data-phrase="out.download">Télécharger</span>
+    <span data-phrase="country.fr">France</span>
+    <span data-phrase="country.it">Italie</span>
+    <span data-phrase="country.nl">Pays-Bas</span>
+    <span data-phrase="country.es">Espagne</span>
+    <span data-phrase="country.ie">Irlande</span>
+    <span data-phrase="country.pl">Pologne</span>
+    <span data-phrase="doc.passport">Passeport</span>
+    <span data-phrase="doc.passport-id">Passeport et carte d&rsquo;identité</span>
+    <span data-phrase="doc.passport-id-licence">Passeport, carte d’identité et permis de conduire</span>
+    <span data-phrase="bg.forbid.white">Le fond mesuré est {hex}, blanc ou presque &mdash; cette règle refuse les fonds blancs.</span>
+    <span data-phrase="bg.white-or-grey.label">Blanc uni ou gris clair</span>
+    <span data-phrase="bg.white-or-grey.inline">blanc uni ou gris clair</span>
+    <span data-phrase="bg.white-or-grey.note">Les deux conviennent. La mesure concerne le mur, pas le papier&nbsp;: un mur blanc uniformément éclairé paraît souvent gris clair sur la photo.</span>
+    <span data-phrase="bg.white-grey-blue.label">Blanc, gris clair ou bleu clair</span>
+    <span data-phrase="bg.white-grey-blue.inline">blanc, gris clair ou bleu clair</span>
+    <span data-phrase="bg.white-grey-blue.note">L’un des trois convient si la teinte reste uniforme. Le bleu clair permet de distinguer les cheveux clairs du fond.</span>
+    <span data-phrase="bg.white-grey-cream.label">Blanc, gris clair ou crème</span>
+    <span data-phrase="bg.white-grey-cream.inline">blanc, gris clair ou crème</span>
+    <span data-phrase="bg.white-grey-cream.note">Les trois conviennent. Crème signifie un blanc légèrement chaud. Ce qui échoue est l’ombre, la texture ou un encadrement de porte sur le mur, pas cette nuance.</span>
+    <span data-phrase="bg.grey-or-blue-not-white.label">Gris clair ou bleu clair &mdash; pas blanc</span>
+    <span data-phrase="bg.grey-or-blue-not-white.inline">gris clair ou bleu clair, pas blanc</span>
+    <span data-phrase="bg.grey-or-blue-not-white.note">Cette règle refuse explicitement le blanc. Le conseil habituel de se placer devant un mur blanc ne convient donc pas.</span>
+    <span data-phrase="note.crown-skull">La tête est mesurée jusqu’au sommet du crâne, sans les cheveux. Les points de l’outil trouvent le sommet des cheveux&nbsp;: avec une chevelure fournie, la mesure est plus élevée. Visez la moitié inférieure de la bande.</span>
+    <span data-phrase="note.head-advisory">Aucune hauteur de tête n’est publiée. Les chiffres OACI sont affichés à titre indicatif, jamais comme un échec. Cadrez selon la description de la règle.</span>
+    <span data-phrase="note.head-loose">Aucune hauteur de tête n’est publiée et le format est inhabituel&nbsp;: les chiffres OACI ne s’appliquent pas. La bande approximative vient de la description et reste indicative, jamais signalée comme un échec.</span>
+    <span data-phrase="note.eye-advisory">Aucune ligne des yeux n’est publiée. La bande correspond à une tête centrée&nbsp;: c’est un repère, pas une exigence, et elle ne devient jamais rouge.</span>
+    <span data-phrase="spec.fr-passport.note1">La photo doit être prise par un photographe agréé ou une cabine agréée. L’impression produite ici sert à vérifier leur photo, pas à la remettre avec la demande.</span>
+    <span data-phrase="spec.it-passport.note1">L’Italie publie une largeur de 35 à 40 mm avec le visage occupant 70 à 80 %, sans hauteur. Le format utilisé est donc le &#x2066;35 x 45&#x2069; vendu par les cabines et studios italiens.</span>
+    <span data-phrase="spec.nl-passport.note1">La tête doit mesurer 26 à 30 mm, soit 58 à 67 % du cadre, contre 70 à 80 % pour l’OACI. Un recadrage OACI est trop serré pour une demande néerlandaise.</span>
+    <span data-phrase="spec.nl-passport.note2">Deux autres chiffres sont publiés mais non utilisés&nbsp;: visage de 16 à 20 mm de large hors oreilles, hauteur minimale de tête de 19 mm avant 11 ans. Le minimum de 400 dpi explique l’impression plus grande.</span>
+    <span data-phrase="spec.es-passport.note1">Le format espagnol mesure 26 mm de large sur 32 de haut, indiqué « &nbsp;&#x2066;32 x 26&#x2069; mm&nbsp; » dans la règle. Ce n’est pas un &#x2066;35 x 45&#x2069;&nbsp;: une photo de passeport européen ordinaire n’a pas la bonne taille.</span>
+    <span data-phrase="spec.ie-passport.note1">Une demande papier nécessite quatre impressions identiques. Le témoin signe et tamponne le dos de deux. De &#x2066;35 x 45&#x2069; à &#x2066;38 x 50&#x2069; mm sont acceptés&nbsp;; l’outil utilise le petit format courant en cabine.</span>
+    <span data-phrase="spec.ie-passport.note2">La demande en ligne exige une photo plus large, tête jusqu’au milieu du torse, d’au moins &#x2066;715 x 951&#x2069; pixels. Le formulaire la recadre&nbsp;: envoyez la photo d’origine, pas celle recadrée ici.</span>
+    <span data-phrase="spec.pl-passport.note1">La Pologne publie une ligne des yeux de 20 à 30 mm au-dessus du bord inférieur. Une partie d’une chevelure fournie peut sortir du cadre si le visage n’est pas réduit.</span>
+    <span data-phrase="country.kr">Corée du Sud</span>
+    <span data-phrase="country.sg">Singapour</span>
+    <span data-phrase="country.nz">Nouvelle-Zélande</span>
+    <span data-phrase="upload.online">Photo pour la demande en ligne</span>
+    <span data-phrase="source.studio">Studios photo</span>
+    <span data-phrase="source.studio.doc">Un format vendu sous ce nom par les studios, pas une règle publiée</span>
+    <span data-phrase="note.studio-size">Aucune autorité ne publie ce format. Il correspond au nom utilisé par studios, formulaires ou employeurs. Le cadre convient&nbsp;; la bande de tête OACI reste indicative et ne signale aucun échec.</span>
+    <span data-phrase="spec.kr-passport.note1">La Corée interdit de détourer ou remplacer le fond par logiciel et mesure la tête au sommet du crâne, sans les cheveux. Le formulaire recommande &#x2066;413 x 531&#x2069; pixels, soit cette impression à 300 dpi.</span>
+    <span data-phrase="spec.sg-passport.note1">Singapour publie le fichier numérique&nbsp;: &#x2066;400 x 514&#x2069; pixels, 8 Mo maximum, sur blanc, pris dans les trois derniers mois. Aucun millimètre n’est donné. Ces pixels ont exactement la proportion &#x2066;35 x 45&#x2069; utilisée pour l’impression.</span>
+    <span data-phrase="spec.nz-passport.note1">La Nouvelle-Zélande demande une photo numérique et refuse explicitement le scan d’une impression. La planche imprimable est donc désactivée.</span>
+    <span data-phrase="spec.nz-passport.note2">Le format est 3:4, et non &#x2066;35 x 45&#x2069;. Poids de 250 Ko à 5 Mo, dimensions comprises entre &#x2066;900 x 1200&#x2069; et &#x2066;4500 x 6000&#x2069; pixels.</span>
+    <span data-phrase="spec.cn-1inch.doc">Impression un pouce (&#x2066;一寸&#x2069;)</span>
+    <span data-phrase="spec.cn-1inch.note1">Le format chinois &#x2066;一寸&#x2069; mesure &#x2066;25 x 35&#x2069; mm. Il sert aux formulaires scolaires, badges professionnels et photos à coller, pas aux passeports ni aux documents de voyage.</span>
+    <span data-phrase="spec.cn-2inch.doc">Impression deux pouces (&#x2066;二寸&#x2069;)</span>
+    <span data-phrase="spec.cn-2inch.note1">Le format chinois &#x2066;二寸&#x2069; mesure &#x2066;35 x 49&#x2069; mm. Le passeport mesure &#x2066;33 x 48&#x2069; mm, souvent appelé &#x2066;小二寸&#x2069;&nbsp;: c’est encore un autre format, dans sa propre entrée.</span>
+    <span data-phrase="spec.jp-resume.doc">Photo de CV (&#x2066;履歴書&#x2069;)</span>
+    <span data-phrase="spec.jp-resume.note1">Le CV japonais réserve un cadre de &#x2066;30 x 40&#x2069; mm. Le passeport est différent, &#x2066;35 x 45&#x2069;, avec sa propre entrée.</span>
+    <span data-phrase="spec.kr-banmyeongham.doc">Impression demi-carte (&#x2066;반명함&#x2069;)</span>
+    <span data-phrase="spec.kr-banmyeongham.note1">Les formulaires coréens demandent ce &#x2066;30 x 40&#x2069; mm par son nom. Le passeport est différent, &#x2066;35 x 45&#x2069;, avec sa propre entrée.</span>
+    <span data-phrase="country.ch">Suisse</span>
+    <span data-phrase="country.se">Suède</span>
+    <span data-phrase="country.no">Norvège</span>
+    <span data-phrase="country.pt">Portugal</span>
+    <span data-phrase="bg.light-unstated.label">Uni et clair &mdash; aucune couleur publiée</span>
+    <span data-phrase="bg.light-unstated.inline">uni et clair</span>
+    <span data-phrase="bg.light-unstated.note">La règle demande un fond uni et uniformément éclairé sans préciser sa couleur. Le contrôle accepte donc blanc, gris clair, bleu clair et crème. Refuser une couleur que l’autorité ne refuse pas inventerait une exigence.</span>
+    <span data-phrase="note.no-measurements">Aucun millimètre n’est publié. Le cadre de &#x2066;35 x 45&#x2069; mm est le format courant, et les bandes OACI sont indicatives, sans échec. Servez-vous-en pour vérifier l’aspect, pas pour satisfaire une règle chiffrée inexistante.</span>
+    <span data-phrase="note.taken-at-the-office">La photo est prise lors de la demande. L’impression produite ici sert à vérifier le cadrage, ou aux formulaires, visas et demandes qui acceptent encore une photo apportée.</span>
+    <span data-phrase="spec.ch-passport.note1">Fedpol publie des exemples corrects et incorrects, sans mesures&nbsp;: surexposition, visage trop petit, bouche ouverte, main devant le visage, tête tournée, yeux fermés et cheveux sur le visage.</span>
+    <span data-phrase="spec.se-passport.note1">La Suède vous photographie au bureau des passeports. C’est une exigence légale pour maintenir la qualité et empêcher l’utilisation de la photo d’une autre personne.</span>
+    <span data-phrase="spec.no-passport.note1">La Norvège vous photographie en cabine biométrique et refuse les photos apportées, sauf pour un passeport d’urgence. Sans dimensions publiées, elle demande environ 70 % de tête, les deux oreilles visibles et aucun port de lunettes.</span>
+    <span data-phrase="spec.pt-passport.note1">Le Portugal ne publie aucune dimension pour le Cart&atilde;o de Cidad&atilde;o ni le passeport, demandés en personne. Les consulats demandent parfois une impression au format passeport.</span>
+    <span data-phrase="country.hk">Hong Kong</span>
+    <span data-phrase="country.tw">Taïwan</span>
+    <span data-phrase="country.vn">Viêt Nam</span>
+    <span data-phrase="country.ph">Philippines</span>
+    <span data-phrase="country.br">Brésil</span>
+    <span data-phrase="country.mx">Mexique</span>
+    <span data-phrase="country.tr">Turquie</span>
+    <span data-phrase="country.za">Afrique du Sud</span>
+    <span data-phrase="country.ae">Émirats arabes unis</span>
+    <span data-phrase="spec.hk-passport.note1">Le format &#x2066;40 x 50&#x2069; mm contient une tête de 32 à 36 mm&nbsp;: plus d’espace qu’un &#x2066;35 x 45&#x2069;. La photo est gravée au laser, d’où le conseil d’éviter les vêtements très sombres comme très clairs.</span>
+    <span data-phrase="spec.hk-passport-online.doc">Passeport, demande en ligne</span>
+    <span data-phrase="spec.hk-passport-online.note1">Le formulaire numérique demande au moins &#x2066;1200 x 1600&#x2069; pixels, soit 3:4 contre 4:5 pour l’impression, en JPEG de 5 Mo maximum. C’est une règle distincte sans impression.</span>
+    <span data-phrase="spec.tw-passport.note1">Les selfies de téléphone, inversés et grand-angle, sont refusés. L’image ne doit pas être rééchantillonnée avant impression et les deux oreilles doivent être visibles. Le fichier numérique doit être un JPEG d’au moins &#x2066;413 x 531&#x2069; pixels, 5 Mo maximum.</span>
+    <span data-phrase="spec.vn-passport.note1">Deux impressions de &#x2066;4 x 6&#x2069; cm, plus hautes en proportion qu’un &#x2066;35 x 45&#x2069;, sur blanc, tête nue, sans lunettes teintées. Elles doivent provenir d’un studio autorisé par l’immigration.</span>
+    <span data-phrase="spec.ph-passport.note1">Les Philippines vous photographient au guichet. Elles précisent les vêtements, pas les dimensions&nbsp;: col ou encolure haute dans une couleur distincte du fond, aucune ombre sur le visage, aucune lentille colorée.</span>
+    <span data-phrase="spec.br-passport.note1">Le &#x2066;5 x 7&#x2069; cm brésilien concerne les consulats à l’étranger et les enfants de moins de cinq ans. Au Brésil, la Pol&iacute;cia Federal photographie les personnes plus âgées au guichet. Une photo utilisée dans un ancien passeport est refusée.</span>
+    <span data-phrase="spec.mx-passport.note1">La photo ne doit pas dater de plus de trente jours, les lunettes sont retirées et le fond gris est explicitement refusé&nbsp;: il doit être blanc.</span>
+    <span data-phrase="spec.tr-passport.note1">La photo biométrique mesure &#x2066;50 x 60&#x2069; mm, pas &#x2066;35 x 45&#x2069;. L’autorité demande de ne pas la réduire. Une mauvaise taille ou un mauvais fond bloque la demande ou entraîne l’annulation de la carte au contrôle qualité.</span>
+    <span data-phrase="spec.za-passport.note1">La tête mesure 29 à 34 mm, comme au Royaume-Uni, et la photo date de moins d’un mois. Les bureaux qui délivrent la carte d’identité intelligente prennent la photo. Les impressions concernent les autres&nbsp;; la brochure avertit qu’une impression maison est rarement suffisante.</span>
+    <span data-phrase="spec.ae-passport.note1">Les Émirats publient une largeur de 35 à 40 mm et un visage de 70 à 80 %, sans hauteur. L’outil utilise le &#x2066;35 x 45&#x2069; vendu en studio. Le fond est seulement décrit comme uni et clair.</span>
+    <span data-phrase="country.pk">Pakistan</span>
+    <span data-phrase="country.bd">Bangladesh</span>
+    <span data-phrase="country.id">Indonésie</span>
+    <span data-phrase="country.il">Israël</span>
+    <span data-phrase="country.eg">Égypte</span>
+    <span data-phrase="country.ng">Nigeria</span>
+    <span data-phrase="spec.pk-passport.note1">Le Pakistan exige une photo professionnelle et refuse explicitement une image découpée dans une photo plus grande ou modifiée par logiciel. Utilisez cet outil pour vérifier une photo de studio&nbsp;: tête de 29 à 34 mm, fond blanc. Le fichier peut atteindre 5 Mo, sans dimensions en pixels publiées&nbsp;; celles proposées correspondent à l’impression à 300 dpi.</span>
+    <span data-phrase="spec.bd-passport.note1">Aucune photo n’est jointe à une demande de passeport électronique au Bangladesh&nbsp;: elle est prise lors de l’enregistrement biométrique au bureau. Seuls les enfants de moins de six ans ont une exception, avec leur propre entrée.</span>
+    <span data-phrase="spec.bd-passport-child.doc">Passeport, enfant de moins de six ans</span>
+    <span data-phrase="spec.bd-passport-child.note1">Un enfant de moins de six ans n’est pas enregistré au bureau&nbsp;: une photo est envoyée, au format de laboratoire 3R, trois pouces et demi sur cinq, sur fond gris. Le bureau en extrait le visage, d’où la large bande de tête.</span>
+    <span data-phrase="spec.id-passport.note1">L’Indonésie prend la photo au bureau d’immigration et peut la refaire sur demande, par exemple après un clignement ou une tête inclinée. Regardez droit, sans grand sourire, cheveux hors du visage et des sourcils, haut sombre avec col pour se distinguer du fond blanc lumineux.</span>
+    <span data-phrase="spec.il-passport.note1">Un carré de &#x2066;5 x 5&#x2069; cm sur blanc, plus petit que le format américain, pour un passeport demandé à l’étranger ou temporaire. En Israël, la photo est prise au bureau. Des impressions ne sont suggérées que pour les enfants jusqu’à six ans, difficiles à photographier sur place.</span>
+    <span data-phrase="spec.eg-passport.note1">Les missions égyptiennes demandent trois photos sur blanc, mais ne donnent pas toutes la même taille. Londres demande des photos de passeport sans dimensions&nbsp;; Washington demande &#x2066;2 x 2&#x2069; pouces, le format américain. Vérifiez auprès de votre mission avant d’imprimer.</span>
+    <span data-phrase="spec.ng-passport.note1">Le Nigeria ne publie que le fichier numérique&nbsp;: exactement &#x2066;600 x 800&#x2069; pixels, moins de 2 Mo, sur blanc, cheveux dégagés du visage et des oreilles. Utilisez le bouton de contrôle d’image du portail avant la demande. La photo officielle est ensuite prise au bureau d’immigration.</span>
+    <span data-phrase="country.my">Malaisie</span>
+    <span data-phrase="country.th">Thaïlande</span>
+    <span data-phrase="country.ar">Argentine</span>
+    <span data-phrase="country.sa">Arabie saoudite</span>
+    <span data-phrase="doc.evisa">Visa électronique</span>
+    <span data-phrase="spec.my-passport.note1">Le cadre malaisien est &#x2066;35 x 50&#x2069; mm, cinq millimètres plus haut que l’habituel, avec un visage plus petit de 25 à 30 mm, soit 50 à 60 % contre 70 à 80 % ailleurs. Un autre recadrage échoue aux deux critères. Deux impressions sur blanc, sans ombre.</span>
+    <span data-phrase="spec.my-expat-pass.doc">Titre pour expatriés (ESD Online)</span>
+    <span data-phrase="spec.my-expat-pass.note1">Le même cadre &#x2066;35 x 50&#x2069; mm que le passeport malaisien, mais une tête de 30 à 35 mm contre 25 à 30&nbsp;: un recadrage ne sert pas aux deux. Le fichier est limité à 25 Ko et comprimé pour tenir. Le blanc convient aux deux catégories de demande, le bleu à une seule&nbsp;: le contrôle utilise le blanc.</span>
+    <span data-phrase="spec.th-passport.note1">La Thaïlande prend la photo, les empreintes et l’iris au bureau des passeports ou à l’ambassade. Aucune impression à apporter ni taille publiée. L’ambassade demande de ne pas porter de lentilles colorées.</span>
+    <span data-phrase="spec.th-evisa.note1">Le visa électronique thaïlandais demande une tête d’environ 70 % de la hauteur, une photo verticale sur blanc ou blanc cassé, un JPEG de 3 Mo maximum, sans dimensions publiées. L’outil utilise &#x2066;35 x 45&#x2069; à 300 dpi. Comparez avec l’exemple du portail.</span>
+    <span data-phrase="spec.ar-passport.note1">Le passeport argentin est délivré par RENAPER à partir de la biométrie prise au rendez-vous ou au consulat. Aucune photo apportée ni taille publiée. Seuls les passeports d’urgence ou provisoires demandent une impression, dans leur propre entrée.</span>
+    <span data-phrase="spec.ar-emergency.doc">Passeport d’urgence ou provisoire</span>
+    <span data-phrase="spec.ar-emergency.note1">Un carré &#x2066;4 x 4&#x2069; cm sur blanc, de face, à mi-buste&nbsp;: les épaules apparaissent et la tête est plus petite que pour un passeport ordinaire. Aucun chapeau ni lunettes. Pour un passeport perdu ou volé à l’étranger&nbsp;; Asunci&oacute;n demande aussi la couleur et du papier mat.</span>
+    <span data-phrase="spec.sa-evisa.note1">Le visa touristique saoudien exige exactement &#x2066;200 x 200&#x2069; pixels, de 5 à 100 Ko, sur blanc, visage de 70 à 80 %, deux oreilles visibles. La règle donne aussi des pouces, inapplicables à un fichier de 200 pixels&nbsp;: le pourcentage est utilisé. Partez d’une photo nette.</span>
+    <span data-phrase="doc.visa">Visa</span>
+    <span data-phrase="bg.white-or-light.label">Blanc ou couleur claire unie</span>
+    <span data-phrase="bg.white-or-light.inline">blanc ou couleur claire unie</span>
+    <span data-phrase="bg.white-or-light.note">La règle accepte le blanc ou toute couleur claire unie sans la préciser. Le contrôle accepte blanc, gris clair, bleu clair et crème.</span>
+    <span data-phrase="spec.us-visa.note1">L’impression mesure &#x2066;2 x 2&#x2069; pouces comme le passeport, mais les lunettes sont interdites sans certificat médical signé. Le fichier DS-160 est un carré de 600 à 1200 pixels et 240 Ko maximum, contre 10 Mo pour le renouvellement du passeport. Le texte donne une tête de 22 mm à côté d’un pouce&nbsp;; son schéma donne 25 mm et garde la ligne des yeux de 28 à 35 mm depuis le bas, retirée de la règle du passeport.</span>
+    <span data-phrase="spec.ca-pr-card.doc">Résidence permanente et carte RP</span>
+    <span data-phrase="spec.ca-pr-card.note1">La photo peut dater de douze mois, sur blanc uniquement, avec avertissement contre les vêtements blancs. En ligne&nbsp;: de &#x2066;715 x 1000&#x2069; à &#x2066;2000 x 2800&#x2069; pixels, 4 Mo maximum. Une photo téléphonique d’une impression est refusée, un vrai scan peut convenir. Sur papier&nbsp;: deux impressions, pas imprimées à domicile.</span>
+    <span data-phrase="spec.ca-citizenship.doc">Citoyenneté</span>
+    <span data-phrase="spec.ca-citizenship.note1">Le Canada exige en ligne un fichier enregistré directement depuis l’appareil sans modification. Un recadrage est une modification&nbsp;: utilisez l’outil pour vérifier le fichier du photographe et préparer les impressions. Le minimum &#x2066;420 x 540&#x2069; pixels ne suit pas son cadre &#x2066;50 x 70&#x2069; mm&nbsp;; &#x2066;420 x 588&#x2069; respecte les proportions et les minimums. Environ 240 Ko conseillés, 4 Mo maximum.</span>
+    <span data-phrase="spec.ca-visa.doc">Visa de visiteur (résident temporaire)</span>
+    <span data-phrase="spec.ca-visa.note1">Ce visa canadien utilise le cadre ordinaire &#x2066;35 x 45&#x2069; mm au minimum, contre &#x2066;50 x 70&#x2069; pour passeport, RP et citoyenneté. La tête de 31 à 36 mm remplit davantage le cadre. Deux impressions identiques, couleur ou noir et blanc.</span>
+    <span data-phrase="spec.au-visa.note1">Home Affairs demande une photo récente de &#x2066;45 x 35&#x2069; mm, tête et épaules sur fond uni, moins de six mois, nom au dos, sans publier de taille de tête ni de couleur. Une photo conforme au passeport australien convient aussi.</span>
+    <span data-phrase="spec.au-citizenship.doc">Citoyenneté, demande papier</span>
+    <span data-phrase="spec.au-citizenship.note1">Les lunettes doivent être retirées&nbsp;: une mauvaise vue seule ne justifie pas leur présence. Cadre de &#x2066;35 x 45&#x2069; à &#x2066;40 x 50&#x2069; mm, visage de 32 à 36 mm. Home Affairs déconseille les services photo en ligne et applications pour la qualité&nbsp;: comparez le résultat à ses exemples.</span>
+    <span data-phrase="spec.au-citizenship-online.doc">Citoyenneté, demande en ligne</span>
+    <span data-phrase="spec.au-citizenship-online.note1">JPEG de 70 Ko à 3,5 Mo, de préférence &#x2066;1200 x 1600&#x2069; pixels, soit 3:4 contre 7:9 pour l’impression. Aucune impression&nbsp;: scans ou photos d’une photo papier sont refusés. Retirez les lunettes. Home Affairs déconseille les services en ligne et applications&nbsp;: vérifiez ses exemples.</span>
+    <span data-phrase="spec.in-visa.note1">JPEG carré de 10 à 300 Ko, blanc ou couleur claire unie, sans bordure. La tête de 25 à 35 mm correspond au format &#x2066;2 x 2&#x2069; pouces utilisé ici. La phrase officielle sur les yeux est incomplète&nbsp;: la bande du passeport reste indicative, jamais rouge. Aucune dimension en pixels publiée&nbsp;: deux pouces à 300 dpi sont utilisés.</span>
+    <span data-phrase="spec.in-evisa.note1">Le visa électronique accepte un JPEG carré de 10 Ko à 1 Mo, contre 300 Ko pour le visa ordinaire, sur blanc ou couleur claire unie, sans bordure ni lunettes. Aucune taille de tête ni dimensions en pixels publiées&nbsp;: deux pouces à 300 dpi sont utilisés.</span>
+    <span data-phrase="country.ru">Russie</span>
+    <span data-phrase="spec.ru-passport.doc">Passeport biométrique de dix ans</span>
+    <span data-phrase="spec.ru-passport.note1">Aucune photo apportée pour le passeport biométrique de dix ans&nbsp;: le consulat la prend. Pas de lunettes teintées ni d’uniforme. Un couvre-chef religieux est permis si l’ovale du visage reste dégagé. Les enfants de moins de six ans doivent pouvoir être photographiés sur place&nbsp;: le passeport de cinq ans est conseillé pour eux.</span>
+    <span data-phrase="spec.ru-passport-5.doc">Passeport de cinq ans</span>
+    <span data-phrase="spec.ru-passport-5.note1">Trois photos identiques de &#x2066;35 x 45&#x2069; mm, strictement de face, sur blanc sans motifs, marques ni ombres. Visage et haut des épaules centrés, visage de 70 à 80 %. Couleur ou noir et blanc, sans lunettes teintées ni uniforme.</span>
+    <span data-phrase="country.dk">Danemark</span>
+    <span data-phrase="doc.driving-licence">Permis de conduire</span>
+    <span data-phrase="doc.id-card">Carte d’identité</span>
+    <span data-phrase="doc.health-card">Carte d’assurance maladie</span>
+    <span data-phrase="spec.uk-ni-driving-licence.doc">Permis de conduire, Irlande du Nord</span>
+    <span data-phrase="spec.uk-ni-driving-licence.note1">L’Irlande du Nord publie sa règle, tandis que la DVLA britannique demande une photo récente de type passeport. Ici&nbsp;: moins d’un mois, fond gris clair ou crème, couleur. Ne découpez pas une impression pour obtenir &#x2066;45 x 35&#x2069; mm&nbsp;; une impression maison est jugée peu fiable. En ligne, ne recadrez pas&nbsp;: envoyez l’original, le formulaire le fera.</span>
+    <span data-phrase="spec.de-health-card.note1">La photo de carte de santé allemande n’a pas à être biométrique. Cette règle est celle de Techniker Krankenkasse&nbsp;: &#x2066;35 x 45&#x2069; mm, couleur ou noir et blanc, fond aussi neutre que possible, sans chapeau ni casquette, fichier JPG, PNG ou BMP d’au moins &#x2066;300 x 400&#x2069; pixels. Vérifiez votre assureur, certains prennent la photo dans leur application.</span>
+    <span data-phrase="spec.it-id-card.note1">La carte d’identité électronique italienne publie un visage de 70 à 80 % et une ligne des yeux de 23 à 31 mm depuis le bas. Fond uni, de préférence bleu clair, beige, brun clair, gris clair ou blanc. Il est interdit de recadrer pour supprimer le fond ou redresser la tête, ou de retoucher&nbsp;: cadrez droit dès la prise, puis rognez seulement les bords.</span>
+    <span data-phrase="spec.it-driving-licence.note1">La circulaire donne 40 à 45 mm de haut sur 32 à 35 de large, une tête de 60 à 90 % dans le texte et 28 à 32 mm dans le schéma. Ces millimètres respectent les pourcentages et sont utilisés ici. Fond gris clair, crème ou bleu clair de préférence, blanc accepté. Papier mat conseillé, impressions identiques pour une demande.</span>
+    <span data-phrase="spec.es-driving-licence.note1">Le petit format &#x2066;32 x 26&#x2069; mm du DNI, en couleur sur fond uni, sans obligation de blanc comme le DNI. Depuis le 6 novembre 2024, aucune photo n’est demandée si la DGT en possède déjà une. Les centres médicaux de renouvellement la prennent sur place&nbsp;: cette entrée concerne les autres cas.</span>
+    <span data-phrase="spec.pl-driving-licence.note1">La Pologne exige exactement &#x2066;480 x 615&#x2069; pixels, 100 Ko maximum, qualité de compression d’au moins 80, et un JPEG avec en-tête EXIF indiquant la date de prise. Le fichier créé ici respecte taille et poids mais n’a pas cet EXIF&nbsp;: vérifiez le cadrage puis remettez une impression ou un fichier d’appareil avec date.</span>
+    <span data-phrase="spec.pl-passport.note2">La carte d’identité peut être demandée en ligne avec au moins &#x2066;492 x 633&#x2069; pixels, 2,5 Mo maximum&nbsp;: ce fichier est produit ici. Le passeport ne le peut pas, sauf avant douze ans, avec &#x2066;768 x 1004&#x2069; pixels.</span>
+    <span data-phrase="spec.ch-driving-licence.note1">Le permis suisse demande un visage de 29 à 34 mm, fond uni et neutre, couleur malgré l’impression en gris sur le permis, moins d’un an. Papier photo lisse brillant ou semi-mat, sans bordure, angles droits&nbsp;: les angles arrondis sont refusés.</span>
+    <span data-phrase="spec.se-driving-licence.note1">La Suède mesure de la pupille au menton, 14 à 17 mm, distance non mesurée ici. Cela correspond généralement à une tête de 31 à 37 mm, utilisée comme bande. Une impression de &#x2066;35 x 45&#x2069; mm, angles ronds ou droits, fond clair sans ombre, couleur ou noir et blanc. Aucun couvre-chef ni lunettes teintées.</span>
+    <span data-phrase="spec.dk-driving-licence.note1">Le Danemark mesure jusqu’au sommet des cheveux, 30 à 36 mm, comme l’outil. Fond clair uni, notamment bleu clair ou gris clair, avec contraste pour cheveux blancs, clairs ou foulard clair. Couleur ou noir et blanc.</span>
+    <span data-phrase="doc.residence-card">Carte de séjour</span>
+    <span data-phrase="bg.blue.label">Bleu uni</span>
+    <span data-phrase="bg.blue.inline">bleu uni</span>
+    <span data-phrase="bg.blue.note">La règle demande du bleu sans nuance précise, donc le contrôle est large. Le fond doit être réel, pas ajouté par logiciel. Rien ici ne remplace le fond&nbsp;: placez-vous devant un mur ou un tissu bleu.</span>
+    <span data-phrase="spec.cn-id-card.note1">La carte d’identité chinoise mesure &#x2066;26 x 32&#x2069; mm, sur blanc sans bordure. La tête occupe environ deux tiers, le visage 15 mm de large à 1 mm près entre les racines des oreilles. Aucun uniforme ni haut blanc. Les porteurs habituels de lunettes les gardent. La police prend souvent la photo ou impose un studio&nbsp;: renseignez-vous avant d’imprimer.</span>
+    <span data-phrase="spec.cn-driving-licence.note1">La photo de permis dite un pouce mesure &#x2066;22 x 32&#x2069; mm, plus étroite que le format de studio. Tête de 19 à 22 mm de haut et 14 à 16 de large, blanc, couleur, moins de six mois, sans uniforme. Chiffres de la police routière de Pékin, même format publié ailleurs.</span>
+    <span data-phrase="spec.jp-mynumber.doc">Carte My Number</span>
+    <span data-phrase="spec.jp-mynumber.note1">Par courrier&nbsp;: &#x2066;45 x 35&#x2069; mm, nom et date de naissance au dos. En ligne&nbsp;: JPEG RVB de 20 Ko à 7 Mo, chaque côté de 480 à 6000 pixels, sans proportion publiée&nbsp;: celle de l’impression est utilisée. Le visage de 34 mm à 2 mm près du schéma est un repère. Noir et blanc accepté. Une image passée par un logiciel peut être refusée&nbsp;: vérifiez les exemples officiels.</span>
+    <span data-phrase="spec.jp-residence-card.note1">Format &#x2066;30 x 40&#x2069; mm, tête de 25 mm à 3 mm près du sommet des cheveux au menton, 5 mm au-dessus. Sans chapeau, fond ni ombre, moins de six mois, nom au dos. Retouches et images inversées sont refusées&nbsp;: la caméra avant peut enregistrer une image miroir.</span>
+    <span data-phrase="spec.jp-driving-licence.note1">La photo du permis est prise par le personnel. Celle du formulaire mesure &#x2066;24 x 30&#x2069; mm&nbsp;: de face, haut du corps, sans chapeau ni fond, moins de six mois. Seuls certains centres acceptent une photo apportée, sur papier photo.</span>
+    <span data-phrase="spec.kr-driving-licence.note1">Le format imprimé suit le passeport&nbsp;: tête de 32 à 36 mm, blanc, papier photo, sans dents visibles ni modifications. En ligne&nbsp;: JPG de 500 Ko maximum, &#x2066;413 x 531&#x2069; pixels demandés, uniquement de 395 à 431 par 507 à 550 acceptés.</span>
+    <span data-phrase="spec.kr-id-card.note1">La carte d’enregistrement des résidents accepte la photo du passeport, &#x2066;3.5 x 4.5&#x2069; cm. Le fond est plus souple&nbsp;: absent ou blanc de préférence, couleur pâle unie permise. Aucun visage chiffré en millimètres.</span>
+    <span data-phrase="spec.tw-id-card.note1">Même tête de 32 à 36 mm que le passeport taïwanais, sur blanc, mais photo de moins de deux ans au lieu de six mois. Impression fine brillante avec nom, numéro d’identité et date au dos, ou JPG d’au moins &#x2066;413 x 531&#x2069; pixels, 5 Mo maximum. Sans lentilles teintées, retouche ni inversion.</span>
+    <span data-phrase="spec.vn-driving-licence.note1">Pour échanger ou remplacer un permis en ligne&nbsp;: &#x2066;3 x 4&#x2069; cm sur blanc, comme le demande le portail policier malgré certaines pages provinciales bleues. Au moins &#x2066;473 x 630&#x2069; pixels, 700 Ko maximum. Évitez les vêtements noirs et blancs, tête à moins de cinq degrés de la verticale, sans lunettes sombres ni montures épaisses.</span>
+    <span data-phrase="spec.id-driving-licence.note1">Le renouvellement d’un SIM en ligne demande exactement &#x2066;480 x 640&#x2069; pixels, 100 Ko maximum, sur bleu. Ni lunettes, lentilles, couvre-chef ni hijab bleu qui disparaîtrait sur le fond. Fichier d’origine, pas une photo d’impression. Le premier permis est photographié au bureau.</span>
+    <span data-phrase="spec.my-driving-licence.note1">Une photo couleur de &#x2066;25 x 32&#x2069; mm sur blanc, différente du passeport malaisien de &#x2066;35 x 50&#x2069;. La page anglaise du service routier dit fond noir&nbsp;; l’original malais dit putih, blanc.</span>
+    <span data-phrase="spec.in-driving-licence.note1">Le portail Sarathi demande une photo aux proportions de passeport d’au moins &#x2066;420 x 525&#x2069; pixels, de 10 à 20 Ko. Le fichier est fortement comprimé&nbsp;: un fond uni et bien éclairé laisse plus de place au visage. Fond clair, blanc de préférence&nbsp;; couvre-chef religieux autorisé, casquette et lunettes sombres interdites.</span>
+    <span data-phrase="spec.ca-firearms-licence.doc">Permis d’armes à feu (PAL)</span>
+    <span data-phrase="spec.ca-firearms-licence.note1">Format &#x2066;45 x 57&#x2069; mm, tête d’au moins 30 mm sans maximum publié&nbsp;: le haut de la bande vient de l’outil. JPG de 200 Ko à 6 Mo, moins d’un an, noir et blanc accepté. Verres correcteurs teintés refusés même si les yeux sont visibles. À la première demande, un répondant signe le dos de l’impression.</span>
+    <span data-phrase="spec.ru-internal-passport.doc">Passeport intérieur</span>
+    <span data-phrase="spec.ru-internal-passport.note1">Deux impressions &#x2066;35 x 45&#x2069; mm sur blanc, couleur ou noir et blanc. Tête de 80 % maximum, 5 mm à 1 mm près au-dessus&nbsp;: le bas de la bande vient de l’outil. Lunettes habituelles obligatoires sans verres teintés. Aucun uniforme, manteau, foulard sur le menton ni retouche esthétique. Transcrit du texte publié de l’arrêté du ministère de l’Intérieur, dont le site ne répond pas ici.</span>
+    <span data-phrase="spec.za-driving-licence.note1">L’Afrique du Sud demande du noir et blanc&nbsp;: deux impressions identiques de &#x2066;45 x 35&#x2069; mm au Cap-Occidental, quatre dans certains centres. Vérifiez le nombre. L’outil ne retire pas la couleur&nbsp;: demandez une impression noir et blanc. Aucune taille de tête publiée.</span>
+    <span data-phrase="name.native">{name} (&#x2066;{native}&#x2069;)</span>
+    <span data-phrase="source.common">Usage courant</span>
+    <span data-phrase="source.common.doc">Le standard de papeterie &#x2066;35 x 45&#x2069; mm, pas une règle publiée</span>
+    <span data-phrase="source.you">Vous</span>
+    <span data-phrase="source.you.doc">Ce qu&rsquo;on vous a envoyé</span>
+    <span data-phrase="print.none">pas de taille d&rsquo;impression &mdash; cette règle est pour un formulaire web</span>
+    <span data-phrase="print.size">&#x2066;{width} x {height}&#x2069; mm à {dpi} ppp</span>
+    <span data-phrase="print.pixels">&#x2066;{width} x {height}&#x2069; pixels</span>
+    <span data-phrase="px.exact">exactement &#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="px.upto">&#x2066;{width} x {height}&#x2069; px, jusqu&rsquo;à &#x2066;{maxWidth} x {maxHeight}&#x2069;</span>
+    <span data-phrase="px.least">au moins &#x2066;{width} x {height}&#x2069; px</span>
+    <span data-phrase="bytes.band">de {min} à {max}</span>
+    <span data-phrase="bytes.upto">jusqu&rsquo;à {max}</span>
+    <span data-phrase="bytes.from">{min} et plus</span>
+    <span data-phrase="bytes.none">aucune règle de taille de fichier énoncée</span>
+    <span data-phrase="facts.upload">Règle d&rsquo;envoi</span>
+    <span data-phrase="facts.upload.print">aucune publiée &mdash; celle-ci est un tirage</span>
+    <span data-phrase="facts.upload.value">{pixels}, JPEG, {size}</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="source.line">Transcrit depuis {authority} &mdash; {document}. Vérifié le {checked}. Les règles
+      changent&nbsp;; les chiffres ci-dessus sont ce qu&rsquo;il faut confronter au
+      formulaire devant vous.</span>
+    <span data-phrase="source.line.words">Lu dans {authority} &mdash; {document}, le {checked}. Ce document décrit la photo sans dimensions&nbsp;: les chiffres ci-dessus ne viennent donc pas de lui. Consultez la note.</span>
+    <span data-phrase="source.own">Vos propres chiffres. Rien ici n&rsquo;est vérifié contre quoi que ce soit.</span>
+    <span data-phrase="read.done">Les champs sont remplis depuis votre texte. Chaque chiffre apparaît sous les mots dont il est extrait&nbsp;: vérifiez leur correspondance. Un champ non mentionné garde sa valeur.</span>
+    <span data-phrase="read.none">Aucune taille de photo, hauteur de tête, couleur de fond, dimensions numériques ni poids de fichier n’a été reconnu. Aucun champ n’a changé&nbsp;: saisissez les chiffres ci-dessous.</span>
+    <span data-phrase="read.kept">Aucun champ n’a changé. Voici les éléments reconnus et pourquoi ils ont été laissés de côté&nbsp;:</span>
+    <span data-phrase="read.sizes">Plusieurs tailles de photo sont indiquées, donc le format n’a pas changé. Saisissez celui demandé par votre document&nbsp;:</span>
+    <span data-phrase="read.named">Le texte donne un nom de format, pas des dimensions, et les studios ne s’accordent pas sur ces noms. La taille n’a pas changé. Saisissez les millimètres demandés&nbsp;:</span>
+    <span data-phrase="read.colour">Le fond demandé n’a pas de contrôle disponible ici, qui vérifie blanc, blanc cassé, gris clair et crème. Le réglage n’a pas changé&nbsp;:</span>
+    <span data-phrase="read.pxrange">Plusieurs dimensions numériques sont permises. Les plus petites ont été utilisées&nbsp;:</span>
+    <span data-phrase="read.unused.headwidth">une largeur de tête, non utilisée&nbsp;: l’outil mesure du menton au sommet, pas transversalement</span>
+    <span data-phrase="read.unused.eye">une position des yeux, non utilisée&nbsp;: l’outil utilise la ligne OACI</span>
+    <span data-phrase="read.unused.margin">une marge, non utilisée&nbsp;: l’outil cadre selon la hauteur de tête, dont les marges découlent</span>
+    <span data-phrase="read.unused.paper">une taille du papier d’impression, pas celle de la photo</span>
+    <span data-phrase="read.unused.other">une mesure ne correspondant à aucun champ</span>
+    <span data-phrase="lede.signature">Une signature se vérifie autrement&nbsp;: que le papier est clair, qu&rsquo;il y a
+      de l&rsquo;encre dessus, et que le recadrage n&rsquo;a pas pris une ligne réglée ou
+      le bord de la page.</span>
+    <span data-phrase="lede.portrait">Lu dans une bande en haut du recadrage et le long de chaque côté, au-dessus des
+      épaules &mdash; les parties du cadre qui ne devraient être que du fond. Mesuré en
+      CIE Lab plutôt qu&rsquo;en RVB, parce que deux gris séparés de quarante unités RVB
+      sont indiscernables et que quarante unités de bleu font une autre couleur.</span>
+    <span data-phrase="dpi.note">{floor} ppp est le plancher de cette règle. À {chosen} ppp le fichier sort en
+      {size}, et le JPEG porte cette résolution dans son en-tête, de sorte qu&rsquo;un
+      imprimeur le sort à la bonne taille au lieu de deviner.</span>
+    <span data-phrase="paper.note">{sheet}, avec des repères de coupe dans les espaces et rien d&rsquo;imprimé
+      par-dessus une photo.</span>
+    <span data-phrase="paper.4x6">Tirage &#x2066;4 x 6&#x2069; pouces (&#x2066;10 x 15&#x2069; cm)</span>
+    <span data-phrase="paper.5x7">Tirage &#x2066;5 x 7&#x2069; pouces (&#x2066;13 x 18&#x2069; cm)</span>
+    <span data-phrase="paper.a4">Feuille A4 (&#x2066;210 x 297&#x2069; mm)</span>
+    <span data-phrase="paper.letter">US Letter (&#x2066;8,5 x 11&#x2069; pouces)</span>
+    <span data-phrase="sheet.none">cette photo ne tient pas du tout sur ce papier.</span>
+    <span data-phrase="sheet.one">1 exemplaire, {columns} en largeur et {rows} en hauteur</span>
+    <span data-phrase="sheet.many">{n} exemplaires, {columns} en largeur et {rows} en hauteur</span>
+    <span data-phrase="load.notimage">ce n&rsquo;est pas une image que ce navigateur sait ouvrir.</span>
+    <span data-phrase="load.named">{name} &mdash; &#x2066;{width} x {height}&#x2069; pixels</span>
+    <span data-phrase="load.failed">{name}&nbsp;: {why}</span>
+    <span data-phrase="short.note">La règle voulait plus d&rsquo;image qu&rsquo;il n&rsquo;y en a&nbsp;: {list}. Le
+      cadre a été maintenu à l&rsquo;intérieur de la photo à la place, ce qui explique que
+      les chiffres ci-dessous ne soient peut-être pas tous verts. Une photo prise un pas
+      plus loin est la solution.</span>
+    <span data-phrase="short.side">{value} px en {side}</span>
+    <span data-phrase="side.top">haut</span>
+    <span data-phrase="side.bottom">bas</span>
+    <span data-phrase="side.left">à gauche</span>
+    <span data-phrase="side.right">à droite</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="mark.crown">Sommet du crâne</span>
+    <span data-phrase="mark.crown.hint">le tout haut de la tête, cheveux compris</span>
+    <span data-phrase="mark.chin">Menton</span>
+    <span data-phrase="mark.chin.hint">le bas du menton</span>
+    <span data-phrase="mark.lefteye">Œil gauche</span>
+    <span data-phrase="mark.lefteye.hint">la pupille, à gauche telle que vous la voyez</span>
+    <span data-phrase="mark.righteye">Œil droit</span>
+    <span data-phrase="mark.righteye.hint">l&rsquo;autre pupille</span>
+    <span data-phrase="mark.aria">{label}&nbsp;: {hint}. Les flèches le déplacent&nbsp;; maintenez Maj pour dix pixels
+      à la fois.</span>
+    <span data-phrase="crop.aria">Zone de recadrage. Les flèches la déplacent, Alt et les flèches la redimensionnent,
+      et maintenir Maj fait des pas de dix pixels. La forme est fixée par la spécification
+      et ne peut pas être changée.</span>
+    <span data-phrase="step.print">écriture du tirage &#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="step.sheet">mise en page de la planche</span>
+    <span data-phrase="step.upload">compression vers&nbsp;: {label}</span>
+    <span data-phrase="step.done">terminé</span>
+    <span data-phrase="out.print">Le tirage &mdash; &#x2066;{width} x {height}&#x2069; mm</span>
+    <span data-phrase="out.print.detail">&#x2066;{width} x {height}&#x2069; pixels, {size}, marqué {dpi} ppp dans le fichier lui-même pour
+      qu&rsquo;un imprimeur le reproduise à la bonne taille.</span>
+    <span data-phrase="out.sheet">La planche &mdash; {paper}</span>
+    <span data-phrase="out.sheet.detail">{sheet}, {size}, marquée {dpi} ppp. Imprimez-la à 100 pour cent &mdash;
+      « &nbsp;ajuster à la page&nbsp; » est ce qui fait sortir une planche à la mauvaise
+      taille.</span>
+    <span data-phrase="out.upload">Le fichier à envoyer &mdash; &#x2066;{width} x {height}&#x2069;</span>
+    <span data-phrase="out.upload.detail.one">{size} après 1 encodage. {how}</span>
+    <span data-phrase="out.upload.detail.many">{size} après {n} encodages. {how}</span>
+    <span data-phrase="make.failed">Quelque chose a mal tourné pendant la fabrication des fichiers&nbsp;: {why}</span>
+    <span data-phrase="encode.nodecode">ce navigateur n&rsquo;a pas su décoder l&rsquo;image.</span>
+    <span data-phrase="encode.nojpeg">ce navigateur n&rsquo;a pas voulu écrire de JPEG.</span>
+    <span data-phrase="encode.gaveup">abandon après trop de tentatives.</span>
+    <span data-phrase="frame.nosize">une spécification sans taille d&rsquo;impression ni taille en pixels ne permet aucun
+      recadrage.</span>
+    <span data-phrase="how.toobig">Même à la plus basse qualité encore utilisable, cela sort à {size}, ce qui dépasse
+      la limite. L&rsquo;image contient plus de détail que le formulaire n&rsquo;en
+      prévoit.</span>
+    <span data-phrase="how.fitted">Écrit à la qualité {quality}, ce qui fait {size} &mdash; dans la plage que le
+      formulaire accepte.</span>
+    <span data-phrase="how.padded">L&rsquo;image s&rsquo;encode à {size} tout en haut du curseur de qualité, ce qui
+      reste sous le plancher de {floor} sur lequel le formulaire insiste. {added} de
+      commentaire JPEG ont été ajoutés pour l&rsquo;atteindre&nbsp;; l&rsquo;image
+      elle-même est intacte.</span>
+    <span data-phrase="facts.print">Taille d&rsquo;impression</span>
+    <span data-phrase="facts.head">Tête, du menton au sommet du crâne</span>
+    <span data-phrase="facts.eye">Ligne des yeux, depuis le bas</span>
+    <span data-phrase="facts.background">Fond</span>
+    <span data-phrase="band.range">de {min} à {max}</span>
+    <span data-phrase="band.mm">{range} (&#x2066;{min}&ndash;{max}&#x2069; mm)</span>
+    <span data-phrase="band.guidance">{band} (indicatif)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">La hauteur de tête est de {measured}. La règle demande {wanted}.</span>
+    <span data-phrase="verdict.head.low">La hauteur de tête est de {measured}, ce qui est trop petit. La règle demande
+      {wanted}. Réduisez le cadre.</span>
+    <span data-phrase="verdict.head.high">La hauteur de tête est de {measured}, ce qui est trop grand. La règle demande
+      {wanted}. Agrandissez le cadre.</span>
+    <span data-phrase="verdict.eye.ok">La ligne des yeux est à {measured}. La règle demande {wanted}.</span>
+    <span data-phrase="verdict.eye.low">La ligne des yeux est à {measured}, ce qui est trop bas dans le cadre. La règle
+      demande {wanted}. Descendez le cadre.</span>
+    <span data-phrase="verdict.eye.high">La ligne des yeux est à {measured}, ce qui est trop haut dans le cadre. La règle
+      demande {wanted}. Remontez le cadre.</span>
+    <span data-phrase="tilt.level">La ligne des yeux est horizontale.</span>
+    <span data-phrase="tilt.ok.left">La tête penche de {degrees} degrés vers la gauche, ce qui reste dans les quelques
+      degrés qu&rsquo;un examinateur ne remarquera pas.</span>
+    <span data-phrase="tilt.ok.right">La tête penche de {degrees} degrés vers la droite, ce qui reste dans les quelques
+      degrés qu&rsquo;un examinateur ne remarquera pas.</span>
+    <span data-phrase="tilt.bad.left">La tête penche de {degrees} degrés vers la gauche, et cela se voit. Refaites la
+      photo avec l&rsquo;appareil d&rsquo;aplomb, ou redressez l&rsquo;image
+      d&rsquo;abord.</span>
+    <span data-phrase="tilt.bad.right">La tête penche de {degrees} degrés vers la droite, et cela se voit. Refaites la
+      photo avec l&rsquo;appareil d&rsquo;aplomb, ou redressez l&rsquo;image
+      d&rsquo;abord.</span>
+    <span data-phrase="centre.ok">Le visage est centré dans le cadre.</span>
+    <span data-phrase="centre.left">Le visage est décalé de {size} de la largeur du cadre vers la gauche. Tirez le cadre
+      dans l&rsquo;autre sens, ou appuyez de nouveau sur
+      &laquo;&nbsp;Ajuster&nbsp;&raquo;.</span>
+    <span data-phrase="centre.right">Le visage est décalé de {size} de la largeur du cadre vers la droite. Tirez le cadre
+      dans l&rsquo;autre sens, ou appuyez de nouveau sur
+      &laquo;&nbsp;Ajuster&nbsp;&raquo;.</span>
+    <span data-phrase="resample.enough">Le recadrage fait {have} pixels et la sortie {need}&nbsp;: rien n&rsquo;a à être
+      inventé.</span>
+    <span data-phrase="resample.slight">Le recadrage ne fait que {have} pixels et la sortie {need}. Il sera légèrement
+      agrandi, ce qui coûte un peu de netteté et rien d&rsquo;autre.</span>
+    <span data-phrase="resample.severe">Le recadrage ne fait que {have} pixels et la sortie {need}. C&rsquo;est très loin du
+      compte&nbsp;: le résultat paraîtra mou, et sur papier il aura l&rsquo;air
+      d&rsquo;une capture d&rsquo;écran. Seule une photo prise de plus près, ou à une
+      résolution plus haute, y remédie.</span>
+    <span data-phrase="ready.geometry">Le cadrage ne satisfait pas encore la règle. Vous pouvez tout de même enregistrer
+      les fichiers &mdash; rien ici ne vous refuse votre propre photographie &mdash; mais
+      ce sont les chiffres ci-dessus que le formulaire mesurera.</span>
+    <span data-phrase="ready.background">Le cadrage satisfait la règle. Le fond non, et c&rsquo;est la raison la plus
+      fréquente pour laquelle une photo revient.</span>
+    <span data-phrase="ready.good">Le cadrage satisfait la règle et le fond passe.</span>
+    <span data-phrase="bg.white.label">Blanc uni</span>
+    <span data-phrase="bg.white.inline">blanc uni</span>
+    <span data-phrase="bg.white.note">Un mur blanc se photographie en gris clair. Ce qui est demandé, c&rsquo;est un fond
+      uni, éclairé uniformément et sans ombre, pas une couleur de peinture.</span>
+    <span data-phrase="bg.off-white.label">Blanc ou blanc cassé</span>
+    <span data-phrase="bg.off-white.inline">blanc ou blanc cassé</span>
+    <span data-phrase="bg.off-white.note">Les deux sont acceptés, ce qui en pratique veut dire tout ce qui est uni et
+      clair&nbsp;: pas de motif, pas de meuble et pas d&rsquo;ombre derrière la tête.</span>
+    <span data-phrase="bg.light-grey.label">Gris clair uni</span>
+    <span data-phrase="bg.light-grey.inline">gris clair uni</span>
+    <span data-phrase="bg.light-grey.note">Le gris clair est la préférence de l&rsquo;OACI parce qu&rsquo;il détache un visage
+      clair du fond, et les cheveux foncés aussi. Le blanc pur ne fait ni l&rsquo;un ni
+      l&rsquo;autre.</span>
+    <span data-phrase="bg.cream.label">Gris clair ou crème</span>
+    <span data-phrase="bg.cream.inline">gris clair ou crème</span>
+    <span data-phrase="bg.cream.note">La formulation employée par le Royaume-Uni. Le crème se lit comme un blanc cassé
+      chaud&nbsp;; ce que veut la règle, c&rsquo;est que le fond soit uni et uniforme, pas
+      qu&rsquo;il soit d&rsquo;une teinte précise.</span>
+    <span data-phrase="bg.colour.bad">Le fond se mesure à {hex}, ce qui est très loin de {wanted}.</span>
+    <span data-phrase="bg.colour.warn">Le fond se mesure à {hex} &mdash; proche de {wanted}, mais pas tout à fait.</span>
+    <span data-phrase="bg.colour.good">Le fond se mesure à {hex}, ce qui passe pour du {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">Ce n&rsquo;est pas une seule couleur unie &mdash; il y a une ombre, un motif ou un
+      objet derrière vous.</span>
+    <span data-phrase="bg.uniform.warn">Légèrement inégal. Se tenir un demi-mètre plus loin du mur suffit presque toujours.</span>
+    <span data-phrase="bg.uniform.good">Éclairé uniformément, sans ombre derrière la tête.</span>
+    <span data-phrase="bg.sides.bad">Un côté du fond est bien plus sombre que l&rsquo;autre, ce qui se lit comme un
+      éclairage latéral.</span>
+    <span data-phrase="bg.sides.warn">Un côté est un peu plus sombre que l&rsquo;autre.</span>
+    <span data-phrase="bg.note">{colour} Cet outil ne remplacera pas un fond&nbsp;: détourer une personne demande un
+      modèle de segmentation, et un mauvais mange les cheveux de précisément ceux dont les
+      photos sont déjà refusées le plus souvent. Se tenir un demi-mètre plus loin du mur
+      en corrige davantage que n&rsquo;importe quel filtre.</span>
+    <span data-phrase="bg.signature.note">Rien ici ne modifie votre signature. Elle est mesurée et décrite, et le cadre est à
+      vous.</span>
+    <span data-phrase="sig.ink.bad">Presque pas d&rsquo;encre dans le cadre. Ou bien le cadre est à côté de la
+      signature, ou bien le stylo était trop clair pour être photographié.</span>
+    <span data-phrase="sig.ink.warn">Énormément de pixels sombres &mdash; vérifiez que le cadre n&rsquo;a pas attrapé une
+      ligne réglée ou le bord de la page.</span>
+    <span data-phrase="sig.ink.good">L&rsquo;encre couvre {coverage}&nbsp;% du cadre, ce qui se lit comme une signature.</span>
+    <span data-phrase="sig.paper.bad">Le papier ressort gris plutôt que blanc. Plus de lumière sur la page, ou un scan
+      plutôt qu&rsquo;une photo.</span>
+    <span data-phrase="sig.paper.warn">Le papier est un peu terne. La plupart des formulaires veulent une page blanche et
+      propre derrière la signature.</span>
+    <span data-phrase="sig.paper.good">Le papier est propre et blanc.</span>
+    <span data-phrase="marks.measured">Les quatre ont été mesurés sur la photo&nbsp;: le sommet
+      du crâne d&rsquo;après le contour de votre tête, les pupilles d&rsquo;après ce
+      qu&rsquo;elles ont de sombre, le menton là où la mâchoire rejoint le cou.
+      Vérifiez-les quand même et déplacez ceux qui sont tombés à côté&nbsp;: le
+      recadrage est pris là où ils finissent.</span>
+    <span data-phrase="marks.rough">Placés, mais tout n&rsquo;a pas été mesuré. Vérifiez les quatre points avant
+      d&rsquo;ajuster le cadre.</span>
+    <span data-phrase="marks.none">Rien n&rsquo;a pu être mesuré sur cette photo. Les points sont à leur position
+      de départ &mdash; faites-les glisser sur le sommet du crâne, le menton et chaque
+      pupille.</span>
+    <span data-phrase="marks.manual">Les quatre points sont les vôtres et rien ne les
+      déplacera. Faites glisser chacun sur le sommet du crâne, le menton et une
+      pupille.</span>
+    <span data-phrase="marks.edited">Vous avez déplacé un point&nbsp;: les quatre sont donc les
+      vôtres désormais. &laquo;&nbsp;Les trouver pour moi&nbsp;&raquo; mesure à
+      nouveau la photo.</span>
+
+    <span data-phrase="marks.why.background">Le mur derrière vous n&rsquo;est pas assez uni pour
+      y détourer le contour d&rsquo;une tête.</span>
+    <span data-phrase="marks.why.top">La tête sort par le haut de la photo, il n&rsquo;y avait
+      donc pas de sommet du crâne à trouver.</span>
+    <span data-phrase="marks.why.eyes">Les yeux n&rsquo;ont pas pu être distingués, les deux ont
+      donc été posés là où une tête de cette taille les a d&rsquo;habitude.</span>
+    <span data-phrase="marks.why.chin">Le menton vient des proportions d&rsquo;une tête plutôt
+      que du contour de celle-ci.</span>
+
+    <span data-phrase="marks.button.again">Rechercher le visage</span>
+    <span data-phrase="marks.button.back">Remettre les points</span>
+
+    <span data-phrase="net.clean">vos photos ne sont allées nulle part. {total}
+      fichiers chargés, tous appartenant à cette page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu une photo ou un octet d'une photo.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu une photo ou un octet d'une photo.</span>
+  </div>
+</main>

@@ -1,0 +1,68 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>Öffnen Sie den <a href="../../avif-in-jpg-umwandeln/">AVIF-zu-JPG-Konverter</a>, ziehen Sie die Dateien hinein und drücken Sie „Umwandeln“. Lassen Sie die Qualität bei 92. Sie erhalten JPEG-Dateien mit je einer Downloadschaltfläche oder bei mehreren ein ZIP-Archiv.</p>
+    <p>Nichts wird hochgeladen, und auch vorab muss nichts heruntergeladen werden. Der Decoder steckt bereits im Browser, in dem Sie diese Seite lesen. Dieser entscheidende Punkt wird unten ausführlicher erklärt.</p>
+  </section>
+
+  <section>
+    <h2>Was AVIF ist und warum Sie eine solche Datei haben</h2>
+    <p>AVIF speichert ein Standbild wie ein modernes Videobild: ein einzelnes Schlüsselbild des Videocodecs <strong>AV1</strong> im selben Box-Container wie MP4. Das klingt ungewöhnlich für ein Bildformat, funktioniert aber hervorragend. In AV1 steckt viel mehr Entwicklungsarbeit als in reine Bildcodecs, weil mit Video mehr Geld verdient wird.</p>
+    <p>Das Ergebnis ist bei gleicher sichtbarer Qualität erheblich kleiner als JPEG, oft um das Drei- bis Fünffache. Deshalb verwenden Websites AVIF. Wenn Sie dort ein Bild speichern, bekommen Sie das Format, das die Website ausgeliefert hat. Sie haben AVIF nicht selbst gewählt.</p>
+    <p>Danach öffnet kein Programm auf Ihrem Rechner die Datei:</p>
+    <ul>
+      <li>Windows braucht eine Erweiterung aus dem Store, bevor Fotos sie anzeigt;</li>
+      <li>viele Desktopprogramme zur Bildbearbeitung lehnen sie weiterhin ab;</li>
+      <li>Uploadformulare mit Erweiterungsprüfung kennen sie meist nicht;</li>
+      <li>Drucker, E-Reader und Kamerasoftware liegen Jahre zurück.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Ihr Browser liest sie. Das ist der ganze Trick</h2>
+    <p>Ziehen Sie die sonst nicht zu öffnende Datei in einen Browsertab. Sie wird problemlos angezeigt. Chrome und Firefox dekodieren AVIF seit 2021, Safari seit 2023.</p>
+    <p>Das erklärt, warum die Umwandlung keinen Server braucht. Ein Konverter muss AVIF lesen und JPEG schreiben. Ihr Browser kann bereits beides. Das <a href="../../avif-in-jpg-umwandeln/">Werkzeug hier</a> ergänzt den Decoder um eine Speicherschaltfläche: Es öffnet und zeichnet das Bild und fordert anschließend ein JPEG an.</p>
+    <p>Verlangt ein Konverter den Upload eines AVIFs, verwendet er seine eigene Kopie einer Software, die Sie bereits besitzen, und behält währenddessen Ihr Bild.</p>
+  </section>
+
+  <section>
+    <h2>Der Vergleich, der erklärt, welche Konverter einen Server brauchen</h2>
+    <p>AVIF hat einen nahen Verwandten: <strong>HEIC</strong>, das Speicherformat des iPhones. Der Aufbau ist fast identisch: derselbe Box-Container und darin ein Standbild eines Videocodecs, HEVC statt AV1. Die Softwareunterstützung ist jedoch genau umgekehrt.</p>
+    <table>
+      <thead>
+        <tr><th></th><th>HEIC</th><th>AVIF</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Browser mit Decoder</td><td>nur Safari</td><td>alle</td></tr>
+        <tr><td>Browser mit Encoder</td><td>keiner</td><td>keiner</td></tr>
+        <tr><td>Ein Konverter muss daher mitliefern</td><td>einen Decoder von etwa 1,4 MB</td><td>gar nichts</td></tr>
+      </tbody>
+    </table>
+    <p>Deshalb lädt unser <a href="../../heic-in-jpg-umwandeln/">HEIC-Konverter</a> beim ersten Einsatz einen Codec und erklärt das ausführlich, während dieser nichts herunterlädt. Dieselbe Website und dasselbe Versprechen führen zu verschiedenen ehrlichen Antworten, weil die Formate sich tatsächlich unterscheiden.</p>
+    <p>Daraus folgt eine Frage für jeden Konverter: <em>Kann mein Browser das bereits?</em> Falls ja, ist ein Upload eine Entscheidung der Website und keine Voraussetzung der Aufgabe.</p>
+  </section>
+
+  <section>
+    <h2>Die JPG-Datei wird um ein Mehrfaches größer</h2>
+    <p>Rechnen Sie damit. Ein AVIF von 40&nbsp;KB kann bei gleicher sichtbarer Qualität als JPEG leicht 200&nbsp;KB belegen. Das Beispiel auf der Werkzeugseite wird etwa fünfmal größer. Die Ergebniszeile zeigt das ausdrücklich.</p>
+    <p>AVIF gehört zu den effizientesten Bildcodecs, JPEG zu den ältesten. Sie tauschen Speicherplatz gegen Kompatibilität. Wenn das Ziel kein AVIF annimmt, ist das der richtige Tausch. Ein Tausch bleibt es trotzdem.</p>
+    <p>Wenn die Größe danach wichtig ist, verkleinert der <a href="../../bild-komprimieren/">Bildkompressor</a> das JPEG auf einen gewünschten Wert. Das Werkzeug bietet ihn unter dem Ergebnis an.</p>
+  </section>
+
+  <section>
+    <h2>Was JPEG nicht übernehmen kann</h2>
+    <p>Zwei Dinge, die die meisten Bilder nicht betreffen:</p>
+    <p><strong>Transparenz.</strong> AVIF kann einen transparenten Hintergrund haben, JPEG nicht. Deshalb muss dahinter eine Farbe stehen. Das Werkzeug fragt nach ihr und verwendet standardmäßig Weiß, aber nur bei tatsächlich transparenten Dateien. Die meisten AVIFs von Webseiten sind undurchsichtige Fotos; die Frage erscheint dann nicht. Soll Transparenz bleiben, verwenden Sie den <a href="../../bild-komprimieren/">Bildkompressor</a>, der AVIF liest und PNG sowie WebP schreibt.</p>
+    <p><strong>HDR und große Farbtiefe.</strong> AVIF kann zehn oder zwölf Bit pro Kanal und hellere Spitzlichter als ein gewöhnlicher Bildschirm speichern. JPEG hat acht Bit und kein HDR. Solche Bilder werden auf den gewöhnlichen Dynamikbereich reduziert. Fast kein Bild von einer normalen Webseite nutzt diese Möglichkeiten. Bei Ihren Bildern entsteht daher sehr wahrscheinlich kein solcher Verlust.</p>
+  </section>
+
+  <section>
+    <h2>Die Gegenrichtung ist ein anderes Problem</h2>
+    <p>Hier gibt es kein JPG-zu-AVIF-Werkzeug. Der Grund ist dieselbe Tatsache von der anderen Seite: <strong>Kein Browser schreibt AVIF</strong>. Ein Canvas liefert stattdessen stillschweigend PNG mit der falschen Formatangabe.</p>
+    <p>Eine Seite, die AVIF im Browser verspricht, liegt daher entweder falsch oder schickt Ihr Bild zur Kodierung an einen Server. Für die korrekte Verarbeitung ohne Server muss ein Encoder entwickelt werden. Diese echte Arbeit steht auf <a href="../../roadmap/">der Roadmap</a>, statt hier nur behauptet zu werden.</p>
+  </section>
+
+  <section>
+    <h2>Die Metadaten kommen nicht mit</h2>
+    <p>Das Bild wird dekodiert und neu gezeichnet. Es bleibt bei Pixeln: EXIF, GPS, Farbprofile und XMP gehen verloren. Bei einem Bild von einer Webseite waren diese Informationen meist ohnehin nicht vorhanden.</p>
+    <p>Um vor einer Entscheidung vorhandene Informationen zu prüfen, verwenden Sie den <a href="../../exif-daten-entfernen/">EXIF-Betrachter und Entferner</a>. Er komprimiert nichts erneut. Der Ratgeber <a href="../../ratgeber/entfernt-das-umwandeln-die-metadaten-eines-fotos/">Entfernt eine Bildumwandlung die Metadaten?</a> erklärt das ausführlicher.</p>
+  </section>

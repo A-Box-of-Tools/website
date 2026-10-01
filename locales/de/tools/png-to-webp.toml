@@ -1,0 +1,124 @@
+name = "PNG zu WebP"
+heading = "PNG&nbsp;zu&nbsp;WebP <span class=\"h1-kw\">&mdash; kleiner, mit vollständiger Transparenz</span>"
+tagline = "Dasselbe Bild, oft ein Drittel kleiner, mit unveränderten transparenten Bereichen."
+title = "PNG-zu-WebP-Konverter &mdash; kostenlos, ohne Upload"
+description = "Wandeln Sie PNG-Bilder im Browser in WebP um, verlustfrei oder noch kleiner. Transparenz bleibt in beiden Modi erhalten. Ohne Upload, ohne Konto und auch offline."
+og_title = "PNG-Bilder ohne Upload in WebP umwandeln"
+og_description = "Verlustfreies WebP behält jeden undurchsichtigen Pixel in einer kleineren Datei. Mit Verlusten kann ein Foto auf ein Zehntel schrumpfen. Transparenz bleibt in beiden Modi erhalten. Die Umwandlung läuft auf Ihrem Rechner."
+og_image_alt = "PNG zu WebP - dasselbe Bild, kleiner, mit erhaltener Transparenz"
+pledge = "Die Umwandlung läuft in Ihrem Browser auf Ihrer eigenen Hardware. Alle Browser schreiben seit 2020 WebP. Der Encoder war daher schon auf Ihrem Rechner, bevor Sie diese Seite geöffnet haben. Es gibt nichts herunterzuladen und keine Wartezeit. Deshalb kann diese Seite ihr Versprechen halten: Sie hat keine Netzwerkfunktion und keinen Server, an den ein Bild gesendet werden könnte."
+live_hint = "Prüfen Sie es selbst: Öffnen Sie die Entwicklertools, beobachten Sie den Netzwerk-Tab und wandeln Sie ein Bild um. Sie sehen die Dateien dieser Seite laden, aber keine Anfrage mit einem Bild, Vorschaubild, Dateinamen oder Byte Ihrer Auswahl. Oder laden Sie die Seite einmal, trennen Sie die Internetverbindung und wandeln Sie trotzdem einen ganzen Ordner um."
+read_first = ", sowie <code>src/shared/image-convert.js</code> für die Umwandlung, besonders <code>encodeWebp</code>. Die Funktion schreibt die Datei und liest ihre RIFF-Blöcke erneut, um zu prüfen, ob der Browser tatsächlich die angeforderte verlustfreie Kodierung verwendet hat."
+howto_heading = "So wandeln Sie PNG in WebP um"
+card = "Dasselbe Bild, oft ein Drittel kleiner. Verlustfrei, wenn die Pixel bleiben sollen, oder viel kleiner, wenn Sie Verluste zulassen. Transparente Bereiche bleiben in beiden Fällen erhalten."
+
+[words]
+plural = "Bilder"
+choose = "ein Bild"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größenbegrenzung"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Open Source"
+
+[[privacy]]
+title = "Ihre Bilder haben kein Ziel außerhalb Ihres Rechners."
+body = " Die Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren darf. Keine davon gehört zu dieser Website. Es gibt keinen Endpunkt, der Ihre Dateien sammeln könnte, und keinen Code, der sie versenden würde."
+
+[[privacy]]
+title = "Die Transparenz bleibt erhalten. Genau darum geht es meistens."
+body = " WebP hat ebenso wie PNG einen Alphakanal. Ein Logo mit transparentem Hintergrund behält ihn. Es gibt keine Hintergrundfarbe zu wählen und keine Transparenz aufzufüllen. Das unterscheidet dieses Werkzeug vom benachbarten Konverter <a href=\"../webp-in-jpg-umwandeln/\">WebP zu JPG</a>, der danach fragen muss, weil JPEG keinen Alphakanal hat."
+
+[[privacy]]
+title = "Verlustfreiheit wird geprüft."
+body = " Ein Canvas hat keinen Schalter für verlustfreies WebP. Der Browser wählt die Kodierung anhand des Qualitätswerts; alle aktuellen Browser verwenden am oberen Ende verlustfreie Kodierung. Das ist ein Verhalten der Engine und keine Garantie der Spezifikation. Deshalb liest diese Seite jede geschriebene Datei erneut und zeigt, ob ihre Bytes tatsächlich verlustfrei kodiert sind. Ändert ein Browser sein Verhalten, erfahren Sie es sofort."
+
+[[privacy]]
+title = "Was ein Canvas nicht übernimmt."
+body = " Das Bild wird dekodiert und auf ein Canvas gezeichnet, das nur Pixel enthält. Textblöcke, ICC-Farbprofile und XMP-Blöcke im PNG gehen dabei verloren. Die Pixel bleiben &mdash; das bedeutet hier verlustfrei &mdash;, die Metadaten darum nicht. Falls diese wichtig sind, liest und schreibt der <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter und Entferner</a> sie."
+
+[[privacy]]
+title = "Was Google lädt und welche Informationen es nicht erhält."
+body = " Werbe- und Messskripte kommen von Google, die Spendenschaltfläche von Buy Me a Coffee. Keines davon erhält Informationen über Ihre Bilder. Jede Zeile, die eine Datei liest, dekodiert oder schreibt, wird von dieser Herkunft ausgeliefert und steht im Repository."
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = " Laden Sie die Seite einmal und trennen Sie die Netzwerkverbindung. Das Werkzeug arbeitet unverändert weiter. Das ist der einfachste Beweis: Ein Konverter, der Ihre Bilder zur Verarbeitung verschickt, könnte das nicht."
+
+[[howto]]
+title = "Wählen Sie Ihre PNG-Dateien."
+body = " Ziehen Sie sie auf die Dateiauswahl oder wählen Sie sie von Hand. Jede Datei wird anhand ihrer ersten Bytes statt ihres Namens erkannt. Eine tatsächliche JPEG-Datei wird mit einer entsprechenden Erklärung abgelehnt, statt in eine Kopie ihrer selbst umgewandelt zu werden. Jede Zeile nennt vorhandene Transparenz, weil deren Verlust vielen Menschen besonders wichtig ist."
+
+[[howto]]
+title = "Wählen Sie verlustfrei oder kleiner."
+body = " Verlustfrei behält jeden undurchsichtigen PNG-Pixel und erzeugt trotzdem eine kleinere Datei. Das passt für Bildschirmfotos, Diagramme, Logos und Bilder mit Text. „Kleiner“ aktiviert den Qualitätsregler und passt für Fotos, bei denen der Unterschied kaum sichtbar ist und die Platzersparnis enorm sein kann."
+
+[[howto]]
+title = "Drücken Sie „Umwandeln“ und lesen Sie die Ergebnisangaben."
+body = " Jedes Ergebnis nennt die neue Größe und ihren Unterschied zur ursprünglichen. Danach zeigt es die vom Browser tatsächlich geschriebene Kodierung: verlustfrei oder verlustbehaftet mit der gewählten Qualität. Die Zeile wird aus der fertigen Datei gelesen, nicht einfach aus der Einstellung übernommen."
+
+[[howto]]
+title = "Laden Sie einzeln oder alles zusammen herunter."
+body = " Eine Datei erhält eine Downloadschaltfläche, ab zwei gibt es zusätzlich ein ZIP-Archiv mit allen Ergebnissen. Bei gleichen Dateinamen wird vor der Erweiterung eine Zahl ergänzt, damit sich im Archiv nichts unbemerkt ersetzt."
+
+[[faq]]
+q = "Wird mein Bild irgendwo hochgeladen?"
+a = "Nein. Ihr Browser liest, dekodiert und schreibt die Datei auf Ihrer eigenen Hardware. Dieses Werkzeug hat keinerlei Netzwerkfunktion: Es ruft nichts ab und versendet nichts. Die <code>Content-Security-Policy</code> der Seite nennt jede erlaubte Kontaktadresse; keine gehört zu dieser Website."
+
+[[faq]]
+q = "Bleibt die Transparenz erhalten?"
+a = "Ja, in beiden Modi. Das ist der wichtigste Grund, PNG in WebP statt in JPEG umzuwandeln. WebP hat einen echten Alphakanal. Ein Logo mit transparentem Hintergrund behält ihn; keine Farbe muss gewählt und nichts aufgefüllt werden. Jede Dateizeile nennt vor der Umwandlung vorhandene Transparenz. Das Ergebnis bestätigt ihre Übernahme."
+
+[[faq]]
+q = "Was unterscheidet verlustfrei von kleiner?"
+a = "Verlustfrei bedeutet, dass jeder undurchsichtige WebP-Pixel dem ursprünglichen PNG-Pixel entspricht. Die Datei wird trotzdem meist um ein Fünftel bis ein Drittel kleiner, weil WebP verlustfrei effizienter kodiert als PNG. Die Einschränkung bei halbtransparenten Pixeln wird in der nächsten Frage erläutert. „Kleiner“ verwendet die verlustbehaftete WebP-Kodierung, die kaum bemerkte Details verwirft und ein Foto auf ein Zehntel verkleinern kann. Als Faustregel: Text, flache Farbflächen und scharfe Kanten brauchen verlustfrei; Fotos den anderen Modus."
+
+[[faq]]
+q = "Sie sagen „jeden undurchsichtigen Pixel“. Was ist mit halbtransparenten?"
+a = "Sie können sich sehr geringfügig verändern. Das liegt am Canvas, nicht an WebP. Ein Browser speichert Canvas-Farben bereits mit ihrer Deckkraft multipliziert. Diese Multiplikation lässt sich nicht exakt rückgängig machen: Je durchsichtiger ein Pixel ist, desto weniger seiner ursprünglichen Farbe bleibt rechnerisch erhalten. Jeder browserbasierte Konverter hat diese Eigenschaft, auch dieser, weil das Canvas das Bild zwischen den Formaten überträgt. <br><br> Praktisch bedeutet das: Vollständig undurchsichtige sowie vollständig unsichtbare Pixel bleiben Bit für Bit gleich. Dazwischen können die gespeicherten Farbwerte wechseln. Hier wurden bei Pixeln mit weniger als einem Viertel Deckkraft Unterschiede bis 63 von 255 gemessen, bei allen übrigen höchstens 4. Das ist nicht sichtbar. Gerade die am stärksten veränderten Farben werden am wenigsten angezeigt: Ein fast unsichtbarer Pixel trägt unabhängig vom gespeicherten Wert nur fast unsichtbare Farbe bei. Der geglättete Rand eines Logos ist der einzige betroffene Bereich und sieht hinterher gleich aus. <br><br> Brauchen Sie eine bitgenaue Archivkopie, behalten Sie das PNG. Brauchen Sie das gleiche Aussehen bei einem Drittel weniger Platz, ist dieses Werkzeug dafür gedacht."
+
+[[faq]]
+q = "Wie prüfen Sie, ob es wirklich verlustfrei war?"
+a = "Die fertige Datei wird erneut gelesen und geprüft. WebP speichert Pixel in einem von zwei Blöcken: <code>VP8L</code> für verlustfreie und <code>VP8&nbsp;</code> für verlustbehaftete Kodierung. Diese Seite liest den vorhandenen Block und zeigt ihn in der Ergebniszeile an. Das ist nötig, weil ein Canvas keinen Schalter für Verlustfreiheit hat. Die höchste Qualität fordert sie indirekt an; jeder aktuelle Browser versteht das. Diese Seite prüft trotzdem nach."
+
+[[faq]]
+q = "Lässt sich WebP wirklich überall öffnen?"
+a = "Im Web ja: Chrome, Edge, Firefox und Safari zeigen WebP seit 2020. Für Websites ist kein Ersatzformat mehr nötig. Außerhalb des Browsers ist die Unterstützung uneinheitlicher. Windows und macOS zeigen inzwischen Vorschauen, doch ältere Desktopsoftware, einige Uploadformulare und viele E-Reader lehnen WebP weiterhin ab. Verwenden Sie für solche Ziele den Konverter <a href=\"../webp-in-jpg-umwandeln/\">WebP zu JPG</a>, der in die andere Richtung arbeitet."
+
+[[faq]]
+q = "Warum ist mein PNG überhaupt so groß?"
+a = "PNG ist verlustfrei, und Fotos lassen sich so schlecht komprimieren. Bei Bildschirmfotos und Logos wiederholen sich große Flächen; dafür ist PNG hervorragend. Bei Fotos wiederholt sich fast nichts. Ein Handyfoto als PNG ist oft zehnmal so groß wie dasselbe Bild als JPEG. Genau dafür ist hier der verlustbehaftete Modus sinnvoll. Muss die Datei unter einer bestimmten Größe bleiben, verwendet der <a href=\"../bild-komprimieren/\">Bildkompressor</a> eine Zielgröße statt eines Qualitätswerts."
+
+[[faq]]
+q = "Bleiben Datum, Kamera und Standort erhalten?"
+a = "Nein. Das Bild wird auf ein Canvas gezeichnet, das nur Pixel enthält. Alle umgebenden Metadaten bleiben zurück. Bei PNG ist das meist unbedeutend, weil die meisten Dateien keine Kameradaten enthalten. Um vorhandene Informationen zu prüfen, liest und schreibt der <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter und Entferner</a> sie ohne erneute Bildkomprimierung."
+
+[[faq]]
+q = "Kann ich einen ganzen Ordner auf einmal umwandeln?"
+a = "Ja. Ziehen Sie beliebig viele Dateien hinein. Zahl und Größe sind nicht begrenzt, weil kein Server dafür aufkommen muss. Jede erhält eine eigene Zeile und einen eigenen Download. Ab zwei gibt es ein ZIP-Archiv mit allen Ergebnissen und der gesamten Ersparnis am Anfang."
+
+[[faq]]
+q = "Ist es kostenlos und brauche ich ein Konto?"
+a = "Es ist kostenlos, ohne Konto, Anmeldung, Testphase oder Wasserzeichen. Werbung finanziert die Website und erhält keine Informationen über Ihre Bilder."
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = "Ja. Laden Sie die Seite einmal und trennen Sie die Internetverbindung. Sie arbeitet unverändert weiter. Das ist zugleich der stärkste verfügbare Beweis, dass nichts hochgeladen wird. Ein Konverter, der Dateien zur Verarbeitung versendet, würde ohne Verbindung sofort stoppen; dieser tut das nicht."
+
+[schema]
+description = "PNG-Bilder im Browser in WebP umwandeln, verlustfrei oder mit einer Qualitätseinstellung. Transparenz bleibt in beiden Fällen erhalten. Jedes Ergebnis zeigt die tatsächlich geschriebene Kodierung. Nichts wird hochgeladen und kein Codec heruntergeladen."
+features = ["PNG zu WebP mit dem bereits im Browser vorhandenen Encoder", "Verlustfreies WebP: jeder undurchsichtige Pixel bleibt, die Datei wird kleiner", "Verlustbehaftetes WebP mit Qualitätsregler für Fotos", "Erhält den Alphakanal und damit die Transparenz", "Liest das Ergebnis erneut, um die geschriebene Kodierung zu bestätigen", "Kein Upload; das Werkzeug funktioniert ohne Netzwerk", "Erkennt Dateien anhand ihres Inhalts statt ihrer Erweiterung", "Zeigt die Platzersparnis pro Datei und für den ganzen Stapel", "Stapelverarbeitung mit allen Ergebnissen in einem ZIP-Archiv"]
+
+[picker]
+title = "PNG-Bilder hier ablegen"
+hint = "oder klicken, um Dateien auszuwählen &mdash; .png-Dateien unabhängig von ihrem Namen"

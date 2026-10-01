@@ -1,0 +1,209 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>動画を選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the turn.
+
+    Three buttons and a preview. The preview is the clip's first frame drawn
+    through the same arithmetic the file will carry, so what it shows is what
+    a player will do with the header, not a CSS turn that could disagree.
+  -->
+  <section class="card" id="turn-card">
+    <h2><span class="step">2</span>向きを選ぶ</h2>
+
+    <p class="card-lede">電話で横向きに撮った動画は、画素を回さずヘッダーに90度の回転を書き、プレーヤーが適用します。動画を回すにはそのヘッダーだけを変更できます。フレームを1枚もデコードせず、映像は完全に同じです。</p>
+
+    <div class="chips" role="group" aria-label="回転の角度">
+      <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; 右に90度</button>
+      <button type="button" class="chip" data-turn="270" aria-pressed="false">&#8634; 左に90度</button>
+      <button type="button" class="chip" data-turn="180" aria-pressed="false">上下逆</button>
+    </div>
+
+    <div class="preview-box">
+      <canvas id="preview" class="preview" aria-label="選んだ向きに回転した先頭のフレーム" hidden></canvas>
+      <p id="preview-line" class="preview-line" role="status" aria-live="polite"></p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="bake">
+      <span>
+        <strong>映像自体を回転する</strong>
+        <span class="check-note">ヘッダーを無視する少数の古いプレーヤー向けに、各フレームを回転して描き、H.264で再エンコードします。画質が1世代変わり、エンコードの時間も必要です。実際に横向きで表示された場合だけ選んでください。</span>
+        <span id="bake-note" class="check-note" hidden></span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>音声を除く</strong>
+        <span id="sound-note" class="check-note" hidden></span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>回転する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">動画を回転する</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="メモリから再生する回転後の動画"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">上でこのブラウザが読める動画を選ぶと使えます。</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; 表示方向{shown}</span>
+    <span data-phrase="note.nopreview">ブラウザが映像をデコードできないのでプレビューはありませんが、回転はファイルに書き込めます。</span>
+    <span data-phrase="preview.nofile">上で動画を選ぶと、現在の向きを表示します。</span>
+    <span data-phrase="preview.copy">現在は{now}、回転後は{after}、{frame}です。各フレームはそのままコピーします。</span>
+    <span data-phrase="preview.bake">現在は{now}、回転後は{after}、{frame}です。各フレームを回転して描き、H.264、約{rate}で再エンコードします。</span>
+    <span data-phrase="bake.must">WebMやMKVの中の映像がH.264ではないので、そのままMP4に包めません。映像自体を回転します。</span>
+    <span data-phrase="bake.cannot">ブラウザが映像をデコードまたはエンコードできないので、ヘッダーにだけ回転を書きます。電話、ブラウザ、現在のプレーヤーはそれを使います。</span>
+    <span data-phrase="sound.none">この動画に音声はありません。</span>
+    <span data-phrase="sound.copy">音声はAACなので、そのままコピーします。</span>
+    <span data-phrase="sound.encode">音声はMP4に入れられない{codec}なので、AAC、160kbit/sで再エンコードします。</span>
+    <span data-phrase="sound.unknown">音声はブラウザがデコードできない{codec}なので除きます。映像は回転できます。</span>
+    <span data-phrase="codec.aac">AAC</span>
+    <span data-phrase="codec.opus">Opus</span>
+    <span data-phrase="codec.vorbis">Vorbis</span>
+    <span data-phrase="codec.mp3">MP3</span>
+    <span data-phrase="codec.flac">FLAC</span>
+    <span data-phrase="codec.ac3">Dolby AC-3</span>
+    <span data-phrase="codec.eac3">Dolby E-AC-3</span>
+    <span data-phrase="codec.other">&ldquo;{name}&rdquo;</span>
+    <span data-phrase="rotation.0">正しい向き</span>
+    <span data-phrase="rotation.90">右に横倒し</span>
+    <span data-phrase="rotation.180">上下逆</span>
+    <span data-phrase="rotation.270">左に横倒し</span>
+    <span data-phrase="turn.90">右に90度</span>
+    <span data-phrase="turn.180">180度</span>
+    <span data-phrase="turn.270">左に90度</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
+    <span data-phrase="progress.sound">音声：{total}パケット中{done}&hellip;</span>
+    <span data-phrase="progress.preparing">準備しています&hellip;</span>
+    <span data-phrase="progress.frame">フレーム{total}件中{done}件（{percent}%）</span>
+    <span data-phrase="progress.finishing">最後のフレームを処理中&hellip;</span>
+    <span data-phrase="progress.writing">ファイルを書き出しています&hellip;</span>
+    <span data-phrase="progress.checking">開き直して確認中&hellip;</span>
+    <span data-phrase="run.cancelled">キャンセルしました。書き出しはありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="result.ready">{size}のMP4、{turn}回転しました。</span>
+    <span data-phrase="result.sub.copy">フレームとパケットをそのままコピーし、ヘッダーだけを変えました。</span>
+    <span data-phrase="result.sub.bake">各フレームを回転して描き、H.264で再エンコードしました。ヘッダーに回転情報は不要になりました。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
+    <span data-phrase="check.ok">メモリから開き直し、元と同じ長さ{length}、表示方向{shown}、{frame}を確認しました。</span>
+    <span data-phrase="check.length">完成したファイルの長さが{want}ではなく{got}です</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="check.turn">完成したファイルの表示方向は{got}、{frame}で、指定と違います</span>
+    <span data-phrase="check.sound">完成したファイルに音声トラックがありません</span>
+    <span data-phrase="facts.picture.copied">{frame}の{frames}フレームをバイト単位でそのままコピーしました。デコードも再エンコードもありません。ヘッダーの回転情報は電話、ブラウザ、現在のプレーヤーが使います。</span>
+    <span data-phrase="facts.picture.baked">各フレームを回転して描き、H.264、{rate}、{frame}、毎秒{fps}フレームで再エンコードしました。元より1世代の画質変化があるため、原本を残してください。</span>
+    <span data-phrase="facts.sound.copied">音声はそのままコピーし、再エンコードしていません。</span>
+    <span data-phrase="facts.sound.encoded">音声はAAC、160kbit/sで再エンコードしました。</span>
+    <span data-phrase="facts.sound.none">音声トラックはありません。元からなかったか、指定で除きました。</span>
+    <span data-phrase="facts.time">{seconds}で完了しました。</span>
+    <span data-phrase="support.nodecode">ブラウザはこの映像（{codec}）をデコードできず、そのままMP4にも包めません。同じ端末の別のブラウザで読める場合があります。</span>
+    <span data-phrase="stall.both">ブラウザの動画コーデックが応答しなくなりました。再読み込みして試してください。ハードウェアエンコーダーが使用中、またはない場合に起きます。</span>
+    <span data-phrase="stall.sound">ブラウザの音声コーデックが応答しなくなりました。再読み込みして試すか、音声を除いてください。</span>
+    <span data-phrase="encode.toobig">このブラウザは{size}でH.264をエンコードできません。映像自体の回転を外し、ヘッダーだけに回転情報を書いてください。</span>
+    <span data-phrase="encode.noconfig">エンコーダーはデコーダー設定を一度も返しませんでした。</span>
+    <span data-phrase="decode.none">この動画からフレームをデコードできませんでした。</span>
+    <span data-phrase="copy.notavc">WebMやMKVからそのままコピーできるのはH.264だけです。映像自体を回転してください。</span>
+    <span data-phrase="rotate.badturn">このページが扱う回転ではありません。</span>
+    <span data-phrase="sound.noaac">ブラウザはこの音声のサンプリング周波数とチャンネル数でAACをエンコードできません。音声を除いて映像だけ回転してください。</span>
+    <span data-phrase="sound.noencode">音声エンコーダーから結果が得られませんでした。</span>
+    <span data-phrase="write.noframes">書き出すフレームがありません。</span>
+    <span data-phrase="write.toobig">完成したファイルが4GBを超えます。ここで書き出すMP4は対応しません。先に動画を短くしてください。</span>
+    <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
+    <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
+    <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
+    <span data-phrase="read.av1short">AV1の設定レコードが短すぎます。</span>
+    <span data-phrase="read.compactsizes">サンプルの大きさが、このリーダーの解さない圧縮テーブルに入っています。</span>
+    <span data-phrase="read.sampletables">サンプルテーブルが欠けています。</span>
+    <span data-phrase="read.chunktable">チャンクテーブルが空です。</span>
+    <span data-phrase="read.nosamples">動画トラックにフレームがありません。</span>
+    <span data-phrase="read.nostbl">映像トラックにサンプルテーブルがありません。</span>
+    <span data-phrase="read.nostsd">映像トラックにサンプル記述がありません。</span>
+    <span data-phrase="read.emptystsd">映像のサンプル記述が空です。</span>
+    <span data-phrase="read.encrypted">映像トラックが暗号化されています。</span>
+    <span data-phrase="read.unknowncodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.noconfig">「{type}」トラックはデコーダー設定を持っていません。</span>
+    <span data-phrase="read.notmp4">MP4、MOV、WebM、MKVではありません。AVI、WMV、FLV、MPEG-2は扱えません。</span>
+    <span data-phrase="read.nomoov">ファイルにムービーヘッダーがありません。</span>
+    <span data-phrase="read.novideo">このファイルには、このリーダーが使える映像トラックがありません。</span>
+    <span data-phrase="read.notimescale">映像トラックにタイムスケールがありません。</span>
+    <span data-phrase="read.nofragments">このファイルのフラグメントには、映像トラックのコマが1つも入っていません。</span>
+    <span data-phrase="read.unreadable">このファイルはMP4として読めませんでした。</span>
+    <span data-phrase="read.notplayed">この形式は、このブラウザーが再生できるものではありません。</span>
+    <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
+    <span data-phrase="read.notmkv">WebMまたはMKVファイルではありません。</span>
+    <span data-phrase="read.nosegment">ヘッダーの後にセグメントがありません。</span>
+    <span data-phrase="read.mkvtracks">トラックが指定されていません。</span>
+    <span data-phrase="read.mkvcodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.mkvencoded">トラックがコンテナ内で圧縮または暗号化されており、このリーダーでは解除できません。</span>
+    <span data-phrase="read.mkvaudio">「{type}」の音声トラックに設定がなく、サンプリング周波数も設定なしで表せる値ではありません。</span>
+    <span data-phrase="read.lacing">ブロックのレーシング形式をこのリーダーで読めませんでした。</span>
+    <span data-phrase="net.clean">動画はどこへも送られていません。読み込んだ{total}個のファイルはすべてこのページ自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+  </div>
+</main>
