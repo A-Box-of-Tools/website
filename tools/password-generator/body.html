@@ -197,12 +197,13 @@
     <div class="result" id="result"
          data-copied="Copied."
          data-copy-failed="Your browser would not let this page reach the clipboard. Select it and copy it yourself.">
-      <output id="secret" class="secret" aria-live="polite"></output>
+      <output id="secret" class="secret" aria-live="polite" tabindex="0"></output>
       <div class="result-actions">
         <button type="button" id="regenerate" class="primary">Make another</button>
         <button type="button" id="copy" class="ghost" data-download>Copy</button>
         <span id="copy-note" class="copy-note" role="status"></span>
       </div>
+      <pre id="copy-fallback" class="secret" tabindex="0" hidden></pre>
     </div>
 
     <!--

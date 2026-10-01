@@ -2,7 +2,7 @@
  * Registers the front page's service worker. GENERATED FILE - do not edit; see
  * templates/offline.js.
  *
- * A tool page does this from its own main.js, where there is a live indicator
+ * A tool page does this from shared/trust.js, where there is a live indicator
  * waiting to be told whether it worked. This page has neither a main.js nor an
  * indicator, and needed one file rather than a script tag the
  * Content-Security-Policy would refuse: script-src here is 'self' with no
@@ -18,5 +18,8 @@
  */
 
 if ('serviceWorker' in navigator && window.isSecureContext) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+  const version = document.documentElement.dataset.offlineVersion;
+  if (/^[0-9a-f]{10}$/.test(version || '')) {
+    navigator.serviceWorker.register(`sw.js?v=${version}`, { updateViaCache: 'none' }).catch(() => {});
+  }
 }

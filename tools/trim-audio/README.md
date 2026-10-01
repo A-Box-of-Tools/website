@@ -230,3 +230,7 @@ the context is created to match. A file whose format does not say is decoded at
   test can set it to zero and not depend on how fast the machine is.
 
 Run them with `node --test "tests/js/*.test.js"` from the repository root.
+
+A replacement file is decoded before export is enabled again. Only the most
+recent load may replace the current recording, and an export captures its
+source, sample rate and filename together before rendering yields to the page.

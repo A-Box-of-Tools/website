@@ -60,7 +60,7 @@
           <label for="input" id="input-label">Tu YAML</label>
           <span class="count" id="input-count">vacío</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Pega aquí el YAML - o suelta arriba un archivo .yaml, .yml o .json."></textarea>
       </div>
@@ -104,6 +104,12 @@
     thing about it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vacío</span>
+    <span data-phrase="n.line.one">{n} línea</span>
+    <span data-phrase="n.line.many">{n} líneas</span>
+    <span data-phrase="n.character.one">{n} carácter</span>
+    <span data-phrase="n.character.many">{n} caracteres</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
     <span data-phrase="parse.at">{reason} (línea {line}, columna {column})</span>
     <span data-phrase="char.end">el final del texto</span>
     <span data-phrase="char.newline">un salto de línea</span>

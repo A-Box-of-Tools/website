@@ -74,7 +74,7 @@
           <label for="input">Your XML</label>
           <span class="count" id="input-count">empty</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Paste XML here - or drop an .xml, .svg or .rss file above."></textarea>
       </div>
@@ -118,6 +118,12 @@
     thing about it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">empty</span>
+    <span data-phrase="n.line.one">{n} line</span>
+    <span data-phrase="n.line.many">{n} lines</span>
+    <span data-phrase="n.character.one">{n} character</span>
+    <span data-phrase="n.character.many">{n} characters</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
     <span data-phrase="parse.at">{reason} (line {line}, column {column})</span>
     <span data-phrase="char.end">the end of the text</span>
     <span data-phrase="char.newline">a line break</span>

@@ -94,11 +94,14 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
+  clearTimeout(timer);
+  clearResult();
   picker.busy(phrase('read.reading'));
   try {
     // Read as text, here, by the browser. There is no other step: the string
     // goes into the box below and never anywhere else.
     el.input.value = await files[0].text();
+    updateCounts();
     run();
   } catch (error) {
     showError(phrase('read.failed', { reason: say(error) }));
@@ -111,6 +114,8 @@ let timer = null;
 
 function schedule() {
   clearTimeout(timer);
+  // The visible input has changed; the previous download no longer describes it.
+  clearResult();
   // A long wait on a long document, a short one on a short document. The work
   // is local either way; this is only about not re-formatting a megabyte
   // between two keystrokes.
@@ -144,11 +149,16 @@ function updateCounts() {
 }
 
 function describe(text) {
-  if (text === '') return 'empty';
+  if (text === '') return phrase('count.empty');
   const lines = text.split('\n').length;
-  return `${lines.toLocaleString()} line${lines === 1 ? '' : 's'}, `
-    + `${text.length.toLocaleString()} character${text.length === 1 ? '' : 's'}, `
-    + humanBytes(byteLength(text));
+  // Three phrases folded with a fourth rather than one with commas in it:
+  // ja and zh separate a list with a character of their own.
+  return [
+    phrase(lines === 1 ? 'n.line.one' : 'n.line.many', { n: lines.toLocaleString() }),
+    phrase(text.length === 1 ? 'n.character.one' : 'n.character.many',
+      { n: text.length.toLocaleString() }),
+    humanBytes(byteLength(text)),
+  ].reduce((a, b) => phrase('join.comma', { a, b }));
 }
 
 const byteLength = (text) => new TextEncoder().encode(text).length;
@@ -156,6 +166,7 @@ const byteLength = (text) => new TextEncoder().encode(text).length;
 /* ---------------------------------------------------------------- the work */
 
 function run() {
+  clearTimeout(timer);
   clearError();
   clearResult();
   updateOptionVisibility();
@@ -254,10 +265,13 @@ function show(text, note, name) {
 
 el.copy.addEventListener('click', async () => {
   if (!result) return;
+  const copied = result;
   try {
-    await navigator.clipboard.writeText(result.text);
+    await navigator.clipboard.writeText(copied.text);
+    if (result !== copied) return;
     el.copy.textContent = phrase('copy.copied');
   } catch {
+    if (result !== copied) return;
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the block is a route that always works.
     const range = document.createRange();
@@ -267,10 +281,11 @@ el.copy.addEventListener('click', async () => {
     selection.addRange(range);
     el.copy.textContent = phrase('copy.selected');
   }
-  setTimeout(() => { el.copy.textContent = phrase('copy.copy'); }, 2500);
+  setTimeout(() => { if (result === copied) el.copy.textContent = phrase('copy.copy'); }, 2500);
 });
 
 function clearResult() {
+  el.copy.textContent = phrase('copy.copy');
   el.output.textContent = '';
   el.copy.disabled = true;
   download.clear();

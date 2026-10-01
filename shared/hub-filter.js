@@ -36,7 +36,10 @@
  * name of the category the card sits in - so "video" finds the whole group and
  * "pdf" finds the four that say so. Accents are stripped from both sides
  * before comparing, because a reader typing in a hurry in French or Portuguese
- * should not have to get them right to find their own language's page.
+ * should not have to get them right to find their own language's page. Format
+ * identifiers also find the tools that handle them, even when the card says
+ * "format change" rather than spelling out JPG and PNG. Multiple words may
+ * occur anywhere in that text; a task need not be a quotation from a card.
  */
 
 (function () {
@@ -58,8 +61,31 @@
   function fold(text) {
     return text.toLowerCase().normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[-\u2010-\u2015\u2212]/g, '');
+      .replace(/[-\u2010-\u2015\u2212]/g, '')
+      .replace(/\bjpeg\b/g, 'jpg');
   }
+
+  /* These are file identifiers, shared by the translated interfaces. The
+     stable source slug keeps them attached to the same capability when a
+     language gives the page a different address. */
+  var formats = {
+    'resize-image': ['jpg png webp gif bmp avif', 'jpg png webp'],
+    'heic-to-jpg': ['heic heif', 'jpg png webp'],
+    'webp-to-jpg': ['webp', 'jpg'],
+    'png-to-webp': ['png', 'webp'],
+    'avif-to-jpg': ['avif', 'jpg'],
+    'svg-to-image': ['svg', 'png jpg webp'],
+    'image-to-svg': ['jpg png webp', 'svg'],
+    'image-to-ico': ['jpg png webp', 'ico icns'],
+    'convert-to-mp4': ['webm mkv mov mp4', 'mp4'],
+    'gif-to-mp4': ['gif', 'mp4'],
+    'video-to-gif': ['mp4 webm mov', 'gif'],
+    'yaml-to-json': ['yaml yml json', 'yaml yml json'],
+    'xml-formatter': ['xml json', 'xml json'],
+    'json-formatter': ['json xml html css yaml yml', 'json xml html css yaml yml']
+  };
+  var connectors = /^(to|into|a|al|para|de|em|en|zu|in|nach|convert|convertir|converter|umwandeln)$/;
+  var fileFormat = /^(jpg|png|webp|gif|bmp|avif|heic|heif|svg|ico|icns|webm|mkv|mov|mp4|yaml|yml|json|xml|html|css)$/;
 
   /* Every card, with the text it can be found by worked out once. Reading this
      on each keystroke would be re-reading the whole page thirty-seven times a
@@ -75,7 +101,12 @@
       var rows = [];
       Array.prototype.forEach.call(
         section.querySelectorAll('.tool-grid > li'), function (row) {
-          var entry = { row: row, text: fold(row.textContent) + ' ' + groupText };
+          var card = row.querySelector('a.tool-card');
+          var slug = card ? card.getAttribute('data-tool') : '';
+          var capability = formats[slug];
+          var entry = { row: row, slug: slug, capability: capability,
+            text: fold(row.textContent) + ' ' + groupText
+              + ' ' + (capability ? capability.join(' ') : '') };
           rows.push(entry);
           items.push(entry);
         });
@@ -86,12 +117,29 @@
 
   function apply() {
     var query = fold(input.value.trim());
+    var terms = query.split(/\s+/).filter(function (term) {
+      return term && !connectors.test(term);
+    });
+    var conversion = terms.length === 2 && fileFormat.test(terms[0])
+      && fileFormat.test(terms[1]) && query.split(/\s+/).length > 2;
     var shown = 0;
 
     groups.forEach(function (group) {
       var visible = 0;
       group.rows.forEach(function (entry) {
-        var match = !query || entry.text.indexOf(query) !== -1;
+        var match = !query || entry.text.indexOf(query) !== -1
+          || (terms.length > 0 && terms.every(function (term) {
+            return entry.text.indexOf(term) !== -1;
+          }));
+        if (conversion) {
+          match = !!entry.capability
+            && entry.capability[0].split(' ').indexOf(terms[0]) !== -1
+            && entry.capability[1].split(' ').indexOf(terms[1]) !== -1;
+          if (entry.slug === 'json-formatter' && terms[0] !== terms[1]) {
+            match = (terms[0] === 'json' && /^(xml|yaml|yml)$/.test(terms[1]))
+              || (terms[1] === 'json' && /^(xml|yaml|yml)$/.test(terms[0]));
+          }
+        }
         entry.row.hidden = !match;
         if (match) visible++;
       });

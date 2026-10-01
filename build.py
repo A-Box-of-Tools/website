@@ -83,6 +83,8 @@ The build never reaches the network, whichever way it runs.
 """
 
 import argparse
+import hashlib
+import json
 import html
 import os
 import posixpath
@@ -443,15 +445,17 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # every time is a build that looks different every time.
     written = []
     page_links = {}
+    offline_generations = {}
 
     if jobs == 1 or len(targets) < 2:
         for locale in targets:
-            done, links = build_locale(out, templates, locale, locales, site,
+            done, links, generations = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
                                        feedback_v, handoff_v, keep_v, md_v,
                                        offline_v, filter_v, site_css, emit, only)
             written += done
             page_links.update(links)
+            offline_generations.update(generations)
     else:
         with ProcessPoolExecutor(max_workers=jobs) as pool:
             pending = [
@@ -462,9 +466,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
                 for locale in targets
             ]
             for future in pending:
-                done, links = future.result()
+                done, links, generations = future.result()
                 written += done
                 page_links.update(links)
+                offline_generations.update(generations)
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
@@ -564,6 +569,11 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     # naming pages nothing wrote, a 404 whose links lead nowhere. Left unwritten
     # rather than written wrong.
     if not scoped:
+        # The release checker reads this receipt from the exact dist commit,
+        # then verifies every rebuilt hub and tool rather than only the hub.
+        write(out / 'offline-generations.json', json.dumps(
+            {'format': 1, 'scopes': offline_generations}, indent=2, sort_keys=True))
+
         build_404(out, templates, base, locales, site, ordered_tools,
                   ordered_prose, css_v, lang_v, emit)
         written.append('404.html')
@@ -791,7 +801,9 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
         scoped_links = {path.relative_to(out).as_posix(): found
                         for path, found in emit.page_links.items()}
         emit.page_links.clear()
-        return written, scoped_links
+        generations = emit.offline_generations.copy()
+        emit.offline_generations.clear()
+        return written, scoped_links, generations
 
     # Old addresses that moved. A static host cannot answer 301, so the page
     # that used to be at the address says where the tool went and sends the
@@ -841,7 +853,9 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     links = {path.relative_to(out).as_posix(): found
              for path, found in emit.page_links.items()}
     emit.page_links.clear()
-    return written, links
+    generations = emit.offline_generations.copy()
+    emit.offline_generations.clear()
+    return written, links, generations
 
 
 def locale_links(locale, site, pages):
@@ -1387,13 +1401,10 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
                ('analytics.js', analytics), ('manifest.json', manifest)]
               + emitted
               + [(name, (tool['dir'] / name).read_bytes()) for name in vendored])
-    emit.js(dest / 'sw.js', templates.render('sw.js', {
-        'words': tool['words'],
-        'assets': (['index.html', 'index.md', css_href, 'manifest.json']
-                   + eager_hrefs + vendored),
-        'cache_scope': f'/{locale["prefix"]}{tool["out_slug"]}/',
-        'cache_hash': sitelib.cache_hash(cached),
-    }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
+    write_worker(dest, templates, emit, page, cached,
+                 ['index.html', 'index.md', css_href, 'manifest.json']
+                 + eager_hrefs + vendored,
+                 f'/{locale["prefix"]}{tool["out_slug"]}/', tool['words'])
 
     # Required, not optional. templates/tool.html writes og:image and
     # twitter:image on every tool page whether or not the file is there, and
@@ -1735,6 +1746,29 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
 # The hub
 
 
+def write_worker(dest, templates, emit, page, cached, assets, scope, words, extra=()):
+    """Bind the page and worker to one generation without a recursive hash.
+
+    The page's version slot is hashed before it is filled. The worker template
+    participates too: changing its caching rules must bypass an old CDN copy
+    even when none of its assets changed. No input depends on a git revision,
+    so scoped, full, local and CI builds still produce identical files.
+    """
+    token = '__ABOX_OFFLINE_VERSION__'
+    worker = templates.render('sw.js', {
+        'words': words, 'assets': assets, 'cache_scope': scope, 'cache_hash': token,
+    })
+    if page.count(token) != 1 or worker.count(token) != 1:
+        raise sitelib.ConfigError(f'{scope}: the offline generation slot is missing or repeated')
+    version = sitelib.cache_hash(cached, [*extra, worker])
+    write(dest / 'index.html', page.replace(token, version))
+    emitted = emit.js(dest / 'sw.js', worker.replace(token, version), where=f'{scope}sw.js')
+    emit.offline_generations[scope] = {
+        'version': version,
+        'worker_sha256': hashlib.sha256(emitted.encode('utf-8')).hexdigest(),
+    }
+
+
 def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
               css_v, lang_v, offline_v, filter_v, site_css, emit):
     """The front page of one language, and the app it can be installed as.
@@ -1853,15 +1887,11 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     # site.css goes in as `extra`: one copy of it is written per language at
     # the end of the build, which has not happened yet, and it has always been
     # hashed nameless - see cache_hash on why that must not change.
-    emit.js(out / 'sw.js', templates.render('sw.js', {
-        'words': {'plural': 'files'},
-        'assets': ['index.html', css_href, 'manifest.json'],
-        'cache_scope': f'/{locale["prefix"]}',
-        'cache_hash': sitelib.cache_hash(
-            [('index.html', page), ('analytics.js', analytics),
-             ('manifest.json', manifest)],
-            [site_css]),
-    }), where=f'{locale["prefix"]}sw.js')
+    write_worker(out, templates, emit, page,
+                 [('index.html', page), ('analytics.js', analytics),
+                  ('manifest.json', manifest)],
+                 ['index.html', css_href, 'manifest.json'],
+                 f'/{locale["prefix"]}', {'plural': 'files'}, [site_css])
 
 
 def build_roadmap(out, templates, locale, locales, site, planned, ordered,

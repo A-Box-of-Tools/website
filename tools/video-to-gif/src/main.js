@@ -108,6 +108,8 @@ let section = { start: 0, end: 0 };
 let canRead = false;      // the demuxer and WebCodecs between them
 let canPlay = false;      // the browser's own player
 let exporting = false;
+let loading = false;
+let loadGeneration = 0;
 let abortController = null;
 let lastResultUrl = null;
 /** Set while "Play the section" is looping, so playback stops at the mark. */
@@ -144,6 +146,9 @@ const picker = wireFilePicker({
 
 async function loadFile(picked) {
   if (exporting) return;
+  const generation = ++loadGeneration;
+  loading = true;
+  el.exportBtn.disabled = true;
 
   clearError();
   releaseFile();
@@ -154,25 +159,26 @@ async function loadFile(picked) {
   try {
     objectUrl = URL.createObjectURL(picked);
     const played = await openInPlayer(el.preview, objectUrl);
-
+    if (generation !== loadGeneration) return;
+    let inputMedia = null;
+    let inputFallback = null;
     try {
-      media = await demux(picked);
-      fallbackReason = null;
+      inputMedia = await demux(picked);
     } catch (error) {
-      media = null;
-      fallbackReason = error instanceof UnsupportedFile
+      inputFallback = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
     }
 
+    if (generation !== loadGeneration) return;
     let decodable = false;
-    if (media && hasWebCodecs()) {
-      decodable = await canDecode(decoderConfig(media.video));
+    if (inputMedia && hasWebCodecs()) {
+      decodable = await canDecode(decoderConfig(inputMedia.video));
       if (!decodable) {
-        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
+        inputFallback = { key: 'read.nodecoder', values: { codec: inputMedia.video.codec } };
       }
-    } else if (media && !hasWebCodecs()) {
-      fallbackReason = { key: 'read.nowebcodecs' };
+    } else if (inputMedia && !hasWebCodecs()) {
+      inputFallback = { key: 'read.nowebcodecs' };
     }
 
     // If the reader and the player disagree about the shape of the picture, one
@@ -180,11 +186,14 @@ async function loadFile(picked) {
     // wrong one would come out on its side. The player is what you are looking
     // at, so it wins and the reader path stands down.
     if (decodable && played.ok
-      && (played.width !== media.video.displayWidth || played.height !== media.video.displayHeight)) {
+      && (played.width !== inputMedia.video.displayWidth || played.height !== inputMedia.video.displayHeight)) {
       decodable = false;
-      fallbackReason = { key: 'read.turned' };
+      inputFallback = { key: 'read.turned' };
     }
 
+    if (generation !== loadGeneration) return;
+    media = inputMedia;
+    fallbackReason = inputFallback;
     canRead = decodable;
     canPlay = played.ok;
 
@@ -210,13 +219,18 @@ async function loadFile(picked) {
     el.exportBtn.disabled = false;
     updateSummary();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     console.error(error);
     // The leaf modules throw keys; a browser that failed for its own reasons
     // throws a sentence, and phrase() hands back what it does not recognise.
     showError(error?.message ? phrase(error.message) : phrase('open.notopened'));
     resetView();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) {
+      loading = false;
+      picker.done();
+      updateSummary();
+    }
   }
 }
 
@@ -449,7 +463,7 @@ function updateSummary() {
     b: phrase(memory > MEMORY_LIMIT ? 'note.memory.toobig' : 'note.memory.ok'),
   });
 
-  el.exportBtn.disabled = exporting || memory > MEMORY_LIMIT || span <= 0;
+  el.exportBtn.disabled = loading || exporting || !file || (!canRead && !canPlay) || memory > MEMORY_LIMIT || span <= 0;
 }
 
 /* ------------------------------------------------------------------ export */
@@ -475,9 +489,17 @@ function outputFilename() {
 }
 
 async function runExport() {
-  if (exporting || !file) return;
+  if (exporting || loading || !file) return;
 
   const { size, fps, times } = plan();
+  // The controls may describe the next run while frames are being collected;
+  // their new values must not change the timing or encoding of this one.
+  const delays = frameDelays(times, section.end);
+  const dither = el.dither.value === 'on';
+  const loop = el.loop.checked;
+  const name = outputFilename();
+  const inputFile = file;
+  const inputMedia = media;
   if (!times.length) {
     showError(phrase('export.tooshort'));
     return;
@@ -508,7 +530,7 @@ async function runExport() {
   try {
     const frames = canRead
       ? await framesByDecoding({
-        file, media, times, ...size, histogram, step,
+        file: inputFile, media: inputMedia, times, ...size, histogram, step,
         onProgress: setProgress, signal: abortController.signal,
       })
       : await framesByPlaying({
@@ -516,16 +538,14 @@ async function runExport() {
         onProgress: setProgress, signal: abortController.signal,
       });
 
-    const delays = frameDelays(times, section.end);
-
     const result = await encodeGif({
       frames,
       histogram,
       delays,
       ...size,
       colors: MAX_COLORS,
-      dither: el.dither.value === 'on',
-      loop: el.loop.checked,
+      dither,
+      loop,
       onProgress: setProgress,
       signal: abortController.signal,
     });
@@ -535,7 +555,7 @@ async function runExport() {
 
     el.resultImage.src = lastResultUrl;
     el.download.href = lastResultUrl;
-    el.download.download = outputFilename();
+    el.download.download = name;
     const written = phrase(result.written === 1 ? 'n.frame.one' : 'n.frame.many',
       { n: result.written });
     el.resultInfo.textContent = [

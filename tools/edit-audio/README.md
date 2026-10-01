@@ -193,3 +193,7 @@ result decoded again by the browser to confirm the file is real: 2 s at 1.5×
 comes back as 1.3333 s, reversed so the quiet half is first, normalised to
 exactly −1 dBFS, with the tone still at 440 Hz and nothing at 660. That is also
 the run that caught the WebM sample-rate bug above.
+
+A replacement file is decoded before export is enabled again. Only the most
+recent load may replace the current recording, and an export captures its
+source, sample rate and filename together before rendering yields to the page.

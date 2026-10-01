@@ -60,6 +60,13 @@ can never fully describe a WebRTC page.
   `{private}` instead of the content; the reader's introduction returns as
   `{knock, note}`; admit sends the content, deny sends `{denied}` and closes.
   All of it on the peer channel — the worker needed nothing for this.
+- **First delivery.** The reader announces that its message handler is ready
+  on the peer channel; the host repeats the introduction if it already sent
+  one. Both sides handle a channel delivered already open. Establishing the
+  channel and receiving the first private/text message have separate twenty-
+  second deadlines: an open channel alone must not leave the reader waiting
+  forever. A delivery timeout closes that attempt and offers a fresh retry;
+  a private reader waiting for a person's admission has no artificial deadline.
 - **Files.** Pull model on the same channel: `{files, list}` advertises,
   `{get, id}` requests, then `file-begin` → 64 KB binary chunks paced by
   `bufferedAmountLowThreshold` (1 MB low, 8 MB high-water, with a close

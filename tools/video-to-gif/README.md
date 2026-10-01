@@ -251,3 +251,8 @@ of it against MP4s built inside the page by `VideoEncoder` and the muxer from
 - **The interface end to end**: typed times, `I` and `O`, a letter typed into a
   field staying a letter, a custom width, dithering off, cancelling mid-run and
   converting again afterwards, and a text file dropped in to be refused.
+
+An export captures its frame times, delays, size, dithering and loop setting
+before decoding starts. Controls remain available for the next run; changing
+the selected end while frames are being collected cannot lengthen the last
+frame of the GIF already being made.

@@ -196,7 +196,7 @@ function refresh() {
  */
 function drawPreview() {
   const first = loaded?.pages[0];
-  const box = first ? first.box : A4;
+  const box = first ? first.visibleBox : A4;
   const rotate = first ? first.rotate : 0;
   const visible = visibleSize(rotate, box);
 
@@ -313,7 +313,7 @@ async function run() {
     });
 
     setProgress(1, 1, phrase('stage.checking'));
-    const check = await verify(blob, chosen, loaded.pages.length);
+    const check = await verify(blob, chosen, loaded.pages.length, done.names);
 
     showResult({ blob, check, chosen, done, words, signed });
   } catch (error) {
@@ -341,7 +341,7 @@ async function run() {
  * that should carry the stamp has to name it in its resources and end with
  * the instruction that draws it.
  */
-async function verify(blob, chosen, expected) {
+async function verify(blob, chosen, expected, names) {
   let again;
   try {
     again = await PdfDocument.open(new Uint8Array(await blob.arrayBuffer()));
@@ -362,7 +362,7 @@ async function verify(blob, chosen, expected) {
   };
   const wanted = chosen.firstPageOnly ? found.slice(0, 1) : found;
   for (let i = 0; i < wanted.length; i += 1) {
-    if (!(await carriesStamp(again, wanted[i], decode))) {
+    if (!(await carriesStamp(again, wanted[i], decode, names[i]))) {
       return { ok: false, text: { key: 'check.missing', values: { n: i + 1 } } };
     }
   }

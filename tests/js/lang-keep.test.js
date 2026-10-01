@@ -149,6 +149,7 @@ function el(selectors = [], attrs = {}) {
     // a real input would have carried it without comment.
     dataset: {},
     getAttribute: (name) => (name in attrs ? attrs[name] : null),
+    hasAttribute: (name) => name in attrs,
     setAttribute: (name, value) => { attrs[name] = value; },
     closest(query) {
       const wanted = query.split(',').map((part) => part.trim());
@@ -248,6 +249,8 @@ function run({
   const feedback = el(['#feedback'], { 'data-tool': tool });
   const main = el(['#main']);
   main.querySelectorAll = () => controls;
+  main.querySelector = (selector) => selector === '[data-language-text]'
+    ? controls.find((node) => node.hasAttribute('data-language-text')) ?? null : null;
   main.contains = (other) => controls.indexOf(other) >= 0;
   for (const node of controls) node.parentNode = main;
 
@@ -785,4 +788,59 @@ test('a page with no picker still carries its settings', async () => {
   await page.settle();
 
   assert.deepEqual(page.record().values, [{ key: '#words', value: '9' }]);
+});
+
+
+/* Text editors carry their current document, not an obsolete file import. */
+test('an edited text file crosses a language switch without replaying the file', async () => {
+  const source = control('textarea', 'input', { attrs: { 'data-language-text': '' } });
+  source.value = '{"edited":true}';
+  const before = run({ tool: 'json-formatter', controls: [source] });
+  before.choose(file('original.json'));
+  before.click(before.link);
+  await before.settle();
+  assert.deepEqual(before.record().files, []);
+
+  const target = control('textarea', 'input', { attrs: { 'data-language-text': '' } });
+  const after = run({ tool: 'json-formatter', lang: 'de', ready: 'complete',
+    controls: [target], parked: before.record() });
+  await after.settle();
+  assert.equal(target.value, '{"edited":true}');
+  assert.deepEqual(after.input.fired, [], 'no later file read can replace the edited document');
+  assert.deepEqual(target.fired, ['input', 'change']);
+});
+
+test('clearing an imported text file does not bring it back on a language switch', async () => {
+  const box = control('textarea', 'input', { attrs: { 'data-language-text': '' } });
+  const page = run({ controls: [box] });
+  page.choose(file('discarded.txt'));
+  const click = page.click(page.link);
+  await page.settle();
+  assert.equal(click.defaultPrevented, false);
+  assert.equal(page.record(), null);
+});
+
+test('text snapshots preserve CRLF even though textarea assignment normalizes it', async () => {
+  const original = 'first\r\nsecond\r\n';
+  const source = control('textarea', 'input', { attrs: { 'data-language-text': '' } });
+  source.value = original.replaceAll('\r\n', '\n');
+  source.addEventListener('abox:language-text', (event) => { event.detail.value = original; });
+  const before = run({ tool: 'text-diff', controls: [source] });
+  before.click(before.link);
+  await before.settle();
+  assert.equal(before.record().values[0].value, original);
+
+  const target = control('textarea', 'input', { attrs: { 'data-language-text': '' } });
+  let shown = '';
+  Object.defineProperty(target, 'value', {
+    get: () => shown,
+    set: (value) => { shown = value.replaceAll('\r\n', '\n'); },
+  });
+  let restored;
+  target.addEventListener('input', (event) => { restored = event.detail.languageText; });
+  const after = run({ tool: 'text-diff', lang: 'de', ready: 'complete',
+    controls: [target], parked: before.record() });
+  await after.settle();
+  assert.equal(target.value, 'first\nsecond\n');
+  assert.equal(restored, original, 'the tool receives exact source text, not normalized display text');
 });

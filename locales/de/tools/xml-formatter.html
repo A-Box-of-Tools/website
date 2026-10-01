@@ -73,7 +73,7 @@
           <label for="input">Ihr XML</label>
           <span class="count" id="input-count">leer</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="XML hier einfügen - oder oben eine .xml-, .svg- oder .rss-Datei ablegen."></textarea>
       </div>
@@ -117,6 +117,12 @@
     thing about it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">leer</span>
+    <span data-phrase="n.line.one">{n} Zeile</span>
+    <span data-phrase="n.line.many">{n} Zeilen</span>
+    <span data-phrase="n.character.one">{n} Zeichen</span>
+    <span data-phrase="n.character.many">{n} Zeichen</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
     <span data-phrase="parse.at">{reason} (Zeile {line}, Spalte {column})</span>
     <span data-phrase="char.end">das Ende des Textes</span>
     <span data-phrase="char.newline">ein Zeilenumbruch</span>
