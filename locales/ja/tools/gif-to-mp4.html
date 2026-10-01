@@ -1,0 +1,164 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>GIFを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what will be written.
+
+    There is almost nothing to choose. A GIF's frames have their own timing
+    and the video keeps every delay as it is; the size stays the GIF's own,
+    made even. The one question a video needs answered that a GIF does not
+    is what colour goes where the GIF was transparent, and the field for it
+    appears only for a GIF that has such places.
+  -->
+  <section class="card" id="plan-card">
+    <h2><span class="step">2</span>書き出す内容を確認する</h2>
+
+    <p class="card-lede">GIFの各フレームを、元と同じ表示時間の動画フレームにします。間引き、複製、間隔の変更はなく、動画の長さも同じです。画像の大きさも保ちます。</p>
+
+    <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+
+    <div id="background-row" class="background-row" hidden>
+      <label class="field" for="background">
+        <span>透明な部分の背景色</span>
+        <span id="background-note" class="field-note"></span>
+      </label>
+      <input type="color" id="background" value="#ffffff">
+    </div>
+
+    <p class="field-note">GIFと違い、動画自身には繰り返し再生の指定はなく、プレーヤーが決めます。下のプレビューは繰り返し、チャットアプリやフィードも通常は繰り返します。</p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>変換する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">MP4に変換</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls loop muted playsinline preload="metadata" hidden
+             aria-label="メモリから再生する変換後の動画"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.file">上でGIFを選ぶと使えます。</span>
+    <span data-phrase="file.facts">{size} &middot; {frames}フレーム &middot; {length} &middot; {frame}</span>
+    <span data-phrase="plan.nofile">上でGIFを選ぶと、動画の内容をここに表示します。</span>
+    <span data-phrase="plan.same">{frame}、{frames}フレーム{timing}、長さ{length}、H.264で約{rate}です。</span>
+    <span data-phrase="plan.resized">{frame}（元のGIFは{from}です。H.264には偶数の辺が必要なので、背景色の1列を足します）、{frames}フレーム{timing}、長さ{length}、H.264で約{rate}です。</span>
+    <span data-phrase="timing.steady">、毎秒{fps}フレームの一定間隔で</span>
+    <span data-phrase="timing.varies">、元の表示時間を保ち、平均毎秒{fps}フレームで</span>
+    <span data-phrase="background.some">このGIFには透明な部分があります。動画では保てないので、そこに置く色を選んでください。</span>
+    <span data-phrase="background.none">透明な部分はないので、背景色は不要です。</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
+    <span data-phrase="progress.preparing">準備しています&hellip;</span>
+    <span data-phrase="progress.frame">フレーム{total}件中{done}件（{percent}%）</span>
+    <span data-phrase="progress.finishing">最後のフレームを処理中&hellip;</span>
+    <span data-phrase="progress.checking">開き直して確認中&hellip;</span>
+    <span data-phrase="run.cancelled">キャンセルしました。書き出しはありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="result.ready">{size}のMP4です。元の{from}のGIFより{percent}%小さくなりました。</span>
+    <span data-phrase="result.bigger">{size}のMP4です。元の{from}のGIFより{percent}%大きくなりました。小さいGIFやほぼ動かないGIFでは起こることがあります。</span>
+    <span data-phrase="result.sub">同じフレームと表示時間を、どのサービスでも使いやすいH.264のMP4にしました。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">確認に失敗しました：{found}。元のGIFを残してください。</span>
+    <span data-phrase="check.ok">メモリから開き直し、GIFと同じ長さ{length}で全{frames}フレームを確認しました。</span>
+    <span data-phrase="check.length">完成したファイルの長さが{want}ではなく{got}です</span>
+    <span data-phrase="check.frames">完成したファイルのフレーム数が{want}ではなく{got}です</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="facts.picture">{frame}の{frames}フレームをH.264、{rate}でエンコードしました。</span>
+    <span data-phrase="facts.timing">各フレームはGIF自身の表示時間を保ちます：{timing}。</span>
+    <span data-phrase="facts.loop.gif">元のGIFは繰り返し再生でした。MP4にその設定はなく、プレーヤーが決めます。フィードやチャットアプリの多くは短い動画を繰り返します。</span>
+    <span data-phrase="facts.loop.none">元のGIFは1回だけの再生でした。MP4にその設定はなく、プレーヤーが決めます。</span>
+    <span data-phrase="facts.time">{seconds}で完了しました。</span>
+    <span data-phrase="support.nowebcodecs">このブラウザは動画をエンコードできません。Chrome、Edge、Safari、Firefox 130以降は対応しています。</span>
+    <span data-phrase="stall.encoder">ブラウザの動画エンコーダーが応答しなくなりました。再読み込みして試してください。端末のハードウェアエンコーダーが使用中、またはない場合に起きます。</span>
+    <span data-phrase="encode.noh264">このブラウザは{size}でH.264をエンコードできません。</span>
+    <span data-phrase="mp4.noconfig">エンコーダーはデコーダー設定を一度も返しませんでした。</span>
+    <span data-phrase="mp4.noframes">書き出すフレームがありません。</span>
+    <span data-phrase="mp4.toobig">完成したファイルが4GBを超えます。ここで書き出すMP4はそのサイズに対応しません。</span>
+    <span data-phrase="gif.tooshort">そのファイルはGIFにしては短すぎます。</span>
+    <span data-phrase="gif.notagif">それはGIFではありません。ファイルがGIF87aでもGIF89aでも始まっていません。</span>
+    <span data-phrase="gif.enormous">このGIFは非常に大きく、先頭の{n}フレームでこのページが保持できるメモリに達しました。残りは読み込んでいません。</span>
+    <span data-phrase="gif.midframe">このGIFはフレームの途中で終わっているので、最後の1枚は不完全かもしれません。</span>
+    <span data-phrase="gif.damaged">このGIFは壊れています。最初のフレームが揃う前に終わっています。</span>
+    <span data-phrase="gif.noframes">そのGIFには、この読み取り機で開けたフレームがありませんでした。</span>
+    <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
+    <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
+    <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
+    <span data-phrase="read.av1short">AV1の設定レコードが短すぎます。</span>
+    <span data-phrase="read.compactsizes">サンプルの大きさが、このリーダーの解さない圧縮テーブルに入っています。</span>
+    <span data-phrase="read.sampletables">サンプルテーブルが欠けています。</span>
+    <span data-phrase="read.chunktable">チャンクテーブルが空です。</span>
+    <span data-phrase="read.nosamples">動画トラックにフレームがありません。</span>
+    <span data-phrase="read.nostbl">映像トラックにサンプルテーブルがありません。</span>
+    <span data-phrase="read.nostsd">映像トラックにサンプル記述がありません。</span>
+    <span data-phrase="read.emptystsd">映像のサンプル記述が空です。</span>
+    <span data-phrase="read.encrypted">映像トラックが暗号化されています。</span>
+    <span data-phrase="read.unknowncodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.noconfig">「{type}」トラックはデコーダー設定を持っていません。</span>
+    <span data-phrase="read.notmp4">完成したファイルをMP4として読み直せませんでした。</span>
+    <span data-phrase="read.nomoov">ファイルにムービーヘッダーがありません。</span>
+    <span data-phrase="read.novideo">このファイルには、このリーダーが使える映像トラックがありません。</span>
+    <span data-phrase="read.notimescale">映像トラックにタイムスケールがありません。</span>
+    <span data-phrase="read.nofragments">このファイルのフラグメントには、映像トラックのコマが1つも入っていません。</span>
+    <span data-phrase="read.unreadable">このファイルはMP4として読めませんでした。</span>
+    <span data-phrase="read.notplayed">この形式は、このブラウザーが再生できるものではありません。</span>
+    <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
+    <span data-phrase="net.clean">GIFはどこへも送られていません。読み込んだ{total}個のファイルはすべてこのページ自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにもGIFやその1バイトも渡していません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにもGIFやその1バイトも渡していません。</span>
+  </div>
+</main>

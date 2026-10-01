@@ -1,0 +1,128 @@
+name = "Conversion MP4"
+heading = "Convertir&nbsp;en&nbsp;MP4 <span class=\"h1-kw\">&mdash; WebM, MKV et MOV dans un format accepté</span>"
+tagline = "Enregistrement d’écran, extraction ou caméra&nbsp;: H.264 et AAC dans MP4. Copie intacte quand possible, réencodage seulement si nécessaire."
+title = "Convertir WebM, MKV ou MOV en MP4 &mdash; Gratuit, dans le navigateur, sans envoi"
+description = "Transformez WebM, MKV, MOV ou MP4 en MP4 avec H.264 et AAC, accepté par téléphones, navigateurs et formulaires. H.264 et AAC restent intacts&nbsp;; les autres pistes sont réencodées sur votre appareil. Aucun envoi."
+og_title = "Convertir une vidéo en MP4 sans l’envoyer"
+og_description = "Enregistrement d’écran, MKV extrait ou MOV de caméra, transformés en MP4 compatible dans votre navigateur. Les pistes déjà H.264 ou AAC sont copiées, pas réencodées."
+og_image_alt = "Convertir une vidéo en MP4 dans votre navigateur sans l’envoyer"
+pledge = "Votre vidéo est lue, décomposée puis écrite en MP4 en mémoire sur votre appareil avec les codecs du navigateur et le code du site. Aucun envoi possible ni serveur pour la recevoir. Un gigaoctet ne part pas pour revenir dans un autre format."
+live_hint = "Regardez l’onglet Réseau des outils de développement pendant la conversion. Aucune requête ne transporte vidéo, image ou nom de fichier. Ou déconnectez Internet et convertissez-la quand même."
+read_first = ", <code>src/plan.js</code> pour décider quelles pistes copier ou réencoder, <code>src/convert.js</code> pour la copie et l’écriture, et <code>src/shared/mkv-reader.js</code> pour lire WebM et MKV. Aucun de ces fichiers ni lecteurs et rédacteurs ne contacte le réseau."
+howto_heading = "Comment convertir une vidéo en MP4"
+card = "Un WebM d’écran, un MKV extrait ou un MOV de caméra réécrit en H.264 et AAC dans MP4. Les pistes déjà conformes sont copiées intactes&nbsp;; seules les autres sont réencodées sur votre appareil."
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "L’envoi est la partie lente, absente ici."
+body = "Les convertisseurs en ligne demandent souvent le gigaoctet entier pour en renvoyer un autre. L’envoi est souvent plus long que la conversion, avant la question de conservation. Ici, le navigateur lit puis écrit avec ses codecs. La <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. L’outil fonctionne déconnecté."
+
+[[privacy]]
+title = "Ce que MP4 signifie ici."
+body = "Le fichier largement accepté est une image H.264 et un son AAC dans un MP4 ordinaire. WebM, MKV ou MP4 contenant HEVC, VP9 ou AV1 sont encore refusés par des destinations. La page écrit donc cette combinaison seule, sans copier un autre codec vidéo qui réduirait la compatibilité."
+
+[[privacy]]
+title = "Copie quand possible, réencodage seulement si nécessaire."
+body = "H.264 dans MKV contient les mêmes octets que MP4 accepte&nbsp;: la copie ne perd rien, comme pour AAC. VP8, VP9, HEVC, Opus ou Vorbis doivent être décodés puis réencodés, une génération de plus. La page annonce le traitement de chaque piste avant lancement."
+
+[[privacy]]
+title = "Le résultat est rouvert et vérifié."
+body = "Un MP4 ayant perdu la dernière seconde ou son audio resterait un MP4. Le lecteur rouvre le résultat et vérifie durée, H.264 et piste audio promise. Il se lit en mémoire avant enregistrement."
+
+[[privacy]]
+title = "Le coût sur votre appareil est annoncé."
+body = "La copie lit la structure puis le contenu à écrire, rapidement. Le réencodage dépend du matériel&nbsp;: souvent plus rapide que le clip avec un encodeur dédié, plus lent sans lui, long en 4K. L’entrée est lue par morceaux&nbsp;; le résultat doit tenir en mémoire. L’annulation reste disponible."
+
+[[privacy]]
+title = "Formats lus et non lus."
+body = "WebM et MKV avec VP8, VP9, AV1, H.264 ou HEVC, et son Opus, Vorbis, AAC, MP3 ou FLAC. MP4, MOV et M4V avec H.264, HEVC, VP9 ou AV1 et AAC. Une image indécodable, souvent HEVC sans licence, est nommée et refusée&nbsp;; un son indécodable est nommé puis retiré. AVI, WMV, FLV et MPEG-2 sont refusés clairement."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = "Les scripts publicitaires et de mesure de Google ne reçoivent ni vidéo, image, nom, poids, durée ni format d’origine. Tout le code de lecture, encodage et écriture vient du site et figure dans le dépôt."
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = "Le bouton de don est dessiné par cdnjs.buymeacoffee.com avec Google Fonts. C’est un lien sans suivi de visite, qui ne reçoit rien sur vous ou vos vidéos. Il mène à un autre site uniquement si vous cliquez."
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = "Déconnectez le réseau&nbsp;: toutes les fonctions restent disponibles. Un outil envoyant votre vidéo ailleurs pour la convertir s’arrêterait."
+
+[[howto]]
+title = "Choisissez la vidéo."
+body = "Un fichier WebM, MKV, MOV, M4V ou MP4 à la fois, lu sur votre disque. La page indique durée, poids, dimensions et conteneur."
+
+[[howto]]
+title = "Lisez les deux phrases."
+body = "Une pour l’image, une pour le son. Chaque piste est soit déjà conforme et copiée intacte, soit nommée avec son futur codec. Rien à régler&nbsp;: le fichier décide. Retirez le son s’il n’est pas lisible ou si vous souhaitez un clip muet."
+
+[[howto]]
+title = "Convertissez et lisez la vérification."
+body = "Les pistes à copier restent intactes, les autres sont réencodées avec progression. Le résultat est rouvert pour vérifier durée, H.264 et son, puis se lit en mémoire sous le téléchargement."
+
+[[faq]]
+q = "La qualité diminue-t-elle&nbsp;?"
+a = "Pas pour les pistes copiées&nbsp;: H.264 et AAC passent octet par octet. VP9, VP8, AV1, HEVC, Opus, Vorbis, MP3 ou FLAC réencodés ajoutent une génération, avec un débit adapté à la source pour limiter la perte. Gardez l’original."
+
+[[faq]]
+q = "Pourquoi ne pas conserver HEVC ou VP9, plus petits&nbsp;?"
+a = "Le but est la compatibilité. HEVC exige parfois une licence&nbsp;; VP9 et AV1 en MP4 sont encore refusés par des formulaires et courriels. H.264 et AAC sont la combinaison largement acceptée. La page annonce le coût plutôt que le masquer."
+
+[[faq]]
+q = "Le son de mon enregistrement WebM sera-t-il conservé&nbsp;?"
+a = "Oui. Opus est décodé puis réencodé en AAC à 160 kbit/s, suffisant pour un microphone. VP8 ou VP9 devient H.264. Tout se fait sur votre appareil et le résultat est rouvert pour vérifier durée et son."
+
+[[faq]]
+q = "Pourquoi convertir mon MOV, si proche de MP4&nbsp;?"
+a = "MOV et MP4 ont la même conception. Avec H.264 et AAC, les pistes sont copiées en quelques secondes&nbsp;: le conteneur change pour satisfaire un formulaire qui vérifie l’extension. Un MOV HEVC d’iPhone doit réencoder l’image en H.264 si le navigateur sait décoder HEVC."
+
+[[faq]]
+q = "Quels fichiers sont lus&nbsp;?"
+a = "WebM et MKV avec VP8, VP9, AV1, H.264 ou HEVC et son Opus, Vorbis, AAC, MP3 ou FLAC&nbsp;; MP4, MOV et M4V avec H.264, HEVC, VP9 ou AV1 et AAC. Une image indécodable bloque, un son indécodable est retiré et annoncé. Pas d’AVI, WMV, FLV ni MPEG-2."
+
+[[faq]]
+q = "Combien de temps cela prend-il&nbsp;?"
+a = "La copie coûte environ deux lectures du fichier, souvent quelques secondes. Le réencodage dépend du matériel&nbsp;: plus rapide que le clip avec encodeur dédié, plus lent sans lui, coûteux en 4K. La barre indique l’image traitée. Annuler arrête et n’écrit rien."
+
+[[faq]]
+q = "Mes vidéos sont-elles envoyées&nbsp;?"
+a = "Non. Votre navigateur lit, décode si nécessaire, encode et écrit sur votre appareil. La <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. Déconnectez Internet pour vérifier. L’envoi serait souvent plus long que la conversion."
+
+[[faq]]
+q = "Est-ce que cela marche sur téléphone&nbsp;?"
+a = "Oui si le navigateur du téléphone sait décoder et encoder. Le matériel est rapide mais la mémoire peut manquer pour un long résultat. Coupez d’abord avec le <a href=\"../couper-une-video/\">coupeur vidéo</a> ou convertissez sur ordinateur."
+
+[[faq]]
+q = "Y a-t-il une limite de taille, et cela coûte-t-il quelque chose&nbsp;?"
+a = "L’entrée est lue par morceaux, même au-delà de la mémoire. Le résultat reste en mémoire et le MP4 ne peut dépasser 4 Go. Gratuit, sans compte, connexion ni essai limité. Les publicités ne reçoivent aucune vidéo."
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = "Oui. Chargez la page puis déconnectez Internet&nbsp;: elle continue. Un outil envoyant votre vidéo ailleurs pour la convertir s’arrêterait."
+
+[schema]
+description = "Convertissez WebM, MKV, MOV ou MP4 en MP4 avec H.264 et AAC dans le navigateur. Les pistes déjà conformes sont copiées intactes, les autres réencodées sur votre appareil. Aucun envoi."
+features = ["Lit WebM et MKV avec VP8, VP9, AV1, H.264, HEVC et son Opus, Vorbis, AAC, MP3, FLAC", "Lit MP4, MOV et M4V avec H.264, HEVC, VP9, AV1 et AAC", "Copie les images H.264 et paquets AAC intacts et l’annonce", "Réencode seulement les pistes non conformes avec un débit adapté à la source", "Écrit un MP4 ordinaire avec index en tête pour les formulaires", "Rouvre pour vérifier durée, codec et son, puis lit le résultat en mémoire", "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune limite de taille"]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour choisir &mdash; WebM, MKV, MOV ou MP4, un à la fois"

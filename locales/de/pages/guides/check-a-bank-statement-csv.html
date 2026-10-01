@@ -1,0 +1,106 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>Eine sauber geöffnete CSV-Datei kann trotzdem falsche Beträge, fehlende Buchungen oder falsch gelesene Daten enthalten. Vergleichen Sie sie mit dem Originalauszug: erst Zeilen, Daten und Beschreibungen, dann die Beträge anhand der gedruckten laufenden Salden.</p>
+    <p>Behalten Sie das PDF neben der umgewandelten Datei. Ein erfolgreicher Download beweist nur, dass ein Konverter eine Datei erstellt hat. Diese Prüfungen helfen zu klären, ob sie den Auszug richtig wiedergibt.</p>
+  </section>
+
+  <section>
+    <h2>Suchen Sie vor der Umwandlung nach einem Export</h2>
+    <p>Bietet Ihre Bank einen CSV-Download für den benötigten Zeitraum, beginnen Sie damit. Ein direkter Export vermeidet die Rekonstruktion einer Tabelle aus auf PDF-Seiten verteiltem Text. Prüfen Sie Konto, Zeitraum und Spaltenbedeutung. Eine mögliche Fehlerquelle entfällt aber.</p>
+    <p>Manchmal gibt es nur das PDF: ein alter Auszug, ein geschlossenes Konto oder ein zugesandtes Dokument. Dann ist eine Umwandlung sinnvoll.</p>
+  </section>
+
+  <section>
+    <h2>Ein kleiner Beispielauszug</h2>
+    <p>Dieser fiktive Girokontoauszug beginnt mit <strong>1,250.00</strong>. Positive Beträge erhöhen das Guthaben, negative verringern es. Die letzte Spalte ist auf dem Auszug gedruckt und wurde nicht nachträglich in der Tabelle berechnet.</p>
+
+    <figure class="data">
+      <figcaption id="statement-caption">Vier fiktive Buchungen mit einem Anfangssaldo von 1,250.00</figcaption>
+      <div class="scroll" tabindex="0" role="region" aria-label="Fiktiver Kontoauszug">
+        <table aria-labelledby="statement-caption">
+          <thead>
+            <tr>
+              <th scope="col">Datum</th>
+              <th scope="col">Beschreibung</th>
+              <th scope="col">Betrag</th>
+              <th scope="col">Gedruckter Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-08-03</td>
+              <td>Gehaltszahlung</td>
+              <td>+800.00</td>
+              <td>2,050.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-04</td>
+              <td>Lebensmittel</td>
+              <td>-43.20</td>
+              <td>2,006.80</td>
+            </tr>
+            <tr>
+              <td>2026-08-05</td>
+              <td>Kaffee</td>
+              <td>-6.80</td>
+              <td>2,000.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-06</td>
+              <td>Überweisung</td>
+              <td>-125.00</td>
+              <td>1,875.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <p>Jede Zeile erlaubt eine Prüfung: <strong>vorheriger Saldo + Betrag mit Vorzeichen = neuer Saldo</strong>. Für Lebensmittel gilt <code>2050.00 + (-43.20) = 2006.80</code>, für Kaffee <code>2006.80 + (-6.80) = 2000.00</code>.</p>
+    <p>Angenommen, die CSV-Datei liest den Lebensmittelbetrag als <strong>-48.20</strong>. Alle Zellen sind gefüllt, aber <code>2050.00 + (-48.20) = 2001.80</code>. Die Abweichung vom gedruckten Saldo beträgt <strong>5.00</strong>. Damit kennen Sie die konkrete Zeile, die im PDF geprüft werden muss.</p>
+    <p>Behalten Sie bei der Prüfung die gedruckten Salden. Ersetzen Sie sie durch Formeln aus den umgewandelten Beträgen, stimmt die Tabelle nur mit sich selbst überein, einschließlich möglicher Fehler.</p>
+    <p>Prüfen Sie vor den Vorzeichen, was der Saldo bedeutet. Ein Kreditkartenauszug kann die Schuld zeigen: Einkäufe erhöhen sie, Rückzahlungen verringern sie. Positive und negative Beträge bedeuten dort nicht zwingend dasselbe wie im Girokontobeispiel.</p>
+  </section>
+
+  <section>
+    <h2>Warum der Endsaldo nicht genügt</h2>
+    <p>Anfangssaldo plus alle Beträge mit dem Endsaldo zu vergleichen ist sinnvoll, doch Fehler können sich aufheben. Ist eine Zahlung um 5.00 zu groß und eine andere um 5.00 zu klein gelesen, stimmt die Summe trotzdem.</p>
+    <p>Jeder verfügbare laufende Saldo bietet einen weiteren Vergleich. Gibt es nur einen Saldo pro Tagesende, vergleichen Sie ihn mit dem vorherigen gedruckten Saldo plus allen dazwischenliegenden Beträgen.</p>
+    <p>Auch das hat Grenzen. Zwei fehlende Buchungen von <strong>-20.00 und +20.00</strong> ändern den Saldo nicht. Die Prüfung über diese Lücke kann bestehen. Vergleichen Sie daher zusätzlich die Reihenfolge und Zahl der Originalzeilen.</p>
+    <p>Ein passender Saldo bestätigt weder Datum noch Zahlungsempfänger und beweist nicht die Echtheit des Auszugs. Er prüft nur die Beziehung der verfügbaren Beträge und Salden.</p>
+  </section>
+
+  <section>
+    <h2>Prüfen Sie Daten vor jedem Sortieren</h2>
+    <p><code>03/04/2026</code> kann der 3. April oder der 4. März sein. <code>18/04/2026</code> kann die Konvention klären, doch ein kurzer Auszug enthält vielleicht keinen solchen Hinweis. Prüfen Sie Zeitraum und Darstellung der Bank, statt eine Vermutung zu übernehmen.</p>
+    <p>Prüfen Sie nach dem Öffnen der CSV-Datei erneut: Ihr Tabellenprogramm kann Daten anders deuten als der Konverter. Behalten Sie die ursprüngliche Reihenfolge bis zum Abschluss der Prüfung. Sortierte, teilweise falsch gelesene Daten erschweren den Zeilenvergleich und stören die Saldofolge.</p>
+    <p>Bei Daten ohne Jahr muss auch der Auszugszeitraum geprüft werden, besonders zwischen Dezember und Januar. Prüfen Sie Zahlenkonventionen: <code>1,240.00</code> und <code>1.240,00</code> können denselben Betrag meinen. Die importierten Zellen müssen diesen Wert erhalten.</p>
+  </section>
+
+  <section>
+    <h2>Lesen Sie Beschreibungen und trennen Sie Summen</h2>
+    <p>Eine zweizeilige Beschreibung bleibt eine einzige Buchung. Prüfen Sie, ob die Fortsetzung bei ihr geblieben ist. Beachten Sie besonders Seitenumbrüche, an denen wiederholte Überschriften und Übertragssalden wie zusätzliche Zeilen aussehen können.</p>
+    <p>Ein PDF kann auch Kontozusammenfassungen, Zwischensummen und Zahlungsdetails enthalten. Sie gehören zur Dokumentextraktion, dürfen aber nicht als zusätzliche Buchungen importiert werden. Identifizieren Sie die Buchungstabelle und trennen Sie Zusammenfassungszeilen vor dem Import.</p>
+    <p>Zwei Zahlungen mit gleichem Datum, Empfänger und Betrag können beide echt sein. Vergleichen Sie Positionen und Referenzen mit dem Auszug, bevor Sie eine löschen. Eine doppelte Extraktion und eine wiederholte Zahlung brauchen verschiedene Korrekturen.</p>
+  </section>
+
+  <section>
+    <h2>Was der Konverter hier prüft</h2>
+    <p><a href="../../pdf-in-csv-umwandeln/">PDF zu CSV</a> erkennt Tabellen anhand der Textausrichtung, verbindet umgebrochene Zellen und behält Summen sowie Abschnittsbezeichnungen. Bei mehreren Tabellen wählen Sie die benötigte. Für mehrdeutige Daten gibt es eine Einstellung der Datumsreihenfolge; Daten ohne Jahr bleiben wie gedruckt.</p>
+    <p>Erkennt das Werkzeug eine laufende Saldokette, meldet es, ob die verfügbaren Vergleiche übereinstimmen. Prüfen Sie selbst die Beträge vor dem ersten gedruckten Saldo gegen den Anfangssaldo sowie die Beträge nach dem letzten. Eine erfolgreiche Meldung gilt nur für die tatsächlich möglichen Vergleiche.</p>
+    <p>Ohne erkannte Saldokette gibt es kein Prüfurteil. <strong>Keine Meldung ist keine Bestätigung.</strong> Weder ein stilles Ergebnis noch passende Salden garantieren die Richtigkeit der gesamten Datei. Die Vorschau zeigt höchstens 25 Zeilen pro Tabelle. Prüfen Sie den Rest in der heruntergeladenen Datei.</p>
+    <p>Gescannte Seiten benötigen Texterkennung, die dieses Werkzeug nicht bietet. Die Umwandlung läuft im Browser. Der separate Ratgeber zum <a href="../is-it-safe-to-upload-a-bank-statement/">Upload eines Kontoauszugs an einen Konverter</a> behandelt den Datenschutz.</p>
+  </section>
+
+  <section>
+    <h2>Vor dem Import in andere Programme</h2>
+    <p>Prüfen Sie die Importvorschau des Zielprogramms ebenso sorgfältig. Wählen Sie das richtige Bank- oder Kreditkartenkonto, bestätigen Sie das Datumsformat und ordnen Sie Datum, Beschreibung und Betrag den richtigen Spalten zu. Das sind eigene Entscheidungen nach der PDF-Extraktion. Die <a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">CSV-Importanleitung von Intuit</a> zeigt die Anforderungen eines Produkts.</p>
+    <ul>
+      <li>Bestätigen Sie Konto und Auszugszeitraum.</li>
+      <li>Prüfen Sie nach dem Öffnen Daten, Vorzeichen und Zahlenformate.</li>
+      <li>Vergleichen Sie Buchungszeilen einschließlich Seitenumbrüchen mit dem Original.</li>
+      <li>Prüfen Sie verfügbare Anfangs-, laufende und Endsalden.</li>
+      <li>Untersuchen Sie Abweichungen und wiederholte Zeilen vor einer Änderung.</li>
+      <li>Behalten Sie Originalauszug und eine Kopie der geprüften CSV-Datei.</li>
+    </ul>
+  </section>

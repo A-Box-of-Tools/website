@@ -7,9 +7,9 @@ translated. English keeps the addresses it has always had - `/compress-image/`
 - and every other language sits under a prefix with slugs of its own:
 `/de/bild-komprimieren/`.
 
-**Five of those languages are built from here: English, Simplified Chinese,
-German, Spanish and Brazilian Portuguese.** The other ten -
-`ar fr hi id it ja ko nl tr zh-TW` - were frozen as they were deployed in 1.4.2
+**Seven of those languages are built from here: English, Simplified Chinese,
+German, Spanish, Brazilian Portuguese, French and Japanese.** The other eight -
+`ar hi id it ko nl tr zh-TW` - were frozen as they were deployed in 1.4.2
 and are kept in
 [A-Box-of-Tools/translations](https://github.com/A-Box-of-Tools/translations),
 whose folders the deploy copies in beside the build. Their pages all still
@@ -100,7 +100,7 @@ and a sentence in a README goes stale the first time a tool ships.
 
 ## Frozen languages
 
-`frozen_languages` in `config/site.toml` names the ten, and
+`frozen_languages` in `config/site.toml` names the eight, and
 `frozen_archive` beside it names the repository and the commit they are served
 from. Three things read the list, so it cannot say one thing while the site
 does another: the build refuses a folder under `locales/` for a frozen language
@@ -130,9 +130,9 @@ it is a different fact about a different thing. `unadvertised_languages` in
 `config/site.toml` names languages whose translations are **finished** and
 which the site does not offer anyway, because too few people were reading them
 to justify asking Google to index them. No built language is on it today: the
-ten that remain are frozen, and were already unadvertised when they froze,
-which is why their pages carry `noindex`. German, Spanish and Brazilian
-Portuguese came back advertised: they are built, in the sitemap and in the
+eight that remain are frozen, and were already unadvertised when they froze,
+which is why their pages carry `noindex`. German, Spanish, Brazilian Portuguese,
+French and Japanese came back advertised: they are built, in the sitemap and in the
 hreflang sets like Chinese. The mechanism stays for the day a built language
 needs it.
 

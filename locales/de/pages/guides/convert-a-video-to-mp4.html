@@ -1,0 +1,42 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>Öffnen Sie den <a href="../../in-mp4-umwandeln/">MP4-Konverter</a>, ziehen Sie die Datei hinein und lesen Sie die beiden Sätze für Bild und Ton. Jeder erklärt, ob die Spur bereits für MP4 geeignet ist und unverändert kopiert wird, oder welchen Codec sie hat und womit sie neu kodiert wird. Drücken Sie die Schaltfläche. Die Datei wird auf Ihrem Rechner als MP4 mit H.264 und AAC geschrieben und erneut geöffnet, um ihre unveränderte Länge zu prüfen. Nichts wird hochgeladen.</p>
+    <p>Der Rest erklärt, warum die Datei überhaupt abgelehnt wurde. „Es muss MP4 sein“ verbirgt drei verschiedene Probleme, von denen nur eines bei der Behebung Qualität kostet.</p>
+  </section>
+
+  <section>
+    <h2>Drei Dinge müssen stimmen, nicht nur eines</h2>
+    <p>Eine Videodatei ist ein Container mit zwei Datenströmen: einem Bild, das mit einem Codec kodiert ist, und einem Ton mit einem anderen. „MP4“ bezeichnet nur den Container. Was ein Uploadformular, eine Chat-App oder ein E-Mail-Programm tatsächlich möchte, ist die Kombination, die jedes Gerät abspielt: der MP4-Container, H.264 für das Bild und AAC für den Ton. Ist eines davon falsch, lehnt irgendwo ein Programm die Datei ab. Die Meldung nennt den Container, weil Menschen diesen Teil erkennen können.</p>
+    <p>Eine abgelehnte Datei kann also den falschen Container mit den richtigen Codecs haben, den richtigen Container mit den falschen Codecs oder in allen Punkten ungeeignet sein. Die Lösung unterscheidet sich jeweils darin, ob neu kodiert werden muss.</p>
+  </section>
+
+  <section>
+    <h2>Die Dateien, mit denen Menschen tatsächlich kommen</h2>
+    <p><strong>Eine Bildschirmaufnahme aus dem Browser</strong> ist eine WebM-Datei mit VP8- oder VP9-Bild und Opus-Ton. Aus Sicht eines Uploadformulars sind alle drei Teile falsch, und beide Spuren müssen neu kodiert werden. Das Bild wird dekodiert und als H.264 kodiert, der Ton dekodiert und als AAC kodiert. Das ist die häufigste Ausgangsdatei und die Umwandlung mit dem größten Verlust, weil nichts übernommen werden kann.</p>
+    <p><strong>Eine gerippte oder heruntergeladene MKV-Datei</strong> enthält häufig die richtigen Codecs im falschen Container: H.264 und AAC in einer Matroska-Datei. Diese Umwandlung verliert nichts. Bilder und Pakete werden Byte für Byte in MP4 kopiert, ohne das Bild zu dekodieren. Außer dem Container ist das Ergebnis mit dem Original identisch. Eine MKV-Datei mit HEVC ist der andere Fall: Das Bild wird neu kodiert, der meist als AAC vorliegende Ton kopiert.</p>
+    <p><strong>Eine MOV-Datei vom iPhone</strong> hat den richtigen Ton in einem fast passenden Container, aber seit 2017 meist das falsche Bild: HEVC ist kleiner als H.264 und wird häufiger abgelehnt. Das Bild wird neu kodiert, AAC kopiert und der Container von MOV zu MP4 geändert. Beide Container folgen demselben Aufbau unter verschiedenen Namen. Bei älteren Handys oder Kameras mit H.264 betrifft die Änderung nur den Container; es wird kopiert.</p>
+    <p><strong>Eine trotzdem abgelehnte MP4-Datei</strong> enthält meist HEVC, VP9 oder AV1. Der Container stimmt, das Bild nicht, und das Bild wird neu kodiert. Gelegentlich ist es eine fragmentierte MP4-Datei aus einer Streamingaufnahme, die manche Editoren nicht öffnen. Das erneute Schreiben als gewöhnliche MP4-Datei mit dem Index am Anfang behebt das, ohne ein Bild anzutasten.</p>
+  </section>
+
+  <section>
+    <h2>Warum Kopieren nichts verliert und Neukodieren ein wenig</h2>
+    <p>H.264-Bilder in einer MKV-Datei und in einer MP4-Datei bestehen aus denselben Bytes. Sie zu verschieben ist wie eine Datei zwischen Ordnern zu bewegen: Der Container ändert sich, das Bild bleibt genau gleich. Dasselbe gilt für AAC. Ein Konverter, der eine solche Datei trotzdem dekodiert und neu kodiert &mdash; viele tun das, weil ein einziger Verarbeitungspfad einfacher ist &mdash;, kostet ohne Grund eine Generation Qualität.</p>
+    <p>Ein Bild mit einem anderen Codec als H.264 muss zu Pixeln dekodiert und neu kodiert werden. Jede Kodierung verliert etwas, auch mit einem guten Encoder. Wie viel, hängt von der erlaubten Bitrate ab. Die passende Bitrate richtet sich nach der bisherigen: Eine VP9-Datei mit zwei Megabit pro Sekunde braucht für ein ähnliches Bild in H.264 etwa drei, weil VP9 dichter packt. Das Werkzeug nimmt die ursprüngliche Bitrate, passt sie an das Verhältnis der Codecs an und begrenzt sie pro Pixel nach unten und oben. So bleibt ein knapp kodiertes Video nicht unnötig knapp, und ein großzügig kodiertes wird nicht wieder so groß wie das Original. Die gewählte Bitrate wird vor dem Start angezeigt.</p>
+    <p>Das Werkzeug kodiert nie neu, was es kopieren kann, und kopiert nie einen anderen Bildcodec als H.264 ins Ergebnis, obwohl MP4 ihn enthalten könnte. HEVC in einer MP4-Datei öffnet sich an weniger Stellen als das HEVC in Ihrer ursprünglichen MKV-Datei. Eine solche Umwandlung würde das Problem verschlimmern.</p>
+  </section>
+
+  <section>
+    <h2>Was passiert mit dem Ton?</h2>
+    <p>Opus, Vorbis, MP3 und FLAC passen nicht in eine MP4-Datei, die überall abspielbar ist. Deshalb werden sie dekodiert und als AAC mit 160 kbit/s neu kodiert. Das ist mehr, als ein Mikrofon oder ein Spiel üblicherweise liefert. Ton mit mehr als zwei Kanälen wird zu Stereo zusammengeführt, wie jeder Player mit zwei Lautsprechern es ohnehin tut. Kann der Browser den Ton gar nicht dekodieren &mdash; meist unkomprimiertes PCM aus manchen Kameras &mdash;, wird das benannt und der Ton weggelassen. Das Bild wird trotzdem umgewandelt. Mit dem Kontrollkästchen können Sie den Ton auch bewusst weglassen, wenn der Clip ohnehin stumm abgespielt werden soll.</p>
+  </section>
+
+  <section>
+    <h2>Warum der Upload der merkwürdige Teil ist</h2>
+    <p>Jeder Onlinekonverter verlangt zuerst die Datei. Ein Gigabyte Bildschirmaufnahme oder ein gerippter Film muss über Ihre Verbindung hinauf, damit eine andere Datei zurückkommen kann. Meist dauert der Upload länger als die Umwandlung, noch bevor die Frage auftaucht, wer die Datei wie lange behält. Merkwürdig ist das, weil die benötigten Codecs bereits in Ihrem Browser stecken: Jeder Browser, der Video abspielt, kann es dekodieren, und jeder neuere kann H.264 und AAC kodieren. Ein Server fügt nur Entfernung hinzu.</p>
+    <p>Der <a href="../../in-mp4-umwandeln/">MP4-Konverter</a> verwendet genau diese Codecs. Die Datei wird stückweise von Ihrer Festplatte gelesen, zerlegt, auf Ihrem Rechner kopiert oder neu kodiert und in den Arbeitsspeicher geschrieben. Die Sicherheitsrichtlinie der Seite nennt jede erlaubte Kontaktadresse; keine gehört zu dieser Website. Ohne Netzwerk funktioniert das Werkzeug weiter. Das ist der einfachste Beweis.</p>
+  </section>
+
+  <section>
+    <h2>Prüfen Sie das Ergebnis vor dem Versenden</h2>
+    <p>Ein Konverter kann eine MP4-Datei erzeugen, die trotzdem falsch ist: eine Sekunde zu kurz, mit vorhandener, aber leerer Tonspur oder mit einem anderen als dem zugesagten Bildcodec. Das Werkzeug öffnet sein Ergebnis erneut mit demselben Leser wie die Ausgangsdatei und prüft drei Dinge: die ursprüngliche Länge, H.264 und den angekündigten Ton. Anschließend spielt es das Ergebnis aus dem Arbeitsspeicher unter dem Download ab. Sehen und hören Sie besonders die letzte Sekunde an und speichern Sie dann. Behalten Sie in jedem Fall das Original. Ein neu kodiertes Bild liegt eine Generation weiter von der Kamera entfernt, und das Original ist die einzige Kopie ohne diese zusätzliche Generation.</p>
+  </section>

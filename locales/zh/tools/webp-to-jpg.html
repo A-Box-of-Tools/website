@@ -1,0 +1,125 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择 WebP 文件</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the two decisions.
+
+    A JPEG has no alpha channel, so the colour behind the see-through parts is
+    not an option this tool can leave open: something goes there whatever
+    happens. The field appears only when a file on the list actually has
+    transparency in it, which is read off the decoded pixels rather than
+    assumed from the format - plenty of WebPs are fully opaque, and a colour
+    picker that changes nothing is worse than no colour picker.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> 选择质量</h2>
+
+    <p class="card-lede">WebP 和 JPEG 使用不同编码，图片必须先解码再重新编码，无法跳过。你在这里决定损失多少质量。</p>
+
+    <div class="settings">
+      <label class="field" for="quality"><span>JPEG 质量——<output id="quality-value" for="quality">92</output></span><span class="field-note">92 时照片很难与原图区分。低于约 75 时，边缘开始显现损失。</span></label>
+      <input type="range" id="quality" min="40" max="100" step="1" value="92">
+
+      <div id="background-row" class="background-row" hidden>
+        <label class="field" for="background"><span>透明区域背后的颜色</span><span id="background-note" class="field-note"></span></label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 开始转换</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">转为 JPG</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>全部下载为 ZIP</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 个文件</span>
+    <span data-phrase="chosen.many">{count} 个文件</span>
+    <span data-phrase="row.remove">移除 {name}</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.lossless">无损 WebP</span>
+    <span data-phrase="file.animated">动画——JPEG 只能保存第一帧</span>
+    <span data-phrase="file.alpha">含透明区域</span>
+    <span data-phrase="read.notwebp">{name} 不是 WebP，而是 {found}。本工具转换 WebP 文件。</span>
+    <span data-phrase="read.unknown">{name} 不是 WebP，其开头字节也不符合本页认识的任何图片格式。</span>
+    <span data-phrase="read.failed">无法打开 {name}：{why}</span>
+    <span data-phrase="found.png">PNG</span>
+    <span data-phrase="found.jpeg">JPEG</span>
+    <span data-phrase="found.avif">AVIF</span>
+    <span data-phrase="found.gif">GIF</span>
+    <span data-phrase="found.bmp">BMP</span>
+    <span data-phrase="background.some">其中一张图片有透明区域，JPEG 无法保留。请选择背后的填充颜色。</span>
+    <span data-phrase="background.none">列表中没有透明区域，因此不需要填充颜色。</span>
+    <span data-phrase="settings.one">1 个 WebP，质量 {quality}。</span>
+    <span data-phrase="settings.many">{count} 个 WebP 文件，质量 {quality}。</span>
+    <span data-phrase="settings.none">请先选择 WebP，这里会显示准备输出什么。</span>
+    <span data-phrase="run.one">转为 JPG</span>
+    <span data-phrase="run.many">将 {count} 个文件转为 JPG</span>
+    <span data-phrase="progress.each">正在转换 {name}……</span>
+    <span data-phrase="progress.done">完成。</span>
+    <span data-phrase="run.failed">本次转换失败：{detail}</span>
+    <span data-phrase="written.one">{name}——{size}，{change}</span>
+    <span data-phrase="written.many">已写出 {count} 个 JPEG，共 {size}。</span>
+    <span data-phrase="result.headline">{size}——{change}</span>
+    <span data-phrase="result.detail">来自 {name}——{dimensions}，原来 {was}。</span>
+    <span data-phrase="result.flattened">透明区域已填充为 {colour}。</span>
+    <span data-phrase="result.firstframe">这个 WebP 是动画，只写出了第一帧。</span>
+    <span data-phrase="result.download">下载</span>
+    <span data-phrase="change.smaller">小了 {percent}%</span>
+    <span data-phrase="change.larger">大了 {percent}%</span>
+    <span data-phrase="change.same">大小相同</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">浏览器无法解码</span>
+    <span data-phrase="error.encode">浏览器无法写出 {format}</span>
+    <span data-phrase="error.wrongtype">浏览器返回的文件不是 {format}</span>
+    <span data-phrase="error.broke">出现问题：{detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">文件没有去往别处。已加载 {total} 个文件，全是本页自身的文件。{platform}</span>
+    <span data-phrase="net.dirty">有内容联系了 {hosts}，本工具不会这样做。值得检查。{platform}</span>
+    <span data-phrase="net.platform.one">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
+    <span data-phrase="net.platform.many">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
+  </div>
+</main>

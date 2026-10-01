@@ -1,0 +1,36 @@
+<section>
+    <h2>La réponse rapide</h2>
+    <p>Ouvrez le <a href="../../convertir-en-mp4/">convertisseur MP4</a>, déposez le fichier et lisez les deux phrases affichées : une pour l’image, une pour le son. Chacune indique si la piste convient déjà au MP4 et sera copiée intacte, ou son codec actuel et celui du réencodage. Appuyez sur le bouton : le fichier est réécrit sur votre ordinateur en MP4 avec H.264 et AAC, puis rouvert pour vérifier sa durée. Rien n’est envoyé.</p>
+    <p>La suite explique le refus initial : « il faut un MP4 » cache trois problèmes différents, dont un seul coûte quelque chose à corriger.</p>
+  </section>
+  <section>
+    <h2>Trois éléments doivent convenir</h2>
+    <p>Un fichier vidéo est un conteneur avec deux flux : l’image encodée avec un codec et le son avec un autre. « MP4 » ne nomme que le conteneur. Un formulaire, une messagerie ou un client de courrier attend en réalité l’ensemble lisible partout : conteneur MP4, image H.264 et son AAC. Si l’un des trois ne convient pas, un logiciel refusera le fichier ; il nommera le conteneur, car c’est ce que l’utilisateur voit.</p>
+    <p>Le fichier peut donc avoir le mauvais conteneur avec les bons codecs, le bon conteneur avec les mauvais codecs, ou être incorrect sur les trois points. La correction diffère selon le cas ; la différence est la nécessité de réencoder.</p>
+  </section>
+  <section>
+    <h2>Les fichiers que les gens apportent</h2>
+    <p><strong>Un enregistrement d’écran depuis le navigateur</strong> est un WebM : image VP8 ou VP9, son Opus. Les trois éléments ne conviennent pas et les deux pistes doivent être réencodées : l’image en H.264, le son en AAC. C’est le fichier le plus courant et celui dont la conversion coûte le plus, car aucune piste ne peut être conservée telle quelle.</p>
+    <p><strong>Un MKV extrait ou téléchargé</strong> contient très souvent les bons codecs dans le mauvais conteneur : H.264 et AAC dans Matroska. Cette conversion ne perd rien. Images et paquets sont copiés octet pour octet dans un MP4, sans même décoder l’image. Seul le conteneur change. Avec HEVC dans le MKV, l’image doit être réencodée ; le son, généralement AAC, est copié.</p>
+    <p><strong>Un MOV d’iPhone</strong> possède le bon son dans un conteneur presque correct, mais depuis 2017 utilise HEVC pour l’image, plus petit que H.264 et davantage refusé. L’image est réencodée, AAC copié, et MOV devient MP4 : une même conception sous deux noms. Un MOV d’ancien téléphone ou d’appareil photo avec H.264 ne demande qu’un changement de conteneur et une copie.</p>
+    <p><strong>Un MP4 tout de même refusé</strong> contient généralement HEVC, VP9 ou AV1 : le conteneur convient, l’image non, et elle est réencodée. Parfois il s’agit d’un MP4 fragmenté, produit par un enregistreur de diffusion, que certains éditeurs refusent. Le réécrire en MP4 ordinaire avec l’index au début corrige cela sans toucher aux images.</p>
+  </section>
+  <section>
+    <h2>Pourquoi la copie ne perd rien et le réencodage perd un peu</h2>
+    <p>Les images H.264 d’un MKV et d’un MP4 sont les mêmes octets. Les déplacer revient à déplacer un fichier entre dossiers : le conteneur change, l’image reste identique. C’est aussi vrai pour AAC. Un convertisseur qui décode et réencode malgré tout — souvent pour n’écrire qu’une seule méthode — vous coûte inutilement une génération de qualité.</p>
+    <p>Une image qui n’est pas en H.264 doit être décodée en pixels et réencodée. Chaque encodage perd quelque chose, même avec un bon encodeur. La perte dépend du débit autorisé, lui-même lié à celui de la source : deux mégabits par seconde en VP9 demandent environ trois en H.264 pour le même aspect, car VP9 compresse mieux. L’outil part du débit d’origine, l’ajuste selon les codecs puis applique un minimum et un maximum par pixel. Une source trop limitée n’est pas laissée ainsi, et une source généreuse ne produit pas nécessairement un résultat aussi gros. Le débit choisi est annoncé avant le début.</p>
+    <p>L’outil ne réencode jamais ce qu’il peut copier et ne copie jamais un codec d’image autre que H.264, même si MP4 pourrait le contenir. HEVC en MP4 serait lisible dans moins de logiciels que le MKV HEVC d’origine : la conversion aggraverait le problème.</p>
+  </section>
+  <section>
+    <h2>Et le son ?</h2>
+    <p>Opus, Vorbis, MP3 et FLAC ne permettent pas un MP4 lisible partout. Ils sont décodés puis réencodés en AAC à 160 kbit/s, davantage que ce qu’un microphone ou un jeu fournit. Au-delà de deux canaux, le son est réduit en stéréo comme le ferait discrètement un lecteur à deux haut-parleurs. Si le navigateur ne peut pas le décoder — surtout le PCM brut de certains appareils — l’outil nomme le codec et retire le son ; l’image est quand même convertie. Cochez la case pour retirer volontairement le son d’une vidéo destinée à être lue sans audio.</p>
+  </section>
+  <section>
+    <h2>Pourquoi l’envoi du fichier est la partie étrange</h2>
+    <p>Chaque convertisseur en ligne demande d’abord le fichier. Tout passe par votre connexion — un gigaoctet d’enregistrement d’écran ou de film extrait — pour qu’un autre fichier revienne. Cet envoi est généralement plus long que la conversion, avant même de se demander qui conserve le fichier et combien de temps. Les codecs nécessaires sont pourtant déjà dans votre navigateur : tout navigateur lisant la vidéo sait la décoder, et les versions récentes savent encoder H.264 et AAC. Un serveur ne fait qu’ajouter de la distance.</p>
+    <p>Le <a href="../../convertir-en-mp4/">convertisseur MP4</a> utilise ces codecs et rien d’autre. Le fichier est lu par morceaux depuis votre disque, séparé en pistes, copié ou réencodé sur votre ordinateur puis réécrit en mémoire. La politique de sécurité de la page énumère les adresses qu’elle peut contacter, et aucune n’est celle de ce site. Déconnectez le réseau : il continue à fonctionner. C’est la preuve la plus simple.</p>
+  </section>
+  <section>
+    <h2>Vérifiez avant d’envoyer</h2>
+    <p>Un convertisseur peut produire un MP4 incorrect : une seconde manque, la piste audio est vide ou le codec diffère de celui annoncé. L’outil rouvre son propre résultat avec le lecteur utilisé pour votre fichier et vérifie trois choses : la durée d’origine, H.264 et le son promis. Il lit ensuite le résultat en mémoire sous le téléchargement. Regardez la dernière seconde, écoutez puis enregistrez. Gardez toujours l’original : une image réencodée s’éloigne d’une génération de l’appareil, tandis que l’original reste intact.</p>
+  </section>

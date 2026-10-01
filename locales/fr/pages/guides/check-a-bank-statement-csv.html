@@ -1,0 +1,164 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Un CSV bien présenté dans un tableur peut encore contenir un montant erroné, une opération manquante ou une date inversée. Comparez-le au relevé original : lignes, dates et descriptions, puis soldes courants imprimés pour contrôler les montants.
+    </p>
+    <p>
+      Gardez le PDF à côté du fichier converti. Un téléchargement réussi prouve seulement qu’un fichier a été produit ; ces contrôles aident à vérifier sa fidélité au relevé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Avant de convertir, cherchez un export</h2>
+    <p>
+      Si votre banque fournit un CSV pour la période voulue, commencez par lui. L’export direct évite de reconstruire un tableau depuis des mots placés sur une page PDF. Vérifiez le compte, les dates et le sens des colonnes ; une étape susceptible d’erreur disparaît.
+    </p>
+    <p>
+      Parfois, vous n’avez que le PDF : ancien relevé, compte fermé ou document reçu. La conversion devient alors utile.
+    </p>
+  </section>
+
+  <section>
+    <h2>Examinez un petit relevé</h2>
+    <p>
+      Ce relevé fictif de compte courant commence avec
+      <strong>1,250.00</strong>. Les montants positifs ajoutent de l’argent ; les négatifs en retirent. La dernière colonne est imprimée sur le relevé, pas calculée ensuite dans le tableur.
+    </p>
+
+    <figure class="data">
+      <figcaption id="statement-caption">Quatre opérations fictives, avec un solde initial de 1 250,00</figcaption>
+      <div class="scroll" tabindex="0" role="region" aria-label="Relevé bancaire fictif">
+        <table aria-labelledby="statement-caption">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Description</th>
+              <th scope="col">Montant</th>
+              <th scope="col">Solde imprimé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-08-03</td>
+              <td>Versement de salaire</td>
+              <td>+800.00</td>
+              <td>2,050.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-04</td>
+              <td>Courses</td>
+              <td>-43.20</td>
+              <td>2,006.80</td>
+            </tr>
+            <tr>
+              <td>2026-08-05</td>
+              <td>Café</td>
+              <td>-6.80</td>
+              <td>2,000.00</td>
+            </tr>
+            <tr>
+              <td>2026-08-06</td>
+              <td>Virement</td>
+              <td>-125.00</td>
+              <td>1,875.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+
+    <p>
+      Chaque ligne se vérifie ainsi :
+      <strong>solde précédent + montant signé = nouveau solde</strong>. Pour les courses, <code>2050.00 + (-43.20) = 2006.80</code>. Pour le café, <code>2006.80 + (-6.80) = 2000.00</code>.
+    </p>
+    <p>
+      Supposons que le CSV lise les courses comme <strong>-48.20</strong>. Toutes les cellules sont remplies, mais
+      <code>2050.00 + (-48.20) = 2001.80</code>. L’écart avec le solde imprimé est de <strong>5.00</strong>, ce qui donne une ligne précise à comparer au PDF.
+    </p>
+    <p>
+      Gardez les soldes imprimés pendant le contrôle. Les remplacer par des formules utilisant les montants convertis rend le tableur cohérent avec lui-même, erreurs comprises.
+    </p>
+    <p>
+      Vérifiez le sens du solde avant les signes. Un relevé de carte peut afficher une dette : les achats l’augmentent et les remboursements la réduisent. Ses signes ne signifient pas forcément la même chose que dans cet exemple de compte courant.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi le total final ne suffit pas</h2>
+    <p>
+      Comparer le solde initial plus tous les montants au solde final est utile, mais des erreurs peuvent se compenser : un paiement supérieur de 5,00 et un autre inférieur de 5,00 laissent un total concordant.
+    </p>
+    <p>
+      Vérifier chaque solde courant disponible fournit davantage de comparaisons. Si un solde n’apparaît qu’en fin de journée, comparez-le au solde imprimé précédent augmenté de tous les montants intermédiaires.
+    </p>
+    <p>
+      Même ce contrôle a des limites. Deux opérations manquantes de
+      <strong>-20.00 et +20.00</strong> laissent le solde inchangé, et la comparaison peut réussir. Comparez aussi l’ordre des lignes à l’original.
+    </p>
+    <p>
+      Un solde concordant ne prouve ni la fidélité d’une date ou d’un bénéficiaire, ni l’authenticité du relevé. Il contrôle seulement la relation entre les montants et soldes disponibles.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vérifiez les dates avant de trier</h2>
+    <p>
+      <code>03/04/2026</code> peut signifier le 3 avril ou le 4 mars. Une date comme
+      <code>18/04/2026</code> peut établir la convention, mais un court relevé peut n’en contenir aucune. Vérifiez la période et la présentation de la banque au lieu d’accepter une supposition.
+    </p>
+    <p>
+      Vérifiez encore après ouverture du CSV : le tableur peut interpréter les dates autrement que le convertisseur. Gardez l’ordre original jusqu’à la fin du contrôle. Trier des dates mal lues complique la comparaison et détruit l’ordre des soldes courants.
+    </p>
+    <p>
+      Les dates sans année exigent aussi de vérifier la période, surtout entre décembre et janvier. Vérifiez les conventions numériques :
+      <code>1,240.00</code> et <code>1.240,00</code> peuvent représenter le même montant ; les cellules importées doivent préserver cette valeur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lisez les descriptions et séparez les totaux</h2>
+    <p>
+      Une description sur deux lignes reste une opération. Vérifiez que sa suite lui est restée attachée, surtout aux changements de page où en-têtes répétés et reports de solde peuvent ressembler à des opérations.
+    </p>
+    <p>
+      Le PDF peut contenir résumés du compte, sous-totaux et détails de paiement. Ils font partie du document extrait, mais ne doivent pas devenir des opérations supplémentaires. Identifiez le tableau des opérations et séparez les résumés avant l’import.
+    </p>
+    <p>
+      Deux paiements de même date, bénéficiaire et montant peuvent être réels. Comparez leur position et leurs références au relevé avant d’en retirer un. Une extraction dupliquée et un paiement répété nécessitent des corrections différentes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que ce convertisseur contrôle</h2>
+    <p>
+      <a href="../../pdf-en-csv/">PDF en CSV</a> repère les tableaux grâce à l’alignement du texte, réunit les cellules sur plusieurs lignes et garde les totaux et libellés. S’il y a plusieurs tableaux, choisissez le bon. L’ordre des dates ambiguës est réglable ; les dates sans année restent telles qu’imprimées.
+    </p>
+    <p>
+      Lorsqu’une suite de soldes courants est reconnue, l’outil indique si les comparaisons disponibles concordent. Vérifiez vous-même les montants avant le premier solde avec le solde initial, puis ceux après le dernier. Un message positif ne couvre que les comparaisons effectuées.
+    </p>
+    <p>
+      Sans suite de soldes utilisable reconnue, aucun verdict n’est donné.
+      <strong>Le silence n’est pas une confirmation.</strong> Un résultat silencieux ou un contrôle positif ne garantit pas l’exactitude du fichier entier. L’aperçu montre au plus 25 lignes par tableau ; examinez le téléchargement pour les autres.
+    </p>
+    <p>
+      Les pages numérisées exigent une reconnaissance du texte, absente de cet outil. La conversion fonctionne dans votre navigateur ; le guide sur
+      <a href="../envoyer-un-releve-bancaire-est-il-sur/">l’envoi d’un relevé bancaire à un convertisseur</a> traite la confidentialité.
+    </p>
+  </section>
+
+  <section>
+    <h2>Avant d’importer le CSV ailleurs</h2>
+    <p>
+      Examinez l’aperçu d’import aussi attentivement que le fichier. Choisissez le bon compte bancaire ou de carte, confirmez le format des dates et associez les colonnes de date, description et montant. Ces choix sont distincts de l’extraction du PDF ; consultez
+      <a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">les instructions d’import CSV d’Intuit</a>
+      pour les exigences d’un produit.
+    </p>
+    <ul>
+      <li>Confirmez le compte et la période du relevé.</li>
+      <li>Vérifiez dates, signes et formats numériques après ouverture.</li>
+      <li>Comparez les opérations à l’original, changements de page compris.</li>
+      <li>Vérifiez les soldes initial, courants et final disponibles.</li>
+      <li>Examinez les écarts et les répétitions avant de les corriger.</li>
+      <li>Gardez l’original et une copie du CSV vérifié.</li>
+    </ul>
+  </section>

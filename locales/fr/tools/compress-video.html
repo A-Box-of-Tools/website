@@ -1,0 +1,198 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez la vidéo</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">En choisir un autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the number.
+
+    People arrive with a limit, not a preference: the file has to be under
+    what a chat app, an email or a form allows. So the card asks for that
+    number and answers with what it buys - the frame size and bitrate the
+    clip's length and sound leave room for - before anything is encoded.
+  -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> Indiquer la taille à ne pas dépasser</h2>
+
+    <p class="card-lede">
+      Le son est copié intact et le conteneur prend un peu de place. Le budget restant, réparti sur la durée du clip, revient à l’image. Ses dimensions descendent alors parmi les tailles usuelles pour donner assez d’octets à chaque image, sans agrandissement.
+    </p>
+
+    <label class="field" for="target-mb">
+      <span>Ne pas dépasser</span>
+      <span class="field-note">En mégaoctets. Les boutons proposent les limites courantes.</span>
+    </label>
+    <div class="target-row">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <span class="target-unit">Mo</span>
+    </div>
+    <div class="chips" role="group" aria-label="Limites courantes">
+      <button type="button" class="chip" data-mb="8">8 Mo</button>
+      <button type="button" class="chip" data-mb="16">16 Mo</button>
+      <button type="button" class="chip" data-mb="25">25 Mo</button>
+      <button type="button" class="chip" data-mb="50">50 Mo</button>
+      <button type="button" class="chip" data-mb="100">100 Mo</button>
+      <button type="button" class="chip" data-fraction="0.5">La moitié</button>
+      <button type="button" class="chip" data-fraction="0.25">Le quart</button>
+    </div>
+
+    <p id="estimate" class="estimate" role="status" aria-live="polite"></p>
+
+    <fieldset class="chip-group">
+      <legend>Taille de l'image</legend>
+      <div class="chips" role="group">
+        <button type="button" class="chip" data-edge="auto" aria-pressed="true">Laisser le poids décider</button>
+        <button type="button" class="chip" data-edge="1920">1080p</button>
+        <button type="button" class="chip" data-edge="1280">720p</button>
+        <button type="button" class="chip" data-edge="854">480p</button>
+        <button type="button" class="chip" data-edge="640">360p</button>
+      </div>
+      <p class="field-note">
+        La taille est un plafond&nbsp;: l’image n’est jamais agrandie. Un grand cadre avec un petit budget devient flou.
+      </p>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>Retirer le son</strong>
+        <span class="check-note">
+          Sinon, le son est copié intact au débit d’origine. Le retirer donne tout le budget à l’image.
+        </span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Compressez-la</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Compresser la vidéo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Télécharger</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="La vidéo comprimée, lue depuis la mémoire"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.target">Disponible avec une vidéo et un poids cible atteignable.</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
+    <span data-phrase="note.silent">Ce clip n’a pas de son&nbsp;: tout le budget revient à l’image.</span>
+    <span data-phrase="estimate.nofile">Choisissez une vidéo pour voir ce que le poids demandé permet.</span>
+    <span data-phrase="estimate.notarget">Saisissez un poids en mégaoctets ou appuyez sur un bouton.</span>
+    <span data-phrase="estimate.already">Ce clip pèse {size}, déjà sous {target}. Rien à faire sauf réduire la cible.</span>
+    <span data-phrase="estimate.nofit">Le son seul dépasse cette limite. Retirez-le ou autorisez au moins {least}.</span>
+    <span data-phrase="estimate.toosmall">Aucune image regardable ne tient dans ce poids. Autorisez au moins {least}.</span>
+    <span data-phrase="estimate.plan">{frame} à environ {rate}, résultat estimé à {estimate}, sous {target}, puis mesuré pour vérification.</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} Go</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="progress.preparing">Préparation&hellip;</span>
+    <span data-phrase="progress.again">Le résultat dépasse la cible. Nouvel encodage plus serré&hellip;</span>
+    <span data-phrase="progress.frame">Image {done} sur {total} ({percent} %)</span>
+    <span data-phrase="progress.finishing">Finalisation des dernières images&hellip;</span>
+    <span data-phrase="progress.checking">Réouverture pour vérification&hellip;</span>
+    <span data-phrase="run.cancelled">Annulé. Aucun fichier créé&nbsp;; appuyez sur le bouton pour recommencer.</span>
+    <span data-phrase="run.failed">Échec de cette opération&nbsp;: {detail}</span>
+    <span data-phrase="result.ready">{size} &mdash; {percent} % plus petit que les {from} d’origine.</span>
+    <span data-phrase="result.sub">Même durée, même son. L’image a été réencodée pour tenir.</span>
+    <span data-phrase="check.passed">Vérifié&nbsp;: {found}</span>
+    <span data-phrase="check.failed">Ce passage n&rsquo;a pas été validé &mdash; {found}. Gardez votre original.</span>
+    <span data-phrase="check.ok">rouvert en mémoire, durée inchangée de {length}, {size} sous {target}.</span>
+    <span data-phrase="check.over">rouvert en mémoire, durée inchangée de {length}, mais {size} dépasse encore {target}. L’encodeur ne descend pas plus à cette taille&nbsp;: réduisez le cadre ou retirez le son.</span>
+    <span data-phrase="check.length">le fichier créé dure {got} au lieu de {want}</span>
+    <span data-phrase="check.reopen">le fichier créé ne s’ouvre pas ({detail})</span>
+    <span data-phrase="facts.picture">{frame}, depuis {from}, à {rate} et {fps} images par seconde.</span>
+    <span data-phrase="facts.sound.kept">Le son a été copié intact, sans réencodage.</span>
+    <span data-phrase="facts.sound.none">Aucune piste audio&nbsp;: absente à l’origine ou retirée.</span>
+    <span data-phrase="facts.passes.one">Un passage&nbsp;: le premier encodage respecte la cible.</span>
+    <span data-phrase="facts.passes.two">Deux passages&nbsp;: le premier dépassait la cible. Le second utilise un débit calculé depuis cet écart.</span>
+    <span data-phrase="facts.time">{frames} images en {seconds}.</span>
+    <span data-phrase="facts.reencoded">L’image a une génération de plus depuis la caméra. Gardez l’original.</span>
+    <span data-phrase="support.nowebcodecs">Ce navigateur ne sait pas encoder la vidéo. Chrome, Edge et Safari le peuvent, Firefox à partir de 130.</span>
+    <span data-phrase="support.nodecode">Ce navigateur ne sait pas décoder ce clip ({codec}). Un autre navigateur sur le même appareil peut parfois le faire.</span>
+    <span data-phrase="stall.both">Le codec vidéo ne répond plus. Rechargez et réessayez, ou réduisez le cadre&nbsp;: l’encodeur matériel peut être occupé ou absent.</span>
+    <span data-phrase="encode.toobig">Ce navigateur ne sait pas encoder H.264 à {size}. Choisissez un cadre plus petit.</span>
+    <span data-phrase="encode.noconfig">L'encodeur n'a jamais signalé de configuration de décodeur.</span>
+    <span data-phrase="decode.none">Aucune image n’a pu être décodée dans ce clip.</span>
+    <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
+    <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
+    <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>
+    <span data-phrase="read.av1short">L&rsquo;enregistrement de configuration AV1 est trop court.</span>
+    <span data-phrase="read.compactsizes">Les tailles d&rsquo;échantillons sont dans une table compacte que ce lecteur ne
+      décode pas.</span>
+    <span data-phrase="read.sampletables">Les tables d&rsquo;échantillons sont incomplètes.</span>
+    <span data-phrase="read.chunktable">La table des chunks est vide.</span>
+    <span data-phrase="read.nosamples">La piste ne contient aucun échantillon.</span>
+    <span data-phrase="read.nostbl">Il manque à la piste vidéo ses tables d&rsquo;échantillons.</span>
+    <span data-phrase="read.nostsd">La piste vidéo n&rsquo;a pas de description d&rsquo;échantillon.</span>
+    <span data-phrase="read.emptystsd">La description d&rsquo;échantillon de la vidéo est vide.</span>
+    <span data-phrase="read.encrypted">La piste vidéo est chiffrée.</span>
+    <span data-phrase="read.unknowncodec">La vidéo est stockée en &laquo;&nbsp;{type}&nbsp;&raquo;, que ce lecteur ne connaît
+      pas.</span>
+    <span data-phrase="read.noconfig">La piste &laquo;&nbsp;{type}&nbsp;&raquo; ne porte aucune configuration de décodeur.</span>
+    <span data-phrase="read.notmp4">Ce fichier n’est pas un MP4 ni un MOV. WebM et les autres formats ne sont pas encore lus ici.</span>
+    <span data-phrase="read.nomoov">Le fichier n&rsquo;a pas d&rsquo;en-tête de film.</span>
+    <span data-phrase="read.novideo">Le fichier n&rsquo;a aucune piste vidéo utilisable par ce lecteur.</span>
+    <span data-phrase="read.notimescale">La piste vidéo n&rsquo;a pas d&rsquo;échelle de temps.</span>
+    <span data-phrase="read.nofragments">Les fragments de ce fichier ne contiennent aucune image pour sa piste vidéo.</span>
+    <span data-phrase="read.unreadable">Le fichier n&rsquo;a pas pu être lu comme un MP4.</span>
+    <span data-phrase="read.notplayed">Ce format n&rsquo;est pas de ceux que ce navigateur lit.</span>
+    <span data-phrase="read.layout">La disposition de ce fichier n&rsquo;est pas de celles que le lecteur comprend ici.</span>
+    <span data-phrase="net.clean">votre vidéo n’a été envoyée nulle part. {total} fichiers chargés, tous propres à la page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts publicitaires, de mesure et du bouton de don viennent de {hosts} hôte&nbsp;; aucun n’a reçu une vidéo ni un de ses octets.</span>
+    <span data-phrase="net.platform.many">Les scripts publicitaires, de mesure et du bouton de don viennent de {hosts} hôtes&nbsp;; aucun n’a reçu une vidéo ni un de ses octets.</span>
+  </div>
+</main>

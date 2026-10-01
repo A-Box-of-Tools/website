@@ -1,0 +1,262 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez le PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">En choisir un autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where an old password can be taken off, shown only when one is what
+      stopped the file being read. Two passwords on one document is not a
+      thing the format can express, so changing one is always take-off then
+      put-on, and the page that takes it off is next door.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Ce document demande déjà un mot de passe. Retirez-le d’abord dans ce navigateur avec le <a href="../deverrouiller-un-pdf/">Déverrouilleur de PDF</a>
+      &mdash; puis revenez ici avec la copie déverrouillée pour lui attribuer le nouveau.
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what goes on it.
+
+    The card leads with the password because the password is the lock, and
+    puts the restrictions under it with a sentence saying what they are and
+    are not. A page that listed "no printing" beside "password" as two boxes
+    of equal weight would be telling the visitor the two are the same kind of
+    thing, and the site next door exists to say they are not.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> Choisissez le mot de passe et les restrictions</h2>
+
+    <p class="card-lede">
+      Le mot de passe verrouille réellement le document&nbsp;: la clé de chiffrement en dépend. Les restrictions sont différentes&nbsp;: une demande que les lecteurs respectent par accord et peuvent ignorer. Vous pouvez définir l’un, l’autre ou les deux.
+    </p>
+
+    <div class="password-box">
+      <label class="field" for="password">
+        <span>Mot de passe d’ouverture du document</span>
+        <span class="field-note">
+          Saisi et utilisé ici, jamais envoyé&nbsp;: cette page n’a aucune destination pour le recevoir. Laissez vide pour définir seulement des restrictions sur un document ouvert à tous.
+        </span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal" class="ghost" aria-pressed="false">Afficher</button>
+      </div>
+
+      <label class="field" for="password-again">
+        <span>Confirmez ce mot de passe</span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+      </div>
+
+      <!--
+        The one sentence on the page that has to be read, so it is not in the
+        FAQ. A strong scheme and a forgotten password is a lost document, and
+        nothing on this site - or anywhere honest - gets it back.
+      -->
+      <p id="password-status" class="field-summary password-status" role="status" aria-live="polite">
+        Sans ce mot de passe, aucun accès possible. Rien ici ne le devine. Gardez votre original.
+      </p>
+    </div>
+
+    <fieldset class="restrictions">
+      <legend>Restrictions</legend>
+      <p class="field-note restrictions-note">
+        Elles demandent au lecteur de refuser certaines opérations. Beaucoup les respectent, aucun n’y est forcé. Un document sans mot de passe d’ouverture peut toujours en être débarrassé. Ce sont vos souhaits, pas une garantie.
+      </p>
+
+      <label class="check">
+        <input type="checkbox" id="restrict-print">
+        <span>
+          <strong>Interdire l’impression</strong>
+          <span class="check-note">À pleine qualité comme en image grossière.</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-copy">
+        <span>
+          <strong>Interdire la copie</strong>
+          <span class="check-note">Le texte et les images ne peuvent être sélectionnés et copiés. La lecture à voix haute pour une personne malvoyante reste autorisée.</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-change">
+        <span>
+          <strong>Interdire les modifications</strong>
+          <span class="check-note">Ni édition, commentaires, surlignage, remplissage de formulaire, ajout, suppression ou réorganisation de pages.</span>
+        </span>
+      </label>
+
+      <label class="field owner-field" for="owner-password">
+        <span>Mot de passe propriétaire, pour lever les restrictions</span>
+        <span class="field-note">
+          Facultatif. Vide, le mot de passe d’ouverture sert aux deux fonctions. Sans aucun mot de passe, une valeur aléatoire est utilisée puis oubliée pour éviter de lever les restrictions avec un champ vide.
+        </span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">Afficher</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="modes">
+      <legend>Chiffrement</legend>
+      <label class="mode">
+        <input type="radio" name="scheme" value="6" checked>
+        <span><strong>AES-256</strong> Le mécanisme actuel de PDF 2.0. Les lecteurs depuis 2010 l’ouvrent et c’est le seul encore considéré robuste.</span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="scheme" value="4">
+        <span><strong>AES-128</strong> Le mécanisme de 2005, pour un lecteur antérieur à 2010. Le chiffrement est solide, mais le hachage de mot de passe de 1994 rend les tentatives beaucoup moins coûteuses.</span>
+      </label>
+    </fieldset>
+
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Protégez-le</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Protéger le document</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Télécharger</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.settings">Disponible quand les mots de passe correspondent et qu’une protection est demandée.</span>
+    <span data-phrase="password.show">Afficher</span>
+    <span data-phrase="password.hide">Masquer</span>
+    <span data-phrase="status.blank">Sans ce mot de passe, aucun accès possible. Rien ici ne le devine. Gardez votre original.</span>
+    <span data-phrase="status.mismatch">Les deux mots de passe ne correspondent pas encore.</span>
+    <span data-phrase="status.short">{n} caractères. Un mot de passe court est le point faible du mécanisme actuel&nbsp;: préférez une phrase à un mot.</span>
+    <span data-phrase="status.ok">{n} caractères, saisis deux fois à l’identique. Sans eux, aucun accès possible&nbsp;: gardez l’original.</span>
+    <span data-phrase="status.nothing">Aucune protection demandée&nbsp;: définissez un mot de passe, une restriction ou les deux.</span>
+    <span data-phrase="status.restrictonly">Aucun mot de passe d’ouverture. Le document reste ouvert à tous avec les restrictions cochées.</span>
+    <span data-phrase="note.restricted">Ce document comporte déjà des restrictions sans mot de passe d’ouverture. Il s’est ouvert sans mot de passe&nbsp;; vos réglages remplacent les précédents.</span>
+    <span data-phrase="note.repaired">La table de références croisées de ce fichier ne correspondait pas à son
+      contenu&nbsp;; il a donc été lu en cherchant les objets un à un. C&rsquo;est une
+      réparation, et elle a marché &mdash; vérifiez le résultat avant de l&rsquo;envoyer
+      où que ce soit.</span>
+    <span data-phrase="note.incremental">Ce document a déjà été modifié et enregistré. Les anciennes versions d’objets qui ne sont plus référencées sont retirées du résultat.</span>
+    <span data-phrase="crypt.handler">Ce document est verrouillé par certificat, pas par mot de passe (/{name}). L’outil ne peut ni l’ouvrir ni le protéger à nouveau.</span>
+    <span data-phrase="crypt.version">Cette version de chiffrement PDF n’est pas lue ici (V{v}, R{r}). Le document ne peut pas être ouvert pour être protégé à nouveau.</span>
+    <span data-phrase="crypt.malformed">Le document se déclare chiffré, mais son dictionnaire de chiffrement est incomplet. Le fichier est endommagé et ne peut pas être ouvert.</span>
+    <span data-phrase="crypt.wrongpassword">Ce document exige un mot de passe d’ouverture.</span>
+    <span data-phrase="read.notpdf">Ce n&rsquo;est pas un PDF. Cet outil ne travaille que sur des fichiers PDF.</span>
+    <span data-phrase="read.encrypted">Ce PDF est chiffré.</span>
+    <span data-phrase="read.nocatalogue">Ce fichier n’a pas de catalogue de document&nbsp;: rien à protéger. Ce n’est pas un PDF ou il est trop endommagé.</span>
+    <span data-phrase="read.noheader">Cela ne commence pas comme un PDF&nbsp;: il n&rsquo;y a pas d&rsquo;en-tête %PDF-.</span>
+    <span data-phrase="read.failed">Ce PDF n&rsquo;a pas pu être lu&nbsp;: {detail}</span>
+    <span data-phrase="pdf.flate">un flux Flate n'a pas pu être décompressé ({detail})</span>
+    <span data-phrase="pdf.nocompression">ce navigateur n'a pas de CompressionStream</span>
+    <span data-phrase="pdf.lzw">un flux LZW commence par un code non défini</span>
+    <span data-phrase="pdf.cryptfilter">ce flux est chiffré</span>
+    <span data-phrase="pdf.unknownfilter">un filtre inconnu, /{name}</span>
+    <span data-phrase="pdf.deep">imbriqué trop profondément</span>
+    <span data-phrase="pdf.short">dépassement de la fin</span>
+    <span data-phrase="pdf.unexpected">inattendu {found} à {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">octet inattendu 0x{hex} à {at}</span>
+    <span data-phrase="pdf.noendstream">un flux sans endstream</span>
+    <span data-phrase="pdf.noobj">pas de mot-clé obj à {at}</span>
+    <span data-phrase="pdf.nostartxref">pas de startxref</span>
+    <span data-phrase="pdf.noxref">pas une section xref</span>
+    <span data-phrase="pdf.now">un flux xref sans /W</span>
+    <span data-phrase="pdf.zerowidth">un flux xref dont les champs sont de largeur nulle</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="stage.keys">Calcul des clés depuis le mot de passe</span>
+    <span data-phrase="stage.writing">Écriture du document chiffré</span>
+    <span data-phrase="stage.checking">Réouverture pour vérification</span>
+    <span data-phrase="run.cancelled">Annulé. Rien n’a changé&nbsp;; appuyez sur le bouton pour recommencer.</span>
+    <span data-phrase="result.locked">{size} &mdash; mot de passe nécessaire à l’ouverture.</span>
+    <span data-phrase="result.restricted">{size} &mdash; ouvert à tous, avec restrictions.</span>
+    <span data-phrase="result.sub">Chaque page, police et image est celle de l’original, chiffrée. Gardez aussi l’original.</span>
+    <span data-phrase="check.passed">Vérifié&nbsp;: {found}</span>
+    <span data-phrase="check.failed">Ce passage n&rsquo;a pas été validé &mdash; {found}. Gardez votre original.</span>
+    <span data-phrase="check.ok.locked">refusé sans mot de passe, puis rouvert en mémoire avec le vôtre&nbsp;: {pages}, comme l’original.</span>
+    <span data-phrase="check.ok.restricted">rouvert en mémoire sans mot de passe, comme prévu, avec vos restrictions&nbsp;: {pages}, comme l’original.</span>
+    <span data-phrase="check.open">le résultat s’ouvre sans mot de passe, donc le verrouillage n’est pas actif</span>
+    <span data-phrase="check.stillshut">le résultat ne s’ouvre pas avec le mot de passe défini ({detail})</span>
+    <span data-phrase="check.pages">le résultat comporte {pages} pages au lieu de {expected}</span>
+    <span data-phrase="check.permissions">le résultat ne porte pas les restrictions demandées</span>
+    <span data-phrase="check.reopen">le fichier créé ne s’ouvre pas ({detail})</span>
+    <span data-phrase="facts.scheme.aes256">Chiffré en AES-256 avec le hachage PDF 2.0, le mécanisme actuel. Lisible dans tous les lecteurs depuis 2010.</span>
+    <span data-phrase="facts.scheme.aes128">Chiffré en AES-128 avec le mécanisme de 2005 pour les anciens lecteurs. Le hachage de 1994 rend un mot de passe court plus facile à deviner qu’avec AES-256.</span>
+    <span data-phrase="facts.userpassword">L’ouverture exige le mot de passe défini. Aucun autre accès possible.</span>
+    <span data-phrase="facts.nouserpassword">Ouvert à tous. Il porte une demande, pas un verrou.</span>
+    <span data-phrase="facts.restrictions">Les lecteurs doivent refuser&nbsp;: {list}.</span>
+    <span data-phrase="facts.norestrictions">Aucune restriction. Toute personne ayant le mot de passe peut imprimer, copier et modifier.</span>
+    <span data-phrase="facts.owner.same">Le mot de passe d’ouverture lève aussi les restrictions.</span>
+    <span data-phrase="facts.owner.own">Le mot de passe propriétaire défini lève les restrictions.</span>
+    <span data-phrase="facts.owner.random">Le mot de passe propriétaire est aléatoire et inconnu&nbsp;: un champ vide ne lève pas les restrictions. Un lecteur peut toutefois les ignorer.</span>
+    <span data-phrase="facts.replaced">Les restrictions d’origine ont été remplacées.</span>
+    <span data-phrase="facts.signature">Le document portait une signature numérique. La réécriture invalide toute signature&nbsp;: cette copie n’est plus signée, l’original reste signé.</span>
+    <span data-phrase="facts.incremental">Les copies plus anciennes et périmées d&rsquo;objets venues de modifications
+      antérieures n&rsquo;ont pas été recopiées.</span>
+    <span data-phrase="facts.repaired">La table de références croisées de l&rsquo;original était cassée et a dû être
+      reconstruite en cherchant. Vérifiez ce fichier avant de le transmettre.</span>
+    <span data-phrase="perm.print">impression</span>
+    <span data-phrase="perm.copy">copie</span>
+    <span data-phrase="perm.change">modification</span>
+    <span data-phrase="list.two">{a} et {b}</span>
+    <span data-phrase="list.three">{a}, {b} et {c}</span>
+    <span data-phrase="net.clean">votre document n'est allé nulle part. {total}
+      fichiers chargés, tous appartenant à cette page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu un document ou un octet d'un document.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu un document ou un octet d'un document.</span>
+  </div>
+</main>

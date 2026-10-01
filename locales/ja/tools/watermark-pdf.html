@@ -1,0 +1,213 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>PDFを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where a password can be taken off, shown only when one is what stopped
+      the file being read. Stamping a document means opening it, and this
+      page does not ask for passwords; the page that takes one off is next
+      door, and the one that puts it back is next door to that.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>この書類は保護されています。まずこのブラウザで<a href="../unlock-pdf/">PDF保護解除ツール</a>を使って解除し、そのコピーをここへ戻してください。透かしを入れたコピーにパスワードも付けるなら、その後で<a href="../protect-pdf/">PDF保護ツール</a>を使えます。</p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the stamp.
+
+    The words first, because they are the whole point; then how the stamp
+    sits, with a preview beside the controls. The preview is a blank page the
+    shape of the first page with the placement drawn on it by the same
+    arithmetic that writes the file - never the document itself, which this
+    site cannot draw and says so.
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span>透かしの文字と配置を選ぶ</h2>
+
+    <label class="field" for="words">
+      <span>文字</span>
+      <span class="field-note">コピーの送り先や日付です。ブラウザが描くので、入力できる言語ならどれでも使えます。</span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="Acme銀行専用 &middot; 2026年9月12日">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>サイズ</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">小</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">中</button>
+            <button type="button" class="chip" data-size="large">大</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>角度</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">斜め</button>
+            <button type="button" class="chip" data-diagonal="no">水平</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>配置</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">中央に1つ</button>
+            <button type="button" class="chip" data-tiled="yes">ページ全体に繰り返す</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>色</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">灰色</button>
+            <button type="button" class="chip" data-colour="red">赤</button>
+            <button type="button" class="chip" data-colour="blue">青</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>薄さ</span>
+          <span class="field-note">
+            <span id="opacity-value">30</span>%の不透明度です。本文が読めて、コピーしても残る濃さを選びます。</span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>先頭のページだけ</strong>
+            <span class="check-note">選ばなければ、すべてのページに入れます。</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        The preview. A blank page the size and shape of the first page with
+        the stamp laid on it; the words are drawn live so the visitor sees
+        their own text, not a placeholder. Described for a screen reader by
+        the sentence below it, which says what is and is not shown.
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">先頭のページと同じ形の白紙に、ファイルで使う位置と同じ透かしを描きます。このサイトはPDFレンダラーを備えていないため、ページの本文は描きません。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>透かしを入れる</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">書類に透かしを入れる</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">上で書類を選び、透かしの文字を入力すると使えます。</span>
+    <span data-phrase="note.repaired">このファイルの相互参照表は中身と合っていなかったので、オブジェクトを一つずつ探して読みました。これは修復で、うまくいきましたが、どこかへ送る前に結果を確かめてください。</span>
+    <span data-phrase="note.incremental">この書類は編集して保存し直されており、どこからも参照されない古いオブジェクトが残っています。書き出すファイルからは除きます。</span>
+    <span data-phrase="note.pages.one">1ページ、{size}です。</span>
+    <span data-phrase="note.pages.many">{n}ページ、{size}。</span>
+    <span data-phrase="read.notpdf">これはPDFではありません。この道具はPDFファイルにしか使えません。</span>
+    <span data-phrase="read.encrypted">このPDFは暗号化されています。</span>
+    <span data-phrase="read.nocatalogue">このファイルには文書カタログがなく、透かしを入れられません。PDFではないか、ここで修復できないほど破損しています。</span>
+    <span data-phrase="read.noheader">これはPDFの始まり方をしていません。%PDF-のヘッダーがありません。</span>
+    <span data-phrase="read.nopages">この書類には透かしを入れるページがありません。</span>
+    <span data-phrase="read.failed">このPDFは読めませんでした：{detail}</span>
+    <span data-phrase="pdf.flate">Flateストリームを展開できませんでした（{detail}）</span>
+    <span data-phrase="pdf.nocompression">このブラウザーにはCompressionStreamがありません</span>
+    <span data-phrase="pdf.lzw">LZWストリームが未定義のコードで始まっています</span>
+    <span data-phrase="pdf.cryptfilter">このストリームは暗号化されています</span>
+    <span data-phrase="pdf.unknownfilter">未知のフィルター /{name}</span>
+    <span data-phrase="pdf.deep">入れ子が深すぎます</span>
+    <span data-phrase="pdf.short">終わりを越えました</span>
+    <span data-phrase="pdf.unexpected">{at}に想定外の{found}</span>
+    <span data-phrase="pdf.unexpectedbyte">{at}に想定外のバイト0x{hex}</span>
+    <span data-phrase="pdf.noendstream">endstreamのないストリーム</span>
+    <span data-phrase="pdf.noobj">{at}にobjキーワードがありません</span>
+    <span data-phrase="pdf.nostartxref">startxrefがありません</span>
+    <span data-phrase="pdf.noxref">xrefセクションではありません</span>
+    <span data-phrase="pdf.now">/Wのないxrefストリーム</span>
+    <span data-phrase="pdf.zerowidth">フィールド幅がゼロのxrefストリーム</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n}ページ</span>
+    <span data-phrase="count.pages.many">{n}ページ</span>
+    <span data-phrase="stage.drawing">透かしを描画中</span>
+    <span data-phrase="stage.writing">各ページに透かしを入れて書き出し中</span>
+    <span data-phrase="stage.checking">開き直して確認中</span>
+    <span data-phrase="run.cancelled">キャンセルしました。変更はありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="result.ready">{size}。透かしを入れました。</span>
+    <span data-phrase="result.sub">すべてのページ、フォント、画像は元のままで、その上に透かしを描きました。元のファイルも残してください。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
+    <span data-phrase="check.ok.all">メモリから開き直し、{pages}のすべてに透かしがあることを確認しました。</span>
+    <span data-phrase="check.ok.first">メモリから開き直し、指定どおり{pages}の先頭だけに透かしがあることを確認しました。</span>
+    <span data-phrase="check.ok.single">メモリから開き直し、1ページに透かしがあることを確認しました。</span>
+    <span data-phrase="check.pages">完成したファイルのページ数が{expected}ではなく{pages}です</span>
+    <span data-phrase="check.missing">完成したファイルの{n}ページ目に透かしがありません</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="facts.words">透かしの文字は「{words}」です。</span>
+    <span data-phrase="facts.placement.once">各ページの中央に1つ、{size}、{angle}、不透明度{opacity}%です。</span>
+    <span data-phrase="facts.placement.tiled">各ページに{n}個ずつ、{size}、{angle}、不透明度{opacity}%です。</span>
+    <span data-phrase="facts.firstonly">先頭のページだけに入れました。残り{n}ページはそのままです。</span>
+    <span data-phrase="facts.picture">文字は画像として描くので、どのリーダーでも見えますが、選択や検索はできません。編集ソフトを持つ人は透かしを削除できます。コピーの送り先を示すもので、書類を開くことは防ぎません。</span>
+    <span data-phrase="facts.signature">この書類には電子署名がありました。書き直すと署名は無効になるため、今回のコピーには署名がありません。元のファイルの署名はそのままです。</span>
+    <span data-phrase="facts.incremental">以前の編集から残った古い、差し替え済みのオブジェクトの写しは写しませんでした。</span>
+    <span data-phrase="facts.repaired">元のファイルの相互参照表が壊れていて、探しながら組み直す必要がありました。このファイルを人に渡す前に確かめてください。</span>
+    <span data-phrase="size.small">小</span>
+    <span data-phrase="size.medium">中</span>
+    <span data-phrase="size.large">大</span>
+    <span data-phrase="angle.diagonal">斜め</span>
+    <span data-phrase="angle.flat">水平</span>
+    <span data-phrase="net.clean">書類はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、書類も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、書類も、その1バイトも渡っていません。</span>
+  </div>
+</main>

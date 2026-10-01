@@ -21,9 +21,9 @@ contact_email = "hi@abox.tools"
 # Languages that are no longer built here, and are still served: frozen as they
 # were deployed in 1.4.2 and kept in A-Box-of-Tools/translations, whose folders
 # the deploy copies into the site at the commit named below. English, Simplified
-# Chinese, German, Spanish and Brazilian Portuguese are maintained here. The
-# latter three were restored from the archived sources and brought up to date,
-# so their pages follow the current tools again.
+# Chinese, German, Spanish, Brazilian Portuguese, French and Japanese are
+# maintained here. The latter five were restored from the archived sources and
+# brought up to date, so their pages follow the current tools again.
 #
 # Why. Every change to a tool in English had to be made again in each
 # translated copy of its page, or the build refused it, and nearly nobody was
@@ -48,13 +48,13 @@ contact_email = "hi@abox.tools"
 # its generated site folder in a new archive revision and pin that revision
 # here too, so the deploy cannot copy an old page over a maintained one.
 frozen_languages = [
-  "ar", "fr", "hi", "id", "it", "ja", "ko", "nl", "tr", "zh-TW",
+  "ar", "hi", "id", "it", "ko", "nl", "tr", "zh-TW",
 ]
 
 # Where the frozen languages are kept, and at which commit. A commit rather
 # than a branch, so a push to the archive reaches abox.tools only through a pull
 # request here that moves this line.
-frozen_archive = { repository = "A-Box-of-Tools/translations", commit = "e2efd554826a0639b11e38c9ef6bfcf63823382b" }
+frozen_archive = { repository = "A-Box-of-Tools/translations", commit = "3311738e9deda4c0510e983ad0b4510574174db2" }
 
 # The account the site posts from. It is here rather than in the footer markup
 # because it is the same fact twice: the link a reader follows, and the `sameAs`

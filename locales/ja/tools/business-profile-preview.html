@@ -1,0 +1,584 @@
+<main id="main">
+  <!--
+    The import fold sits above step 1 rather than being a step of its own,
+    because it is an alternative to the whole form rather than a stage in it.
+    Somebody with an existing listing starts here; somebody opening a new one
+    never has to see it.
+  -->
+  <details class="card card-note" id="import-card">
+    <summary><h2>リスティングがあるなら、そこから始める</h2></summary>
+
+    <p class="card-lede">このページには外部への接続機能がなく、プロフィールを取得できません。Googleで自分のリスティングを開き、選択、コピーして下へ貼り付けてください。認識した値を入力し、項目ごとに報告するので、誤った推定も見えます。</p>
+
+    <div class="field">
+      <label for="paste">リスティングを貼り付ける</label>
+      <textarea id="paste" rows="6" spellcheck="false"
+                placeholder="Blue Bottle Coffee&#10;4.5 (1,284)&#10;コーヒーショップ&#10;123 King St W, Toronto, ON M5V 1J5"></textarea>
+      <p class="field-note">名前、評価、カテゴリ、住所、電話番号、ウェブサイト、1週間の営業時間を認識します。写真は文字のクリップボードから渡せないので、手順1で追加してください。</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="read-paste" class="primary">貼り付けた内容を読む</button>
+        <button type="button" id="open-json" class="ghost">保存したプロフィールを開く&hellip;</button>
+      </div>
+    </div>
+
+    <p class="field-note">手順4で保存するJSONを開けます。GoogleビジネスプロフィールAPIの拠点データの書き出しにも対応します。<code>title</code>, <code>storefrontAddress</code>,
+      <code>regularHours</code>という構造が、自分のリスティングの書き出しです。</p>
+
+    <!-- Driven by the button above rather than shown, and named anyway: a
+         control a visitor can reach needs a name whether or not it is the
+         thing they clicked. -->
+    <input type="file" id="json-file" accept="application/json,.json" hidden
+           aria-label="保存したプロフィールかビジネスプロフィールの書き出しを選ぶ">
+
+    <p class="path-note" id="import-note" role="status" hidden></p>
+    <p class="error" id="import-error" role="alert" hidden></p>
+  </details>
+
+  <!-- Step 1 &mdash; who the business is -->
+  <section class="card">
+    <h2><span class="step">1</span>ビジネスを説明する</h2>
+
+    <p class="card-lede">各欄はGoogleがどこかで表示する項目で、入力すると下のプレビューが更新されます。特に名前とカテゴリを確認してください。名前は3つの表示すべてで省略され、カテゴリは検索結果にほかの情報が入らないときにも残る行です。</p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="name">ビジネス名</label>
+        <input type="text" id="name" autocomplete="off" spellcheck="false"
+               value="ブルーボトルコーヒー">
+        <p class="field-note" id="name-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="category">メインカテゴリ</label>
+        <input type="text" id="category" autocomplete="off" list="category-list"
+               value="コーヒーショップ">
+        <!--
+          A shortlist, and deliberately not the whole thing. Google's own
+          category list runs to about four thousand entries, it is Google's
+          data rather than ours, and it changes several times a year - so a
+          copy of it here would be a hundred and sixty kilobytes in each of
+          fifteen translated bodies and would start going stale the day it
+          landed, which on a closed list is worse than saying nothing. These
+          are the everyday trades, as suggestions; the box is ordinary text
+          and takes whatever Google's picker gave you.
+
+          Grouped by comment rather than by <optgroup>: browsers ignore
+          optgroup inside a datalist, so it would be markup nobody sees.
+          Translated per locale, because a category is Google's own wording
+          in each language and not a name that travels.
+        -->
+        <datalist id="category-list">
+          <!-- Food and drink -->
+          <option value="レストラン"></option>
+          <option value="カフェ"></option>
+          <option value="コーヒーショップ"></option>
+          <option value="パン屋"></option>
+          <option value="バー"></option>
+          <option value="パブ"></option>
+          <option value="ワインバー"></option>
+          <option value="醸造所"></option>
+          <option value="ピザ店"></option>
+          <option value="イタリア料理店"></option>
+          <option value="中華料理店"></option>
+          <option value="インド料理店"></option>
+          <option value="メキシコ料理店"></option>
+          <option value="日本料理店"></option>
+          <option value="タイ料理店"></option>
+          <option value="ベトナム料理店"></option>
+          <option value="ギリシャ料理店"></option>
+          <option value="トルコ料理店"></option>
+          <option value="寿司店"></option>
+          <option value="シーフードレストラン"></option>
+          <option value="ステーキハウス"></option>
+          <option value="バーベキューレストラン"></option>
+          <option value="ヴィーガン料理店"></option>
+          <option value="ベジタリアン料理店"></option>
+          <option value="朝食レストラン"></option>
+          <option value="ファストフード店"></option>
+          <option value="サンドイッチ店"></option>
+          <option value="デリカテッセン"></option>
+          <option value="アイスクリーム店"></option>
+          <option value="ジュース店"></option>
+          <option value="ティーハウス"></option>
+          <option value="ケータリング業者"></option>
+          <option value="ナイトクラブ"></option>
+          <!-- Beauty and wellbeing -->
+          <option value="美容院"></option>
+          <option value="理容店"></option>
+          <option value="ビューティーサロン"></option>
+          <option value="ネイルサロン"></option>
+          <option value="スパ"></option>
+          <option value="デイスパ"></option>
+          <option value="マッサージセラピスト"></option>
+          <option value="タトゥーショップ"></option>
+          <option value="ワックス脱毛サービス"></option>
+          <option value="スキンケアクリニック"></option>
+          <!-- Health -->
+          <option value="歯科医"></option>
+          <option value="歯科医院"></option>
+          <option value="矯正歯科医"></option>
+          <option value="医師"></option>
+          <option value="診療所"></option>
+          <option value="理学療法士"></option>
+          <option value="カイロプラクター"></option>
+          <option value="検眼医"></option>
+          <option value="薬局"></option>
+          <option value="獣医"></option>
+          <option value="動物病院"></option>
+          <option value="心理士"></option>
+          <option value="心理療法士"></option>
+          <option value="栄養士"></option>
+          <option value="足病医"></option>
+          <option value="聴覚専門家"></option>
+          <option value="臨床検査施設"></option>
+          <option value="在宅医療サービス"></option>
+          <!-- Home and trade -->
+          <option value="配管工"></option>
+          <option value="電気工"></option>
+          <option value="屋根工事業者"></option>
+          <option value="建設業者"></option>
+          <option value="空調設備業者"></option>
+          <option value="塗装業者"></option>
+          <option value="大工"></option>
+          <option value="造園業者"></option>
+          <option value="芝生の手入れサービス"></option>
+          <option value="鍵屋"></option>
+          <option value="便利屋"></option>
+          <option value="害虫駆除サービス"></option>
+          <option value="清掃サービス"></option>
+          <option value="ハウスクリーニング"></option>
+          <option value="窓清掃サービス"></option>
+          <option value="引越業者"></option>
+          <option value="床工事業者"></option>
+          <option value="キッチンリフォーム業者"></option>
+          <option value="浴室リフォーム業者"></option>
+          <option value="フェンス工事業者"></option>
+          <option value="ガレージドア販売業者"></option>
+          <option value="太陽光発電工事業者"></option>
+          <option value="樹木管理サービス"></option>
+          <option value="家電修理サービス"></option>
+          <option value="廃棄物処理サービス"></option>
+          <!-- Vehicles -->
+          <option value="自動車修理工場"></option>
+          <option value="自動車販売店"></option>
+          <option value="中古車販売店"></option>
+          <option value="タイヤ販売店"></option>
+          <option value="洗車場"></option>
+          <option value="自動車板金工場"></option>
+          <option value="カーコーティングサービス"></option>
+          <option value="ガソリンスタンド"></option>
+          <option value="レッカーサービス"></option>
+          <option value="オートバイ販売店"></option>
+          <option value="レンタカー会社"></option>
+          <option value="自動車教習所"></option>
+          <option value="自動車ガラス店"></option>
+          <!-- Professional services -->
+          <option value="弁護士"></option>
+          <option value="法律事務所"></option>
+          <option value="会計士"></option>
+          <option value="記帳代行サービス"></option>
+          <option value="税務申告サービス"></option>
+          <option value="保険代理店"></option>
+          <option value="不動産会社"></option>
+          <option value="不動産仲介業者"></option>
+          <option value="銀行"></option>
+          <option value="信用組合"></option>
+          <option value="ファイナンシャルプランナー"></option>
+          <option value="住宅ローン仲介業者"></option>
+          <option value="公証人"></option>
+          <option value="マーケティング会社"></option>
+          <option value="広告代理店"></option>
+          <option value="ウェブデザイナー"></option>
+          <option value="ソフトウェア会社"></option>
+          <option value="グラフィックデザイナー"></option>
+          <option value="建築士"></option>
+          <option value="インテリアデザイナー"></option>
+          <option value="土地測量士"></option>
+          <option value="採用担当者"></option>
+          <option value="翻訳者"></option>
+          <option value="経営コンサルタント"></option>
+          <option value="印刷店"></option>
+          <option value="写真家"></option>
+          <option value="映像制作業者"></option>
+          <option value="警備サービス"></option>
+          <!-- Fitness and leisure -->
+          <option value="ジム"></option>
+          <option value="フィットネスセンター"></option>
+          <option value="ヨガスタジオ"></option>
+          <option value="ピラティススタジオ"></option>
+          <option value="パーソナルトレーナー"></option>
+          <option value="武道教室"></option>
+          <option value="ダンス教室"></option>
+          <option value="ボクシングジム"></option>
+          <option value="スポーツクラブ"></option>
+          <option value="ゴルフ場"></option>
+          <option value="ボウリング場"></option>
+          <!-- Shops -->
+          <option value="食料品店"></option>
+          <option value="スーパーマーケット"></option>
+          <option value="コンビニエンスストア"></option>
+          <option value="精肉店"></option>
+          <option value="酒店"></option>
+          <option value="健康食品店"></option>
+          <option value="衣料品店"></option>
+          <option value="靴店"></option>
+          <option value="宝石店"></option>
+          <option value="家具店"></option>
+          <option value="家庭用品店"></option>
+          <option value="金物店"></option>
+          <option value="園芸店"></option>
+          <option value="書店"></option>
+          <option value="花屋"></option>
+          <option value="ペットショップ"></option>
+          <option value="おもちゃ店"></option>
+          <option value="ギフトショップ"></option>
+          <option value="家電販売店"></option>
+          <option value="携帯電話修理店"></option>
+          <option value="コンピューター修理サービス"></option>
+          <option value="スポーツ用品店"></option>
+          <option value="骨董品店"></option>
+          <option value="リサイクルショップ"></option>
+          <option value="眼鏡店"></option>
+          <option value="楽器店"></option>
+          <!-- Hospitality and travel -->
+          <option value="ホテル"></option>
+          <option value="モーテル"></option>
+          <option value="朝食付き宿泊施設"></option>
+          <option value="ゲストハウス"></option>
+          <option value="ホステル"></option>
+          <option value="キャンプ場"></option>
+          <option value="旅行代理店"></option>
+          <option value="イベント会場"></option>
+          <option value="結婚式場"></option>
+          <option value="宴会場"></option>
+          <option value="ツアー会社"></option>
+          <!-- Learning and community -->
+          <option value="幼稚園"></option>
+          <option value="小学校"></option>
+          <option value="家庭教師サービス"></option>
+          <option value="語学学校"></option>
+          <option value="音楽教室"></option>
+          <option value="美術学校"></option>
+          <option value="保育施設"></option>
+          <option value="図書館"></option>
+          <option value="博物館"></option>
+          <option value="美術館"></option>
+          <option value="教会"></option>
+          <option value="コミュニティセンター"></option>
+          <option value="葬儀場"></option>
+          <option value="非営利団体"></option>
+          <!-- Other services -->
+          <option value="保管施設"></option>
+          <option value="宅配サービス"></option>
+          <option value="ドライクリーニング店"></option>
+          <option value="洗濯サービス"></option>
+          <option value="仕立屋"></option>
+          <option value="靴修理店"></option>
+          <option value="時計修理サービス"></option>
+          <option value="看板店"></option>
+          <option value="リサイクルセンター"></option>
+          <option value="職業紹介所"></option>
+        </datalist>
+        <p class="field-note">Googleで使われる言葉の1行です。多くの検索がこの語句に対応します。よく使う約200件を入力中に候補として示しますが、任意の文字を使えます。実際のGoogleの一覧は約4000件で、選べる項目の基準はその一覧です。</p>
+      </div>
+    </div>
+
+    <div class="settings numbers">
+      <div class="field">
+        <label for="rating">星の評価</label>
+        <input type="number" id="rating" min="0" max="5" step="0.1" inputmode="decimal"
+               value="4.5">
+      </div>
+
+      <div class="field">
+        <label for="reviews">クチコミ</label>
+        <input type="number" id="reviews" min="0" step="1" inputmode="numeric"
+               value="1284">
+      </div>
+
+      <div class="field">
+        <label for="price">価格帯</label>
+        <select id="price">
+          <option value="">表示しない</option>
+          <option value="$">$：安価</option>
+          <option value="$$" selected>$$：標準</option>
+          <option value="$$$">$$$：高価</option>
+          <option value="$$$$">$$$$：非常に高価</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="field-summary">評価とクチコミ数を空にすると、新しいリスティングと同じ「クチコミはまだありません」の行を表示します。空の星5つは一見1つ星に見えるため表示しません。実際のリスティングで予想外の見え方を避けるためです。</p>
+
+    <div class="field">
+      <label for="description">説明</label>
+      <textarea id="description" rows="3">少量焙煎のコーヒー豆とカフェ。シングルオリジンのエスプレッソとハンドドリップを毎日提供します。2本先の通りで焙煎した豆を袋で販売しています。</textarea>
+      <p class="field-note" id="description-note"></p>
+    </div>
+
+    <div class="field">
+      <label for="attributes">属性</label>
+      <input type="text" id="attributes" autocomplete="off"
+             value="店内飲食, テイクアウト, 車椅子対応">
+      <p class="field-note">コンマで区切ります。例：<code>店内飲食, テイクアウト, 車椅子対応</code>。カードに表示するのは最大6件です。</p>
+    </div>
+
+    <fieldset class="options">
+      <legend>カバー写真</legend>
+      <p class="field-note">このページで読み、小さく描き直して画像内に収めます。端末からは出ず、撮影日時や場所の情報は描き直した時点でなくなります。</p>
+      <div class="toolbar">
+        <div class="toolbar-actions">
+          <button type="button" id="pick-photo" class="ghost">写真を選ぶ&hellip;</button>
+          <button type="button" id="drop-photo" class="ghost danger" hidden>写真を削除</button>
+        </div>
+      </div>
+      <input type="file" id="photo-file" accept="image/*" hidden
+             aria-label="リスティングのカバー写真を選ぶ">
+      <p class="path-note" id="photo-note" role="status" hidden></p>
+    </fieldset>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">例を試す</button>
+        <button type="button" id="clear" class="ghost danger">すべての欄をクリア</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the three fields that turn into buttons -->
+  <section class="card">
+    <h2><span class="step">2</span>所在地と連絡先</h2>
+
+    <p class="card-lede">この3つがボタンを決めます。住所がなければ<em>経路</em>、ウェブサイトがなければ<em>ウェブサイト</em>、電話番号がなければ<em>電話</em>のボタンはありません。プレビューですぐ確認でき、実際のプロフィールでも抜けやすい項目です。</p>
+
+    <div class="field">
+      <label for="address">住所</label>
+      <input type="text" id="address" autocomplete="off"
+             value="123 King St W, Toronto, ON M5V 1J5">
+      <p class="field-note">リスティングで表示するように1行で入力します。</p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="service-area">
+      <span>
+        <strong>出張サービスのビジネスです</strong>
+        <span class="check-note">配管工、訪問トリマー、配達専門の店などです。Googleは住所ではなく対応地域を表示し、上の欄もその地域を入力する欄になります。</span>
+      </span>
+    </label>
+
+    <div class="settings">
+      <div class="field">
+        <label for="phone">電話番号</label>
+        <input type="tel" id="phone" autocomplete="off" value="(416) 555-0134">
+      </div>
+
+      <div class="field">
+        <label for="website">ウェブサイト</label>
+        <input type="url" id="website" autocomplete="off" spellcheck="false"
+               value="https://www.example.com">
+        <p class="field-note">表示では<code>https://</code>や<code>www.</code>を省きます。リスティングと同じ表示です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the hours, and the sentence they produce -->
+  <section class="card">
+    <h2><span class="step">3</span>営業時間</h2>
+
+    <p class="card-lede">リスティングの中で自動で変わる行です。1週間を入力すると、端末の現在時刻から表示を計算します。例：<em>営業中 &middot; 午後9時に閉店</em>、または<em>営業時間外 &middot; 火曜日の午前9時に開店</em>。日曜日の夜に探す人に何が見えるかを確認できます。</p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="status">営業状態</label>
+        <select id="status">
+          <option value="auto" selected>下の営業時間から計算</option>
+          <option value="open24">24時間営業</option>
+          <option value="temporary">臨時休業</option>
+          <option value="permanent">閉業</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="clock">時計表示</label>
+        <select id="clock">
+          <option value="12" selected>12時間：午後9時</option>
+          <option value="24">24時間：21:00</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="week" id="week"></div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="copy-monday" class="ghost">月曜日をすべての曜日にコピー</button>
+        <button type="button" id="weekdays-only" class="ghost">平日だけ</button>
+      </div>
+    </div>
+
+    <p class="field-summary" id="week-note"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">4</span>確認して保存する</h2>
+
+    <p class="card-lede">同じプロフィールを3つの長さで表示します。パネルに入る情報が検索結果にも入るとは限りません。名前を知らない人が見つけるのは検索結果なので、切り替えて確認してください。</p>
+
+    <div class="chips" role="group" aria-label="プレビューする表示面">
+      <button type="button" class="chip" data-surface="panel" aria-pressed="true">ナレッジパネル</button>
+      <button type="button" class="chip" data-surface="mobile" aria-pressed="false">電話の画面</button>
+      <button type="button" class="chip" data-surface="listing" aria-pressed="false">検索結果</button>
+    </div>
+
+    <div class="stage" id="stage"></div>
+
+    <p class="field-summary" id="stage-note"></p>
+
+    <div class="export-row">
+      <label for="scale">サイズ</label>
+      <select id="scale">
+        <option value="1" selected>実寸</option>
+        <option value="2">2倍</option>
+        <option value="3">3倍</option>
+      </select>
+      <button type="button" id="save-png" class="primary big">PNGをダウンロード</button>
+      <button type="button" id="save-svg" class="ghost">SVGをダウンロード</button>
+      <button type="button" id="save-json" class="ghost">プロフィールを保存</button>
+    </div>
+
+    <p class="path-note" id="save-note" role="status" hidden></p>
+    <p class="error" id="save-error" role="alert" hidden></p>
+
+    <!--
+      Deliberately a plain paragraph rather than a field-summary. Everything in
+      that class is folded behind the card's heading by buildlib/cards.py,
+      which is right for an explanation and wrong for this one: a page drawing
+      somebody else's interface this recognisably has to say on sight that it
+      is a drawing and that Google had nothing to do with it. A disclaimer
+      behind a fold is a disclaimer nobody read. The longer version of the same
+      point is a field-summary below, and folds like everything else.
+    -->
+    <p class="mock-note">画面の撮影ではなく描画です。Googleが作成、承認、提携したものではありません。</p>
+
+    <p class="field-summary">実際の画面は端末にないGoogle Sansを使い、レイアウトも更新で変わるため、間隔は近似です。正確に確認できるのは、与えられた幅に各欄のどこまでが収まるかです。</p>
+  </section>
+
+  <!--
+    Sentences the JavaScript puts on the page. They live here rather than in
+    src/ so that they arrive in the page's language: shared/js/phrases.js reads
+    them back, and a {name} is filled in by the caller. See the note at the top
+    of that file for why a string in a module is English on fourteen pages out
+    of fifteen.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="label.reviews">Googleのクチコミ{count}件</span>
+    <span data-phrase="label.review1">Googleのクチコミ1件</span>
+    <span data-phrase="label.reviewsshort">({count})</span>
+    <span data-phrase="label.noreviews">クチコミはまだありません</span>
+    <span data-phrase="label.website">ウェブサイト</span>
+    <span data-phrase="label.directions">経路</span>
+    <span data-phrase="label.call">電話</span>
+    <span data-phrase="label.save">保存</span>
+    <span data-phrase="label.share">共有</span>
+    <span data-phrase="label.from">ビジネスからの情報</span>
+    <span data-phrase="label.serves">対応地域：{area}</span>
+    <span data-phrase="sample.placeholder">ビジネス名</span>
+
+    <span data-phrase="status.open">営業中</span>
+    <span data-phrase="status.closed">営業時間外</span>
+    <span data-phrase="status.closes">{at}に閉店</span>
+    <span data-phrase="status.opens">{at}に開店</span>
+    <span data-phrase="status.opensday">{day}の{at}に開店</span>
+    <span data-phrase="status.open24">24時間営業</span>
+    <span data-phrase="status.temporary">臨時休業</span>
+    <span data-phrase="status.permanent">閉業</span>
+
+    <span data-phrase="time.am">AM</span>
+    <span data-phrase="time.pm">PM</span>
+
+    <span data-phrase="day.sun">日</span>
+    <span data-phrase="day.mon">月</span>
+    <span data-phrase="day.tue">火</span>
+    <span data-phrase="day.wed">水</span>
+    <span data-phrase="day.thu">木</span>
+    <span data-phrase="day.fri">金</span>
+    <span data-phrase="day.sat">土</span>
+
+    <span data-phrase="day.long.sun">日曜日</span>
+    <span data-phrase="day.long.mon">月曜日</span>
+    <span data-phrase="day.long.tue">火曜日</span>
+    <span data-phrase="day.long.wed">水曜日</span>
+    <span data-phrase="day.long.thu">木曜日</span>
+    <span data-phrase="day.long.fri">金曜日</span>
+    <span data-phrase="day.long.sat">土曜日</span>
+
+    <span data-phrase="week.open">{day}に開店</span>
+    <span data-phrase="week.close">{day}に閉店</span>
+    <span data-phrase="week.shut">{day}は休業</span>
+    <span data-phrase="week.copied">月曜日の営業時間をすべての曜日にコピーしました。</span>
+    <span data-phrase="week.weekdays">月曜日から金曜日まで営業、週末は休業にしました。</span>
+    <span data-phrase="week.reads">現在は{status}と表示されます。端末の時計から計算するので、別の時間帯の同僚には違う行が見えます。</span>
+
+    <span data-phrase="name.length">{count}文字です。検索結果の名前は1行で、幅に収まらない部分は切られます。3番目のプレビューで確認してください。</span>
+    <span data-phrase="description.length">{count}文字です。パネルには最初の約4行が表示されます。</span>
+
+    <span data-phrase="photo.added">このページで追加し、{width}×{height}に縮小して描きました。画像を読むためのアップロードはありません。</span>
+    <span data-phrase="photo.toobig">画像が大きすぎます。上限は20MBです。</span>
+    <span data-phrase="photo.unreadable">このブラウザが読める画像ではありません。</span>
+    <span data-phrase="photo.tiny">カードに使うには画像が小さすぎます。</span>
+    <span data-phrase="photo.gone">削除しました。写真がないリスティングと同じ灰色の枠を表示します。</span>
+
+    <span data-phrase="sample.done">カバー写真を含む例を入力しました。写真は取得せず、このページで描いたものです。好きに書き換えてください。</span>
+    <span data-phrase="clear.done">クリアしました。何も入力していないリスティングの見え方を確認できます。</span>
+
+    <span data-phrase="sample.name">アシュグローブベイクハウス</span>
+    <span data-phrase="sample.category">パン屋</span>
+    <span data-phrase="sample.address">ミルレーン42番地、ブリストルBS1 4RN</span>
+    <span data-phrase="sample.phone">+44 117 496 0142</span>
+    <span data-phrase="sample.website">https://ashgrove.example.com</span>
+    <span data-phrase="sample.description">夜通し焼いたサワードウとペストリーを朝7時から売り切れるまで販売。長時間発酵のパン、厳選メニュー、持ち帰りコーヒーをご用意しています。</span>
+    <span data-phrase="sample.attributes">テイクアウト, 車椅子対応, ベジタリアン向けメニュー</span>
+
+    <span data-phrase="stage.panel">ナレッジパネル、{width}×{height}画素です。</span>
+    <span data-phrase="stage.mobile">電話の画面、{width}×{height}画素です。</span>
+    <span data-phrase="stage.listing">検索結果、{width}×{height}画素です。</span>
+    <span data-phrase="stage.alt">{name}のGoogleリスティングの見本：{status}、{reviews}。</span>
+
+    <span data-phrase="save.done">保存しました。{name}、{width}×{height}画素です。描画のために送信したものはありません。</span>
+    <span data-phrase="save.svgdone">SVGで保存しました。写真もファイル内に含み、外部へのリンクはありません。</span>
+    <span data-phrase="save.jsondone">保存しました。このファイルをここで開くとプロフィールを再開できます。</span>
+    <span data-phrase="save.failed">{detail}。SVGはそれでもダウンロードされます。</span>
+    <span data-phrase="save.nosvg">ブラウザが画像を描けませんでした</span>
+    <span data-phrase="save.nopng">ブラウザがPNGを書けませんでした</span>
+
+    <span data-phrase="paste.empty">読み取る内容が空です。</span>
+    <span data-phrase="paste.nothing">リスティングらしい内容を見つけられませんでした。1行だけでなく、名前、星、その下の行を含めたカード全体をコピーしてください。</span>
+    <span data-phrase="paste.read">読み取った項目：{fields}。残りはそのままです。どれも推定なので確認してください。</span>
+
+    <span data-phrase="field.name">名前</span>
+    <span data-phrase="field.category">カテゴリ</span>
+    <span data-phrase="field.rating">評価</span>
+    <span data-phrase="field.reviews">クチコミ数</span>
+    <span data-phrase="field.address">住所</span>
+    <span data-phrase="field.phone">電話番号</span>
+    <span data-phrase="field.website">ウェブサイト</span>
+    <span data-phrase="field.price">価格帯</span>
+    <span data-phrase="field.hours">営業時間</span>
+    <span data-phrase="field.description">説明</span>
+    <span data-phrase="field.list">{first}と{last}</span>
+
+    <span data-phrase="load.own">読み込みました。このページが保存したプロフィールです。</span>
+    <span data-phrase="load.google">ビジネスプロフィールの書き出しとして読み込みました。評価、クチコミ数、写真は含まれないので、自分で入力してください。</span>
+    <span data-phrase="load.notjson">読み取れるJSONではありません。</span>
+    <span data-phrase="load.unknown">このページが保存したプロフィールでも、ビジネスプロフィールの拠点データでもありません。</span>
+
+    <span data-phrase="net.clean">入力したビジネス情報はどこへも送られていません。{total}個のファイルを読み込みました。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも入力欄、写真、営業時間を渡していません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも入力欄、写真、営業時間を渡していません。</span>
+  </div>
+</main>

@@ -1,0 +1,46 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>Öffnen Sie den <a href="../../video-komprimieren/">Videokompressor</a>, ziehen Sie den Clip hinein und wählen Sie die vorgegebene Grenze &mdash; 8 MB, 16, 25, 50 oder 100 &mdash; oder geben Sie eine beliebige Zahl ein. Die Zeile unter dem Feld erklärt, was damit möglich ist: die Bildgröße und Bitrate, für die bei der Länge des Clips Platz bleibt. Drücken Sie die Schaltfläche. Der Clip wird auf Ihrem Rechner kodiert, an der Grenze gemessen und noch einmal geöffnet, um seine unveränderte Länge zu prüfen. Nichts wird hochgeladen.</p>
+    <p>Der Rest erklärt, was Sie dabei eintauschen. Bei einer ZIP-Datei bedeutet „komprimieren“ etwas ohne Verlust; bei einem Video ist das anders.</p>
+  </section>
+
+  <section>
+    <h2>Wohin die Megabytes gehen</h2>
+    <p>Eine Videodatei besteht fast vollständig aus dem Bild. Eine Minute in 1080p vom Handy belegt etwa 60 bis 150 MB, davon ungefähr eines für den Ton. Der Rest sind dreißig Bilder pro Sekunde, jeweils beschrieben durch die Änderungen seit dem vorherigen. Die Größe eines Videos ist daher annähernd eine einzige Zahl: die erlaubten Bits pro Sekunde für das Bild &mdash; die <em>Bitrate</em> &mdash; multipliziert mit seiner Laufzeit.</p>
+    <p>Deshalb wird aus einer Größenbegrenzung unmittelbar eine Bitrate. Von der Obergrenze werden der unverändert kopierte Ton und ein kleiner Anteil für den Container abgezogen. Der Rest wird durch die Länge des Clips geteilt. Eine Grenze von 25 MB für einen Clip von zwei Minuten lässt dem Bild etwa 1,6 Megabit pro Sekunde. Das ist das gesamte Budget, aus dem alles Weitere folgt.</p>
+  </section>
+
+  <section>
+    <h2>Warum das Bild kleiner wird, bevor es schlechter wird</h2>
+    <p>Eine Bitrate sagt erst im Verhältnis zur Zahl der darzustellenden Pixel etwas aus. 1,6 Megabit pro Sekunde für 1080p &mdash; zwei Millionen Pixel, dreißigmal pro Sekunde &mdash; lassen jedem Pixel fast nichts. Der Encoder reagiert darauf mit Verschmieren. Kanten werden weich, flache Bereiche werden zu Blöcken und Bewegungen verschwimmen. Dieselben 1,6 Megabit ergeben bei 720p ein gut anschaubares Bild und bei 480p ein gutes.</p>
+    <p>Das Werkzeug geht deshalb die Bildgrößen 1080p, 720p, 480p und 360p durch, bis jedem Bild genügend Bits bleiben. Es tut das vor dem Start und erklärt die Entscheidung. Ein kleineres, klares Bild ist auf jedem Bildschirm besser als ein größeres, verschmiertes. Jeder Dienst, der Uploads annimmt, tut genau das stillschweigend mit Ihrem Video. In die andere Richtung geht das Werkzeug nie: Ein Clip wird nicht über seine ursprüngliche Größe vergrößert.</p>
+    <p>Sie können die Entscheidung ändern. Eine Bildschirmaufnahme mit lesbarem Text muss vielleicht 1080p behalten und dafür ein weicheres Bild hinnehmen. Ein Clip, der nur auf einem Handy angesehen wird, kann auf 480p gehen und die Bits stattdessen für Bewegung nutzen.</p>
+  </section>
+
+  <section>
+    <h2>Was verloren geht und wie Sie den Verlust begrenzen</h2>
+    <p>Ein komprimiertes Video ist ein neu kodiertes Video. Das Bild wird dekodiert, kleiner gezeichnet und mit der neuen Bitrate geschrieben. Es liegt damit eine Generation weiter vom Kamerabild entfernt als die Ausgangsdatei. Der Ton bleibt unberührt: Seine Samples werden genau so in die neue Datei kopiert, wie sie waren. Den Bildverlust bestimmt die Zahl. Ein halb so großer Clip verliert wenig; ein Clip von 900 MB, der auf 25 MB sinkt, verliert die meisten Bits, und das sieht man.</p>
+    <ul>
+      <li><strong>Wählen Sie die benötigte Grenze und keine kleinere.</strong> Bei einer Grenze von 25 MB sind 25 MB richtig. 8 MB werfen ohne Grund zwei Drittel des Bildbudgets weg.</li>
+      <li><strong>Schneiden Sie zuerst.</strong> Die Länge ist die andere Hälfte der Multiplikation. Zehn unnötige Sekunden verbrauchen Bitrate, die jeder verbleibenden Sekunde hätte zugutekommen können. Der <a href="../../ratgeber/video-kuerzen/">Videoschneider</a> schneidet ohne Neukodierung. Machen Sie das deshalb zuerst.</li>
+      <li><strong>Lassen Sie unwichtigen Ton weg.</strong> Eine Minute Stereo benötigt etwa ein Megabyte. Bei einem kurzen Clip mit enger Grenze entscheidet dieses Megabyte oft zwischen einem klaren und einem verschmierten Bild.</li>
+      <li><strong>Behalten Sie das Original.</strong> Ein komprimiertes Video lässt sich nicht wiederherstellen. Komprimieren und versenden Sie eine Kopie und behalten Sie die Datei aus der Kamera.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Warum der Upload der merkwürdige Teil ist</h2>
+    <p>Ein Onlinekompressor verlangt, dass Sie die Datei hochladen, die zum Hochladen zu groß war. Die 900 MB müssen über Ihre Verbindung hinauf, damit 25 MB zurückkommen können. Bei den meisten Heimanschlüssen dauert der Upload länger als die Kodierung. Dazu kommt die Frage, die auch die anderen Ratgeber hier stellen: Was wird behalten, wie lange und wer kann es sehen? Bei einem Video Ihrer Kinder oder Ihres Wohnzimmers ist das keine nebensächliche Frage.</p>
+    <p>All das ist unnötig. Jeder Browser aus den letzten Jahren enthält dieselben Videocodecs wie ein Handy. <a href="../../video-komprimieren/">Dieses Werkzeug</a> verwendet sie: Der Clip wird stückweise von Ihrer Festplatte gelesen, dekodiert, kleiner gezeichnet und auf Ihrem Rechner neu kodiert. Die fertige Datei bleibt bis zum Speichern im Arbeitsspeicher. Die Sicherheitsrichtlinie der Seite nennt jede erlaubte Kontaktadresse; keine gehört zu dieser Website. Das Werkzeug funktioniert auch ohne Netzwerk. Wenn Sie das selbst prüfen möchten, trennen Sie die Verbindung und komprimieren Sie trotzdem.</p>
+    <p>Die allgemeinere Erklärung dazu steht in <a href="../../ratgeber/ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien hochzuladen?</a>.</p>
+  </section>
+
+  <section>
+    <h2>Was das Werkzeug prüft, bevor es die Datei ausgibt</h2>
+    <p>Ein Encoder trifft eine angeforderte Bitrate ungefähr, nicht exakt. Deshalb wird zunächst etwas unter der Grenze kodiert und die Datei anschließend gemessen. Ist sie zu groß, wird die Bitrate aus der Abweichung neu berechnet und der Clip erneut kodiert. Die Seite meldet das. Anschließend wird die fertige Datei auf Ihrem Rechner erneut geöffnet und ihre ursprüngliche Länge geprüft. Auch ein Kompressor, der die letzte Sekunde oder den Ton verliert, erzeugt eine kleinere Datei. Erst das erneute Lesen zeigt den Unterschied. Das Ergebnis lässt sich unter dem Download abspielen, damit Sie es vor dem Versenden ansehen können.</p>
+  </section>
+
+  <section>
+    <h2>Was es schreibt und was es liest</h2>
+    <p>Es schreibt MP4 mit H.264-Video, weil jedes Handy, jeder Browser, jede Chat-App und jedes E-Mail-Programm diese Kombination abspielt. Genau darum geht es bei einer Datei, die sich versenden lassen soll. WebM, HEVC oder AV1 werden nicht geschrieben: Sie sind bei gleicher Qualität kleiner, aber viele Empfänger können sie nicht öffnen. Gelesen werden MP4 und MOV, wie sie Handys, Kameras und Bildschirmrekorder schreiben, mit jedem enthaltenen Codec, den Ihr Browser dekodiert. Ein HEVC-Clip vom iPhone öffnet sich auf den meisten Rechnern. WebM, MKV und AVI werden noch nicht gelesen; die Seite erklärt das, wenn sie eine solche Datei erhält.</p>
+  </section>
