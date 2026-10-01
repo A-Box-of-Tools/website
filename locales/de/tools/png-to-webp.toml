@@ -37,7 +37,7 @@ body = " Die Content-Security-Policy nennt jede Adresse, die diese Seite kontakt
 
 [[privacy]]
 title = "Die Transparenz bleibt erhalten. Genau darum geht es meistens."
-body = " WebP hat ebenso wie PNG einen Alphakanal. Ein Logo mit transparentem Hintergrund behält ihn. Es gibt keine Hintergrundfarbe zu wählen und keine Transparenz aufzufüllen. Das unterscheidet dieses Werkzeug vom benachbarten Konverter <a href=\"../webp-to-jpg/\">WebP zu JPG</a>, der danach fragen muss, weil JPEG keinen Alphakanal hat."
+body = " WebP hat ebenso wie PNG einen Alphakanal. Ein Logo mit transparentem Hintergrund behält ihn. Es gibt keine Hintergrundfarbe zu wählen und keine Transparenz aufzufüllen. Das unterscheidet dieses Werkzeug vom benachbarten Konverter <a href=\"../webp-in-jpg-umwandeln/\">WebP zu JPG</a>, der danach fragen muss, weil JPEG keinen Alphakanal hat."
 
 [[privacy]]
 title = "Verlustfreiheit wird geprüft."
@@ -93,7 +93,7 @@ a = "Die fertige Datei wird erneut gelesen und geprüft. WebP speichert Pixel in
 
 [[faq]]
 q = "Lässt sich WebP wirklich überall öffnen?"
-a = "Im Web ja: Chrome, Edge, Firefox und Safari zeigen WebP seit 2020. Für Websites ist kein Ersatzformat mehr nötig. Außerhalb des Browsers ist die Unterstützung uneinheitlicher. Windows und macOS zeigen inzwischen Vorschauen, doch ältere Desktopsoftware, einige Uploadformulare und viele E-Reader lehnen WebP weiterhin ab. Verwenden Sie für solche Ziele den Konverter <a href=\"../webp-to-jpg/\">WebP zu JPG</a>, der in die andere Richtung arbeitet."
+a = "Im Web ja: Chrome, Edge, Firefox und Safari zeigen WebP seit 2020. Für Websites ist kein Ersatzformat mehr nötig. Außerhalb des Browsers ist die Unterstützung uneinheitlicher. Windows und macOS zeigen inzwischen Vorschauen, doch ältere Desktopsoftware, einige Uploadformulare und viele E-Reader lehnen WebP weiterhin ab. Verwenden Sie für solche Ziele den Konverter <a href=\"../webp-in-jpg-umwandeln/\">WebP zu JPG</a>, der in die andere Richtung arbeitet."
 
 [[faq]]
 q = "Warum ist mein PNG überhaupt so groß?"
