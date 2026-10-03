@@ -6,6 +6,12 @@ The seventh tool. You watch a video and mark every part worth keeping as it
 plays; it gives those parts back as one file. On the normal path it does that
 without decoding a single frame.
 
+Every drop, file selection or example starts a new job, replacing the previous
+videos, marks and result. Several videos delivered together still form one
+join. A batch generation keeps a slow read, thumbnail, still frame or cancelled
+export from putting a discarded video back, and the language switch carries
+only that latest batch.
+
 ---
 
 ## The shape of it, which is the whole point

@@ -320,10 +320,12 @@
     var picked = [];
     for (var i = 0; i < (files ? files.length : 0); i += 1) picked.push(files[i]);
     if (!picked.length) return;
-    // A picker marked `multiple` belongs to a tool that adds to a list; one
-    // without it replaces what it had. Following the input's own attribute is
-    // how this gets both right without knowing which tool it is on.
-    held = (input && input.multiple && !restoring) ? held.concat(picked) : picked;
+    // Multiple-file tools usually append, but some replace their whole batch
+    // on each delivery. Their input opts out so a language switch cannot bring
+    // the discarded batch back. Read the flag when files arrive: the tool's
+    // module sets it after this frame script has registered its listeners.
+    held = (input && input.multiple && input.dataset.languageReplace !== '1' && !restoring)
+      ? held.concat(picked) : picked;
   }
 
   if (input) {
