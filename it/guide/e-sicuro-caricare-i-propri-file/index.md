@@ -1,0 +1,91 @@
+# È sicuro caricare i propri file sui convertitori online?
+
+Di solito la risposta onesta è «probabilmente sì, ma non lo puoi verificare». Vediamo cosa fa davvero un caricamento al tuo file, perché quasi tutti gli strumenti lo fanno ancora, e quattro prove che ti dicono se quello che hai davanti ne ha bisogno.
+
+Ultimo aggiornamento 26 agosto 2026
+
+## La risposta corta
+
+Per quasi tutti i file, quasi sempre, caricare va bene. I convertitori seri cancellano quello che mandi nel giro di qualche ora e delle tue foto delle vacanze non sanno che farsene.
+
+Il problema non è che stiano mentendo. È che **non hai modo di sapere se lo stanno facendo**. Una volta che un file lascia il tuo dispositivo, ogni promessa su quello che succede dopo è una promessa che prendi sulla fiducia: per quanto viene tenuto, chi ci può arrivare, se finisce in un backup che sopravvive al timer di cancellazione, cosa gli succede se l'azienda viene venduta o violata. Niente di tutto questo si vede da fuori.
+
+Quindi la domanda utile non è «mi fido di questo sito?», è **«questo lavoro ha davvero bisogno che il mio file se ne vada?»**. Per un numero grande e crescente di lavori la risposta è no, e quando la risposta è no, la domanda sulla fiducia smette di essere una di quelle a cui devi rispondere.
+
+## Cosa fa davvero un «caricamento»
+
+Quando un convertitore ti chiede di scegliere un file e poi ti mostra una barra di avanzamento, il tuo browser sta copiando tutto il file, byte per byte, attraverso internet, su un computer che è di qualcun altro. Quel computer lo scrive su un disco, esegue la conversione, scrive il risultato sullo stesso disco, e ti passa un link.
+
+In quel momento il tuo file esiste in almeno tre posti che non hai scelto tu: il disco del server, i registri che hanno annotato la richiesta, e spesso una rete di distribuzione dei contenuti che ha messo in cache il risultato perché lo scaricamento sia rapido. Una politica di cancellazione deve arrivare a tutti e tre. Quasi tutte dicono di arrivarci, e tu non ne puoi verificare nemmeno una.
+
+Vale anche la pena saperlo: il file non è l'unica cosa che arriva. Il nome del file va con lui, e ci va anche tutto quello che c'è dentro il file e che tu non vedi. Una foto appena uscita da un telefono porta di solito le coordinate GPS esatte del posto in cui è stata scattata, l'ora, il numero di serie della fotocamera, e a volte una miniatura incorporata dell'immagine originale, quella di prima che la ritagliassi. Chi sta attento all'immagine spesso a quello non ci pensa, perché sullo schermo non c'è niente che glielo mostri.
+
+## Perché quasi tutti gli strumenti caricano lo stesso
+
+Non perché vogliano i tuoi file, ma perché per quasi tutta la vita del web un'alternativa non c'era. Un browser non sapeva decodificare un video, ricodificare un'immagine a una qualità scelta o analizzare un formato di file; un server con FFmpeg e ImageMagick sì. Caricare non era un modello di business, era l'unico posto in cui il lavoro potesse avvenire.
+
+Ha smesso di essere vero di recente e in sordina. I browser ormai si portano dietro WebAssembly, che esegue gli stessi codec compilati a una velocità vicina a quella nativa, WebCodecs, che espone l'encoder video hardware che il tuo dispositivo ha già, e un'API Canvas che sa decodificare e ricodificare immagini direttamente. Il lavoro per cui serviva un server adesso gira sul dispositivo che il file ce l'ha già.
+
+Parecchi strumenti caricano ancora, e ci sono motivi onesti: una catena esistente che nessuno vuole riscrivere, un formato senza decodificatore lato browser, un lavoro davvero troppo pesante per un telefono. C'è anche un motivo meno onesto, ed è che è sul server che vivono gli account, le quote e i piani a pagamento. Uno strumento che gira interamente nel tuo browser è difficile da contabilizzare.
+
+## Quattro verifiche che puoi fare da solo
+
+Funzionano su qualunque strumento, questo compreso. Nessuna richiede di credere a qualcuno sulla parola, e la prima richiede una decina di secondi.
+
+### 1. Stacca la spina
+
+Carica la pagina, poi spegni il wi-fi o stacca il cavo, e prova a usarla. Uno strumento che fa il lavoro nel tuo browser continua esattamente come prima. Uno strumento che carica si ferma subito, perché la cosa che faceva il lavoro non è più raggiungibile.
+
+È la prova più forte che ci sia, ed è la più difficile da falsificare, perché non le si può rispondere con una formulazione: o la conversione si completa senza rete, o non si completa.
+
+### 2. Guarda il pannello Rete
+
+Apri gli strumenti per sviluppatori del tuo browser, scegli Rete, poi usa lo strumento. Ogni richiesta che la pagina fa è elencata con la sua dimensione. Se la tua foto da 4 MB è stata caricata, in quell'elenco c'è una richiesta da 4 MB. Se la cosa più grande che esce dalla pagina sono qualche kilobyte di pubblicità, non lo è stata.
+
+Ordina per dimensione e guarda in cima. Non ti serve capire le richieste, ti serve accorgerti se una di loro è della dimensione del tuo file.
+
+### 3. Leggi la Content-Security-Policy
+
+Guarda il sorgente della pagina e cerca `Content-Security-Policy`, vicino alla cima. È l'elenco degli indirizzi che quella pagina può contattare, e a farlo rispettare è il tuo browser e non le buone intenzioni del sito: una richiesta verso qualcosa che nell'elenco non c'è viene rifiutata, qualunque cosa provi a fare il codice.
+
+La direttiva che conta è `connect-src`, che regola dove la pagina può mandare dati. Se nomina un indirizzo appartenente al sito su cui ti trovi, la pagina può mandarci il tuo file. Se non nomina niente, o nomina solo terze parti come una rete pubblicitaria, non può.
+
+Una pagina senza nessuna Content-Security-Policy non è la prova di niente di brutto. Vuol dire solo che questa particolare verifica non ha niente da dirti.
+
+### 4. Leggi il codice
+
+La meno comoda, e la più conclusiva. Se uno strumento pubblica il proprio sorgente e lo serve senza un passaggio di compilazione, i file che il tuo browser ha recuperato sono i file che puoi leggere. Cercaci `fetch`, `XMLHttpRequest` e `sendBeacon`, i tre modi in cui una pagina può mandare qualcosa, e guarda cosa gli viene passato.
+
+Quasi nessuno lo farà. Conta lo stesso che sia possibile, perché un'affermazione che nessuno è in grado di verificare non è davvero un'affermazione.
+
+## Cosa non vuol dire «gira nel tuo browser»
+
+Vale la pena essere precisi, perché l'espressione viene usata alla leggera e questo sito deve tenersi allo stesso standard che sta proponendo.
+
+- **Non vuol dire nessuna richiesta.** La pagina stessa è arrivata dalla rete, e quasi tutti gli strumenti gratuiti hanno pubblicità o statistiche che parlano con qualcuno. L'affermazione riguarda il tuo *file*, non il traffico in generale.
+- **Non nasconde il tuo indirizzo IP.** Lo vede ogni sito che visiti, questo compreso. L'elaborazione locale riguarda il contenuto dei tuoi file, non l'anonimato.
+- **Non sopravvive a una funzione che recupera qualcosa.** Uno strumento che ti lascia incollare un indirizzo web deve contattare quell'indirizzo, e quel server viene a sapere il tuo IP e cosa hai chiesto. È insito nella funzione e non è un suo difetto, ma resta un'eccezione vera, e uno strumento dovrebbe dirlo chiaramente invece di arrotondarla.
+- **Non è la stessa cosa di «cancelliamo i tuoi file».** La seconda frase riguarda quello che un'azienda sceglie di fare. La prima riguarda quello che è tecnicamente possibile. Solo una delle due è verificabile.
+
+## Quando caricare va davvero bene
+
+Questo non è un ragionamento per cui ogni caricamento è un errore. Manda il file quando il contenuto non è delicato e il lavoro è più facile così; quando il lavoro è davvero troppo pesante per il tuo dispositivo; quando il formato non ha un decodificatore lato browser; oppure quando stai usando un servizio con cui hai già un rapporto e di cui le condizioni le hai lette davvero.
+
+Stai più attento quando il file contiene qualcosa che non pubblicheresti: documenti d'identità, esami medici, contratti, qualunque cosa con un indirizzo o un volto che non avevi intenzione di condividere, o una foto di cui non hai guardato i dati di posizione. Per quelli, uno strumento che puoi verificare è da preferire a uno di cui ti devi fidare, e non perché quello di cui ti fidi sia probabile che ti tradisca, ma perché con quello verificabile la domanda non si pone.
+
+## Come risponde questo sito a quelle quattro verifiche
+
+Sarebbe una guida strana quella che ti dice di verificare e poi chiede un'esenzione. Quindi, in ordine:
+
+- **Stacca la spina.** Apri uno strumento qualsiasi di qui, stacca la connessione, e continua a funzionare. La pagina di ogni strumento ha un indicatore dal vivo che ti dice se in questo momento sei online, così puoi guardarlo cambiare.
+- **Pannello Rete.** Converti qualcosa e leggi l'elenco. Non c'è niente che porti con sé il tuo file, una sua miniatura, il suo nome, la sua dimensione, o qualunque cosa ci sia stata letta dentro. Su questo sito non esiste nessun evento di analytics personalizzato che abbia qualcosa del genere da mandare.
+- **Content-Security-Policy.** Sta in cima al sorgente di ogni pagina. `connect-src` nomina gli endpoint pubblicitari e di misurazione di Google e il pulsante delle donazioni, e nient'altro. **Nessun indirizzo di quell'elenco appartiene a questo sito**, perché questo sito un server non ce l'ha: sono file statici. Non c'è nessun posto dove un file potrebbe essere mandato, nemmeno se qualcosa ci provasse.
+- **Codice.** Ogni riga è [pubblica](https://github.com/A-Box-of-Tools/website). La compilazione toglie i commenti e gli spazi e nient'altro, e la puoi eseguire tu e confrontare il risultato con quello che viene servito.
+
+Le eccezioni le diciamo invece di seppellirle: questo sito ospita pubblicità di Google e un contatore delle visite, che parlano tutti e due con Google e a nessuno dei due viene passato niente sui tuoi file; e lo strumento [Immagini in video](https://abox.tools/it/immagini-in-video/) può recuperare un'immagine da un indirizzo che incolli tu, il che vuol dire che quel server vede il tuo IP. La [pagina sulla privacy](https://abox.tools/it/privacy/) le espone tutte e due per intero.
+
+Ogni strumento di qui funziona così: un [compressore di immagini](https://abox.tools/it/comprimere-immagine/) che centra un peso che dici tu, un [ritagliatore di video](https://abox.tools/it/ritagliare-video/), un [visualizzatore e rimozione EXIF](https://abox.tools/it/rimuovere-dati-exif/) per i dati nascosti descritti più su in questa pagina, [immagini in video](https://abox.tools/it/immagini-in-video/), e [immagini in PDF](https://abox.tools/it/immagini-in-pdf/). Tutti gratuiti, nessun account, e nessuno di loro ha un posto dove mandare i tuoi file.
+
+![Il riquadro di una pagina strumento: una riga che dice che i file non lasciano mai il browser, i fatti che la sostengono e un controllo dal vivo che riferisce che la pagina non ha fatto nessuna richiesta di rete.](https://abox.tools/screens/is-it-safe-to-upload-files/pledge.webp)
+
+L'ultimo dei quattro controlli, risposto nella pagina invece che in un paragrafo: il conteggio lo fa la pagina su se stessa, e lo stesso conteggio puoi farlo nel tuo browser.

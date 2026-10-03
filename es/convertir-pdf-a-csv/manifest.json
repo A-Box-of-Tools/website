@@ -1,0 +1,26 @@
+{
+  "id": "/es/convertir-pdf-a-csv/",
+  "name": "PDF a CSV",
+  "short_name": "PDF a CSV",
+  "description": "Encuentra tablas en un PDF y las convierte en filas para una hoja de c\u00e1lculo.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

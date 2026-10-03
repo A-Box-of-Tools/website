@@ -1,0 +1,26 @@
+{
+  "id": "/zh/convert-to-mp4/",
+  "name": "MP4 \u8f6c\u6362",
+  "short_name": "MP4 \u8f6c\u6362",
+  "description": "\u4e0d\u7ba1\u4ece\u5f55\u5c4f\u3001\u538b\u5236\u8fd8\u662f\u76f8\u673a\u91cc\u51fa\u6765\u7684\u662f\u4ec0\u4e48\uff0c\u90fd\u53d8\u6210 MP4 \u91cc\u7684 H.264 \u548c AAC\u3002\u80fd\u590d\u5236\u7684\u539f\u6837\u590d\u5236\uff0c\u975e\u6539\u4e0d\u53ef\u7684\u624d\u91cd\u65b0\u7f16\u7801\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/tr/videoyu-gife-donusturme/",
+  "name": "Videodan GIF'e",
+  "short_name": "Videodan GIF'e",
+  "description": "B\u00f6l\u00fcm\u00fc, boyutu ve kare h\u0131z\u0131n\u0131 siz se\u00e7in.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

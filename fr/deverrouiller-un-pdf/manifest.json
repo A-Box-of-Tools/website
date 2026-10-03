@@ -1,0 +1,26 @@
+{
+  "id": "/fr/deverrouiller-un-pdf/",
+  "name": "D\u00e9verrouillage PDF",
+  "short_name": "D\u00e9verrouillage PDF",
+  "description": "La plupart des PDF prot\u00e9g\u00e9s n'exigent aucun mot de passe. Cet outil vous indique leur type avant de les modifier.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hans">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">全部免费，文件不用上传。图片拼成 PDF 或 MP4、把图压到指定大小、裁视频、清 EXIF，都在你自己的浏览器里做完。</subtitle>
+  <id>https://abox.tools/zh/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
+  <updated>2026-09-29T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/zh/</uri>
+  </author>
+  <entry>
+    <title type="html">上传银行账单安全吗？</title>
+    <id>https://abox.tools/zh/guides/is-it-safe-to-upload-a-bank-statement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/is-it-safe-to-upload-a-bank-statement/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">账单把收款人、金额和余额放在一个文件中。了解转换器得到什么，谨慎服务如何处理，以及如何分辨上传是否必要。</summary>
+  </entry>
+  <entry>
+    <title type="html">信任银行账单 CSV 前如何检查</title>
+    <id>https://abox.tools/zh/guides/check-a-bank-statement-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/check-a-bank-statement-csv/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">检查转换账单的错误金额、缺失行和误读日期。实例说明连续余额能证明什么、不能证明什么。</summary>
+  </entry>
+  <entry>
+    <title type="html">文本比对</title>
+    <id>https://abox.tools/zh/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/text-diff/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">证件照制作</title>
+    <id>https://abox.tools/zh/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/id-photo/"/>
+    <updated>2026-09-21T00:00:00Z</updated>
+    <summary type="html">按你所在国家公布的规定做护照或签证照片：毫米和 DPI 精确到位，头高和眼线实时叠加提示，检查背景，一张可直接打印的 10x15 拼版，以及一个压进办事门户 KB 限制里的文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">DCM 文件怎么打开，以及里面有什么</title>
+    <id>https://abox.tools/zh/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/open-a-dicom-file/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">.dcm 文件是什么、用什么打开，医院给的光盘里都有什么，文件为什么没有后缀，怎么在浏览器里打开一份 .dcm 影像，窗宽窗位到底在做什么，以及一份影像除了图像之外还带着关于病人的哪些东西。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM 阅片器</title>
+    <id>https://abox.tools/zh/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/dicom-viewer/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">免费的 DCM 文件打开工具：不用安装，直接在浏览器里打开 .dcm 格式的 CT、MR、X 光和超声影像。调窗宽窗位，翻整套序列，按毫米测量，读遍每一个 DICOM 标签，还能看清这个文件里究竟什么在指认病人。什么都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">20 个在线转换器怎样处理你的文件</title>
+    <id>https://abox.tools/zh/guides/what-20-converters-do-with-your-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/what-20-converters-do-with-your-file/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">同一文件交给 20 个免费转换器，观察网络：19 个上传。谁上传、去哪里、多快、政策怎么承诺。</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIF 转 JPG</title>
+    <id>https://abox.tools/zh/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">在浏览器中将 AVIF 图片转换为 JPG。浏览器已经能解码 AVIF，因此无需上传、注册，也能离线使用。透明区域会填充你选择的颜色。</summary>
+  </entry>
+  <entry>
+    <title type="html">PNG 转 WebP</title>
+    <id>https://abox.tools/zh/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">在浏览器中把 PNG 转为 WebP，可选无损或更小的文件。两种模式都保留透明，无需上传或账号，也可离线使用。</summary>
+  </entry>
+  <entry>
+    <title type="html">WebP 转 JPG</title>
+    <id>https://abox.tools/zh/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">在浏览器中将 WebP 图片转为 JPG。浏览器已经能解码 WebP，因此无需上传或账号，也可离线使用。透明区域填充你选择的颜色。</summary>
+  </entry>
+  <entry>
+    <title type="html">只有你正在阅读的浏览器能打开的文件</title>
+    <id>https://abox.tools/zh/guides/convert-avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">下载图片得到无法打开的 .avif？浏览器能读取，所以转换无需上传。这里解释 AVIF、JPEG 无法保留的内容和文件为何大数倍。</summary>
+  </entry>
+  <entry>
+    <title type="html">同一张图片，小三分之一，透明保持完整</title>
+    <id>https://abox.tools/zh/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">无损 WebP 已比 PNG 小，允许损失时更小。哪种合适取决于图片内容。这里解释两种模式、节省多少以及如何无需上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">把网页保存的图片变成所有软件仍接受的格式</title>
+    <id>https://abox.tools/zh/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">网页保存的 .webp 没有软件能打开？这里解释 WebP、转换为何增大文件、透明会怎样，以及如何无需上传完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 转 MP4</title>
+    <id>https://abox.tools/zh/gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">在浏览器里把动态 GIF 变成 MP4，体积只剩零头。每一帧保留 GIF 自己的时间，不做重采样。MP4 里的 H.264，每个平台都收的文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何把 GIF 转为 MP4，为什么会小得多</title>
+    <id>https://abox.tools/zh/guides/convert-a-gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-a-gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">为什么同一动画的 MP4 只有 GIF 的十分之一，视频缺少哪些 GIF 能力，为什么时序易错，以及如何在浏览器中无需上传地转换。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何无损旋转视频</title>
+    <id>https://abox.tools/zh/guides/rotate-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/rotate-a-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">手机视频为什么横着播放，文件头九个数字做什么，为什么多数旋转器白白重编码，什么时候该转像素，以及怎样无需上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频旋转</title>
+    <id>https://abox.tools/zh/rotate-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/rotate-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">在浏览器里把拍横了或者拍倒了的视频转四分之一圈或半圈。旋转写进文件头，所以没有一帧被重新编码，什么都不会丢；也可以为老播放器把旋转烧进画面。MP4、MOV、WebM、MKV 进，MP4 出。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">MP4 转换</title>
+    <id>https://abox.tools/zh/convert-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/convert-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 WebM、MKV、MOV 或任何 MP4 变成装着 H.264 和 AAC 的 MP4，也就是每一部手机、每一个浏览器和上传表单都收的那种文件。已经是 H.264、AAC 的轨道原样复制；其余的在你的机器上重新编码。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 水印</title>
+    <id>https://abox.tools/zh/watermark-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/watermark-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">在浏览器里给 PDF 的每一页加上水印：给谁的、日期、名字，任意角度和透明度，任何语言。什么都不上传，页面本身不动，结果会先核对再给你下载。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 解锁</title>
+    <id>https://abox.tools/zh/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/unlock-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">在浏览器里去掉 PDF 的密码，以及不许打印、不许复制、不许编辑这些限制。大多数被保护的文件根本不用密码，这一页会告诉你手上是哪一种。什么都不上传，也从不猜密码。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何为 PDF 加水印，印记究竟有什么用</title>
+    <id>https://abox.tools/zh/guides/watermark-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/watermark-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">贷款机构和房东为何要求扫描写名字，印记能防什么、不能防什么，写什么，以及怎样在浏览器中无需上传完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何把视频压到可以发送的大小</title>
+    <id>https://abox.tools/zh/guides/compress-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/compress-a-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">大小上限让视频付出什么，容量花在哪里，为什么先降低尺寸，以及怎样在浏览器中少损失、无需上传地压缩。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何把视频转为普遍接受的 MP4</title>
+    <id>https://abox.tools/zh/guides/convert-a-video-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-a-video-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">可顺利上传的 MP4 包含什么，WebM、MKV 和 iPhone MOV 为何被拒，哪些转换无损，以及如何在浏览器中无需上传完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何给 PDF 加密码，保护到底值多少</title>
+    <id>https://abox.tools/zh/guides/protect-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/protect-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">PDF 密码是真正的锁，打印限制只是请求。了解两者、选择加密、为何无需上传，以及忘记密码会怎样。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频压缩</title>
+    <id>https://abox.tools/zh/compress-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">在浏览器里把视频压到 8、16、25 或任意兆字节以下。说出大小，工具选画面尺寸和码率，编码，再量结果。什么都不上传，声音原样复制过去。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 加密</title>
+    <id>https://abox.tools/zh/protect-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/protect-pdf/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary type="html">在浏览器里给 PDF 加上密码，或者限制打印和复制。默认 AES-256，什么都不上传，做好的文件会先在这里重新打开一次、证明密码管用，然后才交给你。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF 查看与清除</title>
+    <id>https://abox.tools/zh/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/exif-editor/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">看清一张照片里藏着的 EXIF 和 GPS 信息，改它，或者一键清光。在浏览器里跑，什么都不上传，画面也从不重新编码。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 合并与拆分</title>
+    <id>https://abox.tools/zh/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/merge-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 涂黑</title>
+    <id>https://abox.tools/zh/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把字从 PDF 里拿掉，而不是在上面画个黑块。字是从绘制这一页的指令里删掉的，做好的文件会被重新打开搜一遍，证明它们真的没了，而且什么都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 转 CSV</title>
+    <id>https://abox.tools/zh/pdf-to-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/pdf-to-csv/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">把 PDF 里的表格变成 CSV：银行和信用卡对账单、发票、价目表、报告。每一页上的每一张表都按文字落在纸上的位置找出来，有可读余额的表还会比较金额的净变动。什么都不上传。</summary>
+  </entry>
+</feed>

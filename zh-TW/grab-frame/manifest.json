@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/grab-frame/",
+  "name": "\u5f71\u7247\u622a\u5e40",
+  "short_name": "\u5f71\u7247\u622a\u5e40",
+  "description": "\u4efb\u610f\u4f4d\u7f6e\uff0c\u4e00\u5f35\u539f\u756b\u8cea\u975c\u5e40\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

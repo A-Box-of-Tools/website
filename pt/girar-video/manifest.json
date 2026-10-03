@@ -1,0 +1,26 @@
+{
+  "id": "/pt/girar-video/",
+  "name": "Rotacionar v\u00eddeo",
+  "short_name": "Rotacionar v\u00eddeo",
+  "description": "Um quarto de volta, meia volta ou para o outro lado. A rota\u00e7\u00e3o fica no cabe\u00e7alho do arquivo: nenhum quadro \u00e9 decodificado e nada se perde.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

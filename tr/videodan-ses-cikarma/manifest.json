@@ -1,0 +1,26 @@
+{
+  "id": "/tr/videodan-ses-cikarma/",
+  "name": "Videodan Ses \u00c7\u0131karma",
+  "short_name": "Videodan Ses \u00c7\u0131karma",
+  "description": "Bir video b\u0131rak\u0131n, sesini al\u0131n. G\u00f6r\u00fcnt\u00fc hi\u00e7bir zaman \u00e7\u00f6z\u00fclmez ve hi\u00e7bir \u015fey y\u00fcklenmez.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/zh/avif-to-jpg/",
+  "name": "AVIF \u8f6c JPG",
+  "short_name": "AVIF \u8f6c JPG",
+  "description": "\u628a\u7f51\u7ad9\u5982\u4eca\u4fdd\u5b58\u7684\u683c\u5f0f\uff0c\u53d8\u6210\u6240\u6709\u8f6f\u4ef6\u4e00\u76f4\u652f\u6301\u7684\u683c\u5f0f\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

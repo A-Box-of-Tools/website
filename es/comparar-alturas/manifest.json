@@ -1,0 +1,26 @@
+{
+  "id": "/es/comparar-alturas/",
+  "name": "Comparador de alturas",
+  "short_name": "Comparador de alturas",
+  "description": "Escribe las alturas, ll\u00e9vate la imagen. No se env\u00eda nada para dibujarla.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/ja/pdf-to-csv/",
+  "name": "PDF\u3092CSV\u306b",
+  "short_name": "PDF\u3092CSV\u306b",
+  "description": "PDF\u306e\u8868\u3092\u898b\u3064\u3051\u3001\u8868\u8a08\u7b97\u3067\u958b\u3051\u308b\u884c\u306b\u5909\u63db\u3057\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

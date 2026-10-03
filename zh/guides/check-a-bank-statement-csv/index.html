@@ -1,0 +1,122 @@
+<!-- Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check --><!doctype html> <html lang="zh-Hans"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1">   <meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+"> <title>信任银行账单 CSV 前如何检查</title> <meta name="description" content="检查转换账单的错误金额、缺失行和误读日期。实例说明连续余额能证明什么、不能证明什么。"> <link rel="canonical" href="https://abox.tools/zh/guides/check-a-bank-statement-csv/">  <link rel="alternate" hreflang="en" href="https://abox.tools/guides/check-a-bank-statement-csv/"> <link rel="alternate" hreflang="de" href="https://abox.tools/de/ratgeber/kontoauszug-csv-pruefen/"> <link rel="alternate" hreflang="es" href="https://abox.tools/es/guias/comprobar-un-extracto-bancario-en-csv/"> <link rel="alternate" hreflang="fr" href="https://abox.tools/fr/guides/verifier-un-releve-bancaire-csv/"> <link rel="alternate" hreflang="ja" href="https://abox.tools/ja/guides/check-a-bank-statement-csv/"> <link rel="alternate" hreflang="pt-BR" href="https://abox.tools/pt/guias/conferir-csv-de-extrato-bancario/"> <link rel="alternate" hreflang="zh-Hans" href="https://abox.tools/zh/guides/check-a-bank-statement-csv/"> <link rel="alternate" hreflang="x-default" href="https://abox.tools/guides/check-a-bank-statement-csv/">  <link rel="alternate" type="application/atom+xml" title="A Box of Tools" href="/zh/feed.xml">  <link rel="alternate" type="text/markdown" href="index.md">  <script src="/lang.js?v=bc94fd3df9"></script> <meta name="google-adsense-account" content="ca-pub-5997711677062324">  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script> <script src="analytics.js" defer></script> <meta property="og:type" content="article"> <meta property="og:site_name" content="A Box of Tools"> <meta property="og:url" content="https://abox.tools/zh/guides/check-a-bank-statement-csv/"> <meta property="og:title" content="信任银行账单 CSV 前如何检查"> <meta property="og:description" content="整齐表格也会错。通过连续余额实例找误读日期和缺失行，了解总额一致的局限。"> <meta property="og:image" content="https://abox.tools/og.png"> <meta property="og:image:width" content="1200"> <meta property="og:image:height" content="630"> <meta property="og:image:alt" content="abox.tools - 无需服务器的工具"> <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="信任银行账单 CSV 前如何检查"> <meta name="twitter:description" content="整齐表格也会错。通过连续余额实例找误读日期和缺失行，了解总额一致的局限。"> <meta name="twitter:image" content="https://abox.tools/og.png">   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"\u4fe1\u4efb\u94f6\u884c\u8d26\u5355 CSV \u524d\u5982\u4f55\u68c0\u67e5","description":"\u68c0\u67e5\u8f6c\u6362\u8d26\u5355\u7684\u9519\u8bef\u91d1\u989d\u3001\u7f3a\u5931\u884c\u548c\u8bef\u8bfb\u65e5\u671f\u3002\u5b9e\u4f8b\u8bf4\u660e\u8fde\u7eed\u4f59\u989d\u80fd\u8bc1\u660e\u4ec0\u4e48\u3001\u4e0d\u80fd\u8bc1\u660e\u4ec0\u4e48\u3002","url":"https://abox.tools/zh/guides/check-a-bank-statement-csv/","datePublished":"2026-09-29","dateModified":"2026-09-29","inLanguage":"zh-Hans","mainEntityOfPage":{"@type":"WebPage","@id":"https://abox.tools/zh/guides/check-a-bank-statement-csv/"},"author":{"@type":"Organization","name":"A Box of Tools","url":"https://abox.tools/"},"publisher":{"@type":"Organization","name":"A Box of Tools","url":"https://abox.tools/"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"A Box of Tools","item":"https://abox.tools/zh/"},{"@type":"ListItem","position":2,"name":"\u6307\u5357","item":"https://abox.tools/zh/guides/"},{"@type":"ListItem","position":3,"name":"\u68c0\u67e5\u8d26\u5355 CSV","item":"https://abox.tools/zh/guides/check-a-bank-statement-csv/"}]}]}</script> <link rel="stylesheet" href="../../site.css?v=cac83c4c7d"> <link rel="icon" href="/logo.svg" type="image/svg+xml"> <link rel="apple-touch-icon" href="/icon-180.png"> </head> <body>  <a class="skip-link" href="#main">跳到主要内容</a>   <div class="lang-auto" id="lang-auto" role="status" hidden> <p> 你的浏览器要的是简体中文，所以这个页面按简体中文显示。 <a class="lang-auto-back" href="../../"></a> </p> </div> <header class="hub-head"> <div class="head-row"> <p class="brand"> <a class="brand-home" href="../../"> <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3" transform="rotate(18 54.5 21.5)"/> <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1" transform="rotate(-28 41.5 5.5)"/> <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1" transform="rotate(42 56.5 8.5)"/> <g transform="rotate(-12 34.8 26.7)"> <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/> <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/> </g> <g transform="rotate(24 35.3 13.1)"> <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/> <g transform="translate(31.6 9.4) scale(0.3083)"> <path class="logo-stroke" fill="none" stroke-width="3.081" stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/> <circle class="logo-glyph" cx="6" cy="18" r="3.9"/> <circle class="logo-glyph" cx="18" cy="16" r="3.9"/> </g> </g> <g transform="rotate(-20 48.55 29.75)"> <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/> <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/> <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/> </g> <g transform="rotate(34 46.65 14.25)"> <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/> <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/> </g> <g transform="rotate(38 22 42)"> <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/> <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/> <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/> </g> </svg> abox.tools </a> </p>  <details class="lang-pick"> <summary> <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"> <g fill="none" stroke="currentColor" stroke-width="1.2"> <circle cx="8" cy="8" r="6.4"></circle> <path d="M1.6 8h12.8"></path> <path d="M8 1.6c1.7 1.9 2.6 4 2.6 6.4S9.7 12.5 8 14.4C6.3 12.5 5.4 10.4 5.4 8S6.3 3.5 8 1.6z"></path> </g> </svg>  <span class="visually-hidden">语言: </span> <span>简体中文</span> <span class="lang-pick-caret" aria-hidden="true">&#9662;</span> </summary> <ul class="lang-pick-menu"> <li> <a href="/guides/check-a-bank-statement-csv/" lang="en" hreflang="en">English</a> </li> <li> <a href="/de/ratgeber/kontoauszug-csv-pruefen/" lang="de" hreflang="de">Deutsch</a> </li> <li> <a href="/es/guias/comprobar-un-extracto-bancario-en-csv/" lang="es" hreflang="es">Español</a> </li> <li> <a href="/fr/guides/verifier-un-releve-bancaire-csv/" lang="fr" hreflang="fr">Français</a> </li> <li> <a href="/ja/guides/check-a-bank-statement-csv/" lang="ja" hreflang="ja">日本語</a> </li> <li> <a href="/pt/guias/conferir-csv-de-extrato-bancario/" lang="pt-BR" hreflang="pt-BR">Português</a> </li> <li> <span class="lang-current" lang="zh-Hans" aria-current="true">简体中文</span> </li> </ul> </details> </div>  <nav class="crumbs" aria-label="面包屑导航"> <a href="../../">全部工具</a> <span aria-hidden="true">&rsaquo;</span> <a href="../../guides/">指南</a> <span aria-hidden="true">&rsaquo;</span> <span aria-current="page">检查账单 CSV</span> </nav> <h1>信任银行账单 CSV 前如何检查</h1> <p class="lede"> 表格看似完美，仍可能金额错或交易缺失。对照账单，用印出的余额测数字，用原行检查其余内容。 </p>   <div class="page-meta"> <p class="legal-date">最后更新 2026 年 9 月 29 日</p>  <p class="page-md"> <button type="button" class="page-md-copy" title="把本页复制为 Markdown"> <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"> <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/> </svg> 复制给 LLM </button> <span class="page-md-status" role="status" data-copied="已复制" data-failed="复制失败"></span> <a class="page-md-view" href="index.md">以 Markdown 查看</a> </p> <pre id="page-markdown" hidden># 信任银行账单 CSV 前如何检查
+
+表格看似完美，仍可能金额错或交易缺失。对照账单，用印出的余额测数字，用原行检查其余内容。
+
+最后更新 2026 年 9 月 29 日
+
+## 简短答案
+
+CSV 在表格中整齐打开，仍可能有错误金额、缺失交易或读反的日期。对照原账单检查行、日期和说明，再利用账单印出的连续余额核对金额。
+
+保留 PDF 与转换结果。下载成功只说明转换器生成了文件，这些检查帮助确认它是否忠实于账单。
+
+## 转换前先找导出
+
+若银行提供所需期间的 CSV 下载，先用它。直接导出不必从 PDF 上排布的文字重建表格。仍需核对账号、期间和列含义，但少一处出错机会。
+
+有时只有 PDF：旧账单、已关闭账号或别人发来的文件。这时转换有价值。
+
+## 看一个小例子
+
+这份虚构活期账单初始余额为 **1,250.00**，正金额增加存款，负金额减少。最后一列来自原账单，不是表格后来计算的。
+
+四笔虚构交易，初始余额 1,250.00
+
+| 日期 | 说明 | 金额 | 账单余额 |
+| --- | --- | --- | --- |
+| 2026-08-03 | 工资到账 | +800.00 | 2,050.00 |
+| 2026-08-04 | 购买食品 | -43.20 | 2,006.80 |
+| 2026-08-05 | 咖啡 | -6.80 | 2,000.00 |
+| 2026-08-06 | 转账 | -125.00 | 1,875.00 |
+
+每行都能检查：**前一余额 + 带符号金额 = 新余额**。食品是 `2050.00 + (-43.20) = 2006.80`，咖啡是 `2006.80 + (-6.80) = 2000.00`。
+
+若 CSV 把食品读成 **-48.20**，单元格虽都填满，但 `2050.00 + (-48.20) = 2001.80`，与账单余额相差 **5.00**。你便知道该对照 PDF 检查哪行。
+
+检查时保留账单印出的余额。若换成依据转换金额的公式，表格只会与自己一致，错误也一致。
+
+使用符号前先核实余额含义。信用卡账单可能显示欠款，购物增加欠款，还款减少。不要假设其正负金额与这个活期例子相同。
+
+## 只核对期末总额为什么不够
+
+初始余额加全部金额对比期末余额很有用，但错误能抵消。一笔多读 5.00，另一笔少读 5.00，总额仍对。
+
+检查每个可用连续余额能增加比较。只有每日末余额时，用上一个印出余额加期间所有金额来核对。
+
+仍有局限：漏掉 **-20.00 和 +20.00** 两笔，余额不变，跨越缺口的检查也能通过。除了算术，还要比对原行序。
+
+余额一致无法证明日期或收款人正确，也不能证明账单真实。它只测试可比较金额与余额之间的关系。
+
+## 排序前先检查日期
+
+`03/04/2026` 可能是 4 月 3 日或 3 月 4 日。`18/04/2026` 可确定规则，但短账单可能没有线索。检查账单期间和银行格式，不要接受猜测。
+
+打开 CSV 后再检查，表格软件可能与转换器解读不同。检查结束前保留原顺序。排序读错日期会增加比较难度，并打乱连续余额。
+
+不写年份的日期也要对照账单期间，尤其跨十二月和一月。数值格式也要核实：`1,240.00` 与 `1.240,00` 可表示同样金额，导入必须保留值。
+
+## 阅读说明，分开汇总
+
+换行的说明仍是一笔交易，检查续行是否跟对。特别注意分页，重复标题和结转余额可能被当成额外行。
+
+PDF 还可含账号汇总、小计和支付信息。它们应在文档提取中保留，却不应作为额外交易导入。先确定交易表，分开汇总行。
+
+同日期、收款人、金额的两笔可能都真实。删除前对照位置和参考号。重复提取与重复付款要分别处理。
+
+## 本转换器检查什么
+
+[PDF 转 CSV](https://abox.tools/zh/pdf-to-csv/) 按文字对齐识别表格，合并折行单元格，保留总额和章节标签。有多个表时选择所需表。它提供日期顺序选项处理歧义，无年份日期则原样保留。
+
+识别到连续余额链时，会报告可比较部分是否一致。首个印出余额之前的金额，要自己对照初始余额；最后余额之后也要自己检查。通过提示只覆盖它能做的比较。
+
+未识别到可用链就没有检查结论。**没有提示不等于确认。**安静的结果或余额通过都不能保证整份文件正确。预览每表最多 25 行，其余检查下载文件。
+
+扫描页需要文字识别，本工具不提供。转换在浏览器中运行。关于隐私，见[将银行账单上传转换器](https://abox.tools/zh/guides/is-it-safe-to-upload-a-bank-statement/)指南。
+
+## 导入其他软件前
+
+同样仔细检查目标的导入预览，选正确银行或信用卡账户，确认日期格式，将日期、说明、金额列正确匹配。这是 PDF 提取之后另一组决定。[Intuit 的 CSV 导入指南](https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB)给出一个产品的要求。
+
+- 确认账户和账单期间。
+- 打开后检查日期、正负号和数字格式。
+- 交易行与原件对照，包括分页处。
+- 检查所有可用的初始、连续和期末余额。
+- 改动前调查差异和重复行。
+- 保留原账单和核对后的 CSV 副本。
+</pre> <script src="/page-md.js?v=5d209f19dc" defer></script> </div> </header>  <main id="main" class="prose"> <section> <h2>简短答案</h2> <p>CSV 在表格中整齐打开，仍可能有错误金额、缺失交易或读反的日期。对照原账单检查行、日期和说明，再利用账单印出的连续余额核对金额。</p> <p>保留 PDF 与转换结果。下载成功只说明转换器生成了文件，这些检查帮助确认它是否忠实于账单。</p> </section> <section> <h2>转换前先找导出</h2> <p>若银行提供所需期间的 CSV 下载，先用它。直接导出不必从 PDF 上排布的文字重建表格。仍需核对账号、期间和列含义，但少一处出错机会。</p> <p>有时只有 PDF：旧账单、已关闭账号或别人发来的文件。这时转换有价值。</p> </section> <section> <h2>看一个小例子</h2> <p>这份虚构活期账单初始余额为 <strong>1,250.00</strong>，正金额增加存款，负金额减少。最后一列来自原账单，不是表格后来计算的。</p> <figure class="data"> <figcaption id="statement-caption">四笔虚构交易，初始余额 1,250.00</figcaption> <div class="scroll" tabindex="0" role="region" aria-label="虚构银行账单"> <table aria-labelledby="statement-caption"> <thead> <tr> <th scope="col">日期</th> <th scope="col">说明</th> <th scope="col">金额</th> <th scope="col">账单余额</th> </tr> </thead> <tbody> <tr> <td>2026-08-03</td> <td>工资到账</td> <td>+800.00</td> <td>2,050.00</td> </tr> <tr> <td>2026-08-04</td> <td>购买食品</td> <td>-43.20</td> <td>2,006.80</td> </tr> <tr> <td>2026-08-05</td> <td>咖啡</td> <td>-6.80</td> <td>2,000.00</td> </tr> <tr> <td>2026-08-06</td> <td>转账</td> <td>-125.00</td> <td>1,875.00</td> </tr> </tbody> </table> </div> </figure> <p>每行都能检查：<strong>前一余额 + 带符号金额 = 新余额</strong>。食品是 <code>2050.00 + (-43.20) = 2006.80</code>，咖啡是 <code>2006.80 + (-6.80) = 2000.00</code>。</p> <p>若 CSV 把食品读成 <strong>-48.20</strong>，单元格虽都填满，但 <code>2050.00 + (-48.20) = 2001.80</code>，与账单余额相差 <strong>5.00</strong>。你便知道该对照 PDF 检查哪行。</p> <p>检查时保留账单印出的余额。若换成依据转换金额的公式，表格只会与自己一致，错误也一致。</p> <p>使用符号前先核实余额含义。信用卡账单可能显示欠款，购物增加欠款，还款减少。不要假设其正负金额与这个活期例子相同。</p> </section> <section> <h2>只核对期末总额为什么不够</h2> <p>初始余额加全部金额对比期末余额很有用，但错误能抵消。一笔多读 5.00，另一笔少读 5.00，总额仍对。</p> <p>检查每个可用连续余额能增加比较。只有每日末余额时，用上一个印出余额加期间所有金额来核对。</p> <p>仍有局限：漏掉 <strong>-20.00 和 +20.00</strong> 两笔，余额不变，跨越缺口的检查也能通过。除了算术，还要比对原行序。</p> <p>余额一致无法证明日期或收款人正确，也不能证明账单真实。它只测试可比较金额与余额之间的关系。</p> </section> <section> <h2>排序前先检查日期</h2> <p><code>03/04/2026</code> 可能是 4 月 3 日或 3 月 4 日。<code>18/04/2026</code> 可确定规则，但短账单可能没有线索。检查账单期间和银行格式，不要接受猜测。</p> <p>打开 CSV 后再检查，表格软件可能与转换器解读不同。检查结束前保留原顺序。排序读错日期会增加比较难度，并打乱连续余额。</p> <p>不写年份的日期也要对照账单期间，尤其跨十二月和一月。数值格式也要核实：<code>1,240.00</code> 与 <code>1.240,00</code> 可表示同样金额，导入必须保留值。</p> </section> <section> <h2>阅读说明，分开汇总</h2> <p>换行的说明仍是一笔交易，检查续行是否跟对。特别注意分页，重复标题和结转余额可能被当成额外行。</p> <p>PDF 还可含账号汇总、小计和支付信息。它们应在文档提取中保留，却不应作为额外交易导入。先确定交易表，分开汇总行。</p> <p>同日期、收款人、金额的两笔可能都真实。删除前对照位置和参考号。重复提取与重复付款要分别处理。</p> </section> <section> <h2>本转换器检查什么</h2> <p><a href="../../pdf-to-csv/">PDF 转 CSV</a> 按文字对齐识别表格，合并折行单元格，保留总额和章节标签。有多个表时选择所需表。它提供日期顺序选项处理歧义，无年份日期则原样保留。</p> <p>识别到连续余额链时，会报告可比较部分是否一致。首个印出余额之前的金额，要自己对照初始余额；最后余额之后也要自己检查。通过提示只覆盖它能做的比较。</p> <p>未识别到可用链就没有检查结论。<strong>没有提示不等于确认。</strong>安静的结果或余额通过都不能保证整份文件正确。预览每表最多 25 行，其余检查下载文件。</p> <p>扫描页需要文字识别，本工具不提供。转换在浏览器中运行。关于隐私，见<a href="../is-it-safe-to-upload-a-bank-statement/">将银行账单上传转换器</a>指南。</p> </section> <section> <h2>导入其他软件前</h2> <p>同样仔细检查目标的导入预览，选正确银行或信用卡账户，确认日期格式，将日期、说明、金额列正确匹配。这是 PDF 提取之后另一组决定。<a href="https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-transactions/prepare-csv-file-bank-upload-quickbooks/L4BjLWckq_GB_en_GB" target="_blank" rel="noopener noreferrer">Intuit 的 CSV 导入指南</a>给出一个产品的要求。</p> <ul> <li>确认账户和账单期间。</li> <li>打开后检查日期、正负号和数字格式。</li> <li>交易行与原件对照，包括分页处。</li> <li>检查所有可用的初始、连续和期末余额。</li> <li>改动前调查差异和重复行。</li> <li>保留原账单和核对后的 CSV 副本。</li> </ul> </section> </main>  <footer> <div class="footer-cols"> <div class="footer-col footer-brand"> <a class="home-link" href="../../"> <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3" transform="rotate(18 54.5 21.5)"/> <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1" transform="rotate(-28 41.5 5.5)"/> <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1" transform="rotate(42 56.5 8.5)"/> <g transform="rotate(-12 34.8 26.7)"> <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/> <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/> </g> <g transform="rotate(24 35.3 13.1)"> <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/> <g transform="translate(31.6 9.4) scale(0.3083)"> <path class="logo-stroke" fill="none" stroke-width="3.081" stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/> <circle class="logo-glyph" cx="6" cy="18" r="3.9"/> <circle class="logo-glyph" cx="18" cy="16" r="3.9"/> </g> </g> <g transform="rotate(-20 48.55 29.75)"> <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/> <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/> <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/> </g> <g transform="rotate(34 46.65 14.25)"> <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/> <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/> <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/> </g> <g transform="rotate(38 22 42)"> <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/> <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/> <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/> </g> </svg> abox.tools </a> <p> 不走服务器的工具。文件留在你自己的机器上，没有东西要传，也不用注册账号。 </p> </div>  <div class="footer-col footer-site"> <strong>本站</strong> <ul> <li><a href="../../">全部工具</a></li> <li><a href="../../guides/">全部指南</a></li> <li><a href="../../roadmap/">路线图</a></li> <li><a href="../../about/">关于本站</a></li> <li><a href="../../contact/">联系</a></li> <li><a href="../../privacy/">隐私与 Cookie</a></li> <li><a href="../../terms/">使用条款</a></li> <li><a href="/sitemap.xml">站点地图</a></li> </ul> </div>  <div class="footer-col"> <strong>联系我们</strong> <ul class="footer-marks"> <li> <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 上读代码" title="在 GitHub 上读代码"> <svg class="footer-mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"> <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13 -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66 .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15 -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/> </svg> </a> </li> <li> <a href="https://x.com/aboxtools" target="_blank" rel="noopener noreferrer" aria-label="abox.tools 的 X 账号" title="abox.tools 的 X 账号"> <svg class="footer-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/> </svg> </a> </li> <li> <a href="mailto:hi@abox.tools" aria-label="hi@abox.tools" title="hi@abox.tools"> <svg class="footer-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"> <path d="M2.4 6.7A1.8 1.8 0 0 1 4.1 5.5h15.8a1.8 1.8 0 0 1 1.7 1.2L12 12.6Z"/> <path d="M2 8.5 12 14.5l10-6V17a1.8 1.8 0 0 1-1.8 1.8H3.8A1.8 1.8 0 0 1 2 17Z"/> </svg> </a> </li> </ul> </div> </div>  <nav class="footer-tools" aria-label="工具"> <div class="footer-col"> <strong>图片</strong> <ul> <li><a href="../../compress-image/">图片压缩</a></li> <li><a href="../../resize-image/">图片缩放</a></li> <li><a href="../../heic-to-jpg/">HEIC 转 JPG</a></li> <li><a href="../../webp-to-jpg/">WebP 转 JPG</a></li> <li><a href="../../png-to-webp/">PNG 转 WebP</a></li> <li><a href="../../avif-to-jpg/">AVIF 转 JPG</a></li> <li><a href="../../id-photo/">证件照制作</a></li> <li><a href="../../stack-images/">图片堆栈</a></li> <li><a href="../../redact-image/">图片涂黑与打码</a></li> <li><a href="../../exif-editor/">EXIF 查看与清除</a></li> <li><a href="../../dicom-viewer/">DICOM 阅片器</a></li> <li><a href="../../image-to-ico/">图片转 ICO</a></li> <li><a href="../../image-to-data-uri/">图片转 Data URI</a></li> <li><a href="../../svg-to-image/">SVG 转图片</a></li> <li><a href="../../image-to-svg/">图片转 SVG</a></li> <li><a href="../../compare-heights/">身高对比图</a></li> <li><a href="../../business-profile-preview/">商家资料预览</a></li> </ul> </div> <div class="footer-col"> <strong>视频与动画</strong> <ul> <li><a href="../../compress-video/">视频压缩</a></li> <li><a href="../../convert-to-mp4/">MP4 转换</a></li> <li><a href="../../rotate-video/">视频旋转</a></li> <li><a href="../../images-to-video/">图片转视频</a></li> <li><a href="../../trim-video/">视频剪切</a></li> <li><a href="../../crop-video/">视频裁剪</a></li> <li><a href="../../reverse-video/">视频倒放</a></li> <li><a href="../../timelapse-video/">延时视频</a></li> <li><a href="../../grab-frame/">视频截帧</a></li> <li><a href="../../gif-to-mp4/">GIF 转 MP4</a></li> <li><a href="../../video-to-gif/">视频转 GIF</a></li> <li><a href="../../gif-maker/">GIF 制作</a></li> <li><a href="../../split-gif/">GIF 拆帧</a></li> <li><a href="../../gif-analyzer/">GIF 分析</a></li> </ul> </div> <div class="footer-col"> <strong>文档与音频</strong> <ul> <li><a href="../../merge-pdf/">PDF 合并与拆分</a></li> <li><a href="../../compress-pdf/">PDF 压缩</a></li> <li><a href="../../unlock-pdf/">PDF 解锁</a></li> <li><a href="../../protect-pdf/">PDF 加密</a></li> <li><a href="../../watermark-pdf/">PDF 水印</a></li> <li><a href="../../redact-pdf/">PDF 涂黑</a></li> <li><a href="../../pdf-to-csv/">PDF 转 CSV</a></li> <li><a href="../../images-to-pdf/">图片转 PDF</a></li> <li><a href="../../document-scanner/">文档扫描</a></li> <li><a href="../../extract-audio-from-video/">从视频里提取音频</a></li> <li><a href="../../trim-audio/">音频剪辑</a></li> <li><a href="../../edit-audio/">音频编辑</a></li> </ul> </div> <div class="footer-col"> <strong>文本、编码与密码</strong> <ul> <li><a href="../../json-formatter/">JSON 格式化</a></li> <li><a href="../../yaml-to-json/">YAML 转 JSON</a></li> <li><a href="../../xml-formatter/">XML 格式化</a></li> <li><a href="../../text-diff/">文本比对</a></li> <li><a href="../../base64/">Base64 编码解码</a></li> <li><a href="../../share-text/">文本与文件分享</a></li> <li><a href="../../qr-barcode/">二维码与条形码生成</a></li> <li><a href="../../qr-barcode-reader/">二维码与条形码识读</a></li> <li><a href="../../hash-checksum/">哈希与校验和</a></li> <li><a href="../../password-generator/">密码与密码短语生成器</a></li> </ul> </div> </nav>  <nav class="lang-switch" aria-label="语言"> <ul> <li> <a href="/guides/check-a-bank-statement-csv/" lang="en" hreflang="en">English</a> </li> <li> <a href="/de/ratgeber/kontoauszug-csv-pruefen/" lang="de" hreflang="de">Deutsch</a> </li> <li> <a href="/es/guias/comprobar-un-extracto-bancario-en-csv/" lang="es" hreflang="es">Español</a> </li> <li> <a href="/fr/guides/verifier-un-releve-bancaire-csv/" lang="fr" hreflang="fr">Français</a> </li> <li> <a href="/ja/guides/check-a-bank-statement-csv/" lang="ja" hreflang="ja">日本語</a> </li> <li> <a href="/pt/guias/conferir-csv-de-extrato-bancario/" lang="pt-BR" hreflang="pt-BR">Português</a> </li> <li> <span class="lang-current" lang="zh-Hans" aria-current="true">简体中文</span> </li> </ul> </nav> <p class="footer-base"> 本站说的每一句话，都是写来给你核对的，不是写来让你信的。 </p> <p class="footer-licence"> 本站文字采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>，代码采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>。欢迎取用，注明出处即可。 </p> </footer> </body> </html>

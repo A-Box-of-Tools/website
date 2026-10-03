@@ -1,0 +1,26 @@
+{
+  "id": "/fr/couper-un-audio/",
+  "name": "D\u00e9coupeur audio",
+  "short_name": "D\u00e9coupeur audio",
+  "description": "Marquez au vol les passages \u00e0 garder. Ils vous reviennent en un seul fichier, coup\u00e9 l\u00e0 o\u00f9 vous l'avez dit.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

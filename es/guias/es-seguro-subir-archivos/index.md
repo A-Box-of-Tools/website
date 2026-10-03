@@ -1,0 +1,91 @@
+# ¿Es seguro subir archivos a los conversores en línea?
+
+La respuesta honesta suele ser «probablemente sí, pero no tienes forma de comprobarlo». Aquí va lo que le hace de verdad una subida a tu archivo, por qué casi todas las herramientas la siguen haciendo, y cuatro pruebas que te dicen si la que tienes delante la necesita.
+
+Última actualización 26 de agosto de 2026
+
+## La respuesta corta
+
+Con casi cualquier archivo, y casi siempre, no pasa nada por subirlo. Los conversores serios borran lo que les mandas en unas horas y no tienen el más mínimo interés en tus fotos de vacaciones.
+
+El problema no es que estén mintiendo, sino que **no tienes manera de saber si lo hacen**. En cuanto un archivo sale de tu dispositivo, cualquier promesa sobre lo que pasa después es una promesa que te estás creyendo: cuánto tiempo se guarda, quién puede llegar hasta él, si se cuela en una copia de seguridad que sobreviva al temporizador de borrado, qué le ocurre si la empresa se vende o sufre una brecha. Nada de eso se ve desde fuera.
+
+Así que la pregunta útil no es «¿me fío de este sitio?», sino **«¿de verdad este trabajo necesita que mi archivo salga de aquí?»**. En un número de trabajos cada vez mayor la respuesta es que no, y cuando la respuesta es que no, la de la confianza deja de ser una pregunta que tengas que responder.
+
+## Qué hace de verdad una «subida»
+
+Cuando un conversor te pide que elijas un archivo y acto seguido te enseña una barra de progreso, lo que está haciendo tu navegador es copiar el archivo entero, byte por byte, por internet hasta una máquina que es de otra persona. Esa máquina lo escribe en un disco, ejecuta la conversión, escribe el resultado en el mismo disco y te da un enlace.
+
+A esas alturas tu archivo existe en al menos tres sitios que tú no has elegido: el disco del servidor, los registros que hayan anotado la petición y, muchas veces, una red de distribución de contenidos que ha cacheado el resultado para que la descarga vaya rápida. Una política de borrado tiene que llegar a los tres. Casi todas dicen que llegan. Y tú no puedes comprobar ninguno.
+
+Conviene saber además que lo que llega no es solo el archivo. Con él va su nombre, y va también todo lo que el archivo lleva dentro y tú no ves. Una foto recién salida de un móvil suele llevar las coordenadas GPS exactas del sitio donde se tomó, la hora, el número de serie de la cámara y a veces una miniatura incrustada de la imagen original, de antes de que la recortaras. Mucha gente que cuida la imagen no cuida nada de eso, sencillamente porque no hay nada en pantalla que se lo enseñe.
+
+## Por qué casi todas las herramientas suben de todas formas
+
+No porque quieran tus archivos, sino porque durante casi toda la vida de la web no había alternativa. Un navegador no sabía descodificar un vídeo, ni recodificar una imagen a una calidad elegida, ni analizar un formato de archivo; un servidor con FFmpeg e ImageMagick sí. Subir no era un modelo de negocio: era el único sitio donde podía ocurrir el trabajo.
+
+Eso dejó de ser cierto hace poco y sin hacer ruido. Hoy los navegadores traen WebAssembly, que ejecuta esos mismos códecs compilados a una velocidad cercana a la nativa; WebCodecs, que da acceso al codificador de vídeo por hardware que ya llevas dentro; y una API de lienzo capaz de descodificar y recodificar imágenes directamente. El trabajo para el que hacía falta un servidor ocurre ahora en el propio dispositivo que ya tiene el archivo.
+
+Muchas herramientas siguen subiendo, y hay motivos honestos: una cadena de procesos que nadie quiere reescribir, un formato sin descodificador del lado del navegador, un trabajo de verdad demasiado pesado para un móvil. Y hay también un motivo menos honesto: el servidor es donde viven las cuentas, las cuotas y los planes de pago. Una herramienta que funciona entera dentro de tu navegador es difícil de medir.
+
+## Cuatro comprobaciones que puedes hacer tú
+
+Sirven para cualquier herramienta, esta incluida. Ninguna te obliga a creerte la palabra de nadie, y la primera lleva unos diez segundos.
+
+### 1. Desenchufa
+
+Carga la página, apaga el wifi o desenchufa el cable e intenta usarla. Una herramienta que hace su trabajo dentro de tu navegador sigue exactamente igual que antes. Una que sube se para en el acto, porque lo que hacía el trabajo ya le queda fuera de alcance.
+
+Esta es la prueba más contundente que hay, y la más difícil de fingir, porque no se puede responder con palabras: o la conversión termina sin red, o no termina.
+
+### 2. Mira la pestaña Red
+
+Abre las herramientas de desarrollo del navegador, ponte en Red y usa la herramienta. Ahí se listan todas las peticiones que hace la página, con su tamaño. Si tu foto de 4 MB se ha subido, en esa lista hay una petición de 4 MB. Si lo más grande que sale de la página son unos kilobytes de publicidad, no se ha subido nada.
+
+Ordena por tamaño y mira lo de arriba. No hace falta que entiendas las peticiones: lo único que tienes que ver es si alguna tiene el tamaño de tu archivo.
+
+### 3. Lee la Content-Security-Policy
+
+Mira el código fuente de la página y busca `Content-Security-Policy`, cerca del principio. Es la lista de direcciones a las que esa página tiene permitido conectarse, y quien la hace cumplir es tu navegador y no las buenas intenciones del sitio: una petición a algo que no esté en la lista se rechaza, intente lo que intente el código.
+
+La directiva que importa es `connect-src`, que decide adónde puede enviar datos la página. Si ahí aparece una dirección del propio sitio en el que estás, la página puede mandarle tu archivo. Si no aparece ninguna, o solo hay terceros como una red publicitaria, no puede.
+
+Que una página no tenga Content-Security-Policy no demuestra nada malo: significa solo que esta comprobación en concreto no tiene nada que decirte.
+
+### 4. Lee el código
+
+La menos cómoda y la más concluyente. Si una herramienta publica su código fuente y lo sirve sin ningún paso de compilación, los archivos que se ha bajado tu navegador son exactamente los que puedes leer. Búscales `fetch`, `XMLHttpRequest` y `sendBeacon`, que son las tres formas que tiene una página de enviar algo, y mira qué se les está entregando.
+
+Esto no lo va a hacer casi nadie. Aun así importa que se pueda hacer, porque una afirmación que nadie puede comprobar no llega a ser una afirmación.
+
+## Lo que «funciona en tu navegador» no significa
+
+Aquí conviene ser preciso, porque la frase se usa muy a la ligera y este sitio tiene que aguantar el mismo listón que está proponiendo.
+
+- **No significa que no haya ninguna petición.** La propia página ha llegado por la red, y casi todas las herramientas gratuitas llevan publicidad o analítica que hablan con alguien. La afirmación va de tu *archivo*, no del tráfico en general.
+- **No te esconde la dirección IP.** La ven todos los sitios que visitas, este incluido. El procesamiento local va del contenido de tus archivos, no del anonimato.
+- **No sobrevive a una función que descarga algo.** Una herramienta que te deja pegar una dirección web tiene que contactar con esa dirección, y ese servidor se entera de tu IP y de qué le has pedido. Eso va en la propia función y no es un defecto, pero es una excepción real, y una herramienta debería decirlo con todas las letras en vez de pasarla por alto.
+- **No es lo mismo que «borramos tus archivos».** Esa segunda frase habla de lo que una empresa decide hacer; la primera, de lo que es técnicamente posible. Y solo una de las dos se puede comprobar.
+
+## Cuándo subir está genuinamente bien
+
+Esto no va de que subir sea siempre un error. Manda el archivo cuando el contenido no sea sensible y así te resulte más cómodo, cuando el trabajo sea de verdad demasiado pesado para tu dispositivo, cuando el formato no tenga descodificador del lado del navegador, o cuando estés usando un servicio con el que ya tienes una relación y cuyas condiciones te has leído de verdad.
+
+Ten más cuidado cuando el archivo lleve algo que no publicarías: documentos de identidad, pruebas médicas, contratos, cualquier cosa con una dirección o una cara que no pensabas compartir, o una foto cuyos datos de ubicación no has mirado. Con esos, más vale una herramienta que puedes comprobar que una en la que tienes que confiar. Y no porque sea probable que la de confianza te falle, sino porque con la comprobable la pregunta ni siquiera llega a plantearse.
+
+## Cómo responde este sitio a esas cuatro comprobaciones
+
+Sería una guía bastante rara la que te mandara comprobar y luego pidiera quedar exenta. Así que, por orden:
+
+- **Desenchufa.** Abre cualquier herramienta de aquí, desconéctate y verás que sigue funcionando. Cada página de herramienta lleva un indicador en directo que dice si estás conectado ahora mismo, así que puedes verlo cambiar.
+- **Pestaña Red.** Convierte algo y lee la lista. No hay nada que lleve tu archivo, ni una miniatura suya, ni su nombre, ni su tamaño, ni nada leído de dentro de él. En este sitio no hay ningún evento de analítica propio que tuviera nada de eso que enviar.
+- **Content-Security-Policy.** Está al principio del código fuente de todas las páginas. En `connect-src` aparecen los destinos de publicidad y medición de Google y el botón de donación, y nada más. **Ninguna dirección de esa lista es de este sitio**, porque este sitio no tiene servidor: son archivos estáticos. No hay ningún sitio al que mandar un archivo aunque algo lo intentara.
+- **Código.** Todas las líneas son [públicas](https://github.com/A-Box-of-Tools/website). La compilación quita comentarios y espacios en blanco y nada más, y puedes ejecutarla tú y comparar el resultado con lo que se está sirviendo.
+
+Las excepciones, dichas en voz alta en vez de escondidas: este sitio lleva publicidad de Google y un contador de visitas, que hablan los dos con Google y a ninguno de los cuales se le entrega nada sobre tus archivos; y la herramienta [Imágenes a vídeo](https://abox.tools/es/imagenes-a-video/) puede descargar una imagen desde una dirección que pegues tú, con lo que ese servidor ve tu IP. La [página de privacidad](https://abox.tools/es/privacidad/) explica las dos al completo.
+
+Todas las herramientas de aquí funcionan así: un [compresor de imágenes](https://abox.tools/es/comprimir-imagen/) que acierta el tamaño que tú digas, un [recortador de vídeo](https://abox.tools/es/recortar-video/), un [visor y eliminador de EXIF](https://abox.tools/es/eliminar-datos-exif/) para esos datos ocultos de los que hablábamos más arriba, [imágenes a vídeo](https://abox.tools/es/imagenes-a-video/) e [imágenes a PDF](https://abox.tools/es/imagenes-a-pdf/). Todas gratis, sin cuenta, y ninguna tiene adónde mandar tus archivos.
+
+![El panel de una página de herramienta: una línea que dice que los archivos nunca salen del navegador, los datos que lo sostienen y una comprobación en vivo que informa de que la página no ha hecho ninguna petición de red.](https://abox.tools/screens/is-it-safe-to-upload-files/pledge.webp)
+
+La última de las cuatro comprobaciones, contestada en la página y no en un párrafo: la cuenta la hace la página sobre sí misma, y puedes hacer la misma cuenta en tu navegador.

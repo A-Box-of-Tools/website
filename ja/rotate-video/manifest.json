@@ -1,0 +1,26 @@
+{
+  "id": "/ja/rotate-video/",
+  "name": "\u52d5\u753b\u56de\u8ee2\u30c4\u30fc\u30eb",
+  "short_name": "\u52d5\u753b\u56de\u8ee2\u30c4\u30fc\u30eb",
+  "description": "\u53f3\u306b90\u5ea6\u3001180\u5ea6\u3001\u5de6\u306b90\u5ea6\u3002\u30d8\u30c3\u30c0\u30fc\u306b\u56de\u8ee2\u3092\u66f8\u304d\u3001\u30d5\u30ec\u30fc\u30e0\u306f\u30c7\u30b3\u30fc\u30c9\u305b\u305a\u753b\u8cea\u3092\u4fdd\u3061\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

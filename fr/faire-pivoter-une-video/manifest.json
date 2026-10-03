@@ -1,0 +1,26 @@
+{
+  "id": "/fr/faire-pivoter-une-video/",
+  "name": "Rotation vid\u00e9o",
+  "short_name": "Rotation vid\u00e9o",
+  "description": "Un quart de tour, un demi-tour, dans l'autre sens. Inscrit dans l'en-t\u00eate sans d\u00e9coder une image ni perdre de qualit\u00e9.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

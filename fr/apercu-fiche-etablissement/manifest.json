@@ -1,0 +1,26 @@
+{
+  "id": "/fr/apercu-fiche-etablissement/",
+  "name": "Aper\u00e7u de fiche d'\u00e9tablissement",
+  "short_name": "Aper\u00e7u de fiche d'\u00e9tablissement",
+  "description": "Saisissez vos informations, elles deviennent la carte que Google afficherait. Aucun envoi pour la dessiner.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

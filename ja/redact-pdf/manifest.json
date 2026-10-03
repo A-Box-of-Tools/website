@@ -1,0 +1,26 @@
+{
+  "id": "/ja/redact-pdf/",
+  "name": "PDF\u306e\u9ed2\u5857\u308a",
+  "short_name": "PDF\u306e\u9ed2\u5857\u308a",
+  "description": "\u6587\u5b57\u306f\u30d5\u30a1\u30a4\u30eb\u304b\u3089\u6d88\u3055\u308c\u3001\u305d\u306e\u3042\u3068\u30d5\u30a1\u30a4\u30eb\u3092\u691c\u7d22\u3057\u3066\u78ba\u304b\u3081\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

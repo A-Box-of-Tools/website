@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-avif-en-jpg/",
+  "name": "AVIF en JPG",
+  "short_name": "AVIF en JPG",
+  "description": "Le format que les sites enregistrent aujourd'hui, dans celui que tout accepte depuis toujours.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

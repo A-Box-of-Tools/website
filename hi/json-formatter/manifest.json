@@ -1,0 +1,26 @@
+{
+  "id": "/hi/json-formatter/",
+  "name": "JSON \u092b\u093c\u0949\u0930\u094d\u092e\u0948\u091f\u0930",
+  "short_name": "JSON \u092b\u093c\u0949\u0930\u094d\u092e\u0948\u091f\u0930",
+  "description": "JSON, XML, HTML, CSS \u0914\u0930 YAML, \u0938\u091c\u093e\u090f \u0939\u0941\u090f \u092f\u093e \u092c\u0926\u0932\u0947 \u0939\u0941\u090f\u0964 \u0915\u0941\u091b \u092d\u0940 \u0915\u093f\u0938\u0940 \u0914\u0930 \u0915\u0947 \u0938\u0930\u094d\u0935\u0930 \u092e\u0947\u0902 \u091a\u093f\u092a\u0915\u093e\u092f\u093e \u0928\u0939\u0940\u0902 \u091c\u093e\u0924\u093e\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

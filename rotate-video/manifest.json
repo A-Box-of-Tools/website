@@ -1,0 +1,26 @@
+{
+  "id": "/rotate-video/",
+  "name": "Video Rotator",
+  "short_name": "Video Rotator",
+  "description": "A quarter turn, a half turn, the other way. Written into the file's header, so not one frame is decoded and nothing is lost.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

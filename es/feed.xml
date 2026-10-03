@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="es">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Herramientas gratis que no suben tus archivos. Une imágenes en un PDF o un MP4, comprime una imagen al tamaño exacto, recorta un vídeo o borra el EXIF.</subtitle>
+  <id>https://abox.tools/es/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/es/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/es/"/>
+  <updated>2026-09-29T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/es/</uri>
+  </author>
+  <entry>
+    <title type="html">Comparador de textos</title>
+    <id>https://abox.tools/es/comparar-textos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/comparar-textos/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo comprobar un extracto bancario en CSV antes de confiar en él</title>
+    <id>https://abox.tools/es/guias/comprobar-un-extracto-bancario-en-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comprobar-un-extracto-bancario-en-csv/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">Revisa un extracto convertido a CSV para detectar importes incorrectos, filas ausentes y fechas mal interpretadas. Un ejemplo muestra qué pueden comprobar los saldos acumulados y qué no.</summary>
+  </entry>
+  <entry>
+    <title type="html">¿Es seguro subir un extracto bancario?</title>
+    <id>https://abox.tools/es/guias/es-seguro-subir-un-extracto-bancario/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/es-seguro-subir-un-extracto-bancario/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">Un extracto reúne destinatarios, importes y saldos en un archivo. Qué recibe el convertidor, qué hacen los servicios cuidadosos y cómo comprobar si realmente era necesario subirlo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Creador de fotos de carnet</title>
+    <id>https://abox.tools/es/foto-carnet/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/foto-carnet/"/>
+    <updated>2026-09-21T00:00:00Z</updated>
+    <summary type="html">Haz una foto de pasaporte o visado según la norma publicada de tu país: milímetros y DPI exactos, una guía en vivo de altura de cabeza y línea de ojos, comprobación del fondo, una hoja de 10x15 lista para imprimir y un archivo ajustado al límite en KB del portal. No se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo abrir un archivo DCM, y qué hay dentro de uno</title>
+    <id>https://abox.tools/es/guias/abrir-un-archivo-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/abrir-un-archivo-dicom/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">Qué es un archivo .dcm y con qué se abre, qué hay en un disco hospitalario, por qué los archivos no tienen extensión, cómo abrir un estudio .dcm en el navegador, qué hacen de verdad la ventana y el centro, y qué lleva un estudio sobre el paciente además de la imagen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Visor DICOM</title>
+    <id>https://abox.tools/es/visor-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/visor-dicom/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">Abre gratis estudios .dcm de TC, resonancia, radiografía y ecografía en el navegador, sin instalar nada. Ajusta la ventana y el centro, recorre una serie, mide en milímetros y lee las etiquetas que identifican al paciente. No se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIF a JPG</title>
+    <id>https://abox.tools/es/convertir-avif-a-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-avif-a-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convierte AVIF a JPG en el navegador. Ya incluye el decodificador: no se sube nada, no hace falta cuenta y funciona sin conexión. Elige el color que sustituirá la transparencia.</summary>
+  </entry>
+  <entry>
+    <title type="html">El archivo que casi nada abre, salvo el navegador donde lees esto</title>
+    <id>https://abox.tools/es/guias/convertir-avif-a-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-avif-a-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">¿Guardaste una imagen y recibiste un .avif que ningún programa abre? El navegador sí lo lee. Qué es AVIF, qué no puede conservar un JPEG, por qué ocupa más y cómo convertirlo sin subirlo.</summary>
+  </entry>
+  <entry>
+    <title type="html">La imagen que guarda la web y el formato que casi todo acepta</title>
+    <id>https://abox.tools/es/guias/convertir-webp-a-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-webp-a-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">¿Guardaste una imagen y recibiste un .webp que otros programas no abren? Qué es WebP, por qué convertirlo suele aumentar el tamaño, qué ocurre con la transparencia y cómo hacerlo sin subir nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">La misma imagen, un tercio más pequeña y con la transparencia intacta</title>
+    <id>https://abox.tools/es/guias/convertir-png-a-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-png-a-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">WebP ocupa menos que PNG incluso sin perder información, y mucho menos si aceptas una pequeña pérdida. Qué modo conviene según la imagen, cuánto ahorra y cómo convertir sin subir archivos.</summary>
+  </entry>
+  <entry>
+    <title type="html">PNG a WebP</title>
+    <id>https://abox.tools/es/convertir-png-a-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-png-a-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convierte PNG a WebP en el navegador, sin pérdida o con mayor compresión. Ambos modos conservan la transparencia. Sin subir nada, sin cuenta y sin conexión.</summary>
+  </entry>
+  <entry>
+    <title type="html">Qué hacen 20 convertidores en línea con tu archivo</title>
+    <id>https://abox.tools/es/guias/que-hacen-20-conversores-con-tu-archivo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/que-hacen-20-conversores-con-tu-archivo/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Enviamos el mismo archivo a 20 convertidores gratuitos y observamos la red. 19 lo subieron. Cuáles, adónde, cuándo y qué prometían sus políticas de privacidad.</summary>
+  </entry>
+  <entry>
+    <title type="html">WebP a JPG</title>
+    <id>https://abox.tools/es/convertir-webp-a-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-webp-a-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">Convierte WebP a JPG en el navegador. Ya incluye el decodificador: no se sube nada, no hace falta cuenta y funciona sin conexión. Elige el color que sustituirá la transparencia.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo convertir un GIF a MP4 y por qué ocupa mucho menos</title>
+    <id>https://abox.tools/es/guias/convertir-un-gif-a-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-un-gif-a-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Por qué un MP4 de la misma animación suele ocupar una décima parte del GIF, qué cambia al convertirlo, por qué importan los tiempos de cada fotograma y cómo hacerlo en el navegador sin subir el archivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo girar un video sin perder calidad</title>
+    <id>https://abox.tools/es/guias/girar-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/girar-un-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Por qué un video del teléfono se ve de lado, qué hacen los nueve números de su encabezado, cuándo basta con cambiarlos y cuándo conviene girar los píxeles, sin subir el archivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF a MP4</title>
+    <id>https://abox.tools/es/convertir-gif-a-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-gif-a-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Convierte un GIF animado a MP4 en el navegador, con mucho menos tamaño. Conserva cada fotograma y su duración, sin ajustar la animación a una frecuencia fija. H.264 en MP4, sin subidas.</summary>
+  </entry>
+  <entry>
+    <title type="html">Girar vídeo</title>
+    <id>https://abox.tools/es/girar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/girar-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">Gira un vídeo de lado o invertido en el navegador. Cambia la cabecera sin recodificar, o aplica el giro a los píxeles para reproductores antiguos. Lee MP4, MOV, WebM y MKV; genera MP4. Sin subidas.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compresor de vídeo</title>
+    <id>https://abox.tools/es/comprimir-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/comprimir-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Reduce un vídeo a menos de 8, 16, 25 o los megabytes que necesites en el navegador. Calcula dimensiones y tasa de bits, codifica y mide. No sube nada y copia el sonido intacto.</summary>
+  </entry>
+  <entry>
+    <title type="html">Conversor a MP4</title>
+    <id>https://abox.tools/es/convertir-a-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-a-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Convierte WebM, MKV, MOV o MP4 a MP4 con H.264 y AAC en el navegador. Copia intactas las pistas compatibles y recodifica las demás en tu dispositivo. No se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo comprimir un video para poder enviarlo</title>
+    <id>https://abox.tools/es/guias/comprimir-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comprimir-un-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Qué pierde un video al ajustarse a un límite de tamaño, en qué se gastan los megabytes, por qué conviene reducir las dimensiones antes de perder nitidez y cómo hacerlo en el navegador sin subir el archivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo convertir un video a un MP4 compatible</title>
+    <id>https://abox.tools/es/guias/convertir-un-video-a-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-un-video-a-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Qué necesita un MP4 para ser compatible, por qué se rechazan WebM, MKV o MOV de iPhone, cuándo la conversión no pierde nada y cuándo vuelve a codificar, y cómo hacerla sin subir el archivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo poner una marca de agua en un PDF y qué consigue</title>
+    <id>https://abox.tools/es/guias/poner-una-marca-de-agua-en-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/poner-una-marca-de-agua-en-un-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Por qué conviene identificar el destinatario de una copia, qué evita y qué no evita una marca de agua, qué escribir y cómo añadirla en el navegador sin subir el documento.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo proteger un PDF con contraseña y qué garantía ofrece</title>
+    <id>https://abox.tools/es/guias/proteger-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/proteger-un-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Una contraseña de apertura cifra un PDF. Una restricción de impresión es una petición. Qué hace cada una, qué cifrado elegir, por qué no necesitas subir el documento y qué ocurre si olvidas la contraseña.</summary>
+  </entry>
+  <entry>
+    <title type="html">Desbloquear PDF</title>
+    <id>https://abox.tools/es/desbloquear-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/desbloquear-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Quita la contraseña y las restricciones de impresión, copia y edición de un PDF en el navegador. Indica si necesita contraseña; no la adivina ni sube el archivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Marca de agua en PDF</title>
+    <id>https://abox.tools/es/marca-de-agua-en-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/marca-de-agua-en-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">Añade una marca de agua a un PDF en el navegador: destinatario, fecha o nombre, en cualquier idioma, con tamaño, ángulo y opacidad ajustables. No se sube nada y se comprueba el resultado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Proteger PDF</title>
+    <id>https://abox.tools/es/proteger-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/proteger-pdf/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary type="html">Añade contraseña o restricciones de impresión y copia a un PDF en el navegador. AES-256 por defecto, sin subidas. Se reabre el resultado para comprobar la protección antes de descargarlo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Censor de PDF</title>
+    <id>https://abox.tools/es/censurar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Censor de imágenes</title>
+    <id>https://abox.tools/es/censurar-imagen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-imagen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Cubre un nombre, una dirección o un número de cuenta en una foto o una captura y vuelve a guardar la imagen, de modo que los píxeles ocultos desaparecen del archivo en lugar de quedarse debajo de un rectángulo. Todo ocurre en el navegador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Compresor de imágenes</title>
+    <id>https://abox.tools/es/comprimir-imagen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/comprimir-imagen/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Comprime un JPEG, PNG o WebP al tamaño exacto que te pidan: 100 KB, 2 MB o el que sea. Todo dentro del navegador, sin subir nada, sin cuenta y sin conexión.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo desbloquear un PDF y reconocer qué lo bloquea</title>
+    <id>https://abox.tools/es/guias/desbloquear-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/desbloquear-un-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">Un PDF que no se puede imprimir y uno que no se puede abrir plantean problemas distintos. Qué significa cada protección, cuál se retira con un clic y cuál requiere conocer la contraseña.</summary>
+  </entry>
+</feed>

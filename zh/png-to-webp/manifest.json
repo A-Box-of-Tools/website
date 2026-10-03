@@ -1,0 +1,26 @@
+{
+  "id": "/zh/png-to-webp/",
+  "name": "PNG \u8f6c WebP",
+  "short_name": "PNG \u8f6c WebP",
+  "description": "\u540c\u4e00\u5f20\u56fe\u7247\uff0c\u5e38\u5e38\u51cf\u5c11\u4e09\u5206\u4e4b\u4e00\u4f53\u79ef\uff0c\u900f\u660e\u533a\u57df\u4fdd\u6301\u5b8c\u6574\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

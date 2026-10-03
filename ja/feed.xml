@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">ファイルをアップロードしない無料ツール。画像をPDFやMP4にまとめる、サイズを指定して圧縮する、動画を切り抜く、EXIFを削除します。処理はすべてブラウザの中で終わります。</subtitle>
+  <id>https://abox.tools/ja/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
+  <updated>2026-09-29T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/ja/</uri>
+  </author>
+  <entry>
+    <title type="html">テキスト差分</title>
+    <id>https://abox.tools/ja/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/text-diff/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">銀行明細CSVを信頼する前に確認する方法</title>
+    <id>https://abox.tools/ja/guides/check-a-bank-statement-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/check-a-bank-statement-csv/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">変換した銀行明細CSVの金額の誤り、行の欠落、日付の読み違いを確認します。具体例で、取引ごとの残高で証明できることと、できないことを説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">銀行明細をアップロードしても安全か</title>
+    <id>https://abox.tools/ja/guides/is-it-safe-to-upload-a-bank-statement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-upload-a-bank-statement/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">明細には支払先、金額、残高が1つのファイルに入っています。変換サービスへ渡す情報、慎重な事業者の扱い方、アップロードが本当に必要かを確認する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">証明写真作成</title>
+    <id>https://abox.tools/ja/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/id-photo/"/>
+    <updated>2026-09-21T00:00:00Z</updated>
+    <summary type="html">お住まいの国の公表規定どおりにパスポートやビザ用の写真を作ります。ミリ単位とdpiは正確に、顔の高さと目の高さは重ねて表示、背景も確認し、印刷用のL判シートと、提出フォームのKB制限に収めたファイルまで。アップロードは一切ありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">DCMファイルの開き方と、その中身</title>
+    <id>https://abox.tools/ja/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/open-a-dicom-file/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">.dcmファイルとは何か、何で開けるか、病院のディスクの中身、拡張子のない理由、DCMファイルをブラウザで開く方法、ウィンドウと中心値の働き、画像のほかに患者について何を抱えているかを説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOMビューア</title>
+    <id>https://abox.tools/ja/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/dicom-viewer/"/>
+    <updated>2026-09-19T00:00:00Z</updated>
+    <summary type="html">.dcmの検査画像をブラウザで開く無料のDCMファイルビューアです。CT、MRI、レントゲン、超音波に対応し、インストールは不要です。ウィンドウと中心値を調整し、シリーズ全体を送り、ミリ単位で測り、すべてのDICOMタグと患者の特定につながる情報を確認できます。何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">20のオンライン変換サービスはファイルをどう扱うか</title>
+    <id>https://abox.tools/ja/guides/what-20-converters-do-with-your-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/what-20-converters-do-with-your-file/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">20の無料オンライン変換サービスへ同じファイルを渡し、通信を測りました。19がアップロードしました。どのサービスが、どこへ、いつ送り、プライバシーポリシーで何を約束するかを説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">AVIFをJPGに</title>
+    <id>https://abox.tools/ja/avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でAVIF画像をJPGに変換します。デコーダーはブラウザに備わっているので、アップロードもアカウントも不要で、オフラインでも動きます。透明な部分の背景色も選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">PNGをWebPに</title>
+    <id>https://abox.tools/ja/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でPNG画像を可逆圧縮のWebP、またはさらに小さなWebPに変換します。どちらも透明度を保ちます。アップロードもアカウントも不要で、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">WebPをJPGに</title>
+    <id>https://abox.tools/ja/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でWebP画像をJPGに変換します。デコーダーはブラウザに備わっているので、アップロードもアカウントも不要で、オフラインでも動きます。透明な部分の背景色も選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">ほかでは開けないファイルを、このブラウザーは開ける</title>
+    <id>https://abox.tools/ja/guides/convert-avif-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-avif-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">ダウンロードした.avifの画像をソフトで開けなくても、ブラウザーは読めます。アップロードせずに変換できる理由、AVIFの仕組み、JPEGに引き継げない情報、JPGの容量が数倍になる理由を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">ウェブが保存した画像を、広く使える形式へ</title>
+    <id>https://abox.tools/ja/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-webp-to-jpg/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">サイトから保存した.webpの画像を開けない場合に。WebPの仕組み、変換で容量が増える理由、透明部分がどうなるか、何もアップロードせずに変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">透明部分を保ったまま、同じ画像を3分の1ほど小さく</title>
+    <id>https://abox.tools/ja/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-png-to-webp/"/>
+    <updated>2026-09-17T00:00:00Z</updated>
+    <summary type="html">WebPは情報を失わない方法でもPNGより小さくなり、非可逆ならさらに減らせます。適した方法は画像の内容次第です。各モードの働き、容量の違い、アップロードせずに変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをMP4に</title>
+    <id>https://abox.tools/ja/gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">ブラウザでGIFアニメーションを小さなMP4に変換します。各フレームの表示時間を保ち、間隔は変更しません。広く使えるH.264のMP4で、アップロードは不要です。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIFをMP4に変換する方法と、容量が大幅に減る理由</title>
+    <id>https://abox.tools/ja/guides/convert-a-gif-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-a-gif-to-mp4/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">同じアニメーションのMP4がGIFの10分の1ほどになる理由、GIFにできて動画にできないこと、多くの変換でフレームの表示時間が崩れる理由、アップロードせずにブラウザーで変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画回転ツール</title>
+    <id>https://abox.tools/ja/rotate-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/rotate-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">ブラウザで横向きや上下逆の動画を90度・180度回転します。ヘッダーだけを変えて画質を保つか、古いプレーヤー向けに映像自体を回せます。MP4、MOV、WebM、MKVからMP4へ、アップロード不要。</summary>
+  </entry>
+  <entry>
+    <title type="html">画質を落とさずに動画を回転する方法</title>
+    <id>https://abox.tools/ja/guides/rotate-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/rotate-a-video/"/>
+    <updated>2026-09-13T00:00:00Z</updated>
+    <summary type="html">スマートフォンの動画が横向きに再生される理由、ヘッダーにある9個の数値の役割、不要な再エンコードが行われる理由、画像そのものを回転すべき場合、アップロードせずにブラウザーで回す方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">MP4変換ツール</title>
+    <id>https://abox.tools/ja/convert-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/convert-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">WebM、MKV、MOV、MP4を、電話やブラウザやフォームで広く使えるH.264とAACのMP4にします。すでにH.264やAACならそのままコピーし、それ以外だけ端末で再エンコードします。アップロード不要です。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFにパスワードを付ける方法と、その保護の意味</title>
+    <id>https://abox.tools/ja/guides/protect-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/protect-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">PDFを開くパスワードは実際の鍵で、印刷制限は操作への要請です。それぞれの意味、暗号化方式の選び方、オンラインツールへアップロードする問題、パスワードを忘れた場合を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFに透かしを付ける方法と、その目的</title>
+    <id>https://abox.tools/ja/guides/watermark-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/watermark-a-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">金融機関や大家が宛名入りのスキャンを求める理由、透かしで防げることと防げないこと、文書をアップロードせずにブラウザーで付ける方法、書く内容を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF保護解除ツール</title>
+    <id>https://abox.tools/ja/unlock-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/unlock-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">ブラウザでPDFのパスワードと印刷・コピー・編集の制限を外します。保護されたファイルの多くはパスワード不要で、保護の種類を表示します。アップロードもパスワードの推測もありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF透かしツール</title>
+    <id>https://abox.tools/ja/watermark-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/watermark-pdf/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">ブラウザでPDFの各ページに送り先、日付、名前の透かしを入れます。角度、不透明度、言語を自由に選べます。アップロードせず、元のページは保ち、ダウンロード前に結果を確認します。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画圧縮ツール</title>
+    <id>https://abox.tools/ja/compress-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compress-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">ブラウザで動画を8、16、25MBなど好きな容量未満に縮めます。上限からフレームの大きさとビットレートを計算し、エンコードして実測します。アップロードせず、音声はそのままコピーします。</summary>
+  </entry>
+  <entry>
+    <title type="html">受け付けてもらえるMP4に動画を変換する方法</title>
+    <id>https://abox.tools/ja/guides/convert-a-video-to-mp4/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-a-video-to-mp4/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">広く受け付けられるMP4の条件、WebM、MKV、iPhoneのMOVが拒否される理由、情報を失わない変換と再エンコードの違い、アップロードせずにブラウザーで変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">送れる容量まで動画を圧縮する方法</title>
+    <id>https://abox.tools/ja/guides/compress-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/compress-a-video/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary type="html">容量の上限が動画に与える影響、容量の使われ方、画質が崩れる前にフレームを小さくする理由、できるだけ情報を残す方法、アップロードせずにブラウザーで圧縮する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF保護ツール</title>
+    <id>https://abox.tools/ja/protect-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/protect-pdf/"/>
+    <updated>2026-09-11T00:00:00Z</updated>
+    <summary type="html">ブラウザでPDFにパスワードを設定し、印刷やコピーを制限できます。標準はAES-256で、アップロードは不要です。ダウンロード前に完成したファイルを開き直し、保護を確かめます。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIFビューアー・削除ツール</title>
+    <id>https://abox.tools/ja/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/exif-editor/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">写真に隠れているEXIFやGPSの情報を見て、編集し、ワンクリックですべて削除できます。処理はブラウザの中だけ。アップロードはなく、写真そのものをエンコードし直すこともありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFの保護を解除する方法と、保護の種類</title>
+    <id>https://abox.tools/ja/guides/unlock-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/unlock-a-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">印刷できないPDFと開けないPDFは、同じ「保護」という名前でも別の問題です。それぞれの仕組み、片方は1回で外せてももう片方はパスワードなしでは外せない理由、見分け方を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFの黒塗り</title>
+    <id>https://abox.tools/ja/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-pdf/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">PDFの文字の上に黒い四角を描くのではなく、文字そのものを取り除きます。文字はページを描く命令から消され、できあがったファイルをもう一度開いて検索し、本当に消えたことを確かめます。何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFをCSVに</title>
+    <id>https://abox.tools/ja/pdf-to-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/pdf-to-csv/"/>
+    <updated>2026-09-10T00:00:00Z</updated>
+    <summary type="html">PDFの銀行・カード明細、請求書、価格表、レポートをCSVにします。全ページの文字の位置から表を見つけ、読み取れる場合は印刷された残高も比較します。アップロード不要です。</summary>
+  </entry>
+</feed>

@@ -1,0 +1,26 @@
+{
+  "id": "/de/pdf-verkleinern/",
+  "name": "PDF-Kompressor",
+  "short_name": "PDF-Kompressor",
+  "description": "Ein Dokument verkleinern, ohne es irgendwohin zu schicken.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/tr/metin-karsilastirma/",
+  "name": "Metin Kar\u015f\u0131la\u015ft\u0131rma",
+  "short_name": "Metin Kar\u015f\u0131la\u015ft\u0131rma",
+  "description": "\u0130ki metin girer; her fark sat\u0131r sat\u0131r ve s\u00f6zc\u00fck s\u00f6zc\u00fck i\u015faretlenmi\u015f \u00e7\u0131kar. Hi\u00e7bir \u015fey bir ba\u015fkas\u0131n\u0131n sunucusuna yap\u0131\u015ft\u0131r\u0131lm\u0131yor.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
