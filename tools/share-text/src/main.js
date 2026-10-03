@@ -171,6 +171,10 @@ function addRequest(id, dc, note) {
   };
   row.append(text, admit, deny);
   pending.set(id, { dc, row });
+  // A carried admission token can belong to a previous share with this name.
+  // Acknowledging the pending knock distinguishes a person's decision from
+  // a peer channel that has stopped delivering its first response.
+  try { dc.send(JSON.stringify({ type: 'asked' })); } catch {}
   $('requests').append(row);
   refreshCount();
 }
@@ -324,14 +328,28 @@ async function hostSignal(from, data) {
     pc.ondatachannel = (e) => {
       const dc = e.channel;
       dc.binaryType = 'arraybuffer';
-      dc.onopen = () => {
+      let introduced = false;
+      const introduce = () => {
+        if (introduced || dc.readyState !== 'open') return;
+        introduced = true;
         if (isPrivate) { dc.send(JSON.stringify({ type: 'private' })); refreshCount(); }
         else admitViewer(from, dc);
       };
+      dc.onopen = introduce;
       dc.onmessage = (ev) => {
         if (typeof ev.data !== 'string') return;
         let m;
         try { m = JSON.parse(ev.data); } catch { return; }
+        if (!m || typeof m !== 'object') return;
+        // The reader announces that its message handler is installed. This
+        // also covers engines that deliver datachannel already open, before
+        // this side can attach an open listener.
+        if (m.type === 'hello') {
+          if (!introduced) introduce();
+          else if (channels.has(from)) { dc.send(payload()); dc.send(filesMsg()); }
+          else dc.send(JSON.stringify({ type: 'private' }));
+          return;
+        }
         // Files go only to admitted readers, one at a time, in the order asked.
         if (m.type === 'get' && channels.has(from)) {
           const chain = sendQueue.get(from) ?? Promise.resolve();
@@ -349,6 +367,7 @@ async function hostSignal(from, data) {
         }
       };
       dc.onclose = () => dropViewer(from);
+      introduce();
     };
   }
   try {
@@ -477,10 +496,35 @@ function view(code) {
   let got = false;
   let connected = false;
   let done = false;
+  let introduced = false;
+  let viewerKeepalive = 0;
   let lastBody = '';
   let asMd = false;
   let mdTouched = false;
   let rx = null; // the one in-flight download: {id, name, size, mime, parts, got, btn}
+  let connectionTimer = 0;
+  let deliveryTimer = 0;
+  const clearDeadlines = () => {
+    clearTimeout(connectionTimer);
+    clearTimeout(deliveryTimer);
+  };
+  const stopAttempt = (key, offerRelay = false) => {
+    if (done) return;
+    done = true;
+    viewerLive = false;
+    clearDeadlines();
+    clearInterval(viewerKeepalive);
+    pc?.close();
+    ws.close();
+    $('knockrow').hidden = true;
+    $('view-status').hidden = false;
+    fail(phrase(key));
+    $('relayrow').hidden = !offerRelay;
+  };
+  const awaitIntroduction = () => {
+    clearTimeout(deliveryTimer);
+    deliveryTimer = setTimeout(() => stopAttempt('view.no-content'), 20000);
+  };
 
   // The raw source always sits in #received (the copy button reads it
   // there); the toggle only decides which of the two views is shown.
@@ -562,6 +606,8 @@ function view(code) {
     if (done) return;
     done = true;
     viewerLive = false;
+    clearDeadlines();
+    clearInterval(viewerKeepalive);
     $('knockrow').hidden = true;
     $('filelist').textContent = '';
     rx = null;
@@ -599,6 +645,9 @@ function view(code) {
     $('consent').hidden = true;
     $('view-status').textContent = phrase(relay ? 'view.relaying' : 'view.connecting');
     pc = new RTCPeerConnection(relay ? { iceServers: [...RTC.iceServers, relay] } : RTC);
+    connectionTimer = setTimeout(() => {
+      if (!connected) stopAttempt(relay ? 'view.relay-failed' : 'view.no-connect', !relay);
+    }, 20000);
     pc.onicecandidate = (ev) => {
       if (ev.candidate && ws.readyState === 1) ws.send(JSON.stringify({ data: { candidate: ev.candidate } }));
     };
@@ -612,13 +661,9 @@ function view(code) {
     // candidate pair has been tried, and the timer below covers the case
     // where it never says so. A direct attempt that fails offers the relay;
     // a relayed one that fails has nothing left to offer.
-    let given = false;
     const giveUp = () => {
-      if (given || got || connected || done) return;
-      given = true;
-      if (relay) { fail(phrase('view.relay-failed')); return; }
-      fail(phrase('view.no-connect'));
-      $('relayrow').hidden = false;
+      if (got || connected || done) return;
+      stopAttempt(relay ? 'view.relay-failed' : 'view.no-connect', !relay);
     };
     pc.oniceconnectionstatechange = () => {
       if (pc.iceConnectionState === 'failed') giveUp();
@@ -626,10 +671,24 @@ function view(code) {
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
     dcRef = dc;
-    dc.onopen = () => { connected = true; viewerLive = true; };
+    const opened = () => {
+      if (connected || done) return;
+      connected = true;
+      viewerLive = true;
+      clearTimeout(connectionTimer);
+      if (!introduced) {
+        $('view-status').textContent = phrase('view.waiting-content');
+        awaitIntroduction();
+      }
+      dc.send(JSON.stringify({ type: 'hello' }));
+    };
+    dc.onopen = opened;
     dc.onmessage = (ev) => {
+      if (done) return;
       if (typeof ev.data !== 'string') { fileChunk(ev.data); return; }
-      const msg = JSON.parse(ev.data);
+      let msg;
+      try { msg = JSON.parse(ev.data); } catch { return; }
+      if (!msg || typeof msg !== 'object') return;
       if (msg.type === 'files') { renderFilelist(msg.list ?? []); return; }
       if (msg.type === 'file-begin') { fileBegin(msg); return; }
       if (msg.type === 'file-end') { fileEnd(); return; }
@@ -639,11 +698,15 @@ function view(code) {
         return;
       }
       if (msg.type === 'private') {
+        if (got) return;
+        introduced = true;
+        clearDeadlines();
         // A reader who was admitted and switched language knocks again with
         // the token the sharer issued, silently; anyone else knocks aloud.
         let token = null;
         try { token = carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
         if (token !== null) {
+          awaitIntroduction();
           dc.send(JSON.stringify({ type: 'knock', note: '', token }));
           return;
         }
@@ -652,8 +715,16 @@ function view(code) {
         $('knock').focus();
         return;
       }
+      if (msg.type === 'asked') {
+        introduced = true;
+        clearDeadlines();
+        $('view-status').textContent = phrase('view.asked');
+        return;
+      }
       if (msg.type === 'denied') {
         done = true;
+        viewerLive = false;
+        clearDeadlines();
         $('knockrow').hidden = true;
         $('view-status').textContent = phrase('view.denied');
         $('retryrow').hidden = false;
@@ -661,6 +732,8 @@ function view(code) {
       }
       if (msg.type !== 'text' || done) return;
       got = true;
+      introduced = true;
+      clearDeadlines();
       lastBody = String(msg.body ?? '');
       // The sharer's markdown flag sets the default; a reader who has
       // touched the view toggle keeps their own choice through live updates.
@@ -673,9 +746,10 @@ function view(code) {
       if (lastBody === '') $('view-status').textContent = phrase('view.empty');
     };
     dc.onclose = sharerGone;
+    if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
+    if (done) return;
     ws.send(JSON.stringify({ data: { sdp: pc.localDescription } }));
-    setTimeout(giveUp, 20000);
   }
 
   // The credential is minted by the rendezvous, one per socket, and handed
@@ -698,7 +772,7 @@ function view(code) {
   }
 
   $('connect').addEventListener('click', () => {
-    dial().catch(() => fail(phrase('view.error')));
+    dial().catch(() => stopAttempt('view.error'));
   });
 
   $('relay').addEventListener('click', () => {
@@ -706,13 +780,13 @@ function view(code) {
       sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
       sessionStorage.setItem(RELAY_FLAG(code), '1');
     } catch {
-      fail(phrase('view.error'));
+      stopAttempt('view.error');
       return;
     }
     location.reload();
   });
 
-  ws.onopen = () => setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
+  ws.onopen = () => { viewerKeepalive = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000); };
 
   ws.onmessage = async (e) => {
     if (e.data === 'pong') return;
@@ -739,18 +813,20 @@ function view(code) {
         else if (m.data.candidate) await pc.addIceCandidate(m.data.candidate);
       }
     } catch {
-      fail(phrase('view.error'));
+      if (!done && !got) stopAttempt('view.error');
     }
   };
 
   ws.onclose = (e) => {
+    clearInterval(viewerKeepalive);
     // The server closes every reader with host-gone the instant the sharer
     // disconnects - long before the peer channel notices on its own.
     if (done) return;
     if (e.code === 4410) { sharerGone(); return; }
     if (got) return;
-    if (e.code === 4404) fail(phrase('view.nobody'));
-    else if (e.code === 4429) fail(phrase('view.full'));
+    if (e.code === 4404) stopAttempt('view.nobody');
+    else if (e.code === 4429) stopAttempt('view.full');
+    else if (!connected) stopAttempt('view.error');
   };
 }
 

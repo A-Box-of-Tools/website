@@ -98,7 +98,7 @@
           <label for="input">Tu texto</label>
           <span class="count" id="input-count">vacío</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Pega aquí JSON, XML, HTML, CSS o YAML, o suelta un archivo arriba."></textarea>
       </div>
@@ -137,6 +137,12 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vacío</span>
+    <span data-phrase="count.lines.one">{count} línea</span>
+    <span data-phrase="count.lines.many">{count} líneas</span>
+    <span data-phrase="count.characters.one">{count} carácter</span>
+    <span data-phrase="count.characters.many">{count} caracteres</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
     <span data-phrase="parse.at">{reason} (línea {line}, columna {column})</span>
     <span data-phrase="char.end">el final del texto</span>
     <span data-phrase="char.newline">un salto de línea</span>

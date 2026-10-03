@@ -1,0 +1,132 @@
+name = "Aperçu de fiche d’établissement"
+heading = "Aperçu de fiche d’établissement <span class=\"h1-kw\">&mdash; voir votre fiche Google avant publication</span>"
+tagline = "Saisissez vos informations, elles deviennent la carte que Google afficherait. Aucun envoi pour la dessiner."
+title = "Aperçu Google Business Profile &mdash; Gratuit, sans inscription ni envoi"
+description = "Prévisualisez panneau d’informations, carte téléphone et résultat de recherche depuis nom, catégorie, horaires, note et photo. Collez une fiche existante pour l’importer. Téléchargez en PNG ou SVG. Tout reste dans votre navigateur."
+og_title = "Prévisualisez votre fiche Google sans confier vos informations"
+og_description = "Panneau d’informations, carte téléphone et recherche locale dessinés depuis votre saisie. Import par copier-coller, sans compte, filigrane ni envoi."
+og_image_alt = "Aperçu de fiche d’établissement — voir votre fiche Google avant publication"
+pledge = "Chaque champ devient une image grâce à environ mille lignes de JavaScript lisibles sur cette page, sans contacter qui que ce soit&nbsp;: ni recherche de votre entreprise, vérification d’adresse ni dessin d’étoile. Aucune fonction réseau, d’autant plus utile quand une fiche contient une adresse de domicile et un téléphone personnel."
+live_hint = "Regardez l’onglet Réseau des outils de développement en saisissant adresse et téléphone. Aucune requête n’en transporte un caractère. Ou déconnectez Internet et créez toute la maquette."
+read_first = ", <code>src/surfaces.js</code> pour les trois cartes et leurs coordonnées explicites, <code>src/profile.js</code> pour le calcul d’ouverture actuelle, et <code>src/parse-listing.js</code> pour lire la fiche collée."
+howto_heading = "Comment prévisualiser une fiche Google avant publication"
+card = "Votre fiche Google sous trois formes&nbsp;: panneau d’informations, carte téléphone et recherche locale. Collez une fiche existante pour commencer."
+
+[words]
+plural = "profils et leurs images"
+choose = "une photo de couverture"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Ce que vous tapez n'a nulle part où aller."
+body = "La Content-Security-Policy énumère les adresses autorisées, dont aucune n’appartient au site. Aucun point de collecte ne reçoit adresse ou téléphone, et aucun code ne les enverrait s’il existait."
+
+[[privacy]]
+title = "Rien ici ne récupère quoi que ce soit."
+body = "Aucun <code>fetch</code>, <code>XMLHttpRequest</code> ni <code>sendBeacon</code> dans <code>src/</code>. L’outil ne peut donc pas chercher votre fiche&nbsp;: vous la collez. Pouvoir la récupérer signifierait aussi pouvoir envoyer vos champs."
+
+[[privacy]]
+title = "La photo est lue et débarrassée de ses métadonnées ici."
+body = "La couverture est décodée dans la page puis redessinée sur un canevas qui limite sa taille et retire date et lieu enregistrés. La maquette contient une image, pas votre fichier original."
+
+[[privacy]]
+title = "Le téléchargement correspond à l’aperçu."
+body = "Le PNG n’est pas un second rendu susceptible de différer&nbsp;: le même balisage est peint par le navigateur sur un canevas. Aucune police à récupérer ni image liée&nbsp;: le fichier est autonome et l’export fonctionne hors ligne."
+
+[[privacy]]
+title = "Un profil enregistré est un fichier, pas un compte."
+body = "Le JSON va sur votre disque seul. Le rouvrir est le seul moyen pour l’outil de retrouver le profil. Rien n’est stocké entre visites dans le navigateur&nbsp;: adresse et horaires ne nous appartiennent pas."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = "Les scripts publicitaires et de mesure viennent de Google, le bouton de don de Buy Me a Coffee. Aucun ne reçoit votre saisie. Tout le code qui dessine vos champs vient du site et figure dans le dépôt."
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = "Débranchez le réseau et l'outil est inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la preuve la plus simple qui soit."
+
+[[howto]]
+title = "Commencez par votre fiche existante si vous en avez une."
+body = "Ouvrez la fiche Google, copiez toute la carte avec nom, étoiles et lignes, puis collez-la dans le panneau du haut. Nom, catégorie, note, avis, adresse, téléphone, site et semaine d’horaires sont reconnus. Chaque champ rempli est signalé pour vérifier les erreurs. Un export JSON de l’API Business Profile peut aussi être ouvert."
+
+[[howto]]
+title = "Vérifiez d’abord le nom et la catégorie."
+body = "Le nom est tronqué sur les trois surfaces, surtout dans les résultats. Ajouter ville et métier à la fin peut ne laisser que des points de suspension. La catégorie est parfois la seule ligne visible du résultat local et celle que la recherche utilise."
+
+[[howto]]
+title = "Remplissez la semaine et regardez le statut."
+body = "<em>Ouvert &middot; Ferme à 21&nbsp;h</em> devient <em>Fermé &middot; Ouvre mardi à 9&nbsp;h</em> automatiquement. La page calcule depuis vos horaires et votre horloge. Un horaire 22:00 à 02:00 passe minuit, comme pour un bar. Fermer un jour montre aussitôt ce que verrait un visiteur ce soir-là."
+
+[[howto]]
+title = "Vérifiez les boutons disponibles."
+body = "Sans adresse, pas d’<em>Itinéraire</em>. Sans site, pas de <em>Site web</em>. Sans téléphone, pas d’<em>Appeler</em>. Ces champs produisent les boutons sous le nom. Sans eux, un visiteur doit chercher ailleurs pour agir. C’est rapide à vérifier et souvent incomplet sur une fiche réelle."
+
+[[howto]]
+title = "Examinez les trois surfaces."
+body = "Le panneau est généreux et vu par ceux qui connaissent déjà votre nom. La carte téléphone concerne beaucoup de visiteurs. Le résultat local est étroit et aide à choisir entre vous et deux concurrents. Une description lisible dans le premier peut être invisible dans le troisième."
+
+[[howto]]
+title = "Emportez l’image."
+body = "Le PNG utilise la taille de la surface, son double ou son triple, agrandissements qui gardent les retours à la ligne. Le SVG autonome intègre la photo et imprime nettement sans lien externe. Le troisième export est le profil enregistré, à garder pour revenir."
+
+[[faq]]
+q = "Cet outil est-il créé par Google&nbsp;?"
+a = "Non. Aucun lien, affiliation ni approbation de Google. Google Business Profile est sa marque, citée pour décrire l’aperçu. C’est un dessin produit localement depuis votre saisie, pas une capture ni une vue de votre compte. Rien ici ne modifie votre vraie fiche&nbsp;: faites-le chez Google."
+
+[[faq]]
+q = "Peut-il importer automatiquement ma fiche&nbsp;?"
+a = "Non. Récupérer votre fiche nécessiterait de contacter un serveur et permettrait aussi d’y envoyer vos champs, capacité absente de cet outil. Vous copiez et collez la fiche&nbsp;: l’outil lit le texte et indique les champs remplis. Un export JSON de l’API peut être ouvert directement."
+
+[[faq]]
+q = "Ce que je tape est-il envoyé quelque part&nbsp;?"
+a = "Non. Aucun <code>fetch</code>, <code>XMLHttpRequest</code> ni <code>sendBeacon</code> dans le code. La <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. Une fiche peut contenir votre domicile et votre téléphone personnel&nbsp;: ces données restent sur l’appareil."
+
+[[faq]]
+q = "Quelle précision offre la maquette&nbsp;?"
+a = "Précise sur le texte qui tient, approximative sur l’apparence. Google Sans n’est pas installée sur votre appareil et Search comme Maps changent leur espacement. L’aperçu montre surtout la portion de nom conservée, la catégorie dans le format étroit et les boutons disponibles."
+
+[[faq]]
+q = "Pourquoi ma nouvelle fiche n’affiche-t-elle aucune étoile&nbsp;?"
+a = "Google affiche « &nbsp;Aucun avis&nbsp; », car cinq étoiles vides peuvent ressembler à une étoile au premier regard. Laissez note et nombre d’avis vides. Remplissez les deux pour dessiner les étoiles proportionnellement&nbsp;: 4,6 remplit quatre étoiles et trois cinquièmes de la cinquième."
+
+[[faq]]
+q = "De quoi dépend la ligne Ouvert ou Fermé&nbsp;?"
+a = "De la semaine saisie et de l’horloge de votre appareil. Aucun fuseau demandé&nbsp;: l’aperçu est exact si vous êtes dans celui de l’établissement, décalé sinon. La page le précise sous les horaires. Il ne peut demander à un service l’heure locale."
+
+[[faq]]
+q = "Puis-je utiliser l’image dans une proposition ou un rapport&nbsp;?"
+a = "Oui, sans filigrane, compte, limite de créations ni lien vers le site. Vos champs sont dessinés sur votre appareil. Précisez au destinataire qu’il s’agit d’une maquette&nbsp;: elle peut facilement être prise pour une capture d’une fiche déjà publiée."
+
+[[faq]]
+q = "Quelle différence entre les trois aperçus&nbsp;?"
+a = "Leur largeur détermine le texte conservé. Le <strong>panneau d’informations</strong> est la carte à droite d’une recherche de votre nom sur ordinateur. La carte <strong>téléphone</strong> est celle de nombreux visiteurs. Le <strong>résultat de recherche</strong> est une des trois entrées locales sous une carte, le format le plus étroit, où de nouveaux clients choisissent entre vous et vos concurrents."
+
+[[faq]]
+q = "La photo ajoutée est-elle envoyée&nbsp;?"
+a = "Non. Elle est décodée ici, redessinée à la taille utile et intégrée à l’image sous forme de données. Le fichier reste sur votre appareil et ses métadonnées de lieu et de date disparaissent. Gardez votre original&nbsp;: la maquette utilise une copie."
+
+[[faq]]
+q = "Puis-je enregistrer le profil et revenir&nbsp;?"
+a = "Oui. <em>Enregistrer le profil</em> écrit un JSON sur votre disque avec les champs et la photo. Rouvrez-le ici pour tout retrouver. Aucun stockage entre visites ni compte&nbsp;: adresse, téléphone et horaires ne sont pas conservés par le site."
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = "Oui. Chargez la page puis déconnectez Internet&nbsp;: champs, dessin et PNG fonctionnent. Un outil envoyant vos informations ailleurs pour dessiner la carte s’arrêterait."
+
+[schema]
+description = "Prévisualisez une fiche Google dans le navigateur&nbsp;: panneau, téléphone et recherche locale, depuis les champs, horaires et photo. Calcule Ouvert ou Fermé et télécharge PNG ou SVG. Import par texte collé ou export d’API Business Profile. Aucun envoi."
+features = ["Trois surfaces depuis un profil&nbsp;: panneau, téléphone et résultat local", "Statut d’ouverture calculé sur une semaine, horaires traversant minuit compris", "Étoiles proportionnelles à la note, absentes pour une fiche sans avis", "Boutons d’action uniquement si leur champ est rempli", "Import par copier-coller avec liste des champs reconnus", "Ouvre directement un export d’établissement de l’API Business Profile", "Photo lue localement, métadonnées retirées, intégrée à l’image", "PNG en taille réelle, double ou triple, et SVG autonome", "Profil enregistré et rouvert en JSON, sans compte ni stockage navigateur", "Fonctionne hors ligne, sans envoi, filigrane ni inscription"]

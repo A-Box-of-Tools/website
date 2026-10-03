@@ -73,6 +73,8 @@ let resultUrl = null;
 let lastEdited = null;
 
 let exporting = false;
+let loading = false;
+let loadGeneration = 0;
 let abortController = null;
 
 /** What the speed slider means, as a multiple. Held here rather than read back
@@ -101,6 +103,9 @@ const picker = wireFilePicker({
 
 async function loadFile(picked) {
   if (exporting) return;
+  const generation = ++loadGeneration;
+  loading = true;
+  el.exportBtn.disabled = true;
   clearError();
   clearResult();
   picker.busy(phrase('step.reading'));
@@ -110,6 +115,7 @@ async function loadFile(picked) {
     // to leave out: the file is handed to the browser's own decoder and the
     // samples come back into this page's memory.
     const decoded = await decodeAudio(picked);
+    if (generation !== loadGeneration) return;
     file = picked;
     source = decoded;
     sourcePeak = peak(decoded.channels);
@@ -117,6 +123,7 @@ async function loadFile(picked) {
     showSource();
     updateSummary();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     // shared/audio-decode.js throws a key; a browser that failed for its own reasons
     // throws a sentence, and phrase() hands back what it does not know.
     if (error instanceof UnreadableFile) showError(phrase(error.message));
@@ -125,7 +132,11 @@ async function loadFile(picked) {
       console.error(error);
     }
   } finally {
-    picker.done();
+    if (generation === loadGeneration) {
+      loading = false;
+      picker.done();
+      if (source) updateSummary();
+    }
   }
 }
 
@@ -237,6 +248,7 @@ el.depth.addEventListener('change', updateSummary);
  * without touching the audio.
  */
 function updateSummary() {
+  el.exportBtn.disabled = !source || loading || exporting;
   if (!source) return;
   const chosen = settings();
   const frames = lengthAfter(source.frames, chosen.speed, chosen.keepPitch);
@@ -311,10 +323,15 @@ function volumeNote(chosen, gain, after) {
 /* ---------------------------------------------------------------- exporting */
 
 async function runExport() {
-  if (!source || exporting) return;
+  if (!source || loading || exporting) return;
   clearError();
   clearResult();
 
+  // A replacement decode must finish before export can begin. Keep the exact
+  // source and filename together across the asynchronous rendering step too.
+  const input = source;
+  const chosen = settings();
+  const name = outputName(file.name, chosen);
   exporting = true;
   abortController = new AbortController();
   el.exportBtn.disabled = true;
@@ -322,23 +339,22 @@ async function runExport() {
   el.progress.hidden = false;
   progress(0, 'step.starting');
 
-  const chosen = settings();
   const bits = Number(el.depth.value);
 
   try {
     const started = performance.now();
-    const edited = await render(source, chosen, {
+    const edited = await render(input, chosen, {
       signal: abortController.signal,
       onProgress: (done, label) => progress(done, label),
     });
 
-    const blob = writeWav(edited.channels, source.sampleRate, { bits });
-    const seconds = edited.channels[0].length / source.sampleRate;
+    const blob = writeWav(edited.channels, input.sampleRate, { bits });
+    const seconds = edited.channels[0].length / input.sampleRate;
 
     resultUrl = URL.createObjectURL(blob);
     el.resultAudio.src = resultUrl;
     el.download.href = resultUrl;
-    el.download.download = outputName(file.name, chosen);
+    el.download.download = name;
     el.result.hidden = false;
     lastEdited = edited.channels;
     drawWaveform(el.outWave, lastEdited);
@@ -367,7 +383,7 @@ async function runExport() {
     exporting = false;
     abortController = null;
     el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = false;
+    updateSummary();
   }
 }
 

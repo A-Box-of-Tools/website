@@ -1,0 +1,124 @@
+name = "PNG en WebP"
+heading = "PNG&nbsp;en&nbsp;WebP <span class=\"h1-kw\">&mdash; convertir sans envoi</span>"
+tagline = "La même image, souvent un tiers plus légère, avec sa transparence intacte."
+title = "Convertir PNG en WebP &mdash; Gratuit, sans envoi"
+description = "Convertissez PNG en WebP dans votre navigateur, sans perte ou avec une compression plus forte. Transparence conservée, aucun envoi ni compte, fonctionnement hors ligne."
+og_title = "Convertir PNG en WebP sans perdre la transparence"
+og_description = "Sans perte pour les logos et les captures, plus léger pour les photos. Votre navigateur fait tout, sans envoyer les fichiers."
+og_image_alt = "PNG en WebP — la même image, plus légère, transparence intacte"
+pledge = "La conversion se fait dans votre navigateur, sur votre appareil. Les navigateurs savent écrire WebP depuis 2020&nbsp;: l’encodeur était déjà là avant votre arrivée. Aucun téléchargement ni attente, aucune fonction réseau ni serveur auquel envoyer une image."
+live_hint = "Ouvrez les outils de développement, regardez l’onglet Réseau et convertissez une image. Seuls les fichiers de la page se chargent&nbsp;: aucune requête ne transporte votre image, sa miniature, son nom ni ses octets. Ou chargez la page une fois, déconnectez Internet et convertissez tout un dossier."
+read_first = ", et <code>src/shared/image-convert.js</code> pour la conversion, notamment <code>encodeWebp</code>, qui écrit le fichier puis relit ses blocs RIFF afin de vérifier si le navigateur a bien produit le codage sans perte demandé."
+howto_heading = "Comment convertir un PNG en WebP"
+card = "La même image PNG, souvent un tiers plus légère en WebP, avec sa transparence intacte &mdash; sans perte ou plus comprimée pour les photos."
+
+[words]
+plural = "images"
+choose = "une image"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Aucune limite de taille"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos images ne peuvent être envoyées nulle part."
+body = "La Content-Security-Policy énumère les adresses que cette page peut contacter, dont aucune n’appartient à ce site. Aucun point de collecte ne reçoit vos fichiers et aucun code ne les enverrait s’il existait."
+
+[[privacy]]
+title = "La transparence est préservée."
+body = "WebP possède un canal alpha comme PNG. Le fond transparent d’un logo reste transparent, sans couleur à choisir ni aplatissement. Le convertisseur <a href=\"../convertir-webp-en-jpg/\">WebP en JPG</a> doit vous demander un fond, car JPEG n’a pas de canal alpha."
+
+[[privacy]]
+title = "Le mode sans perte est vérifié."
+body = "Le canevas n’a pas de bouton sans perte pour WebP. Le navigateur choisit le codage selon la qualité, et les versions actuelles produisent du sans perte au maximum. Ce comportement n’est pas garanti par la spécification&nbsp;: chaque fichier est relu et son codage annoncé. Si le navigateur change, vous le saurez immédiatement."
+
+[[privacy]]
+title = "Ce qu’un canevas ne conserve pas."
+body = "Le canevas ne contient que les pixels&nbsp;: blocs de texte, profils ICC et XMP sont abandonnés. Sans perte décrit les pixels, pas les métadonnées. Le <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a> permet de les lire et de les modifier."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu’il ne reçoit pas."
+body = "Les scripts publicitaires et de mesure viennent de Google, le bouton de don de Buy Me a Coffee. Aucun ne reçoit vos images. Tout le code qui lit, décode ou écrit un fichier vient de ce site et figure dans le dépôt."
+
+[[privacy]]
+title = "Fonctionne hors ligne."
+body = "Chargez la page une fois, puis déconnectez le réseau&nbsp;: l’outil fonctionne de la même façon. Un convertisseur qui envoyait vos images ailleurs ne pourrait pas le faire."
+
+[[howto]]
+title = "Choisissez vos fichiers PNG."
+body = "Déposez-les ou choisissez-les. Les premiers octets identifient le format&nbsp;: un JPEG est refusé plutôt que reconverti en copie. La ligne indique la transparence avant conversion."
+
+[[howto]]
+title = "Choisissez sans perte, ou plus petit."
+body = "Sans perte préserve chaque pixel opaque et réduit généralement le poids&nbsp;: adapté aux captures, schémas, logos et textes. Plus petit active la qualité réglable, utile aux photographies où le gain est bien plus grand."
+
+[[howto]]
+title = "Appuyez sur « &nbsp;Convertir&nbsp; » et lisez le résultat."
+body = "Chaque ligne indique le nouveau poids, le gain et le codage réellement écrit par le navigateur, lu dans le fichier final et non recopié depuis le réglage."
+
+[[howto]]
+title = "Téléchargez un fichier ou tout le lot."
+body = "Un fichier offre un bouton, plusieurs offrent aussi un ZIP. Les noms identiques reçoivent un numéro pour éviter tout remplacement."
+
+[[faq]]
+q = "Mon image est-elle envoyée quelque part&nbsp;?"
+a = "Non. Votre navigateur lit, décode et écrit le fichier sur votre appareil. Cet outil n’a aucune fonction réseau&nbsp;: il ne récupère ni n’envoie de contenu. La <code>Content-Security-Policy</code> énumère les adresses autorisées, dont aucune n’appartient à ce site."
+
+[[faq]]
+q = "La transparence est-elle conservée&nbsp;?"
+a = "Oui, dans les deux modes. WebP possède un vrai canal alpha&nbsp;: aucune couleur de fond n’est choisie et aucune zone n’est aplatie. La liste signale la transparence avant conversion et le résultat confirme sa conservation."
+
+[[faq]]
+q = "Quelle différence entre sans perte et plus petit&nbsp;?"
+a = "Sans perte conserve chaque pixel opaque, avec généralement un cinquième à un tiers de poids en moins. Les pixels semi-transparents ont une nuance expliquée ci-dessous. Plus petit utilise le codage avec perte de WebP et peut réduire une photo au dixième. Texte, aplats et contours nets préfèrent le sans perte&nbsp;; photos, le second mode."
+
+[[faq]]
+q = "Et les pixels semi-transparents&nbsp;?"
+a = "Ils peuvent changer très légèrement à cause du canevas, pas de WebP. Le navigateur multiplie la couleur par la transparence et l’opération inverse n’est pas exacte.<br><br>Les pixels opaques et totalement invisibles restent inchangés. La couleur sous les autres peut varier, ici jusqu’à 63 sur 255 pour une opacité inférieure au quart, et jusqu’à 4 pour le reste. Ces variations sont invisibles car les pixels les plus touchés contribuent le moins à l’image. Les contours lissés d’un logo gardent leur aspect.<br><br>Pour une archive absolument exacte, gardez le PNG. Pour un aspect identique dans un fichier plus léger, cette conversion convient."
+
+[[faq]]
+q = "Comment vérifier que le fichier est sans perte&nbsp;?"
+a = "Le fichier terminé est relu. WebP contient <code>VP8L</code> pour le codage sans perte, <code>VP8&nbsp;</code> pour le codage avec perte. La page lit le bloc présent et l’annonce. Un canevas n’ayant pas de drapeau sans perte, la qualité maximale ne suffit pas à garantir le comportement&nbsp;: même si tous les navigateurs actuels le respectent, la page vérifie."
+
+[[faq]]
+q = "WebP s’ouvre-t-il partout&nbsp;?"
+a = "Sur le Web, oui&nbsp;: Chrome, Edge, Firefox et Safari l’affichent depuis 2020. Windows et macOS le prévisualisent, mais des logiciels anciens, formulaires ou liseuses peuvent le refuser. Utilisez alors le convertisseur <a href=\"../convertir-webp-en-jpg/\">WebP en JPG</a>."
+
+[[faq]]
+q = "Pourquoi mon PNG est-il si gros&nbsp;?"
+a = "PNG est sans perte&nbsp;: il compresse bien les zones répétées des captures et logos, mais mal les photographies. Une photo en PNG pèse souvent dix fois le JPEG. Le mode avec perte est adapté à ce cas. Le <a href=\"../compresser-une-image/\">compresseur d’images</a> accepte directement un poids cible."
+
+[[faq]]
+q = "Conserve-t-il la date, l’appareil et la localisation&nbsp;?"
+a = "Non. Un canevas ne contient que les pixels&nbsp;: EXIF, GPS, profils colorimétriques et XMP sont abandonnés. Pour lire ou modifier ces données sans recomprimer l’image, utilisez le <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a>."
+
+[[faq]]
+q = "Peut-il traiter tout un dossier&nbsp;?"
+a = "Oui. Déposez autant de fichiers que vous voulez, sans limite de nombre ni de taille imposée par un serveur. Chacun a sa ligne et son téléchargement&nbsp;; à partir de deux, une archive ZIP rassemble le tout. Le résultat indique également le gain total."
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = "Oui, c’est gratuit, sans compte, connexion, essai limité ni filigrane. La publicité finance le site et ne reçoit aucune information sur vos images."
+
+[[faq]]
+q = "Fonctionne-t-il hors ligne&nbsp;?"
+a = "Oui. Chargez la page une fois puis déconnectez Internet&nbsp;: elle continue de fonctionner. Un convertisseur qui envoyait les fichiers à un serveur s’arrêterait dès la déconnexion."
+
+[schema]
+description = "Convertissez PNG en WebP dans votre navigateur, sans perte ou avec une compression plus forte. Transparence conservée, aucun envoi ni compte, fonctionnement hors ligne."
+features = ["Convertit PNG en WebP avec l’encodeur du navigateur", "Sans perte&nbsp;: pixels opaques conservés, fichier plus petit", "WebP avec perte et qualité réglable pour les photos", "Conserve le canal alpha et la transparence", "Relit le fichier terminé pour confirmer son codage", "Aucun envoi, fonctionne réseau déconnecté", "Identifie le contenu plutôt que l’extension", "Indique le gain par fichier et pour le lot", "Conversion par lots avec tous les résultats dans un ZIP"]
+
+[picker]
+title = "Déposez vos images PNG ici"
+hint = "ou cliquez pour les choisir &mdash; fichiers .png, quel que soit leur nom"

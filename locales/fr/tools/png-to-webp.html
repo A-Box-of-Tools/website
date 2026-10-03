@@ -1,0 +1,149 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez vos fichiers PNG</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">Tout retirer</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the only decision, and it is the whole tool.
+
+    A PNG is lossless, so the question is whether the WebP stays that way.
+    Lossless WebP is the like-for-like swap - the same pixels, a smaller file -
+    and lossy WebP is the one that makes a photograph a fraction of the size at
+    a cost. Both keep the alpha channel, which is the reason this converter
+    needs no background colour and the WebP-to-JPG one does.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> Sans perte, ou plus petit</h2>
+
+    <p class="card-lede">
+      La transparence est conservée dans les deux cas &mdash; WebP possède un canal alpha comme PNG. Il n’est pas nécessaire de l’aplatir sur un fond.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <fieldset class="modes">
+          <legend>Mode d’encodage</legend>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossless" checked>
+            <span><strong>Sans perte</strong> Tous les pixels opaques du PNG restent identiques dans un fichier plus petit. Le choix adapté aux captures d’écran, schémas, logos et dessins au trait.</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossy">
+            <span><strong>Plus petit</strong> Un fichier encore plus petit, avec une perte de qualité que vous réglez. Utile pour les photos&nbsp;; moins pour les aplats et le texte, dont les contours deviennent flous.</span>
+          </label>
+        </fieldset>
+      </div>
+
+      <div id="quality-field" hidden>
+        <label class="field" for="quality">
+          <span>Qualité WebP &mdash; <output id="quality-value" for="quality">80</output></span>
+          <span class="field-note">80 est la valeur par défaut de WebP, généralement très bonne pour une photographie. En dessous de 60 environ, la perte devient visible.</span>
+        </label>
+        <input type="range" id="quality" min="30" max="99" step="1" value="80">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Convertissez-les</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Convertir en WebP</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>Tout télécharger en zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 fichier</span>
+    <span data-phrase="chosen.many">{count} fichiers</span>
+    <span data-phrase="row.remove">Supprimer {name}</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">Contient des zones transparentes &mdash; WebP les conserve</span>
+    <span data-phrase="read.notpng">{name} n’est pas un PNG &mdash; c’est {found}. Cet outil convertit les fichiers PNG.</span>
+    <span data-phrase="read.unknown">{name} n’est pas un PNG et ses premiers octets ne correspondent à aucun format d’image connu de cette page.</span>
+    <span data-phrase="read.failed">Impossible d’ouvrir {name}&nbsp;: {why}</span>
+    <span data-phrase="found.webp">un WebP</span>
+    <span data-phrase="found.jpeg">un JPEG</span>
+    <span data-phrase="found.avif">un AVIF</span>
+    <span data-phrase="found.gif">un GIF</span>
+    <span data-phrase="found.bmp">un BMP</span>
+    <span data-phrase="support.nowebp">Ce navigateur ne sait pas créer de fichiers WebP. Cette page ne peut donc pas les convertir. Chrome, Edge, Firefox et Safari créent tous du WebP depuis 2020.</span>
+    <span data-phrase="settings.lossless">Un PNG, sans perte.</span>
+    <span data-phrase="settings.lossless.many">{count} fichiers PNG, sans perte.</span>
+    <span data-phrase="settings.lossy">Un PNG à la qualité {quality}.</span>
+    <span data-phrase="settings.lossy.many">{count} fichiers PNG à la qualité {quality}.</span>
+    <span data-phrase="settings.none">Choisissez un PNG ci-dessus pour connaître le résultat prévu.</span>
+    <span data-phrase="run.one">Convertir en WebP</span>
+    <span data-phrase="run.many">Convertir {count} fichiers en WebP</span>
+    <span data-phrase="progress.each">Conversion de {name}&hellip;</span>
+    <span data-phrase="progress.done">Terminé.</span>
+    <span data-phrase="run.failed">Échec de cette opération&nbsp;: {detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count} fichiers WebP créés, {size} au total &mdash; {change} que les PNG.</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">À partir de {name} &mdash; {dimensions}, {was} auparavant.</span>
+    <span data-phrase="result.lossless">Sans perte&nbsp;: chaque pixel est celui du PNG.</span>
+    <span data-phrase="result.lossless.alpha">Sans perte pour les pixels visibles&nbsp;: chaque pixel opaque est exactement celui du PNG. La couleur sous les contours presque transparents peut légèrement changer à cause du canevas, pas de WebP &mdash; voir les questions ci-dessous.</span>
+    <span data-phrase="result.lossy">Avec perte, à la qualité {quality}.</span>
+    <span data-phrase="result.askedlossless">Le mode sans perte était demandé, mais ce navigateur a créé un WebP avec perte. Le fichier fonctionne&nbsp;; ses pixels ne sont pas tous identiques à ceux du PNG.</span>
+    <span data-phrase="result.alpha">Les zones transparentes ont été conservées sans changement.</span>
+    <span data-phrase="result.download">Télécharger</span>
+    <span data-phrase="change.smaller">{percent} % de moins</span>
+    <span data-phrase="change.larger">{percent} % de plus</span>
+    <span data-phrase="change.same">la même taille</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">le navigateur n’a pas pu le décoder</span>
+    <span data-phrase="error.encode">le navigateur n’a pas pu créer un {format}</span>
+    <span data-phrase="error.wrongtype">le navigateur a renvoyé un contenu qui n’est pas un {format}</span>
+    <span data-phrase="error.broke">Une erreur s’est produite&nbsp;: {detail}</span>
+    <span data-phrase="size.bytes">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="net.clean">vos fichiers ne sont allés nulle part. {total}
+      fichiers chargés, tous appartenant à cette page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu une image ou un octet d'une image.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu une image ou un octet d'une image.</span>
+  </div>
+</main>

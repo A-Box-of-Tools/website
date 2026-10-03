@@ -54,6 +54,8 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
+  clearTimeout(timer);
+  clearResult();
   picker.busy(phrase('step.reading'));
   try {
     // Read as text, here, by the browser. There is no other step: the string
@@ -72,6 +74,8 @@ let timer = null;
 
 function schedule() {
   clearTimeout(timer);
+  // The visible input has changed; the previous download no longer describes it.
+  clearResult();
   // A long wait on a long document, a short one on a short document. The work
   // is local either way; this is only about not re-encoding a megabyte
   // between two keystrokes.
@@ -121,6 +125,7 @@ const byteLength = (text) => new TextEncoder().encode(text).length;
 /* --------------------------------------------------------------- the work */
 
 function run() {
+  clearTimeout(timer);
   clearError();
   clearResult();
   el.codecNote.textContent = phrase(codecById(el.codec.value).note);
@@ -184,10 +189,13 @@ function show(text, note, name) {
 
 el.copy.addEventListener('click', async () => {
   if (!result) return;
+  const copied = result;
   try {
-    await navigator.clipboard.writeText(result.text);
+    await navigator.clipboard.writeText(copied.text);
+    if (result !== copied) return;
     el.copy.textContent = phrase('copy.copied');
   } catch {
+    if (result !== copied) return;
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the block is a route that always works.
     const range = document.createRange();
@@ -197,10 +205,11 @@ el.copy.addEventListener('click', async () => {
     selection.addRange(range);
     el.copy.textContent = phrase('copy.selected');
   }
-  setTimeout(() => { el.copy.textContent = phrase('copy.copy'); }, 2500);
+  setTimeout(() => { if (result === copied) el.copy.textContent = phrase('copy.copy'); }, 2500);
 });
 
 function clearResult() {
+  el.copy.textContent = phrase('copy.copy');
   el.output.textContent = '';
   el.copy.disabled = true;
   download.clear();

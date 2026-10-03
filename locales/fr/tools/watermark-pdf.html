@@ -1,0 +1,232 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez le PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">En choisir un autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where a password can be taken off, shown only when one is what stopped
+      the file being read. Stamping a document means opening it, and this
+      page does not ask for passwords; the page that takes one off is next
+      door, and the one that puts it back is next door to that.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>
+      Ce document est verrouillé. Retirez d’abord la protection dans ce navigateur avec le <a href="../deverrouiller-un-pdf/">Déverrouilleur de PDF</a> &mdash; revenez avec la copie déverrouillée, puis protégez la copie marquée avec le
+      <a href="../proteger-un-pdf/">protecteur PDF</a> si vous le souhaitez.
+    </p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the stamp.
+
+    The words first, because they are the whole point; then how the stamp
+    sits, with a preview beside the controls. The preview is a blank page the
+    shape of the first page with the placement drawn on it by the same
+    arithmetic that writes the file - never the document itself, which this
+    site cannot draw and says so.
+  -->
+  <section class="card" id="stamp-card">
+    <h2><span class="step">2</span> Choisissez le texte et sa disposition</h2>
+
+    <label class="field" for="words">
+      <span>Le texte</span>
+      <span class="field-note">
+        Le destinataire de la copie et sa date. Toute langue est possible&nbsp;: votre navigateur dessine les mots que vous saisissez.
+      </span>
+    </label>
+    <input type="text" id="words" class="words" autocomplete="off" spellcheck="false"
+           maxlength="120" placeholder="Pour la banque Acme uniquement &middot; 12 septembre 2026">
+
+    <div class="stamp-layout">
+      <div class="stamp-controls">
+        <fieldset class="chip-group">
+          <legend>Taille</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-size="small">Petit</button>
+            <button type="button" class="chip" data-size="medium" aria-pressed="true">Moyen</button>
+            <button type="button" class="chip" data-size="large">Grand</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Angle</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-diagonal="yes" aria-pressed="true">En diagonale</button>
+            <button type="button" class="chip" data-diagonal="no">Horizontal</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Disposition</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-tiled="no" aria-pressed="true">Une fois au centre</button>
+            <button type="button" class="chip" data-tiled="yes">Répété sur la page</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="chip-group">
+          <legend>Couleur</legend>
+          <div class="chips" role="group">
+            <button type="button" class="chip" data-colour="grey" aria-pressed="true">Gris</button>
+            <button type="button" class="chip" data-colour="red">Rouge</button>
+            <button type="button" class="chip" data-colour="blue">Bleu</button>
+          </div>
+        </fieldset>
+
+        <label class="field" for="opacity">
+          <span>Opacité</span>
+          <span class="field-note">
+            <span id="opacity-value">30</span>% d’opacité. Assez pâle pour lire à travers, assez sombre pour résister à une photocopie.
+          </span>
+        </label>
+        <input type="range" id="opacity" min="10" max="80" step="5" value="30">
+
+        <label class="check">
+          <input type="checkbox" id="first-only">
+          <span>
+            <strong>Première page seulement</strong>
+            <span class="check-note">Le filigrane est ajouté à toutes les pages sauf si cette case est cochée.</span>
+          </span>
+        </label>
+      </div>
+
+      <!--
+        The preview. A blank page the size and shape of the first page with
+        the stamp laid on it; the words are drawn live so the visitor sees
+        their own text, not a placeholder. Described for a screen reader by
+        the sentence below it, which says what is and is not shown.
+      -->
+      <figure class="stamp-preview">
+        <canvas id="preview" aria-labelledby="preview-note"></canvas>
+        <figcaption id="preview-note" class="field-note">
+          Le filigrane sur une page blanche aux proportions de la première page, exactement à sa position finale. Le contenu du document n’est pas dessiné&nbsp;: ce site n’intègre volontairement aucun moteur de rendu PDF.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Ajoutez le filigrane</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Ajouter un filigrane au document</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Télécharger</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.words">Disponible avec un document choisi et un texte de filigrane.</span>
+    <span data-phrase="note.repaired">La table de références croisées de ce fichier ne correspondait pas à son
+      contenu&nbsp;; il a donc été lu en cherchant les objets un à un. C&rsquo;est une
+      réparation, et elle a marché &mdash; vérifiez le résultat avant de l&rsquo;envoyer
+      où que ce soit.</span>
+    <span data-phrase="note.incremental">Ce document a déjà été modifié et enregistré. Les anciennes versions d’objets qui ne sont plus référencées sont retirées du résultat.</span>
+    <span data-phrase="note.pages.one">1 page, {size}.</span>
+    <span data-phrase="note.pages.many">{n} pages, {size}.</span>
+    <span data-phrase="read.notpdf">Ce n&rsquo;est pas un PDF. Cet outil ne travaille que sur des fichiers PDF.</span>
+    <span data-phrase="read.encrypted">Ce PDF est chiffré.</span>
+    <span data-phrase="read.nocatalogue">Aucun catalogue de document&nbsp;: rien à marquer. Ce n’est pas un PDF ou il est trop endommagé.</span>
+    <span data-phrase="read.noheader">Cela ne commence pas comme un PDF&nbsp;: il n&rsquo;y a pas d&rsquo;en-tête %PDF-.</span>
+    <span data-phrase="read.nopages">Ce document n’a aucune page à marquer.</span>
+    <span data-phrase="read.failed">Ce PDF n&rsquo;a pas pu être lu&nbsp;: {detail}</span>
+    <span data-phrase="pdf.flate">un flux Flate n'a pas pu être décompressé ({detail})</span>
+    <span data-phrase="pdf.nocompression">ce navigateur n'a pas de CompressionStream</span>
+    <span data-phrase="pdf.lzw">un flux LZW commence par un code non défini</span>
+    <span data-phrase="pdf.cryptfilter">ce flux est chiffré</span>
+    <span data-phrase="pdf.unknownfilter">un filtre inconnu, /{name}</span>
+    <span data-phrase="pdf.deep">imbriqué trop profondément</span>
+    <span data-phrase="pdf.short">dépassement de la fin</span>
+    <span data-phrase="pdf.unexpected">inattendu {found} à {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">octet inattendu 0x{hex} à {at}</span>
+    <span data-phrase="pdf.noendstream">un flux sans endstream</span>
+    <span data-phrase="pdf.noobj">pas de mot-clé obj à {at}</span>
+    <span data-phrase="pdf.nostartxref">pas de startxref</span>
+    <span data-phrase="pdf.noxref">pas une section xref</span>
+    <span data-phrase="pdf.now">un flux xref sans /W</span>
+    <span data-phrase="pdf.zerowidth">un flux xref dont les champs sont de largeur nulle</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="stage.drawing">Dessin du filigrane</span>
+    <span data-phrase="stage.writing">Écriture du document avec le filigrane sur chaque page</span>
+    <span data-phrase="stage.checking">Réouverture pour vérification</span>
+    <span data-phrase="run.cancelled">Annulé. Rien n’a changé&nbsp;; appuyez sur le bouton pour recommencer.</span>
+    <span data-phrase="result.ready">{size} &mdash; avec filigrane.</span>
+    <span data-phrase="result.sub">Chaque page, police et image reste celle de l’original, avec un filigrane ajouté. Gardez aussi l’original.</span>
+    <span data-phrase="check.passed">Vérifié&nbsp;: {found}</span>
+    <span data-phrase="check.failed">Ce passage n&rsquo;a pas été validé &mdash; {found}. Gardez votre original.</span>
+    <span data-phrase="check.ok.all">rouvert en mémoire&nbsp;: chacune des {pages} porte le filigrane.</span>
+    <span data-phrase="check.ok.first">rouvert en mémoire&nbsp;: la première des {pages} porte le filigrane, comme demandé.</span>
+    <span data-phrase="check.ok.single">rouvert en mémoire&nbsp;: sa seule page porte le filigrane.</span>
+    <span data-phrase="check.pages">le résultat comporte {pages} pages au lieu de {expected}</span>
+    <span data-phrase="check.missing">la page {n} du résultat ne porte pas le filigrane</span>
+    <span data-phrase="check.reopen">le fichier créé ne s’ouvre pas ({detail})</span>
+    <span data-phrase="facts.words">Le filigrane indique « &nbsp;{words}&nbsp; ».</span>
+    <span data-phrase="facts.placement.once">Une fois par page, {size}, {angle}, opacité de {opacity} %.</span>
+    <span data-phrase="facts.placement.tiled">Répété {n} fois par page, {size}, {angle}, opacité de {opacity} %.</span>
+    <span data-phrase="facts.firstonly">Seule la première page le porte&nbsp;; les {n} autres restent intactes.</span>
+    <span data-phrase="facts.picture">Le texte est dessiné en image&nbsp;: visible dans tous les lecteurs, mais non sélectionnable ni recherchable. Toute personne ayant un éditeur peut retirer un filigrane&nbsp;: il indique la destination d’une copie et ne verrouille pas le document.</span>
+    <span data-phrase="facts.signature">Le document portait une signature numérique. La réécriture invalide toute signature&nbsp;: cette copie n’est plus signée, l’original reste signé.</span>
+    <span data-phrase="facts.incremental">Les copies plus anciennes et périmées d&rsquo;objets venues de modifications
+      antérieures n&rsquo;ont pas été recopiées.</span>
+    <span data-phrase="facts.repaired">La table de références croisées de l&rsquo;original était cassée et a dû être
+      reconstruite en cherchant. Vérifiez ce fichier avant de le transmettre.</span>
+    <span data-phrase="size.small">petit</span>
+    <span data-phrase="size.medium">moyen</span>
+    <span data-phrase="size.large">grand</span>
+    <span data-phrase="angle.diagonal">en diagonale</span>
+    <span data-phrase="angle.flat">horizontal</span>
+    <span data-phrase="net.clean">votre document n'est allé nulle part. {total}
+      fichiers chargés, tous appartenant à cette page. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. Cela mérite d'être examiné. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu un document ou un octet d'un document.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu un document ou un octet d'un document.</span>
+  </div>
+</main>

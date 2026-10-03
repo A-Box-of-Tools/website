@@ -1,0 +1,189 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>動画を選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the number.
+
+    People arrive with a limit, not a preference: the file has to be under
+    what a chat app, an email or a form allows. So the card asks for that
+    number and answers with what it buys - the frame size and bitrate the
+    clip's length and sound leave room for - before anything is encoded.
+  -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span>容量の上限を指定する</h2>
+
+    <p class="card-lede">音声をそのままコピーし、コンテナに必要な分を引いた残りを映像に使います。各フレームに十分な容量を割り当てられるまで、よく使う大きさの段階に沿って小さくします。元より大きくはしません。</p>
+
+    <label class="field" for="target-mb">
+      <span>容量の上限</span>
+      <span class="field-note">MBで指定します。よく使われる上限は下のボタンにあります。</span>
+    </label>
+    <div class="target-row">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <span class="target-unit">MB</span>
+    </div>
+    <div class="chips" role="group" aria-label="よく使う容量の上限">
+      <button type="button" class="chip" data-mb="8">8 MB</button>
+      <button type="button" class="chip" data-mb="16">16 MB</button>
+      <button type="button" class="chip" data-mb="25">25 MB</button>
+      <button type="button" class="chip" data-mb="50">50 MB</button>
+      <button type="button" class="chip" data-mb="100">100 MB</button>
+      <button type="button" class="chip" data-fraction="0.5">半分の容量</button>
+      <button type="button" class="chip" data-fraction="0.25">4分の1</button>
+    </div>
+
+    <p id="estimate" class="estimate" role="status" aria-live="polite"></p>
+
+    <fieldset class="chip-group">
+      <legend>フレームの大きさ</legend>
+      <div class="chips" role="group">
+        <button type="button" class="chip" data-edge="auto" aria-pressed="true">指定容量に合わせる</button>
+        <button type="button" class="chip" data-edge="1920">1080p</button>
+        <button type="button" class="chip" data-edge="1280">720p</button>
+        <button type="button" class="chip" data-edge="854">480p</button>
+        <button type="button" class="chip" data-edge="640">360p</button>
+      </div>
+      <p class="field-note">選んだ値は上限です。元より大きくはせず、大きなフレームに少ない容量を割り当てるとぼやけます。</p>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="drop-audio">
+      <span>
+        <strong>音声を除く</strong>
+        <span class="check-note">選ばなければ音声は元の容量のままコピーします。除けば指定容量をすべて映像に使えます。</span>
+      </span>
+    </label>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>圧縮する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">動画を圧縮する</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <video id="player" class="player" controls playsinline preload="metadata" hidden
+             aria-label="メモリから再生する圧縮後の動画"></video>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.target">上で動画を選び、収められる容量を指定すると使えます。</span>
+    <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
+    <span data-phrase="note.silent">音声がないので、指定容量をすべて映像に使います。</span>
+    <span data-phrase="estimate.nofile">上で動画を選ぶと、指定容量で何が作れるか表示します。</span>
+    <span data-phrase="estimate.notarget">MBで容量を入力するか、よく使う値を押してください。</span>
+    <span data-phrase="estimate.already">この動画は{size}で、すでに{target}未満です。目標を小さくしなければ処理は不要です。</span>
+    <span data-phrase="estimate.nofit">音声だけで指定容量を超えます。音声を除くか、少なくとも{least}を指定してください。</span>
+    <span data-phrase="estimate.toosmall">その容量では見られる映像にできません。少なくとも{least}を指定してください。</span>
+    <span data-phrase="estimate.plan">{frame}、約{rate}で、見込みは{estimate}です。{target}未満にしてから実測で確かめます。</span>
+    <span data-phrase="frame.named">{name} ({width}&times;{height})</span>
+    <span data-phrase="frame.plain">{width}&times;{height}</span>
+    <span data-phrase="rate.mbit">{n} Mbit/s</span>
+    <span data-phrase="rate.kbit">{n} kbit/s</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
+    <span data-phrase="progress.preparing">準備しています&hellip;</span>
+    <span data-phrase="progress.again">目標容量を超えたので、さらに圧縮して再エンコード中&hellip;</span>
+    <span data-phrase="progress.frame">フレーム{total}件中{done}件（{percent}%）</span>
+    <span data-phrase="progress.finishing">最後のフレームを処理中&hellip;</span>
+    <span data-phrase="progress.checking">開き直して確認中&hellip;</span>
+    <span data-phrase="run.cancelled">キャンセルしました。書き出しはありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="result.ready">{size}です。元の{from}より{percent}%小さくなりました。</span>
+    <span data-phrase="result.sub">同じ長さ、同じ音声です。映像を再エンコードして容量に収めました。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
+    <span data-phrase="check.ok">メモリから開き直し、元と同じ長さ{length}で、{size}が{target}未満であることを確認しました。</span>
+    <span data-phrase="check.over">メモリから開き直し、長さは元と同じ{length}ですが、{size}はまだ{target}を超えています。エンコーダーがこの大きさではこれ以上減らせません。フレームを小さくするか音声を除いてください。</span>
+    <span data-phrase="check.length">完成したファイルの長さが{want}ではなく{got}です</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="facts.picture">元の{from}から{frame}、{rate}、毎秒{fps}フレームにしました。</span>
+    <span data-phrase="facts.sound.kept">音声はそのままコピーし、再エンコードしていません。</span>
+    <span data-phrase="facts.sound.none">音声トラックはありません。元からなかったか、指定で除きました。</span>
+    <span data-phrase="facts.passes.one">1回の処理：初回のエンコードで目標容量未満に収まりました。</span>
+    <span data-phrase="facts.passes.two">2回の処理：初回が目標を超えたので、差からビットレートを計算して再エンコードしました。</span>
+    <span data-phrase="facts.time">{frames}フレームを{seconds}で処理しました。</span>
+    <span data-phrase="facts.reencoded">元より1世代の画質変化があります。原本を残してください。</span>
+    <span data-phrase="support.nowebcodecs">このブラウザは動画をエンコードできません。Chrome、Edge、Safari、Firefox 130以降は対応しています。</span>
+    <span data-phrase="support.nodecode">このブラウザは動画（{codec}）をデコードできません。同じ端末の別のブラウザで読める場合があります。</span>
+    <span data-phrase="stall.both">ブラウザの動画コーデックが応答しなくなりました。再読み込みするかフレームを小さくしてください。ハードウェアエンコーダーが使用中、またはない場合に起きます。</span>
+    <span data-phrase="encode.toobig">このブラウザは{size}でH.264をエンコードできません。フレームを小さくしてください。</span>
+    <span data-phrase="encode.noconfig">エンコーダーはデコーダー設定を一度も返しませんでした。</span>
+    <span data-phrase="decode.none">この動画からフレームをデコードできませんでした。</span>
+    <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
+    <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
+    <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
+    <span data-phrase="read.av1short">AV1の設定レコードが短すぎます。</span>
+    <span data-phrase="read.compactsizes">サンプルの大きさが、このリーダーの解さない圧縮テーブルに入っています。</span>
+    <span data-phrase="read.sampletables">サンプルテーブルが欠けています。</span>
+    <span data-phrase="read.chunktable">チャンクテーブルが空です。</span>
+    <span data-phrase="read.nosamples">そのトラックにサンプルが1つもありません。</span>
+    <span data-phrase="read.nostbl">映像トラックにサンプルテーブルがありません。</span>
+    <span data-phrase="read.nostsd">映像トラックにサンプル記述がありません。</span>
+    <span data-phrase="read.emptystsd">映像のサンプル記述が空です。</span>
+    <span data-phrase="read.encrypted">映像トラックが暗号化されています。</span>
+    <span data-phrase="read.unknowncodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.noconfig">「{type}」トラックはデコーダー設定を持っていません。</span>
+    <span data-phrase="read.notmp4">MP4またはMOVファイルではありません。WebMなどはまだ扱えません。</span>
+    <span data-phrase="read.nomoov">ファイルにムービーヘッダーがありません。</span>
+    <span data-phrase="read.novideo">このファイルには、このリーダーが使える映像トラックがありません。</span>
+    <span data-phrase="read.notimescale">映像トラックにタイムスケールがありません。</span>
+    <span data-phrase="read.nofragments">このファイルのフラグメントには、映像トラックのコマが1つも入っていません。</span>
+    <span data-phrase="read.unreadable">このファイルはMP4として読めませんでした。</span>
+    <span data-phrase="read.notplayed">この形式は、このブラウザーが再生できるものではありません。</span>
+    <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
+    <span data-phrase="net.clean">動画はどこへも送られていません。読み込んだ{total}個のファイルはすべてこのページ自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのスクリプトを{hosts}のホストから読み込みました。どれにも動画やその1バイトも渡していません。</span>
+  </div>
+</main>

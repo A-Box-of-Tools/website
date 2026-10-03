@@ -54,6 +54,11 @@
  *     keyOf() below; asking for an id alone lost exactly the setting that says
  *     what to do with the file.
  *
+ * A text tool marks its editable document with `data-language-text`. Its
+ * current text travels instead of its imported files, so edits and a cleared
+ * box survive without a later asynchronous read replacing them. Text Diff's
+ * snapshot event also carries the original line endings of untouched files.
+ *
  * What it does not carry is anything a tool worked out for itself. A result
  * already computed is not restored - the tool recomputes it from the file, the
  * way it would have anyway - and a control the tool FILLS IN from the file it
@@ -237,8 +242,14 @@
         if (node.checked !== node.defaultChecked) out.push({ key: key, on: node.checked });
       } else if (node.tagName === 'SELECT') {
         if (node.value !== fallback(node)) out.push({ key: key, value: node.value });
-      } else if (node.value !== node.defaultValue) {
-        out.push({ key: key, value: node.value });
+      } else {
+        var saved = { value: node.value };
+        if (node.hasAttribute('data-language-text')) {
+          // A textarea normalizes line endings. Text Diff supplies the exact
+          // source here so an untouched CRLF file stays CRLF after switching.
+          node.dispatchEvent(new CustomEvent('abox:language-text', { detail: saved }));
+        }
+        if (saved.value !== node.defaultValue) out.push({ key: key, value: saved.value });
       }
     }
     return out;
@@ -286,9 +297,11 @@
       } else {
         if (node.value === want.value) continue;
         node.value = want.value;
-        if (node.value !== want.value) continue;
+        if (node.value !== want.value && !node.hasAttribute('data-language-text')) continue;
       }
-      node.dispatchEvent(new Event('input', { bubbles: true }));
+      node.dispatchEvent(node.hasAttribute('data-language-text')
+        ? new CustomEvent('input', { bubbles: true, detail: { languageText: want.value } })
+        : new Event('input', { bubbles: true }));
       node.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
@@ -307,10 +320,12 @@
     var picked = [];
     for (var i = 0; i < (files ? files.length : 0); i += 1) picked.push(files[i]);
     if (!picked.length) return;
-    // A picker marked `multiple` belongs to a tool that adds to a list; one
-    // without it replaces what it had. Following the input's own attribute is
-    // how this gets both right without knowing which tool it is on.
-    held = (input && input.multiple && !restoring) ? held.concat(picked) : picked;
+    // Multiple-file tools usually append, but some replace their whole batch
+    // on each delivery. Their input opts out so a language switch cannot bring
+    // the discarded batch back. Read the flag when files arrive: the tool's
+    // module sets it after this frame script has registered its listeners.
+    held = (input && input.multiple && input.dataset.languageReplace !== '1' && !restoring)
+      ? held.concat(picked) : picked;
   }
 
   if (input) {
@@ -371,7 +386,7 @@
           && record.lang && record.lang !== here) {
         // Files first: a tool clears its controls when a new file arrives, and
         // a setting restored before that would be cleared along with them.
-        if (record.files) deliver(record.files);
+        if (record.files && !main.querySelector('[data-language-text]')) deliver(record.files);
         if (record.values) apply(record.values);
       }
       return sweep();
@@ -406,11 +421,14 @@
     if (carrying) { event.preventDefault(); return; }
 
     var values = settings();
+    // A text tool's editable document is authoritative, including a cleared
+    // box. Replaying the original File later would overwrite those edits.
+    var files = main.querySelector('[data-language-text]') ? [] : held;
     // Nothing has been done to this page yet. The switcher is a plain link and
     // stays one: no storage is touched, no navigation is intercepted, and a
     // reader who is only browsing pays nothing for a feature they are not
     // using.
-    if (!values.length && !held.length) return;
+    if (!values.length && !files.length) return;
 
     event.preventDefault();
     carrying = true;
@@ -418,7 +436,7 @@
     // styling is in shared/css/tool-frame.css, beside the handoff's.
     link.setAttribute('aria-busy', 'true');
 
-    park({ lang: here, values: values, files: held, time: Date.now() })
+    park({ lang: here, values: values, files: files, time: Date.now() })
       .catch(function () {
         // Storage refused, or the work is more than it will hold. The switch
         // itself is not worth blocking over: the reader asked for another

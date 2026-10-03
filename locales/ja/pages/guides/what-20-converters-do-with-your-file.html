@@ -1,0 +1,140 @@
+  <section>
+    <h2>先に答えを</h2>
+    <p>2026年9月17日、20の無料オンライン変換サービスへ同じファイルを渡し、ブラウザーから出たすべてのバイトを測りました。<strong>20のうち19がアップロードし、</strong>1つはしませんでした。</p>
+    <p>これは多くの人の予想どおりかもしれません。意外だったのは3点です。<strong>19のうち11は、変換ボタンを押す前、考え直す機会がないまま、ファイルを選んだ瞬間に送信しました。</strong><strong>後から取得を試した完成ファイルは、すべて通常のウェブアドレスから、Cookie、ログイン、セッションなしで読めました。</strong>そして<strong>2つは、そのアドレスに元のファイル名を含めました。</strong></p>
+    <p>悪意の証拠ではありません。多くのサービスはもともとアップロードで動き、保管方針も大半は短く具体的です。推測されていないアドレスで2時間保管すること自体が問題の証明ではありません。分かったのは、<em>サイトが削除すると説明している</em>ことと、<em>ファイルに何が起きたかを自分で確認できる</em>ことの間に大きな隔たりがあり、それを午後の作業で測れるということです。</p>
+  </section>
+  <section>
+    <h2>測定方法</h2>
+    <p>意見ではなく数値が目的なので、方法は単純で再現できるものにしました。</p>
+    <h3>ファイル</h3>
+    <p>ランダムなピクセルで埋めた450&nbsp;&times;&nbsp;350のPNG、約542&nbsp;KBで、名前は<code>abox-probe-9471.png</code>です。ランダムなノイズは圧縮できず、どこでもバイト数がほぼ同じなので、送信リクエストを一覧で見分けられます。固有の名前なら、後でURLに含まれているかも探せます。</p>
+    <h3>測定</h3>
+    <p>ファイルを渡す前に、ページがバイトを送るすべての方法を、渡されたデータの大きさを記録してから通常の処理を行うものへ置き換えました。対象は<code>fetch</code>、<code>XMLHttpRequest</code>、<code>navigator.sendBeacon</code>、<code>WebSocket.send</code>、そして重要な<code>HTMLFormElement.submit</code>です。その後、ページのファイル入力にファイルを入れ、10秒待って記録を読みました。</p>
+    <p>フォームの監視も必要です。20のうち複数はスクリプトではなくHTMLフォームで送信し、<code>fetch</code>と<code>XMLHttpRequest</code>だけの監視には見えません。PicResizeはその間、<code>blob:</code>のアドレスからローカルに画像を表示するため、フォーム送信を捕まえるまでは端末内で動くツールに見えます。</p>
+    <h3>その後の確認</h3>
+    <p>完成ファイルへのリンクを返すサイトでは、そのリンクを通常のコマンドラインからもう一度取得しました。別のプログラムで、Cookieもセッションも、ブラウザーから引き継いだものもありません。その条件で返るファイルは、アドレスを持つ誰でも読めます。</p>
+    <p>20という数は操作できたサイトの数で、最大手20社の意味ではありません。さらに9つを試して測れなかったので、黙って除外せず後で挙げます。自動操作に対応しないことは、検査に合格したことではありません。</p>
+  </section>
+  <section>
+    <h2>結果の表</h2>
+    <p>以下のバイト数は2026年9月17日に送信から測った値です。最後の列は、同日に各サイトが公表していた方針を短くまとめたものです。</p>
+<figure class="data">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">変換サービス</th>
+              <th scope="col">ファイルは送信されたか</th>
+              <th scope="col">測定したバイト数</th>
+              <th scope="col">送信先</th>
+              <th scope="col">方針に記載された保管期間</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Squoosh</td><td>送信なし</td><td>0</td><td>&mdash;</td><td>保管するものなし</td></tr>
+            <tr><td>TinyPNG</td><td>選択時に送信</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48時間</td></tr>
+            <tr><td>iLoveIMG</td><td>選択時に送信</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2時間</td></tr>
+            <tr><td>iLovePDF</td><td>選択時に送信</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2時間</td></tr>
+            <tr><td>Sejda</td><td>選択時に送信</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>処理後。共有リンクは7日間</td></tr>
+            <tr><td>PDF24</td><td>選択時に送信</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>「通常」1時間</td></tr>
+            <tr><td>PDF Candy</td><td>選択時に送信</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2時間</td></tr>
+            <tr><td>jpg2pdf.com</td><td>選択時に送信</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1時間、利用規約に記載</td></tr>
+            <tr><td>Img2Go</td><td>選択時に送信</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72時間</td></tr>
+            <tr><td>Online-Convert</td><td>選択時に送信</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72時間</td></tr>
+            <tr><td>PDF2Go</td><td>選択時に送信</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72時間</td></tr>
+            <tr><td>Compress2Go</td><td>選択時に送信</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72時間</td></tr>
+            <tr><td>PicResize</td><td>選択時に送信</td><td>542,568</td><td><code>picresize.com/en/edit</code>, フォーム送信</td><td>20分</td></tr>
+            <tr><td>ResizePixel</td><td>選択時に送信</td><td>フォーム送信</td><td><code>resizepixel.com/</code></td><td>1時間以内</td></tr>
+            <tr><td>CloudConvert</td><td>変換時に送信</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24時間</td></tr>
+            <tr><td>Convertio</td><td>変換時に送信</td><td>測定できず</td><td><code>convertio.co/process/&hellip;</code></td><td>24時間</td></tr>
+            <tr><td>Ezgif</td><td>変換時に送信</td><td>542,483</td><td><code>ezgif.com/optimize</code>, フォーム送信</td><td>最後の利用から1時間</td></tr>
+            <tr><td>Aconvert</td><td>変換時に送信</td><td>フォーム送信</td><td><code>aconvert.com/results.php</code></td><td>2時間</td></tr>
+            <tr><td>Online2PDF</td><td>変換時に送信</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>「直ちに」</td></tr>
+            <tr><td>IMGonline</td><td>変換時に送信</td><td>542,633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>方針を確認できず</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>2026年9月17日、20のサービスに同じ542&nbsp;KBのファイルを渡した結果です。「選択時」はファイルを選ぶと送信が始まり、「変換時」はボタンを待ったことを示します。Convertioはバイト数を読み取る前にページが移動したため、推測せず測定できずと記載しています。</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>11のサービスはボタンを押す前に送信する</h2>
+    <p>ここまで偏るとは予想していませんでした。19のうち11は、ページに未操作の変換ボタンが出ている間に、すでにファイルをサーバーへ送っていました。</p>
+    <p>iLoveIMGには<em>画像を圧縮</em>と表示され、開始の指示を待っているように見えても、542,816バイトが<code>api9.iloveimg.com</code>へ送られていました。iLovePDF、PDF24、PDF Candy、Sejda、TinyPNG、jpg2pdfと、後述の同一プラットフォームの4サイトも同様でした。</p>
+    <p>設定を読んでいる間に送信すると、実行を決めたときに変換がすぐ終わるように見えます。技術的には合理的な改善ですが、多くの人があると思っている段階をなくします。ファイルの選択は開くこと、変換ボタンは送ることに感じられますが、20のうち11では両方が同時で、早いほうの選択時に送信されます。</p>
+    <p>その11では、削除前の下書き、給与明細、先に切り抜く予定の写真など、間違ったファイルを選んだと気付けるのは、送信された後です。</p>
+  </section>
+  <section>
+    <h2>完成ファイルは公開アドレスに置かれる</h2>
+    <p>4つのサイトは完成ファイルへの通常のリンクを返します。変換したブラウザーとは何も共有しないコマンドラインで、Cookieもセッションもなしに取得し直すと、4つともファイルを返しました。</p>
+    <ul>
+      <li><strong>Ezgif</strong>の<code>s1.ezgif.com/tmp/&hellip;</code>は542,483バイトを返しました。測定用ファイルとバイト単位で同じです。</li>
+      <li><strong>Aconvert</strong>の<code>s6.aconvert.com/convert/&hellip;</code>は474,856バイトのPDFを返しました。</li>
+      <li><strong>ResizePixel</strong>の<code>resizepixel.com/Image/&hellip;</code>は432,111バイトを返しました。</li>
+      <li><strong>IMGonline</strong>の<code>srv2.imgonline.com.ua/result_img/&hellip;</code>は128,179バイトのJPEGを返しました。</li>
+    </ul>
+    <p>普通のウェブ設計で、不正侵入ではありません。アドレスには長いランダムな部分があり、推測は現実的ではありません。ただし、ファイルを守っているものはパスワードでもアカウントでもなく、<strong>URLが知られていないこと</strong>です。URLは履歴、アドレスバーのスクリーンショット、次のページへ送る<code>Referer</code>ヘッダー、通信経路のプロキシ、ファイルの代わりにリンクを送るチャットなどに残る場合があります。</p>
+    <p>Aconvertは結果ページに、ファイルは2時間を超えて保管せず、ほかのサイトからリンクしないよう説明します。適切な場所とタイミングの注意ですが、4つのうちその説明があったのはここだけでした。</p>
+  </section>
+  <section>
+    <h2>ファイル名も送られる</h2>
+    <p>ファイルは内容だけと思いがちですが、変換サービスにはそれ以上が届きます。20のうち2つは、その追加情報を見える場所に置きました。</p>
+    <p>PDF Candyの送信先は<code>/uploadcbc/1789652849416-abox-probe-9471.png</code>で、時刻と元のファイル名がアドレスに含まれました。ResizePixelのプレビューも<code>/Image/&lt;id&gt;/Preview/abox-probe-9471.png</code>でした。</p>
+    <p>測定用の<code>abox-probe-9471.png</code>は何も明かしませんが、実際の名前には<code>passport-scan.jpg</code>、<code>contract-signed-final.pdf</code>、<code>scan-12wk.png</code>などがあります。名前は文書の内容をよく説明するメタデータで、リクエストのアドレスはログやキャッシュに長く残り、ファイル自体より多くの相手に保管される場合があります。</p>
+    <p>画面に表示されない中身の情報も同じです。スマートフォンの写真には通常、撮影場所、時刻、カメラの識別情報があり、ときには切り抜く<em>前</em>の画像のサムネイルもあります。変換後にどう扱ったとしても、サービスはそれを受け取りました。</p>
+  </section>
+  <section>
+    <h2>4つの名前、1つのプラットフォーム</h2>
+    <p>Img2Go、Online-Convert、PDF2Go、Compress2Goは独立したサービスに見えます。送信先も<code>www21.img2go.com</code>、<code>www8.online-convert.com</code>、<code>www15.pdf2go.com</code>、<code>www6.compress2go.com</code>と異なりますが、すべて同じパスで受け取りました。</p>
+    <pre><code>/v2/dl/web7/upload-file/&lt;uuid&gt;</code></pre>
+    <p>送信先の構造、動作、方針の文面、72時間の保管期間が同じです。1つのプラットフォームに4つの入口があり、方針を最後まで読めば開示されています。</p>
+    <p>批判ではありません。1つのシステムで複数のブランドを運営するのは普通で効率的です。ただし、信用できない変換サービスから別のサービスへ移っても、実際には同じ場所かもしれません。「別のサイトを使う」が対策になるのは、本当に別のサイトの場合です。</p>
+    <p>似た小さな例では、CloudConvertは<code>eu-central.storage.cloudconvert.com</code>へ送りました。名前から到着した地域が分かる点は、ほかの多くのサービスより情報があります。</p>
+  </section>
+  <section>
+    <h2>保管方針の説明と、その意味</h2>
+    <p>保管の約束は大半が短く具体的で、この種のサイトの評判から想像するより良好でした。Online2PDFの処理直後、PicResizeの20分、iLovePDF、iLoveIMG、PDF Candy、Aconvertの2時間から、4サイトのプラットフォームの72時間まであります。</p>
+    <p>逆の理由で挙げたいのが2つあります。<strong>jpg2pdf.com</strong>は通常のアドレスにプライバシーポリシーがなく、トップページの法的なリンクは<code>/terms</code>だけでした。その「Terms and Privacy」に1時間と書かれています。約束はよいものですが、場所が意外です。<strong>IMGonline</strong>では、英語トップページ、通常使われる2つのアドレス、ツールの保管・削除の説明のどこにも方針を見つけられませんでした。一方、完成ファイルはリンクを持つ誰でも取得できました。</p>
+    <p>大事なのは時間数そのものではありません。<strong>利用者の側からは、これらの約束が本当に守られたかを検証できません。</strong>削除を見られず、バックアップ、ログ、リクエスト本文を記録したエラー報告、配信を速めるキャッシュにも反映されたかは分かりません。売却や侵害後の扱いも見えません。保管方針は、会ったことのない人が、見られない機械について述べる意図で、誠実な説明もそうでない説明も同じ言葉で書けます。</p>
+    <p>ファイルをそもそも送れないツールを選ぶ理由はそこです。上記の会社がうそをつくという意味ではなく、送信しないツールなら、その扱いについて信用する必要がないためです。</p>
+  </section>
+  <section>
+    <h2>アップロードしなかった1つ</h2>
+    <p>Googleの画像圧縮ツールSquooshは、ファイルを受け取り、表示し、圧縮しても、<strong>ネットワークリクエストを一切出しませんでした。</strong>小さいデータやハッシュを送ったのでもなく、0バイトです。直前にTinyPNGの542,566バイトを検出したのと同じ方法で測りました。</p>
+    <p>表に入れる意味は、対照例になることです。送信なしという結果も得られるので、19の送信は、必ず何かを見つける測定方法のせいではありません。同じ形式の同じ作業をブラウザーで、サーバーなしにできることも示します。「変換は難しいから送信が必要」という前提への答えです。</p>
+    <p>送信は必須ではありません。多くのツールは以前の必要に合わせて作られ、アカウント、利用量、料金プランをサーバーで管理します。ブラウザーだけで動くツールは利用量を計測しにくくなります。</p>
+  </section>
+  <section>
+    <h2>測れなかったもの</h2>
+    <p>さらにFreeConvert、Smallpdf、Zamzar、Optimizilla、Photopea、media.io、Bulk Resize Photos、png2jpg.com、SimpleImageResizerの9サイトを試しましたが、表には入れていません。</p>
+    <p>8つは私たちの操作方法の限界です。実際のクリックにしか反応せず、スクリプトで入れたファイルを受け付けませんでした。送信されず、測るものもありません。<strong>これは検査結果ではなく、結果として読むべきではありません。</strong>その8つが端末内で処理する証拠ではなく、検査を実行できなかっただけです。</p>
+    <p>SimpleImageResizerは、この方法の落とし穴を示しました。フォームにファイル入力があっても、<code>enctype="application/x-www-form-urlencoded"</code>なので、ブラウザーが送るのはバイトではなく<em>ファイル名だけ</em>です。最初の単純な測定ではフォームの内容を足し、実際には起こらなかった1,085,210バイトの送信と判定しました。公表せず、その行を除外しました。再測定する人は、フォームの<code>enctype</code>を確認してください。</p>
+  </section>
+  <section>
+    <h2>自分で確認する</h2>
+    <p>説明を信じる必要はありません。方法を公表したのは、間違いだと思う人も表を作り直せるようにするためです。簡単な確認には特別な道具も要りません。</p>
+    <ul>
+      <li><strong>接続を切る。</strong>ページを読み込んでWi-Fiを切ってから使います。ブラウザー内の処理は続き、サーバーでの処理は止まります。言い回しではこの検査に答えられません。</li>
+      <li><strong>ネットワークタブを見る。</strong>開発者ツールでNetworkを選び、大きさで並べて操作します。4&nbsp;MBの写真が送られれば、4&nbsp;MBのリクエストが上に出ます。変換ボタンを押した後だけでなく、<em>前</em>も見てください。</li>
+      <li><strong><code>connect-src</code>を読む。</strong>ページの<code>Content-Security-Policy</code>に通信を許可するアドレスがあり、コードの動作にかかわらずブラウザーが適用します。そのサイト自身のアドレスがあれば、そこへファイルを送れます。</li>
+    </ul>
+    <p>3つの詳しい説明と、4つ目も確認する理由は<a href="../is-it-safe-to-upload-files/">オンライン変換サービスへファイルをアップロードしても安全か</a>で説明しています。</p>
+  </section>
+  <section>
+    <h2>このサイトにも同じ問いを向ける</h2>
+    <p>ほかの20サイトを測り、自分だけ除外するのは不自然です。同じ表の項目で答えます。</p>
+    <ul>
+      <li><strong>送信バイト数：0。</strong>各ツールはブラウザーで動き、ファイル、サムネイル、名前、大きさ、読み取った内容を送りません。</li>
+      <li><strong>送信先：なし。</strong>送るサーバーはありません。静的なファイルで、ポリシーの<code>connect-src</code>にはGoogleの広告・計測と寄付ボタンの通信先がありますが、<strong>このサイト自身のアドレスはありません。</strong></li>
+      <li><strong>保管期間：該当なし。</strong>何も届かないので、削除タイマーを信頼する必要がありません。それがこのページの理由です。</li>
+      <li><strong>検証できるか：はい。</strong>コードはすべて<a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">公開</a>されています。ビルドはコメントと空白を除くだけで、自分で実行し、配信されるものと比べられます。</li>
+    </ul>
+    <p>例外も明記します。Googleの広告と訪問計測はGoogleと通信しますが、ファイル情報を渡しません。<a href="../../images-to-video/">画像から動画</a>は貼り付けたアドレスから画像を取得でき、そのサーバーにはIPアドレスが分かります。<a href="../../share-text/">テキスト共有</a>は2つのブラウザーを紹介するために1つの接続を開きますが、何も保管せず、内容も運びません。3つとも<a href="../../privacy/">プライバシーページ</a>で詳しく説明しています。</p>
+    <p>20のいずれかを検索して来たなら、こちらには指定容量を目指す<a href="../../compress-image/">画像圧縮</a>、<a href="../../images-to-pdf/">画像からPDF</a>、<a href="../../merge-pdf/">PDF結合</a>、<a href="../../compress-pdf/">PDF圧縮</a>、隠れた情報を調べる<a href="../../exif-editor/">EXIF表示・削除</a>があります。無料でアカウント不要、ファイルを送る場所もありません。</p>
+  </section>
+  <section>
+    <h2>この数値を使うには</h2>
+    <p>測定結果は引用、参照、再測定できます。紹介するときの要点は、2026年9月17日に20の無料変換サービスを測り、19が送信し、そのうち11は変換ボタンを押す前、取得を試した完成ファイル4件すべてはセッションなしの公開アドレスから読めた、ということです。</p>
+    <p>このページへのリンクは歓迎しますが、必須ではありません。サイトは変わり、これはある午後の記録なので、同じ方法で違う結果が出たら知らせてください。<a href="../../contact/">連絡先</a>から送れます。バイト数を添えた訂正をここに公表します。</p>
+  </section>

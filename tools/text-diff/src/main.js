@@ -79,6 +79,8 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
+  clearTimeout(timer);
+  clearResult();
   // Taken before the first await, while the flag is still on the input:
   // shared/lang-keep.js sets it for the length of its dispatch, and this
   // handler starts synchronously inside that.
@@ -117,6 +119,8 @@ let timer = null;
 
 function schedule() {
   clearTimeout(timer);
+  // The visible input has changed; the previous download no longer describes it.
+  clearResult();
   // A long wait on a long document, a short one on a short document. The work
   // is local either way; this is only about not re-comparing a megabyte
   // between two keystrokes.
@@ -125,8 +129,12 @@ function schedule() {
 }
 
 for (const box of [el.input, el.inputB]) {
-  box.addEventListener('input', () => {
-    sourceTexts.delete(box);
+  box.addEventListener('abox:language-text', (event) => {
+    event.detail.value = sourceText(box);
+  });
+  box.addEventListener('input', (event) => {
+    if (typeof event.detail?.languageText === 'string') setText(box, event.detail.languageText);
+    else sourceTexts.delete(box);
     updateCounts();
     schedule();
   });
@@ -183,6 +191,7 @@ const byteLength = (text) => new TextEncoder().encode(text).length;
 /* --------------------------------------------------------------- the work */
 
 function run() {
+  clearTimeout(timer);
   clearError();
   clearResult();
 
@@ -374,11 +383,14 @@ function side(text, words, where, marked) {
 
 el.copy.addEventListener('click', async () => {
   if (!result) return;
-  const text = result.text;
+  const copied = result;
+  const text = copied.text;
   try {
     await navigator.clipboard.writeText(text);
+    if (result !== copied) return;
     el.copy.textContent = phrase('copy.done');
   } catch {
+    if (result !== copied) return;
     // The view can omit lines or draw both sides beside each other, so it is
     // never the text a patch reader needs. If automatic copying is refused,
     // select the actual patch instead and let the visitor copy that by hand.
@@ -393,10 +405,11 @@ el.copy.addEventListener('click', async () => {
     selection.addRange(range);
     el.copy.textContent = phrase('copy.select');
   }
-  setTimeout(() => { el.copy.textContent = copyLabel; }, 2500);
+  setTimeout(() => { if (result === copied) el.copy.textContent = copyLabel; }, 2500);
 });
 
 function clearResult() {
+  el.copy.textContent = copyLabel;
   el.diffView.replaceChildren();
   el.copy.disabled = true;
   download.clear();

@@ -1,0 +1,120 @@
+name = "Rotation vidéo"
+heading = "Rotation&nbsp;vidéo <span class=\"h1-kw\">&mdash; faire pivoter sans envoi</span>"
+tagline = "Un quart de tour, un demi-tour, dans l’autre sens. Inscrit dans l’en-tête sans décoder une image ni perdre de qualité."
+title = "Faire pivoter une vidéo &mdash; Gratuit, sans envoi ni perte"
+description = "Faites pivoter une vidéo de côté ou à l’envers dans votre navigateur. La rotation est inscrite dans l’en-tête, sans réencodage ni perte, ou dans les pixels pour les anciens lecteurs. MP4, MOV, WebM et MKV en entrée, MP4 en sortie. Aucun envoi."
+og_title = "Faire pivoter une vidéo sans réencoder ni envoyer"
+og_description = "Une rotation dans l’en-tête&nbsp;: chaque image reste intacte. Votre navigateur le fait sur votre appareil, même hors ligne."
+og_image_alt = "Rotation vidéo — un quart de tour sans perte ni envoi"
+pledge = "Votre vidéo est lue, dotée d’un nouvel en-tête puis écrite en mémoire sur votre appareil, par le code de ce site. Si vous inscrivez la rotation dans les pixels, les codecs du navigateur dessinent les images. Aucun envoi possible, aucun serveur pour recevoir votre vidéo&nbsp;: un gigaoctet n’a pas à partir puis revenir tourné."
+live_hint = "Regardez l’onglet Réseau des outils de développement pendant une rotation. Aucune requête ne contient vidéo, image ou nom de fichier. Ou déconnectez Internet et faites-la pivoter quand même."
+read_first = ", <code>src/plan.js</code> pour les neuf nombres de la rotation, <code>src/rotate.js</code> pour la copie et l’écriture, et <code>src/shared/copy-tracks.js</code> pour déplacer une image sans la décoder. Aucun de ces fichiers, ni les lecteurs et le rédacteur voisins, ne contacte le réseau."
+howto_heading = "Comment faire pivoter une vidéo"
+card = "Une vidéo de côté ou à l’envers remise à l’endroit &mdash; rotation inscrite dans l’en-tête, sans décoder ni perdre une image."
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Aucune perte de qualité"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "La rotation est neuf nombres dans l’en-tête."
+body = "Un téléphone conserve les images telles que son capteur les voit et inscrit un quart de tour dans une matrice de neuf nombres. Le lecteur l’applique à l’affichage. Cette page modifie cette matrice puis copie chaque image et paquet sans décodage. Un gigaoctet prend donc quelques secondes&nbsp;: la qualité et le poids restent presque identiques."
+
+[[privacy]]
+title = "L’envoi est la partie lente, qui n’a pas lieu ici."
+body = "Les outils en ligne demandent souvent le fichier entier avant de le renvoyer tourné, puis réencodent un travail qui ne nécessitait que neuf nombres. Ici, les octets passent du disque à la mémoire puis reviennent. La <code>Content-Security-Policy</code> énumère les adresses autorisées, aucune n’appartenant au site. L’outil fonctionne réseau déconnecté."
+
+[[privacy]]
+title = "Pour les lecteurs qui ignorent l’en-tête."
+body = "Téléphones, navigateurs, lecteurs modernes et éditeurs appliquent la matrice, utilisée pour les vidéos de téléphone depuis 2010. Certains vieux lecteurs l’ignorent. Pour eux, ou une destination impossible à vérifier, inscrivez la rotation dans les pixels&nbsp;: chaque image est dessinée tournée et réencodée en H.264. Cela ajoute une génération de perte et prend le temps d’un encodage."
+
+[[privacy]]
+title = "Le résultat est rouvert et vérifié."
+body = "Une matrice incorrecte peut produire un fichier lisible mais mal orienté. Le fichier terminé est relu et doit garder sa durée, afficher l’orientation et les dimensions demandées et porter le son prévu. Il se lit depuis la mémoire sous le téléchargement, avant l’enregistrement."
+
+[[privacy]]
+title = "Formats lus et format écrit."
+body = "MP4, MOV et M4V acceptent toute image, H.264, HEVC, VP9 ou AV1, car une rotation d’en-tête ne dépend pas du codec. Pour WebM et MKV, H.264 est copié et les autres codecs réencodés. AAC est copié&nbsp;; Opus, Vorbis, MP3 et FLAC deviennent AAC. Le son que le navigateur ne peut décoder est nommé puis retiré. Le résultat est un MP4."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu’il ne reçoit pas."
+body = "Les scripts publicitaires et de mesure de Google ne reçoivent ni fichier vidéo, image, nom, taille, durée ni rotation choisie. Tout le code qui lit, tourne et écrit vient du site et figure dans son dépôt."
+
+[[privacy]]
+title = "Ce que le bouton de don charge."
+body = "Le bouton de don est dessiné par cdnjs.buymeacoffee.com avec Google Fonts. C’est un lien&nbsp;: il ne signale aucune visite et ne reçoit rien sur vous ou vos vidéos. Il mène à un autre site uniquement si vous cliquez."
+
+[[privacy]]
+title = "Fonctionne hors ligne."
+body = "Déconnectez le réseau&nbsp;: toutes les fonctions restent disponibles. Un outil envoyant votre vidéo ailleurs s’arrêterait."
+
+[[howto]]
+title = "Choisissez la vidéo."
+body = "Un fichier à la fois&nbsp;: MP4, MOV, M4V, WebM ou MKV. Le navigateur le lit sur votre disque et indique son format et son orientation actuelle."
+
+[[howto]]
+title = "Choisissez la rotation et regardez l’aperçu."
+body = "Un quart de tour à droite, à gauche, ou un demi-tour. La première image utilise le même calcul que l’en-tête final. Inscrivez la rotation dans les pixels uniquement si un lecteur affiche le clip de côté. Retirez le son si vous le souhaitez."
+
+[[howto]]
+title = "Faites pivoter et lisez la vérification."
+body = "Le nouvel en-tête et la copie prennent quelques secondes. La rotation dans les pixels prend le temps d’un encodage, avec une barre de progression. Le résultat est rouvert pour vérifier durée, orientation et son, puis se lit depuis la mémoire."
+
+[[faq]]
+q = "La rotation réduit-elle la qualité&nbsp;?"
+a = "Non pour la méthode ordinaire&nbsp;: chaque image est copiée octet par octet et seule la matrice de l’en-tête change. Le poids reste presque identique. Seule la rotation inscrite dans les pixels réencode, avec un avertissement avant de l’activer."
+
+[[faq]]
+q = "Pourquoi un lecteur affiche-t-il encore le clip de côté&nbsp;?"
+a = "Il ignore la matrice d’affichage, contrairement aux téléphones, navigateurs et lecteurs modernes. Inscrivez la rotation dans l’image pour réencoder les pixels en H.264&nbsp;: tous les lecteurs verront la même orientation, au prix d’une génération de qualité."
+
+[[faq]]
+q = "Dans quel sens est un quart de tour à droite&nbsp;?"
+a = "Dans le sens des aiguilles d’une montre, comme si vous tourniez votre téléphone à droite. Choisissez le bouton dont l’aperçu remet la première image à l’endroit, puis lancez."
+
+[[faq]]
+q = "Quels fichiers lit-il&nbsp;?"
+a = "MP4, MOV et M4V avec tout codec vidéo pour une rotation d’en-tête. WebM et MKV avec H.264 copié et les autres images réencodées. AAC est copié&nbsp;; Opus, Vorbis, MP3 et FLAC deviennent AAC. Un son indécodable est annoncé et retiré. Le résultat est toujours MP4."
+
+[[faq]]
+q = "Combien de temps cela prend-il&nbsp;?"
+a = "Quelques secondes pour l’en-tête&nbsp;: une lecture de la structure puis une autre pour la copie, à la vitesse du disque. La rotation dans les pixels prend le temps d’un encodage, souvent plus court que le clip avec un encodeur matériel, plus long sans lui."
+
+[[faq]]
+q = "Mes vidéos sont-elles envoyées&nbsp;?"
+a = "Non. Votre navigateur lit et écrit sur votre appareil. La <code>Content-Security-Policy</code> énumère les adresses autorisées et aucune n’appartient au site. Déconnecter le réseau le prouve. L’envoi d’un gros fichier prendrait plus de temps que toute la rotation."
+
+[[faq]]
+q = "Fonctionne-t-il sur téléphone&nbsp;?"
+a = "Oui. La rotation d’en-tête ne décode rien et reste rapide. Le résultat attend en mémoire le téléchargement&nbsp;: quelques centaines de mégaoctets passent généralement sur téléphone. Pour réencoder les pixels, l’encodeur matériel du téléphone est rapide."
+
+[[faq]]
+q = "Quelle limite de taille et quel prix&nbsp;?"
+a = "Le fichier d’entrée est lu par morceaux, même s’il dépasse la mémoire. Le résultat est conservé en mémoire et le MP4 écrit ici ne peut dépasser 4 Go. L’outil est gratuit, sans compte, connexion ni essai limité. Les publicités ne reçoivent aucune vidéo."
+
+[[faq]]
+q = "Fonctionne-t-il hors ligne&nbsp;?"
+a = "Oui. Chargez la page une fois, puis déconnectez Internet&nbsp;: elle continue. Un outil qui envoyait votre vidéo à un serveur s’arrêterait."
+
+[schema]
+description = "Faites pivoter une vidéo de côté ou à l’envers dans votre navigateur. La rotation est inscrite dans l’en-tête, sans réencodage ni perte, ou dans les pixels pour les anciens lecteurs. MP4, MOV, WebM et MKV en entrée, MP4 en sortie. Aucun envoi."
+features = ["Un quart de tour à droite, à gauche ou un demi-tour", "Modifie la matrice et copie chaque image et paquet intact", "Aperçu de la première image avec le calcul final", "Rotation inscrite dans les pixels sur demande pour les anciens lecteurs", "Lit MP4, MOV, M4V, WebM et MKV, écrit MP4", "Rouvre le résultat pour vérifier durée, rotation et son, et le lit en mémoire", "Fonctionne hors ligne, sans envoi ni compte"]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour la choisir &mdash; MP4, MOV, M4V, WebM ou MKV"

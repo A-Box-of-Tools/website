@@ -1,0 +1,132 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择 PNG 文件</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the only decision, and it is the whole tool.
+
+    A PNG is lossless, so the question is whether the WebP stays that way.
+    Lossless WebP is the like-for-like swap - the same pixels, a smaller file -
+    and lossy WebP is the one that makes a photograph a fraction of the size at
+    a cost. Both keep the alpha channel, which is the reason this converter
+    needs no background colour and the WebP-to-JPG one does.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> 无损，或者更小</h2>
+
+    <p class="card-lede">两种模式都保留透明。WebP 和 PNG 一样有透明通道，无需将透明区域填到背景上。</p>
+
+    <div class="settings">
+      <div class="field">
+        <fieldset class="modes">
+          <legend>How to encode it</legend>
+          <label class="mode"><input type="radio" name="mode" value="lossless" checked><span><strong>无损</strong> 每个不透明像素与 PNG 完全相同，文件更小。直接替换，适合截图、示意图、徽标和线条图。</span></label>
+          <label class="mode"><input type="radio" name="mode" value="lossy"><span><strong>更小</strong> 再小得多，损失由你选择。适合照片，通常不适合平坦色块和文字，后者的边缘会模糊。</span></label>
+        </fieldset>
+      </div>
+
+      <div id="quality-field" hidden>
+        <label class="field" for="quality"><span>WebP 质量——<output id="quality-value" for="quality">80</output></span><span class="field-note">80 是 WebP 的默认质量，对照片通常很好。低于约 60 时开始看出损失。</span></label>
+        <input type="range" id="quality" min="30" max="99" step="1" value="80">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> 开始转换</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">转为 WebP</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>全部下载为 ZIP</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 个文件</span>
+    <span data-phrase="chosen.many">{count} 个文件</span>
+    <span data-phrase="row.remove">移除 {name}</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">含透明区域——WebP 会保留</span>
+    <span data-phrase="read.notpng">{name} 不是 PNG，而是 {found}。本工具转换 PNG 文件。</span>
+    <span data-phrase="read.unknown">{name} 不是 PNG，其开头字节也不符合本页认识的任何图片格式。</span>
+    <span data-phrase="read.failed">无法打开 {name}：{why}</span>
+    <span data-phrase="found.webp">WebP</span>
+    <span data-phrase="found.jpeg">JPEG</span>
+    <span data-phrase="found.avif">AVIF</span>
+    <span data-phrase="found.gif">GIF</span>
+    <span data-phrase="found.bmp">BMP</span>
+    <span data-phrase="support.nowebp">这个浏览器无法写出 WebP，因此本工具不能处理。Chrome、Edge、Firefox 和 Safari 自 2020 年起都能写出 WebP。</span>
+    <span data-phrase="settings.lossless">1 个 PNG，无损。</span>
+    <span data-phrase="settings.lossless.many">{count} 个 PNG 文件，无损。</span>
+    <span data-phrase="settings.lossy">1 个 PNG，质量 {quality}。</span>
+    <span data-phrase="settings.lossy.many">{count} 个 PNG 文件，质量 {quality}。</span>
+    <span data-phrase="settings.none">请先选择 PNG，这里会显示准备输出什么。</span>
+    <span data-phrase="run.one">转为 WebP</span>
+    <span data-phrase="run.many">将 {count} 个文件转为 WebP</span>
+    <span data-phrase="progress.each">正在转换 {name}……</span>
+    <span data-phrase="progress.done">完成。</span>
+    <span data-phrase="run.failed">本次转换失败：{detail}</span>
+    <span data-phrase="written.one">{name}——{size}，{change}</span>
+    <span data-phrase="written.many">已写出 {count} 个 WebP，共 {size}——比 PNG {change}。</span>
+    <span data-phrase="result.headline">{size}——{change}</span>
+    <span data-phrase="result.detail">来自 {name}——{dimensions}，原来 {was}。</span>
+    <span data-phrase="result.lossless">无损：每个像素都与 PNG 相同。</span>
+    <span data-phrase="result.lossless.alpha">可见内容无损：每个不透明像素都与 PNG 完全相同。近透明边缘下储存的颜色可能略有变化，这是画布造成的，不是 WebP。请参阅下方常见问题。</span>
+    <span data-phrase="result.lossy">有损，质量 {quality}。</span>
+    <span data-phrase="result.askedlossless">请求了无损，但浏览器写出了有损 WebP。文件有效，却不是与 PNG 逐像素相同。</span>
+    <span data-phrase="result.alpha">透明区域已原样保留。</span>
+    <span data-phrase="result.download">下载</span>
+    <span data-phrase="change.smaller">小了 {percent}%</span>
+    <span data-phrase="change.larger">大了 {percent}%</span>
+    <span data-phrase="change.same">大小相同</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">浏览器无法解码</span>
+    <span data-phrase="error.encode">浏览器无法写出 {format}</span>
+    <span data-phrase="error.wrongtype">浏览器返回的文件不是 {format}</span>
+    <span data-phrase="error.broke">出现问题：{detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">文件没有去往别处。已加载 {total} 个文件，全是本页自身的文件。{platform}</span>
+    <span data-phrase="net.dirty">有内容联系了 {hosts}，本工具不会这样做。值得检查。{platform}</span>
+    <span data-phrase="net.platform.one">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
+    <span data-phrase="net.platform.many">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
+  </div>
+</main>

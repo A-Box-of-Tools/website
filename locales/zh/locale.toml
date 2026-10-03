@@ -269,7 +269,7 @@ guarantees_note = """
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
 hub_filter_label = "查找工具"
-hub_filter_none = "没有匹配的工具。"
+hub_filter_none = "没有匹配的工具。试试减少关键词，或输入 PDF、PNG 等文件格式。"
 
 hub_guides_note = """
     不知道该动哪个设置，也不清楚代价？\

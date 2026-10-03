@@ -1,0 +1,238 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span>PDFを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      Where an old password can be taken off, shown only when one is what
+      stopped the file being read. Two passwords on one document is not a
+      thing the format can express, so changing one is always take-off then
+      put-on, and the page that takes it off is next door.
+    -->
+    <p id="unlock-hint" class="field-note" hidden>この書類を開くにはすでにパスワードが必要です。まずこのブラウザで<a href="../unlock-pdf/">PDF保護解除ツール</a>を使って解除し、そのコピーをここへ戻して新しいパスワードを設定してください。</p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; what goes on it.
+
+    The card leads with the password because the password is the lock, and
+    puts the restrictions under it with a sentence saying what they are and
+    are not. A page that listed "no printing" beside "password" as two boxes
+    of equal weight would be telling the visitor the two are the same kind of
+    thing, and the site next door exists to say they are not.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span>パスワードと制限を選ぶ</h2>
+
+    <p class="card-lede">パスワードは書類を開くことを防ぎます。そこから生成した鍵で暗号化され、持っていない人は内容を読めません。その下の制限は、リーダーが守ることに同意する依頼で、無視することもできます。片方でも両方でも設定できます。</p>
+
+    <div class="password-box">
+      <label class="field" for="password">
+        <span>書類を開くためのパスワード</span>
+        <span class="field-note">ここで入力して使い、どこにも送信しません。このページに送信先はありません。制限だけを付け、誰でも開けるままにするなら空欄にしてください。</span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal" class="ghost" aria-pressed="false">表示</button>
+      </div>
+
+      <label class="field" for="password-again">
+        <span>同じパスワードをもう一度</span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+      </div>
+
+      <!--
+        The one sentence on the page that has to be read, so it is not in the
+        FAQ. A strong scheme and a forgotten password is a lost document, and
+        nothing on this site - or anywhere honest - gets it back.
+      -->
+      <p id="password-status" class="field-summary password-status" role="status" aria-live="polite">このパスワードなしでは開けません。ここにも、ほかの誠実なツールにも、パスワードを推測する機能はありません。元のファイルを残してください。</p>
+    </div>
+
+    <fieldset class="restrictions">
+      <legend>制限</legend>
+      <p class="field-note restrictions-note">リーダーに特定の操作をしないよう求めます。多くのリーダーは守りますが、強制ではありません。パスワードなしで開ける書類の制限は解除できます。希望する操作を選ぶもので、保証ではありません。</p>
+
+      <label class="check">
+        <input type="checkbox" id="restrict-print">
+        <span>
+          <strong>印刷を禁止</strong>
+          <span class="check-note">高画質でも粗い画像でも印刷を認めません。</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-copy">
+        <span>
+          <strong>コピーを禁止</strong>
+          <span class="check-note">文字や画像を選択してコピーできません。見えない人への読み上げは許可したままです。</span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="restrict-change">
+        <span>
+          <strong>変更を禁止</strong>
+          <span class="check-note">編集、コメント、ハイライト、フォーム入力、ページの追加、削除、並べ替えを認めません。</span>
+        </span>
+      </label>
+
+      <label class="field owner-field" for="owner-password">
+        <span>後で制限を解除するための所有者パスワード</span>
+        <span class="field-note">任意です。空欄なら開くためのパスワードを兼用します。どちらも空欄ならランダムな値を使って破棄し、空のパスワードで解除できないようにします。</span>
+      </label>
+      <div class="password-input">
+        <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
+               autocapitalize="off">
+        <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">表示</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="modes">
+      <legend>暗号化方式</legend>
+      <label class="mode">
+        <input type="radio" name="scheme" value="6" checked>
+        <span><strong>AES-256</strong>PDF 2.0の現在の方式です。2010年以降のリーダーで開け、現在も強いと評価される唯一の方式です。</span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="scheme" value="4">
+        <span><strong>AES-128</strong>2010年より前のリーダーが必要な場合の2005年の方式です。暗号自体は安全ですが、1994年のパスワードハッシュにより推測の費用がかなり下がります。</span>
+      </label>
+    </fieldset>
+
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>保護する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">書類を保護する</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="waiting.settings">上で2つのパスワードが一致し、保護方法を1つ以上選ぶと使えます。</span>
+    <span data-phrase="password.show">表示</span>
+    <span data-phrase="password.hide">閉じる</span>
+    <span data-phrase="status.blank">このパスワードなしでは開けません。ここにも、ほかの誠実なツールにも、パスワードを推測する機能はありません。元のファイルを残してください。</span>
+    <span data-phrase="status.mismatch">2つのパスワードはまだ一致していません。</span>
+    <span data-phrase="status.short">{n}文字です。現在の方式でも短いパスワードが弱点になります。単語より文のほうが向いています。</span>
+    <span data-phrase="status.ok">{n}文字で、2回同じように入力されました。これがなければ開けないので、元のファイルを残してください。</span>
+    <span data-phrase="status.nothing">保護方法が選ばれていません。パスワード、制限、または両方を設定してください。</span>
+    <span data-phrase="status.restrictonly">開くためのパスワードはありません。誰でも開けて、下で選んだ制限だけが付きます。</span>
+    <span data-phrase="note.restricted">この書類には制限がありますが、開くためのパスワードはありません。ここでもパスワードなしで開けました。下の設定で元の制限を置き換えます。</span>
+    <span data-phrase="note.repaired">このファイルの相互参照表は中身と合っていなかったので、オブジェクトを一つずつ探して読みました。これは修復で、うまくいきましたが、どこかへ送る前に結果を確かめてください。</span>
+    <span data-phrase="note.incremental">この書類は編集して保存し直されており、どこからも参照されない古いオブジェクトが残っています。書き出すファイルからは除きます。</span>
+    <span data-phrase="crypt.handler">この書類はパスワードではなく証明書で保護されています（/{name}）。ここでは開けないため、保護し直すこともできません。</span>
+    <span data-phrase="crypt.version">この書類は対応していないPDF暗号化方式（V{v}、R{r}）を使っています。ここでは開いて保護し直せません。</span>
+    <span data-phrase="crypt.malformed">暗号化された書類ですが暗号化辞書が不完全なので開けません。ファイルが破損しています。</span>
+    <span data-phrase="crypt.wrongpassword">この書類を開くにはパスワードが必要です。</span>
+    <span data-phrase="read.notpdf">これはPDFではありません。この道具はPDFファイルにしか使えません。</span>
+    <span data-phrase="read.encrypted">このPDFは暗号化されています。</span>
+    <span data-phrase="read.nocatalogue">このファイルには文書カタログがなく、保護できません。PDFではないか、ここで修復できないほど破損しています。</span>
+    <span data-phrase="read.noheader">これはPDFの始まり方をしていません。%PDF-のヘッダーがありません。</span>
+    <span data-phrase="read.failed">このPDFは読めませんでした：{detail}</span>
+    <span data-phrase="pdf.flate">Flateストリームを展開できませんでした（{detail}）</span>
+    <span data-phrase="pdf.nocompression">このブラウザーにはCompressionStreamがありません</span>
+    <span data-phrase="pdf.lzw">LZWストリームが未定義のコードで始まっています</span>
+    <span data-phrase="pdf.cryptfilter">このストリームは暗号化されています</span>
+    <span data-phrase="pdf.unknownfilter">未知のフィルター /{name}</span>
+    <span data-phrase="pdf.deep">入れ子が深すぎます</span>
+    <span data-phrase="pdf.short">終わりを越えました</span>
+    <span data-phrase="pdf.unexpected">{at}に想定外の{found}</span>
+    <span data-phrase="pdf.unexpectedbyte">{at}に想定外のバイト0x{hex}</span>
+    <span data-phrase="pdf.noendstream">endstreamのないストリーム</span>
+    <span data-phrase="pdf.noobj">{at}にobjキーワードがありません</span>
+    <span data-phrase="pdf.nostartxref">startxrefがありません</span>
+    <span data-phrase="pdf.noxref">xrefセクションではありません</span>
+    <span data-phrase="pdf.now">/Wのないxrefストリーム</span>
+    <span data-phrase="pdf.zerowidth">フィールド幅がゼロのxrefストリーム</span>
+    <span data-phrase="size.bytes">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.pages.one">{n}ページ</span>
+    <span data-phrase="count.pages.many">{n}ページ</span>
+    <span data-phrase="stage.keys">パスワードから鍵を生成中</span>
+    <span data-phrase="stage.writing">暗号化して書き出し中</span>
+    <span data-phrase="stage.checking">開き直して確認中</span>
+    <span data-phrase="run.cancelled">キャンセルしました。変更はありません。ボタンを押すと再開できます。</span>
+    <span data-phrase="result.locked">{size}。開くにはパスワードが必要です。</span>
+    <span data-phrase="result.restricted">{size}。誰でも開けますが、制限があります。</span>
+    <span data-phrase="result.sub">すべてのページ、フォント、画像は元のまま暗号化しました。元のファイルも残してください。</span>
+    <span data-phrase="check.passed">確認：{found}</span>
+    <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
+    <span data-phrase="check.ok.locked">パスワードなしでは開けず、指定したパスワードでメモリから開き直せました。ページ数は元と同じ{pages}です。</span>
+    <span data-phrase="check.ok.restricted">指定どおりパスワードなしでメモリから開き直せました。指定した制限があり、ページ数は元と同じ{pages}です。</span>
+    <span data-phrase="check.open">パスワードなしで完成したファイルを開けました。保護されていません</span>
+    <span data-phrase="check.stillshut">指定したパスワードでは完成したファイルを開けませんでした（{detail}）</span>
+    <span data-phrase="check.pages">完成したファイルのページ数が{expected}ではなく{pages}です</span>
+    <span data-phrase="check.permissions">指定した制限が完成したファイルにありません</span>
+    <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
+    <span data-phrase="facts.scheme.aes256">PDF 2.0の現在のパスワードハッシュ方式でAES-256暗号化しました。2010年以降のリーダーで開けます。</span>
+    <span data-phrase="facts.scheme.aes128">古いリーダー向けの2005年の方式でAES-128暗号化しました。パスワードハッシュは1994年の方式なので、短いパスワードはAES-256より推測しやすくなります。</span>
+    <span data-phrase="facts.userpassword">開くには指定したパスワードが必要です。ほかの方法はありません。</span>
+    <span data-phrase="facts.nouserpassword">誰でも開けます。付いているのは依頼であり、開封の防止ではありません。</span>
+    <span data-phrase="facts.restrictions">リーダーに禁止を求める操作：{list}。</span>
+    <span data-phrase="facts.norestrictions">制限はありません。パスワードを持つ人は印刷、コピー、編集できます。</span>
+    <span data-phrase="facts.owner.same">開くためのパスワードで制限も解除できます。</span>
+    <span data-phrase="facts.owner.own">指定した所有者パスワードで制限を解除できます。</span>
+    <span data-phrase="facts.owner.random">所有者パスワードは誰も持たないランダムな値です。空のパスワードを試しても解除できません。ただしリーダーは制限を無視できます。</span>
+    <span data-phrase="facts.replaced">元の書類の制限を今回の指定で置き換えました。</span>
+    <span data-phrase="facts.signature">この書類には電子署名がありました。書き直すと署名は無効になるため、今回のコピーには署名がありません。元のファイルの署名はそのままです。</span>
+    <span data-phrase="facts.incremental">以前の編集から残った古い、差し替え済みのオブジェクトの写しは写しませんでした。</span>
+    <span data-phrase="facts.repaired">元のファイルの相互参照表が壊れていて、探しながら組み直す必要がありました。このファイルを人に渡す前に確かめてください。</span>
+    <span data-phrase="perm.print">印刷</span>
+    <span data-phrase="perm.copy">コピー</span>
+    <span data-phrase="perm.change">編集</span>
+    <span data-phrase="list.two">{a}と{b}</span>
+    <span data-phrase="list.three">{a}、{b}、{c}</span>
+    <span data-phrase="net.clean">書類はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、書類も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、書類も、その1バイトも渡っていません。</span>
+  </div>
+</main>

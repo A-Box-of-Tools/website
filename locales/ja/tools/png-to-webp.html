@@ -1,0 +1,141 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span>PNGファイルを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">すべて削除</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the only decision, and it is the whole tool.
+
+    A PNG is lossless, so the question is whether the WebP stays that way.
+    Lossless WebP is the like-for-like swap - the same pixels, a smaller file -
+    and lossy WebP is the one that makes a photograph a fraction of the size at
+    a cost. Both keep the alpha channel, which is the reason this converter
+    needs no background colour and the WebP-to-JPG one does.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span>可逆圧縮か、さらに小さくするか</h2>
+
+    <p class="card-lede">どちらでも透明度は保たれます。WebPにもPNGと同じくアルファチャンネルがあるので、背景色で塗りつぶす必要はありません。</p>
+
+    <div class="settings">
+      <div class="field">
+        <fieldset class="modes">
+          <legend>圧縮方法</legend>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossless" checked>
+            <span><strong>可逆圧縮</strong>不透明な画素は元のPNGと完全に同じで、ファイルは小さくなります。そのまま置き換えたい場合や、スクリーンショット、図、ロゴ、線画に向いています。</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="mode" value="lossy">
+            <span><strong>さらに小さく</strong>画質の変化を選んで、さらに小さくします。写真に向いていますが、単色や文字では輪郭がぼやけるため、通常は不向きです。</span>
+          </label>
+        </fieldset>
+      </div>
+
+      <div id="quality-field" hidden>
+        <label class="field" for="quality">
+          <span>WebP画質：<output id="quality-value" for="quality">80</output></span>
+          <span class="field-note">80はWebPの標準値で、写真では劣化がほとんど気になりません。60前後より下では見え始めます。</span>
+        </label>
+        <input type="range" id="quality" min="30" max="99" step="1" value="80">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span>変換する</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">WebPに変換</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>すべてZIPでダウンロード</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1個のファイル</span>
+    <span data-phrase="chosen.many">{count}個のファイル</span>
+    <span data-phrase="row.remove">{name}を削除</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">透明な部分があります。WebPではそのまま保ちます。</span>
+    <span data-phrase="read.notpng">{name}はPNGではなく{found}です。このツールはPNGファイルを変換します。</span>
+    <span data-phrase="read.unknown">{name}はPNGではなく、先頭のバイトもこのページが対応する画像形式に一致しません。</span>
+    <span data-phrase="read.failed">{name}を開けませんでした：{why}</span>
+    <span data-phrase="found.webp">WebP</span>
+    <span data-phrase="found.jpeg">JPEG</span>
+    <span data-phrase="found.avif">AVIF</span>
+    <span data-phrase="found.gif">GIF</span>
+    <span data-phrase="found.bmp">BMP</span>
+    <span data-phrase="support.nowebp">このブラウザはWebPを書き出せないので、このページでは変換できません。Chrome、Edge、Firefox、Safariはいずれも2020年から書き出しに対応しています。</span>
+    <span data-phrase="settings.lossless">1個のPNGを可逆圧縮で変換します。</span>
+    <span data-phrase="settings.lossless.many">{count}個のPNGを可逆圧縮で変換します。</span>
+    <span data-phrase="settings.lossy">1個のPNGを画質{quality}で変換します。</span>
+    <span data-phrase="settings.lossy.many">{count}個のPNGを画質{quality}で変換します。</span>
+    <span data-phrase="settings.none">上でPNGを選ぶと、書き出す内容をここに表示します。</span>
+    <span data-phrase="run.one">WebPに変換</span>
+    <span data-phrase="run.many">{count}個のファイルをWebPに変換</span>
+    <span data-phrase="progress.each">{name}を変換中&hellip;</span>
+    <span data-phrase="progress.done">完了しました。</span>
+    <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count}個のWebPを書き出しました。合計{size}で、元のPNGより{change}です。</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">元のファイル：{name}、{dimensions}、元のサイズは{was}です。</span>
+    <span data-phrase="result.lossless">可逆圧縮：すべての画素が元のPNGと同じです。</span>
+    <span data-phrase="result.lossless.alpha">見える部分は可逆圧縮です。不透明な画素は元のPNGと完全に同じです。ほぼ透明な輪郭の下に保存される色が少し変わる場合があります。WebPではなくキャンバスによるものです。下の質問をご覧ください。</span>
+    <span data-phrase="result.lossy">非可逆圧縮、画質{quality}です。</span>
+    <span data-phrase="result.askedlossless">可逆圧縮を指定しましたが、ブラウザは非可逆圧縮のWebPを書き出しました。有効なファイルですが、画素は元のPNGと完全には一致しません。</span>
+    <span data-phrase="result.alpha">透明な部分はそのまま保たれました。</span>
+    <span data-phrase="result.download">ダウンロード</span>
+    <span data-phrase="change.smaller">{percent}%小さく</span>
+    <span data-phrase="change.larger">{percent}%大きく</span>
+    <span data-phrase="change.same">同じサイズ</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">ブラウザが画像をデコードできませんでした</span>
+    <span data-phrase="error.encode">ブラウザが{format}を書き出せませんでした</span>
+    <span data-phrase="error.wrongtype">ブラウザが返した内容は{format}ではありませんでした</span>
+    <span data-phrase="error.broke">問題が起きました：{detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">ファイルはどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+  </div>
+</main>

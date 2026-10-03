@@ -1,0 +1,126 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Une page web vit et meurt d'ordinaire avec sa connexion, parce que
+      chaque visite la va rechercher. Mais une page peut livrer avec elle
+      un petit programme appelé <em>service worker</em>, que le navigateur
+      installe à côté d'elle et met aux commandes de son trafic réseau. À
+      la première visite, ce worker range une copie complète de tout ce
+      qui compose la page &mdash; balisage, styles, scripts &mdash; dans
+      un cache sur votre machine. Dès lors, les requêtes trouvent réponse
+      dans cette copie. Quand le wifi meurt, rien ne change, puisque rien
+      n'était recherché de toute façon.
+    </p>
+    <p>
+      Il n'y a là ni magie ni permission spéciale&nbsp;: c'est de la
+      mécanique standard du navigateur, livrée dans tous les grands
+      navigateurs depuis une dizaine d'années. Ce qui est inhabituel,
+      c'est un site qui s'y appuie aussi fort que celui-ci &mdash; parce
+      que pour un site dont toute la promesse est que vos fichiers ne
+      partent jamais, le hors-ligne n'est pas un confort. C'est la
+      preuve.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que prouve la survie au débranchage</h2>
+    <p>
+      La vérification la plus forte du guide sur l'envoi est
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">débrancher</a>&nbsp;:
+      charger l'outil, couper la connexion, s'en servir. Il vaut la peine
+      d'être précis sur la raison pour laquelle cela marche. Un outil qui
+      convertit votre fichier sur un serveur a besoin du réseau à
+      l'instant exact où il travaille &mdash; coupez le fil et le travail
+      s'arrête. Un outil qui continue a démontré, et non affirmé, que le
+      travail se passe sur votre machine&nbsp;; et une page qui ne peut
+      pas atteindre le réseau ne peut envoyer votre fichier nulle part,
+      quoi que son code puisse souhaiter.
+    </p>
+    <p>
+      Aucune politique de confidentialité ne peut offrir cela. Une
+      politique décrit des intentions et peut changer&nbsp;; une page qui
+      fait son travail en mode avion, c'est de la physique. C'est pourquoi
+      chaque outil de ce site fonctionne hors ligne et porte un indicateur
+      en direct qui dit si vous l'êtes en ce moment &mdash; pour que vous
+      puissiez le regarder basculer en coupant la connexion, et dérouler
+      la plus forte vérification qui soit en une dizaine de secondes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment la copie reste honnête</h2>
+    <p>
+      Deux questions décident si une copie gardée pour toujours est un
+      cadeau ou un piège, et la mécanique répond aux deux&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>La copie vieillit-elle&nbsp;?</strong> Le worker guette
+        une version plus récente quand une connexion existe et l'échange
+        en bloc. Les versions vont en bloc parce que la copie doit
+        toujours être cohérente &mdash; moitié vieille, moitié neuve est
+        le seul état qui ne doit jamais être servi.
+      </li>
+      <li>
+        <strong>Qu'est-ce qui a été copié, exactement&nbsp;?</strong> Tout
+        ce dont la page a besoin et rien d'autre &mdash; et chaque outil
+        d'ici garde sa copie dans son propre casier. Le cache d'un outil
+        contient cet outil&nbsp;; en installer un n'en installe pas dix en
+        silence. La copie est de plus inspectable&nbsp;: les outils de
+        développement de votre navigateur listent chaque fichier en cache,
+        et la liste est la même que la page a été chercher au grand
+        jour.
+      </li>
+    </ul>
+    <p>
+      Le résultat est une page qui se comporte comme une application que
+      vous auriez installée en la visitant &mdash; ce qui est aussi,
+      littéralement, proposé&nbsp;: la barre d'adresse du navigateur
+      installe n'importe quel outil d'ici comme une application, avec
+      l'icône propre de l'outil, s'ouvrant droit sur l'outil, sans bouton
+      sur la page et sans script qui quémande. La même mécanique, en habit
+      de raccourci.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que le hors-ligne ne prouve pas</h2>
+    <p>
+      La vérification est forte, pas magique, et ses limites méritent
+      d'être dites aussi nettement que sa force&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Elle prouve l'instant, pas l'avenir.</strong> Le travail
+        fait hors ligne est resté sur votre machine, point. Une page
+        pourrait en principe retenir des données et les envoyer au retour
+        de la connexion &mdash; pour les fichiers les plus délicats,
+        fermez donc l'onglet avant de vous reconnecter, ou vérifiez aussi
+        l'autre sens&nbsp;: regardez l'onglet Réseau au moment où la
+        connexion revient.
+      </li>
+      <li>
+        <strong>Elle prouve cette page, pas le site.</strong> Chaque page
+        répond pour elle-même. Celle d'ici qui utilise le réseau le dit
+        sur sa propre page&nbsp;: l'outil de
+        <a href="../../partager-du-texte/">partage de texte</a>, dont tout
+        le métier est de déplacer quelque chose entre deux appareils, et
+        qui explique exactement ce que transporte sa seule connexion.
+      </li>
+      <li>
+        <strong>Il ne vous cache pas.</strong> Charger la page a d'emblée
+        donné votre adresse au site, comme tout chargement de page sur le
+        web. Le hors-ligne concerne la destination de vos fichiers, pas
+        l'anonymat.
+      </li>
+    </ul>
+    <p>
+      Ces limites sont la raison pour laquelle le guide sur l'envoi
+      enseigne quatre vérifications plutôt qu'une &mdash; l'onglet Réseau,
+      la politique de sécurité dans la source de la page et le code
+      lisible couvrent ce que le débranchage ne peut pas. Mais comme
+      premier filtre, aucun n'est plus rapide&nbsp;: si un outil ne peut
+      pas faire son travail réseau coupé, vous avez appris où le travail
+      se passe, et aucune lecture supplémentaire n'est requise.
+    </p>
+  </section>

@@ -94,9 +94,9 @@
       <div class="pane">
         <div class="pane-head">
           <label for="input">你的文本</label>
-          <span class="count" id="input-count">空的</span>
+          <span class="count" id="input-count">空</span>
         </div>
-        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="把 JSON、XML、HTML、CSS 或 YAML 贴在这里，或者把文件拖到上面。"></textarea>
       </div>
@@ -135,6 +135,12 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">空</span>
+    <span data-phrase="count.lines.one">{count} 行</span>
+    <span data-phrase="count.lines.many">{count} 行</span>
+    <span data-phrase="count.characters.one">{count} 个字符</span>
+    <span data-phrase="count.characters.many">{count} 个字符</span>
+    <span data-phrase="count.summary">{lines}，{characters}，{size}</span>
     <span data-phrase="parse.at">{reason}（第 {line} 行，第 {column} 列）</span>
     <span data-phrase="char.end">文本的末尾</span>
     <span data-phrase="char.newline">一个换行</span>

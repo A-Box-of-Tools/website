@@ -1,0 +1,124 @@
+name = "GIF en MP4"
+heading = "GIF&nbsp;en&nbsp;MP4 <span class=\"h1-kw\">&mdash; la même animation dix fois plus légère</span>"
+tagline = "Chaque image, avec la durée que le GIF lui donne, en H.264 dans un MP4. Converti sur votre machine ; le fichier n’est jamais envoyé."
+title = "Convertisseur GIF en MP4 &mdash; Gratuit, dans votre navigateur, sans envoi"
+description = "Transformez un GIF animé en MP4 dans votre navigateur, pour une fraction de sa taille. Chaque image conserve sa durée d’origine ; aucun rééchantillonnage. Du H.264 dans un MP4, accepté partout. Aucun fichier n’est envoyé."
+og_title = "Transformez un GIF en MP4 sans l’envoyer"
+og_description = "La même animation en H.264 dans un MP4, généralement dix fois plus légère, en conservant la durée de chaque image. Conversion dans votre navigateur ; le fichier reste sur votre machine."
+og_image_alt = "Convertissez un GIF en MP4 dans votre navigateur, sans envoi"
+pledge = "Le GIF choisi est décodé, dessiné image par image, encodé et écrit en MP4 dans la mémoire de cette machine, avec l’encodeur de votre navigateur et le code servi depuis cette adresse. Rien ici ne peut envoyer de fichier, et aucun serveur ne peut en recevoir à l’autre bout de cette page."
+live_hint = "Vérifiez par vous-même : ouvrez les outils de développement, surveillez l’onglet Réseau et convertissez un fichier. Aucune requête ne transporte de GIF, d’image ou de nom de fichier. Ou déconnectez Internet et convertissez quand même."
+read_first = ", <code>src/plan.js</code> pour la conversion des délais du GIF en durées vidéo, <code>src/encode.js</code> pour le dessin et l’encodage, et <code>src/shared/gif-decode.js</code> pour la lecture. Aucun de ces fichiers n’accède au réseau, pas plus que le module d’écriture voisin."
+howto_heading = "Comment convertir un GIF en MP4"
+card = "La même animation en MP4, généralement dix fois plus légère, pour les services qui refusent un gros GIF. Chaque image conserve son délai, aucun rééchantillonnage, et l’image garde sa taille. Encodage sur votre machine."
+
+[words]
+plural = "GIF"
+choose = "un GIF"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "Pourquoi un MP4 est dix fois plus léger, et pourquoi les plateformes le préfèrent."
+body = "Un GIF stocke chaque image avec au plus 256 couleurs, sans tenir compte de la précédente. Un codec vidéo stocke les changements, en couleurs complètes, et H.264 a trente ans de pratique : la même animation occupe généralement dix fois moins de place, parfois moins, et paraît meilleure. C’est pourquoi les réseaux sociaux, messageries et systèmes de contenu refusent les gros GIF ou les transforment discrètement en MP4 à l’envoi &mdash; lorsqu’ils indiquent &ldquo;GIF trop gros&rdquo;, c’est un MP4 qu’ils attendent."
+
+[[privacy]]
+title = "L’envoi est l’étape lente, et c’est celle qui disparaît."
+body = "Tout convertisseur en ligne demande d’abord le fichier : 30 Mo montent par votre connexion pour que 3 Mo reviennent, avant même de savoir qui garde le fichier. Cette page lit le GIF avec le code servi depuis cette adresse et écrit le MP4 avec l’encodeur du navigateur. Les octets ne vont que du disque à la mémoire, puis au disque. La <code>Content-Security-Policy</code> nomme chaque adresse joignable &mdash; aucune n’appartient à ce site &mdash; et la page fonctionne déconnectée."
+
+[[privacy]]
+title = "La durée est conservée image par image, ce que beaucoup de convertisseurs ratent."
+body = "Un GIF n’a pas de cadence fixe. Chaque image précise sa durée, qui varie : un diaporama peut garder une photo deux secondes puis faire défiler dix images. Un convertisseur qui choisit une cadence et rééchantillonne double certaines images et en supprime d’autres ; le résultat saccade ou raccourcit. Ici, chaque image du GIF devient une image vidéo avec exactement son délai &mdash; avec la seule convention des navigateurs, qui lisent un délai inférieur à deux centièmes de seconde comme dix centièmes &mdash; puis le fichier est rouvert pour vérifier toutes les images et sa durée."
+
+[[privacy]]
+title = "Deux choses qu’un GIF peut faire et qu’une vidéo ne peut pas, annoncées dès le départ."
+body = "Un GIF peut laisser voir ce qui se trouve dessous ; une vidéo est un rectangle opaque. Une couleur remplace donc les zones transparentes. La page la demande uniquement si le GIF en comporte, avec du blanc par défaut comme la plupart des pages. Un GIF indique aussi sa propre répétition ; un MP4 ne le fait pas, et le lecteur décide. La plupart des fils et messageries répètent les courtes vidéos. L’aperçu ici tourne en boucle pour montrer le raccord."
+
+[[privacy]]
+title = "Ce que cela coûte à votre machine, clairement."
+body = "L’encodage dépend de votre machine : avec un encodeur matériel &mdash; la plupart des portables et des téléphones de la dernière décennie &mdash; quelques secondes pour un GIF ordinaire ; davantage sans lui. Toutes les images sont d’abord décodées en mémoire. Quelques mégaoctets de GIF deviennent un octet par pixel et par image. La page s’arrête à un demi-gigaoctet et l’explique, au lieu de faire planter l’onglet. Annuler reste toujours disponible."
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = "Les scripts de publicité et de mesure proviennent de Google. Ils ne reçoivent rien sur votre GIF : ni fichier, ni image, ni nom, ni taille, ni durée. Chaque ligne qui le lit, l’encode ou l’écrit est servie depuis cette origine et figure dans le dépôt."
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = "Le bouton « Buy me a coffee » de l’en-tête est dessiné par un script de cdnjs.buymeacoffee.com et utilise Google Fonts. C’est un simple lien : il ne signale aucune visite et ne reçoit rien sur vous ou vos GIF. Rien ne se passe sans un clic, qui mène au site de quelqu’un d’autre."
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = "Déconnectez le réseau : tout sur cette page fonctionne encore. C’est la preuve la plus simple ; un outil qui envoyait votre GIF pour le convertir s’arrêterait."
+
+[[howto]]
+title = "Choisissez le GIF."
+body = "Un fichier à la fois. Le navigateur le lit directement sur votre disque et affiche sa taille, son nombre d’images, sa durée et ses dimensions en pixels."
+
+[[howto]]
+title = "Lisez ce qui sera écrit."
+body = "Une ligne indique les dimensions, les images et leurs durées, la durée totale et le débit. Rien à régler sauf si le GIF contient des zones transparentes : un champ de couleur apparaît alors pour leur fond."
+
+[[howto]]
+title = "Convertissez, puis lisez la confirmation de vérification."
+body = "Chaque image est dessinée et encodée, avec une barre de progression. Le fichier terminé est ensuite rouvert ici et doit contenir toutes les images pour la même durée que le GIF. Il se lit depuis la mémoire sous le téléchargement, en boucle, pour voir le raccord."
+
+[[faq]]
+q = "Pourquoi le MP4 est-il beaucoup plus petit ?"
+a = "Un GIF stocke chaque image avec au plus 256 couleurs, sans mémoire de la précédente ; un codec vidéo stocke seulement les changements. H.264 a trente ans de pratique. La même animation occupe généralement dix fois moins de place, parfois moins, avec un meilleur rendu sans la limite de 256 couleurs. Un GIF minuscule ou presque immobile peut grossir ; la page l’indique."
+
+[[faq]]
+q = "La durée sera-t-elle identique ?"
+a = "Oui, image par image. Le GIF n’a que le délai propre à chaque image ; la vidéo le conserve exactement. Aucune image n’est rééchantillonnée, doublée ou supprimée. La seule convention est celle des navigateurs : un délai inférieur à deux centièmes de seconde est lu comme dix centièmes, pour la même durée qu’en navigateur. Le résultat est rouvert pour vérifier ces deux points."
+
+[[faq]]
+q = "La vidéo tournera-t-elle en boucle ?"
+a = "Le lecteur décide. Un GIF contient une instruction de répétition ; un MP4 n’en contient pas. La plupart des fils et messageries répètent une courte vidéo. L’aperçu ici boucle pour montrer le raccord. Un lecteur sur ordinateur la joue généralement une seule fois."
+
+[[faq]]
+q = "Que deviennent les parties transparentes ?"
+a = "Elles reçoivent une couleur, car une vidéo est un rectangle opaque. Le champ de couleur apparaît seulement pour les GIF qui ont des zones transparentes ; il est blanc par défaut, comme la plupart des pages. La couleur est dessinée derrière les images avant l’encodage et fait donc partie de la vidéo."
+
+[[faq]]
+q = "Les dimensions de l’image changent-elles ?"
+a = "D’un pixel seulement, si nécessaire. H.264 exige deux dimensions paires : une ligne de couleur de fond est ajoutée à une largeur ou hauteur impaire, sans rééchantillonnage. Un GIF plus large que 3840 pixels est ramené à cette largeur, acceptée par les encodeurs. La page affiche les dimensions prévues avant de commencer."
+
+[[faq]]
+q = "Combien de temps faut-il ?"
+a = "Quelques secondes pour un GIF ordinaire sur une machine avec encodeur matériel, comme la plupart des portables et téléphones récents ; plus longtemps sans lui. Le GIF est d’abord décodé en mémoire, et un très long GIF peut dépasser la limite d’un demi-gigaoctet d’images. La page l’indique. La barre montre l’image traitée ; Annuler arrête immédiatement sans écrire de fichier."
+
+[[faq]]
+q = "Mes GIF sont-ils envoyés quelque part ?"
+a = "Non. Votre navigateur lit, décode, encode et écrit le GIF sur votre matériel. La <code>Content-Security-Policy</code> nomme toutes les adresses joignables &mdash; aucune n’appartient à ce site. Déconnectez le réseau et utilisez la page pour le vérifier."
+
+[[faq]]
+q = "Est-ce que cela marche sur téléphone&nbsp;?"
+a = "Oui, si le navigateur du téléphone peut encoder une vidéo ; l’encodeur matériel est rapide. La mémoire reste la limite : les images du GIF sont décodées d’abord, et un très long GIF peut dépasser la capacité du téléphone."
+
+[[faq]]
+q = "Y a-t-il une limite de taille, et cela coûte-t-il quelque chose&nbsp;?"
+a = "La page arrête la lecture à un demi-gigaoctet d’images décodées, ce qui représente beaucoup d’images, et l’explique. C’est gratuit, sans compte, connexion ou essai. La publicité finance le site ; elle ne reçoit rien sur vos GIF."
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = "Oui. Chargez la page une fois puis déconnectez Internet : elle continue de fonctionner. Cela prouve aussi qu’aucun fichier n’est envoyé ; un convertisseur distant s’arrêterait aussitôt."
+
+[schema]
+description = "Convertissez un GIF animé en MP4 dans votre navigateur. Chaque image conserve son délai, les dimensions restent les mêmes, et le H.264 en MP4 occupe une fraction de la taille du GIF. Aucun envoi."
+features = ["Lit tous les GIF animés en respectant la transparence et les règles de remplacement des images du navigateur", "Conserve chaque image et chaque délai, sans rééchantillonnage sur une cadence fixe", "Demande une couleur derrière les parties transparentes uniquement si le GIF en contient", "Écrit du H.264 dans un MP4, généralement dix fois plus léger", "Rouvre le résultat pour vérifier les images et la durée, puis le lit en boucle depuis la mémoire", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
+
+[picker]
+title = "Déposez un GIF ici"
+hint = "ou cliquez pour parcourir &mdash; un GIF animé à la fois"

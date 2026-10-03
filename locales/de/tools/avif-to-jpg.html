@@ -1,0 +1,123 @@
+<main id="main">
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Wählen Sie Ihre AVIF-Dateien</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="list-toolbar" hidden>
+      <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
+      <button type="button" id="clear-all" class="ghost danger">Alle entfernen</button>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="support-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!--
+    Step 2 &mdash; the two decisions, same as the WebP converter's.
+
+    A JPEG has no alpha channel, so the colour behind the see-through parts is
+    not an option this tool can leave open. AVIF carries alpha far less often
+    than WebP does - most of the AVIFs people arrive with are photographs saved
+    off a web page - so the field is hidden more often here, and it is still
+    decided by looking at the decoded pixels rather than at the format.
+  -->
+  <section class="card" id="settings-card">
+    <h2><span class="step">2</span> Wählen Sie die Qualität</h2>
+
+    <p class="card-lede">AVIF und JPEG verwenden verschiedene Codecs. Das Bild muss deshalb dekodiert und neu kodiert werden. Ohne diese Schritte lässt sich das Format nicht wechseln. Sie bestimmen den Qualitätsverlust.</p>
+
+    <div class="settings">
+      <label class="field" for="quality"><span>JPEG-Qualität &mdash; <output id="quality-value" for="quality">92</output></span> <span class="field-note">Bei 92 lässt sich ein Foto kaum vom Original unterscheiden. Unter etwa 75 werden die Verluste an Kanten sichtbar.</span></label>
+      <input type="range" id="quality" min="40" max="100" step="1" value="92">
+
+      <div id="background-row" class="background-row" hidden>
+        <label class="field" for="background"><span>Hinter den transparenten Bereichen</span> <span id="background-note" class="field-note"></span></label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+    </div>
+
+    <p id="settings-note" class="field-summary" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card" inert>
+    <h2><span class="step">3</span> Wandeln Sie die Dateien um</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">In JPG umwandeln</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3 id="results-summary"></h3>
+        <button type="button" id="download-zip" class="primary" hidden>Alle als ZIP herunterladen</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript needs, held in the markup rather than
+    in src/ because src/ is copied byte for byte into every language and a
+    string written there would be English at all of its addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="chosen.one">1 Datei</span>
+    <span data-phrase="chosen.many">{count} Dateien</span>
+    <span data-phrase="row.remove">{name} entfernen</span>
+    <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
+    <span data-phrase="file.alpha">Hat transparente Bereiche</span>
+    <span data-phrase="read.notavif">{name} ist kein AVIF, sondern {found}. Dieses Werkzeug wandelt AVIF-Dateien um.</span>
+    <span data-phrase="read.unknown">{name} ist kein AVIF. Seine ersten Bytes entsprechen keinem Bildformat, das diese Seite kennt.</span>
+    <span data-phrase="read.failed">{name} konnte nicht geöffnet werden: {why}</span>
+    <span data-phrase="found.png">eine PNG-Datei</span>
+    <span data-phrase="found.jpeg">eine JPEG-Datei</span>
+    <span data-phrase="found.webp">eine WebP-Datei</span>
+    <span data-phrase="found.gif">eine GIF-Datei</span>
+    <span data-phrase="found.bmp">eine BMP-Datei</span>
+    <span data-phrase="support.noavif">Dieser Browser kann AVIF-Dateien nicht öffnen. Deshalb kann dieses Werkzeug hier nicht helfen. Chrome und Firefox lesen AVIF seit 2021, Safari seit 2023. Bei älteren Browsern fehlt der benötigte Decoder.</span>
+    <span data-phrase="background.some">Eine Datei hat transparente Bereiche, die JPEG nicht erhalten kann. Wählen Sie die Farbe dahinter.</span>
+    <span data-phrase="background.none">Keine Datei in der Liste hat transparente Bereiche. Eine Hintergrundfarbe ist daher unnötig.</span>
+    <span data-phrase="settings.one">Ein AVIF mit Qualität {quality}.</span>
+    <span data-phrase="settings.many">{count} AVIF-Dateien mit Qualität {quality}.</span>
+    <span data-phrase="settings.none">Wählen Sie oben ein AVIF. Hier wird dann die geplante Ausgabe angezeigt.</span>
+    <span data-phrase="run.one">In JPG umwandeln</span>
+    <span data-phrase="run.many">{count} Dateien in JPG umwandeln</span>
+    <span data-phrase="progress.each">{name} wird umgewandelt&hellip;</span>
+    <span data-phrase="progress.done">Fertig.</span>
+    <span data-phrase="run.failed">Die Umwandlung ist fehlgeschlagen: {detail}</span>
+    <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
+    <span data-phrase="written.many">{count} JPEG-Dateien geschrieben, insgesamt {size}.</span>
+    <span data-phrase="result.headline">{size} &mdash; {change}</span>
+    <span data-phrase="result.detail">Aus {name} &mdash; {dimensions}, vorher {was}.</span>
+    <span data-phrase="result.flattened">Die transparenten Bereiche wurden mit {colour} gefüllt.</span>
+    <span data-phrase="result.download">Herunterladen</span>
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% größer</span>
+    <span data-phrase="change.same">gleich groß</span>
+    <span data-phrase="dimensions">{width}&times;{height}</span>
+    <span data-phrase="error.decode">der Browser konnte die Datei nicht dekodieren</span>
+    <span data-phrase="error.encode">der Browser konnte keine Datei im Format {format} schreiben</span>
+    <span data-phrase="error.wrongtype">der Browser lieferte eine Datei, die nicht dem Format {format} entspricht</span>
+    <span data-phrase="error.broke">Etwas ist schiefgegangen: {detail}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">Ihre Dateien haben den Rechner nicht verlassen. {total} Dateien wurden geladen, alle gehören zu dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Es gab einen Kontakt mit {hosts}, den dieses Werkzeug nie selbst aufnimmt. Prüfen Sie das. {platform}</span>
+    <span data-phrase="net.platform.one">Die Werbe-, Mess- und Spendenskripte der Seite wurden von {hosts} Host geladen. Keines erhielt ein Bild oder ein Byte daraus.</span>
+    <span data-phrase="net.platform.many">Die Werbe-, Mess- und Spendenskripte der Seite wurden von {hosts} Hosts geladen. Keines erhielt ein Bild oder ein Byte daraus.</span>
+  </div>
+</main>

@@ -170,7 +170,7 @@ test('the content stream wraps everything in q/Q and draws once per placement', 
 
 test('every page of the example comes back carrying the stamp', async () => {
   const { done, pages, again, decode } = await roundTrip(await plainDocument(3), CENTRED);
-  assert.deepEqual(done, { pages: 3, stamps: 3 });
+  assert.deepEqual(done, { pages: 3, stamps: 3, names: [NAMES, NAMES, NAMES] });
   assert.equal(pages.length, 3);
   for (const page of pages) assert.equal(await carriesStamp(again, page, decode), true);
 });
@@ -216,7 +216,7 @@ test('repeated stamps are many placements on each page', async () => {
 test('first page only leaves the others exactly as they were', async () => {
   const { done, again, pages, decode } = await roundTrip(await plainDocument(3),
     { ...CENTRED, firstPageOnly: true });
-  assert.deepEqual(done, { pages: 1, stamps: 1 });
+  assert.deepEqual(done, { pages: 1, stamps: 1, names: [NAMES] });
   assert.equal(await carriesStamp(again, pages[0], decode), true);
   assert.equal(await carriesStamp(again, pages[1], decode), false);
   assert.equal(await carriesStamp(again, pages[2], decode), false);
@@ -281,4 +281,85 @@ test('the opacity goes into an ExtGState the page names', async () => {
 test('format: the finished file is named for what happened', () => {
   assert.equal(outName('scan.pdf'), 'scan-watermarked.pdf');
   assert.equal(outName('.pdf'), 'document-watermarked.pdf');
+});
+
+for (const rotate of [0, 90, 180, 270]) {
+  test(`an inherited offset CropBox places the stamp inside the visible page at ${rotate} degrees`, async () => {
+    const doc = await plainDocument(1);
+    const [page] = readPages(doc);
+    page.dict.set('MediaBox', [50, 100, 400, 600]);
+    page.dict.set('Rotate', rotate);
+    doc.resolve(page.dict.get('Parent')).set('CropBox', [100, 200, 300, 500]);
+    const { again, pages, decode } = await roundTrip(doc,
+      { ...CENTRED, diagonal: false, size: 'small' });
+    assert.deepEqual(pages[0].box, [50, 100, 400, 600], 'the physical sheet is preserved');
+    assert.deepEqual(pages[0].visibleBox, [100, 200, 300, 500]);
+    const streams = again.resolve(pages[0].dict.get('Contents'));
+    const text = await decode(again.resolve(streams.at(-1)));
+    const matrices = [...text.matchAll(/^([\d. -]+) cm$/gm)].map((match) => match[1].split(' ').map(Number));
+    assert.equal(matrices.length, 2);
+    const corner = (x, y) => apply(matrices[0], ...apply(matrices[1], x, y));
+    const centre = corner(0.5, 0.5);
+    near(centre[0], 200, 'centre x in user coordinates');
+    near(centre[1], 350, 'centre y in user coordinates');
+    for (const [x, y] of [corner(0, 0), corner(1, 0), corner(0, 1), corner(1, 1)]) {
+      assert.ok(x >= 100 && x <= 300 && y >= 200 && y <= 500,
+        `visible watermark corner ${x}, ${y}`);
+    }
+  });
+}
+
+test('the visible CropBox is intersected with MediaBox without changing either entry', async () => {
+  const doc = await plainDocument(1);
+  const [page] = readPages(doc);
+  page.dict.set('MediaBox', [20, 30, 220, 330]);
+  page.dict.set('CropBox', [-20, 90, 180, 390]);
+  const { pages } = await roundTrip(doc, CENTRED);
+  assert.deepEqual(pages[0].visibleBox, [20, 90, 180, 330]);
+  assert.deepEqual(pages[0].dict.get('CropBox'), [-20, 90, 180, 390]);
+  assert.deepEqual(pages[0].dict.get('MediaBox'), [20, 30, 220, 330]);
+});
+
+test('a second watermark preserves the first image, opacity and drawing bindings', async () => {
+  const first = await roundTrip(await plainDocument(1), { ...CENTRED, opacity: 0.2 });
+  const previousResources = first.again.resolve(first.pages[0].dict.get('Resources'));
+  const previousImage = first.again.resolve(previousResources.get('XObject')).get(NAMES.image);
+  const previousState = first.again.resolve(previousResources.get('ExtGState')).get(NAMES.state);
+  const previousStreams = first.again.resolve(first.pages[0].dict.get('Contents'));
+  const previousDrawing = await first.decode(first.again.resolve(previousStreams.at(-1)));
+  const second = await roundTrip(first.again, { ...CENTRED, opacity: 0.8 }, fakeImage(80, 20));
+  const resources = second.again.resolve(second.pages[0].dict.get('Resources'));
+  const images = second.again.resolve(resources.get('XObject'));
+  const states = second.again.resolve(resources.get('ExtGState'));
+  assert.equal(images.get(NAMES.image).key, previousImage.key);
+  assert.equal(states.get(NAMES.state).key, previousState.key);
+  assert.equal(second.again.resolve(images.get(NAMES.image)).dict.get('Width'), 400);
+  assert.equal(second.again.resolve(states.get(NAMES.state)).get('ca'), 0.2);
+  const names = second.done.names[0];
+  assert.notEqual(names.image, NAMES.image);
+  assert.notEqual(names.state, NAMES.state);
+  assert.equal(second.again.resolve(images.get(names.image)).dict.get('Width'), 80);
+  assert.equal(second.again.resolve(states.get(names.state)).get('ca'), 0.8);
+  const streams = second.again.resolve(second.pages[0].dict.get('Contents'));
+  assert.equal(await second.decode(second.again.resolve(streams.at(-2))), previousDrawing);
+  assert.equal(await carriesStamp(second.again, second.pages[0], second.decode, names), true);
+  assert.equal(await carriesStamp(second.again, second.pages[0], second.decode, NAMES), false,
+    'the last drawing must use the names allocated for this run');
+});
+
+test('first-page stamping never adds entries to inherited direct resource subdictionaries', async () => {
+  const doc = await plainDocument(2);
+  const [first, second] = readPages(doc);
+  const images = new Map([[NAMES.image, new Name('ExistingImage')]]);
+  const states = new Map([[NAMES.state, new Map([['ca', 0.6]])]]);
+  const resources = new Map([['XObject', images], ['ExtGState', states]]);
+  const parent = doc.resolve(first.dict.get('Parent'));
+  parent.set('Resources', resources);
+  first.dict.delete('Resources');
+  second.dict.delete('Resources');
+  const done = stampDocument(doc, fakeImage(), { ...CENTRED, firstPageOnly: true });
+  assert.deepEqual([...images.keys()], [NAMES.image]);
+  assert.deepEqual([...states.keys()], [NAMES.state]);
+  assert.deepEqual(done.names, [{ image: 'AbxWmImg1', state: 'AbxWmGs1' }]);
+  assert.equal(readPages(doc)[1].inherited.get('Resources'), resources);
 });

@@ -1,0 +1,116 @@
+name = "AVIF zu JPG"
+heading = "AVIF&nbsp;zu&nbsp;JPG <span class=\"h1-kw\">&mdash; das Bild öffnen, das sich nicht öffnen lässt</span>"
+tagline = "Das Format, in dem Websites heute speichern, in dem Format, das überall angenommen wird."
+title = "AVIF-zu-JPG-Konverter &mdash; kostenlos, ohne Upload"
+description = "Wandeln Sie AVIF-Bilder im Browser in JPG um. Ihr Browser dekodiert AVIF bereits: ohne Upload, ohne Konto und auch offline. Transparente Bereiche werden mit einer Farbe Ihrer Wahl gefüllt."
+og_title = "AVIF-Bilder ohne Upload in JPG umwandeln"
+og_description = "Ein Bild von einer Website gespeichert und kein Programm öffnet es? Ihr Browser liest AVIF bereits. Dieses Werkzeug erzeugt auf Ihrem Rechner eine JPG-Datei, ohne das Bild zu versenden."
+og_image_alt = "AVIF zu JPG - das heutige Webformat in dem Format, das überall angenommen wird"
+pledge = "Die Umwandlung läuft in Ihrem Browser auf Ihrer eigenen Hardware. Kein Decoder muss heruntergeladen werden, und es gibt keine Wartezeit. Ihr Browser liest AVIF seit 2021; deshalb wird das Bild, das sich anderswo nicht öffnen lässt, in einem Browsertab problemlos angezeigt. Diese Seite nutzt den Decoder, zeichnet das Bild und schreibt eine JPEG-Datei. Sie hat keine Netzwerkfunktion und keinen Server, an den ein Foto gesendet werden könnte."
+live_hint = "Prüfen Sie es selbst: Öffnen Sie die Entwicklertools, beobachten Sie den Netzwerk-Tab und wandeln Sie ein Bild um. Sie sehen die Dateien dieser Seite laden, aber keine Anfrage mit einem Bild, Vorschaubild, Dateinamen oder Byte Ihrer Auswahl. Oder laden Sie die Seite einmal, trennen Sie die Internetverbindung und wandeln Sie trotzdem einen ganzen Ordner um."
+read_first = ", sowie <code>src/shared/image-convert.js</code> für die Umwandlung: die Formaterkennung, die echte AVIF-Dateien identifiziert, die Dekodierung und das Canvas, aus dem JPEG geschrieben wird. Die anderen beiden Formatkonverter verwenden dieselbe Datei; sie enthält keinen Codec."
+howto_heading = "So wandeln Sie AVIF in JPG um"
+card = "Ein Bild von einer Website gespeichert, das kein Programm öffnet? Ihr Browser liest AVIF bereits. Dieses Werkzeug erzeugt auf Ihrem Rechner eine JPG-Datei, ohne das Bild zu versenden."
+
+[words]
+plural = "Bilder"
+choose = "ein Bild"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größenbegrenzung"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Open Source"
+
+[[privacy]]
+title = "Ihre Bilder haben kein Ziel außerhalb Ihres Rechners."
+body = " Die Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren darf. Keine davon gehört zu dieser Website. Es gibt keinen Endpunkt, der Ihre Dateien sammeln könnte, und keinen Code, der sie versenden würde."
+
+[[privacy]]
+title = "Der Decoder steckt bereits im Browser. Das ist der ganze Trick."
+body = " Ein AVIF, das Ihr Bildbetrachter ablehnt, öffnet sich in einem Browsertab problemlos: Chrome und Firefox dekodieren AVIF seit 2021, Safari seit 2023. Diese Seite ergänzt diesen Decoder um eine Speicherschaltfläche. Sie öffnet die Datei, zeichnet das Bild und schreibt ein JPEG. Es gibt also keine Engine zum Herunterladen, keine Wartezeit vor der ersten Umwandlung und keinen Grund für einen Server. Genau das verschweigen Konverter, die einen Upload verlangen."
+
+[[privacy]]
+title = "Die transparenten Bereiche und die Farbe dahinter."
+body = " AVIF kann einen Alphakanal enthalten, JPEG nicht. Deshalb muss dahinter eine Farbe stehen. Diese Seite fragt nach ihr und verwendet standardmäßig Weiß. Sie fragt nur, wenn eine Datei tatsächlich Transparenz enthält, festgestellt anhand der dekodierten Pixel. Die meisten AVIF-Dateien von Websites sind undurchsichtige Fotos. Dann bleibt das Farbfeld verborgen."
+
+[[privacy]]
+title = "Was JPEG aus einem AVIF nicht übernehmen kann."
+body = " AVIF kann mehr Farben und hellere Spitzlichter beschreiben als JPEG: zehn oder zwölf Bit pro Kanal und HDR. JPEG hat acht Bit und kein HDR. Ein entsprechendes Bild wird auf den gewöhnlichen Dynamikbereich reduziert. Bei der großen Mehrheit der Bilder gibt es nichts zu reduzieren und keinen sichtbaren Unterschied; bei einem Bildschirmfoto eines HDR-Fotos möglicherweise schon. Das steht deshalb vorab hier."
+
+[[privacy]]
+title = "Was Google lädt und welche Informationen es nicht erhält."
+body = " Werbe- und Messskripte kommen von Google, die Spendenschaltfläche von Buy Me a Coffee. Keines davon erhält Informationen über Ihre Bilder. Jede Zeile, die eine Datei liest, dekodiert oder schreibt, wird von dieser Herkunft ausgeliefert und steht im Repository."
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = " Laden Sie die Seite einmal und trennen Sie die Netzwerkverbindung. Das Werkzeug arbeitet unverändert weiter. Das ist der einfachste Beweis: Ein Konverter, der Ihre Bilder zur Verarbeitung verschickt, könnte das nicht."
+
+[[howto]]
+title = "Wählen Sie Ihre AVIF-Dateien."
+body = " Ziehen Sie sie auf die Dateiauswahl oder wählen Sie sie von Hand. Jede Datei wird anhand ihrer ersten Bytes statt ihres Namens erkannt. Ein beim Download umbenanntes AVIF funktioniert deshalb weiterhin. Eine tatsächliche PNG-Datei wird mit einer Erklärung ihres Formats abgelehnt."
+
+[[howto]]
+title = "Wählen Sie die Qualität und die Farbe hinter transparenten Bereichen."
+body = " Der Regler beginnt bei 92. Ein Foto lässt sich damit kaum vom Original unterscheiden. Das Farbfeld erscheint nur, wenn eine Datei transparente Bereiche hat, weil JPEG diese mit einer Farbe füllen muss."
+
+[[howto]]
+title = "Drücken Sie „Umwandeln“ und laden Sie das Ergebnis herunter."
+body = " Jedes Ergebnis nennt die Ausgangsdatei, die neue Größe und den Größenunterschied. Meist wird es deutlich größer, weil AVIF effizienter kodiert und Sie Speicherplatz gegen Kompatibilität tauschen. Eine Datei erhält eine Downloadschaltfläche, mehrere zusätzlich ein ZIP-Archiv."
+
+[[faq]]
+q = "Wird mein Bild irgendwo hochgeladen?"
+a = "Nein. Ihr Browser liest, dekodiert und schreibt die Datei auf Ihrer eigenen Hardware. Dieses Werkzeug hat keinerlei Netzwerkfunktion: Es ruft nichts ab und versendet nichts. Die <code>Content-Security-Policy</code> der Seite nennt jede erlaubte Kontaktadresse; keine gehört zu dieser Website. Nicht einmal ein Decoder muss zuerst geladen werden, denn Ihr Browser hat bereits einen."
+
+[[faq]]
+q = "Warum öffnet kein Programm auf meinem Rechner diese Datei?"
+a = "Weil AVIF dort noch neu ist, wo es darauf ankommt. Websites verwenden es, weil es bei gleicher Qualität erheblich kleiner als JPEG ist. Wer ein Bild speichert, bekommt deshalb inzwischen eine <code>.avif</code>-Datei. Das Programm zum Öffnen ist oft älter als das Format. Windows braucht eine Erweiterung, viele Desktopeditoren lehnen es ab, und die meisten E-Reader, Drucker und Uploadformulare kennen es nicht. Ihr Browser liest es dagegen problemlos. Deshalb kann diese Seite helfen, und deshalb haben Sie die Datei überhaupt erhalten."
+
+[[faq]]
+q = "Wird die JPG-Datei größer als das AVIF?"
+a = "Mit großer Wahrscheinlichkeit, oft um ein Mehrfaches. Das Ergebnis zeigt den Unterschied ausdrücklich. AVIF gehört zu den effizientesten Bildcodecs und JPEG zu den ältesten. Ein Bild von 40 KB als AVIF kann bei gleicher sichtbarer Qualität als JPEG leicht 200 KB belegen. Sie tauschen Speicherplatz gegen Kompatibilität. Wenn die Größe danach wichtig ist, verkleinert der <a href=\"../bild-komprimieren/\">Bildkompressor</a> das JPEG auf eine gewünschte Größe."
+
+[[faq]]
+q = "Was passiert mit der Transparenz?"
+a = "Sie wird mit einer Farbe Ihrer Wahl gefüllt. Die Seite erklärt das vor dem Start. AVIF hat einen Alphakanal, JPEG nicht; Transparenz kann bei dieser Umwandlung also nicht erhalten bleiben. Sie entscheiden, welche Farbe darunter liegt. Die meisten AVIF-Dateien sind undurchsichtige Fotos, bei denen das Farbfeld nie erscheint. Soll Transparenz bleiben, verwenden Sie den <a href=\"../bild-komprimieren/\">Bildkompressor</a>, der AVIF liest und PNG sowie WebP schreibt."
+
+[[faq]]
+q = "Was ist mit HDR und 10-Bit-Farbe?"
+a = "Beides geht verloren, weil JPEG es nicht aufnehmen kann. AVIF speichert zehn oder zwölf Bit pro Kanal und Spitzlichter, die heller sind als die Anzeige eines gewöhnlichen Bildschirms. JPEG hat acht Bit und kennt keinen solchen Dynamikbereich. Ein HDR-AVIF wird deshalb zu einem gewöhnlichen Bild. Für eine überall zu öffnende Datei ist das passend, für eine Archivierung ein echter Verlust. Fast kein Bild von einer gewöhnlichen Webseite enthält HDR; für die meisten Menschen ändert sich daher nichts."
+
+[[faq]]
+q = "Wird das Bild erneut komprimiert?"
+a = "Ja, das ist erforderlich. AVIF und JPEG verwenden verschiedene Codecs. Ohne Dekodierung und anschließende neue Kodierung lässt sich nicht zwischen ihnen wechseln. Das gilt für jeden AVIF-Konverter, auch für solche mit Upload. Sie bestimmen den Qualitätsverlust. Der Regler beginnt bei 92, womit sich ein Foto kaum vom Original unterscheiden lässt."
+
+[[faq]]
+q = "Geht es auch andersherum, von JPG zu AVIF?"
+a = "Hier nicht. Der Grund: Kein Browser schreibt AVIF. Ein Canvas, das um AVIF gebeten wird, liefert stillschweigend PNG mit dem falschen Typ. Eine Seite, die AVIF im Browser verspricht, liegt daher entweder falsch oder sendet das Bild zur Kodierung an einen Server. Für die korrekte Verarbeitung ohne Server wäre ein eigener Encoder nötig. Diese Arbeit steht auf <a href=\"../roadmap/\">der Roadmap</a>, statt hier nur behauptet zu werden."
+
+[[faq]]
+q = "Bleiben Datum, Kamera und Standort erhalten?"
+a = "Nein. Das Bild wird auf ein Canvas gezeichnet, das nur Pixel enthält. EXIF, GPS, Farbprofile und XMP bleiben zurück. Bei Bildern von Webseiten sind diese Daten meist ohnehin nicht vorhanden. Um vorhandene Daten zu sehen oder zu bearbeiten, verwenden Sie den <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter und Entferner</a>; er komprimiert das Bild dabei nicht erneut."
+
+[[faq]]
+q = "Kann ich einen ganzen Ordner auf einmal umwandeln?"
+a = "Ja. Ziehen Sie beliebig viele Dateien hinein. Zahl und Größe sind nicht begrenzt, weil kein Server dafür aufkommen muss. Jede erhält eine eigene Zeile und einen eigenen Download. Ab zwei Dateien gibt es zusätzlich ein ZIP-Archiv mit allen Ergebnissen."
+
+[[faq]]
+q = "Ist es kostenlos und funktioniert es offline?"
+a = "Es ist kostenlos, ohne Konto, Anmeldung, Testphase oder Wasserzeichen. Werbung finanziert die Website und erhält keine Informationen über Ihre Bilder. Laden Sie die Seite einmal und trennen Sie die Internetverbindung: Sie arbeitet unverändert weiter. Das ist zugleich der stärkste verfügbare Beweis, dass nichts hochgeladen wird."
+
+[schema]
+description = "AVIF-Bilder im Browser in JPG umwandeln. Der AVIF-Decoder des Browsers liest die Datei und sein Encoder schreibt JPEG. Nichts wird hochgeladen und kein Codec heruntergeladen. Transparenz wird mit einer gewählten Farbe gefüllt; mehrere Ergebnisse gibt es als ZIP-Archiv."
+features = ["AVIF zu JPEG mit dem bereits im Browser vorhandenen Decoder", "Kein Upload; das Werkzeug funktioniert ohne Netzwerk", "Fragt nur bei vorhandener Transparenz nach der Hintergrundfarbe", "Erkennt Dateien anhand ihres Inhalts; umbenannte AVIF-Dateien funktionieren", "Qualitätsregler mit Voreinstellung 92", "Zeigt die Größe jeder Datei vor und nach der Umwandlung", "Erklärt ausdrücklich, wenn der Browser zu alt für AVIF ist", "Stapelverarbeitung mit allen Ergebnissen in einem ZIP-Archiv"]
+
+[picker]
+title = "AVIF-Bilder hier ablegen"
+hint = "oder klicken, um Dateien auszuwählen &mdash; .avif-Dateien unabhängig von ihrem Namen"

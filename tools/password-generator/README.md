@@ -219,3 +219,12 @@ fraction of visitors who asked for a hundred at once.
 * **No password manager.** Storing them is a different product with a different
   threat model, and doing it badly in a browser tab would undo everything this
   page is for.
+
+## Copy feedback belongs to the generated secret
+
+A clipboard request records the current generation. If an option changes or
+another secret is made before permission resolves, its late completion cannot
+label the new secret as copied. The result remains an output rather than a
+password input, but is keyboard focusable and selects its text on focus. If
+clipboard access is refused, the same selection is offered directly; a batch
+gets a contiguous output block so copying it by hand includes every secret.

@@ -1,0 +1,181 @@
+<main id="main">
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir un PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">En choisir un autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The two documents this tool cannot read, each with the way out of it.
+      Revealed by main.js when the matching failure happens, rather than sitting
+      open on a page most people arrive at with a statement that works.
+
+      Every route here runs on the visitor's own machine, which is why this list
+      used to name no website at all: sending somebody to a site that strips the
+      password would have undone, in the sentence after the failure, the promise
+      the rest of this page makes. /unlock-pdf/ is why that is no longer the
+      choice. It takes the password off in the visitor's own browser and uploads
+      nothing, so it is the same promise rather than a hole in it - and it is
+      first in the list because it is the only route that leaves the page
+      untouched, which for a tool that reads columns by where the text sits is
+      not a small thing. The warning underneath still stands, and now says what
+      it is excepting.
+    -->
+    <div id="locked-help" class="help" hidden>
+      <h3>Retirer le mot de passe sur votre machine</h3>
+      <p>
+        Les banques verrouillent souvent les relevés avec votre date de naissance ou les derniers chiffres du compte. Ces méthodes créent une copie déverrouillée ; revenez ici avec elle : son texte sera conservé, ce dont cet outil a besoin.
+      </p>
+      <ul>
+        <li>
+          <strong>Le <a href="../deverrouiller-un-pdf/">Déverrouilleur de PDF</a> sur ce site</strong> &mdash; saisissez le mot de passe : il est retiré dans ce navigateur, sans envoi. C’est la seule méthode ici qui ne réécrit rien sur les pages ; les mots restent exactement là où la banque les a placés.
+        </li>
+        <li>
+          <strong>Windows</strong> &mdash; ouvrez le PDF dans Chrome ou Edge, saisissez le mot de passe, puis <strong>Imprimer</strong> et choisissez
+          <strong>Enregistrer en PDF</strong> comme imprimante.
+        </li>
+        <li>
+          <strong>macOS</strong> &mdash; ouvrez-le dans Aperçu, saisissez le mot de passe, puis <strong>Fichier &rarr; Exporter au format PDF</strong>.
+        </li>
+      </ul>
+      <p class="help-warn">
+        N’utilisez aucun <em>autre</em> site proposant de le déverrouiller. Cela enverrait le relevé, précisément ce que cette page évite. La page liée ci-dessus n’en fait pas partie : elle n’a aucun serveur où envoyer un fichier et fonctionne encore sans réseau.
+      </p>
+    </div>
+
+    <div id="scanned-help" class="help" hidden>
+      <h3>Ce fichier est une photographie : que faire à la place</h3>
+      <p>
+        Le fichier ne contient aucun texte &mdash; ses pages sont des images issues d’un scanner ou d’un téléphone. Lire les lettres d’une image est un autre travail que lire un tableau dans du texte ; cet outil ne prétend pas le faire. Par ordre approximatif d’efficacité :
+      </p>
+      <ul>
+        <li>
+          <strong>Demandez les données à votre banque plutôt que le papier.</strong>
+          Presque toutes les banques en ligne fournissent le même relevé en CSV, OFX ou QIF. Cela évite toute conversion et reste plus précis que la lecture d’une image.
+        </li>
+        <li>
+          <strong>Demandez à l’expéditeur le PDF original</strong> plutôt qu’un scan du document imprimé.
+        </li>
+        <li>
+          <strong>Ou lisez l’image sur votre machine.</strong> L’Outil Capture d’écran de Windows, Texte en direct de macOS et la fonction
+          <em>Reconnaître le texte</em> d’Acrobat le font sans envoi. Vérifiez ensuite chaque montant visuellement : un chiffre mal lu ressemble à un nombre, pas à une erreur.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the screen that matters, because everything before it was inference -->
+  <section class="card" id="table-card">
+    <h2><span class="step">2</span> Vérifiez ce qui a été lu</h2>
+
+    <p class="card-lede">
+      Un PDF ressemble à un ensemble de tableaux mais contient du texte placé sur une page ; les colonnes sont des bandes de papier restées vides. Chaque tableau ci-dessous a donc été déduit. Lorsqu’il comporte un solde courant, la ligne au-dessus indique quelles comparaisons concordent et quelles lignes n’ont pas pu être vérifiées. La concordance contrôle les variations nettes ; des erreurs qui se compensent peuvent passer.
+    </p>
+
+    <p id="summary" class="verdict" role="status" aria-live="polite"></p>
+    <p id="check-line" class="check-line"></p>
+
+    <div class="field" id="table-field" hidden>
+      <label for="table-pick">Quel tableau</label>
+      <select id="table-pick"></select>
+    </div>
+
+    <div class="field" id="order-field" hidden>
+      <label for="date-order">Les dates sont écrites</label>
+      <select id="date-order">
+        <option value="dmy">jour / mois / année</option>
+        <option value="mdy">mois / jour / année</option>
+      </select>
+      <p class="field-note" id="order-note"></p>
+    </div>
+
+    <!-- One captioned table per table found, built by main.js: how many there
+         are is not known until the file is read. -->
+    <div id="previews" class="previews"></div>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Récupérez le CSV</h2>
+
+    <div id="result" class="result">
+      <a id="download" class="primary as-button" download>Télécharger le CSV</a>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen, held in the markup
+    rather than in src/ because src/ is copied byte for byte into every
+    language. shared/js/phrases.js reads them back; a {name} is filled in by
+    the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Ce n’est pas un PDF. Cet outil lit les tableaux d’un PDF.</span>
+    <span data-phrase="load.encrypted">Ce PDF est protégé par mot de passe. Le retirer est un autre travail que lire les tableaux ; cet outil ne le fera pas à votre insu.</span>
+    <span data-phrase="error.broke">Un élément de cette page a cessé de fonctionner ({detail}). Rechargez-la et réessayez.</span>
+    <span data-phrase="load.broken">Ce fichier n'a pas pu être ouvert comme PDF ({detail}).</span>
+    <span data-phrase="load.nopages">Il s'est ouvert, mais aucune page n'a pu y être trouvée.</span>
+    <span data-phrase="scan.notext">Ce PDF ne contient aucun texte : ses pages sont des images de pages.</span>
+    <span data-phrase="scan.notables">Aucun élément de ces pages n’est disposé en tableau &mdash; aucune paire de lignes ne s’aligne en colonnes &mdash; il n’y a donc rien à transformer en lignes.</span>
+    <span data-phrase="sum.one">Un tableau, {rows}, lu sur {pages}.</span>
+    <span data-phrase="sum.many">{tables}, {rows} au total, lus sur {pages}.</span>
+    <span data-phrase="table.label">Tableau {n} &middot; page {page} &middot; {rows} &middot; {columns}</span>
+    <span data-phrase="pick.all">Les {tables}, à la suite</span>
+    <span data-phrase="check.intable">Tableau {n} : {verdict}</span>
+    <span data-phrase="fact.shape">{rows} dans {columns}</span>
+    <span data-phrase="fact.tables">{rows} dans {tables}, à la suite</span>
+    <span data-phrase="count.rows.one">{n} ligne</span>
+    <span data-phrase="count.rows.many">{n} lignes</span>
+    <span data-phrase="count.columns.one">{n} colonne</span>
+    <span data-phrase="count.columns.many">{n} colonnes</span>
+    <span data-phrase="count.tables.one">{n} tableau</span>
+    <span data-phrase="count.tables.many">{n} tableaux</span>
+    <span data-phrase="check.held">Le solde courant concorde dans les {links} comparaisons.</span>
+    <span data-phrase="check.broke">Le solde courant concorde dans {held} comparaisons sur {links}. Vérifiez dans le PDF les montants qui se terminent à {where}.</span>
+    <span data-phrase="check.unchecked">Lignes non vérifiées : {where}. Comparez leurs montants au PDF.</span>
+    <span data-phrase="check.summary">{verdict} {note}</span>
+    <span data-phrase="check.row">ligne {n}</span>
+    <span data-phrase="check.rows">lignes {list}</span>
+    <span data-phrase="order.found">L’ordre a été établi à partir d’un jour supérieur à douze dans ce document : il s’agit donc d’une lecture, pas d’une supposition.</span>
+    <span data-phrase="order.guessed">Toutes les dates de ce document ont un jour inférieur ou égal à douze : rien n’indique leur ordre. Modifiez-le si les dates ci-dessous paraissent erronées.</span>
+    <span data-phrase="preview.more">Seules les {shown} premières lignes du tableau sont affichées ici. Le téléchargement les contient toutes.</span>
+    <span data-phrase="result.name">{name}.csv</span>
+    <span data-phrase="fact.dates">Dates avec année écrites sous la forme YYYY-MM-DD</span>
+    <span data-phrase="fact.amounts">Montants sous forme de nombres signés simples</span>
+    <span data-phrase="fact.encoding">UTF-8, guillemets conformes à RFC 4180</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="pdf.flate">un flux Flate n'a pas pu être décompressé ({detail})</span>
+    <span data-phrase="pdf.nocompression">ce navigateur n'a pas de CompressionStream</span>
+    <span data-phrase="pdf.lzw">un flux LZW commence par un code non défini</span>
+    <span data-phrase="pdf.cryptfilter">ce flux est chiffré</span>
+    <span data-phrase="pdf.unknownfilter">un filtre inconnu, /{name}</span>
+    <span data-phrase="pdf.deep">imbriqué trop profondément</span>
+    <span data-phrase="pdf.short">dépassement de la fin</span>
+    <span data-phrase="pdf.unexpected">inattendu {found} à {at}</span>
+    <span data-phrase="pdf.unexpectedbyte">octet inattendu 0x{hex} à {at}</span>
+    <span data-phrase="pdf.noendstream">un flux sans endstream</span>
+    <span data-phrase="pdf.noobj">pas de mot-clé obj à {at}</span>
+    <span data-phrase="pdf.nostartxref">pas de startxref</span>
+    <span data-phrase="pdf.noxref">pas une section xref</span>
+    <span data-phrase="pdf.now">un flux xref sans /W</span>
+    <span data-phrase="pdf.zerowidth">un flux xref dont les champs sont de largeur nulle</span>
+    <span data-phrase="read.noheader">Cela ne commence pas comme un PDF&nbsp;: il n&rsquo;y a pas d&rsquo;en-tête %PDF-.</span>
+    <span data-phrase="read.encrypted">Ce PDF est chiffré.</span>
+    <span data-phrase="read.nocatalogue">Ce fichier n’a pas de catalogue de document. Ce n’est pas un PDF, ou il est trop endommagé pour être réparé ici.</span>
+  </div>
+</main>

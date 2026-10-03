@@ -30,9 +30,8 @@ import { Name, PdfStream, Ref } from './shared/pdf-objects.js';
 import { readPages } from './shared/pdf-pages.js';
 import { contentFor, placements, visibleSize, visibleToUser } from './stamp.js';
 
-/** The resource names the stamp is drawn by. Prefixed so as not to collide
- *  with anything a page already names; /Im0 and /GS0 are what every writer
- *  reaches for first. */
+/** Preferred names. A page may already carry these, including from an earlier
+ *  watermark, so each insertion allocates an unused name in that page. */
 export const NAMES = { image: 'AbxWmImg', state: 'AbxWmGs' };
 
 /**
@@ -58,13 +57,13 @@ export const NAMES = { image: 'AbxWmImg', state: 'AbxWmGs' };
  * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {StampImage} image
  * @param {StampSettings} settings
- * @returns {{pages: number, stamps: number}} how many pages were stamped, and
+ * @returns {{pages: number, stamps: number, names: {image: string, state: string}[]}} how many pages were stamped, and
  *   how many times the stamp was drawn across them
  */
 export function stampDocument(doc, image, settings) {
   const pages = readPages(doc);
   const chosen = settings.firstPageOnly ? pages.slice(0, 1) : pages;
-  if (chosen.length === 0) return { pages: 0, stamps: 0 };
+  if (chosen.length === 0) return { pages: 0, stamps: 0, names: [] };
 
   const imageRef = addImage(doc, image);
   const stateRef = addObject(doc, new Map([
@@ -78,14 +77,20 @@ export function stampDocument(doc, image, settings) {
   const openRef = addObject(doc, textStream('q\n'));
 
   let stamps = 0;
+  const names = [];
   const aspect = image.width / image.height;
 
   for (const page of chosen) {
-    const visible = visibleSize(page.rotate, page.box);
+    const resources = ownResources(doc, page);
+    const images = subDictionary(doc, resources, 'XObject');
+    const states = subDictionary(doc, resources, 'ExtGState');
+    const allocated = { image: unusedName(images, NAMES.image), state: unusedName(states, NAMES.state) };
+    names.push(allocated);
+    const visible = visibleSize(page.rotate, page.visibleBox);
     const spots = placements(visible, aspect, settings);
     stamps += spots.length;
 
-    const drawing = contentFor(spots, visibleToUser(page.rotate, page.box), NAMES);
+    const drawing = contentFor(spots, visibleToUser(page.rotate, page.visibleBox), allocated);
     const existing = page.dict.get('Contents');
     const list = existing === undefined
       ? []
@@ -97,12 +102,11 @@ export function stampDocument(doc, image, settings) {
     const drawRef = addObject(doc, textStream(closing + drawing));
     page.dict.set('Contents', list.length ? [openRef, ...list, drawRef] : [drawRef]);
 
-    const resources = ownResources(doc, page);
-    subDictionary(doc, resources, 'XObject').set(NAMES.image, imageRef);
-    subDictionary(doc, resources, 'ExtGState').set(NAMES.state, stateRef);
+    images.set(allocated.image, imageRef);
+    states.set(allocated.state, stateRef);
   }
 
-  return { pages: chosen.length, stamps };
+  return { pages: chosen.length, stamps, names };
 }
 
 /**
@@ -114,16 +118,18 @@ export function stampDocument(doc, image, settings) {
  * @param {ReturnType<typeof readPages>[number]} page
  * @returns {Promise<boolean>}
  */
-export async function carriesStamp(doc, page, decode) {
+export async function carriesStamp(doc, page, decode, names = NAMES) {
   const resources = doc.resolve(page.dict.get('Resources') ?? page.inherited.get('Resources'));
   const xobjects = resources instanceof Map ? doc.resolve(resources.get('XObject')) : null;
-  if (!(xobjects instanceof Map) || !xobjects.has(NAMES.image)) return false;
+  const states = resources instanceof Map ? doc.resolve(resources.get('ExtGState')) : null;
+  if (!(xobjects instanceof Map) || !xobjects.has(names.image)
+    || !(states instanceof Map) || !states.has(names.state)) return false;
 
   const contents = doc.resolve(page.dict.get('Contents'));
   const last = Array.isArray(contents) ? doc.resolve(contents[contents.length - 1]) : contents;
   if (!(last instanceof PdfStream)) return false;
   const text = await decode(last);
-  return text.includes(`/${NAMES.image} Do`);
+  return text.includes(`/${names.image} Do`) && text.includes(`/${names.state} gs`);
 }
 
 /* ---------------------------------------------------------------- objects */
@@ -187,8 +193,6 @@ function addObject(doc, value) {
  */
 function ownResources(doc, page) {
   const own = page.dict.get('Resources');
-  if (own instanceof Map) return own;
-
   const source = doc.resolve(own ?? page.inherited.get('Resources'));
   const copy = source instanceof Map ? new Map(source) : new Map();
   page.dict.set('Resources', copy);
@@ -199,9 +203,16 @@ function ownResources(doc, page) {
  *  and copied if it was shared, for the same reason as the dictionary above. */
 function subDictionary(doc, resources, key) {
   const value = resources.get(key);
-  if (value instanceof Map) return value;
   const source = doc.resolve(value);
   const copy = source instanceof Map ? new Map(source) : new Map();
   resources.set(key, copy);
   return copy;
+}
+
+/** A name must be new in its own resource category; a prefix alone cannot
+ *  preserve a document that has already been through this tool. */
+function unusedName(dictionary, base) {
+  let name = base;
+  for (let suffix = 1; dictionary.has(name); suffix += 1) name = `${base}${suffix}`;
+  return name;
 }
