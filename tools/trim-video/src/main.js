@@ -122,6 +122,8 @@ let exporting = false;
 let abortController = null;
 let lastResultUrl = null;
 let nextId = 1;
+let batch = 0;
+let loading = false;
 /** Where the playhead is, in seconds. Read off the element where there is one,
  *  and kept here where there is not. */
 let playAt = 0;
@@ -139,6 +141,9 @@ const clip = () => (selected >= 0 ? clips[selected] : null);
 
 /* ------------------------------------------------------------------ adding */
 
+// Multiple files make one join; the next delivery starts another job. The
+// language switch must carry that latest batch rather than every past choice.
+el.fileInput.dataset.languageReplace = '1';
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
@@ -147,34 +152,97 @@ const picker = wireFilePicker({
 });
 
 async function addFiles(files) {
-  if (exporting || !files.length) return;
+  if (!files.length) return;
+  const generation = ++batch;
+  loading = true;
+  discardSelection();
   clearError();
   picker.busy(readingLabel(files.length));
 
   try {
     for (const file of files) {
-      const added = await addClip(file);
+      const added = await addClip(file, generation);
+      if (generation !== batch) return;
       if (added && selected < 0) selectClip(clips.length - 1);
     }
   } finally {
-    picker.done();
+    if (generation === batch) {
+      loading = false;
+      picker.done();
+      el.sectionCard.inert = !clips.length;
+      timeline.setEnabled(Boolean(clips.length));
+      renderSegments();
+    }
   }
 
-  if (!clips.length) return;
+  if (generation !== batch || !clips.length) return;
   describeSelection();
   renderClips();
   updateMethodOptions();
 }
 
-async function addClip(file) {
+function discardSelection() {
+  abortController?.abort();
+  abortController = null;
+  exporting = false;
+  for (const video of [el.preview, el.resultVideo]) {
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  }
+  for (const entry of clips) URL.revokeObjectURL(entry.objectUrl);
+  clips = [];
+  selected = -1;
+  selectedSegment = null;
+  playAt = 0;
+  watchUntil = null;
+  clearTimeout(stillTimer);
+  stillWanted = null;
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  el.resultInfo.textContent = '';
+  el.result.hidden = true;
+  el.progress.hidden = true;
+  el.cancelBtn.hidden = true;
+  el.preview.hidden = true;
+  el.still.hidden = true;
+  for (const note of [el.editing, el.stageNote, el.pathNote, el.joinNote]) {
+    note.hidden = true;
+    note.textContent = '';
+  }
+  el.sectionCard.inert = true;
+  // The error alert lives in this card too. Disable export through its
+  // current selection, so a refused replacement can still be announced.
+  el.exportCard.inert = false;
+  setTransportEnabled(false);
+  timeline.setSource({ duration: 0 });
+  timeline.setPlayhead(0);
+  timeline.setEnabled(false);
+  el.tlNow.textContent = formatTime(0);
+  el.tlTotal.textContent = formatTime(0);
+  renderSegments();
+}
+
+function releaseProbe(probe) {
+  probe.pause();
+  probe.removeAttribute('src');
+  probe.load();
+}
+
+async function addClip(file, generation) {
   const objectUrl = URL.createObjectURL(file);
   const probe = document.createElement('video');
   probe.preload = 'metadata';
   probe.muted = true;
   probe.playsInline = true;
+  let retained = false;
+  let thumbnailStarted = false;
 
   try {
     const played = await openInPlayer(probe, objectUrl);
+    if (generation !== batch) return false;
 
     let media = null;
     let fallbackReason = null;
@@ -185,19 +253,20 @@ async function addClip(file) {
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
     }
+    if (generation !== batch) return false;
 
     // Copying needs nothing but the reader: no decoder, no encoder, no
     // WebCodecs. A browser that cannot re-encode a frame can still cut one of
     // these files without losing a thing.
     const canExact = Boolean(media) && hasWebCodecs()
       && await canDecode(decoderConfig(media.video));
+    if (generation !== batch) return false;
     const canRecord = played.ok && hasMediaRecorder();
 
     if (!media && !canRecord) {
       showError(played.ok
         ? phrase('open.norecord', { name: file.name })
         : phrase('open.failed', { name: file.name, reason: why(fallbackReason, 'read.notplayed') }));
-      URL.revokeObjectURL(objectUrl);
       return false;
     }
 
@@ -224,26 +293,31 @@ async function addClip(file) {
     };
 
     clips.push(entry);
+    retained = true;
     // The picture in the list is worth having and is not worth failing over.
-    makeThumbnail(entry, probe).then((url) => {
-      if (!url) return;
+    thumbnailStarted = true;
+    makeThumbnail(entry, probe, generation).then((url) => {
+      if (!url || generation !== batch || !clips.includes(entry)) return;
       entry.thumbnail = url;
       renderClips();
-    });
+    }).finally(() => releaseProbe(probe));
     return true;
   } catch (error) {
+    if (generation !== batch) return false;
     console.error(error);
     showError(phrase('open.failed', {
       name: file.name,
       reason: error?.message ? phrase(error.message) : String(error),
     }));
-    URL.revokeObjectURL(objectUrl);
     return false;
+  } finally {
+    if (!retained) URL.revokeObjectURL(objectUrl);
+    if (!thumbnailStarted) releaseProbe(probe);
   }
 }
 
 /** A still from a second or so in, which is more use than a black first frame. */
-async function makeThumbnail(entry, probe) {
+async function makeThumbnail(entry, probe, generation) {
   const at = Math.min(1, entry.duration / 2) || 0;
 
   if (entry.media && entry.canExact) {
@@ -251,13 +325,14 @@ async function makeThumbnail(entry, probe) {
       const canvas = await grabFrame({
         file: entry.file, media: entry.media, atSeconds: at, maxWidth: 240,
       });
+      if (generation !== batch) return null;
       return canvas.toDataURL('image/jpeg', 0.7);
     } catch {
       // Fall through to the player, which may manage what the decoder did not.
     }
   }
 
-  if (!entry.playable) return null;
+  if (generation !== batch || !entry.playable) return null;
   try {
     await new Promise((resolve) => {
       const done = () => { clearTimeout(timer); resolve(); };
@@ -265,6 +340,7 @@ async function makeThumbnail(entry, probe) {
       probe.addEventListener('seeked', done, { once: true });
       probe.currentTime = at;
     });
+    if (generation !== batch) return null;
     const scale = Math.min(1, 240 / Math.max(1, probe.videoWidth));
     const canvas = document.createElement('canvas');
     canvas.width = Math.max(2, Math.round(probe.videoWidth * scale));
@@ -466,24 +542,30 @@ let stillTimer = null;
  * along the timeline asks for a hundred frames and wants the last of them.
  */
 async function drawStill(entry, atSeconds) {
-  if (!entry?.media || entry.playable) return;
-  stillWanted = atSeconds;
+  if (!entry?.media || entry.playable || entry !== clip()) return;
+  stillWanted = { entry, atSeconds, generation: batch };
   if (stillBusy) return;
 
   stillBusy = true;
   try {
     while (stillWanted !== null) {
-      const at = stillWanted;
+      const request = stillWanted;
       stillWanted = null;
-      const canvas = await grabFrame({ file: entry.file, media: entry.media, atSeconds: at });
-      el.still.width = canvas.width;
-      el.still.height = canvas.height;
-      el.still.getContext('2d').drawImage(canvas, 0, 0);
-      el.still.hidden = false;
+      try {
+        const canvas = await grabFrame({
+          file: request.entry.file, media: request.entry.media, atSeconds: request.atSeconds,
+        });
+        if (request.generation !== batch || request.entry !== clip()) continue;
+        el.still.width = canvas.width;
+        el.still.height = canvas.height;
+        el.still.getContext('2d').drawImage(canvas, 0, 0);
+        el.still.hidden = false;
+      } catch (error) {
+        if (request.generation !== batch || request.entry !== clip()) continue;
+        el.stageNote.textContent = phrase('stage.noframe',
+          { detail: phrase(error.message, error.values) });
+      }
     }
-  } catch (error) {
-    el.stageNote.textContent = phrase('stage.noframe',
-      { detail: phrase(error.message, error.values) });
   } finally {
     stillBusy = false;
   }
@@ -817,9 +899,11 @@ el.marksInput.addEventListener('change', async () => {
   el.marksInput.value = '';
   const entry = clip();
   if (!file || !entry) return;
+  const generation = batch;
 
   try {
     const parsed = readTimestamps(await file.text());
+    if (generation !== batch || entry !== clip()) return;
     const kept = parsed.segments.filter((segment) => segment.start < entry.duration);
 
     if (!kept.length) {
@@ -859,6 +943,7 @@ el.marksInput.addEventListener('change', async () => {
     }
     renderSegments();
   } catch (error) {
+    if (generation !== batch || entry !== clip()) return;
     showError(phrase('marks.failed',
       { name: file.name, reason: phrase(error.message, error.values) }));
   }
@@ -875,7 +960,7 @@ function typing(target) {
 }
 
 window.addEventListener('keydown', (event) => {
-  if (el.sectionCard.hidden || exporting) return;
+  if (el.sectionCard.hidden || exporting || loading) return;
   if (typing(event.target) || event.metaKey || event.ctrlKey || event.altKey) return;
 
   const key = event.key.toLowerCase();
@@ -1024,6 +1109,11 @@ function updateSummary() {
     el.sumLength.textContent = formatDuration(0);
     el.sumClips.textContent = phrase(
       mode === 'cut' ? 'sum.nothing.cut' : 'sum.nothing.keep');
+    for (const field of [el.sumStart, el.sumSize, el.sumPicture, el.sumSound]) {
+      field.textContent = '—';
+    }
+    el.cutNote.hidden = true;
+    el.cutNote.textContent = '';
     return;
   }
 
@@ -1102,7 +1192,7 @@ function updateSummary() {
     el.sumSound.textContent = phrase('sum.sound.encode');
   } else el.sumSound.textContent = phrase('sum.sound.copy');
 
-  el.exportBtn.disabled = exporting || Boolean(el.method.selectedOptions[0]?.disabled);
+  el.exportBtn.disabled = exporting || loading || Boolean(el.method.selectedOptions[0]?.disabled);
   el.exportBtn.textContent = sections > 1
     ? phrase('export.many', { n: sections })
     : phrase('export.one');
@@ -1152,7 +1242,7 @@ function outputFilename(extension) {
 }
 
 async function runExport() {
-  if (exporting || el.method.selectedOptions[0]?.disabled) return;
+  if (exporting || loading || el.method.selectedOptions[0]?.disabled) return;
 
   const chosen = exportClips();
   if (!chosen.length) {
@@ -1162,6 +1252,7 @@ async function runExport() {
   }
 
   clearError();
+  const generation = batch;
   exporting = true;
   abortController = new AbortController();
 
@@ -1176,7 +1267,7 @@ async function runExport() {
   const method = el.method.value;
   const quality = el.quality.value;
   const keepAudio = el.keepAudio.checked && !el.keepAudio.disabled;
-  const onProgress = setProgress;
+  const onProgress = (progress) => { if (generation === batch) setProgress(progress); };
   const signal = abortController.signal;
 
   try {
@@ -1209,6 +1300,7 @@ async function runExport() {
       });
     }
 
+    if (generation !== batch) return;
     if (result.warning?.length) {
       showError(sentences(result.warning.map((key) => phrase(key))));
     }
@@ -1231,6 +1323,7 @@ async function runExport() {
     el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
+    if (generation !== batch) return;
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
       showError(error?.message
@@ -1240,12 +1333,14 @@ async function runExport() {
       console.error(error);
     }
   } finally {
-    exporting = false;
-    abortController = null;
-    el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = false;
-    timeline.setEnabled(true);
-    renderSegments();
+    if (generation === batch) {
+      exporting = false;
+      abortController = null;
+      el.cancelBtn.hidden = true;
+      el.exportBtn.disabled = false;
+      timeline.setEnabled(true);
+      renderSegments();
+    }
   }
 }
 

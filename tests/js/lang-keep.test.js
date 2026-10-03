@@ -592,6 +592,40 @@ test('a picker that takes one file replaces; one marked multiple adds', async ()
   assert.deepEqual(many.record().files, [file('a.jpg'), file('b.jpg')]);
 });
 
+for (const arrival of ['choice', 'drop']) {
+  test(`a replacement batch from a ${arrival} is the only batch restored after a language switch`, async () => {
+    const before = run({ tool: 'trim-video', multiple: true });
+    // The tool sets this after the frame script has started, before wiring
+    // its picker. Reading it only during setup would miss the tool's policy.
+    before.input.dataset.languageReplace = '1';
+    const deliver = (...files) => arrival === 'choice'
+      ? before.choose(...files) : before.drop(before.inside, ...files);
+    deliver(file('discarded-a.mp4'), file('discarded-b.mp4'));
+    deliver(file('current-a.mp4'), file('current-b.mp4'));
+    deliver(); // Dismissing a picker is not a replacement.
+    before.click(before.link);
+    await before.settle();
+
+    const current = [file('current-a.mp4'), file('current-b.mp4')];
+    assert.deepEqual(before.record().files, current, 'keep the complete latest batch in order');
+
+    const after = run({
+      tool: 'trim-video', lang: 'de', ready: 'complete', multiple: true,
+      parked: before.record(),
+    });
+    after.input.dataset.languageReplace = '1';
+    await after.settle();
+    assert.deepEqual(after.input.files, current, 'neither discarded clip reaches the new page');
+    assert.deepEqual(after.input.fired, ['change'], 'restore both current clips in one delivery');
+
+    after.link.setAttribute('hreflang', 'fr');
+    after.link.href = '/fr/couper-une-video/';
+    after.click(after.link);
+    await after.settle();
+    assert.deepEqual(after.record().files, current, 'restoring does not duplicate the batch');
+  });
+}
+
 test('a drop on the dropzone counts; a drop anywhere else does not', async () => {
   const page = run();
   page.drop(page.inside, file('dropped.png'));
