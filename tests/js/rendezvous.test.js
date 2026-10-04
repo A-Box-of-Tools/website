@@ -6,28 +6,40 @@
  * been knocking all minute. Those three decisions run here in Node, with a
  * fake environment standing in for the Durable Object and the rate limiter,
  * so a test can say which of them turned a request away and that the room
- * was never asked. The room itself needs the Workers runtime - WebSocketPair,
- * hibernation - and is exercised in a browser, not here.
+ * was never asked. Discovery's separate cases use runtime-shaped sockets and
+ * contexts to cover its binding-only authorization and hibernation races.
  */
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import worker, { relayServers } from '../../workers/rendezvous/worker.js';
+import { DISCOVERY_SCOPE_HEADER, discoveryScope } from '../../workers/rendezvous/discovery.js';
 
 const HOST = 'https://rendezvous.example';
 const OURS = 'https://abox.tools';
 
 function env({ allow = true } = {}) {
-  const asked = { rooms: [], keys: [] };
+  const asked = { rooms: [], keys: [], roomRequests: [], discoveries: [], discoveryRequests: [] };
   return {
     asked,
     ROOMS: {
       idFromName: (name) => `id:${name}`,
       get: (id) => ({
-        fetch: async () => {
+        fetch: async (request) => {
           asked.rooms.push(id);
+          asked.roomRequests.push(request);
           return new Response('room', { status: 200 });
+        },
+      }),
+    },
+    DISCOVERY: {
+      idFromName: (scope) => `scope:${scope}`,
+      get: (id) => ({
+        fetch: async (request) => {
+          asked.discoveries.push(id);
+          asked.discoveryRequests.push(request);
+          return new Response('discovery', { status: 200 });
         },
       }),
     },
@@ -122,6 +134,104 @@ test('the limit is counted per address, not per room', async () => {
   await worker.fetch(upgrade('/ws/two', { Origin: OURS }), e);
   assert.deepEqual(e.asked.keys, ['203.0.113.7', '203.0.113.7']);
   assert.deepEqual(e.asked.rooms, ['id:one', 'id:two']);
+});
+
+test('discovery requires an upgrade, the page origin, and the existing address limit', async () => {
+  const e = env();
+  assert.equal((await worker.fetch(new Request(HOST + '/discover', { headers: { Origin: OURS } }), e)).status, 426);
+  assert.equal((await worker.fetch(upgrade('/discover', { Origin: 'https://example.com', 'CF-Connecting-IP': '1.2.3.4' }), e)).status, 403);
+  assert.deepEqual(e.asked.keys, []);
+  assert.deepEqual(e.asked.discoveries, []);
+  const blocked = env({ allow: false });
+  assert.equal((await worker.fetch(upgrade('/discover', { Origin: OURS, 'CF-Connecting-IP': '1.2.3.4' }), blocked)).status, 429);
+  assert.deepEqual(blocked.asked.keys, ['1.2.3.4']);
+  assert.deepEqual(blocked.asked.discoveries, []);
+});
+
+test('discovery groups exact edge addresses and normalized origins, never a supplied group', async () => {
+  const e = env();
+  const request = upgrade('/discover?scope=chosen', {
+    Origin: OURS, 'CF-Connecting-IP': '1.2.3.4', [DISCOVERY_SCOPE_HEADER]: 'chosen',
+    'X-Forwarded-For': '8.8.8.8', 'X-Real-IP': '8.8.4.4',
+  });
+  const scope = await discoveryScope(request);
+  assert.match(scope, /^[a-f0-9]{64}$/);
+  assert.equal((await worker.fetch(request, e)).status, 200);
+  assert.deepEqual(e.asked.discoveries, [`scope:${scope}`]);
+  assert.equal(e.asked.discoveryRequests[0].headers.get(DISCOVERY_SCOPE_HEADER), scope);
+  assert.equal(await discoveryScope(upgrade('/discover', { Origin: 'https://ABOX.tools:443', 'CF-Connecting-IP': '1.2.3.4' })), scope);
+  assert.notEqual(await discoveryScope(upgrade('/discover', { Origin: OURS, 'CF-Connecting-IP': '1.2.3.5' })), scope);
+  assert.notEqual(await discoveryScope(upgrade('/discover', { Origin: 'https://pr-1.abox-preview.pages.dev', 'CF-Connecting-IP': '1.2.3.4' })), scope);
+  const ipv6 = { Origin: OURS, 'CF-Connecting-IP': '2606:4700:4700::1111' };
+  assert.equal(await discoveryScope(upgrade('/discover', ipv6)), await discoveryScope(upgrade('/discover', {
+    ...ipv6, 'CF-Connecting-IP': '2606:4700:4700:0:0:0:0:1111',
+  })));
+});
+
+test('discovery rejects absent, reserved, malformed, and Worker-supplied source addresses', async () => {
+  const e = env();
+  const addresses = ['', 'not-an-ip', '1.2.3.999', '1.2.3.4,8.8.8.8', '001.2.3.4',
+    '0.0.0.0', '10.1.2.3', '127.0.0.1', '100.64.0.1', '169.254.1.2', '172.16.1.2',
+    '192.168.1.2', '203.0.113.7', '198.18.0.1', '224.0.0.1', '::', '::1',
+    'fc00::1', 'fe80::1', 'ff00::1', '2001:db8::1', '2a06:98c0:3600::103'];
+  for (const address of addresses) {
+    assert.equal((await worker.fetch(upgrade('/discover', { Origin: OURS, 'CF-Connecting-IP': address }), e)).status, 403, address);
+  }
+  const missing = upgrade('/discover', { Origin: OURS });
+  missing.headers.delete('CF-Connecting-IP');
+  assert.equal((await worker.fetch(missing, e)).status, 403);
+  for (const value of ['', 'example.com']) {
+    assert.equal((await worker.fetch(upgrade('/discover', { Origin: OURS, 'CF-Connecting-IP': '1.2.3.4', 'CF-Worker': value }), e)).status, 403);
+  }
+  assert.deepEqual(e.asked.keys, []);
+  assert.deepEqual(e.asked.rooms, []);
+  assert.deepEqual(e.asked.discoveries, []);
+  // Cached ordinary clients retain their original room and rate-limit path.
+  assert.equal((await worker.fetch(upgrade('/ws/ordinary?role=host', { Origin: OURS }), e)).status, 200);
+});
+
+test('an offered host with an unsupported scope still opens its ordinary sharing socket', async () => {
+  const e = env();
+  for (const headers of [
+    { Origin: OURS, 'CF-Connecting-IP': '' },
+    { Origin: OURS, 'CF-Connecting-IP': '127.0.0.1' },
+    { Origin: OURS, 'CF-Connecting-IP': '2a06:98c0:3600::103' },
+    { Origin: OURS, 'CF-Connecting-IP': '1.2.3.4', 'CF-Worker': 'example.com' },
+  ]) {
+    const request = upgrade('/ws/one?role=host&local=1&discover=1', { ...headers, [DISCOVERY_SCOPE_HEADER]: 'f'.repeat(64) });
+    assert.equal((await worker.fetch(request, e)).status, 200);
+    assert.equal(e.asked.roomRequests.at(-1).headers.get(DISCOVERY_SCOPE_HEADER), null);
+  }
+  const missing = upgrade('/ws/one?role=host&local=1&discover=1', { Origin: OURS });
+  missing.headers.delete('CF-Connecting-IP');
+  assert.equal((await worker.fetch(missing, e)).status, 200);
+  assert.equal(e.asked.roomRequests.at(-1).headers.get(DISCOVERY_SCOPE_HEADER), null);
+  assert.equal(e.asked.rooms.length, 5);
+  assert.deepEqual(e.asked.discoveries, []);
+});
+
+test('the explicitly offered host receives the same server-selected scope as discovery', async () => {
+  const e = env();
+  const headers = { Origin: OURS, 'CF-Connecting-IP': '1.2.3.4', [DISCOVERY_SCOPE_HEADER]: 'f'.repeat(64) };
+  const offered = upgrade('/ws/brave-otter-42?role=host&local=1&discover=1', headers);
+  const scope = await discoveryScope(offered);
+  assert.equal((await worker.fetch(offered, e)).status, 200);
+  assert.equal(e.asked.roomRequests[0].headers.get(DISCOVERY_SCOPE_HEADER), scope);
+  await worker.fetch(upgrade('/ws/ordinary?role=host&local=1', headers), e);
+  assert.equal(e.asked.roomRequests[1].headers.get(DISCOVERY_SCOPE_HEADER), null);
+});
+
+test('private discovery endpoints cannot be addressed through the public worker', async () => {
+  const e = env();
+  for (const path of ['/_discovery/check', '/_discovery/withdraw']) {
+    const res = await worker.fetch(new Request(HOST + path, {
+      method: 'POST', headers: { Origin: OURS, 'CF-Connecting-IP': '1.2.3.4' },
+      body: JSON.stringify({ code: 'one', lease: 'x'.repeat(36), scope: 'a'.repeat(64) }),
+    }), e);
+    assert.equal(res.status, 404);
+  }
+  assert.deepEqual(e.asked.rooms, []);
+  assert.deepEqual(e.asked.discoveries, []);
 });
 
 /*

@@ -21,16 +21,20 @@ pledge = """
     leitor por um canal WebRTC criptografado de ponta a ponta, e para nenhum
     outro lugar. O único servidor envolvido &mdash; nomeado na
     <code>Content-Security-Policy</code> desta página, código no
-    repositório &mdash; apresenta os dois navegadores um ao outro e sai de
-    cena: não guarda nada, e o conteúdo nunca passa por ele. Não há
-    histórico nem conta. Feche esta aba e o compartilhamento acaba em todo
+    repositório &mdash; apresenta os dois navegadores um ao outro e lista
+    os nomes de link locais visíveis na lista. Não guarda texto ou arquivos
+    compartilhados, e o conteúdo nunca passa por ele. Os nomes da descoberta
+    duram só enquanto quem compartilha continua conectado. Não há histórico
+    de conteúdo nem conta. Feche esta aba e o compartilhamento acaba em todo
     lugar ao mesmo tempo, inclusive nas páginas abertas dos leitores."""
 
 live_hint = """
       Abra as ferramentas do desenvolvedor e observe a aba
       &ldquo;Rede&rdquo; enquanto compartilha. Você verá um WebSocket até o
-      intermediário com alguns kilobytes de negociação &mdash; e por mais
-      que digite ou anexe, nenhuma requisição carregando nada disso."""
+      intermediário para os nomes de link locais ao abrir esta página
+      inicial. Começar a compartilhar adiciona outro para estabelecer
+      conexões. Um leitor usa um único socket de apresentação. Por mais
+      que você digite ou anexe, nenhum deles carrega o texto ou os arquivos."""
 
 read_first = """
 , <code>src/main.js</code> para as duas
@@ -39,8 +43,8 @@ read_first = """
       renderizador que processa texto vindo do outro lado do fio, e que por
       isso escapa tudo antes de emitir qualquer coisa. O código completo do
       servidor é <code>workers/rendezvous/worker.js</code>, no mesmo
-      repositório: uma sala por nome de link, que não guarda nada além das
-      conexões abertas."""
+      repositório: uma sala por nome de link, mais um diretório de descoberta
+      com os nomes anunciados em conexões abertas, nunca o texto ou os arquivos."""
 
 howto_heading = "Como compartilhar texto e arquivos sem fazer upload para lugar nenhum"
 
@@ -76,21 +80,17 @@ text = "Código aberto"
 [[privacy]]
 title = "O conteúdo vai para o seu leitor, e para nenhum outro lugar."
 body = """
- O texto e os arquivos
-      viajam por um canal de dados WebRTC: uma conexão direta, criptografada
-      com DTLS, entre o seu navegador e o de cada leitor. Nesse caminho não
-      há servidor. Na mesma rede, os bytes nem saem do prédio: dois
-      notebooks no mesmo Wi-Fi passam tudo localmente.
-      A única exceção é um leitor cuja rede não pode ser alcançada
-      diretamente e que então escolhe, na própria página, um retransmissor
-      criptografado: ele repassa o mesmo texto cifrado e não consegue lê-lo."""
+O texto e os arquivos passam por um canal de dados WebRTC: uma conexão direta, criptografada com DTLS, entre seu navegador e o de cada leitor. Não há servidor nesse caminho. O modo Rede local usa os endereços de rede dos próprios navegadores, sem descoberta pública de endereços nem retransmissor de internet. Uma VPN ou as políticas de rede do navegador podem afetar o caminho desses endereços; isso não é uma garantia sobre um prédio físico. No modo normal, um leitor que não pode ser alcançado diretamente pode escolher na própria página um retransmissor criptografado, que encaminha o mesmo conteúdo criptografado sem poder lê-lo."""
 
 [[privacy]]
 title = "O que é o intermediário, e tudo o que ele vê."
 body = """
  Uma conexão direta precisa
-      de uma apresentação, então esta página &mdash; a única do site &mdash;
-      abre um WebSocket para um servidor nosso. Ele junta quem digitou um
+      de uma apresentação. Esta página inicial abre automaticamente um
+      WebSocket para o nosso intermediário para os nomes de link locais
+      visíveis na lista; começar a compartilhar abre outro para o próprio
+      compartilhamento. Um leitor usa um único socket de apresentação.
+      Ele junta quem digitou um
       nome de link com quem compartilha sob esse nome, repassa alguns
       kilobytes de negociação e não retém nada: nunca grava armazenamento, e
       uma sala deixa de existir assim que quem compartilha se desconecta.
@@ -98,7 +98,11 @@ body = """
       endereços IP. Não pode ver o texto, os arquivos, quem foi admitido nem
       o que alguém escreveu: até a batida numa porta privada viaja pelo
       canal direto criptografado. O código completo dele está no
-      repositório, ao lado do desta ferramenta. O que sobrevive a um
+      repositório, ao lado do desta ferramenta. O diretório lista só os nomes
+      anunciados por quem continua conectado com o mesmo endereço IP público.
+      Isso pode incluir outras redes por trás de uma VPN compartilhada ou de
+      um endereço compartilhado pelo provedor; dispositivos próximos com
+      endereços públicos diferentes podem não aparecer. O que sobrevive a um
       compartilhamento é uma coisa só: a Cloudflare, que executa o servidor,
       guarda um registro de cada conexão por sete dias, com o nome de link, o
       endereço e a hora, nunca o conteúdo."""
@@ -116,13 +120,15 @@ body = """
       nenhum."""
 
 [[privacy]]
-title = "O nome do link é o único segredo, e o modo privado é a tranca."
+title = "O nome do link é um endereço, e Privado é a tranca."
 body = """
  Qualquer um que
       conheça ou adivinhe um nome pode abrir o que está por trás. Por isso
-      as sugestões são três palavras ao acaso, por isso qualquer coisa
-      delicada merece um nome inadivinhável &mdash; ou a chave de privado,
-      que já vem ligada: cada leitor que chega precisa se apresentar, pelo
+      as sugestões são nomes que dá para falar em voz alta. Compartilhamentos
+      locais visíveis publicam seu nome na lista desta conexão: o nome fica
+      público para navegadores que usam o mesmo endereço IP público.
+      Mantenha Privado ativado para qualquer conteúdo sensível. Ele já vem
+      ativado: cada leitor que chega precisa se apresentar, pelo
       canal direto, e nada é enviado até você deixá-lo entrar."""
 
 [[privacy]]
@@ -172,9 +178,10 @@ title = "Dê um nome ao link, ou fique com a sugestão."
 body = """
  O nome é o endereço:
       <code>brave-otter-42</code> dá para falar de um lado a outro da sala,
-      ler por telefone ou copiar de um quadro. Também é o único segredo:
-      para algo privado, escolha um nome que ninguém adivinharia, ou
-      apoie-se na chave de privado. Um nome sob o qual outra pessoa já
+      ler por telefone ou copiar de um quadro. Compartilhamentos locais
+      visíveis listam seu nome, então mantenha Privado ativado para qualquer
+      conteúdo sensível. Para um compartilhamento disponível só por link,
+      um nome que ninguém adivinharia também ajuda. Um nome sob o qual outra pessoa já
       compartilha é recusado, e o seu fica livre assim que você para."""
 
 [[howto]]
@@ -194,7 +201,7 @@ body = """
       compartilhamento fica acessível enquanto ela estiver aberta e
       acordada, e nem um instante a mais. Um notebook fechado também o
       encerra. Copie o link, ou apenas fale o nome: um leitor pode digitá-lo
-      como <code>#name</code> no fim do endereço desta página."""
+      como <code>#name</code> no fim do endereço desta página. Para o modo Rede local, copie o link: ele contém <code>?local=1</code> antes do nome. Um leitor que usa outro modo precisa escolher antes de tentar de novo com o seu."""
 
 [[howto]]
 title = "Do outro lado: primeiro consentir, depois bater."
@@ -211,10 +218,11 @@ q = "Alguma coisa é enviada para algum lugar?"
 a = """
         Não. O texto e os arquivos vão do seu navegador para o de cada
         leitor por um canal WebRTC criptografado, diretamente. O único
-        servidor envolvido carrega a apresentação &mdash; alguns kilobytes
-        de negociação de conexão &mdash; e nunca o conteúdo. Nele não há
-        nada para vazar, requisitar ou perder: não guarda um byte seu, e uma
-        sala deixa de existir assim que você se desconecta."""
+        servidor envolvido carrega a apresentação e os nomes de link locais
+        cuja publicação foi escolhida, nunca o conteúdo. Não guarda texto
+        nem bytes de arquivos. Salas e entradas de descoberta acabam com
+        suas conexões abertas; os registros de conexão de sete dias da
+        Cloudflare contêm metadados, nunca o conteúdo."""
 
 [[faq]]
 q = "Então por que esta ferramenta fala com um servidor, logo neste site?"
@@ -225,15 +233,20 @@ a = """
         dois. Esse algo é o intermediário, a única dependência de rede desta
         página, nomeado na sua <code>Content-Security-Policy</code> e
         publicado no mesmo repositório da página. É o menor servidor capaz
-        de fazer o trabalho: não guarda nada, não lê nada e sai de cena
-        assim que os dois navegadores têm um canal direto."""
+        de fazer o trabalho. Ele também lista os nomes de link locais cuja
+        publicação foi escolhida, para navegadores que usam o mesmo endereço
+        IP público. Não guarda conteúdo nem consegue ler o canal criptografado
+        entre os navegadores."""
 
 [[faq]]
 q = "O que exatamente esse servidor pode ver?"
 a = """
         Que um nome de link está em uso, quando quem compartilha e os
         leitores se conectam e saem, seus endereços IP e o estabelecimento
-        da conexão criptografada que trocam. Não o texto, não os arquivos,
+        da conexão criptografada que trocam, e os nomes de link cuja
+        publicação na descoberta foi escolhida. A lista de descoberta
+        agrupa os nomes pelo endereço IP público visto pelo servidor.
+        Não o texto, não os arquivos,
         não seus nomes nem tamanhos, não quem foi admitido a um
         compartilhamento privado, e não o que alguém escreveu ao se
         apresentar: tudo isso viaja pelo canal direto, criptografado de
@@ -289,8 +302,9 @@ q = "Qual o tamanho máximo dos arquivos, e qual a velocidade?"
 a = """
         Até 200&nbsp;MB por arquivo, de qualquer tipo, e tão rápido quanto a
         mais lenta das duas conexões: não há servidor no meio para frear ou
-        medir. Dois computadores no mesmo Wi-Fi transferem em velocidade de rede
-        local, e os bytes não saem do prédio. Os leitores baixam cada
+        medir. Dois computadores com uma conexão local funcionando transferem em
+        velocidade de rede local; VPNs e roteamento do navegador podem afetar
+        o caminho. Os leitores baixam cada
         arquivo sob demanda, então anexar algo grande não custa nada até
         alguém realmente pedir."""
 
@@ -307,7 +321,7 @@ a = """
 [[faq]]
 q = "E se a gente não conseguir conectar?"
 a = """
-        A maioria dos pares de navegadores se alcança diretamente depois de
+A oferta de retransmissor descrita abaixo vale apenas para o modo de conexão normal. A maioria dos pares de navegadores se alcança diretamente depois de
         apresentada; uma minoria não, geralmente quando um dos lados está na
         rede de endereços compartilhados de uma operadora de celular ou
         atrás de uma rede corporativa rígida. Esta página nunca passa para
@@ -321,7 +335,7 @@ a = """
         &mdash; os dois endereços, como a conexão direta veria &mdash;, e
         ali também nada é guardado. O seu lado não muda: seu navegador
         continua enviando só para aquele leitor, como faria se ele estivesse
-        atrás de uma VPN."""
+        atrás de uma VPN. O modo Rede local nunca oferece um retransmissor. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet e se o isolamento da rede de convidados, um firewall ou uma VPN está bloqueando a conexão."""
 
 [[faq]]
 q = "Renderizar Markdown é seguro, se qualquer um pode compartilhar qualquer coisa?"
@@ -356,6 +370,34 @@ a = """
         plano gratuito justamente porque não guarda nada e quase não faz
         nada."""
 
+[[faq]]
+q = "Posso compartilhar arquivos pela minha rede local?"
+a = """
+Sim. Antes de começar, escolha Rede local — sem retransmissor de internet, conecte os dois dispositivos à mesma rede Wi-Fi ou Ethernet e copie o link para o leitor. O link inclui o modo; um leitor que usa outro modo precisa escolher explicitamente antes de tentar de novo com o modo de quem compartilha. A apresentação dos navegadores ainda precisa de internet. Este modo não usa descoberta pública de endereços e nunca passa a um retransmissor de internet. Uma VPN ou as políticas de rede do navegador podem mudar o caminho ou impedir a conexão; a opção não prova que os bytes ficam dentro de um prédio. A aprovação privada continua ativada por padrão e o limite continua sendo de 200&nbsp;MB por arquivo. Uma sessão pode incluir até 256 arquivos.
+        Visível na lista vem ativado neste modo: o outro navegador pode abrir
+        a página da ferramenta e escolher seu nome na lista desta conexão.
+        Desmarque para compartilhar só por link; você também pode continuar
+        copiando o link para o leitor."""
+
+[[faq]]
+q = "Como a lista encontra compartilhamentos locais?"
+a = """
+        Abrir a página inicial desta ferramenta pede ao intermediário os
+        nomes de link visíveis na lista de navegadores que usam o mesmo
+        endereço IP público. Normalmente isso significa o mesmo roteador,
+        mas uma VPN compartilhada ou um provedor que compartilha um endereço
+        pode incluir outras redes; IPv6 ou caminhos diferentes podem ocultar
+        dispositivos próximos. A lista não comprova uma mesma rede local
+        física. É preciso ter internet. Compartilhamentos locais são
+        anunciados por padrão; desmarque Visível na lista para compartilhar
+        só por link e mantenha Privado ativado em redes compartilhadas.
+        Escolher um nome abre a página de consentimento do compartilhamento;
+        nunca conecta automaticamente nem dispensa a aprovação privada.
+        O diretório mantém só os nomes de link enquanto quem compartilha
+        continua conectado, nunca o texto, os nomes de arquivo ou os bytes
+        dos arquivos. Se a descoberta estiver indisponível, compartilhar
+        por link continua funcionando."""
+
 [schema]
 description = "Compartilhe texto e arquivos de um navegador para outro por uma conexão WebRTC direta e criptografada de ponta a ponta. Nomes de link faláveis, atualização ao vivo enquanto digita, Markdown e aprovação por leitor. Nenhum servidor guarda nada; o compartilhamento acaba quando quem compartilha fecha a aba."
 features = [
@@ -369,4 +411,6 @@ features = [
   "Arquivos de até 200 MB cada, baixados sob demanda, com progresso por arquivo",
   "O rascunho fica só no navegador de quem compartilha - ou em lugar nenhum, se descartável",
   "Todo o componente de servidor é um intermediário sem armazenamento, publicado no repositório",
+  "Modo opcional de rede local sem descoberta pública de endereços nem retransmissor de internet",
+  "Nomes de link locais visíveis na lista aparecem para navegadores com o mesmo IP público, preservando o consentimento e a aprovação privada",
 ]

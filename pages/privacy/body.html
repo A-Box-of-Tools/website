@@ -109,17 +109,19 @@
 
     <h3>The share tool&rsquo;s rendezvous</h3>
     <p>
-      One tool, <a href="../share-text/">Share Text &amp; Files</a>, moves
-      text and files straight from one browser to another, and a direct
-      connection needs an introduction. So that page &mdash; alone on this
-      site &mdash; opens one WebSocket to a small server of ours, which
-      matches the two ends of a link name and passes their connection set-up
-      between them. It never sees the text or the files; those travel the
-      encrypted connection it introduced. It does see the link name, when each
-      side connects and leaves, and their IP addresses, and Cloudflare, which
-      runs it, keeps a log of each connection for seven days. It is the only
-      per-visitor log on this site that we can read. The tool&rsquo;s own page
-      describes it in full, and its entire source is in the repository.
+      <a href="../share-text/">Share Text &amp; Files</a> moves text and
+      files directly between browsers. Its start page automatically connects
+      to our rendezvous to list discoverable local link names; sharing opens
+      another connection for browser introductions. The list groups names by
+      public IP address and page origin, a hint of a shared gateway rather
+      than proof of the same physical network. A shared VPN or ISP address
+      can include other networks. The server never receives the shared text
+      or files, which travel over an encrypted browser connection. Directory
+      names live only on open connections and are not written to durable
+      storage. The server sees names, connection times and IP addresses;
+      Cloudflare still keeps connection logs for seven days. These remain
+      the only per-visitor logs on this site that we can read. The tool page
+      describes this in full, and the entire server source is in the repository.
     </p>
   </section>
 

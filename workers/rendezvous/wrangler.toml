@@ -30,6 +30,10 @@ routes = [
 name = "ROOMS"
 class_name = "Room"
 
+[[durable_objects.bindings]]
+name = "DISCOVERY"
+class_name = "Discovery"
+
 # SQLite-backed classes are the kind the free plan allows. The object never
 # touches its storage - its whole state is the sockets connected to it - but
 # the class still has to be declared this way to deploy at all.
@@ -37,8 +41,15 @@ class_name = "Room"
 tag = "v1"
 new_sqlite_classes = ["Room"]
 
-# One address may open thirty sockets a minute. A person never comes near it -
-# a host opens one, each reader one - and it is the difference between a script
+# Discovery also keeps its complete state in hibernating socket attachments.
+# A separate class leaves existing room ids and older clients unchanged.
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Discovery"]
+
+# One address may open thirty sockets a minute. The start page opens one for
+# discovery, a host adds one for its room, and each reader opens one. It is
+# the difference between a script
 # spending the free plan's daily quota in an hour and spending its own patience.
 # Counted per Cloudflare location, so it is a cap on nuisance rather than a
 # wall. The namespace id is an arbitrary label that keeps this counter apart

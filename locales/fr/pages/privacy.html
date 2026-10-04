@@ -120,18 +120,22 @@
 
     <h3>L'entremetteur de l'outil de partage</h3>
     <p>
-      Un outil, <a href="../partager-du-texte/">Partager du texte et des
-      fichiers</a>, fait passer du texte et des fichiers directement d'un
-      navigateur à l'autre, et une connexion directe demande une présentation.
-      Cette page, seule sur ce site, ouvre donc un WebSocket vers un petit
-      serveur à nous, qui réunit les deux bouts d'un nom de lien et relaie
-      entre eux l'établissement de la connexion. Il ne voit jamais le texte ni
-      les fichiers&nbsp;; ils voyagent par la connexion chiffrée qu'il a
-      présentée. Il voit le nom de lien, quand chaque côté se connecte et
-      repart, et les adresses IP, et Cloudflare, qui le fait tourner, garde un
-      journal de chaque connexion pendant sept jours. C'est le seul journal
-      par visiteur de ce site que nous puissions lire. La page de l'outil le
-      décrit en entier, et son code complet est dans le dépôt.
+      <a href="../partager-du-texte/">Partager du texte et des fichiers</a>
+      fait passer le texte et les fichiers directement entre les navigateurs.
+      Sa page d’accueil se connecte automatiquement à notre entremetteur pour
+      lister les noms de lien locaux rendus visibles ; commencer un partage
+      ouvre une autre connexion pour présenter les navigateurs. La liste
+      regroupe les noms selon l’adresse IP publique et l’origine de la page,
+      un indice de passerelle commune plutôt qu’une preuve de réseau physique
+      commun. Un VPN partagé ou une adresse mutualisée par un fournisseur peut
+      inclure d’autres réseaux. Le serveur ne reçoit jamais le texte ni les
+      fichiers partagés, qui passent par une connexion chiffrée entre les
+      navigateurs. Les noms de l’annuaire ne vivent que dans les connexions
+      ouvertes et ne sont pas enregistrés durablement. Le serveur voit les
+      noms, les heures de connexion et les adresses IP ; Cloudflare conserve
+      toujours les journaux de connexion pendant sept jours. Ce sont toujours
+      les seuls journaux par visiteur de ce site que nous pouvons lire. La page
+      de l’outil explique l’ensemble, et tout le code du serveur est dans le dépôt.
     </p>
   </section>
 

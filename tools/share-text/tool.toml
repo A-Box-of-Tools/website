@@ -12,8 +12,9 @@
 # is the whole of the deletion. A direct channel needs an introduction, so
 # this tool - alone on the site - names a server of ours in its CSP: the
 # rendezvous, a Cloudflare Worker whose entire code is in workers/rendezvous/
-# and whose entire job is to match the two ends of a code word and forward
-# their connection negotiation. It stores nothing and cannot read anything.
+# that matches the two ends of a code word, forwards their negotiation, and
+# lists opted-in local link names to browsers sharing a public IP address.
+# It keeps no content and cannot read anything exchanged by the peers.
 # The docs' rule for network features is that a tool says so on its own page,
 # in plain language, and does not weaken the site-wide claim quietly; this
 # file is where most of that saying happens.
@@ -36,7 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-lastmod = "2026-09-03"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -57,7 +58,12 @@ csp_note = """
   govern and no server touches, unless a reader who could not be reached
   directly chooses Cloudflare's TURN relay, which forwards the encrypted
   channel without a key to it. The worker's whole source is in the
-  repository at workers/rendezvous/."""
+  repository at workers/rendezvous/. Local network mode uses only host ICE
+  candidates, with no public STUN server or TURN relay; its introduction
+  still uses the rendezvous. The start page automatically opens a discovery
+  WebSocket for opted-in link names on the same public IP address. Sharing
+  opens a second socket for the actual share; a reader uses its own single
+  introduction socket. The discovery directory never carries text or files."""
 
 # --- the pledge block --------------------------------------------------------
 
@@ -66,16 +72,19 @@ pledge = """
     over a WebRTC channel that is encrypted end to end, and it goes nowhere
     else. The one server involved &mdash; named in this page's
     <code>Content-Security-Policy</code>, source in the repository &mdash;
-    introduces the two browsers and then stands aside: it stores nothing, and
-    the content never passes through it. There is no history and no account.
+    introduces the two browsers and lists discoverable local link names.
+    It keeps no shared text or files, and the content never passes through
+    it. Discovery names last only while the sharer is connected. There is
+    no content history and no account.
     Close this tab and the share ends everywhere at once, including on
     readers' open pages."""
 
 live_hint = """
       Open DevTools and watch the Network tab while you share. You will see
-      one WebSocket to the rendezvous carrying a few kilobytes of connection
-      set-up &mdash; and however much you type or attach, not one request
-      carrying any of it."""
+      a WebSocket to the rendezvous for local link names when this start page
+      opens. Starting a share adds another for connection set-up. A reader
+      uses one introduction socket. However much you type or attach, none
+      of these carries the text or files."""
 
 # --- the "how this is verified" panel ----------------------------------------
 
@@ -86,7 +95,8 @@ read_first = """
       runs on text from the other side of the wire, which escapes everything
       before it emits anything. The server's whole source is
       <code>workers/rendezvous/worker.js</code> in the same repository: one
-      room per link name, holding nothing but the open connections."""
+      room per link name, plus a discovery directory holding advertised names
+      on open connections, never the text or files."""
 
 # --- the written half of the page --------------------------------------------
 
@@ -135,9 +145,11 @@ title = "The content goes to your reader, and nowhere else."
 body = """
  The text and the files travel
       over a WebRTC data channel: a direct, DTLS-encrypted connection between
-      your browser and each reader's. There is no server in that path. On the
-      same network the bytes never even leave the building &mdash; two laptops
-      on one Wi-Fi exchange them locally. The one exception is a reader whose
+      your browser and each reader's. There is no server in that path. Local
+      network mode uses the browsers' own network addresses without public
+      address discovery or an internet relay. A VPN or browser network policy
+      can affect which path those addresses take, so this is not a guarantee
+      about a physical building. The ordinary mode also supports a reader whose
       network cannot be reached directly and who then chooses, on their own
       page, an encrypted relay: it forwards the same ciphertext and cannot
       read it."""
@@ -146,8 +158,10 @@ body = """
 title = "What the rendezvous is, and the whole of what it sees."
 body = """
  A direct connection needs an
-      introduction, so this page &mdash; alone on this site &mdash; opens one
-      WebSocket to a server of ours. That server matches the person who typed
+      introduction. This start page automatically opens a WebSocket to our
+      rendezvous for discoverable local link names; starting a share opens
+      another for the share itself. A reader uses one introduction socket.
+      The server matches the person who typed
       a link name with the person sharing under it, forwards a few kilobytes
       of connection negotiation between them, and holds nothing: no storage
       is ever written, and a room ceases to exist the moment the sharer
@@ -155,7 +169,10 @@ body = """
       and their IP addresses. It cannot see the text, the files, who was let
       in, or what anybody said &mdash; even the knock on a private share
       travels the encrypted peer channel. Its entire source is in the
-      repository beside this tool's. What outlives a share is one thing:
+      repository beside this tool's. The directory lists only names offered
+      by connected sharers using the same public IP address. That can include
+      other networks behind a shared VPN or ISP address; nearby devices with
+      different public addresses can be absent. What outlives a share is one thing:
       Cloudflare, which runs the server, keeps a log of each connection for
       seven days &mdash; the link name, the address and the time, never a
       payload."""
@@ -172,12 +189,14 @@ body = """
       mark it one-off and it is kept nowhere at all."""
 
 [[privacy]]
-title = "The link name is the only secret, and private mode is the lock."
+title = "The link name is an address, and Private is the lock."
 body = """
  Anyone who knows or
       guesses a name can open the share behind it, which is why the
-      suggestions are three random words and why anything sensitive deserves
-      an unguessable name &mdash; or the private switch, which is on by
+      suggestions are speakable names. Discoverable local shares publish
+      their name to the list on this connection; the name is then public to
+      browsers using the same public IP address. Keep Private on for anything
+      sensitive. It is on by
       default: each arriving reader must introduce themselves, over the
       direct channel, and nothing is sent until you let them in."""
 
@@ -227,9 +246,9 @@ title = "Name the link, or keep the suggestion."
 body = """
  The name is the address:
       <code>brave-otter-42</code> can be said across a room, read over the
-      phone, or typed from a whiteboard. It is also the only secret, so for
-      anything private either pick a name nobody would guess or rely on the
-      private switch instead. A name someone else is actively sharing under
+      phone, or typed from a whiteboard. Discoverable local shares list their
+      name, so keep Private on for anything sensitive. For a share available
+      only by link, an unguessable name is useful too. A name someone else is actively sharing under
       is refused, and yours frees up the moment you stop."""
 
 [[howto]]
@@ -249,7 +268,9 @@ body = """
       share is reachable while it is open and awake, and stops the moment it
       is not. A laptop lid closing ends it too. Copy the link, or just say
       the name &mdash; a reader can type it into this page's address as
-      <code>#name</code> on the end."""
+      <code>#name</code> on the end. For Local network mode, copy the link:
+      it carries <code>?local=1</code> before the name. A reader who uses the
+      wrong mode is asked before retrying with yours."""
 
 [[howto]]
 title = "On the other side: consent, then knock."
@@ -266,10 +287,10 @@ q = "Is anything uploaded, anywhere?"
 a = """
         No. The text and the files go from your browser to each reader's
         browser over an encrypted WebRTC channel, directly. The one server
-        involved carries the introduction &mdash; a few kilobytes of
-        connection negotiation &mdash; and never the content. There is
-        nothing on it to breach, subpoena or leak: it holds no bytes of
-        yours, and a room ceases to exist the moment you disconnect."""
+        involved carries the introduction and opted-in local link names,
+        never the content. It keeps no text or file bytes. Rooms and
+        discovery entries end with their open connections; Cloudflare's
+        seven-day connection logs contain metadata, never a payload."""
 
 [[faq]]
 q = "So why does this tool contact a server at all, on this site of all sites?"
@@ -280,16 +301,18 @@ a = """
         That something is the rendezvous, this page's one network
         dependency, named in its <code>Content-Security-Policy</code> and
         published in the same repository as this page. It is the smallest
-        server that could do the job &mdash; it stores nothing, reads
-        nothing, and stands aside once the two browsers hold a direct
-        channel."""
+        server that could do the job. It also lists opted-in local link names
+        for browsers using the same public IP address. It holds no content
+        and cannot read the encrypted peer channel."""
 
 [[faq]]
 q = "What exactly can that server see?"
 a = """
         That a link name is in use, when a sharer and readers connect and
         leave, their IP addresses, and the encrypted-connection set-up they
-        exchange. Not the text, not the files, not their names or sizes, not
+        exchange, and the link names opted into discovery. The discovery
+        list groups names by the public IP address seen by the server. Not
+        the text, not the files, not their names or sizes, not
         who was admitted to a private share, and not what anyone wrote in an
         introduction &mdash; all of that travels the peer channel, which is
         encrypted end to end and does not pass through the server. Cloudflare,
@@ -344,8 +367,9 @@ q = "How big can the files be, and how fast is it?"
 a = """
         Up to 200&nbsp;MB per file, any type, and as fast as the slower of
         the two connections &mdash; there is no server in the middle to slow
-        it down or meter it. Two machines on the same Wi-Fi transfer at
-        local-network speed, and the bytes never leave the building. Readers
+        it down or meter it. Two machines with a working local connection
+        transfer at local-network speed; VPNs and browser routing settings
+        can affect the path. Readers
         fetch each file on demand, so attaching something large costs
         nothing until somebody actually asks for it."""
 
@@ -368,14 +392,17 @@ a = """
         one. This page never switches to a relay quietly &mdash; that would
         change what this tool is without saying so &mdash; so after twenty
         seconds it says plainly that a direct connection could not be made,
-        and offers the reader one: a relay run by Cloudflare that forwards
-        the encrypted bytes between the two browsers and cannot read them,
+        and, in ordinary mode, offers the reader one: a relay run by
+        Cloudflare that forwards the encrypted bytes between the two
+        browsers and cannot read them,
         since the key never leaves the two ends. The reader chooses it by
         name, on their own page, after being told what it sees &mdash; both
         addresses, as the direct connection would &mdash; and nothing is
         stored there either. Your side of the share does not change: your
         browser still sends to that one reader, as it would if they were on
-        a VPN."""
+        a VPN. Local network mode never offers a relay: check that both
+        devices use the same Wi-Fi or Ethernet, and that guest-network
+        isolation, a firewall or a VPN is not blocking the connection."""
 
 [[faq]]
 q = "Is the markdown safe to render, if anyone can share anything?"
@@ -407,6 +434,40 @@ a = """
         page shares, and the rendezvous runs comfortably inside a free tier
         precisely because it stores nothing and does almost nothing."""
 
+[[faq]]
+q = "Can I share files over my local network?"
+a = """
+        Yes. Before starting, choose Local network &mdash; no internet relay,
+        connect both devices to the same Wi-Fi or Ethernet, and start
+        sharing. Discoverable is on by default in this mode: the other
+        browser can open the tool page and choose your name from the list
+        on this connection. Uncheck it to share only by link. You can still
+        copy the link to the reader. The link carries that mode, and a mismatched
+        reader must choose explicitly before retrying with the sharer's
+        mode. Internet is still needed for the rendezvous that introduces
+        the browsers. Local mode uses no public address-discovery server
+        and never falls back to an internet relay. A VPN or browser network
+        policy can change the route or prevent a connection; the setting
+        does not prove that bytes stay inside a physical building.
+        Private approval stays on by default, and files are still limited
+        to 200&nbsp;MB each, with up to 256 files in one share."""
+
+[[faq]]
+q = "How does the list find local shares?"
+a = """
+        Opening this tool's start page asks the rendezvous for discoverable
+        link names from browsers using the same public IP address. Usually
+        that means the same router, but a shared VPN or an ISP sharing one
+        address can include other networks; IPv6 or different routes can
+        hide nearby devices. The list is not proof of a physical local
+        network. Internet is required. Local shares advertise by default;
+        uncheck Discoverable for a link-only share, and keep Private on on
+        shared networks. Choosing a name opens the share's consent page;
+        it never connects automatically or bypasses private approval.
+        The directory holds only link names while the sharer is connected,
+        never text, file names or file bytes. If discovery is unavailable,
+        sharing by link still works."""
+
 [schema]
 category = "UtilitiesApplication"
 description = "Share text and files from one browser to another over a direct, end-to-end encrypted WebRTC connection. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab."
@@ -421,4 +482,6 @@ features = [
   "Files to 200 MB each, fetched on demand with per-file progress",
   "The draft persists only in the sharer's own browser, or nowhere if marked one-off",
   "The whole server component is a storage-less rendezvous, published in the repository",
+  "Optional local-network mode uses no public address discovery or internet relay",
+  "Discoverable local link names appear for browsers sharing a public IP address, with consent and private approval preserved",
 ]
