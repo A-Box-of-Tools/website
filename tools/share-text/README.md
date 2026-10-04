@@ -24,8 +24,9 @@ quietly. The page's `connect-src` names exactly one origin of ours — the
 [`workers/rendezvous/`](../../workers/rendezvous/). A direct connection
 needs an introduction: something must match the reader who typed
 `brave-otter-42` with the sharer under that name and pass a few KB of WebRTC
-negotiation between them. The rendezvous does that and nothing else. It
-writes no storage — a room is its open sockets and dies with them — and the
+negotiation between them. The rendezvous also lists opted-in local link
+names for browsers using the same public IP address. It writes no storage
+— rooms and discovery entries live on their open sockets — and the
 content never passes through it. What it can see: that a name is in use,
 when peers come and go, their IPs, and the negotiation blobs. What it
 cannot see: the text, the files, who was admitted, or what a knock said —
@@ -58,6 +59,9 @@ would still let a peer offer a relayed or server-reflexive address. Local
 mode also ignores any saved relay retry and never asks the worker for TURN
 credentials. The worker carries the mode in its existing opaque negotiation
 messages; it needs no new deployment.
+The discovery directory described below does need the newer worker and its
+additional Durable Object binding; transport by link still works with an
+older worker.
 
 The intended use is two devices on the same Wi-Fi or Ethernet. The mode
 constrains ICE candidates, not physical routing: a VPN, an OS route or browser
@@ -67,6 +71,45 @@ connection. The page describes that limitation rather than promising that a
 packet never leaves a building. Internet access is still needed for the
 introduction, private approval remains the default, and the 200 MB cap is
 unchanged.
+
+## Finding a share on the start page
+
+Opening the tool without a share name opens one WebSocket to `/discover`.
+The list contains only advertised codes and the local-mode flag; opening an
+entry shows the usual consent page in another tab. It never opens WebRTC on
+its own and never bypasses Private approval. Starting a local share leaves
+**Discoverable** on by default; unticking it makes the share link-only.
+Keep Private on on shared networks: without it, anyone who sees the name
+can connect and read without an admission decision.
+
+The group is derived by the worker from the exact canonical Cloudflare
+public source address and the allowed page origin, hashed with SHA-256.
+The page cannot pick a scope. One router usually gives the expected group,
+but a shared VPN or carrier-grade NAT can include other networks. Exact IPv6
+matching or different routes can exclude two devices on the same LAN.
+Missing, unknown or Worker-proxied source addresses are refused rather than
+falling into one global group. A host can still share by link when its
+discovery scope is unsupported; it receives no publication lease. This is
+a finding aid, not a LAN boundary;
+internet is still required and the copied link remains the fallback.
+
+The host starts its usual room socket with `local=1&discover=1` only when
+advertising. The live room issues a random lease in
+`{type: 'host-ready', discovery: {code, lease}}`; the page publishes it on
+its discovery socket as `{publish: {code, lease}}`. The directory verifies
+the lease against the room through its private binding before listing a
+name. Socket attachments keep only transient advertisement state through
+hibernation. Stopping sends `{publish: null}` as a fast withdrawal, while
+the room's own binding call removes the lease when the host disappears.
+A stale close cannot remove a restarted share with a different lease.
+The Refresh control asks the directory to revalidate its listed room leases
+before returning a fresh snapshot.
+
+The start page keeps its discovery socket while sharing and adds one room
+socket; a reader still uses one introduction socket. An unavailable or older
+worker becomes a visible discovery failure, and the active share stays
+reachable by link. The new worker deployment is manual, documented in
+[`workers/rendezvous/README.md`](../../workers/rendezvous/README.md).
 
 ## How the pieces work
 
@@ -115,8 +158,9 @@ unchanged.
   beside the editor; the reader gets Formatted/Source with the sharer's
   flag as the default.
 - **Names.** `src/names.js`: adjective-noun-number suggestions, free-typed
-  names folded to `[a-z0-9-]{1,64}`. The name is the only secret, and the
-  page says so.
+  names folded to `[a-z0-9-]{1,64}`. A link-only share can keep the name
+  unguessable; a discoverable local share publishes it to its address group.
+  Private admission is the access control in either case.
 - **The draft** persists in `localStorage` (`share-text-draft`), or not at
   all with one-off checked. Nothing else is ever stored.
 

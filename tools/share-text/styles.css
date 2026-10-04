@@ -82,6 +82,19 @@
 
 /* -------------------------------------------------- names, links, statuses */
 
+.discovery-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.discovery-code { flex: 1; min-width: 10rem; overflow-wrap: anywhere; }
+.discovery-open { color: var(--accent); font-weight: 600; }
+.discovery-note { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+#discovery-share-status { color: var(--text-dim); }
+
 .namerow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
 .namerow input {
   flex: 1;

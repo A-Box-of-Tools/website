@@ -6,8 +6,10 @@
 // currently connected to it, so a room ceases to exist the moment the
 // sharer's tab closes. All it does is forward small JSON blobs (WebRTC
 // session descriptions and ICE candidates) between the one host and each
-// viewer, and those blobs are all it can ever see. The text and the files
-// travel over the peer-to-peer channel those blobs negotiate, encrypted end
+// viewer. A separate discovery socket lists only the live codes that local
+// hosts explicitly offer, grouped by the edge address and page origin. The
+// text and the files travel over the peer-to-peer channel those blobs
+// negotiate, encrypted end
 // to end, and no byte of them passes through here.
 //
 // Deployed by hand: `npx wrangler deploy` from this directory, logged in to
@@ -21,7 +23,7 @@
 // close code of a refusal and the status of a relay credential it could not
 // mint.
 //
-// The one thing it does beyond forwarding: a viewer whose direct attempt has
+// A viewer whose direct attempt has
 // failed may ask, once, for a relay. The room then mints a short-lived
 // credential for Cloudflare's TURN service and hands it back on the same
 // socket. The relay forwards the DTLS-encrypted bytes between the two
@@ -36,24 +38,17 @@
 // somebody else's site. A script can send any Origin it likes; the rate limit
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
-const SITE = "https://abox.tools";
+import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, validPublication, validScope } from "./discovery.js";
+
+export { Discovery };
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
 // (see the `preview` job in .github/workflows/build.yml), at
 // https://pr-<n>.abox-preview.pages.dev, and the QA suite is run against it -
 // share-text included, which is the one tool that cannot work without this
 // worker's say-so. The suffix is the project's, so no other Pages project on
 // the same platform is let in by it.
-const PREVIEWS = ".abox-preview.pages.dev";
-
 function fromOurPage(origin) {
-  if (origin === SITE) return true;
-  try {
-    const { protocol, hostname } = new URL(origin);
-    if (hostname === "localhost" || hostname === "127.0.0.1") return true;
-    return protocol === "https:" && hostname.endsWith(PREVIEWS);
-  } catch {
-    return false;
-  }
+  return pageOrigin(origin) !== null;
 }
 
 export default {
@@ -67,12 +62,20 @@ export default {
       );
     }
     const room = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/);
-    if (room) {
+    if (room || url.pathname === "/discover") {
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
       }
       if (!fromOurPage(request.headers.get("Origin"))) {
         return new Response("not for this page", { status: 403 });
+      }
+      const discover = url.pathname === "/discover";
+      const offered = room && url.searchParams.get("role") === "host"
+        && url.searchParams.get("local") === "1" && url.searchParams.get("discover") === "1";
+      let scope = null;
+      if (discover || offered) {
+        scope = await discoveryScope(request);
+        if (discover && scope === null) return new Response("discovery unavailable for this address", { status: 403 });
       }
       // Keyed by address rather than by room: the nuisance this caps is one
       // client opening rooms by the thousand, and the room name is theirs to
@@ -81,7 +84,14 @@ export default {
       if (!knock.success) {
         return new Response("too many connections from this address", { status: 429 });
       }
-      return env.ROOMS.get(env.ROOMS.idFromName(room[1])).fetch(request);
+      // The page cannot choose its group, including through a header copied
+      // into this binding-only request. Ordinary room clients need no group.
+      const headers = new Headers(request.headers);
+      headers.delete(DISCOVERY_SCOPE_HEADER);
+      if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
+      const forwarded = new Request(request, { headers });
+      if (discover) return env.DISCOVERY.get(env.DISCOVERY.idFromName(scope)).fetch(forwarded);
+      return env.ROOMS.get(env.ROOMS.idFromName(room[1])).fetch(forwarded);
     }
     return new Response("not found", { status: 404 });
   },
@@ -146,8 +156,34 @@ export class Room {
     this.ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
   }
 
-  fetch(request) {
-    const role = new URL(request.url).searchParams.get("role");
+  async fetch(request) {
+    const url = new URL(request.url);
+    // This endpoint is reachable only through a binding. The public Worker
+    // does not forward its path, and the lease never enters a request URL.
+    if (url.pathname === "/_discovery/check" && request.method === "POST") {
+      let claim;
+      try {
+        const text = await request.text();
+        if (text.length > 512) return new Response(null, { status: 400 });
+        claim = JSON.parse(text);
+      } catch { return new Response(null, { status: 400 }); }
+      if (!validPublication(claim) || !validScope(claim.scope)) return new Response(null, { status: 400 });
+      const live = this.ctx.getWebSockets("host").some((host) => {
+        const who = host.deserializeAttachment();
+        return host.readyState === 1 && who?.role === "host" && who.local === true && who.discover === true
+          && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope;
+      });
+      return new Response(null, { status: live ? 204 : 403 });
+    }
+    const code = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/)?.[1];
+    if (code === undefined) return new Response(null, { status: 404 });
+    const role = url.searchParams.get("role");
+    const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
+    // Discovery can be unavailable behind a proxy or an address transform.
+    // The local share still works through its copied link; it simply has no
+    // lease to advertise unless the edge supplied a trustworthy scope.
+    const offered = role === "host" && url.searchParams.get("local") === "1"
+      && url.searchParams.get("discover") === "1" && validScope(scope);
     const { 0: client, 1: server } = new WebSocketPair();
 
     // A refused handshake reaches the browser as a bare error with nothing
@@ -168,7 +204,13 @@ export class Room {
     if (role === "host") {
       if (hosts.length > 0) return refuse(4409, "taken");
       this.ctx.acceptWebSocket(server, ["host"]);
-      server.serializeAttachment({ role: "host" });
+      if (offered) {
+        const lease = crypto.randomUUID();
+        server.serializeAttachment({ role: "host", code, scope, local: true, discover: true, lease });
+        server.send(JSON.stringify({ type: "host-ready", discovery: { code, lease } }));
+      } else {
+        server.serializeAttachment({ role: "host" });
+      }
     } else if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
       if (this.ctx.getWebSockets("viewer").length >= MAX_VIEWERS) return refuse(4429, "full");
@@ -194,6 +236,7 @@ export class Room {
     } catch {
       return;
     }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return;
     const who = ws.deserializeAttachment();
     if (who === null) return;
     if (who.role === "viewer") {
@@ -229,6 +272,18 @@ export class Room {
     // the second pass finds nothing to do.
     ws.serializeAttachment(null);
     if (who.role === "host") {
+      if (who.discover === true && who.local === true && validScope(who.scope) && validPublication(who)) {
+        // A closing browser may never deliver its fast unpublish hint. Room
+        // owns the live-host lease and authoritatively removes both verified
+        // advertisements and checks still waiting on its reply.
+        this.ctx.waitUntil(this.env.DISCOVERY.get(this.env.DISCOVERY.idFromName(who.scope)).fetch(
+          "https://discovery.internal/_discovery/withdraw", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ code: who.code, lease: who.lease }),
+          },
+        ).catch(() => {}));
+      }
       for (const viewer of this.ctx.getWebSockets("viewer")) {
         try {
           viewer.close(4410, "host-gone");

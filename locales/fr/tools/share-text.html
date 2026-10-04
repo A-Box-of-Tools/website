@@ -1,6 +1,14 @@
 <main id="main">
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Partages locaux sur cette connexion</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Recherche de partages locaux…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IP publique que le vôtre. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
+      <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
       <div class="panel" id="editor">
@@ -34,11 +42,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Suggérer un autre nom">&#8635;</button>
         </div>
-        <p class="field-note">
-          Le nom est l'adresse et le seul secret : assez court pour se
-          lancer à travers une pièce, et pour tout ce qui est privé, il en
-          mérite un indevinable.
-        </p>
+        <p class="field-note">Le nom est l’adresse, assez court pour le dire à travers une pièce. Les partages locaux visibles l’affichent pour les autres sur cette connexion. Gardez Privé activé pour tout contenu sensible.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -50,6 +54,11 @@
           Réseau local — sans relais internet
         </label>
         <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage.</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Visible — afficher ce nom de lien sur cette connexion internet
+        </label>
+        <p class="discovery-note">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IP publique. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Éphémère &mdash; ne pas garder le brouillon sur cet appareil
@@ -73,19 +82,13 @@
         <button type="button" id="stop" class="danger">Arrêter le partage</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>Rien n'est stocké nulle part</h2>
-      <p>
-        Le texte et les fichiers voyagent chiffrés, directement de cet
-        onglet vers celui de chaque lecteur. Le seul serveur impliqué
-        présente les deux navigateurs l'un à l'autre et ne voit jamais ce
-        qu'ils échangent. Fermer cet onglet arrête le partage et vide aussi
-        les pages ouvertes des lecteurs &mdash; ce que quelqu'un a déjà
-        copié ou téléchargé reste toutefois à lui.
-      </p>
+      <p>Le texte et les fichiers voyagent chiffrés, directement de cet onglet vers celui de chaque lecteur. L’entremetteur présente les navigateurs et liste les noms de lien visibles ; il ne voit jamais le texte ou les fichiers. Fermer cet onglet arrête le partage et vide les pages ouvertes des lecteurs — ce que quelqu’un a déjà copié ou téléchargé reste toutefois à lui.</p>
     </section>
   </section>
 
@@ -162,6 +165,15 @@
     <span data-phrase="units.b">o</span>
     <span data-phrase="units.kb">Ko</span>
     <span data-phrase="units.mb">Mo</span>
+
+    <span data-phrase="discovery.connecting">Recherche de partages locaux…</span>
+    <span data-phrase="discovery.empty">Aucun autre partage local visible ici pour le moment. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
+    <span data-phrase="discovery.ready">Choisissez un partage pour ouvrir sa page de connexion.</span>
+    <span data-phrase="discovery.unavailable">La recherche locale est indisponible. Vous pouvez toujours utiliser un lien de partage.</span>
+    <span data-phrase="discovery.open">Ouvrir le partage</span>
+    <span data-phrase="discovery.publishing">Ce partage local devient visible…</span>
+    <span data-phrase="discovery.published">Votre partage local est visible sur cette connexion.</span>
+    <span data-phrase="discovery.not-published">Ce partage est accessible par lien ; la recherche locale n’a pas pu le publier.</span>
 
     <span data-phrase="share.waiting">Partage en cours. En attente que quelqu'un ouvre le lien &mdash; laissez cet onglet ouvert.</span>
     <span data-phrase="share.reader-count.one">1 lecteur connecté</span>

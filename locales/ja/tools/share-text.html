@@ -3,6 +3,14 @@
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>この接続上のローカル共有</h2>
+      <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">この一覧には、あなたと同じ公開IPアドレスを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv6や経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
+      <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> 書くか、添付する</h2>
       <div class="panel" id="editor">
@@ -33,7 +41,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="別の名前を提案">&#8635;</button>
         </div>
-        <p class="field-note">名前がそのまま住所で、唯一の秘密でもあります。部屋の向こうへ声で伝えられる短さで、内輪のものには推測できない名前を。</p>
+        <p class="field-note">名前がアドレスで、部屋の向こうへ声で伝えられる短さです。発見可能なローカル共有は、この接続上の相手に名前を表示します。機密性のある内容では非公開を有効にしてください。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -45,6 +53,11 @@
           ローカルネットワーク——インターネット中継なし
         </label>
         <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          発見可能——このインターネット接続上にリンク名を表示する
+        </label>
+        <p class="discovery-note">発見可能な共有は、同じ公開IPアドレスを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           使い切り——下書きをこの端末に残さない
@@ -64,12 +77,13 @@
         <button type="button" id="stop" class="danger">共有をやめる</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>どこにも何も保存されません</h2>
-      <p>テキストとファイルは暗号化されたまま、このタブから読む側それぞれのタブへ直接届きます。関わる唯一のサーバーは2つのブラウザを引き合わせるだけで、やり取りの中身を見ることはありません。このタブを閉じれば共有は終わり、読む側の開いたページも空になります。ただし、誰かがすでにコピーやダウンロードしたものはその人のものです。</p>
+      <p>テキストとファイルは暗号化され、このタブから各読者のタブへ直接届きます。仲介役はブラウザ同士を紹介し、発見可能なリンク名を一覧にしますが、テキストやファイルは見ません。このタブを閉じると共有が終わり、読者の開いたページも消去されます。ただし、相手がすでにコピーやダウンロードしたものは相手のものです。</p>
     </section>
   </section>
 
@@ -137,6 +151,15 @@
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="discovery.connecting">ローカル共有を検索中…</span>
+    <span data-phrase="discovery.empty">ほかの発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
+    <span data-phrase="discovery.ready">共有を選ぶと、その接続ページを開きます。</span>
+    <span data-phrase="discovery.unavailable">ローカル検索を利用できません。共有リンクは引き続き使えます。</span>
+    <span data-phrase="discovery.open">共有を開く</span>
+    <span data-phrase="discovery.publishing">このローカル共有を発見可能にしています…</span>
+    <span data-phrase="discovery.published">この接続上であなたのローカル共有を発見できます。</span>
+    <span data-phrase="discovery.not-published">この共有はリンクで利用できますが、ローカル検索には公開できませんでした。</span>
 
     <span data-phrase="share.waiting">共有中です。誰かがリンクを開くのを待っています。このタブを開けたままにしてください。</span>
     <span data-phrase="share.reader-count.one">1人が読んでいます</span>

@@ -1,6 +1,14 @@
 <main id="main">
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Lokale Freigaben an diesem Anschluss</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Suche lokale Freigaben…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IP-Adresse wie Ihrer. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv6 oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
+      <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> Schreiben Sie ihn, oder hängen Sie sie an</h2>
       <div class="panel" id="editor">
@@ -34,11 +42,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Anderen Namen vorschlagen">&#8635;</button>
         </div>
-        <p class="field-note">
-          Der Name ist die Adresse und das einzige Geheimnis: kurz genug,
-          um ihn durch einen Raum zu rufen, und für alles Private einen
-          unerratbaren wert.
-        </p>
+        <p class="field-note">Der Name ist die Adresse, kurz genug, um ihn durch einen Raum zu rufen. Auffindbare lokale Freigaben zeigen ihn anderen an diesem Anschluss. Lassen Sie Privat für alles Sensible an.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -50,6 +54,11 @@
           Lokales Netzwerk — kein Internet-Relais
         </label>
         <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung.</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
+        </label>
+        <p class="discovery-note">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IP-Adresse. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Einmalig &mdash; den Entwurf nicht auf diesem Gerät behalten
@@ -73,19 +82,13 @@
         <button type="button" id="stop" class="danger">Freigabe beenden</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>Nichts wird irgendwo gespeichert</h2>
-      <p>
-        Text und Dateien wandern verschlüsselt direkt aus diesem Tab in den
-        jedes Lesers. Der eine beteiligte Server stellt die beiden Browser
-        einander vor und sieht nie, was sie austauschen. Das Schließen dieses
-        Tabs beendet die Freigabe und leert auch die offenen Seiten der Leser
-        &mdash; wobei das, was jemand schon kopiert oder heruntergeladen hat,
-        ihm gehört.
-      </p>
+      <p>Text und Dateien wandern verschlüsselt direkt aus diesem Tab in den jedes Lesers. Der Vermittler stellt die Browser einander vor und listet auffindbare Link-Namen; Text und Dateien sieht er nie. Das Schließen dieses Tabs beendet die Freigabe und leert die offenen Seiten der Leser — was jemand bereits kopiert oder heruntergeladen hat, gehört ihm weiterhin.</p>
     </section>
   </section>
 
@@ -162,6 +165,15 @@
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="discovery.connecting">Suche lokale Freigaben…</span>
+    <span data-phrase="discovery.empty">Hier gibt es noch keine anderen auffindbaren lokalen Freigaben. Lassen Sie den Tab des Teilenden offen, oder nutzen Sie seinen Link.</span>
+    <span data-phrase="discovery.ready">Wählen Sie eine Freigabe, um ihre Verbindungsseite zu öffnen.</span>
+    <span data-phrase="discovery.unavailable">Die lokale Suche ist nicht verfügbar. Sie können weiterhin einen Freigabe-Link nutzen.</span>
+    <span data-phrase="discovery.open">Freigabe öffnen</span>
+    <span data-phrase="discovery.publishing">Diese lokale Freigabe wird auffindbar gemacht…</span>
+    <span data-phrase="discovery.published">Ihre lokale Freigabe ist an diesem Anschluss auffindbar.</span>
+    <span data-phrase="discovery.not-published">Diese Freigabe ist per Link verfügbar; die lokale Suche konnte sie nicht veröffentlichen.</span>
 
     <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>
     <span data-phrase="share.reader-count.one">1 Leser verbunden</span>

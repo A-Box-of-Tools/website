@@ -2,6 +2,21 @@
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Local shares on this connection</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Looking for local shares&hellip;</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">
+        This list shows link names from browsers using the same public IP
+        address as yours. Usually that means the same router; a shared VPN
+        or an ISP sharing one address can include other networks. IPv6 or
+        different routes can hide nearby devices. Internet is required.
+        Opening a share still asks before connecting, and Private shares
+        still need the sharer&rsquo;s approval.
+      </p>
+      <button type="button" id="discovery-refresh" class="ghost">Refresh local shares</button>
+    </section>
+
     <!-- Step 1 &mdash; the content -->
     <section class="card">
       <h2><span class="step">1</span> Write it, or attach it</h2>
@@ -39,8 +54,9 @@
           <button type="button" id="suggest" class="ghost" aria-label="Suggest another name">&#8635;</button>
         </div>
         <p class="field-note">
-          The name is the address and the only secret: short enough to say
-          across a room, and worth making unguessable for anything private.
+          The name is the address, short enough to say across a room.
+          Discoverable local shares list it for others on this connection.
+          Keep Private on for anything sensitive.
         </p>
       </div>
       <div class="field checks">
@@ -57,6 +73,17 @@
           needed to introduce the browsers; this mode uses no public
           address-discovery server or relay. VPNs and browser settings can
           affect the network path. The copied link carries this setting.
+        </p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Discoverable &mdash; show this link name on this internet connection
+        </label>
+        <p class="discovery-note">
+          A discoverable share lists its name for others using the same
+          public IP address. Keep Private on, especially on shared networks.
+          With Private off, anyone who sees the name can connect and read
+          without your approval.
+          Uncheck Discoverable to share only by link.
         </p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
@@ -82,6 +109,7 @@
         <button type="button" id="stop" class="danger">Stop sharing</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
@@ -89,8 +117,9 @@
       <h2>Nothing is stored anywhere</h2>
       <p>
         The text and the files travel straight from this tab to each
-        reader&rsquo;s, encrypted. The one server involved introduces the two
-        browsers and never sees what they exchange. Closing this tab ends the
+        reader&rsquo;s, encrypted. The rendezvous introduces the browsers and
+        lists discoverable link names; it never sees the text or files.
+        Closing this tab ends the
         share and clears readers&rsquo; open pages too &mdash; though what
         someone already copied or downloaded is theirs.
       </p>
@@ -184,6 +213,15 @@
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="discovery.connecting">Looking for local shares&hellip;</span>
+    <span data-phrase="discovery.empty">No other discoverable local shares here yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
+    <span data-phrase="discovery.ready">Choose a share to open its connection page.</span>
+    <span data-phrase="discovery.unavailable">Local discovery is unavailable. You can still use a share link.</span>
+    <span data-phrase="discovery.open">Open share</span>
+    <span data-phrase="discovery.publishing">Making this local share discoverable&hellip;</span>
+    <span data-phrase="discovery.published">Your local share is discoverable on this connection.</span>
+    <span data-phrase="discovery.not-published">This share is available by link; local discovery could not publish it.</span>
 
     <span data-phrase="share.waiting">Sharing. Waiting for someone to open the link &mdash; keep this tab open.</span>
     <span data-phrase="share.local-waiting">Sharing in Local network mode. Waiting for someone to open the link &mdash; keep this tab open.</span>

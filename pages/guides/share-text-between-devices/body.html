@@ -12,14 +12,14 @@
       everywhere.
     </p>
     <p>
-      Nothing was uploaded at any point. That is not a policy; it is the
-      shape of the thing. The rest of this page is why that matters, and
+      No shared text or file was uploaded to a server. That is the shape
+      of the thing. The rest of this page is why that matters, and
       what the honest limits of it are.
     </p>
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/write.webp" loading="lazy" decoding="async"
-           alt="The first card of the sharing tool: a text box holding a few lines of meeting notes, with a Markdown switch and a button for attaching a file above it.">
+           alt="The writing card of the sharing tool: a text box holding a few lines of meeting notes, with a Markdown switch and a button for attaching a file above it.">
       <figcaption>
         What is being handed over. The same box takes a shopping list or a document, and Markdown is a switch rather than a separate mode.
       </figcaption>
@@ -64,9 +64,11 @@
       find each other unaided. A small server &mdash; the rendezvous &mdash;
       matches the person who typed the name with the person sharing under it
       and carries a few kilobytes of connection set-up between them. It
-      stores nothing, and the content never passes through it; its whole
+      keeps no shared content, and the content never passes through it; its whole
       source is published beside the tool's. It is the introduction, not the
-      conversation &mdash; and it is the one server anything on this site
+      conversation. It also lists opted-in local link names, which is how
+      a second browser can find a share on the tool's start page. It is
+      the one server anything on this site
       talks to, which is why the tool's own page spells out exactly what it
       can and cannot see.
     </p>
@@ -82,9 +84,24 @@
     <p>
       Before starting the share, choose <em>Local network &mdash; no internet
       relay</em>. Attach the file, leave Private on if you want to approve
-      each reader, and copy the link to the other device. Both devices need
+      each reader, and start sharing. Discoverable is checked by default:
+      open the tool page on the second device and choose the share's name
+      from <em>Local shares on this connection</em>. It opens the consent
+      page, then asks for your approval on a private share. Uncheck
+      Discoverable before starting if you want to share only by link.
+      Both devices need
       to use the same Wi-Fi or Ethernet. Files still have the same
       200&nbsp;MB limit, and readers still choose which ones to download.
+    </p>
+    <p>
+      The list groups browsers by the public IP address the introduction
+      server sees. Usually that means one router, but a shared VPN or an ISP
+      sharing one address can include other networks. IPv6 or different
+      routes can hide a device sitting beside you. Keep Private on on shared
+      networks; a listed name is visible to others in that group, and the
+      list does not prove that a device is in the same room or building.
+      Internet is required. If discovery is unavailable, the copied link
+      still works.
     </p>
     <p>
       The copied link carries the setting as <code>?local=1#brave-otter-42</code>.
@@ -106,7 +123,7 @@
   </section>
 
   <section>
-    <h2>The name is the address, and the only secret</h2>
+    <h2>The name is the address; Private decides who gets in</h2>
     <p>
       A share link differs from every other sharing link in one practical
       way: it survives being spoken. <code>brave-otter-42</code> can be said
@@ -116,8 +133,9 @@
     </p>
     <p>
       It cuts both ways: anyone who knows or guesses a live name can open the
-      share behind it. For anything sensitive, either give the share a name
-      nobody would guess, or lean on the default instead &mdash; shares are
+      share behind it. A discoverable local share lists that name for
+      browsers using the same public IP address, so the name is public
+      within that group. For anything sensitive, keep the default &mdash; shares are
       <em>private</em> unless you untick the box, which means every arriving
       reader has to introduce themselves and you decide, message by message,
       who gets in. The introduction travels the encrypted direct channel, so
@@ -126,7 +144,7 @@
 
     <figure class="shot">
       <img src="/screens/share-text-between-devices/name.webp" loading="lazy" decoding="async"
-           alt="The second card: a link name reading thursday-notes, a note saying the name is the address and the only secret, and switches for private and one-off.">
+           alt="The link-name card showing thursday-notes and switches for private and one-off sharing.">
       <figcaption>
         The name is the whole of the address. Private means each reader has to ask and you let them in; one-off means the draft is not kept on this device either.
       </figcaption>

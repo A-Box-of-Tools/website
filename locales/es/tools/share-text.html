@@ -1,6 +1,22 @@
 <main id="main">
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Lo compartido en esta conexión local</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Buscando comparticiones locales&hellip;</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">
+        Esta lista muestra los nombres de enlace de navegadores que usan
+        la misma dirección IP pública que el tuyo. Normalmente significa
+        el mismo router; una VPN compartida o un proveedor que comparte una
+        dirección pueden incluir otras redes. IPv6 o rutas distintas pueden
+        ocultar dispositivos cercanos. Se necesita internet. Al abrir una
+        compartición aún se pide tu consentimiento antes de conectar, y las
+        privadas siguen necesitando la aprobación de quien comparte.
+      </p>
+      <button type="button" id="discovery-refresh" class="ghost">Actualizar comparticiones locales</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> Escríbelo, o adjúntalo</h2>
       <div class="panel" id="editor">
@@ -35,9 +51,10 @@
           <button type="button" id="suggest" class="ghost" aria-label="Sugerir otro nombre">&#8635;</button>
         </div>
         <p class="field-note">
-          El nombre es la dirección y el único secreto: lo bastante corto
-          para decirlo de un lado a otro de una sala, y para algo privado
-          merece uno inadivinable.
+          El nombre es la dirección, lo bastante corto para decirlo de un
+          lado a otro de una sala. Las comparticiones locales visibles en
+          la lista lo muestran a otros en esta conexión. Mantén Privado
+          activado para cualquier contenido delicado.
         </p>
       </div>
       <div class="field checks">
@@ -50,6 +67,18 @@
           Red local — sin retransmisor de internet
         </label>
         <p class="field-note">Para dispositivos en la misma red Wi-Fi o Ethernet. La presentación de los navegadores aún necesita internet; este modo no usa servidores públicos para descubrir direcciones ni retransmisores. Las VPN y los ajustes del navegador pueden afectar la ruta. El enlace copiado incluye esta opción.</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Visible en la lista &mdash; mostrar este nombre de enlace en esta conexión a internet
+        </label>
+        <p class="discovery-note">
+          Una compartición visible en la lista muestra su nombre a otros
+          que usan la misma dirección IP pública. Mantén Privado activado,
+          sobre todo en redes compartidas. Con Privado desactivado,
+          cualquiera que vea el nombre puede conectarse y leer sin tu
+          aprobación. Desmarca Visible en la lista para compartir solo por
+          enlace.
+        </p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           De un solo uso &mdash; no guardar el borrador en este dispositivo
@@ -73,6 +102,7 @@
         <button type="button" id="stop" class="danger">Dejar de compartir</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
@@ -80,8 +110,9 @@
       <h2>Nada se guarda en ninguna parte</h2>
       <p>
         El texto y los archivos viajan cifrados, directos de esta pestaña a
-        la de cada lector. El único servidor implicado presenta a los dos
-        navegadores y nunca ve lo que intercambian. Cerrar esta pestaña
+        la de cada lector. El intermediario presenta a los navegadores y
+        enumera los nombres de enlace visibles en la lista; nunca ve el
+        texto ni los archivos. Cerrar esta pestaña
         termina la compartición y vacía también las páginas abiertas de los
         lectores &mdash; aunque lo que alguien ya copió o descargó es suyo.
       </p>
@@ -160,6 +191,15 @@
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="discovery.connecting">Buscando comparticiones locales&hellip;</span>
+    <span data-phrase="discovery.empty">Todavía no hay otras comparticiones locales visibles en la lista. Mantén abierta la pestaña de quien comparte o usa su enlace.</span>
+    <span data-phrase="discovery.ready">Elige una compartición para abrir su página de conexión.</span>
+    <span data-phrase="discovery.unavailable">La búsqueda de comparticiones locales no está disponible. Puedes seguir usando un enlace para compartir.</span>
+    <span data-phrase="discovery.open">Abrir compartición</span>
+    <span data-phrase="discovery.publishing">Haciendo visible esta compartición local en la lista&hellip;</span>
+    <span data-phrase="discovery.published">Tu compartición local es visible en la lista de esta conexión.</span>
+    <span data-phrase="discovery.not-published">Esta compartición está disponible por enlace; la búsqueda local no pudo incluirla en la lista.</span>
 
     <span data-phrase="share.waiting">Compartiendo. Esperando a que alguien abra el enlace &mdash; deja esta pestaña abierta.</span>
     <span data-phrase="share.reader-count.one">1 lector conectado</span>

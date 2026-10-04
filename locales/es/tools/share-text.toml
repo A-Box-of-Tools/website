@@ -21,16 +21,20 @@ pledge = """
     canal WebRTC cifrado de extremo a extremo, y a ningún otro sitio. El
     único servidor implicado &mdash; nombrado en la
     <code>Content-Security-Policy</code> de esta página, con el código en el
-    repositorio &mdash; presenta a los dos navegadores y se aparta: no
-    guarda nada, y el contenido nunca pasa por él. No hay historial ni
-    cuenta. Cierra esta pestaña y lo compartido se acaba en todas partes a
+    repositorio &mdash; presenta a los dos navegadores y enumera los nombres
+    de enlace locales visibles en la lista. No guarda texto ni archivos
+    compartidos, y el contenido nunca pasa por él. Los nombres de la lista
+    duran solo mientras quien comparte sigue conectado. No hay historial
+    de contenido ni cuenta. Cierra esta pestaña y lo compartido se acaba en todas partes a
     la vez, también en las páginas abiertas de los lectores."""
 
 live_hint = """
       Abre las herramientas de desarrollo y mira la pestaña «Red» mientras
-      compartes. Verás un WebSocket al intermediario con unos pocos
-      kilobytes de negociación &mdash; y por mucho que escribas o adjuntes,
-      ni una sola petición que lleve nada de ello."""
+      compartes. Verás un WebSocket al intermediario para los nombres de
+      enlace locales al abrir esta página inicial. Empezar a compartir añade
+      otro para establecer conexiones. Un lector usa un solo socket de
+      presentación. Por mucho que escribas o adjuntes, ninguno lleva el texto
+      ni los archivos."""
 
 read_first = """
 , <code>src/main.js</code> para las dos
@@ -39,8 +43,9 @@ read_first = """
       para el renderizador que procesa texto llegado del otro lado del
       cable, y que por eso escapa todo antes de emitir nada. El código
       completo del servidor es <code>workers/rendezvous/worker.js</code>, en
-      el mismo repositorio: una sala por nombre de enlace, que no guarda más
-      que las conexiones abiertas."""
+      el mismo repositorio: una sala por nombre de enlace, más un directorio
+      de búsqueda con los nombres anunciados en conexiones abiertas, nunca
+      el texto ni los archivos."""
 
 howto_heading = "Cómo compartir texto y archivos sin subirlos a ninguna parte"
 
@@ -85,8 +90,10 @@ El texto y los archivos viajan por un canal de datos WebRTC: una conexión direc
 title = "Qué es el intermediario, y todo lo que ve."
 body = """
  Una conexión directa
-      necesita una presentación, así que esta página &mdash; la única del
-      sitio &mdash; abre un WebSocket a un servidor nuestro. Ese servidor
+      necesita una presentación. Esta página inicial abre automáticamente
+      un WebSocket a nuestro intermediario para los nombres de enlace
+      locales visibles en la lista; empezar a compartir abre otro para la
+      propia compartición. Un lector usa un solo socket de presentación. Ese servidor
       junta a quien tecleó un nombre de enlace con quien comparte bajo ese
       nombre, les pasa unos kilobytes de negociación y no retiene nada:
       nunca escribe almacenamiento, y una sala deja de existir en cuanto
@@ -95,7 +102,11 @@ body = """
       texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta
       la llamada a una compartición privada viaja por el canal directo
       cifrado. Su código completo está en el repositorio, junto al de esta
-      herramienta. Lo que sobrevive a una compartición es una sola cosa:
+      herramienta. El directorio enumera solo los nombres anunciados por
+      quienes siguen conectados con la misma dirección IP pública. Puede
+      incluir otras redes detrás de una VPN compartida o de una dirección
+      compartida por el proveedor; los dispositivos cercanos con direcciones
+      públicas distintas pueden no aparecer. Lo que sobrevive a una compartición es una sola cosa:
       Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión
       durante siete días, con el nombre de enlace, la dirección y la hora,
       nunca el contenido."""
@@ -113,13 +124,15 @@ body = """
       ninguna parte."""
 
 [[privacy]]
-title = "El nombre del enlace es el único secreto, y el modo privado, el cerrojo."
+title = "El nombre del enlace es una dirección, y Privado, el cerrojo."
 body = """
  Cualquiera que
       conozca o adivine un nombre puede abrir lo que hay detrás. Por eso las
-      sugerencias son tres palabras al azar, por eso cualquier cosa delicada
-      merece un nombre inadivinable &mdash; o el interruptor de privado, que
-      viene activado: cada lector que llega debe presentarse, por el canal
+      sugerencias son nombres que se pueden decir en voz alta. Las
+      comparticiones locales visibles publican su nombre en la lista de
+      esta conexión: queda público para los navegadores que usan la misma
+      dirección IP pública. Mantén Privado activado para cualquier contenido
+      delicado. Viene activado: cada lector que llega debe presentarse, por el canal
       directo, y no se envía nada hasta que tú lo dejas entrar."""
 
 [[privacy]]
@@ -169,9 +182,10 @@ title = "Ponle nombre al enlace, o quédate con la sugerencia."
 body = """
  El nombre es la dirección:
       <code>brave-otter-42</code> se puede decir de un lado a otro de una
-      sala, leer por teléfono o copiar de una pizarra. También es el único
-      secreto, así que para algo privado elige un nombre que nadie
-      adivinaría, o apóyate en el interruptor de privado. Un nombre bajo el
+      sala, leer por teléfono o copiar de una pizarra. Las comparticiones
+      locales visibles enumeran su nombre, así que mantén Privado activado
+      para cualquier contenido delicado. Para una compartición disponible
+      solo por enlace, un nombre que nadie adivinaría también es útil. Un nombre bajo el
       que ya comparte otra persona se rechaza, y el tuyo queda libre en
       cuanto paras."""
 
@@ -209,10 +223,11 @@ q = "¿Se sube algo, a alguna parte?"
 a = """
         No. El texto y los archivos van de tu navegador al de cada lector
         por un canal WebRTC cifrado, directamente. El único servidor
-        implicado lleva la presentación &mdash; unos kilobytes de
-        negociación de la conexión &mdash; y nunca el contenido. En él no
-        hay nada que filtrar, requisar o perder: no retiene ni un byte tuyo,
-        y una sala deja de existir en cuanto te desconectas."""
+        implicado lleva la presentación y los nombres de enlace locales
+        cuya publicación se haya elegido, nunca el contenido. No guarda
+        texto ni bytes de archivos. Las salas y las entradas de búsqueda
+        terminan con sus conexiones abiertas; los registros de conexión
+        de siete días de Cloudflare contienen metadatos, nunca el contenido."""
 
 [[faq]]
 q = "¿Y por qué esta herramienta habla con un servidor, precisamente en este sitio?"
@@ -223,15 +238,20 @@ a = """
         algo es el intermediario, la única dependencia de red de esta
         página, nombrado en su <code>Content-Security-Policy</code> y
         publicado en el mismo repositorio que la página. Es el servidor más
-        pequeño capaz de hacer el trabajo: no guarda nada, no lee nada y se
-        aparta en cuanto los dos navegadores tienen un canal directo."""
+        pequeño capaz de hacer el trabajo. También enumera los nombres de
+        enlace locales cuya publicación se haya elegido, para navegadores
+        que usan la misma dirección IP pública. No guarda contenido ni
+        puede leer el canal cifrado entre los navegadores."""
 
 [[faq]]
 q = "¿Qué puede ver exactamente ese servidor?"
 a = """
         Que un nombre de enlace está en uso, cuándo se conectan y se van
         quien comparte y los lectores, sus direcciones IP y el
-        establecimiento de la conexión cifrada que intercambian. No el
+        establecimiento de la conexión cifrada que intercambian, y los
+        nombres de enlace cuya publicación en la lista se haya elegido.
+        La lista agrupa los nombres por la dirección IP pública que ve
+        el servidor. No el
         texto, no los archivos, no sus nombres ni tamaños, no a quién se
         dejó entrar en una compartición privada, y no lo que nadie escribió
         al presentarse: todo eso viaja por el canal directo, cifrado de
@@ -353,7 +373,31 @@ a = """
 [[faq]]
 q = "¿Puedo compartir archivos por mi red local?"
 a = """
-Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200&nbsp;MB por archivo. Una sesión puede incluir hasta 256 archivos."""
+Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200&nbsp;MB por archivo. Una sesión puede incluir hasta 256 archivos.
+        Visible en la lista viene activado en este modo: el otro navegador
+        puede abrir la página de la herramienta y elegir tu nombre en la
+        lista de esta conexión. Desmárcalo para compartir solo por enlace;
+        también puedes seguir copiando el enlace para el lector."""
+
+[[faq]]
+q = "¿Cómo encuentra la lista las comparticiones locales?"
+a = """
+        Al abrir la página inicial de esta herramienta se piden al
+        intermediario los nombres de enlace visibles en la lista de
+        navegadores que usan la misma dirección IP pública. Normalmente
+        significa el mismo router, pero una VPN compartida o un proveedor
+        que comparte una dirección pueden incluir otras redes; IPv6 o
+        rutas distintas pueden ocultar dispositivos cercanos. La lista no
+        demuestra que sea una misma red local física. Se necesita internet.
+        Las comparticiones locales se anuncian por defecto; desmarca
+        Visible en la lista para compartir solo por enlace y mantén
+        Privado activado en redes compartidas. Al elegir un nombre se abre
+        la página de consentimiento de la compartición; nunca conecta
+        automáticamente ni evita la aprobación privada. El directorio
+        conserva solo los nombres de enlace mientras quien comparte sigue
+        conectado, nunca el texto, los nombres de archivo ni sus bytes.
+        Si la búsqueda no está disponible, compartir por enlace sigue
+        funcionando."""
 
 [schema]
 description = "Comparte texto y archivos de un navegador a otro por una conexión WebRTC directa y cifrada de extremo a extremo. Nombres de enlace que se pueden decir en voz alta, actualización en vivo al escribir, Markdown y aprobación por lector. Ningún servidor guarda nada; lo compartido se acaba cuando quien comparte cierra la pestaña."
@@ -369,4 +413,5 @@ features = [
   "El borrador queda solo en el navegador de quien comparte - o en ninguna parte, si es de un solo uso",
   "Todo el componente de servidor es un intermediario sin almacenamiento, publicado en el repositorio",
   "Modo opcional de red local sin descubrimiento público de direcciones ni retransmisor de internet",
+  "Los nombres de enlace locales visibles en la lista aparecen para navegadores con la misma IP pública, respetando el consentimiento y la aprobación privada",
 ]

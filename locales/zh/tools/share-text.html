@@ -3,6 +3,14 @@
        Chinese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>此连接上的本地分享</h2>
+      <p id="discovery-status" role="status" aria-live="polite">正在寻找本地分享…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">这个列表显示与你使用同一公共 IP 地址的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv6 或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
+      <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> 写下来，或附上文件</h2>
       <div class="panel" id="editor">
@@ -33,7 +41,7 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="换个建议名">&#8635;</button>
         </div>
-        <p class="field-note">名字就是地址，也是唯一的秘密：短到能隔着房间喊出来；私密的东西，配个没人猜得中的名字。</p>
+        <p class="field-note">名称就是地址，短到可以隔着房间喊出来。可被发现的本地分享会向此连接上的其他人显示名称。敏感内容请保持私密开启。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -45,6 +53,11 @@
           局域网——不使用互联网中转
         </label>
         <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          可被发现——在这条互联网连接上显示链接名
+        </label>
+        <p class="discovery-note">可被发现的分享会向使用同一公共 IP 地址的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           一次性——草稿不留在这台设备上
@@ -64,12 +77,13 @@
         <button type="button" id="stop" class="danger">停止分享</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>哪里都不存任何东西</h2>
-      <p>文本和文件加密后从这个标签页直达每位读者的标签页。唯一牵涉的服务器只负责引见两个浏览器，永远看不到它们交换了什么。关掉这个标签页，分享结束，读者开着的页面也随之清空——不过别人已经复制或下载的东西归他。</p>
+      <p>文字和文件加密后从这个标签页直达每位读者的标签页。引见服务器负责引介浏览器、列出可被发现的链接名，永远看不到文字或文件。关闭此标签页会结束分享并清空读者开着的页面；不过对方已经复制或下载的东西仍归对方。</p>
     </section>
   </section>
 
@@ -137,6 +151,15 @@
     <span data-phrase="units.b">B</span>
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="discovery.connecting">正在寻找本地分享…</span>
+    <span data-phrase="discovery.empty">这里暂时没有其他可被发现的本地分享。请让分享方保持标签页开启，或使用对方的链接。</span>
+    <span data-phrase="discovery.ready">选择一个分享，打开其连接页面。</span>
+    <span data-phrase="discovery.unavailable">本地发现暂不可用。你仍可使用分享链接。</span>
+    <span data-phrase="discovery.open">打开分享</span>
+    <span data-phrase="discovery.publishing">正在让这个本地分享可被发现…</span>
+    <span data-phrase="discovery.published">你的本地分享在此连接上可被发现。</span>
+    <span data-phrase="discovery.not-published">此分享可通过链接打开；本地发现未能发布它。</span>
 
     <span data-phrase="share.waiting">分享中。等着有人打开链接——别关这个标签页。</span>
     <span data-phrase="share.reader-count.one">1 位读者已连接</span>

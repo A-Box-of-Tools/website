@@ -5,6 +5,7 @@ import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
 import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive-file.js';
+import { watchDiscovery } from './discovery.js';
 
 // The one address this tool contacts, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -30,7 +31,7 @@ const RENDEZVOUS = 'wss://rendezvous.abox.tools';
 const RELAY_FLAG = (code) => `share-text-relay:${code}`;
 const RELAY_WAIT = 5000;
 
-const wsUrl = (code, role) => `${RENDEZVOUS}/ws/${code}?role=${role}`;
+const wsUrl = (code, role, advertise = false) => `${RENDEZVOUS}/ws/${code}?role=${role}${advertise ? '&local=1&discover=1' : ''}`;
 const shareUrl = (code) => makeShareUrl(location.href, code, isLocal);
 
 const MAX_FILE = 200 * 1024 * 1024;
@@ -54,6 +55,12 @@ let attempts = 0;
 let suggestion = '';
 let isPrivate = true;        // captured when sharing starts
 let isLocal = isLocalLink(location.href);
+let isDiscoverable = false;
+let discovery = null;
+let discoveryCode = '';
+let discoveryState = 'connecting';
+let foundShares = [];
+let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
@@ -102,10 +109,15 @@ function suggest() {
 }
 
 function unlock() {
+  discoveryCode = '';
+  isDiscoverable = false;
+  renderDiscovery();
   $('code').disabled = false;
   $('suggest').disabled = false;
   $('private').disabled = false;
   $('local').disabled = false;
+  $('discoverable').disabled = !$('local').checked;
+  $('discovery-share-status').textContent = '';
   $('publish').hidden = false;
   $('stop').hidden = true;
   $('linkrow').hidden = true;
@@ -119,6 +131,7 @@ function setStatus(text, warn = false) {
 }
 
 function refreshCount() {
+  if (!$('publish').hidden) return;
   const n = channels.size;
   const w = pending.size;
   if (n === 0 && w === 0) {
@@ -266,10 +279,54 @@ async function sendFile(dc, id) {
   dc.send(JSON.stringify({ type: 'file-end', id }));
 }
 
+/* ----------------------------------------------------- local discovery */
+
+function renderDiscovery() {
+  const list = $('discovery-list');
+  list.textContent = '';
+  const others = foundShares.filter((share) => share.code !== discoveryCode);
+  for (const [index, share] of others.entries()) {
+    const row = document.createElement('div');
+    row.className = 'discovery-row';
+    const name = document.createElement('span');
+    name.className = 'discovery-code';
+    name.id = `discovery-code-${index}`;
+    name.textContent = share.code;
+    const open = document.createElement('a');
+    open.className = 'discovery-open';
+    open.href = makeShareUrl(location.href, share.code, true);
+    // Opening a listed share must not end this tab's own share or draft.
+    open.target = '_blank';
+    open.rel = 'noopener';
+    open.setAttribute('aria-describedby', name.id);
+    open.textContent = phrase('discovery.open');
+    row.append(name, open);
+    list.append(row);
+  }
+  const state = discoveryState === 'ready' ? (others.length ? 'ready' : 'empty') : discoveryState;
+  $('discovery-status').textContent = phrase(`discovery.${state}`);
+}
+
+function startDiscovery() {
+  discovery = watchDiscovery(`${RENDEZVOUS}/discover`, {
+    list(shares) { foundShares = shares; renderDiscovery(); },
+    status(state) { discoveryState = state; renderDiscovery(); },
+    publication(state) {
+      $('discovery-share-status').textContent = state && isDiscoverable && $('publish').hidden
+        ? phrase(`discovery.${state}`) : '';
+    },
+  });
+  $('discovery-refresh').addEventListener('click', () => discovery.refresh());
+}
+
+$('local').addEventListener('change', () => {
+  $('discoverable').disabled = !$('local').checked;
+});
+
 /* ------------------------------------------------- the sharer's connection */
 
 function hostSocket(code, onOpen) {
-  const ws = new WebSocket(wsUrl(code, 'host'));
+  const ws = new WebSocket(wsUrl(code, 'host', isLocal && isDiscoverable));
   sock = ws;
   let pulse = 0;
   ws.onopen = () => {
@@ -277,11 +334,21 @@ function hostSocket(code, onOpen) {
     pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
     keepalive = pulse;
     onOpen();
+    if (isDiscoverable) {
+      $('discovery-share-status').textContent = phrase('discovery.publishing');
+      announcementTimer = setTimeout(() => {
+        if (sock === ws && isDiscoverable) $('discovery-share-status').textContent = phrase('discovery.not-published');
+      }, 8000);
+    }
   };
   ws.onmessage = (e) => {
     if (sock !== ws) return;
     if (e.data === 'pong') return;
     const m = JSON.parse(e.data);
+    if (m.type === 'host-ready' && isLocal && isDiscoverable && m.discovery?.code === code) {
+      if (discovery?.publish(code, m.discovery.lease)) clearTimeout(announcementTimer);
+      return;
+    }
     if (m.type === 'leave') {
       // The reader's page never closes its rendezvous socket on purpose, so
       // a leave means the reader is gone. The peer channel's own close event
@@ -296,6 +363,8 @@ function hostSocket(code, onOpen) {
     // arrives. That close belongs to its own room and its own heartbeat.
     clearInterval(pulse);
     if (sock !== ws) return;
+    clearTimeout(announcementTimer);
+    discovery?.unpublish();
     if (e.code === 4409) {
       // A collision on our own suggestion is bad luck, silently retried; a
       // collision on a name the user chose is theirs to resolve.
@@ -327,6 +396,10 @@ function publish() {
   $('private').disabled = true;
   isLocal = $('local').checked;
   $('local').disabled = true;
+  isDiscoverable = isLocal && $('discoverable').checked;
+  $('discoverable').disabled = true;
+  discoveryCode = code;
+  renderDiscovery();
   $('publish').hidden = true;
   setStatus(phrase('share.setting-up'));
   hostSocket(code, () => {
@@ -479,6 +552,11 @@ $('save').addEventListener('click', () => {
 $('publish').addEventListener('click', publish);
 
 $('stop').addEventListener('click', () => {
+  clearTimeout(announcementTimer);
+  discovery?.unpublish();
+  isDiscoverable = false;
+  discoveryCode = '';
+  renderDiscovery();
   sock?.close(1000);
   clearInterval(keepalive);
   for (const pc of peers.values()) pc.close();
@@ -941,7 +1019,12 @@ window.addEventListener('unhandledrejection', (event) => bootError(event.reason?
 const code = location.hash.replace(/^#/, '').toLowerCase();
 $('local').checked = isLocal;
 if (CODE_PATTERN.test(code)) view(code);
-else { suggest(); restore(); }
+else {
+  $('discoverable').disabled = !isLocal;
+  suggest();
+  restore();
+  startDiscovery();
+}
 
 // A share link pasted into an already-open page changes only the hash, and
 // hash navigation never reloads the document on its own - so make it, or

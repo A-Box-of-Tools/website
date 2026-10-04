@@ -16,32 +16,19 @@ og_title = "Eine Freigabe, die endet, sobald Sie den Tab schließen"
 og_description = "Text und Dateien wandern verschlüsselt direkt von Ihrem Browser in den des Lesers. Der Server stellt die beiden nur einander vor und sieht den Inhalt nie. Kein Speicher, kein Verlauf, kein Konto - Tab zu, und alles ist weg, überall."
 og_image_alt = "Text & Dateien teilen - direkt von Browser zu Browser, nichts gespeichert"
 
-pledge = """
-    Was Sie hier teilen, wandert über einen Ende-zu-Ende-verschlüsselten
-    WebRTC-Kanal von Ihrem Browser in den jedes Lesers, und nirgendwohin
-    sonst. Der eine beteiligte Server &mdash; in der
-    <code>Content-Security-Policy</code> dieser Seite benannt, Quelltext im
-    Repository &mdash; stellt die beiden Browser einander vor und tritt dann
-    beiseite: Er speichert nichts, und der Inhalt läuft nie durch ihn
-    hindurch. Es gibt keinen Verlauf und kein Konto. Schließen Sie diesen
-    Tab, endet die Freigabe überall zugleich, auch auf den offenen Seiten
-    der Leser."""
+pledge = "Was Sie hier teilen, wandert über einen Ende-zu-Ende-verschlüsselten WebRTC-Kanal von Ihrem Browser in den jedes Lesers, und nirgendwohin sonst. Der eine beteiligte Server — in der <code>Content-Security-Policy</code> dieser Seite benannt, Quelltext im Repository — stellt die Browser einander vor und listet auffindbare lokale Link-Namen. Er hält weder geteilten Text noch Dateien; der Inhalt läuft nie durch ihn. Die Namen in der Suche bestehen nur, solange der Teilende verbunden ist. Es gibt keinen Inhaltsverlauf und kein Konto. Schließen Sie diesen Tab, endet die Freigabe überall zugleich, auch auf den offenen Seiten der Leser."
 
-live_hint = """
-      Öffnen Sie die DevTools und sehen Sie beim Teilen im Tab
-      &bdquo;Netzwerk&ldquo; zu. Sie sehen einen WebSocket zum Vermittler mit
-      ein paar Kilobyte Verbindungsaufbau &mdash; und wie viel Sie auch
-      tippen oder anhängen: keine einzige Anfrage, die etwas davon trägt."""
+live_hint = "Öffnen Sie die DevTools und beobachten Sie beim Teilen den Tab „Netzwerk“. Beim Öffnen dieser Startseite erscheint ein WebSocket zum Vermittler für lokale Link-Namen. Das Starten einer Freigabe öffnet einen weiteren für den Verbindungsaufbau. Ein Leser nutzt einen Vermittlungssocket. Wie viel Sie auch tippen oder anhängen: Keiner davon trägt Text oder Dateien."
 
 read_first = """
-, <code>src/main.js</code> für beide
+      , <code>src/main.js</code> für beide
       Hälften des Austauschs &mdash; der Tab des Teilenden und der des Lesers
       sind dieselbe Datei &mdash; und <code>src/markdown.js</code> für den
       Renderer, der auf Text von der anderen Seite der Leitung läuft und
       deshalb alles maskiert, bevor er irgendetwas ausgibt. Der vollständige
       Quelltext des Servers ist <code>workers/rendezvous/worker.js</code> im
       selben Repository: ein Raum pro Link-Name, der nichts hält als die
-      offenen Verbindungen."""
+      offenen Verbindungen. Die zusätzliche Suche hält nur veröffentlichte Link-Namen an offenen Verbindungen, niemals Text oder Dateien."""
 
 howto_heading = "So teilen Sie Text und Dateien, ohne sie irgendwohin hochzuladen"
 
@@ -84,23 +71,7 @@ Text und Dateien reisen über einen WebRTC-Datenkanal: eine direkte, DTLS-versch
 
 [[privacy]]
 title = "Was der Vermittler ist, und alles, was er sieht."
-body = """
- Eine Direktverbindung braucht
-      eine Vorstellung, deshalb öffnet diese Seite &mdash; als einzige dieser
-      Website &mdash; einen WebSocket zu einem eigenen Server. Er bringt die
-      Person, die einen Link-Namen eingetippt hat, mit der zusammen, die
-      darunter teilt, reicht ein paar Kilobyte Verbindungsaushandlung weiter
-      und hält nichts fest: Es wird nie ein Speicher beschrieben, und ein
-      Raum hört auf zu existieren, sobald der Teilende die Verbindung trennt.
-      Er kann sehen, dass ein Name in Benutzung ist, wann jemand kommt und
-      geht, und die IP-Adressen. Er kann nicht sehen: den Text, die Dateien,
-      wer eingelassen wurde oder was jemand geschrieben hat &mdash; selbst
-      das Anklopfen bei einer privaten Freigabe reist über den
-      verschlüsselten Direktkanal. Sein vollständiger Quelltext liegt im
-      Repository neben dem dieses Werkzeugs. Was eine Freigabe überdauert, ist
-      eine einzige Sache: Cloudflare, das den Server betreibt, führt sieben
-      Tage lang ein Protokoll jeder Verbindung, mit dem Link-Namen, der
-      Adresse und der Uhrzeit, nie mit einer Nutzlast."""
+body = "Eine Direktverbindung braucht eine Vorstellung. Diese Startseite öffnet automatisch einen WebSocket zum Vermittler für auffindbare lokale Link-Namen; das Starten einer Freigabe öffnet einen weiteren für die Freigabe selbst. Ein Leser nutzt einen Vermittlungssocket. Der Server bringt den Leser mit dem Teilenden unter dem Link-Namen zusammen und reicht einige Kilobyte Verbindungsaushandlung weiter. Er schreibt keinen Speicher; Räume und Sucheinträge enden mit ihren offenen Verbindungen. Er sieht Namen, Verbindungszeiten, IP-Adressen und Verbindungsaufbau, aber keinen Text, keine Dateien, keine Zulassungsentscheidung und keine private Vorstellung. Die Suche zeigt nur Namen verbundener Teilender mit derselben öffentlichen IP-Adresse. Gemeinsame VPNs oder vom Anbieter geteilte Adressen können andere Netze einschließen; Geräte in der Nähe mit anderen öffentlichen Adressen fehlen möglicherweise. Der vollständige Quelltext liegt im Repository. Cloudflare hält Verbindungsprotokolle sieben Tage vor: Adresse, Link-Name und Zeit, niemals eine Nutzlast."
 
 [[privacy]]
 title = "Nichts ist gespeichert - das Schließen des Tabs ist die Löschung."
@@ -115,14 +86,8 @@ body = """
       markiert liegt er nirgendwo."""
 
 [[privacy]]
-title = "Der Link-Name ist das einzige Geheimnis, und der Privat-Schalter das Schloss."
-body = """
- Wer einen Namen kennt oder
-      errät, kann die Freigabe dahinter öffnen. Deshalb sind die Vorschläge
-      drei zufällige Wörter, deshalb verdient alles Heikle einen
-      unerratbaren Namen &mdash; oder den Privat-Schalter, der standardmäßig
-      an ist: Jeder ankommende Leser muss sich vorstellen, über den
-      Direktkanal, und nichts wird gesendet, bevor Sie ihn einlassen."""
+title = "Der Link-Name ist eine Adresse, und Privat ist das Schloss."
+body = "Wer einen Namen kennt oder errät, kann die Freigabe dahinter öffnen. Auffindbare lokale Freigaben zeigen ihren Namen anderen Browsern mit derselben öffentlichen IP-Adresse. Der Name ist dann innerhalb dieser Gruppe öffentlich. Lassen Sie Privat für alles Sensible an. Es ist standardmäßig aktiv: Jeder Leser stellt sich über den verschlüsselten Peer-Kanal vor, und nichts wird gesendet, bevor Sie ihn einlassen."
 
 [[privacy]]
 title = "Eine Direktverbindung zeigt jeder Seite die Adresse der anderen."
@@ -170,14 +135,7 @@ body = """
 
 [[howto]]
 title = "Benennen Sie den Link, oder behalten Sie den Vorschlag."
-body = """
- Der Name ist die Adresse:
-      <code>brave-otter-42</code> lässt sich durch einen Raum rufen, am
-      Telefon vorlesen oder von einer Tafel abtippen. Er ist auch das
-      einzige Geheimnis &mdash; wählen Sie für alles Private entweder einen
-      Namen, den niemand erraten würde, oder verlassen Sie sich auf den
-      Privat-Schalter. Ein Name, unter dem gerade jemand anderes teilt,
-      wird abgelehnt, und Ihrer wird frei, sobald Sie aufhören."""
+body = "Der Name ist die Adresse: <code>brave-otter-42</code> lässt sich durch einen Raum rufen, am Telefon vorlesen oder von einer Tafel abtippen. Auffindbare lokale Freigaben listen ihren Namen, daher sollte Privat für sensible Inhalte an bleiben. Für eine Freigabe nur per Link ist auch ein unerratbarer Name hilfreich. Ein bereits aktiv genutzter Name wird abgelehnt und wird frei, sobald Sie aufhören."
 
 [[howto]]
 title = "Entscheiden Sie, wer hineinkommt."
@@ -211,42 +169,15 @@ body = """
 
 [[faq]]
 q = "Wird irgendetwas hochgeladen, irgendwohin?"
-a = """
-        Nein. Text und Dateien wandern über einen verschlüsselten
-        WebRTC-Kanal direkt von Ihrem Browser in den jedes Lesers. Der eine
-        beteiligte Server trägt die Vorstellung &mdash; ein paar Kilobyte
-        Verbindungsaushandlung &mdash; und nie den Inhalt. Auf ihm gibt es
-        nichts zu erbeuten, anzufordern oder zu verlieren: Er hält kein Byte
-        von Ihnen, und ein Raum hört auf zu existieren, sobald Sie die
-        Verbindung trennen."""
+a = "Kein Text und keine Datei werden hochgeladen. Sie reisen direkt über einen verschlüsselten WebRTC-Kanal von Ihrem Browser in den jedes Lesers. Der Server trägt die Vorstellung und veröffentlichte lokale Link-Namen, niemals den Inhalt. Räume und Sucheinträge enden mit ihren offenen Verbindungen. Cloudflares siebentägige Verbindungsprotokolle enthalten Metadaten, niemals eine Nutzlast."
 
 [[faq]]
 q = "Warum spricht dieses Werkzeug überhaupt mit einem Server, ausgerechnet auf dieser Website?"
-a = """
-        Weil zwei Browser einander nicht allein finden können: Irgendetwas
-        muss die Person, die <code>brave-otter-42</code> eingetippt hat, mit
-        der zusammenbringen, die darunter teilt, und das Verbindungsangebot
-        zwischen ihnen übertragen. Dieses Etwas ist der Vermittler, die eine
-        Netzabhängigkeit dieser Seite, benannt in ihrer
-        <code>Content-Security-Policy</code> und veröffentlicht im selben
-        Repository wie die Seite selbst. Er ist der kleinste Server, der die
-        Aufgabe erfüllen könnte &mdash; er speichert nichts, liest nichts
-        und tritt beiseite, sobald die beiden Browser einen direkten Kanal
-        haben."""
+a = "Weil zwei Browser einander nicht allein finden: Der Vermittler verbindet die Person, die <code>brave-otter-42</code> eingegeben hat, mit der, die darunter teilt, und trägt den Verbindungsaufbau. Er ist in der <code>Content-Security-Policy</code> dieser Seite benannt, und sein Quelltext liegt im selben Repository. Er zeigt auch veröffentlichte lokale Link-Namen für Browser mit derselben öffentlichen IP-Adresse. Er hält keinen Inhalt und kann den verschlüsselten Peer-Kanal nicht lesen."
 
 [[faq]]
 q = "Was genau kann dieser Server sehen?"
-a = """
-        Dass ein Link-Name in Benutzung ist, wann ein Teilender und Leser
-        sich verbinden und gehen, ihre IP-Adressen und den Aufbau der
-        verschlüsselten Verbindung, den sie austauschen. Nicht den Text,
-        nicht die Dateien, nicht deren Namen oder Größen, nicht, wer bei
-        einer privaten Freigabe eingelassen wurde, und nicht, was jemand in
-        einer Vorstellung geschrieben hat &mdash; all das reist über den
-        Ende-zu-Ende-verschlüsselten Direktkanal, der nicht durch den Server
-        läuft. Cloudflare, das den Server betreibt, führt sieben Tage lang ein
-        Protokoll jeder Verbindung: den Link-Namen, die Adresse und die
-        Uhrzeit. Sonst überdauert nichts die Freigabe."""
+a = "Er sieht genutzte Link-Namen, wann Teilende und Leser kommen und gehen, ihre IP-Adressen und den Verbindungsaufbau. Die Suche gruppiert veröffentlichte Namen anhand der öffentlichen IP-Adresse, die der Server sieht. Er sieht keinen Text, keine Dateien oder deren Namen und Größen, keine private Zulassung und keine Vorstellung. All das reist über den Ende-zu-Ende-verschlüsselten Peer-Kanal. Cloudflare hält Verbindungsprotokolle sieben Tage vor: Link-Name, Adresse und Zeit, niemals eine Nutzlast."
 
 [[faq]]
 q = "Was passiert, wenn ich den Tab schließe?"
@@ -365,21 +296,12 @@ a = """
 
 [[faq]]
 q = "Kann ich Dateien über mein lokales Netzwerk teilen?"
-a = """
-Ja. Wählen Sie vor dem Start Lokales Netzwerk — kein Internet-Relais, verbinden Sie beide Geräte mit demselben WLAN oder Ethernet-Netz und kopieren Sie den Link für den Leser. Der Link enthält den Modus; ein Leser mit einem anderen Modus muss ausdrücklich wählen, bevor er es mit dem Modus des Teilenden erneut versucht. Internet bleibt für die Vermittlung zwischen den Browsern nötig. Dieser Modus nutzt keine öffentliche Adressermittlung und wechselt nie auf ein Internet-Relais. Ein VPN oder Browser-Netzwerkrichtlinien können den Weg ändern oder die Verbindung verhindern; die Einstellung beweist nicht, dass Bytes in einem Gebäude bleiben. Private Freigabe bleibt die Voreinstellung, und Dateien sind weiterhin auf 200&nbsp;MB pro Stück begrenzt. Eine Freigabe kann bis zu 256 Dateien enthalten."""
+a = "Ja. Wählen Sie vor dem Start Lokales Netzwerk — kein Internet-Relais, verbinden Sie beide Geräte mit demselben WLAN oder Ethernet-Netz und kopieren Sie den Link für den Leser. Der Link enthält den Modus; ein Leser mit einem anderen Modus muss ausdrücklich wählen, bevor er es mit dem Modus des Teilenden erneut versucht. Internet bleibt für die Vermittlung zwischen den Browsern nötig. Dieser Modus nutzt keine öffentliche Adressermittlung und wechselt nie auf ein Internet-Relais. Ein VPN oder Browser-Netzwerkrichtlinien können den Weg ändern oder die Verbindung verhindern; die Einstellung beweist nicht, dass Bytes in einem Gebäude bleiben. Private Freigabe bleibt die Voreinstellung, und Dateien sind weiterhin auf 200&nbsp;MB pro Stück begrenzt. Eine Freigabe kann bis zu 256 Dateien enthalten. Auffindbar ist in diesem Modus standardmäßig an: Der andere Browser kann die Startseite öffnen und Ihren Namen aus der Liste an diesem Anschluss wählen. Schalten Sie Auffindbar aus, um nur per Link zu teilen. Lassen Sie Privat in gemeinsam genutzten Netzen an."
+
+[[faq]]
+q = "Wie findet die Liste lokale Freigaben?"
+a = "Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IP-Adresse wie Ihrer. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv6 oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden. Lokale Freigaben werden standardmäßig veröffentlicht; schalten Sie Auffindbar aus, um nur per Link zu teilen. Das Wählen eines Namens öffnet die Zustimmungsseite und stellt nie automatisch eine Verbindung her oder umgeht die private Freigabe. Die Suche hält nur Link-Namen, solange der Teilende verbunden ist, niemals Text, Dateinamen oder Dateiinhalte. Ist die Suche nicht verfügbar, funktioniert der Freigabe-Link weiterhin."
 
 [schema]
 description = "Text und Dateien über eine direkte, Ende-zu-Ende-verschlüsselte WebRTC-Verbindung von einem Browser in einen anderen teilen. Aussprechbare Link-Namen, Live-Aktualisierung beim Tippen, Markdown-Rendern und Freigabe pro Leser. Auf keinem Server wird etwas gespeichert; die Freigabe endet, wenn der Teilende den Tab schließt."
-features = [
-  "Text und Dateien reisen von Browser zu Browser, Ende-zu-Ende-verschlüsselt, nie durch einen Server",
-  "Die Freigabe lebt im offenen Tab: ihn zu schließen beendet sie und leert die Seiten der Leser",
-  "Aussprechbare Link-Namen - brave-otter-42 -, änderbar, eine lebende Freigabe pro Name",
-  "Standardmäßig privat: jeder Leser stellt sich vor, und der Teilende lässt ein oder weist ab",
-  "Leser stimmen zu, bevor eine Verbindung existiert, klar gewarnt, dass IPs sichtbar werden",
-  "Live-Aktualisierung: Änderungen erreichen verbundene Leser, während der Teilende tippt",
-  "Markdown, auf beiden Seiten umschaltbar, gerendert von einem maskierenden eingebauten Renderer",
-  "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei",
-  "Der Entwurf bleibt nur im Browser des Teilenden - oder nirgends, als einmalig markiert",
-  "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository",
-  "Optionaler Modus für das lokale Netzwerk ohne öffentliche Adressermittlung oder Internet-Relais",
-]
+features = ["Text und Dateien reisen von Browser zu Browser, Ende-zu-Ende-verschlüsselt, nie durch einen Server", "Die Freigabe lebt im offenen Tab: ihn zu schließen beendet sie und leert die Seiten der Leser", "Aussprechbare Link-Namen - brave-otter-42 -, änderbar, eine lebende Freigabe pro Name", "Standardmäßig privat: jeder Leser stellt sich vor, und der Teilende lässt ein oder weist ab", "Leser stimmen zu, bevor eine Verbindung existiert, klar gewarnt, dass IPs sichtbar werden", "Live-Aktualisierung: Änderungen erreichen verbundene Leser, während der Teilende tippt", "Markdown, auf beiden Seiten umschaltbar, gerendert von einem maskierenden eingebauten Renderer", "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei", "Der Entwurf bleibt nur im Browser des Teilenden - oder nirgends, als einmalig markiert", "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository", "Optionaler Modus für das lokale Netzwerk ohne öffentliche Adressermittlung oder Internet-Relais", "Auffindbare lokale Link-Namen für Browser mit gemeinsamer öffentlicher IP-Adresse, weiterhin mit Zustimmung und privater Freigabe"]

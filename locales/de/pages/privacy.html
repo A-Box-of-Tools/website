@@ -119,19 +119,23 @@
 
     <h3>Der Vermittler des Teilen-Werkzeugs</h3>
     <p>
-      Ein Werkzeug, <a href="../text-teilen/">Text &amp; Dateien teilen</a>,
-      bringt Text und Dateien direkt von einem Browser zum anderen, und eine
-      Direktverbindung braucht eine Vorstellung. Deshalb öffnet diese Seite,
-      als einzige dieser Website, einen WebSocket zu einem kleinen eigenen
-      Server, der die beiden Enden eines Link-Namens zusammenbringt und den
-      Verbindungsaufbau zwischen ihnen weiterreicht. Den Text und die Dateien
-      sieht er nie; die reisen über die verschlüsselte Verbindung, die er
-      vermittelt hat. Er sieht den Link-Namen, wann sich jede Seite verbindet
-      und wieder geht, und die IP-Adressen, und Cloudflare, das ihn betreibt,
-      führt sieben Tage lang ein Protokoll jeder Verbindung. Es ist das
-      einzige besucherbezogene Protokoll dieser Website, das wir lesen können.
-      Die Seite des Werkzeugs beschreibt ihn vollständig, und sein gesamter
-      Quelltext liegt im Repository.
+      <a href="../text-teilen/">Text &amp; Dateien teilen</a> bringt Text und
+      Dateien direkt von einem Browser zum anderen. Die Startseite verbindet
+      sich automatisch mit unserem Vermittler, um auffindbare lokale
+      Link-Namen anzuzeigen; beim Teilen kommt eine weitere Verbindung für die
+      Vorstellung der Browser hinzu. Die Liste gruppiert Namen nach
+      öffentlicher IP-Adresse und Seitenherkunft. Das weist auf einen
+      gemeinsamen Internetzugang hin, beweist aber kein gemeinsames physisches
+      Netzwerk. Ein geteiltes VPN oder eine vom Anbieter gemeinsam genutzte
+      Adresse kann andere Netzwerke einschließen. Der Server erhält nie den
+      geteilten Text oder die Dateien; diese reisen über eine verschlüsselte
+      Verbindung zwischen den Browsern. Die Namen im Verzeichnis leben nur
+      auf offenen Verbindungen und werden nicht dauerhaft gespeichert. Der
+      Server sieht Namen, Verbindungszeiten und IP-Adressen; Cloudflare hält
+      die Verbindungsprotokolle weiterhin sieben Tage vor. Dies sind nach wie
+      vor die einzigen besucherbezogenen Protokolle dieser Website, die wir
+      lesen können. Die Werkzeugseite beschreibt alles vollständig, und der
+      gesamte Serverquelltext steht im Repository.
     </p>
   </section>
 
