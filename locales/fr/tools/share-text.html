@@ -23,8 +23,7 @@
       <p class="field-note">
         Les fichiers voyagent par le même canal direct que le texte, jusqu'à
         200&nbsp;Mo pièce. Les lecteurs voient la liste et ne récupèrent
-        chaque fichier que s'ils le demandent.
-      </p>
+        chaque fichier que s'ils le demandent. Un partage peut contenir jusqu’à 256 fichiers.</p>
     </section>
 
     <section class="card">
@@ -46,6 +45,11 @@
           <input type="checkbox" id="private" checked>
           Privé &mdash; chaque lecteur doit demander, et vous l'admettez
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          Réseau local — sans relais internet
+        </label>
+        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Éphémère &mdash; ne pas garder le brouillon sur cet appareil
@@ -92,13 +96,8 @@
       <p id="view-status" role="status" aria-live="polite">Recherche de la personne qui partage&hellip;</p>
 
       <div id="consent" hidden>
-        <p>
-          Le lire connecte votre navigateur directement au sien &mdash;
-          c'est justement le principe : rien ici ne touche un serveur. Comme
-          toute connexion directe, elle laisse chaque bout voir l'adresse
-          réseau (IP) de l'autre. Rien n'est récupéré, et rien de vous n'est
-          partagé, tant que vous ne choisissez pas de vous connecter.
-        </p>
+        <p>La connexion permet à la personne qui partage d’envoyer le texte et les fichiers directement à votre navigateur par un canal chiffré. Comme toute connexion directe, elle révèle à chacun l’adresse réseau (IP) de l’autre. La personne qui partage apprend que vous avez ouvert ce lien seulement lorsque vous choisissez de vous connecter.</p>
+        <p id="local-note" hidden>Ce lien utilise le mode Réseau local. Les deux appareils doivent être sur le même réseau Wi-Fi ou Ethernet, et internet reste nécessaire pour les mettre en relation. Aucun serveur public de découverte d’adresses ni relais internet n’est utilisé. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
         </div>
@@ -130,6 +129,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">Réessayer par le relais</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">Réessayer avec le mode de connexion de la personne qui partage</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -176,6 +179,7 @@
     <span data-phrase="share.lost-rendezvous">Connexion à l'entremetteur perdue&nbsp;; nouvelle tentative. Les lecteurs connectés ne sont pas affectés.</span>
     <span data-phrase="share.stopped">Arrêté. Plus rien n'est partagé.</span>
     <span data-phrase="share.file-too-big">&laquo;&nbsp;{name}&nbsp;&raquo; dépasse la limite de 200 Mo.</span>
+    <span data-phrase="share.too-many-files">Un partage peut contenir jusqu’à 256 fichiers. Retirez-en un avant d’en ajouter d’autres.</span>
     <span data-phrase="share.leave-warning">Quitter cette page met fin au partage pour tout le monde. Continuer ?</span>
 
     <span data-phrase="copy.done">Copié</span>
@@ -201,6 +205,12 @@
     <span data-phrase="view.error">Quelque chose a mal tourné pendant la connexion. Rechargez la page et réessayez.</span>
     <span data-phrase="view.download">Télécharger</span>
     <span data-phrase="view.file-gone">N'est plus partagé</span>
+    <span data-phrase="share.local-waiting">Partage en mode Réseau local. En attente de l’ouverture du lien — gardez cet onglet ouvert.</span>
+    <span data-phrase="view.local-connecting">Connexion par le réseau local…</span>
+    <span data-phrase="view.mode-local">La personne qui partage utilise le mode Réseau local. Réessayez avec son mode pour vous connecter sans relais internet.</span>
+    <span data-phrase="view.mode-direct">La personne qui partage utilise le mode de connexion habituel. Réessayez avec son mode&nbsp;; un relais est proposé après l’échec d’une connexion directe et utilisé seulement si vous le choisissez.</span>
+    <span data-phrase="view.local-no-connect">Impossible de joindre la personne qui partage en mode Réseau local. Vérifiez que les deux appareils utilisent le même réseau Wi-Fi ou Ethernet&nbsp;; l’isolation du réseau invité, un VPN, un pare-feu ou les réglages du navigateur peuvent bloquer la connexion. Aucun relais internet n’est proposé dans ce mode.</span>
+    <span data-phrase="view.file-failed">Le téléchargement du fichier n’a pas pu être terminé. Vérifiez à nouveau ce lien pour relancer le téléchargement.</span>
 
     <span data-phrase="net.clean">ce que cette page partage n'est passé par
       aucun serveur. {total} fichiers chargés. {platform}</span>

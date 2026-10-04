@@ -23,8 +23,7 @@
       <p class="field-note">
         Dateien reisen über denselben Direktkanal wie der Text, bis
         200&nbsp;MB pro Stück. Leser sehen die Liste und holen jede Datei
-        nur, wenn sie danach fragen.
-      </p>
+        nur, wenn sie danach fragen. Eine Freigabe kann bis zu 256 Dateien enthalten.</p>
     </section>
 
     <section class="card">
@@ -46,6 +45,11 @@
           <input type="checkbox" id="private" checked>
           Privat &mdash; jeder Leser muss anfragen, und Sie lassen ihn ein
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          Lokales Netzwerk — kein Internet-Relais
+        </label>
+        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Einmalig &mdash; den Entwurf nicht auf diesem Gerät behalten
@@ -92,14 +96,8 @@
       <p id="view-status" role="status" aria-live="polite">Suche den Teilenden&hellip;</p>
 
       <div id="consent" hidden>
-        <p>
-          Es zu lesen verbindet Ihren Browser direkt mit dem des Teilenden
-          &mdash; genau das ist der Punkt: Nichts hier berührt einen Server.
-          Wie jede Direktverbindung zeigt sie beiden Seiten die Netzadresse
-          (IP) der jeweils anderen. Nichts wird geholt, und nichts über Sie
-          wird preisgegeben, bevor Sie sich nicht selbst zum Verbinden
-          entscheiden.
-        </p>
+        <p>Durch das Verbinden kann der Teilende Text und Dateien über einen verschlüsselten Kanal direkt an Ihren Browser senden. Wie jede Direktverbindung zeigt sie beiden Seiten die Netzwerkadresse (IP) der jeweils anderen. Der Teilende erfährt erst, dass Sie diesen Link geöffnet haben, wenn Sie sich zum Verbinden entscheiden.</p>
+        <p id="local-note" hidden>Dieser Link nutzt den Modus Lokales Netzwerk. Beide Geräte müssen im selben WLAN oder Ethernet-Netz sein; für die Vermittlung ist weiterhin Internet nötig. Es werden weder öffentliche Server zur Adressermittlung noch ein Internet-Relais genutzt. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
         </div>
@@ -131,6 +129,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">Erneut versuchen, über das Relais</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">Mit dem Verbindungsmodus des Teilenden erneut versuchen</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -177,6 +179,7 @@
     <span data-phrase="share.lost-rendezvous">Verbindung zum Vermittler verloren; neuer Versuch. Verbundene Leser sind nicht betroffen.</span>
     <span data-phrase="share.stopped">Beendet. Es wird nichts mehr geteilt.</span>
     <span data-phrase="share.file-too-big">&bdquo;{name}&ldquo; liegt über der Grenze von 200 MB.</span>
+    <span data-phrase="share.too-many-files">Eine Freigabe kann bis zu 256 Dateien enthalten. Entfernen Sie eine, bevor Sie weitere anhängen.</span>
     <span data-phrase="share.leave-warning">Wenn Sie diese Seite verlassen, endet die Freigabe für alle. Fortfahren?</span>
 
     <span data-phrase="copy.done">Kopiert</span>
@@ -202,6 +205,12 @@
     <span data-phrase="view.error">Beim Verbinden ist etwas schiefgegangen. Laden Sie die Seite neu und versuchen Sie es wieder.</span>
     <span data-phrase="view.download">Herunterladen</span>
     <span data-phrase="view.file-gone">Wird nicht mehr geteilt</span>
+    <span data-phrase="share.local-waiting">Freigabe im Modus Lokales Netzwerk läuft. Warte, bis jemand den Link öffnet — lassen Sie diesen Tab offen.</span>
+    <span data-phrase="view.local-connecting">Verbinde über das lokale Netzwerk…</span>
+    <span data-phrase="view.mode-local">Der Teilende nutzt den Modus Lokales Netzwerk. Versuchen Sie es mit seinem Modus erneut, um sich ohne Internet-Relais zu verbinden.</span>
+    <span data-phrase="view.mode-direct">Der Teilende nutzt den normalen Verbindungsmodus. Versuchen Sie es mit seinem Modus erneut; ein Relais wird erst nach einem gescheiterten Direktversuch angeboten und nur genutzt, wenn Sie es wählen.</span>
+    <span data-phrase="view.local-no-connect">Der Teilende ist im Modus Lokales Netzwerk nicht erreichbar. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen; die Geräteisolierung im Gastnetz, ein VPN, eine Firewall oder Browsereinstellungen können die Verbindung blockieren. In diesem Modus wird kein Internet-Relais angeboten.</span>
+    <span data-phrase="view.file-failed">Die Datei konnte nicht vollständig heruntergeladen werden. Prüfen Sie diesen Link erneut, um den Download noch einmal zu versuchen.</span>
 
     <span data-phrase="net.clean">Was diese Seite teilt, ist durch keinen Server
       gegangen. {total} Dateien geladen. {platform}</span>

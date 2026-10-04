@@ -22,7 +22,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="添付するファイル">
       <div id="attachlist"></div>
-      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。</p>
+      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。1回の共有には最大256ファイルを添付できます。</p>
     </section>
 
     <section class="card">
@@ -40,6 +40,11 @@
           <input type="checkbox" id="private" checked>
           非公開——読む側はそれぞれ求め、あなたが入れる
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          ローカルネットワーク——インターネット中継なし
+        </label>
+        <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           使い切り——下書きをこの端末に残さない
@@ -75,7 +80,8 @@
       <p id="view-status" role="status" aria-live="polite">共有している人を探しています&hellip;</p>
 
       <div id="consent" hidden>
-        <p>読むには、あなたのブラウザが共有する側のブラウザと直接つながります。それこそが要点で、ここでは何もサーバーに触れません。あらゆる直接接続と同じく、互いのネットワーク（IP）アドレスが見えるようになります。あなたが接続を選ぶまで、何も取得されず、あなたについて何も共有されません。</p>
+        <p>接続すると、共有者が暗号化された通信路でテキストやファイルをあなたのブラウザへ直接送れるようになります。直接接続では双方に相手のネットワーク（IP）アドレスが分かります。あなたが接続を選ぶまで、共有者はこのリンクが開かれたことを知りません。</p>
+        <p id="local-note" hidden>このリンクはローカルネットワークモードです。両方の端末を同じWi-Fiまたはイーサネットにつなぐ必要があり、紹介には引き続きインターネットが必要です。アドレスを調べる公開サーバーやインターネット中継は使いません。VPNやブラウザの設定により通信経路が変わることがあります。</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
         </div>
@@ -97,6 +103,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">中継を通してもう一度試す</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">共有者の接続モードで再試行</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -144,6 +154,7 @@
     <span data-phrase="share.lost-rendezvous">仲介役との接続が切れました。再試行しています。接続中の読む側には影響ありません。</span>
     <span data-phrase="share.stopped">停止しました。もう何も共有されていません。</span>
     <span data-phrase="share.file-too-big">「{name}」は200 MBの上限を超えています。</span>
+    <span data-phrase="share.too-many-files">1回の共有には最大256ファイルを添付できます。追加する前に1つ削除してください。</span>
     <span data-phrase="share.leave-warning">このページを離れると、共有は全員にとって終わります。続けますか？</span>
 
     <span data-phrase="copy.done">コピーしました</span>
@@ -169,6 +180,12 @@
     <span data-phrase="view.error">接続中に問題が起きました。ページを再読み込みして、もう一度試してください。</span>
     <span data-phrase="view.download">ダウンロード</span>
     <span data-phrase="view.file-gone">もう共有されていません</span>
+    <span data-phrase="share.local-waiting">ローカルネットワークモードで共有中です。リンクが開かれるのを待っています——このタブを開いたままにしてください。</span>
+    <span data-phrase="view.local-connecting">ローカルネットワークで接続中…</span>
+    <span data-phrase="view.mode-local">共有者はローカルネットワークモードを使っています。インターネット中継なしで接続するには、共有者のモードで再試行してください。</span>
+    <span data-phrase="view.mode-direct">共有者は通常の接続モードを使っています。共有者のモードで再試行してください。直接接続に失敗すると中継が提示されますが、選んだ場合にのみ使用されます。</span>
+    <span data-phrase="view.local-no-connect">ローカルネットワークモードで共有者に接続できませんでした。両方の端末が同じWi-Fiまたはイーサネットを使っているか確認してください。ゲストネットワークの端末分離、VPN、ファイアウォール、ブラウザ設定が接続を妨げることがあります。このモードではインターネット中継を提示しません。</span>
+    <span data-phrase="view.file-failed">ファイルのダウンロードを完了できませんでした。このリンクをもう一度確認してダウンロードを再試行してください。</span>
 
     <span data-phrase="net.clean">このページが共有するものは、どのサーバーも経由していません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>

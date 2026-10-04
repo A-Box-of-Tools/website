@@ -3,6 +3,8 @@
 import { phrase } from './shared/phrases.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
+import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
+import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive-file.js';
 
 // The one address this tool contacts, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -12,7 +14,6 @@ import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 // than the worker's workers.dev name: that whole domain is blocked inside
 // mainland China, and this one is not.
 const RENDEZVOUS = 'wss://rendezvous.abox.tools';
-const RTC = { iceServers: [{ urls: ['stun:stun.cloudflare.com:3478', 'stun:stun.l.google.com:19302'] }] };
 
 // A direct connection is what this page is, and it is also what a minority of
 // network pairs cannot make: a phone on a carrier's address-sharing network
@@ -30,9 +31,10 @@ const RELAY_FLAG = (code) => `share-text-relay:${code}`;
 const RELAY_WAIT = 5000;
 
 const wsUrl = (code, role) => `${RENDEZVOUS}/ws/${code}?role=${role}`;
-const shareUrl = (code) => `${location.origin}${location.pathname}#${code}`;
+const shareUrl = (code) => makeShareUrl(location.href, code, isLocal);
 
 const MAX_FILE = 200 * 1024 * 1024;
+const MAX_FILES = 256;
 const CHUNK = 64 * 1024;
 
 const $ = (id) => document.getElementById(id);
@@ -51,11 +53,12 @@ let keepalive = 0;
 let attempts = 0;
 let suggestion = '';
 let isPrivate = true;        // captured when sharing starts
+let isLocal = isLocalLink(location.href);
 const peers = new Map();     // viewer id -> RTCPeerConnection
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
-const sendQueue = new Map(); // viewer id -> promise chain, one transfer at a time
+const sendQueue = new Map(); // viewer id -> the one transfer in flight
 
 const payload = () => JSON.stringify({ type: 'text', body: $('text').value, md: $('markdown').checked });
 
@@ -102,6 +105,7 @@ function unlock() {
   $('code').disabled = false;
   $('suggest').disabled = false;
   $('private').disabled = false;
+  $('local').disabled = false;
   $('publish').hidden = false;
   $('stop').hidden = true;
   $('linkrow').hidden = true;
@@ -118,7 +122,7 @@ function refreshCount() {
   const n = channels.size;
   const w = pending.size;
   if (n === 0 && w === 0) {
-    setStatus(phrase('share.waiting'));
+    setStatus(phrase(isLocal ? 'share.local-waiting' : 'share.waiting'));
     return;
   }
   const parts = [n === 1 ? phrase('share.reader-count.one') : phrase('share.reader-count.many', { n })];
@@ -245,12 +249,19 @@ async function sendFile(dc, id) {
       // The close listener races the wait so a vanished reader cannot leave
       // this loop suspended forever.
       await new Promise((resolve) => {
-        dc.addEventListener('bufferedamountlow', resolve, { once: true });
-        dc.addEventListener('close', resolve, { once: true });
+        const resume = () => {
+          dc.removeEventListener('bufferedamountlow', resume);
+          dc.removeEventListener('close', resume);
+          resolve();
+        };
+        dc.addEventListener('bufferedamountlow', resume, { once: true });
+        dc.addEventListener('close', resume, { once: true });
       });
       if (dc.readyState !== 'open') return;
     }
-    dc.send(await f.slice(off, off + CHUNK).arrayBuffer());
+    const bytes = await f.slice(off, off + CHUNK).arrayBuffer();
+    if (dc.readyState !== 'open') return;
+    dc.send(bytes);
   }
   dc.send(JSON.stringify({ type: 'file-end', id }));
 }
@@ -258,12 +269,17 @@ async function sendFile(dc, id) {
 /* ------------------------------------------------- the sharer's connection */
 
 function hostSocket(code, onOpen) {
-  sock = new WebSocket(wsUrl(code, 'host'));
-  sock.onopen = () => {
-    keepalive = setInterval(() => { if (sock.readyState === 1) sock.send('ping'); }, 30000);
+  const ws = new WebSocket(wsUrl(code, 'host'));
+  sock = ws;
+  let pulse = 0;
+  ws.onopen = () => {
+    if (sock !== ws) { ws.close(1000); return; }
+    pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
+    keepalive = pulse;
     onOpen();
   };
-  sock.onmessage = (e) => {
+  ws.onmessage = (e) => {
+    if (sock !== ws) return;
     if (e.data === 'pong') return;
     const m = JSON.parse(e.data);
     if (m.type === 'leave') {
@@ -275,8 +291,11 @@ function hostSocket(code, onOpen) {
     }
     if (m.type === 'signal') hostSignal(m.from, m.data);
   };
-  sock.onclose = (e) => {
-    clearInterval(keepalive);
+  ws.onclose = (e) => {
+    // Stopping and starting can replace the socket before the old close
+    // arrives. That close belongs to its own room and its own heartbeat.
+    clearInterval(pulse);
+    if (sock !== ws) return;
     if (e.code === 4409) {
       // A collision on our own suggestion is bad luck, silently retried; a
       // collision on a name the user chose is theirs to resolve.
@@ -290,7 +309,7 @@ function hostSocket(code, onOpen) {
     // through the server - but new ones cannot join until this recovers.
     setStatus(phrase('share.lost-rendezvous'), true);
     setTimeout(() => {
-      if ($('publish').hidden) hostSocket(code, refreshCount);
+      if ($('publish').hidden && sock === ws) hostSocket(code, refreshCount);
     }, 5000);
   };
 }
@@ -306,6 +325,8 @@ function publish() {
   $('suggest').disabled = true;
   isPrivate = $('private').checked;
   $('private').disabled = true;
+  isLocal = $('local').checked;
+  $('local').disabled = true;
   $('publish').hidden = true;
   setStatus(phrase('share.setting-up'));
   hostSocket(code, () => {
@@ -318,12 +339,20 @@ function publish() {
 }
 
 async function hostSignal(from, data) {
+  if (!data || typeof data !== 'object') return;
+  // The copied link carries the mode for convenience; the sharer enforces
+  // it too, so removing its query cannot enable a relay on a local share.
+  if ((data.local === true) !== isLocal) {
+    if (sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { networkMode: isLocal ? 'local' : 'direct' } }));
+    return;
+  }
+  if (data.candidate && !allowedCandidate(data.candidate, isLocal)) return;
   let pc = peers.get(from);
   if (!pc) {
-    pc = new RTCPeerConnection(RTC);
+    pc = new RTCPeerConnection(rtcConfig(isLocal));
     peers.set(from, pc);
     pc.onicecandidate = (e) => {
-      if (e.candidate && sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { candidate: e.candidate } }));
+      if (e.candidate && allowedCandidate(e.candidate, isLocal) && sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { candidate: e.candidate, local: isLocal } }));
     };
     pc.ondatachannel = (e) => {
       const dc = e.channel;
@@ -350,10 +379,15 @@ async function hostSignal(from, data) {
           else dc.send(JSON.stringify({ type: 'private' }));
           return;
         }
-        // Files go only to admitted readers, one at a time, in the order asked.
+        // Files go only to admitted readers, with one request in flight.
         if (m.type === 'get' && channels.has(from)) {
-          const chain = sendQueue.get(from) ?? Promise.resolve();
-          sendQueue.set(from, chain.then(() => sendFile(dc, String(m.id))).catch(() => {}));
+          // A reader can ask again after completion, but cannot build an
+          // unbounded queue of the same large file while it is in flight.
+          if (sendQueue.has(from)) return;
+          const transfer = sendFile(dc, String(m.id)).catch(() => {}).finally(() => {
+            if (sendQueue.get(from) === transfer) sendQueue.delete(from);
+          });
+          sendQueue.set(from, transfer);
           return;
         }
         if (m.type === 'knock' && isPrivate && !channels.has(from) && !pending.has(from)) {
@@ -372,9 +406,9 @@ async function hostSignal(from, data) {
   }
   try {
     if (data.sdp) {
-      await pc.setRemoteDescription(data.sdp);
+      await pc.setRemoteDescription(isLocal ? localDescription(data.sdp) : data.sdp);
       await pc.setLocalDescription(await pc.createAnswer());
-      sock.send(JSON.stringify({ to: from, data: { sdp: pc.localDescription } }));
+      sock.send(JSON.stringify({ to: from, data: { sdp: pc.localDescription, local: isLocal } }));
     } else if (data.candidate) {
       await pc.addIceCandidate(data.candidate);
     }
@@ -418,6 +452,10 @@ $('fileinput').addEventListener('change', () => {
     if (f.size > MAX_FILE) {
       setStatus(phrase('share.file-too-big', { name: f.name }));
       continue;
+    }
+    if (attached.size >= MAX_FILES) {
+      setStatus(phrase('share.too-many-files'));
+      break;
     }
     attached.set(crypto.randomUUID(), f);
   }
@@ -472,6 +510,9 @@ let viewerLive = false;
 function view(code) {
   $('share').hidden = true;
   $('view').hidden = false;
+  const localMode = isLocalLink(location.href);
+  $('local-note').hidden = !localMode;
+  let retryLocal = localMode;
 
   // A language switch made while connected sets this flag on the way out.
   // It stands in for the consent the same reader gave moments ago on the
@@ -484,7 +525,7 @@ function view(code) {
     const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
     carried = Date.now() - stamp < 5 * 60 * 1000;
     sessionStorage.removeItem(`share-text-carry:${code}`);
-    wantRelay = carried && sessionStorage.getItem(RELAY_FLAG(code)) === '1';
+    wantRelay = !localMode && carried && sessionStorage.getItem(RELAY_FLAG(code)) === '1';
     sessionStorage.removeItem(RELAY_FLAG(code));
   } catch {}
 
@@ -519,7 +560,7 @@ function view(code) {
     $('knockrow').hidden = true;
     $('view-status').hidden = false;
     fail(phrase(key));
-    $('relayrow').hidden = !offerRelay;
+    $('relayrow').hidden = localMode || !offerRelay;
   };
   const awaitIntroduction = () => {
     clearTimeout(deliveryTimer);
@@ -545,7 +586,7 @@ function view(code) {
   function renderFilelist(list) {
     const box = $('filelist');
     box.textContent = '';
-    for (const f of list) {
+    for (const f of cleanFileList(list, MAX_FILE)) {
       const row = document.createElement('div');
       row.className = 'filerow';
       const name = document.createElement('span');
@@ -559,11 +600,12 @@ function view(code) {
       btn.className = 'ghost';
       btn.textContent = phrase('view.download');
       btn.onclick = () => {
-        if (rx !== null || dcRef === null) return;
-        rx = { id: f.id, name: name.textContent, size: Number(f.size) || 0, mime: '', parts: [], got: 0, btn };
+        if (rx !== null || dcRef?.readyState !== 'open') return;
+        rx = { id: f.id, name: name.textContent, size: f.size, mime: '', parts: [], got: 0, btn };
         btn.disabled = true;
         btn.textContent = '0%';
-        dcRef.send(JSON.stringify({ type: 'get', id: f.id }));
+        try { dcRef.send(JSON.stringify({ type: 'get', id: f.id })); }
+        catch { fileFailed(); }
       };
       row.append(name, size, btn);
       box.append(row);
@@ -571,20 +613,19 @@ function view(code) {
   }
 
   function fileBegin(msg) {
-    if (rx === null || msg.id !== rx.id) return;
-    rx.mime = String(msg.mime ?? '');
-    rx.size = Number(msg.size) || rx.size;
+    if (rx === null) return;
+    if (!beginFile(rx, msg, MAX_FILE)) fileFailed();
   }
 
   function fileChunk(buf) {
     if (rx === null) return;
-    rx.parts.push(buf);
-    rx.got += buf.byteLength;
+    if (!appendFileChunk(rx, buf, MAX_FILE)) { fileFailed(); return; }
     if (rx.size > 0) rx.btn.textContent = `${Math.min(99, Math.floor((rx.got / rx.size) * 100))}%`;
   }
 
-  function fileEnd() {
+  function fileEnd(msg) {
     if (rx === null) return;
+    if (!finishFile(rx, msg)) { fileFailed(); return; }
     const url = URL.createObjectURL(new Blob(rx.parts, { type: rx.mime }));
     const a = document.createElement('a');
     a.href = url;
@@ -600,6 +641,29 @@ function view(code) {
     if (rx === null) return;
     rx.btn.textContent = phrase('view.file-gone');
     rx = null;
+  }
+
+  function fileFailed() {
+    if (rx === null) return;
+    rx.btn.textContent = phrase('view.file-failed');
+    rx.parts = [];
+    rx = null;
+    // A broken transfer must finish its channel before a new request can
+    // reuse the binary lane, or late chunks could enter the next file.
+    done = true;
+    viewerLive = false;
+    clearDeadlines();
+    clearInterval(viewerKeepalive);
+    lastBody = '';
+    $('received').textContent = '';
+    $('rendered').textContent = '';
+    $('panel').hidden = true;
+    pc?.close();
+    ws.close(1000);
+    for (const button of $('filelist').querySelectorAll('button')) button.disabled = true;
+    $('view-status').hidden = false;
+    $('view-status').textContent = phrase('view.file-failed');
+    $('retryrow').hidden = false;
   }
 
   const sharerGone = () => {
@@ -643,13 +707,13 @@ function view(code) {
   async function dial() {
     if (pc !== null || ws.readyState !== 1) return;
     $('consent').hidden = true;
-    $('view-status').textContent = phrase(relay ? 'view.relaying' : 'view.connecting');
-    pc = new RTCPeerConnection(relay ? { iceServers: [...RTC.iceServers, relay] } : RTC);
+    $('view-status').textContent = phrase(localMode ? 'view.local-connecting' : relay ? 'view.relaying' : 'view.connecting');
+    pc = new RTCPeerConnection(rtcConfig(localMode, relay));
     connectionTimer = setTimeout(() => {
-      if (!connected) stopAttempt(relay ? 'view.relay-failed' : 'view.no-connect', !relay);
+      if (!connected) stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay);
     }, 20000);
     pc.onicecandidate = (ev) => {
-      if (ev.candidate && ws.readyState === 1) ws.send(JSON.stringify({ data: { candidate: ev.candidate } }));
+      if (ev.candidate && allowedCandidate(ev.candidate, localMode) && ws.readyState === 1) ws.send(JSON.stringify({ data: { candidate: ev.candidate, local: localMode } }));
     };
     // The slow path for noticing an abrupt disappearance: ICE consent
     // expiry flips the connection to failed after ~30s. The fast path is
@@ -663,7 +727,7 @@ function view(code) {
     // a relayed one that fails has nothing left to offer.
     const giveUp = () => {
       if (got || connected || done) return;
-      stopAttempt(relay ? 'view.relay-failed' : 'view.no-connect', !relay);
+      stopAttempt(localMode ? 'view.local-no-connect' : relay ? 'view.relay-failed' : 'view.no-connect', !localMode && !relay);
     };
     pc.oniceconnectionstatechange = () => {
       if (pc.iceConnectionState === 'failed') giveUp();
@@ -691,8 +755,8 @@ function view(code) {
       if (!msg || typeof msg !== 'object') return;
       if (msg.type === 'files') { renderFilelist(msg.list ?? []); return; }
       if (msg.type === 'file-begin') { fileBegin(msg); return; }
-      if (msg.type === 'file-end') { fileEnd(); return; }
-      if (msg.type === 'file-gone') { fileGone(); return; }
+      if (msg.type === 'file-end') { fileEnd(msg); return; }
+      if (msg.type === 'file-gone') { if (rx?.id === msg.id) fileGone(); return; }
       if (msg.type === 'token') {
         try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
         return;
@@ -749,7 +813,7 @@ function view(code) {
     if (dc.readyState === 'open') opened();
     await pc.setLocalDescription(await pc.createOffer());
     if (done) return;
-    ws.send(JSON.stringify({ data: { sdp: pc.localDescription } }));
+    ws.send(JSON.stringify({ data: { sdp: pc.localDescription, local: localMode } }));
   }
 
   // The credential is minted by the rendezvous, one per socket, and handed
@@ -757,6 +821,7 @@ function view(code) {
   // older one that does not know the question - leaves the ask unanswered,
   // and the wait below turns that silence into a sentence.
   function askRelay() {
+    if (localMode) return Promise.resolve(null);
     return new Promise((resolve) => {
       relayReply = resolve;
       setTimeout(() => resolve(null), RELAY_WAIT);
@@ -776,6 +841,7 @@ function view(code) {
   });
 
   $('relay').addEventListener('click', () => {
+    if (localMode) return;
     try {
       sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now()));
       sessionStorage.setItem(RELAY_FLAG(code), '1');
@@ -784,6 +850,10 @@ function view(code) {
       return;
     }
     location.reload();
+  });
+
+  $('mode-retry').addEventListener('click', () => {
+    location.href = makeShareUrl(location.href, code, retryLocal);
   });
 
   ws.onopen = () => { viewerKeepalive = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000); };
@@ -803,14 +873,21 @@ function view(code) {
           $('view-status').textContent = phrase('view.someone');
           $('consent').hidden = false;
         }
-      } else if (m.type === 'relay' && relayReply !== null) {
+      } else if (m.type === 'relay' && !localMode && relayReply !== null) {
         // Only a TURN entry with a credential is worth carrying; anything
         // else the rendezvous might send is not a relay.
         const entry = m.iceServers?.find?.((s) => typeof s?.username === 'string' && typeof s?.credential === 'string');
         relayReply(entry ?? null);
-      } else if (m.type === 'signal' && pc) {
-        if (m.data.sdp) await pc.setRemoteDescription(m.data.sdp);
-        else if (m.data.candidate) await pc.addIceCandidate(m.data.candidate);
+      } else if (m.type === 'signal' && pc && !done) {
+        const mode = m.data.networkMode;
+        if (mode === 'local' || mode === 'direct' || (localMode && m.data.sdp && m.data.local !== true)) {
+          retryLocal = mode === 'local';
+          stopAttempt(retryLocal ? 'view.mode-local' : 'view.mode-direct');
+          $('mode-retryrow').hidden = false;
+          return;
+        }
+        if (m.data.sdp) await pc.setRemoteDescription(localMode ? localDescription(m.data.sdp) : m.data.sdp);
+        else if (m.data.candidate && allowedCandidate(m.data.candidate, localMode)) await pc.addIceCandidate(m.data.candidate);
       }
     } catch {
       if (!done && !got) stopAttempt('view.error');
@@ -862,6 +939,7 @@ window.addEventListener('unhandledrejection', (event) => bootError(event.reason?
 /* --------------------------------------------------------------- routing */
 
 const code = location.hash.replace(/^#/, '').toLowerCase();
+$('local').checked = isLocal;
 if (CODE_PATTERN.test(code)) view(code);
 else { suggest(); restore(); }
 
@@ -898,7 +976,7 @@ addEventListener('click', (event) => {
   if (viewerLive) {
     try { sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now())); } catch {}
   }
-  anchor.href = anchor.pathname + location.hash;
+  anchor.href = makeShareUrl(anchor.href, code, isLocalLink(location.href));
 }, true);
 
 // Reached only if every step above ran without throwing.

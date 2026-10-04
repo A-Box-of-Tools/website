@@ -36,7 +36,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-lastmod = "2026-09-03"
+lastmod = "2026-10-03"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -57,7 +57,9 @@ csp_note = """
   govern and no server touches, unless a reader who could not be reached
   directly chooses Cloudflare's TURN relay, which forwards the encrypted
   channel without a key to it. The worker's whole source is in the
-  repository at workers/rendezvous/."""
+  repository at workers/rendezvous/. Local network mode uses only host ICE
+  candidates, with no public STUN server or TURN relay; its introduction
+  still uses that same public WebSocket."""
 
 # --- the pledge block --------------------------------------------------------
 
@@ -135,9 +137,11 @@ title = "The content goes to your reader, and nowhere else."
 body = """
  The text and the files travel
       over a WebRTC data channel: a direct, DTLS-encrypted connection between
-      your browser and each reader's. There is no server in that path. On the
-      same network the bytes never even leave the building &mdash; two laptops
-      on one Wi-Fi exchange them locally. The one exception is a reader whose
+      your browser and each reader's. There is no server in that path. Local
+      network mode uses the browsers' own network addresses without public
+      address discovery or an internet relay. A VPN or browser network policy
+      can affect which path those addresses take, so this is not a guarantee
+      about a physical building. The ordinary mode also supports a reader whose
       network cannot be reached directly and who then chooses, on their own
       page, an encrypted relay: it forwards the same ciphertext and cannot
       read it."""
@@ -249,7 +253,9 @@ body = """
       share is reachable while it is open and awake, and stops the moment it
       is not. A laptop lid closing ends it too. Copy the link, or just say
       the name &mdash; a reader can type it into this page's address as
-      <code>#name</code> on the end."""
+      <code>#name</code> on the end. For Local network mode, copy the link:
+      it carries <code>?local=1</code> before the name. A reader who uses the
+      wrong mode is asked before retrying with yours."""
 
 [[howto]]
 title = "On the other side: consent, then knock."
@@ -344,8 +350,9 @@ q = "How big can the files be, and how fast is it?"
 a = """
         Up to 200&nbsp;MB per file, any type, and as fast as the slower of
         the two connections &mdash; there is no server in the middle to slow
-        it down or meter it. Two machines on the same Wi-Fi transfer at
-        local-network speed, and the bytes never leave the building. Readers
+        it down or meter it. Two machines with a working local connection
+        transfer at local-network speed; VPNs and browser routing settings
+        can affect the path. Readers
         fetch each file on demand, so attaching something large costs
         nothing until somebody actually asks for it."""
 
@@ -368,14 +375,17 @@ a = """
         one. This page never switches to a relay quietly &mdash; that would
         change what this tool is without saying so &mdash; so after twenty
         seconds it says plainly that a direct connection could not be made,
-        and offers the reader one: a relay run by Cloudflare that forwards
-        the encrypted bytes between the two browsers and cannot read them,
+        and, in ordinary mode, offers the reader one: a relay run by
+        Cloudflare that forwards the encrypted bytes between the two
+        browsers and cannot read them,
         since the key never leaves the two ends. The reader chooses it by
         name, on their own page, after being told what it sees &mdash; both
         addresses, as the direct connection would &mdash; and nothing is
         stored there either. Your side of the share does not change: your
         browser still sends to that one reader, as it would if they were on
-        a VPN."""
+        a VPN. Local network mode never offers a relay: check that both
+        devices use the same Wi-Fi or Ethernet, and that guest-network
+        isolation, a firewall or a VPN is not blocking the connection."""
 
 [[faq]]
 q = "Is the markdown safe to render, if anyone can share anything?"
@@ -407,6 +417,21 @@ a = """
         page shares, and the rendezvous runs comfortably inside a free tier
         precisely because it stores nothing and does almost nothing."""
 
+[[faq]]
+q = "Can I share files over my local network?"
+a = """
+        Yes. Before starting, choose Local network &mdash; no internet relay,
+        connect both devices to the same Wi-Fi or Ethernet, and copy the
+        link to the reader. The link carries that mode, and a mismatched
+        reader must choose explicitly before retrying with the sharer's
+        mode. Internet is still needed for the rendezvous that introduces
+        the browsers. Local mode uses no public address-discovery server
+        and never falls back to an internet relay. A VPN or browser network
+        policy can change the route or prevent a connection; the setting
+        does not prove that bytes stay inside a physical building.
+        Private approval stays on by default, and files are still limited
+        to 200&nbsp;MB each, with up to 256 files in one share."""
+
 [schema]
 category = "UtilitiesApplication"
 description = "Share text and files from one browser to another over a direct, end-to-end encrypted WebRTC connection. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab."
@@ -421,4 +446,5 @@ features = [
   "Files to 200 MB each, fetched on demand with per-file progress",
   "The draft persists only in the sharer's own browser, or nowhere if marked one-off",
   "The whole server component is a storage-less rendezvous, published in the repository",
+  "Optional local-network mode uses no public address discovery or internet relay",
 ]

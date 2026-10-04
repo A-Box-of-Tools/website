@@ -22,7 +22,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="要附上的文件">
       <div id="attachlist"></div>
-      <p class="field-note">文件走和文本同一条直连通道，每个最大 200&nbsp;MB。读者看到列表，只有开口要，文件才会传给他。</p>
+      <p class="field-note">文件走和文本同一条直连通道，每个最大 200&nbsp;MB。读者看到列表，只有开口要，文件才会传给他。一次分享最多可以附上 256 个文件。</p>
     </section>
 
     <section class="card">
@@ -40,6 +40,11 @@
           <input type="checkbox" id="private" checked>
           私密——每位读者先申请，由你放行
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          局域网——不使用互联网中转
+        </label>
+        <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           一次性——草稿不留在这台设备上
@@ -75,7 +80,8 @@
       <p id="view-status" role="status" aria-live="polite">正在寻找分享的人&hellip;</p>
 
       <div id="consent" hidden>
-        <p>要读它，你的浏览器会和分享方的浏览器直接相连——这正是关键：这里没有任何东西碰服务器。和一切直连一样，双方会看到彼此的网络（IP）地址。在你选择连接之前，什么都不会获取，关于你的任何信息也不会外泄。</p>
+        <p>连接后，分享方就能通过加密通道把文字和文件直接送到你的浏览器。和所有直连一样，双方都能看到彼此的网络（IP）地址。只有你选择连接后，分享方才会知道你打开了这个链接。</p>
+        <p id="local-note" hidden>这个链接使用局域网模式。两台设备需要连接同一 Wi-Fi 或以太网，引介仍需要互联网。不使用公共地址发现服务器或互联网中转。VPN 和浏览器设置可能影响网络路径。</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">连接并接收分享</button>
         </div>
@@ -97,6 +103,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">经中转再试一次</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">按分享方的连接模式重试</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -144,6 +154,7 @@
     <span data-phrase="share.lost-rendezvous">与引见服务器失联；正在重试。已连接的读者不受影响。</span>
     <span data-phrase="share.stopped">已停止。什么都不再分享了。</span>
     <span data-phrase="share.file-too-big">“{name}”超出了 200 MB 的上限。</span>
+    <span data-phrase="share.too-many-files">一次分享最多可以附上 256 个文件。请先移除一个，再继续添加。</span>
     <span data-phrase="share.leave-warning">离开此页面，分享对所有人结束。继续吗？</span>
 
     <span data-phrase="copy.done">已复制</span>
@@ -169,6 +180,12 @@
     <span data-phrase="view.error">连接时出了点问题。刷新页面再试一次。</span>
     <span data-phrase="view.download">下载</span>
     <span data-phrase="view.file-gone">已不再分享</span>
+    <span data-phrase="share.local-waiting">正在以局域网模式分享。等着有人打开链接——别关这个标签页。</span>
+    <span data-phrase="view.local-connecting">正在通过局域网连接…</span>
+    <span data-phrase="view.mode-local">分享方使用局域网模式。按对方的模式重试，即可在不使用互联网中转的情况下连接。</span>
+    <span data-phrase="view.mode-direct">分享方使用普通连接模式。请按对方的模式重试；只有直连失败后才会提供中转，而且由你选择是否使用。</span>
+    <span data-phrase="view.local-no-connect">在局域网模式下无法连接分享方。请检查两台设备是否使用同一 Wi-Fi 或以太网；访客网络隔离、VPN、防火墙或浏览器设置可能阻止连接。此模式不提供互联网中转。</span>
+    <span data-phrase="view.file-failed">文件下载未能完成。请重新检查这个链接，然后再尝试下载。</span>
 
     <span data-phrase="net.clean">这一页分享的内容没有经过任何服务器。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>

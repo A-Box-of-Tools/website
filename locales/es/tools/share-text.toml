@@ -79,14 +79,7 @@ text = "Código abierto"
 [[privacy]]
 title = "El contenido va a tu lector, y a ningún otro sitio."
 body = """
- El texto y los archivos
-      viajan por un canal de datos WebRTC: una conexión directa, cifrada con
-      DTLS, entre tu navegador y el de cada lector. En ese camino no hay
-      servidor. En la misma red, los bytes ni siquiera salen del edificio:
-      dos portátiles en el mismo wifi se los pasan en local.
-      La única excepción es un lector cuya red no se puede alcanzar
-      directamente y que entonces elige, en su propia página, un relevo
-      cifrado: reenvía el mismo texto cifrado y no puede leerlo."""
+El texto y los archivos viajan por un canal de datos WebRTC: una conexión directa, cifrada con DTLS, entre tu navegador y el de cada lector. No hay servidor en esa ruta. El modo Red local usa las direcciones de red propias de los navegadores, sin descubrimiento público de direcciones ni retransmisor de internet. Una VPN o las políticas de red del navegador pueden afectar la ruta de esas direcciones; no es una garantía sobre un edificio físico. En el modo normal, un lector al que no se pueda llegar directamente puede elegir un retransmisor cifrado en su propia página, que reenvía el mismo contenido cifrado sin poder leerlo."""
 
 [[privacy]]
 title = "Qué es el intermediario, y todo lo que ve."
@@ -199,7 +192,7 @@ body = """
       lo compartido está disponible mientras siga abierta y despierta, y ni
       un momento más. Un portátil que se cierra también lo termina. Copia el
       enlace, o simplemente di el nombre: un lector puede escribirlo como
-      <code>#name</code> al final de la dirección de esta página."""
+      <code>#name</code> al final de la dirección de esta página. Para el modo Red local, copia el enlace: lleva <code>?local=1</code> antes del nombre. Si el lector usa otro modo, se le pregunta antes de reintentar con el tuyo."""
 
 [[howto]]
 title = "Al otro lado: primero consentir, después llamar."
@@ -293,12 +286,7 @@ a = """
 [[faq]]
 q = "¿Cómo de grandes pueden ser los archivos, y qué velocidad tiene?"
 a = """
-        Hasta 200&nbsp;MB por archivo, de cualquier tipo, y tan rápido como
-        la más lenta de las dos conexiones: no hay servidor en medio que
-        frene ni ponga cuota. Dos máquinas en el mismo wifi transfieren a
-        velocidad de red local, y los bytes no salen del edificio. Los
-        lectores descargan cada archivo cuando lo piden, así que adjuntar
-        algo grande no cuesta nada hasta que alguien lo quiere de verdad."""
+Hasta 200&nbsp;MB por archivo, de cualquier tipo, a la velocidad de la conexión más lenta de las dos. Una conexión local que funciona transfiere a la velocidad de esa red; las VPN y el enrutamiento del navegador pueden afectar la ruta. Los lectores descargan cada archivo cuando lo piden, así que un archivo grande adjunto no se transfiere hasta que alguien lo solicita."""
 
 [[faq]]
 q = "¿Funciona sin conexión?"
@@ -314,7 +302,7 @@ a = """
 [[faq]]
 q = "¿Y si no conseguimos conectar?"
 a = """
-        La mayoría de los pares de navegadores se alcanzan directamente una
+La oferta de retransmisor que se describe a continuación solo se aplica al modo de conexión normal. La mayoría de los pares de navegadores se alcanzan directamente una
         vez presentados; una minoría no, normalmente cuando un lado está en
         la red de direcciones compartidas de una operadora móvil o tras una
         red corporativa estricta. Esta página nunca pasa a un relevo en
@@ -327,7 +315,7 @@ a = """
         qué ve &mdash; las dos direcciones, como la conexión directa
         &mdash;, y ahí tampoco se guarda nada. Tu lado no cambia: tu
         navegador sigue enviando a ese único lector, como lo haría si
-        estuviera tras una VPN."""
+        estuviera tras una VPN. El modo Red local nunca ofrece un retransmisor. Comprueba que ambos dispositivos usan la misma red Wi-Fi o Ethernet y que el aislamiento de la red de invitados, un cortafuegos o una VPN no bloquean la conexión."""
 
 [[faq]]
 q = "¿Es seguro renderizar Markdown, si cualquiera puede compartir cualquier cosa?"
@@ -362,6 +350,11 @@ a = """
         sobra en un plan gratuito precisamente porque no guarda nada y casi
         no hace nada."""
 
+[[faq]]
+q = "¿Puedo compartir archivos por mi red local?"
+a = """
+Sí. Antes de empezar, elige Red local — sin retransmisor de internet, conecta ambos dispositivos a la misma red Wi-Fi o Ethernet y copia el enlace para el lector. El enlace incluye el modo; un lector con otro modo debe elegir explícitamente antes de reintentar con el modo de quien comparte. La presentación de los navegadores aún necesita internet. Este modo no usa descubrimiento público de direcciones y nunca pasa a un retransmisor de internet. Una VPN o las políticas de red del navegador pueden cambiar la ruta o impedir la conexión; la opción no demuestra que los bytes permanezcan dentro de un edificio. La aprobación privada sigue activada por defecto y el límite sigue siendo de 200&nbsp;MB por archivo. Una sesión puede incluir hasta 256 archivos."""
+
 [schema]
 description = "Comparte texto y archivos de un navegador a otro por una conexión WebRTC directa y cifrada de extremo a extremo. Nombres de enlace que se pueden decir en voz alta, actualización en vivo al escribir, Markdown y aprobación por lector. Ningún servidor guarda nada; lo compartido se acaba cuando quien comparte cierra la pestaña."
 features = [
@@ -375,4 +368,5 @@ features = [
   "Archivos de hasta 200 MB cada uno, descargados a petición y con progreso por archivo",
   "El borrador queda solo en el navegador de quien comparte - o en ninguna parte, si es de un solo uso",
   "Todo el componente de servidor es un intermediario sin almacenamiento, publicado en el repositorio",
+  "Modo opcional de red local sin descubrimiento público de direcciones ni retransmisor de internet",
 ]

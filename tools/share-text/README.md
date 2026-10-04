@@ -36,10 +36,37 @@ The endpoint is a constant at the top of `src/main.js` and one line in
 a subdomain of the site, `rendezvous.abox.tools`, rather than the worker's
 own `workers.dev` name, because that whole domain is blocked inside mainland
 China and the site's is not; the worker answers at both.
-STUN (Cloudflare's and Google's public servers) helps the browsers discover
-their own addresses; ICE traffic — STUN and, when a reader chooses it, the
-TURN relay — is outside `connect-src`'s vocabulary, which is why CSP alone
-can never fully describe a WebRTC page.
+In ordinary mode, STUN (Cloudflare's and Google's public servers) helps the
+browsers discover their own addresses; ICE traffic — STUN and, when a reader
+chooses it, the TURN relay — is outside `connect-src`'s vocabulary, which is
+why CSP alone can never fully describe a WebRTC page. Local network mode
+removes those public STUN servers and does not offer TURN, but still uses
+the public rendezvous for signalling.
+
+## Local network mode
+
+The sharer can select **Local network — no internet relay** before starting.
+The copied URL carries `?local=1#name`, so the reader knows the intended mode
+before consenting; `#name` by itself keeps the ordinary mode. A reader and a
+sharer with different modes do not connect until the reader explicitly
+chooses to retry with the sharer's mode. There is no automatic downgrade.
+
+Both peers construct their connection with no ICE servers, and allow only
+host candidates in both SDP descriptions and trickled candidate messages.
+Filtering both directions matters: removing our STUN configuration alone
+would still let a peer offer a relayed or server-reflexive address. Local
+mode also ignores any saved relay retry and never asks the worker for TURN
+credentials. The worker carries the mode in its existing opaque negotiation
+messages; it needs no new deployment.
+
+The intended use is two devices on the same Wi-Fi or Ethernet. The mode
+constrains ICE candidates, not physical routing: a VPN, an OS route or browser
+network policy can change which interfaces are visible and where a host
+address leads. Guest isolation, firewalls and browser policy can prevent the
+connection. The page describes that limitation rather than promising that a
+packet never leaves a building. Internet access is still needed for the
+introduction, private approval remains the default, and the 200 MB cap is
+unchanged.
 
 ## How the pieces work
 
@@ -74,6 +101,13 @@ can never fully describe a WebRTC page.
   `file-end`. String frames are JSON control; binary frames are the one
   in-flight file. A `get` is honoured only from an admitted channel. The
   receiver assembles in memory, which is what the 200 MB cap is about.
+  `src/receive-file.js` treats the other browser's metadata as a claim: a
+  begin marker must match the requested ID and size, chunks cannot overrun
+  that size, and a matching end marker downloads only a complete file.
+  Empty chunks and more than 16,384 parts are refused because a byte cap
+  alone would permit unlimited allocations. A share holds at most 256
+  files, and a reader can have only one request in flight. A failed transfer
+  closes that reader's channel and clears its content before a retry.
 - **Markdown.** `src/markdown.js`, ~80 lines, escape-first: input is
   entity-escaped before any tag is emitted, the tag set is fixed, links
   allow only http/https/mailto. It runs on remote-peer text; that is the
@@ -88,7 +122,7 @@ can never fully describe a WebRTC page.
 
 ## The relay, and why it is the reader's
 
-Direct first, always: the page dials with STUN alone, and a pair that cannot
+In ordinary mode, direct first: the page dials with STUN alone, and a pair that cannot
 be joined that way — typically a phone on a carrier's address-sharing network
 against a laptop behind a strict router, which is the tool's headline use
 case at its unluckiest — fails after twenty seconds with an honest message.

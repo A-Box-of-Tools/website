@@ -23,8 +23,7 @@
       <p class="field-note">
         Os arquivos viajam pelo mesmo canal direto do texto, até
         200&nbsp;MB cada. Os leitores veem a lista e só baixam um arquivo se
-        pedirem.
-      </p>
+        pedirem. Uma sessão pode incluir até 256 arquivos.</p>
     </section>
 
     <section class="card">
@@ -46,6 +45,11 @@
           <input type="checkbox" id="private" checked>
           Privado &mdash; cada leitor precisa pedir, e você deixa entrar
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          Rede local — sem retransmissor de internet
+        </label>
+        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A apresentação dos navegadores ainda precisa de internet; este modo não usa servidores públicos para descobrir endereços nem retransmissores. VPNs e configurações do navegador podem afetar o caminho de rede. O link copiado inclui esta opção.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Descartável &mdash; não guardar o rascunho neste dispositivo
@@ -92,13 +96,8 @@
       <p id="view-status" role="status" aria-live="polite">Procurando quem compartilha&hellip;</p>
 
       <div id="consent" hidden>
-        <p>
-          Ler conecta o seu navegador direto ao de quem compartilha &mdash;
-          esse é justamente o ponto: aqui nada toca um servidor. Como toda
-          conexão direta, ela deixa cada lado ver o endereço de rede (IP) do
-          outro. Nada é baixado, e nada sobre você é compartilhado, até que
-          você escolha conectar.
-        </p>
+        <p>Ao se conectar, você permite que quem compartilha envie o texto e os arquivos diretamente ao seu navegador por um canal criptografado. Como em qualquer conexão direta, cada lado pode ver o endereço de rede (IP) do outro. Quem compartilha só descobre que você abriu este link quando você escolhe se conectar.</p>
+        <p id="local-note" hidden>Este link usa o modo Rede local. Os dois dispositivos precisam estar na mesma rede Wi-Fi ou Ethernet, e a apresentação ainda precisa de internet. Não são usados servidores públicos para descobrir endereços nem retransmissores de internet. VPNs e configurações do navegador podem afetar o caminho de rede.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Conectar e receber o compartilhamento</button>
         </div>
@@ -129,6 +128,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">Tentar de novo pelo retransmissor</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">Tentar de novo com o modo de conexão de quem compartilha</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -175,6 +178,7 @@
     <span data-phrase="share.lost-rendezvous">Conexão com o intermediário perdida; tentando de novo. Os leitores conectados não são afetados.</span>
     <span data-phrase="share.stopped">Parado. Nada mais está sendo compartilhado.</span>
     <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; passa do limite de 200 MB.</span>
+    <span data-phrase="share.too-many-files">Uma sessão pode incluir até 256 arquivos. Remova um antes de anexar mais.</span>
     <span data-phrase="share.leave-warning">Sair desta página encerra o compartilhamento para todos. Continuar?</span>
 
     <span data-phrase="copy.done">Copiado</span>
@@ -200,6 +204,12 @@
     <span data-phrase="view.error">Algo deu errado na conexão. Recarregue a página e tente de novo.</span>
     <span data-phrase="view.download">Baixar</span>
     <span data-phrase="view.file-gone">Não é mais compartilhado</span>
+    <span data-phrase="share.local-waiting">Compartilhando no modo Rede local. Aguardando alguém abrir o link — mantenha esta aba aberta.</span>
+    <span data-phrase="view.local-connecting">Conectando pela rede local…</span>
+    <span data-phrase="view.mode-local">Quem compartilha usa o modo Rede local. Tente de novo com esse modo para se conectar sem um retransmissor de internet.</span>
+    <span data-phrase="view.mode-direct">Quem compartilha usa o modo de conexão normal. Tente de novo com esse modo; um retransmissor só é oferecido após uma tentativa direta falhar e só é usado se você o escolher.</span>
+    <span data-phrase="view.local-no-connect">Não foi possível alcançar quem compartilha no modo Rede local. Confira se os dois dispositivos usam a mesma rede Wi-Fi ou Ethernet; isolamento da rede de convidados, VPN, firewall ou configurações do navegador podem bloquear a conexão. Este modo não oferece retransmissores de internet.</span>
+    <span data-phrase="view.file-failed">Não foi possível concluir o download do arquivo. Confira este link novamente para tentar baixar de novo.</span>
 
     <span data-phrase="net.clean">O que esta página compartilha não passou por
       nenhum servidor. {total} arquivos carregados. {platform}</span>

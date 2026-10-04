@@ -80,15 +80,7 @@ text = "Open Source"
 [[privacy]]
 title = "Der Inhalt geht zu Ihrem Leser, und nirgendwohin sonst."
 body = """
- Text und Dateien reisen
-      über einen WebRTC-Datenkanal: eine direkte, DTLS-verschlüsselte
-      Verbindung zwischen Ihrem Browser und dem jedes Lesers. In diesem Weg
-      steht kein Server. Im selben Netz verlassen die Bytes nicht einmal das
-      Gebäude &mdash; zwei Laptops im selben WLAN tauschen sie lokal aus.
-      Die eine Ausnahme ist ein Leser, dessen Netz direkt nicht zu erreichen
-      ist und der dann auf seiner eigenen Seite ein verschlüsseltes Relais
-      wählt: Es reicht denselben Chiffretext weiter und kann ihn nicht
-      lesen."""
+Text und Dateien reisen über einen WebRTC-Datenkanal: eine direkte, DTLS-verschlüsselte Verbindung zwischen Ihrem Browser und dem jedes Lesers. In diesem Weg steht kein Server. Der Modus Lokales Netzwerk nutzt die eigenen Netzwerkadressen der Browser ohne öffentliche Adressermittlung oder Internet-Relais. Ein VPN oder die Netzwerkrichtlinien des Browsers können den Weg dieser Adressen beeinflussen; das ist keine Garantie für ein bestimmtes Gebäude. Im normalen Modus kann ein direkt nicht erreichbarer Leser auf seiner Seite ein verschlüsseltes Relais wählen, das denselben Chiffretext weiterreicht und nicht lesen kann."""
 
 [[privacy]]
 title = "Was der Vermittler ist, und alles, was er sieht."
@@ -205,7 +197,7 @@ body = """
       Freigabe ist erreichbar, solange er offen und wach ist, und keinen
       Moment länger. Auch ein zugeklappter Laptop beendet sie. Kopieren Sie
       den Link, oder sagen Sie einfach den Namen &mdash; ein Leser kann ihn
-      als <code>#name</code> ans Ende der Adresse dieser Seite tippen."""
+      als <code>#name</code> ans Ende der Adresse dieser Seite tippen. Kopieren Sie für den Modus Lokales Netzwerk den Link: Er enthält <code>?local=1</code> vor dem Namen. Ein Leser mit einem anderen Modus wird gefragt, bevor er es mit Ihrem Modus erneut versucht."""
 
 [[howto]]
 title = "Auf der anderen Seite: erst zustimmen, dann anklopfen."
@@ -305,12 +297,7 @@ a = """
 [[faq]]
 q = "Wie groß dürfen die Dateien sein, und wie schnell ist es?"
 a = """
-        Bis 200&nbsp;MB pro Datei, jeder Typ, und so schnell wie die
-        langsamere der beiden Verbindungen &mdash; kein Server in der Mitte
-        bremst oder deckelt. Zwei Rechner im selben WLAN übertragen mit
-        lokaler Geschwindigkeit, und die Bytes verlassen das Gebäude nicht.
-        Leser holen jede Datei auf Anforderung; etwas Großes anzuhängen
-        kostet also nichts, bis jemand wirklich danach fragt."""
+Bis 200&nbsp;MB pro Datei, jeder Typ, und so schnell wie die langsamere der beiden Verbindungen. Eine funktionierende lokale Verbindung überträgt mit der Geschwindigkeit dieses Netzes; VPNs und Browser-Routing können den Weg beeinflussen. Leser holen jede Datei auf Anforderung, sodass eine große angehängte Datei erst übertragen wird, wenn jemand sie anfordert."""
 
 [[faq]]
 q = "Funktioniert es offline?"
@@ -326,7 +313,7 @@ a = """
 [[faq]]
 q = "Was, wenn wir keine Verbindung bekommen?"
 a = """
-        Die meisten Browserpaare erreichen einander direkt, sobald sie
+Das folgende Relais-Angebot gilt nur für den normalen Verbindungsmodus. Die meisten Browserpaare erreichen einander direkt, sobald sie
         vorgestellt sind; eine Minderheit nicht, typischerweise wenn eine
         Seite im Mobilfunknetz eines Anbieters mit geteilten Adressen oder
         hinter einem strengen Firmennetz sitzt. Diese Seite wechselt nie
@@ -341,7 +328,7 @@ a = """
         die Direktverbindung auch &mdash;, und gespeichert wird auch dort
         nichts. Ihre Seite der Freigabe ändert sich nicht: Ihr Browser
         sendet weiterhin an diesen einen Leser, so wie er es täte, säße der
-        Leser hinter einem VPN."""
+        Leser hinter einem VPN. Der Modus Lokales Netzwerk bietet nie ein Relais an. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen und ob die Geräteisolierung im Gastnetz, eine Firewall oder ein VPN die Verbindung blockiert."""
 
 [[faq]]
 q = "Ist das Markdown-Rendern sicher, wenn jeder alles teilen kann?"
@@ -376,6 +363,11 @@ a = """
         bequem in einem kostenlosen Tarif, gerade weil er nichts speichert
         und fast nichts tut."""
 
+[[faq]]
+q = "Kann ich Dateien über mein lokales Netzwerk teilen?"
+a = """
+Ja. Wählen Sie vor dem Start Lokales Netzwerk — kein Internet-Relais, verbinden Sie beide Geräte mit demselben WLAN oder Ethernet-Netz und kopieren Sie den Link für den Leser. Der Link enthält den Modus; ein Leser mit einem anderen Modus muss ausdrücklich wählen, bevor er es mit dem Modus des Teilenden erneut versucht. Internet bleibt für die Vermittlung zwischen den Browsern nötig. Dieser Modus nutzt keine öffentliche Adressermittlung und wechselt nie auf ein Internet-Relais. Ein VPN oder Browser-Netzwerkrichtlinien können den Weg ändern oder die Verbindung verhindern; die Einstellung beweist nicht, dass Bytes in einem Gebäude bleiben. Private Freigabe bleibt die Voreinstellung, und Dateien sind weiterhin auf 200&nbsp;MB pro Stück begrenzt. Eine Freigabe kann bis zu 256 Dateien enthalten."""
+
 [schema]
 description = "Text und Dateien über eine direkte, Ende-zu-Ende-verschlüsselte WebRTC-Verbindung von einem Browser in einen anderen teilen. Aussprechbare Link-Namen, Live-Aktualisierung beim Tippen, Markdown-Rendern und Freigabe pro Leser. Auf keinem Server wird etwas gespeichert; die Freigabe endet, wenn der Teilende den Tab schließt."
 features = [
@@ -389,4 +381,5 @@ features = [
   "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei",
   "Der Entwurf bleibt nur im Browser des Teilenden - oder nirgends, als einmalig markiert",
   "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository",
+  "Optionaler Modus für das lokale Netzwerk ohne öffentliche Adressermittlung oder Internet-Relais",
 ]
