@@ -51,7 +51,12 @@ input[data-field="currency"] { text-transform: uppercase; }
 .custom-currency[hidden] { display: none; }
 .custom-final-currency[hidden], .online-rate-controls[hidden] { display: none; }
 input[data-field="finalCurrency"], #final-currency { text-transform: uppercase; }
-.final-currency-settings { margin-top: 1.25rem; }
+.review-head > #clear-all { flex: none; margin-inline-start: auto; font-size: 0.88rem; padding: 0.35rem 0.9rem; }
+.final-currency-settings { grid-template-columns: minmax(0, 28rem) max-content; align-items: end; justify-content: start; margin: 0 0 1.25rem; }
+.final-currency-settings > .field { min-width: 0; }
+#final-currency-choice { min-width: 0; width: 100%; }
+#use-default-currency { justify-self: start; }
+.final-currency-settings > .custom-final-currency { grid-column: 1 / -1; max-width: 28rem; width: 100%; }
 .conversion-fields { margin: 1rem 0; padding: 0.8rem; border: 1px solid var(--border); border-radius: 6px; }
 .conversion-fields legend { padding: 0 0.3rem; font-size: 0.84rem; font-weight: 600; }
 .conversion-fields .settings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -62,6 +67,7 @@ input[data-field="finalCurrency"], #final-currency { text-transform: uppercase; 
 .grand-total-box > strong { display: block; margin-top: 0.25rem; font-size: 1.6rem; font-variant-numeric: tabular-nums; }
 .grand-total-box p { margin-bottom: 0; }
 @media (max-width: 680px) {
+  .final-currency-settings { grid-template-columns: minmax(0, 1fr); }
   .document-content { grid-template-columns: 1fr; }
   .document { padding: 0.75rem; }
   .document-fields .settings { grid-template-columns: 1fr; }
