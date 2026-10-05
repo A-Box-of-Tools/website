@@ -7,7 +7,7 @@
       <h2>此连接上的本地分享</h2>
       <p id="discovery-status" role="status" aria-live="polite">正在寻找本地分享…</p>
       <div id="discovery-list"></div>
-      <p class="discovery-note">这个列表显示与你使用同一公共 IP 地址的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv6 或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
+      <p class="discovery-note">这个列表显示与你使用同一公网 IPv4 地址或 IPv6 子网的浏览器所分享的链接名。通常这意味着同一路由器；共享 VPN 或运营商共享地址可能把其他网络也包括进来。IPv4 与 IPv6 混用或不同路径也可能让身边的设备不出现在列表里。需要互联网。打开分享仍会在连接前征求同意，私密分享仍需要分享方批准。</p>
       <button type="button" id="discovery-refresh" class="ghost">刷新本地分享</button>
     </section>
 
@@ -52,12 +52,12 @@
           <input type="checkbox" id="local">
           局域网——不使用互联网中转
         </label>
-        <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。</p>
+        <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。 局域网模式默认关闭；要让自己的分享出现在本地发现列表中，请先选择此模式。</p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
           可被发现——在这条互联网连接上显示链接名
         </label>
-        <p class="discovery-note">可被发现的分享会向使用同一公共 IP 地址的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
+        <p class="discovery-note">可被发现的分享会向使用同一公网 IPv4 地址或 IPv6 子网的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           一次性——草稿不留在这台设备上
@@ -153,7 +153,7 @@
     <span data-phrase="units.mb">MB</span>
 
     <span data-phrase="discovery.connecting">正在寻找本地分享…</span>
-    <span data-phrase="discovery.empty">这里暂时没有其他可被发现的本地分享。请让分享方保持标签页开启，或使用对方的链接。</span>
+    <span data-phrase="discovery.empty">这里暂时没有可被发现的本地分享。请让分享方保持标签页开启，或使用对方的链接。</span>
     <span data-phrase="discovery.ready">选择一个分享，打开其连接页面。</span>
     <span data-phrase="discovery.unavailable">本地发现暂不可用。你仍可使用分享链接。</span>
     <span data-phrase="discovery.open">打开分享</span>

@@ -8,9 +8,11 @@ import { exampleFiles } from './example.js';
 import { recognize, terminateOcr } from './ocr.js';
 import { receiptFromRecognition } from './ocr-results.js';
 import { extractReceipt, parseAmount, formatMinor, summarize } from './receipt.js';
+import { inferLocationCurrency } from './location-currency.js';
 import { mostUsedCurrency, isoDate, parseRate, conversionFor, summarizeConverted, buildConversionCsv, fetchHistoricalRate } from './fx.js';
 import { FULL_CROP, inspectImage, prepareImage, readImageCanvas, rotateCrop } from './attachments.js';
 import { buildEmailDraft } from './email.js';
+import { wireCurrencyHelp } from './currency-help.js';
 
 const $ = id => document.getElementById(id);
 const records = [];
@@ -21,6 +23,7 @@ let nextId = 0;
 let finalCurrency = '';
 let finalCustom = false;
 let useDefaultCurrency = true;
+let useDefaultSubject = true;
 let imageQueue = Promise.resolve();
 const picker = wireFilePicker({
   input: $('file-input'), dropzone: $('dropzone'), onFiles: addFiles, example: exampleFiles,
@@ -94,7 +97,8 @@ async function addFiles(files) {
     const record = {
       id: ++nextId, file, filename: file.name, url: URL.createObjectURL(file), rotation: 0,
       merchant: '', date: '', reference: '', currency: '', amount: '', confirmed: false,
-      text: '', status: 'queued', crop: { ...FULL_CROP }, imageVersion: 0,
+      text: '', recoveryText: '', headerText: '', currencySource: '', locationEvidence: '', locationText: '',
+      status: 'queued', crop: { ...FULL_CROP }, imageVersion: 0,
       attachment: null, preparing: true, disposed: false,
       finalCurrency, conversionDate: '', rateMode: 'manual', rate: '', rateSource: '', rateDate: '',
       rateBase: '', rateQuote: '', rateRequestDate: '', rateVersion: 0, rateBusy: false,
@@ -115,6 +119,24 @@ function syncCurrency(record) {
   choice.value = !record.currency ? '' : listed ? record.currency : 'custom';
   record.element.querySelector('.custom-currency').hidden = choice.value !== 'custom';
   record.element.querySelector('[data-field="currency"]').value = record.currency;
+  updateCurrencyHint(record);
+}
+
+function updateCurrencyHint(record) {
+  const hint = record.element.querySelector('.currency-hint');
+  const inferred = record.currencySource === 'location' && record.currency && record.locationEvidence;
+  hint.hidden = !inferred;
+  hint.textContent = inferred ? phrase('currencyFromLocation', { currency: record.currency, location: record.locationEvidence }) : '';
+}
+
+function revalidateLocationCurrency(record) {
+  if (record.currencySource !== 'location') return;
+  // A new date can cross a currency changeover. A visitor's own currency
+  // choice has no location marker and therefore survives edits to the date.
+  const location = inferLocationCurrency(record.locationText, record.date);
+  record.currency = location?.currency ?? '';
+  record.locationEvidence = location?.evidence ?? '';
+  syncCurrency(record);
 }
 
 function syncFinalCurrency() {
@@ -233,8 +255,15 @@ function createDocument(record) {
   element.querySelector('.get-rate').addEventListener('click', () => getHistoricalRate(record));
   const choice = element.querySelector('[data-currency-choice]');
   choice.id = `doc-${record.id}-currency-choice`;
+  const currencyHint = element.querySelector('.currency-hint');
+  currencyHint.id = `doc-${record.id}-currency-hint`;
+  choice.setAttribute('aria-describedby', currencyHint.id);
   choice.addEventListener('change', () => {
     record.currency = choice.value === 'custom' ? '' : choice.value;
+    record.currencySource = '';
+    record.locationEvidence = '';
+    record.locationText = '';
+    updateCurrencyHint(record);
     element.querySelector('.custom-currency').hidden = choice.value !== 'custom';
     element.querySelector('[data-field="currency"]').value = record.currency;
     if (choice.value === 'custom') element.querySelector('[data-field="currency"]').focus();
@@ -257,7 +286,13 @@ function createDocument(record) {
         else showDocumentError(record, '');
       } else {
         record[field] = field === 'currency' ? input.value.trim().toUpperCase() : input.value;
-        if (field === 'currency') input.value = record.currency;
+        if (field === 'currency') {
+          input.value = record.currency;
+          record.currencySource = '';
+          record.locationEvidence = '';
+          record.locationText = '';
+          updateCurrencyHint(record);
+        }
         if (field === 'rate') {
           record.rateController?.abort();
           record.rateController = null;
@@ -268,6 +303,7 @@ function createDocument(record) {
           element.querySelector('.rate-status').textContent = '';
         } else if (['currency', 'date', 'conversionDate', 'rateMode'].includes(field)) {
           if (field === 'date') {
+            revalidateLocationCurrency(record);
             record.conversionDate = isoDate(record.date);
             element.querySelector('[data-field="conversionDate"]').value = record.conversionDate;
           }
@@ -277,7 +313,7 @@ function createDocument(record) {
         uncheck(record);
         showDocumentError(record, '');
       }
-      if (field === 'currency') updateDefaultCurrency();
+      if (field === 'currency' || field === 'date' && record.currencySource === 'location') updateDefaultCurrency();
       updateDocumentStatus(record);
       updateConversion(record);
       updateControls(record);
@@ -451,6 +487,15 @@ function updateDocumentStatus(record) {
 
 function fillExtraction(record, recognition = null) {
   const result = recognition ? receiptFromRecognition(recognition) : extractReceipt(record.text);
+  record.currencySource = result.currencySource || '';
+  record.locationEvidence = result.locationEvidence || '';
+  record.recoveryText = recognition?.recoveryText || '';
+  record.headerText = recognition?.headerText || '';
+  record.locationText = record.currencySource === 'location'
+    ? [recognition?.bodyText ?? record.text, record.recoveryText, record.headerText].find(text => {
+      const suggestion = inferLocationCurrency(text, result.date);
+      return suggestion?.currency === result.currency && suggestion.evidence === result.locationEvidence;
+    }) ?? '' : '';
   const previousCurrency = record.currency;
   const previousDate = record.date;
   const previousConversionDate = record.conversionDate;
@@ -466,6 +511,10 @@ function fillExtraction(record, recognition = null) {
   else updateConversion(record);
   uncheck(record);
   record.element.querySelector('.ocr-text').value = record.text;
+  record.element.querySelector('.ocr-recovery-text').value = record.recoveryText;
+  record.element.querySelector('.ocr-recovery').hidden = !record.recoveryText;
+  record.element.querySelector('.ocr-header-text').value = record.headerText;
+  record.element.querySelector('.ocr-header').hidden = !record.headerText;
   record.status = result.warning || 'reviewExtraction';
   showDocumentError(record, '');
   updateDocumentStatus(record);
@@ -596,6 +645,12 @@ function updateReport() {
     totals.append(item);
   }
   $('report-text').value = records.length ? makeReport(summary) : '';
+  if (useDefaultSubject) {
+    const complete = records.length > 0 && grand.confirmedCount === records.length && !grand.warning;
+    $('email-subject').value = records.length ? phrase(complete ? 'emailSubjectTotal' : 'emailSubjectCount', {
+      title: phrase('reportTitle'), count: records.length, currency: finalCurrency, amount: grand.amount,
+    }) : phrase('reportTitle');
+  }
   for (const id of ['email-report', 'download-email', 'download-images']) $(id).disabled = !readyToSend();
   $('copy-report').disabled = !records.length || running || exporting;
   $('download-csv').disabled = !records.length || running || exporting;
@@ -637,6 +692,7 @@ $('use-default-currency').addEventListener('click', () => {
   useDefaultCurrency = true;
   updateDefaultCurrency();
 });
+wireCurrencyHelp($('default-currency-help'));
 $('stop-reading').addEventListener('click', stopReading);
 $('clear-all').addEventListener('click', () => {
   stopReading();
@@ -660,6 +716,7 @@ $('copy-report').addEventListener('click', async () => {
 });
 $('download-csv').addEventListener('click', () => saveBlob(csvFile(), phrase('csvFilename')));
 $('download-email').addEventListener('click', downloadEmail);
+$('email-subject').addEventListener('input', () => { useDefaultSubject = false; });
 $('email-report').addEventListener('click', async () => {
   if (!readyToSend()) return;
   const payload = sharePayload();

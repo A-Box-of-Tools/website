@@ -1,5 +1,5 @@
 import { findPageQuad, WORKING_EDGE } from './shared/document-detect.js';
-import { findReceiptCrop } from './receipt-crop.js';
+import { findReceiptCrop, preserveColoredReceiptEnds } from './receipt-crop.js';
 
 export const MAX_IMAGE_PIXELS = 80_000_000;
 export const ATTACHMENT_EDGE = 1600;
@@ -165,7 +165,8 @@ export async function inspectImage(file, { rotation = 0, maxEdge = 1000 } = {}) 
     try {
       const pixels = working.getContext('2d').getImageData(0, 0, working.width, working.height);
       detection = findPageQuad(pixels);
-      if (detection.found) crop = cropFromQuad(detection.quad, workingDimensions.width, workingDimensions.height);
+      if (detection.found) crop = preserveColoredReceiptEnds(pixels,
+        cropFromQuad(detection.quad, workingDimensions.width, workingDimensions.height));
       else {
         detection = findReceiptCrop(pixels);
         crop = detection.crop;

@@ -13,7 +13,7 @@
 # this tool - alone on the site - names a server of ours in its CSP: the
 # rendezvous, a Cloudflare Worker whose entire code is in workers/rendezvous/
 # that matches the two ends of a code word, forwards their negotiation, and
-# lists opted-in local link names to browsers sharing a public IP address.
+# lists opted-in local link names to browsers sharing a public IPv4 address or IPv6 subnet.
 # It keeps no content and cannot read anything exchanged by the peers.
 # The docs' rule for network features is that a tool says so on its own page,
 # in plain language, and does not weaken the site-wide claim quietly; this
@@ -37,7 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-05"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -61,7 +61,7 @@ csp_note = """
   repository at workers/rendezvous/. Local network mode uses only host ICE
   candidates, with no public STUN server or TURN relay; its introduction
   still uses the rendezvous. The start page automatically opens a discovery
-  WebSocket for opted-in link names on the same public IP address. Sharing
+  WebSocket for opted-in link names on the same public IPv4 address or IPv6 subnet. Sharing
   opens a second socket for the actual share; a reader uses its own single
   introduction socket. The discovery directory never carries text or files."""
 
@@ -170,9 +170,9 @@ body = """
       in, or what anybody said &mdash; even the knock on a private share
       travels the encrypted peer channel. Its entire source is in the
       repository beside this tool's. The directory lists only names offered
-      by connected sharers using the same public IP address. That can include
-      other networks behind a shared VPN or ISP address; nearby devices with
-      different public addresses can be absent. What outlives a share is one thing:
+      by connected sharers using the same public IPv4 address or IPv6 subnet. That can include
+      other networks behind a shared VPN or ISP address; nearby devices using
+      IPv4 and IPv6, or different routes, can be absent. What outlives a share is one thing:
       Cloudflare, which runs the server, keeps a log of each connection for
       seven days &mdash; the link name, the address and the time, never a
       payload."""
@@ -195,7 +195,7 @@ body = """
       guesses a name can open the share behind it, which is why the
       suggestions are speakable names. Discoverable local shares publish
       their name to the list on this connection; the name is then public to
-      browsers using the same public IP address. Keep Private on for anything
+      browsers using the same public IPv4 address or IPv6 subnet. Keep Private on for anything
       sensitive. It is on by
       default: each arriving reader must introduce themselves, over the
       direct channel, and nothing is sent until you let them in."""
@@ -302,7 +302,7 @@ a = """
         dependency, named in its <code>Content-Security-Policy</code> and
         published in the same repository as this page. It is the smallest
         server that could do the job. It also lists opted-in local link names
-        for browsers using the same public IP address. It holds no content
+        for browsers using the same public IPv4 address or IPv6 subnet. It holds no content
         and cannot read the encrypted peer channel."""
 
 [[faq]]
@@ -311,7 +311,8 @@ a = """
         That a link name is in use, when a sharer and readers connect and
         leave, their IP addresses, and the encrypted-connection set-up they
         exchange, and the link names opted into discovery. The discovery
-        list groups names by the public IP address seen by the server. Not
+        list groups names by public IPv4 address or IPv6 subnet, and page
+        origin. Not
         the text, not the files, not their names or sizes, not
         who was admitted to a private share, and not what anyone wrote in an
         introduction &mdash; all of that travels the peer channel, which is
@@ -456,11 +457,14 @@ a = """
 q = "How does the list find local shares?"
 a = """
         Opening this tool's start page asks the rendezvous for discoverable
-        link names from browsers using the same public IP address. Usually
+        link names from browsers using the same public IPv4 address or IPv6 subnet. Usually
         that means the same router, but a shared VPN or an ISP sharing one
-        address can include other networks; IPv6 or different routes can
+        address can include other networks; mixed IPv4 and IPv6 connections
+        or different routes can
         hide nearby devices. The list is not proof of a physical local
-        network. Internet is required. Local shares advertise by default;
+        network. Internet is required. Only Local network shares appear;
+        choose this mode before starting, since it is off by default.
+        Local shares advertise by default;
         uncheck Discoverable for a link-only share, and keep Private on on
         shared networks. Choosing a name opens the share's consent page;
         it never connects automatically or bypasses private approval.
@@ -483,5 +487,5 @@ features = [
   "The draft persists only in the sharer's own browser, or nowhere if marked one-off",
   "The whole server component is a storage-less rendezvous, published in the repository",
   "Optional local-network mode uses no public address discovery or internet relay",
-  "Discoverable local link names appear for browsers sharing a public IP address, with consent and private approval preserved",
+  "Discoverable local link names appear for browsers sharing a public IPv4 address or IPv6 subnet, with consent and private approval preserved",
 ]

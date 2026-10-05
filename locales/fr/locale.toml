@@ -4,6 +4,8 @@ endonym = "Français"
 complete = true
 
 [slugs]
+"receipt-invoice-extractor" = "extraire-recus-factures"
+"guides/extract-receipts-and-invoices" = "guides/extraire-recus-et-factures"
 "compress-image" = "compresser-une-image"
 "compress-pdf" = "compresser-un-pdf"
 "crop-video" = "recadrer-une-video"

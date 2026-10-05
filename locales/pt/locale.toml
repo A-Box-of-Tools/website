@@ -33,6 +33,7 @@ complete = true
 #
 
 [slugs]
+"guides/extract-receipts-and-invoices" = "guias/extrair-recibos-e-faturas"
 "receipt-invoice-extractor" = "extrair-recibos-faturas"
 "avif-to-jpg" = "avif-para-jpg"
 "png-to-webp" = "png-para-webp"

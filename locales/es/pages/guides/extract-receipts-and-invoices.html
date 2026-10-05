@@ -1,0 +1,248 @@
+  <section>
+    <h2>Empieza con un documento por foto</h2>
+    <p>
+      Fotografía el recibo o la factura completos, con el texto derecho y
+      enfocado. Llena el encuadre, usa luz uniforme y evita proyectar tu sombra
+      sobre la página. Comprueba que se vean el nombre del comercio y el importe
+      final. La impresión térmica desvaída y los reflejos pueden ocultar un
+      dígito que ningún programa puede recuperar de la imagen.
+    </p>
+    <p>
+      Añade archivos JPEG, PNG, WebP o AVIF, hasta 20 por lote y 20 MB por
+      archivo. Cada imagen se convierte en un documento. Una factura de dos
+      páginas requiere cuidado. Esta herramienta no une las páginas en una
+      factura, así que añadir ambas como documentos independientes podría
+      contar el mismo importe dos veces. Usa la página con los datos
+      identificativos y el importe final, y adjunta la otra por tu cuenta
+      al enviar el mensaje.
+    </p>
+    <p>
+      Una foto de varios recibos o una colección de plantillas no se divide
+      automáticamente. Usa una imagen o un recorte independiente para cada
+      documento. El texto de varios recibos en una imagen puede producir una
+      sugerencia mezclada que no corresponda a ninguno.
+    </p>
+    <p>
+      El modelo de OCR incluido lee texto impreso en inglés. La escritura a
+      mano y otras escrituras quedan fuera de lo que admite. Si el teléfono
+      genera archivos HEIC, exporta copias JPEG o conviértelas con
+      <a href="../../convertir-heic-a-jpg/">HEIC a JPG</a> antes de añadirlas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compara las sugerencias con la imagen</h2>
+    <p>
+      Ejecuta el OCR y revisa la foto, los campos sugeridos y el texto leído
+      de cada documento. Gira una foto de lado y vuelve a leerla. Ajusta el
+      recorte para contener un documento completo y vuelve a leerlo cuando
+      haga falta. La herramienta amplía los recortes pequeños hasta tres veces
+      y añade un borde blanco estrecho para el OCR. Esa copia de trabajo se
+      mantiene dentro de 2400 píxeles en su lado más largo. Una copia mayor
+      puede ayudar al motor, pero no recuperar detalles perdidos por desenfoque.
+      La imagen original y el adjunto que se envía no se amplían para el OCR.
+    </p>
+    <p>
+      Una primera lectura poco fiable o la falta de un importe o una fecha
+      pueden activar una segunda lectura con ajuste local del contraste para
+      distinguir mejor la impresión del papel. Abre «Texto leído de esta
+      imagen» para comparar ambas lecturas con la foto. Las discrepancias no
+      resueltas sobre importes, fechas, referencias o monedas pueden dejar
+      campos vacíos para que los revises. La moneda impresa tiene prioridad
+      sobre una deducción basada en la dirección. Una fecha reconocida del
+      recibo o la factura tiene prioridad sobre la fecha de un comprobante
+      de pago con tarjeta añadido. Corrige el texto editable antes de usarlo
+      para rellenar los campos, o introduce los campos directamente. La segunda
+      lectura se muestra por separado para comparar. Ninguna de las dos
+      garantiza que un dígito borroso o desvaído sea correcto.
+    </p>
+    <p>
+      La falta del nombre del comercio o una moneda de dólar o yen sin
+      identificar también pueden activar una lectura más cercana del
+      encabezado. Su texto aparece debajo de las lecturas del documento para
+      comparar y solo proporciona el nombre del comercio y sugerencias de
+      moneda basadas en la dirección. Comprueba también esas sugerencias
+      con la imagen.
+    </p>
+    <p>
+      Revisa estos cinco campos antes de confirmar un documento:
+    </p>
+    <ul>
+      <li><strong>Comercio.</strong> La empresa o el proveedor que figura en el documento. Un logotipo estilizado puede ser ilegible para el modelo de texto en inglés. Introduce el nombre si el campo queda vacío.</li>
+      <li><strong>Fecha.</strong> La fecha tal como está impresa. Una factura puede incluir una fecha de emisión y otra de vencimiento; una fecha numérica como 03/04 puede ser ambigua. Debes comprobar y seleccionar la fecha de conversión en su campo independiente.</li>
+      <li><strong>Referencia.</strong> El número del recibo o la factura, si aparece. Un número de tarjeta o teléfono no es una referencia del documento. El campo puede quedar vacío si no hay un candidato fiable.</li>
+      <li><strong>Moneda.</strong> Elige un código habitual como USD, CAD o EUR, o selecciona «Otro / código personalizado» e introduce otro código de tres letras. Tiene prioridad la moneda impresa junto al total final. El símbolo de libra sugiere GBP; el símbolo $ por sí solo no distingue USD, CAD, AUD u otra moneda de dólar. Un país claro o un código postal distintivo con su región en la dirección del comercio pueden proporcionar una sugerencia alternativa, con la línea impresa de la dirección al lado para comparar. Una ciudad por sí sola o una dirección de cliente, entrega o banco no bastan. Revisa cada sugerencia en el recibo. Hace falta una moneda antes de confirmar.</li>
+      <li><strong>Total.</strong> El importe final del documento. El analizador evita etiquetas de descuentos y efectivo entregado, pero el OCR puede no leerlas. Comprueba que no haya elegido un subtotal, descuento, impuesto, efectivo entregado, cambio o saldo pendiente.</li>
+    </ul>
+    <p>
+      Corrige directamente cualquier campo incorrecto. El OCR ahorra escritura,
+      pero puede confundir un 3 con un 8 o perder un separador decimal. Confirmar
+      registra que has revisado el documento. No demuestra que los cálculos de
+      la factura sean correctos, y la herramienta no extrae las líneas de
+      productos. Los importes admiten hasta dos decimales.
+    </p>
+  </section>
+
+  <section>
+    <h2>Conserva el documento completo dentro del recorte</h2>
+    <p>
+      La herramienta sugiere un recorte cuando encuentra bordes fiables. En un
+      recibo largo que llena la imagen, puede eliminar el fondo lateral y
+      conservar toda la altura para que una fecha debajo del código de barras
+      siga visible. En un recibo largo de papel de color, un color de papel
+      coincidente más allá de un borde detectado puede conservar ese extremo
+      completo. Así protege el encabezado o la última línea y mantiene algo
+      de fondo adicional. Si los bordes no están claros, conserva la imagen
+      completa. Compara el recorte con la foto original y ajústalo para quitar
+      el fondo sin perder ningún borde ni texto del documento. Una sugerencia
+      puede ser incorrecta, sobre todo con recibos oscuros, superficies con
+      estampados o fotografías de varias hojas.
+    </p>
+    <p>
+      El adjunto que se envía es una nueva copia JPEG de hasta 1600 píxeles en
+      su lado más largo, sin ampliar recortes más pequeños. La compresión intenta
+      dejar cada imagen en unos 350 KB. Se muestra el tamaño real porque el
+      objetivo no está garantizado. Revisa la vista previa preparada y comprueba
+      que el texto pequeño y el total sigan siendo legibles. La foto original
+      no cambia y no se adjunta al correo.
+    </p>
+    <p>
+      Confirma el documento solo después de revisar los campos y el recorte.
+      Cambiar un campo, el recorte o la rotación borra la confirmación para que
+      una imagen modificada no salga con una revisión anterior sin que lo notes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Elige la moneda del correo y el tipo de cada documento</h2>
+    <p>La moneda final del correo es, de forma predeterminada, la más frecuente entre los documentos. Si hay empate, se usa la primera que aparece. Una moneda elegida manualmente se mantiene; «Usar moneda predeterminada» restaura la elección automática.</p>
+    <p>
+      Mantén la moneda impresa en el documento como moneda original. Elige
+      una moneda final común para el correo mediante un código habitual o
+      «Otro / código personalizado». Esa misma moneda aparece en todos los
+      documentos. Cambiarla actualiza el lote y borra los tipos y las
+      confirmaciones hechos para la moneda anterior.
+    </p>
+    <p>
+      Introduce un tipo manual para cada documento en la dirección mostrada,
+      como «1 CAD = 0.70 USD». Los documentos que ya usan la moneda final
+      tienen un tipo de uno. La fecha es opcional para un tipo manual. Para
+      consultar un tipo en línea, comprueba la fecha del recibo en el campo
+      de fecha de conversión, elige la consulta en línea y pulsa «Obtener
+      tipo histórico». Una fecha impresa como 03/04 es ambigua, por lo que la
+      consulta usa la fecha que has seleccionado expresamente. Incluso una
+      fecha inequívoca como 24/09/2018 conserva su forma impresa. Selecciona
+      tú el 24 de septiembre de 2018 en el campo de fecha de conversión.
+    </p>
+    <p>
+      La consulta opcional usa <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">tipos de referencia de Frankfurter</a>.
+      Solo se envían el par de monedas y la fecha elegida a api.frankfurter.dev.
+      No se envían imágenes, importes, nombres de archivo, texto del OCR ni
+      direcciones de correo. El servicio puede ver la consulta y la dirección
+      IP. Comprueba la fecha real del tipo devuelto, que puede ser anterior
+      a la del recibo si no se publicó ningún tipo ese día. Los tipos de
+      referencia pueden diferir del aplicado por el banco o la tarjeta. Si
+      el par o la fecha no está disponible, introduce un tipo manual. No se
+      usa un tipo actual sin avisar para sustituir uno histórico que falta.
+    </p>
+    <p>
+      Revisa el importe original, el tipo y el valor convertido antes de
+      confirmar. El correo y el CSV conservan esos detalles para poder
+      relacionar el total con cada documento. Cambiar una moneda o una fecha
+      requiere otro tipo y otra revisión.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué indican la cantidad de documentos y los totales</h2>
+    <p>
+      El informe enumera los datos y el importe de cada documento, con la
+      cantidad de documentos y cuántos están revisados o pendientes. Solo
+      los importes revisados entran en los totales por moneda original y en
+      el total general convertido. Elige una moneda final común para todo
+      el lote; cada documento muestra la misma. Cada valor convertido se
+      redondea a dos decimales antes de sumar, de modo que el total general
+      coincide con los valores individuales que figuran en el correo.
+    </p>
+    <p>
+      Compara la cantidad con el montón de originales. Una foto que falta
+      deja fuera un gasto; una duplicada lo cuenta dos veces. No hay detección
+      automática de duplicados. Quita lo que no quieras contar y guarda o
+      copia el informe antes de cerrar la pestaña. El lote se mantiene en la
+      memoria, sin historial de documentos guardado. Durante la revisión,
+      los informes copiados y los CSV pueden contener filas sin terminar,
+      marcadas como pendientes. Enviar por correo y descargar adjuntos solo
+      se habilita cuando todos los documentos restantes están revisados y
+      sus copias JPEG están listas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Envía el informe con sus imágenes comprimidas</h2>
+    <p>
+      El asunto sugerido incluye la cantidad de documentos y añade el total
+      general en la moneda final cuando todos estén revisados. Edita el asunto
+      para usar tu propia redacción; tus cambios se conservan cuando cambia
+      el lote.
+    </p>
+    <p>
+      Usa «Correo con imágenes» después de revisar todos los documentos. Si
+      el navegador permite compartir archivos, abre el menú de compartir
+      del dispositivo con las copias JPEG preparadas y el informe. Elige allí
+      la aplicación de correo. El informe incluye el valor de cada documento,
+      la cantidad de documentos, los totales por moneda original y un total
+      general convertido. Revisa el asunto, el destinatario, el texto y cada
+      adjunto en la aplicación, y envía el mensaje tú mismo.
+    </p>
+    <p>
+      Los menús de compartir y las aplicaciones de correo varían. Una app
+      puede aceptar las imágenes sin el informe, y la página no puede elegir
+      el destinatario allí. Copia el informe en el mensaje si hace falta.
+      La página no puede enviar el mensaje ni saber si la app finalmente
+      lo entregó.
+    </p>
+  </section>
+
+  <section>
+    <h2>Descarga un archivo de correo o adjunta las copias por tu cuenta</h2>
+    <p>
+      «Descargar archivo de correo» crea un mensaje <code>.eml</code> con el
+      informe completo y todos los JPEG preparados como adjuntos. El
+      destinatario opcional que introduces en la página se aplica a este
+      archivo. Si el navegador no permite compartir archivos, el botón
+      de correo descarga el mismo archivo. Ábrelo en la aplicación y
+      comprueba que estén todos los adjuntos antes de enviarlo.
+    </p>
+    <p>
+      Algunas aplicaciones lo abren como borrador; otras lo muestran como
+      un mensaje recibido que hay que reenviar o volver a enviar. Ninguna
+      función del navegador garantiza una ventana de redacción con adjuntos
+      en todas las aplicaciones de correo. Si la app no puede usar el archivo,
+      descarga el ZIP, extráelo y adjunta sus copias JPEG y el CSV a un mensaje
+      nuevo. Copia el informe en el texto del mensaje. Guarda los originales
+      por separado si el destinatario puede necesitar más adelante los
+      documentos con toda su resolución.
+    </p>
+  </section>
+
+  <section>
+    <h2>Adónde va la información</h2>
+    <p>
+      La lectura y la edición se realizan en el navegador. El motor de OCR
+      y los datos de inglés vienen con la página. No se suben fotos ni campos
+      extraídos para el OCR. La conversión manual permanece en el dispositivo.
+      Los tipos históricos en línea son la consulta opcional descrita arriba.
+      Espera a que el estado sin conexión indique que está listo antes de
+      desconectarte. La herramienta guardada en caché puede entonces leer
+      fotos, crear el informe, preparar copias JPEG y guardar un CSV, un
+      archivo de correo o un ZIP sin conexión.
+    </p>
+    <p>
+      El correo y el uso de compartir son un paso siguiente que eliges
+      expresamente. Esos botones pasan el informe o los archivos a la app
+      que eliges, y esa app controla su entrega posterior. Una aplicación
+      de correo puede guardar un borrador sin conexión y enviarlo al
+      conectarse. Comprueba el destinatario y los adjuntos como harías con
+      cualquier mensaje que contenga recibos o facturas.
+    </p>
+  </section>

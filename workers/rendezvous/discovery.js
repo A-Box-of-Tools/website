@@ -1,6 +1,6 @@
 // Discovery is a list of live, explicitly offered room codes. A public
-// address is only a best-effort gateway match: shared carrier gateways can
-// include strangers, and two devices on one LAN can use different addresses.
+// IPv4 address or IPv6 /64 is only a best-effort network match: shared carrier
+// gateways can include strangers, and nearby devices can use different routes.
 // Nothing here decides whether their eventual WebRTC connection is local.
 
 export const DISCOVERY_SCOPE_HEADER = "x-rendezvous-discovery-scope";
@@ -25,11 +25,17 @@ export function pageOrigin(value) {
   return null;
 }
 
+function ipv4Octets(value) {
+  if (typeof value !== "string" || !/^(?:\d{1,3}\.){3}\d{1,3}$/.test(value)) return null;
+  const parts = value.split(".");
+  const octets = parts.map(Number);
+  return octets.some((n, i) => n > 255 || String(n) !== parts[i]) ? null : octets;
+}
+
 function publicAddress(value) {
   if (typeof value !== "string" || value.length > 64) return null;
-  if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(value)) {
-    const octets = value.split(".").map(Number);
-    if (octets.some((n, i) => n > 255 || String(n) !== value.split(".")[i])) return null;
+  const octets = ipv4Octets(value);
+  if (octets !== null) {
     const [a, b, c] = octets;
     if (a === 0 || a === 10 || a === 127 || a >= 224
         || (a === 100 && b >= 64 && b <= 127) || (a === 169 && b === 254)
@@ -51,12 +57,32 @@ function publicAddress(value) {
   }
 }
 
+function networkAddress(request) {
+  const edgeAddress = request.headers.get("CF-Connecting-IP");
+  const octets = ipv4Octets(edgeAddress);
+  // Pseudo IPv4's overwrite mode keeps the real IPv6 in this edge header.
+  // Its Class E marker is required: an ordinary or absent source address
+  // must never let a caller-supplied alternate choose the discovery group.
+  const address = publicAddress(octets !== null && octets[0] >= 240
+    ? request.headers.get("CF-Connecting-IPv6") : edgeAddress);
+  if (address === null) return null;
+  if (!address.includes(":")) return octets !== null && octets[0] >= 240 ? null : address;
+  // Devices on an IPv6 LAN have distinct interface identifiers. Expanding
+  // the compressed form before masking avoids dividing one /64 by device.
+  const [left, right] = address.split("::");
+  const leading = left ? left.split(":") : [];
+  const trailing = right ? right.split(":") : [];
+  const groups = right === undefined ? leading
+    : [...leading, ...Array(8 - leading.length - trailing.length).fill("0"), ...trailing];
+  return `${groups.slice(0, 4).map((n) => parseInt(n, 16).toString(16)).join(":")}::/64`;
+}
+
 // CF-Connecting-IP is supplied by the edge, but a same-zone Worker may
 // override it in a subrequest. Cross-zone Workers also share one fixed IPv6
 // address. Neither is a browser gateway and neither may select a group.
 export async function discoveryScope(request) {
   if (request.headers.has("CF-Worker")) return null;
-  const address = publicAddress(request.headers.get("CF-Connecting-IP"));
+  const address = networkAddress(request);
   const origin = pageOrigin(request.headers.get("Origin"));
   if (address === null || origin === null) return null;
   const bytes = new TextEncoder().encode(`${origin}\n${address}`);

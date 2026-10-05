@@ -57,7 +57,6 @@ let isPrivate = true;        // captured when sharing starts
 let isLocal = isLocalLink(location.href);
 let isDiscoverable = false;
 let discovery = null;
-let discoveryCode = '';
 let discoveryState = 'connecting';
 let foundShares = [];
 let announcementTimer = 0;
@@ -109,7 +108,6 @@ function suggest() {
 }
 
 function unlock() {
-  discoveryCode = '';
   isDiscoverable = false;
   renderDiscovery();
   $('code').disabled = false;
@@ -284,8 +282,8 @@ async function sendFile(dc, id) {
 function renderDiscovery() {
   const list = $('discovery-list');
   list.textContent = '';
-  const others = foundShares.filter((share) => share.code !== discoveryCode);
-  for (const [index, share] of others.entries()) {
+  // The sharer needs to see its own entry to verify that it was advertised.
+  for (const [index, share] of foundShares.entries()) {
     const row = document.createElement('div');
     row.className = 'discovery-row';
     const name = document.createElement('span');
@@ -303,7 +301,7 @@ function renderDiscovery() {
     row.append(name, open);
     list.append(row);
   }
-  const state = discoveryState === 'ready' ? (others.length ? 'ready' : 'empty') : discoveryState;
+  const state = discoveryState === 'ready' ? (foundShares.length ? 'ready' : 'empty') : discoveryState;
   $('discovery-status').textContent = phrase(`discovery.${state}`);
 }
 
@@ -398,7 +396,6 @@ function publish() {
   $('local').disabled = true;
   isDiscoverable = isLocal && $('discoverable').checked;
   $('discoverable').disabled = true;
-  discoveryCode = code;
   renderDiscovery();
   $('publish').hidden = true;
   setStatus(phrase('share.setting-up'));
@@ -555,7 +552,6 @@ $('stop').addEventListener('click', () => {
   clearTimeout(announcementTimer);
   discovery?.unpublish();
   isDiscoverable = false;
-  discoveryCode = '';
   renderDiscovery();
   sock?.close(1000);
   clearInterval(keepalive);

@@ -12,8 +12,10 @@
   </section>
 
   <section class="card" id="review-card">
-    <h2><span class="step">2</span> Check each document</h2>
-    <div class="export-row"><button type="button" id="clear-all" class="ghost danger" disabled>Clear all</button></div>
+    <div class="card-head review-head">
+      <h2><span class="step">2</span> Check each document</h2>
+      <button type="button" id="clear-all" class="ghost danger" disabled>Clear all</button>
+    </div>
     <p class="card-lede">Check the crop and make sure the attachment is readable. OCR can misread digits or pick the wrong total: compare each suggestion with the picture, correct the fields, choose the final email currency and review its exchange rate, then tick “I checked this document”. Each picture counts as one document; adding it twice counts it twice.</p>
     <p class="field-summary">OCR, cropping and manual conversion stay on this device. Historical rate lookup is optional and starts only when you press “Get historical rate”. It sends the two currency codes and receipt date to <a href="https://frankfurter.dev/">Frankfurter</a>, which also sees your IP address. Your pictures, merchants, amounts and receipt numbers stay on this device.</p>
     <div class="final-currency-settings settings">
@@ -29,11 +31,18 @@
               <option value="SAR">SAR — Saudi riyal</option><option value="ZAR">ZAR — South African rand</option>
               <option value="BRL">BRL — Brazilian real</option><option value="MXN">MXN — Mexican peso</option>
               <option value="custom">Other / custom code</option>
-            </select></div>
+            </select>
+        <p class="field-note">The default is the most common document currency; ties use the first one encountered. A currency you choose manually stays selected.</p>
+      </div>
+      <div class="currency-default-actions">
+        <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Use default currency</button>
+        <details class="currency-default-help info-fold" id="default-currency-help">
+          <summary aria-describedby="default-currency-note"><span class="visually-hidden">How the default currency is chosen</span></summary>
+          <p class="currency-default-note" id="default-currency-note" role="tooltip">Selects the currency used by the most documents. If there’s a tie, it uses the first one encountered.</p>
+        </details>
+      </div>
       <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Custom final currency code</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
     </div>
-    <p class="field-note">The default is the most common document currency; ties use the first one encountered. A currency you choose manually stays selected.</p>
-    <div class="export-row"><button type="button" id="use-default-currency" class="ghost">Use default currency</button></div>
     <p class="field-summary">Choose one final currency for the email grand total. Every document uses this choice; changing it here or on a document updates the whole batch and clears rates and confirmations.</p>
     <div id="documents" class="documents"></div>
     <p id="empty-documents" class="field-summary">Your pictures and editable details will appear here.</p>
@@ -51,7 +60,7 @@
     <p class="field-summary">Totals include checked documents only. Original amounts remain grouped by currency; a bare $ does not tell us which dollar you mean. Each checked document also contributes its converted amount to one grand total in your final email currency. Converted amounts are rounded individually to two decimal places.</p>
     <div class="settings mail-fields">
       <div class="field"><label for="email-to">Email to (optional)</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
-      <div class="field"><label for="email-subject">Subject</label><input type="text" id="email-subject" value="Receipt and invoice summary" maxlength="150"></div>
+      <div class="field"><label for="email-subject">Subject</label><input type="text" id="email-subject" value="Receipt and invoice summary" maxlength="150" aria-describedby="email-subject-note"><p class="field-note" id="email-subject-note">Adds the document count, then the grand total once every document is checked. Your edits are kept.</p></div>
     </div>
     <div class="field report-preview"><label for="report-text">Report preview</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
     <div class="export-row">
@@ -95,7 +104,7 @@
             <label class="field">Merchant / supplier<input type="text" data-field="merchant" maxlength="200"></label>
             <label class="field">Date (as printed)<input type="text" data-field="date" maxlength="50"></label>
             <label class="field">Receipt / invoice number<input type="text" data-field="reference" maxlength="100"></label>
-            <label class="field">Document currency<select data-currency-choice>
+            <div class="field"><label class="field">Document currency<select data-currency-choice>
               <option value="">Choose currency</option>
               <option value="USD">USD — US dollar</option><option value="CAD">CAD — Canadian dollar</option>
               <option value="EUR">EUR — Euro</option><option value="GBP">GBP — British pound</option>
@@ -107,7 +116,7 @@
               <option value="SAR">SAR — Saudi riyal</option><option value="ZAR">ZAR — South African rand</option>
               <option value="BRL">BRL — Brazilian real</option><option value="MXN">MXN — Mexican peso</option>
               <option value="custom">Other / custom code</option>
-            </select></label>
+            </select></label><p class="currency-hint field-note" hidden></p></div>
             <label class="field custom-currency" hidden>Custom currency code<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">Enter three letters, such as MYR.</span></label>
             <label class="field">Document total<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
           </div>
@@ -127,7 +136,13 @@
           </fieldset>
           <label class="confirm-document"><input type="checkbox" data-field="confirmed"> I checked the fields and the cropped attachment</label>
           <p class="document-error error" hidden></p>
-          <details class="ocr-details"><summary>Text read from this picture</summary><label class="field">Correct the text if needed<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label><button type="button" class="parse-text ghost">Use this text to fill the fields</button></details>
+          <details class="ocr-details">
+            <summary>Text read from this picture</summary>
+            <label class="field">Correct the text if needed<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label>
+            <button type="button" class="parse-text ghost">Use this text to fill the fields</button>
+            <div class="ocr-recovery" hidden><label class="field">Second reading for comparison<textarea class="ocr-recovery-text ocr-text" rows="8" spellcheck="false" readonly></textarea></label><p class="field-note">Compare both readings with the picture. Correct the text above before using it to fill the fields.</p></div>
+            <div class="ocr-header" hidden><label class="field">Store name and address reading<textarea class="ocr-header-text ocr-text" rows="5" spellcheck="false" readonly></textarea></label><p class="field-note">This reading is used for the store name and address-based currency suggestions. Compare it with the picture.</p></div>
+          </details>
         </div>
       </div>
     </article>
@@ -153,6 +168,10 @@
     </div>
   </div>
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="emailSubjectCount">{title} — {count} documents</span>
+    <span data-phrase="emailSubjectTotal">{title} — {count} documents — {currency} {amount}</span>
+    <span data-phrase="currencyFromLocation">Suggested {currency} from the store address: {location}. Check it against the receipt.</span>
+    <span data-phrase="conflictingRecognition">The two readings disagree. Compare both texts with the picture and fill the blank fields yourself.</span>
     <span data-phrase="net.clean">Photos stay on this device during processing. {total} resources loaded; optional historical rates may contact Frankfurter. {platform}</span>
     <span data-phrase="net.dirty">Unexpected connections were observed: {hosts}. {platform}</span>
     <span data-phrase="offline.ready">ready — OCR, manual conversion and downloads work offline; online rate lookup needs a connection.</span>

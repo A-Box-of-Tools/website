@@ -4,7 +4,8 @@
 # OCR suggests fields; it does not verify them. A person compares each result
 # with the photograph before confirming it for totals and email. Keep that
 # distinction in the prose: a plausible total is not an accounting check, and a currency symbol
-# alone may not identify a currency.
+# alone may not identify a currency. Address inference is a fallback using the
+# issuer's printed address, never a customer address or the visitor's location.
 #
 # Email and device sharing are deliberate handoffs after local processing.
 # The page creates an email file or opens a share sheet; the visitor chooses
@@ -161,7 +162,9 @@ title = "Outgoing pictures are cropped, compressed copies."
 body = """
       Adjust each crop to keep the entire receipt or invoice. The page makes
       a suggested crop when it finds clear document edges; otherwise it keeps
-      the full image. Review and adjust that suggestion. It makes
+      the full image. On a long colored receipt, matching paper color beyond a
+      detected edge can retain the whole end of the picture, keeping its heading
+      or final text with some extra background. Review and adjust that suggestion. It makes
       JPEG copies up to 1600 pixels on their longest side and aims for about
       350 KB per image. Check their previews and reported sizes before sending;
       the size target is not guaranteed. Your original photos are unchanged
@@ -253,6 +256,20 @@ a = """
         stylized business logo. The parser avoids discount and tendered-total
         labels, but it cannot use a label OCR did not read. Merchant and
         reference fields can stay blank when there is no reliable candidate.
+        A missing store name or an unresolved dollar or yen currency can also
+        trigger a closer reading of the store heading. That reading is shown
+        separately and supplies only the store name and address-based currency
+        suggestions.
+        A weak reading or a missing amount or date can trigger one second
+        reading with local contrast adjustment to help separate the print from
+        the paper.
+        Both full-document readings are available for comparison. Unresolved
+        disagreements about amounts, dates, references or currencies can leave
+        fields blank for you to fill. Printed currency takes priority over an
+        address-based guess, and a recognized receipt or invoice date takes
+        priority over a date in an appended card-payment record.
+        This can improve a suggestion, but cannot recover detail lost to
+        blur or guarantee a correct result.
         Compare every suggestion with the photo and confirm each document
         yourself before exporting it. This tool does not extract line items
         or prove that an invoice's arithmetic is correct."""
@@ -272,9 +289,15 @@ a = """
         The document date stays as printed. For an online exchange rate, check
         it and choose the date in the separate conversion-date field; a date
         such as 24/09/2018 is not automatically converted there. A pound sign
-        suggests GBP. A dollar sign alone leaves the currency for you to
-        choose, because it can mean USD, CAD, AUD or another dollar currency.
-        Check every suggested code against the document."""
+        suggests GBP. A dollar sign alone can mean USD, CAD, AUD or another
+        dollar currency. A printed currency associated with the final total
+        takes priority. If the currency is still unclear, a recognized country
+        or distinctive postcode and region in the store's own address can
+        suggest it. The printed address line appears beside that suggestion.
+        A city alone or a customer, delivery or bank address is insufficient;
+        unresolved ambiguous or conflicting evidence leaves the currency blank. No
+        location lookup is made. Check every suggested code against the
+        document."""
 
 [[faq]]
 q = "Which files and languages can it read?"
@@ -302,6 +325,9 @@ a = """
         No. Where supported, it offers the report and compressed JPEG copies
         through the device's share sheet; choose your email app there. Otherwise
         it downloads an email file containing the report and attachments.
+        The suggested subject includes the document count and, once every
+        document is checked, the grand total in the final currency. Editing
+        the subject keeps your chosen wording.
         Review the recipient, contents and attachments, then send it yourself.
         The page cannot tell whether your email app accepted them or whether
         you eventually sent the message."""
@@ -388,6 +414,7 @@ features = [
   "Batches of up to 20 pictures, each up to 20 MB",
   "Editable merchant, date, reference, currency and total",
   "Common currency codes and a custom three-letter code",
+  "Currency suggestions from clear printed store-address evidence",
   "Original image and raw OCR text for review",
   "Rotation and rereading for sideways photos",
   "Adjustable crops and compressed JPEG attachment previews",

@@ -1,0 +1,266 @@
+<main id="main">
+  <section class="card">
+    <h2><span class="step">1</span> Ajouter des photos de reçus ou de factures</h2>
+    <p class="card-lede">Un document par photo. Ajoutez jusqu’à 20 images JPEG, PNG, WebP ou AVIF, de 20 Mo chacune. Le texte anglais est lu sur cet appareil par un moteur de reconnaissance de texte (OCR) fourni avec la page. Les images AVIF utilisent le décodeur de votre navigateur.</p>
+    {% include "partials/file-picker.html" %}
+    <div class="export-row">
+      <button type="button" id="stop-reading" class="ghost" hidden>Arrêter la lecture</button>
+    </div>
+    <p class="field-summary">Gardez le document entier dans le cadre, à l’endroit et bien éclairé. Pour les images HEIC, utilisez d’abord <a href="../convertir-heic-en-jpg/">HEIC en JPG</a>. Les PDF et les reçus manuscrits ne sont pas pris en charge.</p>
+    <p id="read-progress" role="status" aria-live="polite"></p>
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="review-card">
+    <div class="card-head review-head">
+      <h2><span class="step">2</span> Vérifier chaque document</h2>
+      <button type="button" id="clear-all" class="ghost danger" disabled>Tout effacer</button>
+    </div>
+    <p class="card-lede">Vérifiez le recadrage et la lisibilité de la pièce jointe. L’OCR peut confondre des chiffres ou choisir le mauvais total&nbsp;: comparez chaque suggestion avec la photo, corrigez les champs, choisissez la devise finale du courriel et vérifiez le taux de change, puis cochez «&nbsp;J’ai vérifié les champs et la pièce jointe recadrée&nbsp;». Chaque photo compte pour un document&nbsp;; l’ajouter deux fois revient à la compter deux fois.</p>
+    <p class="field-summary">L’OCR, le recadrage et la conversion manuelle restent sur cet appareil. La recherche d’un taux historique est facultative et ne commence que lorsque vous appuyez sur «&nbsp;Obtenir le taux historique&nbsp;». Elle envoie les deux codes de devise et la date du reçu à <a href="https://frankfurter.dev/">Frankfurter</a>, qui voit aussi votre adresse IP. Vos photos, commerçants, montants et numéros de reçus restent sur cet appareil.</p>
+    <div class="final-currency-settings settings">
+      <div class="field"><label for="final-currency-choice">Devise finale du courriel pour tous les documents</label><select id="final-currency-choice">
+              <option value="">Choisir la devise finale du courriel</option>
+              <option value="USD">USD — Dollar américain</option><option value="CAD">CAD — Dollar canadien</option>
+              <option value="EUR">EUR — Euro</option><option value="GBP">GBP — Livre sterling</option>
+              <option value="AUD">AUD — Dollar australien</option><option value="NZD">NZD — Dollar néo-zélandais</option>
+              <option value="JPY">JPY — Yen japonais</option><option value="CNY">CNY — Yuan chinois</option>
+              <option value="INR">INR — Roupie indienne</option><option value="CHF">CHF — Franc suisse</option>
+              <option value="HKD">HKD — Dollar de Hong Kong</option><option value="SGD">SGD — Dollar de Singapour</option>
+              <option value="KRW">KRW — Won sud-coréen</option><option value="AED">AED — Dirham des Émirats arabes unis</option>
+              <option value="SAR">SAR — Riyal saoudien</option><option value="ZAR">ZAR — Rand sud-africain</option>
+              <option value="BRL">BRL — Réal brésilien</option><option value="MXN">MXN — Peso mexicain</option>
+              <option value="custom">Autre / code personnalisé</option>
+            </select>
+        <p class="field-note">La devise par défaut est celle du plus grand nombre de documents&nbsp;; en cas d’égalité, c’est la première rencontrée. Une devise choisie manuellement reste sélectionnée.</p>
+      </div>
+      <div class="currency-default-actions">
+        <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Utiliser la devise par défaut</button>
+        <details class="currency-default-help info-fold" id="default-currency-help">
+          <summary aria-describedby="default-currency-note"><span class="visually-hidden">Comment la devise par défaut est choisie</span></summary>
+          <p class="currency-default-note" id="default-currency-note" role="tooltip">Sélectionne la devise utilisée par le plus grand nombre de documents. En cas d’égalité, choisit la première rencontrée.</p>
+        </details>
+      </div>
+      <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Code personnalisé de la devise finale</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
+    </div>
+    <p class="field-summary">Choisissez une seule devise finale pour le total général du courriel. Tous les documents utilisent ce choix&nbsp;; le changer ici ou sur un document met à jour tout le lot et efface les taux et les confirmations.</p>
+    <div id="documents" class="documents"></div>
+    <p id="empty-documents" class="field-summary">Vos photos et leurs champs modifiables apparaîtront ici.</p>
+  </section>
+
+  <section class="card" id="report-card" inert>
+    <h2><span class="step">3</span> Totaux et courriel</h2>
+    <div class="report-stats">
+      <div><span>Documents</span><strong id="document-count">0</strong></div>
+      <div><span>Vérifiés</span><strong id="checked-count">0</strong></div>
+      <div><span>À vérifier</span><strong id="review-count">0</strong></div>
+    </div>
+    <div class="grand-total-box"><span>Total général dans la devise finale du courriel</span><strong id="grand-total">—</strong><p id="grand-total-note" class="field-note">Documents vérifiés uniquement.</p></div>
+    <ul id="currency-totals" class="currency-totals" aria-label="Totaux d’origine par devise"></ul>
+    <p class="field-summary">Les totaux ne comprennent que les documents vérifiés. Les montants d’origine restent regroupés par devise&nbsp;; un simple $ ne permet pas de savoir de quel dollar il s’agit. Le montant converti de chaque document vérifié s’ajoute aussi à un total général dans la devise finale du courriel. Chaque montant converti est arrondi séparément à deux décimales.</p>
+    <div class="settings mail-fields">
+      <div class="field"><label for="email-to">Destinataire (facultatif)</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
+      <div class="field"><label for="email-subject">Objet</label><input type="text" id="email-subject" value="Récapitulatif des reçus et factures" maxlength="150" aria-describedby="email-subject-note"><p class="field-note" id="email-subject-note">Ajoute le nombre de documents, puis le total général une fois tous les documents vérifiés. Vos modifications sont conservées.</p></div>
+    </div>
+    <div class="field report-preview"><label for="report-text">Aperçu du rapport</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
+    <div class="export-row">
+      <button type="button" id="email-report" class="primary" disabled>Courriel avec images</button>
+      <button type="button" id="download-email" class="ghost" disabled>Télécharger le courriel (.eml)</button>
+      <button type="button" id="download-images" class="ghost" disabled>Télécharger images + CSV (.zip)</button>
+      <button type="button" id="copy-report" class="ghost" disabled>Copier le rapport</button>
+      <button type="button" id="download-csv" class="ghost" disabled>Télécharger le CSV</button>
+    </div>
+    <p id="export-status" class="field-summary" role="status" aria-live="polite"></p>
+    <p class="field-summary">Chaque export de courriel inclut les copies JPEG recadrées et compressées. «&nbsp;Courriel avec images&nbsp;» ouvre le menu de partage de votre appareil lorsqu’il accepte les fichiers&nbsp;; choisissez votre application de messagerie et saisissez-y le destinataire. Sinon, un fichier de courriel contenant le rapport et les images jointes est téléchargé. Ouvrez ce fichier .eml dans une application compatible pour rédiger, transférer ou renvoyer le message&nbsp;; la prise en charge des brouillons varie selon l’application. Le destinataire ci-dessus est utilisé dans le fichier de courriel. Vous vérifiez et envoyez vous-même le message.</p>
+    <p class="field-summary">Le ZIP contient les images JPEG préparées et le CSV à joindre manuellement. Les images sont redimensionnées à 1 600 pixels au maximum sur le côté le plus long, avec une taille visée de 350 Ko chacune&nbsp;; la taille réelle apparaît sous chaque aperçu. Vérifiez les petits caractères avant l’envoi. Les originaux restent inchangés et le traitement reste sur cet appareil.</p>
+  </section>
+
+  <template id="document-template">
+    <article class="document">
+      <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Retirer</button></div>
+      <div class="document-content">
+        <div class="picture-column">
+          <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Aperçu de la pièce jointe recadrée et compressée" hidden></a>
+          <p class="attachment-status field-note" role="status"></p>
+          <div class="export-row"><a class="original-link" target="_blank" rel="noopener">Voir l’original</a><button type="button" class="download-picture ghost" disabled>Enregistrer le JPEG</button></div>
+          <div class="export-row"><button type="button" class="rotate-document ghost">Tourner de 90°</button><button type="button" class="reread-document ghost">Relire</button></div>
+          <details class="crop-editor"><summary>Ajuster le recadrage</summary>
+            <div class="crop-stage"></div>
+            <div class="crop-numbers">
+              <label class="field">Gauche (px)<input type="number" data-crop="x" min="0" step="1"></label>
+              <label class="field">Haut (px)<input type="number" data-crop="y" min="0" step="1"></label>
+              <label class="field">Largeur (px)<input type="number" data-crop="width" min="1" step="1"></label>
+              <label class="field">Hauteur (px)<input type="number" data-crop="height" min="1" step="1"></label>
+            </div>
+            <div class="export-row"><button type="button" class="detect-crop ghost">Suggérer un recadrage</button><button type="button" class="reset-crop ghost">Utiliser toute la photo</button></div>
+            <p class="crop-status field-note"></p>
+            <p class="field-note">Faites glisser les bords du recadrage ou utilisez les champs en pixels. Lorsque le recadrage a le focus, les flèches le déplacent&nbsp;; Alt + flèches le redimensionne et Maj augmente le pas. Gardez tous les bords du document et son total à l’intérieur du recadrage.</p>
+          </details>
+          <p class="field-note">Sélectionnez l’aperçu de la pièce jointe pour le vérifier en taille réelle. Changer le recadrage ou la rotation oblige à vérifier de nouveau le document.</p>
+        </div>
+        <div class="document-fields">
+          <p class="document-status" role="status"></p>
+          <div class="settings">
+            <label class="field">Commerçant / fournisseur<input type="text" data-field="merchant" maxlength="200"></label>
+            <label class="field">Date (telle qu’imprimée)<input type="text" data-field="date" maxlength="50"></label>
+            <label class="field">Numéro du reçu / de la facture<input type="text" data-field="reference" maxlength="100"></label>
+            <div class="field"><label class="field">Devise du document<select data-currency-choice>
+              <option value="">Choisir une devise</option>
+              <option value="USD">USD — Dollar américain</option><option value="CAD">CAD — Dollar canadien</option>
+              <option value="EUR">EUR — Euro</option><option value="GBP">GBP — Livre sterling</option>
+              <option value="AUD">AUD — Dollar australien</option><option value="NZD">NZD — Dollar néo-zélandais</option>
+              <option value="JPY">JPY — Yen japonais</option><option value="CNY">CNY — Yuan chinois</option>
+              <option value="INR">INR — Roupie indienne</option><option value="CHF">CHF — Franc suisse</option>
+              <option value="HKD">HKD — Dollar de Hong Kong</option><option value="SGD">SGD — Dollar de Singapour</option>
+              <option value="KRW">KRW — Won sud-coréen</option><option value="AED">AED — Dirham des Émirats arabes unis</option>
+              <option value="SAR">SAR — Riyal saoudien</option><option value="ZAR">ZAR — Rand sud-africain</option>
+              <option value="BRL">BRL — Réal brésilien</option><option value="MXN">MXN — Peso mexicain</option>
+              <option value="custom">Autre / code personnalisé</option>
+            </select></label><p class="currency-hint field-note" hidden></p></div>
+            <label class="field custom-currency" hidden>Code de devise personnalisé<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">Saisissez trois lettres, par exemple MYR.</span></label>
+            <label class="field">Total du document<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
+          </div>
+          <fieldset class="conversion-fields">
+            <legend>Convertir ce document pour le courriel</legend>
+            <div class="settings">
+              <label class="field">Devise finale du courriel<select data-final-currency-choice></select></label>
+              <label class="field custom-final-currency" hidden>Code personnalisé de la devise finale<input type="text" data-field="finalCurrency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></label>
+              <label class="field">Date de conversion (celle du reçu)<input type="date" data-field="conversionDate"><span class="field-note">Facultative pour les taux manuels. Vérifiez la date du reçu pour une recherche historique&nbsp;: elle doit correspondre à aujourd’hui ou à une date antérieure. Les dates imprimées ambiguës ne sont pas remplies automatiquement.</span></label>
+              <label class="field">Source du taux<select data-field="rateMode"><option value="manual">Saisir un taux manuellement</option><option value="online">Rechercher un taux de référence historique</option></select></label>
+              <label class="field">Taux de change<input type="text" data-field="rate" inputmode="decimal" maxlength="32" autocomplete="off" placeholder="0.70295"><span class="field-note">Utilisez un point décimal, avec 12 décimales au maximum.</span></label>
+            </div>
+            <p class="rate-direction field-note"></p>
+            <div class="online-rate-controls" hidden><button type="button" class="get-rate ghost">Obtenir le taux historique</button><p class="field-note">Cette requête facultative n’envoie que les deux codes de devise et la date à <a href="https://frankfurter.dev/">Frankfurter</a>. Le fournisseur voit votre adresse IP. Aucune photo, aucun commerçant, montant ou numéro de reçu n’est envoyé. Ce sont des taux de référence, qui peuvent différer de ceux de votre banque ou de votre carte. Saisissez un taux manuellement si la devise ou la date n’est pas disponible.</p></div>
+            <p class="rate-status field-note" role="status"></p>
+            <p class="converted-value"></p>
+          </fieldset>
+          <label class="confirm-document"><input type="checkbox" data-field="confirmed"> J’ai vérifié les champs et la pièce jointe recadrée</label>
+          <p class="document-error error" hidden></p>
+          <details class="ocr-details">
+            <summary>Texte lu sur cette photo</summary>
+            <label class="field">Corriger le texte si nécessaire<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label>
+            <button type="button" class="parse-text ghost">Utiliser ce texte pour remplir les champs</button>
+            <div class="ocr-recovery" hidden><label class="field">Deuxième lecture pour comparaison<textarea class="ocr-recovery-text ocr-text" rows="8" spellcheck="false" readonly></textarea></label><p class="field-note">Comparez les deux lectures avec la photo. Corrigez le texte ci-dessus avant de l’utiliser pour remplir les champs.</p></div>
+            <div class="ocr-header" hidden><label class="field">Lecture du nom et de l’adresse du magasin<textarea class="ocr-header-text ocr-text" rows="5" spellcheck="false" readonly></textarea></label><p class="field-note">Cette lecture sert à suggérer le nom du magasin et la devise d’après son adresse. Comparez-la avec la photo.</p></div>
+          </details>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div id="example-documents" hidden aria-hidden="true">
+    <div data-example="sample-receipt.png">
+      <span data-line>NORTH STREET CAFE</span>
+      <span data-line>RECEIPT R-1042</span>
+      <span data-line>Date: 2026-10-04</span>
+      <span data-line>Coffee and lunch CAD 21.50</span>
+      <span data-line>Tax CAD 2.80</span>
+      <span data-line>TOTAL CAD 24.30</span>
+      <span data-line>Thank you</span>
+    </div>
+    <div data-example="sample-invoice.png">
+      <span data-line>MAPLE OFFICE SUPPLIES</span>
+      <span data-line>INVOICE INV-208</span>
+      <span data-line>Date: 2026-10-03</span>
+      <span data-line>Paper CAD 40.00</span>
+      <span data-line>Tax CAD 5.20</span>
+      <span data-line>AMOUNT DUE CAD 45.20</span>
+    </div>
+  </div>
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="emailSubjectCount">{title} — {count} documents</span>
+    <span data-phrase="emailSubjectTotal">{title} — {count} documents — {currency} {amount}</span>
+    <span data-phrase="currencyFromLocation">Devise {currency} suggérée d’après l’adresse du magasin&nbsp;: {location}. Vérifiez-la sur le reçu.</span>
+    <span data-phrase="conflictingRecognition">Les deux lectures ne concordent pas. Comparez les deux textes avec la photo et remplissez vous-même les champs vides.</span>
+    <span data-phrase="net.clean">Les photos restent sur cet appareil pendant le traitement. {total} ressources chargées&nbsp;; les taux historiques facultatifs peuvent contacter Frankfurter. {platform}</span>
+    <span data-phrase="net.dirty">Des connexions inattendues ont été observées&nbsp;: {hosts}. {platform}</span>
+    <span data-phrase="offline.ready">prêt — l’OCR, la conversion manuelle et les téléchargements fonctionnent hors ligne&nbsp;; la recherche de taux en ligne nécessite une connexion.</span>
+    <span data-phrase="finalCurrencyRequired">Choisissez pour le lot une seule devise finale de courriel, avec un code valide de trois lettres.</span>
+    <span data-phrase="invalidConversionDate">Saisissez la date de conversion du reçu comme date complète du calendrier. La recherche historique exige aujourd’hui ou une date antérieure&nbsp;; les dates imprimées ambiguës doivent être vérifiées.</span>
+    <span data-phrase="invalidRate">Saisissez un taux de change positif avec un point décimal et jusqu’à 12 décimales.</span>
+    <span data-phrase="rateRequired">Obtenez un taux historique pour les devises et la date actuelles ou choisissez un taux manuel.</span>
+    <span data-phrase="conversionOverflow">Ce montant converti dépasse la plage prise en charge. Vérifiez le montant et le taux.</span>
+    <span data-phrase="rateDirection">1 {base} = {rate} {quote}</span>
+    <span data-phrase="rateDirectionEmpty">Saisissez le montant en {quote} correspondant à 1 {base}.</span>
+    <span data-phrase="rateChooseCurrencies">Choisissez d’abord la devise du document et la devise finale du courriel.</span>
+    <span data-phrase="sameCurrencyRate">Les devises sont identiques. Le taux 1 est appliqué sur cet appareil&nbsp;; aucune recherche n’est nécessaire.</span>
+    <span data-phrase="manualRateReady">Taux manuel. Date de conversion&nbsp;: {date}. Vérifiez-le auprès de votre source avant de confirmer.</span>
+    <span data-phrase="fx.loading">Recherche du taux de référence historique…</span>
+    <span data-phrase="fx.loaded">Taux de référence Frankfurter du {date}&nbsp;; date du reçu demandée&nbsp;: {requested}. Vérifiez-le avant de confirmer.</span>
+    <span data-phrase="fx.failed">Le taux historique n’a pas pu être obtenu ou vérifié. Saisissez un taux manuellement ou réessayez.</span>
+    <span data-phrase="fx.unsupported">Aucun taux n’est disponible pour cette paire de devises et cette date. Saisissez un taux manuellement.</span>
+    <span data-phrase="fx.timeout">Le délai de la requête de taux a expiré. Saisissez un taux manuellement ou réessayez.</span>
+    <span data-phrase="fx.cancelled">Requête de taux annulée.</span>
+    <span data-phrase="convertedAmount">Montant converti du document&nbsp;: {amount} {currency}</span>
+    <span data-phrase="conversionPending">Une conversion vérifiée est nécessaire avant d’inclure ce document dans le total général.</span>
+    <span data-phrase="grandTotal">{amount} {currency}</span>
+    <span data-phrase="grandTotalNote">Somme de {checked} documents vérifiés, arrondis séparément à deux décimales&nbsp;; {review} restent à vérifier.</span>
+    <span data-phrase="reportFinalCurrency">Devise finale du courriel&nbsp;: {currency}</span>
+    <span data-phrase="reportRate">Taux de change&nbsp;: 1 {base} = {rate} {quote}</span>
+    <span data-phrase="reportRateManual">Source du taux&nbsp;: saisie manuelle, date de conversion {date}.</span>
+    <span data-phrase="reportRateOnline">Source du taux&nbsp;: taux de référence Frankfurter du {date}&nbsp;; date du reçu demandée&nbsp;: {requested}.</span>
+    <span data-phrase="reportRateSame">Source du taux&nbsp;: devises identiques, taux fixe de 1&nbsp;; aucune requête en ligne.</span>
+    <span data-phrase="reportGrandTotal">Total général&nbsp;: {amount} {currency} pour {count} documents vérifiés&nbsp;; documents dans le lot&nbsp;: {documents}.</span>
+    <span data-phrase="reportConversionPending">La conversion reste à vérifier.</span>
+    <span data-phrase="csv.conversionDate">Date de conversion demandée</span><span data-phrase="csv.rate">Taux de change</span><span data-phrase="csv.rateSource">Source du taux</span><span data-phrase="csv.rateDate">Date du taux utilisé</span><span data-phrase="csv.finalCurrency">Devise finale du courriel</span><span data-phrase="csv.convertedAmount">Montant converti</span>
+    <span data-phrase="csv.manual">Manuel</span><span data-phrase="csv.online">Référence Frankfurter</span><span data-phrase="csv.same">Devises identiques</span><span data-phrase="csv.documentCount">Nombre de documents</span><span data-phrase="csv.checkedCount">Nombre de documents vérifiés</span><span data-phrase="csv.grandTotal">Total général</span>
+
+    <span data-phrase="queued">En attente de lecture de cette photo.</span>
+    <span data-phrase="reading">Lecture de {name} ({percent} %).</span>
+    <span data-phrase="loadingEngine">Préparation du moteur OCR local pour {name}.</span>
+    <span data-phrase="batchDone">{count} photos lues. Vérifiez chaque document avant l’envoi par courriel.</span>
+    <span data-phrase="readFailed">Cette photo n’a pas pu être lue. Vous pouvez saisir les champs vous-même ou tenter une nouvelle lecture.</span>
+    <span data-phrase="reviewExtraction">Un total a été suggéré. Vérifiez chaque champ sur la photo.</span>
+    <span data-phrase="missingTotal">Aucun total de document clair n’a été trouvé. Saisissez-le d’après la photo.</span>
+    <span data-phrase="ambiguousTotal">Plusieurs totaux possibles ont été trouvés. Saisissez le bon total d’après la photo.</span>
+    <span data-phrase="stopped">Lecture arrêtée. Saisissez les champs vous-même ou choisissez Relire.</span>
+    <span data-phrase="busy">Attendez la fin de la lecture en cours ou arrêtez-la d’abord.</span>
+    <span data-phrase="tooMany">Ajoutez jusqu’à 20 photos. Retirez un document pour en ajouter un autre.</span>
+    <span data-phrase="badFile">{name} n’est pas une image JPEG, PNG, WebP ou AVIF prise en charge.</span>
+    <span data-phrase="tooLarge">{name} dépasse 20 Mo. Utilisez une image plus petite.</span>
+    <span data-phrase="imageFailed">{name} n’a pas pu être ouvert comme image. Essayez de l’exporter en JPEG ou PNG.</span>
+    <span data-phrase="cropLabel">Recadrage du document</span>
+    <span data-phrase="cropPreview">Photo entière pour ajuster le recadrage du document</span>
+    <span data-phrase="cropSuggested">Un recadrage a été suggéré d’après les bords du document. Vérifiez-le et ajustez-le si nécessaire.</span>
+    <span data-phrase="cropNotFound">Aucun bord de document clair n’a été trouvé. Toute la photo est sélectionnée&nbsp;; ajustez le recadrage si nécessaire.</span>
+    <span data-phrase="cropManual">Votre recadrage est sélectionné. Vérifiez la pièce jointe préparée avant de confirmer.</span>
+    <span data-phrase="preparingImage">Préparation de la pièce jointe JPEG recadrée…</span>
+    <span data-phrase="attachmentReady">{width} × {height} px · JPEG de {size} Ko (original de {original} Ko).</span>
+    <span data-phrase="attachmentTargetMissed">Cette image dépasse encore la taille visée de 350 Ko pour rester lisible.</span>
+    <span data-phrase="attachmentFailed">La pièce jointe n’a pas pu être préparée. Essayez Suggérer un recadrage ou utilisez une autre photo. L’export du courriel exige un JPEG préparé pour chaque document.</span>
+    <span data-phrase="attachmentRequired">Attendez la fin de la préparation de la pièce jointe JPEG recadrée avant de vérifier ce document.</span>
+    <span data-phrase="reportAttachment">Image jointe&nbsp;: {name}</span>
+    <span data-phrase="attachmentTotals">Pièces jointes&nbsp;: {count} JPEG recadrés, {size} Ko au total.</span>
+    <span data-phrase="invalidAmount">Saisissez un total valide avec deux décimales au maximum avant de vérifier ce document.</span>
+    <span data-phrase="invalidCurrency">Saisissez le code de devise de trois lettres imprimé sur le document avant de le vérifier.</span>
+    <span data-phrase="documentChecked">Vérifié sur la photo.</span>
+    <span data-phrase="needsReview">À vérifier</span>
+    <span data-phrase="unknownCurrency">Devise non précisée</span>
+    <span data-phrase="currencyTotal">{currency}&nbsp;: {amount} pour {count} documents vérifiés</span>
+    <span data-phrase="reportTitle">Récapitulatif des reçus et factures</span>
+    <span data-phrase="reportCounts">Documents&nbsp;: {count}&nbsp;; vérifiés&nbsp;: {checked}&nbsp;; à vérifier&nbsp;: {review}.</span>
+    <span data-phrase="reportDocument">{number}. {name}</span>
+    <span data-phrase="reportMerchant">Commerçant / fournisseur&nbsp;: {value}</span>
+    <span data-phrase="reportDate">Date&nbsp;: {value}</span>
+    <span data-phrase="reportReference">Numéro du reçu / de la facture&nbsp;: {value}</span>
+    <span data-phrase="reportAmount">Montant&nbsp;: {currency} {amount}</span>
+    <span data-phrase="notEntered">Non renseigné</span>
+    <span data-phrase="reportTotals">Totaux d’origine par devise (documents vérifiés uniquement)&nbsp;:</span>
+    <span data-phrase="noTotals">Aucun total vérifié pour le moment.</span>
+    <span data-phrase="totalOverflow">Ces totaux dépassent la plage prise en charge. Utilisez des lots plus petits avant l’envoi par courriel.</span>
+    <span data-phrase="reviewFirst">Vérifiez les champs, le taux de conversion et la pièce jointe préparée de chaque document avant l’envoi par courriel.</span>
+    <span data-phrase="invalidEmail">Saisissez une adresse de courriel valide ou laissez le destinataire vide. L’objet doit tenir sur une seule ligne.</span>
+    <span data-phrase="emailDownloaded">Fichier de courriel téléchargé avec {count} pièces jointes JPEG recadrées et le rapport. Ouvrez-le dans votre application de messagerie&nbsp;; rédigez, transférez ou renvoyez selon les fonctions disponibles.</span>
+    <span data-phrase="emailFailed">Le fichier de courriel n’a pas pu être créé. Téléchargez les images et le CSV, puis joignez les images dans votre application de messagerie.</span>
+    <span data-phrase="zipDownloaded">{count} JPEG recadrés et le CSV téléchargés dans un seul ZIP. Extrayez-le pour joindre les JPEG à votre courriel.</span>
+    <span data-phrase="zipFailed">Le ZIP n’a pas pu être créé. Enregistrez les JPEG depuis leurs aperçus et téléchargez le CSV séparément.</span>
+    <span data-phrase="copied">Rapport copié.</span>
+    <span data-phrase="copyFailed">La copie était indisponible. Le rapport est sélectionné ci-dessus&nbsp;; copiez-le avec la commande de copie de votre appareil.</span>
+    <span data-phrase="shareFailed">Le partage était indisponible. Utilisez Télécharger le courriel ou téléchargez le ZIP et joignez ses images JPEG manuellement.</span>
+    <span data-phrase="shared">Les images JPEG recadrées et le rapport ont été transmis au menu de partage. Vérifiez les pièces jointes et terminez l’envoi dans l’application de messagerie choisie.</span>
+    <span data-phrase="emailFilename">recus-factures-courriel.eml</span>
+    <span data-phrase="zipFilename">recus-factures-images.zip</span>
+    <span data-phrase="csvFilename">recus-factures-recapitulatif.csv</span>
+    <span data-phrase="csv.filename">Document</span><span data-phrase="csv.merchant">Commerçant / fournisseur</span><span data-phrase="csv.date">Date</span><span data-phrase="csv.reference">Numéro du reçu / de la facture</span><span data-phrase="csv.currency">Devise</span><span data-phrase="csv.amount">Total</span><span data-phrase="csv.confirmed">Vérifié</span><span data-phrase="csv.yes">Oui</span><span data-phrase="csv.no">Non</span>
+  </div>
+</main>

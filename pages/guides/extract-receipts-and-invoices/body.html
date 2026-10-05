@@ -42,13 +42,34 @@
       attachment are not enlarged for OCR.
     </p>
     <p>
+      A weak first reading or a missing amount or date can trigger one second
+      reading with local contrast adjustment to help separate the print from
+      the paper.
+      Open Text read from this picture to compare the two readings with the
+      photo. Unresolved disagreements about amounts, dates, references or
+      currencies can leave fields blank for your review. Printed currency is
+      preferred over an address-based guess; a recognized receipt or invoice
+      date is preferred over a date in an appended card-payment record.
+      Correct the editable text before using it to fill the
+      fields, or enter the fields directly. The second reading is shown
+      separately for comparison, and neither reading can guarantee that a
+      blurred or faded digit is correct.
+    </p>
+    <p>
+      A missing store name or an unresolved dollar or yen currency can also
+      trigger a closer reading of the store heading. Its text is shown below
+      the body readings for comparison and supplies only store-name and
+      address-based currency suggestions. Check those suggestions against the
+      picture too.
+    </p>
+    <p>
       Check these five fields before confirming a document:
     </p>
     <ul>
       <li><strong>Merchant.</strong> The business or supplier named on the document. A stylized logo may be unreadable to the English text model; enter the name yourself if the field stays blank.</li>
       <li><strong>Date.</strong> The date as printed. An invoice may print an issue date and a due date; a numeric date such as 03/04 can be ambiguous. The separate conversion date needs your check and selection.</li>
       <li><strong>Reference.</strong> The receipt or invoice number, if one is printed. A card number or telephone number is not a document reference. The field can stay blank when there is no reliable candidate.</li>
-      <li><strong>Currency.</strong> Choose a common currency code such as USD, CAD or EUR, or choose Custom and type another three-letter code. A pound sign suggests GBP. A dollar sign can mean USD, CAD, AUD or another dollar currency, so that symbol alone leaves the choice to you; a currency is required before confirming.</li>
+      <li><strong>Currency.</strong> Choose a common currency code such as USD, CAD or EUR, or choose Custom and type another three-letter code. A printed currency associated with the final total takes priority. A pound sign suggests GBP; a dollar sign alone cannot distinguish USD, CAD, AUD or another dollar currency. Clear country or distinctive postcode and region evidence in the store's own address can supply a fallback suggestion, with the printed address line shown for comparison. A city alone or a customer, delivery or bank address is insufficient. Review any suggestion against the receipt; a currency is required before confirming.</li>
       <li><strong>Total.</strong> The document's final amount. The parser avoids discount and tendered-total labels, but OCR may miss them. Check that the suggestion has not picked a subtotal, discount, tax, cash tendered, change or outstanding balance.</li>
     </ul>
     <p>
@@ -65,7 +86,10 @@
     <p>
       The tool suggests a crop when it finds reliable document edges. A long
       receipt filling the picture can have its side background removed while
-      keeping the full height, so a date below the barcode stays visible. If
+      keeping the full height, so a date below the barcode stays visible. On a
+      long colored receipt, matching paper color beyond a detected edge can
+      retain that whole end, protecting a heading or final line while keeping
+      some extra background. If
       the edges are uncertain, it keeps the full image. Compare the crop with the original photograph
       and adjust it to remove the background while keeping every document edge
       and all its text. A suggested crop can be wrong, especially on a dark
@@ -147,11 +171,17 @@
   <section>
     <h2>Email the report with its compressed images</h2>
     <p>
+      The suggested subject includes the document count, then adds the grand
+      total in the final currency once every document is checked. Edit the
+      subject to use your own wording; your edits are kept when the batch
+      changes.
+    </p>
+    <p>
       Use Email with images after checking every document. Where your browser
       supports sharing files, it opens the device's share sheet with the
       prepared JPEG copies and report. Choose your email app there. The report
       includes each document's value, the document count and the totals for
-      the original currencies plus one converted grand total. Review the recipient, body and every attachment in the
+      the original currencies plus one converted grand total. Review the subject, recipient, body and every attachment in the
       email app, then send the message yourself.
     </p>
     <p>

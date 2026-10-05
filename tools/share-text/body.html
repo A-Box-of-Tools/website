@@ -7,9 +7,9 @@
       <p id="discovery-status" role="status" aria-live="polite">Looking for local shares&hellip;</p>
       <div id="discovery-list"></div>
       <p class="discovery-note">
-        This list shows link names from browsers using the same public IP
-        address as yours. Usually that means the same router; a shared VPN
-        or an ISP sharing one address can include other networks. IPv6 or
+        This list shows link names from browsers using the same public IPv4
+        address or IPv6 subnet as yours. Usually that means the same router; a shared VPN
+        or an ISP sharing one address can include other networks. Mixed IPv4 and IPv6 connections or
         different routes can hide nearby devices. Internet is required.
         Opening a share still asks before connecting, and Private shares
         still need the sharer&rsquo;s approval.
@@ -73,6 +73,7 @@
           needed to introduce the browsers; this mode uses no public
           address-discovery server or relay. VPNs and browser settings can
           affect the network path. The copied link carries this setting.
+          Local network is off by default; choose it to list your share in local discovery.
         </p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
@@ -80,7 +81,7 @@
         </label>
         <p class="discovery-note">
           A discoverable share lists its name for others using the same
-          public IP address. Keep Private on, especially on shared networks.
+          public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
           With Private off, anyone who sees the name can connect and read
           without your approval.
           Uncheck Discoverable to share only by link.
@@ -215,7 +216,7 @@
     <span data-phrase="units.mb">MB</span>
 
     <span data-phrase="discovery.connecting">Looking for local shares&hellip;</span>
-    <span data-phrase="discovery.empty">No other discoverable local shares here yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
+    <span data-phrase="discovery.empty">No discoverable local shares here yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
     <span data-phrase="discovery.ready">Choose a share to open its connection page.</span>
     <span data-phrase="discovery.unavailable">Local discovery is unavailable. You can still use a share link.</span>
     <span data-phrase="discovery.open">Open share</span>

@@ -44,6 +44,7 @@ complete = true
 
 [slugs]
 "receipt-invoice-extractor" = "extraer-recibos-facturas"
+"guides/extract-receipts-and-invoices" = "guias/extraer-recibos-facturas-de-fotos"
 "avif-to-jpg" = "convertir-avif-a-jpg"
 "business-profile-preview" = "vista-previa-del-perfil-de-empresa"
 "compress-video" = "comprimir-video"

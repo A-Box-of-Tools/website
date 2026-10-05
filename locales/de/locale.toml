@@ -69,6 +69,7 @@ complete = true
 
 [slugs]
 # The tools.
+"receipt-invoice-extractor" = "belege-rechnungen-auslesen"
 "protect-pdf" = "pdf-schuetzen"
 "unlock-pdf" = "pdf-entsperren"
 "watermark-pdf" = "pdf-wasserzeichen"
@@ -152,6 +153,7 @@ complete = true
 
 # The guides. Each one is the question its readers ask, in the words they ask it
 # in, rather than a translation of the English title.
+"guides/extract-receipts-and-invoices" = "ratgeber/belege-rechnungen-aus-fotos-auslesen"
 "guides/compress-an-image-to-a-target-size" = "ratgeber/bild-auf-groesse-komprimieren"
 "guides/resize-an-image" = "ratgeber/bild-skalieren"
 "guides/remove-exif-and-gps-data" = "ratgeber/exif-und-gps-daten-entfernen"

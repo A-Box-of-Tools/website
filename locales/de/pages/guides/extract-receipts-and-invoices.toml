@@ -1,0 +1,20 @@
+#
+# Die Prüfung am Bild macht einen OCR-Vorschlag versandfertig. Der Ratgeber
+# trennt lokale Verarbeitung, optionale Kursabfrage und Übergabe an die App.
+#
+
+nav = "Belege und Rechnungen auslesen"
+title = "Beleg- und Rechnungsangaben auslesen und zugeschnittene Bildanhänge per E-Mail vorbereiten"
+description = "Belegerkennung und Ausschnitte prüfen, eine gemeinsame E-Mail-Währung sowie manuelle oder historische Kurse wählen und komprimierte Bilder mit umgerechneten Einzelbeträgen, Dokumentanzahl und Gesamtbetrag per E-Mail vorbereiten."
+heading = "Beleg- und Rechnungsangaben aus Fotos auslesen"
+lede = """
+    Ein Stapel Belege wird brauchbar, wenn jeder Betrag lesbar ist und der
+    Bericht zeigt, wie viele Dokumente gezählt wurden. Die Texterkennung spart
+    Tipparbeit; erst Ihr Vergleich mit dem Bild macht das Ergebnis
+    versandfertig. Hier erfahren Sie, was Sie prüfen sollten, wie das ganze
+    Dokument in einem kleineren Anhang erhalten bleibt, was die Summen bedeuten
+    und wie Sie Bilder und Bericht in Ihre eigene E-Mail-App übernehmen."""
+updated = "4. Oktober 2026"
+og_title = "Aus Belegfotos einen Bericht für die E-Mail erstellen"
+og_description = "Belegangaben und Ausschnitte prüfen, Währungen wählen und komprimierte JPEG-Anhänge sowie einen Bericht mit Dokumentanzahl und Summen in die E-Mail-App übernehmen."
+og_image_alt = "abox.tools, Werkzeuge zur Dateiverarbeitung auf Ihrem eigenen Gerät"

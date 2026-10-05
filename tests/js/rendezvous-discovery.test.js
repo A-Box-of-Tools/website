@@ -131,6 +131,122 @@ const withdraw = (s, claim, scope = SCOPE) => s.discovery(scope).instance.fetch(
   method: 'POST', body: JSON.stringify(claim),
 }));
 
+function edgeRequest(path, address, extra = {}) {
+  const headers = new Headers({ Upgrade: 'websocket', Origin: 'https://abox.tools', ...extra });
+  if (address !== null) headers.set('CF-Connecting-IP', address);
+  return new Request(`https://rendezvous.abox.tools${path}`, { headers });
+}
+
+async function edgeSocket(s, path, address, extra) {
+  const response = await worker.fetch(edgeRequest(path, address, extra), s.env);
+  assert.equal(response.status, 101);
+  return response.webSocket.peer;
+}
+
+test('different IPv6 devices on one /64 find a live lease through the public Worker', async () => {
+  const s = system();
+  const address = '2606:4700:4700:ab::1111';
+  const offered = await edgeSocket(s, '/ws/ipv6-room?role=host&local=1&discover=1', address);
+  const publisher = await edgeSocket(s, '/discover', address);
+  const scope = publisher.deserializeAttachment().scope;
+  assert.equal(offered.deserializeAttachment().scope, scope);
+  await publish(s, publisher, publication(offered), scope);
+  const nearby = await edgeSocket(s, '/discover', '2606:4700:4700:AB:9876:5432:abcd:ef01', {
+    Origin: 'https://ABOX.tools:443',
+  });
+  assert.equal(nearby.deserializeAttachment().scope, scope);
+  assert.deepEqual(shares(nearby).list, [{ code: 'ipv6-room', local: true }]);
+  const adjacent = await edgeSocket(s, '/discover', '2606:4700:4700:ac::1111');
+  assert.notEqual(adjacent.deserializeAttachment().scope, scope);
+  assert.deepEqual(shares(adjacent).list, []);
+  const expanded = await edgeSocket(s, '/discover', '2606:4700:4700:00ab:0000:0000:0000:2222');
+  assert.equal(expanded.deserializeAttachment().scope, scope);
+  assert.deepEqual(shares(expanded).list, [{ code: 'ipv6-room', local: true }]);
+  // Prefix matching changes only the list. A live Room still authorizes
+  // the publication, and host closure still removes it from every observer.
+  offered.close(1000, 'done');
+  s.room('ipv6-room').instance.webSocketClose(offered);
+  await s.room('ipv6-room').ctx.flush();
+  assert.deepEqual(shares(nearby).list, []);
+  assert.deepEqual(shares(expanded).list, []);
+});
+
+test('IPv6 prefix matching retains the page-origin and Room lease boundaries', async () => {
+  const s = system();
+  const offered = await edgeSocket(s, '/ws/origin-room?role=host&local=1&discover=1', '2606:4700::1234');
+  const publisher = await edgeSocket(s, '/discover', '2606:4700:0:0:0:0:0:5678');
+  const scope = publisher.deserializeAttachment().scope;
+  await publish(s, publisher, publication(offered), scope);
+  const preview = await edgeSocket(s, '/discover', '2606:4700::9abc', {
+    Origin: 'https://pr-1.abox-preview.pages.dev',
+  });
+  const previewScope = preview.deserializeAttachment().scope;
+  assert.notEqual(previewScope, scope);
+  assert.deepEqual(shares(preview).list, []);
+  await publish(s, preview, publication(offered), previewScope);
+  assert.deepEqual(shares(preview).list, []);
+  assert.deepEqual(shares(publisher).list, [{ code: 'origin-room', local: true }]);
+  assert.equal((await worker.fetch(edgeRequest('/discover', '2606:4700::1111', {
+    Origin: 'https://example.com',
+  }), s.env)).status, 403);
+});
+
+test('IPv4 discovery keeps its exact address and original hash input', async () => {
+  const s = system();
+  const observer = await edgeSocket(s, '/discover', '1.2.3.4', {
+    'CF-Connecting-IPv6': '2606:4700::1111',
+  });
+  const bytes = new TextEncoder().encode('https://abox.tools\n1.2.3.4');
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+  const expected = [...digest].map((n) => n.toString(16).padStart(2, '0')).join('');
+  assert.equal(observer.deserializeAttachment().scope, expected);
+  const adjacent = await edgeSocket(s, '/discover', '1.2.3.5');
+  const ipv6 = await edgeSocket(s, '/discover', '2606:4700::1111');
+  assert.notEqual(adjacent.deserializeAttachment().scope, expected);
+  assert.notEqual(ipv6.deserializeAttachment().scope, expected);
+});
+
+test('Cloudflare Pseudo IPv4 overwrite mode joins the preserved public IPv6 /64', async () => {
+  const s = system();
+  const offered = await edgeSocket(s, '/ws/pseudo-room?role=host&local=1&discover=1', '240.16.0.1', {
+    'CF-Connecting-IPv6': '2606:4700:4700:ab::1111',
+  });
+  const publisher = await edgeSocket(s, '/discover', '250.32.0.2', {
+    'CF-Connecting-IPv6': '2606:4700:4700:00ab:9876:5432:abcd:ef01',
+  });
+  const scope = publisher.deserializeAttachment().scope;
+  assert.equal(offered.deserializeAttachment().scope, scope);
+  await publish(s, publisher, publication(offered), scope);
+  const nearby = await edgeSocket(s, '/discover', '2606:4700:4700:ab::2222');
+  assert.equal(nearby.deserializeAttachment().scope, scope);
+  assert.deepEqual(shares(nearby).list, [{ code: 'pseudo-room', local: true }]);
+});
+
+test('an alternate IPv6 header cannot repair an absent or invalid edge address', async () => {
+  const s = system();
+  for (const address of [null, '', 'not-an-ip', '1.2.3.999', '001.2.3.4',
+    '10.1.2.3', '224.0.0.1', '239.1.2.3', '240.999.0.1']) {
+    const response = await worker.fetch(edgeRequest('/discover', address, {
+      'CF-Connecting-IPv6': '2606:4700::1111',
+    }), s.env);
+    assert.equal(response.status, 403, String(address));
+  }
+  for (const alternate of ['', '1.2.3.4', 'fc00::1', 'fe80::1', '2001:db8::1',
+    '2a06:98c0:3600::103', 'not-an-ip', '2606:4700::1111,2606:4700::2222']) {
+    const response = await worker.fetch(edgeRequest('/discover', '240.16.0.1', {
+      'CF-Connecting-IPv6': alternate,
+    }), s.env);
+    assert.equal(response.status, 403, alternate);
+  }
+  assert.equal((await worker.fetch(edgeRequest('/discover', '240.16.0.1'), s.env)).status, 403);
+  for (const address of ['2606:4700::1111', '2a06:98c0:3600::103', '240.16.0.1']) {
+    assert.equal((await worker.fetch(edgeRequest('/discover', address, {
+      'CF-Connecting-IPv6': '2606:4700::1111', 'CF-Worker': 'example.com',
+    }), s.env)).status, 403, address);
+  }
+  assert.equal(s.calls.length, 0);
+});
+
 test('only an explicitly discoverable local host receives a server-issued lease', async () => {
   const s = system();
   const offered = await host(s);
