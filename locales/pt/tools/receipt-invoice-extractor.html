@@ -12,8 +12,10 @@
   </section>
 
   <section class="card" id="review-card">
-    <h2><span class="step">2</span> Confira cada documento</h2>
-    <div class="export-row"><button type="button" id="clear-all" class="ghost danger" disabled>Limpar tudo</button></div>
+    <div class="card-head review-head">
+      <h2><span class="step">2</span> Confira cada documento</h2>
+      <button type="button" id="clear-all" class="ghost danger" disabled>Limpar tudo</button>
+    </div>
     <p class="card-lede">Confira o recorte e veja se o anexo está legível. O OCR pode confundir dígitos ou escolher o total errado. Compare cada sugestão com a imagem, corrija os campos, escolha a moeda final do e-mail e confira a taxa de câmbio. Depois marque a caixa de confirmação. Cada imagem conta como um documento; adicioná-la duas vezes conta duas vezes.</p>
     <p class="field-summary">O OCR, os recortes e a conversão manual acontecem neste dispositivo. A consulta da taxa histórica é opcional e só começa quando você aperta “Obter taxa histórica”. Ela envia os dois códigos de moeda e a data do recibo ao <a href="https://frankfurter.dev/">Frankfurter</a>, que também vê seu endereço IP. As imagens, os estabelecimentos, os valores e os números dos recibos ficam neste dispositivo.</p>
     <div class="final-currency-settings settings">
@@ -29,11 +31,13 @@
               <option value="SAR">SAR — rial saudita</option><option value="ZAR">ZAR — rand sul-africano</option>
               <option value="BRL">BRL — real brasileiro</option><option value="MXN">MXN — peso mexicano</option>
               <option value="custom">Outro / código personalizado</option>
-            </select></div>
+            </select>
+        <p class="field-note">A moeda padrão é a mais frequente entre os documentos. Em caso de empate, vale a primeira que aparece. Uma moeda escolhida manualmente permanece selecionada.</p>
+      </div>
+      <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Usar moeda padrão</button>
+      <p class="currency-default-note" id="default-currency-note">Seleciona a moeda usada pelo maior número de documentos. Em caso de empate, usa a primeira que aparece.</p>
       <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Código personalizado da moeda final</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
     </div>
-    <p class="field-note">A moeda padrão é a mais frequente entre os documentos. Em caso de empate, vale a primeira que aparece. Uma moeda escolhida manualmente permanece selecionada.</p>
-    <div class="export-row"><button type="button" id="use-default-currency" class="ghost">Usar moeda padrão</button></div>
     <p class="field-summary">Escolha uma moeda final para o total geral do e-mail. Todos os documentos usam essa moeda. Alterá-la aqui ou em um documento atualiza o lote inteiro e apaga as taxas de câmbio e as confirmações.</p>
     <div id="documents" class="documents"></div>
     <p id="empty-documents" class="field-summary">Suas imagens e os dados editáveis aparecerão aqui.</p>
