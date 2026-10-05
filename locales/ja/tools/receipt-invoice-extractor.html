@@ -1,0 +1,264 @@
+<main id="main">
+  <section class="card">
+    <h2><span class="step">1</span>領収書や請求書の画像を追加</h2>
+    <p class="card-lede">1枚の画像に1つの書類を入れてください。JPEG・PNG・WebP・AVIF画像を最大20枚、各20MBまで追加できます。このページに含まれるOCRエンジンが、手元の端末で英語の文字を読み取ります。AVIF画像はブラウザのデコーダーで開きます。</p>{% include "partials/file-picker.html" %}<div class="export-row">
+      <button type="button" id="stop-reading" class="ghost" hidden>読み取りを停止</button>
+    </div>
+    <p class="field-summary">書類全体を写し、文字を正しい向きにして、十分な明るさを確保してください。HEIC画像は、先に<a href="../heic-to-jpg/">HEICからJPGへの変換</a>を使ってください。PDFや手書きの領収書には対応していません。</p>
+    <p id="read-progress" role="status" aria-live="polite"></p>
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="review-card">
+    <div class="card-head review-head">
+      <h2><span class="step">2</span>書類を1つずつ確認</h2>
+      <button type="button" id="clear-all" class="ghost danger" disabled>すべて削除</button>
+    </div>
+    <p class="card-lede">切り抜き範囲と添付画像の読みやすさを確認してください。OCRは数字を誤読したり、別の金額を合計と判断したりすることがあります。提案された値を画像と見比べて修正し、メールで使う共通の通貨と為替レートを確認してから、「入力内容と切り抜いた添付画像を確認しました」にチェックを入れてください。画像1枚を1書類として数えるため、同じ画像を2回追加すると2書類になります。</p>
+    <p class="field-summary">OCR・切り抜き・手入力のレートによる換算は、手元の端末で行われます。過去のレートの検索は任意で、「過去のレートを取得」を押したときだけ始まります。2つの通貨コードと領収書の日付を<a href="https://frankfurter.dev/">Frankfurter</a>に送信します。サービスにはIPアドレスも伝わります。画像・店舗名・金額・領収書番号は手元の端末にとどまります。</p>
+    <div class="final-currency-settings settings">
+      <div class="field"><label for="final-currency-choice">すべての書類に共通のメール用通貨</label><select id="final-currency-choice">
+              <option value="">メール用通貨を選択</option>
+              <option value="USD">USD｜米ドル</option><option value="CAD">CAD｜カナダドル</option>
+              <option value="EUR">EUR｜ユーロ</option><option value="GBP">GBP｜英ポンド</option>
+              <option value="AUD">AUD｜豪ドル</option><option value="NZD">NZD｜ニュージーランドドル</option>
+              <option value="JPY">JPY｜日本円</option><option value="CNY">CNY｜人民元</option>
+              <option value="INR">INR｜インドルピー</option><option value="CHF">CHF｜スイスフラン</option>
+              <option value="HKD">HKD｜香港ドル</option><option value="SGD">SGD｜シンガポールドル</option>
+              <option value="KRW">KRW｜韓国ウォン</option><option value="AED">AED｜UAEディルハム</option>
+              <option value="SAR">SAR｜サウジアラビアリヤル</option><option value="ZAR">ZAR｜南アフリカランド</option>
+              <option value="BRL">BRL｜ブラジルレアル</option><option value="MXN">MXN｜メキシコペソ</option>
+              <option value="custom">その他／独自のコード</option>
+            </select>
+        <p class="field-note">初期値は書類で最も多く使われている通貨です。同数なら最初に現れた通貨を使います。手動で選んだ通貨は、そのまま維持されます。</p>
+      </div>
+      <div class="currency-default-actions">
+        <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">既定の通貨を使う</button>
+        <details class="currency-default-help info-fold" id="default-currency-help">
+          <summary aria-describedby="default-currency-note"><span class="visually-hidden">既定の通貨の選び方</span></summary>
+          <p class="currency-default-note" id="default-currency-note" role="tooltip">最も多くの書類で使われている通貨を選びます。同数なら、最初に現れた通貨を使います。</p>
+        </details>
+      </div>
+      <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">メール用の独自の通貨コード</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
+    </div>
+    <p class="field-summary">メールの総合計に使う通貨を1つ選んでください。すべての書類がこの通貨を使います。ここで変更しても、個別の書類で変更しても、全書類に反映され、レートと確認済みの状態がリセットされます。</p>
+    <div id="documents" class="documents"></div>
+    <p id="empty-documents" class="field-summary">追加した画像と、編集できる詳細情報がここに表示されます。</p>
+  </section>
+
+  <section class="card" id="report-card" inert>
+    <h2><span class="step">3</span>合計とメール</h2>
+    <div class="report-stats">
+      <div><span>書類数</span><strong id="document-count">0</strong></div>
+      <div><span>確認済み</span><strong id="checked-count">0</strong></div>
+      <div><span>未確認</span><strong id="review-count">0</strong></div>
+    </div>
+    <div class="grand-total-box"><span>メール用通貨での総合計</span><strong id="grand-total">—</strong><p id="grand-total-note" class="field-note">確認済みの書類のみ。</p></div>
+    <ul id="currency-totals" class="currency-totals" aria-label="通貨ごとの元の合計金額"></ul>
+    <p class="field-summary">合計に含まれるのは確認済みの書類だけです。元の金額は通貨ごとにまとめます。$記号だけでは、どの国のドルかは分かりません。確認済みの各書類をメール用通貨に換算し、その値を総合計に加えます。換算額は書類ごとに小数第2位まで丸めます。</p>
+    <div class="settings mail-fields">
+      <div class="field"><label for="email-to">宛先メールアドレス（任意）</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
+      <div class="field"><label for="email-subject">件名</label><input type="text" id="email-subject" value="領収書と請求書の一覧" maxlength="150" aria-describedby="email-subject-note"><p class="field-note" id="email-subject-note">書類数が追加され、すべて確認済みになると総合計も追加されます。手動で編集した内容は維持されます。</p></div>
+    </div>
+    <div class="field report-preview"><label for="report-text">レポートのプレビュー</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
+    <div class="export-row">
+      <button type="button" id="email-report" class="primary" disabled>画像を添えてメール</button>
+      <button type="button" id="download-email" class="ghost" disabled>メールファイルを保存（.eml）</button>
+      <button type="button" id="download-images" class="ghost" disabled>画像とCSVを保存（.zip）</button>
+      <button type="button" id="copy-report" class="ghost" disabled>レポートをコピー</button>
+      <button type="button" id="download-csv" class="ghost" disabled>CSVを保存</button>
+    </div>
+    <p id="export-status" class="field-summary" role="status" aria-live="polite"></p>
+    <p class="field-summary">メールの書き出しには、切り抜いて圧縮したJPEGコピーがすべて含まれます。「画像を添えてメール」は、ファイル共有に対応する端末で共有画面を開きます。そこでメールアプリを選び、宛先を入力してください。対応していない場合は、レポートと添付画像を含むメールファイルを保存します。.emlファイルを対応するメールアプリで開き、新規作成・転送・再送のいずれかで送信してください。下書きへの対応はアプリによって異なります。上の宛先欄はメールファイルに使われます。内容を確認して、ご自身で送信してください。</p>
+    <p class="field-summary">ZIPには、手動で添付するためのJPEG画像とCSVが含まれます。画像は長辺が最大1,600ピクセルになるよう縮小し、1枚350KBを目標に圧縮します。実際のサイズは各プレビューの下に表示されます。送信前に小さな文字が読めるか確認してください。元の画像は変更せず、処理は手元の端末で行います。</p>
+  </section>
+
+  <template id="document-template">
+    <article class="document">
+      <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">削除</button></div>
+      <div class="document-content">
+        <div class="picture-column">
+          <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="切り抜いて圧縮した添付画像のプレビュー" hidden></a>
+          <p class="attachment-status field-note" role="status"></p>
+          <div class="export-row"><a class="original-link" target="_blank" rel="noopener">元の画像を見る</a><button type="button" class="download-picture ghost" disabled>JPEGを保存</button></div>
+          <div class="export-row"><button type="button" class="rotate-document ghost">90°回転</button><button type="button" class="reread-document ghost">もう一度読み取る</button></div>
+          <details class="crop-editor"><summary>切り抜きを調整</summary>
+            <div class="crop-stage"></div>
+            <div class="crop-numbers">
+              <label class="field">左（px）<input type="number" data-crop="x" min="0" step="1"></label>
+              <label class="field">上（px）<input type="number" data-crop="y" min="0" step="1"></label>
+              <label class="field">幅（px）<input type="number" data-crop="width" min="1" step="1"></label>
+              <label class="field">高さ（px）<input type="number" data-crop="height" min="1" step="1"></label>
+            </div>
+            <div class="export-row"><button type="button" class="detect-crop ghost">切り抜き範囲を提案</button><button type="button" class="reset-crop ghost">画像全体を使う</button></div>
+            <p class="crop-status field-note"></p>
+            <p class="field-note">切り抜き枠の端をドラッグするか、ピクセル値を入力してください。枠にフォーカスがあるときは矢印キーで移動できます。Alt＋矢印キーでサイズを変更し、Shiftを併用すると移動幅が大きくなります。書類のすべての端と合計金額を枠内に残してください。</p>
+          </details>
+          <p class="field-note">添付画像のプレビューを選ぶと、実寸で確認できます。切り抜きや回転を変更した場合は、もう一度書類を確認する必要があります。</p>
+        </div>
+        <div class="document-fields">
+          <p class="document-status" role="status"></p>
+          <div class="settings">
+            <label class="field">店舗／仕入先<input type="text" data-field="merchant" maxlength="200"></label>
+            <label class="field">日付（印字どおり）<input type="text" data-field="date" maxlength="50"></label>
+            <label class="field">領収書／請求書番号<input type="text" data-field="reference" maxlength="100"></label>
+            <div class="field"><label class="field">書類の通貨<select data-currency-choice>
+              <option value="">通貨を選択</option>
+              <option value="USD">USD｜米ドル</option><option value="CAD">CAD｜カナダドル</option>
+              <option value="EUR">EUR｜ユーロ</option><option value="GBP">GBP｜英ポンド</option>
+              <option value="AUD">AUD｜豪ドル</option><option value="NZD">NZD｜ニュージーランドドル</option>
+              <option value="JPY">JPY｜日本円</option><option value="CNY">CNY｜人民元</option>
+              <option value="INR">INR｜インドルピー</option><option value="CHF">CHF｜スイスフラン</option>
+              <option value="HKD">HKD｜香港ドル</option><option value="SGD">SGD｜シンガポールドル</option>
+              <option value="KRW">KRW｜韓国ウォン</option><option value="AED">AED｜UAEディルハム</option>
+              <option value="SAR">SAR｜サウジアラビアリヤル</option><option value="ZAR">ZAR｜南アフリカランド</option>
+              <option value="BRL">BRL｜ブラジルレアル</option><option value="MXN">MXN｜メキシコペソ</option>
+              <option value="custom">その他／独自のコード</option>
+            </select></label><p class="currency-hint field-note" hidden></p></div>
+            <label class="field custom-currency" hidden>独自の通貨コード<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">MYRなど、3文字のコードを入力してください。</span></label>
+            <label class="field">書類の合計金額<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
+          </div>
+          <fieldset class="conversion-fields">
+            <legend>この書類をメール用に換算</legend>
+            <div class="settings">
+              <label class="field">メール用通貨<select data-final-currency-choice></select></label>
+              <label class="field custom-final-currency" hidden>メール用の独自の通貨コード<input type="text" data-field="finalCurrency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></label>
+              <label class="field">換算日（領収書の日付）<input type="date" data-field="conversionDate"><span class="field-note">手入力のレートでは日付は任意です。過去のレートを検索する場合は、今日以前の領収書の日付を確認してください。解釈が曖昧な印字の日付は、自動入力しません。</span></label>
+              <label class="field">レートの取得方法<select data-field="rateMode"><option value="manual">レートを手入力</option><option value="online">過去の参考レートを検索</option></select></label>
+              <label class="field">為替レート<input type="text" data-field="rate" inputmode="decimal" maxlength="32" autocomplete="off" placeholder="0.70295"><span class="field-note">小数点を使い、小数部分は最大12桁で入力してください。</span></label>
+            </div>
+            <p class="rate-direction field-note"></p>
+            <div class="online-rate-controls" hidden><button type="button" class="get-rate ghost">過去のレートを取得</button><p class="field-note">この任意のリクエストは、2つの通貨コードと日付だけを<a href="https://frankfurter.dev/">Frankfurter</a>に送信します。サービスにはIPアドレスも伝わります。画像・店舗名・金額・領収書番号は送りません。参考レートのため、銀行やカード会社のレートとは異なることがあります。通貨や日付に対応するレートがない場合は、手入力してください。</p></div>
+            <p class="rate-status field-note" role="status"></p>
+            <p class="converted-value"></p>
+          </fieldset>
+          <label class="confirm-document"><input type="checkbox" data-field="confirmed">入力内容と切り抜いた添付画像を確認しました</label>
+          <p class="document-error error" hidden></p>
+          <details class="ocr-details">
+            <summary>この画像から読み取った文字</summary>
+            <label class="field">必要に応じて文字を修正<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label>
+            <button type="button" class="parse-text ghost">この文字から入力欄を埋める</button>
+            <div class="ocr-recovery" hidden><label class="field">比較用の2回目の読み取り<textarea class="ocr-recovery-text ocr-text" rows="8" spellcheck="false" readonly></textarea></label><p class="field-note">両方の読み取り結果を画像と見比べてください。入力欄に反映する前に、上の文字を修正してください。</p></div>
+            <div class="ocr-header" hidden><label class="field">店舗名と住所の読み取り<textarea class="ocr-header-text ocr-text" rows="5" spellcheck="false" readonly></textarea></label><p class="field-note">この読み取り結果は、店舗名と住所に基づく通貨の候補に使われます。画像と見比べてください。</p></div>
+          </details>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div id="example-documents" hidden aria-hidden="true">
+    <div data-example="sample-receipt.png">
+      <span data-line>NORTH STREET CAFE</span>
+      <span data-line>RECEIPT R-1042</span>
+      <span data-line>Date: 2026-10-04</span>
+      <span data-line>Coffee and lunch CAD 21.50</span>
+      <span data-line>Tax CAD 2.80</span>
+      <span data-line>TOTAL CAD 24.30</span>
+      <span data-line>Thank you</span>
+    </div>
+    <div data-example="sample-invoice.png">
+      <span data-line>MAPLE OFFICE SUPPLIES</span>
+      <span data-line>INVOICE INV-208</span>
+      <span data-line>Date: 2026-10-03</span>
+      <span data-line>Paper CAD 40.00</span>
+      <span data-line>Tax CAD 5.20</span>
+      <span data-line>AMOUNT DUE CAD 45.20</span>
+    </div>
+  </div>
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="emailSubjectCount">{title}｜書類{count}件</span>
+    <span data-phrase="emailSubjectTotal">{title}｜書類{count}件｜{currency} {amount}</span>
+    <span data-phrase="currencyFromLocation">店舗の住所から{currency}を提案しました：{location}。領収書と見比べて確認してください。</span>
+    <span data-phrase="conflictingRecognition">2回の読み取り結果が一致しません。両方の文字を画像と見比べ、空欄を手動で埋めてください。</span>
+    <span data-phrase="net.clean">処理中の写真は手元の端末にとどまります。{total}件のリソースを読み込みました。任意の過去レート検索ではFrankfurterに接続することがあります。{platform}</span>
+    <span data-phrase="net.dirty">予期しない接続を確認しました：{hosts}。{platform}</span>
+    <span data-phrase="offline.ready">準備完了。OCR・手入力のレートによる換算・保存はオフラインで使えます。オンラインのレート検索には接続が必要です。</span>
+    <span data-phrase="finalCurrencyRequired">全書類に共通の、3文字の有効なメール用通貨コードを選んでください。</span>
+    <span data-phrase="invalidConversionDate">領収書の換算日を年月日の揃った日付で入力してください。過去のレート検索には今日以前の日付が必要です。曖昧な印字の日付は、ご自身で確認してください。</span>
+    <span data-phrase="invalidRate">正の為替レートを、小数点を使って入力してください。小数部分は最大12桁です。</span>
+    <span data-phrase="rateRequired">現在の通貨と日付で過去のレートを取得するか、レートを手入力してください。</span>
+    <span data-phrase="conversionOverflow">換算額が対応範囲を超えています。金額とレートを確認してください。</span>
+    <span data-phrase="rateDirection">1 {base} = {rate} {quote}</span>
+    <span data-phrase="rateDirectionEmpty">1{base}に対する{quote}の金額を入力してください。</span>
+    <span data-phrase="rateChooseCurrencies">先に書類の通貨とメール用通貨を選んでください。</span>
+    <span data-phrase="sameCurrencyRate">通貨が同じです。端末上でレート1を適用するため、検索は不要です。</span>
+    <span data-phrase="manualRateReady">手入力のレートです。換算日：{date}。確認済みにする前に、元の資料と照合してください。</span>
+    <span data-phrase="fx.loading">過去の参考レートを取得中…</span>
+    <span data-phrase="fx.loaded">Frankfurterの参考レートの観測日：{date}。指定した領収書の日付：{requested}。確認済みにする前に内容を確認してください。</span>
+    <span data-phrase="fx.failed">過去のレートを取得または検証できませんでした。レートを手入力するか、もう一度試してください。</span>
+    <span data-phrase="fx.unsupported">この通貨の組み合わせと日付のレートはありません。レートを手入力してください。</span>
+    <span data-phrase="fx.timeout">レート取得が時間切れになりました。レートを手入力するか、もう一度試してください。</span>
+    <span data-phrase="fx.cancelled">レート取得をキャンセルしました。</span>
+    <span data-phrase="convertedAmount">書類の換算額：{amount} {currency}</span>
+    <span data-phrase="conversionPending">この書類を総合計に含めるには、換算を確認する必要があります。</span>
+    <span data-phrase="grandTotal">{amount} {currency}</span>
+    <span data-phrase="grandTotalNote">書類ごとに小数第2位まで丸めた、確認済み{checked}件の合計です。{review}件が未確認です。</span>
+    <span data-phrase="reportFinalCurrency">メール用通貨：{currency}</span>
+    <span data-phrase="reportRate">為替レート：1 {base} = {rate} {quote}</span>
+    <span data-phrase="reportRateManual">レートの取得方法：手入力。換算日：{date}。</span>
+    <span data-phrase="reportRateOnline">レートの取得方法：Frankfurterの参考レート。観測日：{date}。指定した領収書の日付：{requested}。</span>
+    <span data-phrase="reportRateSame">レートの取得方法：同一通貨のため1で固定。オンライン接続なし。</span>
+    <span data-phrase="reportGrandTotal">総合計：確認済み{count}件で{amount} {currency}。追加した書類：{documents}件。</span>
+    <span data-phrase="reportConversionPending">換算が未確認です。</span>
+    <span data-phrase="csv.conversionDate">指定した換算日</span><span data-phrase="csv.rate">為替レート</span><span data-phrase="csv.rateSource">レートの取得方法</span><span data-phrase="csv.rateDate">使用したレートの日付</span><span data-phrase="csv.finalCurrency">メール用通貨</span><span data-phrase="csv.convertedAmount">換算額</span>
+    <span data-phrase="csv.manual">手入力</span><span data-phrase="csv.online">Frankfurterの参考レート</span><span data-phrase="csv.same">同一通貨</span><span data-phrase="csv.documentCount">書類数</span><span data-phrase="csv.checkedCount">確認済みの書類数</span><span data-phrase="csv.grandTotal">総合計</span>
+
+    <span data-phrase="queued">この画像の読み取りを待っています。</span>
+    <span data-phrase="reading">{name}を読み取り中（{percent}%）。</span>
+    <span data-phrase="loadingEngine">{name}を読み取るため、端末上のOCRエンジンを準備しています。</span>
+    <span data-phrase="batchDone">画像{count}枚を読み取りました。メールにする前に各書類を確認してください。</span>
+    <span data-phrase="readFailed">この画像を読み取れませんでした。詳細を手入力するか、もう一度読み取りを試してください。</span>
+    <span data-phrase="reviewExtraction">合計金額の候補が見つかりました。すべての入力内容を画像と見比べてください。</span>
+    <span data-phrase="missingTotal">明確な合計金額が見つかりませんでした。画像を見て入力してください。</span>
+    <span data-phrase="ambiguousTotal">合計金額の候補が複数見つかりました。画像を見て正しい合計を入力してください。</span>
+    <span data-phrase="stopped">読み取りを停止しました。詳細を手入力するか、「もう一度読み取る」を選んでください。</span>
+    <span data-phrase="busy">現在の読み取りが終わるまで待つか、先に停止してください。</span>
+    <span data-phrase="tooMany">画像は最大20枚までです。書類を1つ削除すると、新しい画像を追加できます。</span>
+    <span data-phrase="badFile">{name}は対応するJPEG・PNG・WebP・AVIF画像ではありません。</span>
+    <span data-phrase="tooLarge">{name}は20MBを超えています。小さい画像を使ってください。</span>
+    <span data-phrase="imageFailed">{name}を画像として開けませんでした。JPEGまたはPNGに書き出して試してください。</span>
+    <span data-phrase="cropLabel">書類の切り抜き範囲</span>
+    <span data-phrase="cropPreview">書類の切り抜きを調整するための画像全体</span>
+    <span data-phrase="cropSuggested">書類の端から切り抜き範囲を提案しました。確認し、必要に応じて調整してください。</span>
+    <span data-phrase="cropNotFound">書類の端がはっきり見つかりませんでした。画像全体が選択されています。必要に応じて切り抜きを調整してください。</span>
+    <span data-phrase="cropManual">指定した切り抜き範囲が選択されています。確認済みにする前に、用意された添付画像を確認してください。</span>
+    <span data-phrase="preparingImage">切り抜いたJPEG添付画像を準備中…</span>
+    <span data-phrase="attachmentReady">{width} × {height}px・{size}KBのJPEG（元の画像：{original}KB）。</span>
+    <span data-phrase="attachmentTargetMissed">読みやすさを保つため、この画像は目標の350KBを超えています。</span>
+    <span data-phrase="attachmentFailed">添付画像を準備できませんでした。「切り抜き範囲を提案」を試すか、別の画像を使ってください。メールに書き出すには、すべての書類のJPEGが必要です。</span>
+    <span data-phrase="attachmentRequired">この書類を確認済みにする前に、切り抜いたJPEG添付画像の準備が終わるまで待ってください。</span>
+    <span data-phrase="reportAttachment">添付画像：{name}</span>
+    <span data-phrase="attachmentTotals">添付：切り抜いたJPEG{count}枚、合計{size}KB。</span>
+    <span data-phrase="invalidAmount">確認済みにする前に、有効な合計金額を小数第2位までで入力してください。</span>
+    <span data-phrase="invalidCurrency">確認済みにする前に、書類に印字された3文字の通貨コードを入力してください。</span>
+    <span data-phrase="documentChecked">画像と照合済みです。</span>
+    <span data-phrase="needsReview">未確認</span>
+    <span data-phrase="unknownCurrency">通貨未指定</span>
+    <span data-phrase="currencyTotal">{currency}：確認済み{count}件で{amount}</span>
+    <span data-phrase="reportTitle">領収書と請求書の一覧</span>
+    <span data-phrase="reportCounts">書類：{count}件、確認済み：{checked}件、未確認：{review}件。</span>
+    <span data-phrase="reportDocument">{number}. {name}</span>
+    <span data-phrase="reportMerchant">店舗／仕入先：{value}</span>
+    <span data-phrase="reportDate">日付：{value}</span>
+    <span data-phrase="reportReference">領収書／請求書番号：{value}</span>
+    <span data-phrase="reportAmount">金額：{currency} {amount}</span>
+    <span data-phrase="notEntered">未入力</span>
+    <span data-phrase="reportTotals">通貨ごとの元の合計金額（確認済みの書類のみ）：</span>
+    <span data-phrase="noTotals">確認済みの合計金額はまだありません。</span>
+    <span data-phrase="totalOverflow">合計が対応範囲を超えています。メールにする前に、書類を少数ずつに分けてください。</span>
+    <span data-phrase="reviewFirst">メールにする前に、すべての書類の入力内容・為替レート・添付画像を確認してください。</span>
+    <span data-phrase="invalidEmail">有効なメールアドレスを1つ入力するか、宛先を空欄にしてください。件名は1行に収めてください。</span>
+    <span data-phrase="emailDownloaded">切り抜いたJPEG{count}枚とレポートを含むメールファイルを保存しました。メールアプリで開き、対応している新規作成・転送・再送のいずれかで送信してください。</span>
+    <span data-phrase="emailFailed">メールファイルを作成できませんでした。画像とCSVを保存し、メールアプリで画像を添付してください。</span>
+    <span data-phrase="zipDownloaded">切り抜いたJPEG{count}枚とCSVを1つのZIPに保存しました。展開してJPEGをメールに添付してください。</span>
+    <span data-phrase="zipFailed">ZIPを作成できませんでした。各プレビューからJPEGを保存し、CSVを別に保存してください。</span>
+    <span data-phrase="copied">レポートをコピーしました。</span>
+    <span data-phrase="copyFailed">コピーできませんでした。上のレポートが選択されています。端末のコピー操作でコピーしてください。</span>
+    <span data-phrase="shareFailed">共有できませんでした。「メールファイルを保存」を使うか、ZIPを保存してJPEG画像を手動で添付してください。</span>
+    <span data-phrase="shared">切り抜いたJPEG画像とレポートを共有画面に渡しました。選んだメールアプリで添付を確認し、送信を完了してください。</span>
+    <span data-phrase="emailFilename">receipt-invoice-email.eml</span>
+    <span data-phrase="zipFilename">receipt-invoice-images.zip</span>
+    <span data-phrase="csvFilename">receipt-invoice-summary.csv</span>
+    <span data-phrase="csv.filename">書類</span><span data-phrase="csv.merchant">店舗／仕入先</span><span data-phrase="csv.date">日付</span><span data-phrase="csv.reference">領収書／請求書番号</span><span data-phrase="csv.currency">通貨</span><span data-phrase="csv.amount">合計金額</span><span data-phrase="csv.confirmed">確認済み</span><span data-phrase="csv.yes">はい</span><span data-phrase="csv.no">いいえ</span>
+  </div>
+</main>

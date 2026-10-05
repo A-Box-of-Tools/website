@@ -1,0 +1,162 @@
+# The OCR examples remain in English because that is the bundled model's supported language.
+
+name = "Extracteur de reçus et factures"
+heading = "Extracteur&nbsp;de&nbsp;reçus&nbsp;et&nbsp;factures <span class=\"h1-kw\">&mdash; des photos à un rapport que vous vérifiez</span>"
+tagline = "Lisez les photos, vérifiez les champs et les recadrages, puis envoyez les images compressées avec chaque montant et les totaux."
+title = "Extracteur de reçus et factures &mdash; Photos en CSV et courriel, sans envoi pour le traitement"
+description = "Lisez des photos de reçus et de factures en local, vérifiez les recadrages et les montants, puis convertissez chaque document dans une seule devise de courriel avec des taux manuels ou historiques en ligne. Envoyez les images compressées, les montants individuels et un total général."
+og_title = "Des photos de reçus et factures à un rapport à envoyer par courriel"
+og_description = "Lisez les photos en local, vérifiez chaque document, choisissez des taux de change manuels ou historiques et envoyez les images recadrées avec les montants convertis, le nombre de documents et un total général."
+og_image_alt = "Extracteur de reçus et factures - lecture locale des photos et préparation d’un rapport par courriel"
+pledge_line = "Vos photos sont <strong>lues sur cet appareil</strong>. Les taux en ligne sont facultatifs. Vous choisissez ce que vous envoyez ou partagez."
+md_note = "Les photos sont lues en local. Les requêtes facultatives de taux historiques n’envoient que les devises et la date choisie à Frankfurter. Le courriel et le partage sont des transmissions volontaires à une application choisie par la personne."
+pledge = "Les photos sont décodées et lues sur cet appareil. Le moteur OCR et les données anglaises sont fournis avec la page, et aucune photo ni aucun champ extrait n’est envoyé pour l’OCR. Les taux manuels, la copie du rapport et les téléchargements sont aussi locaux. Seul le bouton Obtenir le taux historique contacte <a href=\"https://frankfurter.dev/\" target=\"_blank\" rel=\"noopener noreferrer\">Frankfurter</a> avec les deux codes de devise et la date choisie. Ce service voit la requête et votre adresse IP, mais ne reçoit aucune image, aucun montant, texte OCR, nom de fichier ou adresse de courriel. Le courriel et le partage sont votre étape suivante&nbsp;: ces boutons transmettent le rapport ou les fichiers que vous choisissez de partager à une application sur votre appareil. Vous choisissez le destinataire, vérifiez ce qui sera transmis et envoyez vous-même le message."
+live_hint = "Ouvrez les DevTools et observez Réseau pendant la lecture d’une photo. La page peut charger ses propres ressources OCR, mais aucune requête ne transporte votre photo, son nom de fichier, le commerçant ou le montant. Une fois la page mise en cache, recommencez hors ligne avec des taux manuels. Appuyez sur Obtenir le taux historique pour voir une requête à api.frankfurter.dev contenant uniquement les codes de devise et la date choisie. L’envoi ultérieur du courriel utilise la connexion de votre application de messagerie."
+read_first = ", <code>src/ocr.js</code> pour l’interface OCR locale, <code>src/main.js</code> pour la vérification et les transmissions au courriel ou au partage, <code>src/attachments.js</code> pour les copies JPEG, <code>src/email.js</code> pour le fichier de courriel, <code>src/fx.js</code> pour la conversion et les requêtes facultatives de taux historiques, et <code>vendor/</code> pour le moteur et ses licences. Le rapport et les pièces jointes sont assemblés dans l’onglet&nbsp;; vous choisissez une application de messagerie ou téléchargez un fichier de courriel, puis l’envoyez vous-même."
+howto_heading = "Comment extraire les renseignements des reçus et factures à partir de photos"
+card = "Lisez les photos de reçus et factures en local, vérifiez les champs suggérés et préparez un rapport avec chaque montant, le nombre de documents et un total général dans une seule devise de courriel. Utilisez des taux manuels ou des taux historiques en ligne facultatifs. Recadrez et compressez les images pour le courriel, ou enregistrez le rapport en CSV."
+
+[words]
+plural = "photos de reçus et factures"
+choose = "des photos de reçus ou factures"
+analytics_extra = ", ni quoi que ce soit sur vos commerçants, références, devises, montants, nombre de documents ou noms de fichiers"
+
+[[facts]]
+text = "Aucun envoi pour le traitement"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "OCR hors ligne"
+
+[[facts]]
+text = "Vérifiez chaque document"
+
+[[facts]]
+text = "Envoyez depuis votre application"
+
+[[privacy]]
+title = "L’OCR se fait sur votre appareil."
+body = "Une photo contient des pixels plutôt que du texte&nbsp;; sa lecture exige donc un moteur OCR. Cette page fournit Tesseract et les données anglaises plutôt que de confier la photo à un serveur. Le navigateur lit en mémoire les fichiers que vous choisissez. Ce site ne stocke ni les photos ni les champs extraits. Le moteur et les données représentent environ 8 Mo avant la compression de livraison et sont mis en cache avec l’outil. Leurs versions, fichiers sources et <a href=\"vendor/README.md\">licences figurent à leurs côtés</a>."
+
+[[privacy]]
+title = "Un montant suggéré a encore besoin de vos yeux."
+body = "Un chiffre effacé, un reflet ou un sous-total près du bas peut produire une réponse fausse mais convaincante. Comparez le commerçant, la date, la référence, la devise et le total avec la photo, corrigez-les et vérifiez que le document entier reste dans le recadrage. Seuls les documents confirmés entrent dans les totaux, et tous les documents restants doivent être confirmés avant d’ouvrir le courriel ou le téléchargement des pièces jointes. Changer un champ, le recadrage ou la rotation demande une nouvelle vérification. Un rapport copié ou un CSV peut inclure des lignes incomplètes signalées comme à vérifier. La confirmation enregistre votre vérification&nbsp;; elle ne prouve pas indépendamment l’exactitude des calculs du document."
+
+[[privacy]]
+title = "Vous contrôlez la transmission au courriel."
+body = "Lorsque le partage de fichiers est pris en charge, Courriel avec images ouvre le menu de partage de l’appareil avec les copies JPEG compressées et le rapport. Choisissez votre application de messagerie et vérifiez-y le destinataire, le corps du message et les pièces jointes. Sinon, téléchargez le fichier de courriel contenant le rapport et toutes les pièces jointes JPEG. Les applications compatibles l’ouvrent comme un brouillon&nbsp;; d’autres peuvent nécessiter Transférer ou Renvoyer. Cette page n’envoie rien. Votre application et votre fournisseur de messagerie gèrent la livraison selon leurs propres réglages."
+
+[[privacy]]
+title = "Les images transmises sont des copies recadrées et compressées."
+body = "Ajustez chaque recadrage pour garder le reçu ou la facture en entier. La page suggère un recadrage lorsqu’elle trouve des bords de document clairs&nbsp;; sinon, elle conserve l’image entière. Sur un long reçu coloré, une couleur de papier identique au-delà d’un bord détecté peut conserver cette extrémité entière, gardant l’en-tête ou le texte final avec un peu d’arrière-plan supplémentaire. Vérifiez et ajustez cette suggestion. La page produit des copies JPEG de 1 600 pixels au maximum sur leur côté le plus long et vise environ 350 Ko par image. Vérifiez leurs aperçus et leurs tailles avant l’envoi&nbsp;; la taille visée n’est pas garantie. Vos photos originales restent inchangées et ne sont pas jointes. Si votre application ne peut pas utiliser le fichier de courriel, téléchargez le ZIP, extrayez-le et joignez vous-même ses copies JPEG et son CSV."
+
+[[privacy]]
+title = "Les taux de change en ligne sont facultatifs."
+body = "Les taux manuels gardent toute la préparation hors ligne. Choisir la recherche en ligne n’envoie pas de requête à lui seul&nbsp;: appuyez sur Obtenir le taux historique pour ce document. Seuls la devise d’origine, la devise finale et la date choisie sont envoyés à api.frankfurter.dev, sans identifiants ni référent. Frankfurter peut voir votre adresse IP et votre requête. Le taux reçu et sa date d’observation apparaissent à côté du document et dans le rapport. Ce sont des taux de référence, qui peuvent différer d’un débit bancaire ou par carte. Si le service ne fournit pas de taux, utilisez un taux manuel&nbsp;; la page n’utilise jamais silencieusement le taux d’aujourd’hui."
+
+[[privacy]]
+title = "Le rapport appartient à cet onglet jusqu’à ce que vous l’emportiez."
+body = "Il n’y a ni compte ni historique de documents ici. Gardez la page ouverte pendant la vérification et copiez le rapport ou enregistrez le CSV avant de partir. Fermer ou recharger la page fait perdre le lot conservé en mémoire. Un rapport copié, téléchargé ou transmis à une autre application reste là où vous l’avez mis."
+
+[[privacy]]
+title = "Ce que reçoivent les autres scripts de la page."
+body = "Les scripts de publicité, de mesure et du bouton de don du site se chargent comme sur les autres outils. Aucune photo, aucun texte OCR, nom de fichier, nom de commerçant, montant ou nombre de documents ne leur est transmis. Le code qui lit les photos et crée le rapport est servi depuis ce site et figure dans le dépôt."
+
+[[privacy]]
+title = "La lecture fonctionne hors ligne&nbsp;; la livraison dépend de l’application."
+body = "Attendez que la ligne Hors ligne de la page indique prêt, puis déconnectez-vous et lisez une autre photo. Le moteur OCR mis en cache, le formulaire de vérification, les totaux, la copie, la préparation JPEG, la conversion manuelle et les téléchargements fonctionnent toujours. La recherche de taux en ligne nécessite une connexion. Votre application de messagerie peut enregistrer un brouillon hors ligne&nbsp;; l’envoi effectif nécessite la connexion utilisée par cette application."
+
+[[howto]]
+title = "Choisissez des photos nettes."
+body = "Ajoutez jusqu’à 20 images JPEG, PNG, WebP ou AVIF de 20 Mo au maximum chacune. Utilisez un reçu ou une facture par photo. L’OCR prend en charge le texte anglais imprimé. Photographiez le document entier sous un éclairage uniforme, avec le texte à l’endroit et net."
+
+[[howto]]
+title = "Lisez, recadrez et comparez."
+body = "Lancez l’OCR, puis examinez chaque photo à côté de ses champs suggérés et de son texte brut. Tournez une image de côté et relisez-la si nécessaire. Ajustez le recadrage pour garder tous les bords et le texte du document, puis relisez ce recadrage. Corrigez le commerçant, la date, la référence, la devise et le total. Le commerçant ou la référence peut rester vide si la lecture n’est pas fiable. Distinguez notamment le total final d’un sous-total, d’une remise, d’une somme remise en espèces, de la monnaie rendue, d’une taxe ou d’un solde restant."
+
+[[howto]]
+title = "Confirmez chaque document."
+body = "Vérifiez les champs, le recadrage et la conversion. Choisissez la devise imprimée sur le document, puis une seule devise finale de courriel commune à tous les documents. Saisissez chaque taux de change manuellement ou choisissez la recherche en ligne et appuyez sur Obtenir le taux historique après avoir vérifié la date du reçu. Le sens indiqué correspond à une unité de la devise du document dans la devise finale. Les documents dans la même devise utilisent le taux 1. Seuls les montants convertis confirmés entrent dans le total général. Retirez les photos en double pour ne pas compter un reçu deux fois."
+
+[[howto]]
+title = "Emportez le rapport dans votre application."
+body = "Vérifiez les aperçus et les tailles des JPEG préparés. Utilisez Courriel avec images pour choisir votre application de messagerie si la fonction est prise en charge, ou téléchargez le fichier de courriel avec le rapport et les pièces jointes JPEG. Vérifiez et envoyez vous-même le message. Si votre application ne peut pas ouvrir le fichier de courriel, téléchargez et extrayez le ZIP, puis joignez ses images et son CSV dans un nouveau message."
+
+[[faq]]
+q = "Lit-il correctement tous les reçus et factures&nbsp;?"
+a = "Non. L’OCR peut confondre un chiffre ou manquer une impression pâle, de petits caractères ou un logo stylisé. L’analyseur évite les libellés de remise et de montant remis, mais il ne peut pas utiliser un libellé que l’OCR n’a pas lu. Les champs commerçant et référence peuvent rester vides si aucun candidat n’est fiable. L’absence du nom du magasin ou une devise en dollars ou en yens non résolue peut aussi déclencher une lecture plus attentive de l’en-tête du magasin. Cette lecture apparaît séparément et ne fournit que le nom du magasin et des suggestions de devise d’après son adresse. Une lecture peu fiable ou l’absence de montant ou de date peut déclencher une deuxième lecture avec un réglage local du contraste pour mieux distinguer l’impression du papier. Les deux lectures du document entier peuvent être comparées. Des désaccords non résolus sur les montants, dates, références ou devises peuvent laisser des champs vides à remplir. Une devise imprimée est prioritaire sur une déduction d’après l’adresse, et une date reconnue du reçu ou de la facture est prioritaire sur une date figurant dans un justificatif de paiement par carte ajouté à la suite. Cela peut améliorer une suggestion, mais ne retrouve pas les détails perdus dans le flou et ne garantit pas un résultat correct. Comparez chaque suggestion avec la photo et confirmez vous-même chaque document avant de l’exporter. Cet outil n’extrait pas les articles et ne prouve pas l’exactitude des calculs d’une facture."
+
+[[faq]]
+q = "Une photo peut-elle contenir plusieurs reçus&nbsp;?"
+a = "Utilisez un reçu ou une facture par photo. L’outil traite chaque image comme un document et ne sépare pas une collection de reçus ou une planche de modèles. Ajoutez une photo ou un recadrage distinct pour chaque document, avec ses renseignements d’identification et son montant final visibles. Sinon, le texte de plusieurs reçus peut se mêler dans une seule suggestion."
+
+[[faq]]
+q = "Comment les dates et les symboles de devise sont-ils interprétés&nbsp;?"
+a = "La date du document reste telle qu’imprimée. Pour un taux de change en ligne, vérifiez-la et choisissez-la dans le champ séparé de date de conversion&nbsp;; une date telle que 24/09/2018 n’y est pas convertie automatiquement. Le symbole de la livre suggère GBP. Un symbole dollar seul peut signifier USD, CAD, AUD ou une autre devise en dollars. Une devise imprimée associée au total final est prioritaire. Si la devise reste incertaine, un pays reconnu, ou un code postal distinctif accompagné de sa région dans l’adresse du magasin lui-même, peut la suggérer. La ligne d’adresse imprimée apparaît à côté de cette suggestion. Une ville seule ou une adresse de client, de livraison ou de banque ne suffit pas&nbsp;; des éléments ambigus ou contradictoires non résolus laissent la devise vide. Aucune recherche de localisation n’est faite. Vérifiez chaque code suggéré sur le document."
+
+[[faq]]
+q = "Quels fichiers et quelles langues peut-il lire&nbsp;?"
+a = "Des photos JPEG, PNG, WebP et AVIF, jusqu’à 20 par lot et 20 Mo par fichier. Le modèle OCR fourni lit le texte anglais imprimé. Les autres systèmes d’écriture, les manuscrits, les PDF et les fichiers HEIC ne sont pas pris en charge. Pour une photo HEIC d’iPhone, créez d’abord un JPEG avec l’application de photos de l’appareil ou le convertisseur HEIC de ce site."
+
+[[faq]]
+q = "Que signifient le nombre de documents et les totaux&nbsp;?"
+a = "Chaque photo compte pour un document. Chaque document présente son montant d’origine et son montant converti dans la même devise finale de courriel. Le total général additionne les montants convertis vérifiés, chacun arrondi à deux décimales, et le rapport garde aussi les totaux des devises d’origine. Le courriel et le téléchargement des pièces jointes exigent que chaque document soit vérifié. Les photos en double comptent deux fois si vous n’en retirez pas une."
+
+[[faq]]
+q = "Le bouton de courriel envoie-t-il quelque chose automatiquement&nbsp;?"
+a = "Non. Lorsque la fonction est prise en charge, il propose le rapport et les copies JPEG compressées dans le menu de partage de l’appareil&nbsp;; choisissez-y votre application de messagerie. Sinon, il télécharge un fichier de courriel contenant le rapport et les pièces jointes. L’objet suggéré inclut le nombre de documents et, une fois chaque document vérifié, le total général dans la devise finale. Modifier l’objet conserve votre formulation. Vérifiez le destinataire, le contenu et les pièces jointes, puis envoyez vous-même le message. La page ne peut pas savoir si votre application a accepté ces éléments ni si vous avez finalement envoyé le message."
+
+[[faq]]
+q = "Les images recadrées sont-elles jointes au fichier de courriel&nbsp;?"
+a = "Oui. Le fichier <code>.eml</code> téléchargé contient le rapport et chaque JPEG préparé en pièce jointe. Les applications compatibles l’ouvrent comme un brouillon&nbsp;; d’autres peuvent l’ouvrir comme un message à transférer ou à renvoyer. Vos photos originales restent inchangées et ne sont pas jointes. Le ZIP contient les mêmes JPEG et le CSV si vous devez les joindre manuellement. Aucun navigateur ne peut garantir que toutes les applications de messagerie acceptent un fichier de brouillon ou une transmission par le menu de partage."
+
+[[faq]]
+q = "Comment la devise du courriel par défaut est-elle choisie&nbsp;?"
+a = "Chaque document avec un code de devise valide a une voix. Le code le plus fréquent devient la devise finale du courriel&nbsp;; en cas d’égalité, la première occurrence dans l’ordre actuel des documents l’emporte. Les codes absents ou incomplets sont ignorés. Lire, corriger ou retirer des documents met à jour la valeur par défaut. Choisir une devise finale manuellement conserve votre choix. Utiliser la devise par défaut rétablit le choix automatique. Changer la devise finale efface les taux de change et les confirmations précédents."
+
+[[faq]]
+q = "Puis-je choisir une devise qui n’est pas dans la liste&nbsp;?"
+a = "Oui. Choisissez Autre / code personnalisé et saisissez un code de trois lettres pour la devise du document ou la devise finale du courriel. Changer la devise finale met à jour chaque document et efface ses anciens taux et vérifications. La couverture en ligne dépend de la paire de devises et de la date. Si aucun taux historique n’est disponible, saisissez un taux manuellement&nbsp;; aucun taux récent n’est substitué."
+
+[[faq]]
+q = "Mes photos sont-elles envoyées pour l’OCR&nbsp;?"
+a = "Non. Tesseract les lit dans votre navigateur avec les données anglaises fournies avec la page. La copie et le téléchargement sont des actions locales. Choisir le courriel ou le partage de l’appareil transmet volontairement les renseignements sélectionnés à une autre application, qui gère toute livraison ultérieure."
+
+[[faq]]
+q = "Pourquoi une photo très détaillée peut-elle encore donner un mauvais résultat&nbsp;?"
+a = "Les reflets, le flou, les plis et une page éloignée peuvent masquer des lettres même dans une grande image. L’OCR agrandit les petits recadrages jusqu’à trois fois et ajoute une fine bordure blanche, en limitant la copie de travail à 2 400 pixels sur son côté le plus long. Cela peut aider le moteur à lire les petits caractères, mais ne peut pas retrouver les détails absents de la photo. Remplissez le cadre avec un document, gardez le texte net et uniformément éclairé, puis tournez une page de côté avant de la relire. L’original et la pièce jointe ne sont pas agrandis pour l’OCR."
+
+[[faq]]
+q = "Fonctionne-t-il hors ligne&nbsp;?"
+a = "La lecture, la modification, le recadrage, la conversion manuelle, le comptage, la préparation JPEG et les téléchargements fonctionnent une fois la page et les ressources OCR mises en cache. La recherche de taux historiques en ligne nécessite une connexion&nbsp;; un taux déjà obtenu reste disponible dans l’onglet ouvert. Ouvrir un brouillon peut fonctionner hors ligne, mais la livraison du courriel nécessite normalement la connexion de votre application."
+
+[[faq]]
+q = "Comment les taux historiques utilisent-ils la date du reçu&nbsp;?"
+a = "Vérifiez la date imprimée sur le reçu et saisissez-la dans le champ Date de conversion. Les dates ambiguës ne sont pas devinées. Choisissez la recherche en ligne et appuyez sur Obtenir le taux historique. Le résultat indique sa date d’observation réelle, qui peut précéder la date demandée lorsqu’aucun taux n’a été publié. Comparez-le avant de confirmer. Vous pouvez aussi saisir un taux manuel distinct pour chaque document. Le courriel enregistre le taux, sa source et la date utilisés pour chaque montant converti."
+
+[schema]
+description = "Lisez en local des photos de reçus et factures en anglais, vérifiez les champs et les recadrages, puis préparez des pièces jointes JPEG compressées avec le montant de chaque document, leur nombre et un total général dans une seule devise finale, grâce à des taux manuels ou historiques facultatifs."
+features = [
+  "OCR anglais local pour les photos JPEG, PNG, WebP et AVIF",
+  "Lots de 20 photos au maximum, jusqu’à 20 Mo chacune",
+  "Commerçant, date, référence, devise et total modifiables",
+  "Codes de devise courants et code personnalisé de trois lettres",
+  "Suggestions de devise d’après une adresse de magasin imprimée clairement identifiée",
+  "Image originale et texte OCR brut pour vérification",
+  "Rotation et nouvelle lecture des photos de côté",
+  "Recadrages ajustables et aperçus des pièces jointes JPEG compressées",
+  "Confirmation explicite avant d’inclure un document dans le rapport",
+  "Nombre de documents, totaux des devises d’origine et un total général converti",
+  "Une devise finale de courriel commune avec des taux manuels par document",
+  "Taux historiques en ligne facultatifs utilisant une date de reçu vérifiée",
+  "Rapport à copier et téléchargement CSV",
+  "Pièces jointes JPEG et rapport via le menu de partage de l’appareil si pris en charge",
+  "Fichier de courriel contenant le rapport et chaque JPEG préparé",
+  "ZIP des copies JPEG préparées et du CSV pour les joindre manuellement",
+]
+
+[picker]
+title = "Déposez ici des photos de reçus ou factures"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP ou AVIF&nbsp;; jusqu’à 20 photos de 20 Mo chacune"

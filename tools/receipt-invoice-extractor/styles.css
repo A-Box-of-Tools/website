@@ -78,8 +78,8 @@ input[data-field="finalCurrency"], #final-currency { text-transform: uppercase; 
   .currency-default-note { inset-inline-start: 0; inset-inline-end: auto; width: min(22rem, calc(100vw - 5rem)); }
   .document-content { grid-template-columns: 1fr; }
   .document { padding: 0.75rem; }
-  .document-fields .settings { grid-template-columns: 1fr; }
-  .conversion-fields .settings { grid-template-columns: 1fr; }
+  .document-fields .settings { grid-template-columns: minmax(0, 1fr); }
+  .conversion-fields .settings { grid-template-columns: minmax(0, 1fr); }
   .document-image { height: 200px; }
   .report-stats div { padding: 0.65rem; }
 }

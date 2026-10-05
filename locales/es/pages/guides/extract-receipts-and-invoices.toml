@@ -1,0 +1,20 @@
+#
+# La revisión de la imagen convierte una sugerencia del OCR en un informe listo
+# para enviar. Las consultas de tipos y la entrega a la aplicación son opcionales.
+#
+
+nav = "Extraer recibos y facturas"
+title = "Extraer datos de recibos y facturas y preparar imágenes recortadas para el correo"
+description = "Cómo revisar el OCR y los recortes, elegir una moneda común y tipos manuales o históricos, y preparar imágenes comprimidas por correo con cada valor convertido, la cantidad de documentos y un total general."
+heading = "Extraer datos de recibos y facturas a partir de fotos"
+lede = """
+    Un montón de recibos resulta útil cuando cada documento tiene un importe
+    legible y el informe indica cuántos se han contado. El OCR puede ahorrar
+    trabajo de escritura, pero tu revisión de la imagen es lo que deja el
+    resultado listo para enviar. Aquí verás qué comprobar, cómo conservar el
+    documento completo en un adjunto más pequeño, qué significan los totales
+    y cómo llevar las imágenes y el informe a tu aplicación de correo."""
+updated = "4 de octubre de 2026"
+og_title = "De las fotos de recibos a un informe para enviar por correo"
+og_description = "Revisa los datos y recortes de los recibos, elige las monedas y lleva adjuntos JPEG comprimidos y un informe con la cantidad de documentos y los totales a la aplicación de correo."
+og_image_alt = "abox.tools, herramientas que procesan los archivos en tu propio dispositivo"
