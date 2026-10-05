@@ -446,7 +446,7 @@ function showDocumentError(record, key) {
 
 function updateDocumentStatus(record) {
   record.element.dataset.confirmed = String(record.confirmed);
-  record.element.querySelector('.document-status').textContent = phrase(record.confirmed ? 'checked' : record.status);
+  record.element.querySelector('.document-status').textContent = phrase(record.confirmed ? 'documentChecked' : record.status);
 }
 
 function fillExtraction(record, recognition = null) {
@@ -556,7 +556,7 @@ function makeReport(summary) {
       lines.push(phrase('convertedAmount', { amount: formatMinor(conversion.minor), currency: finalCurrency }));
     }
     if (record.attachment) lines.push(phrase('reportAttachment', { name: record.attachment.file.name }));
-    lines.push(phrase(record.confirmed && !validation(record) ? 'checked' : 'needsReview'), '');
+    lines.push(phrase(record.confirmed && !validation(record) ? 'documentChecked' : 'needsReview'), '');
   });
   lines.push(phrase('reportTotals'));
   if (!summary.totals.length) lines.push(phrase('noTotals'));
@@ -691,6 +691,11 @@ window.addEventListener('pagehide', event => {
   if (running) stopReading();
   else terminateOcr();
   if (!event.persisted) for (const record of records) releaseRecord(record);
+});
+$('privacy-toggle').addEventListener('click', () => {
+  const open = $('privacy-panel').hidden;
+  $('privacy-panel').hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
 });
 updateReport();
 document.getElementById('boot-warning')?.remove();

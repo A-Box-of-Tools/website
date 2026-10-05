@@ -43,6 +43,7 @@ complete = true
 #
 
 [slugs]
+"receipt-invoice-extractor" = "extraer-recibos-facturas"
 "avif-to-jpg" = "convertir-avif-a-jpg"
 "business-profile-preview" = "vista-previa-del-perfil-de-empresa"
 "compress-video" = "comprimir-video"
