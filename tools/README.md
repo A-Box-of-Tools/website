@@ -53,6 +53,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Watermark](watermark-pdf/) | `/watermark-pdf/` | A scan that says where it went is a scan that cannot quietly go somewhere else. |
 | [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
 | [PDF to CSV](pdf-to-csv/) | `/pdf-to-csv/` | Finds every table in a PDF and turns it into rows a spreadsheet can open. |
+| [Receipt & Invoice Extractor](receipt-invoice-extractor/) | `/receipt-invoice-extractor/` | Read the photos, check the fields and crops, then email compressed images with each amount and the totals. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
 | [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Extract Audio from Video](extract-audio-from-video/) | `/extract-audio-from-video/` | Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded. |

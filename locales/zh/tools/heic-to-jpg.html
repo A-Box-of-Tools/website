@@ -8,13 +8,14 @@
 <main id="main">
   <!-- 第 1 步，选文件 -->
   <section class="card">
-    <h2><span class="step">1</span> 选好你的 HEIC 照片</h2>
+    <h2><span class="step">1</span> 选好你的 HEIC 和 AVIF 照片</h2>
 
     <p class="card-lede">
       手机里直接拷的、备份里翻出来的、存储卡上拿的，都行。文件就在这台机器上读，画面也在这里解码。这个页面没有上传这一步，背后也没有服务器。
     </p>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF 使用浏览器解码器，不加载 HEIC 引擎。输出仍为 JPEG、PNG 或 WebP。只输出第一张解码后的图片，颜色或 HDR 可能改变。AVIF 元数据一律不保留，元数据复选框仅适用于 HEIC。原文件保持不变。</p>
 
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
@@ -113,10 +114,9 @@
   <div id="phrases" hidden aria-hidden="true">
     <!-- 不要换行：行首的缩进会变成空格，落在句子中间。 -->
     <span data-phrase="load.refused">{name}：{why}</span>
-    <span data-phrase="refuse.avif">这是 AVIF，不是 HEIC。现在的浏览器都已经能打开，所以这里没什么要对它做的。</span>
     <span data-phrase="refuse.jpeg">这已经是 JPEG 了。</span>
     <span data-phrase="refuse.png">这是 PNG，本来就到处都打得开。</span>
-    <span data-phrase="refuse.other">这不是 HEIC。不管 {name} 是什么，它开头的字节都不是 HEIF 容器，文件名也说明不了什么。</span>
+    <span data-phrase="refuse.other">{name} 的开头字节不是支持的 HEIC 或 AVIF 图片。</span>
     <span data-phrase="list.count.one">{n} 张照片，共 {size}</span>
     <span data-phrase="list.count.many">{n} 张照片，共 {size}</span>
     <span data-phrase="row.sub">HEIC（{brand}）&middot; {size}</span>
@@ -148,8 +148,8 @@
     <span data-phrase="heif.nosize">这个文件里的图片没有解码器能用的尺寸。</span>
     <span data-phrase="heif.nodraw">解码器把文件读了下来，却画不出来。</span>
     <span data-phrase="codec.nowrite">这个浏览器不肯写出 {format}。</span>
-    <span data-phrase="n.heic.one">{n} 个 HEIC 文件</span>
-    <span data-phrase="n.heic.many">{n} 个 HEIC 文件</span>
+    <span data-phrase="n.heic.one">{n} 个输入文件</span>
+    <span data-phrase="n.heic.many">{n} 个输入文件</span>
     <span data-phrase="n.picture.one">{n} 张 {format} 图片</span>
     <span data-phrase="n.picture.many">{n} 张 {format} 图片</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}。{before} &rarr; {after}，{change}。</span>
@@ -182,5 +182,10 @@
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到照片，或照片里的一个字节。</span>
     <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到照片，或照片里的一个字节。</span>
+    <span data-phrase="file.avif">AVIF：仅第一张解码后的图片，一律不保留元数据。</span>
+    <span data-phrase="row.avif">AVIF &middot; {size}</span>
+    <span data-phrase="error.decode">浏览器无法解码此 AVIF</span>
+    <span data-phrase="error.encode">浏览器无法输出 {format}</span>
+    <span data-phrase="error.wrongtype">浏览器返回的文件不是 {format}</span>
   </div>
 </main>

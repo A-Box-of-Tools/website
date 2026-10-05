@@ -194,16 +194,7 @@ a = """
 
 [[faq]]
 q = "¿También quita los datos EXIF y GPS?"
-a = """
-        Sí, como efecto secundario. Guardar significa codificar un lienzo lleno de
-        píxeles, y un lienzo no lleva etiquetas, así que la ubicación, el modelo de
-        cámara, las fechas y la miniatura incrustada sencillamente no se escriben
-        en el archivo nuevo. La miniatura importa aquí: es una segunda copia
-        pequeña de la imagen, no siempre se regenera al editar una foto, y una foto
-        censurada que viaja con una miniatura sin censurar deshace todo el trabajo.
-        Si lo que quieres es quitar los metadatos sin recodificar la imagen, el
-        <a href="../eliminar-datos-exif/">Visor y limpiador EXIF</a> reescribe el
-        contenedor en lugar de la imagen."""
+a = "Sí, como efecto secundario. Guardar significa codificar un lienzo lleno de píxeles, y un lienzo no lleva etiquetas, así que la ubicación, el modelo de cámara, las fechas y la miniatura incrustada sencillamente no se escriben en el archivo nuevo. La miniatura importa aquí: es una segunda copia pequeña de la imagen, no siempre se regenera al editar una foto, y una foto censurada que viaja con una miniatura sin censurar deshace todo el trabajo. <a href=\"../eliminar-datos-exif/\">Visor y limpiador EXIF</a> lee y edita metadatos JPEG, PNG y WebP sin recodificar sus imágenes. Para AVIF muestra el EXIF disponible como solo lectura y limpia convirtiendo la primera imagen decodificada a un PNG nuevo; el color o el HDR pueden cambiar."
 
 [[faq]]
 q = "¿Qué formatos puede leer y escribir?"
@@ -260,4 +251,4 @@ features = [
 
 [picker]
 title = "Arrastra una imagen aquí"
-hint = "o haz clic para elegir &mdash; JPEG, PNG, WebP y cualquier otra cosa que tu navegador pueda abrir"
+hint = "o haz clic para elegir &mdash; JPEG, PNG, WebP, AVIF y cualquier otra cosa que tu navegador pueda abrir"

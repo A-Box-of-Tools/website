@@ -13,9 +13,9 @@ heading = "Remover&nbsp;dados&nbsp;EXIF <span class=\"h1-kw\">&mdash; ver e apag
 tagline = "Veja o que uma foto conta sobre você. Depois tire isso."
 
 title = "Ver e remover dados EXIF &mdash; editor de metadados de fotos grátis"
-description = "Veja os dados EXIF e de GPS escondidos numa foto, edite, ou apague tudo num clique. Roda no seu navegador, não envia nada, e a foto nunca é recodificada."
+description = "Veja, edite ou remova dados EXIF e GPS. JPEG, PNG e WebP mantêm sua codificação; a limpeza de AVIF cria um PNG novo. Sem upload."
 og_title = "Visualizador e removedor de EXIF &mdash; veja, edite ou apague"
-og_description = "Leia os metadados escondidos numa foto e remova todos num clique. Roda no seu próprio computador, e a imagem em si nunca é recodificada."
+og_description = "Leia e remova metadados no seu dispositivo. JPEG, PNG e WebP usam edição do contêiner; a limpeza de AVIF cria uma cópia PNG."
 og_image_alt = "Visualizador e removedor de EXIF - leia, edite ou apague os metadados de uma foto"
 
 pledge = """
@@ -59,7 +59,7 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[facts]]
-text = "Nunca recodifica a imagem"
+text = "AVIF é limpo para PNG; JPEG, PNG e WebP mantêm a codificação"
 
 [[privacy]]
 title = "Suas fotos não têm para onde ir."
@@ -121,25 +121,15 @@ body = """
 
 [[howto]]
 title = "Leia o que tem nelas, se quiser."
-body = """
- A lista de achados nomeia as
-      coisas que vale saber, como a posição de GPS, os horários e os números de
-      série, antes da tabela completa com todas as etiquetas."""
+body = " A lista de achados nomeia as coisas que vale saber, como a posição de GPS, os horários e os números de série, antes da tabela completa com todas as etiquetas. Para JPEG, PNG e WebP, estes blocos são listados. AVIF mostra só o EXIF extraído disponível; outros metadados AVIF não são inventariados."
 
 [[howto]]
 title = "Clique em &ldquo;Remover todos os metadados&rdquo;."
-body = """
- Esse é o trabalho
-      inteiro para a maioria das pessoas. Todas as etiquetas, os blocos XMP e
-      IPTC, os comentários e a miniatura embutida vão embora, em todas as fotos da
-      lista de uma vez."""
+body = "Para JPEG, PNG e WebP: Esse é o trabalho inteiro para a maioria das pessoas. Todas as etiquetas, os blocos XMP e IPTC, os comentários e a miniatura embutida vão embora, em todas as fotos da lista de uma vez. AVIF é decodificado pelo navegador e salvo como um PNG novo sem copiar os metadados originais. Suas tags EXIF disponíveis podem ser vistas aqui, mas não editadas. O PNG pode ficar maior e a conversão pode mudar cores ou HDR. O original permanece intacto."
 
 [[howto]]
 title = "Ou edite em vez de remover."
-body = """
- Mude uma data, corrija uma linha de
-      direitos autorais, jogue fora a localização e mantenha os ajustes da câmera.
-      Depois salve aquela foto sozinha."""
+body = "Para JPEG, PNG e WebP: Mude uma data, corrija uma linha de direitos autorais, jogue fora a localização e mantenha os ajustes da câmera. Depois salve aquela foto sozinha."
 
 [[faq]]
 q = "Minha foto é enviada para algum lugar?"
@@ -152,63 +142,27 @@ a = """
 
 [[faq]]
 q = "O que é EXIF, e o que mais está escondido numa foto?"
-a = """
-        EXIF é um bloco de etiquetas que a câmera escreve ao lado da imagem: a marca
-        e o modelo, os ajustes de exposição, a data e a hora com precisão de segundo,
-        muitas vezes uma posição de GPS e às vezes um número de série. As fotos
-        costumam carregar mais coisas além disso: um pacote XMP de XML vindo de um
-        editor, um bloco IPTC com campos de legenda e assinatura, um perfil de cor,
-        uma segunda cópia pequena da imagem como miniatura, e uma maker note com
-        dados não documentados do fabricante. Esta ferramenta lista tudo isso."""
+a = "Para JPEG, PNG e WebP: EXIF é um bloco de etiquetas que a câmera escreve ao lado da imagem: a marca e o modelo, os ajustes de exposição, a data e a hora com precisão de segundo, muitas vezes uma posição de GPS e às vezes um número de série. As fotos costumam carregar mais coisas além disso: um pacote XMP de XML vindo de um editor, um bloco IPTC com campos de legenda e assinatura, um perfil de cor, uma segunda cópia pequena da imagem como miniatura, e uma maker note com dados não documentados do fabricante. Esta ferramenta lista tudo isso. Para JPEG, PNG e WebP, estes blocos são listados. AVIF mostra só o EXIF extraído disponível; outros metadados AVIF não são inventariados."
 
 [[faq]]
 q = "Remover os metadados reduz a qualidade da imagem?"
-a = """
-        Não, e esse é o motivo principal para usar uma ferramenta assim em vez de
-        salvar a foto de novo. Os metadados ficam no contêiner em volta da imagem
-        comprimida, e não dentro dela. Removê-los é apagar itens de uma lista e
-        escrever a lista de volta, enquanto os dados de imagem comprimida são
-        copiados byte por byte. O resultado decodifica exatamente para os mesmos
-        pixels. Nada é decodificado e nada é recomprimido."""
+a = "A limpeza de JPEG, PNG e WebP edita seus contêineres e copia os dados comprimidos da imagem byte por byte sem decodificar ou recomprimir. AVIF decodifica a primeira imagem e grava um PNG novo sem perdas e sem metadados originais. O PNG pode ficar maior e a decodificação do navegador pode mudar cores ou HDR. O original permanece intacto."
 
 [[faq]]
 q = "Quais formatos de arquivo ele trata?"
-a = """
-        JPEG, PNG e WebP. HEIC e AVIF são reconhecidos, mas não reescritos: são
-        formatos de caixas montados a partir de átomos aninhados e precisam de outro
-        interpretador, então a ferramenta avisa isso em vez de produzir um arquivo
-        quebrado. Um TIFF puro também fica de fora, porque num TIFF os metadados e os
-        pixels são endereçados pelos mesmos deslocamentos."""
+a = "JPEG, PNG e WebP permitem ver, editar e limpar metadados no contêiner. AVIF permite uma prévia do EXIF extraído disponível e limpeza para um PNG novo. Tags AVIF são somente leitura; outros metadados não são inventariados. AVIF animado usa a primeira imagem. HEIC e TIFF puro são reconhecidos, mas não reescritos."
 
 [[faq]]
 q = "Minha foto vai aparecer girada depois que os metadados forem removidos?"
-a = """
-        Pode acontecer, e existe um ajuste para isso. Os celulares normalmente gravam
-        a imagem do jeito que o sensor viu e acrescentam uma etiqueta de Orientação
-        dizendo como virar. Remova essa etiqueta e alguns visualizadores mostram a
-        foto deitada. A opção de &ldquo;manter a etiqueta de orientação&rdquo;, que
-        já vem ligada, escreve de volta um pequeníssimo bloco EXIF contendo só essa
-        etiqueta, e só quando a foto realmente precisava. Desligue se você preferir
-        que o arquivo não carregue EXIF nenhum."""
+a = "Para JPEG, PNG e WebP, manter a orientação grava um pequeno bloco EXIF só com essa tag quando necessário. Desmarque para removê-la. AVIF usa a imagem decodificada na orientação correta pelo navegador e cria um PNG. As opções de orientação e perfil de cor valem só para JPEG, PNG e WebP."
 
 [[faq]]
 q = "Ele remove a localização de GPS?"
-a = """
-        Remove. Remover tudo tira o diretório de GPS inteiro, e dá para apagar só a
-        localização e manter o resto. A posição aparece primeiro em graus decimais,
-        porque &ldquo;51 graus, 30 minutos, 26 segundos&rdquo; não deixa evidente que
-        a foto está entregando o prédio em que foi tirada."""
+a = "A limpeza remove os dados GPS. Para JPEG, PNG e WebP, também é possível apagar só a localização e manter o resto. Tags AVIF são somente leitura; a conversão para PNG não copia metadados originais."
 
 [[faq]]
 q = "Posso mudar uma etiqueta em vez de apagá-la?"
-a = """
-        Pode. Etiquetas de texto, datas, o ISO, a orientação e a resolução podem
-        todas ser editadas, e algumas etiquetas comuns podem ser acrescentadas a uma
-        foto que não tem nenhuma. Uma ressalva: escrever o arquivo reconstrói o bloco
-        EXIF, e uma maker note contém deslocamentos que apontam para dentro do bloco
-        original, então uma maker note reconstruída pode deixar de ser legível pelo
-        próprio software do fabricante. Se isso importa para você, apague a maker
-        note ou deixe o arquivo sem editar."""
+a = "JPEG, PNG e WebP permitem editar e adicionar tags. Reescrever a nota do fabricante pode invalidar deslocamentos específicos; mantenha o original se isso importar. O EXIF AVIF é somente leitura. A limpeza cria um PNG sem metadados originais em vez de reescrever o contêiner AVIF."
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
@@ -226,16 +180,16 @@ a = """
         serem processadas pararia no instante em que você tirasse da tomada."""
 
 [schema]
-description = "Leia os metadados EXIF, GPS, XMP e IPTC de dentro de uma foto, edite etiquetas individuais, ou remova tudo num clique. JPEG, PNG e WebP, processados no navegador sem recodificar a imagem."
+description = "Veja, edite ou remova dados EXIF e GPS. JPEG, PNG e WebP mantêm sua codificação; a limpeza de AVIF cria um PNG novo. Sem upload."
 features = [
   "Mostra todas as etiquetas EXIF, inclusive posição de GPS, números de série da câmera e maker notes",
   "Edita ou apaga etiquetas individuais e escreve o arquivo de volta",
   "Remove EXIF, GPS, XMP, IPTC, comentários e a miniatura embutida num clique",
-  "JPEG, PNG e WebP",
-  "Reescreve só o contêiner, então a imagem nunca é recomprimida",
+  "Edição de contêineres JPEG, PNG e WebP; prévia EXIF AVIF e limpeza para PNG",
+  "Mantém a codificação JPEG, PNG e WebP; AVIF decodifica a primeira imagem para PNG",
   "Roda offline; sem envio, sem conta",
 ]
 
 [picker]
 title = "Arraste fotos para cá"
-hint = "ou clique para escolher: JPEG, PNG e WebP"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP e AVIF"

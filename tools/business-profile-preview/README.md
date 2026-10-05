@@ -195,6 +195,11 @@ part of this site's own.
 
 ### The photograph is redrawn, not embedded
 
+AVIF cover photos use the same native decoder as the other raster inputs.
+The file chooser names both `image/avif` and `.avif` so the operating system
+need not recognize that extension. A successful decode is still required, and
+the bounded photo embedded in the mock-up remains JPEG.
+
 `src/photo.js` decodes the file, draws it onto a canvas bounded at 1200 on its
 longest side, and encodes that as a JPEG data URI. Three things fall out of it:
 the size is bounded (the card draws it at 428 across, and base64 costs a third

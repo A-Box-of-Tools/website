@@ -4,9 +4,9 @@
  *
  * GENERATED INTO EACH TOOL. This file lives at shared/js/image-convert.js and
  * the build copies it to <tool>/src/shared/image-convert.js for the tools that
- * ask for it with `js_parts = ["image-convert", ...]`: the three format
- * converters, which are the same three steps - identify, decode, encode - with
- * a different pair of formats at each end. It imports nothing.
+ * ask for it with `js_parts = ["image-convert", ...]`: the native format
+ * converters and the HEIC converter's AVIF branch. They share the same three
+ * steps - identify, decode, encode. It imports nothing.
  *
  * WHY NO CODEC SHIPS WITH IT
  *
@@ -70,6 +70,35 @@ const ascii = (bytes, at, text) => text
   .split('')
   .every((ch, index) => bytes[at + index] === ch.charCodeAt(0));
 
+/** A head can end within ftyp; only complete brand words inside its size count. */
+export function imageBrands(bytes) {
+  if (!bytes || bytes.length < 16 || !ascii(bytes, 4, 'ftyp')) return [];
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let size = view.getUint32(0);
+  let start = 8;
+  if (size === 1) {
+    if (bytes.length < 24) return [];
+    const extended = view.getBigUint64(8);
+    if (extended > BigInt(Number.MAX_SAFE_INTEGER)) return [];
+    size = Number(extended);
+    start = 16;
+  } else if (size === 0) size = bytes.length;
+  if (size < start + 8 || (size - start - 8) % 4) return [];
+  const end = Math.min(bytes.length, size);
+  const brands = [];
+  for (let at = start; at + 4 <= end; at += 4) {
+    // The second word is a minor version, even if its bytes spell avif.
+    if (at === start + 4) continue;
+    brands.push(String.fromCharCode(...bytes.subarray(at, at + 4)));
+  }
+  return brands;
+}
+
+/** A sequence is reduced to its first picture by these still-image converters. */
+export function avifFacts(bytes) {
+  return { animated: imageBrands(bytes).includes('avis') };
+}
+
 /**
  * What a file actually is, read from its first bytes.
  *
@@ -92,12 +121,7 @@ export function sniff(bytes) {
   // AVIF is an ISO base media file: a 'ftyp' box whose brand list holds one of
   // the AVIF brands. 'avis' is the image-sequence brand, which decodes to its
   // first picture like any other still.
-  if (ascii(bytes, 4, 'ftyp')) {
-    const end = Math.min(bytes.length, 64);
-    for (let at = 8; at + 4 <= end; at += 4) {
-      if (ascii(bytes, at, 'avif') || ascii(bytes, at, 'avis')) return AVIF;
-    }
-  }
+  if (imageBrands(bytes).some(brand => brand === 'avif' || brand === 'avis')) return AVIF;
 
   return null;
 }

@@ -150,4 +150,4 @@ index_lede = "Chaque règle chiffrée possède une page qui indique ses dimensio
 
 [picker]
 title = "Déposez une photo ici"
-hint = "ou cliquez pour parcourir &mdash; une photographie, JPEG, PNG, WebP ou tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; une photographie, JPEG, PNG, WebP, AVIF ou tout ce que votre navigateur sait ouvrir"

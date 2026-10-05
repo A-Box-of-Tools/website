@@ -16,6 +16,13 @@ page can promise what it promises.
 
 ---
 
+AVIF inputs use the same native decoder as the other raster pictures. The
+chooser names `image/avif` and `.avif`, and
+[`shared/js/image-input.js`](../../shared/js/image-input.js) admits the extension
+even with a missing or incorrect registry MIME type. Decoding still verifies
+that the bytes are a picture. Icon entries and the website set keep their
+existing PNG or DIB formats.
+
 ## Why the sizes are the product
 
 The interesting decision in an icon tool is not the format, it is **which sizes

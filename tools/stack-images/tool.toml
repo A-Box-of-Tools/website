@@ -38,7 +38,7 @@ js_parts = ["file-picker", "message-box", "example-photo"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -410,10 +410,10 @@ features = [
 # a .CR3 is an image/*. Leaving it at image/* hides every RAW file in the folder
 # somebody opened the dialog to find.
 [picker]
-accept = "image/*,.cr2,.cr3,.crw,.nef,.nrw,.arw,.srf,.sr2,.dng,.orf,.raf,.rw2,.pef,.srw,.erf,.mrw,.dcr,.kdc,.mos,.iiq,.3fr,.rwl,.mef"
+accept = "image/*,image/avif,.cr2,.cr3,.crw,.nef,.nrw,.arw,.srf,.sr2,.dng,.orf,.raf,.rw2,.pef,.srw,.erf,.mrw,.dcr,.kdc,.mos,.iiq,.3fr,.rwl,.mef,.avif"
 multiple = true
 title = "Drop the frames here"
-hint = "or click to browse &mdash; JPEG, PNG, WebP, TIFF and camera RAW"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, AVIF, TIFF and camera RAW"
 # Six frames of one scene differing only in grain, which is what a
 # burst in poor light actually is, and the one input whose result can be
 # checked by eye.

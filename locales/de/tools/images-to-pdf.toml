@@ -10,7 +10,7 @@ heading = "Bilder&nbsp;in&nbsp;PDF <span class=\"h1-kw\">&mdash; JPG in PDF umwa
 tagline = "Ihre Bilder in ein einziges Dokument packen."
 
 title = "Bilder in PDF umwandeln &mdash; kostenlos, JPG zu PDF, ohne Upload"
-description = "JPG-, PNG- oder WebP-Bilder zu einem PDF zusammenfügen, kostenlos und vollständig in Ihrem Browser. Fotos kommen hinein, ohne neu kodiert zu werden, und nichts wird hochgeladen."
+description = "JPG-, PNG-, WebP- oder AVIF-Bilder zu einem PDF zusammenfügen, kostenlos und vollständig in Ihrem Browser. JPEG-Fotos kommen hinein, ohne neu kodiert zu werden, und nichts wird hochgeladen."
 og_title = "Bilder in PDF &mdash; kostenloser JPG-zu-PDF-Umwandler"
 og_description = "Bilder auf Ihrem eigenen Gerät zu einem PDF zusammenfügen. JPEG-Fotos werden unangetastet übernommen, es verliert also nichts an Qualität und nichts wird hochgeladen."
 og_image_alt = "Bilder in PDF - Bilder zu einem Dokument zusammenfügen, ohne sie hochzuladen"
@@ -221,7 +221,7 @@ a = """
         stehen, in dem Sie den Stecker ziehen."""
 
 [schema]
-description = "JPG-, PNG- und WebP-Bilder zu einem einzigen PDF-Dokument zusammenfügen. Jede Seite wird in Ihrem Browser geschrieben, es wird also nie ein Bild hochgeladen."
+description = "JPG-, PNG-, WebP- und AVIF-Bilder zu einem einzigen PDF-Dokument zusammenfügen. Jede Seite wird in Ihrem Browser geschrieben, es wird also nie ein Bild hochgeladen."
 features = [
   "Fügt JPG-, PNG-, WebP-, GIF- und AVIF-Bilder zu einem PDF zusammen",
   "JPEG-Fotos werden eingebettet, ohne neu kodiert zu werden",

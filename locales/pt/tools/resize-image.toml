@@ -217,16 +217,7 @@ a = """
 
 [[faq]]
 q = "Ele remove os dados EXIF e de GPS?"
-a = """
-        De qualquer coisa que ele de fato processe, sim, como efeito colateral:
-        cortar ou redimensionar significa decodificar a imagem em pixels e codificar
-        esses pixels de novo, e um canvas cheio de pixels não carrega etiqueta
-        nenhuma, então a localização, o modelo da câmera e os horários simplesmente
-        não são escritos no arquivo novo. Um arquivo que você não está alterando é
-        outro caso, porque ele volta byte por byte, com etiquetas e tudo. Se você
-        quer os metadados fora mas a imagem intocada, use o
-        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a>, que
-        reescreve o contêiner sem recomprimir nada."""
+a = "De qualquer coisa que ele de fato processe, sim, como efeito colateral: cortar ou redimensionar significa decodificar a imagem em pixels e codificar esses pixels de novo, e um canvas cheio de pixels não carrega etiqueta nenhuma, então a localização, o modelo da câmera e os horários simplesmente não são escritos no arquivo novo. Um arquivo que você não está alterando é outro caso, porque ele volta byte por byte, com etiquetas e tudo. <a href=\"../remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e edita metadados JPEG, PNG e WebP sem recodificar suas imagens. Para AVIF, mostra o EXIF disponível como somente leitura e limpa convertendo a primeira imagem decodificada para um PNG novo; as cores ou o HDR podem mudar."
 
 [[faq]]
 q = "Qual a diferença entre isto e o compressor de imagens?"
@@ -274,4 +265,4 @@ features = [
 
 [picker]
 title = "Arraste imagens para cá"
-hint = "ou clique para escolher: JPEG, PNG, WebP e tudo o mais que o seu navegador conseguir abrir"
+hint = "ou clique para escolher: JPEG, PNG, WebP, AVIF e tudo o mais que o seu navegador conseguir abrir"

@@ -201,12 +201,7 @@
         separate file the phone keeps beside the HEIC, so it is not in there to
         convert.
       </li>
-      <li>
-        <strong>AVIF is not HEIC.</strong> They look alike &mdash; the same
-        container, different codec inside &mdash; but every current browser opens
-        an AVIF natively, so there is nothing to convert and the tool says so
-        rather than pretending to work.
-      </li>
+      <li><strong>AVIF.</strong> AVIF uses the browser decoder and does not load the HEIC engine. Output remains JPEG, PNG or WebP. Only the first decoded image is written; color or HDR may change. AVIF metadata is always left out: the metadata checkbox applies only to HEIC. The original file stays unchanged.</li>
       <li>
         <strong>Stopping the problem at the source.</strong> On the phone:
         Settings &rarr; Camera &rarr; Formats &rarr; Most Compatible. New photos

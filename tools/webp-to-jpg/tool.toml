@@ -48,12 +48,12 @@ js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "down
 # The tool to offer next, on the carry-on row under the result. A JPEG that has
 # just been written is the thing people most often need smaller.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-09-17"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "WebP to JPG Converter &mdash; Free, No Upload"
-description = "Convert WebP images to JPG in your browser. Your browser already decodes WebP, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose."
+description = "Convert WebP and AVIF images to JPG in your browser. Your browser already decodes WebP, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose."
 og_title = "Turn WebP images into JPGs without uploading them"
 og_description = "The converter that does not want your pictures. Your browser already reads WebP and writes JPEG, so the files never leave your machine."
 og_image_alt = "WebP to JPG - the pictures the web saves, in the format everything takes"
@@ -175,14 +175,7 @@ body = """
 
 [[privacy]]
 title = "What a canvas does not carry across."
-body = """
- The picture is
-      decoded and drawn onto a canvas, and a canvas holds pixels and nothing
-      else, so EXIF, ICC colour profiles, XMP and any copyright block do not
-      survive the trip. For most people that is a bonus and for some it is a
-      loss, so it is said here rather than discovered later. If what you wanted
-      was the metadata, the <a href="../exif-editor/">EXIF Viewer &amp;
-      Remover</a> reads and writes it without re-compressing anything."""
+body = "The picture is decoded and drawn onto a canvas, and a canvas holds pixels and nothing else, so EXIF, ICC colour profiles, XMP and any copyright block do not survive the trip. For most people that is a bonus and for some it is a loss, so it is said here rather than discovered later. <a href=\"../exif-editor/\">EXIF Viewer &amp; Remover</a> reads and edits JPEG, PNG and WebP metadata without re-encoding their pictures. For AVIF, it shows available EXIF as read-only and cleans by converting the first decoded image to a new PNG; color or HDR may change."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -202,7 +195,7 @@ body = """
       manage it."""
 
 [[howto]]
-title = "Choose your WebP files."
+title = "Choose your WebP and AVIF files."
 body = """
  Drop them onto the picker or select
       them by hand. Every file is identified by its first bytes rather than by
@@ -312,14 +305,7 @@ a = """
 
 [[faq]]
 q = "Does it keep the date, camera and location?"
-a = """
-        No. The picture is drawn onto a canvas and a canvas holds pixels and
-        nothing else, so EXIF, GPS, colour profiles and XMP are all left behind.
-        In practice most WebPs on the web have already had that stripped, and for
-        anybody converting a picture to send somewhere it is usually the outcome
-        they wanted. If you need to see or edit what a file carries, the
-        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> does that without
-        re-compressing the picture."""
+a = "No. The picture is drawn onto a canvas and a canvas holds pixels and nothing else, so EXIF, GPS, colour profiles and XMP are all left behind. In practice most WebPs on the web have already had that stripped, and for anybody converting a picture to send somewhere it is usually the outcome they wanted. <a href=\"../exif-editor/\">EXIF Viewer &amp; Remover</a> reads and edits JPEG, PNG and WebP metadata without re-encoding their pictures. For AVIF, it shows available EXIF as read-only and cleans by converting the first decoded image to a new PNG; color or HDR may change."
 
 [[faq]]
 q = "Can it do a whole folder at once?"
@@ -346,9 +332,14 @@ a = """
         be processed would stop the moment you unplugged, and this one does
         not."""
 
+
+[[faq]]
+q = "Can I also convert AVIF pictures?"
+a = "AVIF is also accepted when your browser can decode it. Output remains JPEG. AVIF sequences give only the first decoded image. The browser canvas makes an 8-bit SDR copy: color or HDR may change, metadata is left out, and the file may be larger. Your original file stays unchanged."
+
 [schema]
 category = "MultimediaApplication"
-description = "Convert WebP images to JPG in the browser. The browser's own decoder reads the WebP and its own encoder writes the JPEG, so nothing is uploaded and no codec is downloaded. Transparency is filled with a colour of your choosing, animated WebP files give their first frame, and batches come back as a zip."
+description = "Convert WebP and AVIF images to JPG in the browser. The browser's own decoder reads the WebP and its own encoder writes the JPEG, so nothing is uploaded and no codec is downloaded. Transparency is filled with a colour of your choosing, animated WebP files give their first frame, and batches come back as a zip."
 features = [
   "Converts WebP to JPEG using the decoder the browser already has",
   "Nothing is uploaded, and the tool works with the network unplugged",
@@ -358,6 +349,7 @@ features = [
   "Quality slider, defaulting to 92",
   "Reports what each file weighed before and after",
   "Batches, with all results in one zip",
+  "Also accepts AVIF input using the browser decoder; sequences give the first image only",
 ]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which
@@ -366,12 +358,12 @@ features = [
 # Deliberately wider than ".webp". A WebP that arrived called ".jpg" is one of
 # the commonest reasons somebody is on this page, and an accept list of the one
 # extension would hide that file in the browser's own dialog. Every file is
-# identified by its first bytes anyway, and anything that is not a WebP is
-# refused with a message saying what it actually is.
-accept = "image/*,.webp"
+# identified by its first bytes anyway, and files outside the WebP and AVIF
+# inputs are refused with a message saying what they actually are.
+accept = "image/avif,image/*,.webp,.avif"
 multiple = true
-title = "Drop WebP pictures here"
-hint = "or click to browse &mdash; .webp files, whatever they happen to be named"
+title = "Drop WebP and AVIF pictures here"
+hint = "or click to browse &mdash; .webp, .avif, identified by their contents"
 # Two files, drawn in the page: a photograph and a transparent mark. The second
 # is what makes the background colour appear, which is the half of this tool
 # worth demonstrating. See src/example.js.

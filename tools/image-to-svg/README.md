@@ -4,6 +4,11 @@ Traces a bitmap shape into a single SVG `<path>`. Everything happens in the
 visitor's browser, in about seven hundred lines of plain ES modules — no
 engine, no wasm, no network step.
 
+AVIF can enter the same native bitmap-decoding path as PNG, JPEG and WebP
+when the browser supports it. The chooser names `image/avif` and `.avif` so
+files remain selectable when the operating system has no image association
+for that extension. The output remains traced SVG paths, not an AVIF encode.
+
 ## Why this exists at all, given the entry that says it should not
 
 [`docs/what-can-be-built-here.md`](../../docs/what-can-be-built-here.md) ruled

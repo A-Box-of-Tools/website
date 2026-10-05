@@ -97,7 +97,7 @@ a = "Elle est remplie avec la couleur de fond, parce que le JPEG n'a pas de cana
 
 [[faq]]
 q = "Supprime-t-il les données EXIF et GPS&nbsp;?"
-a = "Pour tout ce qu'il traite réellement, oui, par effet de bord&nbsp;: recadrer ou redimensionner revient à décoder l'image en pixels puis à réencoder ces pixels, or un canvas rempli de pixels ne porte aucune étiquette, si bien que le lieu, le modèle d'appareil et les horodatages ne sont tout simplement pas écrits dans le nouveau fichier. Un fichier que vous ne changez pas du tout relève d'un autre cas, puisqu'il vous est rendu octet pour octet, étiquettes comprises. Si vous voulez faire disparaître les métadonnées en laissant l'image intacte, prenez le <a href=\"../supprimer-les-donnees-exif/\">lecteur et effaceur EXIF</a>, qui réécrit le conteneur sans rien recompresser."
+a = "Pour tout ce qu'il traite réellement, oui, par effet de bord&nbsp;: recadrer ou redimensionner revient à décoder l'image en pixels puis à réencoder ces pixels, or un canvas rempli de pixels ne porte aucune étiquette, si bien que le lieu, le modèle d'appareil et les horodatages ne sont tout simplement pas écrits dans le nouveau fichier. Un fichier que vous ne changez pas du tout relève d'un autre cas, puisqu'il vous est rendu octet pour octet, étiquettes comprises. <a href=\"../supprimer-les-donnees-exif/\">lecteur et effaceur EXIF</a> lit et modifie les métadonnées JPEG, PNG et WebP sans réencoder leurs images. Pour AVIF, il montre l’EXIF disponible en lecture seule et nettoie en convertissant la première image décodée vers un nouveau PNG ; les couleurs ou le HDR peuvent changer."
 
 [[faq]]
 q = "En quoi est-ce différent du compresseur d'images&nbsp;?"
@@ -117,4 +117,4 @@ features = ["Redimensionne en pixels exacts, par le plus grand côté, ou en pou
 
 [picker]
 title = "Déposez vos images ici"
-hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, AVIF et tout ce que votre navigateur sait ouvrir"

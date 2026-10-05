@@ -3,6 +3,14 @@
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>この接続上のローカル共有</h2>
+      <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">この一覧には、あなたと同じ公開IPアドレスを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv6や経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
+      <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> 書くか、添付する</h2>
       <div class="panel" id="editor">
@@ -22,7 +30,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="添付するファイル">
       <div id="attachlist"></div>
-      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。</p>
+      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。1回の共有には最大256ファイルを添付できます。</p>
     </section>
 
     <section class="card">
@@ -33,13 +41,23 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="別の名前を提案">&#8635;</button>
         </div>
-        <p class="field-note">名前がそのまま住所で、唯一の秘密でもあります。部屋の向こうへ声で伝えられる短さで、内輪のものには推測できない名前を。</p>
+        <p class="field-note">名前がアドレスで、部屋の向こうへ声で伝えられる短さです。発見可能なローカル共有は、この接続上の相手に名前を表示します。機密性のある内容では非公開を有効にしてください。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           非公開——読む側はそれぞれ求め、あなたが入れる
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          ローカルネットワーク——インターネット中継なし
+        </label>
+        <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          発見可能——このインターネット接続上にリンク名を表示する
+        </label>
+        <p class="discovery-note">発見可能な共有は、同じ公開IPアドレスを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           使い切り——下書きをこの端末に残さない
@@ -59,12 +77,13 @@
         <button type="button" id="stop" class="danger">共有をやめる</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>どこにも何も保存されません</h2>
-      <p>テキストとファイルは暗号化されたまま、このタブから読む側それぞれのタブへ直接届きます。関わる唯一のサーバーは2つのブラウザを引き合わせるだけで、やり取りの中身を見ることはありません。このタブを閉じれば共有は終わり、読む側の開いたページも空になります。ただし、誰かがすでにコピーやダウンロードしたものはその人のものです。</p>
+      <p>テキストとファイルは暗号化され、このタブから各読者のタブへ直接届きます。仲介役はブラウザ同士を紹介し、発見可能なリンク名を一覧にしますが、テキストやファイルは見ません。このタブを閉じると共有が終わり、読者の開いたページも消去されます。ただし、相手がすでにコピーやダウンロードしたものは相手のものです。</p>
     </section>
   </section>
 
@@ -75,7 +94,8 @@
       <p id="view-status" role="status" aria-live="polite">共有している人を探しています&hellip;</p>
 
       <div id="consent" hidden>
-        <p>読むには、あなたのブラウザが共有する側のブラウザと直接つながります。それこそが要点で、ここでは何もサーバーに触れません。あらゆる直接接続と同じく、互いのネットワーク（IP）アドレスが見えるようになります。あなたが接続を選ぶまで、何も取得されず、あなたについて何も共有されません。</p>
+        <p>接続すると、共有者が暗号化された通信路でテキストやファイルをあなたのブラウザへ直接送れるようになります。直接接続では双方に相手のネットワーク（IP）アドレスが分かります。あなたが接続を選ぶまで、共有者はこのリンクが開かれたことを知りません。</p>
+        <p id="local-note" hidden>このリンクはローカルネットワークモードです。両方の端末を同じWi-Fiまたはイーサネットにつなぐ必要があり、紹介には引き続きインターネットが必要です。アドレスを調べる公開サーバーやインターネット中継は使いません。VPNやブラウザの設定により通信経路が変わることがあります。</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
         </div>
@@ -97,6 +117,10 @@
         <div class="result-actions">
           <button type="button" id="relay" class="primary">中継を通してもう一度試す</button>
         </div>
+      </div>
+
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">共有者の接続モードで再試行</button>
       </div>
 
       <div class="result-actions" id="retryrow" hidden>
@@ -128,6 +152,15 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
+    <span data-phrase="discovery.connecting">ローカル共有を検索中…</span>
+    <span data-phrase="discovery.empty">ほかの発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
+    <span data-phrase="discovery.ready">共有を選ぶと、その接続ページを開きます。</span>
+    <span data-phrase="discovery.unavailable">ローカル検索を利用できません。共有リンクは引き続き使えます。</span>
+    <span data-phrase="discovery.open">共有を開く</span>
+    <span data-phrase="discovery.publishing">このローカル共有を発見可能にしています…</span>
+    <span data-phrase="discovery.published">この接続上であなたのローカル共有を発見できます。</span>
+    <span data-phrase="discovery.not-published">この共有はリンクで利用できますが、ローカル検索には公開できませんでした。</span>
+
     <span data-phrase="share.waiting">共有中です。誰かがリンクを開くのを待っています。このタブを開けたままにしてください。</span>
     <span data-phrase="share.reader-count.one">1人が読んでいます</span>
     <span data-phrase="share.reader-count.many">{n}人が読んでいます</span>
@@ -144,6 +177,7 @@
     <span data-phrase="share.lost-rendezvous">仲介役との接続が切れました。再試行しています。接続中の読む側には影響ありません。</span>
     <span data-phrase="share.stopped">停止しました。もう何も共有されていません。</span>
     <span data-phrase="share.file-too-big">「{name}」は200 MBの上限を超えています。</span>
+    <span data-phrase="share.too-many-files">1回の共有には最大256ファイルを添付できます。追加する前に1つ削除してください。</span>
     <span data-phrase="share.leave-warning">このページを離れると、共有は全員にとって終わります。続けますか？</span>
 
     <span data-phrase="copy.done">コピーしました</span>
@@ -169,6 +203,12 @@
     <span data-phrase="view.error">接続中に問題が起きました。ページを再読み込みして、もう一度試してください。</span>
     <span data-phrase="view.download">ダウンロード</span>
     <span data-phrase="view.file-gone">もう共有されていません</span>
+    <span data-phrase="share.local-waiting">ローカルネットワークモードで共有中です。リンクが開かれるのを待っています——このタブを開いたままにしてください。</span>
+    <span data-phrase="view.local-connecting">ローカルネットワークで接続中…</span>
+    <span data-phrase="view.mode-local">共有者はローカルネットワークモードを使っています。インターネット中継なしで接続するには、共有者のモードで再試行してください。</span>
+    <span data-phrase="view.mode-direct">共有者は通常の接続モードを使っています。共有者のモードで再試行してください。直接接続に失敗すると中継が提示されますが、選んだ場合にのみ使用されます。</span>
+    <span data-phrase="view.local-no-connect">ローカルネットワークモードで共有者に接続できませんでした。両方の端末が同じWi-Fiまたはイーサネットを使っているか確認してください。ゲストネットワークの端末分離、VPN、ファイアウォール、ブラウザ設定が接続を妨げることがあります。このモードではインターネット中継を提示しません。</span>
+    <span data-phrase="view.file-failed">ファイルのダウンロードを完了できませんでした。このリンクをもう一度確認してダウンロードを再試行してください。</span>
 
     <span data-phrase="net.clean">このページが共有するものは、どのサーバーも経由していません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>

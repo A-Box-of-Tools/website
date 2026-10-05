@@ -16,7 +16,7 @@ heading = "Bilder&nbsp;in&nbsp;Video <span class=\"h1-kw\">&mdash; eine MP4-Dias
 tagline = "Aus einem Ordner voller Bilder ein Video machen."
 
 title = "Bildsequenz zu MP4 &mdash; kostenlos, ohne Upload, auch offline"
-description = "JPG-, PNG- oder WebP-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und offline geht es auch."
+description = "JPG-, PNG-, WebP- oder AVIF-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und offline geht es auch."
 og_title = "Bildsequenz zu MP4 &mdash; kostenlos, in Ihrem Browser"
 og_description = "Eine Render-Sequenz, einen Zeitraffer oder einen Ordner voller Fotos in ein MP4 verwandeln. Die Kodierung läuft auf Ihrem eigenen Gerät, nichts wird hochgeladen."
 og_image_alt = "Bilder in Video - aus einem Ordner voller Bilder eine MP4-Diashow machen"

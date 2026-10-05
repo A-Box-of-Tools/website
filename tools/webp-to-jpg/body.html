@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> Choose your WebP files</h2>
+    <h2><span class="step">1</span> Choose your WebP and AVIF files</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF is also accepted when your browser can decode it. Output remains JPEG. AVIF sequences give only the first decoded image. The browser canvas makes an 8-bit SDR copy: color or HDR may change, metadata is left out, and the file may be larger. Your original file stays unchanged.</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -92,8 +93,8 @@
     <span data-phrase="file.lossless">Lossless WebP</span>
     <span data-phrase="file.animated">Animated &mdash; the first frame is what a JPEG can hold</span>
     <span data-phrase="file.alpha">Has see-through parts</span>
-    <span data-phrase="read.notwebp">{name} is not a WebP &mdash; it is {found}. This tool converts WebP files.</span>
-    <span data-phrase="read.unknown">{name} is not a WebP, and its first bytes match no picture format this page knows.</span>
+    <span data-phrase="read.notwebp">{name} is {found}. This tool accepts WebP and AVIF files.</span>
+    <span data-phrase="read.unknown">{name} is not a supported WebP and AVIF picture, based on its first bytes.</span>
     <span data-phrase="read.failed">{name} could not be opened: {why}</span>
     <span data-phrase="found.png">a PNG</span>
     <span data-phrase="found.jpeg">a JPEG</span>
@@ -103,9 +104,9 @@
     <span data-phrase="background.some">One of these has see-through parts and a JPEG cannot keep them.
       Pick the colour that goes underneath.</span>
     <span data-phrase="background.none">Nothing on the list has see-through parts, so no colour is needed.</span>
-    <span data-phrase="settings.one">One WebP at quality {quality}.</span>
-    <span data-phrase="settings.many">{count} WebP files at quality {quality}.</span>
-    <span data-phrase="settings.none">Choose a WebP above and this will say what will be written.</span>
+    <span data-phrase="settings.one">One image at quality {quality}.</span>
+    <span data-phrase="settings.many">{count} images at quality {quality}.</span>
+    <span data-phrase="settings.none">Choose a supported picture above to see what will be written.</span>
     <span data-phrase="run.one">Convert to JPG</span>
     <span data-phrase="run.many">Convert {count} files to JPG</span>
     <span data-phrase="progress.each">Converting {name}&hellip;</span>
@@ -116,7 +117,7 @@
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">From {name} &mdash; {dimensions}, {was} before.</span>
     <span data-phrase="result.flattened">The see-through parts were filled with {colour}.</span>
-    <span data-phrase="result.firstframe">This WebP is animated; the first frame is what was written.</span>
+    <span data-phrase="result.firstframe">This input is animated; only the first decoded image was written.</span>
     <span data-phrase="result.download">Download</span>
     <span data-phrase="change.smaller">{percent}% smaller</span>
     <span data-phrase="change.larger">{percent}% larger</span>
@@ -139,5 +140,7 @@
     <span data-phrase="net.platform.many">The page's own ad, measurement and
       donate-button scripts loaded from {hosts} hosts; not one of them was given
       a picture or a byte of one.</span>
+    <span data-phrase="file.avif">AVIF &mdash; browser-decoded image; metadata is left out</span>
+    <span data-phrase="file.avif.sequence">AVIF sequence &mdash; only the first decoded image is written</span>
   </div>
 </main>

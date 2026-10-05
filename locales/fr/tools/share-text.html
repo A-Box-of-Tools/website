@@ -1,6 +1,14 @@
 <main id="main">
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Partages locaux sur cette connexion</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Recherche de partages locaux…</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IP publique que le vôtre. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
+      <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
+    </section>
+
     <section class="card">
       <h2><span class="step">1</span> Écrivez-le, ou joignez-les</h2>
       <div class="panel" id="editor">
@@ -23,8 +31,7 @@
       <p class="field-note">
         Les fichiers voyagent par le même canal direct que le texte, jusqu'à
         200&nbsp;Mo pièce. Les lecteurs voient la liste et ne récupèrent
-        chaque fichier que s'ils le demandent.
-      </p>
+        chaque fichier que s'ils le demandent. Un partage peut contenir jusqu’à 256 fichiers.</p>
     </section>
 
     <section class="card">
@@ -35,17 +42,23 @@
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
           <button type="button" id="suggest" class="ghost" aria-label="Suggérer un autre nom">&#8635;</button>
         </div>
-        <p class="field-note">
-          Le nom est l'adresse et le seul secret : assez court pour se
-          lancer à travers une pièce, et pour tout ce qui est privé, il en
-          mérite un indevinable.
-        </p>
+        <p class="field-note">Le nom est l’adresse, assez court pour le dire à travers une pièce. Les partages locaux visibles l’affichent pour les autres sur cette connexion. Gardez Privé activé pour tout contenu sensible.</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
           <input type="checkbox" id="private" checked>
           Privé &mdash; chaque lecteur doit demander, et vous l'admettez
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          Réseau local — sans relais internet
+        </label>
+        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage.</p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Visible — afficher ce nom de lien sur cette connexion internet
+        </label>
+        <p class="discovery-note">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IP publique. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Éphémère &mdash; ne pas garder le brouillon sur cet appareil
@@ -69,19 +82,13 @@
         <button type="button" id="stop" class="danger">Arrêter le partage</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
     <section class="card note-card">
       <h2>Rien n'est stocké nulle part</h2>
-      <p>
-        Le texte et les fichiers voyagent chiffrés, directement de cet
-        onglet vers celui de chaque lecteur. Le seul serveur impliqué
-        présente les deux navigateurs l'un à l'autre et ne voit jamais ce
-        qu'ils échangent. Fermer cet onglet arrête le partage et vide aussi
-        les pages ouvertes des lecteurs &mdash; ce que quelqu'un a déjà
-        copié ou téléchargé reste toutefois à lui.
-      </p>
+      <p>Le texte et les fichiers voyagent chiffrés, directement de cet onglet vers celui de chaque lecteur. L’entremetteur présente les navigateurs et liste les noms de lien visibles ; il ne voit jamais le texte ou les fichiers. Fermer cet onglet arrête le partage et vide les pages ouvertes des lecteurs — ce que quelqu’un a déjà copié ou téléchargé reste toutefois à lui.</p>
     </section>
   </section>
 
@@ -92,13 +99,8 @@
       <p id="view-status" role="status" aria-live="polite">Recherche de la personne qui partage&hellip;</p>
 
       <div id="consent" hidden>
-        <p>
-          Le lire connecte votre navigateur directement au sien &mdash;
-          c'est justement le principe : rien ici ne touche un serveur. Comme
-          toute connexion directe, elle laisse chaque bout voir l'adresse
-          réseau (IP) de l'autre. Rien n'est récupéré, et rien de vous n'est
-          partagé, tant que vous ne choisissez pas de vous connecter.
-        </p>
+        <p>La connexion permet à la personne qui partage d’envoyer le texte et les fichiers directement à votre navigateur par un canal chiffré. Comme toute connexion directe, elle révèle à chacun l’adresse réseau (IP) de l’autre. La personne qui partage apprend que vous avez ouvert ce lien seulement lorsque vous choisissez de vous connecter.</p>
+        <p id="local-note" hidden>Ce lien utilise le mode Réseau local. Les deux appareils doivent être sur le même réseau Wi-Fi ou Ethernet, et internet reste nécessaire pour les mettre en relation. Aucun serveur public de découverte d’adresses ni relais internet n’est utilisé. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau.</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Se connecter et récupérer le partage</button>
         </div>
@@ -132,6 +134,10 @@
         </div>
       </div>
 
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">Réessayer avec le mode de connexion de la personne qui partage</button>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Revérifier ce lien</button>
       </div>
@@ -160,6 +166,15 @@
     <span data-phrase="units.kb">Ko</span>
     <span data-phrase="units.mb">Mo</span>
 
+    <span data-phrase="discovery.connecting">Recherche de partages locaux…</span>
+    <span data-phrase="discovery.empty">Aucun autre partage local visible ici pour le moment. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
+    <span data-phrase="discovery.ready">Choisissez un partage pour ouvrir sa page de connexion.</span>
+    <span data-phrase="discovery.unavailable">La recherche locale est indisponible. Vous pouvez toujours utiliser un lien de partage.</span>
+    <span data-phrase="discovery.open">Ouvrir le partage</span>
+    <span data-phrase="discovery.publishing">Ce partage local devient visible…</span>
+    <span data-phrase="discovery.published">Votre partage local est visible sur cette connexion.</span>
+    <span data-phrase="discovery.not-published">Ce partage est accessible par lien ; la recherche locale n’a pas pu le publier.</span>
+
     <span data-phrase="share.waiting">Partage en cours. En attente que quelqu'un ouvre le lien &mdash; laissez cet onglet ouvert.</span>
     <span data-phrase="share.reader-count.one">1 lecteur connecté</span>
     <span data-phrase="share.reader-count.many">{n} lecteurs connectés</span>
@@ -176,6 +191,7 @@
     <span data-phrase="share.lost-rendezvous">Connexion à l'entremetteur perdue&nbsp;; nouvelle tentative. Les lecteurs connectés ne sont pas affectés.</span>
     <span data-phrase="share.stopped">Arrêté. Plus rien n'est partagé.</span>
     <span data-phrase="share.file-too-big">&laquo;&nbsp;{name}&nbsp;&raquo; dépasse la limite de 200 Mo.</span>
+    <span data-phrase="share.too-many-files">Un partage peut contenir jusqu’à 256 fichiers. Retirez-en un avant d’en ajouter d’autres.</span>
     <span data-phrase="share.leave-warning">Quitter cette page met fin au partage pour tout le monde. Continuer ?</span>
 
     <span data-phrase="copy.done">Copié</span>
@@ -201,6 +217,12 @@
     <span data-phrase="view.error">Quelque chose a mal tourné pendant la connexion. Rechargez la page et réessayez.</span>
     <span data-phrase="view.download">Télécharger</span>
     <span data-phrase="view.file-gone">N'est plus partagé</span>
+    <span data-phrase="share.local-waiting">Partage en mode Réseau local. En attente de l’ouverture du lien — gardez cet onglet ouvert.</span>
+    <span data-phrase="view.local-connecting">Connexion par le réseau local…</span>
+    <span data-phrase="view.mode-local">La personne qui partage utilise le mode Réseau local. Réessayez avec son mode pour vous connecter sans relais internet.</span>
+    <span data-phrase="view.mode-direct">La personne qui partage utilise le mode de connexion habituel. Réessayez avec son mode&nbsp;; un relais est proposé après l’échec d’une connexion directe et utilisé seulement si vous le choisissez.</span>
+    <span data-phrase="view.local-no-connect">Impossible de joindre la personne qui partage en mode Réseau local. Vérifiez que les deux appareils utilisent le même réseau Wi-Fi ou Ethernet&nbsp;; l’isolation du réseau invité, un VPN, un pare-feu ou les réglages du navigateur peuvent bloquer la connexion. Aucun relais internet n’est proposé dans ce mode.</span>
+    <span data-phrase="view.file-failed">Le téléchargement du fichier n’a pas pu être terminé. Vérifiez à nouveau ce lien pour relancer le téléchargement.</span>
 
     <span data-phrase="net.clean">ce que cette page partage n'est passé par
       aucun serveur. {total} fichiers chargés. {platform}</span>

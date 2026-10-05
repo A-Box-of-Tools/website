@@ -10,7 +10,7 @@ heading = "Imagens&nbsp;para&nbsp;PDF <span class=\"h1-kw\">&mdash; conversor de
 tagline = "Coloque suas imagens num documento só."
 
 title = "Conversor de imagens para PDF &mdash; JPG para PDF grátis, sem envio"
-description = "Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado."
+description = "Junte imagens JPG, PNG, WebP ou AVIF num só PDF, de graça e inteiramente no seu navegador. As fotos JPEG entram sem serem recodificadas, e nada é enviado."
 og_title = "Imagens para PDF &mdash; conversor grátis de JPG para PDF"
 og_description = "Junte imagens num só PDF no seu próprio computador. Fotos JPEG são copiadas intocadas, então nada perde qualidade e nada é enviado."
 og_image_alt = "Imagens para PDF - junte imagens num documento sem enviá-las"
@@ -208,7 +208,7 @@ a = """
         virarem um documento pararia no instante em que você tirasse da tomada."""
 
 [schema]
-description = "Junte imagens JPG, PNG e WebP num único documento PDF. Cada página é escrita no seu navegador, então imagem nenhuma é enviada."
+description = "Junte imagens JPG, PNG, WebP e AVIF num único documento PDF. Cada página é escrita no seu navegador, então imagem nenhuma é enviada."
 features = [
   "Junta imagens JPG, PNG, WebP, GIF e AVIF num só PDF",
   "Fotos JPEG são embutidas sem serem recodificadas",

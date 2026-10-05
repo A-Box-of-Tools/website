@@ -2,7 +2,7 @@ name = "WebP en JPG"
 heading = "WebP&nbsp;en&nbsp;JPG <span class=\"h1-kw\">&mdash; convertir sans envoi</span>"
 tagline = "Les images que le Web enregistre, dans le format que tout accepte encore."
 title = "Convertir WebP en JPG &mdash; Gratuit, sans envoi"
-description = "Convertissez WebP en JPG dans votre navigateur, sans envoi ni compte, même hors ligne. Choisissez le fond des zones transparentes."
+description = "Convertissez WebP et AVIF en JPG dans votre navigateur, sans envoi ni compte, même hors ligne. Choisissez le fond des zones transparentes."
 og_title = "Convertir des images WebP en JPG sans les envoyer"
 og_description = "Le convertisseur qui ne demande pas vos photos. Votre navigateur lit déjà WebP et écrit JPEG&nbsp;: les fichiers restent sur votre appareil."
 og_image_alt = "WebP en JPG — les images du Web dans un format accepté partout"
@@ -45,7 +45,7 @@ body = "WebP accepte la transparence, JPEG non. Vous choisissez une couleur, bla
 
 [[privacy]]
 title = "Ce qu’un canevas ne conserve pas."
-body = "Le canevas contient les pixels seuls&nbsp;: EXIF, profils ICC, XMP et blocs de droits ne sont pas conservés. C’est utile pour certains et une perte pour d’autres. Le <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a> lit et modifie ces données sans recomprimer l’image."
+body = "Le canevas contient les pixels seuls&nbsp;: EXIF, profils ICC, XMP et blocs de droits ne sont pas conservés. C’est utile pour certains et une perte pour d’autres. <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a> lit et modifie les métadonnées JPEG, PNG et WebP sans réencoder leurs images. Pour AVIF, il montre l’EXIF disponible en lecture seule et nettoie en convertissant la première image décodée vers un nouveau PNG ; les couleurs ou le HDR peuvent changer."
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu’il ne reçoit pas."
@@ -56,7 +56,7 @@ title = "Fonctionne hors ligne."
 body = "Chargez la page une fois, puis déconnectez le réseau&nbsp;: l’outil fonctionne de la même façon. Un convertisseur qui envoyait vos images ailleurs ne pourrait pas le faire."
 
 [[howto]]
-title = "Choisissez vos fichiers WebP."
+title = "Choisissez vos fichiers WebP et AVIF."
 body = "Déposez-les ou choisissez-les. Les premiers octets identifient le format&nbsp;: un WebP nommé « &nbsp;.jpg&nbsp; » fonctionne, un vrai PNG est refusé avec son format réel."
 
 [[howto]]
@@ -97,7 +97,7 @@ a = "Souvent, et le résultat indique de combien. À qualité égale, WebP compr
 
 [[faq]]
 q = "Conserve-t-il la date, l’appareil et la localisation&nbsp;?"
-a = "Non. Un canevas ne contient que les pixels&nbsp;: EXIF, GPS, profils colorimétriques et XMP sont abandonnés. Pour lire ou modifier ces données sans recomprimer l’image, utilisez le <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a>."
+a = "Non. Un canevas ne contient que les pixels&nbsp;: EXIF, GPS, profils colorimétriques et XMP sont abandonnés. <a href=\"../supprimer-les-donnees-exif/\">lecteur et éditeur EXIF</a> lit et modifie les métadonnées JPEG, PNG et WebP sans réencoder leurs images. Pour AVIF, il montre l’EXIF disponible en lecture seule et nettoie en convertissant la première image décodée vers un nouveau PNG ; les couleurs ou le HDR peuvent changer."
 
 [[faq]]
 q = "Peut-il traiter tout un dossier&nbsp;?"
@@ -111,10 +111,15 @@ a = "Oui, c’est gratuit, sans compte, connexion, essai limité ni filigrane. L
 q = "Fonctionne-t-il hors ligne&nbsp;?"
 a = "Oui. Chargez la page une fois puis déconnectez Internet&nbsp;: elle continue de fonctionner. Un convertisseur qui envoyait les fichiers à un serveur s’arrêterait dès la déconnexion."
 
+
+[[faq]]
+q = "Puis-je aussi convertir des images AVIF ?"
+a = "AVIF est aussi accepté si votre navigateur sait le décoder. La sortie reste JPEG. Une séquence AVIF ne donne que la première image décodée. Le canvas du navigateur crée une copie SDR sur 8 bits : les couleurs ou le HDR peuvent changer, les métadonnées sont omises et le fichier peut être plus gros. Votre original reste inchangé."
+
 [schema]
 description = "Convertissez WebP en JPG dans votre navigateur, sans envoi ni compte, même hors ligne. Choisissez le fond des zones transparentes."
-features = ["Convertit WebP en JPEG avec le décodeur du navigateur", "Aucun envoi, fonctionne réseau déconnecté", "Demande un fond uniquement pour les fichiers transparents", "Indique les fichiers sans perte, transparents ou animés avant conversion", "Identifie le contenu, même pour un WebP nommé .jpg", "Qualité réglable, 92 par défaut", "Indique le poids avant et après", "Conversion par lots avec tous les résultats dans un ZIP"]
+features = ["Convertit WebP en JPEG avec le décodeur du navigateur", "Aucun envoi, fonctionne réseau déconnecté", "Demande un fond uniquement pour les fichiers transparents", "Indique les fichiers sans perte, transparents ou animés avant conversion", "Identifie le contenu, même pour un WebP nommé .jpg", "Qualité réglable, 92 par défaut", "Indique le poids avant et après", "Conversion par lots avec tous les résultats dans un ZIP", "Accepte aussi AVIF avec le décodeur du navigateur ; première image seulement pour les séquences"]
 
 [picker]
-title = "Déposez vos images WebP ici"
-hint = "ou cliquez pour les choisir &mdash; fichiers .webp, quel que soit leur nom"
+title = "Déposez les images WebP et AVIF ici"
+hint = "ou cliquez pour choisir &mdash; .webp, .avif, identifiés par leur contenu"

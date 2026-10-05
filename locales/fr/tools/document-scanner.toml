@@ -8,7 +8,7 @@ og_description = "Les coins de la page sont trouvés, l'inclinaison est défaite
 og_image_alt = "Scanner de documents - une photo de page, redressée et nettoyée, sans envoi"
 pledge = "La photo est décodée, redressée, nettoyée et écrite dans un PDF par votre propre navigateur, avec rien d'autre que du calcul et les codecs qu'il embarque déjà. Cet outil n'a aucune fonction réseau, ni pour récupérer ni pour envoyer, et la raison pour laquelle cela compte ici tient à ce dont les gens photographient les pages&nbsp;: un passeport, une fiche de paie, un bail, un formulaire qu'une administration a demandé &laquo;&nbsp;scanné&nbsp;&raquo;."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez l'onglet Réseau et scannez une page. Aucune requête ne transporte une photo, une vignette, un nom de fichier ou la position d'un seul coin. Ou débranchez-vous d'internet et scannez-en une quand même."
-read_first = ", <code>src/detect.js</code> pour la façon dont les coins sont trouvés sans le moindre modèle, <code>src/warp.js</code> pour le redressement, et <code>src/clean.js</code> pour la façon dont la lumière inégale est divisée."
+read_first = ", <code>src/shared/document-detect.js</code> pour la façon dont les coins sont trouvés sans le moindre modèle, <code>src/warp.js</code> pour le redressement, et <code>src/clean.js</code> pour la façon dont la lumière inégale est divisée."
 howto_heading = "Comment scanner un document avec l'appareil photo du téléphone"
 card = "Une photo de page, redressée et nettoyée jusqu'à devenir un document. Les coins sont trouvés pour vous, l'inclinaison est défaite et l'ombre est divisée."
 
@@ -37,7 +37,7 @@ body = "La Content-Security-Policy nomme chaque adresse que cette page peut cont
 
 [[privacy]]
 title = "Il n'y a pas de modèle, donc rien à télécharger et rien à demander."
-body = "Trouver les quatre coins d'une page est du calcul&nbsp;: le gradient de l'image, un vote pour les droites qu'elle contient, et une vérification de ce qui se trouve réellement sous chaque côté du rectangle gagnant. Aucun poids, aucun moteur d'inférence, rien qui se télécharge à la première utilisation, et rien qui se comporte autrement sur le document de quelqu'un d'autre que sur le vôtre. Voir <code>src/detect.js</code>."
+body = "Trouver les quatre coins d'une page est du calcul&nbsp;: le gradient de l'image, un vote pour les droites qu'elle contient, et une vérification de ce qui se trouve réellement sous chaque côté du rectangle gagnant. Aucun poids, aucun moteur d'inférence, rien qui se télécharge à la première utilisation, et rien qui se comporte autrement sur le document de quelqu'un d'autre que sur le vôtre. Voir <code>src/shared/document-detect.js</code>."
 
 [[privacy]]
 title = "Le document ne porte ni date, ni auteur, ni nom de machine."
@@ -85,7 +85,7 @@ a = "Faites-les glisser. Les coins sont une position de départ et jamais une d�
 
 [[faq]]
 q = "Pourquoi la page redressée sort-elle à la bonne forme et non écrasée&nbsp;?"
-a = "Parce que la forme est récupérée depuis la perspective plutôt que mesurée sur les bords. Une page photographiée de biais a son bord lointain raccourci, si bien que la méthode évidente &mdash; prendre la plus longue paire de bords opposés et appeler cela le rapport &mdash; produit un A4 visiblement trapu, ce que donnent la plupart des scanners en ligne. La photo d'un rectangle porte en réalité assez d'information pour récupérer à la fois les proportions du rectangle et la focale de l'appareil, pourvu que ce soit un appareil ordinaire&nbsp;; c'est un résultat de Zhang et He de 2003, et c'est ce que fait <code>src/geometry.js</code>. Là où la photo a été prise perpendiculairement, il n'y a pas de perspective d'où partir et il n'en faut pas, puisque les bords sont alors exacts&nbsp;: l'outil s'y rabat, et la page dit laquelle des deux a répondu."
+a = "Parce que la forme est récupérée depuis la perspective plutôt que mesurée sur les bords. Une page photographiée de biais a son bord lointain raccourci, si bien que la méthode évidente &mdash; prendre la plus longue paire de bords opposés et appeler cela le rapport &mdash; produit un A4 visiblement trapu, ce que donnent la plupart des scanners en ligne. La photo d'un rectangle porte en réalité assez d'information pour récupérer à la fois les proportions du rectangle et la focale de l'appareil, pourvu que ce soit un appareil ordinaire&nbsp;; c'est un résultat de Zhang et He de 2003, et c'est ce que fait <code>src/shared/document-geometry.js</code>. Là où la photo a été prise perpendiculairement, il n'y a pas de perspective d'où partir et il n'en faut pas, puisque les bords sont alors exacts&nbsp;: l'outil s'y rabat, et la page dit laquelle des deux a répondu."
 
 [[faq]]
 q = "Que fait exactement le &laquo;&nbsp;nettoyage&nbsp;&raquo; à l'image&nbsp;?"
@@ -117,4 +117,4 @@ features = ["Trouve les quatre coins de la page sans modèle, sans téléchargem
 
 [picker]
 title = "Déposez ici les photos de vos pages"
-hint = "ou cliquez pour parcourir &mdash; une photo par page, dans l'ordre des pages"
+hint = "ou cliquez pour parcourir &mdash; une photo par page, dans l'ordre des pages (JPEG, PNG, WebP, AVIF)"

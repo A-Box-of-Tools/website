@@ -5,10 +5,12 @@ text and files directly between two browsers over WebRTC, and a direct
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
 them and match "the person who typed `brave-otter-42`" with the other person
-who typed it. This Worker is that something, and deliberately nothing more.
+who typed it. This Worker carries that introduction and lists opted-in local
+link names, never the shared text or files.
 
-One Durable Object per code word, holding nothing but the open sockets - no
-storage is ever written, so a room ceases to exist the moment its sharer
+One Room Durable Object per code word, plus a Discovery Durable Object per
+public-address-and-origin group. No storage is ever written; the rooms and
+directory entries live on open sockets, so a room ends when its sharer
 disconnects, and an idle deployment costs nothing at all. What it can see:
 that a code word is in use, when peers come and go, their IP addresses, and
 the negotiation blobs. What it cannot see: the text, the files, who was
@@ -47,8 +49,44 @@ if the worker ever moves again, those are the two places that change.
 
 This folder is invisible to `build.py` - the deploy is by hand, and rare,
 because nearly every feature the tool has gained since the first version has
-been page-side. The protocol here is a dumb switchboard, and the one thing
-added to it since is the relay credential below.
+been page-side. The protocol carries introductions, the relay credential
+below and the local discovery directory.
+
+### The discovery migration
+
+The local discovery page needs this worker deployed; the static site build
+cannot activate it. `wrangler.toml` adds the `DISCOVERY` binding for the
+exported `Discovery` class and migration `v2` with
+`new_sqlite_classes = ["Discovery"]`. Keep the original `v1` Room migration
+and binding: existing share names must keep addressing the same rooms.
+The normal `npx wrangler deploy` from this directory applies the new class
+and binding. An older worker leaves discovery unavailable on the page while
+the ordinary share link and its consent workflow continue to work.
+
+### What local discovery means
+
+Discovery groups browsers by the exact canonical Cloudflare public source
+address and the normalized allowed origin, hashed with SHA-256. No client
+parameter, header or message chooses a group. Discovery requests with an
+unknown, reserved, invalid or missing address, `CF-Worker`, or Cloudflare's
+shared Worker address are refused rather than grouped together. A local
+host with an unsupported discovery scope can still open its room and share
+by link; the room issues no discovery lease for that connection.
+
+This is a finding aid, not a physical LAN guarantee. Browsers behind one
+router commonly share the address, but a shared VPN or carrier-grade NAT
+can include unrelated networks; exact IPv6 addresses and different routes
+can hide nearby devices. The page explains the scope before listing or
+advertising anything. Local shares advertise by default, with a switch for
+link-only sharing. Names are visible to the group, so Private stays on by
+default. Choosing a name opens consent; it does not initiate a peer
+connection or override admission.
+
+The directory contains only codes and `local: true`, never text, file names,
+file sizes or file bytes. Its state is held in WebSocket attachments while
+the sockets are open, with no directory records written to Durable Object
+storage. Cloudflare's seven-day connection logging is unchanged; leases are
+message payloads and never put in URLs or logged by the worker.
 
 ### The relay's two secrets
 
@@ -77,8 +115,9 @@ pairs that could not connect directly.
   this stops another site borrowing the switchboard; it does not stop a
   script, which is what the next line is for.
 - One address may open thirty sockets a minute, counted per Cloudflare
-  location; the thirty-first is refused with 429. A host opens one socket
-  and each reader one, so a person never comes near it.
+  location; the thirty-first is refused with 429. The start page opens a
+  discovery socket and a host adds one room socket; each reader opens one
+  introduction socket.
 - A host connects to `/ws/<code>?role=host`; a second host on a live code is
   refused with close code 4409.
 - A viewer connects with `?role=viewer`; with no host present it is refused
@@ -103,3 +142,31 @@ pairs that could not connect directly.
   "host-gone" - the instant, authoritative end-of-share signal, long before
   WebRTC's own ~30s consent expiry would notice.
 - `ping` is answered `pong` by the runtime without waking the object.
+
+## The discovery protocol
+
+- The start page opens `/discover` with a WebSocket upgrade, scoped by the
+  worker as described above. A directory group permits 64 observer sockets
+  and 32 listed share codes. Snapshots contain `{code, local: true}` entries
+  and no addresses or content metadata.
+- A local host that wants listing opens
+  `/ws/<code>?role=host&local=1&discover=1`. Its room issues a random lease
+  in `{type: "host-ready", discovery: {code, lease}}`. Ordinary hosts keep
+  their existing protocol and are never listed.
+- An observer publishes `{publish: {code, lease}}`. Discovery calls the
+  room through its private binding at `POST /_discovery/check` with
+  `{code, lease, scope}`. A 204 confirms that the matching local,
+  discoverable host is still connected; anything else refuses publication.
+  The lease is not accepted as authority without that live room check.
+- `{publish: null}` withdraws the observer's listing. Closing the observer
+  also removes it. When the actual room host disconnects, the room calls
+  Discovery through its private binding at `POST /_discovery/withdraw` with
+  `{code, lease}`. That cancels matching pending or verified listings and
+  broadcasts the change; an earlier host's lease cannot remove a newer one.
+- `{refresh: true}` revalidates the listed rooms' leases and broadcasts a
+  fresh snapshot, so refreshing cannot preserve a vanished host's listing.
+- Incoming discovery messages are limited to 512 UTF-16 code units and an
+  observer may send 120 publication, withdrawal or refresh updates per
+  connection.
+  The usual origin checks, address connection limit and automatic ping/pong
+  responses also apply. The page does not send text or files to this socket.

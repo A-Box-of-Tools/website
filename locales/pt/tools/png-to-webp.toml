@@ -2,7 +2,7 @@ name = "PNG para WebP"
 heading = "PNG&nbsp;para&nbsp;WebP <span class=\"h1-kw\">&mdash; menor, com a transparência intacta</span>"
 tagline = "A mesma imagem, muitas vezes um terço menor, com as áreas transparentes intactas."
 title = "Conversor de PNG para WebP &mdash; grátis, sem upload"
-description = "Converta imagens PNG em WebP no navegador, sem perdas ou com tamanho ainda menor. A transparência é preservada nos dois modos. Sem upload nem conta, e funciona offline."
+description = "Converta imagens PNG e AVIF em WebP no navegador, sem perdas ou com tamanho ainda menor. A transparência é preservada nos dois modos. Sem upload nem conta, e funciona offline."
 og_title = "Transforme imagens PNG em WebP sem enviá-las"
 og_description = "WebP sem perdas preserva cada pixel opaco em um arquivo menor; o modo com perdas pode reduzir uma fotografia a um décimo do tamanho. Ambos preservam a transparência. Conversão no seu computador."
 og_image_alt = "PNG para WebP — a mesma imagem, menor, com a transparência intacta"
@@ -45,7 +45,7 @@ body = "Um canvas não tem uma opção explícita de WebP sem perdas &mdash; o n
 
 [[privacy]]
 title = "O que um canvas não preserva."
-body = "A imagem é decodificada e desenhada em um canvas, que contém apenas pixels. Portanto, blocos de texto, perfil de cor ICC e blocos XMP do PNG não são preservados. Os pixels são &mdash; é esse o sentido de sem perdas aqui &mdash; mas os metadados ao redor deles não. Se isso importar, o <a href=\"/pt/remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e grava esses dados."
+body = "A imagem é decodificada e desenhada em um canvas, que contém apenas pixels. Portanto, blocos de texto, perfil de cor ICC e blocos XMP do PNG não são preservados. Os pixels são &mdash; é esse o sentido de sem perdas aqui &mdash; mas os metadados ao redor deles não. <a href=\"/pt/remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e edita metadados JPEG, PNG e WebP sem recodificar suas imagens. Para AVIF, mostra o EXIF disponível como somente leitura e limpa convertendo a primeira imagem decodificada para um PNG novo; as cores ou o HDR podem mudar."
 
 [[privacy]]
 title = "O que o Google carrega e o que não recebe."
@@ -56,7 +56,7 @@ title = "Funciona offline."
 body = "Carregue a página uma vez e desconecte a rede: a ferramenta continua igual. Essa é a prova mais simples: um conversor que enviasse suas imagens para processamento não conseguiria fazer isso."
 
 [[howto]]
-title = "Escolha seus arquivos PNG."
+title = "Escolha seus arquivos PNG e AVIF."
 body = "Arraste-os para a área de seleção ou escolha-os manualmente. Cada arquivo é identificado pelos primeiros bytes, e não pelo nome. Um arquivo que realmente é JPEG é recusado com uma mensagem explicando o formato, em vez de ser convertido em uma cópia de si mesmo. A lista identifica as áreas transparentes, porque é o que as pessoas mais receiam perder."
 
 [[howto]]
@@ -101,7 +101,7 @@ a = "Porque PNG é sem perdas, e fotografias não comprimem bem desse modo. PNG 
 
 [[faq]]
 q = "A data, a câmera e a localização são preservadas?"
-a = "Não. A imagem é desenhada em um canvas, que contém apenas pixels, e os metadados ficam para trás. Em PNG isso normalmente tem pouca importância &mdash; a maioria nem contém dados de câmera. Para ver o que um arquivo guarda, o <a href=\"/pt/remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e grava esses dados sem recomprimir a imagem."
+a = "Não. A imagem é desenhada em um canvas, que contém apenas pixels, e os metadados ficam para trás. Em PNG isso normalmente tem pouca importância &mdash; a maioria nem contém dados de câmera. <a href=\"/pt/remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e edita metadados JPEG, PNG e WebP sem recodificar suas imagens. Para AVIF, mostra o EXIF disponível como somente leitura e limpa convertendo a primeira imagem decodificada para um PNG novo; as cores ou o HDR podem mudar."
 
 [[faq]]
 q = "Posso converter uma pasta inteira de uma vez?"
@@ -115,10 +115,15 @@ a = "É grátis, sem conta, login, período de teste ou marca-d'água. Os anúnc
 q = "Funciona offline?"
 a = "Sim. Carregue a página uma vez e desconecte a internet: ela continua funcionando exatamente como antes. Essa também é a prova mais forte de que nada é enviado: um conversor que enviasse seus arquivos para processamento pararia assim que você se desconectasse, e este não para."
 
+
+[[faq]]
+q = "Também posso converter imagens AVIF?"
+a = "AVIF também é aceito se seu navegador conseguir decodificá-lo. A saída continua sendo WebP. Sequências AVIF produzem apenas a primeira imagem decodificada. O canvas do navegador cria uma cópia SDR de 8 bits: a cor ou o HDR podem mudar, os metadados são omitidos e o arquivo pode ficar maior. O original permanece intacto."
+
 [schema]
 description = "Converta imagens PNG em WebP no navegador, sem perdas ou com qualidade ajustável. A transparência é preservada nos dois modos, e cada resultado informa a codificação realmente gravada pelo navegador. Sem upload nem download de codec."
-features = ["Converte PNG em WebP usando o codificador que o navegador já possui", "WebP sem perdas: cada pixel opaco preservado em um arquivo menor", "WebP com perdas e controle de qualidade para fotografias", "Preserva o canal alfa e a transparência", "Lê o arquivo pronto para confirmar a codificação gravada", "Nenhum arquivo é enviado; a ferramenta funciona sem conexão à rede", "Identifica arquivos pelo conteúdo, e não pela extensão", "Informa a economia por arquivo e no lote inteiro", "Conversão em lote, com todos os resultados em um ZIP"]
+features = ["Converte PNG em WebP usando o codificador que o navegador já possui", "WebP sem perdas: cada pixel opaco preservado em um arquivo menor", "WebP com perdas e controle de qualidade para fotografias", "Preserva o canal alfa e a transparência", "Lê o arquivo pronto para confirmar a codificação gravada", "Nenhum arquivo é enviado; a ferramenta funciona sem conexão à rede", "Identifica arquivos pelo conteúdo, e não pela extensão", "Informa a economia por arquivo e no lote inteiro", "Conversão em lote, com todos os resultados em um ZIP", "Também aceita AVIF com o decodificador do navegador; só a primeira imagem de uma sequência"]
 
 [picker]
-title = "Arraste imagens PNG para cá"
-hint = "ou clique para procurar &mdash; arquivos .png, independentemente do nome"
+title = "Solte imagens PNG e AVIF aqui"
+hint = "ou clique para escolher &mdash; .png, .avif, identificados pelo conteúdo"

@@ -254,4 +254,4 @@ features = [
 
 [picker]
 title = "把这些帧拖到这里"
-hint = "或者点击选择 | JPEG、PNG、WebP、TIFF，以及相机 RAW"
+hint = "或者点击选择 | JPEG、PNG、WebP、AVIF、TIFF，以及相机 RAW"

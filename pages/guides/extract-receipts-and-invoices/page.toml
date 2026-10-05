@@ -1,0 +1,31 @@
+#
+# The review step matters more than the OCR button: a convincing wrong amount
+# must not quietly become an expense claim. This guide explains what to check,
+# why a larger OCR working copy cannot recover missing print, and how the
+# device's email/share handoff differs from reading the photos.
+#
+
+slug = "guides/extract-receipts-and-invoices"
+kind = "guide"
+nav = "Extracting receipts and invoices"
+group = "doing-the-job"
+tool = "receipt-invoice-extractor"
+
+title = "Extract Receipt and Invoice Details and Email Cropped Image Attachments"
+description = "How to check receipt OCR and crops, choose one email currency and manual or historical rates, then email compressed images with each converted value, the document count and a grand total."
+heading = "Extract receipt and invoice details from photos"
+lede = """
+    A pile of receipts becomes useful when every document has a readable amount
+    and the report tells you how many were counted. OCR can save the typing, but
+    your check of the picture is what makes the result ready to send. Here is
+    what to check, how to keep the full document in a smaller attachment, what
+    the totals mean and how to carry the images and report into your own email
+    app."""
+
+updated = "4 October 2026"
+published = "2026-10-04"
+lastmod = "2026-10-05"
+
+og_title = "Receipt photos to a report you can email"
+og_description = "Review receipt fields and crops, choose currencies, then take compressed JPEG attachments and a report with document counts and totals into your email app."
+og_image_alt = "abox.tools - tools that process your files on your own device"

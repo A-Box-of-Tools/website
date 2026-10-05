@@ -31,9 +31,9 @@ lede = """
     you want depends entirely on what is in the picture, and this is how to
     tell."""
 
-updated = "17 September 2026"
+updated = "4 October 2026"
 published = "2026-09-17"
-lastmod = "2026-09-17"
+lastmod = "2026-10-04"
 
 og_title = "How to convert PNG to WebP"
 og_description = "Lossless or lossy, what each one saves, and why the transparency survives either way."

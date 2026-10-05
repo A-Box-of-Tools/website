@@ -1,0 +1,247 @@
+<main id="main">
+  <section class="card">
+    <h2><span class="step">1</span> Añade fotos de recibos o facturas</h2>
+    <p class="card-lede">Un documento por imagen. Añade hasta 20 imágenes JPEG, PNG, WebP o AVIF, de 20 MB cada una. El texto en inglés se lee en este dispositivo con el motor de OCR incluido en la página. Las imágenes AVIF usan el decodificador del navegador.</p>
+    {% include "partials/file-picker.html" %}
+    <div class="export-row">
+      <button type="button" id="stop-reading" class="ghost" hidden>Detener lectura</button>
+    </div>
+    <p class="field-summary">Mantén todo el documento visible, derecho y con buena luz. Para imágenes HEIC, usa primero <a href="/es/convertir-heic-a-jpg/">HEIC a JPG</a>. No se admiten PDF ni recibos escritos a mano.</p>
+    <p id="read-progress" role="status" aria-live="polite"></p>
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="review-card">
+    <h2><span class="step">2</span> Revisa cada documento</h2>
+    <div class="export-row"><button type="button" id="clear-all" class="ghost danger" disabled>Borrar todo</button></div>
+    <p class="card-lede">Revisa el recorte y comprueba que el adjunto se pueda leer. El OCR puede confundir dígitos o elegir un total equivocado. Compara cada sugerencia con la imagen, corrige los campos, elige la moneda final del correo y revisa el tipo de cambio. Después marca la casilla de confirmación. Cada imagen cuenta como un documento; añadirla dos veces la cuenta dos veces.</p>
+    <p class="field-summary">El OCR, los recortes y la conversión manual se realizan en este dispositivo. La consulta del tipo de cambio histórico es opcional y solo comienza al pulsar «Obtener tipo histórico». Envía los dos códigos de moneda y la fecha del recibo a <a href="https://frankfurter.dev/">Frankfurter</a>, que también ve tu dirección IP. Las imágenes, los comercios, los importes y los números de recibo permanecen en este dispositivo.</p>
+    <div class="final-currency-settings settings">
+      <div class="field"><label for="final-currency-choice">Moneda final del correo para todos los documentos</label><select id="final-currency-choice">
+              <option value="">Elige la moneda final del correo</option>
+              <option value="USD">USD — dólar estadounidense</option><option value="CAD">CAD — dólar canadiense</option>
+              <option value="EUR">EUR — euro</option><option value="GBP">GBP — libra esterlina</option>
+              <option value="AUD">AUD — dólar australiano</option><option value="NZD">NZD — dólar neozelandés</option>
+              <option value="JPY">JPY — yen japonés</option><option value="CNY">CNY — yuan chino</option>
+              <option value="INR">INR — rupia india</option><option value="CHF">CHF — franco suizo</option>
+              <option value="HKD">HKD — dólar de Hong Kong</option><option value="SGD">SGD — dólar de Singapur</option>
+              <option value="KRW">KRW — won surcoreano</option><option value="AED">AED — dírham de Emiratos Árabes Unidos</option>
+              <option value="SAR">SAR — riyal saudí</option><option value="ZAR">ZAR — rand sudafricano</option>
+              <option value="BRL">BRL — real brasileño</option><option value="MXN">MXN — peso mexicano</option>
+              <option value="custom">Otro / código personalizado</option>
+            </select></div>
+      <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Código personalizado de moneda final</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
+    </div>
+    <p class="field-note">La moneda predeterminada es la más frecuente entre los documentos. En caso de empate, se usa la primera que aparece. Si eliges una moneda manualmente, se mantiene seleccionada.</p>
+    <div class="export-row"><button type="button" id="use-default-currency" class="ghost">Usar moneda predeterminada</button></div>
+    <p class="field-summary">Elige una moneda final para el total general del correo. Todos los documentos usan esa moneda. Cambiarla aquí o en un documento actualiza todo el lote y borra los tipos de cambio y las confirmaciones.</p>
+    <div id="documents" class="documents"></div>
+    <p id="empty-documents" class="field-summary">Aquí aparecerán las imágenes y los datos editables.</p>
+  </section>
+
+  <section class="card" id="report-card" inert>
+    <h2><span class="step">3</span> Totales y correo</h2>
+    <div class="report-stats">
+      <div><span>Documentos</span><strong id="document-count">0</strong></div>
+      <div><span>Revisados</span><strong id="checked-count">0</strong></div>
+      <div><span>Sin revisar</span><strong id="review-count">0</strong></div>
+    </div>
+    <div class="grand-total-box"><span>Total general en la moneda final del correo</span><strong id="grand-total">—</strong><p id="grand-total-note" class="field-note">Solo documentos revisados.</p></div>
+    <ul id="currency-totals" class="currency-totals" aria-label="Totales originales por moneda"></ul>
+    <p class="field-summary">Los totales solo incluyen documentos revisados. Los importes originales se agrupan por moneda; el símbolo $ por sí solo no identifica el tipo de dólar. El importe convertido de cada documento revisado se suma al total general en la moneda final del correo. Los importes convertidos se redondean individualmente a dos decimales.</p>
+    <div class="settings mail-fields">
+      <div class="field"><label for="email-to">Destinatario (opcional)</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
+      <div class="field"><label for="email-subject">Asunto</label><input type="text" id="email-subject" value="Resumen de recibos y facturas" maxlength="150"></div>
+    </div>
+    <div class="field report-preview"><label for="report-text">Vista previa del informe</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
+    <div class="export-row">
+      <button type="button" id="email-report" class="primary" disabled>Correo con imágenes</button>
+      <button type="button" id="download-email" class="ghost" disabled>Descargar archivo de correo (.eml)</button>
+      <button type="button" id="download-images" class="ghost" disabled>Descargar imágenes + CSV (.zip)</button>
+      <button type="button" id="copy-report" class="ghost" disabled>Copiar informe</button>
+      <button type="button" id="download-csv" class="ghost" disabled>Descargar CSV</button>
+    </div>
+    <p id="export-status" class="field-summary" role="status" aria-live="polite"></p>
+    <p class="field-summary">Cada exportación de correo incluye copias JPEG recortadas y comprimidas. «Correo con imágenes» abre el menú de compartir del dispositivo cuando admite archivos; elige la aplicación de correo e introduce allí el destinatario. Si no es compatible, se descarga un archivo de correo con el informe y las imágenes adjuntas. Abre el archivo .eml en una aplicación compatible para redactar, reenviar o volver a enviar el mensaje; la compatibilidad con borradores depende de la aplicación. El destinatario de arriba se usa en el archivo de correo. Tú revisas y envías el mensaje.</p>
+    <p class="field-summary">El ZIP contiene las imágenes JPEG preparadas y el CSV para adjuntarlos manualmente. Las imágenes se reducen a un máximo de 1600 píxeles en su lado más largo, con un objetivo de 350 KB cada una. El tamaño real aparece debajo de cada vista previa. Revisa la letra pequeña antes de enviar. Los originales no cambian y el procesamiento se realiza en este dispositivo.</p>
+  </section>
+
+  <template id="document-template">
+    <article class="document">
+      <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Eliminar</button></div>
+      <div class="document-content">
+        <div class="picture-column">
+          <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Vista previa del adjunto recortado y comprimido" hidden></a>
+          <p class="attachment-status field-note" role="status"></p>
+          <div class="export-row"><a class="original-link" target="_blank" rel="noopener">Ver original</a><button type="button" class="download-picture ghost" disabled>Guardar JPEG</button></div>
+          <div class="export-row"><button type="button" class="rotate-document ghost">Girar 90°</button><button type="button" class="reread-document ghost">Leer de nuevo</button></div>
+          <details class="crop-editor"><summary>Ajustar recorte</summary>
+            <div class="crop-stage"></div>
+            <div class="crop-numbers">
+              <label class="field">Izquierda (px)<input type="number" data-crop="x" min="0" step="1"></label>
+              <label class="field">Arriba (px)<input type="number" data-crop="y" min="0" step="1"></label>
+              <label class="field">Ancho (px)<input type="number" data-crop="width" min="1" step="1"></label>
+              <label class="field">Alto (px)<input type="number" data-crop="height" min="1" step="1"></label>
+            </div>
+            <div class="export-row"><button type="button" class="detect-crop ghost">Sugerir recorte</button><button type="button" class="reset-crop ghost">Usar imagen completa</button></div>
+            <p class="crop-status field-note"></p>
+            <p class="field-note">Arrastra los bordes del recorte o usa los campos de píxeles. Con el recorte enfocado, las flechas lo mueven; Alt + flechas cambia su tamaño y Mayús aumenta el paso. Mantén todos los bordes del documento y su total dentro del recorte.</p>
+          </details>
+          <p class="field-note">Selecciona la vista previa del adjunto para revisarlo a tamaño completo. Cambiar el recorte o la rotación requiere revisar de nuevo el documento.</p>
+        </div>
+        <div class="document-fields">
+          <p class="document-status" role="status"></p>
+          <div class="settings">
+            <label class="field">Comercio / proveedor<input type="text" data-field="merchant" maxlength="200"></label>
+            <label class="field">Fecha (tal como aparece)<input type="text" data-field="date" maxlength="50"></label>
+            <label class="field">Número de recibo / factura<input type="text" data-field="reference" maxlength="100"></label>
+            <label class="field">Moneda del documento<select data-currency-choice>
+              <option value="">Elige la moneda</option>
+              <option value="USD">USD — dólar estadounidense</option><option value="CAD">CAD — dólar canadiense</option>
+              <option value="EUR">EUR — euro</option><option value="GBP">GBP — libra esterlina</option>
+              <option value="AUD">AUD — dólar australiano</option><option value="NZD">NZD — dólar neozelandés</option>
+              <option value="JPY">JPY — yen japonés</option><option value="CNY">CNY — yuan chino</option>
+              <option value="INR">INR — rupia india</option><option value="CHF">CHF — franco suizo</option>
+              <option value="HKD">HKD — dólar de Hong Kong</option><option value="SGD">SGD — dólar de Singapur</option>
+              <option value="KRW">KRW — won surcoreano</option><option value="AED">AED — dírham de Emiratos Árabes Unidos</option>
+              <option value="SAR">SAR — riyal saudí</option><option value="ZAR">ZAR — rand sudafricano</option>
+              <option value="BRL">BRL — real brasileño</option><option value="MXN">MXN — peso mexicano</option>
+              <option value="custom">Otro / código personalizado</option>
+            </select></label>
+            <label class="field custom-currency" hidden>Código personalizado de moneda<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">Introduce tres letras, como MYR.</span></label>
+            <label class="field">Total del documento<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
+          </div>
+          <fieldset class="conversion-fields">
+            <legend>Convertir este documento para el correo</legend>
+            <div class="settings">
+              <label class="field">Moneda final del correo<select data-final-currency-choice></select></label>
+              <label class="field custom-final-currency" hidden>Código personalizado de moneda final<input type="text" data-field="finalCurrency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></label>
+              <label class="field">Fecha de conversión (del recibo)<input type="date" data-field="conversionDate"><span class="field-note">Opcional para los tipos manuales. Revisa la fecha del recibo para la consulta histórica, que requiere la fecha de hoy o una anterior. Las fechas impresas ambiguas no se rellenan automáticamente.</span></label>
+              <label class="field">Origen del tipo de cambio<select data-field="rateMode"><option value="manual">Introducir tipo manualmente</option><option value="online">Consultar tipo de referencia histórico</option></select></label>
+              <label class="field">Tipo de cambio<input type="text" data-field="rate" inputmode="decimal" maxlength="32" autocomplete="off" placeholder="0.70295"><span class="field-note">Usa un punto decimal, con un máximo de 12 decimales.</span></label>
+            </div>
+            <p class="rate-direction field-note"></p>
+            <div class="online-rate-controls" hidden><button type="button" class="get-rate ghost">Obtener tipo histórico</button><p class="field-note">Esta consulta opcional solo envía los dos códigos de moneda y la fecha a <a href="https://frankfurter.dev/">Frankfurter</a>. El proveedor ve tu dirección IP. No se envían imágenes, comercios, importes ni números de recibo. Son tipos de referencia y pueden diferir del tipo aplicado por el banco o la tarjeta. Introduce un tipo manual si la moneda o la fecha no está disponible.</p></div>
+            <p class="rate-status field-note" role="status"></p>
+            <p class="converted-value"></p>
+          </fieldset>
+          <label class="confirm-document"><input type="checkbox" data-field="confirmed"> He revisado los campos y el adjunto recortado</label>
+          <p class="document-error error" hidden></p>
+          <details class="ocr-details"><summary>Texto leído de esta imagen</summary><label class="field">Corrige el texto si hace falta<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label><button type="button" class="parse-text ghost">Usar este texto para rellenar los campos</button></details>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div id="example-documents" hidden aria-hidden="true">
+    <div data-example="sample-receipt.png">
+      <span data-line>NORTH STREET CAFE</span>
+      <span data-line>RECEIPT R-1042</span>
+      <span data-line>Date: 2026-10-04</span>
+      <span data-line>Coffee and lunch CAD 21.50</span>
+      <span data-line>Tax CAD 2.80</span>
+      <span data-line>TOTAL CAD 24.30</span>
+      <span data-line>Thank you</span>
+    </div>
+    <div data-example="sample-invoice.png">
+      <span data-line>MAPLE OFFICE SUPPLIES</span>
+      <span data-line>INVOICE INV-208</span>
+      <span data-line>Date: 2026-10-03</span>
+      <span data-line>Paper CAD 40.00</span>
+      <span data-line>Tax CAD 5.20</span>
+      <span data-line>AMOUNT DUE CAD 45.20</span>
+    </div>
+  </div>
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">Las fotos permanecen en este dispositivo durante el procesamiento. {total} recursos cargados; la consulta opcional de tipos históricos puede contactar con Frankfurter. {platform}</span>
+    <span data-phrase="net.dirty">Se observaron conexiones inesperadas: {hosts}. {platform}</span>
+    <span data-phrase="offline.ready">listo: el OCR, la conversión manual y las descargas funcionan sin conexión; consultar tipos en línea requiere conexión.</span>
+    <span data-phrase="finalCurrencyRequired">Elige un código válido de tres letras para la moneda final del correo de todo el lote.</span>
+    <span data-phrase="invalidConversionDate">Introduce la fecha de conversión del recibo como una fecha de calendario completa. La consulta histórica requiere la fecha de hoy o una anterior; las fechas impresas ambiguas requieren revisión.</span>
+    <span data-phrase="invalidRate">Introduce un tipo de cambio positivo con punto decimal y hasta 12 decimales.</span>
+    <span data-phrase="rateRequired">Obtén un tipo histórico para las monedas y la fecha actuales, o elige un tipo manual.</span>
+    <span data-phrase="conversionOverflow">Este importe convertido supera el rango admitido. Revisa el importe y el tipo de cambio.</span>
+    <span data-phrase="rateDirection">1 {base} = {rate} {quote}</span>
+    <span data-phrase="rateDirectionEmpty">Introduce el importe en {quote} por 1 {base}.</span>
+    <span data-phrase="rateChooseCurrencies">Elige primero la moneda del documento y la moneda final del correo.</span>
+    <span data-phrase="sameCurrencyRate">Las monedas coinciden. Se aplica un tipo de 1 en este dispositivo; no hace falta consultar.</span>
+    <span data-phrase="manualRateReady">Tipo manual. Fecha de conversión: {date}. Compáralo con tu fuente antes de confirmar.</span>
+    <span data-phrase="fx.loading">Consultando el tipo de referencia histórico…</span>
+    <span data-phrase="fx.loaded">Tipo de referencia de Frankfurter del {date}; fecha del recibo solicitada: {requested}. Revísalo antes de confirmar.</span>
+    <span data-phrase="fx.failed">No se pudo obtener o verificar el tipo histórico. Introduce uno manual o vuelve a intentarlo.</span>
+    <span data-phrase="fx.unsupported">No hay un tipo disponible para estas monedas y esta fecha. Introduce uno manual.</span>
+    <span data-phrase="fx.timeout">La consulta del tipo de cambio agotó el tiempo de espera. Introduce uno manual o vuelve a intentarlo.</span>
+    <span data-phrase="fx.cancelled">Consulta del tipo de cambio cancelada.</span>
+    <span data-phrase="convertedAmount">Valor convertido del documento: {amount} {currency}</span>
+    <span data-phrase="conversionPending">Revisa la conversión antes de que este documento entre en el total general.</span>
+    <span data-phrase="grandTotal">{amount} {currency}</span>
+    <span data-phrase="grandTotalNote">Suma de {checked} documentos revisados, redondeados individualmente a dos decimales; {review} siguen sin revisar.</span>
+    <span data-phrase="reportFinalCurrency">Moneda final del correo: {currency}</span>
+    <span data-phrase="reportRate">Tipo de cambio: 1 {base} = {rate} {quote}</span>
+    <span data-phrase="reportRateManual">Origen del tipo de cambio: manual; fecha de conversión: {date}.</span>
+    <span data-phrase="reportRateOnline">Origen del tipo de cambio: referencia de Frankfurter del {date}; fecha del recibo solicitada: {requested}.</span>
+    <span data-phrase="reportRateSame">Origen del tipo de cambio: misma moneda, tipo fijo de 1; sin consulta en línea.</span>
+    <span data-phrase="reportGrandTotal">Total general: {amount} {currency} en {count} documentos revisados; documentos en el lote: {documents}.</span>
+    <span data-phrase="reportConversionPending">La conversión sigue sin revisar.</span>
+    <span data-phrase="csv.conversionDate">Fecha de conversión solicitada</span><span data-phrase="csv.rate">Tipo de cambio</span><span data-phrase="csv.rateSource">Origen del tipo de cambio</span><span data-phrase="csv.rateDate">Fecha del tipo utilizado</span><span data-phrase="csv.finalCurrency">Moneda final del correo</span><span data-phrase="csv.convertedAmount">Valor convertido</span>
+    <span data-phrase="csv.manual">Manual</span><span data-phrase="csv.online">Referencia de Frankfurter</span><span data-phrase="csv.same">Misma moneda</span><span data-phrase="csv.documentCount">Número de documentos</span><span data-phrase="csv.checkedCount">Número de documentos revisados</span><span data-phrase="csv.grandTotal">Total general</span>
+
+    <span data-phrase="queued">Esperando para leer esta imagen.</span>
+    <span data-phrase="reading">Leyendo {name} ({percent}%).</span>
+    <span data-phrase="loadingEngine">Preparando el motor de OCR local para {name}.</span>
+    <span data-phrase="batchDone">Se han leído {count} imágenes. Revisa cada documento antes de enviar el correo.</span>
+    <span data-phrase="readFailed">No se pudo leer esta imagen. Puedes introducir los datos manualmente o intentar leerla de nuevo.</span>
+    <span data-phrase="reviewExtraction">Se ha sugerido un total. Compara cada campo con la imagen.</span>
+    <span data-phrase="missingTotal">No se encontró un total claro del documento. Introdúcelo a partir de la imagen.</span>
+    <span data-phrase="ambiguousTotal">Se encontró más de un total posible. Introduce el total correcto de la imagen.</span>
+    <span data-phrase="stopped">Lectura detenida. Introduce los datos manualmente o elige Leer de nuevo.</span>
+    <span data-phrase="busy">Espera a que termine la lectura actual o detenla primero.</span>
+    <span data-phrase="tooMany">Añade hasta 20 imágenes. Elimina un documento para poder añadir otro.</span>
+    <span data-phrase="badFile">{name} no es una imagen JPEG, PNG, WebP o AVIF compatible.</span>
+    <span data-phrase="tooLarge">{name} supera los 20 MB. Usa una imagen más pequeña.</span>
+    <span data-phrase="imageFailed">No se pudo abrir {name} como imagen. Prueba a exportarla como JPEG o PNG.</span>
+    <span data-phrase="cropLabel">Recorte del documento</span>
+    <span data-phrase="cropPreview">Imagen completa para ajustar el recorte del documento</span>
+    <span data-phrase="cropSuggested">Se ha sugerido un recorte a partir de los bordes del documento. Revísalo y ajústalo si hace falta.</span>
+    <span data-phrase="cropNotFound">No se encontraron bordes claros del documento. Está seleccionada toda la imagen; ajusta el recorte si hace falta.</span>
+    <span data-phrase="cropManual">Tu recorte está seleccionado. Revisa el adjunto preparado antes de confirmar.</span>
+    <span data-phrase="preparingImage">Preparando el adjunto JPEG recortado…</span>
+    <span data-phrase="attachmentReady">{width} × {height} px · {size} KB JPEG (original: {original} KB).</span>
+    <span data-phrase="attachmentTargetMissed">Esta imagen supera el objetivo de 350 KB para conservar la legibilidad.</span>
+    <span data-phrase="attachmentFailed">No se pudo preparar el adjunto. Prueba Sugerir recorte o usa otra imagen. La exportación de correo necesita un JPEG preparado por cada documento.</span>
+    <span data-phrase="attachmentRequired">Espera a que termine de prepararse el adjunto JPEG recortado antes de confirmar la revisión de este documento.</span>
+    <span data-phrase="reportAttachment">Imagen adjunta: {name}</span>
+    <span data-phrase="attachmentTotals">Adjuntos: {count} JPEG recortados, {size} KB en total.</span>
+    <span data-phrase="invalidAmount">Introduce un total válido con hasta dos decimales antes de confirmar la revisión de este documento.</span>
+    <span data-phrase="invalidCurrency">Introduce el código de moneda de tres letras impreso en el documento antes de confirmar su revisión.</span>
+    <span data-phrase="documentChecked">Revisado con la imagen.</span>
+    <span data-phrase="needsReview">Sin revisar</span>
+    <span data-phrase="unknownCurrency">Moneda sin especificar</span>
+    <span data-phrase="currencyTotal">{currency}: {amount} en {count} documentos revisados</span>
+    <span data-phrase="reportTitle">Resumen de recibos y facturas</span>
+    <span data-phrase="reportCounts">Documentos: {count}; revisados: {checked}; sin revisar: {review}.</span>
+    <span data-phrase="reportDocument">{number}. {name}</span>
+    <span data-phrase="reportMerchant">Comercio / proveedor: {value}</span>
+    <span data-phrase="reportDate">Fecha: {value}</span>
+    <span data-phrase="reportReference">Número de recibo / factura: {value}</span>
+    <span data-phrase="reportAmount">Valor: {currency} {amount}</span>
+    <span data-phrase="notEntered">Sin introducir</span>
+    <span data-phrase="reportTotals">Totales originales por moneda (solo documentos revisados):</span>
+    <span data-phrase="noTotals">Todavía no hay totales revisados.</span>
+    <span data-phrase="totalOverflow">Estos totales superan el rango admitido. Usa lotes más pequeños antes de enviar el correo.</span>
+    <span data-phrase="reviewFirst">Revisa los campos, el tipo de cambio y el adjunto preparado de todos los documentos antes de enviar el correo.</span>
+    <span data-phrase="invalidEmail">Introduce una dirección de correo válida o deja el destinatario vacío. El asunto debe ocupar una sola línea.</span>
+    <span data-phrase="emailDownloaded">Archivo de correo descargado con {count} adjuntos JPEG recortados y el informe. Ábrelo en la aplicación de correo para redactar, reenviar o volver a enviar el mensaje, según lo que admita.</span>
+    <span data-phrase="emailFailed">No se pudo crear el archivo de correo. Descarga las imágenes y el CSV, y adjunta las imágenes en la aplicación de correo.</span>
+    <span data-phrase="zipDownloaded">Se han descargado {count} JPEG recortados y el CSV en un ZIP. Extráelo para adjuntar los JPEG al correo.</span>
+    <span data-phrase="zipFailed">No se pudo crear el ZIP. Guarda los JPEG desde sus vistas previas y descarga el CSV por separado.</span>
+    <span data-phrase="copied">Informe copiado.</span>
+    <span data-phrase="copyFailed">No se pudo copiar. El informe está seleccionado arriba; cópialo con la función de copiar del dispositivo.</span>
+    <span data-phrase="shareFailed">No se pudo compartir. Usa Descargar archivo de correo o descarga el ZIP y adjunta manualmente sus imágenes JPEG.</span>
+    <span data-phrase="shared">Las imágenes JPEG recortadas y el informe se entregaron al menú de compartir. Revisa los adjuntos y completa el envío en la aplicación de correo elegida.</span>
+    <span data-phrase="emailFilename">correo-recibos-facturas.eml</span>
+    <span data-phrase="zipFilename">imagenes-recibos-facturas.zip</span>
+    <span data-phrase="csvFilename">resumen-recibos-facturas.csv</span>
+    <span data-phrase="csv.filename">Documento</span><span data-phrase="csv.merchant">Comercio / proveedor</span><span data-phrase="csv.date">Fecha</span><span data-phrase="csv.reference">Número de recibo / factura</span><span data-phrase="csv.currency">Moneda</span><span data-phrase="csv.amount">Total</span><span data-phrase="csv.confirmed">Revisado</span><span data-phrase="csv.yes">Sí</span><span data-phrase="csv.no">No</span>
+  </div>
+</main>

@@ -27,7 +27,7 @@ import assert from 'node:assert/strict';
 import { turnQuad, warpPage } from '../../tools/document-scanner/src/warp.js';
 import { cleanPage, levels, sauvola, toLuma } from '../../tools/document-scanner/src/clean.js';
 import { deflate, packMono } from '../../tools/document-scanner/src/encode.js';
-import { homography, project } from '../../tools/document-scanner/src/geometry.js';
+import { homography, project } from '../../shared/js/document-geometry.js';
 
 function noise(seed = 11) {
   let state = seed >>> 0;

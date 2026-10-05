@@ -312,4 +312,4 @@ features = [
 
 [picker]
 title = "ここに画像をドロップ"
-hint = "クリックして選ぶこともできます。PNG、SVG、JPEG、WebP、その他ブラウザが開けるものすべてに対応"
+hint = "クリックして選ぶこともできます。PNG、SVG、JPEG、WebP、AVIF、その他ブラウザが開けるものすべてに対応"

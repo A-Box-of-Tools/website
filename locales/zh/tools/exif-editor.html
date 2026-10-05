@@ -34,9 +34,9 @@
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> 全部清掉</h2>
 
-    <p class="card-lede">
-      一个按钮，列表上的照片全清。画面不解码、不重绘、不重新压缩，压缩后的图像数据原样搬过去，扔掉的只是它周围的元数据，所以拿回来的还是那张照片，只是身上什么都不带了。
-    </p>
+    <p class="card-lede">对于 JPEG、PNG 和 WebP: 一个按钮，列表上的照片全清。画面不解码、不重绘、不重新压缩，压缩后的图像数据原样搬过去，扔掉的只是它周围的元数据，所以拿回来的还是那张照片，只是身上什么都不带了。</p>
+
+    <p id="avif-mode-note" class="card-lede">AVIF 由浏览器解码并保存为新的 PNG，不复制原有元数据。这里可以查看提取到的 EXIF 标签，但无法编辑。PNG 可能更大，转换也可能改变颜色或 HDR 显示。原文件保持不变。</p>
 
     <div class="strip-row">
       <button type="button" id="strip-all" class="primary big" disabled>清除全部元数据</button>
@@ -82,9 +82,7 @@
   <section class="card" id="inspect-card" inert>
     <h2><span class="step">3</span> 翻开看看，想改哪条改哪条</h2>
 
-    <p id="inspect-empty" class="empty-note">
-      在上面选一张照片，里面的东西就会全出现在这儿：你当时在哪儿、什么时候、用什么拍的。要弄清这些，不用把任何东西发去别处。
-    </p>
+    <p id="inspect-empty" class="empty-note">在上面选一张照片，里面的东西就会全出现在这儿：你当时在哪儿、什么时候、用什么拍的。要弄清这些，不用把任何东西发去别处。 JPEG、PNG 和 WebP 会列出这些块。AVIF 只显示提取到的 EXIF，不列出其他元数据。</p>
 
     <div id="inspector" hidden>
       <div class="inspect-head">
@@ -100,6 +98,8 @@
           <select id="inspect-select"></select>
         </div>
       </div>
+
+      <p id="avif-inspect-note" class="empty-note" hidden>AVIF 预览只显示此读取器能提取的 EXIF 块，不列出 XMP 或其他 AVIF 元数据。“删除全部元数据”会将解码后的图片转换为 PNG，不复制原有元数据。</p>
 
       <!-- The findings: the part of this page that answers the actual question. -->
       <section class="findings" aria-labelledby="findings-h">
@@ -147,6 +147,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.avif">{kind} · {size} · 清理会转换为 PNG</span>
+    <span data-phrase="inspect.avif">仅 EXIF 预览，不列出其他元数据</span>
+    <span data-phrase="badge.avif">PNG 转换</span>
+    <span data-phrase="editor.avif">AVIF 标签为只读。清理会生成新的 PNG，不复制原有元数据。</span>
+    <span data-phrase="avif.blocks">仅显示提取到的 EXIF，无法逐块编辑 AVIF。清理通过 PNG 转换去除原有元数据。</span>
+    <span data-phrase="avif.scope.title">AVIF 的 EXIF 预览</span>
+    <span data-phrase="avif.nofindings">未提取到可读的 EXIF 信息。其他 AVIF 元数据尚未列出。</span>
+    <span data-phrase="read.avifdecode">此浏览器无法解码这张 AVIF 图片，请尝试原生支持 AVIF 的浏览器。</span>
+    <span data-phrase="write.avifpng">浏览器无法输出清理后的 PNG。</span>
+    <span data-phrase="write.aviflarge">解码后的 AVIF 超过 8000 万像素的处理上限。</span>
+    <span data-phrase="clean.avif">已将 AVIF 转换为 PNG，未复制原有元数据</span>
+    <span data-phrase="result.avif">AVIF：{before} → PNG：{after}。未复制原有元数据。</span>
+    <span data-phrase="keep.avif">AVIF 按正确方向解码后转换为 PNG，这些保留选项仅适用于 JPEG、PNG 和 WebP。</span>
+
     <span data-phrase="row.file">{kind} · {size} · 其中约 {metadata} 是元数据</span>
     <span data-phrase="row.remove">把 {name} 从列表里去掉</span>
     <span data-phrase="inspect.metadata">其中约 {size} 是元数据</span>
@@ -402,10 +416,9 @@
     <span data-phrase="read.exifmagic">TIFF 的魔数不对。</span>
     <span data-phrase="read.exifoffset">第一个目录的偏移指到了块外面。</span>
     <span data-phrase="refuse.heic">HEIC 是一层套一层的盒子格式，要安全地重写一个，得用一个跟这里这三个都不一样的解析器。先转成 JPEG 吧，本站的 HEIC 转 JPG 就干这个，顺手还能把元数据留下不带走。</span>
-    <span data-phrase="refuse.avif">AVIF 用的是跟 HEIC 一样的盒子格式，情况也一样：要重写一个，得有这个工具还没有的解析器。</span>
     <span data-phrase="refuse.gif">GIF 里没有 EXIF，只有注释块和应用块，而且几乎从不夹带私人信息。这儿不处理它。</span>
     <span data-phrase="refuse.tiff">裸的 TIFF 通篇是元数据，同时通篇是图像，像素正是靠这个工具本该挪动的那些偏移找到的。改这种文件跟改一张照片是两门手艺。</span>
-    <span data-phrase="refuse.unknown">这看着既不像 JPEG，也不像 PNG 或 WebP。</span>
+    <span data-phrase="refuse.unknown">这不像 JPEG、PNG、WebP 或 AVIF 文件。</span>
     <span data-phrase="refuse.unwritable">这种格式写不了。</span>
     <span data-phrase="segment.jfif.label">JFIF 头</span>
     <span data-phrase="segment.jfif.detail">就是那五个字节，说明这个 JPEG 是 JPEG，外加打印分辨率。留着：它跟你这个人没关系，而且有些老程序碰上没有它的文件就打不开。</span>

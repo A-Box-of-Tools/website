@@ -9,6 +9,7 @@
  */
 
 import { inspectJpeg } from './jpeg.js';
+import { acceptsImageFile } from './shared/image-input.js';
 
 const THUMB_MAX = 320;
 
@@ -81,8 +82,7 @@ export async function loadImages(files) {
 }
 
 function looksLikeImage(file) {
-  if (file.type) return file.type.startsWith('image/');
-  return /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name);
+  return acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif']);
 }
 
 async function peekJpeg(file) {

@@ -342,7 +342,7 @@ features = [
 
 [picker]
 title = "Suelta aquí una foto"
-hint = "o haz clic para buscarla &mdash; una fotografía, JPEG, PNG, WebP o cualquier otra cosa que tu navegador pueda abrir"
+hint = "o haz clic para buscarla &mdash; una fotografía, JPEG, PNG, WebP, AVIF o cualquier otra cosa que tu navegador pueda abrir"
 
 [landing]
 title = "Tamaño y requisitos de foto: {document}, {country}"

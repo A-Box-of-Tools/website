@@ -5,6 +5,13 @@
 The fifth tool. It puts pictures into a document, one to a page, and writes the
 PDF itself — there is no library here, and nothing is fetched to make one.
 
+AVIF inputs use the browser's decoder. Both the MIME type and filename
+extension are offered in the chooser so an incomplete operating-system MIME
+registry does not hide the pictures. A recognized extension admits a file to
+the decoder, which still decides whether the bytes are a usable image. AVIF
+pixels follow the same re-encoding or lossless PDF storage as other non-JPEG
+inputs; no AVIF encoder is involved.
+
 ---
 
 ## The point of it: a JPEG does not have to be re-encoded

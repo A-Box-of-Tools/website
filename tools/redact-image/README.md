@@ -12,6 +12,12 @@ has published court filings, government reports and newspaper scans. Here there
 is no rectangle in the output at all — there are pixel values, written over the
 ones that were there, before an encoder is handed anything.
 
+AVIF follows the same native decoding path as JPEG, PNG and WebP when the
+browser supports it. The chooser names both `image/avif` and `.avif` because
+some operating systems do not include the extension in their image registry.
+The redacted result is still written as JPEG, PNG or WebP; it is a new raster
+image with the covered pixels replaced.
+
 ## What happens to a file
 
     file  ->  createImageBitmap  ->  canvas  ->  getImageData  ->  applyRegions

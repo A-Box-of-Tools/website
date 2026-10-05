@@ -30,7 +30,7 @@ live_hint = """
 
 read_first = """
 ，四个角是怎么在没有模型的情况下找出来的，\
-      看 <code>src/detect.js</code>；摆正在 <code>src/warp.js</code>；不匀的光是\
+      看 <code>src/shared/document-detect.js</code>；摆正在 <code>src/warp.js</code>；不匀的光是\
       怎么被除掉的，看 <code>src/clean.js</code>。"""
 
 howto_heading = "怎么用手机摄像头扫描文档"
@@ -71,7 +71,7 @@ body = """\
  找出一张纸的四个角靠的是\
       算术：图像的梯度，对其中直线的一次投票，再检查胜出那个四边形的每条边下面\
       到底有什么。没有权重，没有推理运行时，第一次用时也不去取任何东西，更没有\
-      什么会在别人的文档上表现得不一样。看 <code>src/detect.js</code>。"""
+      什么会在别人的文档上表现得不一样。看 <code>src/shared/document-detect.js</code>。"""
 
 [[privacy]]
 title = "文档里不写日期、不写作者、不写机器名。"
@@ -164,7 +164,7 @@ a = """
         压短，所以最顺手的办法，也就是取最长的一对对边当成比例，会做出一张明显偏矮胖的 \
         A4，网上多数扫描工具给你的就是这个。其实一张四边形的照片里，只要相机是台普通\
         相机，信息就足够同时还原出这个四边形的真实长宽比和相机的焦距。这是 Zhang 和 He \
-        在 2003 年的结果，<code>src/geometry.js</code> 做的就是这个。正对着拍的照片\
+        在 2003 年的结果，<code>src/shared/document-geometry.js</code> 做的就是这个。正对着拍的照片\
         没有透视可用，也不需要，因为那时边缘本来就是准的，于是它退回去用边缘，并且\
         页面会说明是哪一种给出了答案。"""
 
@@ -234,4 +234,4 @@ features = [
 
 [picker]
 title = "把纸张照片拖到这里"
-hint = "或者点击选择 | 一页一张照片，按页面顺序"
+hint = "或者点击选择 | 一页一张照片，按页面顺序（JPEG、PNG、WebP、AVIF）"

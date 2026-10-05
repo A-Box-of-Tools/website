@@ -28,10 +28,17 @@
     <h2><span class="step">2</span> Remove everything</h2>
 
     <p class="card-lede">
-      One button, every photo on the list. The picture is not decoded, re-drawn or
+      One button, every photo on the list. For JPEG, PNG and WebP, the picture is not decoded, re-drawn or
       re-compressed &mdash; the compressed image data is copied across untouched and
       only the metadata around it is dropped, so the result is the same photo with
       nothing attached.
+    </p>
+
+    <p id="avif-mode-note" class="card-lede">
+      AVIF is decoded by your browser and saved as a new PNG without copying the
+      original metadata. Its EXIF tags can be viewed here but cannot be edited.
+      The PNG may be larger, and conversion can change colour or HDR rendering.
+      Your original file stays unchanged.
     </p>
 
     <div class="strip-row">
@@ -87,7 +94,7 @@
     <h2><span class="step">3</span> Look inside, and change what you like</h2>
 
     <p id="inspect-empty" class="empty-note">
-      Choose a photo above and everything in it appears here: what it says about
+      Choose a photo above and its readable metadata appears here: what it says about
       where you were, when, and on what. Nothing is sent anywhere to work that out.
     </p>
 
@@ -105,6 +112,12 @@
           <select id="inspect-select"></select>
         </div>
       </div>
+
+      <p id="avif-inspect-note" class="empty-note" hidden>
+        AVIF preview shows only the EXIF block this reader can extract. XMP and
+        other AVIF metadata are not inventoried. Use Remove all metadata to
+        convert the decoded picture to PNG without copying original metadata.
+      </p>
 
       <!-- The findings: the part of this page that answers the actual question. -->
       <section class="findings" aria-labelledby="findings-h">
@@ -152,6 +165,19 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.avif">{kind} · {size} · clean converts to PNG</span>
+    <span data-phrase="inspect.avif">EXIF preview only; other metadata is not inventoried</span>
+    <span data-phrase="badge.avif">PNG conversion</span>
+    <span data-phrase="editor.avif">AVIF tags are read-only. Cleaning writes a new PNG and copies no original metadata.</span>
+    <span data-phrase="avif.blocks">Only extracted EXIF is shown. AVIF block-by-block editing is unavailable; cleaning removes original metadata by PNG conversion.</span>
+    <span data-phrase="avif.scope.title">AVIF EXIF preview</span>
+    <span data-phrase="avif.nofindings">No readable EXIF findings were extracted. Other AVIF metadata has not been inventoried.</span>
+    <span data-phrase="read.avifdecode">This browser could not decode this AVIF image. Try a browser with native AVIF support.</span>
+    <span data-phrase="write.avifpng">The browser could not write the cleaned PNG.</span>
+    <span data-phrase="write.aviflarge">The decoded AVIF exceeds the 80-megapixel processing limit.</span>
+    <span data-phrase="clean.avif">AVIF converted to PNG; no original metadata copied</span>
+    <span data-phrase="result.avif">AVIF: {before} → PNG: {after}. No original metadata copied.</span>
+    <span data-phrase="keep.avif">AVIF is decoded upright and converted to PNG; these keep options apply only to JPEG, PNG and WebP.</span>
     <span data-phrase="row.file">{kind} · {size} · about {metadata} of metadata</span>
     <span data-phrase="row.remove">Take {name} off the list</span>
     <span data-phrase="inspect.metadata">about {size} of it metadata</span>
@@ -437,10 +463,9 @@
     <span data-phrase="read.exifmagic">The TIFF magic number is wrong.</span>
     <span data-phrase="read.exifoffset">The first directory offset points outside the block.</span>
     <span data-phrase="refuse.heic">HEIC is a box format built out of nested atoms, and rewriting one safely needs a different parser from the three here. Convert it to JPEG first &mdash; the HEIC to JPG tool on this site does that, and can leave the metadata out on the way.</span>
-    <span data-phrase="refuse.avif">AVIF uses the same box format as HEIC, and the same applies: rewriting one needs a parser this tool does not have yet.</span>
     <span data-phrase="refuse.gif">GIF has comment and application blocks rather than EXIF, and almost never carries anything personal. It is not handled here.</span>
     <span data-phrase="refuse.tiff">A bare TIFF is all metadata and all image at once, with the pixels addressed by the same offsets this tool would have to move. Editing one is a different job from editing a photo.</span>
-    <span data-phrase="refuse.unknown">This does not look like a JPEG, PNG or WebP.</span>
+    <span data-phrase="refuse.unknown">This does not look like a JPEG, PNG, WebP or AVIF.</span>
     <span data-phrase="refuse.unwritable">This format cannot be written.</span>
     <span data-phrase="segment.jfif.label">JFIF header</span>
     <span data-phrase="segment.jfif.detail">The five-byte block that says a JPEG is a JPEG, plus the print resolution. Kept: it says nothing about you, and some older software will not open a file without it.</span>

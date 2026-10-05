@@ -1,7 +1,7 @@
 <main id="main">
   <!-- Étape 1 &mdash; les fichiers -->
   <section class="card">
-    <h2><span class="step">1</span> Choisir vos photos HEIC</h2>
+    <h2><span class="step">1</span> Choisir vos photos HEIC et AVIF</h2>
 
     <p class="card-lede">
       Directement depuis le téléphone, depuis une sauvegarde, ou copiées d'une
@@ -11,6 +11,7 @@
     </p>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF utilise le décodeur du navigateur sans charger le moteur HEIC. La sortie reste JPEG, PNG ou WebP. Seule la première image décodée est écrite ; les couleurs ou le HDR peuvent changer. Les métadonnées AVIF sont toujours omises : la case des métadonnées concerne seulement HEIC. L’original reste inchangé.</p>
 
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
@@ -121,12 +122,9 @@
   -->
   <div id="phrases" hidden aria-hidden="true">
     <span data-phrase="load.refused">{name}&nbsp;: {why}</span>
-    <span data-phrase="refuse.avif">c&rsquo;est un AVIF, pas un HEIC. Tous les navigateurs actuels en ouvrent un déjà,
-      il n&rsquo;y a donc rien à lui faire ici.</span>
     <span data-phrase="refuse.jpeg">c&rsquo;est déjà un JPEG.</span>
     <span data-phrase="refuse.png">c&rsquo;est un PNG, qui s&rsquo;ouvre déjà partout.</span>
-    <span data-phrase="refuse.other">ce n&rsquo;est pas un HEIC. Quoi que soit {name}, ses premiers octets ne sont pas un
-      conteneur HEIF, et le nom ne prouve rien non plus.</span>
+    <span data-phrase="refuse.other">Les premiers octets de {name} ne désignent pas une image HEIC ou AVIF prise en charge.</span>
     <span data-phrase="list.count.one">{n} photo, {size} au total</span>
     <span data-phrase="list.count.many">{n} photos, {size} au total</span>
     <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
@@ -169,8 +167,8 @@
     <span data-phrase="heif.nosize">l&rsquo;image de ce fichier n&rsquo;a aucune taille que le décodeur ait pu utiliser.</span>
     <span data-phrase="heif.nodraw">le décodeur a lu le fichier mais n&rsquo;a pas su le dessiner.</span>
     <span data-phrase="codec.nowrite">ce navigateur n&rsquo;a pas voulu écrire de {format}.</span>
-    <span data-phrase="n.heic.one">{n} fichier HEIC</span>
-    <span data-phrase="n.heic.many">{n} fichiers HEIC</span>
+    <span data-phrase="n.heic.one">{n} fichier source</span>
+    <span data-phrase="n.heic.many">{n} fichiers source</span>
     <span data-phrase="n.picture.one">{n} image {format}</span>
     <span data-phrase="n.picture.many">{n} images {format}</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
@@ -214,5 +212,10 @@
     <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
       du bouton de don propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'a reçu une photo ou un octet d'une photo.</span>
+    <span data-phrase="file.avif">AVIF : première image décodée seulement ; métadonnées toujours omises.</span>
+    <span data-phrase="row.avif">AVIF &middot; {size}</span>
+    <span data-phrase="error.decode">le navigateur n’a pas pu décoder cet AVIF</span>
+    <span data-phrase="error.encode">le navigateur n’a pas pu écrire de {format}</span>
+    <span data-phrase="error.wrongtype">le navigateur a renvoyé autre chose qu’un {format}</span>
   </div>
 </main>

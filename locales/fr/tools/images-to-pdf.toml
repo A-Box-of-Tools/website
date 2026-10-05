@@ -2,7 +2,7 @@ name = "Images en PDF"
 heading = "Images&nbsp;en&nbsp;PDF <span class=\"h1-kw\">&mdash; convertisseur JPG en PDF</span>"
 tagline = "Réunir vos images dans un seul document."
 title = "Convertisseur d'images en PDF &mdash; JPG en PDF gratuit, sans envoi"
-description = "Réunissez des images JPG, PNG ou WebP dans un seul PDF, gratuitement et entièrement dans votre navigateur. Les photos entrent sans être réencodées, et rien n'est envoyé."
+description = "Réunissez des images JPG, PNG, WebP ou AVIF dans un seul PDF, gratuitement et entièrement dans votre navigateur. Les photos JPEG entrent sans être réencodées, et rien n'est envoyé."
 og_title = "Images en PDF &mdash; convertisseur JPG en PDF gratuit"
 og_description = "Réunissez des images dans un seul PDF sur votre propre machine. Les photos JPEG y sont recopiées intactes&nbsp;: rien ne perd en qualité et rien n'est envoyé."
 og_image_alt = "Images en PDF - réunir des images dans un document sans les envoyer"
@@ -104,7 +104,7 @@ q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = "Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue de travailler. C'est aussi la façon la plus simple de prouver que rien n'est envoyé, car un outil qui expédierait vos images ailleurs pour en faire un document s'arrêterait à l'instant où vous débranchez."
 
 [schema]
-description = "Réunissez des images JPG, PNG et WebP dans un seul document PDF. Chaque page est écrite dans votre navigateur, si bien qu'aucune image n'est jamais envoyée."
+description = "Réunissez des images JPG, PNG, WebP et AVIF dans un seul document PDF. Chaque page est écrite dans votre navigateur, si bien qu'aucune image n'est jamais envoyée."
 features = ["Réunit des images JPG, PNG, WebP, GIF et AVIF dans un seul PDF", "Les photos JPEG sont incorporées sans être réencodées", "Formats de page de l'A5 au Tabloid, ou une page ajustée à chaque image", "Réordonner, faire tourner, régler les marges et une couleur de page", "Stockage sans perte facultatif pour les scans et les captures d'écran", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]

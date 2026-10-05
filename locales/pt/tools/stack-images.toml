@@ -322,4 +322,4 @@ features = [
 
 [picker]
 title = "Arraste os quadros para cá"
-hint = "ou clique para procurar &mdash; JPEG, PNG, WebP, TIFF e RAW de câmera"
+hint = "ou clique para procurar &mdash; JPEG, PNG, WebP, AVIF, TIFF e RAW de câmera"

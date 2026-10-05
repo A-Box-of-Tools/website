@@ -66,6 +66,20 @@ test('a file that is not an image or will not decode is skipped by name', async 
   assert.deepEqual(items.map((item) => item.name), ['ok-10x10.jpg']);
 });
 
+test('AVIF inputs reach the browser decoder even when file registries omit their MIME type', async () => {
+  const { closed } = browser();
+  const { items, skipped } = await loadImages([
+    file('typed-120x80.avif', 'image/avif'),
+    file('untyped-120x80.AVIF', ''),
+    file('generic-120x80.avif', 'application/octet-stream'),
+    file('broken-120x80.avif', 'image/avif'),
+    file('notes.txt', ''),
+  ]);
+  assert.deepEqual(items.map(item => item.name), ['typed-120x80.avif', 'untyped-120x80.AVIF', 'generic-120x80.avif']);
+  assert.deepEqual(closed, items.map(item => item.name));
+  assert.deepEqual(skipped, ['broken-120x80.avif', 'notes.txt']);
+});
+
 test('the tool decides what else an item carries', async () => {
   browser();
   const { items } = await loadImages([file('ok-10x10.jpg')], {

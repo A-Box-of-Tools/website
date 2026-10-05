@@ -45,7 +45,7 @@ roadmap_group = "beyond"
 # the build so that its own can override them.
 css_parts = ["form", "checks", "notes", "chips"]
 js_parts = ["download"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 

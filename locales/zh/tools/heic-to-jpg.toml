@@ -14,7 +14,7 @@ heading = "HEIC 转 JPG <span class=\"h1-kw\">转换 iPhone 照片</span>"
 tagline = "iPhone 拍的照片，换成什么都打得开的格式。"
 
 title = "HEIC 转 JPG 在线转换 | 免费，不用上传"
-description = "在浏览器里把 iPhone 的 HEIC 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。"
+description = "在浏览器里把 iPhone 的 HEIC 和 AVIF 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。 元数据复选框和预览仅适用于 HEIC，AVIF 元数据一律不保留。"
 og_title = "不上传，也能把 HEIC 照片变成 JPG"
 og_description = "一个不想要你照片的转换器。HEIC 解码器由这个页面自己带着，在你的机器上跑，照片从头到尾没离开过。"
 og_image_alt = "HEIC 转 JPG - iPhone 照片，换成什么都打得开的格式"
@@ -114,7 +114,7 @@ body = """\
       解码的转换器，绝无可能做到这一点。"""
 
 [[howto]]
-title = "选好你的 HEIC 照片。"
+title = "选好你的 HEIC 和 AVIF 照片。"
 body = """\
       拖到下面的方框里，或者点开自己挑，直接从手机备份、桌面文件夹里选都行。\
       浏览器直接从你的硬盘上读，这期间没有东西发出去。列表会写明每一张是\
@@ -206,14 +206,8 @@ a = """
         谁想要的画面，原样留着不动。"""
 
 [[faq]]
-q = "为什么它不收我的 AVIF？"
-a = """
-        因为没什么可做的。AVIF 和 HEIC 是同一种容器，只是里面装的是 AV1 而不\
-        是 HEVC，现在的浏览器个个都能原生解码。为它下发一兆的引擎，是在解决\
-        一个你根本没有的问题。真要把 AVIF 变成 JPEG，\
-        <a href="../compress-image/">图片压缩</a>和\
-        <a href="../resize-image/">图片缩放</a>都能用浏览器自带的解码器读
-        AVIF、写 JPEG。"""
+q = "也能转换 AVIF 图片吗？"
+a = "AVIF 使用浏览器解码器，不加载 HEIC 引擎。输出仍为 JPEG、PNG 或 WebP。只输出第一张解码后的图片，颜色或 HDR 可能改变。AVIF 元数据一律不保留，元数据复选框仅适用于 HEIC。原文件保持不变。"
 
 [[faq]]
 q = "免费吗？要注册吗？"
@@ -230,19 +224,9 @@ a = """
         转换器，拔线那一刻就停了，这一个不会。"""
 
 [schema]
-description = "把 iPhone 的 HEIC 和 HEIF 照片转成 JPEG、PNG 或 WebP。HEIC 解码器是页面自己带着的 WebAssembly，照片在你自己的机器上解码，不上传。日期、相机和位置可以带进 JPEG，也可以丢掉。"
-features = [
-  "HEIC 和 HEIF 转成 JPEG、PNG 或 WebP",
-  "在浏览器里解码，什么浏览器都行，不只是 Safari",
-  "什么都不上传，拔了网线照样能用",
-  "日期、相机和 GPS 可以带进 JPEG，也可以不要",
-  "还没开始转，就先说明哪些照片带着 GPS 坐标",
-  "纠正方向标签，竖构图的照片不会横着出来",
-  "按文件内容识别，名叫 .jpg 的 HEIC 照样能转",
-  "连拍和 Live Photo 里的每一张画面都转，不只是第一张",
-  "支持批量，结果打成一个 zip",
-]
+description = "把 iPhone 的 HEIC 和 HEIF 照片转成 JPEG、PNG 或 WebP。HEIC 解码器是页面自己带着的 WebAssembly，照片在你自己的机器上解码，不上传。日期、相机和位置可以带进 JPEG，也可以丢掉。 元数据复选框和预览仅适用于 HEIC，AVIF 元数据一律不保留。"
+features = ["HEIC 和 HEIF 转成 JPEG、PNG 或 WebP", "在浏览器里解码，什么浏览器都行，不只是 Safari", "什么都不上传，拔了网线照样能用", "日期、相机和 GPS 可以带进 JPEG，也可以不要", "还没开始转，就先说明哪些照片带着 GPS 坐标", "纠正方向标签，竖构图的照片不会横着出来", "按文件内容识别，名叫 .jpg 的 HEIC 照样能转", "连拍和 Live Photo 里的每一张画面都转，不只是第一张", "支持批量，结果打成一个 zip", "也接受浏览器解码的 AVIF，序列仅输出第一张图片"]
 
 [picker]
-title = "把 HEIC 照片拖到这儿"
-hint = "或者点击选择，.heic 和 .heif 都行，管它文件名叫什么"
+title = "将 HEIC 和 AVIF 图片拖到这里"
+hint = "或点击选择：.heic, .heif, .avif，根据文件内容识别格式"

@@ -2,6 +2,21 @@
   <!-- The sharer's half. Hidden by main.js when the address carries a code,
        because then this page is a reader. -->
   <section id="share">
+    <section id="discovery" class="card">
+      <h2>Local shares on this connection</h2>
+      <p id="discovery-status" role="status" aria-live="polite">Looking for local shares&hellip;</p>
+      <div id="discovery-list"></div>
+      <p class="discovery-note">
+        This list shows link names from browsers using the same public IP
+        address as yours. Usually that means the same router; a shared VPN
+        or an ISP sharing one address can include other networks. IPv6 or
+        different routes can hide nearby devices. Internet is required.
+        Opening a share still asks before connecting, and Private shares
+        still need the sharer&rsquo;s approval.
+      </p>
+      <button type="button" id="discovery-refresh" class="ghost">Refresh local shares</button>
+    </section>
+
     <!-- Step 1 &mdash; the content -->
     <section class="card">
       <h2><span class="step">1</span> Write it, or attach it</h2>
@@ -24,8 +39,8 @@
       <div id="attachlist"></div>
       <p class="field-note">
         Files ride the same direct channel as the text, up to 200&nbsp;MB
-        apiece. Readers see the list and fetch each file only if they ask
-        for it.
+        apiece, with up to 256 files in one share. Readers see the list and
+        fetch each file only if they ask for it.
       </p>
     </section>
 
@@ -39,8 +54,9 @@
           <button type="button" id="suggest" class="ghost" aria-label="Suggest another name">&#8635;</button>
         </div>
         <p class="field-note">
-          The name is the address and the only secret: short enough to say
-          across a room, and worth making unguessable for anything private.
+          The name is the address, short enough to say across a room.
+          Discoverable local shares list it for others on this connection.
+          Keep Private on for anything sensitive.
         </p>
       </div>
       <div class="field checks">
@@ -48,6 +64,27 @@
           <input type="checkbox" id="private" checked>
           Private &mdash; each reader must ask, and you let them in
         </label>
+        <label class="check" for="local">
+          <input type="checkbox" id="local">
+          Local network &mdash; no internet relay
+        </label>
+        <p class="field-note">
+          For devices on the same Wi-Fi or Ethernet. Internet is still
+          needed to introduce the browsers; this mode uses no public
+          address-discovery server or relay. VPNs and browser settings can
+          affect the network path. The copied link carries this setting.
+        </p>
+        <label class="check" for="discoverable">
+          <input type="checkbox" id="discoverable" checked disabled>
+          Discoverable &mdash; show this link name on this internet connection
+        </label>
+        <p class="discovery-note">
+          A discoverable share lists its name for others using the same
+          public IP address. Keep Private on, especially on shared networks.
+          With Private off, anyone who sees the name can connect and read
+          without your approval.
+          Uncheck Discoverable to share only by link.
+        </p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           One-off &mdash; don&rsquo;t keep the draft on this device
@@ -72,6 +109,7 @@
         <button type="button" id="stop" class="danger">Stop sharing</button>
       </div>
       <p id="status" role="status" aria-live="polite"></p>
+      <p id="discovery-share-status" role="status" aria-live="polite"></p>
       <div id="requests"></div>
     </section>
 
@@ -79,8 +117,9 @@
       <h2>Nothing is stored anywhere</h2>
       <p>
         The text and the files travel straight from this tab to each
-        reader&rsquo;s, encrypted. The one server involved introduces the two
-        browsers and never sees what they exchange. Closing this tab ends the
+        reader&rsquo;s, encrypted. The rendezvous introduces the browsers and
+        lists discoverable link names; it never sees the text or files.
+        Closing this tab ends the
         share and clears readers&rsquo; open pages too &mdash; though what
         someone already copied or downloaded is theirs.
       </p>
@@ -95,11 +134,17 @@
 
       <div id="consent" hidden>
         <p>
-          Reading it connects your browser straight to the sharer&rsquo;s
-          &mdash; that is the point: nothing here touches a server. Like any
-          direct connection, it lets each side see the other&rsquo;s network
-          (IP) address. Nothing is fetched, and nothing about you is shared,
-          until you choose to connect.
+          Connecting lets the sharer send the text and files straight to
+          your browser over an encrypted channel. Like any direct
+          connection, it lets each side see the other&rsquo;s network (IP)
+          address. The sharer does not learn that you opened this link until
+          you choose to connect.
+        </p>
+        <p id="local-note" hidden>
+          This link uses Local network mode. Both devices need to be on the
+          same Wi-Fi or Ethernet, and internet is still needed for the
+          introduction. No public address-discovery server or internet relay
+          is used. VPNs and browser settings can affect the network path.
         </p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">Connect and fetch the share</button>
@@ -136,6 +181,10 @@
         </div>
       </div>
 
+      <div class="result-actions" id="mode-retryrow" hidden>
+        <button type="button" id="mode-retry" class="ghost">Retry with the sharer&rsquo;s connection mode</button>
+      </div>
+
       <div class="result-actions" id="retryrow" hidden>
         <button type="button" id="retry" class="ghost">Check this link again</button>
       </div>
@@ -165,7 +214,17 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
+    <span data-phrase="discovery.connecting">Looking for local shares&hellip;</span>
+    <span data-phrase="discovery.empty">No other discoverable local shares here yet. Keep the sharer&rsquo;s tab open, or use their link.</span>
+    <span data-phrase="discovery.ready">Choose a share to open its connection page.</span>
+    <span data-phrase="discovery.unavailable">Local discovery is unavailable. You can still use a share link.</span>
+    <span data-phrase="discovery.open">Open share</span>
+    <span data-phrase="discovery.publishing">Making this local share discoverable&hellip;</span>
+    <span data-phrase="discovery.published">Your local share is discoverable on this connection.</span>
+    <span data-phrase="discovery.not-published">This share is available by link; local discovery could not publish it.</span>
+
     <span data-phrase="share.waiting">Sharing. Waiting for someone to open the link &mdash; keep this tab open.</span>
+    <span data-phrase="share.local-waiting">Sharing in Local network mode. Waiting for someone to open the link &mdash; keep this tab open.</span>
     <span data-phrase="share.reader-count.one">1 reader connected</span>
     <span data-phrase="share.reader-count.many">{n} readers connected</span>
     <span data-phrase="share.knock-count.one">1 person waiting for you to let them in</span>
@@ -181,6 +240,7 @@
     <span data-phrase="share.lost-rendezvous">Lost the introduction server; retrying. Connected readers are not affected.</span>
     <span data-phrase="share.stopped">Stopped. Nothing is shared any more.</span>
     <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; is over the 200 MB limit.</span>
+    <span data-phrase="share.too-many-files">A share can hold up to 256 files. Remove one before attaching more.</span>
     <span data-phrase="share.leave-warning">Leaving this page ends the share for everyone. Continue?</span>
 
     <span data-phrase="copy.done">Copied</span>
@@ -191,6 +251,9 @@
     <span data-phrase="view.connecting">Connecting directly&hellip;</span>
     <span data-phrase="view.waiting-content">Connected. Waiting for the sharer&rsquo;s first message&hellip;</span>
     <span data-phrase="view.no-content">The connection opened, but the share did not arrive. Ask the sharer to keep their tab open and awake, then check this link again.</span>
+    <span data-phrase="view.local-connecting">Connecting over the local network&hellip;</span>
+    <span data-phrase="view.mode-local">The sharer uses Local network mode. Retry with their mode to connect without an internet relay.</span>
+    <span data-phrase="view.mode-direct">The sharer uses the ordinary connection mode. Retry with their mode to connect; a relay is offered only if you choose it after a direct attempt fails.</span>
     <span data-phrase="view.private">The sharer set this to private.</span>
     <span data-phrase="view.asked">Asked. Waiting for the sharer to let you in&hellip;</span>
     <span data-phrase="view.denied">The sharer didn&rsquo;t let you in.</span>
@@ -200,12 +263,14 @@
     <span data-phrase="view.nobody">Nobody is sharing at this address. The sharer may have closed their tab &mdash; if so, the share is gone with it.</span>
     <span data-phrase="view.full">This share already has its maximum number of readers.</span>
     <span data-phrase="view.no-connect">Could not reach the sharer directly. One of the two networks may not allow a peer-to-peer connection.</span>
+    <span data-phrase="view.local-no-connect">Could not reach the sharer in Local network mode. Check that both devices use the same Wi-Fi or Ethernet; guest-network isolation, a VPN, a firewall or browser settings may block the connection. No internet relay is offered in this mode.</span>
     <span data-phrase="view.relaying">Connecting through the relay&hellip;</span>
     <span data-phrase="view.relay-none">No relay is available right now. Trying from a different network usually works.</span>
     <span data-phrase="view.relay-failed">Could not reach the sharer even through the relay. They may have closed their tab.</span>
     <span data-phrase="view.error">Something went wrong while connecting. Reload to try again.</span>
     <span data-phrase="view.download">Download</span>
     <span data-phrase="view.file-gone">No longer shared</span>
+    <span data-phrase="view.file-failed">The file download could not be completed. Check this link again to retry the download.</span>
 
     <span data-phrase="net.clean">what this page shares has gone through no
       server. {total} files loaded. {platform}</span>

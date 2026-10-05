@@ -213,16 +213,7 @@ a = """
 
 [[faq]]
 q = "¿Quita los datos EXIF y GPS?"
-a = """
-        De todo lo que procesa de verdad, sí, y de rebote: recortar o
-        redimensionar consiste en descodificar la foto a píxeles y volver a
-        codificar esos píxeles, y un lienzo lleno de píxeles no lleva etiquetas,
-        así que la ubicación, el modelo de cámara y las marcas de tiempo
-        sencillamente no se escriben en el archivo nuevo. Un archivo que no le
-        estás cambiando nada es otro caso: se devuelve byte por byte, con
-        etiquetas y todo. Si lo que quieres es quitar los metadatos sin tocar la
-        foto, tienes el <a href="../eliminar-datos-exif/">visor y eliminador de
-        EXIF</a>, que reescribe el contenedor sin volver a comprimir nada."""
+a = "De todo lo que procesa de verdad, sí, y de rebote: recortar o redimensionar consiste en descodificar la foto a píxeles y volver a codificar esos píxeles, y un lienzo lleno de píxeles no lleva etiquetas, así que la ubicación, el modelo de cámara y las marcas de tiempo sencillamente no se escriben en el archivo nuevo. Un archivo que no le estás cambiando nada es otro caso: se devuelve byte por byte, con etiquetas y todo. <a href=\"../eliminar-datos-exif/\">visor y eliminador de EXIF</a> lee y edita metadatos JPEG, PNG y WebP sin recodificar sus imágenes. Para AVIF muestra el EXIF disponible como solo lectura y limpia convirtiendo la primera imagen decodificada a un PNG nuevo; el color o el HDR pueden cambiar."
 
 [[faq]]
 q = "¿En qué se diferencia esto del compresor de imágenes?"
@@ -269,4 +260,4 @@ features = [
 
 [picker]
 title = "Arrastra aquí las imágenes"
-hint = "o haz clic para buscarlas &mdash; JPEG, PNG, WebP y cualquier otra cosa que el navegador sepa abrir"
+hint = "o haz clic para buscarlas &mdash; JPEG, PNG, WebP, AVIF y cualquier otra cosa que el navegador sepa abrir"

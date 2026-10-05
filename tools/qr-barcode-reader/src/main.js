@@ -4,6 +4,7 @@ import * as camera from './camera.js';
 import { scan } from './scan.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { phrase } from './shared/phrases.js';
+import { acceptsImageFile } from './shared/image-input.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -399,7 +400,7 @@ async function readFiles(files) {
 // screen, and it is the one route into this page that needs no file at all.
 window.addEventListener('paste', (event) => {
   const files = [...(event.clipboardData?.files ?? [])]
-    .filter((file) => file.type.startsWith('image/'));
+    .filter((file) => acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'svg']));
   if (files.length) {
     event.preventDefault();
     void readFiles(files);

@@ -193,16 +193,7 @@ a = """
 
 [[faq]]
 q = "Ele também remove os dados EXIF e GPS?"
-a = """
-        Sim, como efeito colateral. Salvar aqui significa codificar uma tela cheia
-        de pixels, e uma tela não carrega etiquetas: a localização, o modelo da
-        câmera, as datas e a miniatura embutida simplesmente não são escritas no
-        arquivo novo. A miniatura importa: é uma segunda cópia pequena da imagem,
-        nem sempre é refeita quando a foto é editada, e uma foto tarjada que viaja
-        com uma miniatura sem tarja desfaz todo o trabalho. Se você quer os
-        metadados fora sem que a imagem seja recodificada, o
-        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a> reescreve o
-        contêiner em vez da imagem."""
+a = "Sim, como efeito colateral. Salvar aqui significa codificar uma tela cheia de pixels, e uma tela não carrega etiquetas: a localização, o modelo da câmera, as datas e a miniatura embutida simplesmente não são escritas no arquivo novo. A miniatura importa: é uma segunda cópia pequena da imagem, nem sempre é refeita quando a foto é editada, e uma foto tarjada que viaja com uma miniatura sem tarja desfaz todo o trabalho. <a href=\"../remover-dados-exif/\">Visualizador e removedor de EXIF</a> lê e edita metadados JPEG, PNG e WebP sem recodificar suas imagens. Para AVIF, mostra o EXIF disponível como somente leitura e limpa convertendo a primeira imagem decodificada para um PNG novo; as cores ou o HDR podem mudar."
 
 [[faq]]
 q = "Quais formatos ele lê e escreve?"
@@ -258,4 +249,4 @@ features = [
 
 [picker]
 title = "Arraste uma imagem para cá"
-hint = "ou clique para escolher &mdash; JPEG, PNG, WebP e tudo mais que o seu navegador abrir"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP, AVIF e tudo mais que o seu navegador abrir"

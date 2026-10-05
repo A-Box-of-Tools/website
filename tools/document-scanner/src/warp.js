@@ -28,7 +28,7 @@
  * exactly how much of a problem there is.
  */
 
-import { homography, project } from './geometry.js';
+import { homography, project } from './shared/document-geometry.js';
 
 /** Sub-samples per output pixel, per axis, however far it is being shrunk. */
 const MAX_SAMPLES = 2;

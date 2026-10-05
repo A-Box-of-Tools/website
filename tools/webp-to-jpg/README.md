@@ -2,15 +2,21 @@
 
 [← All tools](../README.md) · [The tool](https://abox.tools/webp-to-jpg/)
 
-Decodes a WebP with the browser's own decoder, draws it on a canvas, and asks
+Decodes a WebP or AVIF with the browser's own decoder, draws it on a canvas, and asks
 the canvas for a JPEG. That is the whole pipeline, and its shortness is the
 argument the page makes: there is no engine here, so there is no reason for a
 server, so there is no reason to upload anything.
 
-It is one of three tools built on `shared/js/image-convert.js` — the others
+It is one of the tools built on `shared/js/image-convert.js` — the others
 being [PNG to WebP](../png-to-webp/) and [AVIF to JPG](../avif-to-jpg/). They
 are the same three steps with a different pair of formats at each end, and
 everything they share lives in that module rather than in three copies here.
+
+AVIF input uses `shared/js/image-convert.js` and the browser decoder, never
+an AVIF encoder. An `avis` sequence produces only its first decoded image.
+The output remains JPEG; metadata is not copied from AVIF. The default
+canvas produces an 8-bit SDR copy, so color, HDR and source precision may
+change, and converting can increase the file size. The original stays intact.
 
 ## Why this is not heic-to-jpg
 
@@ -40,8 +46,8 @@ background now" complaint about every other converter comes from.
 
 The colour field appears only when a file on the list actually has
 transparency, and that is a question about the *pixels*, not the container:
-`webpFacts()` reads the `ALPH` chunk and the `VP8X` alpha flag, and then
-`hasAlpha()` decodes and walks the alpha channel to confirm it. A WebP can
+`hasAlpha()` walks the decoded alpha channel for both input formats. This
+also handles lossless WebP alpha that is not described by an extended header. A WebP can
 perfectly well carry an alpha channel that is opaque corner to corner, and
 offering a matte colour for one is a control that does nothing.
 

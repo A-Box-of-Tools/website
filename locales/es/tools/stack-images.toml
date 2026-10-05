@@ -335,4 +335,4 @@ features = [
 
 [picker]
 title = "Suelta aquí las tomas"
-hint = "o pulsa para elegir &mdash; JPEG, PNG, WebP, TIFF y RAW de cámara"
+hint = "o pulsa para elegir &mdash; JPEG, PNG, WebP, AVIF, TIFF y RAW de cámara"

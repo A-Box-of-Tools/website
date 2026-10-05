@@ -32,18 +32,18 @@ css_parts = ["progress", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "pdf-page-writer", "message-box", "format", "example-photo"]
+js_parts = ["file-picker", "pdf-page-writer", "message-box", "format", "example-photo", "image-input"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["merge-pdf", "compress-pdf", "watermark-pdf", "protect-pdf"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Images to PDF Converter &mdash; Free JPG to PDF, No Upload"
-description = "Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded."
+description = "Combine JPG, PNG, WebP or AVIF images into one PDF, free and entirely in your browser. JPEG photos go in without being re-encoded, and nothing is uploaded."
 og_title = "Images to PDF &mdash; free JPG to PDF converter"
 og_description = "Combine images into one PDF on your own machine. JPEG photos are copied in untouched, so nothing loses quality and nothing is uploaded."
 og_image_alt = "Images to PDF - combine pictures into one document without uploading them"
@@ -267,7 +267,7 @@ a = """
 
 [schema]
 category = "UtilitiesApplication"
-description = "Combine JPG, PNG and WebP images into a single PDF document. Every page is written in your browser, so no image is ever uploaded."
+description = "Combine JPG, PNG, WebP and AVIF images into a single PDF document. Every page is written in your browser, so no image is ever uploaded."
 features = [
   "Combines JPG, PNG, WebP, GIF and AVIF images into one PDF",
   "JPEG photos are embedded without being re-encoded",
@@ -280,7 +280,7 @@ features = [
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*"
+accept = "image/*,image/avif,.avif"
 multiple = true
 title = "Drop images here"
 hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"

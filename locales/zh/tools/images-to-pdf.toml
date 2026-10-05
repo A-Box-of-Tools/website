@@ -14,7 +14,7 @@ heading = "图片转 PDF <span class=\"h1-kw\">JPG 转 PDF</span>"
 tagline = "把你的图片装进一个文档。"
 
 title = "图片转 PDF | 免费 JPG 转 PDF，不用上传"
-description = "把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。"
+description = "把 JPG、PNG、WebP 或 AVIF 合成一个 PDF，免费，全程在你的浏览器里跑。JPEG 照片进去不重新编码，什么都不上传。"
 og_title = "图片转 PDF | 免费的 JPG 转 PDF"
 og_description = "在自己的机器上把图片合成一个 PDF。JPEG 照片原样抄进去，画质不掉，也不用上传。"
 og_image_alt = "图片转 PDF - 不上传也能把图片合成一个文档"
@@ -181,7 +181,7 @@ a = """
         办法。一个把图片送出去做文档的工具，拔线那一刻就停了。"""
 
 [schema]
-description = "把 JPG、PNG 和 WebP 图片合成一个 PDF 文档。每一页都在你的浏览器里写出来，图片从头到尾不上传。"
+description = "把 JPG、PNG、WebP 和 AVIF 图片合成一个 PDF 文档。每一页都在你的浏览器里写出来，图片从头到尾不上传。"
 features = [
   "把 JPG、PNG、WebP、GIF 和 AVIF 合成一个 PDF",
   "JPEG 照片直接嵌入，不重新编码",

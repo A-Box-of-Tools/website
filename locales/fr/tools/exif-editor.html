@@ -27,12 +27,12 @@
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> Tout supprimer</h2>
 
-    <p class="card-lede">
-      Un bouton, toutes les photos de la liste. L'image n'est ni décodée, ni
+    <p class="card-lede">Pour JPEG, PNG et WebP : Un bouton, toutes les photos de la liste. L'image n'est ni décodée, ni
       redessinée, ni recompressée&nbsp;: les données d'image compressées sont
       recopiées intactes et seules les métadonnées autour d'elles sont jetées, si
-      bien que le résultat est la même photo, sans rien d'attaché.
-    </p>
+      bien que le résultat est la même photo, sans rien d'attaché.</p>
+
+    <p id="avif-mode-note" class="card-lede">AVIF est décodé par votre navigateur et enregistré dans un nouveau PNG sans copier les métadonnées d’origine. Les balises EXIF disponibles sont consultables ici, mais ne peuvent pas être modifiées. Le PNG peut être plus gros et la conversion peut changer les couleurs ou le HDR. Votre original reste inchangé.</p>
 
     <div class="strip-row">
       <button type="button" id="strip-all" class="primary big" disabled>Tout supprimer</button>
@@ -88,11 +88,9 @@
   <section class="card" id="inspect-card" inert>
     <h2><span class="step">3</span> Regarder dedans, et changer ce que vous voulez</h2>
 
-    <p id="inspect-empty" class="empty-note">
-      Choisissez une photo ci-dessus et tout ce qu'elle contient apparaît
+    <p id="inspect-empty" class="empty-note">Choisissez une photo ci-dessus et tout ce qu'elle contient apparaît
       ici&nbsp;: ce qu'elle raconte sur l'endroit où vous étiez, sur le moment et
-      sur le matériel. Rien n'est envoyé nulle part pour l'établir.
-    </p>
+      sur le matériel. Rien n'est envoyé nulle part pour l'établir. Pour JPEG, PNG et WebP, ces blocs sont inventoriés. AVIF montre seulement l’EXIF extrait disponible ; les autres métadonnées AVIF ne sont pas inventoriées.</p>
 
     <div id="inspector" hidden>
       <div class="inspect-head">
@@ -108,6 +106,8 @@
           <select id="inspect-select"></select>
         </div>
       </div>
+
+      <p id="avif-inspect-note" class="empty-note" hidden>L’aperçu AVIF montre seulement le bloc EXIF que ce lecteur peut extraire. XMP et les autres métadonnées AVIF ne sont pas inventoriés. « Retirer toutes les métadonnées » convertit l’image décodée en PNG sans copier les métadonnées d’origine.</p>
 
       <!-- The findings: the part of this page that answers the actual question. -->
       <section class="findings" aria-labelledby="findings-h">
@@ -155,6 +155,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.avif">{kind} · {size} · le nettoyage convertit en PNG</span>
+    <span data-phrase="inspect.avif">Aperçu EXIF seulement ; autres métadonnées non inventoriées</span>
+    <span data-phrase="badge.avif">Conversion en PNG</span>
+    <span data-phrase="editor.avif">Les balises AVIF sont en lecture seule. Le nettoyage crée un nouveau PNG sans copier les métadonnées d’origine.</span>
+    <span data-phrase="avif.blocks">Seul l’EXIF extrait est affiché. La modification des blocs AVIF est indisponible ; la conversion en PNG supprime les métadonnées d’origine.</span>
+    <span data-phrase="avif.scope.title">Aperçu EXIF d’AVIF</span>
+    <span data-phrase="avif.nofindings">Aucune information EXIF lisible n’a été extraite. Les autres métadonnées AVIF n’ont pas été inventoriées.</span>
+    <span data-phrase="read.avifdecode">Ce navigateur n’a pas pu décoder cet AVIF. Essayez un navigateur prenant AVIF en charge nativement.</span>
+    <span data-phrase="write.avifpng">Le navigateur n’a pas pu écrire le PNG nettoyé.</span>
+    <span data-phrase="write.aviflarge">L’AVIF décodé dépasse la limite de traitement de 80 mégapixels.</span>
+    <span data-phrase="clean.avif">AVIF converti en PNG ; aucune métadonnée d’origine copiée</span>
+    <span data-phrase="result.avif">AVIF : {before} → PNG : {after}. Aucune métadonnée d’origine copiée.</span>
+    <span data-phrase="keep.avif">AVIF est décodé dans le bon sens et converti en PNG ; ces options concernent seulement JPEG, PNG et WebP.</span>
+
     <span data-phrase="row.file">{kind} · {size} · dont environ {metadata} de métadonnées</span>
     <span data-phrase="row.remove">Retirer {name} de la liste</span>
     <span data-phrase="inspect.metadata">dont environ {size} de métadonnées</span>
@@ -335,15 +349,13 @@
       analyseur différent des trois qui sont ici. Convertissez-le d&rsquo;abord en JPEG
       &mdash; l&rsquo;outil HEIC vers JPG de ce site le fait, et peut laisser les
       métadonnées de côté au passage.</span>
-    <span data-phrase="refuse.avif">AVIF emploie le même format à boîtes que HEIC, et il en va de même&nbsp;: en
-      réécrire un demande un analyseur que cet outil n&rsquo;a pas encore.</span>
     <span data-phrase="refuse.gif">Le GIF a des blocs de commentaire et d&rsquo;application plutôt que de l&rsquo;EXIF,
       et ne porte presque jamais quoi que ce soit de personnel. Il n&rsquo;est pas traité
       ici.</span>
     <span data-phrase="refuse.tiff">Un TIFF nu est à la fois tout en métadonnées et tout en image, avec les pixels
       adressés par les décalages mêmes que cet outil devrait déplacer. En modifier un est
       un autre métier que modifier une photo.</span>
-    <span data-phrase="refuse.unknown">Cela ne ressemble ni à un JPEG, ni à un PNG, ni à un WebP.</span>
+    <span data-phrase="refuse.unknown">Ce fichier ne ressemble pas à un JPEG, PNG, WebP ou AVIF.</span>
     <span data-phrase="refuse.unwritable">Ce format ne peut pas être écrit.</span>
     <span data-phrase="segment.jfif.label">En-tête JFIF</span>
     <span data-phrase="segment.jfif.detail">Le bloc de cinq octets qui dit qu&rsquo;un JPEG est un JPEG, plus la résolution

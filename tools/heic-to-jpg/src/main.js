@@ -7,6 +7,7 @@ import { encodePixels, encodableTypes, FORMATS, JPEG, PNG, WEBP } from './codecs
 import { heifBrand, isAvif, readExif } from './boxes.js';
 import { describeExif, fitsInJpeg, uprightExif, withExif } from './exif.js';
 import { decodeHeic, engine, warmEngine } from './heif.js';
+import { AVIF, decode, encode, release } from './shared/image-convert.js';
 import {
   bytes as humanBytes, change, dimensions, metadataText, outName, uniqueNames,
 } from './files.js';
@@ -106,7 +107,8 @@ async function addFiles(files) {
   try {
     for (const file of files) {
       const head = new Uint8Array(await file.slice(0, HEAD_BYTES).arrayBuffer());
-      const brand = heifBrand(head);
+      const avif = isAvif(head);
+      const brand = avif ? 'avif' : heifBrand(head);
 
       if (!brand) {
         failures.push(phrase('load.refused',
@@ -117,8 +119,8 @@ async function addFiles(files) {
       items.push({
         id: nextId,
         file,
-        brand,
-        exif: describeExif(readExif(head)),
+        brand, avif,
+        exif: describeExif(avif ? null : readExif(head)),
       });
       nextId += 1;
     }
@@ -132,7 +134,7 @@ async function addFiles(files) {
   // The megabyte starts arriving now rather than when the button is pressed,
   // so that in the ordinary case - choose photos, glance at the options, press
   // convert - it is already here and the wait is nobody's.
-  if (items.length) {
+  if (items.some(item => !item.avif)) {
     warmEngine();
     watchEngine();
   }
@@ -150,7 +152,6 @@ async function addFiles(files) {
  * a folder where only some of the photos are the awkward ones.
  */
 function refusal(head, file) {
-  if (isAvif(head)) return phrase('refuse.avif');
   if (head[0] === 0xff && head[1] === 0xd8) return phrase('refuse.jpeg');
   if (head[0] === 0x89 && head[1] === 0x50) return phrase('refuse.png');
   return phrase('refuse.other', { name: file.name });
@@ -189,6 +190,7 @@ function render() {
       { n: items.length, size: humanBytes(totalBytes(), phrase) })
     : '';
   el.convertAll.disabled = !any || busy;
+  el.keepExif.disabled = busy || (any && items.every(item => item.avif));
   renderList();
   renderFormatNote();
 }
@@ -219,13 +221,13 @@ function renderList() {
 
     const sub = document.createElement('p');
     sub.className = 'file-sub';
-    sub.textContent = phrase('row.sub',
+    sub.textContent = phrase(item.avif ? 'row.avif' : 'row.sub',
       { brand: item.brand, size: humanBytes(item.file.size, phrase) });
     text.appendChild(sub);
 
     const note = document.createElement('p');
     note.className = item.exif.gps ? 'file-note file-note-gps' : 'file-note';
-    note.textContent = metadataText(item.exif, phrase);
+    note.textContent = item.avif ? phrase('file.avif') : metadataText(item.exif, phrase);
     text.appendChild(note);
 
     main.appendChild(text);
@@ -254,11 +256,16 @@ function renderFormatNote() {
 
   const format = { [JPEG]: 'format.jpeg', [PNG]: 'format.png', [WEBP]: 'format.webp' }[mime];
 
-  const details = !el.keepExif.checked
+  let details = !el.keepExif.checked
     ? phrase('exif.dropped')
     : mime === JPEG
       ? phrase('exif.kept')
       : phrase('exif.cannot', { format: FORMATS[mime]?.label ?? phrase('format.file') });
+
+  if (items.some(item => item.avif)) {
+    details = items.every(item => item.avif) ? phrase('file.avif')
+      : phrase('join.sentences', { a: details, b: phrase('file.avif') });
+  }
 
   el.formatNote.textContent = format
     ? phrase('join.sentences', { a: phrase(format), b: details })
@@ -305,8 +312,10 @@ el.convertAll.addEventListener('click', async () => {
   try {
     // Waited for here, once, rather than inside the loop: the first photo
     // should not be the one that looks slow because it paid for the decoder.
-    showProgress(0, items.length, '', phrase('step.waiting'));
-    await engine();
+    if (items.some(item => !item.avif)) {
+      showProgress(0, items.length, '', phrase('step.waiting'));
+      await engine();
+    }
 
     for (const [index, item] of items.entries()) {
       if (stopping) { stopped = true; break; }
@@ -381,6 +390,25 @@ async function convertOne(item, onStep) {
   const mime = el.formatSelect.value;
   const quality = Number(el.quality.value) / 100;
   const keepExif = el.keepExif.checked;
+
+  if (item.avif) {
+    // AVIF uses the browser decoder, so an AVIF-only batch never loads libheif.
+    // Metadata preservation remains the HEIC path's job; this copy is pixels.
+    onStep(phrase('step.decoding'));
+    const picture = await decode(new Blob([item.file], { type: AVIF }));
+    try {
+      onStep(phrase('step.writing.file', { format: FORMATS[mime].label }));
+      const blob = await encode(picture.bitmap, {
+        width: picture.width, height: picture.height, mime, quality, background: mime === JPEG ? '#ffffff' : undefined,
+      });
+      return [{
+        name: item.file.name, before: item.file.size, after: blob.size, blob,
+        mime, quality, width: picture.width, height: picture.height,
+        metadata: 'none', exif: item.exif, part: 0, parts: 1,
+        outName: outName(item.file.name, mime),
+      }];
+    } finally { release(picture.bitmap); }
+  }
 
   const bytes = new Uint8Array(await item.file.arrayBuffer());
 

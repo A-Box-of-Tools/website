@@ -1,5 +1,5 @@
 /**
- * tools/document-scanner/src/detect.js - where the four corners start.
+ * shared/js/document-detect.js - where the four corners start.
  *
  * The risk here is not a crash. It is a photograph whose corners are put
  * somewhere confident and wrong: a page cropped to the last line of writing on
@@ -32,8 +32,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { findPageQuad } from '../../tools/document-scanner/src/detect.js';
-import { homography, project } from '../../tools/document-scanner/src/geometry.js';
+import { findPageQuad } from '../../shared/js/document-detect.js';
+import { homography, project } from '../../shared/js/document-geometry.js';
 
 /** A repeatable noise source, so a failure can be looked at twice. */
 function noise(seed = 7) {

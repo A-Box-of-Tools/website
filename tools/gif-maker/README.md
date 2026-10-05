@@ -8,6 +8,11 @@ after that — choosing 256 colours, deciding which one every pixel becomes,
 compressing the result and wrapping it in the file — is written out here, in
 four files you can read in a sitting.
 
+AVIF inputs use the browser's decoder. The shared image list admits recognized
+image extensions when the operating system supplies no useful MIME type, then
+skips any picture the browser cannot decode. Each input contributes one still
+frame to the output GIF; the tool does not write AVIF files.
+
 It is a sibling of [Images to Video](../images-to-video/), which does the same
 job into an MP4, and the two exist for different reasons. A GIF plays by itself
 in an email, in a chat window, in a forum post and inside an `<img>` tag, with
