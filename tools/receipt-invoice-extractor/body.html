@@ -34,7 +34,8 @@
             </select>
         <p class="field-note">The default is the most common document currency; ties use the first one encountered. A currency you choose manually stays selected.</p>
       </div>
-      <button type="button" id="use-default-currency" class="ghost">Use default currency</button>
+      <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Use default currency</button>
+      <p class="currency-default-note" id="default-currency-note">Selects the currency used by the most documents. If there’s a tie, it uses the first one encountered.</p>
       <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Custom final currency code</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
     </div>
     <p class="field-summary">Choose one final currency for the email grand total. Every document uses this choice; changing it here or on a document updates the whole batch and clears rates and confirmations.</p>

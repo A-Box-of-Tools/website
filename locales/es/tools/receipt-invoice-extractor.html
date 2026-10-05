@@ -34,7 +34,8 @@
             </select>
         <p class="field-note">La moneda predeterminada es la más frecuente entre los documentos. En caso de empate, se usa la primera que aparece. Si eliges una moneda manualmente, se mantiene seleccionada.</p>
       </div>
-      <button type="button" id="use-default-currency" class="ghost">Usar moneda predeterminada</button>
+      <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Usar moneda predeterminada</button>
+      <p class="currency-default-note" id="default-currency-note">Selecciona la moneda usada por más documentos. En caso de empate, usa la primera que aparece.</p>
       <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Código personalizado de moneda final</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
     </div>
     <p class="field-summary">Elige una moneda final para el total general del correo. Todos los documentos usan esa moneda. Cambiarla aquí o en un documento actualiza todo el lote y borra los tipos de cambio y las confirmaciones.</p>

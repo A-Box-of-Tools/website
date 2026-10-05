@@ -34,7 +34,8 @@
             </select>
         <p class="field-note">A moeda padrão é a mais frequente entre os documentos. Em caso de empate, vale a primeira que aparece. Uma moeda escolhida manualmente permanece selecionada.</p>
       </div>
-      <button type="button" id="use-default-currency" class="ghost">Usar moeda padrão</button>
+      <button type="button" id="use-default-currency" class="ghost" aria-describedby="default-currency-note">Usar moeda padrão</button>
+      <p class="currency-default-note" id="default-currency-note">Seleciona a moeda usada pelo maior número de documentos. Em caso de empate, usa a primeira que aparece.</p>
       <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Código personalizado da moeda final</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
     </div>
     <p class="field-summary">Escolha uma moeda final para o total geral do e-mail. Todos os documentos usam essa moeda. Alterá-la aqui ou em um documento atualiza o lote inteiro e apaga as taxas de câmbio e as confirmações.</p>
