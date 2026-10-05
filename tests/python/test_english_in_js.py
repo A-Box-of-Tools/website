@@ -183,6 +183,10 @@ BASELINE = {
 # site's own readings of what a value means - "No flash on this camera" is ours
 # and has to move.
 NOT_OURS = {
+    ('receipt-invoice-extractor', 'location-currency.js'):
+        'country and region names matched against printed issuer addresses, '
+        'and address grammar. The module returns only a currency code and raw '
+        'document evidence; the interface explains those with translated phrases',
     ('dicom-viewer', 'dictionary.js'):
         'the PS3.6 attribute names, which every DICOM tool prints in English',
     ('dicom-viewer', 'uids.js'):

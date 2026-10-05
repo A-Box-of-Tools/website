@@ -134,7 +134,7 @@ function amounts(line, onlyMoney = false) {
   // Normalize that evidence here so the suffix 14 cannot become a whole total.
   // Manual field input still goes through the unchanged strict parseAmount.
   line = line.replace(/[\u00a0\u2007\u2009\u202f]/g, ' ').replace(/(\d)[ \t]*([.,])[ \t]+(?=\d)|(\d)[ \t]+([.,])(?=\d)/g,
-    (match, first, firstMark, second, secondMark) => `${first ?? second}${firstMark ?? secondMark}`);
+    (match, first, firstMark, alternate, alternateMark) => `${first ?? alternate}${firstMark ?? alternateMark}`);
   const values = [];
   const pattern = /[+-]?\(?[ \t]*(?:(?:[A-Z]{1,3}\$)|[$€£¥₹])?[ \t]*(?:\d+(?:[.,'’ \u00a0\u202f]\d+)*|[.,]\d{1,2})[ \t]*\)?-?/giu;
   for (const match of line.matchAll(pattern)) {
