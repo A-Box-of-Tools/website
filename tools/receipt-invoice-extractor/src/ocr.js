@@ -5,8 +5,8 @@
  * were ever reached. The blob worker inherits that same policy.
  */
 import { AbortedError, said } from './shared/errors.js';
-import { findDarkHeader } from './ocr-image.js';
-import { merchantFromRecognition } from './ocr-results.js';
+import { findDarkHeader, normalizeReceiptImage, headerReadingDimensions } from './ocr-image.js';
+import { merchantFromRecognition, needsRecoveryRecognition, needsHeaderRecognition } from './ocr-results.js';
 
 const vendor = new URL('../vendor/', import.meta.url);
 const assets = {
@@ -24,7 +24,9 @@ let nextId = 0;
  * image and recognition state belong to the worker, rather than to a job.
  * @param {HTMLCanvasElement} canvas
  * @param {(progress: {status: string, progress: number}) => void} [onProgress]
- * @returns {Promise<{text: string, bodyText: string, merchant: string, confidence: number}>}
+ * @returns {Promise<{text: string, bodyText: string, merchant: string, confidence: number,
+ *   recoveryText?: string, recoveryMerchant?: string, recoveryConfidence?: number,
+ *   headerText?: string, headerMerchant?: string, headerConfidence?: number}>}
  */
 export function recognize(canvas, onProgress = () => {}) {
   const session = current ??= createSession();
@@ -44,7 +46,65 @@ export function recognize(canvas, onProgress = () => {}) {
       output: { text: true, blocks: true },
     }, 180000);
     let merchant = merchantFromRecognition(data);
-    if (!merchant) {
+    let recovery = null;
+    if (needsRecoveryRecognition(data)) {
+      let recoveryCanvas;
+      try {
+        recoveryCanvas = normalizedCanvas(canvas);
+        if (recoveryCanvas) {
+          const recoveryBlob = await canvasBlob(recoveryCanvas);
+          if (session.closed) throw new AbortedError();
+          const recoveryImage = new Uint8Array(await recoveryBlob.arrayBuffer());
+          // Adaptive thresholding follows local paper brightness. Keep the
+          // receipt's columns in one upright block: separate-column layouts
+          // can detach an amount from the label that explains what it means.
+          recovery = await request(session, 'recognize', {
+            image: recoveryImage,
+            options: { tessedit_pageseg_mode: '6', thresholding_method: '2', user_defined_dpi: '300' },
+            output: { text: true, blocks: true },
+          }, 180000);
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+        // Optional recovery must not discard the original readable evidence.
+      } finally {
+        if (recoveryCanvas) recoveryCanvas.width = recoveryCanvas.height = 0;
+      }
+    }
+    const text = typeof data.text === 'string' ? data.text : '';
+    const result = {
+      text, bodyText: text, merchant,
+      confidence: Number.isFinite(data.confidence) ? data.confidence : 0,
+    };
+    if (recovery) {
+      result.recoveryText = typeof recovery.text === 'string' ? recovery.text : '';
+      result.recoveryMerchant = merchantFromRecognition(recovery);
+      result.recoveryConfidence = Number.isFinite(recovery.confidence) ? recovery.confidence : 0;
+    }
+    if (!session.closed && needsHeaderRecognition(result)) {
+      let headerCanvas;
+      try {
+        headerCanvas = closerHeader(canvas);
+        if (headerCanvas) {
+          const headerBlob = await canvasBlob(headerCanvas);
+          if (session.closed) throw new AbortedError();
+          const headerImage = new Uint8Array(await headerBlob.arrayBuffer());
+          const header = await request(session, 'recognize', {
+            image: headerImage,
+            options: { tessedit_pageseg_mode: '6', thresholding_method: '2', user_defined_dpi: '300' },
+            output: { text: true, blocks: true },
+          }, 180000);
+          result.headerText = typeof header.text === 'string' ? header.text : '';
+          result.headerMerchant = merchantFromRecognition(header);
+          result.headerConfidence = Number.isFinite(header.confidence) ? header.confidence : 0;
+        }
+      } catch (error) {
+        if (error.name === 'AbortError') throw error;
+      } finally {
+        if (headerCanvas) headerCanvas.width = headerCanvas.height = 0;
+      }
+    }
+    if (!merchant && !result.recoveryMerchant && !result.headerMerchant && !session.closed) {
       let headerCanvas;
       try {
         const context = canvas.getContext('2d');
@@ -73,15 +133,57 @@ export function recognize(canvas, onProgress = () => {}) {
         if (headerCanvas) headerCanvas.width = headerCanvas.height = 0;
       }
     }
-    const text = typeof data.text === 'string' ? data.text : '';
-    return {
-      text: merchant && !text.includes(merchant) ? `${merchant}\n${text}` : text,
-      bodyText: text, merchant,
-      confidence: Number.isFinite(data.confidence) ? data.confidence : 0,
-    };
+    result.text = merchant && !text.includes(merchant) ? `${merchant}\n${text}` : text;
+    result.merchant = merchant;
+    return result;
   });
   session.tail = run.catch(() => {});
   return run;
+}
+
+function closerHeader(canvas) {
+  const dimensions = headerReadingDimensions(canvas.width, canvas.height);
+  if (!dimensions) return null;
+  const header = document.createElement('canvas');
+  header.width = dimensions.width;
+  header.height = dimensions.height;
+  try {
+    const context = header.getContext('2d');
+    if (!context) throw said('ocr.failed');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, header.width, header.height);
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+    const border = dimensions.border;
+    context.drawImage(canvas, 0, 0, canvas.width, dimensions.sourceHeight,
+      border, border, header.width - border * 2, header.height - border * 2);
+    const pixels = normalizeReceiptImage(context.getImageData(0, 0, header.width, header.height));
+    if (!pixels) throw said('ocr.failed');
+    context.putImageData(new ImageData(pixels.data, pixels.width, pixels.height), 0, 0);
+    return header;
+  } catch (error) {
+    header.width = header.height = 0;
+    throw error;
+  }
+}
+
+function normalizedCanvas(canvas) {
+  const context = canvas.getContext('2d');
+  if (!context) return null;
+  const pixels = normalizeReceiptImage(context.getImageData(0, 0, canvas.width, canvas.height));
+  if (!pixels) return null;
+  const recovery = document.createElement('canvas');
+  recovery.width = pixels.width;
+  recovery.height = pixels.height;
+  try {
+    const destination = recovery.getContext('2d');
+    if (!destination) throw said('ocr.failed');
+    destination.putImageData(new ImageData(pixels.data, pixels.width, pixels.height), 0, 0);
+    return recovery;
+  } catch (error) {
+    recovery.width = recovery.height = 0;
+    throw error;
+  }
 }
 
 /**

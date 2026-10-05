@@ -25,7 +25,11 @@ deskew turn a receipt's columns sideways. Clear document edges produce a
 suggested crop. When a long receipt fills the picture vertically, a fallback
 can remove the side background from two consistent paper edges while retaining
 the entire height, including the barcode and date below it. If neither method
-finds reliable edges, the full image is kept. The visitor
+finds reliable edges, the full image is kept. On a long colored receipt, matching
+paper color just beyond a detected short edge retains that whole end of the
+picture. This protects a heading or final line when an internal barcode was
+mistaken for the paper boundary, at the cost of possibly keeping extra background.
+Neutral paper and square pictures retain the existing detection behavior. The visitor
 reviews and adjusts the crop to keep the whole document and remove the
 surrounding background. Changing the crop or rotation clears confirmation.
 One image represents one document; there is no grouping of invoice pages or
@@ -60,16 +64,44 @@ asset goes through a runtime fetch. This costs larger source files but recogniti
 `script-src 'wasm-unsafe-eval'` for this local engine.
 
 The primary OCR pass keeps the selected upright orientation and uses page
-segmentation mode 6 on the enlarged, bordered crop. Merchant suggestions come
-from high-confidence leading text lines, so garbled header text does not
-automatically fill the name. If that pass has no merchant candidate and a
+segmentation mode 6 on the enlarged, bordered crop. A missing amount or date,
+or weak overall or critical-line confidence, triggers at most one body recovery
+pass. That copy normalizes the paper's local brightness and uses Sauvola
+adaptive thresholding with upright block segmentation (mode 6), keeping
+amounts beside their labels. It can help with uneven light, but it cannot
+restore absent pixels. Recovery fills a missing amount, date, reference or
+currency only when its average text confidence is at least 60. Merchant
+suggestions use their leading line's confidence separately. Unresolved
+disagreements in amounts, dates, references or currencies leave the affected
+fields blank with a review warning. Printed currency in the primary reading is
+retained over a weaker address-based recovery suggestion. A recognized receipt
+or invoice date is retained over an appended card-payment date; a sufficiently
+confident receipt date from recovery can replace that weaker payment-date
+fallback. Equivalent unambiguous calendar dates do not conflict solely because
+their printed formats differ. A total already ambiguous
+inside the primary reading is not settled by the recovery pass. Both complete
+body readings remain available: the primary text is editable, and the second
+is a separate read-only comparison. The original photo and attachment never
+receive the contrast adjustments.
+
+Merchant suggestions normally require a leading line confidence of at least
+60; the separately bounded inverted-logo pass allows 55. Garbled header text
+does not automatically fill the name. A missing reliable merchant,
+or an unresolved dollar or yen symbol, can trigger one closer reading of the
+top 22 percent of the upright crop. This normalized copy aims for 1000 pixels
+wide within the 2400-pixel longest-edge budget. Its text appears in a separate
+read-only store-name-and-address comparison. It can fill a missing merchant
+or suggest currency from the issuer address, with the final body date used for
+historical safeguards. Printed or conflicting body currency evidence takes
+priority; amounts, dates and references never come from this header reading.
+
+If the body and closer header readings still offer no reliable merchant and a
 bounded filled dark header is found, `src/ocr.js` reads a separate locally
 inverted crop to help with light lettering in a logo. If block recognition has
 no usable name, sparse text segmentation can ignore its decorative frame.
-That supplemental pass
-supplies only a merchant hint; the primary body text remains the source for
-the date, reference, currency and amount. Either pass can still be wrong, so
-its suggestions require the same human review.
+That logo pass supplies only a merchant hint. The original and conditional
+recovery body readings supply the date, reference, amount and printed currency.
+Every pass can still be wrong, so its suggestions require the same human review.
 
 The parser infers fields from OCR text rather than knowing the issuer's layout.
 It excludes labels for subtotals, discounts, cash tendered and change when
@@ -81,7 +113,16 @@ It does not extract line items, prove the arithmetic on the document, or decide
 whether an invoice was paid. Dates stay as printed: a recognized 24/09/2018
 does not automatically fill the separate ISO conversion date. A pound sign
 suggests GBP, while a dollar sign alone is insufficient to distinguish USD,
-CAD and AUD. Every suggested currency still needs the visitor's review.
+CAD and AUD. A printed currency associated with the final total takes priority.
+When the currency remains unknown, a bounded store or supplier address can
+suggest it from a clear country name or a distinctive postcode with its region.
+The form shows the printed address line beside that suggestion. This inference
+uses only recognized document text; it makes no location request and does not
+use the visitor's location. A city name alone, a customer or delivery address,
+or a bank address does not identify the store's currency. Unresolved conflicting evidence
+keeps the field blank. Historical currency changes are handled conservatively
+rather than assigning today's currency to an older receipt. Every suggested
+currency still needs the visitor's review.
 
 ## What enters the report
 
@@ -132,6 +173,12 @@ JPEGs and text report to the device's share sheet. The visitor chooses their
 email app, recipient and send action there. Share-sheet recipients cannot be
 preselected by the page. An app may accept the pictures without the report, so
 the visitor still checks the message before sending it.
+
+The suggested subject includes the document count and, once every document is
+checked, the converted grand total with its final currency. It follows batch
+changes until the visitor edits the subject, after which their wording is kept.
+The subject is passed to the share sheet and written into the email file; the
+visitor checks how their email app uses it.
 
 The explicit email-file download builds a local `.eml` message containing the
 full report and every prepared JPEG as a MIME attachment. The optional

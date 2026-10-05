@@ -127,6 +127,9 @@ body = """
       Ajuste cada recorte para manter o recibo ou a fatura por inteiro. A página
       sugere um recorte quando encontra bordas claras do documento; caso
       contrário, mantém a imagem inteira. Confira e ajuste essa sugestão.
+      Em um recibo longo de papel colorido, uma cor de papel correspondente
+      além da borda detectada pode preservar aquela extremidade da imagem,
+      mantendo o cabeçalho ou o texto final com um pouco de fundo extra.
       Ela cria cópias JPEG com até 1600 pixels no lado mais longo e busca um
       tamanho de cerca de 350 KB por imagem. Confira as prévias e os tamanhos
       informados antes de enviar; essa meta de tamanho não é garantida.
@@ -227,7 +230,21 @@ a = """
         rótulos de descontos e de valores entregues para pagamento, mas não
         consegue usar um rótulo que o OCR não leu. Os campos de estabelecimento
         e número do recibo ou da fatura podem ficar em branco quando não há
-        uma opção confiável. Compare cada sugestão com a foto e confirme
+        uma opção confiável. A falta do nome do estabelecimento ou uma moeda
+        de dólar ou iene não identificada também podem acionar uma leitura
+        mais próxima do cabeçalho do estabelecimento. Essa leitura é mostrada
+        separadamente e fornece apenas o nome do estabelecimento e sugestões
+        de moeda baseadas no endereço. Uma leitura pouco confiável ou a falta de um valor
+        ou de uma data podem acionar uma segunda leitura com ajuste local de
+        contraste para distinguir melhor a impressão do papel. As duas leituras do documento completo ficam
+        disponíveis para comparação. Divergências não resolvidas sobre valores,
+        datas, números de recibo ou fatura ou moedas podem deixar campos em
+        branco para você preencher. A moeda impressa tem prioridade sobre uma
+        dedução pelo endereço, e uma data reconhecida do recibo ou da fatura
+        tem prioridade sobre uma data de um comprovante de pagamento com
+        cartão anexado. Isso pode melhorar uma sugestão, mas não
+        recuperar detalhes perdidos pelo desfoque nem garantir um resultado
+        correto. Compare cada sugestão com a foto e confirme
         cada documento por conta própria antes de exportá-lo. Esta ferramenta
         não extrai os itens individualmente nem comprova que os cálculos de
         uma fatura estão corretos."""
@@ -249,9 +266,14 @@ a = """
         taxa de câmbio online, confira-a e escolha a data no campo separado
         de data de conversão; uma data como 24/09/2018 não é convertida
         automaticamente ali. O símbolo de libra sugere GBP. O símbolo de
-        dólar sozinho deixa a escolha da moeda para você, porque pode indicar
-        USD, CAD, AUD ou outra moeda chamada dólar. Confira cada código
-        sugerido no documento."""
+        dólar sozinho pode indicar USD, CAD, AUD ou outra moeda chamada dólar.
+        A moeda impressa junto ao total final tem prioridade. Se a moeda ainda
+        não estiver clara, um país reconhecido ou um código postal distintivo
+        junto com sua região no endereço do estabelecimento podem sugeri-la.
+        A linha do endereço impresso aparece junto da sugestão. Uma cidade
+        sozinha ou um endereço de cliente, entrega ou banco não bastam; dados
+        ambíguos ou contraditórios não resolvidos deixam a moeda em branco. Nenhum serviço de
+        localização é consultado. Confira cada código sugerido no documento."""
 
 [[faq]]
 q = "Quais arquivos e idiomas a ferramenta consegue ler?"
@@ -280,7 +302,10 @@ a = """
         Não. Quando há suporte, ele oferece o relatório e as cópias JPEG
         comprimidas pelo menu de compartilhamento do dispositivo; escolha
         seu aplicativo de e-mail ali. Caso contrário, ele baixa um arquivo de
-        e-mail contendo o relatório e os anexos. Confira o destinatário,
+        e-mail contendo o relatório e os anexos. O assunto sugerido inclui a
+        quantidade de documentos e, quando todos estiverem conferidos, o total
+        geral na moeda final. Se você editar o assunto, seu texto será mantido.
+        Confira o destinatário,
         o conteúdo e os anexos e faça o envio. A página não consegue saber
         se seu aplicativo de e-mail os aceitou nem se você acabou enviando
         a mensagem."""
@@ -372,6 +397,7 @@ features = [
   "Lotes de até 20 imagens, cada uma com até 20 MB",
   "Estabelecimento, data, número do recibo ou da fatura, moeda e total editáveis",
   "Códigos de moedas comuns e código personalizado de três letras",
+  "Sugestões de moeda com dados claros do endereço impresso do estabelecimento",
   "Imagem original e texto do OCR sem edição para conferência",
   "Rotação e nova leitura de fotos de lado",
   "Recortes ajustáveis e prévias de anexos JPEG comprimidos",

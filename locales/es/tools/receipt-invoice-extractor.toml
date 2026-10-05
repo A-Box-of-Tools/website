@@ -51,7 +51,7 @@ body = "Cuando se admite compartir archivos, Correo con imágenes abre el menú 
 
 [[privacy]]
 title = "Las imágenes que envías son copias recortadas y comprimidas."
-body = "Ajusta cada recorte para conservar el recibo o la factura completos. La página sugiere un recorte cuando encuentra bordes claros del documento; de lo contrario, conserva la imagen completa. Revisa y ajusta la sugerencia. Crea copias JPEG de hasta 1600 píxeles en su lado más largo e intenta que cada imagen ocupe unos 350 KB. Revisa las vistas previas y los tamaños indicados antes de enviar; el tamaño objetivo no está garantizado. Las fotos originales no cambian y no se adjuntan. Si la aplicación de correo no puede usar el archivo de correo, descarga el ZIP, extráelo y adjunta sus copias JPEG y el CSV manualmente."
+body = "Ajusta cada recorte para conservar el recibo o la factura completos. La página sugiere un recorte cuando encuentra bordes claros del documento; de lo contrario, conserva la imagen completa. En un recibo largo de papel de color, un color de papel coincidente más allá del borde detectado puede conservar ese extremo de la imagen, manteniendo el encabezado o el texto final con algo de fondo adicional. Revisa y ajusta la sugerencia. Crea copias JPEG de hasta 1600 píxeles en su lado más largo e intenta que cada imagen ocupe unos 350 KB. Revisa las vistas previas y los tamaños indicados antes de enviar; el tamaño objetivo no está garantizado. Las fotos originales no cambian y no se adjuntan. Si la aplicación de correo no puede usar el archivo de correo, descarga el ZIP, extráelo y adjunta sus copias JPEG y el CSV manualmente."
 
 [[privacy]]
 title = "Los tipos de cambio en línea son opcionales."
@@ -89,7 +89,7 @@ body = "Revisa las vistas previas y los tamaños de los JPEG preparados. Usa Cor
 
 [[faq]]
 q = "¿Lee correctamente todos los recibos y facturas?"
-a = "No. El OCR puede confundir un dígito o no leer impresión tenue, texto diminuto o un logotipo estilizado. El analizador evita etiquetas de descuentos y efectivo entregado, pero no puede usar una etiqueta que el OCR no haya leído. El comercio y la referencia pueden quedar vacíos si no hay un candidato fiable. Compara cada sugerencia con la foto y confirma cada documento antes de exportarlo. Esta herramienta no extrae líneas de productos ni demuestra que los cálculos de una factura sean correctos."
+a = "No. El OCR puede confundir un dígito o no leer impresión tenue, texto diminuto o un logotipo estilizado. El analizador evita etiquetas de descuentos y efectivo entregado, pero no puede usar una etiqueta que el OCR no haya leído. El comercio y la referencia pueden quedar vacíos si no hay un candidato fiable. La falta del nombre del comercio o una moneda de dólar o yen sin identificar también pueden activar una lectura más cercana del encabezado del comercio. Esa lectura se muestra por separado y solo proporciona el nombre del comercio y sugerencias de moneda basadas en su dirección. Una lectura poco fiable o la falta de un importe o una fecha pueden activar una segunda lectura con ajuste local del contraste para distinguir mejor la impresión del papel. Puedes comparar las dos lecturas del documento completo. Las discrepancias no resueltas sobre importes, fechas, referencias o monedas pueden dejar campos vacíos para que los rellenes. La moneda impresa tiene prioridad sobre una deducción basada en la dirección, y una fecha reconocida del recibo o la factura tiene prioridad sobre una fecha de un comprobante de pago con tarjeta añadido. Puede mejorar una sugerencia, pero no recuperar detalles perdidos por desenfoque ni garantizar un resultado correcto. Compara cada sugerencia con la foto y confirma cada documento antes de exportarlo. Esta herramienta no extrae líneas de productos ni demuestra que los cálculos de una factura sean correctos."
 
 [[faq]]
 q = "¿Puede una imagen contener varios recibos?"
@@ -97,7 +97,7 @@ a = "Usa un recibo o una factura por imagen. La herramienta trata cada imagen co
 
 [[faq]]
 q = "¿Cómo se interpretan las fechas y los símbolos de moneda?"
-a = "La fecha del documento se conserva tal como está impresa. Para consultar un tipo de cambio en línea, revísala y elígela en el campo independiente de fecha de conversión; una fecha como 24/09/2018 no se rellena automáticamente allí. El símbolo de libra sugiere GBP. El símbolo $ por sí solo deja la elección a tu cargo, porque puede significar USD, CAD, AUD u otra moneda de dólar. Compara cada código sugerido con el documento."
+a = "La fecha del documento se conserva tal como está impresa. Para consultar un tipo de cambio en línea, revísala y elígela en el campo independiente de fecha de conversión; una fecha como 24/09/2018 no se rellena automáticamente allí. El símbolo de libra sugiere GBP. El símbolo $ por sí solo puede significar USD, CAD, AUD u otra moneda de dólar. Tiene prioridad la moneda impresa junto al total final. Si la moneda sigue sin estar clara, un país reconocido o un código postal distintivo junto con su región en la dirección del comercio pueden sugerirla. La línea de la dirección impresa aparece junto a la sugerencia. Una ciudad por sí sola o una dirección de cliente, entrega o banco no bastan; los datos ambiguos o contradictorios sin resolver dejan la moneda vacía. No se consulta ningún servicio de ubicación. Compara cada código sugerido con el documento."
 
 [[faq]]
 q = "¿Qué archivos e idiomas puede leer?"
@@ -109,7 +109,7 @@ a = "Cada foto cuenta como un documento. Cada documento muestra su importe origi
 
 [[faq]]
 q = "¿El botón de correo envía algo automáticamente?"
-a = "No. Si es compatible, ofrece el informe y las copias JPEG comprimidas mediante el menú de compartir del dispositivo; elige allí la aplicación de correo. Si no es compatible, descarga un archivo de correo con el informe y los adjuntos. Revisa el destinatario, el contenido y los adjuntos, y envía el mensaje tú mismo. La página no puede saber si la aplicación los aceptó o si finalmente enviaste el mensaje."
+a = "No. Si es compatible, ofrece el informe y las copias JPEG comprimidas mediante el menú de compartir del dispositivo; elige allí la aplicación de correo. Si no es compatible, descarga un archivo de correo con el informe y los adjuntos. El asunto sugerido incluye el número de documentos y, cuando todos estén revisados, el total general en la moneda final. Si editas el asunto, se conserva tu texto. Revisa el destinatario, el contenido y los adjuntos, y envía el mensaje tú mismo. La página no puede saber si la aplicación los aceptó o si finalmente enviaste el mensaje."
 
 [[faq]]
 q = "¿Las imágenes recortadas se adjuntan al archivo de correo?"
@@ -147,6 +147,7 @@ features = [
   "Lotes de hasta 20 imágenes, de hasta 20 MB cada una",
   "Comercio, fecha, referencia, moneda y total editables",
   "Códigos de moneda habituales y código personalizado de tres letras",
+  "Sugerencias de moneda a partir de datos claros de la dirección impresa del comercio",
   "Imagen original y texto de OCR para revisar",
   "Rotación y nueva lectura de fotos de lado",
   "Recortes ajustables y vistas previas de adjuntos JPEG comprimidos",
