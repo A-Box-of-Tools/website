@@ -65,8 +65,12 @@ the ordinary share link and its consent workflow continue to work.
 
 ### What local discovery means
 
-Discovery groups browsers by the exact canonical Cloudflare public source
-address and the normalized allowed origin, hashed with SHA-256. No client
+Discovery groups browsers by the canonical Cloudflare public IPv4 address
+or IPv6 /64 subnet, together with the normalized allowed origin, hashed
+with SHA-256. IPv6 devices with different addresses inside one /64 share
+the group. When Cloudflare's Pseudo IPv4 mode replaces the address with a
+Class E marker, the group uses its preserved `CF-Connecting-IPv6` address;
+an alternate header is ignored for ordinary source addresses. No client
 parameter, header or message chooses a group. Discovery requests with an
 unknown, reserved, invalid or missing address, `CF-Worker`, or Cloudflare's
 shared Worker address are refused rather than grouped together. A local
@@ -75,8 +79,8 @@ by link; the room issues no discovery lease for that connection.
 
 This is a finding aid, not a physical LAN guarantee. Browsers behind one
 router commonly share the address, but a shared VPN or carrier-grade NAT
-can include unrelated networks; exact IPv6 addresses and different routes
-can hide nearby devices. The page explains the scope before listing or
+can include unrelated networks; mixed IPv4 and IPv6 connections or
+different routes can hide nearby devices. The page explains the scope before listing or
 advertising anything. Local shares advertise by default, with a switch for
 link-only sharing. Names are visible to the group, so Private stays on by
 default. Choosing a name opens consent; it does not initiate a peer

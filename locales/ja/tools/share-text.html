@@ -7,7 +7,7 @@
       <h2>この接続上のローカル共有</h2>
       <p id="discovery-status" role="status" aria-live="polite">ローカル共有を検索中…</p>
       <div id="discovery-list"></div>
-      <p class="discovery-note">この一覧には、あなたと同じ公開IPアドレスを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv6や経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
+      <p class="discovery-note">この一覧には、あなたと同じ公開IPv4アドレスまたは同じIPv6サブネットを使うブラウザのリンク名が表示されます。通常は同じルーターですが、共有VPNや通信事業者によるアドレス共有では別のネットワークも含まれます。IPv4とIPv6の違いや経路の違いで近くの端末が見つからないこともあります。インターネットが必要です。共有を開いても接続前に確認され、非公開の共有には引き続き共有者の承認が必要です。</p>
       <button type="button" id="discovery-refresh" class="ghost">ローカル共有を更新</button>
     </section>
 
@@ -52,12 +52,12 @@
           <input type="checkbox" id="local">
           ローカルネットワーク——インターネット中継なし
         </label>
-        <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。</p>
+        <p class="field-note">同じWi-Fiまたはイーサネットに接続した端末向けです。ブラウザ同士の紹介には引き続きインターネットが必要ですが、このモードはアドレスを調べる公開サーバーも中継も使いません。VPNやブラウザの設定により通信経路が変わることがあります。コピーしたリンクにはこの設定が含まれます。 ローカルネットワークは標準で無効です。自分の共有をローカル検索の一覧に表示するには、このモードを選んでください。</p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
           発見可能——このインターネット接続上にリンク名を表示する
         </label>
-        <p class="discovery-note">発見可能な共有は、同じ公開IPアドレスを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
+        <p class="discovery-note">発見可能な共有は、同じ公開IPv4アドレスまたは同じIPv6サブネットを使う相手に名前を表示します。特に共有ネットワークでは「非公開」を有効にしてください。非公開を無効にすると、名前が見える相手はあなたの承認なしで接続して読めます。「発見可能」を外すとリンクのみで共有できます。</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           使い切り——下書きをこの端末に残さない
@@ -153,7 +153,7 @@
     <span data-phrase="units.mb">MB</span>
 
     <span data-phrase="discovery.connecting">ローカル共有を検索中…</span>
-    <span data-phrase="discovery.empty">ほかの発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
+    <span data-phrase="discovery.empty">発見可能なローカル共有はまだありません。共有者のタブを開いたままにするか、リンクを使ってください。</span>
     <span data-phrase="discovery.ready">共有を選ぶと、その接続ページを開きます。</span>
     <span data-phrase="discovery.unavailable">ローカル検索を利用できません。共有リンクは引き続き使えます。</span>
     <span data-phrase="discovery.open">共有を開く</span>

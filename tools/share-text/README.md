@@ -25,7 +25,7 @@ quietly. The page's `connect-src` names exactly one origin of ours — the
 needs an introduction: something must match the reader who typed
 `brave-otter-42` with the sharer under that name and pass a few KB of WebRTC
 negotiation between them. The rendezvous also lists opted-in local link
-names for browsers using the same public IP address. It writes no storage
+names for browsers using the same public IPv4 address or IPv6 /64 subnet. It writes no storage
 — rooms and discovery entries live on their open sockets — and the
 content never passes through it. What it can see: that a name is in use,
 when peers come and go, their IPs, and the negotiation blobs. What it
@@ -79,14 +79,19 @@ The list contains only advertised codes and the local-mode flag; opening an
 entry shows the usual consent page in another tab. It never opens WebRTC on
 its own and never bypasses Private approval. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
+Local network mode itself is off by default, so ordinary shares are never
+listed. The directory includes the sharer’s own published share.
 Keep Private on on shared networks: without it, anyone who sees the name
 can connect and read without an admission decision.
 
-The group is derived by the worker from the exact canonical Cloudflare
-public source address and the allowed page origin, hashed with SHA-256.
+The group is derived by the worker from the canonical Cloudflare public
+IPv4 address or IPv6 /64 subnet, together with the allowed page origin,
+hashed with SHA-256. IPv6 devices in one /64 share the group even when their
+individual addresses differ.
 The page cannot pick a scope. One router usually gives the expected group,
-but a shared VPN or carrier-grade NAT can include other networks. Exact IPv6
-matching or different routes can exclude two devices on the same LAN.
+but a shared VPN or carrier-grade NAT can include other networks. Mixed IPv4
+and IPv6 connections or different routes can exclude two devices on the
+same LAN.
 Missing, unknown or Worker-proxied source addresses are refused rather than
 falling into one global group. A host can still share by link when its
 discovery scope is unsupported; it receives no publication lease. This is

@@ -103,10 +103,12 @@ body = """
       la llamada a una compartición privada viaja por el canal directo
       cifrado. Su código completo está en el repositorio, junto al de esta
       herramienta. El directorio enumera solo los nombres anunciados por
-      quienes siguen conectados con la misma dirección IP pública. Puede
+      quienes siguen conectados con la misma dirección IPv4 pública o la
+      misma subred IPv6. Puede
       incluir otras redes detrás de una VPN compartida o de una dirección
-      compartida por el proveedor; los dispositivos cercanos con direcciones
-      públicas distintas pueden no aparecer. Lo que sobrevive a una compartición es una sola cosa:
+      compartida por el proveedor. Si unos dispositivos usan IPv4 y otros
+      IPv6, o siguen rutas distintas, pueden no aparecer aunque estén en la
+      misma red local. Lo que sobrevive a una compartición es una sola cosa:
       Cloudflare, que ejecuta el servidor, guarda un registro de cada conexión
       durante siete días, con el nombre de enlace, la dirección y la hora,
       nunca el contenido."""
@@ -131,7 +133,7 @@ body = """
       sugerencias son nombres que se pueden decir en voz alta. Las
       comparticiones locales visibles publican su nombre en la lista de
       esta conexión: queda público para los navegadores que usan la misma
-      dirección IP pública. Mantén Privado activado para cualquier contenido
+      dirección IPv4 pública o la misma subred IPv6. Mantén Privado activado para cualquier contenido
       delicado. Viene activado: cada lector que llega debe presentarse, por el canal
       directo, y no se envía nada hasta que tú lo dejas entrar."""
 
@@ -240,7 +242,8 @@ a = """
         publicado en el mismo repositorio que la página. Es el servidor más
         pequeño capaz de hacer el trabajo. También enumera los nombres de
         enlace locales cuya publicación se haya elegido, para navegadores
-        que usan la misma dirección IP pública. No guarda contenido ni
+        que usan la misma dirección IPv4 pública o la misma subred IPv6.
+        No guarda contenido ni
         puede leer el canal cifrado entre los navegadores."""
 
 [[faq]]
@@ -250,8 +253,8 @@ a = """
         quien comparte y los lectores, sus direcciones IP y el
         establecimiento de la conexión cifrada que intercambian, y los
         nombres de enlace cuya publicación en la lista se haya elegido.
-        La lista agrupa los nombres por la dirección IP pública que ve
-        el servidor. No el
+        La lista agrupa los nombres por la dirección IPv4 pública o la
+        subred IPv6 que ve el servidor, y por el origen de la página. No el
         texto, no los archivos, no sus nombres ni tamaños, no a quién se
         dejó entrar en una compartición privada, y no lo que nadie escribió
         al presentarse: todo eso viaja por el canal directo, cifrado de
@@ -384,12 +387,16 @@ q = "¿Cómo encuentra la lista las comparticiones locales?"
 a = """
         Al abrir la página inicial de esta herramienta se piden al
         intermediario los nombres de enlace visibles en la lista de
-        navegadores que usan la misma dirección IP pública. Normalmente
+        navegadores que usan la misma dirección IPv4 pública o la misma
+        subred IPv6. Normalmente
         significa el mismo router, pero una VPN compartida o un proveedor
-        que comparte una dirección pueden incluir otras redes; IPv6 o
-        rutas distintas pueden ocultar dispositivos cercanos. La lista no
+        que comparte una dirección pueden incluir otras redes. Si unos
+        dispositivos usan IPv4 y otros IPv6, o siguen rutas distintas,
+        pueden no aparecer aunque estén en la misma red local. La lista no
         demuestra que sea una misma red local física. Se necesita internet.
-        Las comparticiones locales se anuncian por defecto; desmarca
+        Solo aparecen las comparticiones en modo Red local. Elige este modo
+        antes de empezar, ya que está desactivado por defecto. Las
+        comparticiones locales se anuncian por defecto; desmarca
         Visible en la lista para compartir solo por enlace y mantén
         Privado activado en redes compartidas. Al elegir un nombre se abre
         la página de consentimiento de la compartición; nunca conecta
@@ -413,5 +420,5 @@ features = [
   "El borrador queda solo en el navegador de quien comparte - o en ninguna parte, si es de un solo uso",
   "Todo el componente de servidor es un intermediario sin almacenamiento, publicado en el repositorio",
   "Modo opcional de red local sin descubrimiento público de direcciones ni retransmisor de internet",
-  "Los nombres de enlace locales visibles en la lista aparecen para navegadores con la misma IP pública, respetando el consentimiento y la aprobación privada",
+  "Los nombres de enlace locales visibles en la lista aparecen para navegadores con la misma dirección IPv4 pública o subred IPv6, respetando el consentimiento y la aprobación privada",
 ]
