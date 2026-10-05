@@ -4,8 +4,11 @@
       Open the <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a>, drop
       the photos in, and press &ldquo;Remove all metadata&rdquo;. Every tag, the
       XMP and IPTC blocks, the comments and the embedded thumbnail go, on every
-      photo on the list at once. The picture itself is not touched &mdash; not
-      re-compressed, not decoded, not changed by a single pixel.
+      JPEG, PNG or WebP photo on the list at once. Their compressed picture data
+      is copied unchanged. AVIF cleaning instead creates a new PNG from the
+      browser's first decoded image, without copying the original metadata.
+      The original file stays unchanged; the PNG may be larger and HDR or
+      colour representation may change.
     </p>
     <p>
       Before you do that, it is worth looking at what was in there. It is
@@ -101,10 +104,11 @@
       Re-saving a photo through an editor or a compressor does remove the
       metadata &mdash; the picture is decoded to pixels and encoded again, and a
       canvas full of pixels carries no tags. It works, and it costs you quality,
-      because that re-encode is lossy.
+      when the new encoding is lossy. A lossless PNG can avoid another lossy
+      compression step, but decoding may still change HDR or colour representation.
     </p>
     <p>
-      Removing the metadata properly costs nothing at all. The tags sit in the
+      For JPEG, PNG and WebP, container cleaning avoids re-encoding. The tags sit in the
       container <em>around</em> the compressed picture, not inside it, so
       stripping them is deleting entries from a list and writing the list back
       out. The compressed image data is copied across byte for byte and the
@@ -171,15 +175,15 @@
   <section>
     <h2>Formats, and the ones that cannot be done this way</h2>
     <p>
-      JPEG, PNG and WebP can all be rewritten cleanly, and those are the three
-      the tool here handles.
+      JPEG, PNG and WebP support container cleaning and tag editing. AVIF
+      supports an available EXIF preview and cleaning to a new PNG. AVIF tag
+      editing is unavailable, and its preview does not inventory every other
+      metadata block. Animated AVIF uses the first decoded image.
     </p>
     <p>
-      HEIC &mdash; what an iPhone saves by default &mdash; and AVIF are box
-      formats built from nested atoms, and need a different parser entirely. The
-      tool recognises them and says so rather than producing a broken file. If
-      you have a HEIC, converting it to JPEG will remove the metadata as a side
-      effect of the conversion.
+      HEIC &mdash; what an iPhone often saves &mdash; uses a different codec and
+      is still recognised but refused by this metadata tool. If
+      you have a HEIC, choose metadata removal when converting it to JPEG.
     </p>
     <p>
       A bare TIFF is not handled either, and for a more interesting reason: in a

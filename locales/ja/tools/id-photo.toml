@@ -130,7 +130,7 @@ features = ["公表された規格の一覧。それぞれに出典の当局と�
 
 [picker]
 title = "ここに写真をドロップ"
-hint = "クリックして選ぶこともできます——写真1枚。JPEG・PNG・WebP、そのほかブラウザで開けるものなら何でも"
+hint = "クリックして選ぶこともできます——写真1枚。JPEG・PNG・WebP・AVIF、そのほかブラウザで開けるものなら何でも"
 
 [landing]
 title = "写真の寸法と要件：{country}、{document}"

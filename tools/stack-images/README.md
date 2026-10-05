@@ -8,6 +8,12 @@ files without a RAW converter.
 This file is for somebody reading the code. What the tool is for, and what it
 claims, is on [the page itself](https://abox.tools/stack-images/).
 
+Ordinary frames use the browser decoder, including AVIF when it is supported.
+The chooser names `image/avif` and `.avif` explicitly so a missing operating
+system association does not hide those frames. AVIF does not enter the RAW
+preview reader; it is decoded as an ordinary image, and the stack is still
+written as PNG or JPEG.
+
 ## The two decisions that shaped everything else
 
 ### 1. A RAW file is opened by reading about a hundred kilobytes of it

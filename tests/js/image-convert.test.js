@@ -1,5 +1,5 @@
 /**
- * shared/js/image-convert.js - the half of the three format converters that
+ * shared/js/image-convert.js - the half of the native format converters that
  * can be tested without a browser.
  *
  * WHAT IS AND IS NOT HERE
@@ -12,8 +12,8 @@
  *
  * The fixtures come from tests/js/helpers.js, which already knew how to build
  * a WebP because the EXIF tools needed one. The AVIF headers are built here:
- * nothing else in the repository reads one, and they are eight bytes of magic
- * plus a brand list, which is worth seeing written out.
+ * a box header, major brand, minor version and compatible brands are worth
+ * seeing written out, especially because the version is not another brand.
  */
 
 import test from 'node:test';
@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 
 import {
   AVIF, BMP, GIF, JPEG, PNG, WEBP,
-  change, outName, riffChunks, sniff, uniqueNames, webpFacts,
+  avifFacts, change, outName, riffChunks, sniff, uniqueNames, webpFacts,
 } from '../../shared/js/image-convert.js';
 import {
   ascii, concat, jpeg, png, u32be, VP8_CHUNK, vp8xChunk, webp, webpChunk,
@@ -71,6 +71,29 @@ test('a brand is only matched on a four-byte boundary', () => {
   // "xavi" + "fxxx" contains the letters of a brand across the join, and is
   // not one. Walking a byte at a time would accept it.
   assert.equal(sniff(ftyp(['xavi', 'fxxx'])), null);
+});
+
+test('AVIF brands must be inside ftyp, never its minor version or a later box', () => {
+  assert.equal(sniff(ftyp(['isom', 'avif', 'isom'])), null);
+  const ordinary = ftyp(['isom', '\0\0\0\0']);
+  assert.equal(sniff(concat(ordinary, ascii('avif'))), null);
+  assert.equal(sniff(concat(u32be(12), ascii('ftypavif'))), null);
+  assert.equal(sniff(concat(u32be(17), ascii('ftypavif'), new Uint8Array(5))), null);
+});
+
+test('an extended-size ftyp keeps its version and brands in the right places', () => {
+  const box = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(28), ascii('mif1'), u32be(0), ascii('avif'));
+  assert.equal(sniff(box), AVIF);
+  assert.equal(sniff(box.subarray(0, 20)), null);
+  const version = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(24), ascii('isom'), ascii('avif'));
+  assert.equal(sniff(version), null);
+});
+
+test('AVIF sequence facts come only from complete declared brands', () => {
+  assert.deepEqual(avifFacts(ftyp(['avif', '\0\0\0\0', 'mif1'])), { animated: false });
+  assert.deepEqual(avifFacts(ftyp(['avis', '\0\0\0\0', 'msf1'])), { animated: true });
+  assert.deepEqual(avifFacts(ftyp(['avif', 'avis', 'mif1'])), { animated: false });
+  assert.deepEqual(avifFacts(null), { animated: false });
 });
 
 test('anything else, and anything too short, is null', () => {

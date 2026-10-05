@@ -351,8 +351,8 @@ def tool_page(templates, site, tool, ui, guide, related):
         'tagline': text(tool['tagline']),
         'description': text(tool['description']),
         'url': url,
-        'note': text(ui['md_note']),
-        'pledge_line': text(ui['pledge_line']),
+        'note': text(tool.get('md_note') or ui['md_note']),
+        'pledge_line': text(tool.get('pledge_line') or ui['pledge_line']),
         'pledge': block(tool['pledge']),
         'facts': [f'{text(fact["mark"])} {text(fact["text"])}'.strip()
                   for fact in tool['facts']],

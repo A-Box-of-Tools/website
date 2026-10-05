@@ -10,7 +10,7 @@ heading = "Crear&nbsp;un&nbsp;GIF <span class=\"h1-kw\">&mdash; imágenes a GIF 
 tagline = "Convierte un puñado de imágenes en una sola animación."
 
 title = "Crear un GIF con imágenes &mdash; gratis y sin subir nada"
-description = "Convierte imágenes JPG, PNG o WebP en un GIF animado, gratis y enteramente en el navegador. Tú decides el orden, la velocidad y el tamaño. No se sube nada y funciona sin conexión."
+description = "Convierte imágenes JPG, PNG, WebP o AVIF en un GIF animado, gratis y enteramente en el navegador. Tú decides el orden, la velocidad y el tamaño. No se sube nada y funciona sin conexión."
 og_title = "Creador de GIF &mdash; imágenes a GIF animado, en tu navegador"
 og_description = "Ordena los fotogramas, di cuánto dura cada uno, elige un tamaño y llévate un GIF. La paleta y la compresión se calculan en tu propio dispositivo; no se sube nada."
 og_image_alt = "Creador de GIF - convertir un conjunto de imágenes en un GIF animado"

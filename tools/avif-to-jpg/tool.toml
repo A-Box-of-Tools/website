@@ -359,7 +359,7 @@ features = [
 # Wider than ".avif" on purpose: every file is identified by its first bytes
 # anyway, and a narrow accept list hides a misnamed file inside the browser's
 # own dialog, where no message this page writes could reach it.
-accept = "image/*,.avif"
+accept = "image/avif,image/*,.avif"
 multiple = true
 title = "Drop AVIF pictures here"
 hint = "or click to browse &mdash; .avif files, whatever they happen to be named"

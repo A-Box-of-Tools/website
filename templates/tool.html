@@ -270,7 +270,7 @@
     <summary class="pledge-line">
       <span class="pledge-mark" aria-hidden="true">&#9679;</span>
       <span class="pledge-title">
-{{ ui.tool.pledge_line }}
+{% if tool.pledge_line %}{{ tool.pledge_line }}{% else %}{{ ui.tool.pledge_line }}{% endif %}
       </span>
       <span class="pledge-caret" aria-hidden="true"></span>
     </summary>

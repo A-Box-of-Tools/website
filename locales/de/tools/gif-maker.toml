@@ -10,7 +10,7 @@ heading = "GIF&nbsp;erstellen <span class=\"h1-kw\">&mdash; aus Bildern ein anim
 tagline = "Aus einer Reihe von Bildern eine Animation machen."
 
 title = "GIF aus Bildern erstellen &mdash; kostenlos, ohne Upload"
-description = "JPG-, PNG- oder WebP-Bilder in ein animiertes GIF verwandeln, kostenlos und vollständig im Browser. Reihenfolge, Tempo und Größe bestimmen Sie. Es wird nichts hochgeladen, und es geht auch offline."
+description = "JPG-, PNG-, WebP- oder AVIF-Bilder in ein animiertes GIF verwandeln, kostenlos und vollständig im Browser. Reihenfolge, Tempo und Größe bestimmen Sie. Es wird nichts hochgeladen, und es geht auch offline."
 og_title = "GIF-Ersteller &mdash; aus Bildern ein animiertes GIF, im Browser"
 og_description = "Die Einzelbilder ordnen, festlegen, wie lange jedes steht, eine Größe wählen, und heraus kommt ein GIF. Farbtabelle und Kompression entstehen auf Ihrem eigenen Gerät, hochgeladen wird nichts."
 og_image_alt = "GIF-Ersteller - aus einer Reihe von Bildern ein animiertes GIF machen"

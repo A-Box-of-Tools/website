@@ -32,13 +32,13 @@ css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-mark", "example-photo"]
-lastmod = "2026-09-07"
+js_parts = ["image-input", "file-picker", "zip", "crc32", "message-box", "format", "example-mark", "example-photo"]
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Image to ICO &mdash; Make a Favicon, App Icon or ICNS, No Upload"
-description = "Convert a PNG, JPEG or SVG into a real multi-size .ico or a macOS .icns in your browser. Favicon, Windows app icon, Mac app icon, plus the Apple and Android files a site needs. Nothing is uploaded."
+description = "Convert a PNG, JPEG, AVIF or SVG into a real multi-size .ico or a macOS .icns in your browser. Favicon, Windows app icon, Mac app icon, plus the Apple and Android files a site needs. Nothing is uploaded."
 og_title = "Make an .ico or an .icns with every size in it, without uploading anything"
 og_description = "A favicon.ico for a website, an app.ico for a Windows program, an .icns for a Mac - with a preview at 16 pixels before you download. It all runs on your own machine."
 og_image_alt = "Image to ICO - favicon, Windows and macOS icon maker, no upload"
@@ -168,7 +168,7 @@ body = """
 [[howto]]
 title = "Choose the picture."
 body = """
- Drop a PNG, JPEG, WebP or SVG onto the
+ Drop a PNG, JPEG, WebP, AVIF or SVG onto the
       picker, or pick several and convert them in one go. Square is easiest, and
       anything from 256 pixels up has enough detail for every size. It is read
       straight off your disk by the browser; nothing is sent anywhere while you
@@ -399,10 +399,10 @@ features = [
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*,.png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,.svg"
+accept = "image/*,image/avif,.png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,.svg"
 multiple = true
 title = "Drop a picture here"
-hint = "or click to browse &mdash; PNG, SVG, JPEG, WebP and anything else your browser can open"
+hint = "or click to browse &mdash; PNG, SVG, JPEG, WebP, AVIF and anything else your browser can open"
 # A flat square mark, which is what an icon starts life as. A
 # photograph loses everything at sixteen pixels.
 example = true

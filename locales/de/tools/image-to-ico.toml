@@ -355,4 +355,4 @@ features = [
 
 [picker]
 title = "Bild hierher ziehen"
-hint = "oder klicken und auswählen &mdash; PNG, SVG, JPEG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; PNG, SVG, JPEG, WebP, AVIF und alles andere, was Ihr Browser öffnen kann"

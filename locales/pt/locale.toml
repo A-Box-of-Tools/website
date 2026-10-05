@@ -33,6 +33,7 @@ complete = true
 #
 
 [slugs]
+"receipt-invoice-extractor" = "extrair-recibos-faturas"
 "avif-to-jpg" = "avif-para-jpg"
 "png-to-webp" = "png-para-webp"
 "webp-to-jpg" = "webp-para-jpg"
@@ -367,9 +368,7 @@ lede = """
 #
 
 [footer]
-blurb = """
-        Ferramentas que não passam por servidor nenhum. Seus arquivos ficam no
-        seu computador, sem nada para enviar e sem conta para criar."""
+blurb = "Ferramentas que processam arquivos no seu dispositivo. Sem envio para processamento nem criação de conta."
 base = "Toda afirmação deste site é para ser conferida, não para ser aceita na fé."
 licence = """
     Os textos estão sob

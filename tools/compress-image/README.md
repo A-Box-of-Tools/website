@@ -7,6 +7,12 @@ that fits in it.
 
 ---
 
+The file gate uses [`shared/js/image-input.js`](../../shared/js/image-input.js).
+It admits a known image extension even when the operating system reports a
+generic or incorrect MIME type, so an AVIF file is not refused before the
+browser gets to decode it. The decoder still establishes whether it is a
+picture; the filename alone never does.
+
 ## Why a target size rather than a quality slider
 
 Every other compressor hands you a quality dial and leaves you to guess. That is

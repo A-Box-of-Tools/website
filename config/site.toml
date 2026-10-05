@@ -335,6 +335,9 @@ support_note = """
 # The guarantee, stated as three checkable facts rather than a promise. Every
 # tool here is expected to hold all three; if one ever cannot, it says so on its
 # own page instead of quietly weakening this claim.
+# Receipt OCR stays local; its optional historical-rate button sends only a
+# currency pair and date to Frankfurter. That exception and the later email
+# handoff are explained on the receipt tool, beside the controls that use them.
 [[hub.guarantees]]
 title = "Your files never leave your machine"
 body = """
@@ -394,7 +397,7 @@ order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", 
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
+order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -567,6 +570,7 @@ order = [
   "check-a-bank-statement-csv",
   "combine-images-into-a-pdf",
   "scan-a-document-with-your-phone",
+  "extract-receipts-and-invoices",
   "turn-images-into-a-video",
   "make-a-gif-from-images",
   "trim-a-video",
@@ -991,9 +995,7 @@ note = """
 #
 
 [footer]
-blurb = """
-        Tools that never touch a server. Your files stay on your machine &mdash;
-        nothing to upload, no account to make."""
+blurb = "Tools that process files on your device. No processing uploads, no account to make."
 base = "Every claim on this site is meant to be checked, not believed."
 
 # What the site licenses, rather than what it reserves. The conventional footer
@@ -1056,7 +1058,7 @@ licence = """
 summary = """
 Free single-purpose file tools - compress, resize, crop, trim, convert, inspect
 - that run entirely inside the visitor's own browser. No upload, no server, no
-account, no size limit."""
+account. Each tool explains its supported formats and practical limits."""
 
 intro = """
 Every tool listed below is a static page and a few ES modules. A file chosen on

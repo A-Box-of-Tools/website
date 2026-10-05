@@ -97,6 +97,11 @@ be drawn should say so.
 
 ### A picture goes on as itself; a drawing is rebuilt
 
+AVIF is one of the raster inputs handled by the browser decoder. The chooser
+names both `image/avif` and `.avif` so files can be selected even without an
+operating system association. A successful decode is still required; the
+embedded raster in the downloaded chart remains the bounded PNG described below.
+
 Two readers sit behind one button, and they have opposite jobs.
 
 `src/import-svg.js` reads a drawing. An SVG is a program, so nothing from the

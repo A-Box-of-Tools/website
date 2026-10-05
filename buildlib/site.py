@@ -510,6 +510,9 @@ def load_tool(path, site):
     # Optional: a tool that needs no directive of its own has nothing to add to
     # the policy comment, and no extra file worth naming in the privacy panel.
     tool.setdefault('csp_note', '')
+    # A tool with an intentional handoff must qualify the frame's blanket
+    # promise. An empty value keeps the shared, translated wording elsewhere.
+    tool.setdefault('pledge_line', '')
 
     tool['url'] = f'{site["domain"]}{tool["slug"]}/'
     tool['dir'] = path.parent

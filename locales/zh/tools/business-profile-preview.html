@@ -350,7 +350,7 @@
           <button type="button" id="drop-photo" class="ghost danger" hidden>去掉这张照片</button>
         </div>
       </div>
-      <input type="file" id="photo-file" accept="image/*" hidden
+      <input type="file" id="photo-file" accept="image/*,image/avif,.avif" hidden
              aria-label="为这份资料选一张封面照片">
       <p class="path-note" id="photo-note" role="status" hidden></p>
     </fieldset>
@@ -412,7 +412,7 @@
     <h2><span class="step">3</span> 什么时候开门</h2>
 
     <p class="card-lede">
-      这是一份资料上唯一会自己变的一行。把一周填满，预览就会按你自己的钟算出此刻它说的是什么——<em>营业中 &middot; 21:00 关门</em>，或者 <em>已关门 &middot; 周二 09:00 开门</em>——而这是弄清楚「周日傍晚来查你的人被告知了什么」的唯一办法。
+      这是一份资料上唯一会自己变的一行。把一周填满，预览就会按你自己的钟算出此刻它说的是什么——<em>营业中 &middot; 21:00 关门</em>，或者<em>已关门 &middot; 周二 09:00 开门</em>——而这是弄清楚「周日傍晚来查你的人被告知了什么」的唯一办法。
     </p>
 
     <div class="settings">
@@ -558,7 +558,7 @@
     <span data-phrase="week.shut">{day} 休息</span>
     <span data-phrase="week.copied">周一的营业时间已经复制到一周的每一天。</span>
     <span data-phrase="week.weekdays">周一到周五营业，周末休息。</span>
-    <span data-phrase="week.reads">此刻这里读出来是{status}。它是按你自己的钟算的，所以在另一个时区的同事看到的会是另一行。</span>
+    <span data-phrase="week.reads">此刻这里读出来是 {status}。它是按你自己的钟算的，所以在另一个时区的同事看到的会是另一行。</span>
 
     <span data-phrase="name.length">{count} 个字符。搜索结果只给名称一行，行到哪儿就从哪儿截断——看看第三个预览。</span>
     <span data-phrase="description.length">{count} 个字符。面板大约显示它的前四行。</span>
@@ -594,7 +594,7 @@
 
     <span data-phrase="paste.empty">框里没有东西可读。</span>
     <span data-phrase="paste.nothing">那里面没有哪一部分像是一份资料。请把整张卡片复制下来——名称、星星，以及底下那几行——而不是只复制其中一行。</span>
-    <span data-phrase="paste.read">读到了{fields}。其余的都原样留着，而这里面每一项都是值得核对一下的猜测。</span>
+    <span data-phrase="paste.read">读到了 {fields}。其余的都原样留着，而这里面每一项都是值得核对一下的猜测。</span>
 
     <span data-phrase="field.name">名称</span>
     <span data-phrase="field.category">类别</span>
@@ -606,7 +606,7 @@
     <span data-phrase="field.price">价格档次</span>
     <span data-phrase="field.hours">营业时间</span>
     <span data-phrase="field.description">商家简介</span>
-    <span data-phrase="field.list">{first}和{last}</span>
+    <span data-phrase="field.list">{first} 和 {last}</span>
 
     <span data-phrase="load.own">已载入。这就是这个页面当初存下来的那份资料。</span>
     <span data-phrase="load.google">已按 Business Profile 导出文件读取。评分、评价数和照片不在导出文件里，所以这三项还得你自己填。</span>

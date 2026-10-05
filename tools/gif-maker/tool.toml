@@ -32,18 +32,18 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box", "format", "errors", "image-list", "example-photo"]
+js_parts = ["file-picker", "message-box", "format", "errors", "image-list", "example-photo", "image-input"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["gif-analyzer"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "GIF Maker &mdash; Images to Animated GIF, Free and No Upload"
-description = "Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline."
+description = "Turn JPG, PNG, WebP or AVIF images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline."
 og_title = "GIF Maker &mdash; images into an animated GIF, in your browser"
 og_description = "Order the frames, set how long each one is held, pick a size, and get a GIF. The palette and the compression are worked out on your own machine; nothing is uploaded."
 og_image_alt = "GIF Maker - turn a set of images into one animated GIF"
@@ -304,7 +304,7 @@ features = [
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*"
+accept = "image/*,image/avif,.avif"
 multiple = true
 title = "Drop images here"
 hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"

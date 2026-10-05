@@ -263,4 +263,4 @@ features = [
 
 [picker]
 title = "把图片拖到这儿"
-hint = "或者点击选择，PNG、JPEG、SVG、WebP、GIF、ICO 等都行"
+hint = "或者点击选择，PNG、JPEG、SVG、WebP、AVIF、GIF、ICO 等都行"

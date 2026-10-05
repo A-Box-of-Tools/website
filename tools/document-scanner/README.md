@@ -7,12 +7,18 @@ result written into a PDF. Several photographs become the pages of one document.
 This file is for somebody reading the code. What the tool does, and why anybody
 would want it, is on [the page itself](https://abox.tools/document-scanner/).
 
+AVIF photographs use the browser's image decoder, like JPEG and PNG inputs.
+The chooser names both its MIME type and extension because some operating
+systems do not recognize the format yet. A filename gets an input as far as
+the decoder; it does not establish that its bytes are an image. The result
+remains a scanned PDF rather than an AVIF file.
+
 ## The shape of it
 
-    photo ──▶ detect.js ──▶ four corners
+    photo ──▶ document-detect.js ──▶ four corners
                    │
                    ▼
-              geometry.js ──▶ the page's real aspect ratio, and the size to
+              document-geometry.js ──▶ the page's real aspect ratio, and the size to
                    │           resample it at
                    ▼
                warp.js ──▶ a flat rectangle of pixels
@@ -25,6 +31,13 @@ would want it, is on [the page itself](https://abox.tools/document-scanner/).
                    │
                    ▼
             document.js ──▶ the PDF, via shared/pdf-page-writer.js
+
+The corner finder and geometry live in
+[`shared/js/document-detect.js`](../../shared/js/document-detect.js) and
+[`shared/js/document-geometry.js`](../../shared/js/document-geometry.js). The
+receipt extractor uses the same corner finder for its suggested crop, so fixes
+to page detection reach both tools. The build copies them into each tool's
+`src/shared/` folder to keep either tool complete offline.
 
 Every one of those but `encode.js` is a pure function on a pixel array or on
 numbers, which is why most of this tool is tested without a browser:
@@ -66,7 +79,7 @@ they were between these two corners.
 ### 2. The three things that make step 4 work
 
 Each of these was a real failure before it was a rule, and each is in
-`detect.js` with the failure written next to it.
+`document-detect.js` with the failure written next to it.
 
 **The lines are shared out by angle.** A plain "strongest twenty lines" does not
 work at all on the clearest photograph in the test set. Every line of text on a
@@ -103,7 +116,7 @@ rectangle's aspect ratio and the camera's focal length, given only that the
 camera is an ordinary pinhole with square pixels and a roughly centred principal
 point. That is Zhang and He, [*Whiteboard Scanning and Image
 Enhancement*](https://www.microsoft.com/en-us/research/publication/whiteboard-scanning-and-image-enhancement/)
-(MSR-TR-2003-39), section 3, and `perspectiveAspect` in `geometry.js` is it:
+(MSR-TR-2003-39), section 3, and `perspectiveAspect` in `document-geometry.js` is it:
 about thirty lines of cross products, exact to a fraction of a per cent on
 synthetic photographs, and it recovers the focal length as a by-product.
 

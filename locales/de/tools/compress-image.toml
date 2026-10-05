@@ -185,37 +185,15 @@ a = """
 
 [[faq]]
 q = "Welche Formate kann es lesen und schreiben?"
-a = """
-        Es liest alles, was Ihr Browser dekodieren kann, in der Praxis also
-        JPEG, PNG, WebP, GIF, BMP und, in den meisten aktuellen Browsern, AVIF.
-        Geschrieben werden JPEG, PNG und WebP, denn das sind die Encoder, die
-        Browser mitbringen. Auf &bdquo;automatisch&ldquo; behält es das Format
-        bei, in dem Ihre Datei angekommen ist, und wechselt nur dann zu WebP,
-        wenn das Beibehalten eine Verkleinerung oder einen sichtbaren
-        Qualitätsverlust bedeutet hätte."""
+a = "Es liest Bilder, die Ihr Browser dekodieren kann, darunter JPEG, PNG, WebP, GIF, BMP und AVIF. Neue Kodierungen verwenden JPEG, PNG oder WebP. Dateien bereits unter der Zielgröße werden samt Originalformat und Metadaten unverändert zurückgegeben. Muss kodiert werden, beginnt Automatisch mit dem Originalformat, sofern der Browser es schreiben kann. Andernfalls beginnt GIF als PNG, AVIF, BMP oder ein unbekannter MIME-Typ als JPEG. Automatisch kann danach WebP wählen, wenn es die Zielgröße mit weniger sichtbarem Verlust erreicht."
 
 [[faq]]
 q = "Warum lässt sich ein PNG nicht weit komprimieren?"
-a = """
-        Weil PNG verlustfrei arbeitet und deshalb gar keinen Qualitätsregler
-        hat. Ein PNG kleiner zu bekommen geht nur über weniger Pixel oder
-        weniger Farben, und mit ausgewähltem PNG erreicht das Werkzeug eine
-        Zielgröße daher allein über die Größenänderung. Bei einer Fotografie
-        kommen JPEG oder WebP Ihrer Zielgröße in sichtbar unbedenklicher
-        Qualität weit näher. Bei einem Logo oder einem Screenshot mit
-        Transparenz behält WebP die Transparenz, die JPEG mit Weiß auffüllen
-        würde."""
+a = "        Weil PNG verlustfrei arbeitet und deshalb gar keinen Qualitätsregler hat. Ein PNG kleiner zu bekommen geht nur über weniger Pixel oder weniger Farben, und mit ausgewähltem PNG erreicht das Werkzeug eine Zielgröße daher allein über die Größenänderung. Bei einer Fotografie kommen JPEG oder WebP Ihrer Zielgröße in sichtbar unbedenklicher Qualität weit näher. Bei einem Logo oder einem Screenshot mit Transparenz behält WebP die Transparenz, die JPEG mit Weiß auffüllen würde."
 
 [[faq]]
 q = "Entfernt das Komprimieren die EXIF- und GPS-Daten eines Bildes?"
-a = """
-        Ja, als Nebenwirkung. Komprimieren heißt, das Bild zu Pixeln zu
-        dekodieren und diese Pixel erneut zu kodieren, und ein Canvas voller
-        Pixel trägt keine Tags. Ort, Kameramodell, Zeitstempel und alles Weitere
-        werden also schlicht nicht in die neue Datei geschrieben. Sollen die
-        Metadaten weg, das Bild aber unangetastet bleiben, nehmen Sie besser den
-        <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>.
-        Der schreibt nur den Container neu und komprimiert nichts."""
+a = "Ein neu kodiertes Ergebnis lässt ursprüngliches EXIF, GPS, Zeitstempel und andere Metadaten weg, weil das Canvas nur Pixel enthält. Eine Datei bereits unter der Zielgröße wird unverändert samt Metadaten zurückgegeben. <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter &amp; -Entferner</a> liest und bearbeitet Metadaten von JPEG, PNG und WebP, ohne deren Bilder neu zu kodieren. Bei AVIF zeigt es verfügbares EXIF schreibgeschützt an und bereinigt durch Umwandlung des ersten dekodierten Bildes in ein neues PNG; Farben oder HDR können sich ändern."
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
@@ -250,4 +228,4 @@ features = [
 
 [picker]
 title = "Bilder hierher ziehen"
-hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP, AVIF und alles andere, was Ihr Browser öffnen kann"

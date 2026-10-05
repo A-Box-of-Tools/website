@@ -99,7 +99,7 @@ export function quadArea(quad) {
  *
  * A page is convex in every photograph of one, so a candidate that is not is
  * either two edges that crossed or three corners in a line. Both come out of the
- * search in detect.js, and both would produce a warp that folds the picture over
+ * search in document-detect.js, and both would produce a warp that folds the picture over
  * itself, so they are refused here rather than drawn.
  */
 export function isConvex(quad) {

@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> 选择 PNG 文件</h2>
+    <h2><span class="step">1</span> 选择 PNG 和 AVIF 文件</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">只要浏览器能够解码，也接受 AVIF 输入。输出格式仍为 WebP。AVIF 序列只输出第一张解码后的图片。浏览器画布会生成 8 位 SDR 副本：颜色或 HDR 可能改变，不保留元数据，文件也可能变大。原文件保持不变。</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -84,8 +85,8 @@
     <span data-phrase="row.remove">移除 {name}</span>
     <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
     <span data-phrase="file.alpha">含透明区域——WebP 会保留</span>
-    <span data-phrase="read.notpng">{name} 不是 PNG，而是 {found}。本工具转换 PNG 文件。</span>
-    <span data-phrase="read.unknown">{name} 不是 PNG，其开头字节也不符合本页认识的任何图片格式。</span>
+    <span data-phrase="read.notpng">{name} 是 {found}。此工具接受 PNG 和 AVIF 文件。</span>
+    <span data-phrase="read.unknown">{name} 的开头字节不属于支持的 PNG 和 AVIF 图片。</span>
     <span data-phrase="read.failed">无法打开 {name}：{why}</span>
     <span data-phrase="found.webp">WebP</span>
     <span data-phrase="found.jpeg">JPEG</span>
@@ -93,24 +94,24 @@
     <span data-phrase="found.gif">GIF</span>
     <span data-phrase="found.bmp">BMP</span>
     <span data-phrase="support.nowebp">这个浏览器无法写出 WebP，因此本工具不能处理。Chrome、Edge、Firefox 和 Safari 自 2020 年起都能写出 WebP。</span>
-    <span data-phrase="settings.lossless">1 个 PNG，无损。</span>
-    <span data-phrase="settings.lossless.many">{count} 个 PNG 文件，无损。</span>
-    <span data-phrase="settings.lossy">1 个 PNG，质量 {quality}。</span>
-    <span data-phrase="settings.lossy.many">{count} 个 PNG 文件，质量 {quality}。</span>
-    <span data-phrase="settings.none">请先选择 PNG，这里会显示准备输出什么。</span>
+    <span data-phrase="settings.lossless">一张图片，无损编码。</span>
+    <span data-phrase="settings.lossless.many">{count} 张图片，无损编码。</span>
+    <span data-phrase="settings.lossy">一张图片，质量 {quality}。</span>
+    <span data-phrase="settings.lossy.many">{count} 张图片，质量 {quality}。</span>
+    <span data-phrase="settings.none">在上方选择支持的图片后，会显示输出内容。</span>
     <span data-phrase="run.one">转为 WebP</span>
     <span data-phrase="run.many">将 {count} 个文件转为 WebP</span>
     <span data-phrase="progress.each">正在转换 {name}……</span>
     <span data-phrase="progress.done">完成。</span>
     <span data-phrase="run.failed">本次转换失败：{detail}</span>
     <span data-phrase="written.one">{name}——{size}，{change}</span>
-    <span data-phrase="written.many">已写出 {count} 个 WebP，共 {size}——比 PNG {change}。</span>
+    <span data-phrase="written.many">已输出 {count} 个 WebP 文件，共 {size}，比输入 {change}。</span>
     <span data-phrase="result.headline">{size}——{change}</span>
     <span data-phrase="result.detail">来自 {name}——{dimensions}，原来 {was}。</span>
-    <span data-phrase="result.lossless">无损：每个像素都与 PNG 相同。</span>
-    <span data-phrase="result.lossless.alpha">可见内容无损：每个不透明像素都与 PNG 完全相同。近透明边缘下储存的颜色可能略有变化，这是画布造成的，不是 WebP。请参阅下方常见问题。</span>
+    <span data-phrase="result.lossless">对浏览器解码后的像素进行了无损编码。</span>
+    <span data-phrase="result.lossless.alpha">对浏览器解码后的不透明像素进行了无损编码。画布可能改变半透明边缘的颜色；详见下方问题。</span>
     <span data-phrase="result.lossy">有损，质量 {quality}。</span>
-    <span data-phrase="result.askedlossless">请求了无损，但浏览器写出了有损 WebP。文件有效，却不是与 PNG 逐像素相同。</span>
+    <span data-phrase="result.askedlossless">请求了无损编码，但此浏览器输出了有损 WebP。解码后的像素经过了再次压缩。</span>
     <span data-phrase="result.alpha">透明区域已原样保留。</span>
     <span data-phrase="result.download">下载</span>
     <span data-phrase="change.smaller">小了 {percent}%</span>
@@ -128,5 +129,7 @@
     <span data-phrase="net.dirty">有内容联系了 {hosts}，本工具不会这样做。值得检查。{platform}</span>
     <span data-phrase="net.platform.one">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
     <span data-phrase="net.platform.many">本页的广告、统计和捐赠脚本从 {hosts} 个主机加载，它们没有获得任何图片或图片字节。</span>
+    <span data-phrase="file.avif">AVIF：浏览器解码，不保留元数据</span>
+    <span data-phrase="file.avif.sequence">AVIF 序列——只输出第一张解码后的图片</span>
   </div>
 </main>

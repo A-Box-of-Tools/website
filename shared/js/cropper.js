@@ -197,7 +197,7 @@ export class Cropper {
     this.#box.classList.add('dragging');
 
     const move = (moved) => {
-      if (!this.#drag) return;
+      if (!this.#drag || !this.#enabled) return;
       const dx = (moved.clientX - this.#drag.pointerX) * this.#drag.scale;
       const dy = (moved.clientY - this.#drag.pointerY) * this.#drag.scale;
       if (this.#drag.handle === 'move') this.#move(dx, dy);

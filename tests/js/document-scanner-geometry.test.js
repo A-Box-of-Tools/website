@@ -1,5 +1,5 @@
 /**
- * tools/document-scanner/src/geometry.js - the shape of the straightened page.
+ * shared/js/document-geometry.js - the shape of the straightened page.
  *
  * The risk this file covers is not a crash. It is a scan that comes out looking
  * perfectly good and is the wrong shape: an A4 page a tenth too wide, every line
@@ -31,7 +31,7 @@ import assert from 'node:assert/strict';
 import {
   edgeAspect, homography, isConvex, orderCorners, outputSize, pageAspect,
   perspectiveAspect, project, quadArea, sharpestCorner, wholeFrame,
-} from '../../tools/document-scanner/src/geometry.js';
+} from '../../shared/js/document-geometry.js';
 import {
   coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, snapshotPages, stemOf,
 } from '../../tools/document-scanner/src/pages.js';

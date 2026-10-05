@@ -34,7 +34,7 @@ live_hint = """
       escanéala igualmente."""
 
 read_first = """
-, <code>src/detect.js</code> para cómo se
+, <code>src/shared/document-detect.js</code> para cómo se
       encuentran las esquinas sin ningún modelo, <code>src/warp.js</code> para el
       enderezado y <code>src/clean.js</code> para cómo se divide la luz
       desigual."""
@@ -82,7 +82,7 @@ body = """
       debajo de cada lado del rectángulo que gana. Sin pesos, sin motor de
       inferencia, sin nada que se descargue la primera vez y sin nada que se
       comporte distinto con el documento de otra persona que con el tuyo. Mira
-      <code>src/detect.js</code>."""
+      <code>src/shared/document-detect.js</code>."""
 
 [[privacy]]
 title = "El documento no lleva fecha, ni autor, ni nombre de equipo."
@@ -202,7 +202,7 @@ a = """
         rectángulo lleva en realidad información suficiente para recuperar tanto
         la proporción del rectángulo como la distancia focal de la cámara, con tal
         de que sea una cámara corriente; es un resultado de Zhang y He de 2003, y
-        es lo que hace <code>src/geometry.js</code>. Cuando la foto se ha tomado
+        es lo que hace <code>src/shared/document-geometry.js</code>. Cuando la foto se ha tomado
         perpendicular no hay perspectiva de la que partir y tampoco hace falta,
         porque entonces los bordes son exactos: ahí recurre a ellos, y la página
         dice cuál de los dos ha respondido."""
@@ -294,4 +294,4 @@ features = [
 
 [picker]
 title = "Suelta aquí las fotos de tus hojas"
-hint = "o pulsa para elegir &mdash; una foto por hoja, en el orden de las páginas"
+hint = "o pulsa para elegir &mdash; una foto por hoja, en el orden de las páginas (JPEG, PNG, WebP, AVIF)"

@@ -48,7 +48,7 @@ category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
-lastmod = "2026-08-30"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 

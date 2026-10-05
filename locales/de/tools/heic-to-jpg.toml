@@ -10,7 +10,7 @@ heading = "HEIC&nbsp;zu&nbsp;JPG <span class=\"h1-kw\">&mdash; iPhone-Fotos umwa
 tagline = "Die Fotos, die ein iPhone macht, in einem Format, das jedes Programm öffnet."
 
 title = "HEIC-zu-JPG-Umwandler &mdash; kostenlos, ohne Upload"
-description = "HEIC-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, auch offline, und Datum und Kameradaten dürfen mitkommen."
+description = "HEIC und AVIF-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, auch offline, und Datum und Kameradaten dürfen mitkommen. Das Metadaten-Kontrollkästchen und die Metadaten-Vorschau gelten nur für HEIC; AVIF-Metadaten entfallen immer."
 og_title = "HEIC-Fotos zu JPGs machen, ohne sie hochzuladen"
 og_description = "Der Umwandler, der Ihre Fotos gar nicht haben will. Der HEIC-Decoder kommt von dieser Seite und läuft auf Ihrem eigenen Gerät, die Bilder verlassen es also nie."
 og_image_alt = "HEIC zu JPG - iPhone-Fotos in einem Format, das jedes Programm öffnet"
@@ -134,7 +134,7 @@ body = """
       Ihre Fotos zum Dekodieren wegschickte, brächte das unmöglich fertig."""
 
 [[howto]]
-title = "Wählen Sie Ihre HEIC-Fotos aus."
+title = "Wählen Sie Ihre HEIC und AVIF-Fotos aus."
 body = """
  Ziehen Sie sie auf das Auswahlfeld
       oder suchen Sie sie von Hand heraus, direkt aus einem Telefon-Backup oder
@@ -257,15 +257,8 @@ a = """
         bleiben unangetastet."""
 
 [[faq]]
-q = "Warum nimmt es mein AVIF nicht?"
-a = """
-        Weil es damit nichts zu tun gäbe. AVIF ist derselbe Container wie HEIC,
-        nur mit AV1 statt HEVC darin, und jeder aktuelle Browser dekodiert eines
-        von Haus aus. Ein Umwandler lieferte also ein Megabyte Engine aus, um ein
-        Problem zu lösen, das Sie gar nicht haben. Brauchen Sie ein AVIF als
-        JPEG, lesen der <a href="../bild-komprimieren/">Bildkompressor</a> und
-        der <a href="../bildgroesse-aendern/">Bildskalierer</a> beide AVIF und
-        schreiben JPEG, und zwar mit dem Decoder, den Ihr Browser ohnehin hat."""
+q = "Kann ich auch AVIF-Bilder umwandeln?"
+a = "AVIF nutzt den Browser-Decoder und lädt die HEIC-Engine nicht. Das Ausgabeformat bleibt JPEG, PNG oder WebP. Nur das erste dekodierte Bild wird geschrieben; Farben oder HDR können sich ändern. AVIF-Metadaten entfallen immer: Das Metadaten-Kontrollkästchen gilt nur für HEIC. Die Originaldatei bleibt unverändert."
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
@@ -287,19 +280,9 @@ a = """
         Stecker ziehen. Dieser bleibt es nicht."""
 
 [schema]
-description = "HEIC- und HEIF-Fotos von einem iPhone in JPEG, PNG oder WebP umwandeln. Der HEIC-Decoder ist WebAssembly und wird von der Seite selbst ausgeliefert, die Bilder werden also auf Ihrem eigenen Gerät dekodiert und nie hochgeladen. Datum, Kamera und Ort können ins JPEG mitgenommen oder weggelassen werden."
-features = [
-  "Wandelt HEIC und HEIF in JPEG, PNG oder WebP um",
-  "Dekodiert im Browser, in jedem Browser, nicht nur in Safari",
-  "Es wird nichts hochgeladen, und das Werkzeug arbeitet mit getrennter Netzverbindung",
-  "Nimmt Datum, Kamera und GPS ins JPEG mit, oder lässt sie weg",
-  "Sagt vor jeder Umwandlung, welche Fotos GPS-Koordinaten enthalten",
-  "Korrigiert das Orientierungs-Tag, damit Hochformatfotos nicht quer herauskommen",
-  "Erkennt Dateien an ihrem Inhalt, ein HEIC namens .jpg funktioniert also trotzdem",
-  "Wandelt jedes Bild einer Serienaufnahme oder eines Live Photos um, nicht nur das erste",
-  "Stapelverarbeitung, alle Ergebnisse in einem ZIP",
-]
+description = "HEIC- und HEIF-Fotos von einem iPhone in JPEG, PNG oder WebP umwandeln. Der HEIC-Decoder ist WebAssembly und wird von der Seite selbst ausgeliefert, die Bilder werden also auf Ihrem eigenen Gerät dekodiert und nie hochgeladen. Datum, Kamera und Ort können ins JPEG mitgenommen oder weggelassen werden. Das Metadaten-Kontrollkästchen und die Metadaten-Vorschau gelten nur für HEIC; AVIF-Metadaten entfallen immer."
+features = ["Wandelt HEIC und HEIF in JPEG, PNG oder WebP um", "Dekodiert im Browser, in jedem Browser, nicht nur in Safari", "Es wird nichts hochgeladen, und das Werkzeug arbeitet mit getrennter Netzverbindung", "Nimmt Datum, Kamera und GPS ins JPEG mit, oder lässt sie weg", "Sagt vor jeder Umwandlung, welche Fotos GPS-Koordinaten enthalten", "Korrigiert das Orientierungs-Tag, damit Hochformatfotos nicht quer herauskommen", "Erkennt Dateien an ihrem Inhalt, ein HEIC namens .jpg funktioniert also trotzdem", "Wandelt jedes Bild einer Serienaufnahme oder eines Live Photos um, nicht nur das erste", "Stapelverarbeitung, alle Ergebnisse in einem ZIP", "Nimmt auch AVIF über den Browser-Decoder an; Sequenzen liefern nur das erste Bild"]
 
 [picker]
-title = "HEIC-Fotos hierher ziehen"
-hint = "oder klicken und auswählen &mdash; .heic und .heif, wie sie auch gerade heißen"
+title = "HEIC und AVIF-Bilder hier ablegen"
+hint = "oder klicken, um Dateien auszuwählen &mdash; .heic, .heif, .avif, anhand ihres Inhalts erkannt"

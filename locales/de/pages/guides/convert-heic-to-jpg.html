@@ -216,12 +216,7 @@
         Videohälfte eines Live Photos liegt als eigene Datei neben dem HEIC, sie
         steckt also gar nicht darin.
       </li>
-      <li>
-        <strong>AVIF ist nicht HEIC.</strong> Die beiden sehen sich ähnlich,
-        derselbe Container mit einem anderen Codec darin, aber ein AVIF öffnet
-        jeder aktuelle Browser von Haus aus. Da ist nichts umzuwandeln, und das
-        Werkzeug sagt Ihnen das, statt Arbeit vorzutäuschen.
-      </li>
+      <li><strong>AVIF.</strong> AVIF nutzt den Browser-Decoder und lädt die HEIC-Engine nicht. Das Ausgabeformat bleibt JPEG, PNG oder WebP. Nur das erste dekodierte Bild wird geschrieben; Farben oder HDR können sich ändern. AVIF-Metadaten entfallen immer: Das Metadaten-Kontrollkästchen gilt nur für HEIC. Die Originaldatei bleibt unverändert.</li>
       <li>
         <strong>Das Übel an der Wurzel packen.</strong> Am Handy: Einstellungen
         &rarr; Kamera &rarr; Formate &rarr; Maximale Kompatibilität. Von da an

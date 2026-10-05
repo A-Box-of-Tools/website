@@ -18,8 +18,8 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { saveBlob } from './shared/download.js';
 import {
-  FORMATS, JPEG, WEBP,
-  change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames, webpFacts,
+  AVIF, FORMATS, JPEG, WEBP,
+  avifFacts, change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames, webpFacts,
 } from './shared/image-convert.js';
 import { makeExample } from './example.js';
 
@@ -111,14 +111,15 @@ async function addFiles(files) {
       const head = new Uint8Array(await file.slice(0, 64).arrayBuffer());
       const kind = sniff(head);
 
-      if (kind !== WEBP) {
+      if (kind !== WEBP && kind !== AVIF) {
         failures.push(kind
           ? phrase('read.notwebp', { name: file.name, found: phrase(FOUND[kind] ?? kind) })
           : phrase('read.unknown', { name: file.name }));
         continue;
       }
 
-      const facts = webpFacts(new Uint8Array(await file.arrayBuffer()));
+      const facts = kind === WEBP ? webpFacts(new Uint8Array(await file.arrayBuffer()))
+        : { ...avifFacts(head), lossless: false };
 
       let decoded;
       try {
@@ -135,12 +136,13 @@ async function addFiles(files) {
       // pixels rather than the container: a WebP can carry an alpha channel
       // that is opaque from corner to corner, and offering a background
       // colour for one is a control that does nothing.
-      const alpha = facts.alpha && hasAlpha(decoded.bitmap, decoded.width, decoded.height);
+      const alpha = hasAlpha(decoded.bitmap, decoded.width, decoded.height);
       release(decoded.bitmap);
 
       items.push({
         id: nextId,
         file,
+        kind,
         width: decoded.width,
         height: decoded.height,
         alpha,
@@ -248,7 +250,8 @@ function fileRow(item) {
   const notes = [];
   if (item.lossless) notes.push(phrase('file.lossless'));
   if (item.alpha) notes.push(phrase('file.alpha'));
-  if (item.animated) notes.push(phrase('file.animated'));
+  if (item.kind === AVIF) notes.push(phrase(item.animated ? 'file.avif.sequence' : 'file.avif'));
+  else if (item.animated) notes.push(phrase('file.animated'));
 
   for (const text of notes) {
     const note = document.createElement('p');

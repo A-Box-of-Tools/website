@@ -85,7 +85,7 @@ a = "Parce que la plupart des logiciels enregistrent le rectangle à côté de l
 
 [[faq]]
 q = "Les données EXIF et GPS sont-elles retirées aussi&nbsp;?"
-a = "Oui, par effet de bord. Enregistrer revient à encoder un canevas rempli de pixels, et un canevas ne porte aucune balise&nbsp;: le lieu, le modèle d'appareil, les dates et la vignette intégrée ne sont tout simplement pas écrits dans le nouveau fichier. La vignette compte ici&nbsp;: c'est une petite seconde copie de l'image, elle n'est pas toujours régénérée quand la photo est modifiée, et une photo caviardée qui voyage avec une vignette non caviardée annule tout le travail. Si vous voulez retirer les métadonnées sans que l'image soit réencodée, le <a href=\"../supprimer-les-donnees-exif/\">Lecteur et nettoyeur EXIF</a> réécrit le conteneur à la place."
+a = "Oui, par effet de bord. Enregistrer revient à encoder un canevas rempli de pixels, et un canevas ne porte aucune balise&nbsp;: le lieu, le modèle d'appareil, les dates et la vignette intégrée ne sont tout simplement pas écrits dans le nouveau fichier. La vignette compte ici&nbsp;: c'est une petite seconde copie de l'image, elle n'est pas toujours régénérée quand la photo est modifiée, et une photo caviardée qui voyage avec une vignette non caviardée annule tout le travail. <a href=\"../supprimer-les-donnees-exif/\">Lecteur et nettoyeur EXIF</a> lit et modifie les métadonnées JPEG, PNG et WebP sans réencoder leurs images. Pour AVIF, il montre l’EXIF disponible en lecture seule et nettoie en convertissant la première image décodée vers un nouveau PNG ; les couleurs ou le HDR peuvent changer."
 
 [[faq]]
 q = "Quels formats sait-il lire et écrire&nbsp;?"
@@ -109,4 +109,4 @@ features = ["Aplat noir, pixellisation et flou, choisis cadre par cadre", "Les p
 
 [picker]
 title = "Déposez une image ici"
-hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, AVIF et tout ce que votre navigateur sait ouvrir"

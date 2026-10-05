@@ -2,10 +2,16 @@
 
 [← All tools](../README.md) · [The tool](https://abox.tools/png-to-webp/)
 
-Decodes a PNG with the browser's own decoder, draws it on a canvas, and asks
-the canvas for a WebP — losslessly, or with a quality setting. One of three
+Decodes a PNG or AVIF with the browser's own decoder, draws it on a canvas, and asks
+the canvas for a WebP — losslessly, or with a quality setting. One of the
 tools built on `shared/js/image-convert.js`; the others are
 [WebP to JPG](../webp-to-jpg/) and [AVIF to JPG](../avif-to-jpg/).
+
+AVIF input uses `shared/js/image-convert.js` and the browser decoder, never
+an AVIF encoder. An `avis` sequence produces only its first decoded image.
+The output remains WebP; metadata is not copied from AVIF. The default
+canvas produces an 8-bit SDR copy, so color, HDR and source precision may
+change, and converting can increase the file size. The original stays intact.
 
 ## The lossless problem, which is the whole tool
 

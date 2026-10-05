@@ -32,13 +32,13 @@ css_parts = ["progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "codec-support", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list", "example-photo"]
-lastmod = "2026-09-07"
+js_parts = ["file-picker", "codec-support", "mp4-muxer", "message-box", "format", "webcodecs", "errors", "mp4-boxes", "image-list", "example-photo", "image-input"]
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Image Sequence to MP4 &mdash; Free, No Upload, Works Offline"
-description = "Turn JPG, PNG or WebP images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline."
+description = "Turn JPG, PNG, WebP or AVIF images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline."
 og_title = "Image Sequence to MP4 &mdash; free, in your browser"
 og_description = "Turn a render sequence, a timelapse or a folder of photos into an MP4. Encoding runs on your own machine; nothing is uploaded."
 og_image_alt = "Images to Video - turn a folder of images into an MP4 slideshow"
@@ -304,7 +304,7 @@ features = [
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*"
+accept = "image/*,image/avif,.avif"
 multiple = true
 title = "Drop images here"
 hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"

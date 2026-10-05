@@ -205,12 +205,7 @@
         es un archivo aparte que el móvil guarda junto al HEIC, así que ahí no está
         para convertirla.
       </li>
-      <li>
-        <strong>El AVIF no es un HEIC.</strong> Se parecen, porque son el mismo
-        contenedor con otro códec dentro, pero cualquier navegador actual abre un
-        AVIF de forma nativa. Así que ahí no hay nada que convertir, y la
-        herramienta te lo dice en vez de fingir que trabaja.
-      </li>
+      <li><strong>AVIF.</strong> AVIF usa el decodificador del navegador sin cargar el motor HEIC. La salida sigue siendo JPEG, PNG o WebP. Solo se escribe la primera imagen decodificada; el color o el HDR pueden cambiar. Siempre se omiten los metadatos AVIF: la casilla de metadatos solo se aplica a HEIC. El original no cambia.</li>
       <li>
         <strong>Cortar el problema de raíz.</strong> En el móvil: Ajustes &rarr;
         Cámara &rarr; Formatos &rarr; Más compatible. A partir de ahí las fotos

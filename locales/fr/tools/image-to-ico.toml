@@ -141,4 +141,4 @@ features = ["Écrit un vrai .ico multi-tailles, de 16 à 256 pixels", "Écrit un
 
 [picker]
 title = "Déposez une image ici"
-hint = "ou cliquez pour parcourir &mdash; PNG, SVG, JPEG, WebP et tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; PNG, SVG, JPEG, WebP, AVIF et tout ce que votre navigateur sait ouvrir"

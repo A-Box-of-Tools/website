@@ -122,9 +122,7 @@
       <li>
         <strong>一个文件，好几张画面。</strong>连拍或者 Live Photo 可以装不止一张静态图。装几张就转几张，多出来的按原文件名加编号。Live Photo 的视频那一半，是手机搁在 HEIC 旁边的另一个文件，不在这里面，也就无从转起。
       </li>
-      <li>
-        <strong>AVIF 不是 HEIC。</strong>它俩长得像，同一种容器，里面的编码不同，但现在的浏览器都能原生打开 AVIF，所以没什么可转的，工具会直说，而不是装作在干活。
-      </li>
+      <li><strong>AVIF.</strong> AVIF 使用浏览器解码器，不加载 HEIC 引擎。输出仍为 JPEG、PNG 或 WebP。只输出第一张解码后的图片，颜色或 HDR 可能改变。AVIF 元数据一律不保留，元数据复选框仅适用于 HEIC。原文件保持不变。</li>
       <li>
         <strong>从源头上把问题掐掉。</strong>手机上：设置 &rarr; 相机 &rarr; 格式 &rarr; 最兼容。从此新拍的都是 JPEG。它更占存储空间，也不会动到你已有的照片，但从此不用再干这件事了。
       </li>

@@ -36,7 +36,7 @@ live_hint = """
       scannen Sie trotzdem eine."""
 
 read_first = """
-, <code>src/detect.js</code> dafür, wie die Ecken
+, <code>src/shared/document-detect.js</code> dafür, wie die Ecken
       ohne jedes Modell gefunden werden, <code>src/warp.js</code> für das
       Geraderücken und <code>src/clean.js</code> dafür, wie das ungleichmäßige
       Licht herausgeteilt wird."""
@@ -85,7 +85,7 @@ body = """
       siegreichen Rechtecks tatsächlich liegt. Keine Gewichte, keine
       Inferenz-Laufzeit, nichts, was beim ersten Gebrauch nachgeladen wird, und
       nichts, was sich beim Dokument einer anderen Person anders verhält als bei
-      Ihrem. Siehe <code>src/detect.js</code>."""
+      Ihrem. Siehe <code>src/shared/document-detect.js</code>."""
 
 [[privacy]]
 title = "Das Dokument trägt kein Datum, keinen Autor und keinen Rechnernamen."
@@ -215,7 +215,7 @@ a = """
         Information, um sowohl das Seitenverhältnis des Rechtecks als auch die
         Brennweite der Kamera zurückzugewinnen, sofern es eine gewöhnliche
         Kamera ist. Das ist ein Ergebnis von Zhang und He aus dem Jahr 2003, und
-        genau das tut <code>src/geometry.js</code>. Wo das Foto im rechten Winkel
+        genau das tut <code>src/shared/document-geometry.js</code>. Wo das Foto im rechten Winkel
         aufgenommen wurde, gibt es keine Perspektive, aus der sich rechnen ließe,
         und es braucht auch keine, weil die Kanten dann exakt sind. Dann fällt er
         auf sie zurück, und die Seite sagt, welche der beiden geantwortet hat."""
@@ -309,4 +309,4 @@ features = [
 
 [picker]
 title = "Fotos Ihrer Seiten hier ablegen"
-hint = "oder klicken zum Auswählen &mdash; ein Foto pro Seite, in der Reihenfolge der Seiten"
+hint = "oder klicken zum Auswählen &mdash; ein Foto pro Seite, in der Reihenfolge der Seiten (JPEG, PNG, WebP, AVIF)"

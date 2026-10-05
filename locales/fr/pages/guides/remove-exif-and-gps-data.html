@@ -1,13 +1,7 @@
   <section>
     <h2>La réponse courte</h2>
-    <p>
-      Ouvrez le <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur
-      EXIF</a>, déposez-y les photos, et appuyez sur
-      &laquo;&nbsp;Tout supprimer&nbsp;&raquo;. Chaque étiquette, les blocs XMP
-      et IPTC, les commentaires et la vignette incorporée partent, sur toutes les
-      photos de la liste d'un coup. L'image elle-même n'est pas touchée&nbsp;:
-      ni recompressée, ni décodée, ni changée d'un seul pixel.
-    </p>
+    <p>Ouvrez <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur
+      EXIF</a> pour retirer les métadonnées de vos photos. JPEG, PNG et WebP conservent leurs données d’image compressées. AVIF est nettoyé dans un nouveau PNG de la première image décodée sans métadonnées d’origine. Les options d’orientation et de profil concernent seulement les trois formats de conteneur. AVIF est décodé par votre navigateur et enregistré dans un nouveau PNG sans copier les métadonnées d’origine. Les balises EXIF disponibles sont consultables ici, mais ne peuvent pas être modifiées. Le PNG peut être plus gros et la conversion peut changer les couleurs ou le HDR. Votre original reste inchangé.</p>
     <p>
       Avant de le faire, cela vaut la peine de regarder ce qu'il y avait dedans.
       C'est en général plus que ce que les gens imaginent, et cette liste est
@@ -103,22 +97,14 @@
 
   <section>
     <h2>Pourquoi ne pas simplement réenregistrer&nbsp;?</h2>
-    <p>
-      Réenregistrer une photo dans un logiciel de retouche ou un compresseur
-      supprime bien les métadonnées, puisque l'image est décodée en pixels puis
-      réencodée et qu'un canvas rempli de pixels ne porte aucune étiquette. Cela
-      fonctionne, et cela vous coûte de la qualité, parce que ce réencodage est
-      avec perte.
-    </p>
-    <p>
-      Supprimer les métadonnées proprement ne coûte rien du tout. Les étiquettes
+    <p>Un éditeur ou compresseur retire les métadonnées en décodant puis réencodant l’image. Un encodage avec perte peut réduire la qualité. Un PNG sans perte évite une nouvelle compression avec perte, mais le décodage du navigateur peut changer les couleurs ou le HDR.</p>
+    <p>Pour JPEG, PNG et WebP : Supprimer les métadonnées proprement ne coûte rien du tout. Les étiquettes
       se trouvent dans le conteneur <em>autour</em> de l'image compressée, pas
       dedans&nbsp;: les retirer, c'est effacer des entrées d'une liste et
       réécrire la liste. Les données d'image compressées sont recopiées octet
       pour octet et le résultat décode exactement les mêmes pixels. C'est là
       toute la raison d'utiliser un outil de métadonnées plutôt qu'un
-      convertisseur.
-    </p>
+      convertisseur.</p>
     <p>
       L'exception est le cas où vous alliez réencoder de toute façon. Si vous
       compressez ou redimensionnez déjà la photo, les étiquettes partent par
@@ -134,14 +120,7 @@
       d'orientation qui dit comment la tourner pour l'affichage. Retirez toutes
       les étiquettes et certaines visionneuses montreront votre photo couchée.
     </p>
-    <p>
-      C'est pourquoi l'outil d'ici a une option
-      &laquo;&nbsp;garder l'étiquette d'orientation&nbsp;&raquo;, active par
-      défaut. Elle réécrit un minuscule bloc EXIF contenant cette seule étiquette
-      et rien d'autre, et seulement pour les photos qui en avaient réellement
-      besoin. Le GPS, les horodatages, le numéro de série et le reste ont toujours
-      disparu.
-    </p>
+    <p>Pour JPEG, PNG et WebP, conserver l’orientation écrit au besoin un petit bloc EXIF avec cette seule balise. Désactivez l’option pour la retirer. AVIF est nettoyé à partir de l’image décodée dans le bon sens par le navigateur, puis converti en PNG. Les options d’orientation et de profil colorimétrique concernent seulement JPEG, PNG et WebP.</p>
     <p>
       Décochez-la si vous préférez que le fichier ne porte plus le moindre EXIF,
       et vérifiez alors le résultat avant de l'envoyer, parce qu'une photo
@@ -166,11 +145,9 @@
       avoir besoin de corriger une date fausse parce que l'horloge de l'appareil
       l'était.
     </p>
-    <p>
-      Les deux sont possibles. Le lieu peut être supprimé seul, et les étiquettes
+    <p>Pour JPEG, PNG et WebP : Les deux sont possibles. Le lieu peut être supprimé seul, et les étiquettes
       de texte, les dates, l'ISO, l'orientation et la résolution peuvent être
-      modifiés sur place.
-    </p>
+      modifiés sur place.</p>
     <p>
       Une réserve qui vaut pour tous les outils qui font cela, pas seulement pour
       celui-ci&nbsp;: écrire le fichier reconstruit le bloc EXIF, or une note de
@@ -183,17 +160,8 @@
 
   <section>
     <h2>Les formats, et ceux qui ne se traitent pas ainsi</h2>
-    <p>
-      Le JPEG, le PNG et le WebP peuvent tous être réécrits proprement, et ce
-      sont les trois que prend en charge l'outil d'ici.
-    </p>
-    <p>
-      Le HEIC, ce qu'un iPhone enregistre par défaut, et l'AVIF sont des formats
-      à boîtes faits d'atomes imbriqués, qui demandent un tout autre analyseur.
-      L'outil les reconnaît et le dit plutôt que de produire un fichier cassé. Si
-      vous avez un HEIC, le convertir en JPEG supprimera les métadonnées par
-      effet de bord de la conversion.
-    </p>
+    <p>JPEG, PNG et WebP permettent de consulter, modifier et nettoyer les métadonnées dans leur conteneur. AVIF permet un aperçu de l’EXIF extrait disponible et un nettoyage vers un nouveau PNG. Les balises AVIF sont en lecture seule ; les autres métadonnées ne sont pas inventoriées. AVIF animé utilise la première image. HEIC et TIFF brut sont reconnus, mais ne sont pas réécrits.</p>
+    <p>HEIC, souvent enregistré par un iPhone, utilise un autre codec et est reconnu mais refusé par cet outil de métadonnées. Lors de sa conversion en JPEG, choisissez de retirer les métadonnées.</p>
     <p>
       Un TIFF nu n'est pas pris en charge non plus, et pour une raison plus
       intéressante&nbsp;: dans un TIFF, les métadonnées et les données de pixels

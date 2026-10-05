@@ -34,7 +34,7 @@ live_hint = """
       da internet e digitalize uma mesmo assim."""
 
 read_first = """
-, <code>src/detect.js</code> para como os cantos
+, <code>src/shared/document-detect.js</code> para como os cantos
       são encontrados sem modelo algum, <code>src/warp.js</code> para o
       endireitamento, e <code>src/clean.js</code> para como a luz irregular é
       dividida para fora."""
@@ -83,7 +83,7 @@ body = """
       de cada lado do retângulo vencedor. Sem pesos, sem runtime de inferência, sem
       nada buscado no primeiro uso, e sem nada que se comporte de um jeito no
       documento de outra pessoa e de outro no seu &mdash; veja
-      <code>src/detect.js</code>."""
+      <code>src/shared/document-detect.js</code>."""
 
 [[privacy]]
 title = "O documento não carrega data, nem autor, nem nome do computador."
@@ -205,7 +205,7 @@ a = """
         verdade, informação suficiente para recuperar tanto a proporção do retângulo
         quanto a distância focal da câmera, bastando que a câmera seja uma comum;
         isso é um resultado de Zhang e He de 2003, e é o que
-        <code>src/geometry.js</code> faz. Onde a foto foi tirada de frente não há
+        <code>src/shared/document-geometry.js</code> faz. Onde a foto foi tirada de frente não há
         perspectiva de onde partir e nem é preciso, porque então as bordas são
         exatas &mdash; então ele recorre a elas, e a página diz qual das duas
         respondeu."""
@@ -295,4 +295,4 @@ features = [
 
 [picker]
 title = "Arraste para cá as fotos das suas páginas"
-hint = "ou clique para procurar &mdash; uma foto por página, na ordem das páginas"
+hint = "ou clique para procurar &mdash; uma foto por página, na ordem das páginas (JPEG, PNG, WebP, AVIF)"

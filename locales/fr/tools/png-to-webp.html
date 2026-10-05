@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> Choisissez vos fichiers PNG</h2>
+    <h2><span class="step">1</span> Choisissez vos fichiers PNG et AVIF</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF est aussi accepté si votre navigateur sait le décoder. La sortie reste WebP. Une séquence AVIF ne donne que la première image décodée. Le canvas du navigateur crée une copie SDR sur 8 bits : les couleurs ou le HDR peuvent changer, les métadonnées sont omises et le fichier peut être plus gros. Votre original reste inchangé.</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -95,8 +96,8 @@
     <span data-phrase="row.remove">Supprimer {name}</span>
     <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
     <span data-phrase="file.alpha">Contient des zones transparentes &mdash; WebP les conserve</span>
-    <span data-phrase="read.notpng">{name} n’est pas un PNG &mdash; c’est {found}. Cet outil convertit les fichiers PNG.</span>
-    <span data-phrase="read.unknown">{name} n’est pas un PNG et ses premiers octets ne correspondent à aucun format d’image connu de cette page.</span>
+    <span data-phrase="read.notpng">{name} est {found}. Cet outil accepte les fichiers PNG et AVIF.</span>
+    <span data-phrase="read.unknown">Les premiers octets de {name} ne correspondent pas à une image PNG et AVIF prise en charge.</span>
     <span data-phrase="read.failed">Impossible d’ouvrir {name}&nbsp;: {why}</span>
     <span data-phrase="found.webp">un WebP</span>
     <span data-phrase="found.jpeg">un JPEG</span>
@@ -104,24 +105,24 @@
     <span data-phrase="found.gif">un GIF</span>
     <span data-phrase="found.bmp">un BMP</span>
     <span data-phrase="support.nowebp">Ce navigateur ne sait pas créer de fichiers WebP. Cette page ne peut donc pas les convertir. Chrome, Edge, Firefox et Safari créent tous du WebP depuis 2020.</span>
-    <span data-phrase="settings.lossless">Un PNG, sans perte.</span>
-    <span data-phrase="settings.lossless.many">{count} fichiers PNG, sans perte.</span>
-    <span data-phrase="settings.lossy">Un PNG à la qualité {quality}.</span>
-    <span data-phrase="settings.lossy.many">{count} fichiers PNG à la qualité {quality}.</span>
-    <span data-phrase="settings.none">Choisissez un PNG ci-dessus pour connaître le résultat prévu.</span>
+    <span data-phrase="settings.lossless">Une image, sans perte.</span>
+    <span data-phrase="settings.lossless.many">{count} images, sans perte.</span>
+    <span data-phrase="settings.lossy">Une image à la qualité {quality}.</span>
+    <span data-phrase="settings.lossy.many">{count} images à la qualité {quality}.</span>
+    <span data-phrase="settings.none">Choisissez une image prise en charge ci-dessus pour voir ce qui sera écrit.</span>
     <span data-phrase="run.one">Convertir en WebP</span>
     <span data-phrase="run.many">Convertir {count} fichiers en WebP</span>
     <span data-phrase="progress.each">Conversion de {name}&hellip;</span>
     <span data-phrase="progress.done">Terminé.</span>
     <span data-phrase="run.failed">Échec de cette opération&nbsp;: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
-    <span data-phrase="written.many">{count} fichiers WebP créés, {size} au total &mdash; {change} que les PNG.</span>
+    <span data-phrase="written.many">{count} fichiers WebP écrits, {size} au total &mdash; {change} que les entrées.</span>
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">À partir de {name} &mdash; {dimensions}, {was} auparavant.</span>
-    <span data-phrase="result.lossless">Sans perte&nbsp;: chaque pixel est celui du PNG.</span>
-    <span data-phrase="result.lossless.alpha">Sans perte pour les pixels visibles&nbsp;: chaque pixel opaque est exactement celui du PNG. La couleur sous les contours presque transparents peut légèrement changer à cause du canevas, pas de WebP &mdash; voir les questions ci-dessous.</span>
+    <span data-phrase="result.lossless">Encodage sans perte des pixels décodés par le navigateur.</span>
+    <span data-phrase="result.lossless.alpha">Encodage sans perte des pixels opaques décodés par le navigateur. Le canvas peut changer les couleurs des bords semi-transparents ; voir les questions ci-dessous.</span>
     <span data-phrase="result.lossy">Avec perte, à la qualité {quality}.</span>
-    <span data-phrase="result.askedlossless">Le mode sans perte était demandé, mais ce navigateur a créé un WebP avec perte. Le fichier fonctionne&nbsp;; ses pixels ne sont pas tous identiques à ceux du PNG.</span>
+    <span data-phrase="result.askedlossless">Un encodage sans perte a été demandé, mais ce navigateur a écrit un WebP avec perte. Les pixels décodés ont été recompressés.</span>
     <span data-phrase="result.alpha">Les zones transparentes ont été conservées sans changement.</span>
     <span data-phrase="result.download">Télécharger</span>
     <span data-phrase="change.smaller">{percent} % de moins</span>
@@ -145,5 +146,7 @@
     <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
       du bouton de don propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'a reçu une image ou un octet d'une image.</span>
+    <span data-phrase="file.avif">AVIF &mdash; décodé par le navigateur ; métadonnées omises</span>
+    <span data-phrase="file.avif.sequence">Séquence AVIF &mdash; seule la première image décodée est écrite</span>
   </div>
 </main>

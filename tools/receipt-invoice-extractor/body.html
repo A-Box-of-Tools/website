@@ -1,0 +1,247 @@
+<main id="main">
+  <section class="card">
+    <h2><span class="step">1</span> Add receipt or invoice pictures</h2>
+    <p class="card-lede">One document per picture. Add up to 20 JPEG, PNG, WebP or AVIF images, 20 MB each. English text is read on this device, using an OCR engine included with the page. AVIF pictures use your browser’s decoder.</p>
+    {% include "partials/file-picker.html" %}
+    <div class="export-row">
+      <button type="button" id="stop-reading" class="ghost" hidden>Stop reading</button>
+    </div>
+    <p class="field-summary">Keep the whole document in view, upright and in good light. For HEIC pictures, use <a href="../heic-to-jpg/">HEIC to JPG</a> first. PDFs and handwritten receipts are not supported.</p>
+    <p id="read-progress" role="status" aria-live="polite"></p>
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="review-card">
+    <h2><span class="step">2</span> Check each document</h2>
+    <div class="export-row"><button type="button" id="clear-all" class="ghost danger" disabled>Clear all</button></div>
+    <p class="card-lede">Check the crop and make sure the attachment is readable. OCR can misread digits or pick the wrong total: compare each suggestion with the picture, correct the fields, choose the final email currency and review its exchange rate, then tick “I checked this document”. Each picture counts as one document; adding it twice counts it twice.</p>
+    <p class="field-summary">OCR, cropping and manual conversion stay on this device. Historical rate lookup is optional and starts only when you press “Get historical rate”. It sends the two currency codes and receipt date to <a href="https://frankfurter.dev/">Frankfurter</a>, which also sees your IP address. Your pictures, merchants, amounts and receipt numbers stay on this device.</p>
+    <div class="final-currency-settings settings">
+      <div class="field"><label for="final-currency-choice">Final email currency for every document</label><select id="final-currency-choice">
+              <option value="">Choose final email currency</option>
+              <option value="USD">USD — US dollar</option><option value="CAD">CAD — Canadian dollar</option>
+              <option value="EUR">EUR — Euro</option><option value="GBP">GBP — British pound</option>
+              <option value="AUD">AUD — Australian dollar</option><option value="NZD">NZD — New Zealand dollar</option>
+              <option value="JPY">JPY — Japanese yen</option><option value="CNY">CNY — Chinese yuan</option>
+              <option value="INR">INR — Indian rupee</option><option value="CHF">CHF — Swiss franc</option>
+              <option value="HKD">HKD — Hong Kong dollar</option><option value="SGD">SGD — Singapore dollar</option>
+              <option value="KRW">KRW — South Korean won</option><option value="AED">AED — UAE dirham</option>
+              <option value="SAR">SAR — Saudi riyal</option><option value="ZAR">ZAR — South African rand</option>
+              <option value="BRL">BRL — Brazilian real</option><option value="MXN">MXN — Mexican peso</option>
+              <option value="custom">Other / custom code</option>
+            </select></div>
+      <div class="field custom-final-currency" id="custom-final-currency" hidden><label for="final-currency">Custom final currency code</label><input type="text" id="final-currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></div>
+    </div>
+    <p class="field-note">The default is the most common document currency; ties use the first one encountered. A currency you choose manually stays selected.</p>
+    <div class="export-row"><button type="button" id="use-default-currency" class="ghost">Use default currency</button></div>
+    <p class="field-summary">Choose one final currency for the email grand total. Every document uses this choice; changing it here or on a document updates the whole batch and clears rates and confirmations.</p>
+    <div id="documents" class="documents"></div>
+    <p id="empty-documents" class="field-summary">Your pictures and editable details will appear here.</p>
+  </section>
+
+  <section class="card" id="report-card" inert>
+    <h2><span class="step">3</span> Totals and email</h2>
+    <div class="report-stats">
+      <div><span>Documents</span><strong id="document-count">0</strong></div>
+      <div><span>Checked</span><strong id="checked-count">0</strong></div>
+      <div><span>Need review</span><strong id="review-count">0</strong></div>
+    </div>
+    <div class="grand-total-box"><span>Grand total in final email currency</span><strong id="grand-total">—</strong><p id="grand-total-note" class="field-note">Checked documents only.</p></div>
+    <ul id="currency-totals" class="currency-totals" aria-label="Original totals by currency"></ul>
+    <p class="field-summary">Totals include checked documents only. Original amounts remain grouped by currency; a bare $ does not tell us which dollar you mean. Each checked document also contributes its converted amount to one grand total in your final email currency. Converted amounts are rounded individually to two decimal places.</p>
+    <div class="settings mail-fields">
+      <div class="field"><label for="email-to">Email to (optional)</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
+      <div class="field"><label for="email-subject">Subject</label><input type="text" id="email-subject" value="Receipt and invoice summary" maxlength="150"></div>
+    </div>
+    <div class="field report-preview"><label for="report-text">Report preview</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
+    <div class="export-row">
+      <button type="button" id="email-report" class="primary" disabled>Email with images</button>
+      <button type="button" id="download-email" class="ghost" disabled>Download email file (.eml)</button>
+      <button type="button" id="download-images" class="ghost" disabled>Download images + CSV (.zip)</button>
+      <button type="button" id="copy-report" class="ghost" disabled>Copy report</button>
+      <button type="button" id="download-csv" class="ghost" disabled>Download CSV</button>
+    </div>
+    <p id="export-status" class="field-summary" role="status" aria-live="polite"></p>
+    <p class="field-summary">Every email export includes the cropped, compressed JPEG copies. “Email with images” opens your device’s share sheet when it supports files; choose your email app and enter the recipient there. Otherwise it downloads an email file containing the report and attached images. Open that .eml file in a compatible email app to compose, forward or resend it; draft support varies by app. The recipient above is used in the email file. You review and send the email yourself.</p>
+    <p class="field-summary">The ZIP contains the prepared JPEG images and CSV for attaching manually. Pictures are resized to at most 1,600 pixels on the longest edge, with a target of 350 KB each; actual size is shown below each preview. Check small print before sending. Originals stay unchanged, and processing stays on this device.</p>
+  </section>
+
+  <template id="document-template">
+    <article class="document">
+      <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Remove</button></div>
+      <div class="document-content">
+        <div class="picture-column">
+          <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Cropped and compressed attachment preview" hidden></a>
+          <p class="attachment-status field-note" role="status"></p>
+          <div class="export-row"><a class="original-link" target="_blank" rel="noopener">View original</a><button type="button" class="download-picture ghost" disabled>Save JPEG</button></div>
+          <div class="export-row"><button type="button" class="rotate-document ghost">Rotate 90°</button><button type="button" class="reread-document ghost">Read again</button></div>
+          <details class="crop-editor"><summary>Adjust crop</summary>
+            <div class="crop-stage"></div>
+            <div class="crop-numbers">
+              <label class="field">Left (px)<input type="number" data-crop="x" min="0" step="1"></label>
+              <label class="field">Top (px)<input type="number" data-crop="y" min="0" step="1"></label>
+              <label class="field">Width (px)<input type="number" data-crop="width" min="1" step="1"></label>
+              <label class="field">Height (px)<input type="number" data-crop="height" min="1" step="1"></label>
+            </div>
+            <div class="export-row"><button type="button" class="detect-crop ghost">Suggest crop</button><button type="button" class="reset-crop ghost">Use whole picture</button></div>
+            <p class="crop-status field-note"></p>
+            <p class="field-note">Drag the crop edges, or use the pixel fields. With the crop focused, arrow keys move it; Alt + arrows resize it and Shift makes larger steps. Keep every document edge and its total inside the crop.</p>
+          </details>
+          <p class="field-note">Select the attachment preview to check it at full size. Changing the crop or rotation requires checking the document again.</p>
+        </div>
+        <div class="document-fields">
+          <p class="document-status" role="status"></p>
+          <div class="settings">
+            <label class="field">Merchant / supplier<input type="text" data-field="merchant" maxlength="200"></label>
+            <label class="field">Date (as printed)<input type="text" data-field="date" maxlength="50"></label>
+            <label class="field">Receipt / invoice number<input type="text" data-field="reference" maxlength="100"></label>
+            <label class="field">Document currency<select data-currency-choice>
+              <option value="">Choose currency</option>
+              <option value="USD">USD — US dollar</option><option value="CAD">CAD — Canadian dollar</option>
+              <option value="EUR">EUR — Euro</option><option value="GBP">GBP — British pound</option>
+              <option value="AUD">AUD — Australian dollar</option><option value="NZD">NZD — New Zealand dollar</option>
+              <option value="JPY">JPY — Japanese yen</option><option value="CNY">CNY — Chinese yuan</option>
+              <option value="INR">INR — Indian rupee</option><option value="CHF">CHF — Swiss franc</option>
+              <option value="HKD">HKD — Hong Kong dollar</option><option value="SGD">SGD — Singapore dollar</option>
+              <option value="KRW">KRW — South Korean won</option><option value="AED">AED — UAE dirham</option>
+              <option value="SAR">SAR — Saudi riyal</option><option value="ZAR">ZAR — South African rand</option>
+              <option value="BRL">BRL — Brazilian real</option><option value="MXN">MXN — Mexican peso</option>
+              <option value="custom">Other / custom code</option>
+            </select></label>
+            <label class="field custom-currency" hidden>Custom currency code<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">Enter three letters, such as MYR.</span></label>
+            <label class="field">Document total<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
+          </div>
+          <fieldset class="conversion-fields">
+            <legend>Convert this document for the email</legend>
+            <div class="settings">
+              <label class="field">Final email currency<select data-final-currency-choice></select></label>
+              <label class="field custom-final-currency" hidden>Custom final currency code<input type="text" data-field="finalCurrency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"></label>
+              <label class="field">Conversion date (from the receipt)<input type="date" data-field="conversionDate"><span class="field-note">Optional for manual rates. Check the receipt date for historical lookup, which requires today or earlier. Ambiguous printed dates are not filled automatically.</span></label>
+              <label class="field">Rate source<select data-field="rateMode"><option value="manual">Enter a rate manually</option><option value="online">Look up a historical reference rate</option></select></label>
+              <label class="field">Exchange rate<input type="text" data-field="rate" inputmode="decimal" maxlength="32" autocomplete="off" placeholder="0.70295"><span class="field-note">Use a decimal point, up to 12 decimal places.</span></label>
+            </div>
+            <p class="rate-direction field-note"></p>
+            <div class="online-rate-controls" hidden><button type="button" class="get-rate ghost">Get historical rate</button><p class="field-note">This optional request sends only the two currency codes and date to <a href="https://frankfurter.dev/">Frankfurter</a>. The provider sees your IP address. No picture, merchant, amount or receipt number is sent. These are reference rates, which can differ from your bank or card rate. Enter a manual rate if the currency or date is unavailable.</p></div>
+            <p class="rate-status field-note" role="status"></p>
+            <p class="converted-value"></p>
+          </fieldset>
+          <label class="confirm-document"><input type="checkbox" data-field="confirmed"> I checked the fields and the cropped attachment</label>
+          <p class="document-error error" hidden></p>
+          <details class="ocr-details"><summary>Text read from this picture</summary><label class="field">Correct the text if needed<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label><button type="button" class="parse-text ghost">Use this text to fill the fields</button></details>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div id="example-documents" hidden aria-hidden="true">
+    <div data-example="sample-receipt.png">
+      <span data-line>NORTH STREET CAFE</span>
+      <span data-line>RECEIPT R-1042</span>
+      <span data-line>Date: 2026-10-04</span>
+      <span data-line>Coffee and lunch CAD 21.50</span>
+      <span data-line>Tax CAD 2.80</span>
+      <span data-line>TOTAL CAD 24.30</span>
+      <span data-line>Thank you</span>
+    </div>
+    <div data-example="sample-invoice.png">
+      <span data-line>MAPLE OFFICE SUPPLIES</span>
+      <span data-line>INVOICE INV-208</span>
+      <span data-line>Date: 2026-10-03</span>
+      <span data-line>Paper CAD 40.00</span>
+      <span data-line>Tax CAD 5.20</span>
+      <span data-line>AMOUNT DUE CAD 45.20</span>
+    </div>
+  </div>
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">Photos stay on this device during processing. {total} resources loaded; optional historical rates may contact Frankfurter. {platform}</span>
+    <span data-phrase="net.dirty">Unexpected connections were observed: {hosts}. {platform}</span>
+    <span data-phrase="offline.ready">ready — OCR, manual conversion and downloads work offline; online rate lookup needs a connection.</span>
+    <span data-phrase="finalCurrencyRequired">Choose one valid three-letter final email currency for the batch.</span>
+    <span data-phrase="invalidConversionDate">Enter the receipt’s conversion date as a complete calendar date. Historical lookup requires today or earlier; ambiguous printed dates need your review.</span>
+    <span data-phrase="invalidRate">Enter a positive exchange rate with a decimal point and up to 12 decimal places.</span>
+    <span data-phrase="rateRequired">Get a historical rate for the current currencies and date, or choose a manual rate.</span>
+    <span data-phrase="conversionOverflow">This converted amount exceeds the supported range. Check the amount and rate.</span>
+    <span data-phrase="rateDirection">1 {base} = {rate} {quote}</span>
+    <span data-phrase="rateDirectionEmpty">Enter the amount of {quote} for 1 {base}.</span>
+    <span data-phrase="rateChooseCurrencies">Choose the document and final email currencies first.</span>
+    <span data-phrase="sameCurrencyRate">The currencies match. Rate 1 is applied on this device; no lookup is needed.</span>
+    <span data-phrase="manualRateReady">Manual rate. Conversion date: {date}. Check it against your source before confirming.</span>
+    <span data-phrase="fx.loading">Getting the historical reference rate…</span>
+    <span data-phrase="fx.loaded">Frankfurter reference rate dated {date}; requested receipt date {requested}. Review it before confirming.</span>
+    <span data-phrase="fx.failed">The historical rate could not be retrieved or verified. Enter a manual rate, or try again.</span>
+    <span data-phrase="fx.unsupported">No rate is available for this currency pair and date. Enter a manual rate.</span>
+    <span data-phrase="fx.timeout">The rate request timed out. Enter a manual rate, or try again.</span>
+    <span data-phrase="fx.cancelled">Rate request cancelled.</span>
+    <span data-phrase="convertedAmount">Converted document value: {amount} {currency}</span>
+    <span data-phrase="conversionPending">A reviewed conversion is needed before this document enters the grand total.</span>
+    <span data-phrase="grandTotal">{amount} {currency}</span>
+    <span data-phrase="grandTotalNote">Sum of {checked} checked documents, rounded individually to two decimal places; {review} still need review.</span>
+    <span data-phrase="reportFinalCurrency">Final email currency: {currency}</span>
+    <span data-phrase="reportRate">Exchange rate: 1 {base} = {rate} {quote}</span>
+    <span data-phrase="reportRateManual">Rate source: manual, conversion date {date}.</span>
+    <span data-phrase="reportRateOnline">Rate source: Frankfurter reference rate dated {date}; requested receipt date {requested}.</span>
+    <span data-phrase="reportRateSame">Rate source: same currency, fixed rate 1; no online request.</span>
+    <span data-phrase="reportGrandTotal">Grand total: {amount} {currency} across {count} checked documents; documents in batch: {documents}.</span>
+    <span data-phrase="reportConversionPending">Conversion still needs review.</span>
+    <span data-phrase="csv.conversionDate">Requested conversion date</span><span data-phrase="csv.rate">Exchange rate</span><span data-phrase="csv.rateSource">Rate source</span><span data-phrase="csv.rateDate">Rate date used</span><span data-phrase="csv.finalCurrency">Final email currency</span><span data-phrase="csv.convertedAmount">Converted value</span>
+    <span data-phrase="csv.manual">Manual</span><span data-phrase="csv.online">Frankfurter reference</span><span data-phrase="csv.same">Same currency</span><span data-phrase="csv.documentCount">Document count</span><span data-phrase="csv.checkedCount">Checked document count</span><span data-phrase="csv.grandTotal">Grand total</span>
+
+    <span data-phrase="queued">Waiting to read this picture.</span>
+    <span data-phrase="reading">Reading {name} ({percent}%).</span>
+    <span data-phrase="loadingEngine">Preparing the local OCR engine for {name}.</span>
+    <span data-phrase="batchDone">Read {count} pictures. Check each document before emailing.</span>
+    <span data-phrase="readFailed">This picture could not be read. You can enter the details yourself or try reading it again.</span>
+    <span data-phrase="reviewExtraction">A total was suggested. Check every field against the picture.</span>
+    <span data-phrase="missingTotal">No clear document total was found. Enter it from the picture.</span>
+    <span data-phrase="ambiguousTotal">More than one possible total was found. Enter the correct total from the picture.</span>
+    <span data-phrase="stopped">Reading stopped. Enter the details yourself or choose Read again.</span>
+    <span data-phrase="busy">Wait for the current reading to finish, or stop it first.</span>
+    <span data-phrase="tooMany">Add up to 20 pictures. Remove a document to make room for another.</span>
+    <span data-phrase="badFile">{name} is not a supported JPEG, PNG, WebP or AVIF picture.</span>
+    <span data-phrase="tooLarge">{name} is larger than 20 MB. Use a smaller picture.</span>
+    <span data-phrase="imageFailed">{name} could not be opened as a picture. Try exporting it as JPEG or PNG.</span>
+    <span data-phrase="cropLabel">Document crop</span>
+    <span data-phrase="cropPreview">Full picture for adjusting the document crop</span>
+    <span data-phrase="cropSuggested">A crop was suggested from the document edges. Check it and adjust if needed.</span>
+    <span data-phrase="cropNotFound">No clear document edges were found. The whole picture is selected; adjust the crop if needed.</span>
+    <span data-phrase="cropManual">Your crop is selected. Check the prepared attachment before confirming.</span>
+    <span data-phrase="preparingImage">Preparing the cropped JPEG attachment…</span>
+    <span data-phrase="attachmentReady">{width} × {height} px · {size} KB JPEG (original {original} KB).</span>
+    <span data-phrase="attachmentTargetMissed">This image remains above the 350 KB target to keep it readable.</span>
+    <span data-phrase="attachmentFailed">The attachment could not be prepared. Try Suggest crop or use a different picture. Email export needs a prepared JPEG for every document.</span>
+    <span data-phrase="attachmentRequired">Wait for the cropped JPEG attachment to finish before checking this document.</span>
+    <span data-phrase="reportAttachment">Image attachment: {name}</span>
+    <span data-phrase="attachmentTotals">Attachments: {count} cropped JPEGs, {size} KB in total.</span>
+    <span data-phrase="invalidAmount">Enter a valid total with up to two decimal places before checking this document.</span>
+    <span data-phrase="invalidCurrency">Enter the three-letter currency code printed on the document before checking it.</span>
+    <span data-phrase="documentChecked">Checked against the picture.</span>
+    <span data-phrase="needsReview">Needs review</span>
+    <span data-phrase="unknownCurrency">Currency not specified</span>
+    <span data-phrase="currencyTotal">{currency}: {amount} across {count} checked documents</span>
+    <span data-phrase="reportTitle">Receipt and invoice summary</span>
+    <span data-phrase="reportCounts">Documents: {count}; checked: {checked}; need review: {review}.</span>
+    <span data-phrase="reportDocument">{number}. {name}</span>
+    <span data-phrase="reportMerchant">Merchant / supplier: {value}</span>
+    <span data-phrase="reportDate">Date: {value}</span>
+    <span data-phrase="reportReference">Receipt / invoice number: {value}</span>
+    <span data-phrase="reportAmount">Value: {currency} {amount}</span>
+    <span data-phrase="notEntered">Not entered</span>
+    <span data-phrase="reportTotals">Original totals by currency (checked documents only):</span>
+    <span data-phrase="noTotals">No checked totals yet.</span>
+    <span data-phrase="totalOverflow">These totals exceed the supported range. Use smaller batches before emailing.</span>
+    <span data-phrase="reviewFirst">Check every document’s fields, conversion rate and prepared attachment before emailing.</span>
+    <span data-phrase="invalidEmail">Enter one valid email address, or leave the recipient blank. The subject must stay on one line.</span>
+    <span data-phrase="emailDownloaded">Email file downloaded with {count} cropped JPEG attachments and the report. Open it in your email app; compose, forward or resend as supported.</span>
+    <span data-phrase="emailFailed">The email file could not be created. Download the images and CSV, then attach the images in your email app.</span>
+    <span data-phrase="zipDownloaded">Downloaded {count} cropped JPEGs and the CSV in one ZIP. Extract it to attach the JPEGs to your email.</span>
+    <span data-phrase="zipFailed">The ZIP could not be created. Save the JPEGs from their previews and download the CSV separately.</span>
+    <span data-phrase="copied">Report copied.</span>
+    <span data-phrase="copyFailed">Copy was unavailable. The report is selected above; copy it using your device’s copy command.</span>
+    <span data-phrase="shareFailed">Sharing was unavailable. Use Download email file, or download the ZIP and attach its JPEG images manually.</span>
+    <span data-phrase="shared">The cropped JPEG images and report were handed to the share sheet. Review the attachments and complete sending in the email app you selected.</span>
+    <span data-phrase="emailFilename">receipt-invoice-email.eml</span>
+    <span data-phrase="zipFilename">receipt-invoice-images.zip</span>
+    <span data-phrase="csvFilename">receipt-invoice-summary.csv</span>
+    <span data-phrase="csv.filename">Document</span><span data-phrase="csv.merchant">Merchant / supplier</span><span data-phrase="csv.date">Date</span><span data-phrase="csv.reference">Receipt / invoice number</span><span data-phrase="csv.currency">Currency</span><span data-phrase="csv.amount">Total</span><span data-phrase="csv.confirmed">Checked</span><span data-phrase="csv.yes">Yes</span><span data-phrase="csv.no">No</span>
+  </div>
+</main>

@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span>PNGファイルを選ぶ</h2>
+    <h2><span class="step">1</span>PNGとAVIFファイルを選ぶ</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">ブラウザがデコードできるAVIFも入力できます。出力形式はWebPのままです。AVIFシーケンスは最初にデコードされた画像だけを書き出します。ブラウザのCanvasは8ビットSDRのコピーを作るため、色やHDRが変わる場合があります。メタデータは引き継がれず、ファイルが大きくなる場合もあります。元のファイルは変わりません。</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -93,8 +94,8 @@
     <span data-phrase="row.remove">{name}を削除</span>
     <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
     <span data-phrase="file.alpha">透明な部分があります。WebPではそのまま保ちます。</span>
-    <span data-phrase="read.notpng">{name}はPNGではなく{found}です。このツールはPNGファイルを変換します。</span>
-    <span data-phrase="read.unknown">{name}はPNGではなく、先頭のバイトもこのページが対応する画像形式に一致しません。</span>
+    <span data-phrase="read.notpng">{name}は{found}です。この道具はPNGとAVIFファイルを入力できます。</span>
+    <span data-phrase="read.unknown">{name}の先頭バイトは、対応するPNGとAVIF画像ではありません。</span>
     <span data-phrase="read.failed">{name}を開けませんでした：{why}</span>
     <span data-phrase="found.webp">WebP</span>
     <span data-phrase="found.jpeg">JPEG</span>
@@ -102,24 +103,24 @@
     <span data-phrase="found.gif">GIF</span>
     <span data-phrase="found.bmp">BMP</span>
     <span data-phrase="support.nowebp">このブラウザはWebPを書き出せないので、このページでは変換できません。Chrome、Edge、Firefox、Safariはいずれも2020年から書き出しに対応しています。</span>
-    <span data-phrase="settings.lossless">1個のPNGを可逆圧縮で変換します。</span>
-    <span data-phrase="settings.lossless.many">{count}個のPNGを可逆圧縮で変換します。</span>
-    <span data-phrase="settings.lossy">1個のPNGを画質{quality}で変換します。</span>
-    <span data-phrase="settings.lossy.many">{count}個のPNGを画質{quality}で変換します。</span>
-    <span data-phrase="settings.none">上でPNGを選ぶと、書き出す内容をここに表示します。</span>
+    <span data-phrase="settings.lossless">画像1枚を可逆圧縮。</span>
+    <span data-phrase="settings.lossless.many">画像{count}枚を可逆圧縮。</span>
+    <span data-phrase="settings.lossy">画像1枚、品質{quality}。</span>
+    <span data-phrase="settings.lossy.many">画像{count}枚、品質{quality}。</span>
+    <span data-phrase="settings.none">上で対応する画像を選ぶと、出力内容を表示します。</span>
     <span data-phrase="run.one">WebPに変換</span>
     <span data-phrase="run.many">{count}個のファイルをWebPに変換</span>
     <span data-phrase="progress.each">{name}を変換中&hellip;</span>
     <span data-phrase="progress.done">完了しました。</span>
     <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
-    <span data-phrase="written.many">{count}個のWebPを書き出しました。合計{size}で、元のPNGより{change}です。</span>
+    <span data-phrase="written.many">WebPを{count}ファイル書き出しました。合計{size}、入力より{change}。</span>
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">元のファイル：{name}、{dimensions}、元のサイズは{was}です。</span>
-    <span data-phrase="result.lossless">可逆圧縮：すべての画素が元のPNGと同じです。</span>
-    <span data-phrase="result.lossless.alpha">見える部分は可逆圧縮です。不透明な画素は元のPNGと完全に同じです。ほぼ透明な輪郭の下に保存される色が少し変わる場合があります。WebPではなくキャンバスによるものです。下の質問をご覧ください。</span>
+    <span data-phrase="result.lossless">ブラウザでデコードした画素を可逆圧縮しました。</span>
+    <span data-phrase="result.lossless.alpha">ブラウザでデコードした不透明な画素を可逆圧縮しました。半透明の縁の色はCanvasで変わる場合があります。下の質問をご覧ください。</span>
     <span data-phrase="result.lossy">非可逆圧縮、画質{quality}です。</span>
-    <span data-phrase="result.askedlossless">可逆圧縮を指定しましたが、ブラウザは非可逆圧縮のWebPを書き出しました。有効なファイルですが、画素は元のPNGと完全には一致しません。</span>
+    <span data-phrase="result.askedlossless">可逆圧縮を要求しましたが、このブラウザは非可逆WebPを書き出しました。デコード済みの画素が再圧縮されています。</span>
     <span data-phrase="result.alpha">透明な部分はそのまま保たれました。</span>
     <span data-phrase="result.download">ダウンロード</span>
     <span data-phrase="change.smaller">{percent}%小さく</span>
@@ -137,5 +138,7 @@
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
     <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+    <span data-phrase="file.avif">AVIF：ブラウザでデコードし、メタデータを除外</span>
+    <span data-phrase="file.avif.sequence">AVIFシーケンス——最初にデコードされた画像だけを書き出します</span>
   </div>
 </main>

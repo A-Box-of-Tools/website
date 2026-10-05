@@ -16,7 +16,7 @@ several times the size or several times smaller, depending on the quality the
 browser picked. For a tool whose whole job is "take the metadata out and change
 nothing else", that is the wrong trade.
 
-So nothing here is decoded. All three formats keep their metadata in the
+JPEG, PNG and WebP are not decoded for cleaning. These three formats keep their metadata in the
 container *around* the compressed picture:
 
 | Format | Where the metadata is | What is copied untouched |
@@ -25,7 +25,7 @@ container *around* the compressed picture:
 | PNG | `tEXt`, `zTXt`, `iTXt`, `eXIf`, `tIME` chunks | `IDAT`, and every chunk not on that list |
 | WebP | `EXIF`, `XMP `, `ICCP` chunks in a `VP8X`-headed file | the `VP8`/`VP8L` bitstream |
 
-Removing metadata is therefore a list edit: parse the container into its parts,
+For those three formats, removing metadata is therefore a list edit: parse the container into its parts,
 drop the ones you do not want, write the list back. The result decodes to exactly
 the same pixels as the original, and a stripped JPEG is byte-for-byte identical
 to its source from the `SOS` marker onwards.
@@ -109,10 +109,17 @@ some CMYK and YCCK JPEGs inside out.
   Rewriting the block moves it, so the manufacturer's own software may no longer
   read it. Removing everything is unaffected — this only applies to saving edits.
   The page says so, in those words.
-- **HEIC, AVIF and bare TIFF are recognised and refused**, each with its own
-  reason rather than a generic "unsupported". HEIC and AVIF are box formats of
-  nested atoms and need a different parser; in a TIFF the metadata and the pixels
-  are addressed by the same offsets, which makes it a different job.
+- **AVIF cleaning makes a PNG copy.** Available EXIF is extracted through
+  `shared/heif-metadata.js` and shown read-only; the AVIF metadata inventory is
+  incomplete and no per-tag editing is offered. Cleaning decodes the first
+  image natively and writes a lossless PNG without original metadata. HDR and
+  colour representation may change during decoding, and the PNG can be larger.
+  The original remains unchanged. Orientation and ICC keep controls apply only
+  to the three container-editing formats. The decoded image is limited to
+  80 megapixels.
+- **HEIC and bare TIFF remain recognised and refused.** A TIFF addresses metadata
+  and pixels through the same offsets. HEIC conversion belongs to its dedicated
+  tool.
 - **A JPEG segment holds 65,533 bytes.** Writing back an EXIF block larger than
   that fails with a message naming the thumbnail and the maker note, which are
   what makes a block that big.
@@ -128,9 +135,7 @@ some CMYK and YCCK JPEGs inside out.
 
 ## Testing it
 
-There is no test runner in this repository, so the checks that
-were used while writing this are not checked in. What they covered, if it needs
-doing again: a JPEG and a PNG built by hand with known tag values, asserting the
+The JavaScript suite runs in CI. Container and TIFF fixtures cover: a JPEG and a PNG built by hand with known tag values, asserting the
 parsed values match; the EXIF block round-tripping through
 `serializeExif` → `parseExif` unchanged; stripped output still decoding, and its
 JPEG scan being byte-identical to the original's; a WebP produced by
