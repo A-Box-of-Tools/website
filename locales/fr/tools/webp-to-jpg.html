@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> Choisissez vos fichiers WebP</h2>
+    <h2><span class="step">1</span> Choisissez vos fichiers WebP et AVIF</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF est aussi accepté si votre navigateur sait le décoder. La sortie reste JPEG. Une séquence AVIF ne donne que la première image décodée. Le canvas du navigateur crée une copie SDR sur 8 bits : les couleurs ou le HDR peuvent changer, les métadonnées sont omises et le fichier peut être plus gros. Votre original reste inchangé.</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -89,8 +90,8 @@
     <span data-phrase="file.lossless">WebP sans perte</span>
     <span data-phrase="file.animated">Animé &mdash; un JPEG ne peut conserver que la première image</span>
     <span data-phrase="file.alpha">Contient des zones transparentes</span>
-    <span data-phrase="read.notwebp">{name} n’est pas un WebP &mdash; c’est {found}. Cet outil convertit les fichiers WebP.</span>
-    <span data-phrase="read.unknown">{name} n’est pas un WebP et ses premiers octets ne correspondent à aucun format d’image connu de cette page.</span>
+    <span data-phrase="read.notwebp">{name} est {found}. Cet outil accepte les fichiers WebP et AVIF.</span>
+    <span data-phrase="read.unknown">Les premiers octets de {name} ne correspondent pas à une image WebP et AVIF prise en charge.</span>
     <span data-phrase="read.failed">Impossible d’ouvrir {name}&nbsp;: {why}</span>
     <span data-phrase="found.png">un PNG</span>
     <span data-phrase="found.jpeg">un JPEG</span>
@@ -99,9 +100,9 @@
     <span data-phrase="found.bmp">un BMP</span>
     <span data-phrase="background.some">Un fichier comporte des zones transparentes que JPEG ne peut pas conserver. Choisissez leur couleur de fond.</span>
     <span data-phrase="background.none">Aucun fichier de la liste n’a de zones transparentes, aucune couleur n’est donc nécessaire.</span>
-    <span data-phrase="settings.one">Un WebP à la qualité {quality}.</span>
-    <span data-phrase="settings.many">{count} fichiers WebP à la qualité {quality}.</span>
-    <span data-phrase="settings.none">Choisissez un WebP ci-dessus pour connaître le résultat prévu.</span>
+    <span data-phrase="settings.one">Une image à la qualité {quality}.</span>
+    <span data-phrase="settings.many">{count} images à la qualité {quality}.</span>
+    <span data-phrase="settings.none">Choisissez une image prise en charge ci-dessus pour voir ce qui sera écrit.</span>
     <span data-phrase="run.one">Convertir en JPG</span>
     <span data-phrase="run.many">Convertir {count} fichiers en JPG</span>
     <span data-phrase="progress.each">Conversion de {name}&hellip;</span>
@@ -112,7 +113,7 @@
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">À partir de {name} &mdash; {dimensions}, {was} auparavant.</span>
     <span data-phrase="result.flattened">Les zones transparentes ont été remplies avec {colour}.</span>
-    <span data-phrase="result.firstframe">Ce WebP est animé&nbsp;: seule la première image a été enregistrée.</span>
+    <span data-phrase="result.firstframe">Cette entrée est animée ; seule la première image décodée a été écrite.</span>
     <span data-phrase="result.download">Télécharger</span>
     <span data-phrase="change.smaller">{percent} % de moins</span>
     <span data-phrase="change.larger">{percent} % de plus</span>
@@ -135,5 +136,7 @@
     <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
       du bouton de don propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'a reçu une image ou un octet d'une image.</span>
+    <span data-phrase="file.avif">AVIF &mdash; décodé par le navigateur ; métadonnées omises</span>
+    <span data-phrase="file.avif.sequence">Séquence AVIF &mdash; seule la première image décodée est écrite</span>
   </div>
 </main>

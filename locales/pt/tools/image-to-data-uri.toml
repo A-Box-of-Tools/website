@@ -312,4 +312,4 @@ features = [
 
 [picker]
 title = "Arraste imagens para cá"
-hint = "ou clique para escolher: PNG, JPEG, SVG, WebP, GIF, ICO e mais"
+hint = "ou clique para escolher: PNG, JPEG, SVG, WebP, AVIF, GIF, ICO e mais"

@@ -1,13 +1,14 @@
 <main id="main">
   <!-- ステップ1｜ファイル -->
   <section class="card">
-    <h2><span class="step">1</span> HEIC写真を選ぶ</h2>
+    <h2><span class="step">1</span> HEICとAVIF写真を選ぶ</h2>
 
     <p class="card-lede">
       スマホから直接でも、バックアップからでも、メモリーカードから複製したものでも構いません。ファイルを読むのも画像をデコードするのも、この端末の中です。このページにアップロードの段階はありませんし、後ろにサーバーもありません。
     </p>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIFはブラウザのデコーダーを使い、HEICエンジンを読み込みません。出力はJPEG、PNG、WebPのままです。最初にデコードされた画像だけを書き出し、色やHDRが変わる場合があります。AVIFのメタデータは常に除外します。メタデータのチェックボックスはHEICだけに適用されます。元のファイルは変わりません。</p>
 
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
@@ -109,10 +110,9 @@
   <div id="phrases" hidden aria-hidden="true">
     <!-- 折り返さない。行頭の字下げが空白になって文の中に入ってしまう。 -->
     <span data-phrase="load.refused">{name}: {why}</span>
-    <span data-phrase="refuse.avif">これはHEICではなくAVIFです。いまのブラウザーはどれも開けるので、ここで何かする必要はありません。</span>
     <span data-phrase="refuse.jpeg">これはすでにJPEGです。</span>
     <span data-phrase="refuse.png">これはPNGで、もうどこでも開けます。</span>
-    <span data-phrase="refuse.other">これはHEICではありません。{name}が何であれ、先頭のバイトはHEIFコンテナではなく、名前も証拠にはなりません。</span>
+    <span data-phrase="refuse.other">{name}の先頭バイトは、対応するHEICまたはAVIF画像ではありません。</span>
     <span data-phrase="list.count.one">写真{n}枚、合計{size}</span>
     <span data-phrase="list.count.many">写真{n}枚、合計{size}</span>
     <span data-phrase="row.sub">HEIC（{brand}）&middot; {size}</span>
@@ -144,8 +144,8 @@
     <span data-phrase="heif.nosize">このファイルの画像に、デコーダーが使えるサイズがありません。</span>
     <span data-phrase="heif.nodraw">デコーダーはファイルを読みましたが、描くことはできませんでした。</span>
     <span data-phrase="codec.nowrite">このブラウザーは{format}を書いてくれませんでした。</span>
-    <span data-phrase="n.heic.one">HEIC {n}件</span>
-    <span data-phrase="n.heic.many">HEIC {n}件</span>
+    <span data-phrase="n.heic.one">入力ファイル{n}個</span>
+    <span data-phrase="n.heic.many">入力ファイル{n}個</span>
     <span data-phrase="n.picture.one">{format} {n}枚</span>
     <span data-phrase="n.picture.many">{format} {n}枚</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}。{before} &rarr; {after}、{change}。</span>
@@ -178,5 +178,10 @@
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
     <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、写真も、その1バイトも渡っていません。</span>
+    <span data-phrase="file.avif">AVIF：最初にデコードされた画像のみ。メタデータは常に除外します。</span>
+    <span data-phrase="row.avif">AVIF &middot; {size}</span>
+    <span data-phrase="error.decode">ブラウザがこのAVIFをデコードできませんでした</span>
+    <span data-phrase="error.encode">ブラウザが{format}を書き出せませんでした</span>
+    <span data-phrase="error.wrongtype">ブラウザが{format}以外の形式を返しました</span>
   </div>
 </main>

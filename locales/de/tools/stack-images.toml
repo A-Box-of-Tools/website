@@ -344,4 +344,4 @@ features = [
 
 [picker]
 title = "Aufnahmen hier ablegen"
-hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, TIFF und Kamera-RAW"
+hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, AVIF, TIFF und Kamera-RAW"

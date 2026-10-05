@@ -30,7 +30,7 @@ css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-09-21"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -470,10 +470,10 @@ example = "us-passport"
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*,.jpg,.jpeg,.png,.webp,.heic"
+accept = "image/*,image/avif,.jpg,.jpeg,.png,.webp,.heic,.avif"
 multiple = false
 title = "Drop a photo here"
-hint = "or click to browse &mdash; one photograph, JPEG, PNG, WebP or anything else your browser can open"
+hint = "or click to browse &mdash; one photograph, JPEG, PNG, WebP, AVIF or anything else your browser can open"
 # A real portrait, in src/example-data.js. This tool measures a
 # face - the eye line, the chin, the crown - and a drawn one has nothing to
 # measure. From Pexels; recorded in THIRD-PARTY-NOTICES.md.

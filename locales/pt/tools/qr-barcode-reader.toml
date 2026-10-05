@@ -56,7 +56,7 @@ card = """
 
 [picker]
 title = "Solte aqui uma imagem com um código"
-hint = "ou clique para procurar &mdash; uma foto, um print, um PNG, qualquer coisa que o seu navegador abra"
+hint = "ou clique para procurar &mdash; uma foto, um print, um PNG ou AVIF, qualquer coisa que o seu navegador abra"
 
 [words]
 plural = "as imagens e os códigos que estão nelas"

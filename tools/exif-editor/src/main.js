@@ -7,6 +7,8 @@ import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { readImage, readBytes, serialize, exifBytes, outputType, KIND_NAMES } from './container.js';
+import { cleanAvif } from './avif.js';
+import { outName, cleanNames } from './names.js';
 import { serializeExif, setEntryValue, createEntry, TYPE } from './tiff.js';
 import { describeTag } from './tags.js';
 import { makeExample } from './example.js';
@@ -39,6 +41,7 @@ const el = {
   inspectName: $('inspect-name'),
   inspectSub: $('inspect-sub'),
   inspectSelect: $('inspect-select'),
+  avifInspectNote: $('avif-inspect-note'),
   findingsList: $('findings-list'),
   blockList: $('block-list'),
   tagGroups: $('tag-groups'),
@@ -73,6 +76,8 @@ const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 let items = [];
 let selectedId = null;
 let nextId = 1;
+let cleaning = false;
+let cleanEpoch = 0;
 
 /** Object URLs handed to download links, revoked when the results are replaced. */
 let resultUrls = [];
@@ -123,6 +128,10 @@ async function addFiles(files) {
       // what a WebP with no extended header needs before metadata can be added.
       const dims = await measureImage(item.thumbUrl);
       if (dims && item.doc) item.doc.canvas = dims;
+      if (item.kind === 'avif' && (!dims || dims.width * dims.height > 80_000_000)) {
+        item.ok = false;
+        item.error = dims ? 'write.aviflarge' : 'read.avifdecode';
+      }
 
       if (item.ok) normalizeExif(item);
 
@@ -192,6 +201,7 @@ function normalizeExif(item) {
 function removeItem(id) {
   const at = items.findIndex((i) => i.id === id);
   if (at < 0) return;
+  cleanEpoch += 1;
   URL.revokeObjectURL(items[at].thumbUrl);
   items.splice(at, 1);
   if (selectedId === id) selectedId = items.find((i) => i.ok)?.id ?? null;
@@ -199,6 +209,7 @@ function removeItem(id) {
 }
 
 el.clearAll.addEventListener('click', () => {
+  cleanEpoch += 1;
   for (const item of items) URL.revokeObjectURL(item.thumbUrl);
   items = [];
   selectedId = null;
@@ -225,7 +236,7 @@ function render() {
     : '';
 
   renderList();
-  el.stripAll.disabled = !items.some((i) => i.ok);
+  el.stripAll.disabled = cleaning || !items.some((i) => i.ok);
   renderKeepSummary();
   renderInspector();
 }
@@ -263,18 +274,20 @@ function renderList() {
     const sub = document.createElement('span');
     sub.className = 'file-sub';
     sub.textContent = item.ok
-      ? phrase('row.file', {
+      ? phrase(item.kind === 'avif' ? 'row.avif' : 'row.file', {
         kind: KIND_NAMES[item.kind],
         size: humanBytes(item.size),
         metadata: humanBytes(metadataSize(item)),
       })
-      : item.error;
+      : phrase(item.error, item.values);
     main.appendChild(sub);
 
     if (item.ok) {
       const row = document.createElement('span');
       row.className = 'badges';
-      for (const badge of badges(item)) {
+      const shownBadges = badges(item).filter((badge) => item.kind !== 'avif' || badge.label !== 'badge.clean');
+      if (item.kind === 'avif') shownBadges.push({ label: 'badge.avif', level: 'medium' });
+      for (const badge of shownBadges) {
         const span = document.createElement('span');
         span.className = `badge badge-${badge.level}`;
         span.textContent = phrase(badge.label, badge.values);
@@ -307,9 +320,18 @@ function renderKeepSummary() {
   // language answers for itself.
   const orientation = el.keepOrientation.checked;
   const icc = el.keepIcc.checked;
+  const anyAvif = items.some((item) => item.ok && item.kind === 'avif');
+  const containerEdits = items.some((item) => item.ok && item.kind !== 'avif');
+  el.keepOrientation.disabled = cleaning || (anyAvif && !containerEdits);
+  el.keepIcc.disabled = cleaning || (anyAvif && !containerEdits);
+  if (anyAvif && !containerEdits) {
+    el.keepSummary.textContent = phrase('keep.avif');
+    return;
+  }
   if (!orientation && !icc) el.keepSummary.textContent = phrase('keep.nothing');
   else if (orientation && icc) el.keepSummary.textContent = phrase('keep.both');
   else el.keepSummary.textContent = phrase(orientation ? 'keep.orientation' : 'keep.icc');
+  if (anyAvif) el.keepSummary.textContent += ` ${phrase('keep.avif')}`;
 }
 
 el.keepOrientation.addEventListener('change', renderKeepSummary);
@@ -340,6 +362,7 @@ function renderInspector() {
   const item = selected();
   el.inspector.hidden = !item;
   el.inspectEmpty.hidden = Boolean(item);
+  if (el.avifInspectNote) el.avifInspectNote.hidden = item?.kind !== 'avif';
   if (!item) return;
 
   el.inspectSelect.replaceChildren();
@@ -362,7 +385,7 @@ function renderInspector() {
     KIND_NAMES[item.kind],
     size ? ltr(`${size.width} × ${size.height}`) : null,
     humanBytes(item.size),
-    hasMetadata(item)
+    item.kind === 'avif' ? phrase('inspect.avif') : hasMetadata(item)
       ? phrase('inspect.metadata', { size: humanBytes(metadataSize(item)) })
       : phrase('inspect.nometadata'),
   ].filter(Boolean).join(' · ');
@@ -386,13 +409,14 @@ function renderFindings(item) {
 
   if (!findings.length) {
     const li = document.createElement('li');
-    li.className = 'finding finding-clean';
+    li.className = item.kind === 'avif' ? 'finding' : 'finding finding-clean';
     const title = document.createElement('p');
     title.className = 'finding-title';
-    title.textContent = phrase('find.clean.title');
+    title.textContent = phrase(item.kind === 'avif' ? 'avif.scope.title' : 'find.clean.title');
     const detail = document.createElement('p');
     detail.className = 'finding-detail';
-    detail.textContent = phrase(item.dirty ? 'find.clean.cleared' : 'find.clean.never');
+    detail.textContent = phrase(item.kind === 'avif' ? 'avif.nofindings'
+      : item.dirty ? 'find.clean.cleared' : 'find.clean.never');
     li.append(title, detail);
     el.findingsList.appendChild(li);
     return;
@@ -516,6 +540,13 @@ function blockDescriptors(item) {
 
 function renderBlocks(item) {
   el.blockList.replaceChildren();
+  if (item.kind === 'avif') {
+    const li = document.createElement('li');
+    li.className = 'block block-none';
+    li.textContent = phrase('avif.blocks');
+    el.blockList.appendChild(li);
+    return;
+  }
   const blocks = blockDescriptors(item);
 
   if (!blocks.length && !item.meta.notes.length) {
@@ -591,7 +622,8 @@ function renderTags(item) {
   el.tagGroups.replaceChildren();
   const groups = tagGroups(item);
 
-  el.tagsNote.textContent = phrase(groups.length ? 'editor.note' : 'editor.notags');
+  el.tagsNote.textContent = phrase(item.kind === 'avif' ? 'editor.avif'
+    : groups.length ? 'editor.note' : 'editor.notags');
 
   if (item.textChunks?.length && !item.drop.has('text')) el.tagGroups.appendChild(textChunkGroup(item));
 
@@ -795,9 +827,11 @@ function tagRow(item, group, entry) {
   const remove = document.createElement('button');
   remove.type = 'button';
   remove.className = 'tag-delete';
+  remove.disabled = item.kind === 'avif';
   remove.textContent = phrase('block.remove');
   remove.setAttribute('aria-label', phrase('editor.removetag', { tag: spec.name }));
   remove.addEventListener('click', () => {
+    if (item.kind === 'avif') return;
     const list = item.exif.groups[group];
     const at = list.indexOf(entry);
     if (at >= 0) list.splice(at, 1);
@@ -822,7 +856,7 @@ function editableText(entry) {
 function editorFor(item, group, entry) {
   const spec = describeTag(group, entry.tag);
 
-  if (!spec.edit) {
+  if (!spec.edit || item.kind === 'avif') {
     const span = document.createElement('span');
     span.className = 'tag-readonly';
     span.textContent = say(formatValue(group, entry));
@@ -901,6 +935,10 @@ const ADDABLE = [
 
 function renderAddTag(item) {
   el.addTagSelect.replaceChildren();
+  if (item.kind === 'avif') {
+    el.addTag.hidden = true;
+    return;
+  }
 
   const available = ADDABLE.filter(
     (candidate) => !item.exif.groups[candidate.group].some((e) => e.tag === candidate.tag),
@@ -927,7 +965,7 @@ el.addTagSelect.addEventListener('change', syncAddTagHint);
 
 el.addTagGo.addEventListener('click', () => {
   const item = selected();
-  if (!item) return;
+  if (!item || item.kind === 'avif') return;
 
   const candidate = ADDABLE.find((c) => `${c.group}:${c.tag}` === el.addTagSelect.value);
   if (!candidate) return;
@@ -955,19 +993,12 @@ function markDirty(item) {
 
 function updateSaveButtons() {
   const item = selected();
-  el.saveEdits.disabled = !item?.dirty;
-  el.revertEdits.disabled = !item?.dirty;
+  el.saveEdits.disabled = !item?.dirty || item.kind === 'avif';
+  el.revertEdits.disabled = !item?.dirty || item.kind === 'avif';
   if (item && !item.dirty) el.saveStatus.textContent = '';
 }
 
 /* ------------------------------------------------------------ writing files */
-
-/** What the saved file should be called. */
-function outName(item, suffix) {
-  const { ext } = outputType(item.kind);
-  const base = item.name.replace(/\.[^.]+$/, '') || 'photo';
-  return `${base}-${suffix}.${ext}`;
-}
 
 /**
  * The plan for "remove everything".
@@ -1012,29 +1043,47 @@ function editPlan(item) {
   return plan;
 }
 
-el.stripAll.addEventListener('click', () => {
+el.stripAll.addEventListener('click', async () => {
+  if (cleaning) return;
+  cleaning = true;
+  const epoch = ++cleanEpoch;
   const keepOrientation = el.keepOrientation.checked;
   const keepIcc = el.keepIcc.checked;
   const results = [];
+  const batch = items.filter((item) => item.ok).map((item) => {
+    try { return { item, metadata: hasMetadata(item),
+      plan: item.kind === 'avif' ? null : stripPlan(item, keepOrientation, keepIcc) }; }
+    catch (error) { return { item, error }; }
+  });
+  render();
 
-  for (const item of items) {
-    if (!item.ok) continue;
-    try {
-      if (!hasMetadata(item)) {
-        results.push({ item, note: phrase('strip.nothing') });
-        continue;
+  try {
+    for (const { item, plan, metadata, error: planError } of batch) {
+      if (epoch !== cleanEpoch) return;
+      try {
+        if (planError) throw planError;
+        if (item.kind === 'avif') {
+          const data = await cleanAvif(item.bytes);
+          results.push({ item, data, note: phrase('clean.avif') });
+        } else if (!metadata) {
+          results.push({ item, note: phrase('strip.nothing') });
+        } else {
+          results.push({ item, data: serialize(item, plan) });
+        }
+      } catch (error) {
+        results.push({ item, error: phrase(error.message, error.values) });
       }
-      results.push({ item, data: serialize(item, stripPlan(item, keepOrientation, keepIcc)) });
-    } catch (error) {
-      results.push({ item, error: phrase(error.message, error.values) });
     }
+    if (epoch !== cleanEpoch) return;
+    showResults(results);
+    const cleaned = results.filter((r) => r.data).length;
+    el.stripStatus.textContent = cleaned
+      ? phrase(cleaned === 1 ? 'strip.done.one' : 'strip.done.many', { count: cleaned })
+      : phrase('strip.none');
+  } finally {
+    cleaning = false;
+    render();
   }
-
-  showResults(results);
-  const cleaned = results.filter((r) => r.data).length;
-  el.stripStatus.textContent = cleaned
-    ? phrase(cleaned === 1 ? 'strip.done.one' : 'strip.done.many', { count: cleaned })
-    : phrase('strip.none');
 });
 
 function clearResults() {
@@ -1049,6 +1098,9 @@ function clearResults() {
 function showResults(results) {
   clearResults();
   if (!results.length) return;
+  const cleaned = results.filter(result => result.data);
+  const names = cleanNames(cleaned.map(result => result.item));
+  cleaned.forEach((result, index) => { result.outputName = names[index]; });
 
   el.cleanResults.hidden = false;
 
@@ -1065,12 +1117,17 @@ function showResults(results) {
     const detail = document.createElement('p');
     detail.className = 'result-detail';
     if (result.data) {
-      const saved = result.item.size - result.data.length;
-      detail.textContent = phrase('result.saved', {
+      const sizes = {
         before: humanBytes(result.item.size),
         after: humanBytes(result.data.length),
-        saved: humanBytes(Math.max(0, saved)),
-      });
+      };
+      if (result.item.kind === 'avif') detail.textContent = phrase('result.avif', sizes);
+      else {
+        detail.textContent = phrase('result.saved', {
+          ...sizes, saved: humanBytes(Math.max(0, result.item.size - result.data.length)),
+        });
+        if (result.note) detail.textContent = `${result.note} · ${detail.textContent}`;
+      }
     } else if (result.error) {
       detail.textContent = result.error;
       li.classList.add('result-failed');
@@ -1086,7 +1143,7 @@ function showResults(results) {
       const link = document.createElement('a');
       link.className = 'primary as-button';
       link.href = url;
-      link.download = outName(result.item, 'clean');
+      link.download = result.outputName;
       link.textContent = phrase('result.download');
       li.appendChild(link);
     }
@@ -1094,17 +1151,16 @@ function showResults(results) {
     el.resultList.appendChild(li);
   }
 
-  const cleaned = results.filter((r) => r.data);
   el.downloadZip.hidden = cleaned.length < 2;
   el.downloadZip.onclick = () => {
-    const zip = makeZip(cleaned.map((r) => ({ name: outName(r.item, 'clean'), data: r.data })));
+    const zip = makeZip(cleaned.map((r) => ({ name: r.outputName, data: r.data })));
     saveBlob(zip, 'photos-without-metadata.zip');
   };
 }
 
 el.saveEdits.addEventListener('click', () => {
   const item = selected();
-  if (!item) return;
+  if (!item || item.kind === 'avif') return;
 
   try {
     const data = serialize(item, editPlan(item));
@@ -1118,7 +1174,7 @@ el.saveEdits.addEventListener('click', () => {
 
 el.revertEdits.addEventListener('click', async () => {
   const item = selected();
-  if (!item) return;
+  if (!item || item.kind === 'avif') return;
 
   // Re-read the original bytes rather than un-picking the edits one at a time.
   // The pixel size is carried across because it came from decoding the picture,

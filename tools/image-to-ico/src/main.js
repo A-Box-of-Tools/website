@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { acceptsImageFile } from './shared/image-input.js';
 import { messageBox } from './shared/message-box.js';
 import { writeIco, dibEntry, readIcoDirectory } from './ico.js';
 import { writeIcns, readIcnsElements, ICNS_TYPES, ICNS_SIZES } from './icns.js';
@@ -161,8 +162,7 @@ async function addFiles(files) {
 
 /** Types the browser is likely to decode. The decode itself is the real test. */
 function looksLikeImage(file) {
-  if (!file.type) return /\.(jpe?g|png|webp|gif|bmp|avif|svg)$/i.test(file.name);
-  return file.type.startsWith('image/');
+  return acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'svg']);
 }
 
 /**

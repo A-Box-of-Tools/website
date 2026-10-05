@@ -20,8 +20,8 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { saveBlob } from './shared/download.js';
 import {
-  FORMATS, PNG, WEBP,
-  canEncode, change, decode, encodeWebp, hasAlpha, outName, release, sniff, uniqueNames,
+  AVIF, FORMATS, PNG, WEBP,
+  avifFacts, canEncode, change, decode, encodeWebp, hasAlpha, outName, release, sniff, uniqueNames,
 } from './shared/image-convert.js';
 import { makeExample } from './example.js';
 
@@ -113,7 +113,7 @@ async function addFiles(files) {
       const head = new Uint8Array(await file.slice(0, 64).arrayBuffer());
       const kind = sniff(head);
 
-      if (kind !== PNG) {
+      if (kind !== PNG && kind !== AVIF) {
         failures.push(kind
           ? phrase('read.notpng', { name: file.name, found: phrase(FOUND[kind] ?? kind) })
           : phrase('read.unknown', { name: file.name }));
@@ -141,6 +141,7 @@ async function addFiles(files) {
       items.push({
         id: nextId,
         file,
+        kind, animated: kind === AVIF && avifFacts(head).animated,
         width: decoded.width,
         height: decoded.height,
         alpha,
@@ -240,6 +241,13 @@ function fileRow(item) {
     const note = document.createElement('p');
     note.className = 'file-out';
     note.textContent = phrase('file.alpha');
+    main.append(note);
+  }
+
+  if (item.kind === AVIF) {
+    const note = document.createElement('p');
+    note.className = 'file-out';
+    note.textContent = phrase(item.animated ? 'file.avif.sequence' : 'file.avif');
     main.append(note);
   }
 

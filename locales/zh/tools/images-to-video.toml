@@ -14,7 +14,7 @@ heading = "图片转视频 <span class=\"h1-kw\">做一个 MP4 幻灯片</span>"
 tagline = "一个文件夹的图片，变成一段视频。"
 
 title = "图片序列转 MP4 | 免费，不上传，断网能用"
-description = "把 JPG、PNG 或 WebP 做成 MP4 幻灯片视频，免费，全程在你的浏览器里跑。什么都不上传，不用注册，断网也能用。"
+description = "把 JPG、PNG、WebP 或 AVIF 做成 MP4 幻灯片视频，免费，全程在你的浏览器里跑。什么都不上传，不用注册，断网也能用。"
 og_title = "图片序列转 MP4 | 免费，在你的浏览器里"
 og_description = "把渲染序列、延时素材或者一整个文件夹的照片做成 MP4。编码在你自己的机器上跑，什么都不上传。"
 og_image_alt = "图片转视频 - 把一个文件夹的图片做成 MP4 幻灯片"

@@ -1,13 +1,7 @@
   <section>
     <h2>A resposta curta</h2>
-    <p>
-      Abra o <a href="../../remover-dados-exif/">Visualizador e removedor de
-      EXIF</a>, jogue as fotos dentro e clique em &ldquo;Remover todos os
-      metadados&rdquo;. Todas as etiquetas, os blocos XMP e IPTC, os comentários
-      e a miniatura embutida vão embora, em todas as fotos da lista de uma vez.
-      A imagem em si não é tocada: não é recomprimida, não é decodificada, não
-      muda um pixel sequer.
-    </p>
+    <p>Abra <a href="../../remover-dados-exif/">Visualizador e removedor de
+      EXIF</a> para remover os metadados das fotos. JPEG, PNG e WebP mantêm os dados comprimidos da imagem. A limpeza de AVIF cria um PNG novo da primeira imagem decodificada sem metadados originais. As opções de orientação e perfil valem apenas para os três formatos de contêiner. AVIF é decodificado pelo navegador e salvo como um PNG novo sem copiar os metadados originais. Suas tags EXIF disponíveis podem ser vistas aqui, mas não editadas. O PNG pode ficar maior e a conversão pode mudar cores ou HDR. O original permanece intacto.</p>
     <p>
       Antes de fazer isso, vale olhar o que tinha lá dentro. Costuma ser mais do
       que as pessoas esperam, e essa lista é o argumento para fazer isso.
@@ -100,20 +94,13 @@
 
   <section>
     <h2>Por que não simplesmente salvar de novo?</h2>
-    <p>
-      Salvar de novo uma foto por um editor ou um compressor realmente remove os
-      metadados, porque a imagem é decodificada em pixels e codificada outra vez,
-      e um canvas cheio de pixels não carrega etiqueta nenhuma. Funciona, e custa
-      qualidade a você, porque essa recodificação é com perdas.
-    </p>
-    <p>
-      Remover os metadados direito não custa nada. As etiquetas ficam no
+    <p>Um editor ou compressor remove metadados ao decodificar e codificar a imagem novamente. Codificação com perdas pode reduzir a qualidade. PNG sem perdas evita outra compressão com perdas, mas a decodificação do navegador pode mudar cores ou HDR.</p>
+    <p>Para JPEG, PNG e WebP: Remover os metadados direito não custa nada. As etiquetas ficam no
       contêiner <em>em volta</em> da imagem comprimida, e não dentro dela, então
       apagá-las é excluir entradas de uma lista e escrever a lista de volta. Os
       dados de imagem comprimida são copiados byte por byte e o resultado
       decodifica exatamente para os mesmos pixels. Esse é o motivo inteiro para
-      usar uma ferramenta de metadados em vez de um conversor.
-    </p>
+      usar uma ferramenta de metadados em vez de um conversor.</p>
     <p>
       A exceção é se você fosse recodificar de qualquer jeito. Se já está
       comprimindo ou redimensionando a foto, as etiquetas vão embora como efeito
@@ -129,13 +116,7 @@
       como aquilo deve ser virado para exibição. Apague todas as etiquetas e
       alguns visualizadores vão mostrar a sua foto deitada.
     </p>
-    <p>
-      É por isso que a ferramenta daqui tem uma opção de &ldquo;manter a etiqueta
-      de orientação&rdquo;, que já vem ligada. Ela escreve de volta um
-      pequeníssimo bloco EXIF contendo só essa etiqueta e nada mais, e só nas
-      fotos que realmente precisavam. O GPS, os horários, o número de série e o
-      resto continuam fora.
-    </p>
+    <p>Para JPEG, PNG e WebP, manter a orientação grava um pequeno bloco EXIF só com essa tag quando necessário. Desmarque para removê-la. AVIF usa a imagem decodificada na orientação correta pelo navegador e cria um PNG. As opções de orientação e perfil de cor valem só para JPEG, PNG e WebP.</p>
     <p>
       Desligue se você preferir que o arquivo não carregue EXIF nenhum, e então
       confira o resultado antes de mandar, porque uma foto deitada é o desfecho
@@ -159,10 +140,8 @@
       ajustes da câmera e tirar só a localização, e um arquivista pode precisar
       corrigir uma data que estava errada porque o relógio da câmera estava.
     </p>
-    <p>
-      Os dois são possíveis. A localização pode ser apagada sozinha, e etiquetas
-      de texto, datas, ISO, orientação e resolução podem ser editadas ali mesmo.
-    </p>
+    <p>Para JPEG, PNG e WebP: Os dois são possíveis. A localização pode ser apagada sozinha, e etiquetas
+      de texto, datas, ISO, orientação e resolução podem ser editadas ali mesmo.</p>
     <p>
       Uma ressalva que vale para toda ferramenta que faz isso, não só para esta:
       escrever o arquivo reconstrói o bloco EXIF, e uma maker note contém
@@ -175,17 +154,8 @@
 
   <section>
     <h2>Formatos, e os que não dão para fazer assim</h2>
-    <p>
-      JPEG, PNG e WebP podem todos ser reescritos de forma limpa, e são esses os
-      três que a ferramenta daqui trata.
-    </p>
-    <p>
-      HEIC, que é o que um iPhone salva por padrão, e AVIF são formatos de caixas
-      montados a partir de átomos aninhados, e precisam de um interpretador
-      completamente diferente. A ferramenta reconhece os dois e avisa isso, em
-      vez de produzir um arquivo quebrado. Se você tem um HEIC, convertê-lo para
-      JPEG vai remover os metadados como efeito colateral da conversão.
-    </p>
+    <p>JPEG, PNG e WebP permitem ver, editar e limpar metadados no contêiner. AVIF permite uma prévia do EXIF extraído disponível e limpeza para um PNG novo. Tags AVIF são somente leitura; outros metadados não são inventariados. AVIF animado usa a primeira imagem. HEIC e TIFF puro são reconhecidos, mas não reescritos.</p>
+    <p>HEIC, que um iPhone costuma salvar, usa outro codec e é reconhecido, mas recusado por esta ferramenta de metadados. Ao convertê-lo para JPEG, escolha remover os metadados.</p>
     <p>
       Um TIFF puro também fica de fora, e por um motivo mais interessante: num
       TIFF os metadados e os dados de pixel são endereçados pelos mesmos

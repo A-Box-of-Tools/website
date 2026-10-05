@@ -8,6 +8,11 @@ for — one file or a folder of them, and none of them going anywhere.
 
 ---
 
+The file gate uses [`shared/js/image-input.js`](../../shared/js/image-input.js).
+A known extension, including `.avif`, can reach the decoder even when the
+operating system reports no MIME type or the wrong one. The browser validates
+the image bytes afterward. AVIF input does not add an AVIF output encoder.
+
 ## Why this is one tool and not three
 
 Resize, crop and convert were three separate names on the planned list, and

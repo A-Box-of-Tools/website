@@ -85,7 +85,7 @@ a = "Ce sont des mesures de ce que la compression a coûté, prises en décodant
 
 [[faq]]
 q = "Quels formats sait-il lire et écrire&nbsp;?"
-a = "Il lit tout ce que votre navigateur sait décoder, ce qui revient en pratique au JPEG, au PNG, au WebP, au GIF, au BMP, ainsi qu'à l'AVIF sur la plupart des navigateurs actuels. Il écrit du JPEG, du PNG et du WebP, parce que ce sont là les encodeurs que les navigateurs embarquent. En mode &laquo;&nbsp;auto&nbsp;&raquo;, il garde le format dans lequel votre fichier est arrivé et ne bascule sur WebP que lorsque le conserver aurait imposé un redimensionnement ou une baisse de qualité visible."
+a = "Il lit les images que votre navigateur peut décoder, dont JPEG, PNG, WebP, GIF, BMP et AVIF. Les nouveaux encodages utilisent JPEG, PNG ou WebP. Les fichiers déjà sous la taille cible sont rendus inchangés, avec leur format et leurs métadonnées d’origine. Si un encodage est nécessaire, Automatique commence avec le format source si le navigateur sait l’écrire ; sinon, GIF commence en PNG, tandis qu’AVIF, BMP ou un type MIME inconnu commencent en JPEG. Automatique peut ensuite choisir WebP s’il atteint la cible avec moins de perte visible."
 
 [[faq]]
 q = "Pourquoi ne peut-il pas compresser un PNG bien loin&nbsp;?"
@@ -93,7 +93,7 @@ a = "Parce que le PNG est un format sans perte, dépourvu de toute molette de qu
 
 [[faq]]
 q = "Compresser une image supprime-t-il ses données EXIF et GPS&nbsp;?"
-a = "Oui, par effet de bord. Compresser revient à décoder l'image en pixels puis à réencoder ces pixels, or un canvas rempli de pixels ne porte aucune étiquette&nbsp;: le lieu, le modèle d'appareil, les horodatages et tout le reste ne sont tout simplement pas écrits dans le nouveau fichier. Si vous voulez faire disparaître les métadonnées en laissant l'image intacte, passez plutôt par le <a href=\"../supprimer-les-donnees-exif/\">lecteur et effaceur EXIF</a>, qui réécrit le conteneur sans rien recompresser."
+a = "Un résultat réencodé omet l’EXIF, le GPS, les horodatages et les autres métadonnées d’origine, car le canevas ne contient que les pixels. Un fichier déjà sous la taille cible est rendu inchangé, avec ses métadonnées. <a href=\"../supprimer-les-donnees-exif/\">lecteur et effaceur EXIF</a> lit et modifie les métadonnées JPEG, PNG et WebP sans réencoder leurs images. Pour AVIF, il montre l’EXIF disponible en lecture seule et nettoie en convertissant la première image décodée vers un nouveau PNG ; les couleurs ou le HDR peuvent changer."
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
@@ -109,4 +109,4 @@ features = ["Compresse vers une taille de fichier que vous choisissez, pas vers 
 
 [picker]
 title = "Déposez vos images ici"
-hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, AVIF et tout ce que votre navigateur sait ouvrir"

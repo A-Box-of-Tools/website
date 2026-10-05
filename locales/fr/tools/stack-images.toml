@@ -120,4 +120,4 @@ features = ["Sept méthodes&nbsp;: moyenne, médiane, moyenne à écrêtage sigm
 
 [picker]
 title = "Déposez les prises ici"
-hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, TIFF et RAW d'appareil"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, AVIF, TIFF et RAW d'appareil"

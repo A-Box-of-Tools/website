@@ -1,7 +1,7 @@
 <main id="main">
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Ihre HEIC-Fotos auswählen</h2>
+    <h2><span class="step">1</span> Ihre HEIC und AVIF-Fotos auswählen</h2>
 
     <p class="card-lede">
       Direkt vom Telefon, aus einem Backup oder von einer Speicherkarte kopiert.
@@ -11,6 +11,7 @@
     </p>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF nutzt den Browser-Decoder und lädt die HEIC-Engine nicht. Das Ausgabeformat bleibt JPEG, PNG oder WebP. Nur das erste dekodierte Bild wird geschrieben; Farben oder HDR können sich ändern. AVIF-Metadaten entfallen immer: Das Metadaten-Kontrollkästchen gilt nur für HEIC. Die Originaldatei bleibt unverändert.</p>
 
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
@@ -122,12 +123,9 @@
   -->
   <div id="phrases" hidden aria-hidden="true">
     <span data-phrase="load.refused">{name}: {why}</span>
-    <span data-phrase="refuse.avif">das ist ein AVIF, kein HEIC. Jeder aktuelle Browser öffnet eines bereits, hier ist
-      also nichts damit zu tun.</span>
     <span data-phrase="refuse.jpeg">das ist bereits ein JPEG.</span>
     <span data-phrase="refuse.png">das ist ein PNG, das ohnehin überall aufgeht.</span>
-    <span data-phrase="refuse.other">das ist kein HEIC. Was {name} auch sein mag, die ersten Bytes davon sind kein
-      HEIF-Container, und der Name ist auch kein Beleg.</span>
+    <span data-phrase="refuse.other">Die ersten Bytes von {name} kennzeichnen kein unterstütztes HEIC- oder AVIF-Bild.</span>
     <span data-phrase="list.count.one">{n} Foto, insgesamt {size}</span>
     <span data-phrase="list.count.many">{n} Fotos, insgesamt {size}</span>
     <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
@@ -169,8 +167,8 @@
     <span data-phrase="heif.nosize">das Bild in dieser Datei hat keine Größe, die der Dekoder verwenden konnte.</span>
     <span data-phrase="heif.nodraw">der Dekoder hat die Datei gelesen, konnte sie aber nicht zeichnen.</span>
     <span data-phrase="codec.nowrite">dieser Browser wollte kein {format} schreiben.</span>
-    <span data-phrase="n.heic.one">{n} HEIC-Datei</span>
-    <span data-phrase="n.heic.many">{n} HEIC-Dateien</span>
+    <span data-phrase="n.heic.one">{n} Eingabedatei</span>
+    <span data-phrase="n.heic.many">{n} Eingabedateien</span>
     <span data-phrase="n.picture.one">{n} {format}-Bild</span>
     <span data-phrase="n.picture.many">{n} {format}-Bilder</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
@@ -214,5 +212,10 @@
     <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für
       Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines
       davon hat ein Foto oder ein Byte davon bekommen.</span>
+    <span data-phrase="file.avif">AVIF: nur das erste dekodierte Bild; Metadaten entfallen immer.</span>
+    <span data-phrase="row.avif">AVIF &middot; {size}</span>
+    <span data-phrase="error.decode">der Browser konnte dieses AVIF nicht dekodieren</span>
+    <span data-phrase="error.encode">der Browser konnte kein {format} schreiben</span>
+    <span data-phrase="error.wrongtype">der Browser lieferte etwas anderes als {format}</span>
   </div>
 </main>

@@ -19,6 +19,8 @@
  * format here. That is what this reads.
  */
 
+import { imageBrands } from './shared/image-convert.js';
+
 const utf8 = new TextDecoder('utf-8');
 
 /** ASCII at an offset, for the four-character tags these formats are full of. */
@@ -29,23 +31,6 @@ function tag(bytes, at, length = 4) {
 }
 
 const starts = (bytes, ...values) => values.every((v, i) => bytes[i] === v);
-
-/**
- * ISO base media files - AVIF, HEIC and the rest - all begin with an `ftyp`
- * box and differ only in the brands inside it. The major brand is at 8, and
- * the compatible brands follow from 16 in four-byte runs; a file written by a
- * phone often has a generic major brand and the useful one further down.
- */
-function brands(bytes) {
-  if (bytes.length < 12 || tag(bytes, 4) !== 'ftyp') return [];
-  const declared = (bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]) >>> 0;
-  // The box says how long it is; the caller may only have handed over the head
-  // of the file. Whichever is shorter is what can actually be read.
-  const size = Math.min(declared, bytes.length);
-  const found = [tag(bytes, 8)];
-  for (let at = 16; at + 4 <= size; at += 4) found.push(tag(bytes, at));
-  return found;
-}
 
 /**
  * Formats a browser will not draw, and the reason it is worth saying so on the
@@ -78,10 +63,10 @@ const TESTS = [
   (b) => starts(b, 0x00, 0x00, 0x01, 0x00)
     && { mime: 'image/x-icon', label: 'ICO' },
 
-  (b) => brands(b).some((brand) => brand === 'avif' || brand === 'avis')
+  (b) => imageBrands(b).some((brand) => brand === 'avif' || brand === 'avis')
     && { mime: 'image/avif', label: 'AVIF' },
 
-  (b) => brands(b).some((brand) => /^(heic|heix|hevc|hevx|mif1|msf1)$/.test(brand))
+  (b) => imageBrands(b).some((brand) => /^(heic|heix|hevc|hevx|mif1|msf1)$/.test(brand))
     && { mime: 'image/heic', label: 'HEIC', note: UNRENDERABLE },
 
   // The bare codestream, and the container Apple and others write.

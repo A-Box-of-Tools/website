@@ -287,4 +287,4 @@ features = [
 
 [picker]
 title = "把图片拖到这儿"
-hint = "或者点击选择，PNG、SVG、JPEG、WebP，以及你浏览器打得开的其他格式"
+hint = "或者点击选择，PNG、SVG、JPEG、WebP、AVIF，以及你浏览器打得开的其他格式"

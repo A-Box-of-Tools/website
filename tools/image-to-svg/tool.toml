@@ -43,7 +43,7 @@ css_parts = ["checks"]
 # Shared modules this tool asks for. file-picker brings in the drop zone;
 # phrases arrives on its own, for every tool.
 js_parts = ["file-picker", "download", "example-mark", "example-photo"]
-lastmod = "2026-09-09"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -369,7 +369,7 @@ features = [
 # time: every setting on the page is judged against the picture in front of
 # you, and a batch would have to be traced blind.
 [picker]
-accept = "image/*"
+accept = "image/*,image/avif,.avif"
 multiple = false
 title = "Drop a picture here"
 hint = "or click to browse &mdash; PNG, JPEG, WebP, GIF, AVIF"

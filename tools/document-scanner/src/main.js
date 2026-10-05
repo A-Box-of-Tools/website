@@ -1,13 +1,14 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { acceptsImageFile } from './shared/image-input.js';
 import { messageBox } from './shared/message-box.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
-import { WORKING_EDGE, findPageQuad } from './detect.js';
+import { WORKING_EDGE, findPageQuad } from './shared/document-detect.js';
 import {
   clampPoint, copyQuad, orderCorners, outputSize, pageAspect, scaleQuad, wholeFrame,
-} from './geometry.js';
+} from './shared/document-geometry.js';
 import { turnQuad, warpPage } from './warp.js';
 import { cleanPage } from './clean.js';
 import { encodeImage, encodePage } from './encode.js';
@@ -176,7 +177,7 @@ function shrinkTo(bitmap, width, height, edge) {
 
 async function addFiles(files) {
   clearError();
-  const wanted = files.filter((file) => /^image\//i.test(file.type) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name));
+  const wanted = files.filter((file) => acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif']));
   if (!wanted.length) return;
 
   picker.busy(readingLabel(wanted.length));

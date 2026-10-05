@@ -229,17 +229,7 @@ a = """
 
 [[faq]]
 q = "Entfernt es EXIF- und GPS-Daten?"
-a = """
-        Bei allem, was es tatsächlich verarbeitet, ja, und zwar als Nebenwirkung.
-        Zuschneiden oder Skalieren heißt, das Bild zu Pixeln zu dekodieren und
-        diese Pixel erneut zu kodieren, und ein Canvas voller Pixel trägt keine
-        Tags. Ort, Kameramodell und Zeitstempel werden also schlicht nicht in die
-        neue Datei geschrieben. Bei einer Datei, die Sie überhaupt nicht ändern,
-        liegt der Fall anders, denn die wird Byte für Byte zurückgereicht, samt
-        Tags. Sollen die Metadaten weg, das Bild aber unangetastet bleiben,
-        nehmen Sie den <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp;
-        -Entferner</a>. Der schreibt nur den Container neu und komprimiert
-        nichts."""
+a = "Bei allem, was es tatsächlich verarbeitet, ja, und zwar als Nebenwirkung. Zuschneiden oder Skalieren heißt, das Bild zu Pixeln zu dekodieren und diese Pixel erneut zu kodieren, und ein Canvas voller Pixel trägt keine Tags. Ort, Kameramodell und Zeitstempel werden also schlicht nicht in die neue Datei geschrieben. Bei einer Datei, die Sie überhaupt nicht ändern, liegt der Fall anders, denn die wird Byte für Byte zurückgereicht, samt Tags. <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter &amp; -Entferner</a> liest und bearbeitet Metadaten von JPEG, PNG und WebP, ohne deren Bilder neu zu kodieren. Bei AVIF zeigt es verfügbares EXIF schreibgeschützt an und bereinigt durch Umwandlung des ersten dekodierten Bildes in ein neues PNG; Farben oder HDR können sich ändern."
 
 [[faq]]
 q = "Worin unterscheidet sich das vom Bildkompressor?"
@@ -289,4 +279,4 @@ features = [
 
 [picker]
 title = "Bilder hierher ziehen"
-hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP, AVIF und alles andere, was Ihr Browser öffnen kann"

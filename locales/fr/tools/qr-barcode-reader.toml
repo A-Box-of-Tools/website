@@ -14,7 +14,7 @@ card = "Lisez un QR code depuis une photo, une capture d'écran ou votre caméra
 
 [picker]
 title = "Déposez ici une image contenant un code"
-hint = "ou cliquez pour parcourir &mdash; une photo, une capture d'écran, un PNG, tout ce que votre navigateur sait ouvrir"
+hint = "ou cliquez pour parcourir &mdash; une photo, une capture d'écran, un PNG ou AVIF, tout ce que votre navigateur sait ouvrir"
 
 [words]
 plural = "images et les codes qu'elles contiennent"

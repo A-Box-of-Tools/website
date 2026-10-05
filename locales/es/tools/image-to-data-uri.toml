@@ -317,4 +317,4 @@ features = [
 
 [picker]
 title = "Arrastra aquí las imágenes"
-hint = "o haz clic para buscarlas &mdash; PNG, JPEG, SVG, WebP, GIF, ICO y más"
+hint = "o haz clic para buscarlas &mdash; PNG, JPEG, SVG, WebP, AVIF, GIF, ICO y más"

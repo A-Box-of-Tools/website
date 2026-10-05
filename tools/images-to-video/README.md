@@ -4,6 +4,11 @@
 
 The first tool in the box. Everything below is specific to it.
 
+AVIF still images use the browser's decoder. The shared image list admits a
+recognized extension when the operating system supplies no useful MIME type,
+then skips pictures that cannot be decoded. They become slideshow frames in
+the selected video output; the tool does not write AVIF files.
+
 ---
 
 ## How the privacy claim holds up

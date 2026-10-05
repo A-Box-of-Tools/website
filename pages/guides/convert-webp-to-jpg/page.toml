@@ -28,9 +28,9 @@ lede = """
     great deal of other software still refuses. This is what it is, what
     converting costs, and why the JPEG usually comes out bigger."""
 
-updated = "17 September 2026"
+updated = "4 October 2026"
 published = "2026-09-17"
-lastmod = "2026-09-17"
+lastmod = "2026-10-04"
 
 og_title = "How to convert WebP to JPG"
 og_description = "Why websites serve WebP, what converting costs the picture, and how to do it without handing the file to anybody."

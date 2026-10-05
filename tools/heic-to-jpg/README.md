@@ -2,7 +2,11 @@
 
 *The photos an iPhone makes, in a format everything opens.*  ·  lives at `/heic-to-jpg/`  ·  [all tools](../)  ·  [how the site is built](../../README.md)
 
-The eleventh tool, and the first one here that carries a codec.
+The HEIC path carries a codec. AVIF input uses the browser decoder and an
+AVIF-only batch does not warm or await libheif. The metadata checkbox applies
+only to HEIC; AVIF output contains the decoded picture without copied EXIF.
+Container parsing lives in `shared/js/heif-metadata.js`, imported through the
+`src/boxes.js` compatibility wrapper.
 
 ---
 
@@ -112,7 +116,7 @@ Decoding one picture is a single synchronous call into WebAssembly. There is no
 way to yield part-way through a frame, which is why progress is reported between
 files and not within one, and why the progress bar does not animate.
 
-### `src/boxes.js` — the container
+### `src/boxes.js` — the shared container reader
 
 HEIF is the MP4 box format: a tree of length-prefixed records. The picture is
 not a box, it is a run of bytes in `mdat`, and the `meta` box holds a small
@@ -197,8 +201,8 @@ onto one canvas and that canvas is `drawImage`d onto a second, white one.
 and decoding is the expensive half of this tool's whole job — twenty photos
 would be converted twice, once to look at and once to keep. The rows say what
 each file is instead, and the pictures appear once, under the results. This is
-the only tool here whose input cannot be previewed, and the reason is the same
-reason the tool exists.
+the same list for both input formats, even though AVIF can be previewed with the
+browser decoder. HEIC still requires the engine for its first preview.
 
 **Only the first 256 KB of each file is read when it is added.** Enough for the
 brand and, in every file anybody has, the EXIF block, which sits at the front of
@@ -216,10 +220,11 @@ Repeats within a batch are given a suffix by `uniqueNames`, because two folders
 dropped together can easily hold two `IMG_0001.HEIC` and a zip with two entries
 of the same name unpacks to one file on every platform.
 
-**AVIF is refused on purpose**, with its own message. It is the same container
-with AV1 inside, every current browser decodes one natively, and sending it
-through a vendored engine would be shipping a megabyte to solve a problem
-nobody has.
+AVIF input uses `shared/js/image-convert.js` and the browser decoder, never
+an AVIF encoder. An `avis` sequence produces only its first decoded image.
+The output remains JPEG, PNG, WebP; metadata is not copied from AVIF. The default
+canvas produces an 8-bit SDR copy, so color, HDR and source precision may
+change, and converting can increase the file size. The original stays intact.
 
 **The metadata checkbox defaults to on.** A converted photo that has lost the
 day it was taken sorts to the bottom of every photo library, and that is the

@@ -33,13 +33,13 @@ roadmap_group = "images"
 # more than one tool needs and that no tool should own.
 css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "format", "errors"]
-lastmod = "2026-09-07"
+js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "format", "errors", "image-convert", "heif-metadata"]
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "HEIC to JPG Converter &mdash; Free, No Upload"
-description = "Convert iPhone HEIC photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along."
+description = "Convert iPhone HEIC and AVIF photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along. The metadata checkbox and metadata preview apply only to HEIC; AVIF metadata is always left out."
 og_title = "Turn HEIC photos into JPGs without uploading them"
 og_description = "The converter that does not want your photos. The HEIC decoder is served from this page and runs on your own machine, so the pictures never leave it."
 og_image_alt = "HEIC to JPG - iPhone photos in a format everything opens"
@@ -205,7 +205,7 @@ body = """
       decoded could not possibly manage it."""
 
 [[howto]]
-title = "Choose your HEIC photos."
+title = "Choose your HEIC and AVIF photos."
 body = """
  Drop them onto the picker or select them
       by hand, straight out of a phone backup or a folder on the desktop. They
@@ -324,15 +324,8 @@ a = """
         for, and are left alone."""
 
 [[faq]]
-q = "Why will it not take my AVIF?"
-a = """
-        Because there is nothing to do to it. AVIF is the same container as HEIC
-        with AV1 inside instead of HEVC, and every current browser decodes one
-        natively &mdash; so a converter would be shipping a megabyte of engine to
-        solve a problem you do not have. If you need an AVIF as a JPEG, the
-        <a href="../compress-image/">Image Compressor</a> and the
-        <a href="../resize-image/">Image Resizer</a> both read AVIF and write
-        JPEG using the decoder your browser already has."""
+q = "Can I also convert AVIF pictures?"
+a = "AVIF uses the browser decoder and does not load the HEIC engine. Output remains JPEG, PNG or WebP. Only the first decoded image is written; color or HDR may change. AVIF metadata is always left out: the metadata checkbox applies only to HEIC. The original file stays unchanged."
 
 [[faq]]
 q = "Is it free, and do I need an account?"
@@ -354,7 +347,7 @@ a = """
 
 [schema]
 category = "MultimediaApplication"
-description = "Convert HEIC and HEIF photos from an iPhone into JPEG, PNG or WebP. The HEIC decoder is WebAssembly served from the page itself, so the pictures are decoded on your own machine and never uploaded. The date, camera and location can be carried into the JPEG or left out."
+description = "Convert HEIC and AVIF and HEIF photos from an iPhone into JPEG, PNG or WebP. The HEIC decoder is WebAssembly served from the page itself, so the pictures are decoded on your own machine and never uploaded. The date, camera and location can be carried into the JPEG or left out. The metadata checkbox and metadata preview apply only to HEIC; AVIF metadata is always left out."
 features = [
   "Converts HEIC and HEIF to JPEG, PNG or WebP",
   "Decodes in the browser, on any browser - not only Safari",
@@ -365,6 +358,7 @@ features = [
   "Identifies files by their contents, so a HEIC named .jpg still works",
   "Converts every picture in a burst or Live Photo, not just the first",
   "Batches, with all results in one zip",
+  "Also accepts AVIF input using the browser decoder; sequences give the first image only",
 ]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which
@@ -374,11 +368,11 @@ features = [
 # of the commonest reasons somebody is on this page, and an accept list of
 # just the two extensions would hide that file in the browser's own dialog.
 # Every file is identified by its first bytes anyway, and anything that is
-# not a HEIC is refused with a message saying what it actually is.
-accept = "image/*,.heic,.heif"
+# outside the HEIC and AVIF inputs is refused with a message saying what it is.
+accept = "image/avif,image/*,.heic,.heif,.avif"
 multiple = true
-title = "Drop HEIC photos here"
-hint = "or click to browse &mdash; .heic and .heif, whatever they happen to be named"
+title = "Drop HEIC and AVIF pictures here"
+hint = "or click to browse &mdash; .heic, .heif, .avif, identified by their contents"
 # A real .heic, in src/example-data.js, because no browser will
 # encode one - which is the whole reason this tool exists. It is the only
 # example on the site that could not be drawn.

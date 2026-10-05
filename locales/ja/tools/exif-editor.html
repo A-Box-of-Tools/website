@@ -27,9 +27,9 @@
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> すべて削除する</h2>
 
-    <p class="card-lede">
-      ボタンひとつで、リスト上のすべての写真に効きます。画像をデコードすることも、描き直すことも、再圧縮することもありません。圧縮された画像データはそのまま複製し、その周りのメタデータだけを落とすので、出てくるのは何も付いていない同じ写真です。
-    </p>
+    <p class="card-lede">JPEG、PNG、WebPの場合：ボタンひとつで、リスト上のすべての写真に効きます。画像をデコードすることも、描き直すことも、再圧縮することもありません。圧縮された画像データはそのまま複製し、その周りのメタデータだけを落とすので、出てくるのは何も付いていない同じ写真です。</p>
+
+    <p id="avif-mode-note" class="card-lede">AVIFはブラウザでデコードし、元のメタデータをコピーせずに新しいPNGとして保存します。抽出できたEXIFタグは閲覧できますが、編集はできません。PNGが大きくなったり、変換で色やHDRの表示が変わったりする場合があります。元のファイルは変わりません。</p>
 
     <div class="strip-row">
       <button type="button" id="strip-all" class="primary big" disabled>メタデータをすべて削除</button>
@@ -78,9 +78,7 @@
   <section class="card" id="inspect-card" inert>
     <h2><span class="step">3</span> 中を見て、好きなところを変える</h2>
 
-    <p id="inspect-empty" class="empty-note">
-      上で写真を選ぶと、その中身がすべてここに出ます。どこにいたのか、いつなのか、何で撮ったのか。その写真が何を語っているかです。それを調べるために何かがどこかへ送られることはありません。
-    </p>
+    <p id="inspect-empty" class="empty-note">上で写真を選ぶと、その中身がすべてここに出ます。どこにいたのか、いつなのか、何で撮ったのか。その写真が何を語っているかです。それを調べるために何かがどこかへ送られることはありません。 JPEG、PNG、WebPではこれらのブロックを一覧表示します。AVIFは抽出できたEXIFだけを表示し、他のメタデータは一覧化しません。</p>
 
     <div id="inspector" hidden>
       <div class="inspect-head">
@@ -96,6 +94,8 @@
           <select id="inspect-select"></select>
         </div>
       </div>
+
+      <p id="avif-inspect-note" class="empty-note" hidden>AVIFのプレビューは、この読み取り器が抽出できるEXIFブロックだけを表示します。XMPなど他のAVIFメタデータは一覧化しません。「すべてのメタデータを削除」は、デコードした画像を元のメタデータをコピーせずにPNGへ変換します。</p>
 
       <!-- The findings: the part of this page that answers the actual question. -->
       <section class="findings" aria-labelledby="findings-h">
@@ -143,6 +143,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.avif">{kind} · {size} · 削除時にPNGへ変換</span>
+    <span data-phrase="inspect.avif">EXIFプレビューのみ。他のメタデータは一覧化しません</span>
+    <span data-phrase="badge.avif">PNG変換</span>
+    <span data-phrase="editor.avif">AVIFタグは読み取り専用です。削除時には元のメタデータをコピーせず、新しいPNGを作ります。</span>
+    <span data-phrase="avif.blocks">抽出したEXIFだけを表示します。AVIFのブロック別編集はできません。PNG変換で元のメタデータを除去します。</span>
+    <span data-phrase="avif.scope.title">AVIFのEXIFプレビュー</span>
+    <span data-phrase="avif.nofindings">読み取れるEXIF情報を抽出できませんでした。他のAVIFメタデータは一覧化していません。</span>
+    <span data-phrase="read.avifdecode">このブラウザはAVIFをデコードできませんでした。AVIFを標準で扱えるブラウザをお試しください。</span>
+    <span data-phrase="write.avifpng">ブラウザが削除済みのPNGを書き出せませんでした。</span>
+    <span data-phrase="write.aviflarge">デコードしたAVIFが処理上限の8000万画素を超えています。</span>
+    <span data-phrase="clean.avif">AVIFをPNGに変換しました。元のメタデータはコピーしていません</span>
+    <span data-phrase="result.avif">AVIF：{before} → PNG：{after}。元のメタデータはコピーしていません。</span>
+    <span data-phrase="keep.avif">AVIFは正しい向きでデコードし、PNGに変換します。保持する項目の設定はJPEG、PNG、WebPだけに適用されます。</span>
+
     <span data-phrase="row.file">{kind} · {size} · うち約{metadata}がメタデータ</span>
     <span data-phrase="row.remove">{name}をリストから外す</span>
     <span data-phrase="inspect.metadata">うち約{size}がメタデータ</span>
@@ -279,10 +293,9 @@
     <span data-phrase="read.exifmagic">TIFFのマジックナンバーが違います。</span>
     <span data-phrase="read.exifoffset">最初のディレクトリの位置がブロックの外を指しています。</span>
     <span data-phrase="refuse.heic">HEICは入れ子のボックスでできた形式で、安全に書き直すには、ここにある3つとは別のパーサーが要ります。まずJPEGに変換してください。このサイトのHEIC→JPG変換ツールがそれをしますし、ついでにメタデータを置いてくることもできます。</span>
-    <span data-phrase="refuse.avif">AVIFもHEICと同じボックス形式です。事情は同じで、書き直すにはこの道具がまだ持っていないパーサーが要ります。</span>
     <span data-phrase="refuse.gif">GIFにはEXIFの代わりにコメントブロックとアプリケーションブロックがあり、個人的なものを抱えていることはまずありません。ここでは扱いません。</span>
     <span data-phrase="refuse.tiff">裸のTIFFは、全体がメタデータであり、同時に全体が画像です。しかも画素は、この道具が動かすことになるまさにその位置で指されています。それを編集するのは、写真を編集するのとは別の仕事です。</span>
-    <span data-phrase="refuse.unknown">これはJPEGにもPNGにもWebPにも見えません。</span>
+    <span data-phrase="refuse.unknown">JPEG、PNG、WebP、AVIFのいずれでもないようです。</span>
     <span data-phrase="refuse.unwritable">この形式は書き出せません。</span>
     <span data-phrase="segment.jfif.label">JFIFヘッダー</span>
     <span data-phrase="segment.jfif.detail">JPEGがJPEGであることを示す5バイトのブロックと、印刷解像度です。残します。あなたについては何も語りませんし、古いソフトの中にはこれがないファイルを開けないものがあります。</span>

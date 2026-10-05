@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> Escolha seus arquivos WebP</h2>
+    <h2><span class="step">1</span> Escolha seus arquivos WebP e AVIF</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF também é aceito se seu navegador conseguir decodificá-lo. A saída continua sendo JPEG. Sequências AVIF produzem apenas a primeira imagem decodificada. O canvas do navegador cria uma cópia SDR de 8 bits: a cor ou o HDR podem mudar, os metadados são omitidos e o arquivo pode ficar maior. O original permanece intacto.</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -89,8 +90,8 @@
     <span data-phrase="file.lossless">WebP sem perdas</span>
     <span data-phrase="file.animated">Animado &mdash; um JPEG só pode guardar o primeiro quadro</span>
     <span data-phrase="file.alpha">Contém áreas transparentes</span>
-    <span data-phrase="read.notwebp">{name} não é WebP &mdash; é {found}. Esta ferramenta converte arquivos WebP.</span>
-    <span data-phrase="read.unknown">{name} não é WebP, e seus primeiros bytes não correspondem a nenhum formato de imagem reconhecido por esta página.</span>
+    <span data-phrase="read.notwebp">{name} é {found}. Esta ferramenta aceita arquivos WebP e AVIF.</span>
+    <span data-phrase="read.unknown">Os primeiros bytes de {name} não correspondem a uma imagem WebP e AVIF compatível.</span>
     <span data-phrase="read.failed">Não foi possível abrir {name}: {why}</span>
     <span data-phrase="found.png">um PNG</span>
     <span data-phrase="found.jpeg">um JPEG</span>
@@ -99,9 +100,9 @@
     <span data-phrase="found.bmp">um BMP</span>
     <span data-phrase="background.some">Um dos arquivos contém áreas transparentes que o JPEG não pode preservar. Escolha a cor de fundo.</span>
     <span data-phrase="background.none">Nenhum arquivo da lista tem áreas transparentes, então não é preciso escolher uma cor.</span>
-    <span data-phrase="settings.one">Um WebP com qualidade {quality}.</span>
-    <span data-phrase="settings.many">{count} arquivos WebP com qualidade {quality}.</span>
-    <span data-phrase="settings.none">Escolha um WebP acima para ver o que será gravado.</span>
+    <span data-phrase="settings.one">Uma imagem com qualidade {quality}.</span>
+    <span data-phrase="settings.many">{count} imagens com qualidade {quality}.</span>
+    <span data-phrase="settings.none">Escolha uma imagem compatível acima para ver o que será gravado.</span>
     <span data-phrase="run.one">Converter para JPG</span>
     <span data-phrase="run.many">Converter {count} arquivos para JPG</span>
     <span data-phrase="progress.each">Convertendo {name}&hellip;</span>
@@ -112,7 +113,7 @@
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">Origem: {name} &mdash; {dimensions}, antes {was}.</span>
     <span data-phrase="result.flattened">As áreas transparentes foram preenchidas com {colour}.</span>
-    <span data-phrase="result.firstframe">Este WebP é animado; apenas o primeiro quadro foi gravado.</span>
+    <span data-phrase="result.firstframe">Esta entrada é animada; só a primeira imagem decodificada foi gravada.</span>
     <span data-phrase="result.download">Baixar</span>
     <span data-phrase="change.smaller">{percent}% menor</span>
     <span data-phrase="change.larger">{percent}% maior</span>
@@ -129,5 +130,7 @@
     <span data-phrase="net.dirty">algo contatou {hosts}, o que esta ferramenta nunca faz. Vale investigar. {platform}</span>
     <span data-phrase="net.platform.one">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereço; nenhum recebeu uma imagem ou qualquer byte dela.</span>
     <span data-phrase="net.platform.many">Os scripts de anúncios, medição e doação da página carregaram de {hosts} endereços; nenhum recebeu uma imagem ou qualquer byte dela.</span>
+    <span data-phrase="file.avif">AVIF &mdash; decodificado pelo navegador; metadados omitidos</span>
+    <span data-phrase="file.avif.sequence">Sequência AVIF &mdash; só a primeira imagem decodificada é gravada</span>
   </div>
 </main>

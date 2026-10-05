@@ -80,9 +80,9 @@ BASELINE = {
     # fixed-width layout of a line in the text report.
     'dicom-viewer': 6,
     # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
-    # filename template, and one invariant check: orderCorners is only ever
-    # handed the four corners of a quad.
-    'document-scanner': 7,
+    # filename template. The quad invariant now lives in the shared geometry
+    # module alongside the detector, because the receipt tool uses it too.
+    'document-scanner': 6,
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
@@ -129,6 +129,9 @@ BASELINE = {
     # their callers; two are a symbology's published name; and three are a
     # digit pair, a CSS selector and a key template.
     'qr-barcode-reader': 13,
+    # The MIME To header in the downloaded email file. Its value comes from
+    # the visitor, and its name is protocol syntax rather than interface text.
+    'receipt-invoice-extractor': 1,
     # A key template, and a CSS class name the stage builds.
     'redact-image': 2,
     # Three Base-14 glyph tables from the PDF specification, four lines of

@@ -3,6 +3,12 @@
 The other half of [`../qr-barcode/`](../qr-barcode/). That tool turns a string
 into a picture; this one turns a picture back into a string.
 
+AVIF pictures use the browser's decoder, both from the file picker and from
+the clipboard. A recognized image extension also admits a clipboard file when
+the operating system supplies no useful MIME type. Successful decoding still
+decides whether it is a picture; the reader never downloads a decoder or sends
+the image away to read its code.
+
 The two are not the same size of problem. Drawing a QR code is arithmetic with
 a known answer: the modules go where the specification says, and nothing can go
 wrong that is not a bug. Reading one is a measurement. The symbol is somewhere

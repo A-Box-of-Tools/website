@@ -5,7 +5,8 @@
  * the build copies it to <tool>/src/shared/image-list.js for the tools that
  * ask for it with `js_parts = ["image-list", ...]`: the GIF maker and the
  * slideshow maker, which carried the same file apart from the size of the
- * thumbnail and what each picture is held for. It imports nothing.
+ * thumbnail and what each picture is held for. The shared input predicate
+ * admits names whose image MIME type an operating system has not registered.
  *
  * Full-size bitmaps are deliberately not kept in memory: a hundred
  * 12-megapixel photos would be several gigabytes of decoded RGBA. Each file is
@@ -18,9 +19,11 @@
  * function and spreads what it returns into the item.
  */
 
+import { acceptsImageFile } from './image-input.js';
+
 let nextId = 1;
 
-const isImage = (file) => file.type.startsWith('image/');
+const isImage = (file) => acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'svg']);
 
 async function makeThumbnail(bitmap, thumbMax) {
   const scale = Math.min(1, thumbMax / Math.max(bitmap.width, bitmap.height));

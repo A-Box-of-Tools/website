@@ -10,7 +10,7 @@ heading = "Imágenes&nbsp;a&nbsp;PDF <span class=\"h1-kw\">&mdash; convertir JPG
 tagline = "Mete tus fotos en un solo documento."
 
 title = "Convertidor de imágenes a PDF &mdash; JPG a PDF gratis y sin subir nada"
-description = "Une imágenes JPG, PNG o WebP en un solo PDF, gratis y sin salir del navegador. Las fotos entran sin volver a codificarse, y no se sube nada."
+description = "Une imágenes JPG, PNG, WebP o AVIF en un solo PDF, gratis y sin salir del navegador. Las fotos JPEG entran sin volver a codificarse, y no se sube nada."
 og_title = "Imágenes a PDF &mdash; convertidor gratuito de JPG a PDF"
 og_description = "Une imágenes en un solo PDF en tu propio dispositivo. Las fotos JPEG se copian intactas, así que no se pierde calidad y no se sube nada."
 og_image_alt = "Imágenes a PDF - une fotos en un documento sin subirlas"
@@ -213,7 +213,7 @@ a = """
         convertirlas en un documento se pararía en cuanto desenchufaras."""
 
 [schema]
-description = "Une imágenes JPG, PNG y WebP en un único documento PDF. Cada página se escribe dentro de tu navegador, así que no se sube ninguna imagen."
+description = "Une imágenes JPG, PNG, WebP y AVIF en un único documento PDF. Cada página se escribe dentro de tu navegador, así que no se sube ninguna imagen."
 features = [
   "Une imágenes JPG, PNG, WebP, GIF y AVIF en un solo PDF",
   "Las fotos JPEG se incrustan sin volver a codificarse",

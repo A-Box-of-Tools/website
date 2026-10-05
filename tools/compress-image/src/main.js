@@ -1,11 +1,12 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { acceptsImageFile } from './shared/image-input.js';
 import { measureImage } from './shared/media.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  decode, encodableTypes, release, FORMATS, JPEG, PNG, WEBP, READABLE,
+  decode, encodableTypes, release, FORMATS, JPEG, PNG, WEBP,
 } from './codecs.js';
 import {
   fitToTarget, keepFormat, alternativeFormat, QUALITY_FLOOR,
@@ -148,11 +149,9 @@ async function addFiles(files) {
   render();
 }
 
-/** Types the browser is likely to decode. An empty type means the platform did
- *  not recognise the file; the decode below is the real test either way. */
+/** The registry may mislabel a file; the decoder settles what the bytes are. */
 function isImage(file) {
-  if (!file.type) return /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name);
-  return READABLE.includes(file.type) || file.type.startsWith('image/');
+  return acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif']);
 }
 
 

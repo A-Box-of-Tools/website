@@ -50,7 +50,7 @@
 
 import {
   clampPoint, isConvex, orderCorners, quadArea, sharpestCorner, wholeFrame,
-} from './geometry.js';
+} from './document-geometry.js';
 
 /**
  * The long edge of the picture this reads.

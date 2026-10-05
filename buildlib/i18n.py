@@ -147,7 +147,7 @@ from buildlib.site import ConfigError, load_toml
 TRANSLATABLE_TOOL_KEYS = (
     'name', 'heading', 'tagline',
     'title', 'description', 'og_title', 'og_description', 'og_image_alt',
-    'pledge', 'live_hint', 'read_first', 'howto_heading', 'card',
+    'pledge', 'pledge_line', 'md_note', 'live_hint', 'read_first', 'howto_heading', 'card',
     'words', 'facts', 'privacy', 'howto', 'faq', 'schema',
     # The frame of the pages a tool's rules have to themselves - a title
     # pattern, a few headings, a button. See buildlib/landing.py.

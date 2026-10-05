@@ -207,12 +207,7 @@
         Live Photo é um arquivo separado que o celular guarda ao lado do HEIC,
         então não está ali dentro para ser convertida.
       </li>
-      <li>
-        <strong>AVIF não é HEIC.</strong> Eles se parecem, com o mesmo contêiner
-        e um codec diferente lá dentro, mas todo navegador atual abre um AVIF
-        nativamente. Não há o que converter, e a ferramenta avisa isso em vez de
-        fingir que trabalhou.
-      </li>
+      <li><strong>AVIF.</strong> AVIF usa o decodificador do navegador sem carregar o motor HEIC. A saída continua sendo JPEG, PNG ou WebP. Só a primeira imagem decodificada é gravada; a cor ou o HDR podem mudar. Os metadados AVIF sempre são omitidos: a caixa de metadados vale apenas para HEIC. O original permanece intacto.</li>
       <li>
         <strong>Cortar o problema na origem.</strong> No celular: Ajustes &rarr;
         Câmera &rarr; Formatos &rarr; Mais compatível. Dali em diante as fotos

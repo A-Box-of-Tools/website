@@ -133,4 +133,4 @@ features = ["Data URI en base64 pour PNG, JPEG, WebP, GIF, ICO, AVIF et d'autres
 
 [picker]
 title = "Déposez vos images ici"
-hint = "ou cliquez pour parcourir &mdash; PNG, JPEG, SVG, WebP, GIF, ICO et d'autres"
+hint = "ou cliquez pour parcourir &mdash; PNG, JPEG, SVG, WebP, AVIF, GIF, ICO et d'autres"

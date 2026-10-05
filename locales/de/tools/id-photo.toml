@@ -369,7 +369,7 @@ features = [
 
 [picker]
 title = "Foto hierher ziehen"
-hint = "oder klicken und auswählen &mdash; ein Foto, JPEG, PNG, WebP oder alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; ein Foto, JPEG, PNG, WebP, AVIF oder alles andere, was Ihr Browser öffnen kann"
 
 # Eine Seite je Vorschrift: /de/biometrisches-passbild/us-passport/. Hier steht nur
 # der Rahmen; Maße, Hinweise und Quelle kommen aus den #phrases des Bodys, aus

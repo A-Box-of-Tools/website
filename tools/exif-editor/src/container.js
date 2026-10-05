@@ -32,11 +32,12 @@ import * as jpeg from './jpeg.js';
 import * as png from './png.js';
 import * as webp from './webp.js';
 import { parseExif, serializeExif } from './tiff.js';
+import { isAvif, readExif } from './shared/heif-metadata.js';
 
 const HANDLERS = { jpeg, png, webp };
 
 /** Human-readable names, used in messages and in the file list. */
-export const KIND_NAMES = { jpeg: 'JPEG', png: 'PNG', webp: 'WebP' };
+export const KIND_NAMES = { jpeg: 'JPEG', png: 'PNG', webp: 'WebP', avif: 'AVIF' };
 
 const latin1 = new TextDecoder('latin1');
 
@@ -55,10 +56,10 @@ export function sniff(bytes) {
   if (bytes.length >= 12 && latin1.decode(bytes.subarray(0, 4)) === 'RIFF'
       && latin1.decode(bytes.subarray(8, 12)) === 'WEBP') return 'webp';
 
+  if (isAvif(bytes)) return 'avif';
   if (bytes.length >= 12 && latin1.decode(bytes.subarray(4, 8)) === 'ftyp') {
     const brand = latin1.decode(bytes.subarray(8, 12));
     if (brand.startsWith('hei') || brand.startsWith('mif')) return 'heic';
-    if (brand.startsWith('avi')) return 'avif';
   }
   if (bytes.length >= 4 && latin1.decode(bytes.subarray(0, 3)) === 'GIF') return 'gif';
   if (bytes.length >= 4) {
@@ -71,7 +72,6 @@ export function sniff(bytes) {
 /** Why a format this tool can read is not one it can rewrite. */
 const REFUSALS = {
   heic: 'refuse.heic',
-  avif: 'refuse.avif',
   gif: 'refuse.gif',
   tiff: 'refuse.tiff',
   unknown: 'refuse.unknown',
@@ -100,6 +100,16 @@ export async function readImage(file) {
  */
 export async function readBytes(bytes) {
   const kind = sniff(bytes);
+
+  if (kind === 'avif') {
+    // AVIF is a read-only EXIF preview, not a container editor. Unknown metadata
+    // is not inventoried; the separate pixel conversion copies none of it.
+    const raw = readExif(bytes, { primaryOnly: true });
+    const meta = { exif: raw, xmp: null, iptc: null, icc: null,
+      comments: [], text: [], extras: [], notes: [] };
+    const exif = raw ? parseExif(raw) : null;
+    return { ok: true, kind, bytes, doc: {}, meta, exif, size: bytes.length };
+  }
 
   if (!HANDLERS[kind]) {
     return { ok: false, kind, error: REFUSALS[kind] ?? REFUSALS.unknown, bytes };
@@ -159,7 +169,7 @@ function cloneDoc(doc) {
 
 /** The extension and MIME type to hand a download. */
 export function outputType(kind) {
-  if (kind === 'png') return { mime: 'image/png', ext: 'png' };
+  if (kind === 'png' || kind === 'avif') return { mime: 'image/png', ext: 'png' };
   if (kind === 'webp') return { mime: 'image/webp', ext: 'webp' };
   return { mime: 'image/jpeg', ext: 'jpg' };
 }

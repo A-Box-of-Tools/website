@@ -32,7 +32,7 @@ css_parts = ["file-list", "progress", "results", "form", "checks", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "example-photo"]
+js_parts = ["image-input", "file-picker", "zip", "crc32", "message-box", "download", "media", "example-photo"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the results once there are any.
 # This tool finishes a whole batch at once and the row carries all of it,
@@ -40,12 +40,12 @@ js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["images-to-pdf"]
-lastmod = "2026-09-10"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Compress Image to a Target Size &mdash; Free, No Upload"
-description = "Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline."
+description = "Compress a JPEG, PNG, WebP or AVIF to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline."
 og_title = "Compress an image to a size you choose"
 og_description = "Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image Compressor - name a size, keep the quality"
@@ -245,33 +245,15 @@ a = """
 
 [[faq]]
 q = "Which formats can it read and write?"
-a = """
-        It reads anything your browser can decode, which in practice means JPEG,
-        PNG, WebP, GIF, BMP and &mdash; on most current browsers &mdash; AVIF. It
-        writes JPEG, PNG and WebP, because those are the encoders browsers ship. On
-        "auto" it keeps the format your file arrived in, and switches to WebP only
-        when keeping it would have meant a resize or a visible drop in quality."""
+a = "It reads pictures your browser can decode, including JPEG, PNG, WebP, GIF, BMP and AVIF. New encodes use JPEG, PNG or WebP. Files already under the target are returned unchanged, including their original format and metadata. When encoding is needed, Auto starts with the source format if the browser can write it; otherwise GIF starts as PNG and AVIF, BMP or an unknown MIME type starts as JPEG. Auto may then choose WebP if it meets the target with less visible loss."
 
 [[faq]]
 q = "Why can it not compress a PNG very far?"
-a = """
-        Because PNG is lossless: it has no quality dial to turn. The only way to
-        make a PNG smaller is to give it fewer pixels or fewer colours, so with PNG
-        selected the tool reaches a target by resizing alone. If the picture is a
-        photograph, JPEG or WebP will get far closer to your target at a size you
-        can see is fine &mdash; and if it is a logo or a screenshot with
-        transparency, WebP keeps the transparency that JPEG would fill in with
-        white."""
+a = "        Because PNG is lossless: it has no quality dial to turn. The only way to make a PNG smaller is to give it fewer pixels or fewer colours, so with PNG selected the tool reaches a target by resizing alone. If the picture is a photograph, JPEG or WebP will get far closer to your target at a size you can see is fine &mdash; and if it is a logo or a screenshot with transparency, WebP keeps the transparency that JPEG would fill in with white."
 
 [[faq]]
 q = "Does compressing an image remove its EXIF and GPS data?"
-a = """
-        Yes, as a side effect. Compressing means decoding the picture to pixels and
-        encoding those pixels again, and a canvas full of pixels carries no tags, so
-        the location, camera model, timestamps and everything else are simply not
-        written to the new file. If you want the metadata gone but the picture
-        untouched, use the <a href="../exif-editor/">EXIF Viewer &amp; Remover</a>
-        instead &mdash; it rewrites the container without re-compressing anything."""
+a = "A re-encoded result leaves out the original EXIF, GPS, timestamps and other metadata because the canvas carries pixels only. A file already under the target is returned unchanged, with its metadata still present. <a href=\"../exif-editor/\">EXIF Viewer &amp; Remover</a> reads and edits JPEG, PNG and WebP metadata without re-encoding their pictures. For AVIF, it shows available EXIF as read-only and cleans by converting the first decoded image to a new PNG; color or HDR may change."
 
 [[faq]]
 q = "Is it free, and do I need an account?"
@@ -307,10 +289,10 @@ features = [
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
+accept = "image/*,image/avif,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
 multiple = true
 title = "Drop images here"
-hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, AVIF and anything else your browser can open"
 
 # The example is a photograph drawn in the page by shared/js/example-photo.js.
 # It is grainy and full of grass on purpose: a synthetic picture of flat

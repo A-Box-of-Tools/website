@@ -1,14 +1,6 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>
-      Öffnen Sie den
-      <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>,
-      ziehen Sie die Fotos hinein und klicken Sie auf &bdquo;Alle Metadaten
-      entfernen&ldquo;. Jedes Tag, der XMP- und der IPTC-Block, die Kommentare
-      und das eingebettete Vorschaubild sind damit weg, bei allen Fotos auf der
-      Liste in einem Rutsch. Das Bild selbst bleibt unangetastet: nicht neu
-      komprimiert, nicht dekodiert, kein Pixel verändert.
-    </p>
+    <p>Öffnen Sie <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a> und entfernen Sie die Metadaten aus Ihren Fotos. JPEG, PNG und WebP behalten ihre komprimierten Bilddaten unverändert. Bei AVIF entsteht ein neues PNG aus dem ersten dekodierten Bild ohne Originalmetadaten. Die Optionen für Orientierung und Farbprofil gelten nur für die drei Container-Formate. AVIF wird vom Browser dekodiert und als neues PNG gespeichert, ohne die ursprünglichen Metadaten zu kopieren. Seine verfügbaren EXIF-Tags lassen sich hier ansehen, aber nicht bearbeiten. Das PNG kann größer sein und die Umwandlung Farben oder HDR verändern. Ihre Originaldatei bleibt unverändert.</p>
     <p>
       Vorher lohnt sich allerdings ein Blick darauf, was da eigentlich stand. Es
       ist meist mehr, als man erwartet, und diese Liste ist das eigentliche
@@ -103,22 +95,14 @@
 
   <section>
     <h2>Warum nicht einfach neu abspeichern?</h2>
-    <p>
-      Ein Foto durch ein Bildbearbeitungsprogramm oder einen Kompressor neu zu
-      speichern entfernt die Metadaten tatsächlich. Das Bild wird zu Pixeln
-      dekodiert und erneut kodiert, und ein Canvas voller Pixel trägt keine Tags.
-      Es funktioniert also, kostet Sie aber Qualität, weil diese Neukodierung
-      verlustbehaftet ist.
-    </p>
-    <p>
-      Die Metadaten ordentlich zu entfernen kostet dagegen gar nichts. Die Tags
+    <p>Ein Bildbearbeitungsprogramm oder Kompressor entfernt Metadaten durch Dekodieren und erneutes Kodieren. Verlustbehaftete Kodierung kann Bildqualität kosten. Verlustfreies PNG vermeidet weitere verlustbehaftete Komprimierung; die Browser-Dekodierung kann dennoch Farben oder HDR verändern.</p>
+    <p>Für JPEG, PNG und WebP: Die Metadaten ordentlich zu entfernen kostet dagegen gar nichts. Die Tags
       sitzen im Behälter <em>um</em> das komprimierte Bild herum und nicht darin,
       und sie loszuwerden heißt, Einträge aus einer Liste zu streichen und die
       Liste wieder herauszuschreiben. Die komprimierten Bilddaten werden Byte für
       Byte übernommen, und das Ergebnis dekodiert zu exakt denselben Pixeln. Das
       ist der ganze Grund, ein Metadaten-Werkzeug zu nehmen und keinen
-      Konverter.
-    </p>
+      Konverter.</p>
     <p>
       Eine Ausnahme gibt es: Sie hätten ohnehin neu kodiert. Wenn Sie das Foto
       sowieso komprimieren oder skalieren, fallen die Tags nebenbei weg, und ein
@@ -134,13 +118,7 @@
       angibt, wie es zur Anzeige gedreht gehört. Löschen Sie wirklich jedes Tag,
       zeigen manche Betrachter Ihr Foto quer.
     </p>
-    <p>
-      Dafür gibt es im Werkzeug die Option &bdquo;das Orientierungs-Tag
-      behalten&ldquo;, von vornherein gesetzt. Sie schreibt einen winzigen
-      EXIF-Block zurück, in dem dieses eine Tag steht und sonst nichts, und auch
-      das nur bei Fotos, die es tatsächlich gebraucht haben. GPS, Zeitstempel,
-      Seriennummer und der Rest sind trotzdem fort.
-    </p>
+    <p>Bei JPEG, PNG und WebP schreibt die Option bei Bedarf einen kleinen EXIF-Block mit nur dem Orientierungs-Tag. Schalten Sie sie aus, um das Tag zu entfernen. AVIF wird als aufrecht dekodiertes Bild in PNG umgewandelt. Die Optionen für Orientierung und Farbprofil gelten nur für JPEG, PNG und WebP.</p>
     <p>
       Schalten Sie sie ab, wenn die Datei am Ende gar kein EXIF mehr tragen soll,
       und sehen Sie sich das Ergebnis dann an, bevor Sie es weitergeben. Ein quer
@@ -165,11 +143,9 @@
       muss womöglich ein Datum geraderücken, das falsch war, weil die Kamerauhr
       falsch ging.
     </p>
-    <p>
-      Beides ist möglich. Der Ort lässt sich einzeln löschen, und Text-Tags,
+    <p>Für JPEG, PNG und WebP: Beides ist möglich. Der Ort lässt sich einzeln löschen, und Text-Tags,
       Datumsangaben, ISO, Ausrichtung und Auflösung lassen sich an Ort und Stelle
-      bearbeiten.
-    </p>
+      bearbeiten.</p>
     <p>
       Einen Vorbehalt gibt es, und er gilt für jedes Werkzeug dieser Art und
       nicht nur für dieses. Beim Schreiben wird der EXIF-Block neu aufgebaut, und
@@ -182,17 +158,8 @@
 
   <section>
     <h2>Formate, und die, bei denen es so nicht geht</h2>
-    <p>
-      JPEG, PNG und WebP lassen sich alle sauber neu schreiben, und das sind die
-      drei, die das Werkzeug hier bearbeitet.
-    </p>
-    <p>
-      HEIC, das ein iPhone von Haus aus speichert, und AVIF sind Box-Formate aus
-      verschachtelten Atomen und brauchen einen völlig anderen Parser. Das
-      Werkzeug erkennt sie und sagt es Ihnen, statt eine kaputte Datei
-      auszuspucken. Haben Sie ein HEIC, entfernt schon die Umwandlung nach JPEG
-      die Metadaten nebenbei.
-    </p>
+    <p>JPEG, PNG und WebP unterstützen Metadatenansicht, Bearbeitung und Container-Bereinigung. AVIF unterstützt die Vorschau verfügbaren extrahierten EXIFs und Bereinigung zu einem neuen PNG. AVIF-Tags sind schreibgeschützt; andere Metadaten werden nicht inventarisiert. Animiertes AVIF liefert das erste Bild. HEIC und reines TIFF werden erkannt, aber nicht neu geschrieben.</p>
+    <p>HEIC, das ein iPhone häufig speichert, verwendet einen anderen Codec und wird von diesem Metadatenwerkzeug erkannt, aber abgelehnt. Wählen Sie bei der Umwandlung in JPEG die Entfernung der Metadaten.</p>
     <p>
       Ein reines TIFF wird ebenfalls nicht angefasst, und dafür gibt es einen
       interessanteren Grund: In einem TIFF werden Metadaten und Bilddaten über

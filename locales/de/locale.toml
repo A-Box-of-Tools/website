@@ -420,9 +420,7 @@ lede = """
 #
 
 [footer]
-blurb = """
-        Werkzeuge, die ohne Server auskommen. Ihre Dateien bleiben auf Ihrem
-        Gerät. Sie laden nichts hoch und legen kein Konto an."""
+blurb = "Tools, die Dateien auf deinem Gerät verarbeiten. Kein Upload zur Verarbeitung, kein Konto nötig."
 base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben."
 licence = """
     Texte unter

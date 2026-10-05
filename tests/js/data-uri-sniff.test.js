@@ -91,6 +91,39 @@ test('an ftyp box shorter than it claims does not read past the end', () => {
   assert.equal(sniff(truncated).mime, 'image/avif');
 });
 
+test('AVIF brands in extended-size ftyp boxes are read at their actual payload offsets', () => {
+  const extended = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(28),
+    ascii('mif1'), u32be(0), ascii('avif'));
+  assert.equal(sniff(extended).mime, 'image/avif');
+  const sequence = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(24), ascii('avis'), u32be(0));
+  assert.equal(sniff(sequence).mime, 'image/avif');
+});
+
+test('the minor version is not an AVIF brand in either ftyp header form', () => {
+  const standard = concat(u32be(16), ascii('ftyp'), ascii('qt  '), ascii('avif'));
+  const extended = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(24), ascii('qt  '), ascii('avif'));
+  assert.equal(sniff(standard), null);
+  assert.equal(sniff(extended), null);
+});
+
+test('AVIF words outside the declared ftyp bounds cannot override its type', () => {
+  const after = concat(ftyp('qt  '), ascii('avif'));
+  const tooShort = concat(u32be(8), ascii('ftyp'), ascii('avif'), u32be(0));
+  const noVersion = concat(u32be(12), ascii('ftyp'), ascii('avif'));
+  assert.equal(sniff(after), null);
+  assert.equal(sniff(tooShort), null);
+  assert.equal(sniff(noVersion), null);
+});
+
+test('partial and oversized extended ftyp headers are refused without guessing', () => {
+  const partial = concat(u32be(1), ascii('ftyp'), u32be(0), u32be(28),
+    ascii('qt  '), u32be(0), ascii('avi'));
+  const oversized = concat(u32be(1), ascii('ftyp'), u32be(0x200000), u32be(1), ascii('avif'), u32be(0));
+  assert.equal(sniff(partial), null);
+  assert.equal(sniff(partial.subarray(0, 23)), null);
+  assert.equal(sniff(oversized), null);
+});
+
 /* --------------------------------------------------------------------- SVG */
 
 /** Real UTF-8, so a byte-order mark is the three bytes it actually is rather

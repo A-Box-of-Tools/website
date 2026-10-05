@@ -59,7 +59,7 @@ card = """
 
 [picker]
 title = "Bild eines Codes hier ablegen"
-hint = "oder klicken zum Auswählen &mdash; ein Foto, ein Screenshot, ein PNG, alles, was Ihr Browser öffnen kann"
+hint = "oder klicken zum Auswählen &mdash; ein Foto, ein Screenshot, ein PNG oder AVIF, alles, was Ihr Browser öffnen kann"
 
 [words]
 plural = "Bilder und die Codes darin"

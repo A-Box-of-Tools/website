@@ -206,17 +206,7 @@ a = """
 
 [[faq]]
 q = "Entfernt es auch die EXIF- und GPS-Daten?"
-a = """
-        Ja, als Nebenwirkung. Speichern heißt hier, eine Fläche voller Pixel zu
-        kodieren, und eine solche Fläche trägt keine Tags. Ort, Kameramodell,
-        Zeitstempel und das eingebettete Vorschaubild werden also schlicht nicht
-        in die neue Datei geschrieben. Das Vorschaubild ist hier besonders wichtig:
-        Es ist eine kleine zweite Kopie des Bildes, es wird beim Bearbeiten nicht
-        immer neu erzeugt, und ein geschwärztes Foto mit einem ungeschwärzten
-        Vorschaubild macht die ganze Arbeit zunichte. Wenn die Metadaten weg
-        sollen, ohne dass das Bild überhaupt neu kodiert wird, schreibt der
-        <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
-        stattdessen den Container neu."""
+a = "Ja, als Nebenwirkung. Speichern heißt hier, eine Fläche voller Pixel zu kodieren, und eine solche Fläche trägt keine Tags. Ort, Kameramodell, Zeitstempel und das eingebettete Vorschaubild werden also schlicht nicht in die neue Datei geschrieben. Das Vorschaubild ist hier besonders wichtig: Es ist eine kleine zweite Kopie des Bildes, es wird beim Bearbeiten nicht immer neu erzeugt, und ein geschwärztes Foto mit einem ungeschwärzten Vorschaubild macht die ganze Arbeit zunichte. <a href=\"../exif-daten-entfernen/\">EXIF-Betrachter &amp; -Entferner</a> liest und bearbeitet Metadaten von JPEG, PNG und WebP, ohne deren Bilder neu zu kodieren. Bei AVIF zeigt es verfügbares EXIF schreibgeschützt an und bereinigt durch Umwandlung des ersten dekodierten Bildes in ein neues PNG; Farben oder HDR können sich ändern."
 
 [[faq]]
 q = "Welche Formate kann es lesen und schreiben?"
@@ -276,4 +266,4 @@ features = [
 
 [picker]
 title = "Bild hierher ziehen"
-hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP, AVIF und alles andere, was Ihr Browser öffnen kann"

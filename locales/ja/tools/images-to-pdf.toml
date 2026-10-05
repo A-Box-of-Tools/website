@@ -11,7 +11,7 @@ heading = "画像をPDFに<span class=\"h1-kw\">｜JPGをPDFに変換</span>"
 tagline = "手元の画像を、1つの書類にまとめます。"
 
 title = "画像をPDFに変換｜無料のJPG→PDF、アップロード不要"
-description = "JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。"
+description = "JPG・PNG・WebP・AVIFの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。JPEG写真はエンコードし直さずに入り、何もアップロードしません。"
 og_title = "画像をPDFに｜無料のJPG→PDF変換"
 og_description = "画像を手元の端末で1つのPDFにまとめます。JPEGの写真は手を加えずに複製するので、画質が落ちることも、何かがアップロードされることもありません。"
 og_image_alt = "画像をPDFに - アップロードせずに画像を1つの書類にまとめる"
@@ -190,7 +190,7 @@ a = """
         するために画像をどこかへ送っている道具なら、線を抜いた瞬間に止まるからです。"""
 
 [schema]
-description = "JPG・PNG・WebPの画像を1つのPDF書類にまとめます。すべてのページをブラウザの中で書くので、画像がアップロードされることはありません。"
+description = "JPG・PNG・WebP・AVIFの画像を1つのPDF書類にまとめます。すべてのページをブラウザの中で書くので、画像がアップロードされることはありません。"
 features = [
   "JPG、PNG、WebP、GIF、AVIFの画像を1つのPDFにまとめます",
   "JPEGの写真はエンコードし直さずに埋め込みます",

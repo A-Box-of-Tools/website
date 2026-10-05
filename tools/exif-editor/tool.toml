@@ -36,7 +36,7 @@ css_parts = ["file-list", "form", "checks", "notes"]
 # batch of cleaned files comes back in, and crc32 is the checksum both it and
 # the PNG writer need. This tool carried its own copy of those two until the
 # tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "example-photo", "example-exif"]
+js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "heif-metadata", "example-photo", "example-exif"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the results once there are any.
 # This tool finishes a whole batch at once and the row carries all of it,
@@ -44,20 +44,20 @@ js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-09-10"
+lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "EXIF Viewer &amp; Remover &mdash; Free Photo Metadata Editor"
-description = "See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. In your browser: nothing uploaded, and the photo is never re-encoded."
+description = "See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. JPEG, PNG and WebP stay unencoded; AVIF cleaning converts to a new PNG. Nothing uploaded."
 og_title = "EXIF Viewer &amp; Remover &mdash; see it, edit it, or strip it"
-og_description = "Read the metadata hidden in a photo and remove all of it in one click. Runs on your own machine; the picture itself is never re-encoded."
+og_description = "Read the metadata hidden in a photo and remove all of it in one click. Runs on your own machine. JPEG, PNG and WebP use container edits; AVIF cleaning makes a PNG copy."
 og_image_alt = "EXIF Viewer and Remover - read, edit or strip the metadata in a photo"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
 # card's heading is `name` above and its footer is the same line on every
 # card, so this is the only part of it that belongs to this tool.
-og_card = "See what a photo says about you, then take it out - without re-encoding the picture."
+og_card = "View photo tags and clean them. AVIF cleaning creates a PNG copy."
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
@@ -125,7 +125,7 @@ text = "Open source"
 
 [[facts]]
 mark = "&#10003;"
-text = "Never re-encodes the picture"
+text = "AVIF cleans to PNG; JPEG, PNG and WebP keep their encoding"
 
 [[privacy]]
 title = "Your photos have nowhere to go."
@@ -193,14 +193,14 @@ body = """
 [[howto]]
 title = "Press \"Remove all metadata\"."
 body = """
- That is the whole job for most
-      people. Every tag, the XMP and IPTC blocks, the comments and the embedded
-      thumbnail all go, on every photo on the list at once."""
+ For JPEG, PNG and WebP, every tag, the XMP and IPTC blocks, the comments and the embedded
+      thumbnail all go across the batch. AVIF is decoded to a new PNG that copies no
+      original metadata; inspect the result because colour and HDR can change."""
 
 [[howto]]
 title = "Or edit instead of removing."
 body = """
- Change a date, correct a
+ For JPEG, PNG and WebP, change a date, correct a
       copyright line, drop the location and keep the camera settings &mdash; then
       save that photo on its own."""
 
@@ -226,56 +226,58 @@ a = """
         position, and sometimes a serial number. Photos frequently carry more
         besides &mdash; an XMP packet of XML from an editor, an IPTC block of caption
         and byline fields, a colour profile, a small second copy of the image as a
-        thumbnail, and a maker note of undocumented manufacturer data. This tool
-        lists all of it."""
+        thumbnail, and a maker note of undocumented manufacturer data. JPEG, PNG and WebP inventories list these blocks. AVIF shows available
+        extracted EXIF only; other AVIF metadata is not inventoried."""
 
 [[faq]]
 q = "Does removing metadata reduce the image quality?"
 a = """
-        No, and this is the main reason to use a tool like this rather than
-        re-saving the photo. Metadata sits in the container around the compressed
-        picture, not inside it. Removing it means deleting items from a list and
-        writing the list back out; the compressed image data is copied across byte
-        for byte, so the result decodes to exactly the same pixels. Nothing is
-        decoded and nothing is re-compressed."""
+JPEG, PNG and WebP cleaning edits their containers and copies their
+        compressed picture data byte for byte, without decoding or recompressing
+        it. AVIF cleaning instead decodes the first image and writes a new
+        lossless PNG without copying original metadata. That PNG may be larger,
+        and the browser's decoding can change HDR or colour representation.
+        The original file stays unchanged.
+"""
 
 [[faq]]
 q = "Which file formats does it handle?"
 a = """
-        JPEG, PNG and WebP. HEIC and AVIF are recognised but not rewritten: they
-        are box formats built from nested atoms and need a different parser, so the
-        tool says so rather than producing a broken file. A bare TIFF is not handled
-        either, because in a TIFF the metadata and the pixels are addressed by the
-        same offsets."""
+JPEG, PNG and WebP support metadata viewing, editing and container
+        cleaning. AVIF supports a preview of available extracted EXIF and
+        cleaning to a new PNG; AVIF tags are read-only and other metadata is not
+        inventoried. Animated AVIF uses the first image. HEIC and bare TIFF are
+        recognised but not rewritten. Convert HEIC first when needed.
+"""
 
 [[faq]]
 q = "Will my photo appear rotated after the metadata is removed?"
 a = """
-        It can, and there is a setting for it. Phones usually record the picture the
-        way the sensor saw it and add an Orientation tag saying how to turn it.
-        Remove that tag and some viewers show the photo sideways. The "keep the
-        orientation tag" option, which is on by default, writes back a tiny EXIF
-        block containing nothing but that one tag &mdash; and only when the photo
-        actually needed it. Turn it off if you would rather the file carry no EXIF
-        whatsoever."""
+For JPEG, PNG and WebP, keeping the orientation tag writes a small
+        EXIF block containing only that tag when needed. Turn the option off
+        to drop it. AVIF cleaning uses the browser's upright decoded image and
+        creates a PNG; the orientation and colour-profile checkboxes apply
+        only to JPEG, PNG and WebP.
+"""
 
 [[faq]]
 q = "Does it remove the GPS location?"
 a = """
-        Yes. Removing everything removes the whole GPS directory, and you can also
-        delete the location on its own and keep the rest. The position is shown in
+        Cleaning removes the original location metadata. For JPEG, PNG and WebP,
+        you can also delete location tags individually and keep the rest.
+        AVIF cleaning creates a PNG without copying original metadata. The position is shown in
         decimal degrees first, because "51 degrees, 30 minutes, 26 seconds" does not
         make it obvious that a photo names the building it was taken in."""
 
 [[faq]]
 q = "Can I change a tag instead of deleting it?"
 a = """
-        Yes. Text tags, dates, the ISO, the orientation and the resolution can all
-        be edited, and a few common tags can be added to a photo that has none. One
-        caveat: writing the file rebuilds the EXIF block, and a maker note contains
-        offsets into the original block, so a rebuilt maker note may not be readable
-        by the manufacturer's own software afterwards. Delete it or leave the file
-        unedited if that matters to you."""
+JPEG, PNG and WebP support tag editing and additions. A rewritten
+        maker note may contain invalid manufacturer-specific offsets, so keep
+        the original when that matters. AVIF's extracted EXIF is read-only;
+        its cleaning action creates a PNG without original metadata rather
+        than rewriting the AVIF container.
+"""
 
 [[faq]]
 q = "Is it free, and do I need an account?"
@@ -294,23 +296,23 @@ a = """
 
 [schema]
 category = "MultimediaApplication"
-description = "Read the EXIF, GPS, XMP and IPTC metadata inside a photo, edit individual tags, or remove all of it in one click. JPEG, PNG and WebP, processed in the browser without re-encoding the image."
+description = "Read the EXIF, GPS, XMP and IPTC metadata inside a photo, edit individual tags, or remove all of it in one click. JPEG, PNG and WebP use container edits; AVIF shows available EXIF and cleans to a new PNG in the browser."
 features = [
   "Shows every EXIF tag, including GPS position, camera serial numbers and maker notes",
   "Edits or deletes individual tags and writes the file back",
   "Removes EXIF, GPS, XMP, IPTC, comments and the embedded thumbnail in one click",
-  "JPEG, PNG and WebP",
-  "Rewrites the container only, so the image is never re-compressed",
+  "JPEG, PNG and WebP container editing; AVIF EXIF preview and PNG cleaning",
+  "Keeps JPEG, PNG and WebP encoding; AVIF cleaning decodes the first image to PNG",
   "Runs offline; no upload, no account",
 ]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
-accept = "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+accept = "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
 multiple = true
 title = "Drop photos here"
-hint = "or click to browse &mdash; JPEG, PNG and WebP"
+hint = "or click to browse &mdash; JPEG, PNG, WebP and AVIF"
 # A JPEG carrying a hand-written EXIF block - camera, lens, exposure,
 # date and GPS. A picture with an empty header would say nothing, which is the
 # one thing this tool is for reading.

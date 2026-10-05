@@ -14,6 +14,12 @@ names the country whose document they are applying for.
 
 ---
 
+AVIF photographs are decoded by the browser alongside the other image inputs.
+The chooser names both `image/avif` and `.avif`, and the extension fallback
+also accepts an AVIF that the operating system labelled with a generic MIME
+type. The file must still decode successfully. Print, sheet and portal outputs
+keep their existing JPEG path.
+
 ## What the job actually is
 
 Almost every "passport photo" tool is a crop box with a fixed aspect ratio. That

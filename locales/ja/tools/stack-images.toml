@@ -280,4 +280,4 @@ features = [
 
 [picker]
 title = "フレームをここにドロップ"
-hint = "またはクリックして選択｜JPEG、PNG、WebP、TIFF、そしてカメラRAW"
+hint = "またはクリックして選択｜JPEG、PNG、WebP、AVIF、TIFF、そしてカメラRAW"

@@ -372,9 +372,7 @@ lede = """
 #
 
 [footer]
-blurb = """
-        Herramientas que no pasan por ningún servidor. Tus archivos se quedan
-        en tu dispositivo, sin nada que subir y sin ninguna cuenta que crear."""
+blurb = "Herramientas que procesan archivos en tu dispositivo. Sin subirlos para procesarlos ni crear una cuenta."
 base = "Cada afirmación de este sitio está hecha para comprobarla, no para creértela."
 licence = """
     Los textos, con licencia

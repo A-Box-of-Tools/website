@@ -1,9 +1,10 @@
 <main id="main">
   <!-- Step 1 &mdash; the files -->
   <section class="card">
-    <h2><span class="step">1</span> Choose your PNG files</h2>
+    <h2><span class="step">1</span> Choose your PNG and AVIF files</h2>
 
     {% include "partials/file-picker.html" %}
+    <p class="field-note">AVIF is also accepted when your browser can decode it. Output remains WebP. AVIF sequences give only the first decoded image. The browser canvas makes an 8-bit SDR copy: color or HDR may change, metadata is left out, and the file may be larger. Your original file stays unchanged.</p>
 
     <div id="list-toolbar" class="list-toolbar" hidden>
       <p id="count-label" class="count-label" role="status" aria-live="polite"></p>
@@ -102,8 +103,8 @@
     <span data-phrase="row.remove">Remove {name}</span>
     <span data-phrase="file.facts">{size} &middot; {dimensions}</span>
     <span data-phrase="file.alpha">Has see-through parts &mdash; WebP keeps them</span>
-    <span data-phrase="read.notpng">{name} is not a PNG &mdash; it is {found}. This tool converts PNG files.</span>
-    <span data-phrase="read.unknown">{name} is not a PNG, and its first bytes match no picture format this page knows.</span>
+    <span data-phrase="read.notpng">{name} is {found}. This tool accepts PNG and AVIF files.</span>
+    <span data-phrase="read.unknown">{name} is not a supported PNG and AVIF picture, based on its first bytes.</span>
     <span data-phrase="read.failed">{name} could not be opened: {why}</span>
     <span data-phrase="found.webp">a WebP</span>
     <span data-phrase="found.jpeg">a JPEG</span>
@@ -112,27 +113,24 @@
     <span data-phrase="found.bmp">a BMP</span>
     <span data-phrase="support.nowebp">This browser will not write WebP files, so there is nothing this page
       can do for you. Chrome, Edge, Firefox and Safari have all written WebP since 2020.</span>
-    <span data-phrase="settings.lossless">One PNG, losslessly.</span>
-    <span data-phrase="settings.lossless.many">{count} PNG files, losslessly.</span>
-    <span data-phrase="settings.lossy">One PNG at quality {quality}.</span>
-    <span data-phrase="settings.lossy.many">{count} PNG files at quality {quality}.</span>
-    <span data-phrase="settings.none">Choose a PNG above and this will say what will be written.</span>
+    <span data-phrase="settings.lossless">One image, losslessly.</span>
+    <span data-phrase="settings.lossless.many">{count} images, losslessly.</span>
+    <span data-phrase="settings.lossy">One image at quality {quality}.</span>
+    <span data-phrase="settings.lossy.many">{count} images at quality {quality}.</span>
+    <span data-phrase="settings.none">Choose a supported picture above to see what will be written.</span>
     <span data-phrase="run.one">Convert to WebP</span>
     <span data-phrase="run.many">Convert {count} files to WebP</span>
     <span data-phrase="progress.each">Converting {name}&hellip;</span>
     <span data-phrase="progress.done">Done.</span>
     <span data-phrase="run.failed">This run failed: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
-    <span data-phrase="written.many">{count} WebP files written, {size} in total &mdash; {change} than the PNGs.</span>
+    <span data-phrase="written.many">{count} WebP files written, {size} in total &mdash; {change} than the inputs.</span>
     <span data-phrase="result.headline">{size} &mdash; {change}</span>
     <span data-phrase="result.detail">From {name} &mdash; {dimensions}, {was} before.</span>
-    <span data-phrase="result.lossless">Lossless: every pixel is the one the PNG had.</span>
-    <span data-phrase="result.lossless.alpha">Lossless where it shows: every solid pixel is the PNG's exactly. The
-      colour stored under the near-transparent edges can shift a little, which is a canvas doing it rather than
-      WebP &mdash; see the questions below.</span>
+    <span data-phrase="result.lossless">Lossless encoding of the browser-decoded pixels.</span>
+    <span data-phrase="result.lossless.alpha">Lossless encoding of the browser-decoded solid pixels. Canvas can shift colors at partly transparent edges; see the questions below.</span>
     <span data-phrase="result.lossy">Lossy, at quality {quality}.</span>
-    <span data-phrase="result.askedlossless">Asked for lossless, but this browser wrote a lossy WebP. The file
-      is good; it is not pixel-for-pixel the PNG.</span>
+    <span data-phrase="result.askedlossless">Lossless was requested, but this browser wrote lossy WebP. The decoded pixels were compressed again.</span>
     <span data-phrase="result.alpha">The see-through parts came across unchanged.</span>
     <span data-phrase="result.download">Download</span>
     <span data-phrase="change.smaller">{percent}% smaller</span>
@@ -156,5 +154,7 @@
     <span data-phrase="net.platform.many">The page's own ad, measurement and
       donate-button scripts loaded from {hosts} hosts; not one of them was given
       a picture or a byte of one.</span>
+    <span data-phrase="file.avif">AVIF &mdash; browser-decoded image; metadata is left out</span>
+    <span data-phrase="file.avif.sequence">AVIF sequence &mdash; only the first decoded image is written</span>
   </div>
 </main>

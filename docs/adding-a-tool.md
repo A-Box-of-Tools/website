@@ -354,10 +354,17 @@ Content-Security-Policy, is in [What can be built here](what-can-be-built-here.m
 
 ## Adding from a web address
 
-Setting `[picker.urls]` in a tool.toml switches on one of the two features
-here that contact anything — the other being `/share-text/`'s rendezvous,
-argued on that tool's own page and in `workers/rendezvous/`. Both are parts a
-tool must *qualify* for rather than simply ask for.
+Setting `[picker.urls]` in a tool.toml switches on one of three explicit
+network features here. The others are `/share-text/`'s rendezvous, argued on
+that tool's own page and in `workers/rendezvous/`, and
+`/receipt-invoice-extractor/`'s optional historical exchange-rate lookup.
+That lookup contacts only `api.frankfurter.dev`, only after a visitor presses
+Get historical rate, and sends the two currency codes and chosen date. The
+provider sees the request and IP address; photographs, OCR text, merchants,
+amounts, references and filenames stay on the device. Manual conversion works
+offline. Each network feature must state what leaves the device and why its
+particular permissions are needed; a tool must *qualify* for one rather than
+simply ask for it.
 
 ```toml
 [picker.urls]
@@ -394,11 +401,12 @@ A tool that would have to misdescribe what it was given goes without.
 
 Two things to hold the line on, because the whole site rests on them:
 
-- **Nothing about a user's file is ever read out.** Not to Google, not to
-  anywhere. Every byte that touches a file comes from this origin, and the
-  processing happens in the visitor's own browser.
+- **File processing stays in the visitor's browser.** Photos, OCR text and
+  document contents are not uploaded for processing. The receipt tool's
+  optional rate request sends only the selected currency pair and date, as
+  disclosed above. Every byte that processes a file comes from this origin.
 - **If a tool genuinely needs the network**, it says so on its own page, in plain
-  language, and explains exactly what leaves the machine. Images to Video does this
-  for its "add from a web address" feature (see below). What it must not do is
+  language, and explains exactly what leaves the machine. Images to Video does
+  this for its "add from a web address" feature; the receipt tool does it for
+  historical rates. What it must not do is
   weaken the site-wide claim quietly.
-
