@@ -31,7 +31,7 @@ The pinned archives are:
 - <https://registry.npmjs.org/tesseract.js-core/-/tesseract.js-core-6.0.0.tgz>
 - <https://registry.npmjs.org/@tesseract.js-data/eng/-/eng-1.0.0.tgz>
 
-`LICENSE-tesseract.js`, `LICENSE-tesseract-core` and
+`LICENSE-tesseract-js.txt`, `LICENSE-tesseract-core` and
 `LICENSE-language-data` carry the Apache 2.0 licenses. The language-data
 license comes from [the upstream data repository](https://github.com/naptha/tessdata/blob/gh-pages/LICENSE).
 `worker.min.js.LICENSE.txt` preserves the bundled components' notices.
