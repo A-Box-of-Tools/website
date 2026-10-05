@@ -132,3 +132,88 @@ export function findReceiptCrop(image) {
   candidates.sort((a, b) => b.score - a.score);
   return candidates.length ? { found: true, ...candidates[0] } : empty;
 }
+
+function paperColor(image, rect) {
+  const channels = [[], [], []];
+  for (let row = 0; row < 17; row += 1) {
+    const y = Math.min(image.height - 1, Math.max(0,
+      Math.round((rect.y + rect.height * (row + 0.5) / 17) * image.height)));
+    for (let col = 0; col < 19; col += 1) {
+      const x = Math.min(image.width - 1, Math.max(0,
+        Math.round((rect.x + rect.width * (col + 0.5) / 19) * image.width)));
+      const at = (y * image.width + x) * 4;
+      const alpha = image.data[at + 3] / 255;
+      for (let channel = 0; channel < 3; channel += 1) {
+        channels[channel].push(image.data[at + channel] * alpha + 255 * (1 - alpha));
+      }
+    }
+  }
+  return channels.map(median);
+}
+
+function samePaperColor(reference, sample) {
+  const brightness = color => color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114;
+  const chroma = color => Math.max(...color) - Math.min(...color);
+  // Channel differences tolerate a paper-lighting gradient without treating
+  // brown wood and cyan paper as the same equally bright surface.
+  return chroma(sample) >= chroma(reference) * 0.5
+    && Math.abs(brightness(reference) - brightness(sample)) <= 55
+    && Math.hypot((reference[0] - reference[1]) - (sample[0] - sample[1]),
+      (reference[1] - reference[2]) - (sample[1] - sample[2])) <= 22;
+}
+
+/**
+ * A barcode can outvote the top edge of colored receipt paper. If that paper
+ * continues across a proposed short edge, retain the excluded end. The extra
+ * background is preferable to losing the merchant or a final line, and this
+ * leaves the established neutral-paper crops untouched.
+ */
+export function preserveColoredReceiptEnds(image, crop) {
+  const retained = { ...crop };
+  const { width, height, data } = image ?? {};
+  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height)
+      || width < 24 || height < 24 || width * height > 1_000_000
+      || !data || data.length !== width * height * 4 || !crop
+      || ![crop.x, crop.y, crop.width, crop.height].every(Number.isFinite)
+      || crop.x < 0 || crop.y < 0 || crop.width <= 0 || crop.height <= 0
+      || crop.x + crop.width > 1 + 1e-9 || crop.y + crop.height > 1 + 1e-9) return retained;
+  const vertical = height >= width * 1.35;
+  const horizontal = width >= height * 1.35;
+  if (!vertical && !horizontal) return retained;
+  const reference = paperColor(image, {
+    x: crop.x + crop.width * 0.15, y: crop.y + crop.height * 0.1,
+    width: crop.width * 0.7, height: crop.height * 0.8,
+  });
+  if (Math.max(...reference) - Math.min(...reference) < 28
+      || reference[0] * 0.299 + reference[1] * 0.587 + reference[2] * 0.114 < 100) return retained;
+  if (vertical) {
+    const band = Math.min(0.06, crop.height * 0.15);
+    const start = Math.max(0, crop.y - band);
+    const bottom = Math.min(1, crop.y + crop.height);
+    let end = bottom;
+    if (crop.y > 0 && samePaperColor(reference, paperColor(image, {
+      x: crop.x + crop.width * 0.15, y: start,
+      width: crop.width * 0.7, height: crop.y - start,
+    }))) retained.y = 0;
+    if (bottom < 1 && samePaperColor(reference, paperColor(image, {
+      x: crop.x + crop.width * 0.15, y: bottom,
+      width: crop.width * 0.7, height: Math.min(band, 1 - bottom),
+    }))) end = 1;
+    if (retained.y !== crop.y || end !== bottom) retained.height = end - retained.y;
+  } else {
+    const band = Math.min(0.06, crop.width * 0.15);
+    const start = Math.max(0, crop.x - band);
+    const right = Math.min(1, crop.x + crop.width);
+    let end = right;
+    if (crop.x > 0 && samePaperColor(reference, paperColor(image, {
+      x: start, y: crop.y + crop.height * 0.15,
+      width: crop.x - start, height: crop.height * 0.7,
+    }))) retained.x = 0;
+    if (right < 1 && samePaperColor(reference, paperColor(image, {
+      x: right, y: crop.y + crop.height * 0.15,
+      width: Math.min(band, 1 - right), height: crop.height * 0.7,
+    }))) end = 1;
+    if (retained.x !== crop.x || end !== right) retained.width = end - retained.x;
+  }
+  return retained;
+}

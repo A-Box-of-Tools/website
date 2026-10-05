@@ -51,7 +51,7 @@
     <p class="field-summary">Los totales solo incluyen documentos revisados. Los importes originales se agrupan por moneda; el símbolo $ por sí solo no identifica el tipo de dólar. El importe convertido de cada documento revisado se suma al total general en la moneda final del correo. Los importes convertidos se redondean individualmente a dos decimales.</p>
     <div class="settings mail-fields">
       <div class="field"><label for="email-to">Destinatario (opcional)</label><input type="email" id="email-to" autocomplete="email" maxlength="254"></div>
-      <div class="field"><label for="email-subject">Asunto</label><input type="text" id="email-subject" value="Resumen de recibos y facturas" maxlength="150"></div>
+      <div class="field"><label for="email-subject">Asunto</label><input type="text" id="email-subject" value="Resumen de recibos y facturas" maxlength="150" aria-describedby="email-subject-note"><p class="field-note" id="email-subject-note">Añade el número de documentos y, cuando todos estén revisados, el total general. Los cambios que hagas se conservan.</p></div>
     </div>
     <div class="field report-preview"><label for="report-text">Vista previa del informe</label><textarea id="report-text" rows="10" readonly spellcheck="false"></textarea></div>
     <div class="export-row">
@@ -95,7 +95,7 @@
             <label class="field">Comercio / proveedor<input type="text" data-field="merchant" maxlength="200"></label>
             <label class="field">Fecha (tal como aparece)<input type="text" data-field="date" maxlength="50"></label>
             <label class="field">Número de recibo / factura<input type="text" data-field="reference" maxlength="100"></label>
-            <label class="field">Moneda del documento<select data-currency-choice>
+            <div class="field"><label class="field">Moneda del documento<select data-currency-choice>
               <option value="">Elige la moneda</option>
               <option value="USD">USD — dólar estadounidense</option><option value="CAD">CAD — dólar canadiense</option>
               <option value="EUR">EUR — euro</option><option value="GBP">GBP — libra esterlina</option>
@@ -107,7 +107,7 @@
               <option value="SAR">SAR — riyal saudí</option><option value="ZAR">ZAR — rand sudafricano</option>
               <option value="BRL">BRL — real brasileño</option><option value="MXN">MXN — peso mexicano</option>
               <option value="custom">Otro / código personalizado</option>
-            </select></label>
+            </select></label><p class="currency-hint field-note" hidden></p></div>
             <label class="field custom-currency" hidden>Código personalizado de moneda<input type="text" data-field="currency" maxlength="3" autocomplete="off" spellcheck="false" placeholder="ABC"><span class="field-note">Introduce tres letras, como MYR.</span></label>
             <label class="field">Total del documento<input type="text" data-field="amount" inputmode="decimal" maxlength="24" autocomplete="off"></label>
           </div>
@@ -127,7 +127,13 @@
           </fieldset>
           <label class="confirm-document"><input type="checkbox" data-field="confirmed"> He revisado los campos y el adjunto recortado</label>
           <p class="document-error error" hidden></p>
-          <details class="ocr-details"><summary>Texto leído de esta imagen</summary><label class="field">Corrige el texto si hace falta<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label><button type="button" class="parse-text ghost">Usar este texto para rellenar los campos</button></details>
+          <details class="ocr-details">
+            <summary>Texto leído de esta imagen</summary>
+            <label class="field">Corrige el texto si hace falta<textarea class="ocr-text" rows="8" spellcheck="false"></textarea></label>
+            <button type="button" class="parse-text ghost">Usar este texto para rellenar los campos</button>
+            <div class="ocr-recovery" hidden><label class="field">Segunda lectura para comparar<textarea class="ocr-recovery-text ocr-text" rows="8" spellcheck="false" readonly></textarea></label><p class="field-note">Compara ambas lecturas con la imagen. Corrige el texto de arriba antes de usarlo para rellenar los campos.</p></div>
+            <div class="ocr-header" hidden><label class="field">Lectura del nombre y la dirección del comercio<textarea class="ocr-header-text ocr-text" rows="5" spellcheck="false" readonly></textarea></label><p class="field-note">Esta lectura se usa para el nombre del comercio y las sugerencias de moneda basadas en su dirección. Compárala con la imagen.</p></div>
+          </details>
         </div>
       </div>
     </article>
@@ -153,6 +159,10 @@
     </div>
   </div>
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="emailSubjectCount">{title} — {count} documentos</span>
+    <span data-phrase="emailSubjectTotal">{title} — {count} documentos — {currency} {amount}</span>
+    <span data-phrase="currencyFromLocation">Se sugiere {currency} por la dirección del comercio: {location}. Compruébala en el recibo.</span>
+    <span data-phrase="conflictingRecognition">Las dos lecturas no coinciden. Compara ambos textos con la imagen y rellena los campos vacíos.</span>
     <span data-phrase="net.clean">Las fotos permanecen en este dispositivo durante el procesamiento. {total} recursos cargados; la consulta opcional de tipos históricos puede contactar con Frankfurter. {platform}</span>
     <span data-phrase="net.dirty">Se observaron conexiones inesperadas: {hosts}. {platform}</span>
     <span data-phrase="offline.ready">listo: el OCR, la conversión manual y las descargas funcionan sin conexión; consultar tipos en línea requiere conexión.</span>
