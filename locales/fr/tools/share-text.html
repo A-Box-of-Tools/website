@@ -5,7 +5,7 @@
       <h2>Partages locaux sur cette connexion</h2>
       <p id="discovery-status" role="status" aria-live="polite">Recherche de partages locaux…</p>
       <div id="discovery-list"></div>
-      <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IP publique que le vôtre. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
+      <p class="discovery-note">Cette liste affiche les noms de lien des navigateurs utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6 que vous. Cela correspond généralement au même routeur ; un VPN partagé ou une adresse partagée par le fournisseur d’accès peut inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes différentes peuvent masquer des appareils voisins. Internet est nécessaire. Ouvrir un partage demande toujours votre accord avant la connexion, et les partages privés exigent encore l’approbation de la personne qui partage.</p>
       <button type="button" id="discovery-refresh" class="ghost">Actualiser les partages locaux</button>
     </section>
 
@@ -53,12 +53,12 @@
           <input type="checkbox" id="local">
           Réseau local — sans relais internet
         </label>
-        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage.</p>
+        <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage. Réseau local est désactivé par défaut ; choisissez-le pour afficher votre partage dans la recherche locale.</p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
           Visible — afficher ce nom de lien sur cette connexion internet
         </label>
-        <p class="discovery-note">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IP publique. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
+        <p class="discovery-note">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Éphémère &mdash; ne pas garder le brouillon sur cet appareil
@@ -167,7 +167,7 @@
     <span data-phrase="units.mb">Mo</span>
 
     <span data-phrase="discovery.connecting">Recherche de partages locaux…</span>
-    <span data-phrase="discovery.empty">Aucun autre partage local visible ici pour le moment. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
+    <span data-phrase="discovery.empty">Aucun partage local visible ici pour le moment. Gardez l’onglet de la personne qui partage ouvert, ou utilisez son lien.</span>
     <span data-phrase="discovery.ready">Choisissez un partage pour ouvrir sa page de connexion.</span>
     <span data-phrase="discovery.unavailable">La recherche locale est indisponible. Vous pouvez toujours utiliser un lien de partage.</span>
     <span data-phrase="discovery.open">Ouvrir le partage</span>

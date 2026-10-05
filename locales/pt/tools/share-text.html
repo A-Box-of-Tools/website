@@ -6,11 +6,13 @@
       <p id="discovery-status" role="status" aria-live="polite">Procurando compartilhamentos locais&hellip;</p>
       <div id="discovery-list"></div>
       <p class="discovery-note">
-        Esta lista mostra os nomes de link de navegadores que usam o mesmo
-        endereço IP público que o seu. Normalmente isso significa o mesmo
+        Esta lista mostra os nomes de link de navegadores que compartilham
+        seu endereço IPv4 público ou sua sub-rede IPv6. Normalmente isso
+        significa o mesmo
         roteador; uma VPN compartilhada ou um provedor que compartilha um
-        endereço pode incluir outras redes. IPv6 ou caminhos diferentes
-        podem ocultar dispositivos próximos. É preciso ter internet. Abrir
+        endereço pode incluir outras redes. Se alguns dispositivos usam
+        IPv4 e outros IPv6, ou seguem caminhos diferentes, podem não aparecer
+        mesmo estando na mesma rede local. É preciso ter internet. Abrir
         um compartilhamento ainda pede consentimento antes de conectar, e
         os privados ainda precisam da aprovação de quem compartilha.
       </p>
@@ -66,14 +68,15 @@
           <input type="checkbox" id="local">
           Rede local — sem retransmissor de internet
         </label>
-        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. A apresentação dos navegadores ainda precisa de internet; este modo não usa servidores públicos para descobrir endereços nem retransmissores. VPNs e configurações do navegador podem afetar o caminho de rede. O link copiado inclui esta opção.</p>
+        <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. O modo Rede local vem desativado por padrão; ative para exibir o nome do seu link na lista de descoberta local. A apresentação dos navegadores ainda precisa de internet; este modo não usa servidores públicos para descobrir endereços nem retransmissores. VPNs e configurações do navegador podem afetar o caminho de rede. O link copiado inclui esta opção.</p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
           Visível na lista &mdash; mostrar este nome de link nesta conexão à internet
         </label>
         <p class="discovery-note">
           Um compartilhamento visível na lista mostra seu nome a outras
-          pessoas que usam o mesmo endereço IP público. Mantenha Privado
+          pessoas que usam o mesmo endereço IPv4 público ou a mesma sub-rede
+          IPv6. Mantenha Privado
           ativado, principalmente em redes compartilhadas. Com Privado
           desativado, qualquer pessoa que veja o nome pode conectar e ler
           sem sua aprovação. Desmarque Visível na lista para compartilhar
@@ -194,7 +197,7 @@
     <span data-phrase="units.mb">MB</span>
 
     <span data-phrase="discovery.connecting">Procurando compartilhamentos locais&hellip;</span>
-    <span data-phrase="discovery.empty">Ainda não há outros compartilhamentos locais visíveis na lista. Mantenha aberta a aba de quem compartilha ou use o link dele.</span>
+    <span data-phrase="discovery.empty">Ainda não há compartilhamentos locais visíveis na lista. Mantenha aberta a aba de quem compartilha ou use o link dele.</span>
     <span data-phrase="discovery.ready">Escolha um compartilhamento para abrir sua página de conexão.</span>
     <span data-phrase="discovery.unavailable">A descoberta de compartilhamentos locais está indisponível. Você ainda pode usar um link de compartilhamento.</span>
     <span data-phrase="discovery.open">Abrir compartilhamento</span>

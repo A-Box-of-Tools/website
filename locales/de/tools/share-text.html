@@ -5,7 +5,7 @@
       <h2>Lokale Freigaben an diesem Anschluss</h2>
       <p id="discovery-status" role="status" aria-live="polite">Suche lokale Freigaben…</p>
       <div id="discovery-list"></div>
-      <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IP-Adresse wie Ihrer. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv6 oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
+      <p class="discovery-note">Diese Liste zeigt Link-Namen von Browsern mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Meist bedeutet das denselben Router; ein gemeinsames VPN oder eine vom Internetanbieter geteilte Adresse kann andere Netze einschließen. IPv4- und IPv6-Verbindungen oder andere Routen können Geräte in der Nähe ausblenden. Internet ist erforderlich. Beim Öffnen einer Freigabe wird vor dem Verbinden gefragt; private Freigaben brauchen weiterhin die Zustimmung des Teilenden.</p>
       <button type="button" id="discovery-refresh" class="ghost">Lokale Freigaben aktualisieren</button>
     </section>
 
@@ -53,12 +53,12 @@
           <input type="checkbox" id="local">
           Lokales Netzwerk — kein Internet-Relais
         </label>
-        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung.</p>
+        <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Lokales Netzwerk ist standardmäßig aus; wählen Sie es, um Ihre Freigabe in der lokalen Suche aufzulisten.</p>
         <label class="check" for="discoverable">
           <input type="checkbox" id="discoverable" checked disabled>
           Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
         </label>
-        <p class="discovery-note">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IP-Adresse. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
+        <p class="discovery-note">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Einmalig &mdash; den Entwurf nicht auf diesem Gerät behalten
@@ -167,7 +167,7 @@
     <span data-phrase="units.mb">MB</span>
 
     <span data-phrase="discovery.connecting">Suche lokale Freigaben…</span>
-    <span data-phrase="discovery.empty">Hier gibt es noch keine anderen auffindbaren lokalen Freigaben. Lassen Sie den Tab des Teilenden offen, oder nutzen Sie seinen Link.</span>
+    <span data-phrase="discovery.empty">Hier gibt es noch keine auffindbaren lokalen Freigaben. Lassen Sie den Tab des Teilenden offen, oder nutzen Sie seinen Link.</span>
     <span data-phrase="discovery.ready">Wählen Sie eine Freigabe, um ihre Verbindungsseite zu öffnen.</span>
     <span data-phrase="discovery.unavailable">Die lokale Suche ist nicht verfügbar. Sie können weiterhin einen Freigabe-Link nutzen.</span>
     <span data-phrase="discovery.open">Freigabe öffnen</span>

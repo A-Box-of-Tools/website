@@ -82,7 +82,8 @@
   <section>
     <h2>Sharing on the same Wi-Fi or Ethernet</h2>
     <p>
-      Before starting the share, choose <em>Local network &mdash; no internet
+      Local network is off by default. Before starting the share, choose
+      <em>Local network &mdash; no internet
       relay</em>. Attach the file, leave Private on if you want to approve
       each reader, and start sharing. Discoverable is checked by default:
       open the tool page on the second device and choose the share's name
@@ -94,9 +95,9 @@
       200&nbsp;MB limit, and readers still choose which ones to download.
     </p>
     <p>
-      The list groups browsers by the public IP address the introduction
-      server sees. Usually that means one router, but a shared VPN or an ISP
-      sharing one address can include other networks. IPv6 or different
+      The list groups browsers by the public IPv4 address or IPv6 subnet
+      the introduction server sees. Usually that means one router, but a shared VPN or an ISP
+      sharing one address can include other networks. Mixed IPv4 and IPv6 connections or different
       routes can hide a device sitting beside you. Keep Private on on shared
       networks; a listed name is visible to others in that group, and the
       list does not prove that a device is in the same room or building.
@@ -134,7 +135,7 @@
     <p>
       It cuts both ways: anyone who knows or guesses a live name can open the
       share behind it. A discoverable local share lists that name for
-      browsers using the same public IP address, so the name is public
+      browsers using the same public IPv4 address or IPv6 subnet, so the name is public
       within that group. For anything sensitive, keep the default &mdash; shares are
       <em>private</em> unless you untick the box, which means every arriving
       reader has to introduce themselves and you decide, message by message,
