@@ -83,6 +83,9 @@ Local network mode itself is off by default, so ordinary shares are never
 listed. The directory includes the sharer’s own published share.
 Keep Private on on shared networks: without it, anyone who sees the name
 can connect and read without an admission decision.
+The information icon beside Discoverable opens that explanation on hover,
+keyboard focus or tap. Its tooltip behavior is shared with the receipt tool
+through `shared/js/help-tooltip.js`; Escape or clicking elsewhere dismisses it.
 
 The group is derived by the worker from the canonical Cloudflare public
 IPv4 address or IPv6 /64 subnet, together with the allowed page origin,

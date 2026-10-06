@@ -1,4 +1,4 @@
-export function wireCurrencyHelp(details) {
+export function wireHelpTooltip(details) {
   const summary = details?.querySelector(':scope > summary');
   if (!summary) return;
 
@@ -16,7 +16,7 @@ export function wireCurrencyHelp(details) {
   details.addEventListener('toggle', () => {
     delete details.dataset.placement;
     if (!details.open) return;
-    const note = details.querySelector('#default-currency-note');
+    const note = details.querySelector(':scope > [role="tooltip"]');
     const viewport = details.ownerDocument.defaultView;
     if (!note || !viewport || note.getBoundingClientRect().bottom <= viewport.innerHeight - 12) return;
     details.dataset.placement = 'above';

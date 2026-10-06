@@ -53,11 +53,16 @@
           局域网——不使用互联网中转
         </label>
         <p class="field-note">适合连接同一 Wi-Fi 或以太网的设备。引介浏览器仍需要互联网；此模式不使用公共地址发现服务器或中转。VPN 和浏览器设置可能影响网络路径。复制的链接会带上此设置。 局域网模式默认关闭；要让自己的分享出现在本地发现列表中，请先选择此模式。</p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          可被发现——在这条互联网连接上显示链接名
-        </label>
-        <p class="discovery-note">可被发现的分享会向使用同一公网 IPv4 地址或 IPv6 子网的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            可被发现——在这条互联网连接上显示链接名
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">关于可被发现的分享</span></summary>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">可被发现的分享会向使用同一公网 IPv4 地址或 IPv6 子网的人显示名称。尤其在共享网络上，请保持私密开启。关闭私密后，看到名称的人都能连接并阅读，无需你批准。取消可被发现，只通过链接分享。</p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           一次性——草稿不留在这台设备上
