@@ -54,11 +54,16 @@
           Réseau local — sans relais internet
         </label>
         <p class="field-note">Pour des appareils sur le même réseau Wi-Fi ou Ethernet. Internet reste nécessaire pour mettre les navigateurs en relation&nbsp;; ce mode n’utilise ni serveur public de découverte d’adresses ni relais. Les VPN et les réglages du navigateur peuvent modifier le trajet réseau. Le lien copié inclut ce réglage. Réseau local est désactivé par défaut ; choisissez-le pour afficher votre partage dans la recherche locale.</p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Visible — afficher ce nom de lien sur cette connexion internet
-        </label>
-        <p class="discovery-note">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Visible — afficher ce nom de lien sur cette connexion internet
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">À propos des partages visibles</span></summary>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Un partage visible affiche son nom pour les autres personnes utilisant la même adresse IPv4 publique ou le même sous-réseau IPv6. Gardez Privé activé, surtout sur les réseaux partagés. Si Privé est désactivé, toute personne voyant le nom peut se connecter et lire sans votre approbation. Décochez Visible pour partager uniquement par lien.</p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Éphémère &mdash; ne pas garder le brouillon sur cet appareil

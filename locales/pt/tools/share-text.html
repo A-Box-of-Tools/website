@@ -69,11 +69,14 @@
           Rede local — sem retransmissor de internet
         </label>
         <p class="field-note">Para dispositivos na mesma rede Wi-Fi ou Ethernet. O modo Rede local vem desativado por padrão; ative para exibir o nome do seu link na lista de descoberta local. A apresentação dos navegadores ainda precisa de internet; este modo não usa servidores públicos para descobrir endereços nem retransmissores. VPNs e configurações do navegador podem afetar o caminho de rede. O link copiado inclui esta opção.</p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Visível na lista &mdash; mostrar este nome de link nesta conexão à internet
-        </label>
-        <p class="discovery-note">
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Visível na lista &mdash; mostrar este nome de link nesta conexão à internet
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">Sobre os compartilhamentos visíveis na lista</span></summary>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">
           Um compartilhamento visível na lista mostra seu nome a outras
           pessoas que usam o mesmo endereço IPv4 público ou a mesma sub-rede
           IPv6. Mantenha Privado
@@ -82,6 +85,8 @@
           sem sua aprovação. Desmarque Visível na lista para compartilhar
           só por link.
         </p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Descartável &mdash; não guardar o rascunho neste dispositivo

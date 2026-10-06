@@ -75,17 +75,22 @@
           affect the network path. The copied link carries this setting.
           Local network is off by default; choose it to list your share in local discovery.
         </p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Discoverable &mdash; show this link name on this internet connection
-        </label>
-        <p class="discovery-note">
-          A discoverable share lists its name for others using the same
-          public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
-          With Private off, anyone who sees the name can connect and read
-          without your approval.
-          Uncheck Discoverable to share only by link.
-        </p>
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Discoverable &mdash; show this link name on this internet connection
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">About discoverable shares</span></summary>
+            <p id="discoverable-note" role="tooltip" class="discoverable-note">
+              A discoverable share lists its name for others using the same
+              public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
+              With Private off, anyone who sees the name can connect and read
+              without your approval.
+              Uncheck Discoverable to share only by link.
+            </p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           One-off &mdash; don&rsquo;t keep the draft on this device
