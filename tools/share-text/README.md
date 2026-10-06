@@ -80,9 +80,19 @@ entry shows the usual consent page in another tab. It never opens WebRTC on
 its own and never bypasses Private approval. Starting a local share leaves
 **Discoverable** on by default; unticking it makes the share link-only.
 Local network mode itself is off by default, so ordinary shares are never
-listed. The directory includes the sharer’s own published share.
+listed. Starting a share hides this tab's discovery panel until sharing
+stops or a name collision returns the page to editing. The discovery socket
+stays open, so the advertised name remains visible to other browsers while
+the panel is hidden. The rendered list excludes this tab's own share, and
+Stop suppresses its name until a directory snapshot confirms it absent.
+A collision releases that name because it now belongs to another host.
+The share controls show an opening state, then a persistent Sharing badge
+separate from reader counts or connection warnings.
 Keep Private on on shared networks: without it, anyone who sees the name
 can connect and read without an admission decision.
+The information icon beside Discoverable opens that explanation on hover,
+keyboard focus or tap. Its tooltip behavior is shared with the receipt tool
+through `shared/js/help-tooltip.js`; Escape or clicking elsewhere dismisses it.
 
 The group is derived by the worker from the canonical Cloudflare public
 IPv4 address or IPv6 /64 subnet, together with the allowed page origin,

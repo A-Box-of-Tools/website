@@ -37,6 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
+js_parts = ["help-tooltip"]
 lastmod = "2026-10-05"
 
 # --- what search engines and chat apps are told ------------------------------

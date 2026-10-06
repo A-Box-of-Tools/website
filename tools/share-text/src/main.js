@@ -1,6 +1,7 @@
 /** UI wiring and the two roles: the sharer's tab, and a reader's. */
 
 import { phrase } from './shared/phrases.js';
+import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { renderMarkdown } from './markdown.js';
 import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
@@ -59,6 +60,7 @@ let isDiscoverable = false;
 let discovery = null;
 let discoveryState = 'connecting';
 let foundShares = [];
+const withdrawing = new Set();
 let announcementTimer = 0;
 const peers = new Map();     // viewer id -> RTCPeerConnection
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
@@ -109,6 +111,8 @@ function suggest() {
 
 function unlock() {
   isDiscoverable = false;
+  $('publish').hidden = false;
+  setShareState();
   renderDiscovery();
   $('code').disabled = false;
   $('suggest').disabled = false;
@@ -116,11 +120,15 @@ function unlock() {
   $('local').disabled = false;
   $('discoverable').disabled = !$('local').checked;
   $('discovery-share-status').textContent = '';
-  $('publish').hidden = false;
   $('stop').hidden = true;
   $('linkrow').hidden = true;
   $('requests').textContent = '';
   pending.clear();
+}
+
+function setShareState(key = '') {
+  $('share-state').hidden = !key;
+  $('share-state').textContent = key ? phrase(key) : '';
 }
 
 function setStatus(text, warn = false) {
@@ -280,10 +288,13 @@ async function sendFile(dc, id) {
 /* ----------------------------------------------------- local discovery */
 
 function renderDiscovery() {
+  const hosting = $('publish').hidden;
+  $('discovery').hidden = hosting;
+  const ownCode = hosting ? normalize($('code').value) : '';
+  const shares = foundShares.filter((share) => share.code !== ownCode && !withdrawing.has(share.code));
   const list = $('discovery-list');
   list.textContent = '';
-  // The sharer needs to see its own entry to verify that it was advertised.
-  for (const [index, share] of foundShares.entries()) {
+  for (const [index, share] of shares.entries()) {
     const row = document.createElement('div');
     row.className = 'discovery-row';
     const name = document.createElement('span');
@@ -301,13 +312,21 @@ function renderDiscovery() {
     row.append(name, open);
     list.append(row);
   }
-  const state = discoveryState === 'ready' ? (foundShares.length ? 'ready' : 'empty') : discoveryState;
+  const state = discoveryState === 'ready' ? (shares.length ? 'ready' : 'empty') : discoveryState;
   $('discovery-status').textContent = phrase(`discovery.${state}`);
 }
 
 function startDiscovery() {
   discovery = watchDiscovery(`${RENDEZVOUS}/discover`, {
-    list(shares) { foundShares = shares; renderDiscovery(); },
+    list(shares) {
+      // A snapshot already in flight can arrive after Stop. Keep its code
+      // out of the list until the directory confirms that it is gone.
+      for (const code of withdrawing) {
+        if (!shares.some((share) => share.code === code)) withdrawing.delete(code);
+      }
+      foundShares = shares;
+      renderDiscovery();
+    },
     status(state) { discoveryState = state; renderDiscovery(); },
     publication(state) {
       $('discovery-share-status').textContent = state && isDiscoverable && $('publish').hidden
@@ -320,6 +339,7 @@ function startDiscovery() {
 $('local').addEventListener('change', () => {
   $('discoverable').disabled = !$('local').checked;
 });
+wireHelpTooltip($('discoverable-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 
@@ -331,6 +351,7 @@ function hostSocket(code, onOpen) {
     if (sock !== ws) { ws.close(1000); return; }
     pulse = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
     keepalive = pulse;
+    setShareState('share.active');
     onOpen();
     if (isDiscoverable) {
       $('discovery-share-status').textContent = phrase('discovery.publishing');
@@ -364,6 +385,7 @@ function hostSocket(code, onOpen) {
     clearTimeout(announcementTimer);
     discovery?.unpublish();
     if (e.code === 4409) {
+      withdrawing.delete(code);
       // A collision on our own suggestion is bad luck, silently retried; a
       // collision on a name the user chose is theirs to resolve.
       if ($('code').value === suggestion && attempts < 3) { attempts += 1; suggest(); publish(); return; }
@@ -396,16 +418,22 @@ function publish() {
   $('local').disabled = true;
   isDiscoverable = isLocal && $('discoverable').checked;
   $('discoverable').disabled = true;
-  renderDiscovery();
   $('publish').hidden = true;
-  setStatus(phrase('share.setting-up'));
-  hostSocket(code, () => {
-    attempts = 0;
-    $('link').value = shareUrl(code);
-    $('linkrow').hidden = false;
-    $('stop').hidden = false;
-    refreshCount();
-  });
+  setShareState('share.setting-up');
+  renderDiscovery();
+  setStatus('');
+  try {
+    hostSocket(code, () => {
+      attempts = 0;
+      $('link').value = shareUrl(code);
+      $('linkrow').hidden = false;
+      $('stop').hidden = false;
+      refreshCount();
+    });
+  } catch (error) {
+    unlock();
+    throw error;
+  }
 }
 
 async function hostSignal(from, data) {
@@ -550,9 +578,11 @@ $('publish').addEventListener('click', publish);
 
 $('stop').addEventListener('click', () => {
   clearTimeout(announcementTimer);
+  const stoppedCode = normalize($('code').value);
+  if (isDiscoverable) withdrawing.add(stoppedCode);
   discovery?.unpublish();
   isDiscoverable = false;
-  renderDiscovery();
+  foundShares = foundShares.filter((share) => share.code !== stoppedCode);
   sock?.close(1000);
   clearInterval(keepalive);
   for (const pc of peers.values()) pc.close();

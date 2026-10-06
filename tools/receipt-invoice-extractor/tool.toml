@@ -25,7 +25,7 @@ category = "documents-and-audio"
 roadmap_group = "documents"
 
 css_parts = ["form", "notes", "results", "cropper"]
-js_parts = ["file-picker", "download", "errors", "cropper", "zip", "crc32", "document-detect", "document-geometry", "image-input"]
+js_parts = ["file-picker", "download", "errors", "cropper", "zip", "crc32", "document-detect", "document-geometry", "image-input", "help-tooltip"]
 lastmod = "2026-10-05"
 
 title = "Receipt &amp; Invoice Extractor &mdash; Photos to CSV and Email, No Upload"

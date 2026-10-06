@@ -75,17 +75,22 @@
           affect the network path. The copied link carries this setting.
           Local network is off by default; choose it to list your share in local discovery.
         </p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Discoverable &mdash; show this link name on this internet connection
-        </label>
-        <p class="discovery-note">
-          A discoverable share lists its name for others using the same
-          public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
-          With Private off, anyone who sees the name can connect and read
-          without your approval.
-          Uncheck Discoverable to share only by link.
-        </p>
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Discoverable &mdash; show this link name on this internet connection
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">About discoverable shares</span></summary>
+            <p id="discoverable-note" role="tooltip" class="discoverable-note">
+              A discoverable share lists its name for others using the same
+              public IPv4 address or IPv6 subnet. Keep Private on, especially on shared networks.
+              With Private off, anyone who sees the name can connect and read
+              without your approval.
+              Uncheck Discoverable to share only by link.
+            </p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           One-off &mdash; don&rsquo;t keep the draft on this device
@@ -101,6 +106,7 @@
     <!-- Step 3 &mdash; the share itself -->
     <section class="card">
       <h2><span class="step">3</span> Share it</h2>
+      <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
         <button type="button" id="publish" class="primary">Start sharing</button>
       </div>
@@ -224,6 +230,7 @@
     <span data-phrase="discovery.published">Your local share is discoverable on this connection.</span>
     <span data-phrase="discovery.not-published">This share is available by link; local discovery could not publish it.</span>
 
+    <span data-phrase="share.active">Sharing</span>
     <span data-phrase="share.waiting">Sharing. Waiting for someone to open the link &mdash; keep this tab open.</span>
     <span data-phrase="share.local-waiting">Sharing in Local network mode. Waiting for someone to open the link &mdash; keep this tab open.</span>
     <span data-phrase="share.reader-count.one">1 reader connected</span>

@@ -69,11 +69,14 @@
           Red local — sin retransmisor de internet
         </label>
         <p class="field-note">Para dispositivos en la misma red Wi-Fi o Ethernet. El modo Red local está desactivado por defecto; actívalo para mostrar el nombre de tu enlace en la lista de descubrimiento local. La presentación de los navegadores aún necesita internet; este modo no usa servidores públicos para descubrir direcciones ni retransmisores. Las VPN y los ajustes del navegador pueden afectar la ruta. El enlace copiado incluye esta opción.</p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Visible en la lista &mdash; mostrar este nombre de enlace en esta conexión a internet
-        </label>
-        <p class="discovery-note">
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Visible en la lista &mdash; mostrar este nombre de enlace en esta conexión a internet
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">Sobre las comparticiones visibles en la lista</span></summary>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">
           Una compartición visible en la lista muestra su nombre a otros
           que usan la misma dirección IPv4 pública o la misma subred IPv6.
           Mantén Privado activado,
@@ -82,6 +85,8 @@
           aprobación. Desmarca Visible en la lista para compartir solo por
           enlace.
         </p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           De un solo uso &mdash; no guardar el borrador en este dispositivo
@@ -96,6 +101,7 @@
 
     <section class="card">
       <h2><span class="step">3</span> Compártelo</h2>
+      <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
         <button type="button" id="publish" class="primary">Empezar a compartir</button>
       </div>
@@ -204,6 +210,7 @@
     <span data-phrase="discovery.published">Tu compartición local es visible en la lista de esta conexión.</span>
     <span data-phrase="discovery.not-published">Esta compartición está disponible por enlace; la búsqueda local no pudo incluirla en la lista.</span>
 
+    <span data-phrase="share.active">Compartiendo</span>
     <span data-phrase="share.waiting">Compartiendo. Esperando a que alguien abra el enlace &mdash; deja esta pestaña abierta.</span>
     <span data-phrase="share.reader-count.one">1 lector conectado</span>
     <span data-phrase="share.reader-count.many">{n} lectores conectados</span>

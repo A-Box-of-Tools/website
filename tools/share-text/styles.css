@@ -95,6 +95,41 @@
 .discovery-note { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
 #discovery-share-status { color: var(--text-dim); }
 
+#share-state:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  margin: 0 0 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 700;
+}
+#share-state::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.discoverable-row { position: relative; display: flex; align-items: center; gap: 0.35rem; width: fit-content; max-width: 100%; }
+.discoverable-row > .check { min-width: 0; }
+.discoverable-help { flex: none; }
+.discoverable-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
+.discoverable-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.discoverable-note { position: absolute; z-index: 5; inset-block-start: calc(100% + 0.35rem); inset-inline-start: 0; width: min(32rem, calc(100vw - 4rem)); margin: 0; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgb(0 0 0 / 0.16); font-size: 0.84rem; line-height: 1.5; }
+.discoverable-note::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.5rem; }
+.discoverable-help[data-placement="above"] > .discoverable-note { inset-block-start: auto; inset-block-end: calc(100% + 0.35rem); }
+.discoverable-help[data-placement="above"] > .discoverable-note::before { inset-block-start: 100%; inset-block-end: auto; }
+@media (pointer: coarse) {
+  .discoverable-help > summary { min-width: 2.75rem; min-height: 2.75rem; }
+}
+
 .namerow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
 .namerow input {
   flex: 1;

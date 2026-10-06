@@ -54,11 +54,16 @@
           Lokales Netzwerk — kein Internet-Relais
         </label>
         <p class="field-note">Für Geräte im selben WLAN oder Ethernet-Netz. Für die Vermittlung zwischen den Browsern ist weiterhin Internet nötig; dieser Modus nutzt weder öffentliche Server zur Adressermittlung noch ein Relais. VPNs und Browsereinstellungen können den Netzwerkpfad beeinflussen. Der kopierte Link enthält diese Einstellung. Lokales Netzwerk ist standardmäßig aus; wählen Sie es, um Ihre Freigabe in der lokalen Suche aufzulisten.</p>
-        <label class="check" for="discoverable">
-          <input type="checkbox" id="discoverable" checked disabled>
-          Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
-        </label>
-        <p class="discovery-note">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
+        <div class="discoverable-row">
+          <label class="check" for="discoverable">
+            <input type="checkbox" id="discoverable" checked disabled>
+            Auffindbar — diesen Link-Namen an diesem Internetanschluss anzeigen
+          </label>
+          <details id="discoverable-help" class="discoverable-help info-fold">
+            <summary aria-describedby="discoverable-note"><span class="visually-hidden">Über auffindbare Freigaben</span></summary>
+            <p class="discoverable-note" id="discoverable-note" role="tooltip">Eine auffindbare Freigabe zeigt ihren Namen anderen mit derselben öffentlichen IPv4-Adresse oder im selben IPv6-Subnetz. Lassen Sie Privat an, besonders in gemeinsam genutzten Netzen. Wenn Privat aus ist, kann jeder, der den Namen sieht, ohne Ihre Zustimmung eine Verbindung herstellen und lesen. Schalten Sie Auffindbar aus, um nur per Link zu teilen.</p>
+          </details>
+        </div>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
           Einmalig &mdash; den Entwurf nicht auf diesem Gerät behalten
@@ -73,6 +78,7 @@
 
     <section class="card">
       <h2><span class="step">3</span> Teilen Sie ihn</h2>
+      <p id="share-state" class="share-state" role="status" aria-live="polite" hidden></p>
       <div class="result-actions">
         <button type="button" id="publish" class="primary">Freigabe starten</button>
       </div>
@@ -175,6 +181,7 @@
     <span data-phrase="discovery.published">Ihre lokale Freigabe ist an diesem Anschluss auffindbar.</span>
     <span data-phrase="discovery.not-published">Diese Freigabe ist per Link verfügbar; die lokale Suche konnte sie nicht veröffentlichen.</span>
 
+    <span data-phrase="share.active">Freigabe läuft</span>
     <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>
     <span data-phrase="share.reader-count.one">1 Leser verbunden</span>
     <span data-phrase="share.reader-count.many">{n} Leser verbunden</span>
