@@ -95,6 +95,28 @@
 .discovery-note { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
 #discovery-share-status { color: var(--text-dim); }
 
+#share-state:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  margin: 0 0 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 700;
+}
+#share-state::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
 .discoverable-row { position: relative; display: flex; align-items: center; gap: 0.35rem; width: fit-content; max-width: 100%; }
 .discoverable-row > .check { min-width: 0; }
 .discoverable-help { flex: none; }
