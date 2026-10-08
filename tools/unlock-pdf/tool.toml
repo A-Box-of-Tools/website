@@ -72,7 +72,7 @@ js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writ
 # tool is the way IN to the PDF chain - every tool that refuses a locked file
 # sends its reader here - so it needs a way out, or the journey ends on a
 # download and a second upload to the tool they wanted in the first place.
-handoff = ["merge-pdf", "compress-pdf", "redact-pdf"]
+handoff = ["merge-pdf", "compress-pdf", "redact-pdf", "watermark-pdf", "protect-pdf"]
 lastmod = "2026-09-12"
 
 # --- what search engines and chat apps are told ------------------------------
