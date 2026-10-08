@@ -130,6 +130,10 @@
     <span data-phrase="xml.comment">Este comentário nunca é fechado</span>
     <span data-phrase="xml.cdata">Esta seção CDATA nunca é fechada</span>
     <span data-phrase="xml.declaration">Esta declaração nunca é fechada</span>
+    <span data-phrase="xml.document">O XML precisa de exatamente um elemento externo, sem texto fora dele.</span>
+    <span data-phrase="xml.declarationorder">A declaração XML deve vir primeiro; um DOCTYPE só pode aparecer uma vez, antes do elemento externo.</span>
+    <span data-phrase="xml.declarationinvalid">Esta declaração XML é inválida.</span>
+    <span data-phrase="xml.character">Esta referência numérica de caractere é inválida em XML.</span>
     <span data-phrase="xml.closing">Esta tag de fecho nunca é terminada</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; nunca é fechada</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; fecha uma tag que nunca foi aberta</span>
@@ -158,7 +162,7 @@
     <span data-phrase="convert.json-xml.name">De JSON para XML</span>
     <span data-phrase="convert.xml-json">Os atributos viram membros com um @ no nome, o texto próprio de um elemento vira
       #text onde tem de dividir o lugar, e todo valor continua string &mdash; o XML nunca
-      disse quais eram números.</span>
+      disse quais eram números. A ordem do conteúdo misto e os comentários não são preservados.</span>
     <span data-phrase="convert.json-xml">Um array vira um elemento repetido, que é a única forma que se lê de volta. Um
       objeto vazio e uma string vazia saem os dois como elemento vazio.</span>
     <span data-phrase="size.bytes">{n} B</span>

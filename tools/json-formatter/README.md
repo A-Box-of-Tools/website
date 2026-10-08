@@ -111,6 +111,15 @@ the program that opens the file next may still be on 1.1, and PyYAML is.
 Reading strictly and writing conservatively is the only combination that is
 right whichever end you are at.
 
+XML formatting keeps text and mixed content together without collapsing
+their spaces, and honors inherited `xml:space="preserve"` with an explicit
+`default` reset. Whitespace used only between child elements is still treated
+as layout unless preservation was requested. The XML reader requires one
+outer element, retains valid prolog/epilog nodes, and checks numeric character
+references before conversion; a DOCTYPE remains literal and resolves nothing.
+XML-to-JSON conversion keeps text and CDATA characters but still loses comments
+and the interleaved order of mixed content, as its menu note explains.
+
 **Reindenting HTML is not free**, and the page says so. Whitespace between two
 inline elements is a space between two words. Two things keep it in check:
 `<pre>` and `<textarea>` are copied through exactly, and an element holding

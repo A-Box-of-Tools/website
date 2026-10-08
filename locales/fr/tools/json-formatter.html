@@ -173,6 +173,10 @@
     <span data-phrase="xml.comment">Ce commentaire n'est jamais fermé</span>
     <span data-phrase="xml.cdata">Cette section CDATA n'est jamais fermée</span>
     <span data-phrase="xml.declaration">Cette déclaration n'est jamais fermée</span>
+    <span data-phrase="xml.document">XML exige exactement un élément extérieur, sans texte en dehors.</span>
+    <span data-phrase="xml.declarationorder">La déclaration XML doit venir en premier ; un DOCTYPE ne peut apparaître qu’une fois, avant l’élément extérieur.</span>
+    <span data-phrase="xml.declarationinvalid">Cette déclaration XML est invalide.</span>
+    <span data-phrase="xml.character">Cette référence numérique de caractère est invalide en XML.</span>
     <span data-phrase="xml.closing">Cette balise fermante n'est jamais terminée</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; n'est jamais fermée</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; ferme une balise qui n'a jamais été ouverte</span>
@@ -215,7 +219,7 @@
       objet vide et une chaîne vide sortent tous deux comme un élément vide.</span>
     <span data-phrase="convert.xml-json">Les attributs deviennent des membres nommés avec un @, le texte propre d'un élément
       devient #text là où il doit partager la place, et toute valeur reste une chaîne
-      &mdash; XML n'a jamais dit lesquelles étaient des nombres.</span>
+      &mdash; XML n'a jamais dit lesquelles étaient des nombres. L’ordre du contenu mixte et les commentaires ne sont pas conservés.</span>
     <span data-phrase="format.unknown">{language} n'est pas un langage que ceci formate.</span>
     <span data-phrase="size.bytes">{n} o</span>
     <span data-phrase="size.kb">{n} Ko</span>

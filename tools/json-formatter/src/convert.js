@@ -28,7 +28,7 @@
 
 import { parseJson, printJson } from './shared/parse-json.js';
 import { parseYaml, printYaml } from './shared/parse-yaml.js';
-import { parseXml, printXml } from './shared/parse-xml.js';
+import { parseXml, printXml, unescapeXml, xmlSpace } from './shared/parse-xml.js';
 
 /* -------------------------------------------------------------- JSON, YAML */
 
@@ -138,27 +138,28 @@ function escapeXml(text) {
  */
 export function xmlToJson(text, { indent = '  ' } = {}) {
   const nodes = parseXml(text);
-  const elements = nodes.filter((node) => node.t === 'element');
-  if (!elements.length) {
-    return `${printJson({ t: 'map', pairs: [] }, { indent })}\n`;
-  }
-  const root = elements[0];
+  const root = nodes.find((node) => node.t === 'element');
   const data = { t: 'map', pairs: [{ key: root.name, value: elementData(root) }] };
   return `${printJson(data, { indent })}\n`;
 }
 
-function elementData(element) {
+function elementData(element, inheritedSpace = false) {
+  const preserve = xmlSpace(element, inheritedSpace);
   const pairs = [];
   for (const attr of element.attrs) {
     pairs.push({ key: `@${attr.name}`, value: { t: 'str', value: unescapeXml(attr.value ?? '') } });
   }
 
   const children = element.children.filter((child) => child.t === 'element');
-  const text = element.children
+  const ownText = element.children
     .filter((child) => child.t === 'text' || child.t === 'cdata')
     .map((child) => (child.t === 'cdata' ? child.text : unescapeXml(child.text)))
-    .join('')
-    .trim();
+    .join('');
+  // Only whitespace used to lay out child elements is omitted. Leaf text,
+  // mixed content and explicit CDATA keep their surrounding characters.
+  const layout = children.length && !preserve && /^[ \t\r\n]*$/.test(ownText)
+    && !element.children.some((child) => child.t === 'cdata');
+  const text = layout ? '' : ownText;
 
   if (!children.length) {
     if (!pairs.length) {
@@ -175,7 +176,7 @@ function elementData(element) {
   const byName = new Map();
   for (const child of children) {
     if (!byName.has(child.name)) { byName.set(child.name, []); order.push(child.name); }
-    byName.get(child.name).push(elementData(child));
+    byName.get(child.name).push(elementData(child, preserve));
   }
   for (const name of order) {
     const list = byName.get(name);
@@ -183,17 +184,6 @@ function elementData(element) {
   }
   if (text !== '') pairs.push({ key: '#text', value: { t: 'str', value: text } });
   return { t: 'map', pairs };
-}
-
-function unescapeXml(text) {
-  return text.replace(/&(lt|gt|amp|quot|apos|#[0-9]+|#[xX][0-9a-fA-F]+);/g, (whole, body) => {
-    if (body[0] === '#') {
-      const code = body[1] === 'x' || body[1] === 'X'
-        ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
-      return Number.isFinite(code) ? String.fromCodePoint(code) : whole;
-    }
-    return { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'" }[body];
-  });
 }
 
 /* ---------------------------------------------------------------- the list */

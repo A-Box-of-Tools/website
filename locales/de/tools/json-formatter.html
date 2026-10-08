@@ -176,6 +176,10 @@
     <span data-phrase="xml.comment">Dieser Kommentar wird nie geschlossen</span>
     <span data-phrase="xml.cdata">Dieser CDATA-Abschnitt wird nie geschlossen</span>
     <span data-phrase="xml.declaration">Diese Deklaration wird nie geschlossen</span>
+    <span data-phrase="xml.document">XML braucht genau ein äußeres Element, ohne Text außerhalb davon.</span>
+    <span data-phrase="xml.declarationorder">Die XML-Deklaration muss zuerst stehen; ein DOCTYPE darf nur einmal vor dem äußeren Element stehen.</span>
+    <span data-phrase="xml.declarationinvalid">Diese XML-Deklaration ist ungültig.</span>
+    <span data-phrase="xml.character">Diese numerische Zeichenreferenz ist in XML ungültig.</span>
     <span data-phrase="xml.closing">Dieses schließende Tag wird nie beendet</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; wird nie geschlossen</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; schließt ein Tag, das nie geöffnet wurde</span>
@@ -221,7 +225,7 @@
       leeres Element heraus.</span>
     <span data-phrase="convert.xml-json">Attribute werden zu Membern mit einem @ im Namen, der eigene Text eines Elements
       wird zu #text, wo er sich den Platz teilen muss, und jeder Wert bleibt eine
-      Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren.</span>
+      Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren. Die Reihenfolge gemischter Inhalte und Kommentare bleiben nicht erhalten.</span>
     <span data-phrase="format.unknown">{language} ist keine Sprache, die dies formatiert.</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>
