@@ -902,6 +902,28 @@ class BuildTheSite(unittest.TestCase):
                             self.assertTrue(specifier.endswith(f'?v={version}'),
                                             f'{specifier} is not on this deploy\'s version')
 
+    def test_share_text_shows_its_code_version_in_every_language(self):
+        """A diagnostic label must identify the code actually loaded, and
+        changing the page's language must not invent a code mismatch between
+        devices that run the same sharing implementation.
+        """
+        versions = set()
+        for locale in self.locales:
+            folder = buildmod.i18n.locale_path(locale, 'share-text').strip('/')
+            page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+            with self.subTest(lang=locale['lang']):
+                shown = re.findall(
+                    r'<code\b[^>]*\bid="tool-version"[^>]*>([0-9a-f]{10})</code>',
+                    page)
+                self.assertEqual(len(shown), 1,
+                                 'the page must show one generated tool version')
+                loaded = re.search(r'src="src/main\.js\?v=([0-9a-f]{10})"', page)
+                self.assertIsNotNone(loaded)
+                self.assertEqual(shown[0], loaded[1])
+                versions.add(shown[0])
+        self.assertEqual(len(versions), 1,
+                         'translated pages must identify the same sharing code')
+
     def test_a_tool_pages_links_leave_in_a_new_tab_except_the_switcher(self):
         """Every link away from a tool page opens elsewhere - see frame().
 
