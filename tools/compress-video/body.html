@@ -37,10 +37,10 @@
 
     <label class="field" for="target-mb">
       <span>No bigger than</span>
-      <span class="field-note">In megabytes. The limits people actually hit are the chips.</span>
+      <span class="field-note">1 MB = 1,000,000 bytes. The chips are common upload limits.</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">MB</span>
     </div>
     <div class="chips" role="group" aria-label="Common limits">
@@ -129,7 +129,7 @@
     <span data-phrase="note.silent">This clip has no sound, so the whole of the number goes to the
       picture.</span>
     <span data-phrase="estimate.nofile">Choose a video above and this will say what the number buys.</span>
-    <span data-phrase="estimate.notarget">Type a number of megabytes, or press one of the chips.</span>
+    <span data-phrase="estimate.notarget">Enter at least 0.1 MB as a finite number, or press one of the chips.</span>
     <span data-phrase="estimate.already">This clip is {size}, which is already under {target}. There is
       nothing to do unless the number comes down.</span>
     <span data-phrase="estimate.nofit">The sound alone is more than that. Leave the sound out, or allow at
@@ -164,6 +164,7 @@
       still over {target}. The encoder would not go lower at this frame size;
       try a smaller frame or leave the sound out.</span>
     <span data-phrase="check.length">the finished file is {got} long instead of {want}</span>
+    <span data-phrase="check.sound">the finished file did not keep all of the sound</span>
     <span data-phrase="check.reopen">the finished file would not reopen ({detail})</span>
     <span data-phrase="facts.picture">{frame}, from {from}, at {rate} and {fps} frames a second.</span>
     <span data-phrase="facts.sound.kept">The sound was copied through as it was, not re-encoded.</span>

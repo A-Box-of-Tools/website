@@ -40,10 +40,10 @@
 
     <label class="field" for="target-mb">
       <span>不超过</span>
-      <span class="field-note">单位是兆字节。下面的小按钮是大家真正会撞上的那几个上限。</span>
+      <span class="field-note">1 MB 等于 1,000,000 字节。下面的按钮是常见的上传上限。</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">MB</span>
     </div>
     <div class="chips" role="group" aria-label="常见上限">
@@ -125,7 +125,7 @@
     <span data-phrase="file.facts">{size} · {length} · {frame} · {rate}</span>
     <span data-phrase="note.silent">这段视频没有声音，所以整个数字都归画面。</span>
     <span data-phrase="estimate.nofile">在上面选一段视频，这里会说那个数字能买到什么。</span>
-    <span data-phrase="estimate.notarget">打一个兆字节数，或者按下面的一个按钮。</span>
+    <span data-phrase="estimate.notarget">请输入至少 0.1 MB 的有限数值，或按下面的一个按钮。</span>
     <span data-phrase="estimate.already">这段视频是 {size}，已经在 {target} 以下了。数字不往下调的话，没有什么可做的。</span>
     <span data-phrase="estimate.nofit">光是声音就不止这些。把声音去掉，或者至少允许 {least}。</span>
     <span data-phrase="estimate.toosmall">这么点大小装不下任何能看的画面。至少允许 {least}。</span>
@@ -154,6 +154,7 @@
     <span data-phrase="check.ok">从内存里重新打开了，时长 {length} 跟原来一样，{size} 在 {target} 以下。</span>
     <span data-phrase="check.over">从内存里重新打开了，时长 {length} 跟原来一样，但 {size} 仍然超过 {target}。这个画面尺寸下编码器已经压不下去了；试试更小的画面，或者把声音去掉。</span>
     <span data-phrase="check.length">做好的文件时长是 {got}，而不是 {want}</span>
+    <span data-phrase="check.sound">做好的文件没有保留全部声音</span>
     <span data-phrase="check.reopen">做好的文件没能重新打开（{detail}）</span>
     <span data-phrase="facts.picture">{frame}，原来是 {from}，码率 {rate}，每秒 {fps} 帧。</span>
     <span data-phrase="facts.sound.kept">声音原样复制过去，没有重新编码。</span>

@@ -38,10 +38,10 @@
 
     <label class="field" for="target-mb">
       <span>Nicht größer als</span>
-      <span class="field-note">In Megabyte. Die Grenzen, an die man wirklich stößt, stehen auf den Schaltflächen.</span>
+      <span class="field-note">1 MB = 1.000.000 Bytes. Die Schaltflächen zeigen übliche Upload-Grenzen.</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">MB</span>
     </div>
     <div class="chips" role="group" aria-label="Übliche Grenzen">
@@ -130,7 +130,7 @@
     <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
     <span data-phrase="note.silent">Dieser Clip hat keinen Ton, die ganze Zahl geht also ans Bild.</span>
     <span data-phrase="estimate.nofile">Wählen Sie oben ein Video aus, dann steht hier, was die Zahl kauft.</span>
-    <span data-phrase="estimate.notarget">Tippen Sie eine Zahl Megabyte ein, oder drücken Sie eine der Schaltflächen.</span>
+    <span data-phrase="estimate.notarget">Geben Sie mindestens 0,1 MB als endliche Zahl ein, oder drücken Sie eine der Schaltflächen.</span>
     <span data-phrase="estimate.already">Dieser Clip ist {size}, und das ist schon unter {target}. Es gibt nichts
       zu tun, solange die Zahl nicht sinkt.</span>
     <span data-phrase="estimate.nofit">Der Ton allein ist mehr als das. Lassen Sie den Ton weg, oder erlauben Sie
@@ -165,6 +165,7 @@
       liegt immer noch über {target}. Der Encoder ging bei dieser Bildgröße nicht tiefer;
       versuchen Sie eine kleinere Bildgröße, oder lassen Sie den Ton weg.</span>
     <span data-phrase="check.length">die fertige Datei ist {got} lang statt {want}</span>
+    <span data-phrase="check.sound">die fertige Datei hat nicht den gesamten Ton behalten</span>
     <span data-phrase="check.reopen">die fertige Datei ließ sich nicht wieder öffnen ({detail})</span>
     <span data-phrase="facts.picture">{frame}, von {from}, mit {rate} und {fps} Bildern pro Sekunde.</span>
     <span data-phrase="facts.sound.kept">Der Ton wurde übernommen, wie er war, nicht neu kodiert.</span>
