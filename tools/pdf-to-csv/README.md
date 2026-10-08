@@ -200,3 +200,34 @@ fraction of a point off the table's baselines, a heading repeated on page two, a
 one-row table, a label wrapped above its value. The last two build a real PDF
 with the layout of the statement that broke the first version — every word of
 it invented — and read it through the same reader the page uses.
+
+## Text intended for a spreadsheet
+
+The default export prefixes formula-like text cells with an apostrophe and
+quotes those fields. Headings are text too. The selector and affected-cell
+count disclose that change before download, and the preview shows those exact
+cell values. Recognized amounts and balances carry numeric metadata, so signed
+numbers remain numbers; a formula-shaped value cannot bypass protection just
+by carrying that marker. The raw option keeps text unchanged, with the existing
+date and amount normalization still applied.
+
+Spreadsheet import settings and re-saving can change how prefixes are treated;
+this CSV convention is not a guarantee across applications. The policy follows
+the text-prefix approach described by [OWASP's CSV injection guidance](https://github.com/OWASP/www-community/blob/master/pages/attacks/CSV_Injection.md),
+without changing numeric amounts into text or silently removing characters.
+
+## Loading and reviewing large documents
+
+Each load owns an abort controller. A newer file, Choose another or Cancel
+retires it; old data, errors, progress and cleanup cannot change the current
+page. Reads are checked after every awaited step, and extraction yields to the
+page after eight pages or after a page crosses the 24 ms task budget. Cancellation
+takes effect at the next boundary, rather than interrupting the PDF decoder in
+the middle of a page. Table inference is still a synchronous final pass.
+
+Each table mounts at most 25 data rows. Previous, Next and Jump to row only
+change that preview, leaving the full CSV and its object URL unchanged. Row
+numbers match balance warnings. A shortcut opens the first mismatched row, or
+the first unchecked row when there is no mismatch; these rows are labelled for
+review. Export mode and date changes rebuild the output while retaining the
+preview's current page.

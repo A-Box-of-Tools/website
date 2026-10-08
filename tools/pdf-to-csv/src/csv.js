@@ -33,16 +33,41 @@ export function columnLetter(index) {
   return name;
 }
 
+/** A known numeric cell still has to be a whole numeric token. */
+const NUMBER = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
+const FORMULA = /^[\s]*[=+\-@＝＋－＠]|^[\t\r\n]/;
+
+/**
+ * Only cells already parsed as amounts carry numeric metadata. Guessing from
+ * text here would exempt a heading or identifier that merely looks numeric.
+ */
+export function csvValue(cell, { spreadsheetSafe = false } = {}) {
+  const typed = cell !== null && typeof cell === 'object';
+  const text = String((typed ? cell.value : cell) ?? '');
+  const numeric = typeof cell === 'number' && Number.isFinite(cell)
+    || typed && cell.numeric === true && NUMBER.test(text);
+  return spreadsheetSafe && !numeric && FORMULA.test(text) ? `'${text}` : text;
+}
+
+/** Count the text changes before the visitor chooses a download. */
+export function formulaCells(rows) {
+  return rows.reduce((count, row) => count + row.filter((cell) =>
+    csvValue(cell, { spreadsheetSafe: true }) !== csvValue(cell)).length, 0);
+}
+
 /** One field, quoted if it has to be. */
-function field(value) {
-  const text = value === null || value === undefined ? '' : String(value);
-  return /[",\r\n]/.test(text) ? `"${text.split('"').join('""')}"` : text;
+function field(value, options) {
+  const text = csvValue(value, options);
+  const quote = /[",\r\n]/.test(text) || text !== csvValue(value);
+  return quote ? `"${text.split('"').join('""')}"` : text;
 }
 
 /**
- * @param {string[][]} rows  the heading row included
+ * @param {(string | number | {value: string, numeric: boolean})[][]} rows  headings included
+ * @param {{spreadsheetSafe?: boolean}} options  raw text remains available
  * @returns {string}
  */
-export function toCsv(rows) {
-  return '\ufeff' + rows.map((row) => row.map(field).join(',')).join('\r\n') + '\r\n';
+export function toCsv(rows, options = {}) {
+  return '\ufeff' + rows.map((row) => row.map((cell) => field(cell, options)).join(','))
+    .join('\r\n') + '\r\n';
 }
