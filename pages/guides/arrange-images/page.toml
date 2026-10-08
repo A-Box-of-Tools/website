@@ -1,0 +1,29 @@
+#
+# Guide: arranging pictures into one image.
+#
+# The important choice is whether a fixed cell is allowed to trim a picture.
+# The guide starts there, then explains why a long strip can hit a canvas
+# limit sooner than a grid with the same pictures.
+#
+
+slug = "guides/arrange-images"
+kind = "guide"
+nav = "Arrange images"
+group = "doing-the-job"
+tool = "image-layout"
+
+title = "How to Arrange Multiple Images Into One Picture"
+description = "Make a collage, contact sheet or image strip: choose a grid, keep pictures whole or crop to fill, set the spacing and save a PNG, JPEG or WebP without uploading."
+heading = "How to arrange multiple images into one picture"
+lede = """
+    A contact sheet, a side-by-side comparison, or a row of screenshots: the
+    pictures need to become one file. The choices that matter are their order,
+    the shape they fit into, and whether filling that shape is allowed to cut
+    off an edge."""
+
+updated = "8 October 2026"
+published = "2026-10-08"
+lastmod = "2026-10-08"
+og_title = "How to arrange multiple images into one picture"
+og_description = "Grid or strip, crop or keep whole, solid or transparent: the choices behind a collage or contact sheet made entirely in your browser."
+og_image_alt = "abox.tools - tools that never touch a server"

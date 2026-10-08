@@ -106,6 +106,8 @@ BASELINE = {
     # counted here, or this number becomes a tally of how many countries are
     # covered and stops being a ratchet on anything.
     'id-photo': 5,
+    # The output filename template. Every sentence shown on the page is in markup.
+    'image-layout': 1,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
     'image-to-ico': 6,

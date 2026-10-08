@@ -1,0 +1,319 @@
+#
+# Image Layout
+#
+# Arranging several pictures is a different job from blending a burst or
+# putting one picture on each PDF page. A canvas does the job locally, and
+# the preview and the download share one plan so checking the first checks
+# the placement in the second.
+#
+
+slug = "image-layout"
+name = "Image Layout"
+heading = "Image&nbsp;Layout <span class=\"h1-kw\">&mdash; collage and contact sheet maker</span>"
+tagline = "Put your pictures together. Keep them on your machine."
+icon = "&#128444;&#65039;"
+favicon = "&#128444;"
+glyph = "images"
+category = "images"
+roadmap_group = "images"
+
+css_parts = ["form", "notes", "progress", "checks"]
+# The list owns thumbnails rather than full-size bitmaps. A folder of phone
+# photos should cost the memory of one decoded photograph during export,
+# rather than the memory of every photograph held open together.
+js_parts = ["file-picker", "image-list", "image-input", "image-convert", "message-box", "download", "format", "example-photo", "errors"]
+# There is no carry-on row, so this page needs no blob: connect-src allowance.
+handoff = []
+lastmod = "2026-10-08"
+
+title = "Image Layout &mdash; Free Collage &amp; Contact Sheet Maker, No Upload"
+description = "Arrange images in a grid or strip with ready-to-use presets. Adjust each picture with pan and zoom, then save one PNG, JPEG or WebP. Free, offline and no upload."
+og_title = "Arrange multiple images without uploading them"
+og_description = "A grid, a strip or a contact sheet: reorder pictures, choose the size and spacing, then save one PNG, JPEG or WebP. Everything happens in your browser."
+og_image_alt = "Image Layout - arrange pictures into one image without uploading them"
+og_card = "A grid, a strip, a contact sheet. Several pictures become one, on your own machine."
+
+pledge = """
+    Your images are read, arranged and written by your own browser, using the
+    canvas and image encoders it already has. This tool has no network feature
+    of its own: no upload, no remote image import, and no codec to fetch."""
+
+live_hint = """
+      Open DevTools, watch the Network tab, and make a layout. No request
+      carries an image, a thumbnail, a filename or a byte of your pictures.
+      Or disconnect from the internet and make one anyway."""
+
+read_first = """
+, <code>src/arrange.js</code> for the geometry shared by the preview and export,
+      <code>src/shared/image-list.js</code> for how the chosen pictures are read,
+      and <code>src/shared/image-convert.js</code> for the browser's encoder and
+      the check that it wrote the format you asked for."""
+
+howto_heading = "How to arrange multiple images into one picture"
+card = """
+            Make a collage, a contact sheet, or a horizontal or vertical strip.
+            Reorder the pictures, set the gaps, and save one PNG, JPEG or WebP."""
+
+[words]
+plural = "images"
+choose = "images"
+analytics_extra = """, and none of the sizes, layouts or file names this tool works with"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "The pictures stay here."
+body = """
+ Your browser reads the files you choose
+      and draws the combined picture in memory. This tool has no network feature
+      and no endpoint to receive your files. The page's
+      <code>Content-Security-Policy</code> names the addresses it may contact;
+      your pictures, their names and their thumbnails are never handed to them."""
+
+[[privacy]]
+title = "The layout is made by this page."
+body = """
+ There is no image service
+      behind the preview and no remote renderer behind the download. The same
+      rectangles decide where the pictures land in both, and the browser's own
+      encoder turns the finished canvas into a PNG, JPEG or WebP."""
+
+[[privacy]]
+title = "The original files are left alone."
+body = """
+ A layout is a new image.
+      The files you picked stay as they were; no edited copy is written over
+      them. Source EXIF, GPS, camera and date tags are not copied into the
+      layout, because it is made from pixels rather than from the original
+      file containers."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The page's advertising
+      and measurement scripts come from Google. Neither is given your images,
+      their names, their dimensions, their number, or anything drawn from them.
+      The code that reads and arranges a picture is served from this origin."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+ The
+      &ldquo;Buy me a coffee&rdquo; button is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link,
+      and it is handed nothing about your pictures. Clicking it opens the
+      service's own page."""
+
+[[privacy]]
+title = "Disconnect and check."
+body = """
+ After the page has loaded, it can import,
+      preview and export with the network disconnected. The example is drawn in
+      the page too; it is never downloaded from somewhere else."""
+
+[[howto]]
+title = "Choose your pictures."
+body = """
+ Drop several images onto the picker, or
+      browse for them. The tiles show what the browser could open. The example
+      makes pictures on this page if you want to try the controls first."""
+
+[[howto]]
+title = "Put them in order."
+body = """
+ Drag a tile to move it, or use its arrow
+      buttons. Remove a picture that does not belong. The order runs across each
+      row of a grid, from left to right in a horizontal strip, and from top to
+      bottom in a vertical one."""
+
+[[howto]]
+title = "Start with a preset, then set the spacing."
+body = """
+ Choose square cells, a contact
+      sheet, a strip, portrait cells or a seamless grid. Adjust the output width,
+      grid columns, cell shape, gap and outer margin. Presets keep your filename
+      and each picture's existing framing."""
+
+[[howto]]
+title = "Adjust the picture inside each frame."
+body = """
+ Select a picture in the preview
+      or choose it from Frame. Drag to pan, or use Horizontal position, Vertical
+      position and Zoom. Zoom out below 100% to show more background, or zoom
+      in to enlarge and crop. At 100% zoom, &ldquo;Fit whole image&rdquo; keeps
+      every edge; &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop. Reset
+      this frame restores the selected picture, and Reset all frames restores
+      every picture's starting fit."""
+
+[[howto]]
+title = "Check the preview, then save one image."
+body = """
+ The preview shows the
+      arrangement and crop used by the download. Choose PNG, JPEG or WebP, set a
+      background or transparency where the format permits it, and create the
+      image. Export draws from the original files at the output size."""
+
+[[faq]]
+q = "Are my images uploaded anywhere?"
+a = """
+        No. Reading, arranging and exporting happen in your browser on your own
+        machine. This tool adds no network feature to the page, and the files,
+        thumbnails and names are never handed to the advertising or measurement
+        scripts. It also works with the network disconnected after loading."""
+
+[[faq]]
+q = "Can I make a collage, a contact sheet or a strip?"
+a = """
+        Yes. A grid puts the pictures into equal cells with the column count
+        you choose. A horizontal strip places them side by side; a vertical
+        strip places them one above another. Drag the tiles or use their arrow
+        buttons to change the order. This makes one flat image rather than an
+        editable design document."""
+
+[[faq]]
+q = "Which presets can I start from?"
+a = """
+        Choose a square collage, a three-column contact sheet, a side-by-side
+        strip, a vertical strip, a portrait collage or a seamless collage with
+        no gaps. They set layout and export controls, which you can still
+        adjust. A preset keeps your filename and each picture's pan and zoom.
+        The complete image's shape depends on the number of pictures; square
+        cells do not promise a square output."""
+
+[[faq]]
+q = "How do I keep the whole of every picture?"
+a = """
+        Choose &ldquo;Fit whole image&rdquo; and use &ldquo;Reset all frames&rdquo;
+        to return every picture to 100% zoom and its starting position. Each
+        source then fits inside its cell, with background wherever the shapes
+        differ. A strip's &ldquo;Keep original shapes (strips)&rdquo; option gives
+        each picture a cell with its own proportions, so there is no crop or
+        extra space at 100% zoom. Choosing a preset keeps existing framing;
+        resetting the frames is what undoes a previous zoom."""
+
+[[faq]]
+q = "Can I move or zoom one picture without changing its neighbours?"
+a = """
+        Yes. Select its frame in the preview or the Frame menu, then drag to
+        pan, use the position controls, or adjust Zoom from 25% to 400%. The
+        selected fit is the 100% baseline. Zooming out below 100% shrinks the
+        picture and shows more background; zooming in enlarges it and can crop
+        its edges. Panning is available on an axis when the picture and frame
+        have different sizes. A larger picture can move to choose its crop; a
+        smaller picture can move within the unused space while staying wholly
+        inside the frame.
+        &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop, and you
+        can move it to keep the subject in view. The framing stays with the
+        picture when you reorder it. Reset this frame restores its starting
+        position and 100% zoom; Reset all frames restores every picture.
+        Zoom cannot add detail that the original does not contain."""
+
+[[faq]]
+q = "Can the gaps and background be transparent?"
+a = """
+        Yes, when you choose PNG or WebP and turn on transparency. That also
+        preserves see-through parts of the input pictures. JPEG has no alpha
+        channel, so it always uses a solid background. The background colour
+        also fills the space around a picture shown whole in a cell."""
+
+[[faq]]
+q = "Which formats can I use?"
+a = """
+        The input must be an image your browser can decode, including JPEG,
+        PNG, WebP, GIF, BMP, AVIF and supported SVG files. HEIC support depends
+        on your browser; <a href=\"../heic-to-jpg/\">HEIC to JPG</a> can convert
+        one first. Output is PNG, JPEG or WebP. If the browser cannot write WebP,
+        that choice is disabled rather than saving a PNG with a WebP extension."""
+
+[[faq]]
+q = "Does it keep an animation?"
+a = """
+        No. This is a still-image layout. An animated GIF, WebP or AVIF is
+        reduced to the first frame the browser decodes. To arrange separate
+        frames from a GIF, extract them first with
+        <a href=\"../split-gif/\">GIF Splitter</a>."""
+
+[[faq]]
+q = "Does the preview use the full-resolution pictures?"
+a = """
+        The live preview uses small copies so changing a gap or column count
+        stays quick. Export uses the original files. Both use the same layout
+        geometry, but fine detail should be checked in the finished file,
+        especially when a small source is enlarged."""
+
+[[faq]]
+q = "What are the size limits?"
+a = """
+        The finished canvas is limited to 8192 pixels on either side and
+        32 megapixels in total. A tall strip can reach the height limit even
+        when its width is small. Reduce the output width, use more grid columns,
+        or split the pictures into several layouts if the page reports a limit.
+        Your browser can still run out of memory below those limits with very
+        large source files; export opens one full-size picture at a time."""
+
+[[faq]]
+q = "Will the picture quality, colours and metadata stay the same?"
+a = """
+        This makes a new image by drawing your pictures onto a browser canvas.
+        Resizing or cropping changes the pixels, and JPEG or WebP compression
+        can lose detail. PNG keeps the pixels of the finished canvas, which is
+        not the same as preserving the original files. The canvas makes an
+        8-bit SDR image, so wide-gamut colour, HDR and partly transparent colours
+        may change. Source EXIF, GPS, date and camera tags are not copied.
+        Keep the originals if you need an archival copy."""
+
+[[faq]]
+q = "Is it free, and does it work offline?"
+a = """
+        It is free, with no account, trial or watermark. Load the page once,
+        then disconnect and the arrangement and export still work. Advertising
+        pays for the site; it is not given anything about your pictures."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Arrange pictures into a grid, contact sheet or strip with ready-to-use presets, per-image pan and zoom, reordering, size and spacing controls. Preview and save one PNG, JPEG or WebP entirely in the browser."
+features = [
+  "Grid, horizontal and vertical image layouts",
+  "Drag to reorder, with keyboard-accessible arrow buttons",
+  "Output width, column count, cell shape, gap and outer padding",
+  "Ready-to-use collage, contact sheet and strip presets",
+  "Fit whole images at 100% zoom or crop to fill each cell",
+  "Per-image pan and 25% to 400% zoom, with pointer and keyboard controls",
+  "Move smaller pictures within unused space or choose a larger picture's crop",
+  "Reset one frame or all frames; crops stay with reordered images",
+  "Original image proportions in horizontal and vertical strips",
+  "Live preview and export use the same layout geometry",
+  "PNG, JPEG and WebP output with a checked encoder",
+  "Solid background or transparency in PNG and WebP",
+  "Export from the original images, one decoded picture at a time",
+  "Runs offline with no image upload, account or watermark",
+]
+
+[picker]
+accept = "image/*,.avif"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, AVIF and other images your browser can open"
+example = true

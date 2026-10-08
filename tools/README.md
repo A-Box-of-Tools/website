@@ -17,6 +17,7 @@ browser and uploads nothing; how the site around them is built is in the
 |---|---|---|
 | [Image Compressor](compress-image/) | `/compress-image/` | Name the size. It works out the rest. |
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |
+| [Image Layout](image-layout/) | `/image-layout/` | Put your pictures together. Keep them on your machine. |
 | [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
 | [WebP to JPG](webp-to-jpg/) | `/webp-to-jpg/` | The pictures the web saves, in the format everything still takes. |
 | [PNG to WebP](png-to-webp/) | `/png-to-webp/` | The same picture, often a third off, with the see-through parts intact. |
