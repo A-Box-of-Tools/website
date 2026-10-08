@@ -25,6 +25,8 @@ const el = {
   clearAll: $('clear-all'),
   reorderHint: $('reorder-hint'),
   list: $('frame-list'),
+  framesPanel: $('frames-panel'),
+  framesSummary: $('frames-summary'),
 
   mode: $('mode'),
   modeNote: $('mode-note'),
@@ -41,6 +43,7 @@ const el = {
   gain: $('gain'),
   gainValue: $('gain-value'),
   gainNote: $('gain-note'),
+  normalize: $('normalize'),
   format: $('format'),
   qualityRow: $('quality-row'),
   quality: $('quality'),
@@ -52,6 +55,7 @@ const el = {
   planDecodes: $('plan-decodes'),
   planRead: $('plan-read'),
   planWarning: $('plan-warning'),
+  planNote: $('plan-note'),
 
   run: $('run'),
   cancel: $('cancel'),
@@ -60,7 +64,19 @@ const el = {
   progressLabel: $('progress-label'),
   error: $('error'),
   result: $('result'),
+  resultStale: $('result-stale'),
+  resultFrame: $('result-frame'),
+  viewSource: $('view-source'),
+  viewSize: $('view-size'),
+  viewerStatus: $('viewer-status'),
+  alignmentList: $('alignment-list'),
   resultImage: $('result-image'),
+  referenceImage: $('reference-image'),
+  comparisonStage: $('comparison-stage'),
+  divider: $('comparison-divider'),
+  comparisonHandle: $('comparison-handle'),
+  referenceLabel: $('reference-label'),
+  resultLabel: $('result-label'),
   resultInfo: $('result-info'),
   resultMoves: $('result-moves'),
   download: $('download'),
@@ -70,6 +86,7 @@ const el = {
 };
 
 const { show: showError } = messageBox(el.error);
+const comparisonOption = el.viewSource.querySelector('option[value="compare"]');
 
 /** @type {{file: File, info: object|null, thumb: string|null, ok: boolean}[]} */
 let frames = [];
@@ -93,6 +110,16 @@ let busy = false;
 let inspecting = 0;
 let resultUrl = null;
 let startedAt = 0;
+let activeRequest = null;
+let activeSlots = [];
+let completed = null;
+let referenceUrl = null;
+let comparing = false;
+let comparisonId = 0;
+let collapsedOnPhone = false;
+let localQueue = Promise.resolve();
+let currentPlan = null;
+let imagePan = null;
 
 /* ------------------------------------------------------------------ worker */
 
@@ -115,9 +142,15 @@ function ensureWorker() {
     worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
     worker.addEventListener('message', (event) => handle(event.data));
     worker.addEventListener('error', () => {
+      worker?.terminate();
       worker = null;
-      showError(phrase('error.unknown'));
+      local = import('./pipeline.js');
+      for (const id of [...pending.keys()]) batchFailed(id);
+      el.viewSource.value = 'result';
+      finishComparison();
       finishRun();
+      renderViewer();
+      showError(phrase('error.unknown'));
     });
   } catch {
     local = import('./pipeline.js');
@@ -126,26 +159,37 @@ function ensureWorker() {
 
 /** Send one command, whichever of the two ways is available. */
 async function send(message) {
-  ensureWorker();
-  if (worker) {
-    worker.postMessage(message);
-    return;
-  }
-  const pipeline = await local;
-  const hooks = {
-    cancelled: () => cancelled,
-    onProgress: (update) => handle({ type: 'progress', update }),
-  };
   try {
-    if (message.type === 'inspect') {
-      handle({ type: 'inspected', id: message.id, found: await pipeline.inspect(message.files, hooks) });
-    } else if (message.type === 'run') {
-      handle({ type: 'done', result: await pipeline.runStack(message.request, hooks) });
+    ensureWorker();
+    if (worker) {
+      worker.postMessage(message);
+      return;
     }
+    // The fallback must serialize inspection batches just as the worker does.
+    // Otherwise two imports can draw over each other's temporary surfaces.
+    localQueue = localQueue.then(async () => {
+      const pipeline = await local;
+      const hooks = {
+        cancelled: () => cancelled,
+        onProgress: (update) => handle({ type: 'progress', update }),
+      };
+      try {
+        if (message.type === 'inspect') {
+          handle({ type: 'inspected', id: message.id, found: await pipeline.inspect(message.files, hooks) });
+        } else if (message.type === 'run') {
+          handle({ type: 'done', result: await pipeline.runStack(message.request, hooks) });
+        } else if (message.type === 'compare') {
+          handle({ type: 'compared', id: message.id, result: await pipeline.compareReference(message.request, hooks) });
+        }
+      } catch (error) {
+        handle(error instanceof pipeline.Cancelled
+          ? { type: 'cancelled', id: message.id, kind: message.type }
+          : { type: 'error', id: message.id, kind: message.type, message: String(error?.message ?? 'error.unknown') });
+      }
+    }).catch((error) => handle({ type: 'error', id: message.id, kind: message.type, message: String(error?.message ?? 'error.unknown') }));
+    await localQueue;
   } catch (error) {
-    handle(error instanceof pipeline.Cancelled
-      ? { type: 'cancelled' }
-      : { type: 'error', message: String(error?.message ?? 'error.unknown') });
+    handle({ type: 'error', id: message.id, kind: message.type, message: String(error?.message ?? 'error.unknown') });
   }
 }
 
@@ -195,10 +239,11 @@ function addFiles(chosen) {
   // list would not corrupt it - but the worker is busy and the new files could
   // not be opened until it finished, which would leave rows sitting blank for
   // however long the stack takes. Saying so beats showing that.
-  if (busy) {
+  if (busy || comparing) {
     showError(phrase('error.busy'));
     return;
   }
+  discardResult();
   const id = (batch += 1);
   inspecting += 1;
   picker.busy(readingLabel(chosen.length));
@@ -217,6 +262,7 @@ function addFiles(chosen) {
 /** One batch is finished with, however it finished. */
 function batchDone(id) {
   const added = pending.get(id);
+  if (!added) return null;
   pending.delete(id);
   inspecting -= 1;
   if (inspecting <= 0) {
@@ -229,14 +275,17 @@ function batchDone(id) {
 /**
  * A batch that did not come back at all.
  *
- * Its rows are placeholders with nothing behind them, so they are taken out
- * rather than left saying they are being read. Without this the drop zone also
- * never stops looking busy, which is the more visible half of the same bug.
+ * Its rows have nothing behind them, so they become removable failures
+ * rather than staying stuck saying they are being read. Without this the drop
+ * zone also never stops looking busy, which is the more visible half of the bug.
  */
 function batchFailed(id) {
   const added = batchDone(id);
   if (!added) return;
-  frames = frames.filter((slot) => !added.includes(slot));
+  for (const slot of added) {
+    slot.ok = false;
+    slot.info = { name: slot.file.name };
+  }
   render();
 }
 
@@ -246,7 +295,7 @@ function inspected(id, found) {
 
   found.forEach((result, index) => {
     const slot = added[index];
-    if (!slot) return;
+    if (!slot || !frames.includes(slot)) return;
     slot.ok = result.ok && Boolean(result.frame.width);
     slot.info = result.frame;
     slot.thumb = result.thumb ? URL.createObjectURL(result.thumb) : null;
@@ -254,23 +303,31 @@ function inspected(id, found) {
 
   const failed = added.filter((slot) => !slot.ok);
   if (failed.length) {
-    showError(phrase('error.unreadable', { name: failed[0].info?.name ?? failed[0].file.name }));
+    showError(phrase('import.skipped', { count: failed.length }));
   }
-  frames = frames.filter((slot) => slot.ok || slot.info === null);
+  if (!reference || !ready().includes(reference)) reference = ready()[0] ?? null;
+  if (!collapsedOnPhone && frames.length > 4 && matchMedia('(max-width: 544px)').matches) {
+    el.framesPanel.open = false;
+    collapsedOnPhone = true;
+  }
   render();
 }
 
 function removeAt(index) {
+  if (busy || comparing) return;
+  discardResult();
   const [gone] = frames.splice(index, 1);
   if (gone?.thumb) URL.revokeObjectURL(gone.thumb);
   // Dropping the pointer as well as the row keeps the removed frame's File out
   // of memory; `referenceSlot` would have fallen back without this.
-  if (gone === reference) reference = null;
+  if (gone === reference) reference = ready()[0] ?? null;
   render();
 }
 
 /** Mark a frame as the reference. The list keeps the order it had. */
 function makeReference(index) {
+  if (busy || comparing || !ready().includes(frames[index])) return;
+  discardResult();
   reference = frames[index] ?? null;
   render();
 }
@@ -283,7 +340,7 @@ function makeReference(index) {
  * row, and the element the key was pressed on no longer exists.
  */
 function moveFrame(from, to) {
-  if (to < 0 || to >= frames.length || from === to) return;
+  if (busy || comparing || to < 0 || to >= frames.length || from === to) return;
   const [moved] = frames.splice(from, 1);
   frames.splice(to, 0, moved);
   render();
@@ -291,9 +348,13 @@ function moveFrame(from, to) {
 }
 
 function clearAll() {
+  if (busy || comparing) return;
+  discardResult();
   for (const slot of frames) if (slot.thumb) URL.revokeObjectURL(slot.thumb);
   frames = [];
   reference = null;
+  collapsedOnPhone = false;
+  el.framesPanel.open = true;
   render();
 }
 
@@ -311,7 +372,13 @@ function render() {
   renderList();
   renderSettings();
   renderPlan();
-  el.run.disabled = busy || ready().length < 2;
+  const locked = busy || comparing;
+  for (const control of [el.fileInput, el.sortName, el.clearAll, el.mode, el.align,
+    el.scale, el.kappa, el.radius, el.gain, el.format, el.quality,
+    ...el.list.querySelectorAll('button')]) control.disabled = locked;
+  el.viewSource.disabled = comparing;
+  el.run.disabled = unsupported || locked || inspecting > 0 || ready().length < 2 || Boolean(currentPlan?.overBudget);
+  el.normalize.disabled = locked || inspecting > 0 || ready().length < 2;
 }
 
 /** The frames that are opened and usable. */
@@ -326,7 +393,7 @@ const ready = () => frames.filter((slot) => slot.ok && slot.info?.width);
  * a badge that has gone missing.
  */
 const referenceSlot = () => (
-  reference && frames.includes(reference) ? reference : frames[0] ?? null
+  reference && ready().includes(reference) ? reference : ready()[0] ?? null
 );
 
 function renderList() {
@@ -337,12 +404,17 @@ function renderList() {
     : phrase(frames.length === 1 ? 'count.one' : 'count.many', { count: frames.length });
 
   const chosen = referenceSlot();
+  el.framesPanel.hidden = frames.length === 0;
+  el.framesSummary.textContent = chosen?.ok && chosen.info?.width
+    ? phrase('frames.summary', { frames: el.countLabel.textContent, name: chosen.file.name })
+    : el.countLabel.textContent;
   el.list.replaceChildren(...frames.map((slot, index) => row(slot, index, slot === chosen)));
 }
 
 function row(slot, index, isReference) {
   const item = document.createElement('li');
   item.className = 'frame-row';
+  item.classList.toggle('is-invalid', !slot.ok);
   if (isReference) item.classList.add('is-reference');
 
   const label = slot.info?.name ?? slot.file.name;
@@ -386,7 +458,7 @@ function row(slot, index, isReference) {
     badge.className = 'frame-badge';
     badge.textContent = phrase('frame.reference');
     actions.append(badge);
-  } else {
+  } else if (slot.ok && slot.info?.width) {
     const promote = document.createElement('button');
     promote.type = 'button';
     promote.className = 'ghost';
@@ -513,6 +585,7 @@ function applyDrop() {
 function describe(slot) {
   const info = slot.info;
   if (!info) return phrase('progress.survey', { name: slot.file.name });
+  if (!slot.ok) return phrase('frame.unreadable');
   if (info.kind === 'raw-unreadable') return phrase('frame.raw-unreadable');
   if (info.kind === 'raw') {
     return info.camera
@@ -537,19 +610,22 @@ function renderSettings() {
   el.radiusField.hidden = mode !== 'focus';
   el.kappaValue.textContent = `${Number(el.kappa.value).toFixed(1)}σ`;
   el.radiusValue.textContent = `${el.radius.value} px`;
-  el.gainValue.textContent = `${Number(el.gain.value).toFixed(2)}×`;
+  el.gainValue.textContent = `${Number(Number(el.gain.value).toPrecision(4))}×`;
+  el.normalize.hidden = mode !== 'sum';
   el.qualityValue.textContent = String(Math.round(Number(el.quality.value) * 100));
   el.qualityRow.hidden = el.format.value !== 'jpeg';
 
   el.gainNote.textContent = mode === 'sum' && ready().length > 1
-    ? phrase('gain.sum-note', { count, suggested: (1 / count).toFixed(2) })
+    ? phrase('gain.sum-note', { count, suggested: Number((1 / count).toPrecision(4)) })
     : phrase('gain.note');
 }
 
 function renderPlan() {
+  currentPlan = null;
   const usable = ready();
   if (usable.length < 2) {
     el.plan.hidden = true;
+    el.planNote.hidden = true;
     el.planWarning.hidden = true;
     return;
   }
@@ -557,6 +633,7 @@ function renderPlan() {
   const mode = el.mode.value;
   const scale = SCALES[el.scale.value] ?? 1;
   const sizes = usable.map((slot) => slot.info);
+  const surveyDecodePixels = Math.max(...sizes.map((info) => info.surveyDecodePixels ?? info.width * info.height));
   const output = outputSize(sizes, scale);
   if (!output) {
     el.plan.hidden = true;
@@ -565,9 +642,12 @@ function renderPlan() {
 
   const plan = planRun({
     width: output.width, height: output.height, frames: usable.length, mode,
+    radius: Number(el.radius.value), align: el.align.value, surveyDecodePixels,
   });
 
+  currentPlan = plan;
   el.plan.hidden = false;
+  el.planNote.hidden = false;
   el.planOutput.textContent = phrase('plan.output', {
     width: output.width, height: output.height,
   });
@@ -589,12 +669,15 @@ function renderPlan() {
   const total = usable.reduce((sum, slot) => sum + (slot.info.sourceBytes ?? 0), 0);
   el.planRead.textContent = phrase('plan.read', { read: bytes(read), total: bytes(total) });
 
-  if (plan.banded) {
+  if (plan.overBudget) {
+    el.planWarning.textContent = phrase('plan.too-large');
+    el.planWarning.hidden = false;
+  } else if (plan.banded) {
     // Asked at the frames' own size, because a scale is what is being chosen.
     // Taking the widest frame and the tallest separately would ask about a
     // picture that does not exist whenever the set mixes shapes.
     const natural = outputSize(sizes, 1);
-    const better = scaleThatFits({ ...natural, frames: usable.length, mode });
+    const better = scaleThatFits({ ...natural, frames: usable.length, mode, radius: Number(el.radius.value), align: el.align.value, surveyDecodePixels });
     const suggestion = better && better !== el.scale.value
       ? el.scale.querySelector(`option[value="${better}"]`)?.textContent?.split('—')[0]?.trim()
       : null;
@@ -610,6 +693,15 @@ function renderPlan() {
 /* --------------------------------------------------------------------- run */
 
 function start() {
+  if (busy || comparing || inspecting || unsupported) return;
+  if (currentPlan?.overBudget) {
+    showError(phrase('plan.too-large'));
+    return;
+  }
+  if (!el.gain.checkValidity()) {
+    el.gain.reportValidity();
+    return;
+  }
   const usable = ready();
   if (usable.length < 2) {
     showError(phrase('error.one.frame'));
@@ -628,6 +720,8 @@ function start() {
   const first = usable.includes(chosen) ? chosen : usable[0];
   const ordered = [first, ...usable.filter((slot) => slot !== first)];
 
+  discardResult(false);
+  activeSlots = ordered;
   busy = true;
   cancelled = false;
   startedAt = performance.now();
@@ -639,20 +733,18 @@ function start() {
   el.progressLabel.textContent = '';
   render();
 
-  send({
-    type: 'run',
-    request: {
-      files: ordered.map((slot) => slot.file),
-      mode: el.mode.value,
-      align: el.align.value,
-      scale: SCALES[el.scale.value] ?? 1,
-      kappa: Number(el.kappa.value),
-      gain: Number(el.gain.value),
-      radius: Number(el.radius.value),
-      format: el.format.value,
-      quality: Number(el.quality.value),
-    },
-  });
+  activeRequest = {
+    files: ordered.map((slot) => slot.file),
+    mode: el.mode.value,
+    align: el.align.value,
+    scale: SCALES[el.scale.value] ?? 1,
+    kappa: Number(el.kappa.value),
+    gain: Number(el.gain.value),
+    radius: Number(el.radius.value),
+    format: el.format.value,
+    quality: Number(el.quality.value),
+  };
+  send({ type: 'run', request: activeRequest });
 }
 
 function handle(message) {
@@ -667,13 +759,21 @@ function handle(message) {
     case 'done':
       finished(message.result);
       break;
+    case 'compared':
+      compared(message.id, message.result);
+      break;
     case 'cancelled':
-      if (message.id) batchFailed(message.id);
+      if (message.kind === 'compare') finishComparison();
+      else if (pending.has(message.id)) batchFailed(message.id);
       else finishRun();
       break;
     case 'error':
       showError(resolve(message.message));
-      if (message.id && pending.has(message.id)) batchFailed(message.id);
+      if (message.kind === 'compare') {
+        el.viewSource.value = 'result';
+        finishComparison();
+        renderViewer();
+      } else if (pending.has(message.id)) batchFailed(message.id);
       else finishRun();
       break;
     default:
@@ -715,11 +815,20 @@ function progress(update) {
 }
 
 function finished(result) {
+  completed = { ...result, request: activeRequest, slots: activeSlots };
   finishRun();
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = URL.createObjectURL(result.blob);
 
-  el.resultImage.src = resultUrl;
+  el.viewSize.value = 'fit';
+  renderViewOptions();
+  el.viewSource.value = 'compare';
+  el.divider.value = '50';
+  el.comparisonStage.style.setProperty('--preview-ratio', String(result.width / result.height));
+  el.comparisonStage.style.setProperty('--preview-width', `${result.width}px`);
+  el.resultImage.width = result.width;
+  el.resultImage.height = result.height;
+  renderViewer();
   el.download.href = resultUrl;
   el.download.download = `stacked.${result.blob.type === 'image/jpeg' ? 'jpg' : 'png'}`;
   el.resultInfo.textContent = phrase('result.info', {
@@ -730,9 +839,12 @@ function finished(result) {
     seconds: ((performance.now() - startedAt) / 1000).toFixed(1),
   });
 
-  el.resultMoves.textContent = movesNote(result.moves)
+  el.resultMoves.textContent = movesNote(result.moves, completed.request.align)
     + (result.cropped ? ` ${phrase('result.cropped')}` : '');
+  renderAlignment(result, completed.request.align);
+  el.resultStale.hidden = true;
   el.result.hidden = false;
+  compare();
 }
 
 /**
@@ -742,8 +854,8 @@ function finished(result) {
  * measured looks exactly like a stack that came out soft for any other reason,
  * and the tool is the only one that knows which it was.
  */
-function movesNote(moves) {
-  if (el.align.value === 'none') return phrase('result.moves-none');
+function movesNote(moves, alignment) {
+  if (alignment === 'none') return phrase('result.moves-none');
   const measurable = moves.slice(1);
   // The pipeline decided, and an unmeasured frame is sitting at the identity,
   // so "left where they were" is a report and not a hope.
@@ -758,9 +870,196 @@ function movesNote(moves) {
 }
 
 function finishRun() {
+  activeRequest = null;
+  activeSlots = [];
   busy = false;
   el.cancel.hidden = true;
   el.progress.hidden = true;
+  render();
+}
+
+/** The exported picture belongs to its input snapshot, including the reference. */
+function discardResult(notice = true) {
+  finishImagePan();
+  const hadResult = Boolean(completed);
+  completed = null;
+  activeRequest = null;
+  activeSlots = [];
+  comparisonId += 1;
+  if (resultUrl) URL.revokeObjectURL(resultUrl);
+  if (referenceUrl) URL.revokeObjectURL(referenceUrl);
+  resultUrl = null;
+  referenceUrl = null;
+  el.result.hidden = true;
+  el.resultImage.removeAttribute('src');
+  el.referenceImage.removeAttribute('src');
+  el.download.removeAttribute('href');
+  el.alignmentList.replaceChildren();
+  if (!notice) el.resultStale.hidden = true;
+  else if (hadResult) el.resultStale.hidden = false;
+}
+
+function renderAlignment(result, alignment) {
+  el.alignmentList.replaceChildren(...result.frames.map((frame, index) => {
+    const move = result.moves[index];
+    const item = document.createElement('li');
+    const name = document.createElement('strong');
+    name.textContent = frame.name;
+    const detail = document.createElement('span');
+    const refinement = move.fallbackRefine || move.refine;
+    const status = index === 0 ? 'reference' : alignment === 'none' ? 'none'
+      : move.measured === false ? 'weak' : move.clamped ? 'clamped'
+        : refinement === 'partial' ? 'partial' : move.homography ? 'perspective'
+          : alignment === 'projective' ? 'perspective-fallback' : 'aligned';
+    detail.textContent = phrase(`alignment.${status}`);
+    if (index > 0 && alignment !== 'none' && move.measured !== false && !move.homography) {
+      detail.textContent += ` — ${phrase('alignment.offset', {
+        dx: move.dx.toFixed(2), dy: move.dy.toFixed(2),
+        angle: move.angle.toFixed(3), scale: move.scale.toFixed(4),
+      })}`;
+    }
+    item.append(name, detail);
+    if (status === 'weak') {
+      const slot = completed.slots[index];
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'ghost danger';
+      remove.textContent = phrase('alignment.remove');
+      remove.addEventListener('click', () => {
+        const at = frames.indexOf(slot);
+        if (at >= 0) removeAt(at);
+      });
+      item.append(remove);
+    }
+    return item;
+  }));
+}
+
+function renderViewOptions() {
+  const actual = el.viewSize.value === 'actual';
+  if (actual) {
+    if (el.viewSource.value === 'compare') el.viewSource.value = 'result';
+    // Removing the option keeps it out of native menus that ignore hidden
+    // options. Retaining the node preserves its translated label for Fit.
+    comparisonOption.remove();
+  } else if (comparisonOption.parentNode !== el.viewSource) {
+    const source = el.viewSource.value;
+    el.viewSource.prepend(comparisonOption);
+    el.viewSource.value = source;
+  }
+  return actual;
+}
+
+function renderViewer() {
+  finishImagePan();
+  if (!completed) return;
+  const actual = renderViewOptions();
+  const source = el.viewSource.value;
+  const isReference = source === 'reference' && referenceUrl;
+  const split = !actual && source === 'compare' && Boolean(referenceUrl);
+  const label = (value) => el.viewSource.querySelector(`option[value="${value}"]`).textContent;
+  el.resultImage.src = isReference ? referenceUrl : resultUrl;
+  el.resultImage.alt = label(isReference ? 'reference' : 'result');
+  if (referenceUrl) el.referenceImage.src = referenceUrl;
+  el.referenceImage.hidden = !split;
+  el.divider.hidden = !split;
+  el.comparisonHandle.hidden = !split;
+  el.comparisonStage.classList.toggle('is-comparing', split);
+  el.referenceLabel.textContent = label('reference');
+  el.resultLabel.textContent = label('result');
+  el.resultFrame.classList.toggle('actual-size', actual);
+  renderSplit();
+  el.viewerStatus.textContent = comparing ? phrase('viewer.loading')
+    : split ? phrase('viewer.compare')
+      : isReference ? phrase('viewer.reference', { name: completed.request.files[0].name })
+        : actual ? phrase('viewer.pan') : phrase('viewer.result');
+  if (actual && isReference && !comparing) el.viewerStatus.textContent += ` ${phrase('viewer.pan')}`;
+}
+
+function renderSplit() {
+  const percent = Number(el.divider.value);
+  el.comparisonStage.style.setProperty('--split', `${percent}%`);
+  el.divider.setAttribute('aria-valuetext', phrase('viewer.split', {
+    percent, remaining: 100 - percent,
+  }));
+  const split = el.comparisonStage.classList.contains('is-comparing');
+  el.referenceLabel.hidden = !split || percent === 0;
+  el.resultLabel.hidden = !split || percent === 100;
+}
+
+// The divider follows the displayed picture rather than the native range's
+// narrow hit strip, so mouse and touch reveal the same image coordinates.
+function moveDivider(event) {
+  const image = el.comparisonStage.getBoundingClientRect();
+  if (!image.width) return;
+  el.divider.value = String(Math.round(Math.max(0, Math.min(100,
+    (event.clientX - image.left) / image.width * 100,
+  ))));
+  renderSplit();
+}
+
+// Capture keeps the mouse attached to the picture even outside the preview.
+// Native touch and pen handling preserves browser gestures; scrollbar and
+// wheel input remain available for anyone who prefers them.
+function startImagePan(event) {
+  if (!completed || el.viewSize.value !== 'actual' || event.pointerType !== 'mouse'
+    || !event.isPrimary || event.button !== 0) return;
+  const bounds = el.resultFrame.getBoundingClientRect();
+  const left = bounds.left + el.resultFrame.clientLeft;
+  const top = bounds.top + el.resultFrame.clientTop;
+  if (event.clientX < left || event.clientX >= left + el.resultFrame.clientWidth
+    || event.clientY < top || event.clientY >= top + el.resultFrame.clientHeight) return;
+  event.preventDefault();
+  el.resultFrame.focus({ preventScroll: true });
+  imagePan = {
+    id: event.pointerId, x: event.clientX, y: event.clientY,
+    left: el.resultFrame.scrollLeft, top: el.resultFrame.scrollTop,
+  };
+  el.resultFrame.setPointerCapture(event.pointerId);
+  el.resultFrame.classList.add('is-panning');
+}
+
+function moveImagePan(event) {
+  if (imagePan?.id !== event.pointerId) return;
+  if (!(event.buttons & 1)) {
+    finishImagePan();
+    return;
+  }
+  el.resultFrame.scrollLeft = imagePan.left + imagePan.x - event.clientX;
+  el.resultFrame.scrollTop = imagePan.top + imagePan.y - event.clientY;
+}
+
+function finishImagePan() {
+  if (!imagePan) return;
+  const { id } = imagePan;
+  imagePan = null;
+  el.resultFrame.classList.remove('is-panning');
+  if (el.resultFrame.hasPointerCapture(id)) el.resultFrame.releasePointerCapture(id);
+}
+
+function compare() {
+  if (!completed || comparing) return;
+  if (!['compare', 'reference'].includes(el.viewSource.value) || referenceUrl) {
+    renderViewer();
+    return;
+  }
+  comparing = true;
+  cancelled = false;
+  const id = ++comparisonId;
+  render();
+  renderViewer();
+  send({ type: 'compare', id, request: { file: completed.request.files[0], ...completed.comparison } });
+}
+
+function compared(id, result) {
+  if (id !== comparisonId || !completed) return;
+  referenceUrl = URL.createObjectURL(result.blob);
+  finishComparison();
+  renderViewer();
+}
+
+function finishComparison() {
+  comparing = false;
   render();
 }
 
@@ -769,6 +1068,55 @@ function finishRun() {
 el.run.addEventListener('click', start);
 el.cancel.addEventListener('click', stopWork);
 el.clearAll.addEventListener('click', clearAll);
+el.viewSource.addEventListener('change', compare);
+el.viewSize.addEventListener('change', renderViewer);
+el.divider.addEventListener('input', renderSplit);
+el.resultFrame.addEventListener('pointerdown', startImagePan);
+el.resultFrame.addEventListener('pointermove', moveImagePan);
+for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+  el.resultFrame.addEventListener(type, (event) => {
+    if (imagePan?.id === event.pointerId) finishImagePan();
+  });
+}
+window.addEventListener('blur', finishImagePan);
+el.resultFrame.addEventListener('dragstart', (event) => {
+  if (el.viewSize.value === 'actual') event.preventDefault();
+});
+el.resultFrame.addEventListener('keydown', (event) => {
+  if (event.target !== el.resultFrame || !completed || el.viewSize.value !== 'actual'
+    || event.altKey || event.ctrlKey || event.metaKey) return;
+  const direction = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+  if (!direction) return;
+  event.preventDefault();
+  el.resultFrame.scrollLeft += direction[0] * 40;
+  el.resultFrame.scrollTop += direction[1] * 40;
+});
+// Native touch dragging would measure this narrow hit strip instead of the
+// picture. Keep its keyboard behaviour, and let pointer capture measure touch.
+for (const type of ['touchstart', 'touchmove']) {
+  el.divider.addEventListener(type, (event) => event.preventDefault(), { passive: false });
+}
+el.divider.addEventListener('pointerdown', (event) => {
+  if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+  event.preventDefault();
+  el.divider.focus({ preventScroll: true });
+  el.divider.setPointerCapture(event.pointerId);
+  moveDivider(event);
+});
+el.divider.addEventListener('pointermove', (event) => {
+  if (el.divider.hasPointerCapture(event.pointerId)) moveDivider(event);
+});
+for (const type of ['pointerup', 'pointercancel']) {
+  el.divider.addEventListener(type, (event) => {
+    if (el.divider.hasPointerCapture(event.pointerId)) el.divider.releasePointerCapture(event.pointerId);
+  });
+}
+el.normalize.addEventListener('click', () => {
+  if (busy || comparing || inspecting > 0 || ready().length < 2) return;
+  el.gain.value = String(1 / ready().length);
+  discardResult();
+  renderSettings();
+});
 
 // Dropping in the gaps between rows should still land somewhere sensible
 // rather than being swallowed by the window, which navigates to a dropped file.
@@ -782,16 +1130,26 @@ el.list.addEventListener('drop', (event) => {
 });
 
 el.sortName.addEventListener('click', () => {
+  if (busy || comparing) return;
   frames.sort((a, b) => (a.info?.name ?? a.file.name)
     .localeCompare(b.info?.name ?? b.file.name, undefined, { numeric: true }));
   render();
 });
 
 for (const control of [el.mode, el.align, el.scale, el.format]) {
-  control.addEventListener('change', render);
+  control.addEventListener('change', () => {
+    if (busy || comparing) return;
+    discardResult();
+    render();
+  });
 }
 for (const control of [el.kappa, el.radius, el.gain, el.quality]) {
-  control.addEventListener('input', renderSettings);
+  control.addEventListener('input', () => {
+    if (busy || comparing) return;
+    discardResult();
+    if (control === el.radius) render();
+    else renderSettings();
+  });
 }
 
 el.privacyToggle.addEventListener('click', () => {

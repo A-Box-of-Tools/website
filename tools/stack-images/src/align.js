@@ -3,9 +3,9 @@
  *
  * Stacking a hand-held burst without this produces a blur, so alignment is not
  * a refinement here, it is most of what makes the tool work on anything but a
- * tripod. There are three settings and this file implements two of them; the
- * third is doing nothing, which is the right answer for an intervalometer
- * sequence and is offered because it is.
+ * tripod. This file measures a shift or a rotation and scale. Projective mode
+ * starts with that same coarse estimate, then pipeline.js fits the field of
+ * local residuals; doing nothing remains available for stationary content.
  *
  * PHASE CORRELATION, AND WHY IT IS THE FAST ANSWER
  *
@@ -43,8 +43,8 @@
 
 import { fft2 } from './fft.js';
 
-/** The three settings, in the order the page offers them. */
-export const ALIGN_MODES = ['none', 'translate', 'similarity'];
+/** The alignment settings accepted by the engine. */
+export const ALIGN_MODES = ['none', 'translate', 'similarity', 'projective'];
 
 /**
  * Rotation and scale beyond these are not a burst, they are a mistake - a frame
@@ -1371,7 +1371,7 @@ export function estimate(reference, frame, size, mode) {
   let clamped = false;
   let moved = frame;
 
-  if (mode === 'similarity') {
+  if (mode === 'similarity' || mode === 'projective') {
     const a = logPolar(logSpectrum(reference, size), size);
     const b = logPolar(logSpectrum(frame, size), size);
     // The log-polar maps are windowed too. Their left edge is the middle of the

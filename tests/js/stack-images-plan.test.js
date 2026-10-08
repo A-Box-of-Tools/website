@@ -20,7 +20,7 @@ import assert from 'node:assert/strict';
 import {
   DEFAULT_BUDGET, MIN_BAND_ROWS, MODES, MODE_IDS, REFINE_GRID, REFINE_INSET, SCALES,
   bands, bytesPerPixel, commonArea, isMode, outputSize, placement, planRun,
-  refineWindow, scaleThatFits, workingSize,
+  planComparison, refineWindow, scaleThatFits, workingSize,
 } from '../../tools/stack-images/src/plan.js';
 
 const MEGAPIXEL_24 = { width: 6000, height: 4000 };
@@ -60,20 +60,18 @@ test('a streaming mode costs the same memory however many frames there are', () 
   assert.ok(median.banded, 'and the one that has to band for it');
 });
 
-test('the cheap methods fit 24 megapixels whole; the expensive ones do not', () => {
+test('extremes fit 24 megapixels whole while larger accumulators need bands', () => {
   // Worth pinning as a table rather than as a rule, because the line falls
   // between them and moves whenever an accumulator changes size. Anything that
   // crosses it should be a decision, not a surprise.
   const bandsAt24 = (mode) => planRun({ ...MEGAPIXEL_24, frames: 20, mode }).bands;
 
-  for (const mode of ['mean', 'max', 'min', 'sum']) {
+  for (const mode of ['max', 'min']) {
     assert.equal(bandsAt24(mode), 1, `${mode} should fit 24 megapixels in one piece`);
   }
-  // Focus carries two float buffers to measure sharpness in and sigma carries
-  // two float accumulators, and with the output canvas taken off the budget
-  // neither quite fits at full size. One step down is four times less, and both
-  // fit comfortably.
-  for (const mode of ['focus', 'sigma', 'median']) {
+  // Every larger accumulator needs space alongside the decoded frame and two
+  // canvases. One step down leaves enough room for each method without bands.
+  for (const mode of ['mean', 'sum', 'focus', 'sigma', 'median']) {
     assert.ok(bandsAt24(mode) > 1, `${mode} was expected to need banding at 24 megapixels`);
     assert.equal(
       planRun({ width: 3000, height: 2000, frames: 20, mode }).bands, 1,
@@ -122,35 +120,40 @@ test('a small median does not band, and costs one decode a frame', () => {
   assert.equal(plan.decodes, 12);
 });
 
-test('the peak quoted is the peak that gets allocated', () => {
-  // Three things get allocated and all three are in the figure: the
-  // accumulators, the RGBA the canvas hands back, and the full-size canvas the
-  // answer is drawn into. Leaving the readback out quotes 25% low; leaving the
-  // output canvas out quotes a fifth low at 24 megapixels, and it is the one
-  // that is easy to forget because it is not part of the band arithmetic.
-  const frames = 8;
+test('the memory estimate reserves canvases alongside the active pixel buffers', () => {
+  // During readback the output and scratch canvases coexist with the returned
+  // RGBA and all accumulators. That is three RGBA-sized surfaces, not one.
+  const pixels = 1000 * 1000;
   for (const mode of MODE_IDS) {
-    const plan = planRun({ width: 1000, height: 1000, frames, mode });
-    assert.equal(
-      plan.peak,
-      1000 * 1000 * 4 + plan.rows * 1000 * bytesPerPixel(mode, frames),
-      `${mode} quoted a peak that is not its allocation`,
-    );
+    const plan = planRun({ width: 1000, height: 1000, frames: 8, mode, align: 'none' });
+    const accumulator = pixels * MODES[mode].bytes * (MODES[mode].perFrame ? 8 : 1);
+    assert.equal(plan.stages.readback, accumulator + pixels * 4 * 3);
+    assert.ok(plan.peak >= plan.stages.readback);
+    assert.equal(plan.peak, Math.max(...Object.values(plan.stages)));
+    assert.equal(plan.overBudget, false);
   }
+  const average = planRun({ ...MEGAPIXEL_24, frames: 8, mode: 'mean' });
+  assert.ok(average.banded, 'the decoded frame cannot be omitted to make a full average fit');
+  assert.ok(average.peak <= DEFAULT_BUDGET);
+  assert.equal(bytesPerPixel('median', 8), MODES.median.bytes * 8 + 4);
+});
 
-  // And the output canvas is counted even when nothing else is: a one-row band
-  // of a huge picture still has that picture to write into.
-  const wide = planRun({ width: 6000, height: 4000, frames: 200, mode: 'median' });
-  assert.ok(wide.peak > 6000 * 4000 * 4, 'the canvas itself went missing');
-  assert.ok(
-    bytesPerPixel('mean', 8) > MODES.mean.bytes,
-    'the readback buffer is part of the working set',
-  );
-  assert.equal(
-    bytesPerPixel('median', 8),
-    MODES.median.bytes * 8 + 4,
-    'the median holds one copy per frame',
-  );
+test('cropping an accumulator does not crop its decoded frame allocation', () => {
+  const plan = planRun({
+    width: 1000, height: 1000, frames: 2, mode: 'max', align: 'none',
+    decodePixels: 6000 * 4000, surveyDecodePixels: 6000 * 4000,
+  });
+  assert.ok(plan.stages.decode >= 6000 * 4000 * 4);
+  assert.ok(plan.stages.survey >= 6000 * 4000 * 4);
+});
+
+test('a comparison budgets its reference decode and encoder separately', () => {
+  const output = { width: 6000, height: 4000 };
+  const crop = { width: 3000, height: 2000 };
+  const plan = planComparison({ output, crop });
+  assert.equal(plan.peak, (6000 * 4000 + 3000 * 2000) * 4);
+  assert.equal(plan.overBudget, false);
+  assert.equal(planComparison({ output, crop, budget: 1024 }).overBudget, true);
 });
 
 test('a budget too small for a whole band still produces a usable one', () => {
@@ -160,6 +163,7 @@ test('a budget too small for a whole band still produces a usable one', () => {
   const plan = planRun({ ...MEGAPIXEL_24, frames: 100, mode: 'median', budget: 1024 });
   assert.equal(plan.rows, MIN_BAND_ROWS);
   assert.ok(plan.bands > 1);
+  assert.equal(plan.overBudget, true, 'minimum useful rows cannot hide an impossible budget');
 });
 
 test('a picture shorter than a band is one band, not a band taller than it', () => {
@@ -175,7 +179,8 @@ test('a run with no size, or no mode, is refused', () => {
 });
 
 test('focus stacking asks for overlap, and the bands give it', () => {
-  assert.ok(MODES.focus.context > 0, 'sharpness is measured from the neighbours');
+  assert.equal(MODES.focus.context, 4, 'default radius three also needs the Laplacian neighbour');
+  assert.equal(planRun({ width: 6000, height: 4000, frames: 3, mode: 'focus', radius: 12 }).context, 13);
   assert.equal(MODES.mean.context, 0, 'an average has no neighbours');
 
   const list = bands(100, 40, 2);
@@ -243,7 +248,7 @@ test('the advice about resolution is advice that is true', () => {
     const size = workingSize(ask.width, ask.height, SCALES[name]);
     assert.equal(planRun({ ...size, frames: 30, mode: 'median' }).banded, false);
   }
-  assert.equal(scaleThatFits({ ...MEGAPIXEL_24, frames: 4, mode: 'mean' }), 'full');
+  assert.equal(scaleThatFits({ ...MEGAPIXEL_24, frames: 4, mode: 'mean' }), 'half');
   // Two hundred frames of 24 megapixels will not fit at any resolution offered,
   // and saying so is better than naming one that does not help.
   assert.equal(scaleThatFits({ ...MEGAPIXEL_24, frames: 400, mode: 'median' }), null);

@@ -32,7 +32,7 @@
  * pays for this site. See docs/what-can-be-built-here.md.
  */
 
-import { Cancelled, inspect, runStack } from './pipeline.js';
+import { Cancelled, compareReference, inspect, runStack } from './pipeline.js';
 
 let cancelled = false;
 let working = false;
@@ -56,7 +56,7 @@ self.onmessage = (event) => {
     cancelled = true;
     return;
   }
-  if (message?.type !== 'run' && message?.type !== 'inspect') return;
+  if (message?.type !== 'run' && message?.type !== 'inspect' && message?.type !== 'compare') return;
 
   waiting.push(message);
   pump();
@@ -84,12 +84,14 @@ async function pump() {
           self.postMessage({
             type: 'inspected', id: message.id, found: await inspect(message.files, hooks),
           });
+        } else if (message.type === 'compare') {
+          self.postMessage({ type: 'compared', id: message.id, result: await compareReference(message.request, hooks) });
         } else {
           self.postMessage({ type: 'done', result: await runStack(message.request, hooks) });
         }
       } catch (error) {
         if (error instanceof Cancelled) {
-          self.postMessage({ type: 'cancelled', id: message.id });
+          self.postMessage({ type: 'cancelled', id: message.id, kind: message.type });
         } else {
           // The message is a phrase key wherever the pipeline raised it
           // deliberately and a browser's own text where it did not; main.js
@@ -97,7 +99,7 @@ async function pump() {
           // written in here - see "The strings in the JavaScript" in the
           // repository README.
           self.postMessage({
-            type: 'error', id: message.id, message: String(error?.message ?? 'error.unknown'),
+            type: 'error', id: message.id, kind: message.type, message: String(error?.message ?? 'error.unknown'),
           });
         }
       }
