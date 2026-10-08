@@ -119,6 +119,7 @@ let comparisonId = 0;
 let collapsedOnPhone = false;
 let localQueue = Promise.resolve();
 let currentPlan = null;
+let imagePan = null;
 
 /* ------------------------------------------------------------------ worker */
 
@@ -879,6 +880,7 @@ function finishRun() {
 
 /** The exported picture belongs to its input snapshot, including the reference. */
 function discardResult(notice = true) {
+  finishImagePan();
   const hadResult = Boolean(completed);
   completed = null;
   activeRequest = null;
@@ -949,6 +951,7 @@ function renderViewOptions() {
 }
 
 function renderViewer() {
+  finishImagePan();
   if (!completed) return;
   const actual = renderViewOptions();
   const source = el.viewSource.value;
@@ -969,7 +972,8 @@ function renderViewer() {
   el.viewerStatus.textContent = comparing ? phrase('viewer.loading')
     : split ? phrase('viewer.compare')
       : isReference ? phrase('viewer.reference', { name: completed.request.files[0].name })
-        : phrase('viewer.result');
+        : actual ? phrase('viewer.pan') : phrase('viewer.result');
+  if (actual && isReference && !comparing) el.viewerStatus.textContent += ` ${phrase('viewer.pan')}`;
 }
 
 function renderSplit() {
@@ -992,6 +996,45 @@ function moveDivider(event) {
     (event.clientX - image.left) / image.width * 100,
   ))));
   renderSplit();
+}
+
+// Capture keeps the mouse attached to the picture even outside the preview.
+// Native touch and pen handling preserves browser gestures; scrollbar and
+// wheel input remain available for anyone who prefers them.
+function startImagePan(event) {
+  if (!completed || el.viewSize.value !== 'actual' || event.pointerType !== 'mouse'
+    || !event.isPrimary || event.button !== 0) return;
+  const bounds = el.resultFrame.getBoundingClientRect();
+  const left = bounds.left + el.resultFrame.clientLeft;
+  const top = bounds.top + el.resultFrame.clientTop;
+  if (event.clientX < left || event.clientX >= left + el.resultFrame.clientWidth
+    || event.clientY < top || event.clientY >= top + el.resultFrame.clientHeight) return;
+  event.preventDefault();
+  el.resultFrame.focus({ preventScroll: true });
+  imagePan = {
+    id: event.pointerId, x: event.clientX, y: event.clientY,
+    left: el.resultFrame.scrollLeft, top: el.resultFrame.scrollTop,
+  };
+  el.resultFrame.setPointerCapture(event.pointerId);
+  el.resultFrame.classList.add('is-panning');
+}
+
+function moveImagePan(event) {
+  if (imagePan?.id !== event.pointerId) return;
+  if (!(event.buttons & 1)) {
+    finishImagePan();
+    return;
+  }
+  el.resultFrame.scrollLeft = imagePan.left + imagePan.x - event.clientX;
+  el.resultFrame.scrollTop = imagePan.top + imagePan.y - event.clientY;
+}
+
+function finishImagePan() {
+  if (!imagePan) return;
+  const { id } = imagePan;
+  imagePan = null;
+  el.resultFrame.classList.remove('is-panning');
+  if (el.resultFrame.hasPointerCapture(id)) el.resultFrame.releasePointerCapture(id);
 }
 
 function compare() {
@@ -1028,6 +1071,26 @@ el.clearAll.addEventListener('click', clearAll);
 el.viewSource.addEventListener('change', compare);
 el.viewSize.addEventListener('change', renderViewer);
 el.divider.addEventListener('input', renderSplit);
+el.resultFrame.addEventListener('pointerdown', startImagePan);
+el.resultFrame.addEventListener('pointermove', moveImagePan);
+for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+  el.resultFrame.addEventListener(type, (event) => {
+    if (imagePan?.id === event.pointerId) finishImagePan();
+  });
+}
+window.addEventListener('blur', finishImagePan);
+el.resultFrame.addEventListener('dragstart', (event) => {
+  if (el.viewSize.value === 'actual') event.preventDefault();
+});
+el.resultFrame.addEventListener('keydown', (event) => {
+  if (event.target !== el.resultFrame || !completed || el.viewSize.value !== 'actual'
+    || event.altKey || event.ctrlKey || event.metaKey) return;
+  const direction = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+  if (!direction) return;
+  event.preventDefault();
+  el.resultFrame.scrollLeft += direction[0] * 40;
+  el.resultFrame.scrollTop += direction[1] * 40;
+});
 // Native touch dragging would measure this narrow hit strip instead of the
 // picture. Keep its keyboard behaviour, and let pointer capture measure touch.
 for (const type of ['touchstart', 'touchmove']) {

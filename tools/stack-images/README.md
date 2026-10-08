@@ -232,7 +232,13 @@ whole image. The divider is available only in Fit to window. Choosing actual
 pixels removes Compare from the source menu and shows the whole stacked
 result; the reference remains available as a separate image. Returning to Fit
 restores Compare without changing the chosen image. A new stack opens its
-comparison in Fit again.
+comparison in Fit again. At actual size, dragging with a mouse pans both axes
+and captures the pointer until release, so leaving the preview does not abandon
+the gesture. Touch and pen use native panning; touch also retains browser pinch
+gestures. The focused preview also pans with arrow keys; wheel and scrollbar
+input remain
+available. Switching views, discarding a result, losing capture or leaving the
+window ends a drag, so the next result cannot inherit a held pointer.
 
 ## The alignment, and the sign
 

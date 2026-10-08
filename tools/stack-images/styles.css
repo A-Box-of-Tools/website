@@ -357,7 +357,14 @@
   margin-bottom: 0.5rem;
 }
 .viewer-controls .field { display: grid; gap: 0.3rem; }
-.result-frame.actual-size { max-height: 60vh; overflow: auto; }
+.result-frame.actual-size {
+  max-height: 60vh;
+  overflow: auto;
+  cursor: grab;
+  user-select: none;
+  overscroll-behavior: contain;
+}
+.result-frame.actual-size.is-panning { cursor: grabbing; }
 .result-frame.actual-size .comparison-stage {
   width: var(--preview-width);
   max-width: none;

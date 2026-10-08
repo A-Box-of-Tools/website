@@ -186,7 +186,7 @@
         </div>
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
-      <div id="result-frame" class="result-frame" role="region" aria-label="Vista previa de la imagen" tabindex="0">
+      <div id="result-frame" class="result-frame" role="region" aria-label="Vista previa de la imagen" tabindex="0" aria-describedby="viewer-status">
         <div id="comparison-stage" class="comparison-stage">
           <img id="result-image" alt="El resultado apilado">
           <img id="reference-image" class="reference-image" alt="Toma de referencia" hidden>
@@ -230,6 +230,7 @@
     <span data-phrase="viewer.reference">Referencia: {name}. La vista usa el mismo recorte y resolución que el resultado.</span>
     <span data-phrase="viewer.compare">Referencia a la izquierda y resultado apilado a la derecha. Arrastra el separador o usa las flechas para comparar.</span>
     <span data-phrase="viewer.split">{percent}% referencia; {remaining}% resultado apilado</span>
+    <span data-phrase="viewer.pan">Arrastra la imagen para moverte por ella o usa las teclas de flecha. Para comparar con el separador, elige Ajustar a la ventana.</span>
     <span data-phrase="viewer.result">Resultado apilado. Elige 100% para examinar el detalle. Para usar el separador de comparación, elige Ajustar a la ventana.</span>
     <span data-phrase="alignment.reference">Referencia</span>
     <span data-phrase="alignment.none">Sin alinear</span>

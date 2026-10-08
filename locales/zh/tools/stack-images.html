@@ -183,7 +183,7 @@
         </div>
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
-      <div id="result-frame" class="result-frame" role="region" aria-label="图片预览" tabindex="0">
+      <div id="result-frame" class="result-frame" role="region" aria-label="图片预览" tabindex="0" aria-describedby="viewer-status">
         <div id="comparison-stage" class="comparison-stage">
           <img id="result-image" alt="堆栈的结果">
           <img id="reference-image" class="reference-image" alt="基准帧" hidden>
@@ -226,6 +226,7 @@
     <span data-phrase="viewer.reference">基准：{name}。显示使用与结果相同的裁剪范围和分辨率。</span>
     <span data-phrase="viewer.compare">左侧为基准，右侧为堆栈结果。拖动分隔线或使用方向键来对比。</span>
     <span data-phrase="viewer.split">{percent}% 基准；{remaining}% 堆栈结果</span>
+    <span data-phrase="viewer.pan">拖动图片或用方向键移动查看。要用分隔线对比，请选择“适应窗口”。</span>
     <span data-phrase="viewer.result">堆栈结果。选 100% 查看细节。要使用对比分隔线，请选择“适应窗口”。</span>
     <span data-phrase="alignment.reference">基准</span>
     <span data-phrase="alignment.none">未对齐</span>

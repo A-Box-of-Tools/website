@@ -181,7 +181,7 @@
         </div>
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
-      <div id="result-frame" class="result-frame" role="region" aria-label="画像プレビュー" tabindex="0">
+      <div id="result-frame" class="result-frame" role="region" aria-label="画像プレビュー" tabindex="0" aria-describedby="viewer-status">
         <div id="comparison-stage" class="comparison-stage">
           <img id="result-image" alt="スタックした結果">
           <img id="reference-image" class="reference-image" alt="基準フレーム" hidden>
@@ -222,6 +222,7 @@
     <span data-phrase="viewer.reference">基準：{name}。結果と同じ切り取り範囲と解像度で表示しています。</span>
     <span data-phrase="viewer.compare">左は基準、右はスタック結果です。仕切りをドラッグするか、矢印キーを使って比較してください。</span>
     <span data-phrase="viewer.split">{percent}%基準、{remaining}%スタック結果</span>
+    <span data-phrase="viewer.pan">画像をドラッグするか、矢印キーで表示位置を移動してください。仕切りで比較するときは、「ウィンドウに合わせる」を選んでください。</span>
     <span data-phrase="viewer.result">スタック結果です。詳細は100%で確認してください。比較の仕切りを使うときは、「ウィンドウに合わせる」を選んでください。</span>
     <span data-phrase="alignment.reference">基準</span>
     <span data-phrase="alignment.none">位置合わせなし</span>
