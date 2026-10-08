@@ -9,9 +9,11 @@ rather than leaving the only test of the logic to be whether a deploy happened
 to produce a sensible tag.
 """
 
+import subprocess
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import call, patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -45,6 +47,65 @@ class TheLatestTag(unittest.TestCase):
     def test_no_version_tags_at_all(self):
         self.assertIsNone(version.latest(['split-safety-e80668985', 'dist']))
         self.assertIsNone(version.latest([]))
+
+
+class TheReleaseShownInTheFooter(unittest.TestCase):
+    """A checkout's tags are metadata, not a reason to contact the network.
+
+    Mocked Git replies keep these cases independent of the tags a local clone
+    or CI's shallow checkout happens to carry.
+    """
+
+    @staticmethod
+    def reply(text='', returncode=0):
+        return subprocess.CompletedProcess(['git'], returncode, text, '')
+
+    def test_a_historical_build_uses_the_highest_version_on_head(self):
+        with patch.object(version.subprocess, 'run', return_value=self.reply(
+                'nightly\n1.0.9\n1.0.10\n')) as run:
+            self.assertEqual(version.release_tag(ROOT), '1.0.10')
+        run.assert_called_once_with(
+            ['git', 'tag', '--points-at', 'HEAD'], cwd=ROOT,
+            capture_output=True, encoding='utf-8')
+
+    def test_an_untagged_branch_uses_the_highest_existing_release(self):
+        replies = [self.reply('split-safety-e80668985\n'),
+                   self.reply('1.0.9\nnightly\n1.0.10\n')]
+        with patch.object(version.subprocess, 'run', side_effect=replies) as run:
+            self.assertEqual(version.release_tag(ROOT), '1.0.10')
+        self.assertEqual(run.call_args_list, [
+            call(['git', 'tag', '--points-at', 'HEAD'], cwd=ROOT,
+                 capture_output=True, encoding='utf-8'),
+            call(['git', 'tag', '--list'], cwd=ROOT,
+                 capture_output=True, encoding='utf-8'),
+        ])
+
+    def test_the_release_link_keeps_the_selected_tags_spelling(self):
+        with patch.object(version.subprocess, 'run', return_value=self.reply(
+                '01.2.3\n')):
+            self.assertEqual(version.release_tag(ROOT), '01.2.3')
+
+    def test_a_checkout_without_numeric_tags_has_no_version(self):
+        with patch.object(version.subprocess, 'run', return_value=self.reply(
+                'nightly\nv1.0.0\n')) as run:
+            self.assertEqual(version.release_tag(ROOT), '')
+        self.assertEqual(run.call_count, 2)
+
+    def test_a_source_archive_without_git_still_builds(self):
+        with patch.object(version.subprocess, 'run',
+                          side_effect=FileNotFoundError):
+            self.assertEqual(version.release_tag(ROOT), '')
+
+    def test_a_directory_outside_a_repository_has_no_version(self):
+        with patch.object(version.subprocess, 'run', return_value=self.reply(
+                '1.2.3\n', returncode=128)) as run:
+            self.assertEqual(version.release_tag(ROOT), '')
+        self.assertEqual(run.call_count, 1)
+
+    def test_a_failed_fallback_lookup_has_no_version(self):
+        replies = [self.reply(), self.reply('1.2.3\n', returncode=1)]
+        with patch.object(version.subprocess, 'run', side_effect=replies):
+            self.assertEqual(version.release_tag(ROOT), '')
 
 
 class MovingTheVersion(unittest.TestCase):
@@ -236,6 +297,47 @@ class TheCheckoutTheDeployRunsOn(unittest.TestCase):
         self.assertIn('git ls-remote --exit-code --tags origin', self.build)
         self.assertNotIn('git rev-parse -q --verify "refs/tags/$version"',
                          self.build)
+
+    def test_both_builds_and_the_tag_share_one_version_decision(self):
+        # Recalculating after publication can name a different version from
+        # the one every footer already links to. The decision has to precede
+        # both renders and remain the one used by the later tag step.
+        calculation = self.build.index(
+            'python scripts/next_version.py > "$RUNNER_TEMP/next"')
+        tag = self.build.index('- name: Tag the version, if this deploy moved it')
+        for name in ('Build (readable)', 'Build (deployed)'):
+            start = self.build.index(f'- name: {name}')
+            self.assertLess(calculation, start)
+            self.assertLess(start, tag)
+            step = self.build[start:].partition('\n      - ')[0]
+            self.assertIn('--release-version "${{ steps.release.outputs.version }}"',
+                          step)
+        tag_step = self.build[tag:].partition('\n      - ')[0]
+        self.assertNotIn('python scripts/next_version.py', tag_step)
+        self.assertIn('sed -n \'1p\' "$RUNNER_TEMP/next"', tag_step)
+        self.assertIn('RELEASE_VERSION: ${{ steps.release.outputs.version }}', tag_step)
+        self.assertEqual(self.build.count('python scripts/next_version.py'), 1)
+
+    def test_a_rerun_recovers_a_tag_whose_release_page_was_not_created(self):
+        # A tag can reach GitHub before creating its release page fails. On
+        # the rerun the version stands, but its footer link still needs that
+        # page, including when the remote guard finds the tag already there.
+        tag_step = self.build.partition(
+            '- name: Tag the version, if this deploy moved it')[2]
+        tag_step = tag_step.partition('\n      - ')[0]
+        ensure = tag_step.partition('ensure_release() {')[2].partition(
+            '\n          }')[0]
+        self.assertIn('if ! gh release view "$version"', ensure)
+        self.assertIn('gh release create "$version" --verify-tag', ensure)
+        self.assertIn('--notes-from-tag', ensure)
+        for condition in ('if [ ! -s "$RUNNER_TEMP/next" ]; then',
+                          'if git ls-remote --exit-code --tags origin '
+                          '"refs/tags/$version" >/dev/null 2>&1; then'):
+            with self.subTest(condition=condition):
+                branch = tag_step.partition(condition)[2].partition(
+                    '\n          fi')[0]
+                self.assertIn('ensure_release', branch)
+                self.assertLess(branch.index('ensure_release'), branch.index('exit 0'))
 
     def test_indexnow_does_not_ride_on_the_tag_step(self):
         # `continue-on-error` stops IndexNow failing the deploy. It does not

@@ -64,11 +64,10 @@ x_url = "https://x.com/aboxtools"
 
 # The version is deliberately NOT here. It is a git tag, worked out by the
 # deploy from what the change touched - see buildlib/version.py and "The
-# version" in CLAUDE.md. It lived on this line until it was noticed that
-# nothing read it: no template renders it, no page shows it, and the only code
-# that opened it was the presubmit checking that somebody had moved it. A
-# counter that every branch has to edit and nothing consumes is a merge
-# conflict with no upside, and with several pull requests open it was one.
+# version" in CLAUDE.md. The footer now links to that tag's GitHub release,
+# using metadata supplied by the build rather than a number kept in this file.
+# A counter that every branch has to edit makes concurrent pull requests
+# conflict; deriving it from the tags keeps the source free of that counter.
 
 # The one guide that is linked to from inside a sentence rather than from a
 # list. The hub's three guarantees end by pointing at it, so it cannot be moved

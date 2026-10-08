@@ -140,6 +140,15 @@ against `dist`, `dist` tracks `main` exactly, and `dev` is ahead of `main` by
 construction whenever it is holding anything at all. That is not a failure to
 investigate, and CI does not run it.
 
+**The footer links to the release it was built for.** The number still lives
+in Git tags, not in a source file. A production run works out the next tag
+before building, passes it to both builds with `--release-version`, and keeps
+that same decision for the tag it pushes after publication. Rebuilding the
+tagged checkout therefore shows the same number. Local and preview builds use
+an existing local release tag: the one on `HEAD`, or the highest version when
+`HEAD` is untagged. A source archive without Git or version tags omits the link
+unless a release version is supplied; discovering it never contacts GitHub.
+
 ## GitHub Pages
 
 *Settings → Pages → Deploy from a branch → `dist` → `/ (root)`.* The
