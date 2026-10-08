@@ -23,6 +23,13 @@
           </label>
         </fieldset>
       </div>
+      <div class="field" id="canonical-field" hidden inert>
+        <label class="mode" for="canonical">
+          <input type="checkbox" id="canonical" aria-describedby="canonical-note">
+          <span>Require canonical Base64</span>
+        </label>
+        <p class="field-note" id="canonical-note"></p>
+      </div>
     </div>
   </section>
 
@@ -119,6 +126,10 @@
     <span data-phrase="result.none">Nothing came out.</span>
     <span data-phrase="out.encoded">{name}, encoded &mdash; {in} in, {out} out</span>
     <span data-phrase="out.decoded">{name}, decoded &mdash; {in} in, {out} out</span>
+    <span data-phrase="b64.profile.standard">Standard profile: + and /, with = padding where required, zero unused bits and no whitespace. Unchecked accepts either alphabet, wrapped input and missing padding.</span>
+    <span data-phrase="b64.profile.url">URL profile: - and _, without padding, zero unused bits and no whitespace. Unchecked accepts either alphabet, wrapped input and padding.</span>
+    <span data-phrase="b64.canonical">This is not the canonical spelling for the chosen Base64 profile. Check the alphabet, padding and unused bits, and remove whitespace.</span>
+    <span data-phrase="esc.range">\u{…} must be a code point from U+0000 to U+10FFFF.</span>
     <span data-phrase="b64.padding">That has more than two padding characters on the
       end.</span>
     <span data-phrase="b64.notfour">That is padded, but its length is not a multiple of
