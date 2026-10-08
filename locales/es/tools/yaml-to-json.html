@@ -60,7 +60,7 @@
           <label for="input" id="input-label">Tu YAML</label>
           <span class="count" id="input-count">vacío</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Pega aquí el YAML - o suelta arriba un archivo .yaml, .yml o .json."></textarea>
       </div>
@@ -80,6 +80,8 @@
     <h2><span class="step">3</span> Llévate el resultado</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Ir al error</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Todavía nada.</p>
@@ -110,6 +112,11 @@
     <span data-phrase="n.character.one">{n} carácter</span>
     <span data-phrase="n.character.many">{n} caracteres</span>
     <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="convert.comments">Comentarios YAML descartados: {n}. El texto entre comillas y en escalares de bloque sigue siendo texto.</span>
+    <span data-phrase="convert.names">Nombres XML cambiados: {n}. Esta conversión no conserva los nombres originales.</span>
+    <span data-phrase="convert.collisions">Colisiones de nombres XML: {n}. Claves distintas se convirtieron en el mismo nombre de elemento y pueden volver a leerse como un valor repetido.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">La conversión se detuvo en esta construcción no admitida. No se produjo ningún resultado.</span>
     <span data-phrase="parse.at">{reason} (línea {line}, columna {column})</span>
     <span data-phrase="char.end">el final del texto</span>
     <span data-phrase="char.newline">un salto de línea</span>

@@ -98,7 +98,7 @@
           <label for="input">Votre texte</label>
           <span class="count" id="input-count">vide</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Collez ici du JSON, du XML, du HTML, du CSS ou du YAML - ou déposez un fichier au-dessus."></textarea>
       </div>
@@ -118,6 +118,8 @@
     <h2><span class="step">3</span> Emportez le résultat</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Aller à l’erreur</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Rien pour l'instant.</p>
@@ -143,6 +145,11 @@
     <span data-phrase="count.characters.one">{count} caractère</span>
     <span data-phrase="count.characters.many">{count} caractères</span>
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+    <span data-phrase="convert.comments">Commentaires YAML supprimés : {n}. Le texte entre guillemets et dans les scalaires de bloc reste du texte.</span>
+    <span data-phrase="convert.names">Noms XML modifiés : {n}. Cette conversion ne conserve pas les noms d’origine.</span>
+    <span data-phrase="convert.collisions">Collisions de noms XML : {n}. Des clés différentes sont devenues le même nom d’élément et peuvent être relues comme une valeur répétée.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">La conversion s’est arrêtée à cette construction non prise en charge. Aucun résultat n’a été produit.</span>
     <span data-phrase="parse.at">{reason} (ligne {line}, colonne {column})</span>
     <span data-phrase="char.end">la fin du texte</span>
     <span data-phrase="char.newline">un saut de ligne</span>
@@ -211,8 +218,7 @@
       mises entre guillemets que là où les laisser nues changerait ce qu'elles disent.</span>
     <span data-phrase="convert.yaml-json">Les commentaires se perdent, parce que JSON n'a nulle part où en mettre un. Les
       ancres, les alias et les tags arrêtent la conversion plutôt que d'être devinés.</span>
-    <span data-phrase="convert.json-xml">Un tableau devient un élément répété, ce qui est la seule forme qui se relise. Un
-      objet vide et une chaîne vide sortent tous deux comme un élément vide.</span>
+    <span data-phrase="convert.json-xml">Un tableau devient des éléments répétés. Un objet vide et une chaîne vide deviennent tous deux un élément vide. Les clés sont adaptées en noms XML sans préfixe ; les noms modifiés et les collisions sont indiqués avec le résultat.</span>
     <span data-phrase="convert.xml-json">Les attributs deviennent des membres nommés avec un @, le texte propre d'un élément
       devient #text là où il doit partager la place, et toute valeur reste une chaîne
       &mdash; XML n'a jamais dit lesquelles étaient des nombres.</span>

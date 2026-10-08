@@ -169,3 +169,27 @@ cleared box therefore stays clear, and edits are not overwritten by an
 asynchronous file read after navigation. Copy and Download are invalidated as
 soon as typing starts, before the debounced calculation runs; a pending
 clipboard write may only update feedback for the result it actually copied.
+
+## Conversion feedback and error navigation
+
+The shared `editor-feedback` part offers **Go to error** after a parser refusal.
+It moves the caret only when the exact source and parser or conversion mode
+that produced the error remain current; parsing while someone types does not
+move focus. A new edit clears the action and conversion notes immediately.
+YAML errors use the parser’s normalized line and column, mapped back to the
+editable source including a leading BOM.
+
+YAML to JSON reports the comments the reader actually consumed, including
+whole comment lines and trailing comments. A hash inside a quoted value or a
+block scalar is text and does not contribute to that count. An unsupported
+construct still stops at the first actual parser refusal; the feedback does
+not claim to inspect the rest of an unconverted document.
+
+JSON to XML reports repaired names and distinct sibling keys that collide
+after repair. Colons are repaired too, because this mapping adds no namespace
+bindings. Intentional repeated array elements are not collisions. Up to four
+name examples are shown as text, bounded to eighty Unicode code points on
+each side; counts still cover the whole conversion. This remains a lossy
+mapping: original key names, empty-value distinctions, and the existing XML
+type and mixed-content limitations cannot be reconstructed. No lossless
+key/value representation is implied by the warning.
