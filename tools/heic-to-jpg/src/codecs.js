@@ -37,8 +37,12 @@ async function canEncode(mime) {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
-  return Boolean(blob) && blob.type === mime;
+  try {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
+    return Boolean(blob) && blob.type === mime;
+  } finally {
+    release(canvas);
+  }
 }
 
 /** @returns {Promise<Set<string>>} the types this browser can write. */
@@ -65,33 +69,42 @@ export async function encodableTypes() {
  */
 export async function encodePixels(picture, { mime, quality }) {
   const surface = canvas(picture.width, picture.height, true);
-  surface.ctx.putImageData(
-    new ImageData(picture.pixels, picture.width, picture.height), 0, 0,
-  );
-
   let target = surface;
-  if (mime === JPEG) {
-    target = canvas(picture.width, picture.height, false);
-    target.ctx.fillStyle = '#ffffff';
-    target.ctx.fillRect(0, 0, picture.width, picture.height);
-    target.ctx.drawImage(surface.el, 0, 0);
+  try {
+    surface.ctx.putImageData(
+      new ImageData(picture.pixels, picture.width, picture.height), 0, 0,
+    );
+
+    if (mime === JPEG) {
+      target = canvas(picture.width, picture.height, false);
+      target.ctx.fillStyle = '#ffffff';
+      target.ctx.fillRect(0, 0, picture.width, picture.height);
+      target.ctx.drawImage(surface.el, 0, 0);
+      release(surface.el);
+    }
+
+    const blob = await new Promise((resolve) => target.el.toBlob(resolve, mime, quality));
+
+    // A key and its blank; main.js resolves them. This file is copied byte for
+    // byte into fifteen languages.
+    if (!blob) throw said('codec.nowrite', { format: FORMATS[mime]?.label ?? mime });
+    return blob;
+  } finally {
     release(surface.el);
+    if (target !== surface) release(target.el);
   }
-
-  const blob = await new Promise((resolve) => target.el.toBlob(resolve, mime, quality));
-  release(target.el);
-
-  // A key and its blank; main.js resolves them. This file is copied byte for
-  // byte into fifteen languages.
-  if (!blob) throw said('codec.nowrite', { format: FORMATS[mime]?.label ?? mime });
-  return blob;
 }
 
 function canvas(width, height, alpha) {
   const el = document.createElement('canvas');
   el.width = width;
   el.height = height;
-  return { el, ctx: el.getContext('2d', { alpha }) };
+  try {
+    return { el, ctx: el.getContext('2d', { alpha }) };
+  } catch (error) {
+    release(el);
+    throw error;
+  }
 }
 
 /** Free the backing store now rather than when the collector gets round to it.

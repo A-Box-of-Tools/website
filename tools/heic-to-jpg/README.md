@@ -234,9 +234,34 @@ colour on that list that is not grey.
 
 ---
 
+## One context per batch
+
+The selected files, output format, quality and metadata choice are captured
+before waiting for the HEIC engine. `src/convert.js` uses that context for every
+file and picture; format, quality and metadata controls stay locked while it
+runs. The completed results repeat those settings, with HEIC metadata requested
+only for JPEG and AVIF metadata always omitted. Each row still reports what was
+actually copied, including an oversized metadata block that could not fit.
+
+Each result carries the selected input's stable identity and byte count. Input
+counts and savings include two files with the same camera filename separately,
+while several pictures from one HEIC count that source once. Output filenames
+remain unique across the whole batch. Stopped progress also counts completed
+input files rather than pictures.
+
+Completed files remain downloadable after another file fails or the run stops.
+Cancel keeps the existing checkpoints between HEIC decode and picture writes.
+AVIF continues to use the shared browser converter without loading libheif;
+its decoded bitmap is released on every exit. Pixel and JPEG-compositing canvas
+stores are also released when drawing or encoding fails.
+
 ## Tests
 
-`tests/js/heic-boxes.test.js` and `tests/js/heic-exif.test.js`.
+`tests/js/heic-boxes.test.js`, `tests/js/heic-exif.test.js` and
+`tests/js/heic-convert.test.js`. CI exercises captured settings through a delayed
+file read, repeated-name and multi-picture totals, primary-only metadata, AVIF
+cleanup and pixel-canvas failure cleanup. Local checks build the page and use
+the real built tool; the suites run in CI.
 
 The container and TIFF fixtures are built in the test file out of the same
 helpers the EXIF tool's tests use, so a reader can see exactly what is in each
