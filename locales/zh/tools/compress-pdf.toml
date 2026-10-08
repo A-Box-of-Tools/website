@@ -29,8 +29,8 @@ live_hint = """
       一条请求带着页面、图片或者文件名。或者干脆拔掉网线，照压不误。"""
 
 read_first = """\
-      ，读和写的全部过程在 <code>src/reader.js</code> 和 \
-      <code>src/writer.js</code> 里，这两个文件都够不着网络。"""
+      ，读和写的全部过程在 <code>src/shared/pdf-reader.js</code> 和 \
+      <code>src/shared/pdf-writer.js</code> 里，这两个文件都够不着网络。"""
 
 howto_heading = "PDF 怎么变小"
 
@@ -69,8 +69,8 @@ body = """\
 title = "整套格式的处理都在这个仓库里。"
 body = """\
       一个 PDF 说白了就是一串对象，外加一张记着每个对象从哪儿开始的表。\
-      <code>src/objects.js</code> 读这套语法，<code>src/reader.js</code> 跟着\
-      那张表走，<code>src/writer.js</code> 写出一份新的，三个文件谁都没有\
+      <code>src/shared/pdf-objects.js</code> 读这套语法，<code>src/shared/pdf-reader.js</code> 跟着\
+      那张表走，<code>src/shared/pdf-writer.js</code> 写出一份新的，三个文件谁都没有\
       引入能发请求的东西。没有库要去外面取，也没有哪一步是在服务器上渲染的。"""
 
 [[privacy]]
