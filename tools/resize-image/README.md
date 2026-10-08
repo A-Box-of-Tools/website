@@ -146,6 +146,22 @@ The note under the preview says how many of the others have a box of their own
 and how many are still on the whole picture, and only when there is another
 image for it to be true of.
 
+## One plan per export batch
+
+Starting an export copies the files, each image's own crop, the common resize
+settings, and its output format, quality and background before decoding the
+first image. `src/run.js` prepares the source and destination rectangles using
+`geometry.js`; processing a later image never reads live controls. Crop, size,
+format and preset controls stay locked until the run ends. Cancel stays
+available, and completed images remain downloadable after a stop or another
+file fails.
+
+The finished results repeat the captured encoding settings. Each row shows its
+actual crop and output dimensions, and the viewer's quality comes from the
+result that was encoded. Decoded bitmaps and canvas stores are released on
+success and failure. A file with nothing asked of it still passes through as
+the original `File` without decoding or re-encoding.
+
 ## Looking at the result
 
 Every finished file opens full size in a `<dialog>` — click the thumbnail, or
@@ -209,8 +225,11 @@ who wanted the tags gone without the picture being touched.
 ## Testing it
 
 `tests/js/resize-image.test.js` covers `geometry.js`, `files.js` and the format
-table, which is everything in the tool that is not a canvas call. The cases that
-get the most attention are the ones with a decision in them: what a blank height
+table. It also covers prepared export jobs through a delayed decoder, changes
+to the original settings and crop objects, passthrough identity and bitmap/canvas
+cleanup after failures. CI runs these regressions; local checks build the page
+and exercise it in a browser. The cases that get the most attention are the
+ones with a decision in them: what a blank height
 means, what each fit does to a 4:3 photograph in a 3:2 box, whether every fit
 that could enlarge honours the checkbox that says not to, and whether the four
 fits are four genuinely different answers — if two of them ever agreed, one of
