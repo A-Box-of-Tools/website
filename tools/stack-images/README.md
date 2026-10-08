@@ -12,31 +12,34 @@ Ordinary frames use the browser decoder, including AVIF when it is supported.
 The chooser names `image/avif` and `.avif` explicitly so a missing operating
 system association does not hide those frames. AVIF does not enter the RAW
 preview reader; it is decoded as an ordinary image, and the stack is still
-written as PNG or JPEG.
+written as PNG or JPEG. TIFF is not promised: there is no TIFF decoder here,
+and an operating-system association does not make a format decodable by
+`createImageBitmap`.
 
 ## The two decisions that shaped everything else
 
-### 1. A RAW file is opened by reading about a hundred kilobytes of it
+### 1. A RAW file is opened from its embedded JPEG preview
 
-Camera RAW is on the ruled-out list in
+Camera RAW sensor decoding is on the ruled-out list in
 [docs/what-can-be-built-here.md](../../docs/what-can-be-built-here.md), and it
-still is. Decoding sensor data means LibRaw or dcraw: a second engine, tens of
-megabytes, for one family of formats, most of it per-vendor compression.
+still is. It means an engine such as LibRaw or dcraw, with its per-vendor
+compression schemes, for one family of formats.
 
-What made this tool possible is that stacking does not need it. Every RAW file
-already contains a full-size JPEG that the camera rendered when it took the
-shot — it is what the back of the camera shows and what the operating system
-draws as the thumbnail. `src/raw.js` finds it by walking directory entries and
-then asking for one slice.
+Many camera RAW files already contain a JPEG that the camera rendered when it
+took the shot. `src/raw.js` walks directory entries, ranks the usable previews,
+and asks for one slice. It does not know the sensor image's size, so it cannot
+promise that the largest preview is full resolution. A preview below 640×480
+is refused; a missing preview is an unreadable frame.
 
-The consequence is the number this tool is built around: **opening a 60 MB
-frame costs about 100 KB of reading and one ordinary JPEG decode.** Twenty
-frames open in the time a RAW converter would spend on one. The page shows the
-figure against the size of the files, because it is the whole justification.
+**Finding the preview and decoding it are separate reads.** The inspection
+figure counts the directory and header reads, commonly a small fraction of the
+file. The JPEG slice is then handed to the browser decoder, which reads its
+bytes too. Calling the inspection figure the total read cost would omit the
+picture being stacked, and a banded run decodes it again for each band.
 
-What it costs is honesty about what the pixels are: the camera's white balance
-and picture style at eight bits a channel, not linear sensor data. The page
-says so in its second FAQ answer rather than in a footnote.
+The pixels are the camera's white balance and picture style at eight bits a
+channel. The sensor data is never decoded. The row gives the preview's actual
+dimensions, because those are the dimensions that can reach the result.
 
 Three container shapes, one rule:
 
@@ -84,7 +87,7 @@ surface in the pipeline is one. A document canvas cannot go to a worker.
 
 | File | What it is |
 |---|---|
-| `src/main.js` | the page: the list, the settings, the predicted cost, the progress |
+| `src/main.js` | the page: file readiness, settings, cost estimate, progress and result comparison |
 | `src/worker.js` | a shim around the pipeline, and the cancel flag |
 | `src/pipeline.js` | the run — open, survey, measure, stack, encode |
 | `src/raw.js` | finding the preview inside a RAW file. Reads offsets; never a pixel |
@@ -148,57 +151,72 @@ where it sends the corners, against the specification's own wording of each
 value, because a rotation the wrong way round does not throw or look wrong in
 review: it puts one frame into the stack a half turn from the rest.
 
-## Why six of the seven methods are free and one is not
+## Frame count, passes and working memory
 
-An accumulator that can be updated from the frame in front of it does not have
-to remember the frames behind it. A running maximum, minimum, sum and mean are
-all like that, and so is focus stacking's best-so-far. Those methods hold one
-accumulator no matter how many frames arrive: **a hundred frames costs the same
-memory as two, and each frame is read once.**
+A running maximum, minimum, sum and mean do not need to remember earlier
+frames, and neither does focus stacking's best-so-far. Their accumulator sizes
+depend on the picture, not the frame count. Sigma clipping also uses a
+constant-sized accumulator, but it takes two passes: one to learn the mean and
+spread and a second to average the values inside the threshold.
 
-The median is not like that, because the middle value of a set is not knowable
-until the set is complete. Twenty 24-megapixel frames at three bytes a pixel is
-1.4 GB, so the picture is cut into horizontal bands and one band is stacked at a
-time, which trades memory for re-reading the frames per band.
+Median must hold each frame's values for the band being combined. Twenty
+24-megapixel frames at three bytes a pixel would be about 1.4 GB just for those
+values. Bands trade that storage for repeat decodes, and every method uses the
+same band machinery when its working buffers would exceed the budget. A
+one-band run is the fast path rather than a separate engine.
 
-Sigma clipping is the interesting middle: two passes over a constant amount of
-memory. Pass one learns what each pixel usually is and how much it varies; pass
-two averages only the values that agree. It cannot be folded into one pass,
-because the threshold a value is tested against depends on frames that have not
-been read yet. It is the mode to reach for when the median will not fit.
+Per pixel of a band, with the RGBA readback included but before the other
+working buffers are counted:
 
-`plan.js` bands every method through one formula rather than having two
-engines. A streaming method's working set is small enough that the band is the
-whole picture and the loop runs once — the fast path, without being a separate
-path.
+| Method | Bytes | Stacking passes per band |
+|---|---|---|
+| Lighten / Darken | 7 | 1 |
+| Average / Add | 16 | 1 |
+| Focus | 19 | 1 |
+| Sigma clipping | 34 | 2 |
+| Median | 4 + 3 per frame | 1 |
 
-**The numbers `plan.js` produces are shown on the page before the run starts.**
-That is the reason it is a separate module with its own tests: `decodes` is the
-tool's promise about its speed and `peak` is its promise about memory, and both
-are checked against the allocations that actually happen rather than against
-whatever the code did the day it was written.
+The estimate in `plan.js` follows the largest working set across inspection
+and survey, coarse alignment, stacking, readback, packing and encoding. It
+counts the current bitmap, scratch and output canvases, refinement buffers,
+focus overlap and median scratch where they are live. Browser codec and GPU
+internals, and the timing of garbage collection, are outside that model. The
+512 MB budget therefore sizes bands; it is not a hard cap on the browser
+process's total memory.
 
-Per pixel of a band, with the RGBA readback included:
+The output canvas remains full size even when the stack is banded, at four
+bytes a pixel. It comes out of the budget before choosing band height, so
+banding cannot make an arbitrarily large output cheap. A smaller working
+resolution cuts the area, and most working memory, by four for each step.
 
-| Method | Bytes | Passes | Bands at 24 MP, 20 frames |
-|---|---|---|---|
-| Lighten / Darken | 7 | 1 | 1 |
-| Average / Add | 16 | 1 | 1 |
-| Focus | 19 | 1 | 2 |
-| Sigma clipping | 34 | 2 | 2 |
-| Median | 4 + 3 per frame | 1 | 4 |
+The decode figure means **planned stacking decodes**: frame count multiplied by
+passes and bands. Inspection and the run's survey decode frames too. Alignment
+may crop the working box enough to need fewer bands than the preflight plan,
+so the figure is a useful plan rather than a claim about every decoder call.
 
-**The output canvas is in the figure too, and is not part of the band
-arithmetic.** The picture being accumulated into exists at full size whether or
-not the run is banded, at four bytes a pixel — 96 MB at 24 megapixels, a fifth
-of the budget. It comes off the top and the bands are sized in what is left,
-because a memory figure that omits a fifth of the memory is not a memory figure.
-Counting it is what moves focus stacking from one band to two at full size.
+## The arithmetic and the result
 
-The three methods that do not fit at 24 megapixels are a real limit and the page
-says so, along with the working resolution that would fix it. Memory falls with
-the square of the scale, so one step down is four times less and all three fit
-comfortably.
+All seven methods combine decoded eight-bit RGB values. Average and sigma
+clipping use wider accumulators and round at the end, but the exported PNG or
+JPEG still has eight bits per channel. Add is additive blending of those
+values; it is not a simulation of accumulating linear sensor exposure.
+Normalizing its brightness applies a gain of `1 / frameCount` before rounding,
+which is why the page provides an exact numeric exposure rather than a slider
+whose lowest stop cannot express a long stack's reciprocal.
+
+Sigma clipping is one mean-and-spread estimate followed by one rejection pass.
+At the default two-sigma threshold, a lone outlier among four identical values
+can still be accepted. The fallback for a channel that rejected every value is
+its original mean. It does not have the median's immunity to a moving object;
+the page explains that distinction instead of promising the two methods give
+the same result.
+
+The page waits for imported batches before a run, retains an explicit record
+of skipped files, and keeps a running request's settings fixed. Alignment
+details name the frames that could not be measured, because a soft stack
+cannot tell the visitor which frame caused it. The result viewer compares the
+saved stack with the request's reference frame and can show actual pixels:
+noise reduction and alignment are hard to judge from a scaled thumbnail.
 
 ## The alignment, and the sign
 

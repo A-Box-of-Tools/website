@@ -16,7 +16,7 @@ tagline = "Vinte quadros em um, sem vinte envios e sem um conversor RAW."
 title = "Empilhar imagens &mdash; média, mediana e focus stacking no navegador"
 description = "Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador."
 og_title = "Empilhe uma sequência de fotografias, arquivos RAW inclusive"
-og_description = "Média, mediana, sigma clipping, clarear, escurecer, somar ou focus stacking &mdash; com os quadros alinhados antes. Os arquivos RAW são abertos lendo a prévia que a câmera já escreveu, então um quadro de 60 MB abre tão rápido quanto um JPEG. Nada é enviado."
+og_description = "Média, mediana, sigma clipping, clarear, escurecer, somar ou focus stacking, com os quadros alinhados primeiro. Arquivos RAW são abertos pela prévia JPEG incorporada pela câmera, quando existe, sem decodificar os dados do sensor. Nada é enviado."
 og_image_alt = "Empilhador de imagens - vários quadros juntos num só, no navegador"
 
 pledge = """
@@ -32,12 +32,7 @@ live_hint = """
       fotografia, uma miniatura, um nome de arquivo ou um modelo de câmera. Ou tire
       o cabo da internet e empilhe mesmo assim &mdash; nada na ferramenta muda."""
 
-read_first = """
-, <code>src/raw.js</code> para como um arquivo RAW
-      é aberto lendo kilobytes em vez de megabytes, <code>src/stack.js</code> para
-      a aritmética de cada método, e <code>src/plan.js</code> para de onde vêm os
-      números de memória e de decodificação mostrados na página &mdash; são as
-      respostas daquele arquivo, não estimativas."""
+read_first = ", <code>src/raw.js</code> explica como encontrar prévias RAW incorporadas sem decodificar o sensor, <code>src/stack.js</code> traz a conta de cada método e <code>src/plan.js</code> explica a memória de trabalho estimada e as decodificações planejadas da pilha. Processos internos do navegador e liberação de memória podem acrescentar memória além dos buffers modelados."
 
 howto_heading = "Como empilhar um conjunto de fotografias no navegador"
 
@@ -80,15 +75,8 @@ body = """
       <code>src/</code> nem no worker."""
 
 [[privacy]]
-title = "Os arquivos RAW são lidos, não enviados &mdash; e mal lidos."
-body = """
- Um arquivo RAW de câmera já
-      contém um JPEG em tamanho cheio que a câmera renderizou no momento do
-      disparo. Esta ferramenta o encontra percorrendo algumas entradas de diretório
-      e depois pedindo uma única fatia, o que num arquivo de 60&nbsp;MB costuma
-      ficar abaixo de cem kilobytes. A página mostra esse número ao lado do tamanho
-      dos seus arquivos enquanto você trabalha. Os dados do sensor não são lidos
-      nunca."""
+title = "As prévias RAW são lidas neste dispositivo."
+body = "Muitos arquivos RAW contêm uma prévia JPEG renderizada pela câmera. Esta ferramenta percorre os diretórios do arquivo e extrai a maior prévia utilizável. A leitura de inspeção conta os cabeçalhos e diretórios lidos para encontrá-la e descrevê-la; a decodificação também lê a fatia JPEG. Os dados do sensor nunca são decodificados, e a linha mostra as dimensões reais da prévia."
 
 [[privacy]]
 title = "O trabalho acontece num Worker neste computador, não num servidor."
@@ -123,21 +111,11 @@ body = """
 
 [[howto]]
 title = "Escolha os quadros."
-body = """
- Uma sequência, um conjunto em
-      bracketing, uma série de intervalômetro ou uma pasta de arquivos RAW. Cada um
-      é aberto conforme chega e a linha diz o que saiu dele &mdash; para um arquivo
-      RAW, a câmera, o tamanho da prévia encontrada dentro, e quão pouco do arquivo
-      precisou ser lido para encontrá-la."""
+body = "Uma sequência de fotos, uma série de intervalômetro ou uma pasta de RAW com prévias JPEG utilizáveis. Espere os arquivos terminarem de abrir. Cada linha mostra o que foi encontrado: para RAW, a câmera e o tamanho real da prévia incorporada. Os arquivos que não puderam ser abertos ficam na lista para você conferir quais foram deixados de fora."
 
 [[howto]]
 title = "Escolha o método que combina com o que você quer perder."
-body = """
- Ruído:
-      média, ou sigma clipping se alguma coisa se mexeu. Pessoas, carros ou um
-      avião passando: mediana. Um céu escuro que você quer como rastros de
-      estrelas: clarear. Uma macro feita ao longo do anel de foco: focus stacking. A
-      nota abaixo do menu diz o que cada um faz com o seu número de quadros."""
+body = "Ruído: média, ou sigma clipping para rejeitar valores diferentes dos demais. Pessoas, carros ou um avião: mediana, desde que ocupem cada parte da cena em menos da metade dos quadros. Rastros de estrelas: clarear. Macro fotografada ao longo do anel de foco: focus stacking. A nota abaixo do menu explica o método e seus limites."
 
 [[howto]]
 title = "Decida se os quadros precisam de alinhamento."
@@ -151,12 +129,7 @@ body = """
 
 [[howto]]
 title = "Leia os quatro números, e então aperte o botão."
-body = """
- Antes de qualquer
-      coisa rodar, a página diz que tamanho terá o resultado, mais ou menos quanta
-      memória vai levar, quantas vezes os quadros serão decodificados e quanto dos
-      seus arquivos foi lido. Se o conjunto não couber na memória de uma vez, ela
-      diz, e diz qual resolução de trabalho resolveria."""
+body = "Antes de começar, a página mostra o tamanho planejado do resultado, a memória estimada da pilha, as decodificações planejadas para empilhar e os bytes lidos na inspeção. Processos internos do navegador e liberação de memória podem consumir mais que os buffers modelados; esses números são um plano, não uma garantia do uso total. Se forem necessárias faixas, a página sugere uma resolução de trabalho menor. Depois, compare a referência com o resultado no tamanho real dos pixels e confira os detalhes de alinhamento antes de baixar."
 
 [[faq]]
 q = "As minhas fotografias são enviadas para algum lugar?"
@@ -174,105 +147,31 @@ a = """
 
 [[faq]]
 q = "Quais formatos RAW ele consegue ler, e como?"
-a = """
-        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF,
-        RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL e mais alguns &mdash; que é
-        quase tudo o que as câmeras escrevem. O que ele lê deles é a prévia JPEG em
-        tamanho cheio que a própria câmera renderizou no momento do disparo: a imagem
-        na traseira da câmera, e a que o seu sistema operacional desenha como
-        miniatura. Ela é encontrada percorrendo a estrutura de diretórios do arquivo,
-        o que custa algumas leituras de poucos kilobytes cada, e depois pegando uma
-        única fatia. <strong>Não é um demosaicing dos dados do sensor.</strong> O
-        resultado carrega o balanço de branco e o estilo de imagem da câmera a oito
-        bits por canal, em vez dos doze ou catorze bits de dados lineares do sensor
-        que um conversor RAW entregaria."""
+a = "<span id=\"faq-raw\"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL e formatos relacionados são compatíveis quando o arquivo contém uma prévia JPEG utilizável. A ferramenta percorre os diretórios e usa a maior prévia encontrada, que pode ser menor que a imagem do sensor ou não existir. <strong>Os dados do sensor não são decodificados.</strong> Os pixels mantêm o balanço de branco e o estilo de imagem da câmera, com oito bits por canal. Confira as dimensões na linha. A contagem de inspeção cobre cabeçalhos e diretórios; a decodificação também lê a fatia JPEG."
 
 [[faq]]
 q = "Então por que não decodificar os dados do sensor direito?"
-a = """
-        Porque significaria embutir a LibRaw ou o dcraw &mdash; um segundo motor de
-        dezenas de megabytes, para uma única família de formatos, cuja maior parte
-        são esquemas de compressão de cada fabricante. Essa troca é discutida em
-        <code>docs/what-can-be-built-here.md</code> no código-fonte deste site, onde
-        o RAW de câmera está na lista dos descartados desde antes de esta ferramenta
-        existir. O que mudou não foi a resposta àquela pergunta, mas a descoberta de
-        que empilhar não precisa disso: as prévias são em resolução cheia, são o que
-        a câmera teria produzido como JPEG de qualquer jeito, e lê-las é cerca de cem
-        vezes mais rápido do que o demosaicing seria. Se você quer os dados do
-        sensor, revele os quadros num conversor RAW antes e empilhe os TIFFs ou JPEGs
-        que ele produzir &mdash; esta ferramenta aceita esses também."""
+a = "Decodificar o sensor exigiria um mecanismo RAW como LibRaw ou dcraw, com os esquemas de compressão de cada câmera. Usar um JPEG incorporado mantém esta ferramenta pequena e usa o decodificador do navegador. Também significa aceitar a renderização da câmera e a resolução da prévia presente no arquivo. Para escolher os ajustes de revelação RAW, revele os quadros antes e exporte JPEG ou PNG para empilhar aqui."
 
 [[faq]]
 q = "Quantos quadros ele aguenta, e de que tamanho?"
-a = """
-        Seis dos sete métodos trabalham em fluxo: mantêm um acumulador e leem cada
-        quadro exatamente uma vez, então cem quadros custam a mesma memória que dois
-        e a única coisa que cresce é o tempo. A mediana é a exceção, porque o valor
-        do meio de um conjunto não se sabe até que se tenha o conjunto inteiro, então
-        ela segura todos os quadros ao mesmo tempo &mdash; vinte quadros de 24
-        megapixels são cerca de 1,4&nbsp;GB, que nenhum navegador consegue disponibilizar. Quando isso
-        acontece, a imagem é cortada em faixas horizontais e empilhada uma faixa por
-        vez, o que custa reler os quadros para cada faixa. A página calcula tudo isso
-        antes de você apertar o botão e mostra o número, para que uma execução lenta
-        nunca seja surpresa."""
+a = "Seis dos sete métodos têm acumuladores cujo tamanho não cresce com o número de quadros. Média, clarear, escurecer, somar e focus stacking precisam de uma passagem por faixa; sigma clipping precisa de duas. Mediana guarda os valores de cada quadro para a faixa atual, então sua memória cresce com a quantidade de quadros. Qualquer método pode ser dividido em faixas se seus buffers ultrapassarem o orçamento da ferramenta, o que exige decodificar os quadros de novo para cada faixa. A página estima esses buffers e mostra as decodificações planejadas para empilhar. Inspeção e alinhamento acrescentam trabalho, e os processos internos de codecs e GPU do navegador podem precisar de memória além da estimativa."
 
 [[faq]]
 q = "O que o alinhamento dos quadros faz de fato?"
-a = """
-        Ele descobre quanto cada quadro se deslocou em relação ao quadro de
-        referência e o desloca de volta, com precisão de fração de pixel. O método é a correlação de
-        fase: o deslocamento entre duas imagens aparece como uma diferença de fase
-        entre os seus espectros, então uma transformada de Fourier em cada uma acha
-        um desvio de duzentos pixels tão barato quanto um de dois. O segundo ajuste
-        recupera também rotação e escala, pelo mesmo truque aplicado ao espectro em
-        coordenadas log-polares. Tudo isso é global &mdash; um deslocamento, um
-        ângulo, uma escala para o quadro inteiro &mdash; então corrige uma câmera que
-        se moveu e não corrige um assunto que se moveu, nem uma fotografia tirada um
-        passo à esquerda. Uma consequência visível: um quadro deslocado vinte pixels
-        para a esquerda já não alcança a borda direita, então o resultado é aparado
-        até a parte que todos os quadros cobrem. É por isso que uma pilha alinhada
-        volta um tantinho menor do que os quadros que entraram nela, e é a única
-        alternativa a uma borda escura feita dos quadros que ali não estavam."""
+a = "A ferramenta mede o deslocamento de cada quadro em relação à referência e o reposiciona com precisão menor que um pixel. Usa correlação de fase: o deslocamento aparece como uma diferença de fase entre os espectros, então uma transformada de Fourier por imagem encontra um deslocamento de duzentos pixels tão facilmente quanto um de dois. O segundo ajuste também recupera rotação e escala com o espectro em coordenadas logarítmico-polares. A correção é global: um deslocamento, um ângulo e uma escala para o quadro inteiro. Corrige a câmera que se mexeu, mas não um objeto em movimento nem uma foto tirada um passo para o lado. Um quadro deslocado à esquerda não alcança mais a borda direita. Por isso o resultado é recortado para a área comum e pode ficar um pouco menor, evitando bordas escuras por áreas sem cobertura."
 
 [[faq]]
 q = "Qual método eu devo usar?"
-a = """
-        <strong>Média</strong> para ruído, num conjunto em que nada se mexeu: ela
-        corta o ruído aleatório em cerca da raiz quadrada do número de quadros.
-        <strong>Mediana</strong> para tirar coisas que só estavam ali parte do tempo
-        &mdash; o uso clássico é fotografar uma praça movimentada umas doze vezes e
-        recebê-la vazia. <strong>Sigma clipping</strong> quando você quer as duas
-        coisas: ele aprende o que cada pixel costuma ser e tira a média só dos
-        valores que concordam com isso, então tem a imunidade da mediana a um carro
-        passando e a redução de ruído da média. <strong>Clarear</strong> para rastros
-        de estrelas, fogos de artifício e light painting.
-        <strong>Escurecer</strong> para tirar qualquer coisa clara que tenha se
-        mexido. <strong>Somar</strong> para simular uma única exposição longa.
-        <strong>Focus stacking</strong> para uma macro feita ao longo do anel de
-        foco."""
+a = "<strong>Média</strong> para ruído quando nada se mexeu: o ruído aleatório independente cai aproximadamente pela raiz quadrada do número de quadros. <strong>Mediana</strong> para remover o que ocupa uma parte da cena em menos da metade dos quadros. <strong>Sigma clipping</strong> tira a média dos valores próximos da média e rejeita os que passam do limite escolhido. Pode manter objetos em movimento em conjuntos pequenos ou se aparecem com frequência; mediana é mais segura quando removê-los é a prioridade. <strong>Clarear</strong> para rastros de estrelas, fogos e light painting. <strong>Escurecer</strong> para remover elementos claros que se mexeram. <strong>Somar</strong> faz uma mistura aditiva dos quadros decodificados. Trabalha com valores de imagem de oito bits e não reproduz uma exposição mais longa da câmera. <strong>Focus stacking</strong> para uma macro fotografada ao longo do anel de foco."
 
 [[faq]]
 q = "Por que o meu resultado tem oito bits se os meus arquivos RAW têm catorze?"
-a = """
-        Porque o que está sendo empilhado é a prévia da própria câmera, que é um
-        JPEG. Vale dizer que empilhar recupera parte do que isso custa: tirar a média
-        de dezesseis quadros de oito bits dá um resultado com gradações realmente
-        mais finas do que qualquer um deles tinha, porque é justamente o ruído que
-        fazia o arredondamento de cada quadro ser diferente que permite à média cair
-        entre os níveis. Aqui a aritmética é feita em ponto flutuante e arredondada
-        uma única vez no fim, então nada disso é jogado fora no meio do caminho.
-        Continua não sendo a mesma coisa que empilhar dados lineares de sensor, e
-        esta ferramenta não finge o contrário."""
+a = "A entrada RAW é a prévia JPEG da câmera, e a saída é um PNG ou JPEG de oito bits. Média e sigma clipping usam acumuladores mais amplos e arredondam no final. Assim estimam um valor mais limpo a partir de quadros com ruído sem arredondar cada etapa intermediária. A imagem salva continua com oito bits por canal; não ganha a profundidade de bits nem o alcance dinâmico dos dados lineares do sensor."
 
 [[faq]]
 q = "Posso empilhar quadros de tamanhos diferentes, ou de câmeras diferentes?"
-a = """
-        Pode, embora costume ser um engano e valha a pena conferir se era o que você
-        queria. O resultado fica do tamanho do maior quadro, e cada outro quadro é
-        redimensionado para caber e centralizado nele. Misturar câmeras mistura
-        também a interpretação de cor, então uma média das duas é uma média de duas
-        leituras diferentes da mesma luz. Onde ajuda de verdade é num conjunto feito
-        em duas resoluções, ou num arquivo RAW e um JPEG do mesmo quadro."""
+a = "Sim, mas confira se é intencional. O maior quadro define a área de trabalho; os outros são ajustados e centralizados nela. O resultado salvo é recortado para a área comum, então formatos diferentes ou o alinhamento podem deixá-lo menor que a área planejada. Misturar câmeras também mistura sua renderização de cores. Mantenha exposição e enquadramento constantes e compare com a referência para examinar o resultado."
 
 [[faq]]
 q = "Ele diz que a execução vai ser em faixas. O que isso quer dizer?"
@@ -300,26 +199,22 @@ a = """
 
 [[faq]]
 q = "É grátis, e eu preciso de conta?"
-a = """
-        É grátis, e não há conta, nem login, nem teste, nem marca-d'água. Também não
-        há limite de quantos quadros você empilha ou de que tamanho eles são, porque
-        não há um servidor pagando por isso &mdash; o trabalho acontece no seu próprio computador e o único teto é a sua memória. O site exibe publicidade, e é ela que
-        o paga; os anunciantes não recebem nada sobre as suas fotografias."""
+a = "É grátis, sem conta, login, período de teste ou marca d’água. Não há uma cota do serviço para a quantidade ou o tamanho dos quadros. Os limites práticos são a memória do dispositivo, os limites de canvas e decodificação do navegador e o tempo da pilha. A publicidade sustenta a página e não recebe nada sobre suas fotos."
 
 [schema]
-description = "Empilhe uma sequência de fotografias no navegador: média, mediana, média com sigma clipping, clarear, escurecer, somar ou focus stacking, com os quadros alinhados antes por correlação de fase. Lê arquivos RAW de câmera extraindo a prévia em tamanho cheio que a câmera embutiu, então nenhum conversor RAW é preciso. Nada é enviado."
+description = "Empilha uma sequência de fotos no navegador: média, mediana, média com sigma clipping, clarear, escurecer, somar ou focus stacking, com alinhamento prévio por correlação de fase. Lê RAW com prévias JPEG incorporadas utilizáveis, sem decodificar o sensor. Nada é enviado."
 features = [
   "Sete métodos de empilhamento: média, mediana, média com sigma clipping, clarear, escurecer, somar e focus stacking",
-  "Lê CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 e outros extraindo a prévia em tamanho cheio da própria câmera",
-  "Abre um arquivo RAW de 60 MB lendo cerca de cem kilobytes dele",
+  "Lê CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 e outros formatos quando há uma prévia JPEG incorporada utilizável",
+  "Encontra prévias RAW lendo pequenas partes de diretórios e cabeçalhos, depois decodifica a fatia JPEG",
   "Alinhamento automático: só deslocamento, ou deslocamento com rotação e escala, ou nenhum",
   "Alinhamento abaixo do pixel por correlação de fase, não por busca de desvios",
-  "Seis dos sete métodos mantêm um acumulador, então cem quadros custam a memória de dois",
-  "Custo de memória e de decodificação calculado e mostrado antes de a execução começar",
+  "Seis métodos têm acumuladores que não crescem com o número de quadros; mediana guarda valores de cada quadro",
+  "Mostra a memória estimada da pilha e as decodificações planejadas antes de começar",
   "O trabalho roda num Worker, então o progresso anda e o Cancelar responde",
   "Saída em PNG ou JPEG; funciona offline; sem envio, sem conta",
 ]
 
 [picker]
 title = "Arraste os quadros para cá"
-hint = "ou clique para procurar &mdash; JPEG, PNG, WebP, AVIF, TIFF e RAW de câmera"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP, AVIF e RAW de câmera com prévias JPEG"

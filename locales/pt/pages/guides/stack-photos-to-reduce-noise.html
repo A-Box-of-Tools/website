@@ -12,9 +12,7 @@
       <li><strong>Uma macro com quase nenhuma profundidade de campo</strong> &mdash; focus stacking.</li>
     </ul>
     <p>
-      Deixe o alinhamento ligado se a câmera estava nas suas mãos e desligue se ela
-      estava num tripé. Arquivos RAW podem entrar direto; não é preciso revelá-los
-      antes.
+      Deixe o alinhamento ligado se fotografou na mão e desligue com um tripé fixo. Os RAW podem entrar direto quando contêm uma prévia JPEG utilizável. A linha mostra o tamanho da imagem que está sendo empilhada de verdade.
     </p>
     <p>
       Tudo o que vem abaixo é o motivo pelo qual aquelas cinco linhas são o que são.
@@ -38,11 +36,7 @@
       quase toda pilha prática fica entre oito e trinta quadros.
     </p>
     <p>
-      Há um segundo ganho, mais discreto. Tirar a média de dezesseis quadros de oito
-      bits dá um resultado com gradações mais finas do que qualquer um deles tinha,
-      porque é justamente o ruído que fazia cada quadro arredondar de um jeito
-      diferente que permite à média cair entre os níveis. Empilhar um conjunto
-      ruidoso não só tira ruído; recupera tom que um único quadro quantizou fora.
+      A média também deixa as estimativas de tom mais estáveis porque cada quadro com ruído foi arredondado de um jeito um pouco diferente. A ferramenta usa acumuladores mais amplos e arredonda o valor combinado no final. O PNG ou JPEG salvo continua com oito bits por canal: uma média mais limpa não aumenta a profundidade da saída.
     </p>
   </section>
 
@@ -80,22 +74,13 @@
 
     <h3>As duas coisas: sigma clipping</h3>
     <p>
-      A mediana joga fora a maior parte da informação para conseguir a sua robustez
-      &mdash; onze dos seus doze valores são descartados em cada pixel, então ela
-      reduz o ruído bem menos do que uma média do mesmo conjunto reduziria.
+      A mediana reduz ruído aleatório independente com menos eficiência que a média. Sua saída vem do valor central, ou do par central, em vez da média de todos os valores. Esse é o preço de ser menos afetada por poucos valores muito diferentes dos demais.
     </p>
     <p>
-      O sigma clipping é o meio-termo, e costuma ser o padrão certo para qualquer
-      conjunto do mundo real. Ele olha para cada pixel em todos os quadros, descobre
-      o que ele costuma ser e quanto varia, e então tira a média só dos valores que
-      concordam com isso. Um carro que cruzou um quadro é excluído naqueles pixels;
-      todo outro quadro continua contando em todo lugar. Você fica com a imunidade da
-      mediana a coisas que se mexeram e com a maior parte da redução de ruído da
-      média.
+      Sigma clipping estima primeiro a média e a dispersão de cada canal, depois tira a média só dos valores dentro do limite escolhido. Pode rejeitar um objeto que passou por poucos quadros e aproveitar o fundo restante. É menos confiável em conjuntos pequenos ou quando o objeto aparece com frequência. No limite padrão, um valor diferente entre quatro idênticos ainda pode ser aceito. Use mediana se remover o objeto for mais importante que obter a maior redução de ruído.
     </p>
     <p>
-      O limiar é em desvios padrão, e dois é o ponto de partida de sempre. Mais baixo
-      rejeita mais, e começa a rejeitar detalhe verdadeiro junto com o carro.
+      O limite é medido em desvios padrão e começa em dois. Diminuir rejeita mais valores, inclusive detalhes reais. Se todos os valores de um canal forem rejeitados, a ferramenta mantém a média original desse canal em vez de deixar um buraco.
     </p>
 
     <h3>Só as coisas claras importam: clarear</h3>
@@ -128,9 +113,14 @@
       imagem noutro foco.
     </p>
 
+    <h3>Uma mistura mais clara: somar</h3>
+    <p>
+      Somar adiciona os valores de imagem decodificados antes de aplicar o multiplicador de Exposição. São valores de oito bits, então o resultado é uma mistura aditiva e não uma simulação de uma exposição mais longa da câmera. As áreas claras podem estourar. <strong>Normalizar brilho</strong> define o multiplicador como um dividido pelo número de quadros. Você também pode digitar diretamente um multiplicador menor.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/plan.webp" loading="lazy" decoding="async"
-           alt="A lista de modos, média, mediana, mais claro, mais escuro, com um plano embaixo dando o tamanho de saída, a memória necessária e quanto de cada arquivo precisa ser lido.">
+           alt="Métodos e ajustes da pilha, com tamanho planejado de saída, memória de trabalho estimada, decodificações planejadas e leituras de inspeção.">
       <figcaption>
         O modo é a pergunta desta seção. O plano embaixo é a ferramenta dizendo o custo da rodada antes de começar.
       </figcaption>
@@ -147,8 +137,7 @@
       decepcionar.
     </p>
     <p>
-      Então os quadros são medidos contra um deles e postos de volta no lugar antes,
-      com precisão de fração de pixel. Três ajustes:
+      Cada quadro é medido contra o marcado como <strong>Referência</strong> e reposicionado quando há uma correção confiável. O primeiro é o padrão. <strong>Usar como referência</strong> muda essa marca sem reordenar a lista. Escolha um quadro nítido com detalhes estáticos claros. São três ajustes de alinhamento:
     </p>
     <ul>
       <li>
@@ -156,9 +145,7 @@
         a deriva e o tremor.
       </li>
       <li>
-        <strong>Deslocamento, rotação e escala</strong> para um conjunto em que você
-        também girava de leve, ou em que um zoom escorregou. Custa uma medição a mais
-        por quadro e não custa nada quando os quadros se revelam retos.
+        <strong>Deslocamento, rotação e escala</strong> para uma série em que você também girou um pouco ou o zoom mudou. Exige medições adicionais por quadro, mesmo quando os quadros estão retos.
       </li>
       <li>
         <strong>Nenhum</strong> para um tripé travado ou uma série de
@@ -174,11 +161,15 @@
       não.
     </p>
 
+    <p>
+      Depois de empilhar, abra <strong>Detalhes de alinhamento</strong> para ver o estado e a correção de cada quadro. Um quadro que não pôde ser alinhado continua incluído onde estava; remova-o e rode de novo se deixar o resultado sem nitidez. Use <strong>Mostrar</strong> para alternar entre o resultado e a referência, e <strong>Tamanho da visualização</strong> para examinar os pixels reais.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/result.webp" loading="lazy" decoding="async"
-           alt="O resultado: a imagem empilhada, com uma nota dizendo o quanto cada quadro teve que ser movido para alinhar com o primeiro.">
+           alt="O resultado empilhado com controles para mostrar o quadro de referência, ver pixels reais e examinar os detalhes de alinhamento.">
       <figcaption>
-        Os números do alinhamento valem uma lida. Uma rajada na mão anda alguns pixels por quadro, e é isso que o alinhador desfaz sem dizer nada.
+        Compare o resultado com a referência e confira os detalhes de alinhamento. Um quadro que não pôde ser alinhado pode deixar a pilha sem nitidez.
       </figcaption>
     </figure>
   </section>
@@ -186,26 +177,17 @@
   <section>
     <h2>Onde os arquivos RAW entram</h2>
     <p>
-      Você pode soltar CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF e o resto direto lá
-      dentro, e vale a pena ser exato sobre o que acontece com eles, porque não é o
-      que um conversor RAW faz.
+      CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF e formatos relacionados podem ser abertos quando contêm uma prévia JPEG utilizável. Vale explicar exatamente o que acontece porque é diferente de revelar os dados RAW do sensor.
     </p>
     <p>
-      Todo arquivo RAW já contém um <strong>JPEG em tamanho cheio que a câmera
-      renderizou no momento do disparo</strong>. É o que a tela da câmera
-      mostra e o que o seu sistema operacional desenha como miniatura. O empilhador
-      encontra aquela imagem e usa aquilo. Ele não decodifica os dados do sensor.
+      Muitos RAW contêm uma <strong>prévia JPEG renderizada pela câmera</strong>. A ferramenta encontra a maior utilizável e a decodifica com o decodificador comum do navegador. Essa prévia pode ser menor que a imagem do sensor, e alguns arquivos não têm nenhuma. Confira as dimensões de cada quadro.
     </p>
     <p>
       Duas consequências, uma boa e uma que vale a pena saber:
     </p>
     <ul>
       <li>
-        <strong>É rápido.</strong> Encontrar a prévia significa ler alguns kilobytes
-        de diretório e depois uma fatia, então um quadro de 60&nbsp;MB abre mais ou
-        menos tão rápido quanto um JPEG. Vinte deles abrem no tempo que um conversor
-        RAW gastaria num. A página mostra quão pouco dos seus arquivos ele leu de
-        fato.
+        <strong>Evita decodificar o sensor.</strong> Encontrar a prévia normalmente exige pequenas leituras de diretórios e cabeçalhos, e o navegador depois lê a fatia JPEG para decodificá-la. O número de inspeção conta essas leituras, não todos os bytes lidos pelo decodificador de imagens.
       </li>
       <li>
         <strong>É a interpretação da câmera, não a sua.</strong> Oito bits por canal,
@@ -215,12 +197,7 @@
       </li>
     </ul>
     <p>
-      Para redução de ruído, rastros de estrelas, tirar transeuntes e focus stacking,
-      essa troca quase sempre compensa: as prévias são em resolução cheia e são o que
-      você teria recebido como JPEG de qualquer jeito. Se você está puxando muito as
-      sombras, ou empilhando para astrofotografia, onde o último pedacinho de faixa
-      dinâmica é o ponto inteiro, revele os quadros num conversor RAW antes e empilhe
-      os TIFFs ou JPEGs que ele der. Esses entram do mesmo jeito.
+      Uma prévia utilizável pode bastar para reduzir ruído, criar rastros de estrelas, remover pessoas e fazer focus stacking. Suas dimensões e a renderização da câmera são os limites. Para escolher balanço de branco, ajustar tons ou recuperar sombras RAW, revele os quadros primeiro e exporte JPEG ou PNG para empilhar aqui. O resultado salvo continua sendo uma imagem de oito bits.
     </p>
   </section>
 
@@ -231,26 +208,13 @@
       uma que leva dois minutos.
     </p>
     <p>
-      Seis dos sete métodos só precisam lembrar de uma coisa. Um máximo corrente não
-      se importa com os quadros que já viu, e um total corrente também não, então
-      esses métodos leem cada quadro exatamente uma vez e usam a mesma memória para
-      cem quadros que para dois.
+      Seis métodos têm acumuladores cujo tamanho não cresce com o número de quadros. Média, clarear, escurecer, somar e focus stacking fazem uma passagem por faixa. Sigma clipping faz duas: uma para estimar a média e a dispersão e outra para tirar a média dos valores aceitos. Inspeção e alinhamento também decodificam os arquivos, então uma passagem de empilhamento não significa uma única leitura no total.
     </p>
     <p>
-      A mediana não pode funcionar assim, porque não dá para saber o valor do meio de
-      um conjunto até ter o conjunto inteiro. Vinte quadros de 24 megapixels são cerca
-      de 1,4&nbsp;GB de pixels segurados ao mesmo tempo, que nenhum navegador consegue disponibilizar,
-      então a imagem é cortada em faixas horizontais e empilhada uma faixa por vez
-      &mdash; correto, e mais lento, porque os quadros são lidos de novo para cada
-      faixa.
+      Mediana precisa guardar os valores de cada quadro para a faixa combinada. Vinte quadros de 24 megapixels precisariam de cerca de 1,4&nbsp;GB só para esses valores. As faixas permitem processar menos linhas por vez, ao custo de decodificar cada quadro novamente para cada faixa. Os outros métodos também podem ser divididos em faixas quando seus buffers excedem o orçamento.
     </p>
     <p>
-      A ferramenta calcula tudo isso antes de você apertar o botão e informa: que
-      tamanho terá o resultado, mais ou menos quanta memória precisa, e quantas vezes
-      os seus quadros serão decodificados. Se ela disser que a execução vai ser em
-      faixas, baixar um passo a resolução de trabalho divide a memória por quatro e
-      quase sempre a devolve a uma passagem única &mdash; e se você está empilhando
-      para tirar ruído, meia resolução já ia sair mais limpa do que a cheia.
+      Antes de começar, a ferramenta mostra o tamanho planejado do resultado, a memória de trabalho estimada, as decodificações planejadas da pilha e os bytes lidos na inspeção. A estimativa inclui os buffers de trabalho modelados; processos internos do navegador e liberação de memória podem aumentar o uso total. Reduzir a resolução de trabalho um nível divide a área da imagem por quatro e pode diminuir as decodificações repetidas. O alinhamento pode recortar o resultado o suficiente para precisar de menos faixas que o plano inicial.
     </p>
   </section>
 

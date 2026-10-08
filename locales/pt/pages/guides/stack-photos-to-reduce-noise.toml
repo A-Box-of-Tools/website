@@ -7,13 +7,9 @@ title = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
 description = "Empilhar junta uma sequência de quadros numa imagem só. Qual método usar depende do que você quer perder: ruído, transeuntes, ou a profundidade de campo rasa de uma macro. Como cada um funciona, quanto custa, e onde os arquivos RAW entram."
 
 heading = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
-lede = """
-    Uma sequência de quadros guarda mais informação do que qualquer um deles. Tirar
-    a média deles cancela o ruído; pegar o valor do meio de cada pixel apaga tudo o
-    que só estava ali parte do tempo. Qual dos dois você quer depende inteiramente
-    do que se mexeu."""
+lede = "Uma sequência de fotos tem mais informação que cada quadro sozinho. A média reduz ruído aleatório independente; o valor central de cada pixel pode remover o que aparece em menos da metade dos quadros. A escolha depende do que se mexeu."
 
-updated = "26 de agosto de 2026"
+updated = "8 de outubro de 2026"
 
 og_title = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
 og_description = "Tire a média de uma sequência para matar o ruído, use a mediana para esvaziar uma praça movimentada, clareie para rastros de estrelas. Qual método resolve qual problema, e onde os arquivos RAW entram."

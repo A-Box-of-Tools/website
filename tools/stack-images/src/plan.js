@@ -3,15 +3,16 @@
  *
  * Everything expensive about this tool is decided here, before a single file is
  * opened, which is why this module holds no pixels and touches no DOM: it is
- * arithmetic over four numbers - how wide, how tall, how many frames, which
- * mode - and it is the part worth being sure about.
+ * arithmetic over sizes and settings, and it is the part worth being sure
+ * about before any large accumulator is allocated.
  *
  * THE TWO SHAPES A STACK CAN HAVE
  *
  * Six of the seven modes are *streaming*. A running maximum does not need to
  * remember the frames it has already seen, and neither does a running sum, so
- * those modes hold one accumulator and read each frame exactly once. Twenty
- * 24-megapixel frames cost twenty decodes and about 290 MB, whatever twenty is.
+ * those modes hold one accumulator regardless of frame count. Their canvases
+ * and a decoded frame still have to fit alongside it, so even a streaming
+ * method may need bands at a large working resolution.
  *
  * The median is not. To know the middle value of a pixel you must have all of
  * its values at once, and twenty 24-megapixel frames at three bytes a pixel is
@@ -32,6 +33,8 @@
  * allocates until it dies takes the user's other tabs with it, and a stack that
  * runs slightly slower is better than one that never finishes.
  */
+
+import { DEFAULT_RADIUS } from './stack.js';
 
 /** Bytes of working memory a run may use before it starts banding. */
 export const DEFAULT_BUDGET = 512 * 1024 * 1024;
@@ -68,7 +71,7 @@ export const MODES = {
   max: { bytes: 3, perFrame: false, passes: 1, context: 0 },
   min: { bytes: 3, perFrame: false, passes: 1, context: 0 },
   sum: { bytes: 12, perFrame: false, passes: 1, context: 0 },
-  focus: { bytes: 15, perFrame: false, passes: 1, context: 2 },
+  focus: { bytes: 15, perFrame: false, passes: 1, context: DEFAULT_RADIUS + 1 },
 };
 
 /** The one band that is always there: the RGBA the canvas hands back. */
@@ -81,11 +84,11 @@ export function isMode(id) {
 }
 
 /**
- * Working resolution. Decoding straight to a smaller size is the one lever that
- * costs nothing to pull: `createImageBitmap` resamples inside the browser's own
- * decoder, so half resolution is not "decode then shrink", it is less decoding.
- * Memory falls with the square, which is why a stack that will not fit at full
- * size usually fits comfortably one step down.
+ * Working resolution. Asking createImageBitmap for a smaller bitmap reduces
+ * the pixels held and processed by this pipeline. A browser may also avoid some
+ * decoding work, but that is its implementation choice rather than a guarantee.
+ * Pixel memory falls with the square, which is why a stack that will not fit at
+ * full size usually fits comfortably one step down.
  */
 export const SCALES = { full: 1, half: 0.5, quarter: 0.25 };
 
@@ -117,67 +120,99 @@ export function bytesPerPixel(mode, frames) {
   return accumulator + READBACK_BYTES;
 }
 
+/** The largest bitmap retained for each frame during the alignment survey. */
+export const SURVEY_EDGE = 256;
+
 /**
- * The whole plan for one run.
- *
- * @param {object} options
- * @param {number} options.width       working width, after any scale
- * @param {number} options.height      working height
- * @param {number} options.frames      how many pictures are being stacked
- * @param {string} options.mode        one of MODE_IDS
- * @param {number} [options.budget]    bytes of working memory to stay inside
- * @returns {{rows: number, bands: number, passes: number, decodes: number,
- *   peak: number, banded: boolean, context: number}}  `peak` counts the
- *   accumulators, the readback, and the full-size canvas the answer is drawn
- *   into - everything the run actually allocates.
+ * Correlation owns its input squares, six transform buffers and the reference
+ * grid. Reserving the largest grid keeps refinement inside the plan even when
+ * its final crop has not been measured yet.
  */
-export function planRun({ width, height, frames, mode, budget = DEFAULT_BUDGET }) {
+const ALIGN_WORK = 16 * SURVEY_EDGE * SURVEY_EDGE * 8 + SURVEY_EDGE * 32;
+
+/**
+ * Plan from the largest live stage, rather than adding allocations that never
+ * coexist or omitting a canvas because it is not an accumulator. Browser codec
+ * internals and the timing of garbage collection remain outside this estimate.
+ *
+ * `decodePixels` is the full working frame, including the part outside a crop;
+ * `surveyDecodePixels` is the natural frame that an unrecognised header may
+ * require before its small survey bitmap can be made.
+ */
+export function planRun({
+  width, height, frames, mode, budget = DEFAULT_BUDGET, radius = DEFAULT_RADIUS,
+  decodePixels = width * height, surveyDecodePixels = decodePixels, align = 'similarity',
+}) {
   const spec = MODES[mode];
   if (!spec) throw new RangeError(`unknown mode: ${mode}`);
   if (!(width > 0) || !(height > 0)) throw new RangeError('a frame with no size');
   const count = Math.max(1, Math.floor(frames));
-
-  const perPixel = bytesPerPixel(mode, count);
-  const perRow = width * perPixel;
-
-  // The picture being accumulated into exists whether or not the run is banded,
-  // at full size, at four bytes a pixel. It is not part of the band arithmetic
-  // and it is very much part of the memory: at 24 megapixels it is 96 MB, which
-  // is a fifth of the budget and would be a fifth missing from the figure the
-  // page shows. So it comes off the top, and the bands are sized in what is
-  // left rather than in the whole.
-  //
-  // The pipeline is handed the box the frames covered and crops at the end, so
-  // the canvas it really allocates is the crop and this term is an
-  // over-estimate of it - by the pixel or two a side the refinement moved
-  // them, and by the radius a focus stack gives up. Over is the safe direction
-  // for a figure whose job is to keep a tab alive, and quoting the crop would
-  // mean knowing the crop, which is not known until every frame has been
-  // refined. The slack pays for the one thing the run allocates that is not
-  // counted here: the refinement's nine reference windows, which are held
-  // while the first band is stacked and dropped when it is done.
+  const context = mode === 'focus' ? Math.max(0, Math.floor(radius)) + 1 : 0;
+  const accumulatorBytes = spec.perFrame ? spec.bytes * count : spec.bytes;
   const canvas = width * height * 4;
-  const forBands = Math.max(0, budget - canvas);
+  const decode = Math.max(1, decodePixels) * 4;
+  const thumb = Math.min(surveyDecodePixels, SURVEY_EDGE * SURVEY_EDGE) * 4;
+  const retained = count * thumb;
+  const survey = Math.max(1, surveyDecodePixels) * 4 + retained + thumb * 2;
+  const measure = retained + (align === 'none' ? 0 : ALIGN_WORK);
+  const refine = align === 'none' || !refineWindow({ width, height }) ? 0 : ALIGN_WORK;
+  // A median gathers contiguous chunks and sorts one frame-count-sized list.
+  // The larger-list branch uses ordinary numbers, so reserve its array too.
+  const medianScratch = mode === 'median'
+    ? Math.min(width * height * 3, 8192) * count + count * 17
+    : 0;
 
-  // How many rows that buys, held between one useful band and the whole
-  // picture. Math.min last, so a picture shorter than MIN_BAND_ROWS is one band
-  // rather than a band taller than the picture it is cut from.
-  const affordable = Math.floor(forBands / Math.max(1, perRow));
-  const rows = Math.min(height, Math.max(MIN_BAND_ROWS, affordable));
-  const bands = Math.ceil(height / rows);
-
+  const stagesAt = (rows) => {
+    const readRows = Math.min(height, rows + context * 2);
+    const pixels = width * readRows;
+    const accumulator = pixels * accumulatorBytes;
+    const rgba = pixels * 4;
+    return {
+      survey,
+      measure,
+      decode: canvas + accumulator + rgba + decode + refine,
+      readback: canvas + accumulator + rgba * 2,
+      pack: canvas + accumulator + rgba + medianScratch,
+      // The encoder may copy its input. This is an allowance, not a claim
+      // about a particular browser's PNG or JPEG implementation.
+      encode: canvas * 2,
+    };
+  };
+  const peakAt = (rows) => Math.max(...Object.values(stagesAt(rows)));
+  const minimum = Math.min(height, MIN_BAND_ROWS);
+  let rows = height;
+  if (peakAt(rows) > budget) {
+    let low = minimum;
+    let high = height;
+    while (low < high) {
+      const middle = Math.ceil((low + high) / 2);
+      if (peakAt(middle) <= budget) low = middle;
+      else high = middle - 1;
+    }
+    rows = low;
+  }
+  const countBands = Math.ceil(height / rows);
+  const stages = stagesAt(rows);
+  const peak = Math.max(...Object.values(stages));
   return {
     rows,
-    bands,
+    bands: countBands,
     passes: spec.passes,
-    // What this run will actually ask the JPEG decoder to do. One decode per
-    // frame per pass in the ordinary case; multiplied by the bands when the
-    // frames have to be revisited because they would not all fit at once.
-    decodes: bands * spec.passes * count,
-    peak: canvas + rows * perRow,
-    banded: bands > 1,
-    context: spec.context,
+    decodes: countBands * spec.passes * count,
+    peak,
+    stages,
+    overBudget: peak > budget,
+    banded: countBands > 1,
+    context,
   };
+}
+
+/** A comparison closes its decoded frame before asking the encoder to run. */
+export function planComparison({ output, crop, budget = DEFAULT_BUDGET }) {
+  const canvas = crop.width * crop.height * 4;
+  const decode = output.width * output.height * 4;
+  const peak = Math.max(canvas + decode, canvas * 2);
+  return { peak, overBudget: peak > budget };
 }
 
 /**
@@ -389,10 +424,14 @@ export function refineWindow({ width, height }) {
  * resolution of somebody's stack has made the one decision they would most want
  * to be asked about.
  */
-export function scaleThatFits({ width, height, frames, mode, budget = DEFAULT_BUDGET }) {
+export function scaleThatFits({
+  width, height, frames, mode, budget = DEFAULT_BUDGET, radius = DEFAULT_RADIUS,
+  align = 'similarity', surveyDecodePixels = width * height,
+}) {
   for (const [name, scale] of Object.entries(SCALES)) {
     const size = workingSize(width, height, scale);
-    if (!planRun({ ...size, frames, mode, budget }).banded) return name;
+    const plan = planRun({ ...size, frames, mode, budget, radius, align, surveyDecodePixels });
+    if (!plan.banded && !plan.overBudget) return name;
   }
   return null;
 }

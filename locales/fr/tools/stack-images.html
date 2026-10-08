@@ -20,11 +20,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      Les fichiers RAW sont ouverts en lisant le JPEG pleine taille que
-      l'appareil y a déjà écrit&nbsp;: quelques kilooctets de répertoire, puis une
-      seule tranche. Les données du capteur ne sont jamais décodées, si bien
-      qu'une prise de 60&nbsp;Mo s'ouvre à peu près aussi vite qu'un JPEG.
-      <a href="#faq-raw">Ce que cela signifie pour le résultat</a>.
+      Les RAW utilisent le plus grand aperçu JPEG utilisable intégré par l'appareil. Ses dimensions figurent ci-dessous&nbsp;; il peut être plus petit que l'image du capteur. Les données du capteur ne sont jamais décodées. <a href="#faq-raw">Ce que cela signifie pour le résultat</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -35,6 +31,8 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">Prises et référence</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       Faites glisser une prise par sa poignée <span class="grip" aria-hidden="true">&#8942;&#8942;</span> pour
       réordonner la liste, ou servez-vous des flèches haut et bas quand la poignée a le
@@ -43,6 +41,7 @@
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- Étape 2 &mdash; comment les combiner -->
@@ -58,7 +57,7 @@
           <option value="sigma">Écrêtage sigma &mdash; les deux à la fois</option>
           <option value="max">Éclaircir &mdash; filés d'étoiles, feux d'artifice, light painting</option>
           <option value="min">Assombrir &mdash; retirer ce qui est clair et qui a bougé</option>
-          <option value="sum">Additionner &mdash; simuler une longue pose</option>
+          <option value="sum">Additionner &mdash; mélange additif</option>
           <option value="focus">Empilement de mise au point &mdash; garder ce qui était net</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -112,10 +111,11 @@
       <div class="field">
         <label for="gain">Exposition</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>Normaliser la luminosité</button>
       </div>
 
       <div class="field">
@@ -142,10 +142,11 @@
     <dl class="plan" id="plan" hidden>
       <div><dt>Résultat</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Mémoire de travail</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>Prises décodées</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>Lu sur le disque</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>Décodages d'empilement</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Lecture pour inspection</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>La mémoire est une estimation des tampons de pixels&nbsp;; le navigateur et les encodeurs peuvent en demander davantage. L'inspection et l'alignement décodent aussi des aperçus.</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -165,13 +166,35 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>La sélection ou les réglages ont changé. Empilez à nouveau pour créer un nouveau résultat.</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">Afficher</label>
+          <select id="view-source">
+            <option value="result">Résultat empilé</option>
+            <option value="reference">Prise de référence</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">Taille d'affichage</label>
+          <select id="view-size">
+            <option value="fit">Adapter à la fenêtre</option>
+            <option value="actual">100% &mdash; pixels réels</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="Aperçu de l'image" tabindex="0">
         <img id="result-image" alt="Le résultat empilé">
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>Détails d'alignement</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>Télécharger l'image</a>
       </div>
     </div>
@@ -190,6 +213,20 @@
     <span data-phrase="count.many">{count} prises</span>
     <span data-phrase="count.none">Aucune prise pour l'instant</span>
 
+    <span data-phrase="frames.summary">{frames} &mdash; référence&nbsp;: {name}</span>
+    <span data-phrase="frame.unreadable">Impossible d'ouvrir ce fichier&nbsp;; il est écarté de l'empilement. Essayez JPEG, PNG, WebP ou un autre format pris en charge par ce navigateur.</span>
+    <span data-phrase="import.skipped">Impossible d'ouvrir {count} fichiers. Ils restent dans la liste pour vérifier lesquels ont été écartés.</span>
+    <span data-phrase="viewer.loading">Préparation de la prise de référence&hellip;</span>
+    <span data-phrase="viewer.reference">Référence&nbsp;: {name}. La vue utilise le même recadrage et la même résolution que le résultat.</span>
+    <span data-phrase="viewer.result">Résultat empilé. Choisissez 100% pour examiner les détails ou passez à la référence pour comparer.</span>
+    <span data-phrase="alignment.reference">Référence</span>
+    <span data-phrase="alignment.none">Non alignée</span>
+    <span data-phrase="alignment.weak">Impossible d'aligner avec confiance</span>
+    <span data-phrase="alignment.clamped">Décalage seul&nbsp;; la rotation était trop grande</span>
+    <span data-phrase="alignment.partial">Décalage affiné&nbsp;; impossible d'affiner la rotation</span>
+    <span data-phrase="alignment.aligned">Alignée</span>
+    <span data-phrase="alignment.offset">Décalage&nbsp;: {dx}, {dy} px&nbsp;; rotation&nbsp;: {angle}&deg;&nbsp;; échelle&nbsp;: {scale}&times;</span>
+    <span data-phrase="alignment.remove">Retirer de la sélection</span>
     <span data-phrase="frame.reference">Référence</span>
     <span data-phrase="frame.make-reference">Prendre comme référence</span>
     <span data-phrase="frame.move">Déplacer {name} &mdash; glisser, ou les flèches haut et bas</span>
@@ -201,21 +238,22 @@
     <span data-phrase="frame.read">{read} lus sur {total}</span>
 
     <span data-phrase="mode.mean">Moyenne toutes les prises. Le bruit aléatoire est aussi souvent au-dessus qu'en dessous, si bien que moyenner {count} prises le réduit d'environ {factor} fois. La méthode pour une série stable, et celle qu'un seul oiseau de passage gâche.</span>
-    <span data-phrase="mode.median">Prend la valeur centrale de chaque pixel. Tout ce qui n'était présent que sur une partie des prises &mdash; un touriste, une voiture, un avion &mdash; disparaît. C'est la seule méthode qui doit garder toutes les prises à la fois, et c'est pourquoi elle peut passer en bandes ci-dessous.</span>
-    <span data-phrase="mode.sigma">Apprend ce qu'est habituellement chaque pixel, puis ne moyenne que les valeurs qui concordent. Le résultat de la médiane avec la réduction de bruit de la moyenne. Elle lit les prises deux fois.</span>
+    <span data-phrase="mode.median">Prend la valeur centrale de chaque pixel. Un objet mobile peut disparaître s'il occupait ce pixel dans moins de la moitié des prises. C'est la seule méthode qui garde toutes les prises à la fois, d'où une éventuelle division en bandes.</span>
+    <span data-phrase="mode.sigma">Estime la valeur habituelle de chaque pixel puis moyenne les valeurs compatibles. Peut rejeter les valeurs aberrantes et réduire le bruit. Une petite série peut garder un objet de passage&nbsp;; utilisez la médiane si son retrait est prioritaire. Lit les prises deux fois.</span>
     <span data-phrase="mode.max">Garde la valeur la plus claire qu'ait jamais eue chaque pixel. C'est ce qui transforme une suite de poses courtes en filés d'étoiles, et ce qui recompose un feu d'artifice à partir de ses propres prises.</span>
     <span data-phrase="mode.min">Garde la valeur la plus sombre qu'ait jamais eue chaque pixel. Un pixel ne reste clair que s'il l'était sur toutes les prises&nbsp;: les reflets, les phares et les gouttes de pluie éclairées disparaissent donc.</span>
-    <span data-phrase="mode.sum">Additionne les prises sans diviser&nbsp;: ce qu'aurait recueilli une seule pose {count} fois plus longue. Cela sature, exactement comme cette pose l'aurait fait. Servez-vous du curseur d'exposition pour le récupérer.</span>
+    <span data-phrase="mode.sum">Additionne les valeurs de couleur rendues sans les diviser. C'est un mélange additif, pas une simulation de l'exposition du capteur. Les valeurs claires sont écrêtées&nbsp;; normalisez la luminosité pour diviser par le nombre de prises.</span>
     <span data-phrase="mode.focus">Prend chaque partie de l'image dans la prise où elle était nette. Photographiez un petit sujet le long de la bague de mise au point et ceci recompose les parties qui étaient nettes.</span>
 
     <span data-phrase="align.translate">Trouve de combien chaque prise s'est décalée et la remet en place, à une fraction de pixel près. Corrige le tremblement à main levée et la dérive du trépied. Il ne peut pas corriger la rotation.</span>
-    <span data-phrase="align.similarity">Trouve aussi la rotation et l'échelle. Coûte une mesure de plus par prise et rien du tout lorsque les prises se révèlent droites. La rotation n'est jamais récupérée qu'à une demi-tour près.</span>
+    <span data-phrase="align.similarity">Trouve aussi la rotation et l'échelle. Effectue une mesure supplémentaire pour chaque prise, même si les prises sont droites. La rotation est toujours retrouvée dans la limite d'un demi-tour.</span>
     <span data-phrase="align.none">Empile les prises exactement telles qu'elles sont données. Juste pour un trépied fixe ou une séquence d'intervallomètre, et faux pour tout ce qui est pris à main levée.</span>
 
-    <span data-phrase="scale.note">Chaque prise est décodée à cette taille par le décodeur du navigateur lui-même&nbsp;: un réglage plus petit, c'est donc moins de travail autant que moins de mémoire.</span>
+    <span data-phrase="scale.note">Une taille de travail plus petite réduit les tampons de pixels et les calculs. Le navigateur peut toujours décoder le fichier en pleine taille en interne.</span>
     <span data-phrase="gain.note">Multiplié dans le résultat tout à la fin, après le calcul et avant l'arrondi.</span>
-    <span data-phrase="gain.sum-note">Additionner {count} prises va presque certainement saturer. Descendez ceci vers {suggested} pour voir ce qui a été recueilli.</span>
+    <span data-phrase="gain.sum-note">Additionner {count} prises peut écrêter les valeurs claires. Normalisez la luminosité à {suggested}&times; ou saisissez votre propre exposition.</span>
 
+    <span data-phrase="plan.too-large">Même une petite bande dépasse le budget des tampons de pixels. Choisissez une résolution de travail plus petite ou des images sources plus petites.</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">environ {mb} Mo</span>
     <span data-phrase="plan.decodes.simple">{count}, un par prise</span>
@@ -242,8 +280,8 @@
     <span data-phrase="error.no.files">Ajoutez d'abord au moins une image.</span>
     <span data-phrase="error.no.size">Aucun de ces fichiers n'a pu être ouvert comme image.</span>
     <span data-phrase="error.one.frame">L'empilement demande au moins deux prises.</span>
-    <span data-phrase="error.unknown">Quelque chose s'est mal passé pendant l'empilement. Si l'un de ces fichiers est inhabituel, essayez-le seul.</span>
-    <span data-phrase="error.memory">Le navigateur est à court de mémoire. Essayez une résolution de travail plus petite, ou moins de prises.</span>
+    <span data-phrase="error.unknown">Une erreur est survenue pendant l'empilement. Essayez une sélection de fichiers plus petite.</span>
+    <span data-phrase="error.memory">Cette exécution dépasse le budget des tampons de pixels, ou le navigateur manque de mémoire. Essayez une résolution de travail plus petite ou moins de prises.</span>
     <span data-phrase="error.unreadable">{name} n'a pas pu être ouvert comme image et a été laissé de côté.</span>
     <span data-phrase="error.busy">Attendez la fin de cette pile avant d'ajouter d'autres prises, ou annulez-la.</span>
 

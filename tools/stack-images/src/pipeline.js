@@ -5,7 +5,7 @@
  * to be run inside a worker - see worker.js, and see the tool's README for why
  * this is the first tool here that has one. Nothing in it touches the document,
  * so it also runs on the main thread unchanged, which is the fallback for a
- * browser without OffscreenCanvas.
+ * browser without module workers. OffscreenCanvas is still required.
  *
  * THE SHAPE OF A RUN
  *
@@ -38,7 +38,8 @@
 
 import { NO_MOVE, estimate, isMeasured, phaseCorrelate, window2d } from './align.js';
 import {
-  REFINE_INSET, bands, commonArea, outputSize, placement, planRun, refineWindow, workingSize,
+  REFINE_INSET, SURVEY_EDGE, bands, commonArea, outputSize, placement, planComparison,
+  planRun, refineWindow, workingSize,
 } from './plan.js';
 import { jpegOrientation, orientationMatrix, orientedSize } from './orient.js';
 import { findPreview, jpegSize, looksRaw } from './raw.js';
@@ -61,7 +62,7 @@ export const ALIGN_SIZE = 256;
  * fed from a smaller decode holds less picture than its own area, and the
  * alignment can only be as good as what it is shown.
  */
-const THUMB_SIZE = 256;
+const THUMB_SIZE = SURVEY_EDGE;
 
 /** Anything at least this big is a picture worth stacking. */
 const MIN_PREVIEW_PIXELS = 640 * 480;
@@ -287,6 +288,44 @@ function drawAligned(context, bitmap, spot, output, move, crop, bandY, turn) {
   drawFrame(context, bitmap, spot, turn);
 }
 
+/** Render the chosen reference in exactly the finished stack's coordinates. */
+export async function compareReference(request, hooks) {
+  const { file, output, crop, spot, move } = request;
+  const stop = () => { if (hooks.cancelled()) throw new Cancelled(); };
+  if (planComparison(request).overBudget) throw new Error('memory');
+  let bitmap = null;
+  let canvas = null;
+  try {
+    stop();
+    const frame = await openFrame(file);
+    // Its natural size may not have a header reader. Decoding to the known
+    // placement directly avoids a second survey of an AVIF or WebP reference.
+    const natural = request.decoded ?? frame.decoded;
+    if (natural) {
+      bitmap = await decodeAt(frame.blob, natural, spot, frame.turn);
+    } else {
+      const wanted = orientedSize(spot.width, spot.height, frame.turn);
+      bitmap = await createImageBitmap(frame.blob, {
+        resizeWidth: Math.max(1, Math.round(wanted.width)),
+        resizeHeight: Math.max(1, Math.round(wanted.height)),
+        resizeQuality: 'high',
+      });
+    }
+    stop();
+    const shown = surface(crop.width, crop.height);
+    canvas = shown.canvas;
+    drawAligned(shown.context, bitmap, spot, output, move, crop, 0, frame.turn);
+    bitmap.close();
+    bitmap = null;
+    const blob = await canvas.convertToBlob({ type: 'image/png' });
+    stop();
+    return { blob, width: crop.width, height: crop.height };
+  } finally {
+    bitmap?.close();
+    if (canvas) canvas.width = 0;
+  }
+}
+
 /**
  * Decode one frame small, once, for the two things a small decode is good for:
  * a picture for the list, and the luma the alignment is measured in.
@@ -295,46 +334,65 @@ function drawAligned(context, bitmap, spot, output, move, crop, bandY, turn) {
  * straight away because the list only wanted the JPEG; a run keeps it, because
  * the next thing it does is correlate it.
  */
-async function surveyFrame(frame) {
+export async function surveyFrame(frame) {
   const known = Boolean(frame.width && frame.height);
-  let bitmap;
-  if (known) {
-    // The resize is asked for in the decoder's own terms - the stored size,
-    // for a frame this code turns itself - or a sideways preview would be
-    // squeezed into an upright box before it was ever turned.
-    const fit = Math.min(1, THUMB_SIZE / Math.max(frame.width, frame.height));
-    bitmap = await createImageBitmap(frame.blob, {
-      resizeWidth: Math.max(1, Math.round(frame.decoded.width * fit)),
-      resizeHeight: Math.max(1, Math.round(frame.decoded.height * fit)),
-      resizeQuality: 'medium',
-    });
-  } else {
-    // Nothing in the file said how big it is, so it has to be decoded to find
-    // out. Rare: a JPEG and a PNG both say, and so does every RAW preview.
-    bitmap = await createImageBitmap(frame.blob);
+  let bitmap = null;
+  let natural = null;
+  let shown = null;
+  let decoded = frame.decoded;
+  try {
+    if (known) {
+      const fit = Math.min(1, THUMB_SIZE / Math.max(frame.width, frame.height));
+      bitmap = await createImageBitmap(frame.blob, {
+        resizeWidth: Math.max(1, Math.round(frame.decoded.width * fit)),
+        resizeHeight: Math.max(1, Math.round(frame.decoded.height * fit)),
+        resizeQuality: 'medium',
+      });
+    } else {
+      // AVIF, WebP and any other header we do not read need one natural-size
+      // decode to discover their dimensions. Keeping that bitmap as a survey
+      // would retain every full-size frame before banding had a chance to help.
+      natural = await createImageBitmap(frame.blob);
+      decoded = { width: natural.width, height: natural.height };
+      const fit = Math.min(1, THUMB_SIZE / Math.max(natural.width, natural.height));
+      if (fit < 1) {
+        bitmap = await createImageBitmap(natural, {
+          resizeWidth: Math.max(1, Math.round(natural.width * fit)),
+          resizeHeight: Math.max(1, Math.round(natural.height * fit)),
+          resizeQuality: 'medium',
+        });
+        natural.close();
+        natural = null;
+      } else {
+        bitmap = natural;
+        natural = null;
+      }
+    }
+
+    const upright = orientedSize(bitmap.width, bitmap.height, frame.turn);
+    shown = surface(upright.width, upright.height);
+    drawFrame(shown.context, bitmap, { x: 0, y: 0, ...upright }, frame.turn);
+    const thumb = await shown.canvas.convertToBlob({ type: 'image/jpeg', quality: 0.8 });
+    const size = orientedSize(decoded.width, decoded.height, frame.turn);
+    const result = {
+      described: {
+        ...frame,
+        width: known ? frame.width : size.width,
+        height: known ? frame.height : size.height,
+        decoded,
+        surveyDecodePixels: known ? bitmap.width * bitmap.height : decoded.width * decoded.height,
+      },
+      bitmap,
+      thumb,
+    };
+    // Ownership passes to the caller only after every survey step succeeds.
+    bitmap = null;
+    return result;
+  } finally {
+    natural?.close();
+    bitmap?.close();
+    if (shown) shown.canvas.width = 0;
   }
-
-  // The list shows the picture upright, whichever of the two did the turning.
-  const upright = orientedSize(bitmap.width, bitmap.height, frame.turn);
-  const shown = surface(upright.width, upright.height);
-  drawFrame(shown.context, bitmap, { x: 0, y: 0, ...upright }, frame.turn);
-  const thumb = await shown.canvas.convertToBlob({ type: 'image/jpeg', quality: 0.8 });
-  shown.canvas.width = 0;
-
-  // A frame that declared no size gets all three from the bitmap, in the same
-  // terms as the rest: the upright size for the box it will occupy, and the
-  // bitmap's own for what the decoder hands back. A frame that declared one
-  // keeps it, because a survey decode that was resized is no witness to it.
-  return {
-    described: {
-      ...frame,
-      width: known ? frame.width : upright.width,
-      height: known ? frame.height : upright.height,
-      decoded: known ? frame.decoded : { width: bitmap.width, height: bitmap.height },
-    },
-    bitmap,
-    thumb,
-  };
 }
 
 /**
@@ -353,9 +411,14 @@ export async function inspect(files, hooks) {
     try {
       const opened = await openFrame(file);
       const surveyed = await surveyFrame(opened);
-      surveyed.bitmap.close();
-      out.push({ frame: describe(surveyed.described), thumb: surveyed.thumb, ok: true });
-    } catch {
+      try {
+        if (hooks.cancelled()) throw new Cancelled();
+        out.push({ frame: describe(surveyed.described), thumb: surveyed.thumb, ok: true });
+      } finally {
+        surveyed.bitmap.close();
+      }
+    } catch (error) {
+      if (error instanceof Cancelled) throw error;
       // One unreadable file should not cost somebody the other nineteen.
       out.push({ frame: { name: file.name, sourceBytes: file.size }, thumb: null, ok: false });
     }
@@ -772,344 +835,378 @@ export async function runStack(request, hooks) {
 
   if (!files.length) throw new Error('no.files');
 
-  /* --- open ------------------------------------------------------------ */
-
-  const opened = [];
-  for (const [index, file] of files.entries()) {
-    stop();
-    report({ stage: 'open', done: index, total: files.length, name: file.name });
-    opened.push(await openFrame(file));
-  }
-
-  /* --- survey ---------------------------------------------------------- */
-
-  // Every frame is decoded once, small. This is where a frame that declared no
-  // size gets one, and where the thumbnails come from.
   const frames = [];
-  for (const [index, frame] of opened.entries()) {
-    stop();
-    report({ stage: 'survey', done: index, total: opened.length, name: frame.name });
-
-    const surveyed = await surveyFrame(frame);
-    frames.push({ ...surveyed.described, thumb: surveyed.bitmap });
-  }
-
-  const output = outputSize(frames, scale);
-  if (!output) throw new Error('no.size');
-
-  /* --- measure --------------------------------------------------------- */
-
-  // The square every frame is correlated in, sized so that one number converts
-  // a shift in it back to a shift in the output.
-  const fit = placement(output, { width: ALIGN_SIZE, height: ALIGN_SIZE });
-  // Where each frame sits in the output box. Constant for the whole run and
-  // wanted by every stage after this one, so it is worked out once: the crop
-  // needs it to know what a letterboxed frame ever covered, and the stack and
-  // the refinement need it on every draw.
-  const spots = frames.map((frame) => placement(frame, output));
-  const centre = { x: output.width / 2, y: output.height / 2 };
-  const moves = [];
-  // The moves as commonArea wants them: each one carrying the box its frame
-  // filled before it was moved.
-  const placed = () => moves.map((move, index) => ({ ...move, spot: spots[index] }));
-  let reference = null;
-
-  for (const [index, frame] of frames.entries()) {
-    stop();
-    if (align === 'none') {
-      moves.push({ ...NO_MOVE, measured: true, clamped: false });
-      continue;
-    }
-    report({ stage: 'measure', done: index, total: frames.length, name: frame.name });
-
-    const spot = spots[index];
-    // The thumbnail is drawn as if it were the full frame, which it is a scaled
-    // copy of. Its own size never enters the arithmetic.
-    const square = lumaSquare(frame.thumb, {
-      x: spot.x, y: spot.y, width: spot.width, height: spot.height,
-    }, fit, frame.turn);
-
-    if (!reference) {
-      // Everything else is measured against this frame, so it is the one move
-      // known exactly.
-      reference = square;
-      moves.push({
-        ...NO_MOVE, measured: true, clamped: false, live: 1, coherence: 1, plateau: 0, next: 0,
-        refine: REFINED.reference,
-      });
-      continue;
-    }
-    const found = estimate(reference, square, ALIGN_SIZE, align);
-    // A peak the gate refused is the tallest point of a featureless surface,
-    // not a shift, and the page says such a frame was left where it was. The
-    // identity makes that literally true, and it is what the crop and the
-    // stack below see for this frame; the statistics travel with it so the
-    // page can count it.
-    moves.push(found.measured ? {
-      ...found,
-      // Back out of the alignment square and into the output's own pixels.
-      dx: found.dx / fit.scale,
-      dy: found.dy / fit.scale,
-      // Overwritten during the stack, when the frame is refined. A frame that
-      // never reaches a full-size decode - a run cancelled part way - keeps
-      // this, which is what actually happened to it.
-      refine: REFINED.coarse,
-    } : {
-      ...NO_MOVE,
-      measured: false,
-      clamped: false,
-      live: found.live,
-      coherence: found.coherence,
-      plateau: found.plateau,
-      next: found.next,
-      refine: REFINED.none,
-    });
-  }
-
-  // The thumbnails have done both of their jobs by here.
-  for (const frame of frames) frame.thumb.close();
-
-  /* --- stack ----------------------------------------------------------- */
-
-  // The refinement the measure stage promised. The moves above were read in a
-  // small square and multiplied back up to output pixels, and the multiply-up
-  // scales their sub-pixel error with them - enough to blur the stack by more
-  // than it blurs a frame. So during the stack, when each frame's full-size
-  // decode is in hand anyway, windows of it are correlated against the same
-  // windows of the reference at output resolution and the answer is corrected
-  // in place. It costs no extra decode, which is why it happens there and not
-  // here.
-  //
-  // The grid is laid out over what the frames covered under their COARSE
-  // moves, which is also the box everything below accumulates into. That is
-  // not the crop the run finishes with - the refinement is about to move them
-  // again, and the crop is settled afterwards from where they ended up - but
-  // it is the right region to sample: the part of the output every frame has
-  // something in.
-  const covered = commonArea(placed(), output);
-  // Except when it is not, because `commonArea` gave up and handed back the
-  // whole box for a set that overlaps in almost nothing. A grid laid over that
-  // puts windows where a frame has nothing, and a half-empty window correlates
-  // confidently against a full one and reports a shift that is neither frame's;
-  // the coarse move standing is the honest answer for such a set.
-  const slivered = fellBack(covered, placed(), output);
-  const windows = align === 'none' || slivered ? null : refineWindow(covered);
-  const grid = windows ? refineGrid(covered, windows) : [];
-  let referenceWindows = null;
-  const refined = frames.map(() => false);
-  // How far the refinement may move a frame, out of the coarse pass's square
-  // and into the output's own pixels.
-  const limit = REFINE_LIMIT / fit.scale;
-
-  // The accumulator covers `covered` and the crop is taken at the end, out of
-  // the finished rows. It has to be that way round now: the moves are not
-  // final until every frame has been refined, which happens on each one's
-  // first full-size decode, which is inside this loop. It is `covered` rather
-  // than the whole output box because the band arithmetic is not free of the
-  // difference - a run planned on the box instead of on what the frames cover
-  // can gain a whole band, and a band is a re-read of every frame, so a
-  // five-frame run that read each frame once would read each of them twice.
-  // The refinement's corrections are a pixel or two, so the crop settled below
-  // is inside this box in any case.
-  const plan = planRun({
-    width: covered.width, height: covered.height, frames: frames.length, mode,
-    budget: request.budget,
-  });
-  report({ stage: 'planned', plan, output, frames: frames.map(describe) });
-
-  // Allocated at the crop's size the moment the crop is known, which is when
-  // the first band has been stacked. No second canvas and no copy: the rows
-  // are cut on their way out of the accumulator.
-  let crop = null;
+  let activeBitmap = null;
+  let scratch = null;
   let out = null;
-  let outContext = null;
-  const list = bands(covered.height, plan.rows, plan.context);
-  const totalSteps = plan.decodes;
-  let step = 0;
+  try {
+    /* --- open ------------------------------------------------------------ */
 
-  for (const [bandIndex, band] of list.entries()) {
-    stop();
-    const stack = createStack(mode, {
-      width: covered.width,
-      height: band.readRows,
-      frames: frames.length,
-      kappa: request.kappa,
-      gain: request.gain,
-      radius: request.radius,
-    });
-    const { canvas: scratch, context } = surface(covered.width, band.readRows);
+    const opened = [];
+    for (const [index, file] of files.entries()) {
+      stop();
+      report({ stage: 'open', done: index, total: files.length, name: file.name });
+      opened.push(await openFrame(file));
+    }
 
-    for (let pass = 0; pass < stack.passes; pass += 1) {
-      stack.beginPass(pass);
-      for (const [index, frame] of frames.entries()) {
-        stop();
-        step += 1;
-        report({
-          stage: 'stack', done: step, total: totalSteps, name: frame.name,
-          band: bandIndex + 1, bands: list.length, pass: pass + 1, passes: stack.passes,
-        });
+    /* --- survey ---------------------------------------------------------- */
 
-        const spot = spots[index];
-        const working = workingSize(frame.decoded.width, frame.decoded.height, 1);
-        const bitmap = await decodeAt(frame.blob, working, spot, frame.turn);
+    // Every frame is decoded once, small. This is where a frame that declared no
+    // size gets one, and where the thumbnails come from.
+    for (const [index, frame] of opened.entries()) {
+      stop();
+      report({ stage: 'survey', done: index, total: opened.length, name: frame.name });
 
-        // Each frame's first full-size appearance settles its final position.
-        // Later bands and passes reuse the answer, so a banded run stays
-        // consistent with itself, and it is what lets the crop be taken from
-        // the finished moves: every one of them is final by the end of the
-        // first band's first pass.
-        //
-        // Every window goes through the same gate the coarse pass does, for
-        // the same reasons but on its own floor: these are full squares of
-        // picture at the resolution the frame was shot at, so `isMeasured`
-        // below is asked with no floor and gets N_MAX, where the coarse peak
-        // is asked with N_MAX_SURVEY because a thumbnail tapered to the
-        // picture's box is a different surface and the same statistic reads on
-        // a different scale there. The comment on N_MAX_SURVEY has both
-        // distributions; do not make the two "consistent". The reasons
-        // themselves are shared: a window without enough texture to correlate,
-        // one whose peak is a plateau - a wall, a sky - so that its position
-        // is the noise's choice, or one whose peak is merely the tallest of
-        // several, so that which one the argmax took is the noise's choice
-        // instead. A window that reports a shift larger than a quarter of what
-        // it covers is refused as well, and that one is arithmetic rather than
-        // judgement: a correlation surface wraps, so a shift approaching half
-        // the square is as likely to be the same feature coming round the
-        // other side as a real residual, and no residual of a coarse move is
-        // that large. What survives goes to the consensus. A frame the coarse
-        // pass could not measure is not refined at all: it is sitting at the
-        // identity, and a residual measured from there is not a residual but a
-        // whole shift, which is the measurement that was already refused.
-        if (windows && !refined[index]) {
-          refined[index] = true;
-          if (index === 0) {
-            referenceWindows = grid.map((at) => windowSquare(
-              bitmap, spot, output, moves[index], at, windows, frame.turn,
-            ));
-          } else if (referenceWindows && moves[index].measured) {
-            const points = [];
-            for (const [which, at] of grid.entries()) {
-              const square = windowSquare(
-                bitmap, spot, output, moves[index], at, windows, frame.turn,
-              );
-              const residual = phaseCorrelate(referenceWindows[which], square, windows.size);
-              if (!isMeasured(residual)) continue;
-              // Out of the window's own square and back into output pixels,
-              // which is the one number the half-scale draw costs.
-              const back = windows.cover / windows.size;
-              const dx = residual.dx * back;
-              const dy = residual.dy * back;
-              if (Math.hypot(dx, dy) > windows.cover / 4) continue;
-              points.push({ x: at.centre.x, y: at.centre.y, dx, dy });
-            }
-            moves[index] = refineMove(
-              moves[index], points, align === 'similarity', centre, limit,
-            );
-          }
-        }
+      const surveyed = await surveyFrame(frame);
+      frames.push({ ...surveyed.described, thumb: surveyed.bitmap });
+    }
 
-        context.setTransform(1, 0, 0, 1, 0, 0);
-        context.clearRect(0, 0, covered.width, band.readRows);
-        drawAligned(context, bitmap, spot, output, moves[index], covered, band.readY, frame.turn);
-        bitmap.close();
+    const output = outputSize(frames, scale);
+    if (!output) throw new Error('no.size');
 
-        stack.add(context.getImageData(0, 0, covered.width, band.readRows).data, index, pass);
+    /* --- measure --------------------------------------------------------- */
+
+    // The square every frame is correlated in, sized so that one number converts
+    // a shift in it back to a shift in the output.
+    const fit = placement(output, { width: ALIGN_SIZE, height: ALIGN_SIZE });
+    // Where each frame sits in the output box. Constant for the whole run and
+    // wanted by every stage after this one, so it is worked out once: the crop
+    // needs it to know what a letterboxed frame ever covered, and the stack and
+    // the refinement need it on every draw.
+    const spots = frames.map((frame) => placement(frame, output));
+    const centre = { x: output.width / 2, y: output.height / 2 };
+    const moves = [];
+    // The moves as commonArea wants them: each one carrying the box its frame
+    // filled before it was moved.
+    const placed = () => moves.map((move, index) => ({ ...move, spot: spots[index] }));
+    let reference = null;
+
+    for (const [index, frame] of frames.entries()) {
+      stop();
+      if (align === 'none') {
+        moves.push({ ...NO_MOVE, measured: true, clamped: false });
+        continue;
       }
-      stack.endPass(pass);
+      report({ stage: 'measure', done: index, total: frames.length, name: frame.name });
+
+      const spot = spots[index];
+      // The thumbnail is drawn as if it were the full frame, which it is a scaled
+      // copy of. Its own size never enters the arithmetic.
+      const square = lumaSquare(frame.thumb, {
+        x: spot.x, y: spot.y, width: spot.width, height: spot.height,
+      }, fit, frame.turn);
+
+      if (!reference) {
+        // Everything else is measured against this frame, so it is the one move
+        // known exactly.
+        reference = square;
+        moves.push({
+          ...NO_MOVE, measured: true, clamped: false, live: 1, coherence: 1, plateau: 0, next: 0,
+          refine: REFINED.reference,
+        });
+        continue;
+      }
+      const found = estimate(reference, square, ALIGN_SIZE, align);
+      // A peak the gate refused is the tallest point of a featureless surface,
+      // not a shift, and the page says such a frame was left where it was. The
+      // identity makes that literally true, and it is what the crop and the
+      // stack below see for this frame; the statistics travel with it so the
+      // page can count it.
+      moves.push(found.measured ? {
+        ...found,
+        // Back out of the alignment square and into the output's own pixels.
+        dx: found.dx / fit.scale,
+        dy: found.dy / fit.scale,
+        // Overwritten during the stack, when the frame is refined. A frame that
+        // never reaches a full-size decode - a run cancelled part way - keeps
+        // this, which is what actually happened to it.
+        refine: REFINED.coarse,
+      } : {
+        ...NO_MOVE,
+        measured: false,
+        clamped: false,
+        live: found.live,
+        coherence: found.coherence,
+        plateau: found.plateau,
+        next: found.next,
+        refine: REFINED.none,
+      });
     }
 
-    // The crop, the first time there is anything to crop. Every frame was
-    // refined during the pass just finished, so this is the earliest moment it
-    // can be asked for and the last one at which it is needed.
-    if (!crop) {
-      crop = finalCrop(placed(), output, covered, slivered, mode, request.radius);
-      ({ canvas: out, context: outContext } = surface(crop.width, crop.height));
-      // The reference windows can never be read again - every frame was
-      // refined during the pass that just finished - and at the 512/256 grid
-      // they are nine 256-squares of doubles, which is more memory than the
-      // single window they replaced and more than plan.peak counts.
-      referenceWindows = null;
+    // The thumbnails have done both of their jobs by here.
+    for (const frame of frames) {
+      frame.thumb.close();
+      frame.thumb = null;
     }
+    reference = null;
 
-    // Only the rows this band owns are written, and only the columns the crop
-    // kept. The overlap above and below was read so that focus stacking could
-    // measure across the seam, and it belongs to the neighbouring bands; the
-    // rows outside the crop were stacked because the accumulator covers
-    // everything the frames covered, and they are thrown away here rather than
-    // in a second canvas. The bands are cut from that box, so the crop has to
-    // come into its coordinates to be compared with them.
-    const finished = stack.result();
-    const top = crop.y - covered.y;
-    const from = Math.max(band.y, top);
-    const to = Math.min(band.y + band.rows, top + crop.height);
-    if (to > from) {
-      const keep = new ImageData(crop.width, to - from);
-      for (let row = 0; row < to - from; row += 1) {
-        const at = (band.offset + from - band.y + row) * covered.width + (crop.x - covered.x);
-        keep.data.set(
-          finished.subarray(at * 4, (at + crop.width) * 4),
-          row * crop.width * 4,
+    /* --- stack ----------------------------------------------------------- */
+
+    // The refinement the measure stage promised. The moves above were read in a
+    // small square and multiplied back up to output pixels, and the multiply-up
+    // scales their sub-pixel error with them - enough to blur the stack by more
+    // than it blurs a frame. So during the stack, when each frame's full-size
+    // decode is in hand anyway, windows of it are correlated against the same
+    // windows of the reference at output resolution and the answer is corrected
+    // in place. It costs no extra decode, which is why it happens there and not
+    // here.
+    //
+    // The grid is laid out over what the frames covered under their COARSE
+    // moves, which is also the box everything below accumulates into. That is
+    // not the crop the run finishes with - the refinement is about to move them
+    // again, and the crop is settled afterwards from where they ended up - but
+    // it is the right region to sample: the part of the output every frame has
+    // something in.
+    const covered = commonArea(placed(), output);
+    // Except when it is not, because `commonArea` gave up and handed back the
+    // whole box for a set that overlaps in almost nothing. A grid laid over that
+    // puts windows where a frame has nothing, and a half-empty window correlates
+    // confidently against a full one and reports a shift that is neither frame's;
+    // the coarse move standing is the honest answer for such a set.
+    const slivered = fellBack(covered, placed(), output);
+    const windows = align === 'none' || slivered ? null : refineWindow(covered);
+    const grid = windows ? refineGrid(covered, windows) : [];
+    let referenceWindows = null;
+    const refined = frames.map(() => false);
+    // How far the refinement may move a frame, out of the coarse pass's square
+    // and into the output's own pixels.
+    const limit = REFINE_LIMIT / fit.scale;
+
+    // The accumulator covers `covered` and the crop is taken at the end, out of
+    // the finished rows. It has to be that way round now: the moves are not
+    // final until every frame has been refined, which happens on each one's
+    // first full-size decode, which is inside this loop. It is `covered` rather
+    // than the whole output box because the band arithmetic is not free of the
+    // difference - a run planned on the box instead of on what the frames cover
+    // can gain a whole band, and a band is a re-read of every frame, so a
+    // five-frame run that read each frame once would read each of them twice.
+    // The refinement's corrections are a pixel or two, so the crop settled below
+    // is inside this box in any case.
+    const plan = planRun({
+      width: covered.width, height: covered.height, frames: frames.length, mode,
+      budget: request.budget,
+      radius: request.radius,
+      decodePixels: Math.max(...frames.map((frame, index) => {
+        const size = decodeSize(frame.decoded, spots[index], frame.turn);
+        return size.width * size.height;
+      })),
+      surveyDecodePixels: Math.max(...frames.map((frame) => frame.surveyDecodePixels)),
+      align,
+    });
+    if (plan.overBudget) throw new Error('memory');
+    report({ stage: 'planned', plan, output, frames: frames.map(describe) });
+
+    // Allocated at the crop's size the moment the crop is known, which is when
+    // the first band has been stacked. No second canvas and no copy: the rows
+    // are cut on their way out of the accumulator.
+    let crop = null;
+    let outContext = null;
+    const list = bands(covered.height, plan.rows, plan.context);
+    const totalSteps = plan.decodes;
+    let step = 0;
+
+    for (const [bandIndex, band] of list.entries()) {
+      stop();
+      const stack = createStack(mode, {
+        width: covered.width,
+        height: band.readRows,
+        frames: frames.length,
+        kappa: request.kappa,
+        gain: request.gain,
+        radius: request.radius,
+      });
+      const workingSurface = surface(covered.width, band.readRows);
+      scratch = workingSurface.canvas;
+      const { context } = workingSurface;
+
+      for (let pass = 0; pass < stack.passes; pass += 1) {
+        stack.beginPass(pass);
+        for (const [index, frame] of frames.entries()) {
+          stop();
+          step += 1;
+          report({
+            stage: 'stack', done: step, total: totalSteps, name: frame.name,
+            band: bandIndex + 1, bands: list.length, pass: pass + 1, passes: stack.passes,
+          });
+
+          const spot = spots[index];
+          const working = workingSize(frame.decoded.width, frame.decoded.height, 1);
+          const bitmap = await decodeAt(frame.blob, working, spot, frame.turn);
+          activeBitmap = bitmap;
+          stop();
+
+          // Each frame's first full-size appearance settles its final position.
+          // Later bands and passes reuse the answer, so a banded run stays
+          // consistent with itself, and it is what lets the crop be taken from
+          // the finished moves: every one of them is final by the end of the
+          // first band's first pass.
+          //
+          // Every window goes through the same gate the coarse pass does, for
+          // the same reasons but on its own floor: these are full squares of
+          // picture at the resolution the frame was shot at, so `isMeasured`
+          // below is asked with no floor and gets N_MAX, where the coarse peak
+          // is asked with N_MAX_SURVEY because a thumbnail tapered to the
+          // picture's box is a different surface and the same statistic reads on
+          // a different scale there. The comment on N_MAX_SURVEY has both
+          // distributions; do not make the two "consistent". The reasons
+          // themselves are shared: a window without enough texture to correlate,
+          // one whose peak is a plateau - a wall, a sky - so that its position
+          // is the noise's choice, or one whose peak is merely the tallest of
+          // several, so that which one the argmax took is the noise's choice
+          // instead. A window that reports a shift larger than a quarter of what
+          // it covers is refused as well, and that one is arithmetic rather than
+          // judgement: a correlation surface wraps, so a shift approaching half
+          // the square is as likely to be the same feature coming round the
+          // other side as a real residual, and no residual of a coarse move is
+          // that large. What survives goes to the consensus. A frame the coarse
+          // pass could not measure is not refined at all: it is sitting at the
+          // identity, and a residual measured from there is not a residual but a
+          // whole shift, which is the measurement that was already refused.
+          if (windows && !refined[index]) {
+            refined[index] = true;
+            if (index === 0) {
+              referenceWindows = grid.map((at) => windowSquare(
+                bitmap, spot, output, moves[index], at, windows, frame.turn,
+              ));
+            } else if (referenceWindows && moves[index].measured) {
+              const points = [];
+              for (const [which, at] of grid.entries()) {
+                const square = windowSquare(
+                  bitmap, spot, output, moves[index], at, windows, frame.turn,
+                );
+                const residual = phaseCorrelate(referenceWindows[which], square, windows.size);
+                if (!isMeasured(residual)) continue;
+                // Out of the window's own square and back into output pixels,
+                // which is the one number the half-scale draw costs.
+                const back = windows.cover / windows.size;
+                const dx = residual.dx * back;
+                const dy = residual.dy * back;
+                if (Math.hypot(dx, dy) > windows.cover / 4) continue;
+                points.push({ x: at.centre.x, y: at.centre.y, dx, dy });
+              }
+              moves[index] = refineMove(
+                moves[index], points, align === 'similarity', centre, limit,
+              );
+            }
+          }
+
+          context.setTransform(1, 0, 0, 1, 0, 0);
+          context.clearRect(0, 0, covered.width, band.readRows);
+          drawAligned(context, bitmap, spot, output, moves[index], covered, band.readY, frame.turn);
+          bitmap.close();
+          activeBitmap = null;
+
+          stack.add(context.getImageData(0, 0, covered.width, band.readRows).data, index, pass);
+        }
+        stack.endPass(pass);
+      }
+
+      scratch.width = 0;
+      scratch = null;
+      stop();
+
+      // The crop, the first time there is anything to crop. Every frame was
+      // refined during the pass just finished, so this is the earliest moment it
+      // can be asked for and the last one at which it is needed.
+      if (!crop) {
+        crop = finalCrop(placed(), output, covered, slivered, mode, request.radius);
+        ({ canvas: out, context: outContext } = surface(crop.width, crop.height));
+        // The reference windows can never be read again - every frame was
+        // refined during the pass that just finished - and at the 512/256 grid
+        // they are nine 256-squares of doubles. The plan reserves them during
+        // refinement, and releasing them before packing keeps that stage smaller.
+        referenceWindows = null;
+      }
+
+      // Only the rows this band owns are written, and only the columns the crop
+      // kept. The overlap above and below was read so that focus stacking could
+      // measure across the seam, and it belongs to the neighbouring bands; the
+      // rows outside the crop were stacked because the accumulator covers
+      // everything the frames covered, and they are thrown away here rather than
+      // in a second canvas. The bands are cut from that box, so the crop has to
+      // come into its coordinates to be compared with them.
+      const finished = stack.result();
+      const top = crop.y - covered.y;
+      const from = Math.max(band.y, top);
+      const to = Math.min(band.y + band.rows, top + crop.height);
+      if (to > from) {
+        const image = new ImageData(finished, covered.width, band.readRows);
+        const left = crop.x - covered.x;
+        const readTop = band.offset + from - band.y;
+        // ImageData wraps the finished buffer; the dirty rectangle selects the
+        // crop without allocating another RGBA copy of the whole kept band.
+        outContext.putImageData(
+          image, -left, band.readY - top, left, readTop, crop.width, to - from,
         );
       }
-      outContext.putImageData(keep, 0, from - top);
     }
-    scratch.width = 0;
+
+    /* --- encode ---------------------------------------------------------- */
+
+    // What the frames covered before any of them was moved. Measuring the crop
+    // against the output box instead would call a set of two shapes cropped for
+    // the letterboxing alone, and the page's note for that run says the frames
+    // were stacked exactly as given - two sentences that cannot both be true.
+    const base = commonArea(spots.map((spot) => ({ ...NO_MOVE, spot })), output);
+
+    stop();
+    report({ stage: 'encode', done: totalSteps, total: totalSteps });
+    const format = request.format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    const blob = await out.convertToBlob({
+      type: format,
+      quality: format === 'image/jpeg' ? (request.quality ?? 0.92) : undefined,
+    });
+    stop();
+
+    return {
+      blob,
+      width: crop.width,
+      height: crop.height,
+      // Whether MOVING the frames cost anything at the edges, so the page can
+      // say so when it is more than a trim.
+      cropped: crop.width !== base.width || crop.height !== base.height,
+      plan,
+      frames: frames.map(describe),
+      moves,
+      comparison: {
+        output, crop, spot: spots[0], move: moves[0], decoded: frames[0].decoded,
+      },
+    };
+  } finally {
+    activeBitmap?.close();
+    for (const frame of frames) frame.thumb?.close();
+    if (scratch) scratch.width = 0;
+    if (out) out.width = 0;
   }
-
-  /* --- encode ---------------------------------------------------------- */
-
-  // What the frames covered before any of them was moved. Measuring the crop
-  // against the output box instead would call a set of two shapes cropped for
-  // the letterboxing alone, and the page's note for that run says the frames
-  // were stacked exactly as given - two sentences that cannot both be true.
-  const base = commonArea(spots.map((spot) => ({ ...NO_MOVE, spot })), output);
-
-  stop();
-  report({ stage: 'encode', done: totalSteps, total: totalSteps });
-  const format = request.format === 'jpeg' ? 'image/jpeg' : 'image/png';
-  const blob = await out.convertToBlob({
-    type: format,
-    quality: format === 'image/jpeg' ? (request.quality ?? 0.92) : undefined,
-  });
-  out.width = 0;
-
-  return {
-    blob,
-    width: crop.width,
-    height: crop.height,
-    // Whether MOVING the frames cost anything at the edges, so the page can
-    // say so when it is more than a trim.
-    cropped: crop.width !== base.width || crop.height !== base.height,
-    plan,
-    frames: frames.map(describe),
-    moves,
-  };
 }
 
 /**
  * Decode one frame at the size it will be drawn at.
  *
- * Asking the decoder for the size wanted, rather than decoding at full size and
- * scaling afterwards, is the cheapest resampling available: it happens inside
- * the browser's own decoder, and for a JPEG being halved or quartered it can be
- * done in the frequency domain without ever building the full-size image.
+ * Asking createImageBitmap for the size wanted avoids retaining a full-size
+ * bitmap and then resampling it in another canvas. A browser may save decoding
+ * work as well, but its internal codec allocations are not controlled here.
  *
  * `natural` is the size the decoder will produce and `spot` is the upright box
  * the frame is going into, so for a frame this code turns itself the request
  * is the box with its sides swapped: the decoder does not know about the turn
  * and would otherwise be asked for a portrait picture from a landscape stream.
  */
-function decodeAt(blob, natural, spot, turn) {
+export function decodeSize(natural, spot, turn) {
   const wanted = orientedSize(spot.width, spot.height, turn);
   const width = Math.max(1, Math.round(wanted.width));
   const height = Math.max(1, Math.round(wanted.height));
-  if (width >= natural.width && height >= natural.height) {
-    // Upscaling, or no change. Let the draw do it rather than the decoder, so
-    // nothing is resampled twice.
-    return createImageBitmap(blob);
-  }
+  return width >= natural.width && height >= natural.height
+    ? { ...natural, resize: false }
+    : { width, height, resize: true };
+}
+
+function decodeAt(blob, natural, spot, turn) {
+  const size = decodeSize(natural, spot, turn);
+  // Upscaling belongs to the draw, so a smaller frame is never resampled twice.
+  if (!size.resize) return createImageBitmap(blob);
   return createImageBitmap(blob, {
-    resizeWidth: width, resizeHeight: height, resizeQuality: 'high',
+    resizeWidth: size.width, resizeHeight: size.height, resizeQuality: 'high',
   });
 }
 
@@ -1122,6 +1219,7 @@ function describe(frame) {
     camera: frame.camera,
     bytesRead: frame.bytesRead,
     sourceBytes: frame.sourceBytes,
+    surveyDecodePixels: frame.surveyDecodePixels,
   };
 }
 

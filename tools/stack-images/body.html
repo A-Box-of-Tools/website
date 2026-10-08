@@ -12,10 +12,9 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      RAW files are opened by reading the full-size JPEG the camera already
-      wrote inside them &mdash; a few kilobytes of directory, then one slice.
-      The sensor data is never decoded, so a 60&nbsp;MB frame opens about as
-      fast as a JPEG. <a href="#faq-raw">What that means for the result</a>.
+      RAW files use the largest usable JPEG preview embedded by the camera.
+      Its dimensions are shown below; it may be smaller than the sensor image.
+      The sensor data is never decoded. <a href="#faq-raw">What that means for the result</a>.
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -30,6 +29,8 @@
       Only shown once there are two frames, because with one there is nothing
       to reorder and nothing to align against either.
     -->
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">Frames and reference</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       Drag a frame by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> handle to
       reorder the list, or press the up and down arrow keys while the handle has focus. The
@@ -38,6 +39,7 @@
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- Step 2 &mdash; how to combine them -->
@@ -53,7 +55,7 @@
           <option value="sigma">Sigma clipping &mdash; both at once</option>
           <option value="max">Lighten &mdash; star trails, fireworks, light painting</option>
           <option value="min">Darken &mdash; remove anything bright that moved</option>
-          <option value="sum">Add &mdash; simulate one long exposure</option>
+          <option value="sum">Add &mdash; additive blend</option>
           <option value="focus">Focus stacking &mdash; keep whatever was sharp</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -106,10 +108,11 @@
       <div class="field">
         <label for="gain">Exposure</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>Normalize brightness</button>
       </div>
 
       <div class="field">
@@ -136,10 +139,11 @@
     <dl class="plan" id="plan" hidden>
       <div><dt>Result</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Working memory</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>Frames decoded</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>Read from disk</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>Stacking decodes</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Read to inspect files</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>Memory is an estimate of pixel buffers; the browser and encoders may need more. Inspection and alignment also decode previews.</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -159,13 +163,35 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>The selection or settings changed. Stack again to make a new result.</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">Show</label>
+          <select id="view-source">
+            <option value="result">Stacked result</option>
+            <option value="reference">Reference frame</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">View size</label>
+          <select id="view-size">
+            <option value="fit">Fit to window</option>
+            <option value="actual">100% &mdash; actual pixels</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" tabindex="0" role="region" aria-label="Picture preview">
         <img id="result-image" alt="The stacked result">
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>Alignment details</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>Download picture</a>
       </div>
     </div>
@@ -186,6 +212,20 @@
     <span data-phrase="count.many">{count} frames</span>
     <span data-phrase="count.none">No frames yet</span>
 
+    <span data-phrase="frames.summary">{frames} &mdash; reference: {name}</span>
+    <span data-phrase="frame.unreadable">Could not open this file; excluded from stacking. Try JPEG, PNG, WebP or another format this browser supports.</span>
+    <span data-phrase="import.skipped">{count} files could not be opened. They remain in the list so you can check which ones were excluded.</span>
+    <span data-phrase="viewer.loading">Preparing the reference frame&hellip;</span>
+    <span data-phrase="viewer.reference">Reference: {name}. The view uses the same crop and resolution as the result.</span>
+    <span data-phrase="viewer.result">Stacked result. Choose 100% to inspect detail, or switch to the reference to compare.</span>
+    <span data-phrase="alignment.reference">Reference</span>
+    <span data-phrase="alignment.none">Not aligned</span>
+    <span data-phrase="alignment.weak">Could not align confidently</span>
+    <span data-phrase="alignment.clamped">Shift only; rotation was too large</span>
+    <span data-phrase="alignment.partial">Shift refined; rotation could not be refined</span>
+    <span data-phrase="alignment.aligned">Aligned</span>
+    <span data-phrase="alignment.offset">Shift: {dx}, {dy} px; rotation: {angle}&deg;; scale: {scale}&times;</span>
+    <span data-phrase="alignment.remove">Remove from selection</span>
     <span data-phrase="frame.reference">Reference</span>
     <span data-phrase="frame.make-reference">Use as reference</span>
     <span data-phrase="frame.move">Move {name} &mdash; drag, or use the up and down arrow keys</span>
@@ -197,21 +237,22 @@
     <span data-phrase="frame.read">{read} read of {total}</span>
 
     <span data-phrase="mode.mean">Averages every frame. Random noise is as often high as low, so averaging {count} frames cuts it by roughly {factor} times. The one to use on a steady set, and the one a single passing bird will spoil.</span>
-    <span data-phrase="mode.median">Takes the middle value of each pixel. Anything that was only there in some of the frames &mdash; a tourist, a car, an aeroplane &mdash; disappears. It is the only method that has to hold every frame at once, which is why it may be banded below.</span>
-    <span data-phrase="mode.sigma">Learns what each pixel usually is, then averages only the values that agree. The median's result with the average's noise reduction. It reads the frames twice.</span>
+    <span data-phrase="mode.median">Takes the middle value of each pixel. A moving object can disappear where it occupied a pixel in fewer than half the frames. It is the only method that has to hold every frame at once, which is why it may be banded below.</span>
+    <span data-phrase="mode.sigma">Learns what each pixel usually is, then averages only the values that agree. Can reject outliers while reducing noise. Small sets may keep a passing object; use Median when removing it matters most. It reads the frames twice.</span>
     <span data-phrase="mode.max">Keeps the brightest value each pixel ever had. This is what turns a sequence of short exposures into star trails, and what assembles a firework from its own frames.</span>
     <span data-phrase="mode.min">Keeps the darkest value each pixel ever had. A pixel only stays bright if it was bright in every frame, so reflections, headlights and lit raindrops go.</span>
-    <span data-phrase="mode.sum">Adds the frames without dividing: what one exposure {count} times as long would have collected. It clips, exactly as that exposure would have. Use the exposure slider to bring it back.</span>
+    <span data-phrase="mode.sum">Adds rendered colour values without dividing. This is additive blending, rather than a simulation of sensor exposure. Bright values clip; normalize brightness to divide by the number of frames.</span>
     <span data-phrase="mode.focus">Takes each part of the picture from whichever frame had it in focus. Photograph a small subject along the focus ring and this assembles the parts that were sharp.</span>
 
     <span data-phrase="align.translate">Finds how far each frame shifted and moves it back, to a fraction of a pixel. Corrects hand-held wobble and tripod drift. It cannot correct rotation.</span>
-    <span data-phrase="align.similarity">Also finds rotation and scale. Costs one more measurement per frame and nothing at all when the frames turn out to be straight. Rotation is only ever recovered within half a turn.</span>
+    <span data-phrase="align.similarity">Also finds rotation and scale. Performs an additional measurement for every frame, even when the frames turn out to be straight. Rotation is only ever recovered within half a turn.</span>
     <span data-phrase="align.none">Stacks the frames exactly as given. Right for a locked-off tripod or an intervalometer sequence, and wrong for anything hand-held.</span>
 
-    <span data-phrase="scale.note">Every frame is decoded at this size by the browser's own decoder, so a smaller setting is less work as well as less memory.</span>
+    <span data-phrase="scale.note">A smaller working size reduces pixel buffers and arithmetic. The browser may still decode a file at full size internally.</span>
     <span data-phrase="gain.note">Multiplied into the result at the very end, after the arithmetic and before rounding.</span>
-    <span data-phrase="gain.sum-note">Adding {count} frames will almost certainly clip. Bring this down to about {suggested} to see what was collected.</span>
+    <span data-phrase="gain.sum-note">Adding {count} frames can clip. Normalize brightness to use {suggested}&times;, or enter your own exposure.</span>
 
+    <span data-phrase="plan.too-large">Even a small band exceeds the pixel-buffer budget. Choose a smaller working resolution or smaller input images.</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">about {mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}, one for each frame</span>
@@ -238,8 +279,8 @@
     <span data-phrase="error.no.files">Add at least one picture first.</span>
     <span data-phrase="error.no.size">None of these files could be opened as a picture.</span>
     <span data-phrase="error.one.frame">Stacking needs at least two frames.</span>
-    <span data-phrase="error.unknown">Something went wrong while stacking. If one of these files is unusual, try it on its own.</span>
-    <span data-phrase="error.memory">The browser ran out of memory. Try a smaller working resolution, or fewer frames.</span>
+    <span data-phrase="error.unknown">Something went wrong while stacking. Try a smaller selection of files.</span>
+    <span data-phrase="error.memory">This run exceeds the pixel-buffer budget, or the browser ran out of memory. Try a smaller working resolution, or fewer frames.</span>
     <span data-phrase="error.unreadable">{name} could not be opened as a picture and was left out.</span>
     <span data-phrase="error.busy">Wait for this stack to finish before adding more frames, or cancel it.</span>
 

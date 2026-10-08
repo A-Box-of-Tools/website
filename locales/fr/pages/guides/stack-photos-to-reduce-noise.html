@@ -13,9 +13,7 @@
       <li><strong>Une macro presque sans profondeur de champ</strong> &mdash; empilement de mise au point.</li>
     </ul>
     <p>
-      Laissez l'alignement activé si l'appareil était dans vos mains, et
-      désactivez-le s'il était sur un trépied. Les fichiers RAW peuvent entrer
-      directement&nbsp;; il n'est pas nécessaire de les développer d'abord.
+      Laissez l'alignement actif pour des photos à main levée et désactivez-le sur un trépied fixe. Les RAW peuvent entrer directement s'ils contiennent un aperçu JPEG utilisable. La ligne montre la taille de l'image réellement empilée.
     </p>
     <p>
       Tout ce qui suit explique pourquoi ces cinq lignes disent ce qu'elles
@@ -41,12 +39,7 @@
       trente prises.
     </p>
     <p>
-      Il y a un second gain, plus discret. Moyenner seize prises de huit bits donne
-      un résultat aux dégradés plus fins que n'en avait aucune d'elles, parce que
-      le bruit qui faisait arrondir chaque prise différemment est précisément ce
-      qui permet à la moyenne de tomber entre les niveaux. Empiler une série
-      bruitée ne fait pas que retirer du bruit&nbsp;: cela récupère des nuances
-      qu'une prise unique avait quantifiées.
+      La moyenne stabilise aussi les estimations de tons, car chaque prise bruitée a été arrondie un peu différemment. L'outil utilise des accumulateurs plus larges et arrondit la valeur combinée à la fin. Le PNG ou JPEG enregistré garde huit bits par canal&nbsp;: une moyenne plus propre n'ajoute pas de profondeur à la sortie.
     </p>
   </section>
 
@@ -85,23 +78,13 @@
 
     <h3>Les deux&nbsp;: l'écrêtage sigma</h3>
     <p>
-      La médiane jette l'essentiel de l'information pour obtenir sa robustesse
-      &mdash; onze de vos douze valeurs sont écartées à chaque pixel &mdash;, elle
-      réduit donc bien moins le bruit qu'une moyenne de la même série ne le
-      ferait.
+      La médiane réduit le bruit aléatoire indépendant moins efficacement que la moyenne. Sa sortie vient de la valeur centrale ou des deux valeurs centrales, plutôt que de la moyenne de toutes les valeurs. C'est le prix à payer pour être moins affectée par quelques valeurs très différentes des autres.
     </p>
     <p>
-      L'écrêtage sigma est le compromis, et c'est en général le réglage par défaut
-      qui convient à toute série du monde réel. Il regarde chaque pixel sur toutes
-      les prises, détermine ce qu'il est habituellement et de combien il varie,
-      puis ne moyenne que les valeurs qui concordent. Une voiture qui a traversé
-      une prise est exclue sur ces pixels&nbsp;; toutes les autres prises comptent
-      encore partout. Vous obtenez l'immunité de la médiane à ce qui a bougé et
-      l'essentiel de la réduction de bruit de la moyenne.
+      L'écrêtage sigma estime d'abord la moyenne et la dispersion de chaque canal, puis moyenne seulement les valeurs dans le seuil choisi. Il peut rejeter un objet apparu dans peu de prises tout en moyennant le fond restant. Il est moins fiable sur une petite série ou si l'objet revient souvent. Au seuil par défaut, une valeur différente parmi quatre identiques peut encore être acceptée. Utilisez la médiane si retirer l'objet compte davantage que réduire le bruit au maximum.
     </p>
     <p>
-      Le seuil est en écarts-types, et deux est le point de départ habituel. Plus
-      bas écarte davantage, et commence à écarter du détail réel avec la voiture.
+      Le seuil se mesure en écarts-types et commence à deux. Le baisser rejette davantage de valeurs, parfois de vrais détails. Si toutes les valeurs d'un canal sont rejetées, l'outil garde sa moyenne initiale plutôt que de laisser un trou.
     </p>
 
     <h3>Seul ce qui est clair compte&nbsp;: éclaircir</h3>
@@ -136,9 +119,14 @@
       n'est pas la même image à une autre mise au point.
     </p>
 
+    <h3>Un mélange plus lumineux&nbsp;: additionner</h3>
+    <p>
+      Additionner somme les valeurs d'image décodées avant d'appliquer le multiplicateur d'Exposition. Ce sont des valeurs de huit bits&nbsp;; le résultat est donc un mélange additif et ne simule pas une pose plus longue. Les zones claires peuvent être écrêtées. <strong>Normaliser la luminosité</strong> règle le multiplicateur sur un divisé par le nombre de prises. Vous pouvez aussi saisir directement un multiplicateur plus petit.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/plan.webp" loading="lazy" decoding="async"
-           alt="La liste des modes, moyenne, médiane, plus clair, plus sombre, avec en dessous un plan donnant la taille de sortie, la mémoire nécessaire et la part de chaque fichier à lire.">
+           alt="Méthodes et réglages d&#x27;empilement avec taille de sortie prévue, mémoire de travail estimée, décodages prévus et lectures d&#x27;inspection.">
       <figcaption>
         Le mode est la question de cette section. Le plan en dessous est l'outil qui dit ce que coûtera la passe avant de la lancer.
       </figcaption>
@@ -155,8 +143,7 @@
       plus fréquente pour laquelle un premier essai d'empilement déçoit.
     </p>
     <p>
-      Les prises sont donc mesurées par rapport à l'une d'elles et remises en place
-      d'abord, à une fraction de pixel près. Trois réglages&nbsp;:
+      Chaque prise est mesurée par rapport à celle marquée <strong>Référence</strong> et remise en place si une correction fiable est trouvée. La première est le choix par défaut. <strong>Prendre comme référence</strong> déplace la marque sans réordonner la liste. Choisissez une prise nette avec des détails statiques clairs. Trois réglages d'alignement&nbsp;:
     </p>
     <ul>
       <li>
@@ -164,10 +151,7 @@
         main levée. Il corrige la dérive et le tremblement.
       </li>
       <li>
-        <strong>Décalage, rotation et échelle</strong> pour une série où vous
-        tourniez aussi légèrement, ou dans laquelle un zoom a glissé. Cela coûte
-        une mesure de plus par prise et rien du tout lorsque les prises se révèlent
-        droites.
+        <strong>Décalage, rotation et échelle</strong> pour une série où vous tourniez légèrement ou dont le zoom a changé. Cela demande des mesures supplémentaires par prise, même si les prises sont droites.
       </li>
       <li>
         <strong>Aucun</strong> pour un trépied fixe ou une séquence
@@ -183,11 +167,15 @@
       sur place, c'est bon&nbsp;; marcher, non.
     </p>
 
+    <p>
+      Après l'empilement, ouvrez <strong>Détails d'alignement</strong> pour voir l'état et la correction de chaque prise. Une prise impossible à aligner reste incluse à sa place initiale&nbsp;; retirez-la et recommencez si elle rend le résultat flou. Utilisez <strong>Afficher</strong> pour passer du résultat à sa référence et <strong>Taille d'affichage</strong> pour examiner les pixels réels.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/result.webp" loading="lazy" decoding="async"
-           alt="Le résultat&nbsp;: l'image empilée, avec une note indiquant de combien chaque image a dû être déplacée pour s'aligner sur la première.">
+           alt="Le résultat empilé avec des commandes pour afficher la référence, voir les pixels réels et examiner les détails d&#x27;alignement.">
       <figcaption>
-        Les chiffres d'alignement méritent d'être lus. Une rafale à main levée bouge de quelques pixels par image, et c'est cela que l'aligneur défait sans rien dire.
+        Comparez le résultat à sa référence et vérifiez les détails d'alignement. Une prise impossible à aligner peut rendre l'empilement flou.
       </figcaption>
     </figure>
   </section>
@@ -195,27 +183,17 @@
   <section>
     <h2>Où les fichiers RAW s'insèrent</h2>
     <p>
-      Vous pouvez déposer directement des CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF et
-      le reste, et il vaut la peine d'être exact sur ce qui leur arrive, car ce
-      n'est pas ce que fait un dérawtiseur.
+      CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF et les formats proches peuvent être ouverts s'ils contiennent un aperçu JPEG utilisable. Il faut préciser ce qui se passe, car cela diffère du développement des données RAW du capteur.
     </p>
     <p>
-      Tout fichier RAW contient déjà un <strong>JPEG pleine taille que l'appareil a
-      développé au déclenchement</strong>. C'est ce que vous montre le dos de
-      l'appareil et ce que votre système d'exploitation dessine en vignette.
-      L'empileur trouve cette image et l'emploie. Il ne décode pas les données du
-      capteur.
+      De nombreux RAW contiennent un <strong>aperçu JPEG rendu par l'appareil</strong>. L'outil trouve le plus grand utilisable et le décode avec le décodeur ordinaire du navigateur. Cet aperçu peut être plus petit que l'image du capteur, et certains fichiers n'en ont aucun. Vérifiez les dimensions de chaque prise.
     </p>
     <p>
       Deux conséquences, une bonne et une à connaître&nbsp;:
     </p>
     <ul>
       <li>
-        <strong>C'est rapide.</strong> Trouver l'aperçu revient à lire quelques
-        kilooctets de répertoire puis une seule tranche, si bien qu'une prise de
-        60&nbsp;Mo s'ouvre à peu près aussi vite qu'un JPEG. Vingt d'entre elles
-        s'ouvrent dans le temps qu'un dérawtiseur consacrerait à une seule. La page
-        vous montre le peu de vos fichiers qu'elle a réellement lu.
+        <strong>Cela évite le décodage du capteur.</strong> Trouver l'aperçu demande généralement de petites lectures de répertoires et d'en-têtes, puis le navigateur lit la tranche JPEG pour la décoder. Le chiffre d'inspection compte ces lectures, pas tous les octets lus par le décodeur d'images.
       </li>
       <li>
         <strong>C'est l'interprétation de l'appareil, pas la vôtre.</strong> Huit
@@ -225,13 +203,7 @@
       </li>
     </ul>
     <p>
-      Pour la réduction de bruit, les filés d'étoiles, le retrait des passants et
-      l'empilement de mise au point, ce compromis vaut presque toujours la
-      peine&nbsp;: les aperçus sont en pleine résolution et ils sont ce que vous
-      auriez obtenu en JPEG de toute façon. Si vous poussez fort les ombres, ou si
-      vous empilez pour de l'astrophotographie où le dernier bit de dynamique est
-      tout l'enjeu, développez d'abord les prises dans un dérawtiseur et empilez
-      les TIFF ou les JPEG qu'il donne. Ils entrent de la même façon.
+      Un aperçu utilisable peut suffire pour réduire le bruit, tracer des filés d'étoiles, retirer des passants et empiler la mise au point. Ses dimensions et le rendu de l'appareil sont les limites. Pour votre propre balance des blancs, vos réglages de tons ou la récupération d'ombres RAW, développez d'abord les prises et exportez des JPEG ou PNG à empiler ici. Le résultat enregistré reste une image de huit bits.
     </p>
   </section>
 
@@ -242,27 +214,13 @@
       prend huit secondes et une qui en prend deux minutes.
     </p>
     <p>
-      Six des sept méthodes n'ont jamais besoin de se souvenir que d'une chose. Un
-      maximum courant se moque des prises qu'il a déjà vues, et un total courant
-      aussi&nbsp;: ces méthodes lisent donc chaque prise exactement une fois et
-      emploient autant de mémoire pour cent prises que pour deux.
+      Six méthodes ont des accumulateurs dont la taille ne dépend pas du nombre de prises. Moyenne, éclaircir, assombrir, additionner et empilement de mise au point font une passe par bande. L'écrêtage sigma en fait deux&nbsp;: une pour estimer la moyenne et la dispersion, une pour moyenner les valeurs gardées. L'inspection et l'alignement décodent aussi les fichiers&nbsp;; une passe d'empilement ne signifie donc pas une seule lecture au total.
     </p>
     <p>
-      La médiane ne peut pas fonctionner ainsi, parce qu'on ne peut connaître la
-      valeur centrale d'un ensemble qu'une fois qu'on l'a tout entier. Vingt prises
-      de 24 mégapixels font environ 1,4&nbsp;Go de pixels gardés à la fois, ce
-      qu'aucun navigateur ne vous accordera&nbsp;: l'image est donc découpée en
-      bandes horizontales et empilée bande par bande &mdash; correct, et plus lent,
-      parce que les prises sont relues pour chaque bande.
+      La médiane doit garder les valeurs de chaque prise pour la bande en cours. Vingt prises de 24 mégapixels demanderaient environ 1,4&nbsp;Go rien que pour ces valeurs. Les bandes traitent moins de lignes à la fois, au prix d'un nouveau décodage de chaque prise pour chaque bande. Les autres méthodes peuvent aussi être divisées en bandes si leurs tampons dépassent le budget.
     </p>
     <p>
-      L'outil calcule tout cela avant que vous n'appuyiez sur le bouton et vous le
-      dit&nbsp;: la taille du résultat, la mémoire qu'il demandera à peu près, et
-      combien de fois vos prises seront décodées. S'il annonce un passage en bandes,
-      baisser la résolution de travail d'un cran divise la mémoire par quatre et le
-      ramène presque toujours à un seul passage &mdash; et si vous empilez pour
-      retirer du bruit, la demi-résolution allait de toute façon paraître plus
-      propre que la pleine.
+      Avant le départ, l'outil affiche la taille prévue du résultat, la mémoire de travail estimée, les décodages prévus de l'empilement et les octets lus pendant l'inspection. L'estimation comprend les tampons modélisés&nbsp;; le fonctionnement interne du navigateur et la récupération de mémoire peuvent augmenter l'usage total. Réduire la résolution de travail d'un niveau divise la surface par quatre et peut réduire les décodages répétés. L'alignement peut recadrer assez le résultat pour demander moins de bandes que le plan initial.
     </p>
   </section>
 

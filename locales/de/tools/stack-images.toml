@@ -21,7 +21,7 @@ tagline = "Zwanzig Aufnahmen werden eine, ohne zwanzig Uploads und ohne RAW-Konv
 title = "Bild-Stacker &mdash; Mittelwert, Median und Focus Stacking im Browser"
 description = "Eine Serie von Fotos zu einem Bild zusammenrechnen: mitteln gegen das Rauschen, den Median nehmen, um Passanten aus einer Szene zu entfernen, aufhellen für Sternspuren oder eine Makroaufnahme fokusstacken. Liest CR2, NEF, ARW, DNG, RAF und CR3, indem es die Vorschau der Kamera selbst herausholt. Läuft komplett im Browser."
 og_title = "Eine Fotoserie stacken, RAW-Dateien eingeschlossen"
-og_description = "Mittelwert, Median, Sigma-Clipping, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher ausgerichteten Aufnahmen. RAW-Dateien werden geöffnet, indem die Vorschau gelesen wird, die die Kamera bereits geschrieben hat, sodass eine 60-MB-Aufnahme so schnell öffnet wie ein JPEG. Nichts wird hochgeladen."
+og_description = "Mittelwert, Median, Sigma-Clipping, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher ausgerichteten Aufnahmen. RAW-Dateien werden über die eingebettete JPEG-Vorschau der Kamera geöffnet, sofern eine vorhanden ist, ohne die Sensordaten zu dekodieren. Nichts wird hochgeladen."
 og_image_alt = "Bild-Stacker - mehrere Aufnahmen zu einer zusammengerechnet, im Browser"
 
 pledge = """
@@ -39,13 +39,7 @@ live_hint = """
       oder ein Kameramodell. Oder trennen Sie die Internetverbindung und stacken
       Sie sie trotzdem, am Werkzeug ändert sich dadurch nichts."""
 
-read_first = """
-, <code>src/raw.js</code> dafür, wie eine
-      RAW-Datei geöffnet wird, indem Kilobyte statt Megabyte gelesen werden,
-      <code>src/stack.js</code> für die Rechnung hinter jeder Methode und
-      <code>src/plan.js</code> dafür, woher die Speicher- und Dekodierzahlen auf
-      der Seite kommen: Sie sind die Antworten dieser Datei und keine
-      Schätzungen."""
+read_first = ", <code>src/raw.js</code> dafür, wie eingebettete RAW-Vorschauen ohne Dekodieren der Sensordaten gefunden werden, <code>src/stack.js</code> für die Rechnung hinter jeder Methode und <code>src/plan.js</code> für den geschätzten Arbeitsspeicher und die geplanten Dekodiervorgänge beim Stacken. Browserinternes und Speicherbereinigung können mehr Speicher brauchen als die modellierten Puffer."
 
 howto_heading = "So stacken Sie eine Reihe von Fotos im Browser"
 
@@ -88,15 +82,8 @@ body = """
       <code>src/</code> noch im Worker."""
 
 [[privacy]]
-title = "Die RAW-Dateien werden gelesen, nicht hochgeladen, und kaum gelesen."
-body = """
- Eine RAW-Datei aus einer
-      Kamera enthält bereits ein JPEG in voller Größe, das die Kamera beim
-      Auslösen gerendert hat. Dieses Werkzeug findet es, indem es ein paar
-      Verzeichniseinträge abläuft und dann um genau einen Ausschnitt bittet, was
-      bei einer 60&nbsp;MB großen Datei meist unter hundert Kilobyte sind. Die
-      Seite zeigt Ihnen diese Zahl neben der Größe Ihrer Dateien, während Sie
-      arbeiten. Die Sensordaten werden überhaupt nicht gelesen."""
+title = "RAW-Vorschauen werden auf diesem Gerät gelesen."
+body = "Viele Kamera-RAW-Dateien enthalten eine von der Kamera gerenderte JPEG-Vorschau. Dieses Werkzeug geht die Verzeichnisse der Datei durch und nimmt die größte brauchbare Vorschau als Ausschnitt. Die Zahl für das Prüfen zählt die gelesenen Kopf- und Verzeichnisdaten; beim Dekodieren wird zusätzlich der JPEG-Ausschnitt gelesen. Die Sensordaten werden nie dekodiert, und die Zeile zeigt die tatsächlichen Maße der Vorschau."
 
 [[privacy]]
 title = "Die Arbeit passiert in einem Worker auf diesem Gerät, nicht auf einem Server."
@@ -132,22 +119,11 @@ body = """
 
 [[howto]]
 title = "Wählen Sie die Aufnahmen."
-body = """
- Eine Serie, eine Belichtungsreihe,
-      eine Intervallaufnahme oder ein Ordner voller RAW-Dateien. Jede wird beim
-      Ankommen geöffnet, und die Zeile sagt Ihnen, was herauskam: bei einer
-      RAW-Datei die Kamera, die Größe der darin gefundenen Vorschau und wie wenig
-      von der Datei gelesen werden musste, um sie zu finden."""
+body = "Eine Serie, eine Intervallaufnahme oder ein Ordner voller RAW-Dateien mit brauchbaren JPEG-Vorschauen. Warten Sie, bis alle Dateien geöffnet sind. Jede Zeile zeigt, was darin gefunden wurde: bei RAW die Kamera und die tatsächlichen Maße der eingebetteten Vorschau. Dateien, die sich nicht öffnen ließen, werden aufgelistet, damit Sie sehen, was fehlt."
 
 [[howto]]
 title = "Nehmen Sie die Methode, die zu dem passt, was weg soll."
-body = """
- Rauschen: Mittelwert,
-      oder Sigma-Clipping, wenn sich etwas bewegt hat. Leute, Autos oder ein
-      vorbeifliegendes Flugzeug: Median. Ein dunkler Himmel, der zu Sternspuren
-      werden soll: Aufhellen. Eine Makroaufnahme entlang des Fokusrings: Focus
-      Stacking. Der Hinweis unter dem Menü sagt, was jede Methode mit genau Ihrer
-      Anzahl Aufnahmen macht."""
+body = "Rauschen: Mittelwert oder Sigma-Clipping, um abweichende Werte zu verwerfen. Leute, Autos oder ein vorbeifliegendes Flugzeug: Median, wenn sie jeden Teil der Szene in weniger als der Hälfte der Aufnahmen verdecken. Sternspuren: Aufhellen. Eine Makroaufnahme entlang des Fokusrings: Focus Stacking. Der Hinweis unter dem Menü erklärt die Methode und ihre Grenzen."
 
 [[howto]]
 title = "Entscheiden Sie, ob die Aufnahmen ausgerichtet werden müssen."
@@ -162,12 +138,7 @@ body = """
 
 [[howto]]
 title = "Lesen Sie die vier Zahlen und drücken Sie dann den Knopf."
-body = """
- Bevor irgendetwas läuft,
-      sagt die Seite, wie groß das Ergebnis wird, wie viel Speicher es ungefähr
-      braucht, wie oft die Aufnahmen dekodiert werden und wie viel von Ihren
-      Dateien gelesen wurde. Passt die Serie nicht am Stück in den Speicher, sagt
-      sie das und nennt die Arbeitsauflösung, die es beheben würde."""
+body = "Vor dem Start zeigt die Seite die geplante Ergebnisgröße, den geschätzten Speicher für den Stack, die geplanten Dekodiervorgänge beim Stacken und die beim Prüfen gelesenen Bytes. Browserinternes und Speicherbereinigung können mehr Speicher brauchen als die modellierten Puffer; die Zahlen sind ein Plan und keine Garantie für den Gesamtverbrauch. Bei einem Stack in Bändern schlägt die Seite eine kleinere Arbeitsauflösung vor. Vergleichen Sie danach Bezug und Ergebnis in tatsächlicher Pixelgröße und prüfen Sie die Ausrichtungsdetails vor dem Download."
 
 [[faq]]
 q = "Werden meine Fotos irgendwohin hochgeladen?"
@@ -185,112 +156,31 @@ a = """
 
 [[faq]]
 q = "Welche RAW-Formate kann er lesen, und wie?"
-a = """
-        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
-        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL und ein paar mehr,
-        also das meiste, was Kameras schreiben. Gelesen wird daraus das JPEG in
-        voller Größe, das die Kamera beim Auslösen selbst gerendert hat: das Bild
-        auf dem Kameradisplay und das, was Ihr Betriebssystem als Vorschaubild
-        zeichnet. Gefunden wird es, indem die Verzeichnisstruktur der Datei
-        abgelaufen wird, was ein paar Lesevorgänge von je ein paar Kilobyte
-        kostet, und dann ein Ausschnitt genommen wird.
-        <strong>Es ist kein Demosaicing der Sensordaten.</strong> Das Ergebnis
-        trägt den Weißabgleich und den Bildstil der Kamera mit acht Bit pro Kanal
-        und nicht die zwölf oder vierzehn Bit linearer Sensordaten, die ein
-        RAW-Konverter Ihnen gäbe."""
+a = "<span id=\"faq-raw\"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL und verwandte Formate werden unterstützt, wenn eine brauchbare JPEG-Vorschau enthalten ist. Das Werkzeug geht die Verzeichnisse durch und nimmt die größte gefundene Vorschau. Sie kann kleiner als das Sensorbild sein oder ganz fehlen. <strong>Die Sensordaten werden nicht dekodiert.</strong> Die Pixel tragen Weißabgleich und Bildstil der Kamera mit acht Bit pro Kanal. Prüfen Sie die Maße in der Zeile. Die Prüfzahl zählt Kopf- und Verzeichnisdaten; beim Dekodieren wird auch der JPEG-Ausschnitt gelesen."
 
 [[faq]]
 q = "Warum dann nicht die Sensordaten richtig dekodieren?"
-a = """
-        Weil das hieße, LibRaw oder dcraw mitzuliefern, also eine zweite Engine
-        von zig Megabyte für eine einzige Formatfamilie, und der größte Teil davon
-        sind herstellereigene Kompressionsverfahren. Diese Abwägung wird in
-        <code>docs/what-can-be-built-here.md</code> im Quelltext dieser Seite
-        ausgetragen, wo Kamera-RAW schon auf der Ausschlussliste stand, bevor es
-        dieses Werkzeug gab. Geändert hat sich nicht die Antwort auf diese Frage,
-        sondern die Erkenntnis, dass Stacken sie nicht braucht: Die Vorschauen
-        haben volle Auflösung, sie sind das, was die Kamera Ihnen ohnehin als JPEG
-        gegeben hätte, und sie zu lesen ist rund hundertmal schneller als
-        Demosaicing. Wenn Sie die Sensordaten wollen, entwickeln Sie die Aufnahmen
-        zuerst in einem RAW-Konverter und stacken Sie die TIFFs oder JPEGs, die er
-        ausgibt. Die nimmt dieses Werkzeug auch."""
+a = "Das Dekodieren der Sensordaten bräuchte eine RAW-Engine wie LibRaw oder dcraw mit den Kompressionsverfahren der einzelnen Kameras. Eine eingebettete JPEG-Vorschau hält dieses Werkzeug klein und nutzt den Bilddecoder des Browsers. Dabei werden die Wiedergabe der Kamera und die Vorschauauflösung der Datei übernommen. Für eigene RAW-Entwicklungseinstellungen entwickeln Sie die Aufnahmen zuerst und exportieren JPEG- oder PNG-Dateien zum Stacken."
 
 [[faq]]
 q = "Wie viele Aufnahmen schafft er, und wie groß?"
-a = """
-        Sechs der sieben Methoden strömen: Sie halten einen Akkumulator und lesen
-        jede Aufnahme genau einmal, hundert Aufnahmen kosten also so viel Speicher
-        wie zwei, und größer wird allein die Zeit. Der Median ist die Ausnahme,
-        weil sich der mittlere Wert einer Menge nicht kennen lässt, bevor man sie
-        ganz hat, und er deshalb jede Aufnahme gleichzeitig hält. Zwanzig Aufnahmen
-        mit 24 Megapixeln sind rund 1,4&nbsp;GB, und so viel gibt kein Browser
-        heraus. Dann wird das Bild in waagerechte Bänder geschnitten und Band für
-        Band gestackt, was das erneute Lesen der Aufnahmen für jedes Band kostet.
-        Die Seite rechnet das alles aus, bevor Sie den Knopf drücken, und zeigt
-        Ihnen die Zahl, ein langsamer Durchlauf ist also nie eine Überraschung."""
+a = "Sechs der sieben Methoden verwenden Akkumulatoren, deren Größe nicht mit der Zahl der Aufnahmen wächst. Mittelwert, Aufhellen, Abdunkeln, Addieren und Focus Stacking brauchen einen Durchlauf je Band, Sigma-Clipping zwei. Median hält die Werte jeder Aufnahme für das aktuelle Band und braucht deshalb mit mehr Aufnahmen mehr Speicher. Jede Methode kann in Bänder aufgeteilt werden, wenn ihre Arbeitspuffer das Budget des Werkzeugs überschreiten. Dann werden die Aufnahmen für jedes Band erneut dekodiert. Die Seite schätzt diese Puffer und zeigt die geplanten Dekodiervorgänge beim Stacken. Prüfen und Ausrichten brauchen weitere Arbeit, und die internen Codec- und GPU-Puffer des Browsers können mehr Speicher brauchen als geschätzt."
 
 [[faq]]
 q = "Was macht das Ausrichten der Aufnahmen eigentlich?"
-a = """
-        Es findet heraus, wie weit jede Aufnahme sich gegenüber der
-        Bezugsaufnahme bewegt hat, und schiebt sie zurück, auf Bruchteile eines
-        Pixels genau. Die
-        Methode ist Phasenkorrelation: Die Verschiebung zwischen zwei Bildern
-        zeigt sich als Phasenunterschied zwischen ihren Spektren, eine
-        Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln
-        also so billig wie einen von zwei. Die zweite Einstellung holt zusätzlich
-        Drehung und Maßstab zurück, mit demselben Kniff, angewandt auf das
-        Spektrum in logarithmisch-polaren Koordinaten. Das alles ist global, eine
-        Verschiebung, ein Winkel, ein Maßstab für das ganze Bild, und es
-        korrigiert deshalb eine Kamera, die sich bewegt hat, und kein Motiv, das
-        sich bewegt hat, und kein Foto, das einen Schritt weiter links aufgenommen
-        wurde. Eine sichtbare Folge: Eine um zwanzig Pixel nach links geschobene
-        Aufnahme reicht nicht mehr bis an den rechten Rand, deshalb wird das
-        Ergebnis auf den Teil beschnitten, den jede Aufnahme abdeckt. Darum kommt
-        ein ausgerichteter Stapel ein wenig kleiner heraus als die Aufnahmen, die
-        hineingingen, und das ist die einzige Alternative zu einem dunklen Rand
-        aus den Aufnahmen, die dort nicht waren."""
+a = "Das Werkzeug misst, wie weit jede Aufnahme gegenüber dem Bezug verschoben ist, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Es verwendet Phasenkorrelation: Verschiebung zeigt sich als Phasenunterschied zwischen den Spektren. Eine Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln so günstig wie einen von zwei. Die zweite Einstellung bestimmt auch Drehung und Maßstab über das Spektrum in logarithmisch-polaren Koordinaten. Die Korrektur ist global: eine Verschiebung, ein Winkel und ein Maßstab für das ganze Bild. Sie korrigiert die Bewegung der Kamera, aber weder ein bewegtes Motiv noch ein Foto von einem seitlich versetzten Standort. Eine nach links verschobene Aufnahme erreicht den rechten Rand nicht mehr. Das Ergebnis wird deshalb auf den gemeinsamen Bereich beschnitten und kann etwas kleiner sein. So werden dunkle Ränder durch nicht abgedeckte Bereiche vermieden."
 
 [[faq]]
 q = "Welche Methode soll ich nehmen?"
-a = """
-        <strong>Mittelwert</strong> gegen Rauschen, auf einer Serie, in der sich
-        nichts bewegt hat: Er senkt zufälliges Rauschen um rund die Wurzel aus der
-        Anzahl der Aufnahmen. <strong>Median</strong>, um Dinge zu entfernen, die
-        nur zeitweise da waren; der klassische Fall ist, einen belebten Platz ein
-        Dutzend Mal zu fotografieren und ihn leer zu bekommen.
-        <strong>Sigma-Clipping</strong>, wenn Sie beides wollen: Es lernt, was
-        jedes Pixel üblicherweise ist, und mittelt nur die Werte, die dazu passen,
-        hat also die Unempfindlichkeit des Medians gegen ein vorbeifahrendes Auto
-        und die Rauschminderung des Mittelwerts. <strong>Aufhellen</strong> für
-        Sternspuren, Feuerwerk und Lichtmalerei. <strong>Abdunkeln</strong>, um
-        alles Helle zu entfernen, das sich bewegt hat. <strong>Addieren</strong>,
-        um eine einzelne lange Belichtung nachzubilden. <strong>Focus
-        Stacking</strong> für eine Makroaufnahme entlang des Fokusrings."""
+a = "<strong>Mittelwert</strong> gegen Rauschen, wenn sich nichts bewegt hat: unabhängiges zufälliges Rauschen sinkt ungefähr um die Wurzel aus der Zahl der Aufnahmen. <strong>Median</strong> entfernt Dinge, die einen Teil der Szene in weniger als der Hälfte der Aufnahmen verdecken. <strong>Sigma-Clipping</strong> mittelt Werte nahe ihrem Mittelwert und verwirft Werte außerhalb der gewählten Schwelle. In kleinen Serien oder bei häufigem Auftreten können bewegte Objekte bleiben; wenn deren Entfernung Vorrang hat, ist Median die sicherere Wahl. <strong>Aufhellen</strong> für Sternspuren, Feuerwerk und Lichtmalerei. <strong>Abdunkeln</strong> gegen bewegte helle Dinge. <strong>Addieren</strong> mischt die dekodierten Aufnahmen additiv. Es arbeitet mit Acht-Bit-Bildwerten und bildet keine längere Kamerabelichtung nach. <strong>Focus Stacking</strong> für eine Makroaufnahme entlang des Fokusrings."
 
 [[faq]]
 q = "Warum hat mein Ergebnis acht Bit, wenn meine RAW-Dateien vierzehn haben?"
-a = """
-        Weil gestackt wird, was die Kamera selbst als Vorschau abgelegt hat, und
-        das ist ein JPEG. Dazu gehört gesagt, dass Stacken einen Teil davon
-        zurückholt: Sechzehn Acht-Bit-Aufnahmen zu mitteln ergibt ein Bild mit
-        tatsächlich feineren Abstufungen, als eine einzelne von ihnen hatte, weil
-        genau das Rauschen, das jede Aufnahme anders runden ließ, den Mittelwert
-        zwischen den Stufen landen lässt. Gerechnet wird hier in Fließkomma und
-        erst ganz am Ende einmal gerundet, dazwischen geht davon also nichts
-        verloren. Dasselbe wie lineare Sensordaten zu stacken ist es trotzdem
-        nicht, und dieses Werkzeug tut nicht so."""
+a = "Aus der RAW-Datei wird die JPEG-Vorschau der Kamera verwendet, und das Ergebnis ist ein Acht-Bit-PNG oder -JPEG. Mittelwert und Sigma-Clipping verwenden breitere Akkumulatoren und runden erst am Ende. So lässt sich aus verrauschten Aufnahmen ein saubererer Wert bestimmen, ohne jeden Zwischenschritt zu runden. Das gespeicherte Bild hat weiterhin acht Bit pro Kanal; Bittiefe und Dynamikumfang linearer Sensordaten gewinnt es nicht."
 
 [[faq]]
 q = "Kann ich Aufnahmen unterschiedlicher Größe oder aus verschiedenen Kameras stacken?"
-a = """
-        Ja, auch wenn es meist ein Versehen ist und einen prüfenden Blick lohnt.
-        Das Ergebnis hat die Größe der größten Aufnahme, und jede andere wird
-        eingepasst und mittig gesetzt. Kameras zu mischen mischt auch die
-        Farbwiedergabe, ein Mittelwert aus beiden ist also ein Mittelwert aus zwei
-        verschiedenen Deutungen desselben Lichts. Wirklich hilfreich ist es bei
-        einer Serie, die in zwei Auflösungen aufgenommen wurde, oder bei einer
-        RAW-Datei und einem JPEG derselben Aufnahme."""
+a = "Ja, aber prüfen Sie, ob das beabsichtigt ist. Die größte Aufnahme bestimmt die Arbeitsfläche; andere werden eingepasst und zentriert. Das gespeicherte Ergebnis wird auf den gemeinsamen Bereich beschnitten. Verschiedene Bildformen oder die Ausrichtung können es daher kleiner als die geplante Fläche machen. Verschiedene Kameras mischen auch ihre Farbwiedergabe. Halten Sie Belichtung und Bildausschnitt gleich und prüfen Sie das Ergebnis mit dem Bezugsvergleich."
 
 [[faq]]
 q = "Er sagt, der Durchlauf werde in Bänder geteilt. Was heißt das?"
@@ -320,28 +210,22 @@ a = """
 
 [[faq]]
 q = "Ist das kostenlos, und brauche ich ein Konto?"
-a = """
-        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
-        und kein Wasserzeichen. Es gibt auch keine Grenze dafür, wie viele
-        Aufnahmen Sie stacken oder wie groß sie sind, weil kein Server dafür
-        bezahlt: Die Arbeit passiert auf Ihrem eigenen Gerät, und die einzige
-        Decke ist Ihr eigener Speicher. Die Seite trägt Werbung, und die bezahlt
-        sie; die Werbung bekommt nichts über Ihre Fotos."""
+a = "Es ist kostenlos, ohne Konto, Anmeldung, Testphase oder Wasserzeichen. Es gibt keine Dienstquote für Zahl oder Größe der Aufnahmen. Die praktischen Grenzen sind der Speicher Ihres Geräts, die Canvas- und Decodergrenzen des Browsers und die Laufzeit. Die Seite trägt Werbung, die sie bezahlt; die Werbung bekommt nichts über Ihre Fotos."
 
 [schema]
-description = "Eine Fotoserie im Browser stacken: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher per Phasenkorrelation ausgerichteten Aufnahmen. Liest Kamera-RAW-Dateien, indem die eingebettete Vorschau in voller Größe herausgeholt wird, ein RAW-Konverter ist also nicht nötig. Nichts wird hochgeladen."
+description = "Eine Fotoserie im Browser stacken: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher per Phasenkorrelation ausgerichteten Aufnahmen. Liest Kamera-RAW-Dateien mit brauchbaren eingebetteten JPEG-Vorschauen, ohne Sensordaten zu dekodieren. Nichts wird hochgeladen."
 features = [
   "Sieben Methoden: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren und Focus Stacking",
-  "Liest CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 und mehr, indem die Vorschau der Kamera in voller Größe herausgeholt wird",
-  "Öffnet eine 60-MB-RAW-Datei, indem rund hundert Kilobyte davon gelesen werden",
+  "Liest CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 und mehr, wenn eine brauchbare eingebettete JPEG-Vorschau vorhanden ist",
+  "Findet RAW-Vorschauen durch kleine Verzeichnis- und Kopfdatenlesevorgänge und dekodiert danach den JPEG-Ausschnitt",
   "Automatisches Ausrichten: nur verschieben, verschieben mit Drehung und Maßstab, oder gar nicht",
   "Ausrichtung auf Subpixel genau per Phasenkorrelation statt durch Absuchen von Versätzen",
-  "Sechs der sieben Methoden halten einen Akkumulator, hundert Aufnahmen kosten also den Speicher von zweien",
-  "Speicher- und Dekodierkosten werden vor dem Start ausgerechnet und angezeigt",
+  "Bei sechs Methoden wächst die Größe der Akkumulatoren nicht mit der Zahl der Aufnahmen; Median hält Werte je Aufnahme",
+  "Geschätzter Speicher für den Stack und geplante Dekodiervorgänge beim Stacken vor dem Start angezeigt",
   "Die Arbeit läuft in einem Worker, der Fortschritt bewegt sich und Abbrechen antwortet",
   "PNG oder JPEG heraus; läuft offline; kein Upload, kein Konto",
 ]
 
 [picker]
 title = "Aufnahmen hier ablegen"
-hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, AVIF, TIFF und Kamera-RAW"
+hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, AVIF und Kamera-RAW mit JPEG-Vorschauen"

@@ -150,11 +150,10 @@ function meanStack({ pixels, gain }) {
 }
 
 /**
- * Sum. The same accumulator, undivided: what a single long exposure would have
- * collected. Light painting and fireworks want this, and so does anything where
- * the subject is brighter than the background and the background is meant to
- * stay dark. It clips, and clipping is the point - a highlight that would have
- * blown out in one long exposure blows out here too.
+ * Sum. An additive blend of the rendered RGB channels, useful for light
+ * painting and fireworks where bright parts of separate frames should build up.
+ * These channels are encoded rather than linear light, so this is a blend with
+ * clipping, not the light a physically longer exposure would have collected.
  */
 function sumStack({ pixels, gain }) {
   const sum = new Float32Array(pixels * RGB);
@@ -311,8 +310,9 @@ export function medianOf(values, n = values.length) {
  * Pass one learns, for every pixel, what it usually is and how much it varies.
  * Pass two averages only the values within kappa standard deviations of that,
  * so a car that crossed one frame is excluded from that pixel and every other
- * frame still counts. It is the median's result with the mean's noise
- * reduction, and unlike the median it does not have to hold the frames.
+ * frame still counts. A small set may give an outlier enough influence over
+ * the mean and spread to keep it inside the threshold, so rejection is not
+ * guaranteed. Unlike the median this method does not have to hold the frames.
  *
  * There is no way to fold this into one pass. The threshold a value is tested
  * against depends on frames that have not been read yet.
@@ -458,8 +458,8 @@ function focusStack({ pixels, width, height, radius, gain }) {
  * Zero rather than a mirrored or clamped edge, because a band's top and bottom
  * rows are usually not the picture's - they are a seam in the middle of it -
  * and inventing an edge there would score the seam higher than the picture
- * around it. plan.js gives focus stacking two rows of overlap for this reason,
- * so the rows scored as zero are rows that get thrown away.
+ * around it. plan.js gives focus stacking the blur radius plus one row of
+ * overlap, so every kept score has the same neighbours as an unbanded run.
  */
 export function laplacian(source, out, width, height) {
   out.fill(0);
