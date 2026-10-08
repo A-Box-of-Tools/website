@@ -177,7 +177,7 @@ async function load(file) {
     if (loading !== owner) return;
     current = { file: data.file, pages: data.pages, tables: data.tables,
       mark: data.mark, order: data.found ?? 'dmy', pick: ALL };
-    el.fileFacts.textContent = `${countOf('pages', data.pages)} · ${size(data.bytes)}`;
+    el.fileFacts.textContent = fileFactsText(data.pages, data.bytes);
 
     // The date control is offered only where it would change something.
     if (hasAmbiguousDates(data.cells)) {
@@ -222,7 +222,7 @@ function refuse(message) {
 function fail(error) {
   if (error instanceof TableReadError) {
     if (error.pages) {
-      el.fileFacts.textContent = `${countOf('pages', error.pages)} · ${size(error.bytes)}`;
+      el.fileFacts.textContent = fileFactsText(error.pages, error.bytes);
     }
     refuse(phrase(error.reason));
     el.scannedHelp.hidden = error.reason !== 'scan.notext';
@@ -551,6 +551,10 @@ function countOf(thing, n) {
 }
 
 const size = (n) => sizeText(n, phrase, { under: 'size.bytes' });
+
+// A refused scan still has known page and byte counts, so both outcomes use
+// the same translated facts instead of keeping two layouts in sync.
+const fileFactsText = (pages, bytes) => `${countOf('pages', pages)} · ${size(bytes)}`;
 
 /** The document's name without its extension, for the CSV beside it. */
 function baseName(name) {
