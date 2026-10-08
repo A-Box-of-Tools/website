@@ -9,9 +9,10 @@ THE RULE
 
 WHERE THE NUMBER LIVES
 
-In git tags, and nowhere else. It used to be a line in config/site.toml that
-every pull request had to move, checked by a presubmit - and that arrangement
-had two faults which turned out to be one fault.
+In git tags, rather than a number maintained in a source file. It used to be
+a line in config/site.toml that every pull request had to move, checked by a
+presubmit - and that arrangement had two faults which turned out to be one
+fault.
 
 Nothing read it. No template rendered it, no page showed it; the only code
 that opened that line was the check confirming somebody had moved it. It was a
@@ -40,6 +41,12 @@ at once, or a deploy that was skipped because the output was identical, still
 moves the number exactly once and never loses a change that happened in
 between.
 
+The footer displays a version derived from those tags. Local and preview
+builds read only tags already in the checkout, preferring one on HEAD so a
+historical release can be rebuilt with its own number. The deploy calculates
+its next version before building and supplies that number to the build, then
+creates the tag after publishing. No page needs to ask GitHub for its version.
+
 WHY THE ANSWER COMES FROM A LIST OF PATHS
 
 Because the honest question - "did the rendered site change?" - can only be
@@ -57,6 +64,7 @@ under this rule. That is the cheaper mistake of the two.
 """
 
 import re
+import subprocess
 
 #: Files a visitor could never notice a change in.
 INVISIBLE = (
@@ -117,6 +125,33 @@ def latest(tags):
     """
     versions = [v for v in (parse(tag) for tag in tags) if v]
     return max(versions) if versions else None
+
+
+def release_tag(root):
+    """The release shown by an ordinary build, using only this checkout.
+
+    A tag on HEAD belongs to the sources being rebuilt, even when newer tags
+    exist elsewhere in the checkout. An untagged branch shows the latest
+    existing release instead of linking to one that has not been published.
+    Source archives and clones without tags can still build: an unavailable
+    version is an empty string, and there is never a remote lookup.
+    """
+    for args in (('tag', '--points-at', 'HEAD'), ('tag', '--list')):
+        try:
+            done = subprocess.run(
+                ['git', *args], cwd=root, capture_output=True,
+                encoding='utf-8')
+        except OSError:
+            return ''
+        if done.returncode != 0:
+            return ''
+        tags = [tag.strip() for tag in done.stdout.splitlines()
+                if parse(tag) is not None]
+        if tags:
+            # The URL names an existing tag, so preserve its spelling rather
+            # than reconstructing it from the numbers used to compare it.
+            return max(tags, key=parse)
+    return ''
 
 
 def bump(current, need):

@@ -335,16 +335,31 @@ jobs:
         with:
           node-version: '20'
 
+      # The footer must name the release being built, although the tag is only
+      # pushed after publication. Save the decision once so both builds and
+      # the later tag step cannot disagree. Previews keep the existing tag.
+      - name: Work out the release before building it
+        id: release
+        if: env.DEPLOYS == 'true'
+        run: |
+          set -euo pipefail
+          python scripts/next_version.py > "$RUNNER_TEMP/next"
+          version=$(sed -n '1p' "$RUNNER_TEMP/next")
+          if [ -z "$version" ]; then
+            version=$(python -c "from pathlib import Path; from buildlib.version import release_tag; print(release_tag(Path.cwd()))")
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
       # The unminified build, kept as the reference the deployed one is judged
       # against. Cheap, and it means a file that went missing has something to
       # go missing from.
       - name: Build (readable)
         if: env.BUILDS == 'true'
-        run: python build.py --out _plain --clean --no-minify
+        run: python build.py --out _plain --clean --no-minify --release-version "${{ steps.release.outputs.version }}"
 
       - name: Build (deployed)
         if: env.BUILDS == 'true'
-        run: python build.py --out _site --clean
+        run: python build.py --out _site --clean --release-version "${{ steps.release.outputs.version }}"
 
       # DID THIS CHANGE THE SITE AT ALL?
       #
@@ -617,16 +632,27 @@ jobs:
         if: env.DEPLOYS == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           set -euo pipefail
 
-          # Two lines, or nothing at all: the version to tag and why it moved.
+          # A tag push can succeed while creating its release page fails.
+          # Reruns must repair that page, because every footer links to it.
+          ensure_release() {
+            if ! gh release view "$version" >/dev/null 2>&1; then
+              gh release create "$version" --verify-tag --title "$version" --notes-from-tag
+            fi
+          }
+          version="$RELEASE_VERSION"
+
+          # The saved decision from before the builds: the version and why it
+          # moved, or nothing at all when this deploy leaves it alone.
           # Nothing is the ordinary answer - the rule requires a change to the
           # tests, to CI or to the documentation to leave the version alone -
-          # so an empty answer ends the step successfully.
-          python scripts/next_version.py > "$RUNNER_TEMP/next"
+          # so an empty answer keeps the tag and checks its release page.
           if [ ! -s "$RUNNER_TEMP/next" ]; then
             echo 'The version stands; nothing here reaches a page.'
+            ensure_release
             exit 0
           fi
 
@@ -647,7 +673,8 @@ jobs:
           # would be right today; asking the remote is right whether or not
           # that stays true.
           if git ls-remote --exit-code --tags origin "refs/tags/$version" >/dev/null 2>&1; then
-            echo "Version $version is already tagged; nothing to do."
+            echo "Version $version is already tagged; checking its release page."
+            ensure_release
             exit 0
           fi
 
@@ -662,7 +689,7 @@ jobs:
           # caused it, so the two can never say different things.
           printf '%s\n\n%s\n' "$reason" "$(git log -1 --pretty=%s)" \
             > "$RUNNER_TEMP/notes.md"
-          gh release create "$version" --title "$version" \
+          gh release create "$version" --verify-tag --title "$version" \
             --notes-file "$RUNNER_TEMP/notes.md"
 
           echo "### Version" >> "$GITHUB_STEP_SUMMARY"

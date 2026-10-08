@@ -22,6 +22,7 @@ import unittest
 import xml.etree.ElementTree as ElementTree
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from unittest.mock import patch
 
 import build as buildmod
 import indexnow
@@ -1898,6 +1899,48 @@ class BuildTheSite(unittest.TestCase):
                          'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())
+
+
+class TheReleaseLinkInABuiltFooter(unittest.TestCase):
+    """The deploy's chosen version must survive the actual page render.
+
+    These cases build one English tool, independently of the whole-site
+    fixtures and of whichever release tags CI's checkout happens to carry.
+    """
+
+    def page(self, release_version=None, local_version='1.2.3'):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'dist'
+            with patch.object(buildmod.version, 'release_tag',
+                              return_value=local_version) as read_tag:
+                buildmod.build(out, clean=True, minify_output=False, jobs=1,
+                               only=['compress-image'], langs=['en'],
+                               release_version=release_version)
+            return (out / 'compress-image' / 'index.html').read_text(
+                encoding='utf-8'), read_tag
+
+    def test_the_deploys_version_overrides_the_older_local_release(self):
+        source = buildmod.sitelib.load_toml(
+            ROOT / 'config' / 'site.toml')['source_url']
+        for supplied in ('9.8.7', ' \t9.8.7 \n'):
+            with self.subTest(supplied=supplied):
+                page, read_tag = self.page(release_version=supplied)
+                self.assertIn(f'href="{source}/releases/tag/9.8.7"', page)
+                self.assertIn('<bdi>v9.8.7</bdi>', page)
+                read_tag.assert_not_called()
+
+    def test_a_build_without_version_tags_omits_the_release_link(self):
+        page, read_tag = self.page(local_version='')
+        self.assertNotIn('class="footer-release"', page)
+        self.assertNotIn('/releases/tag/', page)
+        read_tag.assert_called_once_with(buildmod.ROOT)
+
+    def test_an_invalid_override_is_refused(self):
+        for supplied in ('v9.8.7', '9.8', '9.8.7/notes'):
+            with self.subTest(supplied=supplied):
+                with self.assertRaisesRegex(buildmod.sitelib.ConfigError,
+                                            'Invalid release version'):
+                    self.page(release_version=supplied)
 
 
 class ScopedBuildRefusals(unittest.TestCase):

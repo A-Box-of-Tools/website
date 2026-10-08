@@ -108,6 +108,7 @@ from buildlib import markdown as mdlib
 from buildlib import minify
 from buildlib import screens
 from buildlib import site as sitelib
+from buildlib import version
 from buildlib.deployed import check_against_branch
 # LINK comes from the emitter because that is what gathers a page's links, on
 # the way past as it writes; check_links borrows the pattern for the one path
@@ -162,6 +163,9 @@ def main(argv=None):
     parser.add_argument('--quiet', action='store_true',
                         help='say how many pages were written rather than naming '
                              'every one')
+    parser.add_argument('--release-version',
+                        help='release tag to show in the footer (default: the '
+                             'local Git release tag, when available)')
     args = parser.parse_args(argv)
 
     out = (ROOT / args.out).resolve()
@@ -183,7 +187,8 @@ def main(argv=None):
 
     try:
         pages = build(out, clean=args.clean, minify_output=args.minify,
-                      jobs=args.jobs, only=args.only, langs=args.langs)
+                      jobs=args.jobs, only=args.only, langs=args.langs,
+                      release_version=args.release_version)
     except (sitelib.ConfigError, TemplateError, minify.MinifyError,
             cssmin.CssError) as err:
         print(f'build failed: {err}', file=sys.stderr)
@@ -200,7 +205,7 @@ def main(argv=None):
 
 
 def build(out, clean=False, minify_output=True, jobs=None, only=None,
-          langs=None):
+          langs=None, release_version=None):
     """Everything, into `out`. `only` and `langs` narrow what is written to the
     named tools and the named languages - see "A scoped build" above."""
     only = set(only) if only else None
@@ -213,6 +218,15 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
 
     templates = Loader(TEMPLATES)
     site = sitelib.load_toml(CONFIG / 'site.toml')
+    # Production supplies the tag it will create after publication. Ordinary
+    # builds read an existing local tag, so previews never invent a release
+    # and rebuilding a tagged checkout produces the footer that shipped.
+    release_version = (release_version or version.release_tag(ROOT)).strip()
+    if release_version and version.parse(release_version) is None:
+        raise sitelib.ConfigError(
+            f'Invalid release version {release_version!r}: expected a numeric '
+            'Git tag such as 1.2.3.')
+    site['release_version'] = release_version
     emit = Emitter(minify_output, site)
     # The hub and the legal pages share one stylesheet, so they share one
     # version for it. Tool pages each hash their own assembled sheet.

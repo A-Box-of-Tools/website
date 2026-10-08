@@ -138,6 +138,8 @@
   </p>
 
   <p class="footer-licence">
+{% if site.release_version %}    <a class="footer-release" href="{{ site.source_url }}/releases/tag/{{ site.release_version }}" target="_blank" rel="noopener noreferrer"><bdi>v{{ site.release_version }}</bdi></a> ·
+{% endif %}
 {{ site.footer.licence }}
   </p>
 </footer>
