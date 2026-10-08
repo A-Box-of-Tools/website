@@ -228,8 +228,11 @@ the left and the saved stack on the right. A divider reveals either image at
 the same coordinates, because switching whole pictures makes a subtle change
 in noise or sharpness hard to locate. It can be dragged by mouse or touch, or
 moved with the native range control's arrow keys. Either endpoint shows one
-whole image, and the actual-pixel view scrolls both pictures together. The
-single-image options remain available for looking at either picture alone.
+whole image. The divider is available only in Fit to window. Choosing actual
+pixels removes Compare from the source menu and shows the whole stacked
+result; the reference remains available as a separate image. Returning to Fit
+restores Compare without changing the chosen image. A new stack opens its
+comparison in Fit again.
 
 ## The alignment, and the sign
 

@@ -86,6 +86,7 @@ const el = {
 };
 
 const { show: showError } = messageBox(el.error);
+const comparisonOption = el.viewSource.querySelector('option[value="compare"]');
 
 /** @type {{file: File, info: object|null, thumb: string|null, ok: boolean}[]} */
 let frames = [];
@@ -818,8 +819,9 @@ function finished(result) {
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = URL.createObjectURL(result.blob);
 
-  el.viewSource.value = 'compare';
   el.viewSize.value = 'fit';
+  renderViewOptions();
+  el.viewSource.value = 'compare';
   el.divider.value = '50';
   el.comparisonStage.style.setProperty('--preview-ratio', String(result.width / result.height));
   el.comparisonStage.style.setProperty('--preview-width', `${result.width}px`);
@@ -931,11 +933,27 @@ function renderAlignment(result, alignment) {
   }));
 }
 
+function renderViewOptions() {
+  const actual = el.viewSize.value === 'actual';
+  if (actual) {
+    if (el.viewSource.value === 'compare') el.viewSource.value = 'result';
+    // Removing the option keeps it out of native menus that ignore hidden
+    // options. Retaining the node preserves its translated label for Fit.
+    comparisonOption.remove();
+  } else if (comparisonOption.parentNode !== el.viewSource) {
+    const source = el.viewSource.value;
+    el.viewSource.prepend(comparisonOption);
+    el.viewSource.value = source;
+  }
+  return actual;
+}
+
 function renderViewer() {
   if (!completed) return;
+  const actual = renderViewOptions();
   const source = el.viewSource.value;
   const isReference = source === 'reference' && referenceUrl;
-  const split = source === 'compare' && Boolean(referenceUrl);
+  const split = !actual && source === 'compare' && Boolean(referenceUrl);
   const label = (value) => el.viewSource.querySelector(`option[value="${value}"]`).textContent;
   el.resultImage.src = isReference ? referenceUrl : resultUrl;
   el.resultImage.alt = label(isReference ? 'reference' : 'result');
@@ -946,7 +964,7 @@ function renderViewer() {
   el.comparisonStage.classList.toggle('is-comparing', split);
   el.referenceLabel.textContent = label('reference');
   el.resultLabel.textContent = label('result');
-  el.resultFrame.classList.toggle('actual-size', el.viewSize.value === 'actual');
+  el.resultFrame.classList.toggle('actual-size', actual);
   renderSplit();
   el.viewerStatus.textContent = comparing ? phrase('viewer.loading')
     : split ? phrase('viewer.compare')
@@ -965,9 +983,8 @@ function renderSplit() {
   el.resultLabel.hidden = !split || percent === 100;
 }
 
-// The divider moves in image coordinates, so the two sides stay registered
-// when the actual-size view scrolls. Its narrow hit area leaves the rest of
-// the picture available for touch scrolling instead of swallowing every drag.
+// The divider follows the displayed picture rather than the native range's
+// narrow hit strip, so mouse and touch reveal the same image coordinates.
 function moveDivider(event) {
   const image = el.comparisonStage.getBoundingClientRect();
   if (!image.width) return;
