@@ -88,6 +88,11 @@
       actually reach called out on its own line.
     </p>
 
+    <div class="run-row">
+      <button type="button" id="clear-results" class="ghost">Clear results</button>
+    </div>
+    <p id="result-status" class="field-summary" role="status"></p>
+
     <div id="results"></div>
   </section>
 
@@ -233,6 +238,7 @@
       app: anyone holding it can generate your codes for that account
       indefinitely. It has not left this page, and it is worth being careful
       where else it goes.</span>
+    <span data-phrase="warn.percent-encoding">One of this code's fields has an invalid percent escape. That field is shown as written; check the full text before using it.</span>
     <span data-phrase="warn.not-openable">This is not a web address, so there is
       no link to offer. It is printed in full above; whether anything on your
       machine will act on it is between you and that program.</span>
@@ -253,6 +259,7 @@
     <span data-phrase="preview.nothing">No code found</span>
     <span data-phrase="preview.broken">Could not be opened</span>
 
+    <span data-phrase="status.cleared">Results and picture previews cleared.</span>
     <span data-phrase="status.reading">Reading the picture&hellip;</span>
     <span data-phrase="status.nothing">No code found in that picture. It needs
       the whole symbol in frame, its white margin included, and enough light

@@ -202,6 +202,15 @@ function aboutContact(text) {
   };
 }
 
+/** A malformed escape belongs to the code's text, not to picture decoding. */
+function uriField(text) {
+  try {
+    return { value: decodeURIComponent(text), malformed: false };
+  } catch {
+    return { value: text, malformed: true };
+  }
+}
+
 /** An email, written either as a link or in the older message format. */
 function aboutEmail(text) {
   if (/^MATMSG:/i.test(text)) {
@@ -226,7 +235,8 @@ function aboutEmail(text) {
   } catch {
     return null;
   }
-  const to = decodeURIComponent(url.pathname);
+  const recipient = uriField(url.pathname);
+  const to = recipient.value;
   const rows = [row('field.to', to, { emphasis: true })];
   for (const [name, key] of [['subject', 'field.subject'], ['body', 'field.message']]) {
     const value = url.searchParams.get(name);
@@ -236,8 +246,8 @@ function aboutEmail(text) {
     kind: 'email',
     kindKey: 'kind.email',
     rows,
-    warnings: [],
-    link: { href: url.href, host: to },
+    warnings: recipient.malformed ? [{ key: 'warn.percent-encoding', values: {} }] : [],
+    link: recipient.malformed ? null : { href: url.href, host: to },
   };
 }
 
@@ -299,16 +309,19 @@ function aboutOtp(text) {
   } catch {
     return null;
   }
+  const account = uriField(url.pathname.replace(/^\/+/, ''));
   return {
     kind: 'otp',
     kindKey: 'kind.otp',
     rows: [
-      row('field.account', decodeURIComponent(url.pathname.replace(/^\/+/, '')),
-          { emphasis: true }),
+      row('field.account', account.value, { emphasis: true }),
       row('field.issuer', url.searchParams.get('issuer') ?? ''),
       row('field.secret', url.searchParams.get('secret') ?? '', { secret: true }),
     ].filter((entry) => entry.value),
-    warnings: [{ key: 'warn.otp-secret', values: {} }],
+    warnings: [
+      { key: 'warn.otp-secret', values: {} },
+      ...(account.malformed ? [{ key: 'warn.percent-encoding', values: {} }] : []),
+    ],
     link: null,
   };
 }
