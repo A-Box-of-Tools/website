@@ -184,6 +184,27 @@ export function verdict(entries, digests, fileName) {
   return { state: 'mismatch', entry: candidates[0] };
 }
 
+/**
+ * What each displayed algorithm can claim about the paste.
+ *
+ * The overall verdict accepts any matching candidate. A row still has to compare
+ * its own algorithm, because choosing one overall match does not make the other
+ * checksums wrong. Wrapped line fragments remain candidates for that overall
+ * decision, but only the joined digest describes an algorithm in the paste.
+ *
+ * @param {{entries: Expected[], wrapped: boolean}} expected
+ * @param {Record<string, string>} digests
+ * @param {string} [fileName]
+ * @returns {Record<string, 'none'|'waiting'|'match'|'mismatch'>}
+ */
+export function rowVerdicts(expected, digests, fileName) {
+  const declared = expected.wrapped ? expected.entries.slice(0, 1) : expected.entries;
+  return Object.fromEntries(ORDER.map((id) => {
+    const entries = declared.filter((entry) => entry.algorithm === id);
+    return [id, verdict(entries, digests, fileName).state];
+  }));
+}
+
 /** The last path segment, so a Windows path and a URL both come down to a name. */
 function basename(name) {
   return name.split(/[\/]/).pop().trim();
