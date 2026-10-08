@@ -38,7 +38,7 @@ roadmap_group = "beyond"
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
 js_parts = ["help-tooltip"]
-lastmod = "2026-10-05"
+lastmod = "2026-10-08"
 
 # --- what search engines and chat apps are told ------------------------------
 

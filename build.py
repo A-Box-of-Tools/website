@@ -1292,7 +1292,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
                       body_path.read_text(encoding='utf-8')),
         f'{tool["slug"]}/body.html [{locale["lang"]}]',
         {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
-         'links': links}).rstrip('\n')
+         'links': links, 'js_v': js_v}).rstrip('\n')
 
     # The explanation each step opens with, folded behind that step's heading.
     # Done here rather than in five hundred bodies, one per tool per language,

@@ -340,6 +340,7 @@ $('local').addEventListener('change', () => {
   $('discoverable').disabled = !$('local').checked;
 });
 wireHelpTooltip($('discoverable-help'));
+wireHelpTooltip($('tool-version-help'));
 
 /* ------------------------------------------------- the sharer's connection */
 

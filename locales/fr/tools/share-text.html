@@ -1,4 +1,12 @@
 <main id="main">
+  <div class="share-version">
+    <span>Version de l’outil</span> <code id="tool-version">{{ js_v }}</code>
+    <details id="tool-version-help" class="tool-version-help info-fold">
+      <summary aria-describedby="tool-version-note"><span class="visually-hidden">À propos de la version de l’outil</span></summary>
+      <p id="tool-version-note" role="tooltip" class="tool-version-note">Comparez cette valeur sur les deux appareils. Si elle diffère, rechargez les deux pages avant de commencer un nouveau partage.</p>
+    </details>
+  </div>
+
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
     <section id="discovery" class="card">

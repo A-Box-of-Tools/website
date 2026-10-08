@@ -74,6 +74,14 @@ unchanged.
 
 ## Finding a share on the start page
 
+Both roles show the tool's generated code version above their controls. It is
+the same content hash used in this page's module URLs, so languages using the
+same code show the same value, and changing the tool or its shared modules
+changes it without a hand-maintained version number. The information tooltip
+asks devices with different values to reload before starting a new share.
+This helps identify an older open or cached page; it does not gate connections
+or claim that different versions cannot work together.
+
 Opening the tool without a share name opens one WebSocket to `/discover`.
 The list contains only advertised codes and the local-mode flag; opening an
 entry shows the usual consent page in another tab. It never opens WebRTC on

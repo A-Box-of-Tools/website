@@ -1,4 +1,12 @@
 <main id="main">
+  <div class="share-version">
+    <span>工具版本</span> <code id="tool-version">{{ js_v }}</code>
+    <details id="tool-version-help" class="tool-version-help info-fold">
+      <summary aria-describedby="tool-version-note"><span class="visually-hidden">关于工具版本</span></summary>
+      <p id="tool-version-note" role="tooltip" class="tool-version-note">请比较两台设备上的这个值。如果不同，请重新加载两边的页面，然后开始新的分享。</p>
+    </details>
+  </div>
+
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Chinese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
