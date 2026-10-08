@@ -112,6 +112,7 @@
         <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
+      <p id="results-settings" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
@@ -174,6 +175,11 @@
     <span data-phrase="error.encode">这个浏览器不肯写成 {format}。</span>
     <span data-phrase="error.decode">这个浏览器解不开这张图。</span>
 
+    <span data-phrase="run.settings">本次设置：每张图 {target}；超出目标大小的图片：{format}；{resize}。</span>
+    <span data-phrase="run.format.auto">自动选择格式</span>
+    <span data-phrase="run.format.keep">原始格式</span>
+    <span data-phrase="run.resize.on">允许缩小尺寸</span>
+    <span data-phrase="run.resize.off">保留原始尺寸</span>
     <span data-phrase="results.all">从 {before} 降到 {after} &mdash; {change}，每张图都在目标大小以下。</span>
     <span data-phrase="results.missed.one">从 {before} 降到 {after}。有 {count} 张没能到目标大小——看下面那一行。</span>
     <span data-phrase="results.missed.many">从 {before} 降到 {after}。有 {count} 张没能到目标大小——看下面几行。</span>

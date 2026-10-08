@@ -62,24 +62,27 @@ function luma(source, width, height) {
   canvas.width = width;
   canvas.height = height;
 
-  const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
-  // Transparency has to land on something, and it has to be the same something
-  // in both pictures or the comparison is measuring the background.
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, width, height);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-  ctx.drawImage(source, 0, 0, width, height);
+  try {
+    const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
+    // Transparency has to land on something, and it has to be the same something
+    // in both pictures or the comparison is measuring the background.
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(source, 0, 0, width, height);
 
-  const { data } = ctx.getImageData(0, 0, width, height);
-  const out = new Float32Array(width * height);
-  for (let i = 0, p = 0; i < out.length; i += 1, p += 4) {
-    out[i] = 0.299 * data[p] + 0.587 * data[p + 1] + 0.114 * data[p + 2];
+    const { data } = ctx.getImageData(0, 0, width, height);
+    const out = new Float32Array(width * height);
+    for (let i = 0, p = 0; i < out.length; i += 1, p += 4) {
+      out[i] = 0.299 * data[p] + 0.587 * data[p + 1] + 0.114 * data[p + 2];
+    }
+
+    return out;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
   }
-
-  canvas.width = 0;
-  canvas.height = 0;
-  return out;
 }
 
 /**
@@ -179,20 +182,23 @@ export function hasTransparency(source, size) {
   canvas.width = width;
   canvas.height = height;
 
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.drawImage(source, 0, 0, width, height);
-
-  let transparent = false;
   try {
-    const { data } = ctx.getImageData(0, 0, width, height);
-    for (let p = 3; p < data.length; p += 4) {
-      if (data[p] < 250) { transparent = true; break; }
-    }
-  } catch {
-    transparent = false;
-  }
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(source, 0, 0, width, height);
 
-  canvas.width = 0;
-  canvas.height = 0;
-  return transparent;
+    let transparent = false;
+    try {
+      const { data } = ctx.getImageData(0, 0, width, height);
+      for (let p = 3; p < data.length; p += 4) {
+        if (data[p] < 250) { transparent = true; break; }
+      }
+    } catch {
+      transparent = false;
+    }
+
+    return transparent;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }

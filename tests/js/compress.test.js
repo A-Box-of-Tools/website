@@ -30,8 +30,10 @@ import {
   MIN_SCALE, QUALITY_CEILING, QUALITY_FLOOR, QUALITY_HARD_MIN, SEARCH_QUALITY,
   alternativeFormat, keepFormat,
 } from '../../tools/compress-image/src/compress.js';
-import { FORMATS, JPEG, PNG, READABLE, WEBP } from '../../tools/compress-image/src/codecs.js';
+import { encode, FORMATS, JPEG, PNG, READABLE, WEBP } from '../../tools/compress-image/src/codecs.js';
 import { parseImageUrl } from '../../shared/js/url-import.js';
+import { captureSettings, compressOne, score } from '../../tools/compress-image/src/process.js';
+import { compare, hasTransparency } from '../../tools/compress-image/src/measure.js';
 
 /* ================================================================= sizes */
 
@@ -253,5 +255,196 @@ test('parseImageUrl: the invalid address is short enough to show in a translated
   } catch (err) {
     assert.equal(err.message, 'url.invalid');
     assert.equal(err.values.address.length, 60);
+  }
+});
+
+
+/* =========================================================== run settings */
+
+const deferred = () => {
+  let resolve;
+  const promise = new Promise((done) => { resolve = done; });
+  return { promise, resolve };
+};
+
+const runItem = () => ({
+  file: { name: 'photo.png', size: 20000, type: PNG },
+  size: { width: 320, height: 240 },
+});
+
+function fitted(mime, extra = {}) {
+  return {
+    blob: new Blob(['encoded'], { type: mime }), mime,
+    width: 320, height: 240, fitted: true, resized: false,
+    quality: 0.8, encodes: 1, ...extra,
+  };
+}
+
+test('a delayed decode keeps the batch target, format and resizing permission', async () => {
+  const options = { targetBytes: 10000, format: JPEG, allowResize: true };
+  const writable = new Set([JPEG, PNG]);
+  const settings = captureSettings(options, writable);
+  const decoded = deferred();
+  const bitmap = {};
+  const searches = [];
+  const released = [];
+  const processing = compressOne(runItem(), settings, () => {}, {
+    decode: () => decoded.promise,
+    hasTransparency: () => false,
+    fitToTarget: async (_, search) => { searches.push(search); return fitted(search.mime); },
+    score: async () => ({ ssim: 0.99 }),
+    release: (source) => released.push(source),
+  });
+  options.targetBytes = 50000;
+  options.format = PNG;
+  options.allowResize = false;
+  writable.clear();
+  decoded.resolve({ bitmap, width: 320, height: 240 });
+  const result = await processing;
+  assert.equal(searches.length, 1);
+  assert.equal(searches[0].targetBytes, 10000);
+  assert.equal(searches[0].mime, JPEG);
+  assert.equal(searches[0].allowResize, true);
+  assert.equal(result.mime, JPEG);
+  assert.equal(result.outName, 'photo-compressed.jpg');
+  assert.deepEqual(released, [bitmap]);
+});
+
+test('automatic comparison uses the captured encoder set for both searches', async () => {
+  const writable = new Set([JPEG, PNG, WEBP]);
+  const settings = captureSettings({ targetBytes: 10000, format: 'auto', allowResize: true }, writable);
+  const decoded = deferred();
+  const bitmap = {};
+  const searches = [];
+  const released = [];
+  const processing = compressOne(runItem(), settings, () => {}, {
+    decode: () => decoded.promise,
+    hasTransparency: () => true,
+    fitToTarget: async (_, search) => {
+      searches.push(search);
+      return fitted(search.mime, { resized: true, encodes: 2 });
+    },
+    score: async (_, candidate) => ({ ssim: candidate.mime === WEBP ? 0.99 : 0.8 }),
+    release: (source) => released.push(source),
+  });
+  writable.delete(WEBP);
+  decoded.resolve({ bitmap, width: 320, height: 240 });
+  const result = await processing;
+  assert.deepEqual(searches.map(({ mime, targetBytes, allowResize }) =>
+    ({ mime, targetBytes, allowResize })), [
+    { mime: PNG, targetBytes: 10000, allowResize: true },
+    { mime: WEBP, targetBytes: 10000, allowResize: true },
+  ]);
+  assert.equal(result.mime, WEBP);
+  assert.equal(result.changedFormat, true);
+  assert.equal(result.encodes, 4);
+  assert.deepEqual(released, [bitmap]);
+});
+
+test('a file under the captured target stays byte-for-byte without decoding', async () => {
+  const item = runItem();
+  const settings = captureSettings({ targetBytes: 30000, format: JPEG, allowResize: true }, new Set([JPEG, PNG]));
+  const result = await compressOne(item, settings, () => {}, {
+    decode: () => assert.fail('a file that fits must not be decoded'),
+  });
+  assert.equal(result.blob, item.file);
+  assert.equal(result.outName, item.file.name);
+  assert.equal(result.mime, PNG);
+  assert.equal(result.untouched, true);
+});
+
+test('source bitmaps are released after encoder failure and cancellation', async () => {
+  const settings = captureSettings({ targetBytes: 10000, format: JPEG, allowResize: true }, new Set([JPEG, PNG]));
+  for (const failure of [new Error('error.encode'), new DOMException('Cancelled', 'AbortError')]) {
+    const bitmap = {};
+    const released = [];
+    await assert.rejects(compressOne(runItem(), settings, (step) => {
+      if (step === 'step.quality') throw failure;
+    }, {
+      decode: async () => ({ bitmap, width: 320, height: 240 }),
+      hasTransparency: () => false,
+      fitToTarget: async (_, { onStep }) => {
+        if (failure.name === 'AbortError') onStep('step.quality');
+        throw failure;
+      },
+      release: (source) => released.push(source),
+    }), (error) => error === failure);
+    assert.deepEqual(released, [bitmap]);
+  }
+});
+
+test('measurement releases its bitmap on success and comparison failure', async () => {
+  for (const failed of [false, true]) {
+    const bitmap = {};
+    const released = [];
+    const failure = new Error('comparison failed');
+    const measurement = score({ bitmap: {}, width: 320, height: 240 }, fitted(JPEG), {
+      decode: async () => ({ bitmap }),
+      compare: () => { if (failed) throw failure; return { ssim: 0.99 }; },
+      release: (source) => released.push(source),
+    });
+    if (failed) await assert.rejects(measurement, (error) => error === failure);
+    else assert.deepEqual(await measurement, { ssim: 0.99 });
+    assert.deepEqual(released, [bitmap]);
+  }
+});
+
+
+async function withCanvas(canvas, work) {
+  const previous = Object.getOwnPropertyDescriptor(globalThis, 'document');
+  Object.defineProperty(globalThis, 'document', {
+    configurable: true, value: { createElement: () => canvas },
+  });
+  try { return await work(); }
+  finally {
+    if (previous) Object.defineProperty(globalThis, 'document', previous);
+    else delete globalThis.document;
+  }
+}
+
+test('encode releases canvas storage after success, null output and thrown failures', async () => {
+  for (const failure of ['none', 'draw', 'encode', 'null']) {
+    const expected = new Error(failure);
+    const canvas = {
+      width: 0, height: 0,
+      getContext: () => ({
+        fillRect() {},
+        drawImage() { if (failure === 'draw') throw expected; },
+      }),
+      toBlob(callback) {
+        if (failure === 'encode') throw expected;
+        callback(failure === 'null' ? null : new Blob(['encoded'], { type: JPEG }));
+      },
+    };
+    await withCanvas(canvas, async () => {
+      const output = encode({}, { width: 4000, height: 3000, mime: JPEG, quality: 0.8 });
+      if (failure === 'none') assert.equal((await output).type, JPEG);
+      else if (failure === 'null') await assert.rejects(output, /error\.encode/);
+      else await assert.rejects(output, (error) => error === expected);
+    });
+    assert.equal(canvas.width, 0, failure);
+    assert.equal(canvas.height, 0, failure);
+  }
+});
+
+test('measurement canvases release storage when pixel reads or drawing fail', async () => {
+  for (const failure of ['draw', 'pixels']) {
+    for (const operation of [compare, hasTransparency]) {
+      const canvas = {
+        width: 0, height: 0,
+        getContext: () => ({
+          fillRect() {},
+          drawImage() { if (failure === 'draw') throw new Error('drawing failed'); },
+          getImageData() { throw new Error('pixels unavailable'); },
+        }),
+      };
+      await withCanvas(canvas, async () => {
+        if (operation === compare) assert.equal(compare({}, {}, { width: 4000, height: 3000 }), null);
+        else if (failure === 'draw') assert.throws(() => hasTransparency({}, { width: 4000, height: 3000 }), /drawing failed/);
+        else assert.equal(hasTransparency({}, { width: 4000, height: 3000 }), false);
+      });
+      assert.equal(canvas.width, 0, failure);
+      assert.equal(canvas.height, 0, failure);
+    }
   }
 });
