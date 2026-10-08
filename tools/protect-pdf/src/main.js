@@ -22,6 +22,7 @@ import {
 import { permissionsIn, refusedIn } from './shared/pdf-permissions.js';
 import { outName, pages, refusedList } from './format.js';
 import { makeExample } from './example.js';
+import { passwordIssue } from './password-validation.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -95,6 +96,7 @@ let loaded = null;
 /** The object URL behind the download link, revoked when it is replaced. */
 let downloadUrl = '';
 let running = null;
+let loadGeneration = 0;
 
 /* ------------------------------------------------------------------ loading */
 
@@ -111,12 +113,14 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const generation = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     if (!looksLikePdf(file)) throw new NotAPdfError('read.notpdf');
 
     const bytes = new Uint8Array(await file.arrayBuffer());
+    if (generation !== loadGeneration) return;
     el.fileName.textContent = file.name;
     el.fileFacts.textContent = size(bytes.length);
     el.fileRow.hidden = false;
@@ -126,6 +130,7 @@ async function load(file) {
     // and one that genuinely needs a password is told where to go instead.
     const { unlock, report } = standardSecurity('');
     const doc = await PdfDocument.open(bytes, { unlock });
+    if (generation !== loadGeneration) return;
     loaded = { file, bytes, doc, restricted: report.encrypted };
 
     if (report.encrypted) note(phrase('note.restricted'));
@@ -134,6 +139,7 @@ async function load(file) {
 
     refresh();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     if (error instanceof WrongPasswordError) {
       // Not an error line: the hint says what to do, and the file row stays
       // so that it is clear which file it is talking about.
@@ -143,17 +149,37 @@ async function load(file) {
     }
     picker.waiting();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) picker.done();
   }
 }
 
 /* ----------------------------------------------------------- the settings */
 
 for (const input of [el.password, el.passwordAgain, el.ownerPassword]) {
-  input.addEventListener('input', refresh);
+  input.addEventListener('input', settingsChanged);
 }
 for (const box of [el.restrictPrint, el.restrictCopy, el.restrictChange]) {
-  box.addEventListener('change', refresh);
+  box.addEventListener('change', settingsChanged);
+}
+for (const input of el.schemes) input.addEventListener('change', settingsChanged);
+
+function settingsChanged() {
+  if (running) return;
+  el.result.hidden = true;
+  releaseDownload();
+  refresh();
+}
+
+function selectedRevision() {
+  return Number([...el.schemes].find((input) => input.checked)?.value ?? 6);
+}
+
+function passwordProblem() {
+  for (const [kind, value] of [['open', el.password.value], ['owner', el.ownerPassword.value]]) {
+    const issue = passwordIssue(value, selectedRevision());
+    if (issue) return { kind, key: `status.${kind}.${issue.key}`, values: issue.values };
+  }
+  return null;
 }
 
 /**
@@ -164,7 +190,7 @@ for (const box of [el.restrictPrint, el.restrictCopy, el.restrictChange]) {
  */
 function settings() {
   const userPassword = el.password.value;
-  if (userPassword !== el.passwordAgain.value) return null;
+  if (userPassword !== el.passwordAgain.value || passwordProblem()) return null;
 
   let permissions = -1;
   if (el.restrictPrint.checked) permissions &= ~PRINT;
@@ -173,12 +199,11 @@ function settings() {
 
   if (!userPassword && permissions === -1) return null;
 
-  const chosen = [...el.schemes].find((input) => input.checked);
   return {
     userPassword,
     ownerPassword: el.ownerPassword.value,
     permissions,
-    revision: Number(chosen?.value ?? 6),
+    revision: selectedRevision(),
   };
 }
 
@@ -191,6 +216,7 @@ function settings() {
  * has been asked for when both are blank and no box is ticked.
  */
 function refresh() {
+  if (running) return;
   const typed = el.password.value;
   const again = el.passwordAgain.value;
   const restricting = el.restrictPrint.checked || el.restrictCopy.checked
@@ -204,11 +230,18 @@ function refresh() {
   } else if (typed !== again) {
     key = 'status.mismatch';
   } else {
-    key = typed.length < SHORT ? 'status.short' : 'status.ok';
-    values = { n: typed.length };
+    const n = Array.from(typed).length;
+    key = n < SHORT ? 'status.short' : 'status.ok';
+    values = { n };
   }
+  const problem = typed === again ? passwordProblem() : null;
+  if (problem) { key = problem.key; values = problem.values; }
   el.passwordStatus.textContent = phrase(key, values);
-  el.passwordStatus.classList.toggle('bad', key === 'status.mismatch');
+  el.passwordStatus.classList.toggle('bad', Boolean(problem) || key === 'status.mismatch');
+  const openInvalid = key === 'status.mismatch' || problem?.kind === 'open';
+  el.password.setAttribute('aria-invalid', String(openInvalid));
+  el.passwordAgain.setAttribute('aria-invalid', String(openInvalid));
+  el.ownerPassword.setAttribute('aria-invalid', String(problem?.kind === 'owner'));
 
   gate(Boolean(loaded) && settings() !== null);
 }
@@ -259,14 +292,17 @@ el.run.addEventListener('click', run);
 el.cancel.addEventListener('click', () => running?.abort());
 el.clearFile.addEventListener('click', () => {
   reset();
-  picker.waiting();
+  el.dropzone.focus();
 });
 
 async function run() {
   const chosen = loaded && settings();
   if (!chosen || running) return;
 
-  running = new AbortController();
+  const input = loaded;
+  const controller = new AbortController();
+  running = controller;
+  lockSettings(true);
   el.run.disabled = true;
   el.cancel.hidden = false;
   el.result.hidden = true;
@@ -282,20 +318,30 @@ async function run() {
     // anything is encrypted; the writer puts the same bytes in the trailer.
     const id = crypto.getRandomValues(new Uint8Array(16));
     const security = await protect({ ...chosen, id });
-    const signed = hasSignature(loaded.doc);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
+    const signed = hasSignature(input.doc);
+    const expected = input.doc.countPages();
 
     setProgress(0, 1, phrase('stage.writing'));
-    const blob = await writeDocument(loaded.doc, {
+    const blob = await writeDocument(input.doc, {
       security,
-      signal: running.signal,
-      onProgress: (done, total) => setProgress(done, total, null),
+      signal: controller.signal,
+      onProgress: (done, total) => {
+        if (running === controller) setProgress(done, total, null);
+      },
     });
 
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
     setProgress(1, 1, phrase('stage.checking'));
-    const check = await verify(blob, chosen, loaded.doc.countPages());
+    const check = await verify(blob, chosen, expected);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
 
-    showResult({ blob, check, chosen, security, signed });
+    showResult({ blob, check, chosen, security, signed }, input);
   } catch (error) {
+    if (running !== controller) return;
     if (error?.name === 'AbortError') {
       cancelled = true;
       el.progressLabel.textContent = phrase('run.cancelled');
@@ -304,11 +350,15 @@ async function run() {
       el.runError.hidden = false;
     }
   } finally {
-    running = null;
-    el.run.disabled = false;
-    el.cancel.hidden = true;
-    el.progress.hidden = !cancelled;
-    if (cancelled) el.progressBar.style.width = '0%';
+    if (running === controller) {
+      running = null;
+      lockSettings(false);
+      el.run.disabled = false;
+      el.cancel.hidden = true;
+      el.progress.hidden = !cancelled;
+      if (cancelled) el.progressBar.style.width = '0%';
+      refresh();
+    }
   }
 }
 
@@ -365,7 +415,7 @@ async function verify(blob, chosen, expected) {
   };
 }
 
-function showResult({ blob, check, chosen, security, signed }) {
+function showResult({ blob, check, chosen, security, signed }, input) {
   el.resultSize.textContent = phrase(
     chosen.userPassword ? 'result.locked' : 'result.restricted',
     { size: size(blob.size) },
@@ -376,11 +426,11 @@ function showResult({ blob, check, chosen, security, signed }) {
     { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
 
-  renderFacts({ chosen, security, signed });
+  renderFacts({ chosen, security, signed }, input);
 
   downloadUrl = URL.createObjectURL(blob);
   el.download.href = downloadUrl;
-  el.download.download = outName(loaded.file.name);
+  el.download.download = outName(input.file.name);
   // A file the tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !check.ok;
@@ -388,17 +438,17 @@ function showResult({ blob, check, chosen, security, signed }) {
   el.result.hidden = false;
 }
 
-function renderFacts({ chosen, security, signed }) {
-  const { doc, restricted } = loaded;
+function renderFacts({ chosen, security, signed }, input) {
+  const { doc, restricted } = input;
   const facts = [];
 
   facts.push(phrase(security.revision === 6 ? 'facts.scheme.aes256' : 'facts.scheme.aes128'));
   facts.push(phrase(chosen.userPassword ? 'facts.userpassword' : 'facts.nouserpassword'));
 
   const refused = [];
-  if (el.restrictPrint.checked) refused.push(phrase('perm.print'));
-  if (el.restrictCopy.checked) refused.push(phrase('perm.copy'));
-  if (el.restrictChange.checked) refused.push(phrase('perm.change'));
+  if ((chosen.permissions & PRINT) !== PRINT) refused.push(phrase('perm.print'));
+  if ((chosen.permissions & COPY) !== COPY) refused.push(phrase('perm.copy'));
+  if ((chosen.permissions & CHANGE) !== CHANGE) refused.push(phrase('perm.change'));
   const list = refusedList(refused);
   facts.push(list
     ? phrase('facts.restrictions', { list: say(list) })
@@ -493,7 +543,21 @@ function setProgress(done, total, stage) {
   el.progressLabel.textContent = `${stageText}...`;
 }
 
+function lockSettings(locked) {
+  for (const control of $('settings-card').querySelectorAll('input, button')) {
+    control.disabled = locked;
+  }
+}
+
 function reset() {
+  loadGeneration += 1;
+  running?.abort();
+  running = null;
+  lockSettings(false);
+  el.run.disabled = false;
+  el.cancel.hidden = true;
+  picker.done();
+  picker.waiting();
   loaded = null;
   el.fileRow.hidden = true;
   el.result.hidden = true;
