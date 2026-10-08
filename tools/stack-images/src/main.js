@@ -405,7 +405,8 @@ function renderList() {
 
 function row(slot, index, isReference) {
   const item = document.createElement('li');
-  item.className = slot.ok ? 'frame-row' : 'frame-row is-invalid';
+  item.className = 'frame-row';
+  item.classList.toggle('is-invalid', !slot.ok);
   if (isReference) item.classList.add('is-reference');
 
   const label = slot.info?.name ?? slot.file.name;
