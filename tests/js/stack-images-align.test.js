@@ -1064,7 +1064,7 @@ test('an implausible transform is refused rather than applied', () => {
   );
 });
 
-test('doing nothing is one of the three answers', () => {
+test('doing nothing remains an available alignment answer', () => {
   const size = 32;
   const reference = field(size, scene);
   const frame = circularShift(reference, size, 9, 9);
@@ -1073,7 +1073,7 @@ test('doing nothing is one of the three answers', () => {
     estimate(reference, frame, size, 'none'),
     { ...NO_MOVE, measured: true, clamped: false },
   );
-  assert.deepEqual(ALIGN_MODES, ['none', 'translate', 'similarity']);
+  assert.deepEqual(ALIGN_MODES, ['none', 'translate', 'similarity', 'projective']);
 
   // Translation-only leaves the angle and the scale alone rather than guessing
   // at them, which is what makes it the safe setting for a locked-off camera.
