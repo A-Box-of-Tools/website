@@ -111,6 +111,13 @@ the program that opens the file next may still be on 1.1, and PyYAML is.
 Reading strictly and writing conservatively is the only combination that is
 right whichever end you are at.
 
+YAML numbers use the same text-based tree as JSON numbers. A leading plus,
+leading zeros or a missing digit beside the decimal point are normalised as
+text, keeping every significant digit and the exponent. Hexadecimal and octal
+integers are converted to exact decimal text through `BigInt`. This matters
+for both formatting and conversion: `+9007199254740993` keeps its last digit,
+and `.5e999` becomes `0.5e999` instead of being substituted with zero.
+
 **Reindenting HTML is not free**, and the page says so. Whitespace between two
 inline elements is a space between two words. Two things keep it in check:
 `<pre>` and `<textarea>` are copied through exactly, and an element holding
