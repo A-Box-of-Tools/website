@@ -11,9 +11,9 @@
 # The first is that a turn is a change to the file's header, not to its
 # frames. A phone that films sideways writes a quarter turn into the display
 # matrix and every player applies it; this page writes a different matrix
-# and copies every frame and every packet across untouched. That is why it
-# is fast, why it loses nothing, and why the page keeps saying "not one
-# frame is decoded" - it is the claim, and it is true.
+# and copies every picture frame across untouched. That is why it
+# keeps picture quality unchanged. Sound is copied, encoded as AAC or
+# omitted; the copy claim belongs to the picture frames.
 #
 # The second is that the header is honoured by every phone, browser and
 # modern player and ignored by a few old desktop ones, and the page says so
@@ -27,7 +27,7 @@ name = "Video Rotator"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
 heading = "Rotate&nbsp;Video <span class=\"h1-kw\">&mdash; for the clip that was filmed sideways</span>"
-tagline = "A quarter turn, a half turn, the other way. Written into the file's header, so not one frame is decoded and nothing is lost."
+tagline = "A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged."
 icon = "&#128260;"                  # the arrows going round, beside the page heading
 favicon = "&#128260;"      # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -69,10 +69,10 @@ lastmod = "2026-09-13"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "Rotate a Video &mdash; Free, Lossless, in Your Browser, No Upload"
-description = "Turn a sideways or upside-down video a quarter or half turn in your browser. The turn is written into the file's header, so no frame is re-encoded and nothing is lost; or bake it into the picture for old players. MP4, MOV, WebM and MKV in, MP4 out. Nothing is uploaded."
-og_title = "Rotate a video without uploading it, and without re-encoding it"
-og_description = "A clip filmed sideways needs nine numbers changed in its header, not a re-encode. Turn it in your browser in seconds; the file never leaves your machine."
+title = "Rotate a Video &mdash; Free, in Your Browser, No Upload"
+description = "Turn a video in your browser. Header rotation copies picture frames unchanged; baking the turn re-encodes the picture for old players. AAC sound is copied, other decodable sound is encoded as AAC, and sound can be omitted. MP4, MOV, WebM and MKV in, MP4 out. Nothing is uploaded."
+og_title = "Rotate a video by changing its header, without uploading it"
+og_description = "Header rotation keeps picture frames unchanged. Sound is copied, encoded as AAC or omitted. Turn the clip in your browser; the file never leaves your machine."
 og_image_alt = "Rotate a video in your browser, without uploading it"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -121,11 +121,10 @@ howto_heading = "How to rotate a video"
 # --- the card on the hub page ------------------------------------------------
 
 card = """
-            Rotate the clip that was filmed sideways: a quarter turn right or
-            left, or upside down. The turn is written into the file's header
-            and every frame is copied across as it is &mdash; nothing
-            decoded, nothing lost, seconds for a gigabyte &mdash; or baked
-            into the picture for the old players that ignore headers."""
+    Rotate the clip that was filmed sideways: a quarter turn right or
+    left, or upside down. Header rotation copies picture frames
+    unchanged; baking the turn re-encodes the picture for old players.
+    Sound is copied, encoded as AAC or omitted."""
 
 # The nouns this tool uses for the things it works on.
 [words]
@@ -155,19 +154,16 @@ mark = "&#10003;"
 text = "Files stay on your device"
 
 [[privacy]]
-title = "A turn is nine numbers in the header, and the page changes only those."
+title = "A turn is nine numbers in the picture's header."
 body = """
 
-      A phone that films sideways does not turn its pixels. It stores the
-      frames as the sensor saw them and writes a quarter turn into the track
-      header &mdash; a display matrix of nine numbers &mdash; which every
-      player applies on the way to the screen. So a video that shows
-      sideways needs a different matrix, not a different picture. This page
-      writes the matrix for the turn you chose and copies every frame and
-      every packet across exactly as they were, without decoding one. That
-      is why a gigabyte takes seconds, why the picture is bit for bit what
-      it was, and why the file comes out almost exactly the size it went
-      in."""
+      A phone that films sideways stores its frames as the sensor saw them and
+      writes the turn into the track's display matrix, which a player applies
+      on the screen. With header rotation, this page writes the matrix for the
+      turn you chose and copies every picture frame byte for byte, without
+      re-encoding it. AAC sound is copied; other decodable sound is encoded
+      again as AAC unless you leave it out. When the sound is copied too,
+      the file comes out almost exactly the size it went in."""
 
 [[privacy]]
 title = "The upload is the slow part, and it is the part that does not happen."
@@ -280,13 +276,11 @@ body = """
 [[faq]]
 q = "Does rotating lose quality?"
 a = """
-        No, not the ordinary way. The turn is written into the file's header
-        and every frame is copied across byte for byte, so the picture is
-        exactly what it was and the file is almost exactly the size it was.
-        Only &ldquo;bake it in&rdquo; re-encodes, and the page says so
-        before you tick it. A rotator that re-encodes by default &mdash; most
-        online ones &mdash; is doing a re-encode for a job that needed nine
-        numbers."""
+    Header rotation keeps picture quality unchanged: each picture frame
+    is copied byte for byte. Only baking the turn re-encodes the
+    picture. AAC sound is copied; other decodable sound is encoded as
+    AAC, unless it is omitted. File size stays almost the same when
+    sound is copied too."""
 
 [[faq]]
 q = "Why does the file still look sideways in one player?"
@@ -341,11 +335,11 @@ a = """
 [[faq]]
 q = "Does it work on a phone?"
 a = """
-        Yes. The ordinary turn decodes nothing, so a phone does it as fast
-        as a laptop; the finished file is held in memory until you save it,
-        which is the only limit, and a phone will hold a few hundred
-        megabytes of result without complaint. Baking in is an encode, and a
-        phone's own hardware encoder is quick at it."""
+    Yes. Header rotation copies picture frames without decoding them;
+    sound may need AAC encoding. The finished file is held in memory
+    until you save it, and a phone will usually hold a few hundred
+    megabytes of result. Baking the turn also needs picture encoding,
+    which a phone's hardware encoder can accelerate."""
 
 [[faq]]
 q = "Is there a size limit, and does it cost anything?"
@@ -367,10 +361,10 @@ a = """
 
 [schema]
 category = "MultimediaApplication"
-description = "Rotate a video a quarter or half turn in your browser. The turn is written into the file's header and every frame is copied across untouched, so nothing is re-encoded and nothing is lost; or bake it into the picture for old players. Nothing is uploaded."
+description = "Rotate a video a quarter or half turn in your browser. Header rotation copies picture frames unchanged; baking the turn re-encodes the picture for old players. AAC sound is copied, other decodable sound is encoded as AAC, and sound can be omitted. Nothing is uploaded."
 features = [
   "A quarter turn right, a quarter turn left, or upside down",
-  "Writes the turn into the display matrix and copies every frame and packet across as it is",
+  "Writes the turn into the display matrix and copies every picture frame as it is",
   "Shows the first frame turned as chosen, through the same arithmetic the file will carry",
   "Bakes the turn into the picture on request, for the few players that ignore the header",
   "Reads MP4, MOV, M4V, WebM and MKV; writes MP4",

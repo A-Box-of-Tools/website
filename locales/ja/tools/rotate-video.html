@@ -27,7 +27,7 @@
   <section class="card" id="turn-card">
     <h2><span class="step">2</span>向きを選ぶ</h2>
 
-    <p class="card-lede">電話で横向きに撮った動画は、画素を回さずヘッダーに90度の回転を書き、プレーヤーが適用します。動画を回すにはそのヘッダーだけを変更できます。フレームを1枚もデコードせず、映像は完全に同じです。</p>
+    <p class="card-lede">電話で横向きに撮った動画は、画素を回さずヘッダーに90度の回転を書き、プレーヤーが適用します。ヘッダーで回転する場合、このページは行列を変えて映像の各フレームをそのままコピーします。音声はコピー、AACへの再エンコード、または除去となります。</p>
 
     <div class="chips" role="group" aria-label="回転の角度">
       <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; 右に90度</button>
@@ -145,8 +145,8 @@
     <span data-phrase="run.cancelled">キャンセルしました。書き出しはありません。ボタンを押すと再開できます。</span>
     <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
     <span data-phrase="result.ready">{size}のMP4、{turn}回転しました。</span>
-    <span data-phrase="result.sub.copy">フレームとパケットをそのままコピーし、ヘッダーだけを変えました。</span>
-    <span data-phrase="result.sub.bake">各フレームを回転して描き、H.264で再エンコードしました。ヘッダーに回転情報は不要になりました。</span>
+    <span data-phrase="result.sub.copy">全フレームをそのままコピーし、ヘッダーに回転を記録しました。{sound}</span>
+    <span data-phrase="result.sub.bake">各フレームを回転して描き、H.264で再エンコードしました。ヘッダーに回転情報は不要になりました。{sound}</span>
     <span data-phrase="check.passed">確認：{found}</span>
     <span data-phrase="check.failed">この回は検証に通りませんでした。{found}。元のファイルをお使いください。</span>
     <span data-phrase="check.ok">メモリから開き直し、元と同じ長さ{length}、表示方向{shown}、{frame}を確認しました。</span>
