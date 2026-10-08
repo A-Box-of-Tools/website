@@ -18,10 +18,11 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { saveBlob } from './shared/download.js';
 import {
-  AVIF, FORMATS, JPEG, WEBP,
-  avifFacts, change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames, webpFacts,
+  AVIF, JPEG, WEBP,
+  avifFacts, change, decode, hasAlpha, release, sniff, webpFacts,
 } from './shared/image-convert.js';
 import { makeExample } from './example.js';
+import { prepareImageBatch, convertImageBatch } from './shared/image-batch.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -40,6 +41,7 @@ const el = {
   backgroundNote: $('background-note'),
   settingsNote: $('settings-note'),
   run: $('run'),
+  cancel: $('cancel'),
   progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
@@ -83,6 +85,7 @@ const FOUND = {
 let items = [];
 let nextId = 1;
 let busy = false;
+let stopping = false;
 
 let results = [];
 let resultUrls = [];
@@ -136,8 +139,12 @@ async function addFiles(files) {
       // pixels rather than the container: a WebP can carry an alpha channel
       // that is opaque from corner to corner, and offering a background
       // colour for one is a control that does nothing.
-      const alpha = hasAlpha(decoded.bitmap, decoded.width, decoded.height);
-      release(decoded.bitmap);
+      let alpha;
+      try {
+        alpha = hasAlpha(decoded.bitmap, decoded.width, decoded.height);
+      } finally {
+        release(decoded.bitmap);
+      }
 
       items.push({
         id: nextId,
@@ -319,8 +326,10 @@ function gate() {
 
 el.run.addEventListener('click', () => {
   runAll().catch((error) => {
-    showRunError(phrase('run.failed', { detail: error.message }));
+    showRunError(phrase('run.failed', { detail: phrase(error.message, fill(error.values)) }));
     busy = false;
+    stopping = false;
+    el.cancel.hidden = true;
     el.progress.hidden = true;
     render();
   });
@@ -329,44 +338,51 @@ el.run.addEventListener('click', () => {
 async function runAll() {
   if (busy || !items.length) return;
 
+  const plan = prepareImageBatch(items, settings());
   busy = true;
+  stopping = false;
   clearRunError();
   clearResults();
   render();
-
-  const set = settings();
-  const names = uniqueNames(items.map((item) => outName(item.file.name, FORMATS[set.mime].ext)));
-
   el.progress.hidden = false;
-  const made = [];
+  el.cancel.hidden = false;
+  el.cancel.disabled = false;
 
-  for (const [index, item] of items.entries()) {
-    setProgress(index / items.length, phrase('progress.each', { name: item.file.name }));
-    // Yield so the line above is painted before the work starts.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    const decoded = await decode(item.file);
-    try {
-      const blob = await encode(decoded.bitmap, {
-        width: decoded.width,
-        height: decoded.height,
-        mime: set.mime,
-        quality: set.quality,
-        background: set.background,
-      });
-      made.push({ item, blob, name: names[index] });
-    } finally {
-      release(decoded.bitmap);
+  try {
+    const outcome = await convertImageBatch(plan, {
+      shouldStop: () => stopping,
+      onProgress(index, total, item) {
+        setProgress(index / total, phrase('progress.each', { name: item.file.name }));
+      },
+    });
+    results = outcome.results;
+    if (outcome.failures.length) {
+      showRunError(outcome.failures.map(({ item, error }) => phrase('run.filefailed', {
+        name: item.file.name, why: phrase(error.message, fill(error.values)),
+      })).join('\n'));
     }
+    if (outcome.stopped) {
+      setProgress(results.length / outcome.total, phrase(results.length ? 'progress.stopped' : 'progress.stopped.none', {
+        done: results.length, total: outcome.total,
+      }));
+    } else {
+      setProgress(1, phrase('progress.done'));
+      el.progress.hidden = true;
+    }
+    renderResults();
+  } finally {
+    busy = false;
+    stopping = false;
+    el.cancel.hidden = true;
+    render();
   }
-
-  setProgress(1, phrase('progress.done'));
-  busy = false;
-  results = made;
-  renderResults();
-  render();
-  el.progress.hidden = true;
 }
+
+el.cancel.addEventListener('click', () => {
+  if (!busy) return;
+  stopping = true;
+  el.cancel.disabled = true;
+});
 
 function setProgress(fraction, label) {
   el.progressBar.style.width = `${Math.round(fraction * 100)}%`;
@@ -439,7 +455,7 @@ function resultRow(one) {
   // file rather than once at the top, because in a batch it is usually true
   // of some of them and not others.
   for (const extra of [
-    one.item.alpha ? phrase('result.flattened', { colour: el.background.value }) : null,
+    one.item.alpha ? phrase('result.flattened', { colour: one.settings.background }) : null,
     one.item.animated ? phrase('result.firstframe') : null,
   ].filter(Boolean)) {
     const note = document.createElement('p');
@@ -492,11 +508,13 @@ function clearResults() {
 /* ------------------------------------------------------------- the controls */
 
 el.quality.addEventListener('input', () => {
+  if (busy) return;
   clearResults();
   renderSettings();
 });
 
 el.background.addEventListener('input', () => {
+  if (busy) return;
   clearResults();
   renderSettings();
 });
