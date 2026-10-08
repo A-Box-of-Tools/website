@@ -20,10 +20,11 @@ import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { bytes as humanBytes, outName, tally } from './format.js';
 import {
-  contextOf, FINDERS, findPattern, findTerm, glyphsIn, mergeRanges, wordsOf,
+  contextOf, FINDERS, findPattern, findTerm, wordsOf,
 } from './matches.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
 import { redact } from './redact.js';
+import { planSelection, snapshotSelection } from './selection.js';
 import { pagesOf, readPage } from './shared/pdf-text.js';
 import { harvestAll, verify } from './verify.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
@@ -111,6 +112,7 @@ let found = [];
 let showing = 0;
 let running = null;
 let downloadUrl = '';
+let loadGeneration = 0;
 
 /* ------------------------------------------------------------------ loading */
 
@@ -125,6 +127,7 @@ const picker = wireFilePicker({
 
 async function open(file) {
   if (running) return;
+  const mine = ++loadGeneration;
 
   picker.busy(readingLabel(1));
   el.loadError.hidden = true;
@@ -140,13 +143,16 @@ async function open(file) {
     const list = pagesOf(doc);
     if (!list.length) throw new NotAPdfError(phrase('load.nopages'));
 
-    pages = [];
+    const read = [];
     for (let index = 0; index < list.length; index += 1) {
+      if (mine !== loadGeneration) return;
       picker.busy(phrase('page.of', { number: index + 1, total: list.length }));
-      pages.push(await readPage(doc, list[index], index + 1));
+      read.push(await readPage(doc, list[index], index + 1));
       if (index % 8 === 7) await breathe();
     }
 
+    if (mine !== loadGeneration) return;
+    pages = read;
     source = {
       file,
       raw,
@@ -156,6 +162,7 @@ async function open(file) {
     };
     if (doc.repaired) note(phrase('load.repaired'));
   } catch (error) {
+    if (mine !== loadGeneration) return;
     // Half a document read is not a document. Leaving the pages in place would
     // put a text panel on screen under an error message saying the file could
     // not be opened.
@@ -165,6 +172,7 @@ async function open(file) {
     sayWhereToUnlock(error instanceof EncryptedPdfError);
   }
 
+  if (mine !== loadGeneration) return;
   picker.done();
   render();
 }
@@ -375,6 +383,7 @@ function clip(text, fromEnd) {
 /* ---------------------------------------------------------- what is picked */
 
 function pick(index, range) {
+  if (running) return;
   if (!picked.has(index)) picked.set(index, new Map());
   picked.get(index).set(`${range.from}:${range.to}`, {
     from: range.from, to: range.to, text: range.text,
@@ -382,6 +391,7 @@ function pick(index, range) {
 }
 
 function unpick(index, range) {
+  if (running) return;
   picked.get(index)?.delete(`${range.from}:${range.to}`);
 }
 
@@ -501,6 +511,7 @@ function wordSpan(word, marked) {
 }
 
 el.pageText.addEventListener('click', (event) => {
+  if (running) return;
   const span = event.target.closest?.('.word');
   if (!span || !pages.length) return;
 
@@ -526,6 +537,13 @@ el.pageText.addEventListener('click', (event) => {
 /* ------------------------------------------------------------------ running */
 
 function renderRun() {
+  const busy = Boolean(running);
+  el.findCard.inert = busy;
+  el.pageCard.inert = busy;
+  el.fileInput.disabled = busy;
+  for (const option of [el.optBoxes, el.optElsewhere, el.optAttachments]) {
+    option.disabled = busy;
+  }
   const count = pickedCount();
   const onPages = [...picked.values()].filter((ranges) => ranges.size).length;
 
@@ -539,6 +557,12 @@ function renderRun() {
 
 async function go() {
   if (running || !source) return;
+  const input = source;
+  const selection = snapshotSelection(picked, {
+    boxes: el.optBoxes.checked,
+    elsewhere: el.optElsewhere.checked,
+    attachments: el.optAttachments.checked,
+  });
   const controller = new AbortController();
   running = controller;
 
@@ -551,41 +575,30 @@ async function go() {
   renderRun();
 
   try {
-    const { doc, read: fresh } = await documentToEdit();
-
-    const chosen = new Map();
-    const texts = new Set();
-    picked.forEach((ranges, index) => {
-      const page = fresh[index];
-      if (!page) return;
-      const glyphs = new Set();
-      for (const range of mergeRanges([...ranges.values()])) {
-        for (const glyph of glyphsIn(page, range.from, range.to)) glyphs.add(glyph);
-        const text = page.text.slice(range.from, range.to).trim();
-        if (text) texts.add(text);
-      }
-      if (glyphs.size) chosen.set(index, glyphs);
-    });
+    const { doc, read: fresh } = await documentToEdit(input);
+    controller.signal.throwIfAborted();
+    const plan = planSelection(fresh, selection);
 
     const before = await harvestAll(doc, fresh);
+    controller.signal.throwIfAborted();
     step(0.45, phrase('run.writing'));
 
-    const result = await redact(doc, fresh, chosen, {
-      boxes: el.optBoxes.checked,
-      elsewhere: el.optElsewhere.checked,
-      attachments: el.optAttachments.checked,
-      texts: [...texts],
+    const result = await redact(doc, fresh, plan.chosen, {
+      ...selection.options,
+      texts: [...plan.texts],
     }, { signal: controller.signal });
 
+    controller.signal.throwIfAborted();
     step(0.8, phrase('run.checking'));
     const check = await verify(result.bytes, {
       text: before,
       pages: fresh.length,
-      terms: [...texts].map((text) => ({ text, removed: countPicked(fresh, text) })),
+      terms: plan.terms,
     });
 
+    controller.signal.throwIfAborted();
     step(1, '');
-    show(result, check, texts.size);
+    show(result, check, plan, input);
   } catch (error) {
     if (error?.name === 'AbortError') showRunError(phrase('run.cancelled'));
     else showRunError(phrase('run.failed', { detail: error?.message ?? error }));
@@ -606,15 +619,15 @@ async function go() {
  * graph in place and a document that has already had its words taken out is
  * not the document somebody ticked words on.
  */
-async function documentToEdit() {
-  if (!source.spent && source.doc && source.read) {
+async function documentToEdit(input) {
+  if (!input.spent && input.doc && input.read) {
     // Handed over once. Marked here rather than after a successful run,
     // because a run that fails halfway has still edited some of it.
-    source.spent = true;
-    return { doc: source.doc, read: source.read };
+    input.spent = true;
+    return { doc: input.doc, read: input.read };
   }
 
-  const doc = await PdfDocument.open(source.raw);
+  const doc = await PdfDocument.open(input.raw);
   const list = pagesOf(doc);
   const read = [];
   for (let index = 0; index < list.length; index += 1) {
@@ -622,20 +635,6 @@ async function documentToEdit() {
     if (index % 8 === 7) await breathe();
   }
   return { doc, read };
-}
-
-/** How many of the occurrences of one piece of text were ticked, which is what
- *  the check at the end measures the finished file against. */
-function countPicked(read, text) {
-  let count = 0;
-  picked.forEach((ranges, index) => {
-    const page = read[index];
-    if (!page) return;
-    for (const range of ranges.values()) {
-      if (page.text.slice(range.from, range.to).trim() === text) count += 1;
-    }
-  });
-  return count;
 }
 
 function step(fraction, label) {
@@ -648,7 +647,7 @@ function showRunError(text) {
   el.runError.hidden = false;
 }
 
-function show(result, check, terms) {
+function show(result, check, plan, input) {
   if (!check.ok) {
     showRunError(phrase(check.problem));
     return;
@@ -658,7 +657,7 @@ function show(result, check, terms) {
   const boxes = result.report.pages.reduce((sum, page) => sum + page.boxes, 0);
 
   el.resultSize.textContent = phrase('result.headline', {
-    words: plural(pickedCount(), 'piece', 'pieces'),
+    words: plural(plan.count, 'piece', 'pieces'),
   });
   el.resultSub.textContent = phrase('result.sub', {
     size: humanBytes(result.bytes.length),
@@ -670,7 +669,7 @@ function show(result, check, terms) {
   el.checkLine.textContent = phrase(clean ? 'check.good' : 'check.partial');
   el.checkLine.className = 'check-line good';
 
-  el.checkTerms.hidden = terms === 0;
+  el.checkTerms.hidden = plan.texts.size === 0;
   el.checkTerms.replaceChildren(...check.terms.map((term) => {
     const item = document.createElement('li');
     item.textContent = phrase('term.change', {
@@ -687,7 +686,7 @@ function show(result, check, terms) {
 
   downloadUrl = URL.createObjectURL(new Blob([result.bytes], { type: 'application/pdf' }));
   el.download.href = downloadUrl;
-  el.download.download = outName(source.file.name);
+  el.download.download = outName(input.file.name);
   el.result.hidden = false;
 }
 
@@ -750,6 +749,7 @@ el.clearFound.addEventListener('click', () => {
 el.prevPage.addEventListener('click', () => { current -= 1; render(); });
 el.nextPage.addEventListener('click', () => { current += 1; render(); });
 el.clearPage.addEventListener('click', () => {
+  if (running) return;
   picked.delete(current);
   render();
 });

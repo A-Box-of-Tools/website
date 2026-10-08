@@ -174,6 +174,12 @@ there is to say about a document: this word is not in it.
 
 A failure here is reported as a failure. No download is offered.
 
+An export copies its selected character ranges and options before the first
+read yields. Writing, verification and the result count all use that one plan;
+the editing cards are inert until it finishes. A second export resolves those
+captured ranges against a fresh reading of the original file, rather than
+reusing glyph objects that the first run has already edited.
+
 ## The tables in base14.js
 
 Fourteen fonts have metrics and encodings that are part of the specification
