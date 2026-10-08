@@ -140,3 +140,10 @@ The `abox:language-text` snapshot supplies `sourceText()` rather than the
 textarea's normalized value. The restoration input event carries that exact
 string back, so untouched CRLF files retain their bytes, while an edited box
 keeps the line endings of the text the visitor actually entered.
+
+File reads on this page use the shared `text-import` owner. Typing, Clear and
+an example retire a pending read immediately; a newer file choice replaces it.
+The old read may still finish in the browser, but its text and errors cannot
+replace the current editor or clear a newer import's reading label. Swap retires
+it too. The destination for one file is chosen before reading, and original
+line endings are retained until that box is edited.
