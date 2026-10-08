@@ -27,7 +27,7 @@ handoff = []
 lastmod = "2026-10-08"
 
 title = "Image Layout &mdash; Free Collage &amp; Contact Sheet Maker, No Upload"
-description = "Arrange multiple images in a grid, side by side or vertically. Set the size, gaps and background, then download one PNG, JPEG or WebP. Free, offline and no upload."
+description = "Arrange images in a grid or strip with ready-to-use presets. Adjust each picture with pan and zoom, then save one PNG, JPEG or WebP. Free, offline and no upload."
 og_title = "Arrange multiple images without uploading them"
 og_description = "A grid, a strip or a contact sheet: reorder pictures, choose the size and spacing, then save one PNG, JPEG or WebP. Everything happens in your browser."
 og_image_alt = "Image Layout - arrange pictures into one image without uploading them"
@@ -149,12 +149,22 @@ body = """
       bottom in a vertical one."""
 
 [[howto]]
-title = "Choose the arrangement and spacing."
+title = "Start with a preset, then set the spacing."
 body = """
- Pick a grid, a horizontal
-      strip or a vertical strip. Set the output width, the grid columns, the cell
-      shape, the gap between images and the outer margin around them. &ldquo;Fit whole image&rdquo; keeps every edge; &ldquo;Fill box (crop edges)&rdquo; fills the
-      cell by trimming the overflow."""
+ Choose square cells, a contact
+      sheet, a strip, portrait cells or a seamless grid. Adjust the output width,
+      grid columns, cell shape, gap and outer margin. Presets keep your filename
+      and each picture's existing framing."""
+
+[[howto]]
+title = "Adjust the picture inside each frame."
+body = """
+ Select a picture in the preview
+      or choose it from Frame. Drag to pan, or use Horizontal position, Vertical
+      position and Zoom. At 100% zoom, &ldquo;Fit whole image&rdquo; keeps every
+      edge; &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop. Reset
+      this frame restores the selected picture, and Reset all frames restores
+      every picture's starting fit."""
 
 [[howto]]
 title = "Check the preview, then save one image."
@@ -182,13 +192,37 @@ a = """
         editable design document."""
 
 [[faq]]
+q = "Which presets can I start from?"
+a = """
+        Choose a square collage, a three-column contact sheet, a side-by-side
+        strip, a vertical strip, a portrait collage or a seamless collage with
+        no gaps. They set layout and export controls, which you can still
+        adjust. A preset keeps your filename and each picture's pan and zoom.
+        The complete image's shape depends on the number of pictures; square
+        cells do not promise a square output."""
+
+[[faq]]
 q = "How do I keep the whole of every picture?"
 a = """
-        Choose &ldquo;Fit whole image&rdquo;. Each picture is scaled to fit
-        its cell, with background showing wherever their shapes differ.
-        &ldquo;Fill box (crop edges)&rdquo; fills the cell and cuts off the overflow,
-        centred on the picture. A strip's &ldquo;Keep original shapes (strips)&rdquo; option
-        keeps the pictures' own proportions, so their cells need no crop."""
+        Choose &ldquo;Fit whole image&rdquo; and use &ldquo;Reset all frames&rdquo;
+        to return every picture to 100% zoom and its starting position. Each
+        source then fits inside its cell, with background wherever the shapes
+        differ. A strip's &ldquo;Keep original shapes (strips)&rdquo; option gives
+        each picture a cell with its own proportions, so there is no crop or
+        extra space at 100% zoom. Choosing a preset keeps existing framing;
+        resetting the frames is what undoes a previous zoom."""
+
+[[faq]]
+q = "Can I move or zoom one picture without changing its neighbours?"
+a = """
+        Yes. Select its frame in the preview or the Frame menu, then drag to
+        pan, use the position controls, or adjust Zoom. Panning is available
+        on an axis only when the picture extends beyond that side of its cell.
+        &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop, and you
+        can move it to keep the subject in view. The framing stays with the
+        picture when you reorder it. Reset this frame restores its starting
+        position and 100% zoom; Reset all frames restores every picture.
+        Zoom cannot add detail that the original does not contain."""
 
 [[faq]]
 q = "Can the gaps and background be transparent?"
@@ -253,12 +287,15 @@ a = """
 
 [schema]
 category = "MultimediaApplication"
-description = "Arrange multiple pictures into a grid, contact sheet, horizontal strip or vertical strip, then save one PNG, JPEG or WebP. Reorder, choose the size and spacing, show images whole or crop to fill, and work entirely in the browser."
+description = "Arrange pictures into a grid, contact sheet or strip with ready-to-use presets, per-image pan and zoom, reordering, size and spacing controls. Preview and save one PNG, JPEG or WebP entirely in the browser."
 features = [
   "Grid, horizontal and vertical image layouts",
   "Drag to reorder, with keyboard-accessible arrow buttons",
   "Output width, column count, cell shape, gap and outer padding",
-  "Show the whole image or centre-crop to fill its cell",
+  "Ready-to-use collage, contact sheet and strip presets",
+  "Fit whole images at 100% zoom or crop to fill each cell",
+  "Per-image pan and zoom, with pointer and keyboard controls",
+  "Reset one frame or all frames; crops stay with reordered images",
   "Original image proportions in horizontal and vertical strips",
   "Live preview and export use the same layout geometry",
   "PNG, JPEG and WebP output with a checked encoder",

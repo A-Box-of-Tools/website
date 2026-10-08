@@ -7,7 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  MAX_PIXELS, MAX_SIDE, arrange, drawImageInCell, renderLayout,
+  MAX_PIXELS, MAX_SIDE, MAX_ZOOM, arrange, imagePlacement, drawImageInCell, renderLayout,
 } from '../../tools/image-layout/src/arrange.js';
 
 const landscape = { width: 200, height: 100 };
@@ -160,6 +160,90 @@ test('cover scales evenly and crops equal amounts from opposite edges', () => {
     ['drawImage', portrait, 10, -30, 100, 200]);
 });
 
+test('panning reaches either cropped edge without exposing an empty strip', () => {
+  const cell = { x: 10, y: 20, width: 100, height: 100 };
+  const left = imagePlacement(landscape, cell, 'cover', { panX: 1, panY: 1 });
+  assert.deepEqual(left, { x: 10, y: 20, width: 200, height: 100, panRangeX: 50, panRangeY: 0 });
+  const right = imagePlacement(landscape, cell, 'cover', { panX: -1, panY: -1 });
+  assert.equal(right.x + right.width, cell.x + cell.width);
+  assert.equal(right.y, cell.y);
+  const top = imagePlacement(portrait, cell, 'cover', { panY: 1 });
+  const bottom = imagePlacement(portrait, cell, 'cover', { panY: -1 });
+  assert.equal(top.y, cell.y);
+  assert.equal(bottom.y + bottom.height, cell.y + cell.height);
+});
+
+test('contain keeps spare space centred until zoom creates a crop', () => {
+  const cell = { x: 0, y: 0, width: 100, height: 100 };
+  assert.deepEqual(imagePlacement(landscape, cell, 'contain', { panX: 1, panY: -1 }),
+    { x: 0, y: 25, width: 100, height: 50, panRangeX: 0, panRangeY: 0 });
+  assert.deepEqual(imagePlacement(landscape, cell, 'contain', { zoom: 1.5, panX: -1, panY: 1 }),
+    { x: -50, y: 12.5, width: 150, height: 75, panRangeX: 25, panRangeY: 0 });
+  assert.deepEqual(imagePlacement(landscape, cell, 'contain', { zoom: 3, panX: 1, panY: -1 }),
+    { x: 0, y: -50, width: 300, height: 150, panRangeX: 100, panRangeY: 25 });
+});
+
+test('zoom preserves aspect ratio and clips an independently adjusted frame', () => {
+  const ctx = recorder();
+  const cell = { x: 10, y: 20, width: 100, height: 100 };
+  drawImageInCell(ctx, landscape, cell, 'cover', { zoom: 2, panX: 0.5, panY: -1 });
+  assert.deepEqual(ctx.calls, [
+    ['save'], ['beginPath'], ['rect', 10, 20, 100, 100], ['clip'],
+    ['drawImage', landscape, -65, -80, 400, 200], ['restore'],
+  ]);
+});
+
+test('a normalized adjustment selects the same crop at preview and export sizes', () => {
+  const transform = { zoom: 2.75, panX: -0.6, panY: 0.35 };
+  const small = imagePlacement(landscape,
+    { x: 12, y: 18, width: 120, height: 90 }, 'cover', transform);
+  const large = imagePlacement(landscape,
+    { x: 120, y: 180, width: 1200, height: 900 }, 'cover', transform);
+  for (const key of ['x', 'y', 'width', 'height', 'panRangeX', 'panRangeY']) {
+    near(large[key], small[key] * 10);
+  }
+});
+
+test('a rounded preview bitmap uses the original aspect ratio for its placement', () => {
+  const bitmap = { width: 1, height: 600 };
+  const original = { width: 1, height: 3000 };
+  const cell = { x: 0, y: 0, width: 100, height: 100 };
+  const ctx = recorder();
+  drawImageInCell(ctx, bitmap, cell, 'contain', {}, original);
+  const call = ctx.calls.find((entry) => entry[0] === 'drawImage');
+  assert.equal(call[1], bitmap);
+  near(call[2], (100 - 1 / 30) / 2);
+  assert.equal(call[3], 0);
+  near(call[4], 1 / 30);
+  assert.equal(call[5], 100);
+  const cropped = recorder();
+  drawImageInCell(cropped, bitmap, cell, 'cover', { zoom: 2, panY: -1 }, original);
+  assert.deepEqual(cropped.calls.find((entry) => entry[0] === 'drawImage'),
+    ['drawImage', bitmap, -50, -599900, 200, 600000]);
+});
+
+test('original-shape strips can zoom and pan without changing their frame geometry', () => {
+  const plan = arrange([landscape, portrait], { ...settings,
+    layout: 'horizontal', ratio: 'original', width: 250, gap: 0, padding: 0 });
+  const cell = plan.cells[0];
+  assert.deepEqual(cell, { x: 0, y: 0, width: 200, height: 100 });
+  const placement = imagePlacement(landscape, cell, 'contain', { zoom: 2, panX: -1, panY: 1 });
+  assert.deepEqual(placement,
+    { x: -200, y: 0, width: 400, height: 200, panRangeX: 100, panRangeY: 50 });
+  assert.deepEqual(plan.cells[1], { x: 200, y: 0, width: 50, height: 100 });
+});
+
+test('invalid adjustments are rejected before a drawing context is changed', () => {
+  assert.equal(MAX_ZOOM, 4);
+  const cell = { x: 0, y: 0, width: 100, height: 100 };
+  for (const transform of [null, [], { zoom: 0.99 }, { zoom: 4.01 }, { zoom: NaN },
+    { zoom: Infinity }, { zoom: '2' }, { panX: -1.01 }, { panY: 1.01 }, { panX: NaN }]) {
+    const ctx = recorder();
+    assert.throws(() => drawImageInCell(ctx, square, cell, 'contain', transform), /errorSettings/);
+    assert.deepEqual(ctx.calls, []);
+  }
+});
+
 test('a thumbnail uses its intrinsic size and a drawing failure restores the clip', () => {
   const image = { width: 100, height: 100, naturalWidth: 200, naturalHeight: 100 };
   const ctx = recorder();
@@ -188,9 +272,12 @@ async function withCanvas(action) {
 const exportSettings = { ...settings, layout: 'horizontal', width: 220,
   ratio: 'square', gap: 0, padding: 10, background: '#123456' };
 
-test('an export snapshots its order and settings and closes each bitmap before the next decode', async () => {
+test('an export snapshots order, settings and individual crops and closes each bitmap before the next decode', async () => {
   await withCanvas(async ({ ctx }) => {
-    const items = [{ ...square, file: 'first' }, { ...square, file: 'second' }];
+    const items = [
+      { ...square, file: 'first', transform: { zoom: 2, panX: 1, panY: -1 } },
+      { ...square, file: 'second', transform: { zoom: 3, panX: -1, panY: 1 } },
+    ];
     const options = { ...exportSettings };
     const events = [];
     let release;
@@ -201,6 +288,9 @@ test('an export snapshots its order and settings and closes each bitmap before t
     };
     const progress = [];
     const pending = renderLayout(items, options, { onProgress(value) { progress.push(value); } });
+    items[0].transform.zoom = 4;
+    items[0].transform.panX = -1;
+    items[1].transform.panY = -1;
     items.reverse();
     items[0].file = 'changed';
     items.splice(0);
@@ -215,6 +305,8 @@ test('an export snapshots its order and settings and closes each bitmap before t
       ['decode', 'second'], ['close', 'second']]);
     assert.deepEqual(ctx.calls.filter((call) => call[0] === 'drawImage').map((call) => call[1].file),
       ['first', 'second']);
+    assert.deepEqual(ctx.calls.filter((call) => call[0] === 'drawImage').map((call) => call.slice(2)),
+      [[10, -90, 200, 200], [-90, 10, 300, 300]]);
     assert.deepEqual(ctx.calls.find((call) => call[0] === 'fillRect'),
       ['fillRect', '#123456', 0, 0, 220, 120]);
     assert.deepEqual(progress, [0.5, 1]);

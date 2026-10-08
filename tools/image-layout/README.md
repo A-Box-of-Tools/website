@@ -22,10 +22,40 @@ proportions. Original proportions mean a common height across a horizontal
 strip and a common width down a vertical strip, rather than distortion to make
 different-shaped sources occupy identical rectangles.
 
-Contain shows the whole source, centred in the cell, with background around it
-where the shapes differ. Cover fills the cell by centre-cropping the overflow.
+At 100% zoom, contain shows the whole source, centred in the cell, with
+background around it where the shapes differ. Cover starts with a centred crop
+of the overflow; per-image pan and zoom let the visitor choose a different
+framing.
 There is no stretch mode: making a contact sheet does not warrant quietly
 changing the proportions of the things being compared.
+
+## Presets are starting points, and framing belongs to each image
+
+`src/presets.js` holds six arrangements: square cells, a contact sheet,
+horizontal and vertical strips, portrait cells, and a seamless grid. The
+first preserves the original defaults. The contact sheet and strips start by
+keeping the whole picture at 100% zoom; the portrait and seamless arrangements
+fill their cells and crop the overflow. These are cell shapes rather than promises about the
+finished image's aspect ratio, because an arbitrary number of pictures changes
+its row count and height.
+
+The module contains identifiers and settings rather than visitor-facing names.
+The names and explanations live in the markup where they can be translated.
+A preset applies layout and export defaults and leaves the filename and each
+image's existing framing alone. Choosing a whole-image preset does not undo
+a previous zoom; Reset all frames restores the starting fit when that is the
+job the visitor wants.
+After applying it, the same ordinary controls stay available for fine tuning;
+the choices are conveniences rather than a separate kind of document.
+
+Each image can be reframed with its own pan and zoom. Dragging changes the part
+shown inside that image's cell; the position and zoom controls provide the same
+adjustments by keyboard. A reset brings that image back to its initial framing.
+The framing belongs to the image, so it moves with the tile when the list is
+reordered. Preview and export use the same framing, and zoom never changes the
+cell size or moves neighbouring images. Enlarging the source spends the detail
+it already contains rather than adding any, which the guide says before the
+visitor exports a tightly zoomed picture.
 
 ## Keep source pixels available without keeping every source open
 
@@ -40,8 +70,10 @@ an empty operating-system MIME type can still reach the decoder.
 The list thumbnails are JPEGs, so the canvas preview does not use them: doing
 so would flatten transparency before the visitor had chosen a background. It
 instead decodes smaller bitmaps from the original files, preserving alpha, and
-draws them one at a time. Export opens each original at full size, draws it into
-its planned rectangle, then closes it before opening the next. That matters
+keeps them within a shared 8-megapixel preview budget so framing can update
+without decoding on every pointer movement. Export opens each original at full
+size, draws it into its planned rectangle, then closes it before opening the
+next. That matters
 for a folder of phone photos: holding all their decoded RGBA pixels would use
 gigabytes before the output canvas had even been allocated. EXIF orientation
 is honoured by the browser decode.

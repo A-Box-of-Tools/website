@@ -31,7 +31,7 @@
 .tile-size { color: var(--text-dim); font-size: 0.72rem; margin: 0.25rem 0 0.5rem; }
 .tile-actions { display: flex; gap: 0.35rem; }
 .tile-actions button { flex: 1; padding: 0.35rem; }
-.layout-workspace { display: grid; gap: 1.5rem; grid-template-columns: 1fr 1fr; }
+.layout-workspace { align-items: start; display: grid; gap: 1.5rem; grid-template-columns: 1fr 1fr; }
 .layout-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .layout-settings input, .layout-settings select { min-width: 0; width: 100%; }
 .layout-settings input[type="color"] { height: 2.5rem; max-width: 6rem; }
@@ -39,6 +39,8 @@
 .check-inline { align-items: center; display: flex; font-size: 0.8rem; gap: 0.5rem; margin-top: 0.35rem; }
 .layout-preview { min-width: 0; }
 .layout-preview h3 { font-size: 0.95rem; margin: 0 0 0.7rem; }
+.layout-preset { margin-bottom: 1.5rem; max-width: 35rem; }
+.layout-preset select { width: 100%; }
 .preview-surface {
   align-items: center;
   background-color: #e5e7eb;
@@ -53,6 +55,33 @@
   padding: 0.75rem;
 }
 #preview { display: block; height: auto; max-height: 420px; max-width: 100%; object-fit: contain; }
+.preview-wrap { line-height: 0; max-width: 100%; min-width: 0; position: relative; }
+.frame-layer { inset: 0; position: absolute; }
+.frame-layer button {
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: grab;
+  margin: 0;
+  min-height: 0;
+  padding: 0;
+  position: absolute;
+  touch-action: none;
+}
+.frame-layer button:hover { background: transparent; border-color: var(--accent); }
+.frame-layer button[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px #fff;
+}
+.frame-layer button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.frame-layer button:active { cursor: grabbing; }
+.frame-editor { border-top: 1px solid var(--border); margin-top: 1rem; padding-top: 1rem; }
+.frame-hint { color: var(--text-dim); font-size: 0.8rem; line-height: 1.5; margin: 0 0 0.75rem; }
+.frame-editor .field { margin-top: 0.75rem; }
+.frame-editor select, .frame-editor input { min-width: 0; width: 100%; }
+.frame-editor label output { color: var(--text-dim); margin-left: 0.4rem; }
+.frame-position { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.frame-editor .layout-actions { margin-top: 0.75rem; }
 #preview-empty { background: var(--surface-2); color: var(--text-dim); font-size: 0.9rem; margin: 0; padding: 1rem; text-align: center; }
 .layout-export { margin-top: 1.1rem; }
 .layout-result { align-items: center; display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }

@@ -17,6 +17,19 @@
 
   <section class="card" id="layout-card">
     <h2><span class="step">2</span> Arrange the layout</h2>
+    <div class="field layout-preset">
+      <label for="preset">Layout preset</label>
+      <select id="preset">
+        <option value="square">Square collage · 2 columns</option>
+        <option value="contact">Contact sheet · 3 columns</option>
+        <option value="horizontal">Side by side · original shapes</option>
+        <option value="vertical">Vertical strip · original shapes</option>
+        <option value="portrait">Portrait collage · 2 columns</option>
+        <option value="seamless">Seamless collage · no gaps</option>
+        <option value="custom">Custom layout</option>
+      </select>
+      <p class="field-note">Choose a ready-to-use layout, then adjust any setting. Presets keep your images and their individual crop adjustments.</p>
+    </div>
     <div class="layout-workspace">
       <div class="settings layout-settings">
         <div class="field">
@@ -51,7 +64,7 @@
             <option value="contain">Fit whole image</option>
             <option value="cover">Fill box (crop edges)</option>
           </select>
-          <p class="field-note">Fitting keeps the whole picture. Filling crops around its centre.</p>
+          <p class="field-note">Fitting starts with the whole picture. Filling starts with a crop that covers the box. Adjust each image in the preview.</p>
         </div>
         <div class="field">
           <label for="gap">Gap between images (px)</label>
@@ -71,11 +84,42 @@
       <div class="layout-preview">
         <h3 id="preview-heading">Live preview</h3>
         <div class="preview-surface">
-          <canvas id="preview" role="img" aria-labelledby="preview-heading" aria-describedby="preview-summary" hidden></canvas>
+          <div id="preview-wrap" class="preview-wrap" hidden>
+            <canvas id="preview" role="img" aria-labelledby="preview-heading" aria-describedby="preview-summary" hidden></canvas>
+            <div id="frame-layer" class="frame-layer" role="group" aria-label="Select an image frame"></div>
+          </div>
           <p id="preview-empty">Choose images, or try the example, to see your layout here.</p>
         </div>
         <p id="preview-summary" class="field-summary" role="status"></p>
         <p class="field-note">The preview shows placement and cropping. The download uses the original images at the output size.</p>
+        <div id="frame-editor" class="frame-editor" hidden>
+          <h3>Adjust one frame</h3>
+          <p class="frame-hint">Select a frame in the preview, then drag its image. Zoom and position apply only to that frame.</p>
+          <div class="field">
+            <label for="frame-select">Frame</label>
+            <select id="frame-select"></select>
+          </div>
+          <div class="field">
+            <label for="frame-zoom">Zoom <output id="frame-zoom-label" for="frame-zoom">100%</output></label>
+            <input type="range" id="frame-zoom" min="100" max="400" step="1" value="100">
+            <p class="field-note">100% uses the Image fit setting. Zoom in to crop closer, or zoom out to return to that fit.</p>
+          </div>
+          <div class="frame-position">
+            <div class="field">
+              <label for="frame-pan-x">Horizontal position</label>
+              <input type="range" id="frame-pan-x" min="-100" max="100" step="1" value="0">
+            </div>
+            <div class="field">
+              <label for="frame-pan-y">Vertical position</label>
+              <input type="range" id="frame-pan-y" min="-100" max="100" step="1" value="0">
+            </div>
+          </div>
+          <p class="field-note">Position becomes available when the image extends beyond its frame.</p>
+          <div class="layout-actions">
+            <button type="button" id="frame-reset" class="ghost">Reset this frame</button>
+            <button type="button" id="frames-reset" class="ghost">Reset all frames</button>
+          </div>
+        </div>
       </div>
     </div>
     <p id="layout-error" class="error" role="status" hidden></p>
@@ -136,6 +180,8 @@
     <span data-phrase="error.broke">Something went wrong. Reload the page and try again.</span>
     <span data-phrase="preview.summary">{dimensions} · {n} images</span>
     <span data-phrase="preview.drawing">Drawing preview…</span>
+    <span data-phrase="frame.option">{n} · {name}</span>
+    <span data-phrase="frame.select">Adjust frame {n}: {name}</span>
     <span data-phrase="export.drawing">Drawing image {done} of {total}…</span>
     <span data-phrase="export.starting">Starting the image…</span>
     <span data-phrase="export.encoding">Writing the image…</span>

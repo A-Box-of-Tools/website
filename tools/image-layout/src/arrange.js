@@ -11,6 +11,7 @@ import { throwIfAborted } from './shared/errors.js';
 // picture repeated in a tall strip can otherwise allocate gigabytes at once.
 export const MAX_SIDE = 8192;
 export const MAX_PIXELS = 32_000_000;
+export const MAX_ZOOM = 4;
 
 const RATIOS = { square: 1, landscape: 4 / 3, portrait: 3 / 4 };
 const validInteger = (value, minimum) => Number.isSafeInteger(value) && value >= minimum;
@@ -100,17 +101,51 @@ export function arrange(items, settings) {
   return { width, height, cells, columns, rows };
 }
 
-/** Draw a picture without distortion; cover crops at the centre of its cell. */
-export function drawImageInCell(ctx, image, cell, fit = 'contain') {
+/**
+ * Pan is a fraction of the distance from the centred picture to either edge.
+ * Keeping it independent of output pixels makes a crop survive a width change,
+ * and leaves a smaller picture centred until zoom creates something to pan.
+ */
+export function imagePlacement(image, cell, fit = 'contain', transform = {}) {
   if (!['contain', 'cover'].includes(fit)) fail('errorSettings');
+  if (!image || !cell || !transform || typeof transform !== 'object' || Array.isArray(transform)) {
+    fail('errorSettings');
+  }
+  const { zoom = 1, panX = 0, panY = 0 } = transform;
+  if (!Number.isFinite(zoom) || zoom < 1 || zoom > MAX_ZOOM
+      || !Number.isFinite(panX) || Math.abs(panX) > 1
+      || !Number.isFinite(panY) || Math.abs(panY) > 1
+      || !Number.isFinite(cell.x) || !Number.isFinite(cell.y)
+      || !Number.isFinite(cell.width) || cell.width <= 0
+      || !Number.isFinite(cell.height) || cell.height <= 0) fail('errorSettings');
   const sourceWidth = image.naturalWidth || image.width;
   const sourceHeight = image.naturalHeight || image.height;
-  if (!(sourceWidth > 0) || !(sourceHeight > 0)) fail('errorSettings');
+  if (!Number.isFinite(sourceWidth) || !(sourceWidth > 0)
+      || !Number.isFinite(sourceHeight) || !(sourceHeight > 0)) fail('errorSettings');
   const scale = fit === 'cover'
     ? Math.max(cell.width / sourceWidth, cell.height / sourceHeight)
     : Math.min(cell.width / sourceWidth, cell.height / sourceHeight);
-  const width = sourceWidth * scale;
-  const height = sourceHeight * scale;
+  const width = sourceWidth * scale * zoom;
+  const height = sourceHeight * scale * zoom;
+  const panRangeX = Math.max(0, (width - cell.width) / 2);
+  const panRangeY = Math.max(0, (height - cell.height) / 2);
+  return {
+    x: cell.x + (cell.width - width) / 2 + panX * panRangeX,
+    y: cell.y + (cell.height - height) / 2 + panY * panRangeY,
+    width,
+    height,
+    panRangeX,
+    panRangeY,
+  };
+}
+
+/**
+ * Draw the selected portion without distortion, always clipped to its frame.
+ * A resized preview can name its original dimensions so whole-pixel bitmap
+ * rounding does not choose a different crop from the full-size export.
+ */
+export function drawImageInCell(ctx, image, cell, fit = 'contain', transform = {}, sourceDimensions = image) {
+  const { x, y, width, height } = imagePlacement(sourceDimensions, cell, fit, transform);
   ctx.save();
   try {
     ctx.globalAlpha = 1;
@@ -119,15 +154,14 @@ export function drawImageInCell(ctx, image, cell, fit = 'contain') {
     ctx.beginPath();
     ctx.rect(cell.x, cell.y, cell.width, cell.height);
     ctx.clip();
-    ctx.drawImage(image, cell.x + (cell.width - width) / 2,
-      cell.y + (cell.height - height) / 2, width, height);
+    ctx.drawImage(image, x, y, width, height);
   } finally {
     ctx.restore();
   }
 }
 
 /**
- * @param {object[]} items  imported pictures, each with its original File
+ * @param {object[]} items  imported pictures, each with its original File and optional transform
  * @param {object} settings  arrange() settings, plus background and transparent
  * @param {{signal?: AbortSignal, onProgress?: (fraction: number) => void}} [options]
  * @returns {Promise<HTMLCanvasElement|null>}
@@ -136,7 +170,11 @@ export async function renderLayout(items, settings, { signal, onProgress } = {})
   throwIfAborted(signal);
   // The editor can change during a decode. Its current order, dimensions and
   // colour belong to the next export, not a half-finished copy of this one.
-  const snapshot = items.map((item) => ({ ...item }));
+  const snapshot = items.map((item) => ({
+    ...item,
+    transform: item.transform && typeof item.transform === 'object' && !Array.isArray(item.transform)
+      ? { ...item.transform } : item.transform,
+  }));
   const options = { ...settings };
   const plan = arrange(snapshot, options);
   if (!plan) return null;
@@ -157,7 +195,7 @@ export async function renderLayout(items, settings, { signal, onProgress } = {})
       const bitmap = await decodeFull(snapshot[index]);
       try {
         throwIfAborted(signal);
-        drawImageInCell(ctx, bitmap, plan.cells[index], fit);
+        drawImageInCell(ctx, bitmap, plan.cells[index], fit, snapshot[index].transform);
       } finally {
         bitmap.close();
       }
