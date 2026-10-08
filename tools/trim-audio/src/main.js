@@ -386,26 +386,19 @@ function adjustSegment(id, { start, end }) {
 /* ---------------------------------------------------------- the parts table */
 
 function renderSegments() {
-  const finished = segmentRanges(segments);
-
   el.segmentTable.hidden = segments.length === 0;
   el.segmentsEmpty.hidden = segments.length > 0;
   el.segmentRows.innerHTML = '';
 
-  el.segmentCount.textContent = segments.length === 0
-    ? phrase('parts.none')
-    : phrase('parts.count', { finished: finished.length, total: segments.length });
-  el.totalKept.textContent = formatTime(
-    mode === 'keep' && finished.length ? totalCaptured(segments) : totalSeconds(ranges()));
-
   segments.forEach((segment, index) => {
     const row = document.createElement('tr');
+    row.dataset.segmentId = String(segment.id);
     row.className = `segment${segment.id === selectedSegment ? ' selected' : ''}`;
     if (segment.end === null) row.classList.add('open');
-    row.addEventListener('click', () => {
-      selectedSegment = segment.id;
-      renderSegments();
+    row.addEventListener('click', (event) => {
+      if (!event.target.closest('button')) selectSegment(segment.id);
     });
+    row.addEventListener('focusin', () => selectSegment(segment.id));
 
     const number = document.createElement('td');
     number.className = 'col-index';
@@ -421,6 +414,26 @@ function renderSegments() {
     el.segmentRows.append(row);
   });
 
+  updatePartSummary();
+}
+
+function selectSegment(id) {
+  selectedSegment = id;
+  for (const row of el.segmentRows.children) {
+    row.classList.toggle('selected', row.dataset.segmentId === String(id));
+  }
+  timeline.setSegments(segments, selectedSegment);
+}
+
+// The field must survive its own commit so Enter keeps the caret in it and
+// Tab can reach the next control rather than a replacement of the whole row.
+function updatePartSummary() {
+  const finished = segmentRanges(segments);
+  el.segmentCount.textContent = segments.length === 0
+    ? phrase('parts.none')
+    : phrase('parts.count', { finished: finished.length, total: segments.length });
+  el.totalKept.textContent = formatTime(
+    mode === 'keep' && finished.length ? totalCaptured(segments) : totalSeconds(ranges()));
   timeline.setSegments(segments, selectedSegment);
   timeline.setPending(openSegment(segments)?.start ?? null);
   updateSummary();
@@ -439,23 +452,39 @@ function timeCell(segment, which) {
   input.value = segment[which] === null ? '' : formatTime(segment[which]);
   input.placeholder = which === 'end' ? phrase('time.open') : '';
 
+  const restore = () => {
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const direction = input.selectionDirection;
+    const length = input.value.length;
+    input.value = segment[which] === null ? '' : formatTime(segment[which]);
+    if (document.activeElement === input) {
+      input.setSelectionRange(start === length ? input.value.length : start,
+        end === length ? input.value.length : end, direction);
+    }
+  };
+
   const commit = () => {
+    if (!source || !segments.includes(segment)) return;
     const seconds = parseTime(input.value);
     if (seconds === null) {
-      input.value = segment[which] === null ? '' : formatTime(segment[which]);
+      restore();
       return;
     }
     const at = Math.max(0, Math.min(seconds, source.duration));
-    if (which === 'start' && segment.end !== null && at >= segment.end) {
-      input.value = formatTime(segment.start);
-      return;
-    }
-    if (which === 'end' && at <= segment.start) {
-      input.value = segment.end === null ? '' : formatTime(segment.end);
+    if ((which === 'start' && segment.end !== null && at >= segment.end)
+      || (which === 'end' && at <= segment.start)) {
+      restore();
       return;
     }
     segment[which] = at;
-    renderSegments();
+    restore();
+    const row = cell.parentElement;
+    row.classList.toggle('open', segment.end === null);
+    row.querySelector('.segment-length').textContent = segment.end === null
+      ? '—' : formatTime(segment.end - segment.start);
+    row.querySelector('.segment-buttons button').disabled = segment.end === null;
+    updatePartSummary();
   };
 
   input.addEventListener('change', commit);
@@ -503,20 +532,29 @@ function playSegment(segment) {
   if (!source || segment.end === null) return;
   el.preview.currentTime = segment.start;
   watchUntil = segment.end;
-  selectedSegment = segment.id;
+  selectSegment(segment.id);
   el.preview.play().catch(() => {});
-  renderSegments();
 }
 
 function moveSegment(index, by) {
   const to = index + by;
   if (to < 0 || to >= segments.length) return;
+  const focused = document.activeElement;
+  const buttons = focused.closest('.segment-buttons');
+  const action = buttons ? [...buttons.children].indexOf(focused) : -1;
   const [moved] = segments.splice(index, 1);
   segments.splice(to, 0, moved);
   renderSegments();
+  if (action >= 0) {
+    const row = el.segmentRows.children[to];
+    const actions = row.querySelector('.segment-buttons').children;
+    const next = actions[action].disabled ? actions[by < 0 ? 2 : 1] : actions[action];
+    next.focus();
+  }
 }
 
 function removeSegment(index) {
+  const hadFocus = el.segmentRows.children[index]?.contains(document.activeElement);
   const [gone] = segments.splice(index, 1);
   if (selectedSegment === gone.id) {
     selectedSegment = segments.length
@@ -524,6 +562,10 @@ function removeSegment(index) {
       : null;
   }
   renderSegments();
+  if (hadFocus) {
+    const row = el.segmentRows.children[Math.min(index, segments.length - 1)];
+    (row?.querySelector('.segment-buttons .danger') ?? el.addSegment).focus();
+  }
 }
 
 /* -------------------------------------------------------- saving the marks */

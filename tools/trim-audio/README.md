@@ -234,3 +234,11 @@ Run them with `node --test "tests/js/*.test.js"` from the repository root.
 A replacement file is decoded before export is enabled again. Only the most
 recent load may replace the current recording, and an export captures its
 source, sample rate and filename together before rendering yields to the page.
+
+Timestamp commits update the existing row rather than replacing its fields, so
+Enter retains the focused field and caret and Tab reaches the next control.
+Row selection and playback update the highlight in place. Keyboard movement
+returns focus to the moved part, using the opposite direction at the list's
+edge; removing a focused part reaches its neighbour's Remove action or Add a
+row by hand when the list is empty. Browser checks cover these transitions,
+invalid marks, narrow-layout entry and a WAV exported from the edited marks.
