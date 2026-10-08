@@ -95,6 +95,9 @@ surface in the pipeline is one. A document canvas cannot go to a worker.
 | `src/plan.js` | how much memory and how many decodes, before anything runs |
 | `src/stack.js` | the seven methods, as accumulators over plain RGBA |
 | `src/align.js` | phase correlation, and log-polar for rotation and scale |
+| `src/similarity.js` | the consensus correction from nine measured windows |
+| `src/projective.js` | a validated homography when perspective explains the windows better |
+| `src/mesh.js` | bounded native affine draws for a projective warp, without a full RGBA source copy |
 | `src/fft.js` | the transform the alignment is built on |
 
 `plan.js`, `stack.js`, `align.js`, `fft.js`, `raw.js` and `orient.js` hold no
@@ -117,10 +120,11 @@ A RAW file's embedded preview is the awkward case, because the orientation
 lives in the RAW's own IFD0, where the decoder never looks, and the preview
 JPEG usually carries no EXIF of its own. That frame arrives sideways and the
 pipeline has to turn it: `openFrame` gives it a `turn` (the IFD0 value) and a
-`decoded` size (the stored one), and a single `drawFrame` helper — the only
-`drawImage` of a frame bitmap in the file — applies `orientationMatrix` about
-the box's centre with the sides swapped, as the innermost step of whatever
-alignment transform is already on the context. The turn is synthesised **only
+`decoded` size (the stored one). For the ordinary alignment path, `drawFrame`
+applies `orientationMatrix` about the box's centre with the sides swapped, as
+the innermost step of whatever alignment transform is already on the context.
+The projective mesh inverts the same orientation and placement when mapping
+each upright triangle back into the decoded bitmap. The turn is synthesised **only
 when the preview has no EXIF of its own**: when it does, the browser will
 apply that, and applying the RAW's tag as well would turn the frame twice.
 
@@ -179,7 +183,9 @@ working buffers are counted:
 The estimate in `plan.js` follows the largest working set across inspection
 and survey, coarse alignment, stacking, readback, packing and encoding. It
 counts the current bitmap, scratch and output canvases, refinement buffers,
-focus overlap and median scratch where they are live. Browser codec and GPU
+focus overlap and median scratch where they are live. Auto perspective also
+reserves each retained mesh's maximum coordinate buffer plus fixed metadata;
+the mesh itself holds at most 266,256 bytes of coordinates per moving frame. Browser codec and GPU
 internals, and the timing of garbage collection, are outside that model. The
 512 MB budget therefore sizes bands; it is not a hard cap on the browser
 process's total memory.
@@ -261,7 +267,37 @@ corrects the coarse answer in place. At output resolution there is nothing to
 multiply up, so a twentieth of a pixel of error stays a twentieth of a pixel.
 The same synthetic bursts land within a quarter of a pixel per frame.
 
-**The refinement is a grid of nine windows, a gate on each of them, one
+**Auto perspective is the default, with similarity as its fallback.** A wide
+night sky can line up near the centre while its outer stars still streak:
+rotation of the sky through a wide field is generally projective, rather than
+one shift, angle and scale. `projective.js` uses the same nine local window
+measurements to propose an eight-parameter homography. At least six windows
+must agree and span the measured field. The fit must improve on a similarity,
+predict each inlier when that window is held out, and pass bounds on its
+corner movement, orientation and homogeneous denominator. A failed fit keeps
+the existing similarity correction and is reported as a fallback, rather than
+using the model's extra freedom to warp a noisy or moving subject.
+
+The fitted residual maps `(x-dx, y-dy)` to the reference's `(x,y)` and is
+composed on the left of the coarse similarity. That sign and order matter:
+the windows were measured after the coarse move, so applying the residual
+before it would correct a different coordinate system. Placement and EXIF
+orientation remain the innermost transform; the crop and band origin are
+subtracted only when drawing.
+
+`mesh.js` draws the resulting projective image through small native affine
+triangles. A uniform grid is doubled until a bound on every triangle's entire
+interior is at most 0.15 output pixels. The global grid is cached and reused
+for all bands and passes. Expanded destination clips and copy compositing
+keep antialiasing from opening dark cracks or adding opacity to a translucent
+PNG. Only triangles intersecting the current band are drawn, each from a
+bounded rectangle of the decoded bitmap. No full-frame RGBA source array is
+allocated. The maximum grid is 128 by 128, and a transform requiring more is
+refused before it changes the crop. Canvas sampling can still differ in the
+last bits when the same geometry is rasterized with a different band origin;
+constant opaque and translucent fields remain uniform across those edges.
+
+**Similarity refinement is a grid of nine windows, a gate on each of them, one
 consensus fit, and a ladder to fall down.** It was one window in the middle
 for a week, and one window measures a shift. Nine measure a *field*, and a
 field is what a rotation is: a frame turned a third of a degree moves the
@@ -290,7 +326,8 @@ The whole grid is cheaper than one decode.
 Every window goes through `isMeasured`, the same gate as everything else here,
 and one that reports a shift larger than a quarter of what it covers is
 dropped as well — a correlation surface wraps, and no residual of a coarse
-move is that large. What survives goes to `similarity.js`: every pair of
+move is that large. In similarity mode, or as Auto's fallback, what survives
+goes to `similarity.js`: every pair of
 surviving windows is taken as a proposal, scored by how many of the others it
 explains within two output pixels, and the largest agreeing set is refitted by
 least squares. Exhaustive rather than sampled, because nine points have
@@ -612,8 +649,8 @@ test itself created, exactly, with no windowing and no tolerance.
 
 Two limits, both on the page:
 
-- everything is global — one shift, one angle, one scale for the whole frame.
-  A camera that moved is corrected; a *subject* that moved is not, and neither
+- every correction is global: a similarity in the simpler modes, or one
+  homography in Auto perspective. A *subject* that moved is not corrected, and neither
   is a photograph taken from a step to the left, because parallax moves near
   things further than far ones and no single transform describes that;
 - rotation is only ever recovered within half a turn, because the magnitude
@@ -646,10 +683,9 @@ first pass — and the output canvas is allocated at the crop's size the moment
 the crop is known, with each band's rows cut on their way out of the
 accumulator. No second canvas and no copy. The cost is that `plan.peak`'s
 canvas term is now an over-estimate of the canvas actually allocated, by the
-pixel or two a side the refinement moved things, which is the safe direction
-for a figure whose job is to keep a tab alive — and the slack pays for the
-nine reference windows, which are the one thing a run allocates that the
-figure does not count. The accumulator is that box rather than the whole
+small amount the refinement moved things, which is the safe direction for a
+figure whose job is to keep a tab alive. Reference-window and retained mesh
+buffers are reserved separately by the plan. The accumulator is that box rather than the whole
 output box because the band arithmetic is not indifferent to the difference: a
 run planned on the full box can gain a whole band over a run planned on the
 crop, and a band is a re-read of every frame, so a five-frame stack that read
@@ -859,8 +895,10 @@ on `N_MAX` has the numbers at every size.
 **Focus stacking needs its bands to overlap.** Sharpness is measured from a
 pixel's neighbours, so a band edge scored without them draws a seam across the
 picture — invisible until somebody stacks something with a horizon in it.
-`plan.js` gives that method two rows of context on each side and `bands()`
-returns the read window separately from the written one.
+`plan.js` gives that method `radius + 1` rows of context on each side: the
+blur's radius and the Laplacian's own neighbour. `bands()` returns the read
+window separately from the written one, so the same neighbourhood is scored
+on either side of a band boundary.
 
 **The alignment square must be built from the *output* box, not from each
 frame.** Every frame is drawn into it the same way — the output box,

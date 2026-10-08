@@ -66,7 +66,8 @@
       <div class="field">
         <label for="align">Alinear las tomas</label>
         <select id="align">
-          <option value="translate" selected>Sí &mdash; solo desplazamiento</option>
+          <option value="projective" selected>Auto &mdash; corregir perspectiva</option>
+          <option value="translate">Sí &mdash; solo desplazamiento</option>
           <option value="similarity">Sí &mdash; desplazamiento, rotación y escala</option>
           <option value="none">No &mdash; usarlas exactamente como están</option>
         </select>
@@ -235,6 +236,8 @@
     <span data-phrase="alignment.weak">No se pudo alinear con confianza</span>
     <span data-phrase="alignment.clamped">Solo desplazamiento; la rotación era demasiado grande</span>
     <span data-phrase="alignment.partial">Desplazamiento afinado; no se pudo afinar la rotación</span>
+    <span data-phrase="alignment.perspective">Alineada con corrección de perspectiva</span>
+    <span data-phrase="alignment.perspective-fallback">Alineada sin corrección de perspectiva</span>
     <span data-phrase="alignment.aligned">Alineada</span>
     <span data-phrase="alignment.offset">Desplazamiento: {dx}, {dy} px; rotación: {angle}&deg;; escala: {scale}&times;</span>
     <span data-phrase="alignment.remove">Quitar de la selección</span>
@@ -256,9 +259,10 @@
     <span data-phrase="mode.sum">Suma los valores de color renderizados sin dividir. Es una mezcla aditiva, no una simulación de la exposición del sensor. Los valores brillantes se recortan; normaliza el brillo para dividir por el número de tomas.</span>
     <span data-phrase="mode.focus">Toma cada parte de la imagen de la toma en la que estaba enfocada. Fotografía un sujeto pequeño a lo largo del anillo de enfoque y esto monta las partes que estaban nítidas.</span>
 
+    <span data-phrase="align.projective">Mide desplazamiento, rotación y escala y después corrige la perspectiva si coinciden suficientes regiones. Útil para fotos de estrellas con un campo amplio. Si no se puede medir la perspectiva con confianza, usa rotación y escala.</span>
     <span data-phrase="align.translate">Encuentra cuánto se ha desplazado cada toma y la devuelve a su sitio, con precisión de fracciones de píxel. Corrige el pulso y la deriva del trípode. No puede corregir la rotación.</span>
     <span data-phrase="align.similarity">También encuentra rotación y escala. Realiza una medición adicional por toma, incluso si las tomas están rectas. La rotación solo se recupera dentro de media vuelta.</span>
-    <span data-phrase="align.none">Apila las tomas exactamente como se le dan. Correcto para un trípode fijo o una secuencia de intervalómetro, y equivocado para cualquier cosa a pulso.</span>
+    <span data-phrase="align.none">Apila las tomas exactamente como están. Úsalo si ya coinciden o para estelas de estrellas que deban conservar el movimiento del cielo. Un trípode fijo no mantiene las estrellas alineadas.</span>
 
     <span data-phrase="scale.note">Un tamaño de trabajo menor reduce los búferes de píxeles y el cálculo. El navegador puede seguir decodificando internamente el archivo a tamaño completo.</span>
     <span data-phrase="gain.note">Se multiplica en el resultado al final del todo, después de la aritmética y antes de redondear.</span>

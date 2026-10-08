@@ -64,7 +64,7 @@ body = "Bruit&nbsp;: moyenne, ou écrêtage sigma pour rejeter les valeurs qui d
 
 [[howto]]
 title = "Décidez si les prises ont besoin d'être alignées."
-body = "À main levée&nbsp;: oui, décalage seul. À main levée et en tournant aussi&nbsp;: décalage, rotation et échelle. Trépied fixe ou intervallomètre&nbsp;: non, et ce sera plus rapide. Chaque prise est mesurée par rapport à celle qui porte la marque de référence, la première tant que vous n'en décidez pas autrement&nbsp;: &laquo;&nbsp;Prendre comme référence&nbsp;&raquo; déplace la marque et laisse la liste dans l'ordre où vous l'avez mise."
+body = "Commencez avec Auto&nbsp;: il mesure décalage, rotation et échelle, puis corrige la perspective si des zones fiables réparties sur l'image concordent. Il est utile pour les étoiles à grand champ. Décalage seul demande moins de mesures pour une rafale stable. Choisissez Non si les prises sont déjà alignées, ou pour les filés d'étoiles qui doivent garder le mouvement du ciel. Un trépied fixe ne maintient pas les étoiles alignées. Chaque prise est mesurée par rapport à celle marquée comme référence, la première tant que vous n'en choisissez pas une autre. &laquo;&nbsp;Prendre comme référence&nbsp;&raquo; déplace la marque sans réordonner la liste."
 
 [[howto]]
 title = "Lisez les quatre chiffres, puis appuyez sur le bouton."
@@ -88,7 +88,7 @@ a = "Six des sept méthodes ont des accumulateurs dont la taille ne dépend pas 
 
 [[faq]]
 q = "Que fait réellement l'alignement des prises&nbsp;?"
-a = "L'outil mesure le décalage de chaque prise par rapport à la référence et la remet en place avec une précision inférieure au pixel. Il utilise la corrélation de phase&nbsp;: le décalage apparaît comme une différence de phase entre les spectres, donc une transformée de Fourier par image trouve un décalage de deux cents pixels aussi facilement qu'un de deux. Le second réglage retrouve aussi rotation et échelle avec le spectre en coordonnées logarithmiques polaires. La correction est globale&nbsp;: un décalage, un angle et une échelle pour toute la prise. Elle corrige le mouvement de l'appareil, mais ni un sujet mobile ni une photo prise un pas plus loin sur le côté. Une prise décalée à gauche ne couvre plus le bord droit. Le résultat est donc recadré à la zone commune et peut être un peu plus petit, ce qui évite les bordures sombres des zones non couvertes."
+a = "L'outil mesure le décalage de chaque prise par rapport à la référence et la remet en place avec une précision inférieure au pixel. Il utilise la corrélation de phase&nbsp;: le décalage apparaît comme une différence de phase entre les spectres, donc une transformée de Fourier par image trouve un décalage de deux cents pixels aussi facilement qu'un de deux. Rotation et échelle sont retrouvées par le même procédé sur le spectre en coordonnées logarithmiques polaires. Auto mesure aussi des zones réparties sur l'image et corrige la perspective si suffisamment de mesures fiables concordent. Cela aide à aligner les étoiles d'un grand champ sur les bords comme au centre. Si cette correction supplémentaire ne peut pas être mesurée avec confiance, Auto garde rotation et échelle et indique cette correction sans perspective dans Détails d'alignement. La correction concerne toute l'image&nbsp;; elle ne peut aligner ni un sujet mobile indépendant ni toutes les profondeurs d'une scène prise un pas plus loin sur le côté. Une prise décalée à gauche ne couvre plus le bord droit. Le résultat est donc recadré à la zone commune et peut être un peu plus petit, ce qui évite les bordures sombres des zones non couvertes."
 
 [[faq]]
 q = "Quelle méthode dois-je utiliser&nbsp;?"
@@ -104,7 +104,7 @@ a = "Oui, mais vérifiez que c'est voulu. La plus grande prise définit le cadre
 
 [[faq]]
 q = "Il dit que le passage se fera en bandes. Qu'est-ce que cela veut dire&nbsp;?"
-a = "Que la mémoire de travail dont la méthode a besoin dépasse ce que l'outil est prêt à réserver d'un coup&nbsp;: l'image sera donc découpée en bandes horizontales et empilée bande par bande. Le résultat est exactement le même&nbsp;; l'outil relit simplement les prises pour chaque bande, cela prend donc plus longtemps, et la page vous dit combien de décodages cela représentera. Baisser la résolution de travail d'un cran divise la mémoire par quatre, ce qui transforme presque toujours un passage en bandes en un seul passage&nbsp;; la note indique le réglage qui le ferait."
+a = "La mémoire de travail nécessaire dépasse ce que l'outil veut réserver d'un coup. L'image est divisée en bandes horizontales, empilées une par une. La géométrie d'alignement et la méthode restent les mêmes&nbsp;; le rééchantillonnage du navigateur peut varier légèrement au dernier bit. Les prises sont lues à nouveau pour chaque bande, donc le calcul prend plus de temps. La page indique combien de décodages cela demande. Baisser la résolution de travail d'un niveau divise la mémoire par quatre et permet presque toujours une seule passe. La note indique le réglage adapté."
 
 [[faq]]
 q = "Pourquoi cet outil emploie-t-il un Worker et aucun des autres&nbsp;?"
@@ -120,7 +120,7 @@ features = [
   "Sept méthodes&nbsp;: moyenne, médiane, moyenne à écrêtage sigma, éclaircir, assombrir, additionner et empilement de mise au point",
   "Lit CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 et d'autres formats si un aperçu JPEG intégré utilisable est disponible",
   "Trouve les aperçus RAW par de petites lectures de répertoires et d'en-têtes, puis décode la tranche JPEG",
-  "Alignement automatique&nbsp;: décalage seul, décalage avec rotation et échelle, ou aucun",
+  "Alignement automatique avec correction de perspective vérifiée, rotation et échelle&nbsp;; options de décalage seul et sans alignement",
   "Alignement au sous-pixel par corrélation de phase, et non par recherche de décalages",
   "Six méthodes ont des accumulateurs dont la taille ne dépend pas du nombre de prises&nbsp;; la médiane garde des valeurs par prise",
   "Affiche la mémoire estimée de l'empilement et ses décodages prévus avant le départ",

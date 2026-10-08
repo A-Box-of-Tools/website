@@ -119,13 +119,7 @@ body = "Ruído: média, ou sigma clipping para rejeitar valores diferentes dos d
 
 [[howto]]
 title = "Decida se os quadros precisam de alinhamento."
-body = """
- Na mão: sim,
-      só deslocamento. Na mão e você também girava: deslocamento, rotação e escala.
-      Tripé travado ou intervalômetro: não, e vai ser mais rápido. Cada quadro é
-      medido contra o que estiver marcado como referência, que é o primeiro
-      enquanto você não disser outra coisa: &ldquo;Usar como referência&rdquo;
-      muda a marca e deixa a lista na ordem em que você a pôs."""
+body = "Comece com Automático: ele mede deslocamento, rotação e escala e depois corrige a perspectiva quando regiões confiáveis espalhadas pela imagem concordam. É útil para estrelas em campo amplo. Só deslocamento exige menos medições para uma sequência estável. Escolha Não se os quadros já se encaixam, ou para rastros de estrelas que devem manter o movimento do céu. Um tripé fixo não mantém as estrelas alinhadas. Cada quadro é medido contra o marcado como referência, que é o primeiro até você escolher outro. &ldquo;Usar como referência&rdquo; muda a marca sem reordenar a lista."
 
 [[howto]]
 title = "Leia os quatro números, e então aperte o botão."
@@ -159,7 +153,7 @@ a = "Seis dos sete métodos têm acumuladores cujo tamanho não cresce com o nú
 
 [[faq]]
 q = "O que o alinhamento dos quadros faz de fato?"
-a = "A ferramenta mede o deslocamento de cada quadro em relação à referência e o reposiciona com precisão menor que um pixel. Usa correlação de fase: o deslocamento aparece como uma diferença de fase entre os espectros, então uma transformada de Fourier por imagem encontra um deslocamento de duzentos pixels tão facilmente quanto um de dois. O segundo ajuste também recupera rotação e escala com o espectro em coordenadas logarítmico-polares. A correção é global: um deslocamento, um ângulo e uma escala para o quadro inteiro. Corrige a câmera que se mexeu, mas não um objeto em movimento nem uma foto tirada um passo para o lado. Um quadro deslocado à esquerda não alcança mais a borda direita. Por isso o resultado é recortado para a área comum e pode ficar um pouco menor, evitando bordas escuras por áreas sem cobertura."
+a = "A ferramenta mede o deslocamento de cada quadro em relação à referência e o reposiciona com precisão menor que um pixel. Usa correlação de fase: o deslocamento aparece como uma diferença de fase entre os espectros, então uma transformada de Fourier por imagem encontra um deslocamento de duzentos pixels tão facilmente quanto um de dois. Rotação e escala são recuperadas pelo mesmo método sobre o espectro em coordenadas logarítmico-polares. Automático também mede regiões espalhadas pelo quadro e corrige a perspectiva quando há concordância entre medições confiáveis suficientes. Isso ajuda a alinhar estrelas de um campo amplo nas bordas e no centro. Se não for possível medir essa correção com confiança, mantém rotação e escala e informa essa alternativa em Detalhes de alinhamento. A correção vale para o quadro inteiro; não alinha um objeto que se move sozinho nem todas as profundidades de uma cena fotografada um passo para o lado. Um quadro deslocado à esquerda não alcança a borda direita. Por isso o resultado é recortado para a área comum e pode ficar um pouco menor, evitando bordas escuras por áreas sem cobertura."
 
 [[faq]]
 q = "Qual método eu devo usar?"
@@ -175,14 +169,7 @@ a = "Sim, mas confira se é intencional. O maior quadro define a área de trabal
 
 [[faq]]
 q = "Ele diz que a execução vai ser em faixas. O que isso quer dizer?"
-a = """
-        Que a memória de trabalho de que o método precisa é mais do que a ferramenta
-        está disposta a reservar de uma vez, então a imagem vai ser cortada em tiras
-        horizontais e empilhada uma tira por vez. Ela ainda produz exatamente o mesmo
-        resultado; só relê os quadros para cada tira, então demora mais, e a página
-        informa quantas decodificações serão. Baixar um passo a resolução de trabalho
-        divide a memória por quatro, o que quase sempre transforma uma execução em
-        faixas numa passagem única &mdash; a nota diz qual ajuste faria isso."""
+a = "A memória de trabalho necessária supera o que a ferramenta quer reservar de uma vez. A imagem é dividida em faixas horizontais, empilhadas uma por uma. A geometria de alinhamento e o método são os mesmos; a reamostragem do navegador pode variar levemente no último bit. Os quadros são lidos de novo para cada faixa, então demora mais. A página mostra quantas decodificações serão necessárias. Reduzir a resolução de trabalho um nível divide a memória por quatro e quase sempre permite uma passagem só. A nota indica o ajuste adequado."
 
 [[faq]]
 q = "Por que esta ferramenta usa um Worker e nenhuma das outras usa?"
@@ -207,7 +194,7 @@ features = [
   "Sete métodos de empilhamento: média, mediana, média com sigma clipping, clarear, escurecer, somar e focus stacking",
   "Lê CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 e outros formatos quando há uma prévia JPEG incorporada utilizável",
   "Encontra prévias RAW lendo pequenas partes de diretórios e cabeçalhos, depois decodifica a fatia JPEG",
-  "Alinhamento automático: só deslocamento, ou deslocamento com rotação e escala, ou nenhum",
+  "Alinhamento automático com correção de perspectiva verificada, rotação e escala; opções de só deslocamento e sem alinhamento",
   "Alinhamento abaixo do pixel por correlação de fase, não por busca de desvios",
   "Seis métodos têm acumuladores que não crescem com o número de quadros; mediana guarda valores de cada quadro",
   "Mostra a memória estimada da pilha e as decodificações planejadas antes de começar",

@@ -34,6 +34,8 @@
  * runs slightly slower is better than one that never finishes.
  */
 
+import { MESH_MAX_BYTES } from './mesh.js';
+import { applyHomography } from './projective.js';
 import { DEFAULT_RADIUS } from './stack.js';
 
 /** Bytes of working memory a run may use before it starts banding. */
@@ -156,6 +158,7 @@ export function planRun({
   const survey = Math.max(1, surveyDecodePixels) * 4 + retained + thumb * 2;
   const measure = retained + (align === 'none' ? 0 : ALIGN_WORK);
   const refine = align === 'none' || !refineWindow({ width, height }) ? 0 : ALIGN_WORK;
+  const mesh = align === 'projective' && refine ? Math.max(0, count - 1) * (MESH_MAX_BYTES + 1024) : 0;
   // A median gathers contiguous chunks and sorts one frame-count-sized list.
   // The larger-list branch uses ordinary numbers, so reserve its array too.
   const medianScratch = mode === 'median'
@@ -170,12 +173,12 @@ export function planRun({
     return {
       survey,
       measure,
-      decode: canvas + accumulator + rgba + decode + refine,
-      readback: canvas + accumulator + rgba * 2,
-      pack: canvas + accumulator + rgba + medianScratch,
+      decode: canvas + accumulator + rgba + decode + refine + mesh,
+      readback: canvas + accumulator + rgba * 2 + mesh,
+      pack: canvas + accumulator + rgba + medianScratch + mesh,
       // The encoder may copy its input. This is an allowance, not a claim
       // about a particular browser's PNG or JPEG implementation.
-      encode: canvas * 2,
+      encode: canvas * 2 + mesh,
     };
   };
   const peakAt = (rows) => Math.max(...Object.values(stagesAt(rows)));
@@ -208,10 +211,11 @@ export function planRun({
 }
 
 /** A comparison closes its decoded frame before asking the encoder to run. */
-export function planComparison({ output, crop, budget = DEFAULT_BUDGET }) {
+export function planComparison({ output, crop, move, budget = DEFAULT_BUDGET }) {
   const canvas = crop.width * crop.height * 4;
   const decode = output.width * output.height * 4;
-  const peak = Math.max(canvas + decode, canvas * 2);
+  const mesh = move?.homography ? MESH_MAX_BYTES + 1024 : 0;
+  const peak = Math.max(canvas + decode, canvas * 2) + mesh;
   return { peak, overBudget: peak > budget };
 }
 
@@ -325,7 +329,7 @@ export function commonArea(moves, output) {
     const radians = ((move.angle ?? 0) * Math.PI) / 180;
     const cos = Math.cos(radians) * (move.scale ?? 1);
     const sin = Math.sin(radians) * (move.scale ?? 1);
-    const at = (x, y) => ({
+    const at = (x, y) => move.homography ? applyHomography(move.homography, x, y) : ({
       x: cx + (x - cx) * cos - (y - cy) * sin + (move.dx ?? 0),
       y: cy + (x - cx) * sin + (y - cy) * cos + (move.dy ?? 0),
     });

@@ -66,7 +66,8 @@
       <div class="field">
         <label for="align">Aligner les prises</label>
         <select id="align">
-          <option value="translate" selected>Oui &mdash; décalage seul</option>
+          <option value="projective" selected>Auto &mdash; corriger la perspective</option>
+          <option value="translate">Oui &mdash; décalage seul</option>
           <option value="similarity">Oui &mdash; décalage, rotation et échelle</option>
           <option value="none">Non &mdash; les prendre exactement telles quelles</option>
         </select>
@@ -234,6 +235,8 @@
     <span data-phrase="alignment.weak">Impossible d'aligner avec confiance</span>
     <span data-phrase="alignment.clamped">Décalage seul&nbsp;; la rotation était trop grande</span>
     <span data-phrase="alignment.partial">Décalage affiné&nbsp;; impossible d'affiner la rotation</span>
+    <span data-phrase="alignment.perspective">Alignée avec correction de perspective</span>
+    <span data-phrase="alignment.perspective-fallback">Alignée sans correction de perspective</span>
     <span data-phrase="alignment.aligned">Alignée</span>
     <span data-phrase="alignment.offset">Décalage&nbsp;: {dx}, {dy} px&nbsp;; rotation&nbsp;: {angle}&deg;&nbsp;; échelle&nbsp;: {scale}&times;</span>
     <span data-phrase="alignment.remove">Retirer de la sélection</span>
@@ -255,9 +258,10 @@
     <span data-phrase="mode.sum">Additionne les valeurs de couleur rendues sans les diviser. C'est un mélange additif, pas une simulation de l'exposition du capteur. Les valeurs claires sont écrêtées&nbsp;; normalisez la luminosité pour diviser par le nombre de prises.</span>
     <span data-phrase="mode.focus">Prend chaque partie de l'image dans la prise où elle était nette. Photographiez un petit sujet le long de la bague de mise au point et ceci recompose les parties qui étaient nettes.</span>
 
+    <span data-phrase="align.projective">Mesure le décalage, la rotation et l'échelle, puis corrige la perspective si suffisamment de zones concordent. Utile pour les photos d'étoiles à grand champ. Si la perspective ne peut pas être mesurée avec confiance, la rotation et l'échelle sont utilisées.</span>
     <span data-phrase="align.translate">Trouve de combien chaque prise s'est décalée et la remet en place, à une fraction de pixel près. Corrige le tremblement à main levée et la dérive du trépied. Il ne peut pas corriger la rotation.</span>
     <span data-phrase="align.similarity">Trouve aussi la rotation et l'échelle. Effectue une mesure supplémentaire pour chaque prise, même si les prises sont droites. La rotation est toujours retrouvée dans la limite d'un demi-tour.</span>
-    <span data-phrase="align.none">Empile les prises exactement telles qu'elles sont données. Juste pour un trépied fixe ou une séquence d'intervallomètre, et faux pour tout ce qui est pris à main levée.</span>
+    <span data-phrase="align.none">Empile les prises exactement telles quelles. À utiliser si elles sont déjà alignées, ou pour des filés d'étoiles qui doivent préserver le mouvement du ciel. Un trépied fixe ne maintient pas les étoiles alignées.</span>
 
     <span data-phrase="scale.note">Une taille de travail plus petite réduit les tampons de pixels et les calculs. Le navigateur peut toujours décoder le fichier en pleine taille en interne.</span>
     <span data-phrase="gain.note">Multiplié dans le résultat tout à la fin, après le calcul et avant l'arrondi.</span>

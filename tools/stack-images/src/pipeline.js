@@ -41,6 +41,10 @@ import {
   REFINE_INSET, SURVEY_EDGE, bands, commonArea, outputSize, placement, planComparison,
   planRun, refineWindow, workingSize,
 } from './plan.js';
+import { drawMesh, prepareMesh } from './mesh.js';
+import {
+  boundedHomography, multiplyHomographies, projectiveConsensus, similarityHomography,
+} from './projective.js';
 import { jpegOrientation, orientationMatrix, orientedSize } from './orient.js';
 import { findPreview, jpegSize, looksRaw } from './raw.js';
 import { MIN_INLIERS, consensus } from './similarity.js';
@@ -278,6 +282,12 @@ function drawFrame(context, bitmap, spot, turn) {
  * output's, because that is the space the movement was measured in.
  */
 function drawAligned(context, bitmap, spot, output, move, crop, bandY, turn) {
+  if (move.homography) {
+    drawMesh(context, bitmap, move.homography, spot, turn, {
+      x: crop.x, y: crop.y + bandY, width: context.canvas.width, height: context.canvas.height,
+    });
+    return;
+  }
   const cx = output.width / 2;
   const cy = output.height / 2;
   context.setTransform(1, 0, 0, 1, -crop.x, -crop.y - bandY);
@@ -507,6 +517,8 @@ const REFINE_LIMIT = 2;
 export const REFINED = Object.freeze({
   reference: 'reference',
   fit: 'fit',
+  projective: 'projective',
+  projectiveFallback: 'projective-fallback',
   partial: 'partial',
   coarse: 'coarse',
   none: 'none',
@@ -698,7 +710,7 @@ export function fellBack(area, moves, output) {
     // The same default commonArea takes, so the two read one set of moves the
     // same way.
     const box = move.spot ?? { x: 0, y: 0, width: output.width, height: output.height };
-    return move.dx !== 0 || move.dy !== 0 || move.angle !== 0 || move.scale !== 1
+    return Boolean(move.homography) || move.dx !== 0 || move.dy !== 0 || move.angle !== 0 || move.scale !== 1
       || box.x !== 0 || box.y !== 0
       || box.width !== output.width || box.height !== output.height;
   });
@@ -808,6 +820,28 @@ export function refineMove(move, points, turning, centre, limit) {
   return { ...move, refine: REFINED.coarse };
 }
 
+/** A rejected warp keeps the existing similarity correction and its status. */
+export function refineProjective(move, points, centre, limit, output, spot) {
+  const simple = refineMove(move, points, true, centre, limit);
+  const fallback = { ...simple, refine: REFINED.projectiveFallback, fallbackRefine: simple.refine };
+  const found = projectiveConsensus(points, { centre, output, limit, tolerance: REFINE_TOLERANCE });
+  if (!found) return fallback;
+  const homography = multiplyHomographies(found.matrix, similarityHomography(move, centre));
+  if (!boundedHomography(homography, output)) return fallback;
+  try {
+    prepareMesh(homography, spot);
+  } catch (error) {
+    if (error.message === 'warp') return fallback;
+    throw error;
+  }
+  return {
+    ...move, homography, refine: REFINED.projective, clamped: false,
+    projectiveInliers: found.inliers.length,
+    projectiveRms: found.rms,
+    projectiveValidation: found.validation,
+  };
+}
+
 /* -------------------------------------------------------------------- run */
 
 /**
@@ -906,7 +940,7 @@ export async function runStack(request, hooks) {
         });
         continue;
       }
-      const found = estimate(reference, square, ALIGN_SIZE, align);
+      const found = estimate(reference, square, ALIGN_SIZE, align === 'projective' ? 'similarity' : align);
       // A peak the gate refused is the tallest point of a featureless surface,
       // not a shift, and the page says such a frame was left where it was. The
       // identity makes that literally true, and it is what the crop and the
@@ -971,6 +1005,13 @@ export async function runStack(request, hooks) {
     // How far the refinement may move a frame, out of the coarse pass's square
     // and into the output's own pixels.
     const limit = REFINE_LIMIT / fit.scale;
+    if (align === 'projective') {
+      for (let index = 1; index < moves.length; index += 1) {
+        if (!windows || !moves[index].measured) {
+          moves[index] = { ...moves[index], refine: REFINED.projectiveFallback, fallbackRefine: moves[index].refine };
+        }
+      }
+    }
 
     // The accumulator covers `covered` and the crop is taken at the end, out of
     // the finished rows. It has to be that way round now: the moves are not
@@ -1084,9 +1125,9 @@ export async function runStack(request, hooks) {
                 if (Math.hypot(dx, dy) > windows.cover / 4) continue;
                 points.push({ x: at.centre.x, y: at.centre.y, dx, dy });
               }
-              moves[index] = refineMove(
-                moves[index], points, align === 'similarity', centre, limit,
-              );
+              moves[index] = align === 'projective'
+                ? refineProjective(moves[index], points, centre, limit, output, spot)
+                : refineMove(moves[index], points, align === 'similarity', centre, limit);
             }
           }
 

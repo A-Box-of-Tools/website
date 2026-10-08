@@ -66,7 +66,8 @@
       <div class="field">
         <label for="align">Alinhar os quadros</label>
         <select id="align">
-          <option value="translate" selected>Sim &mdash; só deslocamento</option>
+          <option value="projective" selected>Auto &mdash; corrigir perspectiva</option>
+          <option value="translate">Sim &mdash; só deslocamento</option>
           <option value="similarity">Sim &mdash; deslocar, girar e redimensionar</option>
           <option value="none">Não &mdash; pegar exatamente como estão</option>
         </select>
@@ -235,6 +236,8 @@
     <span data-phrase="alignment.weak">Não foi possível alinhar com confiança</span>
     <span data-phrase="alignment.clamped">Só deslocamento; a rotação era grande demais</span>
     <span data-phrase="alignment.partial">Deslocamento refinado; não foi possível refinar a rotação</span>
+    <span data-phrase="alignment.perspective">Alinhado com correção de perspectiva</span>
+    <span data-phrase="alignment.perspective-fallback">Alinhado sem correção de perspectiva</span>
     <span data-phrase="alignment.aligned">Alinhado</span>
     <span data-phrase="alignment.offset">Deslocamento: {dx}, {dy} px; rotação: {angle}&deg;; escala: {scale}&times;</span>
     <span data-phrase="alignment.remove">Remover da seleção</span>
@@ -256,9 +259,10 @@
     <span data-phrase="mode.sum">Soma os valores de cor renderizados sem dividir. É uma mistura aditiva, não uma simulação da exposição do sensor. Valores claros estouram; normalize o brilho para dividir pelo número de quadros.</span>
     <span data-phrase="mode.focus">Pega cada parte da imagem do quadro em que ela estava em foco. Fotografe um assunto pequeno ao longo do anel de foco, e isto junta as partes nítidas.</span>
 
+    <span data-phrase="align.projective">Mede deslocamento, rotação e escala e depois corrige a perspectiva quando há concordância entre regiões suficientes. Útil para fotos de estrelas com campo amplo. Se não for possível medir a perspectiva com confiança, usa rotação e escala.</span>
     <span data-phrase="align.translate">Descobre quanto cada quadro se deslocou e o desloca de volta, com precisão de frações de pixel. Corrige o tremor da mão e a deriva do tripé. Rotação ele não corrige.</span>
     <span data-phrase="align.similarity">Também encontra rotação e escala. Faz uma medição adicional em cada quadro, mesmo quando os quadros estão retos. A rotação só é recuperada dentro de meia volta.</span>
-    <span data-phrase="align.none">Empilha os quadros exatamente como chegam. Certo para um tripé fixo ou uma série de intervalos, errado para qualquer coisa feita na mão.</span>
+    <span data-phrase="align.none">Empilha os quadros exatamente como estão. Use quando já se encaixam, ou para rastros de estrelas que devem preservar o movimento do céu. Um tripé fixo não mantém as estrelas alinhadas.</span>
 
     <span data-phrase="scale.note">Um tamanho de trabalho menor reduz buffers de pixels e cálculos. O navegador ainda pode decodificar o arquivo internamente em tamanho cheio.</span>
     <span data-phrase="gain.note">Multiplicado no resultado bem no fim, depois da conta e antes do arredondamento.</span>

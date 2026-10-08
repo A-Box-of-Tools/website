@@ -63,7 +63,8 @@
       <div class="field">
         <label for="align">フレームの位置合わせ</label>
         <select id="align">
-          <option value="translate" selected>する｜平行移動だけ</option>
+          <option value="projective" selected>自動｜遠近補正</option>
+          <option value="translate">する｜平行移動だけ</option>
           <option value="similarity">する｜平行移動・回転・拡大縮小</option>
           <option value="none">しない｜そのまま使う</option>
         </select>
@@ -227,6 +228,8 @@
     <span data-phrase="alignment.weak">確実に位置合わせできませんでした</span>
     <span data-phrase="alignment.clamped">平行移動のみ。回転が大きすぎました</span>
     <span data-phrase="alignment.partial">平行移動を補正しましたが、回転は補正できませんでした</span>
+    <span data-phrase="alignment.perspective">遠近補正で位置合わせ済み</span>
+    <span data-phrase="alignment.perspective-fallback">遠近補正なしで位置合わせ済み</span>
     <span data-phrase="alignment.aligned">位置合わせ済み</span>
     <span data-phrase="alignment.offset">移動：{dx}、{dy} px、回転：{angle}&deg;、倍率：{scale}&times;</span>
     <span data-phrase="alignment.remove">選択から削除</span>
@@ -239,7 +242,8 @@
 
     <span data-phrase="mode.mean">各フレームの平均を取ります。ランダムなノイズは高く出るのと同じだけ低くも出るので、{count}枚の平均を取るとおよそ{factor}倍に下がります。静かな一組のための手法であり、通りかかった鳥1羽で台無しになる手法でもあります。</span><span data-phrase="mode.median">各画素の中央の値を使います。動くものがその画素に写った回数が全体の半分未満なら消せる場合があります。全フレームを同時に持つ唯一の手法なので、帯に分ける場合があります。</span><span data-phrase="mode.sigma">各画素の通常の値を求め、一致する値だけを平均します。外れ値を除きながらノイズを減らせます。少ない枚数では通り過ぎたものが残る場合があります。除去が最優先なら中央値を使ってください。フレームは2回読みます。</span><span data-phrase="mode.max">各画素がこれまでに持ったいちばん明るい値を残します。短い露光の連なりを星の軌跡にするのも、花火をそれ自身のフレームから組み直すのもこれです。</span><span data-phrase="mode.min">各画素がこれまでに持ったいちばん暗い値を残します。画素が明るいまま残るのはすべてのフレームで明るかったときだけなので、窓の映り込みも通り過ぎるヘッドライトもストロボに光る雨粒も消えます。</span><span data-phrase="mode.sum">描画済みの色の値を、割らずに加算します。加算合成であり、センサーの露光は再現しません。明るい値は上限に達します。明るさを正規化するとフレーム数で割ります。</span><span data-phrase="mode.focus">画像の各部分を、そこにピントが合っていたフレームから取ります。小さな被写体をフォーカスリングを回しながら撮ると、これが鋭い部分をつなぎ合わせます。</span>
 
-    <span data-phrase="align.translate">各フレームがどれだけずれたかを求め、そのぶん戻します。1画素の何分の1という精度です。手持ちの揺れや三脚の流れを直します。回転は直せません。</span><span data-phrase="align.similarity">回転と拡大縮小も求めます。フレームがまっすぐでも、各フレームに追加の測定を行います。回転は半回転の範囲内でのみ復元します。</span><span data-phrase="align.none">フレームを届いたそのままスタックします。固定した三脚やインターバル撮影には正しく、手持ちのものには間違っています。</span>
+    <span data-phrase="align.projective">平行移動・回転・拡大縮小を測定し、十分な領域で一致が得られれば遠近を補正します。広い画角の星の写真に役立ちます。遠近を確実に測定できない場合は、回転と拡大縮小を使います。</span>
+    <span data-phrase="align.translate">各フレームがどれだけずれたかを求め、そのぶん戻します。1画素の何分の1という精度です。手持ちの揺れや三脚の流れを直します。回転は直せません。</span><span data-phrase="align.similarity">回転と拡大縮小も求めます。フレームがまっすぐでも、各フレームに追加の測定を行います。回転は半回転の範囲内でのみ復元します。</span><span data-phrase="align.none">フレームをそのままスタックします。すでに位置が合っている場合や、空の動きを残す星の軌跡に使ってください。固定した三脚でも星の位置はそろいません。</span>
 
     <span data-phrase="scale.note">小さな作業サイズは画素バッファと計算量を減らします。ブラウザ内部では原寸でデコードする場合があります。</span><span data-phrase="gain.note">計算のあと、丸める前に、いちばん最後に結果へ掛けます。</span>
     <span data-phrase="gain.sum-note">{count}枚を加算すると明るい部分が上限に達する場合があります。明るさを正規化して{suggested}&times;にするか、露出を直接入力してください。</span>

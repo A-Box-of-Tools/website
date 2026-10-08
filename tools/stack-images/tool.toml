@@ -207,9 +207,11 @@ body = """
 [[howto]]
 title = "Decide whether the frames need aligning."
 body = """
- Hand-held: yes,
-      shift only. Hand-held and you were also turning: shift, rotation and scale.
-      Locked-off tripod or an intervalometer: no, and it will be quicker. Every
+      Start with Auto: it measures shift, rotation and scale, then corrects
+      perspective when reliable regions across the image agree. It is useful for
+      wide-field stars. Shift only does less measurement work for a steady burst.
+      Choose None when frames already line up, or for star trails that should
+      preserve the sky's motion. A fixed tripod does not keep stars aligned. Every
       frame is measured against the one marked as the reference, which is the
       first one until you say otherwise: &ldquo;use as reference&rdquo; moves the
       mark and leaves the list in the order you put it in."""
@@ -286,11 +288,15 @@ a = """
         moves it back, to a fraction of a pixel. The method is phase correlation:
         the shift between two pictures shows up as a phase difference between their
         spectra, so one Fourier transform each finds a two-hundred-pixel offset as
-        cheaply as a two-pixel one. The second setting also recovers rotation and
-        scale, by the same trick applied to the spectrum in log-polar coordinates.
-        All of it is global &mdash; one shift, one angle, one scale for the whole
-        frame &mdash; so it corrects a camera that moved and cannot correct a
-        subject that moved, or a photograph taken from a step to the left. One
+        cheaply as a two-pixel one. Rotation and scale are recovered by the same
+        trick applied to the spectrum in log-polar coordinates. Auto also measures
+        regions across the frame and corrects perspective when enough reliable
+        measurements agree. This helps wide-field stars stay aligned near the
+        edges as well as the centre. When that extra correction cannot be measured
+        confidently, Auto keeps rotation and scale and reports the fallback in
+        Alignment details. The correction applies to the whole frame; it cannot
+        align an independently moving subject or every depth of a scene taken from
+        a step to the left. One
         visible consequence: a frame moved twenty pixels left no longer reaches
         the right-hand edge, so the result is trimmed to the part every frame
         covers. That is why an aligned stack comes back very slightly smaller
@@ -339,8 +345,9 @@ q = "It says the run will be banded. What does that mean?"
 a = """
         That the working memory the method needs is more than the tool is willing
         to allocate in one go, so the picture will be cut into horizontal strips
-        and stacked a strip at a time. It still produces exactly the same result;
-        it just reads the frames again for each strip, so it takes longer, and the
+        and stacked a strip at a time. It uses the same alignment geometry and
+        stacking method; browser resampling can differ slightly at the last bit.
+        It reads the frames again for each strip, so it takes longer, and the
         page tells you how many decodes that will be. Dropping the working
         resolution one step cuts the memory by four, which almost always turns a
         banded run into a single pass &mdash; the note says which setting would do
@@ -375,7 +382,7 @@ features = [
   "Seven stacking methods: average, median, sigma-clipped mean, lighten, darken, add and focus stacking",
   "Reads CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 and more when a usable embedded JPEG preview is available",
   "Finds RAW previews through small directory and header reads, then decodes the JPEG slice",
-  "Automatic alignment: shift only, or shift with rotation and scale, or none",
+  "Automatic alignment with checked perspective correction, rotation and scale; shift-only and no-alignment options",
   "Sub-pixel alignment by phase correlation, not by searching offsets",
   "Six methods have accumulators whose size does not grow with the frame count; median holds values per frame",
   "Estimated working memory and planned stacking decodes shown before the run starts",

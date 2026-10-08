@@ -64,7 +64,8 @@
       <div class="field">
         <label for="align">Align the frames</label>
         <select id="align">
-          <option value="translate" selected>Yes &mdash; shift only</option>
+          <option value="projective" selected>Auto &mdash; correct perspective</option>
+          <option value="translate">Yes &mdash; shift only</option>
           <option value="similarity">Yes &mdash; shift, rotation and scale</option>
           <option value="none">No &mdash; use them exactly as they are</option>
         </select>
@@ -233,6 +234,8 @@
     <span data-phrase="alignment.weak">Could not align confidently</span>
     <span data-phrase="alignment.clamped">Shift only; rotation was too large</span>
     <span data-phrase="alignment.partial">Shift refined; rotation could not be refined</span>
+    <span data-phrase="alignment.perspective">Perspective aligned</span>
+    <span data-phrase="alignment.perspective-fallback">Aligned without perspective correction</span>
     <span data-phrase="alignment.aligned">Aligned</span>
     <span data-phrase="alignment.offset">Shift: {dx}, {dy} px; rotation: {angle}&deg;; scale: {scale}&times;</span>
     <span data-phrase="alignment.remove">Remove from selection</span>
@@ -254,9 +257,10 @@
     <span data-phrase="mode.sum">Adds rendered colour values without dividing. This is additive blending, rather than a simulation of sensor exposure. Bright values clip; normalize brightness to divide by the number of frames.</span>
     <span data-phrase="mode.focus">Takes each part of the picture from whichever frame had it in focus. Photograph a small subject along the focus ring and this assembles the parts that were sharp.</span>
 
+    <span data-phrase="align.projective">Measures shifts, rotation and scale, then corrects perspective when enough regions agree. Useful for wide-field star photographs. If perspective cannot be measured confidently, rotation and scale are used.</span>
     <span data-phrase="align.translate">Finds how far each frame shifted and moves it back, to a fraction of a pixel. Corrects hand-held wobble and tripod drift. It cannot correct rotation.</span>
     <span data-phrase="align.similarity">Also finds rotation and scale. Performs an additional measurement for every frame, even when the frames turn out to be straight. Rotation is only ever recovered within half a turn.</span>
-    <span data-phrase="align.none">Stacks the frames exactly as given. Right for a locked-off tripod or an intervalometer sequence, and wrong for anything hand-held.</span>
+    <span data-phrase="align.none">Stacks the frames exactly as given. Use when the frames already line up, or for star trails that should preserve the sky's motion. A fixed tripod does not keep stars aligned.</span>
 
     <span data-phrase="scale.note">A smaller working size reduces pixel buffers and arithmetic. The browser may still decode a file at full size internally.</span>
     <span data-phrase="gain.note">Multiplied into the result at the very end, after the arithmetic and before rounding.</span>

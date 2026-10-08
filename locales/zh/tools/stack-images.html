@@ -65,7 +65,8 @@
       <div class="field">
         <label for="align">对齐各帧</label>
         <select id="align">
-          <option value="translate" selected>对齐 | 只平移</option>
+          <option value="projective" selected>自动 | 透视校正</option>
+          <option value="translate">对齐 | 只平移</option>
           <option value="similarity">对齐 | 平移、旋转、缩放</option>
           <option value="none">不对齐 | 就照它们原样</option>
         </select>
@@ -231,6 +232,8 @@
     <span data-phrase="alignment.weak">无法可靠对齐</span>
     <span data-phrase="alignment.clamped">只平移，旋转角度过大</span>
     <span data-phrase="alignment.partial">已细化平移，无法细化旋转</span>
+    <span data-phrase="alignment.perspective">已通过透视校正对齐</span>
+    <span data-phrase="alignment.perspective-fallback">已对齐，未校正透视</span>
     <span data-phrase="alignment.aligned">已对齐</span>
     <span data-phrase="alignment.offset">平移：{dx}、{dy} px；旋转：{angle}&deg;；缩放：{scale}&times;</span>
     <span data-phrase="alignment.remove">从选择中移除</span>
@@ -242,7 +245,8 @@
 
     <span data-phrase="mode.mean">对每一帧取平均值。随机噪点偏高和偏低的次数一样多，所以把 {count} 帧平均一下，噪点大约降到原来的 {factor} 分之一。这是给安静一组用的手法，也是被一只飞过去的鸟就毁掉的那种。</span><span data-phrase="mode.median">取每个像素的中间值。移动物体占据这个像素的帧数不到一半时，可能消失。这是唯一需要同时保存各帧的手法，因此可能分条处理。</span><span data-phrase="mode.sigma">估计每个像素的常见值，只对一致的值取平均。可以排除异常值并降低噪点。帧数少时可能保留经过的物体；最重要的是移除物体时，请用中位数。各帧读取两遍。</span><span data-phrase="mode.max">留下每个像素出现过的最亮值。把一串短曝光变成星轨、把一场烟花从它自己的帧里重新拼起来，靠的就是它。</span><span data-phrase="mode.min">留下每个像素出现过的最暗值。一个像素只有在每一帧里都亮才会保持亮，所以窗户上的反光、开过去的车灯、被闪光灯打亮的雨滴，全都会消失。</span><span data-phrase="mode.sum">把渲染后的颜色值相加，不除以帧数。这是加法混合，不模拟传感器曝光。明亮值会溢出，归一化亮度可除以帧数。</span><span data-phrase="mode.focus">图像的每一部分，都从它在那一帧里清楚的那一帧取。沿着对焦环拍一个小东西，这个手法会把清楚的部分接起来。</span>
 
-    <span data-phrase="align.translate">算出每一帧偏了多少，再挪回去，精度到一个像素的几分之一。能纠正手持的抖动和三脚架的漂移，纠正不了旋转。</span><span data-phrase="align.similarity">还会找出旋转和缩放。每一帧都会进行额外测量，即使各帧原本很正。旋转只在半圈范围内恢复。</span><span data-phrase="align.none">照这些帧进来的样子直接堆。对锁死的三脚架或者间隔拍摄是对的，对任何手持的东西都是错的。</span>
+    <span data-phrase="align.projective">测量平移、旋转和缩放，足够多的区域一致时再校正透视。适合广角星空照片。如果无法可靠测量透视，就使用旋转和缩放。</span>
+    <span data-phrase="align.translate">算出每一帧偏了多少，再挪回去，精度到一个像素的几分之一。能纠正手持的抖动和三脚架的漂移，纠正不了旋转。</span><span data-phrase="align.similarity">还会找出旋转和缩放。每一帧都会进行额外测量，即使各帧原本很正。旋转只在半圈范围内恢复。</span><span data-phrase="align.none">按原样堆栈各帧。用于已经对齐的帧，或需要保留天空运动的星轨。固定三脚架并不能让星星保持对齐。</span>
 
     <span data-phrase="scale.note">更小的工作尺寸会减少像素缓冲区和计算量。浏览器内部仍可能按原尺寸解码文件。</span><span data-phrase="gain.note">在算完之后、取整之前，最后一步乘进结果里。</span><span data-phrase="gain.sum-note">相加 {count} 帧可能让明亮值溢出。归一化亮度可设为 {suggested}&times;，也可自行输入曝光。</span>
 

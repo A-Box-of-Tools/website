@@ -122,13 +122,7 @@ body = "Ruido: media, o recorte sigma para rechazar valores distintos del resto.
 
 [[howto]]
 title = "Decide si hay que alinear las tomas."
-body = """
- A pulso: sí, solo
-      desplazamiento. A pulso y además girando: desplazamiento, rotación y
-      escala. Trípode fijo o intervalómetro: no, y así irá más rápido. Cada toma
-      se mide contra la que lleva la marca de referencia, que es la primera
-      mientras no digas otra cosa: &laquo;Usar como referencia&raquo; mueve la
-      marca y deja la lista en el orden en que la pusiste."""
+body = "Empieza con Auto: mide desplazamiento, rotación y escala y luego corrige la perspectiva si coinciden regiones fiables de toda la imagen. Es útil para estrellas en un campo amplio. Solo desplazamiento requiere menos mediciones para una ráfaga estable. Elige No si las tomas ya coinciden o para estelas de estrellas que deban conservar el movimiento del cielo. Un trípode fijo no mantiene las estrellas alineadas. Cada toma se mide contra la marcada como referencia, que es la primera hasta que elijas otra. &ldquo;Usar como referencia&rdquo; cambia la marca sin cambiar el orden de la lista."
 
 [[howto]]
 title = "Lee las cuatro cifras y después pulsa el botón."
@@ -162,7 +156,7 @@ a = "Seis de los siete métodos usan acumuladores cuyo tamaño no crece con el n
 
 [[faq]]
 q = "¿Qué hace exactamente alinear las tomas?"
-a = "La herramienta mide cuánto se desplazó cada toma respecto a la referencia y la recoloca con precisión inferior a un píxel. Usa correlación de fase: el desplazamiento aparece como una diferencia de fase entre los espectros, así que una transformada de Fourier por imagen encuentra un desplazamiento de doscientos píxeles tan fácilmente como uno de dos. El segundo ajuste recupera también rotación y escala con el espectro en coordenadas logarítmico-polares. La corrección es global: un desplazamiento, un ángulo y una escala para toda la imagen. Corrige la cámara que se movió, pero no un sujeto móvil ni una foto tomada desde un paso a un lado. Una toma desplazada a la izquierda deja de cubrir el borde derecho. Por eso el resultado se recorta al área común y puede ser algo menor; así se evitan bordes oscuros por zonas sin cobertura."
+a = "La herramienta mide cuánto se desplazó cada toma respecto a la referencia y la recoloca con precisión inferior a un píxel. Usa correlación de fase: el desplazamiento aparece como una diferencia de fase entre los espectros, así que una transformada de Fourier por imagen encuentra un desplazamiento de doscientos píxeles tan fácilmente como uno de dos. Rotación y escala se recuperan con el mismo método sobre el espectro en coordenadas logarítmico-polares. Auto también mide regiones por toda la imagen y corrige la perspectiva si coinciden suficientes mediciones fiables. Esto ayuda a alinear las estrellas de un campo amplio tanto en los bordes como en el centro. Si no se puede medir esa corrección con confianza, mantiene rotación y escala e informa de esa alternativa en Detalles de alineación. La corrección se aplica a toda la imagen; no puede alinear un sujeto que se mueve por su cuenta ni todas las profundidades de una escena fotografiada un paso más a un lado. Una toma desplazada a la izquierda deja de cubrir el borde derecho. Por eso el resultado se recorta al área común y puede ser algo menor, evitando bordes oscuros de zonas sin cobertura."
 
 [[faq]]
 q = "¿Qué método debería usar?"
@@ -178,15 +172,7 @@ a = "Sí, pero comprueba que sea intencionado. La toma más grande define el ár
 
 [[faq]]
 q = "Dice que la pasada irá por bandas. ¿Qué significa?"
-a = """
-        Que la memoria de trabajo que necesita el método es más de la que la
-        herramienta está dispuesta a reservar de una vez, así que la imagen se
-        cortará en tiras horizontales y se apilará tira a tira. Sigue produciendo
-        exactamente el mismo resultado; solo relee las tomas para cada tira, así
-        que tarda más, y la página te dice cuántas decodificaciones serán. Bajar
-        un escalón la resolución de trabajo divide la memoria entre cuatro, y eso
-        casi siempre convierte una pasada por bandas en una sola pasada; la nota
-        dice qué ajuste lo haría."""
+a = "La memoria de trabajo que necesita el método supera lo que la herramienta quiere reservar de una vez. La imagen se divide en franjas horizontales y se apila una por una. Se usan la misma geometría de alineación y el mismo método; el remuestreo del navegador puede variar ligeramente en el último bit. Las tomas se leen de nuevo para cada franja, así que tarda más; la página indica cuántas decodificaciones serán. Bajar un nivel la resolución de trabajo divide la memoria entre cuatro y casi siempre permite una sola pasada. La nota indica qué ajuste usar."
 
 [[faq]]
 q = "¿Por qué esta herramienta usa un Worker y ninguna de las otras?"
@@ -211,7 +197,7 @@ features = [
   "Siete métodos: media, mediana, media con recorte sigma, aclarar, oscurecer, sumar y apilado de enfoque",
   "Lee CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 y otros formatos si hay una vista previa JPEG integrada utilizable",
   "Localiza vistas previas RAW leyendo pequeñas partes de directorios y cabeceras y luego decodifica el fragmento JPEG",
-  "Alineación automática: solo desplazamiento, desplazamiento con rotación y escala, o ninguna",
+  "Alineación automática con corrección de perspectiva comprobada, rotación y escala; opciones de solo desplazamiento y sin alineación",
   "Alineación con precisión de subpíxel por correlación de fase, no buscando desplazamientos",
   "Seis métodos usan acumuladores que no crecen con el número de tomas; mediana conserva valores de cada toma",
   "Muestra la memoria estimada del apilado y las decodificaciones previstas antes de empezar",

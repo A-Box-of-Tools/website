@@ -12,9 +12,11 @@
       <li><strong>A macro shot with almost no depth of field</strong> &mdash; focus stacking.</li>
     </ul>
     <p>
-      Leave alignment on if the camera was in your hands and turn it off for a
-      locked-off tripod. RAW files can go straight in when they contain a usable
-      JPEG preview; the row shows the size of the picture actually being stacked.
+      Start with <strong>Auto perspective</strong> for noise reduction, including
+      night-sky photographs taken on a tripod: the stars move even when the
+      camera stays still. Use <strong>None</strong> for intentional star trails
+      or frames that already line up. RAW files can go straight in when they
+      contain a usable JPEG preview; the row shows the picture's actual size.
     </p>
     <p>
       Everything below is why those five lines are what they are.
@@ -162,12 +164,20 @@
       and moved back when a reliable correction can be found. The first frame is
       the default; <strong>Use as reference</strong> changes that mark without
       rearranging the list. Choose a sharp frame with clear, static detail.
-      Three alignment settings:
+      Four alignment settings:
     </p>
     <ul>
       <li>
-        <strong>Shift only</strong> is right for almost everything hand-held. It
-        corrects the drift and the wobble.
+        <strong>Auto perspective</strong> is the default. It corrects drift,
+        rotation and scale, and uses a perspective correction when reliable
+        measurements across the frame support it. This helps wide night-sky
+        bursts where the centre lines up but stars near the edges still trail.
+        It falls back to the simpler correction when a stable perspective fit
+        cannot be found.
+      </li>
+      <li>
+        <strong>Shift only</strong> for a burst that drifted without turning or
+        changing perspective. It corrects translation alone.
       </li>
       <li>
         <strong>Shift, rotation and scale</strong> for a set where you were also
@@ -175,9 +185,9 @@
         adds measurement work even when the frames turn out to be straight.
       </li>
       <li>
-        <strong>None</strong> for a locked-off tripod or an intervalometer
-        sequence, where the frames are already aligned and measuring them is
-        wasted time.
+        <strong>None</strong> when static frames already line up, or when you
+        want moving stars to become trails. A tripod does not keep stars in
+        the same pixels throughout a night-sky sequence.
       </li>
     </ul>
     <p>

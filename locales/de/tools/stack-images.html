@@ -66,7 +66,8 @@
       <div class="field">
         <label for="align">Aufnahmen ausrichten</label>
         <select id="align">
-          <option value="translate" selected>Ja &mdash; nur verschieben</option>
+          <option value="projective" selected>Auto &mdash; Perspektive korrigieren</option>
+          <option value="translate">Ja &mdash; nur verschieben</option>
           <option value="similarity">Ja &mdash; verschieben, drehen und skalieren</option>
           <option value="none">Nein &mdash; genau so nehmen, wie sie sind</option>
         </select>
@@ -236,6 +237,8 @@
     <span data-phrase="alignment.weak">Keine sichere Ausrichtung möglich</span>
     <span data-phrase="alignment.clamped">Nur verschoben; die Drehung war zu groß</span>
     <span data-phrase="alignment.partial">Verschiebung verfeinert; Drehung ließ sich nicht verfeinern</span>
+    <span data-phrase="alignment.perspective">Mit Perspektivkorrektur ausgerichtet</span>
+    <span data-phrase="alignment.perspective-fallback">Ohne Perspektivkorrektur ausgerichtet</span>
     <span data-phrase="alignment.aligned">Ausgerichtet</span>
     <span data-phrase="alignment.offset">Verschiebung: {dx}, {dy} px; Drehung: {angle}&deg;; Maßstab: {scale}&times;</span>
     <span data-phrase="alignment.remove">Aus Auswahl entfernen</span>
@@ -257,9 +260,10 @@
     <span data-phrase="mode.sum">Addiert gerenderte Farbwerte ohne Division. Das ist additives Mischen und keine Simulation der Sensorbelichtung. Helle Werte werden abgeschnitten; normalisieren Sie die Helligkeit, um durch die Zahl der Aufnahmen zu teilen.</span>
     <span data-phrase="mode.focus">Nimmt jeden Teil des Bildes aus der Aufnahme, in der er scharf war. Fotografieren Sie ein kleines Motiv entlang des Fokusrings, und das hier setzt die scharfen Teile zusammen.</span>
 
+    <span data-phrase="align.projective">Misst Verschiebung, Drehung und Maßstab und korrigiert die Perspektive, wenn genügend Bereiche übereinstimmen. Hilfreich für Sternaufnahmen mit großem Bildfeld. Lässt sich die Perspektive nicht zuverlässig messen, werden Drehung und Maßstab verwendet.</span>
     <span data-phrase="align.translate">Findet, wie weit jede Aufnahme verschoben war, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Korrigiert Wackeln aus der Hand und Stativdrift. Drehung kann es nicht korrigieren.</span>
     <span data-phrase="align.similarity">Findet zusätzlich Drehung und Maßstab. Nimmt für jede Aufnahme eine zusätzliche Messung vor, auch wenn die Aufnahmen gerade sind. Drehung wird immer nur innerhalb einer halben Umdrehung zurückgewonnen.</span>
-    <span data-phrase="align.none">Stackt die Aufnahmen genau so, wie sie kommen. Richtig für ein festes Stativ oder eine Intervallserie, falsch für alles aus der Hand.</span>
+    <span data-phrase="align.none">Stackt die Aufnahmen genau so, wie sie kommen. Verwenden Sie dies, wenn sie bereits zusammenpassen, oder für Sternspuren, die die Bewegung des Himmels erhalten sollen. Ein festes Stativ hält die Sterne nicht ausgerichtet.</span>
 
     <span data-phrase="scale.note">Eine kleinere Arbeitsgröße reduziert Pixelpuffer und Rechenaufwand. Der Browser kann eine Datei intern trotzdem in voller Größe dekodieren.</span>
     <span data-phrase="gain.note">Ganz am Ende in das Ergebnis multipliziert, nach der Rechnung und vor dem Runden.</span>

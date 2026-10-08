@@ -127,14 +127,7 @@ body = "Rauschen: Mittelwert oder Sigma-Clipping, um abweichende Werte zu verwer
 
 [[howto]]
 title = "Entscheiden Sie, ob die Aufnahmen ausgerichtet werden müssen."
-body = """
- Aus der Hand: ja, nur
-      verschieben. Aus der Hand und dabei gedreht: verschieben, drehen und
-      skalieren. Festes Stativ oder Intervallauslöser: nein, und es geht
-      schneller. Jede Aufnahme wird gegen die als Bezug markierte vermessen, und das
-      ist die erste, solange Sie nichts anderes sagen: &bdquo;Als Bezug
-      nehmen&ldquo; versetzt die Markierung und lässt die Liste in der
-      Reihenfolge, in die Sie sie gebracht haben."""
+body = "Beginnen Sie mit Automatisch: Es misst Verschiebung, Drehung und Maßstab und korrigiert dann die Perspektive, wenn zuverlässige Bereiche über das Bild verteilt übereinstimmen. Das ist hilfreich für Sternaufnahmen mit großem Bildfeld. Nur verschieben braucht weniger Messarbeit für eine ruhige Serie. Wählen Sie Nein, wenn die Aufnahmen bereits zusammenpassen, oder für Sternspuren, bei denen die Bewegung des Himmels erhalten bleiben soll. Ein festes Stativ hält die Sterne nicht ausgerichtet. Jede Aufnahme wird gegen die als Bezug markierte gemessen. Das ist zunächst die erste: &bdquo;Als Bezug nehmen&ldquo; versetzt die Markierung und lässt die Reihenfolge der Liste bestehen."
 
 [[howto]]
 title = "Lesen Sie die vier Zahlen und drücken Sie dann den Knopf."
@@ -168,7 +161,7 @@ a = "Sechs der sieben Methoden verwenden Akkumulatoren, deren Größe nicht mit 
 
 [[faq]]
 q = "Was macht das Ausrichten der Aufnahmen eigentlich?"
-a = "Das Werkzeug misst, wie weit jede Aufnahme gegenüber dem Bezug verschoben ist, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Es verwendet Phasenkorrelation: Verschiebung zeigt sich als Phasenunterschied zwischen den Spektren. Eine Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln so günstig wie einen von zwei. Die zweite Einstellung bestimmt auch Drehung und Maßstab über das Spektrum in logarithmisch-polaren Koordinaten. Die Korrektur ist global: eine Verschiebung, ein Winkel und ein Maßstab für das ganze Bild. Sie korrigiert die Bewegung der Kamera, aber weder ein bewegtes Motiv noch ein Foto von einem seitlich versetzten Standort. Eine nach links verschobene Aufnahme erreicht den rechten Rand nicht mehr. Das Ergebnis wird deshalb auf den gemeinsamen Bereich beschnitten und kann etwas kleiner sein. So werden dunkle Ränder durch nicht abgedeckte Bereiche vermieden."
+a = "Das Werkzeug misst die Verschiebung jeder Aufnahme gegenüber dem Bezug und schiebt sie zurück, auf Bruchteile eines Pixels genau. Es verwendet Phasenkorrelation: Verschiebung zeigt sich als Phasenunterschied zwischen den Spektren. Eine Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln so günstig wie einen von zwei. Drehung und Maßstab werden über dasselbe Verfahren mit dem Spektrum in logarithmisch-polaren Koordinaten bestimmt. Automatisch misst zusätzlich Bereiche über das Bild verteilt und korrigiert die Perspektive, wenn genügend zuverlässige Messungen übereinstimmen. Das hilft, Sterne in einem großen Bildfeld am Rand ebenso wie in der Mitte auszurichten. Lässt sich diese Zusatzkorrektur nicht zuverlässig messen, bleiben Drehung und Maßstab erhalten, und die Ausrichtungsdetails melden die Ausrichtung ohne Perspektivkorrektur. Die Korrektur gilt für das ganze Bild; sie kann weder ein unabhängig bewegtes Motiv noch jede Tiefe einer seitlich versetzten Szene ausrichten. Eine nach links verschobene Aufnahme reicht nicht mehr bis zum rechten Rand. Das Ergebnis wird deshalb auf den gemeinsamen Bereich beschnitten und kann etwas kleiner sein. So werden dunkle Ränder durch nicht abgedeckte Bereiche vermieden."
 
 [[faq]]
 q = "Welche Methode soll ich nehmen?"
@@ -184,15 +177,7 @@ a = "Ja, aber prüfen Sie, ob das beabsichtigt ist. Die größte Aufnahme bestim
 
 [[faq]]
 q = "Er sagt, der Durchlauf werde in Bänder geteilt. Was heißt das?"
-a = """
-        Dass der Arbeitsspeicher, den die Methode braucht, mehr ist, als das
-        Werkzeug am Stück belegen will, und das Bild deshalb in waagerechte
-        Streifen geschnitten und Streifen für Streifen gestackt wird. Das Ergebnis
-        ist genau dasselbe; es liest die Aufnahmen nur für jeden Streifen erneut,
-        dauert also länger, und die Seite sagt Ihnen, wie viele Dekodiervorgänge
-        das werden. Die Arbeitsauflösung eine Stufe zu senken viertelt den
-        Speicher und macht aus einem gebänderten Durchlauf fast immer einen
-        einzigen; der Hinweis nennt die Einstellung, die das täte."""
+a = "Die Methode braucht mehr Arbeitsspeicher, als das Werkzeug auf einmal belegen will. Das Bild wird deshalb in waagerechte Streifen geteilt und streifenweise gestackt. Ausrichtungsgeometrie und Stacking-Methode bleiben gleich; die Neuberechnung der Pixel im Browser kann sich im letzten Bit leicht unterscheiden. Für jeden Streifen werden die Aufnahmen erneut gelesen, was länger dauert. Die Seite zeigt die Anzahl der Dekodiervorgänge. Die Arbeitsauflösung eine Stufe zu senken viertelt den Speicher und macht aus einem Durchlauf in Bändern fast immer einen einzigen. Der Hinweis nennt die passende Einstellung."
 
 [[faq]]
 q = "Warum verwendet dieses Werkzeug einen Worker und keines der anderen?"
@@ -218,7 +203,7 @@ features = [
   "Sieben Methoden: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren und Focus Stacking",
   "Liest CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 und mehr, wenn eine brauchbare eingebettete JPEG-Vorschau vorhanden ist",
   "Findet RAW-Vorschauen durch kleine Verzeichnis- und Kopfdatenlesevorgänge und dekodiert danach den JPEG-Ausschnitt",
-  "Automatisches Ausrichten: nur verschieben, verschieben mit Drehung und Maßstab, oder gar nicht",
+  "Automatische Ausrichtung mit geprüfter Perspektivkorrektur, Drehung und Maßstab; wahlweise nur verschieben oder nicht ausrichten",
   "Ausrichtung auf Subpixel genau per Phasenkorrelation statt durch Absuchen von Versätzen",
   "Bei sechs Methoden wächst die Größe der Akkumulatoren nicht mit der Zahl der Aufnahmen; Median hält Werte je Aufnahme",
   "Geschätzter Speicher für den Stack und geplante Dekodiervorgänge beim Stacken vor dem Start angezeigt",

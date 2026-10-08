@@ -902,11 +902,13 @@ function renderAlignment(result, alignment) {
     const name = document.createElement('strong');
     name.textContent = frame.name;
     const detail = document.createElement('span');
+    const refinement = move.fallbackRefine || move.refine;
     const status = index === 0 ? 'reference' : alignment === 'none' ? 'none'
       : move.measured === false ? 'weak' : move.clamped ? 'clamped'
-        : move.refine === 'partial' ? 'partial' : 'aligned';
+        : refinement === 'partial' ? 'partial' : move.homography ? 'perspective'
+          : alignment === 'projective' ? 'perspective-fallback' : 'aligned';
     detail.textContent = phrase(`alignment.${status}`);
-    if (index > 0 && alignment !== 'none' && move.measured !== false) {
+    if (index > 0 && alignment !== 'none' && move.measured !== false && !move.homography) {
       detail.textContent += ` — ${phrase('alignment.offset', {
         dx: move.dx.toFixed(2), dy: move.dy.toFixed(2),
         angle: move.angle.toFixed(3), scale: move.scale.toFixed(4),
