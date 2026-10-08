@@ -166,6 +166,7 @@
         <div class="field">
           <label for="view-source">表示</label>
           <select id="view-source">
+            <option value="compare" selected>比較｜仕切りをドラッグ</option>
             <option value="result">スタック結果</option>
             <option value="reference">基準フレーム</option>
           </select>
@@ -180,7 +181,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="画像プレビュー" tabindex="0">
-        <img id="result-image" alt="スタックした結果">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="スタックした結果">
+          <img id="reference-image" class="reference-image" alt="基準フレーム" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="比較の仕切り" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -211,7 +219,9 @@
     <span data-phrase="import.skipped">{count}個のファイルを開けませんでした。除外されたものを確認できるよう一覧に残しています。</span>
     <span data-phrase="viewer.loading">基準フレームを準備しています&hellip;</span>
     <span data-phrase="viewer.reference">基準：{name}。結果と同じ切り取り範囲と解像度で表示しています。</span>
-    <span data-phrase="viewer.result">スタック結果です。詳細は100%で確認し、比較するときは基準に切り替えてください。</span>
+    <span data-phrase="viewer.compare">左は基準、右はスタック結果です。仕切りをドラッグするか、矢印キーを使って比較してください。</span>
+    <span data-phrase="viewer.split">{percent}%基準、{remaining}%スタック結果</span>
+    <span data-phrase="viewer.result">スタック結果です。詳細は100%で確認し、比較を選ぶと基準との間の仕切りをドラッグできます。</span>
     <span data-phrase="alignment.reference">基準</span>
     <span data-phrase="alignment.none">位置合わせなし</span>
     <span data-phrase="alignment.weak">確実に位置合わせできませんでした</span>

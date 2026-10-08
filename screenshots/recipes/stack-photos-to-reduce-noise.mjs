@@ -35,7 +35,9 @@ export const shots = [
       await load(k);
       k.click('#run');
       const image = await k.wait('#result:not([hidden]) #result-image');
-      await image.decode();
+      await k.wait('#comparison-divider:not([hidden])');
+      const reference = await k.wait('#reference-image');
+      await Promise.all([image.decode(), reference.decode()]);
       await k.settle();
     },
   },

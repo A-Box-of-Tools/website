@@ -214,9 +214,16 @@ the same result.
 The page waits for imported batches before a run, retains an explicit record
 of skipped files, and keeps a running request's settings fixed. Alignment
 details name the frames that could not be measured, because a soft stack
-cannot tell the visitor which frame caused it. The result viewer compares the
-saved stack with the request's reference frame and can show actual pixels:
-noise reduction and alignment are hard to judge from a scaled thumbnail.
+cannot tell the visitor which frame caused it.
+
+The finished result prepares its reference comparison automatically. Both
+pictures are rendered in the same crop and resolution, with the reference on
+the left and the saved stack on the right. A divider reveals either image at
+the same coordinates, because switching whole pictures makes a subtle change
+in noise or sharpness hard to locate. It can be dragged by mouse or touch, or
+moved with the native range control's arrow keys. Either endpoint shows one
+whole image, and the actual-pixel view scrolls both pictures together. The
+single-image options remain available for looking at either picture alone.
 
 ## The alignment, and the sign
 

@@ -172,6 +172,7 @@
         <div class="field">
           <label for="view-source">Afficher</label>
           <select id="view-source">
+            <option value="compare" selected>Comparer &mdash; faire glisser le séparateur</option>
             <option value="result">Résultat empilé</option>
             <option value="reference">Prise de référence</option>
           </select>
@@ -186,7 +187,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="Aperçu de l'image" tabindex="0">
-        <img id="result-image" alt="Le résultat empilé">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="Le résultat empilé">
+          <img id="reference-image" class="reference-image" alt="Prise de référence" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Séparateur de comparaison" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -218,7 +226,9 @@
     <span data-phrase="import.skipped">Impossible d'ouvrir {count} fichiers. Ils restent dans la liste pour vérifier lesquels ont été écartés.</span>
     <span data-phrase="viewer.loading">Préparation de la prise de référence&hellip;</span>
     <span data-phrase="viewer.reference">Référence&nbsp;: {name}. La vue utilise le même recadrage et la même résolution que le résultat.</span>
-    <span data-phrase="viewer.result">Résultat empilé. Choisissez 100% pour examiner les détails ou passez à la référence pour comparer.</span>
+    <span data-phrase="viewer.compare">Référence à gauche, résultat empilé à droite. Faites glisser le séparateur ou utilisez les flèches pour comparer.</span>
+    <span data-phrase="viewer.split">{percent}% référence&nbsp;; {remaining}% résultat empilé</span>
+    <span data-phrase="viewer.result">Résultat empilé. Choisissez 100% pour examiner les détails ou Comparer pour faire glisser un séparateur face à la référence.</span>
     <span data-phrase="alignment.reference">Référence</span>
     <span data-phrase="alignment.none">Non alignée</span>
     <span data-phrase="alignment.weak">Impossible d'aligner avec confiance</span>

@@ -171,6 +171,7 @@
         <div class="field">
           <label for="view-source">Mostrar</label>
           <select id="view-source">
+            <option value="compare" selected>Comparar &mdash; arrastra el separador</option>
             <option value="result">Resultado apilado</option>
             <option value="reference">Toma de referencia</option>
           </select>
@@ -185,7 +186,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="Vista previa de la imagen" tabindex="0">
-        <img id="result-image" alt="El resultado apilado">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="El resultado apilado">
+          <img id="reference-image" class="reference-image" alt="Toma de referencia" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Separador de comparación" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -219,7 +227,9 @@
     <span data-phrase="import.skipped">No se pudieron abrir {count} archivos. Siguen en la lista para comprobar cuáles se excluyeron.</span>
     <span data-phrase="viewer.loading">Preparando la toma de referencia&hellip;</span>
     <span data-phrase="viewer.reference">Referencia: {name}. La vista usa el mismo recorte y resolución que el resultado.</span>
-    <span data-phrase="viewer.result">Resultado apilado. Elige 100% para examinar el detalle o cambia a la referencia para comparar.</span>
+    <span data-phrase="viewer.compare">Referencia a la izquierda y resultado apilado a la derecha. Arrastra el separador o usa las flechas para comparar.</span>
+    <span data-phrase="viewer.split">{percent}% referencia; {remaining}% resultado apilado</span>
+    <span data-phrase="viewer.result">Resultado apilado. Elige 100% para examinar el detalle o Comparar para arrastrar un separador frente a la referencia.</span>
     <span data-phrase="alignment.reference">Referencia</span>
     <span data-phrase="alignment.none">Sin alinear</span>
     <span data-phrase="alignment.weak">No se pudo alinear con confianza</span>

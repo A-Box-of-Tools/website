@@ -171,6 +171,7 @@
         <div class="field">
           <label for="view-source">Mostrar</label>
           <select id="view-source">
+            <option value="compare" selected>Comparar &mdash; arraste o divisor</option>
             <option value="result">Resultado empilhado</option>
             <option value="reference">Quadro de referência</option>
           </select>
@@ -185,7 +186,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="Prévia da imagem" tabindex="0">
-        <img id="result-image" alt="O resultado empilhado">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="O resultado empilhado">
+          <img id="reference-image" class="reference-image" alt="Quadro de referência" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Divisor de comparação" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -219,7 +227,9 @@
     <span data-phrase="import.skipped">Não foi possível abrir {count} arquivos. Eles continuam na lista para você conferir quais foram excluídos.</span>
     <span data-phrase="viewer.loading">Preparando o quadro de referência&hellip;</span>
     <span data-phrase="viewer.reference">Referência: {name}. A visualização usa o mesmo recorte e a mesma resolução do resultado.</span>
-    <span data-phrase="viewer.result">Resultado empilhado. Escolha 100% para examinar os detalhes ou mude para a referência para comparar.</span>
+    <span data-phrase="viewer.compare">Referência à esquerda e resultado empilhado à direita. Arraste o divisor ou use as setas para comparar.</span>
+    <span data-phrase="viewer.split">{percent}% referência; {remaining}% resultado empilhado</span>
+    <span data-phrase="viewer.result">Resultado empilhado. Escolha 100% para examinar os detalhes ou Comparar para arrastar um divisor sobre a referência.</span>
     <span data-phrase="alignment.reference">Referência</span>
     <span data-phrase="alignment.none">Não alinhado</span>
     <span data-phrase="alignment.weak">Não foi possível alinhar com confiança</span>

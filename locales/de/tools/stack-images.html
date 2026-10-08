@@ -172,6 +172,7 @@
         <div class="field">
           <label for="view-source">Anzeigen</label>
           <select id="view-source">
+            <option value="compare" selected>Vergleichen &mdash; Trennlinie ziehen</option>
             <option value="result">Ergebnis des Stacks</option>
             <option value="reference">Bezugsaufnahme</option>
           </select>
@@ -186,7 +187,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="Bildvorschau" tabindex="0">
-        <img id="result-image" alt="Das gestackte Ergebnis">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="Das gestackte Ergebnis">
+          <img id="reference-image" class="reference-image" alt="Bezugsaufnahme" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Vergleichstrennlinie" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -220,7 +228,9 @@
     <span data-phrase="import.skipped">{count} Dateien ließen sich nicht öffnen. Sie bleiben in der Liste, damit Sie sehen, welche ausgeschlossen wurden.</span>
     <span data-phrase="viewer.loading">Bezugsaufnahme wird vorbereitet&hellip;</span>
     <span data-phrase="viewer.reference">Bezug: {name}. Die Ansicht verwendet denselben Ausschnitt und dieselbe Auflösung wie das Ergebnis.</span>
-    <span data-phrase="viewer.result">Ergebnis des Stacks. Wählen Sie 100%, um Details zu prüfen, oder wechseln Sie zum Bezug für einen Vergleich.</span>
+    <span data-phrase="viewer.compare">Links der Bezug, rechts das gestackte Ergebnis. Ziehen Sie die Trennlinie oder verwenden Sie die Pfeiltasten zum Vergleichen.</span>
+    <span data-phrase="viewer.split">{percent}% Bezug; {remaining}% gestacktes Ergebnis</span>
+    <span data-phrase="viewer.result">Ergebnis des Stacks. Wählen Sie 100%, um Details zu prüfen, oder Vergleichen, um eine Trennlinie zwischen Ergebnis und Bezug zu ziehen.</span>
     <span data-phrase="alignment.reference">Bezug</span>
     <span data-phrase="alignment.none">Nicht ausgerichtet</span>
     <span data-phrase="alignment.weak">Keine sichere Ausrichtung möglich</span>

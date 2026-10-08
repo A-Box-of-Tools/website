@@ -169,6 +169,7 @@
         <div class="field">
           <label for="view-source">Show</label>
           <select id="view-source">
+            <option value="compare">Compare &mdash; drag divider</option>
             <option value="result">Stacked result</option>
             <option value="reference">Reference frame</option>
           </select>
@@ -183,7 +184,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" tabindex="0" role="region" aria-label="Picture preview">
-        <img id="result-image" alt="The stacked result">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="The stacked result">
+          <img id="reference-image" class="reference-image" alt="Reference frame" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Comparison divider" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -217,7 +225,9 @@
     <span data-phrase="import.skipped">{count} files could not be opened. They remain in the list so you can check which ones were excluded.</span>
     <span data-phrase="viewer.loading">Preparing the reference frame&hellip;</span>
     <span data-phrase="viewer.reference">Reference: {name}. The view uses the same crop and resolution as the result.</span>
-    <span data-phrase="viewer.result">Stacked result. Choose 100% to inspect detail, or switch to the reference to compare.</span>
+    <span data-phrase="viewer.compare">Reference on the left; stacked result on the right. Drag the divider or use the arrow keys to compare.</span>
+    <span data-phrase="viewer.split">{percent}% reference; {remaining}% stacked result</span>
+    <span data-phrase="viewer.result">Stacked result. Choose 100% to inspect detail, or Compare to drag a divider against the reference.</span>
     <span data-phrase="alignment.reference">Reference</span>
     <span data-phrase="alignment.none">Not aligned</span>
     <span data-phrase="alignment.weak">Could not align confidently</span>

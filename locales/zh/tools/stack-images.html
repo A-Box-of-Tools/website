@@ -168,6 +168,7 @@
         <div class="field">
           <label for="view-source">显示</label>
           <select id="view-source">
+            <option value="compare" selected>对比 | 拖动分隔线</option>
             <option value="result">堆栈结果</option>
             <option value="reference">基准帧</option>
           </select>
@@ -182,7 +183,14 @@
       </div>
       <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
       <div id="result-frame" class="result-frame" role="region" aria-label="图片预览" tabindex="0">
-        <img id="result-image" alt="堆栈的结果">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="堆栈的结果">
+          <img id="reference-image" class="reference-image" alt="基准帧" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="对比分隔线" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
@@ -215,7 +223,9 @@
     <span data-phrase="import.skipped">{count} 个文件无法打开。它们仍留在列表里，方便你检查哪些被排除了。</span>
     <span data-phrase="viewer.loading">正在准备基准帧&hellip;</span>
     <span data-phrase="viewer.reference">基准：{name}。显示使用与结果相同的裁剪范围和分辨率。</span>
-    <span data-phrase="viewer.result">堆栈结果。选 100% 查看细节，或切换到基准进行对比。</span>
+    <span data-phrase="viewer.compare">左侧为基准，右侧为堆栈结果。拖动分隔线或使用方向键来对比。</span>
+    <span data-phrase="viewer.split">{percent}% 基准；{remaining}% 堆栈结果</span>
+    <span data-phrase="viewer.result">堆栈结果。选 100% 查看细节，或选对比来拖动与基准之间的分隔线。</span>
     <span data-phrase="alignment.reference">基准</span>
     <span data-phrase="alignment.none">未对齐</span>
     <span data-phrase="alignment.weak">无法可靠对齐</span>

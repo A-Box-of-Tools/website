@@ -71,6 +71,12 @@ const el = {
   viewerStatus: $('viewer-status'),
   alignmentList: $('alignment-list'),
   resultImage: $('result-image'),
+  referenceImage: $('reference-image'),
+  comparisonStage: $('comparison-stage'),
+  divider: $('comparison-divider'),
+  comparisonHandle: $('comparison-handle'),
+  referenceLabel: $('reference-label'),
+  resultLabel: $('result-label'),
   resultInfo: $('result-info'),
   resultMoves: $('result-moves'),
   download: $('download'),
@@ -812,8 +818,11 @@ function finished(result) {
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = URL.createObjectURL(result.blob);
 
-  el.viewSource.value = 'result';
+  el.viewSource.value = 'compare';
   el.viewSize.value = 'fit';
+  el.divider.value = '50';
+  el.comparisonStage.style.setProperty('--preview-ratio', String(result.width / result.height));
+  el.comparisonStage.style.setProperty('--preview-width', `${result.width}px`);
   el.resultImage.width = result.width;
   el.resultImage.height = result.height;
   renderViewer();
@@ -832,6 +841,7 @@ function finished(result) {
   renderAlignment(result, completed.request.align);
   el.resultStale.hidden = true;
   el.result.hidden = false;
+  compare();
 }
 
 /**
@@ -878,6 +888,7 @@ function discardResult(notice = true) {
   referenceUrl = null;
   el.result.hidden = true;
   el.resultImage.removeAttribute('src');
+  el.referenceImage.removeAttribute('src');
   el.download.removeAttribute('href');
   el.alignmentList.replaceChildren();
   if (!notice) el.resultStale.hidden = true;
@@ -920,18 +931,53 @@ function renderAlignment(result, alignment) {
 
 function renderViewer() {
   if (!completed) return;
-  const isReference = el.viewSource.value === 'reference' && referenceUrl;
+  const source = el.viewSource.value;
+  const isReference = source === 'reference' && referenceUrl;
+  const split = source === 'compare' && Boolean(referenceUrl);
+  const label = (value) => el.viewSource.querySelector(`option[value="${value}"]`).textContent;
   el.resultImage.src = isReference ? referenceUrl : resultUrl;
-  el.resultImage.alt = el.viewSource.querySelector(`option[value="${isReference ? 'reference' : 'result'}"]`).textContent;
+  el.resultImage.alt = label(isReference ? 'reference' : 'result');
+  if (referenceUrl) el.referenceImage.src = referenceUrl;
+  el.referenceImage.hidden = !split;
+  el.divider.hidden = !split;
+  el.comparisonHandle.hidden = !split;
+  el.comparisonStage.classList.toggle('is-comparing', split);
+  el.referenceLabel.textContent = label('reference');
+  el.resultLabel.textContent = label('result');
   el.resultFrame.classList.toggle('actual-size', el.viewSize.value === 'actual');
+  renderSplit();
   el.viewerStatus.textContent = comparing ? phrase('viewer.loading')
-    : isReference ? phrase('viewer.reference', { name: completed.request.files[0].name })
-      : phrase('viewer.result');
+    : split ? phrase('viewer.compare')
+      : isReference ? phrase('viewer.reference', { name: completed.request.files[0].name })
+        : phrase('viewer.result');
+}
+
+function renderSplit() {
+  const percent = Number(el.divider.value);
+  el.comparisonStage.style.setProperty('--split', `${percent}%`);
+  el.divider.setAttribute('aria-valuetext', phrase('viewer.split', {
+    percent, remaining: 100 - percent,
+  }));
+  const split = el.comparisonStage.classList.contains('is-comparing');
+  el.referenceLabel.hidden = !split || percent === 0;
+  el.resultLabel.hidden = !split || percent === 100;
+}
+
+// The divider moves in image coordinates, so the two sides stay registered
+// when the actual-size view scrolls. Its narrow hit area leaves the rest of
+// the picture available for touch scrolling instead of swallowing every drag.
+function moveDivider(event) {
+  const image = el.comparisonStage.getBoundingClientRect();
+  if (!image.width) return;
+  el.divider.value = String(Math.round(Math.max(0, Math.min(100,
+    (event.clientX - image.left) / image.width * 100,
+  ))));
+  renderSplit();
 }
 
 function compare() {
   if (!completed || comparing) return;
-  if (el.viewSource.value !== 'reference' || referenceUrl) {
+  if (!['compare', 'reference'].includes(el.viewSource.value) || referenceUrl) {
     renderViewer();
     return;
   }
@@ -962,6 +1008,27 @@ el.cancel.addEventListener('click', stopWork);
 el.clearAll.addEventListener('click', clearAll);
 el.viewSource.addEventListener('change', compare);
 el.viewSize.addEventListener('change', renderViewer);
+el.divider.addEventListener('input', renderSplit);
+// Native touch dragging would measure this narrow hit strip instead of the
+// picture. Keep its keyboard behaviour, and let pointer capture measure touch.
+for (const type of ['touchstart', 'touchmove']) {
+  el.divider.addEventListener(type, (event) => event.preventDefault(), { passive: false });
+}
+el.divider.addEventListener('pointerdown', (event) => {
+  if (!event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+  event.preventDefault();
+  el.divider.focus({ preventScroll: true });
+  el.divider.setPointerCapture(event.pointerId);
+  moveDivider(event);
+});
+el.divider.addEventListener('pointermove', (event) => {
+  if (el.divider.hasPointerCapture(event.pointerId)) moveDivider(event);
+});
+for (const type of ['pointerup', 'pointercancel']) {
+  el.divider.addEventListener(type, (event) => {
+    if (el.divider.hasPointerCapture(event.pointerId)) el.divider.releasePointerCapture(event.pointerId);
+  });
+}
 el.normalize.addEventListener('click', () => {
   if (busy || comparing || inspecting > 0 || ready().length < 2) return;
   el.gain.value = String(1 / ready().length);
