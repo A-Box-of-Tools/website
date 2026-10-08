@@ -59,6 +59,7 @@
     <p id="range-error" class="error" role="alert" hidden></p>
 
     <ul id="page-list" class="page-list"></ul>
+    <p id="page-status" class="visually-hidden" role="status" aria-live="polite"></p>
   </section>
 
   <!-- Schritt 3 &mdash; ein Dokument oder mehrere -->
@@ -81,7 +82,7 @@
             <strong>Alle so und so viele Seiten teilen</strong>
             <span class="preset-note">
               Ein langer Scan, geschnitten in Abschnitte von je
-              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+              <input type="number" id="split-size" aria-describedby="split-error" min="1" max="5000" step="1" value="10"
                      inputmode="numeric" aria-label="Seiten je Datei">
               Seiten.
             </span>
@@ -93,7 +94,7 @@
             <strong>Bei Seite&hellip; teilen</strong>
             <span class="preset-note">
               Schneiden vor
-              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" aria-describedby="split-error" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Seitenzahlen, vor denen geschnitten wird">
               &mdash; jede davon beginnt eine neue Datei.
             </span>
@@ -131,6 +132,7 @@
     </label>
 
     <p id="output-summary" class="field-summary"></p>
+    <p id="split-error" class="error" role="alert" hidden></p>
   </section>
 
   <!-- Schritt 4 &mdash; der eine Klick -->
@@ -231,6 +233,10 @@
     <span data-phrase="page.clockwise">Seite {n} im Uhrzeigersinn drehen</span>
     <span data-phrase="page.earlier">Seite {n} nach vorn</span>
     <span data-phrase="page.later">Seite {n} nach hinten</span>
+    <span data-phrase="split.size">Geben Sie für die Seiten pro Datei eine ganze Zahl von 1 bis 5.000 ein.</span>
+    <span data-phrase="plan.invalid">Korrigieren Sie die Teilungseinstellungen, bevor Sie die Dokumente erstellen.</span>
+    <span data-phrase="page.updated">{name}, ursprüngliche Seite {page}: Position {position} von {total}, um {rotation}° gedreht.</span>
+    <span data-phrase="page.removed">{name}, ursprüngliche Seite {page} entfernt. Verbleibende Seiten: {total}.</span>
     <span data-phrase="range.none">keine</span>
     <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>

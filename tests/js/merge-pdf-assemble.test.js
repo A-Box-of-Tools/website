@@ -468,3 +468,22 @@ test('one part is one file and no archive', async () => {
 test('a document with no pages is refused rather than written', async () => {
   assert.throws(() => assemble([], { t: say }), /^Error: assemble\.empty$/);
 });
+
+
+test('cancellation during final verification prevents the completed output from being published', async () => {
+  const source = await fixture();
+  const controller = new AbortController();
+  const original = PdfDocument.open;
+  PdfDocument.open = async function (...args) {
+    const document = await original.apply(this, args);
+    controller.abort();
+    return document;
+  };
+  try {
+    await assert.rejects(produce([pick(source, 0)], {
+      split: { mode: 'single' }, stem: 'four.pdf', suffix: 'edited', bookmarks: true,
+    }, { t: say, signal: controller.signal }), { name: 'AbortError' });
+  } finally {
+    PdfDocument.open = original;
+  }
+});

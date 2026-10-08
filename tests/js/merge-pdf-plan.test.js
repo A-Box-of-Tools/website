@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import { ltr } from '../../shared/js/phrases.js';
 
 import {
-  archiveName, describeRanges, outputNames, parseRanges, splitInto,
+  archiveName, describeRanges, outputNames, parseRanges, parseSplit, splitInto,
 } from '../../tools/merge-pdf/src/plan.js';
 import {
   normalizeBox, normalizeRotation, sizeLabel, decodeText,
@@ -254,4 +254,37 @@ test('a long file name keeps its end, where the useful part is', () => {
   const short = shortName(long, 24);
   assert.ok(short.length <= 24, short);
   assert.ok(short.endsWith('-v3.pdf'), short);
+});
+
+
+test('split validation refuses the whole malformed cut list rather than exporting its valid subset', () => {
+  for (const at of ['2, typo, 999', '999', '', '   ']) {
+    const result = parseSplit({ mode: 'at', at }, 10, say);
+    assert.ok(result.error, at);
+    assert.equal(result.field, 'at');
+    assert.deepEqual(result.split.at, []);
+  }
+  const result = parseSplit({ mode: 'at', at: '2, 5-6' }, 10, say);
+  assert.equal(result.error, '');
+  assert.deepEqual(splitInto(pageEntries(10), result.split).map(part => part.entries.length), [1, 3, 1, 5]);
+});
+
+test('split summary groups and writer groups use the same validated integer size', () => {
+  for (const size of ['', '0', '-1', '2.5', '5001', 'Infinity', 'NaN']) {
+    const result = parseSplit({ mode: 'every', size }, 10, say);
+    assert.ok(result.error, size);
+    assert.equal(result.field, 'size');
+  }
+  const result = parseSplit({ mode: 'every', size: '2' }, 10, say);
+  assert.equal(result.error, '');
+  assert.deepEqual(splitInto(pageEntries(10), result.split).map(part => part.entries.length), [2, 2, 2, 2, 2]);
+  assert.equal(parseSplit({ mode: 'single', size: '2.5', at: 'typo' }, 10, say).error, '');
+});
+
+test('archive names reserve source suffixes and avoid case-insensitive extraction collisions', () => {
+  const labels = ['report.pdf', 'report.pdf', 'report-2.pdf', 'REPORT.pdf', 'report-3.pdf'];
+  const parts = labels.map(label => ({ entries: [{ source: { label } }] }));
+  const names = outputNames(parts, { stem: 'report', mode: 'file' });
+  assert.deepEqual(names, ['report.pdf', 'report-4.pdf', 'report-2.pdf', 'REPORT-5.pdf', 'report-3.pdf']);
+  assert.equal(new Set(names.map(name => name.toLowerCase())).size, labels.length);
 });
