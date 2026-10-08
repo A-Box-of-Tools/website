@@ -92,11 +92,13 @@ page with an offset origin is stamped where a PDF reader actually shows it.
 ## The preview is the placement, not the page
 
 This site has no PDF renderer and does not pretend to. The preview draws a
-blank sheet the exact size and shape of the first page and lays the stamp on
-it using the **same** `placements()` call the writer makes, with the words
+blank sheet the exact size, visible crop and rotation of the selected page
+and lays the stamp on it using the **same** `placements()` call the writer makes, with the words
 drawn live in the same bold face. So it is a true preview of where the stamp
 goes and how big it is, and an honest blank where the visitor's own page
-would be. The caption under it says so.
+would be. The caption under it says so. A page-number control previews other
+page shapes without changing which pages will be stamped. With First page
+only selected, a later page is shown blank and identified as unstamped.
 
 ## The check afterwards
 
@@ -132,3 +134,10 @@ included.
   the file it was applied to. The tool notices when a document was signed and
   says so on the results.
 - **Make selectable text.** The stamp is a picture, by design.
+
+A load generation retires older file reads, errors and cleanup after another
+selection or Clear. An export captures the source, words, colour and placement
+settings, locks editing, and guards progress and completion with its own abort
+controller. Clear retires that run; Cancel is checked after reopening, writing
+and final verification so a late download cannot appear. Later setting edits
+revoke the previous result rather than leaving a download beside a new preview.

@@ -109,9 +109,15 @@
         the sentence below it, which says what is and is not shown.
       -->
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">Page de l’aperçu</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">Ce choix concerne uniquement l’aperçu ; l’export suit l’option Première page uniquement.</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
         <figcaption id="preview-note" class="field-note">
-          Le filigrane sur une page blanche aux proportions de la première page, exactement à sa position finale. Le contenu du document n’est pas dessiné&nbsp;: ce site n’intègre volontairement aucun moteur de rendu PDF.
+          Une feuille blanche aux dimensions, au recadrage et à la rotation de la page choisie montre où le tampon sera placé. Le contenu de votre page n’est pas dessiné : ce site n’intègre pas de moteur de rendu PDF.
         </figcaption>
       </figure>
     </div>
@@ -155,6 +161,9 @@
     shared/js/phrases.js reads them back; a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">Page {n} sur {total} — aperçu de la position.</span>
+    <span data-phrase="preview.unstamped">La page {n} sur {total} reste sans tampon car Première page uniquement est sélectionné.</span>
+    <span data-phrase="preview.sample">Exemple de position sur une feuille A4 jusqu’au choix d’un document.</span>
     <span data-phrase="waiting.words">Disponible avec un document choisi et un texte de filigrane.</span>
     <span data-phrase="note.repaired">La table de références croisées de ce fichier ne correspondait pas à son
       contenu&nbsp;; il a donc été lu en cherchant les objets un à un. C&rsquo;est une

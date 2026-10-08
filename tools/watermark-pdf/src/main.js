@@ -46,6 +46,9 @@ const el = {
   opacityValue: $('opacity-value'),
   firstOnly: $('first-only'),
   preview: $('preview'),
+  previewPage: $('preview-page'),
+  previewPageField: $('preview-page-field'),
+  previewState: $('preview-state'),
   runCard: $('run-card'),
   run: $('run'),
   cancel: $('cancel'),
@@ -83,6 +86,8 @@ let loaded = null;
 /** The object URL behind the download link, revoked when it is replaced. */
 let downloadUrl = '';
 let running = null;
+let loadGeneration = 0;
+let previewIndex = 0;
 
 /** What the chips currently say. */
 const choice = { size: 'medium', diagonal: true, tiled: false, colour: 'grey' };
@@ -102,17 +107,20 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const generation = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     if (!looksLikePdf(file)) throw new NotAPdfError('read.notpdf');
 
     const bytes = new Uint8Array(await file.arrayBuffer());
+    if (generation !== loadGeneration) return;
     el.fileName.textContent = file.name;
     el.fileFacts.textContent = size(bytes.length);
     el.fileRow.hidden = false;
 
     const doc = await PdfDocument.open(bytes);
+    if (generation !== loadGeneration) return;
     const found = readPages(doc);
     if (found.length === 0) throw new Error('read.nopages');
     loaded = { file, bytes, doc, pages: found };
@@ -126,6 +134,7 @@ async function load(file) {
 
     refresh();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     if (error instanceof EncryptedPdfError) {
       // Not an error line: the hint says what to do, and the file row stays
       // so that it is clear which file it is talking about.
@@ -135,18 +144,38 @@ async function load(file) {
     }
     picker.waiting();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) picker.done();
   }
 }
 
 /* ----------------------------------------------------------- the settings */
 
-el.words.addEventListener('input', refresh);
-el.opacity.addEventListener('input', refresh);
-el.firstOnly.addEventListener('change', refresh);
+el.words.addEventListener('input', settingsChanged);
+el.opacity.addEventListener('input', settingsChanged);
+el.firstOnly.addEventListener('change', settingsChanged);
+
+function settingsChanged() {
+  if (running) return;
+  el.result.hidden = true;
+  releaseDownload();
+  refresh();
+}
+
+el.previewPage.addEventListener('input', () => {
+  if (running || !loaded) return;
+  const valid = el.previewPage.validity.valid;
+  el.previewPage.setAttribute('aria-invalid', String(!valid));
+  if (!valid) return;
+  previewIndex = el.previewPage.valueAsNumber - 1;
+  drawPreview();
+});
+el.previewPage.addEventListener('change', () => {
+  if (!el.previewPage.validity.valid) el.previewPage.reportValidity();
+});
 
 for (const chip of el.chips) {
   chip.addEventListener('click', () => {
+    if (running) return;
     const { size, diagonal, tiled, colour } = chip.dataset;
     if (size) choice.size = size;
     if (diagonal) choice.diagonal = diagonal === 'yes';
@@ -156,7 +185,7 @@ for (const chip of el.chips) {
     for (const other of chip.parentElement.querySelectorAll('.chip')) {
       other.setAttribute('aria-pressed', String(other === chip));
     }
-    refresh();
+    settingsChanged();
   });
 }
 
@@ -180,13 +209,19 @@ function settings() {
  * a 2400-pixel picture to scale it down again.
  */
 function refresh() {
+  if (running) return;
+  const total = loaded?.pages.length ?? 1;
+  el.previewPageField.hidden = !loaded || total < 2;
+  el.previewPage.max = String(total);
+  el.previewPage.value = String(previewIndex + 1);
+  el.previewPage.setAttribute('aria-invalid', 'false');
   el.opacityValue.textContent = el.opacity.value;
   drawPreview();
   gate(Boolean(loaded) && el.words.value.trim().length > 0);
 }
 
 /**
- * The preview: a blank sheet the shape of the first page, and the stamp on
+ * The preview: a blank sheet the shape of the selected page, and the stamp on
  * it where the file will put it.
  *
  * The placements come from stamp.js, the same call the writer makes, with
@@ -195,9 +230,14 @@ function refresh() {
  * placement's rectangle, which is what the picture in the file is.
  */
 function drawPreview() {
-  const first = loaded?.pages[0];
-  const box = first ? first.visibleBox : A4;
-  const rotate = first ? first.rotate : 0;
+  const page = loaded?.pages[previewIndex];
+  const box = page ? page.visibleBox : A4;
+  const rotate = page ? page.rotate : 0;
+  const unstamped = Boolean(page && el.firstOnly.checked && previewIndex > 0);
+  el.previewState.textContent = page
+    ? phrase(unstamped ? 'preview.unstamped' : 'preview.page',
+      { n: previewIndex + 1, total: loaded.pages.length })
+    : phrase('preview.sample');
   const visible = visibleSize(rotate, box);
 
   // Pixels per point: the sheet is drawn at up to 640 pixels across its
@@ -215,6 +255,7 @@ function drawPreview() {
   ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
   ctx.lineWidth = 1;
   ctx.strokeRect(0.5, 0.5, width - 1, height - 1);
+  if (unstamped) return;
 
   const words = el.words.value.trim() || el.words.placeholder;
   const family = 'system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif';
@@ -278,14 +319,19 @@ el.run.addEventListener('click', run);
 el.cancel.addEventListener('click', () => running?.abort());
 el.clearFile.addEventListener('click', () => {
   reset();
-  picker.waiting();
+  el.dropzone.focus();
 });
 
 async function run() {
   const words = el.words.value.trim();
   if (!loaded || !words || running) return;
 
-  running = new AbortController();
+  const input = loaded;
+  const chosen = settings();
+  const colour = COLOURS[choice.colour] ?? COLOURS.grey;
+  const controller = new AbortController();
+  running = controller;
+  lockSettings(true);
   el.run.disabled = true;
   el.cancel.hidden = false;
   el.result.hidden = true;
@@ -297,26 +343,34 @@ async function run() {
   let cancelled = false;
 
   try {
-    const chosen = settings();
-    const image = renderStamp(words, COLOURS[choice.colour] ?? COLOURS.grey);
+    const image = renderStamp(words, colour);
 
     // The document is stamped in place and written; a second run on the
     // same file would stamp it twice, so it is reopened from the bytes.
-    const doc = await PdfDocument.open(loaded.bytes);
+    const doc = await PdfDocument.open(input.bytes);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
     const signed = hasSignature(doc);
     const done = stampDocument(doc, image, chosen);
 
     setProgress(0, 1, phrase('stage.writing'));
     const blob = await writeDocument(doc, {
-      signal: running.signal,
-      onProgress: (count, total) => setProgress(count, total, null),
+      signal: controller.signal,
+      onProgress: (count, total) => {
+        if (running === controller) setProgress(count, total, null);
+      },
     });
 
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
     setProgress(1, 1, phrase('stage.checking'));
-    const check = await verify(blob, chosen, loaded.pages.length, done.names);
+    const check = await verify(blob, chosen, input.pages.length, done.names);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
 
-    showResult({ blob, check, chosen, done, words, signed });
+    showResult({ blob, check, chosen, done, words, signed }, input);
   } catch (error) {
+    if (running !== controller) return;
     if (error?.name === 'AbortError') {
       cancelled = true;
       el.progressLabel.textContent = phrase('run.cancelled');
@@ -325,11 +379,15 @@ async function run() {
       el.runError.hidden = false;
     }
   } finally {
-    running = null;
-    el.run.disabled = false;
-    el.cancel.hidden = true;
-    el.progress.hidden = !cancelled;
-    if (cancelled) el.progressBar.style.width = '0%';
+    if (running === controller) {
+      running = null;
+      lockSettings(false);
+      el.run.disabled = false;
+      el.cancel.hidden = true;
+      el.progress.hidden = !cancelled;
+      if (cancelled) el.progressBar.style.width = '0%';
+      refresh();
+    }
   }
 }
 
@@ -373,7 +431,7 @@ async function verify(blob, chosen, expected, names) {
   return { ok: true, text: { key, values: { pages: say(pages(found.length)) } } };
 }
 
-function showResult({ blob, check, chosen, done, words, signed }) {
+function showResult({ blob, check, chosen, done, words, signed }, input) {
   el.resultSize.textContent = phrase('result.ready', { size: size(blob.size) });
   el.resultSub.textContent = phrase('result.sub');
 
@@ -381,11 +439,11 @@ function showResult({ blob, check, chosen, done, words, signed }) {
     { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
 
-  renderFacts({ chosen, done, words, signed });
+  renderFacts({ chosen, done, words, signed }, input);
 
   downloadUrl = URL.createObjectURL(blob);
   el.download.href = downloadUrl;
-  el.download.download = outName(loaded.file.name);
+  el.download.download = outName(input.file.name);
   // A file the tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !check.ok;
@@ -393,8 +451,8 @@ function showResult({ blob, check, chosen, done, words, signed }) {
   el.result.hidden = false;
 }
 
-function renderFacts({ chosen, done, words, signed }) {
-  const { doc } = loaded;
+function renderFacts({ chosen, done, words, signed }, input) {
+  const { doc } = input;
   const facts = [];
 
   facts.push(phrase('facts.words', { words }));
@@ -407,8 +465,8 @@ function renderFacts({ chosen, done, words, signed }) {
   };
   facts.push(phrase(chosen.tiled ? 'facts.placement.tiled' : 'facts.placement.once', values));
 
-  if (chosen.firstPageOnly && loaded.pages.length > 1) {
-    facts.push(phrase('facts.firstonly', { n: loaded.pages.length - 1 }));
+  if (chosen.firstPageOnly && input.pages.length > 1) {
+    facts.push(phrase('facts.firstonly', { n: input.pages.length - 1 }));
   }
   facts.push(phrase('facts.picture'));
   if (signed) facts.push(phrase('facts.signature'));
@@ -484,7 +542,22 @@ function setProgress(done, total, stage) {
   el.progressLabel.textContent = `${stageText}...`;
 }
 
+function lockSettings(locked) {
+  for (const control of $('stamp-card').querySelectorAll('input, button')) {
+    control.disabled = locked;
+  }
+}
+
 function reset() {
+  loadGeneration += 1;
+  running?.abort();
+  running = null;
+  lockSettings(false);
+  el.run.disabled = false;
+  el.cancel.hidden = true;
+  picker.done();
+  picker.waiting();
+  previewIndex = 0;
   loaded = null;
   el.fileRow.hidden = true;
   el.result.hidden = true;
