@@ -101,8 +101,8 @@
           </div>
           <div class="field">
             <label for="frame-zoom">Zoom <output id="frame-zoom-label" for="frame-zoom">100%</output></label>
-            <input type="range" id="frame-zoom" min="100" max="400" step="1" value="100">
-            <p class="field-note">100% uses the Image fit setting. Zoom in to crop closer, or zoom out to return to that fit.</p>
+            <input type="range" id="frame-zoom" min="25" max="400" step="1" value="100">
+            <p class="field-note">100% uses the Image fit setting. Zoom in to crop closer, or zoom out to show more background. Each frame supports 25%–400%.</p>
           </div>
           <div class="frame-position">
             <div class="field">
@@ -114,7 +114,7 @@
               <input type="range" id="frame-pan-y" min="-100" max="100" step="1" value="0">
             </div>
           </div>
-          <p class="field-note">Position becomes available when the image extends beyond its frame.</p>
+          <p class="field-note">A position slider is available whenever the image and frame have different sizes.</p>
           <div class="layout-actions">
             <button type="button" id="frame-reset" class="ghost">Reset this frame</button>
             <button type="button" id="frames-reset" class="ghost">Reset all frames</button>

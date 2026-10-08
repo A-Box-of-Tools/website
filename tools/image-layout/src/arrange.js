@@ -11,6 +11,7 @@ import { throwIfAborted } from './shared/errors.js';
 // picture repeated in a tall strip can otherwise allocate gigabytes at once.
 export const MAX_SIDE = 8192;
 export const MAX_PIXELS = 32_000_000;
+export const MIN_ZOOM = 0.25;
 export const MAX_ZOOM = 4;
 
 const RATIOS = { square: 1, landscape: 4 / 3, portrait: 3 / 4 };
@@ -103,8 +104,9 @@ export function arrange(items, settings) {
 
 /**
  * Pan is a fraction of the distance from the centred picture to either edge.
- * Keeping it independent of output pixels makes a crop survive a width change,
- * and leaves a smaller picture centred until zoom creates something to pan.
+ * Keeping it independent of output pixels makes a crop survive a width change.
+ * A smaller picture moves within the frame; a larger one moves only far enough
+ * to reach its cropped edge, so positioning never hides more of the picture.
  */
 export function imagePlacement(image, cell, fit = 'contain', transform = {}) {
   if (!['contain', 'cover'].includes(fit)) fail('errorSettings');
@@ -112,7 +114,7 @@ export function imagePlacement(image, cell, fit = 'contain', transform = {}) {
     fail('errorSettings');
   }
   const { zoom = 1, panX = 0, panY = 0 } = transform;
-  if (!Number.isFinite(zoom) || zoom < 1 || zoom > MAX_ZOOM
+  if (!Number.isFinite(zoom) || zoom < MIN_ZOOM || zoom > MAX_ZOOM
       || !Number.isFinite(panX) || Math.abs(panX) > 1
       || !Number.isFinite(panY) || Math.abs(panY) > 1
       || !Number.isFinite(cell.x) || !Number.isFinite(cell.y)
@@ -127,8 +129,10 @@ export function imagePlacement(image, cell, fit = 'contain', transform = {}) {
     : Math.min(cell.width / sourceWidth, cell.height / sourceHeight);
   const width = sourceWidth * scale * zoom;
   const height = sourceHeight * scale * zoom;
-  const panRangeX = Math.max(0, (width - cell.width) / 2);
-  const panRangeY = Math.max(0, (height - cell.height) / 2);
+  const rangeX = Math.abs(width - cell.width) / 2;
+  const rangeY = Math.abs(height - cell.height) / 2;
+  const panRangeX = rangeX < 1e-6 ? 0 : rangeX;
+  const panRangeY = rangeY < 1e-6 ? 0 : rangeY;
   return {
     x: cell.x + (cell.width - width) / 2 + panX * panRangeX,
     y: cell.y + (cell.height - height) / 2 + panY * panRangeY,

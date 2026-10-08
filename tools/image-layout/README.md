@@ -22,8 +22,8 @@ proportions. Original proportions mean a common height across a horizontal
 strip and a common width down a vertical strip, rather than distortion to make
 different-shaped sources occupy identical rectangles.
 
-At 100% zoom, contain shows the whole source, centred in the cell, with
-background around it where the shapes differ. Cover starts with a centred crop
+At 100% zoom, contain shows the whole source and starts centred in the cell,
+with background around it where the shapes differ. Cover starts with a centred crop
 of the overflow; per-image pan and zoom let the visitor choose a different
 framing.
 There is no stretch mode: making a contact sheet does not warrant quietly
@@ -50,7 +50,17 @@ the choices are conveniences rather than a separate kind of document.
 
 Each image can be reframed with its own pan and zoom. Dragging changes the part
 shown inside that image's cell; the position and zoom controls provide the same
-adjustments by keyboard. A reset brings that image back to its initial framing.
+adjustments by keyboard. The fit is the 100% baseline, with zoom available from
+25% to 400%. Zooming out below 100% shrinks the picture inside its cell and
+shows more background; zooming in enlarges it and can crop its edges. A reset
+brings that image back to its starting position and 100% zoom.
+
+Pan is available on each axis where the image and cell have different sizes.
+For a larger image it selects which part is cropped; for a smaller image it
+moves the picture through the unused space, bounded so the whole picture stays
+inside the cell. A letterboxed picture therefore starts centred but can be
+aligned toward an edge without changing its size.
+
 The framing belongs to the image, so it moves with the tile when the list is
 reordered. Preview and export use the same framing, and zoom never changes the
 cell size or moves neighbouring images. Enlarging the source spends the detail
@@ -106,7 +116,7 @@ or encode cannot be interrupted by this page.
 
 ## The output is a new image, not a container for the originals
 
-Every source is drawn to an 8-bit SDR canvas. Scaling and centre-cropping change
+Every source is drawn to an 8-bit SDR canvas. Scaling and cropping change
 the pixels, JPEG and WebP may add compression loss, and colour, HDR or partly
 transparent channel values can change in the browser's canvas conversion.
 PNG is lossless relative to the finished canvas rather than an archival copy

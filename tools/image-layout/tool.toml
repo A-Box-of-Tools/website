@@ -161,8 +161,9 @@ title = "Adjust the picture inside each frame."
 body = """
  Select a picture in the preview
       or choose it from Frame. Drag to pan, or use Horizontal position, Vertical
-      position and Zoom. At 100% zoom, &ldquo;Fit whole image&rdquo; keeps every
-      edge; &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop. Reset
+      position and Zoom. Zoom out below 100% to show more background, or zoom
+      in to enlarge and crop. At 100% zoom, &ldquo;Fit whole image&rdquo; keeps
+      every edge; &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop. Reset
       this frame restores the selected picture, and Reset all frames restores
       every picture's starting fit."""
 
@@ -216,8 +217,13 @@ a = """
 q = "Can I move or zoom one picture without changing its neighbours?"
 a = """
         Yes. Select its frame in the preview or the Frame menu, then drag to
-        pan, use the position controls, or adjust Zoom. Panning is available
-        on an axis only when the picture extends beyond that side of its cell.
+        pan, use the position controls, or adjust Zoom from 25% to 400%. The
+        selected fit is the 100% baseline. Zooming out below 100% shrinks the
+        picture and shows more background; zooming in enlarges it and can crop
+        its edges. Panning is available on an axis when the picture and frame
+        have different sizes. A larger picture can move to choose its crop; a
+        smaller picture can move within the unused space while staying wholly
+        inside the frame.
         &ldquo;Fill box (crop edges)&rdquo; starts with a centred crop, and you
         can move it to keep the subject in view. The framing stays with the
         picture when you reorder it. Reset this frame restores its starting
@@ -294,7 +300,8 @@ features = [
   "Output width, column count, cell shape, gap and outer padding",
   "Ready-to-use collage, contact sheet and strip presets",
   "Fit whole images at 100% zoom or crop to fill each cell",
-  "Per-image pan and zoom, with pointer and keyboard controls",
+  "Per-image pan and 25% to 400% zoom, with pointer and keyboard controls",
+  "Move smaller pictures within unused space or choose a larger picture's crop",
   "Reset one frame or all frames; crops stay with reordered images",
   "Original image proportions in horizontal and vertical strips",
   "Live preview and export use the same layout geometry",

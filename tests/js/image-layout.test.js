@@ -7,7 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  MAX_PIXELS, MAX_SIDE, MAX_ZOOM, arrange, imagePlacement, drawImageInCell, renderLayout,
+  MAX_PIXELS, MAX_SIDE, MIN_ZOOM, MAX_ZOOM, arrange, imagePlacement, drawImageInCell, renderLayout,
 } from '../../tools/image-layout/src/arrange.js';
 
 const landscape = { width: 200, height: 100 };
@@ -173,14 +173,55 @@ test('panning reaches either cropped edge without exposing an empty strip', () =
   assert.equal(bottom.y + bottom.height, cell.y + cell.height);
 });
 
-test('contain keeps spare space centred until zoom creates a crop', () => {
+test('contain can position a whole image in spare space and a crop along overflowing axes', () => {
   const cell = { x: 0, y: 0, width: 100, height: 100 };
   assert.deepEqual(imagePlacement(landscape, cell, 'contain', { panX: 1, panY: -1 }),
-    { x: 0, y: 25, width: 100, height: 50, panRangeX: 0, panRangeY: 0 });
+    { x: 0, y: 0, width: 100, height: 50, panRangeX: 0, panRangeY: 25 });
   assert.deepEqual(imagePlacement(landscape, cell, 'contain', { zoom: 1.5, panX: -1, panY: 1 }),
-    { x: -50, y: 12.5, width: 150, height: 75, panRangeX: 25, panRangeY: 0 });
+    { x: -50, y: 25, width: 150, height: 75, panRangeX: 25, panRangeY: 12.5 });
   assert.deepEqual(imagePlacement(landscape, cell, 'contain', { zoom: 3, panX: 1, panY: -1 }),
     { x: 0, y: -50, width: 300, height: 150, panRangeX: 100, panRangeY: 25 });
+});
+
+test('zooming out from contain or cover reveals centred space within the same clipped frame', () => {
+  const cell = { x: 10, y: 20, width: 100, height: 100 };
+  for (const [fit, expected] of [
+    ['contain', { x: 35, y: 57.5, width: 50, height: 25, panRangeX: 25, panRangeY: 37.5 }],
+    ['cover', { x: 10, y: 45, width: 100, height: 50, panRangeX: 0, panRangeY: 25 }],
+  ]) {
+    const transform = { zoom: 0.5 };
+    assert.deepEqual(imagePlacement(landscape, cell, fit, transform), expected);
+    const ctx = recorder();
+    drawImageInCell(ctx, landscape, cell, fit, transform);
+    assert.deepEqual(ctx.calls, [
+      ['save'], ['beginPath'], ['rect', 10, 20, 100, 100], ['clip'],
+      ['drawImage', landscape, expected.x, expected.y, expected.width, expected.height], ['restore'],
+    ]);
+  }
+  assert.deepEqual(imagePlacement(square, cell, 'cover', { zoom: MIN_ZOOM }),
+    { x: 47.5, y: 57.5, width: 25, height: 25, panRangeX: 37.5, panRangeY: 37.5 });
+});
+
+test('zoomed-out pictures can move to opposite frame edges while staying entirely inside', () => {
+  const cell = { x: 10, y: 20, width: 100, height: 100 };
+  for (const [image, fit, zoom] of [
+    [landscape, 'contain', 0.5], [landscape, 'cover', 0.5], [square, 'cover', MIN_ZOOM],
+  ]) {
+    const start = imagePlacement(image, cell, fit, { zoom, panX: -1, panY: -1 });
+    const end = imagePlacement(image, cell, fit, { zoom, panX: 1, panY: 1 });
+    assert.equal(start.x, cell.x);
+    assert.equal(start.y, cell.y);
+    assert.equal(end.x + end.width, cell.x + cell.width);
+    assert.equal(end.y + end.height, cell.y + cell.height);
+    assert.ok(start.width <= cell.width && start.height <= cell.height);
+  }
+});
+
+test('an insignificant difference from the frame does not produce a draggable axis', () => {
+  const placement = imagePlacement(square,
+    { x: 0, y: 0, width: 100, height: 100 }, 'cover', { zoom: 1 + 1e-9, panX: 1, panY: -1 });
+  assert.equal(placement.panRangeX, 0);
+  assert.equal(placement.panRangeY, 0);
 });
 
 test('zoom preserves aspect ratio and clips an independently adjusted frame', () => {
@@ -234,9 +275,10 @@ test('original-shape strips can zoom and pan without changing their frame geomet
 });
 
 test('invalid adjustments are rejected before a drawing context is changed', () => {
+  assert.equal(MIN_ZOOM, 0.25);
   assert.equal(MAX_ZOOM, 4);
   const cell = { x: 0, y: 0, width: 100, height: 100 };
-  for (const transform of [null, [], { zoom: 0.99 }, { zoom: 4.01 }, { zoom: NaN },
+  for (const transform of [null, [], { zoom: 0.24 }, { zoom: 4.01 }, { zoom: NaN },
     { zoom: Infinity }, { zoom: '2' }, { panX: -1.01 }, { panY: 1.01 }, { panX: NaN }]) {
     const ctx = recorder();
     assert.throws(() => drawImageInCell(ctx, square, cell, 'contain', transform), /errorSettings/);
@@ -316,8 +358,20 @@ test('an export snapshots order, settings and individual crops and closes each b
 test('a transparent export leaves the gaps and margins unpainted', async () => {
   await withCanvas(async ({ ctx }) => {
     globalThis.createImageBitmap = async () => ({ ...square, close() {} });
-    await renderLayout([{ ...square, file: null }], { ...exportSettings, transparent: true });
+    await renderLayout([{ ...square, file: null, transform: { zoom: 0.5 } }],
+      { ...exportSettings, transparent: true });
     assert.equal(ctx.calls.some((call) => call[0] === 'fillRect'), false);
+    assert.deepEqual(ctx.calls.find((call) => call[0] === 'drawImage').slice(2), [60, 60, 100, 100]);
+  });
+});
+
+test('zooming out exposes the chosen export background around the smaller picture', async () => {
+  await withCanvas(async ({ ctx }) => {
+    globalThis.createImageBitmap = async () => ({ ...square, close() {} });
+    await renderLayout([{ ...square, file: null, transform: { zoom: 0.5 } }], exportSettings);
+    assert.deepEqual(ctx.calls.find((call) => call[0] === 'fillRect'),
+      ['fillRect', '#123456', 0, 0, 220, 220]);
+    assert.deepEqual(ctx.calls.find((call) => call[0] === 'drawImage').slice(2), [60, 60, 100, 100]);
   });
 });
 
