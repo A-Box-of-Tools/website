@@ -49,7 +49,10 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">In JPG umwandeln</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
+
+    <p class="note">Abbrechen stoppt vor der nächsten Datei. Ein bereits gestarteter Encoder läuft zu Ende; fertige Dateien bleiben verfügbar.</p>
 
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
@@ -97,6 +100,9 @@
     <span data-phrase="run.many">{count} Dateien in JPG umwandeln</span>
     <span data-phrase="progress.each">{name} wird umgewandelt&hellip;</span>
     <span data-phrase="progress.done">Fertig.</span>
+    <span data-phrase="run.filefailed">{name} wurde nicht umgewandelt: {why}</span>
+    <span data-phrase="progress.stopped">Nach {done} von {total} Dateien angehalten. Fertige Dateien stehen unten bereit.</span>
+    <span data-phrase="progress.stopped.none">Angehalten, bevor eine Datei fertig war.</span>
     <span data-phrase="run.failed">Die Umwandlung ist fehlgeschlagen: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count} JPEG-Dateien geschrieben, insgesamt {size}.</span>

@@ -21,9 +21,9 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { saveBlob } from './shared/download.js';
 import {
-  AVIF, FORMATS, JPEG,
-  change, decode, encode, hasAlpha, outName, release, sniff, uniqueNames,
+  AVIF, JPEG, change, decode, hasAlpha, release, sniff,
 } from './shared/image-convert.js';
+import { prepareImageBatch, convertImageBatch } from './shared/image-batch.js';
 import { makeExample } from './example.js';
 import { canReadAvif } from './avif-support.js';
 
@@ -45,6 +45,7 @@ const el = {
   backgroundNote: $('background-note'),
   settingsNote: $('settings-note'),
   run: $('run'),
+  cancel: $('cancel'),
   progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
@@ -63,6 +64,11 @@ const { show: showSupportError } = messageBox(el.supportError);
 
 /** A size through this page's own wording. */
 const bytes = (n) => sizeText(n, phrase, { under: 'size.bytes', kb: 'auto' });
+
+// Native details can contain selector punctuation, so only our own keys enter phrase().
+const CONVERT_ERRORS = new Set(['error.decode', 'error.encode', 'error.wrongtype']);
+const errorDetail = (error) => CONVERT_ERRORS.has(error.message)
+  ? phrase(error.message, fill(error.values)) : error.message;
 
 /** A phrase key for whatever the file turned out to be instead of an AVIF. */
 const FOUND = {
@@ -87,6 +93,7 @@ const FOUND = {
 let items = [];
 let nextId = 1;
 let busy = false;
+let stopping = false;
 
 /** Cleared once this browser has been shown not to read AVIF. */
 let supported = true;
@@ -133,13 +140,17 @@ async function addFiles(files) {
         // support is measured separately with a known-good sample.
         failures.push(phrase('read.failed', {
           name: file.name,
-          why: phrase(error.message, fill(error.values)),
+          why: errorDetail(error),
         }));
         continue;
       }
 
-      const alpha = hasAlpha(decoded.bitmap, decoded.width, decoded.height);
-      release(decoded.bitmap);
+      let alpha;
+      try {
+        alpha = hasAlpha(decoded.bitmap, decoded.width, decoded.height);
+      } finally {
+        release(decoded.bitmap);
+      }
 
       items.push({
         id: nextId,
@@ -303,8 +314,10 @@ function gate() {
 
 el.run.addEventListener('click', () => {
   runAll().catch((error) => {
-    showRunError(phrase('run.failed', { detail: error.message }));
+    showRunError(phrase('run.failed', { detail: errorDetail(error) }));
     busy = false;
+    stopping = false;
+    el.cancel.hidden = true;
     el.progress.hidden = true;
     render();
   });
@@ -313,44 +326,51 @@ el.run.addEventListener('click', () => {
 async function runAll() {
   if (busy || !items.length || !supported) return;
 
+  const plan = prepareImageBatch(items, settings());
   busy = true;
+  stopping = false;
   clearRunError();
   clearResults();
   render();
-
-  const set = settings();
-  const names = uniqueNames(items.map((item) => outName(item.file.name, FORMATS[set.mime].ext)));
-
   el.progress.hidden = false;
-  const made = [];
+  el.cancel.hidden = false;
+  el.cancel.disabled = false;
 
-  for (const [index, item] of items.entries()) {
-    setProgress(index / items.length, phrase('progress.each', { name: item.file.name }));
-    // Yield so the line above is painted before the work starts.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    const decoded = await decode(item.file);
-    try {
-      const blob = await encode(decoded.bitmap, {
-        width: decoded.width,
-        height: decoded.height,
-        mime: set.mime,
-        quality: set.quality,
-        background: set.background,
-      });
-      made.push({ item, blob, name: names[index] });
-    } finally {
-      release(decoded.bitmap);
+  try {
+    const outcome = await convertImageBatch(plan, {
+      shouldStop: () => stopping,
+      onProgress(index, total, item) {
+        setProgress(index / total, phrase('progress.each', { name: item.file.name }));
+      },
+    });
+    results = outcome.results;
+    if (outcome.failures.length) {
+      showRunError(outcome.failures.map(({ item, error }) => phrase('run.filefailed', {
+        name: item.file.name, why: errorDetail(error),
+      })).join('\n'));
     }
+    if (outcome.stopped) {
+      setProgress(results.length / outcome.total, phrase(results.length ? 'progress.stopped' : 'progress.stopped.none', {
+        done: results.length, total: outcome.total,
+      }));
+    } else {
+      setProgress(1, phrase('progress.done'));
+      el.progress.hidden = true;
+    }
+    renderResults();
+  } finally {
+    busy = false;
+    stopping = false;
+    el.cancel.hidden = true;
+    render();
   }
-
-  setProgress(1, phrase('progress.done'));
-  busy = false;
-  results = made;
-  renderResults();
-  render();
-  el.progress.hidden = true;
 }
+
+el.cancel.addEventListener('click', () => {
+  if (!busy) return;
+  stopping = true;
+  el.cancel.disabled = true;
+});
 
 function setProgress(fraction, label) {
   el.progressBar.style.width = `${Math.round(fraction * 100)}%`;
@@ -422,7 +442,7 @@ function resultRow(one) {
   if (one.item.alpha) {
     const note = document.createElement('p');
     note.className = 'result-detail';
-    note.textContent = phrase('result.flattened', { colour: el.background.value });
+    note.textContent = phrase('result.flattened', { colour: one.settings.background });
     text.append(note);
   }
 
@@ -470,11 +490,13 @@ function clearResults() {
 /* ------------------------------------------------------------- the controls */
 
 el.quality.addEventListener('input', () => {
+  if (busy) return;
   clearResults();
   renderSettings();
 });
 
 el.background.addEventListener('input', () => {
+  if (busy) return;
   clearResults();
   renderSettings();
 });
