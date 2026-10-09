@@ -14,9 +14,9 @@ heading = "图片转 Data URI <span class=\"h1-kw\">图片 base64 编码，给 C
 tagline = "整张图变成一行文本，直接粘进 CSS 或者 HTML。"
 
 title = "图片转 Data URI | CSS 用的 base64 编码，免费，不用上传"
-description = "把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。"
+description = "把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。UTF-8 SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。"
 og_title = "把一张图变成能粘进 CSS 的一行"
-og_description = "位图走 base64，SVG 走百分号编码，外面那圈 CSS 规则、自定义属性或者 img 标签也一并写好。跑在你自己的机器上，什么都不上传。"
+og_description = "位图走 base64，UTF-8 SVG 走百分号编码，外面那圈 CSS 规则、自定义属性或者 img 标签也一并写好。跑在你自己的机器上，什么都不上传。"
 og_image_alt = "图片转 Data URI - 把图片直接粘进样式表"
 
 pledge = """
@@ -156,11 +156,7 @@ a = """
 [[faq]]
 q = "为什么我的 SVG 没走 base64？"
 a = """
-        因为 base64 对它来说是错的编码。SVG 本身是文本，而网址本来就能装文本，\
-        只有少数几个字符需要转义。把那几个转成百分号写法、别的原样留着，生成的
-        URI 通常比同一个文件的 base64 短五分之一左右，而且在样式表里还看得懂，\
-        元素名、颜色、<code>viewBox</code> 都还在，随手能改。个别工具链非要 \
-        <code>;base64</code> 不可，页面上有个勾选框可以强制。"""
+        有效的 UTF-8 SVG 使用可读的百分号编码，通常比 base64 更短。采用其他 XML 编码或包含无效 UTF-8 的 SVG 会自动使用 base64，保留原始字节和编码声明。勾选复选框也会让 UTF-8 SVG 使用 base64。预览仍取决于浏览器能否绘制原始文件。"""
 
 [[faq]]
 q = "base64 会让图片大多少？"
@@ -248,7 +244,7 @@ a = """
         办法。一个把图片送出去编码的工具，拔线那一刻就停了。"""
 
 [schema]
-description = "把 PNG、JPEG、SVG、WebP、GIF 或 ICO 转成能直接粘进 CSS 和 HTML 的 data URI。位图走 base64，SVG 走百分号编码，外面套好 CSS 规则、自定义属性、img 标签或者 Markdown，并报出体积代价和内嵌的元数据。全程在浏览器里跑，不上传。"
+description = "把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。UTF-8 SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。"
 features = [
   "PNG、JPEG、WebP、GIF、ICO、AVIF 等格式的 base64 data URI",
   "SVG 走百分号编码，比 base64 短，而且在样式表里还看得懂",

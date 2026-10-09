@@ -18,7 +18,7 @@ text and a URL can only carry text. It costs a third — three bytes in, four
 characters out — and there is no way around that; it is the price of writing
 arbitrary bytes with the characters a URL permits.
 
-**Percent-encoding** for SVG, because an SVG *is* text and base64 would be the
+**Percent-encoding** for valid UTF-8 SVG, because an SVG *is* text and base64 would be the
 wrong trade twice: it pays the same third for nothing, and it turns a stylesheet
 you could read into a wall of letters. Five characters have to be escaped and
 the rest are left alone:
@@ -44,8 +44,16 @@ Nothing is minified, reordered or tidied on the way through. Whitespace inside a
 `<text>` element is content, and an SVG that has been "optimised" between the
 file on disk and the stylesheet renders differently from the file on disk, which
 is exactly the surprise a tool at this end of the job should not be producing.
-`decodeURIComponent` of the output is the input, byte for byte, and
+Percent-decoding the URI returns the original UTF-8 bytes, including a BOM, and
 `tests/js/data-uri-encode.test.js` holds that.
+
+The shared BOM/declaration-aware `svg-text` reader recognizes UTF-16 in both
+byte orders as well as declared legacy text. Those files, contradictory XML
+encoding declarations and invalid UTF-8 take the original-byte base64 path
+automatically. The result says why. No declaration is rewritten, no replacement
+character is introduced, and the browser may still refuse an original XML
+encoding it cannot render. The manual base64 choice continues to apply to every
+SVG, including UTF-8.
 
 `base64()` builds its input string in 32 KB chunks. The obvious
 `String.fromCharCode(...bytes)` passes one argument per byte and overflows the

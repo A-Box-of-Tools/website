@@ -89,6 +89,7 @@
 
     <fieldset class="options">
       <legend>SVG</legend>
+      <p class="field-summary">XMLの文字コードがUTF-8以外のSVGや、UTF-8として不正なバイトを含むSVGには、自動的にbase64を使います。元のバイト列と文字コードの宣言を保持します。</p>
 
       <label class="check">
         <input type="checkbox" id="svg-base64">
@@ -131,6 +132,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="svg.base64">XMLの文字コードがUTF-8以外のSVGや、UTF-8として不正なバイトを含むSVGには、自動的にbase64を使います。元のバイト列と文字コードの宣言を保持します。</span>
     <span data-phrase="read.notimage">{name}：これはこの道具が知っている画像形式ではありません。データURIの中の種別は正しくなければならないので、推測はしません。</span>
     <span data-phrase="read.mismatch">名前は{extension}ですが、中身のバイトは{label}です。URIには{mime}と書いてあり、動くのはこちらです。</span>
     <span data-phrase="row.remove">{name}を一覧から外す</span>

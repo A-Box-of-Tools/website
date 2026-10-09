@@ -2,9 +2,9 @@ name = "Image en data URI"
 heading = "Image&nbsp;en&nbsp;data&nbsp;URI <span class=\"h1-kw\">&mdash; encoder une image en base64 pour le CSS ou le HTML</span>"
 tagline = "L'image entière en une ligne de texte. À coller directement dans du CSS ou du HTML."
 title = "Image en data URI &mdash; encodage base64 pour le CSS, gratuit, sans envoi"
-description = "Transformez un PNG, un JPEG, un SVG ou un WebP en data URI à coller dans du CSS ou du HTML. Les SVG sont encodés en pourcents plutôt qu'en base64&nbsp;: ils restent lisibles et plus courts. Rien n'est envoyé."
+description = "Transformez un PNG, un JPEG, un SVG ou un WebP en data URI à coller dans du CSS ou du HTML. Les SVG en UTF-8 sont encodés en pourcents plutôt qu'en base64&nbsp;: ils restent lisibles et plus courts. Rien n'est envoyé."
 og_title = "Transformer une image en une ligne à coller dans du CSS"
-og_description = "Base64 pour les images, encodage en pourcents pour le SVG, et la règle, la propriété personnalisée ou la balise img déjà faites autour. Tout tourne sur votre machine&nbsp;; rien n'est envoyé."
+og_description = "Base64 pour les images, encodage en pourcents pour le SVG en UTF-8, et la règle, la propriété personnalisée ou la balise img déjà faites autour. Tout tourne sur votre machine&nbsp;; rien n'est envoyé."
 og_image_alt = "Image en data URI - coller l'image dans la feuille de style"
 pledge = "L'encodage se fait dans votre propre navigateur, sur votre propre matériel. C'est de l'arithmétique sur des octets que la page a déjà&nbsp;: pas d'encodeur, pas de serveur, et aucune étape réseau à omettre. Cet outil ne comporte aucune fonction réseau, si bien qu'il n'a rien à aller chercher et rien à envoyer. Et quand bien même il en aurait une, il n'y a à l'autre bout de cette page aucun serveur à qui remettre une image."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement, surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et déposez une image. Pas une seule requête ne transporte d'image, de vignette, de nom de fichier ni le moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la connexion et en encoder une quand même."
@@ -85,7 +85,8 @@ a = "Une façon d'écrire un fichier entier là où irait normalement une adress
 
 [[faq]]
 q = "Pourquoi mon SVG n'est-il pas en base64&nbsp;?"
-a = "Parce que le base64 est le mauvais encodage pour lui. Un SVG est du texte, et une URL sait déjà transporter du texte, puisque seule une poignée de caractères doit y être échappée. Les encoder en pourcents et laisser le reste tranquille produit un URI typiquement un cinquième plus court que le base64 du même fichier, et que vous pouvez encore lire dans votre feuille de style&nbsp;: les noms d'éléments, les couleurs et le <code>viewBox</code> sont tous encore là, modifiables. Une case permet de forcer le base64 pour la rare chaîne d'outils qui l'exige."
+a = """
+        Les SVG en UTF-8 valide utilisent un encodage en pourcents lisible, généralement plus court que base64. Les SVG avec un autre encodage XML ou un UTF-8 invalide utilisent automatiquement base64 pour conserver les octets d’origine et la déclaration d’encodage. La case impose aussi base64 aux SVG en UTF-8. L’aperçu dépend toujours de la capacité du navigateur à afficher le fichier d’origine."""
 
 [[faq]]
 q = "De combien le base64 alourdit-il mon image&nbsp;?"
@@ -128,7 +129,7 @@ q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = "Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue de travailler. C'est aussi la façon la plus simple de prouver que rien n'est envoyé, car un outil qui expédierait vos images ailleurs pour les encoder s'arrêterait à l'instant où vous débranchez."
 
 [schema]
-description = "Convertissez un PNG, un JPEG, un SVG, un WebP, un GIF ou un ICO en data URI prêt à coller dans du CSS ou du HTML. Base64 pour les formats matriciels et encodage en pourcents pour le SVG, enveloppés dans une règle CSS, une propriété personnalisée, une balise img ou du Markdown, avec le coût en taille et les métadonnées incorporées signalés. Tout se passe dans le navigateur, sans aucun envoi."
+description = "Transformez un PNG, un JPEG, un SVG ou un WebP en data URI à coller dans du CSS ou du HTML. Les SVG en UTF-8 sont encodés en pourcents plutôt qu'en base64&nbsp;: ils restent lisibles et plus courts. Rien n'est envoyé."
 features = ["Data URI en base64 pour PNG, JPEG, WebP, GIF, ICO, AVIF et d'autres", "Data URI SVG encodés en pourcents, plus courts que le base64 et qui restent lisibles", "Règle CSS, propriété personnalisée CSS, balise img HTML ou Markdown déjà faites, toujours correctement mises entre guillemets", "Le type de média lu dans les octets du fichier, pas dans son extension", "Dit ce que l'encodage a coûté en caractères, et si l'intégration vaut le coup à cette taille", "Prévient quand de l'EXIF, du XMP ou un profil colorimétrique est sur le point d'être copié dans votre feuille de style", "Copie le fichier octet pour octet&nbsp;: aucun réencodage et aucune perte de qualité", "Traitement par lots, tout copié ou téléchargé en un seul fichier", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]

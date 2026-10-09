@@ -197,3 +197,8 @@ is the one place this tool's policy differs from a tool with no carry-on
 row, and it is worth knowing before concluding that a `blob:` fetch failing
 somewhere else on the site is a bug. Nothing else is widened, and `blob:`
 names bytes inside this page — it gains no reach over the network.
+
+The BOM/declaration-aware text reader lives in `shared/js/svg-text.js`; the
+`decodeSvgText` export from `src/svg.js` remains available to existing callers.
+Image to Data URI uses the same reader for detection and preserves original
+bytes for non-UTF-8 output.

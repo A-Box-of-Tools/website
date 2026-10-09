@@ -10,9 +10,9 @@ heading = "Bild&nbsp;als&nbsp;Data-URI <span class=\"h1-kw\">&mdash; ein Bild f�
 tagline = "Das ganze Bild als eine Zeile Text. Direkt in CSS oder HTML einfügen."
 
 title = "Bild als Data-URI &mdash; Base64 für CSS, kostenlos, ohne Upload"
-description = "Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser, nichts wird hochgeladen."
+description = "Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. UTF-8-SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser, nichts wird hochgeladen."
 og_title = "Ein Bild in eine Zeile verwandeln, die Sie in CSS einfügen können"
-og_description = "Base64 für Bilder, Prozentkodierung für SVG, und die fertige Regel, Custom Property oder img-Zeile drumherum. Läuft auf Ihrem eigenen Gerät, nichts wird hochgeladen."
+og_description = "Base64 für Bilder, Prozentkodierung für UTF-8-SVG, und die fertige Regel, Custom Property oder img-Zeile drumherum. Läuft auf Ihrem eigenen Gerät, nichts wird hochgeladen."
 og_image_alt = "Bild als Data-URI - das Bild ins Stylesheet einfügen"
 
 pledge = """
@@ -181,14 +181,7 @@ a = """
 [[faq]]
 q = "Warum ist mein SVG nicht base64?"
 a = """
-        Weil Base64 dafür die falsche Kodierung ist. Ein SVG ist Text, und Text
-        kann eine URL ohnehin tragen, maskiert werden muss nur eine Handvoll
-        Zeichen. Genau die prozentzukodieren und den Rest in Ruhe zu lassen
-        ergibt eine URI, die typischerweise ein Fünftel kürzer ausfällt als das
-        Base64 derselben Datei und die Sie in Ihrem Stylesheet noch lesen können.
-        Die Elementnamen, die Farben und die <code>viewBox</code> stehen alle
-        noch da und lassen sich bearbeiten. Für die seltene Werkzeugkette, die
-        darauf besteht, gibt es ein Häkchen, das Base64 erzwingt."""
+        Gültige UTF-8-SVGs verwenden lesbare Prozentkodierung, die meist kürzer als Base64 ist. Bei einer anderen XML-Kodierung oder ungültigem UTF-8 wird automatisch Base64 verwendet, damit die ursprünglichen Bytes und die Kodierungsangabe erhalten bleiben. Das Häkchen erzwingt Base64 auch für UTF-8-SVGs. Die Vorschau hängt weiterhin davon ab, ob der Browser die ursprüngliche Datei darstellen kann."""
 
 [[faq]]
 q = "Wie viel größer macht Base64 mein Bild?"
@@ -305,7 +298,7 @@ a = """
         ziehen."""
 
 [schema]
-description = "Ein PNG, JPEG, SVG, WebP, GIF oder ICO in eine Data-URI umwandeln, fertig zum Einfügen in CSS oder HTML. Base64 für Rasterformate und Prozentkodierung für SVG, eingefasst in eine CSS-Regel, eine Custom Property, ein img-Element oder Markdown, mit Angabe der Größenkosten und der eingebetteten Metadaten. Läuft vollständig im Browser, ohne Upload."
+description = "Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. UTF-8-SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser, nichts wird hochgeladen."
 features = [
   "Base64-Data-URIs für PNG, JPEG, WebP, GIF, ICO, AVIF und mehr",
   "Prozentkodierte SVG-Data-URIs, kürzer als Base64 und weiterhin lesbar",
