@@ -122,7 +122,8 @@ export function describeRanges(pages, t) {
 }
 
 /** Validate once before both the summary and the writer use the split. */
-export function parseSplit({ mode = 'single', size = 1, at = '' }, total, t) {
+export function parseSplit(options, total, t) {
+  const { mode = 'single', size = 1, at = '' } = options;
   const split = { mode, size: 1, at: [] };
   if (mode === 'every') {
     const value = Number(size);
