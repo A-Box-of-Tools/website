@@ -213,3 +213,6 @@ button.danger {
   overflow-wrap: anywhere;
   font-size: 0.92rem;
 }
+
+.file-status { flex-basis: 100%; color: var(--text-dim); font-size: 0.85rem; }
+.file-status:empty { display: none; }
