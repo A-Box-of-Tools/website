@@ -46,7 +46,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal" class="ghost" aria-pressed="false">表示</button>
       </div>
 
@@ -55,7 +55,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
       </div>
 
       <!--
@@ -98,7 +98,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">表示</button>
       </div>
     </fieldset>
@@ -158,6 +158,10 @@
     <span data-phrase="waiting.settings">上で2つのパスワードが一致し、保護方法を1つ以上選ぶと使えます。</span>
     <span data-phrase="password.show">表示</span>
     <span data-phrase="password.hide">閉じる</span>
+    <span data-phrase="status.open.latin1">AES-128では開くためのパスワードの一部の文字を表現できません。Latin-1の文字を使うか、AES-256を選んでください。</span>
+    <span data-phrase="status.owner.latin1">AES-128では所有者パスワードの一部の文字を表現できません。Latin-1の文字を使うか、AES-256を選んでください。</span>
+    <span data-phrase="status.open.limit">開くためのパスワードは{n}バイトです。この方式で保持できるのは最大{limit}バイトです。一部が失われないよう、書き出す前に短くしてください。</span>
+    <span data-phrase="status.owner.limit">所有者パスワードは{n}バイトです。この方式で保持できるのは最大{limit}バイトです。一部が失われないよう、書き出す前に短くしてください。</span>
     <span data-phrase="status.blank">このパスワードなしでは開けません。ここにも、ほかの誠実なツールにも、パスワードを推測する機能はありません。元のファイルを残してください。</span>
     <span data-phrase="status.mismatch">2つのパスワードはまだ一致していません。</span>
     <span data-phrase="status.short">{n}文字です。現在の方式でも短いパスワードが弱点になります。単語より文のほうが向いています。</span>

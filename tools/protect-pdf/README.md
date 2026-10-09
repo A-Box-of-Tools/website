@@ -54,6 +54,7 @@ changed by any of this and the page says to keep it.
 | File | What it does |
 |---|---|
 | `main.js` | the page: loading, the settings, the run, and the check afterwards |
+| `password-validation.js` | refuses unsupported characters and passwords beyond the chosen scheme’s byte limit |
 | `format.js` | the few things this tool turns into words |
 | `example.js` | asks `shared/js/example-pdf.js` for an ordinary statement |
 
@@ -89,7 +90,10 @@ key it derived is the one the document was written with.
 Neither scheme applies SASLprep to the password; the bytes are UTF-8 (R6) or
 Latin-1 (R4), truncated to 127 and 32 bytes, which is what pypdf does and what
 the reading side of the same file expects. A password made of ASCII is the
-same bytes under every rule.
+same bytes under every rule. The page refuses non-Latin-1 passwords for R4,
+and passwords above the selected scheme’s byte limit for either the open or
+explicit owner password. It validates again when the scheme changes, so a
+password cannot be silently changed or shortened on export.
 
 ## What the writer does differently under a `security`
 
@@ -154,3 +158,13 @@ owner's, refuses a wrong one, and reads the permissions back exactly.
   when a document was signed and says so on the results.
 - **Recover a password.** Deliberately, and permanently, like the tool next
   door.
+
+Loads and exports belong to their captured document. Replacing or clearing a
+file retires earlier success, error, progress and cleanup. Clear also cancels
+a running export, and Cancel is checked after key derivation, writing and
+verification so a late completion cannot offer a download.
+
+The settings stay locked during export. Result restrictions and the filename
+come from the source and permissions used to write that file. Editing a
+password, restriction or scheme afterward revokes the previous download;
+the new settings need a new export.

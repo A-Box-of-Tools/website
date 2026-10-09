@@ -39,6 +39,7 @@ import {
 } from '../../shared/js/pdf-crypt.js';
 import { permissionsIn, refusedIn } from '../../shared/js/pdf-permissions.js';
 import { makeExample } from '../../tools/protect-pdf/src/example.js';
+import { passwordIssue } from '../../tools/protect-pdf/src/password-validation.js';
 import { outName, refusedList } from '../../tools/protect-pdf/src/format.js';
 
 const latin1 = (bytes) => Buffer.from(bytes).toString('latin1');
@@ -281,3 +282,31 @@ test('format: the finished file is named for what happened, and the list reads i
   assert.deepEqual(refusedList(['a', 'b', 'c']),
     { key: 'list.three', values: { a: 'a', b: 'b', c: 'c' } });
 });
+
+
+test('AES-128 passwords are representable Latin-1 and fit the 32-byte key input', () => {
+  assert.equal(passwordIssue('', 4), null);
+  assert.equal(passwordIssue('é'.repeat(32), 4), null);
+  assert.deepEqual(passwordIssue('a'.repeat(33), 4), { key: 'limit', values: { n: 33, limit: 32 } });
+  for (const value of ['Āsecret-pass', '密码', '🔐']) {
+    assert.deepEqual(passwordIssue(value, 4), { key: 'latin1', values: {} });
+  }
+});
+
+test('AES-256 counts UTF-8 bytes rather than UTF-16 units or visible characters', () => {
+  for (const value of ['', 'a'.repeat(127), '界'.repeat(42) + 'a', '🔐'.repeat(31) + 'abc']) {
+    assert.equal(passwordIssue(value, 6), null);
+  }
+  for (const [value, n] of [['a'.repeat(128), 128], ['界'.repeat(43), 129], ['🔐'.repeat(32), 128]]) {
+    assert.deepEqual(passwordIssue(value, 6), { key: 'limit', values: { n, limit: 127 } });
+  }
+});
+
+for (const [revision, password] of [[4, 'é'.repeat(32)], [6, '界'.repeat(42) + 'a']]) {
+  test(`an accepted boundary password remains distinct in revision ${revision}`, async () => {
+    assert.equal(passwordIssue(password, revision), null);
+    const bytes = await protectedBytes({ userPassword: password, ownerPassword: 'owner-only', revision });
+    assert.equal((await openWith(bytes, password)).doc.countPages(), 2);
+    await assert.rejects(openWith(bytes, password.slice(0, -1)), WrongPasswordError);
+  });
+}
