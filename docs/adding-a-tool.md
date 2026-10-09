@@ -141,6 +141,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/video-support.js` | `js_parts = ["video-support"]` | what this browser will decode, encode and record; imports `codec-support` |
 | `shared/js/frame-canvas.js` | `js_parts = ["frame-canvas"]` | the canvas a video's frames are drawn into at the output size, turned the way the file asks; `readBack` for a tool that reads the pixels out again |
 | `shared/js/format.js` | `js_parts = ["format"]` | sizes, durations and the m:ss.mmm clock as words, in the tiers and decimals the tool names |
+| `shared/js/svg-text.js` | `js_parts = ["svg-text"]` | BOM/declaration-aware SVG text detection; consumers that promise byte preservation keep the original bytes for output |
 | `shared/js/clipboard-feedback.js` | `js_parts = ["clipboard-feedback"]` | awaited clipboard feedback with captured-value ownership, manual selection and retired timers |
 | `shared/js/message-box.js` | `js_parts = ["message-box"]` | the error line under the drop zone, or any line that is either saying something or hidden |
 | `shared/js/download.js` | `js_parts = ["download"]` | a download that starts now, or a link that follows the latest result |

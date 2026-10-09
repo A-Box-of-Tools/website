@@ -10,9 +10,9 @@ heading = "Imagen&nbsp;a&nbsp;data&nbsp;URI <span class=\"h1-kw\">&mdash; codifi
 tagline = "La imagen entera en una línea de texto, lista para pegarla en tu CSS o tu HTML."
 
 title = "Imagen a data URI &mdash; codificar en base64 para CSS, gratis y sin subir nada"
-description = "Convierte un PNG, JPEG, SVG o WebP en un data URI listo para pegar en tu CSS o tu HTML. Los SVG se codifican con porcentajes y no en base64, así que salen más cortos y siguen leyéndose. Todo en el navegador, sin subir nada."
+description = "Convierte un PNG, JPEG, SVG o WebP en un data URI listo para pegar en tu CSS o tu HTML. Los SVG en UTF-8 se codifican con porcentajes y no en base64, así que salen más cortos y siguen leyéndose. Todo en el navegador, sin subir nada."
 og_title = "Convierte una imagen en una línea que puedes pegar en tu CSS"
-og_description = "Base64 para las imágenes, codificación por porcentajes para los SVG, y la regla, la propiedad personalizada o la etiqueta img ya montadas alrededor. Todo en tu dispositivo, sin subir nada."
+og_description = "Base64 para las imágenes, codificación por porcentajes para los SVG en UTF-8, y la regla, la propiedad personalizada o la etiqueta img ya montadas alrededor. Todo en tu dispositivo, sin subir nada."
 og_image_alt = "Imagen a data URI - mete la imagen dentro de la hoja de estilos"
 
 pledge = """
@@ -180,14 +180,7 @@ a = """
 [[faq]]
 q = "¿Por qué mi SVG no sale en base64?"
 a = """
-        Porque base64 es la codificación equivocada para él. Un SVG es texto, y
-        una URL ya admite texto: basta con escapar un puñado de caracteres. Si
-        codificas esos con porcentajes y dejas el resto en paz, sale un URI que
-        suele ser una quinta parte más corto que el base64 del mismo archivo, y
-        que además puedes seguir leyendo en tu hoja de estilos, porque los nombres
-        de elemento, los colores y el <code>viewBox</code> siguen ahí para
-        editarlos. Hay una casilla para forzar base64, por si te toca esa rara
-        cadena de herramientas que insiste en ello."""
+        Los SVG en UTF-8 válido usan codificación por porcentajes, que sigue siendo legible y suele ser más corta que base64. Los SVG con otra codificación XML o UTF-8 inválido usan base64 automáticamente para conservar los bytes originales y la declaración de codificación. La casilla fuerza base64 también para los SVG en UTF-8. La vista previa sigue dependiendo de que el navegador pueda dibujar el archivo original."""
 
 [[faq]]
 q = "¿Cuánto agranda base64 mi imagen?"
@@ -302,7 +295,7 @@ a = """
         pararía en cuanto desenchufaras."""
 
 [schema]
-description = "Convierte un PNG, JPEG, SVG, WebP, GIF o ICO en un data URI listo para pegar en CSS o HTML. Base64 para los formatos de mapa de bits y codificación por porcentajes para los SVG, envuelto en una regla CSS, una propiedad personalizada, una etiqueta img o Markdown, y con el coste en tamaño y los metadatos incrustados a la vista. Funciona por completo en el navegador y no sube nada."
+description = "Convierte un PNG, JPEG, SVG o WebP en un data URI listo para pegar en tu CSS o tu HTML. Los SVG en UTF-8 se codifican con porcentajes y no en base64, así que salen más cortos y siguen leyéndose. Todo en el navegador, sin subir nada."
 features = [
   "Data URI en base64 para PNG, JPEG, WebP, GIF, ICO, AVIF y más",
   "Data URI de SVG codificados con porcentajes, más cortos que en base64 y legibles",

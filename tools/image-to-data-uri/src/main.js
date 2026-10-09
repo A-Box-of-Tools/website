@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
-import { base64DataUri, svgDataUri } from './encode.js';
+import { base64DataUri, svgDataUri, svgTextForUri } from './encode.js';
 import { sniff, extensionType } from './sniff.js';
 import { metadata } from './metadata.js';
 import {
@@ -50,7 +50,7 @@ const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
  * @property {string} mismatch set when the extension disagrees with the bytes
  * @property {{bytes: number, kinds: string[]}|null} meta null means not looked at
  * @property {boolean} svg
- * @property {string} text the SVG source; empty for everything else
+ * @property {string|null} text exact UTF-8 SVG source, null for preserved byte encoding
  * @property {number} width in pixels, 0 until measured or when unmeasurable
  * @property {number} height
  * @property {boolean} renders whether the URI drew as a picture here
@@ -62,8 +62,6 @@ const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 let items = [];
 let nextId = 1;
 let busy = false;
-
-const utf8 = new TextDecoder('utf-8');
 
 /* ------------------------------------------------------------------ adding */
 
@@ -119,7 +117,7 @@ async function addFiles(files) {
           : '',
         meta: metadata(data, kind.mime),
         svg: kind.mime === 'image/svg+xml',
-        text: kind.mime === 'image/svg+xml' ? utf8.decode(data) : '',
+        text: kind.mime === 'image/svg+xml' ? svgTextForUri(data) : '',
         width: 0,
         height: 0,
         renders: true,
@@ -189,7 +187,7 @@ el.clearAll.addEventListener('click', () => {
 
 /** Which settings the cached URI was built under. Only one setting can change
  *  what an item encodes to, and it changes it for SVGs alone. */
-const modeKey = (item) => (item.svg && !el.svgBase64.checked ? 'svg' : 'base64');
+const modeKey = (item) => (item.svg && item.text !== null && !el.svgBase64.checked ? 'svg' : 'base64');
 
 /**
  * The data URI for one item, built once and kept.
@@ -363,6 +361,7 @@ function resultRow(shape, row) {
 
   for (const warning of [
     item.mismatch,
+    item.svg && item.text === null ? phrase('svg.base64') : '',
     item.note,
     item.renders ? '' : phrase('render.failed'),
     item.meta ? metadataNote(item.meta, item.file.size, phrase) : '',

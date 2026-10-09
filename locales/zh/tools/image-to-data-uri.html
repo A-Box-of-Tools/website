@@ -96,6 +96,7 @@
 
     <fieldset class="options">
       <legend>SVG</legend>
+      <p class="field-summary">XML 编码不是 UTF-8 或包含无效 UTF-8 字节的 SVG 会自动使用 base64，保留原始字节和编码声明。</p>
 
       <label class="check">
         <input type="checkbox" id="svg-base64">
@@ -137,6 +138,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="svg.base64">XML 编码不是 UTF-8 或包含无效 UTF-8 字节的 SVG 会自动使用 base64，保留原始字节和编码声明。</span>
     <span data-phrase="result.download">下载</span>
     <span data-phrase="result.showall">显示全部{n}个字符</span>
     <span data-phrase="copy.copy">复制</span>

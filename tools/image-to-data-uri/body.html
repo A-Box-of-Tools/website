@@ -100,6 +100,7 @@
 
     <fieldset class="options">
       <legend>SVG</legend>
+      <p class="field-summary">SVGs with another XML encoding, or bytes that are not valid UTF-8, use base64 automatically. Their original bytes and encoding declaration are preserved.</p>
 
       <label class="check">
         <input type="checkbox" id="svg-base64">
@@ -146,6 +147,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="svg.base64">SVGs with another XML encoding, or bytes that are not valid UTF-8, use base64 automatically. Their original bytes and encoding declaration are preserved.</span>
     <span data-phrase="result.download">Download</span>
     <span data-phrase="result.showall">Show all {n} characters</span>
     <span data-phrase="copy.copy">Copy</span>

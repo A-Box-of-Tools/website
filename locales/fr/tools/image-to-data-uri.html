@@ -100,6 +100,7 @@
 
     <fieldset class="options">
       <legend>SVG</legend>
+      <p class="field-summary">Les SVG avec un autre encodage XML ou des octets UTF-8 invalides utilisent automatiquement base64. Les octets d’origine et la déclaration d’encodage sont conservés.</p>
 
       <label class="check">
         <input type="checkbox" id="svg-base64">
@@ -147,6 +148,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="svg.base64">Les SVG avec un autre encodage XML ou des octets UTF-8 invalides utilisent automatiquement base64. Les octets d’origine et la déclaration d’encodage sont conservés.</span>
     <span data-phrase="read.notimage">{name}&nbsp;: ce n&rsquo;est pas un format
       d&rsquo;image que cet outil reconnaît. Le type dans une URI de données doit être
       juste, il n&rsquo;en devinera donc pas un.</span>
