@@ -77,7 +77,7 @@ figure would be a lie in one direction or the other.
 
 Two things the tool does that cost nothing and save a great deal:
 
-- **A frame identical to the one before it is not written at all.** Its time is
+- **Identical frames share one held shot.** Its time is
   given to the frame before instead, which is what "held shot" means to a
   format that stores delays per frame. `src/encode.js` holds every frame back
   until the next one proves it has to be written, which is the only way to do
@@ -172,11 +172,30 @@ palette cannot be chosen until the last frame has been counted. That is the
 constraint, not the length of the file: 300 frames at 480×270 is 155 MB, and
 the same at 1280×720 is 1.1 GB.
 
-So the page works out what the current settings would cost and shows it, and
-refuses above a limit rather than letting the tab run out of memory and vanish
-without explaining itself. The frames are released as they are quantized, so
-the peak is the frames plus one index buffer rather than both formats of
-everything.
+The page estimates retained RGBA plus worst-case GIF chunks, transient
+canvas/index/LZW storage, two source-frame buffers and compressed-packet
+reserves before allocating sample times. It compares that estimate with a
+bounded planning budget: 96 MiB when the browser hints at at most 2 GiB of
+device memory, 192 MiB through 4 GiB or when the hint is unavailable, and
+384 MiB above that. The hint measures neither free RAM nor a tab's allowance.
+Private codec allocations and JS array representation can use more memory;
+this is a conservative planning policy, not a guarantee against exhaustion.
+
+The estimate stays visible, and an over-budget plan offers the largest smaller
+width that fits when one exists. Phones and the lowest device-memory tier
+start at no more than 240 pixels wide; desktop retains the markup preference.
+Source decoding still needs its full coded size, even when the output is small.
+This tool alone drains its decoder queue to one pending frame. Frames are
+released as they are quantized, and native canvases/decoders retire on failure
+and Cancel. Native reads and synchronous canvas calls cannot be interrupted
+mid-call.
+
+A held shot longer than GIF's 65,535-centisecond field uses transparent
+one-pixel continuation frames with disposal 1. Their delays sum to the full
+hold; a one-centisecond tail borrows a centisecond from the preceding frame
+so no generated delay falls below two. Ordinary short animations keep their
+existing bytes. Identical-frame encoding also yields every eight samples so
+progress and Cancel remain reachable.
 
 ## Limitations
 

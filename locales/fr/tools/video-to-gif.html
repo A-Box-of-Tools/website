@@ -145,7 +145,8 @@
       <div><dt>Taille de fichier approximative</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
-    <p id="memory-note" class="field-note" hidden></p>
+    <p id="memory-note" class="memory-plan" hidden></p>
+    <button id="smaller-width" class="button secondary" type="button" hidden>Utiliser une largeur plus petite qui convient</button>
 
     <div class="export-row">
       <button type="button" id="export" class="primary" disabled>Fabriquer le GIF</button>
@@ -194,18 +195,17 @@
     <span data-phrase="note.wider">C&rsquo;est plus large que la vidéo elle-même ({px}
       px), ce qui ne peut pas ajouter du détail qui n&rsquo;a jamais existé &mdash;
       seulement des octets.</span>
-    <span data-phrase="note.memory">Chaque image reste en mémoire pendant le choix de la
-      palette, ce qui fait environ {size} avec ces réglages.</span>
-    <span data-phrase="note.memory.toobig">C&rsquo;est plus que ce que cet outil tentera
-      &mdash; une section plus courte, une largeur plus petite ou une cadence plus basse
-      y remédient.</span>
-    <span data-phrase="note.memory.ok">Une section plus courte, une largeur plus petite
-      ou une cadence plus basse font toutes baisser ce chiffre.</span>
+    <span data-phrase="note.memory">Tampons de travail estimés : {size}. Budget de planification : {limit}. Cela comprend les images, la sortie GIF et les réserves de décodage ; ce n’est pas une mesure de mémoire libre.</span>
+    <span data-phrase="note.memory.toobig">Ce plan dépasse le budget. Un passage plus court, une largeur ou une cadence plus petite peuvent aider ; décoder la source demande aussi de la mémoire.</span>
+    <span data-phrase="note.memory.ok">Les allocations internes du navigateur peuvent utiliser plus de mémoire. Un passage plus court, une largeur ou une cadence plus petite réduisent le travail de sortie.</span>
     <span data-phrase="step.readframe">Lecture de l&rsquo;image {done} sur {total}</span>
     <span data-phrase="step.writeframe">Écriture de l&rsquo;image {done} sur {total}</span>
     <span data-phrase="n.frame.one">{n} image</span>
     <span data-phrase="n.frame.many">{n} images</span>
     <span data-phrase="out.dropped">{frames} ({n} identiques, retirées)</span>
+    <span data-phrase="out.holds">Images supplémentaires pour les pauses longues : {n}</span>
+    <span data-phrase="open.notopened.detail">Ce fichier n’a pas pu être ouvert : {why}</span>
+    <span data-phrase="export.failed.detail">Le GIF n’a pas pu être créé : {why}</span>
     <span data-phrase="out.fps">{n} fps</span>
     <span data-phrase="out.colours">{n} couleurs</span>
     <span data-phrase="export.tooshort">Cette section est trop courte pour en tirer une

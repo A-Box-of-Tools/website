@@ -16,7 +16,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  frameTimes, frameDelays, outputSize, workingBytes, estimateBytes, MIN_DELAY, MAX_FPS,
+  frameCount, frameTimes, frameDelays, outputSize, workingBytes, workingMemory, planningLimit, smallerWidth, estimateBytes, MIN_DELAY, MAX_FPS,
 } from '../../tools/video-to-gif/src/plan.js';
 
 const sum = (values) => values.reduce((total, value) => total + value, 0);
@@ -111,4 +111,40 @@ test('the size estimate is a range, and the low end is below the high one', () =
   const { low, high } = estimateBytes({ frames: 60, width: 480, height: 270 });
   assert.ok(low > 0);
   assert.ok(high > low * 2);
+});
+
+
+test('planning counts rejected long clips without allocating their sample times', () => {
+  assert.equal(frameCount({ start: 0, end: 1e9, fps: 25 }), 25e9);
+  for (const fps of [5, 12, 15, 25]) {
+    assert.equal(frameCount({ start: 0.3, end: 2.3, fps }), frameTimes({ start: 0.3, end: 2.3, fps }).length);
+  }
+});
+
+test('device hints choose bounded budgets and absent or invalid hints keep the fallback', () => {
+  const mib = 2 ** 20;
+  for (const value of [undefined, NaN, Infinity, 0, -1]) assert.equal(planningLimit(value), 192 * mib);
+  for (const value of [0.25, 1, 2]) assert.equal(planningLimit(value), 96 * mib);
+  assert.equal(planningLimit(4), 192 * mib);
+  for (const value of [8, 16, 128]) assert.equal(planningLimit(value), 384 * mib);
+});
+
+test('source decoding and compressed packets still cost memory at a small output size', () => {
+  const output = { frames: 10, width: 32, height: 18, sourceWidth: 320, sourceHeight: 180 };
+  assert.equal(workingMemory(output), 32 * 2 ** 20 + 576 * (80 + 48) + 57600 * 8);
+  assert.equal(workingMemory({ ...output, packetBytes: 1000 }), workingMemory(output) + 3000);
+  assert.equal(workingMemory({ ...output, sourceWidth: 3840, sourceHeight: 2160 }) - workingMemory(output),
+    (3840 * 2160 - 320 * 180) * 8);
+  for (const args of [{ ...output, frames: NaN }, { ...output, width: -1 },
+    { ...output, frames: Number.MAX_SAFE_INTEGER }, { ...output, packetBytes: -1 }]) {
+    assert.equal(workingMemory(args), Infinity);
+  }
+});
+
+test('the smaller-width action finds the largest fitting width and can refuse when source buffers dominate', () => {
+  const args = { frames: 100, width: 200, sourceWidth: 320, sourceHeight: 160 };
+  const limit = workingMemory({ frames: 100, width: 100, height: 50, sourceWidth: 320, sourceHeight: 160 });
+  assert.equal(smallerWidth({ ...args, limit }), 100);
+  assert.equal(smallerWidth({ ...args, codedWidth: 16384, codedHeight: 16384, limit }), null);
+  assert.equal(smallerWidth({ ...args, width: 16, limit }), null);
 });

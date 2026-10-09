@@ -216,13 +216,7 @@ a = """
 [[faq]]
 q = "Gibt es eine Grenze für Länge oder Größe?"
 a = """
-        Begrenzt ist der Abschnitt, und zwar durch den Arbeitsspeicher und nicht
-        durch eine Regel. Jedes seiner Einzelbilder wird gleichzeitig gehalten,
-        während die Palette gewählt wird. Die Seite rechnet deshalb aus, was Ihre
-        Einstellungen kosten würden, und sagt es Ihnen vor dem Start. Sie weigert
-        sich lieber, als den Tab den Speicher aufbrauchen und verschwinden zu
-        lassen. Herunter bringen das ein kürzerer Abschnitt, eine kleinere Breite
-        oder eine niedrigere Bildrate."""
+        Die Seite schätzt vor dem Start gespeicherte Bilder, GIF-Ausgabe und vorübergehende Dekodierpuffer und lehnt Pläne oberhalb eines begrenzten Planungsbudgets ab. Ein Speicherhinweis des Browsers kann dieses Budget senken; er misst keinen freien Speicher und garantiert nicht, dass der Tab darin bleibt. Eine kleinere Breite, ein kürzerer Abschnitt oder eine niedrigere Bildrate verringern die Ausgabearbeit; die Quelle braucht weiterhin eigene Dekodierpuffer."""
 
 [[faq]]
 q = "Behält es den Ton?"

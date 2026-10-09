@@ -214,11 +214,7 @@ a = """
 [[faq]]
 q = "Existe limite de duração ou de tamanho?"
 a = """
-        O limitado é o trecho, e por memória, não por regra: todo quadro dele fica na
-        memória de uma vez enquanto a paleta é escolhida. Por isso a página calcula
-        o que os seus ajustes custariam e avisa antes de você começar. Ela prefere
-        recusar a deixar a aba ficar sem memória e sumir. Um trecho mais curto, uma
-        largura menor ou uma taxa de quadros mais baixa baixam essa conta."""
+        Antes de começar, a página estima os quadros retidos, a saída GIF e os buffers temporários de decodificação, e recusa planos acima de um orçamento de planejamento limitado. Uma indicação de memória do navegador pode reduzir esse orçamento; ela não mede a memória livre nem garante que a aba permaneça dentro dele. Uma largura menor, um trecho mais curto ou uma taxa de quadros menor reduz o trabalho de saída; a origem ainda precisa dos próprios buffers de decodificação."""
 
 [[faq]]
 q = "Ele mantém o som?"

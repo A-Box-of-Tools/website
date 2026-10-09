@@ -273,12 +273,7 @@ a = """
 [[faq]]
 q = "Is there a limit on the length or the size?"
 a = """
-        The section is what is limited, and by memory rather than by a rule: every
-        frame of it is held at once while the palette is chosen, so the page works
-        out what your settings would cost and says so before you start. It
-        refuses rather than letting the tab run out of memory and vanish. A
-        shorter section, a smaller width or a lower frame rate all bring it
-        down."""
+        The page estimates retained frames, GIF output and temporary decoding buffers before starting, and refuses plans above a bounded planning budget. A browser device-memory hint can lower that budget; it does not measure free memory or guarantee that a tab will stay within it. A smaller width, shorter section or lower frame rate reduces the output work, while the source still needs its own decoding buffers."""
 
 [[faq]]
 q = "Does it keep the sound?"
