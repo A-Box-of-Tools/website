@@ -32,7 +32,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="プレビュー"></video>
+        <video id="preview" playsinline aria-label="元の動画"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -133,7 +133,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> カットする</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">カットの方法</label>
         <select id="method">
@@ -203,7 +203,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="カットした動画"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>動画をダウンロード</a>
@@ -218,6 +218,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">再生</span>
+    <span data-phrase="transport.pause">一時停止</span>
     <span data-phrase="clip.nth">クリップ{n}</span>
     <span data-phrase="join.nothing">つなぐものがありません。</span>
     <span data-phrase="join.unread">{name}はこの読み取りが理解できるMP4ではないので、そのフレームはコピーできません。</span>

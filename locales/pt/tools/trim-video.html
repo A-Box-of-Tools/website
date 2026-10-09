@@ -36,7 +36,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="Pré-visualização"></video>
+        <video id="preview" playsinline aria-label="Vídeo original"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="transport">
-      <button type="button" id="play" class="primary" aria-label="Tocar">▶</button>
+      <button type="button" id="play" class="primary" aria-label="Reproduzir">▶</button>
       <button type="button" id="back-5" class="ghost" title="Voltar cinco segundos">&minus;5s</button>
       <button type="button" id="forward-5" class="ghost" title="Avançar cinco segundos">+5s</button>
       <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Marcar início</button>
@@ -143,7 +143,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> Apare</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">Como aparar</label>
         <select id="method">
@@ -215,7 +215,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Vídeo cortado"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Baixar o vídeo</a>
@@ -230,6 +230,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">Reproduzir</span>
+    <span data-phrase="transport.pause">Pausar</span>
     <span data-phrase="tl.band">Trecho {n}: de {from} a {to}</span>
     <span data-phrase="record.failed">Não foi possível gravar o vídeo.</span>
     <span data-phrase="time.start">Tempo de início</span>

@@ -435,3 +435,44 @@ media clocks, version widths, signed fields, malformed lists, hidden samples,
 audio-only edits and fragmented identities. Browser checks also compare actual
 picture and sound content; a plausible raw duration alone does not prove the
 visible movie timeline survived.
+
+
+## Editor, imports and results
+
+A finished download belongs to the marks, clip order, keep/cut choice and
+writing settings that produced it. Changing any of those retires the result:
+its player is unloaded, its object URL revoked and its download removed.
+Selecting a row or clip, seeking, changing preview speed and saving marks do
+not change the output plan and keep the result available.
+
+Export captures the files, ranges, frame, quality, sound choice and filename
+before any asynchronous work. Its owner includes the source batch and plan
+revision; progress, errors, publication and cleanup can only affect that
+owner's page. The mark editor and writing settings are inert during export,
+while Cancel remains available. Queued edit events are refused too. Selecting
+new source files keeps the existing replacement behavior: it cancels and
+retires the export, starts a new batch and waits for that batch's own load.
+Cancellation is cooperative; a pending browser operation can still take time
+to return, but its retired owner cannot publish or unlock a newer job.
+
+Marks loading uses the shared `text-import` owner. A newer import, typed mark
+draft, committed output-plan change, selected source clip, source replacement
+or export retires the read. `File.text()` itself is not abortable; late success,
+failure and cleanup are ignored. A current invalid import keeps the existing
+marks. Loading still replaces the selected clip's marks rather than appending.
+
+The transport's translated Play/Pause name follows actual playback, including
+ended playback and the stop at a segment's end. Source and result players have
+distinct translated names. Browser checks cover native Copy, Exact and
+Recording output, result retirement, pending edits and source replacement,
+overlapping imports and retired failures, timestamp caret/Tab focus, keyboard
+row moves/removal, all six translations and the narrow-screen controls.
+
+
+Marks-read and export failures resolve only keys declared in the tool's
+`#phrases` block. Unknown native exception messages use the existing localized
+generic failure, so quoted browser messages cannot become invalid selectors or
+untranslated prose. Known typed errors retain their interpolation values.
+Browser checks cover a quoted `File.text()` DOMException, the native
+MediaRecorder constructor's quoted unsupported-type failure, typed encoder-size
+refusal, cleanup and a valid recovery export in English and German.
