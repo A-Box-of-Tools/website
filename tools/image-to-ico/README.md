@@ -241,6 +241,18 @@ rather than copied from the plan that produced them. If the writer ever
 disagreed with the settings, the page would say so instead of the visitor
 finding out when Windows drew nothing.
 
+Each export captures the source batch, requested formats, ICO preset, sizes and
+storage, fit and resolved background before its first yield. Completed rows
+show the request that produced their bytes, with ICO-only choices kept off ICNS
+and website-pack rows. A pack without an ICO or ICNS still reports its actual
+file count and ZIP size. The slot chips continue to come from the written files.
+
+Export decoding is independent of the preview cache: selecting another preview
+cannot close a picture still needed by the export. Each call releases its decode
+and rendered canvases in `finally`, including an encoder refusal. The progress
+indicator and settings lock also retire on failure. A failed batch retains the
+existing all-or-nothing result publication policy.
+
 ---
 
 ## Limitations
@@ -279,6 +291,15 @@ length that counts its own header, the absence of padding between elements, and
 a walk back out through `readIcnsElements`. It also pins Apple's table — ten
 types, no duplicates among them, every `role` name agreeing arithmetically with
 its pixel count, and the three sizes that legitimately appear twice.
+
+[`tests/js/icon-export.test.js`](../../tests/js/icon-export.test.js) checks that
+later settings or list changes cannot change a captured request, that PNG bytes
+are shared across overlapping ICO/ICNS slots, and that independent export
+decodes and canvases retire on successful and refused encodes. Its renderer seam
+checks ownership and dispatch; it does not pretend to verify browser scaling.
+The built-page review decodes native ICO entries by their directory offsets,
+checks their pixels and walks the ICNS slots back out of the actual output.
+That remains a local byte-and-pixel check, not validation of Finder rendering.
 
 The scaling is not tested, and deliberately: it needs a real `<canvas>`
 attached to a document, and faking one well enough to be worth the trouble means

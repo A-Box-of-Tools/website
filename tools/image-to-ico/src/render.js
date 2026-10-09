@@ -201,34 +201,41 @@ export function square(source, sourceWidth, sourceHeight, px, { fit, background,
   const canvas = document.createElement('canvas');
   canvas.width = px;
   canvas.height = px;
-  const ctx = canvas.getContext('2d');
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+  let reduced;
+  try {
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
-  if (background) {
-    ctx.fillStyle = background;
-    ctx.fillRect(0, 0, px, px);
+    if (background) {
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, px, px);
+    }
+
+    // A vector is re-rasterised by the browser at whatever size it is drawn, so
+    // there is nothing to step down from and nothing to lose by going straight
+    // there. Doing it anyway would rasterise once and then scale the raster,
+    // which is exactly the blur this avoids.
+    reduced = vector
+      ? { canvas: null, source: layout.source }
+      : stepDown(source, layout.source, layout.draw.width, layout.draw.height);
+    ctx.drawImage(
+      reduced.canvas ?? source,
+      reduced.source.x, reduced.source.y, reduced.source.width, reduced.source.height,
+      layout.draw.x, layout.draw.y, layout.draw.width, layout.draw.height,
+    );
+
+    return canvas;
+  } catch (error) {
+    canvas.width = 0;
+    canvas.height = 0;
+    throw error;
+  } finally {
+    if (reduced?.canvas) {
+      reduced.canvas.width = 0;
+      reduced.canvas.height = 0;
+    }
   }
-
-  // A vector is re-rasterised by the browser at whatever size it is drawn, so
-  // there is nothing to step down from and nothing to lose by going straight
-  // there. Doing it anyway would rasterise once and then scale the raster,
-  // which is exactly the blur this avoids.
-  const reduced = vector
-    ? { canvas: null, source: layout.source }
-    : stepDown(source, layout.source, layout.draw.width, layout.draw.height);
-  ctx.drawImage(
-    reduced.canvas ?? source,
-    reduced.source.x, reduced.source.y, reduced.source.width, reduced.source.height,
-    layout.draw.x, layout.draw.y, layout.draw.width, layout.draw.height,
-  );
-
-  if (reduced.canvas) {
-    reduced.canvas.width = 0;
-    reduced.canvas.height = 0;
-  }
-
-  return canvas;
 }
 
 /**
@@ -249,27 +256,41 @@ function stepDown(source, rect, targetWidth, targetHeight) {
   let take = rect;
   let scratch = null;
 
-  while (width > targetWidth * 2 && height > targetHeight * 2) {
-    const nextWidth = Math.max(targetWidth, Math.floor(width / 2));
-    const nextHeight = Math.max(targetHeight, Math.floor(height / 2));
+  try {
+    while (width > targetWidth * 2 && height > targetHeight * 2) {
+      const nextWidth = Math.max(targetWidth, Math.floor(width / 2));
+      const nextHeight = Math.max(targetHeight, Math.floor(height / 2));
 
-    const step = document.createElement('canvas');
-    step.width = nextWidth;
-    step.height = nextHeight;
-    const ctx = step.getContext('2d');
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(from, take.x, take.y, take.width, take.height, 0, 0, nextWidth, nextHeight);
+      const step = document.createElement('canvas');
+      step.width = nextWidth;
+      step.height = nextHeight;
+      try {
+        const ctx = step.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(from, take.x, take.y, take.width, take.height, 0, 0, nextWidth, nextHeight);
+      } catch (error) {
+        step.width = 0;
+        step.height = 0;
+        throw error;
+      }
 
+      if (scratch) {
+        scratch.width = 0;
+        scratch.height = 0;
+      }
+      scratch = step;
+      from = step;
+      take = { x: 0, y: 0, width: nextWidth, height: nextHeight };
+      width = nextWidth;
+      height = nextHeight;
+    }
+  } catch (error) {
     if (scratch) {
       scratch.width = 0;
       scratch.height = 0;
     }
-    scratch = step;
-    from = step;
-    take = { x: 0, y: 0, width: nextWidth, height: nextHeight };
-    width = nextWidth;
-    height = nextHeight;
+    throw error;
   }
 
   return { canvas: scratch, source: take };
