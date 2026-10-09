@@ -960,8 +960,11 @@ export async function demux(file, { timeline = 'incoming' } = {}) {
       // Keep inspecting the selected sound timeline before an ordinary codec
       // refusal is allowed to choose a playback fallback.
       if (!selected) {
-        throw new UnsupportedTimeline(readFailure && !(readFailure instanceof UnsupportedFile)
-          ? 'read.editinvalid' : 'read.edits');
+        // A broken timing box can hide another mandatory table before the
+        // later bounds proof, so missing tables are invalid edited timing too.
+        const invalid = readFailure && (!(readFailure instanceof UnsupportedFile)
+          || readFailure.reason === 'read.sampletables');
+        throw new UnsupportedTimeline(invalid ? 'read.editinvalid' : 'read.edits');
       }
       timelines.push({ track: selected, trak, editDuration });
       fragmentBounds.set(selected.trackId, { start: Infinity, end: -Infinity, decodeEnd: 0 });
