@@ -28,6 +28,11 @@
 
 .file-out.warn { color: var(--danger); font-weight: 600; }
 
+.file-sub.linked-assets, .preview-note.linked-assets, .result-detail.linked-assets {
+  color: var(--warn);
+  overflow-wrap: anywhere;
+}
+
 /* The row whose drawing the preview is showing. */
 .file-row.active { border-color: var(--accent); }
 

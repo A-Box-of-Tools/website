@@ -119,6 +119,21 @@ The one visible cost is a webfont in a `<text>` element falling back to whatever
 the machine has, which the page says in as many words: convert text to paths
 before exporting and it becomes geometry, which looks the same everywhere.
 
+The source list, active preview and completed results identify ordinary linked
+assets before that omission looks like a damaged export. A detached XML document
+is inspected once on import; no node enters the page and no address is opened.
+`src/svg-linked-assets.js` checks SVG image, filter image, use and font-face
+references, XML stylesheet instructions and ordinary CSS URL/import forms.
+Embedded data and same-document fragments remain local and do not warn; ordinary
+hyperlinks are not resource loads. Comments, namespace prefixes and XML attribute
+entities are left to the browser parser. CSS comments and quoted content are
+stepped over, and CSS escapes are read before a URL is classified. This is a
+conservative inventory, not an exhaustive XML/CSS resolver or a promise that
+every listed resource would change visible pixels. Invalid XML still belongs
+to the existing rasteriser, and the original drawing text is never rewritten
+for this check. The hint recommends embedding assets or converting text to
+paths; the static rendering policy stays the same.
+
 ---
 
 ## The size plan

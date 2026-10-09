@@ -176,6 +176,7 @@
         <canvas id="preview-canvas" role="img" aria-label="预览"></canvas>
       </div>
       <p class="preview-note" id="preview-note"></p>
+      <p class="preview-note linked-assets" id="preview-assets" hidden></p>
     </div>
 
     <p id="preview-empty" class="field-summary">加一个 SVG，它就出现在这儿。</p>
@@ -206,6 +207,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="source.linked-assets">此 SVG 引用了文件外的资源。预览和导出不会加载它们。请将这些资源嵌入 SVG，或先将文字转换为路径再导出。</span>
     <span data-phrase="read.notsvg">{name}：这个工具只读 SVG 文件。PNG 或 JPEG 本来就是像素，那种要用图片缩放。</span>
     <span data-phrase="read.nosvg.named">{name}：这个文件里没有 &lt;svg&gt; 元素。</span>
     <span data-phrase="read.nosvg">这个文件里没有 &lt;svg&gt; 元素。</span>

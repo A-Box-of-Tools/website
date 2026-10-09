@@ -186,6 +186,7 @@
         <canvas id="preview-canvas" role="img" aria-label="Vorschau"></canvas>
       </div>
       <p class="preview-note" id="preview-note"></p>
+      <p class="preview-note linked-assets" id="preview-assets" hidden></p>
     </div>
 
     <p id="preview-empty" class="field-summary">Ein SVG hinzufügen, dann erscheint es hier.</p>
@@ -216,6 +217,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="source.linked-assets">Diese SVG-Datei enthält Verweise auf Ressourcen außerhalb der Datei. Die Vorschau und der Export laden sie nicht. Betten Sie diese Ressourcen in die SVG-Datei ein oder wandeln Sie Schrift vor dem Export in Pfade um.</span>
     <span data-phrase="read.notsvg">{name}: dieses Werkzeug liest nur SVG-Dateien. Ein
       PNG oder ein JPEG besteht schon aus Pixeln; dafür ist der Bildskalierer da.</span>
     <span data-phrase="read.nosvg.named">{name}: in dieser Datei gibt es kein
