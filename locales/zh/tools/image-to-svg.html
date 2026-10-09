@@ -90,20 +90,25 @@
       红线是现在的轮廓，画在它来自的那些像素上面。只有在那里，这个问题才有答案，因为一条轮廓对不对，只相对于那些像素，跟别的无关。拖任意一张图，两张一起动；滚滚轮放大；不该有的东西，点一下。一下点中的是那一整块同色区域，所以你指的是一个形状而不是一个像素；再点一下就回来。
     </p>
 
+    <p id="keyboard-help" class="field-note">键盘：按 Tab 进入任一图片。方向键移动原图中的 1 个像素，Shift 加方向键移动 10 个像素。Home 返回图片中心。Enter 或空格键切换选区；若已启用背景取样，则添加背景颜色。两张图片都会显示十字光标，坐标从 1 开始。</p>
+
     <div class="stages waiting" id="stages">
       <div class="stage-wrap">
         <h3 class="stage-title">图片</h3>
-        <div class="stage" id="stage-picture" role="group"
+        <div class="stage" id="stage-picture" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="图片，上面画着描出来的轮廓。拖动平移，滚轮缩放，点某个部分就把它去掉。"></div>
       </div>
       <div class="stage-wrap">
         <h3 class="stage-title">SVG</h3>
-        <div class="stage" id="stage-svg" role="group"
+        <div class="stage" id="stage-svg" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="描出来的图。拖动平移，滚轮缩放，点某个部分就把它去掉。"></div>
       </div>
     </div>
 
     <p id="hint" class="hint" role="status" aria-live="polite"></p>
+    <p id="cursor-status" class="hint" role="status" aria-live="polite" aria-atomic="true"></p>
 
     <div class="controls">
       <div class="option-row">
@@ -190,6 +195,15 @@
     in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="cursor.ink">像素（{x}, {y}）属于形状。按 Enter 或空格键排除其区域。</span>
+    <span data-phrase="cursor.paper">像素（{x}, {y}）不属于形状。按 Enter 或空格键填充其区域。</span>
+    <span data-phrase="cursor.sample">像素（{x}, {y}）：按 Enter 或空格键将此颜色添加为背景。</span>
+    <span data-phrase="cursor.sampled">像素（{x}, {y}）：已添加背景颜色，正在使用 {count} 个样本。</span>
+    <span data-phrase="cursor.excluded">像素（{x}, {y}）：已从形状中排除 {size} 个像素。</span>
+    <span data-phrase="cursor.included">像素（{x}, {y}）：已将 {size} 个像素加入形状。</span>
+    <span data-phrase="trace.updating">正在更新轮廓…</span>
+    <span data-phrase="trace.failed">无法更新轮廓：{why}</span>
+
     <span data-phrase="read.nodecode">这个浏览器解码不了这张图片。</span>
     <span data-phrase="read.failed">那个文件打不开：{why}</span>
     <span data-phrase="loaded.name">{name}——&#x2066;{width} &times; {height}&#x2069;</span>

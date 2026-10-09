@@ -104,20 +104,25 @@
       sie zurück.
     </p>
 
+    <p id="keyboard-help" class="field-note">Tastatur: Wechseln Sie mit Tab zu einem der Bilder. Die Pfeiltasten bewegen den Cursor um einen Quellpixel, Umschalt plus Pfeil um zehn. Pos1 führt zur Bildmitte. Eingabe oder Leertaste schaltet den Bereich um oder fügt bei aktivierter Option eine Hintergrundprobe hinzu. Das Fadenkreuz erscheint in beiden Bildern; die Koordinaten beginnen bei 1.</p>
+
     <div class="stages waiting" id="stages">
       <div class="stage-wrap">
         <h3 class="stage-title">Das Bild</h3>
-        <div class="stage" id="stage-picture" role="group"
+        <div class="stage" id="stage-picture" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="Das Bild, mit der nachgezeichneten Kontur darüber. Ziehen zum Verschieben, Rad zum Zoomen, Klick auf einen Teil, um ihn wegzulassen."></div>
       </div>
       <div class="stage-wrap">
         <h3 class="stage-title">Das SVG</h3>
-        <div class="stage" id="stage-svg" role="group"
+        <div class="stage" id="stage-svg" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="Die nachgezeichnete Zeichnung. Ziehen zum Verschieben, Rad zum Zoomen, Klick auf einen Teil, um ihn wegzulassen."></div>
       </div>
     </div>
 
     <p id="hint" class="hint" role="status" aria-live="polite"></p>
+    <p id="cursor-status" class="hint" role="status" aria-live="polite" aria-atomic="true"></p>
 
     <div class="controls">
       <div class="option-row">
@@ -211,6 +216,15 @@
     in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="cursor.ink">Pixel ({x}, {y}) gehört zur Form. Eingabe oder Leertaste schließt seinen Bereich aus.</span>
+    <span data-phrase="cursor.paper">Pixel ({x}, {y}) gehört nicht zur Form. Eingabe oder Leertaste füllt seinen Bereich.</span>
+    <span data-phrase="cursor.sample">Pixel ({x}, {y}): Eingabe oder Leertaste fügt diese Farbe als Hintergrund hinzu.</span>
+    <span data-phrase="cursor.sampled">Pixel ({x}, {y}): Hintergrundfarbe hinzugefügt. {count} Proben werden verwendet.</span>
+    <span data-phrase="cursor.excluded">Pixel ({x}, {y}): {size} Pixel aus der Form ausgeschlossen.</span>
+    <span data-phrase="cursor.included">Pixel ({x}, {y}): {size} Pixel in die Form aufgenommen.</span>
+    <span data-phrase="trace.updating">Der Umriss wird aktualisiert…</span>
+    <span data-phrase="trace.failed">Der Umriss konnte nicht aktualisiert werden: {why}</span>
+
     <span data-phrase="read.nodecode">dieser Browser konnte das Bild nicht dekodieren.</span>
     <span data-phrase="read.failed">Diese Datei ließ sich nicht öffnen: {why}</span>
     <span data-phrase="loaded.name">{name} &mdash; &#x2066;{width} &times; {height}&#x2069;</span>

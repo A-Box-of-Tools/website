@@ -141,6 +141,26 @@ than 1,042. Selecting by joined shape is still offered, because when the loop
 coming out wrong is the thing you want, what you select is then exactly what
 you would get.
 
+### Picking with the keyboard
+
+Both pictures become tab stops when a source is ready. They share one cursor in
+source pixels: arrows move one pixel, Shift plus arrows ten, and Home returns to
+the image centre. Enter or Space calls the same region toggle or background
+sampling path as a click. A crosshair follows the cursor in both panes, panning
+when needed, and translated feedback gives one-based coordinates, inclusion or
+exclusion, and the number of background samples. Composition and browser
+modifier keys keep their native behavior. A replacement resets the cursor, and
+Clear retires it along with pending hover and resize callbacks.
+
+### A source owns its decoding and its drawing
+
+`picture-read.js` keeps each native decode tied to the current selection.
+Clear or a newer source retires late pixels, errors and busy cleanup. Every
+bitmap closes; a temporary or obsolete canvas is cleared, while an accepted
+canvas belongs to the picture until replacement or Clear. A failed replacement
+keeps the last usable picture and rebuilds it for the current controls. Clear
+also revokes the download through the shared download owner.
+
 ## Staying alive on a big picture
 
 The wand runs on every pointer move and each thing it does is the size of the
@@ -158,6 +178,19 @@ preview waits for a pause of 110 ms rather than running per frame. `fit` has a
 matching trap: it measures the pane, and a pane not on screen yet measures
 zero — falling back to 1× there would size two canvases to a whole photograph
 to show something nobody is looking at, so it keeps the zoom it had.
+
+### A pause costs less than every position of a slider
+
+A generated 2400 by 3200 outlined drawing traced to 36 contours and 21.9 kB.
+Four successive Detail inputs cost 43.7–52.7 ms each, 187.1 ms together, on the
+native review browser. `trace-updates.js` waits 120 ms after the latest input
+instead of doing those four traces. A remask takes precedence over a trace-only
+request, with the final live controls supplying the settled pass. A committed
+change or correction flushes it immediately. While work is pending, the old
+download is revoked and the page says it is updating; Clear and replacement
+retire that work. The pipeline, its source-pixel resolution and its output bytes
+are unchanged. One settled pass can still occupy the main thread, which is why
+this is a measured coalescing policy rather than a claim that tracing is free.
 
 ### Where the line sits
 
