@@ -5,8 +5,9 @@
 Turns a video a quarter turn either way or upside down, in the browser,
 without the file going anywhere and, ordinarily, without a frame being
 decoded: the turn is written into the track's display matrix and every
-frame and packet is copied across as it was. "Bake it in" — draw every
-frame turned and encode it again — is offered for the few players that
+picture frame is copied across as it was. AAC sound is copied; other
+decodable sound is encoded as AAC unless it is left out. "Bake it in" —
+draw every frame turned and encode it again — is offered for the few players that
 ignore the matrix and required for a WebM or MKV whose picture is not
 H.264.
 
@@ -97,3 +98,21 @@ Clearing the file aborts and retires its export. A codec can finish a pending
 flush after cancellation, and the result check also reads asynchronously, so
 the page checks the run again at both boundaries. Progress, errors and cleanup
 from that retired run cannot overwrite the controls for a replacement file.
+
+The run plan captures the requested turn and sound job. Controls may change
+while the codecs finish, but the operation, verification, heading and caption
+continue to describe that captured plan. Copy claims refer to the picture
+frames; the caption separately says whether sound was copied, encoded as AAC,
+or omitted.
+
+Every load, codec probe and first-frame preview checks a reset-retired
+generation. A bitmap returned by an old preview is closed instead of taking
+over a replacement; old errors and picker cleanup are ignored too. Browser
+regressions should change the turn and sound controls during an export,
+compare header-copy and baked native playback, and replace or clear a file
+during reads, capability checks and delayed preview creation. Count preview
+bitmaps through clear to confirm that none remain owned.
+
+The shared reader still ignores incoming MP4 edit lists. Honoring or refusing
+those timelines is recorded in the audit as an optional shared enhancement
+for a separate change, rather than a promise implemented by this fix.

@@ -1,8 +1,8 @@
 /**
  * The turn itself, in either of its two forms.
  *
- * The one this page exists for copies every frame and every packet across
- * as slices of the file and writes a new header whose display matrix says
+ * The one this page exists for copies every picture frame across as slices
+ * of the file and writes a new header whose display matrix says
  * "shown turned this far". Not one frame is decoded; the file is read once
  * for its layout and once more as the browser writes the result out, and
  * the picture is exactly what it was.
