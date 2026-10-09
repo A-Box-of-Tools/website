@@ -178,3 +178,16 @@
   color: var(--text-dim);
   font-size: 0.88rem;
 }
+
+/* Filenames and translated outcomes must wrap without hiding the Inspect button. */
+.batch-list { list-style: none; padding: 0; display: grid; gap: 0.6rem; }
+.batch-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.4rem 0.7rem; align-items: center; padding: 0.7rem; border: 1px solid var(--border); border-radius: 8px; }
+.batch-name, .batch-error { overflow-wrap: anywhere; min-width: 0; }
+.batch-name { font-weight: 600; }
+.batch-state { grid-column: 1; font-size: 0.85rem; color: var(--text-dim); }
+.batch-list button { grid-column: 2; grid-row: 1 / 3; }
+.batch-list button[aria-pressed="true"] { border-color: var(--accent); }
+.batch-list [data-state="match"], .batch-list [data-state="renamed"] { border-color: var(--ok); }
+.batch-list [data-state="mismatch"], .batch-list [data-state="unreadable"] { border-color: var(--danger); }
+.batch-error { grid-column: 1 / -1; font-size: 0.85rem; color: var(--danger); }
+#progress-text { overflow-wrap: anywhere; min-width: 0; }

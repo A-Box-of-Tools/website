@@ -10,7 +10,7 @@
     色ではなく一文で答えます。
   -->
   <section class="card">
-    <h2><span class="step">1</span> ファイルを選ぶ</h2>
+    <h2><span class="step">1</span> 1つ以上のファイルを選ぶ</h2>
 
     <!--
       本物の <label> なら、ブラウザーがファイル選択画面を開きます。display:none で
@@ -21,6 +21,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">複数のファイルを選んでチェックサム一覧と照合できます。各ファイルを1つずつ分割して読み込みます。選び直すと現在の選択を置き換えます。</p>
+    <div id="batch" hidden>
+      <h3>選択中のファイル</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>計算済みのチェックサムを保存</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -74,7 +81,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      中止しました。このファイルについては何も計算していません。
+      未計算のチェックサムがあります。再開すると未計算のものだけを読み込み、計算済みの結果は残ります。
       <button type="button" id="restart" class="ghost">もう一度</button>
     </p>
 
@@ -173,6 +180,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">前のブラウザー読み込みが終わるのを待っています。停止すると待機中の処理を取り消せます。</span>
+    <span data-phrase="progress.file">{count}件中{n}件目：{name}</span>
+    <span data-phrase="batch.pending">計算待ち</span>
+    <span data-phrase="batch.reading">読み込み中</span>
+    <span data-phrase="batch.ready">計算済み</span>
+    <span data-phrase="batch.match">一致</span>
+    <span data-phrase="batch.renamed">別の名前で一致</span>
+    <span data-phrase="batch.mismatch">不一致</span>
+    <span data-phrase="batch.waiting">アルゴリズムの計算待ち</span>
+    <span data-phrase="batch.unlisted">一覧にファイル名がありません</span>
+    <span data-phrase="batch.unreadable">読み込めません</span>
+    <span data-phrase="batch.stopped">停止</span>
+    <span data-phrase="batch.choose">アルゴリズムを選択</span>
+    <span data-phrase="batch.inspect">確認</span>
+    <span data-phrase="batch.inspect-name">{n}件目を確認：{name}</span>
+    <span data-phrase="batch.summary">{count}件中{matched}件が少なくとも1つの期待値と一致します。各ファイルを確認するとアルゴリズムごとの結果が表示されます。</span>
+    <span data-phrase="batch.selected">{count}件中{done}件の選択したチェックサムを計算済みです。</span>
+
     <span data-phrase="net.clean">ファイルはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>
