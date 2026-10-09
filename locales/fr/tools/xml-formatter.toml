@@ -70,7 +70,7 @@ body = "Deux espaces, quatre, ou une tabulation. Compacté, c'est le même docum
 
 [[howto]]
 title = "Lisez l'erreur là où elle est."
-body = "Un analyseur qui échoue ici dit <em>quelle balise</em> n'a jamais été fermée, et à quelle ligne et quelle colonne, plutôt que &laquo;&nbsp;erreur à la ligne 1&nbsp;&raquo;, ce qu'un navigateur dit d'un document qu'il a lu d'un seul tenant."
+body = "Un analyseur qui échoue ici dit <em>quelle balise</em> n'a jamais été fermée, et à quelle ligne et quelle colonne, plutôt que &laquo;&nbsp;erreur à la ligne 1&nbsp;&raquo;, ce qu'un navigateur dit d'un document qu'il a lu d'un seul tenant. Choisissez <em>Aller à l’erreur</em> pour revenir à cette position dans le texte. La saisie garde le focus à sa place jusqu’à ce que vous demandiez à le déplacer."
 
 [[howto]]
 title = "Emportez le résultat."

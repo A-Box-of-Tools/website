@@ -73,7 +73,7 @@
           <label for="input">Votre XML</label>
           <span class="count" id="input-count">vide</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Collez le XML ici - ou déposez un fichier .xml, .svg ou .rss ci-dessus."></textarea>
       </div>
@@ -93,6 +93,7 @@
     <h2><span class="step">3</span> Emportez le résultat</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Aller à l’erreur</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">Rien pour l'instant.</p>

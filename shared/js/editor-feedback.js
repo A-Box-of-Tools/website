@@ -37,16 +37,18 @@ const shortKey = (key) => {
   return JSON.stringify(points.slice(0, 80).join('') + (points.length > 80 ? '…' : ''));
 };
 
+/** Caret-only pages may omit notes; conversion consumers keep their existing sink. */
 export function editorFeedback({ input, go, notes, phrase, context }) {
   let target = null;
   const clear = () => {
     target = null;
     go.hidden = true;
     input.removeAttribute('aria-invalid');
-    notes.replaceChildren();
-    notes.hidden = true;
+    notes?.replaceChildren();
+    if (notes) notes.hidden = true;
   };
   const line = (text) => {
+    if (!notes) return;
     const item = document.createElement('li');
     item.textContent = text;
     notes.append(item);

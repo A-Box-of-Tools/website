@@ -74,7 +74,7 @@
           <label for="input">Your XML</label>
           <span class="count" id="input-count">empty</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Paste XML here - or drop an .xml, .svg or .rss file above."></textarea>
       </div>
@@ -94,6 +94,7 @@
     <h2><span class="step">3</span> Take the result</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Go to error</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">Nothing yet.</p>

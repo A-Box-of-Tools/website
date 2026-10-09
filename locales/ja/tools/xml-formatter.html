@@ -72,7 +72,7 @@
           <label for="input">あなたのXML</label>
           <span class="count" id="input-count">空</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="ここにXMLを貼り付け - または上に.xml・.svg・.rssファイルをドロップ。"></textarea>
       </div>
@@ -92,6 +92,7 @@
     <h2><span class="step">3</span> 結果を持ち出す</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>エラー位置へ移動</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">まだ何もありません。</p>

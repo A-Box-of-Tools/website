@@ -121,3 +121,14 @@ File reads on this page use the shared `text-import` owner. Typing, Clear and
 an example retire a pending read immediately; a newer file choice replaces it.
 The old read may still finish in the browser, but its text and errors cannot
 replace the current editor or clear a newer import's reading label.
+
+## Returning to a parser error
+
+The shared editor-feedback part offers Go to error for the XML parser and for
+JSON input being converted to XML. Live parsing leaves focus and the caret
+where they are; the explicit action returns to the parser's UTF-16 source
+offset and scrolls that line into view. Its target belongs to the exact input
+and formatting/conversion mode that produced it. Typing, Clear, an example,
+a replacement file or changed options retire it immediately, and generic
+platform/read failures do not offer a parser position. This page uses only the
+caret part; the conversion-note sink remains optional for shared consumers.
