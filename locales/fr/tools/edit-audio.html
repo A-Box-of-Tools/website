@@ -47,7 +47,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">Vitesse</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="Vitesse, en multiple">
       </div>
 
@@ -85,12 +85,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">Volume</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="Écart de volume, en décibels">
       </div>
 
@@ -116,6 +117,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -126,6 +128,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>Écouter depuis la position de lecture</button>
+      <p class="preview-hint" id="preview-hint">Déplacez la position de lecture du lecteur source pour choisir jusqu’à cinq secondes. Seul cet extrait est traité : la normalisation utilise son pic, et les transitions de vitesse peuvent différer de la piste entière.</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="Extrait modifié"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- Étape 3 &mdash; le fichier qui sort -->
@@ -140,9 +150,7 @@
           <option value="32">WAV 32&nbsp;bits flottant &mdash; rien n'est écrêté</option>
         </select>
         <p class="field-note" id="depth-note">
-          Un WAV garde les échantillons tels quels, si bien qu'en écrire un ne
-          peut pas coûter de qualité. En revanche, ce n'est pas un petit
-          fichier&nbsp;: voyez l'estimation ci-dessus.
+          Le PCM 16 bits arrondit les échantillons et écrête les pics au-delà du maximum. Le flottant 32 bits conserve les échantillons modifiés ; il ne récupère pas les informations perdues dans la source. Les deux fichiers sont volumineux : voir l’estimation ci-dessus.
         </p>
       </div>
     </div>
@@ -176,6 +184,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">Utilisez une vitesse de 0,25 à 4 avec deux décimales au maximum. Le point ou la virgule sont acceptés.</span>
+    <span data-phrase="input.volume">Utilisez un niveau de −24 à +24 dB avec deux décimales au maximum. Le point ou la virgule sont acceptés.</span>
+    <span data-phrase="step.copying">Préparation des échantillons…</span>
+    <span data-phrase="preview.interval">Source {from}–{to} ; aperçu modifié {length}.</span>
+    <span data-phrase="preview.end">Placez la position de lecture du lecteur source avant la fin de l’enregistrement.</span>
+    <span data-phrase="preview.failed">Cet aperçu n’a pas pu être créé : {why}</span>
+    <span data-phrase="edit.failed.reason">Le son n’a pas pu être modifié : {why}</span>
     <span data-phrase="step.reading">Lecture du son&hellip;</span>
     <span data-phrase="step.starting">Démarrage&hellip;</span>
     <span data-phrase="step.reversing">Inversion&hellip;</span>

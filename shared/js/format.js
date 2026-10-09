@@ -100,13 +100,15 @@ export function durationText(seconds, t, { hours, decimals = 'auto' } = {}) {
  * somebody edited the row beside it.
  *
  * @param {number} seconds
+ * @param {{decimals?: 1|3}} [options] one decimal for a length, three for a mark
  * @returns {string}
  */
-export function clockText(seconds) {
-  const total = Math.round(Math.max(0, seconds || 0) * 1000);
-  const whole = Math.floor(total / 1000);
+export function clockText(seconds, { decimals = 3 } = {}) {
+  const scale = 10 ** decimals;
+  const total = Math.round(Math.max(0, seconds || 0) * scale);
+  const whole = Math.floor(total / scale);
   const hours = Math.floor(whole / 3600);
   const minutes = Math.floor((whole % 3600) / 60);
-  const tail = `${pad(whole % 60)}.${String(total % 1000).padStart(3, '0')}`;
+  const tail = `${pad(whole % 60)}.${String(total % scale).padStart(decimals, '0')}`;
   return hours ? `${hours}:${pad(minutes)}:${tail}` : `${minutes}:${tail}`;
 }

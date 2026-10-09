@@ -52,7 +52,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">速度</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="速度倍数">
       </div>
 
@@ -88,12 +88,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">音量</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="音量增减，单位分贝">
       </div>
 
@@ -117,6 +118,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -127,6 +129,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>从播放位置试听</button>
+      <p class="preview-hint" id="preview-hint">移动原音频播放器的播放位置，选择最多5秒的片段。试听只编辑这段音频：归一化使用片段内的峰值，速度变化的边界可能与整段音频的编辑结果不同。</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="编辑后的片段"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- 第 3 步，出文件 -->
@@ -141,7 +151,7 @@
           <option value="32">32 位浮点 WAV，什么都不削顶</option>
         </select>
         <p class="field-note" id="depth-note">
-          WAV 里装的就是采样本身，所以写出来这一步不可能掉质量。缺点是文件不小，上面那个估算就是。
+          16位PCM会舍入采样，并削平超过满幅的峰值。32位浮点保留编辑后的浮点采样，但不能恢复原音频已丢失的信息。两种文件都较大，请看上方估算。
         </p>
       </div>
     </div>
@@ -175,6 +185,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">速度须为0.25～4，最多两位小数。小数点可用点或逗号。</span>
+    <span data-phrase="input.volume">音量须为−24～+24 dB，最多两位小数。小数点可用点或逗号。</span>
+    <span data-phrase="step.copying">正在准备采样…</span>
+    <span data-phrase="preview.interval">原片段{from}～{to}，编辑后试听时长{length}。</span>
+    <span data-phrase="preview.end">请把原音频播放器的播放位置移到录音结束之前。</span>
+    <span data-phrase="preview.failed">无法生成试听音频：{why}</span>
+    <span data-phrase="edit.failed.reason">无法编辑音频：{why}</span>
     <span data-phrase="summary.speed.unchanged">不变</span>
     <span data-phrase="summary.speed.same">{speed}，音调不变</span>
     <span data-phrase="summary.speed.up">{speed}，音调升高</span>

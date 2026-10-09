@@ -15,7 +15,8 @@
  * the browser already decoded, in this page, on this machine.
  */
 
-import { reverse, applyGain, peak, dbToGain, normalizeGain } from './effects.js';
+import { reverseRange, measureRange, gainRange, dbToGain, normalizeGain } from './effects.js';
+import { workCheckpoint } from './shared/cooperative-work.js';
 import { resample, resampledLength } from './speed.js';
 import { stretch, stretchedLength } from './stretch.js';
 
@@ -27,25 +28,37 @@ import { stretch, stretchedLength } from './stretch.js';
  *   reverse: boolean, speed: number, keepPitch: boolean,
  *   volume: {mode: 'gain'|'normalize', db: number},
  * }} settings
- * @param {{onProgress?: (done: number, label: string) => void, signal?: AbortSignal}} options
+ * @param {{onProgress?: (done: number, label: string) => void, signal?: AbortSignal, budgetMs?: number}} options
  * @returns {Promise<{
  *   channels: Float32Array[], peak: number, clipped: number, gain: number,
  * }>} the samples, how close to full scale they came, how many went past it,
  *   and what they were multiplied by to get there
  */
-export async function render(source, settings, { onProgress, signal } = {}) {
+export async function render(source, settings, { onProgress, signal, budgetMs } = {}) {
   const report = (done, label) => onProgress?.(Math.min(1, Math.max(0, done)), label);
-
-  // A copy, so the file can be edited again with different settings without
-  // being read off the disk and decoded a second time.
-  let channels = source.channels.map((samples) => Float32Array.from(samples));
-  signal?.throwIfAborted();
+  const checkpoint = workCheckpoint({ signal, budgetMs });
+  const BLOCK = 8192;
+  await checkpoint(true);
+  report(0, 'step.copying');
+  let channels = [];
+  for (const samples of source.channels) {
+    const copy = new Float32Array(samples.length);
+    for (let from = 0; from < samples.length; from += BLOCK) {
+      copy.set(samples.subarray(from, Math.min(samples.length, from + BLOCK)), from);
+      await checkpoint();
+    }
+    channels.push(copy);
+  }
 
   if (settings.reverse) {
-    // A phrase key, not a word: this module ships in fifteen languages and
-    // the page is the only place a sentence can be read.
     report(0.02, 'step.reversing');
-    reverse(channels);
+    for (const samples of channels) {
+      const half = Math.floor(samples.length / 2);
+      for (let from = 0; from < half; from += BLOCK) {
+        reverseRange(samples, from, Math.min(half, from + BLOCK));
+        await checkpoint();
+      }
+    }
   }
 
   if (settings.speed !== 1) {
@@ -57,28 +70,34 @@ export async function render(source, settings, { onProgress, signal } = {}) {
       : await resample(channels, settings.speed, { onProgress: onStep, signal });
   }
 
-  signal?.throwIfAborted();
+  await checkpoint();
   report(0.95, 'step.level');
-
-  const before = peak(channels);
-  const gain = settings.volume.mode === 'normalize'
-    ? normalizeGain(before, settings.volume.db)
-    : dbToGain(settings.volume.db);
-
-  const after = gain === 1 ? { peak: before, clipped: countOver(channels) } : applyGain(channels, gain);
-  report(1, 'step.writing');
-
-  return { channels, peak: after.peak, clipped: after.clipped, gain };
-}
-
-/** How many samples are already past full scale, for the gain-of-one case
- *  where nothing is multiplied and there is nothing to count on the way. */
-function countOver(channels) {
-  let over = 0;
+  let before = 0; let clipped = 0;
   for (const samples of channels) {
-    for (let i = 0; i < samples.length; i += 1) if (Math.abs(samples[i]) > 1) over += 1;
+    for (let from = 0; from < samples.length; from += BLOCK) {
+      const result = measureRange(samples, from, Math.min(samples.length, from + BLOCK));
+      before = Math.max(before, result.peak); clipped += result.clipped;
+      await checkpoint();
+    }
   }
-  return over;
+  const gain = settings.volume.mode === 'normalize'
+    ? normalizeGain(before, settings.volume.db) : dbToGain(settings.volume.db);
+  let after = before;
+  report(0.97, 'step.level');
+  if (gain !== 1) {
+    after = 0; clipped = 0;
+    for (const samples of channels) {
+      for (let from = 0; from < samples.length; from += BLOCK) {
+        const result = gainRange(samples, gain, from, Math.min(samples.length, from + BLOCK));
+        after = Math.max(after, result.peak); clipped += result.clipped;
+        await checkpoint();
+      }
+    }
+  }
+  await checkpoint();
+  report(1, 'step.writing');
+  await checkpoint();
+  return { channels, peak: after, clipped, gain };
 }
 
 /** What the speed setting will do to the length, for the line on the page that
