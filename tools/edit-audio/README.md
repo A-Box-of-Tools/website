@@ -164,8 +164,8 @@ clip without editing it at all: leave every setting alone and press the button.
   wants something under a gigabyte to work in. A WAV over 4 GB is refused
   outright rather than written, because the format's own size field cannot
   describe one.
-- **Nothing is trimmed here.** Marking a section and keeping it is the next
-  audio tool, not a setting on this one.
+- **Nothing is trimmed here.** Marking a section and keeping it belongs to
+  [Audio Trimmer](../trim-audio/), rather than this tool’s whole-track export.
 - **Peak normalisation, not loudness.** Matching two tracks by how loud they
   *sound* is LUFS, and it involves deciding on the listener's behalf which parts
   to squash. This tool only ever multiplies.
@@ -197,3 +197,38 @@ the run that caught the WebM sample-rate bug above.
 A replacement file is decoded before export is enabled again. Only the most
 recent load may replace the current recording, and an export captures its
 source, sample rate and filename together before rendering yields to the page.
+
+
+## Trying an excerpt and owning the result
+
+Preview from playhead reads at most five source seconds from the existing
+source player's position. The same reverse, speed, level and depth settings
+are applied to that excerpt without changing the recording or offering an
+excerpt download. At minimum speed its output is at most twenty seconds.
+Normalization measures this excerpt's peak, and short speed-change boundaries
+may differ from a full render, which is disclosed beside the action.
+
+Typing a draft or changing an edit/depth retires both finished playback URLs
+and the full download immediately. An immutable job owns its captured source,
+name, settings and depth; only its controller may publish progress, failures
+or a result. Controls are locked while rendering, with Cancel outside their
+inert scope. Even a programmatic edit retires the current controller. Retired
+playback is paused and detached before its URL and samples are released.
+
+Typed speed and level entries accept a dot or comma and at most two decimal
+places, with an optional x/× or dB suffix. Ambiguous grouping, mixed separators,
+stray characters and out-of-range values stay editable with an inline error;
+export and preview remain unavailable until corrected. Enter commits without
+replacing the focused input. A typed level is held separately from slider ticks
+so the displayed value is the value applied.
+
+The shared clock formatter's optional tenths precision carries rounded seconds
+into minutes/hours, preserving the default millisecond clocks of other tools.
+Rendering uses bounded copy/reverse/measurement/gain work and the opt-in shared
+asynchronous WAV writer. Their range primitives retain the synchronous effects'
+order, Float32 stores, and pre-store product peak/clipping measurements. Cancel
+stops at browser-turn checkpoints; native decode, allocation and Blob assembly
+cannot be interrupted. Native refusal text is rendered as text, while only
+known audio/WAV leaf keys are resolved as localized phrases. PCM16 rounds and
+clamps; float preserves the computed decoded samples rather than recovering
+information already lost in a compressed source.

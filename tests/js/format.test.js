@@ -94,3 +94,14 @@ test('sizes: decimal upload limits are explicit and leave the binary default unc
   assert.equal(sizeText(1_000_000_000, t, decimal), 'size.gb:1.00');
   assert.equal(sizeText(25_000_000, t), 'size.mb:23.8');
 });
+
+
+test('clock tenths carry across minutes and hours without changing default marks', () => {
+  for (const [seconds, shown] of [[0, '0:00.0'], [59.96, '1:00.0'],
+    [3599.96, '1:00:00.0'], [3725.25, '1:02:05.3'], [-1, '0:00.0']]) {
+    assert.equal(clockText(seconds, { decimals: 1 }), shown);
+  }
+  assert.equal(clockText(59.96), '0:59.960');
+  assert.equal(clockText(3599.96), '59:59.960');
+  assert.equal(clockText(3.9996), '0:04.000');
+});
