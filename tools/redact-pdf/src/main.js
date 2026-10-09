@@ -555,8 +555,9 @@ el.pageText.addEventListener('click', (event) => {
   const focused = document.activeElement === span;
   render();
   if (focused) {
-    el.pageText.querySelector(`[data-from="${from}"][data-to="${to}"]`)
-      ?.focus({ preventScroll: true });
+    const replacement = Array.from(el.pageText.querySelectorAll('.word'))
+      .find((word) => Number(word.dataset.from) === from && Number(word.dataset.to) === to);
+    replacement?.focus({ preventScroll: true });
   }
 });
 
