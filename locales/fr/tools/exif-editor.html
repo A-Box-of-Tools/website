@@ -46,7 +46,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>Ce qu'il faut garder</legend>
+      <legend>Choix de conservation pour le prochain nettoyage</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -155,6 +155,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">Conservation demandée pour cette copie&nbsp;: orientation&nbsp;: {orientation}&nbsp;; profil ICC&nbsp;: {icc}.</span>
+    <span data-phrase="copy.on">oui</span>
+    <span data-phrase="copy.off">non</span>
+    <span data-phrase="copy.avif">Ces choix de conservation ne s’appliquaient pas&nbsp;: l’AVIF a été décodé dans le bon sens et enregistré en PNG sans copier les métadonnées d’origine.</span>
+    <span data-phrase="copy.inspect">Inspecter la copie nettoyée</span>
+    <span data-phrase="copy.inspectname">Inspecter la copie nettoyée&nbsp;: {name}</span>
+    <span data-phrase="copy.reading">Lecture des métadonnées de cette copie…</span>
+    <span data-phrase="copy.failed">Impossible d’inspecter cette copie&nbsp;: {reason}</span>
+    <span data-phrase="copy.scope">Métadonnées en lecture seule de cette copie nettoyée.</span>
+    <span data-phrase="copy.tags">Balises EXIF</span>
+    <span data-phrase="copy.profile">Profil ICC</span>
+    <span data-phrase="copy.absent">Absent</span>
+    <span data-phrase="copy.none">Aucune métadonnée supprimable n’a été trouvée dans cette copie.</span>
+    <span data-phrase="copy.note">{label}&nbsp;: {detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · le nettoyage convertit en PNG</span>
     <span data-phrase="inspect.avif">Aperçu EXIF seulement ; autres métadonnées non inventoriées</span>
     <span data-phrase="badge.avif">Conversion en PNG</span>
@@ -182,8 +196,7 @@
     <span data-phrase="badge.comment">Commentaire</span>
     <span data-phrase="badge.text">Texte {count}</span>
     <span data-phrase="badge.unknown">Blocs inconnus</span>
-    <span data-phrase="keep.nothing">Absolument tout part, y compris l&rsquo;étiquette d&rsquo;orientation et le profil
-      colorimétrique. Le fichier ne portera plus aucune métadonnée.</span>
+    <span data-phrase="keep.nothing">Les deux exceptions de conservation sont désactivées. Les métadonnées supprimables, dont l’orientation et le profil ICC, sont retirées&nbsp;; les en-têtes d’affichage JPEG sont conservés.</span>
     <span data-phrase="keep.orientation">Tout le reste part&nbsp;: EXIF, GPS, la note du fabricant, XMP, IPTC, les
       commentaires, la vignette incorporée et tout bloc que cet outil n&rsquo;a pas su
       identifier. Gardé&nbsp;: l&rsquo;étiquette d&rsquo;orientation.</span>

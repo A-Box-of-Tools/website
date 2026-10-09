@@ -46,7 +46,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>Qué conservar</legend>
+      <legend>Opciones de conservación para la próxima limpieza</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -155,6 +155,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">Conservación solicitada para esta copia: orientación: {orientation}; perfil ICC: {icc}.</span>
+    <span data-phrase="copy.on">sí</span>
+    <span data-phrase="copy.off">no</span>
+    <span data-phrase="copy.avif">Estas opciones de conservación no se aplicaron: el AVIF se decodificó con la orientación correcta y se guardó como PNG sin copiar los metadatos originales.</span>
+    <span data-phrase="copy.inspect">Inspeccionar la copia limpia</span>
+    <span data-phrase="copy.inspectname">Inspeccionar la copia limpia: {name}</span>
+    <span data-phrase="copy.reading">Leyendo los metadatos de esta copia…</span>
+    <span data-phrase="copy.failed">No se pudo inspeccionar esta copia: {reason}</span>
+    <span data-phrase="copy.scope">Metadatos de solo lectura de esta copia limpia.</span>
+    <span data-phrase="copy.tags">Etiquetas EXIF</span>
+    <span data-phrase="copy.profile">Perfil ICC</span>
+    <span data-phrase="copy.absent">Ausente</span>
+    <span data-phrase="copy.none">No se encontraron metadatos eliminables en esta copia.</span>
+    <span data-phrase="copy.note">{label}: {detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · la limpieza convierte a PNG</span>
     <span data-phrase="inspect.avif">Solo vista previa EXIF; no se inventarían otros metadatos</span>
     <span data-phrase="badge.avif">Conversión a PNG</span>
@@ -182,8 +196,7 @@
     <span data-phrase="badge.comment">Comentario</span>
     <span data-phrase="badge.text">Texto {count}</span>
     <span data-phrase="badge.unknown">Bloques desconocidos</span>
-    <span data-phrase="keep.nothing">Se va absolutamente todo, incluida la etiqueta de orientación y el perfil de color.
-      El archivo no llevará ningún metadato de ninguna clase.</span>
+    <span data-phrase="keep.nothing">Ambas excepciones de conservación están desactivadas. Se eliminan los metadatos eliminables, incluida la orientación y el perfil ICC; se conservan las cabeceras de visualización JPEG.</span>
     <span data-phrase="keep.orientation">Se va todo lo demás: EXIF, GPS, la nota del fabricante, XMP, IPTC, comentarios, la
       miniatura incrustada y cualquier bloque que esta herramienta no haya sabido
       identificar. Se conserva: la etiqueta de orientación.</span>

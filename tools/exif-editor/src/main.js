@@ -8,8 +8,9 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { readImage, readBytes, serialize, exifBytes, outputType, KIND_NAMES } from './container.js';
 import { cleanAvif } from './avif.js';
+import { prepareCleanCopy } from './clean-copy.js';
 import { outName, cleanNames } from './names.js';
-import { serializeExif, setEntryValue, createEntry, TYPE } from './tiff.js';
+import { setEntryValue, createEntry, TYPE } from './tiff.js';
 import { describeTag } from './tags.js';
 import { makeExample } from './example.js';
 import {
@@ -81,6 +82,7 @@ let cleanEpoch = 0;
 
 /** Object URLs handed to download links, revoked when the results are replaced. */
 let resultUrls = [];
+let resultEpoch = 0;
 
 /* ------------------------------------------------------------------ adding */
 
@@ -1000,35 +1002,6 @@ function updateSaveButtons() {
 
 /* ------------------------------------------------------------ writing files */
 
-/**
- * The plan for "remove everything".
- *
- * Every key is null, which is the plan language for "take it out". The only
- * thing that can put anything back is the orientation option, and it does so by
- * writing a fresh EXIF block holding that one tag - not by keeping the original
- * block and deleting the rest of it, which would leave whatever this tool had
- * failed to parse still sitting in the file.
- */
-function stripPlan(item, keepOrientation, keepIcc) {
-  const plan = { exif: null, xmp: null, iptc: null, comments: null, extras: null, text: null };
-  if (!keepIcc) plan.icc = null;
-
-  if (keepOrientation && item.exif?.ok) {
-    const orientation = item.exif.groups.ifd0.find((e) => e.tag === 0x0112);
-    // A photo that is already the right way up does not need the tag, and not
-    // writing it is the difference between "almost empty" and empty.
-    if (orientation && orientation.value !== 1) {
-      plan.exif = serializeExif({
-        littleEndian: item.exif.littleEndian,
-        groups: { ifd0: [orientation], exif: [], gps: [], interop: [], ifd1: [] },
-        thumbnail: null,
-      });
-    }
-  }
-
-  return plan;
-}
-
 /** The plan for "save this photo": whatever the model says now. */
 function editPlan(item) {
   const plan = { exif: exifBytes(item.exif) };
@@ -1051,24 +1024,23 @@ el.stripAll.addEventListener('click', async () => {
   const keepIcc = el.keepIcc.checked;
   const results = [];
   const batch = items.filter((item) => item.ok).map((item) => {
-    try { return { item, metadata: hasMetadata(item),
-      plan: item.kind === 'avif' ? null : stripPlan(item, keepOrientation, keepIcc) }; }
+    try { return { item, ...prepareCleanCopy(item, { keepOrientation, keepIcc }) }; }
     catch (error) { return { item, error }; }
   });
   render();
 
   try {
-    for (const { item, plan, metadata, error: planError } of batch) {
+    for (const { item, source, requested, plan, metadata, error: planError } of batch) {
       if (epoch !== cleanEpoch) return;
       try {
         if (planError) throw planError;
         if (item.kind === 'avif') {
           const data = await cleanAvif(item.bytes);
-          results.push({ item, data, note: phrase('clean.avif') });
+          results.push({ item: source, requested, data, note: phrase('clean.avif') });
         } else if (!metadata) {
-          results.push({ item, note: phrase('strip.nothing') });
+          results.push({ item: source, note: phrase('strip.nothing') });
         } else {
-          results.push({ item, data: serialize(item, plan) });
+          results.push({ item: source, requested, data: serialize(item, plan) });
         }
       } catch (error) {
         results.push({ item, error: phrase(error.message, error.values) });
@@ -1087,6 +1059,7 @@ el.stripAll.addEventListener('click', async () => {
 });
 
 function clearResults() {
+  resultEpoch += 1;
   for (const url of resultUrls) URL.revokeObjectURL(url);
   resultUrls = [];
   el.resultList.replaceChildren();
@@ -1135,6 +1108,15 @@ function showResults(results) {
       detail.textContent = result.note;
     }
     text.appendChild(detail);
+    if (result.data) {
+      const policy = document.createElement('p');
+      policy.className = 'result-policy';
+      policy.textContent = result.requested.applies ? phrase('copy.requested', {
+        orientation: phrase(result.requested.keepOrientation ? 'copy.on' : 'copy.off'),
+        icc: phrase(result.requested.keepIcc ? 'copy.on' : 'copy.off'),
+      }) : phrase('copy.avif');
+      text.appendChild(policy);
+    }
     li.appendChild(text);
 
     if (result.data) {
@@ -1146,6 +1128,7 @@ function showResults(results) {
       link.download = result.outputName;
       link.textContent = phrase('result.download');
       li.appendChild(link);
+      li.appendChild(cleanedInspection(result, resultEpoch));
     }
 
     el.resultList.appendChild(li);
@@ -1156,6 +1139,93 @@ function showResults(results) {
     const zip = makeZip(cleaned.map((r) => ({ name: r.outputName, data: r.data })));
     saveBlob(zip, 'photos-without-metadata.zip');
   };
+}
+
+/** Reparse this artifact rather than borrowing the original photo's working model. */
+function cleanedInspection(result, epoch) {
+  const details = document.createElement('details');
+  details.className = 'clean-inspection';
+  const summary = document.createElement('summary');
+  summary.textContent = phrase('copy.inspect');
+  summary.setAttribute('aria-label', phrase('copy.inspectname', { name: result.outputName }));
+  const content = document.createElement('div');
+  content.className = 'copy-inventory';
+  const status = document.createElement('p');
+  status.className = 'result-detail';
+  status.setAttribute('role', 'status');
+  details.append(summary, status, content);
+  let started = false;
+  details.addEventListener('toggle', async () => {
+    if (!details.open || started) return;
+    started = true;
+    status.textContent = phrase('copy.reading');
+    const current = () => epoch === resultEpoch && details.isConnected;
+    try {
+      const copy = await readBytes(result.data);
+      if (!current()) return;
+      if (!copy.ok) throw new Error(copy.error);
+      renderCopyInventory(copy, content);
+      status.textContent = '';
+    } catch (error) {
+      if (current()) status.textContent = phrase('copy.failed', {
+        reason: phrase(error.message, error.values),
+      });
+    }
+  });
+  return details;
+}
+
+function renderCopyInventory(copy, target) {
+  const intro = document.createElement('p');
+  intro.className = 'copy-scope';
+  intro.textContent = phrase('copy.scope');
+  target.appendChild(intro);
+  const list = document.createElement('dl');
+  list.className = 'copy-facts';
+  const fact = (label, value) => {
+    const row = document.createElement('div');
+    const name = document.createElement('dt');
+    const detail = document.createElement('dd');
+    name.textContent = label;
+    detail.textContent = value;
+    row.append(name, detail);
+    list.appendChild(row);
+  };
+  fact(phrase('copy.tags'), copy.meta.exif && !copy.exif?.ok
+    ? phrase('badge.exifbad') : String(countTags(copy)));
+  fact(phrase('copy.profile'), copy.meta.icc
+    ? humanBytes(copy.meta.icc.length) : phrase('copy.absent'));
+  for (const id of ['xmp', 'iptc']) {
+    if (copy.meta[id]) fact(phrase(`block.${id}.title`), humanBytes(copy.meta[id].length));
+  }
+  for (const id of ['comments', 'text', 'extras']) {
+    if (copy.meta[id].length) fact(phrase(`block.${id}.title`), String(copy.meta[id].length));
+  }
+  if (copy.exif?.thumbnail?.length) {
+    fact(phrase('block.thumbnail.title'), humanBytes(copy.exif.thumbnail.length));
+  }
+  // The tag value belongs to the output model, including a retained rotation.
+  for (const group of tagGroups(copy)) {
+    for (const entry of group.entries) {
+      const spec = describeTag(group.id, entry.tag);
+      fact(phrase(spec.name), say(formatValue(group.id, entry)));
+    }
+  }
+  target.appendChild(list);
+  if (!hasMetadata(copy)) {
+    const empty = document.createElement('p');
+    empty.className = 'result-detail';
+    empty.textContent = phrase('copy.none');
+    target.appendChild(empty);
+  }
+  for (const note of copy.meta.notes) {
+    const text = document.createElement('p');
+    text.className = 'result-detail';
+    text.textContent = phrase('copy.note', {
+      label: phrase(note.label), detail: phrase(note.detail),
+    });
+    target.appendChild(text);
+  }
 }
 
 el.saveEdits.addEventListener('click', () => {
