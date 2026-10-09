@@ -35,7 +35,7 @@
 
     The words first, because they are the whole point; then how the stamp
     sits, with a preview beside the controls. The preview is a blank page the
-    shape of the first page with the placement drawn on it by the same
+    shape of the selected page with the placement drawn on it by the same
     arithmetic that writes the file - never the document itself, which this
     site cannot draw and says so.
   -->
@@ -107,17 +107,21 @@
       </div>
 
       <!--
-        The preview. A blank page the size and shape of the first page with
+        The preview. A blank page the size and shape of the selected page with
         the stamp laid on it; the words are drawn live so the visitor sees
         their own text, not a placeholder. Described for a screen reader by
         the sentence below it, which says what is and is not shown.
       -->
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">Preview page</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">This selects the preview only; export follows First page only.</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
         <figcaption id="preview-note" class="field-note">
-          The stamp on a blank page the shape of your first page, placed
-          exactly where the file will put it. Your page's own contents are
-          not drawn: this site has no PDF renderer, on purpose.
+          A blank sheet with the selected page’s size, crop and rotation, showing where the stamp will go. Your page’s own contents are not drawn: this site has no PDF renderer.
         </figcaption>
       </figure>
     </div>
@@ -161,6 +165,9 @@
     shared/js/phrases.js reads them back; a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">Page {n} of {total} — placement preview.</span>
+    <span data-phrase="preview.unstamped">Page {n} of {total} stays unstamped because First page only is selected.</span>
+    <span data-phrase="preview.sample">A4 placement example until you choose a document.</span>
     <span data-phrase="waiting.words">This opens once there is a document above and words on the stamp.</span>
     <span data-phrase="note.repaired">This file&rsquo;s cross-reference table did not match its contents, so it
       was read by scanning for objects instead. That is a repair, and it

@@ -78,6 +78,7 @@
   <template id="document-template">
     <article class="document">
       <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Entfernen</button></div>
+      <p class="duplicate-note field-summary" role="status" aria-live="polite" aria-atomic="true" hidden></p>
       <div class="document-content">
         <div class="picture-column">
           <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Vorschau des zugeschnittenen und komprimierten Anhangs" hidden></a>
@@ -213,6 +214,7 @@
     <span data-phrase="missingTotal">Es wurde kein eindeutiger Dokumentgesamtbetrag gefunden. Übernehmen Sie ihn aus dem Bild.</span>
     <span data-phrase="ambiguousTotal">Es wurde mehr als ein möglicher Gesamtbetrag gefunden. Übernehmen Sie den richtigen Betrag aus dem Bild.</span>
     <span data-phrase="stopped">Erkennung gestoppt. Geben Sie die Angaben selbst ein oder wählen Sie „Erneut erkennen“.</span>
+    <span data-phrase="duplicatePhoto">Mögliches Duplikat: {count} Fotos haben denselben Dateinamen und dieselbe Dateigröße. Vergleiche sie vor dem Bestätigen. Sie bleiben getrennte Dokumente.</span>
     <span data-phrase="busy">Warten Sie, bis die laufende Erkennung beendet ist, oder stoppen Sie sie zuerst.</span>
     <span data-phrase="tooMany">Sie können bis zu 20 Bilder hinzufügen. Entfernen Sie ein Dokument, um Platz für ein weiteres zu schaffen.</span>
     <span data-phrase="badFile">{name} ist kein unterstütztes JPEG-, PNG-, WebP- oder AVIF-Bild.</span>

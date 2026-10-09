@@ -140,6 +140,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">La transparence est supprimée lors de l’empilement. L’image enregistrée est opaque, même au format PNG.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Résultat</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Mémoire de travail</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -199,6 +201,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>Détails d'alignement</summary>
@@ -285,6 +288,26 @@
     <span data-phrase="progress.stack-banded">Empilement &mdash; bande {band} sur {bands}, {done} prises lues sur {total}</span>
     <span data-phrase="progress.encode">Écriture de l'image&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Créé avec {method}&nbsp;; alignement&nbsp;: {alignment}&nbsp;; résolution de travail&nbsp;: {resolution}&nbsp;; exposition&nbsp;: {gain}×&nbsp;; {encoding}.</span>
+    <span data-phrase="result.method.mean">Moyenne</span>
+    <span data-phrase="result.method.median">Médiane</span>
+    <span data-phrase="result.method.sigma">Écrêtage sigma</span>
+    <span data-phrase="result.method.max">Éclaircir</span>
+    <span data-phrase="result.method.min">Assombrir</span>
+    <span data-phrase="result.method.sum">Addition</span>
+    <span data-phrase="result.method.focus">Empilement de mise au point</span>
+    <span data-phrase="result.alignment.projective">Perspective automatique</span>
+    <span data-phrase="result.alignment.translate">Décalage seul</span>
+    <span data-phrase="result.alignment.similarity">Décalage, rotation et échelle</span>
+    <span data-phrase="result.alignment.none">Aucun</span>
+    <span data-phrase="result.resolution.full">Complète</span>
+    <span data-phrase="result.resolution.half">Moitié</span>
+    <span data-phrase="result.resolution.quarter">Quart</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG de qualité {quality}</span>
+    <span data-phrase="result.settings.sigma">Seuil d’écrêtage&nbsp;: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Rayon de netteté&nbsp;: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} prises combinées en {seconds} secondes</span>
     <span data-phrase="result.moves">Chaque prise a été mesurée et remise en place.</span>
     <span data-phrase="result.moves-some">{count} prises sur {total} n'ont pas pu être mesurées avec certitude et ont été laissées où elles étaient.</span>

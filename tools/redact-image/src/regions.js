@@ -114,6 +114,23 @@ export function clampRect(rect, source) {
   };
 }
 
+/**
+ * Numeric editing uses the same boundary policy as a drag, but a missing or
+ * fractional field cannot become a rectangle silently. A tiny source image
+ * remains editable even when it is smaller than the ordinary gesture minimum.
+ */
+export function coordinateRect(values, source) {
+  const keys = ['x', 'y', 'width', 'height'];
+  if (!keys.every((key) => Number.isSafeInteger(values[key]))
+      || values.width <= 0 || values.height <= 0) return { error: 'coordinates.invalid' };
+  const rect = clampRect({
+    ...values,
+    width: Math.max(Math.min(MIN_SIZE, source.width), values.width),
+    height: Math.max(Math.min(MIN_SIZE, source.height), values.height),
+  }, source);
+  return { rect };
+}
+
 /** Move a box by a whole number of source pixels, keeping it on the picture. */
 export const moveRect = (rect, dx, dy, source) => clampRect(
   { ...rect, x: rect.x + dx, y: rect.y + dy }, source,

@@ -61,6 +61,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">Convert to JPG</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -111,6 +112,9 @@
     <span data-phrase="run.many">Convert {count} files to JPG</span>
     <span data-phrase="progress.each">Converting {name}&hellip;</span>
     <span data-phrase="progress.done">Done.</span>
+    <span data-phrase="progress.stopped">Stopped after {done} of {total}. Completed images are below.</span>
+    <span data-phrase="progress.stopped.none">Stopped before any image finished.</span>
+    <span data-phrase="run.filefailed">{name} could not be converted: {why}</span>
     <span data-phrase="run.failed">This run failed: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count} JPEGs written, {size} in total.</span>

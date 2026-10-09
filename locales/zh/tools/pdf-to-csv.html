@@ -24,7 +24,10 @@
         <span id="file-facts" class="file-sub"></span>
       </div>
       <button type="button" id="clear-file" class="ghost danger">换一份</button>
+      <button type="button" id="cancel-load" class="ghost" hidden>取消读取</button>
     </div>
+
+    <p id="load-progress" class="load-progress" role="status" aria-live="polite" hidden></p>
 
     <p id="load-error" class="error" role="alert" hidden></p>
 
@@ -108,6 +111,15 @@
   <section class="card" id="result-card">
     <h2><span class="step">3</span> 把 CSV 拿走</h2>
 
+    <div class="field">
+      <label for="export-mode">电子表格文本处理</label>
+      <select id="export-mode" aria-describedby="export-note">
+        <option value="safe">保护类似公式的文本（默认）</option>
+        <option value="raw">保持文本不变（原始文本）</option>
+      </select>
+      <p id="export-note" class="field-note" role="status" aria-live="polite"></p>
+    </div>
+
     <div id="result" class="result">
       <a id="download" class="primary as-button" download>下载 CSV</a>
       <ul id="result-facts" class="result-facts"></ul>
@@ -120,6 +132,20 @@
     {name} 这样的占位由调用方填。
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.progress">已读取 {total} 页中的 {done} 页。</span>
+    <span data-phrase="load.cancelled">读取已取消。请选择 PDF 重新开始。</span>
+    <span data-phrase="export.safe">已在类似公式的文本前加单引号的单元格数：{n}。识别出的金额仍为数值。预览显示导出的文本。</span>
+    <span data-phrase="export.raw">保持类似公式的文本不变的单元格数：{n}。电子表格软件可能将其视为公式。识别出的金额仍为数值。</span>
+    <span data-phrase="preview.row">行</span>
+    <span data-phrase="preview.controls">表 {n} 的行</span>
+    <span data-phrase="preview.previous">上一页</span>
+    <span data-phrase="preview.next">下一页</span>
+    <span data-phrase="preview.jump">跳转到行</span>
+    <span data-phrase="preview.go">跳转</span>
+    <span data-phrase="preview.range">显示第 {first}–{last} 行，共 {total} 行。CSV 包含所有行。</span>
+    <span data-phrase="preview.review">{n}（需检查）</span>
+    <span data-phrase="preview.mismatch">显示首个不一致</span>
+    <span data-phrase="preview.unchecked">显示首个未检查的行</span>
     <span data-phrase="load.notpdf">这不是 PDF。这个工具从 PDF 里读出表格。</span>
     <span data-phrase="load.encrypted">这份 PDF 带着密码。把密码取掉跟从里面读出表格是两回事，这个工具不会背着你去做。</span>
     <span data-phrase="error.broke">这一页上有东西不工作了（{detail}）。刷新之后再试一次。</span>
@@ -148,7 +174,6 @@
     <span data-phrase="check.rows">第 {list} 行</span>
     <span data-phrase="order.found">是从这份文件里一个大于 12 的日子推出来的，所以这是它自己写的，不是猜的。</span>
     <span data-phrase="order.guessed">这份文件里每一个日期都在 12 号或者更早，所以它里面没有任何东西说明顺序是哪一种。要是下面的日期看着不对，就改这里。</span>
-    <span data-phrase="preview.more">这张表这里只显示前 {shown} 行。下载的文件里是全部的行。</span>
     <span data-phrase="result.name">{name}.csv</span>
     <span data-phrase="fact.dates">带年份的日期写成 YYYY-MM-DD</span>
     <span data-phrase="fact.amounts">金额是带正负号的普通数字</span>

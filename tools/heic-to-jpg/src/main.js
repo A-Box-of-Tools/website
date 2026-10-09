@@ -3,17 +3,17 @@
 import { phrase } from './shared/phrases.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
-import { encodePixels, encodableTypes, FORMATS, JPEG, PNG, WEBP } from './codecs.js';
+import { encodableTypes, FORMATS, JPEG, PNG, WEBP } from './codecs.js';
 import { heifBrand, isAvif, readExif } from './boxes.js';
-import { describeExif, fitsInJpeg, uprightExif, withExif } from './exif.js';
-import { decodeHeic, engine, warmEngine } from './heif.js';
-import { AVIF, decode, encode, release } from './shared/image-convert.js';
+import { describeExif } from './exif.js';
+import { engine, warmEngine } from './heif.js';
 import {
-  bytes as humanBytes, change, dimensions, metadataText, outName, uniqueNames,
+  bytes as humanBytes, change, dimensions, metadataText, resultTotals, uniqueNames,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { makeExample } from './example.js';
+import { captureBatch, convertOne } from './convert.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -41,6 +41,7 @@ const el = {
   resultList: $('result-list'),
   downloadZip: $('download-zip'),
   resultsSummary: $('results-summary'),
+  resultsSettings: $('results-settings'),
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
@@ -185,6 +186,8 @@ function render() {
   const any = items.length > 0;
   el.listToolbar.hidden = !any;
   el.clearAll.disabled = busy;
+  el.formatSelect.disabled = busy;
+  el.quality.disabled = busy;
   el.countLabel.textContent = any
     ? phrase(items.length === 1 ? 'list.count.one' : 'list.count.many',
       { n: items.length, size: humanBytes(totalBytes(), phrase) })
@@ -282,12 +285,14 @@ function renderFormatNote() {
 */
 for (const control of [el.formatSelect, el.keepExif]) {
   control.addEventListener('change', () => {
+    if (busy) return;
     clearResults();
     renderFormatNote();
   });
 }
 
 el.quality.addEventListener('input', () => {
+  if (busy) return;
   el.qualityValue.textContent = el.quality.value;
   clearResults();
 });
@@ -297,6 +302,10 @@ el.quality.addEventListener('input', () => {
 el.convertAll.addEventListener('click', async () => {
   if (!items.length || busy) return;
 
+  const { settings, batch } = captureBatch(items, {
+    mime: el.formatSelect.value, quality: Number(el.quality.value) / 100,
+    keepExif: el.keepExif.checked,
+  });
   busy = true;
   stopping = false;
   clearResults();
@@ -312,21 +321,21 @@ el.convertAll.addEventListener('click', async () => {
   try {
     // Waited for here, once, rather than inside the loop: the first photo
     // should not be the one that looks slow because it paid for the decoder.
-    if (items.some(item => !item.avif)) {
-      showProgress(0, items.length, '', phrase('step.waiting'));
+    if (batch.some(item => !item.avif)) {
+      showProgress(0, batch.length, '', phrase('step.waiting'));
       await engine();
     }
 
-    for (const [index, item] of items.entries()) {
+    for (const [index, item] of batch.entries()) {
       if (stopping) { stopped = true; break; }
-      showProgress(index, items.length, item.file.name, phrase('step.reading'));
+      showProgress(index, batch.length, item.file.name, phrase('step.reading'));
       try {
-        for (const result of await convertOne(item, (note) => {
+        for (const result of await convertOne(item, settings, (key, values) => {
           // convertOne reports as it decodes, so a press of Cancel lands
           // inside a photo rather than after it. The largest HEIC on a phone
           // is the slowest single thing this site does.
           if (stopping) throw new DOMException('Cancelled', 'AbortError');
-          showProgress(index, items.length, item.file.name, note);
+          showProgress(index, batch.length, item.file.name, phrase(key, values));
         })) {
           collected.push(result);
         }
@@ -357,14 +366,14 @@ el.convertAll.addEventListener('click', async () => {
 
   if (stopped) {
     el.progressLabel.textContent = collected.length
-      ? phrase('progress.stopped', { done: collected.length, total: items.length })
+      ? phrase('progress.stopped', { done: resultTotals(collected).files, total: batch.length })
       : phrase('progress.stopped.none');
   }
   if (failures.length) showLoadError(failures.join('\n'));
   // What finished is kept: one JPEG per photo means a run stopped halfway
   // still leaves half of them converted.
   results = collected;
-  showResults();
+  showResults(settings);
 });
 
 el.cancel.addEventListener('click', () => { stopping = true; });
@@ -376,92 +385,6 @@ function showProgress(index, total, name, note) {
     : note;
 }
 
-/**
- * Convert one file, which is usually one picture and occasionally several.
- *
- * The whole file is read here rather than at the point it was chosen. It has to
- * be - the decoder wants every byte, and the EXIF block's own offsets are
- * offsets into the complete file - and reading it here means it is held for the
- * length of one conversion instead of for the length of the visit.
- *
- * @returns {Promise<object[]>} one result per picture in the file
- */
-async function convertOne(item, onStep) {
-  const mime = el.formatSelect.value;
-  const quality = Number(el.quality.value) / 100;
-  const keepExif = el.keepExif.checked;
-
-  if (item.avif) {
-    // AVIF uses the browser decoder, so an AVIF-only batch never loads libheif.
-    // Metadata preservation remains the HEIC path's job; this copy is pixels.
-    onStep(phrase('step.decoding'));
-    const picture = await decode(new Blob([item.file], { type: AVIF }));
-    try {
-      onStep(phrase('step.writing.file', { format: FORMATS[mime].label }));
-      const blob = await encode(picture.bitmap, {
-        width: picture.width, height: picture.height, mime, quality, background: mime === JPEG ? '#ffffff' : undefined,
-      });
-      return [{
-        name: item.file.name, before: item.file.size, after: blob.size, blob,
-        mime, quality, width: picture.width, height: picture.height,
-        metadata: 'none', exif: item.exif, part: 0, parts: 1,
-        outName: outName(item.file.name, mime),
-      }];
-    } finally { release(picture.bitmap); }
-  }
-
-  const bytes = new Uint8Array(await item.file.arrayBuffer());
-
-  onStep(phrase('step.decoding'));
-  const pictures = await decodeHeic(bytes);
-
-  // Read from the whole file rather than from the first 256 KB the list was
-  // built off, so a photo whose metadata sits further in is not quietly
-  // stripped of it here after the row promised otherwise.
-  const tiff = keepExif && mime === JPEG ? readExif(bytes) : null;
-
-  const out = [];
-  for (const [index, picture] of pictures.entries()) {
-    onStep(pictures.length > 1
-      ? phrase('step.writing.picture', { index: index + 1, total: pictures.length })
-      : phrase('step.writing.file',
-        { format: FORMATS[mime]?.label ?? phrase('format.file') }));
-
-    let blob = await encodePixels(picture, { mime, quality });
-    let metadata = 'none';
-
-    // Only the primary picture gets the metadata. In a file holding several,
-    // the EXIF block describes that one - stamping the same date and place onto
-    // the others would be inventing facts about them.
-    if (tiff && picture.primary) {
-      if (fitsInJpeg(tiff)) {
-        const patched = withExif(new Uint8Array(await blob.arrayBuffer()), uprightExif(tiff));
-        blob = new Blob([patched], { type: JPEG });
-        metadata = 'kept';
-      } else {
-        metadata = 'too large';
-      }
-    }
-
-    out.push({
-      name: item.file.name,
-      before: item.file.size,
-      after: blob.size,
-      blob,
-      mime,
-      quality,
-      width: picture.width,
-      height: picture.height,
-      metadata,
-      exif: item.exif,
-      part: pictures.length > 1 ? index + 1 : 0,
-      parts: pictures.length,
-      outName: outName(item.file.name, mime, index),
-    });
-  }
-  return out;
-}
-
 /* ------------------------------------------------------------- the results */
 
 function clearResults() {
@@ -470,9 +393,12 @@ function clearResults() {
   results = [];
   el.resultList.replaceChildren();
   el.results.hidden = true;
+  el.resultsSummary.textContent = '';
+  el.resultsSettings.textContent = '';
+  el.downloadZip.hidden = true;
 }
 
-function showResults() {
+function showResults(settings) {
   if (!results.length) return;
 
   // Named here rather than in convertOne, because uniqueness is a property of
@@ -481,15 +407,17 @@ function showResults() {
   results.forEach((result, at) => { result.outName = names[at]; });
 
   el.results.hidden = false;
+  el.resultsSettings.textContent = phrase('results.settings', {
+    format: FORMATS[settings.mime].label, quality: Math.round(settings.quality * 100),
+    metadata: phrase(settings.hasHeic && settings.keepExif && settings.mime === JPEG
+      ? 'results.metadata.requested' : 'results.metadata.omitted'),
+  });
   for (const result of results) el.resultList.appendChild(resultRow(result));
 
   // Counted over files rather than pictures on the way in, and over pictures on
   // the way out, because that is what actually happened.
-  const before = new Set(results.map((r) => r.name)).size;
-  const beforeBytes = [...new Map(results.map((r) => [r.name, r.before])).values()]
-    .reduce((n, size) => n + size, 0);
-  const afterBytes = results.reduce((n, r) => n + r.after, 0);
-  const label = FORMATS[results[0].mime]?.label ?? phrase('format.new');
+  const { files: before, beforeBytes, afterBytes } = resultTotals(results);
+  const label = FORMATS[settings.mime].label;
 
   // Two counts, each with its own plural, so each is a whole phrase.
   el.resultsSummary.textContent = phrase('results.summary', {

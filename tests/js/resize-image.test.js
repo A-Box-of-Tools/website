@@ -27,8 +27,9 @@ import {
   bytes, change, countOf, describePlan, dimensions, outName, scaleText,
 } from '../../tools/resize-image/src/files.js';
 import {
-  FORMATS, JPEG, PNG, READABLE, WEBP, keepFormat,
+  FORMATS, JPEG, PNG, READABLE, WEBP, keepFormat, render,
 } from '../../tools/resize-image/src/codecs.js';
+import { prepareRun, processOne } from '../../tools/resize-image/src/run.js';
 
 /** A 4000 x 3000 photograph, which is the shape most of these are about. */
 const PHOTO = { width: 4000, height: 3000 };
@@ -419,4 +420,152 @@ test('describePlan: no terminator, because a caller may carry on past it', () =>
   // thing that only works in the languages that end a sentence with one.
   const result = plan(whole(PHOTO), { mode: 'none' });
   assert.doesNotMatch(describePlan(PHOTO, result.source, result, PNG, say), /[.。]$/);
+});
+
+
+/* ======================================================== prepared exports */
+
+const imageItem = (name, crop = whole(PHOTO), type = PNG) => ({
+  file: { name, size: 20000, type }, size: { ...PHOTO }, crop: { ...crop },
+});
+const exportOptions = () => ({
+  resize: { mode: 'pixels', width: 1000, height: 1000, fit: 'pad', noEnlarge: true },
+  format: JPEG, quality: 0.85, background: '#ffffff',
+});
+
+test('a delayed export uses the prepared crop, dimensions and encoding settings', async () => {
+  const item = imageItem('photo.png', { x: 400, y: 200, width: 1800, height: 1800 });
+  const options = exportOptions();
+  const items = [item];
+  const { batch } = prepareRun(items, options, new Set([JPEG, PNG]));
+  let ready;
+  const decode = new Promise((resolve) => { ready = resolve; });
+  const bitmap = {};
+  const writes = [];
+  const released = [];
+  const processing = processOne(batch[0], {
+    decode: () => decode,
+    render: async (_, laid, encoding) => {
+      writes.push({ laid, encoding });
+      return new Blob(['resized'], { type: encoding.mime });
+    },
+    release: (source) => released.push(source),
+  });
+  options.resize.width = 50;
+  options.resize.height = 40;
+  options.resize.fit = 'stretch';
+  options.format = PNG;
+  options.quality = 0.3;
+  options.background = '#ff0000';
+  item.crop.x = 0;
+  item.crop.width = 800;
+  item.size.width = 800;
+  items.length = 0;
+  ready({ bitmap });
+  const result = await processing;
+  assert.deepEqual(writes[0].laid.source, { x: 400, y: 200, width: 1800, height: 1800 });
+  assert.deepEqual(writes[0].laid.canvas, { width: 1000, height: 1000 });
+  assert.deepEqual(writes[0].encoding, { mime: JPEG, quality: 0.85, background: '#ffffff' });
+  assert.deepEqual(result.size, PHOTO);
+  assert.equal(result.quality, 0.85);
+  assert.equal(result.outName, 'photo-1000x1000.jpg');
+  assert.equal(batch.length, 1);
+  assert.deepEqual(released, [bitmap]);
+});
+
+test('each batch image keeps its own prepared crop and format capability decision', async () => {
+  const first = imageItem('first.webp', { x: 400, y: 200, width: 1800, height: 1800 }, WEBP);
+  const second = imageItem('second.avif', whole(PHOTO), 'image/avif');
+  const writable = new Set([JPEG, PNG, WEBP]);
+  const options = exportOptions();
+  options.format = 'keep';
+  options.resize = { mode: 'percent', percent: 50 };
+  const { batch } = prepareRun([first, second], options, writable);
+  writable.delete(WEBP);
+  second.crop.width = 400;
+  const writes = [];
+  for (const job of batch) {
+    await processOne(job, {
+      decode: async () => ({ bitmap: {} }),
+      render: async (_, laid, encoding) => {
+        writes.push({ crop: laid.source, canvas: laid.canvas, mime: encoding.mime });
+        return new Blob(['resized'], { type: encoding.mime });
+      },
+      release: () => {},
+    });
+  }
+  assert.deepEqual(writes, [
+    { crop: { x: 400, y: 200, width: 1800, height: 1800 }, canvas: { width: 900, height: 900 }, mime: WEBP },
+    { crop: { x: 0, y: 0, width: 4000, height: 3000 }, canvas: { width: 2000, height: 1500 }, mime: PNG },
+  ]);
+});
+
+test('an unchanged prepared image keeps the original file and metadata without decoding', async () => {
+  const item = imageItem('photo.avif', whole(PHOTO), 'image/avif');
+  const options = exportOptions();
+  options.resize = { mode: 'none' };
+  options.format = 'keep';
+  const { batch } = prepareRun([item], options, new Set([JPEG, PNG]));
+  const result = await processOne(batch[0], {
+    decode: () => assert.fail('a file with no changes must not be decoded'),
+  });
+  assert.equal(result.blob, item.file);
+  assert.equal(result.outName, item.file.name);
+  assert.equal(result.mime, 'image/avif');
+  assert.equal(result.untouched, true);
+});
+
+test('a prepared export releases its decoded bitmap after success, error or abort', async () => {
+  for (const failure of [null, new Error('write.refused'), new DOMException('Cancelled', 'AbortError')]) {
+    const { batch } = prepareRun([imageItem('photo.png')], exportOptions(), new Set([JPEG, PNG]));
+    const bitmap = {};
+    const released = [];
+    const processing = processOne(batch[0], {
+      decode: async () => ({ bitmap }),
+      render: async () => { if (failure) throw failure; return new Blob(['resized'], { type: JPEG }); },
+      release: (source) => released.push(source),
+    });
+    if (failure) await assert.rejects(processing, (error) => error === failure);
+    else assert.equal((await processing).mime, JPEG);
+    assert.deepEqual(released, [bitmap]);
+  }
+});
+
+test('render clears canvas storage after success, null output and thrown failures', async () => {
+  for (const failure of ['none', 'draw', 'encode', 'null']) {
+    const expected = new Error(failure);
+    const fills = [];
+    const draws = [];
+    const context = {
+      fillRect(...args) { fills.push({ color: this.fillStyle, args }); },
+      drawImage(...args) { draws.push(args); if (failure === 'draw') throw expected; },
+    };
+    const canvas = {
+      width: 0, height: 0,
+      getContext: () => context,
+      toBlob(callback) {
+        if (failure === 'encode') throw expected;
+        callback(failure === 'null' ? null : new Blob(['encoded'], { type: JPEG }));
+      },
+    };
+    const previous = Object.getOwnPropertyDescriptor(globalThis, 'document');
+    Object.defineProperty(globalThis, 'document', { configurable: true, value: { createElement: () => canvas } });
+    const crop = { x: 400, y: 200, width: 1800, height: 1200 };
+    const laid = plan(crop, { mode: 'pixels', width: 1000, height: 1000, fit: 'pad' });
+    const source = {};
+    try {
+      const output = render(source, laid, { mime: JPEG, quality: 0.85, background: '#123456' });
+      if (failure === 'none') assert.equal((await output).type, JPEG);
+      else if (failure === 'null') await assert.rejects(output, /write\.refused/);
+      else await assert.rejects(output, (error) => error === expected);
+    } finally {
+      if (previous) Object.defineProperty(globalThis, 'document', previous);
+      else delete globalThis.document;
+    }
+    assert.deepEqual(fills, [{ color: '#123456', args: [0, 0, 1000, 1000] }]);
+    assert.deepEqual(draws[0], [source, crop.x, crop.y, crop.width, crop.height,
+      laid.draw.x, laid.draw.y, laid.draw.width, laid.draw.height]);
+    assert.equal(canvas.width, 0, failure);
+    assert.equal(canvas.height, 0, failure);
+  }
 });

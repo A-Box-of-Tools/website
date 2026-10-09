@@ -85,6 +85,11 @@
       con el host al que llegarías de verdad sacado a su propia línea.
     </p>
 
+    <div class="run-row">
+      <button type="button" id="clear-results" class="ghost">Borrar resultados</button>
+    </div>
+    <p id="result-status" class="field-summary" role="status"></p>
+
     <div id="results"></div>
   </section>
 
@@ -232,6 +237,7 @@
       autenticación: quien la tenga puede generar tus códigos de esa cuenta
       indefinidamente. No ha salido de esta página, y conviene tener cuidado con
       adónde va después.</span>
+    <span data-phrase="warn.percent-encoding">Uno de los campos de este código tiene una secuencia de porcentaje no válida. Se muestra tal como está; revisa el texto completo antes de usarlo.</span>
     <span data-phrase="warn.not-openable">Esto no es una dirección web, así que no
       hay ningún enlace que ofrecer. Está impreso entero arriba; si algo en tu
       máquina le hace caso, eso es cosa tuya y de ese programa.</span>
@@ -252,6 +258,7 @@
     <span data-phrase="preview.nothing">No se encontró ningún código</span>
     <span data-phrase="preview.broken">No se pudo abrir</span>
 
+    <span data-phrase="status.cleared">Resultados y vistas previas de imágenes borrados.</span>
     <span data-phrase="status.reading">Leyendo la imagen&hellip;</span>
     <span data-phrase="status.nothing">No se encontró ningún código en esa
       imagen. Hace falta el símbolo entero en el encuadre, margen blanco

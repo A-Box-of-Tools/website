@@ -15,12 +15,12 @@
 
 name = "Video-Rotator"
 heading = "Video&nbsp;drehen <span class=\"h1-kw\">&mdash; für den Clip, der quer gefilmt wurde</span>"
-tagline = "Eine Vierteldrehung, eine halbe Drehung, in die andere Richtung. In den Header der Datei geschrieben, sodass kein einziges Einzelbild dekodiert wird und nichts verloren geht."
+tagline = "Eine Vierteldrehung, eine halbe Drehung, in die andere Richtung. Bei der Drehung im Header bleiben die Einzelbilder unverändert."
 
-title = "Video drehen &mdash; kostenlos, verlustfrei, im Browser, ohne Upload"
-description = "Ein quer oder kopfüber gefilmtes Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung wird in den Header der Datei geschrieben, sodass kein Einzelbild neu kodiert wird und nichts verloren geht; oder sie wird für alte Player ins Bild eingebrannt. MP4, MOV, WebM und MKV hinein, MP4 heraus. Nichts wird hochgeladen."
-og_title = "Ein Video drehen, ohne es hochzuladen und ohne es neu zu kodieren"
-og_description = "Bei einem quer gefilmten Clip müssen neun Zahlen im Header geändert werden, nicht das Video neu kodiert. Drehen Sie ihn in Sekunden im Browser; die Datei verlässt Ihr Gerät nie."
+title = "Video drehen &mdash; kostenlos, im Browser, ohne Upload"
+description = "Drehen Sie ein Video im Browser. Die Drehung im Header übernimmt die Einzelbilder unverändert; Einbrennen kodiert das Bild für alte Player neu. AAC-Ton wird kopiert, anderer dekodierbarer Ton als AAC neu kodiert; Ton kann weggelassen werden. MP4, MOV, WebM und MKV hinein, MP4 heraus. Kein Upload."
+og_title = "Ein Video über seinen Header drehen, ohne es hochzuladen"
+og_description = "Die Drehung im Header lässt die Einzelbilder unverändert. Ton wird kopiert, als AAC neu kodiert oder weggelassen. Drehen Sie den Clip im Browser; die Datei verlässt Ihr Gerät nie."
 og_image_alt = "Ein Video im Browser drehen, ohne es hochzuladen"
 
 pledge = """
@@ -49,12 +49,10 @@ read_first = """
 howto_heading = "So drehen Sie ein Video"
 
 card = """
-            Den quer gefilmten Clip drehen: eine Vierteldrehung nach rechts
-            oder links, oder auf den Kopf. Die Drehung wird in den Header der
-            Datei geschrieben, und jedes Einzelbild wird übernommen, wie es
-            ist: nichts dekodiert, nichts verloren, Sekunden für ein Gigabyte.
-            Oder sie wird für die alten Player, die Header ignorieren, ins
-            Bild eingebrannt."""
+    Den quer gefilmten Clip drehen: eine Vierteldrehung nach rechts oder
+    links, oder auf den Kopf. Die Drehung im Header übernimmt die
+    Einzelbilder unverändert; Einbrennen kodiert das Bild für alte
+    Player neu. Ton wird kopiert, als AAC neu kodiert oder weggelassen."""
 
 [words]
 plural = "Videos"
@@ -78,19 +76,16 @@ text = "Quelloffen"
 text = "Dateien bleiben auf Ihrem Gerät"
 
 [[privacy]]
-title = "Eine Drehung sind neun Zahlen im Header, und die Seite ändert nur diese."
+title = "Eine Drehung sind neun Zahlen im Header der Bildspur."
 body = """
 
-      Ein Handy, das quer filmt, dreht seine Pixel nicht. Es speichert die
-      Einzelbilder so, wie der Sensor sie gesehen hat, und schreibt eine
-      Vierteldrehung in den Header der Spur, eine Anzeigematrix aus neun
-      Zahlen, die jeder Player auf dem Weg zum Bildschirm anwendet. Ein
-      Video, das quer erscheint, braucht also eine andere Matrix, kein
-      anderes Bild. Diese Seite schreibt die Matrix für die gewählte Drehung
-      und übernimmt jedes Einzelbild und jedes Paket genau so, wie es war,
-      ohne ein einziges zu dekodieren. Deshalb dauert ein Gigabyte Sekunden,
-      deshalb ist das Bild Bit für Bit, was es war, und deshalb kommt die
-      Datei fast genau so groß heraus, wie sie hineinging."""
+      Ein Handy, das quer filmt, speichert die Einzelbilder so, wie der Sensor
+      sie gesehen hat, und schreibt die Drehung in die Anzeigematrix der Spur.
+      Der Player wendet sie auf dem Bildschirm an. Auf dem Header-Weg schreibt
+      diese Seite die gewählte Matrix und übernimmt jedes Einzelbild Bit für
+      Bit, ohne es neu zu kodieren. AAC-Ton wird kopiert; anderer dekodierbarer
+      Ton wird als AAC neu kodiert, sofern Sie ihn nicht weglassen. Wird auch
+      der Ton kopiert, bleibt die Dateigröße fast gleich."""
 
 [[privacy]]
 title = "Der Upload ist der langsame Teil, und er ist der Teil, der nicht stattfindet."
@@ -210,13 +205,11 @@ body = """
 [[faq]]
 q = "Kostet das Drehen Qualität?"
 a = """
-        Nein, auf dem normalen Weg nicht. Die Drehung wird in den Header der
-        Datei geschrieben, und jedes Einzelbild wird Byte für Byte übernommen,
-        das Bild ist also genau, was es war, und die Datei fast genau so groß,
-        wie sie war. Nur &bdquo;Einbrennen&ldquo; kodiert neu, und die Seite
-        sagt das, bevor Sie das Häkchen setzen. Ein Rotator, der
-        standardmäßig neu kodiert, und das tun die meisten im Netz, macht eine
-        Neukodierung für eine Aufgabe, die neun Zahlen brauchte."""
+    Die Drehung im Header erhält die Bildqualität: Jedes Einzelbild wird
+    Byte für Byte kopiert. Nur Einbrennen kodiert das Bild neu. AAC-Ton
+    wird kopiert; anderer dekodierbarer Ton wird als AAC neu kodiert,
+    sofern er nicht weggelassen wird. Wird auch der Ton kopiert, bleibt
+    die Dateigröße fast gleich."""
 
 [[faq]]
 q = "Warum sieht die Datei in einem Player immer noch quer aus?"
@@ -274,12 +267,12 @@ a = """
 [[faq]]
 q = "Funktioniert es auf dem Handy?"
 a = """
-        Ja. Die normale Drehung dekodiert nichts, ein Handy erledigt sie also
-        so schnell wie ein Laptop; die fertige Datei wird bis zum Speichern im
-        Arbeitsspeicher gehalten, und das ist die einzige Grenze, wobei ein
-        Handy ein paar hundert Megabyte Ergebnis ohne Klagen hält. Das
-        Einbrennen ist eine Kodierung, und der eigene Hardware-Encoder eines
-        Handys ist darin schnell."""
+    Ja. Die Drehung im Header kopiert die Einzelbilder ohne Dekodierung;
+    der Ton muss möglicherweise als AAC kodiert werden. Die fertige
+    Datei bleibt bis zum Speichern im Arbeitsspeicher; ein Handy hält
+    gewöhnlich einige hundert Megabyte Ergebnis. Einbrennen erfordert
+    auch Bildkodierung, die der Hardware-Encoder des Handys
+    beschleunigen kann."""
 
 [[faq]]
 q = "Gibt es eine Größengrenze, und kostet es etwas?"
@@ -302,10 +295,10 @@ a = """
         dem Sie die Verbindung trennen."""
 
 [schema]
-description = "Ein Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung wird in den Header der Datei geschrieben und jedes Einzelbild unangetastet übernommen, es wird also nichts neu kodiert und nichts geht verloren; oder sie wird für alte Player ins Bild eingebrannt. Nichts wird hochgeladen."
+description = "Ein Video im Browser um eine Viertel- oder halbe Drehung drehen. Die Drehung im Header übernimmt die Einzelbilder unverändert; Einbrennen kodiert das Bild für alte Player neu. AAC-Ton wird kopiert, anderer dekodierbarer Ton als AAC neu kodiert; Ton kann weggelassen werden. Kein Upload."
 features = [
   "Eine Vierteldrehung nach rechts, eine Vierteldrehung nach links oder auf den Kopf",
-  "Schreibt die Drehung in die Anzeigematrix und übernimmt jedes Einzelbild und jedes Paket, wie es ist",
+  "Schreibt die Drehung in die Anzeigematrix und übernimmt jedes Einzelbild unverändert",
   "Zeigt das erste Einzelbild so gedreht wie gewählt, mit derselben Rechnung, die auch die Datei tragen wird",
   "Brennt die Drehung auf Wunsch ins Bild ein, für die wenigen Player, die den Header ignorieren",
   "Liest MP4, MOV, M4V, WebM und MKV; schreibt MP4",

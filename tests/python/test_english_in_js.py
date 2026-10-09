@@ -76,9 +76,9 @@ BASELINE = {
     'convert-to-mp4': 0,
     'rotate-video': 0,
     'crop-video': 0,
-    # Two internal keys, a DOM id, a clock format, one key template and the
-    # fixed-width layout of a line in the text report.
-    'dicom-viewer': 6,
+    # Two internal keys, a DOM id, a clock format and the fixed-width layout
+    # of a line in the text report. File identity replaced the filename key.
+    'dicom-viewer': 5,
     # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
     # filename template. The quad invariant now lives in the shared geometry
     # module alongside the detector, because the receipt tool uses it too.
@@ -118,10 +118,11 @@ BASELINE = {
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,
-    'merge-pdf': 3,
+    'merge-pdf': 2,
     'password-generator': 8,
     'png-to-webp': 0,
-    # The two left are a symbology's own name and a line of SVG markup.
+    # Both layouts join translated fact fragments; neither carries an English
+    # sentence. The heuristic counts their nested page/encoding phrase keys.
     'pdf-to-csv': 2,
     'protect-pdf': 0,
     'qr-barcode': 2,

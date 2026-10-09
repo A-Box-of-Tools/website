@@ -70,6 +70,7 @@ const el = {
   modeAuto: $('mark-mode-auto'),
   modeManual: $('mark-mode-manual'),
   markNote: $('mark-note'),
+  markPosition: $('mark-position'),
   markWhy: $('mark-why'),
   stage: $('stage'),
   preview: $('preview'),
@@ -178,6 +179,11 @@ const bytesText = (bytes) => sizeText(bytes, phrase);
 const cropper = new Cropper(el.stage, { onChange: onCropChange, t: phrase });
 const marks = new Marks(el.stage, {
   t: phrase,
+  onPosition: (position) => {
+    el.markPosition.textContent = position
+      ? phrase('mark.position', { ...position, label: phrase(position.label) })
+      : '';
+  },
   onChange: (_, why) => {
     if (why === 'drag' && markMode === 'auto') {
       markMode = 'manual';

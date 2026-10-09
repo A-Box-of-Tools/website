@@ -197,6 +197,8 @@
         <button type="button" id="whole-photo" class="ghost">Largest box that fits</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -657,6 +659,7 @@
     <span data-phrase="mark.lefteye.hint">the pupil, on the left as you look at it</span>
     <span data-phrase="mark.righteye">Right eye</span>
     <span data-phrase="mark.righteye.hint">the other pupil</span>
+    <span data-phrase="mark.position">{label}: {x} pixels from the left and {y} pixels from the top of the photograph.</span>
     <span data-phrase="mark.aria">{label}: {hint}. The arrow keys move it; hold Shift for ten pixels at a time.</span>
     <span data-phrase="crop.aria">Crop area. The arrow keys move it, Alt and the arrow keys resize it, and holding
       Shift makes each step ten pixels. The shape is fixed by the specification and cannot

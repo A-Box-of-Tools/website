@@ -50,7 +50,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>留下什么</legend>
+      <legend>下次清理的保留选项</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -147,6 +147,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">此副本请求的保留设置：方向 {orientation}；ICC 配置文件 {icc}。</span>
+    <span data-phrase="copy.on">开启</span>
+    <span data-phrase="copy.off">关闭</span>
+    <span data-phrase="copy.avif">这些保留选项未应用：AVIF 已按正确方向解码，并保存为 PNG，未复制原始元数据。</span>
+    <span data-phrase="copy.inspect">检查清理后的副本</span>
+    <span data-phrase="copy.inspectname">检查清理后的副本：{name}</span>
+    <span data-phrase="copy.reading">正在读取此副本的元数据…</span>
+    <span data-phrase="copy.failed">无法检查此副本：{reason}</span>
+    <span data-phrase="copy.scope">此清理后副本的只读元数据。</span>
+    <span data-phrase="copy.tags">EXIF 标签</span>
+    <span data-phrase="copy.profile">ICC 配置文件</span>
+    <span data-phrase="copy.absent">无</span>
+    <span data-phrase="copy.none">此副本中未发现可移除的元数据。</span>
+    <span data-phrase="copy.note">{label}：{detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · 清理会转换为 PNG</span>
     <span data-phrase="inspect.avif">仅 EXIF 预览，不列出其他元数据</span>
     <span data-phrase="badge.avif">PNG 转换</span>
@@ -174,7 +188,7 @@
     <span data-phrase="badge.comment">注释</span>
     <span data-phrase="badge.text">文本 {count}</span>
     <span data-phrase="badge.unknown">未知块</span>
-    <span data-phrase="keep.nothing">真的全清，方向标签和色彩配置文件也一并清掉。这个文件之后不会带任何一种元数据。</span>
+    <span data-phrase="keep.nothing">两项保留例外均已关闭。方向和 ICC 配置文件等可移除的元数据将被移除；JPEG 显示所需的文件头会保留。</span>
     <span data-phrase="keep.orientation">其余全清：EXIF、GPS、厂商备注、XMP、IPTC、注释、内嵌缩略图，还有这个工具认不出来的每一个块。留下的是：方向标签。</span>
     <span data-phrase="keep.icc">其余全清：EXIF、GPS、厂商备注、XMP、IPTC、注释、内嵌缩略图，还有这个工具认不出来的每一个块。留下的是：色彩配置文件。</span>
     <span data-phrase="keep.both">其余全清：EXIF、GPS、厂商备注、XMP、IPTC、注释、内嵌缩略图，还有这个工具认不出来的每一个块。留下的是：方向标签和色彩配置文件。</span>

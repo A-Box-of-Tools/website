@@ -17,7 +17,7 @@
 #
 # "Extract audio from video" is the phrase, and it is a bigger one than
 # anything else the audio pages do. So it has an address that says it, a page
-# with one job on it and nothing to configure, and an FAQ of its own.
+# with one job and explicit WAV precision and channel choices, and an FAQ of its own.
 #
 # WHY THE FILE THAT COMES OUT IS A WAV, AND WHY THE ADDRESS DOES NOT SAY MP3
 #
@@ -72,7 +72,7 @@ roadmap_group = "audio"
 css_parts = ["progress", "results", "form", "notes", "modes", "checks"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "message-box", "format", "example-photo", "example-audio", "example-video", "example-video-sound", "video-support", "codec-support", "mp4-muxer", "mp4-boxes", "mp4-writer", "aac"]
+js_parts = ["file-picker", "audio-decode", "samplerate", "wav", "wav-async", "cooperative-work", "errors", "message-box", "format", "example-photo", "example-audio", "example-video", "example-video-sound", "video-support", "codec-support", "mp4-muxer", "mp4-boxes", "mp4-writer", "aac"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. The sound
 # out of a video is very often wanted shorter, or louder, which is the next two
@@ -105,13 +105,7 @@ csp_note = """
 
 # --- the pledge block --------------------------------------------------------
 
-pledge = """
-    The decoder is the one already in your browser &mdash; the same code path
-    that plays a file in a <code>&lt;video&gt;</code> element &mdash; and it is
-    asked for the audio track and nothing else. Writing a WAV is putting a
-    forty-four-byte header in front of the samples, in
-    <code>src/shared/wav.js</code>. There is no encoder in the loop, no upload step,
-    and no network feature of any kind on this page."""
+pledge = """The browser’s own decoder reads only the audio track. WAV output is written locally as 16-bit PCM or 32-bit float. There is no MP3 encoder, upload step or network feature in this tool."""
 
 live_hint = """
       Don't take our word for it: open DevTools, watch the Network tab, and drop
@@ -194,13 +188,8 @@ body = """
       browser already plays."""
 
 [[privacy]]
-title = "The samples are written down, not encoded again."
-body = """
-
-      A WAV is the samples the decoder handed back with a header in front of
-      them. There is no encoder in the loop making decisions about your
-      recording, and nothing that could be described as an upload for one to
-      happen on."""
+title = """The WAV format makes its precision explicit."""
+body = """16-bit PCM rounds and clamps decoded samples for compatibility. 32-bit float preserves them when channels stay unchanged. Mono averages the channels. Both formats are written on this machine without uploading anything."""
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -233,12 +222,8 @@ body = """
       nothing was touched."""
 
 [[howto]]
-title = "Choose mono, if you want it smaller."
-body = """
- Leaving the channels
-      alone keeps the recording exactly as it was. Mixing down to mono halves
-      the file and is what a transcriber or a voice recording wants; it averages
-      the channels rather than throwing one away."""
+title = """Choose the format and channels."""
+body = """16-bit PCM is the compatible default. Choose 32-bit float to preserve decoded samples without rounding or clipping. Leave channels unchanged for that preservation; mono averages them and halves stereo audio data."""
 
 [[howto]]
 title = "Play it before you save it."
@@ -271,15 +256,7 @@ a = """
 
 [[faq]]
 q = "Can it give me an MP3?"
-a = """
-        No, and it will not pretend to. No browser ships an MP3 encoder, and the
-        only way to reach one is to send your video to a server that has it
-        &mdash; which is the one thing this site exists not to do. What you get
-        is a WAV: the samples with a forty-four-byte header in front, which
-        needs no encoder at all and cannot cost any quality. It is larger, about
-        ten megabytes a minute in stereo, and every player, phone and editor
-        opens one. Anything that wants an MP3 can make one from it in a
-        second."""
+a = """This page writes WAV rather than MP3. MP3 output needs an encoder this tool does not ship. Choose compatible 16-bit PCM or 32-bit float; neither requires an upload. WAV is larger because its audio is uncompressed, and another editor can compress it afterwards."""
 
 [[faq]]
 q = "Is the picture ever looked at?"
@@ -312,32 +289,15 @@ a = """
 
 [[faq]]
 q = "Does it lose any quality?"
-a = """
-        Nothing beyond what the video already did to its own audio when it was
-        made. The samples the decoder hands back are written down as they are
-        &mdash; there is no second encode, so there is no second generation of
-        loss. The one thing to know is the sample rate: the file's own rate is
-        read out of its header first and the decode is done at that rate, so
-        your recording is not quietly resampled. If a file does not declare one,
-        the page says which rate it assumed."""
+a = """16-bit PCM rounds decoded samples and clamps values beyond full scale. Choose 32-bit float and leave channels unchanged to preserve the decoder’s samples, including values beyond full scale. Mono averages channels. Float does not undo losses already present in the video. The file’s own sample rate is used when detected; otherwise the page discloses the assumed rate."""
 
 [[faq]]
 q = "Why is the WAV so much bigger than the video?"
-a = """
-        Because a WAV is not compressed and the video's audio track was. Sound
-        at CD quality is about ten megabytes a minute in stereo, whatever it
-        holds; the AAC track inside an MP4 is perhaps a tenth of that. Mixing
-        down to mono halves it. This is the cost of not re-encoding, and it is
-        paid once: whatever you open the file in next can compress it."""
+a = """WAV audio is uncompressed. At 44.1 kHz, 16-bit stereo is about ten megabytes a minute. Float doubles the sample data; mono halves stereo sample data. The output size is shown before the file is finished."""
 
 [[faq]]
 q = "How long a video can it handle?"
-a = """
-        There is no limit set here, because there is no server paying for one.
-        The practical ceiling is your own machine's memory: the file is read in
-        and the whole audio track is held as samples, so a very long recording
-        on a small machine can run out of room. A few hours of video is
-        ordinarily fine, and a phone will manage less than a laptop."""
+a = """The input is read and decoded into memory, and the full WAV is assembled there too. Long recordings can exceed available memory; WAV output beyond its 4 GB format limit is refused before sample bytes are written. Cancel retires a pending read or stops cooperative mixing and writing. Native browser decoding may continue until it returns, but its cancelled result is discarded."""
 
 [[faq]]
 q = "Can I cut it down or make it louder?"
@@ -367,10 +327,10 @@ a = """
 category = "MultimediaApplication"
 description = "Extract the audio track from an MP4, MOV or WebM and save it as a WAV. Only the audio is decoded, the picture is never read, and nothing is uploaded."
 features = [
-  "Saves the audio from MP4, M4V, MOV and WebM video as a WAV",
+  "Saves video audio as compatible 16-bit PCM or 32-bit float WAV",
   "Decodes only the audio track; the picture is never read",
   "Reads the file's own sample rate first, so nothing is quietly resampled",
-  "Mixes down to mono by averaging, for half the file size",
+  "Mixes down to mono by averaging all channels",
   "Plays the result before you save it",
   "Carries the result into the audio trimmer or editor without saving",
   "Runs offline; no upload, no account",

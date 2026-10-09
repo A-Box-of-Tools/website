@@ -61,6 +61,9 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const numericPairs = [[el.length, el.lengthOut], [el.words, el.wordsOut], [el.count, el.countOut]]
+  .map(([range, number]) => ({ range, number, error: $(`${range.id}-error`) }));
+
 /**
  * Every word this file can put on screen is read out of body.html, which is
  * the file that gets translated. `data-very-weak` becomes `dataset.veryWeak`,
@@ -192,12 +195,21 @@ function make() {
   el.copyFallback.hidden = true;
   el.copyFallback.textContent = '';
   const chosen = options();
+  const activeRange = mode === 'passphrase' ? el.words : el.length;
+  let invalid = false;
+  for (const { range, number, error } of numericPairs) {
+    const active = range === activeRange || range === el.count;
+    const refused = !number.validity.valid;
+    number.setAttribute('aria-invalid', String(refused));
+    error.hidden = !active || !refused;
+    invalid ||= active && refused;
+  }
   const empty = chosen.mode === 'password' && classSizes(chosen).length === 0;
 
-  el.noClasses.hidden = !empty;
-  el.result.hidden = empty;
-  el.strength.hidden = empty;
-  if (empty) {
+  el.noClasses.hidden = invalid || !empty;
+  el.result.hidden = invalid || empty;
+  el.strength.hidden = invalid || empty;
+  if (invalid || empty) {
     shown = [];
     el.batch.hidden = true;
     el.copyAll.hidden = true;
@@ -289,18 +301,24 @@ el.copy.addEventListener('click', () => toClipboard(shown[0] ?? ''));
 el.copyAll.addEventListener('click', () => toClipboard(shown.join('\n')));
 el.download.addEventListener('click', downloadList);
 
-el.length.addEventListener('input', () => {
-  el.lengthOut.textContent = el.length.value;
-  make();
-});
-el.words.addEventListener('input', () => {
-  el.wordsOut.textContent = el.words.value;
-  make();
-});
-el.count.addEventListener('input', () => {
-  el.countOut.textContent = el.count.value;
-  make();
-});
+// Invalid drafts remain editable, but cannot describe an old secret as a new
+// setting. The slider remains the last valid value until numeric entry agrees.
+for (const { range, number } of numericPairs) {
+  range.addEventListener('input', () => {
+    number.value = range.value;
+    make();
+  });
+  number.addEventListener('input', () => {
+    if (number.validity.valid) range.value = number.value;
+    make();
+  });
+  number.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.isComposing) {
+      event.preventDefault();
+      if (number.validity.valid) number.value = range.value;
+    }
+  });
+}
 
 for (const control of [
   el.useLower, el.useUpper, el.useDigits, el.useSymbols, el.symbolSet,

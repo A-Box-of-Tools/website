@@ -1,16 +1,16 @@
 name = "Rotation vidéo"
 heading = "Rotation&nbsp;vidéo <span class=\"h1-kw\">&mdash; faire pivoter sans envoi</span>"
-tagline = "Un quart de tour, un demi-tour, dans l’autre sens. Inscrit dans l’en-tête sans décoder une image ni perdre de qualité."
-title = "Faire pivoter une vidéo &mdash; Gratuit, sans envoi ni perte"
-description = "Faites pivoter une vidéo de côté ou à l’envers dans votre navigateur. La rotation est inscrite dans l’en-tête, sans réencodage ni perte, ou dans les pixels pour les anciens lecteurs. MP4, MOV, WebM et MKV en entrée, MP4 en sortie. Aucun envoi."
-og_title = "Faire pivoter une vidéo sans réencoder ni envoyer"
-og_description = "Une rotation dans l’en-tête&nbsp;: chaque image reste intacte. Votre navigateur le fait sur votre appareil, même hors ligne."
-og_image_alt = "Rotation vidéo — un quart de tour sans perte ni envoi"
+tagline = "Un quart de tour, un demi-tour, dans l’autre sens. Avec la rotation d’en-tête, les images restent intactes."
+title = "Faire pivoter une vidéo &mdash; Gratuit, dans le navigateur, sans envoi"
+description = "Faites pivoter une vidéo dans le navigateur. La rotation d’en-tête copie les images intactes ; l’inscrire dans les pixels réencode l’image pour les anciens lecteurs. Le son AAC est copié, les autres sons décodables sont réencodés en AAC et le son peut être retiré. MP4, MOV, WebM et MKV en entrée, MP4 en sortie. Aucun envoi."
+og_title = "Faire pivoter une vidéo par son en-tête, sans l’envoyer"
+og_description = "La rotation d’en-tête garde les images intactes. Le son est copié, réencodé en AAC ou retiré. Faites pivoter le clip dans le navigateur ; le fichier reste sur votre appareil."
+og_image_alt = "Rotation vidéo dans le navigateur, sans envoi"
 pledge = "Votre vidéo est lue, dotée d’un nouvel en-tête puis écrite en mémoire sur votre appareil, par le code de ce site. Si vous inscrivez la rotation dans les pixels, les codecs du navigateur dessinent les images. Aucun envoi possible, aucun serveur pour recevoir votre vidéo&nbsp;: un gigaoctet n’a pas à partir puis revenir tourné."
 live_hint = "Regardez l’onglet Réseau des outils de développement pendant une rotation. Aucune requête ne contient vidéo, image ou nom de fichier. Ou déconnectez Internet et faites-la pivoter quand même."
 read_first = ", <code>src/plan.js</code> pour les neuf nombres de la rotation, <code>src/rotate.js</code> pour la copie et l’écriture, et <code>src/shared/copy-tracks.js</code> pour déplacer une image sans la décoder. Aucun de ces fichiers, ni les lecteurs et le rédacteur voisins, ne contacte le réseau."
 howto_heading = "Comment faire pivoter une vidéo"
-card = "Une vidéo de côté ou à l’envers remise à l’endroit &mdash; rotation inscrite dans l’en-tête, sans décoder ni perdre une image."
+card = "Remettez une vidéo de côté ou à l’envers à l’endroit. La rotation d’en-tête copie les images intactes ; l’inscrire dans les pixels réencode l’image pour les anciens lecteurs. Le son est copié, réencodé en AAC ou retiré."
 
 [words]
 plural = "vidéos"
@@ -23,7 +23,7 @@ text = "Aucun envoi"
 text = "Aucun compte"
 
 [[facts]]
-text = "Aucune perte de qualité"
+text = "Images intactes avec la rotation d’en-tête"
 
 [[facts]]
 text = "Fonctionne hors ligne"
@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Code ouvert"
 
 [[privacy]]
-title = "La rotation est neuf nombres dans l’en-tête."
-body = "Un téléphone conserve les images telles que son capteur les voit et inscrit un quart de tour dans une matrice de neuf nombres. Le lecteur l’applique à l’affichage. Cette page modifie cette matrice puis copie chaque image et paquet sans décodage. Un gigaoctet prend donc quelques secondes&nbsp;: la qualité et le poids restent presque identiques."
+title = "La rotation est neuf nombres dans l’en-tête de l’image."
+body = "Un téléphone conserve les images telles que son capteur les voit et inscrit la rotation dans la matrice d’affichage de la piste. Le lecteur l’applique à l’écran. Sur le chemin utilisant l’en-tête, cette page écrit la matrice choisie et copie chaque image intacte, sans réencodage. Le son AAC est copié&nbsp;; les autres sons décodables sont réencodés en AAC, sauf si vous les retirez. Quand le son est également copié, le poids du fichier reste presque identique."
 
 [[privacy]]
 title = "L’envoi est la partie lente, qui n’a pas lieu ici."
@@ -76,8 +76,8 @@ title = "Faites pivoter et lisez la vérification."
 body = "Le nouvel en-tête et la copie prennent quelques secondes. La rotation dans les pixels prend le temps d’un encodage, avec une barre de progression. Le résultat est rouvert pour vérifier durée, orientation et son, puis se lit depuis la mémoire."
 
 [[faq]]
-q = "La rotation réduit-elle la qualité&nbsp;?"
-a = "Non pour la méthode ordinaire&nbsp;: chaque image est copiée octet par octet et seule la matrice de l’en-tête change. Le poids reste presque identique. Seule la rotation inscrite dans les pixels réencode, avec un avertissement avant de l’activer."
+q = "La rotation réduit-elle la qualité ?"
+a = "La rotation d’en-tête conserve la qualité d’image : chaque image est copiée octet par octet. Seule la rotation inscrite dans les pixels réencode l’image. Le son AAC est copié ; les autres sons décodables sont réencodés en AAC, sauf s’ils sont retirés. Quand le son est également copié, le poids du fichier reste presque identique."
 
 [[faq]]
 q = "Pourquoi un lecteur affiche-t-il encore le clip de côté&nbsp;?"
@@ -100,8 +100,8 @@ q = "Mes vidéos sont-elles envoyées&nbsp;?"
 a = "Non. Votre navigateur lit et écrit sur votre appareil. La <code>Content-Security-Policy</code> énumère les adresses autorisées et aucune n’appartient au site. Déconnecter le réseau le prouve. L’envoi d’un gros fichier prendrait plus de temps que toute la rotation."
 
 [[faq]]
-q = "Fonctionne-t-il sur téléphone&nbsp;?"
-a = "Oui. La rotation d’en-tête ne décode rien et reste rapide. Le résultat attend en mémoire le téléchargement&nbsp;: quelques centaines de mégaoctets passent généralement sur téléphone. Pour réencoder les pixels, l’encodeur matériel du téléphone est rapide."
+q = "Fonctionne-t-il sur téléphone ?"
+a = "Oui. La rotation d’en-tête copie les images sans les décoder ; le son peut nécessiter un encodage AAC. Le résultat attend en mémoire le téléchargement : quelques centaines de mégaoctets passent généralement sur téléphone. Inscrire la rotation dans les pixels encode aussi l’image, ce que l’encodeur matériel peut accélérer."
 
 [[faq]]
 q = "Quelle limite de taille et quel prix&nbsp;?"
@@ -112,8 +112,8 @@ q = "Fonctionne-t-il hors ligne&nbsp;?"
 a = "Oui. Chargez la page une fois, puis déconnectez Internet&nbsp;: elle continue. Un outil qui envoyait votre vidéo à un serveur s’arrêterait."
 
 [schema]
-description = "Faites pivoter une vidéo de côté ou à l’envers dans votre navigateur. La rotation est inscrite dans l’en-tête, sans réencodage ni perte, ou dans les pixels pour les anciens lecteurs. MP4, MOV, WebM et MKV en entrée, MP4 en sortie. Aucun envoi."
-features = ["Un quart de tour à droite, à gauche ou un demi-tour", "Modifie la matrice et copie chaque image et paquet intact", "Aperçu de la première image avec le calcul final", "Rotation inscrite dans les pixels sur demande pour les anciens lecteurs", "Lit MP4, MOV, M4V, WebM et MKV, écrit MP4", "Rouvre le résultat pour vérifier durée, rotation et son, et le lit en mémoire", "Fonctionne hors ligne, sans envoi ni compte"]
+description = "Faites pivoter une vidéo dans le navigateur. La rotation d’en-tête copie les images intactes ; l’inscrire dans les pixels réencode l’image pour les anciens lecteurs. Le son AAC est copié, les autres sons décodables sont réencodés en AAC et le son peut être retiré. Aucun envoi."
+features = ["Un quart de tour à droite, à gauche ou un demi-tour", "Modifie la matrice et copie chaque image intacte", "Aperçu de la première image avec le calcul final", "Rotation inscrite dans les pixels sur demande pour les anciens lecteurs", "Lit MP4, MOV, M4V, WebM et MKV, écrit MP4", "Rouvre le résultat pour vérifier durée, rotation et son, et le lit en mémoire", "Fonctionne hors ligne, sans envoi ni compte"]
 
 [picker]
 title = "Déposez une vidéo ici"

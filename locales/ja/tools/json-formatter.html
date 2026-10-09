@@ -96,7 +96,7 @@
           <label for="input">あなたのテキスト</label>
           <span class="count" id="input-count">空</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="JSON・XML・HTML・CSS・YAMLをここに貼り付けるか、上にファイルをドロップしてください。"></textarea>
       </div>
@@ -116,6 +116,8 @@
     <h2><span class="step">3</span> 結果を持ち出す</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>エラー位置へ移動</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">まだ何もありません。</p>
@@ -141,6 +143,11 @@
     <span data-phrase="count.characters.one">{count}文字</span>
     <span data-phrase="count.characters.many">{count}文字</span>
     <span data-phrase="count.summary">{lines}、{characters}、{size}</span>
+    <span data-phrase="convert.comments">破棄したYAMLコメント：{n}件。引用符内やブロックスカラー内のテキストはそのまま残ります。</span>
+    <span data-phrase="convert.names">変更したXML名：{n}件。この変換では元の名前を保持しません。</span>
+    <span data-phrase="convert.collisions">XML名の衝突：{n}件。異なるキーが同じ要素名になり、読み戻すと繰り返しの値としてまとめられる場合があります。</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">この未対応の構文で変換を停止しました。結果は生成していません。</span>
     <span data-phrase="parse.at">{reason}（{line}行目、{column}文字目）</span>
     <span data-phrase="char.end">テキストの終わり</span>
     <span data-phrase="char.newline">改行</span>
@@ -203,7 +210,7 @@
     <span data-phrase="convert.xml-json.name">XMLからJSONへ</span>
     <span data-phrase="convert.json-yaml">失われるものはありません。JSON文書はどれもすでにYAML文書です。文字列に引用符を付けるのは、裸のままだと意味が変わってしまう場合だけです。</span>
     <span data-phrase="convert.yaml-json">コメントは失われます。JSONにはそれを置く場所がないからです。アンカー・エイリアス・タグは、推測されるのではなく変換を止めます。</span>
-    <span data-phrase="convert.json-xml">配列は繰り返しの要素になります。読み戻せる形はそれだけだからです。空のオブジェクトと空の文字列は、どちらも空の要素として出てきます。</span>
+    <span data-phrase="convert.json-xml">配列は繰り返しの要素になります。空のオブジェクトと空の文字列は、どちらも空の要素になります。キーは接頭辞のないXML名に修正し、変更した名前と衝突を結果とともに表示します。</span>
     <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。</span>
     <span data-phrase="format.unknown">{language}はこれが整形できる言語ではありません。</span>
     <span data-phrase="size.bytes">{n} B</span>

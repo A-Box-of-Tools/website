@@ -167,6 +167,8 @@
 
     <div class="preview" id="preview" role="img" aria-label="Der Code, den Sie erzeugt haben"></div>
 
+    <div id="scan-note" class="scan-note" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
@@ -192,6 +194,11 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="scan.same">Code und Hintergrund haben dieselbe Farbe, sodass der Code unsichtbar ist. Wählen Sie vor der Verwendung unterschiedliche Farben.</span>
+    <span data-phrase="scan.low">Diese Farben haben sehr wenig Kontrast. Ein dunkler Code auf hellem Hintergrund ist sicherer. Testen Sie ihn auf der Fläche, auf der er verwendet wird.</span>
+    <span data-phrase="scan.transparent">Der Hintergrund ist transparent. Der Kontrast hängt daher davon ab, was hinter dem Code liegt. Testen Sie ihn auf seiner endgültigen Fläche.</span>
+    <span data-phrase="scan.margin">Dieser QR-Rand ist kleiner als vier Module. Lassen Sie auf jeder Seite mindestens vier freie Module und testen Sie den fertigen Code vor dem Drucken.</span>
+
     <span data-phrase="bar.code128.holds">Beliebiger Text: Buchstaben, Ziffern und Satzzeichen. Die übliche Wahl, wenn Sie die
       Nummer selbst festlegen.</span>
     <span data-phrase="bar.code128.needs">beliebigen Text, den Sie auf einer Tastatur eingeben können</span>

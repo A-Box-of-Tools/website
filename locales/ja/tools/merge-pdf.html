@@ -50,6 +50,7 @@
     <p id="range-error" class="error" role="alert" hidden></p>
 
     <ul id="page-list" class="page-list"></ul>
+    <p id="page-status" class="visually-hidden" role="status" aria-live="polite"></p>
   </section>
 
   <!-- ステップ3 &mdash; 1つか、複数か -->
@@ -71,7 +72,7 @@
             <strong>何ページごとに分ける</strong>
             <span class="preset-note">
               長いスキャンを
-              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+              <input type="number" id="split-size" aria-describedby="split-error" min="1" max="5000" step="1" value="10"
                      inputmode="numeric" aria-label="1ファイルあたりのページ数">
               ページずつの章に切り分けます。
             </span>
@@ -82,7 +83,7 @@
           <span class="preset-body">
             <strong>指定ページで分ける</strong>
             <span class="preset-note">
-              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" aria-describedby="split-error" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="この番号の直前で切る">
               の直前で切ります。指定した各ページが新しいファイルの先頭になります。
             </span>
@@ -115,6 +116,7 @@
     </label>
 
     <p id="output-summary" class="field-summary"></p>
+    <p id="split-error" class="error" role="alert" hidden></p>
   </section>
 
   <!-- ステップ4 &mdash; 最後のひと押し -->
@@ -207,6 +209,10 @@
     <span data-phrase="page.clockwise">{n}ページ目を右に回す</span>
     <span data-phrase="page.earlier">{n}ページ目を前へ</span>
     <span data-phrase="page.later">{n}ページ目を後ろへ</span>
+    <span data-phrase="split.size">各ファイルのページ数には1から5,000までの整数を入力してください。</span>
+    <span data-phrase="plan.invalid">分割の設定を修正してから書類を作成してください。</span>
+    <span data-phrase="page.updated">{name}の元の{page}ページ目：全{total}ページ中{position}番目、回転{rotation}°。</span>
+    <span data-phrase="page.removed">{name}の元の{page}ページ目を削除しました。残りのページ数：{total}。</span>
     <span data-phrase="range.none">なし</span>
     <span data-phrase="range.pair">{from}、{to}</span>
     <span data-phrase="range.run">{from}-{to}</span>

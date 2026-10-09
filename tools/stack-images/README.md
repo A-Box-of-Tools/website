@@ -88,6 +88,7 @@ surface in the pipeline is one. A document canvas cannot go to a worker.
 | File | What it is |
 |---|---|
 | `src/main.js` | the page: file readiness, settings, cost estimate, progress and result comparison |
+| `src/run-context.js` | phrase keys and values describing the request that made the saved image |
 | `src/worker.js` | a shim around the pipeline, and the cancel flag |
 | `src/pipeline.js` | the run — open, survey, measure, stack, encode |
 | `src/raw.js` | finding the preview inside a RAW file. Reads offsets; never a pixel |
@@ -221,6 +222,17 @@ The page waits for imported batches before a run, retains an explicit record
 of skipped files, and keeps a running request's settings fixed. Alignment
 details name the frames that could not be measured, because a soft stack
 cannot tell the visitor which frame caused it.
+
+The finished result also describes the captured request: method, requested
+alignment, working resolution, exposure and encoding quality, with the sigma
+threshold or focus radius only for the method that uses it. `run-context.js`
+returns phrase keys and values, so the UI's next settings cannot describe the
+previous image and every language has its own labels.
+
+Stacking combines RGB values and always writes opaque alpha. It discards input
+transparency rather than blending the result onto a chosen background, and even
+PNG output is opaque. The page says so before a run; this photograph stacker's
+established pixel arithmetic is unchanged.
 
 The finished result prepares its reference comparison automatically. Both
 pictures are rendered in the same crop and resolution, with the reference on

@@ -101,6 +101,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Tout effacer</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Charger des repères&hellip;</button>
+        <select id="import-mode" aria-label="Lors du chargement des repères" aria-describedby="import-mode-note"><option value="append" selected>Ajouter aux parties actuelles</option><option value="replace">Remplacer les parties actuelles</option></select>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Format du fichier de temps">
           <option value="seconds" selected>secondes</option>
@@ -108,6 +109,7 @@
         </select>
         <button type="button" id="export-marks" class="ghost">Enregistrer les repères</button>
       </div>
+      <p class="path-note" id="import-mode-note">Ajouter conserve vos parties actuelles. Remplacer les supprime uniquement après la lecture réussie du fichier sélectionné.</p>
 
       <p class="field-note">
         Les repères s'enregistrent dans un fichier texte &mdash; une ligne par

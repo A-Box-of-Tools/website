@@ -200,8 +200,13 @@ export async function canEncode(mime) {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
-  return Boolean(blob) && blob.type === mime;
+  try {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
+    return Boolean(blob) && blob.type === mime;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
 
 /**
@@ -318,28 +323,31 @@ export function hasAlpha(bitmap, width, height) {
   const canvas = document.createElement('canvas');
   canvas.width = w;
   canvas.height = band;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  try {
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-  let found = false;
-  for (let top = 0; top < full && !found; top += band) {
-    const rows = Math.min(band, full - top);
-    // Cleared first so that the tail of the last band - which is shorter than
-    // the canvas - cannot show rows left over from the band before it.
-    ctx.clearRect(0, 0, w, band);
-    ctx.drawImage(bitmap, 0, -top);
+    let found = false;
+    for (let top = 0; top < full && !found; top += band) {
+      const rows = Math.min(band, full - top);
+      // Cleared first so that the tail of the last band - which is shorter than
+      // the canvas - cannot show rows left over from the band before it.
+      ctx.clearRect(0, 0, w, band);
+      ctx.drawImage(bitmap, 0, -top);
 
-    const { data } = ctx.getImageData(0, 0, w, rows);
-    for (let at = 3; at < data.length; at += 4) {
-      if (data[at] !== 255) {
-        found = true;
-        break;
+      const { data } = ctx.getImageData(0, 0, w, rows);
+      for (let at = 3; at < data.length; at += 4) {
+        if (data[at] !== 255) {
+          found = true;
+          break;
+        }
       }
     }
-  }
 
-  canvas.width = 0;
-  canvas.height = 0;
-  return found;
+    return found;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
 
 /**
@@ -362,36 +370,36 @@ export async function encode(source, {
   canvas.width = Math.max(1, Math.round(width));
   canvas.height = Math.max(1, Math.round(height));
 
-  const opaque = !FORMATS[mime]?.alpha;
-  const ctx = canvas.getContext('2d', { alpha: !opaque });
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+  try {
+    const opaque = !FORMATS[mime]?.alpha;
+    const ctx = canvas.getContext('2d', { alpha: !opaque });
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
-  if (opaque || background) {
-    ctx.fillStyle = background || '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (opaque || background) {
+      ctx.fillStyle = background || '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
+
+    if (!blob) throw saying('error.encode', { format: FORMATS[mime]?.label ?? mime });
+    // The type is checked rather than the call: see the note at the top of this
+    // file. A browser that cannot write this format has just handed back a PNG,
+    // and shipping that under the asked-for extension is the one outcome worse
+    // than refusing.
+    if (blob.type !== mime) {
+      throw saying('error.wrongtype', { format: FORMATS[mime]?.label ?? mime });
+    }
+
+    return blob;
+  } finally {
+    // A failed draw or encoder must not retain a full photo until collection.
+    canvas.width = 0;
+    canvas.height = 0;
   }
-
-  ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
-
-  // Free the backing store now rather than when the collector gets round to
-  // it. A batch runs one of these per file, and on large photographs the
-  // difference is hundreds of megabytes held for no reason.
-  canvas.width = 0;
-  canvas.height = 0;
-
-  if (!blob) throw saying('error.encode', { format: FORMATS[mime]?.label ?? mime });
-  // The type is checked rather than the call: see the note at the top of this
-  // file. A browser that cannot write this format has just handed back a PNG,
-  // and shipping that under the asked-for extension is the one outcome worse
-  // than refusing.
-  if (blob.type !== mime) {
-    throw saying('error.wrongtype', { format: FORMATS[mime]?.label ?? mime });
-  }
-
-  return blob;
 }
 
 /**

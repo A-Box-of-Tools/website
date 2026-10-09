@@ -76,6 +76,7 @@ const { show: note } = messageBox(el.loadNote);
 
 /** @type {Loaded|null} */
 let loaded = null;
+let loadGeneration = 0;
 let downloadUrl = '';
 let running = null;
 
@@ -94,11 +95,14 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const generation = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     const matroska = await isMatroska(file);
+    if (generation !== loadGeneration) return;
     const media = matroska ? await demuxMatroska(file) : await demux(file);
+    if (generation !== loadGeneration) return;
     const { video, audio } = media;
     const container = containerOf(file.name, matroska);
     const sound = describeSound(audio);
@@ -108,9 +112,18 @@ async function load(file) {
     const codecs = hasWebCodecs();
     const pictureDecodable = isH264(video.codec)
       || (codecs && await canDecode(decoderConfig(video)));
-    const soundDecodable = Boolean(sound && !sound.copyable && sound.codec)
-      && codecs && await canDecodeSound(sound)
-      && await canEncodeAac({ sampleRate: Math.round(sound.sampleRate), channels: Math.min(2, sound.channels) });
+    if (generation !== loadGeneration) return;
+    let soundDecodable = false;
+    if (sound && !sound.copyable && sound.codec && codecs) {
+      const decodable = await canDecodeSound(sound);
+      if (generation !== loadGeneration) return;
+      if (decodable) {
+        soundDecodable = await canEncodeAac({
+          sampleRate: Math.round(sound.sampleRate), channels: Math.min(2, sound.channels),
+        });
+        if (generation !== loadGeneration) return;
+      }
+    }
 
     const videoBytes = video.samples.reduce((sum, s) => sum + s.size, 0);
     loaded = {
@@ -145,10 +158,11 @@ async function load(file) {
 
     refresh();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     showLoadError(messageFor(error));
     picker.waiting();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) picker.done();
   }
 }
 
@@ -393,7 +407,9 @@ function showResult({ out, check, plan, jobs, seconds }) {
   el.resultSize.textContent = phrase('result.ready', {
     size: size(out.blob.size), from: size(file.size), container: say(containerText(container)),
   });
-  el.resultSub.textContent = phrase('result.sub');
+  el.resultSub.textContent = phrase('result.sub', {
+    sound: phrase(jobs.sound === 'none' ? 'check.sound.none' : 'check.sound.aac'),
+  });
 
   el.checkLine.textContent = phrase(check.ok ? 'check.passed' : 'check.failed', { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
@@ -475,6 +491,8 @@ function messageFor(error) {
 }
 
 function reset() {
+  // A newer file or clear owns the page even if an earlier read or probe finishes later.
+  loadGeneration += 1;
   running?.abort();
   running = null;
   el.run.disabled = false;

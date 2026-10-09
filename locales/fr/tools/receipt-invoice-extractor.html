@@ -78,6 +78,7 @@
   <template id="document-template">
     <article class="document">
       <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Retirer</button></div>
+      <p class="duplicate-note field-summary" role="status" aria-live="polite" aria-atomic="true" hidden></p>
       <div class="document-content">
         <div class="picture-column">
           <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Aperçu de la pièce jointe recadrée et compressée" hidden></a>
@@ -214,6 +215,7 @@
     <span data-phrase="missingTotal">Aucun total de document clair n’a été trouvé. Saisissez-le d’après la photo.</span>
     <span data-phrase="ambiguousTotal">Plusieurs totaux possibles ont été trouvés. Saisissez le bon total d’après la photo.</span>
     <span data-phrase="stopped">Lecture arrêtée. Saisissez les champs vous-même ou choisissez Relire.</span>
+    <span data-phrase="duplicatePhoto">Doublon possible : {count} photos ont le même nom et la même taille de fichier. Comparez-les avant de confirmer. Elles restent des documents distincts.</span>
     <span data-phrase="busy">Attendez la fin de la lecture en cours ou arrêtez-la d’abord.</span>
     <span data-phrase="tooMany">Ajoutez jusqu’à 20 photos. Retirez un document pour en ajouter un autre.</span>
     <span data-phrase="badFile">{name} n’est pas une image JPEG, PNG, WebP ou AVIF prise en charge.</span>

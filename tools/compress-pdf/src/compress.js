@@ -79,6 +79,7 @@ const MIN_PIXELS = 32;
  */
 export async function compressDocument(bytes, settings, hooks = {}) {
   const { onStage, onProgress, signal } = hooks;
+  stop(signal);
   const before = bytes.length;
 
   onStage?.('stage.reading');
@@ -120,6 +121,7 @@ export async function compressDocument(bytes, settings, hooks = {}) {
 
   onStage?.('stage.checking');
   const check = await verify(blob, inventory.pages);
+  stop(signal);
 
   return {
     blob,

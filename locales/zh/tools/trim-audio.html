@@ -94,6 +94,7 @@
         <button type="button" id="reset-segments" class="ghost danger">全部清空</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">载入标记&hellip;</button>
+        <select id="import-mode" aria-label="载入区间时" aria-describedby="import-mode-note"><option value="append" selected>追加到当前区间</option><option value="replace">替换当前区间</option></select>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="时间文件格式">
           <option value="seconds" selected>秒数</option>
@@ -101,6 +102,7 @@
         </select>
         <button type="button" id="export-marks" class="ghost">保存标记</button>
       </div>
+      <p class="path-note" id="import-mode-note">追加会保留当前区间。只有成功读取所选文件后，替换才会删除当前区间。</p>
 
       <p class="field-note">
         标记会保存成纯文本文件，一行一段，格式就是上面选的那种。这样一次很长的标记工作不会因为关掉标签页而白费，同一个文件也可以交给视频剪辑，或者任何能读这种排版的工具。

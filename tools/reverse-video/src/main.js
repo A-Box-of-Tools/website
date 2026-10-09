@@ -10,6 +10,7 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { reverseExact } from './reverse.js';
 import { measureFps, reverseByPlayback } from './playback.js';
 import { gopRanges } from './timeline.js';
+import { audioDecoderConfig, audioMemoryEstimate } from './audio.js';
 import { hasWebCodecs, hasEncoder, canDecode } from './shared/video-support.js';
 import { makeExample } from './example.js';
 
@@ -43,6 +44,7 @@ const el = {
   quality: $('quality'),
   keepAudio: $('keep-audio'),
   audioNote: $('audio-note'),
+  audioMemory: $('audio-memory'),
   sumSize: $('sum-size'),
   sumLength: $('sum-length'),
   sumFrames: $('sum-frames'),
@@ -81,6 +83,8 @@ let canReverseExactly = false;
 let canPlay = false;
 /** True from the moment a file is chosen until the page has finished reading it. */
 let loading = false;
+let loadId = 0;
+let loadController = null;
 let exporting = false;
 let abortController = null;
 let lastResultUrl = null;
@@ -93,10 +97,15 @@ let lastResultUrl = null;
  * hundred times. Doing either to the player you are watching would be rude, and
  * would also mean the export moved the picture under you while it ran.
  */
-const worker = document.createElement('video');
-worker.muted = true;
-worker.playsInline = true;
-worker.preload = 'auto';
+let worker = null;
+
+function playbackWorker() {
+  const video = document.createElement('video');
+  video.muted = true;
+  video.playsInline = true;
+  video.preload = 'auto';
+  return video;
+}
 
 /* ------------------------------------------------------------------ adding */
 
@@ -117,62 +126,60 @@ const picker = wireFilePicker({
 /* ------------------------------------------------------------------ loading */
 
 async function loadFile(picked) {
-  if (exporting) return;
+  if (!picked || exporting) return;
 
   clearError();
   releaseFile();
-
-  // Nothing may be exported while this runs. Opening a file takes a moment -
-  // the player has to read it, the demuxer has to walk it, and on the playback
-  // path a second of it is played to measure the frame rate - and for that
-  // moment the page is still describing the file before this one. Leaving the
-  // button live is how "reverse" gets pressed against a half-open file.
+  const mine = loadId;
+  const controller = new AbortController();
+  loadController = controller;
   loading = true;
   file = picked;
-  el.exportBtn.disabled = true;
   picker.busy(phrase('step.reading'));
 
   try {
     objectUrl = URL.createObjectURL(picked);
+    const currentWorker = playbackWorker();
+    worker = currentWorker;
     const played = await openInPlayer(el.preview, objectUrl);
-    if (played.ok) await openInPlayer(worker, objectUrl);
+    if (mine !== loadId) return;
+    if (played.ok) {
+      await openInPlayer(currentWorker, objectUrl);
+      if (mine !== loadId) return;
+    }
 
+    let found = null;
+    let refused = null;
     try {
-      media = await demux(picked);
-      fallbackReason = null;
+      found = await demux(picked);
     } catch (error) {
-      media = null;
-      fallbackReason = error instanceof UnsupportedFile
+      if (mine !== loadId) return;
+      refused = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
     }
+    if (mine !== loadId) return;
 
     let decodable = false;
-    if (media && hasWebCodecs()) {
-      decodable = await canDecode(decoderConfig(media.video));
-      if (!decodable) {
-        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
-      }
-    } else if (media && !hasWebCodecs()) {
-      fallbackReason = { key: 'read.nowebcodecs' };
+    if (found && hasWebCodecs()) {
+      decodable = await canDecode(decoderConfig(found.video));
+      if (mine !== loadId) return;
+      if (!decodable) refused = { key: 'read.nodecoder', values: { codec: found.video.codec } };
+    } else if (found) {
+      refused = { key: 'read.nowebcodecs' };
     }
 
-    // If the reader and the player disagree about the shape of the picture, one
-    // of them is applying a rotation the other is not. The player is what you
-    // are looking at, so it wins and the exact path stands down - the same rule
-    // /crop-video/ uses, for the same reason.
+    // The player is what the visitor sees. A shape disagreement still selects
+    // playback, but the decision belongs to this load rather than a later one.
     if (decodable && played.ok
-      && (played.width !== media.video.displayWidth
-        || played.height !== media.video.displayHeight)) {
+      && (played.width !== found.video.displayWidth
+        || played.height !== found.video.displayHeight)) {
       decodable = false;
-      fallbackReason = { key: 'read.turned' };
+      refused = { key: 'read.turned' };
     }
 
-    canReverseExactly = decodable;
-    canPlay = played.ok;
-
-    if (!canReverseExactly && !canPlay) {
-      showError(phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
+    if (!decodable && !played.ok) {
+      showError(phrase('open.failed', { reason: why(refused, 'read.notplayed') }));
       resetView();
       return;
     }
@@ -182,42 +189,54 @@ async function loadFile(picked) {
       return;
     }
 
-    source = canReverseExactly
-      ? { width: media.video.displayWidth, height: media.video.displayHeight }
+    const size = decodable
+      ? { width: found.video.displayWidth, height: found.video.displayHeight }
       : { width: played.width, height: played.height };
-    duration = played.duration || (media ? media.duration : 0);
-
-    if (canReverseExactly) {
-      fps = averageFps(media.video);
-      fpsMeasured = true;
-      frames = media.video.samples.length;
+    const seconds = played.duration || (found ? found.duration : 0);
+    let rate;
+    let measured;
+    let count;
+    if (decodable) {
+      rate = averageFps(found.video);
+      measured = true;
+      count = found.video.samples.length;
     } else {
-      // Out on the playback path the file's own frame times cannot be seen, so
-      // the clip is sampled at a fixed rate - measured here if the browser will
-      // report one, assumed if it will not. The page says which.
       picker.busy(phrase('step.measuring'));
-      const measured = await measureFps(worker);
-      fps = measured.fps;
-      fpsMeasured = measured.measured;
-      frames = Math.max(1, Math.floor(duration * fps));
+      const answer = await measureFps(currentWorker, 1, controller.signal);
+      if (mine !== loadId) return;
+      rate = answer.fps;
+      measured = answer.measured;
+      count = Math.max(1, Math.floor(seconds * rate));
     }
 
+    media = found;
+    fallbackReason = refused;
+    canReverseExactly = decodable;
+    canPlay = played.ok;
+    source = size;
+    duration = seconds;
+    fps = rate;
+    fpsMeasured = measured;
+    frames = count;
+    loading = false;
     showPreview(played.ok);
     describeSource(played);
-
-    el.exportBtn.disabled = false;
     updateAudioNote();
     updateSummary();
+    el.exportCard.inert = false;
+    el.exportBtn.disabled = false;
   } catch (error) {
+    if (mine !== loadId) return;
     console.error(error);
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
     showError(error?.message
       ? phrase(error.message, error.values) : phrase('open.notopened'));
     resetView();
   } finally {
-    loading = false;
-    picker.done();
+    if (mine === loadId) {
+      loading = false;
+      loadController = null;
+      picker.done();
+    }
   }
 }
 
@@ -270,31 +289,63 @@ function describeSource(played) {
   }
 }
 
-function releaseFile() {
-  if (objectUrl) {
-    el.preview.removeAttribute('src');
-    el.preview.load();
-    worker.removeAttribute('src');
-    worker.load();
-    URL.revokeObjectURL(objectUrl);
-    objectUrl = null;
-  }
-  media = null;
-  file = null;
+function clearResult() {
+  el.result.hidden = true;
+  el.resultVideo.pause();
+  el.resultVideo.removeAttribute('src');
+  el.resultVideo.load();
+  el.download.removeAttribute('href');
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
 }
 
-function resetView() {
+function releaseFile() {
+  loadId++;
+  loadController?.abort();
+  loadController = null;
+  loading = false;
+  el.preview.pause();
+  el.preview.removeAttribute('src');
+  el.preview.load();
+  if (worker) {
+    worker.pause();
+    worker.removeAttribute('src');
+    worker.load();
+    worker = null;
+  }
+  if (objectUrl) URL.revokeObjectURL(objectUrl);
+  objectUrl = null;
+  media = null;
+  file = null;
+  fallbackReason = null;
+  source = { width: 0, height: 0 };
+  duration = 0;
+  frames = 0;
+  fps = 30;
+  fpsMeasured = false;
+  canReverseExactly = false;
+  canPlay = false;
   el.exportBtn.disabled = true;
+  el.exportCard.inert = true;
   el.source.hidden = true;
   el.previewWrap.hidden = true;
   el.stageNote.hidden = true;
   el.pathNote.hidden = true;
+  el.audioMemory.hidden = true;
+  clearResult();
+}
+
+function resetView() {
   releaseFile();
+  picker.done();
+  picker.waiting();
 }
 
 /* ------------------------------------------------------------- the output */
 
 function updateAudioNote() {
+  if (loading || !file || !source.width) return;
+  updateAudioMemory();
   const off = !el.keepAudio.checked;
   if (off) {
     el.audioNote.textContent = phrase('sound.off');
@@ -302,6 +353,39 @@ function updateAudioNote() {
   }
   el.audioNote.textContent = phrase(canReverseExactly && media?.audio
     ? 'sound.exact' : 'sound.player');
+}
+
+function updateAudioMemory() {
+  el.audioMemory.hidden = false;
+  if (!el.keepAudio.checked) {
+    el.audioMemory.textContent = phrase('memory.off');
+    return;
+  }
+  if (!canReverseExactly) {
+    el.audioMemory.textContent = phrase('memory.unknown', { file: formatBytes(file.size) });
+    return;
+  }
+  if (!media.audio) {
+    el.audioMemory.textContent = phrase('memory.none');
+    return;
+  }
+  const config = audioDecoderConfig(media.audio);
+  const byTrack = Boolean(config) && typeof window.AudioDecoder === 'function';
+  const estimate = audioMemoryEstimate({
+    duration: media.audio.duration / media.audio.timescale,
+    sampleRate: config?.sampleRate ?? 48000,
+    channels: config?.numberOfChannels ?? media.audio.channels,
+  });
+  if (!estimate) {
+    el.audioMemory.textContent = phrase(byTrack ? 'memory.unavailable' : 'memory.unknown',
+      { file: formatBytes(file.size) });
+    return;
+  }
+  el.audioMemory.textContent = phrase(byTrack ? 'memory.track' : 'memory.file', {
+    pcm: formatBytes(estimate.pcmBytes),
+    peak: formatBytes(estimate.assemblyBytes),
+    file: formatBytes(file.size),
+  });
 }
 
 /** What the output frame will be: the picture as watched, at even numbers. */
@@ -313,7 +397,7 @@ function outputFrame() {
 }
 
 function updateSummary() {
-  if (!source.width) return;
+  if (loading || !file || !source.width) return;
 
   const frame = outputFrame();
   el.sumSize.textContent = frame.width === source.width && frame.height === source.height
@@ -371,7 +455,7 @@ function outputFilename(extension) {
 }
 
 async function runExport() {
-  if (exporting || loading || !file) return;
+  if (exporting || loading || !file || !source.width) return;
 
   clearError();
   exporting = true;
@@ -380,7 +464,7 @@ async function runExport() {
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
   el.progress.hidden = false;
-  el.result.hidden = true;
+  clearResult();
   el.preview.pause();
   setProgress({ phase: 'preparing', done: 0, total: 1 });
 
@@ -429,7 +513,7 @@ async function runExport() {
     exporting = false;
     abortController = null;
     el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = false;
+    el.exportBtn.disabled = loading || !file || !source.width;
   }
 }
 

@@ -95,7 +95,9 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |
 | `shared/css/modes.css` | `css_parts = ["modes"]` | a choice between two ways of working, as radio rows with a title and an explanation |
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
+| `shared/js/ordered-loads.js` | `js_parts = ["ordered-loads"]` | sequential batches for an append workflow; Reset retires pending reads and starts a fresh queue |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
+| `shared/js/image-batch.js` | `js_parts = ["image-batch", "image-convert"]` | sequential native image conversion with captured jobs, per-file failures and cooperative cancellation; imports `image-convert` |
 | `shared/js/image-list.js` | `js_parts = ["image-list"]` | a list of pictures to work through in order: decoded once for a thumbnail and their size, sorted, reordered, re-decoded one at a time |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
@@ -122,11 +124,13 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/mp4-muxer.js` | `js_parts = ["mp4-muxer"]` | the MP4 writer for one H.264 track an encoder just produced; imports `mp4-boxes` |
 | `shared/js/webcodecs.js` | `js_parts = ["webcodecs"]` | a decoder's configuration, a track's frame rate, microseconds, and the wait that keeps a feed loop behind the codecs |
 | `shared/js/errors.js` | `js_parts = ["errors"]` | the cancellation every page ignores by name, and `said`, the error whose message is a phrase key |
+| `shared/js/cooperative-work.js` | `js_parts = ["cooperative-work", "errors"]` | a work checkpoint yields real browser turns so long jobs can report progress and respond to Cancel; imports `errors` |
 | `shared/js/segments.js` | `js_parts = ["segments"]` | in-and-out points marked while something plays, and the text file they are saved as; the tool passes its own shortest segment |
 | `shared/js/timeline.js` | `js_parts = ["timeline"]` | the bar with every segment drawn on it; a subclass draws what lies underneath and says where a mark lands; imports `format` |
 | `shared/js/audio-decode.js` | `js_parts = ["audio-decode"]` | the browser's own decoder, asked for the audio track and nothing else |
 | `shared/js/samplerate.js` | `js_parts = ["samplerate"]` | the sample rate sniffed out of a file's header before it is decoded; `audio-decode` imports it |
 | `shared/js/wav.js` | `js_parts = ["wav"]` | the WAV writer: a header in front of the samples |
+| `shared/js/wav-async.js` | `js_parts = ["wav-async", "wav", "cooperative-work", "errors"]` | opt-in WAV packing shares the synchronous writer’s header and samples while yielding for progress and Cancel; imports `wav` and `cooperative-work`, which imports `errors` |
 | `shared/js/aac.js` | `js_parts = ["aac"]` | an AAC track's description, read out of an `mp4a` sample entry and written round a new one; imports `mp4-boxes` |
 | `shared/js/parse-errors.js` | `js_parts = ["parse-errors"]` | the `ParseError` every text parser throws, with a line, a column and a phrase key; each `parse-*` part below imports it |
 | `shared/js/parse-json.js` | `js_parts = ["parse-json"]` | JSON read into the tree every text parser speaks, and printed back |

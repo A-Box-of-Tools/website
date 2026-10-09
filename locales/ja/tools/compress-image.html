@@ -107,6 +107,7 @@
         <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
+      <p id="results-settings" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
@@ -169,6 +170,11 @@
     <span data-phrase="error.encode">このブラウザーは{format}で書き出しませんでした。</span>
     <span data-phrase="error.decode">このブラウザーは画像をデコードできませんでした。</span>
 
+    <span data-phrase="run.settings">今回の設定：画像ごとに{target}、目標サイズを超える画像は{format}、{resize}。</span>
+    <span data-phrase="run.format.auto">形式を自動選択</span>
+    <span data-phrase="run.format.keep">元の形式</span>
+    <span data-phrase="run.resize.on">縮小を許可</span>
+    <span data-phrase="run.resize.off">元の寸法を維持</span>
     <span data-phrase="results.all">{before}から{after}へ &mdash; {change}。どの画像も目標サイズ未満です。</span>
     <span data-phrase="results.missed.one">{before}から{after}へ。{count}枚が目標サイズに届きませんでした——下の行をご覧ください。</span>
     <span data-phrase="results.missed.many">{before}から{after}へ。{count}枚が目標サイズに届きませんでした——下の行をご覧ください。</span>

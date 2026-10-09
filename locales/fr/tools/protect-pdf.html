@@ -53,7 +53,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal" class="ghost" aria-pressed="false">Afficher</button>
       </div>
 
@@ -62,7 +62,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
       </div>
 
       <!--
@@ -111,7 +111,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">Afficher</button>
       </div>
     </fieldset>
@@ -171,6 +171,10 @@
     <span data-phrase="waiting.settings">Disponible quand les mots de passe correspondent et qu’une protection est demandée.</span>
     <span data-phrase="password.show">Afficher</span>
     <span data-phrase="password.hide">Masquer</span>
+    <span data-phrase="status.open.latin1">AES-128 ne peut pas représenter tous les caractères du mot de passe d’ouverture. Utilisez des caractères Latin-1 ou choisissez AES-256.</span>
+    <span data-phrase="status.owner.latin1">AES-128 ne peut pas représenter tous les caractères du mot de passe propriétaire. Utilisez des caractères Latin-1 ou choisissez AES-256.</span>
+    <span data-phrase="status.open.limit">Le mot de passe d’ouverture utilise {n} octets ; ce mode en conserve au maximum {limit}. Raccourcissez-le avant l’export pour ne perdre aucune partie.</span>
+    <span data-phrase="status.owner.limit">Le mot de passe propriétaire utilise {n} octets ; ce mode en conserve au maximum {limit}. Raccourcissez-le avant l’export pour ne perdre aucune partie.</span>
     <span data-phrase="status.blank">Sans ce mot de passe, aucun accès possible. Rien ici ne le devine. Gardez votre original.</span>
     <span data-phrase="status.mismatch">Les deux mots de passe ne correspondent pas encore.</span>
     <span data-phrase="status.short">{n} caractères. Un mot de passe court est le point faible du mécanisme actuel&nbsp;: préférez une phrase à un mot.</span>

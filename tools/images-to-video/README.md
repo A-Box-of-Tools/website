@@ -187,3 +187,15 @@ Adding audio, or transitions that need reordered frames, would mean extending it
 - **HEIC images** are not decodable by most browsers. They are skipped with a message.
 - Output is capped at 4 GB, and at whatever resolution the browser's encoder will accept
   (checked at runtime via `VideoEncoder.isConfigSupported`).
+
+The WebM clock uses the resolved hold duration directly, including one-frame
+holds shorter than 100 ms. A delayed decode may miss its own display interval,
+but the recorder always requests the image needed by the current clock rather
+than waiting for a skipped image before it can advance. At most two full-size
+decodes run together, the shown picture stays until its replacement is ready,
+and skipped or late bitmaps are closed even after cancellation. Native browser
+checks inspect the recorded duration and colour changes; pure boundary and
+skipped-clock cases live in `tests/js/images-to-video-recording.test.js`.
+
+The keyboard reorder controls restore focus to the moved image. Reaching either
+edge focuses the opposite direction so the same image remains reachable.

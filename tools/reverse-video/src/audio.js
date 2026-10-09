@@ -30,6 +30,8 @@
  */
 
 import { audioDecoderConfig, mp4aSampleEntry } from './shared/aac.js';
+import { QUEUE_LIMIT, settle } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 export { audioDecoderConfig, mp4aSampleEntry };
 
@@ -41,6 +43,30 @@ const AAC_CODEC = 'mp4a.40.2';
 
 /** Frames handed to the encoder in one go. One AAC packet is 1024. */
 const ENCODE_STEP = 1024;
+
+/** A fast codec still owes Cancel and the progress label a browser turn. */
+const YIELD_PACKETS = 32;
+const STALL_TIMEOUT = 30_000;
+
+function browserTurn() {
+  return new Promise((resolve) => {
+    const channel = new MessageChannel();
+    channel.port1.onmessage = () => {
+      channel.port1.close();
+      channel.port2.close();
+      resolve();
+    };
+    channel.port2.postMessage(0);
+  });
+}
+
+/** PCM only: browser allocations and the assembled output are additional. */
+export function audioMemoryEstimate({ duration, sampleRate, channels }) {
+  if (![duration, sampleRate, channels].every((n) => Number.isFinite(n) && n > 0)) return null;
+  const pcmBytes = Math.ceil(duration * sampleRate) * Math.ceil(channels) * 4;
+  if (!Number.isSafeInteger(pcmBytes) || !Number.isSafeInteger(pcmBytes * 2)) return null;
+  return { pcmBytes, assemblyBytes: pcmBytes * 2 };
+}
 
 /* ---------------------------------------------------------------- the samples */
 
@@ -113,9 +139,8 @@ export async function decodeTrack({ file, track, config, onProgress, signal }) {
     error: (error) => { failure ??= error; },
   });
 
-  decoder.configure(config);
-
   try {
+    decoder.configure(config);
     for (let i = 0; i < track.samples.length; i++) {
       if (signal?.aborted) throw Object.assign(new Error('Cancelled.'), { name: 'AbortError' });
       if (failure) throw failure;
@@ -143,10 +168,15 @@ export async function decodeTrack({ file, track, config, onProgress, signal }) {
   for (let c = 0; c < count; c++) channels.push(new Float32Array(frames));
 
   let at = 0;
-  for (const planes of pieces) {
+  for (let i = 0; i < pieces.length; i++) {
+    throwIfAborted(signal);
+    const planes = pieces[i];
     const length = planes[0]?.length ?? 0;
     for (let c = 0; c < count; c++) channels[c].set(planes[Math.min(c, planes.length - 1)], at);
     at += length;
+    // Allocating the flat channels briefly doubles PCM. The pieces no longer
+    // have a job once copied, so keeping them would prolong that peak.
+    pieces[i] = null;
   }
 
   return { channels, sampleRate: config.sampleRate };
@@ -198,6 +228,7 @@ export async function encodeAudioTrack({ channels, sampleRate, onProgress, signa
 
   const encoder = new AudioEncoder({
     output: (chunk, metadata) => {
+      if (signal?.aborted) return;
       try {
         if (!asc && metadata?.decoderConfig?.description) {
           const description = metadata.decoderConfig.description;
@@ -218,15 +249,27 @@ export async function encodeAudioTrack({ channels, sampleRate, onProgress, signa
     error: (error) => { failure ??= error; },
   });
 
-  encoder.configure({
-    codec: AAC_CODEC, sampleRate, numberOfChannels, bitrate: TARGET_BITRATE,
-  });
+  const cancel = () => {
+    if (encoder.state !== 'closed') encoder.close();
+  };
+  signal?.addEventListener('abort', cancel, { once: true });
+  let flushTimer;
 
   try {
-    // Fed a packet at a time rather than all at once, so a long track does not
-    // hand the encoder a single enormous buffer.
+    throwIfAborted(signal);
+    encoder.configure({
+      codec: AAC_CODEC, sampleRate, numberOfChannels, bitrate: TARGET_BITRATE,
+    });
+
+    // Small packets alone do not bound a queue: without a drain a long track
+    // hands every packet over in one browser turn and Cancel cannot run.
     for (let offset = 0; offset < length; offset += ENCODE_STEP) {
-      if (signal?.aborted) throw Object.assign(new Error('Cancelled.'), { name: 'AbortError' });
+      throwIfAborted(signal);
+      if (failure) throw failure;
+      await settle([encoder], {
+        limit: QUEUE_LIMIT - 1, stallAfter: STALL_TIMEOUT, stallKey: 'audio.stalled',
+      });
+      throwIfAborted(signal);
       if (failure) throw failure;
 
       const count = Math.min(ENCODE_STEP, length - offset);
@@ -251,14 +294,29 @@ export async function encodeAudioTrack({ channels, sampleRate, onProgress, signa
       }
 
       if ((offset / ENCODE_STEP) % 200 === 0) onProgress?.({ done: offset, total: length });
+      if ((offset / ENCODE_STEP + 1) % YIELD_PACKETS === 0) await browserTurn();
     }
 
-    await encoder.flush();
+    throwIfAborted(signal);
+    await Promise.race([
+      encoder.flush(),
+      new Promise((_, reject) => {
+        flushTimer = setTimeout(() => reject(new Error('audio.stalled')), STALL_TIMEOUT);
+      }),
+    ]);
+    throwIfAborted(signal);
     if (failure) throw failure;
     if (!encoded.length || !asc) {
       throw new Error('audio.noencode');
     }
+  } catch (error) {
+    // Closing an encoder interrupts a pending flush with a platform error.
+    // Cancellation still has the same meaning to the caller at either wait.
+    throwIfAborted(signal);
+    throw error;
   } finally {
+    clearTimeout(flushTimer);
+    signal?.removeEventListener('abort', cancel);
     if (encoder.state !== 'closed') encoder.close();
   }
 
@@ -293,6 +351,7 @@ export async function encodeAudioTrack({ channels, sampleRate, onProgress, signa
 export async function reversedAudioTrack({
   file, audio, maxDecodeBytes = 800 << 20, onProgress, signal,
 }) {
+  throwIfAborted(signal);
   const config = audio ? audioDecoderConfig(audio) : null;
   const canDecodeTrack = Boolean(config) && typeof window.AudioDecoder === 'function';
 
@@ -318,6 +377,7 @@ export async function reversedAudioTrack({
     try {
       decoded = await decodeWholeFile(file, sampleRate);
     } catch {
+      throwIfAborted(signal);
       // Either there is no audio track in the file or this browser will not
       // decode the one there is. Nothing out here can tell those apart, so the
       // note says both rather than picking one and being wrong half the time.
@@ -328,14 +388,17 @@ export async function reversedAudioTrack({
     }
   }
 
+  throwIfAborted(signal);
   if (!decoded.channels.length || !decoded.channels[0].length) {
     return { track: null, note: null };
   }
 
-  if (!await canEncodeAudio({
+  const encodable = await canEncodeAudio({
     sampleRate: decoded.sampleRate,
     numberOfChannels: Math.min(2, decoded.channels.length),
-  })) {
+  });
+  throwIfAborted(signal);
+  if (!encodable) {
     return {
       track: null,
       note: 'audio.noaac',
@@ -343,6 +406,7 @@ export async function reversedAudioTrack({
   }
 
   reverseChannels(decoded.channels);
+  throwIfAborted(signal);
 
   onProgress?.({ phase: 'sound-writing', done: 0, total: 1 });
   const track = await encodeAudioTrack({

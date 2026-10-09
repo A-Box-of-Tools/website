@@ -6,7 +6,7 @@ description = "Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV
 og_title = "Récupérer le son d'une vidéo sans l'envoyer nulle part"
 og_description = "Déposez un MP4, MOV ou WebM et enregistrez son audio en WAV. Seule la piste sonore est décodée, et le fichier ne va nulle part."
 og_image_alt = "Extraire l'audio d'une vidéo - le son seul, sans envoi"
-pledge = "Le décodeur est celui que votre navigateur possède déjà, le même chemin de code qui lit un fichier dans un élément <code>&lt;video&gt;</code>, et on lui demande la piste audio et rien d'autre. Écrire un WAV consiste à poser un en-tête de quarante-quatre octets devant les échantillons, dans <code>src/shared/wav.js</code>. Il n'y a aucun encodeur dans la boucle, aucune étape d'envoi, et cette page n'a aucune fonction réseau d'aucune sorte."
+pledge = """Le décodeur du navigateur ne lit que la piste audio. Le WAV est écrit localement en PCM 16 bits ou en flottant 32 bits. Cet outil ne contient ni encodeur MP3, ni téléversement, ni fonction réseau."""
 live_hint = "Inutile de nous croire sur parole&nbsp;: ouvrez les DevTools, regardez l'onglet réseau et déposez une vidéo. Pas une requête n'en transporte un octet. Ou débranchez internet et récupérez le son quand même."
 read_first = ", <code>src/shared/audio-decode.js</code> pour l'unique décodeur qui existe ici et pourquoi l'image n'est jamais demandée, et <code>src/shared/samplerate.js</code> pour la lecture d'en-tête qui empêche votre enregistrement d'être rééchantillonné en silence."
 howto_heading = "Comment extraire l'audio d'une vidéo sans l'envoyer"
@@ -45,8 +45,8 @@ title = "Le décodeur est celui que votre navigateur possède déjà."
 body = "Rien n'est livré ici pour lire votre format, et rien hors de cette page n'est sollicité pour le lire non plus. Les fichiers qui fonctionnent sont donc exactement ceux que votre navigateur sait déjà lire."
 
 [[privacy]]
-title = "Les échantillons sont écrits tels quels, pas réencodés."
-body = "Un WAV, ce sont les échantillons rendus par le décodeur avec un en-tête devant. Aucun encodeur ne prend de décision sur votre enregistrement, et il n'y a rien qu'on puisse appeler un envoi sur lequel cela se produirait."
+title = """Le format WAV précise sa fidélité."""
+body = """Le PCM 16 bits arrondit et écrête les échantillons décodés pour favoriser la compatibilité. Le flottant 32 bits les conserve si les canaux restent inchangés. Le mono fait la moyenne des canaux. Les deux formats sont écrits sur cet appareil sans téléversement."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -65,8 +65,8 @@ title = "Lisez ce qui a été trouvé."
 body = "La durée, le nombre de canaux et la fréquence d'échantillonnage, directement tirés du fichier. Si le fichier n'a pas déclaré sa fréquence, la page le dit, plutôt que de rééchantillonner en silence en prétendant n'avoir rien touché."
 
 [[howto]]
-title = "Choisissez le mono si vous le voulez plus léger."
-body = "Laisser les canaux tels quels garde l'enregistrement exactement comme il était. Le mixage en mono divise le fichier par deux et c'est ce que veut une transcription ou un enregistrement de voix&nbsp;; il fait la moyenne des canaux plutôt que d'en jeter un."
+title = """Choisissez le format et les canaux."""
+body = """Le PCM 16 bits est le choix compatible par défaut. Choisissez le flottant 32 bits pour conserver les échantillons décodés sans arrondi ni écrêtage. Gardez les canaux inchangés pour les conserver ; le mono en fait la moyenne et divise les données stéréo par deux."""
 
 [[howto]]
 title = "Écoutez-le avant de l'enregistrer."
@@ -82,7 +82,7 @@ a = "Non. Le décodage et l'écriture se font tous deux dans votre propre naviga
 
 [[faq]]
 q = "Peut-il me donner un MP3&nbsp;?"
-a = "Non, et il ne fera pas semblant. Aucun navigateur ne livre d'encodeur MP3, et le seul moyen d'en atteindre un est d'envoyer votre vidéo à un serveur qui en possède un &mdash; ce qui est précisément la seule chose que ce site existe pour ne pas faire. Ce que vous obtenez est un WAV&nbsp;: les échantillons avec un en-tête de quarante-quatre octets devant, ce qui ne demande aucun encodeur et ne peut coûter aucune qualité. Il est plus lourd, environ dix mégaoctets la minute en stéréo, et tout lecteur, téléphone ou éditeur l'ouvre. Ce qui veut un MP3 peut en faire un à partir de là en une seconde."
+a = """Cette page écrit du WAV plutôt que du MP3. Le MP3 exige un encodeur que cet outil ne fournit pas. Choisissez le PCM 16 bits compatible ou le flottant 32 bits ; aucun ne demande de téléversement. Le WAV est plus volumineux parce que son audio est non compressé ; un autre éditeur peut le compresser ensuite."""
 
 [[faq]]
 q = "L'image est-elle regardée à un moment&nbsp;?"
@@ -98,15 +98,15 @@ a = "Tout ce que votre navigateur décode, ce qui en pratique veut dire MP4, M4V
 
 [[faq]]
 q = "Y a-t-il une perte de qualité&nbsp;?"
-a = "Rien au-delà de ce que la vidéo avait déjà fait subir à son propre audio au moment de sa création. Les échantillons rendus par le décodeur sont écrits tels quels&nbsp;: il n'y a pas de second encodage, donc pas de seconde génération de perte. La seule chose à savoir est la fréquence d'échantillonnage&nbsp;: celle du fichier est lue d'abord dans son en-tête et le décodage se fait à cette fréquence, si bien que votre enregistrement n'est pas rééchantillonné en silence. Si un fichier n'en déclare aucune, la page dit quelle fréquence elle a supposée."
+a = """Le PCM 16 bits arrondit les échantillons décodés et écrête les valeurs au-delà de la pleine échelle. Choisissez le flottant 32 bits et gardez les canaux inchangés pour conserver les échantillons du décodeur, y compris ces valeurs. Le mono fait la moyenne des canaux. Le flottant ne répare pas les pertes déjà présentes dans la vidéo. La fréquence détectée dans le fichier est utilisée ; sinon la page indique la fréquence supposée."""
 
 [[faq]]
 q = "Pourquoi le WAV est-il tellement plus lourd que la vidéo&nbsp;?"
-a = "Parce qu'un WAV n'est pas compressé et que la piste audio de la vidéo l'était. Du son de qualité CD pèse environ dix mégaoctets la minute en stéréo, quel qu'en soit le contenu&nbsp;; la piste AAC d'un MP4 en fait peut-être un dixième. Le mixage en mono divise cela par deux. C'est le prix de ne pas réencoder, et il se paie une fois&nbsp;: ce avec quoi vous ouvrirez le fichier ensuite pourra le compresser."
+a = """Le WAV est non compressé. À 44,1 kHz, le stéréo 16 bits prend environ dix mégaoctets par minute. Le flottant double les données des échantillons ; le mono divise les données stéréo par deux. La taille de sortie est affichée avant la fin du fichier."""
 
 [[faq]]
 q = "Quelle durée de vidéo peut-il traiter&nbsp;?"
-a = "Aucune limite n'est inscrite ici, parce qu'aucun serveur ne la paie. Le plafond réel est la mémoire de votre propre machine&nbsp;: le fichier est lu en entier et toute la piste audio est conservée sous forme d'échantillons, si bien qu'un enregistrement très long sur une petite machine peut manquer de place. Quelques heures de vidéo passent ordinairement bien, et un téléphone en supportera moins qu'un portable."
+a = """Le fichier est lu et décodé en mémoire, où le WAV complet est aussi assemblé. Les longues prises peuvent dépasser la mémoire disponible ; les sorties dépassant la limite WAV de 4 Go sont refusées avant l’écriture des échantillons. Annuler abandonne une lecture en attente ou arrête le mixage et l’écriture par blocs. Le décodeur du navigateur peut continuer jusqu’à son retour, mais son résultat annulé est écarté."""
 
 [[faq]]
 q = "Puis-je le raccourcir ou monter le volume&nbsp;?"
@@ -122,7 +122,7 @@ a = "Oui. Chargez la page une fois, puis débranchez internet et elle continue d
 
 [schema]
 description = "Extraire la piste audio d'un MP4, MOV ou WebM et l'enregistrer en WAV. Seul l'audio est décodé, l'image n'est jamais lue, et rien n'est envoyé."
-features = ["Enregistre en WAV le son des vidéos MP4, M4V, MOV et WebM", "Ne décode que la piste audio&nbsp;; l'image n'est jamais lue", "Lit d'abord la fréquence d'échantillonnage du fichier, pour ne rien rééchantillonner en silence", "Mixe en mono par moyenne, pour la moitié de la taille", "Fait écouter le résultat avant l'enregistrement", "Emporte le résultat vers le découpeur ou l'éditeur audio sans l'enregistrer", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
+features = ["Enregistre le son vidéo en WAV PCM 16 bits compatible ou flottant 32 bits", "Ne décode que la piste audio&nbsp;; l'image n'est jamais lue", "Lit d'abord la fréquence d'échantillonnage du fichier, pour ne rien rééchantillonner en silence", "Mixe en mono en faisant la moyenne de tous les canaux", "Fait écouter le résultat avant l'enregistrement", "Emporte le résultat vers le découpeur ou l'éditeur audio sans l'enregistrer", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]
 title = "Déposez une vidéo ici"

@@ -10,6 +10,7 @@
 import { drawFrame } from './compose.js';
 import { decodeFull } from './images.js';
 import { pickWebmMimeType } from './support.js';
+import { recordingTimeline, recordingIndex } from './recording-timeline.js';
 
 /**
  * @param {{items: object[], settings: object, onProgress?: Function, signal?: AbortSignal}} args
@@ -32,13 +33,26 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
   // Paint the first frame before capture starts so the stream never opens on a blank canvas.
   const bitmaps = new Map();
   const decoding = new Map();
+  const failed = new Set();
+  let wantedIndex = 0;
+  let disposed = false;
 
   const prefetch = (index) => {
-    if (index >= items.length || bitmaps.has(index) || decoding.has(index)) return;
+    if (disposed || index >= items.length || bitmaps.has(index) || decoding.has(index)
+      || failed.has(index) || decoding.size >= 2) return;
     const promise = decodeFull(items[index])
-      .then((bitmap) => { bitmaps.set(index, bitmap); })
-      .catch(() => { /* leave it missing; the loop holds the previous frame */ })
-      .finally(() => { decoding.delete(index); });
+      .then((bitmap) => {
+        // The clock can pass an image while its decode is pending. It no
+        // longer belongs in the queue, even if export has already returned.
+        if (disposed || index < wantedIndex) bitmap.close();
+        else bitmaps.set(index, bitmap);
+      })
+      .catch(() => { failed.add(index); })
+      .finally(() => {
+        decoding.delete(index);
+        prefetch(wantedIndex);
+        prefetch(wantedIndex + 1);
+      });
     decoding.set(index, promise);
   };
 
@@ -47,13 +61,7 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
   if (bitmaps.has(0)) drawFrame(ctx, bitmaps.get(0), { fit, background });
   prefetch(1);
 
-  const boundaries = [];
-  let clock = 0;
-  for (const item of items) {
-    clock += Math.max(0.1, item.duration);
-    boundaries.push(clock);
-  }
-  const totalSeconds = clock;
+  const { boundaries, totalSeconds } = recordingTimeline(items);
 
   const stream = canvas.captureStream(fps);
   const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond });
@@ -66,6 +74,7 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
   });
 
   const cleanup = () => {
+    disposed = true;
     for (const bitmap of bitmaps.values()) bitmap.close();
     bitmaps.clear();
     for (const track of stream.getTracks()) track.stop();
@@ -115,11 +124,21 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
 
         const elapsed = (now - startedAt) / 1000;
 
-        let index = boundaries.findIndex((end) => elapsed < end);
-        if (index === -1) index = items.length - 1;
+        const index = recordingIndex(boundaries, elapsed);
+        wantedIndex = index;
+        for (const [cachedIndex, bitmap] of bitmaps) {
+          if (cachedIndex < index && cachedIndex !== shownIndex) {
+            bitmap.close();
+            bitmaps.delete(cachedIndex);
+          }
+        }
+        // Ask for the clock's target even when it skipped the prefetched
+        // image. Waiting for an advance first would strand every later frame.
+        prefetch(index);
+        prefetch(index + 1);
 
-        // Only advance if the next image finished decoding; otherwise hold the
-        // current one rather than flashing an empty frame.
+        // Hold the current picture until the requested one is decoded rather
+        // than painting a blank frame while its pixels are still arriving.
         if (index !== shownIndex && bitmaps.has(index)) {
           const previous = bitmaps.get(shownIndex);
           if (previous) {
@@ -127,7 +146,6 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
             bitmaps.delete(shownIndex);
           }
           shownIndex = index;
-          prefetch(index + 1);
         }
 
         const bitmap = bitmaps.get(shownIndex);

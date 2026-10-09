@@ -151,6 +151,8 @@ SINGLETONS = {
     # three text converters above by name only.
     ('convert.js', 'convert-to-mp4'):
         'copies or re-encodes video and sound into an MP4; a namesake of the text converters and nothing more',
+    ('convert.js', 'heic-to-jpg'):
+        'It converts HEIC and AVIF pictures and copies primary HEIC metadata for JPEG, independently of the text and MP4 converters.',
 }
 
 

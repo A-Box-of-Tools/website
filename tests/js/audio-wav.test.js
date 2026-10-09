@@ -11,7 +11,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { writeWav, wavSize } from '../../shared/js/wav.js';
+import { prepareWav, writeWav, wavSize } from '../../shared/js/wav.js';
+import { writeWavAsync } from '../../shared/js/wav-async.js';
 import { blobBytes } from './helpers.js';
 
 /** Read a WAV back: the fields this writer sets, and the samples. */
@@ -142,9 +143,84 @@ test('wavSize agrees with the file that gets written', async () => {
     const made = writeWav(
       Array.from({ length: channels }, () => ramp(frames)), 44100, { bits });
     const bytes = await blobBytes(made);
-    // The float header is larger by the cbSize field and the fact chunk, so the
-    // estimate is the floor rather than the exact figure there.
-    assert.ok(bytes.length >= wavSize(frames, channels, bits));
-    assert.ok(bytes.length - wavSize(frames, channels, bits) <= 14);
+    assert.equal(bytes.length, wavSize(frames, channels, bits));
   }
+});
+
+
+test('cooperative WAV preserves complete bytes across block boundaries and depths', async () => {
+  const channels = [ramp(8192 * 2 + 7), ramp(8192 * 2 + 7), ramp(8192 * 2 + 7)];
+  channels[0][8192] = 1.5;
+  channels[1][8191] = -1.5;
+  channels[2][8193] = 0.1234567;
+  for (const bits of [16, 32]) {
+    const sync = await blobBytes(writeWav(channels, 48000, { bits }));
+    const async = await blobBytes(await writeWavAsync(channels, 48000, { bits }));
+    assert.deepEqual(async, sync);
+    const read = await readWav(await writeWavAsync(channels, 48000, { bits }));
+    assert.equal(read.format.channels, 3);
+    assert.equal(read.format.bits, bits);
+    assert.equal(read.channels[0][8192], bits === 32 ? 1.5 : 32767);
+    assert.equal(read.channels[1][8191], bits === 32 ? -1.5 : -32768);
+    if (bits === 32) {
+      assert.equal(read.channels[2][8193], channels[2][8193]);
+      const view = new DataView(read.bytes.buffer, read.bytes.byteOffset, read.bytes.byteLength);
+      assert.equal(view.getUint32(read.chunks.fact.at, true), channels[0].length);
+    }
+  }
+});
+
+test('RIFF limits include the entire PCM or float header before sample allocation', () => {
+  for (const bits of [16, 32]) {
+    const header = bits === 32 ? 58 : 44;
+    const bytesPerFrame = bits / 8;
+    const frames = Math.floor((0xffffffff - header + 8) / bytesPerFrame);
+    const safe = [{ length: frames }];
+    const plan = prepareWav(safe, 48000, { bits });
+    const count = new DataView(plan.header.buffer).getUint32(4, true);
+    assert.equal(count, header - 8 + frames * bytesPerFrame);
+    assert.ok(count <= 0xffffffff);
+    assert.throws(() => prepareWav([{ length: frames + 1 }], 48000, { bits }), /wav\.toobig/);
+    assert.throws(() => writeWav([{ length: frames + 1 }], 48000, { bits }), /wav\.toobig/);
+  }
+});
+
+test('cooperative WAV refuses malformed and oversized channels before reading samples', async () => {
+  await assert.rejects(writeWavAsync([], 48000), /wav\.nochannels/);
+  await assert.rejects(writeWavAsync([ramp(2), ramp(3)], 48000), /wav\.uneven/);
+  const huge = new Proxy({ length: 2 ** 31 }, {
+    get(target, key) {
+      if (key === 'length') return target.length;
+      throw new Error('sample data should not be read');
+    },
+  });
+  await assert.rejects(writeWavAsync([huge], 48000, { bits: 32 }), /wav\.toobig/);
+});
+
+test('cooperative WAV yields to a real timer and aborts without publishing a partial file', async () => {
+  const controller = new AbortController();
+  const frames = 8192 * 40;
+  let done = 0;
+  let publications = 0;
+  const pending = writeWavAsync([ramp(frames)], 48000, {
+    signal: controller.signal, budgetMs: 0,
+    onProgress(progress) {
+      assert.ok(progress.done > done && progress.done <= frames);
+      done = progress.done;
+      if (done === 8192) setTimeout(() => controller.abort(), 0);
+    },
+  }).then(() => { publications++; });
+  await assert.rejects(pending, { name: 'AbortError' });
+  assert.ok(done > 0 && done < frames);
+  assert.equal(publications, 0);
+  const held = done;
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  assert.equal(done, held, 'no late progress arrives after rejection');
+});
+
+test('a cancelled WAV never reads the source samples', async () => {
+  const controller = new AbortController();
+  controller.abort();
+  const source = new Proxy({}, { get() { throw new Error('cancelled source was read'); } });
+  await assert.rejects(writeWavAsync([source], 48000, { signal: controller.signal }), { name: 'AbortError' });
 });

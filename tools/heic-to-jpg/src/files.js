@@ -99,3 +99,15 @@ export function metadataText(exif, t) {
     ? parts.reduce((a, b) => t('join.dot', { a, b }))
     : t('meta.nothing');
 }
+
+
+/** Several pictures count one source once; matching filenames do not merge sources. */
+export function resultTotals(results) {
+  const inputs = new Map(results.map((result) => [result.inputId, result.before]));
+  return {
+    files: inputs.size,
+    pictures: results.length,
+    beforeBytes: [...inputs.values()].reduce((sum, size) => sum + size, 0),
+    afterBytes: results.reduce((sum, result) => sum + result.after, 0),
+  };
+}

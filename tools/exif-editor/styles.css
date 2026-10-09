@@ -164,6 +164,17 @@
 .result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
 .result-detail { margin: 0.2rem 0 0; font-size: 0.82rem; color: var(--text-dim); max-width: 62ch; }
 
+/* A result's policy and byte inventory stay with that downloadable copy. */
+.result-policy { margin: 0.4rem 0 0; font-size: 0.82rem; max-width: 70ch; }
+.clean-inspection { flex-basis: 100%; min-width: 0; font-size: 0.84rem; }
+.clean-inspection summary { cursor: pointer; width: fit-content; padding: 0.5rem 0; }
+.clean-inspection summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.copy-scope { margin: 0.4rem 0; color: var(--text-dim); }
+.copy-facts { margin: 0.5rem 0; display: grid; gap: 0.4rem; }
+.copy-facts > div { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; }
+.copy-facts dt { font-weight: 600; }
+.copy-facts dd { margin: 0; overflow-wrap: anywhere; }
+
 /* --------------------------------------------------------------- inspector */
 
 .empty-note {

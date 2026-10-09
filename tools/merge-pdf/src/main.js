@@ -5,7 +5,8 @@ import { messageBox } from './shared/message-box.js';
 import { readSource } from './assemble.js';
 import { bytes, count as countOf, shortName } from './format.js';
 import { sizeLabel } from './shared/pdf-pages.js';
-import { describeRanges, parseRanges } from './plan.js';
+import { describeRanges, parseRanges, parseSplit, splitInto } from './plan.js';
+import { orderedLoads } from './shared/ordered-loads.js';
 import { produce } from './produce.js';
 import { wireReorder } from './reorder.js';
 import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
@@ -22,6 +23,7 @@ const count = (n, noun) => countOf(n, noun, phrase);
 const el = {
   dropzone: $('dropzone'),
   fileInput: $('file-input'),
+  example: $('example-button'),
   loadError: $('load-error'),
   unlockHint: $('unlock-hint'),
   loadNote: $('load-note'),
@@ -39,6 +41,7 @@ const el = {
   rangeTurn: $('range-turn'),
   rangeError: $('range-error'),
   pageList: $('page-list'),
+  pageStatus: $('page-status'),
 
   outputCard: $('output-card'),
   splitModes: $('split-modes'),
@@ -47,6 +50,7 @@ const el = {
   byFilePreset: $('by-file-preset'),
   keepBookmarks: $('keep-bookmarks'),
   outputSummary: $('output-summary'),
+  splitError: $('split-error'),
 
   runCard: $('run-card'),
   run: $('run'),
@@ -87,6 +91,7 @@ let entries = [];
 let running = null;
 /** Object URLs behind the download links, revoked when they are replaced. */
 let urls = [];
+const pageEntries = new WeakMap();
 
 /* ------------------------------------------------------------------ loading */
 
@@ -107,55 +112,49 @@ const picker = wireFilePicker({
  * picker that started over each time would make the tool useless for the job
  * it is named after.
  */
-async function addFiles(files) {
-  if (running) return;
-
-  picker.busy(readingLabel(files.length));
-  el.loadError.hidden = true;
-  sayWhereToUnlock(false);
-
-  const refused = [];
-  const notes = [];
-
-  for (const file of files) {
-    try {
-      if (!looksLikePdf(file)) {
-        refused.push(phrase('load.notpdf', { name: file.name }));
-        continue;
+const imports = orderedLoads({
+  async read(file) {
+    if (!looksLikePdf(file)) throw new Error('load.notpdf');
+    const raw = new Uint8Array(await file.arrayBuffer());
+    const doc = await PdfDocument.open(raw);
+    const source = readSource(doc, file.name);
+    if (!source.pages.length) throw new Error('load.nopages');
+    return { source, name: file.name, size: file.size, repaired: doc.repaired };
+  },
+  complete({ items, errors }) {
+    const notes = [];
+    for (const item of items) {
+      sources.push(item);
+      for (let index = 0; index < item.source.pages.length; index += 1) {
+        entries.push({ source: item.source, index, rotate: 0 });
       }
-
-      const raw = new Uint8Array(await file.arrayBuffer());
-      const doc = await PdfDocument.open(raw);
-      const source = readSource(doc, file.name);
-
-      if (!source.pages.length) {
-        refused.push(phrase('load.nopages', { name: file.name }));
-        continue;
-      }
-
-      sources.push({ source, name: file.name, size: file.size });
-      for (let index = 0; index < source.pages.length; index += 1) {
-        entries.push({ source, index, rotate: 0 });
-      }
-
-      if (doc.repaired) {
-        notes.push(phrase('load.repaired', { name: file.name }));
-      }
-    } catch (error) {
-      refused.push(phrase('load.failed', { name: file.name, reason: messageFor(error) }));
-      // Several files arrive at once here, and one locked document among
-      // them is reason enough to say where the password comes off.
-      if (error instanceof EncryptedPdfError) sayWhereToUnlock(true);
+      if (item.repaired) notes.push(phrase('load.repaired', { name: item.name }));
     }
-  }
+    const refused = errors.map(({ value: file, error }) => {
+      if (error.message === 'load.notpdf' || error.message === 'load.nopages') {
+        return phrase(error.message, { name: file.name });
+      }
+      if (error instanceof EncryptedPdfError) sayWhereToUnlock(true);
+      return phrase('load.failed', { name: file.name, reason: messageFor(error) });
+    });
+    if (refused.length) showLoadError(refused.join('\n'));
+    if (notes.length) note(notes.join(' '));
+    render();
+  },
+  status(pending) {
+    if (pending) picker.busy(readingLabel(pending));
+    else picker.done();
+    renderPlan();
+  },
+});
 
-  picker.done();
-
-  if (refused.length) showLoadError(refused.join('\n'));
-  if (notes.length) note(notes.join(' '));
-  else el.loadNote.hidden = true;
-
-  render();
+function addFiles(files) {
+  if (running) return;
+  invalidateResult();
+  el.loadError.hidden = true;
+  el.loadNote.hidden = true;
+  sayWhereToUnlock(false);
+  imports.add(files);
 }
 
 function looksLikePdf(file) {
@@ -248,10 +247,12 @@ function buildPageNode(entry, index) {
   const li = document.createElement('li');
   li.className = 'page-item';
   li.dataset.index = String(index);
+  pageEntries.set(li, entry);
 
   const handle = document.createElement('button');
   handle.type = 'button';
   handle.className = 'drag-handle';
+  handle.dataset.action = 'drag';
   handle.textContent = '⋮⋮';
   handle.title = phrase('page.drag', { n: index + 1 });
   handle.setAttribute('aria-label', handle.title);
@@ -309,6 +310,7 @@ function buildPageNode(entry, index) {
   const remove = document.createElement('button');
   remove.type = 'button';
   remove.className = 'remove-btn';
+  remove.dataset.action = 'remove';
   remove.textContent = '×';
   remove.title = phrase('page.remove', { n: index + 1 });
   remove.setAttribute('aria-label', remove.title);
@@ -316,6 +318,7 @@ function buildPageNode(entry, index) {
     if (running) return;
     entries.splice(index, 1);
     render();
+    el.pageStatus.textContent = phrase('page.removed', { name: entry.source.label, page: entry.index + 1, total: entries.length });
   });
   shapeWrap.append(remove);
 
@@ -339,16 +342,16 @@ function buildPageNode(entry, index) {
   const controls = document.createElement('div');
   controls.className = 'page-controls';
   controls.append(
-    tileButton('↺', phrase('page.anticlockwise', { n: index + 1 }), false, () => {
+    tileButton('anticlockwise', '↺', phrase('page.anticlockwise', { n: index + 1 }), false, () => {
       turn(entry, -90);
     }),
-    tileButton('↻', phrase('page.clockwise', { n: index + 1 }), false, () => {
+    tileButton('clockwise', '↻', phrase('page.clockwise', { n: index + 1 }), false, () => {
       turn(entry, 90);
     }),
-    tileButton('‹', phrase('page.earlier', { n: index + 1 }), index === 0, () => {
+    tileButton('earlier', '‹', phrase('page.earlier', { n: index + 1 }), index === 0, () => {
       move(index, index - 1);
     }),
-    tileButton('›', phrase('page.later', { n: index + 1 }),
+    tileButton('later', '›', phrase('page.later', { n: index + 1 }),
       index === entries.length - 1, () => {
         move(index, index + 1);
       }),
@@ -359,10 +362,11 @@ function buildPageNode(entry, index) {
   return li;
 }
 
-function tileButton(glyph, label, disabled, onClick) {
+function tileButton(action, glyph, label, disabled, onClick) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'tile-btn';
+  button.dataset.action = action;
   button.textContent = glyph;
   button.title = label;
   button.setAttribute('aria-label', label);
@@ -375,6 +379,7 @@ function turn(entry, degrees) {
   if (running) return;
   entry.rotate = (((entry.rotate + degrees) % 360) + 360) % 360;
   render();
+  announcePage(entry);
 }
 
 function move(from, to) {
@@ -382,6 +387,7 @@ function move(from, to) {
   const [item] = entries.splice(from, 1);
   entries.splice(to, 0, item);
   render();
+  announcePage(item);
 }
 
 /*
@@ -425,9 +431,11 @@ el.restore.addEventListener('click', () => {
 
 el.clearAll.addEventListener('click', () => {
   if (running) return;
+  imports.reset();
   sources = [];
   entries = [];
   el.range.value = '';
+  el.pageStatus.textContent = '';
   el.loadError.hidden = true;
   el.loadNote.hidden = true;
   render();
@@ -477,16 +485,22 @@ function applyRange(what) {
 
 /* ---------------------------------------------------------------- the plan */
 
-el.splitModes.addEventListener('change', renderPlan);
+function planChanged() {
+  if (running) return;
+  invalidateResult();
+  renderPlan();
+}
+el.splitModes.addEventListener('change', planChanged);
 for (const input of [el.splitSize, el.splitAt]) {
   input.addEventListener('input', () => {
+    if (running) return;
     // Typing in one of the two boxes means that is the mode being asked for.
     const owner = input.closest('.preset')?.querySelector('input[type="radio"]');
     if (owner) owner.checked = true;
-    renderPlan();
+    planChanged();
   });
 }
-el.keepBookmarks.addEventListener('change', renderPlan);
+el.keepBookmarks.addEventListener('change', planChanged);
 
 function splitMode() {
   return el.splitModes.querySelector('input:checked')?.value ?? 'single';
@@ -494,16 +508,23 @@ function splitMode() {
 
 /** The split as `plan.js` wants it, and as the summary line describes it. */
 function currentSplit() {
-  const mode = splitMode();
-  const at = mode === 'at'
-    ? parseRanges(el.splitAt.value, entries.length, phrase).pages
-    : [];
-  return { mode, size: Number(el.splitSize.value) || 1, at };
+  return parseSplit({ mode: splitMode(), size: el.splitSize.value, at: el.splitAt.value }, entries.length, phrase);
 }
 
 function renderPlan() {
-  const split = currentSplit();
-  const files = countOutputs(split);
+  if (running) return;
+  const { split, error, field } = currentSplit();
+  el.splitError.textContent = error;
+  el.splitError.hidden = !error;
+  el.splitAt.setAttribute('aria-invalid', String(field === 'at'));
+  el.splitSize.setAttribute('aria-invalid', String(field === 'size'));
+  el.run.disabled = Boolean(error) || !entries.length || imports.pending > 0;
+  if (error) {
+    el.outputSummary.textContent = phrase('plan.invalid');
+    el.run.textContent = phrase('run.one');
+    return;
+  }
+  const files = splitInto(entries, split).length;
   const from = new Set(entries.map((entry) => entry.source)).size;
 
   const parts = [
@@ -515,10 +536,6 @@ function renderPlan() {
       ? phrase('plan.one')
       : phrase('plan.many', { files: count(files, 'pdf'), n: files }),
   ];
-
-  if (split.mode === 'at' && !split.at.length && el.splitAt.value.trim()) {
-    parts.push(phrase('plan.nosplit'));
-  }
 
   // The clauses are run together by a phrase too: a space between two of
   // them is English punctuation and is not how every language does it.
@@ -533,21 +550,37 @@ function renderPlan() {
   if (el.run.textContent !== label) el.run.textContent = label;
 }
 
-/** How many files the current plan produces, without building any of them. */
-function countOutputs(split) {
-  if (!entries.length) return 0;
-  if (split.mode === 'each') return entries.length;
-  if (split.mode === 'every') return Math.ceil(entries.length / Math.max(1, split.size));
-  if (split.mode === 'at') {
-    return new Set(split.at.filter((n) => n > 1 && n <= entries.length)).size + 1;
+function announcePage(entry) {
+  el.pageStatus.textContent = phrase('page.updated', { name: entry.source.label, page: entry.index + 1,
+    position: entries.indexOf(entry) + 1, total: entries.length, rotation: entry.rotate });
+}
+
+function restorePageFocus(focus) {
+  if (!focus) return;
+  const found = entries.indexOf(focus.entry);
+  const index = found < 0 ? Math.min(focus.index, entries.length - 1) : found;
+  if (index < 0) { el.restore.focus(); return; }
+  const tile = el.pageList.children[index];
+  let button = tile.querySelector(`[data-action="${focus.action}"]`);
+  if (button?.disabled) {
+    const opposite = { earlier: 'later', later: 'earlier' }[focus.action];
+    button = opposite ? tile.querySelector(`[data-action="${opposite}"]`) : null;
   }
-  if (split.mode === 'file') return new Set(entries.map((entry) => entry.source)).size;
-  return 1;
+  (button && !button.disabled ? button : tile.querySelector('.drag-handle')).focus();
+}
+
+function invalidateResult() {
+  el.result.hidden = true;
+  releaseDownloads();
 }
 
 /* --------------------------------------------------------------- rendering */
 
 function render() {
+  const active = document.activeElement;
+  const tile = active?.closest('.page-item');
+  const focus = tile ? { entry: pageEntries.get(tile), index: Number(tile.dataset.index), action: active.dataset.action } : null;
+  invalidateResult();
   // Every tile below is about to be replaced, so a drag still holding one is
   // holding a node that will not be on the page a line from now.
   cancelReorder();
@@ -566,6 +599,7 @@ function render() {
 
   el.pageList.replaceChildren(...entries.map(buildPageNode));
   renderPlan();
+  restorePageFocus(focus);
 }
 
 /* ----------------------------------------------------------------- running */
@@ -574,10 +608,15 @@ el.run.addEventListener('click', run);
 el.cancel.addEventListener('click', () => running?.abort());
 
 async function run() {
-  if (!entries.length || running) return;
+  if (!entries.length || running || imports.pending) return;
+  const { split, error } = currentSplit();
+  if (error) { renderPlan(); el.splitError.scrollIntoView({ block: 'nearest' }); return; }
+  const chosen = entries.map((entry) => ({ ...entry }));
+  const sourceCount = sources.length;
 
   running = new AbortController();
   el.run.disabled = true;
+  lockEditing(true);
   el.cancel.hidden = false;
   el.result.hidden = true;
   el.runError.hidden = true;
@@ -588,8 +627,8 @@ async function run() {
   let cancelled = false;
 
   try {
-    const result = await produce(entries, {
-      split: currentSplit(),
+    const result = await produce(chosen, {
+      split,
       stem: sources[0]?.name ?? 'document',
       suffix: sources.length > 1 ? 'merged' : 'edited',
       bookmarks: el.keepBookmarks.checked,
@@ -600,7 +639,8 @@ async function run() {
         ? phrase('progress.writing', { what })
         : phrase('progress.checking')),
     });
-    showResult(result);
+    running.signal.throwIfAborted();
+    showResult(result, sourceCount);
   } catch (error) {
     if (error?.name === 'AbortError') {
       cancelled = true;
@@ -612,13 +652,21 @@ async function run() {
     }
   } finally {
     running = null;
-    el.run.disabled = false;
+    lockEditing(false);
+    renderPlan();
     el.cancel.hidden = true;
     // The bar stays up after a cancel, because it is carrying the only message
     // that says what happened.
     el.progress.hidden = !cancelled;
     if (cancelled) el.progressBar.style.width = '0%';
   }
+}
+
+function lockEditing(locked) {
+  for (const root of [el.pagesCard, el.outputCard, el.sourceList]) root.inert = locked;
+  el.fileInput.disabled = locked;
+  if (el.example) el.example.disabled = locked;
+  el.dropzone.classList.toggle('busy', locked);
 }
 
 let stageText = '';
@@ -633,7 +681,7 @@ function setProgress(done, total, stage) {
 
 /* ----------------------------------------------------------------- results */
 
-function showResult(result) {
+function showResult(result, sourceCount) {
   const total = result.files.reduce((sum, file) => sum + file.size, 0);
   const pages = result.files.reduce((sum, file) => sum + file.pages, 0);
 
@@ -645,7 +693,7 @@ function showResult(result) {
     });
   el.resultSub.textContent = phrase('result.sub', {
     pages: count(pages, 'page'),
-    files: count(sources.length, 'file'),
+    files: count(sourceCount, 'file'),
   });
 
   el.checkLine.textContent = result.ok

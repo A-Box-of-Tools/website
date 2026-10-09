@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="変更箇所の移動" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>前の変更</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>次の変更</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
   <!--
@@ -113,8 +125,18 @@
     <span data-phrase="result.identical">この2つはバイト単位で同一です。</span>
     <span data-phrase="result.ignored">無視するよう指定した違いを無視すれば、同じです。</span>
     <span data-phrase="result.counts">{added}行追加、{removed}行削除</span>
-    <span data-phrase="result.summary">{changes} &mdash; 行の{percent}%は両方にあります。{note}</span>
+    <span data-phrase="result.summary">{changes}。内容が一致する行は{percent}%です。{note}</span>
     <span data-phrase="result.newline">片方は改行で終わっていて、もう片方は終わっていません。</span>
+    <span data-phrase="result.endings.one">対応する{count}行の行末が異なります。パッチでは元の行末を正確に保持します。</span>
+    <span data-phrase="result.endings.many">対応する{count}行の行末が異なります。パッチでは元の行末を正確に保持します。</span>
+    <span data-phrase="ending.crlf">CRLF行末</span>
+    <span data-phrase="ending.lf">LF行末</span>
+    <span data-phrase="ending.cr">CR行末</span>
+    <span data-phrase="ending.none">末尾の改行なし</span>
+    <span data-phrase="nav.shown.one">{count}か所の変更ブロックを表示</span>
+    <span data-phrase="nav.shown.many">{count}か所の変更ブロックを表示</span>
+    <span data-phrase="nav.position">表示中の{count}か所の変更ブロックのうち{current}か所目</span>
+    <span data-phrase="nav.truncated">表示を途中で省略しています。移動できる変更ブロックは全{total}か所中{shown}か所です。ダウンロードにはすべての差分が含まれます。</span>
     <span data-phrase="result.failed">何も出ませんでした。</span>
 
     <span data-phrase="skip.one">変更のない{count}行</span>

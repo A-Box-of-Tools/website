@@ -317,7 +317,7 @@ function buildItemNode(item, index) {
   left.title = phrase('tile.earlier.short');
   left.setAttribute('aria-label', phrase('tile.earlier', { name: item.name }));
   left.disabled = index === 0;
-  left.addEventListener('click', () => { moveItem(items, index, index - 1); render(); });
+  left.addEventListener('click', () => moveFrame(index, -1));
   controls.append(left);
 
   const right = document.createElement('button');
@@ -327,7 +327,7 @@ function buildItemNode(item, index) {
   right.title = phrase('tile.later.short');
   right.setAttribute('aria-label', phrase('tile.later', { name: item.name }));
   right.disabled = index === items.length - 1;
-  right.addEventListener('click', () => { moveItem(items, index, index + 1); render(); });
+  right.addEventListener('click', () => moveFrame(index, 1));
   controls.append(right);
 
   meta.append(controls);
@@ -377,6 +377,18 @@ function buildItemNode(item, index) {
   });
 
   return li;
+}
+
+function moveFrame(index, by) {
+  const to = index + by;
+  const hadFocus = el.list.children[index]?.contains(document.activeElement);
+  moveItem(items, index, to);
+  render();
+  if (hadFocus) {
+    const buttons = el.list.children[to].querySelectorAll('.move-btn');
+    const action = by < 0 ? 0 : 1;
+    (buttons[action].disabled ? buttons[1 - action] : buttons[action]).focus();
+  }
 }
 
 /** Move the dragged item to wherever the marker currently sits. */

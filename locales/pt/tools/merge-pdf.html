@@ -58,6 +58,7 @@
     <p id="range-error" class="error" role="alert" hidden></p>
 
     <ul id="page-list" class="page-list"></ul>
+    <p id="page-status" class="visually-hidden" role="status" aria-live="polite"></p>
   </section>
 
   <!-- Passo 3 &mdash; um arquivo, ou vários -->
@@ -80,7 +81,7 @@
             <strong>Dividir a cada tantas páginas</strong>
             <span class="preset-note">
               Uma digitalização longa cortada em capítulos de
-              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+              <input type="number" id="split-size" aria-describedby="split-error" min="1" max="5000" step="1" value="10"
                      inputmode="numeric" aria-label="Páginas em cada arquivo">
               páginas.
             </span>
@@ -92,7 +93,7 @@
             <strong>Dividir na página&hellip;</strong>
             <span class="preset-note">
               Cortar antes de
-              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" aria-describedby="split-error" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Números de página antes dos quais cortar">
               &mdash; cada uma dessas começa um arquivo novo.
             </span>
@@ -129,6 +130,7 @@
     </label>
 
     <p id="output-summary" class="field-summary"></p>
+    <p id="split-error" class="error" role="alert" hidden></p>
   </section>
 
   <!-- Passo 4 &mdash; o único clique -->
@@ -228,6 +230,10 @@
     <span data-phrase="page.clockwise">Girar a página {n} no sentido horário</span>
     <span data-phrase="page.earlier">Mover a página {n} para antes</span>
     <span data-phrase="page.later">Mover a página {n} para depois</span>
+    <span data-phrase="split.size">Digite um número inteiro de 1 a 5.000 para as páginas de cada arquivo.</span>
+    <span data-phrase="plan.invalid">Corrija os ajustes de divisão antes de criar os documentos.</span>
+    <span data-phrase="page.updated">{name}, página original {page}: posição {position} de {total}, girada {rotation}°.</span>
+    <span data-phrase="page.removed">Página original {page} de {name} removida. Páginas restantes: {total}.</span>
     <span data-phrase="range.none">nenhuma</span>
     <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>

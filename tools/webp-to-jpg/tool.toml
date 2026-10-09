@@ -44,7 +44,7 @@ css_parts = ["file-list", "progress", "results", "form", "notes"]
 # Shared modules this tool asks for. image-convert is the decode-and-encode
 # engine the three format converters share; example-photo and example-mark draw
 # the two files behind the "Try an example" button.
-js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "download", "format", "example-photo", "example-mark"]
+js_parts = ["file-picker", "image-convert", "image-batch", "zip", "crc32", "message-box", "download", "format", "example-photo", "example-mark"]
 # The tool to offer next, on the carry-on row under the result. A JPEG that has
 # just been written is the thing people most often need smaller.
 handoff = ["compress-image", "resize-image"]

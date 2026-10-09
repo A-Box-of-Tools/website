@@ -29,7 +29,7 @@ import assert from 'node:assert/strict';
 
 import {
   HANDLES, MIN_SIZE, STRENGTHS, blockCount, blockSize, blurRadius, clampRect,
-  contains, fromDrag, isUsable, moveRect, resizeRect, strengthOf, topmostAt,
+  contains, coordinateRect, fromDrag, isUsable, moveRect, resizeRect, strengthOf, topmostAt,
 } from '../../tools/redact-image/src/regions.js';
 import {
   FILL, applyRegions, blurRegion, fillRegion, pixelateRegion,
@@ -473,4 +473,37 @@ test('riskNote: a blur is reported by its radius', () => {
 test('strengthNote: names the setting and the number behind it', () => {
   assert.match(strengthNote('heavy', say), /label=strength\.heavy/);
   assert.match(strengthNote('heavy', say), new RegExp(`blocks=${STRENGTHS.heavy.blocks}`));
+});
+
+
+/* Numeric fields must not silently turn an incomplete draft into saved pixels. */
+test('coordinate editing rejects incomplete, fractional and nonpositive sizes', () => {
+  const valid = { x: 10, y: 12, width: 20, height: 15 };
+  for (const [key, value] of [['x', NaN], ['y', Infinity], ['x', 1.5], ['width', 0],
+    ['height', -1], ['width', Number.MAX_SAFE_INTEGER + 1]]) {
+    assert.deepEqual(coordinateRect({ ...valid, [key]: value }, { width: 100, height: 80 }),
+      { error: 'coordinates.invalid' });
+  }
+});
+
+test('coordinate editing fits source edges and keeps tiny pictures editable', () => {
+  assert.deepEqual(coordinateRect({ x: 95, y: -12, width: 20, height: 2 }, { width: 100, height: 80 }),
+    { rect: { x: 80, y: 0, width: 20, height: 6 } });
+  assert.deepEqual(coordinateRect({ x: 12, y: 10, width: 300, height: 200 }, { width: 100, height: 80 }),
+    { rect: { x: 0, y: 0, width: 100, height: 80 } });
+  assert.deepEqual(coordinateRect({ x: 1, y: 1, width: 1, height: 1 }, { width: 3, height: 2 }),
+    { rect: { x: 0, y: 0, width: 3, height: 2 } });
+});
+
+test('an applied numeric rectangle destroys exactly its original-pixel area', () => {
+  const image = picture(40, 30);
+  const before = new Uint8ClampedArray(image.data);
+  const { rect } = coordinateRect({ x: 38, y: 28, width: 8, height: 7 }, image);
+  assert.deepEqual(rect, { x: 32, y: 23, width: 8, height: 7 });
+  applyRegions(image, [{ ...rect, style: 'fill' }], 'medium');
+  for (let y = 0; y < image.height; y += 1) for (let x = 0; x < image.width; x += 1) {
+    const offset = (y * image.width + x) * 4;
+    assert.deepEqual([...image.data.slice(offset, offset + 4)],
+      x >= rect.x && y >= rect.y ? [...FILL, 255] : [...before.slice(offset, offset + 4)]);
+  }
 });

@@ -138,6 +138,7 @@ let rows = [];
 let visible = FIRST_PAGE;
 let playing = 0;
 let token = 0;
+let selection = 0;
 
 /* --------------------------------------------------------------- the files */
 
@@ -149,6 +150,8 @@ const picker = wireFilePicker({
 });
 
 async function openFiles(files) {
+  const mine = ++selection;
+  token += 1;
   hideError();
   stopPlaying();
   picker.busy(readingLabel(files.length));
@@ -165,6 +168,7 @@ async function openFiles(files) {
       // One turn of the event loop per file, so that the count above is painted
       // rather than every one of three hundred appearing at once at the end.
       await pause();
+      if (mine !== selection) return;
 
       try {
         instances.push(await scan(files[at]));
@@ -179,9 +183,13 @@ async function openFiles(files) {
       }
     }
   } finally {
-    picker.done();
-    el.working.hidden = true;
+    if (mine === selection) {
+      picker.done();
+      el.working.hidden = true;
+    }
   }
+
+  if (mine !== selection) return;
 
   if (instances.length === 0) {
     showError(phrase('error.none', { why: refused[0] ?? '' }));
@@ -196,10 +204,14 @@ async function openFiles(files) {
   }
 
   cache.clear();
+  frames.clear();
+  open = null;
+  shown = null;
   windowedSeries = null;
   stack = { series: organise(instances), index: 0 };
   renderSeriesPicker();
   await chooseSeries(0);
+  if (mine !== selection) return;
   el.viewerCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -385,7 +397,7 @@ async function showPosition(at, fresh) {
   const file = await load(instance);
   if (mine !== token) return;
 
-  const changedFile = !open || open.name !== file.name;
+  const changedFile = !open || open.source !== file.source;
   open = file;
 
   // Before anything is drawn, and not after. `fitToViewport` measures the
@@ -409,8 +421,8 @@ async function showPosition(at, fresh) {
     position = stack.positions[at];
   }
 
-  await draw(file, position.frame, fresh);
-  updateScrubLabel(at);
+  await draw(file, position.frame, fresh, mine);
+  if (mine === token) updateScrubLabel(at);
 }
 
 /**
@@ -442,17 +454,17 @@ function refit(at, frames) {
 
 /** The parsed file, from the ring or from the disk. */
 async function load(instance) {
-  const found = cache.get(instance.name);
+  const generation = selection;
+  const found = cache.get(instance.file);
   if (found) return found;
 
   const parsed = await parse(
     new Uint8Array(await instance.file.arrayBuffer()), instance.name, instance.file.size,
   );
-  cache.set(instance.name, parsed);
-  while (cache.size > 2) {
-    const oldest = cache.keys().next().value;
-    if (oldest === instance.name) break;
-    cache.delete(oldest);
+  parsed.source = instance.file;
+  if (generation === selection) {
+    cache.set(instance.file, parsed);
+    while (cache.size > 2) cache.delete(cache.keys().next().value);
   }
   return parsed;
 }
@@ -461,9 +473,10 @@ async function load(instance) {
 
 const frames = new Map();
 
-async function draw(file, index, fresh) {
+async function draw(file, index, fresh, mine) {
   el.viewportFail.hidden = true;
-  el.canvas.hidden = false;
+  el.canvas.hidden = true;
+  shown = null;
 
   if (!file.image || !file.pixel) {
     return fail(phrase('pixels.absent'));
@@ -476,12 +489,15 @@ async function draw(file, index, fresh) {
   try {
     frame = await frameOf(file, index);
   } catch (error) {
+    if (mine !== token) return;
     return fail(phrase('pixels.failed', {
       reason: phrase(error.message, error.values),
     }));
   }
 
+  if (mine !== token) return;
   shown = frame;
+  el.canvas.hidden = false;
 
   // A series whose first slice could not be decoded would otherwise never get
   // a window at all, so this asks whether *this series* has one rather than
@@ -509,16 +525,21 @@ function fail(message) {
 
 /** One decoded frame, from the ring or by decoding it. */
 async function frameOf(file, index) {
-  const key = `${file.name}#${index}`;
-  const found = frames.get(key);
-  if (found) return found;
+  const generation = selection;
+  // A filename is a label, and two slices from different folders can share it.
+  // Keep only File identities here: retaining a parsed file would keep its bytes.
+  for (const [key, frame] of frames) {
+    if (key.source === file.source && key.index === index) return frame;
+  }
 
   const frame = file.syntax.pixels === 'jpeg'
     ? await browserJpeg(file, index)
     : decodeFrame(file.bytes, file.pixel, file.image, file.syntax, index);
 
-  frames.set(key, frame);
-  while (frames.size > CACHE_FRAMES) frames.delete(frames.keys().next().value);
+  if (generation === selection) {
+    frames.set({ source: file.source, index }, frame);
+    while (frames.size > CACHE_FRAMES) frames.delete(frames.keys().next().value);
+  }
   return frame;
 }
 

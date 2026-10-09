@@ -39,11 +39,52 @@
       <!-- The picture is a canvas, not an <img>, because the redaction is
            painted into it rather than laid over it. The boxes above it are
            outlines and handles only; src/stage.js adds them. -->
-      <div class="stage-wrap">
+      <div class="preview-tools">
+        <label for="zoom">Zoom de l’aperçu</label>
+        <select id="zoom" aria-controls="stage-viewport">
+          <option value="1">Ajuster à la largeur</option>
+          <option value="2">2× la largeur ajustée</option>
+          <option value="4">4× la largeur ajustée</option>
+        </select>
+        <div class="preview-pan" role="group" aria-label="Déplacer l’aperçu">
+          <button type="button" id="pan-left" class="ghost" aria-controls="stage-viewport" aria-label="Déplacer l’aperçu vers la gauche" title="Déplacer l’aperçu vers la gauche">←</button>
+          <button type="button" id="pan-up" class="ghost" aria-controls="stage-viewport" aria-label="Déplacer l’aperçu vers le haut" title="Déplacer l’aperçu vers le haut">↑</button>
+          <button type="button" id="pan-down" class="ghost" aria-controls="stage-viewport" aria-label="Déplacer l’aperçu vers le bas" title="Déplacer l’aperçu vers le bas">↓</button>
+          <button type="button" id="pan-right" class="ghost" aria-controls="stage-viewport" aria-label="Déplacer l’aperçu vers la droite" title="Déplacer l’aperçu vers la droite">→</button>
+        </div>
+      </div>
+      <p class="note preview-note">Le zoom agrandit uniquement l’aperçu. Les coordonnées et l’image enregistrée conservent leurs pixels d’origine.</p>
+      <div class="stage-wrap" id="stage-viewport" tabindex="0" role="region" aria-label="Aperçu de l’image défilant">
         <div class="stage" id="stage">
           <canvas id="preview" role="img" aria-label="Aperçu"></canvas>
         </div>
       </div>
+
+      <fieldset id="coordinates" class="options coordinate-editor" disabled>
+        <legend>Coordonnées de la zone sélectionnée</legend>
+        <p id="coordinate-selection"></p>
+        <div class="coordinate-grid">
+          <div>
+            <label for="coordinate-x">Gauche (px)</label>
+            <input id="coordinate-x" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-y">Haut (px)</label>
+            <input id="coordinate-y" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-width">Largeur (px)</label>
+            <input id="coordinate-width" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-height">Hauteur (px)</label>
+            <input id="coordinate-height" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+        </div>
+        <p id="coordinate-note" class="note">Saisissez des pixels entiers de l’image d’origine, mesurés depuis son coin supérieur gauche à 0, 0. Appliquer maintient la zone dans l’image&nbsp;; les tailles inférieures à 6 pixels sont agrandies si l’image le permet.</p>
+        <button type="button" id="apply-coordinates" class="ghost">Appliquer les coordonnées</button>
+        <p id="coordinate-status" class="coordinate-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </fieldset>
 
       <fieldset class="options" id="style-group">
         <legend>Ce que fait un nouveau cadre</legend>
@@ -250,6 +291,10 @@
     <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
       du bouton de don propres à la page ont été chargés depuis {hosts}
       hôtes&nbsp;; aucun d'eux n'a reçu une image ou un octet d'une image.</span>
+    <span data-phrase="coordinates.selection">Zone {n} — pixels d’origine</span>
+    <span data-phrase="coordinates.empty">Sélectionnez une zone ou ajoutez-en une au centre pour modifier ses coordonnées.</span>
+    <span data-phrase="coordinates.invalid">Saisissez des nombres entiers pour les quatre coordonnées, avec une largeur et une hauteur positives.</span>
+    <span data-phrase="coordinates.applied">Appliqué&nbsp;: ⁦{width} x {height}⁩ à ⁦{x}, {y}⁩ en pixels d’origine.</span>
     <span data-phrase="region.remove">Retirer</span>
   </div>
 </main>

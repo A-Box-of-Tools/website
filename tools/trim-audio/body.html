@@ -100,6 +100,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Clear them all</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Load marks&hellip;</button>
+        <select id="import-mode" aria-label="When loading marks" aria-describedby="import-mode-note"><option value="append" selected>Append to current parts</option><option value="replace">Replace current parts</option></select>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Timestamp file format">
           <option value="seconds" selected>seconds</option>
@@ -107,6 +108,7 @@
         </select>
         <button type="button" id="export-marks" class="ghost">Save marks</button>
       </div>
+      <p class="path-note" id="import-mode-note">Append keeps your current parts. Replace discards them only after the selected file is read successfully.</p>
 
       <p class="field-note">
         The marks save as a plain text file &mdash; one line a part, the format

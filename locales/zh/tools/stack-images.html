@@ -136,6 +136,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">合成时会丢弃透明度。保存的图片不透明，即使是 PNG 格式也一样。</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>结果</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>工作内存</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -195,6 +197,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>对齐详情</summary>
@@ -264,6 +267,26 @@
     <span data-phrase="progress.measure">正在量 {name} 偏了多少&hellip;</span>
     <span data-phrase="progress.stack">正在堆栈 | 已读 {total} 帧里的 {done} 帧</span><span data-phrase="progress.stack-banded">正在堆栈 | 第 {band} 条，共 {bands} 条，已读 {total} 帧里的 {done} 帧</span><span data-phrase="progress.encode">正在写出图片&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings}{detail}</span>
+    <span data-phrase="result.settings">合成方法：{method}；对齐：{alignment}；处理分辨率：{resolution}；曝光：{gain}×；{encoding}。</span>
+    <span data-phrase="result.method.mean">平均</span>
+    <span data-phrase="result.method.median">中位数</span>
+    <span data-phrase="result.method.sigma">Sigma 裁剪</span>
+    <span data-phrase="result.method.max">取亮</span>
+    <span data-phrase="result.method.min">取暗</span>
+    <span data-phrase="result.method.sum">相加</span>
+    <span data-phrase="result.method.focus">焦点堆叠</span>
+    <span data-phrase="result.alignment.projective">自动透视校正</span>
+    <span data-phrase="result.alignment.translate">只平移</span>
+    <span data-phrase="result.alignment.similarity">平移、旋转和缩放</span>
+    <span data-phrase="result.alignment.none">不对齐</span>
+    <span data-phrase="result.resolution.full">原尺寸</span>
+    <span data-phrase="result.resolution.half">一半</span>
+    <span data-phrase="result.resolution.quarter">四分之一</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG 品质 {quality}</span>
+    <span data-phrase="result.settings.sigma">裁剪阈值：{kappa}σ。</span>
+    <span data-phrase="result.settings.focus">清晰度测量半径：{radius} px。</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;，{size} | {count} 帧在 {seconds} 秒里合到了一起</span><span data-phrase="result.moves">每一帧都量过，也都推回了自己的位置。</span>
     <span data-phrase="result.moves-some">{total} 帧里有 {count} 帧没法有把握地量出来，就留在原处了。</span><span data-phrase="result.moves-none">这些帧是照进来的样子直接堆的。</span><span data-phrase="result.moves-clamped">有 {count} 帧报出的旋转量对一串连拍来说太大了，就只用平移纠正了。</span><span data-phrase="result.cropped">把它们各自推开之后，边上留下了不是每一帧都够得到的地方，那些被裁掉了。</span>
 

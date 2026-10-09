@@ -32,8 +32,16 @@ mistaken for the paper boundary, at the cost of possibly keeping extra backgroun
 Neutral paper and square pictures retain the existing detection behavior. The visitor
 reviews and adjusts the crop to keep the whole document and remove the
 surrounding background. Changing the crop or rotation clears confirmation.
-One image represents one document; there is no grouping of invoice pages or
-automatic duplicate detection. A collection of receipt templates is not split
+One image represents one document; there is no grouping of invoice pages.
+Photos with the exact same filename and byte size receive a possible-duplicate
+warning on every matching document. The warning updates when a photo is added
+or removed, but never removes a record, changes its confirmation or excludes it
+from totals. Different photographs can have the same name and size, and a
+renamed or resized duplicate is not detected: compare the pictures before
+confirming them. No image bytes or OCR text are compared for this advisory.
+Prepared attachment names already carry the stable record number, so repeated
+camera names stay distinct in individual downloads, the report, email and ZIP.
+A collection of receipt templates is not split
 into separate documents: the visitor needs a picture or crop of each one.
 
 AVIF files use the browser's existing decoder. A recognized filename extension

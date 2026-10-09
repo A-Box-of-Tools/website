@@ -135,3 +135,78 @@ test('every codec on the menu has the parts the page reads', () => {
   }
   assert.equal(codecById('nonsense').id, CODECS[0].id, 'an unknown id falls back to the first');
 });
+
+
+test('braced escapes report an out-of-range code point as a codec refusal', () => {
+  for (const text of [String.raw`\u{110000}`, String.raw`\u{ffffff}`]) {
+    assert.throws(() => unescapeUnicode(text), error => error instanceof CodecError && error.message === 'esc.range');
+  }
+  assert.equal(unescapeUnicode(String.raw`\u{10ffff}`), String.fromCodePoint(0x10ffff));
+  assert.equal(unescapeUnicode(String.raw`\u{0}`), String.fromCharCode(0));
+  assert.equal(unescapeUnicode(String.raw`\u{d800}`), String.fromCharCode(0xd800), 'JavaScript code-unit behavior stays available');
+  assert.equal(unescapeUnicode(String.raw`\ud800`), String.fromCharCode(0xd800));
+  assert.equal(unescapeUnicode(String.raw`\ud83d\ude00`), '😀');
+  assert.equal(unescapeUnicode(String.raw`\u{1f600}`), '😀');
+  for (const text of [String.raw`\u{}`, String.raw`\u{1234567}`, String.raw`\u{xyz}`, String.raw`\u{12`]) assert.throws(() => unescapeUnicode(text), CodecError);
+});
+
+const noncanonical = error => error instanceof CodecError && error.message === 'b64.canonical';
+
+test('canonical standard and URL profiles accept the RFC vectors in their chosen spelling', () => {
+  for (const text of ['', 'f', 'fo', 'foo', 'foob', 'fooba', 'foobar', 'café 😀']) {
+    for (const id of ['base64', 'base64url']) {
+      const codec = codecById(id);
+      assert.equal(codec.decode(codec.encode(text), { canonical: true }), text, id + ':' + text);
+    }
+  }
+  const bytes = new Uint8Array([0xfb, 0xef, 0xff]);
+  assert.deepEqual(base64ToBytes('++//', { canonical: true }), bytes);
+  assert.deepEqual(base64ToBytes('--__', { canonical: true, urlSafe: true }), bytes);
+});
+
+test('canonical decoding rejects nonzero unused bits for every one-byte value', () => {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  for (let byte = 0; byte < 256; byte++) {
+    const bytes = new Uint8Array([byte]), encoded = bytesToBase64(bytes);
+    assert.deepEqual(base64ToBytes(encoded, { canonical: true }), bytes);
+    const last = alphabet.indexOf(encoded[1]);
+    for (let extra = 1; extra < 16; extra++) {
+      const variant = encoded[0] + alphabet[last + extra] + '==';
+      assert.deepEqual(base64ToBytes(variant), bytes, 'the compatible default still reads ' + variant);
+      assert.throws(() => base64ToBytes(variant, { canonical: true }), noncanonical, variant);
+    }
+  }
+});
+
+test('canonical decoding rejects the unused two bits after two input bytes', () => {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  for (let byte = 0; byte < 256; byte++) {
+    const bytes = new Uint8Array([17, byte]), encoded = bytesToBase64(bytes), last = alphabet.indexOf(encoded[2]);
+    for (let extra = 1; extra < 4; extra++) {
+      const variant = encoded.slice(0, 2) + alphabet[last + extra] + '=';
+      assert.deepEqual(base64ToBytes(variant), bytes);
+      assert.throws(() => base64ToBytes(variant, { canonical: true }), noncanonical, variant);
+    }
+  }
+});
+
+test('canonical decoding distinguishes selected alphabets, padding profiles and whitespace', () => {
+  for (const input of ['Zg', 'Zg==\n', ' Zg==', 'Z g==', '--__', '+-/_']) {
+    assert.doesNotThrow(() => base64ToBytes(input));
+    assert.throws(() => base64ToBytes(input, { canonical: true }), noncanonical, input);
+  }
+  for (const input of ['Zg==', 'Zg\n', '++//', '-+_/']) {
+    assert.doesNotThrow(() => base64ToBytes(input));
+    assert.throws(() => base64ToBytes(input, { canonical: true, urlSafe: true }), noncanonical, input);
+  }
+  assert.equal(codecById('base64').decode('Zh=='), 'f');
+  assert.equal(codecById('base64url').decode('Zh'), 'f');
+  assert.throws(() => codecById('base64').decode('Zh==', { canonical: true }), noncanonical);
+  assert.throws(() => codecById('base64url').decode('Zh', { canonical: true }), noncanonical);
+});
+
+test('canonical byte validation precedes the independent UTF-8 text check', () => {
+  assert.deepEqual(base64ToBytes('/w==', { canonical: true }), new Uint8Array([255]));
+  assert.throws(() => codecById('base64').decode('/w==', { canonical: true }), TypeError);
+  assert.throws(() => codecById('base64').decode('/x==', { canonical: true }), noncanonical);
+});

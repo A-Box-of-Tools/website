@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
-import { MIN_SIZE, clampRect } from './regions.js';
+import { MIN_SIZE, clampRect, coordinateRect } from './regions.js';
 import { applyRegions } from './redact.js';
 import { Preview } from './preview.js';
 import { Stage } from './stage.js';
@@ -26,6 +26,16 @@ const el = {
   editEmpty: $('edit-empty'),
   editControls: $('edit-controls'),
   stage: $('stage'),
+  stageViewport: $('stage-viewport'),
+  zoom: $('zoom'),
+  coordinates: $('coordinates'),
+  coordinateSelection: $('coordinate-selection'),
+  coordinateStatus: $('coordinate-status'),
+  coordinateX: $('coordinate-x'),
+  coordinateY: $('coordinate-y'),
+  coordinateWidth: $('coordinate-width'),
+  coordinateHeight: $('coordinate-height'),
+  applyCoordinates: $('apply-coordinates'),
   preview: $('preview'),
   styleGroup: $('style-group'),
   strength: $('strength'),
@@ -88,6 +98,7 @@ let resultUrl = null;
 let pending = 0;
 let revision = 0;
 let loadVersion = 0;
+let coordinateState;
 
 const preview = new Preview(el.preview);
 const stage = new Stage(el.stage, {
@@ -158,6 +169,7 @@ async function load(file) {
     history = [];
     selectedId = null;
     counter = 0;
+    resetZoom();
 
     el.loadedName.textContent = phrase('loaded.name', {
       name: file.name, width: decoded.width, height: decoded.height,
@@ -210,6 +222,8 @@ el.clearImage.addEventListener('click', () => {
   wired.done();
   dropPicture();
   preview.clear();
+  stage.setSource(0, 0);
+  resetZoom();
   regions = [];
   history = [];
   selectedId = null;
@@ -284,6 +298,7 @@ el.addBox.addEventListener('click', () => {
 });
 
 el.undo.addEventListener('click', () => {
+  stage.cancelGesture();
   const previous = history.pop();
   if (!previous) return;
   invalidateResult();
@@ -293,6 +308,7 @@ el.undo.addEventListener('click', () => {
 });
 
 el.clearBoxes.addEventListener('click', () => {
+  stage.cancelGesture();
   if (regions.length === 0) return;
   invalidateResult();
   snapshot();
@@ -307,6 +323,90 @@ el.styleGroup.addEventListener('change', (event) => {
 
 el.strength.addEventListener('change', () => { invalidateResult(); refresh(); });
 
+/* ------------------------------------------------------- precise positioning */
+
+const coordinateFields = {
+  x: el.coordinateX, y: el.coordinateY,
+  width: el.coordinateWidth, height: el.coordinateHeight,
+};
+
+// Only a geometry or selection change replaces a draft. Style changes and
+// preview redraws must not reset a native input while somebody is typing.
+function renderCoordinates() {
+  const region = regions.find((item) => item.id === selectedId);
+  const key = region ? [region.id, regions.indexOf(region), region.x, region.y, region.width, region.height].join(':') : null;
+  if (coordinateState === key) return;
+  coordinateState = key;
+  el.coordinates.disabled = !region;
+  el.coordinateSelection.textContent = region
+    ? phrase('coordinates.selection', { n: regions.indexOf(region) + 1 }) : phrase('coordinates.empty');
+  el.coordinateStatus.textContent = '';
+  for (const [name, field] of Object.entries(coordinateFields)) {
+    field.value = region ? region[name] : '';
+  }
+}
+
+el.applyCoordinates.addEventListener('click', () => {
+  const region = regions.find((item) => item.id === selectedId);
+  if (!picture || !region) return;
+  const values = Object.fromEntries(Object.entries(coordinateFields)
+    .map(([name, field]) => [name, field.valueAsNumber]));
+  const { rect, error } = coordinateRect(values, picture);
+  if (error) {
+    el.coordinateStatus.textContent = phrase(error);
+    return;
+  }
+  stage.cancelGesture();
+  if (Object.keys(rect).some((name) => region[name] !== rect[name])) {
+    snapshot();
+    moveRegion(region.id, rect);
+  }
+  // A clamped draft can describe the existing box; still show the rectangle
+  // that will be saved, without inventing an undo step or retiring its file.
+  for (const [name, field] of Object.entries(coordinateFields)) field.value = rect[name];
+  el.coordinateStatus.textContent = phrase('coordinates.applied', rect);
+});
+
+for (const field of Object.values(coordinateFields)) {
+  field.addEventListener('input', () => { el.coordinateStatus.textContent = ''; });
+  field.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' || event.isComposing) return;
+    event.preventDefault();
+    el.applyCoordinates.click();
+  });
+}
+
+function resetZoom() {
+  stage.cancelGesture();
+  el.zoom.value = '1';
+  el.stage.style.width = '100%';
+  el.stageViewport.scrollLeft = 0;
+  el.stageViewport.scrollTop = 0;
+}
+
+el.zoom.addEventListener('change', () => {
+  stage.cancelGesture();
+  const zoom = Number(el.zoom.value);
+  el.stage.style.width = `${zoom * 100}%`;
+  const region = regions.find((item) => item.id === selectedId);
+  // Keep the selected box in the viewport without moving focus off the menu
+  // or scrolling the surrounding page. Coordinates remain source pixels.
+  el.stageViewport.scrollLeft = region && picture
+    ? el.stage.clientWidth * (region.x + region.width / 2) / picture.width - el.stageViewport.clientWidth / 2 : 0;
+  el.stageViewport.scrollTop = region && picture
+    ? el.stage.clientHeight * (region.y + region.height / 2) / picture.height - el.stageViewport.clientHeight / 2 : 0;
+});
+
+// Drawing deliberately owns touch gestures, so native swipe scrolling over
+// the picture is unavailable. These buttons keep a zoomed phone view reachable.
+for (const [direction, dx, dy] of [['left', -1, 0], ['up', 0, -1], ['down', 0, 1], ['right', 1, 0]]) {
+  $(`pan-${direction}`).addEventListener('click', () => {
+    stage.cancelGesture();
+    el.stageViewport.scrollLeft += dx * el.stageViewport.clientWidth * 0.7;
+    el.stageViewport.scrollTop += dy * el.stageViewport.clientHeight * 0.7;
+  });
+}
+
 /* ------------------------------------------------------------- redrawing */
 
 /**
@@ -320,6 +420,7 @@ el.strength.addEventListener('change', () => { invalidateResult(); refresh(); })
 function refresh() {
   stage.render(regions, selectedId);
   renderList();
+  renderCoordinates();
 
   if (!pending) {
     pending = requestAnimationFrame(() => {
