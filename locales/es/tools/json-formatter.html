@@ -179,6 +179,10 @@
     <span data-phrase="xml.comment">Este comentario no se cierra nunca</span>
     <span data-phrase="xml.cdata">Esta sección CDATA no se cierra nunca</span>
     <span data-phrase="xml.declaration">Esta declaración no se cierra nunca</span>
+    <span data-phrase="xml.document">XML necesita exactamente un elemento exterior, sin texto fuera de él.</span>
+    <span data-phrase="xml.declarationorder">La declaración XML debe ir primero; DOCTYPE solo puede aparecer una vez, antes del elemento exterior.</span>
+    <span data-phrase="xml.declarationinvalid">Esta declaración XML no es válida.</span>
+    <span data-phrase="xml.character">Esta referencia numérica de carácter no es válida en XML.</span>
     <span data-phrase="xml.closing">Esta etiqueta de cierre no se termina nunca</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; no se cierra nunca</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; cierra una etiqueta que nunca se abrió</span>
@@ -220,7 +224,7 @@
     <span data-phrase="convert.json-xml">Un array se convierte en elementos repetidos. Un objeto vacío y una cadena vacía se convierten ambos en un elemento vacío. Las claves se adaptan a nombres XML sin prefijo; los nombres cambiados y las colisiones se indican junto al resultado.</span>
     <span data-phrase="convert.xml-json">Los atributos se convierten en miembros con un @ en el nombre, el texto propio de un
       elemento se convierte en #text cuando tiene que compartir sitio, y todo valor sigue
-      siendo una cadena &mdash; XML nunca dijo cuáles eran números.</span>
+      siendo una cadena &mdash; XML nunca dijo cuáles eran números. No se conservan el orden del contenido mixto ni los comentarios.</span>
     <span data-phrase="format.unknown">{language} no es un lenguaje que esto formatee.</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

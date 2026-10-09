@@ -176,6 +176,10 @@
     <span data-phrase="xml.comment">このコメントが閉じられていません</span>
     <span data-phrase="xml.cdata">このCDATAセクションが閉じられていません</span>
     <span data-phrase="xml.declaration">この宣言が閉じられていません</span>
+    <span data-phrase="xml.document">XMLには外側の要素がちょうど1つ必要で、その外にテキストは置けません。</span>
+    <span data-phrase="xml.declarationorder">XML宣言は先頭に置き、DOCTYPEは外側の要素より前に1度だけ記述します。</span>
+    <span data-phrase="xml.declarationinvalid">このXML宣言は無効です。</span>
+    <span data-phrase="xml.character">この数値文字参照はXMLでは無効です。</span>
     <span data-phrase="xml.closing">この終了タグが完結していません</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; が閉じられていません</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; は開かれていないタグを閉じています</span>
@@ -211,7 +215,7 @@
     <span data-phrase="convert.json-yaml">失われるものはありません。JSON文書はどれもすでにYAML文書です。文字列に引用符を付けるのは、裸のままだと意味が変わってしまう場合だけです。</span>
     <span data-phrase="convert.yaml-json">コメントは失われます。JSONにはそれを置く場所がないからです。アンカー・エイリアス・タグは、推測されるのではなく変換を止めます。</span>
     <span data-phrase="convert.json-xml">配列は繰り返しの要素になります。空のオブジェクトと空の文字列は、どちらも空の要素になります。キーは接頭辞のないXML名に修正し、変更した名前と衝突を結果とともに表示します。</span>
-    <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。</span>
+    <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。混在する内容の順序とコメントは保持されません。</span>
     <span data-phrase="format.unknown">{language}はこれが整形できる言語ではありません。</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

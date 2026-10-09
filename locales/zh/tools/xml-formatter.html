@@ -130,6 +130,10 @@
     <span data-phrase="xml.comment">这个注释一直没关上</span>
     <span data-phrase="xml.cdata">这个 CDATA 段一直没关上</span>
     <span data-phrase="xml.declaration">这个声明一直没关上</span>
+    <span data-phrase="xml.document">XML 必须恰好有一个外层元素，元素外不能有文本。</span>
+    <span data-phrase="xml.declarationorder">XML 声明必须位于开头；DOCTYPE 只能出现一次，并且必须位于外层元素之前。</span>
+    <span data-phrase="xml.declarationinvalid">此 XML 声明无效。</span>
+    <span data-phrase="xml.character">此数字字符引用在 XML 中无效。</span>
     <span data-phrase="xml.closing">这个结束标签一直没写完</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; 一直没关上</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; 关的是一个从没打开过的标签</span>
@@ -156,7 +160,7 @@
     <span data-phrase="json.number">这不是 JSON 允许的数字</span>
     <span data-phrase="convert.xml-json.name">XML 转 JSON</span>
     <span data-phrase="convert.json-xml.name">JSON 转 XML</span>
-    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。</span>
+    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。不会保留混合内容的顺序和注释。</span>
     <span data-phrase="convert.json-xml">数组会变成重复出现的元素，这是唯一能读回来的形状。空对象和空字符串出来都是一个空元素。</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

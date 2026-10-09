@@ -176,6 +176,10 @@
     <span data-phrase="xml.comment">这个注释一直没关上</span>
     <span data-phrase="xml.cdata">这个 CDATA 段一直没关上</span>
     <span data-phrase="xml.declaration">这个声明一直没关上</span>
+    <span data-phrase="xml.document">XML 必须恰好有一个外层元素，元素外不能有文本。</span>
+    <span data-phrase="xml.declarationorder">XML 声明必须位于开头；DOCTYPE 只能出现一次，并且必须位于外层元素之前。</span>
+    <span data-phrase="xml.declarationinvalid">此 XML 声明无效。</span>
+    <span data-phrase="xml.character">此数字字符引用在 XML 中无效。</span>
     <span data-phrase="xml.closing">这个结束标签一直没写完</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; 一直没关上</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; 关的是一个从没打开过的标签</span>
@@ -211,7 +215,7 @@
     <span data-phrase="convert.json-yaml">什么都不会丢：每个 JSON 文档本来就已经是 YAML 文档。字符串只在不加引号就会变意思的地方才加引号。</span>
     <span data-phrase="convert.yaml-json">注释会丢，因为 JSON 没地方放。锚点、别名和标签会让转换停下来，而不是靠猜。</span>
     <span data-phrase="convert.json-xml">数组会变成重复的元素。空对象和空字符串都会变成空元素。键会修正为不带前缀的 XML 名称，并在结果旁报告更改的名称和冲突。</span>
-    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。</span>
+    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。不会保留混合内容的顺序和注释。</span>
     <span data-phrase="format.unknown">{language} 不是这个能排版的语言。</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>
