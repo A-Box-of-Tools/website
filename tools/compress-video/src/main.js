@@ -18,7 +18,7 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { hasWebCodecs, hasEncoder, canDecode } from './shared/video-support.js';
 import { averageFps, decoderConfig } from './shared/webcodecs.js';
 import { compress } from './encode.js';
-import { fixedBytes, fractionOf, MB, plan, PRESETS, retune } from './plan.js';
+import { fixedBytes, fractionOf, MB, plan, PRESETS, retune, targetFromMb } from './plan.js';
 import { bitrateText, frameText, outName } from './format.js';
 import { makeExample } from './example.js';
 
@@ -68,6 +68,7 @@ const { show: note } = messageBox(el.loadNote);
 
 /** @type {Loaded|null} */
 let loaded = null;
+let loadGeneration = 0;
 /** The rung the visitor chose, or null for the plan's own choice. */
 let longEdge = null;
 let downloadUrl = '';
@@ -89,13 +90,17 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const generation = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     if (!hasWebCodecs() || !hasEncoder()) throw new Error('support.nowebcodecs');
 
     const media = await demux(file);
-    if (!(await canDecode(decoderConfig(media.video)))) {
+    if (generation !== loadGeneration) return;
+    const decodable = await canDecode(decoderConfig(media.video));
+    if (generation !== loadGeneration) return;
+    if (!decodable) {
       const refused = new Error('support.nodecode');
       refused.values = { codec: media.video.codec };
       throw refused;
@@ -142,10 +147,11 @@ async function load(file) {
 
     refresh();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     showLoadError(messageFor(error));
     picker.waiting();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) picker.done();
   }
 }
 
@@ -171,14 +177,14 @@ for (const chip of el.rungs) {
 }
 
 function setTarget(bytes) {
-  const mb = bytes / MB;
-  el.targetMb.value = mb >= 10 ? String(Math.round(mb)) : mb.toFixed(1).replace(/\.0$/, '');
+  // Fractions of a file are byte budgets too; rounding the displayed MB
+  // would silently change what the chip asked the encoder to stay under.
+  el.targetMb.value = String(bytes / MB);
 }
 
 /** What the box asks for, in bytes, or null while it is empty or nonsense. */
 function targetBytes() {
-  const mb = Number(el.targetMb.value);
-  return Number.isFinite(mb) && mb > 0 ? Math.round(mb * MB) : null;
+  return targetFromMb(el.targetMb.value);
 }
 
 function choice() {
@@ -276,7 +282,7 @@ el.clearFile.addEventListener('click', () => {
 async function run() {
   const chosen = loaded && choice();
   const planned = chosen && chosen.targetBytes && plan(loaded.source, chosen);
-  if (!planned?.ok || running) return;
+  if (!planned?.ok || chosen.targetBytes >= loaded.file.size || running) return;
 
   const controller = new AbortController();
   running = controller;
@@ -327,7 +333,8 @@ async function run() {
     }
 
     setProgress({ phase: 'checking', done: 1, total: 1, pass });
-    const check = await verify(out.blob, media.duration, chosen.targetBytes);
+    const audioSamples = chosen.keepAudio && media.audio ? media.audio.samples.length : null;
+    const check = await verify(out.blob, media.duration, chosen.targetBytes, audioSamples);
     if (running !== controller) return;
     controller.signal.throwIfAborted();
 
@@ -351,19 +358,20 @@ async function run() {
       el.cancel.hidden = true;
       el.progress.hidden = !cancelled;
       if (cancelled) el.progressBar.style.width = '0%';
+      refresh();
     }
   }
 }
 
 /**
- * Open the finished file again, here, and hold it to two things: that it is
- * as long as the original, and that it is under the number asked for.
+ * Open the finished file again and check its length, retained sound samples,
+ * and size before offering it for download.
  *
  * The length is the claim that matters. A compressor that dropped the last
  * second, or the sound, would still be a smaller file, and nothing but
  * reading the result back can tell the difference.
  */
-async function verify(blob, expectedSeconds, targetBytes) {
+async function verify(blob, expectedSeconds, targetBytes, expectedAudioSamples) {
   let again;
   try {
     again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }));
@@ -380,6 +388,10 @@ async function verify(blob, expectedSeconds, targetBytes) {
         values: { got: durationText(again.duration, phrase), want: durationText(expectedSeconds, phrase) },
       },
     };
+  }
+
+  if (expectedAudioSamples !== null && (again.audio?.samples.length ?? 0) !== expectedAudioSamples) {
+    return { ok: false, text: { key: 'check.sound' } };
   }
 
   const under = blob.size <= targetBytes;
@@ -400,7 +412,7 @@ function showResult({ out, check, chosen, planned, bitrate, pass, seconds }) {
   el.resultSize.textContent = phrase('result.ready', {
     size: size(out.blob.size), percent: Math.round(saved * 100), from: size(file.size),
   });
-  el.resultSub.textContent = phrase('result.sub');
+  el.resultSub.textContent = phrase(chosen.keepAudio && source.audioBytes ? 'result.sub' : 'facts.sound.none');
 
   el.checkLine.textContent = phrase(check.ok ? 'check.passed' : 'check.failed',
     { found: say(check.text) });
@@ -464,7 +476,7 @@ function setProgress({ phase, done, total, pass }) {
 /* ------------------------------------------------------------------ scraps */
 
 /** A size, marked as reading left to right, for the reason in the trimmer. */
-const size = (n) => ltr(sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' }));
+const size = (n) => ltr(sizeText(n, phrase, { base: 1000, kb: 0, mb: 1, gb: 'size.gb' }));
 
 /** A {key, values} pair from format.js, as words. A plain string passes
  *  through. */
@@ -479,6 +491,8 @@ function messageFor(error) {
 }
 
 function reset() {
+  // A newer selection or clear retires every pending read of the old file.
+  loadGeneration += 1;
   running?.abort();
   running = null;
   el.run.disabled = false;

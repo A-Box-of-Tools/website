@@ -28,9 +28,15 @@
  * one number so that it can be argued with.
  */
 
-/** A megabyte, as the page counts it: the binary one the site's own size
- *  formatter uses, so the number in the box and the size under it agree. */
-export const MB = 1024 * 1024;
+/** Upload limits use decimal megabytes, so 25 MB must fit 25,000,000 bytes. */
+export const MB = 1_000_000;
+
+/** A typed target in decimal MB, or null if it cannot be a safe byte budget. */
+export function targetFromMb(value) {
+  const mb = Number(value);
+  const bytes = Math.round(mb * MB);
+  return Number.isFinite(mb) && mb >= 0.1 && Number.isSafeInteger(bytes) ? bytes : null;
+}
 
 /** Presets, in bytes. The first three are the limits people actually hit -
  *  a chat app's free tier, an email attachment, a form upload. */

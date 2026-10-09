@@ -34,10 +34,10 @@
 
     <label class="field" for="target-mb">
       <span>Ne pas dépasser</span>
-      <span class="field-note">En mégaoctets. Les boutons proposent les limites courantes.</span>
+      <span class="field-note">1 Mo = 1 000 000 octets. Les boutons indiquent des limites d’envoi courantes.</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">Mo</span>
     </div>
     <div class="chips" role="group" aria-label="Limites courantes">
@@ -122,7 +122,7 @@
     <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
     <span data-phrase="note.silent">Ce clip n’a pas de son&nbsp;: tout le budget revient à l’image.</span>
     <span data-phrase="estimate.nofile">Choisissez une vidéo pour voir ce que le poids demandé permet.</span>
-    <span data-phrase="estimate.notarget">Saisissez un poids en mégaoctets ou appuyez sur un bouton.</span>
+    <span data-phrase="estimate.notarget">Saisissez au moins 0,1 Mo avec un nombre fini ou appuyez sur un bouton.</span>
     <span data-phrase="estimate.already">Ce clip pèse {size}, déjà sous {target}. Rien à faire sauf réduire la cible.</span>
     <span data-phrase="estimate.nofit">Le son seul dépasse cette limite. Retirez-le ou autorisez au moins {least}.</span>
     <span data-phrase="estimate.toosmall">Aucune image regardable ne tient dans ce poids. Autorisez au moins {least}.</span>
@@ -151,6 +151,7 @@
     <span data-phrase="check.ok">rouvert en mémoire, durée inchangée de {length}, {size} sous {target}.</span>
     <span data-phrase="check.over">rouvert en mémoire, durée inchangée de {length}, mais {size} dépasse encore {target}. L’encodeur ne descend pas plus à cette taille&nbsp;: réduisez le cadre ou retirez le son.</span>
     <span data-phrase="check.length">le fichier créé dure {got} au lieu de {want}</span>
+    <span data-phrase="check.sound">le fichier créé n’a pas conservé tout le son</span>
     <span data-phrase="check.reopen">le fichier créé ne s’ouvre pas ({detail})</span>
     <span data-phrase="facts.picture">{frame}, depuis {from}, à {rate} et {fps} images par seconde.</span>
     <span data-phrase="facts.sound.kept">Le son a été copié intact, sans réencodage.</span>

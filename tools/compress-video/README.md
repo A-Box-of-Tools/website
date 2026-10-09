@@ -116,3 +116,23 @@ Clearing the file aborts and retires its export. A codec can finish a pending
 flush after cancellation, and the result check also reads asynchronously, so
 the page checks the run again at both boundaries. Progress, errors and cleanup
 from that retired run cannot overwrite the controls for a replacement file.
+
+Targets and displayed sizes use decimal upload units: 1 MB is 1,000,000
+bytes. Half and quarter targets retain their exact rounded byte budget when
+written into the MB field. The field accepts any precision above its 0.1 MB
+minimum, and rejects non-finite or unsafe byte budgets before an export starts.
+Other tools keep the shared size formatter's binary default.
+
+A new file selection or a clear retires pending reads, so an earlier, slower
+read cannot replace the selected clip or finish its loading state. The result
+caption describes the audio policy captured when the export began, and the
+result check refuses a download if sound that was meant to be retained has a
+different sample count from the source.
+
+Browser checks should include a half or quarter chip whose byte count is not
+a tenth of a megabyte, a 0.25 MB target, a value below 0.1 MB, and a value whose
+byte budget overflows. Export with sound retained and removed, then from a
+silent source, and play each result. Change the sound control during an
+export to check that its caption describes that export. Delay an earlier
+file read until a replacement has loaded, and simulate a missing sound track
+during the finished-file check to confirm that download is withheld.
