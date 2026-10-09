@@ -174,3 +174,25 @@ against its own encoder proves that two halves of one misunderstanding agree.
 The pictures are drawn in the test — flat, rotated, warped, inverted, noisy —
 rather than checked in as binary fixtures, the same way `tests/js/helpers.js`
 builds its images.
+
+## Repeated results, malformed fields, and stopping work
+
+The newest twenty codes are kept without duplicates. Reading a code already on
+the page is still a successful scan: the new picture gets its own preview,
+without a false no-code warning or another copy of the result. Clear results
+removes those codes and the picture previews, stops the camera, and retires
+pending picture reads and camera transitions. The same code can then be read
+again as a new result.
+
+Payload interpretation cannot turn a successfully decoded symbol into a broken
+picture. A malformed percent escape in an email recipient or authenticator
+account remains visible as written, with a warning. The complete decoded string
+is always retained, and an invalid email recipient gets no Open link.
+
+The camera session owns requests as well as streams. Stop, Clear, a replacement
+request, pagehide, or a background tab retires pending permission requests; a
+stream delivered afterward is closed immediately. Playback and device discovery
+check that same ownership before changing the page, and only one animation loop
+is scheduled for the current camera. Deferred-stream regressions live in
+`tests/js/qr-reader-state.test.js`; the built-page checks cover result insertion,
+Clear, and the asynchronous video/device transitions.

@@ -78,6 +78,11 @@
       给你看，但从不替你打开。印出来的码是一个谁也读不出来的地址，而这正是在它上面贴一张贴纸对某些人划得来的原因——所以整串字符都摆在这里给你看，你真正会落到的主机被单独拎出来放一行。
     </p>
 
+    <div class="run-row">
+      <button type="button" id="clear-results" class="ghost">清除结果</button>
+    </div>
+    <p id="result-status" class="field-summary" role="status"></p>
+
     <div id="results"></div>
   </section>
 
@@ -156,7 +161,8 @@
     <span data-phrase="value.yes">是</span><span data-phrase="value.open-network">开放｜没有密码</span><span data-phrase="value.none">没有</span><span data-phrase="value.copied">已复制</span><span data-phrase="value.modules">每边 {n} 个模块</span>
 
     <span data-phrase="warn.userinfo">@ 前面的所有东西都是用户名，不是地址。这个链接看起来说的是什么都不算数，它通向 {host}。</span><span data-phrase="warn.punycode">这个地址是用非拉丁文字写的。别的文字里有些字母的形状和我们的一模一样，把一个名字做得像你早就信任的那个，靠的就是这个。</span><span data-phrase="warn.unicode-host">主机名里有基本拉丁字母之外的字符，这可以用来把一个名字弄得像另一个。</span><span data-phrase="warn.plain-http">这是一个光秃秃的 http:// 地址，所以你发给它的东西是不加密地走的，中间的任何东西都能读，也能改。</span>
-    <span data-phrase="warn.shortener">{host} 是个转跳。你真正会落到的地址不在这个码里，而要弄清楚它是什么就得去联系一台服务器——这是这一页从来不做的事。</span><span data-phrase="warn.wifi-secret">这个码里带着明文密码。谁把码拍下来，谁就拿到了它。在这样的码贴上墙之前，这件事值得先知道。</span><span data-phrase="warn.otp-secret">这是验证器应用的种子：拿到它的人可以一直生成你那个账户的验证码。它没有离开过这一页，而它接下来去哪儿，值得你多留个心。</span><span data-phrase="warn.not-openable">这不是网址，所以也没有链接可以给你。上面已经原样印出来了；你机器上有没有东西会照着它做，是你和那个程序之间的事。</span>
+    <span data-phrase="warn.shortener">{host} 是个转跳。你真正会落到的地址不在这个码里，而要弄清楚它是什么就得去联系一台服务器——这是这一页从来不做的事。</span><span data-phrase="warn.wifi-secret">这个码里带着明文密码。谁把码拍下来，谁就拿到了它。在这样的码贴上墙之前，这件事值得先知道。</span><span data-phrase="warn.otp-secret">这是验证器应用的种子：拿到它的人可以一直生成你那个账户的验证码。它没有离开过这一页，而它接下来去哪儿，值得你多留个心。</span><span data-phrase="warn.percent-encoding">这个码的一个字段含有无效的百分号转义。该字段已按原样显示，请在使用前检查完整文本。</span>
+    <span data-phrase="warn.not-openable">这不是网址，所以也没有链接可以给你。上面已经原样印出来了；你机器上有没有东西会照着它做，是你和那个程序之间的事。</span>
 
     <span data-phrase="mode.numeric">只有数字</span><span data-phrase="mode.alphanumeric">大写字母和数字</span><span data-phrase="mode.byte">字节</span><span data-phrase="mode.kanji">汉字</span>
 
@@ -167,6 +173,7 @@
     <span data-phrase="preview.nothing">没找到码</span>
     <span data-phrase="preview.broken">打不开</span>
 
+    <span data-phrase="status.cleared">结果和图片预览已清除。</span>
     <span data-phrase="status.reading">正在读这张图&hellip;</span>
     <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span><span data-phrase="status.broken">这个文件打不开成图片。</span><span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span><span data-phrase="status.on">摄像头开着。什么都没有在录。</span>
 
