@@ -5,15 +5,14 @@ import { messageBox } from './shared/message-box.js';
 import { downloadLink } from './shared/download.js';
 import { sizeText } from './shared/format.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { EncryptedPdfError, NotAPdfError, PdfDocument } from './shared/pdf-reader.js';
-import { pagesOf, readPage } from './shared/pdf-text.js';
-import { pageRuns } from './layout.js';
-import { cellsOf, findTables } from './tables.js';
+import { EncryptedPdfError, NotAPdfError } from './shared/pdf-reader.js';
 import { buildTable } from './rows.js';
 import { checkBalance } from './check.js';
-import { columnLetter, toCsv } from './csv.js';
+import { columnLetter, csvValue, formulaCells, toCsv } from './csv.js';
+import { readTables, TableReadError } from './read.js';
+import { previewWindow } from './preview.js';
 import {
-  dateOrder, decimalMark, formatAmount, hasAmbiguousDates, looksNumeric, parseAmount,
+  formatAmount, hasAmbiguousDates, parseAmount,
   parseDate,
 } from './values.js';
 import { makeExample } from './example.js';
@@ -27,6 +26,8 @@ const el = {
   fileName: $('file-name'),
   fileFacts: $('file-facts'),
   clearFile: $('clear-file'),
+  cancelLoad: $('cancel-load'),
+  loadProgress: $('load-progress'),
   loadError: $('load-error'),
   lockedHelp: $('locked-help'),
   scannedHelp: $('scanned-help'),
@@ -41,6 +42,8 @@ const el = {
   previews: $('previews'),
   resultCard: $('result-card'),
   download: $('download'),
+  exportMode: $('export-mode'),
+  exportNote: $('export-note'),
   resultFacts: $('result-facts'),
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
@@ -69,6 +72,8 @@ const ALL = 'all';
 
 /** @type {Document|null} */
 let current = null;
+let loading = null;
+const previewRows = new Map();
 
 /* ------------------------------------------------------------------ loading */
 
@@ -82,9 +87,28 @@ const picker = wireFilePicker({
 });
 
 el.clearFile.addEventListener('click', () => {
+  stopLoading();
   reset();
   picker.waiting();
 });
+
+el.cancelLoad.addEventListener('click', () => {
+  stopLoading();
+  reset();
+  el.loadProgress.hidden = false;
+  el.loadProgress.textContent = phrase('load.cancelled');
+  picker.waiting();
+  el.fileInput.focus();
+});
+
+el.exportMode.addEventListener('change', () => { if (current) render(); });
+
+function stopLoading() {
+  loading?.abort();
+  loading = null;
+  el.cancelLoad.hidden = true;
+  picker.done();
+}
 
 // Re-reading rather than re-parsing, for both controls: the tables are already
 // found, and only which of them to show or what a date means has changed. It is
@@ -104,6 +128,9 @@ el.tablePick.addEventListener('change', () => {
 
 function reset() {
   current = null;
+  previewRows.clear();
+  el.loadProgress.hidden = true;
+  el.loadProgress.textContent = '';
   clearLoadError();
   offerCsv.clear();
   el.lockedHelp.hidden = true;
@@ -127,69 +154,47 @@ function reset() {
 async function load(file) {
   if (!file) return;
 
+  stopLoading();
   reset();
+  const owner = new AbortController();
+  loading = owner;
   el.fileRow.hidden = false;
   el.fileName.textContent = file.name;
   el.fileFacts.textContent = '';
+  el.cancelLoad.hidden = false;
+  el.loadProgress.hidden = false;
+  el.loadProgress.textContent = readingLabel(1);
   picker.busy(readingLabel(1));
 
   try {
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const doc = await PdfDocument.open(bytes);
-    const pageDicts = pagesOf(doc);
+    const data = await readTables(file, {
+      signal: owner.signal,
+      onProgress(done, total) {
+        if (loading !== owner) return;
+        el.loadProgress.textContent = phrase('load.progress', { done, total });
+      },
+    });
+    if (loading !== owner) return;
+    current = { file: data.file, pages: data.pages, tables: data.tables,
+      mark: data.mark, order: data.found ?? 'dmy', pick: ALL };
+    el.fileFacts.textContent = fileFactsText(data.pages, data.bytes);
 
-    if (!pageDicts.length) {
-      refuse(phrase('load.nopages'));
-      return;
-    }
-
-    const pages = [];
-    for (let at = 0; at < pageDicts.length; at += 1) {
-      const page = await readPage(doc, pageDicts[at], at + 1);
-      pages.push({ number: at + 1, lines: pageRuns(page) });
-    }
-
-    picker.done();
-    el.fileFacts.textContent = `${countOf('pages', pageDicts.length)} · ${size(bytes.length)}`;
-
-    if (!pages.some((page) => page.lines.length)) {
-      refuse(phrase('scan.notext'));
-      el.scannedHelp.hidden = false;
-      return;
-    }
-
-    const tables = findTables(pages);
-    if (!tables.length) {
-      refuse(phrase('scan.notables'));
-      return;
-    }
-
-    const cells = tables.flatMap((table) => table.blocks
-      .flatMap((block) => block.lines.flatMap((line) => cellsOf(line, table.columns))));
-    const found = dateOrder(cells);
-
-    current = {
-      file,
-      pages: pages.length,
-      tables,
-      mark: decimalMark(cells.filter(looksNumeric)),
-      order: found ?? 'dmy',
-      pick: ALL,
-    };
-
-    // The date control is offered only where it would change something. A
-    // document written in ISO, or with its months spelled out, has already
-    // said which way round its dates are, and asking would invite somebody to
-    // "fix" dates that were never in doubt.
-    if (hasAmbiguousDates(cells)) {
+    // The date control is offered only where it would change something.
+    if (hasAmbiguousDates(data.cells)) {
       el.dateOrder.value = current.order;
-      el.orderNote.textContent = phrase(found ? 'order.found' : 'order.guessed');
+      el.orderNote.textContent = phrase(data.found ? 'order.found' : 'order.guessed');
       el.orderField.hidden = false;
     }
-
     render();
   } catch (error) {
-    fail(error);
+    if (loading === owner && !owner.signal.aborted) fail(error);
+  } finally {
+    if (loading === owner) {
+      loading = null;
+      picker.done();
+      el.cancelLoad.hidden = true;
+      el.loadProgress.hidden = true;
+    }
   }
 }
 
@@ -215,6 +220,14 @@ function refuse(message) {
 /** Say what went wrong, and where a document this tool will not read leaves
  *  somebody who still has to convert it. */
 function fail(error) {
+  if (error instanceof TableReadError) {
+    if (error.pages) {
+      el.fileFacts.textContent = fileFactsText(error.pages, error.bytes);
+    }
+    refuse(phrase(error.reason));
+    el.scannedHelp.hidden = error.reason !== 'scan.notext';
+    return;
+  }
   if (error instanceof EncryptedPdfError) {
     refuse(phrase('load.encrypted'));
     el.lockedHelp.hidden = false;
@@ -276,7 +289,11 @@ function render() {
   // between: the shape a spreadsheet opens as blocks, and the one a person
   // splitting the file by hand would choose.
   const grid = outputs.flatMap(({ grid: g }, index) => (index ? [[], ...g] : g));
-  const csv = toCsv(grid);
+  const spreadsheetSafe = el.exportMode.value !== 'raw';
+  const affected = formulaCells(grid);
+  const csv = toCsv(grid, { spreadsheetSafe });
+  el.exportNote.textContent = phrase(spreadsheetSafe ? 'export.safe' : 'export.raw',
+    { n: affected });
   offerCsv.offer(csv, phrase('result.name', { name: baseName(current.file.name) }));
   facts(outputs, csv);
 }
@@ -332,7 +349,7 @@ function normalise(table, proof, order, mark) {
     if (at === table.dateColumn) return parseDate(cell, order) ?? cell;
     if (!money.has(at) || !cell) return cell;
     const value = parseAmount(cell, mark);
-    return value === null ? cell : formatAmount(value);
+    return value === null ? cell : { value: formatAmount(value), numeric: true };
   }));
 
   return [headers, ...rows];
@@ -380,7 +397,8 @@ function sayCheck(outputs, several) {
 }
 
 function drawPreviews(outputs) {
-  el.previews.replaceChildren(...outputs.map(({ table, grid: [headers, ...rows] }) => {
+  const spreadsheetSafe = el.exportMode.value !== 'raw';
+  el.previews.replaceChildren(...outputs.map(({ table, proof, grid: [headers, ...rows] }) => {
     const block = document.createElement('div');
     block.className = 'preview-block';
     const wrap = document.createElement('div');
@@ -389,43 +407,104 @@ function drawPreviews(outputs) {
 
     const element = document.createElement('table');
     element.className = 'preview';
-
     const caption = document.createElement('caption');
     caption.className = 'preview-caption';
     caption.textContent = labelOf(table);
-
     const head = document.createElement('thead');
     const headRow = document.createElement('tr');
-    headRow.replaceChildren(...headers.map((name) => {
+    headRow.replaceChildren(...[phrase('preview.row'), ...headers.map((cell) =>
+      csvValue(cell, { spreadsheetSafe }))].map((name) => {
       const cell = document.createElement('th');
       cell.scope = 'col';
       cell.textContent = name;
       return cell;
     }));
     head.append(headRow);
-
     const body = document.createElement('tbody');
-    body.replaceChildren(...rows.slice(0, PREVIEW_ROWS).map((row) => {
-      const line = document.createElement('tr');
-      line.replaceChildren(...row.map((value) => {
-        const cell = document.createElement('td');
-        cell.textContent = value;
-        return cell;
-      }));
-      return line;
-    }));
-
     element.append(caption, head, body);
     wrap.append(element);
 
-    // Outside the scrolling box, so a wide table does not carry it away.
-    if (rows.length > PREVIEW_ROWS) {
-      const more = document.createElement('p');
-      more.className = 'field-summary';
-      more.textContent = phrase('preview.more', { shown: PREVIEW_ROWS });
-      block.append(more);
-    }
+    const nav = document.createElement('div');
+    nav.className = 'preview-nav';
+    nav.setAttribute('role', 'group');
+    nav.setAttribute('aria-label', phrase('preview.controls', { n: table.n }));
+    block.append(nav);
+    const range = document.createElement('p');
+    range.className = 'preview-range';
+    range.setAttribute('role', 'status');
+    range.setAttribute('aria-live', 'polite');
+    nav.append(range);
+    const button = (key) => {
+      const control = document.createElement('button');
+      control.type = 'button';
+      control.className = 'ghost';
+      control.textContent = phrase(key);
+      nav.append(control);
+      return control;
+    };
+    const previous = button('preview.previous');
+    const next = button('preview.next');
+    const label = document.createElement('label');
+    label.textContent = phrase('preview.jump');
+    label.htmlFor = `preview-jump-${table.n}`;
+    const jump = document.createElement('input');
+    jump.type = 'number';
+    jump.id = label.htmlFor;
+    jump.min = '1';
+    jump.max = String(rows.length);
+    jump.step = '1';
+    jump.required = true;
+    nav.append(label, jump);
+    const go = button('preview.go');
+    let first = 0;
+    let last = 0;
+    const warnings = new Set([...(proof?.broken ?? []), ...(proof?.unchecked ?? [])]);
 
+    function paint(row, focus = false) {
+      const window = previewWindow(rows.length, row, PREVIEW_ROWS);
+      first = window.start;
+      last = window.end;
+      previewRows.set(table.n, first + 1);
+      body.replaceChildren(...rows.slice(first, last).map((values, offset) => {
+        const n = first + offset + 1;
+        const line = document.createElement('tr');
+        line.id = `preview-${table.n}-row-${n}`;
+        line.tabIndex = -1;
+        line.classList.toggle('review-row', warnings.has(n));
+        const number = document.createElement('th');
+        number.scope = 'row';
+        number.textContent = warnings.has(n) ? phrase('preview.review', { n }) : String(n);
+        line.replaceChildren(number, ...values.map((value) => {
+          const cell = document.createElement('td');
+          cell.textContent = csvValue(value, { spreadsheetSafe });
+          return cell;
+        }));
+        return line;
+      }));
+      range.textContent = phrase('preview.range', { first: first + 1, last, total: rows.length });
+      previous.disabled = first === 0;
+      next.disabled = last === rows.length;
+      jump.value = String(Math.max(first + 1, Math.min(last, Math.floor(row))));
+      if (focus) {
+        const line = body.querySelector(`#preview-${table.n}-row-${jump.value}`);
+        line?.focus({ preventScroll: true });
+        line?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    }
+    previous.addEventListener('click', () => paint(Math.max(1, first - PREVIEW_ROWS + 1)));
+    next.addEventListener('click', () => paint(last + 1));
+    const goToRow = () => { if (jump.reportValidity()) paint(Number(jump.value), true); };
+    go.addEventListener('click', goToRow);
+    jump.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') { event.preventDefault(); goToRow(); }
+    });
+    const flagged = proof?.broken[0] ?? proof?.unchecked[0];
+    if (flagged) {
+      const review = button(proof.broken.length ? 'preview.mismatch' : 'preview.unchecked');
+      review.addEventListener('click', () => paint(flagged, true));
+    }
+    for (const control of [previous, next, label, jump, go]) control.hidden = rows.length <= PREVIEW_ROWS;
+    paint(previewRows.get(table.n) ?? 1);
     return block;
   }));
 }
@@ -472,6 +551,10 @@ function countOf(thing, n) {
 }
 
 const size = (n) => sizeText(n, phrase, { under: 'size.bytes' });
+
+// A refused scan still has known page and byte counts, so both outcomes use
+// the same translated facts instead of keeping two layouts in sync.
+const fileFactsText = (pages, bytes) => `${countOf('pages', pages)} · ${size(bytes)}`;
 
 /** The document's name without its extension, for the CSV beside it. */
 function baseName(name) {

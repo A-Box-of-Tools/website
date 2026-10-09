@@ -121,7 +121,8 @@ BASELINE = {
     'merge-pdf': 2,
     'password-generator': 8,
     'png-to-webp': 0,
-    # The two left are a symbology's own name and a line of SVG markup.
+    # Both layouts join translated fact fragments; neither carries an English
+    # sentence. The heuristic counts their nested page/encoding phrase keys.
     'pdf-to-csv': 2,
     'protect-pdf': 0,
     'qr-barcode': 2,

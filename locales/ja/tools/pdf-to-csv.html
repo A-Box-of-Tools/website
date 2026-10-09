@@ -11,7 +11,10 @@
         <span id="file-facts" class="file-sub"></span>
       </div>
       <button type="button" id="clear-file" class="ghost danger">別のファイルを選ぶ</button>
+      <button type="button" id="cancel-load" class="ghost" hidden>読み取りを中止</button>
     </div>
+
+    <p id="load-progress" class="load-progress" role="status" aria-live="polite" hidden></p>
 
     <p id="load-error" class="error" role="alert" hidden></p>
 
@@ -92,6 +95,15 @@
   <section class="card" id="result-card">
     <h2><span class="step">3</span>CSVを保存する</h2>
 
+    <div class="field">
+      <label for="export-mode">表計算ソフト用のテキスト</label>
+      <select id="export-mode" aria-describedby="export-note">
+        <option value="safe">数式のようなテキストを保護（既定）</option>
+        <option value="raw">テキストを変更しない（保護なし）</option>
+      </select>
+      <p id="export-note" class="field-note" role="status" aria-live="polite"></p>
+    </div>
+
     <div id="result" class="result">
       <a id="download" class="primary as-button" download>CSVをダウンロード</a>
       <ul id="result-facts" class="result-facts"></ul>
@@ -105,6 +117,20 @@
     the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.progress">{total}ページ中{done}ページを読み取りました。</span>
+    <span data-phrase="load.cancelled">読み取りを中止しました。PDFを選んでやり直してください。</span>
+    <span data-phrase="export.safe">数式のようなテキストの先頭にアポストロフィを追加するセル数：{n}。認識した金額は数値のままです。プレビューには書き出すテキストが表示されます。</span>
+    <span data-phrase="export.raw">数式のようなテキストを変更せずに残すセル数：{n}。表計算ソフトが数式として扱う場合があります。認識した金額は数値のままです。</span>
+    <span data-phrase="preview.row">行</span>
+    <span data-phrase="preview.controls">表{n}の行</span>
+    <span data-phrase="preview.previous">前へ</span>
+    <span data-phrase="preview.next">次へ</span>
+    <span data-phrase="preview.jump">指定の行へ移動</span>
+    <span data-phrase="preview.go">移動</span>
+    <span data-phrase="preview.range">全{total}行中{first}〜{last}行を表示。CSVにはすべての行が含まれます。</span>
+    <span data-phrase="preview.review">{n}（要確認）</span>
+    <span data-phrase="preview.mismatch">最初の不一致を表示</span>
+    <span data-phrase="preview.unchecked">最初の未検証の行を表示</span>
     <span data-phrase="load.notpdf">PDFではありません。このツールはPDFの表を読み取ります。</span>
     <span data-phrase="load.encrypted">このPDFはパスワードで保護されています。保護の解除は表の読み取りとは別の作業なので、勝手には行いません。</span>
     <span data-phrase="error.broke">ページの機能が停止しました（{detail}）。再読み込みして試してください。</span>
@@ -133,7 +159,6 @@
     <span data-phrase="check.rows">{list}行目</span>
     <span data-phrase="order.found">この書類に12日を超える日付があるため、推測ではなく書類自身から順序を判断しました。</span>
     <span data-phrase="order.guessed">日付がすべて12日以前なので、書類から順序を判断できません。下の日付が違う場合は変更してください。</span>
-    <span data-phrase="preview.more">ここではこの表の先頭{shown}行だけを表示しています。ダウンロードには全行が入ります。</span>
     <span data-phrase="result.name">{name}.csv</span>
     <span data-phrase="fact.dates">年を含む日付はYYYY-MM-DDで記録</span>
     <span data-phrase="fact.amounts">金額は符号付きの通常の数値</span>

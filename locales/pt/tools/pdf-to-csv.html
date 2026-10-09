@@ -11,7 +11,10 @@
         <span id="file-facts" class="file-sub"></span>
       </div>
       <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+      <button type="button" id="cancel-load" class="ghost" hidden>Cancelar leitura</button>
     </div>
+
+    <p id="load-progress" class="load-progress" role="status" aria-live="polite" hidden></p>
 
     <p id="load-error" class="error" role="alert" hidden></p>
 
@@ -69,6 +72,15 @@
   <section class="card" id="result-card">
     <h2><span class="step">3</span> Baixe o CSV</h2>
 
+    <div class="field">
+      <label for="export-mode">Texto para planilhas</label>
+      <select id="export-mode" aria-describedby="export-note">
+        <option value="safe">Proteger texto que parece fórmula (padrão)</option>
+        <option value="raw">Manter o texto inalterado (bruto)</option>
+      </select>
+      <p id="export-note" class="field-note" role="status" aria-live="polite"></p>
+    </div>
+
     <div id="result" class="result">
       <a id="download" class="primary as-button" download>Baixar o CSV</a>
       <ul id="result-facts" class="result-facts"></ul>
@@ -77,6 +89,20 @@
 
 
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.progress">{done} de {total} páginas lidas.</span>
+    <span data-phrase="load.cancelled">Leitura cancelada. Escolha um PDF para recomeçar.</span>
+    <span data-phrase="export.safe">Células de texto que parecem fórmulas com um apóstrofo antes: {n}. Os valores reconhecidos continuam numéricos. A prévia mostra o texto exportado.</span>
+    <span data-phrase="export.raw">Células de texto que parecem fórmulas mantidas sem alteração: {n}. Planilhas podem tratá-las como fórmulas. Os valores reconhecidos continuam numéricos.</span>
+    <span data-phrase="preview.row">Linha</span>
+    <span data-phrase="preview.controls">Linhas da tabela {n}</span>
+    <span data-phrase="preview.previous">Anterior</span>
+    <span data-phrase="preview.next">Próxima</span>
+    <span data-phrase="preview.jump">Ir para a linha</span>
+    <span data-phrase="preview.go">Ir</span>
+    <span data-phrase="preview.range">Linhas {first}–{last} de {total}. O CSV contém todas as linhas.</span>
+    <span data-phrase="preview.review">{n} (revisar)</span>
+    <span data-phrase="preview.mismatch">Mostrar a primeira divergência</span>
+    <span data-phrase="preview.unchecked">Mostrar a primeira linha não verificada</span>
     <span data-phrase="load.notpdf">Este arquivo não é um PDF. A ferramenta extrai tabelas de arquivos PDF.</span>
     <span data-phrase="load.encrypted">Este PDF está protegido por senha. Removê-la é uma tarefa diferente de ler tabelas; a ferramenta não fará isso sem avisar.</span>
     <span data-phrase="error.broke">Algo nesta página parou de funcionar ({detail}). Recarregue e tente de novo.</span>
@@ -105,7 +131,6 @@
     <span data-phrase="check.rows">linhas {list}</span>
     <span data-phrase="order.found">Ordem identificada por uma data com dia maior que doze neste documento. A interpretação vem do arquivo, não de uma estimativa.</span>
     <span data-phrase="order.guessed">Todas as datas têm dia até doze, então o documento não permite determinar a ordem. Mude esta opção se as datas abaixo estiverem invertidas.</span>
-    <span data-phrase="preview.more">Só as primeiras {shown} linhas desta tabela aparecem aqui. O arquivo para baixar contém todas.</span>
     <span data-phrase="result.name">{name}.csv</span>
     <span data-phrase="fact.dates">Datas com ano no formato AAAA-MM-DD</span>
     <span data-phrase="fact.amounts">Valores como números com sinal</span>

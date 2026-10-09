@@ -11,7 +11,10 @@
         <span id="file-facts" class="file-sub"></span>
       </div>
       <button type="button" id="clear-file" class="ghost danger">En choisir un autre</button>
+      <button type="button" id="cancel-load" class="ghost" hidden>Annuler la lecture</button>
     </div>
+
+    <p id="load-progress" class="load-progress" role="status" aria-live="polite" hidden></p>
 
     <p id="load-error" class="error" role="alert" hidden></p>
 
@@ -108,6 +111,15 @@
   <section class="card" id="result-card">
     <h2><span class="step">3</span> Récupérez le CSV</h2>
 
+    <div class="field">
+      <label for="export-mode">Texte pour les tableurs</label>
+      <select id="export-mode" aria-describedby="export-note">
+        <option value="safe">Protéger le texte ressemblant à une formule (par défaut)</option>
+        <option value="raw">Conserver le texte tel quel (brut)</option>
+      </select>
+      <p id="export-note" class="field-note" role="status" aria-live="polite"></p>
+    </div>
+
     <div id="result" class="result">
       <a id="download" class="primary as-button" download>Télécharger le CSV</a>
       <ul id="result-facts" class="result-facts"></ul>
@@ -121,6 +133,20 @@
     the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.progress">{done} pages lues sur {total}.</span>
+    <span data-phrase="load.cancelled">Lecture annulée. Choisissez un PDF pour recommencer.</span>
+    <span data-phrase="export.safe">Cellules de texte ressemblant à une formule précédées d’une apostrophe : {n}. Les montants reconnus restent numériques. L’aperçu montre le texte exporté.</span>
+    <span data-phrase="export.raw">Cellules de texte ressemblant à une formule laissées telles quelles : {n}. Les tableurs peuvent les traiter comme des formules. Les montants reconnus restent numériques.</span>
+    <span data-phrase="preview.row">Ligne</span>
+    <span data-phrase="preview.controls">Lignes du tableau {n}</span>
+    <span data-phrase="preview.previous">Précédent</span>
+    <span data-phrase="preview.next">Suivant</span>
+    <span data-phrase="preview.jump">Aller à la ligne</span>
+    <span data-phrase="preview.go">Aller</span>
+    <span data-phrase="preview.range">Lignes {first}–{last} sur {total}. Le CSV contient toutes les lignes.</span>
+    <span data-phrase="preview.review">{n} (à vérifier)</span>
+    <span data-phrase="preview.mismatch">Afficher le premier écart</span>
+    <span data-phrase="preview.unchecked">Afficher la première ligne non vérifiée</span>
     <span data-phrase="load.notpdf">Ce n’est pas un PDF. Cet outil lit les tableaux d’un PDF.</span>
     <span data-phrase="load.encrypted">Ce PDF est protégé par mot de passe. Le retirer est un autre travail que lire les tableaux ; cet outil ne le fera pas à votre insu.</span>
     <span data-phrase="error.broke">Un élément de cette page a cessé de fonctionner ({detail}). Rechargez-la et réessayez.</span>
@@ -149,7 +175,6 @@
     <span data-phrase="check.rows">lignes {list}</span>
     <span data-phrase="order.found">L’ordre a été établi à partir d’un jour supérieur à douze dans ce document : il s’agit donc d’une lecture, pas d’une supposition.</span>
     <span data-phrase="order.guessed">Toutes les dates de ce document ont un jour inférieur ou égal à douze : rien n’indique leur ordre. Modifiez-le si les dates ci-dessous paraissent erronées.</span>
-    <span data-phrase="preview.more">Seules les {shown} premières lignes du tableau sont affichées ici. Le téléchargement les contient toutes.</span>
     <span data-phrase="result.name">{name}.csv</span>
     <span data-phrase="fact.dates">Dates avec année écrites sous la forme YYYY-MM-DD</span>
     <span data-phrase="fact.amounts">Montants sous forme de nombres signés simples</span>
