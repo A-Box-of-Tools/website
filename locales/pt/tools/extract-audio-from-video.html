@@ -12,6 +12,7 @@
     {% include "partials/file-picker.html" %}
 
     <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     <p id="error" class="error" role="alert" hidden></p>
 
     <dl class="source" id="source" hidden>
@@ -45,20 +46,24 @@
           <option value="mono">Misturar para mono</option>
         </select>
         <p class="field-note" id="channels-note">
-          O mono corta o arquivo pela metade, que é o que uma transcrição ou uma
-          gravação de voz quer. Ele tira a média dos canais em vez de jogar um
-          fora.
+          O mono calcula a média de todos os canais. Em estéreo reduz os dados de áudio para metade; uma fonte mono continua mono.
         </p>
+      </div>
+      <div class="field">
+        <label for="depth">Formato WAV</label>
+        <select id="depth" aria-describedby="depth-note">
+          <option value="16" selected>PCM de 16 bits — ampla compatibilidade</option>
+          <option value="32">Float de 32 bits — amostras decodificadas</option>
+        </select>
+        <p class="field-note" id="depth-note">O PCM de 16 bits arredonda e limita as amostras decodificadas. O float de 32 bits preserva essas amostras quando os canais não mudam; o mono calcula a média dos canais.</p>
       </div>
     </div>
 
-    <!--
-      No button. A WAV is the samples with a header in front of them, so writing
-      one is fast enough to redo whenever a setting changes - and a file that is
-      always the one the settings describe needs nothing pressed to make it so.
-    -->
+    <!-- Settings generate automatically; a cancelled write can be retried. -->
+    <p id="estimate" class="field-note" hidden></p>
+    <button type="button" id="retry" class="ghost" hidden>Criar o WAV novamente</button>
     <div id="result" class="result" hidden>
-      <audio id="result-audio" controls></audio>
+      <audio id="result-audio" controls aria-label="Áudio extraído"></audio>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Baixar o áudio</a>
@@ -73,6 +78,13 @@
     shared/js/phrases.js reads them back; a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.mixing">Misturando os canais… {n}%</span>
+    <span data-phrase="step.writing">Escrevendo o WAV… {n}%</span>
+    <span data-phrase="step.cancelled">Cancelado.</span>
+    <span data-phrase="out.estimate">Tamanho de saída: cerca de {size}.</span>
+    <span data-phrase="depth.16">PCM de 16 bits</span>
+    <span data-phrase="depth.float">Float de 32 bits</span>
+    <span data-phrase="wav.toobig">Esse WAV ultrapassaria o limite de 4 GB do formato. Escolha 16 bits, mono ou uma fonte mais curta.</span>
     <span data-phrase="step.reading">Lendo o som&hellip;</span>
     <span data-phrase="audio.empty">Esse arquivo está vazio.</span>
     <!--
@@ -96,7 +108,7 @@
     <span data-phrase="channels.stereo">Estéreo</span>
     <span data-phrase="channels.many">Mais de dois canais</span>
     <span data-phrase="rate.khz">{n} kHz</span>
-    <span data-phrase="out.info">WAV &mdash; {size}, {length}, {channels} a {rate} kHz</span>
+    <span data-phrase="out.info">WAV, {depth} — {size}, {length}, {channels} a {rate} kHz</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>

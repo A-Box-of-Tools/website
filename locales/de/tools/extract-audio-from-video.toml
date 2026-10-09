@@ -16,14 +16,7 @@ og_title = "Den Ton aus einem Video holen, ohne es hochzuladen"
 og_description = "Ziehen Sie ein MP4, MOV oder WebM hinein und speichern Sie dessen Ton als WAV. Dekodiert wird allein die Tonspur, und die Datei geht nirgendwohin."
 og_image_alt = "Ton aus Video extrahieren - der Ton für sich, ohne Upload"
 
-pledge = """
-    Der Dekoder ist der, den Ihr Browser ohnehin schon hat. Es ist derselbe
-    Code, der eine Datei in einem <code>&lt;video&gt;</code>-Element abspielt,
-    und gefragt wird er nach der Tonspur und nach nichts sonst. Ein WAV zu
-    schreiben heißt, einen vierundvierzig Byte langen Kopf vor die Samples zu
-    setzen, nachzulesen in <code>src/shared/wav.js</code>. In der Schleife sitzt kein
-    Kodierer, es gibt keinen Upload-Schritt, und eine Netzfunktion hat diese
-    Seite überhaupt nicht."""
+pledge = """Der Decoder des Browsers liest nur die Tonspur. Die WAV-Ausgabe wird lokal als 16-Bit-PCM oder 32-Bit-Float geschrieben. Dieses Werkzeug hat weder MP3-Encoder noch Upload-Schritt oder Netzwerkfunktion."""
 
 live_hint = """
       Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
@@ -94,13 +87,8 @@ body = """
       damit genau das, was Ihr Browser ohnehin abspielt."""
 
 [[privacy]]
-title = "Die Samples werden aufgeschrieben, nicht neu kodiert."
-body = """
-
-      Ein WAV sind die Samples, die der Dekoder zurückgegeben hat, mit einem Kopf
-      davor. In der Schleife sitzt kein Kodierer, der Entscheidungen über Ihre
-      Aufnahme trifft, und es gibt nichts, was man als Upload beschreiben könnte,
-      auf dem so etwas passieren würde."""
+title = """Das WAV-Format macht seine Genauigkeit deutlich."""
+body = """16-Bit-PCM rundet und begrenzt dekodierte Samples zugunsten der Kompatibilität. 32-Bit-Float erhält sie bei unveränderten Kanälen. Mono mittelt die Kanäle. Beide Formate werden auf diesem Gerät geschrieben, ohne etwas hochzuladen."""
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
@@ -134,13 +122,8 @@ body = """
       behaupten, es sei nichts angerührt worden."""
 
 [[howto]]
-title = "Wählen Sie Mono, wenn es kleiner sein soll."
-body = """
- Lässt man die Kanäle
-      in Ruhe, bleibt die Aufnahme genau so, wie sie war. Die Mischung auf Mono
-      halbiert die Datei und ist das, was eine Transkription oder eine
-      Sprachaufnahme will. Dabei werden die Kanäle gemittelt, statt einen davon
-      wegzuwerfen."""
+title = """Format und Kanäle wählen."""
+body = """16-Bit-PCM ist die kompatible Voreinstellung. 32-Bit-Float erhält dekodierte Samples ohne Rundung oder Begrenzung. Lass dafür die Kanäle unverändert; Mono mittelt sie und halbiert Stereo-Audiodaten."""
 
 [[howto]]
 title = "Hören Sie es ab, bevor Sie es speichern."
@@ -168,16 +151,7 @@ a = """
 
 [[faq]]
 q = "Bekomme ich auch ein MP3?"
-a = """
-        Nein, und es wird auch nicht so getan. Kein Browser bringt einen
-        MP3-Kodierer mit, und der einzige Weg zu einem führt darüber, Ihr Video an
-        einen Server zu schicken, der einen hat. Genau das ist das eine, wofür es
-        diese Seite nicht gibt. Was Sie bekommen, ist ein WAV: die Samples mit
-        einem vierundvierzig Byte langen Kopf davor, wofür es keinen Kodierer
-        braucht und was keine Qualität kosten kann. Größer ist es allerdings, rund
-        zehn Megabyte je Minute in Stereo, und öffnen kann es jeder Player, jedes
-        Telefon und jedes Schnittprogramm. Was ein MP3 will, macht daraus in einer
-        Sekunde eines."""
+a = """Diese Seite schreibt WAV statt MP3. Für MP3 wäre ein Encoder nötig, den dieses Werkzeug nicht mitbringt. Wähle kompatibles 16-Bit-PCM oder 32-Bit-Float; keines braucht einen Upload. WAV ist wegen der unkomprimierten Audiodaten größer und kann später in einem Editor komprimiert werden."""
 
 [[faq]]
 q = "Wird das Bild jemals angesehen?"
@@ -212,35 +186,15 @@ a = """
 
 [[faq]]
 q = "Geht dabei Qualität verloren?"
-a = """
-        Nichts über das hinaus, was das Video seinem eigenen Ton bei der Aufnahme
-        schon angetan hat. Die Samples, die der Dekoder zurückgibt, werden so
-        aufgeschrieben, wie sie sind. Es gibt kein zweites Kodieren und damit auch
-        keine zweite Verlustgeneration. Zu wissen ist nur eines: die Abtastrate.
-        Die Rate der Datei wird zuerst aus deren Kopf gelesen, und dekodiert wird
-        mit genau dieser Rate, damit Ihre Aufnahme nicht stillschweigend neu
-        abgetastet wird. Gibt eine Datei keine an, sagt die Seite, mit welcher
-        Rate sie gerechnet hat."""
+a = """16-Bit-PCM rundet dekodierte Samples und begrenzt Werte außerhalb des vollen Pegelbereichs. Wähle 32-Bit-Float und unveränderte Kanäle, um die Samples des Decoders einschließlich höherer Pegel zu erhalten. Mono mittelt die Kanäle. Float macht vorhandene Verluste im Video nicht rückgängig. Die erkannte Abtastrate der Datei wird verwendet; sonst nennt die Seite die angenommene Rate."""
 
 [[faq]]
 q = "Warum ist das WAV so viel größer als das Video?"
-a = """
-        Weil ein WAV nicht komprimiert ist und die Tonspur des Videos es war. Ton
-        in CD-Qualität braucht rund zehn Megabyte je Minute in Stereo, ganz
-        gleich, was darauf zu hören ist; die AAC-Spur in einem MP4 vielleicht ein
-        Zehntel davon. Die Mischung auf Mono halbiert das. Das ist der Preis
-        dafür, nicht neu zu kodieren, und er wird einmal bezahlt: Was Sie als
-        Nächstes damit öffnen, kann die Datei komprimieren."""
+a = """WAV-Audio ist unkomprimiert. Bei 44,1 kHz braucht 16-Bit-Stereo etwa zehn Megabyte pro Minute. Float verdoppelt die Sampledaten; Mono halbiert Stereo-Sampledaten. Die Ausgabegröße wird angezeigt, bevor die Datei fertig ist."""
 
 [[faq]]
 q = "Wie lang darf das Video sein?"
-a = """
-        Hier ist keine Grenze eingebaut, denn es gibt keinen Server, der dafür
-        bezahlt. Die praktische Obergrenze ist der Arbeitsspeicher Ihres Geräts:
-        Die Datei wird eingelesen, und die ganze Tonspur liegt als Samples im
-        Speicher, sodass einer sehr langen Aufnahme auf einem kleinen Gerät der
-        Platz ausgehen kann. Ein paar Stunden Video sind normalerweise
-        unproblematisch, und ein Telefon schafft weniger als ein Notebook."""
+a = """Eingabe und dekodierter Ton liegen im Speicher, ebenso die fertige WAV. Lange Aufnahmen können den verfügbaren Speicher überschreiten; eine Ausgabe über der WAV-Formatgrenze von 4 GB wird vor dem Schreiben der Samplebytes abgelehnt. Abbrechen verwirft einen laufenden Lesevorgang oder stoppt das schrittweise Mischen und Schreiben. Der Browser kann die Dekodierung noch abschließen, ihr abgebrochenes Ergebnis wird aber verworfen."""
 
 [[faq]]
 q = "Kann ich den Ton kürzen oder lauter machen?"
@@ -271,10 +225,10 @@ a = """
 [schema]
 description = "Die Tonspur aus einem MP4, MOV oder WebM holen und als WAV speichern. Dekodiert wird allein der Ton, das Bild wird nie gelesen, und hochgeladen wird nichts."
 features = [
-  "Speichert den Ton aus MP4-, M4V-, MOV- und WebM-Videos als WAV",
+  "Speichert Videoton als kompatible 16-Bit-PCM- oder 32-Bit-Float-WAV",
   "Dekodiert allein die Tonspur; das Bild wird nie gelesen",
   "Liest zuerst die Abtastrate der Datei, damit nichts still neu abgetastet wird",
-  "Mischt durch Mitteln auf Mono, für die halbe Dateigröße",
+  "Mischt alle Kanäle durch Mittelwertbildung zu Mono",
   "Spielt das Ergebnis ab, bevor Sie es speichern",
   "Trägt das Ergebnis in den Audio-Schneider oder -Editor, ohne es zu speichern",
   "Läuft offline; kein Upload, kein Konto",

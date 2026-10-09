@@ -12,8 +12,8 @@
  * file in any audio tool here: a WAV is a header in front of the samples. No browser
  * ships an encoder for MP3, AAC or Opus that can be driven faster than real
  * time, so the honest choice is the one format that needs no encoder at all -
- * the samples are written down as they already are, which cannot cost quality
- * and cannot be slow.
+ * Float preserves the decoded samples. PCM16 rounds and clamps them; both
+ * paths write locally, and large outputs still take time and memory.
  *
  * Two depths, because they answer different questions:
  *
@@ -28,6 +28,7 @@
 /** RIFF chunk ids and the two format tags used here. */
 const PCM = 1;
 const IEEE_FLOAT = 3;
+const headerSize = (float) => (float ? 58 : 44);
 
 /**
  * Write channels of Float32 samples as a WAV file.
@@ -38,6 +39,12 @@ const IEEE_FLOAT = 3;
  * @returns {Blob} the file, ready to be handed to a download link
  */
 export function writeWav(channels, sampleRate, { bits = 16 } = {}) {
+  const { header, float, frames } = prepareWav(channels, sampleRate, { bits });
+  return new Blob([header, packWavFrames(channels, float, 0, frames)], { type: 'audio/wav' });
+}
+
+/** Both writers validate the complete RIFF before allocating sample bytes. */
+export function prepareWav(channels, sampleRate, { bits = 16 } = {}) {
   if (!channels.length) throw new Error('wav.nochannels');
   const frames = channels[0].length;
   for (const channel of channels) {
@@ -45,21 +52,16 @@ export function writeWav(channels, sampleRate, { bits = 16 } = {}) {
   }
 
   const float = bits === 32;
-  const bytesPerSample = float ? 4 : 2;
-  const dataBytes = frames * channels.length * bytesPerSample;
+  const dataBytes = frames * channels.length * (float ? 4 : 2);
+  const headerBytes = headerSize(float);
+  // The RIFF count includes its remaining header, not just the sample data.
+  // Float's fact chunk and cbSize also belong inside that 32-bit ceiling.
+  if (dataBytes > 0xffffffff - (headerBytes - 8)) throw new Error('wav.toobig');
 
-  // A RIFF size field is 32 bits, so a WAV cannot describe more than 4 GB and
-  // players disagree about what to do with one that claims to. Refusing is
-  // better than writing a file that opens as noise somewhere else.
-  if (dataBytes > 0xfffffff0) {
-    throw new Error('wav.toobig');
-  }
-
-  const header = writeHeader({
-    float, bits, sampleRate, channels: channels.length, frames, dataBytes,
-  });
-  const samples = interleave(channels, float);
-  return new Blob([header, samples], { type: 'audio/wav' });
+  return {
+    frames, float,
+    header: writeHeader({ float, bits, sampleRate, channels: channels.length, frames, dataBytes }),
+  };
 }
 
 /**
@@ -72,8 +74,7 @@ export function writeWav(channels, sampleRate, { bits = 16 } = {}) {
  */
 function writeHeader({ float, bits, sampleRate, channels, frames, dataBytes }) {
   const fmtBytes = float ? 18 : 16;
-  const factBytes = float ? 12 : 0;
-  const headerBytes = 12 + 8 + fmtBytes + factBytes + 8;
+  const headerBytes = headerSize(float);
 
   const bytes = new Uint8Array(headerBytes);
   const view = new DataView(bytes.buffer);
@@ -120,16 +121,16 @@ function writeHeader({ float, bits, sampleRate, channels, frames, dataBytes }) {
  * rather than both by 32767. Anything past full scale is clamped, which is
  * what "this will clip" on the page is warning about.
  */
-function interleave(channels, float) {
+export function packWavFrames(channels, float, from, to) {
   const count = channels.length;
-  const frames = channels[0].length;
+  const frames = to - from;
   const out = float
     ? new Float32Array(frames * count)
     : new Int16Array(frames * count);
 
   if (count === 1) {
     const [only] = channels;
-    for (let i = 0; i < frames; i += 1) out[i] = float ? only[i] : toPcm16(only[i]);
+    for (let i = 0; i < frames; i += 1) out[i] = float ? only[from + i] : toPcm16(only[from + i]);
     return new Uint8Array(out.buffer);
   }
 
@@ -137,7 +138,7 @@ function interleave(channels, float) {
     const samples = channels[channel];
     let at = channel;
     for (let i = 0; i < frames; i += 1, at += count) {
-      out[at] = float ? samples[i] : toPcm16(samples[i]);
+      out[at] = float ? samples[from + i] : toPcm16(samples[from + i]);
     }
   }
   return new Uint8Array(out.buffer);
@@ -151,5 +152,5 @@ function toPcm16(value) {
 
 /** What a file of this shape will weigh, for the line on the page that says so. */
 export function wavSize(frames, channels, bits) {
-  return 44 + frames * channels * (bits / 8);
+  return headerSize(bits === 32) + frames * channels * (bits / 8);
 }

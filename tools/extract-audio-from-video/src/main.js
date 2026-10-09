@@ -5,8 +5,9 @@ import { sizeText } from './shared/format.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
-import { writeWav } from './shared/wav.js';
-import { mixToMono } from './mono.js';
+import { prepareWav, wavSize } from './shared/wav.js';
+import { writeWavAsync } from './shared/wav-async.js';
+import { mixToMonoAsync } from './mono.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -24,6 +25,10 @@ const el = {
   takeCard: $('take-card'),
   channels: $('channels'),
   channelsNote: $('channels-note'),
+  depth: $('depth'),
+  estimate: $('estimate'),
+  cancel: $('cancel'),
+  retry: $('retry'),
   status: $('status'),
   error: $('error'),
   result: $('result'),
@@ -45,6 +50,10 @@ const humanBytes = (n) => sizeText(n, phrase, { under: 'size.bytes', kb: 1, mb: 
 let sound = null;
 let sourceName = '';
 let downloadUrl = null;
+let loading = false;
+let loadGeneration = 0;
+let writeVersion = 0;
+let writeController = null;
 
 /* ------------------------------------------------------------------- input */
 
@@ -55,32 +64,61 @@ const picker = wireFilePicker({
   example: makeExample,
 });
 
+function retireWrite() {
+  writeVersion += 1;
+  writeController?.abort();
+  writeController = null;
+}
+
 async function load(file) {
+  if (!file) return;
+  const generation = ++loadGeneration;
+  retireWrite();
+  sound = null;
+  sourceName = '';
+  loading = true;
   clearError();
   clearResult();
+  el.source.hidden = true;
+  el.rateNote.hidden = true;
+  el.takeCard.inert = true;
+  el.estimate.hidden = true;
+  el.retry.hidden = true;
   picker.busy(phrase('step.reading'));
-  el.status.textContent = phrase('step.reading');
-  el.status.hidden = false;
+  showActivity(phrase('step.reading'));
 
   try {
-    // Only the audio track is asked for. decodeAudioData is handed the bytes
-    // and hands back sound; the video track is never decoded, never drawn, and
-    // never reaches this page. There is no code here that could look at it.
-    sound = await decodeAudio(file);
+    // Native decoding cannot be interrupted. Only its current generation may
+    // publish samples, facts or cleanup after that browser operation finishes.
+    const decoded = await decodeAudio(file);
+    if (generation !== loadGeneration) return;
+    sound = decoded;
     sourceName = file.name;
+    loading = false;
+    picker.done();
     describeSource(file);
-    el.takeCard.removeAttribute('inert');
-    write();
+    el.takeCard.inert = false;
+    await write();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     sound = null;
+    sourceName = '';
+    loading = false;
     el.source.hidden = true;
-    el.takeCard.setAttribute('inert', '');
+    el.takeCard.inert = true;
+    clearResult();
+    picker.done();
+    el.cancel.hidden = true;
+    el.status.hidden = true;
     showError(say(error));
     if (!(error instanceof UnreadableFile)) console.error(error);
-  } finally {
-    picker.done();
-    el.status.hidden = true;
   }
+}
+
+function showActivity(text) {
+  el.status.textContent = text;
+  el.status.hidden = false;
+  el.cancel.hidden = false;
 }
 
 function describeSource(file) {
@@ -97,40 +135,99 @@ function describeSource(file) {
 
 const channelWord = (n) => (n === 1 ? 'channels.mono' : n === 2 ? 'channels.stereo' : 'channels.many');
 
-el.channels.addEventListener('change', () => { if (sound) write(); });
+for (const control of [el.channels, el.depth]) {
+  control.addEventListener('change', () => { if (sound && !loading) write(); });
+}
+el.retry.addEventListener('click', () => write());
+el.cancel.addEventListener('click', cancel);
+
+function cancel() {
+  if (!loading && !writeController) return;
+  if (loading) {
+    loadGeneration += 1;
+    loading = false;
+    sound = null;
+    sourceName = '';
+    el.source.hidden = true;
+    el.takeCard.inert = true;
+    el.estimate.hidden = true;
+    picker.done();
+  }
+  retireWrite();
+  clearError();
+  clearResult();
+  el.cancel.hidden = true;
+  el.retry.hidden = !sound;
+  el.status.textContent = phrase('step.cancelled');
+  el.status.hidden = false;
+}
 
 /* -------------------------------------------------------------- the result */
 
 /**
- * Write the WAV.
- *
- * A WAV is the samples with a forty-four-byte header in front of them, so this
- * is not an encode and there is no quality decision in it. It is also fast
- * enough to redo whenever the channel setting changes, which is why there is no
- * button to press: the file is simply always the one the settings describe.
+ * Settings still generate automatically, but each writer owns only its exact
+ * source and choices. Newer settings, a replacement or Cancel retire it.
  */
-function write() {
+async function write() {
+  if (!sound || loading) return;
+  retireWrite();
+  const version = writeVersion;
+  const input = sound;
+  const name = wavName(sourceName);
+  const mono = el.channels.value === 'mono';
+  const bits = Number(el.depth.value);
+  const controller = new AbortController();
+  writeController = controller;
+  const current = () => version === writeVersion && input === sound
+    && controller === writeController && !controller.signal.aborted && !loading;
+  const report = (key, { done, total }) => {
+    if (current()) showActivity(phrase(key, { n: Math.round(done / Math.max(1, total) * 100) }));
+  };
   clearError();
+  clearResult();
+  el.retry.hidden = true;
+  el.estimate.textContent = phrase('out.estimate', {
+    size: humanBytes(wavSize(input.frames, mono ? 1 : input.channels.length, bits)),
+  });
+  el.estimate.hidden = false;
+  showActivity(phrase(mono ? 'step.mixing' : 'step.writing', { n: 0 }));
+  let failed = false;
+
   try {
-    const channels = el.channels.value === 'mono' ? [mixToMono(sound.channels)] : sound.channels;
-    const blob = writeWav(channels, sound.sampleRate, { bits: 16 });
-
-    if (downloadUrl) URL.revokeObjectURL(downloadUrl);
+    // Refuse the complete output before mono allocates an additional PCM plane.
+    prepareWav(mono ? [input.channels[0]] : input.channels, input.sampleRate, { bits });
+    const options = { signal: controller.signal };
+    const channels = mono ? [await mixToMonoAsync(input.channels, {
+      ...options, onProgress: (progress) => report('step.mixing', progress),
+    })] : input.channels;
+    if (!current()) return;
+    const blob = await writeWavAsync(channels, input.sampleRate, {
+      ...options, bits, onProgress: (progress) => report('step.writing', progress),
+    });
+    if (!current()) return;
     downloadUrl = URL.createObjectURL(blob);
-
     el.resultAudio.src = downloadUrl;
     el.download.href = downloadUrl;
-    el.download.download = wavName(sourceName);
+    el.download.download = name;
     el.resultInfo.textContent = phrase('out.info', {
-      size: humanBytes(blob.size),
-      length: clock(sound.duration),
+      depth: phrase(bits === 32 ? 'depth.float' : 'depth.16'),
+      size: humanBytes(blob.size), length: clock(input.duration),
       channels: phrase(channelWord(channels.length)),
-      rate: (sound.sampleRate / 1000).toFixed(1),
+      rate: (input.sampleRate / 1000).toFixed(1),
     });
     el.result.hidden = false;
   } catch (error) {
+    if (!current()) return;
+    failed = true;
     showError(say(error));
     console.error(error);
+  } finally {
+    if (current()) {
+      writeController = null;
+      el.cancel.hidden = true;
+      el.status.hidden = true;
+      el.retry.hidden = !failed;
+    }
   }
 }
 
@@ -142,7 +239,10 @@ function wavName(name) {
 
 function clearResult() {
   el.result.hidden = true;
+  el.resultAudio.pause();
   el.resultAudio.removeAttribute('src');
+  el.resultAudio.load();
+  el.download.removeAttribute('href');
   if (downloadUrl) URL.revokeObjectURL(downloadUrl);
   downloadUrl = null;
 }

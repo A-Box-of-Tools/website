@@ -43,8 +43,10 @@ file in a `<video>` element — is handed the bytes and hands back sound. The
 video track is never asked for, never decoded, never drawn. That is not
 restraint: there is no video decoder in `src/` to run.
 
-Then `src/shared/wav.js` puts a forty-four-byte header in front of the samples. There
-is no encoder in the loop, so there is no second generation of loss.
+The shared WAV primitives write either PCM16 or IEEE Float32. PCM16 rounds and
+clamps decoded samples; Float32 preserves them when channels remain unchanged,
+including values beyond full scale. Neither restores losses already present in
+the source. Mono averages channels before writing either format.
 
 ## The sample-rate trap
 
@@ -77,12 +79,50 @@ recording made with two microphones is half the room. Averaging can cancel
 where the two are out of phase, which is rarer and quieter than losing a
 speaker.
 
-## No button
+## Automatic output with cancellation
 
-A WAV is fast enough to write that redoing it whenever a setting changes costs
-nothing — so the file is simply always the one the settings describe, and there
-is nothing to press. The `<audio>` element plays *the file that is about to be
-downloaded*, not the video: if it sounds right, the download is right.
+The compatible default remains 16-bit PCM. Choosing channels or depth retires
+and releases the previous result, then starts a new writer automatically. A
+cancelled or failed write offers **Create WAV again**, so keeping the current
+source does not require choosing it twice. The player always uses the exact
+WAV offered by Download.
+
+Each replacement first discards decoded source state, its facts and the old
+result/player/download URL. A load generation owns the native read, including
+errors and picker cleanup. Browser decoding itself cannot be interrupted;
+Cancel retires its result immediately, and any later completion is ignored.
+Every writer has a separate controller and exact source/choice ownership, so
+old progress, failures and completion cannot alter a newer load or setting.
+Cancel stays outside the inert output card while reading, and settings remain
+editable during writing so changing them starts the newer plan.
+
+`shared/js/wav-async.js` opts into bounded 8192-frame packing, sharing the same
+header and packing primitives as the unchanged synchronous WAV API. The
+extractor alone asks for it and `cooperative-work.js`; other audio tools keep
+their synchronous writer. Mixing uses the same Float32 accumulation order as
+the existing mix, in bounded runs. Checkpoints yield actual timer turns after
+an eight-millisecond budget, rather than starving browser input with resolved
+promises. Both writers refuse the exact header-inclusive RIFF overflow before
+allocating output samples; the estimate includes Float32’s larger header.
+
+The input, decoded channels, mono plane when requested and output still require
+memory. Blob construction and native decoding are not cooperative operations;
+Cancel cannot interrupt those browser calls halfway through. Cancellation
+retires ownership and discards their results rather than promising immediate
+release of memory the browser still owns.
+
+## Verification
+
+CI coverage checks complete sync/async PCM16 and Float32 byte parity across
+packing boundaries, independent sample/header readback, exact RIFF limits
+without allocating giant buffers, mono accumulation/source preservation and
+actual timer cancellation without late progress or a partial result. The
+local loop is the scoped build and a built browser page; suites run in CI.
+
+Browser checks cover actual MP4 extraction, precision readback, replacement
+success/error ordering, settings during pending work, cancellation/retry,
+released download URLs, translated controls and narrow layout. The sample-rate
+and channel choices remain visible in the output facts.
 
 ## What only a browser catches
 
