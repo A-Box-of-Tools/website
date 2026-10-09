@@ -138,13 +138,13 @@ complete = true
 [hub]
 title = "Outils en ligne gratuits, sans envoi ni inscription | abox.tools"
 description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à la taille voulue, recadrer une vidéo."
-heading = "Des outils qui ne passent jamais par un serveur"
+heading = "Outils gratuits. Fichiers privés."
 og_title = "A Box of Tools &mdash; des outils qui ne passent jamais par un serveur"
 og_description = "De petits outils à usage unique qui travaillent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 schema_description = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Rien n'est envoyé et aucun compte n'est nécessaire."
 schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers en local, sans jamais les envoyer"
-lede = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Vos fichiers restent sur votre machine, car il n'y a rien à envoyer, aucun compte à créer et rien qui vous suive."
+lede = "Tout se fait dans votre navigateur. Aucun envoi, aucun compte."
 support_note = "Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une corvée, voici la seule chose, sur tout ce site, qui vous demande quelque chose."
 
 [[hub.guarantees]]

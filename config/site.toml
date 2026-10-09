@@ -312,20 +312,16 @@ title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
 description = "Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data."
-heading = "A box of tools that never touch a server"
+heading = "Free tools. Private files."
 og_title = "A Box of Tools &mdash; tools that never touch a server"
 og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
 og_image_alt = "abox.tools - tools that never touch a server"
 schema_description = "Small, single-purpose utilities that do all of their work inside your browser. Nothing is uploaded and no account is needed."
 schema_about = "Browser-based file utilities that process files locally without uploading them"
 
-# "tools" rather than "utilities": this is the first line of body copy on the
-# site and the only place the phrase people actually search for can appear
-# early without being forced. The sentence is otherwise unchanged.
-lede = """
-    Small, single-purpose tools that do all of their work inside your
-    browser. Your files stay on your machine: there is nothing to upload,
-    no account to make, and nothing to track."""
+# The opening gives the premise in one breath; the checkable details live
+# below the catalogue so they do not put a phone's first tool off screen.
+lede = "Everything runs in your browser. No uploads, no sign-in."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is

@@ -202,17 +202,14 @@ title = "Ferramentas grátis no navegador &mdash; sem enviar arquivo, sem cadast
 # Abaixo de 155 caracteres, como no inglês: o Google corta a descrição por ali,
 # e aqui o final é a parte que vende o site.
 description = "Ferramentas grátis que nunca enviam seus arquivos. Junte imagens num PDF ou MP4, comprima uma imagem até o tamanho exato, corte um vídeo, remova o EXIF."
-heading = "Ferramentas que não passam por servidor nenhum"
+heading = "Ferramentas grátis. Arquivos privados."
 og_title = "A Box of Tools &mdash; ferramentas que não passam por servidor nenhum"
 og_description = "Ferramentas pequenas, cada uma com uma função só, que rodam inteiras dentro do seu navegador. Seus arquivos não saem do seu computador."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
 schema_description = "Utilitários pequenos, cada um com uma função só, que fazem todo o trabalho dentro do navegador. Não se envia nada e não é preciso ter conta."
 schema_about = "Utilitários de arquivo que rodam no navegador e processam tudo localmente, sem enviar nada"
 
-lede = """
-    Ferramentas pequenas, cada uma com uma função só, que fazem todo o trabalho
-    dentro do seu navegador. Seus arquivos ficam no seu computador. Não há nada
-    para enviar, nenhuma conta para criar e nada rastreando você."""
+lede = "Tudo funciona no seu navegador. Sem enviar arquivos nem fazer login."
 
 support_note = """
       Estas ferramentas são grátis e vão continuar assim. Se alguma poupou

@@ -124,7 +124,7 @@
 
 {% include "partials/lang-notice.html" %}
 
-<header class="hub-head">
+<header class="hub-head hub-home">
   <div class="head-row">
     <p class="brand">
       {% include "partials/site-mark.html" %}
@@ -136,35 +136,9 @@
   <p class="lede">
 {{ site.hub.lede }}
   </p>
-
-  <div class="support-cta">
-    {% include "partials/bmc.html" %}
-    <p class="support-note">
-{{ site.hub.support_note }}
-    </p>
-  </div>
 </header>
 
 <main id="main">
-
-  <ul class="guarantees">
-{% for g in site.hub.guarantees %}    <li>
-      <span class="g-title">{{ g.title }}</span>
-      <span class="g-body">
-{{ g.body }}
-      </span>
-    </li>
-{% endfor %}  </ul>
-
-  <!--
-    The three claims above are worth nothing if a reader has no way to test
-    them, and "read our privacy policy" is not a way to test anything. This
-    points at the guide that sets out how to check a tool like this one -
-    including the checks that can be run against this site.
-  -->
-  <p class="guarantees-note">
-{{ ui.guarantees_note }}
-  </p>
 
   <!--
     The filter, directly above the categories it narrows.
@@ -270,6 +244,39 @@
   <p class="page-note">
 {{ ui.hub_roadmap_note }}
   </p>
+
+  <!--
+    The catalogue comes first so a visitor can reach a tool on a phone without
+    scrolling through the explanation. The full, checkable claims stay together
+    here, and support is offered only after the tools they help keep free.
+  -->
+  <div class="hub-details">
+    <ul class="guarantees">
+{% for g in site.hub.guarantees %}    <li>
+        <span class="g-title">{{ g.title }}</span>
+        <span class="g-body">
+{{ g.body }}
+        </span>
+      </li>
+{% endfor %}    </ul>
+
+    <!--
+      The three claims above are worth nothing if a reader has no way to test
+      them, and "read our privacy policy" is not a way to test anything. This
+      points at the guide that sets out how to check a tool like this one -
+      including the checks that can be run against this site.
+    -->
+    <p class="guarantees-note">
+{{ ui.guarantees_note }}
+    </p>
+
+    <div class="support-cta">
+      {% include "partials/bmc.html" %}
+      <p class="support-note">
+{{ site.hub.support_note }}
+      </p>
+    </div>
+  </div>
 
 </main>
 

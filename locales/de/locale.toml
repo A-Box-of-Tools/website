@@ -244,17 +244,14 @@ title = "Kostenlose Browser-Tools &mdash; ohne Upload, ohne Anmeldung | abox.too
 # Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
 description = "Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 zusammenfügen, exakt komprimieren, Videos zuschneiden, EXIF entfernen."
-heading = "Werkzeuge, die ohne Server auskommen"
+heading = "Kostenlose Werkzeuge. Dateien bleiben privat."
 og_title = "A Box of Tools &mdash; Werkzeuge, die ohne Server auskommen"
 og_description = "Kleine Werkzeuge für je eine Aufgabe, die vollständig in Ihrem Browser laufen. Ihre Dateien verlassen Ihr Gerät nicht."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 schema_description = "Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit im Browser erledigen. Nichts wird hochgeladen, und ein Konto brauchen Sie nicht."
 schema_about = "Browser-Werkzeuge für Dateien, die lokal verarbeitet und nicht hochgeladen werden"
 
-lede = """
-    Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit in Ihrem
-    Browser erledigen. Ihre Dateien bleiben dabei auf Ihrem Gerät. Sie laden
-    nichts hoch, Sie legen kein Konto an, und niemand verfolgt, was Sie tun."""
+lede = "Alles läuft in Ihrem Browser. Kein Upload, keine Anmeldung."
 
 support_note = """
       Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit

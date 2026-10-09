@@ -93,6 +93,35 @@ body {
   font-size: 1.02rem;
 }
 
+/* The hub leads into a catalogue rather than an article. Its opening stays
+   compact without changing the headings on guides and legal pages. */
+.hub-head.hub-home { padding: 1.5rem 0 1.25rem; }
+
+.hub-home h1 {
+  max-width: none;
+  font-size: clamp(1.65rem, 1.2rem + 1.8vw, 2.15rem);
+  text-wrap: balance;
+}
+
+/* A Japanese word should not split just to balance the heading's two lines.
+   Punctuation remains a break, with an emergency wrap for very narrow screens. */
+.hub-home h1:lang(ja),
+.hub-home h1:lang(zh) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.hub-home .lede {
+  margin-top: 0.5rem;
+  max-width: none;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 620px) {
+  .hub-head.hub-home { padding-top: 1rem; }
+  .hub-home h1 { font-size: 1.65rem; }
+}
+
 /* ---- buy me a coffee ---------------------------------------------------- */
 
 /*
@@ -108,7 +137,9 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem 1.1rem;
-  margin: 1.6rem 0 0.4rem;
+  margin: 1.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
 }
 
 .support-cta .bmc-btn {
@@ -129,11 +160,17 @@ body {
   font-size: 0.9rem;
 }
 
-/* ---- the three guarantees ---------------------------------------------- */
+/* ---- the fuller explanation below the catalogue ------------------------ */
+
+.hub-details {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+}
 
 .guarantees {
   list-style: none;
-  margin: 2rem 0 2.75rem;
+  margin: 0 0 1rem;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -156,7 +193,7 @@ body {
 /* The line under the three guarantees, pointing at the guide that says how to
    check them. Quiet: it is a footnote to the claims, not a fourth claim. */
 .guarantees-note {
-  margin: -1.75rem 0 2.75rem;
+  margin: 0;
   font-size: 0.88rem;
   color: var(--text-dim);
   max-width: 68ch;

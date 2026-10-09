@@ -205,17 +205,14 @@ title = "Herramientas gratis en el navegador &mdash; sin subir nada y sin cuenta
 # Por debajo de 155 caracteres, como en inglés: Google corta la descripción más
 # o menos ahí, y aquí el final es la parte que vende el sitio.
 description = "Herramientas gratis que no suben tus archivos. Une imágenes en un PDF o un MP4, comprime una imagen al tamaño exacto, recorta un vídeo o borra el EXIF."
-heading = "Herramientas que no pasan por ningún servidor"
+heading = "Herramientas gratis. Archivos privados."
 og_title = "A Box of Tools &mdash; herramientas que no pasan por ningún servidor"
 og_description = "Herramientas pequeñas, de una sola tarea, que funcionan enteras dentro del navegador. Tus archivos no salen de tu dispositivo."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
 schema_description = "Utilidades pequeñas, de una sola tarea, que hacen todo su trabajo dentro del navegador. No se sube nada y no hace falta ninguna cuenta."
 schema_about = "Utilidades de archivos que funcionan en el navegador y procesan los archivos en local, sin subirlos"
 
-lede = """
-    Herramientas pequeñas, de una sola tarea, que hacen todo su trabajo dentro
-    del navegador. Tus archivos se quedan en tu dispositivo. No hay nada que
-    subir, no hace falta ninguna cuenta y nadie te sigue el rastro."""
+lede = "Todo funciona en el navegador. Sin subir archivos ni iniciar sesión."
 
 support_note = """
       Estas herramientas son gratis y lo van a seguir siendo. Si alguna te ha
