@@ -78,6 +78,7 @@
   <template id="document-template">
     <article class="document">
       <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">移除</button></div>
+      <p class="duplicate-note field-summary" role="status" aria-live="polite" aria-atomic="true" hidden></p>
       <div class="document-content">
         <div class="picture-column">
           <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="裁剪压缩后的附件预览" hidden></a>
@@ -214,6 +215,7 @@
     <span data-phrase="missingTotal">未找到明确的单据总额。请对照图片手动填写。</span>
     <span data-phrase="ambiguousTotal">找到多个可能的总额。请对照图片填写正确总额。</span>
     <span data-phrase="stopped">识别已停止。请手动填写详情，或点击“重新识别”。</span>
+    <span data-phrase="duplicatePhoto">可能重复：{count}张照片的文件名和文件大小相同。请在确认前对照检查。它们仍作为单独的单据保留。</span>
     <span data-phrase="busy">请等待本次识别完成，或先停止识别。</span>
     <span data-phrase="tooMany">最多添加 20 张图片。请先移除一份单据，再添加新图片。</span>
     <span data-phrase="badFile">{name} 不是支持的 JPEG、PNG、WebP 或 AVIF 图片。</span>

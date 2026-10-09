@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="Prévia do vídeo original"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -54,7 +54,9 @@
         <p class="field-note" id="audio-note">
           Virado amostra por amostra e depois codificado de novo em AAC. Deixe
           desligado para um vídeo mudo, que é mais rápido.
+          Ao cancelar, pode ser preciso esperar até terminar a etapa atual de decodificação ou reorganização do som.
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -78,7 +80,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Prévia do vídeo invertido"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Baixar o vídeo</a>
@@ -113,8 +115,10 @@
     <span data-phrase="src.audio.whatever">o que o player achar</span>
     <span data-phrase="sound.off">O clipe invertido não vai ter som nenhum.</span>
     <span data-phrase="sound.exact">Decodificado, virado amostra por amostra e codificado de novo em AAC. Essa segunda
-      codificação é inevitável: pacotes tocados na ordem contrária não são uma inversão.</span>
-    <span data-phrase="sound.player">Lido pelo navegador, virado amostra por amostra e codificado de novo em AAC.</span>
+      codificação é inevitável: pacotes tocados na ordem contrária não são uma inversão.
+      Ao cancelar, pode ser preciso esperar até terminar a etapa atual de decodificação ou reorganização do som.</span>
+    <span data-phrase="sound.player">Lido pelo navegador, virado amostra por amostra e codificado de novo em AAC.
+      Ao cancelar, pode ser preciso esperar até terminar a etapa atual de decodificação ou reorganização do som.</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069; (a partir de &#x2066;{fromWidth} x {fromHeight}&#x2069;; o H.264 não tem como
       guardar um quadro de lado ímpar)</span>
@@ -129,6 +133,13 @@
     <span data-phrase="step.frame">Invertendo o quadro {done} de {total} ({percent}%)</span>
     <span data-phrase="audio.descriptor">Erro interno: a descrição do áudio é maior do que o esperado.</span>
     <span data-phrase="audio.nosound">Não voltou som nenhum deste arquivo.</span>
+    <span data-phrase="memory.track">Memória do som: cerca de {pcm} para a faixa inteira, chegando temporariamente a cerca de {peak} ao reunir os canais. A saída codificada e o consumo adicional do navegador não estão incluídos.</span>
+    <span data-phrase="memory.file">Memória do som: cerca de {pcm} para a faixa inteira. O navegador também lê todo o arquivo de entrada de {file}; outras cópias na decodificação, a saída codificada e o consumo adicional do navegador não estão incluídos.</span>
+    <span data-phrase="memory.unknown">Memória do som: a quantidade de canais é desconhecida até o navegador ler todo o arquivo de entrada de {file}. Os buffers de som completos, as cópias na decodificação, a saída codificada e o consumo adicional do navegador são custos à parte.</span>
+    <span data-phrase="memory.unavailable">Memória do som: as informações disponíveis da faixa não bastam para uma estimativa. O som inteiro e as cópias temporárias ao reunir os canais ficam na memória; a saída codificada e o consumo adicional do navegador são custos à parte.</span>
+    <span data-phrase="memory.off">Memória do som: não são necessários buffers de som decodificado quando o som é omitido.</span>
+    <span data-phrase="memory.none">Memória do som: esta fonte não tem faixa de áudio.</span>
+    <span data-phrase="audio.stalled">O codificador de áudio parou de responder. Tente um clipe mais curto, omita o som ou use outro navegador.</span>
     <span data-phrase="audio.noencode">O som foi decodificado mas não voltou nada do codificador.</span>
     <span data-phrase="audio.toolarge">O som deste arquivo não é AAC, então invertê-lo significaria entregar o arquivo
       inteiro ao navegador para ler &mdash; e este arquivo é grande demais para isso. O
@@ -160,6 +171,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Este arquivo usa uma lista de edição para reprodução que esta ferramenta não consegue preservar. Salve o clipe editado visível como um novo vídeo antes de processá-lo aqui.</span>
+    <span data-phrase="read.editinvalid">A lista de edição para reprodução do arquivo está incompleta ou tem tempos inválidos. Por isso, não é possível preservar sua sequência visível.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

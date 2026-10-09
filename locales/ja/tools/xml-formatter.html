@@ -72,7 +72,7 @@
           <label for="input">あなたのXML</label>
           <span class="count" id="input-count">空</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="ここにXMLを貼り付け - または上に.xml・.svg・.rssファイルをドロップ。"></textarea>
       </div>
@@ -92,6 +92,7 @@
     <h2><span class="step">3</span> 結果を持ち出す</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>エラー位置へ移動</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">まだ何もありません。</p>
@@ -130,6 +131,10 @@
     <span data-phrase="xml.comment">このコメントが閉じられていません</span>
     <span data-phrase="xml.cdata">このCDATAセクションが閉じられていません</span>
     <span data-phrase="xml.declaration">この宣言が閉じられていません</span>
+    <span data-phrase="xml.document">XMLには外側の要素がちょうど1つ必要で、その外にテキストは置けません。</span>
+    <span data-phrase="xml.declarationorder">XML宣言は先頭に置き、DOCTYPEは外側の要素より前に1度だけ記述します。</span>
+    <span data-phrase="xml.declarationinvalid">このXML宣言は無効です。</span>
+    <span data-phrase="xml.character">この数値文字参照はXMLでは無効です。</span>
     <span data-phrase="xml.closing">この終了タグが完結していません</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; が閉じられていません</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; は開かれていないタグを閉じています</span>
@@ -156,7 +161,7 @@
     <span data-phrase="json.number">これはJSONが許す数値ではありません</span>
     <span data-phrase="convert.xml-json.name">XMLからJSONへ</span>
     <span data-phrase="convert.json-xml.name">JSONからXMLへ</span>
-    <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。</span>
+    <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。混在する内容の順序とコメントは保持されません。</span>
     <span data-phrase="convert.json-xml">配列は繰り返しの要素になります。読み戻せる形はそれだけだからです。空のオブジェクトと空の文字列は、どちらも空の要素として出てきます。</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

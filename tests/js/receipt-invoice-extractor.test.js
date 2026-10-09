@@ -7,7 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  parseAmount, formatMinor, extractReceipt, summarize, buildCsv, buildMailto,
+  parseAmount, formatMinor, extractReceipt, summarize, buildCsv, buildMailto, duplicatePhotoCounts,
 } from '../../tools/receipt-invoice-extractor/src/receipt.js';
 
 test('amounts use integer hundredths across decimal and grouping conventions', () => {
@@ -295,4 +295,26 @@ test('mailto rejects recipient and subject header injection, including surroundi
   assert.ok(buildMailto({ to: '', subject: 'Receipts' }).startsWith('mailto:?subject='));
   assert.ok(buildMailto({ to: 'a@example.com, b@example.com' }).startsWith('mailto:a@example.com,b@example.com?'));
   assert.ok(buildMailto({ to: 'name+tag@example.com' }).startsWith('mailto:name%2Btag@example.com?'));
+});
+
+
+test('possible photo duplicates use filename and size without merging their records', () => {
+  const first = { file: { name: 'IMG_0001.jpg', size: 123 }, confirmed: true, amount: '10.00' };
+  const second = { file: { name: 'IMG_0001.jpg', size: 123 }, confirmed: false, amount: '20.00' };
+  const resized = { file: { name: 'IMG_0001.jpg', size: 124 } };
+  const renamed = { file: { name: 'invoice.jpg', size: 123 } };
+  const records = [first, second, resized, renamed];
+  const before = JSON.stringify(records);
+  assert.deepEqual([...duplicatePhotoCounts(records)], [[first, 2], [second, 2]]);
+  assert.equal(JSON.stringify(records), before);
+  assert.equal(duplicatePhotoCounts([first, resized, renamed]).size, 0);
+  assert.equal(duplicatePhotoCounts([first, second, { file: first.file }]).get(first), 3);
+});
+
+test('filename and byte count groups cannot collide through a delimiter or folded name', () => {
+  const a = { file: { name: 'photo:1', size: 23 } };
+  const b = { file: { name: 'photo', size: 123 } };
+  const c = { file: { name: 'PHOTO:1', size: 23 } };
+  assert.equal(duplicatePhotoCounts([a, b, c]).size, 0);
+  assert.equal(duplicatePhotoCounts([{ file: null }, {}, { file: { name: 'photo', size: NaN } }]).size, 0);
 });

@@ -98,7 +98,7 @@
           <label for="input">Tu texto</label>
           <span class="count" id="input-count">vacío</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Pega aquí JSON, XML, HTML, CSS o YAML, o suelta un archivo arriba."></textarea>
       </div>
@@ -118,6 +118,8 @@
     <h2><span class="step">3</span> Llévate el resultado</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Ir al error</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Todavía nada.</p>
@@ -143,6 +145,11 @@
     <span data-phrase="count.characters.one">{count} carácter</span>
     <span data-phrase="count.characters.many">{count} caracteres</span>
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+    <span data-phrase="convert.comments">Comentarios YAML descartados: {n}. El texto entre comillas y en escalares de bloque sigue siendo texto.</span>
+    <span data-phrase="convert.names">Nombres XML cambiados: {n}. Esta conversión no conserva los nombres originales.</span>
+    <span data-phrase="convert.collisions">Colisiones de nombres XML: {n}. Claves distintas se convirtieron en el mismo nombre de elemento y pueden volver a leerse como un valor repetido.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">La conversión se detuvo en esta construcción no admitida. No se produjo ningún resultado.</span>
     <span data-phrase="parse.at">{reason} (línea {line}, columna {column})</span>
     <span data-phrase="char.end">el final del texto</span>
     <span data-phrase="char.newline">un salto de línea</span>
@@ -172,6 +179,10 @@
     <span data-phrase="xml.comment">Este comentario no se cierra nunca</span>
     <span data-phrase="xml.cdata">Esta sección CDATA no se cierra nunca</span>
     <span data-phrase="xml.declaration">Esta declaración no se cierra nunca</span>
+    <span data-phrase="xml.document">XML necesita exactamente un elemento exterior, sin texto fuera de él.</span>
+    <span data-phrase="xml.declarationorder">La declaración XML debe ir primero; DOCTYPE solo puede aparecer una vez, antes del elemento exterior.</span>
+    <span data-phrase="xml.declarationinvalid">Esta declaración XML no es válida.</span>
+    <span data-phrase="xml.character">Esta referencia numérica de carácter no es válida en XML.</span>
     <span data-phrase="xml.closing">Esta etiqueta de cierre no se termina nunca</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; no se cierra nunca</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; cierra una etiqueta que nunca se abrió</span>
@@ -210,11 +221,10 @@
       entrecomillan donde dejarlas desnudas cambiaría lo que dicen.</span>
     <span data-phrase="convert.yaml-json">Los comentarios se pierden, porque JSON no tiene dónde meter uno. Las anclas, los
       alias y las etiquetas paran la conversión en vez de adivinarse.</span>
-    <span data-phrase="convert.json-xml">Un array se convierte en un elemento repetido, que es la única forma que se vuelve a
-      leer bien. Un objeto vacío y una cadena vacía salen los dos como un elemento vacío.</span>
+    <span data-phrase="convert.json-xml">Un array se convierte en elementos repetidos. Un objeto vacío y una cadena vacía se convierten ambos en un elemento vacío. Las claves se adaptan a nombres XML sin prefijo; los nombres cambiados y las colisiones se indican junto al resultado.</span>
     <span data-phrase="convert.xml-json">Los atributos se convierten en miembros con un @ en el nombre, el texto propio de un
       elemento se convierte en #text cuando tiene que compartir sitio, y todo valor sigue
-      siendo una cadena &mdash; XML nunca dijo cuáles eran números.</span>
+      siendo una cadena &mdash; XML nunca dijo cuáles eran números. No se conservan el orden del contenido mixto ni los comentarios.</span>
     <span data-phrase="format.unknown">{language} no es un lenguaje que esto formatee.</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

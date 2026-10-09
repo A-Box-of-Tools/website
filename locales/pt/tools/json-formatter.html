@@ -97,7 +97,7 @@
           <label for="input">O seu texto</label>
           <span class="count" id="input-count">vazio</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Cole aqui JSON, XML, HTML, CSS ou YAML - ou solte um arquivo acima."></textarea>
       </div>
@@ -117,6 +117,8 @@
     <h2><span class="step">3</span> Leve o resultado</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Ir para o erro</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Nada ainda.</p>
@@ -142,6 +144,11 @@
     <span data-phrase="count.characters.one">{count} caractere</span>
     <span data-phrase="count.characters.many">{count} caracteres</span>
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+    <span data-phrase="convert.comments">Comentários YAML descartados: {n}. O texto entre aspas e em escalares de bloco continua sendo texto.</span>
+    <span data-phrase="convert.names">Nomes XML alterados: {n}. Esta conversão não mantém os nomes originais.</span>
+    <span data-phrase="convert.collisions">Colisões de nomes XML: {n}. Chaves diferentes se tornaram o mesmo nome de elemento e podem ser lidas de volta como um valor repetido.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">A conversão parou nesta construção não suportada. Nenhum resultado foi produzido.</span>
     <span data-phrase="parse.at">{reason} (linha {line}, coluna {column})</span>
     <span data-phrase="char.end">o fim do texto</span>
     <span data-phrase="char.newline">uma quebra de linha</span>
@@ -170,6 +177,10 @@
     <span data-phrase="xml.comment">Este comentário nunca é fechado</span>
     <span data-phrase="xml.cdata">Esta seção CDATA nunca é fechada</span>
     <span data-phrase="xml.declaration">Esta declaração nunca é fechada</span>
+    <span data-phrase="xml.document">O XML precisa de exatamente um elemento externo, sem texto fora dele.</span>
+    <span data-phrase="xml.declarationorder">A declaração XML deve vir primeiro; um DOCTYPE só pode aparecer uma vez, antes do elemento externo.</span>
+    <span data-phrase="xml.declarationinvalid">Esta declaração XML é inválida.</span>
+    <span data-phrase="xml.character">Esta referência numérica de caractere é inválida em XML.</span>
     <span data-phrase="xml.closing">Esta tag de fecho nunca é terminada</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; nunca é fechada</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; fecha uma tag que nunca foi aberta</span>
@@ -208,11 +219,10 @@
       entre aspas onde deixá-las cruas mudaria o que dizem.</span>
     <span data-phrase="convert.yaml-json">Os comentários se perdem, porque o JSON não tem onde pôr um. Âncoras, aliases e tags
       param a conversão em vez de serem adivinhados.</span>
-    <span data-phrase="convert.json-xml">Um array vira um elemento repetido, que é a única forma que se lê de volta. Um
-      objeto vazio e uma string vazia saem os dois como elemento vazio.</span>
+    <span data-phrase="convert.json-xml">Um array se torna elementos repetidos. Um objeto vazio e uma string vazia se tornam um elemento vazio. As chaves são ajustadas para nomes XML sem prefixo; os nomes alterados e as colisões são informados junto ao resultado.</span>
     <span data-phrase="convert.xml-json">Os atributos viram membros com um @ no nome, o texto próprio de um elemento vira
       #text onde tem de dividir o lugar, e todo valor continua string &mdash; o XML nunca
-      disse quais eram números.</span>
+      disse quais eram números. A ordem do conteúdo misto e os comentários não são preservados.</span>
     <span data-phrase="format.unknown">{language} não é uma linguagem que isto formate.</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

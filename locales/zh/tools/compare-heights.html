@@ -19,6 +19,8 @@
       </select>
     </div>
 
+    <p class="width-guidance" id="width-guidance">物体宽度留空时使用自动宽度。如果无法识别输入的宽度，修正之前不会在图表中绘制该行。</p>
+
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
         <span></span>
@@ -96,6 +98,7 @@
       里头有几个是真的固定：20 英尺的海运集装箱按定义就是 259&nbsp;cm 高，篮球框在 305，美国的室内门是 203 乘 81。其余是常见尺寸而不是标准——门、窗和台面各国不同、各家也不同。每一个进来都是一行普通的行，量一下你自己的，把真数字盖上去。
     </p>
 
+    <p id="import-status" class="field-note" role="status" aria-live="polite" aria-atomic="true" hidden></p>
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -210,6 +213,17 @@
     <span data-phrase="height.unreadable">这不是这里读得懂的身高。试试 173、1.73 m、5'8" 或者 68 in。</span>
     <span data-phrase="height.tooshort">太矮画不出来——最小 5 cm。</span>
     <span data-phrase="height.tootall">比图表能到的还高——上限是 12 米。</span>
+
+    <span data-phrase="width.reads">宽度识别为 {width}。</span>
+    <span data-phrase="width.automatic">自动宽度随高度确定。</span>
+    <span data-phrase="width.automaticread">自动宽度：{width}。</span>
+    <span data-phrase="width.unreadable">无法识别这个宽度。请尝试 60 cm 或 24 in。</span>
+    <span data-phrase="width.toosmall">宽度太小，最小为 5 cm。</span>
+    <span data-phrase="width.toolarge">宽度超出图表范围，上限为 12 米。</span>
+    <span data-phrase="chart.invalid">修正高度或宽度后，才能在图表中绘制该行。</span>
+    <span data-phrase="import.failed">无法读取 {name}：{detail}。</span>
+    <span data-phrase="import.readingone">正在本页读取 1 张图片…</span>
+    <span data-phrase="import.readingmany">正在本页读取 {count} 张图片…</span>
 
     <span data-phrase="svg.added">已加入，用那个文件里的 {shapes} 个形状画成。为了读它，没有上传任何东西。</span>
     <span data-phrase="svg.noshapes">那个文件里没有可以画的东西。只留下形状——只有文字、效果或链接图片的文件，一个形状也没有。</span>

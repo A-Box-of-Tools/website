@@ -102,6 +102,7 @@
         <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
+      <p id="results-settings" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
@@ -152,6 +153,9 @@
     <span data-phrase="n.heic.many">{n} 个输入文件</span>
     <span data-phrase="n.picture.one">{n} 张 {format} 图片</span>
     <span data-phrase="n.picture.many">{n} 张 {format} 图片</span>
+    <span data-phrase="results.settings">本次设置：{format}；JPEG/WebP 质量 {quality}；{metadata}。</span>
+    <span data-phrase="results.metadata.requested">请求将 HEIC 照片信息复制到 JPEG，省略 AVIF 信息</span>
+    <span data-phrase="results.metadata.omitted">省略照片信息</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}。{before} &rarr; {after}，{change}。</span>
     <span data-phrase="result.alt">转换后的图片：{name}</span>
     <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>

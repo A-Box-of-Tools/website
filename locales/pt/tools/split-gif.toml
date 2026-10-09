@@ -216,21 +216,12 @@ a = """
 [[faq]]
 q = "Tem limite de quantos quadros ele lê?"
 a = """
-        Limite fixo não tem. O teto de verdade é a memória do seu computador: um
-        GIF se expande para mais ou menos um byte por pixel por quadro enquanto
-        está sendo lido, então um arquivo pequeno pode virar muita memória, e esta
-        página prefere parar de ler a deixar a aba morrer. Se isso acontecer, ela
-        avisa e devolve os quadros que conseguiu."""
+        A ferramenta usa uma estimativa de planejamento de 512 MiB para buffers da origem, partes retidas, prévias e saída, e para antes de superar 128 Mi pixels decodificados. Uma parte pequena não reduz os buffers da imagem completa. Planos inseguros são recusados antes do desenho; resultados parciais só ficam disponíveis se seus buffers couberem. Folhas e PNGs acumulados também contam. Alocações internas, objetos JS e limites de canvas podem precisar de mais ou recusar antes: isso não mede memória livre nem garante que ela não acabe."""
 
 [[faq]]
 q = "Ele abre um GIF estragado?"
 a = """
-        Quase sempre. Download cortado no meio, marca de fim ausente e um último
-        quadro que para no meio do fluxo são coisas comuns, e um leitor que recusa
-        tudo isso não serve justamente para os arquivos que as pessoas mais querem
-        desmontar. Voltam todos os quadros que estiverem completos, com um aviso
-        do que estava errado. Só é recusado de cara um arquivo que não é um GIF de
-        jeito nenhum."""
+        Muitas vezes. Os quadros completos são mantidos de arquivos truncados ou sem marcador final. Em um quadro parcial, áreas ausentes usam a primeira cor da paleta salvo se ela for transparente; a página avisa. Arquivos sem quadros legíveis e planos de buffers inseguros são recusados."""
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
@@ -260,4 +251,4 @@ features = [
 
 [picker]
 title = "Arraste um GIF para cá"
-hint = "ou clique para procurar &mdash; animado ou parado, de qualquer tamanho"
+hint = "ou clique para escolher &mdash; GIF animado ou estático"

@@ -32,10 +32,10 @@
 
     <label class="field" for="target-mb">
       <span>容量の上限</span>
-      <span class="field-note">MBで指定します。よく使われる上限は下のボタンにあります。</span>
+      <span class="field-note">1 MBは1,000,000バイトです。よく使われる送信容量の上限は下のボタンにあります。</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">MB</span>
     </div>
     <div class="chips" role="group" aria-label="よく使う容量の上限">
@@ -116,7 +116,7 @@
     <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
     <span data-phrase="note.silent">音声がないので、指定容量をすべて映像に使います。</span>
     <span data-phrase="estimate.nofile">上で動画を選ぶと、指定容量で何が作れるか表示します。</span>
-    <span data-phrase="estimate.notarget">MBで容量を入力するか、よく使う値を押してください。</span>
+    <span data-phrase="estimate.notarget">0.1 MB以上の有限の数値を入力するか、下のボタンを押してください。</span>
     <span data-phrase="estimate.already">この動画は{size}で、すでに{target}未満です。目標を小さくしなければ処理は不要です。</span>
     <span data-phrase="estimate.nofit">音声だけで指定容量を超えます。音声を除くか、少なくとも{least}を指定してください。</span>
     <span data-phrase="estimate.toosmall">その容量では見られる映像にできません。少なくとも{least}を指定してください。</span>
@@ -145,6 +145,7 @@
     <span data-phrase="check.ok">メモリから開き直し、元と同じ長さ{length}で、{size}が{target}未満であることを確認しました。</span>
     <span data-phrase="check.over">メモリから開き直し、長さは元と同じ{length}ですが、{size}はまだ{target}を超えています。エンコーダーがこの大きさではこれ以上減らせません。フレームを小さくするか音声を除いてください。</span>
     <span data-phrase="check.length">完成したファイルの長さが{want}ではなく{got}です</span>
+    <span data-phrase="check.sound">完成したファイルにすべての音声が残っていません</span>
     <span data-phrase="check.reopen">完成したファイルを開き直せませんでした（{detail}）</span>
     <span data-phrase="facts.picture">元の{from}から{frame}、{rate}、毎秒{fps}フレームにしました。</span>
     <span data-phrase="facts.sound.kept">音声はそのままコピーし、再エンコードしていません。</span>
@@ -159,6 +160,8 @@
     <span data-phrase="encode.toobig">このブラウザは{size}でH.264をエンコードできません。フレームを小さくしてください。</span>
     <span data-phrase="encode.noconfig">エンコーダーはデコーダー設定を一度も返しませんでした。</span>
     <span data-phrase="decode.none">この動画からフレームをデコードできませんでした。</span>
+    <span data-phrase="read.edits">このファイルは、このツールでは保持できない再生用の編集リストを使用しています。ここで処理する前に、表示される編集済みのクリップを新しい動画として保存してください。</span>
+    <span data-phrase="read.editinvalid">ファイルの再生用編集リストが不完全か、時間情報が無効なため、表示されるタイムラインを保持できません。</span>
     <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
     <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
     <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>

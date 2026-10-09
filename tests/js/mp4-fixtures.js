@@ -242,6 +242,28 @@ export function sampleTables({
   return { boxes: concat(stts, stsc, stsz, stco, ...extra), offsets: starts, end: at };
 }
 
+/* -------------------------------------------------------------- edit lists */
+
+/**
+ * Playback edits are authored independently of the reader and media writer.
+ * Movie durations and signed media times deliberately have different widths;
+ * BigInt keeps unsafe version-1 values intact so refusal is actually tested.
+ */
+export function editList(entries, { version = 0, flags = 0, wide = false } = {}) {
+  const integer64 = (value, signed) => {
+    const bytes = new Uint8Array(8);
+    const view = new DataView(bytes.buffer);
+    if (signed) view.setBigInt64(0, BigInt(value));
+    else view.setBigUint64(0, BigInt(value));
+    return bytes;
+  };
+  const rows = entries.map(({ duration, mediaTime = 0, rate = 0x00010000 }) => version === 1
+    ? concat(integer64(duration, false), integer64(mediaTime, true), s32be(rate))
+    : concat(u32be(duration), s32be(mediaTime), s32be(rate)));
+  const elst = full('elst', version, flags, u32be(entries.length), ...rows);
+  return (wide ? largeBox : box)('edts', elst);
+}
+
 /* ------------------------------------------------------------------ tracks */
 
 /**
@@ -261,6 +283,7 @@ export function trak({
   tableBoxes = null,
   mdhdVersion = 0,
   tkhdVersion = 0,
+  editBoxes = null,
 }) {
   const tkhd = tkhdVersion === 1
     ? full('tkhd', 1, 7,
@@ -289,13 +312,15 @@ export function trak({
     box('dinf', full('dref', 0, 0, u32be(1), full('url ', 0, 1))),
     stbl);
 
-  return box('trak', tkhd, box('mdia', mdhd, hdlr, minf));
+  return box('trak', tkhd, ...(editBoxes ? [editBoxes] : []), box('mdia', mdhd, hdlr, minf));
 }
 
-/** The movie header. Nothing in the reader looks at it; real files have one. */
-export function mvhd(timescale = 1000, duration = 0, nextTrack = 3) {
-  return full('mvhd', 0, 0,
-    u32be(0), u32be(0), u32be(timescale), u32be(duration),
+/** The movie clock differs from every track clock and versions widen its dates. */
+export function mvhd(timescale = 1000, duration = 0, nextTrack = 3, version = 0) {
+  const dates = version === 1
+    ? concat(u64be(0), u64be(0), u32be(timescale), u64be(duration))
+    : concat(u32be(0), u32be(0), u32be(timescale), u32be(duration));
+  return full('mvhd', version, 0, dates,
     u32be(0x00010000), u16be(0x0100), u16be(0), zeros(8),
     matrix(0), zeros(24), u32be(nextTrack));
 }
@@ -327,7 +352,7 @@ export function fillBytes(length) {
  *
  * @returns {{bytes: Uint8Array, layout: {offsets: number[]}[]}}
  */
-export function plainFile({ tracks, movieDuration = 0, mdatBox = box }) {
+export function plainFile({ tracks, movieDuration = 0, movieTimescale = 1000, mvhdVersion = 0, mdatBox = box }) {
   const dataStart = FTYP.length + (mdatBox === largeBox ? 16 : 8);
 
   const layout = [];
@@ -343,7 +368,7 @@ export function plainFile({ tracks, movieDuration = 0, mdatBox = box }) {
     bytes: concat(
       FTYP,
       mdatBox('mdat', fillBytes(at - dataStart)),
-      box('moov', mvhd(1000, movieDuration), ...built),
+      box('moov', mvhd(movieTimescale, movieDuration, 3, mvhdVersion), ...built),
     ),
     layout,
   };
@@ -363,6 +388,7 @@ export const asFile = (bytes) => new Blob([bytes]);
 function traf({
   trackId,
   baseDecodeTime = null,
+  tfdtVersion = 1,
   tfhdFlags = 0,
   tfhdExtras = [],
   samples,
@@ -389,7 +415,8 @@ function traf({
 
   return box('traf',
     full('tfhd', 0, tfhdFlags, u32be(trackId), ...tfhdExtras),
-    ...(baseDecodeTime === null ? [] : [full('tfdt', 1, 0, u64be(baseDecodeTime))]),
+    ...(baseDecodeTime === null ? [] : [full('tfdt', tfdtVersion, 0,
+      tfdtVersion === 1 ? u64be(baseDecodeTime) : u32be(baseDecodeTime))]),
     full('trun', trunVersion, runFlags,
       u32be(samples.length),
       s32be(dataOffset),
@@ -412,7 +439,7 @@ function runBytes(run) {
  * assembled once to be measured and again with the offsets that measurement
  * produced.
  */
-export function fragmentedFile({ tracks, fragments, movieDuration = 0 }) {
+export function fragmentedFile({ tracks, fragments, movieDuration = 0, movieTimescale = 1000, mvhdVersion = 0 }) {
   const traks = tracks.map((spec) => trak({ ...spec, tableBoxes: null }));
 
   const trex = tracks.map((spec) => full('trex', 0, 0,
@@ -421,7 +448,7 @@ export function fragmentedFile({ tracks, fragments, movieDuration = 0 }) {
     u32be(spec.defaultSize ?? 0),
     u32be(spec.defaultFlags ?? 0)));
 
-  const moov = box('moov', mvhd(1000, movieDuration), ...traks, box('mvex', ...trex));
+  const moov = box('moov', mvhd(movieTimescale, movieDuration, 3, mvhdVersion), ...traks, box('mvex', ...trex));
 
   const parts = [FTYP, moov];
   let sequence = 1;

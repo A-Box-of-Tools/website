@@ -53,7 +53,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal" class="ghost" aria-pressed="false">Mostrar</button>
       </div>
 
@@ -62,7 +62,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
       </div>
 
       <!--
@@ -111,7 +111,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">Mostrar</button>
       </div>
     </fieldset>
@@ -171,6 +171,10 @@
     <span data-phrase="waiting.settings">Se activa cuando coinciden las contraseñas y has elegido alguna protección.</span>
     <span data-phrase="password.show">Mostrar</span>
     <span data-phrase="password.hide">Ocultar</span>
+    <span data-phrase="status.open.latin1">AES-128 no puede representar todos los caracteres de la contraseña de apertura. Usa caracteres Latin-1 o elige AES-256.</span>
+    <span data-phrase="status.owner.latin1">AES-128 no puede representar todos los caracteres de la contraseña de propietario. Usa caracteres Latin-1 o elige AES-256.</span>
+    <span data-phrase="status.open.limit">La contraseña de apertura ocupa {n} bytes; este método conserva como máximo {limit}. Acórtala antes de exportar para no descartar ninguna parte.</span>
+    <span data-phrase="status.owner.limit">La contraseña de propietario ocupa {n} bytes; este método conserva como máximo {limit}. Acórtala antes de exportar para no descartar ninguna parte.</span>
     <span data-phrase="status.blank">Sin esta contraseña no podrás volver a abrirlo. Aquí no se adivinan contraseñas. Conserva el original.</span>
     <span data-phrase="status.mismatch">Las contraseñas todavía no coinciden.</span>
     <span data-phrase="status.short">{n} caracteres. Una contraseña corta debilita la protección; una frase es mejor que una palabra.</span>

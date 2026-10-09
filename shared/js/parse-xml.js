@@ -88,17 +88,27 @@ export function parseXml(text, { html = false } = {}) {
   const root = { t: 'element', name: '#document', attrs: [], children: [] };
   const stack = [root];
   const top = () => stack[stack.length - 1];
-  let at = 0;
+  const beginning = !html && text.startsWith('\ufeff') ? 1 : 0;
+  let at = beginning;
+  let documentElement = false;
+  let doctype = false;
+  let xmlVersion = '1.0';
 
-  const pushText = (raw) => {
+  const pushText = (raw, start) => {
     if (raw === '') return;
+    if (!html) {
+      if (stack.length === 1 && /[^ \t\r\n]/.test(raw)) {
+        throw new ParseError('xml.document', start + raw.search(/[^ \t\r\n]/), text);
+      }
+      validateReferences(raw, start, text, xmlVersion);
+    }
     top().children.push({ t: 'text', text: raw });
   };
 
   while (at < text.length) {
     const next = text.indexOf('<', at);
-    if (next < 0) { pushText(text.slice(at)); break; }
-    pushText(text.slice(at, next));
+    if (next < 0) { pushText(text.slice(at), at); break; }
+    pushText(text.slice(at, next), at);
     at = next;
 
     if (text.startsWith('<!--', at)) {
@@ -110,6 +120,7 @@ export function parseXml(text, { html = false } = {}) {
     }
 
     if (text.startsWith('<![CDATA[', at)) {
+      if (!html && stack.length === 1) throw new ParseError('xml.document', at, text);
       const end = text.indexOf(']]>', at + 9);
       if (end < 0) throw new ParseError('xml.cdata', at, text);
       top().children.push({ t: 'cdata', text: text.slice(at + 9, end) });
@@ -118,11 +129,26 @@ export function parseXml(text, { html = false } = {}) {
     }
 
     if (text.startsWith('<?', at) || text.startsWith('<!', at)) {
-      const close = text.startsWith('<?', at) ? '?>' : '>';
-      const end = text.indexOf(close, at + 2);
-      if (end < 0) throw new ParseError('xml.declaration', at, text);
-      top().children.push({ t: 'directive', text: text.slice(at, end + close.length) });
-      at = end + close.length;
+      const processing = text.startsWith('<?', at);
+      const end = processing ? text.indexOf('?>', at + 2) + 2
+        : html ? text.indexOf('>', at + 2) + 1 : declarationEnd(text, at);
+      if (end < at + 2) throw new ParseError('xml.declaration', at, text);
+      const raw = text.slice(at, end);
+      if (!html) {
+        if (/^<\?xml(?=[ \t\r\n?])/i.test(raw)) {
+          if (at !== beginning) throw new ParseError('xml.declarationorder', at, text);
+          const declaration = XML_DECLARATION.exec(raw);
+          if (!declaration) throw new ParseError('xml.declarationinvalid', at, text);
+          xmlVersion = declaration[2];
+        } else if (!processing) {
+          if (!/^<!DOCTYPE[ \t\r\n]/.test(raw) || stack.length !== 1 || documentElement || doctype) {
+            throw new ParseError('xml.declarationorder', at, text);
+          }
+          doctype = true;
+        }
+      }
+      top().children.push({ t: 'directive', text: raw });
+      at = end;
       continue;
     }
 
@@ -147,7 +173,11 @@ export function parseXml(text, { html = false } = {}) {
     }
 
     // An opening tag.
-    const tag = readTag(text, at, html);
+    if (!html && stack.length === 1) {
+      if (documentElement) throw new ParseError('xml.document', at, text);
+      documentElement = true;
+    }
+    const tag = readTag(text, at, html, xmlVersion);
     at = tag.end;
     const element = {
       t: 'element',
@@ -184,6 +214,7 @@ export function parseXml(text, { html = false } = {}) {
     const open = stack[stack.length - 1];
     throw new ParseError('xml.unclosed', text.length, text, { name: open.name });
   }
+  if (!html && !documentElement) throw new ParseError('xml.document', text.length, text);
   return root.children;
 }
 
@@ -202,7 +233,7 @@ function normalise(name, html) {
 
 const NAME_START = /[A-Za-z_:]/;
 
-function readTag(text, start, html) {
+function readTag(text, start, html, xmlVersion) {
   let at = start + 1;
   if (!NAME_START.test(text[at] ?? '')) {
     throw new ParseError('xml.tagname', at, text);
@@ -240,7 +271,9 @@ function readTag(text, start, html) {
     if (quote === '"' || quote === "'") {
       const end = text.indexOf(quote, at + 1);
       if (end < 0) throw new ParseError('xml.attrstring', at, text);
-      attrs.push({ name: attrName, value: text.slice(at + 1, end), quote });
+      const value = text.slice(at + 1, end);
+      if (!html) validateReferences(value, at + 1, text, xmlVersion);
+      attrs.push({ name: attrName, value, quote });
       at = end + 1;
       continue;
     }
@@ -251,6 +284,73 @@ function readTag(text, start, html) {
     while (at < text.length && !/[\s>]/.test(text[at])) at += 1;
     attrs.push({ name: attrName, value: text.slice(valueStart, at), quote: '"' });
   }
+}
+
+// A declaration has an ordered version, optional encoding and optional
+// standalone flag. Ordinary processing instructions are not declarations.
+const XML_DECLARATION = /^<\?xml[ \t\r\n]+version[ \t\r\n]*=[ \t\r\n]*(["'])(1\.[0-9]+)\1(?:[ \t\r\n]+encoding[ \t\r\n]*=[ \t\r\n]*(["'])([A-Za-z][A-Za-z0-9._-]*)\3)?(?:[ \t\r\n]+standalone[ \t\r\n]*=[ \t\r\n]*(["'])(yes|no)\5)?[ \t\r\n]*\?>$/;
+
+/** Read a DOCTYPE as literal text, including its quoted/internal subset. */
+function declarationEnd(text, start) {
+  let quote = '';
+  let subset = 0;
+  for (let at = start + 2; at < text.length; at += 1) {
+    const ch = text[at];
+    if (quote) { if (ch === quote) quote = ''; continue; }
+    if (text.startsWith('<!--', at)) {
+      const end = text.indexOf('-->', at + 4);
+      if (end < 0) throw new ParseError('xml.declaration', start, text);
+      at = end + 2;
+      continue;
+    }
+    if (ch === '"' || ch === "'") { quote = ch; continue; }
+    if (ch === '[') subset += 1;
+    else if (ch === ']') subset -= 1;
+    else if (ch === '>' && subset === 0) return at + 1;
+  }
+  throw new ParseError('xml.declaration', start, text);
+}
+
+/** Character references cannot name a surrogate, zero or a non-XML character. */
+function referenceCode(reference, version = '1.0') {
+  if (!/^&#(?:[0-9]+|x[0-9a-fA-F]+);$/.test(reference)) return null;
+  const hexadecimal = reference.startsWith('&#x');
+  const code = parseInt(reference.slice(hexadecimal ? 3 : 2, -1), hexadecimal ? 16 : 10);
+  if (!Number.isInteger(code)) return null;
+  if (code >= 0x20 && code <= 0xd7ff || code >= 0xe000 && code <= 0xfffd
+      || code >= 0x10000 && code <= 0x10ffff) return code;
+  if (version === '1.1' && code >= 1 && code < 0x20 || code === 9 || code === 10 || code === 13) return code;
+  return null;
+}
+
+function validateReferences(raw, start, source, version) {
+  for (const match of raw.matchAll(/&#[^;\s<&]*;?/g)) {
+    if (referenceCode(match[0], version) === null) {
+      throw new ParseError('xml.character', start + match.index, source);
+    }
+  }
+}
+
+/** Decode only XML's five built-ins and numeric references, never custom entities. */
+export function unescapeXml(text) {
+  validateReferences(text, 0, text, '1.1');
+  return text.replace(/&(lt|gt|amp|quot|apos|#[0-9]+|#x[0-9a-fA-F]+);/g, (whole, body, at) => {
+    if (body[0] === '#') {
+      // The parser has checked the document's declared version. The decoder
+      // accepts the union of its character ranges without inventing a version.
+      const code = referenceCode(whole, '1.1');
+      if (code === null) throw new ParseError('xml.character', at, text);
+      return String.fromCodePoint(code);
+    }
+    return { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'" }[body];
+  });
+}
+
+/** xml:space is inherited, with an explicit default restoring normal layout. */
+export function xmlSpace(element, inherited = false) {
+  const value = unescapeXml(element.attrs.find((attr) => attr.name === 'xml:space')?.value ?? '');
+  if (value === 'preserve') return true;
+  return value === 'default' ? false : inherited;
 }
 
 /* ------------------------------------------------------------------- write */
@@ -289,16 +389,24 @@ export function printXml(nodes, { indent = '  ', minify = false, html = false } 
     (child) => child.t === 'text'
       || (html && child.t === 'element' && INLINE.has(child.name) && inlineOnly(child)));
 
-  const flat = (node) => {
-    if (node.t === 'text') return collapse(node.text);
+  const xmlTextual = (node) => node.children.some((child) => child.t === 'cdata'
+    || child.t === 'text' && /[^ \t\r\n]/.test(child.text))
+    || !node.children.some((child) => child.t === 'element')
+      && node.children.some((child) => child.t === 'text');
+
+  const flat = (node, inherited = false) => {
+    if (node.t === 'text') return html ? collapse(node.text) : node.text;
     if (node.t === 'comment') return `<!--${node.text}-->`;
     if (node.t === 'cdata') return `<![CDATA[${node.text}]]>`;
     if (node.t === 'directive') return node.text;
-    const inner = node.children.map(flat).join('');
+    const preserve = !html && xmlSpace(node, inherited);
+    const children = html || preserve || xmlTextual(node) ? node.children
+      : node.children.filter((child) => child.t !== 'text' || /[^ \t\r\n]/.test(child.text));
+    const inner = children.map((child) => flat(child, preserve)).join('');
     return isClosed(node) ? `${openTag(node)}${inner}</${node.name}>` : openTag(node);
   };
 
-  const walk = (list, depth) => {
+  const walk = (list, depth, inherited = false) => {
     const pad = minify ? '' : indent.repeat(depth);
     for (const node of list) {
       if (node.t === 'text') {
@@ -312,6 +420,13 @@ export function printXml(nodes, { indent = '  ', minify = false, html = false } 
       if (node.t === 'cdata') { out.push(`${pad}<![CDATA[${node.text}]]>`); continue; }
       if (node.t === 'directive') { out.push(pad + node.text); continue; }
 
+      const preserve = !html && xmlSpace(node, inherited);
+      if (!html && (preserve || xmlTextual(node))) {
+        // In XML a run of spaces can be data. Keep mixed content together so
+        // indentation cannot insert or delete characters between its nodes.
+        out.push(pad + flat(node, inherited));
+        continue;
+      }
       if (!isClosed(node) || !node.children.length) {
         out.push(pad + openTag(node) + (isClosed(node) ? `</${node.name}>` : ''));
         continue;
@@ -328,7 +443,7 @@ export function printXml(nodes, { indent = '  ', minify = false, html = false } 
         continue;
       }
       out.push(pad + openTag(node));
-      walk(node.children, depth + 1);
+      walk(node.children, depth + 1, preserve);
       out.push(`${pad}</${node.name}>`);
     }
   };

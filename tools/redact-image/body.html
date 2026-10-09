@@ -38,11 +38,52 @@
       <!-- The picture is a canvas, not an <img>, because the redaction is
            painted into it rather than laid over it. The boxes above it are
            outlines and handles only; src/stage.js adds them. -->
-      <div class="stage-wrap">
+      <div class="preview-tools">
+        <label for="zoom">Preview zoom</label>
+        <select id="zoom" aria-controls="stage-viewport">
+          <option value="1">Fit width</option>
+          <option value="2">2× fit width</option>
+          <option value="4">4× fit width</option>
+        </select>
+        <div class="preview-pan" role="group" aria-label="Scroll preview">
+          <button type="button" id="pan-left" class="ghost" aria-controls="stage-viewport" aria-label="Scroll preview left" title="Scroll preview left">←</button>
+          <button type="button" id="pan-up" class="ghost" aria-controls="stage-viewport" aria-label="Scroll preview up" title="Scroll preview up">↑</button>
+          <button type="button" id="pan-down" class="ghost" aria-controls="stage-viewport" aria-label="Scroll preview down" title="Scroll preview down">↓</button>
+          <button type="button" id="pan-right" class="ghost" aria-controls="stage-viewport" aria-label="Scroll preview right" title="Scroll preview right">→</button>
+        </div>
+      </div>
+      <p class="note preview-note">Zoom magnifies the preview only. Coordinates and the saved picture keep their original pixels.</p>
+      <div class="stage-wrap" id="stage-viewport" tabindex="0" role="region" aria-label="Scrollable image preview">
         <div class="stage" id="stage">
           <canvas id="preview" role="img" aria-label="Preview"></canvas>
         </div>
       </div>
+
+      <fieldset id="coordinates" class="options coordinate-editor" disabled>
+        <legend>Selected box coordinates</legend>
+        <p id="coordinate-selection"></p>
+        <div class="coordinate-grid">
+          <div>
+            <label for="coordinate-x">Left (px)</label>
+            <input id="coordinate-x" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-y">Top (px)</label>
+            <input id="coordinate-y" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-width">Width (px)</label>
+            <input id="coordinate-width" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-height">Height (px)</label>
+            <input id="coordinate-height" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+        </div>
+        <p id="coordinate-note" class="note">Enter whole pixels in the original image, measured from its top left at 0, 0. Apply keeps the box inside the picture; sizes below 6 pixels expand where the picture allows it.</p>
+        <button type="button" id="apply-coordinates" class="ghost">Apply coordinates</button>
+        <p id="coordinate-status" class="coordinate-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </fieldset>
 
       <fieldset class="options" id="style-group">
         <legend>What a new box does</legend>
@@ -184,6 +225,10 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="coordinates.selection">Area {n} — original pixels</span>
+    <span data-phrase="coordinates.empty">Select a box, or add one in the middle, to edit its coordinates.</span>
+    <span data-phrase="coordinates.invalid">Enter whole numbers for all four coordinates, with positive width and height.</span>
+    <span data-phrase="coordinates.applied">Applied: ⁦{width} x {height}⁩ at ⁦{x}, {y}⁩ in original pixels.</span>
     <span data-phrase="region.remove">Remove</span>
     <span data-phrase="read.nodecode">this browser could not decode the picture.</span>
     <span data-phrase="read.failed">That file could not be opened: {why}</span>

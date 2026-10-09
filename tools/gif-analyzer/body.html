@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>Cancel analysis</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>Clear analysis</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- The summary, and the animation as the browser itself draws it. -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="The animation, playing as this browser draws it">
-        <p class="preview-note">Your browser's own decoder, playing the file as it stands.</p>
+        <p id="preview-note" class="preview-note">Your browser's own decoder, playing the file as it stands.</p>
       </div>
 
       <dl class="facts">
@@ -160,6 +165,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">Drawing {name}: {done} of {total} frames…</span>
+    <span data-phrase="read.cancelled">Analysis cancelled. The native file read may still finish.</span>
+    <span data-phrase="drawing.empty">The screen or a frame has no drawable size.</span>
+    <span data-phrase="drawing.memory">Drawing would exceed this page’s estimated 512 MiB buffer limit.</span>
+    <span data-phrase="drawing.pixels">Drawing reached the 300-million decoded-pixel limit.</span>
+    <span data-phrase="drawing.cancelled">Drawing was cancelled.</span>
+    <span data-phrase="drawing.failed">Drawing stopped: {detail}</span>
+    <span data-phrase="drawing.partial">{drawn} of {total} frames drawn. {why} Header, timing and byte analysis remains available; pixel-use totals are unknown for undrawn frames.</span>
+    <span data-phrase="preview.refused">Browser playback is off because drawing is incomplete. The parsed analysis remains available.</span>
+    <span data-phrase="colours.unknown">Not fully measured</span>
+    <span data-phrase="colours.partial">The tables declare {declared} colour entries. Complete pixel-use totals are unavailable while some frames are not drawn.</span>
+    <span data-phrase="palette.globalpartial">{entries}, {size}, shared by {frames}. No entries are marked unused because not all pixels were drawn.</span>
+    <span data-phrase="palette.unused">{index}: {colour} — never used</span>
+    <span data-phrase="report.drawing">Drawing</span>
+    <span data-phrase="report.partial">{drawn} of {total} frames drawn. {why} Undrawn frames are described from headers; pixel-use totals are unavailable.</span>
+    <span data-phrase="preview.native">Your browser's own decoder, playing the file as it stands.</span>
     <span data-phrase="read.reading">Reading {name}&hellip;</span>
     <span data-phrase="read.notagif">{name} is not a GIF: {why}. This tool reads the GIF format itself, so it has nothing
       to say about other files.</span>
@@ -194,8 +215,7 @@
     <span data-phrase="level.bad">Problem</span>
     <span data-phrase="level.warn">Worth knowing</span>
     <span data-phrase="level.note">Note</span>
-    <span data-phrase="frames.partial">{frames}. {drawn} of them are drawn here; the rest are too large to hold in memory
-      all at once and are reported from their headers alone.</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} are drawn here; the rest are reported from their headers alone.</span>
     <span data-phrase="frames.none">{frames}, none of them covering the whole canvas.</span>
     <span data-phrase="frames.all">{frames}, all of them covering the whole canvas.</span>
     <span data-phrase="frames.some">{frames}, {n} of them covering the whole canvas.</span>

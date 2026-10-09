@@ -34,6 +34,7 @@
     </p>
 
     <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+    <p class="budget-note">La limite de 512 MiB estime les pixels conservés et les tampons de composition et de vidéo. La mémoire interne du codec peut s’y ajouter. Annuler retire l’opération ; une lecture native ou un dessin synchrone peut encore se terminer.</p>
 
     <div id="background-row" class="background-row" hidden>
       <label class="field" for="background">
@@ -93,6 +94,7 @@
     <span data-phrase="file.facts">{size} &middot; {frames} images &middot; {length} &middot; {frame}</span>
     <span data-phrase="plan.nofile">Choisissez un GIF pour voir le résultat vidéo prévu.</span>
     <span data-phrase="plan.same">{frame}, {frames} images {timing}, durée {length}, H.264 à environ {rate}.</span>
+    <span data-phrase="plan.scaled">{frame} (réduit depuis {from} pour H.264, avec ajout de fond pour des dimensions paires si nécessaire), {frames} images {timing}, durée {length}, H.264 à environ {rate}.</span>
     <span data-phrase="plan.resized">{frame} (le GIF mesure {from}&nbsp;; H.264 exige des dimensions paires, donc une ligne de fond est ajoutée), {frames} images {timing}, durée {length}, H.264 à environ {rate}.</span>
     <span data-phrase="timing.steady">à {fps} images par seconde constantes</span>
     <span data-phrase="timing.varies">avec leur propre minutage, environ {fps} images par seconde, conservées une par une</span>
@@ -125,6 +127,7 @@
     <span data-phrase="facts.timing">Chaque image garde son délai d’origine&nbsp;: {timing}.</span>
     <span data-phrase="facts.loop.gif">Le GIF était configuré pour boucler. MP4 ne porte pas ce réglage&nbsp;: le lecteur décide. La plupart des fils et messageries bouclent les clips courts.</span>
     <span data-phrase="facts.loop.none">Le GIF devait jouer une fois. MP4 ne porte pas ce réglage&nbsp;: le lecteur décide.</span>
+    <span data-phrase="facts.background">Les parties transparentes ont été placées sur {colour}.</span>
     <span data-phrase="facts.time">Terminé en {seconds}.</span>
     <span data-phrase="support.nowebcodecs">Ce navigateur ne sait pas encoder la vidéo. Chrome, Edge et Safari le peuvent, Firefox à partir de 130.</span>
     <span data-phrase="stall.encoder">L’encodeur vidéo ne répond plus. Rechargez et réessayez&nbsp;: l’encodeur matériel peut être occupé ou absent.</span>
@@ -134,7 +137,9 @@
     <span data-phrase="mp4.toobig">Le résultat dépasserait 4 Go, limite du MP4 écrit ici.</span>
     <span data-phrase="gif.tooshort">Ce fichier est trop court pour être un GIF.</span>
     <span data-phrase="gif.notagif">Ce n&rsquo;est pas un GIF. Le fichier ne commence pas par GIF87a ni GIF89a.</span>
-    <span data-phrase="gif.enormous">Ce GIF est immense&nbsp;: ses {n} premières images remplissent la mémoire autorisée par la page. Le reste n’a pas été lu.</span>
+    <span data-phrase="gif.workinglimit">Ce GIF dépasserait la limite estimée de 512 MiB pour les tampons de cette page. Essayez un GIF plus petit ; la mémoire interne du codec peut s’y ajouter.</span>
+    <span data-phrase="gif.workinginvalid">Les dimensions ou les tampons de ce GIF ne peuvent pas être représentés de manière sûre. Choisissez un autre GIF.</span>
+    <span data-phrase="gif.enormous">La lecture s’est arrêtée à la limite de pixels décodés. Images lues : {n}.</span>
     <span data-phrase="gif.midframe">Ce GIF se termine au milieu d&rsquo;une image, la dernière peut donc être
       incomplète.</span>
     <span data-phrase="gif.damaged">Ce GIF est abîmé&nbsp;: il se termine avant que la première image ne soit complète.</span>

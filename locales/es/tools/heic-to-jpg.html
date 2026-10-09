@@ -108,6 +108,7 @@
         <button type="button" id="download-zip" class="ghost" hidden>Descargar todo en un zip</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
+      <p id="results-settings" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
@@ -168,6 +169,9 @@
     <span data-phrase="n.heic.many">{n} archivos de entrada</span>
     <span data-phrase="n.picture.one">{n} imagen {format}</span>
     <span data-phrase="n.picture.many">{n} imágenes {format}</span>
+    <span data-phrase="results.settings">Ajustes de esta ejecución: {format}; calidad JPEG/WebP {quality}; {metadata}.</span>
+    <span data-phrase="results.metadata.requested">se solicitan los detalles HEIC para JPEG y se omiten los detalles AVIF</span>
+    <span data-phrase="results.metadata.omitted">se omiten los detalles de las fotos</span>
     <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
     <span data-phrase="result.alt">La imagen convertida: {name}</span>
     <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>

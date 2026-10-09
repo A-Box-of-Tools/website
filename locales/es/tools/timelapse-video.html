@@ -12,7 +12,7 @@
     {% include "partials/file-picker.html" %}
 
     <div class="preview-wrap" id="preview-wrap" hidden>
-      <video id="preview" playsinline controls muted></video>
+      <video id="preview" aria-label="Vídeo de origen" playsinline controls muted></video>
       <canvas id="still" hidden aria-hidden="true"></canvas>
     </div>
     <p id="preview-note" class="path-note" hidden></p>
@@ -34,14 +34,14 @@
     <h2><span class="step">2</span> Elige la velocidad</h2>
 
     <div class="chips speed-row" role="group" aria-label="Cuánto se acelera el clip">
-      <button type="button" class="chip" data-speed="2">2&times;</button>
-      <button type="button" class="chip" data-speed="5">5&times;</button>
-      <button type="button" class="chip" data-speed="10" class="active">10&times;</button>
-      <button type="button" class="chip" data-speed="20">20&times;</button>
-      <button type="button" class="chip" data-speed="30">30&times;</button>
-      <button type="button" class="chip" data-speed="60">60&times;</button>
-      <button type="button" class="chip" data-speed="120">120&times;</button>
-      <button type="button" class="chip" data-speed="300">300&times;</button>
+      <button type="button" class="chip" data-speed="2" aria-pressed="false">2&times;</button>
+      <button type="button" class="chip" data-speed="5" aria-pressed="false">5&times;</button>
+      <button type="button" class="chip active" data-speed="10" aria-pressed="true">10&times;</button>
+      <button type="button" class="chip" data-speed="20" aria-pressed="false">20&times;</button>
+      <button type="button" class="chip" data-speed="30" aria-pressed="false">30&times;</button>
+      <button type="button" class="chip" data-speed="60" aria-pressed="false">60&times;</button>
+      <button type="button" class="chip" data-speed="120" aria-pressed="false">120&times;</button>
+      <button type="button" class="chip" data-speed="300" aria-pressed="false">300&times;</button>
     </div>
 
     <!--
@@ -144,7 +144,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline loop></video>
+      <video id="result-video" aria-label="Resultado del vídeo acelerado" controls playsinline loop></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Descargar timelapse</a>
@@ -238,6 +238,8 @@
     <span data-phrase="unit.ms">{n} ms</span>
     <span data-phrase="unit.s">{n} s</span>
     <span data-phrase="unit.min">{n} min</span>
+    <span data-phrase="read.edits">Este archivo usa una lista de edición de reproducción que esta herramienta no puede conservar. Guarda el clip editado visible como un video nuevo antes de procesarlo aquí.</span>
+    <span data-phrase="read.editinvalid">La lista de edición de reproducción del archivo está incompleta o tiene tiempos no válidos, por lo que no se puede conservar su secuencia visible.</span>
     <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
     <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
     <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>

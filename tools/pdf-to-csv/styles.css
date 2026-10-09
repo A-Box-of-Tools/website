@@ -178,3 +178,51 @@
   color: var(--text);
   font-weight: 500;
 }
+
+/* Row navigation wraps on a phone while the wide table stays in its own box. */
+.preview-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.preview-range {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.preview-nav input {
+  width: 5.5rem;
+}
+
+.preview-nav label {
+  font-size: 0.85rem;
+}
+
+.preview tbody th {
+  position: static;
+  font-weight: 500;
+}
+
+.preview .review-row th {
+  color: var(--warn);
+}
+
+.preview tr:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.load-progress {
+  margin: 0.6rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.file-row {
+  flex-wrap: wrap;
+}

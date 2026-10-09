@@ -50,7 +50,7 @@ body = "Un vídeo es un rectángulo opaco: la transparencia del GIF se rellena c
 
 [[privacy]]
 title = "Tiempo y memoria necesarios."
-body = "Con codificador de hardware, presente en muchos dispositivos, un GIF normal tarda unos segundos; sin él puede tardar más. Primero se decodifican todos los fotogramas en memoria. Unos pocos megabytes pueden expandirse a un byte por píxel y fotograma. La página se detiene al llegar a medio gigabyte y avisa para evitar bloquear la pestaña. Siempre puedes cancelar."
+body = "La codificación por hardware suele tardar segundos con un GIF normal; por software puede tardar más. El lector retiene como máximo 512 millones de píxeles de parches decodificados. La conversión también rechaza una estimación superior a 512 MiB para los búferes conocidos: entrada retenida, pantalla completa, copias de restauración y vídeo recopilado. La memoria interna del códec puede añadir más. Cancelar retira el proceso; una lectura nativa o un dibujo síncrono aún pueden terminar."
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
@@ -94,11 +94,11 @@ a = "Se rellenan con un color porque el vídeo es opaco. Si hay transparencia ap
 
 [[faq]]
 q = "¿Cambia las dimensiones?"
-a = "Solo cuando hace falta. H.264 necesita dimensiones pares: si un lado es impar, se añade una línea del color de fondo sin remuestrear. Si el GIF supera 3840 píxeles de ancho, se reduce hasta ese límite para que los codificadores lo admitan. La página muestra el tamaño previsto antes de empezar."
+a = "H.264 necesita lados pares, así que un ancho o alto impar recibe una línea de fondo sin remuestreo. Si el lado más largo supera 3840 píxeles, el GIF se reduce hasta ese límite. La página indica el tamaño real de salida antes de empezar. Reducir la salida no reduce los búferes de composición de la fuente."
 
 [[faq]]
 q = "¿Cuánto tarda?"
-a = "Un GIF normal tarda unos segundos con codificador de hardware, más sin él. Los fotogramas se guardan primero en memoria; al llegar a medio gigabyte se detiene con un aviso. La barra muestra el fotograma actual. Cancelar detiene el proceso y no escribe el resultado."
+a = "Un GIF normal suele tardar segundos con codificación por hardware, más sin ella. La barra muestra el fotograma actual. Cancelar retira el codificador y su salida; una consulta nativa de compatibilidad, lectura o dibujo síncrono aún pueden terminar. Un trabajo tardío no sustituye una fuente o resultado más reciente."
 
 [[faq]]
 q = "¿Se suben mis GIF?"
@@ -110,7 +110,7 @@ a = "Sí, si el navegador del teléfono puede codificar vídeo. Su codificador d
 
 [[faq]]
 q = "¿Hay límite de tamaño y cuesta algo?"
-a = "La página detiene la lectura al llegar a medio gigabyte de fotogramas decodificados y lo avisa. Es gratis, sin cuenta, inicio de sesión ni prueba. La publicidad paga el sitio y no recibe datos sobre tus GIF."
+a = "El lector retiene como máximo 512 millones de píxeles de parches decodificados y la conversión rechaza una estimación de búferes conocidos superior a 512 MiB. No es una garantía sobre la memoria interna del códec ni todas las asignaciones del navegador. La página explica los rechazos. Es gratis, sin cuenta, acceso ni prueba. La publicidad paga el sitio y no recibe datos sobre tus GIF."
 
 [[faq]]
 q = "¿Funciona sin conexión?"

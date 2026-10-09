@@ -17,6 +17,7 @@ import {
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { makeExample } from './example.js';
+import { svgLinksAssets } from './svg-linked-assets.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -50,6 +51,7 @@ const el = {
   preview: $('preview'),
   previewCanvas: $('preview-canvas'),
   previewNote: $('preview-note'),
+  previewAssets: $('preview-assets'),
   previewEmpty: $('preview-empty'),
   run: $('run'),
   progress: $('progress'),
@@ -79,6 +81,7 @@ const FIELDS = {
  * @property {number} id
  * @property {File} file
  * @property {string} text      the SVG source, decoded once and kept
+ * @property {boolean} linkedAssets ordinary resources the static image cannot load
  * @property {object} intrinsic what the file says its size is
  * @property {string} thumbUrl  an object URL, revoked when the item is dropped
  */
@@ -136,6 +139,7 @@ async function addFiles(files) {
         file,
         text,
         intrinsic,
+        linkedAssets: svgLinksAssets(text),
         thumbUrl: URL.createObjectURL(file),
       });
       nextId += 1;
@@ -302,6 +306,7 @@ function renderList() {
     out.classList.toggle('warn', !limit.ok);
 
     main.append(name, sub, out);
+    if (item.linkedAssets) main.append(linkedAssetsNote('file-sub'));
     wrap.append(thumb, main);
 
     // The whole row puts this drawing in the preview. More than one file is a
@@ -331,6 +336,13 @@ function renderList() {
     row.append(wrap, remove);
     el.fileList.append(row);
   }
+}
+
+function linkedAssetsNote(baseClass) {
+  const note = document.createElement('p');
+  note.className = `${baseClass} linked-assets`;
+  note.textContent = phrase('source.linked-assets');
+  return note;
 }
 
 function renderNotes() {
@@ -397,6 +409,8 @@ async function drawPreview() {
   const item = activeItem();
   el.preview.hidden = !item;
   el.previewEmpty.hidden = Boolean(item);
+  el.previewAssets.hidden = !item?.linkedAssets;
+  el.previewAssets.textContent = item?.linkedAssets ? phrase('source.linked-assets') : '';
   if (!item) return;
 
   const token = (previewToken += 1);
@@ -580,6 +594,7 @@ function resultRow(one) {
   );
 
   textBlock.append(name, headline, detail);
+  if (one.item.linkedAssets) textBlock.append(linkedAssetsNote('result-detail'));
 
   const actions = document.createElement('div');
   actions.className = 'result-actions';

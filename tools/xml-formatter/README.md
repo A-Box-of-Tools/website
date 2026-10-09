@@ -33,8 +33,10 @@ characters `&xxe;`:
 ```
 → `{ "root": { "data": "&xxe;" } }`
 
-`unescapeXml` in `src/convert.js` expands the five entities XML defines and
-numeric character references, and nothing else. That is the whole of it.
+`unescapeXml` in `src/shared/parse-xml.js` expands the five entities XML defines
+and valid numeric character references, and nothing else. Invalid references
+are rejected at their source location before either conversion or formatting;
+XML 1.1 character ranges are used only when that version is declared.
 
 This is worth stating plainly because XXE is the oldest hole in the format and
 because "paste your XML here" is exactly the shape of tool that has it.
@@ -49,7 +51,11 @@ The rest of the mapping is the usual one: an attribute becomes a member whose
 name starts with `@`, an element's own text becomes `#text` when it has to sit
 beside something else, and repeated children become an array. Going the other
 way an array becomes a repeated element, because that is the only shape that
-reads back.
+reads back. The mapping still loses comments and the interleaved order of
+mixed text and child elements; the note beside the conversion menu says so.
+Text itself keeps its leading/trailing spaces and CDATA content. Whitespace
+used only between child elements is omitted unless `xml:space="preserve"`
+applies, including by inheritance; `xml:space="default"` resets that behavior.
 
 ## The parsers are shared parts, and only the ones this page reads
 
@@ -78,10 +84,20 @@ external entities is the other reason.
 
 ## What reindenting does and does not change
 
-Whitespace inside an element that holds words is part of that text, so an
-element holding nothing but text is left on one line rather than opened out.
-`CDATA` sections are copied through exactly as they were. For a document whose
-elements hold other elements, the layout carries no meaning at all.
+XML text is preserved exactly, including its leading/trailing and repeated
+spaces. Text-only and mixed-content elements stay together so indentation
+cannot insert characters between their nodes; CDATA is copied unchanged.
+`xml:space="preserve"` also keeps whitespace between child elements, and the
+setting is inherited until an explicit `xml:space="default"` overrides it.
+Otherwise whitespace between child elements is treated as layout, as before;
+this is an application choice, not a claim that a DTD has proved it ignorable.
+
+XML needs one outer element. Text or CDATA outside it and a second root are
+rejected instead of letting conversion silently keep only the first. Comments
+and processing instructions remain allowed in the prolog and epilog; an XML
+declaration must be first and a DOCTYPE can appear only once, before the root.
+DOCTYPE internal subsets remain literal text, never instructions to resolve
+an entity or contact another file.
 
 ## Tests
 
@@ -100,3 +116,19 @@ cleared box therefore stays clear, and edits are not overwritten by an
 asynchronous file read after navigation. Copy and Download are invalidated as
 soon as typing starts, before the debounced calculation runs; a pending
 clipboard write may only update feedback for the result it actually copied.
+
+File reads on this page use the shared `text-import` owner. Typing, Clear and
+an example retire a pending read immediately; a newer file choice replaces it.
+The old read may still finish in the browser, but its text and errors cannot
+replace the current editor or clear a newer import's reading label.
+
+## Returning to a parser error
+
+The shared editor-feedback part offers Go to error for the XML parser and for
+JSON input being converted to XML. Live parsing leaves focus and the caret
+where they are; the explicit action returns to the parser's UTF-16 source
+offset and scrolls that line into view. Its target belongs to the exact input
+and formatting/conversion mode that produced it. Typing, Clear, an example,
+a replacement file or changed options retire it immediately, and generic
+platform/read failures do not offer a parser position. This page uses only the
+caret part; the conversion-note sink remains optional for shared consumers.

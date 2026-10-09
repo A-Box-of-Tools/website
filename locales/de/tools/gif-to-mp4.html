@@ -37,6 +37,7 @@
     </p>
 
     <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+    <p class="budget-note">Die Grenze von 512 MiB ist eine Schätzung für gespeicherte Pixel sowie Bildaufbau- und Videopuffer. Interner Codec-Speicher kann dazukommen. Abbrechen beendet den Lauf; ein nativer Lese- oder synchroner Zeichenvorgang kann noch zu Ende laufen.</p>
 
     <div id="background-row" class="background-row" hidden>
       <label class="field" for="background">
@@ -98,6 +99,7 @@
     <span data-phrase="file.facts">{size} &middot; {frames} Bilder &middot; {length} &middot; {frame}</span>
     <span data-phrase="plan.nofile">Wählen Sie oben ein GIF aus, und hier steht, was das Video sein wird.</span>
     <span data-phrase="plan.same">{frame}, {frames} Bilder {timing}, {length} lang, H.264 mit etwa {rate}.</span>
+    <span data-phrase="plan.scaled">{frame} (von {from} für H.264 verkleinert und bei Bedarf auf gerade Kanten ergänzt), {frames} Bilder {timing}, {length} lang, H.264 mit etwa {rate}.</span>
     <span data-phrase="plan.resized">{frame} (das GIF ist {from}; H.264 braucht gerade Kanten, also kommt eine Linie
       des Hintergrunds dazu), {frames} Bilder {timing}, {length} lang, H.264 mit etwa {rate}.</span>
     <span data-phrase="timing.steady">mit gleichmäßig {fps} pro Sekunde</span>
@@ -136,6 +138,7 @@
       der Player entscheidet, und die meisten Feeds und Chat-Apps wiederholen ein kurzes.</span>
     <span data-phrase="facts.loop.none">Das GIF war auf einmaliges Abspielen gestellt. Ein MP4 kennt keine solche
       Einstellung; der Player entscheidet.</span>
+    <span data-phrase="facts.background">Transparente Bereiche wurden auf {colour} gelegt.</span>
     <span data-phrase="facts.time">Fertig in {seconds}.</span>
     <span data-phrase="support.nowebcodecs">Dieser Browser kann kein Video kodieren. Chrome, Edge und Safari können es;
       Firefox ab Version 130.</span>
@@ -147,8 +150,9 @@
     <span data-phrase="mp4.toobig">Die fertige Datei wäre über 4 GB groß, und das kann ein hier geschriebenes MP4 nicht fassen.</span>
     <span data-phrase="gif.tooshort">Diese Datei ist zu kurz, um ein GIF zu sein.</span>
     <span data-phrase="gif.notagif">Das ist kein GIF. Die Datei beginnt nicht mit GIF87a oder GIF89a.</span>
-    <span data-phrase="gif.enormous">Dieses GIF ist riesig: Schon die ersten {n} Bilder haben den Speicher gefüllt, den
-      diese Seite auf einmal halten will, und der Rest wurde nicht gelesen.</span>
+    <span data-phrase="gif.workinglimit">Dieses GIF würde die geschätzte Puffergrenze dieser Seite von 512 MiB überschreiten. Wählen Sie ein kleineres GIF; interner Codec-Speicher kann dazukommen.</span>
+    <span data-phrase="gif.workinginvalid">Die Bildfläche oder Puffergrößen dieses GIFs lassen sich nicht sicher darstellen. Wählen Sie ein anderes GIF.</span>
+    <span data-phrase="gif.enormous">Das Lesen wurde an der Grenze für dekodierte Pixel beendet. Gelesene Einzelbilder: {n}.</span>
     <span data-phrase="gif.midframe">Dieses GIF endet mitten in einem Bild, das letzte ist also womöglich unvollständig.</span>
     <span data-phrase="gif.damaged">Dieses GIF ist beschädigt: Es endet, bevor das erste Bild vollständig ist.</span>
     <span data-phrase="gif.noframes">Dieses GIF enthält keine Bilder, die dieser Leser öffnen könnte.</span>

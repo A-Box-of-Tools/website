@@ -58,6 +58,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">Converter para JPG</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -107,6 +108,9 @@
     <span data-phrase="run.many">Converter {count} arquivos para JPG</span>
     <span data-phrase="progress.each">Convertendo {name}&hellip;</span>
     <span data-phrase="progress.done">Concluído.</span>
+    <span data-phrase="progress.stopped">Interrompido após {done} de {total}. As imagens concluídas estão abaixo.</span>
+    <span data-phrase="progress.stopped.none">Interrompido antes de concluir uma imagem.</span>
+    <span data-phrase="run.filefailed">Não foi possível converter {name}: {why}</span>
     <span data-phrase="run.failed">A conversão falhou: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count} arquivos JPEG gravados, {size} no total.</span>

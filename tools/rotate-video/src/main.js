@@ -4,9 +4,8 @@
  * The shape of this file follows from what a turn is: a change to nine
  * numbers in the file's header, not to a single frame. So the page reads
  * the file, shows its first frame the way it is shown now and the way it
- * will be, writes the file again with the new header and every frame and
- * packet copied across, and opens the result to check it says what was
- * asked. "Bake it in" - drawing the frames turned and encoding them again -
+ * will be, writes the file with a new header and the picture frames copied
+ * across, and opens the result to check it says what was asked. "Bake it in" - drawing the frames turned and encoding them again -
  * is offered for the few players that ignore the header and required for a
  * WebM or MKV whose picture is not H.264, and the page says which.
  */
@@ -85,6 +84,7 @@ const PREVIEW_BOX = { width: 480, height: 360 };
 
 /** @type {Loaded|null} */
 let loaded = null;
+let loadGeneration = 0;
 let turn = 90;
 let downloadUrl = '';
 let running = null;
@@ -104,27 +104,43 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const generation = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     const matroska = await isMatroska(file);
+    if (generation !== loadGeneration) return;
     const media = matroska ? await demuxMatroska(file) : await demux(file);
+    if (generation !== loadGeneration) return;
     const { video, audio } = media;
     const sound = describeSound(audio);
     const codecs = hasWebCodecs();
 
     const copyable = canCopy(video);
     const decodable = codecs && await canDecode(decoderConfig(video));
+    if (generation !== loadGeneration) return;
     if (!copyable && !(decodable && hasEncoder())) {
       const refused = new Error('support.nodecode');
       refused.values = { codec: video.codec };
       throw refused;
     }
-    const soundDecodable = Boolean(sound && !sound.copyable && sound.codec)
-      && codecs && await canDecodeSound(sound)
-      && await canEncodeAac({ sampleRate: Math.round(sound.sampleRate), channels: Math.min(2, sound.channels) });
+    let soundDecodable = false;
+    if (sound && !sound.copyable && sound.codec && codecs) {
+      const decodable = await canDecodeSound(sound);
+      if (generation !== loadGeneration) return;
+      if (decodable) {
+        soundDecodable = await canEncodeAac({
+          sampleRate: Math.round(sound.sampleRate), channels: Math.min(2, sound.channels),
+        });
+        if (generation !== loadGeneration) return;
+      }
+    }
 
     const frame = decodable ? await firstFrame(file, video) : null;
+    if (generation !== loadGeneration) {
+      frame?.close();
+      return;
+    }
     const videoBytes = video.samples.reduce((sum, s) => sum + s.size, 0);
     loaded = {
       file, media, sound, copyable, decodable, soundDecodable, frame,
@@ -178,10 +194,11 @@ async function load(file) {
 
     refresh();
   } catch (error) {
+    if (generation !== loadGeneration) return;
     showLoadError(messageFor(error));
     picker.waiting();
   } finally {
-    picker.done();
+    if (generation === loadGeneration) picker.done();
   }
 }
 
@@ -209,6 +226,7 @@ function planned() {
   if (el.dropAudio.checked && job !== 'none') job = 'dropped';
   const frame = bakeFrame(shown);
   return {
+    turn,
     rotation,
     shown,
     bake,
@@ -305,7 +323,7 @@ async function run() {
     setProgress({ phase: plan.bake ? 'preparing' : 'writing', done: 0, total: 1 });
 
     const out = await rotate({
-      file, media, sound, turn, bake: plan.bake, soundJob: job,
+      file, media, sound, turn: plan.turn, bake: plan.bake, soundJob: job,
       bitrate: plan.bitrate, frame: plan.frame, fps: plan.fps,
       signal: controller.signal, onProgress: report,
     });
@@ -348,7 +366,7 @@ async function run() {
 async function verify(blob, expectedSeconds, plan, expectSound) {
   let again;
   try {
-    again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }));
+    again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }), { timeline: 'media' });
   } catch (error) {
     return { ok: false, text: { key: 'check.reopen', values: { detail: messageFor(error) } } };
   }
@@ -402,9 +420,11 @@ function showResult({ out, check, plan, job, seconds }) {
   const { video } = media;
 
   el.resultSize.textContent = phrase('result.ready', {
-    size: size(out.blob.size), turn: say(turnText(turn)),
+    size: size(out.blob.size), turn: say(turnText(plan.turn)),
   });
-  el.resultSub.textContent = phrase(plan.bake ? 'result.sub.bake' : 'result.sub.copy');
+  el.resultSub.textContent = phrase(plan.bake ? 'result.sub.bake' : 'result.sub.copy', {
+    sound: phrase({ copy: 'facts.sound.copied', encode: 'facts.sound.encoded', none: 'facts.sound.none' }[job]),
+  });
 
   el.checkLine.textContent = phrase(check.ok ? 'check.passed' : 'check.failed', { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
@@ -483,6 +503,8 @@ function messageFor(error) {
 }
 
 function reset() {
+  // Reads and preview decodes can outlive the file that owned them.
+  loadGeneration += 1;
   running?.abort();
   running = null;
   el.run.disabled = false;

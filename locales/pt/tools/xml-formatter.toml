@@ -144,7 +144,7 @@ body = """
  Um analisador que falha aqui diz
       <em>qual tag</em> nunca foi fechada e em que linha e coluna, em vez de
       &ldquo;erro na linha 1&rdquo;, que é o que um navegador diz de um documento
-      que leu de uma vez só."""
+      que leu de uma vez só. Clique em <em>Ir para o erro</em> para voltar a essa posição no texto. Ao digitar, o foco fica onde está até você decidir movê-lo."""
 
 [[howto]]
 title = "Leve o resultado."

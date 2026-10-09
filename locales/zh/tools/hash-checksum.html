@@ -8,7 +8,7 @@
     什么样它都收得下，而且用一句话回答，不是用一种颜色。
   -->
   <section class="card">
-    <h2><span class="step">1</span> 选一个文件</h2>
+    <h2><span class="step">1</span> 选择一个或多个文件</h2>
 
     <!--
       真正的 <label> 会让浏览器自己打开文件选择框。对 display:none 藏起来的
@@ -19,6 +19,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">选择多个文件可与校验和清单逐一核对。每个文件都会分块读取，一次处理一个。重新选择会替换当前选择。</p>
+    <div id="batch" hidden>
+      <h3>本次选择的文件</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>保存已完成的校验和</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -72,7 +79,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      已停止。这个文件什么都还没算出来。
+      还有校验和未计算。重新开始时只读取尚未计算的部分，已完成的结果会保留。
       <button type="button" id="restart" class="ghost">重新开始</button>
     </p>
 
@@ -170,6 +177,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">正在等待浏览器完成上一次读取。停止可取消这个排队中的任务。</span>
+    <span data-phrase="progress.file">第{n}个文件，共{count}个：{name}</span>
+    <span data-phrase="batch.pending">等待计算</span>
+    <span data-phrase="batch.reading">正在读取</span>
+    <span data-phrase="batch.ready">校验和已就绪</span>
+    <span data-phrase="batch.match">匹配</span>
+    <span data-phrase="batch.renamed">以其他名称匹配</span>
+    <span data-phrase="batch.mismatch">不匹配</span>
+    <span data-phrase="batch.waiting">等待计算算法</span>
+    <span data-phrase="batch.unlisted">清单中没有此文件名</span>
+    <span data-phrase="batch.unreadable">无法读取</span>
+    <span data-phrase="batch.stopped">已停止</span>
+    <span data-phrase="batch.choose">请选择算法</span>
+    <span data-phrase="batch.inspect">查看</span>
+    <span data-phrase="batch.inspect-name">查看第{n}个文件：{name}</span>
+    <span data-phrase="batch.summary">{count}个文件中有{matched}个至少匹配一个预期校验和。查看每个文件可了解各算法的结果。</span>
+    <span data-phrase="batch.selected">{count}个文件中有{done}个已完成所选校验和的计算。</span>
+
     <span data-phrase="read.failed">未能完整读取 {name}：{reason}。通常是因为读取期间磁盘上的文件发生了变化。这里不会显示部分结果，因为半个文件算出的校验和是错误的校验和，而不是完整校验和的一部分。</span>
     <span data-phrase="read.unreadable">无法读取文件</span>
     <span data-phrase="read.short">文件在达到标示大小前就已结束</span>

@@ -32,7 +32,7 @@ css_parts = ["progress", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "pdf-page-writer", "message-box", "format", "example-photo", "image-input"]
+js_parts = ["file-picker", "pdf-page-writer", "message-box", "format", "example-photo", "image-input", "ordered-loads", "errors"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
@@ -129,12 +129,7 @@ body = """
 
 [[privacy]]
 title = "The document is told nothing about you."
-body = """
- Most tools stamp a
-      PDF with a timestamp and the name of the program that made it. This one
-      writes a title, an author and a date only if you type them in; the file
-      names of your pictures never appear in the document, and neither does
-      anything about your machine."""
+body = """The PDF names this tool as its producer. It includes a title and author only when you enter them, and a creation date only when you tick the box. Image file names and information about your machine are left out."""
 
 [[privacy]]
 title = "What Google loads, and what it is not given."

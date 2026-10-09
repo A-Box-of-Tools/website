@@ -24,7 +24,7 @@ import {
   closeDurations, displayTimes, frameWindows, gopRanges, outputSize, reversedTimes, windowLimit,
 } from '../../tools/reverse-video/src/timeline.js';
 import { averageFps } from '../../shared/js/webcodecs.js';
-import { reverseChannels } from '../../tools/reverse-video/src/audio.js';
+import { audioMemoryEstimate, decodeTrack, encodeAudioTrack, reverseChannels } from '../../tools/reverse-video/src/audio.js';
 
 /* ------------------------------------------------------------- fixtures */
 
@@ -302,4 +302,161 @@ test('an odd-length track keeps its middle sample where it was', () => {
   const samples = Float32Array.from([1, 2, 3, 4, 5]);
   reverseChannels([samples]);
   assert.deepEqual([...samples], [5, 4, 3, 2, 1]);
+});
+
+test('sound estimates include all PCM channels and the temporary assembly copy', () => {
+  assert.deepEqual(audioMemoryEstimate({ duration: 60, sampleRate: 48000, channels: 2 }),
+    { pcmBytes: 23_040_000, assemblyBytes: 46_080_000 });
+  assert.deepEqual(audioMemoryEstimate({ duration: 0.00003, sampleRate: 48000, channels: 6 }),
+    { pcmBytes: 48, assemblyBytes: 96 });
+  for (const options of [
+    { duration: 0, sampleRate: 48000, channels: 2 },
+    { duration: 60, sampleRate: 0, channels: 2 },
+    { duration: 60, sampleRate: 48000, channels: NaN },
+    { duration: Infinity, sampleRate: 48000, channels: 2 },
+    { duration: Number.MAX_SAFE_INTEGER, sampleRate: 48000, channels: 2 },
+  ]) assert.equal(audioMemoryEstimate(options), null);
+});
+
+/** Controlled codecs distinguish bounded submission from merely small packets. */
+function audioCodecFixture(t, { fast = false, holdFlush = false, failConfigure = false, onFirst } = {}) {
+  const original = ['AudioEncoder', 'AudioData'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]);
+  t.after(() => {
+    for (const [key, descriptor] of original) {
+      if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+      else delete globalThis[key];
+    }
+  });
+  const state = { submitted: 0, peak: 0, dataOpened: 0, dataClosed: 0, encoderClosed: 0, flushStarted: false };
+  globalThis.AudioData = class {
+    constructor(options) { this.options = options; state.dataOpened++; }
+    close() { state.dataClosed++; }
+  };
+  globalThis.AudioEncoder = class extends EventTarget {
+    state = 'unconfigured';
+    encodeQueueSize = 0;
+    jobs = new Set();
+    flushWaiter = null;
+    constructor(callbacks) { super(); this.callbacks = callbacks; }
+    configure() {
+      if (failConfigure) throw new Error('configuration refused');
+      this.state = 'configured';
+    }
+    encode(data) {
+      state.submitted++;
+      this.encodeQueueSize++;
+      state.peak = Math.max(state.peak, this.encodeQueueSize);
+      if (state.submitted === 1) onFirst?.();
+      const options = data.options;
+      const emit = () => {
+        if (this.state === 'closed') return;
+        this.encodeQueueSize--;
+        this.callbacks.output({
+          byteLength: 1,
+          timestamp: options.timestamp,
+          duration: options.numberOfFrames / options.sampleRate * 1_000_000,
+          copyTo(target) { target[0] = 1; },
+        }, { decoderConfig: { description: Uint8Array.from([0x11, 0x90]) } });
+        this.dispatchEvent(new Event('dequeue'));
+        if (!this.encodeQueueSize && !holdFlush) this.flushWaiter?.resolve();
+      };
+      if (fast) emit();
+      else {
+        const timer = setTimeout(() => { this.jobs.delete(timer); emit(); }, 2);
+        this.jobs.add(timer);
+      }
+    }
+    flush() {
+      state.flushStarted = true;
+      if (!this.encodeQueueSize && !holdFlush) return Promise.resolve();
+      return new Promise((resolve, reject) => { this.flushWaiter = { resolve, reject }; });
+    }
+    close() {
+      assert.notEqual(this.state, 'closed', 'an encoder is closed only once');
+      this.state = 'closed';
+      state.encoderClosed++;
+      for (const timer of this.jobs) clearTimeout(timer);
+      this.jobs.clear();
+      this.encodeQueueSize = 0;
+      this.flushWaiter?.reject(new Error('closed while flushing'));
+      this.dispatchEvent(new Event('dequeue'));
+    }
+  };
+  return state;
+}
+
+test('AAC submission stays bounded while delayed codecs drain, and every AudioData closes', async (t) => {
+  const state = audioCodecFixture(t);
+  const result = await encodeAudioTrack({ channels: [new Float32Array(1024 * 160 + 31)], sampleRate: 48000 });
+  assert.equal(result.samples.length, 161);
+  assert.equal(result.timescale, 48000);
+  assert.ok(state.peak <= 8, `peak queue ${state.peak}`);
+  assert.equal(state.dataOpened, 161);
+  assert.equal(state.dataClosed, state.dataOpened);
+  assert.equal(state.encoderClosed, 1);
+});
+
+test('a fast audio codec still yields to cancellation before submitting the entire track', async (t) => {
+  const controller = new AbortController();
+  const state = audioCodecFixture(t, {
+    fast: true,
+    onFirst: () => setTimeout(() => controller.abort(), 0),
+  });
+  await assert.rejects(encodeAudioTrack({
+    channels: [new Float32Array(1024 * 2000)], sampleRate: 48000, signal: controller.signal,
+  }), { name: 'AbortError' });
+  assert.ok(state.submitted < 2000, 'Cancel runs before the whole track is handed over');
+  assert.equal(state.dataClosed, state.dataOpened);
+  assert.equal(state.encoderClosed, 1);
+});
+
+test('audio cancellation interrupts flush and releases the encoder', async (t) => {
+  const controller = new AbortController();
+  const state = audioCodecFixture(t, { fast: true, holdFlush: true });
+  const pending = encodeAudioTrack({
+    channels: [new Float32Array(512)], sampleRate: 48000, signal: controller.signal,
+  });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(state.flushStarted, true);
+  controller.abort();
+  await assert.rejects(pending, { name: 'AbortError' });
+  assert.equal(state.dataClosed, state.dataOpened);
+  assert.equal(state.encoderClosed, 1);
+
+});
+
+test('audio configuration failure releases the encoder before allocating packets', async (t) => {
+  const refused = audioCodecFixture(t, { failConfigure: true });
+  await assert.rejects(encodeAudioTrack({ channels: [new Float32Array(512)], sampleRate: 48000 }),
+    /configuration refused/);
+  assert.equal(refused.encoderClosed, 1);
+  assert.equal(refused.dataOpened, 0);
+});
+
+test('audio decoder configuration failure closes the owned decoder before reading the file', async (t) => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'AudioDecoder');
+  t.after(() => {
+    if (original) Object.defineProperty(globalThis, 'AudioDecoder', original);
+    else delete globalThis.AudioDecoder;
+  });
+  let opened = 0;
+  let closed = 0;
+  const refusal = new Error('decoder configuration refused');
+  globalThis.AudioDecoder = class {
+    state = 'unconfigured';
+    constructor() { opened++; }
+    configure() { throw refusal; }
+    close() {
+      assert.notEqual(this.state, 'closed', 'the owned decoder is closed only once');
+      this.state = 'closed';
+      closed++;
+    }
+  };
+  await assert.rejects(decodeTrack({
+    file: { slice() { assert.fail('configuration failure must not read the file'); } },
+    track: { samples: [{ offset: 0, size: 1, dts: 0 }], timescale: 48000 },
+    config: { codec: 'mp4a.40.2', sampleRate: 48000, numberOfChannels: 2 },
+  }), (error) => error === refusal);
+  assert.equal(opened, 1);
+  assert.equal(closed, opened);
 });

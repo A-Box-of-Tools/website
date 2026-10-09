@@ -1,4 +1,12 @@
 <main id="main">
+  <div class="share-version">
+    <span>ツールのバージョン</span> <code id="tool-version">{{ js_v }}</code>
+    <details id="tool-version-help" class="tool-version-help info-fold">
+      <summary aria-describedby="tool-version-note"><span class="visually-hidden">ツールのバージョンについて</span></summary>
+      <p id="tool-version-note" role="tooltip" class="tool-version-note">両方の端末でこの値を比較してください。異なる場合は、新しく共有を始める前に両方のページを再読み込みしてください。</p>
+    </details>
+  </div>
+
   <!-- The sharer's half. Hidden by main.js when the address carries a code.
        Japanese paragraphs and phrases stay on one line each: a wrap inside
        a sentence becomes a visible space. -->
@@ -30,7 +38,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="添付するファイル">
       <div id="attachlist"></div>
-      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。1回の共有には最大256ファイルを添付できます。</p>
+      <p class="field-note">ファイルはテキストと同じ直接接続で送信されます。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。1回の共有には最大256ファイルを添付できます。</p>
     </section>
 
     <section class="card">
@@ -187,6 +195,12 @@
     <span data-phrase="share.too-many-files">1回の共有には最大256ファイルを添付できます。追加する前に1つ削除してください。</span>
     <span data-phrase="share.leave-warning">このページを離れると、共有は全員にとって終わります。続けますか？</span>
 
+    <span data-phrase="copy.select">選択しました。手動でコピーしてください</span>
+    <span data-phrase="view.file-cancel">ダウンロードをキャンセル</span>
+    <span data-phrase="view.file-retry">ダウンロードを再試行</span>
+    <span data-phrase="view.file-cancelled">ダウンロードをキャンセルしました。共有は続いています。</span>
+    <span data-phrase="view.file-legacy-cancel">ダウンロードをキャンセルしました。再試行する前に、このリンクをもう一度確認してください。</span>
+    <span data-phrase="view.file-legacy-failed">ファイルのダウンロードを完了できませんでした。このリンクをもう一度確認してダウンロードを再試行してください。</span>
     <span data-phrase="copy.done">コピーしました</span>
     <span data-phrase="copy.link">リンクをコピー</span>
     <span data-phrase="copy.text">コピー</span>
@@ -215,7 +229,7 @@
     <span data-phrase="view.mode-local">共有者はローカルネットワークモードを使っています。インターネット中継なしで接続するには、共有者のモードで再試行してください。</span>
     <span data-phrase="view.mode-direct">共有者は通常の接続モードを使っています。共有者のモードで再試行してください。直接接続に失敗すると中継が提示されますが、選んだ場合にのみ使用されます。</span>
     <span data-phrase="view.local-no-connect">ローカルネットワークモードで共有者に接続できませんでした。両方の端末が同じWi-Fiまたはイーサネットを使っているか確認してください。ゲストネットワークの端末分離、VPN、ファイアウォール、ブラウザ設定が接続を妨げることがあります。このモードではインターネット中継を提示しません。</span>
-    <span data-phrase="view.file-failed">ファイルのダウンロードを完了できませんでした。このリンクをもう一度確認してダウンロードを再試行してください。</span>
+    <span data-phrase="view.file-failed">ファイルのダウンロードを完了できませんでした。共有が続いている間に、このファイルを再試行してください。</span>
 
     <span data-phrase="net.clean">このページが共有するものは、どのサーバーも経由していません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>

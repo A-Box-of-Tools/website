@@ -13,7 +13,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { parseJson, printJson } from '../../shared/js/parse-json.js';
-import { parseXml, printXml } from '../../shared/js/parse-xml.js';
+import { parseXml, printXml, unescapeXml } from '../../shared/js/parse-xml.js';
 import { parseCss, printCss } from '../../tools/json-formatter/src/css.js';
 import { parseYaml, printYaml } from '../../shared/js/parse-yaml.js';
 import { formatText, detectLanguage } from '../../tools/json-formatter/src/format.js';
@@ -120,6 +120,100 @@ test('XML: comments, CDATA and the declaration survive', () => {
   assert.match(out, /<!\[CDATA\[ <not a tag> \]\]>/);
 });
 
+test('XML: text and mixed content retain every space in either layout', () => {
+  const cases = [
+    '<a>  one   two\n three  </a>',
+    '<a> \t\n </a>',
+    '<a> before <b> middle </b> after </a>',
+    '<a> before <![CDATA[  middle  ]]><b> inside </b> after </a>',
+    '<a xml:space="preserve"> <b/>\n  <c/> </a>',
+    '<a xml:space="pre&#115;erve"> <b> <c/> </b> </a>',
+  ];
+  for (const source of cases) {
+    assert.equal(xml(source), source + '\n', source);
+    assert.equal(xml(source, { minify: true }), source, source);
+    assert.equal(xml(xml(source)), xml(source), 'formatting remains idempotent');
+  }
+});
+
+test('XML: inherited preservation can be reset by an explicit default', () => {
+  const source = '<r xml:space="preserve"> <x><a/> <b/></x> <d xml:space="default"><a/> <b/></d> </r>';
+  const expected = '<r xml:space="preserve"> <x><a/> <b/></x> <d xml:space="default"><a/><b/></d> </r>';
+  assert.equal(xml(source), expected + '\n');
+  assert.equal(xml(source, { minify: true }), expected);
+});
+
+test('XML: one root is required and surrounding character data is rejected', () => {
+  for (const source of ['', '<!-- only a comment -->', '<a/><b/>', 'before<a/>', '<a/>after', '<![CDATA[ ]]><a/>', '<a/><![CDATA[ ]]>']) {
+    assert.throws(() => parseXml(source), (error) => {
+      assert.equal(error.reason, 'xml.document', source);
+      assert.ok(error.line >= 1 && error.column >= 1);
+      return true;
+    });
+  }
+  assert.throws(() => parseXml('<a/>\n<b/>'), (error) => {
+    assert.equal(error.line, 2);
+    assert.equal(error.column, 1);
+    return true;
+  });
+});
+
+test('XML: prolog, epilog and DOCTYPE internal subsets remain literal', () => {
+  const doctype = '<!DOCTYPE r [<!ENTITY custom "a>b]"> <!-- > ] --> <!ENTITY external SYSTEM "file:///example">]>';
+  const source = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<!-- before --><?work x?>' + doctype + '<r>&custom;&external;</r><?after x?><!-- after -->';
+  const flat = xml(source, { minify: true });
+  assert.ok(flat.includes(doctype));
+  assert.ok(flat.includes('<r>&custom;&external;</r>'));
+  assert.ok(flat.endsWith('<?after x?><!-- after -->'));
+  assert.equal(xml('\ufeff<r/>', { minify: true }), '<r/>');
+  assert.equal(xml('\ufeff<?xml version="1.0"?><r/>', { minify: true }), '<?xml version="1.0"?><r/>');
+});
+
+test('XML: declarations have document positions and ordered fields', () => {
+  const misplaced = [' <?xml version="1.0"?><r/>', '<r/><?xml version="1.0"?>', '<r><?xml version="1.0"?></r>', '<r/><!DOCTYPE r>', '<!DOCTYPE r><!DOCTYPE r><r/>'];
+  for (const source of misplaced) {
+    assert.throws(() => parseXml(source), (error) => error.reason === 'xml.declarationorder', source);
+  }
+  for (const source of ['<?xml?><r/>', '<?XML version="1.0"?><r/>', '<?xml encoding="UTF-8" version="1.0"?><r/>', '<?xml version="1.0" standalone="maybe"?><r/>']) {
+    assert.throws(() => parseXml(source), (error) => error.reason === 'xml.declarationinvalid', source);
+  }
+  assert.doesNotThrow(() => parseXml('<?xml-stylesheet href="local.xsl"?><r/>'));
+});
+
+test('XML: invalid numeric references are located in text and attributes', () => {
+  const references = ['&#0;', '&#1;', '&#xD800;', '&#xDFFF;', '&#xFFFE;', '&#xFFFF;', '&#x110000;', '&#1114112;', '&#999999999999999999999999999999999;', '&#xZZ;', '&#;', '&#65', '&#X41;'];
+  for (const reference of references) {
+    assert.throws(() => parseXml(`<r>\n  ${reference}</r>`), (error) => {
+      assert.equal(error.name, 'ParseError', reference);
+      assert.equal(error.reason, 'xml.character', reference);
+      assert.equal(error.line, 2);
+      assert.equal(error.column, 3);
+      return true;
+    });
+    assert.throws(() => parseXml(`<r v="${reference}"/>`), (error) => {
+      assert.equal(error.reason, 'xml.character', reference);
+      assert.equal(error.column, 7);
+      return true;
+    });
+  }
+  assert.doesNotThrow(() => parseXml('<r><![CDATA[&#0; &#x110000;]]><!-- &#0; --></r>'));
+});
+
+test('XML: numeric reference boundaries respect the declared version', () => {
+  const references = '&#9;&#10;&#13;&#32;&#xD7FF;&#xE000;&#xFFFD;&#x10000;&#x10FFFF;';
+  assert.doesNotThrow(() => parseXml(`<r>${references}</r>`));
+  assert.equal(unescapeXml(references), String.fromCodePoint(9, 10, 13, 32, 0xd7ff, 0xe000, 0xfffd, 0x10000, 0x10ffff));
+  assert.doesNotThrow(() => parseXml('<?xml version="1.1"?><r>&#1;</r>'));
+  assert.throws(() => parseXml('<?xml version="1.1"?><r>&#0;</r>'), (error) => error.reason === 'xml.character');
+  assert.throws(() => unescapeXml('&#x110000;'), (error) => error.reason === 'xml.character');
+});
+
+test('HTML: fragments and existing whitespace behavior are unchanged', () => {
+  const nodes = parseXml('<p>  one   two  </p><p>&#x110000;</p>', { html: true });
+  assert.equal(printXml(nodes, { html: true }), '<p>one two</p>\n<p>&#x110000;</p>\n');
+  assert.doesNotThrow(() => parseXml('<!DOCTYPE html><p>x</p><p>y</p>', { html: true }));
+});
+
 test('XML: strictness is the whole difference from HTML', () => {
   assert.throws(() => parseXml('<a><b></a>'), ParseError);
   assert.throws(() => parseXml('<a>'), ParseError);
@@ -208,6 +302,15 @@ test('CSS: what it refuses', () => {
 test('YAML: a document laid out again is the same document', () => {
   const source = 'name: thing\nlist:\n  - one\n  - two\nnested:\n  a: 1\n  b: true\n';
   assert.equal(printYaml(parseYaml(source)), source);
+});
+
+test('YAML: formatting keeps normalised numeric values exact and is idempotent', () => {
+  const source = 'plus: +9007199254740993\nzeros: 0009007199254740993\nhex: 0x20000000000001\noctal: -0o400000000000000001\nlarge: .5e999\nsmall: +.5e-999\n';
+  const expected = 'plus: 9007199254740993\nzeros: 9007199254740993\nhex: 9007199254740993\noctal: -9007199254740993\nlarge: 0.5e999\nsmall: 0.5e-999\n';
+  const formatted = formatText(source, { language: 'yaml' });
+  assert.equal(formatted, expected);
+  assert.equal(formatText(formatted, { language: 'yaml' }), formatted);
+  assert.deepEqual(parseYaml(formatted), parseYaml(source));
 });
 
 test('YAML: strings are quoted exactly when leaving them bare would lie', () => {

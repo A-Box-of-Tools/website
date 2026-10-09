@@ -6,7 +6,7 @@ import { measureImage } from './shared/media.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  decode, encodableTypes, keepFormat, release, render as renderImage,
+  encodableTypes, keepFormat,
   FORMATS, JPEG, PNG, WEBP,
 } from './codecs.js';
 import {
@@ -16,10 +16,11 @@ import { Cropper } from './shared/cropper.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import {
   bytes, change as changeOf, countOf as imageCount, describePlan as planText,
-  dimensions, outName, scaleText,
+  dimensions, scaleText,
 } from './files.js';
 import { makeZip } from './shared/zip.js';
 import { makeExample } from './example.js';
+import { prepareRun, processOne } from './run.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -93,6 +94,7 @@ const el = {
   resultList: $('result-list'),
   downloadZip: $('download-zip'),
   resultsSummary: $('results-summary'),
+  resultsSettings: $('results-settings'),
 
   viewer: $('viewer'),
   viewerName: $('viewer-name'),
@@ -156,6 +158,7 @@ const cropper = new Cropper(el.stage, {
   // a one-pixel picture. Any size, odd ones included: no image format cares.
   minSize: 8,
   onChange(rect) {
+    if (busy) return;
     writeCropFields(rect);
     if (loadingPreview) return;
 
@@ -338,6 +341,15 @@ function render() {
 
   el.run.disabled = !any || busy;
   el.run.textContent = phrase(items.length === 1 ? 'run.one' : 'run.many');
+
+  for (const control of [
+    ...el.cropControls.querySelectorAll('input, select, button'),
+    ...$('resize-card').querySelectorAll('input, select, button'),
+    el.format, el.quality, el.background,
+  ]) control.disabled = busy;
+  // Swap only has a meaning for a numeric aspect, even after a run unlocks.
+  el.swapAspect.disabled = busy || !/^\d+:\d+$/.test(referenceItem()?.aspectKey ?? 'free');
+  el.cropControls.inert = busy;
 }
 
 const totalBytes = () => items.reduce((n, i) => n + i.file.size, 0);
@@ -642,6 +654,7 @@ function renderSummaries() {
   longer true of it would be the one dishonest line on the page.
 */
 const settled = () => {
+  if (busy) return;
   clearResults();
   render();
 };
@@ -657,11 +670,13 @@ for (const control of [el.sizeW, el.sizeH, el.sizeLongest, el.sizePercent]) {
 }
 
 el.quality.addEventListener('input', () => {
+  if (busy) return;
   el.qualityValue.textContent = el.quality.value;
   clearResults();
 });
 
 el.swapSize.addEventListener('click', () => {
+  if (busy) return;
   const width = el.sizeW.value;
   el.sizeW.value = el.sizeH.value;
   el.sizeH.value = width;
@@ -669,6 +684,7 @@ el.swapSize.addEventListener('click', () => {
 });
 
 el.sizePresets.addEventListener('click', (event) => {
+  if (busy) return;
   const button = event.target.closest('button[data-w]');
   if (!button) return;
   el.sizeW.value = button.dataset.w;
@@ -677,6 +693,7 @@ el.sizePresets.addEventListener('click', (event) => {
 });
 
 el.longestPresets.addEventListener('click', (event) => {
+  if (busy) return;
   const button = event.target.closest('button[data-longest]');
   if (!button) return;
   el.sizeLongest.value = button.dataset.longest;
@@ -684,6 +701,7 @@ el.longestPresets.addEventListener('click', (event) => {
 });
 
 el.percentPresets.addEventListener('click', (event) => {
+  if (busy) return;
   const button = event.target.closest('button[data-percent]');
   if (!button) return;
   el.sizePercent.value = button.dataset.percent;
@@ -693,6 +711,7 @@ el.percentPresets.addEventListener('click', (event) => {
 /* ---------------------------------------------------------- the crop box */
 
 el.aspectRow.addEventListener('click', (event) => {
+  if (busy) return;
   const button = event.target.closest('button[data-aspect]');
   if (!button) return;
   applyAspect(button.dataset.aspect);
@@ -700,6 +719,7 @@ el.aspectRow.addEventListener('click', (event) => {
 
 /** Turn the locked shape on its side: 16:9 becomes 9:16. */
 el.swapAspect.addEventListener('click', () => {
+  if (busy) return;
   const reference = referenceItem();
   if (!reference || !cropper.aspect) return;
   applyAspect(flipKey(reference.aspectKey));
@@ -720,6 +740,7 @@ function aspectValue(key, item) {
 /** The shape the visitor pressed, applied to the image on screen and stored on
  *  it - so coming back to this picture later finds the same lock still on. */
 function applyAspect(key) {
+  if (busy) return;
   const reference = referenceItem();
   if (!reference?.size) return;
 
@@ -735,11 +756,12 @@ function markAspect() {
     button.classList.toggle('active', active);
     button.setAttribute('aria-pressed', String(active));
   }
-  el.swapAspect.disabled = !/^\d+:\d+$/.test(key);
+  el.swapAspect.disabled = busy || !/^\d+:\d+$/.test(key);
 }
 
 for (const control of [el.cropX, el.cropY, el.cropW, el.cropH]) {
   control.addEventListener('change', () => {
+    if (busy) return;
     cropper.setRect({
       x: Number(el.cropX.value) || 0,
       y: Number(el.cropY.value) || 0,
@@ -749,9 +771,10 @@ for (const control of [el.cropX, el.cropY, el.cropW, el.cropH]) {
   });
 }
 
-el.cropMax.addEventListener('click', () => cropper.maximize());
-el.cropCentre.addEventListener('click', () => cropper.centre());
+el.cropMax.addEventListener('click', () => { if (!busy) cropper.maximize(); });
+el.cropCentre.addEventListener('click', () => { if (!busy) cropper.centre(); });
 el.cropReset.addEventListener('click', () => {
+  if (busy) return;
   applyAspect('free');
   cropper.reset();
 });
@@ -848,6 +871,10 @@ function outputMime(sourceType) {
 el.run.addEventListener('click', async () => {
   if (!items.length || busy) return;
 
+  const { settings, batch } = prepareRun(items, {
+    resize: resizeSettings(), format: el.format.value,
+    quality: Number(el.quality.value) / 100, background: el.background.value,
+  }, writable);
   busy = true;
   stopping = false;
   clearResults();
@@ -861,13 +888,14 @@ el.run.addEventListener('click', async () => {
   let stopped = false;
 
   try {
-    for (const [index, item] of items.entries()) {
+    for (const [index, job] of batch.entries()) {
+      const { item } = job;
       // Between pictures rather than inside one: a single resize is one draw
       // and one encode, so the wait for the turn to end is not a wait.
       if (stopping) { stopped = true; break; }
-      showProgress(index, items.length, item.file.name);
+      showProgress(index, batch.length, item.file.name);
       try {
-        collected.push(await processOne(item));
+        collected.push(await processOne(job));
       } catch (error) {
         // codecs.js throws a key; the platform throws a sentence. Both
         // come through phrase(), which hands back what it cannot find.
@@ -892,14 +920,14 @@ el.run.addEventListener('click', async () => {
 
   if (stopped) {
     el.progressLabel.textContent = collected.length
-      ? phrase('progress.stopped', { done: collected.length, total: items.length })
+      ? phrase('progress.stopped', { done: collected.length, total: batch.length })
       : phrase('progress.stopped.none');
   }
   if (failures.length) showLoadError(failures.join('\n'));
   // What finished is kept: one file per picture means a run stopped halfway
   // still leaves half of them done.
   results = collected;
-  showResults();
+  showResults(settings);
 });
 
 el.cancel.addEventListener('click', () => { stopping = true; });
@@ -908,60 +936,6 @@ function showProgress(index, total, name) {
   el.progressBar.style.width = `${Math.round((index / total) * 100)}%`;
   el.progressLabel.textContent = phrase('progress.at',
     { index: index + 1, total, name });
-}
-
-/**
- * Do one image.
- *
- * The first branch is the one worth reading. A file that is not being cropped,
- * not being resized and not changing format is handed back byte for byte -
- * not re-saved, not "optimised". Decoding and re-encoding it would cost a
- * little quality and would drop every EXIF tag, and doing that to a file
- * nobody asked to change would be the tool quietly damaging something.
- */
-async function processOne(item) {
-  const laid = previewOf(item);
-  const base = { item, name: item.file.name, before: item.file.size, size: item.size };
-
-  if (laid.untouched) {
-    return {
-      ...base,
-      blob: item.file,
-      after: item.file.size,
-      mime: item.file.type || JPEG,
-      crop: laid.source,
-      canvas: laid.canvas,
-      scale: 1,
-      padded: false,
-      untouched: true,
-      outName: item.file.name,
-    };
-  }
-
-  const source = await decode(item.file);
-  try {
-    const mime = outputMime(item.file.type);
-    const blob = await renderImage(source.bitmap, laid, {
-      mime,
-      quality: Number(el.quality.value) / 100,
-      background: el.background.value,
-    });
-
-    return {
-      ...base,
-      blob,
-      after: blob.size,
-      mime,
-      crop: laid.source,
-      canvas: laid.canvas,
-      scale: laid.scale,
-      padded: laid.padded,
-      untouched: false,
-      outName: outName(item.file.name, mime, laid.canvas.width, laid.canvas.height),
-    };
-  } finally {
-    release(source.bitmap);
-  }
 }
 
 /* ---------------------------------------------------------------- results */
@@ -977,13 +951,18 @@ function clearResults() {
   el.results.hidden = true;
   el.downloadZip.hidden = true;
   el.resultsSummary.textContent = '';
+  el.resultsSettings.textContent = '';
 }
 
-function showResults() {
+function showResults(settings) {
   el.resultList.replaceChildren();
   if (!results.length) return;
 
   el.results.hidden = false;
+  el.resultsSettings.textContent = phrase('results.settings', {
+    format: settings.format === 'keep' ? phrase('results.format.keep') : FORMATS[settings.format].label,
+    quality: Math.round(settings.quality * 100), background: settings.background,
+  });
 
   for (const result of results) {
     // One object URL per result, made here and kept on the result itself: the
@@ -1211,7 +1190,7 @@ function viewerFacts(result) {
     phrase(cropped ? 'fact.scale.crop' : 'fact.scale.original',
       { percent: scaleText(result.scale) })]);
   if (result.padded) facts.push([phrase('fact.padding'), phrase('fact.padding.yes')]);
-  if (FORMATS[result.mime]?.lossy) facts.push([phrase('fact.quality'), el.quality.value]);
+  if (FORMATS[result.mime]?.lossy) facts.push([phrase('fact.quality'), String(Math.round(result.quality * 100))]);
   facts.push([phrase('fact.metadata'), phrase('fact.metadata.gone')]);
 
   return facts;

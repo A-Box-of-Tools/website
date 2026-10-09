@@ -76,16 +76,16 @@ BASELINE = {
     'convert-to-mp4': 0,
     'rotate-video': 0,
     'crop-video': 0,
-    # Two internal keys, a DOM id, a clock format, one key template and the
-    # fixed-width layout of a line in the text report.
-    'dicom-viewer': 6,
+    # Two internal keys, a DOM id, a clock format and the fixed-width layout
+    # of a line in the text report. File identity replaced the filename key.
+    'dicom-viewer': 5,
     # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
     # filename template. The quad invariant now lives in the shared geometry
     # module alongside the detector, because the receipt tool uses it too.
     'document-scanner': 6,
-    # A clock format, and one invariant check in each of the two speed
-    # modules - main.js clamps the speed, so neither can be reached.
-    'edit-audio': 3,
+    # One invariant check remains in each speed module. Validated editor
+    # settings keep both from reaching a visitor; the clock now uses shared format.
+    'edit-audio': 2,
     'exif-editor': 20,
     'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
@@ -106,6 +106,8 @@ BASELINE = {
     # counted here, or this number becomes a tally of how many countries are
     # covered and stops being a ratchet on anything.
     'id-photo': 5,
+    # The output filename template. Every sentence shown on the page is in markup.
+    'image-layout': 1,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
     'image-to-ico': 6,
@@ -116,10 +118,11 @@ BASELINE = {
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,
-    'merge-pdf': 3,
+    'merge-pdf': 2,
     'password-generator': 8,
     'png-to-webp': 0,
-    # The two left are a symbology's own name and a line of SVG markup.
+    # Both layouts join translated fact fragments; neither carries an English
+    # sentence. The heuristic counts their nested page/encoding phrase keys.
     'pdf-to-csv': 2,
     'protect-pdf': 0,
     'qr-barcode': 2,

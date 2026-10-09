@@ -55,12 +55,15 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">转为 WebP</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
     </div>
+
+    <p class="note">取消会在处理下一个文件前停止。已开始的编码会完成，生成的文件仍可保存。</p>
 
     <p id="run-error" class="error" role="alert" hidden></p>
 
@@ -103,6 +106,9 @@
     <span data-phrase="run.many">将 {count} 个文件转为 WebP</span>
     <span data-phrase="progress.each">正在转换 {name}……</span>
     <span data-phrase="progress.done">完成。</span>
+    <span data-phrase="run.filefailed">未能转换 {name}：{why}</span>
+    <span data-phrase="progress.stopped">已处理 {total} 个文件中的 {done} 个后停止。生成的文件可在下方保存。</span>
+    <span data-phrase="progress.stopped.none">在生成任何文件之前已停止。</span>
     <span data-phrase="run.failed">本次转换失败：{detail}</span>
     <span data-phrase="written.one">{name}——{size}，{change}</span>
     <span data-phrase="written.many">已输出 {count} 个 WebP 文件，共 {size}，比输入 {change}。</span>

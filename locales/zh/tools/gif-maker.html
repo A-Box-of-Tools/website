@@ -33,13 +33,14 @@
 
     <div id="bulk-delay" class="bulk" hidden>
       <label for="bulk-amount">每一帧停留</label>
-      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.01" aria-describedby="bulk-help" value="0.5">
       <select id="bulk-unit" aria-label="每帧停留时间的单位">
         <option value="seconds" selected>秒</option>
         <option value="fps">帧每秒</option>
       </select>
       <button type="button" id="apply-bulk" class="ghost">应用到全部</button>
       <span class="bulk-note" id="bulk-note"></span>
+      <p class="bulk-note" id="bulk-help">GIF以百分之一秒记录停留时间。为保持指定的整体帧率，相邻帧的停留时间可能相差0.01秒。</p>
     </div>
   </section>
 

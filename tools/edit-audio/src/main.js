@@ -1,13 +1,15 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
-import { sizeText } from './shared/format.js';
+import { sizeText, clockText } from './shared/format.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import { render, lengthAfter } from './edit.js';
 import { peak, dbToGain, gainToDb, normalizeGain } from './effects.js';
-import { writeWav, wavSize } from './shared/wav.js';
+import { wavSize } from './shared/wav.js';
+import { writeWavAsync } from './shared/wav-async.js';
+import { parseEditNumber, previewSource } from './controls.js';
 import { drawWaveform } from './waveform.js';
 import { makeExample } from './example.js';
 
@@ -32,9 +34,15 @@ const el = {
   speed: $('speed'),
   speedValue: $('speed-value'),
   speedNote: $('speed-note'),
+  speedError: $('speed-error'),
   volume: $('volume'),
   volumeValue: $('volume-value'),
   volumeNote: $('volume-note'),
+  volumeError: $('volume-error'),
+  previewEdit: $('preview-edit'),
+  excerpt: $('excerpt'),
+  excerptAudio: $('excerpt-audio'),
+  excerptInfo: $('excerpt-info'),
   sumLength: $('sum-length'),
   sumSpeed: $('sum-speed'),
   sumPeak: $('sum-peak'),
@@ -68,6 +76,7 @@ let source = null;
 let sourcePeak = 0;
 let previewUrl = null;
 let resultUrl = null;
+let excerptUrl = null;
 /** The samples that came out of the last edit, kept only so the picture of
  *  them can be drawn again when the window changes size. */
 let lastEdited = null;
@@ -76,10 +85,13 @@ let exporting = false;
 let loading = false;
 let loadGeneration = 0;
 let abortController = null;
+let runGeneration = 0;
 
 /** What the speed slider means, as a multiple. Held here rather than read back
  *  off the slider; see setSpeed. */
 let speed = 1;
+// A text entry may fall between slider ticks; the displayed value is the one used.
+let volumeDb = 0;
 
 /** How far the speed can be taken either way. Past these the stretcher starts
  *  to sound like an effect rather than a speed change. */
@@ -102,12 +114,14 @@ const picker = wireFilePicker({
 });
 
 async function loadFile(picked) {
-  if (exporting) return;
+  if (exporting) { setWorking(true); return; }
   const generation = ++loadGeneration;
   loading = true;
   el.exportBtn.disabled = true;
   clearError();
   clearResult();
+  clearExcerpt();
+  updateSummary();
   picker.busy(phrase('step.reading'));
 
   try {
@@ -124,11 +138,11 @@ async function loadFile(picked) {
     updateSummary();
   } catch (error) {
     if (generation !== loadGeneration) return;
-    // shared/audio-decode.js throws a key; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not know.
-    if (error instanceof UnreadableFile) showError(phrase(error.message));
+    // Only known reader keys are resolved. Native sentences remain text so
+    // quotes in a refusal cannot become part of a phrase selector.
+    if (error instanceof UnreadableFile) showError(leafReason(error));
     else {
-      showError(phrase('read.failed', { why: phrase(error?.message ?? String(error)) }));
+      showError(phrase('read.failed', { why: leafReason(error) }));
       console.error(error);
     }
   } finally {
@@ -162,6 +176,7 @@ function showSource() {
 
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewUrl = URL.createObjectURL(file);
+  el.preview.pause();
   el.preview.src = previewUrl;
   el.srcWaveWrap.hidden = false;
   drawWaveform(el.srcWave, source.channels);
@@ -177,7 +192,7 @@ function settings() {
     keepPitch: pickedValue('pitch') === 'keep',
     volume: {
       mode: pickedValue('level'),
-      db: pickedValue('level') === 'normalize' ? NORMALIZE_TARGET : Number(el.volume.value),
+      db: pickedValue('level') === 'normalize' ? NORMALIZE_TARGET : volumeDb,
     },
   };
 }
@@ -194,51 +209,75 @@ const pickedValue = (name) => document.querySelector(`input[name="${name}"]:chec
  * two decimals for the same reason - so the number shown is the number used.
  */
 function setSpeed(wanted) {
-  speed = clamp(Math.round(wanted * 100) / 100, SPEED_LIMITS.min, SPEED_LIMITS.max);
+  const next = Math.round(wanted * 100) / 100;
+  if (next !== speed) invalidateEdits();
+  speed = next;
   el.speed.value = String(Math.log2(speed));
   el.speedValue.value = formatSpeed(speed);
+  numericError('speed', false);
   updateSummary();
 }
 
 function setVolume(db) {
-  el.volume.value = String(clamp(db, -24, 24));
-  el.volumeValue.value = formatDb(Number(el.volume.value));
+  const next = Math.round(db * 100) / 100;
+  if (next !== volumeDb) invalidateEdits();
+  volumeDb = next;
+  el.volume.value = String(volumeDb);
+  el.volumeValue.value = formatDb(volumeDb);
+  numericError('volume', false);
   updateSummary();
 }
 
-// The slider is in octaves; see body.html.
-el.speed.addEventListener('input', () => setSpeed(2 ** Number(el.speed.value)));
+function numericError(kind, invalid) {
+  const input = kind === 'speed' ? el.speedValue : el.volumeValue;
+  const note = kind === 'speed' ? el.speedError : el.volumeError;
+  note.hidden = !invalid;
+  if (invalid) { input.setAttribute('aria-invalid', 'true'); note.textContent = phrase(`input.${kind}`); }
+  else input.removeAttribute('aria-invalid');
+}
 
-// Typed rather than dragged. An unreadable value is left alone until the box
-// loses focus, so half-typed numbers do not fight the person typing them.
-el.speedValue.addEventListener('change', () => {
-  const typed = Number(el.speedValue.value.replace(/[^0-9.]/g, ''));
-  setSpeed(Number.isFinite(typed) && typed > 0 ? typed : speed);
-});
+function commitNumber(kind) {
+  const input = kind === 'speed' ? el.speedValue : el.volumeValue;
+  const value = parseEditNumber(input.value, kind);
+  if (value === null) { numericError(kind, true); updateSummary(); return false; }
+  if (kind === 'speed') setSpeed(value); else setVolume(value);
+  return true;
+}
 
-el.volume.addEventListener('input', () => {
-  el.volumeValue.value = formatDb(Number(el.volume.value));
-  updateSummary();
-});
+function commitInputs() {
+  const a = commitNumber('speed'); const b = commitNumber('volume');
+  return a && b;
+}
 
-el.volumeValue.addEventListener('change', () => {
-  const cleaned = el.volumeValue.value.replace(/[^0-9.+-]/g, '');
-  const typed = Number(cleaned);
-  // An empty box is not a request for silence, or for zero: it is a typo, and
-  // the setting that was there stays there.
-  setVolume(cleaned && Number.isFinite(typed) ? typed : Number(el.volume.value));
-});
+const validDrafts = () => parseEditNumber(el.speedValue.value, 'speed') !== null
+  && parseEditNumber(el.volumeValue.value, 'volume') !== null;
 
+el.speed.addEventListener('input', () => setSpeed(clamp(2 ** Number(el.speed.value), SPEED_LIMITS.min, SPEED_LIMITS.max)));
+el.volume.addEventListener('input', () => setVolume(Number(el.volume.value)));
+for (const [kind, input] of [['speed', el.speedValue], ['volume', el.volumeValue]]) {
+  input.addEventListener('input', () => { invalidateEdits(); numericError(kind, false); updateSummary(); });
+  input.addEventListener('change', () => commitNumber(kind));
+  input.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' || event.isComposing) return;
+    event.preventDefault(); commitNumber(kind);
+  });
+}
 for (const button of document.querySelectorAll('.presets button')) {
   button.addEventListener('click', () => setSpeed(Number(button.dataset.speed)));
 }
-
-for (const input of document.querySelectorAll('input[name="pitch"], input[name="level"]')) {
-  input.addEventListener('change', updateSummary);
+for (const input of [...document.querySelectorAll('input[name="pitch"], input[name="level"]'), el.reverse, el.depth]) {
+  input.addEventListener('change', () => { invalidateEdits(); updateSummary(); });
 }
 
-el.reverse.addEventListener('change', updateSummary);
-el.depth.addEventListener('change', updateSummary);
+/** A programmatic edit also retires work even when ordinary controls are locked. */
+function invalidateEdits() {
+  if (exporting) {
+    runGeneration += 1;
+    abortController?.abort(); abortController = null;
+    setWorking(false);
+  }
+  clearResult(); clearExcerpt(); clearError();
+}
 
 /**
  * The four lines that say what pressing the button will produce.
@@ -248,7 +287,8 @@ el.depth.addEventListener('change', updateSummary);
  * without touching the audio.
  */
 function updateSummary() {
-  el.exportBtn.disabled = !source || loading || exporting;
+  el.exportBtn.disabled = !source || loading || exporting || !validDrafts();
+  el.previewEdit.disabled = el.exportBtn.disabled;
   if (!source) return;
   const chosen = settings();
   const frames = lengthAfter(source.frames, chosen.speed, chosen.keepPitch);
@@ -322,69 +362,96 @@ function volumeNote(chosen, gain, after) {
 
 /* ---------------------------------------------------------------- exporting */
 
-async function runExport() {
-  if (!source || loading || exporting) return;
-  clearError();
-  clearResult();
+function setWorking(active) {
+  exporting = active;
+  el.editCard.inert = active;
+  el.depth.disabled = active;
+  el.dropzone.inert = active;
+  el.fileInput.disabled = active;
+  el.cancelBtn.hidden = !active;
+  el.progress.hidden = !active;
+  updateSummary();
+}
 
-  // A replacement decode must finish before export can begin. Keep the exact
-  // source and filename together across the asynchronous rendering step too.
-  const input = source;
+async function runExport() { await runJob('export'); }
+
+async function runJob(kind) {
+  if (!source || loading || exporting || !commitInputs()) return;
+  clearError(); clearExcerpt();
+  const excerpt = kind === 'preview' ? previewSource(source, el.preview.currentTime) : null;
+  if (kind === 'preview' && !excerpt) { showError(phrase('preview.end')); return; }
+  const input = excerpt?.source ?? source;
   const chosen = settings();
-  const name = outputName(file.name, chosen);
-  exporting = true;
-  abortController = new AbortController();
-  el.exportBtn.disabled = true;
-  el.cancelBtn.hidden = false;
-  el.progress.hidden = false;
-  progress(0, 'step.starting');
-
   const bits = Number(el.depth.value);
-
+  const name = outputName(file.name, chosen);
+  if (kind === 'export') clearResult();
+  const controller = new AbortController();
+  const generation = ++runGeneration;
+  abortController = controller;
+  const owns = () => generation === runGeneration && abortController === controller;
+  const current = () => owns() && !controller.signal.aborted;
+  setWorking(true);
+  progress(0, 'step.starting');
+  el.progress.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   try {
+    const frames = lengthAfter(input.frames, chosen.speed, chosen.keepPitch);
+    if (!Number.isSafeInteger(frames) || wavSize(frames, input.channels.length, bits) - 8 > 0xffffffff) {
+      throw new Error('wav.toobig');
+    }
     const started = performance.now();
-    const edited = await render(input, chosen, {
-      signal: abortController.signal,
-      onProgress: (done, label) => progress(done, label),
-    });
-
-    const blob = writeWav(edited.channels, input.sampleRate, { bits });
+    const edited = await render(input, chosen, { signal: controller.signal,
+      onProgress: (done, label) => { if (current()) progress(done * 0.9, label); } });
+    const blob = await writeWavAsync(edited.channels, input.sampleRate, { bits,
+      signal: controller.signal,
+      onProgress: ({ done, total }) => { if (current()) progress(0.9 + 0.1 * done / Math.max(1, total), 'step.writing'); } });
+    controller.signal.throwIfAborted();
+    if (!current()) return;
+    const url = URL.createObjectURL(blob);
     const seconds = edited.channels[0].length / input.sampleRate;
-
-    resultUrl = URL.createObjectURL(blob);
-    el.resultAudio.src = resultUrl;
-    el.download.href = resultUrl;
-    el.download.download = name;
-    el.result.hidden = false;
-    lastEdited = edited.channels;
-    drawWaveform(el.outWave, lastEdited);
-
-    el.resultInfo.textContent = [
-      phrase(bits === 32 ? 'out.wav.float' : 'out.wav.int'),
-      formatDuration(seconds),
-      formatBytes(blob.size),
-      phrase('out.peak', { peak: formatPeak(edited.peak) }),
-      edited.clipped
-        ? phrase(edited.clipped === 1 ? 'out.clipped.one' : 'out.clipped.many',
-          { n: edited.clipped.toLocaleString() })
-        : null,
-      phrase('out.took', { n: ((performance.now() - started) / 1000).toFixed(1) }),
-    ].filter(Boolean).reduce((a, b) => phrase('join.dot', { a, b }));
-
-    el.progress.hidden = true;
-    el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (kind === 'preview') {
+      excerptUrl = url;
+      el.excerptAudio.src = url;
+      el.excerptInfo.textContent = phrase('preview.interval', {
+        from: formatDuration(excerpt.from / input.sampleRate),
+        to: formatDuration(excerpt.to / input.sampleRate),
+        length: formatDuration(seconds),
+      });
+      el.excerpt.hidden = false;
+      el.excerpt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      resultUrl = url;
+      el.resultAudio.src = url;
+      el.download.href = url;
+      el.download.download = name;
+      el.result.hidden = false;
+      lastEdited = edited.channels;
+      drawWaveform(el.outWave, lastEdited);
+      el.resultInfo.textContent = [
+        phrase(bits === 32 ? 'out.wav.float' : 'out.wav.int'),
+        formatDuration(seconds), formatBytes(blob.size),
+        phrase('out.peak', { peak: formatPeak(edited.peak) }),
+        edited.clipped ? phrase(edited.clipped === 1 ? 'out.clipped.one' : 'out.clipped.many',
+          { n: edited.clipped.toLocaleString() }) : null,
+        phrase('out.took', { n: ((performance.now() - started) / 1000).toFixed(1) }),
+      ].filter(Boolean).reduce((a, b) => phrase('join.dot', { a, b }));
+      el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   } catch (error) {
-    el.progress.hidden = true;
-    if (error?.name !== 'AbortError') {
-      showError(error?.message ? phrase(error.message) : phrase('edit.failed'));
+    if (current() && error?.name !== 'AbortError') {
+      if (kind === 'preview') clearExcerpt(); else clearResult();
+      showError(phrase(kind === 'preview' ? 'preview.failed' : 'edit.failed.reason', { why: leafReason(error) }));
       console.error(error);
     }
   } finally {
-    exporting = false;
-    abortController = null;
-    el.cancelBtn.hidden = true;
-    updateSummary();
+    if (owns()) { abortController = null; setWorking(false); }
   }
+}
+
+const LEAF_KEYS = new Set(['audio.empty', 'audio.nodecode', 'audio.nosound',
+  'wav.nochannels', 'wav.uneven', 'wav.toobig']);
+function leafReason(error) {
+  const message = error?.message ?? String(error);
+  return LEAF_KEYS.has(message) ? phrase(message) : message;
 }
 
 /** What the file is called on the way out: the name that went in, plus what
@@ -407,6 +474,7 @@ function progress(done, label) {
 }
 
 el.exportBtn.addEventListener('click', runExport);
+el.previewEdit.addEventListener('click', () => runJob('preview'));
 el.cancelBtn.addEventListener('click', () => abortController?.abort());
 
 window.addEventListener('beforeunload', (event) => {
@@ -426,10 +494,25 @@ window.addEventListener('resize', () => {
 
 function clearResult() {
   el.result.hidden = true;
+  el.resultAudio.pause();
   el.resultAudio.removeAttribute('src');
+  el.resultAudio.load();
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  el.resultInfo.textContent = '';
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = null;
   lastEdited = null;
+}
+
+function clearExcerpt() {
+  el.excerpt.hidden = true;
+  el.excerptAudio.pause();
+  el.excerptAudio.removeAttribute('src');
+  el.excerptAudio.load();
+  el.excerptInfo.textContent = '';
+  if (excerptUrl) URL.revokeObjectURL(excerptUrl);
+  excerptUrl = null;
 }
 
 /* ----------------------------------------------------------------- wording */
@@ -446,7 +529,7 @@ function formatSpeed(value) {
   return phrase('speed.times', { n: shown.replace(/\.?0+$/, '') });
 }
 
-const formatDb = (db) => `${db > 0 ? '+' : ''}${db.toFixed(1)} dB`;
+const formatDb = (db) => `${db > 0 ? '+' : ''}${db.toFixed(2).replace(/0$/, '')} dB`;
 
 /** Full scale as 0 dBFS, which is how every meter in every editor says it. */
 function formatPeak(value) {
@@ -458,15 +541,7 @@ function formatPeak(value) {
 const EMPTY = '\u2013';
 
 function formatDuration(seconds) {
-  if (!Number.isFinite(seconds)) return EMPTY;
-  const whole = Math.floor(seconds);
-  const hours = Math.floor(whole / 3600);
-  const minutes = Math.floor((whole % 3600) / 60);
-  const rest = seconds - hours * 3600 - minutes * 60;
-  const shown = rest.toFixed(1).padStart(4, '0');
-  return hours
-    ? `${hours}:${String(minutes).padStart(2, '0')}:${shown}`
-    : `${minutes}:${shown}`;
+  return Number.isFinite(seconds) ? clockText(seconds, { decimals: 1 }) : EMPTY;
 }
 
 /* ------------------------------------------------- privacy panel + offline */

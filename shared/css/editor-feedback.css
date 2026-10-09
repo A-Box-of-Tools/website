@@ -1,0 +1,5 @@
+/* A warning and its examples wrap on narrow screens without stretching the
+   editor. The caret action remains separate from the live alert. */
+.editor-feedback { padding-left: 2rem; overflow-wrap: anywhere; }
+.editor-feedback li + li { margin-top: 0.35rem; }
+.error-action { margin: 0 0 1rem; }

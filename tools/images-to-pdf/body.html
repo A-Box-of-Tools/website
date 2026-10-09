@@ -36,7 +36,7 @@
   <section class="card">
     <h2><span class="step">2</span> Page setup</h2>
 
-    <div class="settings">
+    <div class="settings" id="page-settings">
       <div class="field">
         <label for="page-size">Page size</label>
         <select id="page-size">
@@ -146,15 +146,10 @@
       </div>
     </div>
 
-    <details class="meta-panel">
+    <details class="meta-panel" id="metadata-settings">
       <summary>Document details &mdash; all optional, all blank by default</summary>
       <div class="meta-body">
-        <p class="meta-note">
-          A PDF carries a small block of information about itself, and most tools
-          fill it in with a timestamp and a program name whether you asked or not.
-          This one writes what you type here and nothing else: no file names, no
-          machine name, and no date unless you tick the box.
-        </p>
+        <p class="meta-note">The PDF names this tool as its producer. It also records the title and author you enter, and today's date only when you tick the box. Image file names and information about your machine are left out.</p>
         <div class="settings">
           <div class="field">
             <label for="doc-title">Title</label>
@@ -212,6 +207,9 @@
       <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
+    <p id="cancel-note" class="field-note" hidden>Cancel stops this PDF from being offered. Browser decoding, encoding or compression already underway may finish before its resources are released.</p>
+    <p id="export-wait" class="field-note" role="status" aria-live="polite" tabindex="-1" hidden>Earlier browser work is still finishing. Create PDF is available when one operation finishes.</p>
+
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar is-smooth"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
@@ -240,6 +238,7 @@
     <span data-phrase="tile.earlier">Move {name} earlier</span>
     <span data-phrase="tile.later">Move {name} later</span>
     <span data-phrase="read.notimage">{name}: not an image this tool can read.</span>
+    <span data-phrase="read.failed">{name}: this picture could not be prepared. {detail}</span>
     <span data-phrase="read.nodecode">{name}: this browser could not decode it.</span>
     <span data-phrase="drag.move">Drag to move {name}</span>
     <span data-phrase="note.fit">Every page is exactly its picture, so nothing is

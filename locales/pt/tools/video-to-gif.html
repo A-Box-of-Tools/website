@@ -144,7 +144,8 @@
       <div><dt>Tamanho aproximado</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
-    <p id="memory-note" class="field-note" hidden></p>
+    <p id="memory-note" class="memory-plan" hidden></p>
+    <button id="smaller-width" class="button secondary" type="button" hidden>Usar uma largura menor que caiba</button>
 
     <div class="export-row">
       <button type="button" id="export" class="primary" disabled>Fazer o GIF</button>
@@ -192,18 +193,17 @@
     <span data-phrase="sum.bytes">de {low} a {high}</span>
     <span data-phrase="note.wider">Isso é mais largo que o próprio vídeo ({px} px), e
       isso não acrescenta detalhe que nunca existiu &mdash; só bytes.</span>
-    <span data-phrase="note.memory">Cada quadro fica na memória enquanto a paleta é
-      escolhida, o que com estes ajustes dá uns {size}.</span>
-    <span data-phrase="note.memory.toobig">Isso é mais do que esta ferramenta vai
-      tentar: uma seção mais curta, uma largura menor ou uma taxa de quadros mais baixa
-      resolve.</span>
-    <span data-phrase="note.memory.ok">Uma seção mais curta, uma largura menor ou uma
-      taxa de quadros mais baixa baixam esse número.</span>
+    <span data-phrase="note.memory">Buffers de trabalho estimados: {size}. Orçamento de planejamento: {limit}. Inclui quadros, saída GIF e reservas de decodificação; não mede a memória livre.</span>
+    <span data-phrase="note.memory.toobig">Este plano supera o orçamento. Um trecho mais curto, uma largura ou taxa de quadros menor pode ajudar; decodificar a origem também precisa de memória.</span>
+    <span data-phrase="note.memory.ok">As alocações internas do navegador podem usar mais memória. Um trecho mais curto, uma largura ou taxa de quadros menor reduz o trabalho de saída.</span>
     <span data-phrase="step.readframe">Lendo o quadro {done} de {total}</span>
     <span data-phrase="step.writeframe">Escrevendo o quadro {done} de {total}</span>
     <span data-phrase="n.frame.one">{n} quadro</span>
     <span data-phrase="n.frame.many">{n} quadros</span>
     <span data-phrase="out.dropped">{frames} ({n} idênticos, descartados)</span>
+    <span data-phrase="out.holds">Quadros adicionais para pausas longas: {n}</span>
+    <span data-phrase="open.notopened.detail">Não foi possível abrir esse arquivo: {why}</span>
+    <span data-phrase="export.failed.detail">Não foi possível criar o GIF: {why}</span>
     <span data-phrase="out.fps">{n} fps</span>
     <span data-phrase="out.colours">{n} cores</span>
     <span data-phrase="export.tooshort">Essa seção é curta demais para tirar um quadro
@@ -221,6 +221,8 @@
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="read.edits">Este arquivo usa uma lista de edição para reprodução que esta ferramenta não consegue preservar. Salve o clipe editado visível como um novo vídeo antes de processá-lo aqui.</span>
+    <span data-phrase="read.editinvalid">A lista de edição para reprodução do arquivo está incompleta ou tem tempos inválidos. Por isso, não é possível preservar sua sequência visível.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

@@ -29,6 +29,8 @@
       </select>
     </div>
 
+    <p class="width-guidance" id="width-guidance">Lassen Sie die Breite eines Objekts für die automatische Breite leer. Kann eine eingegebene Breite nicht gelesen werden, bleibt die Zeile bis zur Korrektur aus dem Diagramm.</p>
+
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
         <span></span>
@@ -127,6 +129,7 @@
       an, messen Sie also nach und tippen Sie die echten Zahlen darüber.
     </p>
 
+    <p id="import-status" class="field-note" role="status" aria-live="polite" aria-atomic="true" hidden></p>
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -255,6 +258,17 @@
     <span data-phrase="height.unreadable">Das ist keine Größe, die hier verstanden wird. Versuchen Sie 173, 1,73 m, 5'8" oder 68 in.</span>
     <span data-phrase="height.tooshort">Zu klein zum Zeichnen &mdash; 5 cm ist das Kleinste.</span>
     <span data-phrase="height.tootall">Größer, als das Diagramm reicht &mdash; bei 12 Metern ist Schluss.</span>
+
+    <span data-phrase="width.reads">Breite gelesen als {width}.</span>
+    <span data-phrase="width.automatic">Die automatische Breite richtet sich nach der Höhe.</span>
+    <span data-phrase="width.automaticread">Automatische Breite: {width}.</span>
+    <span data-phrase="width.unreadable">Diese Breite wird nicht verstanden. Versuchen Sie 60 cm oder 24 in.</span>
+    <span data-phrase="width.toosmall">Zu schmal zum Zeichnen — 5 cm ist das Minimum.</span>
+    <span data-phrase="width.toolarge">Breiter als das Diagramm reicht — 12 Meter sind die Grenze.</span>
+    <span data-phrase="chart.invalid">Korrigieren Sie eine Höhe oder Breite, um eine Zeile im Diagramm zu zeichnen.</span>
+    <span data-phrase="import.failed">{name} konnte nicht gelesen werden: {detail}.</span>
+    <span data-phrase="import.readingone">Ein Bild wird lokal gelesen…</span>
+    <span data-phrase="import.readingmany">{count} Bilder werden lokal gelesen…</span>
 
     <span data-phrase="svg.added">Hinzugefügt, gezeichnet aus {shapes} Formen in dieser Datei. Zum Lesen wurde nichts hochgeladen.</span>
     <span data-phrase="svg.noshapes">In dieser Datei ist nichts zu zeichnen. Behalten werden nur die Formen &mdash; eine Datei aus lauter Text, Effekten oder verlinkten Bildern hat keine.</span>

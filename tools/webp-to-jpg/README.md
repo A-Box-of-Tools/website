@@ -96,11 +96,36 @@ Two files, both drawn in the page (`src/example.js`; see
   "filled with" note on a result. Without it the example would demonstrate a
   quality slider and nothing else.
 
+## When a batch stops or a file fails
+
+`shared/js/image-batch.js` captures source rows, output names and settings before
+work starts. Each file is converted independently: a decode or encode failure
+names that input and its cause, preserves earlier downloads and still tries
+later inputs. The JPEG background note comes from the completed run's captured
+colour. The shared writer envelope can also carry the lossless verdict from
+`encodeWebp`, so the PNG and AVIF converters can adopt this batch flow separately.
+
+Cancel stops at the next safe boundary. Browser decoding and encoding cannot
+be interrupted: a decoded image returned after Cancel is released without
+writing, while an encoding already in progress may finish and remains available.
+No later file starts, and the page reports how many completed. Settings and
+source controls remain locked until the pending operation exits.
+
+Every decoded bitmap is released after success, failure or a stop. Each shared
+encoding, alpha inspection and format probe clears only the canvas it owns,
+including when drawing or the encoder throws. No browser codec choice changes.
+
 ## Testing
 
 `tests/js/image-convert.test.js` covers the pure half of the shared module —
 sniffing, the RIFF walk, `webpFacts`, naming and the size comparison — against
-byte fixtures. The canvas half cannot be unit tested in Node and is checked in
-a browser, which for this tool means: convert the example, confirm the mark's
+byte fixtures. `tests/js/image-batch.test.js` covers partial failures, snapshots, stable names,
+writer envelopes and cancellation with deferred browser boundaries.
+`tests/js/image-resources.test.js` checks owned canvas cleanup at those boundaries.
+The actual pixels and codec results are checked in a browser, which for this tool means: convert the example, confirm the mark's
 transparency is filled with the chosen colour rather than black, and confirm
 the animated case reports its first frame.
+
+A built-page check also injects a later encoder failure, confirms completed
+JPEGs still download, and cancels while decoding and encoding are pending.
+The suites run in CI; local verification builds and opens the tool.

@@ -11,6 +11,7 @@
 .error {
   max-height: 12rem;
   overflow-y: auto;
+  overflow-wrap: anywhere;
 }
 
 /* ------------------------------------------------------------- the file list */

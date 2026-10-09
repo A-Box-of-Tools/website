@@ -4,7 +4,9 @@ import { phrase, fill } from './shared/phrases.js';
 import { sizeText } from './shared/format.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
+import { editorFeedback, conversionDiagnostics } from './shared/editor-feedback.js';
 import { wireFilePicker } from './shared/file-picker.js';
+import { textImport } from './shared/text-import.js';
 import { LANGUAGES, languageById, formatText, detectLanguage } from './format.js';
 import { CONVERSIONS, conversionById } from './convert.js';
 import { SAMPLES } from './samples.js';
@@ -35,6 +37,8 @@ const el = {
   sample: $('sample'),
   clear: $('clear'),
   error: $('error'),
+  goError: $('go-error'),
+  feedback: $('conversion-feedback'),
   output: $('output'),
   resultNote: $('result-note'),
   copy: $('copy'),
@@ -47,6 +51,8 @@ const { show: showError, clear: clearError } = messageBox(el.error, {
   onShow: () => { el.resultNote.textContent = phrase('out.empty'); },
 });
 const download = downloadLink(el.download);
+const feedback = editorFeedback({ input: el.input, go: el.goError, notes: el.feedback, phrase,
+  context: () => mode === 'format' ? `format:${chosenLanguage()}` : `convert:${el.conversion.value}` });
 const humanBytes = (n) => sizeText(n, phrase, { under: 'size.bytes', kb: 1, mb: 2 });
 
 /** Which of the two jobs is on screen. */
@@ -99,21 +105,26 @@ const picker = wireFilePicker({
   onFiles(files) { loadFiles(files); },
 });
 
+const imports = textImport({
+  busy: () => picker.busy(phrase('read.reading')),
+  done: picker.done,
+});
+
 async function loadFiles(files) {
   clearTimeout(timer);
   clearResult();
-  picker.busy(phrase('read.reading'));
-  try {
-    // Read as text, here, by the browser. There is no other step: the string
-    // goes into the box below and never anywhere else.
-    el.input.value = await files[0].text();
-    updateCounts();
-    run();
-  } catch (error) {
-    showError(phrase('read.failed', { reason: say(error) }));
-  } finally {
-    picker.done();
-  }
+  // Read as text, here, by the browser. There is no other step: the string
+  // goes into the box below and never anywhere else.
+  await imports.read([files[0]], {
+    apply(texts) {
+      el.input.value = texts[0];
+      updateCounts();
+      run();
+    },
+    failed(error) {
+      showError(phrase('read.failed', { reason: say(error) }));
+    },
+  });
 }
 
 let timer = null;
@@ -129,7 +140,11 @@ function schedule() {
   timer = setTimeout(run, size > 200000 ? 500 : 120);
 }
 
-el.input.addEventListener('input', () => { updateCounts(); schedule(); });
+el.input.addEventListener('input', () => {
+  imports.invalidate();
+  updateCounts();
+  schedule();
+});
 
 for (const control of [el.language, el.indent, el.style, el.sortKeys, el.conversion,
   el.rootName]) {
@@ -137,6 +152,7 @@ for (const control of [el.language, el.indent, el.style, el.sortKeys, el.convers
 }
 
 el.clear.addEventListener('click', () => {
+  imports.invalidate();
   el.input.value = '';
   updateCounts();
   run();
@@ -144,6 +160,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
+  imports.invalidate();
   const sample = SAMPLES[mode];
   el.input.value = sample.a;
   if (sample.language && mode === 'format') el.language.value = sample.language;
@@ -200,6 +217,7 @@ function run() {
     // is reported as information rather than as a failure. Anything else is a
     // bug here and goes to the console as well.
     showError(say(error));
+    feedback.error(error, { conversion: mode === 'convert' });
     if (error?.name !== 'ParseError') console.error(error);
   }
 }
@@ -264,17 +282,20 @@ function runFormat(text) {
 
 function runConvert(text) {
   const conversion = conversionById(el.conversion.value);
+  const diagnostics = conversionDiagnostics();
   const out = conversion.run(text, {
     indent: indentString(),
     spaces: el.indent.value === 'tab' ? 2 : Number(el.indent.value),
     sortKeys: el.sortKeys.checked,
     root: el.rootName.value.trim(),
+    onDiagnostic: diagnostics.record,
   });
   show(out, phrase('note.converted', {
     name: phrase(conversion.name),
     lines: out.split('\n').length - 1,
     size: humanBytes(byteLength(out)),
   }), `converted.${conversion.output}`);
+  feedback.conversion(diagnostics.report, { yaml: conversion.id === 'yaml-json' });
 }
 
 /* -------------------------------------------------------------- the result */
@@ -309,6 +330,7 @@ el.copy.addEventListener('click', async () => {
 });
 
 function clearResult() {
+  feedback.clear();
   el.copy.textContent = phrase('copy.copy');
   el.output.textContent = '';
   el.copy.disabled = true;

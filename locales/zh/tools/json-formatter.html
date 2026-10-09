@@ -96,7 +96,7 @@
           <label for="input">你的文本</label>
           <span class="count" id="input-count">空</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="把 JSON、XML、HTML、CSS 或 YAML 贴在这里，或者把文件拖到上面。"></textarea>
       </div>
@@ -116,6 +116,8 @@
     <h2><span class="step">3</span> 把结果带走</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>跳转到错误位置</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">还没有结果。</p>
@@ -141,6 +143,11 @@
     <span data-phrase="count.characters.one">{count} 个字符</span>
     <span data-phrase="count.characters.many">{count} 个字符</span>
     <span data-phrase="count.summary">{lines}，{characters}，{size}</span>
+    <span data-phrase="convert.comments">丢弃的 YAML 注释：{n}条。引号内和块标量内的文本会保留。</span>
+    <span data-phrase="convert.names">更改的 XML 名称：{n}个。此映射不保留原始名称。</span>
+    <span data-phrase="convert.collisions">XML 名称冲突：{n}处。不同的键变成了相同的元素名称，读回时可能合并为重复值。</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">转换在此不支持的语法处停止，未生成结果。</span>
     <span data-phrase="parse.at">{reason}（第 {line} 行，第 {column} 列）</span>
     <span data-phrase="char.end">文本的末尾</span>
     <span data-phrase="char.newline">一个换行</span>
@@ -169,6 +176,10 @@
     <span data-phrase="xml.comment">这个注释一直没关上</span>
     <span data-phrase="xml.cdata">这个 CDATA 段一直没关上</span>
     <span data-phrase="xml.declaration">这个声明一直没关上</span>
+    <span data-phrase="xml.document">XML 必须恰好有一个外层元素，元素外不能有文本。</span>
+    <span data-phrase="xml.declarationorder">XML 声明必须位于开头；DOCTYPE 只能出现一次，并且必须位于外层元素之前。</span>
+    <span data-phrase="xml.declarationinvalid">此 XML 声明无效。</span>
+    <span data-phrase="xml.character">此数字字符引用在 XML 中无效。</span>
     <span data-phrase="xml.closing">这个结束标签一直没写完</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; 一直没关上</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; 关的是一个从没打开过的标签</span>
@@ -203,8 +214,8 @@
     <span data-phrase="convert.xml-json.name">XML 转 JSON</span>
     <span data-phrase="convert.json-yaml">什么都不会丢：每个 JSON 文档本来就已经是 YAML 文档。字符串只在不加引号就会变意思的地方才加引号。</span>
     <span data-phrase="convert.yaml-json">注释会丢，因为 JSON 没地方放。锚点、别名和标签会让转换停下来，而不是靠猜。</span>
-    <span data-phrase="convert.json-xml">数组会变成重复出现的元素，这是唯一能读回来的形状。空对象和空字符串出来都是一个空元素。</span>
-    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。</span>
+    <span data-phrase="convert.json-xml">数组会变成重复的元素。空对象和空字符串都会变成空元素。键会修正为不带前缀的 XML 名称，并在结果旁报告更改的名称和冲突。</span>
+    <span data-phrase="convert.xml-json">属性变成名字带 @ 的成员，元素自己的文字在需要跟别的挤在一起时变成 #text，每个值都还是字符串 &mdash; XML 从来没说过哪些是数字。不会保留混合内容的顺序和注释。</span>
     <span data-phrase="format.unknown">{language} 不是这个能排版的语言。</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>

@@ -173,12 +173,12 @@ AES-128 document.
 
 ## Carrying the result on
 
-The unlocked file can go straight into `/merge-pdf/`, `/compress-pdf/` or
-`/redact-pdf/` without being saved first. That matters more here than on most
-tools: this page is where the other PDF tools send a reader who handed them a
+The unlocked file can go straight into `/merge-pdf/`, `/compress-pdf/`,
+`/redact-pdf/`, `/watermark-pdf/` or `/protect-pdf/` without being saved first.
+That matters more here than on most tools: this page is where the other PDF tools send a reader who handed them a
 locked file, so without a way out the journey ends in a download and a second
 upload to the tool they wanted in the first place. `handoff` in `tool.toml`
-names the three, and `shared/handoff.js` puts a row of links under the result.
+names these targets, and `shared/handoff.js` puts a row of links under the result.
 
 What that costs the policy is one directive: `connect-src` carries `blob:`,
 because the row reads the finished file back out of this page before parking
@@ -186,3 +186,15 @@ it for the next tool. So this page does permit `fetch()` of a `blob:` URL,
 which is worth knowing before concluding that a `blob:` fetch failing
 somewhere else on the site is a bug. `blob:` names bytes inside this page and
 gains no reach over the network.
+
+File reads and password attempts belong to the selected document. A replaced
+or cleared selection retires pending success, error, and cleanup; a password
+attempt in progress also blocks another Enter press. Choose another cancels
+and retires an export, whose progress and completion can no longer change a
+replacement file or run.
+
+An export captures its source and metadata choice, then reopens the original
+bytes with the cipher that already proved it could read them. This keeps the
+metadata checkbox reversible across exports and cancelled runs without asking
+for the password again. Verification, filenames, and result facts all use the
+captured source.

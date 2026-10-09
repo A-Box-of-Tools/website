@@ -29,9 +29,10 @@
 
     <p class="card-lede">
       A phone that filmed sideways did not turn its pixels: it wrote a
-      quarter turn into the file's header, and every player applies it. So
-      turning a clip is a change to that header and nothing else. Not one
-      frame is decoded, and the picture stays exactly what it was.
+      quarter turn into the file's header, and the player applies it.
+      With header rotation, this page changes that matrix and copies the
+      picture frames unchanged. Sound is copied, encoded as AAC or left
+      out.
     </p>
 
     <div class="chips" role="group" aria-label="How far to turn">
@@ -162,10 +163,9 @@
     <span data-phrase="run.cancelled">Cancelled. Nothing was written; press the button to start again.</span>
     <span data-phrase="run.failed">This run failed: {detail}</span>
     <span data-phrase="result.ready">{size} MP4, turned {turn}.</span>
-    <span data-phrase="result.sub.copy">Every frame and every packet copied across as it was; only the header
-      changed.</span>
+    <span data-phrase="result.sub.copy">Every picture frame copied across as it was; the header carries the turn. {sound}</span>
     <span data-phrase="result.sub.bake">Every frame drawn turned and encoded again as H.264; the header says
-      nothing, because it no longer has to.</span>
+      nothing, because it no longer has to. {sound}</span>
     <span data-phrase="check.passed">Checked: {found}</span>
     <span data-phrase="check.failed">This run did not check out &mdash; {found}. Keep your original.</span>
     <span data-phrase="check.ok">opened again from memory, {length} long as before, shown {shown} at
@@ -201,6 +201,8 @@
     <span data-phrase="write.noframes">There were no frames to write.</span>
     <span data-phrase="write.toobig">The finished file would be over 4 GB, which an MP4 written here cannot
       hold. Cut the clip first.</span>
+    <span data-phrase="read.edits">This file uses a playback edit list that this tool cannot preserve. Save the visible edited clip as a new video before processing it here.</span>
+    <span data-phrase="read.editinvalid">The file’s playback edit list is incomplete or has invalid timing, so its visible timeline cannot be preserved.</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

@@ -317,9 +317,8 @@ but the tables.
   it. That is the only path in this tool where the audio is decoded at all, and
   it needs a browser that will encode AAC — Chrome and Edge will; where one will
   not, the join is written without sound and says so.
-- **Edit lists on the way *in* are ignored.** A source that says "start playing
-  40 milliseconds in" is read from its first sample instead. Honouring one
-  properly means honouring all of them, including the ones that reorder a track.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason.
 - **The recording path keeps one section, and needs the tab in front.** Browsers
   stop painting a hidden tab and canvas capture stops with it. The tool notices,
@@ -405,3 +404,75 @@ browser, run against clips generated in the page:
   the encoder was handed nothing and then blamed the browser for it;
 - the single-clip trim, run again after all of the above, to prove a join of one
   is still just a trim.
+
+Timestamp fields keep their own DOM nodes while a mark is committed, so typing,
+Enter and Tab do not lose the field or its caret to a table redraw. Row
+selection updates the highlight and timeline in place; moving a part with its
+keyboard action returns focus to that part, using the opposite direction when
+the move reaches the edge of the list. Browser checks cover mouse entry, Enter
+and Tab commits, invalid marks, repeated keyboard moves, and removal. Removing
+a focused part sends focus to its neighbour's Remove action, or Add segment
+when no parts remain.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.
+
+
+## Editor, imports and results
+
+A finished download belongs to the marks, clip order, keep/cut choice and
+writing settings that produced it. Changing any of those retires the result:
+its player is unloaded, its object URL revoked and its download removed.
+Selecting a row or clip, seeking, changing preview speed and saving marks do
+not change the output plan and keep the result available.
+
+Export captures the files, ranges, frame, quality, sound choice and filename
+before any asynchronous work. Its owner includes the source batch and plan
+revision; progress, errors, publication and cleanup can only affect that
+owner's page. The mark editor and writing settings are inert during export,
+while Cancel remains available. Queued edit events are refused too. Selecting
+new source files keeps the existing replacement behavior: it cancels and
+retires the export, starts a new batch and waits for that batch's own load.
+Cancellation is cooperative; a pending browser operation can still take time
+to return, but its retired owner cannot publish or unlock a newer job.
+
+Marks loading uses the shared `text-import` owner. A newer import, typed mark
+draft, committed output-plan change, selected source clip, source replacement
+or export retires the read. `File.text()` itself is not abortable; late success,
+failure and cleanup are ignored. A current invalid import keeps the existing
+marks. Loading still replaces the selected clip's marks rather than appending.
+
+The transport's translated Play/Pause name follows actual playback, including
+ended playback and the stop at a segment's end. Source and result players have
+distinct translated names. Browser checks cover native Copy, Exact and
+Recording output, result retirement, pending edits and source replacement,
+overlapping imports and retired failures, timestamp caret/Tab focus, keyboard
+row moves/removal, all six translations and the narrow-screen controls.
+
+
+Marks-read and export failures resolve only keys declared in the tool's
+`#phrases` block. Unknown native exception messages use the existing localized
+generic failure, so quoted browser messages cannot become invalid selectors or
+untranslated prose. Known typed errors retain their interpolation values.
+Browser checks cover a quoted `File.text()` DOMException, the native
+MediaRecorder constructor's quoted unsupported-type failure, typed encoder-size
+refusal, cleanup and a valid recovery export in English and German.

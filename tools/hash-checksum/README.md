@@ -114,3 +114,40 @@ A paste that carries filenames is narrowed to the lines naming the file that was
 chosen. If none of them do but some other line matches the bytes, that is
 reported as a match under a different name rather than as a failure: it is what
 happens when a mirror renames a download.
+
+The overall answer accepts any matching candidate, because a manifest can name
+several downloads. Each displayed algorithm compares its own expected values
+separately: correct MD5 and SHA-256 values both say they match, and a differing
+value for one does not mark the other as wrong. A wrapped digest only labels
+the joined algorithm, not the shorter checksums its line fragments could be.
+
+
+## Checking a selection against a manifest
+
+A picker selection replaces the previous selection and may contain several
+files. The existing incremental reader processes them one at a time, retaining
+digests by File identity rather than filename. An unreadable file does not discard
+completed checksums or stop the next file. Stop retains completed values; Start
+again requests only missing algorithms. Checkbox and manifest changes start a new
+captured request. An already-started native 4 MiB read cannot be interrupted: one
+latest request waits for that read, and superseded queued selections are discarded.
+
+Each summary row distinguishes a match, a match under another name, a differing
+checksum, an absent manifest filename, pending work and a read refusal. Any matching
+expected value counts as a match, consistent with the existing single-file answer;
+Inspect opens each algorithm's independent result. Matching bytes alone do not prove
+the publisher is trustworthy. Repeated filenames remain separate rows. The page
+uses basename matching because browser File selections do not carry directory paths;
+identical basenames cannot prove which manifest directory was intended.
+
+Inspect changes the displayed detail without rereading. Saving the batch writes only
+available selected-algorithm values in the existing tagged text form. Saving or
+copying within the detail still refers to that file. Clipboard feedback belongs to
+that File, captured visible value and latest copy action; a pending browser write
+cannot be recalled, but its late success or refusal cannot label a replacement.
+
+`src/hash-selection.js` orchestrates the existing reader. Focused CI checks pin
+serial chunked work, cancellation, unreadable-file continuation, repeated names,
+cached algorithms and manifest filename distinctions. Native built-page checks
+exercise the controls, saved values and retirement boundaries. No algorithm,
+chunk size, privacy policy or network step changes.

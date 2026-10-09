@@ -14,11 +14,12 @@
  * gets the pixels out in the first place.
  */
 import { sizeText } from './shared/format.js';
+import { throwIfAborted } from './shared/errors.js';
 
 export const formatBytes = (n, t) => sizeText(n, t, { under: 'size.b', kb: 'auto', mb: 1 });
 
 /** Frame thumbnails on the page are drawn no larger than this, in pixels. */
-const THUMB_MAX = 168;
+export const THUMB_MAX = 168;
 
 /**
  * The name a frame's file gets.
@@ -54,63 +55,62 @@ export function zipName(sourceName) {
 /** A canvas holding these pixels, at this size. */
 export function pixelsToCanvas(pixels, width, height) {
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext('2d');
-  context.putImageData(new ImageData(pixels, width, height), 0, 0);
-  return canvas;
+  try {
+    canvas.width = width; canvas.height = height;
+    canvas.getContext('2d').putImageData(new ImageData(pixels, width, height), 0, 0);
+    return canvas;
+  } catch (error) { canvas.width = canvas.height = 0; throw error; }
 }
 
-/**
- * Encode a frame as a PNG.
- *
- * `canvas.toBlob` hands back null rather than throwing when it cannot encode,
- * which would otherwise surface three steps later as a download that will not
- * open, so that case is turned into an error here.
- *
- * @returns {Promise<Blob>}
- */
-export function encodePng(pixels, width, height) {
-  const canvas = pixelsToCanvas(pixels, width, height);
+/** A late native encoder callback owns no canvas or URL after cancellation. */
+export function canvasPng(canvas, signal, failure = 'png.nowrite') {
+  throwIfAborted(signal);
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) resolve(blob);
-      else reject(new Error('png.nowrite'));
-    }, 'image/png');
+    let settled = false;
+    const finish = (blob, error) => {
+      if (settled) return;
+      settled = true;
+      signal?.removeEventListener('abort', abort);
+      if (error) reject(error); else resolve(blob);
+    };
+    const abort = () => { try { throwIfAborted(signal); } catch (error) { finish(null, error); } };
+    signal?.addEventListener('abort', abort, { once: true });
+    try { canvas.toBlob(blob => finish(blob, blob ? null : new Error(failure)), 'image/png'); }
+    catch (error) { finish(null, error); }
   });
 }
 
-/**
- * A small copy of a frame, for the grid on the page.
- *
- * Shrunk first and encoded second, so a page showing four hundred previews of a
- * 600-pixel animation holds four hundred thumbnails rather than four hundred
- * full-size images. It is a preview and is never saved: the file you download
- * is encoded separately, from the frame's own pixels at full size, and never
- * from this. PNG rather than JPEG because a frame that is mostly transparent
- * has to look transparent here too.
- *
- * @returns {Promise<{url: string, width: number, height: number}>}
- */
-export function thumbnail(pixels, width, height) {
+/** Native encoding is cooperative; every owned backing store still retires. */
+export async function encodePng(pixels, width, height, { signal } = {}) {
+  throwIfAborted(signal);
+  const canvas = pixelsToCanvas(pixels, width, height);
+  try { return await canvasPng(canvas, signal); }
+  finally { canvas.width = canvas.height = 0; }
+}
+
+/** Keep thumbnails small, while their PNG inputs remain the original pixels. */
+export async function thumbnail(pixels, width, height, { signal } = {}) {
+  throwIfAborted(signal);
   const scale = Math.min(1, THUMB_MAX / Math.max(width, height));
   const small = document.createElement('canvas');
-  small.width = Math.max(1, Math.round(width * scale));
-  small.height = Math.max(1, Math.round(height * scale));
-
-  const context = small.getContext('2d');
-  // Nearest-neighbour: GIF frames are usually pixel art, a screen recording or
-  // line work, and smoothing a shrunken copy of any of those turns crisp edges
-  // into mud. It also makes a one-bit transparent edge look like it is not one.
-  context.imageSmoothingEnabled = false;
-  context.drawImage(pixelsToCanvas(pixels, width, height), 0, 0, small.width, small.height);
-
-  return new Promise((resolve, reject) => {
-    small.toBlob((blob) => {
-      if (blob) resolve({ url: URL.createObjectURL(blob), width: small.width, height: small.height });
-      else reject(new Error('png.nopreview'));
-    }, 'image/png');
-  });
+  const outWidth = Math.max(1, Math.round(width * scale));
+  const outHeight = Math.max(1, Math.round(height * scale));
+  let full = null;
+  try {
+    small.width = outWidth; small.height = outHeight;
+    const context = small.getContext('2d');
+    context.imageSmoothingEnabled = false;
+    full = pixelsToCanvas(pixels, width, height);
+    context.drawImage(full, 0, 0, outWidth, outHeight);
+    full.width = full.height = 0;
+    full = null;
+    const blob = await canvasPng(small, signal, 'png.nopreview');
+    throwIfAborted(signal);
+    return { url: URL.createObjectURL(blob), width: outWidth, height: outHeight, bytes: blob.size };
+  } finally {
+    if (full) full.width = full.height = 0;
+    small.width = small.height = 0;
+  }
 }
 
 /**

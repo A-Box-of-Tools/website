@@ -10,6 +10,7 @@
 
 import { inspectJpeg } from './jpeg.js';
 import { acceptsImageFile } from './shared/image-input.js';
+import { throwIfAborted } from './shared/errors.js';
 
 const THUMB_MAX = 320;
 
@@ -29,53 +30,63 @@ let nextId = 1;
 
 /**
  * @param {FileList|File[]} files
+ * @param {{signal?: AbortSignal}} [options]
  * @returns {Promise<{items: object[], skipped: {key: string, values: object}[]}>}
  *   `skipped` names a sentence and its blanks; only the page can read a
  *   phrase, and this module ships in fifteen languages.
  */
-export async function loadImages(files) {
+export async function loadImages(files, { signal } = {}) {
   const items = [];
   const skipped = [];
 
-  for (const file of Array.from(files)) {
-    if (!looksLikeImage(file)) {
-      skipped.push({ key: 'read.notimage', values: { name: file.name } });
-      continue;
-    }
+  try {
+    for (const file of Array.from(files)) {
+      throwIfAborted(signal);
+      if (!looksLikeImage(file)) {
+        skipped.push({ key: 'read.notimage', values: { name: file.name } });
+        continue;
+      }
 
-    let bitmap;
-    try {
-      // from-image honours the EXIF tag, so the thumbnail is the right way up
-      // and the preview never has to think about rotation twice.
-      bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
-    } catch {
-      skipped.push({ key: 'read.nodecode', values: { name: file.name } });
-      continue;
-    }
+      let bitmap;
+      try {
+        // from-image honours the EXIF tag, so the thumbnail is the right way up
+        // and the preview never has to think about rotation twice.
+        bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      } catch {
+        throwIfAborted(signal);
+        skipped.push({ key: 'read.nodecode', values: { name: file.name } });
+        continue;
+      }
 
-    try {
-      const jpeg = await peekJpeg(file);
-      // Stored size and orientation, kept as a pair: the picture is `width` by
-      // `height` inside the file, and the tag says which way up that is.
-      // Everything that lays out a page works from the size those two make
-      // together, which is what seenSize in layout.js returns.
-      const stored = jpeg
-        ? { width: jpeg.width, height: jpeg.height, orientation: jpeg.orientation }
-        : { width: bitmap.width, height: bitmap.height, orientation: 1 };
+      try {
+        throwIfAborted(signal);
+        const jpeg = await peekJpeg(file);
+        throwIfAborted(signal);
+        // Stored size and orientation, kept as a pair: the picture is `width` by
+        // `height` inside the file, and the tag says which way up that is.
+        // Everything that lays out a page works from the size those two make
+        // together, which is what seenSize in layout.js returns.
+        const stored = jpeg
+          ? { width: jpeg.width, height: jpeg.height, orientation: jpeg.orientation }
+          : { width: bitmap.width, height: bitmap.height, orientation: 1 };
 
-      items.push({
-        id: nextId++,
-        file,
-        name: file.name,
-        lastModified: file.lastModified,
-        ...stored,
-        /** Quarter turns asked for by the buttons on the tile, clockwise. */
-        rotate: 0,
-        thumb: await makeThumbnail(bitmap),
-      });
-    } finally {
-      bitmap.close();
+        items.push({
+          id: nextId++,
+          file,
+          name: file.name,
+          lastModified: file.lastModified,
+          ...stored,
+          /** Quarter turns asked for by the buttons on the tile, clockwise. */
+          rotate: 0,
+          thumb: await makeThumbnail(bitmap, signal),
+        });
+      } finally {
+        bitmap.close();
+      }
     }
+  } catch (error) {
+    for (const item of items) releaseItem(item);
+    throw error;
   }
 
   return { items, skipped };
@@ -103,29 +114,42 @@ async function peekJpeg(file) {
  * transform at drawing time and costs nothing, while re-encoding a thumbnail on
  * every press of the rotate button would slowly grind it into mush.
  */
-async function makeThumbnail(bitmap) {
+async function makeThumbnail(bitmap, signal) {
   const scale = Math.min(1, THUMB_MAX / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');
-  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
-  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-  canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.82));
-  const url = URL.createObjectURL(blob);
-  const image = new Image();
-  image.src = url;
+  let url;
+  let image;
   try {
-    await image.decode();
-  } catch {
-    // Nothing to do about a thumbnail this page itself just encoded failing to
-    // decode; the tile and the preview both skip an image that is not ready.
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.82));
+    throwIfAborted(signal);
+    if (!blob) throw new Error('encode.nojpeg');
+    url = URL.createObjectURL(blob);
+    image = new Image();
+    image.src = url;
+    try {
+      await image.decode();
+    } catch {
+      // A thumbnail the browser cannot show still keeps its measured source.
+    }
+    throwIfAborted(signal);
+    return { url, image };
+  } catch (error) {
+    if (url) URL.revokeObjectURL(url);
+    image?.removeAttribute('src');
+    throw error;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
   }
-  return { url, image };
 }
 
 /** Release one item's thumbnail. */
 export function releaseItem(item) {
   URL.revokeObjectURL(item.thumb.url);
+  item.thumb.image.removeAttribute('src');
 }
 
 /** Turn one picture a quarter circle. Negative goes anticlockwise. */

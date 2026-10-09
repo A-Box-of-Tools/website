@@ -172,3 +172,15 @@
   gap: 0.6rem;
   margin-top: 1.2rem;
 }
+
+.scan-note {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.scan-note p { margin: 0; }
+.scan-note p + p { margin-top: 0.5rem; }

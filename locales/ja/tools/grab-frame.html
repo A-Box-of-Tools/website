@@ -89,7 +89,7 @@
       <div class="field">
         <label for="every">切り出す間隔</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>秒ごと</span>
         </div>
         <p class="field-note">
@@ -97,6 +97,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>動画全体で500枚以内になる間隔にする</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">このコマを切り出す</button>
@@ -152,6 +155,9 @@
     <span data-phrase="at.notread">この方法ではフレームの時刻を読みません</span>
     <span data-phrase="note.png">劣化なし。静止画にはフレームがデコードされたままの画素が&#x2066;{width} x {height}&#x2069;で入ります。</span>
     <span data-phrase="note.lossy">動画そのものの圧縮の上から、もう一度圧縮します。下見には十分ですが、これから手を加えるものには向きません。</span>
+    <span data-phrase="series.plan">予定：{first}から{last}まで、{n}枚の静止画。</span>
+    <span data-phrase="series.plan.player">プレーヤーへの移動要求：{first}から{last}まで{n}回。実際のフレームはプレーヤーが選びます。</span>
+    <span data-phrase="series.overlimit">この間隔では{first}から{last}まで{n}枚の静止画になります。上限は500枚です。開始する前に間隔を長くしてください。</span>
     <span data-phrase="series.any">連続で取り出す</span>
     <span data-phrase="series.every.one">1秒ごとに1枚取り出す</span>
     <span data-phrase="series.every.many">{n}秒ごとに1枚取り出す</span>
@@ -168,7 +174,7 @@
     <span data-phrase="save.nowrite">このブラウザーは{format}を書き出しませんでした。</span>
     <span data-phrase="save.failed">そのフレームは保存できませんでした。</span>
     <span data-phrase="zip.failed">その書庫は作れませんでした。</span>
-    <span data-phrase="series.nointerval">0秒より大きい間隔を指定してください。</span>
+    <span data-phrase="series.nointerval">0.1秒以上の間隔を設定してください。</span>
     <span data-phrase="series.noframes">その間隔ではフレームが1枚も選ばれません。</span>
     <span data-phrase="series.failed">連続で取り出す途中で問題が起きました。</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
@@ -177,6 +183,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
     <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="read.edits">このファイルは、このツールでは保持できない再生用の編集リストを使用しています。ここで処理する前に、表示される編集済みのクリップを新しい動画として保存してください。</span>
+    <span data-phrase="read.editinvalid">ファイルの再生用編集リストが不完全か、時間情報が無効なため、表示されるタイムラインを保持できません。</span>
     <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
     <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
     <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
@@ -201,6 +209,7 @@
     <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
     <span data-phrase="read.nodecoder">このブラウザーは{codec}を直接デコードしません。</span>
     <span data-phrase="read.nowebcodecs">このブラウザーにはWebCodecsがないので、コマを1つずつデコードできません。</span>
+    <span data-phrase="read.duplicatetime">このファイルには同じ表示時刻のフレームがあります。表示するフレームはブラウザーのプレーヤーが選ぶため、正確なフレーム選択はできません。</span>
     <span data-phrase="read.turned">このファイルは回転した状態で保存されていて、ここのリーダーとブラウザーのプレーヤーとで回転の解釈が食い違っています。</span>
     <span data-phrase="open.failed">このブラウザーはこのファイルを開けません。{reason}</span>
     <span data-phrase="path.player">{reason}そのためこのファイルは、1コマずつではなくブラウザー自身のプレーヤーで読みます。写真は動画の実寸のまま保存されますが、どのコマに当たるかを決めるのはプレーヤーで、1歩は正確に1コマではなくおよそ1コマ分進みます。</span>

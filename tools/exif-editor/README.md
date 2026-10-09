@@ -93,12 +93,36 @@ checkboxes changes with them.
 - **The colour profile**, because it says nothing about you and dropping it can
   visibly shift the colours of a wide-gamut photo.
 
-Both can be turned off, and the summary line then says the file will carry no
-metadata of any kind.
+Both can be turned off. The next-run summary names that request, while JPEG
+display headers remain intact.
 
 Two blocks are kept unconditionally and reported as kept rather than silently:
 the JFIF header, and the Adobe `APP14` colour marker — removing the latter turns
 some CMYK and YCCK JPEGs inside out.
+
+## Completed copies
+
+The keep controls describe the next cleaning run. Each completed download keeps
+its own requested orientation/ICC policy, captured before the batch can yield;
+changing the controls or the original photo’s editable tags later does not
+rewrite an existing copy. AVIF results explicitly say that those preservation
+choices do not apply to their PNG conversion. A request to preserve orientation
+or ICC is not evidence that the source contained either one.
+
+**Inspect cleaned copy** lazily reads the exact successful output bytes through
+`readBytes`, showing an actual, read-only inventory and EXIF values. It never
+replaces the original editable inspector or adds the output to the source batch.
+The view counts EXIF tags, reports the presence and size of ICC, and names
+retained JPEG JFIF/Adobe display markers separately. A normal orientation gets no
+EXIF block even when requested; an absent profile stays absent. Clear or a new
+result set retires late inspections. Inspection uses the in-memory artifact and
+adds no fetch or network step.
+
+`clean-copy.js` owns only the existing strip plan and immutable source/policy
+capture. Its fresh orientation-only EXIF is serialized before any asynchronous
+AVIF conversion, so later working-model edits cannot change that plan. Partial
+failures, unchanged-file rows, output naming and ZIP behavior keep their existing
+semantics.
 
 ---
 
@@ -139,7 +163,13 @@ The JavaScript suite runs in CI. Container and TIFF fixtures cover: a JPEG and a
 parsed values match; the EXIF block round-tripping through
 `serializeExif` → `parseExif` unchanged; stripped output still decoding, and its
 JPEG scan being byte-identical to the original's; a WebP produced by
-`canvas.toBlob`, given an EXIF block, read back, and decoded again.
+`canvas.toBlob`, given an EXIF block, read back, and decoded again. The clean-copy
+cases serialize and reparse JPEG, PNG and WebP for all preservation combinations,
+verify upright/missing/unreadable EXIF handling, and prove that captured plans and
+policy survive later option and working-model edits without changing image data.
+Browser verification also exercises the actual cleaned-copy disclosure, stale
+inspection retirement, AVIF conversion, no-op rows, ZIP and translated narrow
+layouts. Suites remain in CI.
 
 ## Carrying the result on
 

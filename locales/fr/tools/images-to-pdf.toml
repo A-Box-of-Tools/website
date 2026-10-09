@@ -41,7 +41,7 @@ body = "Un PDF, c'est une liste d'objets et une table qui dit où chacun commenc
 
 [[privacy]]
 title = "Le document n'apprend rien sur vous."
-body = "La plupart des outils tamponnent un PDF d'un horodatage et du nom du programme qui l'a fabriqué. Celui-ci n'écrit un titre, un auteur et une date que si vous les tapez&nbsp;; les noms de fichiers de vos images n'apparaissent jamais dans le document, et rien de votre machine non plus."
+body = """Le PDF nomme cet outil comme son créateur. Il contient un titre et un auteur uniquement si vous les saisissez, et une date de création uniquement si vous cochez la case. Les noms des fichiers image et les informations sur votre appareil sont omis."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."

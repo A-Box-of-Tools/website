@@ -33,6 +33,9 @@ reported on.
 | `src/gif.js` | the block walk: what is in the file, and where each part starts |
 | `src/lzw.js` | the decompressor, and what it noticed about the stream |
 | `src/frames.js` | indices to pixels, interlacing, and the disposal rules |
+| `src/analysis-steps.js` | synchronous and cooperative consumers of the same algorithms |
+| `src/analysis-memory.js` | conservative admission for owned screen, patch and thumbnail buffers |
+| `src/draw-analysis.js` | cancellable drawing, prefix retention and canvas lifetime |
 | `src/budget.js` | the byte accounting, and what the colour tables cost |
 | `src/findings.js` | the readings: what is worth saying about this particular file |
 | `src/format.js` | numbers as a person would say them |
@@ -74,21 +77,59 @@ colour" and names an index in the screen descriptor, and every browser has
 cleared to transparent instead for twenty-five years. This follows the browsers,
 because the question the page answers is what a viewer does.
 
-### Nothing full-size survives the decode loop
+### Pixel analysis is bounded before allocating a screen or patch
 
-Two hundred frames of a 600×600 GIF held as RGBA is nearly three hundred
-megabytes, and a page that does that is killed by the browser on the file its
-user most wanted to analyse. So `decodeAll` in `main.js` scales each frame into
-a small canvas the moment it is drawn and drops the large buffers. About 60 KB a
-frame survives, whatever the GIF's size.
+Two hundred frames of a 600×600 GIF held as RGBA approach three hundred
+megabytes. `draw-analysis.js` keeps the compositor and previous shown screen
+only during drawing, scales each frame into two thumbnails, and drops its large
+buffers. Each thumbnail has at most 120×120 backing pixels; tiny frames retain
+their original backing size even when CSS enlarges them.
 
-The "is this frame identical to the last one" comparison happens inside the same
-loop for the same reason: it needs two full canvases, and only one pair exists at
-a time.
+`analysis-memory.js` uses the shared `gif-working-budget` arithmetic before
+constructing the compositor and again before each patch's first LZW allocation.
+The 512 MiB estimate includes the encoded buffer, retained thumbnail backing
+stores and palette-use flags, five screen copies for current/previous pictures
+and disposal-snapshot turnover, patch indices and RGBA, compressed sub-block
+copies, interlace rows, dictionaries and native thumbnail scratch. It bounds
+known buffers owned by this page, not browser internals, JavaScript object
+metadata, garbage-collection timing or the native preview decoder. Drawing also
+retains the existing ceiling of 300 million decoded pixels.
 
-There is also a pixel budget - 300 megapixels of decoding - after which frames
-are reported from their headers alone and the frame list says so. Everything
-that comes from the parse rather than the pixels is complete either way.
+Any refused or empty patch permanently ends drawing. A smaller later patch
+cannot be composited correctly after a missing dependency. Parsed headers,
+byte accounting, palettes, extensions and timing remain available; the page and
+text report identify the completed prefix and why drawing stopped. Whole-file
+pixel-use, unused-entry, colour, dictionary-reset and identical-frame totals
+are withheld until every frame has been drawn. Measured per-frame diagnostics
+remain available for the completed prefix. An incomplete source is never given
+to the native animation preview as another unchecked allocation path.
+
+LZW expansion, painting, composition and comparison yield after bounded work;
+the browser checkpoint yields a real turn after about 8 ms and at least every
+eight completed frames. The existing synchronous public exports drain these
+same algorithms, preserving their pixel and diagnostic contracts. The literal
+parser, initial file read, native typed-array copies and canvas calls remain
+synchronous within each operation and cannot be interrupted mid-call.
+
+### Reads, reports and native resources belong to one source
+
+Selecting another file or pressing Clear retires the prior read, report,
+preview URL and canvas backing stores immediately. Late read completions,
+errors and clipboard feedback cannot replace a newer source. Cancel during a
+native file read retires its callback; Cancel during drawing retains only the
+completed prefix and marks the rest as header-only. Clear and read cancellation
+return keyboard focus to the native picker; drawing cancellation focuses the
+stable Clear control and keeps it in view when the partial report appears.
+Owned completion or failure also recovers focus if it hides a focused Cancel or
+Clear button, while leaving other focused controls alone. Pending thumbnails,
+full-size scratch canvases and compositor buffers retire on every success,
+refusal, failure and cancellation path. Report download URLs retire on source
+replacement, Clear or their existing timeout.
+
+Ordinary complete analysis keeps the same plain-text report bytes. The new
+drawing qualification is added only when drawing is incomplete. Known message
+keys are resolved against the page's phrase inventory; unknown native error
+detail stays text, including quotes or brackets.
 
 ## What it deliberately does not do
 
@@ -135,6 +176,12 @@ read it back with this one, and check every field survived. The LZW tests go the
 other way as well - compress with the maker's encoder, expand with this
 decoder - because a compressor and a decompressor that agree with each other and
 with nothing else is the failure neither one can show on its own.
+
+`tests/js/gif-analyzer-owned-analysis.test.js` additionally covers stepped and
+synchronous parity, disposal history, admission boundaries, permanent
+header-only latching, cancellation, pending-canvas cleanup and qualified
+reports. The browser checks exercise current-source ownership and real native
+canvas/clipboard behaviour.
 
 The refusals are tested too: a file that is not a GIF, a file that ends
 mid-block, a stream with a code that refers to a dictionary entry that does not

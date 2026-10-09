@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="Source video preview"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -55,7 +55,9 @@
         <p class="field-note" id="audio-note">
           Turned round sample by sample, then encoded again as AAC. Leave it off
           for a silent clip, which is quicker.
+          Cancelling may wait until the current step of decoding or rearranging sound finishes.
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -79,7 +81,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Reversed video preview"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Download video</a>
@@ -113,8 +115,10 @@
     <span data-phrase="src.audio.whatever">whatever the player finds</span>
     <span data-phrase="sound.off">The reversed clip will have no sound at all.</span>
     <span data-phrase="sound.exact">Decoded, turned round sample by sample, and encoded again as AAC. That second encode
-      is unavoidable: packets played in the other order are not a reversal.</span>
-    <span data-phrase="sound.player">Read by the browser, turned round sample by sample, and encoded again as AAC.</span>
+      is unavoidable: packets played in the other order are not a reversal.
+      Cancelling may wait until the current step of decoding or rearranging sound finishes.</span>
+    <span data-phrase="sound.player">Read by the browser, turned round sample by sample, and encoded again as AAC.
+      Cancelling may wait until the current step of decoding or rearranging sound finishes.</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069; (from &#x2066;{fromWidth} x {fromHeight}&#x2069;; H.264 has no way to store an
       odd-sided frame)</span>
@@ -129,6 +133,13 @@
     <span data-phrase="step.frame">Reversing frame {done} of {total} ({percent}%)</span>
     <span data-phrase="audio.descriptor">Internal error: the audio description is larger than expected.</span>
     <span data-phrase="audio.nosound">No sound came back from this file.</span>
+    <span data-phrase="memory.track">Sound memory: about {pcm} for the full track, rising to about {peak} while channels are assembled. Encoded output and browser overhead are extra.</span>
+    <span data-phrase="memory.file">Sound memory: about {pcm} for the full track. The browser also reads the whole {file} input file; extra decoding copies, encoded output and browser overhead are not included.</span>
+    <span data-phrase="memory.unknown">Sound memory: the channel count is unknown until the browser reads the whole {file} input file. Full sound buffers, decoding copies, encoded output and browser overhead are extra.</span>
+    <span data-phrase="memory.unavailable">Sound memory: the available track information is insufficient for an estimate. The full sound and temporary assembly copies are held in memory; encoded output and browser overhead are extra.</span>
+    <span data-phrase="memory.off">Sound memory: no decoded sound buffers are needed when sound is left out.</span>
+    <span data-phrase="memory.none">Sound memory: this source has no sound track.</span>
+    <span data-phrase="audio.stalled">The audio encoder stopped responding. Try a shorter clip, leave the sound out, or use another browser.</span>
     <span data-phrase="audio.noencode">The sound was decoded but nothing came back from the encoder.</span>
     <span data-phrase="audio.toolarge">The sound in this file is not AAC, so reversing it would mean handing the whole file
       to the browser for reading &mdash; and this file is too large for that. The video
@@ -160,6 +171,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes}m {seconds}s</span>
     <span data-phrase="time.seconds">{n}s</span>
+    <span data-phrase="read.edits">This file uses a playback edit list that this tool cannot preserve. Save the visible edited clip as a new video before processing it here.</span>
+    <span data-phrase="read.editinvalid">The file’s playback edit list is incomplete or has invalid timing, so its visible timeline cannot be preserved.</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

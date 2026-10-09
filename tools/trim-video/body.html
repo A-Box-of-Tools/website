@@ -36,7 +36,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="Preview"></video>
+        <video id="preview" playsinline aria-label="Source video"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -142,7 +142,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> Cut it</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">How to cut it</label>
         <select id="method">
@@ -214,7 +214,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Cut video"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Download video</a>
@@ -229,6 +229,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">Play</span>
+    <span data-phrase="transport.pause">Pause</span>
     <span data-phrase="tl.band">Segment {n}: {from} to {to}</span>
     <span data-phrase="record.failed">Recording failed.</span>
     <span data-phrase="time.start">Start time</span>
@@ -367,6 +369,8 @@
     <span data-phrase="result.parts">{n} parts</span>
     <span data-phrase="result.notreencoded">not re-encoded</span>
     <span data-phrase="error.generic">Something went wrong.</span>
+    <span data-phrase="read.edits">This file uses a playback edit list that this tool cannot preserve. Save the visible edited clip as a new video before processing it here.</span>
+    <span data-phrase="read.editinvalid">The file’s playback edit list is incomplete or has invalid timing, so its visible timeline cannot be preserved.</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

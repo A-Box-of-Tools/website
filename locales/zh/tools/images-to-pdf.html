@@ -41,7 +41,7 @@
   <section class="card">
     <h2><span class="step">2</span> 页面设置</h2>
 
-    <div class="settings">
+    <div class="settings" id="page-settings">
       <div class="field">
         <label for="page-size">页面大小</label>
         <select id="page-size">
@@ -150,12 +150,10 @@
       </div>
     </div>
 
-    <details class="meta-panel">
+    <details class="meta-panel" id="metadata-settings">
       <summary>文档信息，全都可填可不填，默认全空</summary>
       <div class="meta-body">
-        <p class="meta-note">
-          PDF 里带着一小块关于它自己的信息，多数工具不管你要不要，都往里塞一个时间戳和自己的程序名。这一个只写你在这儿打进去的，别的什么都不写：没有文件名，没有机器名，你不勾那个框，连日期都没有。
-        </p>
+        <p class="meta-note">PDF 会将本工具记为生成工具，还会记录你输入的标题和作者。只有勾选复选框时，才会记录今天的日期。图片文件名和有关你设备的信息不会写入。</p>
         <div class="settings">
           <div class="field">
             <label for="doc-title">标题</label>
@@ -213,6 +211,9 @@
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
+    <p id="cancel-note" class="field-note" hidden>取消后，这个 PDF 不会提供下载。浏览器已经开始的解码、编码或压缩可能仍会完成，然后才释放资源。</p>
+    <p id="export-wait" class="field-note" role="status" aria-live="polite" tabindex="-1" hidden>浏览器仍在完成之前的处理。一个操作结束后，就可以再次创建 PDF。</p>
+
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar is-smooth"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
@@ -241,6 +242,7 @@
     <span data-phrase="tile.earlier">把 {name} 往前移</span>
     <span data-phrase="tile.later">把 {name} 往后移</span>
     <span data-phrase="read.notimage">{name}：不是这个工具能读的图片。</span>
+    <span data-phrase="read.failed">{name}：无法准备这张图片。{detail}</span>
     <span data-phrase="read.nodecode">{name}：这个浏览器解不开它。</span>
     <span data-phrase="drag.move">拖动以移动 {name}</span>
     <span data-phrase="note.fit">每一页就是它那张图，所以不会裁掉什么，也不会加黑边。</span>

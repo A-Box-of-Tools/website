@@ -24,6 +24,8 @@ const el = {
   cameraStatus: $('camera-status'),
   resultsCard: $('results-card'),
   results: $('results'),
+  clearResults: $('clear-results'),
+  resultStatus: $('result-status'),
   resultTemplate: $('result-template'),
   preview: $('preview'),
   previewCaption: $('preview-caption'),
@@ -47,6 +49,7 @@ const el = {
 const WORKING_SIDE = 1800;
 
 const decodeCanvas = document.createElement('canvas');
+let fileGeneration = 0;
 
 /** A decoded picture, at a given longest side, as pixels. */
 function pixelsOf(source, width, height, maxSide) {
@@ -136,21 +139,23 @@ function thumbnailOf(picture, width, height) {
 /** Read one file, at the working size and then, if that found nothing, whole. */
 async function readFile(file) {
   const picture = await pictureFrom(file);
-  const width = picture.width ?? picture.naturalWidth;
-  const height = picture.height ?? picture.naturalHeight;
+  try {
+    const width = picture.width ?? picture.naturalWidth;
+    const height = picture.height ?? picture.naturalHeight;
 
-  // Before the scan rather than after it: a picture that opened is a picture
-  // worth showing whatever the search makes of it, and the scan is the half
-  // that can throw.
-  const thumbnail = thumbnailOf(picture, width, height);
+    // Before the scan rather than after it: a picture that opened is a picture
+    // worth showing whatever the search makes of it, and the scan is the half
+    // that can throw.
+    const thumbnail = thumbnailOf(picture, width, height);
 
-  let found = scan(pixelsOf(picture, width, height, WORKING_SIDE));
-  if (!found && Math.max(width, height) > WORKING_SIDE) {
-    found = scan(pixelsOf(picture, width, height, Math.max(width, height)));
+    let found = scan(pixelsOf(picture, width, height, WORKING_SIDE));
+    if (!found && Math.max(width, height) > WORKING_SIDE) {
+      found = scan(pixelsOf(picture, width, height, Math.max(width, height)));
+    }
+    return { found, thumbnail };
+  } finally {
+    picture.close?.();
   }
-
-  picture.close?.();
-  return { found, thumbnail };
 }
 
 /* -------------------------------------------------------------- the results */
@@ -305,6 +310,7 @@ function report(found) {
   shown.unshift(`${found.symbology}:${found.text}`);
   shown.length = Math.min(shown.length, MOST_KEPT);
 
+  el.resultStatus.textContent = '';
   el.results.prepend(render(found));
   while (el.results.children.length > MOST_KEPT) el.results.lastElementChild.remove();
   return true;
@@ -374,27 +380,51 @@ const picker = wireFilePicker({
 });
 
 async function readFiles(files) {
+  const mine = ++fileGeneration;
   el.pickError.hidden = true;
+  el.resultStatus.textContent = '';
   picker.busy(readingLabel(files.length));
   clearPreview();
 
   let any = false;
   let broken = false;
-  for (const file of files) {
-    try {
-      const { found, thumbnail } = await readFile(file);
-      if (found) any = report(found) || any;
-      showPicture(file, thumbnail, found);
-    } catch {
-      broken = true;
-      showPicture(file, null, null);
+  try {
+    for (const file of files) {
+      try {
+        const { found, thumbnail } = await readFile(file);
+        if (mine !== fileGeneration) return;
+        if (found) {
+          // A duplicate was still read successfully, even when it adds no row.
+          any = true;
+          report(found);
+        }
+        showPicture(file, thumbnail, found);
+      } catch {
+        if (mine !== fileGeneration) return;
+        broken = true;
+        showPicture(file, null, null);
+      }
     }
-  }
 
-  picker.done();
-  if (broken) fail('status.broken');
-  else if (!any) fail('status.nothing');
+    if (broken) fail('status.broken');
+    else if (!any) fail('status.nothing');
+  } finally {
+    if (mine === fileGeneration) picker.done();
+  }
 }
+
+function clearResults() {
+  fileGeneration += 1;
+  stopCamera();
+  picker.done();
+  shown.length = 0;
+  el.results.replaceChildren();
+  clearPreview();
+  el.pickError.hidden = true;
+  el.resultStatus.textContent = phrase('status.cleared');
+}
+
+el.clearResults.addEventListener('click', clearResults);
 
 // A screenshot on the clipboard is the fastest way to read a code that is on
 // screen, and it is the one route into this page that needs no file at all.
@@ -409,16 +439,19 @@ window.addEventListener('paste', (event) => {
 
 /* -------------------------------------------------------------- the camera */
 
+const cameraSession = camera.session();
 let stream = null;
 let looking = false;
 let lastLook = 0;
+let cameraFrame = 0;
+let cameraStatusTimer = null;
 
 /** How often a frame is examined. */
 const EVERY_MS = 120;
 
 function look() {
   if (!looking) return;
-  requestAnimationFrame(look);
+  cameraFrame = requestAnimationFrame(look);
 
   const now = performance.now();
   if (now - lastLook < EVERY_MS) return;
@@ -435,48 +468,58 @@ function look() {
 }
 
 async function startCamera(deviceId) {
+  stopCamera();
   el.pickError.hidden = true;
+  el.startCamera.hidden = true;
+  el.stopCamera.hidden = false;
+  let active;
   try {
-    if (stream) camera.close(stream);
-    stream = await camera.open({ deviceId });
+    active = await cameraSession.open({ deviceId });
   } catch (error) {
-    stream = null;
     fail(camera.reasonFor(error));
     stopCamera();
     return;
   }
+  if (!active) return;
 
-  el.video.srcObject = stream;
+  stream = active;
+  el.video.srcObject = active;
   el.cameraCard.hidden = false;
-  el.startCamera.hidden = true;
-  el.stopCamera.hidden = false;
   el.cameraStatus.textContent = phrase('status.on');
   await el.video.play().catch(() => {});
+  if (!cameraSession.isCurrent(active)) return;
 
   const devices = await camera.cameras();
+  if (!cameraSession.isCurrent(active)) return;
   if (devices.length > 1 && !el.cameraPick.options.length) {
     for (const device of devices) el.cameraPick.append(new Option(device.label, device.deviceId));
     el.cameraPickRow.hidden = false;
   }
   if (devices.length > 1) {
-    const active = stream.getVideoTracks()[0]?.getSettings?.().deviceId;
-    if (active) el.cameraPick.value = active;
+    const selected = active.getVideoTracks()[0]?.getSettings?.().deviceId;
+    if (selected) el.cameraPick.value = selected;
   }
 
-  el.torchRow.hidden = !camera.torchable(stream);
+  el.torchRow.hidden = !camera.torchable(active);
   el.torch.checked = false;
 
   looking = true;
   lastLook = 0;
-  requestAnimationFrame(look);
-  setTimeout(() => {
-    if (looking) el.cameraStatus.textContent = phrase('status.looking');
+  cameraFrame = requestAnimationFrame(look);
+  cameraStatusTimer = setTimeout(() => {
+    if (looking && cameraSession.isCurrent(active)) {
+      el.cameraStatus.textContent = phrase('status.looking');
+    }
   }, 2500);
 }
 
 function stopCamera() {
+  cameraSession.stop();
   looking = false;
-  if (stream) camera.close(stream);
+  cancelAnimationFrame(cameraFrame);
+  cameraFrame = 0;
+  clearTimeout(cameraStatusTimer);
+  cameraStatusTimer = null;
   stream = null;
   el.video.srcObject = null;
   el.cameraCard.hidden = true;
@@ -494,7 +537,7 @@ el.torch.addEventListener('change', () => {
 // A tab put into the background keeps the camera light on and the frames
 // coming, which is both a waste and a thing nobody asked for.
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && stream) stopCamera();
+  if (document.hidden) stopCamera();
 });
 window.addEventListener('pagehide', stopCamera);
 

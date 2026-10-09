@@ -81,10 +81,12 @@ export function outputSize(width, height) {
 }
 
 /** Move to a point in the clip and wait until the picture there is ready. */
-function seekTo(video, seconds) {
+function seekTo(video, seconds, signal) {
+  throwIfAborted(signal);
   return new Promise((resolve, reject) => {
     const done = (fail) => {
       clearTimeout(timer);
+      signal?.removeEventListener('abort', cancel);
       video.removeEventListener('seeked', ok);
       video.removeEventListener('error', bad);
       if (fail) reject(fail);
@@ -92,8 +94,12 @@ function seekTo(video, seconds) {
     };
     const ok = () => done(null);
     const bad = () => done(new Error('play.unreadable'));
+    const cancel = () => {
+      try { throwIfAborted(signal); } catch (error) { done(error); }
+    };
     const timer = setTimeout(() => done(new Error('play.slowseek')), SEEK_TIMEOUT);
 
+    signal?.addEventListener('abort', cancel, { once: true });
     video.addEventListener('seeked', ok, { once: true });
     video.addEventListener('error', bad, { once: true });
     video.currentTime = seconds;
@@ -111,37 +117,55 @@ function seekTo(video, seconds) {
  *
  * @returns {Promise<{fps: number, measured: boolean}>}
  */
-export async function measureFps(video, seconds = 1) {
+export async function measureFps(video, seconds = 1, signal) {
+  throwIfAborted(signal);
   if (typeof video.requestVideoFrameCallback !== 'function') {
     return { fps: ASSUMED_FPS, measured: false };
   }
 
   try {
-    await seekTo(video, 0);
+    await seekTo(video, 0, signal);
+    throwIfAborted(signal);
     video.muted = true;
 
-    const counted = await new Promise((resolve) => {
+    const counted = await new Promise((resolve, reject) => {
       let frames = 0;
       let first = null;
-      const stop = setTimeout(() => resolve({ frames, span: 0 }), (seconds + 2) * 1000);
+      let callback = null;
+      let finished = false;
+      const done = (result, error) => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(stop);
+        signal?.removeEventListener('abort', cancel);
+        if (callback !== null) video.cancelVideoFrameCallback?.(callback);
+        if (error) reject(error);
+        else resolve(result);
+      };
+      const cancel = () => {
+        try { throwIfAborted(signal); } catch (error) { done(null, error); }
+      };
+      const stop = setTimeout(() => done({ frames, span: 0 }), (seconds + 2) * 1000);
 
       const tick = (now, metadata) => {
+        if (finished) return;
+        callback = null;
         const at = metadata.mediaTime;
         if (first === null) first = at;
         frames++;
         if (at - first >= seconds || video.ended) {
-          clearTimeout(stop);
-          resolve({ frames: frames - 1, span: at - first });
+          done({ frames: frames - 1, span: at - first });
           return;
         }
-        video.requestVideoFrameCallback(tick);
+        callback = video.requestVideoFrameCallback(tick);
       };
 
-      video.requestVideoFrameCallback(tick);
-      video.play().catch(() => resolve({ frames: 0, span: 0 }));
+      signal?.addEventListener('abort', cancel, { once: true });
+      callback = video.requestVideoFrameCallback(tick);
+      video.play().catch(() => done({ frames: 0, span: 0 }));
     });
 
-    video.pause();
+    throwIfAborted(signal);
     if (counted.span <= 0 || counted.frames < 2) return { fps: ASSUMED_FPS, measured: false };
     const rate = counted.frames / counted.span;
     if (!Number.isFinite(rate) || rate < 5 || rate > 120) {
@@ -151,7 +175,10 @@ export async function measureFps(video, seconds = 1) {
     // a frame rate that is nearly 30 is 30.
     return { fps: Math.round(rate), measured: true };
   } catch {
+    throwIfAborted(signal);
     return { fps: ASSUMED_FPS, measured: false };
+  } finally {
+    video.pause();
   }
 }
 

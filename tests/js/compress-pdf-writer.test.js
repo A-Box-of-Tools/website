@@ -27,7 +27,7 @@ import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { verdict } from '../../tools/compress-pdf/src/inventory.js';
 import { effectiveDpi } from '../../tools/compress-pdf/src/placements.js';
 import {
-  PRESETS, describeSettings,
+  PRESETS, describeSettings, compressDocument,
 } from '../../tools/compress-pdf/src/compress.js';
 import {
   bytes as sizeText, change, count, dimensions, dpi, outName, share,
@@ -355,4 +355,22 @@ test('describeSettings says what the controls add up to', () => {
     { key: 'settings.downsampled', values: { quality: 70, dpi: 150 } });
   assert.deepEqual(describeSettings({ dpi: 0, quality: 0.9 }),
     { key: 'settings.fullsize', values: { quality: 90 } });
+});
+
+
+test('PDF compression cancellation during final verification does not offer a finished result', async () => {
+  const controller = new AbortController();
+  const original = Blob.prototype.arrayBuffer;
+  Blob.prototype.arrayBuffer = async function () {
+    const result = await original.call(this);
+    controller.abort();
+    return result;
+  };
+  try {
+    await assert.rejects(compressDocument(minimalPdf(), { dpi: 0, quality: 0.9 }, {
+      signal: controller.signal,
+    }), (error) => error.name === 'AbortError');
+  } finally {
+    Blob.prototype.arrayBuffer = original;
+  }
 });

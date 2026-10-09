@@ -53,7 +53,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>What to keep</legend>
+      <legend>Preservation choices for the next clean</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -165,6 +165,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">Requested preservation for this copy: orientation {orientation}; ICC profile {icc}.</span>
+    <span data-phrase="copy.on">on</span>
+    <span data-phrase="copy.off">off</span>
+    <span data-phrase="copy.avif">These preservation choices did not apply: AVIF was decoded upright and saved as PNG without copying original metadata.</span>
+    <span data-phrase="copy.inspect">Inspect cleaned copy</span>
+    <span data-phrase="copy.inspectname">Inspect cleaned copy: {name}</span>
+    <span data-phrase="copy.reading">Reading this copy’s metadata…</span>
+    <span data-phrase="copy.failed">This copy could not be inspected: {reason}</span>
+    <span data-phrase="copy.scope">Read-only metadata from this cleaned copy.</span>
+    <span data-phrase="copy.tags">EXIF tags</span>
+    <span data-phrase="copy.profile">ICC profile</span>
+    <span data-phrase="copy.absent">Absent</span>
+    <span data-phrase="copy.none">No removable metadata was found in this copy.</span>
+    <span data-phrase="copy.note">{label}: {detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · clean converts to PNG</span>
     <span data-phrase="inspect.avif">EXIF preview only; other metadata is not inventoried</span>
     <span data-phrase="badge.avif">PNG conversion</span>
@@ -191,8 +205,7 @@
     <span data-phrase="badge.comment">Comment</span>
     <span data-phrase="badge.text">Text {count}</span>
     <span data-phrase="badge.unknown">Unknown blocks</span>
-    <span data-phrase="keep.nothing">Absolutely everything goes, including the orientation tag and the colour profile.
-      The file will carry no metadata of any kind.</span>
+    <span data-phrase="keep.nothing">Both preservation exceptions are off. Removable metadata, including orientation and the ICC profile, is removed; JPEG display headers are kept.</span>
     <span data-phrase="keep.orientation">Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded
       thumbnail, and any block this tool could not identify. Kept: the orientation tag.</span>
     <span data-phrase="keep.icc">Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded

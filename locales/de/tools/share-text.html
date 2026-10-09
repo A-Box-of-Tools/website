@@ -1,4 +1,12 @@
 <main id="main">
+  <div class="share-version">
+    <span>Werkzeugversion</span> <code id="tool-version">{{ js_v }}</code>
+    <details id="tool-version-help" class="tool-version-help info-fold">
+      <summary aria-describedby="tool-version-note"><span class="visually-hidden">Über die Werkzeugversion</span></summary>
+      <p id="tool-version-note" role="tooltip" class="tool-version-note">Vergleichen Sie diesen Wert auf beiden Geräten. Wenn er unterschiedlich ist, laden Sie beide Seiten neu, bevor Sie eine neue Freigabe starten.</p>
+    </details>
+  </div>
+
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
     <section id="discovery" class="card">
@@ -29,7 +37,7 @@
       <input id="fileinput" type="file" multiple hidden aria-label="Anzuhängende Dateien">
       <div id="attachlist"></div>
       <p class="field-note">
-        Dateien reisen über denselben Direktkanal wie der Text, bis
+        Dateien nutzen dieselbe direkte Verbindung wie der Text, bis
         200&nbsp;MB pro Stück. Leser sehen die Liste und holen jede Datei
         nur, wenn sie danach fragen. Eine Freigabe kann bis zu 256 Dateien enthalten.</p>
     </section>
@@ -201,6 +209,12 @@
     <span data-phrase="share.too-many-files">Eine Freigabe kann bis zu 256 Dateien enthalten. Entfernen Sie eine, bevor Sie weitere anhängen.</span>
     <span data-phrase="share.leave-warning">Wenn Sie diese Seite verlassen, endet die Freigabe für alle. Fortfahren?</span>
 
+    <span data-phrase="copy.select">Ausgewählt — bitte manuell kopieren</span>
+    <span data-phrase="view.file-cancel">Download abbrechen</span>
+    <span data-phrase="view.file-retry">Download erneut versuchen</span>
+    <span data-phrase="view.file-cancelled">Download abgebrochen. Die Freigabe ist weiterhin geöffnet.</span>
+    <span data-phrase="view.file-legacy-cancel">Download abgebrochen. Öffnen Sie diesen Link erneut, bevor Sie es wieder versuchen.</span>
+    <span data-phrase="view.file-legacy-failed">Die Datei konnte nicht vollständig heruntergeladen werden. Prüfen Sie diesen Link erneut, um den Download noch einmal zu versuchen.</span>
     <span data-phrase="copy.done">Kopiert</span>
     <span data-phrase="copy.link">Link kopieren</span>
     <span data-phrase="copy.text">Kopieren</span>
@@ -229,7 +243,7 @@
     <span data-phrase="view.mode-local">Der Teilende nutzt den Modus Lokales Netzwerk. Versuchen Sie es mit seinem Modus erneut, um sich ohne Internet-Relais zu verbinden.</span>
     <span data-phrase="view.mode-direct">Der Teilende nutzt den normalen Verbindungsmodus. Versuchen Sie es mit seinem Modus erneut; ein Relais wird erst nach einem gescheiterten Direktversuch angeboten und nur genutzt, wenn Sie es wählen.</span>
     <span data-phrase="view.local-no-connect">Der Teilende ist im Modus Lokales Netzwerk nicht erreichbar. Prüfen Sie, ob beide Geräte dasselbe WLAN oder Ethernet-Netz nutzen; die Geräteisolierung im Gastnetz, ein VPN, eine Firewall oder Browsereinstellungen können die Verbindung blockieren. In diesem Modus wird kein Internet-Relais angeboten.</span>
-    <span data-phrase="view.file-failed">Die Datei konnte nicht vollständig heruntergeladen werden. Prüfen Sie diesen Link erneut, um den Download noch einmal zu versuchen.</span>
+    <span data-phrase="view.file-failed">Der Download konnte nicht abgeschlossen werden. Versuchen Sie diese Datei erneut, solange die Freigabe geöffnet ist.</span>
 
     <span data-phrase="net.clean">Was diese Seite teilt, ist durch keinen Server
       gegangen. {total} Dateien geladen. {platform}</span>

@@ -38,14 +38,14 @@ js_parts = ["file-picker", "message-box", "example-photo"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-08"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Image Stacker &mdash; Average, Median &amp; Focus Stack in Your Browser"
 description = "Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser."
 og_title = "Stack a burst of photographs, RAW files included"
-og_description = "Average, median, sigma-clip, lighten, darken, add or focus stack &mdash; with the frames aligned first. RAW files are opened by reading the preview the camera already wrote, so a 60 MB frame opens as fast as a JPEG. Nothing is uploaded."
+og_description = "Average, median, sigma-clip, lighten, darken, add or focus stack &mdash; with the frames aligned first. RAW files are opened from the camera's embedded JPEG preview when one is available, without decoding the sensor data. Nothing is uploaded."
 og_image_alt = "Image Stacker - several frames combined into one, in the browser"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -84,11 +84,12 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/raw.js</code> for how a RAW
-      file is opened by reading kilobytes rather than megabytes,
+, <code>src/raw.js</code> for how embedded RAW
+      previews are found without decoding sensor data,
       <code>src/stack.js</code> for the arithmetic of each method, and
-      <code>src/plan.js</code> for where the memory and decode figures shown on
-      the page come from &mdash; they are that file's answers, not estimates."""
+      <code>src/plan.js</code> for the estimated working memory and planned
+      stacking decodes. Browser internals and garbage collection can add memory
+      beyond the modeled buffers."""
 
 # --- the written half of the page --------------------------------------------
 
@@ -145,14 +146,14 @@ body = """
       <code>sendBeacon</code>, in <code>src/</code> or in the worker."""
 
 [[privacy]]
-title = "The RAW files are read, not uploaded &mdash; and barely read."
+title = "RAW previews are read on this machine."
 body = """
- A camera RAW file
-      already contains a full-size JPEG that the camera rendered when it took the
-      shot. This tool finds it by walking a few directory entries and then asking
-      for one slice, which on a 60&nbsp;MB file is usually under a hundred
-      kilobytes. The page shows you that figure against the size of your files
-      while you work. The sensor data is never read at all."""
+  Many camera RAW files
+      contain a JPEG preview rendered by the camera. This tool finds the largest
+      usable one by walking the file's directories and taking a slice. The
+      inspection-read figure counts the headers and directories read to find and
+      describe it; decoding reads the JPEG slice too. The sensor data is never
+      decoded, and the row shows the preview's actual dimensions."""
 
 [[privacy]]
 title = "The work happens in a Worker on this machine, not on a server."
@@ -186,27 +187,31 @@ body = """
 [[howto]]
 title = "Choose the frames."
 body = """
- A burst, a bracketed set, an
-      intervalometer sequence, or a folder of RAW files. Each one is opened as it
-      arrives and the row tells you what came out of it &mdash; for a RAW file,
-      the camera, the size of the preview found inside, and how little of the file
-      had to be read to find it."""
+  A burst, an
+      intervalometer sequence, or a folder of RAW files with usable JPEG previews.
+      Wait for the files to finish opening. Each row tells you what came out of it
+      &mdash; for a RAW file, the camera and the actual size of the embedded
+      preview. Files that could not be opened are listed so you can check what was
+      left out."""
 
 [[howto]]
 title = "Pick the method that matches what you are trying to lose."
 body = """
- Noise:
-      average, or sigma-clip if anything moved. People, cars or a passing
-      aeroplane: median. A dark sky you want turned into star trails: lighten. A
-      macro shot taken along the focus ring: focus stacking. The note under the
-      menu says what each one does to your particular number of frames."""
+  Noise:
+      average, or sigma-clip to reject values that differ from the rest. People,
+      cars or a passing aeroplane: median, provided they cover any given part of
+      the scene in fewer than half the frames. A dark sky you want turned into
+      star trails: lighten. A macro shot taken along the focus ring: focus
+      stacking. The note under the menu explains the method and its limits."""
 
 [[howto]]
 title = "Decide whether the frames need aligning."
 body = """
- Hand-held: yes,
-      shift only. Hand-held and you were also turning: shift, rotation and scale.
-      Locked-off tripod or an intervalometer: no, and it will be quicker. Every
+      Start with Auto: it measures shift, rotation and scale, then corrects
+      perspective when reliable regions across the image agree. It is useful for
+      wide-field stars. Shift only does less measurement work for a steady burst.
+      Choose None when frames already line up, or for star trails that should
+      preserve the sky's motion. A fixed tripod does not keep stars aligned. Every
       frame is measured against the one marked as the reference, which is the
       first one until you say otherwise: &ldquo;use as reference&rdquo; moves the
       mark and leaves the list in the order you put it in."""
@@ -214,11 +219,13 @@ body = """
 [[howto]]
 title = "Read the four figures, then press the button."
 body = """
- Before anything
-      runs, the page says how large the result will be, roughly how much memory it
-      will take, how many times the frames will be decoded and how much of your
-      files was read. If the set will not fit in memory in one piece it says so,
-      and says which working resolution would fix it."""
+  Before anything
+      runs, the page shows the planned result size, estimated working memory, planned
+      stacking decodes and bytes read during inspection. Browser internals and
+      garbage collection can add memory beyond the modeled buffers; the figures are a plan, not a guarantee of the
+      browser's total use. If the stack needs bands, the page suggests a smaller
+      working resolution. After the run, compare the reference with the result at
+      actual pixel size and check the alignment details before downloading."""
 
 # Each answer renders twice: as the <details> block at the foot of the page, and
 # as FAQPage structured data in the head. The build derives the plain-text half
@@ -242,45 +249,37 @@ a = """
 q = "Which RAW formats can it read, and how?"
 a = """
         <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
-        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL and a few more
-        &mdash; which is most of what cameras write. What it reads out of them is
-        the full-size JPEG preview the camera itself rendered when it took the
-        shot: the picture on the back of the camera, and the one your operating
-        system draws as the thumbnail. It is found by walking the file's directory
-        structure, which costs a few reads of a few kilobytes each, and then
-        taking one slice. <strong>It is not a demosaic of the sensor data.</strong>
-        The result carries the camera's white balance and picture style at eight
-        bits a channel, rather than the twelve or fourteen bits of linear sensor
-        data a RAW converter would give you."""
+        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL and related
+        formats are supported when the file contains a usable JPEG preview. The
+        tool walks the file's directories and uses the largest preview it can
+        find, which may be smaller than the sensor image or absent altogether.
+        <strong>It does not decode the sensor data.</strong> The pixels carry
+        the camera's white balance and picture style at eight bits a channel.
+        Check the dimensions shown in the row; the inspection-read count covers
+        headers and directories, and decoding also reads the JPEG slice."""
 
 [[faq]]
 q = "Then why not decode the sensor data properly?"
 a = """
-        Because it would mean vendoring LibRaw or dcraw &mdash; a second engine of
-        tens of megabytes, for one family of formats, most of which is per-vendor
-        compression schemes. That trade is argued out in
-        <code>docs/what-can-be-built-here.md</code> in this site's source, where
-        camera RAW has been on the ruled-out list since before this tool existed.
-        What changed is not the answer to that question but the discovery that
-        stacking does not need it: the previews are full resolution, they are what
-        the camera would have given you as a JPEG anyway, and reading them is
-        roughly a hundred times faster than demosaicing would be. If you want the
-        sensor data, develop the frames in a RAW converter first and stack the
-        TIFFs or JPEGs it produces &mdash; this tool will take those too."""
+        Sensor decoding would require a RAW engine such as LibRaw or dcraw,
+        with its camera-specific compression schemes. Using an embedded JPEG
+        keeps this tool small and uses the browser's own image decoder. It also
+        means using the camera's rendering and whatever preview resolution the
+        file contains. To choose your own RAW development settings, develop the
+        frames first and export JPEG or PNG files to stack here."""
 
 [[faq]]
 q = "How many frames can it handle, and how large?"
 a = """
-        Six of the seven methods stream: they hold one accumulator and read each
-        frame exactly once, so a hundred frames costs the same memory as two and
-        the only thing that grows is the time. The median is the exception,
-        because the middle value of a set is not knowable until you have all of
-        it, so it holds every frame at once &mdash; twenty 24-megapixel frames is
-        about 1.4&nbsp;GB, which no browser will give you. When that happens the
-        picture is cut into horizontal bands and stacked a band at a time, which
-        costs re-reading the frames for each band. The page works all of this out
-        before you press the button and shows you the number, so a slow run is
-        never a surprise."""
+        Six of the seven methods have accumulators whose size does not grow
+        with the frame count. Average, lighten, darken, add and focus stacking
+        need one stacking pass per band; sigma clipping needs two. Median holds
+        every frame's values for the current band, so its memory grows with the
+        frame count. Any method can be split into bands when its working buffers
+        exceed the tool's budget, which means decoding the frames again for each
+        band. The page estimates those buffers and shows the planned stacking
+        decodes. Inspection and alignment add work, and browser codec and GPU
+        internals can need memory beyond the estimate."""
 
 [[faq]]
 q = "What does aligning the frames actually do?"
@@ -289,11 +288,15 @@ a = """
         moves it back, to a fraction of a pixel. The method is phase correlation:
         the shift between two pictures shows up as a phase difference between their
         spectra, so one Fourier transform each finds a two-hundred-pixel offset as
-        cheaply as a two-pixel one. The second setting also recovers rotation and
-        scale, by the same trick applied to the spectrum in log-polar coordinates.
-        All of it is global &mdash; one shift, one angle, one scale for the whole
-        frame &mdash; so it corrects a camera that moved and cannot correct a
-        subject that moved, or a photograph taken from a step to the left. One
+        cheaply as a two-pixel one. Rotation and scale are recovered by the same
+        trick applied to the spectrum in log-polar coordinates. Auto also measures
+        regions across the frame and corrects perspective when enough reliable
+        measurements agree. This helps wide-field stars stay aligned near the
+        edges as well as the centre. When that extra correction cannot be measured
+        confidently, Auto keeps rotation and scale and reports the fallback in
+        Alignment details. The correction applies to the whole frame; it cannot
+        align an independently moving subject or every depth of a scene taken from
+        a step to the left. One
         visible consequence: a frame moved twenty pixels left no longer reaches
         the right-hand edge, so the result is trimmed to the part every frame
         covers. That is why an aligned stack comes back very slightly smaller
@@ -303,49 +306,48 @@ a = """
 [[faq]]
 q = "Which method should I use?"
 a = """
-        <strong>Average</strong> for noise, on a set where nothing moved: it cuts
-        random noise by roughly the square root of the number of frames.
-        <strong>Median</strong> to remove things that were only there some of the
-        time &mdash; the classic use is photographing a busy square a dozen times
-        and getting it empty. <strong>Sigma clipping</strong> when you want both:
-        it learns what each pixel usually is and averages only the values that
-        agree, so it has the median's immunity to a passing car and the average's
-        noise reduction. <strong>Lighten</strong> for star trails, fireworks and
-        light painting. <strong>Darken</strong> to remove anything bright that
-        moved. <strong>Add</strong> to simulate one long exposure.
-        <strong>Focus stacking</strong> for a macro shot taken along the focus
-        ring."""
+        <strong>Average</strong> for noise, on a set where nothing moved:
+        independent random noise falls by roughly the square root of the frame
+        count. <strong>Median</strong> to remove things that cover a given part
+        of the scene in fewer than half the frames. <strong>Sigma clipping</strong>
+        averages values near their mean and rejects values outside the chosen
+        threshold. It can retain moving objects in small sets or when they appear
+        often, so median is the safer choice when removing them is the priority.
+        <strong>Lighten</strong> for star trails, fireworks and light painting.
+        <strong>Darken</strong> to remove bright things that moved.
+        <strong>Add</strong> for additive blending of the decoded frames; this
+        works on eight-bit image values, so it does not model a longer camera
+        exposure. <strong>Focus stacking</strong> for a macro shot taken along
+        the focus ring."""
 
 [[faq]]
 q = "Why is my result eight bits when my RAW files are fourteen?"
 a = """
-        Because what is being stacked is the camera's own preview, which is a
-        JPEG. It is worth saying that stacking recovers some of what that costs:
-        averaging sixteen eight-bit frames gives a result with genuinely finer
-        gradations than any one of them had, because the noise that made each
-        frame's rounding differ is exactly what lets the average land between the
-        levels. The arithmetic here is done in floating point and rounded once at
-        the very end, so none of that is thrown away in the middle. It is still
-        not the same as stacking linear sensor data, and this tool does not
-        pretend otherwise."""
+        The RAW input is the camera's JPEG preview, and the output is an
+        eight-bit PNG or JPEG. Average and sigma clipping use wider accumulators
+        and round at the end, which helps estimate a cleaner value from noisy
+        frames without rounding each intermediate step. The saved image still
+        has eight bits a channel; it does not gain the bit depth or dynamic range
+        of linear sensor data."""
 
 [[faq]]
 q = "Can I stack frames of different sizes, or from different cameras?"
 a = """
-        Yes, though it is usually a mistake and worth checking you meant it. The
-        result is the size of the largest frame, and every other frame is scaled
-        to fit and centred inside it. Mixing cameras also mixes colour rendering,
-        so an average of the two is an average of two different interpretations of
-        the same light. Where it genuinely helps is a set shot at two resolutions,
-        or a RAW file and a JPEG of the same frame."""
+        Yes, though check that you meant to. The largest frame defines the
+        working box; other frames are scaled to fit and centred. The saved result
+        is cropped to the area the frames share, so different shapes or alignment
+        can make it smaller than the planned box. Mixing cameras also mixes their
+        colour rendering. Keep the exposure and framing consistent if you want a
+        useful average, and use the reference comparison to inspect the result."""
 
 [[faq]]
 q = "It says the run will be banded. What does that mean?"
 a = """
         That the working memory the method needs is more than the tool is willing
         to allocate in one go, so the picture will be cut into horizontal strips
-        and stacked a strip at a time. It still produces exactly the same result;
-        it just reads the frames again for each strip, so it takes longer, and the
+        and stacked a strip at a time. It uses the same alignment geometry and
+        stacking method; browser resampling can differ slightly at the last bit.
+        It reads the frames again for each strip, so it takes longer, and the
         page tells you how many decodes that will be. Dropping the working
         resolution one step cuts the memory by four, which almost always turns a
         banded run into a single pass &mdash; the note says which setting would do
@@ -367,24 +369,23 @@ a = """
 [[faq]]
 q = "Is it free, and do I need an account?"
 a = """
-        It is free, and there is no account, no sign-in, no trial and no
-        watermark. There is no limit on how many frames you stack or how large
-        they are either, because there is no server paying for it &mdash; the work
-        happens on your own machine and the only ceiling is your own memory. The
-        site carries advertising, which is what pays for it; the ads are not given
-        anything about your photographs."""
+        It is free, with no account, sign-in, trial or watermark. There is no
+        service quota on the number or size of frames. The practical limits are
+        your device's memory, the browser's canvas and decoder limits, and the
+        time the stack takes. The site carries advertising, which pays for it;
+        the ads are not given anything about your photographs."""
 
 [schema]
 category = "MultimediaApplication"
-description = "Stack a burst of photographs in the browser: average, median, sigma-clipped mean, lighten, darken, add or focus stack, with the frames aligned first by phase correlation. Reads camera RAW files by extracting the full-size preview the camera embedded, so no RAW converter is needed. Nothing is uploaded."
+description = "Stack a burst of photographs in the browser: average, median, sigma-clipped mean, lighten, darken, add or focus stack, with the frames aligned first by phase correlation. Reads camera RAW files with usable embedded JPEG previews, without decoding sensor data. Nothing is uploaded."
 features = [
   "Seven stacking methods: average, median, sigma-clipped mean, lighten, darken, add and focus stacking",
-  "Reads CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 and more by extracting the camera's own full-size preview",
-  "Opens a 60 MB RAW file by reading about a hundred kilobytes of it",
-  "Automatic alignment: shift only, or shift with rotation and scale, or none",
+  "Reads CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 and more when a usable embedded JPEG preview is available",
+  "Finds RAW previews through small directory and header reads, then decodes the JPEG slice",
+  "Automatic alignment with checked perspective correction, rotation and scale; shift-only and no-alignment options",
   "Sub-pixel alignment by phase correlation, not by searching offsets",
-  "Six of the seven methods hold one accumulator, so a hundred frames costs the memory of two",
-  "Memory and decode cost worked out and shown before the run starts",
+  "Six methods have accumulators whose size does not grow with the frame count; median holds values per frame",
+  "Estimated working memory and planned stacking decodes shown before the run starts",
   "The work runs in a Worker, so progress moves and Cancel answers",
   "PNG or JPEG out; runs offline; no upload, no account",
 ]
@@ -413,7 +414,7 @@ features = [
 accept = "image/*,image/avif,.cr2,.cr3,.crw,.nef,.nrw,.arw,.srf,.sr2,.dng,.orf,.raf,.rw2,.pef,.srw,.erf,.mrw,.dcr,.kdc,.mos,.iiq,.3fr,.rwl,.mef,.avif"
 multiple = true
 title = "Drop the frames here"
-hint = "or click to browse &mdash; JPEG, PNG, WebP, AVIF, TIFF and camera RAW"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, AVIF and camera RAW with JPEG previews"
 # Six frames of one scene differing only in grain, which is what a
 # burst in poor light actually is, and the one input whose result can be
 # checked by eye.

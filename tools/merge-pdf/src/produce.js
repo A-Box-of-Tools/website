@@ -51,8 +51,10 @@ export async function produce(entries, how, { onProgress, signal, t } = {}) {
     // memory, made into a Blob at the moment somebody clicks Download.
     const written = await writeDocument(built.build, { signal });
     const data = new Uint8Array(await written.arrayBuffer());
+    signal?.throwIfAborted();
 
     const check = await verify(data, part.entries.length, t);
+    signal?.throwIfAborted();
     if (!check.ok) failed = check.text;
 
     files.push({

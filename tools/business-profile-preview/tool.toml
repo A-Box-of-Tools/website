@@ -44,7 +44,7 @@ roadmap_group = "beyond"
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
 css_parts = ["form", "checks", "notes", "chips"]
-js_parts = ["download"]
+js_parts = ["download", "errors", "text-import"]
 lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -228,7 +228,9 @@ body = """
       clock, so switching a day to closed shows you immediately what somebody
       looking you up that evening is told. A window that ends before it starts
       &mdash; 22:00 to 02:00 &mdash; is read as running past midnight, which is
-      what a bar means by it."""
+      what a bar means by it.
+
+      Turn on <em>Preview a chosen date and time</em> to check a particular evening or next morning in this device’s time zone. Turn it off to follow the clock again. The preview choice is not saved in the profile JSON."""
 
 [[howto]]
 title = "Check which buttons you have earned."
@@ -323,14 +325,7 @@ a = """
 [[faq]]
 q = "What does the Open or Closed line actually depend on?"
 a = """
-        The week you filled in, and the clock on the machine you are reading
-        this on. There is no time zone field, because a listing does not have
-        one either: Google shows a visitor the status in the business's own local
-        time, and the closest this page can get to that without asking anybody
-        anything is your clock. So the line here is exactly right if you are in
-        the same time zone as the business, and shifted if you are not &mdash;
-        which the page says under the week rather than leaving you to find
-        out."""
+        The week you filled in and, by default, this device’s local clock. The status refreshes each minute. You can instead choose a local date and time to inspect a particular part of the week. The preview uses this device’s time zone, with no conversion to the business’s time zone and no holiday-hours model. If the business is elsewhere, enter the local wall time you want to inspect. This preview choice is not part of the saved profile JSON."""
 
 [[faq]]
 q = "Can I use the picture in a proposal, a pitch deck or a client report?"

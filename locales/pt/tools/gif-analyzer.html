@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar análise</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>Limpar análise</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- O resumo, e a animação como o próprio navegador desenha. -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="A animação, como este navegador desenha">
-        <p class="preview-note">O decodificador do seu próprio navegador, tocando o arquivo do jeito que ele está.</p>
+        <p id="preview-note" class="preview-note">O decodificador do seu próprio navegador, tocando o arquivo do jeito que ele está.</p>
       </div>
 
       <dl class="facts">
@@ -160,6 +165,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">Desenhando {name}: {done} de {total} quadros…</span>
+    <span data-phrase="read.cancelled">Análise cancelada. A leitura nativa do arquivo ainda pode terminar.</span>
+    <span data-phrase="drawing.empty">A tela ou um quadro não tem tamanho desenhável.</span>
+    <span data-phrase="drawing.memory">Desenhar ultrapassaria o limite estimado de buffers de 512 MiB desta página.</span>
+    <span data-phrase="drawing.pixels">O desenho atingiu o limite de 300 milhões de pixels decodificados.</span>
+    <span data-phrase="drawing.cancelled">O desenho foi cancelado.</span>
+    <span data-phrase="drawing.failed">O desenho parou: {detail}</span>
+    <span data-phrase="drawing.partial">{drawn} de {total} quadros desenhados. {why} A análise de cabeçalhos, tempos e bytes continua disponível; o uso de pixels não desenhados é desconhecido.</span>
+    <span data-phrase="preview.refused">A reprodução do navegador está desativada porque o desenho está incompleto. A análise lida continua disponível.</span>
+    <span data-phrase="colours.unknown">Não medido por completo</span>
+    <span data-phrase="colours.partial">As tabelas declaram {declared} entradas de cor. O uso total de pixels fica indisponível enquanto houver quadros não desenhados.</span>
+    <span data-phrase="palette.globalpartial">{entries}, {size}, compartilhada por {frames}. Nenhuma entrada é marcada como não usada porque nem todos os pixels foram desenhados.</span>
+    <span data-phrase="palette.unused">{index}: {colour} — nunca usado</span>
+    <span data-phrase="report.drawing">Desenho</span>
+    <span data-phrase="report.partial">{drawn} de {total} quadros desenhados. {why} Quadros não desenhados são descritos pelos cabeçalhos; o uso total de pixels fica indisponível.</span>
+    <span data-phrase="preview.native">O decodificador do seu próprio navegador, tocando o arquivo do jeito que ele está.</span>
     <span data-phrase="read.reading">Lendo {name}&hellip;</span>
     <span data-phrase="read.notagif">{name} não é um GIF: {why}. Esta ferramenta lê o próprio formato GIF, então não tem
       nada a dizer sobre outros arquivos.</span>
@@ -195,8 +216,7 @@
     <span data-phrase="level.bad">Problema</span>
     <span data-phrase="level.warn">Vale saber</span>
     <span data-phrase="level.note">Nota</span>
-    <span data-phrase="frames.partial">{frames}. {drawn} deles estão desenhados aqui; o resto é grande demais para caber na
-      memória de uma vez e é descrito só pelos cabeçalhos.</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} foram desenhados aqui; o restante é descrito apenas pelos cabeçalhos.</span>
     <span data-phrase="frames.none">{frames}, nenhum deles cobrindo a tela inteira.</span>
     <span data-phrase="frames.all">{frames}, todos cobrindo a tela inteira.</span>
     <span data-phrase="frames.some">{frames}, {n} deles cobrindo a tela inteira.</span>

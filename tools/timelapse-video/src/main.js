@@ -6,7 +6,7 @@ import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { timelapseByDecoding, previewFrame } from './decode.js';
 import { timelapseByPlaying } from './playback.js';
 import { TimelapseWriter } from './encode.js';
@@ -16,7 +16,7 @@ import {
   clampSpeed, speedForLength, lengthForSpeed, sampleInterval, frameTimes, repeatsFrames,
   outputSize, chooseBitrate, estimateBytes, decodeRuns, decodeCost,
 } from './plan.js';
-import { said } from './shared/errors.js';
+import { said, throwIfAborted } from './shared/errors.js';
 import { makeExample } from './example.js';
 
 /**
@@ -97,6 +97,10 @@ let canPlay = false;
 let working = false;
 let abortController = null;
 let lastResultUrl = null;
+let loadId = 0;
+let loadController = null;
+let loading = false;
+let ready = false;
 
 /* ------------------------------------------------------------------ adding */
 
@@ -144,165 +148,223 @@ const PROBE_TIMEOUT = 10_000;
  * HAVE_CURRENT_DATA or better is the element's own claim to hold a decoded
  * frame, which a track it cannot decode never reaches.
  */
-function firstFrameLands(video, atSeconds) {
+function firstFrameLands(video, atSeconds, signal) {
   return new Promise((resolve) => {
     let settled = false;
+    let timer;
+    let fallbackTimer;
+    let frameCallback;
 
     const done = (ok) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
+      clearTimeout(fallbackTimer);
+      if (frameCallback !== undefined) video.cancelVideoFrameCallback?.(frameCallback);
       video.removeEventListener('error', onError);
       video.removeEventListener('seeked', onSeeked);
+      signal.removeEventListener('abort', onAbort);
       resolve(ok);
     };
 
     const decoded = () => video.readyState >= 2 && !video.error;
     const onError = () => done(false);
+    const onAbort = () => done(false);
     const onSeeked = () => {
       if (typeof video.requestVideoFrameCallback === 'function') {
-        video.requestVideoFrameCallback(() => done(true));
+        frameCallback = video.requestVideoFrameCallback(() => done(true));
       }
-      setTimeout(() => done(decoded()), 500);
+      fallbackTimer = setTimeout(() => done(decoded()), 500);
     };
 
-    const timer = setTimeout(() => done(false), PROBE_TIMEOUT);
+    if (signal.aborted) { done(false); return; }
+    timer = setTimeout(() => done(false), PROBE_TIMEOUT);
     video.addEventListener('error', onError, { once: true });
     video.addEventListener('seeked', onSeeked, { once: true });
+    signal.addEventListener('abort', onAbort, { once: true });
 
     // Somewhere other than zero, so this is a real seek and a real decode
     // rather than whatever the element happened to buffer on load.
-    if (Math.abs(video.currentTime - atSeconds) < 1e-4) onSeeked();
-    else video.currentTime = atSeconds;
+    try {
+      if (Math.abs(video.currentTime - atSeconds) < 1e-4) onSeeked();
+      else video.currentTime = atSeconds;
+    } catch { done(false); }
   });
 }
 
+/** The example wrapper stays inert even if its own pending generator enables its button. */
+function lockSourcePicker(locked) {
+  el.fileInput.disabled = locked;
+  el.dropzone.inert = locked;
+  el.dropzone.setAttribute('aria-disabled', String(locked));
+  const example = $('example-button')?.parentElement;
+  if (example) example.inert = locked;
+}
+
 async function loadFile(picked) {
-  if (working) return;
+  if (working) {
+    // A native chooser opened earlier can finish after export starts. The
+    // shared handoff wakes waiting cards, so reassert this page's source lock.
+    lockSourcePicker(true);
+    return;
+  }
 
   clearError();
   releaseFile();
-
-  file = picked;
+  const mine = loadId;
+  const controller = new AbortController();
+  const { signal } = controller;
+  loadController = controller;
+  loading = true;
+  el.speedCard.inert = true;
   picker.busy(phrase('step.reading'));
 
-  try {
-    objectUrl = URL.createObjectURL(picked);
-    const played = await openInPlayer(el.preview, objectUrl);
+  // Metadata and frame probes belong to this file until it is ready. Retiring
+  // one player must never cancel a newer player's native decode or callbacks.
+  const preview = el.preview.cloneNode(false);
+  preview.removeAttribute('src');
+  preview.muted = true;
+  let url = URL.createObjectURL(picked);
+  let installed = false;
+  let canvas = null;
+  const current = () => mine === loadId && !signal.aborted;
+  const dispose = () => {
+    if (installed || !url) return;
+    preview.pause();
+    preview.removeAttribute('src');
+    preview.load();
+    URL.revokeObjectURL(url);
+    url = null;
+  };
+  signal.addEventListener('abort', dispose, { once: true });
 
+  try {
+    const played = await openInPlayer(preview, url);
+    throwIfAborted(signal);
+
+    let found = null;
+    let refused = null;
     try {
-      media = await demux(picked);
-      fallbackReason = null;
+      found = await demux(picked);
+      throwIfAborted(signal);
     } catch (error) {
-      media = null;
-      fallbackReason = error instanceof UnsupportedFile
+      throwIfAborted(signal);
+      if (error instanceof UnsupportedTimeline) throw error;
+      refused = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
     }
 
     let readable = false;
-    if (media && hasWebCodecs()) {
-      readable = await canDecode(decoderConfig(media.video));
+    if (found && hasWebCodecs()) {
+      readable = await canDecode(decoderConfig(found.video));
+      throwIfAborted(signal);
       if (!readable) {
-        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
+        refused = { key: 'read.nodecoder', values: { codec: found.video.codec } };
       }
-    } else if (media && !hasWebCodecs()) {
-      fallbackReason = { key: 'read.nowebcodecs' };
+    } else if (found) {
+      refused = { key: 'read.nowebcodecs' };
     }
 
-    canReadDirectly = readable;
-
-    // Only the file that has to go through the player is asked for a frame.
-    // The direct path already knows the answer: VideoDecoder.isConfigSupported
-    // is a real decodability test on the real codec string, which is why this
-    // asymmetry existed and why it was invisible until an .mkv turned up.
+    // The direct path has already checked the real decoder configuration;
+    // only the playback fallback still needs to prove that a picture lands.
+    let playable = played.ok;
     let opensButCannotDecode = false;
-    if (canReadDirectly) {
-      canPlay = played.ok;
-    } else if (played.ok) {
+    if (!readable && played.ok) {
       picker.busy(phrase('step.checking'));
-      canPlay = await firstFrameLands(el.preview,
-        Math.min(1, (played.duration || 2) / 2));
-      opensButCannotDecode = !canPlay;
-    } else {
-      canPlay = false;
+      playable = await firstFrameLands(preview,
+        Math.min(1, (played.duration || 2) / 2), signal);
+      throwIfAborted(signal);
+      opensButCannotDecode = !playable;
     }
 
-    if (!canReadDirectly && !canPlay) {
-      // Worth separating: "I do not know this format" and "I opened it and
-      // then could not decode a frame of it" send you to different answers,
-      // and the second one is the case that used to fail an hour in.
-      showError(opensButCannotDecode
-        ? phrase('open.nodecode')
-        : phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
-      resetView();
-      return;
+    if (!readable && !playable) {
+      throw opensButCannotDecode ? said('open.nodecode')
+        : said('open.failed', { reason: why(refused, 'read.notplayed') });
     }
-    if (!hasEncoder()) {
-      showError(phrase('nocodec.file'));
-      resetView();
-      return;
-    }
+    if (!hasEncoder()) throw said('nocodec.file');
 
-    source = canReadDirectly
-      ? { width: media.video.displayWidth, height: media.video.displayHeight }
+    const dimensions = readable
+      ? { width: found.video.displayWidth, height: found.video.displayHeight }
       : { width: played.width, height: played.height };
-    duration = played.duration || (media ? media.duration : 0);
-    sourceFps = canReadDirectly ? averageFps(media.video) : 0;
+    const seconds = played.duration || (found ? found.duration : 0);
+    if (!(seconds > 0)) throw said('open.nolength');
 
-    if (!(duration > 0)) {
-      showError(phrase('open.nolength'));
-      resetView();
-      return;
+    let previewFailure = null;
+    if (!playable) {
+      try {
+        canvas = await previewFrame({ file: picked, media: found, atSeconds: 0, signal });
+        throwIfAborted(signal);
+      } catch (error) {
+        throwIfAborted(signal);
+        previewFailure = error;
+      }
     }
+    if (!current()) return;
 
-    await showPreview(canPlay);
+    el.preview.replaceWith(preview);
+    el.preview = preview;
+    objectUrl = url;
+    url = null;
+    installed = true;
+    file = picked;
+    media = found;
+    fallbackReason = refused;
+    source = dimensions;
+    duration = seconds;
+    sourceFps = readable ? averageFps(found.video) : 0;
+    canReadDirectly = readable;
+    canPlay = playable;
+    loading = false;
+    ready = true;
+    showPreview(canvas, previewFailure);
     describeSource();
     fitSizeOptions();
-
-    el.exportBtn.disabled = false;
+    el.speedCard.inert = false;
+    el.exportCard.inert = false;
     setSpeed(defaultSpeed(), null);
   } catch (error) {
+    if (!current()) return;
     console.error(error);
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
     showError(error?.message
       ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
-    resetView();
   } finally {
-    picker.done();
+    signal.removeEventListener('abort', dispose);
+    dispose();
+    if (canvas) canvas.width = canvas.height = 0;
+    if (mine === loadId) {
+      loadController = null;
+      loading = false;
+      el.speedCard.inert = false;
+      el.exportCard.inert = false;
+      picker.done();
+    }
   }
 }
 
-/**
- * The preview is the played file where the browser will play it, and a decoded
- * still where it will not - which is how an iPhone HEVC clip still shows you
- * what you picked in a browser that has no licence to play one.
- */
-async function showPreview(playable) {
+/** A decoded preview is copied only after its file wins ownership of the page. */
+function showPreview(canvas, failure) {
   el.previewWrap.hidden = false;
+  el.preview.hidden = !canPlay;
+  el.still.hidden = !canvas;
+  el.previewNote.hidden = canPlay;
+  if (canPlay) return;
 
-  if (playable) {
-    el.preview.hidden = false;
-    el.still.hidden = true;
-    el.previewNote.hidden = true;
-    return;
-  }
-
-  el.preview.hidden = true;
-  el.previewNote.hidden = false;
-  el.previewNote.textContent = phrase('preview.still');
-
-  try {
-    const canvas = await previewFrame({ file, media, atSeconds: 0 });
-    el.still.width = canvas.width;
-    el.still.height = canvas.height;
-    el.still.getContext('2d').drawImage(canvas, 0, 0);
-    el.still.hidden = false;
-  } catch (error) {
-    el.still.hidden = true;
-    el.previewNote.textContent = phrase('preview.none',
-      { why: phrase(error.message, fill(error.values)) });
+  el.previewNote.textContent = failure
+    ? phrase('preview.none', { why: phrase(failure.message, fill(failure.values)) })
+    : phrase('preview.still');
+  if (canvas) {
+    try {
+      el.still.width = canvas.width;
+      el.still.height = canvas.height;
+      el.still.getContext('2d').drawImage(canvas, 0, 0);
+    } catch (error) {
+      // The optional picture cannot refuse an otherwise usable direct source.
+      el.still.hidden = true;
+      el.still.width = el.still.height = 0;
+      el.previewNote.textContent = phrase('preview.none',
+        { why: phrase(error.message, fill(error.values)) });
+    }
   }
 }
 
@@ -353,23 +415,55 @@ function defaultSpeed() {
   return clampSpeed(Math.min(best, duration / (MIN_FRAMES / outputFps())));
 }
 
-function releaseFile() {
-  if (objectUrl) {
-    el.preview.removeAttribute('src');
-    el.preview.load();
-    URL.revokeObjectURL(objectUrl);
-    objectUrl = null;
-  }
-  media = null;
-  file = null;
+function releaseResult() {
+  el.result.hidden = true;
+  el.resultVideo.pause();
+  el.resultVideo.removeAttribute('src');
+  el.resultVideo.load();
+  el.resultInfo.textContent = '';
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
 }
 
-function resetView() {
+function releaseFile() {
+  loadId += 1;
+  loadController?.abort();
+  loadController = null;
+  loading = false;
+  ready = false;
+  el.preview.pause();
+  el.preview.removeAttribute('src');
+  el.preview.load();
+  if (objectUrl) URL.revokeObjectURL(objectUrl);
+  objectUrl = null;
+  media = null;
+  file = null;
+  fallbackReason = null;
+  source = { width: 0, height: 0 };
+  duration = 0;
+  sourceFps = 0;
+  canReadDirectly = false;
+  canPlay = false;
   el.source.hidden = true;
   el.previewWrap.hidden = true;
   el.previewNote.hidden = true;
   el.pathNote.hidden = true;
-  releaseFile();
+  el.still.hidden = true;
+  el.still.width = el.still.height = 0;
+  el.length.value = '';
+  for (const value of [el.srcName, el.srcSize, el.srcFrame, el.srcLength,
+    el.srcFps, el.srcCodec, el.intervalNote, el.sumFrames, el.sumInterval,
+    el.sumLength, el.sumSize, el.sumRead, el.sumBytes, el.planNote]) {
+    value.textContent = '';
+  }
+  el.planNote.hidden = true;
+  el.exportCard.inert = true;
+  el.exportBtn.disabled = true;
+  el.speedCard.inert = false;
+  el.progress.hidden = true;
+  releaseResult();
 }
 
 /* ------------------------------------------------------------- the settings */
@@ -397,13 +491,16 @@ function fitSizeOptions() {
  * beside it. One function, so the three can never disagree.
  */
 function setSpeed(speed, from) {
+  if (loading) return;
   const value = clampSpeed(speed);
 
   if (from !== el.speed) el.speed.value = round(value, 1);
-  if (from !== el.length) el.length.value = round(lengthForSpeed({ duration, speed: value }), 1);
+  if (ready && from !== el.length) el.length.value = round(lengthForSpeed({ duration, speed: value }), 1);
 
   for (const button of el.speedRow.querySelectorAll('[data-speed]')) {
-    button.classList.toggle('active', Math.abs(Number(button.dataset.speed) - value) < 0.05);
+    const selected = Math.abs(Number(button.dataset.speed) - value) < 0.05;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
   }
 
   updateSummary();
@@ -423,9 +520,11 @@ el.speed.addEventListener('input', () => setSpeed(Number(el.speed.value), el.spe
 el.speed.addEventListener('change', () => setSpeed(Number(el.speed.value), null));
 
 el.length.addEventListener('input', () => {
+  if (!ready || loading) return;
   setSpeed(speedForLength({ duration, seconds: Number(el.length.value) }), el.length);
 });
 el.length.addEventListener('change', () => {
+  if (!ready || loading) return;
   setSpeed(speedForLength({ duration, seconds: Number(el.length.value) }), null);
 });
 
@@ -453,7 +552,7 @@ function currentPlan() {
 }
 
 function updateSummary() {
-  if (!source.width || !duration) return;
+  if (!ready || loading || !source.width || !duration) return;
 
   const plan = currentPlan();
   const enough = plan.times.length >= MIN_FRAMES;
@@ -525,8 +624,8 @@ function setProgress({ phase, done, total }) {
   }
 }
 
-function outputFilename() {
-  const base = (file?.name ?? 'video').replace(/\.[^.]+$/, '');
+function outputFilename(picked) {
+  const base = (picked?.name ?? 'video').replace(/\.[^.]+$/, '');
   return `${base}-timelapse.mp4`;
 }
 
@@ -541,20 +640,22 @@ function formatInterval(seconds) {
 }
 
 async function runExport() {
-  if (working || !file) return;
+  if (working || loading || !ready || !file || (!canReadDirectly && !canPlay)) return;
 
   const plan = currentPlan();
   if (plan.times.length < MIN_FRAMES) return;
+  const job = { file, media, preview: el.preview, direct: canReadDirectly };
 
   clearError();
   working = true;
+  lockSourcePicker(true);
   abortController = new AbortController();
 
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
   el.progress.hidden = false;
-  el.result.hidden = true;
-  el.preview.pause();
+  releaseResult();
+  job.preview.pause();
   setProgress({ phase: 'preparing', done: 0, total: 1 });
 
   let writer = null;
@@ -566,6 +667,7 @@ async function runExport() {
       framerate: plan.fps,
       bitrate: plan.bitrate,
     });
+    throwIfAborted(abortController.signal);
     if (!codec) {
       throw said('encode.noh264',
         { width: plan.frame.width, height: plan.frame.height });
@@ -580,24 +682,25 @@ async function runExport() {
     });
     writer.open();
 
-    const result = canReadDirectly
+    const result = job.direct
       ? await timelapseByDecoding({
-        file, media, times: plan.times,
+        file: job.file, media: job.media, times: plan.times,
         width: plan.frame.width, height: plan.frame.height,
         writer, onProgress: setProgress, signal: abortController.signal,
       })
       : await timelapseByPlaying({
-        video: el.preview, times: plan.times,
+        video: job.preview, times: plan.times,
         width: plan.frame.width, height: plan.frame.height,
         writer, onProgress: setProgress, signal: abortController.signal,
       });
 
+    throwIfAborted(abortController.signal);
     if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
     lastResultUrl = URL.createObjectURL(result.blob);
 
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
-    el.download.download = outputFilename();
+    el.download.download = outputFilename(job.file);
     el.resultInfo.textContent = [
       phrase('size.plain', { width: plan.frame.width, height: plan.frame.height }),
       phrase(result.frames === 1 ? 'n.frame.one' : 'n.frame.many',
@@ -618,6 +721,7 @@ async function runExport() {
   } finally {
     writer?.close();
     working = false;
+    lockSourcePicker(false);
     abortController = null;
     el.cancelBtn.hidden = true;
     updateSummary();

@@ -84,6 +84,49 @@ export async function open({ deviceId } = {}) {
 }
 
 /**
+ * Own one camera request and stream at a time.
+ *
+ * Permission can resolve after Stop or after another request. That late stream
+ * must be closed before anything attaches it to a video, and a superseded
+ * refusal must not turn off a newer camera that did open.
+ *
+ * @param {{request?: typeof open}} [options]
+ */
+export function session({ request = open } = {}) {
+  let generation = 0;
+  let stream = null;
+
+  return {
+    async open(options) {
+      const mine = ++generation;
+      close(stream);
+      stream = null;
+      let acquired;
+      try {
+        acquired = await request(options);
+      } catch (error) {
+        if (mine !== generation) return null;
+        throw error;
+      }
+      if (mine !== generation) {
+        close(acquired);
+        return null;
+      }
+      stream = acquired;
+      return stream;
+    },
+    stop() {
+      generation += 1;
+      close(stream);
+      stream = null;
+    },
+    isCurrent(candidate) {
+      return candidate !== null && candidate === stream;
+    },
+  };
+}
+
+/**
  * The cameras this browser will admit to.
  *
  * Labels are empty until permission has been given at least once, which is why

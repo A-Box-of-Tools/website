@@ -60,7 +60,7 @@
           <label for="input" id="input-label">O seu YAML</label>
           <span class="count" id="input-count">vazio</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Cole o YAML aqui - ou arraste um arquivo .yaml, .yml ou .json acima."></textarea>
       </div>
@@ -80,6 +80,8 @@
     <h2><span class="step">3</span> Leve o resultado</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Ir para o erro</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Nada ainda.</p>
@@ -110,6 +112,11 @@
     <span data-phrase="n.character.one">{n} caractere</span>
     <span data-phrase="n.character.many">{n} caracteres</span>
     <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="convert.comments">Comentários YAML descartados: {n}. O texto entre aspas e em escalares de bloco continua sendo texto.</span>
+    <span data-phrase="convert.names">Nomes XML alterados: {n}. Esta conversão não mantém os nomes originais.</span>
+    <span data-phrase="convert.collisions">Colisões de nomes XML: {n}. Chaves diferentes se tornaram o mesmo nome de elemento e podem ser lidas de volta como um valor repetido.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">A conversão parou nesta construção não suportada. Nenhum resultado foi produzido.</span>
     <span data-phrase="parse.at">{reason} (linha {line}, coluna {column})</span>
     <span data-phrase="char.end">o fim do texto</span>
     <span data-phrase="char.newline">uma quebra de linha</span>

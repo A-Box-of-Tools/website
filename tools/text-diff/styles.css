@@ -113,6 +113,28 @@ textarea:focus-visible {
   border-block: 1px solid var(--border);
 }
 
+/* Ending labels describe metadata rather than becoming part of the text. */
+.line-ending {
+  display: inline-block;
+  margin-inline-start: 0.6rem;
+  padding: 0 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  background: var(--surface);
+  font: 0.7rem/1.4 system-ui, sans-serif;
+  white-space: normal;
+}
+
+.change-target:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+#ending-note:empty, #change-limit:empty { display: none; }
+#ending-note { margin: 0.6rem 0; }
+.change-navigation { margin-top: 0.6rem; }
+
 @media (max-width: 620px) {
   textarea { min-height: 170px; font-size: 0.8rem; }
   .diff { font-size: 0.75rem; }

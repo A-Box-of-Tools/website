@@ -214,12 +214,7 @@ a = """
 [[faq]]
 q = "¿Hay algún límite de duración o de tamaño?"
 a = """
-        Lo que está limitado es el trozo, y por la memoria más que por una regla:
-        todos sus fotogramas se sostienen a la vez mientras se elige la paleta, así
-        que la página calcula lo que costarían tus ajustes y te lo dice antes de
-        que empieces. Se niega en vez de dejar que la pestaña se quede sin memoria
-        y desaparezca. Un trozo más corto, un ancho menor o una cadencia más baja
-        bajan ese coste."""
+        Antes de empezar, la página estima los fotogramas retenidos, la salida GIF y los búferes temporales de decodificación, y rechaza los planes que superan un presupuesto de planificación acotado. Una indicación de memoria del navegador puede reducir ese presupuesto; no mide la memoria libre ni garantiza que la pestaña se mantenga dentro de él. Un ancho menor, una sección más corta o una tasa de fotogramas menor reducen el trabajo de salida; la fuente sigue necesitando sus propios búferes de decodificación."""
 
 [[faq]]
 q = "¿Conserva el sonido?"

@@ -28,7 +28,7 @@ live_hint = """
       die Internetverbindung und komprimieren Sie trotzdem eines."""
 
 read_first = """
-, sowie <code>src/reader.js</code> und <code>src/writer.js</code>
+, sowie <code>src/shared/pdf-reader.js</code> und <code>src/shared/pdf-writer.js</code>
       für das gesamte Lesen und Neuschreiben, wovon keines ans Netz kommt."""
 
 howto_heading = "So verkleinern Sie ein PDF"
@@ -73,8 +73,8 @@ title = "Das ganze Format liegt in diesem Repository."
 body = """
  Ein PDF ist eine
       Liste von Objekten und eine Tabelle, wo jedes beginnt.
-      <code>src/objects.js</code> liest diese Syntax, <code>src/reader.js</code>
-      folgt der Tabelle, <code>src/writer.js</code> schreibt eine neue, und
+      <code>src/shared/pdf-objects.js</code> liest diese Syntax, <code>src/shared/pdf-reader.js</code>
+      folgt der Tabelle, <code>src/shared/pdf-writer.js</code> schreibt eine neue, und
       keines der drei importiert irgendetwas, das eine Anfrage stellen könnte.
       Es wird keine Bibliothek nachgeladen und nichts auf einem Server
       gerendert."""

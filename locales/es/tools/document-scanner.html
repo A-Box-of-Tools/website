@@ -181,7 +181,7 @@
       hubiera.
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">Tamaño de página</label>
         <select id="page-size">
@@ -249,18 +249,17 @@
       <div class="field">
         <label for="title">Título del documento <span class="optional">(opcional)</span></label>
         <input type="text" id="title" maxlength="120" placeholder="En blanco, el PDF no lleva título">
-        <p class="field-note">
-          Lo único que se escribe en el documento además de las páginas. No hay
-          fecha, ni autor, ni nada sobre este equipo. Mira
-          <code>src/document.js</code>.
-        </p>
+        <p class="field-note">El PDF contiene el nombre de esta herramienta y el título que escribas, sin fecha, autor ni información del equipo.</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>Guardar como PDF</button>
       <button type="button" id="save-images" class="ghost big" disabled>Guardar las páginas como imágenes</button>
+      <button type="button" id="cancel" class="ghost big" hidden>Cancelar</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>La cancelación se comprueba entre las operaciones de cada página. La decodificación o codificación de una imagen ya iniciada puede terminar en segundo plano; su resultado se descarta.</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -370,17 +369,19 @@
     <span data-phrase="result.png">Las páginas se guardan como PNG, que es sin
       pérdida y es lo que quiere una imagen de dos colores: JPEG sería a la vez
       más grande y borroso alrededor de cada letra.</span>
-    <span data-phrase="result.clean">Sin fecha, sin autor, sin nombre de equipo:
-      lo único que hay en el documento además de las páginas es el nombre de esta
-      herramienta.</span>
+    <span data-phrase="result.clean">Sin fecha, autor ni nombre del equipo: además de las páginas, el PDF contiene el nombre de esta herramienta y el título que hayas escrito.</span>
 
     <span data-phrase="size.fit">Cada hoja toma el tamaño que su propia página
       tiene de verdad, a la resolución de arriba. Nada se rodea de bandas.</span>
     <span data-phrase="size.named">Cada página se coloca en una hoja {name},
       dentro del margen, con la forma que le haya salido.</span>
 
-    <span data-phrase="error.decode">Este navegador no ha podido abrir {name}. Si
-      es una foto HEIC de un iPhone, conviértela primero.</span>
+    <span data-phrase="busy.cancelled">Cancelado. Cambia los ajustes o guarda de nuevo para volver a intentarlo.</span>
+    <span data-phrase="error.skipped.one">Se ha omitido un archivo que no se reconoce como foto: {names}.</span>
+    <span data-phrase="error.skipped.many">Se han omitido {count} archivos que no se reconocen como fotos: {names}.</span>
+    <span data-phrase="error.more">{names} y {count} más</span>
+    <span data-phrase="error.decode.one">Este navegador no pudo abrir {names}. Si es una foto HEIC de un iPhone, conviértela primero.</span>
+    <span data-phrase="error.decode.many">Este navegador no pudo abrir {count} fotos: {names}. Convierte las fotos HEIC antes de añadirlas.</span>
     <span data-phrase="error.none">Elige antes al menos una foto.</span>
     <span data-phrase="error.failed">Algo ha salido mal al hacer el archivo:
       {detail}</span>

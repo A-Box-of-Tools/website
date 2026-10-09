@@ -15,6 +15,10 @@ import {
   jsonToYaml, yamlToJson, jsonToXml, xmlToJson, CONVERSIONS,
 } from '../../tools/json-formatter/src/convert.js';
 
+import { xmlToJson as xmlPageToJson } from '../../tools/xml-formatter/src/convert.js';
+
+import { yamlToJson as yamlPageToJson } from '../../tools/yaml-to-json/src/convert.js';
+
 const round = (text) => yamlToJson(jsonToYaml(text), { indent: '' }).trim();
 
 test('JSON to YAML and back is the same document', () => {
@@ -77,6 +81,60 @@ test('YAML to JSON: what YAML allows that JSON does not is normalised', () => {
   assert.equal(out.trim(), '{"a":1,"b":0.5,"c":31,"d":15}');
 });
 
+test('both YAML converters normalise large integers without rounding', () => {
+  const cases = [
+    ['+9007199254740993', '9007199254740993'],
+    ['-09007199254740993', '-9007199254740993'],
+    ['0009007199254740993', '9007199254740993'],
+    ['+0x20000000000001', '9007199254740993'],
+    ['-0x20000000000001', '-9007199254740993'],
+    ['0o400000000000000001', '9007199254740993'],
+    ['-0o400000000000000001', '-9007199254740993'],
+    ['0xffffffffffffffffffff', '1208925819614629174706175'],
+    ['000', '0'],
+    ['-000', '-0'],
+    ['-0x0', '-0'],
+    ['-0o0', '-0'],
+  ];
+  for (const convert of [yamlToJson, yamlPageToJson]) {
+    for (const [source, expected] of cases) {
+      // Both scalar paths must honour the same promise: a flow collection
+      // must not silently use a less exact reader than a block mapping.
+      assert.equal(convert(`n: ${source}`, { indent: '' }).trim(), `{"n":${expected}}`, source);
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${expected}]`, source);
+    }
+  }
+});
+
+test('both YAML converters preserve decimal precision and extreme exponents', () => {
+  const cases = [
+    ['+9007199254740993.1250', '9007199254740993.1250'],
+    ['00001.2300E+004', '1.2300E+004'],
+    ['.5e999', '0.5e999'],
+    ['+.5e-999', '0.5e-999'],
+    ['-.5E+999', '-0.5E+999'],
+    ['-01.e999', '-1.0e999'],
+    ['-00.', '-0.0'],
+    ['1.', '1.0'],
+    ['1E+999', '1E+999'],
+    ['0.10000000000000000001', '0.10000000000000000001'],
+  ];
+  for (const convert of [yamlToJson, yamlPageToJson]) {
+    for (const [source, expected] of cases) {
+      assert.equal(convert(`n: ${source}`, { indent: '' }).trim(), `{"n":${expected}}`, source);
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${expected}]`, source);
+    }
+  }
+});
+
+test('YAML scalars with no mantissa digits remain text rather than becoming zero', () => {
+  for (const source of ['.', '+.', '-.', '.e999', '+.e999', '-.e999']) {
+    for (const convert of [yamlToJson, yamlPageToJson]) {
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${JSON.stringify(source)}]`, source);
+    }
+  }
+});
+
 test('JSON to XML: an array becomes a repeated element', () => {
   const xml = jsonToXml('{"item":[1,2],"one":{"deep":"x"},"nothing":null}');
   assert.equal(xml, [
@@ -133,6 +191,58 @@ test('XML to JSON: every value stays a string, because XML never said otherwise'
 test('XML to JSON: entities are read', () => {
   const json = JSON.parse(xmlToJson('<a>1 &lt; 2 &amp;&#38; 3 &gt; 2</a>'));
   assert.equal(json.a, '1 < 2 && 3 > 2');
+});
+
+test('both XML converters retain leaf, CDATA and mixed text without trimming', () => {
+  const cases = [
+    ['<r>  one   two  </r>', { r: '  one   two  ' }],
+    ['<r> \t\n </r>', { r: ' \t\n ' }],
+    ['<r><![CDATA[  a   b  ]]></r>', { r: '  a   b  ' }],
+    ['<r> before <b> middle </b> after </r>', { r: { b: ' middle ', '#text': ' before  after ' } }],
+    ['<r>\n  <a>1</a>\n</r>', { r: { a: '1' } }],
+    ['<r><![CDATA[ \t ]]><a/></r>', { r: { a: null, '#text': ' \t ' } }],
+    ['<r xml:space="preserve"> <a> </a> <b xml:space="default"> <c/> </b> </r>', { r: { '@xml:space': 'preserve', a: ' ', b: { '@xml:space': 'default', c: null }, '#text': '   ' } }],
+  ];
+  for (const convert of [xmlToJson, xmlPageToJson]) {
+    for (const [source, expected] of cases) assert.deepEqual(JSON.parse(convert(source)), expected, source);
+  }
+});
+
+test('both XML converters reject a second root instead of discarding it', () => {
+  for (const convert of [xmlToJson, xmlPageToJson]) {
+    assert.throws(() => convert('<one>1</one>\n<two>2</two>'), (error) => {
+      assert.equal(error.name, 'ParseError');
+      assert.equal(error.reason, 'xml.document');
+      assert.equal(error.line, 2);
+      assert.equal(error.column, 1);
+      return true;
+    });
+  }
+});
+
+test('both XML converters expand valid references and keep custom entities literal', () => {
+  const source = '<?xml version="1.0"?><!DOCTYPE r [<!ENTITY custom "not resolved">]><r attr="&#x1F600;">&#9;&#10;&#13;&#x1F600;&custom;</r>';
+  for (const convert of [xmlToJson, xmlPageToJson]) {
+    const { r } = JSON.parse(convert(source));
+    assert.equal(r['@attr'], '\u{1f600}');
+    assert.equal(r['#text'], '\t\n\r\u{1f600}&custom;');
+    assert.equal(JSON.parse(convert('<?xml version="1.1"?><r>&#1;</r>')).r, '\x01');
+    assert.equal(JSON.parse(convert('<r><![CDATA[&#0;]]></r>')).r, '&#0;');
+  }
+});
+
+test('both XML converters report invalid references as located parser errors', () => {
+  for (const convert of [xmlToJson, xmlPageToJson]) {
+    for (const source of ['<r>\n&#x110000;</r>', '<r>\n&#0;</r>', '<r>\n<a x="&#xD800;"/></r>']) {
+      assert.throws(() => convert(source), (error) => {
+        assert.equal(error.name, 'ParseError');
+        assert.equal(error.reason, 'xml.character');
+        assert.equal(error.line, 2);
+        assert.ok(error.column >= 1);
+        return true;
+      });
+    }
+  }
 });
 
 test('the conversions on the menu all run', () => {

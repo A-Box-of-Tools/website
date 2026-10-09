@@ -12,6 +12,7 @@
     {% include "partials/file-picker.html" %}
 
     <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cancel" class="ghost" hidden>取消</button>
     <p id="error" class="error" role="alert" hidden></p>
 
     <dl class="source" id="source" hidden>
@@ -46,18 +47,24 @@
           <option value="mono">混成单声道</option>
         </select>
         <p class="field-note" id="channels-note">
-          单声道会把文件减半，转写和人声录音要的正是这个。它把两个声道取平均，而不是扔掉一个。
+          单声道会对所有声道取平均。立体声的音频数据减半；单声道输入仍为单声道。
         </p>
+      </div>
+      <div class="field">
+        <label for="depth">WAV 格式</label>
+        <select id="depth" aria-describedby="depth-note">
+          <option value="16" selected>16 位 PCM——兼容性广</option>
+          <option value="32">32 位浮点——解码后的采样值</option>
+        </select>
+        <p class="field-note" id="depth-note">16 位 PCM 会舍入并限制解码后的采样值。保持声道不变时，32 位浮点会保留这些值；单声道会对各声道取平均。</p>
       </div>
     </div>
 
-    <!--
-      No button. A WAV is the samples with a header in front of them, so writing
-      one is fast enough to redo whenever a setting changes - and a file that is
-      always the one the settings describe needs nothing pressed to make it so.
-    -->
+    <!-- Settings generate automatically; a cancelled write can be retried. -->
+    <p id="estimate" class="field-note" hidden></p>
+    <button type="button" id="retry" class="ghost" hidden>重新生成 WAV</button>
     <div id="result" class="result" hidden>
-      <audio id="result-audio" controls></audio>
+      <audio id="result-audio" controls aria-label="提取的音频"></audio>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>下载音频</a>
@@ -73,6 +80,13 @@
     Every Chinese phrase stays on one line, for the reason above.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.mixing">正在混合声道… {n}%</span>
+    <span data-phrase="step.writing">正在写入 WAV… {n}%</span>
+    <span data-phrase="step.cancelled">已取消。</span>
+    <span data-phrase="out.estimate">输出大小：约 {size}。</span>
+    <span data-phrase="depth.16">16 位 PCM</span>
+    <span data-phrase="depth.float">32 位浮点</span>
+    <span data-phrase="wav.toobig">这个 WAV 将超过格式的 4 GB 上限。请选择 16 位、单声道或较短的输入。</span>
     <span data-phrase="step.reading">正在读取声音&hellip;</span>
     <span data-phrase="audio.empty">这个文件是空的。</span>
     <!--
@@ -92,7 +106,7 @@
     <span data-phrase="channels.stereo">立体声</span>
     <span data-phrase="channels.many">超过两个声道</span>
     <span data-phrase="rate.khz">{n} kHz</span>
-    <span data-phrase="out.info">WAV &mdash; {size}，{length}，{channels}，{rate} kHz</span>
+    <span data-phrase="out.info">WAV，{depth} —— {size}，{length}，{channels}，{rate} kHz</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>

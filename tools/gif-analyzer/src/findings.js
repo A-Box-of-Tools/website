@@ -224,11 +224,11 @@ export function findings(gif, stats = {}) {
   const clears = stats.decoded
     ? stats.decoded.reduce((sum, frame) => sum + (frame ? frame.clears : 0), 0)
     : 0;
-  if (clears > frames.length) {
+  if (stats.complete !== false && clears > frames.length) {
     add('note', 'find.clears.title', 'find.clears.body', { count: clears.toLocaleString() });
   }
 
-  if (stats.identical > 0) {
+  if (stats.complete !== false && stats.identical > 0) {
     add('warn', count(stats.identical, 'find.identical.title'), 'find.identical.body',
       { count: stats.identical.toLocaleString() });
   }

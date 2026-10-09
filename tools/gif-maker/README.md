@@ -192,6 +192,40 @@ therefore refuses to go below 0.02s rather than accept a number that silently
 becomes something else. Saying so in the FAQ is cheaper than a tool that appears
 to have a speed setting that does nothing.
 
+### Requested speed and the holds the file stores
+
+An explicit hold in seconds is committed at a hundredth. A frame rate instead
+keeps its fractional requested hold: 15 fps is 1/15 second until `frameDelays`
+in `images.js` allocates the whole sequence. Rounding cumulative requested ends
+lets neighboring holds share the spare hundredths, so 150 frames at 15 fps
+store ten seconds rather than 150 separately rounded 0.07-second holds. Every
+encoded hold still lies between 0.02 and 60 seconds. The total is within half
+a hundredth of the bounded requested timeline; it does not promise that every
+browser will present frames at a precise wall-clock rate.
+
+The rows display the actual allocated holds, and the summary and encoder use
+that same allocation. Fractional requests survive appended batches and changes
+in order; changing one row commits its displayed seconds without recreating
+the focused input. Reordering keeps focus on the moved frame's available
+action, and removing a frame moves it to the neighboring Remove action or the
+native image picker when none remain.
+
+### A result belongs to one edit plan
+
+Order, holds and output settings retire the completed image, its object URL
+and download link when they change. View size and untouched hold values do
+not alter output. Editing stays available during encoding: the job captures
+its own files, holds, settings and name, and a changed plan cancels its right
+to publish. A late decode or old cleanup cannot update a newer job's progress,
+result or errors. Cancel retires the current owner so another export may start.
+
+Cancellation is cooperative. A native image decode and synchronous drawing,
+quantization or compression already in progress must return before their
+owned work can be released; returned bitmaps are closed even for retired jobs.
+Known tool error keys keep their translated values, while native exception
+prose uses the existing translated export failure message rather than becoming
+a phrase selector.
+
 ## Transparency is one bit
 
 A GIF pixel is either fully painted or entirely invisible; there is no partial
@@ -224,7 +258,7 @@ the actual cost.
 ## Limitations
 
 - **No frames out of a video.** This tool takes still images. Cutting a GIF out
-  of a clip is a different tool with a demuxer in it, and it is on the roadmap.
+  of a clip is the separate [Video to GIF](../video-to-gif/) tool.
 - **No text, no overlays, no crop.** Frames are fit, filled or stretched into
   one box and that is all. Crop the pictures first with
   [Image Resizer](../resize-image/).

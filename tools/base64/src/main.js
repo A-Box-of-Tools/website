@@ -5,6 +5,7 @@ import { sizeText } from './shared/format.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
+import { textImport } from './shared/text-import.js';
 import { CODECS, codecById, CodecError } from './encode.js';
 import { SAMPLES } from './samples.js';
 
@@ -17,6 +18,9 @@ const el = {
   inputCount: $('input-count'),
   codec: $('codec'),
   codecNote: $('codec-note'),
+  canonicalField: $('canonical-field'),
+  canonical: $('canonical'),
+  canonicalNote: $('canonical-note'),
   sample: $('sample'),
   clear: $('clear'),
   error: $('error'),
@@ -53,21 +57,26 @@ const picker = wireFilePicker({
   onFiles(files) { loadFiles(files); },
 });
 
+const imports = textImport({
+  busy: () => picker.busy(phrase('step.reading')),
+  done: picker.done,
+});
+
 async function loadFiles(files) {
   clearTimeout(timer);
   clearResult();
-  picker.busy(phrase('step.reading'));
-  try {
-    // Read as text, here, by the browser. There is no other step: the string
-    // goes into the box below and never anywhere else.
-    el.input.value = await files[0].text();
-    updateCounts();
-    run();
-  } catch (error) {
-    showError(phrase('read.failed', { why: error?.message ?? error }));
-  } finally {
-    picker.done();
-  }
+  // Read as text, here, by the browser. There is no other step: the string
+  // goes into the box below and never anywhere else.
+  await imports.read([files[0]], {
+    apply(texts) {
+      el.input.value = texts[0];
+      updateCounts();
+      run();
+    },
+    failed(error) {
+      showError(phrase('read.failed', { why: error?.message ?? error }));
+    },
+  });
 }
 
 let timer = null;
@@ -83,14 +92,20 @@ function schedule() {
   timer = setTimeout(run, size > 200000 ? 500 : 120);
 }
 
-el.input.addEventListener('input', () => { updateCounts(); schedule(); });
+el.input.addEventListener('input', () => {
+  imports.invalidate();
+  updateCounts();
+  schedule();
+});
 
 el.codec.addEventListener('change', run);
+el.canonical.addEventListener('change', run);
 for (const radio of document.querySelectorAll('input[name="direction"]')) {
   radio.addEventListener('change', run);
 }
 
 el.clear.addEventListener('click', () => {
+  imports.invalidate();
   el.input.value = '';
   updateCounts();
   run();
@@ -98,6 +113,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
+  imports.invalidate();
   el.input.value = phrase(SAMPLES.encode.a);
   updateCounts();
   run();
@@ -129,6 +145,12 @@ function run() {
   clearError();
   clearResult();
   el.codecNote.textContent = phrase(codecById(el.codec.value).note);
+  const canonicalVisible = pickedDirection() === 'decode'
+    && ['base64', 'base64url'].includes(el.codec.value);
+  el.canonicalField.hidden = !canonicalVisible;
+  el.canonicalField.inert = !canonicalVisible;
+  el.canonicalNote.textContent = canonicalVisible
+    ? phrase(el.codec.value === 'base64url' ? 'b64.profile.url' : 'b64.profile.standard') : '';
 
   const text = el.input.value;
   // The last step is dimmed until there is something for it to act on, and
@@ -161,7 +183,7 @@ function runEncode(text) {
   const decoding = pickedDirection() === 'decode';
   let out;
   try {
-    out = decoding ? codec.decode(text) : codec.encode(text);
+    out = decoding ? codec.decode(text, { canonical: el.canonical.checked }) : codec.encode(text);
   } catch (error) {
     if (error?.name === 'TypeError') {
       // What a fatal TextDecoder throws. Its own message says nothing useful

@@ -3,8 +3,9 @@
 import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { ALGORITHMS, ORDER, Stopped, Unreadable, hashFile } from './hash.js';
-import { algorithmsIn, readExpected, verdict } from './expected.js';
+import { ALGORITHMS, ORDER, Stopped } from './hash.js';
+import { hashSelection } from './hash-selection.js';
+import { algorithmsIn, readExpected, rowVerdicts, verdict, manifestVerdict } from './expected.js';
 import { exact, fileSize, percent, rate, remaining, smooth } from './format.js';
 import { makeExample } from './example.js';
 
@@ -31,6 +32,10 @@ const el = {
   copyAll: $('copy-all'),
   downloadChecksums: $('download-checksums'),
   copyStatus: $('copy-status'),
+  batch: $('batch'),
+  batchList: $('batch-list'),
+  batchSummary: $('batch-summary'),
+  saveBatch: $('save-batch'),
 
   expected: $('expected'),
   expectedRead: $('expected-read'),
@@ -56,6 +61,11 @@ const rows = new Map(
 
 /** @type {File|null} */
 let chosen = null;
+let selection = [];
+let selected = null;
+let copyVersion = 0;
+let activeRead = null;
+let queued = null;
 
 /**
  * Digests worked out for the file that is currently chosen, by algorithm.
@@ -77,20 +87,26 @@ let running = null;
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
-  onFiles(files) { openFile(files[0]); },
+  onFiles(files) { openFiles(files); queueMicrotask(() => { if (running) picker.busy(readingLabel(selection.length)); }); },
   example: makeExample,
 });
 
-function openFile(file) {
+function openFiles(files) {
   hideError();
-  chosen = file;
-  digests = {};
-
-  el.fileName.textContent = file.name;
-  el.fileFacts.textContent = `${fileSize(file.size)} - ${exact(file.size)}`;
-  render();
-
+  selection = files.map((file, index) => ({ file, index, digests: {}, error: null, state: 'pending' }));
+  selectFile(selection[0]);
   start(ticked());
+}
+
+function selectFile(record) {
+  selected = record;
+  chosen = record?.file ?? null;
+  digests = record?.digests ?? {};
+  copyVersion += 1;
+  el.copyStatus.textContent = '';
+  el.fileName.textContent = chosen?.name ?? '';
+  el.fileFacts.textContent = chosen ? `${fileSize(chosen.size)} - ${exact(chosen.size)}` : '';
+  render();
 }
 
 /** The algorithms whose boxes are ticked, in the page order. */
@@ -100,7 +116,7 @@ function ticked() {
 
 /** The ticked ones that have not been worked out for this file yet. */
 function outstanding() {
-  return ticked().filter((id) => !(id in digests));
+  return ticked().filter(id => selection.some(record => !(id in record.digests)));
 }
 
 /**
@@ -110,83 +126,100 @@ function outstanding() {
  * two passes over the same file at once, and the second one would fight the
  * first for the progress bar.
  */
-async function start(ids) {
+function start(ids) {
   running?.abort();
+  queued = null;
   running = null;
-  if (!chosen || !ids.length) {
+  if (!selection.length || !ids.length) {
     el.progress.hidden = true;
     el.stopped.hidden = true;
     picker.done();
     return;
   }
-
-  const file = chosen;
+  const records = selection;
+  const asked = [...ids];
   const controller = new AbortController();
   running = controller;
-
+  const owns = () => running === controller && selection === records && !controller.signal.aborted;
   el.stopped.hidden = true;
-  picker.busy(readingLabel(1));
+  picker.busy(readingLabel(records.length));
   el.progress.hidden = false;
-  showProgress(0, chosen.size, null);
-
-  const began = performance.now();
-  let last = { at: 0, when: began };
-  let speed = null;
-
-  try {
-    const found = await hashFile(file, ids, {
-      signal: controller.signal,
-      onProgress(done, total) {
-        if (running !== controller) return;
-        const now = performance.now();
-        if (done > last.at && now > last.when) {
-          speed = smooth(speed, rate(done - last.at, (now - last.when) / 1000));
-          last = { at: done, when: now };
-        }
-        showProgress(done, total, speed);
-      },
-    });
-    if (running !== controller || controller.signal.aborted || chosen !== file) return;
-    Object.assign(digests, found);
-  } catch (error) {
-    if (running !== controller || chosen !== file) return;
-    if (error instanceof Stopped) {
-      // Not a failure. Whatever was already worked out for this file stays on
-      // the page, because it is still true of it - and if that is nothing, the
-      // note below is the way back, because a Stop button with no way to start
-      // again leaves the visitor holding a file and no button.
-      //
-      // Only when this is still the current run, though. A pass that was
-      // superseded by a newer one was not stopped by anybody, and the note
-      // would be about something the visitor never asked to end.
-      if (running === controller) el.stopped.hidden = ORDER.some((id) => id in digests);
-      return;
+  const launch = async () => {
+    if (!owns()) return;
+    activeRead = controller;
+    let currentFile = null;
+    let last = null;
+    let speed = null;
+    let failure = null;
+    try {
+      await hashSelection(records, asked, {
+        signal: controller.signal,
+        onProgress(record, done, total) {
+          if (!owns()) return;
+          const now = performance.now();
+          if (currentFile !== record) {
+            currentFile = record; last = { at: 0, when: now }; speed = null;
+            record.error = null; record.state = 'reading'; renderBatch();
+          }
+          if (done > last.at && now > last.when) {
+            speed = smooth(speed, rate(done - last.at, (now - last.when) / 1000));
+            last = { at: done, when: now };
+          }
+          showProgress(done, total, speed, record);
+        },
+        onResult(record, found) {
+          if (!owns()) return;
+          Object.assign(record.digests, found); record.state = 'ready'; record.error = null;
+          render();
+        },
+        onError(record, error) {
+          if (!owns()) return;
+          record.state = 'unreadable'; record.error = error.message;
+          render();
+        },
+      });
+    } catch (error) {
+      if (owns() && !(error instanceof Stopped)) {
+        failure = error;
+        if (currentFile) currentFile.state = 'pending';
+      }
+    } finally {
+      activeRead = null;
+      if (running === controller) {
+        running = null; el.progress.hidden = true; picker.done(); render();
+        el.stopped.hidden = !outstanding().length;
+        if (failure) showError(phrase('error.broke', { detail: failure.message }));
+      }
+      const next = queued;
+      queued = null;
+      if (next && running === next.controller && !next.controller.signal.aborted) void next.launch();
     }
-    if (error instanceof Unreadable) {
-      showError(phrase('read.failed', {
-        name: file.name, reason: phrase(error.message),
-      }));
-      return;
-    }
-    throw error;
-  } finally {
-    if (running === controller) {
-      running = null;
-      el.progress.hidden = true;
-      picker.done();
-    }
-  }
-
-  render();
+  };
+  if (activeRead) {
+    // A browser read cannot be interrupted. Keep one latest request waiting,
+    // so repeated replacement never starts a collection of native 4 MiB reads.
+    queued = { controller, launch };
+    el.progressText.textContent = phrase('progress.waiting');
+    el.progressBar.style.width = '0%';
+    el.progressTrack.setAttribute('aria-valuenow', '0');
+  } else void launch();
+  renderBatch();
 }
 
 el.stop.addEventListener('click', () => {
   running?.abort();
+  running = null;
+  queued = null;
+  for (const record of selection) {
+    if (ticked().some(id => !(id in record.digests))) record.state = 'stopped';
+  }
+  el.progress.hidden = true; picker.done(); render();
+  el.stopped.hidden = !outstanding().length;
 });
 
 el.restart.addEventListener('click', () => start(outstanding()));
 
-function showProgress(done, total, speed) {
+function showProgress(done, total, speed, record) {
   const fraction = total ? done / total : 1;
   el.progressBar.style.width = `${Math.min(100, fraction * 100)}%`;
   el.progressTrack.setAttribute('aria-valuenow', String(Math.round(fraction * 100)));
@@ -197,7 +230,7 @@ function showProgress(done, total, speed) {
     const left = remaining((total - done) / 1048576 / speed);
     if (left && done < total) parts.push(phrase('progress.remaining', { time: left }));
   }
-  el.progressText.textContent = parts.join('  -  ');
+  el.progressText.textContent = phrase('progress.file', { n: record.index + 1, count: selection.length, name: record.file.name }) + ' — ' + parts.join('  -  ');
 }
 
 /* ------------------------------------------------------- which algorithms */
@@ -205,7 +238,7 @@ function showProgress(done, total, speed) {
 for (const [id, box] of boxes) {
   box.addEventListener('change', () => {
     render();
-    if (box.checked && chosen && !(id in digests)) start(outstanding());
+    if (box.checked && outstanding().length) start(outstanding());
   });
 }
 
@@ -243,13 +276,11 @@ function readPaste() {
 /* ---------------------------------------------------------------- drawing */
 
 function render() {
+  el.loadError.hidden = !selected?.error;
+  if (selected?.error) showError(phrase('read.failed', { name: chosen.name, reason: phrase(selected.error) }));
   const answer = verdict(expected.entries, digests, chosen?.name);
 
-  // What the paste actually says, as opposed to what it is also allowed to
-  // mean. A digest wrapped across lines keeps its line-by-line readings as
-  // candidates for the comparison, and marking a row "differs" because of one
-  // of those would be reporting a checksum nobody wrote.
-  const declared = expected.wrapped ? expected.entries.slice(0, 1) : expected.entries;
+  const comparisons = rowVerdicts(expected, digests, chosen?.name);
 
   for (const id of ORDER) {
     const row = rows.get(id);
@@ -262,18 +293,63 @@ function render() {
     // A row is marked only when this paste actually says something about that
     // algorithm. A green tick beside SHA-256 because the MD5 matched would be
     // a claim nobody made.
-    const said = declared.some((entry) => entry.algorithm === id);
-    const matched = answer.state === 'match' && answer.entry.algorithm === id;
+    const matched = comparisons[id] === 'match';
+    const differs = comparisons[id] === 'mismatch';
     row.querySelector('[data-slot="match"]').hidden = !matched;
-    row.querySelector('[data-slot="differs"]').hidden = !(said && !matched);
+    row.querySelector('[data-slot="differs"]').hidden = !differs;
     row.classList.toggle('is-match', matched);
-    row.classList.toggle('is-differs', said && !matched);
+    row.classList.toggle('is-differs', differs);
   }
 
   el.results.hidden = !ORDER.some((id) => id in digests);
 
   renderRead();
   renderVerdict(answer);
+  renderBatch();
+}
+
+function batchState(record) {
+  if (!ticked().length) return 'choose';
+  if (record.state === 'reading' || record.state === 'stopped' || record.error) return record.error ? 'unreadable' : record.state;
+  if (ticked().some(id => !(id in record.digests))) return 'pending';
+  const answer = manifestVerdict(expected, record.digests, record.file.name);
+  return answer.state === 'none' ? 'ready' : answer.state === 'match' && answer.renamed ? 'renamed' : answer.state;
+}
+
+function renderBatch() {
+  el.batch.hidden = selection.length < 2;
+  if (el.batch.hidden) return;
+  const focus = document.activeElement?.dataset.inspectFile;
+  el.batchList.replaceChildren();
+  let matched = 0;
+  for (const record of selection) {
+    const state = batchState(record);
+    if (state === 'match' || state === 'renamed') matched += 1;
+    const row = document.createElement('li');
+    row.dataset.state = state; row.dataset.fileIndex = record.index;
+    const name = document.createElement('span'); name.className = 'batch-name';
+    name.textContent = (record.index + 1) + '. ' + record.file.name;
+    const status = document.createElement('span'); status.className = 'batch-state';
+    status.textContent = phrase(`batch.${state}`);
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'ghost';
+    button.textContent = phrase('batch.inspect');
+    button.dataset.inspectFile = record.index;
+    button.setAttribute('aria-label', phrase('batch.inspect-name', { name: record.file.name, n: record.index + 1 }));
+    button.setAttribute('aria-pressed', String(record === selected));
+    button.addEventListener('click', () => selectFile(record));
+    row.append(name, status, button);
+    if (record.error) {
+      const error = document.createElement('span'); error.className = 'batch-error';
+      error.textContent = phrase('read.failed', { name: record.file.name, reason: phrase(record.error) });
+      row.append(error);
+    }
+    el.batchList.append(row);
+    if (focus === String(record.index)) button.focus({ preventScroll: true });
+  }
+  el.batchSummary.textContent = expected.entries.length
+    ? phrase('batch.summary', { matched, count: selection.length })
+    : phrase('batch.selected', { done: selection.filter(record => ticked().length && ticked().every(id => id in record.digests)).length, count: selection.length });
+  el.saveBatch.disabled = !selection.some(record => ticked().some(id => id in record.digests));
 }
 
 /** The one line under the paste box saying what was recognised in it. */
@@ -338,47 +414,53 @@ function label(id) {
  * characters to know what any of them is, and this page has just spent three
  * paragraphs arguing that nobody should have to.
  */
-function asText() {
-  const name = chosen ? chosen.name : '';
-  return ticked()
-    .filter((id) => id in digests)
-    .map((id) => `${ALGORITHMS[id].tag} (${name}) = ${digests[id]}`)
-    .join('\n');
+function checksumsFor(record) {
+  const name = record.file.name;
+  const values = record.digests;
+  return ticked().filter(id => id in values)
+    .map(id => `${ALGORITHMS[id].tag} (${name}) = ${values[id]}`).join('\n');
 }
+
+function asText() { return selected ? checksumsFor(selected) : ''; }
 
 for (const [id, row] of rows) {
   row.querySelector('[data-slot="copy"]').addEventListener('click', async (event) => {
     event.preventDefault();
-    await copy(digests[id], phrase('copy.one'));
+    await copy(digests[id], phrase('copy.one'), () => boxes.get(id).checked ? digests[id] : '');
   });
 }
 
-el.copyAll.addEventListener('click', () => copy(asText(), phrase('copy.all')));
+el.copyAll.addEventListener('click', () => copy(asText(), phrase('copy.all'), asText));
 
-async function copy(text, said) {
+async function copy(text, said, current) {
   if (!text) return;
+  const record = selected;
+  const owner = ++copyVersion;
+  const owns = () => selected === record && copyVersion === owner && current() === text;
+  el.copyStatus.textContent = '';
   try {
     await navigator.clipboard.writeText(text);
-    el.copyStatus.textContent = said;
+    if (owns()) el.copyStatus.textContent = said;
   } catch {
+    if (!owns()) return;
     el.copyStatus.textContent = phrase('copy.failed', {
       download: el.downloadChecksums.textContent.trim(),
     });
   }
 }
 
-el.downloadChecksums.addEventListener('click', () => {
-  const text = asText();
+function saveChecksums(text, name) {
   if (!text) return;
   const blob = new Blob([`${text}\n`], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${chosen.name}.checksums.txt`;
-  link.click();
-  // Long enough for the download to have started, and revoked either way so a
-  // page left open all afternoon does not accumulate them.
+  const link = document.createElement('a'); link.href = url; link.download = name; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+el.downloadChecksums.addEventListener('click', () => saveChecksums(asText(), `${chosen.name}.checksums.txt`));
+el.saveBatch.addEventListener('click', () => {
+  const text = selection.map(checksumsFor).filter(Boolean).join('\n');
+  saveChecksums(text, 'checksums.txt');
 });
 
 /* ------------------------------------------------------------- the frame */

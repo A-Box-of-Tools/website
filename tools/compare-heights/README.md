@@ -95,6 +95,22 @@ a row you have not filled in yet is not a mistake. Now that every row arrives
 with a height, an empty one is a box somebody cleared, and a row that will not
 be drawn should say so.
 
+### A typed width cannot quietly become another measurement
+
+A width belongs to both the plain rectangle and a drawn object preset. The
+preset carries `stretch`, which separates it from a person or uploaded art
+whose proportions are its own. The old row reader checked only for absent
+markup, so a drawn door ignored both its preset width and a later edit even
+though the renderer already accepted that second scale factor.
+
+`chart-measurements.js` gives those two object routes the same validation.
+Blank width keeps the renderer's existing automatic ratio of 0.6 times the
+height. A nonblank value uses the existing height parser and its unit/size
+limits; a refused width omits that row and says why under the stable native
+field. The page reports both explicit and automatic widths in both systems,
+so a plausible drawing cannot silently replace a measurement that failed.
+People and uploaded art retain their own aspect ratio and never use that field.
+
 ### A picture goes on as itself; a drawing is rebuilt
 
 AVIF is one of the raster inputs handled by the browser decoder. The chooser
@@ -126,6 +142,21 @@ An `<image>` in the chart looks like it should break the download, since
 `src/save.js` rasterises the SVG through a canvas and a tainted canvas cannot be
 read back. It does not: a `data:` URI is inline rather than external. That was
 put to the browser before it was relied on rather than reasoned about.
+
+### Clear also retires an optional import
+
+Picture selections add rows, so `orderedLoads` keeps their selection order.
+Clear aborts their individual ownership signals and starts a fresh queue;
+a new selection need not wait for an old native decoder to finish. A removed
+or replaced target row cannot receive a late picture, error or success note,
+and capacity is checked again before saying that an import was added.
+
+`chart-picture-read.js` keeps the existing whitelist, geometry and bounded PNG
+writer. It checks ownership after asynchronous byte reading or bitmap decoding.
+Native decoding itself is not cancellable, so a late bitmap closes in finally;
+canvas pixels and the temporary sanitized SVG measurement group/stage also
+release there on success, refusal, failure and retirement. The pending status
+belongs to the current queue, rather than to whichever read finished last.
 
 ### The objects are drawn, and stretched to the numbers
 
@@ -274,7 +305,9 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
 | `src/save.js` | the SVG blob, the canvas rasterisation, and the download |
-| `src/main.js` | the rows and the options |
+| `src/chart-measurements.js` | height and applicable object width validation, without silently replacing a refused value |
+| `src/chart-picture-read.js` | the optional vector/raster readers and their owned decode/measurement resources |
+| `src/main.js` | the rows, options and ordered import handoff |
 
 ## What it does not do
 

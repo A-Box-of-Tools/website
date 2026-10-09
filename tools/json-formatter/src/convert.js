@@ -28,7 +28,7 @@
 
 import { parseJson, printJson } from './shared/parse-json.js';
 import { parseYaml, printYaml } from './shared/parse-yaml.js';
-import { parseXml, printXml } from './shared/parse-xml.js';
+import { parseXml, printXml, unescapeXml, xmlSpace } from './shared/parse-xml.js';
 
 /* -------------------------------------------------------------- JSON, YAML */
 
@@ -36,8 +36,9 @@ export function jsonToYaml(text, { indent = 2 } = {}) {
   return printYaml(parseJson(text), { indent });
 }
 
-export function yamlToJson(text, { indent = '  ', sortKeys = false } = {}) {
-  return `${printJson(stripRaw(parseYaml(text)), { indent, sortKeys })}\n`;
+export function yamlToJson(text, { indent = '  ', sortKeys = false, onDiagnostic } = {}) {
+  const data = parseYaml(text, { onComment: () => onDiagnostic?.({ kind: 'yaml.comment' }) });
+  return `${printJson(stripRaw(data), { indent, sortKeys })}\n`;
 }
 
 /**
@@ -68,23 +69,36 @@ function stripRaw(node) {
  * survives being read back. A top-level array has no key to repeat, so its
  * items are called `item`.
  */
-export function jsonToXml(text, { indent = '  ', root = 'root' } = {}) {
+export function jsonToXml(text, { indent = '  ', root = 'root', onDiagnostic } = {}) {
   const data = parseJson(text);
   const lines = [];
   const pad = (depth) => indent.repeat(depth);
 
-  const write = (name, node, depth) => {
+  const nameOf = (name) => {
     const tag = xmlName(name);
+    if (tag !== name) onDiagnostic?.({ kind: 'xml.name', from: name, to: tag });
+    return tag;
+  };
+  const write = (name, node, depth, tag = nameOf(name)) => {
     switch (node.t) {
       case 'map':
         if (!node.pairs.length) { lines.push(`${pad(depth)}<${tag}/>`); return; }
         lines.push(`${pad(depth)}<${tag}>`);
-        for (const pair of node.pairs) write(pair.key, pair.value, depth + 1);
+        const names = new Map();
+        for (const pair of node.pairs) {
+          const childTag = nameOf(pair.key);
+          if (!names.has(childTag)) names.set(childTag, new Set());
+          names.get(childTag).add(pair.key);
+          write(pair.key, pair.value, depth + 1, childTag);
+        }
+        for (const keys of names.values()) {
+          if (keys.size > 1) onDiagnostic?.({ kind: 'xml.collision' });
+        }
         lines.push(`${pad(depth)}</${tag}>`);
         return;
       case 'seq':
         if (!node.items.length) { lines.push(`${pad(depth)}<${tag}/>`); return; }
-        for (const item of node.items) write(name, item, depth);
+        for (const item of node.items) write(name, item, depth, tag);
         return;
       case 'null':
         lines.push(`${pad(depth)}<${tag}/>`);
@@ -96,9 +110,10 @@ export function jsonToXml(text, { indent = '  ', root = 'root' } = {}) {
 
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
   if (data.t === 'seq') {
-    lines.push(`<${xmlName(root)}>`);
+    const rootTag = nameOf(root);
+    lines.push(`<${rootTag}>`);
     for (const item of data.items) write('item', item, 1);
-    lines.push(`</${xmlName(root)}>`);
+    lines.push(`</${rootTag}>`);
   } else {
     write(root, data, 0);
   }
@@ -115,10 +130,13 @@ function scalarText(node) {
  * A JSON key is any string; an XML element name is not. Anything an element
  * name cannot hold is replaced rather than dropped, and a name that would
  * start with a digit gets a leading underscore, because the alternative is
- * emitting a document that no XML parser will read back.
+ * emitting a document that no XML parser will read back. Colons are replaced
+ * too: this mapping invents no namespace bindings. Diagnostics report name
+ * changes and distinct sibling keys that map to the same name; repeating an
+ * array key is intentional and is not a collision.
  */
 function xmlName(key) {
-  const cleaned = String(key).replace(/[^A-Za-z0-9_.:-]/g, '_');
+  const cleaned = String(key).replace(/[^A-Za-z0-9_.-]/g, '_');
   return /^[A-Za-z_]/.test(cleaned) ? cleaned : `_${cleaned}`;
 }
 
@@ -138,27 +156,28 @@ function escapeXml(text) {
  */
 export function xmlToJson(text, { indent = '  ' } = {}) {
   const nodes = parseXml(text);
-  const elements = nodes.filter((node) => node.t === 'element');
-  if (!elements.length) {
-    return `${printJson({ t: 'map', pairs: [] }, { indent })}\n`;
-  }
-  const root = elements[0];
+  const root = nodes.find((node) => node.t === 'element');
   const data = { t: 'map', pairs: [{ key: root.name, value: elementData(root) }] };
   return `${printJson(data, { indent })}\n`;
 }
 
-function elementData(element) {
+function elementData(element, inheritedSpace = false) {
+  const preserve = xmlSpace(element, inheritedSpace);
   const pairs = [];
   for (const attr of element.attrs) {
     pairs.push({ key: `@${attr.name}`, value: { t: 'str', value: unescapeXml(attr.value ?? '') } });
   }
 
   const children = element.children.filter((child) => child.t === 'element');
-  const text = element.children
+  const ownText = element.children
     .filter((child) => child.t === 'text' || child.t === 'cdata')
     .map((child) => (child.t === 'cdata' ? child.text : unescapeXml(child.text)))
-    .join('')
-    .trim();
+    .join('');
+  // Only whitespace used to lay out child elements is omitted. Leaf text,
+  // mixed content and explicit CDATA keep their surrounding characters.
+  const layout = children.length && !preserve && /^[ \t\r\n]*$/.test(ownText)
+    && !element.children.some((child) => child.t === 'cdata');
+  const text = layout ? '' : ownText;
 
   if (!children.length) {
     if (!pairs.length) {
@@ -175,7 +194,7 @@ function elementData(element) {
   const byName = new Map();
   for (const child of children) {
     if (!byName.has(child.name)) { byName.set(child.name, []); order.push(child.name); }
-    byName.get(child.name).push(elementData(child));
+    byName.get(child.name).push(elementData(child, preserve));
   }
   for (const name of order) {
     const list = byName.get(name);
@@ -183,17 +202,6 @@ function elementData(element) {
   }
   if (text !== '') pairs.push({ key: '#text', value: { t: 'str', value: text } });
   return { t: 'map', pairs };
-}
-
-function unescapeXml(text) {
-  return text.replace(/&(lt|gt|amp|quot|apos|#[0-9]+|#[xX][0-9a-fA-F]+);/g, (whole, body) => {
-    if (body[0] === '#') {
-      const code = body[1] === 'x' || body[1] === 'X'
-        ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
-      return Number.isFinite(code) ? String.fromCodePoint(code) : whole;
-    }
-    return { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'" }[body];
-  });
 }
 
 /* ---------------------------------------------------------------- the list */
@@ -220,14 +228,14 @@ export const CONVERSIONS = [
     id: 'yaml-json',
     name: 'convert.yaml-json.name',
     note: 'convert.yaml-json',
-    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys }),
+    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys, onDiagnostic: options.onDiagnostic }),
     output: 'json',
   },
   {
     id: 'json-xml',
     name: 'convert.json-xml.name',
     note: 'convert.json-xml',
-    run: (text, options) => jsonToXml(text, { indent: options.indent, root: options.root || 'root' }),
+    run: (text, options) => jsonToXml(text, { indent: options.indent, root: options.root || 'root', onDiagnostic: options.onDiagnostic }),
     output: 'xml',
   },
   {

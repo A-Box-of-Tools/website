@@ -1,16 +1,16 @@
 name = "Rotacionar vídeo"
 heading = "Girar&nbsp;vídeo <span class=\"h1-kw\">&mdash; para a gravação que ficou de lado</span>"
-tagline = "Um quarto de volta, meia volta ou para o outro lado. A rotação fica no cabeçalho do arquivo: nenhum quadro é decodificado e nada se perde."
-title = "Girar vídeo &mdash; grátis, sem perdas, no navegador, sem upload"
-description = "Gire um vídeo de lado ou de cabeça para baixo em um quarto ou meia volta no navegador. A rotação é gravada no cabeçalho: nenhum quadro é recodificado e nada se perde. Ou aplique-a aos pixels para players antigos. Aceita MP4, MOV, WebM e MKV; gera MP4. Sem upload."
-og_title = "Gire um vídeo sem enviá-lo e sem recodificá-lo"
-og_description = "Um vídeo filmado de lado precisa de nove números diferentes no cabeçalho, não de recodificação. Gire-o no navegador em segundos; o arquivo nunca sai do seu computador."
+tagline = "Um quarto de volta, meia volta ou para o outro lado. Na rotação pelo cabeçalho, os quadros da imagem ficam intactos."
+title = "Girar vídeo &mdash; grátis, no navegador, sem upload"
+description = "Gire um vídeo no navegador. A rotação pelo cabeçalho copia os quadros intactos; aplicá-la aos pixels recodifica a imagem para players antigos. Áudio AAC é copiado, outro áudio decodificável é recodificado como AAC e o áudio pode ser omitido. Aceita MP4, MOV, WebM e MKV; gera MP4. Sem upload."
+og_title = "Gire um vídeo pelo cabeçalho, sem enviá-lo"
+og_description = "A rotação pelo cabeçalho mantém os quadros intactos. O áudio é copiado, recodificado como AAC ou omitido. Gire o vídeo no navegador; o arquivo nunca sai do seu aparelho."
 og_image_alt = "Gire um vídeo no navegador, sem upload"
 pledge = "O vídeo escolhido é lido, recebe um novo cabeçalho e é gravado na memória deste computador por código servido por este site. Se você pedir para aplicar a rotação aos pixels, os codecs do seu navegador desenham os quadros. Nada aqui pode enviar um arquivo, e não há servidor para recebê-lo. Um gigabyte não precisa ir e voltar para ser girado."
 live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, observe a aba Rede e gire um vídeo. Nenhuma requisição leva um vídeo, um quadro ou um nome de arquivo. Ou desconecte a internet e gire-o mesmo assim."
 read_first = ", <code>src/plan.js</code> para os nove números que representam a rotação, <code>src/rotate.js</code> para a cópia e a gravação, e <code>src/shared/copy-tracks.js</code> para ver como cada quadro é transferido sem ser decodificado. Nenhum pode acessar a rede, nem os leitores e o gravador que os acompanham."
 howto_heading = "Como girar um vídeo"
-card = "Gire o vídeo filmado de lado: um quarto de volta para a direita ou esquerda, ou de cabeça para baixo. A rotação fica no cabeçalho e cada quadro é copiado como está &mdash; sem decodificar, sem perdas, em segundos mesmo para um gigabyte. Também é possível aplicá-la aos pixels para players antigos que ignoram o cabeçalho."
+card = "Gire o vídeo filmado de lado: um quarto de volta para a direita ou esquerda, ou de cabeça para baixo. A rotação pelo cabeçalho copia os quadros intactos; aplicá-la aos pixels recodifica a imagem para players antigos. O áudio é copiado, recodificado como AAC ou omitido."
 
 [words]
 plural = "vídeos"
@@ -32,8 +32,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu aparelho"
 
 [[privacy]]
-title = "Uma rotação são nove números no cabeçalho, e a página altera apenas eles."
-body = "Um celular que filma de lado não gira os pixels. Ele guarda os quadros como o sensor os captou e grava um quarto de volta no cabeçalho da faixa &mdash; uma matriz de exibição de nove números &mdash; que o player aplica ao mostrar o vídeo. Um vídeo que aparece de lado precisa de outra matriz, não de outra imagem. Esta página grava a matriz da rotação escolhida e copia cada quadro e pacote exatamente como estava, sem decodificar nenhum. Por isso um gigabyte leva segundos, a imagem permanece idêntica bit a bit e o arquivo sai com quase o mesmo tamanho."
+title = "Uma rotação são nove números no cabeçalho da imagem."
+body = "Um celular guarda os quadros como o sensor os captou e grava a rotação na matriz de exibição da faixa. O player a aplica na tela. Ao usar o cabeçalho, esta página grava a matriz escolhida e copia cada quadro intacto, sem recodificá-lo. O áudio AAC é copiado; outro áudio decodificável é recodificado como AAC, a menos que você escolha removê-lo. Quando o áudio também é copiado, o tamanho do arquivo fica quase igual."
 
 [[privacy]]
 title = "O upload é a parte demorada, e aqui ele não acontece."
@@ -77,7 +77,7 @@ body = "O cabeçalho é gravado e cada quadro é copiado, o que leva segundos. A
 
 [[faq]]
 q = "Girar o vídeo reduz a qualidade?"
-a = "Não, no modo padrão. A rotação é gravada no cabeçalho e cada quadro é copiado byte a byte: a imagem permanece igual e o tamanho quase não muda. Apenas &ldquo;aplicar aos pixels&rdquo; recodifica, e a página avisa antes de você marcar. Um serviço que recodifica por padrão &mdash; como a maioria dos online &mdash; faz uma recodificação para uma tarefa que precisava alterar nove números."
+a = "A rotação pelo cabeçalho mantém a qualidade da imagem: cada quadro é copiado byte a byte. Apenas aplicar a rotação aos pixels recodifica a imagem. Áudio AAC é copiado; outro áudio decodificável é recodificado como AAC, a menos que seja omitido. Quando o áudio também é copiado, o tamanho do arquivo fica quase igual."
 
 [[faq]]
 q = "Por que o arquivo ainda aparece de lado em um player?"
@@ -101,7 +101,7 @@ a = "Não. O arquivo é lido, recebe um novo cabeçalho e é gravado pelo seu na
 
 [[faq]]
 q = "Funciona no celular?"
-a = "Sim. O modo padrão não decodifica nada, então um celular faz a rotação tão rapidamente quanto um notebook. O arquivo pronto fica na memória até você salvá-lo, que é o único limite; um celular costuma guardar algumas centenas de megabytes de resultado sem problemas. Aplicar aos pixels exige codificação, e o codificador por hardware do próprio celular é rápido nessa tarefa."
+a = "Sim. A rotação pelo cabeçalho copia os quadros sem decodificá-los; o áudio pode precisar de codificação AAC. O arquivo pronto fica na memória até ser salvo, e um celular costuma guardar algumas centenas de megabytes de resultado. Aplicar a rotação aos pixels também codifica a imagem, o que o codificador por hardware pode acelerar."
 
 [[faq]]
 q = "Há limite de tamanho, e custa alguma coisa?"
@@ -112,8 +112,8 @@ q = "Funciona offline?"
 a = "Sim. Carregue a página uma vez e desconecte a internet: ela continua funcionando. Essa também é a forma mais simples de provar que nada é enviado. Uma ferramenta que enviasse seu vídeo para ser girado pararia assim que você se desconectasse."
 
 [schema]
-description = "Gire um vídeo em um quarto ou meia volta no navegador. A rotação é gravada no cabeçalho e cada quadro é copiado intacto, sem recodificação nem perdas. Ou aplique-a aos pixels para players antigos. Sem upload."
-features = ["Um quarto de volta à direita, um quarto à esquerda ou de cabeça para baixo", "Grava a rotação na matriz de exibição e copia cada quadro e pacote como está", "Mostra o primeiro quadro com a mesma transformação que o arquivo terá", "Aplica a rotação aos pixels quando solicitado, para players que ignoram o cabeçalho", "Lê MP4, MOV, M4V, WebM e MKV; grava MP4", "Reabre o arquivo pronto para verificar duração, rotação e áudio, e o reproduz da memória", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
+description = "Gire um vídeo em um quarto ou meia volta no navegador. A rotação pelo cabeçalho copia os quadros intactos; aplicá-la aos pixels recodifica a imagem para players antigos. Áudio AAC é copiado, outro áudio decodificável é recodificado como AAC e o áudio pode ser omitido. Sem upload."
+features = ["Um quarto de volta à direita, um quarto à esquerda ou de cabeça para baixo", "Grava a rotação na matriz de exibição e copia cada quadro intacto", "Mostra o primeiro quadro com a mesma transformação que o arquivo terá", "Aplica a rotação aos pixels quando solicitado, para players que ignoram o cabeçalho", "Lê MP4, MOV, M4V, WebM e MKV; grava MP4", "Reabre o arquivo pronto para verificar duração, rotação e áudio, e o reproduz da memória", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
 
 [picker]
 title = "Arraste um vídeo para cá"

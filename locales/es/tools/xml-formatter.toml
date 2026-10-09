@@ -149,7 +149,7 @@ body = """
  Un analizador que falla aquí
       dice <em>qué etiqueta</em> no se cerró nunca y en qué línea y columna, en
       lugar de &laquo;error en la línea 1&raquo;, que es lo que dice un navegador
-      sobre un documento que leyó de golpe."""
+      sobre un documento que leyó de golpe. Pulsa <em>Ir al error</em> para volver a esa posición en el texto. Al escribir, el foco se mantiene donde está hasta que decidas moverlo."""
 
 [[howto]]
 title = "Llévate el resultado."

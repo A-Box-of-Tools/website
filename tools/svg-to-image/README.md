@@ -119,6 +119,21 @@ The one visible cost is a webfont in a `<text>` element falling back to whatever
 the machine has, which the page says in as many words: convert text to paths
 before exporting and it becomes geometry, which looks the same everywhere.
 
+The source list, active preview and completed results identify ordinary linked
+assets before that omission looks like a damaged export. A detached XML document
+is inspected once on import; no node enters the page and no address is opened.
+`src/svg-linked-assets.js` checks SVG image, filter image, use and font-face
+references, XML stylesheet instructions and ordinary CSS URL/import forms.
+Embedded data and same-document fragments remain local and do not warn; ordinary
+hyperlinks are not resource loads. Comments, namespace prefixes and XML attribute
+entities are left to the browser parser. CSS comments and quoted content are
+stepped over, and CSS escapes are read before a URL is classified. This is a
+conservative inventory, not an exhaustive XML/CSS resolver or a promise that
+every listed resource would change visible pixels. Invalid XML still belongs
+to the existing rasteriser, and the original drawing text is never rewritten
+for this check. The hint recommends embedding assets or converting text to
+paths; the static rendering policy stays the same.
+
 ---
 
 ## The size plan
@@ -197,3 +212,8 @@ is the one place this tool's policy differs from a tool with no carry-on
 row, and it is worth knowing before concluding that a `blob:` fetch failing
 somewhere else on the site is a bug. Nothing else is widened, and `blob:`
 names bytes inside this page — it gains no reach over the network.
+
+The BOM/declaration-aware text reader lives in `shared/js/svg-text.js`; the
+`decodeSvgText` export from `src/svg.js` remains available to existing callers.
+Image to Data URI uses the same reader for detection and preserves original
+bytes for non-UTF-8 output.

@@ -20,6 +20,8 @@ import { encodeGif, MAX_COLORS } from '../../tools/video-to-gif/src/encode.js';
 import { ColorHistogram } from '../../tools/video-to-gif/src/quantize.js';
 import { parseGif, flatFrame } from './gif-fixtures.js';
 import { blobBytes } from './helpers.js';
+import { decodeGif } from '../../shared/js/gif-decode.js';
+import { GifCanvas } from '../../shared/js/gif-compose.js';
 
 const W = 8;
 const H = 4;
@@ -145,4 +147,52 @@ test('a run cancelled partway through throws rather than returning half a file',
   await assert.rejects(
     () => encodeGif({ frames, histogram, delays: [8], width: W, height: H, signal: controller.signal }),
     (error) => error.name === 'AbortError');
+});
+
+
+test('long holds preserve all hundredths without emitting a one-hundredth tail', async () => {
+  for (const [delay, expected] of [[65535, [65535]], [65536, [65534, 2]],
+    [70000, [65535, 4465]], [131071, [65535, 65534, 2]]]) {
+    const { result, gif } = await encode([RED], [delay]);
+    assert.deepEqual(gif.frames.map(frame => frame.control.delay), expected);
+    assert.equal(result.written, expected.length);
+    assert.equal(result.continued, expected.length - 1);
+    assert.ok(expected.every(n => n >= 2 && n <= 65535));
+    for (const frame of gif.frames.slice(1)) {
+      assert.deepEqual([frame.x, frame.y, frame.width, frame.height], [0, 0, 1, 1]);
+      assert.equal(frame.control.hasTransparent, true);
+      assert.equal(frame.control.disposal, 1);
+    }
+    const decoded = decodeGif(await blobBytes(result.blob));
+    const canvas = new GifCanvas(decoded);
+    for (let frame = canvas.next(); frame; frame = canvas.next()) {
+      for (let i = 0; i < frame.pixels.length; i += 4) {
+        assert.deepEqual([...frame.pixels.subarray(i, i + 4)], [...RED, 255]);
+      }
+    }
+  }
+});
+
+test('a long differenced hold retains its prior picture before the next colour', async () => {
+  const { result } = await encode([RED, GREEN, GREEN, BLUE], [5, 40000, 25536, 5], { loop: false });
+  const decoded = decodeGif(await blobBytes(result.blob));
+  assert.deepEqual(decoded.frames.map(frame => frame.delay), [5, 65534, 2, 5]);
+  const canvas = new GifCanvas(decoded);
+  const expected = [RED, GREEN, GREEN, BLUE];
+  for (let i = 0; i < expected.length; i++) assert.deepEqual([...canvas.next().pixels.slice(0, 4)], [...expected[i], 255]);
+});
+
+test('identical frames keep progress cooperative and Cancel rejects before the rest are quantized', async () => {
+  const controller = new AbortController();
+  const frames = Array.from({ length: 200 }, () => flatFrame(W, H, RED));
+  const histogram = new ColorHistogram();
+  histogram.add(frames[0]);
+  const progress = [];
+  await assert.rejects(encodeGif({ frames, histogram, delays: frames.map(() => 20),
+    width: W, height: H, signal: controller.signal, onProgress: step => {
+      progress.push(step.done);
+      if (step.done >= 9) controller.abort();
+    } }), error => error.name === 'AbortError');
+  assert.deepEqual(progress, [1, 9]);
+  assert.ok(frames.slice(9).every(frame => frame !== null));
 });

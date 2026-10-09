@@ -34,10 +34,10 @@
 
     <label class="field" for="target-mb">
       <span>Tamanho máximo</span>
-      <span class="field-note">Em megabytes. Os botões oferecem limites comuns.</span>
+      <span class="field-note">1 MB = 1.000.000 bytes. Os botões mostram limites comuns de envio.</span>
     </label>
     <div class="target-row">
-      <input type="number" id="target-mb" class="target-input" min="0.1" step="0.1" inputmode="decimal">
+      <input type="number" id="target-mb" class="target-input" min="0.1" step="any" inputmode="decimal">
       <span class="target-unit">MB</span>
     </div>
     <div class="chips" role="group" aria-label="Limites comuns">
@@ -122,7 +122,7 @@
     <span data-phrase="file.facts">{size} &middot; {length} &middot; {frame} &middot; {rate}</span>
     <span data-phrase="note.silent">Este vídeo não tem áudio: todo o espaço disponível vai para a imagem.</span>
     <span data-phrase="estimate.nofile">Escolha um vídeo acima para ver os ajustes possíveis.</span>
-    <span data-phrase="estimate.notarget">Digite os megabytes ou escolha um limite.</span>
+    <span data-phrase="estimate.notarget">Digite pelo menos 0,1 MB como um número finito ou escolha um limite.</span>
     <span data-phrase="estimate.already">Este vídeo tem {size}, abaixo de {target}. Só é preciso comprimir se você reduzir o limite.</span>
     <span data-phrase="estimate.nofit">Só o áudio já ultrapassa esse tamanho. Remova-o ou permita pelo menos {least}.</span>
     <span data-phrase="estimate.toosmall">Não cabe uma imagem utilizável. Permita pelo menos {least}.</span>
@@ -151,6 +151,7 @@
     <span data-phrase="check.ok">foi reaberto da memória: dura {length}, como antes, e {size} está abaixo de {target}.</span>
     <span data-phrase="check.over">foi reaberto e dura {length}, como antes, mas {size} ainda supera {target}. O codificador não conseguiu reduzir mais nessas dimensões. Tente uma imagem menor ou remova o áudio.</span>
     <span data-phrase="check.length">o arquivo pronto tem duração de {got} em vez de {want}</span>
+    <span data-phrase="check.sound">o arquivo pronto não manteve todo o áudio</span>
     <span data-phrase="check.reopen">não foi possível reabrir o arquivo pronto ({detail})</span>
     <span data-phrase="facts.picture">{frame}, antes {from}, a {rate} e {fps} quadros por segundo.</span>
     <span data-phrase="facts.sound.kept">O áudio foi copiado intacto, sem recodificação.</span>
@@ -165,6 +166,8 @@
     <span data-phrase="encode.toobig">Este navegador não codifica H.264 em {size}. Escolha dimensões menores.</span>
     <span data-phrase="encode.noconfig">O codificador nunca informou uma configuração de decodificador.</span>
     <span data-phrase="decode.none">Não foi possível decodificar nenhum quadro deste vídeo.</span>
+    <span data-phrase="read.edits">Este arquivo usa uma lista de edição para reprodução que esta ferramenta não consegue preservar. Salve o clipe editado visível como um novo vídeo antes de processá-lo aqui.</span>
+    <span data-phrase="read.editinvalid">A lista de edição para reprodução do arquivo está incompleta ou tem tempos inválidos. Por isso, não é possível preservar sua sequência visível.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

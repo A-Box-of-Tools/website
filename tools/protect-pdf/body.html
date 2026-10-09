@@ -59,7 +59,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal" class="ghost" aria-pressed="false">Show</button>
       </div>
 
@@ -68,7 +68,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="password-again" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
       </div>
 
       <!--
@@ -122,7 +122,7 @@
       </label>
       <div class="password-input">
         <input type="password" id="owner-password" autocomplete="new-password" spellcheck="false"
-               autocapitalize="off">
+               autocapitalize="off" aria-describedby="password-status">
         <button type="button" id="reveal-owner" class="ghost" aria-pressed="false">Show</button>
       </div>
     </fieldset>
@@ -182,6 +182,10 @@
     <span data-phrase="waiting.settings">This opens once the passwords above agree and something has been asked for.</span>
     <span data-phrase="password.show">Show</span>
     <span data-phrase="password.hide">Hide</span>
+    <span data-phrase="status.open.latin1">AES-128 cannot represent every character in the open password. Use Latin-1 characters or choose AES-256.</span>
+    <span data-phrase="status.owner.latin1">AES-128 cannot represent every character in the owner password. Use Latin-1 characters or choose AES-256.</span>
+    <span data-phrase="status.open.limit">The open password uses {n} bytes; this scheme keeps at most {limit}. Shorten it before exporting so no part is discarded.</span>
+    <span data-phrase="status.owner.limit">The owner password uses {n} bytes; this scheme keeps at most {limit}. Shorten it before exporting so no part is discarded.</span>
     <span data-phrase="status.blank">There is no way back in without this password. Nothing here guesses
       one, and nothing honest anywhere does either. Keep your original.</span>
     <span data-phrase="status.mismatch">The two passwords do not match yet.</span>

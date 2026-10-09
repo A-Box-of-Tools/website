@@ -92,7 +92,7 @@
       <div class="field">
         <label for="every">A cada</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>segundos</span>
         </div>
         <p class="field-note">
@@ -101,6 +101,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>Ajustar o intervalo para o vídeo inteiro com no máximo 500 imagens</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">Extrair este quadro</button>
@@ -158,6 +161,9 @@
       o quadro foi decodificado, a &#x2066;{width} x {height}&#x2069;.</span>
     <span data-phrase="note.lossy">Comprimida de novo por cima da compressão do próprio
       vídeo. Serve para uma prévia, não para algo que ainda vai ser editado.</span>
+    <span data-phrase="series.plan">Imagens planejadas: {n}, de {first} a {last}.</span>
+    <span data-phrase="series.plan.player">Posições solicitadas ao player: {n}, de {first} a {last}. O player escolhe os quadros reais.</span>
+    <span data-phrase="series.overlimit">Este intervalo produziria {n} imagens, de {first} a {last}. O limite é 500; aumente o intervalo antes de começar.</span>
     <span data-phrase="series.any">Pegar uma série</span>
     <span data-phrase="series.every.one">Pegar um a cada segundo</span>
     <span data-phrase="series.every.many">Pegar um a cada {n} segundos</span>
@@ -175,7 +181,7 @@
     <span data-phrase="save.nowrite">Este navegador não quis escrever um {format}.</span>
     <span data-phrase="save.failed">Esse quadro não pôde ser salvo.</span>
     <span data-phrase="zip.failed">Esse arquivo compactado não pôde ser montado.</span>
-    <span data-phrase="series.nointerval">Defina um intervalo maior que zero segundos.</span>
+    <span data-phrase="series.nointerval">Defina um intervalo de pelo menos 0,1 segundo.</span>
     <span data-phrase="series.noframes">Esse intervalo não escolhe quadro nenhum.</span>
     <span data-phrase="series.failed">Algo deu errado ao pegar a série.</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
@@ -184,6 +190,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Este arquivo usa uma lista de edição para reprodução que esta ferramenta não consegue preservar. Salve o clipe editado visível como um novo vídeo antes de processá-lo aqui.</span>
+    <span data-phrase="read.editinvalid">A lista de edição para reprodução do arquivo está incompleta ou tem tempos inválidos. Por isso, não é possível preservar sua sequência visível.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>
@@ -209,6 +217,7 @@
     <span data-phrase="read.nodecoder">Este navegador não decodifica {codec} diretamente.</span>
     <span data-phrase="read.nowebcodecs">Este navegador não tem WebCodecs, então os quadros não podem ser decodificados um a
       um.</span>
+    <span data-phrase="read.duplicatetime">Este arquivo tem quadros com o mesmo instante de apresentação. O player do navegador escolhe o quadro visível; a seleção exata de quadros não está disponível.</span>
     <span data-phrase="read.turned">Este arquivo está guardado girado, e o leitor daqui e o player do navegador não
       concordam sobre o giro.</span>
     <span data-phrase="open.failed">Este navegador não consegue abrir este arquivo. {reason}</span>

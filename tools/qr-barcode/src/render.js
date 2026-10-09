@@ -138,6 +138,7 @@ export async function svgToPng(svg, multiple = 1) {
   const { width, height } = sizeOfSvg(svg);
   const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
 
+  let canvas;
   try {
     const image = new Image();
     image.width = width;
@@ -148,7 +149,7 @@ export async function svgToPng(svg, multiple = 1) {
       image.src = url;
     });
 
-    const canvas = document.createElement('canvas');
+    canvas = document.createElement('canvas');
     canvas.width = Math.round(width * multiple);
     canvas.height = Math.round(height * multiple);
     const context = canvas.getContext('2d');
@@ -162,6 +163,7 @@ export async function svgToPng(svg, multiple = 1) {
       }, 'image/png');
     });
   } finally {
+    if (canvas) canvas.width = canvas.height = 0;
     URL.revokeObjectURL(url);
   }
 }

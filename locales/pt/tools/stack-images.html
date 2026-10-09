@@ -20,11 +20,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      Arquivos RAW são abertos lendo o JPEG em tamanho cheio que a câmera já
-      escreveu dentro deles: alguns kilobytes de diretório e depois uma fatia. Os
-      dados do sensor não são decodificados nunca, então um quadro de 60&nbsp;MB
-      abre mais ou menos tão rápido quanto um JPEG.
-      <a href="#faq-raw">O que isso significa para o resultado</a>.
+      Arquivos RAW usam a maior prévia JPEG utilizável incorporada pela câmera. As dimensões aparecem abaixo; ela pode ser menor que a imagem do sensor. Os dados do sensor nunca são decodificados. <a href="#faq-raw">O que isso significa para o resultado</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -35,6 +31,8 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">Quadros e referência</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       Arraste um quadro pela alça <span class="grip" aria-hidden="true">&#8942;&#8942;</span> para reordenar a
       lista, ou use as setas para cima e para baixo com a alça em foco. A ordem é sua: é só
@@ -43,6 +41,7 @@
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- Passo 2 &mdash; como eles se juntam -->
@@ -58,7 +57,7 @@
           <option value="sigma">Sigma clipping &mdash; as duas coisas de uma vez</option>
           <option value="max">Clarear &mdash; rastros de estrelas, fogos, light painting</option>
           <option value="min">Escurecer &mdash; tirar tudo o que é claro e se mexeu</option>
-          <option value="sum">Somar &mdash; simular uma exposição longa</option>
+          <option value="sum">Somar &mdash; mistura aditiva</option>
           <option value="focus">Focus stacking &mdash; guardar o que estava em foco</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -67,7 +66,8 @@
       <div class="field">
         <label for="align">Alinhar os quadros</label>
         <select id="align">
-          <option value="translate" selected>Sim &mdash; só deslocamento</option>
+          <option value="projective" selected>Auto &mdash; corrigir perspectiva</option>
+          <option value="translate">Sim &mdash; só deslocamento</option>
           <option value="similarity">Sim &mdash; deslocar, girar e redimensionar</option>
           <option value="none">Não &mdash; pegar exatamente como estão</option>
         </select>
@@ -111,10 +111,11 @@
       <div class="field">
         <label for="gain">Exposição</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>Normalizar brilho</button>
       </div>
 
       <div class="field">
@@ -138,13 +139,16 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">A transparência é descartada no empilhamento. A imagem salva é opaca, mesmo no formato PNG.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Resultado</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Memória de trabalho</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>Decodificações</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>Lido do disco</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>Decodificações da pilha</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Leitura para inspeção</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>A memória é uma estimativa dos buffers de pixels; o navegador e os codificadores podem precisar de mais. Inspeção e alinhamento também decodificam prévias.</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -164,13 +168,44 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>A seleção ou os ajustes mudaram. Empilhe de novo para criar outro resultado.</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
-        <img id="result-image" alt="O resultado empilhado">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">Mostrar</label>
+          <select id="view-source">
+            <option value="compare" selected>Comparar &mdash; arraste o divisor</option>
+            <option value="result">Resultado empilhado</option>
+            <option value="reference">Quadro de referência</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">Tamanho da visualização</label>
+          <select id="view-size">
+            <option value="fit">Ajustar à janela</option>
+            <option value="actual">100% &mdash; pixels reais</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="Prévia da imagem" tabindex="0" aria-describedby="viewer-status">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="O resultado empilhado">
+          <img id="reference-image" class="reference-image" alt="Quadro de referência" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Divisor de comparação" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>Detalhes de alinhamento</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>Baixar a imagem</a>
       </div>
     </div>
@@ -191,6 +226,25 @@
     <span data-phrase="count.many">{count} quadros</span>
     <span data-phrase="count.none">Ainda sem quadros</span>
 
+    <span data-phrase="frames.summary">{frames} &mdash; referência: {name}</span>
+    <span data-phrase="frame.unreadable">Não foi possível abrir este arquivo; ele foi excluído da pilha. Tente JPEG, PNG, WebP ou outro formato compatível com este navegador.</span>
+    <span data-phrase="import.skipped">Não foi possível abrir {count} arquivos. Eles continuam na lista para você conferir quais foram excluídos.</span>
+    <span data-phrase="viewer.loading">Preparando o quadro de referência&hellip;</span>
+    <span data-phrase="viewer.reference">Referência: {name}. A visualização usa o mesmo recorte e a mesma resolução do resultado.</span>
+    <span data-phrase="viewer.compare">Referência à esquerda e resultado empilhado à direita. Arraste o divisor ou use as setas para comparar.</span>
+    <span data-phrase="viewer.split">{percent}% referência; {remaining}% resultado empilhado</span>
+    <span data-phrase="viewer.pan">Arraste a imagem ou use as teclas de seta para percorrê-la. Para comparar com o divisor, escolha Ajustar à janela.</span>
+    <span data-phrase="viewer.result">Resultado empilhado. Escolha 100% para examinar os detalhes. Para usar o divisor de comparação, escolha Ajustar à janela.</span>
+    <span data-phrase="alignment.reference">Referência</span>
+    <span data-phrase="alignment.none">Não alinhado</span>
+    <span data-phrase="alignment.weak">Não foi possível alinhar com confiança</span>
+    <span data-phrase="alignment.clamped">Só deslocamento; a rotação era grande demais</span>
+    <span data-phrase="alignment.partial">Deslocamento refinado; não foi possível refinar a rotação</span>
+    <span data-phrase="alignment.perspective">Alinhado com correção de perspectiva</span>
+    <span data-phrase="alignment.perspective-fallback">Alinhado sem correção de perspectiva</span>
+    <span data-phrase="alignment.aligned">Alinhado</span>
+    <span data-phrase="alignment.offset">Deslocamento: {dx}, {dy} px; rotação: {angle}&deg;; escala: {scale}&times;</span>
+    <span data-phrase="alignment.remove">Remover da seleção</span>
     <span data-phrase="frame.reference">Referência</span>
     <span data-phrase="frame.make-reference">Usar como referência</span>
     <span data-phrase="frame.move">Mover {name} &mdash; arraste, ou use as setas para cima e para baixo</span>
@@ -202,21 +256,23 @@
     <span data-phrase="frame.read">{read} de {total} lidos</span>
 
     <span data-phrase="mode.mean">Tira a média de cada quadro. O ruído aleatório é alto tantas vezes quantas é baixo, então tirar a média de {count} quadros o baixa em cerca de {factor} vezes. É o método para uma sequência tranquila, e é o que um único pássaro passando estraga.</span>
-    <span data-phrase="mode.median">Pega o valor do meio de cada pixel. Tudo o que só estava em parte dos quadros, um turista, um carro, um avião, some. É o único método que precisa segurar todos os quadros ao mesmo tempo, e é por isso que ele pode ser dividido em faixas aqui embaixo.</span>
-    <span data-phrase="mode.sigma">Aprende o que cada pixel costuma ser, e então tira a média só dos valores que combinam com isso. O resultado da mediana com a redução de ruído da média. Ele lê os quadros duas vezes.</span>
+    <span data-phrase="mode.median">Usa o valor central de cada pixel. Um objeto em movimento pode desaparecer se ocupou esse pixel em menos da metade dos quadros. É o único método que guarda todos os quadros de uma vez, por isso pode ser dividido em faixas.</span>
+    <span data-phrase="mode.sigma">Estima o valor habitual de cada pixel e tira a média só dos valores compatíveis. Pode rejeitar valores discrepantes enquanto reduz ruído. Conjuntos pequenos podem manter um objeto de passagem; use Mediana se removê-lo for a prioridade. Lê os quadros duas vezes.</span>
     <span data-phrase="mode.max">Guarda o valor mais claro que cada pixel já teve. É isso que transforma uma série de exposições curtas em rastros de estrelas e monta um fogo de artifício a partir dos quadros da sua própria explosão.</span>
     <span data-phrase="mode.min">Guarda o valor mais escuro que cada pixel já teve. Um pixel só continua claro se estava claro em todos os quadros, então reflexos, faróis e gotas de chuva iluminadas somem.</span>
-    <span data-phrase="mode.sum">Soma os quadros sem dividir: o que uma exposição {count} vezes mais longa teria recolhido. Ele estoura, exatamente como aquela exposição estouraria. Traga de volta com o controle de exposição.</span>
+    <span data-phrase="mode.sum">Soma os valores de cor renderizados sem dividir. É uma mistura aditiva, não uma simulação da exposição do sensor. Valores claros estouram; normalize o brilho para dividir pelo número de quadros.</span>
     <span data-phrase="mode.focus">Pega cada parte da imagem do quadro em que ela estava em foco. Fotografe um assunto pequeno ao longo do anel de foco, e isto junta as partes nítidas.</span>
 
+    <span data-phrase="align.projective">Mede deslocamento, rotação e escala e depois corrige a perspectiva quando há concordância entre regiões suficientes. Útil para fotos de estrelas com campo amplo. Se não for possível medir a perspectiva com confiança, usa rotação e escala.</span>
     <span data-phrase="align.translate">Descobre quanto cada quadro se deslocou e o desloca de volta, com precisão de frações de pixel. Corrige o tremor da mão e a deriva do tripé. Rotação ele não corrige.</span>
-    <span data-phrase="align.similarity">Descobre também rotação e escala. Custa uma medição a mais por quadro e não custa nada quando os quadros se revelam retos. A rotação só é recuperada dentro de meia volta.</span>
-    <span data-phrase="align.none">Empilha os quadros exatamente como chegam. Certo para um tripé fixo ou uma série de intervalos, errado para qualquer coisa feita na mão.</span>
+    <span data-phrase="align.similarity">Também encontra rotação e escala. Faz uma medição adicional em cada quadro, mesmo quando os quadros estão retos. A rotação só é recuperada dentro de meia volta.</span>
+    <span data-phrase="align.none">Empilha os quadros exatamente como estão. Use quando já se encaixam, ou para rastros de estrelas que devem preservar o movimento do céu. Um tripé fixo não mantém as estrelas alinhadas.</span>
 
-    <span data-phrase="scale.note">Cada quadro é decodificado neste tamanho pelo próprio decodificador do navegador, então um ajuste menor é menos trabalho e não só menos memória.</span>
+    <span data-phrase="scale.note">Um tamanho de trabalho menor reduz buffers de pixels e cálculos. O navegador ainda pode decodificar o arquivo internamente em tamanho cheio.</span>
     <span data-phrase="gain.note">Multiplicado no resultado bem no fim, depois da conta e antes do arredondamento.</span>
-    <span data-phrase="gain.sum-note">Somar {count} quadros vai estourar com quase toda a certeza. Baixe para uns {suggested} para ver o que foi recolhido.</span>
+    <span data-phrase="gain.sum-note">Somar {count} quadros pode estourar valores claros. Normalize o brilho para {suggested}&times; ou digite sua própria exposição.</span>
 
+    <span data-phrase="plan.too-large">Até uma faixa pequena supera o orçamento dos buffers de pixels. Escolha uma resolução de trabalho menor ou imagens de entrada menores.</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">cerca de {mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}, uma por quadro</span>
@@ -233,6 +289,26 @@
     <span data-phrase="progress.stack-banded">Empilhando &mdash; faixa {band} de {bands}, {done} de {total} quadros lidos</span>
     <span data-phrase="progress.encode">Escrevendo a imagem&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Criado com {method}; alinhamento: {alignment}; resolução de trabalho: {resolution}; exposição: {gain}×; {encoding}.</span>
+    <span data-phrase="result.method.mean">Média</span>
+    <span data-phrase="result.method.median">Mediana</span>
+    <span data-phrase="result.method.sigma">Corte sigma</span>
+    <span data-phrase="result.method.max">Clarear</span>
+    <span data-phrase="result.method.min">Escurecer</span>
+    <span data-phrase="result.method.sum">Somar</span>
+    <span data-phrase="result.method.focus">Empilhamento de foco</span>
+    <span data-phrase="result.alignment.projective">Perspectiva automática</span>
+    <span data-phrase="result.alignment.translate">Apenas deslocamento</span>
+    <span data-phrase="result.alignment.similarity">Deslocamento, rotação e escala</span>
+    <span data-phrase="result.alignment.none">Nenhum</span>
+    <span data-phrase="result.resolution.full">Completa</span>
+    <span data-phrase="result.resolution.half">Metade</span>
+    <span data-phrase="result.resolution.quarter">Um quarto</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG com qualidade {quality}</span>
+    <span data-phrase="result.settings.sigma">Limite de corte: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Raio de nitidez: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} quadros somados em {seconds} segundos</span>
     <span data-phrase="result.moves">Cada quadro foi medido e empurrado para o seu lugar.</span>
     <span data-phrase="result.moves-some">{count} de {total} quadros não puderam ser medidos com segurança e ficaram onde estavam.</span>
@@ -243,8 +319,8 @@
     <span data-phrase="error.no.files">Acrescente antes pelo menos uma imagem.</span>
     <span data-phrase="error.no.size">Nenhum destes arquivos pôde ser aberto como imagem.</span>
     <span data-phrase="error.one.frame">Empilhar precisa de pelo menos dois quadros.</span>
-    <span data-phrase="error.unknown">Algo deu errado ao empilhar. Se um destes arquivos for incomum, tente-o sozinho.</span>
-    <span data-phrase="error.memory">O navegador ficou sem memória. Tente uma resolução de trabalho menor ou menos quadros.</span>
+    <span data-phrase="error.unknown">Algo deu errado ao empilhar. Tente uma seleção menor de arquivos.</span>
+    <span data-phrase="error.memory">Esta execução supera o orçamento dos buffers de pixels, ou o navegador ficou sem memória. Tente uma resolução de trabalho menor ou menos quadros.</span>
     <span data-phrase="error.unreadable">{name} não pôde ser aberto como imagem e ficou de fora.</span>
     <span data-phrase="error.busy">Espere esta pilha terminar antes de acrescentar mais quadros, ou cancele-a.</span>
 

@@ -197,12 +197,14 @@ function blockScalar(text, pad) {
  * Parse YAML into the shared tree.
  *
  * @param {string} text
+ * @param {object} [options]
+ * @param {() => void} [options.onComment] called only for comments the reader consumes
  * @returns {object}
  * @throws {ParseError} on anything unsupported, by name
  */
-export function parseYaml(text) {
+export function parseYaml(text, { onComment } = {}) {
   const source = text.replace(/\r\n?/g, '\n').replace(/^\ufeff/, '');
-  const doc = new Doc(source);
+  const doc = new Doc(source, onComment);
   doc.skipBlank();
   if (doc.at >= doc.lines.length) return { t: 'null' };
   const value = doc.parseNode(0);
@@ -214,8 +216,9 @@ export function parseYaml(text) {
 }
 
 class Doc {
-  constructor(source) {
+  constructor(source, onComment) {
     this.source = source;
+    this.onComment = onComment;
     this.lines = source.split('\n');
     this.at = 0;
     // Where each line begins in the source, so an error can be reported at an
@@ -239,7 +242,10 @@ class Doc {
     while (this.at < this.lines.length) {
       const line = this.lines[this.at];
       const trimmed = line.trim();
-      if (trimmed === '' || trimmed.startsWith('#')) { this.at += 1; continue; }
+      if (trimmed === '' || trimmed.startsWith('#')) {
+        if (trimmed.startsWith('#')) this.onComment?.();
+        this.at += 1; continue;
+      }
       if (trimmed === '---' && this.startedDocument) {
         this.fail('yaml.documents', this.at);
       }
@@ -297,6 +303,7 @@ class Doc {
       if (after[0] === '|' || after[0] === '>') return this.blockScalar(after, indent, lineIndex);
       return this.scalarValue(after, lineIndex, column);
     }
+    if (after.startsWith('#')) this.onComment?.();
     this.skipBlank();
     if (this.at >= this.lines.length) return { t: 'null' };
     const next = this.indentOf(this.at);
@@ -323,6 +330,7 @@ class Doc {
       const column = this.lines[lineIndex].length - after.length;
 
       if (after === '' || after.startsWith('#')) {
+        if (after.startsWith('#')) this.onComment?.();
         this.at += 1;
         this.skipBlank();
         const deeper = this.at < this.lines.length ? this.indentOf(this.at) : -1;
@@ -390,6 +398,7 @@ class Doc {
   blockScalar(header, indent, lineIndex) {
     const match = /^([|>])([+-]?)([0-9]?)([+-]?)\s*(#.*)?$/.exec(header.trim());
     if (!match) this.fail('yaml.blockscalar', lineIndex, 0, { header: header.trim() });
+    if (match[5]) this.onComment?.();
     const folded = match[1] === '>';
     const chomp = match[2] || match[4] || '';
     const explicit = match[3] ? Number(match[3]) : 0;
@@ -433,7 +442,8 @@ class Doc {
       this.fail(unsupported(trimmed[0]), lineIndex, column);
     }
     if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-      return parseFlow(trimmed, (key, values) => this.fail(key, lineIndex, column, values));
+      return parseFlow(trimmed, (key, values) => this.fail(key, lineIndex, column, values),
+        { onComment: this.onComment });
     }
     if (trimmed.startsWith('"') || trimmed.startsWith("'")) {
       const [value, end] = readQuotedWithEnd(trimmed,
@@ -442,8 +452,10 @@ class Doc {
       if (after !== '' && !after.startsWith('#')) {
         this.fail('yaml.afterquote', lineIndex, column);
       }
+      if (after.startsWith('#')) this.onComment?.();
       return { t: 'str', value };
     }
+    if (/(^|\s)#/.test(trimmed)) this.onComment?.();
     return resolvePlain(stripComment(trimmed));
   }
 }
@@ -475,17 +487,16 @@ export function resolvePlain(text) {
   if (/^(true|True|TRUE)$/.test(text)) return { t: 'bool', value: true };
   if (/^(false|False|FALSE)$/.test(text)) return { t: 'bool', value: false };
 
-  if (/^[-+]?[0-9]+$/.test(text) || /^[-+]?[0-9]*\.[0-9]*(?:[eE][-+]?[0-9]+)?$/.test(text)
-      || /^[-+]?[0-9]+[eE][-+]?[0-9]+$/.test(text)) {
-    if (text === '.' || text === '-.' || text === '+.') return { t: 'str', value: text };
+  if (/^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$/.test(text)) {
     return { t: 'num', raw: jsonNumber(text) };
   }
   if (/^[-+]?0x[0-9a-fA-F]+$/.test(text) || /^[-+]?0o[0-7]+$/.test(text)) {
     const negative = text.startsWith('-');
     const digits = text.replace(/^[-+]/, '');
-    const value = digits.startsWith('0x')
-      ? parseInt(digits.slice(2), 16) : parseInt(digits.slice(2), 8);
-    return { t: 'num', raw: String(negative ? -value : value) };
+    // The destination is decimal text, not a double: a long hexadecimal id
+    // must not lose its low bits just because JSON uses a different spelling.
+    const raw = BigInt(digits).toString();
+    return { t: 'num', raw: negative ? `-${raw}` : raw };
   }
   return { t: 'str', value: text };
 }
@@ -497,8 +508,13 @@ export function resolvePlain(text) {
  */
 function jsonNumber(text) {
   if (/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?$/.test(text)) return text;
-  const value = Number(text);
-  return Number.isFinite(value) ? String(value) : '0';
+  // Only the spelling changes. Computing the value would round long ids,
+  // underflow small exponents and turn a value such as .5e999 into Infinity.
+  const [, sign, integer, fraction, exponent] =
+    /^([-+]?)([0-9]*)(?:\.([0-9]*))?([eE][-+]?[0-9]+)?$/.exec(text);
+  const whole = integer.replace(/^0+(?=[0-9])/, '') || '0';
+  const decimal = fraction === undefined ? '' : `.${fraction || '0'}`;
+  return `${sign === '-' ? '-' : ''}${whole}${decimal}${exponent || ''}`;
 }
 
 /* ------------------------------------------------------- quoted, and flow */
@@ -551,13 +567,14 @@ function readQuotedWithEnd(text, fail) {
  * quotes made optional. Read here rather than handed to the JSON parser
  * because of exactly that: `{a: 1}` is not JSON.
  */
-export function parseFlow(text, fail) {
+export function parseFlow(text, fail, { onComment } = {}) {
   const state = { at: 0 };
   const value = readFlowValue(text, state, fail);
   skipFlowSpace(text, state);
   if (state.at < text.length && !text.slice(state.at).trim().startsWith('#')) {
     fail('yaml.afterflow');
   }
+  if (text.slice(state.at).trim().startsWith('#')) onComment?.();
   return value;
 }
 

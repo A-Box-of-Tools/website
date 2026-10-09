@@ -22,6 +22,7 @@ import unittest
 import xml.etree.ElementTree as ElementTree
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from unittest.mock import patch
 
 import build as buildmod
 import indexnow
@@ -901,6 +902,28 @@ class BuildTheSite(unittest.TestCase):
                         for specifier in bare:
                             self.assertTrue(specifier.endswith(f'?v={version}'),
                                             f'{specifier} is not on this deploy\'s version')
+
+    def test_share_text_shows_its_code_version_in_every_language(self):
+        """A diagnostic label must identify the code actually loaded, and
+        changing the page's language must not invent a code mismatch between
+        devices that run the same sharing implementation.
+        """
+        versions = set()
+        for locale in self.locales:
+            folder = buildmod.i18n.locale_path(locale, 'share-text').strip('/')
+            page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+            with self.subTest(lang=locale['lang']):
+                shown = re.findall(
+                    r'<code\b[^>]*\bid="tool-version"[^>]*>([0-9a-f]{10})</code>',
+                    page)
+                self.assertEqual(len(shown), 1,
+                                 'the page must show one generated tool version')
+                loaded = re.search(r'src="src/main\.js\?v=([0-9a-f]{10})"', page)
+                self.assertIsNotNone(loaded)
+                self.assertEqual(shown[0], loaded[1])
+                versions.add(shown[0])
+        self.assertEqual(len(versions), 1,
+                         'translated pages must identify the same sharing code')
 
     def test_a_tool_pages_links_leave_in_a_new_tab_except_the_switcher(self):
         """Every link away from a tool page opens elsewhere - see frame().
@@ -1876,6 +1899,48 @@ class BuildTheSite(unittest.TestCase):
                          'feed.xml'):
                 with self.subTest(file=name):
                     self.assertFalse((scoped / name).exists())
+
+
+class TheReleaseLinkInABuiltFooter(unittest.TestCase):
+    """The deploy's chosen version must survive the actual page render.
+
+    These cases build one English tool, independently of the whole-site
+    fixtures and of whichever release tags CI's checkout happens to carry.
+    """
+
+    def page(self, release_version=None, local_version='1.2.3'):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'dist'
+            with patch.object(buildmod.version, 'release_tag',
+                              return_value=local_version) as read_tag:
+                buildmod.build(out, clean=True, minify_output=False, jobs=1,
+                               only=['compress-image'], langs=['en'],
+                               release_version=release_version)
+            return (out / 'compress-image' / 'index.html').read_text(
+                encoding='utf-8'), read_tag
+
+    def test_the_deploys_version_overrides_the_older_local_release(self):
+        source = buildmod.sitelib.load_toml(
+            ROOT / 'config' / 'site.toml')['source_url']
+        for supplied in ('9.8.7', ' \t9.8.7 \n'):
+            with self.subTest(supplied=supplied):
+                page, read_tag = self.page(release_version=supplied)
+                self.assertIn(f'href="{source}/releases/tag/9.8.7"', page)
+                self.assertIn('<bdi>v9.8.7</bdi>', page)
+                read_tag.assert_not_called()
+
+    def test_a_build_without_version_tags_omits_the_release_link(self):
+        page, read_tag = self.page(local_version='')
+        self.assertNotIn('class="footer-release"', page)
+        self.assertNotIn('/releases/tag/', page)
+        read_tag.assert_called_once_with(buildmod.ROOT)
+
+    def test_an_invalid_override_is_refused(self):
+        for supplied in ('v9.8.7', '9.8', '9.8.7/notes'):
+            with self.subTest(supplied=supplied):
+                with self.assertRaisesRegex(buildmod.sitelib.ConfigError,
+                                            'Invalid release version'):
+                    self.page(release_version=supplied)
 
 
 class ScopedBuildRefusals(unittest.TestCase):

@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="Vista previa del vídeo original"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -55,7 +55,9 @@
         <p class="field-note" id="audio-note">
           Se da la vuelta muestra a muestra y se codifica otra vez como AAC.
           Déjalo apagado para un clip mudo, que va más rápido.
+          Al cancelar, puede ser necesario esperar a que termine el paso actual de decodificar o reordenar el sonido.
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -79,7 +81,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Vista previa del vídeo invertido"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Descargar el vídeo</a>
@@ -115,9 +117,11 @@
     <span data-phrase="sound.off">El clip invertido no tendrá sonido ninguno.</span>
     <span data-phrase="sound.exact">Descodificado, dado la vuelta muestra a muestra y codificado otra vez como AAC. Esa
       segunda codificación es inevitable: unos paquetes reproducidos al revés no son una
-      inversión.</span>
+      inversión.
+      Al cancelar, puede ser necesario esperar a que termine el paso actual de decodificar o reordenar el sonido.</span>
     <span data-phrase="sound.player">Leído por el navegador, dado la vuelta muestra a muestra y codificado otra vez como
-      AAC.</span>
+      AAC.
+      Al cancelar, puede ser necesario esperar a que termine el paso actual de decodificar o reordenar el sonido.</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069; (desde &#x2066;{fromWidth} x {fromHeight}&#x2069;; H.264 no sabe guardar un
       fotograma de lado impar)</span>
@@ -132,6 +136,13 @@
     <span data-phrase="step.frame">Invirtiendo el fotograma {done} de {total} ({percent}%)</span>
     <span data-phrase="audio.descriptor">Error interno: la descripción del audio es mayor de lo esperado.</span>
     <span data-phrase="audio.nosound">De este archivo no ha vuelto ningún sonido.</span>
+    <span data-phrase="memory.track">Memoria del sonido: unos {pcm} para la pista completa, que suben temporalmente a unos {peak} al reunir los canales. La salida codificada y el consumo adicional del navegador no están incluidos.</span>
+    <span data-phrase="memory.file">Memoria del sonido: unos {pcm} para la pista completa. El navegador también lee todo el archivo de entrada de {file}; no se incluyen otras copias al decodificar, la salida codificada ni el consumo adicional del navegador.</span>
+    <span data-phrase="memory.unknown">Memoria del sonido: no se conoce el número de canales hasta que el navegador lee todo el archivo de entrada de {file}. Los búferes completos de sonido, las copias al decodificar, la salida codificada y el consumo adicional del navegador se suman aparte.</span>
+    <span data-phrase="memory.unavailable">Memoria del sonido: la información disponible de la pista no basta para hacer una estimación. El sonido completo y las copias temporales al reunir los canales se mantienen en memoria; la salida codificada y el consumo adicional del navegador se suman aparte.</span>
+    <span data-phrase="memory.off">Memoria del sonido: no hacen falta búferes de sonido decodificado cuando se omite el sonido.</span>
+    <span data-phrase="memory.none">Memoria del sonido: este archivo no tiene pista de audio.</span>
+    <span data-phrase="audio.stalled">El codificador de audio dejó de responder. Pruebe un clip más corto, omita el sonido o use otro navegador.</span>
     <span data-phrase="audio.noencode">El sonido se ha descodificado pero del codificador no ha vuelto nada.</span>
     <span data-phrase="audio.toolarge">El sonido de este archivo no es AAC, así que invertirlo significaría darle el
       archivo entero al navegador para que lo lea &mdash; y este archivo es demasiado
@@ -163,6 +174,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Este archivo usa una lista de edición de reproducción que esta herramienta no puede conservar. Guarda el clip editado visible como un video nuevo antes de procesarlo aquí.</span>
+    <span data-phrase="read.editinvalid">La lista de edición de reproducción del archivo está incompleta o tiene tiempos no válidos, por lo que no se puede conservar su secuencia visible.</span>
     <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
     <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
     <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>

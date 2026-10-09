@@ -158,3 +158,73 @@ looks like when a converter has skipped it.
   avoid, and it makes moving traffic smear rather than step.
 - **No slow motion.** Speeds below 1.1× are not a time-lapse, and doing them
   properly means inventing frames that were never filmed.
+
+
+## Replacing a source
+
+A pending source owns its own player, object URL, parser result, codec probe and
+decoded preview. None becomes page state until the current file has passed its
+checks. Replacement immediately retires the previous source, summary and result,
+and suspends source-dependent controls. Late success or failure may dispose only
+that request's resources; it cannot clear a newer file or finish its picker.
+The shared metadata opener may still wait for its bounded timeout after a
+private player is retired, but it has no current player or URL left to affect.
+
+The fallback frame probe cancels its frame callback, both timers and listeners
+on completion or retirement. A decoded preview closes its decoder even when
+configuration fails, stops after a pending read or flush returns, and closes
+every returned frame. A failed preview frees its canvas; a successful one gives
+ownership to the caller, which frees it after copying the current picture.
+Native file reads and support probes themselves cannot be interrupted.
+
+Preset buttons expose their selection with aria-pressed as well as colour,
+including the initial 10× setting, typed speeds, requested lengths and automatic
+loaded-file defaults. Source and result players have distinct translated names.
+The source picker, drop zone and example control are locked during export,
+including when an earlier native chooser or example finishes handing over a
+file. The lock is restored after success, cancellation or refusal. An export
+captures its ready source and plan before asynchronous support checks; settings
+changed for a later export cannot relabel its finished clip.
+
+## Browser regression checks
+
+Delay an actual file read, metadata event, decoder support answer, fallback frame
+probe or decoded preview. Replace it with a different-sized valid file, then
+release the old success or refusal. Only the latest file may own the name, size,
+picture, summary and picker. Click speed and Export while a replacement waits:
+both must be inactive, with no error or retired export. Repeat with an invalid
+current file and a subsequent valid file, including replacement after an export.
+Open a native chooser before an export, hold the export's native support answer,
+and finish the earlier chooser. The current source and export must remain
+captured, further picker actions must be locked, and selection must recover
+after success, cancellation or refusal.
+
+Use real keyboard activation on presets, enter a nonpreset speed and change the
+requested length. Pressed states must match selection without removing focus.
+Export an MP4 through direct decoding and a WebM through playback; inspect native
+output duration, silent track structure and picture progression at the planned
+instants. Cancel and recover, and check that frames, codecs, preview canvases and
+retired object URLs are released. The sampler, playback approximation and incoming
+processing limits are unchanged. The incoming edit-list guard is described below.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.

@@ -74,7 +74,7 @@
           <label for="input">Your XML</label>
           <span class="count" id="input-count">empty</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Paste XML here - or drop an .xml, .svg or .rss file above."></textarea>
       </div>
@@ -94,6 +94,7 @@
     <h2><span class="step">3</span> Take the result</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Go to error</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">Nothing yet.</p>
@@ -132,6 +133,10 @@
     <span data-phrase="xml.comment">This comment is never closed</span>
     <span data-phrase="xml.cdata">This CDATA section is never closed</span>
     <span data-phrase="xml.declaration">This declaration is never closed</span>
+    <span data-phrase="xml.document">XML needs exactly one outer element, with no text outside it.</span>
+    <span data-phrase="xml.declarationorder">An XML declaration must come first; a DOCTYPE must appear once, before the outer element.</span>
+    <span data-phrase="xml.declarationinvalid">This XML declaration is not valid.</span>
+    <span data-phrase="xml.character">This numeric character reference is not valid in XML.</span>
     <span data-phrase="xml.closing">This closing tag is never finished</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; is never closed</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; closes a tag that was never opened</span>
@@ -160,7 +165,7 @@
     <span data-phrase="convert.json-xml.name">JSON to XML</span>
     <span data-phrase="convert.xml-json">Attributes become members named with an @, an element&rsquo;s own text becomes #text
       where it has to share, and every value stays a string &mdash; XML never said which
-      were numbers.</span>
+      were numbers. Mixed-content order and comments are not retained.</span>
     <span data-phrase="convert.json-xml">An array becomes a repeated element, which is the only shape that reads back. An
       empty object and an empty string both come out as an empty element.</span>
     <span data-phrase="size.bytes">{n} B</span>

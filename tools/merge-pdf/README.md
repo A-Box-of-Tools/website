@@ -255,3 +255,20 @@ and reorder them, and read the results back with the same reader the page uses:
   is walked to make sure every entry is reachable;
 - the range parser accepts what the page says it accepts and refuses the rest;
 - splitting produces the right number of files with the right pages in each.
+
+Split controls validate the complete input before a summary or export is
+accepted. A partial range with an error is refused, as is an empty cut list
+or a non-integer/out-of-bounds batch size. The summary counts the same groups
+that the writer receives. Archive names reserve every source's natural name
+before assigning suffixes, including case-insensitive collisions, so a later
+`report-2.pdf` cannot be overwritten by the second `report.pdf`.
+
+The shared `ordered-loads` queue serializes additions in selection order.
+Start again retires pending reads and their errors and starts a new queue
+without waiting for old I/O to settle. Export waits for the whole intended
+queue and locks editing while its captured page order is being written.
+Later edits revoke old downloads; cancellation is checked after reading and
+verifying each finished file. Page actions restore focus to the same page and
+control, use the opposite move button at an edge, and announce the page's
+source, new position and rotation. Removing it focuses the nearest page;
+removing the last page leaves Back to how they came available.

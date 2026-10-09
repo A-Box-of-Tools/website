@@ -169,3 +169,30 @@ test('the bytes and the name can disagree, which is the point of having both', (
   assert.equal(sniff(renamed).mime, 'image/jpeg');
   assert.equal(extensionType('holiday.png'), 'image/png');
 });
+
+
+const utf16Svg = (source, bigEndian, bom) => {
+  const bytes = new Uint8Array(source.length * 2 + (bom ? 2 : 0));
+  if (bom) bytes.set(bigEndian ? [254, 255] : [255, 254]);
+  for (let index = 0; index < source.length; index += 1) {
+    const code = source.charCodeAt(index), at = index * 2 + (bom ? 2 : 0);
+    bytes[at] = bigEndian ? code >> 8 : code & 255;
+    bytes[at + 1] = bigEndian ? code & 255 : code >> 8;
+  }
+  return bytes;
+};
+
+test('SVG detection recognizes both UTF-16 orders with or without a BOM', () => {
+  const source = '<?xml version="1.0" encoding="UTF-16"?><!-- saved by a drawing tool --><svg><text>café 😀</text></svg>';
+  for (const bigEndian of [false, true]) for (const bom of [false, true]) {
+    assert.equal(sniff(utf16Svg(source, bigEndian, bom)).mime, 'image/svg+xml');
+    assert.equal(sniff(utf16Svg('<?xml version="1.0"?><rss/>', bigEndian, bom)), null);
+  }
+});
+
+test('a root name beginning with svg is not an SVG root', () => {
+  for (const source of ['<svg-not-a-picture/>', '<svgfoo/>']) {
+    assert.equal(sniff(utf8(source)), null);
+    assert.equal(sniff(utf16Svg(source, false, true)), null);
+  }
+});

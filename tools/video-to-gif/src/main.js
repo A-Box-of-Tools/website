@@ -6,11 +6,12 @@ import { sizeText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { framesByDecoding, framesByPlaying } from './frames.js';
 import { encodeGif, ColorHistogram, MAX_COLORS } from './encode.js';
 import { RangeBar, formatTime, parseTime } from './range.js';
-import { frameTimes, frameDelays, outputSize, workingBytes, estimateBytes, MAX_FPS } from './plan.js';
+import { frameCount, frameTimes, frameDelays, outputSize, workingMemory, planningLimit, smallerWidth, estimateBytes, MAX_FPS } from './plan.js';
+import { throwIfAborted } from './shared/errors.js';
 import { hasWebCodecs, canDecode } from './support.js';
 import { makeExample } from './example.js';
 
@@ -21,7 +22,7 @@ import { makeExample } from './example.js';
  * all - the browser's own player took it instead.
  */
 function why(fallback, absent) {
-  return phrase(fallback?.key ?? absent, fallback?.values);
+  return knownReason(fallback?.key ?? absent, fallback?.values);
 }
 
 const $ = (id) => document.getElementById(id);
@@ -62,6 +63,7 @@ const el = {
   sumFrames: $('sum-frames'),
   sumBytes: $('sum-bytes'),
   memoryNote: $('memory-note'),
+  smallerWidth: $('smaller-width'),
   exportBtn: $('export'),
   cancelBtn: $('cancel'),
   progress: $('progress'),
@@ -78,6 +80,10 @@ const el = {
 
 const { show: showError, clear: clearError } = messageBox(el.error);
 const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
+const phraseKeys = new Set(['phrases', 'frame-phrases']
+  .flatMap(id => [...($(id)?.querySelectorAll('[data-phrase]') ?? [])])
+  .map(node => node.dataset.phrase));
+const knownReason = (key, values) => phraseKeys.has(key) ? phrase(key, values) : String(key || '');
 
 /**
  * How long a section the tool starts you off with when the clip is longer.
@@ -89,8 +95,8 @@ const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
  */
 const DEFAULT_SECTION = 6;
 
-/** Refuse rather than let the tab die: frames are held in memory all at once. */
-const MEMORY_LIMIT = 1_200 << 20;
+/** Device memory is an optional coarse hint; the fallback policy stays bounded. */
+const MEMORY_LIMIT = planningLimit(navigator.deviceMemory);
 
 /** Where the histogram stops needing more pixels to choose a good palette. */
 const PALETTE_SAMPLE = 4_000_000;
@@ -100,6 +106,7 @@ let file = null;
 let objectUrl = null;
 /** What demux() found, or null if this file is for the player path. */
 let media = null;
+let sourcePacketBytes = 0;
 /** Why the reader path is unavailable, in words, or null. */
 let fallbackReason = null;
 let source = { width: 0, height: 0 };
@@ -165,6 +172,7 @@ async function loadFile(picked) {
     try {
       inputMedia = await demux(picked);
     } catch (error) {
+      if (error instanceof UnsupportedTimeline) throw error;
       inputFallback = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
@@ -193,6 +201,7 @@ async function loadFile(picked) {
 
     if (generation !== loadGeneration) return;
     media = inputMedia;
+    sourcePacketBytes = inputMedia?.video.samples.reduce((n, sample) => Math.max(n, sample.size), 0) || 0;
     fallbackReason = inputFallback;
     canRead = decodable;
     canPlay = played.ok;
@@ -221,9 +230,9 @@ async function loadFile(picked) {
   } catch (error) {
     if (generation !== loadGeneration) return;
     console.error(error);
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
-    showError(error?.message ? phrase(error.message) : phrase('open.notopened'));
+    // Only declared leaf keys are translated; native prose is a value in
+    // a fixed template, so quotes in an exception cannot become a selector.
+    showError(error?.message ? phrase('open.notopened.detail', { why: knownReason(error.message) }) : phrase('open.notopened'));
     resetView();
   } finally {
     if (generation === loadGeneration) {
@@ -394,7 +403,9 @@ function chooseDefaultWidth() {
     .sort((a, b) => a - b);
 
   const preferred = Number([...el.width.options].find((option) => option.defaultSelected)?.value);
-  const aim = Math.min(preferred || presets[presets.length - 1], source.width);
+  const modest = matchMedia('(max-width: 600px)').matches
+    || (Number.isFinite(navigator.deviceMemory) && navigator.deviceMemory <= 2);
+  const aim = Math.min(modest ? 240 : preferred || presets[presets.length - 1], source.width);
 
   const fits = presets.filter((value) => value <= aim);
   el.width.value = fits.length ? String(fits[fits.length - 1]) : 'source';
@@ -412,8 +423,8 @@ function chosenWidth() {
 function plan() {
   const size = outputSize(source.width, source.height, chosenWidth());
   const fps = Math.min(MAX_FPS, Number(el.fps.value) || 12);
-  const times = frameTimes({ start: section.start, end: section.end, fps });
-  return { size, fps, times };
+  const frames = frameCount({ start: section.start, end: section.end, fps });
+  return { size, fps, frames };
 }
 
 el.width.addEventListener('change', () => {
@@ -428,10 +439,32 @@ for (const input of [el.customWidth, el.fps, el.dither, el.loop]) {
   input.addEventListener('change', updateSummary);
 }
 
+function memorySettings() {
+  return {
+    sourceWidth: canRead ? media.video.codedWidth : source.width,
+    sourceHeight: canRead ? media.video.codedHeight : source.height,
+    packetBytes: canRead ? sourcePacketBytes : 0,
+  };
+}
+
+el.smallerWidth.addEventListener('click', () => {
+  if (loading || exporting || !source.width) return;
+  const { size, frames } = plan(), native = memorySettings();
+  const width = smallerWidth({ frames, width: size.width,
+    sourceWidth: source.width, sourceHeight: source.height,
+    codedWidth: native.sourceWidth, codedHeight: native.sourceHeight,
+    packetBytes: native.packetBytes, limit: MEMORY_LIMIT });
+  if (width === null) return;
+  el.width.value = 'custom';
+  el.customWidth.value = String(width);
+  el.customWidthField.hidden = false;
+  updateSummary();
+});
+
 function updateSummary() {
   if (!source.width) return;
 
-  const { size, times } = plan();
+  const { size, frames } = plan();
   const span = Math.max(0, section.end - section.start);
 
   el.sumSection.textContent = phrase('sum.section', {
@@ -445,25 +478,31 @@ function updateSummary() {
     fromWidth: source.width,
     fromHeight: source.height,
   });
-  el.sumFrames.textContent = `${times.length.toLocaleString()}`;
+  el.sumFrames.textContent = frames.toLocaleString();
 
-  const { low, high } = estimateBytes({ frames: times.length, ...size });
+  const { low, high } = estimateBytes({ frames, ...size });
   el.sumBytes.textContent = phrase('sum.bytes',
     { low: formatBytes(low), high: formatBytes(high) });
 
   el.widthNote.hidden = size.width <= source.width;
   el.widthNote.textContent = phrase('note.wider', { px: source.width });
 
-  const memory = workingBytes({ frames: times.length, ...size });
-  el.memoryNote.hidden = memory < (300 << 20);
-  // Two sentences, and the space between them is a phrase as well: ja and
-  // zh do not put one after a full stop.
+  const native = memorySettings();
+  const memory = workingMemory({ frames, ...size, ...native });
+  el.memoryNote.hidden = false;
+  // Sentence joining follows each language's own punctuation convention.
   el.memoryNote.textContent = phrase('join.sentences', {
-    a: phrase('note.memory', { size: formatBytes(memory) }),
+    a: phrase('note.memory', { size: formatBytes(memory), limit: formatBytes(MEMORY_LIMIT) }),
     b: phrase(memory > MEMORY_LIMIT ? 'note.memory.toobig' : 'note.memory.ok'),
   });
-
-  el.exportBtn.disabled = loading || exporting || !file || (!canRead && !canPlay) || memory > MEMORY_LIMIT || span <= 0;
+  const width = memory > MEMORY_LIMIT ? smallerWidth({ frames, width: size.width,
+    sourceWidth: source.width, sourceHeight: source.height,
+    codedWidth: native.sourceWidth, codedHeight: native.sourceHeight,
+    packetBytes: native.packetBytes, limit: MEMORY_LIMIT }) : null;
+  el.smallerWidth.hidden = width === null;
+  el.smallerWidth.disabled = loading || exporting;
+  el.exportBtn.disabled = loading || exporting || !file || (!canRead && !canPlay)
+    || memory > MEMORY_LIMIT || span <= 0;
 }
 
 /* ------------------------------------------------------------------ export */
@@ -491,7 +530,12 @@ function outputFilename() {
 async function runExport() {
   if (exporting || loading || !file) return;
 
-  const { size, fps, times } = plan();
+  const { size, fps, frames: count } = plan();
+  if (workingMemory({ frames: count, ...size, ...memorySettings() }) > MEMORY_LIMIT) {
+    showError(phrase('export.toobig'));
+    return;
+  }
+  const times = frameTimes({ start: section.start, end: section.end, fps });
   // The controls may describe the next run while frames are being collected;
   // their new values must not change the timing or encoding of this one.
   const delays = frameDelays(times, section.end);
@@ -502,10 +546,6 @@ async function runExport() {
   const inputMedia = media;
   if (!times.length) {
     showError(phrase('export.tooshort'));
-    return;
-  }
-  if (workingBytes({ frames: times.length, ...size }) > MEMORY_LIMIT) {
-    showError(phrase('export.toobig'));
     return;
   }
 
@@ -550,6 +590,7 @@ async function runExport() {
       signal: abortController.signal,
     });
 
+    throwIfAborted(abortController.signal);
     if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
     lastResultUrl = URL.createObjectURL(result.blob);
 
@@ -563,6 +604,7 @@ async function runExport() {
       result.dropped
         ? phrase('out.dropped', { frames: written, n: result.dropped })
         : written,
+      ...(result.continued ? [phrase('out.holds', { n: result.continued })] : []),
       phrase('out.fps', { n: fps }),
       phrase('out.colours', { n: result.colors }),
       formatBytes(result.blob.size),
@@ -572,8 +614,8 @@ async function runExport() {
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
     el.progress.hidden = true;
-    if (error?.name !== 'AbortError') {
-      showError(error?.message ? phrase(error.message) : phrase('export.failed'));
+    if (!abortController.signal.aborted && error?.name !== 'AbortError') {
+      showError(error?.message ? phrase('export.failed.detail', { why: knownReason(error.message) }) : phrase('export.failed'));
       console.error(error);
     }
   } finally {

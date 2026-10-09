@@ -444,12 +444,7 @@
     <h2><span class="step">3</span> When it is open</h2>
 
     <p class="card-lede">
-      The one line on a listing that changes by itself. Fill the week in and
-      the preview works out what it says at this moment on your own clock
-      &mdash; <em>Open &middot; Closes 9&nbsp;PM</em>, or
-      <em>Closed &middot; Opens 9&nbsp;AM Tue</em> &mdash; which is the only
-      way to find out what somebody looking you up on a Sunday evening is
-      told.
+      The status follows your device’s local clock, or a date and time you choose below. Fill in the week to see when the listing says Open or Closed, including hours that run past midnight.
     </p>
 
     <div class="settings">
@@ -471,6 +466,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>Preview a chosen date and time</span></label>
+      <div class="field">
+        <label for="preview-at">Local date and time</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">Uses this device’s time zone. Leave the option off to follow its clock; the status refreshes each minute. This preview choice is not saved in the profile JSON.</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -606,6 +611,10 @@
 
     <span data-phrase="name.length">{count} characters. A search result gives the name one line and cuts it wherever that line runs out &mdash; watch the third preview.</span>
     <span data-phrase="description.length">{count} characters. The panel shows about the first four lines of it.</span>
+
+    <span data-phrase="preview.invalid">Choose a complete, valid local date and time. The picture downloads are unavailable until it is valid.</span>
+    <span data-phrase="week.chosen">At {date} in this device’s time zone: {status}.</span>
+    <span data-phrase="load.failed">This browser could not read that profile file. Choose it again or try another file.</span>
 
     <span data-phrase="photo.added">Added, and redrawn to {width} by {height} in this page. Nothing was uploaded to read it.</span>
     <span data-phrase="photo.toobig">That picture is too big. Twenty megabytes is the limit.</span>

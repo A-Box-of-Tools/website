@@ -6,15 +6,12 @@ import { measureImage } from './shared/media.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import {
-  decode, encodableTypes, release, FORMATS, JPEG, PNG, WEBP,
+  encodableTypes, FORMATS, JPEG, PNG, WEBP,
 } from './codecs.js';
-import {
-  fitToTarget, keepFormat, alternativeFormat, QUALITY_FLOOR,
-} from './compress.js';
+import { captureSettings, compressOne } from './process.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { compare, hasTransparency } from './measure.js';
 import {
-  bytes, targetBytes, dimensions, outName, change, matchText, psnrText,
+  bytes, targetBytes, dimensions, change, matchText, psnrText,
 } from './files.js';
 import { makeZip } from './shared/zip.js';
 import { makeExample } from './example.js';
@@ -58,6 +55,7 @@ const el = {
   resultList: $('result-list'),
   downloadZip: $('download-zip'),
   resultsSummary: $('results-summary'),
+  resultsSettings: $('results-settings'),
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
@@ -188,6 +186,8 @@ function render() {
   // run iterates the list, and emptying it mid-way would hand back results for
   // files whose thumbnails have already been revoked.
   el.clearAll.disabled = busy;
+  for (const control of [el.targetValue, el.targetUnit, el.formatSelect, el.allowResize,
+    ...el.presets.querySelectorAll('button')]) control.disabled = busy;
   el.countLabel.textContent = any
     ? phrase(items.length === 1 ? 'list.count.one' : 'list.count.many',
       { count: items.length, size: humanBytes(totalBytes()) })
@@ -337,6 +337,7 @@ function renderFormatNote() {
 */
 for (const control of [el.targetValue, el.targetUnit]) {
   control.addEventListener('input', () => {
+    if (busy) return;
     clearResults();
     renderList();
     renderTargetSummary();
@@ -345,12 +346,14 @@ for (const control of [el.targetValue, el.targetUnit]) {
 
 for (const control of [el.formatSelect, el.allowResize]) {
   control.addEventListener('change', () => {
+    if (busy) return;
     clearResults();
     renderFormatNote();
   });
 }
 
 el.presets.addEventListener('click', (event) => {
+  if (busy) return;
   const button = event.target.closest('button[data-bytes]');
   if (!button) return;
   const amount = Number(button.dataset.bytes);
@@ -368,6 +371,10 @@ el.compressAll.addEventListener('click', async () => {
   const target = targetBytes(el.targetValue.value, el.targetUnit.value);
   if (!target || !items.length || busy) return;
 
+  const settings = captureSettings({
+    targetBytes: target, format: el.formatSelect.value, allowResize: el.allowResize.checked,
+  }, writable);
+  const batch = items.slice();
   busy = true;
   stopping = false;
   clearResults();
@@ -381,17 +388,17 @@ el.compressAll.addEventListener('click', async () => {
   let stopped = false;
 
   try {
-    for (const [index, item] of items.entries()) {
+    for (const [index, item] of batch.entries()) {
       if (stopping) { stopped = true; break; }
-      showProgress(index, items.length, item.file.name, 'step.reading');
+      showProgress(index, batch.length, item.file.name, 'step.reading');
       try {
-        collected.push(await compressOne(item, target, (step, values) => {
+        collected.push(await compressOne(item, settings, (step, values) => {
           // The search calls back between attempts, so Cancel is felt inside a
           // picture rather than only between two of them - which on a large
           // photograph is the difference between stopping and watching it
           // finish.
           if (stopping) throw new DOMException('Cancelled', 'AbortError');
-          showProgress(index, items.length, item.file.name, step, values);
+          showProgress(index, batch.length, item.file.name, step, values);
         }));
       } catch (error) {
         if (error?.name === 'AbortError') { stopped = true; break; }
@@ -416,7 +423,7 @@ el.compressAll.addEventListener('click', async () => {
 
   if (stopped) {
     el.progressLabel.textContent = collected.length
-      ? phrase('progress.stopped', { done: collected.length, total: items.length })
+      ? phrase('progress.stopped', { done: collected.length, total: batch.length })
       : phrase('progress.stopped.none');
   }
   if (failures.length) showLoadError(failures.join('\n'));
@@ -424,7 +431,7 @@ el.compressAll.addEventListener('click', async () => {
   // still leaves half of them done, and dropping those would be taking work
   // back off somebody who only asked it to stop.
   results = collected;
-  showResults();
+  showResults(settings);
 });
 
 el.cancel.addEventListener('click', () => { stopping = true; });
@@ -437,137 +444,6 @@ function showProgress(index, total, name, step, values) {
   });
 }
 
-/**
- * Compress one image.
- *
- * The order of the checks here is the tool's whole argument about quality, so
- * it is worth reading in one go:
- *
- *   - A file already under the target is returned as it arrived. Not re-saved,
- *     not re-encoded, not "optimised": handed back byte for byte, because the
- *     best possible version of a file that already fits is the file.
- *   - Otherwise the search in compress.js finds the cheapest way to fit.
- *   - On "auto", if fitting cost real quality - a resize, or a quality below
- *     the floor - the same search runs again in WebP and the two results are
- *     compared by measurement, not by rule of thumb. The better-looking one
- *     wins, and if the original format wins a tie it keeps the tie.
- *   - Whatever comes out is then measured against the original, so the row can
- *     say what the compression cost rather than promising it was small.
- */
-async function compressOne(item, target, onStep) {
-  const base = {
-    item,
-    name: item.file.name,
-    before: item.file.size,
-    size: item.size,
-  };
-
-  if (item.file.size <= target) {
-    return {
-      ...base,
-      blob: item.file,
-      after: item.file.size,
-      mime: item.file.type || JPEG,
-      untouched: true,
-      fitted: true,
-      width: item.size?.width ?? 0,
-      height: item.size?.height ?? 0,
-      outName: item.file.name,
-    };
-  }
-
-  onStep('step.decoding');
-  const source = await decode(item.file);
-
-  try {
-    const alpha = hasTransparency(source.bitmap, source);
-    const choice = el.formatSelect.value;
-    const allowResize = el.allowResize.checked;
-
-    const firstMime = choice === 'auto' || choice === 'keep'
-      ? keepFormat(item.file.type, writable)
-      : choice;
-
-    let winner = await fitToTarget(source, {
-      targetBytes: target, mime: firstMime, allowResize, onStep,
-    });
-    let winnerScore = await score(source, winner);
-    // The winner's own count is the length of the search that produced it. The
-    // row says how many times this picture was encoded in total, including a
-    // search that was tried and thrown away, because that is the honest answer
-    // to "what did this cost my laptop".
-    let encodes = winner.encodes;
-
-    // Only "auto" is allowed to change the extension, and only when keeping it
-    // actually cost something. A tool that quietly hands back a .webp when a
-    // .jpg would have been fine is not being clever, it is being surprising.
-    const compromised = winner.resized || winner.quality < QUALITY_FLOOR + 0.001 || !winner.fitted;
-    if (choice === 'auto' && compromised) {
-      const other = alternativeFormat(firstMime, writable, alpha);
-      if (other) {
-        onStep('step.trying', { format: FORMATS[other].label });
-        const rival = await fitToTarget(source, {
-          targetBytes: target, mime: other, allowResize, onStep,
-        });
-        const rivalScore = await score(source, rival);
-        encodes += rival.encodes;
-        if (isBetter(rival, rivalScore, winner, winnerScore)) {
-          winner = rival;
-          winnerScore = rivalScore;
-        }
-      }
-    }
-
-    return {
-      ...base,
-      blob: winner.blob,
-      after: winner.blob.size,
-      mime: winner.mime,
-      quality: winner.quality,
-      width: winner.width,
-      height: winner.height,
-      resized: winner.resized,
-      fitted: winner.fitted,
-      encodes,
-      changedFormat: winner.mime !== firstMime,
-      match: winnerScore,
-      untouched: false,
-      outName: outName(item.file.name, winner.mime),
-    };
-  } finally {
-    release(source.bitmap);
-  }
-}
-
-/** Decode a candidate and measure it against the original it came from. */
-async function score(source, candidate) {
-  let decoded;
-  try {
-    decoded = await decode(candidate.blob);
-  } catch {
-    return null;
-  }
-  try {
-    return compare(source.bitmap, decoded.bitmap, source);
-  } finally {
-    release(decoded.bitmap);
-  }
-}
-
-/**
- * Is the challenger the better result?
- *
- * Meeting the target comes first - a prettier file that missed the budget is
- * not a better answer to "make it fit". After that it is the measurement, with
- * a small margin: SSIM differences under a couple of thousandths are noise,
- * and on a tie the format the visitor's file arrived in keeps its place.
- */
-function isBetter(challenger, challengerScore, holder, holderScore) {
-  if (challenger.fitted !== holder.fitted) return challenger.fitted;
-  if (!challengerScore || !holderScore) return false;
-  return challengerScore.ssim > holderScore.ssim + 0.002;
-}
-
 /* ---------------------------------------------------------------- results */
 
 function clearResults() {
@@ -578,13 +454,20 @@ function clearResults() {
   el.results.hidden = true;
   el.downloadZip.hidden = true;
   el.resultsSummary.textContent = '';
+  el.resultsSettings.textContent = '';
 }
 
-function showResults() {
+function showResults(settings) {
   el.resultList.replaceChildren();
   if (!results.length) return;
 
   el.results.hidden = false;
+  el.resultsSettings.textContent = phrase('run.settings', {
+    target: humanBytes(settings.targetBytes),
+    format: settings.format === 'auto' || settings.format === 'keep'
+      ? phrase(`run.format.${settings.format}`) : FORMATS[settings.format].label,
+    resize: phrase(settings.allowResize ? 'run.resize.on' : 'run.resize.off'),
+  });
 
   for (const result of results) {
     el.resultList.appendChild(resultRow(result));

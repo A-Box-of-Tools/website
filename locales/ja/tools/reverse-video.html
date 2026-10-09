@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="元の動画のプレビュー"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -51,8 +51,9 @@
           音も逆向きにする
         </label>
         <p class="field-note" id="audio-note">
-          標本ひとつずつ逆に並べ替えてから、AACで符号化し直します。音のない動画にするなら外してください。そのほうが速く終わります。
+          標本ひとつずつ逆に並べ替えてから、AACで符号化し直します。音のない動画にするなら外してください。そのほうが速く終わります。中止を押しても、進行中の音声の復号や並べ替えが終わるまで待つ場合があります。
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -76,7 +77,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="逆再生動画のプレビュー"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>動画をダウンロード</a>
@@ -106,8 +107,8 @@
     <span data-phrase="src.audio.none">なし</span>
     <span data-phrase="src.audio.whatever">プレーヤーが見つけたもの</span>
     <span data-phrase="sound.off">逆再生クリップに音はまったく入りません。</span>
-    <span data-phrase="sound.exact">デコードし、サンプル単位で逆順にして、AACで再エンコードします。この二度目のエンコードは避けられません。パケットを逆順に再生しても逆再生にはならないからです。</span>
-    <span data-phrase="sound.player">ブラウザーが読み取り、サンプル単位で逆順にして、AACで再エンコードします。</span>
+    <span data-phrase="sound.exact">デコードし、サンプル単位で逆順にして、AACで再エンコードします。この二度目のエンコードは避けられません。パケットを逆順に再生しても逆再生にはならないからです。中止を押しても、進行中の音声の復号や並べ替えが終わるまで待つ場合があります。</span>
+    <span data-phrase="sound.player">ブラウザーが読み取り、サンプル単位で逆順にして、AACで再エンコードします。中止を押しても、進行中の音声の復号や並べ替えが終わるまで待つ場合があります。</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069;（元は&#x2066;{fromWidth} x {fromHeight}&#x2069;。H.264は辺が奇数のフレームを保存できません）</span>
     <span data-phrase="frames.groups">{groups}グループに{n}</span>
@@ -121,6 +122,13 @@
     <span data-phrase="step.frame">{total}フレーム中{done}フレーム目を逆にしています（{percent}%）</span>
     <span data-phrase="audio.descriptor">内部エラー：音声の記述が想定より大きくなっています。</span>
     <span data-phrase="audio.nosound">このファイルから音は返ってきませんでした。</span>
+    <span data-phrase="memory.track">音声のメモリ使用量：トラック全体に約{pcm}、チャンネルをまとめる間は一時的に約{peak}が必要です。エンコード済みの出力やブラウザーの追加メモリは含まれません。</span>
+    <span data-phrase="memory.file">音声のメモリ使用量：トラック全体に約{pcm}が必要です。ブラウザーは{file}の入力ファイル全体も読み込みます。デコード時の追加コピー、エンコード済みの出力、ブラウザーの追加メモリは含まれません。</span>
+    <span data-phrase="memory.unknown">音声のメモリ使用量：ブラウザーが{file}の入力ファイル全体を読み込むまで、チャンネル数は不明です。音声全体のバッファー、デコード時のコピー、エンコード済みの出力、ブラウザーの追加メモリが別途必要です。</span>
+    <span data-phrase="memory.unavailable">音声のメモリ使用量：利用可能な音声トラックの情報では見積もれません。音声全体とチャンネルをまとめる間の一時コピーがメモリに保持されます。エンコード済みの出力やブラウザーの追加メモリは別途必要です。</span>
+    <span data-phrase="memory.off">音声のメモリ使用量：音声を含めない場合、デコード済み音声のバッファーは不要です。</span>
+    <span data-phrase="memory.none">音声のメモリ使用量：この動画には音声トラックがありません。</span>
+    <span data-phrase="audio.stalled">音声エンコーダーが応答しなくなりました。短い動画を試すか、音声を含めないか、別のブラウザーを使ってください。</span>
     <span data-phrase="audio.noencode">音はデコードできましたが、エンコーダーからは何も返りませんでした。</span>
     <span data-phrase="audio.toolarge">このファイルの音はAACではないので、逆にするにはファイル全体をブラウザーに渡して読ませることになります——そしてこのファイルはそれには大きすぎます。映像は音なしで逆再生にしました。</span>
     <span data-phrase="audio.unreadable">このファイルから音を読み取れなかったので、逆再生の動画に音はありません。音声トラックがないか、このブラウザーが入っている音声をデコードしないかのどちらかです。</span>
@@ -143,6 +151,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes}分{seconds}秒</span>
     <span data-phrase="time.seconds">{n}秒</span>
+    <span data-phrase="read.edits">このファイルは、このツールでは保持できない再生用の編集リストを使用しています。ここで処理する前に、表示される編集済みのクリップを新しい動画として保存してください。</span>
+    <span data-phrase="read.editinvalid">ファイルの再生用編集リストが不完全か、時間情報が無効なため、表示されるタイムラインを保持できません。</span>
     <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
     <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
     <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>

@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 
 import {
   chooseFrame, fit, fixedBytes, fractionOf, LADDER, MB, MIN_BITRATE, plan, PRESETS, retune,
-  videoBitrate,
+  targetFromMb, videoBitrate,
 } from '../../tools/compress-video/src/plan.js';
 import { bitrateText, frameText, outName } from '../../tools/compress-video/src/format.js';
 
@@ -112,7 +112,8 @@ test('a second pass asks for proportionally less, and a little more than that', 
 });
 
 test('presets and fractions are what people are told to stay under', () => {
-  assert.equal(MB, 1048576);
+  assert.equal(MB, 1_000_000);
+  assert.equal(PRESETS[2], 25_000_000);
   assert.deepEqual(PRESETS, [8, 16, 25, 50, 100].map((n) => n * MB));
   assert.equal(fractionOf(60_000_000, 0.5), 30_000_000);
   assert.equal(fractionOf(3, 0.25), 1);
@@ -129,4 +130,23 @@ test('format: rates, frames and the file name read as people say them', () => {
     { key: 'frame.plain', values: { width: 1000, height: 500 } });
   assert.equal(outName('holiday.MOV'), 'holiday-compressed.mp4');
   assert.equal(outName('.mp4'), 'video-compressed.mp4');
+});
+
+test('typed limits respect the minimum and must be finite safe byte budgets', () => {
+  for (const value of ['', ' ', '0', '-2', '0.05', 'NaN', 'Infinity', '1e308', '9007199255']) {
+    assert.equal(targetFromMb(value), null, value);
+  }
+  assert.equal(targetFromMb('0.1'), 100_000);
+  assert.equal(targetFromMb('0.25'), 250_000);
+  assert.equal(targetFromMb('25'), 25_000_000);
+  assert.equal(targetFromMb('0.123456'), 123_456);
+});
+
+test('fraction chips survive the displayed decimal MB without changing the budget', () => {
+  for (const bytes of [1_871_373, 29_999_997, 123_456_789]) {
+    for (const fraction of [0.5, 0.25]) {
+      const target = fractionOf(bytes, fraction);
+      assert.equal(targetFromMb(String(target / MB)), target);
+    }
+  }
 });

@@ -28,11 +28,11 @@
     <h2><span class="step">2</span> Die Drehung wählen</h2>
 
     <p class="card-lede">
-      Ein Handy, das quer gefilmt hat, hat seine Pixel nicht gedreht: Es hat
-      eine Vierteldrehung in den Header der Datei geschrieben, und jeder Player
-      wendet sie an. Einen Clip zu drehen ist also eine Änderung an diesem
-      Header und sonst nichts. Kein einziges Einzelbild wird dekodiert, und das
-      Bild bleibt genau, was es war.
+      Ein Handy, das quer gefilmt hat, hat seine Pixel nicht gedreht: Es
+      hat eine Vierteldrehung in den Header der Datei geschrieben, die
+      der Player anwendet. Bei der Drehung im Header ändert diese Seite
+      die Matrix und kopiert die Einzelbilder unverändert. Ton wird
+      kopiert, als AAC neu kodiert oder weggelassen.
     </p>
 
     <div class="chips" role="group" aria-label="Wie weit gedreht wird">
@@ -164,10 +164,9 @@
     <span data-phrase="run.cancelled">Abgebrochen. Es wurde nichts geschrieben; drücken Sie die Schaltfläche, um neu zu beginnen.</span>
     <span data-phrase="run.failed">Dieser Durchgang ist fehlgeschlagen: {detail}</span>
     <span data-phrase="result.ready">{size} MP4, {turn} gedreht.</span>
-    <span data-phrase="result.sub.copy">Jedes Einzelbild und jedes Paket übernommen, wie es war; nur der Header
-      hat sich geändert.</span>
+    <span data-phrase="result.sub.copy">Jedes Einzelbild wurde unverändert übernommen; der Header gibt die Drehung an. {sound}</span>
     <span data-phrase="result.sub.bake">Jedes Einzelbild gedreht gezeichnet und als H.264 neu kodiert; der Header
-      sagt nichts, weil er es nicht mehr muss.</span>
+      sagt nichts, weil er es nicht mehr muss. {sound}</span>
     <span data-phrase="check.passed">Geprüft: {found}</span>
     <span data-phrase="check.failed">Dieser Durchgang ging nicht auf &mdash; {found}. Behalten Sie Ihr Original.</span>
     <span data-phrase="check.ok">aus dem Speicher wieder geöffnet, wie zuvor {length} lang, Anzeige {shown}
@@ -203,6 +202,8 @@
     <span data-phrase="write.noframes">Es gab keine Einzelbilder zu schreiben.</span>
     <span data-phrase="write.toobig">Die fertige Datei wäre größer als 4 GB, und das kann ein hier geschriebenes
       MP4 nicht fassen. Schneiden Sie den Clip zuerst.</span>
+    <span data-phrase="read.edits">Diese Datei verwendet eine Wiedergabe-Schnittliste, die dieses Werkzeug nicht beibehalten kann. Speichern Sie den sichtbaren bearbeiteten Clip als neues Video, bevor Sie ihn hier verarbeiten.</span>
+    <span data-phrase="read.editinvalid">Die Wiedergabe-Schnittliste der Datei ist unvollständig oder enthält ungültige Zeitangaben. Daher kann die sichtbare Zeitleiste nicht beibehalten werden.</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

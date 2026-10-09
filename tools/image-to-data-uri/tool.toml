@@ -33,15 +33,15 @@ css_parts = ["file-list", "form", "checks", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box", "format", "image-convert", "example-mark", "example-photo"]
+js_parts = ["file-picker", "message-box", "format", "image-convert", "example-mark", "example-photo", "svg-text"]
 lastmod = "2026-10-04"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Image to Data URI &mdash; Base64 Encode for CSS, Free, No Upload"
-description = "Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded."
+description = "Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. UTF-8 SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded."
 og_title = "Turn an image into a line you can paste into CSS"
-og_description = "Base64 for pictures, percent-encoding for SVG, and the ready-made rule, custom property or img tag around it. Runs on your own machine; nothing is uploaded."
+og_description = "Base64 for pictures, percent-encoding for UTF-8 SVG, and the ready-made rule, custom property or img tag around it. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image to Data URI - paste the picture into the stylesheet"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -239,13 +239,7 @@ a = """
 [[faq]]
 q = "Why is my SVG not base64?"
 a = """
-        Because base64 is the wrong encoding for it. An SVG is text, and a URL can
-        carry text already &mdash; only a handful of characters have to be escaped.
-        Percent-encoding those and leaving the rest alone produces a URI that is
-        typically a fifth shorter than the base64 of the same file, and that you
-        can still read in your stylesheet: the element names, the colours and the
-        <code>viewBox</code> are all still there to edit. There is a checkbox to
-        force base64 for the rare toolchain that insists on it."""
+        Valid UTF-8 SVGs use readable percent-encoding, which is usually shorter than base64. SVGs with another XML encoding or invalid UTF-8 use base64 automatically to preserve the original bytes and encoding declaration. The checkbox forces base64 for UTF-8 SVGs too. The preview still depends on the browser being able to draw the original file."""
 
 [[faq]]
 q = "How much bigger does base64 make my image?"
@@ -353,7 +347,7 @@ a = """
 
 [schema]
 category = "DeveloperApplication"
-description = "Convert a PNG, JPEG, SVG, WebP, GIF or ICO into a data URI ready to paste into CSS or HTML. Base64 for raster formats and percent-encoding for SVG, wrapped in a CSS rule, a custom property, an img tag or Markdown, with the size cost and any embedded metadata reported. Runs entirely in the browser with no upload."
+description = "Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. UTF-8 SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded."
 features = [
   "Base64 data URIs for PNG, JPEG, WebP, GIF, ICO, AVIF and more",
   "Percent-encoded SVG data URIs, which are shorter than base64 and stay readable",

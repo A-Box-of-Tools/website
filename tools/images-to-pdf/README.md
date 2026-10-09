@@ -104,17 +104,39 @@ fill that in is a hash of the clock and the file name.
 A PDF is a thing people send to other people. Anything in it that was not asked
 for is something the sender did not know they were sending.
 
+## The file belongs to the current choices
+
+Changing pictures, order, rotation, page settings, Title, Author or Date revokes
+an earlier result immediately. File name alone renames the offered download and
+keeps its bytes. Each export captures its page order, metadata and sanitized
+name; edits lock while Cancel and preview navigation remain reachable.
+
+Imports use the shared ordered-loads queue. Overlapping selections append in
+selection order, and export waits for the chosen queue and worked example to
+finish. Remove all also retires pending input, including an example still being
+generated. Late old successes, errors and cleanup cannot replace a newer batch.
+The shared discard callback releases prepared thumbnail URLs that never enter
+the current list; native bitmaps and temporary canvases have their own cleanup.
+
+Cancel retires an export immediately and restores retry. An older native read or
+encoder can still finish, but cannot offer a file or unlock a newer run. At most
+two native import preparations and two unfinished exports may run; an additional
+import waits, and an additional export becomes available after earlier work
+settles. Retired waiting imports are removed before they can start. Cancellation
+cannot interrupt synchronous filtering/assembly or a browser decode, encoding
+or compression operation already underway. Their resources are released after
+that operation returns. Nothing about JPEG copying, EXIF orientation, ICC or
+alpha storage changes with these ownership checks.
+
 ## Limitations
 
 - **One image per page.** No two-up, no contact sheets, no text. That is a
   different tool, and it will say so when it exists.
-- **No OCR and no text layer.** The pages are pictures, so the document is not
-  searchable. Nothing in the browser does OCR, and shipping an engine that could
-  is the same sort of question as
-  [What needs a vendored engine](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine).
-- **Existing PDFs cannot be read.** This writes documents; it does not open
-  them. The reader lives next door, in [PDF Compressor](../compress-pdf/);
-  merging and reordering are on the planned list and would be built on it.
+- **No OCR and no text layer.** This tool makes image-only PDFs, so their pages
+  are not searchable. It does not recognize text.
+- **Existing PDFs cannot be read.** This writes documents from images. Use
+  [PDF Merger & Splitter](../merge-pdf/) for existing PDF pages or
+  [PDF Compressor](../compress-pdf/) to reduce an existing PDF.
 - **Semi-transparent pixels are the browser's, not ours.** A canvas stores
   colours multiplied by their alpha, so a pixel that is half see-through comes
   back slightly changed by the decode — before this tool ever sees it. Fully
@@ -125,10 +147,10 @@ for is something the sender did not know they were sending.
 
 ## Testing it
 
-There is no test runner in this repository, so the checks used while writing this
-are not checked in. What they covered, if it needs doing again — all of it run in
-the browser against images generated in the page, so nothing had to be committed
-as a fixture:
+CI runs the JavaScript and Python regression suites. The PDF writer, JPEG
+inspection and page geometry have dedicated cases, alongside the import/export
+ownership and cancellation cases. Built-page browser checks use generated images
+to exercise native decoders and encoders without committed fixtures. They cover:
 
 - the cross-reference table, which is the part of a PDF a reader trusts
   absolutely: every offset in it must point at the object it claims, every entry

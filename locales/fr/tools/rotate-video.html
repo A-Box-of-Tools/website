@@ -27,9 +27,7 @@
   <section class="card" id="turn-card">
     <h2><span class="step">2</span> Faites-la pivoter</h2>
 
-    <p class="card-lede">
-      Un téléphone qui filme de côté conserve les pixels et inscrit une rotation dans l’en-tête, appliquée par le lecteur. Faire pivoter le clip change donc cet en-tête seul. Aucune image n’est décodée et la qualité reste identique.
-    </p>
+    <p class="card-lede">Un téléphone qui filme de côté conserve les pixels et inscrit une rotation dans l’en-tête, appliquée par le lecteur. Avec la rotation d’en-tête, cette page change la matrice et copie les images intactes. Le son est copié, réencodé en AAC ou retiré.</p>
 
     <div class="chips" role="group" aria-label="Angle de rotation">
       <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; Un quart de tour à droite</button>
@@ -149,8 +147,8 @@
     <span data-phrase="run.cancelled">Annulé. Aucun fichier créé&nbsp;; appuyez sur le bouton pour recommencer.</span>
     <span data-phrase="run.failed">Échec de cette opération&nbsp;: {detail}</span>
     <span data-phrase="result.ready">MP4 de {size}, rotation de {turn}.</span>
-    <span data-phrase="result.sub.copy">Chaque image et chaque paquet sont copiés intacts&nbsp;; seul l’en-tête a changé.</span>
-    <span data-phrase="result.sub.bake">Chaque image est dessinée tournée puis réencodée en H.264. L’en-tête ne demande aucune rotation supplémentaire.</span>
+    <span data-phrase="result.sub.copy">Chaque image est copiée intacte&nbsp;; l’en-tête indique la rotation. {sound}</span>
+    <span data-phrase="result.sub.bake">Chaque image est dessinée tournée puis réencodée en H.264. L’en-tête ne demande aucune rotation supplémentaire. {sound}</span>
     <span data-phrase="check.passed">Vérifié&nbsp;: {found}</span>
     <span data-phrase="check.failed">Ce passage n&rsquo;a pas été validé &mdash; {found}. Gardez votre original.</span>
     <span data-phrase="check.ok">rouvert depuis la mémoire, durée inchangée de {length}, affichage {shown} à {frame}.</span>
@@ -176,6 +174,8 @@
     <span data-phrase="sound.noencode">L’encodeur audio n’a rien produit.</span>
     <span data-phrase="write.noframes">Aucune image à écrire.</span>
     <span data-phrase="write.toobig">Le fichier dépasserait 4 Go, limite du MP4 écrit ici. Coupez d’abord le clip.</span>
+    <span data-phrase="read.edits">Ce fichier utilise une liste de montage pour la lecture que cet outil ne peut pas conserver. Enregistrez le clip monté visible comme une nouvelle vidéo avant de le traiter ici.</span>
+    <span data-phrase="read.editinvalid">La liste de montage pour la lecture du fichier est incomplète ou contient des durées invalides. Sa chronologie visible ne peut donc pas être conservée.</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>

@@ -32,7 +32,7 @@ css_parts = ["file-list", "progress", "results", "form", "notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-mark"]
+js_parts = ["file-picker", "zip", "crc32", "message-box", "format", "example-mark", "svg-text"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the results once there are any.
 # This tool finishes a whole batch at once and the row carries all of it,

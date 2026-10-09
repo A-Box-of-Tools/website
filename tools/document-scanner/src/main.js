@@ -1,20 +1,19 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
-import { acceptsImageFile } from './shared/image-input.js';
 import { messageBox } from './shared/message-box.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
-import { makeZip } from './shared/zip.js';
+import { throwIfAborted } from './shared/errors.js';
+import { orderedLoads } from './shared/ordered-loads.js';
 import { WORKING_EDGE, findPageQuad } from './shared/document-detect.js';
 import {
   clampPoint, copyQuad, orderCorners, outputSize, pageAspect, scaleQuad, wholeFrame,
 } from './shared/document-geometry.js';
 import { turnQuad, warpPage } from './warp.js';
 import { cleanPage } from './clean.js';
-import { encodeImage, encodePage } from './encode.js';
-import { buildDocument } from './document.js';
+import { writeScan } from './write-scan.js';
 import {
-  coverage, matchPaper, outName, pageName, ratioText, scanQuality, sizeText, snapshotPages, stemOf,
+  coverage, errorDetail, fileSummary, matchPaper, photoBatch, ratioText, scanQuality, sizeText, snapshotPages,
 } from './pages.js';
 import { Corners } from './stage.js';
 import { makeExample } from './example.js';
@@ -24,6 +23,7 @@ const $ = (id) => document.getElementById(id);
 const el = {
   dropzone: $('dropzone'),
   fileInput: $('file-input'),
+  example: $('example-button'),
   loadError: $('load-error'),
   stripToolbar: $('strip-toolbar'),
   countLabel: $('count-label'),
@@ -53,6 +53,7 @@ const el = {
   strengthValue: $('strength-value'),
   strengthNote: $('strength-note'),
 
+  saveSettings: $('save-settings'),
   pageSize: $('page-size'),
   sizeNote: $('size-note'),
   dpiField: $('dpi-field'),
@@ -67,6 +68,8 @@ const el = {
   savePdf: $('save-pdf'),
   saveImages: $('save-images'),
   busy: $('busy'),
+  cancel: $('cancel'),
+  cancelNote: $('cancel-note'),
   result: $('result'),
   resultFacts: $('result-facts'),
   download: $('download'),
@@ -114,6 +117,11 @@ let pages = [];
 let current = 0;
 let resultUrl = null;
 let busy = false;
+let running = null;
+let revision = 0;
+let loading = 0;
+let skipped = [];
+let undecodable = [];
 let previewToken = 0;
 let previewTimer = 0;
 
@@ -166,41 +174,84 @@ function shrinkTo(bitmap, width, height, edge) {
   canvas.width = Math.max(1, Math.round(width * scale));
   canvas.height = Math.max(1, Math.round(height * scale));
 
-  const context = canvas.getContext('2d', { willReadFrequently: true });
-  // The browser's own downscale, which is filtered and is a great deal better
-  // than reading one pixel in four would be.
-  context.imageSmoothingEnabled = true;
-  context.imageSmoothingQuality = 'high';
-  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  return canvas;
+  try {
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    // The browser's filtered downscale keeps the full-size resample from
+    // reading an unnecessarily large source when the output is smaller.
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    return canvas;
+  } catch (error) {
+    clearCanvas(canvas);
+    throw error;
+  }
 }
 
-async function addFiles(files) {
-  clearError();
-  const wanted = files.filter((file) => acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif']));
-  if (!wanted.length) return;
-
-  picker.busy(readingLabel(wanted.length));
-  const started = pages.length;
-
-  for (const file of wanted) {
-    try {
-      const decoded = await decode(file);
-      pages.push(preparePage(file, decoded));
-      decoded.bitmap.close?.();
-    } catch {
-      showError(phrase('error.decode', { name: file.name }));
-    }
-    // Between photographs, so that a folder of twenty does not freeze the page
-    // and the strip fills in as they arrive.
-    refresh();
-    await new Promise((resolve) => setTimeout(resolve, 0));
+function importNotices() {
+  const lines = [];
+  for (const [files, one, many] of [
+    [skipped, 'error.skipped.one', 'error.skipped.many'],
+    [undecodable, 'error.decode.one', 'error.decode.many'],
+  ]) {
+    if (!files.length) continue;
+    const { count, names, more } = fileSummary(files);
+    const listed = more ? phrase('error.more', { names, count: more }) : names;
+    lines.push(phrase(count === 1 ? one : many, { count, names: listed }));
   }
+  if (lines.length) showError(lines.join(' '));
+}
 
-  picker.done();
-  if (pages.length > started) select(started);
-  refresh();
-  schedulePreview();
+const imports = orderedLoads({
+  async read(file) {
+    let decoded;
+    try {
+      decoded = await decode(file);
+      const page = preparePage(file, decoded);
+      // Detection is synchronous; a real turn gives Remove all a chance before
+      // a long folder starts its next decode or hands its pages to the strip.
+      await new Promise(resolve => setTimeout(resolve, 0));
+      return page;
+    } finally {
+      decoded?.bitmap.close?.();
+    }
+  },
+  complete({ items, errors }) {
+    const first = pages.length;
+    pages.push(...items);
+    if (items.length) outputChanged();
+    undecodable.push(...errors.map(({ value }) => value));
+    importNotices();
+    if (items.length) select(first);
+    refresh();
+    schedulePreview();
+  },
+  status(pending) {
+    loading = pending;
+    if (pending) picker.busy(readingLabel(pending));
+    else picker.done();
+    refresh();
+  },
+  discard(page) { clearCanvas(page.preview); },
+});
+
+function addFiles(files) {
+  // The shared picker wakes waiting cards before invoking this callback. A
+  // rejected handoff must put the active export's locks back immediately.
+  if (busy) {
+    setExporting(true);
+    return;
+  }
+  outputChanged();
+  if (!imports.pending) {
+    clearError();
+    skipped = [];
+    undecodable = [];
+  }
+  const { accepted, refused } = photoBatch(files);
+  skipped.push(...refused);
+  importNotices();
+  return imports.add(accepted);
 }
 
 /**
@@ -228,8 +279,13 @@ function preparePage(file, decoded) {
     history: [],
   };
 
-  detect(page);
-  return page;
+  try {
+    detect(page);
+    return page;
+  } catch (error) {
+    clearCanvas(preview);
+    throw error;
+  }
 }
 
 /**
@@ -243,43 +299,49 @@ function preparePage(file, decoded) {
  */
 function detect(page) {
   const working = shrinkTo(page.preview, page.preview.width, page.preview.height, WORKING_EDGE);
-  const context = working.getContext('2d', { willReadFrequently: true });
-  const image = context.getImageData(0, 0, working.width, working.height);
-
-  const found = findPageQuad(image);
-  const up = page.width / working.width;
-
-  page.quad = scaleQuad(found.quad, up).map((point) => clampPoint(point, page.width, page.height));
-  page.found = found.found;
-  page.reason = found.reason;
-  page.edited = false;
-  page.history = [];
-
-  working.width = 0;
-  working.height = 0;
+  try {
+    const context = working.getContext('2d', { willReadFrequently: true });
+    const image = context.getImageData(0, 0, working.width, working.height);
+    const found = findPageQuad(image);
+    const up = page.width / working.width;
+    page.quad = scaleQuad(found.quad, up).map((point) => clampPoint(point, page.width, page.height));
+    page.found = found.found;
+    page.reason = found.reason;
+    page.edited = false;
+    page.history = [];
+  } finally {
+    clearCanvas(working);
+  }
 }
 
 /* ------------------------------------------------------------- the page strip */
 
 function select(index) {
+  if (busy) return;
   current = Math.min(pages.length - 1, Math.max(0, index));
   refresh();
   schedulePreview();
 }
 
 function removePage(index) {
-  pages.splice(index, 1);
+  if (busy) return;
+  outputChanged();
+  const [removed] = pages.splice(index, 1);
+  if (removed) clearCanvas(removed.preview);
   if (current >= pages.length) current = Math.max(0, pages.length - 1);
   refresh();
   schedulePreview();
 }
 
 function movePage(index, by) {
+  if (busy) return;
   const to = index + by;
   if (to < 0 || to >= pages.length) return;
+  outputChanged();
   [pages[index], pages[to]] = [pages[to], pages[index]];
   current = to;
   refresh();
+  schedulePreview();
 }
 
 function renderStrip() {
@@ -369,6 +431,7 @@ function drawThumb(canvas, page) {
 /* ------------------------------------------------------------- the corners */
 
 function snapshot() {
+  if (busy) return;
   const page = pages[current];
   if (!page) return;
   page.history.push(copyQuad(page.quad));
@@ -377,6 +440,7 @@ function snapshot() {
 }
 
 function moveCorner(index, point) {
+  if (busy) return;
   const page = pages[current];
   if (!page) return;
 
@@ -387,6 +451,7 @@ function moveCorner(index, point) {
   // which corner it is rather than turning the page inside out. The alternative
   // - refusing the drag - is worse: it is not obvious from the picture which
   // corner is being refused or why.
+  outputChanged();
   page.quad = orderCorners(quad);
   page.edited = true;
 
@@ -400,9 +465,11 @@ function moveCorner(index, point) {
 }
 
 function undo() {
+  if (busy) return;
   const page = pages[current];
   const previous = page?.history.pop();
   if (!previous) return;
+  outputChanged();
   page.quad = previous;
   el.undo.disabled = !page.history.length;
   refresh();
@@ -425,20 +492,29 @@ function refresh() {
   const page = pages[current];
   const any = pages.length > 0;
 
-  el.stripToolbar.hidden = !any;
+  el.stripToolbar.hidden = !any && !loading;
   el.editControls.hidden = !any;
   el.editEmpty.hidden = any;
   el.cleanControls.hidden = !any;
   el.cleanEmpty.hidden = any;
-  el.savePdf.disabled = !any || busy;
-  el.saveImages.disabled = !any || busy;
+  el.savePdf.disabled = !any || busy || loading > 0;
+  el.saveImages.disabled = !any || busy || loading > 0;
+  setExporting(busy);
 
   el.countLabel.textContent = any
     ? phrase(pages.length === 1 ? 'page.count' : 'page.counts', { count: pages.length })
     : '';
 
   renderStrip();
-  if (!page) return;
+  if (!page) {
+    retirePreview();
+    clearCanvas(el.photo);
+    clearCanvas(el.scanPreview);
+    el.scanFacts.replaceChildren();
+    el.detectNote.textContent = '';
+    corners.setSource(0, 0);
+    return;
+  }
 
   // The photograph, at whatever size it is being shown. The stage is given the
   // picture's own shape and the canvas fills it, so every corner over it can be
@@ -466,9 +542,15 @@ function drawCorners() {
 
 /* ---------------------------------------------------------- the scan preview */
 
-function schedulePreview() {
+function retirePreview() {
+  previewToken += 1;
   window.clearTimeout(previewTimer);
-  previewTimer = window.setTimeout(renderPreview, 120);
+  el.scanBusy.hidden = true;
+}
+
+function schedulePreview() {
+  retirePreview();
+  if (pages[current]) previewTimer = window.setTimeout(renderPreview, 120);
 }
 
 /**
@@ -483,6 +565,8 @@ async function renderPreview() {
   const page = pages[current];
   if (!page) return;
 
+  const options = settings();
+  const quad = copyQuad(page.quad);
   const token = previewToken + 1;
   previewToken = token;
   el.scanBusy.hidden = false;
@@ -490,36 +574,35 @@ async function renderPreview() {
   // One frame, so the busy line is actually painted before the main thread is
   // taken for the resample.
   await new Promise((resolve) => setTimeout(resolve, 0));
-  if (previewToken !== token) return;
+  if (previewToken !== token || pages[current] !== page) return;
 
   try {
-    const quad = scaleQuad(page.quad, 1 / page.scale);
-    const shape = pageAspect(quad, page.preview.width, page.preview.height);
-    const size = outputSize(quad, shape.aspect, PREVIEW_EDGE);
+    const scaled = scaleQuad(quad, 1 / page.scale);
+    const shape = pageAspect(scaled, page.preview.width, page.preview.height);
+    const size = outputSize(scaled, shape.aspect, PREVIEW_EDGE);
 
     const source = page.preview
       .getContext('2d', { willReadFrequently: true })
       .getImageData(0, 0, page.preview.width, page.preview.height);
-    const flat = warpPage(source, quad, size);
-    const cleaned = cleanPage(flat, settings());
+    const flat = warpPage(source, scaled, size);
+    const cleaned = cleanPage(flat, options);
 
-    if (previewToken !== token) return;
+    if (previewToken !== token || pages[current] !== page) return;
 
     el.scanPreview.width = cleaned.width;
     el.scanPreview.height = cleaned.height;
     el.scanPreview.getContext('2d')
       .putImageData(new ImageData(cleaned.data, cleaned.width, cleaned.height), 0, 0);
 
-    describeScan(page, shape);
+    describeScan(page, shape, options, quad);
     // The strip is redrawn here rather than during a drag: this is the moment
     // the drag has stopped moving, which is exactly when the thumbnail's outline
     // is worth putting right.
     renderStrip();
   } catch (error) {
-    // The leaf modules throw keys; a browser that failed for its own
-    // reasons throws a sentence, and phrase() hands back what it does not
-    // recognise.
-    showError(phrase('error.failed', { detail: phrase(error.message) }));
+    if (previewToken === token && pages[current] === page) {
+      showError(phrase('error.failed', { detail: errorDetail(error, phrase) }));
+    }
   } finally {
     if (previewToken === token) el.scanBusy.hidden = true;
   }
@@ -529,9 +612,8 @@ async function renderPreview() {
  * What the page will come out as, in the numbers that decide whether to take the
  * photograph again.
  */
-function describeScan(page, shape) {
-  const quad = page.quad;
-  const size = outputSize(quad, shape.aspect, Number(el.maxSide.value) || 0);
+function describeScan(page, shape, options, quad) {
+  const size = outputSize(quad, shape.aspect, options.maxSide);
   const paper = matchPaper(shape.aspect);
   const quality = scanQuality(size.width, shape.aspect);
   const share = Math.round(coverage(quad, page.width, page.height) * 100);
@@ -611,9 +693,12 @@ function showSettingNotes() {
  * than anything worth writing here, and enough on its own that the resample
  * itself never has to read more than one sample per output pixel.
  */
-async function renderFull(page, options) {
+async function renderFull(page, options, signal) {
+  throwIfAborted(signal);
   const decoded = await decode(page.file);
+  let canvas;
   try {
+    throwIfAborted(signal);
     const quad = page.quad;
     const shape = pageAspect(quad, page.width, page.height);
     const size = outputSize(quad, shape.aspect, options.maxSide);
@@ -630,7 +715,7 @@ async function renderFull(page, options) {
     // land every output pixel between two source pixels.
     const factor = Math.min(1, (wanted * 1.1) / Math.max(1, longestEdge));
 
-    const canvas = shrinkTo(
+    canvas = shrinkTo(
       decoded.bitmap, page.width, page.height, Math.max(page.width, page.height) * factor,
     );
     const context = canvas.getContext('2d', { willReadFrequently: true });
@@ -646,125 +731,110 @@ async function renderFull(page, options) {
     const flat = warpPage(source, scaleQuad(quad, applied), size);
     return cleanPage(flat, options);
   } finally {
+    if (canvas) clearCanvas(canvas);
     decoded.bitmap.close?.();
   }
 }
 
-async function savePdf() {
-  await run(async (report, selectedPages, options) => {
-    const encoded = [];
-
-    for (const [index, page] of selectedPages.entries()) {
-      report(phrase('busy.page', { done: index + 1, total: selectedPages.length }));
-      const cleaned = await renderFull(page, options);
-      encoded.push(await encodePage(cleaned, options));
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    }
-
-    report(phrase('busy.writing'));
-    const blob = buildDocument(encoded, options);
-    const name = outName(stemOf(selectedPages[0].name), 'pdf');
-    const mono = options.mode === 'mono';
-
-    show(blob, name, [
-      phrase('result.pdf', {
-        name,
-        size: sizeText(blob.size),
-        pages: phrase(selectedPages.length === 1 ? 'page.count' : 'page.counts', { count: selectedPages.length }),
-      }),
-      phrase(mono ? 'result.mono' : 'result.jpeg'),
-      phrase('result.clean'),
-    ]);
-  });
+function clearCanvas(canvas) {
+  canvas.width = 0;
+  canvas.height = 0;
 }
 
-async function saveImages() {
-  await run(async (report, selectedPages, options) => {
-    const stem = stemOf(selectedPages[0].name);
-    const files = [];
-    let extension = 'jpg';
-
-    for (const [index, page] of selectedPages.entries()) {
-      report(phrase('busy.page', { done: index + 1, total: selectedPages.length }));
-      const cleaned = await renderFull(page, options);
-      const written = await encodeImage(cleaned, options);
-      extension = written.extension;
-      files.push({
-        name: pageName(stem, index, selectedPages.length, written.extension),
-        blob: written.blob,
-      });
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    }
-
-    // One page is one file. Putting a single picture in an archive to be
-    // consistent would mean everybody who scanned one page had to unzip it.
-    if (files.length === 1) {
-      show(files[0].blob, files[0].name, [
-        phrase('result.images', {
-          name: files[0].name,
-          size: sizeText(files[0].blob.size),
-          pages: phrase('page.count', { count: 1 }),
-        }),
-      ]);
-      return;
-    }
-
-    // The bytes are only read out of the blobs here, at the end. Reading them
-    // as each page is finished would hold every page twice over - once as a
-    // blob, which the browser may have put on disk, and once as an array, which
-    // it certainly has not.
-    const zip = makeZip(await Promise.all(files.map(async ({ name, blob }) => ({
-      name,
-      data: new Uint8Array(await blob.arrayBuffer()),
-    }))));
-    const name = outName(stem, 'zip');
-    show(zip, name, [
-      phrase('result.images', {
-        name,
-        size: sizeText(zip.size),
-        pages: phrase('page.counts', { count: files.length }),
-      }),
-      phrase(extension === 'png' ? 'result.png' : 'result.jpeg'),
-    ]);
-  });
+function clearResult() {
+  if (resultUrl) URL.revokeObjectURL(resultUrl);
+  resultUrl = null;
+  el.result.hidden = true;
+  el.resultFacts.replaceChildren();
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
 }
 
-/** The one place that turns the buttons off, reports progress and puts them back. */
-async function run(work) {
-  if (busy || !pages.length) {
+function outputChanged() {
+  revision += 1;
+  if (running) cancelExport();
+  clearResult();
+  if (!busy) el.busy.hidden = true;
+}
+
+function setExporting(active) {
+  busy = active;
+  for (const area of [el.dropzone, el.stripToolbar, el.strip, el.editControls,
+    el.cleanControls, el.saveSettings]) area.inert = active;
+  el.fileInput.disabled = active;
+  el.example.inert = active;
+  el.modeGroup.disabled = active;
+  for (const input of el.saveSettings.querySelectorAll('input, select')) input.disabled = active;
+  el.cancel.hidden = !active;
+  el.cancelNote.hidden = !active;
+}
+
+function cancelExport() {
+  const job = running;
+  if (!job) return;
+  running = null;
+  job.controller.abort();
+  setExporting(false);
+  el.busy.textContent = phrase('busy.cancelled');
+  el.busy.hidden = false;
+  refresh();
+  (job.kind === 'pdf' ? el.savePdf : el.saveImages).focus({ preventScroll: true });
+}
+
+function resultFacts(result) {
+  const { blob, name, count, kind, mono, extension } = result;
+  const facts = [phrase(kind === 'pdf' ? 'result.pdf' : 'result.images', {
+    name, size: sizeText(blob.size),
+    pages: phrase(count === 1 ? 'page.count' : 'page.counts', { count }),
+  })];
+  if (kind === 'pdf') {
+    facts.push(phrase(mono ? 'result.mono' : 'result.jpeg'), phrase('result.clean'));
+  } else if (count > 1) {
+    facts.push(phrase(extension === 'png' ? 'result.png' : 'result.jpeg'));
+  }
+  return facts;
+}
+
+/** Only this captured run may publish a file or restore its controls. */
+async function run(kind) {
+  if (busy || loading || el.dropzone.classList.contains('busy') || !pages.length) {
     if (!pages.length) showError(phrase('error.none'));
     return;
   }
-
-  const selectedPages = snapshotPages(pages);
-  const options = settings();
-  busy = true;
-  el.savePdf.disabled = true;
-  el.saveImages.disabled = true;
-  el.busy.hidden = false;
-  clearError();
-
-  const report = (text) => {
-    el.busy.textContent = text;
+  const job = {
+    controller: new AbortController(), revision, kind,
+    pages: snapshotPages(pages), options: Object.freeze(settings()),
   };
-  report(phrase('busy.page', { done: 1, total: pages.length }));
-
+  running = job;
+  const owns = () => running === job && revision === job.revision && !job.controller.signal.aborted;
+  clearResult();
+  clearError();
+  setExporting(true);
+  refresh();
+  el.busy.hidden = false;
+  el.cancel.focus({ preventScroll: true });
+  const report = (key, values) => {
+    if (owns()) el.busy.textContent = phrase(key, values);
+  };
   try {
-    // A frame, so that the disabled buttons and the progress line are painted
-    // before the main thread is taken. setTimeout rather than
-    // requestAnimationFrame: a background tab never gets a frame, and the file
-    // has to be written whether or not anybody is looking at the page.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    await work(report, selectedPages, options);
+    const result = await writeScan(job.pages, job.options, {
+      kind, signal: job.controller.signal, renderPage: renderFull, report,
+    });
+    if (owns()) show(result.blob, result.name, resultFacts(result));
   } catch (error) {
-    // The leaf modules throw keys; a browser that failed for its own
-    // reasons throws a sentence, and phrase() hands back what it does not
-    // recognise.
-    showError(phrase('error.failed', { detail: phrase(error.message) }));
+    if (owns() && error.name !== 'AbortError') {
+      showError(phrase('error.failed', { detail: errorDetail(error, phrase) }));
+    }
   } finally {
-    busy = false;
-    el.busy.hidden = true;
-    refresh();
+    if (owns()) {
+      const returnFocus = document.activeElement === el.cancel;
+      running = null;
+      setExporting(false);
+      el.busy.hidden = true;
+      refresh();
+      schedulePreview();
+      if (returnFocus) (kind === 'pdf' ? el.savePdf : el.saveImages).focus({ preventScroll: true });
+    }
   }
 }
 
@@ -794,23 +864,29 @@ const picker = wireFilePicker({
 });
 
 el.detectOne.addEventListener('click', () => {
+  if (busy) return;
   const page = pages[current];
   if (!page) return;
+  outputChanged();
   detect(page);
   refresh();
   schedulePreview();
 });
 
 el.detectAll.addEventListener('click', () => {
+  if (busy) return;
+  outputChanged();
   for (const page of pages) detect(page);
   refresh();
   schedulePreview();
 });
 
 el.wholePhoto.addEventListener('click', () => {
+  if (busy) return;
   const page = pages[current];
   if (!page) return;
   snapshot();
+  outputChanged();
   page.quad = wholeFrame(page.width, page.height);
   page.edited = true;
   refresh();
@@ -821,9 +897,11 @@ el.wholePhoto.addEventListener('click', () => {
 // the top left - so a turned page is still a page whose corners were found, and
 // the note under the photo should not start claiming otherwise.
 const turn = (times) => {
+  if (busy) return;
   const page = pages[current];
   if (!page) return;
   snapshot();
+  outputChanged();
   for (let i = 0; i < times; i += 1) page.quad = turnQuad(page.quad);
   refresh();
   schedulePreview();
@@ -834,24 +912,33 @@ el.turnLeft.addEventListener('click', () => turn(3));
 el.undo.addEventListener('click', undo);
 
 el.clearAll.addEventListener('click', () => {
+  if (busy) return;
+  outputChanged();
+  for (const page of pages) clearCanvas(page.preview);
   pages = [];
   current = 0;
+  imports.reset();
+  skipped = [];
+  undecodable = [];
+  clearError();
   refresh();
 });
 
-el.modeGroup.addEventListener('change', () => {
-  showSettingNotes();
-  schedulePreview();
-});
-el.strength.addEventListener('input', () => {
-  showSettingNotes();
-  schedulePreview();
-});
-el.maxSide.addEventListener('change', () => renderPreview());
-el.pageSize.addEventListener('change', showSettingNotes);
-el.quality.addEventListener('input', showSettingNotes);
-el.savePdf.addEventListener('click', savePdf);
-el.saveImages.addEventListener('click', saveImages);
+for (const [input, event, preview] of [
+  [el.modeGroup, 'change', true], [el.strength, 'input', true],
+  [el.maxSide, 'change', true], [el.pageSize, 'change', false],
+  [el.dpi, 'change', false], [el.margin, 'input', false],
+  [el.quality, 'input', false], [el.title, 'input', false],
+]) {
+  input.addEventListener(event, () => {
+    outputChanged();
+    showSettingNotes();
+    if (preview) schedulePreview();
+  });
+}
+el.savePdf.addEventListener('click', () => run('pdf'));
+el.saveImages.addEventListener('click', () => run('images'));
+el.cancel.addEventListener('click', cancelExport);
 
 /* ------------------------------------------------- privacy panel + offline */
 

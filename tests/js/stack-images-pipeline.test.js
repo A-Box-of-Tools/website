@@ -41,7 +41,7 @@ import { NO_MOVE } from '../../tools/stack-images/src/align.js';
 import { REFINE_GRID, REFINE_INSET, refineWindow } from '../../tools/stack-images/src/plan.js';
 import { apply } from '../../tools/stack-images/src/similarity.js';
 import {
-  REFINED, compose, declaredSize, fellBack, finalCrop, openFrame, refineGrid, refineMove,
+  REFINED, compose, declaredSize, decodeSize, fellBack, finalCrop, openFrame, refineGrid, refineMove,
 } from '../../tools/stack-images/src/pipeline.js';
 
 const sof = (width, height) => concat(
@@ -417,5 +417,18 @@ test('a set that never moved is not inset, and a set nobody covered is inset on 
   const apart = [{ ...NO_MOVE, spot: BOX }, { ...NO_MOVE, dx: 2400, spot: BOX }];
   assert.deepEqual(finalCrop(apart, OUTPUT, { ...BOX }, true, 'focus', 3), {
     x: 5, y: 5, width: 2990, height: 1990,
+  });
+});
+
+test('decoded-frame memory follows resizing and leaves upscaling to the canvas', () => {
+  const natural = { width: 6000, height: 4000 };
+  assert.deepEqual(decodeSize(natural, { width: 3000, height: 2000 }, 1), {
+    width: 3000, height: 2000, resize: true,
+  });
+  assert.deepEqual(decodeSize({ width: 1000, height: 500 }, { width: 3000, height: 1500 }, 1), {
+    width: 1000, height: 500, resize: false,
+  });
+  assert.deepEqual(decodeSize(natural, { width: 2000, height: 3000 }, 6), {
+    width: 3000, height: 2000, resize: true,
   });
 });

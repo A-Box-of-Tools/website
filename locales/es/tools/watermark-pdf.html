@@ -109,9 +109,15 @@
         the sentence below it, which says what is and is not shown.
       -->
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">Página de la vista previa</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">Solo cambia la vista previa; la exportación sigue la opción Solo la primera página.</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
         <figcaption id="preview-note" class="field-note">
-          Una hoja en blanco con las dimensiones de tu primera página muestra la posición exacta de la marca. No representa el contenido del PDF: este sitio no incluye un motor para dibujarlo.
+          Una hoja en blanco con el tamaño, recorte y giro de la página elegida muestra dónde irá el sello. No se dibuja el contenido de tu página: este sitio no incluye un renderizador de PDF.
         </figcaption>
       </figure>
     </div>
@@ -155,6 +161,9 @@
     shared/js/phrases.js reads them back; a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">Página {n} de {total}: vista previa de la posición.</span>
+    <span data-phrase="preview.unstamped">La página {n} de {total} queda sin sello porque está seleccionada la opción Solo la primera página.</span>
+    <span data-phrase="preview.sample">Ejemplo de posición en A4 hasta que elijas un documento.</span>
     <span data-phrase="waiting.words">Se activa cuando hay un documento y texto para la marca.</span>
     <span data-phrase="note.repaired">La tabla de referencias cruzadas de este archivo no cuadraba con su contenido, así
       que se leyó buscando los objetos uno a uno. Eso es una reparación, y ha funcionado,

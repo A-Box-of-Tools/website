@@ -45,7 +45,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">速さ</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="速さ（倍率）">
       </div>
 
@@ -81,12 +81,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">音量</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="音量の変化（デシベル）">
       </div>
 
@@ -110,6 +111,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -120,6 +122,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>再生位置から試聴</button>
+      <p class="preview-hint" id="preview-hint">元の音声プレーヤーの再生位置を動かして、最大5秒を選んでください。この範囲だけを編集します。正規化には範囲内のピークを使い、速度変更の境界部分は全体の編集結果と異なる場合があります。</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="編集した抜粋"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- ステップ3｜出てくるファイル -->
@@ -134,7 +144,7 @@
           <option value="32">32ビット浮動小数点WAV（何も切り詰めません）</option>
         </select>
         <p class="field-note" id="depth-note">
-          WAVはサンプルをそのまま持つので、書き出しで音質が落ちることはありません。ただし小さなファイルにはなりません。上の見積もりをご覧ください。
+          16ビットPCMはサンプルを丸め、上限を超えたピークを切り詰めます。32ビット浮動小数点は編集したサンプルを保ちますが、元の音声で失われた情報は復元できません。どちらも大きなファイルになります。上の見積もりをご覧ください。
         </p>
       </div>
     </div>
@@ -168,6 +178,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">速さは0.25〜4で、小数点以下は2桁までにしてください。小数点には点かコンマを使えます。</span>
+    <span data-phrase="input.volume">音量は−24〜+24 dBで、小数点以下は2桁までにしてください。小数点には点かコンマを使えます。</span>
+    <span data-phrase="step.copying">サンプルを準備中…</span>
+    <span data-phrase="preview.interval">元の範囲{from}〜{to}、編集後の試聴時間{length}。</span>
+    <span data-phrase="preview.end">元の音声プレーヤーの再生位置を録音の終わりより前に移動してください。</span>
+    <span data-phrase="preview.failed">試聴音声を作成できませんでした：{why}</span>
+    <span data-phrase="edit.failed.reason">音声を編集できませんでした：{why}</span>
     <span data-phrase="step.reading">音を読み込んでいます&hellip;</span>
     <span data-phrase="step.starting">開始しています&hellip;</span>
     <span data-phrase="step.reversing">逆にしています&hellip;</span>

@@ -55,7 +55,10 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">JPGに変換</button>
+      <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
     </div>
+
+    <p class="note">次のファイルを処理する前に停止します。開始済みのエンコードは完了まで続き、作成済みのファイルは保存できます。</p>
 
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
@@ -103,6 +106,9 @@
     <span data-phrase="run.many">{count}個のファイルをJPGに変換</span>
     <span data-phrase="progress.each">{name}を変換中&hellip;</span>
     <span data-phrase="progress.done">完了しました。</span>
+    <span data-phrase="run.filefailed">{name}を変換できませんでした：{why}</span>
+    <span data-phrase="progress.stopped">{total}ファイル中{done}ファイルで停止しました。作成済みのファイルは下から保存できます。</span>
+    <span data-phrase="progress.stopped.none">ファイルの作成が完了する前に停止しました。</span>
     <span data-phrase="run.failed">処理に失敗しました：{detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count}個のJPEGを書き出しました。合計{size}です。</span>

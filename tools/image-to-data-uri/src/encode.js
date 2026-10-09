@@ -73,7 +73,7 @@ const MUST_ESCAPE = /["#%<>]/;
  * into a stylesheet is an SVG that renders differently from the file on disk -
  * which is exactly the kind of surprise a tool at this end of the job should
  * not be producing. Line breaks are escaped rather than removed, so the
- * original comes back out of `decodeURIComponent` byte for byte.
+ * original text, including its byte-order mark, comes back out unchanged.
  *
  * @param {string} text the SVG source, as UTF-8 text
  * @returns {string} safe to drop inside double quotes anywhere
@@ -83,7 +83,7 @@ export function encodeSvg(text) {
   // Iterated by code point rather than by code unit: an emoji inside a <text>
   // element is a surrogate pair, and encoding half of one produces a URI that
   // decodes to a replacement character.
-  for (const ch of stripBom(text)) {
+  for (const ch of text) {
     const code = ch.codePointAt(0);
     // Below 0x20 is a control character (line breaks among them), above 0x7e
     // is DEL or anything non-ASCII, which has to become its UTF-8 bytes.
@@ -94,10 +94,18 @@ export function encodeSvg(text) {
   return out;
 }
 
-/** A byte-order mark is invisible, legal, and enough to stop some parsers
- *  recognising the root element. It carries no information here. */
-function stripBom(text) {
-  return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
+/** Only exact UTF-8 can take the readable path without rewriting XML bytes. */
+export function svgTextForUri(bytes) {
+  try {
+    const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+    // BOM-less UTF-16 and a contradictory declaration still need their original
+    // bytes, even when every code unit happens to be an ASCII character.
+    if (text.includes(String.fromCharCode(0))) return null;
+    const declared = /<\?xml[^>]*encoding\s*=\s*["']([\w-]+)["']/i.exec(text)?.[1];
+    return declared && !/^utf-?8$/i.test(declared) ? null : text;
+  } catch {
+    return null;
+  }
 }
 
 /**

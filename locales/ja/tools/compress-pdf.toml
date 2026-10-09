@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """
 、そして読み込みと書き直しのすべてについては\
-      <code>src/reader.js</code>と<code>src/writer.js</code>です。どちらも\
+      <code>src/shared/pdf-reader.js</code>と<code>src/shared/pdf-writer.js</code>です。どちらも\
       ネットワークには手が届きません。"""
 
 howto_heading = "PDFを小さくする手順"
@@ -69,8 +69,8 @@ Content-Security-Policyには、このページが接続してよいアドレス
 title = "形式の扱いはすべてこのリポジトリの中にあります。"
 body = """
 PDFとは、オブジェクトの並びと、それぞれがどこから始まるかの表です。\
-      <code>src/objects.js</code>がその構文を読み、<code>src/reader.js</code>\
-      が表をたどり、<code>src/writer.js</code>が新しいものを書きます。この3つは\
+      <code>src/shared/pdf-objects.js</code>がその構文を読み、<code>src/shared/pdf-reader.js</code>\
+      が表をたどり、<code>src/shared/pdf-writer.js</code>が新しいものを書きます。この3つは\
       どれも、リクエストを出せるものを読み込んでいません。ライブラリを取りに\
       行くことも、サーバーで描画することもありません。"""
 

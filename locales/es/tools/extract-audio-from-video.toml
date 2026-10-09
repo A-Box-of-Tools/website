@@ -16,13 +16,7 @@ og_title = "Sacar el sonido de un vídeo sin subirlo a ninguna parte"
 og_description = "Suelta un MP4, MOV o WebM y guarda su audio como WAV. Solo se descodifica la pista de sonido, y el archivo no va a ningún sitio."
 og_image_alt = "Extraer el audio de un vídeo - el sonido a solas, sin subir nada"
 
-pledge = """
-    El descodificador es el que ya trae tu navegador, el mismo camino de código
-    que reproduce un archivo en un elemento <code>&lt;video&gt;</code>, y se le
-    pide la pista de audio y nada más. Escribir un WAV consiste en poner una
-    cabecera de cuarenta y cuatro bytes delante de las muestras, y eso está en
-    <code>src/shared/wav.js</code>. No hay ningún codificador por medio, no hay paso de
-    subida, y esta página no tiene función de red de ninguna clase."""
+pledge = """El decodificador del navegador lee solo la pista de audio. El WAV se escribe localmente como PCM de 16 bits o float de 32 bits. Esta herramienta no tiene codificador MP3, subida ni función de red."""
 
 live_hint = """
       No hace falta que nos creas: abre las DevTools, mira la pestaña de red y
@@ -92,13 +86,8 @@ body = """
       navegador ya sabe reproducir."""
 
 [[privacy]]
-title = "Las muestras se escriben tal cual, no se vuelven a codificar."
-body = """
-
-      Un WAV son las muestras que devolvió el descodificador con una cabecera
-      delante. No hay ningún codificador por medio tomando decisiones sobre tu
-      grabación, ni nada que pudiera describirse como una subida donde eso
-      pudiera ocurrir."""
+title = """El formato WAV deja clara su precisión."""
+body = """PCM de 16 bits redondea y limita las muestras decodificadas para favorecer la compatibilidad. Float de 32 bits las conserva si no cambian los canales. Mono promedia los canales. Ambos formatos se escriben en este dispositivo sin subir nada."""
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
@@ -131,12 +120,8 @@ body = """
       remuestrear en silencio y afirmar que no se tocó nada."""
 
 [[howto]]
-title = "Elige mono si lo quieres más pequeño."
-body = """
- Dejar los canales como
-      están mantiene la grabación exactamente igual que era. Mezclar a mono
-      reduce el archivo a la mitad y es lo que quiere una transcripción o una
-      grabación de voz; promedia los canales en lugar de tirar uno."""
+title = """Elige el formato y los canales."""
+body = """PCM de 16 bits es la opción compatible predeterminada. Elige float de 32 bits para conservar las muestras decodificadas sin redondearlas ni recortarlas. Deja los canales sin cambios para conservarlas; mono los promedia y reduce a la mitad los datos estéreo."""
 
 [[howto]]
 title = "Escúchalo antes de guardarlo."
@@ -164,15 +149,7 @@ a = """
 
 [[faq]]
 q = "¿Puede darme un MP3?"
-a = """
-        No, y no va a fingir que sí. Ningún navegador trae un codificador de MP3,
-        y la única manera de llegar a uno es mandar tu vídeo a un servidor que lo
-        tenga, que es justo lo que este sitio existe para no hacer. Lo que
-        obtienes es un WAV: las muestras con una cabecera de cuarenta y cuatro
-        bytes delante, que no necesita codificador alguno y no puede costar
-        calidad. Es más grande, unos diez megabytes por minuto en estéreo, y lo
-        abre cualquier reproductor, móvil o editor. Lo que quiera un MP3 puede
-        hacer uno a partir de él en un segundo."""
+a = """Esta página escribe WAV en lugar de MP3. MP3 necesita un codificador que esta herramienta no incluye. Elige PCM de 16 bits compatible o float de 32 bits; ninguno exige subir el archivo. WAV ocupa más porque su audio no está comprimido; otro editor puede comprimirlo después."""
 
 [[faq]]
 q = "¿Se llega a mirar la imagen?"
@@ -207,35 +184,15 @@ a = """
 
 [[faq]]
 q = "¿Se pierde calidad?"
-a = """
-        Nada más allá de lo que el vídeo ya le hizo a su propio audio cuando se
-        creó. Las muestras que devuelve el descodificador se escriben tal cual:
-        no hay una segunda codificación, así que no hay una segunda generación de
-        pérdida. Lo único que conviene saber es la frecuencia de muestreo: la del
-        propio archivo se lee primero de su cabecera y la descodificación se hace
-        a esa frecuencia, de modo que tu grabación no se remuestrea en silencio.
-        Si un archivo no declara ninguna, la página dice qué frecuencia
-        supuso."""
+a = """PCM de 16 bits redondea las muestras decodificadas y limita los valores que superan la escala completa. Elige float de 32 bits y deja los canales sin cambios para conservar las muestras del decodificador, incluidos esos valores. Mono promedia los canales. Float no recupera las pérdidas que ya tenía el vídeo. Se usa la frecuencia de muestreo detectada en el archivo; si no se detecta, la página indica la frecuencia asumida."""
 
 [[faq]]
 q = "¿Por qué el WAV es mucho más grande que el vídeo?"
-a = """
-        Porque un WAV no está comprimido y la pista de audio del vídeo sí lo
-        estaba. El sonido con calidad de CD ocupa unos diez megabytes por minuto
-        en estéreo, contenga lo que contenga; la pista AAC dentro de un MP4 quizá
-        una décima parte de eso. Mezclar a mono lo reduce a la mitad. Es el
-        precio de no recodificar, y se paga una sola vez: lo que abras después
-        con el archivo ya puede comprimirlo."""
+a = """El audio WAV no está comprimido. A 44,1 kHz, estéreo de 16 bits ocupa unos diez megabytes por minuto. Float duplica los datos de muestras; mono reduce a la mitad los datos estéreo. El tamaño de salida se muestra antes de terminar el archivo."""
 
 [[faq]]
 q = "¿De qué duración puede ser el vídeo?"
-a = """
-        Aquí no hay ningún límite puesto, porque no hay un servidor pagándolo. El
-        techo real es la memoria de tu propio dispositivo: el archivo se lee
-        entero y toda la pista de audio se mantiene como muestras, así que una
-        grabación muy larga en un dispositivo pequeño puede quedarse sin sitio.
-        Unas cuantas horas de vídeo normalmente van bien, y un móvil aguantará
-        menos que un portátil."""
+a = """El archivo se lee y decodifica en memoria, donde también se reúne el WAV completo. Las grabaciones largas pueden agotar la memoria; las salidas que superarían el límite WAV de 4 GB se rechazan antes de escribir muestras. Cancelar retira una lectura pendiente o detiene la mezcla y escritura por bloques. El navegador puede seguir decodificando hasta que termine, pero se descarta el resultado cancelado."""
 
 [[faq]]
 q = "¿Puedo recortarlo o subirle el volumen?"
@@ -264,10 +221,10 @@ a = """
 [schema]
 description = "Extrae la pista de audio de un MP4, MOV o WebM y guárdala como WAV. Solo se descodifica el audio, la imagen no se lee nunca, y no se sube nada."
 features = [
-  "Guarda como WAV el audio de vídeos MP4, M4V, MOV y WebM",
+  "Guarda el audio del vídeo como WAV PCM de 16 bits compatible o float de 32 bits",
   "Descodifica solo la pista de audio; la imagen no se lee nunca",
   "Lee primero la frecuencia de muestreo del archivo, para no remuestrear en silencio",
-  "Mezcla a mono promediando, para la mitad de tamaño",
+  "Mezcla a mono promediando todos los canales",
   "Reproduce el resultado antes de que lo guardes",
   "Lleva el resultado al recortador o al editor de audio sin guardarlo",
   "Funciona sin conexión; sin subidas, sin cuenta",

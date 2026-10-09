@@ -6,7 +6,7 @@ import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { cropExact, grabFrame } from './transcode.js';
 import { cropByRecording } from './record.js';
 import { Cropper } from './shared/cropper.js';
@@ -106,9 +106,12 @@ let position = 0;
 /** The moment the still path has been asked for, and the one it has drawn. */
 let wantedTime = -1;
 let shownTime = -1;
-let decoding = false;
-/** Bumped by every load, so a decode still in flight knows it is stale. */
+/** Only this request may draw or clear the decoded-still busy indicator. */
+let stillRequest = null;
+/** Retired on release as well as replacement, including a failed load. */
 let loadId = 0;
+let loading = false;
+let ready = false;
 let exporting = false;
 let abortController = null;
 let lastResultUrl = null;
@@ -141,66 +144,75 @@ const picker = wireFilePicker({
 /* ------------------------------------------------------------------ loading */
 
 async function loadFile(picked) {
-  if (exporting) return;
+  if (!picked || exporting) return;
 
   clearError();
   releaseFile();
-  loadId += 1;
-
+  const mine = loadId;
+  loading = true;
   file = picked;
   picker.busy(phrase('step.reading'));
 
   try {
     objectUrl = URL.createObjectURL(picked);
     const played = await openInPlayer(el.preview, objectUrl);
+    if (mine !== loadId) return;
 
+    let found = null;
+    let refused = null;
     try {
-      media = await demux(picked);
-      fallbackReason = null;
+      found = await demux(picked);
     } catch (error) {
-      media = null;
-      fallbackReason = error instanceof UnsupportedFile
+      if (mine !== loadId) return;
+      if (error instanceof UnsupportedTimeline) throw error;
+      refused = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
     }
+    if (mine !== loadId) return;
 
     let decodable = false;
-    if (media && hasWebCodecs()) {
-      decodable = await canDecode(decoderConfig(media.video));
+    if (found && hasWebCodecs()) {
+      decodable = await canDecode(decoderConfig(found.video));
+      if (mine !== loadId) return;
       if (!decodable) {
-        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
+        refused = { key: 'read.nodecoder', values: { codec: found.video.codec } };
       }
-    } else if (media && !hasWebCodecs()) {
-      fallbackReason = { key: 'read.nowebcodecs' };
+    } else if (found && !hasWebCodecs()) {
+      refused = { key: 'read.nowebcodecs' };
     }
 
-    // If the demuxer and the player disagree about the shape of the picture,
-    // one of them is applying a rotation the other is not - and a crop lined up
-    // against the wrong one would cut the wrong part out. The player is what
-    // you are looking at, so it wins, and the exact path stands down.
+    // The player is what the crop is lined up against. A disagreement about
+    // rotation must therefore stand down the exact path rather than guess.
     if (decodable && played.ok
-      && (played.width !== media.video.displayWidth || played.height !== media.video.displayHeight)) {
+      && (played.width !== found.video.displayWidth || played.height !== found.video.displayHeight)) {
       decodable = false;
-      fallbackReason = { key: 'read.turned' };
+      refused = { key: 'read.turned' };
     }
 
-    canCropExactly = decodable;
-    canRecord = played.ok && hasMediaRecorder();
-
-    if (!canCropExactly && !canRecord) {
+    const recordable = played.ok && hasMediaRecorder();
+    if (!decodable && !recordable) {
       showError(played.ok
         ? phrase('open.norecord')
-        : phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
+        : phrase('open.failed', { reason: why(refused, 'read.notplayed') }));
       resetView();
       return;
     }
 
-    source = canCropExactly
-      ? { width: media.video.displayWidth, height: media.video.displayHeight }
+    // Installing these together prevents controls from combining the new
+    // player's file with the previous reader's dimensions or path choice.
+    media = found;
+    fallbackReason = refused;
+    canCropExactly = decodable;
+    canRecord = recordable;
+    source = decodable
+      ? { width: found.video.displayWidth, height: found.video.displayHeight }
       : { width: played.width, height: played.height };
-    duration = played.duration || (media ? media.duration : 0);
-    fps = media ? averageFps(media.video) : 30;
+    duration = played.duration || (found ? found.duration : 0);
+    fps = found ? averageFps(found.video) : 30;
     playable = played.ok;
+    loading = false;
+    ready = true;
 
     showPreview();
     setUpTransport();
@@ -209,19 +221,20 @@ async function loadFile(picked) {
 
     cropper.setSource(source.width, source.height);
     setAspect('free', el.aspectRow.querySelector('[data-aspect="free"]'));
-
-    el.exportBtn.disabled = false;
     updateFormatOptions();
     updateSummary();
+    setSourceControls(true);
   } catch (error) {
+    if (mine !== loadId) return;
     console.error(error);
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
+    // The leaf modules throw keys; browser failures can be their own sentence.
     showError(error?.message
       ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
     resetView();
+    // The disabled export is still a gate, but its refusal alert must be heard.
+    el.exportCard.inert = false;
   } finally {
-    picker.done();
+    if (mine === loadId) picker.done();
   }
 }
 
@@ -238,7 +251,7 @@ function showPreview() {
   el.stage.style.maxWidth = `calc(62vh * ${source.width / source.height})`;
 
   el.preview.hidden = !playable;
-  el.still.hidden = playable;
+  el.still.hidden = true;
   el.stageNote.hidden = playable;
 
   if (!playable) {
@@ -283,11 +296,32 @@ function describeSource(played) {
 }
 
 function releaseFile() {
+  loadId += 1;
+  stillRequest?.controller.abort();
+  stillRequest = null;
+  loading = false;
+  ready = false;
   playing = false;
   playable = false;
+  el.preview.pause();
+  el.play.textContent = '▶';
+  el.play.setAttribute('aria-label', phrase('play.play'));
   position = 0;
   wantedTime = -1;
   shownTime = -1;
+  source = { width: 0, height: 0 };
+  duration = 0;
+  fps = 30;
+  canCropExactly = false;
+  canRecord = false;
+  fallbackReason = null;
+  el.source.hidden = true;
+  el.pathNote.hidden = true;
+  el.transport.hidden = true;
+  el.preview.hidden = true;
+  el.still.hidden = true;
+  el.stageBusy.hidden = true;
+  el.stageNote.hidden = true;
   if (objectUrl) {
     el.preview.removeAttribute('src');
     el.preview.load();
@@ -296,13 +330,32 @@ function releaseFile() {
   }
   media = null;
   file = null;
+  setSourceControls(false);
+  clearResult();
 }
 
 function resetView() {
-  el.source.hidden = true;
-  el.pathNote.hidden = true;
-  el.transport.hidden = true;
   releaseFile();
+  picker.done();
+  picker.waiting();
+}
+
+function setSourceControls(enabled) {
+  el.cropCard.inert = !enabled;
+  el.exportCard.inert = !enabled;
+  el.exportBtn.disabled = !enabled;
+  cropper.setEnabled(enabled);
+  setTransportEnabled(enabled);
+}
+
+function clearResult() {
+  el.result.hidden = true;
+  el.resultVideo.pause();
+  el.resultVideo.removeAttribute('src');
+  el.resultVideo.load();
+  el.download.removeAttribute('href');
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
 }
 
 /* ------------------------------------------------- moving through the clip */
@@ -339,6 +392,7 @@ function setUpTransport() {
 
 /** Show the clip at `seconds`, wherever the picture is coming from. */
 function goTo(seconds) {
+  if (!ready || loading) return;
   position = Math.max(0, Math.min(seconds, duration || seconds));
   el.scrub.value = String(Math.round(position * 1000));
   el.atTime.textContent = clockTime(position);
@@ -348,17 +402,19 @@ function goTo(seconds) {
 
 /** One frame on or back, at the clip's average rate. */
 function step(frames) {
+  if (!ready || loading || exporting) return;
   pause();
   goTo(position + frames / (fps || 30));
 }
 
 function play() {
-  if (!playable || playing) return;
+  if (!ready || loading || exporting || !playable || playing) return;
   playing = true;
   el.play.textContent = '⏸';
   el.play.setAttribute('aria-label', phrase('play.pause'));
-  el.preview.play().catch(() => pause());
-  follow();
+  const mine = loadId;
+  el.preview.play().catch(() => { if (mine === loadId) pause(); });
+  follow(mine);
 }
 
 function pause() {
@@ -372,12 +428,12 @@ function pause() {
 }
 
 /** Keep the slider and the clock in step while it plays. */
-function follow() {
-  if (!playing) return;
+function follow(mine) {
+  if (!playing || mine !== loadId) return;
   position = el.preview.currentTime;
   el.scrub.value = String(Math.round(position * 1000));
   el.atTime.textContent = clockTime(position);
-  requestAnimationFrame(follow);
+  requestAnimationFrame(() => follow(mine));
 }
 
 /**
@@ -390,19 +446,27 @@ function follow() {
  * picture once it has been more than a moment.
  */
 async function drawStill(seconds) {
+  if (!ready || loading || playable || !media || !file) return;
   wantedTime = seconds;
-  if (decoding) return;
+  if (stillRequest?.loadId === loadId) return;
 
-  const mine = loadId;
-  decoding = true;
+  const request = { loadId, controller: new AbortController() };
+  const ownerFile = file;
+  const ownerMedia = media;
+  stillRequest = request;
+  const current = () => stillRequest === request && request.loadId === loadId;
   try {
-    while (wantedTime !== shownTime && media && loadId === mine) {
+    while (current() && ready && wantedTime !== shownTime) {
       const target = wantedTime;
-      const slow = setTimeout(() => { el.stageBusy.hidden = false; }, 120);
+      const slow = setTimeout(() => {
+        if (current()) el.stageBusy.hidden = false;
+      }, 120);
       try {
-        const canvas = await grabFrame({ file, media, atSeconds: target });
-        // Something newer came in, or another file did; that one wins.
-        if (wantedTime !== target || loadId !== mine) continue;
+        const canvas = await grabFrame({
+          file: ownerFile, media: ownerMedia, atSeconds: target,
+          signal: request.controller.signal,
+        });
+        if (!current() || wantedTime !== target) continue;
         el.still.width = canvas.width;
         el.still.height = canvas.height;
         el.still.getContext('2d').drawImage(canvas, 0, 0);
@@ -410,16 +474,21 @@ async function drawStill(seconds) {
         shownTime = target;
       } finally {
         clearTimeout(slow);
-        el.stageBusy.hidden = true;
+        if (current()) el.stageBusy.hidden = true;
       }
     }
   } catch (error) {
-    if (loadId !== mine) return;
+    if (!current() || request.controller.signal.aborted) return;
     el.still.hidden = true;
     el.stageNote.textContent = phrase('preview.none',
       { why: phrase(error.message, fill(error.values)) });
   } finally {
-    decoding = false;
+    // Another source can have its own decoder while this one closes. Its
+    // request and busy indicator belong to it, including during cancellation.
+    if (current()) {
+      stillRequest = null;
+      el.stageBusy.hidden = true;
+    }
   }
 }
 
@@ -437,8 +506,8 @@ el.scrub.addEventListener('input', () => {
 // pressed. Following the element rather than only our own button is what keeps
 // the label, the slider and the clock honest when that happens. pause() clears
 // `playing` before it touches the element, so this cannot loop.
-el.preview.addEventListener('pause', () => pause());
-el.preview.addEventListener('ended', () => pause());
+el.preview.addEventListener('pause', () => { if (el.preview.paused) pause(); });
+el.preview.addEventListener('ended', () => { if (el.preview.ended) pause(); });
 
 /* --------------------------------------------------------------- the crop */
 
@@ -446,6 +515,7 @@ el.preview.addEventListener('ended', () => pause());
 let aspect = null;
 
 function onCropChanged(rect) {
+  if (!ready || loading || exporting) return;
   el.cropX.value = String(rect.x);
   el.cropY.value = String(rect.y);
   el.cropW.value = String(rect.width);
@@ -458,6 +528,7 @@ function onCropChanged(rect) {
 }
 
 function setAspect(value, button) {
+  if (!ready || loading || exporting) return;
   for (const other of el.aspectRow.querySelectorAll('[data-aspect]')) {
     other.classList.toggle('active', other === button);
   }
@@ -478,20 +549,26 @@ el.aspectRow.addEventListener('click', (event) => {
 });
 
 el.swapAspect.addEventListener('click', () => {
-  if (!aspect) return;
+  if (!ready || loading || exporting || !aspect) return;
   aspect = 1 / aspect;
   cropper.setAspect(aspect);
 });
 
-el.cropMax.addEventListener('click', () => cropper.maximize());
-el.cropCentre.addEventListener('click', () => cropper.centre());
+el.cropMax.addEventListener('click', () => {
+  if (ready && !loading && !exporting) cropper.maximize();
+});
+el.cropCentre.addEventListener('click', () => {
+  if (ready && !loading && !exporting) cropper.centre();
+});
 el.cropReset.addEventListener('click', () => {
+  if (!ready || loading || exporting) return;
   setAspect('free', el.aspectRow.querySelector('[data-aspect="free"]'));
   cropper.reset();
 });
 
 for (const input of [el.cropX, el.cropY, el.cropW, el.cropH]) {
   input.addEventListener('change', () => {
+    if (!ready || loading || exporting) return;
     // A typed box is taken literally, so any locked shape is let go rather than
     // quietly overruling what was typed - and the buttons say so, instead of
     // going on claiming a lock the box no longer keeps.
@@ -528,6 +605,7 @@ function updateFormatOptions() {
 }
 
 function updateFormatNote() {
+  if (!ready || loading || exporting) return;
   el.formatNote.textContent = phrase(usingExact() ? 'note.exact' : 'note.record');
   el.audioNote.textContent = phrase(usingExact() ? 'note.audio.exact'
     : 'note.audio.record');
@@ -541,7 +619,7 @@ el.keepAudio.addEventListener('change', updateSummary);
 
 function updateSummary() {
   const rect = cropper.rect;
-  if (!source.width) return;
+  if (!ready || loading || exporting || !source.width) return;
 
   el.sumSize.textContent = phrase('size.from', {
     width: rect.width,
@@ -601,7 +679,7 @@ function clockTime(seconds) {
 }
 
 async function runExport() {
-  if (exporting || !file) return;
+  if (exporting || loading || !ready || !file || (!canCropExactly && !canRecord)) return;
 
   const crop = cropper.rect;
   if (crop.width < 16 || crop.height < 16) {
@@ -618,6 +696,7 @@ async function runExport() {
   el.progress.hidden = false;
   el.result.hidden = true;
   cropper.setEnabled(false);
+  el.cropCard.inert = true;
   pause();
   setTransportEnabled(false);
   setProgress({ phase: 'preparing', done: 0, total: 1 });
@@ -669,9 +748,12 @@ async function runExport() {
     exporting = false;
     abortController = null;
     el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = false;
-    cropper.setEnabled(true);
-    setTransportEnabled(true);
+    const enabled = ready && !loading;
+    el.exportBtn.disabled = !enabled;
+    el.cropCard.inert = !enabled;
+    cropper.setEnabled(enabled);
+    setTransportEnabled(enabled);
+    onCropChanged(cropper.rect);
   }
 }
 
@@ -715,6 +797,9 @@ window.addEventListener('unhandledrejection', (event) => {
 if (!hasWebCodecs() && !hasMediaRecorder()) {
   showError(phrase('nocodec.page'));
 }
+
+setSourceControls(false);
+picker.waiting();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();

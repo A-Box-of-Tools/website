@@ -102,20 +102,25 @@
       no un píxel; vuelve a hacer clic para devolverla.
     </p>
 
+    <p id="keyboard-help" class="field-note">Teclado: pulsa Tab para llegar a cualquiera de las imágenes. Las flechas mueven un píxel de origen; Mayús más flechas mueve diez. Inicio vuelve al centro. Intro o Espacio alterna la región o añade una muestra de fondo si esa opción está activa. La cruz aparece en ambas imágenes y las coordenadas empiezan en 1.</p>
+
     <div class="stages waiting" id="stages">
       <div class="stage-wrap">
         <h3 class="stage-title">La imagen</h3>
-        <div class="stage" id="stage-picture" role="group"
+        <div class="stage" id="stage-picture" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="La imagen, con el contorno vectorizado dibujado encima. Arrastra para mover, rueda para acercar, clic en una parte para dejarla fuera."></div>
       </div>
       <div class="stage-wrap">
         <h3 class="stage-title">El SVG</h3>
-        <div class="stage" id="stage-svg" role="group"
+        <div class="stage" id="stage-svg" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="El dibujo vectorizado. Arrastra para mover, rueda para acercar, clic en una parte para dejarla fuera."></div>
       </div>
     </div>
 
     <p id="hint" class="hint" role="status" aria-live="polite"></p>
+    <p id="cursor-status" class="hint" role="status" aria-live="polite" aria-atomic="true"></p>
 
     <div class="controls">
       <div class="option-row">
@@ -209,6 +214,15 @@
     in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="cursor.ink">El píxel ({x}, {y}) forma parte de la figura. Intro o Espacio excluye su región.</span>
+    <span data-phrase="cursor.paper">El píxel ({x}, {y}) está fuera de la figura. Intro o Espacio rellena su región.</span>
+    <span data-phrase="cursor.sample">Píxel ({x}, {y}): Intro o Espacio añade este color al fondo.</span>
+    <span data-phrase="cursor.sampled">Píxel ({x}, {y}): se añadió un color de fondo. Se usan {count} muestras.</span>
+    <span data-phrase="cursor.excluded">Píxel ({x}, {y}): se excluyeron {size} píxeles de la figura.</span>
+    <span data-phrase="cursor.included">Píxel ({x}, {y}): se incluyeron {size} píxeles en la figura.</span>
+    <span data-phrase="trace.updating">Actualizando el contorno…</span>
+    <span data-phrase="trace.failed">No se pudo actualizar el contorno: {why}</span>
+
     <span data-phrase="read.nodecode">este navegador no pudo descodificar la imagen.</span>
     <span data-phrase="read.failed">Ese archivo no se pudo abrir: {why}</span>
     <span data-phrase="loaded.name">{name} &mdash; &#x2066;{width} &times; {height}&#x2069;</span>

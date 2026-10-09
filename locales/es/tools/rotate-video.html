@@ -27,9 +27,7 @@
   <section class="card" id="turn-card">
     <h2><span class="step">2</span> Elige el giro</h2>
 
-    <p class="card-lede">
-      Un teléfono que graba de lado no gira los píxeles: lo indica en la cabecera y el reproductor lo aplica. Girar el clip puede limitarse a cambiar esa cabecera, sin decodificar ningún fotograma. La imagen queda idéntica.
-    </p>
+    <p class="card-lede">Un teléfono que graba de lado no gira los píxeles: indica el giro en la cabecera y el reproductor lo aplica. Al girar mediante la cabecera, esta página cambia la matriz y copia los fotogramas intactos. El sonido se copia, se recodifica como AAC o se omite.</p>
 
     <div class="chips" role="group" aria-label="Cuánto girar">
       <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; Un cuarto de vuelta a la derecha</button>
@@ -149,8 +147,8 @@
     <span data-phrase="run.cancelled">Cancelado. No se ha escrito nada. Pulsa el botón para empezar de nuevo.</span>
     <span data-phrase="run.failed">La conversión ha fallado: {detail}</span>
     <span data-phrase="result.ready">MP4 de {size}, girado {turn}.</span>
-    <span data-phrase="result.sub.copy">Todos los fotogramas y paquetes se copiaron intactos. Solo cambió la cabecera.</span>
-    <span data-phrase="result.sub.bake">Cada fotograma se giró y recodificó como H.264. Ya no hace falta indicar un giro en la cabecera.</span>
+    <span data-phrase="result.sub.copy">Todos los fotogramas se copiaron intactos; la cabecera indica el giro. {sound}</span>
+    <span data-phrase="result.sub.bake">Cada fotograma se giró y recodificó como H.264. Ya no hace falta indicar un giro en la cabecera. {sound}</span>
     <span data-phrase="check.passed">Comprobado: {found}</span>
     <span data-phrase="check.failed">Esta pasada no ha salido bien &mdash; {found}. Quédate con el original.</span>
     <span data-phrase="check.ok">se ha reabierto desde memoria: duración {length}, como antes, orientación {shown} y tamaño {frame}.</span>
@@ -176,6 +174,8 @@
     <span data-phrase="sound.noencode">El codificador de audio no generó datos.</span>
     <span data-phrase="write.noframes">No había fotogramas que escribir.</span>
     <span data-phrase="write.toobig">El resultado superaría 4 GB, el límite de este escritor MP4. Corta el clip primero.</span>
+    <span data-phrase="read.edits">Este archivo usa una lista de edición de reproducción que esta herramienta no puede conservar. Guarda el clip editado visible como un video nuevo antes de procesarlo aquí.</span>
+    <span data-phrase="read.editinvalid">La lista de edición de reproducción del archivo está incompleta o tiene tiempos no válidos, por lo que no se puede conservar su secuencia visible.</span>
     <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
     <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
     <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>

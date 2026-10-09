@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="Navigation entre les changements" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>Changement précédent</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>Changement suivant</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
   <!--
@@ -113,8 +125,18 @@
     <span data-phrase="result.identical">Les deux sont identiques, octet pour octet.</span>
     <span data-phrase="result.ignored">Identiques, une fois écartées les différences que vous avez demandé d&rsquo;ignorer.</span>
     <span data-phrase="result.counts">{added} ajoutées, {removed} supprimées</span>
-    <span data-phrase="result.summary">{changes} &mdash; {percent}&nbsp;% des lignes sont communes aux deux. {note}</span>
+    <span data-phrase="result.summary">{changes} — le contenu correspond sur {percent} % des lignes. {note}</span>
     <span data-phrase="result.newline">L&rsquo;un se termine par un saut de ligne et l&rsquo;autre non.</span>
+    <span data-phrase="result.endings.one">La fin de ligne diffère sur {count} ligne correspondante. Le patch conserve les fins exactes.</span>
+    <span data-phrase="result.endings.many">Les fins de ligne diffèrent sur {count} lignes correspondantes. Le patch conserve les fins exactes.</span>
+    <span data-phrase="ending.crlf">Fin CRLF</span>
+    <span data-phrase="ending.lf">Fin LF</span>
+    <span data-phrase="ending.cr">Fin CR</span>
+    <span data-phrase="ending.none">Sans saut final</span>
+    <span data-phrase="nav.shown.one">{count} bloc de changements affiché</span>
+    <span data-phrase="nav.shown.many">{count} blocs de changements affichés</span>
+    <span data-phrase="nav.position">Bloc de changements {current} sur {count} affichés</span>
+    <span data-phrase="nav.truncated">La vue est tronquée. La navigation couvre {shown} blocs de changements sur {total}. Le téléchargement inclut toutes les différences.</span>
     <span data-phrase="result.failed">Rien n&rsquo;en est sorti.</span>
 
     <span data-phrase="skip.one">{count} ligne inchangée</span>

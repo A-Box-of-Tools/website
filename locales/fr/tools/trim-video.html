@@ -37,7 +37,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="Aperçu"></video>
+        <video id="preview" playsinline aria-label="Vidéo source"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="transport">
-      <button type="button" id="play" class="primary" aria-label="Lecture">▶</button>
+      <button type="button" id="play" class="primary" aria-label="Lire">▶</button>
       <button type="button" id="back-5" class="ghost" title="Reculer de cinq secondes">&minus;5s</button>
       <button type="button" id="forward-5" class="ghost" title="Avancer de cinq secondes">+5s</button>
       <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Marquer le début</button>
@@ -144,7 +144,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> Couper</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">Comment couper</label>
         <select id="method">
@@ -216,7 +216,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Vidéo découpée"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Télécharger la vidéo</a>
@@ -231,6 +231,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">Lire</span>
+    <span data-phrase="transport.pause">Mettre en pause</span>
     <span data-phrase="clip.nth">clip {n}</span>
     <span data-phrase="join.nothing">il n'y a rien à assembler.</span>
     <span data-phrase="join.unread">{name} n'est pas un MP4 que ce lecteur comprenne, donc ses images ne peuvent pas
@@ -375,6 +377,8 @@
     <span data-phrase="result.parts">{n} passages</span>
     <span data-phrase="result.notreencoded">pas réencodée</span>
     <span data-phrase="error.generic">Quelque chose s'est mal passé.</span>
+    <span data-phrase="read.edits">Ce fichier utilise une liste de montage pour la lecture que cet outil ne peut pas conserver. Enregistrez le clip monté visible comme une nouvelle vidéo avant de le traiter ici.</span>
+    <span data-phrase="read.editinvalid">La liste de montage pour la lecture du fichier est incomplète ou contient des durées invalides. Sa chronologie visible ne peut donc pas être conservée.</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>

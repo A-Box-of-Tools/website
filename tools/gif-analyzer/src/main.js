@@ -3,14 +3,14 @@
 import { phrase, fill, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { DISPOSALS, NotAGif, extensionName, frameData, parseGif } from './gif.js';
-import { lzwDecode } from './lzw.js';
-import { Compositor, duration, isFullCanvas, paintFrame } from './frames.js';
+import { DISPOSALS, NotAGif, extensionName, parseGif } from './gif.js';
+import { duration, isFullCanvas } from './frames.js';
 import { budget, distinctColors, paletteWaste } from './budget.js';
 import { findings } from './findings.js';
 import { report } from './report.js';
 import { clock, count, delay, exact, fileSize, hex, percent, plural, rate } from './format.js';
 import { makeExample } from './example.js';
+import { drawAnalysis, releaseDrawn } from './draw-analysis.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -19,6 +19,10 @@ const el = {
   fileInput: $('file-input'),
   loadError: $('load-error'),
   working: $('working'),
+  cancel: $('cancel'),
+  clear: $('clear-analysis'),
+  drawingStatus: $('drawing-status'),
+  previewNote: $('preview-note'),
 
   summaryCard: $('summary-card'),
   fileName: $('file-name'),
@@ -67,26 +71,8 @@ const el = {
 
 const { show: showError } = messageBox(el.loadError);
 
-/**
- * How much of a file is drawn rather than merely measured.
- *
- * The structure of a GIF is cheap to read at any size; expanding its pixels is
- * not. So the decoder gets a budget in pixels and stops when it runs out.
- * Everything that comes from the parse - the byte budget, the timing, the
- * palettes, most of the findings - is complete either way, and the frame list
- * says which frames it drew.
- *
- * 300 megapixels is a few seconds of LZW in JavaScript, and is more than any
- * GIF anybody sends anybody: a 500x500 animation would need 1,200 frames to
- * reach it.
- */
-const PIXEL_BUDGET = 300_000_000;
-
-/** Frames shown before the "show the rest" button, so a long file still paints. */
+/** Frame cards stay paged independently of the bounded pixel analysis. */
 const FIRST_PAGE = 60;
-
-/** The longest edge of a frame thumbnail. */
-const THUMB = 120;
 
 /** @type {{name: string, gif: object, view: object, drawn: object[]}|null} */
 let current = null;
@@ -102,191 +88,156 @@ const picker = wireFilePicker({
   example: makeExample,
 });
 
-async function openFile(file) {
-  hideError();
-  picker.busy(readingLabel(1));
-  el.working.hidden = false;
-  el.working.textContent = phrase('read.reading', { name: file.name });
+let sourceVersion = 0;
+let reading = null;
+const reportUrls = new Set();
+const phraseKeys = new Set([...($('phrases')?.querySelectorAll('[data-phrase]') ?? [])].map(node => node.dataset.phrase));
+const ownsRead = job => reading === job && job.version === sourceVersion;
+const readLives = job => ownsRead(job) && !job.controller.signal.aborted;
+const safeValues = (values = {}) => Object.fromEntries(Object.entries(values && typeof values === 'object' ? values : {}).map(([name, value]) =>
+  [name, value?.key ? safePhrase(value.key, safeValues(value.values)) : value]));
+const safePhrase = (key, values) => phraseKeys.has(key) ? phrase(key, values) : String(key ?? '');
+const messageFor = error => safePhrase(String(error?.message ?? error), safeValues(error?.values));
 
+function focusRecovery(target, visible = target) {
+  const version = sourceVersion;
+  target.focus({ preventScroll: true });
+  const showControl = () => {
+    if (version === sourceVersion && document.activeElement === target && !visible.hidden) {
+      visible.scrollIntoView({ behavior: 'instant', block: 'center' });
+    }
+  };
+  showControl();
+  // Layout and native focus scrolling may settle after the activating key event.
+  requestAnimationFrame(showControl);
+}
+
+function retireAnalysis() {
+  sourceVersion += 1;
+  reading?.controller.abort();
+  reading = null;
+  releaseDrawn(current?.drawn);
+  current = null;
+  el.preview.removeAttribute('src');
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = null;
+  for (const url of reportUrls) URL.revokeObjectURL(url);
+  reportUrls.clear();
+  for (const card of [el.summaryCard, el.findingsCard, el.budgetCard, el.framesCard, el.colorsCard, el.extrasCard]) card.hidden = true;
+  el.frames.replaceChildren();
+  el.copyReport.disabled = el.downloadReport.disabled = true;
+  el.copyStatus.textContent = '';
+  el.drawingStatus.hidden = true;
+  el.cancel.hidden = el.clear.hidden = true;
+}
+
+async function openFile(file) {
+  if (!file) return;
+  retireAnalysis();
+  hideError();
+  const job = { file, version: sourceVersion, controller: new AbortController(), gif: null };
+  reading = job;
+  picker.busy(readingLabel(1));
+  el.working.hidden = el.cancel.hidden = el.clear.hidden = false;
+  el.working.textContent = phrase('read.reading', { name: file.name });
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    // One turn of the event loop before the decode, so the label above is
-    // actually painted. Reading the file is fast; drawing three hundred frames
-    // is not, and a page that freezes without having said anything reads as
-    // broken rather than as busy.
-    await new Promise((resolve) => { setTimeout(resolve, 0); });
-    show(file, bytes);
+    if (!readLives(job)) return;
+    job.gif = parseGif(bytes);
+    const decoded = await drawAnalysis(job.gif, bytes, {
+      signal: job.controller.signal,
+      label: (key, n) => phrase(key, { n }),
+      onProgress: ({ done, total }) => {
+        if (readLives(job)) el.working.textContent = phrase('read.drawing', {
+          name: file.name, done: count(done), total: count(total),
+        });
+      },
+    });
+    if (!ownsRead(job)) { releaseDrawn(decoded.drawn); return; }
+    show(job, decoded);
   } catch (error) {
-    // gif.js, reader.js and lzw.js all throw keys; a browser that failed for
-    // its own reasons throws a sentence, and phrase() hands back what it does
-    // not recognise, so a real platform error still reaches the reader.
-    const why = phrase(error.message, fill(error.values));
-    if (error instanceof NotAGif) {
-      showError(phrase('read.notagif', { name: file.name, why }));
-    } else {
-      showError(phrase('read.failed', { name: file.name, why }));
-    }
+    if (!ownsRead(job)) return;
+    const why = messageFor(error);
+    if (job.gif) show(job, { drawn: job.gif.frames.map(() => null), identical: 0,
+      reason: { key: 'drawing.failed', values: { detail: why } } });
+    showError(phrase(error instanceof NotAGif ? 'read.notagif' : 'read.failed', { name: file.name, why }));
   } finally {
-    picker.done();
-    el.working.hidden = true;
+    if (ownsRead(job)) {
+      const focused = document.activeElement;
+      reading = null;
+      picker.done();
+      el.working.hidden = el.cancel.hidden = true;
+      el.clear.hidden = !current;
+      if (focused === el.cancel || (focused === el.clear && el.clear.hidden)) {
+        if (current) focusRecovery(el.clear);
+        else focusRecovery(el.fileInput, el.dropzone);
+      }
+    }
   }
 }
 
-function show(file, bytes) {
-  const gif = parseGif(bytes);
-  const { drawn, identical } = decodeAll(gif, bytes);
+el.cancel.addEventListener('click', () => {
+  const job = reading;
+  if (!job) return;
+  job.controller.abort();
+  el.cancel.hidden = true;
+  el.working.textContent = phrase('read.cancelled');
+  if (!job.gif) {
+    // Native file reads cannot be interrupted; their late callback loses its owner now.
+    sourceVersion += 1;
+    reading = null;
+    picker.done();
+    el.clear.hidden = true;
+    focusRecovery(el.fileInput, el.dropzone);
+  } else focusRecovery(el.clear);
+});
+el.clear.addEventListener('click', () => {
+  retireAnalysis();
+  picker.done(); picker.waiting();
+  el.working.hidden = true;
+  hideError();
+  focusRecovery(el.fileInput, el.dropzone);
+});
 
-  const used = drawn.map((frame) => (frame ? frame.used : null));
-  const waste = paletteWaste(gif, used);
-  const colors = distinctColors(gif, used).size;
-
-  const view = {
-    name: file.name,
-    budget: budget(gif),
-    findings: findings(gif, { decoded: drawn, waste, colors, identical }),
-    colors,
-    waste,
+function show(job, decoded) {
+  const { file, gif } = job;
+  const { drawn, identical, reason } = decoded;
+  const used = drawn.map(frame => frame?.used ?? null);
+  const complete = drawn.every(Boolean);
+  const waste = complete ? paletteWaste(gif, used) : {
+    declared: (gif.globalPalette?.count ?? 0) + gif.frames.reduce((n, frame) => n + (frame.palette?.count ?? 0), 0),
   };
-
+  const colors = complete ? distinctColors(gif, used).size : undefined;
+  const drawing = { reason, drawn: drawn.filter(Boolean).length, total: gif.frames.length };
+  const view = { name: file.name, budget: budget(gif), complete, drawing,
+    findings: findings(gif, { decoded: drawn, complete, waste: complete ? waste : undefined, colors, identical }), colors, waste };
   current = { name: file.name, gif, view, drawn };
-
-  if (previewUrl) URL.revokeObjectURL(previewUrl);
-  previewUrl = URL.createObjectURL(file);
-  el.preview.src = previewUrl;
-
+  // A refused source is not handed to the native preview decoder as a second allocation path.
+  el.preview.hidden = Boolean(reason);
+  if (!reason) {
+    previewUrl = URL.createObjectURL(file);
+    el.preview.src = previewUrl;
+  }
+  el.previewNote.textContent = phrase(reason ? 'preview.refused' : 'preview.native');
+  el.drawingStatus.hidden = !reason;
+  el.drawingStatus.textContent = reason ? phrase('drawing.partial', {
+    drawn: count(drawing.drawn), total: count(drawing.total), why: safePhrase(reason.key, reason.values),
+  }) : '';
   renderSummary(gif, view);
   renderFindings(view.findings);
   renderBudget(gif, view.budget);
   renderFrames(gif, drawn);
   renderColors(gif, view, used);
   renderExtras(gif);
-
-  el.summaryCard.hidden = false;
-  el.budgetCard.hidden = false;
+  el.summaryCard.hidden = el.budgetCard.hidden = false;
   el.findingsCard.hidden = view.findings.length === 0;
   el.framesCard.hidden = gif.frames.length === 0;
-  el.colorsCard.hidden = !gif.globalPalette && !gif.frames.some((frame) => frame.palette);
+  el.colorsCard.hidden = !gif.globalPalette && !gif.frames.some(frame => frame.palette);
   el.extrasCard.hidden = gif.extensions.length === 0;
-  el.summaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-/**
- * Decode every frame the pixel budget allows, in order, stacking them as it
- * goes.
- *
- * Order matters: a frame's picture depends on what the frames before it left on
- * the canvas, so this cannot skip one and carry on. When the budget runs out it
- * stops entirely, and everything after that frame is reported from its header
- * alone.
- *
- * WHY THE THUMBNAILS ARE MADE HERE
- *
- * Because the full-size pixels must not be kept. Two hundred frames of a
- * 600x600 GIF held as RGBA is nearly three hundred megabytes, and a page that
- * does that gets killed by the browser on the file its user most wanted to
- * analyse. Each frame is scaled into a small canvas the moment it is drawn and
- * the big buffers are dropped, so what survives the loop is about 60 KB a
- * frame however large the GIF was.
- *
- * The "is this frame the same as the last one" comparison has to happen here
- * for the same reason: it needs the two full canvases, and only one pair of
- * them exists at a time.
- */
-function decodeAll(gif, bytes) {
-  const drawn = [];
-  if (gif.width === 0 || gif.height === 0) {
-    return { drawn: gif.frames.map(() => null), identical: 0 };
-  }
-
-  const canvas = new Compositor(gif.width, gif.height);
-  let spent = 0;
-  let identical = 0;
-  let previous = null;
-
-  for (const frame of gif.frames) {
-    const pixels = frame.width * frame.height;
-    if (pixels === 0 || spent + pixels > PIXEL_BUDGET) {
-      drawn.push(null);
-      previous = null;
-      continue;
-    }
-    spent += pixels;
-
-    const palette = frame.palette ?? gif.globalPalette;
-    const stream = lzwDecode(frameData(bytes, frame), frame.minCodeSize, pixels);
-    const painted = paintFrame(frame, stream.indices, palette);
-    const composited = canvas.draw(frame, painted.pixels);
-
-    if (previous && same(previous, composited)) identical += 1;
-    previous = composited;
-
-    drawn.push({
-      stored: thumbnail(painted.pixels, frame.width, frame.height,
-        phrase('shot.stored', { n: frame.index + 1 })),
-      composited: thumbnail(composited, gif.width, gif.height,
-        phrase('shot.composited', { n: frame.index + 1 })),
-      used: painted.used,
-      missing: painted.missing,
-      clears: stream.clears,
-      codes: stream.codes,
-      pixels: stream.pixels,
-      truncated: stream.truncated,
-      corrupt: stream.corrupt,
-      // What the compressor achieved on this frame: one index per pixel in,
-      // this many bytes out. Under 1 would mean it made the frame larger, which
-      // LZW can do and occasionally does on noise.
-      ratio: frame.payloadBytes > 0 ? pixels / frame.payloadBytes : 0,
-    });
-  }
-
-  return { drawn, identical };
-}
-
-function same(a, b) {
-  for (let at = 0; at < a.length; at += 1) if (a[at] !== b[at]) return false;
-  return true;
-}
-
-/**
- * One picture, as a canvas small enough to keep.
- *
- * The backing store never exceeds the thumbnail box, but the CSS size is
- * computed from the original dimensions, so a four-pixel-wide frame is blown up
- * to something visible rather than shown as a speck. `image-rendering:
- * pixelated` in the stylesheet keeps that honest: it is the stored pixels made
- * bigger, not a smoothed guess at what was between them.
- */
-function thumbnail(pixels, width, height, label) {
-  const scale = THUMB / Math.max(width, height);
-  const shown = { width: Math.max(1, Math.round(width * scale)),
-    height: Math.max(1, Math.round(height * scale)) };
-  const store = scale >= 1 ? { width, height } : shown;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = store.width;
-  canvas.height = store.height;
-  canvas.className = 'frame-canvas';
-  canvas.style.width = `${shown.width}px`;
-  canvas.style.height = `${shown.height}px`;
-  canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', label);
-
-  const context = canvas.getContext('2d');
-  const image = new ImageData(pixels, width, height);
-  if (scale >= 1) {
-    context.putImageData(image, 0, 0);
-    return canvas;
-  }
-
-  // putImageData ignores any transform, so shrinking means going through a
-  // second canvas. Smoothing is left on: this one really is a reduction, and
-  // nearest-neighbour on a photograph at a fifth of the size is unreadable.
-  const scratch = document.createElement('canvas');
-  scratch.width = width;
-  scratch.height = height;
-  scratch.getContext('2d').putImageData(image, 0, 0);
-  context.drawImage(scratch, 0, 0, store.width, store.height);
-  return canvas;
+  el.copyReport.disabled = el.downloadReport.disabled = false;
+  // Recovery controls stay in view even if normal completion wins the race with Cancel.
+  const recovering = document.activeElement === el.cancel || document.activeElement === el.clear;
+  if (!job.controller.signal.aborted && !recovering) el.summaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ----------------------------------------------------------- the summary */
@@ -316,7 +267,7 @@ function renderSummary(gif, view) {
   el.factLoops.textContent = gif.loop === null
     ? phrase('loops.none')
     : gif.loop === 0 ? phrase('loops.forever') : phrase('loops.times', { n: count(gif.loop) });
-  el.factColors.textContent = plural(view.colors, 'n.colour', phrase);
+  el.factColors.textContent = view.colors === undefined ? phrase('colours.unknown') : plural(view.colors, 'n.colour', phrase);
 }
 
 /** "1.20s (8.3 fps)", or just the clock where there is no rate to give. */
@@ -514,10 +465,9 @@ function renderColors(gif, view, used) {
   const locals = gif.frames.filter((frame) => frame.palette);
   const waste = view.waste;
 
-  el.colorsLede.textContent = phrase('colours.lede', {
-    declared: plural(waste.declared, 'n.colour', phrase),
-    referenced: count(waste.referenced),
-    different: count(view.colors),
+  el.colorsLede.textContent = phrase(view.complete ? 'colours.lede' : 'colours.partial', {
+    declared: view.complete ? plural(waste.declared, 'n.colour', phrase) : count(waste.declared),
+    ...(view.complete ? { referenced: count(waste.referenced), different: count(view.colors) } : {}),
   });
 
   el.globalPaletteWrap.hidden = !gif.globalPalette;
@@ -528,12 +478,12 @@ function renderColors(gif, view, used) {
       for (let at = 0; at < 256; at += 1) if (used[index][at]) union[at] = 1;
     }
     const sharing = gif.frames.filter((frame) => !frame.palette).length;
-    el.globalPaletteNote.textContent = phrase('palette.globalnote', {
+    el.globalPaletteNote.textContent = phrase(view.complete ? 'palette.globalnote' : 'palette.globalpartial', {
       entries: plural(gif.globalPalette.count, 'n.entry', phrase),
       size: fileSize(gif.globalPalette.bytes),
       frames: plural(sharing, 'n.frame', phrase),
     });
-    el.globalPalette.replaceChildren(...swatches(gif.globalPalette, union));
+    el.globalPalette.replaceChildren(...swatches(gif.globalPalette, view.complete ? union : null));
   }
 
   el.localPalettesWrap.hidden = locals.length === 0;
@@ -573,7 +523,7 @@ function swatches(palette, used) {
     item.className = used && !used[index] ? 'swatch unused' : 'swatch';
     item.style.background = code;
     item.title = used && !used[index]
-      ? `${index}: ${code} — never used`
+      ? phrase('palette.unused', { index, colour: code })
       : `${index}: ${code}`;
     out.push(item);
   }
@@ -628,26 +578,29 @@ function describe(extension) {
 
 el.downloadReport.addEventListener('click', () => {
   if (!current) return;
-  const text = report(current.gif, current.view, phrase);
+  const source = current;
+  const text = report(source.gif, source.view, phrase);
   const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${current.name.replace(/\.gif$/i, '')}-analysis.txt`;
+  link.download = `${source.name.replace(/\.gif$/i, '')}-analysis.txt`;
   link.click();
   // Long enough for the download to have started, and revoked either way so a
   // page left open all afternoon does not accumulate them.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  reportUrls.add(url);
+  setTimeout(() => { URL.revokeObjectURL(url); reportUrls.delete(url); }, 10_000);
 });
 
 el.copyReport.addEventListener('click', async () => {
   if (!current) return;
-  const text = report(current.gif, current.view, phrase);
+  const source = current;
+  const text = report(source.gif, source.view, phrase);
   try {
     await navigator.clipboard.writeText(text);
-    el.copyStatus.textContent = phrase('copy.done');
+    if (current === source) el.copyStatus.textContent = phrase('copy.done');
   } catch {
-    el.copyStatus.textContent = phrase('copy.refused');
+    if (current === source) el.copyStatus.textContent = phrase('copy.refused');
   }
 });
 

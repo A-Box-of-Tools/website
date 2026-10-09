@@ -52,8 +52,8 @@ The exact path is the one to want, and the playback path is why the tool has no
 says which one it is using and why, in those words.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to [`src/shared/mp4-reader.js`](../../shared/js/mp4-reader.js) first; if it comes back with an
-`UnsupportedFile`, the reason on it is what the page prints — "this is not an
+file goes to [`src/shared/mp4-reader.js`](../../shared/js/mp4-reader.js) first; if it comes back with
+an ordinary `UnsupportedFile`, the reason on it is what the page prints — "this is not an
 MP4 or MOV file", "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
 worth a good deal more than one that says "unsupported file".
@@ -147,7 +147,24 @@ Two details in `seriesFrames()` are deliberate:
   a frame would otherwise produce — a hundred copies of one picture, each with a
   different name.
 
-The stills come out as one ZIP, because twenty downloads is twenty save prompts
+The page shows the planned count and first/last selected frame before starting.
+A plan above 500 is refused rather than truncated to the beginning of the clip;
+the interval button spreads at most 500 regular marks across its whole length.
+On the playback path those are requested times and the player still chooses the
+actual frames. Repeated interval marks picking the same exact frame are counted only once, even for sparse
+footage. Planning skips held-frame intervals rather than walking every mark.
+
+Each grab captures its source, frame time, dimensions, name and encoding settings
+before decoding. Duplicate presentation timestamps cannot identify individual
+native decoded pictures, so those files use the explicitly approximate player
+path; the exact reader/series APIs refuse them before opening a decoder.
+Transport and settings stay locked until completion or Cancel;
+a new source retires pending loads, frames, series and archives. Late native
+callbacks cannot publish a result or unlock a newer job. Clear retires a pending
+series or archive, and archive membership and names are captured before reading
+any blob. Retired readers close delayed bitmaps and series dispose their canvases.
+
+The stills can be downloaded together as one ZIP, because twenty downloads is twenty save prompts
 and that is the sort of thing that makes people give up and use the upload site
 instead. `src/zip.js` is the stored-only writer the image tools already use.
 
@@ -178,8 +195,8 @@ hours only appear when there are any.
 - **The stills are held in the page** until they are downloaded, so a few
   hundred 4K PNGs is the practical ceiling — the video itself is not, since it
   is never read into memory whole.
-- **Edit lists on the way in are ignored**, as in the sibling tools: a file that
-  says "start playing 40 milliseconds in" is read from the first sample instead.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason.
 - **AVI, WMV, FLV and most MKVs** are not readable here and not playable in most
   browsers. That is the FFmpeg question in
@@ -214,3 +231,25 @@ What that covered, if it needs doing again:
   its mark, with the ZIP unpacking to 150 differently-named files;
 - cancelling a series halfway, and grabbing again afterwards;
 - a text file dropped in, to be refused.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.

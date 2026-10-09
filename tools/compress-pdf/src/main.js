@@ -71,6 +71,7 @@ let loaded = null;
 /** The object URL behind the download link, revoked when it is replaced. */
 let downloadUrl = '';
 let running = null;
+let loadGeneration = 0;
 
 /* ------------------------------------------------------------------ loading */
 
@@ -93,9 +94,16 @@ const picker = wireFilePicker({
  * compounding on a document the last run had already edited.
  */
 async function load(file) {
-  if (!file || running) return;
+  if (!file) return;
+  if (running) {
+    // The shared picker wakes cards before handing files over. An ignored
+    // replacement must leave the current export's settings locked.
+    el.settingsCard.inert = true;
+    return;
+  }
 
   reset();
+  const mine = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
@@ -104,7 +112,9 @@ async function load(file) {
     }
 
     const raw = new Uint8Array(await file.arrayBuffer());
+    if (mine !== loadGeneration) return;
     const doc = await PdfDocument.open(raw);
+    if (mine !== loadGeneration) return;
     const inventory = takeInventory(doc);
 
     loaded = { file, bytes: raw, inventory };
@@ -116,6 +126,7 @@ async function load(file) {
 
     renderInventory(inventory);
     renderSettings();
+    picker.arrived();
 
     if (doc.repaired) {
       note(phrase('note.repaired'));
@@ -123,10 +134,11 @@ async function load(file) {
       note(phrase('note.incremental'));
     }
   } catch (error) {
+    if (mine !== loadGeneration) return;
     showLoadError(messageFor(error));
     sayWhereToUnlock(error instanceof EncryptedPdfError);
   } finally {
-    picker.done();
+    if (mine === loadGeneration) picker.done();
   }
 }
 
@@ -172,7 +184,15 @@ function messageFor(error) {
 }
 
 function reset() {
+  loadGeneration += 1;
+  running?.abort();
+  running = null;
   loaded = null;
+  el.run.disabled = false;
+  el.cancel.hidden = true;
+  el.settingsCard.inert = false;
+  picker.done();
+  picker.waiting();
   sayWhereToUnlock(false);
   el.fileRow.hidden = true;
   el.result.hidden = true;
@@ -324,7 +344,11 @@ el.cancel.addEventListener('click', () => running?.abort());
 async function run() {
   if (!loaded || running) return;
 
-  running = new AbortController();
+  const input = loaded;
+  const chosen = settings();
+  const controller = new AbortController();
+  running = controller;
+  el.settingsCard.inert = true;
   el.run.disabled = true;
   el.cancel.hidden = false;
   el.result.hidden = true;
@@ -336,13 +360,20 @@ async function run() {
   let cancelled = false;
 
   try {
-    const result = await compressDocument(loaded.bytes, settings(), {
-      signal: running.signal,
-      onStage: (stage) => setProgress(null, null, phrase(stage)),
-      onProgress: (done, total) => setProgress(done, total, null),
+    const result = await compressDocument(input.bytes, chosen, {
+      signal: controller.signal,
+      onStage: (stage) => {
+        if (running === controller) setProgress(null, null, phrase(stage));
+      },
+      onProgress: (done, total) => {
+        if (running === controller) setProgress(done, total, null);
+      },
     });
-    showResult(result);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
+    showResult(result, input);
   } catch (error) {
+    if (running !== controller) return;
     if (error?.name === 'AbortError') {
       cancelled = true;
       el.progressLabel.textContent = phrase('run.cancelledfull');
@@ -351,14 +382,17 @@ async function run() {
       el.runError.hidden = false;
     }
   } finally {
-    running = null;
-    el.run.disabled = false;
-    el.cancel.hidden = true;
-    // The bar stays up after a cancel, because it is carrying the only message
-    // that says what happened. Hiding it would leave the page looking as
-    // though the button had done nothing at all.
-    el.progress.hidden = !cancelled;
-    if (cancelled) el.progressBar.style.width = '0%';
+    // Choose another retires this owner immediately, so its delayed cleanup
+    // cannot hide progress or unlock the controls of a replacement export.
+    if (running === controller) {
+      running = null;
+      el.settingsCard.inert = false;
+      el.run.disabled = false;
+      el.cancel.hidden = true;
+      // Keep the only explanation of a cancelled run visible.
+      el.progress.hidden = !cancelled;
+      if (cancelled) el.progressBar.style.width = '0%';
+    }
   }
 }
 
@@ -382,7 +416,7 @@ function setProgress(done, total, stage) {
  * is the correct answer, and it was predicted on the screen above before the
  * button was pressed.
  */
-function showResult(result) {
+function showResult(result, input) {
   const saved = result.before - result.after;
 
   el.resultSize.textContent = saved > 0
@@ -405,7 +439,7 @@ function showResult(result) {
 
   downloadUrl = URL.createObjectURL(result.blob);
   el.download.href = downloadUrl;
-  el.download.download = outName(loaded.file.name);
+  el.download.download = outName(input.file.name);
   // A file the tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !result.check.ok;
@@ -427,6 +461,8 @@ function renderFacts(result) {
       shrunk: shrunk.length,
     }));
   }
+
+  if (touched.length) facts.push(phrase('facts.inspect'));
 
   const kept = result.images.filter((image) => image.action === 'kept' && image.note);
   if (kept.length) {

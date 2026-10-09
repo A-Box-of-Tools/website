@@ -5,8 +5,9 @@
 Turns a video a quarter turn either way or upside down, in the browser,
 without the file going anywhere and, ordinarily, without a frame being
 decoded: the turn is written into the track's display matrix and every
-frame and packet is copied across as it was. "Bake it in" — draw every
-frame turned and encode it again — is offered for the few players that
+picture frame is copied across as it was. AAC sound is copied; other
+decodable sound is encoded as AAC unless it is left out. "Bake it in" —
+draw every frame turned and encode it again — is offered for the few players that
 ignore the matrix and required for a WebM or MKV whose picture is not
 H.264.
 
@@ -97,3 +98,44 @@ Clearing the file aborts and retires its export. A codec can finish a pending
 flush after cancellation, and the result check also reads asynchronously, so
 the page checks the run again at both boundaries. Progress, errors and cleanup
 from that retired run cannot overwrite the controls for a replacement file.
+
+The run plan captures the requested turn and sound job. Controls may change
+while the codecs finish, but the operation, verification, heading and caption
+continue to describe that captured plan. Copy claims refer to the picture
+frames; the caption separately says whether sound was copied, encoded as AAC,
+or omitted.
+
+Every load, codec probe and first-frame preview checks a reset-retired
+generation. A bitmap returned by an old preview is closed instead of taking
+over a replacement; old errors and picker cleanup are ignored too. Browser
+regressions should change the turn and sound controls during an export,
+compare header-copy and baked native playback, and replace or clear a file
+during reads, capability checks and delayed preview creation. Count preview
+bitmaps through clear to confirm that none remain owned.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.
+
+The generated-output readback uses `demux(..., { timeline: 'media' })`
+explicitly. It inspects trusted writer-produced raw samples and headers,
+including composition/delay edits, without claiming general incoming timeline
+support. The existing readback facts still need native playback/content checks.

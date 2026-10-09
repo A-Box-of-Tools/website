@@ -1,5 +1,8 @@
 /* Only the rules this tool needs. The frame is shared/css/tool-frame.css. */
 
+.share-version { position: relative; display: flex; align-items: center; gap: 0.4rem; width: fit-content; max-width: 100%; margin: 0 0 0.6rem; color: var(--text-dim); font-size: 0.85rem; }
+.share-version > code { color: var(--text); user-select: all; }
+
 /* ---------------------------------------------------------- the editor panel */
 
 .panel {
@@ -119,15 +122,15 @@
 
 .discoverable-row { position: relative; display: flex; align-items: center; gap: 0.35rem; width: fit-content; max-width: 100%; }
 .discoverable-row > .check { min-width: 0; }
-.discoverable-help { flex: none; }
-.discoverable-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
-.discoverable-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.discoverable-note { position: absolute; z-index: 5; inset-block-start: calc(100% + 0.35rem); inset-inline-start: 0; width: min(32rem, calc(100vw - 4rem)); margin: 0; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgb(0 0 0 / 0.16); font-size: 0.84rem; line-height: 1.5; }
-.discoverable-note::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.5rem; }
-.discoverable-help[data-placement="above"] > .discoverable-note { inset-block-start: auto; inset-block-end: calc(100% + 0.35rem); }
-.discoverable-help[data-placement="above"] > .discoverable-note::before { inset-block-start: 100%; inset-block-end: auto; }
+.discoverable-help, .tool-version-help { flex: none; }
+.discoverable-help > summary, .tool-version-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
+.discoverable-help > summary:focus-visible, .tool-version-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.discoverable-note, .tool-version-note { position: absolute; z-index: 5; inset-block-start: calc(100% + 0.35rem); inset-inline-start: 0; width: min(32rem, calc(100vw - 4rem)); margin: 0; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgb(0 0 0 / 0.16); font-size: 0.84rem; line-height: 1.5; }
+.discoverable-note::before, .tool-version-note::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.5rem; }
+.discoverable-help[data-placement="above"] > .discoverable-note, .tool-version-help[data-placement="above"] > .tool-version-note { inset-block-start: auto; inset-block-end: calc(100% + 0.35rem); }
+.discoverable-help[data-placement="above"] > .discoverable-note::before, .tool-version-help[data-placement="above"] > .tool-version-note::before { inset-block-start: 100%; inset-block-end: auto; }
 @media (pointer: coarse) {
-  .discoverable-help > summary { min-width: 2.75rem; min-height: 2.75rem; }
+  .discoverable-help > summary, .tool-version-help > summary { min-width: 2.75rem; min-height: 2.75rem; }
 }
 
 .namerow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
@@ -210,3 +213,6 @@ button.danger {
   overflow-wrap: anywhere;
   font-size: 0.92rem;
 }
+
+.file-status { flex-basis: 100%; color: var(--text-dim); font-size: 0.85rem; }
+.file-status:empty { display: none; }

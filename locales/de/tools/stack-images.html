@@ -20,11 +20,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      RAW-Dateien werden geöffnet, indem das JPEG in voller Größe gelesen wird,
-      das die Kamera bereits hineingeschrieben hat: ein paar Kilobyte
-      Verzeichnis und dann ein Ausschnitt. Die Sensordaten werden nie dekodiert,
-      eine 60&nbsp;MB große Aufnahme öffnet also ungefähr so schnell wie ein
-      JPEG. <a href="#faq-raw">Was das für das Ergebnis bedeutet</a>.
+      RAW-Dateien nutzen die größte brauchbare JPEG-Vorschau, die die Kamera eingebettet hat. Die Maße stehen unten; die Vorschau kann kleiner als das Sensorbild sein. Die Sensordaten werden nie dekodiert. <a href="#faq-raw">Was das für das Ergebnis bedeutet</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -35,6 +31,8 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">Aufnahmen und Bezug</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       Ziehen Sie eine Aufnahme am <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-Griff, um die Liste
       umzusortieren, oder nehmen Sie die Pfeiltasten, während der Griff den Fokus hat. Die
@@ -43,6 +41,7 @@
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- Schritt 2 &mdash; wie sie zusammenkommen -->
@@ -58,7 +57,7 @@
           <option value="sigma">Sigma-Clipping &mdash; beides auf einmal</option>
           <option value="max">Aufhellen &mdash; Sternspuren, Feuerwerk, Lichtmalerei</option>
           <option value="min">Abdunkeln &mdash; alles Helle entfernen, das sich bewegt hat</option>
-          <option value="sum">Addieren &mdash; eine lange Belichtung nachbilden</option>
+          <option value="sum">Addieren &mdash; additiv mischen</option>
           <option value="focus">Focus Stacking &mdash; behalten, was scharf war</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -67,7 +66,8 @@
       <div class="field">
         <label for="align">Aufnahmen ausrichten</label>
         <select id="align">
-          <option value="translate" selected>Ja &mdash; nur verschieben</option>
+          <option value="projective" selected>Auto &mdash; Perspektive korrigieren</option>
+          <option value="translate">Ja &mdash; nur verschieben</option>
           <option value="similarity">Ja &mdash; verschieben, drehen und skalieren</option>
           <option value="none">Nein &mdash; genau so nehmen, wie sie sind</option>
         </select>
@@ -112,10 +112,11 @@
       <div class="field">
         <label for="gain">Belichtung</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>Helligkeit normalisieren</button>
       </div>
 
       <div class="field">
@@ -139,13 +140,16 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">Transparenz wird beim Stapeln verworfen. Das gespeicherte Bild ist undurchsichtig, auch im PNG-Format.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Ergebnis</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Arbeitsspeicher</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>Dekodiervorgänge</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>Von der Platte gelesen</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>Dekodiervorgänge beim Stacken</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Zum Prüfen gelesene Daten</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>Der Speicher ist eine Schätzung der Pixelpuffer; Browser und Encoder können mehr brauchen. Prüfen und Ausrichten dekodieren ebenfalls Vorschauen.</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -165,13 +169,44 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>Die Auswahl oder Einstellungen haben sich geändert. Stacken Sie erneut für ein neues Ergebnis.</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
-        <img id="result-image" alt="Das gestackte Ergebnis">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">Anzeigen</label>
+          <select id="view-source">
+            <option value="compare" selected>Vergleichen &mdash; Trennlinie ziehen</option>
+            <option value="result">Ergebnis des Stacks</option>
+            <option value="reference">Bezugsaufnahme</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">Ansichtsgröße</label>
+          <select id="view-size">
+            <option value="fit">An Fenster anpassen</option>
+            <option value="actual">100% &mdash; tatsächliche Pixel</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="Bildvorschau" tabindex="0" aria-describedby="viewer-status">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="Das gestackte Ergebnis">
+          <img id="reference-image" class="reference-image" alt="Bezugsaufnahme" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Vergleichstrennlinie" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>Ausrichtungsdetails</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>Bild herunterladen</a>
       </div>
     </div>
@@ -192,6 +227,25 @@
     <span data-phrase="count.many">{count} Aufnahmen</span>
     <span data-phrase="count.none">Noch keine Aufnahmen</span>
 
+    <span data-phrase="frames.summary">{frames} &mdash; Bezug: {name}</span>
+    <span data-phrase="frame.unreadable">Diese Datei ließ sich nicht öffnen und wird nicht gestackt. Versuchen Sie JPEG, PNG, WebP oder ein anderes Format, das dieser Browser unterstützt.</span>
+    <span data-phrase="import.skipped">{count} Dateien ließen sich nicht öffnen. Sie bleiben in der Liste, damit Sie sehen, welche ausgeschlossen wurden.</span>
+    <span data-phrase="viewer.loading">Bezugsaufnahme wird vorbereitet&hellip;</span>
+    <span data-phrase="viewer.reference">Bezug: {name}. Die Ansicht verwendet denselben Ausschnitt und dieselbe Auflösung wie das Ergebnis.</span>
+    <span data-phrase="viewer.compare">Links der Bezug, rechts das gestackte Ergebnis. Ziehen Sie die Trennlinie oder verwenden Sie die Pfeiltasten zum Vergleichen.</span>
+    <span data-phrase="viewer.split">{percent}% Bezug; {remaining}% gestacktes Ergebnis</span>
+    <span data-phrase="viewer.pan">Ziehen Sie das Bild oder verwenden Sie die Pfeiltasten, um den Bildausschnitt zu verschieben. Zum Vergleichen mit der Trennlinie wählen Sie An Fenster anpassen.</span>
+    <span data-phrase="viewer.result">Ergebnis des Stacks. Wählen Sie 100%, um Details zu prüfen. Für die Vergleichstrennlinie wählen Sie An Fenster anpassen.</span>
+    <span data-phrase="alignment.reference">Bezug</span>
+    <span data-phrase="alignment.none">Nicht ausgerichtet</span>
+    <span data-phrase="alignment.weak">Keine sichere Ausrichtung möglich</span>
+    <span data-phrase="alignment.clamped">Nur verschoben; die Drehung war zu groß</span>
+    <span data-phrase="alignment.partial">Verschiebung verfeinert; Drehung ließ sich nicht verfeinern</span>
+    <span data-phrase="alignment.perspective">Mit Perspektivkorrektur ausgerichtet</span>
+    <span data-phrase="alignment.perspective-fallback">Ohne Perspektivkorrektur ausgerichtet</span>
+    <span data-phrase="alignment.aligned">Ausgerichtet</span>
+    <span data-phrase="alignment.offset">Verschiebung: {dx}, {dy} px; Drehung: {angle}&deg;; Maßstab: {scale}&times;</span>
+    <span data-phrase="alignment.remove">Aus Auswahl entfernen</span>
     <span data-phrase="frame.reference">Bezug</span>
     <span data-phrase="frame.make-reference">Als Bezug nehmen</span>
     <span data-phrase="frame.move">{name} verschieben &mdash; ziehen oder die Pfeiltasten nehmen</span>
@@ -203,21 +257,23 @@
     <span data-phrase="frame.read">{read} von {total} gelesen</span>
 
     <span data-phrase="mode.mean">Mittelt jede Aufnahme. Zufälliges Rauschen ist so oft zu hoch wie zu niedrig, {count} Aufnahmen zu mitteln senkt es also um rund das {factor}-fache. Die Methode für eine ruhige Serie, und die, die ein einzelner vorbeifliegender Vogel verdirbt.</span>
-    <span data-phrase="mode.median">Nimmt den mittleren Wert jedes Pixels. Alles, was nur in einem Teil der Aufnahmen da war, ein Tourist, ein Auto, ein Flugzeug, verschwindet. Es ist die einzige Methode, die jede Aufnahme gleichzeitig halten muss, und deshalb kann sie unten in Bänder geteilt werden.</span>
-    <span data-phrase="mode.sigma">Lernt, was jedes Pixel üblicherweise ist, und mittelt dann nur die Werte, die dazu passen. Das Ergebnis des Medians mit der Rauschminderung des Mittelwerts. Er liest die Aufnahmen zweimal.</span>
+    <span data-phrase="mode.median">Nimmt den mittleren Wert jedes Pixels. Ein bewegtes Objekt kann verschwinden, wenn es ein Pixel in weniger als der Hälfte der Aufnahmen belegt hat. Nur diese Methode muss alle Aufnahmen gleichzeitig halten, weshalb sie unten in Bänder geteilt werden kann.</span>
+    <span data-phrase="mode.sigma">Lernt, was jedes Pixel üblicherweise ist, und mittelt nur passende Werte. Kann Ausreißer verwerfen und Rauschen reduzieren. Kleine Serien können ein vorbeiziehendes Objekt behalten; wenn dessen Entfernung Vorrang hat, nehmen Sie Median. Liest die Aufnahmen zweimal.</span>
     <span data-phrase="mode.max">Behält den hellsten Wert, den jedes Pixel je hatte. Das ist es, was aus einer Reihe kurzer Belichtungen Sternspuren macht und ein Feuerwerk aus seinen eigenen Aufnahmen zusammensetzt.</span>
     <span data-phrase="mode.min">Behält den dunkelsten Wert, den jedes Pixel je hatte. Ein Pixel bleibt nur hell, wenn es in jeder Aufnahme hell war, also gehen Spiegelungen, Scheinwerfer und angeleuchtete Regentropfen.</span>
-    <span data-phrase="mode.sum">Addiert die Aufnahmen, ohne zu teilen: was eine {count}-mal so lange Belichtung gesammelt hätte. Sie läuft an, genau wie diese Belichtung es täte. Holen Sie es mit dem Belichtungsregler zurück.</span>
+    <span data-phrase="mode.sum">Addiert gerenderte Farbwerte ohne Division. Das ist additives Mischen und keine Simulation der Sensorbelichtung. Helle Werte werden abgeschnitten; normalisieren Sie die Helligkeit, um durch die Zahl der Aufnahmen zu teilen.</span>
     <span data-phrase="mode.focus">Nimmt jeden Teil des Bildes aus der Aufnahme, in der er scharf war. Fotografieren Sie ein kleines Motiv entlang des Fokusrings, und das hier setzt die scharfen Teile zusammen.</span>
 
+    <span data-phrase="align.projective">Misst Verschiebung, Drehung und Maßstab und korrigiert die Perspektive, wenn genügend Bereiche übereinstimmen. Hilfreich für Sternaufnahmen mit großem Bildfeld. Lässt sich die Perspektive nicht zuverlässig messen, werden Drehung und Maßstab verwendet.</span>
     <span data-phrase="align.translate">Findet, wie weit jede Aufnahme verschoben war, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Korrigiert Wackeln aus der Hand und Stativdrift. Drehung kann es nicht korrigieren.</span>
-    <span data-phrase="align.similarity">Findet zusätzlich Drehung und Maßstab. Kostet eine Messung mehr je Aufnahme und gar nichts, wenn die Aufnahmen sich als gerade erweisen. Drehung wird immer nur innerhalb einer halben Umdrehung zurückgewonnen.</span>
-    <span data-phrase="align.none">Stackt die Aufnahmen genau so, wie sie kommen. Richtig für ein festes Stativ oder eine Intervallserie, falsch für alles aus der Hand.</span>
+    <span data-phrase="align.similarity">Findet zusätzlich Drehung und Maßstab. Nimmt für jede Aufnahme eine zusätzliche Messung vor, auch wenn die Aufnahmen gerade sind. Drehung wird immer nur innerhalb einer halben Umdrehung zurückgewonnen.</span>
+    <span data-phrase="align.none">Stackt die Aufnahmen genau so, wie sie kommen. Verwenden Sie dies, wenn sie bereits zusammenpassen, oder für Sternspuren, die die Bewegung des Himmels erhalten sollen. Ein festes Stativ hält die Sterne nicht ausgerichtet.</span>
 
-    <span data-phrase="scale.note">Jede Aufnahme wird vom Decoder des Browsers selbst in dieser Größe dekodiert, eine kleinere Einstellung ist also weniger Arbeit und nicht nur weniger Speicher.</span>
+    <span data-phrase="scale.note">Eine kleinere Arbeitsgröße reduziert Pixelpuffer und Rechenaufwand. Der Browser kann eine Datei intern trotzdem in voller Größe dekodieren.</span>
     <span data-phrase="gain.note">Ganz am Ende in das Ergebnis multipliziert, nach der Rechnung und vor dem Runden.</span>
-    <span data-phrase="gain.sum-note">{count} Aufnahmen zu addieren wird mit ziemlicher Sicherheit anlaufen. Nehmen Sie das auf etwa {suggested} herunter, um zu sehen, was gesammelt wurde.</span>
+    <span data-phrase="gain.sum-note">Das Addieren von {count} Aufnahmen kann helle Werte abschneiden. Normalisieren Sie die Helligkeit auf {suggested}&times; oder geben Sie eine eigene Belichtung ein.</span>
 
+    <span data-phrase="plan.too-large">Selbst ein kleines Band überschreitet das Pixelpufferbudget. Wählen Sie eine kleinere Arbeitsauflösung oder kleinere Eingabebilder.</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">etwa {mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}, einer je Aufnahme</span>
@@ -234,6 +290,26 @@
     <span data-phrase="progress.stack-banded">Wird gestackt &mdash; Band {band} von {bands}, {done} von {total} Aufnahmen gelesen</span>
     <span data-phrase="progress.encode">Das Bild wird geschrieben&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Erstellt mit {method}; Ausrichtung: {alignment}; Arbeitsauflösung: {resolution}; Belichtung: {gain}×; {encoding}.</span>
+    <span data-phrase="result.method.mean">Mittelwert</span>
+    <span data-phrase="result.method.median">Median</span>
+    <span data-phrase="result.method.sigma">Sigma-Clipping</span>
+    <span data-phrase="result.method.max">Aufhellen</span>
+    <span data-phrase="result.method.min">Abdunkeln</span>
+    <span data-phrase="result.method.sum">Addieren</span>
+    <span data-phrase="result.method.focus">Fokus-Stacking</span>
+    <span data-phrase="result.alignment.projective">Automatische Perspektive</span>
+    <span data-phrase="result.alignment.translate">Nur Verschiebung</span>
+    <span data-phrase="result.alignment.similarity">Verschiebung, Drehung und Skalierung</span>
+    <span data-phrase="result.alignment.none">Keine</span>
+    <span data-phrase="result.resolution.full">Voll</span>
+    <span data-phrase="result.resolution.half">Halb</span>
+    <span data-phrase="result.resolution.quarter">Viertel</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG-Qualität {quality}</span>
+    <span data-phrase="result.settings.sigma">Clipping-Schwelle: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Schärferadius: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} Aufnahmen in {seconds} Sekunden zusammengerechnet</span>
     <span data-phrase="result.moves">Jede Aufnahme wurde vermessen und an ihren Platz geschoben.</span>
     <span data-phrase="result.moves-some">{count} von {total} Aufnahmen ließen sich nicht sicher vermessen und blieben, wo sie waren.</span>
@@ -244,8 +320,8 @@
     <span data-phrase="error.no.files">Fügen Sie zuerst mindestens ein Bild hinzu.</span>
     <span data-phrase="error.no.size">Keine dieser Dateien ließ sich als Bild öffnen.</span>
     <span data-phrase="error.one.frame">Stacken braucht mindestens zwei Aufnahmen.</span>
-    <span data-phrase="error.unknown">Beim Stacken ist etwas schiefgegangen. Wenn eine dieser Dateien ungewöhnlich ist, versuchen Sie sie einzeln.</span>
-    <span data-phrase="error.memory">Dem Browser ist der Speicher ausgegangen. Versuchen Sie eine kleinere Arbeitsauflösung oder weniger Aufnahmen.</span>
+    <span data-phrase="error.unknown">Beim Stacken ist etwas schiefgegangen. Versuchen Sie eine kleinere Dateiauswahl.</span>
+    <span data-phrase="error.memory">Dieser Durchlauf überschreitet das Pixelpufferbudget, oder dem Browser ist der Speicher ausgegangen. Versuchen Sie eine kleinere Arbeitsauflösung oder weniger Aufnahmen.</span>
     <span data-phrase="error.unreadable">{name} ließ sich nicht als Bild öffnen und blieb außen vor.</span>
     <span data-phrase="error.busy">Warten Sie, bis dieser Stapel fertig ist, bevor Sie weitere Aufnahmen hinzufügen, oder brechen Sie ihn ab.</span>
 

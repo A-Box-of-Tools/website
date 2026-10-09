@@ -73,7 +73,7 @@
           <label for="input">Ihr XML</label>
           <span class="count" id="input-count">leer</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="XML hier einfügen - oder oben eine .xml-, .svg- oder .rss-Datei ablegen."></textarea>
       </div>
@@ -93,6 +93,7 @@
     <h2><span class="step">3</span> Das Ergebnis mitnehmen</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Zur Fehlerstelle</button>
 
     <div class="toolbar">
       <p class="count" id="result-note">Noch nichts.</p>
@@ -131,6 +132,10 @@
     <span data-phrase="xml.comment">Dieser Kommentar wird nie geschlossen</span>
     <span data-phrase="xml.cdata">Dieser CDATA-Abschnitt wird nie geschlossen</span>
     <span data-phrase="xml.declaration">Diese Deklaration wird nie geschlossen</span>
+    <span data-phrase="xml.document">XML braucht genau ein äußeres Element, ohne Text außerhalb davon.</span>
+    <span data-phrase="xml.declarationorder">Die XML-Deklaration muss zuerst stehen; ein DOCTYPE darf nur einmal vor dem äußeren Element stehen.</span>
+    <span data-phrase="xml.declarationinvalid">Diese XML-Deklaration ist ungültig.</span>
+    <span data-phrase="xml.character">Diese numerische Zeichenreferenz ist in XML ungültig.</span>
     <span data-phrase="xml.closing">Dieses schließende Tag wird nie beendet</span>
     <span data-phrase="xml.unclosed">&lt;{name}&gt; wird nie geschlossen</span>
     <span data-phrase="xml.stray">&lt;/{name}&gt; schließt ein Tag, das nie geöffnet wurde</span>
@@ -163,7 +168,7 @@
     <span data-phrase="convert.json-xml.name">JSON zu XML</span>
     <span data-phrase="convert.xml-json">Attribute werden zu Membern mit einem @ im Namen, der eigene Text eines Elements
       wird zu #text, wo er sich den Platz teilen muss, und jeder Wert bleibt eine
-      Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren.</span>
+      Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren. Die Reihenfolge gemischter Inhalte und Kommentare bleiben nicht erhalten.</span>
     <span data-phrase="convert.json-xml">Ein Array wird zu einem wiederholten Element, was die einzige Form ist, die sich
       zurücklesen lässt. Ein leeres Objekt und eine leere Zeichenkette kommen beide als
       leeres Element heraus.</span>

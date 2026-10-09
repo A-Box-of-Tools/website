@@ -43,7 +43,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>残すもの</legend>
+      <legend>次の削除で保持する項目</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -143,6 +143,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">このコピーで指定した保持設定：向き{orientation}、ICCプロファイル{icc}。</span>
+    <span data-phrase="copy.on">有効</span>
+    <span data-phrase="copy.off">無効</span>
+    <span data-phrase="copy.avif">これらの保持設定は適用されませんでした。AVIFは正しい向きでデコードされ、元のメタデータをコピーせずにPNGとして保存されました。</span>
+    <span data-phrase="copy.inspect">削除済みコピーを調べる</span>
+    <span data-phrase="copy.inspectname">削除済みコピーを調べる：{name}</span>
+    <span data-phrase="copy.reading">このコピーのメタデータを読み込み中…</span>
+    <span data-phrase="copy.failed">このコピーを調べられませんでした：{reason}</span>
+    <span data-phrase="copy.scope">この削除済みコピーのメタデータを読み取り専用で表示します。</span>
+    <span data-phrase="copy.tags">EXIFタグ</span>
+    <span data-phrase="copy.profile">ICCプロファイル</span>
+    <span data-phrase="copy.absent">なし</span>
+    <span data-phrase="copy.none">このコピーには削除可能なメタデータが見つかりませんでした。</span>
+    <span data-phrase="copy.note">{label}：{detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · 削除時にPNGへ変換</span>
     <span data-phrase="inspect.avif">EXIFプレビューのみ。他のメタデータは一覧化しません</span>
     <span data-phrase="badge.avif">PNG変換</span>
@@ -170,7 +184,7 @@
     <span data-phrase="badge.comment">コメント</span>
     <span data-phrase="badge.text">テキスト{count}</span>
     <span data-phrase="badge.unknown">不明なブロック</span>
-    <span data-phrase="keep.nothing">向きのタグもカラープロファイルも含めて、本当にすべて消えます。このファイルはどんな種類のメタデータも持たなくなります。</span>
+    <span data-phrase="keep.nothing">保持する例外は両方とも無効です。向きやICCプロファイルを含む削除可能なメタデータは削除されます。JPEGの表示に必要なヘッダーは保持されます。</span>
     <span data-phrase="keep.orientation">ほかはすべて消えます。EXIF、GPS、メーカーノート、XMP、IPTC、コメント、埋め込みサムネイル、そしてこの道具が判別できなかったブロックまで。残すもの：向きのタグ。</span>
     <span data-phrase="keep.icc">ほかはすべて消えます。EXIF、GPS、メーカーノート、XMP、IPTC、コメント、埋め込みサムネイル、そしてこの道具が判別できなかったブロックまで。残すもの：カラープロファイル。</span>
     <span data-phrase="keep.both">ほかはすべて消えます。EXIF、GPS、メーカーノート、XMP、IPTC、コメント、埋め込みサムネイル、そしてこの道具が判別できなかったブロックまで。残すもの：向きのタグとカラープロファイル。</span>

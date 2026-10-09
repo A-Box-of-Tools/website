@@ -97,7 +97,8 @@ a = "Il échange un peu de bruit contre beaucoup de bandes en moins. Activé, un
 
 [[faq]]
 q = "Y a-t-il une limite de durée ou de taille&nbsp;?"
-a = "C'est le passage qui est limité, et par la mémoire plutôt que par une règle&nbsp;: chacune de ses images est retenue en même temps pendant le choix de la palette, si bien que la page calcule ce que vos réglages coûteraient et le dit avant de commencer. Elle refuse plutôt que de laisser l'onglet manquer de mémoire et disparaître. Un passage plus court, une largeur plus petite ou une cadence plus basse font tous baisser le chiffre."
+a = """
+        Avant de commencer, la page estime les images retenues, la sortie GIF et les tampons temporaires de décodage, puis refuse les plans dépassant un budget de planification borné. Une indication de mémoire du navigateur peut abaisser ce budget ; elle ne mesure pas la mémoire libre et ne garantit pas que l’onglet restera dans cette limite. Une largeur plus petite, un passage plus court ou une cadence plus basse réduisent le travail de sortie ; la source conserve ses propres besoins de décodage."""
 
 [[faq]]
 q = "Garde-t-il le son&nbsp;?"

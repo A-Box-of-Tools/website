@@ -19,7 +19,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  base64, fromBase64, encodeSvg, svgDataUri, base64DataUri,
+  base64, fromBase64, encodeSvg, svgDataUri, base64DataUri, svgTextForUri,
 } from '../../tools/image-to-data-uri/src/encode.js';
 
 const ascii = (text) => new Uint8Array([...text].map((ch) => ch.charCodeAt(0)));
@@ -115,8 +115,8 @@ test('an astral character is encoded whole', () => {
   assert.equal(decodeURIComponent(encodeSvg(emoji)), emoji);
 });
 
-test('a byte-order mark is dropped', () => {
-  assert.equal(encodeSvg('﻿<svg/>'), '%3Csvg/%3E');
+test('a UTF-8 byte-order mark is preserved with the source bytes', () => {
+  assert.equal(encodeSvg('﻿<svg/>'), '%EF%BB%BF%3Csvg/%3E');
 });
 
 test('ordinary markup characters are left alone', () => {
@@ -140,4 +140,43 @@ test('percent-encoding an icon beats base64 on size', () => {
   const percent = svgDataUri(icon).length;
   const b64 = base64DataUri(ascii(icon), 'image/svg+xml').length;
   assert.ok(percent < b64, `percent-encoded ${percent} should be under base64 ${b64}`);
+});
+
+
+test('the readable UTF-8 choice preserves a BOM, Unicode and XML whitespace exactly', () => {
+  for (const source of ['<svg>café 😀</svg>', '\ufeff<?xml version="1.0" encoding="UTF-8"?><svg>\n  café 😀\n</svg>']) {
+    const bytes = new TextEncoder().encode(source);
+    const chosen = svgTextForUri(bytes);
+    assert.equal(chosen, source);
+    const restored = Buffer.from(decodeURIComponent(svgDataUri(chosen).split(',')[1]), 'utf8');
+    assert.deepEqual(restored, Buffer.from(bytes));
+  }
+});
+
+test('declared non-UTF-8 XML uses its original bytes without changing its declaration', () => {
+  for (const encoding of ['ISO-8859-1', 'windows-1252', 'UTF-16', 'x-unknown-encoding']) {
+    const source = `<?xml version="1.0" encoding="${encoding}"?><svg>café</svg>`;
+    const bytes = Uint8Array.from(source, ch => ch.charCodeAt(0));
+    assert.equal(svgTextForUri(bytes), null);
+    const uri = base64DataUri(bytes, 'image/svg+xml');
+    assert.deepEqual(Buffer.from(uri.split(',')[1], 'base64'), Buffer.from(bytes));
+  }
+  const asciiDeclaration = ascii('<?xml version="1.0" encoding="ISO-8859-1"?><svg/>');
+  assert.equal(svgTextForUri(asciiDeclaration), null, 'an ASCII-only legacy declaration is still authoritative');
+});
+
+test('malformed UTF-8 never silently becomes replacement text', () => {
+  for (const suffix of [[0xc3], [0x80], [0xc0, 0xaf], [0xed, 0xa0, 0x80], [0xf4, 0x90, 0x80, 0x80]]) {
+    const bytes = new Uint8Array([...ascii('<svg>'), ...suffix, ...ascii('</svg>')]);
+    assert.equal(svgTextForUri(bytes), null);
+    assert.deepEqual(fromBase64(base64DataUri(bytes, 'image/svg+xml').split(',')[1]), bytes);
+  }
+});
+
+
+test('a long XML declaration cannot bypass original-byte base64 selection', () => {
+  const source = '<?xml version="1.0"' + ' '.repeat(260) + 'encoding="ISO-8859-1"?><svg/>';
+  const bytes = new TextEncoder().encode(source);
+  assert.equal(svgTextForUri(bytes), null);
+  assert.deepEqual(fromBase64(base64DataUri(bytes, 'image/svg+xml').split(',')[1]), bytes);
 });

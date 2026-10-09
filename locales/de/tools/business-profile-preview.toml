@@ -172,8 +172,7 @@ body = """
 
 [[howto]]
 title = "Füllen Sie die Woche aus, und sehen Sie, was sie sagt."
-body = """
- Die Statuszeile ist
+body = """ Die Statuszeile ist
       der eine Teil eines Eintrags, der sich von selbst ändert: Aus
       <em>Geöffnet &middot; Schließt um 21:00</em> wird <em>Geschlossen
       &middot; Öffnet Di um 09:00</em>, ohne dass jemand etwas anfasst. Diese
@@ -181,7 +180,9 @@ body = """
       also einen Tag auf geschlossen stellt, sieht sofort, was jemandem gesagt
       wird, der an dem Abend nach ihm sucht. Ein Zeitfenster, das endet, bevor
       es beginnt, 22:00 bis 02:00, wird als über Mitternacht hinaus gelesen,
-      und genau das meint eine Bar damit."""
+      und genau das meint eine Bar damit.
+
+      Aktivieren Sie <em>Ein gewähltes Datum und eine Uhrzeit ansehen</em>, um einen bestimmten Abend oder den nächsten Morgen in der Zeitzone dieses Geräts zu prüfen. Ohne diese Option folgt der Status wieder der Uhr. Die Auswahl wird nicht im Profil-JSON gespeichert."""
 
 [[howto]]
 title = "Prüfen Sie, welche Buttons Sie sich verdient haben."
@@ -281,14 +282,7 @@ a = """
 [[faq]]
 q = "Wovon hängt die Zeile Geöffnet oder Geschlossen eigentlich ab?"
 a = """
-        Von der Woche, die Sie ausgefüllt haben, und von der Uhr des Geräts,
-        auf dem Sie das hier lesen. Ein Feld für die Zeitzone gibt es nicht,
-        denn ein Eintrag hat auch keines: Google zeigt einem Besucher den
-        Status in der Ortszeit des Unternehmens, und das Nächste, was diese
-        Seite dem kommen kann, ohne irgendjemanden irgendetwas zu fragen, ist
-        Ihre Uhr. Die Zeile hier stimmt also genau, wenn Sie in derselben
-        Zeitzone sind wie das Unternehmen, und ist verschoben, wenn nicht; das
-        sagt die Seite unter der Woche, statt Sie es herausfinden zu lassen."""
+        Die eingetragene Woche und standardmäßig die lokale Geräteuhr. Der Status wird jede Minute aktualisiert. Sie können stattdessen ein lokales Datum und eine Uhrzeit wählen, um einen bestimmten Teil der Woche zu prüfen. Die Vorschau verwendet die Zeitzone dieses Geräts, ohne Umrechnung in die Zeitzone des Unternehmens oder besondere Feiertagszeiten. Liegt das Unternehmen anderswo, geben Sie die gewünschte örtliche Uhrzeit ein. Diese Vorschauauswahl gehört nicht zum gespeicherten Profil-JSON."""
 
 [[faq]]
 q = "Darf ich das Bild in einem Angebot, einer Präsentation oder einem Kundenbericht verwenden?"

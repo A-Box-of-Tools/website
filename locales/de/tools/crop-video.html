@@ -167,7 +167,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Vorschau des zugeschnittenen Videos"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Video herunterladen</a>
@@ -260,6 +260,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Diese Datei verwendet eine Wiedergabe-Schnittliste, die dieses Werkzeug nicht beibehalten kann. Speichern Sie den sichtbaren bearbeiteten Clip als neues Video, bevor Sie ihn hier verarbeiten.</span>
+    <span data-phrase="read.editinvalid">Die Wiedergabe-Schnittliste der Datei ist unvollständig oder enthält ungültige Zeitangaben. Daher kann die sichtbare Zeitleiste nicht beibehalten werden.</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

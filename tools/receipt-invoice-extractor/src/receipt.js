@@ -306,6 +306,30 @@ export function extractReceipt(input) {
   };
 }
 
+/**
+ * A name and byte count are only a reason to compare photographs. Matching
+ * records remain separate and may represent different receipts; this does not
+ * read or hash their contents and cannot find a renamed duplicate.
+ */
+export function duplicatePhotoCounts(records) {
+  const names = new Map();
+  for (const record of records) {
+    const file = record.file;
+    if (!file || typeof file.name !== 'string' || !Number.isSafeInteger(file.size) || file.size < 0) continue;
+    if (!names.has(file.name)) names.set(file.name, new Map());
+    const sizes = names.get(file.name);
+    if (!sizes.has(file.size)) sizes.set(file.size, []);
+    sizes.get(file.size).push(record);
+  }
+  const counts = new Map();
+  for (const sizes of names.values()) {
+    for (const group of sizes.values()) {
+      if (group.length > 1) for (const record of group) counts.set(record, group.length);
+    }
+  }
+  return counts;
+}
+
 /** Unknown currencies are kept separate even when every row is confirmed. */
 export function summarize(records) {
   const groups = new Map();

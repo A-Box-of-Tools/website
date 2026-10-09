@@ -1,4 +1,12 @@
 <main id="main">
+  <div class="share-version">
+    <span>Version de l’outil</span> <code id="tool-version">{{ js_v }}</code>
+    <details id="tool-version-help" class="tool-version-help info-fold">
+      <summary aria-describedby="tool-version-note"><span class="visually-hidden">À propos de la version de l’outil</span></summary>
+      <p id="tool-version-note" role="tooltip" class="tool-version-note">Comparez cette valeur sur les deux appareils. Si elle diffère, rechargez les deux pages avant de commencer un nouveau partage.</p>
+    </details>
+  </div>
+
   <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
   <section id="share">
     <section id="discovery" class="card">
@@ -29,7 +37,7 @@
       <input id="fileinput" type="file" multiple hidden aria-label="Fichiers à joindre">
       <div id="attachlist"></div>
       <p class="field-note">
-        Les fichiers voyagent par le même canal direct que le texte, jusqu'à
+        Les fichiers voyagent par la même connexion directe que le texte, jusqu'à
         200&nbsp;Mo pièce. Les lecteurs voient la liste et ne récupèrent
         chaque fichier que s'ils le demandent. Un partage peut contenir jusqu’à 256 fichiers.</p>
     </section>
@@ -201,6 +209,12 @@
     <span data-phrase="share.too-many-files">Un partage peut contenir jusqu’à 256 fichiers. Retirez-en un avant d’en ajouter d’autres.</span>
     <span data-phrase="share.leave-warning">Quitter cette page met fin au partage pour tout le monde. Continuer ?</span>
 
+    <span data-phrase="copy.select">Sélectionné — copiez-le manuellement</span>
+    <span data-phrase="view.file-cancel">Annuler le téléchargement</span>
+    <span data-phrase="view.file-retry">Réessayer le téléchargement</span>
+    <span data-phrase="view.file-cancelled">Téléchargement annulé. Le partage reste ouvert.</span>
+    <span data-phrase="view.file-legacy-cancel">Téléchargement annulé. Vérifiez à nouveau ce lien avant de réessayer.</span>
+    <span data-phrase="view.file-legacy-failed">Le téléchargement du fichier n’a pas pu être terminé. Vérifiez à nouveau ce lien pour relancer le téléchargement.</span>
     <span data-phrase="copy.done">Copié</span>
     <span data-phrase="copy.link">Copier le lien</span>
     <span data-phrase="copy.text">Copier</span>
@@ -229,7 +243,7 @@
     <span data-phrase="view.mode-local">La personne qui partage utilise le mode Réseau local. Réessayez avec son mode pour vous connecter sans relais internet.</span>
     <span data-phrase="view.mode-direct">La personne qui partage utilise le mode de connexion habituel. Réessayez avec son mode&nbsp;; un relais est proposé après l’échec d’une connexion directe et utilisé seulement si vous le choisissez.</span>
     <span data-phrase="view.local-no-connect">Impossible de joindre la personne qui partage en mode Réseau local. Vérifiez que les deux appareils utilisent le même réseau Wi-Fi ou Ethernet&nbsp;; l’isolation du réseau invité, un VPN, un pare-feu ou les réglages du navigateur peuvent bloquer la connexion. Aucun relais internet n’est proposé dans ce mode.</span>
-    <span data-phrase="view.file-failed">Le téléchargement du fichier n’a pas pu être terminé. Vérifiez à nouveau ce lien pour relancer le téléchargement.</span>
+    <span data-phrase="view.file-failed">Le téléchargement du fichier a échoué. Réessayez ce fichier tant que le partage reste ouvert.</span>
 
     <span data-phrase="net.clean">ce que cette page partage n'est passé par
       aucun serveur. {total} fichiers chargés. {platform}</span>

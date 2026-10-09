@@ -74,6 +74,14 @@ unchanged.
 
 ## Finding a share on the start page
 
+Both roles show the tool's generated code version above their controls. It is
+the same content hash used in this page's module URLs, so languages using the
+same code show the same value, and changing the tool or its shared modules
+changes it without a hand-maintained version number. The information tooltip
+asks devices with different values to reload before starting a new share.
+This helps identify an older open or cached page; it does not gate connections
+or claim that different versions cannot work together.
+
 Opening the tool without a share name opens one WebSocket to `/discover`.
 The list contains only advertised codes and the local-mode flag; opening an
 entry shows the usual consent page in another tab. It never opens WebRTC on
@@ -152,20 +160,28 @@ reachable by link. The new worker deployment is manual, documented in
   second deadlines: an open channel alone must not leave the reader waiting
   forever. A delivery timeout closes that attempt and offers a fresh retry;
   a private reader waiting for a person's admission has no artificial deadline.
-- **Files.** Pull model on the same channel: `{files, list}` advertises,
-  `{get, id}` requests, then `file-begin` → 64 KB binary chunks paced by
-  `bufferedAmountLowThreshold` (1 MB low, 8 MB high-water, with a close
-  listener racing the wait so a vanished reader cannot hang the sender) →
-  `file-end`. String frames are JSON control; binary frames are the one
-  in-flight file. A `get` is honoured only from an admitted channel. The
-  receiver assembles in memory, which is what the 200 MB cap is about.
-  `src/receive-file.js` treats the other browser's metadata as a claim: a
-  begin marker must match the requested ID and size, chunks cannot overrun
-  that size, and a matching end marker downloads only a complete file.
-  Empty chunks and more than 16,384 parts are refused because a byte cap
-  alone would permit unlimited allocations. A share holds at most 256
-  files, and a reader can have only one request in flight. A failed transfer
-  closes that reader's channel and clears its content before a retry.
+- **Files.** Pull model on the same admitted peer connection. `{files, list,
+  fileChannels: true}` advertises, `{get, id, request}` requests, and the host
+  creates a dedicated `share-file:<request>` data channel for that UUID. Its
+  `file-begin` → 64 KB binary chunks → `file-end` stream retains the existing
+  200 MiB requested-size cap, exact ID/size markers, 16,384-part ceiling and
+  1 MiB/8 MiB backpressure. A host accepts requests only from its admitted
+  main channel, with one active transfer and at most two pending native reads
+  per reader. A file is captured before the first read; removing an attachment
+  cannot replace its bytes with another file under that request.
+  Cancel releases accumulated receiver parts, closes that lane and sends the
+  request ID on the main channel. Retry uses a fresh UUID/channel, so a pending
+  old read, close, failure or chunk cannot enter the retry. Live text and
+  private admission stay open. A completed receiver closes its lane after the
+  exact end marker; idle/opening lanes time out after thirty seconds. Native
+  reads already started cannot be interrupted, but their bytes are discarded
+  after retirement and their 64 KB size remains bounded.
+  A cached older host omits the capability and sends untagged bytes on the
+  main lane. That compatibility path still works, but Cancel or a failed
+  transfer must close its session before Check this link again can retry it.
+  An older reader can still request a file from the new host on the old lane.
+  No new rendezvous message, network origin, storage or automatic relay is
+  introduced. The worker still carries only introductions and discovery.
 - **Markdown.** `src/markdown.js`, ~80 lines, escape-first: input is
   entity-escaped before any tag is emitted, the tag set is fixed, links
   allow only http/https/mailto. It runs on remote-peer text; that is the
@@ -213,3 +229,11 @@ available" — the page degrades to exactly what it was.
 Sixteen readers, 50k characters, 200 MB a file. The sharer's tab must stay
 open and awake: phones suspend background tabs quickly, so this is "desktop
 shares, anyone reads".
+
+## Copy feedback
+
+Both copy controls await the browser clipboard result before saying Copied.
+A refusal selects the raw text or share link for manual copying. Live text
+replacement, end of share, a new share and a newer copy action retire feedback
+and its timer; they cannot cancel a clipboard write already accepted by the
+browser. A stale rejection does not select or change the current content.

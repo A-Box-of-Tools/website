@@ -121,3 +121,11 @@ input[type="range"] {
   .value-box { width: 5.5rem; }
   .wave { height: 88px; }
 }
+
+/* The bounded trial is separate from the whole-track download. */
+.excerpt-preview { margin-top: 1rem; }
+.preview-hint {
+  margin: 0.5rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}

@@ -47,7 +47,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">Tempo</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="Tempo, als Faktor">
       </div>
 
@@ -85,12 +85,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">Lautstärke</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="Lautstärkeänderung, in Dezibel">
       </div>
 
@@ -116,6 +117,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -126,6 +128,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>Ab Abspielposition vorhören</button>
+      <p class="preview-hint" id="preview-hint">Verschiebe die Abspielposition im Quellplayer, um bis zu fünf Sekunden auszuwählen. Nur dieser Ausschnitt wird bearbeitet: Die Normalisierung nutzt seinen Spitzenpegel, und Übergänge bei Tempoänderungen können vom ganzen Stück abweichen.</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="Bearbeiteter Ausschnitt"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- Schritt 3 &mdash; die Datei, die herauskommt -->
@@ -140,8 +150,7 @@
           <option value="32">32-Bit-Fließkomma-WAV &mdash; nichts wird begrenzt</option>
         </select>
         <p class="field-note" id="depth-note">
-          Eine WAV hält die Samples so, wie sie sind, und kann deshalb gar keine
-          Qualität kosten. Klein ist sie dafür nicht, siehe die Schätzung oben.
+          16-Bit-PCM rundet die Samples und begrenzt Spitzen über Vollaussteuerung. 32-Bit-Float behält die bearbeiteten Float-Samples; verlorene Informationen der Quelle kann es nicht wiederherstellen. Beide Dateien sind groß: siehe Schätzung oben.
         </p>
       </div>
     </div>
@@ -175,6 +184,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">Gib ein Tempo von 0,25 bis 4 mit höchstens zwei Nachkommastellen ein. Punkt oder Komma sind erlaubt.</span>
+    <span data-phrase="input.volume">Gib einen Pegel von −24 bis +24 dB mit höchstens zwei Nachkommastellen ein. Punkt oder Komma sind erlaubt.</span>
+    <span data-phrase="step.copying">Samples werden vorbereitet…</span>
+    <span data-phrase="preview.interval">Quelle {from}–{to}; bearbeitete Vorschau {length}.</span>
+    <span data-phrase="preview.end">Verschiebe die Abspielposition im Quellplayer vor das Ende der Aufnahme.</span>
+    <span data-phrase="preview.failed">Die Vorschau konnte nicht erstellt werden: {why}</span>
+    <span data-phrase="edit.failed.reason">Die Audiodatei konnte nicht bearbeitet werden: {why}</span>
     <span data-phrase="summary.speed.unchanged">unverändert</span>
     <span data-phrase="summary.speed.same">{speed}, gleiche Tonhöhe</span>
     <span data-phrase="summary.speed.up">{speed}, höhere Tonhöhe</span>

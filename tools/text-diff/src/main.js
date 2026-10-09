@@ -4,7 +4,8 @@ import { phrase } from './shared/phrases.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { compareText, alignRows, diffWords, formatUnified } from './diff.js';
+import { textImport } from './shared/text-import.js';
+import { compareText, alignRows, changeBlocks, diffWords, formatUnified, splitLines } from './diff.js';
 import { SAMPLES } from './samples.js';
 
 const $ = (id) => document.getElementById(id);
@@ -27,6 +28,12 @@ const el = {
   error: $('error'),
   diffView: $('diff-view'),
   resultNote: $('result-note'),
+  endingNote: $('ending-note'),
+  changeNav: $('change-nav'),
+  changePosition: $('change-position'),
+  changeLimit: $('change-limit'),
+  previousChange: $('previous-change'),
+  nextChange: $('next-change'),
   copy: $('copy'),
   download: $('download'),
   privacyToggle: $('privacy-toggle'),
@@ -40,6 +47,7 @@ const download = downloadLink(el.download);
 
 /** The patch of the last comparison, for the copy and download buttons. */
 let result = null;
+let navigation = null;
 
 /** What the Copy button says at rest, read off the button rather than written
  *  here, so that the word it goes back to after "Copied" is the translated one
@@ -78,6 +86,11 @@ const picker = wireFilePicker({
   onFiles(files) { loadFiles(files); },
 });
 
+const imports = textImport({
+  busy: (count) => picker.busy(readingLabel(count)),
+  done: picker.done,
+});
+
 async function loadFiles(files) {
   clearTimeout(timer);
   clearResult();
@@ -85,34 +98,35 @@ async function loadFiles(files) {
   // shared/lang-keep.js sets it for the length of its dispatch, and this
   // handler starts synchronously inside that.
   const restoring = el.fileInput?.dataset.langRestore === '1';
-  picker.busy(readingLabel(files.length));
-  try {
-    // Read as text, here, by the browser. There is no other step: the strings
-    // go into the boxes below and never anywhere else.
-    const texts = await Promise.all(files.slice(0, 2).map((file) => file.text()));
-    if (texts.length > 1) {
-      setText(el.input, texts[0]);
-      setText(el.inputB, texts[1]);
-    } else if (!restoring && el.input.value.trim() && !el.inputB.value.trim()) {
-      // One file dropped onto a comparison that already has an original fills
-      // the empty side, which is the only thing it could sensibly mean.
-      //
-      // Only when somebody dropped it. A file handed back by a language
-      // switch is the same file that was in the first box, and the text
-      // already restored into that box is what it was read from - so the
-      // empty side is not where it belongs, and putting it there turns one
-      // document into two identical ones.
-      setText(el.inputB, texts[0]);
-    } else {
-      setText(el.input, texts[0]);
-    }
-    updateCounts();
-    run();
-  } catch (error) {
-    showError(phrase('read.failed', { detail: error?.message ?? error }));
-  } finally {
-    picker.done();
-  }
+  const fillSecond = files.length === 1 && !restoring
+    && el.input.value.trim() && !el.inputB.value.trim();
+  // Read as text, here, by the browser. There is no other step: the strings
+  // go into the boxes below and never anywhere else.
+  await imports.read(files.slice(0, 2), {
+    apply(texts) {
+      if (texts.length > 1) {
+        setText(el.input, texts[0]);
+        setText(el.inputB, texts[1]);
+      } else if (fillSecond) {
+        // One file dropped onto a comparison that already has an original fills
+        // the empty side, which is the only thing it could sensibly mean.
+        //
+        // Only when somebody dropped it. A file handed back by a language
+        // switch is the same file that was in the first box, and the text
+        // already restored into that box is what it was read from - so the
+        // empty side is not where it belongs, and putting it there turns one
+        // document into two identical ones.
+        setText(el.inputB, texts[0]);
+      } else {
+        setText(el.input, texts[0]);
+      }
+      updateCounts();
+      run();
+    },
+    failed(error) {
+      showError(phrase('read.failed', { detail: error?.message ?? error }));
+    },
+  });
 }
 
 let timer = null;
@@ -133,6 +147,7 @@ for (const box of [el.input, el.inputB]) {
     event.detail.value = sourceText(box);
   });
   box.addEventListener('input', (event) => {
+    imports.invalidate();
     if (typeof event.detail?.languageText === 'string') setText(box, event.detail.languageText);
     else sourceTexts.delete(box);
     updateCounts();
@@ -146,6 +161,7 @@ for (const control of [el.view, el.onlyChanges, el.ignoreWhitespace, el.ignoreCa
 }
 
 el.swap.addEventListener('click', () => {
+  imports.invalidate();
   const held = sourceText(el.input);
   setText(el.input, sourceText(el.inputB));
   setText(el.inputB, held);
@@ -154,6 +170,7 @@ el.swap.addEventListener('click', () => {
 });
 
 el.clear.addEventListener('click', () => {
+  imports.invalidate();
   setText(el.input, '');
   setText(el.inputB, '');
   updateCounts();
@@ -162,6 +179,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
+  imports.invalidate();
   setText(el.input, SAMPLES.diff.a);
   setText(el.inputB, SAMPLES.diff.b);
   updateCounts();
@@ -169,13 +187,13 @@ el.sample.addEventListener('click', () => {
 });
 
 function updateCounts() {
-  el.inputCount.textContent = describe(el.input.value);
-  el.inputBCount.textContent = describe(el.inputB.value);
+  el.inputCount.textContent = describe(sourceText(el.input));
+  el.inputBCount.textContent = describe(sourceText(el.inputB));
 }
 
 function describe(text) {
   if (text === '') return phrase('count.empty');
-  const lines = text.split('\n').length;
+  const lines = splitLines(text).lines.length;
   const characters = text.length;
   return phrase('count.summary', {
     lines: phrase(lines === 1 ? 'count.lines.one' : 'count.lines.many',
@@ -228,7 +246,12 @@ function runDiff(aText, bText) {
   const { ops, stats } = compareText(aText, bText, options);
   const rows = alignRows(ops);
 
-  el.diffView.replaceChildren(drawDiff(rows));
+  const drawn = drawDiff(rows);
+  el.diffView.replaceChildren(drawn.table);
+  setNavigation(drawn);
+  el.endingNote.textContent = stats.endingChanges === 0 ? ''
+    : phrase(stats.endingChanges === 1 ? 'result.endings.one' : 'result.endings.many',
+      { count: stats.endingChanges.toLocaleString() });
   el.diffView.classList.toggle('split', el.view.value === 'split');
 
   const patch = formatUnified(aText, bText, { aLabel: 'original', bLabel: 'changed' });
@@ -241,7 +264,7 @@ function runDiff(aText, bText) {
     return;
   }
   const ignored = options.ignoreWhitespace || options.ignoreCase || options.ignoreBlankLines;
-  const changes = stats.added === 0 && stats.removed === 0 && ignored && !stats.trailingDiffers
+  const changes = stats.added === 0 && stats.removed === 0 && ignored && !stats.trailingDiffers && stats.endingChanges === 0
     ? phrase('result.ignored')
     : phrase('result.counts', {
       added: stats.added.toLocaleString(),
@@ -262,8 +285,12 @@ function runDiff(aText, bText) {
 function drawDiff(rows) {
   const table = document.createElement('div');
   table.className = 'diff-table';
-  const kept = el.onlyChanges.checked ? collapse(rows, 3) : rows.map((row) => ({ row }));
-
+  const kept = el.onlyChanges.checked ? collapse(rows, 3) : rows.map((row, index) => ({ row, index }));
+  const blocks = changeBlocks(rows);
+  const targets = [];
+  let block = 0;
+  let lastBlock = -1;
+  let truncated = false;
   let drawn = 0;
   for (const entry of kept) {
     if (entry.skipped) {
@@ -279,13 +306,66 @@ function drawDiff(rows) {
       gap.className = 'diff-skip';
       gap.textContent = phrase('skip.rest');
       table.append(gap);
+      truncated = true;
       break;
     }
-    table.append(el.view.value === 'split' ? splitRow(entry.row) : unifiedRow(entry.row));
+    while (block < blocks.length && entry.index >= blocks[block].end) block += 1;
+    const node = el.view.value === 'split' ? splitRow(entry.row) : unifiedRow(entry.row);
+    if (entry.row.type !== 'equal' && block !== lastBlock) {
+      const target = [...node.querySelectorAll('.side')]
+        .find((cell) => !cell.classList.contains('empty'));
+      target.tabIndex = -1;
+      target.classList.add('change-target');
+      targets.push(target);
+      lastBlock = block;
+    }
+    table.append(node);
     drawn += 1;
   }
-  return table;
+  return { table, targets, total: blocks.length, truncated };
 }
+
+// Targets belong to this rendering, rather than to source line numbers. A
+// truncated or filtered view must never navigate to a row it did not draw.
+function setNavigation(drawn) {
+  navigation = drawn.total ? { ...drawn, current: -1 } : null;
+  el.changeNav.hidden = !navigation;
+  el.changeNav.inert = !navigation;
+  updateNavigation();
+}
+
+function clearNavigation() {
+  navigation = null;
+  el.changeNav.hidden = true;
+  el.changeNav.inert = true;
+  updateNavigation();
+}
+
+function updateNavigation() {
+  const shown = navigation?.targets.length ?? 0;
+  el.previousChange.disabled = !navigation || navigation.current <= 0;
+  el.nextChange.disabled = !navigation || navigation.current >= shown - 1;
+  el.changePosition.textContent = !navigation ? '' : navigation.current < 0
+    ? phrase(shown === 1 ? 'nav.shown.one' : 'nav.shown.many', { count: shown.toLocaleString() })
+    : phrase('nav.position', { current: (navigation.current + 1).toLocaleString(), count: shown.toLocaleString() });
+  el.changeLimit.textContent = navigation?.truncated ? phrase('nav.truncated', {
+    shown: shown.toLocaleString(), total: navigation.total.toLocaleString(),
+  }) : '';
+}
+
+function moveChange(step) {
+  if (!navigation) return;
+  const next = navigation.current + step;
+  if (next < 0 || next >= navigation.targets.length) return;
+  navigation.current = next;
+  updateNavigation();
+  const target = navigation.targets[next];
+  target.focus({ preventScroll: true });
+  target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+el.previousChange.addEventListener('click', () => moveChange(-1));
+el.nextChange.addEventListener('click', () => moveChange(1));
 
 /**
  * Keep every changed row and `context` rows either side of one; everything
@@ -306,7 +386,7 @@ function collapse(rows, context) {
   rows.forEach((row, index) => {
     if (keep[index]) {
       if (skipped) { out.push({ skipped }); skipped = 0; }
-      out.push({ row });
+      out.push({ row, index });
       return;
     }
     skipped += 1;
@@ -319,23 +399,30 @@ function splitRow(row) {
   const line = document.createElement('div');
   line.className = `diff-row ${row.type}`;
   const words = row.type === 'change' ? diffWords(row.a.text, row.b.text) : null;
+  const endingChange = row.type === 'ending'
+    || (row.type === 'change' && row.a.ending !== row.b.ending);
 
   line.append(
     lineNumber(row.a?.a),
-    side(row.a ? row.a.text : null, words?.a, 'left', row.type === 'change' || row.type === 'delete'),
+    side(row.a ? row.a.text : null, words?.a, 'left', row.type !== 'equal' && row.type !== 'insert',
+      endingChange ? (row.type === 'ending' ? row.a.aEnding : row.a.ending) : null),
     lineNumber(row.b?.b),
-    side(row.b ? row.b.text : null, words?.b, 'right', row.type === 'change' || row.type === 'insert'),
+    side(row.b ? row.b.text : null, words?.b, 'right', row.type !== 'equal' && row.type !== 'delete',
+      endingChange ? (row.type === 'ending' ? row.b.bEnding : row.b.ending) : null),
   );
   return line;
 }
 
 function unifiedRow(row) {
-  if (row.type === 'change') {
+  if (row.type === 'change' || row.type === 'ending') {
     // A changed line is two lines in one column, which is what a unified diff
     // has always been: the old one and then the new one.
     const wrap = document.createDocumentFragment();
-    wrap.append(unifiedRow({ type: 'delete', a: row.a, b: null }));
-    wrap.append(unifiedRow({ type: 'insert', a: null, b: row.b }));
+    const endingChange = row.type === 'ending' || row.a.ending !== row.b.ending;
+    wrap.append(unifiedRow({ type: 'delete', a: row.a, b: null,
+      ending: endingChange ? (row.type === 'ending' ? row.a.aEnding : row.a.ending) : null }));
+    wrap.append(unifiedRow({ type: 'insert', a: null, b: row.b,
+      ending: endingChange ? (row.type === 'ending' ? row.b.bEnding : row.b.ending) : null }));
     return wrap;
   }
   const line = document.createElement('div');
@@ -349,6 +436,7 @@ function unifiedRow(row) {
   cell.className = `side ${row.type === 'insert' ? 'right marked'
     : row.type === 'delete' ? 'left marked' : 'left'}`;
   cell.textContent = `${sign}${text}`;
+  if (row.ending != null) cell.append(endingBadge(row.ending));
   line.append(cell);
   return line;
 }
@@ -365,18 +453,28 @@ function lineNumber(value) {
  * decides the colour: the left-hand side of a change is what went, the
  * right-hand side is what arrived.
  */
-function side(text, words, where, marked) {
+function side(text, words, where, marked, ending = null) {
   const cell = document.createElement('span');
   cell.className = `side ${where}${marked ? ' marked' : ''}`;
   if (text === null) { cell.classList.add('empty'); return cell; }
-  if (!words) { cell.textContent = text; return cell; }
-  for (const part of words) {
+  if (!words) cell.textContent = text;
+  for (const part of words ?? []) {
     if (part.same) { cell.append(part.text); continue; }
     const mark = document.createElement('mark');
     mark.textContent = part.text;
     cell.append(mark);
   }
+  if (ending != null) cell.append(endingBadge(ending));
   return cell;
+}
+
+function endingBadge(ending) {
+  const badge = document.createElement('span');
+  badge.className = 'line-ending';
+  const key = ending === '\r\n' ? 'ending.crlf' : ending === '\r' ? 'ending.cr'
+    : ending === '\n' ? 'ending.lf' : 'ending.none';
+  badge.textContent = phrase(key);
+  return badge;
 }
 
 /* -------------------------------------------------------------- the result */
@@ -397,6 +495,7 @@ el.copy.addEventListener('click', async () => {
     const patch = document.createElement('pre');
     patch.className = 'diff-patch';
     patch.textContent = text;
+    clearNavigation();
     el.diffView.replaceChildren(patch);
     const range = document.createRange();
     range.selectNodeContents(patch);
@@ -411,6 +510,8 @@ el.copy.addEventListener('click', async () => {
 function clearResult() {
   el.copy.textContent = copyLabel;
   el.diffView.replaceChildren();
+  el.endingNote.textContent = '';
+  clearNavigation();
   el.copy.disabled = true;
   download.clear();
   result = null;

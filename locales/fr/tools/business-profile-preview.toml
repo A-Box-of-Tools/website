@@ -69,7 +69,9 @@ body = "Le nom est tronqué sur les trois surfaces, surtout dans les résultats.
 
 [[howto]]
 title = "Remplissez la semaine et regardez le statut."
-body = "<em>Ouvert &middot; Ferme à 21&nbsp;h</em> devient <em>Fermé &middot; Ouvre mardi à 9&nbsp;h</em> automatiquement. La page calcule depuis vos horaires et votre horloge. Un horaire 22:00 à 02:00 passe minuit, comme pour un bar. Fermer un jour montre aussitôt ce que verrait un visiteur ce soir-là."
+body = """<em>Ouvert &middot; Ferme à 21&nbsp;h</em> devient <em>Fermé &middot; Ouvre mardi à 9&nbsp;h</em> automatiquement. La page calcule depuis vos horaires et votre horloge. Un horaire 22:00 à 02:00 passe minuit, comme pour un bar. Fermer un jour montre aussitôt ce que verrait un visiteur ce soir-là.
+
+      Activez <em>Prévisualiser une date et une heure choisies</em> pour vérifier un soir précis ou le lendemain matin dans le fuseau horaire de cet appareil. Désactivez l’option pour suivre à nouveau l’horloge. Ce choix n’est pas enregistré dans le JSON du profil."""
 
 [[howto]]
 title = "Vérifiez les boutons disponibles."
@@ -105,7 +107,8 @@ a = "Google affiche « &nbsp;Aucun avis&nbsp; », car cinq étoiles vides peuv
 
 [[faq]]
 q = "De quoi dépend la ligne Ouvert ou Fermé&nbsp;?"
-a = "De la semaine saisie et de l’horloge de votre appareil. Aucun fuseau demandé&nbsp;: l’aperçu est exact si vous êtes dans celui de l’établissement, décalé sinon. La page le précise sous les horaires. Il ne peut demander à un service l’heure locale."
+a = """
+        La semaine renseignée et, par défaut, l’horloge locale de cet appareil. Le statut se met à jour chaque minute. Vous pouvez aussi choisir une date et une heure locales pour examiner un moment précis de la semaine. La prévisualisation utilise le fuseau horaire de cet appareil, sans conversion vers celui de l’entreprise ni horaires spéciaux pour les jours fériés. Si l’entreprise se trouve ailleurs, saisissez l’heure locale à examiner. Ce choix ne fait pas partie du JSON enregistré du profil."""
 
 [[faq]]
 q = "Puis-je utiliser l’image dans une proposition ou un rapport&nbsp;?"

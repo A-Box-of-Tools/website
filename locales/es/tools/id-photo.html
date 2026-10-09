@@ -191,6 +191,8 @@
         <button type="button" id="whole-photo" class="ghost">El recuadro más grande que quepa</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -452,6 +454,7 @@
     <span data-phrase="mark.lefteye.hint">la pupila, a la izquierda según se mira</span>
     <span data-phrase="mark.righteye">Ojo derecho</span>
     <span data-phrase="mark.righteye.hint">la otra pupila</span>
+    <span data-phrase="mark.position">{label}: {x} píxeles desde el borde izquierdo y {y} píxeles desde el borde superior de la fotografía.</span>
     <span data-phrase="mark.aria">{label}: {hint}. Las flechas lo mueven; con Mayús pulsada, diez píxeles de golpe.</span>
     <span data-phrase="crop.aria">Área de recorte. Las flechas la mueven, Alt y las flechas la redimensionan, y con
       Mayús pulsada cada paso son diez píxeles. La forma la fija la norma y no se puede

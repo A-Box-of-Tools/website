@@ -93,7 +93,7 @@
       <div class="field">
         <label for="every">Toutes les</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>secondes</span>
         </div>
         <p class="field-note">
@@ -102,6 +102,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>Choisir un intervalle couvrant toute la vidéo avec au plus 500 images</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">Extraire cette image</button>
@@ -159,6 +162,9 @@
       les pixels vers lesquels l&rsquo;image a été décodée, en &#x2066;{width} x {height}&#x2069;.</span>
     <span data-phrase="note.lossy">Recompressée par-dessus la compression de la vidéo
       elle-même. Bien pour un aperçu, pas pour quelque chose qui sera encore retouché.</span>
+    <span data-phrase="series.plan">Images fixes prévues : {n}, de {first} à {last}.</span>
+    <span data-phrase="series.plan.player">Positions demandées au lecteur : {n}, de {first} à {last}. Le lecteur choisit les images réelles.</span>
+    <span data-phrase="series.overlimit">Cet intervalle produirait {n} images fixes, de {first} à {last}. La limite est de 500 ; augmentez l’intervalle avant de commencer.</span>
     <span data-phrase="series.any">Prendre une série</span>
     <span data-phrase="series.every.one">En prendre une chaque seconde</span>
     <span data-phrase="series.every.many">En prendre une toutes les {n} secondes</span>
@@ -176,8 +182,7 @@
     <span data-phrase="save.nowrite">Ce navigateur a refusé d&rsquo;écrire un {format}.</span>
     <span data-phrase="save.failed">Cette image n&rsquo;a pas pu être enregistrée.</span>
     <span data-phrase="zip.failed">Cette archive n&rsquo;a pas pu être construite.</span>
-    <span data-phrase="series.nointerval">Indiquez un intervalle de plus de zéro
-      seconde.</span>
+    <span data-phrase="series.nointerval">Choisissez un intervalle d’au moins 0,1 seconde.</span>
     <span data-phrase="series.noframes">Cet intervalle ne retient aucune image.</span>
     <span data-phrase="series.failed">Quelque chose a mal tourné pendant la prise de la
       série.</span>
@@ -187,6 +192,8 @@
     <span data-phrase="size.gb">{n} Go</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Ce fichier utilise une liste de montage pour la lecture que cet outil ne peut pas conserver. Enregistrez le clip monté visible comme une nouvelle vidéo avant de le traiter ici.</span>
+    <span data-phrase="read.editinvalid">La liste de montage pour la lecture du fichier est incomplète ou contient des durées invalides. Sa chronologie visible ne peut donc pas être conservée.</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>
@@ -214,6 +221,7 @@
     <span data-phrase="read.nodecoder">Ce navigateur ne décode pas {codec} directement.</span>
     <span data-phrase="read.nowebcodecs">Ce navigateur n&rsquo;a pas WebCodecs, les images ne peuvent donc pas être décodées
       une par une.</span>
+    <span data-phrase="read.duplicatetime">Ce fichier contient des images ayant le même instant de présentation. Le lecteur du navigateur choisit l’image visible ; la sélection exacte d’une image est indisponible.</span>
     <span data-phrase="read.turned">Ce fichier est stocké tourné, et le lecteur d&rsquo;ici et celui du navigateur ne
       s&rsquo;accordent pas sur la rotation.</span>
     <span data-phrase="open.failed">Ce navigateur ne peut pas ouvrir ce fichier. {reason}</span>

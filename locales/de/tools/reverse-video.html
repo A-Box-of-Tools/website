@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="Vorschau des Quellvideos"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -55,7 +55,9 @@
         <p class="field-note" id="audio-note">
           Sample für Sample umgedreht und dann wieder als AAC kodiert. Für einen
           stummen Clip lassen Sie es aus, das geht schneller.
+          Beim Abbrechen muss der aktuelle Schritt zum Dekodieren oder Umordnen des Tons unter Umständen erst fertig werden.
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -79,7 +81,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Vorschau des umgekehrten Videos"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Video herunterladen</a>
@@ -115,8 +117,10 @@
     <span data-phrase="sound.off">Der umgekehrte Clip hat überhaupt keinen Ton.</span>
     <span data-phrase="sound.exact">Dekodiert, Sample für Sample umgedreht und wieder als AAC kodiert. Dieses zweite
       Kodieren ist unvermeidlich: Pakete in umgekehrter Reihenfolge abgespielt sind keine
-      Umkehrung.</span>
-    <span data-phrase="sound.player">Vom Browser gelesen, Sample für Sample umgedreht und wieder als AAC kodiert.</span>
+      Umkehrung.
+      Beim Abbrechen muss der aktuelle Schritt zum Dekodieren oder Umordnen des Tons unter Umständen erst fertig werden.</span>
+    <span data-phrase="sound.player">Vom Browser gelesen, Sample für Sample umgedreht und wieder als AAC kodiert.
+      Beim Abbrechen muss der aktuelle Schritt zum Dekodieren oder Umordnen des Tons unter Umständen erst fertig werden.</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069; (aus &#x2066;{fromWidth} x {fromHeight}&#x2069;; H.264 kann ein Bild mit
       ungerader Kantenlänge nicht speichern)</span>
@@ -131,6 +135,13 @@
     <span data-phrase="step.frame">Bild {done} von {total} wird umgekehrt ({percent}%)</span>
     <span data-phrase="audio.descriptor">Interner Fehler: die Tonbeschreibung ist größer als erwartet.</span>
     <span data-phrase="audio.nosound">Aus dieser Datei kam kein Ton zurück.</span>
+    <span data-phrase="memory.track">Tonspeicher: etwa {pcm} für die gesamte Spur, beim Zusammensetzen der Kanäle vorübergehend etwa {peak}. Kodierte Ausgabe und zusätzlicher Speicherbedarf des Browsers kommen hinzu.</span>
+    <span data-phrase="memory.file">Tonspeicher: etwa {pcm} für die gesamte Spur. Der Browser liest außerdem die gesamte Eingabedatei mit {file}; weitere Kopien beim Dekodieren, die kodierte Ausgabe und zusätzlicher Speicherbedarf des Browsers sind nicht enthalten.</span>
+    <span data-phrase="memory.unknown">Tonspeicher: Die Kanalzahl ist erst bekannt, wenn der Browser die gesamte Eingabedatei mit {file} gelesen hat. Vollständige Tonpuffer, Kopien beim Dekodieren, die kodierte Ausgabe und zusätzlicher Speicherbedarf des Browsers kommen hinzu.</span>
+    <span data-phrase="memory.unavailable">Tonspeicher: Die verfügbaren Spurdaten reichen für eine Schätzung nicht aus. Der gesamte Ton und vorübergehende Kopien beim Zusammensetzen bleiben im Speicher; kodierte Ausgabe und zusätzlicher Speicherbedarf des Browsers kommen hinzu.</span>
+    <span data-phrase="memory.off">Tonspeicher: Wenn der Ton weggelassen wird, sind keine dekodierten Tonpuffer nötig.</span>
+    <span data-phrase="memory.none">Tonspeicher: Diese Quelle hat keine Tonspur.</span>
+    <span data-phrase="audio.stalled">Der Audiokodierer antwortet nicht mehr. Versuchen Sie einen kürzeren Clip, lassen Sie den Ton weg oder verwenden Sie einen anderen Browser.</span>
     <span data-phrase="audio.noencode">Der Ton wurde dekodiert, aber vom Encoder kam nichts zurück.</span>
     <span data-phrase="audio.toolarge">Der Ton in dieser Datei ist kein AAC, das Umkehren würde also bedeuten, dem Browser
       die ganze Datei zum Lesen zu geben &mdash; und dafür ist sie zu groß. Das Video
@@ -164,6 +175,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Diese Datei verwendet eine Wiedergabe-Schnittliste, die dieses Werkzeug nicht beibehalten kann. Speichern Sie den sichtbaren bearbeiteten Clip als neues Video, bevor Sie ihn hier verarbeiten.</span>
+    <span data-phrase="read.editinvalid">Die Wiedergabe-Schnittliste der Datei ist unvollständig oder enthält ungültige Zeitangaben. Daher kann die sichtbare Zeitleiste nicht beibehalten werden.</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

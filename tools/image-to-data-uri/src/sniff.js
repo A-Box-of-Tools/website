@@ -21,7 +21,7 @@
 
 import { imageBrands } from './shared/image-convert.js';
 
-const utf8 = new TextDecoder('utf-8');
+import { decodeSvgText } from './shared/svg-text.js';
 
 /** ASCII at an offset, for the four-character tags these formats are full of. */
 function tag(bytes, at, length = 4) {
@@ -90,12 +90,12 @@ const TESTS = [
  * and it is nowhere near that.
  */
 export function looksLikeSvg(bytes) {
-  let head = utf8.decode(bytes.subarray(0, 1024));
+  let head = decodeSvgText(bytes.subarray(0, 1024));
   if (head.charCodeAt(0) === 0xfeff) head = head.slice(1);
 
   for (let guard = 0; guard < 32; guard += 1) {
     head = head.trimStart();
-    if (head.startsWith('<svg')) return true;
+    if (/^<svg[\s/>]/.test(head)) return true;
     if (head.startsWith('<!--')) {
       const end = head.indexOf('-->');
       if (end < 0) return false;

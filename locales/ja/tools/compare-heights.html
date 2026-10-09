@@ -19,6 +19,8 @@
       </select>
     </div>
 
+    <p class="width-guidance" id="width-guidance">物の幅を空欄にすると自動で決まります。入力した幅を読み取れない場合は、修正するまでその行をグラフに描きません。</p>
+
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
         <span></span>
@@ -96,6 +98,7 @@
       このうちいくつかは本当に決まっています。20フィートの海上コンテナは定義上259&nbsp;cmの高さで、バスケットのリングは305、アメリカの室内ドアは203に81です。残りは規格ではなく典型的な値で、ドアも窓も天板も国によって家によって違います。どれも普通の行として入るので、ご自分のものを測って本当の数字を上書きしてください。
     </p>
 
+    <p id="import-status" class="field-note" role="status" aria-live="polite" aria-atomic="true" hidden></p>
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -210,6 +213,17 @@
     <span data-phrase="height.unreadable">これは読み取れる身長ではありません。173、1.73 m、5'8"、68 inのように書いてみてください。</span>
     <span data-phrase="height.tooshort">小さすぎて描けません。5 cmが下限です。</span>
     <span data-phrase="height.tootall">図表の範囲より高すぎます。12メートルまでです。</span>
+
+    <span data-phrase="width.reads">幅を{width}として読み取りました。</span>
+    <span data-phrase="width.automatic">自動の幅は高さに合わせて決まります。</span>
+    <span data-phrase="width.automaticread">自動の幅：{width}。</span>
+    <span data-phrase="width.unreadable">この幅を読み取れません。60 cmや24 inを試してください。</span>
+    <span data-phrase="width.toosmall">幅が狭すぎます。最小は5 cmです。</span>
+    <span data-phrase="width.toolarge">グラフに収まらない幅です。上限は12メートルです。</span>
+    <span data-phrase="chart.invalid">高さまたは幅を修正すると、その行をグラフに描けます。</span>
+    <span data-phrase="import.failed">{name}を読み取れませんでした：{detail}。</span>
+    <span data-phrase="import.readingone">1枚の画像をこのページで読み取っています…</span>
+    <span data-phrase="import.readingmany">{count}枚の画像をこのページで読み取っています…</span>
 
     <span data-phrase="svg.added">追加しました。そのファイルの{shapes}個の図形から描いています。読み取るために何もアップロードしていません。</span>
     <span data-phrase="svg.noshapes">そのファイルには描けるものがありません。残すのは図形だけなので——文字や効果、リンクされた画像しかないファイルには何も残りません。</span>

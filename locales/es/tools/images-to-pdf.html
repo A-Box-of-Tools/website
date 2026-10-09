@@ -36,7 +36,7 @@
   <section class="card">
     <h2><span class="step">2</span> Configura la página</h2>
 
-    <div class="settings">
+    <div class="settings" id="page-settings">
       <div class="field">
         <label for="page-size">Tamaño de página</label>
         <select id="page-size">
@@ -146,16 +146,10 @@
       </div>
     </div>
 
-    <details class="meta-panel">
+    <details class="meta-panel" id="metadata-settings">
       <summary>Datos del documento &mdash; todos opcionales y en blanco por defecto</summary>
       <div class="meta-body">
-        <p class="meta-note">
-          Un PDF lleva un pequeño bloque de información sobre sí mismo, y casi
-          todas las herramientas lo rellenan con una marca de tiempo y el nombre
-          de un programa, se lo pidas o no. Esta escribe lo que teclees aquí y
-          nada más: ni nombres de archivo, ni nombre de equipo, ni fecha a menos
-          que marques la casilla.
-        </p>
+        <p class="meta-note">El PDF identifica esta herramienta como su creadora. También incluye el título y el autor que escribas, y la fecha de hoy solo si marcas la casilla. Se omiten los nombres de los archivos de imagen y la información sobre tu equipo.</p>
         <div class="settings">
           <div class="field">
             <label for="doc-title">Título</label>
@@ -213,6 +207,9 @@
       <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
+    <p id="cancel-note" class="field-note" hidden>Cancelar impide que se ofrezca este PDF para descargar. Una decodificación, codificación o compresión del navegador ya iniciada puede terminar antes de que se liberen sus recursos.</p>
+    <p id="export-wait" class="field-note" role="status" aria-live="polite" tabindex="-1" hidden>El navegador aún está terminando un trabajo anterior. Podrás crear un PDF cuando termine una operación.</p>
+
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar is-smooth"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
@@ -242,6 +239,7 @@
     <span data-phrase="tile.later">Mover {name} después</span>
     <span data-phrase="read.notimage">{name}: no es una imagen que esta herramienta sepa
       leer.</span>
+    <span data-phrase="read.failed">{name}: no se pudo preparar esta imagen. {detail}</span>
     <span data-phrase="read.nodecode">{name}: este navegador no ha podido
       descodificarla.</span>
     <span data-phrase="drag.move">Arrastrar para mover {name}</span>

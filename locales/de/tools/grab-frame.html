@@ -93,7 +93,7 @@
       <div class="field">
         <label for="every">Alle</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>Sekunden</span>
         </div>
         <p class="field-note">
@@ -102,6 +102,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>Intervall für den ganzen Clip mit höchstens 500 Standbildern einstellen</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">Dieses Einzelbild greifen</button>
@@ -160,6 +163,9 @@
     <span data-phrase="note.lossy">Noch einmal komprimiert, zusätzlich zur Kompression
       des Videos selbst. Für eine Vorschau in Ordnung, für alles, was noch bearbeitet
       wird, nicht.</span>
+    <span data-phrase="series.plan">Geplante Standbilder: {n}, von {first} bis {last}.</span>
+    <span data-phrase="series.plan.player">Geplante Positionen im Player: {n}, von {first} bis {last}. Der Player wählt die tatsächlichen Bilder.</span>
+    <span data-phrase="series.overlimit">Dieses Intervall würde {n} Standbilder von {first} bis {last} erzeugen. Die Grenze liegt bei 500; erhöhen Sie das Intervall vor dem Start.</span>
     <span data-phrase="series.any">Serie aufnehmen</span>
     <span data-phrase="series.every.one">Jede Sekunde eins aufnehmen</span>
     <span data-phrase="series.every.many">Alle {n} Sekunden eins aufnehmen</span>
@@ -177,8 +183,7 @@
     <span data-phrase="save.nowrite">Dieser Browser wollte kein {format} schreiben.</span>
     <span data-phrase="save.failed">Dieses Bild ließ sich nicht speichern.</span>
     <span data-phrase="zip.failed">Dieses Archiv ließ sich nicht bauen.</span>
-    <span data-phrase="series.nointerval">Stellen Sie einen Abstand von mehr als null
-      Sekunden ein.</span>
+    <span data-phrase="series.nointerval">Stellen Sie ein Intervall von mindestens 0,1 Sekunden ein.</span>
     <span data-phrase="series.noframes">Bei diesem Abstand kommt kein einziges Bild
       heraus.</span>
     <span data-phrase="series.failed">Beim Aufnehmen der Serie ist etwas schiefgegangen.</span>
@@ -188,6 +193,8 @@
     <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
     <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="read.edits">Diese Datei verwendet eine Wiedergabe-Schnittliste, die dieses Werkzeug nicht beibehalten kann. Speichern Sie den sichtbaren bearbeiteten Clip als neues Video, bevor Sie ihn hier verarbeiten.</span>
+    <span data-phrase="read.editinvalid">Die Wiedergabe-Schnittliste der Datei ist unvollständig oder enthält ungültige Zeitangaben. Daher kann die sichtbare Zeitleiste nicht beibehalten werden.</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>
@@ -214,6 +221,7 @@
     <span data-phrase="read.nodecoder">Dieser Browser dekodiert {codec} nicht direkt.</span>
     <span data-phrase="read.nowebcodecs">Dieser Browser hat kein WebCodecs, also lassen sich die Einzelbilder nicht eines
       nach dem anderen dekodieren.</span>
+    <span data-phrase="read.duplicatetime">Diese Datei enthält Bilder mit derselben Anzeigezeit. Der Player des Browsers wählt das sichtbare Bild; eine genaue Bildauswahl ist nicht verfügbar.</span>
     <span data-phrase="read.turned">Diese Datei ist gedreht gespeichert, und der Leser hier und der Player des Browsers
       sind sich über die Drehung nicht einig.</span>
     <span data-phrase="open.failed">Dieser Browser kann diese Datei nicht öffnen. {reason}</span>

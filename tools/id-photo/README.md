@@ -161,6 +161,17 @@ them*, and so does choosing it, which turns the whole thing off.
 at four skin tones and two hair colours, to one tolerance, plus one fixture for
 each row of the table above.
 
+Each dot is also a button reached with Tab. The arrow keys move it by one
+source-image pixel, or ten with Shift held. Focusing a dot or finishing a burst
+of key presses reports its distance from the photograph's left and top edges
+in a visible, polite live status. Repeated keys settle into one reading rather
+than making someone listen to positions that have already changed; hiding,
+resetting or clearing the dots retires any pending reading. This only describes
+the marked point: it does not change the geometry or the exported photograph.
+
+`tests/js/id-photo-marks.test.js` covers that feedback and its retirement when
+the photo or the landmarks change.
+
 ### Colour is measured in Lab, and evenness is measured separately
 
 Two greys forty RGB units apart are hard to tell apart; forty units of blue is a

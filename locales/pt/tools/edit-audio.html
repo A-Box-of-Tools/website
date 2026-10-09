@@ -47,7 +47,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">Velocidade</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="Velocidade, como multiplicador">
       </div>
 
@@ -85,12 +85,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">Volume</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="Mudança de volume, em decibéis">
       </div>
 
@@ -116,6 +117,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -126,6 +128,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>Prévia a partir da posição de reprodução</button>
+      <p class="preview-hint" id="preview-hint">Mova a posição de reprodução no reprodutor original para escolher até cinco segundos. Só esse trecho é editado: a normalização usa o seu pico, e as transições de velocidade podem diferir da faixa completa.</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="Trecho editado"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- Passo 3: o arquivo que sai -->
@@ -140,8 +150,7 @@
           <option value="32">WAV float de 32 bits: nada é ceifado</option>
         </select>
         <p class="field-note" id="depth-note">
-          Um WAV guarda as amostras como elas são, então escrever um não tem como
-          custar qualidade. Não é um arquivo pequeno: veja a estimativa acima.
+          PCM de 16 bits arredonda as amostras e limita os picos acima da escala máxima. O formato flutuante de 32 bits mantém as amostras editadas; não recupera informação perdida na origem. Ambos os arquivos são grandes: veja a estimativa acima.
         </p>
       </div>
     </div>
@@ -175,6 +184,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">Use uma velocidade de 0,25 a 4 com até duas casas decimais. Ponto ou vírgula são aceitos.</span>
+    <span data-phrase="input.volume">Use um nível de −24 a +24 dB com até duas casas decimais. Ponto ou vírgula são aceitos.</span>
+    <span data-phrase="step.copying">Preparando as amostras…</span>
+    <span data-phrase="preview.interval">Origem {from}–{to}; prévia editada {length}.</span>
+    <span data-phrase="preview.end">Mova a posição de reprodução no reprodutor original para antes do fim da gravação.</span>
+    <span data-phrase="preview.failed">Não foi possível criar a prévia: {why}</span>
+    <span data-phrase="edit.failed.reason">Não foi possível editar o áudio: {why}</span>
     <span data-phrase="summary.speed.unchanged">sem alterações</span>
     <span data-phrase="summary.speed.same">{speed}, mesmo tom</span>
     <span data-phrase="summary.speed.up">{speed}, tom mais agudo</span>

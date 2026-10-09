@@ -29,6 +29,23 @@ visitor's own machine and costs this project nothing.
 
 ---
 
+## One plan per batch
+
+Starting a run captures the files, target, format policy, resizing permission
+and available encoders once. Every image uses that plan after decoding, so a
+batch cannot mix settings while an earlier picture is being processed. The
+settings controls stay disabled until the run ends; Cancel remains available,
+and completed images remain downloadable after a stop or another file fails.
+The results repeat the settings that produced them. The format policy applies
+only to files over the target: an original that already fits still passes
+through byte for byte.
+
+`src/process.js` owns the per-image work without reading the page. Its decoded
+source and measurement bitmaps are released on success, failure and cancellation.
+Canvas backing stores also clear when an encoder or pixel read fails.
+The deferred-decoder regressions in `tests/js/compress.test.js` exercise that
+path while the original settings and encoder set change.
+
 ## The search
 
 `src/compress.js`. Four rules, in order, and the order is the whole argument:
@@ -159,15 +176,16 @@ the right thing to test either way.
 
 ## Testing it
 
-There is no test runner in this repository, so the checks used while writing
-this are not checked in. What they covered, if it needs doing again: images
-generated on a canvas and fed to the file input through a `DataTransfer`, run
-against targets that fit at full quality, targets that need the quality search,
-targets that force a resize, and targets no setting can reach; a file already
-under the target coming back as the identical `File` object; PNG output reaching
-a target by resizing alone; `compare()` returning SSIM 1 and an infinite PSNR for
-a picture against itself, and dropping to ~0.83 at quality 0.05; and the zip
-carrying a valid local-file header.
+CI runs `tests/js/compress.test.js` for size wording, target parsing, format
+choices and the per-image run contract. Build the page and check it in a browser
+while working; the local suites are reserved for CI.
+
+The browser checks use canvas-generated images fed through a `DataTransfer`:
+a two-image run with a delayed second decode, locked settings, completed-run
+context, cancellation and per-file errors. Other useful cases are targets that
+fit at full quality, need a quality search, force a resize or cannot be reached;
+a file already under the target returned as the identical `File`; PNG output
+reaching a target by resizing alone; and the comparison and zip downloads.
 
 ## Carrying the result on
 

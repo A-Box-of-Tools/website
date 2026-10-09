@@ -27,6 +27,8 @@
       </select>
     </div>
 
+    <p class="width-guidance" id="width-guidance">Leave an object’s width blank for automatic width. If a typed width cannot be read, that row stays off the chart until corrected.</p>
+
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
         <span></span>
@@ -131,6 +133,7 @@
       over it.
     </p>
 
+    <p id="import-status" class="field-note" role="status" aria-live="polite" aria-atomic="true" hidden></p>
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -257,6 +260,17 @@
     <span data-phrase="height.unreadable">Not a height this understands. Try 173, 1.73 m, 5'8" or 68 in.</span>
     <span data-phrase="height.tooshort">Too short to draw &mdash; 5 cm is the smallest.</span>
     <span data-phrase="height.tootall">Taller than the chart goes &mdash; 12 metres is the limit.</span>
+
+    <span data-phrase="width.reads">Width read as {width}.</span>
+    <span data-phrase="width.automatic">Automatic width follows the height.</span>
+    <span data-phrase="width.automaticread">Automatic width: {width}.</span>
+    <span data-phrase="width.unreadable">Not a width this understands. Try 60 cm or 24 in.</span>
+    <span data-phrase="width.toosmall">Too narrow to draw — 5 cm is the smallest.</span>
+    <span data-phrase="width.toolarge">Wider than the chart goes — 12 metres is the limit.</span>
+    <span data-phrase="chart.invalid">Correct a height or width to draw a row on the chart.</span>
+    <span data-phrase="import.failed">Could not read {name}: {detail}.</span>
+    <span data-phrase="import.readingone">Reading one picture locally…</span>
+    <span data-phrase="import.readingmany">Reading {count} pictures locally…</span>
 
     <span data-phrase="svg.added">Added, drawn from {shapes} shapes in that file. Nothing was uploaded to read it.</span>
     <span data-phrase="svg.noshapes">There is nothing drawable in that file. Only the shapes are kept &mdash; a file of nothing but text, effects or linked images has none.</span>

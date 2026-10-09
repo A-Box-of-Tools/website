@@ -47,7 +47,7 @@
       they are" is a choice.
     -->
     <fieldset class="keep-options">
-      <legend>Was behalten wird</legend>
+      <legend>Erhaltungsoptionen für die nächste Bereinigung</legend>
       <label class="check">
         <input type="checkbox" id="keep-orientation" checked>
         <span>
@@ -156,6 +156,20 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="copy.requested">Für diese Kopie angeforderter Erhalt: Ausrichtung {orientation}; ICC-Profil {icc}.</span>
+    <span data-phrase="copy.on">ein</span>
+    <span data-phrase="copy.off">aus</span>
+    <span data-phrase="copy.avif">Diese Erhaltungsoptionen galten nicht: AVIF wurde aufrecht dekodiert und ohne Übernahme der ursprünglichen Metadaten als PNG gespeichert.</span>
+    <span data-phrase="copy.inspect">Bereinigte Kopie untersuchen</span>
+    <span data-phrase="copy.inspectname">Bereinigte Kopie untersuchen: {name}</span>
+    <span data-phrase="copy.reading">Metadaten dieser Kopie werden gelesen…</span>
+    <span data-phrase="copy.failed">Diese Kopie konnte nicht untersucht werden: {reason}</span>
+    <span data-phrase="copy.scope">Schreibgeschützte Metadaten dieser bereinigten Kopie.</span>
+    <span data-phrase="copy.tags">EXIF-Tags</span>
+    <span data-phrase="copy.profile">ICC-Profil</span>
+    <span data-phrase="copy.absent">Nicht vorhanden</span>
+    <span data-phrase="copy.none">In dieser Kopie wurden keine entfernbaren Metadaten gefunden.</span>
+    <span data-phrase="copy.note">{label}: {detail}</span>
     <span data-phrase="row.avif">{kind} · {size} · Bereinigung wandelt in PNG um</span>
     <span data-phrase="inspect.avif">Nur EXIF-Vorschau; andere Metadaten werden nicht inventarisiert</span>
     <span data-phrase="badge.avif">PNG-Umwandlung</span>
@@ -183,8 +197,7 @@
     <span data-phrase="badge.comment">Kommentar</span>
     <span data-phrase="badge.text">Text {count}</span>
     <span data-phrase="badge.unknown">Unbekannte Blöcke</span>
-    <span data-phrase="keep.nothing">Es geht wirklich alles, auch das Orientierungs-Tag und das Farbprofil. Die Datei
-      trägt danach keinerlei Metadaten mehr.</span>
+    <span data-phrase="keep.nothing">Beide Erhaltungsausnahmen sind aus. Entfernbare Metadaten einschließlich Ausrichtung und ICC-Profil werden entfernt; JPEG-Anzeigeheader bleiben erhalten.</span>
     <span data-phrase="keep.orientation">Alles andere geht: EXIF, GPS, die Herstellernotiz, XMP, IPTC, Kommentare, das
       eingebettete Vorschaubild und jeder Block, den dieses Werkzeug nicht bestimmen
       konnte. Behalten: das Orientierungs-Tag.</span>

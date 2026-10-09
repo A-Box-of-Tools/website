@@ -240,6 +240,9 @@
   letter-spacing: -0.01em;
 }
 
+.result-context { overflow-wrap: anywhere; }
+
+.result-context,
 .result-detail {
   margin: 0.25rem 0 0;
   font-size: 0.82rem;

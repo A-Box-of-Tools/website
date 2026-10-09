@@ -23,6 +23,13 @@
           </label>
         </fieldset>
       </div>
+      <div class="field" id="canonical-field" hidden inert>
+        <label class="mode" for="canonical">
+          <input type="checkbox" id="canonical" aria-describedby="canonical-note">
+          <span>要求规范的 Base64 格式</span>
+        </label>
+        <p class="field-note" id="canonical-note"></p>
+      </div>
     </div>
   </section>
 
@@ -111,6 +118,10 @@
     <span data-phrase="result.none">什么都没出来。</span>
     <span data-phrase="out.encoded">{name}，已编码——进 {in}，出 {out}</span>
     <span data-phrase="out.decoded">{name}，已解码——进 {in}，出 {out}</span>
+    <span data-phrase="b64.profile.standard">标准形式：使用 + 和 /，需要时以 = 填充，未使用的位必须为零，不能有空白。未勾选时接受两种字符集、换行和省略填充。</span>
+    <span data-phrase="b64.profile.url">URL 形式：使用 - 和 _，不带填充，未使用的位必须为零，不能有空白。未勾选时接受两种字符集、换行和填充。</span>
+    <span data-phrase="b64.canonical">这不是所选 Base64 格式的规范写法。请检查字母表、补位和未使用位，并移除空白。</span>
+    <span data-phrase="esc.range">\u{…} 的码点必须在 U+0000 到 U+10FFFF 范围内。</span>
     <span data-phrase="b64.padding">末尾的补位字符超过两个。</span>
     <span data-phrase="b64.notfour">它有补位，但长度不是四的倍数。</span>
     <span data-phrase="b64.length">要当 Base64 的话，这多了一个字符，或者少了三个。</span>

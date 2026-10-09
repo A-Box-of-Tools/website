@@ -173,6 +173,8 @@
         <button type="button" id="whole-photo" class="ghost">収まる最大の枠</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -569,6 +571,7 @@
     <span data-phrase="mark.lefteye.hint">見た目で左側にある瞳</span>
     <span data-phrase="mark.righteye">右目</span>
     <span data-phrase="mark.righteye.hint">もう一方の瞳</span>
+    <span data-phrase="mark.position">{label}：写真の左端から{x}ピクセル、上端から{y}ピクセルの位置です。</span>
     <span data-phrase="mark.aria">{label}: {hint}。矢印キーで動かせます。Shiftを押しながらなら一度に10ピクセルです。</span>
     <span data-phrase="crop.aria">切り抜き範囲。矢印キーで動かし、Altと矢印キーで大きさを変えられます。Shiftを押しながらなら1回が10ピクセルです。形は規格で決まっていて変えられません。</span>
     <span data-phrase="step.print">&#x2066;{width} x {height}&#x2069; mmの紙焼きを書き出しています</span>

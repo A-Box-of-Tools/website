@@ -97,11 +97,13 @@ a = "En PNG, et délibérément en PNG seulement. Une image de GIF, c'est au plu
 
 [[faq]]
 q = "Y a-t-il une limite au nombre d'images lues&nbsp;?"
-a = "Il n'y a pas de limite fixe. Le plafond réel est la mémoire de votre machine&nbsp;: un GIF gonfle à environ un octet par pixel et par image pendant sa lecture, si bien qu'un petit fichier peut représenter énormément de mémoire. La page préfère alors cesser de lire plutôt que de laisser mourir l'onglet. Si cela arrive, elle le dit et vous rend les images qu'elle a obtenues."
+a = """
+        L’outil utilise une estimation de planification de 512 MiB pour les tampons source, les fragments conservés, les aperçus et la sortie, et s’arrête avant de dépasser 128 Mi pixels décodés. Un petit fragment ne réduit pas les tampons de l’image source complète. Les plans risqués sont refusés avant le dessin ; les résultats partiels ne sont disponibles que si leurs tampons tiennent. Les planches et les PNG accumulés comptent aussi. Les allocations internes, objets JS et limites de canvas peuvent coûter plus ou refuser plus tôt : il ne s’agit ni d’une mesure de mémoire libre ni d’une garantie."""
 
 [[faq]]
 q = "Ouvre-t-il un GIF abîmé&nbsp;?"
-a = "Le plus souvent, oui. Les téléchargements tronqués, la marque de fin absente et une dernière image qui s'arrête au milieu du flux sont courants, et un lecteur qui les refuse est inutile pour précisément les fichiers que les gens veulent le plus démonter. Toutes les images complètes reviennent, avec une note disant ce qui n'allait pas. Seul un fichier qui n'est pas du tout un GIF est refusé d'emblée."
+a = """
+        Souvent. Les images complètes sont conservées dans les fichiers tronqués ou sans marqueur final. Dans une image partielle, les zones manquantes utilisent la première couleur de la palette sauf si elle est transparente ; la page le signale. Les fichiers sans image lisible et les plans de tampons risqués sont refusés."""
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
@@ -117,4 +119,4 @@ features = ["Chaque image d'un GIF dans son propre PNG, transparence conservée"
 
 [picker]
 title = "Déposez un GIF ici"
-hint = "ou cliquez pour parcourir &mdash; animé ou fixe, quelle que soit la taille"
+hint = "ou cliquez pour choisir &mdash; GIF animé ou fixe"

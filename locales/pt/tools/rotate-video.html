@@ -27,9 +27,7 @@
   <section class="card" id="turn-card">
     <h2><span class="step">2</span> Escolha a rotação</h2>
 
-    <p class="card-lede">
-      Um celular que filmou de lado não girou os pixels: gravou um quarto de volta no cabeçalho, que o player aplica. Girar o vídeo é alterar apenas esse cabeçalho. Nenhum quadro é decodificado, e a imagem permanece exatamente igual.
-    </p>
+    <p class="card-lede">Um celular que filmou de lado não girou os pixels: gravou um quarto de volta no cabeçalho, que o player aplica. Na rotação pelo cabeçalho, esta página altera a matriz e copia os quadros intactos. O áudio é copiado, recodificado como AAC ou omitido.</p>
 
     <div class="chips" role="group" aria-label="Ângulo de rotação">
       <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; Um quarto de volta à direita</button>
@@ -149,8 +147,8 @@
     <span data-phrase="run.cancelled">Cancelado. Nada foi gravado; clique no botão para começar novamente.</span>
     <span data-phrase="run.failed">A conversão falhou: {detail}</span>
     <span data-phrase="result.ready">MP4 de {size}, girado {turn}.</span>
-    <span data-phrase="result.sub.copy">Cada quadro e pacote foi copiado como estava; apenas o cabeçalho mudou.</span>
-    <span data-phrase="result.sub.bake">Cada quadro foi desenhado girado e recodificado em H.264. O cabeçalho já não precisa indicar a rotação.</span>
+    <span data-phrase="result.sub.copy">Cada quadro foi copiado intacto; o cabeçalho informa a rotação. {sound}</span>
+    <span data-phrase="result.sub.bake">Cada quadro foi desenhado girado e recodificado em H.264. O cabeçalho já não precisa indicar a rotação. {sound}</span>
     <span data-phrase="check.passed">Conferido: {found}</span>
     <span data-phrase="check.failed">O resultado não passou na verificação: {found}. Guarde o original.</span>
     <span data-phrase="check.ok">reaberto da memória, com a duração original de {length}, orientação {shown} e dimensões {frame}.</span>
@@ -176,6 +174,8 @@
     <span data-phrase="sound.noencode">O codificador de áudio não produziu nenhum dado.</span>
     <span data-phrase="write.noframes">Não havia quadros para gravar.</span>
     <span data-phrase="write.toobig">O arquivo pronto teria mais de 4 GB, acima do que este gravador MP4 suporta. Corte o vídeo primeiro.</span>
+    <span data-phrase="read.edits">Este arquivo usa uma lista de edição para reprodução que esta ferramenta não consegue preservar. Salve o clipe editado visível como um novo vídeo antes de processá-lo aqui.</span>
+    <span data-phrase="read.editinvalid">A lista de edição para reprodução do arquivo está incompleta ou tem tempos inválidos. Por isso, não é possível preservar sua sequência visível.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

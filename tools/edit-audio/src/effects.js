@@ -11,49 +11,56 @@
 
 /** Turn each channel back to front, in place. */
 export function reverse(channels) {
-  for (const samples of channels) {
-    for (let i = 0, j = samples.length - 1; i < j; i += 1, j -= 1) {
-      const held = samples[i];
-      samples[i] = samples[j];
-      samples[j] = held;
-    }
-  }
+  for (const samples of channels) reverseRange(samples, 0, Math.floor(samples.length / 2));
   return channels;
+}
+
+/** Range primitives let cooperative rendering keep the synchronous arithmetic. */
+export function reverseRange(samples, from, to) {
+  for (let i = from; i < to; i += 1) {
+    const j = samples.length - 1 - i;
+    const held = samples[i]; samples[i] = samples[j]; samples[j] = held;
+  }
+}
+
+export function measureRange(samples, from, to) {
+  let highest = 0; let clipped = 0;
+  for (let i = from; i < to; i += 1) {
+    const size = Math.abs(samples[i]);
+    if (size > highest) highest = size;
+    if (size > 1) clipped += 1;
+  }
+  return { peak: highest, clipped };
 }
 
 /** The largest distance from silence in any channel. 1 is full scale. */
 export function peak(channels) {
   let highest = 0;
-  for (const samples of channels) {
-    for (let i = 0; i < samples.length; i += 1) {
-      const size = Math.abs(samples[i]);
-      if (size > highest) highest = size;
-    }
-  }
+  for (const samples of channels) highest = Math.max(highest, measureRange(samples, 0, samples.length).peak);
   return highest;
 }
 
-/**
- * Multiply every sample, in place, and report what that did.
- *
- * Nothing is clamped here. A sample that ends up past full scale stays past
- * full scale, so a 32-bit float export carries it out intact and the count
- * below is a warning rather than a description of damage already done. The
- * 16-bit writer is where clamping actually happens.
- */
-export function applyGain(channels, gain) {
-  let highest = 0;
-  let over = 0;
-  for (const samples of channels) {
-    for (let i = 0; i < samples.length; i += 1) {
-      const value = samples[i] * gain;
-      samples[i] = value;
-      const size = Math.abs(value);
-      if (size > highest) highest = size;
-      if (size > 1) over += 1;
-    }
+/** Peak and clipping still use the product before its Float32 store rounds it. */
+export function gainRange(samples, gain, from, to) {
+  let highest = 0; let clipped = 0;
+  for (let i = from; i < to; i += 1) {
+    const value = samples[i] * gain;
+    samples[i] = value;
+    const size = Math.abs(value);
+    if (size > highest) highest = size;
+    if (size > 1) clipped += 1;
   }
-  return { peak: highest, clipped: over };
+  return { peak: highest, clipped };
+}
+
+/** Nothing clamps before the writer, so a float export can retain overshoots. */
+export function applyGain(channels, gain) {
+  let highest = 0; let clipped = 0;
+  for (const samples of channels) {
+    const result = gainRange(samples, gain, 0, samples.length);
+    highest = Math.max(highest, result.peak); clipped += result.clipped;
+  }
+  return { peak: highest, clipped };
 }
 
 /** Decibels to the number a sample is multiplied by, and back. */

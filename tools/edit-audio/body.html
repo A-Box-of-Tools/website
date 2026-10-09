@@ -47,7 +47,7 @@
     <div class="edit-block">
       <div class="block-head">
         <label for="speed">Speed</label>
-        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+        <input type="text" id="speed-value" aria-describedby="speed-note speed-error" class="value-box" inputmode="decimal"
                spellcheck="false" autocomplete="off" aria-label="Speed, as a multiple">
       </div>
 
@@ -85,12 +85,13 @@
       </fieldset>
 
       <p class="field-note" id="speed-note"></p>
+      <p id="speed-error" class="error" role="alert" hidden></p>
     </div>
 
     <div class="edit-block">
       <div class="block-head">
         <label for="volume">Volume</label>
-        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+        <input type="text" id="volume-value" aria-describedby="volume-note volume-error" class="value-box" inputmode="decimal"
                spellcheck="false" aria-label="Volume change, in decibels">
       </div>
 
@@ -116,6 +117,7 @@
       </fieldset>
 
       <p class="field-note" id="volume-note"></p>
+      <p id="volume-error" class="error" role="alert" hidden></p>
     </div>
 
     <dl class="summary" id="summary">
@@ -126,6 +128,14 @@
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
+    <div class="excerpt-preview">
+      <button type="button" id="preview-edit" class="ghost" aria-describedby="preview-hint" aria-controls="excerpt" disabled>Preview from playhead</button>
+      <p class="preview-hint" id="preview-hint">Move the source player's playhead to choose up to five seconds. This preview edits only that excerpt: normalization uses its peak, and speed-change boundaries may differ from the full track.</p>
+      <div id="excerpt" hidden>
+        <p id="excerpt-info" role="status" aria-live="polite"></p>
+        <audio id="excerpt-audio" controls aria-label="Edited excerpt"></audio>
+      </div>
+    </div>
   </section>
 
   <!-- Step 3 &mdash; the file that comes out -->
@@ -140,8 +150,7 @@
           <option value="32">32-bit float WAV &mdash; nothing clamped</option>
         </select>
         <p class="field-note" id="depth-note">
-          A WAV holds the samples as they are, so writing one cannot cost
-          quality. It is not a small file: see the estimate above.
+          16-bit PCM rounds the samples and clamps peaks above full scale. 32-bit float keeps the edited float samples; it cannot restore information lost in the source. Both are large files: see the estimate above.
         </p>
       </div>
     </div>
@@ -175,6 +184,13 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="input.speed">Use a speed from 0.25 to 4 with at most two decimal places. A dot or comma is accepted.</span>
+    <span data-phrase="input.volume">Use a level from −24 to +24 dB with at most two decimal places. A dot or comma is accepted.</span>
+    <span data-phrase="step.copying">Preparing the samples…</span>
+    <span data-phrase="preview.interval">Source {from}–{to}; edited preview {length}.</span>
+    <span data-phrase="preview.end">Move the source player's playhead before the end of the recording.</span>
+    <span data-phrase="preview.failed">That preview could not be made: {why}</span>
+    <span data-phrase="edit.failed.reason">The audio could not be edited: {why}</span>
     <span data-phrase="summary.speed.unchanged">unchanged</span>
     <span data-phrase="summary.speed.same">{speed}, same pitch</span>
     <span data-phrase="summary.speed.up">{speed}, pitch up</span>

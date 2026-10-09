@@ -143,7 +143,7 @@
     <span data-phrase="run.cancelled">已取消。什么都没写；按按钮重新开始。</span>
     <span data-phrase="run.failed">这次转换失败了：{detail}</span>
     <span data-phrase="result.ready">{size} 的 MP4，原来是 {from} 的 {container}。</span>
-    <span data-phrase="result.sub">H.264 画面，AAC 声音，索引在前面：什么都能播的那种文件。</span>
+    <span data-phrase="result.sub">H.264 画面，{sound}，索引在前面：什么都能播的那种文件。</span>
     <span data-phrase="check.passed">已核对：{found}</span>
     <span data-phrase="check.failed">这次转换没通过核对：{found}。留着你的原文件。</span>
     <span data-phrase="check.ok">从内存里重新打开，跟原来一样是 {length}，H.264，{sound}。</span>
@@ -169,6 +169,8 @@
     <span data-phrase="sound.noencode">音频编码器什么都没产出。</span>
     <span data-phrase="write.noframes">没有可写的帧。</span>
     <span data-phrase="write.toobig">做好的文件会超过 4 GB，这里写出的 MP4 装不下。先把视频剪短。</span>
+    <span data-phrase="read.edits">此文件使用了本工具无法保留的播放编辑列表。请先将可见的编辑后片段保存为新视频，再在此处理。</span>
+    <span data-phrase="read.editinvalid">文件的播放编辑列表不完整或时间信息无效，因此无法保留其可见时间轴。</span>
     <span data-phrase="read.midframe">文件在一帧的中间就结束了。</span>
     <span data-phrase="read.avcshort">H.264 配置记录太短。</span>
     <span data-phrase="read.hevcshort">HEVC 配置记录太短。</span>

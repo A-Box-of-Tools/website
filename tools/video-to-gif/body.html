@@ -143,7 +143,8 @@
       <div><dt>Rough file size</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
-    <p id="memory-note" class="field-note" hidden></p>
+    <p id="memory-note" class="memory-plan" hidden></p>
+    <button id="smaller-width" class="button secondary" type="button" hidden>Use a smaller width that fits</button>
 
     <div class="export-row">
       <button type="button" id="export" class="primary" disabled>Make the GIF</button>
@@ -190,17 +191,17 @@
     <span data-phrase="sum.bytes">{low} to {high}</span>
     <span data-phrase="note.wider">That is wider than the video itself ({px} px), which
       cannot add detail that was never there &mdash; only bytes.</span>
-    <span data-phrase="note.memory">Every frame is held in memory while the palette is
-      chosen, which for these settings is about {size}.</span>
-    <span data-phrase="note.memory.toobig">That is more than this tool will attempt
-      &mdash; shorten the section, or drop the width or the frame rate.</span>
-    <span data-phrase="note.memory.ok">A shorter section, a smaller width or a lower
-      frame rate all bring it down.</span>
+    <span data-phrase="note.memory">Estimated working buffers: {size}. Planning budget: {limit}. This includes frames, GIF output and decoding reserves; it is not a measurement of free memory.</span>
+    <span data-phrase="note.memory.toobig">This plan is above the budget. A shorter section, smaller width or lower frame rate may help; decoding the source also needs memory.</span>
+    <span data-phrase="note.memory.ok">Private browser allocations can use more memory. A shorter section, smaller width or lower frame rate reduces the output work.</span>
     <span data-phrase="step.readframe">Reading frame {done} of {total}</span>
     <span data-phrase="step.writeframe">Writing frame {done} of {total}</span>
     <span data-phrase="n.frame.one">{n} frame</span>
     <span data-phrase="n.frame.many">{n} frames</span>
     <span data-phrase="out.dropped">{frames} ({n} identical, dropped)</span>
+    <span data-phrase="out.holds">Additional frames for long holds: {n}</span>
+    <span data-phrase="open.notopened.detail">That file could not be opened: {why}</span>
+    <span data-phrase="export.failed.detail">The GIF could not be made: {why}</span>
     <span data-phrase="out.fps">{n} fps</span>
     <span data-phrase="out.colours">{n} colours</span>
     <span data-phrase="export.tooshort">That section is too short to take a frame from.</span>
@@ -215,6 +216,8 @@
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="read.edits">This file uses a playback edit list that this tool cannot preserve. Save the visible edited clip as a new video before processing it here.</span>
+    <span data-phrase="read.editinvalid">The file’s playback edit list is incomplete or has invalid timing, so its visible timeline cannot be preserved.</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

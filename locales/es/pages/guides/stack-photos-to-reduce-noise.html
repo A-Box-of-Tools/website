@@ -12,9 +12,7 @@
       <li><strong>Una macro con casi nada de profundidad de campo</strong> &mdash; apilado de enfoque.</li>
     </ul>
     <p>
-      Deja la alineación puesta si la cámara estaba en tus manos y quítala si
-      estaba en un trípode. Los archivos RAW pueden entrar directamente; no hace
-      falta revelarlos antes.
+      Empieza con <strong>Auto con perspectiva</strong> para reducir ruido, incluso en fotos nocturnas tomadas con trípode: las estrellas se mueven aunque la cámara esté quieta. Usa <strong>No</strong> para estelas de estrellas intencionadas o tomas que ya coinciden. Los RAW pueden entrar directamente si contienen una vista previa JPEG utilizable. La fila muestra el tamaño real de la imagen.
     </p>
     <p>
       Todo lo que sigue es por qué esas cinco líneas dicen lo que dicen.
@@ -39,12 +37,7 @@
       tomas.
     </p>
     <p>
-      Hay una segunda ganancia, más callada. Promediar dieciséis tomas de ocho
-      bits da un resultado con gradaciones más finas que las que tenía cualquiera
-      de ellas, porque el ruido que hacía que cada toma redondeara distinto es
-      justo lo que permite que la media caiga entre los niveles. Apilar un
-      conjunto ruidoso no solo quita ruido; recupera tono que una sola toma había
-      cuantizado.
+      La media también estabiliza la estimación de los tonos porque cada toma con ruido se redondeó de forma algo distinta. La herramienta usa acumuladores más amplios y redondea el valor combinado al final. El PNG o JPEG guardado sigue teniendo ocho bits por canal: una media más limpia no aumenta la profundidad de salida.
     </p>
   </section>
 
@@ -81,23 +74,13 @@
 
     <h3>Las dos cosas: recorte sigma</h3>
     <p>
-      La mediana tira la mayor parte de la información para conseguir su
-      robustez: en cada píxel se descartan once de tus doce valores, así que
-      reduce el ruido mucho menos de lo que lo haría una media del mismo conjunto.
+      La mediana reduce el ruido aleatorio independiente con menos eficiencia que la media. El resultado sale del valor central o de los dos valores centrales, en vez de promediar todos los valores. Ese es el coste de verse menos afectada por unos pocos valores muy distintos del resto.
     </p>
     <p>
-      El recorte sigma es el término medio, y suele ser el ajuste correcto por
-      defecto para cualquier conjunto del mundo real. Mira cada píxel a lo largo
-      de todas las tomas, calcula qué suele ser y cuánto varía, y después promedia
-      solo los valores que concuerdan con eso. Un coche que cruzó una toma queda
-      excluido en esos píxeles; todas las demás tomas siguen contando en todas
-      partes. Consigues la inmunidad de la mediana ante lo que se movió y la mayor
-      parte de la reducción de ruido de la media.
+      El recorte sigma estima primero la media y la dispersión de cada canal y luego promedia solo los valores dentro del umbral elegido. Puede rechazar un objeto que pasó por pocas tomas y promediar el resto del fondo. Es menos fiable con conjuntos pequeños o si el objeto aparece a menudo. Con el umbral predeterminado, un valor distinto entre cuatro idénticos puede seguir aceptándose. Usa mediana si quitar el objeto importa más que lograr la mayor reducción de ruido.
     </p>
     <p>
-      El umbral va en desviaciones típicas, y dos es el punto de partida habitual.
-      Más bajo descarta más, y empieza a descartar detalle real junto con el
-      coche.
+      El umbral se mide en desviaciones estándar y empieza en dos. Bajarlo rechaza más valores, incluido detalle real. Si se rechazan todos los valores de un canal, se conserva su media original para no dejar un hueco.
     </p>
 
     <h3>Solo importa lo brillante: aclarar</h3>
@@ -132,9 +115,14 @@
       es la misma imagen a otro enfoque.
     </p>
 
+    <h3>Una mezcla más brillante: sumar</h3>
+    <p>
+      Sumar añade los valores de imagen decodificados antes de aplicar el multiplicador de Exposición. Son valores de ocho bits, así que el resultado es una mezcla aditiva y no una simulación de una exposición de cámara más larga. Las zonas brillantes pueden recortarse. <strong>Normalizar brillo</strong> ajusta el multiplicador a uno dividido entre el número de tomas. También puedes escribir directamente un multiplicador menor.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/plan.webp" loading="lazy" decoding="async"
-           alt="La lista de modos, media, mediana, más claro y más oscuro, con un plan debajo que da el tamaño de salida, la memoria necesaria y cuánto hay que leer de cada archivo.">
+           alt="Métodos y ajustes de apilado con tamaño previsto de salida, memoria de trabajo estimada, decodificaciones previstas del apilado y lectura de inspección.">
       <figcaption>
         El modo es la pregunta de esta sección. El plan de debajo es la herramienta diciendo lo que costará la pasada antes de empezarla.
       </figcaption>
@@ -151,24 +139,20 @@
       intento de apilado decepcione.
     </p>
     <p>
-      Así que las tomas se miden contra una de ellas y se devuelven antes a su
-      sitio, con precisión de fracciones de píxel. Tres ajustes:
+      Cada toma se mide contra la marcada como <strong>Referencia</strong> y se recoloca si se encuentra una corrección fiable. La primera es la opción predeterminada. <strong>Usar como referencia</strong> cambia esa marca sin reordenar la lista. Elige una toma nítida con detalle estático claro. Hay cuatro ajustes de alineación:
     </p>
     <ul>
       <li>
-        <strong>Solo desplazamiento</strong> es lo correcto para casi todo lo
-        hecho a pulso. Corrige la deriva y el temblor.
+        <strong>Auto con perspectiva</strong> es la opción predeterminada. Corrige desplazamiento, rotación y escala y añade una corrección de perspectiva si la respaldan mediciones fiables por toda la imagen. Ayuda en ráfagas nocturnas de campo amplio donde el centro coincide pero las estrellas de los bordes siguen dejando trazos. Si no encuentra un ajuste de perspectiva estable, usa la corrección más simple.
       </li>
       <li>
-        <strong>Desplazamiento, rotación y escala</strong> para un conjunto en el
-        que además girabas un poco, o en el que se coló un zoom. Cuesta una
-        medición más por toma y nada en absoluto cuando las tomas resultan estar
-        derechas.
+        <strong>Solo desplazamiento</strong> para una ráfaga que se desplazó sin girar ni cambiar de perspectiva. Corrige únicamente la traslación.
       </li>
       <li>
-        <strong>Ninguna</strong> para un trípode fijo o una secuencia de
-        intervalómetro, donde las tomas ya están alineadas y medirlas es tiempo
-        perdido.
+        <strong>Desplazamiento, rotación y escala</strong> para una serie en la que también giraste ligeramente o cambió el zoom. Requiere mediciones adicionales por toma, incluso si las tomas están rectas.
+      </li>
+      <li>
+        <strong>No</strong> si las tomas estáticas ya coinciden o si quieres que las estrellas móviles formen estelas. Un trípode no mantiene las estrellas en los mismos píxeles durante una secuencia nocturna.
       </li>
     </ul>
     <p>
@@ -179,11 +163,15 @@
       sitio vale; andar no.
     </p>
 
+    <p>
+      Tras apilar, abre <strong>Detalles de alineación</strong> para ver el estado y la corrección de cada toma. Una toma que no se pudo alinear sigue incluida donde estaba; quítala y repite si vuelve borroso el resultado. El resultado se abre con la referencia a la izquierda y la pila a la derecha. Arrastra el separador con el ratón o el dedo, o enfócalo y usa las flechas izquierda y derecha. Llévalo hasta un borde para ver una imagen completa. El separador está disponible en <strong>Ajustar a la ventana</strong>. Al elegir <strong>100% &mdash; píxeles reales</strong>, se muestra todo el resultado apilado y desaparece la opción de comparación. Al 100%, arrastra la imagen para moverte por ella o enfoca la vista previa y usa las teclas de flecha. Usa <strong>Mostrar</strong> para examinar la referencia o la pila por separado. Vuelve a Ajustar a la ventana para comparar de nuevo con el separador.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/result.webp" loading="lazy" decoding="async"
-           alt="El resultado: la imagen apilada, con una nota que dice cuánto hubo que mover cada fotograma para alinearlo con el primero.">
+           alt="Una comparación dividida con la referencia a la izquierda, el resultado apilado a la derecha y un separador móvil.">
       <figcaption>
-        Las cifras de alineación merecen una lectura. Una ráfaga a pulso se mueve unos píxeles por fotograma, y eso es lo que el alineador deshace sin decir nada.
+        Mueve el separador sobre el ruido y los bordes finos para comparar la misma parte de ambas imágenes. Revisa los detalles de alineación si la pila parece borrosa.
       </figcaption>
     </figure>
   </section>
@@ -191,26 +179,17 @@
   <section>
     <h2>Dónde encajan los archivos RAW</h2>
     <p>
-      Puedes soltar CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF y el resto
-      directamente, y conviene ser exacto sobre qué les pasa, porque no es lo que
-      hace un revelador RAW.
+      CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF y formatos relacionados se pueden abrir si contienen una vista previa JPEG utilizable. Conviene precisar lo que ocurre porque es distinto de revelar los datos RAW del sensor.
     </p>
     <p>
-      Todo archivo RAW ya contiene un <strong>JPEG a tamaño completo que la cámara
-      reveló al disparar</strong>. Es lo que te enseña la pantalla trasera de la
-      cámara y lo que dibuja tu sistema operativo como miniatura. El apilador
-      encuentra esa imagen y la usa. No decodifica los datos del sensor.
+      Muchos RAW contienen una <strong>vista previa JPEG creada por la cámara</strong>. La herramienta encuentra la mayor utilizable y la decodifica con el decodificador normal del navegador. Puede ser menor que la imagen del sensor, y algunos archivos no incluyen ninguna. Comprueba las dimensiones de cada toma.
     </p>
     <p>
       Dos consecuencias, una buena y otra que conviene conocer:
     </p>
     <ul>
       <li>
-        <strong>Es rápido.</strong> Encontrar la vista previa significa leer unos
-        kilobytes de directorio y después un solo trozo, así que una toma de
-        60&nbsp;MB abre casi tan rápido como un JPEG. Veinte de ellas abren en el
-        tiempo que un revelador RAW dedicaría a una. La página te enseña qué poco
-        de tus archivos ha leído realmente.
+        <strong>Evita decodificar el sensor.</strong> Encontrar la vista previa suele requerir pequeñas lecturas de directorios y cabeceras; después el navegador lee el fragmento JPEG para decodificarlo. La cifra de inspección cuenta esas lecturas de directorios y cabeceras, no todos los bytes leídos por el decodificador de imágenes.
       </li>
       <li>
         <strong>Es la interpretación de la cámara, no la tuya.</strong> Ocho bits
@@ -220,12 +199,7 @@
       </li>
     </ul>
     <p>
-      Para reducir ruido, estelas de estrellas, quitar transeúntes y apilado de
-      enfoque, ese intercambio casi siempre compensa: las vistas previas están a
-      resolución completa y son lo que habrías obtenido como JPEG de todas formas.
-      Si estás levantando mucho las sombras, o apilando para astrofotografía donde
-      el último bit de rango dinámico es todo el objetivo, revela antes las tomas
-      en un revelador RAW y apila los TIFF o los JPEG que dé. Entran igual.
+      Una vista previa utilizable puede bastar para reducir ruido, dibujar estelas de estrellas, quitar personas y apilar el enfoque. Sus dimensiones y el revelado de la cámara marcan los límites. Para elegir el balance de blancos, ajustar tonos o recuperar sombras RAW, revela primero las tomas y exporta JPEG o PNG para apilarlas aquí. El resultado guardado sigue siendo una imagen de ocho bits.
     </p>
   </section>
 
@@ -236,27 +210,13 @@
       segundos y una que tarda dos minutos.
     </p>
     <p>
-      Seis de los siete métodos solo necesitan recordar una cosa. Un máximo
-      corriente no se preocupa por las tomas que ya ha visto, y una suma corriente
-      tampoco, así que esos métodos leen cada toma exactamente una vez y usan la
-      misma memoria para cien tomas que para dos.
+      Seis métodos usan acumuladores cuyo tamaño no aumenta con el número de tomas. Media, aclarar, oscurecer, sumar y apilado de enfoque necesitan una pasada por banda. El recorte sigma necesita dos: una para estimar la media y la dispersión y otra para promediar los valores aceptados. Inspeccionar y alinear también decodifica los archivos, así que una pasada de apilado no equivale a una sola lectura total.
     </p>
     <p>
-      La mediana no puede funcionar así, porque no se puede saber el valor central
-      de un conjunto hasta tenerlo entero. Veinte tomas de 24 megapíxeles son
-      alrededor de 1,4&nbsp;GB de píxeles sostenidos a la vez, y eso no te lo da
-      ningún navegador, así que la imagen se corta en bandas horizontales y se
-      apila banda a banda: correcto, y más lento, porque las tomas se releen para
-      cada banda.
+      La mediana debe conservar los valores de cada toma para la banda que combina. Veinte tomas de 24 megapíxeles ocuparían unos 1,4&nbsp;GB solo para esos valores. Las bandas permiten procesar menos filas a la vez a cambio de volver a decodificar cada toma para cada banda. Los demás métodos también pueden dividirse si sus búferes superan el presupuesto.
     </p>
     <p>
-      La herramienta calcula todo esto antes de que pulses el botón y te lo dice:
-      cómo de grande será el resultado, cuánta memoria necesita aproximadamente y
-      cuántas veces se decodificarán tus tomas. Si dice que la pasada irá por
-      bandas, bajar un escalón la resolución de trabajo divide la memoria entre
-      cuatro y casi siempre la convierte otra vez en una sola pasada &mdash; y si
-      estás apilando para quitar ruido, media resolución ya iba a verse más limpia
-      que la completa.
+      Antes de empezar, la herramienta muestra el tamaño previsto del resultado, la memoria de trabajo estimada, las decodificaciones previstas del apilado y los bytes leídos en la inspección. La estimación incluye los búferes de trabajo modelados; el funcionamiento interno del navegador y la liberación de memoria pueden aumentar el uso total. Bajar un nivel la resolución de trabajo divide el área de la imagen entre cuatro y puede reducir las decodificaciones repetidas. La alineación puede recortar el resultado lo suficiente para necesitar menos bandas que el plan inicial.
     </p>
   </section>
 

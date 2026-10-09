@@ -111,6 +111,22 @@ the program that opens the file next may still be on 1.1, and PyYAML is.
 Reading strictly and writing conservatively is the only combination that is
 right whichever end you are at.
 
+XML formatting keeps text and mixed content together without collapsing
+their spaces, and honors inherited `xml:space="preserve"` with an explicit
+`default` reset. Whitespace used only between child elements is still treated
+as layout unless preservation was requested. The XML reader requires one
+outer element, retains valid prolog/epilog nodes, and checks numeric character
+references before conversion; a DOCTYPE remains literal and resolves nothing.
+XML-to-JSON conversion keeps text and CDATA characters but still loses comments
+and the interleaved order of mixed content, as its menu note explains.
+
+YAML numbers use the same text-based tree as JSON numbers. A leading plus,
+leading zeros or a missing digit beside the decimal point are normalised as
+text, keeping every significant digit and the exponent. Hexadecimal and octal
+integers are converted to exact decimal text through `BigInt`. This matters
+for both formatting and conversion: `+9007199254740993` keeps its last digit,
+and `.5e999` becomes `0.5e999` instead of being substituted with zero.
+
 **Reindenting HTML is not free**, and the page says so. Whitespace between two
 inline elements is a space between two words. Two things keep it in check:
 `<pre>` and `<textarea>` are copied through exactly, and an element holding
@@ -169,3 +185,32 @@ cleared box therefore stays clear, and edits are not overwritten by an
 asynchronous file read after navigation. Copy and Download are invalidated as
 soon as typing starts, before the debounced calculation runs; a pending
 clipboard write may only update feedback for the result it actually copied.
+
+File reads on this page use the shared `text-import` owner. Typing, Clear and
+an example retire a pending read immediately; a newer file choice replaces it.
+The old read may still finish in the browser, but its text and errors cannot
+replace the current editor or clear a newer import's reading label.
+
+## Conversion feedback and error navigation
+
+The shared `editor-feedback` part offers **Go to error** after a parser refusal.
+It moves the caret only when the exact source and parser or conversion mode
+that produced the error remain current; parsing while someone types does not
+move focus. A new edit clears the action and conversion notes immediately.
+YAML errors use the parser’s normalized line and column, mapped back to the
+editable source including a leading BOM.
+
+YAML to JSON reports the comments the reader actually consumed, including
+whole comment lines and trailing comments. A hash inside a quoted value or a
+block scalar is text and does not contribute to that count. An unsupported
+construct still stops at the first actual parser refusal; the feedback does
+not claim to inspect the rest of an unconverted document.
+
+JSON to XML reports repaired names and distinct sibling keys that collide
+after repair. Colons are repaired too, because this mapping adds no namespace
+bindings. Intentional repeated array elements are not collisions. Up to four
+name examples are shown as text, bounded to eighty Unicode code points on
+each side; counts still cover the whole conversion. This remains a lossy
+mapping: original key names, empty-value distinctions, and the existing XML
+type and mixed-content limitations cannot be reconstructed. No lossless
+key/value representation is implied by the warning.

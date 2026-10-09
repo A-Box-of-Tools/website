@@ -171,7 +171,7 @@
       contract to, and nothing in the code that would send one if there were.
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">Page size</label>
         <select id="page-size">
@@ -237,18 +237,17 @@
       <div class="field">
         <label for="title">Document title <span class="optional">(optional)</span></label>
         <input type="text" id="title" maxlength="120" placeholder="Left blank, the PDF carries no title">
-        <p class="field-note">
-          The only thing written into the document besides the pages. There is no
-          date, no author and nothing about this machine &mdash; see
-          <code>src/document.js</code>.
-        </p>
+        <p class="field-note">The PDF records this tool’s name and any title you enter, without a date, author or machine information.</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>Save as PDF</button>
       <button type="button" id="save-images" class="ghost big" disabled>Save the pages as images</button>
+      <button type="button" id="cancel" class="ghost big" hidden>Cancel</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>Cancel stops between page operations. Image decoding or encoding that has already started may finish in the background; its result is discarded.</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -356,16 +355,19 @@
     <span data-phrase="result.png">The pages are stored as PNG, which is lossless
       and is what a picture of two colours wants &mdash; JPEG would be both
       larger and blurred around every letter.</span>
-    <span data-phrase="result.clean">No date, no author, no machine name: the only
-      thing in the document besides the pages is the name of this tool.</span>
+    <span data-phrase="result.clean">No date, no author, no machine name: besides the pages, the PDF records this tool’s name and any title you entered.</span>
 
     <span data-phrase="size.fit">Every sheet becomes the size its own page really
       is, at the resolution above. Nothing is letterboxed.</span>
     <span data-phrase="size.named">Every page is put on a {name} sheet, inside the
       margin, whatever shape it came out.</span>
 
-    <span data-phrase="error.decode">This browser could not open {name}. If it is
-      a HEIC photo from an iPhone, convert it first.</span>
+    <span data-phrase="busy.cancelled">Cancelled. Change the settings or save again to retry.</span>
+    <span data-phrase="error.skipped.one">Skipped a file that is not recognized as a photo: {names}.</span>
+    <span data-phrase="error.skipped.many">Skipped {count} files that are not recognized as photos: {names}.</span>
+    <span data-phrase="error.more">{names}, and {count} more</span>
+    <span data-phrase="error.decode.one">This browser could not open {names}. If it is a HEIC photo from an iPhone, convert it first.</span>
+    <span data-phrase="error.decode.many">This browser could not open {count} photos: {names}. Convert HEIC photos before adding them.</span>
     <span data-phrase="error.none">Choose at least one photo first.</span>
     <span data-phrase="error.failed">Something went wrong making the file:
       {detail}</span>

@@ -66,12 +66,15 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">Convertir a WebP</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
     </div>
+
+    <p class="note">Cancelar detiene el proceso antes del siguiente archivo. Un codificador ya iniciado termina y los archivos completados siguen disponibles.</p>
 
     <p id="run-error" class="error" role="alert" hidden></p>
 
@@ -114,6 +117,9 @@
     <span data-phrase="run.many">Convertir {count} archivos a WebP</span>
     <span data-phrase="progress.each">Convirtiendo {name}&hellip;</span>
     <span data-phrase="progress.done">Listo.</span>
+    <span data-phrase="run.filefailed">No se convirtió {name}: {why}</span>
+    <span data-phrase="progress.stopped">Detenido tras {done} de {total} archivos. Los completados están listos abajo.</span>
+    <span data-phrase="progress.stopped.none">Detenido antes de completar algún archivo.</span>
     <span data-phrase="run.failed">La conversión ha fallado: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count} archivos WebP escritos, {size} en total &mdash; {change} que las entradas.</span>

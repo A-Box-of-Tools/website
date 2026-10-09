@@ -136,7 +136,7 @@ export async function framesByDecoding({
   const decoder = new VideoDecoder({
     output: (frame) => {
       try {
-        if (failure || sampler.done) return;
+        if (signal?.aborted || failure || sampler.done) return;
         sampler.offer(frame.timestamp / 1_000_000, () => drawScaled(ctx, frame, {
           rotation: video.rotation,
           displayWidth: video.displayWidth,
@@ -154,11 +154,13 @@ export async function framesByDecoding({
     error: (error) => { failure ??= error; },
   });
 
-  decoder.configure(decoderConfig(video));
-
   const window = new FileWindow(file);
 
+  const abort = () => { if (decoder.state !== 'closed') decoder.close(); };
+  signal?.addEventListener('abort', abort, { once: true });
   try {
+    throwIfAborted(signal);
+    decoder.configure(decoderConfig(video));
     for (let i = first; i < video.samples.length; i += 1) {
       throwIfAborted(signal);
       if (failure) throw failure;
@@ -166,6 +168,7 @@ export async function framesByDecoding({
 
       const sample = video.samples[i];
       const bytes = await window.read(sample.offset, sample.size);
+      throwIfAborted(signal);
 
       decoder.decode(new EncodedVideoChunk({
         type: sample.isKey ? 'key' : 'delta',
@@ -175,18 +178,21 @@ export async function framesByDecoding({
 
       if (sample.pts > endTicks + REORDER_SLACK * video.timescale) break;
 
-      await settle([decoder]);
+      await settle([decoder], { limit: 1 });
+      throwIfAborted(signal);
     }
 
     await decoder.flush();
+    throwIfAborted(signal);
     if (failure) throw failure;
 
     sampler.finish();
     if (!sampler.frames.length) throw new Error('read.noframes');
     return sampler.frames;
   } finally {
+    signal?.removeEventListener('abort', abort);
     if (decoder.state !== 'closed') decoder.close();
-    canvas.width = 0;   // let the browser drop the backing store now
+    canvas.width = canvas.height = 0;   // let the browser drop the backing store now
   }
 }
 
@@ -214,6 +220,7 @@ export async function framesByPlaying({
       throwIfAborted(signal);
 
       await seek(video, times[i]);
+      throwIfAborted(signal);
       drawScaled(ctx, video, {
         displayWidth: video.videoWidth,
         displayHeight: video.videoHeight,
@@ -230,7 +237,7 @@ export async function framesByPlaying({
 
     return frames;
   } finally {
-    canvas.width = 0;
+    canvas.width = canvas.height = 0;
   }
 }
 

@@ -204,6 +204,16 @@ It is not a proof of correctness and is not described as one. It is the
 difference between a bug caught here and a bug caught by whoever the document
 was sent to.
 
+Choosing another file cancels and retires the current run, including a result
+already being read back for verification. Its progress, failure, and cleanup
+cannot change a newer file or export. File reads likewise belong to the latest
+selection. Each export captures its source and settings, with the settings card
+inert until the run ends.
+
+When images are re-encoded, the result asks the reader to compare the downloaded
+pages with the original, especially small text and detail. Reopening and counting
+pages cannot establish visual equivalence.
+
 ## Limitations
 
 - **No JPEG 2000, JBIG2 or CCITT.** Named above, reported on the results, and
@@ -226,10 +236,10 @@ was sent to.
 
 ## Testing it
 
-There is no test runner in this repository, so the checks used while writing this
-are not checked in. What they covered, if it needs doing again — a page that
-imports the modules directly and runs them against PDFs written by hand for the
-purpose, so that each file is exactly the shape the check needs:
+Reader and writer regressions live in `tests/js/compress-pdf-reader.test.js`
+and `tests/js/compress-pdf-writer.test.js` and run in CI. Built-page checks
+also exercise PDFs written for the purpose, so each file is exactly the shape
+the check needs:
 
 - **a classic table**, an **xref stream with an object stream**, a **broken
   `startxref`**, and an **incremental update** that supersedes a content stream:

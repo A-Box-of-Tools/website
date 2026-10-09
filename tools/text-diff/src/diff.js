@@ -39,13 +39,24 @@ const MAX_STEPS = 2000;
  * a real difference between two files and one that a patch has to carry.
  */
 export function splitLines(text) {
-  if (text === '') return { lines: [], trailing: false };
-  const normalised = text.replace(/\r\n?/g, '\n');
-  const lines = normalised.split('\n');
-  const trailing = lines.length > 1 && lines[lines.length - 1] === '';
-  if (trailing) lines.pop();
-  return { lines, trailing };
+  const records = lineRecords(text);
+  return { lines: records.map((line) => line.text), trailing: hasTerminator(records) };
 }
+
+// The view still matches line content, but a matched line's exact terminator
+// has to remain visible or CRLF-to-LF edits look unchanged beside a real patch.
+function lineRecords(text) {
+  const records = [];
+  let start = 0;
+  for (const match of text.matchAll(/\r\n|\r|\n/g)) {
+    records.push({ text: text.slice(start, match.index), ending: match[0] });
+    start = match.index + match[0].length;
+  }
+  if (start < text.length) records.push({ text: text.slice(start), ending: '' });
+  return records;
+}
+
+const hasTerminator = (records) => records.length > 0 && records.at(-1).ending !== '';
 
 /**
  * Compare two pieces of text, line by line.
@@ -59,8 +70,10 @@ export function splitLines(text) {
  * @returns {{ops: Array<object>, stats: object}}
  */
 export function compareText(aText, bText, options = {}) {
-  const a = splitLines(aText);
-  const b = splitLines(bText);
+  const aRecords = lineRecords(aText);
+  const bRecords = lineRecords(bText);
+  const a = { lines: aRecords.map((line) => line.text), trailing: hasTerminator(aRecords) };
+  const b = { lines: bRecords.map((line) => line.text), trailing: hasTerminator(bRecords) };
   const key = keyFor(options);
 
   let aLines = a.lines;
@@ -78,7 +91,7 @@ export function compareText(aText, bText, options = {}) {
   }
 
   const ops = diffSequences(aLines.map(key), bLines.map(key));
-  const out = [];
+  let out = [];
   for (const op of ops) {
     if (op.type === 'equal') {
       for (let i = 0; i < op.count; i += 1) {
@@ -87,21 +100,25 @@ export function compareText(aText, bText, options = {}) {
           a: aMap[op.aStart + i],
           b: bMap[op.bStart + i],
           text: a.lines[aMap[op.aStart + i]],
+          bText: b.lines[bMap[op.bStart + i]],
+          aEnding: aRecords[aMap[op.aStart + i]].ending,
+          bEnding: bRecords[bMap[op.bStart + i]].ending,
         });
       }
       continue;
     }
     if (op.type === 'delete') {
       for (let i = 0; i < op.count; i += 1) {
-        out.push({ type: 'delete', a: aMap[op.aStart + i], b: null, text: a.lines[aMap[op.aStart + i]] });
+        out.push({ type: 'delete', a: aMap[op.aStart + i], b: null, text: a.lines[aMap[op.aStart + i]], ending: aRecords[aMap[op.aStart + i]].ending });
       }
       continue;
     }
     for (let i = 0; i < op.count; i += 1) {
-      out.push({ type: 'insert', a: null, b: bMap[op.bStart + i], text: b.lines[bMap[op.bStart + i]] });
+      out.push({ type: 'insert', a: null, b: bMap[op.bStart + i], text: b.lines[bMap[op.bStart + i]], ending: bRecords[bMap[op.bStart + i]].ending });
     }
   }
 
+  if (options.ignoreBlankLines) out = retainBlankEndingChanges(out, aRecords, bRecords);
   const added = out.filter((op) => op.type === 'insert').length;
   const removed = out.filter((op) => op.type === 'delete').length;
   const same = out.filter((op) => op.type === 'equal').length;
@@ -120,8 +137,51 @@ export function compareText(aText, bText, options = {}) {
       similarity: a.lines.length + b.lines.length === 0
         ? 1 : (2 * same) / (a.lines.length + b.lines.length),
       trailingDiffers: a.trailing !== b.trailing,
+      endingChanges: out.filter((op) => op.type === 'equal' && op.aEnding !== op.bEnding).length,
     },
   };
+}
+
+// Filtering blank content must not filter its line terminator. Equal nonblank
+// lines anchor each gap; blank lines within that gap pair in source order, so
+// retaining their ending edits cannot renumber or reorder either side.
+function retainBlankEndingChanges(ops, aRecords, bRecords) {
+  const out = [];
+  let aStart = 0;
+  let bStart = 0;
+  let pending = [];
+  const flush = (aEnd, bEnd) => {
+    const aBlank = [], bBlank = [];
+    for (let i = aStart; i < aEnd; i += 1) if (aRecords[i].text.trim() === '') aBlank.push(i);
+    for (let i = bStart; i < bEnd; i += 1) if (bRecords[i].text.trim() === '') bBlank.push(i);
+    const pairs = [];
+    for (let i = 0; i < Math.min(aBlank.length, bBlank.length); i += 1) {
+      const a = aBlank[i], b = bBlank[i];
+      if (aRecords[a].ending !== bRecords[b].ending) pairs.push({ a, b });
+    }
+    if (!pairs.length) { for (const op of pending) out.push(op); pending = []; return; }
+    const deleted = pending.filter((op) => op.type === 'delete');
+    const inserted = pending.filter((op) => op.type === 'insert');
+    let left = 0, right = 0;
+    for (const { a, b } of pairs) {
+      while (left < deleted.length && deleted[left].a < a) out.push(deleted[left++]);
+      while (right < inserted.length && inserted[right].b < b) out.push(inserted[right++]);
+      out.push({ type: 'equal', a, b, text: aRecords[a].text, bText: bRecords[b].text,
+        aEnding: aRecords[a].ending, bEnding: bRecords[b].ending });
+    }
+    while (left < deleted.length) out.push(deleted[left++]);
+    while (right < inserted.length) out.push(inserted[right++]);
+    pending = [];
+  };
+  for (const op of ops) {
+    if (op.type !== 'equal') { pending.push(op); continue; }
+    flush(op.a, op.b);
+    out.push(op);
+    aStart = op.a + 1;
+    bStart = op.b + 1;
+  }
+  flush(aRecords.length, bRecords.length);
+  return out;
 }
 
 function keyFor({ ignoreWhitespace = false, ignoreCase = false } = {}) {
@@ -292,7 +352,9 @@ export function alignRows(ops) {
   while (index < ops.length) {
     const op = ops[index];
     if (op.type === 'equal') {
-      rows.push({ type: 'equal', a: op, b: op });
+      const ending = op.aEnding !== op.bEnding;
+      rows.push({ type: ending ? 'ending' : 'equal', a: op,
+        b: ending ? { ...op, text: op.bText ?? op.text } : op });
       index += 1;
       continue;
     }
@@ -310,6 +372,22 @@ export function alignRows(ops) {
     }
   }
   return rows;
+}
+
+/** Contiguous changes are one destination even when a replacement draws twice. */
+export function changeBlocks(rows) {
+  const blocks = [];
+  let start = null;
+  rows.forEach((row, index) => {
+    if (row.type !== 'equal') {
+      if (start === null) start = index;
+    } else if (start !== null) {
+      blocks.push({ start, end: index });
+      start = null;
+    }
+  });
+  if (start !== null) blocks.push({ start, end: rows.length });
+  return blocks;
 }
 
 /* ------------------------------------------------------------------- words */

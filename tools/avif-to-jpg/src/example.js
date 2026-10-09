@@ -1,5 +1,5 @@
 /**
- * The two pictures behind the "Try an example" button.
+ * The three pictures behind the "Try an example" button.
  *
  * The only example on this site besides the HEIC one that is a real file
  * rather than a drawing, and it has to be: nothing in a browser will encode an
@@ -17,7 +17,7 @@
  * worker's precache.
  */
 async function filesFromData() {
-  const { LANDSCAPE, SQUARE } = await import('./example-data.js');
+  const { LANDSCAPE, SQUARE, MARK } = await import('./example-data.js');
 
   const decode = (base64, name) => {
     const binary = atob(base64);
@@ -29,6 +29,7 @@ async function filesFromData() {
   return [
     decode(LANDSCAPE, 'example-landscape.avif'),
     decode(SQUARE, 'example-square.avif'),
+    decode(MARK, 'example-logo.avif'),
   ];
 }
 

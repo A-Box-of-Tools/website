@@ -547,3 +547,67 @@ test('cancelling after the last progress event publishes no GIF', async () => {
       onProgress() { controller.abort(); } }), { name: 'AbortError' });
   });
 });
+
+
+// Fixed timelines are read from the emitted file by the independent GIF
+// decoder above. These cases catch per-frame rounding even when a summary and
+// an encoder happen to agree on the same slowed rate.
+async function timelineGif(delays, settings = exportSettings) {
+  let file;
+  await withCanvas(async () => {
+    globalThis.createImageBitmap = async (colour) =>
+      ({ width: 1, height: 1, colour, close() {} });
+    const colours = [[255, 0, 0], [0, 255, 0], [0, 0, 255]];
+    const { blob } = await encodeGif({ items: delays.map((delay, index) =>
+      ({ file: colours[index % colours.length], delay })), settings });
+    file = readGif(new Uint8Array(await blob.arrayBuffer()));
+  });
+  return file;
+}
+
+test('150 frames requested at 15 fps store ten seconds and every picture', async () => {
+  const file = await timelineGif(Array(150).fill(1 / 15));
+  assert.equal(file.frames.length, 150);
+  assert.equal(file.frames.reduce((sum, frame) => sum + frame.delay, 0), 1000);
+  assert.deepEqual(file.frames.slice(0, 3).map((frame) => frame.delay), [7, 6, 7]);
+  assert.ok(file.frames.every((frame) => frame.delay === 6 || frame.delay === 7));
+  for (const [index, frame] of file.frames.entries()) {
+    const colour = Array.from(frame.palette.subarray(frame.indices[0] * 3, frame.indices[0] * 3 + 3));
+    assert.deepEqual(colour, [[255, 0, 0], [0, 255, 0], [0, 0, 255]][index % 3]);
+  }
+});
+
+test('24 requested fps share hundredths without changing the one-second timeline', async () => {
+  const file = await timelineGif(Array(24).fill(1 / 24));
+  assert.equal(file.frames.reduce((sum, frame) => sum + frame.delay, 0), 100);
+  assert.deepEqual(file.frames.slice(0, 6).map((frame) => frame.delay), [4, 4, 5, 4, 4, 4]);
+  assert.ok(file.frames.every((frame) => frame.delay === 4 || frame.delay === 5));
+});
+
+test('mixed explicit and fractional holds retain their timeline after reordering', async () => {
+  const requested = [0.2, 1 / 15, 1 / 15, 1 / 15, 0.1];
+  const file = await timelineGif(requested);
+  const reversed = await timelineGif([...requested].reverse());
+  assert.deepEqual(file.frames.map((frame) => frame.delay), [20, 7, 6, 7, 10]);
+  assert.deepEqual(reversed.frames.map((frame) => frame.delay), [10, 7, 6, 7, 20]);
+});
+
+test('shared palette fractional holds keep the same duration and colors', async () => {
+  const file = await timelineGif(Array(15).fill(1 / 15), { ...exportSettings, sharedPalette: true });
+  assert.equal(file.frames.reduce((sum, frame) => sum + frame.delay, 0), 100);
+  assert.ok(file.frames.every((frame) => !frame.local));
+  const colours = file.frames.slice(0, 3).map((frame) =>
+    Array.from(frame.palette.subarray(frame.indices[0] * 3, frame.indices[0] * 3 + 3)));
+  assert.deepEqual(colours, [[255, 0, 0], [0, 255, 0], [0, 0, 255]]);
+});
+
+test('encoded holds remain within the tool bounds without moving explicit endpoints', async () => {
+  const file = await timelineGif([0.02, 60, 0.00001, 1000, NaN]);
+  assert.deepEqual(file.frames.map((frame) => frame.delay), [2, 6000, 2, 6000, 50]);
+});
+
+test('a long fractional timeline keeps the rounded total instead of accumulating frame error', async () => {
+  const file = await timelineGif(Array(1001).fill(1 / 30));
+  assert.equal(file.frames.reduce((sum, frame) => sum + frame.delay, 0), 3337);
+  assert.ok(file.frames.every((frame) => frame.delay === 3 || frame.delay === 4));
+});

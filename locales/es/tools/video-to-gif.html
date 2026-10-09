@@ -145,7 +145,8 @@
       <div><dt>Tamaño aproximado</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
-    <p id="memory-note" class="field-note" hidden></p>
+    <p id="memory-note" class="memory-plan" hidden></p>
+    <button id="smaller-width" class="button secondary" type="button" hidden>Usar un ancho menor que quepa</button>
 
     <div class="export-row">
       <button type="button" id="export" class="primary" disabled>Hacer el GIF</button>
@@ -192,18 +193,17 @@
     <span data-phrase="sum.bytes">de {low} a {high}</span>
     <span data-phrase="note.wider">Eso es más ancho que el propio vídeo ({px} px), y eso
       no puede añadir detalle que nunca estuvo ahí: solo bytes.</span>
-    <span data-phrase="note.memory">Cada fotograma se queda en memoria mientras se elige
-      la paleta, lo que con estos ajustes son unos {size}.</span>
-    <span data-phrase="note.memory.toobig">Eso es más de lo que esta herramienta va a
-      intentar: una sección más corta, un ancho menor o una cadencia más baja lo
-      arreglan.</span>
-    <span data-phrase="note.memory.ok">Una sección más corta, un ancho menor o una
-      cadencia más baja lo bajan.</span>
+    <span data-phrase="note.memory">Búferes de trabajo estimados: {size}. Presupuesto de planificación: {limit}. Incluye fotogramas, salida GIF y reservas de decodificación; no mide la memoria libre.</span>
+    <span data-phrase="note.memory.toobig">Este plan supera el presupuesto. Acortar la sección o reducir el ancho o la tasa de fotogramas puede ayudar; decodificar la fuente también necesita memoria.</span>
+    <span data-phrase="note.memory.ok">Las asignaciones internas del navegador pueden usar más memoria. Acortar la sección o reducir el ancho o la tasa de fotogramas disminuye el trabajo de salida.</span>
     <span data-phrase="step.readframe">Leyendo el fotograma {done} de {total}</span>
     <span data-phrase="step.writeframe">Escribiendo el fotograma {done} de {total}</span>
     <span data-phrase="n.frame.one">{n} fotograma</span>
     <span data-phrase="n.frame.many">{n} fotogramas</span>
     <span data-phrase="out.dropped">{frames} ({n} idénticos, descartados)</span>
+    <span data-phrase="out.holds">Fotogramas adicionales para pausas largas: {n}</span>
+    <span data-phrase="open.notopened.detail">No se pudo abrir ese archivo: {why}</span>
+    <span data-phrase="export.failed.detail">No se pudo crear el GIF: {why}</span>
     <span data-phrase="out.fps">{n} fps</span>
     <span data-phrase="out.colours">{n} colores</span>
     <span data-phrase="export.tooshort">Esa sección es demasiado corta para sacarle un
@@ -221,6 +221,8 @@
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="read.edits">Este archivo usa una lista de edición de reproducción que esta herramienta no puede conservar. Guarda el clip editado visible como un video nuevo antes de procesarlo aquí.</span>
+    <span data-phrase="read.editinvalid">La lista de edición de reproducción del archivo está incompleta o tiene tiempos no válidos, por lo que no se puede conservar su secuencia visible.</span>
     <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
     <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
     <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>

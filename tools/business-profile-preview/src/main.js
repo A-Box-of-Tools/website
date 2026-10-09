@@ -22,6 +22,7 @@
 
 import { saveBlob } from './shared/download.js';
 import { phrase } from './shared/phrases.js';
+import { textImport } from './shared/text-import.js';
 import { readPhoto } from './photo.js';
 import { parseListing } from './parse-listing.js';
 import { DAY_KEYS, FORM_DAYS, empty, normalise } from './profile.js';
@@ -31,6 +32,7 @@ import { EXAMPLE, coverPhoto } from './samples.js';
 import { fromJson, toJson } from './saved.js';
 import { SURFACES } from './surfaces.js';
 import { describe } from './view.js';
+import { localDateValue, previewDate } from './preview-time.js';
 
 const el = (id) => document.getElementById(id);
 
@@ -46,6 +48,8 @@ const ui = {
   address: el('address'), serviceArea: el('service-area'),
   phone: el('phone'), website: el('website'),
   status: el('status'), clock: el('clock'), week: el('week'), weekNote: el('week-note'),
+  previewFixed: el('preview-fixed'), previewAt: el('preview-at'),
+  previewTimeError: el('preview-time-error'),
   copyMonday: el('copy-monday'), weekdaysOnly: el('weekdays-only'),
   privacyToggle: el('privacy-toggle'), privacyPanel: el('privacy-panel'),
   stage: el('stage'), stageNote: el('stage-note'), scale: el('scale'),
@@ -205,6 +209,12 @@ function write(profile) {
 // Held outside the form because a file input cannot be given a value, and the
 // picture is the one field a visitor cannot type back in.
 let photo = null;
+let photoRead = null;
+
+function retirePhoto() {
+  photoRead?.abort();
+  photoRead = null;
+}
 
 function setPhoto(dataUri, note = '') {
   photo = dataUri;
@@ -213,8 +223,8 @@ function setPhoto(dataUri, note = '') {
 }
 
 /** The name a download takes, out of the business name. */
-function stem() {
-  const name = read().name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function stem(value = read().name) {
+  const name = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   return name || 'business-profile';
 }
 
@@ -222,6 +232,20 @@ function stem() {
 
 let drawn = null;
 let pending = 0;
+let pngWrite = null;
+
+function syncDownloads() {
+  ui.savePng.disabled = !drawn || !!pngWrite;
+  ui.saveSvg.disabled = !drawn;
+}
+
+function retirePng() {
+  pngWrite?.abort();
+  pngWrite = null;
+  syncDownloads();
+  say(ui.saveNote, '');
+  say(ui.saveError, '');
+}
 
 /** The surface currently being looked at. */
 function chosen() {
@@ -236,8 +260,21 @@ function schedule() {
 }
 
 function draw() {
+  if (pending) { cancelAnimationFrame(pending); pending = 0; }
+  const date = ui.previewFixed.checked ? previewDate(ui.previewAt.value) : new Date();
+  const invalid = !date;
+  ui.previewAt.setAttribute('aria-invalid', String(invalid));
+  say(ui.previewTimeError, invalid ? phrase('preview.invalid') : '');
+  if (invalid) {
+    drawn = null;
+    ui.stage.replaceChildren();
+    ui.stageNote.textContent = '';
+    ui.weekNote.textContent = '';
+    syncDownloads();
+    return;
+  }
   const profile = read();
-  const view = describe(profile, labels, new Date());
+  const view = describe(profile, labels, date);
   const surface = chosen();
   drawn = SURFACES[surface](view, measure);
 
@@ -258,9 +295,22 @@ function draw() {
     ? phrase('name.length', { count: profile.name.length }) : '';
   ui.descriptionNote.textContent = profile.description
     ? phrase('description.length', { count: profile.description.length }) : '';
-  ui.weekNote.textContent = phrase('week.reads', {
+  ui.weekNote.textContent = phrase(ui.previewFixed.checked ? 'week.chosen' : 'week.reads', {
+    date: new Intl.DateTimeFormat(document.documentElement.lang, {
+      dateStyle: 'medium', timeStyle: 'short',
+    }).format(date),
     status: [view.status.lead, view.status.tail].filter(Boolean).join(' · '),
   });
+  syncDownloads();
+}
+
+// Status is the one field that can change without an edit. Background tabs may
+// defer their timers, so returning to the page also refreshes the local clock.
+function followClock() {
+  setTimeout(() => {
+    if (!ui.previewFixed.checked) draw();
+    followClock();
+  }, 60000 - Date.now() % 60000);
 }
 
 /* ------------------------------------------------------------------- the notes */
@@ -290,6 +340,7 @@ function fieldList(found) {
 }
 
 function readPaste() {
+  replaceProfile();
   clearImport();
   const text = ui.paste.value.trim();
   if (!text) { say(ui.importError, phrase('paste.empty')); return; }
@@ -309,18 +360,39 @@ function readPaste() {
   draw();
 }
 
-async function readSaved(file) {
+const savedRead = textImport({
+  busy() { ui.openJson.setAttribute('aria-busy', 'true'); },
+  done() { ui.openJson.removeAttribute('aria-busy'); },
+});
+
+function readSaved(file) {
   clearImport();
-  try {
-    const { profile, shape } = fromJson(await file.text());
-    photo = null;
-    ui.dropPhoto.hidden = true;
-    write(profile);
-    say(ui.importNote, phrase(shape === 'google' ? 'load.google' : 'load.own'));
-    draw();
-  } catch (error) {
-    say(ui.importError, phrase(error.message));
-  }
+  retirePhoto();
+  retirePng();
+  return savedRead.read([file], {
+    apply([text]) {
+      const { profile, shape } = fromJson(text);
+      setPhoto(null);
+      write(profile);
+      say(ui.importNote, phrase(shape === 'google' ? 'load.google' : 'load.own'));
+      draw();
+    },
+    failed(error) {
+      const detail = ['load.notjson', 'load.unknown'].includes(error?.message)
+        ? phrase(error.message) : phrase('load.failed');
+      say(ui.importError, detail);
+    },
+  });
+}
+
+function retireImports() {
+  savedRead.invalidate();
+}
+
+function replaceProfile() {
+  retireImports();
+  retirePhoto();
+  retirePng();
 }
 
 /* ------------------------------------------------- the example, and the empty */
@@ -333,6 +405,7 @@ async function readSaved(file) {
  * a picture is the one field the opening state cannot carry.
  */
 function fillExample() {
+  replaceProfile();
   clearImport();
   const words = ['name', 'category', 'address', 'phone', 'website', 'description',
     'attributes'];
@@ -347,6 +420,10 @@ function fillExample() {
 
 /** Every field empty, which is what a listing nobody has filled in looks like. */
 function clearAll() {
+  replaceProfile();
+  ui.previewFixed.checked = false;
+  ui.previewAt.disabled = true;
+  ui.previewAt.value = '';
   clearImport();
   setPhoto(null);
   write(empty());
@@ -357,19 +434,33 @@ function clearAll() {
 /* ------------------------------------------------------------------- saving */
 
 async function savePng() {
+  if (pngWrite) return;
+  draw();
+  if (!drawn) return;
   say(ui.saveError, '');
+  say(ui.saveNote, '');
+  const owner = new AbortController();
+  pngWrite = owner;
+  syncDownloads();
+  // Everything the save says belongs to the same picture, even if the form or
+  // surface is edited while the native image/PNG encoder is still working.
+  const picture = { ...drawn };
+  const scale = Number(ui.scale.value) || 1;
+  const name = `${stem()}-${chosen()}.png`;
+  const width = Math.round(picture.width * scale);
+  const height = Math.round(picture.height * scale);
   try {
-    const scale = Number(ui.scale.value) || 1;
-    const blob = await toPng(drawn, scale);
-    const name = `${stem()}-${chosen()}.png`;
+    const blob = await toPng(picture, scale, owner.signal);
+    if (pngWrite !== owner) return;
     saveBlob(blob, name);
-    say(ui.saveNote, phrase('save.done', {
-      name,
-      width: Math.round(drawn.width * scale),
-      height: Math.round(drawn.height * scale),
-    }));
+    say(ui.saveNote, phrase('save.done', { name, width, height }));
   } catch (error) {
-    say(ui.saveError, phrase('save.failed', { detail: phrase(error.message) }));
+    if (pngWrite !== owner || error?.name === 'AbortError') return;
+    const detail = ['save.nosvg', 'save.nopng'].includes(error?.message)
+      ? phrase(error.message) : phrase('save.nopng');
+    say(ui.saveError, phrase('save.failed', { detail }));
+  } finally {
+    if (pngWrite === owner) { pngWrite = null; syncDownloads(); }
   }
 }
 
@@ -381,9 +472,20 @@ function wire() {
     ui.attributes, ui.address, ui.serviceArea, ui.phone, ui.website,
     ui.status, ui.clock,
   ]) {
-    node.addEventListener('input', schedule);
+    node.addEventListener('input', () => { retireImports(); schedule(); });
   }
-  ui.week.addEventListener('input', schedule);
+  ui.week.addEventListener('input', () => { retireImports(); schedule(); });
+  ui.previewFixed.addEventListener('change', () => {
+    ui.previewAt.disabled = !ui.previewFixed.checked;
+    if (ui.previewFixed.checked && !ui.previewAt.value) {
+      ui.previewAt.value = localDateValue(new Date());
+    }
+    draw();
+  });
+  ui.previewAt.addEventListener('input', schedule);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !ui.previewFixed.checked) draw();
+  });
 
   for (const button of document.querySelectorAll('.chip[data-surface]')) {
     button.addEventListener('click', () => {
@@ -395,6 +497,7 @@ function wire() {
   }
 
   ui.copyMonday.addEventListener('click', () => {
+    retireImports();
     const monday = weekRows()[1];
     const from = monday.querySelector('.day-open').value;
     const to = monday.querySelector('.day-close').value;
@@ -409,6 +512,7 @@ function wire() {
   });
 
   ui.weekdaysOnly.addEventListener('click', () => {
+    retireImports();
     weekRows().forEach((row, day) => {
       row.querySelector('.day-shut').checked = day === 0 || day === 6;
     });
@@ -423,17 +527,29 @@ function wire() {
     // twice - which is what somebody does after cropping it - fires again.
     ui.photoFile.value = '';
     if (!file) return;
+    retireImports();
+    retirePhoto();
+    const owner = new AbortController();
+    photoRead = owner;
     try {
-      const picture = await readPhoto(file);
+      const picture = await readPhoto(file, undefined, owner.signal);
+      if (photoRead !== owner) return;
       setPhoto(picture.uri, phrase('photo.added', {
         width: picture.width, height: picture.height,
       }));
+      draw();
     } catch (error) {
-      say(ui.photoNote, phrase(error.message), true);
+      if (photoRead !== owner || error?.name === 'AbortError') return;
+      const key = ['photo.toobig', 'photo.unreadable', 'photo.tiny'].includes(error?.message)
+        ? error.message : 'photo.unreadable';
+      say(ui.photoNote, phrase(key), true);
+    } finally {
+      if (photoRead === owner) photoRead = null;
     }
-    draw();
   });
   ui.dropPhoto.addEventListener('click', () => {
+    retireImports();
+    retirePhoto();
     setPhoto(null, phrase('photo.gone'));
     draw();
   });
@@ -461,6 +577,8 @@ function wire() {
 
   ui.savePng.addEventListener('click', savePng);
   ui.saveSvg.addEventListener('click', () => {
+    draw();
+    if (!drawn) return;
     saveBlob(svgBlob(drawn.svg), `${stem()}-${chosen()}.svg`);
     say(ui.saveNote, phrase('save.svgdone'));
   });
@@ -490,6 +608,7 @@ window.addEventListener('unhandledrejection', (event) => {
 buildWeek();
 wire();
 draw();
+followClock();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();

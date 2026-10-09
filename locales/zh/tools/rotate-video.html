@@ -34,9 +34,7 @@
   <section class="card" id="turn-card">
     <h2><span class="step">2</span> 转一下</h2>
 
-    <p class="card-lede">
-      手机拍横了的时候并没有把像素转过来：它往文件头里写了一个四分之一转，每个播放器都会照着转。所以旋转一段视频改的是那个文件头，别的什么都不动。一帧都不用解码，画面跟原来一模一样。
-    </p>
+    <p class="card-lede">手机拍横了的时候并没有把像素转过来：它往文件头里写了一个四分之一转，播放器会照着转。使用文件头旋转时，这一页改变显示矩阵，每一帧画面原样复制。声音会原样复制、重新编码为 AAC 或去掉。</p>
 
     <div class="chips" role="group" aria-label="转多少">
       <button type="button" class="chip" data-turn="90" aria-pressed="true">&#8635; 往右转四分之一圈</button>
@@ -153,8 +151,8 @@
     <span data-phrase="run.cancelled">已取消。什么都没写；按按钮重新开始。</span>
     <span data-phrase="run.failed">这次旋转失败了：{detail}</span>
     <span data-phrase="result.ready">{size} 的 MP4，转了 {turn}。</span>
-    <span data-phrase="result.sub.copy">每一帧、每一个声音包原样复制过去；只有文件头变了。</span>
-    <span data-phrase="result.sub.bake">每一帧转好画出来，重新编码成了 H.264；文件头什么都不用说了。</span>
+    <span data-phrase="result.sub.copy">每一帧画面原样复制过去；文件头记录了旋转方向。{sound}</span>
+    <span data-phrase="result.sub.bake">每一帧转好画出来，重新编码成了 H.264；文件头什么都不用说了。{sound}</span>
     <span data-phrase="check.passed">已核对：{found}</span>
     <span data-phrase="check.failed">这次旋转没通过核对：{found}。留着你的原文件。</span>
     <span data-phrase="check.ok">从内存里重新打开，跟原来一样是 {length}，显示为 {shown}，{frame}。</span>
@@ -180,6 +178,8 @@
     <span data-phrase="sound.noencode">音频编码器什么都没产出。</span>
     <span data-phrase="write.noframes">没有可写的帧。</span>
     <span data-phrase="write.toobig">做好的文件会超过 4 GB，这里写出的 MP4 装不下。先把视频剪短。</span>
+    <span data-phrase="read.edits">此文件使用了本工具无法保留的播放编辑列表。请先将可见的编辑后片段保存为新视频，再在此处理。</span>
+    <span data-phrase="read.editinvalid">文件的播放编辑列表不完整或时间信息无效，因此无法保留其可见时间轴。</span>
     <span data-phrase="read.midframe">文件在一帧的中间就结束了。</span>
     <span data-phrase="read.avcshort">H.264 配置记录太短。</span>
     <span data-phrase="read.hevcshort">HEVC 配置记录太短。</span>
