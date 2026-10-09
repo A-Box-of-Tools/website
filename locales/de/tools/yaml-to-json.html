@@ -60,7 +60,7 @@
           <label for="input" id="input-label">Ihr YAML</label>
           <span class="count" id="input-count">leer</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="YAML hier einfügen - oder oben eine .yaml-, .yml- oder .json-Datei ablegen."></textarea>
       </div>
@@ -80,6 +80,8 @@
     <h2><span class="step">3</span> Das Ergebnis mitnehmen</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Zur Fehlerstelle</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Noch nichts.</p>
@@ -110,6 +112,11 @@
     <span data-phrase="n.character.one">{n} Zeichen</span>
     <span data-phrase="n.character.many">{n} Zeichen</span>
     <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="convert.comments">Verworfene YAML-Kommentare: {n}. Text in Anführungszeichen und Blockskalaren bleibt Text.</span>
+    <span data-phrase="convert.names">Geänderte XML-Namen: {n}. Diese Abbildung bewahrt die ursprünglichen Namen nicht.</span>
+    <span data-phrase="convert.collisions">XML-Namenskollisionen: {n}. Verschiedene Schlüssel wurden zum selben Elementnamen und können beim Rücklesen als ein wiederholter Wert erscheinen.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">Die Konvertierung wurde bei diesem nicht unterstützten Konstrukt abgebrochen. Es wurde kein Ergebnis erzeugt.</span>
     <span data-phrase="parse.at">{reason} (Zeile {line}, Spalte {column})</span>
     <span data-phrase="char.end">das Ende des Textes</span>
     <span data-phrase="char.newline">ein Zeilenumbruch</span>

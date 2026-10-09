@@ -60,7 +60,7 @@
           <label for="input" id="input-label">你的 YAML</label>
           <span class="count" id="input-count">空的</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="把 YAML 粘贴到这里 - 或者在上面放一个 .yaml、.yml 或 .json 文件。"></textarea>
       </div>
@@ -80,6 +80,8 @@
     <h2><span class="step">3</span> 把结果带走</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>跳转到错误位置</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">还没有结果。</p>
@@ -110,6 +112,11 @@
     <span data-phrase="n.character.one">{n} 个字符</span>
     <span data-phrase="n.character.many">{n} 个字符</span>
     <span data-phrase="join.comma">{a}，{b}</span>
+    <span data-phrase="convert.comments">丢弃的 YAML 注释：{n}条。引号内和块标量内的文本会保留。</span>
+    <span data-phrase="convert.names">更改的 XML 名称：{n}个。此映射不保留原始名称。</span>
+    <span data-phrase="convert.collisions">XML 名称冲突：{n}处。不同的键变成了相同的元素名称，读回时可能合并为重复值。</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">转换在此不支持的语法处停止，未生成结果。</span>
     <span data-phrase="parse.at">{reason}（第 {line} 行，第 {column} 列）</span>
     <span data-phrase="char.end">文本的末尾</span>
     <span data-phrase="char.newline">一个换行</span>

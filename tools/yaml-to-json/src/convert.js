@@ -38,8 +38,9 @@ export function jsonToYaml(text, { indent = 2 } = {}) {
   return printYaml(parseJson(text), { indent });
 }
 
-export function yamlToJson(text, { indent = '  ', sortKeys = false } = {}) {
-  return `${printJson(stripRaw(parseYaml(text)), { indent, sortKeys })}\n`;
+export function yamlToJson(text, { indent = '  ', sortKeys = false, onDiagnostic } = {}) {
+  const data = parseYaml(text, { onComment: () => onDiagnostic?.({ kind: 'yaml.comment' }) });
+  return `${printJson(stripRaw(data), { indent, sortKeys })}\n`;
 }
 
 /**
@@ -76,7 +77,7 @@ export const CONVERSIONS = [
     id: 'yaml-json',
     name: 'convert.yaml-json.name',
     note: 'convert.yaml-json',
-    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys }),
+    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys, onDiagnostic: options.onDiagnostic }),
     output: 'json',
   },
   {
