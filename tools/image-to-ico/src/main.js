@@ -3,13 +3,13 @@
 import { phrase } from './shared/phrases.js';
 import { acceptsImageFile } from './shared/image-input.js';
 import { messageBox } from './shared/message-box.js';
-import { writeIco, dibEntry, readIcoDirectory } from './ico.js';
-import { writeIcns, readIcnsElements, ICNS_TYPES, ICNS_SIZES } from './icns.js';
+import { captureIconRequest, makeIconOutput, iconErrorDetail } from './icon-export.js';
+import { ICNS_TYPES, ICNS_SIZES } from './icns.js';
 import { PRESETS, SIZES, WHY, presetById, storageFor, dibBytes } from './sizes.js';
-import { decode, release, square, pixels, png, FIT, NOMINAL_VECTOR } from './render.js';
-import { PACK_IMAGES, manifest, browserConfig, headSnippet, readme } from './pack.js';
+import { decode, release, square, FIT, NOMINAL_VECTOR } from './render.js';
+import { PACK_IMAGES, headSnippet } from './pack.js';
 import {
-  bytes, dimensions, countOf as count, iconName, folderFor,
+  bytes, dimensions, countOf as count, folderFor,
   describe as describeSizes, listOf as joinList,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
@@ -96,7 +96,7 @@ let activeId = null;
 let activeDecoded = null;
 let activeFor = null;
 
-/** The current settings. Read by the preview and by the run; never duplicated. */
+/** The current settings. The preview reads these; a run captures them before any work yields. */
 let presetId = 'website';
 let chosen = new Set(presetById('website').sizes);
 
@@ -403,6 +403,7 @@ function renderSizes() {
 }
 
 function renderNotes() {
+  for (const control of [el.fitSelect, el.backgroundMode, el.backgroundColour]) control.disabled = busy;
   const preset = presetById(presetId);
   el.presetNote.textContent = phrase(preset.note);
 
@@ -645,7 +646,7 @@ async function decodedFor(item) {
 
 el.makeIcon.addEventListener('click', () => {
   makeAll().catch((error) => {
-    showLoadError(phrase('error.broke', { detail: error.message }));
+    showLoadError(phrase('error.broke', { detail: iconErrorDetail(error, phrase) }));
     busy = false;
     render();
   });
@@ -654,155 +655,34 @@ el.makeIcon.addEventListener('click', () => {
 async function makeAll() {
   const want = wanted();
   if (busy || !items.length || !want.any) return;
+  const request = captureIconRequest(items, {
+    want, sizes: sizeList(), preset: presetId, storage: el.storageSelect.value,
+    fit: el.fitSelect.value, background: background(),
+  });
 
   busy = true;
   clearResults();
   render();
-
   el.progress.hidden = false;
-  setProgress(0, phrase('progress.all', { count: countOf(items.length, 'image') }));
+  setProgress(0, phrase('progress.all', { count: countOf(request.batch.length, 'image') }));
 
-  const made = [];
-
-  for (const [index, item] of items.entries()) {
-    setProgress(index / items.length, phrase('progress.one', { name: item.file.name }));
-    // Yield so the progress line above is painted before the work starts.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    // The preview has already decoded whichever picture it is showing.
-    const decoded = (item.id === activeFor && activeDecoded) || await decode(item.file);
-    try {
-      made.push(await makeOne(item, decoded, want));
-    } finally {
-      // The active picture keeps its own copy; anything else was decoded for
-      // this run alone and is dropped as soon as its files exist.
-      if (decoded !== activeDecoded) release(decoded);
+  try {
+    const made = [];
+    for (const [index, item] of request.batch.entries()) {
+      setProgress(index / request.batch.length, phrase('progress.one', { name: item.file.name }));
+      // Yield so the progress line is painted before the work starts.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      made.push(await makeIconOutput(item, request, phrase));
     }
+    setProgress(1, phrase('progress.done'));
+    results = made;
+    renderResults();
+  } finally {
+    busy = false;
+    el.progress.hidden = true;
+    render();
   }
-
-  setProgress(1, phrase('progress.done'));
-  busy = false;
-  results = made;
-  renderResults();
-  render();
-  el.progress.hidden = true;
 }
-
-/**
- * One picture, all the way to the files it becomes.
- *
- * Every square is drawn once and handed to whatever wants it. The two formats
- * overlap at 16, 32, 128 and 256, and an .icns asks for 32 twice over - so
- * rendering per output rather than per size would draw a picture that a Mac
- * reads at two sizes three separate times.
- */
-async function makeOne(item, decoded, want) {
-  const storage = el.storageSelect.value;
-  const options = { fit: el.fitSelect.value, background: background(), vector: decoded.vector };
-  const sizes = sizeList();
-  // The website set brings its own naming with it; see iconName.
-  const website = presetId === 'website' || want.pack;
-
-  /** @type {Map<number, HTMLCanvasElement>} */
-  const drawn = new Map();
-  for (const px of everySize()) {
-    drawn.set(px, square(decoded.bitmap, decoded.width, decoded.height, px, options));
-  }
-
-  /** PNG bytes for a size, encoded at most once however many files want them. */
-  const encoded = new Map();
-  const pngFor = async (px) => {
-    if (!encoded.has(px)) encoded.set(px, await png(drawn.get(px)));
-    return encoded.get(px);
-  };
-
-  const outputs = [];
-  const files = [];
-
-  if (want.ico) {
-    const entries = [];
-    for (const px of sizes) {
-      const kind = storageFor(px, storage);
-      const data = kind === 'png' ? await pngFor(px) : dibEntry(pixels(drawn.get(px)));
-      entries.push({ width: px, height: px, kind, data });
-    }
-
-    const ico = writeIco(entries);
-    const name = iconName(item.file.name, 'ico', website);
-    files.push({ name, data: ico });
-    outputs.push({
-      kind: 'ico',
-      name,
-      data: ico,
-      // Read back out of the bytes that were just written rather than copied
-      // from the plan that produced them. If a writer and the settings ever
-      // disagreed, this is where it would show.
-      entries: readIcoDirectory(ico).map((entry) => ({
-        label: `${entry.width}px`,
-        detail: entry.kind === 'png' ? 'PNG' : phrase('entry.uncompressed'),
-        bytes: entry.bytes,
-      })),
-    });
-  }
-
-  if (want.icns) {
-    const elements = [];
-    for (const slot of ICNS_TYPES) {
-      // Every slot is a PNG, and the same picture serves two of them wherever
-      // Apple names one size as another size's Retina version. Encoded once.
-      elements.push({ type: slot.type, data: await pngFor(slot.px) });
-    }
-
-    const icns = writeIcns(elements);
-    const name = iconName(item.file.name, 'icns', website);
-    files.push({ name, data: icns });
-    outputs.push({
-      kind: 'icns',
-      name,
-      data: icns,
-      entries: readIcnsElements(icns).map((element) => ({
-        label: `${element.px}px`,
-        detail: element.type,
-        bytes: element.bytes,
-      })),
-    });
-  }
-
-  for (const canvas of drawn.values()) {
-    canvas.width = 0;
-    canvas.height = 0;
-  }
-
-  if (want.pack) {
-    for (const image of PACK_IMAGES) {
-      const canvas = square(decoded.bitmap, decoded.width, decoded.height, image.px, {
-        fit: options.fit,
-        vector: options.vector,
-        // An opaque file has to be opaque even when the user asked for
-        // transparency, which is why this is not simply `options.background`.
-        // The colour is theirs; the fact that iOS gets no alpha is not.
-        background: image.opaque ? (options.background ?? '#ffffff') : options.background,
-        inset: image.inset ?? 0,
-      });
-      files.push({ name: image.name, data: await png(canvas) });
-      canvas.width = 0;
-      canvas.height = 0;
-    }
-
-    const tile = options.background ?? '#ffffff';
-    files.push(
-      { name: 'site.webmanifest', data: text(manifest({ name: phrase('manifest.name'), background: tile, theme: tile })) },
-      { name: 'browserconfig.xml', data: text(browserConfig(tile)) },
-      { name: 'head.html', data: text(headSnippet(phrase)) },
-      { name: 'README.txt', data: text(readme(iconName(item.file.name, 'ico', true), sizes, want.ico, phrase)) },
-    );
-  }
-
-  return { item, outputs, files, packed: want.pack };
-}
-
-const encoder = new TextEncoder();
-const text = (string) => encoder.encode(string);
 
 function setProgress(fraction, label) {
   el.progressBar.style.width = `${Math.round(fraction * 100)}%`;
@@ -826,6 +706,9 @@ function renderResults() {
   el.resultsSummary.textContent = summarise(rows, total, packed);
 
   for (const row of rows) el.resultList.append(resultRow(row));
+  for (const result of results.filter((result) => result.packed)) {
+    el.resultList.append(packRow(result));
+  }
 
   // A single picture keeps its files at the top of the zip; a batch gets a
   // folder each, because two of them would otherwise both be favicon.ico and
@@ -843,6 +726,12 @@ function renderResults() {
 
 /** The line above the rows, said in files rather than in settings. */
 function summarise(rows, total, packed) {
+  if (!rows.length) return phrase('results.packonly', {
+    count: countOf(results.length, 'image'),
+    n: results.reduce((n, result) => n + result.files.length, 0),
+    size: humanBytes(results.reduce((n, result) =>
+      n + result.files.reduce((bytes, file) => bytes + file.data.length, 0), 0)),
+  });
   const said = results.length === 1
     ? summariseOne(rows, total)
     : phrase('results.batch', {
@@ -914,7 +803,14 @@ function resultRow(row) {
     list.append(chip);
   }
 
-  textBlock.append(name, headline, detail, list);
+  textBlock.append(name, headline, detail);
+  if (row.kind === 'ico') textBlock.append(contextLine(phrase('result.ico.settings', {
+    preset: phrase(presetById(row.result.request.preset).label),
+    storage: phrase(`store.${row.result.request.storage}`),
+    sizes: joinList(row.result.request.sizes, phrase),
+  })));
+  textBlock.append(drawingContext(row.result.request), list);
+  if (row.kind === 'icns') textBlock.append(contextLine(phrase('result.icns.check')));
 
   const actions = document.createElement('div');
   actions.className = 'result-actions';
@@ -929,6 +825,36 @@ function resultRow(row) {
   actions.append(download);
 
   li.append(textBlock, actions);
+  return li;
+}
+
+function contextLine(text) {
+  const line = document.createElement('p');
+  line.className = 'result-context';
+  line.textContent = text;
+  return line;
+}
+
+function drawingContext(request) {
+  const fit = request.fit === 'pad'
+    ? `fit.pad.${request.background === null ? 'transparent' : 'colour'}`
+    : `fit.${request.fit}`;
+  return contextLine(phrase('result.drawing', {
+    fit: phrase(fit), background: request.background ?? phrase('result.transparent'),
+  }));
+}
+
+function packRow(result) {
+  const li = document.createElement('li');
+  li.className = 'result-row';
+  const textBlock = document.createElement('div');
+  textBlock.className = 'result-text';
+  textBlock.append(
+    contextLine(phrase('result.pack.from', { name: result.item.file.name })),
+    drawingContext(result.request),
+    contextLine(phrase('result.pack.settings', { n: PACK_IMAGES.length })),
+  );
+  li.append(textBlock);
   return li;
 }
 
