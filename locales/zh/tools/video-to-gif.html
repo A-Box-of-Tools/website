@@ -145,7 +145,8 @@
       <div><dt>大致体积</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
-    <p id="memory-note" class="field-note" hidden></p>
+    <p id="memory-note" class="memory-plan" hidden></p>
+    <button id="smaller-width" class="button secondary" type="button" hidden>改用预算内较小的宽度</button>
 
     <div class="export-row">
       <button type="button" id="export" class="primary" disabled>做 GIF</button>
@@ -189,14 +190,17 @@
     <span data-phrase="size.from">&#x2066;{width} x {height}&#x2069;（由 &#x2066;{fromWidth} x {fromHeight}&#x2069; 而来）</span>
     <span data-phrase="sum.bytes">{low} 到 {high}</span>
     <span data-phrase="note.wider">这比视频本身（{px} px）还宽，而这并不能补出本来就没有的细节——只会多出字节。</span>
-    <span data-phrase="note.memory">挑调色板的时候每一帧都留在内存里，按现在的设置大约 {size}。</span>
-    <span data-phrase="note.memory.toobig">这超过了这个工具愿意尝试的量——把这一段截短，或者把宽度或帧率调低。</span>
-    <span data-phrase="note.memory.ok">把这一段截短、把宽度调小或者把帧率调低，都能降下来。</span>
+    <span data-phrase="note.memory">预计工作缓冲区：{size}。规划预算：{limit}。包括帧、GIF 输出和解码预留；这不是可用内存的测量值。</span>
+    <span data-phrase="note.memory.toobig">此方案超出预算。缩短片段、减小宽度或降低帧率可能有帮助；解码原视频也需要内存。</span>
+    <span data-phrase="note.memory.ok">浏览器内部的分配可能使用更多内存。缩短片段、减小宽度或降低帧率会减少输出处理量。</span>
     <span data-phrase="step.readframe">正在读第 {done} 帧，共 {total} 帧</span>
     <span data-phrase="step.writeframe">正在写第 {done} 帧，共 {total} 帧</span>
     <span data-phrase="n.frame.one">{n} 帧</span>
     <span data-phrase="n.frame.many">{n} 帧</span>
     <span data-phrase="out.dropped">{frames}（其中 {n} 帧相同，已丢弃）</span>
+    <span data-phrase="out.holds">为保留长时间静止画面增加的帧数：{n}</span>
+    <span data-phrase="open.notopened.detail">无法打开此文件：{why}</span>
+    <span data-phrase="export.failed.detail">无法生成 GIF：{why}</span>
     <span data-phrase="out.fps">{n} fps</span>
     <span data-phrase="out.colours">{n} 种颜色</span>
     <span data-phrase="export.tooshort">这一段太短了，一帧也取不出来。</span>

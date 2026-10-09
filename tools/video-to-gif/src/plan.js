@@ -40,6 +40,14 @@ export function outputSize(sourceWidth, sourceHeight, targetWidth) {
   return { width, height };
 }
 
+/** Count before allocating sample times, including plans that cannot fit. */
+export function frameCount({ start, end, fps }) {
+  const span = Math.max(0, end - start);
+  const rate = Math.max(0.1, Math.min(MAX_FPS, fps));
+  // Slider subtraction can fall just below an exact frame boundary.
+  return Math.max(1, Math.floor(span * rate + 1e-6));
+}
+
 /**
  * When each frame is taken from, in seconds.
  *
@@ -49,11 +57,8 @@ export function outputSize(sourceWidth, sourceHeight, targetWidth) {
  * viewer has already seen.
  */
 export function frameTimes({ start, end, fps }) {
-  const span = Math.max(0, end - start);
   const rate = Math.max(0.1, Math.min(MAX_FPS, fps));
-  // The epsilon is for the section that is exactly two seconds long at 10 fps
-  // and arrives as 1.9999999999999998 because the two ends came from a slider.
-  const count = Math.max(1, Math.floor(span * rate + 1e-6));
+  const count = frameCount({ start, end, fps });
 
   const times = new Array(count);
   for (let i = 0; i < count; i += 1) times[i] = start + i / rate;
@@ -114,4 +119,44 @@ export function workingBytes({ frames, width, height }) {
 export function estimateBytes({ frames, width, height }) {
   const pixels = frames * width * height;
   return { low: Math.round(pixels * 0.4 / 8), high: Math.round(pixels * 2.5 / 8) };
+}
+
+const MIB = 2 ** 20;
+
+/** A bounded planning policy uses the optional device hint, never free RAM. */
+export function planningLimit(deviceMemory) {
+  if (!Number.isFinite(deviceMemory) || deviceMemory <= 0) return 192 * MIB;
+  return (deviceMemory <= 2 ? 96 : deviceMemory <= 4 ? 192 : 384) * MIB;
+}
+
+/**
+ * Retained RGBA, GIF chunks and transient canvas/index/LZW storage share a peak.
+ * Two source frames match this tool's decoder queue limit of one. Native codec
+ * internals and JS array representation cannot be measured by this arithmetic,
+ * so it is a conservative planning estimate rather than an allocation promise.
+ */
+export function workingMemory({ frames, width, height, sourceWidth, sourceHeight,
+  packetBytes = 0 }) {
+  if (![frames, width, height, sourceWidth, sourceHeight].every(n =>
+    Number.isSafeInteger(n) && n > 0)
+    || !Number.isSafeInteger(packetBytes) || packetBytes < 0) return Infinity;
+  const pixels = width * height;
+  const bytes = frames * pixels * 8 + pixels * 48
+    + sourceWidth * sourceHeight * 8 + packetBytes * 3 + 32 * MIB;
+  return Number.isSafeInteger(bytes) ? bytes : Infinity;
+}
+
+/** The largest smaller output width that fits, without allocating any pixels. */
+export function smallerWidth({ frames, width, sourceWidth, sourceHeight,
+  codedWidth = sourceWidth, codedHeight = sourceHeight, packetBytes = 0, limit }) {
+  if (![width, sourceWidth, sourceHeight, limit].every(n => Number.isFinite(n) && n > 0)) return null;
+  let low = 16, high = Math.min(1920, Math.floor(width) - 1), best = null;
+  while (low <= high) {
+    const next = Math.floor((low + high) / 2);
+    const bytes = workingMemory({ frames, ...outputSize(sourceWidth, sourceHeight, next),
+      sourceWidth: codedWidth, sourceHeight: codedHeight, packetBytes });
+    if (bytes <= limit) { best = next; low = next + 1; }
+    else high = next - 1;
+  }
+  return best;
 }

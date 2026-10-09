@@ -17,6 +17,7 @@
 
 import { ColorHistogram, Palette, medianCut, amplitudeFor, quantizeFrame } from './quantize.js';
 import { GifWriter, diffFrame } from './gif.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * The largest palette that can be differenced.
@@ -48,12 +49,13 @@ const breathe = () => new Promise((resolve) => { setTimeout(resolve, 0); });
  * @param {number} [args.colors]  palette size to aim for
  * @param {boolean} [args.dither]
  * @param {boolean} [args.loop]
- * @returns {Promise<{blob: Blob, colors: number, written: number, dropped: number}>}
+ * @returns {Promise<{blob: Blob, colors: number, written: number, dropped: number, continued: number}>}
  */
 export async function encodeGif({
   frames, histogram, delays, width, height,
   colors = MAX_COLORS, dither = true, loop = true, onProgress, signal,
 }) {
+  throwIfAborted(signal);
   const palette = new Palette(medianCut(histogram, Math.min(MAX_COLORS, colors)));
   const amplitude = dither ? amplitudeFor(palette.rgb) : 0;
 
@@ -74,26 +76,33 @@ export async function encodeGif({
   let heldDelay = 0;
   let written = 0;
   let dropped = 0;
+  let continued = 0;
 
-  const flush = () => {
+  const flush = async () => {
     if (!held) return;
-    writer.addFrame(held.indices, {
-      x: held.x,
-      y: held.y,
-      width: held.width,
-      height: held.height,
-      transparent: held.transparent,
-      delay: Math.min(MAX_DELAY, heldDelay),
-    });
-    written += 1;
+    let remaining = heldDelay, first = true, count = 0;
+    while (remaining > 0) {
+      throwIfAborted(signal);
+      let delay = Math.min(MAX_DELAY, remaining);
+      // A one-centisecond tail is played too slowly by browsers. Borrow one
+      // from the previous block so both delays are representable and >= 2.
+      if (remaining - delay === 1) delay -= 1;
+      const block = first ? held : {
+        indices: new Uint8Array([transparent]), x: 0, y: 0,
+        width: 1, height: 1, transparent,
+      };
+      writer.addFrame(block.indices, { x: block.x, y: block.y,
+        width: block.width, height: block.height, transparent: block.transparent, delay });
+      written += 1;
+      if (!first) continued += 1;
+      first = false;
+      remaining -= delay;
+      if (++count % YIELD_EVERY === 0) await breathe();
+    }
   };
 
   for (let i = 0; i < frames.length; i += 1) {
-    if (signal?.aborted) {
-      const error = new Error('Cancelled.');
-      error.name = 'AbortError';
-      throw error;
-    }
+    throwIfAborted(signal);
 
     const indices = quantizeFrame(frames[i], width, height, palette, amplitude, current);
     frames[i] = null;
@@ -110,6 +119,11 @@ export async function encodeGif({
       if (!changed) {
         heldDelay += delays[i];
         dropped += 1;
+        if (i % YIELD_EVERY === 0) {
+          onProgress?.({ phase: 'encoding', done: i + 1, total: frames.length });
+          await breathe();
+          throwIfAborted(signal);
+        }
         continue;
       }
       block = {
@@ -122,7 +136,7 @@ export async function encodeGif({
       };
     }
 
-    flush();
+    await flush();
     held = block;
     heldDelay = delays[i];
 
@@ -138,14 +152,17 @@ export async function encodeGif({
     }
   }
 
-  flush();
+  await flush();
+  throwIfAborted(signal);
   onProgress?.({ phase: 'encoding', done: frames.length, total: frames.length });
+  throwIfAborted(signal);
 
   return {
     blob: writer.finish(),
     colors: palette.size,
     written,
     dropped,
+    continued,
   };
 }
 

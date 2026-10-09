@@ -195,3 +195,7 @@
   border-radius: var(--radius);
   background: var(--surface-2);
 }
+
+/* The estimate and refusal remain visible when explanatory notes are folded. */
+.memory-plan { margin: 1rem 0; color: var(--text-dim); }
+#smaller-width { margin-bottom: 1rem; }
