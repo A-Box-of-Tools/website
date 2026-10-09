@@ -139,6 +139,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">A transparência é descartada no empilhamento. A imagem salva é opaca, mesmo no formato PNG.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Resultado</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Memória de trabalho</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -198,6 +200,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>Detalhes de alinhamento</summary>
@@ -286,6 +289,26 @@
     <span data-phrase="progress.stack-banded">Empilhando &mdash; faixa {band} de {bands}, {done} de {total} quadros lidos</span>
     <span data-phrase="progress.encode">Escrevendo a imagem&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Criado com {method}; alinhamento: {alignment}; resolução de trabalho: {resolution}; exposição: {gain}×; {encoding}.</span>
+    <span data-phrase="result.method.mean">Média</span>
+    <span data-phrase="result.method.median">Mediana</span>
+    <span data-phrase="result.method.sigma">Corte sigma</span>
+    <span data-phrase="result.method.max">Clarear</span>
+    <span data-phrase="result.method.min">Escurecer</span>
+    <span data-phrase="result.method.sum">Somar</span>
+    <span data-phrase="result.method.focus">Empilhamento de foco</span>
+    <span data-phrase="result.alignment.projective">Perspectiva automática</span>
+    <span data-phrase="result.alignment.translate">Apenas deslocamento</span>
+    <span data-phrase="result.alignment.similarity">Deslocamento, rotação e escala</span>
+    <span data-phrase="result.alignment.none">Nenhum</span>
+    <span data-phrase="result.resolution.full">Completa</span>
+    <span data-phrase="result.resolution.half">Metade</span>
+    <span data-phrase="result.resolution.quarter">Um quarto</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG com qualidade {quality}</span>
+    <span data-phrase="result.settings.sigma">Limite de corte: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Raio de nitidez: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} quadros somados em {seconds} segundos</span>
     <span data-phrase="result.moves">Cada quadro foi medido e empurrado para o seu lugar.</span>
     <span data-phrase="result.moves-some">{count} de {total} quadros não puderam ser medidos com segurança e ficaram onde estavam.</span>

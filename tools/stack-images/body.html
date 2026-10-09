@@ -137,6 +137,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">Transparency is discarded during stacking. The saved picture is opaque, even in PNG format.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Result</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Working memory</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -196,6 +198,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>Alignment details</summary>
@@ -284,6 +287,26 @@
     <span data-phrase="progress.stack-banded">Stacking &mdash; band {band} of {bands}, {done} of {total} frames read</span>
     <span data-phrase="progress.encode">Writing the picture&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Made with {method}; alignment: {alignment}; working resolution: {resolution}; exposure: {gain}×; {encoding}.</span>
+    <span data-phrase="result.method.mean">Average</span>
+    <span data-phrase="result.method.median">Median</span>
+    <span data-phrase="result.method.sigma">Sigma clipping</span>
+    <span data-phrase="result.method.max">Lighten</span>
+    <span data-phrase="result.method.min">Darken</span>
+    <span data-phrase="result.method.sum">Add</span>
+    <span data-phrase="result.method.focus">Focus stacking</span>
+    <span data-phrase="result.alignment.projective">Auto perspective</span>
+    <span data-phrase="result.alignment.translate">Shift only</span>
+    <span data-phrase="result.alignment.similarity">Shift, rotation and scale</span>
+    <span data-phrase="result.alignment.none">None</span>
+    <span data-phrase="result.resolution.full">Full</span>
+    <span data-phrase="result.resolution.half">Half</span>
+    <span data-phrase="result.resolution.quarter">Quarter</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG quality {quality}</span>
+    <span data-phrase="result.settings.sigma">Clipping threshold: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Sharpness radius: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} frames combined in {seconds} seconds</span>
     <span data-phrase="result.moves">Every frame was measured and moved into place.</span>
     <span data-phrase="result.moves-some">{count} of {total} frames could not be measured confidently and were left where they were.</span>

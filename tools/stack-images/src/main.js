@@ -12,6 +12,7 @@ import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { SCALES, outputSize, planRun, scaleThatFits } from './plan.js';
+import { runContext } from './run-context.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -78,6 +79,7 @@ const el = {
   referenceLabel: $('reference-label'),
   resultLabel: $('result-label'),
   resultInfo: $('result-info'),
+  resultSettings: $('result-settings'),
   resultMoves: $('result-moves'),
   download: $('download'),
 
@@ -838,6 +840,20 @@ function finished(result) {
     count: result.frames.length,
     seconds: ((performance.now() - startedAt) / 1000).toFixed(1),
   });
+
+  const context = runContext(completed.request);
+  const settings = phrase('result.settings', {
+    method: phrase(context.method),
+    alignment: phrase(context.alignment),
+    resolution: phrase(context.resolution),
+    gain: context.gain,
+    encoding: phrase(context.encoding.key, context.encoding.values),
+  });
+  el.resultSettings.textContent = context.parameter
+    ? phrase('result.settings.detail', {
+      settings, detail: phrase(context.parameter.key, context.parameter.values),
+    })
+    : settings;
 
   el.resultMoves.textContent = movesNote(result.moves, completed.request.align)
     + (result.cropped ? ` ${phrase('result.cropped')}` : '');

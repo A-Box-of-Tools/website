@@ -139,6 +139,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">La transparencia se descarta al apilar. La imagen guardada es opaca, incluso en formato PNG.</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>Resultado</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Memoria de trabajo</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -198,6 +200,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>Detalles de alineación</summary>
@@ -286,6 +289,26 @@
     <span data-phrase="progress.stack-banded">Apilando &mdash; banda {band} de {bands}, {done} de {total} tomas leídas</span>
     <span data-phrase="progress.encode">Escribiendo la imagen&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings} {detail}</span>
+    <span data-phrase="result.settings">Creado con {method}; alineación: {alignment}; resolución de trabajo: {resolution}; exposición: {gain}×; {encoding}.</span>
+    <span data-phrase="result.method.mean">Promedio</span>
+    <span data-phrase="result.method.median">Mediana</span>
+    <span data-phrase="result.method.sigma">Recorte sigma</span>
+    <span data-phrase="result.method.max">Aclarar</span>
+    <span data-phrase="result.method.min">Oscurecer</span>
+    <span data-phrase="result.method.sum">Sumar</span>
+    <span data-phrase="result.method.focus">Apilado de enfoque</span>
+    <span data-phrase="result.alignment.projective">Perspectiva automática</span>
+    <span data-phrase="result.alignment.translate">Solo desplazamiento</span>
+    <span data-phrase="result.alignment.similarity">Desplazamiento, rotación y escala</span>
+    <span data-phrase="result.alignment.none">Ninguna</span>
+    <span data-phrase="result.resolution.full">Completa</span>
+    <span data-phrase="result.resolution.half">Mitad</span>
+    <span data-phrase="result.resolution.quarter">Cuarta parte</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG con calidad {quality}</span>
+    <span data-phrase="result.settings.sigma">Umbral de recorte: {kappa}σ.</span>
+    <span data-phrase="result.settings.focus">Radio de nitidez: {radius} px.</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;, {size} &mdash; {count} tomas combinadas en {seconds} segundos</span>
     <span data-phrase="result.moves">Todas las tomas se han medido y se han llevado a su sitio.</span>
     <span data-phrase="result.moves-some">{count} de {total} tomas no se han podido medir con confianza y se han dejado donde estaban.</span>
