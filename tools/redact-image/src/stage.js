@@ -23,6 +23,8 @@ export class Stage {
   #handlers;
   #source = { width: 0, height: 0 };
   #elements = new Map();
+  #cancelGesture = null;
+  #pointerId = null;
 
   /**
    * @param {HTMLElement} stage  the element the preview canvas exactly fills
@@ -42,7 +44,13 @@ export class Stage {
   }
 
   setSource(width, height) {
+    this.cancelGesture();
     this.#source = { width, height };
+  }
+
+  /** A resized view or replacement picture cannot inherit an old pointer. */
+  cancelGesture() {
+    this.#cancelGesture?.();
   }
 
   /**
@@ -126,11 +134,14 @@ export class Stage {
 
   #onPointerDown = (event) => {
     if (event.button !== 0 || !this.#source.width) return;
+    if (this.#cancelGesture && event.pointerId !== this.#pointerId) return;
 
     const element = event.target.closest?.('.redact-box');
     const handle = event.target.dataset?.handle;
     const start = this.#pointAt(event);
 
+    this.cancelGesture();
+    this.#pointerId = event.pointerId;
     this.#stage.setPointerCapture?.(event.pointerId);
     event.preventDefault();
 
@@ -193,21 +204,33 @@ export class Stage {
         ghost.remove();
         if (isUsable(rect)) this.#handlers.onCreate(rect);
       },
+      () => ghost.remove(),
     );
   }
 
-  /** The three listeners every drag needs, wired and unwired in one place. */
-  #follow(onMove, onEnd) {
-    const move = (event) => onMove(this.#pointAt(event));
-    const up = () => {
+  /**
+   * Each drag owns its listeners and capture. Changing zoom retires them before
+   * the same pointer position starts describing a different source pixel.
+   */
+  #follow(onMove, onEnd, onCancel) {
+    const pointerId = this.#pointerId;
+    const owns = (event) => event.pointerId === pointerId;
+    const move = (event) => { if (owns(event)) onMove(this.#pointAt(event)); };
+    const cleanup = () => {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
-      window.removeEventListener('pointercancel', up);
-      onEnd?.();
+      window.removeEventListener('pointercancel', cancel);
+      if (this.#stage.hasPointerCapture?.(pointerId)) this.#stage.releasePointerCapture(pointerId);
+      if (this.#cancelGesture === retire) this.#cancelGesture = null;
+      this.#pointerId = null;
     };
+    const up = (event) => { if (owns(event)) { cleanup(); onEnd?.(); } };
+    const retire = () => { cleanup(); onCancel?.(); };
+    const cancel = (event) => { if (owns(event)) retire(); };
+    this.#cancelGesture = retire;
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
-    window.addEventListener('pointercancel', up);
+    window.addEventListener('pointercancel', cancel);
   }
 
   #onKeyDown = (event) => {

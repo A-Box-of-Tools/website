@@ -40,11 +40,52 @@
       <!-- The picture is a canvas, not an <img>, because the redaction is
            painted into it rather than laid over it. The boxes above it are
            outlines and handles only; src/stage.js adds them. -->
-      <div class="stage-wrap">
+      <div class="preview-tools">
+        <label for="zoom">Vorschau vergrößern</label>
+        <select id="zoom" aria-controls="stage-viewport">
+          <option value="1">An Breite anpassen</option>
+          <option value="2">2× angepasste Breite</option>
+          <option value="4">4× angepasste Breite</option>
+        </select>
+        <div class="preview-pan" role="group" aria-label="Vorschau verschieben">
+          <button type="button" id="pan-left" class="ghost" aria-controls="stage-viewport" aria-label="Vorschau nach links verschieben" title="Vorschau nach links verschieben">←</button>
+          <button type="button" id="pan-up" class="ghost" aria-controls="stage-viewport" aria-label="Vorschau nach oben verschieben" title="Vorschau nach oben verschieben">↑</button>
+          <button type="button" id="pan-down" class="ghost" aria-controls="stage-viewport" aria-label="Vorschau nach unten verschieben" title="Vorschau nach unten verschieben">↓</button>
+          <button type="button" id="pan-right" class="ghost" aria-controls="stage-viewport" aria-label="Vorschau nach rechts verschieben" title="Vorschau nach rechts verschieben">→</button>
+        </div>
+      </div>
+      <p class="note preview-note">Die Vergrößerung betrifft nur die Vorschau. Koordinaten und gespeichertes Bild behalten die ursprünglichen Pixel.</p>
+      <div class="stage-wrap" id="stage-viewport" tabindex="0" role="region" aria-label="Scrollbare Bildvorschau">
         <div class="stage" id="stage">
           <canvas id="preview" role="img" aria-label="Vorschau"></canvas>
         </div>
       </div>
+
+      <fieldset id="coordinates" class="options coordinate-editor" disabled>
+        <legend>Koordinaten des ausgewählten Bereichs</legend>
+        <p id="coordinate-selection"></p>
+        <div class="coordinate-grid">
+          <div>
+            <label for="coordinate-x">Links (px)</label>
+            <input id="coordinate-x" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-y">Oben (px)</label>
+            <input id="coordinate-y" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-width">Breite (px)</label>
+            <input id="coordinate-width" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-height">Höhe (px)</label>
+            <input id="coordinate-height" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+        </div>
+        <p id="coordinate-note" class="note">Ganze Pixel im Originalbild eingeben, gemessen von dessen linker oberer Ecke bei 0, 0. Anwenden hält den Bereich im Bild; Größen unter 6 Pixeln werden erweitert, soweit das Bild es erlaubt.</p>
+        <button type="button" id="apply-coordinates" class="ghost">Koordinaten anwenden</button>
+        <p id="coordinate-status" class="coordinate-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </fieldset>
 
       <fieldset class="options" id="style-group">
         <legend>Was ein neuer Kasten macht</legend>
@@ -190,6 +231,10 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="coordinates.selection">Bereich {n} — Originalpixel</span>
+    <span data-phrase="coordinates.empty">Einen Bereich auswählen oder einen in der Mitte hinzufügen, um seine Koordinaten zu bearbeiten.</span>
+    <span data-phrase="coordinates.invalid">Für alle vier Koordinaten ganze Zahlen mit positiver Breite und Höhe eingeben.</span>
+    <span data-phrase="coordinates.applied">Angewendet: ⁦{width} x {height}⁩ bei ⁦{x}, {y}⁩ in Originalpixeln.</span>
     <span data-phrase="region.remove">Entfernen</span>
     <span data-phrase="read.nodecode">dieser Browser konnte das Bild nicht dekodieren.</span>
     <span data-phrase="read.failed">Diese Datei konnte nicht geöffnet werden: {why}</span>

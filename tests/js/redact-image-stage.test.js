@@ -96,7 +96,7 @@ function build(regions) {
   owner.setSource(SOURCE.width, SOURCE.height);
   owner.render(regions, null);
   const boxes = stage.children.filter((child) => child.className.startsWith('redact-box'));
-  return { stage, boxes, gestures, regions };
+  return { stage, boxes, gestures, regions, owner };
 }
 
 /** The stage a node sits on: the press is listened for there, not on the box. */
@@ -109,11 +109,11 @@ function drag(target, from, to, { steps = 8 } = {}) {
   });
   for (let i = 1; i <= steps; i += 1) {
     window.fire('pointermove', {
-      clientX: from.x + ((to.x - from.x) * i) / steps,
+      pointerId: 1, clientX: from.x + ((to.x - from.x) * i) / steps,
       clientY: from.y + ((to.y - from.y) * i) / steps,
     });
   }
-  window.fire('pointerup', {});
+  window.fire('pointerup', { pointerId: 1 });
 }
 
 const grip = (box, handle) => box.children.find((child) => child.dataset.handle === handle);
@@ -163,4 +163,72 @@ test('a click that did not move changes nothing and is not undoable', () => {
     id: 'r1', x: 100, y: 100, width: 200, height: 100, style: 'fill',
   });
   assert.equal(gestures.length, 0);
+});
+
+
+/** Begin without finishing, as a menu change or new picture can interrupt a drag. */
+function press(target, x, y, pointerId = 1) {
+  stageOf(target).listeners.pointerdown[0]({
+    button: 0, pointerId, target, clientX: x, clientY: y, preventDefault() {},
+  });
+}
+
+test('display zoom changes pointer scale while the stored rectangle stays in source pixels', () => {
+  const fit = [{ id: 'r1', x: 100, y: 100, width: 200, height: 100, style: 'fill' }];
+  const enlarged = fit.map(region => ({ ...region }));
+  drag(build(fit).boxes[0], { x: 80, y: 80 }, { x: 100, y: 95 });
+  const fixture = build(enlarged);
+  fixture.stage.getBoundingClientRect = () => ({ ...STAGE, width: 1000, height: 800 });
+  drag(fixture.boxes[0], { x: 160, y: 160 }, { x: 200, y: 190 });
+  assert.deepEqual(enlarged, fit);
+  assert.equal(enlarged[0].x, 140);
+  assert.equal(enlarged[0].y, 130);
+});
+
+test('retiring a zoom drag stops late pointer changes and releases its capture', () => {
+  const regions = [{ id: 'r1', x: 100, y: 100, width: 200, height: 100, style: 'fill' }];
+  const { stage, boxes, owner, gestures } = build(regions);
+  let capture = null;
+  stage.setPointerCapture = id => { capture = id; };
+  stage.hasPointerCapture = id => capture === id;
+  stage.releasePointerCapture = () => { capture = null; };
+  press(boxes[0], 80, 80);
+  window.fire('pointermove', { pointerId: 1, clientX: 90, clientY: 80 });
+  assert.equal(regions[0].x, 120);
+  owner.cancelGesture();
+  stage.getBoundingClientRect = () => ({ ...STAGE, width: 1000, height: 800 });
+  window.fire('pointermove', { pointerId: 1, clientX: 200, clientY: 80 });
+  window.fire('pointerup', { pointerId: 1 });
+  assert.equal(regions[0].x, 120);
+  assert.equal(gestures.length, 1);
+  assert.equal(capture, null);
+});
+
+test('source replacement retires an unfinished new box rather than creating it later', () => {
+  const { stage, regions, owner } = build([]);
+  press(stage, 10, 10);
+  window.fire('pointermove', { pointerId: 1, clientX: 80, clientY: 60 });
+  const ghost = stage.children.find(child => child.className.includes('drawing'));
+  assert.equal(ghost.parent, stage);
+  owner.setSource(200, 100);
+  assert.equal(ghost.parent, null);
+  window.fire('pointermove', { pointerId: 1, clientX: 180, clientY: 160 });
+  window.fire('pointerup', { pointerId: 1 });
+  assert.deepEqual(regions, []);
+});
+
+test('foreign pointers cannot move or finish a drag and cancellation discards its new box', () => {
+  const { stage, regions } = build([]);
+  press(stage, 10, 10);
+  press(stage, 20, 20, 2);
+  window.fire('pointermove', { pointerId: 2, clientX: 80, clientY: 60 });
+  window.fire('pointerup', { pointerId: 2 });
+  assert.deepEqual(regions, []);
+  const ghost = stage.children.find(child => child.className.includes('drawing'));
+  assert.equal(ghost.parent, stage);
+  window.fire('pointermove', { pointerId: 1, clientX: 80, clientY: 60 });
+  window.fire('pointercancel', { pointerId: 1 });
+  assert.equal(ghost.parent, null);
+  window.fire('pointerup', { pointerId: 1 });
+  assert.deepEqual(regions, []);
 });
