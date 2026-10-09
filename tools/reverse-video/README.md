@@ -83,12 +83,29 @@ Two consequences worth knowing:
 
 - **The track is held whole.** Reversing needs the last sample before it can
   write the first, so the sound cannot be streamed the way the picture is.
-  Stereo 48 kHz costs about 23 MB a minute as 32-bit float, which is the one
-  real ceiling on how long a clip this tool will take.
+  Stereo 48 kHz costs about 23 MB a minute as 32-bit float. Track decoding
+  briefly holds both decoded pieces and assembled channels, roughly twice
+  that PCM amount; each piece is released as it is copied. The page estimates
+  both amounts from the known audio duration, rate and channel count. On the
+  browser-reader path it names the additional whole-file read and says when
+  the channel count is unknown. Encoded output and browser overhead are extra,
+  so these are estimates of sound storage rather than a safe total budget.
 - **AAC in, AAC out.** The re-encode is at 160 kbit/s. A browser that will not
   encode AAC — which is a real thing, and Firefox has been one — gets a video
   with no sound and a message saying exactly that, rather than a silent clip
   and no explanation.
+
+AAC submission waits for a small encoder queue and gives the browser an actual
+turn after bounded packet batches even when the queue drains immediately.
+Cancel closes the owned encoder, interrupts a pending queue wait or flush,
+and cannot return a completed sound track after the signal fires. Every
+AudioData is closed after submission. A stalled queue or flush has a deadline
+and a translated explanation rather than an indefinite wait. This applies to
+AAC encoding, not every stage of sound processing: a pending native decoder
+flush or whole-file `decodeAudioData` call must return before cancellation is
+observed. PCM allocation, copying and reversal are synchronous and likewise
+finish their current work before Cancel can run. Their late result is discarded
+when the signal is checked; cancellation does not return a finished output.
 
 The descriptor reading and writing (`esds`, `AudioSpecificConfig`, the `mp4a`
 sample entry) are the ones written for the join in `/trim-video/`, which met
@@ -176,3 +193,40 @@ a real decoder hands back, in a real file with B-frames, come out in the order
 this arithmetic says they should. That was checked by hand — a clip counted
 into numbered seconds, reversed, and watched — and it is the check to repeat
 after touching `reverse.js`.
+
+## Replacing a source and checking it in a browser
+
+Each source load owns its reader results, capability decisions and hidden
+playback worker until all of them are ready. Replacing or refusing a source
+retires that generation and its frame-rate measurement. An old success,
+failure, frame callback or picker cleanup cannot change the current source.
+The source and result players have separate translated names, and replacing
+the source removes the old result and download URL.
+
+The focused browser checks to repeat after changes to the sound or lifecycle:
+
+- Submit a two-minute stereo PCM track to the native AAC encoder. The queue
+  stays bounded, a browser-turn cancellation fires before every packet has
+  been submitted, the call rejects as cancellation, and all AudioData and
+  encoders close. On the built page, press Cancel during sound writing and
+  then export again successfully.
+- Reverse a clip with visibly ordered frames and different early/late tones.
+  Play the MP4 in the native result player and decode the sound: the picture
+  order and tone regions both reverse. Repeat with sound omitted, and check
+  the source/result duration with the documented AAC delay in mind.
+- Replace a delayed reader with a new file; let the old read succeed or fail.
+  Also replace during native metadata, decoder support and playback-frame-rate
+  measurement. The latest file keeps its facts, player, settings and picker
+  state, and a current refusal can recover with another valid source.
+- Inspect known-channel, unknown-channel, silent and omitted-sound memory
+  text. It must explain the temporary assembly peak and the excluded browser
+  and encoded-output costs. Check a translated page and a narrow result.
+
+The existing JavaScript test file also covers sound-memory arithmetic, bounded
+AAC submission, browser-turn cancellation and codec configuration cleanup. Those
+checks use controlled codec objects; native decoding and playback remain the
+browser checks above.
+
+Incoming MP4 edit lists are still intentionally ignored by the shared reader.
+Honoring or refusing those timelines remains a separate shared-media
+enhancement; the replacement and queue guards do not add edit-list support.

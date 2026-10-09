@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="Aperçu de la vidéo source"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -55,7 +55,9 @@
         <p class="field-note" id="audio-note">
           Retourné échantillon par échantillon, puis réencodé en AAC. Laissez-le
           désactivé pour un clip muet, ce qui va plus vite.
+          L’annulation peut attendre la fin de l’étape en cours de décodage ou de réorganisation du son.
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -79,7 +81,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Aperçu de la vidéo inversée"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Télécharger la vidéo</a>
@@ -115,8 +117,10 @@
     <span data-phrase="sound.off">Le clip inversé n&rsquo;aura aucun son.</span>
     <span data-phrase="sound.exact">Décodé, retourné échantillon par échantillon, et réencodé en AAC. Ce second encodage
       est inévitable&nbsp;: des paquets joués dans l&rsquo;autre sens ne sont pas une
-      inversion.</span>
-    <span data-phrase="sound.player">Lu par le navigateur, retourné échantillon par échantillon, et réencodé en AAC.</span>
+      inversion.
+      L’annulation peut attendre la fin de l’étape en cours de décodage ou de réorganisation du son.</span>
+    <span data-phrase="sound.player">Lu par le navigateur, retourné échantillon par échantillon, et réencodé en AAC.
+      L’annulation peut attendre la fin de l’étape en cours de décodage ou de réorganisation du son.</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069; (à partir de &#x2066;{fromWidth} x {fromHeight}&#x2069;&nbsp;; H.264 ne sait pas
       stocker une image à côté impair)</span>
@@ -131,6 +135,13 @@
     <span data-phrase="step.frame">Inversion de l&rsquo;image {done} sur {total} ({percent} %)</span>
     <span data-phrase="audio.descriptor">Erreur interne&nbsp;: la description audio est plus grosse que prévu.</span>
     <span data-phrase="audio.nosound">Aucun son n&rsquo;est revenu de ce fichier.</span>
+    <span data-phrase="memory.track">Mémoire du son&nbsp;: environ {pcm} pour la piste entière, et temporairement environ {peak} lors de l’assemblage des canaux. La sortie encodée et la mémoire supplémentaire du navigateur s’ajoutent à ces valeurs.</span>
+    <span data-phrase="memory.file">Mémoire du son&nbsp;: environ {pcm} pour la piste entière. Le navigateur lit aussi le fichier d’entrée entier de {file}&nbsp;; les copies supplémentaires au décodage, la sortie encodée et la mémoire supplémentaire du navigateur ne sont pas incluses.</span>
+    <span data-phrase="memory.unknown">Mémoire du son&nbsp;: le nombre de canaux est inconnu tant que le navigateur n’a pas lu le fichier d’entrée entier de {file}. Les tampons audio complets, les copies au décodage, la sortie encodée et la mémoire supplémentaire du navigateur s’ajoutent.</span>
+    <span data-phrase="memory.unavailable">Mémoire du son&nbsp;: les informations disponibles sur la piste ne suffisent pas pour une estimation. Le son entier et les copies temporaires lors de l’assemblage restent en mémoire&nbsp;; la sortie encodée et la mémoire supplémentaire du navigateur s’ajoutent.</span>
+    <span data-phrase="memory.off">Mémoire du son&nbsp;: aucun tampon audio décodé n’est nécessaire lorsque le son est omis.</span>
+    <span data-phrase="memory.none">Mémoire du son&nbsp;: cette source n’a pas de piste audio.</span>
+    <span data-phrase="audio.stalled">L’encodeur audio ne répond plus. Essayez un clip plus court, omettez le son ou utilisez un autre navigateur.</span>
     <span data-phrase="audio.noencode">Le son a été décodé mais rien n&rsquo;est revenu de l&rsquo;encodeur.</span>
     <span data-phrase="audio.toolarge">Le son de ce fichier n&rsquo;est pas de l&rsquo;AAC, l&rsquo;inverser voudrait donc
       dire confier le fichier entier au navigateur pour lecture &mdash; et ce fichier est

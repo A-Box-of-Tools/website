@@ -21,7 +21,7 @@
     </dl>
 
     <div class="stage-wrap" id="preview-wrap" hidden>
-      <video id="preview" class="stage" playsinline controls></video>
+      <video id="preview" class="stage" playsinline controls aria-label="原视频预览"></video>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -51,8 +51,9 @@
           声音也倒过来
         </label>
         <p class="field-note" id="audio-note">
-          一个采样一个采样地掉头，然后重新编码成 AAC。要做无声片子就关掉，那样更快。
+          一个采样一个采样地掉头，然后重新编码成 AAC。要做无声片子就关掉，那样更快。取消时，可能需要等当前的声音解码或重排步骤结束。
         </p>
+        <p class="field-note" id="audio-memory" hidden></p>
       </div>
     </div>
 
@@ -76,7 +77,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="倒放视频预览"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>下载视频</a>
@@ -106,8 +107,8 @@
     <span data-phrase="src.audio.none">没有</span>
     <span data-phrase="src.audio.whatever">播放器找到什么算什么</span>
     <span data-phrase="sound.off">倒放的片段将完全没有声音。</span>
-    <span data-phrase="sound.exact">解码、逐个采样倒过来，再重新编码成 AAC。第二次编码躲不掉：把数据包倒着播并不是倒放。</span>
-    <span data-phrase="sound.player">由浏览器读取、逐个采样倒过来，再重新编码成 AAC。</span>
+    <span data-phrase="sound.exact">解码、逐个采样倒过来，再重新编码成 AAC。第二次编码躲不掉：把数据包倒着播并不是倒放。取消时，可能需要等当前的声音解码或重排步骤结束。</span>
+    <span data-phrase="sound.player">由浏览器读取、逐个采样倒过来，再重新编码成 AAC。取消时，可能需要等当前的声音解码或重排步骤结束。</span>
     <span data-phrase="size.plain">&#x2066;{width} x {height}&#x2069;</span>
     <span data-phrase="size.evened">&#x2066;{width} x {height}&#x2069;（原为 &#x2066;{fromWidth} x {fromHeight}&#x2069;；H.264 没法存边长为奇数的画面）</span>
     <span data-phrase="frames.groups">{groups} 组共 {n}</span>
@@ -121,6 +122,13 @@
     <span data-phrase="step.frame">正在倒第 {done} 帧，共 {total} 帧（{percent}%）</span>
     <span data-phrase="audio.descriptor">内部错误：音频描述比预期的大。</span>
     <span data-phrase="audio.nosound">这个文件没有返回任何声音。</span>
+    <span data-phrase="memory.track">音频内存：整条音轨约需 {pcm}，合并声道时会暂时增至约 {peak}。编码后的输出和浏览器的额外内存不包含在内。</span>
+    <span data-phrase="memory.file">音频内存：整条音轨约需 {pcm}。浏览器还会读取整个 {file} 输入文件；解码时的额外副本、编码后的输出和浏览器的额外内存不包含在内。</span>
+    <span data-phrase="memory.unknown">音频内存：浏览器读取整个 {file} 输入文件后才能确定声道数。完整音频缓冲区、解码时的副本、编码后的输出和浏览器的额外内存都需要另算。</span>
+    <span data-phrase="memory.unavailable">音频内存：现有音轨信息不足以估算用量。完整音频和合并声道时的临时副本都会保存在内存中；编码后的输出和浏览器的额外内存需要另算。</span>
+    <span data-phrase="memory.off">音频内存：不保留声音时，无需解码后的音频缓冲区。</span>
+    <span data-phrase="memory.none">音频内存：这个视频没有音轨。</span>
+    <span data-phrase="audio.stalled">音频编码器停止响应。请尝试较短的视频、不保留声音，或换用其他浏览器。</span>
     <span data-phrase="audio.noencode">声音解码出来了，但编码器什么都没返回。</span>
     <span data-phrase="audio.toolarge">这个文件里的声音不是 AAC，要倒过来就得把整个文件交给浏览器去读——而这个文件太大了。视频已经在没有声音的情况下倒好了。</span>
     <span data-phrase="audio.unreadable">这个文件里读不出声音，所以倒放的视频没有声音。要么它没有音轨，要么这个浏览器解不了它带的那条。</span>
