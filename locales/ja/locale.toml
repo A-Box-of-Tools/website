@@ -50,6 +50,9 @@ complete = true
 #
 
 [hub]
+privacy_heading = "ファイルは、あなたの手元に。"
+privacy_lede = "ファイルはお使いの端末で処理します。一度ツールを開けば、オフラインでも使い続けられます。"
+support_heading = "あなたの支援で、これからも無料。"
 title = "無料のブラウザツール｜アップロード不要・登録不要｜abox.tools"
 # 全角で約80字。日本語の検索結果はこのあたりで切られます。
 description = "ファイルをアップロードしない無料ツール。画像をPDFやMP4にまとめる、サイズを指定して圧縮する、動画を切り抜く、EXIFを削除します。処理はすべてブラウザの中で終わります。"
@@ -93,21 +96,25 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "画像"
+short_name = "画像"
 note = "縮める、大きさを変える、写真がそっと記録しているものを消す。どれも端末の外には出ません。"
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "動画とアニメーション"
+short_name = "動画とGIF"
 note = "切るのも、変換するのも、写真から組み立てるのも、映像は端末の中だけで済みます。"
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "書類と音声"
+short_name = "PDFと音声"
 note = "書類を並べ替えるのも、録音を切り詰めるのも、どこかへ送って処理してもらう必要はありません。"
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "テキストとコードとパスワード"
+short_name = "テキストとコード"
 note = "読む、確かめる、ここで作る。トークンも設定ファイルもパスワードも、他人のサーバーには渡りません。"
 
 #
@@ -265,6 +272,10 @@ guarantees_note = """
       そのツールに本当にファイルが必要かを見分ける方法</a>\
     では、このサイトでも他のサイトでも自分で試せる確認方法を四つ挙げています。"""
 
+hub_categories_label = "ツールの分類"
+hub_view_all = "すべて表示"
+hub_show_fewer = "表示を減らす"
+hub_privacy_details = "ファイルが外に出ない仕組み"
 hub_filter_label = "ツールを探す"
 hub_filter_none = "該当するツールはありません。単語を減らすか、PDFやPNGなどのファイル形式で検索してみてください。"
 

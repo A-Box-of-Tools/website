@@ -126,19 +126,29 @@
 
 <header class="hub-head hub-home">
   <div class="head-row">
-    <p class="brand">
+    <a class="brand brand-home" href="./">
       {% include "partials/site-mark.html" %}
       abox.tools
-    </p>
-    {% include "partials/lang-pick.html" %}
+    </a>
+    <div class="head-actions">
+      <a class="hub-guides-link" href="{{ links.guides }}/">{{ site.guides.heading }}</a>
+      {% include "partials/lang-pick.html" %}
+    </div>
   </div>
-  <h1>{{ site.hub.heading }}</h1>
-  <p class="lede">
-{{ site.hub.lede }}
-  </p>
+  <div class="hub-intro">
+    <div>
+      <h1>{{ site.hub.heading }}</h1>
+      <p class="lede">{{ site.hub.lede }}</p>
+    </div>
+    <a class="hub-privacy-mark" href="#hub-privacy">
+      <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{{ privacy_glyph }}</svg>
+      {{ site.hub.privacy_heading }}
+    </a>
+  </div>
 </header>
 
 <main id="main">
+<div class="hub-catalogue">
 
   <!--
     The filter, directly above the categories it narrows.
@@ -169,6 +179,10 @@
     <span class="tool-filter-key" aria-hidden="true">/</span>
   </div>
 
+  <nav class="hub-categories" aria-label="{{ ui.hub_categories_label }}">
+{% for category in categories %}    <a href="#{{ category.id }}">{{ category.short_name }} <span class="category-count">{{ category.count }}</span></a>
+{% endfor %}  </nav>
+
   <!--
     The live region is the wrapper, and it is never hidden; only the sentence
     inside it is. That order is the whole point: a region has to be in the
@@ -196,27 +210,33 @@
     ADDING A CATEGORY
 
     Add a [[hub.categories]] table in config/site.toml and move its name out of
-    config/planned.toml. Once there are three or more categories, add a jump nav
-    under the header - with one or two it is noise.
+    config/planned.toml. Its short_name labels the jump link above; the full
+    name labels the section and the catalogue filter reads its note.
     ==========================================================================
   -->
 {% for category in categories %}
   <section class="category" id="{{ category.id }}" aria-labelledby="{{ category.id }}-h">
     <div class="category-head">
       <h2 id="{{ category.id }}-h">{{ category.name }}</h2>
-      <p class="category-note">{{ category.note }}</p>
+      <p class="category-note visually-hidden">{{ category.note }}</p>
+      <button class="category-toggle" type="button" hidden aria-expanded="false" aria-controls="{{ category.id }}-tools">
+        <span class="category-more">{{ ui.hub_view_all }} <span class="category-count">{{ category.count }}</span></span>
+        <span class="category-less" hidden>{{ ui.hub_show_fewer }}</span>
+        <span class="visually-hidden"> — {{ category.name }}</span>
+      </button>
     </div>
-    <ul class="tool-grid">
+    <ul class="tool-grid" id="{{ category.id }}-tools">
 {% for tool in category.tools %}      <li>
-        <a class="tool-card" href="{{ tool.out_slug }}/" data-tool="{{ tool.slug | e }}">
+        <a class="tool-card" href="{{ tool.out_slug }}/" data-tool="{{ tool.slug | e }}" data-search="{{ tool.search_text | e }}">
           <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"
                focusable="false">{{ tool.glyph_svg }}</svg>
           <!-- `name` is the tool's plain-text name, the one that also goes into
                the structured data above, so it is escaped on the way in here. -->
-          <span class="tool-name">{{ tool.name | e }}</span>
-          <span class="tool-desc">
-{{ tool.card }}
+          <span class="tool-copy">
+            <span class="tool-name">{{ tool.name | e }}</span>
+            <span class="tool-desc">{{ tool.tagline }}</span>
           </span>
+          <span class="tool-arrow" aria-hidden="true">↗</span>
         </a>
       </li>
 {% endfor %}    </ul>
@@ -251,33 +271,32 @@
     here, and support is offered only after the tools they help keep free.
   -->
   <div class="hub-details">
-    <ul class="guarantees">
-{% for g in site.hub.guarantees %}    <li>
-        <span class="g-title">{{ g.title }}</span>
-        <span class="g-body">
-{{ g.body }}
-        </span>
-      </li>
-{% endfor %}    </ul>
+    <div class="hub-privacy" id="hub-privacy">
+      <h2>{{ site.hub.privacy_heading }}</h2>
+      <p class="hub-privacy-lede">{{ site.hub.privacy_lede }}</p>
+      <details class="hub-privacy-details">
+        <summary>{{ ui.hub_privacy_details }}</summary>
+        <ul class="guarantees">
+{% for g in site.hub.guarantees %}          <li>
+            <span class="g-title">{{ g.title }}</span>
+            <span class="g-body">{{ g.body }}</span>
+          </li>
+{% endfor %}        </ul>
 
-    <!--
-      The three claims above are worth nothing if a reader has no way to test
-      them, and "read our privacy policy" is not a way to test anything. This
-      points at the guide that sets out how to check a tool like this one -
-      including the checks that can be run against this site.
-    -->
-    <p class="guarantees-note">
-{{ ui.guarantees_note }}
-    </p>
-
-    <div class="support-cta">
-      {% include "partials/bmc.html" %}
-      <p class="support-note">
-{{ site.hub.support_note }}
-      </p>
+        <!-- The claims stay beside the guide that lets a reader test them,
+             including the checks they can run against this site. -->
+        <p class="guarantees-note">{{ ui.guarantees_note }}</p>
+      </details>
     </div>
+
+    <aside class="support-cta">
+      <h2>{{ site.hub.support_heading }}</h2>
+      <p class="support-note">{{ site.hub.support_note }}</p>
+      <a class="hub-support-link" href="https://www.buymeacoffee.com/{{ site.bmc.slug }}" target="_blank" rel="noopener noreferrer">{{ site.bmc.text }}</a>
+    </aside>
   </div>
 
+</div>
 </main>
 
 {% include "partials/footer.html" %}

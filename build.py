@@ -1848,13 +1848,15 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
             # it and /index.html went out with four headings and no tools
             # under any of them.
             if locale['is_base'] or not locale['debt'].get(slug):
-                chosen.append(tool)
+                # A short tagline scans better, while search still needs the
+                # details a reader could find in the former, fuller card.
+                chosen.append({**tool, 'search_text': sitelib.to_text(tool['card'])})
             listed.add(slug)
         # A category nobody in this language can use is not a heading worth
         # rendering. It cannot happen today - no language is missing a whole
         # category - but an empty one would render as a title over nothing.
         if chosen:
-            categories.append({**category, 'tools': chosen})
+            categories.append({**category, 'tools': chosen, 'count': len(chosen)})
 
     stray = sorted(set(by_slug) - listed)
     if stray:
@@ -1877,6 +1879,7 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
         # per language would be that many ways to fetch one file.
         'offline_href': f'/offline.js?v={offline_v}',
         'filter_href': f'/hub-filter.js?v={filter_v}',
+        'privacy_glyph': iconlib.inner(ROOT, 'file-lock'),
     })
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')

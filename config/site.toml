@@ -323,6 +323,10 @@ schema_about = "Browser-based file utilities that process files locally without 
 # below the catalogue so they do not put a phone's first tool off screen.
 lede = "Everything runs in your browser. No uploads, no sign-in."
 
+privacy_heading = "Your files stay yours."
+privacy_lede = "Tools process your files on your device. Open one once and it keeps working offline."
+support_heading = "Free, with your support."
+
 support_note = """
       These tools are free and always will be. If one saved you a job, this is
       the only thing on the site that asks you for anything."""
@@ -371,6 +375,7 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Images"
+short_name = "Images"
 note = "Resize one, shrink one, take out what it quietly records about you, or draw one from nothing - none of it sent anywhere."
 order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-to-jpg", "png-to-webp", "avif-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image", "image-to-svg", "compare-heights", "business-profile-preview"]
 
@@ -381,6 +386,7 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; animation"
+short_name = "Video &amp; GIFs"
 note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
 order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
@@ -391,6 +397,7 @@ order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documents &amp; audio"
+short_name = "PDF &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
 order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
@@ -404,6 +411,7 @@ order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pd
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
+short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
 order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
@@ -733,6 +741,11 @@ guarantees_note = """
 # The label is used twice on one control - as the placeholder a sighted reader
 # sees and as the <label> a screen reader hears - so it has to read as an
 # instruction rather than as a heading. "Find a tool", not "Search".
+hub_categories_label = "Tool categories"
+hub_view_all = "View all"
+hub_show_fewer = "Show fewer"
+hub_privacy_details = "How it stays private"
+
 hub_filter_label = "Find a tool"
 hub_filter_none = "No tool matches that. Try fewer words or a file format, such as PDF or PNG."
 

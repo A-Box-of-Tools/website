@@ -201,6 +201,9 @@ complete = true
 #
 
 [hub]
+privacy_heading = "Tus archivos siguen siendo tuyos."
+privacy_lede = "Las herramientas procesan tus archivos en tu dispositivo. Una vez abiertas, siguen funcionando sin conexión."
+support_heading = "Gratis, con tu apoyo."
 title = "Herramientas gratis en el navegador &mdash; sin subir nada y sin cuenta | abox.tools"
 # Por debajo de 155 caracteres, como en inglés: Google corta la descripción más
 # o menos ahí, y aquí el final es la parte que vende el sitio.
@@ -245,21 +248,25 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Imágenes"
+short_name = "Imágenes"
 note = "Redúcela, cámbiale el tamaño o quítale lo que cuenta de ti sin que lo sepas. Nada de eso se manda a ninguna parte."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vídeo y animación"
+short_name = "Vídeo &amp; GIF"
 note = "Córtalo, conviértelo o móntalo a partir de fotos, sin que la grabación salga de tu dispositivo."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documentos y audio"
+short_name = "PDF &amp; audio"
 note = "Reordena un documento o recorta una grabación, sin mandar ninguno de los dos a procesar fuera."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texto, códigos y contraseñas"
+short_name = "Texto &amp; códigos"
 note = "Léelo, compruébalo o créalo aquí. Ningún token, ningún archivo de configuración y ninguna contraseña acaban en el servidor de otro."
 
 #
@@ -421,6 +428,10 @@ guarantees_note = """
     propone cuatro comprobaciones que puedes hacer tú, aquí o en cualquier otro
     sitio."""
 
+hub_categories_label = "Categorías de herramientas"
+hub_view_all = "Ver todas"
+hub_show_fewer = "Ver menos"
+hub_privacy_details = "Cómo se protegen tus archivos"
 hub_filter_label = "Buscar una herramienta"
 hub_filter_none = "Ninguna herramienta coincide. Prueba con menos palabras o con un formato de archivo, como PDF o PNG."
 

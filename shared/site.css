@@ -93,34 +93,159 @@ body {
   font-size: 1.02rem;
 }
 
-/* The hub leads into a catalogue rather than an article. Its opening stays
-   compact without changing the headings on guides and legal pages. */
-.hub-head.hub-home { padding: 1.5rem 0 1.25rem; }
+/* Three previews per category let a visitor scan the whole box before opening
+   one group. These rules belong to the homepage, leaving article pages
+   at the widths they were written for. */
+.hub-home,
+.hub-home ~ main,
+.hub-home ~ footer { max-width: 1080px; }
 
-.hub-home h1 {
-  max-width: none;
-  font-size: clamp(1.65rem, 1.2rem + 1.8vw, 2.15rem);
-  text-wrap: balance;
+.hub-head.hub-home { padding: 0; }
+
+.hub-home .head-row {
+  min-height: 78px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border);
 }
 
-/* A Japanese word should not split just to balance the heading's two lines.
-   Punctuation remains a break, with an emergency wrap for very narrow screens. */
-.hub-home h1:lang(ja),
-.hub-home h1:lang(zh) {
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+.hub-home .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
 }
 
-.hub-home .lede {
-  margin-top: 0.5rem;
-  max-width: none;
-  font-size: 0.95rem;
+.hub-home .brand .site-logo { width: 1.6rem; height: 1.6rem; }
+.hub-home .head-actions { display: flex; align-items: center; gap: 1.25rem; }
+.hub-home .lang-pick > summary { min-height: 44px; padding: 0.5rem 0.65rem; }
+.hub-home .hub-guides-link { color: var(--text-dim); font-size: 0.88rem; text-decoration: none; }
+.hub-home .hub-guides-link:hover { color: var(--accent); }
+
+.hub-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem 0 1.625rem;
+}
+
+.hub-home h1 { font-size: 2rem; letter-spacing: -0.035em; text-wrap: initial; }
+.hub-home .lede { margin-top: 0.5rem; }
+
+.hub-privacy-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.hub-privacy-mark .tool-icon { width: 1.1rem; height: 1.1rem; }
+.hub-privacy-mark:hover { color: var(--accent); }
+
+.hub-catalogue .tool-filter {
+  min-height: 54px;
+  margin-bottom: 0;
+  padding-inline: 1rem;
+  gap: 0.75rem;
+  box-shadow: none;
+}
+
+.hub-catalogue .tool-filter-icon svg { width: 20px; height: 20px; }
+.hub-catalogue .tool-filter input { min-height: 50px; }
+
+.hub-categories { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.875rem 0 1.25rem; }
+.hub-categories a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.hub-categories a:hover { border-color: var(--accent); color: var(--accent); }
+.category-count { font-variant-numeric: tabular-nums; }
+.hub-categories .category-count { font-size: 0.75rem; }
+.hub-catalogue .category { margin-bottom: 1.75rem; scroll-margin-top: 1rem; }
+.hub-catalogue .category-head {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.hub-catalogue .category-head h2 { font-size: 1.07rem; }
+.category-toggle {
+  min-height: 44px;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.category-toggle:hover { text-decoration: underline; }
+.hub-catalogue .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.875rem; }
+.hub-catalogue .tool-card {
+  grid-template-columns: 2rem minmax(0, 1fr) 0.875rem;
+  align-content: start;
+  align-items: start;
+  gap: 0.75rem;
+  min-height: 126px;
+  padding: 1.125rem;
+  box-shadow: none;
+}
+
+.hub-catalogue .tool-card .tool-icon { margin-top: 0.15rem; }
+.hub-catalogue .tool-name { display: block; font-size: 0.95rem; line-height: 1.3; margin-bottom: 0.35rem; }
+.hub-catalogue .tool-desc { display: block; font-size: 0.82rem; line-height: 1.55; }
+.tool-arrow { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+[dir="rtl"] .tool-arrow { transform: scaleX(-1); }
+
+.hub-catalogue .hub-details { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; padding-top: 1.5rem; }
+.hub-details h2 { margin: 0 0 0.4rem; font-size: 1.07rem; letter-spacing: -0.01em; }
+.hub-privacy-lede { margin: 0 0 0.6rem; max-width: 65ch; color: var(--text-dim); font-size: 0.9rem; }
+.hub-privacy-details > summary { min-height: 44px; padding: 0.5rem 0; color: var(--accent); font-size: 0.85rem; cursor: pointer; }
+.hub-privacy-details .guarantees { grid-template-columns: 1fr; margin: 0.5rem 0 1rem; }
+.hub-catalogue .support-cta { display: block; margin: 0; padding: 0; border: 0; }
+.hub-catalogue .support-note { margin-bottom: 0.6rem; max-width: none; }
+.hub-support-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); font-size: 0.85rem; }
+
+@media (max-width: 800px) {
+  .hub-privacy-mark { display: none; }
+  .hub-catalogue .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 620px) {
-  .hub-head.hub-home { padding-top: 1rem; }
+  .hub-home .head-row { min-height: 66px; }
+  .hub-home .hub-guides-link { display: none; }
+  .hub-intro { padding: 1.55rem 0 1.2rem; }
   .hub-home h1 { font-size: 1.65rem; }
+  .hub-home .lede { font-size: 0.88rem; }
+  .hub-catalogue .tool-filter { min-height: 52px; padding-inline: 0.8rem; }
+  .hub-categories { gap: 0.45rem; padding: 0.75rem 0 1.25rem; }
+  .hub-categories a { font-size: 0.75rem; padding-inline: 0.6rem; }
+  .hub-categories .category-count { display: none; }
+  .hub-catalogue .tool-grid { grid-template-columns: 1fr; gap: 0.625rem; }
+  .hub-catalogue .tool-card { min-height: 104px; padding: 1rem; gap: 0.625rem; }
+  .hub-catalogue .hub-details { grid-template-columns: 1fr; gap: 1.25rem; }
 }
+
+.hub-home h1:lang(ja),
+.hub-home h1:lang(zh) { word-break: keep-all; overflow-wrap: anywhere; }
 
 /* ---- buy me a coffee ---------------------------------------------------- */
 
