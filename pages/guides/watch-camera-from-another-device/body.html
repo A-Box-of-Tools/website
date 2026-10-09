@@ -1,0 +1,39 @@
+<section>
+  <h2>What you need</h2>
+  <p>Use two devices with browsers that support camera access and WebRTC. Both need internet access for an introduction and a network that lets them reach each other. A phone on Wi-Fi and a computer on Ethernet can work when that network permits communication between them.</p>
+  <p>Open this site's trusted HTTPS address. An ordinary HTTP address on a LAN IP cannot request a camera. If your browser or operating system asks for local-network access, allow it for this session.</p>
+</section>
+<section>
+  <h2>Start on the camera device</h2>
+  <ol>
+    <li>Choose Use this device's camera.</li>
+    <li>Prefer the front or back camera, then choose Start camera.</li>
+    <li>Allow camera access. The page requests video only.</li>
+  </ol>
+  <p>Your local preview appears along with a viewer link, random code and QR code. Nothing is sent as video yet. Keep this page visible and the device awake; switching away stops capture. Stop before changing the preferred camera.</p>
+</section>
+<section>
+  <h2>Connect the viewer and approve it</h2>
+  <ol>
+    <li>On the other device, open the viewer link or scan its QR code. You can also choose Watch another device and enter the code.</li>
+    <li>Optionally enter a note the source owner will recognise, then choose Connect and ask to view.</li>
+    <li>On the camera device, approve the expected request. Live video then appears on the viewer.</li>
+  </ol>
+  <p>The note is not verified identity. Recognise the person and expected request before approving. Pairing exchanges network addresses even before approval; approval gates the video track. One viewer receives video at a time. If playback pauses, choose Play live video; Full screen enlarges the view where supported.</p>
+</section>
+<section>
+  <h2>Stop when finished</h2>
+  <p>Stop camera and end the link releases capture and closes the invitation. Hiding or closing the source page does the same. Disconnect on the viewer clears its live view while the source retains a local preview for another request.</p>
+  <p>A camera permission granted after Stop is released immediately. Starting again creates a fresh code. Ending a session stops future video; a viewer can still keep anything they independently captured on their own screen.</p>
+</section>
+<section>
+  <h2>If the devices cannot connect</h2>
+  <p>A shared Wi-Fi name does not establish reachability. Guest isolation, firewalls, blocked local address discovery, browser and OS local-network permissions, or VPN routing can block the direct connection. Stop on both devices, check permissions and the network, then try a fresh link.</p>
+  <p>Connection details reports the selected candidate types and the viewer's decoded frame count. The tool uses only host candidates, with no STUN server, TURN relay or relay fallback. A VPN, public interface or operating-system route can affect the path; host candidates do not prove that traffic stays inside a physical building.</p>
+</section>
+<section>
+  <h2>What the introduction service sees</h2>
+  <p>Start or Connect opens a WebSocket to the rendezvous. The connection stays open during the session, and losing it ends the session. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Rooms exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
+  <p>This is a browser camera view: it has no microphone or recording feature, and it does not install a system webcam for other applications.</p>
+</section>

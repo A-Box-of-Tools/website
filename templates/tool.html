@@ -15,11 +15,10 @@
   build, and the deployed site is built from the sources, not from this file.
 -->
 <!--
-  This tool has no network feature of its own, so the only origins named below
-  are Google's ad and measurement endpoints and the donate button, which are the
-  price of the site being free. There is no origin here under this site's
-  control, so a file dropped on this page has nowhere to go even if something
-  tried to send it.
+  The site-wide policy names ad and measurement endpoints and the donate
+  button. A tool with its own network feature adds the origins it needs in
+  its metadata and explains the feature on its page. Those additions and their
+  purpose are included below.
 
   The list is not written here. It comes from config/site.toml, which every page
   on the site is built from, so the pages cannot drift apart: a tool missing an
@@ -286,7 +285,7 @@
     <!-- Live, measured, and wrong-provable: this is the part that turns the
          claim above into something a sceptical visitor can check. Filled in
          by src/shared/trust.js, loaded at the foot of the page. data-expected
-         names the hosts this tool's own CSP lets it talk to - share-text's
+         names the hosts this tool's own CSP lets it talk to - its declared
          rendezvous - which the check counts and does not report, because the
          page has already declared them. -->
     <div class="pledge-live">

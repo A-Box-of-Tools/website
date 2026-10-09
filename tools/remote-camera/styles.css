@@ -1,0 +1,31 @@
+/* A preview and its invitation stay together so the camera owner can see
+   exactly when capture is running and which link they are offering. */
+.camera-modes { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.camera-modes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+.camera-requirements, .camera-consent { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
+.camera-facing-field { max-width: 22rem; }
+.camera-status { margin: 0.8rem 0; min-height: 1.6em; font-weight: 600; }
+.camera-status.warn { color: var(--danger); }
+.run-row .big { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.camera-video-panel { margin: 1rem 0; }
+.camera-video-panel video { display: block; width: 100%; max-height: 32rem; min-height: 12rem; aspect-ratio: 16 / 9; object-fit: contain; background: #101418; border: 1px solid var(--border); border-radius: var(--radius); }
+.camera-invite { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 1.25rem; align-items: center; margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
+.camera-link-fields { min-width: 0; }
+.camera-link-fields label { display: block; margin-bottom: 0.4rem; }
+#camera-link { width: 100%; box-sizing: border-box; margin-bottom: 0.5rem; }
+#camera-qr { width: 180px; height: 180px; max-width: 100%; background: #fff; image-rendering: pixelated; }
+.camera-code-line { overflow-wrap: anywhere; line-height: 1.7; margin-bottom: 0; }
+#camera-code { display: inline-block; font: 600 1rem ui-monospace, monospace; user-select: all; }
+.camera-request { display: flex; gap: 0.65rem; flex-wrap: wrap; align-items: center; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+.camera-request p { flex: 1 1 14rem; margin: 0; overflow-wrap: anywhere; }
+.camera-request button { flex: 0 0 auto; }
+.camera-details { margin: 1rem 0; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; }
+.camera-details summary { cursor: pointer; font-weight: 600; }
+.camera-details p { color: var(--text-dim); line-height: 1.65; }
+@media (max-width: 36rem) {
+  .camera-modes { flex-direction: column; }
+  .camera-invite { grid-template-columns: 1fr; }
+  #camera-qr { justify-self: center; }
+  .camera-request button { flex: 1 1 100%; }
+  .camera-video-panel video { min-height: 9rem; }
+}

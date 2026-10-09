@@ -1,0 +1,171 @@
+# A live camera is shared only after its owner approves a viewer. The first
+# connection contains a control channel; approval adds the single video track.
+# The rendezvous introduces browsers without carrying their media. Host-only
+# ICE is deliberate: this tool does not fall back to an internet relay.
+slug = "remote-camera"
+name = "Remote Camera"
+heading = "Watch a camera <span class=\"h1-kw\">&mdash; from another device on your local network</span>"
+tagline = "Open a camera on one device and approve one viewer in another browser. Live video travels directly between them, encrypted."
+icon = "&#128247;"
+favicon = "&#128247;"
+glyph = "camera"
+category = "video-and-animation"
+roadmap_group = "video"
+css_parts = ["form", "notes"]
+js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr"]
+lastmod = "2026-10-09"
+title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
+description = "Watch a phone or computer camera from another browser on a reachable local network. Direct encrypted video, source approval, no microphone or recording."
+og_title = "Watch another device's camera"
+og_description = "A direct camera view between two browsers, with camera permission and viewer approval on the source device."
+og_image_alt = "Remote Camera - watch a camera from another device"
+og_card = "A live camera, straight from one browser to another."
+csp_note = """
+  This tool opens a WebSocket to the rendezvous only after Start camera or
+  Connect is chosen. It carries WebRTC descriptions and host candidates,
+  never video. The encrypted control channel carries the viewer note and
+  approval; video is added only after approval. Both peers configure no STUN
+  server or TURN relay and filter remote descriptions and candidates too.
+  WebRTC media is outside CSP's connect-src. The existing worker source is
+  workers/rendezvous/worker.js; it keeps no media or room content."""
+pledge = """
+    Your camera video goes directly to the one viewer you approve over an
+    encrypted WebRTC connection. Our introduction service carries connection
+    negotiation, never the video or the viewer's note. There is no recording
+    feature and no microphone request. Stop, hide or close the camera page
+    and capture ends. Internet access is required for the introduction;
+    pairing also reveals network addresses to the other browser."""
+live_hint = """
+      Watch DevTools while connecting: one WebSocket to the rendezvous carries
+      setup messages. Camera frames and the viewer's note travel the encrypted
+      peer connection. The page stays available offline; pairing needs internet."""
+read_first = """
+, <code>src/capture.js</code> for permission cancellation and track cleanup,
+      and <code>src/session.js</code> for approval before video and host-only
+      connection policy. The introduction service source is
+      <code>workers/rendezvous/worker.js</code> in the same repository"""
+howto_heading = "How to watch another device's camera"
+card = "A phone or computer camera in another browser, with one approved viewer and direct encrypted video."
+
+[csp]
+"connect-src" = ["wss://rendezvous.abox.tools"]
+
+[words]
+plural = "camera video"
+choose = "a camera"
+analytics_extra = ", and no camera video or viewer notes are passed to those scripts"
+
+[[facts]]
+mark = "&#10003;"
+text = "Camera only"
+[[facts]]
+mark = "&#10003;"
+text = "Approve the viewer"
+[[facts]]
+mark = "&#10003;"
+text = "Direct encrypted video"
+[[facts]]
+mark = "&#10007;"
+text = "No recording"
+[[facts]]
+mark = "&#10007;"
+text = "No internet relay"
+
+[[privacy]]
+title = "Video goes to the viewer you approve."
+body = """
+      The first WebRTC connection carries only an encrypted control channel.
+      Your camera track is added after you approve the request, and only one
+      viewer receives it. Video uses the browser's encrypted media transport
+      directly between devices. It never passes through the rendezvous.
+      A viewer can still capture their own screen; ending the link stops future
+      video and cannot remove anything they already kept."""
+[[privacy]]
+title = "The introduction requires internet and exposes connection metadata."
+body = """
+      Start camera or Connect opens one WebSocket to
+      <code>rendezvous.abox.tools</code>. It stays open while the session is
+      active. The service sees the code, IP addresses, connection times, and
+      WebRTC setup descriptions and candidates; those setup messages are not
+      encrypted from the service. It does not receive video or the viewer note.
+      Rooms exist only on open connections. Cloudflare keeps connection logs
+      for seven days: the code, address and time, never a payload."""
+[[privacy]]
+title = "A direct connection shares addresses before video is approved."
+body = """
+      Opening a viewer link selects the viewing form and waits. Connect asks
+      the rendezvous to introduce the devices, and each browser then learns
+      addresses offered by the other. Approval controls video, not that address
+      exchange. The name you enter is a note for the source, not verified identity.
+      Recognise the person and expected request before approving."""
+[[privacy]]
+title = "Host candidates are a connection policy, not proof of a building."
+body = """
+      No STUN server or TURN relay is configured, and non-host candidates are
+      removed from descriptions and trickled messages. A VPN, public interface
+      or operating-system route can affect where host addresses lead. Use a
+      reachable local network; guest isolation, firewalls and local-network
+      permissions may prevent the connection. There is no relay fallback."""
+[[privacy]]
+title = "Stop releases the camera and ends the invitation."
+body = """
+      Stop on the source closes its tracks, peers and introduction connection.
+      Hiding or closing its page does the same, as does losing the introduction
+      connection. A permission granted after Stop is immediately released.
+      Disconnect on the viewer ends its connection while the source keeps its
+      local preview available for a new request. Codes and notes are not saved
+      by this tool."""
+[[privacy]]
+title = "The site frame still loads its usual third parties."
+body = """
+      Advertising and measurement scripts come from Google, and the donate
+      button from Buy Me a Coffee. The tool does not pass them video or notes.
+      Third-party scripts can read the page address, which includes the camera
+      code in a viewer link. Keep approval on by recognising the intended
+      viewer; knowing a code allows a request and never grants video by itself."""
+
+[[howto]]
+title = "Start on the camera device."
+body = "Open this HTTPS page on the phone or computer whose camera you want. Prefer the front or back camera, choose Start camera, and allow camera access. No microphone is requested."
+[[howto]]
+title = "Invite the viewing device."
+body = "Open the viewer link or scan the QR code on the other device. You can also choose Watch another device and enter the code. Both devices need internet for pairing and a network that lets them reach each other."
+[[howto]]
+title = "Request a view and approve it."
+body = "The viewer chooses Connect and ask to view. On the source, approve the request you recognise. Live video then appears in the viewer; use Play live video if the browser pauses playback."
+[[howto]]
+title = "Keep the source visible, then stop."
+body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera. Switching away from the source page also stops it."
+
+[[faq]]
+q = "Must both devices use the same Wi-Fi?"
+a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A shared Wi-Fi name alone does not establish reachability: guest isolation, firewalls, VPN routing and browser permissions can block it."
+[[faq]]
+q = "Does it work without internet?"
+a = "No. The introduction uses our public rendezvous and its connection stays open during the session. Video travels directly between the browsers, with no configured internet relay. Losing the introduction connection ends the session."
+[[faq]]
+q = "Does this turn my phone into a webcam for meeting apps?"
+a = "It provides a live view in another browser. It does not install a system webcam or make that camera available to desktop meeting applications."
+[[faq]]
+q = "Why must the camera page use HTTPS?"
+a = "A browser requires a secure context and camera permission. Use the site's trusted HTTPS address. Ordinary HTTP on a local-network IP cannot request a camera; localhost is a development exception on the same computer."
+[[faq]]
+q = "Can anyone with the link watch?"
+a = "A link or code permits a connection request and network-address exchange. The source must approve before a video track is sent. The optional viewer note is not proof of identity, so approve only the person and request you expect."
+[[faq]]
+q = "Can several devices watch at once?"
+a = "One viewer at a time. Disconnect the current viewer before approving another. Up to four peer connections may be pending; further requests are refused while busy."
+[[faq]]
+q = "Why did sharing stop when I changed apps?"
+a = "Hiding or closing the source page deliberately stops capture and ends the link. Keep it visible and awake. Start again to create a new invitation after returning."
+[[faq]]
+q = "Does it send sound or record video?"
+a = "The tool requests video only and has no recording feature. It does not ask for microphone access. A viewer can independently capture their screen, as with anything they can see."
+[[faq]]
+q = "Why can pairing fail on the same Wi-Fi?"
+a = "Guest networks and client isolation can separate devices. Firewalls, blocked local address discovery, OS and browser local-network permissions, or VPN routes can also prevent a direct connection. Stop on both devices, check permissions and network reachability, and try a fresh link. The tool will not switch to an internet relay."
+
+[schema]
+category = "MultimediaApplication"
+description = "Watch one approved device camera in another browser over a direct encrypted WebRTC connection, with no microphone or recording feature."
+features = ["Camera video without microphone access", "One approved viewer at a time", "Direct encrypted WebRTC video", "Viewer link, random code and QR code", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata"]
