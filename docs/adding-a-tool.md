@@ -122,6 +122,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/mp4-boxes.js` | `js_parts = ["mp4-boxes"]` | the bytes an MP4 is built out of: big-endian integers, four-character types, a box round a payload; both writers import it |
 | `shared/js/mp4-writer.js` | `js_parts = ["mp4-writer"]` | the MP4 writer for tracks being copied: two tracks, interleaved, sample entries as bytes; imports `mp4-boxes` |
 | `shared/js/mp4-muxer.js` | `js_parts = ["mp4-muxer"]` | the MP4 writer for one H.264 track an encoder just produced; imports `mp4-boxes` |
+| `shared/js/gif-working-budget.js` | `js_parts = ["gif-working-budget"]` | opt-in safe RGBA logical-screen arithmetic; consumers choose their retained copies, extra buffers and estimated byte ceiling |
 | `shared/js/webcodecs.js` | `js_parts = ["webcodecs"]` | a decoder's configuration, a track's frame rate, microseconds, and the wait that keeps a feed loop behind the codecs |
 | `shared/js/errors.js` | `js_parts = ["errors"]` | the cancellation every page ignores by name, and `said`, the error whose message is a phrase key |
 | `shared/js/cooperative-work.js` | `js_parts = ["cooperative-work", "errors"]` | a work checkpoint yields real browser turns so long jobs can report progress and respond to Cancel; imports `errors` |

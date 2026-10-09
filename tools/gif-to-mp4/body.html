@@ -37,6 +37,7 @@
     </p>
 
     <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+    <p class="budget-note">The 512 MiB limit is an estimate for retained pixels, composition and video buffers. Private codec memory may add more. Cancel retires the run; a native read or synchronous drawing call may still finish.</p>
 
     <div id="background-row" class="background-row" hidden>
       <label class="field" for="background">
@@ -97,6 +98,7 @@
     <span data-phrase="file.facts">{size} &middot; {frames} frames &middot; {length} &middot; {frame}</span>
     <span data-phrase="plan.nofile">Choose a GIF above and this will say what the video will be.</span>
     <span data-phrase="plan.same">{frame}, {frames} frames {timing}, {length} long, H.264 at about {rate}.</span>
+    <span data-phrase="plan.scaled">{frame} (reduced from {from} to fit H.264, with even-edge padding when needed), {frames} frames {timing}, {length} long, H.264 at about {rate}.</span>
     <span data-phrase="plan.resized">{frame} (the GIF is {from}; H.264 needs even edges, so a line of the background
       is added), {frames} frames {timing}, {length} long, H.264 at about {rate}.</span>
     <span data-phrase="timing.steady">at a steady {fps} a second</span>
@@ -135,6 +137,7 @@
       decides, and most feeds and chat apps loop a short one.</span>
     <span data-phrase="facts.loop.none">The GIF was set to play once. An MP4 carries no such setting; the
       player decides.</span>
+    <span data-phrase="facts.background">Transparent parts were placed over {colour}.</span>
     <span data-phrase="facts.time">Done in {seconds}.</span>
     <span data-phrase="support.nowebcodecs">This browser cannot encode video. Chrome, Edge and Safari can; Firefox
       from version 130.</span>
@@ -146,8 +149,9 @@
     <span data-phrase="mp4.toobig">The finished file would be over 4 GB, which an MP4 written here cannot hold.</span>
     <span data-phrase="gif.tooshort">That file is too short to be a GIF.</span>
     <span data-phrase="gif.notagif">That is not a GIF. The file does not start with GIF87a or GIF89a.</span>
-    <span data-phrase="gif.enormous">This GIF is enormous: the first {n} frames filled the memory this page is
-      willing to hold at once, and the rest were not read.</span>
+    <span data-phrase="gif.workinglimit">This GIF would exceed this page’s 512 MiB estimated buffer limit. Try a smaller GIF; private codec memory may add more.</span>
+    <span data-phrase="gif.workinginvalid">This GIF’s screen or buffer sizes cannot be represented safely. Choose another GIF.</span>
+    <span data-phrase="gif.enormous">Reading stopped at the decoded-pixel limit. Frames read: {n}.</span>
     <span data-phrase="gif.midframe">This GIF ends in the middle of a frame, so the last one may be incomplete.</span>
     <span data-phrase="gif.damaged">This GIF is damaged: it ends before the first frame is complete.</span>
     <span data-phrase="gif.noframes">That GIF holds no frames this reader could open.</span>

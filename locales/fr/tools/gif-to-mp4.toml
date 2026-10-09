@@ -49,7 +49,7 @@ body = "Un GIF peut laisser voir ce qui se trouve dessous ; une vidéo est un r
 
 [[privacy]]
 title = "Ce que cela coûte à votre machine, clairement."
-body = "L’encodage dépend de votre machine : avec un encodeur matériel &mdash; la plupart des portables et des téléphones de la dernière décennie &mdash; quelques secondes pour un GIF ordinaire ; davantage sans lui. Toutes les images sont d’abord décodées en mémoire. Quelques mégaoctets de GIF deviennent un octet par pixel et par image. La page s’arrête à un demi-gigaoctet et l’explique, au lieu de faire planter l’onglet. Annuler reste toujours disponible."
+body = "L’encodage matériel prend généralement quelques secondes pour un GIF ordinaire ; le logiciel peut être plus lent. Le lecteur conserve au plus 512 millions de pixels de zones décodées. La conversion refuse aussi une estimation supérieure à 512 MiB pour les tampons connus : entrée conservée, écran complet, copies de restauration et vidéo collectée. La mémoire interne du codec peut s’y ajouter. Annuler retire l’opération ; une lecture native ou un dessin synchrone peut encore se terminer."
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -93,11 +93,11 @@ a = "Elles reçoivent une couleur, car une vidéo est un rectangle opaque. Le ch
 
 [[faq]]
 q = "Les dimensions de l’image changent-elles ?"
-a = "D’un pixel seulement, si nécessaire. H.264 exige deux dimensions paires : une ligne de couleur de fond est ajoutée à une largeur ou hauteur impaire, sans rééchantillonnage. Un GIF plus large que 3840 pixels est ramené à cette largeur, acceptée par les encodeurs. La page affiche les dimensions prévues avant de commencer."
+a = "H.264 exige des dimensions paires : une largeur ou hauteur impaire reçoit une ligne de fond sans rééchantillonnage. Si le côté le plus long dépasse 3840 pixels, le GIF est réduit pour respecter cette limite. La page indique la taille réelle avant de commencer. Réduire la sortie ne réduit pas les tampons de composition de la source."
 
 [[faq]]
 q = "Combien de temps faut-il ?"
-a = "Quelques secondes pour un GIF ordinaire sur une machine avec encodeur matériel, comme la plupart des portables et téléphones récents ; plus longtemps sans lui. Le GIF est d’abord décodé en mémoire, et un très long GIF peut dépasser la limite d’un demi-gigaoctet d’images. La page l’indique. La barre montre l’image traitée ; Annuler arrête immédiatement sans écrire de fichier."
+a = "Un GIF ordinaire prend généralement quelques secondes avec l’encodage matériel, davantage sans lui. La barre indique l’image actuelle. Annuler retire l’encodeur et sa sortie ; une vérification native de compatibilité, une lecture ou un dessin synchrone peut encore se terminer. Un travail tardif ne remplace pas une source ou un résultat plus récent."
 
 [[faq]]
 q = "Mes GIF sont-ils envoyés quelque part ?"
@@ -109,7 +109,7 @@ a = "Oui, si le navigateur du téléphone peut encoder une vidéo ; l’encodeu
 
 [[faq]]
 q = "Y a-t-il une limite de taille, et cela coûte-t-il quelque chose&nbsp;?"
-a = "La page arrête la lecture à un demi-gigaoctet d’images décodées, ce qui représente beaucoup d’images, et l’explique. C’est gratuit, sans compte, connexion ou essai. La publicité finance le site ; elle ne reçoit rien sur vos GIF."
+a = "Le lecteur conserve au plus 512 millions de pixels de zones décodées ; la conversion refuse une estimation des tampons connus supérieure à 512 MiB. Cela ne garantit pas une limite pour la mémoire interne du codec ni toutes les allocations du navigateur. La page explique les refus. C’est gratuit, sans compte, connexion ni essai. La publicité finance le site et ne reçoit rien sur vos GIF."
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"

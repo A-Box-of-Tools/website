@@ -54,6 +54,7 @@ export class GifFormatError extends Error {
 
 /** Thrown internally when a block runs off the end of the file. */
 class Truncated extends Error {}
+class PixelLimit extends Error {}
 
 const BLOCK_EXTENSION = 0x21;
 const BLOCK_IMAGE = 0x2c;
@@ -92,13 +93,18 @@ const INTERLACE_PASSES = [[0, 8], [4, 8], [2, 4], [1, 2]];
  *   per frame, so a 5 MB file can be a gigabyte of indices - which is a browser
  *   tab dying rather than an error anybody can act on. Past the ceiling the
  *   frames already read are returned and `truncated` says why.
+ * @param {boolean} [options.strictMaxPixels]  refuse the next patch before allocation
+ *   when it exceeds maxPixels; omitted callers retain best-effort behavior.
  * @returns {{
  *   width: number, height: number, backgroundIndex: number,
  *   loopCount: number|null, globalPalette: Uint8Array|null,
- *   frames: object[], comment: string|null, truncated: string|null,
+ *   frames: object[], comment: string|null, truncated: {key: string, values: object}|null,
  * }}
  */
-export function decodeGif(bytes, { maxPixels = 512e6 } = {}) {
+export function decodeGif(bytes, { maxPixels = 512e6, strictMaxPixels = false } = {}) {
+  if (strictMaxPixels && (!Number.isFinite(maxPixels) || maxPixels < 0)) {
+    throw new GifFormatError('gif.enormous', { n: 0 });
+  }
   if (bytes.length < 13) throw new GifFormatError('gif.tooshort');
 
   const signature = latin1.decode(bytes.subarray(0, 6));
@@ -170,7 +176,7 @@ export function decodeGif(bytes, { maxPixels = 512e6 } = {}) {
       }
 
       if (marker === BLOCK_IMAGE) {
-        const frame = readImage(bytes, view, reader, gif, control);
+        const frame = readImage(bytes, view, reader, gif, control, strictMaxPixels ? maxPixels - decoded : Infinity);
         gif.frames.push(frame);
         control = null;
 
@@ -196,8 +202,12 @@ export function decodeGif(bytes, { maxPixels = 512e6 } = {}) {
       throw new Truncated(`unknown block 0x${marker.toString(16)}`);
     }
   } catch (error) {
-    if (!(error instanceof Truncated)) throw error;
-    gif.truncated = { key: gif.frames.length ? 'gif.midframe' : 'gif.damaged', values: {} };
+    if (error instanceof PixelLimit) {
+      gif.truncated = { key: 'gif.enormous', values: { n: gif.frames.length } };
+    } else {
+      if (!(error instanceof Truncated)) throw error;
+      gif.truncated = { key: gif.frames.length ? 'gif.midframe' : 'gif.damaged', values: {} };
+    }
   }
 
   if (!gif.frames.length) {
@@ -253,7 +263,7 @@ function readApplication(bytes, reader, gif) {
 }
 
 /** One picture: where it goes, which table it uses, and its pixels. */
-function readImage(bytes, view, reader, gif, control) {
+function readImage(bytes, view, reader, gif, control, availablePixels = Infinity) {
   if (reader.at + 10 > bytes.length) throw new Truncated('image descriptor');
 
   const flags = bytes[reader.at + 9];
@@ -295,6 +305,9 @@ function readImage(bytes, view, reader, gif, control) {
 
   const pixels = frame.width * frame.height;
   if (!pixels) throw new Truncated('a frame of no size');
+  // Strict callers refuse a patch before its indices allocate; existing
+  // consumers retain the best-effort limit checked after a frame is decoded.
+  if (pixels > availablePixels) throw new PixelLimit();
 
   const decoded = lzwDecode(data, minCodeSize, pixels);
   frame.partial = decoded.partial;

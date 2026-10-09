@@ -75,8 +75,8 @@ page, press "Try an example", and read the check line.
 ## What it does not do
 
 - Write WebM. See the roadmap's "…or WebM".
-- Resize or crop; the picture stays the GIF's own size. The compressor takes
-  the result if it has to be smaller.
+- Offer manual resize or crop. Odd edges get background padding and the longest
+  edge is automatically reduced to 3840; the compressor takes a smaller result.
 - Read APNG or animated WebP.
 
 
@@ -89,3 +89,36 @@ The generated MP4 readback uses the shared reader's explicit
 `demux(..., { timeline: 'media' })` inspection mode. It checks raw media samples
 and headers; it does not make a claim about an arbitrary incoming MP4 edit list.
 This tool accepts GIF inputs, so it has no incoming MP4 timeline path to widen.
+
+## Source ownership and estimated buffers
+
+Latest load/Clear generations guard reads, decode admission, errors and picker
+cleanup. The incoming file row keeps Clear reachable while reading. Each run
+captures its file, plan and background; color edits dispose earlier playback and
+downloads, and late codec/readback callbacks cannot commit into a newer owner.
+The strict media-timeline readback merged before this change remains in use.
+
+The shared gif-working-budget part supplies only safe integer RGBA arithmetic.
+This tool sets a 512 MiB estimated known-buffer ceiling before composition and
+as native chunks arrive. It counts distinct retained index/palette buffers,
+including encoded input retained through palette views, the logical-screen
+compositor/flatten/stage buffers, disposal-3 saved snapshots (including transient
+old/new replacement copies), and the output canvas plus two queued output-frame
+copies. This encoder alone uses a queue limit of one; shared WebCodecs defaults
+are unchanged. Collected chunk/config bytes and the possible Blob payload copy
+are budgeted before allocation. The estimate cannot bound private codec storage
+or every native browser allocation, and output resizing never bounds the source
+logical screen. The page refuses such plans and says why.
+
+The reader's opt-in strictMaxPixels guard stops before allocating a patch that
+would exceed its 512-million decoded-pixel ceiling. Existing consumers omit it
+and retain their former best-effort behavior. Truncation reasons keep their
+actual key/values, including how many frames fit. A valid nonzero oversized
+header is refused before pixel decode; a zero screen retains the reader's
+frame-derived fallback and is checked afterward.
+
+Cancel closes that run's native encoder, and finally clears canvases, compositor
+state and muxer sample/config buffers. Native support probes and file reads may
+still finish, and synchronous decode/drawing/Blob calls cannot be interrupted
+mid-call. Retired work cannot publish or clear newer state. No tool network
+step, timing resampling or codec expansion was added.

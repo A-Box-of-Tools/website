@@ -21,6 +21,7 @@ import { pickH264Codec } from './shared/video-support.js';
 import { settle } from './shared/webcodecs.js';
 import { throwIfAborted } from './shared/errors.js';
 import { KEYFRAME_SECONDS, frameTimes } from './plan.js';
+import { ENCODE_QUEUE_LIMIT, gifWorkingPlan, requireWorking, retainedGifBytes, sourceCopies } from './working.js';
 
 /** How long a codec may go without draining before the run is called stuck. */
 const STALL_MS = 30_000;
@@ -39,74 +40,76 @@ const STALL_MS = 30_000;
 export async function gifToMp4({
   gif, size, fps, bitrate, background, onProgress, signal,
 }) {
+  throwIfAborted(signal);
+  // The immutable source is scanned once, rather than once per encoded chunk.
+  const working = { retainedBytes: retainedGifBytes(gif), copies: sourceCopies(gif) };
+  requireWorking(gifWorkingPlan(gif, size, working));
   const { width, height, scale } = size;
   const codec = await pickH264Codec({ width, height, framerate: fps, bitrate });
+  throwIfAborted(signal);
   if (!codec) {
     throw Object.assign(new Error('encode.noh264'), { values: { size: width + 'x' + height } });
   }
 
   onProgress?.({ phase: 'preparing', done: 0, total: 1 });
-
-  // The GIF's own canvas, and the output canvas it is drawn on to: the same
-  // size unless the GIF had an odd edge or was wider than an encoder takes.
-  const stage = document.createElement('canvas');
-  stage.width = gif.width;
-  stage.height = gif.height;
-  const stageCtx = stage.getContext('2d', { willReadFrequently: false });
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d', { alpha: false });
-  ctx.fillStyle = `rgb(${background.r}, ${background.g}, ${background.b})`;
-  ctx.fillRect(0, 0, width, height);
-  ctx.imageSmoothingEnabled = scale !== 1;
-  ctx.imageSmoothingQuality = 'high';
-
   const { times, total } = frameTimes(gif.frames);
   const durationOf = new Map();
-
   const muxer = new Mp4Muxer({ width, height });
+  let stage, canvas, replay, encoder;
   let failure = null;
-  const encoder = new VideoEncoder({
-    output: (chunk, metadata) => {
-      try {
-        if (metadata?.decoderConfig?.description) {
-          muxer.setDecoderConfig(metadata.decoderConfig.description);
-        }
-        const data = new Uint8Array(chunk.byteLength);
-        chunk.copyTo(data);
-        // The chunk carries the frame's timestamp back, which is how the
-        // frame's own delay is found for it whatever order chunks arrive in.
-        const seconds = durationOf.get(chunk.timestamp) ?? (chunk.duration ?? 100_000) / 1_000_000;
-        muxer.addSample(data, chunk.type === 'key', seconds);
-      } catch (error) {
-        failure ??= error;
-      }
-    },
-    error: (error) => { failure ??= error; },
-  });
-
-  encoder.configure({
-    codec,
-    width,
-    height,
-    bitrate,
-    framerate: fps,
-    avc: { format: 'avc' },   // length-prefixed NALUs and an avcC record, which is what MP4 wants
-    alpha: 'discard',
-    latencyMode: 'quality',
-  });
-
-  const replay = new GifCanvas(gif);
+  let retired = false;
+  const closeEncoder = () => {
+    if (encoder && encoder.state !== 'closed') encoder.close();
+  };
+  // Blob finalization can retain a second copy of collected sample buffers.
+  // Native codec private storage is not an exact part of this estimate.
+  const checkStorage = (incoming = 0, config = muxer.avcC?.byteLength ?? 0) => requireWorking(gifWorkingPlan(gif, size,
+    { ...working, chunkBytes: 2 * muxer.totalBytes + 3 * incoming + 2 * config }));
   const count = gif.frames.length;
   let lastKeyframe = -Infinity;
 
   try {
+    throwIfAborted(signal);
+    stage = document.createElement('canvas');
+    stage.width = gif.width;
+    stage.height = gif.height;
+    const stageCtx = stage.getContext('2d', { willReadFrequently: false });
+    canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    ctx.fillStyle = `rgb(${background.r}, ${background.g}, ${background.b})`;
+    ctx.fillRect(0, 0, width, height);
+    ctx.imageSmoothingEnabled = scale !== 1;
+    ctx.imageSmoothingQuality = 'high';
+    replay = new GifCanvas(gif);
+    encoder = new VideoEncoder({
+      output: (chunk, metadata) => {
+        if (retired || signal?.aborted || failure) return;
+        try {
+          const description = metadata?.decoderConfig?.description;
+          checkStorage(chunk.byteLength, muxer.avcC?.byteLength ?? description?.byteLength ?? 0);
+          if (description) muxer.setDecoderConfig(description);
+          const data = new Uint8Array(chunk.byteLength);
+          chunk.copyTo(data);
+          const seconds = durationOf.get(chunk.timestamp) ?? (chunk.duration ?? 100_000) / 1_000_000;
+          muxer.addSample(data, chunk.type === 'key', seconds);
+        } catch (error) {
+          failure ??= error;
+          closeEncoder();
+        }
+      },
+      error: (error) => { if (!retired && !signal?.aborted) failure ??= error; },
+    });
+    signal?.addEventListener('abort', closeEncoder, { once: true });
+    encoder.configure({ codec, width, height, bitrate, framerate: fps,
+      avc: { format: 'avc' }, alpha: 'discard', latencyMode: 'quality' });
     for (let i = 0; i < count; i += 1) {
       throwIfAborted(signal);
       if (failure) throw failure;
-      await settle([encoder], { stallAfter: STALL_MS, stallKey: 'stall.encoder' });
+      await settle([encoder], { limit: ENCODE_QUEUE_LIMIT, stallAfter: STALL_MS, stallKey: 'stall.encoder' });
+      throwIfAborted(signal);
+      if (failure) throw failure;
 
       const shown = replay.next();
       if (!shown) break;
@@ -143,10 +146,21 @@ export async function gifToMp4({
 
     onProgress?.({ phase: 'finishing', done: count, total: count });
     await encoder.flush();
+    throwIfAborted(signal);
     if (failure) throw failure;
+    checkStorage();
+    return { blob: muxer.finalize(), frames: count, seconds: total, codec };
+  } catch (error) {
+    throwIfAborted(signal);
+    throw failure ?? error;
   } finally {
-    if (encoder.state !== 'closed') encoder.close();
+    retired = true;
+    signal?.removeEventListener('abort', closeEncoder);
+    closeEncoder();
+    if (stage) stage.width = stage.height = 0;
+    if (canvas) canvas.width = canvas.height = 0;
+    if (replay) { replay.saved = null; replay.pixels = null; }
+    muxer.samples.length = 0;
+    muxer.avcC = null;
   }
-
-  return { blob: muxer.finalize(), frames: count, seconds: total, codec };
 }

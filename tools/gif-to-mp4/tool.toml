@@ -54,7 +54,7 @@ css_parts = ["progress", "form", "notes", "results"]
 #
 # example-gif and example-photo are for the example alone: the animated GIF
 # the splitter and the analyser demonstrate on, drawn in the page.
-js_parts = ["file-picker", "gif-decode", "gif-compose", "mp4-muxer", "mp4-boxes", "mp4-reader", "video-support", "codec-support", "webcodecs", "message-box", "format", "errors", "example-gif", "example-photo"]
+js_parts = ["file-picker", "gif-decode", "gif-compose", "gif-working-budget", "mp4-muxer", "mp4-boxes", "mp4-reader", "video-support", "codec-support", "webcodecs", "message-box", "format", "errors", "example-gif", "example-photo"]
 # Where a finished result can be carried without being saved first: the row
 # of links shared/handoff.js shows under the result once there is one. A
 # GIF made into a video is often then too big for where it is going, or
@@ -199,15 +199,7 @@ body = """
 
 [[privacy]]
 title = "What it costs on your machine, honestly."
-body = """
-
-      Encoding takes as long as your machine takes: with a hardware encoder
-      &mdash; most laptops and every phone made in the last decade &mdash;
-      a few seconds for an ordinary GIF; without one, longer. Every frame of
-      the GIF is decoded into memory first, which is where the limit is: a
-      GIF is a few megabytes that expand to one byte per pixel per frame,
-      and the page stops reading at half a gigabyte of that and says so
-      rather than crashing the tab. Cancel is always live."""
+body = "Hardware encoding usually takes seconds for an ordinary GIF, and software can take longer. The reader stops before retaining more than 512 million decoded patch pixels. Conversion also refuses an estimated known-buffer plan above 512 MiB, including retained input, full-screen composition, disposal snapshots and collected video data. Private codec memory can add more. Cancel retires the run; native reads and synchronous drawing calls may still finish."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -301,22 +293,11 @@ a = """
 
 [[faq]]
 q = "Does it change the size of the picture?"
-a = """
-        Only by a pixel, and only when it has to. H.264 needs both edges even,
-        so a GIF with an odd width or height gets one line of the background
-        colour added; nothing is resampled. A GIF wider than 3840 pixels is
-        drawn down to that, since that is what encoders can be relied on to
-        take. The page says the size it will write before it starts."""
+a = "H.264 needs even edges, so an odd width or height gets one line of background without resampling. If the longest edge exceeds 3840 pixels, the GIF is drawn down to fit that limit. The page states the actual output size before starting; output resizing does not reduce the source composition buffers."
 
 [[faq]]
 q = "How long does it take?"
-a = """
-        A few seconds for an ordinary GIF on a machine with a hardware
-        encoder, which is most laptops and every recent phone; longer without
-        one. The GIF is decoded into memory first, and a very long one can be
-        more than the page is willing to hold &mdash; it stops at half a
-        gigabyte of frames and says so. The bar says which frame it is on,
-        and cancelling stops it at once and writes nothing."""
+a = "An ordinary GIF usually takes seconds with hardware encoding, longer without it. The bar shows the current frame. Cancel retires its encoder and output; a native support query, file read or synchronous drawing call can still finish. Late work cannot replace a newer source or result."
 
 [[faq]]
 q = "Are my GIFs uploaded anywhere?"
@@ -337,12 +318,7 @@ a = """
 
 [[faq]]
 q = "Is there a size limit, and does it cost anything?"
-a = """
-        The page stops reading a GIF at half a gigabyte of decoded frames,
-        which is a great many frames, and says so. It is free, there is no
-        account, no sign-in and no trial. The site carries advertising, which
-        is what pays for it; the ads are not given anything about your
-        GIFs."""
+a = "The reader retains at most 512 million decoded patch pixels, and conversion refuses estimated known buffers above 512 MiB. This is not a guarantee about private codec memory or every browser allocation. The page explains a refusal. It is free, with no account, sign-in or trial. Advertising pays for the site and receives nothing about your GIFs."
 
 [[faq]]
 q = "Does it work offline?"
