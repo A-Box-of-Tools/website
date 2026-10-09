@@ -2,9 +2,8 @@
  * tools/extract-audio-from-video/ - the mixdown, and the claim the page makes.
  *
  * The decoder, the sample-rate sniffer and the WAV writer are shared with
- * edit-audio and trim-audio and are tested through those; the duplicate check
- * in tests/python/test_duplicates.py holds all three copies identical, so
- * testing them again here would only prove that a copy is a copy.
+ * edit-audio and trim-audio; audio-wav.test.js covers the shared synchronous
+ * and cooperative writers. This file holds the extractor’s own mix policy.
  *
  * What is particular to this page is the one piece of arithmetic that makes a
  * choice - how several channels become one - and the promise that the picture
@@ -15,7 +14,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 
-import { mixToMono } from '../../tools/extract-audio-from-video/src/mono.js';
+import { mixToMono, mixToMonoAsync } from '../../tools/extract-audio-from-video/src/mono.js';
 import { writeWav } from '../../shared/js/wav.js';
 
 const channel = (...values) => Float32Array.from(values);
@@ -92,4 +91,36 @@ test('nothing in this tool reaches the network', () => {
     const source = readFileSync(`${dir}/${name}`, 'utf8');
     assert.ok(!banned.test(source), `${name} has grown a network call`);
   }
+});
+
+
+test('cooperative mono preserves the established Float32 accumulation across blocks', async () => {
+  const channels = Array.from({ length: 4 }, (_, c) => Float32Array.from({ length: 8192 * 2 + 5 },
+    (_, i) => [1e10, 0.1, -1e10, -0.3333, 1.5][(i + c) % 5]));
+  const original = channels.map((plane) => plane.slice());
+  const expected = mixToMono(channels);
+  const actual = await mixToMonoAsync(channels);
+  assert.deepEqual(actual, expected);
+  assert.deepEqual(channels, original, 'mixing never edits the decoded source');
+  assert.equal(await mixToMonoAsync([channels[0]]), channels[0]);
+  await assert.rejects(mixToMonoAsync([]), /wav\.nochannels/);
+  await assert.rejects(mixToMonoAsync([channel(1), channel(1, 2)]), /wav\.uneven/);
+});
+
+test('cooperative mono responds to a timer before all channels are mixed', async () => {
+  const controller = new AbortController();
+  const channels = [new Float32Array(8192 * 50), new Float32Array(8192 * 50)];
+  let done = 0;
+  let total = 0;
+  const pending = mixToMonoAsync(channels, {
+    signal: controller.signal, budgetMs: 0,
+    onProgress(progress) {
+      done = progress.done;
+      total = progress.total;
+      if (done === 8192) setTimeout(() => controller.abort(), 0);
+    },
+  });
+  await assert.rejects(pending, { name: 'AbortError' });
+  assert.ok(done > 0 && done < total);
+  assert.ok(channels.every((plane) => plane.every((sample) => sample === 0)));
 });

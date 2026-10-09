@@ -12,6 +12,7 @@
     {% include "partials/file-picker.html" %}
 
     <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cancel" class="ghost" hidden>キャンセル</button>
     <p id="error" class="error" role="alert" hidden></p>
 
     <dl class="source" id="source" hidden>
@@ -46,18 +47,24 @@
           <option value="mono">モノラルに混ぜる</option>
         </select>
         <p class="field-note" id="channels-note">
-          モノラルにするとファイルは半分になり、文字起こしや声の録音が求めるのはこちらです。片方を捨てるのではなく、両チャンネルを平均します。
+          モノラルは全チャンネルを平均します。ステレオの音声データは半分になり、モノラルの入力はそのままモノラルです。
         </p>
+      </div>
+      <div class="field">
+        <label for="depth">WAV形式</label>
+        <select id="depth" aria-describedby="depth-note">
+          <option value="16" selected>16ビットPCM（幅広い互換性）</option>
+          <option value="32">32ビット浮動小数点（復号後のサンプル）</option>
+        </select>
+        <p class="field-note" id="depth-note">16ビットPCMは復号後のサンプルを丸め、範囲を超える値を制限します。32ビット浮動小数点はチャンネルを変えない場合にサンプルを保持し、モノラルはチャンネルを平均します。</p>
       </div>
     </div>
 
-    <!--
-      No button. A WAV is the samples with a header in front of them, so writing
-      one is fast enough to redo whenever a setting changes - and a file that is
-      always the one the settings describe needs nothing pressed to make it so.
-    -->
+    <!-- Settings generate automatically; a cancelled write can be retried. -->
+    <p id="estimate" class="field-note" hidden></p>
+    <button type="button" id="retry" class="ghost" hidden>WAVを再作成</button>
     <div id="result" class="result" hidden>
-      <audio id="result-audio" controls></audio>
+      <audio id="result-audio" controls aria-label="抽出した音声"></audio>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>音声をダウンロード</a>
@@ -73,6 +80,13 @@
     Every Japanese phrase stays on one line, for the reason above.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.mixing">チャンネルを混合中… {n}%</span>
+    <span data-phrase="step.writing">WAVを書き込み中… {n}%</span>
+    <span data-phrase="step.cancelled">キャンセルしました。</span>
+    <span data-phrase="out.estimate">出力サイズ：約{size}。</span>
+    <span data-phrase="depth.16">16ビットPCM</span>
+    <span data-phrase="depth.float">32ビット浮動小数点</span>
+    <span data-phrase="wav.toobig">このWAVは形式の上限である4 GBを超えます。16ビット、モノラル、または短い入力を選んでください。</span>
     <span data-phrase="step.reading">音を読み込んでいます&hellip;</span>
     <span data-phrase="audio.empty">このファイルは空です。</span>
     <!--
@@ -92,7 +106,7 @@
     <span data-phrase="channels.stereo">ステレオ</span>
     <span data-phrase="channels.many">3チャンネル以上</span>
     <span data-phrase="rate.khz">{n} kHz</span>
-    <span data-phrase="out.info">WAV &mdash; {size}、{length}、{channels}、{rate} kHz</span>
+    <span data-phrase="out.info">WAV、{depth}、{size}、{length}、{channels}、{rate} kHz</span>
     <span data-phrase="size.bytes">{n} B</span>
     <span data-phrase="size.kb">{n} KB</span>
     <span data-phrase="size.mb">{n} MB</span>
