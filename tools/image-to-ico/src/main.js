@@ -837,7 +837,7 @@ function contextLine(text) {
 
 function drawingContext(request) {
   const fit = request.fit === 'pad'
-    ? `fit.pad.${request.background === null ? 'transparent' : 'colour'}`
+    ? (request.background === null ? 'fit.pad.transparent' : 'fit.pad.colour')
     : `fit.${request.fit}`;
   return contextLine(phrase('result.drawing', {
     fit: phrase(fit), background: request.background ?? phrase('result.transparent'),
