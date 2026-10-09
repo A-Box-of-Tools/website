@@ -118,7 +118,7 @@ BASELINE = {
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,
-    'merge-pdf': 3,
+    'merge-pdf': 2,
     'password-generator': 8,
     'png-to-webp': 0,
     # The two left are a symbology's own name and a line of SVG markup.

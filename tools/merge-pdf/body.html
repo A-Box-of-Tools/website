@@ -71,6 +71,7 @@
     <p id="range-error" class="error" role="alert" hidden></p>
 
     <ul id="page-list" class="page-list"></ul>
+    <p id="page-status" class="visually-hidden" role="status" aria-live="polite"></p>
   </section>
 
   <!-- Step 3 &mdash; one file, or several -->
@@ -93,7 +94,7 @@
             <strong>Split every so many pages</strong>
             <span class="preset-note">
               A long scan cut into chapters of
-              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+              <input type="number" id="split-size" aria-describedby="split-error" min="1" max="5000" step="1" value="10"
                      inputmode="numeric" aria-label="Pages in each file">
               pages.
             </span>
@@ -105,7 +106,7 @@
             <strong>Split at page&hellip;</strong>
             <span class="preset-note">
               Cut before
-              <input type="text" id="split-at" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
+              <input type="text" id="split-at" aria-describedby="split-error" dir="ltr" placeholder="5, 9, 14" autocomplete="off"
                      spellcheck="false" aria-label="Page numbers to cut before">
               &mdash; each of those starts a new file.
             </span>
@@ -142,6 +143,7 @@
     </label>
 
     <p id="output-summary" class="field-summary"></p>
+    <p id="split-error" class="error" role="alert" hidden></p>
   </section>
 
   <!-- Step 4 &mdash; the one click -->
@@ -241,6 +243,10 @@
     <span data-phrase="page.clockwise">Turn page {n} clockwise</span>
     <span data-phrase="page.earlier">Move page {n} earlier</span>
     <span data-phrase="page.later">Move page {n} later</span>
+    <span data-phrase="split.size">Enter a whole number from 1 to 5,000 for pages in each file.</span>
+    <span data-phrase="plan.invalid">Correct the split settings before building the documents.</span>
+    <span data-phrase="page.updated">{name}, original page {page}: position {position} of {total}, turned {rotation}°.</span>
+    <span data-phrase="page.removed">{name}, original page {page} removed. Pages remaining: {total}.</span>
     <span data-phrase="range.none">none</span>
     <span data-phrase="range.pair">&#x2066;{from}, {to}&#x2069;</span>
     <span data-phrase="range.run">{from}-{to}</span>
