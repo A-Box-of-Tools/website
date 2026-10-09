@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="Navegación entre cambios" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>Cambio anterior</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>Cambio siguiente</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
   <!--
@@ -113,8 +125,18 @@
     <span data-phrase="result.identical">Los dos son idénticos, byte a byte.</span>
     <span data-phrase="result.ignored">Iguales, una vez ignoradas las diferencias que pediste ignorar.</span>
     <span data-phrase="result.counts">{added} añadidas, {removed} quitadas</span>
-    <span data-phrase="result.summary">{changes} &mdash; el {percent}&nbsp;% de las líneas está en ambos. {note}</span>
+    <span data-phrase="result.summary">{changes}: el contenido coincide en el {percent}% de las líneas. {note}</span>
     <span data-phrase="result.newline">Uno termina en salto de línea y el otro no.</span>
+    <span data-phrase="result.endings.one">El final de línea difiere en {count} línea emparejada. El parche conserva los finales exactos.</span>
+    <span data-phrase="result.endings.many">Los finales de línea difieren en {count} líneas emparejadas. El parche conserva los finales exactos.</span>
+    <span data-phrase="ending.crlf">Final CRLF</span>
+    <span data-phrase="ending.lf">Final LF</span>
+    <span data-phrase="ending.cr">Final CR</span>
+    <span data-phrase="ending.none">Sin salto final</span>
+    <span data-phrase="nav.shown.one">{count} bloque de cambios mostrado</span>
+    <span data-phrase="nav.shown.many">{count} bloques de cambios mostrados</span>
+    <span data-phrase="nav.position">Bloque de cambios {current} de {count} mostrados</span>
+    <span data-phrase="nav.truncated">La vista está truncada. La navegación abarca {shown} de {total} bloques de cambios. La descarga incluye todas las diferencias.</span>
     <span data-phrase="result.failed">No salió nada.</span>
 
     <span data-phrase="skip.one">{count} línea sin cambios</span>

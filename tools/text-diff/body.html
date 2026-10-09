@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="Change navigation" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>Previous change</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>Next change</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
 
@@ -125,8 +137,18 @@
     <span data-phrase="result.identical">These two are identical, byte for byte.</span>
     <span data-phrase="result.ignored">The same, once the differences you asked to ignore are ignored.</span>
     <span data-phrase="result.counts">{added} added, {removed} removed</span>
-    <span data-phrase="result.summary">{changes} - {percent}% of the lines are shared. {note}</span>
+    <span data-phrase="result.summary">{changes} - {percent}% of line contents match. {note}</span>
     <span data-phrase="result.newline">One of them ends with a newline and the other does not.</span>
+    <span data-phrase="result.endings.one">Line endings differ on {count} matched line. The patch preserves them exactly.</span>
+    <span data-phrase="result.endings.many">Line endings differ on {count} matched lines. The patch preserves them exactly.</span>
+    <span data-phrase="ending.crlf">CRLF ending</span>
+    <span data-phrase="ending.lf">LF ending</span>
+    <span data-phrase="ending.cr">CR ending</span>
+    <span data-phrase="ending.none">No final newline</span>
+    <span data-phrase="nav.shown.one">{count} change block shown</span>
+    <span data-phrase="nav.shown.many">{count} change blocks shown</span>
+    <span data-phrase="nav.position">Change block {current} of {count} shown</span>
+    <span data-phrase="nav.truncated">The view is truncated. Navigation covers {shown} of {total} change blocks. Download includes every difference.</span>
     <span data-phrase="result.failed">Nothing came out.</span>
 
     <span data-phrase="skip.one">{count} unchanged line</span>

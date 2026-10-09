@@ -13,7 +13,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  compareText, diffSequences, diffWords, alignRows, formatUnified, splitLines, splitWords,
+  compareText, diffSequences, diffWords, alignRows, changeBlocks, formatUnified, splitLines, splitWords,
 } from '../../tools/text-diff/src/diff.js';
 
 /** Rebuild both sides from the ops, which is what "correct" means here. */
@@ -305,4 +305,124 @@ test('a patch keeps ignored blank lines in context around visible changes', () =
   const patch = formatUnified(a, b, { context: 1, ignoreBlankLines: true });
   assert.equal(patch.match(/^@@/gm).length, 2, 'distant changes are separate hunks');
   assert.equal(applyUnified(a, patch), b);
+});
+
+
+test('ending styles are disclosed without changing normalized content matching', () => {
+  for (const [a, b, endings] of [
+    ['same\r\n', 'same\n', ['\r\n', '\n']],
+    ['same\r', 'same\n', ['\r', '\n']],
+    ['same', 'same\n', ['', '\n']],
+  ]) {
+    const { ops, stats } = compareText(a, b);
+    assert.equal(stats.added + stats.removed, 0);
+    assert.equal(stats.identical, false);
+    assert.equal(stats.endingChanges, 1);
+    assert.equal(stats.similarity, 1);
+    assert.deepEqual([ops[0].aEnding, ops[0].bEnding], endings);
+    assert.deepEqual(alignRows(ops).map(row => row.type), ['ending']);
+    assert.equal(applyUnified(a, formatUnified(a, b)), b);
+  }
+});
+
+test('mixed line endings retain only their actual matched-row differences', () => {
+  const a = 'one\r\ntwo\nthree\rlast';
+  const b = 'one\ntwo\nthree\r\nlast';
+  const { ops, stats } = compareText(a, b);
+  assert.equal(stats.endingChanges, 2);
+  assert.equal(stats.trailingDiffers, false);
+  assert.deepEqual(alignRows(ops).map(row => row.type), ['ending', 'equal', 'ending', 'equal']);
+  assert.deepEqual(ops.map(op => [op.a, op.b]), [[0, 0], [1, 1], [2, 2], [3, 3]]);
+  assert.equal(applyUnified(a, formatUnified(a, b)), b);
+  assert.deepEqual(splitLines(a), { lines: ['one', 'two', 'three', 'last'], trailing: false });
+});
+
+test('final terminator absence remains distinct from a different ending style', () => {
+  for (const [a, b, trailing, matched] of [
+    ['one', 'one\r\n', true, 1],
+    ['one\r\n', 'one\n', false, 1],
+    ['', '\n', true, 0],
+    ['\r\n', '\n', false, 1],
+    ['', '', false, 0],
+    ['one\r\n', 'one\r\n', false, 0],
+  ]) {
+    const { stats } = compareText(a, b);
+    assert.equal(stats.trailingDiffers, trailing, JSON.stringify([a, b]));
+    assert.equal(stats.endingChanges, matched);
+    assert.equal(stats.identical, a === b);
+    assert.equal(applyUnified(a, formatUnified(a, b)), b);
+  }
+});
+
+test('every ignore combination retains matched ending differences including blank lines', () => {
+  const a = 'Title\r\n \r\n  value  \r\n';
+  const b = 'title\n \nvalue\n';
+  for (const ignoreWhitespace of [false, true]) for (const ignoreCase of [false, true]) {
+    for (const ignoreBlankLines of [false, true]) {
+      const options = { ignoreWhitespace, ignoreCase, ignoreBlankLines };
+      const { ops, stats } = compareText(a, b, options);
+      const expected = 1 + Number(ignoreWhitespace) + Number(ignoreCase);
+      assert.equal(stats.endingChanges, expected, JSON.stringify(options));
+      const endings = alignRows(ops).filter(row => row.type === 'ending');
+      assert.equal(endings.length, expected);
+      assert.ok(endings.some(row => row.a.a === 1 && row.b.b === 1), 'blank content cannot hide its terminator');
+      assert.equal(applyUnified(a, formatUnified(a, b, options)), b);
+    }
+  }
+  const { stats } = compareText('\r\n', '\n', { ignoreBlankLines: true });
+  assert.equal(stats.endingChanges, 1);
+  assert.equal(stats.added + stats.removed, 0);
+});
+
+test('ignored blank ending pairs keep original numbering between nonblank anchors', () => {
+  const a = 'head\nold\n\r\nold tail\nfoot\n';
+  const b = 'head\nnew\n\nnew tail\nextra\nfoot\n';
+  const { ops, stats } = compareText(a, b, { ignoreBlankLines: true });
+  assert.equal(stats.endingChanges, 1);
+  assert.equal(stats.added, 3);
+  assert.equal(stats.removed, 2);
+  const blank = alignRows(ops).find(row => row.type === 'ending');
+  assert.deepEqual([blank.a.a, blank.b.b], [2, 2]);
+  for (const key of ['a', 'b']) {
+    const positions = ops.map(op => op[key]).filter(value => value !== null);
+    assert.ok(positions.every((value, i) => i === 0 || value > positions[i - 1]), key + ' stays in source order');
+  }
+  assert.equal(applyUnified(a, formatUnified(a, b)), b);
+});
+
+test('ending rows retain each actual side when content matches under ignore rules', () => {
+  const { ops, stats } = compareText('Title\r\n', 'title\n', { ignoreCase: true });
+  const [row] = alignRows(ops);
+  assert.equal(row.type, 'ending');
+  assert.equal(row.a.text, 'Title');
+  assert.equal(row.b.text, 'title');
+  assert.equal(stats.added + stats.removed, 0);
+});
+
+test('changed line content retains its two endings for a visible paired-row label', () => {
+  const a = 'one\r\ntwo\n', b = 'ONE\ntwo\n';
+  const [row] = alignRows(compareText(a, b).ops);
+  assert.equal(row.type, 'change');
+  assert.deepEqual([row.a.ending, row.b.ending], ['\r\n', '\n']);
+  assert.equal(applyUnified(a, formatUnified(a, b)), b);
+});
+
+test('navigation groups adjacent edits and ending edits into contiguous destinations', () => {
+  const rows = ['equal', 'change', 'insert', 'ending', 'equal', 'delete', 'equal', 'ending'].map(type => ({ type }));
+  assert.deepEqual(changeBlocks(rows), [{ start: 1, end: 4 }, { start: 5, end: 6 }, { start: 7, end: 8 }]);
+  assert.deepEqual(changeBlocks([]), []);
+  assert.deepEqual(changeBlocks([{ type: 'equal' }]), []);
+  const allChanged = alignRows(compareText('old\nold2\n', 'new\nnew2\n').ops);
+  assert.equal(changeBlocks(allChanged).length, 1, 'paired replacement rows belong to one change');
+});
+
+test('a rendered prefix contains only reachable change blocks even when it cuts a block', () => {
+  const rows = Array.from({ length: 4010 }, (_, i) => ({ type: i < 2 || i >= 4005 ? 'change' : 'equal' }));
+  assert.equal(changeBlocks(rows).length, 2);
+  assert.deepEqual(changeBlocks(rows.slice(0, 4000)), [{ start: 0, end: 2 }]);
+  const late = Array.from({ length: 4010 }, (_, i) => ({ type: i >= 4005 ? 'change' : 'equal' }));
+  assert.equal(changeBlocks(late).length, 1);
+  assert.equal(changeBlocks(late.slice(0, 4000)).length, 0, 'an undrawn first change has no destination');
+  const continuous = Array.from({ length: 4010 }, () => ({ type: 'ending' }));
+  assert.deepEqual(changeBlocks(continuous.slice(0, 4000)), [{ start: 0, end: 4000 }]);
 });

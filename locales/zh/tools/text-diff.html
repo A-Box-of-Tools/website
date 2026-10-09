@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="跳转修改" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>上一处修改</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>下一处修改</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
   <!--
@@ -113,8 +125,18 @@
     <span data-phrase="result.identical">这两份逐字节完全一样。</span>
     <span data-phrase="result.ignored">把你要求忽略的差别忽略掉，两份就是一样的。</span>
     <span data-phrase="result.counts">加了 {added} 行，删了 {removed} 行</span>
-    <span data-phrase="result.summary">{changes} &mdash; 有 {percent}% 的行两边都有。{note}</span>
+    <span data-phrase="result.summary">{changes}，{percent}% 的行内容相同。{note}</span>
     <span data-phrase="result.newline">一份以换行结尾，另一份没有。</span>
+    <span data-phrase="result.endings.one">对应的 {count} 行的行尾不同。补丁保留精确的行尾。</span>
+    <span data-phrase="result.endings.many">对应的 {count} 行的行尾不同。补丁保留精确的行尾。</span>
+    <span data-phrase="ending.crlf">CRLF 行尾</span>
+    <span data-phrase="ending.lf">LF 行尾</span>
+    <span data-phrase="ending.cr">CR 行尾</span>
+    <span data-phrase="ending.none">末尾无换行</span>
+    <span data-phrase="nav.shown.one">已显示 {count} 个修改块</span>
+    <span data-phrase="nav.shown.many">已显示 {count} 个修改块</span>
+    <span data-phrase="nav.position">已显示的 {count} 个修改块中的第 {current} 个</span>
+    <span data-phrase="nav.truncated">视图已截断。可跳转的修改块为 {shown} 个，共 {total} 个。下载包含所有差异。</span>
     <span data-phrase="result.failed">什么都没出来。</span>
 
     <span data-phrase="skip.one">{count} 行没有变化</span>

@@ -92,6 +92,18 @@
       </div>
     </div>
 
+    <p id="ending-note" class="count" aria-live="polite"></p>
+    <div id="change-nav" class="change-navigation" role="group" aria-label="Zwischen Änderungen wechseln" hidden inert>
+      <div class="toolbar">
+        <p id="change-position" class="count" role="status" aria-live="polite"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="previous-change" class="ghost" aria-controls="diff-view" disabled>Vorherige Änderung</button>
+          <button type="button" id="next-change" class="ghost" aria-controls="diff-view" disabled>Nächste Änderung</button>
+        </div>
+      </div>
+      <p id="change-limit" class="count"></p>
+    </div>
+
     <div id="diff-view" class="diff"></div>
   </section>
   <!--
@@ -113,8 +125,18 @@
     <span data-phrase="result.identical">Die beiden sind identisch, Byte für Byte.</span>
     <span data-phrase="result.ignored">Gleich, sobald die Unterschiede ignoriert sind, die Sie ignorieren wollten.</span>
     <span data-phrase="result.counts">{added} hinzugefügt, {removed} entfernt</span>
-    <span data-phrase="result.summary">{changes} - {percent}% der Zeilen stehen in beiden. {note}</span>
+    <span data-phrase="result.summary">{changes} – {percent}% der Zeileninhalte stimmen überein. {note}</span>
     <span data-phrase="result.newline">Die eine endet mit einem Zeilenumbruch, die andere nicht.</span>
+    <span data-phrase="result.endings.one">Der Zeilenabschluss unterscheidet sich bei {count} zugeordneter Zeile. Der Patch erhält die genauen Abschlüsse.</span>
+    <span data-phrase="result.endings.many">Die Zeilenabschlüsse unterscheiden sich bei {count} zugeordneten Zeilen. Der Patch erhält die genauen Abschlüsse.</span>
+    <span data-phrase="ending.crlf">CRLF-Abschluss</span>
+    <span data-phrase="ending.lf">LF-Abschluss</span>
+    <span data-phrase="ending.cr">CR-Abschluss</span>
+    <span data-phrase="ending.none">Kein Zeilenabschluss</span>
+    <span data-phrase="nav.shown.one">{count} Änderungsblock angezeigt</span>
+    <span data-phrase="nav.shown.many">{count} Änderungsblöcke angezeigt</span>
+    <span data-phrase="nav.position">Änderungsblock {current} von {count} angezeigten</span>
+    <span data-phrase="nav.truncated">Die Ansicht ist gekürzt. Die Navigation umfasst {shown} von {total} Änderungsblöcken. Der Download enthält jede Änderung.</span>
     <span data-phrase="result.failed">Es kam nichts heraus.</span>
 
     <span data-phrase="skip.one">{count} unveränderte Zeile</span>
