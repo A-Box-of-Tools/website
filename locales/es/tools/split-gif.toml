@@ -222,21 +222,12 @@ a = """
 [[faq]]
 q = "¿Hay un límite de fotogramas que pueda leer?"
 a = """
-        No hay ningún límite fijo. El techo práctico es la memoria de tu propio
-        equipo: un GIF se expande a alrededor de un byte por píxel y fotograma
-        mientras se lee, así que un archivo pequeño puede ser muchísima memoria, y
-        esta página deja de leer antes que dejar morir la pestaña. Si eso pasa lo
-        dice, y te devuelve los fotogramas que sí consiguió."""
+        La herramienta usa una estimación de planificación de 512 MiB para búferes de la fuente, parches retenidos, vistas previas y salida, y se detiene antes de superar 128 Mi píxeles decodificados. Un parche pequeño no abarata la imagen completa de la fuente. Los planes inseguros se rechazan antes de dibujar; los resultados parciales solo están disponibles si sus búferes caben. También cuentan las hojas y los PNG acumulados. Las asignaciones internas, los objetos JS y los límites de canvas pueden necesitar más o fallar antes: esto no mide memoria libre ni garantiza evitar su agotamiento."""
 
 [[faq]]
 q = "¿Abre un GIF dañado?"
 a = """
-        Normalmente sí. Las descargas cortadas, la marca de fin que falta y un
-        último fotograma que se interrumpe a media lectura son cosas corrientes, y
-        un lector que las rechace no sirve justo para los archivos que más ganas
-        tiene la gente de desmontar. Vuelven todos los fotogramas que estén
-        completos, con una nota diciendo qué iba mal. Solo se rechaza de entrada
-        lo que no es un GIF en absoluto."""
+        A menudo. Se conservan los fotogramas completos de archivos truncados o sin marcador final. En un fotograma parcial, las zonas que faltan usan el primer color de la paleta salvo que sea transparente; la página avisa de ello. Se rechazan archivos sin fotogramas legibles y planes de búferes inseguros."""
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
@@ -267,4 +258,4 @@ features = [
 
 [picker]
 title = "Suelta aquí un GIF"
-hint = "o haz clic para buscarlo &mdash; animado o fijo, del tamaño que sea"
+hint = "o haz clic para elegir &mdash; GIF animado o fijo"

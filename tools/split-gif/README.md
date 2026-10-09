@@ -124,16 +124,17 @@ reader that throws on those tells somebody their file is "not a GIF" when their
 browser plays it perfectly well.
 
 So everything after the header is best-effort. Whatever frames were complete come
-back, with a note on the page saying what was wrong, and only two things are
-refused outright: bytes that do not start `GIF87a` or `GIF89a`, and a file that
-yields no frame at all. Inside a frame, a code stream that runs out early fills
+back, with a note on the page saying what was wrong. Invalid signatures, files
+with no readable frame and unsafe buffer plans are refused before drawing. Inside a frame, a code stream that runs out early fills
 the rest of the rectangle with index 0 and marks the frame partial rather than
 throwing away the pixels that did arrive.
 
 There is one deliberate ceiling. A GIF expands to about a byte per pixel per
 frame while it is being read, so a 5 MB file can be a gigabyte of indices — a
-tab dying rather than an error anybody can act on. `decodeGif` stops at 512
-megapixels of decoded frames and reports what it managed.
+tab dying rather than an error anybody can act on. This tool opts into the
+shared reader’s strict limit of 128 Mi decoded patch pixels: it stops before
+the next patch allocates and reports what it retained. Those retained frames
+are offered only when their complete working-buffer plan fits.
 
 ## Why PNG and only PNG
 
@@ -188,17 +189,36 @@ timing list.
 
 ## Memory, which is what shapes the code
 
-The composited frames are never all held at once. `GifCanvas` keeps **one**
-canvas and walks forward, because 300 frames of 500×500 RGBA is 300 MB and one
-canvas is 1 MB. The thumbnails on the page are shrunk before they are encoded,
-and a single frame's download replays the animation from the start rather than
-keeping anything — which sounds expensive and is not, because the indices are
-already decoded and a frame costs a copy and a paint.
+`src/working.js` reuses the shared safe RGBA arithmetic with this tool’s own
+512 MiB planning policy. It counts unique retained index/palette buffers,
+three source copies (compositor, writable pixels and native pixel canvas),
+one disposal-3 snapshot or two during replacement, preview pixels/PNG bytes,
+a 32 MiB bookkeeping reserve and a 4 KiB allowance per grid row. Stored PNGs
+use their patch size; a sheet always needs the complete logical picture. The
+header lower bound is checked before decode and the decoded plan before the
+grid or compositor is constructed, so a tiny patch in a huge screen cannot
+request gigabytes just because its file is small.
 
-The ZIP pass is the same walk, once, with the frames nobody asked for skipped on
-the way out but still drawn on the way through: frame 40 depends on frames 1–39
-whether or not you wanted them. In the stored view they do not, so those frames
-are never touched at all.
+Actual preview and output bytes are checked as native encoders return. ZIP
+admission reserves collected PNG ownership, incoming blob/buffer copies and
+the final archive; sheet admission adds its full native canvas and encoding
+reserve. Ordinary ZIP has at most 65,535 entries including `frames.txt`, and
+this tool refuses a larger plan before writing. Native allocations, JS objects,
+GC timing and browser canvas ceilings can use more or fail earlier: the policy
+is an estimate, never a free-memory measurement or an exhaustion guarantee.
+
+Composited exports still walk every preceding patch/disposal even when only
+every fifth frame is emitted; stored frames are independent. A sheet with no
+selected frames is disabled rather than quietly exporting everything.
+
+Reads, thumbnail passes and all three download paths own their captured source,
+settings, selection and names. Source replacement, Start again, Cancel or an
+output-plan edit retires a pending download before changing the page. A late
+native callback cannot save a retired file, show an old error or restore a new
+owner’s controls. Thumbnail progress belongs to its own pass. Every owned
+canvas backing store and thumbnail URL retires on success, failure or abort;
+native PNG encoding, whole-file decode and synchronous pixel operations cannot
+be interrupted mid-call. Start again returns keyboard focus to the picker.
 
 ## The sprite sheet, and why it is one button rather than a mode
 
