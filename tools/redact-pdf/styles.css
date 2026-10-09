@@ -255,6 +255,13 @@
 }
 
 .word {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  vertical-align: baseline;
+  margin: 0;
   border-radius: 3px;
   cursor: pointer;
   padding: 0 1px;
