@@ -152,7 +152,7 @@ body = """
  Ein Parser, der
       hier scheitert, sagt, <em>welches Tag</em> nie geschlossen wurde und in
       welcher Zeile und Spalte, statt &bdquo;Fehler in Zeile 1&ldquo;, was ein
-      Browser über ein Dokument sagt, das er auf einen Schlag gelesen hat."""
+      Browser über ein Dokument sagt, das er auf einen Schlag gelesen hat. Klicken Sie auf <em>Zur Fehlerstelle</em>, um zu dieser Position in der Eingabe zu wechseln. Beim Tippen bleibt der Fokus an seiner Stelle, bis Sie ihn selbst verschieben."""
 
 [[howto]]
 title = "Nehmen Sie das Ergebnis mit."
