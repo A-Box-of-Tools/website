@@ -183,7 +183,7 @@
       steht nichts, was das täte, wenn es ihn gäbe.
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">Seitengröße</label>
         <select id="page-size">
@@ -251,18 +251,17 @@
       <div class="field">
         <label for="title">Dokumenttitel <span class="optional">(optional)</span></label>
         <input type="text" id="title" maxlength="120" placeholder="Leer gelassen trägt das PDF keinen Titel">
-        <p class="field-note">
-          Das Einzige, was außer den Seiten in das Dokument geschrieben wird. Kein
-          Datum, kein Autor und nichts über dieses Gerät. Siehe
-          <code>src/document.js</code>.
-        </p>
+        <p class="field-note">Das PDF enthält den Namen dieses Werkzeugs und einen von Ihnen eingegebenen Titel, aber kein Datum, keinen Autor und keine Rechnerinformationen.</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>Als PDF speichern</button>
       <button type="button" id="save-images" class="ghost big" disabled>Seiten als Bilder speichern</button>
+      <button type="button" id="cancel" class="ghost big" hidden>Abbrechen</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>Abbrechen stoppt zwischen den Arbeitsschritten einer Seite. Eine bereits gestartete Bilddecodierung oder -codierung kann im Hintergrund zu Ende laufen; ihr Ergebnis wird verworfen.</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -377,9 +376,7 @@
     <span data-phrase="result.png">Die Seiten sind als PNG gespeichert, das
       verlustfrei ist und das ist, was ein Bild aus zwei Farben will. JPEG wäre
       zugleich größer und um jeden Buchstaben herum unscharf.</span>
-    <span data-phrase="result.clean">Kein Datum, kein Autor, kein Rechnername:
-      Das Einzige im Dokument außer den Seiten ist der Name dieses
-      Werkzeugs.</span>
+    <span data-phrase="result.clean">Kein Datum, kein Autor, kein Rechnername: Neben den Seiten enthält das PDF den Namen dieses Werkzeugs und einen von Ihnen eingegebenen Titel.</span>
 
     <span data-phrase="size.fit">Jedes Blatt bekommt die Größe, die seine eigene
       Seite wirklich hat, in der Auflösung von oben. Nichts wird mit Balken
@@ -387,8 +384,12 @@
     <span data-phrase="size.named">Jede Seite wird auf ein Blatt {name} gesetzt,
       innerhalb des Randes, welche Form sie auch bekommen hat.</span>
 
-    <span data-phrase="error.decode">Dieser Browser konnte {name} nicht öffnen.
-      Wenn es ein HEIC-Foto von einem iPhone ist, wandeln Sie es zuerst um.</span>
+    <span data-phrase="busy.cancelled">Abgebrochen. Ändern Sie die Einstellungen oder speichern Sie erneut, um es noch einmal zu versuchen.</span>
+    <span data-phrase="error.skipped.one">Eine Datei wurde übersprungen, weil sie nicht als Foto erkannt wird: {names}.</span>
+    <span data-phrase="error.skipped.many">{count} Dateien wurden übersprungen, weil sie nicht als Fotos erkannt werden: {names}.</span>
+    <span data-phrase="error.more">{names} und {count} weitere</span>
+    <span data-phrase="error.decode.one">Dieser Browser konnte {names} nicht öffnen. Wenn es ein HEIC-Foto vom iPhone ist, wandle es zuerst um.</span>
+    <span data-phrase="error.decode.many">Dieser Browser konnte {count} Fotos nicht öffnen: {names}. Wandle HEIC-Fotos vor dem Hinzufügen um.</span>
     <span data-phrase="error.none">Wählen Sie zuerst mindestens ein Foto.</span>
     <span data-phrase="error.failed">Beim Erstellen der Datei ist etwas
       schiefgegangen: {detail}</span>

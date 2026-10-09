@@ -183,7 +183,7 @@
       un passeport ou un contrat, ni de code qui le ferait s'il y en avait un.
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">Format de page</label>
         <select id="page-size">
@@ -251,18 +251,17 @@
       <div class="field">
         <label for="title">Titre du document <span class="optional">(facultatif)</span></label>
         <input type="text" id="title" maxlength="120" placeholder="Laissé vide, le PDF ne porte aucun titre">
-        <p class="field-note">
-          La seule chose écrite dans le document en dehors des pages. Aucune date,
-          aucun auteur et rien sur cette machine. Voir
-          <code>src/document.js</code>.
-        </p>
+        <p class="field-note">Le PDF contient le nom de cet outil et le titre que vous saisissez, sans date, auteur ni information sur la machine.</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>Enregistrer en PDF</button>
       <button type="button" id="save-images" class="ghost big" disabled>Enregistrer les pages en images</button>
+      <button type="button" id="cancel" class="ghost big" hidden>Annuler</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>L’annulation est vérifiée entre les opérations de chaque page. Le décodage ou l’encodage d’une image déjà commencé peut se terminer en arrière-plan ; son résultat est ignoré.</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -376,17 +375,19 @@
     <span data-phrase="result.png">Les pages sont stockées en PNG, qui est sans
       perte et qui est ce que veut une image à deux couleurs &mdash; le JPEG
       serait à la fois plus gros et flou autour de chaque lettre.</span>
-    <span data-phrase="result.clean">Aucune date, aucun auteur, aucun nom de
-      machine&nbsp;: la seule chose dans le document en dehors des pages est le
-      nom de cet outil.</span>
+    <span data-phrase="result.clean">Aucune date, aucun auteur ni nom de machine : en plus des pages, le PDF contient le nom de cet outil et le titre que vous avez saisi.</span>
 
     <span data-phrase="size.fit">Chaque feuille prend la taille que sa propre page
       a réellement, à la résolution ci-dessus. Rien n'est encadré de bandes.</span>
     <span data-phrase="size.named">Chaque page est posée sur une feuille {name},
       à l'intérieur de la marge, quelle que soit la forme obtenue.</span>
 
-    <span data-phrase="error.decode">Ce navigateur n'a pas pu ouvrir {name}. Si
-      c'est une photo HEIC d'iPhone, convertissez-la d'abord.</span>
+    <span data-phrase="busy.cancelled">Annulé. Modifiez les réglages ou enregistrez à nouveau pour réessayer.</span>
+    <span data-phrase="error.skipped.one">Un fichier non reconnu comme photo a été ignoré : {names}.</span>
+    <span data-phrase="error.skipped.many">{count} fichiers non reconnus comme photos ont été ignorés : {names}.</span>
+    <span data-phrase="error.more">{names} et {count} autres</span>
+    <span data-phrase="error.decode.one">Ce navigateur n’a pas pu ouvrir {names}. S’il s’agit d’une photo HEIC d’iPhone, convertissez-la d’abord.</span>
+    <span data-phrase="error.decode.many">Ce navigateur n’a pas pu ouvrir {count} photos : {names}. Convertissez les photos HEIC avant de les ajouter.</span>
     <span data-phrase="error.none">Choisissez d'abord au moins une photo.</span>
     <span data-phrase="error.failed">Quelque chose s'est mal passé pendant la
       création du fichier&nbsp;: {detail}</span>

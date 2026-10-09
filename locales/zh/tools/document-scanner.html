@@ -156,7 +156,7 @@
       PDF 就在这里、在这一页的内存里一页一页地做出来。这个工具的另一头没有服务器可以接收工资单、护照或者合同，代码里也没有任何东西会去做这件事。
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">页面尺寸</label>
         <select id="page-size">
@@ -218,16 +218,17 @@
       <div class="field">
         <label for="title">文档标题<span class="optional">（可选）</span></label>
         <input type="text" id="title" maxlength="120" placeholder="留空的话 PDF 里不带标题">
-        <p class="field-note">
-          除了页面之外，写进文档里的只有这一样。没有日期，没有作者，也没有关于这台设备的任何东西。看 <code>src/document.js</code>。
-        </p>
+        <p class="field-note">PDF记录此工具的名称和输入的标题，不包含日期、作者或设备信息。</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>存成 PDF</button>
       <button type="button" id="save-images" class="ghost big" disabled>把页面存成图片</button>
+      <button type="button" id="cancel" class="ghost big" hidden>取消</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>取消会在页面处理步骤之间生效。已经开始的图像解码或编码可能在后台完成，但其结果会被丢弃。</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -282,11 +283,16 @@
     <span data-phrase="busy.writing">正在写文档&hellip;</span>
 
     <span data-phrase="result.pdf">{name} | {size}，{pages}。</span>
-    <span data-phrase="result.images">{name} | {size}，{pages}。</span><span data-phrase="result.mono">按每像素一位保存并精确压缩，所以才这么小。</span><span data-phrase="result.jpeg">页面按你选的质量存成了 JPEG。</span><span data-phrase="result.png">页面存成了 PNG，它是无损的，也正是两种颜色的图像需要的。换成 JPEG 会更大，而且每个字周围都发糊。</span><span data-phrase="result.clean">没有日期，没有作者，没有电脑名。除了页面，文档里只有这个工具的名字。</span>
+    <span data-phrase="result.images">{name} | {size}，{pages}。</span><span data-phrase="result.mono">按每像素一位保存并精确压缩，所以才这么小。</span><span data-phrase="result.jpeg">页面按你选的质量存成了 JPEG。</span><span data-phrase="result.png">页面存成了 PNG，它是无损的，也正是两种颜色的图像需要的。换成 JPEG 会更大，而且每个字周围都发糊。</span><span data-phrase="result.clean">没有日期、作者或设备名称：除了页面，PDF只记录此工具的名称和输入的标题。</span>
 
     <span data-phrase="size.fit">每张纸拿到的就是它那一页真实的尺寸，按上面选的分辨率算。不会加白边去凑。</span><span data-phrase="size.named">每一页都放在 {name} 的纸上、页边距以内，不管它最后成了什么形状。</span>
 
-    <span data-phrase="error.decode">这个浏览器打不开 {name}。要是 iPhone 拍的 HEIC 照片，先转换一下。</span><span data-phrase="error.none">先至少选一张照片。</span><span data-phrase="error.failed">做文件的时候出了岔子：{detail}</span>
+    <span data-phrase="busy.cancelled">已取消。可以更改设置或再次保存以重试。</span>
+    <span data-phrase="error.skipped.one">已跳过1个未被识别为照片的文件：{names}。</span>
+    <span data-phrase="error.skipped.many">已跳过{count}个未被识别为照片的文件：{names}。</span>
+    <span data-phrase="error.more">{names}，以及另外{count}个</span>
+    <span data-phrase="error.decode.one">此浏览器无法打开{names}。如果是iPhone的HEIC照片，请先转换。</span>
+    <span data-phrase="error.decode.many">此浏览器无法打开{count}张照片：{names}。添加HEIC照片前请先转换。</span><span data-phrase="error.none">先至少选一张照片。</span><span data-phrase="error.failed">做文件的时候出了岔子：{detail}</span>
 
     <span data-phrase="net.clean">你的文档没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
