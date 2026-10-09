@@ -7,6 +7,8 @@ import { CODE_PATTERN, formatSize, makeCode, normalize } from './names.js';
 import { rtcConfig, makeShareUrl, isLocalLink, localDescription, allowedCandidate } from './network.js';
 import { cleanFileList, beginFile, appendFileChunk, finishFile } from './receive-file.js';
 import { watchDiscovery } from './discovery.js';
+import { clipboardFeedback } from './shared/clipboard-feedback.js';
+import { fileSender, FILE_CHANNEL } from './send-file.js';
 
 // The one address this tool contacts, named in this page's
 // Content-Security-Policy: the rendezvous that introduces the two browsers.
@@ -37,7 +39,6 @@ const shareUrl = (code) => makeShareUrl(location.href, code, isLocal);
 
 const MAX_FILE = 200 * 1024 * 1024;
 const MAX_FILES = 256;
-const CHUNK = 64 * 1024;
 
 const $ = (id) => document.getElementById(id);
 
@@ -66,7 +67,7 @@ const peers = new Map();     // viewer id -> RTCPeerConnection
 const channels = new Map();  // viewer id -> RTCDataChannel receiving the share
 const pending = new Map();   // viewer id -> {dc, row} waiting to be let in
 const attached = new Map();  // file id -> File, the sharer's selection
-const sendQueue = new Map(); // viewer id -> the one transfer in flight
+const sendQueue = new Map(); // viewer id -> its bounded file sender
 
 const payload = () => JSON.stringify({ type: 'text', body: $('text').value, md: $('markdown').checked });
 
@@ -110,6 +111,7 @@ function suggest() {
 }
 
 function unlock() {
+  linkCopy.invalidate();
   isDiscoverable = false;
   $('publish').hidden = false;
   setShareState();
@@ -210,6 +212,7 @@ function removeRequest(id) {
 function dropViewer(id) {
   if (peers.has(id)) { peers.get(id).close(); peers.delete(id); }
   channels.delete(id);
+  sendQueue.get(id)?.close();
   sendQueue.delete(id);
   removeRequest(id);
   refreshCount();
@@ -223,7 +226,7 @@ function broadcast() {
 /* --------------------------------------------------------------- the files */
 
 const filesMsg = () => JSON.stringify({
-  type: 'files',
+  type: 'files', fileChannels: true,
   list: [...attached].map(([id, f]) => ({ id, name: f.name, size: f.size })),
 });
 
@@ -252,37 +255,6 @@ function renderAttachlist() {
     row.append(name, size, del);
     box.append(row);
   }
-}
-
-// The file rides the same channel as the text: a begin marker, binary
-// chunks paced by the channel's own backpressure, an end marker. The
-// rendezvous never carries a byte of it.
-async function sendFile(dc, id) {
-  const f = attached.get(id);
-  if (!f) { dc.send(JSON.stringify({ type: 'file-gone', id })); return; }
-  dc.send(JSON.stringify({ type: 'file-begin', id, name: f.name, size: f.size, mime: f.type }));
-  dc.bufferedAmountLowThreshold = 1 << 20;
-  for (let off = 0; off < f.size; off += CHUNK) {
-    if (dc.readyState !== 'open') return;
-    if (dc.bufferedAmount > (8 << 20)) {
-      // The close listener races the wait so a vanished reader cannot leave
-      // this loop suspended forever.
-      await new Promise((resolve) => {
-        const resume = () => {
-          dc.removeEventListener('bufferedamountlow', resume);
-          dc.removeEventListener('close', resume);
-          resolve();
-        };
-        dc.addEventListener('bufferedamountlow', resume, { once: true });
-        dc.addEventListener('close', resume, { once: true });
-      });
-      if (dc.readyState !== 'open') return;
-    }
-    const bytes = await f.slice(off, off + CHUNK).arrayBuffer();
-    if (dc.readyState !== 'open') return;
-    dc.send(bytes);
-  }
-  dc.send(JSON.stringify({ type: 'file-end', id }));
 }
 
 /* ----------------------------------------------------- local discovery */
@@ -426,6 +398,7 @@ function publish() {
   try {
     hostSocket(code, () => {
       attempts = 0;
+      linkCopy.invalidate();
       $('link').value = shareUrl(code);
       $('linkrow').hidden = false;
       $('stop').hidden = false;
@@ -453,8 +426,14 @@ async function hostSignal(from, data) {
     pc.onicecandidate = (e) => {
       if (e.candidate && allowedCandidate(e.candidate, isLocal) && sock.readyState === 1) sock.send(JSON.stringify({ to: from, data: { candidate: e.candidate, local: isLocal } }));
     };
+    let mainChannel = null;
     pc.ondatachannel = (e) => {
       const dc = e.channel;
+      if (dc.label !== 'share' || mainChannel || peers.get(from) !== pc) { dc.close(); return; }
+      mainChannel = dc;
+      const sender = fileSender({ peer: pc, control: dc, files: attached,
+        admitted: () => channels.get(from) === dc && peers.get(from) === pc });
+      sendQueue.set(from, sender);
       dc.binaryType = 'arraybuffer';
       let introduced = false;
       const introduce = () => {
@@ -478,17 +457,8 @@ async function hostSignal(from, data) {
           else dc.send(JSON.stringify({ type: 'private' }));
           return;
         }
-        // Files go only to admitted readers, with one request in flight.
-        if (m.type === 'get' && channels.has(from)) {
-          // A reader can ask again after completion, but cannot build an
-          // unbounded queue of the same large file while it is in flight.
-          if (sendQueue.has(from)) return;
-          const transfer = sendFile(dc, String(m.id)).catch(() => {}).finally(() => {
-            if (sendQueue.get(from) === transfer) sendQueue.delete(from);
-          });
-          sendQueue.set(from, transfer);
-          return;
-        }
+        if (m.type === 'get') { sender.request(m); return; }
+        if (m.type === 'cancel-file') { sender.cancel(m.request); return; }
         if (m.type === 'knock' && isPrivate && !channels.has(from) && !pending.has(from)) {
           // A knock carrying a token this share issued is a reader who was
           // already let in and merely switched language - no second knock.
@@ -586,6 +556,7 @@ $('stop').addEventListener('click', () => {
   foundShares = foundShares.filter((share) => share.code !== stoppedCode);
   sock?.close(1000);
   clearInterval(keepalive);
+  for (const sender of sendQueue.values()) sender.close();
   for (const pc of peers.values()) pc.close();
   peers.clear(); channels.clear(); sendQueue.clear();
   unlock();
@@ -594,11 +565,35 @@ $('stop').addEventListener('click', () => {
 
 $('suggest').addEventListener('click', suggest);
 
-$('copylink').addEventListener('click', () => {
-  navigator.clipboard.writeText($('link').value);
-  $('copylink').textContent = phrase('copy.done');
-  setTimeout(() => { $('copylink').textContent = phrase('copy.link'); }, 1500);
+const linkCopy = clipboardFeedback({
+  read: () => ({ text: $('link').value, owner: sock }),
+  current: value => value.owner === sock && value.text === $('link').value && !$('linkrow').hidden,
+  write: text => navigator.clipboard.writeText(text),
+  done: () => { $('copylink').textContent = phrase('copy.done'); },
+  selected: () => {
+    $('link').focus(); $('link').select();
+    $('copylink').textContent = phrase('copy.select');
+  },
+  restore: () => { $('copylink').textContent = phrase('copy.link'); },
 });
+$('copylink').addEventListener('click', () => { void linkCopy.copy(); });
+let textVersion = 0;
+const textCopy = clipboardFeedback({
+  read: () => ({ text: $('received').textContent, version: textVersion }),
+  current: value => value.version === textVersion && value.text === $('received').textContent && !$('panel').hidden,
+  write: text => navigator.clipboard.writeText(text),
+  done: () => { $('copytext').textContent = phrase('copy.done'); },
+  selected: () => {
+    $('mode-src').click();
+    const source = $('received'); source.tabIndex = -1; source.focus();
+    const range = document.createRange(); range.selectNodeContents(source);
+    const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+    $('copytext').textContent = phrase('copy.select');
+  },
+  restore: () => { $('copytext').textContent = phrase('copy.text'); },
+});
+function retireTextCopy() { textVersion += 1; textCopy.invalidate(); }
+$('copytext').addEventListener('click', () => { void textCopy.copy(); });
 
 /* -------------------------------------------------------------- the reader */
 
@@ -647,7 +642,9 @@ function view(code) {
   let lastBody = '';
   let asMd = false;
   let mdTouched = false;
-  let rx = null; // the one in-flight download: {id, name, size, mime, parts, got, btn}
+  let rx = null; // Each selected file owns either a dedicated lane or the legacy lane.
+  let fileChannels = false;
+  let offered = new Map();
   let connectionTimer = 0;
   let deliveryTimer = 0;
   const clearDeadlines = () => {
@@ -688,78 +685,40 @@ function view(code) {
   $('mode-fmt').addEventListener('click', () => { mdTouched = true; asMd = true; renderView(); });
   $('mode-src').addEventListener('click', () => { mdTouched = true; asMd = false; renderView(); });
 
-  function renderFilelist(list) {
-    const box = $('filelist');
-    box.textContent = '';
-    for (const f of cleanFileList(list, MAX_FILE)) {
-      const row = document.createElement('div');
-      row.className = 'filerow';
-      const name = document.createElement('span');
-      name.className = 'fname';
-      name.textContent = String(f.name ?? '');
-      const size = document.createElement('span');
-      size.className = 'fsize';
-      size.textContent = fmtSize(Number(f.size) || 0);
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'ghost';
-      btn.textContent = phrase('view.download');
-      btn.onclick = () => {
-        if (rx !== null || dcRef?.readyState !== 'open') return;
-        rx = { id: f.id, name: name.textContent, size: f.size, mime: '', parts: [], got: 0, btn };
-        btn.disabled = true;
-        btn.textContent = '0%';
-        try { dcRef.send(JSON.stringify({ type: 'get', id: f.id })); }
-        catch { fileFailed(); }
-      };
-      row.append(name, size, btn);
-      box.append(row);
+  function refreshFileButtons() {
+    for (const button of $('filelist').querySelectorAll('button')) {
+      button.disabled = done || (button.hasAttribute('data-file-download') && rx !== null);
     }
   }
 
-  function fileBegin(msg) {
-    if (rx === null) return;
-    if (!beginFile(rx, msg, MAX_FILE)) fileFailed();
-  }
-
-  function fileChunk(buf) {
-    if (rx === null) return;
-    if (!appendFileChunk(rx, buf, MAX_FILE)) { fileFailed(); return; }
-    if (rx.size > 0) rx.btn.textContent = `${Math.min(99, Math.floor((rx.got / rx.size) * 100))}%`;
-  }
-
-  function fileEnd(msg) {
-    if (rx === null) return;
-    if (!finishFile(rx, msg)) { fileFailed(); return; }
-    const url = URL.createObjectURL(new Blob(rx.parts, { type: rx.mime }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = rx.name === '' ? 'shared-file' : rx.name;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-    rx.btn.textContent = phrase('view.download');
-    rx.btn.disabled = false;
+  function retireFile(owner) {
+    if (rx !== owner) return false;
     rx = null;
+    clearTimeout(owner.timer);
+    owner.parts = [];
+    owner.cancel.hidden = true;
+    if (owner.request) {
+      try { dcRef?.send(JSON.stringify({ type: 'cancel-file', request: owner.request })); } catch {}
+      owner.channel?.close();
+    }
+    refreshFileButtons();
+    return true;
   }
 
-  function fileGone() {
-    if (rx === null) return;
-    rx.btn.textContent = phrase('view.file-gone');
-    rx = null;
+  function waitingForFile(owner) {
+    clearTimeout(owner.timer);
+    owner.timer = setTimeout(() => { if (rx === owner) fileFailed(owner); }, 30000);
   }
 
-  function fileFailed() {
-    if (rx === null) return;
-    rx.btn.textContent = phrase('view.file-failed');
-    rx.parts = [];
-    rx = null;
-    // A broken transfer must finish its channel before a new request can
-    // reuse the binary lane, or late chunks could enter the next file.
+  function legacyFileFailure(key) {
+    // Older cached pages put untagged chunks on the text lane. That lane must
+    // end before another file can be requested; a retry cannot safely reuse it.
     done = true;
     viewerLive = false;
     clearDeadlines();
     clearInterval(viewerKeepalive);
     lastBody = '';
+    retireTextCopy();
     $('received').textContent = '';
     $('rendered').textContent = '';
     $('panel').hidden = true;
@@ -767,8 +726,135 @@ function view(code) {
     ws.close(1000);
     for (const button of $('filelist').querySelectorAll('button')) button.disabled = true;
     $('view-status').hidden = false;
-    $('view-status').textContent = phrase('view.file-failed');
+    $('view-status').textContent = phrase(key);
     $('retryrow').hidden = false;
+  }
+
+  function startFile(file, controls) {
+    if (rx || done || dcRef?.readyState !== 'open' || !offered.has(file.id)) return;
+    const owner = { ...file, ...controls, mime: '', parts: [], got: 0,
+      request: fileChannels ? crypto.randomUUID() : null, channel: null, timer: null };
+    rx = owner;
+    owner.status.textContent = '';
+    owner.btn.textContent = '0%';
+    owner.cancel.hidden = false;
+    refreshFileButtons();
+    waitingForFile(owner);
+    try { dcRef.send(JSON.stringify({ type: 'get', id: file.id,
+      ...(owner.request ? { request: owner.request } : {}) })); }
+    catch { fileFailed(owner); }
+  }
+
+  function renderFilelist(list, capability) {
+    const files = cleanFileList(list, MAX_FILE);
+    offered = new Map(files.map(file => [file.id, file]));
+    fileChannels = capability === true;
+    if (rx) {
+      const file = offered.get(rx.id);
+      if (!file || file.name !== rx.name || file.size !== rx.size) fileGone(rx);
+    }
+    const box = $('filelist');
+    box.replaceChildren();
+    for (const file of files) {
+      if (rx?.id === file.id) { box.append(rx.row); continue; }
+      const row = document.createElement('div'); row.className = 'filerow';
+      const name = document.createElement('span'); name.className = 'fname'; name.textContent = file.name;
+      name.id = `file-${crypto.randomUUID()}`;
+      const size = document.createElement('span'); size.className = 'fsize'; size.textContent = fmtSize(file.size);
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'ghost';
+      btn.dataset.fileDownload = ''; btn.textContent = phrase('view.download');
+      btn.setAttribute('aria-describedby', name.id);
+      const cancel = document.createElement('button'); cancel.type = 'button'; cancel.className = 'ghost';
+      cancel.textContent = phrase('view.file-cancel'); cancel.hidden = true;
+      cancel.setAttribute('aria-describedby', name.id);
+      const status = document.createElement('span'); status.className = 'file-status';
+      status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+      btn.onclick = () => startFile(file, { row, btn, cancel, status });
+      cancel.onclick = () => {
+        const owner = rx;
+        if (!owner || owner.row !== row) return;
+        const modern = !!owner.request;
+        retireFile(owner);
+        owner.btn.textContent = phrase('view.file-retry');
+        owner.status.textContent = phrase('view.file-cancelled');
+        if (!modern) legacyFileFailure('view.file-legacy-cancel');
+        else owner.btn.focus({ preventScroll: true });
+      };
+      row.append(name, size, btn, cancel, status); box.append(row);
+    }
+    refreshFileButtons();
+  }
+
+  function fileBegin(msg, owner = rx) {
+    if (!owner || rx !== owner) return;
+    if (!beginFile(owner, msg, MAX_FILE)) { fileFailed(owner); return; }
+    waitingForFile(owner);
+  }
+
+  function fileChunk(buf, owner = rx) {
+    if (!owner || rx !== owner) return;
+    if (!appendFileChunk(owner, buf, MAX_FILE)) { fileFailed(owner); return; }
+    waitingForFile(owner);
+    if (owner.size > 0) owner.btn.textContent = `${Math.min(99, Math.floor((owner.got / owner.size) * 100))}%`;
+  }
+
+  function fileEnd(msg, owner = rx) {
+    if (!owner || rx !== owner) return;
+    if (!finishFile(owner, msg)) { fileFailed(owner); return; }
+    let url;
+    try {
+      const blob = new Blob(owner.parts, { type: owner.mime });
+      url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a'); anchor.href = url;
+      anchor.download = owner.name === '' ? 'shared-file' : owner.name; anchor.click();
+    } catch {
+      if (url) URL.revokeObjectURL(url);
+      fileFailed(owner); return;
+    }
+    retireFile(owner);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    owner.btn.textContent = phrase('view.download');
+    owner.status.textContent = '';
+  }
+
+  function fileGone(owner = rx) {
+    if (!owner || rx !== owner) return;
+    const modern = !!owner.request;
+    retireFile(owner);
+    owner.btn.textContent = phrase('view.file-gone'); owner.btn.disabled = true;
+    // A roster can withdraw a captured old File while its untagged bytes are
+    // still arriving. Abandoning that lane needs the same fence as Cancel.
+    if (!modern) legacyFileFailure('view.file-legacy-failed');
+  }
+
+  function fileFailed(owner = rx) {
+    if (!owner || rx !== owner) return;
+    const modern = !!owner.request;
+    retireFile(owner);
+    owner.status.textContent = phrase('view.file-failed');
+    owner.btn.textContent = phrase('view.file-retry');
+    if (!modern) legacyFileFailure('view.file-legacy-failed');
+  }
+
+  function receiveFileChannel(channel) {
+    const owner = rx;
+    if (!owner?.request || done || channel.label !== FILE_CHANNEL + owner.request || owner.channel) {
+      channel.close(); return;
+    }
+    owner.channel = channel; channel.binaryType = 'arraybuffer';
+    channel.onmessage = event => {
+      if (rx !== owner) return;
+      if (typeof event.data !== 'string') { fileChunk(event.data, owner); return; }
+      let message;
+      try { message = JSON.parse(event.data); } catch { fileFailed(owner); return; }
+      if (message?.type === 'file-begin') fileBegin(message, owner);
+      else if (message?.type === 'file-end') fileEnd(message, owner);
+      else if (message?.type === 'file-gone') fileGone(owner);
+      else fileFailed(owner);
+    };
+    channel.onclose = () => { if (rx === owner) fileFailed(owner); };
+    channel.onerror = () => { if (rx === owner) fileFailed(owner); };
+    waitingForFile(owner);
   }
 
   const sharerGone = () => {
@@ -778,12 +864,14 @@ function view(code) {
     clearDeadlines();
     clearInterval(viewerKeepalive);
     $('knockrow').hidden = true;
+    if (rx) retireFile(rx);
+    offered.clear();
     $('filelist').textContent = '';
-    rx = null;
     if (got) {
       // The share ends everywhere at once: what the sharer's tab stops
       // holding, this page stops showing.
       lastBody = '';
+      retireTextCopy();
       $('received').textContent = '';
       $('rendered').textContent = '';
       $('panel').hidden = true;
@@ -837,6 +925,7 @@ function view(code) {
     pc.oniceconnectionstatechange = () => {
       if (pc.iceConnectionState === 'failed') giveUp();
     };
+    pc.ondatachannel = event => receiveFileChannel(event.channel);
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
     dcRef = dc;
@@ -854,14 +943,21 @@ function view(code) {
     dc.onopen = opened;
     dc.onmessage = (ev) => {
       if (done) return;
-      if (typeof ev.data !== 'string') { fileChunk(ev.data); return; }
+      if (typeof ev.data !== 'string') { if (!rx?.request) fileChunk(ev.data); return; }
       let msg;
       try { msg = JSON.parse(ev.data); } catch { return; }
       if (!msg || typeof msg !== 'object') return;
-      if (msg.type === 'files') { renderFilelist(msg.list ?? []); return; }
-      if (msg.type === 'file-begin') { fileBegin(msg); return; }
-      if (msg.type === 'file-end') { fileEnd(msg); return; }
-      if (msg.type === 'file-gone') { if (rx?.id === msg.id) fileGone(); return; }
+      if (msg.type === 'files') { renderFilelist(msg.list ?? [], msg.fileChannels); return; }
+      if (msg.type === 'file-begin') { if (!rx?.request) fileBegin(msg); return; }
+      if (msg.type === 'file-end') { if (!rx?.request) fileEnd(msg); return; }
+      if (msg.type === 'file-gone') {
+        if (rx?.id === msg.id && (!rx.request || msg.request === rx.request)) fileGone();
+        return;
+      }
+      if (msg.type === 'file-failed') {
+        if (rx?.id === msg.id && (!rx.request || msg.request === rx.request)) fileFailed();
+        return;
+      }
       if (msg.type === 'token') {
         try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
         return;
@@ -903,6 +999,7 @@ function view(code) {
       got = true;
       introduced = true;
       clearDeadlines();
+      retireTextCopy();
       lastBody = String(msg.body ?? '');
       // The sharer's markdown flag sets the default; a reader who has
       // touched the view toggle keeps their own choice through live updates.
@@ -1011,12 +1108,6 @@ function view(code) {
     else if (!connected) stopAttempt('view.error');
   };
 }
-
-$('copytext').addEventListener('click', () => {
-  navigator.clipboard.writeText($('received').textContent);
-  $('copytext').textContent = phrase('copy.done');
-  setTimeout(() => { $('copytext').textContent = phrase('copy.text'); }, 1500);
-});
 
 $('retry').addEventListener('click', () => location.reload());
 

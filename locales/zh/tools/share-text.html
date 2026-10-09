@@ -38,7 +38,7 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="要附上的文件">
       <div id="attachlist"></div>
-      <p class="field-note">文件走和文本同一条直连通道，每个最大 200&nbsp;MB。读者看到列表，只有开口要，文件才会传给他。一次分享最多可以附上 256 个文件。</p>
+      <p class="field-note">文件与文本使用同一直连连接，每个最大 200&nbsp;MB。读者看到列表，只有开口要，文件才会传给他。一次分享最多可以附上 256 个文件。</p>
     </section>
 
     <section class="card">
@@ -195,6 +195,12 @@
     <span data-phrase="share.too-many-files">一次分享最多可以附上 256 个文件。请先移除一个，再继续添加。</span>
     <span data-phrase="share.leave-warning">离开此页面，分享对所有人结束。继续吗？</span>
 
+    <span data-phrase="copy.select">已选中，请手动复制</span>
+    <span data-phrase="view.file-cancel">取消下载</span>
+    <span data-phrase="view.file-retry">重试下载</span>
+    <span data-phrase="view.file-cancelled">下载已取消。共享仍在继续。</span>
+    <span data-phrase="view.file-legacy-cancel">下载已取消。请先重新检查此链接，然后再重试。</span>
+    <span data-phrase="view.file-legacy-failed">文件下载未能完成。请重新检查这个链接，然后再尝试下载。</span>
     <span data-phrase="copy.done">已复制</span>
     <span data-phrase="copy.link">复制链接</span>
     <span data-phrase="copy.text">复制</span>
@@ -223,7 +229,7 @@
     <span data-phrase="view.mode-local">分享方使用局域网模式。按对方的模式重试，即可在不使用互联网中转的情况下连接。</span>
     <span data-phrase="view.mode-direct">分享方使用普通连接模式。请按对方的模式重试；只有直连失败后才会提供中转，而且由你选择是否使用。</span>
     <span data-phrase="view.local-no-connect">在局域网模式下无法连接分享方。请检查两台设备是否使用同一 Wi-Fi 或以太网；访客网络隔离、VPN、防火墙或浏览器设置可能阻止连接。此模式不提供互联网中转。</span>
-    <span data-phrase="view.file-failed">文件下载未能完成。请重新检查这个链接，然后再尝试下载。</span>
+    <span data-phrase="view.file-failed">未能完成文件下载。请在共享仍在继续时重试下载此文件。</span>
 
     <span data-phrase="net.clean">这一页分享的内容没有经过任何服务器。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
