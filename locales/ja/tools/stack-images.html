@@ -134,6 +134,8 @@
       proposition from an average of them, and that should be visible before
       the button is pressed rather than afterwards.
     -->
+    <p id="output-note" class="note">合成時に透明度は破棄されます。保存される画像はPNG形式でも不透明です。</p>
+
     <dl class="plan" id="plan" hidden>
       <div><dt>結果</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>作業メモリ</dt><dd id="plan-memory">&mdash;</dd></div>
@@ -193,6 +195,7 @@
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
+        <p id="result-settings" class="field-note"></p>
         <p id="result-moves" class="field-note"></p>
         <details id="alignment-details" class="alignment-details">
           <summary>位置合わせの詳細</summary>
@@ -262,6 +265,26 @@
     <span data-phrase="progress.measure">{name}がどれだけ動いたかを測っています&hellip;</span>
     <span data-phrase="progress.stack">スタック中｜{total}枚のうち{done}枚を読み込み</span><span data-phrase="progress.stack-banded">スタック中｜{bands}本のうち{band}本目の帯、{total}枚のうち{done}枚を読み込み</span><span data-phrase="progress.encode">画像を書き出しています&hellip;</span>
 
+    <span data-phrase="result.settings.detail">{settings}{detail}</span>
+    <span data-phrase="result.settings">{method}で作成。位置合わせ：{alignment}。処理時の解像度：{resolution}。露出：{gain}×。{encoding}。</span>
+    <span data-phrase="result.method.mean">平均</span>
+    <span data-phrase="result.method.median">中央値</span>
+    <span data-phrase="result.method.sigma">シグマクリッピング</span>
+    <span data-phrase="result.method.max">明るい方</span>
+    <span data-phrase="result.method.min">暗い方</span>
+    <span data-phrase="result.method.sum">加算</span>
+    <span data-phrase="result.method.focus">深度合成</span>
+    <span data-phrase="result.alignment.projective">自動遠近補正</span>
+    <span data-phrase="result.alignment.translate">平行移動のみ</span>
+    <span data-phrase="result.alignment.similarity">平行移動・回転・拡大縮小</span>
+    <span data-phrase="result.alignment.none">なし</span>
+    <span data-phrase="result.resolution.full">元のサイズ</span>
+    <span data-phrase="result.resolution.half">半分</span>
+    <span data-phrase="result.resolution.quarter">4分の1</span>
+    <span data-phrase="result.encoding.png">PNG</span>
+    <span data-phrase="result.encoding.jpeg">JPEG品質{quality}</span>
+    <span data-phrase="result.settings.sigma">除外のしきい値：{kappa}σ。</span>
+    <span data-phrase="result.settings.focus">鮮明さの測定半径：{radius}px。</span>
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;、{size}｜{count}枚を{seconds}秒でまとめました</span><span data-phrase="result.moves">各フレームを測り、あるべき場所へ寄せました。</span>
     <span data-phrase="result.moves-some">{total}枚のうち{count}枚は確かに測れなかったので、元の位置のままにしました。</span><span data-phrase="result.moves-none">フレームを届いたそのままスタックしました。</span>
     <span data-phrase="result.moves-clamped">{count}枚が連写にしては大きすぎる回転を返したので、平行移動だけで直しました。</span><span data-phrase="result.cropped">互いに寄せた結果、すべてのフレームが届かない縁が残ったので、そこは切り落としました。</span>
