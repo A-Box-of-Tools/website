@@ -36,7 +36,7 @@
   <section class="card">
     <h2><span class="step">2</span> Seiteneinrichtung</h2>
 
-    <div class="settings">
+    <div class="settings" id="page-settings">
       <div class="field">
         <label for="page-size">Seitengröße</label>
         <select id="page-size">
@@ -146,16 +146,10 @@
       </div>
     </div>
 
-    <details class="meta-panel">
+    <details class="meta-panel" id="metadata-settings">
       <summary>Dokumentangaben &mdash; alle optional, alle standardmäßig leer</summary>
       <div class="meta-body">
-        <p class="meta-note">
-          Ein PDF trägt einen kleinen Block mit Angaben über sich selbst, und die
-          meisten Werkzeuge füllen ihn mit einem Zeitstempel und einem
-          Programmnamen, ob Sie darum gebeten haben oder nicht. Dieses schreibt
-          nur, was Sie hier eintippen. Keine Dateinamen, keinen Gerätenamen und
-          kein Datum, solange Sie das Häkchen nicht setzen.
-        </p>
+        <p class="meta-note">Das PDF nennt dieses Werkzeug als Ersteller. Es enthält außerdem den von Ihnen eingegebenen Titel und Autor sowie das heutige Datum nur dann, wenn Sie das Häkchen setzen. Bilddateinamen und Informationen über Ihr Gerät bleiben außen vor.</p>
         <div class="settings">
           <div class="field">
             <label for="doc-title">Titel</label>
@@ -213,6 +207,9 @@
       <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
 
+    <p id="cancel-note" class="field-note" hidden>Abbrechen verhindert, dass dieses PDF zum Herunterladen angeboten wird. Eine bereits laufende Dekodierung, Kodierung oder Komprimierung im Browser kann noch zu Ende laufen, bevor ihre Ressourcen freigegeben werden.</p>
+    <p id="export-wait" class="field-note" role="status" aria-live="polite" tabindex="-1" hidden>Frühere Arbeit im Browser läuft noch zu Ende. Sobald ein Vorgang abgeschlossen ist, können Sie wieder ein PDF erstellen.</p>
+
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar is-smooth"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
@@ -241,6 +238,7 @@
     <span data-phrase="tile.earlier">{name} nach vorn schieben</span>
     <span data-phrase="tile.later">{name} nach hinten schieben</span>
     <span data-phrase="read.notimage">{name}: kein Bild, das dieses Werkzeug lesen kann.</span>
+    <span data-phrase="read.failed">{name}: Dieses Bild konnte nicht vorbereitet werden. {detail}</span>
     <span data-phrase="read.nodecode">{name}: dieser Browser konnte es nicht dekodieren.</span>
     <span data-phrase="drag.move">{name} durch Ziehen verschieben</span>
     <span data-phrase="note.fit">Jede Seite ist genau ihr Bild, es wird also nichts

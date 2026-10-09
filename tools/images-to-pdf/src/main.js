@@ -8,12 +8,21 @@ import { loadImages, releaseItem, rotateItem, sortItems, moveItem } from './imag
 import { layoutPage, seenSize, PAGE_SIZES } from './layout.js';
 import { buildDocument } from './document.js';
 import { makeExample } from './example.js';
+import { orderedLoads } from './shared/ordered-loads.js';
+import { said } from './shared/errors.js';
+import { errorDetail, outputName, snapshotItems } from './export-state.js';
+import { nativeSlots } from './native-work.js';
 
 const $ = (id) => document.getElementById(id);
 
 const el = {
   dropzone: $('dropzone'),
   fileInput: $('file-input'),
+  example: $('example-button'),
+  pageSettings: $('page-settings'),
+  metadataSettings: $('metadata-settings'),
+  cancelNote: $('cancel-note'),
+  exportWait: $('export-wait'),
   loadError: $('load-error'),
   list: $('image-list'),
   listToolbar: $('list-toolbar'),
@@ -80,8 +89,15 @@ const formatBytes = (n) => sizeText(n, phrase, { under: 'size.b', kb: 0, mb: 1 }
 /** The chosen pictures, in page order. */
 let items = [];
 let exporting = false;
-let cancelled = false;
-let abortController = null;
+let exportJob = null;
+let revision = 0;
+let loadPending = 0;
+let loadGeneration = 0;
+let loadController = new AbortController();
+let exampleJob = null;
+let loadNotices = [];
+const importSlots = nativeSlots();
+const exportSlots = nativeSlots();
 let resultUrl = null;
 /** Which page the preview is showing. */
 let previewAt = 0;
@@ -98,29 +114,70 @@ const picker = wireFilePicker({
   onFiles(files) {
     addFiles(files);
   },
-  example: makeExample,
+  example: makeOwnedExample,
 });
 
-async function addFiles(files) {
-  if (!files?.length || exporting) return;
-
-  picker.busy(readingLabel(files.length));
-
+async function makeOwnedExample() {
+  const job = { generation: loadGeneration };
+  exampleJob = job;
+  refresh();
   try {
-    const { items: added, skipped } = await loadImages(files);
-    items.push(...added);
-    // Each skip is a key and its blanks; the line break between two of them is
-    // not a sentence, so it stays here.
-    if (skipped.length) {
-      showLoadError(skipped.map(({ key, values }) => phrase(key, values)).join('\n'));
-    } else clearLoadError();
+    const files = await makeExample();
+    return exampleJob === job && job.generation === loadGeneration ? files : [];
+  } catch (error) {
+    if (exampleJob !== job || job.generation !== loadGeneration) return [];
+    throw error;
   } finally {
-    picker.done();
+    if (exampleJob === job) { exampleJob = null; refresh(); }
   }
-
-  render();
 }
 
+const loads = orderedLoads({
+  async read(file) {
+    const signal = loadController.signal;
+    const release = await importSlots.take(signal);
+    try {
+      const { items: added, skipped } = await loadImages([file], { signal });
+      if (!added.length) throw said(skipped[0].key, skipped[0].values);
+      return added[0];
+    } finally {
+      release();
+    }
+  },
+  discard: releaseItem,
+  complete({ items: added, errors }) {
+    items.push(...added);
+    for (const { value, error } of errors) {
+      const detail = errorDetail(error, phrase);
+      loadNotices.push(error?.values?.name === value.name ? detail
+        : phrase('read.failed', { name: value.name, detail }));
+    }
+    if (loadNotices.length) showLoadError(loadNotices.join('\n'));
+    render();
+  },
+  status(pending) {
+    loadPending = pending;
+    if (pending) picker.busy(readingLabel(pending));
+    else picker.done();
+    refresh();
+  },
+});
+
+function addFiles(files) {
+  if (exporting) { setExporting(true); return; }
+  if (!files?.length) return;
+  if (!loads.pending) { loadNotices = []; clearLoadError(); }
+  documentChanged();
+  void loads.add(files);
+}
+
+// A shared example's final cleanup cannot hide a newer owned import's progress.
+new MutationObserver(() => {
+  if (loadPending && !el.dropzone.classList.contains('busy')) {
+    picker.busy(readingLabel(loadPending));
+  }
+  updateExportAvailability();
+}).observe(el.dropzone, { attributes: true, attributeFilter: ['class'] });
 
 /* --------------------------------------------------------------- the pages */
 
@@ -316,7 +373,7 @@ function drawThumb(canvas, item) {
 
 /** Move the dragged page to wherever the marker currently sits. */
 function applyDrop() {
-  if (dragIndex === null || dropAt === null) {
+  if (exporting || dragIndex === null || dropAt === null) {
     clearDropMarkers();
     return;
   }
@@ -358,10 +415,16 @@ for (const button of document.querySelectorAll('[data-sort]')) {
 }
 
 el.clearAll.addEventListener('click', () => {
-  if (!items.length || exporting) return;
+  if ((!items.length && !loadPending && !exampleJob) || exporting) return;
+  loadGeneration += 1;
+  exampleJob = null;
+  loadController.abort();
+  loadController = new AbortController();
   for (const item of items) releaseItem(item);
   items = [];
+  loadNotices = [];
   clearLoadError();
+  loads.reset();
   render();
 });
 
@@ -413,16 +476,22 @@ const settingInputs = [
   [el.customUnit, 'change'], [el.dpi, 'change'], [el.orientation, 'change'],
   [el.fit, 'change'], [el.margin, 'input'], [el.background, 'input'],
   [el.mode, 'change'], [el.quality, 'change'], [el.maxSide, 'change'],
+  [el.docTitle, 'input'], [el.docAuthor, 'input'], [el.dated, 'change'],
 ];
 
 for (const [input, type] of settingInputs) {
   input.addEventListener(type, () => {
-    clearResult();
+    documentChanged();
     // Only the page changes here, never the queue - so the tiles, and the
     // hundred canvases that may be in them, are left alone.
     refresh();
   });
 }
+
+el.fileName.addEventListener('input', () => {
+  if (exportJob) documentChanged();
+  if (resultUrl) el.download.download = outputName(el.fileName.value);
+});
 
 /* ----------------------------------------------------------------- preview */
 
@@ -460,7 +529,13 @@ function drawPreview() {
     { n: previewAt + 1, total: items.length });
   el.previewPrev.disabled = previewAt === 0;
   el.previewNext.disabled = previewAt >= items.length - 1;
-  if (!any) return;
+  if (!any) {
+    el.preview.width = 0;
+    el.preview.height = 0;
+    el.preview.style.width = '';
+    el.preview.style.height = '';
+    return;
+  }
 
   const item = items[previewAt];
   const page = layoutPage(item, currentSettings());
@@ -510,7 +585,11 @@ function drawPreview() {
  * before the change is worse than no download button.
  */
 function render() {
-  clearResult();
+  documentChanged();
+  for (const canvas of el.list.querySelectorAll('canvas')) {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
   el.list.replaceChildren(...items.map(buildItemNode));
   refresh();
 }
@@ -521,11 +600,11 @@ const EMPTY = '\u2014';
 
 function refresh() {
   const any = items.length > 0;
-  el.listToolbar.hidden = !any;
+  el.listToolbar.hidden = !any && !loadPending && !exampleJob;
   el.reorderHint.hidden = items.length < 2;
   el.countLabel.textContent = phrase(items.length === 1 ? 'n.image.one' : 'n.image.many',
     { n: items.length });
-  el.exportBtn.disabled = !any || exporting;
+  updateExportAvailability();
 
   syncSettingVisibility();
   updateSummary();
@@ -604,49 +683,80 @@ function clearResult() {
   }
   el.result.hidden = true;
   el.download.removeAttribute('href');
+  el.resultInfo.textContent = '';
 }
 
-/** A file name that a file system will accept, from whatever was typed. */
-function outputName() {
-  const typed = el.fileName.value.trim().replace(/\.pdf$/i, '');
-  const safe = typed.replace(/[\\/:*?"<>|]/g, '-').slice(0, 120).trim();
-  return `${safe || 'images'}.pdf`;
+function updateExportAvailability() {
+  const wasWaiting = document.activeElement === el.exportWait;
+  el.exportBtn.disabled = !items.length || exporting || loadPending > 0
+    || !!exampleJob || el.dropzone.classList.contains('busy') || exportSlots.active >= 2;
+  el.exportWait.hidden = exporting || exportSlots.active < 2;
+  if (!el.exportBtn.disabled && wasWaiting) {
+    el.exportBtn.focus({ preventScroll: true });
+  }
 }
+
+function setExporting(active) {
+  exporting = active;
+  for (const region of [el.dropzone, el.example, el.listToolbar, el.list,
+    el.pageSettings, el.metadataSettings]) region.inert = active;
+  for (const input of [el.fileInput, el.fileName, ...settingInputs.map(([field]) => field)]) {
+    input.disabled = active;
+  }
+  el.cancelBtn.hidden = !active;
+  el.cancelNote.hidden = !active;
+  if (active) { dragIndex = null; dropAt = null; clearDropMarkers(); }
+  updateExportAvailability();
+}
+
+/** A captured run cannot later publish beside a newer document choice. */
+function documentChanged() {
+  revision += 1;
+  clearResult();
+  if (exportJob) {
+    exportJob.controller.abort();
+    exportJob = null;
+    setExporting(false);
+    el.progress.hidden = true;
+  }
+}
+
+const ownsExport = job => exportJob === job && job.revision === revision
+  && !job.controller.signal.aborted;
 
 async function runExport() {
-  if (!items.length || exporting) return;
-
-  exporting = true;
-  cancelled = false;
-  abortController = new AbortController();
+  if (!items.length || exporting || loadPending || exampleJob
+    || el.dropzone.classList.contains('busy') || exportSlots.active >= 2) return;
+  const job = { controller: new AbortController(), revision,
+    queue: snapshotItems(items), settings: Object.freeze(currentSettings()),
+    name: outputName(el.fileName.value) };
+  exportJob = job;
+  let cancelled = false;
+  let release;
   clearError();
   clearResult();
-  el.exportBtn.disabled = true;
-  el.cancelBtn.hidden = false;
+  setExporting(true);
   el.progress.hidden = false;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = phrase('step.starting');
-
-  // The document is built from a copy of the queue, the way the Images to
-  // Video tool hands its encoder one: buildDocument yields to the page between
-  // pictures, and a queue edit landing in one of those gaps would shift the
-  // list under the iteration - a page skipped, or written twice.
-  const queue = items.map((item) => ({ ...item }));
+  el.cancelBtn.focus({ preventScroll: true });
 
   try {
-    const { blob, pages, copied } = await buildDocument(queue, currentSettings(), {
-      signal: abortController.signal,
+    release = await exportSlots.take(job.controller.signal);
+    const { blob, pages, copied } = await buildDocument(job.queue, job.settings, {
+      signal: job.controller.signal,
       onProgress: ({ done, total, name }) => {
+        if (!ownsExport(job)) return;
         el.progressBar.style.width = `${Math.round((done / total) * 100)}%`;
         el.progressLabel.textContent = done < total
           ? phrase('step.page', { n: done + 1, total, name })
           : phrase('step.writing');
       },
     });
-
+    if (!ownsExport(job)) return;
     resultUrl = URL.createObjectURL(blob);
     el.download.href = resultUrl;
-    el.download.download = outputName();
+    el.download.download = job.name;
     el.resultInfo.textContent = phrase('join.sentences', {
       a: phrase(pages === 1 ? 'result.one' : 'result.many',
         { n: pages, size: formatBytes(blob.size) }),
@@ -655,24 +765,32 @@ async function runExport() {
     });
     el.result.hidden = false;
   } catch (error) {
+    if (!ownsExport(job)) return;
     cancelled = error?.name === 'AbortError';
     if (cancelled) el.progressLabel.textContent = phrase('step.cancelled');
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
-    else showError(phrase(error?.message ?? String(error)));
+    else showError(errorDetail(error, phrase));
   } finally {
-    exporting = false;
-    abortController = null;
-    el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = !items.length;
-    // Left on screen after a cancel, so that pressing the button and then
-    // changing your mind does not look like nothing happened.
-    el.progress.hidden = !cancelled;
+    release?.();
+    if (exportJob === job) {
+      exportJob = null;
+      const restoreFocus = document.activeElement === el.cancelBtn;
+      setExporting(false);
+      el.progress.hidden = !cancelled;
+      if (restoreFocus) el.exportBtn.focus({ preventScroll: true });
+    } else updateExportAvailability();
   }
 }
 
 el.exportBtn.addEventListener('click', runExport);
-el.cancelBtn.addEventListener('click', () => abortController?.abort());
+el.cancelBtn.addEventListener('click', () => {
+  if (!exportJob) return;
+  exportJob.controller.abort();
+  exportJob = null;
+  setExporting(false);
+  el.progressLabel.textContent = phrase('step.cancelled');
+  el.progress.hidden = false;
+  (el.exportBtn.disabled ? el.exportWait : el.exportBtn).focus({ preventScroll: true });
+});
 
 window.addEventListener('beforeunload', (event) => {
   if (!exporting) return;

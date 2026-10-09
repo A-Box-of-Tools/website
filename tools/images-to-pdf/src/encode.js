@@ -20,6 +20,7 @@
  */
 
 import { inspectJpeg } from './jpeg.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * Prepare one item for the document.
@@ -28,18 +29,19 @@ import { inspectJpeg } from './jpeg.js';
  *   height: number, gray: boolean, icc: Uint8Array|null, orientation: number,
  *   smask: {data: Uint8Array}|null, copied: boolean, predictor: boolean}>}
  */
-export async function prepareImage(item, settings) {
+export async function prepareImage(item, settings, signal) {
+  throwIfAborted(signal);
   // Turning a picture does not change its longest side, so the limit can be
   // checked against the stored size without working out which way up it is.
   const limit = Number(settings.maxSide) || 0;
   const resizing = limit > 0 && Math.max(item.width, item.height) > limit;
 
   if (settings.mode === 'keep' && !resizing) {
-    const copied = await copyJpeg(item);
+    const copied = await copyJpeg(item, signal);
     if (copied) return copied;
   }
 
-  return redraw(item, settings, resizing ? limit : 0);
+  return redraw(item, settings, resizing ? limit : 0, signal);
 }
 
 /**
@@ -50,10 +52,11 @@ export async function prepareImage(item, settings) {
  * other way and is re-encoded, which is why this returns null rather than
  * throwing.
  */
-async function copyJpeg(item) {
+async function copyJpeg(item, signal) {
   if (!isJpeg(item)) return null;
 
   const bytes = new Uint8Array(await item.file.arrayBuffer());
+  throwIfAborted(signal);
   const info = inspectJpeg(bytes);
   if (!info || !info.sequential) return null;
   if (info.components !== 1 && info.components !== 3) return null;
@@ -90,10 +93,11 @@ function isJpeg(item) {
  * up and the placement matrix has nothing left to do - hence orientation 1 on
  * everything this function returns.
  */
-async function redraw(item, settings, limit) {
+async function redraw(item, settings, limit, signal) {
   const bitmap = await createImageBitmap(item.file, { imageOrientation: 'from-image' });
-
+  let canvas;
   try {
+    throwIfAborted(signal);
     const scale = limit ? Math.min(1, limit / Math.max(bitmap.width, bitmap.height)) : 1;
     const width = Math.max(1, Math.round(bitmap.width * scale));
     const height = Math.max(1, Math.round(bitmap.height * scale));
@@ -102,9 +106,9 @@ async function redraw(item, settings, limit) {
     // asking costs a pass over every pixel of a picture that is here precisely
     // because it is large enough to be worth resizing.
     const lossless = settings.mode === 'lossless'
-      || (settings.mode === 'keep' && !isJpeg(item) && await hasAlpha(bitmap));
+      || (settings.mode === 'keep' && !isJpeg(item) && await hasAlpha(bitmap, signal));
 
-    const canvas = document.createElement('canvas');
+    canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d', { willReadFrequently: lossless });
@@ -120,21 +124,25 @@ async function redraw(item, settings, limit) {
     ctx.drawImage(bitmap, 0, 0, width, height);
 
     return lossless
-      ? await losslessStream(ctx, width, height)
-      : await jpegStream(canvas, settings, width, height);
+      ? await losslessStream(ctx, width, height, signal)
+      : await jpegStream(canvas, settings, width, height, signal);
   } finally {
+    if (canvas) { canvas.width = 0; canvas.height = 0; }
     bitmap.close();
   }
 }
 
-async function jpegStream(canvas, settings, width, height) {
+async function jpegStream(canvas, settings, width, height, signal) {
   const quality = Math.min(1, Math.max(0.3, Number(settings.quality) || 0.9));
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+  throwIfAborted(signal);
   if (!blob) throw new Error('encode.nojpeg');
+  const bytes = new Uint8Array(await blob.arrayBuffer());
+  throwIfAborted(signal);
 
   return {
     kind: 'dct',
-    data: new Uint8Array(await blob.arrayBuffer()),
+    data: bytes,
     width,
     height,
     gray: false,
@@ -154,7 +162,7 @@ async function jpegStream(canvas, settings, width, height) {
  * is markedly worse than a PNG of the same picture, and the difference on a
  * screenshot or a scan of a printed page is several times the file size.
  */
-async function losslessStream(ctx, width, height) {
+async function losslessStream(ctx, width, height, signal) {
   const { data } = ctx.getImageData(0, 0, width, height);
 
   const rgb = new Uint8Array(width * height * 3);
@@ -169,15 +177,19 @@ async function losslessStream(ctx, width, height) {
     if (data[i + 3] !== 255) opaque = false;
   }
 
+  const dataStream = await deflate(pngFilter(rgb, width, height, 3));
+  throwIfAborted(signal);
+  const smask = opaque ? null : { data: await deflate(pngFilter(alpha, width, height, 1)) };
+  throwIfAborted(signal);
   return {
     kind: 'flate',
-    data: await deflate(pngFilter(rgb, width, height, 3)),
+    data: dataStream,
     width,
     height,
     gray: false,
     icc: null,
     orientation: 1,
-    smask: opaque ? null : { data: await deflate(pngFilter(alpha, width, height, 1)) },
+    smask,
     copied: false,
     predictor: true,
   };
@@ -191,18 +203,23 @@ async function losslessStream(ctx, width, height) {
  * (which can). It costs a decode and a pass over the pixels, which is why the
  * question is not put to a file that is already a JPEG.
  */
-async function hasAlpha(bitmap) {
+async function hasAlpha(bitmap, signal) {
+  throwIfAborted(signal);
   const canvas = document.createElement('canvas');
-  canvas.width = bitmap.width;
-  canvas.height = bitmap.height;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  ctx.drawImage(bitmap, 0, 0);
-
-  const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
-  for (let i = 3; i < data.length; i += 4) {
-    if (data[i] !== 255) return true;
+  try {
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(bitmap, 0, 0);
+    const { data } = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] !== 255) return true;
+    }
+    return false;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
   }
-  return false;
 }
 
 /* --------------------------------------------------------------- filtering */

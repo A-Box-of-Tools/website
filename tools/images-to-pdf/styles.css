@@ -294,6 +294,7 @@
 .error {
   max-height: 12rem;
   overflow-y: auto;
+  overflow-wrap: anywhere;
 }
 
 .result { margin-top: 1.25rem; }

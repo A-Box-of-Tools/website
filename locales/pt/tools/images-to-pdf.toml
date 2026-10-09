@@ -76,12 +76,7 @@ body = """
 
 [[privacy]]
 title = "Nada sobre você é contado ao documento."
-body = """
- A maioria das ferramentas
-      carimba num PDF um horário e o nome do programa que o fez. Esta escreve um
-      título, um autor e uma data só se você digitar. Os nomes de arquivo das suas
-      imagens nunca aparecem no documento, e nada sobre o seu computador
-      aparece."""
+body = """O PDF identifica esta ferramenta como sua criadora. Inclui um título e um autor somente se você os digitar, e uma data de criação somente se você marcar a caixa. Os nomes dos arquivos de imagem e as informações sobre seu dispositivo ficam de fora."""
 
 [[privacy]]
 title = "O que o Google carrega, e o que não chega até ele."
