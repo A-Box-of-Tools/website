@@ -799,6 +799,7 @@ if (!hasWebCodecs() && !hasMediaRecorder()) {
 }
 
 setSourceControls(false);
+picker.waiting();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();
