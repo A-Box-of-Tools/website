@@ -10,6 +10,7 @@
 /* A batch can turn several files away at once, and each refusal is its own
    line. Left to grow, the list pushes the rest of the page off the screen. */
 .error {
+  overflow-wrap: anywhere;
   max-height: 12rem;
   overflow-y: auto;
 }

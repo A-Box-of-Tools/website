@@ -158,11 +158,14 @@ test('a custom WebP writer keeps its actual lossless verdict rather than echoing
   const outcome = await convertImageBatch(plan, boundaries({
     write: async (_, options) => {
       assert.equal(options.lossless, true);
+      assert.equal(options.quality, 0.85);
       return { blob: actual, lossless: false };
     },
   }));
   assert.equal(outcome.results[0].blob, actual);
   assert.equal(outcome.results[0].lossless, false);
   assert.equal(outcome.results[0].settings.lossless, true);
+  assert.equal(outcome.results[0].settings.quality, 0.85);
+  assert.equal(outcome.results[0].settings.mime, WEBP);
   assert.equal(outcome.results[0].name, 'same.webp');
 });

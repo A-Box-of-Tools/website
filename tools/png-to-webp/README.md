@@ -134,3 +134,32 @@ PNGs named `.webp`. In practice every browser since 2020 passes.
 is checked in a browser: convert the example both ways and confirm the rows
 report `VP8L` for lossless and the quality for lossy, and that the mark's
 transparency is still there afterwards.
+
+## Batch failures and cancellation
+
+The page adopts `shared/js/image-batch.js`, which is also used by WebP to JPG.
+A run captures its source membership, allocated output names, requested mode and
+quality before its first yield. A failed decode or encoder is reported beside
+that input's name; earlier successful files remain downloadable and later inputs
+are still attempted. Repeated names keep their allocated positions even when a
+middle input fails, so the ZIP cannot replace a completed file.
+
+Cancel stops before a later file starts. Native decoding and encoding cannot be
+interrupted: a stop during decoding skips its encode, while an encode already
+running may finish and its completed file is retained. The page says this before
+the run and reports how many inputs completed. A later run clears the previous
+outcome. The failure path closes each export bitmap through the shared loop;
+inspection also releases its decode if alpha detection refuses.
+
+The writer remains `encodeWebp`, and its actual `lossless` verdict travels through
+the shared result envelope. Result wording uses the captured requested mode and
+quality alongside that readback. Neither partial success nor cancellation can
+turn a lossy `VP8 ` file into a lossless claim or remove the partly transparent
+pixel caveat. Existing AVIF notices and WebP support checks remain in place.
+
+`tests/js/image-batch.test.js` covers the retained-work, captured-settings,
+allocated-name and cancellation contracts used here, including the custom WebP
+writer's actual coding verdict. Browser review additionally checks native WebP
+chunks, lossless-request mismatch reporting, partial failure, Cancel, and the
+translated control and failure text. No codec or processing module is copied
+into this tool.

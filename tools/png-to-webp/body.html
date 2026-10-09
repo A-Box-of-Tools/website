@@ -73,12 +73,15 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">Convert to WebP</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
     </div>
+
+    <p class="note">Cancel stops before the next file. An encoder already running finishes, and completed files remain available.</p>
 
     <p id="run-error" class="error" role="alert" hidden></p>
 
@@ -122,6 +125,9 @@
     <span data-phrase="run.many">Convert {count} files to WebP</span>
     <span data-phrase="progress.each">Converting {name}&hellip;</span>
     <span data-phrase="progress.done">Done.</span>
+    <span data-phrase="run.filefailed">{name} was not converted: {why}</span>
+    <span data-phrase="progress.stopped">Stopped after {done} of {total} files. Completed files are ready below.</span>
+    <span data-phrase="progress.stopped.none">Stopped before any file was completed.</span>
     <span data-phrase="run.failed">This run failed: {detail}</span>
     <span data-phrase="written.one">{name} &mdash; {size}, {change}</span>
     <span data-phrase="written.many">{count} WebP files written, {size} in total &mdash; {change} than the inputs.</span>
