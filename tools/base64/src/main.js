@@ -5,6 +5,7 @@ import { sizeText } from './shared/format.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
+import { textImport } from './shared/text-import.js';
 import { CODECS, codecById, CodecError } from './encode.js';
 import { SAMPLES } from './samples.js';
 
@@ -56,21 +57,26 @@ const picker = wireFilePicker({
   onFiles(files) { loadFiles(files); },
 });
 
+const imports = textImport({
+  busy: () => picker.busy(phrase('step.reading')),
+  done: picker.done,
+});
+
 async function loadFiles(files) {
   clearTimeout(timer);
   clearResult();
-  picker.busy(phrase('step.reading'));
-  try {
-    // Read as text, here, by the browser. There is no other step: the string
-    // goes into the box below and never anywhere else.
-    el.input.value = await files[0].text();
-    updateCounts();
-    run();
-  } catch (error) {
-    showError(phrase('read.failed', { why: error?.message ?? error }));
-  } finally {
-    picker.done();
-  }
+  // Read as text, here, by the browser. There is no other step: the string
+  // goes into the box below and never anywhere else.
+  await imports.read([files[0]], {
+    apply(texts) {
+      el.input.value = texts[0];
+      updateCounts();
+      run();
+    },
+    failed(error) {
+      showError(phrase('read.failed', { why: error?.message ?? error }));
+    },
+  });
 }
 
 let timer = null;
@@ -86,7 +92,11 @@ function schedule() {
   timer = setTimeout(run, size > 200000 ? 500 : 120);
 }
 
-el.input.addEventListener('input', () => { updateCounts(); schedule(); });
+el.input.addEventListener('input', () => {
+  imports.invalidate();
+  updateCounts();
+  schedule();
+});
 
 el.codec.addEventListener('change', run);
 el.canonical.addEventListener('change', run);
@@ -95,6 +105,7 @@ for (const radio of document.querySelectorAll('input[name="direction"]')) {
 }
 
 el.clear.addEventListener('click', () => {
+  imports.invalidate();
   el.input.value = '';
   updateCounts();
   run();
@@ -102,6 +113,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
+  imports.invalidate();
   el.input.value = phrase(SAMPLES.encode.a);
   updateCounts();
   run();

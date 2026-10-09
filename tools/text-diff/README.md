@@ -141,6 +141,13 @@ textarea's normalized value. The restoration input event carries that exact
 string back, so untouched CRLF files retain their bytes, while an edited box
 keeps the line endings of the text the visitor actually entered.
 
+File reads on this page use the shared `text-import` owner. Typing, Clear and
+an example retire a pending read immediately; a newer file choice replaces it.
+The old read may still finish in the browser, but its text and errors cannot
+replace the current editor or clear a newer import's reading label. Swap retires
+it too. The destination for one file is chosen before reading, and original
+line endings are retained until that box is edited.
+
 ## Line endings and change navigation
 
 Line content is still matched after normalizing CRLF, LF and CR for the view.
@@ -166,4 +173,4 @@ Targets belong to the current rendering and are retired as soon as an input
 or option changes. The clipboard fallback also retires them when it replaces
 the comparison with selectable patch text. Imported raw source strings and
 language restoration keep their existing behavior; asynchronous import
-ownership is a separate change.
+ownership is handled by the shared `text-import` part.

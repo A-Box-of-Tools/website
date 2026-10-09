@@ -106,6 +106,11 @@ asynchronous file read after navigation. Copy and Download are invalidated as
 soon as typing starts, before the debounced calculation runs; a pending
 clipboard write may only update feedback for the result it actually copied.
 
+File reads on this page use the shared `text-import` owner. Typing, Clear and
+an example retire a pending read immediately; a newer file choice replaces it.
+The old read may still finish in the browser, but its text and errors cannot
+replace the current editor or clear a newer import's reading label.
+
 ## Optional canonical decoding
 
 **Require canonical Base64** is off by default and appears only for Base64 or

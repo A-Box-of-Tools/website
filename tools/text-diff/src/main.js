@@ -4,6 +4,7 @@ import { phrase } from './shared/phrases.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { textImport } from './shared/text-import.js';
 import { compareText, alignRows, changeBlocks, diffWords, formatUnified, splitLines } from './diff.js';
 import { SAMPLES } from './samples.js';
 
@@ -85,6 +86,11 @@ const picker = wireFilePicker({
   onFiles(files) { loadFiles(files); },
 });
 
+const imports = textImport({
+  busy: (count) => picker.busy(readingLabel(count)),
+  done: picker.done,
+});
+
 async function loadFiles(files) {
   clearTimeout(timer);
   clearResult();
@@ -92,34 +98,35 @@ async function loadFiles(files) {
   // shared/lang-keep.js sets it for the length of its dispatch, and this
   // handler starts synchronously inside that.
   const restoring = el.fileInput?.dataset.langRestore === '1';
-  picker.busy(readingLabel(files.length));
-  try {
-    // Read as text, here, by the browser. There is no other step: the strings
-    // go into the boxes below and never anywhere else.
-    const texts = await Promise.all(files.slice(0, 2).map((file) => file.text()));
-    if (texts.length > 1) {
-      setText(el.input, texts[0]);
-      setText(el.inputB, texts[1]);
-    } else if (!restoring && el.input.value.trim() && !el.inputB.value.trim()) {
-      // One file dropped onto a comparison that already has an original fills
-      // the empty side, which is the only thing it could sensibly mean.
-      //
-      // Only when somebody dropped it. A file handed back by a language
-      // switch is the same file that was in the first box, and the text
-      // already restored into that box is what it was read from - so the
-      // empty side is not where it belongs, and putting it there turns one
-      // document into two identical ones.
-      setText(el.inputB, texts[0]);
-    } else {
-      setText(el.input, texts[0]);
-    }
-    updateCounts();
-    run();
-  } catch (error) {
-    showError(phrase('read.failed', { detail: error?.message ?? error }));
-  } finally {
-    picker.done();
-  }
+  const fillSecond = files.length === 1 && !restoring
+    && el.input.value.trim() && !el.inputB.value.trim();
+  // Read as text, here, by the browser. There is no other step: the strings
+  // go into the boxes below and never anywhere else.
+  await imports.read(files.slice(0, 2), {
+    apply(texts) {
+      if (texts.length > 1) {
+        setText(el.input, texts[0]);
+        setText(el.inputB, texts[1]);
+      } else if (fillSecond) {
+        // One file dropped onto a comparison that already has an original fills
+        // the empty side, which is the only thing it could sensibly mean.
+        //
+        // Only when somebody dropped it. A file handed back by a language
+        // switch is the same file that was in the first box, and the text
+        // already restored into that box is what it was read from - so the
+        // empty side is not where it belongs, and putting it there turns one
+        // document into two identical ones.
+        setText(el.inputB, texts[0]);
+      } else {
+        setText(el.input, texts[0]);
+      }
+      updateCounts();
+      run();
+    },
+    failed(error) {
+      showError(phrase('read.failed', { detail: error?.message ?? error }));
+    },
+  });
 }
 
 let timer = null;
@@ -140,6 +147,7 @@ for (const box of [el.input, el.inputB]) {
     event.detail.value = sourceText(box);
   });
   box.addEventListener('input', (event) => {
+    imports.invalidate();
     if (typeof event.detail?.languageText === 'string') setText(box, event.detail.languageText);
     else sourceTexts.delete(box);
     updateCounts();
@@ -153,6 +161,7 @@ for (const control of [el.view, el.onlyChanges, el.ignoreWhitespace, el.ignoreCa
 }
 
 el.swap.addEventListener('click', () => {
+  imports.invalidate();
   const held = sourceText(el.input);
   setText(el.input, sourceText(el.inputB));
   setText(el.inputB, held);
@@ -161,6 +170,7 @@ el.swap.addEventListener('click', () => {
 });
 
 el.clear.addEventListener('click', () => {
+  imports.invalidate();
   setText(el.input, '');
   setText(el.inputB, '');
   updateCounts();
@@ -169,6 +179,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
+  imports.invalidate();
   setText(el.input, SAMPLES.diff.a);
   setText(el.inputB, SAMPLES.diff.b);
   updateCounts();
