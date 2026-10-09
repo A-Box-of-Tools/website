@@ -76,6 +76,7 @@
   <template id="document-template">
     <article class="document">
       <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">削除</button></div>
+      <p class="duplicate-note field-summary" role="status" aria-live="polite" aria-atomic="true" hidden></p>
       <div class="document-content">
         <div class="picture-column">
           <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="切り抜いて圧縮した添付画像のプレビュー" hidden></a>
@@ -212,6 +213,7 @@
     <span data-phrase="missingTotal">明確な合計金額が見つかりませんでした。画像を見て入力してください。</span>
     <span data-phrase="ambiguousTotal">合計金額の候補が複数見つかりました。画像を見て正しい合計を入力してください。</span>
     <span data-phrase="stopped">読み取りを停止しました。詳細を手入力するか、「もう一度読み取る」を選んでください。</span>
+    <span data-phrase="duplicatePhoto">重複の可能性があります。同じファイル名とサイズの写真が{count}枚あります。確認済みにする前に見比べてください。それぞれ別の書類として保持されます。</span>
     <span data-phrase="busy">現在の読み取りが終わるまで待つか、先に停止してください。</span>
     <span data-phrase="tooMany">画像は最大20枚までです。書類を1つ削除すると、新しい画像を追加できます。</span>
     <span data-phrase="badFile">{name}は対応するJPEG・PNG・WebP・AVIF画像ではありません。</span>

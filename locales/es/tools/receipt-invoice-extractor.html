@@ -78,6 +78,7 @@
   <template id="document-template">
     <article class="document">
       <div class="document-head"><h3 class="document-name"></h3><button type="button" class="remove-document ghost danger">Eliminar</button></div>
+      <p class="duplicate-note field-summary" role="status" aria-live="polite" aria-atomic="true" hidden></p>
       <div class="document-content">
         <div class="picture-column">
           <a class="attachment-link" target="_blank" rel="noopener"><img class="document-image" alt="Vista previa del adjunto recortado y comprimido" hidden></a>
@@ -214,6 +215,7 @@
     <span data-phrase="missingTotal">No se encontró un total claro del documento. Introdúcelo a partir de la imagen.</span>
     <span data-phrase="ambiguousTotal">Se encontró más de un total posible. Introduce el total correcto de la imagen.</span>
     <span data-phrase="stopped">Lectura detenida. Introduce los datos manualmente o elige Leer de nuevo.</span>
+    <span data-phrase="duplicatePhoto">Posible duplicado: {count} fotos tienen el mismo nombre y tamaño de archivo. Compáralas antes de confirmar. Siguen siendo documentos separados.</span>
     <span data-phrase="busy">Espera a que termine la lectura actual o detenla primero.</span>
     <span data-phrase="tooMany">Añade hasta 20 imágenes. Elimina un documento para poder añadir otro.</span>
     <span data-phrase="badFile">{name} no es una imagen JPEG, PNG, WebP o AVIF compatible.</span>
