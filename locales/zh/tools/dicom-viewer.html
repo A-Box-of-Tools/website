@@ -56,7 +56,8 @@
       what is on screen at 400% is the stored pixels made bigger, not a guess at
       what was between them.
     -->
-    <div class="viewport" id="viewport">
+    <div class="viewport" id="viewport" role="group"
+         aria-label="检查图像" aria-describedby="viewport-keys">
       <canvas id="canvas" width="1" height="1" role="img"
               aria-label="屏幕上的画面，由你选的文件绘制"></canvas>
       <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
@@ -66,6 +67,8 @@
       <svg class="marks" id="marks" aria-hidden="true"></svg>
       <p class="viewport-fail" id="viewport-fail" hidden></p>
     </div>
+
+    <p class="hint" id="viewport-keys">对于图像堆栈或多帧文件，先用 Tab 键聚焦图像。上箭头或 Page Up 显示上一张切片或帧；下箭头或 Page Down 显示下一张。Tab 键可移至其他控件。</p>
 
     <div class="scrub" id="scrub-row" hidden>
       <button type="button" id="play" class="ghost" aria-label="播放画面">▶</button>
