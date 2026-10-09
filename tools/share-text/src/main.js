@@ -759,7 +759,7 @@ function view(code) {
       if (rx?.id === file.id) { box.append(rx.row); continue; }
       const row = document.createElement('div'); row.className = 'filerow';
       const name = document.createElement('span'); name.className = 'fname'; name.textContent = file.name;
-      name.id = `file-${crypto.randomUUID()}`;
+      name.id = 'file-' + crypto.randomUUID();
       const size = document.createElement('span'); size.className = 'fsize'; size.textContent = fmtSize(file.size);
       const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'ghost';
       btn.dataset.fileDownload = ''; btn.textContent = phrase('view.download');

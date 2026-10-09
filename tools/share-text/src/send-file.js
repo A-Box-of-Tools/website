@@ -2,7 +2,7 @@
 const CHUNK = 64 * 1024;
 const HIGH = 8 << 20;
 const LOW = 1 << 20;
-export const FILE_CHANNEL = 'share-file:';
+export const FILE_CHANNEL = 'share-file' + ':';
 export const validRequest = value => typeof value === 'string'
   && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(value);
 
