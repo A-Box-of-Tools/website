@@ -17,6 +17,8 @@ import {
 
 import { xmlToJson as xmlPageToJson } from '../../tools/xml-formatter/src/convert.js';
 
+import { yamlToJson as yamlPageToJson } from '../../tools/yaml-to-json/src/convert.js';
+
 const round = (text) => yamlToJson(jsonToYaml(text), { indent: '' }).trim();
 
 test('JSON to YAML and back is the same document', () => {
@@ -77,6 +79,60 @@ test('YAML to JSON: a number keeps the digits it was written with', () => {
 test('YAML to JSON: what YAML allows that JSON does not is normalised', () => {
   const out = yamlToJson('a: +1\nb: .5\nc: 0x1f\nd: 0o17\n', { indent: '' });
   assert.equal(out.trim(), '{"a":1,"b":0.5,"c":31,"d":15}');
+});
+
+test('both YAML converters normalise large integers without rounding', () => {
+  const cases = [
+    ['+9007199254740993', '9007199254740993'],
+    ['-09007199254740993', '-9007199254740993'],
+    ['0009007199254740993', '9007199254740993'],
+    ['+0x20000000000001', '9007199254740993'],
+    ['-0x20000000000001', '-9007199254740993'],
+    ['0o400000000000000001', '9007199254740993'],
+    ['-0o400000000000000001', '-9007199254740993'],
+    ['0xffffffffffffffffffff', '1208925819614629174706175'],
+    ['000', '0'],
+    ['-000', '-0'],
+    ['-0x0', '-0'],
+    ['-0o0', '-0'],
+  ];
+  for (const convert of [yamlToJson, yamlPageToJson]) {
+    for (const [source, expected] of cases) {
+      // Both scalar paths must honour the same promise: a flow collection
+      // must not silently use a less exact reader than a block mapping.
+      assert.equal(convert(`n: ${source}`, { indent: '' }).trim(), `{"n":${expected}}`, source);
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${expected}]`, source);
+    }
+  }
+});
+
+test('both YAML converters preserve decimal precision and extreme exponents', () => {
+  const cases = [
+    ['+9007199254740993.1250', '9007199254740993.1250'],
+    ['00001.2300E+004', '1.2300E+004'],
+    ['.5e999', '0.5e999'],
+    ['+.5e-999', '0.5e-999'],
+    ['-.5E+999', '-0.5E+999'],
+    ['-01.e999', '-1.0e999'],
+    ['-00.', '-0.0'],
+    ['1.', '1.0'],
+    ['1E+999', '1E+999'],
+    ['0.10000000000000000001', '0.10000000000000000001'],
+  ];
+  for (const convert of [yamlToJson, yamlPageToJson]) {
+    for (const [source, expected] of cases) {
+      assert.equal(convert(`n: ${source}`, { indent: '' }).trim(), `{"n":${expected}}`, source);
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${expected}]`, source);
+    }
+  }
+});
+
+test('YAML scalars with no mantissa digits remain text rather than becoming zero', () => {
+  for (const source of ['.', '+.', '-.', '.e999', '+.e999', '-.e999']) {
+    for (const convert of [yamlToJson, yamlPageToJson]) {
+      assert.equal(convert(`[${source}]`, { indent: '' }).trim(), `[${JSON.stringify(source)}]`, source);
+    }
+  }
 });
 
 test('JSON to XML: an array becomes a repeated element', () => {

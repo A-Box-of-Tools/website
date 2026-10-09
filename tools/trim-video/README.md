@@ -405,3 +405,12 @@ browser, run against clips generated in the page:
   the encoder was handed nothing and then blamed the browser for it;
 - the single-clip trim, run again after all of the above, to prove a join of one
   is still just a trim.
+
+Timestamp fields keep their own DOM nodes while a mark is committed, so typing,
+Enter and Tab do not lose the field or its caret to a table redraw. Row
+selection updates the highlight and timeline in place; moving a part with its
+keyboard action returns focus to that part, using the opposite direction when
+the move reaches the edge of the list. Browser checks cover mouse entry, Enter
+and Tab commits, invalid marks, repeated keyboard moves, and removal. Removing
+a focused part sends focus to its neighbour's Remove action, or Add segment
+when no parts remain.

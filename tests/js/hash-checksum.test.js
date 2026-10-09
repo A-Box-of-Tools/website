@@ -29,7 +29,7 @@ import { sha1 } from '../../tools/hash-checksum/src/sha1.js';
 import { sha256 } from '../../tools/hash-checksum/src/sha256.js';
 import { sha384, sha512 } from '../../tools/hash-checksum/src/sha512.js';
 import { ALGORITHMS, ORDER, Stopped, Unreadable, hashFile, hex } from '../../tools/hash-checksum/src/hash.js';
-import { algorithmsIn, readExpected, verdict } from '../../tools/hash-checksum/src/expected.js';
+import { algorithmsIn, readExpected, rowVerdicts, verdict } from '../../tools/hash-checksum/src/expected.js';
 
 const MAKERS = { md5, sha1, sha256, sha384, sha512 };
 
@@ -368,6 +368,72 @@ test('the verdict waits rather than guessing when the digest is not computed yet
 test('case never decides a comparison', () => {
   const { entries } = readExpected(SHA256_ABC.toUpperCase());
   assert.equal(verdict(entries, { sha256: SHA256_ABC }, 'x.iso').state, 'match');
+});
+
+test('every correct algorithm in one paste gets its own matching row', () => {
+  const digests = Object.fromEntries(ORDER.map((id) => [
+    id, createHash(NODE_NAME[id]).update('abc').digest('hex'),
+  ]));
+  const text = ORDER.map((id) => `${ALGORITHMS[id].tag} (abc.txt) = ${digests[id]}`).join('\n');
+  const expected = readExpected(text);
+
+  assert.deepEqual(rowVerdicts(expected, digests, 'abc.txt'), {
+    md5: 'match', sha1: 'match', sha256: 'match', sha384: 'match', sha512: 'match',
+  });
+  assert.equal(verdict(expected.entries, digests, 'abc.txt').state, 'match');
+});
+
+test('a differing algorithm does not borrow or hide another algorithm match', () => {
+  const digests = {
+    md5: createHash('md5').update('abc').digest('hex'),
+    sha256: SHA256_ABC,
+  };
+  for (const wrong of ['md5', 'sha256']) {
+    const text = Object.entries(digests).map(([id, digest]) => (
+      `${id}: ${id === wrong ? '0'.repeat(digest.length) : digest}`
+    )).join('\n');
+    const expected = readExpected(text);
+    const rows = rowVerdicts(expected, digests, 'abc.txt');
+    assert.equal(rows[wrong], 'mismatch');
+    assert.equal(rows[wrong === 'md5' ? 'sha256' : 'md5'], 'match');
+    assert.equal(verdict(expected.entries, digests, 'abc.txt').state, 'match');
+  }
+});
+
+test('computed algorithms absent from the paste stay unmarked', () => {
+  const expected = readExpected(SHA256_ABC);
+  const rows = rowVerdicts(expected, { md5: MD5_EMPTY, sha256: SHA256_ABC }, 'abc.txt');
+  assert.equal(rows.md5, 'none');
+  assert.equal(rows.sha256, 'match');
+  assert.equal(rowVerdicts(expected, {}, 'abc.txt').sha256, 'waiting');
+});
+
+test('each algorithm keeps the checksum manifest filename and renamed-match rules', () => {
+  const digests = {
+    md5: createHash('md5').update('abc').digest('hex'),
+    sha256: SHA256_ABC,
+  };
+  const expected = readExpected([
+    `${'0'.repeat(32)}  abc.txt`,
+    `${digests.md5}  mirror-name.txt`,
+    `${SHA256_ABC}  abc.txt`,
+    `${'0'.repeat(64)}  other.txt`,
+  ].join('\n'));
+  const rows = rowVerdicts(expected, digests, 'abc.txt');
+  assert.equal(rows.md5, 'match');
+  assert.equal(rows.sha256, 'match');
+  assert.equal(verdict(expected.entries, digests, 'abc.txt').renamed, false);
+});
+
+test('wrapped digest fragments do not mark a different algorithm row', () => {
+  const sha512 = createHash('sha512').update('abc').digest('hex');
+  const expected = readExpected(`${sha512.slice(0, 64)}\n${sha512.slice(64)}`);
+  assert.equal(expected.wrapped, true);
+  const rows = rowVerdicts(expected, {
+    sha256: sha512.slice(0, 64), sha512,
+  }, 'abc.txt');
+  assert.equal(rows.sha256, 'none');
+  assert.equal(rows.sha512, 'match');
 });
 
 /* ------------------------------------------------------------ the registry */

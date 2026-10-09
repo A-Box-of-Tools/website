@@ -18,6 +18,7 @@ import assert from 'node:assert/strict';
 import {
   boxBlur, createStack, laplacian, medianOf,
 } from '../../tools/stack-images/src/stack.js';
+import { bands, planRun } from '../../tools/stack-images/src/plan.js';
 
 /** One frame of `pixels` pixels, every channel set to `value`. */
 function flat(pixels, value) {
@@ -363,4 +364,43 @@ test('an option passed as undefined falls to its default rather than landing on 
   assert.equal(red, 100);
   assert.equal(alpha, 255);
   assert.equal(stackFlat('sigma', [50, 50, 50], { kappa: undefined }).red, 50);
+});
+
+test('banded focus stacking agrees with a whole image at every selectable radius', () => {
+  // A seam can choose another frame while still looking like a plausible image.
+  // Compare the pixels themselves, including texture beside every band edge.
+  const width = 32;
+  const height = 64;
+  let seed = 42;
+  const random = () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed >>> 24;
+  };
+  const frames = Array.from({ length: 3 }, () => {
+    const rgba = new Uint8ClampedArray(width * height * 4);
+    for (let at = 0; at < rgba.length; at += 4) {
+      rgba[at] = rgba[at + 1] = rgba[at + 2] = random();
+      rgba[at + 3] = 255;
+    }
+    return rgba;
+  });
+  const combine = (radius, rows, context) => {
+    const out = new Uint8ClampedArray(width * height * 4);
+    for (const band of bands(height, rows, context)) {
+      const stack = createStack('focus', { width, height: band.readRows, frames: 3, radius });
+      frames.forEach((rgba, index) => stack.add(
+        rgba.subarray(band.readY * width * 4, (band.readY + band.readRows) * width * 4), index,
+      ));
+      const result = stack.result();
+      out.set(
+        result.subarray(band.offset * width * 4, (band.offset + band.rows) * width * 4),
+        band.y * width * 4,
+      );
+    }
+    return out;
+  };
+  for (let radius = 1; radius <= 12; radius += 1) {
+    const plan = planRun({ width, height, frames: 3, mode: 'focus', radius });
+    assert.deepEqual(combine(radius, 16, plan.context), combine(radius, height, 0));
+  }
 });

@@ -50,6 +50,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big">转为 JPG</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -99,6 +100,9 @@
     <span data-phrase="run.many">将 {count} 个文件转为 JPG</span>
     <span data-phrase="progress.each">正在转换 {name}……</span>
     <span data-phrase="progress.done">完成。</span>
+    <span data-phrase="progress.stopped">完成 {total} 个中的 {done} 个后停止。已完成的图片在下方。</span>
+    <span data-phrase="progress.stopped.none">在完成第一张图片之前已停止。</span>
+    <span data-phrase="run.filefailed">无法转换 {name}：{why}</span>
     <span data-phrase="run.failed">本次转换失败：{detail}</span>
     <span data-phrase="written.one">{name}——{size}，{change}</span>
     <span data-phrase="written.many">已写出 {count} 个 JPEG，共 {size}。</span>

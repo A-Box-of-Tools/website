@@ -121,6 +121,27 @@ export function describeRanges(pages, t) {
   }).join(', ');
 }
 
+/** Validate once before both the summary and the writer use the split. */
+export function parseSplit(options, total, t) {
+  const { mode = 'single', size = 1, at = '' } = options;
+  const split = { mode, size: 1, at: [] };
+  if (mode === 'every') {
+    const value = Number(size);
+    if (!Number.isSafeInteger(value) || value < 1 || value > 5000) {
+      return { split, field: 'size', error: t('split.size') };
+    }
+    split.size = value;
+  }
+  if (mode === 'at') {
+    const found = parseRanges(at, total, t);
+    if (found.error || !found.pages.length) {
+      return { split, field: 'at', error: found.error || t('range.empty') };
+    }
+    split.at = found.pages;
+  }
+  return { split, field: '', error: '' };
+}
+
 /* ------------------------------------------------------------- splitting */
 
 /**
@@ -203,12 +224,21 @@ export function outputNames(parts, { stem, mode, suffix = 'edited' }) {
 /** Two files in one archive cannot share a name, and splitting by source
  *  document is exactly the case where two of them can. */
 function unique(names) {
-  const seen = new Map();
+  // Reserve natural names first, so a duplicate report.pdf cannot take the
+  // name of the report-2.pdf that appears later. Case-folding also protects
+  // archive extraction onto the usual case-insensitive file systems.
+  const key = (name) => name.normalize('NFC').toLowerCase();
+  const reserved = new Set(names.map(key));
+  const used = new Set();
   return names.map((name) => {
-    const taken = seen.get(name) ?? 0;
-    seen.set(name, taken + 1);
-    if (!taken) return name;
-    return name.replace(/\.pdf$/i, `-${taken + 1}.pdf`);
+    let candidate = name;
+    let suffix = 2;
+    while (used.has(key(candidate))) {
+      do { candidate = name.replace(/\.pdf$/i, `-${suffix++}.pdf`); }
+      while (reserved.has(key(candidate)) || used.has(key(candidate)));
+    }
+    used.add(key(candidate));
+    return candidate;
   });
 }
 

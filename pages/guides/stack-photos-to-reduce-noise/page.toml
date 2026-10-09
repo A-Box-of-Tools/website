@@ -27,13 +27,13 @@ description = "Stacking combines a burst of frames into one picture. Which metho
 heading = "How to stack photographs to reduce noise, or remove people"
 lede = """
     A burst of frames holds more information than any one of them. Averaging
-    them cancels the noise; taking the middle value of each pixel deletes
-    anything that was only there some of the time. Which one you want depends
-    entirely on what moved."""
+    them reduces independent random noise; taking the middle value of each pixel
+    can remove things present in fewer than half the frames. Which one you want
+    depends entirely on what moved."""
 
-updated = "26 August 2026"
+updated = "8 October 2026"
 published = "2026-08-25"
-lastmod = "2026-08-26"
+lastmod = "2026-10-08"
 
 og_title = "How to stack photographs to reduce noise, or remove people"
 og_description = "Average a burst to kill noise, take the median to empty a busy square, lighten for star trails. Which method solves which problem, and where RAW files fit in."

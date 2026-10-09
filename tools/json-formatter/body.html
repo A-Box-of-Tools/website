@@ -98,7 +98,7 @@
           <label for="input">Your text</label>
           <span class="count" id="input-count">empty</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="Paste JSON, XML, HTML, CSS or YAML here - or drop a file above."></textarea>
       </div>
@@ -118,6 +118,8 @@
     <h2><span class="step">3</span> Take the result</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Go to error</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Nothing yet.</p>
@@ -143,6 +145,11 @@
     <span data-phrase="count.characters.one">{count} character</span>
     <span data-phrase="count.characters.many">{count} characters</span>
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+    <span data-phrase="convert.comments">Discarded YAML comments: {n}. Text inside quotes and block scalars stays text.</span>
+    <span data-phrase="convert.names">XML names changed: {n}. This mapping does not retain the original names.</span>
+    <span data-phrase="convert.collisions">XML name collisions: {n}. Different keys became the same element name and may read back as one repeated value.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">Conversion stopped at this unsupported construct. No result was produced.</span>
     <span data-phrase="parse.at">{reason} (line {line}, column {column})</span>
     <span data-phrase="char.end">the end of the text</span>
     <span data-phrase="char.newline">a line break</span>
@@ -213,8 +220,7 @@
       quoted where leaving them bare would change what they say.</span>
     <span data-phrase="convert.yaml-json">Comments are lost, because JSON has nowhere to put one. Anchors, aliases and tags
       stop the conversion rather than being guessed at.</span>
-    <span data-phrase="convert.json-xml">An array becomes a repeated element, which is the only shape that reads back. An
-      empty object and an empty string both come out as an empty element.</span>
+    <span data-phrase="convert.json-xml">An array becomes a repeated element. An empty object and an empty string both become an empty element. Keys are repaired to unprefixed XML names; changed names and collisions are reported with the result.</span>
     <span data-phrase="convert.xml-json">Attributes become members named with an @, an element&rsquo;s own text becomes #text
       where it has to share, and every value stays a string &mdash; XML never said which
       were numbers. Mixed-content order and comments are not retained.</span>

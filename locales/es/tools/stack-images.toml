@@ -21,7 +21,7 @@ tagline = "Veinte tomas se convierten en una, sin veinte subidas y sin revelador
 title = "Apilador de imágenes &mdash; media, mediana y apilado de enfoque en el navegador"
 description = "Combina una ráfaga de fotografías en una sola: promédialas para matar el ruido, toma la mediana para quitar a la gente de una escena, aclara para dejar estelas de estrellas o apila el enfoque de una macro. Lee CR2, NEF, ARW, DNG, RAF y CR3 sacando la propia vista previa de la cámara. Funciona entero en el navegador."
 og_title = "Apila una ráfaga de fotografías, con archivos RAW incluidos"
-og_description = "Media, mediana, recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas antes. Los archivos RAW se abren leyendo la vista previa que la cámara ya escribió, así que una toma de 60 MB abre tan rápido como un JPEG. No se sube nada."
+og_description = "Media, mediana, recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas primero. Los archivos RAW se abren desde la vista previa JPEG que incluye la cámara, si está disponible, sin decodificar los datos del sensor. No se sube nada."
 og_image_alt = "Apilador de imágenes - varias tomas combinadas en una, en el navegador"
 
 pledge = """
@@ -37,13 +37,7 @@ live_hint = """
       miniatura, un nombre de archivo ni un modelo de cámara. O desconéctate de
       internet y apílalos igualmente: la herramienta no cambia en nada."""
 
-read_first = """
-, <code>src/raw.js</code> para cómo se abre un
-      archivo RAW leyendo kilobytes en vez de megabytes,
-      <code>src/stack.js</code> para la aritmética de cada método y
-      <code>src/plan.js</code> para de dónde salen las cifras de memoria y de
-      decodificación que aparecen en la página: son las respuestas de ese
-      archivo, no estimaciones."""
+read_first = ", <code>src/raw.js</code> explica cómo se localizan las vistas previas RAW integradas sin decodificar el sensor; <code>src/stack.js</code>, el cálculo de cada método, y <code>src/plan.js</code>, la memoria de trabajo estimada y las decodificaciones previstas del apilado. El funcionamiento interno del navegador y la liberación de memoria pueden consumir más que los búferes modelados."
 
 howto_heading = "Cómo apilar un conjunto de fotografías en el navegador"
 
@@ -85,14 +79,8 @@ body = """
       <code>sendBeacon</code>, ni en <code>src/</code> ni en el worker."""
 
 [[privacy]]
-title = "Los archivos RAW se leen, no se suben, y apenas se leen."
-body = """
- Un archivo RAW de cámara ya
-      contiene un JPEG a tamaño completo que la cámara reveló al disparar. Esta
-      herramienta lo encuentra recorriendo unas cuantas entradas de directorio y
-      pidiendo después un solo trozo, que en un archivo de 60&nbsp;MB suele ser
-      menos de cien kilobytes. La página te enseña esa cifra junto al tamaño de
-      tus archivos mientras trabajas. Los datos del sensor no se leen nunca."""
+title = "Las vistas previas RAW se leen en este dispositivo."
+body = "Muchos archivos RAW contienen una vista previa JPEG creada por la cámara. La herramienta recorre los directorios del archivo y extrae la mayor vista previa utilizable. La cifra de lectura para inspección cuenta las cabeceras y los directorios usados para localizarla y describirla; al decodificar también se lee el fragmento JPEG. Los datos del sensor no se decodifican, y la fila muestra las dimensiones reales de la vista previa."
 
 [[privacy]]
 title = "El trabajo ocurre en un Worker de este equipo, no en un servidor."
@@ -126,41 +114,19 @@ body = """
 
 [[howto]]
 title = "Elige las tomas."
-body = """
- Una ráfaga, un conjunto horquillado, una
-      secuencia de intervalómetro o una carpeta de archivos RAW. Cada una se abre
-      según llega, y la fila te dice qué ha salido de ella: en un archivo RAW, la
-      cámara, el tamaño de la vista previa encontrada dentro y qué poco del
-      archivo ha habido que leer para encontrarla."""
+body = "Una ráfaga, una secuencia de intervalómetro o una carpeta de RAW con vistas previas JPEG utilizables. Espera a que terminen de abrirse los archivos. Cada fila muestra lo encontrado: en un RAW, la cámara y el tamaño real de la vista previa integrada. Los archivos que no se pudieron abrir aparecen en una lista para comprobar cuáles se dejaron fuera."
 
 [[howto]]
 title = "Elige el método que corresponda a lo que quieres perder."
-body = """
- Ruido: media, o recorte
-      sigma si se ha movido algo. Gente, coches o un avión que pasa: mediana. Un
-      cielo oscuro que quieres convertir en estelas de estrellas: aclarar. Una
-      macro tomada a lo largo del anillo de enfoque: apilado de enfoque. La nota
-      de debajo del menú dice qué hace cada uno con tu número concreto de
-      tomas."""
+body = "Ruido: media, o recorte sigma para rechazar valores distintos del resto. Personas, coches o un avión: mediana, siempre que ocupen cada parte de la escena en menos de la mitad de las tomas. Estelas de estrellas: aclarar. Una macro tomada a lo largo del anillo de enfoque: apilado de enfoque. La nota bajo el menú explica el método y sus límites."
 
 [[howto]]
 title = "Decide si hay que alinear las tomas."
-body = """
- A pulso: sí, solo
-      desplazamiento. A pulso y además girando: desplazamiento, rotación y
-      escala. Trípode fijo o intervalómetro: no, y así irá más rápido. Cada toma
-      se mide contra la que lleva la marca de referencia, que es la primera
-      mientras no digas otra cosa: &laquo;Usar como referencia&raquo; mueve la
-      marca y deja la lista en el orden en que la pusiste."""
+body = "Empieza con Auto: mide desplazamiento, rotación y escala y luego corrige la perspectiva si coinciden regiones fiables de toda la imagen. Es útil para estrellas en un campo amplio. Solo desplazamiento requiere menos mediciones para una ráfaga estable. Elige No si las tomas ya coinciden o para estelas de estrellas que deban conservar el movimiento del cielo. Un trípode fijo no mantiene las estrellas alineadas. Cada toma se mide contra la marcada como referencia, que es la primera hasta que elijas otra. &ldquo;Usar como referencia&rdquo; cambia la marca sin cambiar el orden de la lista."
 
 [[howto]]
 title = "Lee las cuatro cifras y después pulsa el botón."
-body = """
- Antes de que se ejecute
-      nada, la página dice cómo de grande será el resultado, cuánta memoria
-      necesitará aproximadamente, cuántas veces se decodificarán las tomas y
-      cuánto de tus archivos se ha leído. Si el conjunto no cabe entero en
-      memoria, lo dice, y dice qué resolución de trabajo lo arreglaría."""
+body = "Antes de empezar, la página muestra el tamaño previsto del resultado, la memoria estimada del apilado, las decodificaciones previstas para apilar y los bytes leídos durante la inspección. El funcionamiento interno del navegador y la liberación de memoria pueden consumir más que los búferes modelados; estas cifras son un plan y no garantizan el uso total. Si hacen falta bandas, se sugiere una resolución de trabajo menor. Al terminar, compara la referencia con el resultado a tamaño real de píxel y revisa los detalles de alineación antes de descargar."
 
 [[faq]]
 q = "¿Se suben mis fotografías a alguna parte?"
@@ -178,123 +144,35 @@ a = """
 
 [[faq]]
 q = "¿Qué formatos RAW puede leer, y cómo?"
-a = """
-        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
-        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL y algunos más, que
-        es casi todo lo que escriben las cámaras. Lo que lee dentro de ellos es la
-        vista previa JPEG a tamaño completo que reveló la propia cámara al
-        disparar: la imagen de la pantalla trasera, y la que dibuja tu sistema
-        operativo como miniatura. Se encuentra recorriendo la estructura de
-        directorios del archivo, lo que cuesta unas pocas lecturas de unos pocos
-        kilobytes cada una, y tomando después un solo trozo.
-        <strong>No es un revelado de los datos del sensor.</strong> El resultado
-        lleva el balance de blancos y el estilo de imagen de la cámara a ocho bits
-        por canal, en vez de los doce o catorce bits de datos lineales de sensor
-        que te daría un revelador RAW."""
+a = "<span id=\"faq-raw\"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL y formatos relacionados son compatibles si contienen una vista previa JPEG utilizable. La herramienta recorre los directorios y usa la mayor que encuentra; puede ser menor que la imagen del sensor o no existir. <strong>No decodifica los datos del sensor.</strong> Los píxeles conservan el balance de blancos y el estilo de imagen de la cámara, con ocho bits por canal. Comprueba las dimensiones de la fila. La lectura de inspección cuenta cabeceras y directorios; la decodificación también lee el fragmento JPEG."
 
 [[faq]]
 q = "¿Y por qué no decodificar bien los datos del sensor?"
-a = """
-        Porque significaría incorporar LibRaw o dcraw: un segundo motor de decenas
-        de megabytes, para una sola familia de formatos, y la mayor parte de él son
-        esquemas de compresión propios de cada fabricante. Ese intercambio se
-        discute en <code>docs/what-can-be-built-here.md</code>, en el código de
-        este sitio, donde el RAW de cámara estaba en la lista de descartes desde
-        antes de que esta herramienta existiera. Lo que ha cambiado no es la
-        respuesta a esa pregunta, sino descubrir que apilar no lo necesita: las
-        vistas previas están a resolución completa, son lo que la cámara te habría
-        dado como JPEG de todas formas, y leerlas es unas cien veces más rápido
-        que revelar. Si quieres los datos del sensor, revela las tomas antes en un
-        revelador RAW y apila los TIFF o los JPEG que produzca; esta herramienta
-        también los acepta."""
+a = "Decodificar el sensor requeriría un motor RAW como LibRaw o dcraw, con los sistemas de compresión de cada cámara. Usar un JPEG integrado mantiene pequeña la herramienta y permite usar el decodificador del navegador. También implica aceptar el revelado de la cámara y la resolución de la vista previa que incluya el archivo. Para elegir los ajustes de revelado RAW, revela primero las tomas y exporta JPEG o PNG para apilarlas aquí."
 
 [[faq]]
 q = "¿Cuántas tomas admite, y de qué tamaño?"
-a = """
-        Seis de los siete métodos van en flujo: mantienen un acumulador y leen
-        cada toma exactamente una vez, así que cien tomas cuestan la misma memoria
-        que dos y lo único que crece es el tiempo. La mediana es la excepción,
-        porque el valor central de un conjunto no se puede saber hasta tenerlo
-        entero, así que sostiene todas las tomas a la vez: veinte tomas de 24
-        megapíxeles son alrededor de 1,4&nbsp;GB, y eso no te lo da ningún
-        navegador. Cuando pasa, la imagen se corta en bandas horizontales y se
-        apila banda a banda, lo que cuesta releer las tomas para cada banda. La
-        página calcula todo esto antes de que pulses el botón y te enseña el
-        número, así que una pasada lenta no es nunca una sorpresa."""
+a = "Seis de los siete métodos usan acumuladores cuyo tamaño no crece con el número de tomas. Media, aclarar, oscurecer, sumar y apilado de enfoque necesitan una pasada por banda; recorte sigma necesita dos. Mediana conserva los valores de cada toma para la banda actual, por lo que su memoria sí crece con la cantidad de tomas. Cualquier método puede dividirse en bandas si sus búferes superan el presupuesto de la herramienta, lo que obliga a decodificar de nuevo las tomas para cada banda. La página estima esos búferes y muestra las decodificaciones previstas del apilado. Inspeccionar y alinear añade trabajo, y los procesos internos de códecs y GPU del navegador pueden necesitar más memoria de la estimada."
 
 [[faq]]
 q = "¿Qué hace exactamente alinear las tomas?"
-a = """
-        Encuentra cuánto se ha movido cada toma respecto a la toma de
-        referencia y la devuelve a su sitio, con precisión de fracciones de
-        píxel. El método es
-        la correlación de fase: el desplazamiento entre dos imágenes aparece como
-        una diferencia de fase entre sus espectros, así que una transformada de
-        Fourier de cada una encuentra un desplazamiento de doscientos píxeles tan
-        barato como uno de dos. El segundo ajuste recupera además la rotación y la
-        escala, con el mismo truco aplicado al espectro en coordenadas
-        log-polares. Todo ello es global &mdash; un desplazamiento, un ángulo, una
-        escala para toda la toma &mdash;, así que corrige una cámara que se movió
-        y no puede corregir un sujeto que se movió, ni una fotografía tomada un
-        paso más a la izquierda. Una consecuencia visible: una toma desplazada
-        veinte píxeles a la izquierda ya no llega al borde derecho, así que el
-        resultado se recorta a la parte que cubren todas las tomas. Por eso una
-        pila alineada sale ligeramente más pequeña que las tomas que entraron, y
-        es la única alternativa a un borde oscuro hecho de las tomas que no
-        estaban."""
+a = "La herramienta mide cuánto se desplazó cada toma respecto a la referencia y la recoloca con precisión inferior a un píxel. Usa correlación de fase: el desplazamiento aparece como una diferencia de fase entre los espectros, así que una transformada de Fourier por imagen encuentra un desplazamiento de doscientos píxeles tan fácilmente como uno de dos. Rotación y escala se recuperan con el mismo método sobre el espectro en coordenadas logarítmico-polares. Auto también mide regiones por toda la imagen y corrige la perspectiva si coinciden suficientes mediciones fiables. Esto ayuda a alinear las estrellas de un campo amplio tanto en los bordes como en el centro. Si no se puede medir esa corrección con confianza, mantiene rotación y escala e informa de esa alternativa en Detalles de alineación. La corrección se aplica a toda la imagen; no puede alinear un sujeto que se mueve por su cuenta ni todas las profundidades de una escena fotografiada un paso más a un lado. Una toma desplazada a la izquierda deja de cubrir el borde derecho. Por eso el resultado se recorta al área común y puede ser algo menor, evitando bordes oscuros de zonas sin cobertura."
 
 [[faq]]
 q = "¿Qué método debería usar?"
-a = """
-        <strong>Media</strong> para el ruido, en un conjunto donde no se movió
-        nada: reduce el ruido aleatorio aproximadamente en la raíz cuadrada del
-        número de tomas. <strong>Mediana</strong> para quitar cosas que solo
-        estaban parte del tiempo; el uso clásico es fotografiar una plaza
-        concurrida una docena de veces y conseguirla vacía. <strong>Recorte
-        sigma</strong> cuando quieres las dos cosas: aprende qué suele ser cada
-        píxel y promedia solo los valores que concuerdan, así que tiene la
-        inmunidad de la mediana ante un coche que pasa y la reducción de ruido de
-        la media. <strong>Aclarar</strong> para estelas de estrellas, fuegos
-        artificiales y pintura con luz. <strong>Oscurecer</strong> para quitar
-        cualquier cosa brillante que se moviera. <strong>Sumar</strong> para
-        simular una única exposición larga. <strong>Apilado de enfoque</strong>
-        para una macro tomada a lo largo del anillo de enfoque."""
+a = "<strong>Media</strong> para ruido cuando nada se movió: el ruido aleatorio independiente baja aproximadamente por la raíz cuadrada del número de tomas. <strong>Mediana</strong> para quitar lo que ocupa una parte de la escena en menos de la mitad de las tomas. <strong>Recorte sigma</strong> promedia los valores cercanos a la media y rechaza los que superan el umbral elegido. Puede conservar objetos móviles en conjuntos pequeños o si aparecen a menudo; si quitarlos es la prioridad, mediana es más segura. <strong>Aclarar</strong> para estelas de estrellas, fuegos artificiales y pintura con luz. <strong>Oscurecer</strong> para quitar elementos brillantes que se movieron. <strong>Sumar</strong> mezcla de forma aditiva las tomas decodificadas. Trabaja con valores de imagen de ocho bits y no reproduce una exposición de cámara más larga. <strong>Apilado de enfoque</strong> para una macro tomada a lo largo del anillo de enfoque."
 
 [[faq]]
 q = "¿Por qué mi resultado tiene ocho bits si mis archivos RAW tienen catorce?"
-a = """
-        Porque lo que se apila es la propia vista previa de la cámara, que es un
-        JPEG. Conviene decir que apilar recupera parte de lo que eso cuesta:
-        promediar dieciséis tomas de ocho bits da un resultado con gradaciones de
-        verdad más finas que las que tenía cualquiera de ellas, porque el ruido
-        que hacía que cada toma redondeara distinto es justo lo que permite que la
-        media caiga entre los niveles. Aquí la aritmética se hace en coma flotante
-        y se redondea una sola vez al final, así que nada de eso se tira por el
-        camino. Sigue sin ser lo mismo que apilar datos lineales de sensor, y esta
-        herramienta no finge lo contrario."""
+a = "La entrada RAW es la vista previa JPEG de la cámara, y la salida es un PNG o JPEG de ocho bits. Media y recorte sigma usan acumuladores más amplios y redondean al final. Así estiman un valor más limpio a partir de tomas con ruido sin redondear cada paso intermedio. La imagen guardada sigue teniendo ocho bits por canal; no obtiene la profundidad ni el rango dinámico de los datos lineales del sensor."
 
 [[faq]]
 q = "¿Puedo apilar tomas de distinto tamaño, o de cámaras distintas?"
-a = """
-        Sí, aunque suele ser un error y merece la pena comprobar que era lo que
-        querías. El resultado tiene el tamaño de la toma más grande, y todas las
-        demás se escalan para caber y se centran dentro. Mezclar cámaras mezcla
-        también la interpretación del color, así que una media de las dos es una
-        media de dos lecturas distintas de la misma luz. Donde de verdad ayuda es
-        en un conjunto disparado a dos resoluciones, o en un archivo RAW y un JPEG
-        de la misma toma."""
+a = "Sí, pero comprueba que sea intencionado. La toma más grande define el área de trabajo; las demás se ajustan y centran en ella. El resultado se recorta al área común, por lo que las formas diferentes o la alineación pueden hacerlo menor que el área prevista. Mezclar cámaras mezcla también su interpretación del color. Mantén la exposición y el encuadre constantes y examina el resultado comparándolo con la referencia."
 
 [[faq]]
 q = "Dice que la pasada irá por bandas. ¿Qué significa?"
-a = """
-        Que la memoria de trabajo que necesita el método es más de la que la
-        herramienta está dispuesta a reservar de una vez, así que la imagen se
-        cortará en tiras horizontales y se apilará tira a tira. Sigue produciendo
-        exactamente el mismo resultado; solo relee las tomas para cada tira, así
-        que tarda más, y la página te dice cuántas decodificaciones serán. Bajar
-        un escalón la resolución de trabajo divide la memoria entre cuatro, y eso
-        casi siempre convierte una pasada por bandas en una sola pasada; la nota
-        dice qué ajuste lo haría."""
+a = "La memoria de trabajo que necesita el método supera lo que la herramienta quiere reservar de una vez. La imagen se divide en franjas horizontales y se apila una por una. Se usan la misma geometría de alineación y el mismo método; el remuestreo del navegador puede variar ligeramente en el último bit. Las tomas se leen de nuevo para cada franja, así que tarda más; la página indica cuántas decodificaciones serán. Bajar un nivel la resolución de trabajo divide la memoria entre cuatro y casi siempre permite una sola pasada. La nota indica qué ajuste usar."
 
 [[faq]]
 q = "¿Por qué esta herramienta usa un Worker y ninguna de las otras?"
@@ -311,28 +189,22 @@ a = """
 
 [[faq]]
 q = "¿Es gratis y hace falta cuenta?"
-a = """
-        Es gratis, y no hay cuenta, ni registro, ni prueba, ni marca de agua.
-        Tampoco hay límite de cuántas tomas apilas ni de cómo de grandes son,
-        porque no hay ningún servidor pagándolo: el trabajo ocurre en tu propio
-        equipo y el único techo es tu propia memoria. El sitio lleva publicidad,
-        que es lo que lo paga; a los anuncios no se les da nada sobre tus
-        fotografías."""
+a = "Es gratis, sin cuenta, inicio de sesión, prueba ni marca de agua. No hay una cuota del servicio para el número o tamaño de las tomas. Los límites prácticos son la memoria del dispositivo, los límites de lienzo y decodificación del navegador y el tiempo del apilado. La publicidad sostiene la página y no recibe información sobre las fotos."
 
 [schema]
-description = "Apila una ráfaga de fotografías en el navegador: media, mediana, media con recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas antes por correlación de fase. Lee archivos RAW de cámara extrayendo la vista previa a tamaño completo que la cámara incrustó, así que no hace falta revelador RAW. No se sube nada."
+description = "Apila una ráfaga de fotos en el navegador: media, mediana, media con recorte sigma, aclarar, oscurecer, sumar o apilado de enfoque, con las tomas alineadas primero mediante correlación de fase. Lee archivos RAW con vistas previas JPEG integradas utilizables sin decodificar el sensor. No se sube nada."
 features = [
   "Siete métodos: media, mediana, media con recorte sigma, aclarar, oscurecer, sumar y apilado de enfoque",
-  "Lee CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 y más extrayendo la propia vista previa a tamaño completo de la cámara",
-  "Abre un archivo RAW de 60 MB leyendo unos cien kilobytes",
-  "Alineación automática: solo desplazamiento, desplazamiento con rotación y escala, o ninguna",
+  "Lee CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 y otros formatos si hay una vista previa JPEG integrada utilizable",
+  "Localiza vistas previas RAW leyendo pequeñas partes de directorios y cabeceras y luego decodifica el fragmento JPEG",
+  "Alineación automática con corrección de perspectiva comprobada, rotación y escala; opciones de solo desplazamiento y sin alineación",
   "Alineación con precisión de subpíxel por correlación de fase, no buscando desplazamientos",
-  "Seis de los siete métodos mantienen un acumulador, así que cien tomas cuestan la memoria de dos",
-  "El coste de memoria y de decodificación se calcula y se enseña antes de empezar",
+  "Seis métodos usan acumuladores que no crecen con el número de tomas; mediana conserva valores de cada toma",
+  "Muestra la memoria estimada del apilado y las decodificaciones previstas antes de empezar",
   "El trabajo va en un Worker, así que el progreso se mueve y Cancelar responde",
   "PNG o JPEG de salida; funciona sin conexión; sin subidas y sin cuenta",
 ]
 
 [picker]
 title = "Suelta aquí las tomas"
-hint = "o pulsa para elegir &mdash; JPEG, PNG, WebP, AVIF, TIFF y RAW de cámara"
+hint = "o haz clic para elegir &mdash; JPEG, PNG, WebP, AVIF y RAW de cámara con vistas previas JPEG"

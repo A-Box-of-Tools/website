@@ -12,9 +12,11 @@
       <li><strong>A macro shot with almost no depth of field</strong> &mdash; focus stacking.</li>
     </ul>
     <p>
-      Leave the alignment on if the camera was in your hands and turn it off if
-      it was on a tripod. RAW files can go straight in; there is no need to
-      develop them first.
+      Start with <strong>Auto perspective</strong> for noise reduction, including
+      night-sky photographs taken on a tripod: the stars move even when the
+      camera stays still. Use <strong>None</strong> for intentional star trails
+      or frames that already line up. RAW files can go straight in when they
+      contain a usable JPEG preview; the row shows the picture's actual size.
     </p>
     <p>
       Everything below is why those five lines are what they are.
@@ -39,11 +41,10 @@
       frames.
     </p>
     <p>
-      There is a second, quieter gain. Averaging sixteen eight-bit frames gives
-      a result with finer gradations than any one of them had, because the noise
-      that made each frame round differently is exactly what lets the average
-      land between the levels. Stacking a noisy set does not only remove noise;
-      it recovers tone that a single frame quantised away.
+      Averaging also makes tone estimates more stable, because each noisy
+      frame rounded a little differently. The tool uses wider accumulators and
+      rounds the combined value at the end. The saved PNG or JPEG still has
+      eight bits a channel: the cleaner average does not add output bit depth.
     </p>
   </section>
 
@@ -81,23 +82,25 @@
 
     <h3>Both: sigma clipping</h3>
     <p>
-      The median throws away most of the information to get its robustness
-      &mdash; eleven of your twelve values are discarded at each pixel, so it
-      reduces noise far less than an average of the same set would.
+      The median is less efficient than the mean at reducing independent
+      random noise: its output comes from the middle value, or the middle pair,
+      rather than an average of all the values. That is the price of being less
+      affected by a few values that differ sharply from the rest.
     </p>
     <p>
-      Sigma clipping is the compromise, and it is usually the right default for
-      any real-world set. It looks at each pixel across all the frames, works
-      out what it usually is and how much it varies, and then averages only the
-      values that agree with that. A car that crossed one frame is excluded from
-      those pixels; every other frame still counts everywhere. You get the
-      median's immunity to things that moved and most of the average's noise
-      reduction.
+      Sigma clipping first estimates each channel's mean and spread, then
+      averages only values within the chosen threshold. It can reject an object
+      that crossed a small number of frames while averaging the remaining
+      background. It is less reliable on small sets or when the object appears
+      often. At the default threshold, one differing value among four identical
+      values can still be accepted. Use median when removing the object matters
+      more than getting the strongest noise reduction.
     </p>
     <p>
-      The threshold is in standard deviations, and two is the usual starting
-      point. Lower rejects more, and starts rejecting real detail along with the
-      car.
+      The threshold is in standard deviations, and two is the starting point.
+      Lower rejects more and can reject real detail too. If every value for a
+      channel is rejected, the tool keeps that channel's original mean rather
+      than leaving a hole.
     </p>
 
     <h3>Only the bright things matter: lighten</h3>
@@ -129,9 +132,18 @@
       further away is not the same picture at a different focus.
     </p>
 
+    <h3>A brighter blend: add</h3>
+    <p>
+      Add sums the decoded image values before applying the Exposure multiplier.
+      These are eight-bit image values, so the result is an additive blend rather
+      than a simulation of a longer camera exposure. It can clip bright areas.
+      <strong>Normalize brightness</strong> sets the multiplier to one divided
+      by the number of frames; you can also type a smaller multiplier directly.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/plan.webp" loading="lazy" decoding="async"
-           alt="The mode list - average, median, brightest, darkest - with a plan underneath giving the output size, the memory needed, and how much of each file has to be read.">
+           alt="Stacking methods and settings, with planned output size, estimated working memory, planned stacking decodes and inspection reads.">
       <figcaption>
         The mode is the question this section is about. The plan under it is the tool saying what the run will cost before it starts.
       </figcaption>
@@ -148,23 +160,34 @@
       disappoints.
     </p>
     <p>
-      So the frames are measured against one of their number and moved back into
-      place first, to a fraction of a pixel. Three settings:
+      Each frame is measured against the one marked <strong>Reference</strong>
+      and moved back when a reliable correction can be found. The first frame is
+      the default; <strong>Use as reference</strong> changes that mark without
+      rearranging the list. Choose a sharp frame with clear, static detail.
+      Four alignment settings:
     </p>
     <ul>
       <li>
-        <strong>Shift only</strong> is right for almost everything hand-held. It
-        corrects the drift and the wobble.
+        <strong>Auto perspective</strong> is the default. It corrects drift,
+        rotation and scale, and uses a perspective correction when reliable
+        measurements across the frame support it. This helps wide night-sky
+        bursts where the centre lines up but stars near the edges still trail.
+        It falls back to the simpler correction when a stable perspective fit
+        cannot be found.
+      </li>
+      <li>
+        <strong>Shift only</strong> for a burst that drifted without turning or
+        changing perspective. It corrects translation alone.
       </li>
       <li>
         <strong>Shift, rotation and scale</strong> for a set where you were also
-        turning slightly, or where a zoom crept. It costs one more measurement
-        per frame and nothing at all when the frames turn out to be straight.
+        turning slightly, or where a zoom crept. Estimating the extra correction
+        adds measurement work even when the frames turn out to be straight.
       </li>
       <li>
-        <strong>None</strong> for a locked-off tripod or an intervalometer
-        sequence, where the frames are already aligned and measuring them is
-        wasted time.
+        <strong>None</strong> when static frames already line up, or when you
+        want moving stars to become trails. A tripod does not keep stars in
+        the same pixels throughout a night-sky sequence.
       </li>
     </ul>
     <p>
@@ -175,11 +198,26 @@
       is fine; walking is not.
     </p>
 
+    <p>
+      After stacking, open <strong>Alignment details</strong> to see each frame's
+      status and correction. A frame that could not be aligned is still included
+      where it was, so remove it and rerun if it makes the result soft.
+      The result opens with the reference on the left and the stack on the
+      right. Drag the divider with a mouse or finger, or focus it and use the
+      left and right arrow keys. Move it to either edge to see a whole image.
+      The divider is available in <strong>Fit to window</strong>. Choosing
+      <strong>100% &mdash; actual pixels</strong> shows the whole stacked result
+      and removes the comparison option. Use <strong>Show</strong> to inspect
+      the reference or stack separately. Drag the image to pan around it, or
+      focus the preview and use the arrow keys. Return to Fit to window to compare
+      with the divider again.
+    </p>
+
     <figure class="shot">
       <img src="/screens/stack-photos-to-reduce-noise/result.webp" loading="lazy" decoding="async"
-           alt="The result: the stacked image, with a note giving how far each frame had to be moved to line up with the first.">
+           alt="A split comparison with the reference frame on the left, stacked result on the right, and a movable divider.">
       <figcaption>
-        The alignment figures are worth reading. A handheld burst moves by a few pixels a frame, and that is what the aligner is quietly undoing.
+        Move the divider across noise and fine edges to compare the same part of both images. Check the alignment details if the stack looks soft.
       </figcaption>
     </figure>
   </section>
@@ -187,26 +225,26 @@
   <section>
     <h2>Where RAW files fit in</h2>
     <p>
-      You can drop CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF and the rest straight
-      in, and it is worth being exact about what happens to them, because it is
-      not what a RAW converter does.
+      CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF and related files can be opened
+      when they contain a usable JPEG preview. What happens is worth being exact
+      about, because it is different from developing the RAW sensor data.
     </p>
     <p>
-      Every RAW file already contains a <strong>full-size JPEG that the camera
-      rendered when it took the shot</strong>. It is what the back of the camera
-      shows you and what your operating system draws as the thumbnail. The
-      stacker finds that picture and uses it. It does not decode the sensor data.
+      Many RAW files contain a <strong>JPEG preview rendered by the camera</strong>.
+      The stacker finds the largest usable one and decodes it with the browser's
+      ordinary image decoder. That preview can be smaller than the sensor image,
+      and some files have none. Check the dimensions shown for each frame.
     </p>
     <p>
       Two consequences, one good and one worth knowing:
     </p>
     <ul>
       <li>
-        <strong>It is fast.</strong> Finding the preview means reading a few
-        kilobytes of directory and then one slice, so a 60&nbsp;MB frame opens
-        about as quickly as a JPEG. Twenty of them open in the time a RAW
-        converter would spend on one. The page shows you how little of your files
-        it actually read.
+        <strong>It avoids sensor decoding.</strong> Finding the preview usually
+        takes small directory and header reads, and the browser then reads the
+        JPEG slice to decode it. The inspection figure shown on the page counts
+        those directory and header reads; it does not count all the bytes read
+        by the image decoder.
       </li>
       <li>
         <strong>It is the camera's rendering, not yours.</strong> Eight bits a
@@ -216,12 +254,11 @@
       </li>
     </ul>
     <p>
-      For noise reduction, star trails, removing passers-by and focus stacking,
-      that trade is almost always worth taking: the previews are full resolution
-      and they are what you would have got as a JPEG anyway. If you are pushing
-      shadows hard, or stacking for astrophotography where the last bit of
-      dynamic range is the whole point, develop the frames in a RAW converter
-      first and stack the TIFFs or JPEGs it gives you. Those go in the same way.
+      A usable preview can be enough for noise reduction, star trails,
+      removing passers-by and focus stacking. Its dimensions and the camera's
+      rendering are the limits. For your own white balance, tone adjustments or
+      RAW shadow recovery, develop the frames first and export JPEG or PNG files
+      to stack here. The saved result is still an eight-bit image.
     </p>
   </section>
 
@@ -232,25 +269,27 @@
       seconds and one that takes two minutes.
     </p>
     <p>
-      Six of the seven methods only ever need to remember one thing. A running
-      maximum does not care about the frames it has already seen, and neither
-      does a running total, so those methods read each frame exactly once and use
-      the same memory for a hundred frames as for two.
+      Six methods have accumulators whose size does not grow with the frame
+      count. Average, lighten, darken, add and focus stacking take one stacking
+      pass per band. Sigma clipping takes two: one to estimate the mean and
+      spread, and one to average the values it keeps. Inspection and alignment
+      also decode the files, so one stacking pass is not one read in total.
     </p>
     <p>
-      The median cannot work that way, because you cannot know the middle value
-      of a set until you have all of it. Twenty 24-megapixel frames is about
-      1.4&nbsp;GB of pixels held at once, which no browser will give you, so the
-      picture gets cut into horizontal bands and stacked a band at a time &mdash;
-      correct, and slower, because the frames are read again for each band.
+      Median has to retain every frame's values for the band being combined.
+      Twenty 24-megapixel frames would take about 1.4&nbsp;GB just for those
+      values. Bands let it work on fewer rows at once, at the cost of decoding
+      each frame again for every band. The other methods can be banded too when
+      their working buffers exceed the budget.
     </p>
     <p>
-      The tool works all of this out before you press the button and tells you:
-      how large the result will be, roughly how much memory it needs, and how
-      many times your frames will be decoded. If it says the run will be banded,
-      dropping the working resolution one step cuts the memory by four and almost
-      always turns it back into a single pass &mdash; and if you are stacking to
-      remove noise, half resolution was already going to look cleaner than full.
+      Before you press the button, the tool shows the planned result size,
+      estimated working memory, planned stacking decodes, and bytes read during
+      inspection. The memory estimate includes the modeled working buffers;
+      browser internals and garbage collection can make total use larger. If the
+      run will be banded, reducing working resolution cuts the picture's area by
+      four per step and can reduce repeat decodes. Alignment may crop the result
+      enough to need fewer bands than the initial plan.
     </p>
   </section>
 

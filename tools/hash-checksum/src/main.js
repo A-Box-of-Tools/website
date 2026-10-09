@@ -4,7 +4,7 @@ import { phrase } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { ALGORITHMS, ORDER, Stopped, Unreadable, hashFile } from './hash.js';
-import { algorithmsIn, readExpected, verdict } from './expected.js';
+import { algorithmsIn, readExpected, rowVerdicts, verdict } from './expected.js';
 import { exact, fileSize, percent, rate, remaining, smooth } from './format.js';
 import { makeExample } from './example.js';
 
@@ -245,11 +245,7 @@ function readPaste() {
 function render() {
   const answer = verdict(expected.entries, digests, chosen?.name);
 
-  // What the paste actually says, as opposed to what it is also allowed to
-  // mean. A digest wrapped across lines keeps its line-by-line readings as
-  // candidates for the comparison, and marking a row "differs" because of one
-  // of those would be reporting a checksum nobody wrote.
-  const declared = expected.wrapped ? expected.entries.slice(0, 1) : expected.entries;
+  const comparisons = rowVerdicts(expected, digests, chosen?.name);
 
   for (const id of ORDER) {
     const row = rows.get(id);
@@ -262,12 +258,12 @@ function render() {
     // A row is marked only when this paste actually says something about that
     // algorithm. A green tick beside SHA-256 because the MD5 matched would be
     // a claim nobody made.
-    const said = declared.some((entry) => entry.algorithm === id);
-    const matched = answer.state === 'match' && answer.entry.algorithm === id;
+    const matched = comparisons[id] === 'match';
+    const differs = comparisons[id] === 'mismatch';
     row.querySelector('[data-slot="match"]').hidden = !matched;
-    row.querySelector('[data-slot="differs"]').hidden = !(said && !matched);
+    row.querySelector('[data-slot="differs"]').hidden = !differs;
     row.classList.toggle('is-match', matched);
-    row.classList.toggle('is-differs', said && !matched);
+    row.classList.toggle('is-differs', differs);
   }
 
   el.results.hidden = !ORDER.some((id) => id in digests);

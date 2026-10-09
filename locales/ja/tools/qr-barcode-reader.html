@@ -79,6 +79,11 @@
       見せるだけで、開きません。印刷されたコードは誰にも読めないアドレスであり、その上にシールを貼ることが誰かにとって割に合うのは、まさにそのせいです。ですから文字列は全体がここに出ていて、実際にたどり着くホストは独立した一行に取り出してあります。
     </p>
 
+    <div class="run-row">
+      <button type="button" id="clear-results" class="ghost">結果を消去</button>
+    </div>
+    <p id="result-status" class="field-summary" role="status"></p>
+
     <div id="results"></div>
   </section>
 
@@ -163,7 +168,8 @@
     <span data-phrase="value.yes">はい</span><span data-phrase="value.open-network">オープン｜パスワードなし</span><span data-phrase="value.none">なし</span><span data-phrase="value.copied">コピーしました</span><span data-phrase="value.modules">一辺{n}モジュール</span>
 
     <span data-phrase="warn.userinfo">@ より前はすべてユーザー名であって、アドレスではありません。このリンクが何と書いてあるように見えても、行き先は{host}です。</span><span data-phrase="warn.punycode">このアドレスはラテン文字以外の文字体系で書かれています。ほかの文字体系には、こちらの字とそっくりな形の文字があり、見慣れた名前に見せかける手口はそれを使います。</span><span data-phrase="warn.unicode-host">ホスト名に、素のラテン文字の外にある文字が含まれています。ある名前を別の名前に見せかけるのに使われます。</span><span data-phrase="warn.plain-http">これは素のhttp://のアドレスです。ここへ送るものは暗号化されずに流れ、途中にあるものが読むことも書き換えることもできます。</span>
-    <span data-phrase="warn.shortener">{host}は転送です。実際にたどり着くアドレスはこのコードの中になく、それを知るにはサーバーに尋ねることになります。このページはそれを決してしません。</span><span data-phrase="warn.wifi-secret">このコードにはパスワードがそのままの文字で入っています。コードを写真に撮った人はそれを手に入れます。壁に貼る前に知っておく価値のあることです。</span><span data-phrase="warn.otp-secret">これは認証アプリの種です。手にした人は、そのアカウントのコードをいつまでも作れます。この情報はこのページから出ていません。この先どこへ渡すかには気をつける価値があります。</span><span data-phrase="warn.not-openable">これはウェブアドレスではないので、差し出せるリンクもありません。上に全文が出ています。あなたの端末の何かがこれに従うかどうかは、あなたとそのプログラムの間の話です。</span>
+    <span data-phrase="warn.shortener">{host}は転送です。実際にたどり着くアドレスはこのコードの中になく、それを知るにはサーバーに尋ねることになります。このページはそれを決してしません。</span><span data-phrase="warn.wifi-secret">このコードにはパスワードがそのままの文字で入っています。コードを写真に撮った人はそれを手に入れます。壁に貼る前に知っておく価値のあることです。</span><span data-phrase="warn.otp-secret">これは認証アプリの種です。手にした人は、そのアカウントのコードをいつまでも作れます。この情報はこのページから出ていません。この先どこへ渡すかには気をつける価値があります。</span><span data-phrase="warn.percent-encoding">このコードの項目に不正なパーセントエスケープがあります。その項目は元の文字のまま表示しています。使う前に全文を確認してください。</span>
+    <span data-phrase="warn.not-openable">これはウェブアドレスではないので、差し出せるリンクもありません。上に全文が出ています。あなたの端末の何かがこれに従うかどうかは、あなたとそのプログラムの間の話です。</span>
 
     <span data-phrase="mode.numeric">数字のみ</span><span data-phrase="mode.alphanumeric">英大文字と数字</span><span data-phrase="mode.byte">バイト</span><span data-phrase="mode.kanji">漢字</span>
 
@@ -174,6 +180,7 @@
     <span data-phrase="preview.nothing">コードは見つかりませんでした</span>
     <span data-phrase="preview.broken">開けませんでした</span>
 
+    <span data-phrase="status.cleared">結果と画像のプレビューを消去しました。</span>
     <span data-phrase="status.reading">画像を読んでいます&hellip;</span>
     <span data-phrase="status.nothing">この画像にコードは見つかりませんでした。白い余白まで含めてシンボル全体が画面に入っていること、そして濃い四角がきちんと濃く写る明るさが必要です。</span><span data-phrase="status.broken">このファイルは画像として開けませんでした。</span><span data-phrase="status.looking">探しています&hellip;コードを動かさず、画面の半分ほどを埋めてください。</span><span data-phrase="status.on">カメラが動いています。記録はされていません。</span>
 

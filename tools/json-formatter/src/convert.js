@@ -36,8 +36,9 @@ export function jsonToYaml(text, { indent = 2 } = {}) {
   return printYaml(parseJson(text), { indent });
 }
 
-export function yamlToJson(text, { indent = '  ', sortKeys = false } = {}) {
-  return `${printJson(stripRaw(parseYaml(text)), { indent, sortKeys })}\n`;
+export function yamlToJson(text, { indent = '  ', sortKeys = false, onDiagnostic } = {}) {
+  const data = parseYaml(text, { onComment: () => onDiagnostic?.({ kind: 'yaml.comment' }) });
+  return `${printJson(stripRaw(data), { indent, sortKeys })}\n`;
 }
 
 /**
@@ -68,23 +69,36 @@ function stripRaw(node) {
  * survives being read back. A top-level array has no key to repeat, so its
  * items are called `item`.
  */
-export function jsonToXml(text, { indent = '  ', root = 'root' } = {}) {
+export function jsonToXml(text, { indent = '  ', root = 'root', onDiagnostic } = {}) {
   const data = parseJson(text);
   const lines = [];
   const pad = (depth) => indent.repeat(depth);
 
-  const write = (name, node, depth) => {
+  const nameOf = (name) => {
     const tag = xmlName(name);
+    if (tag !== name) onDiagnostic?.({ kind: 'xml.name', from: name, to: tag });
+    return tag;
+  };
+  const write = (name, node, depth, tag = nameOf(name)) => {
     switch (node.t) {
       case 'map':
         if (!node.pairs.length) { lines.push(`${pad(depth)}<${tag}/>`); return; }
         lines.push(`${pad(depth)}<${tag}>`);
-        for (const pair of node.pairs) write(pair.key, pair.value, depth + 1);
+        const names = new Map();
+        for (const pair of node.pairs) {
+          const childTag = nameOf(pair.key);
+          if (!names.has(childTag)) names.set(childTag, new Set());
+          names.get(childTag).add(pair.key);
+          write(pair.key, pair.value, depth + 1, childTag);
+        }
+        for (const keys of names.values()) {
+          if (keys.size > 1) onDiagnostic?.({ kind: 'xml.collision' });
+        }
         lines.push(`${pad(depth)}</${tag}>`);
         return;
       case 'seq':
         if (!node.items.length) { lines.push(`${pad(depth)}<${tag}/>`); return; }
-        for (const item of node.items) write(name, item, depth);
+        for (const item of node.items) write(name, item, depth, tag);
         return;
       case 'null':
         lines.push(`${pad(depth)}<${tag}/>`);
@@ -96,9 +110,10 @@ export function jsonToXml(text, { indent = '  ', root = 'root' } = {}) {
 
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
   if (data.t === 'seq') {
-    lines.push(`<${xmlName(root)}>`);
+    const rootTag = nameOf(root);
+    lines.push(`<${rootTag}>`);
     for (const item of data.items) write('item', item, 1);
-    lines.push(`</${xmlName(root)}>`);
+    lines.push(`</${rootTag}>`);
   } else {
     write(root, data, 0);
   }
@@ -115,10 +130,13 @@ function scalarText(node) {
  * A JSON key is any string; an XML element name is not. Anything an element
  * name cannot hold is replaced rather than dropped, and a name that would
  * start with a digit gets a leading underscore, because the alternative is
- * emitting a document that no XML parser will read back.
+ * emitting a document that no XML parser will read back. Colons are replaced
+ * too: this mapping invents no namespace bindings. Diagnostics report name
+ * changes and distinct sibling keys that map to the same name; repeating an
+ * array key is intentional and is not a collision.
  */
 function xmlName(key) {
-  const cleaned = String(key).replace(/[^A-Za-z0-9_.:-]/g, '_');
+  const cleaned = String(key).replace(/[^A-Za-z0-9_.-]/g, '_');
   return /^[A-Za-z_]/.test(cleaned) ? cleaned : `_${cleaned}`;
 }
 
@@ -210,14 +228,14 @@ export const CONVERSIONS = [
     id: 'yaml-json',
     name: 'convert.yaml-json.name',
     note: 'convert.yaml-json',
-    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys }),
+    run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys, onDiagnostic: options.onDiagnostic }),
     output: 'json',
   },
   {
     id: 'json-xml',
     name: 'convert.json-xml.name',
     note: 'convert.json-xml',
-    run: (text, options) => jsonToXml(text, { indent: options.indent, root: options.root || 'root' }),
+    run: (text, options) => jsonToXml(text, { indent: options.indent, root: options.root || 'root', onDiagnostic: options.onDiagnostic }),
     output: 'xml',
   },
   {

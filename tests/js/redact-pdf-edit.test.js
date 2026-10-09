@@ -21,6 +21,7 @@ import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { findTerm, glyphsIn } from '../../tools/redact-pdf/src/matches.js';
 import { PdfStream } from '../../shared/js/pdf-objects.js';
 import { PdfDocument } from '../../shared/js/pdf-reader.js';
+import { planSelection, snapshotSelection } from '../../tools/redact-pdf/src/selection.js';
 import { redact, remover } from '../../tools/redact-pdf/src/redact.js';
 import { decodeText, encodeText } from '../../tools/redact-pdf/src/strings.js';
 import { pagesOf, readPage } from '../../shared/js/pdf-text.js';
@@ -454,4 +455,56 @@ test('a page with no text at all is left exactly as it was', async () => {
   const out = await redact(doc, pages, new Map(), { texts: [] });
   assert.deepEqual(out.report.pages, []);
   assert.match(await contentOf(out.bytes), /q 1 0 0 1 0 0 cm Q/);
+});
+
+
+test('a redaction and its verification keep the captured selection while the live plan changes', async () => {
+  const bytes = document('BT /F1 12 Tf 72 700 Td (Alice Bob) Tj ET');
+  const doc = await PdfDocument.open(bytes);
+  const read = [await readPage(doc, pagesOf(doc)[0], 1)];
+  const alice = findTerm(read[0].text, 'Alice')[0];
+  const bob = findTerm(read[0].text, 'Bob')[0];
+  const range = { ...alice, text: 'Alice' };
+  const picked = new Map([[0, new Map([['alice', range]])]]);
+  const options = { boxes: false, elsewhere: false, attachments: true };
+  const selection = snapshotSelection(picked, options);
+
+  // A later checkbox state must not change either the bytes being written or
+  // the count against which those bytes are checked. The nested range is copied.
+  picked.get(0).set('bob', { ...bob, text: 'Bob' });
+  range.from = bob.from;
+  range.to = bob.to;
+  options.boxes = true;
+  const before = await harvestAll(doc, read);
+  const plan = planSelection(read, selection);
+  assert.equal(plan.count, 1);
+  assert.deepEqual(plan.terms, [{ text: 'Alice', removed: 1 }]);
+  assert.equal(selection.options.boxes, false);
+  const result = await redact(doc, read, plan.chosen, { ...selection.options, texts: [...plan.texts] });
+  picked.clear();
+  const checked = await verify(result.bytes, { text: before, pages: 1, terms: plan.terms });
+  assert.equal(checked.ok, true);
+  assert.equal(checked.terms[0].now, 0);
+  const reopened = await PdfDocument.open(result.bytes);
+  const remaining = await readPage(reopened, pagesOf(reopened)[0], 1);
+  assert.equal(remaining.text.includes('Alice'), false);
+  assert.equal(remaining.text.includes('Bob'), true);
+});
+
+test('captured character ranges resolve against a reopened document for another export', async () => {
+  const bytes = document('BT /F1 12 Tf 72 700 Td (Alice Alice) Tj ET');
+  const original = await PdfDocument.open(bytes);
+  const originalPage = await readPage(original, pagesOf(original)[0], 1);
+  const range = findTerm(originalPage.text, 'Alice')[0];
+  const selection = snapshotSelection(new Map([[0, new Map([['one', range]])]]), {});
+  const fresh = await PdfDocument.open(bytes);
+  const read = [await readPage(fresh, pagesOf(fresh)[0], 1)];
+  const plan = planSelection(read, selection);
+  const before = await harvestAll(fresh, read);
+  const result = await redact(fresh, read, plan.chosen, { texts: [...plan.texts] });
+  const checked = await verify(result.bytes, { text: before, pages: 1, terms: plan.terms });
+  assert.equal(checked.ok, true);
+  assert.equal(checked.terms[0].was, 2);
+  assert.equal(checked.terms[0].now, 1);
+  assert.equal(checked.terms[0].removed, 1);
 });

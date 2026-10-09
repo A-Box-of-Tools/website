@@ -114,6 +114,7 @@
         <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
+      <p id="results-settings" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
@@ -195,6 +196,11 @@
     <span data-phrase="error.decode">this browser could not decode the picture.</span>
 
     <!-- The line over the results, and each result's own row. -->
+    <span data-phrase="run.settings">This run: {target} per image; {format} for images over the target; {resize}.</span>
+    <span data-phrase="run.format.auto">automatic format</span>
+    <span data-phrase="run.format.keep">the original format</span>
+    <span data-phrase="run.resize.on">resizing allowed</span>
+    <span data-phrase="run.resize.off">original dimensions</span>
     <span data-phrase="results.all">{before} down to {after} - {change}, and every image is under the target.</span>
     <span data-phrase="results.missed.one">{before} down to {after}. {count} image could not reach the target - see the row below.</span>
     <span data-phrase="results.missed.many">{before} down to {after}. {count} images could not reach the target - see the rows below.</span>

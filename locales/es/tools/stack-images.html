@@ -20,11 +20,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      Los archivos RAW se abren leyendo el JPEG a tamaño completo que la cámara
-      ya escribió dentro: unos kilobytes de directorio y después un solo trozo.
-      Los datos del sensor no se decodifican nunca, así que una toma de
-      60&nbsp;MB abre casi tan rápido como un JPEG.
-      <a href="#faq-raw">Qué significa eso para el resultado</a>.
+      Los RAW usan la mayor vista previa JPEG utilizable que incluye la cámara. Sus dimensiones aparecen abajo; puede ser menor que la imagen del sensor. Los datos del sensor no se decodifican. <a href="#faq-raw">Qué significa eso para el resultado</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -35,6 +31,8 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">Tomas y referencia</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       Arrastra una toma por su asa <span class="grip" aria-hidden="true">&#8942;&#8942;</span> para reordenar la lista, o
       pulsa las flechas arriba y abajo con el asa enfocada. El orden es tuyo: solo es cómo
@@ -43,6 +41,7 @@
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- Paso 2 &mdash; cómo combinarlas -->
@@ -58,7 +57,7 @@
           <option value="sigma">Recorte sigma &mdash; las dos cosas a la vez</option>
           <option value="max">Aclarar &mdash; estelas de estrellas, fuegos artificiales, pintura con luz</option>
           <option value="min">Oscurecer &mdash; quitar lo brillante que se movió</option>
-          <option value="sum">Sumar &mdash; simular una exposición larga</option>
+          <option value="sum">Sumar &mdash; mezcla aditiva</option>
           <option value="focus">Apilado de enfoque &mdash; conservar lo que estaba nítido</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -67,7 +66,8 @@
       <div class="field">
         <label for="align">Alinear las tomas</label>
         <select id="align">
-          <option value="translate" selected>Sí &mdash; solo desplazamiento</option>
+          <option value="projective" selected>Auto &mdash; corregir perspectiva</option>
+          <option value="translate">Sí &mdash; solo desplazamiento</option>
           <option value="similarity">Sí &mdash; desplazamiento, rotación y escala</option>
           <option value="none">No &mdash; usarlas exactamente como están</option>
         </select>
@@ -111,10 +111,11 @@
       <div class="field">
         <label for="gain">Exposición</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>Normalizar brillo</button>
       </div>
 
       <div class="field">
@@ -141,10 +142,11 @@
     <dl class="plan" id="plan" hidden>
       <div><dt>Resultado</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>Memoria de trabajo</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>Tomas decodificadas</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>Leído del disco</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>Decodificaciones del apilado</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Lectura para inspeccionar</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>La memoria es una estimación de los búferes de píxeles; el navegador y los codificadores pueden necesitar más. La inspección y la alineación también decodifican vistas previas.</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -164,13 +166,43 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>La selección o los ajustes han cambiado. Apila de nuevo para crear otro resultado.</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
-        <img id="result-image" alt="El resultado apilado">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">Mostrar</label>
+          <select id="view-source">
+            <option value="compare" selected>Comparar &mdash; arrastra el separador</option>
+            <option value="result">Resultado apilado</option>
+            <option value="reference">Toma de referencia</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">Tamaño de vista</label>
+          <select id="view-size">
+            <option value="fit">Ajustar a la ventana</option>
+            <option value="actual">100% &mdash; píxeles reales</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="Vista previa de la imagen" tabindex="0" aria-describedby="viewer-status">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="El resultado apilado">
+          <img id="reference-image" class="reference-image" alt="Toma de referencia" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="Separador de comparación" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>Detalles de alineación</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>Descargar la imagen</a>
       </div>
     </div>
@@ -191,6 +223,25 @@
     <span data-phrase="count.many">{count} tomas</span>
     <span data-phrase="count.none">Todavía no hay tomas</span>
 
+    <span data-phrase="frames.summary">{frames} &mdash; referencia: {name}</span>
+    <span data-phrase="frame.unreadable">No se pudo abrir este archivo y se excluye del apilado. Prueba con JPEG, PNG, WebP u otro formato que admita el navegador.</span>
+    <span data-phrase="import.skipped">No se pudieron abrir {count} archivos. Siguen en la lista para comprobar cuáles se excluyeron.</span>
+    <span data-phrase="viewer.loading">Preparando la toma de referencia&hellip;</span>
+    <span data-phrase="viewer.reference">Referencia: {name}. La vista usa el mismo recorte y resolución que el resultado.</span>
+    <span data-phrase="viewer.compare">Referencia a la izquierda y resultado apilado a la derecha. Arrastra el separador o usa las flechas para comparar.</span>
+    <span data-phrase="viewer.split">{percent}% referencia; {remaining}% resultado apilado</span>
+    <span data-phrase="viewer.pan">Arrastra la imagen para moverte por ella o usa las teclas de flecha. Para comparar con el separador, elige Ajustar a la ventana.</span>
+    <span data-phrase="viewer.result">Resultado apilado. Elige 100% para examinar el detalle. Para usar el separador de comparación, elige Ajustar a la ventana.</span>
+    <span data-phrase="alignment.reference">Referencia</span>
+    <span data-phrase="alignment.none">Sin alinear</span>
+    <span data-phrase="alignment.weak">No se pudo alinear con confianza</span>
+    <span data-phrase="alignment.clamped">Solo desplazamiento; la rotación era demasiado grande</span>
+    <span data-phrase="alignment.partial">Desplazamiento afinado; no se pudo afinar la rotación</span>
+    <span data-phrase="alignment.perspective">Alineada con corrección de perspectiva</span>
+    <span data-phrase="alignment.perspective-fallback">Alineada sin corrección de perspectiva</span>
+    <span data-phrase="alignment.aligned">Alineada</span>
+    <span data-phrase="alignment.offset">Desplazamiento: {dx}, {dy} px; rotación: {angle}&deg;; escala: {scale}&times;</span>
+    <span data-phrase="alignment.remove">Quitar de la selección</span>
     <span data-phrase="frame.reference">Referencia</span>
     <span data-phrase="frame.make-reference">Usar como referencia</span>
     <span data-phrase="frame.move">Mover {name} &mdash; arrastra, o usa las flechas arriba y abajo</span>
@@ -202,21 +253,23 @@
     <span data-phrase="frame.read">{read} leídos de {total}</span>
 
     <span data-phrase="mode.mean">Promedia todas las tomas. El ruido aleatorio está tan a menudo por encima como por debajo, así que promediar {count} tomas lo reduce unas {factor} veces. El método para un conjunto estable, y el que echa a perder un solo pájaro que pase.</span>
-    <span data-phrase="mode.median">Toma el valor central de cada píxel. Todo lo que solo estaba en algunas tomas &mdash; un turista, un coche, un avión &mdash; desaparece. Es el único método que tiene que sostener todas las tomas a la vez, y por eso puede ir por bandas más abajo.</span>
-    <span data-phrase="mode.sigma">Aprende qué suele ser cada píxel y después promedia solo los valores que concuerdan. El resultado de la mediana con la reducción de ruido de la media. Lee las tomas dos veces.</span>
+    <span data-phrase="mode.median">Toma el valor central de cada píxel. Un objeto móvil puede desaparecer si ocupó ese píxel en menos de la mitad de las tomas. Es el único método que conserva todas las tomas a la vez, por eso puede dividirse en bandas.</span>
+    <span data-phrase="mode.sigma">Estima el valor habitual de cada píxel y promedia solo los valores compatibles. Puede rechazar valores atípicos y reducir ruido. En conjuntos pequeños puede conservar un objeto de paso; usa mediana si quitarlo es la prioridad. Lee las tomas dos veces.</span>
     <span data-phrase="mode.max">Conserva el valor más brillante que haya tenido cada píxel. Es lo que convierte una secuencia de exposiciones cortas en estelas de estrellas, y lo que monta unos fuegos artificiales a partir de sus propias tomas.</span>
     <span data-phrase="mode.min">Conserva el valor más oscuro que haya tenido cada píxel. Un píxel solo sigue brillante si lo estaba en todas las tomas, así que los reflejos, los faros y las gotas de lluvia iluminadas desaparecen.</span>
-    <span data-phrase="mode.sum">Suma las tomas sin dividir: lo que habría recogido una única exposición {count} veces más larga. Se satura, exactamente como se habría saturado esa exposición. Usa el deslizador de exposición para recuperarlo.</span>
+    <span data-phrase="mode.sum">Suma los valores de color renderizados sin dividir. Es una mezcla aditiva, no una simulación de la exposición del sensor. Los valores brillantes se recortan; normaliza el brillo para dividir por el número de tomas.</span>
     <span data-phrase="mode.focus">Toma cada parte de la imagen de la toma en la que estaba enfocada. Fotografía un sujeto pequeño a lo largo del anillo de enfoque y esto monta las partes que estaban nítidas.</span>
 
+    <span data-phrase="align.projective">Mide desplazamiento, rotación y escala y después corrige la perspectiva si coinciden suficientes regiones. Útil para fotos de estrellas con un campo amplio. Si no se puede medir la perspectiva con confianza, usa rotación y escala.</span>
     <span data-phrase="align.translate">Encuentra cuánto se ha desplazado cada toma y la devuelve a su sitio, con precisión de fracciones de píxel. Corrige el pulso y la deriva del trípode. No puede corregir la rotación.</span>
-    <span data-phrase="align.similarity">Encuentra además la rotación y la escala. Cuesta una medición más por toma y nada en absoluto cuando las tomas resultan estar derechas. La rotación solo se recupera dentro de media vuelta.</span>
-    <span data-phrase="align.none">Apila las tomas exactamente como se le dan. Correcto para un trípode fijo o una secuencia de intervalómetro, y equivocado para cualquier cosa a pulso.</span>
+    <span data-phrase="align.similarity">También encuentra rotación y escala. Realiza una medición adicional por toma, incluso si las tomas están rectas. La rotación solo se recupera dentro de media vuelta.</span>
+    <span data-phrase="align.none">Apila las tomas exactamente como están. Úsalo si ya coinciden o para estelas de estrellas que deban conservar el movimiento del cielo. Un trípode fijo no mantiene las estrellas alineadas.</span>
 
-    <span data-phrase="scale.note">Cada toma la decodifica a este tamaño el propio decodificador del navegador, así que un ajuste más pequeño es menos trabajo además de menos memoria.</span>
+    <span data-phrase="scale.note">Un tamaño de trabajo menor reduce los búferes de píxeles y el cálculo. El navegador puede seguir decodificando internamente el archivo a tamaño completo.</span>
     <span data-phrase="gain.note">Se multiplica en el resultado al final del todo, después de la aritmética y antes de redondear.</span>
-    <span data-phrase="gain.sum-note">Sumar {count} tomas se saturará casi con toda seguridad. Baja esto a alrededor de {suggested} para ver lo que se recogió.</span>
+    <span data-phrase="gain.sum-note">Sumar {count} tomas puede recortar valores brillantes. Normaliza el brillo a {suggested}&times; o escribe tu propia exposición.</span>
 
+    <span data-phrase="plan.too-large">Incluso una banda pequeña supera el presupuesto de búferes de píxeles. Elige una resolución de trabajo menor o imágenes de entrada más pequeñas.</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">unos {mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}, una por toma</span>
@@ -243,8 +296,8 @@
     <span data-phrase="error.no.files">Añade antes al menos una imagen.</span>
     <span data-phrase="error.no.size">Ninguno de estos archivos se ha podido abrir como imagen.</span>
     <span data-phrase="error.one.frame">Apilar necesita al menos dos tomas.</span>
-    <span data-phrase="error.unknown">Algo ha salido mal al apilar. Si alguno de estos archivos es raro, pruébalo por su cuenta.</span>
-    <span data-phrase="error.memory">El navegador se ha quedado sin memoria. Prueba con una resolución de trabajo más pequeña, o con menos tomas.</span>
+    <span data-phrase="error.unknown">Algo salió mal al apilar. Prueba con una selección menor de archivos.</span>
+    <span data-phrase="error.memory">Esta ejecución supera el presupuesto de búferes de píxeles o el navegador se quedó sin memoria. Prueba una resolución de trabajo menor o menos tomas.</span>
     <span data-phrase="error.unreadable">{name} no se ha podido abrir como imagen y se ha dejado fuera.</span>
     <span data-phrase="error.busy">Espera a que termine esta pila antes de añadir más tomas, o cancélala.</span>
 

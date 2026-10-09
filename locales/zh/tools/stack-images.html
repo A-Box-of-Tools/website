@@ -22,7 +22,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      RAW 文件是靠读相机早就写进去的那张原尺寸 JPEG 打开的：几十 KB 的目录，然后取其中一段。传感器数据从来不解码，所以一张 60&nbsp;MB 的帧开起来跟 JPEG 差不多快。<a href="#faq-raw">这对结果意味着什么</a>。
+      RAW 文件使用相机内嵌的最大可用 JPEG 预览图。尺寸显示在下方，可能比传感器图像小。传感器数据从不解码。<a href="#faq-raw">这对结果意味着什么</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -33,11 +33,14 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">各帧和基准</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       抓住某一帧的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能重排，把手上有焦点时也可以按上下方向键。这里的顺序只是列表的顺序，其余各帧对齐的是标着<strong>基准</strong>的那一帧。
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- 第 2 步 | 怎么合到一起 -->
@@ -53,7 +56,7 @@
           <option value="sigma">Sigma 裁剪 | 两样一起</option>
           <option value="max">最亮 | 星轨、烟花、光绘</option>
           <option value="min">最暗 | 去掉动过的亮东西</option>
-          <option value="sum">相加 | 模拟一次长曝光</option>
+          <option value="sum">相加 | 加法混合</option>
           <option value="focus">景深合成 | 留下清楚的那部分</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -62,7 +65,8 @@
       <div class="field">
         <label for="align">对齐各帧</label>
         <select id="align">
-          <option value="translate" selected>对齐 | 只平移</option>
+          <option value="projective" selected>自动 | 透视校正</option>
+          <option value="translate">对齐 | 只平移</option>
           <option value="similarity">对齐 | 平移、旋转、缩放</option>
           <option value="none">不对齐 | 就照它们原样</option>
         </select>
@@ -104,10 +108,11 @@
       <div class="field">
         <label for="gain">曝光</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>归一化亮度</button>
       </div>
 
       <div class="field">
@@ -134,10 +139,11 @@
     <dl class="plan" id="plan" hidden>
       <div><dt>结果</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>工作内存</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>解码次数</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>从硬盘读了</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>堆栈解码次数</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>检查读取量</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>内存是像素缓冲区的估计，浏览器和编码器可能需要更多。检查和对齐也会解码预览图。</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -157,13 +163,43 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>选择或设置已改变。请重新堆栈以生成新结果。</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
-        <img id="result-image" alt="堆栈的结果">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">显示</label>
+          <select id="view-source">
+            <option value="compare" selected>对比 | 拖动分隔线</option>
+            <option value="result">堆栈结果</option>
+            <option value="reference">基准帧</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">查看尺寸</label>
+          <select id="view-size">
+            <option value="fit">适应窗口</option>
+            <option value="actual">100% | 实际像素</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="图片预览" tabindex="0" aria-describedby="viewer-status">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="堆栈的结果">
+          <img id="reference-image" class="reference-image" alt="基准帧" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="对比分隔线" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>对齐详情</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>下载图片</a>
       </div>
     </div>
@@ -183,18 +219,39 @@
     <span data-phrase="count.one">1 帧</span>
     <span data-phrase="count.many">{count} 帧</span><span data-phrase="count.none">还没有帧</span>
 
+    <span data-phrase="frames.summary">{frames} | 基准：{name}</span>
+    <span data-phrase="frame.unreadable">无法打开此文件，已从堆栈中排除。请试用 JPEG、PNG、WebP 或此浏览器支持的其他格式。</span>
+    <span data-phrase="import.skipped">{count} 个文件无法打开。它们仍留在列表里，方便你检查哪些被排除了。</span>
+    <span data-phrase="viewer.loading">正在准备基准帧&hellip;</span>
+    <span data-phrase="viewer.reference">基准：{name}。显示使用与结果相同的裁剪范围和分辨率。</span>
+    <span data-phrase="viewer.compare">左侧为基准，右侧为堆栈结果。拖动分隔线或使用方向键来对比。</span>
+    <span data-phrase="viewer.split">{percent}% 基准；{remaining}% 堆栈结果</span>
+    <span data-phrase="viewer.pan">拖动图片或用方向键移动查看。要用分隔线对比，请选择“适应窗口”。</span>
+    <span data-phrase="viewer.result">堆栈结果。选 100% 查看细节。要使用对比分隔线，请选择“适应窗口”。</span>
+    <span data-phrase="alignment.reference">基准</span>
+    <span data-phrase="alignment.none">未对齐</span>
+    <span data-phrase="alignment.weak">无法可靠对齐</span>
+    <span data-phrase="alignment.clamped">只平移，旋转角度过大</span>
+    <span data-phrase="alignment.partial">已细化平移，无法细化旋转</span>
+    <span data-phrase="alignment.perspective">已通过透视校正对齐</span>
+    <span data-phrase="alignment.perspective-fallback">已对齐，未校正透视</span>
+    <span data-phrase="alignment.aligned">已对齐</span>
+    <span data-phrase="alignment.offset">平移：{dx}、{dy} px；旋转：{angle}&deg;；缩放：{scale}&times;</span>
+    <span data-phrase="alignment.remove">从选择中移除</span>
     <span data-phrase="frame.reference">基准</span><span data-phrase="frame.make-reference">拿它当基准</span><span data-phrase="frame.remove">移除</span>
     <span data-phrase="frame.move">移动 {name} &mdash; 拖动，或用上下方向键</span>
     <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw">RAW | 相机自己的预览图，&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="frame.raw-camera">{camera} | &#x2066;{width} &times; {height}&#x2069; 的预览图</span><span data-phrase="frame.raw-unreadable">这个 RAW 文件里没找到预览图</span><span data-phrase="frame.read">读了 {total} 里的 {read}</span>
 
-    <span data-phrase="mode.mean">对每一帧取平均值。随机噪点偏高和偏低的次数一样多，所以把 {count} 帧平均一下，噪点大约降到原来的 {factor} 分之一。这是给安静一组用的手法，也是被一只飞过去的鸟就毁掉的那种。</span><span data-phrase="mode.median">取每个像素的中间那个值。只在一部分帧里出现过的东西，游客也好、车也好、飞机也好，都会消失。它是唯一一种必须同时抱着每一帧的手法，所以下面才会被切成横条。</span><span data-phrase="mode.sigma">先学出每个像素通常是什么，再只对跟这个说法一致的数值取平均。既有中位数的结果，又有平均值那种消噪能力。它会把这些帧读两遍。</span><span data-phrase="mode.max">留下每个像素出现过的最亮值。把一串短曝光变成星轨、把一场烟花从它自己的帧里重新拼起来，靠的就是它。</span><span data-phrase="mode.min">留下每个像素出现过的最暗值。一个像素只有在每一帧里都亮才会保持亮，所以窗户上的反光、开过去的车灯、被闪光灯打亮的雨滴，全都会消失。</span><span data-phrase="mode.sum">把这些帧相加，不做除法，也就是一次长 {count} 倍的曝光会收到的量。它会过曝，就像那次曝光本来也会过曝一样。用曝光那个滑杆拉回来。</span><span data-phrase="mode.focus">图像的每一部分，都从它在那一帧里清楚的那一帧取。沿着对焦环拍一个小东西，这个手法会把清楚的部分接起来。</span>
+    <span data-phrase="mode.mean">对每一帧取平均值。随机噪点偏高和偏低的次数一样多，所以把 {count} 帧平均一下，噪点大约降到原来的 {factor} 分之一。这是给安静一组用的手法，也是被一只飞过去的鸟就毁掉的那种。</span><span data-phrase="mode.median">取每个像素的中间值。移动物体占据这个像素的帧数不到一半时，可能消失。这是唯一需要同时保存各帧的手法，因此可能分条处理。</span><span data-phrase="mode.sigma">估计每个像素的常见值，只对一致的值取平均。可以排除异常值并降低噪点。帧数少时可能保留经过的物体；最重要的是移除物体时，请用中位数。各帧读取两遍。</span><span data-phrase="mode.max">留下每个像素出现过的最亮值。把一串短曝光变成星轨、把一场烟花从它自己的帧里重新拼起来，靠的就是它。</span><span data-phrase="mode.min">留下每个像素出现过的最暗值。一个像素只有在每一帧里都亮才会保持亮，所以窗户上的反光、开过去的车灯、被闪光灯打亮的雨滴，全都会消失。</span><span data-phrase="mode.sum">把渲染后的颜色值相加，不除以帧数。这是加法混合，不模拟传感器曝光。明亮值会溢出，归一化亮度可除以帧数。</span><span data-phrase="mode.focus">图像的每一部分，都从它在那一帧里清楚的那一帧取。沿着对焦环拍一个小东西，这个手法会把清楚的部分接起来。</span>
 
-    <span data-phrase="align.translate">算出每一帧偏了多少，再挪回去，精度到一个像素的几分之一。能纠正手持的抖动和三脚架的漂移，纠正不了旋转。</span><span data-phrase="align.similarity">连旋转和缩放也一起算出来。每帧多花一次测量，而如果这些帧本来就是正的，那就一点不多花。旋转永远只能在半圈范围内还原。</span><span data-phrase="align.none">照这些帧进来的样子直接堆。对锁死的三脚架或者间隔拍摄是对的，对任何手持的东西都是错的。</span>
+    <span data-phrase="align.projective">测量平移、旋转和缩放，足够多的区域一致时再校正透视。适合广角星空照片。如果无法可靠测量透视，就使用旋转和缩放。</span>
+    <span data-phrase="align.translate">算出每一帧偏了多少，再挪回去，精度到一个像素的几分之一。能纠正手持的抖动和三脚架的漂移，纠正不了旋转。</span><span data-phrase="align.similarity">还会找出旋转和缩放。每一帧都会进行额外测量，即使各帧原本很正。旋转只在半圈范围内恢复。</span><span data-phrase="align.none">按原样堆栈各帧。用于已经对齐的帧，或需要保留天空运动的星轨。固定三脚架并不能让星星保持对齐。</span>
 
-    <span data-phrase="scale.note">每一帧都是由浏览器自己的解码器按这个尺寸解出来的，所以调小不只是省内存，是活本来就少了。</span><span data-phrase="gain.note">在算完之后、取整之前，最后一步乘进结果里。</span><span data-phrase="gain.sum-note">把 {count} 帧相加，几乎肯定会过曝。降到 {suggested} 上下，看看到底收到了什么。</span>
+    <span data-phrase="scale.note">更小的工作尺寸会减少像素缓冲区和计算量。浏览器内部仍可能按原尺寸解码文件。</span><span data-phrase="gain.note">在算完之后、取整之前，最后一步乘进结果里。</span><span data-phrase="gain.sum-note">相加 {count} 帧可能让明亮值溢出。归一化亮度可设为 {suggested}&times;，也可自行输入曝光。</span>
 
+    <span data-phrase="plan.too-large">即使很小的条带也超出像素缓冲区预算。请选择更低的工作分辨率，或更小的输入图片。</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">大约 {mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count} 次，每帧一次</span>
@@ -210,7 +267,7 @@
     <span data-phrase="result.info">&#x2066;{width} &times; {height}&#x2069;，{size} | {count} 帧在 {seconds} 秒里合到了一起</span><span data-phrase="result.moves">每一帧都量过，也都推回了自己的位置。</span>
     <span data-phrase="result.moves-some">{total} 帧里有 {count} 帧没法有把握地量出来，就留在原处了。</span><span data-phrase="result.moves-none">这些帧是照进来的样子直接堆的。</span><span data-phrase="result.moves-clamped">有 {count} 帧报出的旋转量对一串连拍来说太大了，就只用平移纠正了。</span><span data-phrase="result.cropped">把它们各自推开之后，边上留下了不是每一帧都够得到的地方，那些被裁掉了。</span>
 
-    <span data-phrase="error.no.files">先至少加一张图。</span><span data-phrase="error.no.size">这些文件没有一个打得开成图片。</span><span data-phrase="error.one.frame">堆栈至少要两帧。</span><span data-phrase="error.unknown">堆栈的时候出了岔子。这里面要是有哪个文件比较特别，单独试一下它。</span><span data-phrase="error.memory">浏览器的内存用完了。试试更小的工作分辨率，或者少几帧。</span>
+    <span data-phrase="error.no.files">先至少加一张图。</span><span data-phrase="error.no.size">这些文件没有一个打得开成图片。</span><span data-phrase="error.one.frame">堆栈至少要两帧。</span><span data-phrase="error.unknown">堆栈时出现问题。请减少所选文件再试。</span><span data-phrase="error.memory">此次处理超出像素缓冲区预算，或浏览器内存不足。请降低工作分辨率，或减少帧数。</span>
     <span data-phrase="error.unreadable">{name} 打不开成图片，被撇下了。</span><span data-phrase="error.busy">再加帧之前先等这一次堆完，或者把它取消掉。</span>
 
     <span data-phrase="net.clean">你的照片没有去任何地方。加载了 {total} 个文件。{platform}</span>

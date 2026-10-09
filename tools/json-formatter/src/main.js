@@ -4,6 +4,7 @@ import { phrase, fill } from './shared/phrases.js';
 import { sizeText } from './shared/format.js';
 import { downloadLink } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
+import { editorFeedback, conversionDiagnostics } from './shared/editor-feedback.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { LANGUAGES, languageById, formatText, detectLanguage } from './format.js';
 import { CONVERSIONS, conversionById } from './convert.js';
@@ -35,6 +36,8 @@ const el = {
   sample: $('sample'),
   clear: $('clear'),
   error: $('error'),
+  goError: $('go-error'),
+  feedback: $('conversion-feedback'),
   output: $('output'),
   resultNote: $('result-note'),
   copy: $('copy'),
@@ -47,6 +50,8 @@ const { show: showError, clear: clearError } = messageBox(el.error, {
   onShow: () => { el.resultNote.textContent = phrase('out.empty'); },
 });
 const download = downloadLink(el.download);
+const feedback = editorFeedback({ input: el.input, go: el.goError, notes: el.feedback, phrase,
+  context: () => mode === 'format' ? `format:${chosenLanguage()}` : `convert:${el.conversion.value}` });
 const humanBytes = (n) => sizeText(n, phrase, { under: 'size.bytes', kb: 1, mb: 2 });
 
 /** Which of the two jobs is on screen. */
@@ -200,6 +205,7 @@ function run() {
     // is reported as information rather than as a failure. Anything else is a
     // bug here and goes to the console as well.
     showError(say(error));
+    feedback.error(error, { conversion: mode === 'convert' });
     if (error?.name !== 'ParseError') console.error(error);
   }
 }
@@ -264,17 +270,20 @@ function runFormat(text) {
 
 function runConvert(text) {
   const conversion = conversionById(el.conversion.value);
+  const diagnostics = conversionDiagnostics();
   const out = conversion.run(text, {
     indent: indentString(),
     spaces: el.indent.value === 'tab' ? 2 : Number(el.indent.value),
     sortKeys: el.sortKeys.checked,
     root: el.rootName.value.trim(),
+    onDiagnostic: diagnostics.record,
   });
   show(out, phrase('note.converted', {
     name: phrase(conversion.name),
     lines: out.split('\n').length - 1,
     size: humanBytes(byteLength(out)),
   }), `converted.${conversion.output}`);
+  feedback.conversion(diagnostics.report, { yaml: conversion.id === 'yaml-json' });
 }
 
 /* -------------------------------------------------------------- the result */
@@ -309,6 +318,7 @@ el.copy.addEventListener('click', async () => {
 });
 
 function clearResult() {
+  feedback.clear();
   el.copy.textContent = phrase('copy.copy');
   el.output.textContent = '';
   el.copy.disabled = true;

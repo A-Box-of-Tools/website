@@ -98,7 +98,7 @@
           <label for="input">Ihr Text</label>
           <span class="count" id="input-count">leer</span>
         </div>
-        <textarea id="input" data-language-text spellcheck="false" autocomplete="off" autocapitalize="off"
+        <textarea id="input" data-language-text aria-describedby="error" spellcheck="false" autocomplete="off" autocapitalize="off"
                   autocorrect="off" wrap="off"
                   placeholder="JSON, XML, HTML, CSS oder YAML hier einfügen - oder oben eine Datei ablegen."></textarea>
       </div>
@@ -118,6 +118,8 @@
     <h2><span class="step">3</span> Das Ergebnis mitnehmen</h2>
 
     <p id="error" class="error" role="alert" hidden></p>
+    <button type="button" id="go-error" class="ghost error-action" aria-controls="input" hidden>Zur Fehlerstelle</button>
+    <ul id="conversion-feedback" class="path-note editor-feedback" role="status" hidden></ul>
 
     <div class="toolbar">
       <p class="count" id="result-note">Noch nichts.</p>
@@ -143,6 +145,11 @@
     <span data-phrase="count.characters.one">{count} Zeichen</span>
     <span data-phrase="count.characters.many">{count} Zeichen</span>
     <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+    <span data-phrase="convert.comments">Verworfene YAML-Kommentare: {n}. Text in Anführungszeichen und Blockskalaren bleibt Text.</span>
+    <span data-phrase="convert.names">Geänderte XML-Namen: {n}. Diese Abbildung bewahrt die ursprünglichen Namen nicht.</span>
+    <span data-phrase="convert.collisions">XML-Namenskollisionen: {n}. Verschiedene Schlüssel wurden zum selben Elementnamen und können beim Rücklesen als ein wiederholter Wert erscheinen.</span>
+    <span data-phrase="convert.name.example">{from} → {to}</span>
+    <span data-phrase="convert.refused">Die Konvertierung wurde bei diesem nicht unterstützten Konstrukt abgebrochen. Es wurde kein Ergebnis erzeugt.</span>
     <span data-phrase="parse.at">{reason} (Zeile {line}, Spalte {column})</span>
     <span data-phrase="char.end">das Ende des Textes</span>
     <span data-phrase="char.newline">ein Zeilenumbruch</span>
@@ -220,9 +227,7 @@
       würden.</span>
     <span data-phrase="convert.yaml-json">Kommentare gehen verloren, weil JSON keinen Platz für einen hat. Anker, Aliasse und
       Tags brechen die Umwandlung ab, statt geraten zu werden.</span>
-    <span data-phrase="convert.json-xml">Ein Array wird zu einem wiederholten Element, was die einzige Form ist, die sich
-      zurücklesen lässt. Ein leeres Objekt und eine leere Zeichenkette kommen beide als
-      leeres Element heraus.</span>
+    <span data-phrase="convert.json-xml">Ein Array wird zu wiederholten Elementen. Ein leeres Objekt und eine leere Zeichenfolge werden beide zu einem leeren Element. Schlüssel werden zu XML-Namen ohne Präfix angepasst; geänderte Namen und Kollisionen werden beim Ergebnis angegeben.</span>
     <span data-phrase="convert.xml-json">Attribute werden zu Membern mit einem @ im Namen, der eigene Text eines Elements
       wird zu #text, wo er sich den Platz teilen muss, und jeder Wert bleibt eine
       Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren. Die Reihenfolge gemischter Inhalte und Kommentare bleiben nicht erhalten.</span>

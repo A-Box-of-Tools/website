@@ -20,7 +20,7 @@
     {% include "partials/file-picker.html" %}
 
     <p class="note">
-      RAWファイルは、カメラがすでに中に書き込んでいる原寸のJPEGを読んで開きます。ディレクトリを数キロバイト読み、そのあと1か所を取り出すだけです。センサーのデータは一度もデコードしないので、60&nbsp;MBの1枚がJPEGとほぼ同じ速さで開きます。<a href="#faq-raw">それが結果にとって何を意味するか</a>。
+      RAWファイルは、カメラが埋め込んだJPEGプレビューのうち、使える最大のものを使用します。寸法は下に表示し、センサー画像より小さい場合もあります。センサーのデータはデコードしません。<a href="#faq-raw">それが結果にとって何を意味するか</a>
     </p>
 
     <div id="list-toolbar" class="toolbar" hidden>
@@ -31,11 +31,14 @@
       </div>
     </div>
 
+    <details id="frames-panel" class="frames-panel" open hidden>
+      <summary id="frames-summary">フレームと基準</summary>
     <p id="reorder-hint" class="reorder-hint" hidden>
       フレームの <span class="grip" aria-hidden="true">&#8942;&#8942;</span> つまみを持ってドラッグすれば並べ替えられます。つまみにフォーカスがあれば上下の矢印キーでも動きます。並び順は一覧の見た目だけのもので、ほかのフレームが位置を合わせる相手は<strong>基準</strong>と付いた一枚です。
     </p>
 
     <ul id="frame-list" class="frame-list"></ul>
+    </details>
   </section>
 
   <!-- 手順2｜どうまとめるか -->
@@ -51,7 +54,7 @@
           <option value="sigma">シグマクリッピング｜両方いちどに</option>
           <option value="max">比較明｜星の軌跡、花火、ライトペインティング</option>
           <option value="min">比較暗｜動いた明るいものを消す</option>
-          <option value="sum">加算｜長時間露光を真似る</option>
+          <option value="sum">加算｜加算合成</option>
           <option value="focus">深度合成｜ピントの合っていた部分を残す</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -60,7 +63,8 @@
       <div class="field">
         <label for="align">フレームの位置合わせ</label>
         <select id="align">
-          <option value="translate" selected>する｜平行移動だけ</option>
+          <option value="projective" selected>自動｜遠近補正</option>
+          <option value="translate">する｜平行移動だけ</option>
           <option value="similarity">する｜平行移動・回転・拡大縮小</option>
           <option value="none">しない｜そのまま使う</option>
         </select>
@@ -102,10 +106,11 @@
       <div class="field">
         <label for="gain">露出</label>
         <div class="inline-pair">
-          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <input type="number" id="gain" min="0" max="4" step="any" value="1" required>
           <output id="gain-value" for="gain">1.00&times;</output>
         </div>
         <p class="field-note" id="gain-note"></p>
+        <button type="button" id="normalize" class="ghost" hidden>明るさを正規化</button>
       </div>
 
       <div class="field">
@@ -132,10 +137,11 @@
     <dl class="plan" id="plan" hidden>
       <div><dt>結果</dt><dd id="plan-output">&mdash;</dd></div>
       <div><dt>作業メモリ</dt><dd id="plan-memory">&mdash;</dd></div>
-      <div><dt>デコード回数</dt><dd id="plan-decodes">&mdash;</dd></div>
-      <div><dt>ディスクから読んだ量</dt><dd id="plan-read">&mdash;</dd></div>
+      <div><dt>スタック時のデコード</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>検査の読み取り量</dt><dd id="plan-read">&mdash;</dd></div>
     </dl>
 
+    <p id="plan-note" class="field-note" hidden>メモリは画素バッファの見積もりです。ブラウザやエンコーダーにはさらに必要な場合があります。検査と位置合わせでもプレビューをデコードします。</p>
     <p id="plan-warning" class="path-note" hidden></p>
   </section>
 
@@ -155,13 +161,43 @@
 
     <p id="error" class="error" role="alert" hidden></p>
 
+    <p id="result-stale" class="note" role="status" hidden>選択または設定が変わりました。もう一度スタックして新しい結果を作成してください。</p>
     <div id="result" class="result" hidden>
-      <div class="result-frame">
-        <img id="result-image" alt="スタックした結果">
+      <div class="viewer-controls">
+        <div class="field">
+          <label for="view-source">表示</label>
+          <select id="view-source">
+            <option value="compare" selected>比較｜仕切りをドラッグ</option>
+            <option value="result">スタック結果</option>
+            <option value="reference">基準フレーム</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="view-size">表示サイズ</label>
+          <select id="view-size">
+            <option value="fit">ウィンドウに合わせる</option>
+            <option value="actual">100%｜実際の画素</option>
+          </select>
+        </div>
+      </div>
+      <p id="viewer-status" class="field-note" role="status" aria-live="polite"></p>
+      <div id="result-frame" class="result-frame" role="region" aria-label="画像プレビュー" tabindex="0" aria-describedby="viewer-status">
+        <div id="comparison-stage" class="comparison-stage">
+          <img id="result-image" alt="スタックした結果">
+          <img id="reference-image" class="reference-image" alt="基準フレーム" hidden>
+          <input type="range" id="comparison-divider" class="comparison-divider" min="0" max="100" step="1" value="50" aria-label="比較の仕切り" aria-describedby="viewer-status" hidden>
+          <span id="comparison-handle" class="comparison-handle" aria-hidden="true" hidden>&#8596;</span>
+          <span id="reference-label" class="comparison-label reference-label" aria-hidden="true" hidden></span>
+          <span id="result-label" class="comparison-label result-label" aria-hidden="true" hidden></span>
+        </div>
       </div>
       <div class="result-meta">
         <p id="result-info"></p>
         <p id="result-moves" class="field-note"></p>
+        <details id="alignment-details" class="alignment-details">
+          <summary>位置合わせの詳細</summary>
+          <ul id="alignment-list" class="alignment-list"></ul>
+        </details>
         <a id="download" class="primary as-button" download>画像をダウンロード</a>
       </div>
     </div>
@@ -179,6 +215,25 @@
     <span data-phrase="count.one">1枚</span>
     <span data-phrase="count.many">{count}枚</span><span data-phrase="count.none">まだフレームがありません</span>
 
+    <span data-phrase="frames.summary">{frames}｜基準：{name}</span>
+    <span data-phrase="frame.unreadable">このファイルを開けなかったため、スタックから除外しました。JPEG、PNG、WebPなど、このブラウザが対応する形式を試してください。</span>
+    <span data-phrase="import.skipped">{count}個のファイルを開けませんでした。除外されたものを確認できるよう一覧に残しています。</span>
+    <span data-phrase="viewer.loading">基準フレームを準備しています&hellip;</span>
+    <span data-phrase="viewer.reference">基準：{name}。結果と同じ切り取り範囲と解像度で表示しています。</span>
+    <span data-phrase="viewer.compare">左は基準、右はスタック結果です。仕切りをドラッグするか、矢印キーを使って比較してください。</span>
+    <span data-phrase="viewer.split">{percent}%基準、{remaining}%スタック結果</span>
+    <span data-phrase="viewer.pan">画像をドラッグするか、矢印キーで表示位置を移動してください。仕切りで比較するときは、「ウィンドウに合わせる」を選んでください。</span>
+    <span data-phrase="viewer.result">スタック結果です。詳細は100%で確認してください。比較の仕切りを使うときは、「ウィンドウに合わせる」を選んでください。</span>
+    <span data-phrase="alignment.reference">基準</span>
+    <span data-phrase="alignment.none">位置合わせなし</span>
+    <span data-phrase="alignment.weak">確実に位置合わせできませんでした</span>
+    <span data-phrase="alignment.clamped">平行移動のみ。回転が大きすぎました</span>
+    <span data-phrase="alignment.partial">平行移動を補正しましたが、回転は補正できませんでした</span>
+    <span data-phrase="alignment.perspective">遠近補正で位置合わせ済み</span>
+    <span data-phrase="alignment.perspective-fallback">遠近補正なしで位置合わせ済み</span>
+    <span data-phrase="alignment.aligned">位置合わせ済み</span>
+    <span data-phrase="alignment.offset">移動：{dx}、{dy} px、回転：{angle}&deg;、倍率：{scale}&times;</span>
+    <span data-phrase="alignment.remove">選択から削除</span>
     <span data-phrase="frame.reference">基準</span><span data-phrase="frame.make-reference">これを基準にする</span><span data-phrase="frame.remove">削除</span>
     <span data-phrase="frame.move">{name}を動かす——ドラッグ、または上下の矢印キー</span>
     <span data-phrase="frame.size">&#x2066;{width} &times; {height}&#x2069;</span>
@@ -186,13 +241,15 @@
     <span data-phrase="frame.raw-camera">{camera}｜&#x2066;{width} &times; {height}&#x2069;のプレビュー</span><span data-phrase="frame.raw-unreadable">このRAWファイルにはプレビューが見つかりませんでした</span>
     <span data-phrase="frame.read">{total}のうち{read}を読み込み</span>
 
-    <span data-phrase="mode.mean">各フレームの平均を取ります。ランダムなノイズは高く出るのと同じだけ低くも出るので、{count}枚の平均を取るとおよそ{factor}倍に下がります。静かな一組のための手法であり、通りかかった鳥1羽で台無しになる手法でもあります。</span><span data-phrase="mode.median">各画素の真ん中の値を取ります。一部のフレームにしかいなかったもの、たとえば観光客や車や飛行機は消えます。すべてのフレームを同時に抱えなければならない唯一の手法で、だからこそ下で帯に分けられます。</span><span data-phrase="mode.sigma">各画素がふだん何であるかを学び、そのあとそれと合う値だけを平均します。中央値の結果に、平均のノイズ低減を足したものです。フレームを2回読みます。</span><span data-phrase="mode.max">各画素がこれまでに持ったいちばん明るい値を残します。短い露光の連なりを星の軌跡にするのも、花火をそれ自身のフレームから組み直すのもこれです。</span><span data-phrase="mode.min">各画素がこれまでに持ったいちばん暗い値を残します。画素が明るいまま残るのはすべてのフレームで明るかったときだけなので、窓の映り込みも通り過ぎるヘッドライトもストロボに光る雨粒も消えます。</span><span data-phrase="mode.sum">割らずにフレームを足します。{count}倍長い露光が集めたはずの量です。その露光がそうなるのと同じように白飛びします。露出のスライダーで戻してください。</span><span data-phrase="mode.focus">画像の各部分を、そこにピントが合っていたフレームから取ります。小さな被写体をフォーカスリングを回しながら撮ると、これが鋭い部分をつなぎ合わせます。</span>
+    <span data-phrase="mode.mean">各フレームの平均を取ります。ランダムなノイズは高く出るのと同じだけ低くも出るので、{count}枚の平均を取るとおよそ{factor}倍に下がります。静かな一組のための手法であり、通りかかった鳥1羽で台無しになる手法でもあります。</span><span data-phrase="mode.median">各画素の中央の値を使います。動くものがその画素に写った回数が全体の半分未満なら消せる場合があります。全フレームを同時に持つ唯一の手法なので、帯に分ける場合があります。</span><span data-phrase="mode.sigma">各画素の通常の値を求め、一致する値だけを平均します。外れ値を除きながらノイズを減らせます。少ない枚数では通り過ぎたものが残る場合があります。除去が最優先なら中央値を使ってください。フレームは2回読みます。</span><span data-phrase="mode.max">各画素がこれまでに持ったいちばん明るい値を残します。短い露光の連なりを星の軌跡にするのも、花火をそれ自身のフレームから組み直すのもこれです。</span><span data-phrase="mode.min">各画素がこれまでに持ったいちばん暗い値を残します。画素が明るいまま残るのはすべてのフレームで明るかったときだけなので、窓の映り込みも通り過ぎるヘッドライトもストロボに光る雨粒も消えます。</span><span data-phrase="mode.sum">描画済みの色の値を、割らずに加算します。加算合成であり、センサーの露光は再現しません。明るい値は上限に達します。明るさを正規化するとフレーム数で割ります。</span><span data-phrase="mode.focus">画像の各部分を、そこにピントが合っていたフレームから取ります。小さな被写体をフォーカスリングを回しながら撮ると、これが鋭い部分をつなぎ合わせます。</span>
 
-    <span data-phrase="align.translate">各フレームがどれだけずれたかを求め、そのぶん戻します。1画素の何分の1という精度です。手持ちの揺れや三脚の流れを直します。回転は直せません。</span><span data-phrase="align.similarity">回転と拡大縮小も求めます。1フレームあたり測定が1回増えますが、フレームがまっすぐだと分かればまったく増えません。回転は常に半回転の範囲でしか戻せません。</span><span data-phrase="align.none">フレームを届いたそのままスタックします。固定した三脚やインターバル撮影には正しく、手持ちのものには間違っています。</span>
+    <span data-phrase="align.projective">平行移動・回転・拡大縮小を測定し、十分な領域で一致が得られれば遠近を補正します。広い画角の星の写真に役立ちます。遠近を確実に測定できない場合は、回転と拡大縮小を使います。</span>
+    <span data-phrase="align.translate">各フレームがどれだけずれたかを求め、そのぶん戻します。1画素の何分の1という精度です。手持ちの揺れや三脚の流れを直します。回転は直せません。</span><span data-phrase="align.similarity">回転と拡大縮小も求めます。フレームがまっすぐでも、各フレームに追加の測定を行います。回転は半回転の範囲内でのみ復元します。</span><span data-phrase="align.none">フレームをそのままスタックします。すでに位置が合っている場合や、空の動きを残す星の軌跡に使ってください。固定した三脚でも星の位置はそろいません。</span>
 
-    <span data-phrase="scale.note">各フレームはブラウザ自身のデコーダーがこの大きさでデコードするので、小さい設定はメモリだけでなく処理そのものが減ります。</span><span data-phrase="gain.note">計算のあと、丸める前に、いちばん最後に結果へ掛けます。</span>
-    <span data-phrase="gain.sum-note">{count}枚を足すとほぼ確実に白飛びします。何が集まったのかを見るには{suggested}あたりまで下げてください。</span>
+    <span data-phrase="scale.note">小さな作業サイズは画素バッファと計算量を減らします。ブラウザ内部では原寸でデコードする場合があります。</span><span data-phrase="gain.note">計算のあと、丸める前に、いちばん最後に結果へ掛けます。</span>
+    <span data-phrase="gain.sum-note">{count}枚を加算すると明るい部分が上限に達する場合があります。明るさを正規化して{suggested}&times;にするか、露出を直接入力してください。</span>
 
+    <span data-phrase="plan.too-large">小さな帯でも画素バッファの予算を超えます。作業解像度を下げるか、入力画像を小さくしてください。</span>
     <span data-phrase="plan.output">&#x2066;{width} &times; {height}&#x2069;</span>
     <span data-phrase="plan.memory">およそ{mb} MB</span>
     <span data-phrase="plan.decodes.simple">{count}回、1フレームにつき1回</span>
@@ -209,7 +266,7 @@
     <span data-phrase="result.moves-some">{total}枚のうち{count}枚は確かに測れなかったので、元の位置のままにしました。</span><span data-phrase="result.moves-none">フレームを届いたそのままスタックしました。</span>
     <span data-phrase="result.moves-clamped">{count}枚が連写にしては大きすぎる回転を返したので、平行移動だけで直しました。</span><span data-phrase="result.cropped">互いに寄せた結果、すべてのフレームが届かない縁が残ったので、そこは切り落としました。</span>
 
-    <span data-phrase="error.no.files">まず画像を少なくとも1枚足してください。</span><span data-phrase="error.no.size">これらのファイルはどれも画像として開けませんでした。</span><span data-phrase="error.one.frame">スタックには少なくとも2枚のフレームが要ります。</span><span data-phrase="error.unknown">スタックの途中で問題が起きました。この中に変わったファイルがあるなら、それだけで試してみてください。</span><span data-phrase="error.memory">ブラウザのメモリが尽きました。作業解像度を下げるか、枚数を減らしてみてください。</span>
+    <span data-phrase="error.no.files">まず画像を少なくとも1枚足してください。</span><span data-phrase="error.no.size">これらのファイルはどれも画像として開けませんでした。</span><span data-phrase="error.one.frame">スタックには少なくとも2枚のフレームが要ります。</span><span data-phrase="error.unknown">スタック中に問題が起きました。選ぶファイルを減らして試してください。</span><span data-phrase="error.memory">この処理は画素バッファの予算を超えたか、ブラウザのメモリが不足しました。作業解像度を下げるか、フレームを減らしてください。</span>
     <span data-phrase="error.unreadable">{name}は画像として開けなかったので、外れました。</span><span data-phrase="error.busy">フレームを足す前にこのスタックが終わるのを待つか、中止してください。</span>
 
     <span data-phrase="net.clean">写真はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>

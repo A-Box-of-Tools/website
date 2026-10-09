@@ -7,22 +7,19 @@ export const tool = 'stack-images';
 
 export const helpers = {
   load: async (k) => {
-    const frames = [];
-    // The same scene eight times with a different grain on each, which is what
-    // a burst off a tripod is and the whole premise of averaging them.
-    for (let i = 0; i < 8; i += 1) {
-      frames.push(await k.photo(1600, 1100, { name: 'burst-' + (i + 1) + '.jpg', seed: 300 + i }));
-    }
-    k.give(frames);
-    await k.wait('#frame-list li');
-    await k.settle(900);
+    // The tool's own example keeps the scene fixed and changes only grain.
+    // Varying k.photo's seed changes the ridges as well, which is movement
+    // rather than noise and makes an average a misleading demonstration.
+    k.click('#example-button');
+    await k.wait('#run:not(:disabled)');
+    await k.settle();
   },
 };
 
 export const shots = [
   {
-    // The modes, and the plan under them: how much memory this will take and
-    // how much of each file it has to read to do it.
+    // The plan distinguishes stack decodes from inspection reads, so the
+    // photograph shows both instead of implying the header count is all I/O.
     name: 'plan',
     clip: ['.card:has(#mode)', '#plan'],
     run: async (k) => {
@@ -30,15 +27,18 @@ export const shots = [
     },
   },
   {
-    // The result, with the note about how far each frame had to be moved to
-    // line up - which is the part a reader will not believe without seeing.
+    // The viewer and alignment report let a reader check the result against
+    // the chosen reference, rather than trusting a smaller noisy thumbnail.
     name: 'result',
     clip: '#result',
     run: async (k) => {
       await load(k);
       k.click('#run');
-      await k.wait('#result-image');
-      await k.settle(900);
+      const image = await k.wait('#result:not([hidden]) #result-image');
+      await k.wait('#comparison-divider:not([hidden])');
+      const reference = await k.wait('#reference-image');
+      await Promise.all([image.decode(), reference.decode()]);
+      await k.settle();
     },
   },
 ];
