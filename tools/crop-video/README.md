@@ -243,3 +243,29 @@ committed as a fixture:
 - the interface end to end: a file fed to the picker, the ratio buttons, an odd
   width typed in by hand, a crop larger than the frame, cancelling mid-export
   and cropping again afterwards, and a text file dropped in to be refused.
+
+
+## Replacing a file
+
+The crop, transport and export controls wait for the current load to finish.
+Player metadata, the reader's tracks and the decoder probe remain local until
+the same load has passed all three boundaries, then its source state is
+installed together. Replacing or refusing a file retires the previous load;
+its result, errors and picker cleanup cannot take over the next choice.
+
+Decoded-still requests have their own owner and abort signal. A replacement
+can request its first frame immediately while the old decoder cooperatively
+stops and closes its frames. Only the current request draws, reports an error,
+or changes the busy indicator. Releasing the source also resets Play/Pause and
+releases the previous download and native result player.
+
+Browser regressions should try exporting while a replacement reader is
+delayed, finish old successful and failed reads after a newer valid load, and
+replace at the player, codec probe and still-decoder boundaries. Check that the
+crop dimensions agree with the latest native source, the current still can
+appear before an old decode completes, and refused input recovers with a valid
+file. Export exact and recorded crops, open them natively, and compare their
+dimensions, duration and retained sound against the captured crop operation.
+
+Incoming MP4 edit-list support remains the audit's optional shared enhancement
+for a separate shared-media change; the limitation above still applies.
