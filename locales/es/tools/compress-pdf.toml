@@ -28,7 +28,7 @@ live_hint = """
       y comprime uno igualmente."""
 
 read_first = """
-, y <code>src/reader.js</code> y <code>src/writer.js</code>
+, y <code>src/shared/pdf-reader.js</code> y <code>src/shared/pdf-writer.js</code>
       para toda la lectura y la reescritura, que no pueden llegar a la red ni
       uno ni otro."""
 
@@ -73,8 +73,8 @@ title = "El formato entero está en este repositorio."
 body = """
  Un PDF es una lista de
       objetos y una tabla que dice dónde empieza cada uno.
-      <code>src/objects.js</code> lee esa sintaxis, <code>src/reader.js</code>
-      sigue la tabla y <code>src/writer.js</code> escribe una nueva. Ninguno de
+      <code>src/shared/pdf-objects.js</code> lee esa sintaxis, <code>src/shared/pdf-reader.js</code>
+      sigue la tabla y <code>src/shared/pdf-writer.js</code> escribe una nueva. Ninguno de
       los tres importa nada capaz de hacer una petición. No se descarga ninguna
       biblioteca y no se renderiza nada en un servidor."""
 

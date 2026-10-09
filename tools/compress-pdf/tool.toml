@@ -65,7 +65,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, and <code>src/reader.js</code> and <code>src/writer.js</code>
+, and <code>src/shared/pdf-reader.js</code> and <code>src/shared/pdf-writer.js</code>
       for the whole of the reading and rewriting, neither of which can reach the
       network."""
 
@@ -120,9 +120,9 @@ body = """
 title = "The whole format is in this repository."
 body = """
  A PDF is a list of
-      objects and a table of where each one starts. <code>src/objects.js</code>
-      reads that syntax, <code>src/reader.js</code> follows the table,
-      <code>src/writer.js</code> writes a new one, and none of the three imports
+      objects and a table of where each one starts. <code>src/shared/pdf-objects.js</code>
+      reads that syntax, <code>src/shared/pdf-reader.js</code> follows the table,
+      <code>src/shared/pdf-writer.js</code> writes a new one, and none of the three imports
       anything that can make a request. No library is fetched and nothing is
       rendered on a server."""
 
