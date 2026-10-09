@@ -267,3 +267,19 @@ is the one place this tool's policy differs from a tool with no carry-on
 row, and it is worth knowing before concluding that a `blob:` fetch failing
 somewhere else on the site is a bug. Nothing else is widened, and `blob:`
 names bytes inside this page — it gains no reach over the network.
+
+
+Individual page words are native toggle buttons with their word as the name.
+Tab reaches them and Enter or Space activates them. A fully selected word has
+`aria-pressed="true"`; a partially selected word reports `mixed` and activating
+it selects the whole word. Redrawing the exact partial highlights restores
+focus to the same source-text range. The same overlap rule still removes an
+entire selected range when its fully selected word is toggled off.
+
+A completed Find with zero matches displays the existing translated
+`find.none` sentence in a polite status below the search controls. Editing the
+search or its options, clearing the list or replacing the PDF clears that
+answer until the next Find, so it cannot describe an old query as current.
+Browser checks should activate an individual word with both Enter and Space,
+verify focus and partial selection state, search for missing and present
+terms, then export and verify which text remains in the finished PDF.

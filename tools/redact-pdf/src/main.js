@@ -51,6 +51,7 @@ const el = {
   finders: $('finders'),
   matchBar: $('match-bar'),
   matchCount: $('match-count'),
+  findStatus: $('find-status'),
   tickAll: $('tick-all'),
   tickNone: $('tick-none'),
   clearFound: $('clear-found'),
@@ -109,6 +110,7 @@ let pages = [];
 const picked = new Map();
 /** @type {{page: number, from: number, to: number, text: string, kind: string}[]} */
 let found = [];
+let searched = false;
 let showing = 0;
 let running = null;
 let downloadUrl = '';
@@ -203,6 +205,7 @@ function messageFor(error) {
 }
 
 function reset() {
+  clearSearchStatus();
   source = null;
   pages = [];
   picked.clear();
@@ -273,7 +276,15 @@ function renderFinders() {
   }));
 }
 
+function clearSearchStatus() {
+  searched = false;
+  el.findStatus.textContent = '';
+  el.findStatus.hidden = true;
+}
+
 function search() {
+  if (running || !source || !pages.length) return;
+  clearSearchStatus();
   const terms = el.terms.value.split('\n').map((line) => line.trim()).filter(Boolean);
   const chosen = [...el.finders.querySelectorAll('input:checked')]
     .map((box) => box.dataset.finder);
@@ -300,6 +311,7 @@ function search() {
     }
   });
 
+  searched = true;
   found = hits.map((hit) => ({
     ...hit,
     text: pages[hit.page].text.slice(hit.from, hit.to),
@@ -318,6 +330,8 @@ function search() {
 
 function renderMatches() {
   const any = found.length > 0;
+  el.findStatus.textContent = searched && !any ? phrase('find.none') : '';
+  el.findStatus.hidden = !searched || any;
   el.matchBar.hidden = !any;
   el.matchList.hidden = !any;
   el.matchMore.hidden = found.length <= showing;
@@ -454,7 +468,7 @@ function renderPage() {
     while (index < words.length && words[index].from < line.to) {
       const word = words[index];
       if (word.from > at) row.append(page.text.slice(at, word.from));
-      row.append(wordSpan(word, marked));
+      row.append(wordButton(word, marked));
       at = word.to;
       index += 1;
     }
@@ -467,15 +481,17 @@ function renderPage() {
 }
 
 /**
- * One word, clickable.
+ * A word keeps its exact partial highlight while also acting as a named
+ * keyboard toggle. Mixed selection means activating it selects the whole word.
  *
  * A word is drawn in pieces when only part of it is going - an email address
  * inside a longer run, a name at the front of a reference - so that what is
  * struck through is exactly what will be removed rather than the whole of
  * whatever the word turned out to be.
  */
-function wordSpan(word, marked) {
-  const span = document.createElement('span');
+function wordButton(word, marked) {
+  const span = document.createElement('button');
+  span.type = 'button';
   span.className = 'word';
   span.dataset.from = String(word.from);
   span.dataset.to = String(word.to);
@@ -483,6 +499,7 @@ function wordSpan(word, marked) {
   let run = '';
   let state = marked[word.from] === 1;
   let any = state;
+  let whole = state;
   const flush = () => {
     if (!run) return;
     if (state) {
@@ -502,11 +519,13 @@ function wordSpan(word, marked) {
       state = now;
     }
     any = any || now;
+    whole = whole && now;
     run += pages[current].text[at];
   }
   flush();
 
   if (any) span.classList.add('picked');
+  span.setAttribute('aria-pressed', any ? whole ? 'true' : 'mixed' : 'false');
   return span;
 }
 
@@ -531,7 +550,14 @@ el.pageText.addEventListener('click', (event) => {
   } else {
     pick(current, { from, to, text: pages[current].text.slice(from, to) });
   }
+  // Rendering redraws partial highlights; a native keyboard activation must
+  // return to the same word rather than lose its place in the page.
+  const focused = document.activeElement === span;
   render();
+  if (focused) {
+    el.pageText.querySelector(`[data-from="${from}"][data-to="${to}"]`)
+      ?.focus({ preventScroll: true });
+  }
 });
 
 /* ------------------------------------------------------------------ running */
@@ -731,6 +757,10 @@ function releaseDownload() {
 /* ------------------------------------------------------------------ wiring */
 
 el.find.addEventListener('click', search);
+el.terms.addEventListener('input', clearSearchStatus);
+for (const control of [el.matchCase, el.wholeWord, el.finders]) {
+  control.addEventListener('change', clearSearchStatus);
+}
 el.terms.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) search();
 });
@@ -743,6 +773,7 @@ el.tickNone.addEventListener('click', () => {
   render();
 });
 el.clearFound.addEventListener('click', () => {
+  clearSearchStatus();
   found = [];
   render();
 });
