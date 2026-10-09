@@ -196,6 +196,8 @@
         <button type="button" id="whole-photo" class="ghost">Le plus grand cadre possible</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -664,6 +666,7 @@
     <span data-phrase="mark.lefteye.hint">la pupille, à gauche telle que vous la voyez</span>
     <span data-phrase="mark.righteye">Œil droit</span>
     <span data-phrase="mark.righteye.hint">l&rsquo;autre pupille</span>
+    <span data-phrase="mark.position">{label}&nbsp;: {x} pixels depuis le bord gauche et {y} pixels depuis le haut de la photographie.</span>
     <span data-phrase="mark.aria">{label}&nbsp;: {hint}. Les flèches le déplacent&nbsp;; maintenez Maj pour dix pixels
       à la fois.</span>
     <span data-phrase="crop.aria">Zone de recadrage. Les flèches la déplacent, Alt et les flèches la redimensionnent,
