@@ -275,6 +275,7 @@ $('clear-all').addEventListener('click', () => {
   renderList();
   refresh();
   picker.waiting();
+  $('file-input').focus();
 });
 
 function dimensions(width, height) {
@@ -294,6 +295,8 @@ function refresh() {
   $('frame-layer').replaceChildren();
   $('preview-empty').hidden = Boolean(items.length);
   if (!items.length) {
+    $('preview').width = 0;
+    $('preview').height = 0;
     $('preview-summary').textContent = '';
     return;
   }
