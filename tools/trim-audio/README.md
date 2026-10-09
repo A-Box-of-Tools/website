@@ -217,7 +217,8 @@ the context is created to match. A file whose format does not say is decoded at
   where the plan said.
 - **`src/segments.js`** — the timestamps file in both formats, round-tripping,
   and the leniency: no header, unreadable lines, reversed times. The rounding
-  rule above has its own test, at the fractions that expose it.
+  rule above has its own test, at the fractions that expose it. Appending
+  completed marks also retains an unfinished last part for the next Out.
 - **That the loop really hands the page back.** This is the one test here that
   is about scheduling rather than arithmetic, and it exists because the first
   version of that loop awaited a resolved promise. That queues a *microtask*,
@@ -229,7 +230,8 @@ the context is created to match. A file whose format does not say is decoded at
   person's click arrives. `budgetMs` is an argument to `trim()` so that the
   test can set it to zero and not depend on how fast the machine is.
 
-Run them with `node --test "tests/js/*.test.js"` from the repository root.
+CI runs these checks with the repository's shared-module resolver; local
+verification uses the built page.
 
 A replacement file is decoded before export is enabled again. Only the most
 recent load may replace the current recording, and an export captures its
@@ -242,3 +244,25 @@ returns focus to the moved part, using the opposite direction at the list's
 edge; removing a focused part reaches its neighbour's Remove action or Add a
 row by hand when the list is empty. Browser checks cover these transitions,
 invalid marks, narrow-layout entry and a WAV exported from the edited marks.
+
+
+Changing marked times, row order, keep/cut mode, bit depth or fades releases the
+previous result player, waveform and download URL. Selecting a row or moving
+the playhead does not change the plan and leaves its result available. Export
+locks the marking controls and writing settings while leaving Cancel active;
+its captured source and plan also have a final ownership check before a WAV is
+published.
+
+Loading marks now defaults to appending, preserving the current parts and their
+order. Completed imports and manually added rows go before an unfinished last
+part so the next Out still closes it. Row movement keeps that pending part
+last until it is closed. The adjacent choice explicitly replaces them instead.
+Replacement only
+happens after a file parses successfully and has a part within the current
+recording; unreadable or entirely out-of-range files keep existing work. Each
+read captures its source, source generation, plan revision and append/replace
+choice. A later import, recording, plan edit, choice change or export retires
+that read, including its late error. Typing in a timestamp field retires it
+immediately, before the draft is committed or focus leaves the field. Importing
+never silently moves marks to a
+replacement recording.

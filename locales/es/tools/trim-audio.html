@@ -101,6 +101,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Borrarlas todas</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Cargar marcas&hellip;</button>
+        <select id="import-mode" aria-label="Al cargar marcas" aria-describedby="import-mode-note"><option value="append" selected>Añadir a las partes actuales</option><option value="replace">Reemplazar las partes actuales</option></select>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Formato del archivo de tiempos">
           <option value="seconds" selected>segundos</option>
@@ -108,6 +109,7 @@
         </select>
         <button type="button" id="export-marks" class="ghost">Guardar marcas</button>
       </div>
+      <p class="path-note" id="import-mode-note">Añadir conserva tus partes actuales. Reemplazar las descarta solo cuando el archivo seleccionado se lee correctamente.</p>
 
       <p class="field-note">
         Las marcas se guardan como archivo de texto plano, una línea por trozo, en

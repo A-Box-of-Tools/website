@@ -6,7 +6,7 @@ import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import {
-  formatDuration, openSegment, readTimestamps, segmentRanges, totalCaptured,
+  appendCompletedSegments, formatDuration, openSegment, readTimestamps, segmentRanges, totalCaptured,
   writeTimestamps,
 } from './segments.js';
 import { Timeline, formatTime, parseTime } from './timeline.js';
@@ -53,6 +53,7 @@ const el = {
   resetSegments: $('reset-segments'),
   importMarks: $('import-marks'),
   marksInput: $('marks-input'),
+  importMode: $('import-mode'),
   marksFormat: $('marks-format'),
   exportMarks: $('export-marks'),
 
@@ -109,6 +110,9 @@ let resultUrl = null;
 /** The samples that came out of the last trim, kept only so the picture of
  *  them can be drawn again when the window changes size. */
 let lastOut = null;
+let planRevision = 0;
+let lastPlanKey = '';
+let marksImportVersion = 0;
 
 /** Where the playhead is, in seconds. */
 let playAt = 0;
@@ -137,7 +141,7 @@ const picker = wireFilePicker({
 });
 
 async function loadFile(picked) {
-  if (exporting) return;
+  if (exporting) { setExporting(true); return; }
   const generation = ++loadGeneration;
   loading = true;
   el.exportBtn.disabled = true;
@@ -306,7 +310,7 @@ el.speedRow.addEventListener('click', (event) => {
  * and pressed a beat too early.
  */
 function markIn() {
-  if (!source) return;
+  if (!source || loading || exporting) return;
   const at = timeline.snap(currentTime());
   const open = openSegment(segments);
 
@@ -320,7 +324,7 @@ function markIn() {
 
 /** `o`: close the last part here. */
 function markOut() {
-  if (!source) return;
+  if (!source || loading || exporting) return;
   const last = segments[segments.length - 1];
   if (!last) {
     showError(phrase('mark.noopen'));
@@ -342,7 +346,7 @@ function markOut() {
 
 /** `u`: take the last one back. */
 function undoSegment() {
-  if (!segments.length) return;
+  if (loading || exporting || !segments.length) return;
   segments.pop();
   selectedSegment = segments.length ? segments[segments.length - 1].id : null;
   renderSegments();
@@ -353,20 +357,21 @@ el.markOut.addEventListener('click', markOut);
 el.undo.addEventListener('click', undoSegment);
 
 el.addSegment.addEventListener('click', () => {
-  if (!source) return;
+  if (!source || loading || exporting) return;
   const start = timeline.snap(currentTime());
   const end = Math.min(source.duration, start + Math.min(5, source.duration - start));
   if (end - start < 0.05) {
     showError(phrase('mark.noroom'));
     return;
   }
-  segments.push({ id: nextId++, start, end });
-  selectedSegment = segments[segments.length - 1].id;
+  const added = { id: nextId++, start, end };
+  segments = appendCompletedSegments(segments, [added]);
+  selectedSegment = added.id;
   renderSegments();
 });
 
 el.resetSegments.addEventListener('click', () => {
-  if (!segments.length) return;
+  if (loading || exporting || !segments.length) return;
   // eslint-disable-next-line no-alert
   if (!window.confirm(phrase(segments.length === 1 ? 'mark.clearone' : 'mark.clearall',
     { n: segments.length, name: file.name }))) return;
@@ -376,6 +381,7 @@ el.resetSegments.addEventListener('click', () => {
 });
 
 function adjustSegment(id, { start, end }) {
+  if (loading || exporting) return;
   const segment = segments.find((one) => one.id === id);
   if (!segment) return;
   segment.start = start;
@@ -425,9 +431,20 @@ function selectSegment(id) {
   timeline.setSegments(segments, selectedSegment);
 }
 
+function canMoveSegment(index, by) {
+  const to = index + by;
+  return to >= 0 && to < segments.length && segments[index].end !== null
+    && segments[to].end !== null;
+}
+
 // The field must survive its own commit so Enter keeps the caret in it and
 // Tab can reach the next control rather than a replacement of the whole row.
 function updatePartSummary() {
+  Array.from(el.segmentRows.children).forEach((row, index) => {
+    const buttons = row.querySelector('.segment-buttons').children;
+    buttons[1].disabled = !canMoveSegment(index, -1);
+    buttons[2].disabled = !canMoveSegment(index, 1);
+  });
   const finished = segmentRanges(segments);
   el.segmentCount.textContent = segments.length === 0
     ? phrase('parts.none')
@@ -465,7 +482,7 @@ function timeCell(segment, which) {
   };
 
   const commit = () => {
-    if (!source || !segments.includes(segment)) return;
+    if (!source || loading || exporting || !segments.includes(segment)) return;
     const seconds = parseTime(input.value);
     if (seconds === null) {
       restore();
@@ -487,6 +504,13 @@ function timeCell(segment, which) {
     updatePartSummary();
   };
 
+  input.addEventListener('input', () => { marksImportVersion += 1; });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.isComposing) {
+      event.preventDefault();
+      commit();
+    }
+  });
   input.addEventListener('change', commit);
   input.addEventListener('blur', commit);
   cell.append(input);
@@ -505,9 +529,8 @@ function actionsCell(segment, index) {
   cell.className = 'segment-buttons';
   cell.append(
     iconButton('▶', phrase('btn.play'), () => playSegment(segment), segment.end === null),
-    iconButton('↑', phrase('btn.up'), () => moveSegment(index, -1), index === 0),
-    iconButton('↓', phrase('btn.down'), () => moveSegment(index, 1),
-      index === segments.length - 1),
+    iconButton('↑', phrase('btn.up'), () => moveSegment(index, -1), !canMoveSegment(index, -1)),
+    iconButton('↓', phrase('btn.down'), () => moveSegment(index, 1), !canMoveSegment(index, 1)),
     iconButton('✕', phrase('btn.remove'), () => removeSegment(index), false, 'danger'),
   );
   return cell;
@@ -537,8 +560,9 @@ function playSegment(segment) {
 }
 
 function moveSegment(index, by) {
+  if (loading || exporting) return;
   const to = index + by;
-  if (to < 0 || to >= segments.length) return;
+  if (!canMoveSegment(index, by)) return;
   const focused = document.activeElement;
   const buttons = focused.closest('.segment-buttons');
   const action = buttons ? [...buttons.children].indexOf(focused) : -1;
@@ -554,6 +578,7 @@ function moveSegment(index, by) {
 }
 
 function removeSegment(index) {
+  if (loading || exporting) return;
   const hadFocus = el.segmentRows.children[index]?.contains(document.activeElement);
   const [gone] = segments.splice(index, 1);
   if (selectedSegment === gone.id) {
@@ -592,15 +617,27 @@ el.exportMarks.addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
-el.importMarks.addEventListener('click', () => el.marksInput.click());
+el.importMarks.addEventListener('click', () => {
+  if (!loading && !exporting) el.marksInput.click();
+});
+el.importMode.addEventListener('change', () => { marksImportVersion += 1; });
 
 el.marksInput.addEventListener('change', async () => {
   const [marks] = el.marksInput.files ?? [];
   el.marksInput.value = '';
-  if (!marks || !source) return;
+  if (!marks || !source || loading || exporting) return;
+  const ticket = ++marksImportVersion;
+  const owner = source;
+  const generation = loadGeneration;
+  const revision = planRevision;
+  const importMode = el.importMode.value;
+  const current = () => ticket === marksImportVersion && owner === source
+    && generation === loadGeneration && revision === planRevision && !loading && !exporting;
 
   try {
-    const parsed = readTimestamps(await marks.text());
+    const text = await marks.text();
+    if (!current()) return;
+    const parsed = readTimestamps(text);
     const kept = parsed.segments.filter((segment) => segment.start < source.duration);
 
     if (!kept.length) {
@@ -608,12 +645,13 @@ el.marksInput.addEventListener('change', async () => {
       return;
     }
 
-    segments = kept.map((segment) => ({
+    const imported = kept.map((segment) => ({
       id: nextId++,
       start: segment.start,
       end: Math.min(segment.end, source.duration),
     }));
-    selectedSegment = segments[segments.length - 1].id;
+    segments = importMode === 'replace' ? imported : appendCompletedSegments(segments, imported);
+    selectedSegment = imported[imported.length - 1].id;
     el.marksFormat.value = parsed.format;
 
     // Nothing to say when the whole file loaded: the rows appearing is the
@@ -639,6 +677,7 @@ el.marksInput.addEventListener('change', async () => {
     }
     renderSegments();
   } catch (error) {
+    if (!current()) return;
     showError(phrase('marks.failed',
       { name: marks.name, why: phrase(error.message) }));
   }
@@ -703,6 +742,7 @@ function sections() {
 
 document.querySelectorAll('input[name="mode"]').forEach((radio) => {
   radio.addEventListener('change', () => {
+    if (loading || exporting) return;
     mode = radio.value;
     renderSegments();
   });
@@ -718,7 +758,18 @@ el.fade.addEventListener('change', updateSummary);
  * many samples that is, what a WAV of that shape weighs - so it can be
  * recomputed on every keystroke without touching a sample.
  */
+function planKey() {
+  return JSON.stringify([mode, Number(el.depth.value), Number(el.fade.value),
+    segments.map(({ start, end }) => [start, end])]);
+}
+
 function updateSummary() {
+  const key = planKey();
+  if (key !== lastPlanKey) {
+    lastPlanKey = key;
+    planRevision += 1;
+    clearResult();
+  }
   if (!source) return;
   const planned = sections();
   const bits = Number(el.depth.value);
@@ -800,6 +851,18 @@ function fadeNote(fadeSeconds, edges) {
 
 /* ------------------------------------------------------------------ export */
 
+function setExporting(value) {
+  exporting = value;
+  el.sectionCard.inert = value;
+  el.dropzone.inert = value;
+  timeline.setEnabled(!value && !loading && Boolean(source));
+  el.depth.disabled = value;
+  el.fade.disabled = value;
+  el.fileInput.disabled = value;
+  const example = $('example-button');
+  if (example) example.disabled = value;
+}
+
 async function runExport() {
   if (!source || loading || exporting) return;
   clearError();
@@ -815,7 +878,10 @@ async function runExport() {
   // source and filename together across the asynchronous rendering step too.
   const input = source;
   const name = outputName(file.name);
-  exporting = true;
+  const revision = planRevision;
+  const key = planKey();
+  marksImportVersion += 1;
+  setExporting(true);
   abortController = new AbortController();
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
@@ -832,6 +898,7 @@ async function runExport() {
       onProgress: (done, label) => progress(done, label),
     });
 
+    if (revision !== planRevision || key !== planKey() || input !== source) return;
     progress(1, phrase('step.writing'));
     const blob = writeWav(cut.channels, input.sampleRate, { bits });
     const seconds = cut.frames / input.sampleRate;
@@ -861,7 +928,7 @@ async function runExport() {
       console.error(error);
     }
   } finally {
-    exporting = false;
+    setExporting(false);
     abortController = null;
     el.cancelBtn.hidden = true;
     updateSummary();
@@ -900,7 +967,11 @@ window.addEventListener('resize', () => {
 
 function clearResult() {
   el.result.hidden = true;
+  el.resultAudio.pause();
   el.resultAudio.removeAttribute('src');
+  el.resultAudio.load();
+  el.download.removeAttribute('href');
+  el.outWave.width = el.outWave.height = 0;
   if (resultUrl) URL.revokeObjectURL(resultUrl);
   resultUrl = null;
   lastOut = null;
