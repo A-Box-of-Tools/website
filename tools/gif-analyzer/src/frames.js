@@ -19,6 +19,8 @@
  * typed arrays, which is what makes it testable outside a browser.
  */
 
+import { finishSteps } from './analysis-steps.js';
+
 /** What to leave behind when a frame's time is up, by the value in the field. */
 export const DISPOSE_NONE = 0;
 export const DISPOSE_KEEP = 1;
@@ -63,6 +65,11 @@ export function interlaceMap(height) {
  *   `missing` counts pixels that named an entry the palette does not have.
  */
 export function paintFrame(frame, indices, palette) {
+  return finishSteps(paintFrameSteps(frame, indices, palette));
+}
+
+/** The same pixels can be painted with bounded checkpoints in the browser. */
+export function* paintFrameSteps(frame, indices, palette) {
   const { width, height } = frame;
   const pixels = new Uint8ClampedArray(width * height * 4);
   const used = new Uint8Array(Math.max(palette ? palette.count : 0, 256));
@@ -71,11 +78,13 @@ export function paintFrame(frame, indices, palette) {
   const colors = palette ? palette.colors : null;
   const count = palette ? palette.count : 0;
   let missing = 0;
+  let operations = 0;
 
   for (let row = 0; row < height; row += 1) {
     const target = (rows ? rows[row] : row) * width * 4;
     const source = row * width;
     for (let column = 0; column < width; column += 1) {
+      if (++operations >= 8192) { operations = 0; yield; }
       const index = indices[source + column];
       used[index] = 1;
       const out = target + column * 4;
@@ -123,15 +132,21 @@ export class Compositor {
    * @returns {Uint8ClampedArray} a copy of the canvas after this frame
    */
   draw(frame, stored) {
+    return finishSteps(this.drawSteps(frame, stored));
+  }
+
+  *drawSteps(frame, stored) {
     if (frame.disposal === DISPOSE_PREVIOUS) {
       this.saved = this.pixels.slice();
     }
 
     const { left, top, width, height } = frame;
+    let operations = 0;
     for (let row = 0; row < height; row += 1) {
       const y = top + row;
       if (y < 0 || y >= this.height) continue;
       for (let column = 0; column < width; column += 1) {
+        if (++operations >= 8192) { operations = 0; yield; }
         const x = left + column;
         if (x < 0 || x >= this.width) continue;
         const from = (row * width + column) * 4;
@@ -146,7 +161,7 @@ export class Compositor {
 
     const shown = this.pixels.slice();
 
-    if (frame.disposal === DISPOSE_BACKGROUND) this.clear(frame);
+    if (frame.disposal === DISPOSE_BACKGROUND) yield* this.clearSteps(frame);
     else if (frame.disposal === DISPOSE_PREVIOUS && this.saved) {
       this.pixels.set(this.saved);
       this.saved = null;
@@ -164,14 +179,19 @@ export class Compositor {
    * draws a coloured box no viewer will ever show. This follows the browsers,
    * because the question this tool answers is what a viewer does.
    */
-  clear(frame) {
+  clear(frame) { finishSteps(this.clearSteps(frame)); }
+
+  *clearSteps(frame) {
     const { left, top, width, height } = frame;
+    let operations = 0;
     for (let row = 0; row < height; row += 1) {
       const y = top + row;
       if (y < 0 || y >= this.height) continue;
       const start = (y * this.width + Math.max(0, left)) * 4;
       const span = Math.min(width, this.width - left) * 4;
       if (span > 0) this.pixels.fill(0, start, start + span);
+      operations += Math.max(0, span / 4);
+      if (operations >= 8192) { operations = 0; yield; }
     }
   }
 }

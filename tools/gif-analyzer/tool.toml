@@ -37,7 +37,7 @@ css_parts = ["notes"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker", "message-box", "example-gif", "example-photo"]
+js_parts = ["file-picker", "message-box", "example-gif", "example-photo", "gif-working-budget", "cooperative-work", "errors"]
 lastmod = "2026-09-07"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -330,11 +330,7 @@ a = """
 
 [[faq]]
 q = "Is it free, and do I need an account?"
-a = """
-        It is free, and there is no account, no sign-in and no trial. There is no
-        limit on file size beyond your own machine's memory. The site carries
-        advertising, which is what pays for it; the ads are not given anything
-        about your file."""
+a = "It is free, with no account, sign-in or trial. Reading a file still depends on your machine’s memory. Drawing stops at 300 million decoded pixels or an estimated 512 MiB of buffers owned by this page; this estimate is not a total browser-memory limit. After drawing stops or you cancel it, headers, byte accounting and timing remain available, undrawn frames are described from headers, and complete pixel-use totals and the native animation preview are unavailable. The initial parse and native memory/canvas operations cannot be interrupted mid-call. The site carries advertising; the ads receive no information about your file."
 
 [[faq]]
 q = "Does it work offline?"

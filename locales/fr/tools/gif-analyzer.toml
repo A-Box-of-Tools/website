@@ -114,7 +114,7 @@ a = "Non. Cet outil ne fait que lire. Il n'y a pas de fichier de sortie, pas de 
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
-a = "C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai. La taille des fichiers n'est limitée que par la mémoire de votre machine. Le site affiche de la publicité, et c'est elle qui le finance&nbsp;; les annonces ne reçoivent rien sur votre fichier."
+a = "C’est gratuit, sans compte, connexion ni période d’essai. La lecture du fichier dépend toujours de la mémoire de votre appareil. Le dessin s’arrête à 300 millions de pixels décodés ou à une estimation de 512 MiB de tampons appartenant à cette page ; il ne s’agit pas d’une limite de mémoire totale du navigateur. Après cet arrêt ou une annulation, les en-têtes, le décompte des octets et les durées restent disponibles. Les images non dessinées sont décrites à partir de leurs en-têtes ; les totaux complets d’utilisation des pixels et l’aperçu natif ne sont pas disponibles. L’analyse initiale et les opérations natives de mémoire ou de canevas ne peuvent pas être interrompues au milieu d’un appel. Le site comporte de la publicité ; les annonces ne reçoivent aucune information sur votre fichier."
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"

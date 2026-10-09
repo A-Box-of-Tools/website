@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>解析を中止</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>解析を消去</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- 概要と、ブラウザ自身が描くアニメーション。 -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="このブラウザが描くアニメーション">
-        <p class="preview-note">ブラウザ自身のデコーダーが、ファイルをそのまま再生しています。</p>
+        <p id="preview-note" class="preview-note">ブラウザ自身のデコーダーが、ファイルをそのまま再生しています。</p>
       </div>
 
       <dl class="facts">
@@ -156,6 +161,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">{name}を描画中：全{total}フレーム中{done}フレーム…</span>
+    <span data-phrase="read.cancelled">解析を中止しました。ネイティブのファイル読み込みが完了する場合はあります。</span>
+    <span data-phrase="drawing.empty">画面またはフレームの描画サイズがありません。</span>
+    <span data-phrase="drawing.memory">描画すると、このページのバッファ推定上限512 MiBを超えます。</span>
+    <span data-phrase="drawing.pixels">デコード済みピクセル数が上限の3億に達したため、描画を停止しました。</span>
+    <span data-phrase="drawing.cancelled">描画を中止しました。</span>
+    <span data-phrase="drawing.failed">描画を停止しました：{detail}</span>
+    <span data-phrase="drawing.partial">全{total}フレーム中{drawn}フレームを描画しました。{why}ヘッダー、時間、バイトの解析は利用できます。未描画フレームのピクセル使用数は不明です。</span>
+    <span data-phrase="preview.refused">描画が完了していないため、ブラウザーの再生は停止しています。読み取った解析は利用できます。</span>
+    <span data-phrase="colours.unknown">完全には測定していません</span>
+    <span data-phrase="colours.partial">テーブルには{declared}個の色エントリーが宣言されています。未描画フレームがあるため、全体のピクセル使用数は不明です。</span>
+    <span data-phrase="palette.globalpartial">{entries}、{size}、{frames}で共有しています。すべてのピクセルを描画していないため、未使用の印は付けません。</span>
+    <span data-phrase="palette.unused">{index}：{colour} — 未使用</span>
+    <span data-phrase="report.drawing">描画</span>
+    <span data-phrase="report.partial">全{total}フレーム中{drawn}フレームを描画しました。{why}未描画フレームはヘッダーから説明し、全体のピクセル使用数は不明です。</span>
+    <span data-phrase="preview.native">ブラウザ自身のデコーダーが、ファイルをそのまま再生しています。</span>
     <span data-phrase="read.reading">{name}を読み込んでいます&hellip;</span>
     <span data-phrase="read.notagif">{name}はGIFではありません。{why}。この道具はGIF形式そのものを読むので、ほかの種類のファイルについては何も言えません。</span>
     <span data-phrase="read.failed">{name}を読み込めませんでした：{why}</span>
@@ -189,7 +210,7 @@
     <span data-phrase="level.bad">問題</span>
     <span data-phrase="level.warn">知っておきたいこと</span>
     <span data-phrase="level.note">メモ</span>
-    <span data-phrase="frames.partial">{frames}。うち{drawn}枚をここに描いています。残りは一度にメモリへ収めるには大きすぎるので、ヘッダーだけから説明しています。</span>
+    <span data-phrase="frames.partial">{frames}。ここでは{drawn}を描画し、残りはヘッダーだけから説明しています。</span>
     <span data-phrase="frames.none">{frames}。画面全体を覆うものは一つもありません。</span>
     <span data-phrase="frames.all">{frames}。すべてが画面全体を覆っています。</span>
     <span data-phrase="frames.some">{frames}。うち{n}枚が画面全体を覆っています。</span>

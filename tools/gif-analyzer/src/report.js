@@ -71,6 +71,10 @@ export function report(gif, view, t) {
     : gif.loop === 0 ? t('loops.forever') : t('loops.times', { n: count(gif.loop) })]);
   table.push([t('report.globalpal'), gif.globalPalette
     ? t('report.colours', { n: count(gif.globalPalette.count) }) : t('report.nopalette')]);
+  if (view.drawing?.reason) table.push([t('report.drawing'), t('report.partial', {
+    drawn: count(view.drawing.drawn), total: count(view.drawing.total),
+    why: t(view.drawing.reason.key, view.drawing.reason.values),
+  })]);
   if (view.colors !== undefined) table.push([t('report.drawn'), count(view.colors)]);
   table.push([t('report.background'), String(gif.backgroundIndex)]);
   // The column is as wide as the widest label rather than a fixed 18: a

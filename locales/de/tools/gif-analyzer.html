@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>Analyse abbrechen</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>Analyse leeren</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- Die Übersicht, und die Animation so, wie der Browser selbst sie zeichnet. -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="Die Animation, so wie dieser Browser sie zeichnet">
-        <p class="preview-note">Der eigene Dekoder Ihres Browsers, der die Datei unverändert abspielt.</p>
+        <p id="preview-note" class="preview-note">Der eigene Dekoder Ihres Browsers, der die Datei unverändert abspielt.</p>
       </div>
 
       <dl class="facts">
@@ -160,6 +165,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">{name} wird gezeichnet: {done} von {total} Bildern…</span>
+    <span data-phrase="read.cancelled">Analyse abgebrochen. Der native Lesevorgang kann noch zu Ende laufen.</span>
+    <span data-phrase="drawing.empty">Die Zeichenfläche oder ein Bild hat keine darstellbare Größe.</span>
+    <span data-phrase="drawing.memory">Das Zeichnen würde die geschätzte Puffergrenze von 512 MiB dieser Seite überschreiten.</span>
+    <span data-phrase="drawing.pixels">Das Zeichnen hat die Grenze von 300 Millionen decodierten Pixeln erreicht.</span>
+    <span data-phrase="drawing.cancelled">Das Zeichnen wurde abgebrochen.</span>
+    <span data-phrase="drawing.failed">Das Zeichnen wurde beendet: {detail}</span>
+    <span data-phrase="drawing.partial">{drawn} von {total} Bildern gezeichnet. {why} Kopf-, Zeit- und Byteanalyse bleiben verfügbar; die Pixelnutzung ungezeichneter Bilder ist unbekannt.</span>
+    <span data-phrase="preview.refused">Die Browserwiedergabe ist ausgeschaltet, weil nicht alles gezeichnet wurde. Die gelesene Analyse bleibt verfügbar.</span>
+    <span data-phrase="colours.unknown">Nicht vollständig gemessen</span>
+    <span data-phrase="colours.partial">Die Tabellen enthalten {declared} Farbeinträge. Solange Bilder ungezeichnet bleiben, ist die gesamte Pixelnutzung unbekannt.</span>
+    <span data-phrase="palette.globalpartial">{entries}, {size}, von {frames} geteilt. Da nicht alle Pixel gezeichnet wurden, wird kein Eintrag als unbenutzt markiert.</span>
+    <span data-phrase="palette.unused">{index}: {colour} — nie benutzt</span>
+    <span data-phrase="report.drawing">Zeichnung</span>
+    <span data-phrase="report.partial">{drawn} von {total} Bildern gezeichnet. {why} Ungezeichnete Bilder werden anhand ihrer Kopfdaten beschrieben; die gesamte Pixelnutzung ist unbekannt.</span>
+    <span data-phrase="preview.native">Der eigene Dekoder Ihres Browsers, der die Datei unverändert abspielt.</span>
     <span data-phrase="read.reading">{name} wird gelesen&hellip;</span>
     <span data-phrase="read.notagif">{name} ist kein GIF: {why}. Dieses Werkzeug liest das GIF-Format selbst, es hat also
       über andere Dateien nichts zu sagen.</span>
@@ -196,8 +217,7 @@
     <span data-phrase="level.bad">Problem</span>
     <span data-phrase="level.warn">Wissenswert</span>
     <span data-phrase="level.note">Hinweis</span>
-    <span data-phrase="frames.partial">{frames}. {drawn} davon sind hier gezeichnet; der Rest ist zu groß, um ihn alle auf
-      einmal im Speicher zu halten, und wird allein aus den Kopfdaten berichtet.</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} sind hier gezeichnet; die übrigen werden nur anhand ihrer Kopfdaten beschrieben.</span>
     <span data-phrase="frames.none">{frames}, keines davon deckt die ganze Fläche ab.</span>
     <span data-phrase="frames.all">{frames}, alle decken die ganze Fläche ab.</span>
     <span data-phrase="frames.some">{frames}, {n} davon decken die ganze Fläche ab.</span>

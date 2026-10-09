@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>取消分析</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>清除分析</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- 概览，以及浏览器自己画出来的动画。 -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="这个浏览器画出来的动画">
-        <p class="preview-note">浏览器自带的解码器，按文件原样播放。</p>
+        <p id="preview-note" class="preview-note">浏览器自带的解码器，按文件原样播放。</p>
       </div>
 
       <dl class="facts">
@@ -156,6 +161,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">正在绘制 {name}：共 {total} 帧，已绘制 {done} 帧…</span>
+    <span data-phrase="read.cancelled">分析已取消。原生文件读取仍可能完成。</span>
+    <span data-phrase="drawing.empty">画布或帧没有可绘制的尺寸。</span>
+    <span data-phrase="drawing.memory">绘制会超过本页面估计的 512 MiB 缓冲区上限。</span>
+    <span data-phrase="drawing.pixels">绘制已达到 3 亿个解码像素的上限。</span>
+    <span data-phrase="drawing.cancelled">绘制已取消。</span>
+    <span data-phrase="drawing.failed">绘制已停止：{detail}</span>
+    <span data-phrase="drawing.partial">共 {total} 帧，已绘制 {drawn} 帧。{why} 仍可查看文件头、时间和字节分析；未绘制帧的像素使用量未知。</span>
+    <span data-phrase="preview.refused">由于绘制不完整，浏览器播放已关闭。仍可查看读取出的分析。</span>
+    <span data-phrase="colours.unknown">未完整测量</span>
+    <span data-phrase="colours.partial">颜色表共声明 {declared} 个颜色条目。只要有未绘制的帧，就无法确定完整的像素使用量。</span>
+    <span data-phrase="palette.globalpartial">{entries}，{size}，由 {frames} 共用。由于没有绘制所有像素，不会将任何条目标记为未使用。</span>
+    <span data-phrase="palette.unused">{index}：{colour} — 未使用</span>
+    <span data-phrase="report.drawing">绘制</span>
+    <span data-phrase="report.partial">共 {total} 帧，已绘制 {drawn} 帧。{why} 未绘制的帧仅按文件头描述；完整的像素使用量未知。</span>
+    <span data-phrase="preview.native">浏览器自带的解码器，按文件原样播放。</span>
     <span data-phrase="read.reading">正在读取 {name}&hellip;</span>
     <span data-phrase="read.notagif">{name} 不是 GIF：{why}。这个工具读的是 GIF 格式本身，所以对别的文件无话可说。</span>
     <span data-phrase="read.failed">{name} 读不了：{why}</span>
@@ -189,7 +210,7 @@
     <span data-phrase="level.bad">问题</span>
     <span data-phrase="level.warn">值得知道</span>
     <span data-phrase="level.note">备注</span>
-    <span data-phrase="frames.partial">{frames}。其中 {drawn} 帧在这里画了出来；其余的太大，没法一次全放进内存，只能从各自的头部来说明。</span>
+    <span data-phrase="frames.partial">{frames}。这里绘制了 {drawn}；其余仅按文件头描述。</span>
     <span data-phrase="frames.none">{frames}，没有一帧铺满整张画布。</span>
     <span data-phrase="frames.all">{frames}，全都铺满整张画布。</span>
     <span data-phrase="frames.some">{frames}，其中 {n} 帧铺满整张画布。</span>
