@@ -57,7 +57,8 @@
       what is on screen at 400% is the stored pixels made bigger, not a guess at
       what was between them.
     -->
-    <div class="viewport" id="viewport">
+    <div class="viewport" id="viewport" role="group"
+         aria-label="Imagen de la exploración" aria-describedby="viewport-keys">
       <canvas id="canvas" width="1" height="1" role="img"
               aria-label="El fotograma en pantalla, dibujado a partir del archivo que has elegido"></canvas>
       <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
@@ -67,6 +68,8 @@
       <svg class="marks" id="marks" aria-hidden="true"></svg>
       <p class="viewport-fail" id="viewport-fail" hidden></p>
     </div>
+
+    <p class="hint" id="viewport-keys">En una serie de cortes o un archivo de varios fotogramas, enfoca la imagen con Tab. Flecha arriba o Re Pág muestra el corte o fotograma anterior; Flecha abajo o Av Pág muestra el siguiente. Tab lleva a los otros controles.</p>
 
     <div class="scrub" id="scrub-row" hidden>
       <button type="button" id="play" class="ghost" aria-label="Reproducir los fotogramas">▶</button>

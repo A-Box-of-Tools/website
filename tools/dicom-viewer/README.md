@@ -125,6 +125,17 @@ writing a second DCT decoder to produce a worse picture more slowly would be a
 strange way to spend as many again, and the page says out loud that those
 pixels came back eight bits deep.
 
+## Keyboard navigation
+
+The picture keeps its existing Tab stop and focus outline. Its translated group
+name identifies the focus target, and `aria-describedby` links the visible
+keyboard guidance to it, so the shortcuts can be discovered without a pointer.
+On a stack or multi-frame file, Up Arrow or Page Up shows the previous slice or
+frame, and Down Arrow or Page Down shows the next, stopping at either end.
+Tab moves on to the other controls, including Play and the native scrub range.
+The canvas retains its own image description, and the scrubber remains a
+separate range control.
+
 ## What it will not open
 
 JPEG 2000 (`.90`/`.91`), JPEG-LS (`.80`/`.81`), and the MPEG and HEVC syntaxes.

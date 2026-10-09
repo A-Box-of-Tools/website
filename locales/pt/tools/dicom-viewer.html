@@ -57,7 +57,8 @@
       what is on screen at 400% is the stored pixels made bigger, not a guess at
       what was between them.
     -->
-    <div class="viewport" id="viewport">
+    <div class="viewport" id="viewport" role="group"
+         aria-label="Imagem do exame" aria-describedby="viewport-keys">
       <canvas id="canvas" width="1" height="1" role="img"
               aria-label="A imagem na tela, desenhada a partir do arquivo que você escolheu"></canvas>
       <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
@@ -67,6 +68,8 @@
       <svg class="marks" id="marks" aria-hidden="true"></svg>
       <p class="viewport-fail" id="viewport-fail" hidden></p>
     </div>
+
+    <p class="hint" id="viewport-keys">Para uma pilha de imagens ou um arquivo com vários quadros, use Tab para focar a imagem. Seta para cima ou Page Up mostra o corte ou quadro anterior; Seta para baixo ou Page Down mostra o próximo. Tab passa para os outros controles.</p>
 
     <div class="scrub" id="scrub-row" hidden>
       <button type="button" id="play" class="ghost" aria-label="Tocar as imagens">▶</button>

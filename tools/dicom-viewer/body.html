@@ -46,7 +46,8 @@
       what is on screen at 400% is the stored pixels made bigger, not a guess at
       what was between them.
     -->
-    <div class="viewport" id="viewport">
+    <div class="viewport" id="viewport" role="group"
+         aria-label="Scan picture" aria-describedby="viewport-keys">
       <canvas id="canvas" width="1" height="1" role="img"
               aria-label="The frame on screen, drawn from the file you chose"></canvas>
       <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
@@ -56,6 +57,8 @@
       <svg class="marks" id="marks" aria-hidden="true"></svg>
       <p class="viewport-fail" id="viewport-fail" hidden></p>
     </div>
+
+    <p class="hint" id="viewport-keys">For a stack or multi-frame file, focus the picture with Tab. Up Arrow or Page Up shows the previous slice or frame; Down Arrow or Page Down shows the next. Tab moves to the other controls.</p>
 
     <div class="scrub" id="scrub-row" hidden>
       <button type="button" id="play" class="ghost" aria-label="Play through the frames">▶</button>

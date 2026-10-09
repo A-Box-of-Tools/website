@@ -57,7 +57,8 @@
       what is on screen at 400% is the stored pixels made bigger, not a guess at
       what was between them.
     -->
-    <div class="viewport" id="viewport">
+    <div class="viewport" id="viewport" role="group"
+         aria-label="Image de l’examen" aria-describedby="viewport-keys">
       <canvas id="canvas" width="1" height="1" role="img"
               aria-label="L'image à l'écran, dessinée à partir du fichier que vous avez choisi"></canvas>
       <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
@@ -67,6 +68,8 @@
       <svg class="marks" id="marks" aria-hidden="true"></svg>
       <p class="viewport-fail" id="viewport-fail" hidden></p>
     </div>
+
+    <p class="hint" id="viewport-keys">Pour une pile d’images ou un fichier à plusieurs images, placez le focus sur l’image avec Tab. Flèche haut ou Page précédente affiche la coupe ou l’image précédente&nbsp;; Flèche bas ou Page suivante affiche la suivante. Tab passe aux autres commandes.</p>
 
     <div class="scrub" id="scrub-row" hidden>
       <button type="button" id="play" class="ghost" aria-label="Faire défiler les images">▶</button>
