@@ -1,0 +1,26 @@
+{
+  "id": "/es/compartir-texto/",
+  "name": "Compartir texto y archivos",
+  "short_name": "Compartir texto y archivos",
+  "description": "Lo compartido vive en esta pesta\u00f1a abierta. Los lectores lo reciben cifrado, directamente desde tu navegador, y al cerrar la pesta\u00f1a se acaba: ning\u00fan servidor guarda nada.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

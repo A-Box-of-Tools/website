@@ -1,0 +1,93 @@
+# Ridimensionare un'immagine — ritagliare e convertire
+
+Di' la dimensione, disegna il riquadro, scegli il formato.
+
+> Ridimensiona, ritaglia e converti immagini JPEG, PNG e WebP dentro il tuo browser. Pixel esatti, una percentuale o il lato lungo, per un'immagine sola o per una cartella intera. Non viene caricato niente.
+
+Questa pagina è uno strumento interattivo che funziona interamente nel tuo browser, all'indirizzo https://abox.tools/it/ridimensionare-immagine/ — nulla di ciò che gli affidi viene caricato. Quanto segue è tutto ciò che la pagina dice dello strumento a parole; per usarlo, apri l'indirizzo.
+
+## Qui non si caricano immagini, **mai**. Non c'è nessun server.
+
+Il ridimensionamento, il ritaglio e il cambio di formato avvengono tutti dentro il tuo browser, sul tuo hardware, con gli encoder di immagini che si porta già dietro. Questo strumento non ha nessuna funzione di rete, non c'è niente da recuperare e niente da spedire, e dall'altra parte di questa pagina non c'è nessun server a cui mandare un'immagine, anche se una funzione del genere ci fosse.
+
+- ✗ Niente caricamenti
+- ✗ Nessun account
+- ✗ Nessuna filigrana
+- ✓ Funziona offline
+- ✓ Open source
+
+## Come ridimensionare un'immagine senza caricarla
+
+1. **Scegli le immagini.** Trascinale sul riquadro, oppure selezionale a mano. Le legge il browser direttamente dal tuo disco, e mentre lo fa non parte niente per nessuna destinazione.
+2. **Ritaglia, se ti va.** Il riquadro parte su tutta l'immagine, quindi lasciarlo stare non ritaglia niente. Trascinalo, oppure bloccalo su una forma, 1:1 per una foto profilo, 9:16 per una storia, 16:9 per una miniatura, e premi «Il più grande» per quello più grande che ci sta. Ogni immagine si tiene il proprio riquadro: clicca una riga qualsiasi dell'elenco per disegnare su quella. E se devono essere tutte inquadrate allo stesso modo, c'è un pulsante anche per quello.
+3. **Di' che dimensione deve avere in uscita.** Una larghezza, un'altezza, o entrambe; un lato lungo, che tiene gli scatti verticali e orizzontali della stessa dimensione tra loro; oppure una semplice percentuale. Lascia vuoto uno dei due campi e l'immagine si tiene la propria forma.
+4. **Scegli il formato, poi premi il pulsante.** Puoi tenere quello con cui è arrivato ogni file, oppure scrivere tutto come JPEG, PNG o WebP. Ogni risultato dice cosa è diventato e di quanto si è alleggerito; cliccane uno per aprirlo a dimensione piena, con tutti i numeri dietro e l'originale accanto per confrontare. Un lotto si scarica in un unico zip.
+
+## La versione lunga
+
+[Come ridimensionare un'immagine senza rovinarla](https://abox.tools/it/guide/ridimensionare-un-immagine/): Cosa succede a un'immagine quando ne cambi le misure in pixel: perché rimpicciolire è sicuro e ingrandire no, cosa fare quando il riquadro ha la forma sbagliata, e quando conviene invece ritagliare.
+
+## Anche nella cassetta
+
+- [Da HEIC a JPG](https://abox.tools/it/heic-in-jpg/): Le foto che fa un iPhone, in un formato che apre chiunque.
+- [Creatore di foto tessera](https://abox.tools/it/foto-tessera/): Scegli il paese. Applica quella norma, esattamente.
+- [Impilatore di immagini](https://abox.tools/it/impilare-immagini/): Venti fotogrammi in uno, senza venti caricamenti e senza un convertitore RAW.
+- [Oscuratore di immagini](https://abox.tools/it/oscurare-immagine/): Quello che copri viene cancellato dal file, non nascosto dentro.
+
+## Domande
+
+### La mia immagine viene caricata da qualche parte?
+
+No. Il file lo decodifica, lo ritaglia, lo scala e lo scrive il tuo browser sul tuo hardware, con gli encoder JPEG, PNG e WebP che si porta già dietro. Questo strumento non ha nessuna funzione di rete: non recupera mai niente e non spedisce mai niente. La `Content-Security-Policy` della pagina elenca poi tutti gli indirizzi che può contattare, e nessuno di quelli appartiene a questo sito.
+
+### Cosa succede se do una larghezza ma non un'altezza?
+
+L'altezza viene dietro alla forma stessa dell'immagine, che è quasi sempre quello che si voleva: «larga 1920» vuol dire «larga 1920 e alta quanto viene». Se riempi tutti e due i campi, i due numeri possono non concordare con la forma dell'immagine, ed è l'unico caso in cui compare la scelta «se le forme non concordano»: stare dentro il riquadro, riempirlo e tagliare quello che avanza, riempire con uno sfondo, oppure stirare e accettare la deformazione.
+
+### Ridimensionare un'immagine fa perdere qualità?
+
+Rimpicciolirla no, in nessun modo che si veda: entrano più pixel di quanti ne escano, quindi il dettaglio che resta è dettaglio vero. Ingrandirla invece non può aggiungere quello che non è mai stato fotografato, e il risultato è una copia più morbida della stessa immagine, non una più nitida: per questo «non ingrandire mai un'immagine oltre la sua dimensione di partenza» è attivo di default. Quello che costa davvero qualcosa è la ricodifica successiva, se il formato è JPEG o WebP, e il cursore della qualità è quello che spendi lì.
+
+### Posso ritagliare ogni immagine in modo diverso?
+
+Sì, ed è il comportamento predefinito. Ogni immagine dell'elenco si porta il proprio riquadro, nei propri pixel, e cliccare una riga mette quell'immagine nell'anteprima con il suo riquadro e la sua forma bloccata di nuovo addosso. Niente di quello che fai a una tocca le altre. Anche ogni riquadro parte su tutta l'immagine, quindi un'immagine su cui non disegni mai non viene ritagliata affatto.
+
+### Può ritagliare un lotto intero allo stesso modo in una volta?
+
+Sì, con il pulsante sotto l'anteprima. Dà a ogni altra immagine la stessa area relativa, cioè le stesse frazioni della propria larghezza e altezza, che per una serie di screenshot o di esportazioni tutti della stessa dimensione è esattamente lo stesso riquadro, e la pagina te lo dice. Con una forma bloccata dà invece a ciascuna il riquadro più grande di quella forma dentro quell'area, così premere 1:1 e poi quel pulsante ti tira fuori dei quadrati anche da una cartella dove verticali e orizzontali sono mescolati. Ogni riquadro resta comunque modificabile dopo.
+
+### Quali formati sa leggere e scrivere?
+
+Legge tutto quello che il browser sa decodificare, che in pratica vuol dire JPEG, PNG, WebP, GIF, BMP e, sulla maggior parte dei browser di oggi, anche AVIF. Scrive JPEG, PNG e WebP, perché quelli sono gli encoder che i browser si portano dietro. Su «tieni il formato» un JPEG resta un JPEG e un PNG resta un PNG; tutto quello che il browser non sa scrivere, come una GIF o un BMP, esce come PNG, che è il formato che tiene intatte la trasparenza e le tinte piatte.
+
+### Cosa succede alla trasparenza se salvo in JPEG?
+
+Viene riempita con il colore di sfondo, perché il JPEG un canale alfa in cui conservarla non ce l'ha. Il colore lo scegli tu e parte dal bianco, che è quello che vuole quasi chiunque e quello che fa quasi ogni altro strumento senza dirtelo. Lo stesso colore viene usato dietro una cornice di riempimento. Se invece salvi in PNG o WebP, la trasparenza passa intatta.
+
+### Rimuove i dati EXIF e GPS?
+
+Da tutto quello che elabora davvero, sì, come effetto collaterale: ritagliare o ridimensionare vuol dire decodificare l'immagine in pixel e ricodificare quei pixel, e un canvas pieno di pixel non porta con sé nessun tag, quindi la posizione, il modello della fotocamera e gli orari semplicemente non vengono scritti nel file nuovo. Un file che non stai cambiando affatto è un caso diverso, perché ti viene restituito byte per byte, tag compresi. Se vuoi togliere i metadati ma lasciare l'immagine intatta, c'è il [visualizzatore e rimozione EXIF](https://abox.tools/it/rimuovere-dati-exif/), che riscrive il contenitore senza ricomprimere niente.
+
+### In cosa è diverso dal compressore di immagini?
+
+Questo riguarda le dimensioni: dici quanti pixel vuoi e te li dà. Il [compressore di immagini](https://abox.tools/it/comprimere-immagine/) riguarda invece il peso del file: dici quanti kilobyte ti sono concessi e lui cerca la qualità più alta che ci sta, ridimensionando solo se la qualità da sola non ci arriva. Se ti hanno detto «larga 1200 pixel», sei nel posto giusto. Se ti hanno detto «sotto i 500 KB», l'altro ti porterà più vicino.
+
+### È gratis, e mi serve un account?
+
+È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e non c'è filigrana. Non c'è nemmeno un limite al numero o alla dimensione dei file, perché non c'è nessun server che li paga: il lavoro lo fa il tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo mantiene; agli annunci non arriva niente sulle tue immagini.
+
+### Funziona offline?
+
+Sì. Carica la pagina una volta, poi stacca la connessione e continua a funzionare. È anche il modo più semplice per dimostrare che non viene caricato niente, perché uno strumento che spedisse via le tue immagini per ridimensionarle si fermerebbe nell'istante in cui stacchi la spina.
+
+## Come si verifica quello che promette
+
+- **Le tue immagini non hanno dove andare.** La Content-Security-Policy elenca tutti gli indirizzi che questa pagina può contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non esiste un punto di raccolta in cui i tuoi file possano finire, e nel codice non c'è niente che ce li manderebbe se anche esistesse.
+- **Qui dentro niente va a recuperare niente.** In `src/` non c'è né un `fetch`, né un `XMLHttpRequest`, né un `sendBeacon`. Il ridimensionamento è un `drawImage` su un canvas più un `canvas.toBlob`, cioè lo scalatore e l'encoder già installati nel tuo browser.
+- **Un file che nessuno ha chiesto di cambiare non viene cambiato.** Senza ritaglio, senza ridimensionamento e senza cambio di formato, il file che hai scelto ti viene restituito byte per byte invece che risalvato. Non è solo cortesia: è il motivo per cui questo strumento non può ricodificare in silenzio un'immagine, né buttare in silenzio i metadati di una che volevi soltanto guardare.
+- **Cosa carica Google, e cosa non gli arriva.** Gli script della pubblicità e della misurazione arrivano da Google, il pulsante delle donazioni da Buy Me a Coffee. A nessuno di loro viene passato niente sulle tue immagini. Ogni riga che legge, ritaglia, scala o scrive un file è servita da questa origine ed è elencata nel repository.
+- **Funziona offline.** Stacca la rete e lo strumento resta identico, perché al suo interno non c'è mai stato un passaggio di rete. È la prova più semplice che ci sia.
+
+**Verifica tu stesso.** Niente di quanto sopra va preso per buono. Questa pagina la genera, dai modelli e dalla configurazione del repository, uno script di build che puoi leggere ed eseguire anche tu, e il risultato finisce sul branch `dist`: puoi quindi confrontare quello che viene servito con quello che produce una build dei sorgenti. https://github.com/A-Box-of-Tools/website
+
+I file da leggere per primi sono `config/site.toml` per la Content-Security-Policy, `src/geometry.js` per l'aritmetica che decide cosa viene tenuto e quanto grande esce, e `src/codecs.js` per l'unica chiamata a `drawImage` che fa il ritaglio e il ridimensionamento insieme.

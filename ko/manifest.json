@@ -1,0 +1,31 @@
+{
+  "id": "/ko/",
+  "name": "A Box of Tools",
+  "short_name": "A Box of Tools",
+  "description": "\ud55c \uac00\uc9c0 \uc77c\ub9cc \ud558\ub294 \uc791\uc740 \ub3c4\uad6c\ub4e4\uc774 \ube0c\ub77c\uc6b0\uc800 \uc548\uc5d0\uc11c \ubaa8\ub4e0 \uc791\uc5c5\uc744 \ub05d\ub0c5\ub2c8\ub2e4. \ud30c\uc77c\uc740 \ub0b4 \uae30\uae30 \ubc16\uc73c\ub85c \ub098\uac00\uc9c0 \uc54a\uc544\uc694.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

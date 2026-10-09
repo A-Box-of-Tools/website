@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">ファイルをアップロードしない無料ツール。画像をPDFやMP4にまとめる、サイズを指定して圧縮する、動画を切り抜く、EXIFを削除します。処理はすべてブラウザの中で終わります。</subtitle>
+  <id>https://abox.tools/ja/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
+  <updated>2026-10-08T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/ja/</uri>
+  </author>
+  <entry>
+    <title type="html">テキストとファイルの共有</title>
+    <id>https://abox.tools/ja/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ送れます。声に出して伝えられるリンク名、入力と同時のライブ更新、読む人ごとの承認。そしてどのサーバーにも何も残りません。無料、登録不要。</summary>
+  </entry>
+  <entry>
+    <title type="html">ノイズを減らす、あるいは人を消すために写真をスタックする方法</title>
+    <id>https://abox.tools/ja/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">スタックは連写した複数のフレームを1枚にまとめます。どの手法を使うかは、何を失いたいかによります。ノイズか、通行人か、マクロの浅い被写界深度か。それぞれの仕組みと費用、そしてRAWファイルがどこに収まるのか。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像スタック</title>
+    <id>https://abox.tools/ja/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/stack-images/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">連写した写真を1枚にまとめます。平均でノイズを消し、中央値で場面から人を消し、比較明で星の軌跡にし、あるいはマクロ撮影を深度合成します。CR2・NEF・ARW・DNG・RAF・CR3は、カメラ自身のプレビューを取り出して読みます。すべてブラウザの中で動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
+    <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
+  </entry>
+  <entry>
+    <title type="html">写真から領収書や請求書の詳細を読み取る</title>
+    <id>https://abox.tools/ja/guides/extract-receipts-and-invoices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/extract-receipts-and-invoices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">領収書のOCRと切り抜きを確認し、共通のメール用通貨と手入力または過去の為替レートを選ぶ手順。各換算額・書類数・総合計と圧縮画像をメールへ渡します。</summary>
+  </entry>
+  <entry>
+    <title type="html">領収書・請求書読み取りツール</title>
+    <id>https://abox.tools/ja/receipt-invoice-extractor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/receipt-invoice-extractor/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">領収書や請求書の写真を端末上で読み取り、切り抜きと金額を確認します。手入力またはオンラインの過去レートで共通のメール用通貨に換算し、圧縮画像・各金額・総合計をメールへ渡せます。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIFビューアー・削除ツール</title>
+    <id>https://abox.tools/ja/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/exif-editor/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">EXIFやGPSを確認、編集、削除。JPEG、PNG、WebPは画像の符号化を保持し、AVIFの削除時は新しいPNGに変換します。アップロード不要。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF作成</title>
+    <id>https://abox.tools/ja/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebP・AVIFの画像からアニメーションGIFを作ります。無料で、処理はすべてブラウザの中。順番も速さも大きさも自分で決められます。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC→JPG変換ツール</title>
+    <id>https://abox.tools/ja/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">iPhoneのHEICとAVIF写真をブラウザの中でJPGに変換します。デコーダーが動くのは手元の端末です。アップロードなし、登録なし、オフラインでも動作。撮影日時やカメラ情報も引き継げます。 メタデータのチェックボックスとプレビューはHEICだけに適用されます。AVIFのメタデータは常に除外します。</summary>
+  </entry>
+  <entry>
+    <title type="html">PNGをWebPに</title>
+    <id>https://abox.tools/ja/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でPNGとAVIF画像を可逆圧縮のWebP、またはさらに小さなWebPに変換します。どちらも透明度を保ちます。アップロードもアカウントも不要で、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコード・バーコード読み取りツール</title>
+    <id>https://abox.tools/ja/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode-reader/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">写真、スクリーンショット、カメラからQRコードを読み取り、開く前にリンクの行き先をそのまま確かめられます。EAN、UPC、Code 128、Code 39、ITFのバーコードにも対応。何もアップロードされません。</summary>
+  </entry>
+  <entry>
+    <title type="html">WebPをJPGに</title>
+    <id>https://abox.tools/ja/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">ブラウザの中でWebPとAVIF画像をJPGに変換します。デコーダーはブラウザに備わっているので、アップロードもアカウントも不要で、オフラインでも動きます。透明な部分の背景色も選べます。</summary>
+  </entry>
+  <entry>
+    <title type="html">ウェブが保存した画像を、広く使える形式へ</title>
+    <id>https://abox.tools/ja/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">サイトから保存した.webpの画像を開けない場合に。WebPの仕組み、変換で容量が増える理由、透明部分がどうなるか、何もアップロードせずに変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">スマホが保存した写真と、何も開けてくれない形式</title>
+    <id>https://abox.tools/ja/guides/convert-heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">iPhoneは写真をHEICで保存し、インターネットの半分はそれを開けません。この形式が何であるか、Safariだけがデコードできる理由、変換が画像に何を強いるのか、そして誰にもアップロードせずにそれを行う方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">ビジネスプロフィールのプレビュー</title>
+    <id>https://abox.tools/ja/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/business-profile-preview/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Googleビジネスプロフィールの公開前の見え方を確認します。名前、カテゴリ、営業時間、評価、写真からパネル、電話のカード、検索結果を描きます。既存のリスティングを貼り付けて取り込み、PNGやSVGで保存できます。すべてブラウザ内で処理します。</summary>
+  </entry>
+  <entry>
+    <title type="html">写真が撮った人について語っていることと、その外し方</title>
+    <id>https://abox.tools/ja/guides/remove-exif-and-gps-data/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/remove-exif-and-gps-data/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">スマホで撮った写真は、たいてい撮影した正確な場所、秒単位の時刻、カメラのシリアル番号を抱えています。そこに何が入っていて、誰が読めるのか、そして画像に触れずにそれを外す方法。</summary>
+  </entry>
+  <entry>
+    <title type="html">書類スキャナー</title>
+    <id>https://abox.tools/ja/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/document-scanner/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">スマホで撮った紙の写真を、まっすぐで明るさのそろったPDFにします。四隅は自動で見つけ、傾きを戻し、影は割って取り除きます。すべてブラウザの中で動き、何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→ICO変換ツール</title>
+    <id>https://abox.tools/ja/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-ico/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">PNG・JPEG・SVGを、複数サイズを収めた本物の.icoやmacOSの.icnsにブラウザの中で変換します。ファビコン、Windowsのアプリアイコン、Macのアプリアイコン、さらにサイトに必要なAppleとAndroid向けのファイルまで。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→PDF変換ツール</title>
+    <id>https://abox.tools/ja/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-pdf/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebP・AVIFの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。JPEG写真はエンコードし直さずに入り、何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→SVG変換ツール</title>
+    <id>https://abox.tools/ja/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-svg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">白黒の画像をブラウザの中で本物のSVGの輪郭にトレースします。ロゴ、ステンシル、署名、線画、シルエットが、どんな大きさにも伸ばせる曲線になります。トレースが拾いすぎたものはクリックひとつで外せます。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→データURI変換ツール</title>
+    <id>https://abox.tools/ja/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-data-uri/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">PNG・JPEG・SVG・WebPを、CSSやHTMLに貼れるデータURIに変換します。UTF-8のSVGはbase64ではなくパーセントエンコードするので、短いまま、読める形で残ります。処理はブラウザの中だけ。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→動画変換ツール</title>
+    <id>https://abox.tools/ja/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-video/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebP・AVIFの画像をMP4のスライドショー動画にします。無料で、処理はすべてブラウザの中。アップロードなし、登録なし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像リサイズツール</title>
+    <id>https://abox.tools/ja/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/resize-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">JPEG・PNG・WebPの画像を、ブラウザの中でリサイズ・切り抜き・形式変換します。ピクセル指定、パーセント指定、長辺指定に対応。1枚でもフォルダごとでも。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像圧縮ツール</title>
+    <id>https://abox.tools/ja/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compress-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">JPEG・PNG・WebPを100KBや2MBなど、狙ったサイズちょうどに圧縮します。処理はすべてブラウザの中。アップロードなし、登録なし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像黒塗りツール</title>
+    <id>https://abox.tools/ja/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">写真やスクリーンショットの名前・住所・口座番号を隠して保存し直します。隠した画素は四角形の下に残るのではなく、ファイルから消えます。処理はすべてブラウザ内です。</summary>
+  </entry>
+  <entry>
+    <title type="html">証明写真作成</title>
+    <id>https://abox.tools/ja/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/id-photo/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">お住まいの国の公表規定どおりにパスポートやビザ用の写真を作ります。ミリ単位とdpiは正確に、顔の高さと目の高さは重ねて表示、背景も確認し、印刷用のL判シートと、提出フォームのKB制限に収めたファイルまで。アップロードは一切ありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">身長比較チャート</title>
+    <id>https://abox.tools/ja/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compare-heights/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">身長を並べて比べられます。男性・女性・男の子・女の子に加えて、ドアや窓、ホワイトボード、自動販売機といったものも足せます。センチメートルでも、フィートとインチでも指定でき、できあがった図はPNGかSVGでダウンロードできます。描画はあなたのブラウザの中で行われます。</summary>
+  </entry>
+  <entry>
+    <title type="html">透明部分を保ったまま、同じ画像を3分の1ほど小さく</title>
+    <id>https://abox.tools/ja/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">WebPは情報を失わない方法でもPNGより小さくなり、非可逆ならさらに減らせます。適した方法は画像の内容次第です。各モードの働き、容量の違い、アップロードせずに変換する方法を説明します。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキスト差分</title>
+    <id>https://abox.tools/ja/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/text-diff/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">銀行明細CSVを信頼する前に確認する方法</title>
+    <id>https://abox.tools/ja/guides/check-a-bank-statement-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/check-a-bank-statement-csv/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">変換した銀行明細CSVの金額の誤り、行の欠落、日付の読み違いを確認します。具体例で、取引ごとの残高で証明できることと、できないことを説明します。</summary>
+  </entry>
+</feed>

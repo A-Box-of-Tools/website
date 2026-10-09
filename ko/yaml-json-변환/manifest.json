@@ -1,0 +1,26 @@
+{
+  "id": "/ko/yaml-json-\ubcc0\ud658/",
+  "name": "YAML \u2192 JSON \ubcc0\ud658\uae30",
+  "short_name": "YAML \u2192 JSON \ubcc0\ud658\uae30",
+  "description": "\uc591\ucabd \ubc29\ud5a5 \ubaa8\ub450, \uadf8\ub9ac\uace0 \uac01 \ubc29\ud5a5\uc774 \ubb34\uc5c7\uc744 \uce58\ub974\ub294\uc9c0\ub3c4 \ub9d0\ud574 \uc90d\ub2c8\ub2e4. \uadf8 \uc5b4\ub290 \uac83\ub3c4 \ub0a8\uc758 \uc11c\ubc84\uc5d0 \ubd99\uc5ec \ub123\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

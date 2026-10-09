@@ -1,0 +1,26 @@
+{
+  "id": "/es/convertir-a-mp4/",
+  "name": "Conversor a MP4",
+  "short_name": "Conversor a MP4",
+  "description": "La grabaci\u00f3n de pantalla, el MKV o el v\u00eddeo de c\u00e1mara, en H.264 y AAC dentro de un MP4. Copia lo compatible y recodifica solo lo necesario.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

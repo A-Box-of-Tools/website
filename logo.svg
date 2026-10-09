@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="abox.tools">
+  <title>abox.tools</title>
+  <!--
+    The site mark: a gift box tipped over, with apps thrown out of it and a
+    little confetti at the end of the throw.
+
+    It replaces a tool box holding five hand tools, which was wrong about what
+    this site is, twice over. What is in the box is thirty-six browser apps,
+    not hammers and wrenches, so the things coming out of it are app tiles. And
+    the box is given away rather than sold, so it is a gift box being opened
+    rather than a tool box being worked out of.
+
+    Four decisions here are load-bearing, and all four come from the sizes this
+    is actually seen at. The header draws it at 1.35em - about 22 pixels - and
+    the favicon at 16; the only places it is ever large are the app icons and
+    the share cards. The old mark was tuned for a size nobody sees it at, and
+    was mud at both of the sizes everybody does.
+
+      - The apps are the light tone and the mouth of the box is the dark one.
+        Drawn the other way round they dissolve into the rim they are supposed
+        to be coming out of.
+      - They fan across an arc instead of following the line of the throw. On
+        one line they touched, and two light shapes that touch are one light
+        shape by the time it is 16 pixels wide.
+      - The leading app is cut by the near rim. That single overlap is what
+        makes it read as coming out of the box rather than balanced on top of
+        it, and it is the first thing to protect if these numbers are edited.
+      - The confetti is small enough that when it blurs it thickens the spray
+        rather than joining it.
+
+    The box keeps the site accent and the apps do not. This is the only place
+    on the site allowed more than one hue, and the reason is what the mark has
+    to say in about twenty pixels: four tiles in four colours read as a lot of
+    different things, and four tiles in one blue read as four of the same
+    thing. The four are the mark's own colours rather than site tokens -
+    nothing else may reach for them, and no page element should come to match
+    them by accident.
+
+    Colours are baked in rather than inherited, because this file is also the
+    favicon, and none of the page's CSS reaches it there. The dark-theme block
+    lightens the tiles for a near-black tab strip and darkens the glyphs to
+    match: white on a pastel tile is under the contrast floor the rest of the
+    site is held to.
+
+    og-image.ps1 rasterises this file rather than redrawing it, so this is the
+    only copy of the shape that has to be right. The geometry is inlined again
+    in templates/partials/site-mark.html, so that a page keeps its mark with no
+    network at all; if the shape changes here, change it there too. The palette
+    lives in four places, and they have to agree: here, that partial's two
+    stylesheets, and both of the palettes og-image.ps1 injects - the script
+    because a headless browser cannot be told which colour scheme to pretend to
+    be in, the partial because the page's stylesheet colours it.
+  -->
+  <style>
+    .logo-box   { fill: #b07d10; }
+    .logo-band  { fill: #f0b429; }
+    .logo-latch { fill: #e8618f; }
+    .logo-app-a { fill: #2b6cb0; }
+    .logo-app-b { fill: #8b5cc7; }
+    .logo-app-c { fill: #2f9e63; }
+    .logo-app-d { fill: #d94a4a; }
+    .logo-glyph { fill: #ffffff; }
+    .logo-stroke { stroke: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      .logo-box   { fill: #c4922a; }
+      .logo-band  { fill: #f5c655; }
+      .logo-latch { fill: #ef7fa8; }
+      .logo-app-a { fill: #5b9bd8; }
+      .logo-app-b { fill: #b18ae4; }
+      .logo-app-c { fill: #5cc48c; }
+      .logo-app-d { fill: #ef8080; }
+      .logo-glyph { fill: #16202b; }
+      .logo-stroke { stroke: #16202b; }
+    }
+  </style>
+
+  <!-- confetti: the far end of the same throw -->
+  <rect class="logo-app-d" x="52.4" y="19.4" width="4.2" height="4.2" rx="1.3"
+        transform="rotate(18 54.5 21.5)"/>
+  <rect class="logo-app-a" x="39.7" y="3.7" width="3.6" height="3.6" rx="1.1"
+        transform="rotate(-28 41.5 5.5)"/>
+  <rect class="logo-app-c" x="54.9" y="6.9" width="3.2" height="3.2" rx="1"
+        transform="rotate(42 56.5 8.5)"/>
+
+  <!-- The apps, largest at the mouth and smallest at the end of the throw.
+       Each carries the glyph of a kind of file this site works on - a video, a
+       track, a document, a picture - so the things coming out of the box are
+       recognisably the work rather than four anonymous squares. The glyphs are
+       for the sizes that can hold them: on the app icons and the share cards
+       they read, and by the favicon they have blurred back into the tile,
+       which is why the tile and not the glyph carries the silhouette. -->
+
+  <!-- video -->
+  <g transform="rotate(-12 34.8 26.7)">
+    <rect class="logo-app-a" x="27.8" y="19.7" width="14" height="14" rx="4"/>
+    <path class="logo-glyph" d="M32.6 23.4 38.4 26.7 32.6 30Z"/>
+  </g>
+
+  <!-- a track -->
+  <g transform="rotate(24 35.3 13.1)">
+    <rect class="logo-app-b" x="30.3" y="8.1" width="10" height="10" rx="3"/>
+    <!-- Lucide's `music`, fitted to the tile. Its geometry is untouched; the
+         stroke weight is not, and that is the only change: Lucide draws at
+         width 2 on a 24 grid, which lands at a fifth of a pixel once this is
+         the 22px header mark and at nothing at all in the favicon. The heads
+         are filled rather than stroked so the glyph sits at the same weight as
+         the play triangle beside it. See THIRD-PARTY-NOTICES.md. -->
+    <g transform="translate(31.6 9.4) scale(0.3083)">
+      <path class="logo-stroke" fill="none" stroke-width="3.081"
+            stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13"/>
+      <circle class="logo-glyph" cx="6" cy="18" r="3.9"/>
+      <circle class="logo-glyph" cx="18" cy="16" r="3.9"/>
+    </g>
+  </g>
+
+  <!-- a picture. On the larger of the two tiles, because a mountain and a sun
+       are two shapes and the smaller tile turned them into a second play
+       triangle pointing the wrong way. -->
+  <g transform="rotate(-20 48.55 29.75)">
+    <rect class="logo-app-c" x="44.05" y="25.25" width="9" height="9" rx="2.7"/>
+    <circle class="logo-glyph" cx="46.6" cy="27.9" r="1"/>
+    <path class="logo-glyph" d="M45.4 32.1 48.2 28.4 51.7 32.1Z"/>
+  </g>
+
+  <!-- a document: three rules, which survive being small in a way a drawing
+       does not -->
+  <g transform="rotate(34 46.65 14.25)">
+    <rect class="logo-app-d" x="43.15" y="10.75" width="7" height="7" rx="2.2"/>
+    <rect class="logo-glyph" x="45" y="12.6" width="3.4" height="0.85" rx="0.42"/>
+    <rect class="logo-glyph" x="45" y="14.1" width="3.4" height="0.85" rx="0.42"/>
+    <rect class="logo-glyph" x="45" y="15.6" width="2.2" height="0.85" rx="0.42"/>
+  </g>
+
+  <!-- the box, tipped: dark mouth, lit face, ribbon down the near corner -->
+  <g transform="rotate(38 22 42)">
+    <path class="logo-box" d="M4 30H40L37.6 36H6.4Z"/>
+    <path class="logo-band" d="M6.4 36H37.6L36 54H8Z"/>
+    <path class="logo-latch" d="M19.9 36H24.1L24.3 54H19.7Z"/>
+  </g>
+</svg>

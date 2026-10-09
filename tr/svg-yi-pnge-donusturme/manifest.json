@@ -1,0 +1,26 @@
+{
+  "id": "/tr/svg-yi-pnge-donusturme/",
+  "name": "SVG'den G\u00f6rsele",
+  "short_name": "SVG'den G\u00f6rsele",
+  "description": "Boyutu siz s\u00f6yleyin. Bir vekt\u00f6r\u00fcn kaybedecek kendi boyutu yok.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

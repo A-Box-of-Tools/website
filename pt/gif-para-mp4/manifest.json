@@ -1,0 +1,26 @@
+{
+  "id": "/pt/gif-para-mp4/",
+  "name": "GIF para MP4",
+  "short_name": "GIF para MP4",
+  "description": "Cada quadro, com a dura\u00e7\u00e3o definida no GIF, em H.264 dentro de um MP4. Convers\u00e3o no seu computador; o arquivo n\u00e3o \u00e9 enviado.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

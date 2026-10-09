@@ -1,0 +1,26 @@
+{
+  "id": "/id/tumpuk-gambar/",
+  "name": "Penumpuk Gambar",
+  "short_name": "Penumpuk Gambar",
+  "description": "Dua puluh bingkai menjadi satu, tanpa dua puluh unggahan dan tanpa pengubah RAW.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

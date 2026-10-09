@@ -1,0 +1,26 @@
+{
+  "id": "/fr/convertir-webp-en-jpg/",
+  "name": "WebP en JPG",
+  "short_name": "WebP en JPG",
+  "description": "Les images que le Web enregistre, dans le format que tout accepte encore.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

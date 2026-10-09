@@ -1,0 +1,26 @@
+{
+  "id": "/es/desbloquear-pdf/",
+  "name": "Desbloquear PDF",
+  "short_name": "Desbloquear PDF",
+  "description": "Muchos PDF protegidos no necesitan contrase\u00f1a. Aqu\u00ed ves qu\u00e9 protecci\u00f3n tiene el tuyo antes de cambiarlo.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

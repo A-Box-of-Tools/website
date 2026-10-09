@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hans">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">全部免费，文件不用上传。图片拼成 PDF 或 MP4、把图压到指定大小、裁视频、清 EXIF，都在你自己的浏览器里做完。</subtitle>
+  <id>https://abox.tools/zh/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
+  <updated>2026-10-08T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/zh/</uri>
+  </author>
+  <entry>
+    <title type="html">图片堆栈</title>
+    <id>https://abox.tools/zh/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎么堆栈照片来压噪点，或者把人去掉</title>
+    <id>https://abox.tools/zh/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">堆栈把一串连拍合成一张。用哪种手法，取决于你想失去什么：噪点、路人，还是微距那浅得可怜的景深。每种手法怎么运作、代价是什么，以及 RAW 文件在这里是什么位置。</summary>
+  </entry>
+  <entry>
+    <title type="html">文本与文件分享</title>
+    <id>https://abox.tools/zh/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/share-text/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">把文本或文件经由直连加密通道从一个浏览器送到另一个。链接名说得出口，边打字边实时同步，逐个批准读者——任何服务器上永远不存任何东西。免费，无需注册。</summary>
+  </entry>
+  <entry>
+    <title type="html">从照片提取收据与发票信息</title>
+    <id>https://abox.tools/zh/guides/extract-receipts-and-invoices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/extract-receipts-and-invoices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">核对收据 OCR 和裁剪范围，选择统一邮件币种及手动或历史汇率，再发送压缩图片、每笔换算金额、单据数量和总额。</summary>
+  </entry>
+  <entry>
+    <title type="html">如何不上传就在设备间分享文本与文件</title>
+    <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
+  </entry>
+  <entry>
+    <title type="html">收据与发票识别</title>
+    <id>https://abox.tools/zh/receipt-invoice-extractor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/receipt-invoice-extractor/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">在设备上识别收据和发票照片，核对裁剪范围与金额，用手动汇率或在线历史汇率换算为统一的邮件汇总币种。邮件包含压缩图片、每笔金额和总额。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF 查看与清除</title>
+    <id>https://abox.tools/zh/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/exif-editor/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">查看、编辑或删除 EXIF 和 GPS 数据。JPEG、PNG 和 WebP 保持图片编码，AVIF 清理会转换为新的 PNG。不上传文件。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 制作</title>
+    <id>https://abox.tools/zh/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-maker/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG、WebP 或 AVIF 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC 转 JPG</title>
+    <id>https://abox.tools/zh/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 iPhone 的 HEIC 和 AVIF 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。 元数据复选框和预览仅适用于 HEIC，AVIF 元数据一律不保留。</summary>
+  </entry>
+  <entry>
+    <title type="html">PNG 转 WebP</title>
+    <id>https://abox.tools/zh/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器中把 PNG 和 AVIF 转为 WebP，可选无损或更小的文件。两种模式都保留透明，无需上传或账号，也可离线使用。</summary>
+  </entry>
+  <entry>
+    <title type="html">WebP 转 JPG</title>
+    <id>https://abox.tools/zh/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器中将 WebP 和 AVIF 图片转为 JPG。浏览器已经能解码 WebP，因此无需上传或账号，也可离线使用。透明区域填充你选择的颜色。</summary>
+  </entry>
+  <entry>
+    <title type="html">一张照片把你交代了多少，以及怎么把它删掉</title>
+    <id>https://abox.tools/zh/guides/remove-exif-and-gps-data/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/remove-exif-and-gps-data/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">手机拍的照片通常带着精确的拍摄地点、精确到秒的时间，还有相机的序列号。里面到底有什么，谁读得到，以及怎么在不动画面的前提下把它们清掉。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码识读</title>
+    <id>https://abox.tools/zh/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">同一张图片，小三分之一，透明保持完整</title>
+    <id>https://abox.tools/zh/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">无损 WebP 已比 PNG 小，允许损失时更小。哪种合适取决于图片内容。这里解释两种模式、节省多少以及如何无需上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">商家资料预览</title>
+    <id>https://abox.tools/zh/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/business-profile-preview/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在上线之前就看到你的 Google 商家资料长什么样：知识面板、手机上的地点卡片和本地搜索结果，全部由你打进去的名称、类别、营业时间、评分和照片画出来。已有的商家资料可以粘贴进来导入。做好的图能下载成 PNG 或 SVG。整个过程都发生在你的浏览器里。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片压缩</title>
+    <id>https://abox.tools/zh/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把 JPEG、PNG 或 WebP 压到你要的大小，100 KB、2 MB 都行。全程在浏览器里跑，不上传，不注册，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片涂黑与打码</title>
+    <id>https://abox.tools/zh/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把照片或截图里的姓名、地址、账号遮住再存一份，被遮的像素是从文件里没了，不是压在一个矩形下面。全程在浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片缩放</title>
+    <id>https://abox.tools/zh/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/resize-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器里给 JPEG、PNG 和 WebP 改尺寸、裁切、转格式。精确到像素、按百分比，或者定长边，一张也行，一整个文件夹也行。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 Data URI</title>
+    <id>https://abox.tools/zh/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-data-uri/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。UTF-8 SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 ICO</title>
+    <id>https://abox.tools/zh/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-ico/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 PNG、JPEG 或 SVG 做成一个真正多尺寸的 .ico，或者一个 macOS 的 .icns。网站图标、Windows 应用图标、Mac 应用图标，加上网站需要的苹果和安卓那几个文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 PDF</title>
+    <id>https://abox.tools/zh/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG、WebP 或 AVIF 合成一个 PDF，免费，全程在你的浏览器里跑。JPEG 照片进去不重新编码，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 SVG</title>
+    <id>https://abox.tools/zh/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-svg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">在浏览器里把黑白图片描成真正的 SVG 轮廓。logo、镂空模板、签名、线稿和剪影都变成能放大到任意尺寸的曲线。描多了的部分，点一下就去掉。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转视频</title>
+    <id>https://abox.tools/zh/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-video/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG、WebP 或 AVIF 做成 MP4 幻灯片视频，免费，全程在你的浏览器里跑。什么都不上传，不用注册，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">手机存下的那张照片，和那个什么都打不开的格式</title>
+    <id>https://abox.tools/zh/guides/convert-heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">iPhone 把照片存成 HEIC，而半个互联网打不开它。这个格式是什么，为什么只有 Safari 解得了，转换要拿画质换多少，以及怎么做到不把照片交给任何人。</summary>
+  </entry>
+  <entry>
+    <title type="html">把网页保存的图片变成所有软件仍接受的格式</title>
+    <id>https://abox.tools/zh/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">网页保存的 .webp 没有软件能打开？这里解释 WebP、转换为何增大文件、透明会怎样，以及如何无需上传完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">文档扫描</title>
+    <id>https://abox.tools/zh/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/document-scanner/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把手机拍的纸张照片变成一份摆正、亮度均匀的 PDF。四个角替你找好，透视给你掰正，阴影除掉。全部在你的浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">证件照制作</title>
+    <id>https://abox.tools/zh/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/id-photo/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">按你所在国家公布的规定做护照或签证照片：毫米和 DPI 精确到位，头高和眼线实时叠加提示，检查背景，一张可直接打印的 10x15 拼版，以及一个压进办事门户 KB 限制里的文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">身高对比图</title>
+    <id>https://abox.tools/zh/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-heights/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">把身高并排比出来。可以加男性、女性、男孩、女孩，也可以加物件——门、窗、白板、自动售货机——用厘米或者英尺英寸都行，做好的图能下载成 PNG 或 SVG。它是在你的浏览器里画的。</summary>
+  </entry>
+  <entry>
+    <title type="html">上传银行账单安全吗？</title>
+    <id>https://abox.tools/zh/guides/is-it-safe-to-upload-a-bank-statement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/is-it-safe-to-upload-a-bank-statement/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">账单把收款人、金额和余额放在一个文件中。了解转换器得到什么，谨慎服务如何处理，以及如何分辨上传是否必要。</summary>
+  </entry>
+  <entry>
+    <title type="html">信任银行账单 CSV 前如何检查</title>
+    <id>https://abox.tools/zh/guides/check-a-bank-statement-csv/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/check-a-bank-statement-csv/"/>
+    <updated>2026-09-29T00:00:00Z</updated>
+    <summary type="html">检查转换账单的错误金额、缺失行和误读日期。实例说明连续余额能证明什么、不能证明什么。</summary>
+  </entry>
+</feed>

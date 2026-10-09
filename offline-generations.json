@@ -1,0 +1,1573 @@
+{
+  "format": 1,
+  "scopes": {
+    "/": {
+      "version": "614a9699a5",
+      "worker_sha256": "06adcf68f9116fb841549488b8d7c5b8d299fa2da9f7e9d33289bc65b599fa24"
+    },
+    "/avif-to-jpg/": {
+      "version": "99b832b3b5",
+      "worker_sha256": "a99804a0392e6acd73bb7449a896462201eefc0769721f949b5ee8159ddf261d"
+    },
+    "/base64/": {
+      "version": "53dddeabde",
+      "worker_sha256": "8b9220803e6b5cd8ffb17f1029eb53ff07c93db703699e54818b67bbba0865ed"
+    },
+    "/business-profile-preview/": {
+      "version": "b54e9e5129",
+      "worker_sha256": "76a9509837931158d6b6991c882973b0d2d195d143a2405ba6629a6a09b41c7d"
+    },
+    "/compare-heights/": {
+      "version": "06a8af7854",
+      "worker_sha256": "3dccf219abe10320405c67a4531ae725f8052f93d03acba37b773024ec719b7c"
+    },
+    "/compress-image/": {
+      "version": "3984748204",
+      "worker_sha256": "cef7c35c942a8850f03f80a5911d699f67851581803f7ce79f7fd5ec47265ce9"
+    },
+    "/compress-pdf/": {
+      "version": "44715dbeb3",
+      "worker_sha256": "63aeb9b687e05190a330f5dce7ca1b29d7e0a256ad3cd161104f36f379e77528"
+    },
+    "/compress-video/": {
+      "version": "dc692f6068",
+      "worker_sha256": "b807570ac89747a11ebbf03883a66e82b8020cb58706b55f705d33e2c37e9616"
+    },
+    "/convert-to-mp4/": {
+      "version": "a56cd1dd77",
+      "worker_sha256": "b79763fcb502ec3c94d068914bb940e00a50c8339f6c3888fed147580ac36fe6"
+    },
+    "/crop-video/": {
+      "version": "823da05c4a",
+      "worker_sha256": "f8da59fcbf6f1fd83a6f01b4570a8bbc64a01efb9d5bff596f73cbd9614d0854"
+    },
+    "/de/": {
+      "version": "013fd616d3",
+      "worker_sha256": "9bb613789c2da071362eae3645eaccc6d4c31afb67fd91f9f4624c392090f18a"
+    },
+    "/de/audio-bearbeiten/": {
+      "version": "17e997ac08",
+      "worker_sha256": "b21fe6ef15612e6dd48624d8267ca0d8c5d816e2a3d67f354299a30076242f6b"
+    },
+    "/de/audio-schneiden/": {
+      "version": "4351c390ea",
+      "worker_sha256": "fb6e6e89b8f1aa7c0d04553630cf78777cd29b1fbc035b4fdbad42de884817b6"
+    },
+    "/de/avif-in-jpg-umwandeln/": {
+      "version": "715579731c",
+      "worker_sha256": "1b2e30d32ab69a6891c8df2de95960097b0c3829ae9c8a0f959266da9841356f"
+    },
+    "/de/base64-kodieren/": {
+      "version": "b165304856",
+      "worker_sha256": "47e22e1e2b02971c9ede72e0e4cb48d5eef2bc413ee11a92c8088c6b0c20ce8f"
+    },
+    "/de/belege-rechnungen-auslesen/": {
+      "version": "999aad4828",
+      "worker_sha256": "389714ed1f7170b89d3f6e1ec59848fe37cfd22acadaa67c6b31fbe32c39e2b2"
+    },
+    "/de/bild-als-base64/": {
+      "version": "57347e3e18",
+      "worker_sha256": "83c8a714e3fd2f0e6540d33aee2d19e038eda60c8500af2ab1f76e902bc9a0ed"
+    },
+    "/de/bild-in-svg-umwandeln/": {
+      "version": "ca67e72d09",
+      "worker_sha256": "829690c3a44b06481a2eac2f532c311625f73c3a8abe5bcab3a61fd7587566e0"
+    },
+    "/de/bild-komprimieren/": {
+      "version": "d353c7db38",
+      "worker_sha256": "fb48b5f5ff153eaec03949dae7beb09975e9a9e28f2d1902966f2c7b38e25e37"
+    },
+    "/de/bild-schwaerzen/": {
+      "version": "b736a1dc80",
+      "worker_sha256": "7e40b43698cbd19dc8769c8eb460d6b4cc9e12ecd8fc0740bc48fac562644e97"
+    },
+    "/de/bilder-in-pdf-umwandeln/": {
+      "version": "1daf082cb1",
+      "worker_sha256": "c47843281971480a92e23b5b7a423d2bbad962dc9ddbca84ccd580121a29081c"
+    },
+    "/de/bilder-in-video-umwandeln/": {
+      "version": "63c31da714",
+      "worker_sha256": "b638c8b27e41a0b4261e5266ed501773894c9517e70c24cfda32ff3b2e3bf835"
+    },
+    "/de/bilder-stacken/": {
+      "version": "4fc2afd7f0",
+      "worker_sha256": "c1bd203e0167332a558a146a0d22fd2ae7c3bffe30dcaeb109e122cbe3d1721c"
+    },
+    "/de/bildgroesse-aendern/": {
+      "version": "16d9419be4",
+      "worker_sha256": "ee4f2f265e73c224b4bba509fe6992cd455b53ba1eef8d8eb2ee9de8e92e1600"
+    },
+    "/de/biometrisches-passbild/": {
+      "version": "d84c0422a0",
+      "worker_sha256": "73171a9a3e466a311de5108ca7c44f3eb5453d90f610acd5d40d5b20f41b0ae4"
+    },
+    "/de/dicom-viewer/": {
+      "version": "7e0f59d200",
+      "worker_sha256": "68acad3acf82e922ea0927902dcfe9d35f15c20feaa3c6afe6158f692a2b2261"
+    },
+    "/de/dokumente-scannen/": {
+      "version": "a789e9c5f0",
+      "worker_sha256": "7f47b4aa4e023b610e35b56e35cd9fabd3590a4798f335fe8934500ddd4cc324"
+    },
+    "/de/exif-daten-entfernen/": {
+      "version": "6622ec71be",
+      "worker_sha256": "52ec3bd766221ad309a5c18827e21f7af2cf8dcca28b948648828cb2eec5f9da"
+    },
+    "/de/favicon-erstellen/": {
+      "version": "8b742efaca",
+      "worker_sha256": "f037b607239cd5684e43b18f848bd2694cbc7cc4949bd495efd68f804ce86c8f"
+    },
+    "/de/gif-analysieren/": {
+      "version": "9ac9ff9dd8",
+      "worker_sha256": "0733102a8ec889f7cf1953ca74db853bcb6b344323f76f370f1280fc4bfbfb7a"
+    },
+    "/de/gif-erstellen/": {
+      "version": "c5079607da",
+      "worker_sha256": "37ae2d6c67816a6d5fd5115567c1b1d3489bfc347527f7d7f674346449cc6f8e"
+    },
+    "/de/gif-in-einzelbilder-zerlegen/": {
+      "version": "59fc8595e4",
+      "worker_sha256": "cfe04b5fc619e13277cbb5672cfd733f0c4b563863d3d649ef576923795ba69f"
+    },
+    "/de/gif-in-mp4-umwandeln/": {
+      "version": "dcc42a878b",
+      "worker_sha256": "a2b9b8d95992b1e85ce8002cb7b6fd1e2ef8638452a7dd9d87a84e5cae567157"
+    },
+    "/de/google-unternehmensprofil-vorschau/": {
+      "version": "314a7ee06d",
+      "worker_sha256": "8ef685cdbf7278ba5bed9ed4135aa768018170e861c5f9d335dcd4da54559c2e"
+    },
+    "/de/groessenvergleich-erstellen/": {
+      "version": "e648e56b7e",
+      "worker_sha256": "fe7c276246d5499321b1ee53b833ec6721422bc1386bc417f8fcdec31a27bc7b"
+    },
+    "/de/heic-in-jpg-umwandeln/": {
+      "version": "8b8f7756a7",
+      "worker_sha256": "5b95e2beef71c10ff99fabd4b3d9381a85f110ef96dc0bbb0139d3ce216961e5"
+    },
+    "/de/image-layout/": {
+      "version": "672115dacf",
+      "worker_sha256": "0f8f33ef30c0750c886cd7c393f3900e935d9823aeee2b50d96bb13ebd2bac34"
+    },
+    "/de/in-mp4-umwandeln/": {
+      "version": "8fe802c37c",
+      "worker_sha256": "6c79e0c281f7a03e8f7aaaedbcb845bcd38d3a21bd66c33e73e9d47d5d859c84"
+    },
+    "/de/json-formatieren/": {
+      "version": "2323d5c111",
+      "worker_sha256": "fe3c7943a47d22f41da879dd6e0b158fa43620c36d518ddfee059676f15f0029"
+    },
+    "/de/passwort-generator/": {
+      "version": "67d5bdebf9",
+      "worker_sha256": "47cbfc781c4c8ebd648964cd24ea1074d2a6b3d95440c30f0d8daca8447bcf22"
+    },
+    "/de/pdf-entsperren/": {
+      "version": "8d33b93fb5",
+      "worker_sha256": "0bc106f395fe5a4193ebda2b67629e138fc121e7de8a333172705d626b6ad6e4"
+    },
+    "/de/pdf-in-csv-umwandeln/": {
+      "version": "a20d460701",
+      "worker_sha256": "27c85a6de79f8995020ff64189a312c8069e8f5f16aad609088728e2c3041526"
+    },
+    "/de/pdf-schuetzen/": {
+      "version": "92862d1fba",
+      "worker_sha256": "e47d0241c98db47d50a3440e138ca900c988f4dc86026d00c0c515884d9bee82"
+    },
+    "/de/pdf-schwaerzen/": {
+      "version": "c8d6d71941",
+      "worker_sha256": "0bf1674fe3029cef75cb37687252ba58331e286938043140220f60f7e8225910"
+    },
+    "/de/pdf-verkleinern/": {
+      "version": "4d07d8d562",
+      "worker_sha256": "be6bf5666aab5cb48aa76319f49834243101aeb0bbcdcf9fec08cb7d86e69467"
+    },
+    "/de/pdf-wasserzeichen/": {
+      "version": "02ed62aad0",
+      "worker_sha256": "6d2243b25bb30c5399666374e86156543cfd33ad49c8c27eb75d2f7e08141288"
+    },
+    "/de/pdf-zusammenfuegen/": {
+      "version": "24c9133c25",
+      "worker_sha256": "018c824697f866da7d33d84220e182f2901d961b9d98130461444612d715d54c"
+    },
+    "/de/png-in-webp-umwandeln/": {
+      "version": "a616cebccc",
+      "worker_sha256": "e26b7d41c8ff64e11b62392bf3842ddf604c49c2d0529d20e472e76342efd0dc"
+    },
+    "/de/pruefsumme-berechnen/": {
+      "version": "26f9df6848",
+      "worker_sha256": "5a4b951f8fb60d1591f25c621b7d2abdc79d5cf30713d57b0f4ab1debe549b60"
+    },
+    "/de/qr-code-erstellen/": {
+      "version": "3d6612031e",
+      "worker_sha256": "b9e533139a5823dac23688c289e1c85018d0b2bed6f51304607ff83d8251fc5d"
+    },
+    "/de/qr-code-scannen/": {
+      "version": "ce9da3a3a2",
+      "worker_sha256": "8152c7f9c0187833a6b41ad121f771df5d835098dfc02991503fda138b22c025"
+    },
+    "/de/standbild-aus-video/": {
+      "version": "30e0f5b2d3",
+      "worker_sha256": "28dc58bc5691a427f9b7daa6120a0ea385835588d4776a4e4617681395ad006a"
+    },
+    "/de/svg-in-png-umwandeln/": {
+      "version": "29067e6abe",
+      "worker_sha256": "e2eda43c0d222baca1420d219660d01173c1d332c373622548f39eb700ac4a74"
+    },
+    "/de/text-teilen/": {
+      "version": "7373854c3b",
+      "worker_sha256": "e4f4c81c0607ac0e0db16e6d80ede048f6795a5be62e9ce19a874db66bd9b082"
+    },
+    "/de/text-vergleichen/": {
+      "version": "b3b5340be9",
+      "worker_sha256": "097da4c8d74bf5a22111487e018ce8579c2b043a1055e27779287354e1c82484"
+    },
+    "/de/ton-aus-video-extrahieren/": {
+      "version": "5d61f875c3",
+      "worker_sha256": "f2471fcf4fed10f4ba488b616f894f5bd88e576f73c53cdd0fef0ac04148928a"
+    },
+    "/de/video-drehen/": {
+      "version": "074ae714ef",
+      "worker_sha256": "55d094424b4391590dd220af7330c789799b0a3390d348595066d19ebac219e6"
+    },
+    "/de/video-in-gif-umwandeln/": {
+      "version": "b8ac4787ca",
+      "worker_sha256": "10b5c900451a0aa75b97a9fa651810cced1f62d5fe6a2127a18684f83fdda787"
+    },
+    "/de/video-komprimieren/": {
+      "version": "65712a5ff3",
+      "worker_sha256": "013c3b325f96623a715d8c91599bedbde1d6dcd6baf677ec178ffdd1e7f9a0b0"
+    },
+    "/de/video-rueckwaerts-abspielen/": {
+      "version": "9a8d39ea75",
+      "worker_sha256": "d97c1551e215299a6a803f0ca17ccc3d020c9f156a2f30f749e16a70c54c3472"
+    },
+    "/de/video-schneiden/": {
+      "version": "16cd063f2a",
+      "worker_sha256": "3233a42560d35c00b30d5afc82d24612e53ccd7a423bc0c8e668ace021bf749f"
+    },
+    "/de/video-zuschneiden/": {
+      "version": "58aac306a1",
+      "worker_sha256": "3d6090806864aa93827ca936ba1bcd30f65c29b785852b59e131bd62c5ae2318"
+    },
+    "/de/webp-in-jpg-umwandeln/": {
+      "version": "76c0ff348a",
+      "worker_sha256": "1b1edb9d004cebdbf1510b94efa8e52b96c20956b5ed14c118c81b8703924a92"
+    },
+    "/de/xml-formatieren/": {
+      "version": "391e46814c",
+      "worker_sha256": "cfb56bf8c79cb44f38ff7d7c81bc2c81790a0647758044e8efb381fdac31c820"
+    },
+    "/de/yaml-in-json-umwandeln/": {
+      "version": "74ee793f16",
+      "worker_sha256": "c3ff2a78dc1bb07bd4186b11e65db08c392cf0f7f01f7bd3d39142bccce2f393"
+    },
+    "/de/zeitraffer-erstellen/": {
+      "version": "b9f9203398",
+      "worker_sha256": "280559c1bf76ea0dd6f48b99e26dc868cb4d9fd8491789cc323966eacc9524ba"
+    },
+    "/dicom-viewer/": {
+      "version": "9ad8c77904",
+      "worker_sha256": "d85baf1a28d0e8b0c8ae1ae5afd147171fb127d551e23903799062da7ecf739d"
+    },
+    "/document-scanner/": {
+      "version": "b00fce202d",
+      "worker_sha256": "22cbe5a64902e5430f46cca6159f8986b0160647ee45413ba775799ff9f40bfd"
+    },
+    "/edit-audio/": {
+      "version": "44fd18333e",
+      "worker_sha256": "424ddecbc310df2f289da116a8d0a304c472b34fc30657c9d6fc5a819f519609"
+    },
+    "/es/": {
+      "version": "54551dd268",
+      "worker_sha256": "e2944ff5c887836cfa5b45d3accf33d41a30820a783c648afc3ccace22a5a9ef"
+    },
+    "/es/analizar-gif/": {
+      "version": "0e559d6a96",
+      "worker_sha256": "d4a0fbe50a54a0c0b9439281193754fea243dc59c707b597614c395ed55088c2"
+    },
+    "/es/apilar-imagenes/": {
+      "version": "921ce2e041",
+      "worker_sha256": "e04dae6376d9241994fda4cda0039fad8ecae8aaf22df8d8350487e939772a71"
+    },
+    "/es/calcular-checksum/": {
+      "version": "5fb54bbe92",
+      "worker_sha256": "11c165f5c3a0dc2406fa4906c39e7f75f675ef7e3c723461e287e213662db62f"
+    },
+    "/es/capturar-fotograma-de-video/": {
+      "version": "58749fc59f",
+      "worker_sha256": "1c5a8711f3e7dfc4af3bac69303cf3b87bfd41d093b3ec340348cb0a9a4fd911"
+    },
+    "/es/censurar-imagen/": {
+      "version": "0267da5532",
+      "worker_sha256": "4bf4aafdfffa9b455b9c72425d774cca0da8f52df4edbfb8a06d4a251608ee91"
+    },
+    "/es/censurar-pdf/": {
+      "version": "9561c81e11",
+      "worker_sha256": "5c9b96be5d4226d41798996e58fef81f8a7f947d9e7bfb314ae21b9bbfef6bb7"
+    },
+    "/es/codificar-base64/": {
+      "version": "23f3b2f575",
+      "worker_sha256": "cfbba575b0942887757c2e1f35f8840a018d035f2709f0100a47459b78c63a25"
+    },
+    "/es/comparar-alturas/": {
+      "version": "0df0937f8c",
+      "worker_sha256": "9e65689056a7dfabef7dbe79dcab57dc7e948bdd9265e605684c6a584b9a45fe"
+    },
+    "/es/comparar-textos/": {
+      "version": "5fe0b36102",
+      "worker_sha256": "9dd8883546764b709a71abb474340f4a96ba4071a6bea970bf258630c43207b9"
+    },
+    "/es/compartir-texto/": {
+      "version": "4e36213ed9",
+      "worker_sha256": "2a5cd24df4dffde5bfbef2b37303cce2674d63de6fdd8f35165da1499b466fe3"
+    },
+    "/es/comprimir-imagen/": {
+      "version": "ac44ef7055",
+      "worker_sha256": "11d3b770927002dd9ec2f948317f121366407b60be0cfce24191bcb9b1ef6b15"
+    },
+    "/es/comprimir-pdf/": {
+      "version": "9666820e9b",
+      "worker_sha256": "d64e253aa31062cbf08d91bc19116002a7d2a565b828a1e8c25ea298bcd296d8"
+    },
+    "/es/comprimir-video/": {
+      "version": "1214a5b863",
+      "worker_sha256": "70900a8290ad65b940a239428be8c7b5d4a392cdbef602ebf559648ec37f2658"
+    },
+    "/es/convertir-a-mp4/": {
+      "version": "5d273df162",
+      "worker_sha256": "b9d7aff81e8a07d4f3ff0f2081c8b23af7a4f3efd91b3d308f4b41b92a5de6c5"
+    },
+    "/es/convertir-avif-a-jpg/": {
+      "version": "4a452f4160",
+      "worker_sha256": "702fdc8643697a1b62329ca78fb1cedb105eb4903b5ff54300b08097e9dde50e"
+    },
+    "/es/convertir-gif-a-mp4/": {
+      "version": "84842e41e6",
+      "worker_sha256": "9e2379a2119e1bac59cede1d5c13d3c5e83f1a9d608fa35f4a3db66c234cba28"
+    },
+    "/es/convertir-heic-a-jpg/": {
+      "version": "ee9270468f",
+      "worker_sha256": "564ac03c74356eda40fe3689cc7b804080e67f50ac6b28526ced2e55951ee978"
+    },
+    "/es/convertir-imagen-a-svg/": {
+      "version": "9cc20a78f2",
+      "worker_sha256": "9dc0cda3c069aa9b801b19a8095dfafe5fd8cfd39d688f1d245ad01792c3bd44"
+    },
+    "/es/convertir-pdf-a-csv/": {
+      "version": "3dfd9f9360",
+      "worker_sha256": "3ed394ce52c277e874eade906bb92fa4c9223d8fe7e1b37feeb40dee4bb23484"
+    },
+    "/es/convertir-png-a-webp/": {
+      "version": "c5cf3b6006",
+      "worker_sha256": "e8058a5da9695c3eed186f24c50ba9954df7d5e34d475f6dceb8d16bd1ee0082"
+    },
+    "/es/convertir-svg-a-png/": {
+      "version": "ad3fce1071",
+      "worker_sha256": "1ff1119118b2ac1dd97ad08995b3f22a9d9adc728db4592cf28e85e7f230d5f1"
+    },
+    "/es/convertir-video-a-gif/": {
+      "version": "fb0fc55aed",
+      "worker_sha256": "a1b0aa1c06f269dffecd233bf8c4fd99501a20f831484156cbd4e71044236fa9"
+    },
+    "/es/convertir-webp-a-jpg/": {
+      "version": "0f7f0c61c4",
+      "worker_sha256": "c925d6fb0d2c16c0eda1f3f27e4dc878a95650c4df03853ee0aeb9fe157f7bbd"
+    },
+    "/es/convertir-yaml-a-json/": {
+      "version": "989bb3debe",
+      "worker_sha256": "1c04f5caca6ebb8ad55afb4649a32801b48c0e9d172531a89d0e5f2ff35e2fdc"
+    },
+    "/es/cortar-audio/": {
+      "version": "7f2aeb141a",
+      "worker_sha256": "b4e2b24711ab96fdab5270eda6ddd87767b0024c4b95beb3ac4913ec47a9a36a"
+    },
+    "/es/cortar-video/": {
+      "version": "a3821af371",
+      "worker_sha256": "bc77c0b525217985e3f8c34c613775666bb939c3e604fde993d67ca7fb33f6da"
+    },
+    "/es/crear-favicon/": {
+      "version": "e4b17a0cc9",
+      "worker_sha256": "841f85402e2b944c485b1160e346d06f1306db75d79acf1b7e9d3a6e1e376eb6"
+    },
+    "/es/crear-gif/": {
+      "version": "63f49c29b9",
+      "worker_sha256": "2165d097ae3cb52b7e9c5040629544340d48833241eef90938aa0865d0f4003a"
+    },
+    "/es/crear-timelapse/": {
+      "version": "be104867c2",
+      "worker_sha256": "eb9498df1ad3ada579540729ec6f3f3e0e1eb16d8f80f38a1f144422e6321124"
+    },
+    "/es/desbloquear-pdf/": {
+      "version": "5731c50512",
+      "worker_sha256": "2a87c52017ffb4e22f8bd81e6366e9118ac50c97a066cbf5d6197aec8907a628"
+    },
+    "/es/editar-audio/": {
+      "version": "9d7aeeb6d7",
+      "worker_sha256": "99639789ebc9cc8448a3c57e3d8df463cc0024ec26db4442a1c49a8d69392ceb"
+    },
+    "/es/eliminar-datos-exif/": {
+      "version": "d50d164a77",
+      "worker_sha256": "8ef1cdf556b47cf4b45817b73eb5cdab843e0f75d5d1475702515f2d493aa4f6"
+    },
+    "/es/escanear-codigo-qr/": {
+      "version": "e326c0ce94",
+      "worker_sha256": "263e0c85a69a6e982cc1f08227ca9335f13e1f037e234767c6c66560c3fe0dd8"
+    },
+    "/es/escanear-documentos/": {
+      "version": "4610e6a266",
+      "worker_sha256": "a6bebb311a44c20142e0b267bbc1defafddcdbf8f72de5d5e5af46ea6f5bbd04"
+    },
+    "/es/extraer-audio-de-video/": {
+      "version": "74c1a3e070",
+      "worker_sha256": "9d8a138e1eab0937a4b94e1d136315d0852778e76aac0806817280961a42fd8e"
+    },
+    "/es/extraer-recibos-facturas/": {
+      "version": "f989373ad1",
+      "worker_sha256": "9eaf32701b4d82cafa04030073672aec2f759fb85d35b59f1b6d0a6bfc885966"
+    },
+    "/es/formatear-json/": {
+      "version": "e0d232c3d8",
+      "worker_sha256": "4a231332340b7135664ad364a19c953e05213b442fcf5eb3441ebc8544e1ab55"
+    },
+    "/es/formatear-xml/": {
+      "version": "a3d4b83739",
+      "worker_sha256": "6946f695add2a5eccf784f44a3864e238bd8cc7c9e375225661f0ee86f5b9367"
+    },
+    "/es/foto-carnet/": {
+      "version": "c8734a6edf",
+      "worker_sha256": "98848ac40bc6dde17329e9f3e1d4869c5b9eaf326c3f6cf0d05c7b63e338803d"
+    },
+    "/es/generador-de-contrasenas/": {
+      "version": "a121b1807a",
+      "worker_sha256": "81be5f0725343e1a74c2e90943a1181cddaa1aedcefdcc80610cd6f3ac987cc9"
+    },
+    "/es/generar-codigo-qr/": {
+      "version": "63119bb568",
+      "worker_sha256": "b356a8dd58989250883d80f6c1a35819d0015f7ec75038896303e93fcfec1785"
+    },
+    "/es/girar-video/": {
+      "version": "e2dcc9a812",
+      "worker_sha256": "c8b6e36c92b49762070adb4eeb1e5c05d40178bc61f3af02e2aab094e24a384a"
+    },
+    "/es/image-layout/": {
+      "version": "116687987f",
+      "worker_sha256": "82ded2e4ca8b26db94171e5381f476ef6249a93da0cb8f04cc977f33ef2b457a"
+    },
+    "/es/imagen-a-base64/": {
+      "version": "9c8469ad49",
+      "worker_sha256": "ea9378a24051a48281dd0a6cdd06ee4136982d7b19083cebc5e8d8fa43fb4f50"
+    },
+    "/es/imagenes-a-pdf/": {
+      "version": "0d4ce50d80",
+      "worker_sha256": "091c6b0ac4d893c9750cc76f60e6ef43ce98dccd1a3ea9addb881ac0745fb358"
+    },
+    "/es/imagenes-a-video/": {
+      "version": "c32ab2b25c",
+      "worker_sha256": "90059ed7b20627266e7592b6ee4fa296b39dbb7b36ad7dbf187f008bef208fe4"
+    },
+    "/es/invertir-video/": {
+      "version": "fec42c9726",
+      "worker_sha256": "0096eec114b1bea510edf2b9ee9f9acc5c84e140c4230e5a70d7c49ea372c835"
+    },
+    "/es/marca-de-agua-en-pdf/": {
+      "version": "0bc194c7c2",
+      "worker_sha256": "a045fb452bd73c35ecd1f4d6dfeb895431fad97a45558e69a0defef906a1d05c"
+    },
+    "/es/proteger-pdf/": {
+      "version": "5b523a3887",
+      "worker_sha256": "dcc1c310b5bec8c31b8e6164ed7a27d1caee047ecc2d7ce9ad2412dcd7767af7"
+    },
+    "/es/recortar-video/": {
+      "version": "f3141f37d9",
+      "worker_sha256": "3e229bcf825fa3714c687e41b278347c47c419baa6b22f87ccaaed3a27efbe22"
+    },
+    "/es/redimensionar-imagen/": {
+      "version": "a3200d468d",
+      "worker_sha256": "6dbeb592260cf2dd8972f18a5062f8d6bd15a6262e59a45c92a90d0c1d43c941"
+    },
+    "/es/separar-gif-en-fotogramas/": {
+      "version": "d9ab69dcab",
+      "worker_sha256": "2574f32a2f98fe67b305e4899b39198dbf948c6853b7f227846513a433d587d9"
+    },
+    "/es/unir-pdf/": {
+      "version": "3aa6b06815",
+      "worker_sha256": "f71bf0cf7949f5586b33545d1c2a2d8642fdbeeff6cb349ad34496d2ab12bf74"
+    },
+    "/es/visor-dicom/": {
+      "version": "a9de0d29bd",
+      "worker_sha256": "8d68d015dd238fdfb37f3197c6cd1d655f3363dd8af0ba9c2e02924aa1a65f31"
+    },
+    "/es/vista-previa-del-perfil-de-empresa/": {
+      "version": "9fa7d8729f",
+      "worker_sha256": "62f1965285bb91941b58c61dc4b5b02cbb9774343bd15cf44d57ee6b2929ba33"
+    },
+    "/exif-editor/": {
+      "version": "a4581f5728",
+      "worker_sha256": "6369b63afe22087f75c9c445714406ecda58142d6ee70f7f84cd65f97a57c6cf"
+    },
+    "/extract-audio-from-video/": {
+      "version": "393b317d51",
+      "worker_sha256": "148ad1156be3404de063f477ee0fb740072278d7fc1acbca533f69dccfb23f1c"
+    },
+    "/fr/": {
+      "version": "9fa30f6b8b",
+      "worker_sha256": "ec48b1b701588ec12e5463d09171b28391b4b997df11dc7dddd30f164879f892"
+    },
+    "/fr/analyser-un-gif/": {
+      "version": "110914efff",
+      "worker_sha256": "c7eaa6c0683d09eea667d3c864acf5151dc9a955a1756158f5dde144e28c0755"
+    },
+    "/fr/apercu-fiche-etablissement/": {
+      "version": "b899945b5e",
+      "worker_sha256": "9ee109a8dcff4e8f2774cc5fd64822c8fe4e4d2dbf45ed57e7500edae7152ce5"
+    },
+    "/fr/caviarder-un-pdf/": {
+      "version": "985c8e472a",
+      "worker_sha256": "c080ae3ee1161c7aa687ddb60215cc0922a03787f6f594751ad638b93f563d29"
+    },
+    "/fr/caviarder-une-image/": {
+      "version": "489b3f2cb8",
+      "worker_sha256": "a7838d2bf47ad71db166e725341ba19c7e557914623bfb49e5c5db6029349769"
+    },
+    "/fr/comparer-des-tailles/": {
+      "version": "7e5093a374",
+      "worker_sha256": "091f3a853a2d8191c349bd817100a44ca44e8e2f5610c9e97b5e0755539a4585"
+    },
+    "/fr/comparer-des-textes/": {
+      "version": "fd10ff7bfa",
+      "worker_sha256": "8b5d5b27b3b8dc366a3acaf8fb5f4ea26002ffce63e18af9b40e790ab44f1807"
+    },
+    "/fr/compresser-un-pdf/": {
+      "version": "3fa0016107",
+      "worker_sha256": "5b7d76bceef13d4517e0f63b8efb9f3d20cc98f2138c7f651e0ddf9e4530a0d8"
+    },
+    "/fr/compresser-une-image/": {
+      "version": "40e208af7e",
+      "worker_sha256": "ac9c8e8556928f13fd0d4d56b98e55221e0fa3dcf77bdd0cddd58fe0f2e86bb2"
+    },
+    "/fr/compresser-une-video/": {
+      "version": "9be2cc2fd4",
+      "worker_sha256": "bd419a4461721d2e0e40610c38e46699f7d6c7f3b01ba33ff791350bb9235f97"
+    },
+    "/fr/convertir-avif-en-jpg/": {
+      "version": "4639819627",
+      "worker_sha256": "4cd99f8123520d65036fe7b698c3a7495c6c097cd039f89b4b9e60f18c0af081"
+    },
+    "/fr/convertir-du-yaml-en-json/": {
+      "version": "1afd6bfebb",
+      "worker_sha256": "2c180b3d164da6f37e505096fd74f58242fac0239cccd074910586882340f5cb"
+    },
+    "/fr/convertir-en-mp4/": {
+      "version": "1f90e6a95e",
+      "worker_sha256": "8e7dc3218277606e64b77f9f0169fdd59130831adf8db3b8aadc4032d8c4a330"
+    },
+    "/fr/convertir-heic-en-jpg/": {
+      "version": "136fc9f352",
+      "worker_sha256": "e597bd3d1e5e2455f2ddcb8b83af603deadbe9276d15193880b515e4f1cd2a9a"
+    },
+    "/fr/convertir-image-en-svg/": {
+      "version": "27872dbbc9",
+      "worker_sha256": "6701bdbd42724128bd5fff4758275ea7d2808b7ea6a62778669ddcaafc15bb5a"
+    },
+    "/fr/convertir-png-en-webp/": {
+      "version": "d7954d34ab",
+      "worker_sha256": "da56019fb98fae9cd09602b77d914fd1741fe349b20c0ccb6fca1313b0ffecc4"
+    },
+    "/fr/convertir-svg-en-png/": {
+      "version": "b44b70873a",
+      "worker_sha256": "f22a174c7e5f741cd408895aa4e07e120669139388b81d25b0d1447731c0ac23"
+    },
+    "/fr/convertir-webp-en-jpg/": {
+      "version": "94f962a437",
+      "worker_sha256": "11cdba4511dfb5e4a0dadeeb23833f5ec85dbcf2f96348808cbf005c083c41a8"
+    },
+    "/fr/couper-un-audio/": {
+      "version": "da02177fe8",
+      "worker_sha256": "b8a1655ebbce2ac4f01ce814b6a7b5ec2795a947c576dcb442c096d2a370b3c5"
+    },
+    "/fr/couper-une-video/": {
+      "version": "78ed782ad5",
+      "worker_sha256": "2ddb1ea2a997d70300ed7cd7910eb8f3aa5f361f934ef3e29a5523078e3d5341"
+    },
+    "/fr/creer-un-favicon/": {
+      "version": "e7a336b77e",
+      "worker_sha256": "0ab49b551a99b720675f4ac215454d25db326632ca9e1fef7946a2fd532920d8"
+    },
+    "/fr/creer-un-gif/": {
+      "version": "892cb55886",
+      "worker_sha256": "b91289908d003f653c99f20badf5caa9c8778d185811431cc1c3570b3bd344fc"
+    },
+    "/fr/decouper-un-gif-en-images/": {
+      "version": "b7842a66fc",
+      "worker_sha256": "19aaa1cb95ddf2e30f00a1636a45dbf24f95af24c9506f8d1fd9e184af64f3de"
+    },
+    "/fr/deverrouiller-un-pdf/": {
+      "version": "b1762d6749",
+      "worker_sha256": "0e87e4a8265903b59ea2334bd70457c5d50ccaa6ceba7bebafad5e1b975bf114"
+    },
+    "/fr/empiler-des-images/": {
+      "version": "f69b4604c0",
+      "worker_sha256": "3558a37ddfc1ac5cb4beb425961e47cfae1ebe08abc29bd34e0400b7f669abde"
+    },
+    "/fr/encoder-base64/": {
+      "version": "caae01a6e7",
+      "worker_sha256": "ebe848cea2acb46c9efc3c80d4d8b6fdc236052a8dccfaf6a4606e0af785bea5"
+    },
+    "/fr/extraire-l-audio-d-une-video/": {
+      "version": "b586bdcd99",
+      "worker_sha256": "2ed5d7cb189b83bd0f6e5ccf26fcaebefd4667cf43b6aad8050198ce79fb4056"
+    },
+    "/fr/extraire-recus-factures/": {
+      "version": "f8fcdbfbfc",
+      "worker_sha256": "2e2f8f571e69f7b378e18853acfd9ee0aee2a67b770384b21d9ae20baa605f58"
+    },
+    "/fr/extraire-une-image-d-une-video/": {
+      "version": "ebc1434cc0",
+      "worker_sha256": "56e0339d912c47ffcc7c6dd4f77c5f17a87b0d59a3b5b9ab424c1a2194babb80"
+    },
+    "/fr/faire-pivoter-une-video/": {
+      "version": "6beb169713",
+      "worker_sha256": "6db91e6f54884661eaa4f36bda46227b1c4a62df2f6aad8cfcf6ebe70f804888"
+    },
+    "/fr/faire-un-timelapse/": {
+      "version": "3ffcebcd82",
+      "worker_sha256": "304e489b62a70c1c98b9b39cc8df15c2fd664606bb86e192b30d082000ee0d9c"
+    },
+    "/fr/filigrane-pdf/": {
+      "version": "3a9aee9ae5",
+      "worker_sha256": "e811311e9d402fe16b5190a9835b6d0cffd20c02ea60d16ca6d1434bc4d601cf"
+    },
+    "/fr/formater-du-json/": {
+      "version": "1d54751bdf",
+      "worker_sha256": "bb4f50da0fa4883defc102905814cebae02a6c1ba65d8443142a0944f3554236"
+    },
+    "/fr/formater-du-xml/": {
+      "version": "5079c5582e",
+      "worker_sha256": "b9852cf7ad001e274ff0faf5df8218d10479f4cc6e15dfbbe6cc65dcab5cfab1"
+    },
+    "/fr/fusionner-des-pdf/": {
+      "version": "b7392dbba3",
+      "worker_sha256": "2deef9dbe5f70135b92f63f1fff7d7406d5d1cc0fb8ea72fb419c6474dc8ec9b"
+    },
+    "/fr/generateur-de-mot-de-passe/": {
+      "version": "d29300bfe1",
+      "worker_sha256": "143bdf4dda24805edd694019fde2ac03a7d20c2d0fcabd7a270bb7d45d909dc0"
+    },
+    "/fr/generateur-de-qr-code/": {
+      "version": "768976b3b9",
+      "worker_sha256": "7a3e456228a7566a551e8820b8679a02a3d1513afe23bdca6b97527162f9a881"
+    },
+    "/fr/gif-en-mp4/": {
+      "version": "6cc5e0260d",
+      "worker_sha256": "d1867363590ba19b833309b6e1b5f037f28e4ec85bd4eef2ab3ccbfccae95654"
+    },
+    "/fr/image-en-base64/": {
+      "version": "8d152a7f47",
+      "worker_sha256": "5271e4516e8749f5938b781074b6bb95e29bc23ab88cb753d0dc175b96b03ea8"
+    },
+    "/fr/image-layout/": {
+      "version": "7815680c86",
+      "worker_sha256": "ee31d2f13f08523527bfa40a1b65b7809d421132ca85c30eda5f3fe8e36057cb"
+    },
+    "/fr/images-en-pdf/": {
+      "version": "fba7355288",
+      "worker_sha256": "a9fda07fcbb3bab3376dcd290a16fbef1b9faa297951f92959ee77edc0494382"
+    },
+    "/fr/images-en-video/": {
+      "version": "4876337e5b",
+      "worker_sha256": "aad1528aada9cbc93c3323536a526f6277c998089d867353d5c51878cc262970"
+    },
+    "/fr/inverser-une-video/": {
+      "version": "3f78ffc6cd",
+      "worker_sha256": "1b9bcde116c8d60415ad0da380a824c9039985a779a9ee6c98adc039f7d4ef61"
+    },
+    "/fr/lecteur-de-qr-code/": {
+      "version": "b96a1f7093",
+      "worker_sha256": "57c799ae600cae1f0e5e35c067e3e767edfc9e0e1fd9a4489354052e0585ef1a"
+    },
+    "/fr/modifier-un-audio/": {
+      "version": "4c8835be3c",
+      "worker_sha256": "001c78443d6eef03552f27997f1a33b74ba080da84403b26d339e3c16ea04aae"
+    },
+    "/fr/partager-du-texte/": {
+      "version": "3c3c8e79da",
+      "worker_sha256": "8cfe057ca684bb553e8d4617192dcb06ecd027dbaab8ad1d439b6ac1f7f9ecf7"
+    },
+    "/fr/pdf-en-csv/": {
+      "version": "583b8e06bf",
+      "worker_sha256": "216a271f4d01496d42abf7a0b312bd9a88473674adc249ef241fb872552cd057"
+    },
+    "/fr/photo-d-identite/": {
+      "version": "b3eb34f621",
+      "worker_sha256": "fa3500a4758d1e5e9d945d5eb4f9f0ec81615d9d051dca1f6dd0e09524539174"
+    },
+    "/fr/proteger-un-pdf/": {
+      "version": "3065db20dd",
+      "worker_sha256": "588eb3e9845021fd3672d125830061f1f326953dfdd73faabd420b0a141acb6a"
+    },
+    "/fr/recadrer-une-video/": {
+      "version": "c057ea169a",
+      "worker_sha256": "16092a2f6a3cd060f152bc7f5d67e91904dc74219e11d87abcf49c717363f12d"
+    },
+    "/fr/redimensionner-une-image/": {
+      "version": "4e03e0fe82",
+      "worker_sha256": "9cfbf10192d3a9df5aa1502724c66418941a3b76e73a569b1615f71f0cd2a8ec"
+    },
+    "/fr/scanner-un-document/": {
+      "version": "7872c0befd",
+      "worker_sha256": "fef7fa7216e7624b635e1225eacf2ce2d142e46bfb2b9acb5cd5ad8b039d0f7c"
+    },
+    "/fr/supprimer-les-donnees-exif/": {
+      "version": "f9ba116a9c",
+      "worker_sha256": "0defad8cdf96bf1d1702aeedaecb931cf79d61a9837a306a0f1a8b6a1770cea4"
+    },
+    "/fr/verifier-une-somme-de-controle/": {
+      "version": "e41019ad24",
+      "worker_sha256": "8bb75fd997d67a2d924bc5c392bbfef9a712e550063559870ba007eb7bee0810"
+    },
+    "/fr/video-en-gif/": {
+      "version": "5e59684ba0",
+      "worker_sha256": "4da9ed6504491b49966319d305ae62b4cce83e637cbe747faaa83ae63fd945f8"
+    },
+    "/fr/visionneuse-dicom/": {
+      "version": "036b586c12",
+      "worker_sha256": "e641edb39ad2d09815b52b3eaa2c6976b8e1c33a245a9badb1f809f523e9788b"
+    },
+    "/gif-analyzer/": {
+      "version": "5e15a809cf",
+      "worker_sha256": "5d0c3d97ead991ff1f78f708334752966215f5831907fc71929a71fff914411d"
+    },
+    "/gif-maker/": {
+      "version": "3b3f659b1b",
+      "worker_sha256": "b93f9cb080c0ad875c6fca4b5232654eabdb5dff62a92ac64fbf56456be9b4d4"
+    },
+    "/gif-to-mp4/": {
+      "version": "bf6e328818",
+      "worker_sha256": "484da08f0c83c6c53d6189f0bf71109fcce245236974f1a725db46aa543afdc9"
+    },
+    "/grab-frame/": {
+      "version": "266c6188e0",
+      "worker_sha256": "1b560ca80b91ec971126212a8fc9c583347ff612763fe80c60b951033d6737ea"
+    },
+    "/hash-checksum/": {
+      "version": "ad22b84d07",
+      "worker_sha256": "19a6853b2c43b77c0896b88167f78fc5ee41697dc309d9d6400aaea2636c5454"
+    },
+    "/heic-to-jpg/": {
+      "version": "fb8b31c140",
+      "worker_sha256": "8205f53344e1c5bb7df90203ee5cfcd5685f476ba8445bbd6b6d596c4c0233d6"
+    },
+    "/id-photo/": {
+      "version": "9464f65612",
+      "worker_sha256": "ac390cef88cace3d35c6e846b074eb6083fdac1aaf219fb5233f87f591d1a6ac"
+    },
+    "/image-layout/": {
+      "version": "d41e148204",
+      "worker_sha256": "98ead716e3784a03c6e402b50bb210166835f5c1f420468e4f927edd23c8736c"
+    },
+    "/image-to-data-uri/": {
+      "version": "f536148082",
+      "worker_sha256": "762e2383f41407b9e93294bc3840c6522e33ec875347bd24fa9386cfd76c650d"
+    },
+    "/image-to-ico/": {
+      "version": "e542d463b8",
+      "worker_sha256": "1f78526528132cd6a3a5a500b27916e85d176a72592c4a46684fe863c9c60018"
+    },
+    "/image-to-svg/": {
+      "version": "e24e08e2d3",
+      "worker_sha256": "b4fce26bf8934a9f777e8ad998a98a4aaaba1a24bca50770667342b01a89b270"
+    },
+    "/images-to-pdf/": {
+      "version": "d6fe539e5a",
+      "worker_sha256": "05c57d7d65da185ba59f13b09bd0c0cb9d069fa8bcfe617d00eb0cc18c55a93b"
+    },
+    "/images-to-video/": {
+      "version": "55ca67cf45",
+      "worker_sha256": "3591182f7edd52f3e6af04479827491da748302222a491e0f2d5e969ca93b0e4"
+    },
+    "/ja/": {
+      "version": "0c1d81185c",
+      "worker_sha256": "ebcd6be408abf738272e13a0e06f98fb5d0ebaccc87f78b73a0dfbe0b341e4dd"
+    },
+    "/ja/avif-to-jpg/": {
+      "version": "4cf576a41f",
+      "worker_sha256": "3d7aa8d4ddf3d197e489770c6be876e73670ea1f35596aa64b86a146058ac383"
+    },
+    "/ja/base64/": {
+      "version": "56af8f645b",
+      "worker_sha256": "aefc24afd2bd4dd3a882cfc6b70697509a55415b0d2f81f786c6ffe84c2bd62d"
+    },
+    "/ja/business-profile-preview/": {
+      "version": "207bf80df2",
+      "worker_sha256": "ac38f1e221c6dac611f7d9154403b92edff74021eab13baaca886dfbc9fcb2a5"
+    },
+    "/ja/compare-heights/": {
+      "version": "29c2c1401a",
+      "worker_sha256": "e06490cc579f4bdb04771cc3fb5465277f3f881d475464dd2d21e24e46520147"
+    },
+    "/ja/compress-image/": {
+      "version": "156da72ff6",
+      "worker_sha256": "36591886d7e110a0e855a967753c7a37734b18cd2f6442c307aa59668afa9a9e"
+    },
+    "/ja/compress-pdf/": {
+      "version": "ce0797ecfd",
+      "worker_sha256": "3787651bc9bed20392bbdd10a83d58c4057e80de50f0aa1f4f3d7532d4238537"
+    },
+    "/ja/compress-video/": {
+      "version": "97fd01e35c",
+      "worker_sha256": "1fb1a4de802b4f2740a2127ad2d2ec36afa7333a2b1e822b7b09365fda2326cf"
+    },
+    "/ja/convert-to-mp4/": {
+      "version": "a03a7bc192",
+      "worker_sha256": "3fe062b2603e47bedd7c7e63d9fcfc4cd305e293a585b34ec291dbac8c898a0c"
+    },
+    "/ja/crop-video/": {
+      "version": "d3c7df9b09",
+      "worker_sha256": "49aeca1d926e7a999647aee9c9c6783bc13373746197d0399949efc818326539"
+    },
+    "/ja/dicom-viewer/": {
+      "version": "1ec0d5f30f",
+      "worker_sha256": "323e7212d19a4581b3b5f265ef7d1c788c0d9d86fe774e506dc0ddd1d77a818b"
+    },
+    "/ja/document-scanner/": {
+      "version": "331396200f",
+      "worker_sha256": "c9e8b59ad01fb6dc22c96d4e24620eb1dd3f7d5d2d5ff9ba5f211601fea5aad6"
+    },
+    "/ja/edit-audio/": {
+      "version": "bf3f3371ee",
+      "worker_sha256": "62ca17001dbba2661a6b4c4bbe1765614802a010adb2a941f1b9b23d4a0b580b"
+    },
+    "/ja/exif-editor/": {
+      "version": "d43df155b4",
+      "worker_sha256": "5423d69c311e258feb23a8b83c564db7bdb6f5c37ece0e414170c62690486aa7"
+    },
+    "/ja/extract-audio-from-video/": {
+      "version": "2bf1a43e67",
+      "worker_sha256": "2095538ec8ed9e43742222cf0b9572afac1755a7204ea32562e88217ceb90393"
+    },
+    "/ja/gif-analyzer/": {
+      "version": "5de2ea1178",
+      "worker_sha256": "4cb96eb71815ad42130d2a847f78521f3d477f9b3b528157cae452e1fef2b40d"
+    },
+    "/ja/gif-maker/": {
+      "version": "e071d95c59",
+      "worker_sha256": "6143ff84da20954ae805ed382899d2fde6e32035d0eb8920f5e018d3d15912b5"
+    },
+    "/ja/gif-to-mp4/": {
+      "version": "2607dc9b00",
+      "worker_sha256": "1f9050cc2d5773f18a81618082a6a6f60857c3533d7495d8d14db5bc6cd9231d"
+    },
+    "/ja/grab-frame/": {
+      "version": "df21ff667f",
+      "worker_sha256": "d0a485c6acd6f6520596b478443550bb3ba59a5f3faf2f229f491fa3221bec9f"
+    },
+    "/ja/hash-checksum/": {
+      "version": "1a238b04ee",
+      "worker_sha256": "0f952897a2187eb700880fcd74e53ea446cfc880fd28cf638e6f8dca0e10d61c"
+    },
+    "/ja/heic-to-jpg/": {
+      "version": "c18ee4df36",
+      "worker_sha256": "273049b51e483bf43e815069e26c029e659952cc59372be7b4e5802b9ad6b888"
+    },
+    "/ja/id-photo/": {
+      "version": "60919af680",
+      "worker_sha256": "b37995ffcd130a0c3f29ec7dbaa8347117dcabf8a6e910798e73995a50087152"
+    },
+    "/ja/image-layout/": {
+      "version": "e1f94ec98b",
+      "worker_sha256": "178a983f1bd7ab59092bf97117d635460d4123c66bb25f55add11f85119fcb0b"
+    },
+    "/ja/image-to-data-uri/": {
+      "version": "1417b9e686",
+      "worker_sha256": "08361e7341a09e244d6da4ced1e72ee53506e414d96f7094a93f10baa0b9e25d"
+    },
+    "/ja/image-to-ico/": {
+      "version": "247d67e758",
+      "worker_sha256": "4b211dc3c262b89f75967dfc871be8266c822325c26cd64b4d5da91b3553b426"
+    },
+    "/ja/image-to-svg/": {
+      "version": "ebd9942098",
+      "worker_sha256": "7ea909917f6c019ea6b972c4262f56fdc2cafe65c408f6bbe19db0523ea20261"
+    },
+    "/ja/images-to-pdf/": {
+      "version": "c9a437480e",
+      "worker_sha256": "fa6eb977ff0620845c4aa1714922cebadc5c9dbfe20e2f6895ae3bb1af1d79b2"
+    },
+    "/ja/images-to-video/": {
+      "version": "1ec73ffbdf",
+      "worker_sha256": "da6578664c757811efc55d23ce606f6bc2de65dc5b53c3349f6787dd73d6d23f"
+    },
+    "/ja/json-formatter/": {
+      "version": "7639bd2044",
+      "worker_sha256": "a41e27a30c83b35c81d363cd7e9d2230df9bfcc13903e31ad80555d17569c4a4"
+    },
+    "/ja/merge-pdf/": {
+      "version": "1ce7d16aa6",
+      "worker_sha256": "f02e7ec0c32e27085834a3179ae7925bf3d28a5cdb02e69b637894af136d1705"
+    },
+    "/ja/password-generator/": {
+      "version": "a994474f45",
+      "worker_sha256": "de61d9e967f28dcf1831728f0eddd9e96996720f8fd4d016b707323f9fe5fa21"
+    },
+    "/ja/pdf-to-csv/": {
+      "version": "526fca4424",
+      "worker_sha256": "c803fb2c3cfd079982d7b2bfa87d34a7af76428142ed763e44b09dc2c744ec2c"
+    },
+    "/ja/png-to-webp/": {
+      "version": "2df118814b",
+      "worker_sha256": "8b341ffa0fe60bc82eab7559b73b788218d73b3dadb19d35f41f25904042e77f"
+    },
+    "/ja/protect-pdf/": {
+      "version": "49d04c77b9",
+      "worker_sha256": "075c9edff8277085649b977d7d4668a03f57c87a3ce0311fc47d7a39c164cc00"
+    },
+    "/ja/qr-barcode-reader/": {
+      "version": "f8b8e1aba1",
+      "worker_sha256": "f28fc5f8ac7672aaf731e1b5cf3642a3bf3bfa418c30f023e1b3ede2ebece252"
+    },
+    "/ja/qr-barcode/": {
+      "version": "799f867046",
+      "worker_sha256": "5fea1cdb92f26a54f07aa09ff58753e267aecc5bacd5fd6ac1da90f123d08db8"
+    },
+    "/ja/receipt-invoice-extractor/": {
+      "version": "460be5e910",
+      "worker_sha256": "2cd0fe65739441304692c6a30479169b8269bff43dd640ee018870685413c18f"
+    },
+    "/ja/redact-image/": {
+      "version": "60449340dd",
+      "worker_sha256": "70173be5fdd3455d09cf000d658fa9e4048ac0cbe1caf5ddbcaa6910a537e14f"
+    },
+    "/ja/redact-pdf/": {
+      "version": "4fa952e6da",
+      "worker_sha256": "080f6bd66a78c2aae91a48ba91825dbdf1079ff93875ab7caf77d280259aabc6"
+    },
+    "/ja/resize-image/": {
+      "version": "ab3ab6aa33",
+      "worker_sha256": "07f679cc779372a16d926f3c925f1ff619093e8752c7fef1bcfa506ed6101644"
+    },
+    "/ja/reverse-video/": {
+      "version": "3cb311d6f4",
+      "worker_sha256": "99c82813fc2d334426b8e589d29a59d1a85c9822597005eb149da49283d748b6"
+    },
+    "/ja/rotate-video/": {
+      "version": "4988490582",
+      "worker_sha256": "83dd9ac2c90014394e4d75dfa2041ed34a06ec0fbbaa6fc9eb42fde25362f96a"
+    },
+    "/ja/share-text/": {
+      "version": "53c68df462",
+      "worker_sha256": "325db9822663097fbf084e7daf4529feee1e4f922f8b8e52d8e3b475ecce94d3"
+    },
+    "/ja/split-gif/": {
+      "version": "4b5fa20f73",
+      "worker_sha256": "7fd96826626083ac7a799efaa1ca29a3122f0c7b75195be56cf42244ad575cbf"
+    },
+    "/ja/stack-images/": {
+      "version": "90955160d9",
+      "worker_sha256": "95e8d6b0100018ce06c483afc2d1d873a37935ef9feeb0ab3c48e832219fbd3c"
+    },
+    "/ja/svg-to-image/": {
+      "version": "d8885f8ce4",
+      "worker_sha256": "94ba8f27afd0b69433b8ccb331fc465d4e086f229edaed88fb65120bca532c8c"
+    },
+    "/ja/text-diff/": {
+      "version": "7599e7cfa7",
+      "worker_sha256": "93a99b9687a8b9bfe42b6f169bf80a549f608f09c44b1cf036f14fa9bfed6dfb"
+    },
+    "/ja/timelapse-video/": {
+      "version": "2a75b38d53",
+      "worker_sha256": "a49bf495967845fc4307024166ed9ab36dd3a3b1f1703e332e4fbc221eca5fea"
+    },
+    "/ja/trim-audio/": {
+      "version": "80e3ec5496",
+      "worker_sha256": "23db8955c5ba89db03af43acc8ba6f5c0a7e75e782ee684f44432c04d74bcc38"
+    },
+    "/ja/trim-video/": {
+      "version": "23ad839ad4",
+      "worker_sha256": "9a3472ec2ef540efd58ec123827b3128fa06f49ba5213132030762c0c48c700c"
+    },
+    "/ja/unlock-pdf/": {
+      "version": "371f40de60",
+      "worker_sha256": "2675086f4cec8fb63b4058051a4f3c6bd58afe4ee4e04563f965dde12f07c61f"
+    },
+    "/ja/video-to-gif/": {
+      "version": "241f57607d",
+      "worker_sha256": "25dae9320f46295c628b6401a2e7a46f02f3f97eb627e91692e36e138cde293c"
+    },
+    "/ja/watermark-pdf/": {
+      "version": "c5cd6e7ad2",
+      "worker_sha256": "e0e586632b5b99aa61dc654775cbb670f79633b27c27f67ce8260b806b06d4f8"
+    },
+    "/ja/webp-to-jpg/": {
+      "version": "968ac0704d",
+      "worker_sha256": "d66f8a5f260befc35b580c9970ff34b160b5ab610ca7d6e1e46d5b703c7c0abc"
+    },
+    "/ja/xml-formatter/": {
+      "version": "33952dbcd4",
+      "worker_sha256": "4a41d07f9feb95786efd5c4c2cea317215faff3d63603f303e1da701c66169e7"
+    },
+    "/ja/yaml-to-json/": {
+      "version": "986bec93ec",
+      "worker_sha256": "175cb46ceb6bcae47ada51575aeba58ba88c4f0e1d56a269a4f06587e4d6a377"
+    },
+    "/json-formatter/": {
+      "version": "bff1fa4c0c",
+      "worker_sha256": "c4969606de654d4bcc170ed0538d9a45bdda01915c55c7e6edc6c7d50e777c3f"
+    },
+    "/merge-pdf/": {
+      "version": "7c6e741281",
+      "worker_sha256": "106a47ca9d8dcc482e05e3ccdca3a44cfa46fda9f7cc79c5dea0ef4a396e4491"
+    },
+    "/password-generator/": {
+      "version": "881b430619",
+      "worker_sha256": "72054d502ef32e09d698844a967dcfcca163268eec6a14e1c2d517d7b53ca040"
+    },
+    "/pdf-to-csv/": {
+      "version": "15bad5ac61",
+      "worker_sha256": "6a77bc83be8e90d38b0d0d5bb76c53cf1caf489eec4c9dd15ebc77c0b697e119"
+    },
+    "/png-to-webp/": {
+      "version": "0c85c4bfe7",
+      "worker_sha256": "10b0beda81cd18003ad7f9b796d853f274e26d4ff87a3d1ec27e1a5f8b917b5c"
+    },
+    "/protect-pdf/": {
+      "version": "8d0f01f21d",
+      "worker_sha256": "3f4f8ea58ba1522f5d644a53e82a0fc347e1350a3fd33faa27239546c320dc34"
+    },
+    "/pt/": {
+      "version": "b888896e06",
+      "worker_sha256": "4904a1abaac2617dfc9db5485daf3a96b3c2ab2bd62665af1610324a5b7370cf"
+    },
+    "/pt/analisar-gif/": {
+      "version": "6daeb3f5fa",
+      "worker_sha256": "dcc18bfca7db2f6168b3ca725c9d64806b5581374a686822cf7be76b1f02c827"
+    },
+    "/pt/aparar-video/": {
+      "version": "238c19fcc6",
+      "worker_sha256": "55728ecd4f32682d5102a2efb8388b10cd59aed41acdf44f4e1ae37937d8e733"
+    },
+    "/pt/avif-para-jpg/": {
+      "version": "660515d26f",
+      "worker_sha256": "297328e8197b3b2c9b5541a7079737e8b7245c58b17d1f54aeb0ec0c0cd9cb6a"
+    },
+    "/pt/codificar-base64/": {
+      "version": "0f8191dcd6",
+      "worker_sha256": "8906cb1fa9635cbebc3a7844057ce0932cea13b0a3d4b1de8ee13724b00be5ec"
+    },
+    "/pt/comparar-alturas/": {
+      "version": "aa81a6a2c4",
+      "worker_sha256": "b6290f2572a54ab3f5591f3367efe2ef886ba00403be216c1c0166fa703285db"
+    },
+    "/pt/comparar-textos/": {
+      "version": "a503f6c5e9",
+      "worker_sha256": "8c615ce0e6c5ca7d86225d40f7eaa6c31fba96964881865c406b95bb6ac7cc93"
+    },
+    "/pt/compartilhar-texto/": {
+      "version": "4fca1eb44b",
+      "worker_sha256": "e5015ff5f6255d0acd254c55fba599af62faf0cc41edf3b3d4617e7a9f605a08"
+    },
+    "/pt/comprimir-imagem/": {
+      "version": "aa49ba3f94",
+      "worker_sha256": "a4fcdf8511397a4c49c59d09ee5fddb90d3a62820dfc63f80c72d0fd14b92d4b"
+    },
+    "/pt/comprimir-pdf/": {
+      "version": "2e667b9cfe",
+      "worker_sha256": "b07c1a37104ca69ce064958f92c3460f4d4045567a7de11d1996d1a8ddd74516"
+    },
+    "/pt/comprimir-video/": {
+      "version": "1316dde400",
+      "worker_sha256": "71d914a550b5feaa91cd39b0ccaf95f7995ab0ca3bce23c63c844e454a2ac66a"
+    },
+    "/pt/converter-para-mp4/": {
+      "version": "31dc9d49d4",
+      "worker_sha256": "5a16f92757b8cc72bc9fad83490bbf2568ba7a2632129c0eac3b1bc97544f23e"
+    },
+    "/pt/converter-yaml-para-json/": {
+      "version": "85cd435460",
+      "worker_sha256": "db40f929a6b9dc62e1f46b0fae3e5bac601ee4053e8514884fd17e7650bfe845"
+    },
+    "/pt/cortar-audio/": {
+      "version": "25827916c7",
+      "worker_sha256": "8371386c9cd44f7b98926fb32a9b10e224b2dbcb00a318d795f7f4bc4bc3015b"
+    },
+    "/pt/cortar-video/": {
+      "version": "b213ef70ee",
+      "worker_sha256": "c1289e21fac6ebf814d12596a72b19f625e172ba49e3dfe591aba09364a3fcc9"
+    },
+    "/pt/criar-favicon/": {
+      "version": "31324990cb",
+      "worker_sha256": "a599e3b4a19c68201004ae1edf474c6b5519329fe67657d0a5fda3c3b0794bce"
+    },
+    "/pt/criar-gif/": {
+      "version": "b59a2dcd81",
+      "worker_sha256": "6bd8662a49c9358992a4e6b702be0b6cb47e98ff6cb9301e5077dea264e5a1a4"
+    },
+    "/pt/desbloquear-pdf/": {
+      "version": "8099936764",
+      "worker_sha256": "3a75b1cc9c21c43d72b7096db98d827a851edc66a83ef21f60c635d07139d56f"
+    },
+    "/pt/digitalizar-documentos/": {
+      "version": "e81a3e0076",
+      "worker_sha256": "be06dd88333f4e187121c5138d6be68b887a237424ab73fb5065ff71062c75bb"
+    },
+    "/pt/editar-audio/": {
+      "version": "660a230d7b",
+      "worker_sha256": "d732fac46a851871365cf908e0ec96b0da2afb7d125f5de6e9ce6a267f3d8f18"
+    },
+    "/pt/empilhar-imagens/": {
+      "version": "bc060059cc",
+      "worker_sha256": "fc5661874837e38a74b2aa1b2b8e5fbb66c9bca53fa02fe844d5a2cc6b5e0f3a"
+    },
+    "/pt/extrair-audio-de-video/": {
+      "version": "ec0eedffdb",
+      "worker_sha256": "d0b3f8f983683842c1479a5a8bb38858b4226acf4c91281e32c4128df4506e74"
+    },
+    "/pt/extrair-quadro-de-video/": {
+      "version": "4a2e103f36",
+      "worker_sha256": "725b583761bdf167a813e61c4ea6c99aab785e53f06ee4e10a55b444ee551911"
+    },
+    "/pt/extrair-recibos-faturas/": {
+      "version": "7023c020e0",
+      "worker_sha256": "dc8270979adcf66cc415f0909176b958c6a3a7866a6865d26a71ab91fcd9fefb"
+    },
+    "/pt/fazer-timelapse/": {
+      "version": "d78174ec21",
+      "worker_sha256": "cdffbc9416571ea6405ebbe903a6612d214f18f93bd42d30a9c1ff815c1a399f"
+    },
+    "/pt/formatar-json/": {
+      "version": "6ba2e0bdf1",
+      "worker_sha256": "beb6de9502597005893b148d9e0fd5b75f7661da06f073d49eba424ccb2e9bf8"
+    },
+    "/pt/formatar-xml/": {
+      "version": "bb1a39ba8b",
+      "worker_sha256": "f8198866747fda2c58abe672a9ea4aebec38278c35a184b9c60b7ca8b0d74d68"
+    },
+    "/pt/foto-3x4/": {
+      "version": "92696f40c7",
+      "worker_sha256": "0d5315dc6bd1e76acc32407e2a16234d2632aa91cd4f29d2cc5a3a50c62bbfdc"
+    },
+    "/pt/gerador-de-senha/": {
+      "version": "7384d36015",
+      "worker_sha256": "3fd87fd22f1a47242aeafc8894bb63b5a9edf2baceec6deeef096e3c75e1bc2c"
+    },
+    "/pt/gerar-qr-code/": {
+      "version": "114d0e551f",
+      "worker_sha256": "1e8de2ef350bc29b24ee1fb4c2086668c49d7678a9ab1e65996754efeb19b8fa"
+    },
+    "/pt/gif-para-mp4/": {
+      "version": "b70f550d3a",
+      "worker_sha256": "8aa54ee2249f42c9298bbe71b2c5dab0b6f275b6a34caf5398d5bec202cd9857"
+    },
+    "/pt/girar-video/": {
+      "version": "9b9993bdf6",
+      "worker_sha256": "f0ed3910243d6773358a17b58aa4a6e830fe510cc568eb26ae8b6029a66b00d4"
+    },
+    "/pt/heic-para-jpg/": {
+      "version": "4537b48261",
+      "worker_sha256": "9defa4bb51b0087d3e95248c986423ab6c6425283a8475e1fadd233501ab7c36"
+    },
+    "/pt/image-layout/": {
+      "version": "11dd3c51a0",
+      "worker_sha256": "fab7d2f7c5f51a9001afa4b1b1cab2a9e79c1fe37bd703e0131e3f3b867c966c"
+    },
+    "/pt/imagem-para-base64/": {
+      "version": "b93db2c2d6",
+      "worker_sha256": "f482bfbe7d60d0f9b82513f76ac90b44b7b3e2260f3c42b92c51b34a84e32d50"
+    },
+    "/pt/imagem-para-svg/": {
+      "version": "b1564648ef",
+      "worker_sha256": "28f703c2832920e8512c61bed3d29f2f0bbf718f41683aea9de7f652a2f48f55"
+    },
+    "/pt/imagens-para-pdf/": {
+      "version": "4a4667aa71",
+      "worker_sha256": "8148004dc1e62009a9055ae92eecfa6c8dbc838eac7f6e3bcd46482ed5c2ffb4"
+    },
+    "/pt/imagens-para-video/": {
+      "version": "8ab5972cb8",
+      "worker_sha256": "81a5ab6ef547e5a611d955ab9562eba26a49cb0584f459f8d700ad34c9e050f3"
+    },
+    "/pt/inverter-video/": {
+      "version": "ff3a9dc302",
+      "worker_sha256": "27e5eae386b64264c4787995a173e1f4f3c3fb989f7e253d192ffa161b1d4879"
+    },
+    "/pt/juntar-pdf/": {
+      "version": "c9d0075393",
+      "worker_sha256": "c9a1948db65bdea136f5f8a614ec68b80d03c8e6d3b1bd94fc5efba5f6ac200a"
+    },
+    "/pt/ler-qr-code/": {
+      "version": "d7f6ae2ddd",
+      "worker_sha256": "f70f86cd429a332299200abf181c4e99b7af6fa2c727fef7c18431d68c81f190"
+    },
+    "/pt/marca-dagua-pdf/": {
+      "version": "297083633d",
+      "worker_sha256": "1f4f6dad36d078edf39438f18f5829c0e150b30013f373a1bd47ee3d17f6bad7"
+    },
+    "/pt/pdf-para-csv/": {
+      "version": "d413cf4b71",
+      "worker_sha256": "d552b172fbdfad7c7388582e570efa37044978564628171312c3016d85629876"
+    },
+    "/pt/png-para-webp/": {
+      "version": "aa135b1827",
+      "worker_sha256": "cd17fca3ddd952e619ad8dc9b2f410e7c089fb786185463296b64221a86f1a11"
+    },
+    "/pt/previa-perfil-empresa/": {
+      "version": "a2529fa7a5",
+      "worker_sha256": "31706aef32133e68a1010816e0dcf1b5197a3c6c2faeef767a3b69c47911b434"
+    },
+    "/pt/proteger-pdf/": {
+      "version": "1652953a2e",
+      "worker_sha256": "7a9b1428fd2b1bd99871e9e4ec46da12f1b633613627605c3d91735ee0809942"
+    },
+    "/pt/redimensionar-imagem/": {
+      "version": "ec57f803d6",
+      "worker_sha256": "e5f8260b62cd3639ddaf28cc09a72a0812c056b6a9b8b6a49491b040ab20cf16"
+    },
+    "/pt/remover-dados-exif/": {
+      "version": "ee524f2767",
+      "worker_sha256": "27842a32a88800f444283ed5c54cdb7846672bad3e51c1715702d4253fe9a19d"
+    },
+    "/pt/separar-gif-em-quadros/": {
+      "version": "b63b511fcd",
+      "worker_sha256": "0c9ae55ab5f635d7940128e5920f07a022b8e2082055968aef0d8c0b1592da24"
+    },
+    "/pt/svg-para-png/": {
+      "version": "dfbc95fc5c",
+      "worker_sha256": "c5fb7544e09ca72d0fd972ada8dac0f2c0cf115469d56f8007a0c8bb793f4913"
+    },
+    "/pt/tarjar-imagem/": {
+      "version": "89931868e7",
+      "worker_sha256": "84fb8be31cc76876c3e1b81e64b8406b458bf6a9afd0e00c2af36bddba8194c0"
+    },
+    "/pt/tarjar-pdf/": {
+      "version": "bc59cbb73c",
+      "worker_sha256": "86c09b16a860d3f6fea595c62f40c09747975d064e386974e3f049c7c2687d47"
+    },
+    "/pt/verificar-checksum/": {
+      "version": "e2456ad23d",
+      "worker_sha256": "f763c98c2805869fd9cec6d42249deecbb209aefbad8cfc795a3f1f3af77720b"
+    },
+    "/pt/video-para-gif/": {
+      "version": "0e268c3548",
+      "worker_sha256": "625f172cf7941b9b3976ba1d46dbdc5bf8122335de8ce451d0b4433f2b790b4b"
+    },
+    "/pt/visualizador-dicom/": {
+      "version": "08a5ccf282",
+      "worker_sha256": "8040897b1044ad69d7ab952a7ad9ca8e5bb437e84b1619b449824f2838205d9d"
+    },
+    "/pt/webp-para-jpg/": {
+      "version": "a3026e5605",
+      "worker_sha256": "ad6771e473c92740a34ebfa28aa0ad5627db641ed7c27a9e2672e9f0b6a81784"
+    },
+    "/qr-barcode-reader/": {
+      "version": "e8a26a2db8",
+      "worker_sha256": "f26df94c1c926ea12cac9b6d28ea4b6e779c716f54c69e3afa771a2eecf314c2"
+    },
+    "/qr-barcode/": {
+      "version": "422c3962c6",
+      "worker_sha256": "26ab21277cbecd44393f563b51b6143e2c499eed46b3c7d6848f5e4b90e7433c"
+    },
+    "/receipt-invoice-extractor/": {
+      "version": "cf35daed13",
+      "worker_sha256": "ba6ae9bf634675b9dc985cd2e93ffdd20bdcc417bc2dca90c27c9893e8de09fd"
+    },
+    "/redact-image/": {
+      "version": "d81607fefe",
+      "worker_sha256": "73ba6f7e8c4f21ac34240c61b6b11d34b003085e15ee35dfd891e20933b02627"
+    },
+    "/redact-pdf/": {
+      "version": "be97ca3d2a",
+      "worker_sha256": "287073bb87946f349414177285289f0d246d4229c34ba236abfaee94f4363a58"
+    },
+    "/resize-image/": {
+      "version": "4d2666394c",
+      "worker_sha256": "2cccb8c005a389fe3e3f90fa11d319ef119674aaf5092015c62a04743dcfacb8"
+    },
+    "/reverse-video/": {
+      "version": "a63efb77b3",
+      "worker_sha256": "aae448a548dd632e031cb0d69162abfb54b9d876800a17f012a83dfb01b137e9"
+    },
+    "/rotate-video/": {
+      "version": "77ab70932f",
+      "worker_sha256": "b69ace0a9212d0bcf16c0816e9f97a5017518a392686c6661d75014cba0afadc"
+    },
+    "/share-text/": {
+      "version": "ce2db2298e",
+      "worker_sha256": "6ace4ec190dbb91aeebd10a020744d77cc4e3e5c3e6da5f4c66ea697e766fed0"
+    },
+    "/split-gif/": {
+      "version": "d527baf5c5",
+      "worker_sha256": "b4361eb87d285b188f246eead13d2c8f684d14af3f921b8ac938888ee62b8fdb"
+    },
+    "/stack-images/": {
+      "version": "952a3b84d5",
+      "worker_sha256": "e3014daa7b89cd6d42d1dd9a4c939a90c09e3b5aec2a1d36e9d99ceb7dc506e2"
+    },
+    "/svg-to-image/": {
+      "version": "7344c75f55",
+      "worker_sha256": "1eec64d9e8d07f4ba599fe9fa2c9b15176663d64557a71636f4708ba2eafdadc"
+    },
+    "/text-diff/": {
+      "version": "35c394e1f6",
+      "worker_sha256": "4ee06909fac552cc47f85a24aeec5475058db0b0011cab9a539a5671a60c63b5"
+    },
+    "/timelapse-video/": {
+      "version": "a7d4dd44b8",
+      "worker_sha256": "627daed8e5bab852ae9159f75043e26ace92f1b1015a8a85b4905a815dd26dca"
+    },
+    "/trim-audio/": {
+      "version": "2cfe512561",
+      "worker_sha256": "42b1c05ca71d12902b1d78ea488150fc805f83eba71bdfc1072b6eb0a4679173"
+    },
+    "/trim-video/": {
+      "version": "d59988432c",
+      "worker_sha256": "3a4a13d19c49deb88181b954642e36178575cd9f36fb8206ff10e7632c8e6806"
+    },
+    "/unlock-pdf/": {
+      "version": "611d6352fa",
+      "worker_sha256": "4cf612870bc56e09383c571155c4992538c37eba4529216d07f4ede9db8bc337"
+    },
+    "/video-to-gif/": {
+      "version": "eea4f9dd8a",
+      "worker_sha256": "0bdaf80ab423d0a8b51f8b9d13b9a1b5338a552ecb514d4c19b7fd3bd0267008"
+    },
+    "/watermark-pdf/": {
+      "version": "af0348254b",
+      "worker_sha256": "6544b61d43898f65aeea85f7674fa21f95922ff91772db9daf8ad449b8b918b7"
+    },
+    "/webp-to-jpg/": {
+      "version": "9830ec9408",
+      "worker_sha256": "dfb374d923bdbe04b8a6a49c18f649e103b30946a15eb10ef828c9de8a6fdae5"
+    },
+    "/xml-formatter/": {
+      "version": "002119b7f4",
+      "worker_sha256": "a360159f976416ad0fae1208399cb172f5ba78fd953ccfea29da78486ef5e55e"
+    },
+    "/yaml-to-json/": {
+      "version": "c212ac2b8d",
+      "worker_sha256": "0f40d1f0d37e3b734d3037a5252d6c70e56349980fe3439222d1a08597ff3364"
+    },
+    "/zh/": {
+      "version": "4580adeec3",
+      "worker_sha256": "fcd34b9178cccee260b69b317647f700dce0e973720458b8a7a10c3620ba772f"
+    },
+    "/zh/avif-to-jpg/": {
+      "version": "bf4672a92f",
+      "worker_sha256": "64024454e64db7346dad33623935e3a951d842afec5d18881a47240120fb67b6"
+    },
+    "/zh/base64/": {
+      "version": "5bcc5b4e9e",
+      "worker_sha256": "74f5f5026412b0c0c03bdd58bff9a9f3db24186c23b729467adb1ac2440d1705"
+    },
+    "/zh/business-profile-preview/": {
+      "version": "45f64abc2a",
+      "worker_sha256": "83c4a07fe217f2ce92b7f8d33b965cf576f7a8a118b0cb97bc36227b2db69dc1"
+    },
+    "/zh/compare-heights/": {
+      "version": "556399cdcb",
+      "worker_sha256": "eff1dad8389d484a66d5e955d72d76bb2bdbf5c1b75aa90e5b7b08b68473f2b4"
+    },
+    "/zh/compress-image/": {
+      "version": "f64d66c286",
+      "worker_sha256": "89ecae7fedf9cbed7c22273ceebf131acb8684fc3e1690fb00c301a93d93798b"
+    },
+    "/zh/compress-pdf/": {
+      "version": "9292514c6e",
+      "worker_sha256": "86c895649c3acae24b1a6b095d10eaf779382e485169fd14b47ba97b58defd63"
+    },
+    "/zh/compress-video/": {
+      "version": "d7241c3ab9",
+      "worker_sha256": "46dc229a40a3e911cea2c7596d39aca69087218b86ee5d63a8709082764071c3"
+    },
+    "/zh/convert-to-mp4/": {
+      "version": "e86ef19a7b",
+      "worker_sha256": "d6a66428da001b939f73066e3c82d9287a903e3f5f9b8b3825056507846af2af"
+    },
+    "/zh/crop-video/": {
+      "version": "71562e4f1e",
+      "worker_sha256": "7a5c8b2342a085952a45144e888b755d17ca07ce9e75b097e843ccf4c61a6636"
+    },
+    "/zh/dicom-viewer/": {
+      "version": "beef1f4116",
+      "worker_sha256": "e4597ac762b173c129e94ed185a14476056ffcf09d275a125a94431df9c590f0"
+    },
+    "/zh/document-scanner/": {
+      "version": "905c434a20",
+      "worker_sha256": "b533bd129a267dc7901a587d8e27795c275f83b810d293b5e8a675b09590ff22"
+    },
+    "/zh/edit-audio/": {
+      "version": "70483fef32",
+      "worker_sha256": "5bf12db73dab27f4f5199964694c8b7c75f1963f6cd453e8b215fcd2cc436e0a"
+    },
+    "/zh/exif-editor/": {
+      "version": "f728045580",
+      "worker_sha256": "bc4ca4063ff822322000ca73438af7a0cf2bf533075b727e220723650caf23ed"
+    },
+    "/zh/extract-audio-from-video/": {
+      "version": "fca86458f2",
+      "worker_sha256": "7c57c7ab2f08d9bfad43c9d09ff558c37a46527dc3253cdc23bed3f25ef06eab"
+    },
+    "/zh/gif-analyzer/": {
+      "version": "c003feeed2",
+      "worker_sha256": "24c925ecae8517f0da00ca9a90c201a2c7b3fe241589bdf11cc60c16601cbda3"
+    },
+    "/zh/gif-maker/": {
+      "version": "9675d09d54",
+      "worker_sha256": "badf54ec8856b5aa64299abf0b5eff1b0de5c8dfa78fc11c2aa47325b869f4e1"
+    },
+    "/zh/gif-to-mp4/": {
+      "version": "d1a697cf6b",
+      "worker_sha256": "c9beb2855a1318b7a6a50ae57bc0b5d083dffc9ba547b614e5069cc98bbf5a92"
+    },
+    "/zh/grab-frame/": {
+      "version": "c43ef99a50",
+      "worker_sha256": "20271cb3df2118954698fdeac1fdadb7ea21e4e81b81569760b78f46f11f7d05"
+    },
+    "/zh/hash-checksum/": {
+      "version": "f8093fff73",
+      "worker_sha256": "97354e8b0717fff94ed46c5f38f6a2ba07b0e7114cd38609ca90b17593d99b3e"
+    },
+    "/zh/heic-to-jpg/": {
+      "version": "89951d6def",
+      "worker_sha256": "923a438915fae6a2a8e1051b62c3f18ff28654071179ccddefe9632fba99f8ab"
+    },
+    "/zh/id-photo/": {
+      "version": "292230719e",
+      "worker_sha256": "5984bf5b69373b04b121f7419a99bfe7d5a2539f125e4ec9677f4d5a75c98f45"
+    },
+    "/zh/image-layout/": {
+      "version": "16963387ba",
+      "worker_sha256": "d2b48ffde814ad3d7d77df0b6ad240a5770949a0873bc9e05e172da025bc8130"
+    },
+    "/zh/image-to-data-uri/": {
+      "version": "fcc1f18a8c",
+      "worker_sha256": "39cee8efca1fd3b27518588cdacde94a4f7fcaa167b1a6ee53d31428ce520423"
+    },
+    "/zh/image-to-ico/": {
+      "version": "83fed1dcbb",
+      "worker_sha256": "f907f85b10869c0a5eddc8f9f939ae5f1f7298eb6723996d022ba3ba0ab72448"
+    },
+    "/zh/image-to-svg/": {
+      "version": "4cf3eb8023",
+      "worker_sha256": "4640e3c4ce83c24854cc7a293c560e65b026cd3e4f96825d5ea0633958911adc"
+    },
+    "/zh/images-to-pdf/": {
+      "version": "2ca35cb03f",
+      "worker_sha256": "9f206c3d08d68814453c55097076130686e4608ccc63cc71eb9d1b0ed12717af"
+    },
+    "/zh/images-to-video/": {
+      "version": "e688afebab",
+      "worker_sha256": "967d869de1d575c1f5b0bce5173f7183af93895ff7b9b323b1dddedafcf75669"
+    },
+    "/zh/json-formatter/": {
+      "version": "64b2df448b",
+      "worker_sha256": "299ae7cbe9c36476c9950a58324a9b11e9360579dc5c8c201ac59095fec292f0"
+    },
+    "/zh/merge-pdf/": {
+      "version": "cb74d958df",
+      "worker_sha256": "ab5c1dcc90393ea148cb8250c005cac9bcf1a0385caeee91143be4f91419f73e"
+    },
+    "/zh/password-generator/": {
+      "version": "54d05006ec",
+      "worker_sha256": "eda5d8fd154742e5efba2d20f50080ac2098151697fcc5108984107c2a126b0e"
+    },
+    "/zh/pdf-to-csv/": {
+      "version": "512b1e0d9b",
+      "worker_sha256": "d43e7f235eba3367831f5761e62e07fc1aadb17891780db01ee64f7458f03596"
+    },
+    "/zh/png-to-webp/": {
+      "version": "d41734b0a4",
+      "worker_sha256": "628eed0f1ae647c44d011134d813554c2e3cb1280bd3910f7b51240c553d9f9a"
+    },
+    "/zh/protect-pdf/": {
+      "version": "bc7257cb4e",
+      "worker_sha256": "c11093951eea4a698066d94d6f1a1c3a6b7ccd25676940a5eba5bedce1075c16"
+    },
+    "/zh/qr-barcode-reader/": {
+      "version": "ad23023e1f",
+      "worker_sha256": "90cb1997d2e0fcd03c4fa7012dda9700bc68db893f1ef4cc7737671643ab3b0f"
+    },
+    "/zh/qr-barcode/": {
+      "version": "30e9310a31",
+      "worker_sha256": "e75334a418fbcb8cbe7b69f797de1c38badeb29ede0d90fbaa7272f5f30c4763"
+    },
+    "/zh/receipt-invoice-extractor/": {
+      "version": "1bc00130ac",
+      "worker_sha256": "6ee46ae5b6a093e5f390fd3eae23892fabe5b10121f4d3af6d52bb8d3a6e6499"
+    },
+    "/zh/redact-image/": {
+      "version": "d3d3cd1f6e",
+      "worker_sha256": "7347c7f9efa9a41aaa0d2f162cad75e819ddb31188f96c4bdcb0da6c3200167c"
+    },
+    "/zh/redact-pdf/": {
+      "version": "c4f2f9e9f9",
+      "worker_sha256": "2033ab2b86a34563c1ea826d18e9c3b2d0825d4e5b07beb449869ea140176d46"
+    },
+    "/zh/resize-image/": {
+      "version": "2597ec48a7",
+      "worker_sha256": "36874be56db806cc43c3fe55c1fc72416f95f8a92024c8fadfef8e3235ee314b"
+    },
+    "/zh/reverse-video/": {
+      "version": "94dfd5158e",
+      "worker_sha256": "548c10b9e27dd716f4bfed1c308ab0567a21088eac7f9c38b6816a535d937427"
+    },
+    "/zh/rotate-video/": {
+      "version": "7a55fd4a97",
+      "worker_sha256": "75e46612f7696290ea512d2facd445eb28f01bc7b68952e09e78849fadc98ec9"
+    },
+    "/zh/share-text/": {
+      "version": "5b5d36ba03",
+      "worker_sha256": "031f52c3f382b81aa49c720f9bf0dc0468c4246f8bf2a3ecc848f6072d5a980c"
+    },
+    "/zh/split-gif/": {
+      "version": "6f1953a5c1",
+      "worker_sha256": "060a0f636af0b2a09149ab71bf7a21716aafbf3a4117b63a22717c0c9d344ed3"
+    },
+    "/zh/stack-images/": {
+      "version": "d28b512bbc",
+      "worker_sha256": "a29514657b2b680c8618d9bb8807f24ab07b9ad59c05decbff33e92894927347"
+    },
+    "/zh/svg-to-image/": {
+      "version": "925c62b8c5",
+      "worker_sha256": "e53bf16a8d1d4249f7ea3957a021e83e4ddbfd1f9b6e8d01c8d440d2fbc1a992"
+    },
+    "/zh/text-diff/": {
+      "version": "7b1fefdf2e",
+      "worker_sha256": "f94ec3241311e0a27cb794b492465d987847161cb3aa97ab574418aa0d2b4076"
+    },
+    "/zh/timelapse-video/": {
+      "version": "7bd1ecf0d0",
+      "worker_sha256": "ab65dd6a2f62f69c2ee2b588e2ed2a4585145b7fe255dcf74214e9c4d75b1bc5"
+    },
+    "/zh/trim-audio/": {
+      "version": "2b5b22c610",
+      "worker_sha256": "4f242aec557c8b2a8c901505eeeeb090410293e9d9b2d56d2499c746c871b6b0"
+    },
+    "/zh/trim-video/": {
+      "version": "5de29f4f16",
+      "worker_sha256": "2177d4b2eb6c7bbe7ff25952a6e1ec0ab1043679f50da8821aa02f6c2f5146c1"
+    },
+    "/zh/unlock-pdf/": {
+      "version": "4ac661e9aa",
+      "worker_sha256": "320a36f50ed044e561f1db3c35218d9ba34835690928ba348afa9ea15bfffce6"
+    },
+    "/zh/video-to-gif/": {
+      "version": "ef5bb00adf",
+      "worker_sha256": "c0a08c924edd450bdb9a5b918ed9b43f179f6626a01659781fad7a221bb7f0c6"
+    },
+    "/zh/watermark-pdf/": {
+      "version": "12da953662",
+      "worker_sha256": "af16b72ce507e66249f6371a0f530a50a5d69a6efe5eb3518ac731e898bd1f81"
+    },
+    "/zh/webp-to-jpg/": {
+      "version": "813fb07a7e",
+      "worker_sha256": "498a9ca10d040faf68e34116b82a711dd2c2a8156613f3f2d9c7f46e20c76fed"
+    },
+    "/zh/xml-formatter/": {
+      "version": "d5144f3ce6",
+      "worker_sha256": "4fef8028030d7cccd8f61337904e8dec832e785980fa0ef2b0d369628b5efd04"
+    },
+    "/zh/yaml-to-json/": {
+      "version": "b68b02c299",
+      "worker_sha256": "0c07830ba8bf13735fe085665ffde38e418283e4125f0be53966c3be34b3939b"
+    }
+  }
+}

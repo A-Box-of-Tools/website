@@ -1,0 +1,119 @@
+# Cómo previsualizar un Perfil de Empresa de Google antes de publicarlo
+
+Rellenas un formulario en Google y descubres cómo queda cuando alguien te busca. Verlo antes ayuda a detectar nombres demasiado largos y teléfonos ausentes. Aquí explicamos cómo previsualizarlo y qué revisar.
+
+[Abrir Vista previa del perfil de empresa](https://abox.tools/es/vista-previa-del-perfil-de-empresa/): Escribe los datos y ve cómo quedaría la ficha. Nada se envía para dibujarla.
+
+Última actualización 7 de septiembre de 2026
+
+## La respuesta corta
+
+Abre la [vista previa de un perfil de empresa](https://abox.tools/es/vista-previa-del-perfil-de-empresa/). El formulario incluye una cafetería de ejemplo: sustituye sus datos por los tuyos o pega una ficha existente en el panel desplegable superior. Cambia entre las tres vistas —panel informativo, teléfono y resultado de búsqueda— y fíjate en lo que desaparece de la más estrecha.
+
+Eso cubre casi todo el proceso. El resto de esta guía explica las cuatro decisiones principales de una ficha y cuáles resulta más sencillo cambiar una vez publicada.
+
+## Por qué merece la pena dedicar diez minutos
+
+El perfil se rellena en una pantalla y se lee en tres formatos distintos, ninguno parecido al formulario. Según el espacio disponible, los campos se recortan, se reordenan o desaparecen. Eso tiene dos consecuencias:
+
+- **Lo que escribiste no es lo que se muestra.** Un nombre que parece completo en el campo, como *Riverside Dental Care & Implant Studio Toronto*, puede quedar reducido a puntos suspensivos en el lugar más importante.
+- **Lo que falta no se anuncia.** Una ficha sin teléfono no muestra un botón *Llamar* vacío. Simplemente tiene un botón menos, sin explicar por qué.
+
+El editor de Google muestra un formulario y no permite apreciar bien esos efectos. Para entender cómo queda la ficha, hay que verla.
+
+## Los tres lugares donde se lee tu ficha
+
+Es el mismo perfil con tres extensiones distintas. Conviene distinguirlas porque llegan a personas en situaciones diferentes.
+
+### El panel informativo
+
+Es la tarjeta alta que aparece a la derecha al buscar tu empresa *por su nombre* desde un dispositivo de escritorio. Es la vista más amplia: foto, nombre, valoración, categoría, botones, dirección, horario, teléfono, sitio web y unas líneas de descripción.
+
+También es la que probablemente revisarás más y la que menos influye en descubrirte: quien busca tu nombre ya te conoce. Compruébala y pasa a las otras.
+
+![Representación de un panel informativo con foto de portada, nombre, estrellas y número de reseñas, categoría y precios; botones para llegar, abrir el sitio, llamar, guardar y compartir; dirección, estado de apertura, teléfono y web.](https://abox.tools/screens/preview-a-google-business-profile/panel.webp)
+
+Todos los campos a la vez. Por eso conviene revisarla primero, pero decidir después de mirar las otras vistas. Los botones bajo el nombre representan los campos explicados en el paso 2.
+
+### La tarjeta en un teléfono
+
+Es lo que ve buena parte de las visitas, porque muchas búsquedas locales se hacen desde un teléfono. El ancho es menor y el nombre ocupa más líneas. Los botones son más grandes y el primero se rellena de azul: en el teléfono, *Cómo llegar* suele ser la acción más útil.
+
+### La entrada en los resultados locales
+
+Es una de las tres filas que aparecen bajo un mapa cuando se busca una *actividad* en lugar de un nombre: *dentista cerca de mí* o *cafetería en el centro*. Aquí te encuentran quienes no te conocían. Es la vista más reducida: una línea para el nombre, otra para la valoración, otra para categoría y dirección, otra para el horario y dos botones.
+
+La descripción no aparece aquí. Si un dato importante solo está en ella, las personas que ven esta fila no lo reciben.
+
+## Primera decisión: el nombre no es un campo de palabras clave
+
+Las directrices de Google piden el nombre real de la empresa, sin añadir la ciudad, la actividad ni expresiones como *#1*. Los nombres llenos de palabras clave pueden ser corregidos por Google o por usuarios mediante *Sugerir un cambio*, y en casos más graves la ficha puede suspenderse. Son infracciones que se notifican con frecuencia, a veces por competidores.
+
+Incluso dejando la norma a un lado, añadir esas palabras suele fallar donde más se espera aprovecharlas. La entrada local concede una sola línea al nombre y la recorta mucho antes que el panel informativo. Lo añadido queda fuera de la parte visible y el nombre parece incompleto.
+
+![Una entrada de resultados locales muestra "Blue Bottle Coffee Roasters Downtown Toronto - Best...": el nombre se recorta con puntos suspensivos antes de las tres últimas palabras.](https://abox.tools/screens/preview-a-google-business-profile/search-result.webp)
+
+La ciudad y la actividad añadidas al nombre aparecen en la parte que esta vista recorta. Las palabras clave no llegan a verse.
+
+Escribe tu nombre en la vista previa y mira el tercer formato. Si termina en puntos suspensivos, puede comunicar menos que una versión más corta.
+
+## Segunda decisión: la categoría hace parte del trabajo de la descripción
+
+La categoría principal es una de las señales más claras de lo que hace la empresa. Determina para qué búsquedas puede aparecer, se muestra bajo el nombre y suele tener espacio incluso en la entrada local más breve.
+
+Se elige de la lista de Google, no se escribe libremente. Conviene saberlo antes de decidir una frase. Dos criterios útiles:
+
+- **Elige la categoría más específica que sea cierta.** Existen *Dentista* y *Dentista cosmético*; la específica puede responder a búsquedas concretas sin dejar de representar la actividad general. Una categoría *casi* cierta es peor que otra más amplia y correcta.
+- **Léela como un cliente.** Una persona que compara tres opciones en un segundo puede ver *Cafetería · $$* bajo el nombre. Si eso no describe lo que encontrará, la categoría no es adecuada aunque encaje con tus documentos administrativos.
+
+## Tercera decisión: los campos que se convierten en botones
+
+Son tres y determinan si alguien puede actuar sin hacer otra búsqueda:
+
+- **Una dirección** crea el botón *Cómo llegar*.
+- **Un sitio web** crea el botón *Sitio web*.
+- **Un teléfono** crea el botón *Llamar*.
+
+La vista previa solo muestra los botones que corresponden a campos completos. Así hace visible una ausencia que se pierde entre las casillas del formulario. Borra el teléfono y observa cómo desaparece el botón: eso es lo que ve alguien que quiere llamar.
+
+Si trabajas desde casa o visitas a tus clientes, puedes indicar que prestas servicios en sus ubicaciones y definir la zona atendida. Google mostrará el área en lugar de una dirección concreta, y el botón *Cómo llegar* dejará espacio a esa información. Es más útil que no indicar ninguna ubicación y evita poner tu vivienda en el mapa.
+
+## Cuarta decisión: el horario cambia el estado por sí solo
+
+El resto de la ficha suele decir lo mismo toda la semana. El estado de apertura cambia: puede mostrar *Abierto · Cierra a las 21:00* al mediodía y *Cerrado · Abre el martes a las 9:00* un domingo por la tarde. Es menos probable que revises tu ficha en ese segundo momento.
+
+La vista previa calcula ese estado con el horario introducido y el reloj del dispositivo. Marca un día como cerrado y verás el cambio. Revisa estos tres casos:
+
+![Siete filas de horarios, de lunes a domingo, con casilla de cierre y horas de apertura y cierre. El domingo está marcado como cerrado y sus horas aparecen atenuadas. Debajo se indica el estado actual de la ficha.](https://abox.tools/screens/preview-a-google-business-profile/hours.webp)
+
+La línea bajo la semana es la que aparece en la tarjeta, calculada con estos horarios y el reloj del dispositivo. Marca un día como cerrado y observa el resultado.
+
+- **Un horario que pasa de medianoche.** Un bar abierto de `22:00` a `02:00` sigue abierto a la una de la madrugada del día siguiente. Si escribes de `02:00` a `22:00`, indicas que abre casi todo el día. El formulario no puede adivinar cuál querías poner.
+- **El día de cierre.** No indicar horarios no comunica flexibilidad: deja al lector sin información y puede hacer que elija a un competidor que sí la ofrece.
+- **El horario especial en festivos.** Esta vista previa no lo representa. Llegar a un local que la ficha daba por abierto es una queja muy habitual en las reseñas.
+
+## Qué no puede decirte una vista previa
+
+Conviene dejar claros los límites, porque una imagen convincente puede inspirar más confianza de la que merece:
+
+- **Es una representación, no una captura de Google.** La ficha real utiliza Google Sans, que puede no estar instalada, y Google cambia el diseño con frecuencia. El espaciado es aproximado. La vista permite comprobar cuánto ocupa cada campo dentro del ancho disponible, que es el objetivo útil de la simulación.
+- **No está conectada a tu cuenta.** Lo que cambies aquí no modifica tu perfil real. Sus datos solo aparecen si los escribes o pegas. Es deliberado: la herramienta no puede contactar con otros servicios, por eso la dirección y el teléfono permanecen en tu dispositivo.
+- **La posición en los resultados no depende del aspecto.** La relevancia, la distancia y la notoriedad influyen en el orden de los resultados locales. Una vista previa ayuda a comunicar mejor a quienes ya ven la ficha; no promete mostrarla a más personas.
+
+## Importar una ficha existente
+
+Si la ficha ya existe, puedes evitar volver a escribirla. Ábrela en Google, selecciona la tarjeta, cópiala y pégala en el panel superior. La herramienta reconoce nombre, valoración, número de reseñas, categoría, nivel de precios, dirección, teléfono, sitio web y el horario semanal si lo desplegaste antes de copiar.
+
+![Un campo con texto copiado de una ficha: nombre, botones de sitio web y cómo llegar, valoración, categoría, dirección y teléfono. Debajo se enumeran los campos que se pudieron leer.](https://abox.tools/screens/preview-a-google-business-profile/import.webp)
+
+La línea inferior enumera los campos que la herramienta cree haber leído. Así puedes corregir una interpretación equivocada en el momento.
+
+La herramienta informa de cada campo que completa para facilitar la revisión. También puede leer directamente una exportación de la API de Business Profile, cuyo formato es preciso. Esa exportación no contiene valoraciones, número de reseñas ni fotografías; tendrás que añadir esos tres datos.
+
+Lo que no hace es buscar la ficha por ti. No puede contactar con otros servicios: una página capaz de descargar tu perfil también podría enviar tus datos. La guía sobre [si es seguro pegar datos en una herramienta en línea](https://abox.tools/es/guias/es-seguro-pegar-texto-en-una-herramienta-online/) explica por qué importa esa diferencia.
+
+## Qué hacer con la imagen
+
+Descarga el PNG al tamaño original, al doble o al triple, o el SVG si lo vas a incluir en un documento. Ambos se dibujan en tu dispositivo, sin marca de agua ni referencias a este sitio.
+
+Puedes mostrar a un cliente o colega cómo quedaría un cambio antes de aplicarlo. Al enviarla, aclara que es una representación de la ficha propuesta. Una imagen tan reconocible puede confundirse con una captura de algo que ya está publicado.

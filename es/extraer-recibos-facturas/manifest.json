@@ -1,0 +1,26 @@
+{
+  "id": "/es/extraer-recibos-facturas/",
+  "name": "Extractor de recibos y facturas",
+  "short_name": "Extractor de recibos y facturas",
+  "description": "Lee las fotos, revisa los campos y los recortes, y env\u00eda por correo im\u00e1genes comprimidas con cada importe y los totales.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

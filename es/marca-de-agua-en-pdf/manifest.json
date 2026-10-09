@@ -1,0 +1,26 @@
+{
+  "id": "/es/marca-de-agua-en-pdf/",
+  "name": "Marca de agua en PDF",
+  "short_name": "Marca de agua en PDF",
+  "description": "Identifica el destino de una copia para que siga visible si termina en otro lugar.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

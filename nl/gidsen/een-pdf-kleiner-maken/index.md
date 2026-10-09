@@ -1,0 +1,92 @@
+# Hoe je een pdf kleiner maakt, en waarom sommige niet krimpen
+
+Een pdf die niet binnen een e-maillimiet past, is bijna altijd een pdf vol plaatjes. Hier staat hoe je ziet of dat bij jou zo is, wat comprimeren kost, en waarom elke tool die een vast percentage belooft niet naar je bestand gekeken heeft.
+
+[Open de tool Pdf-compressor](https://abox.tools/nl/pdf-verkleinen/): Een document laten krimpen zonder het ergens heen te sturen.
+
+Laatst bijgewerkt 26 augustus 2026
+
+## Het korte antwoord
+
+Open de [Pdf-compressor](https://abox.tools/nl/pdf-verkleinen/), sleep het document erin, en kijk naar wat hij je vertelt voordat je iets verandert. Hij leest het bestand en laat zien waar de grootte werkelijk zit: in afbeeldingen, lettertypen, tekst en tekenwerk, en in alles waar niets in het document nog naar verwijst. Dat ene scherm beantwoordt de vraag meestal al.
+
+Zit het grootste deel van de grootte in afbeeldingen, dan kun je een flinke besparing verwachten. Zit het in lettertypen en tekst, dan niet, en dan kan geen enkele tool dat. Welke van de twee je hebt, is het hele verhaal, en dat is tien seconden kijken waard.
+
+## Waar de grootte van een pdf werkelijk zit
+
+Een pdf is een container voor verschillende soorten dingen, en die comprimeren niet gelijk.
+
+- **Afbeeldingen.** Foto's en scans. Vrijwel altijd het gros van een grote pdf, en het enige deel met echte ruimte erin.
+- **Ingesloten lettertypen.** Een volledig lettertype kan honderden kilobytes zijn; een subset van de tekens die werkelijk gebruikt worden is veel minder. Hoe dan ook waren ze al gecomprimeerd door wat het bestand maakte.
+- **Tekst en vectortekening.** Instructies in plaats van pixels: teken deze lijn, zet dit woord hier. Al compact, en al gecomprimeerd.
+- **Objecten waar niets meer naar wijst.** Pdf's stapelen die op. Een document bewerken voegt de wijziging vaak achteraan toe in plaats van het bestand te herschrijven, dus een oude versie van een pagina kan er onbeperkt in blijven zitten. Het bestand opnieuw inpakken laat ze vallen.
+
+De twee documenten die mensen naar een pdf-compressor brengen, hebben dus volstrekt verschillende vooruitzichten. Een gescand document is in wezen een stapel foto's, en komt er meestal 60 tot 90% kleiner uit. Een contract, een scriptie of een geëxporteerd rapport is tekst, tekenwerk en lettertypen, en die zijn alle drie al gecomprimeerd door de software die het schreef. Daar is de besparing meestal een paar procent, uit het opnieuw inpakken en het weglaten van wat nergens meer naar verwijst.
+
+Elke tool die “tot 90% kleiner” belooft zonder naar je bestand te kijken, citeert het beste geval van het eerste soort tegen het tweede.
+
+![De inventariskaart: een oordeel dat het grootste deel van het bestand uit afbeeldingen bestaat, een balk die de grootte uitsplitst, en een lijst met wat elk deel weegt.](https://abox.tools/screens/make-a-pdf-smaller/inventory.webp)
+
+Waar de grootte echt zit, voordat er iets is veranderd. Bijna elke grote pdf is groot om de reden die deze balk laat zien.
+
+## Wat dpi ermee te maken heeft
+
+Een pdf bevat niet alleen een plaatje; hij legt ook vast hoe groot dat plaatje op de pagina getekend wordt. Dat geeft je iets nuttigers dan het aantal pixels: de effectieve resolutie.
+
+Een scan van 4000 pixels breed die over twintig centimeter papier gelegd wordt, draagt zo'n 500 pixels per inch. Een scherm toont er ongeveer 100. Een goede kantoorprinter werkt op 300 en kan met veel meer niets. Alles daarboven is detail dat niets in de toekomst van dat document ooit nog gaat tonen, en meestal is dat het grootste deel van het bestand.
+
+Daarom vraagt een verstandige pdf-compressor om een dpi in plaats van om een kwaliteitspercentage. Hij gooit de pixels boven jouw getal er als eerste af, want die kosten niets wat iemand kan zien, en pas daarna begint hij echte kwaliteit uit te geven.
+
+Ruwe leidraad: **150 dpi** voor een document dat op een scherm gelezen wordt, **200 tot 300** voor iets dat geprint gaat worden, **72 tot 100** voor een concept dat niemand bewaart. Afmeten aan hoe groot de afbeelding getekend wordt, is ook waarom een klein geplaatst logo niet hetzelfde behandeld wordt als een paginagrote scan, want het logo zit al dicht bij zijn effectieve resolutie en daar valt niets te halen.
+
+![De instellingenkaart: voorinstellingen, een resolutie in dpi, een kwaliteitsschuif en een schakelaar om metadata te verwijderen, met een schatting van wat het resultaat gaat wegen.](https://abox.tools/screens/make-a-pdf-smaller/settings.webp)
+
+De twee knoppen die ertoe doen zijn de resolutie en de kwaliteit. Wat elk van beide doet met een pagina tekst en met een pagina foto's is het onderwerp van deze sectie.
+
+## Wat comprimeren wel en niet hoort aan te raken
+
+De plaatjes worden opnieuw gecodeerd, dus die verliezen een beetje. Verder hoort er niets aangeraakt te worden, en het is de moeite waard om na te gaan of de tool die je gebruikt zich daaraan houdt:
+
+- **Tekst blijft tekst.** Selecteerbaar, doorzoekbaar, te kopiëren. Een compressor die pagina's tot afbeeldingen platslaat, levert een heel klein bestand en vernielt het document. Je kunt er niet meer in zoeken, schermlezers kunnen het niet lezen, en terugdraaien gaat niet.
+- **Lettertypen blijven heel.** Lettertypen vervangen verandert hoe het document er op andermans apparaat uitziet, en dat is precies het ene ding dat pdf bestaat om te voorkomen.
+- **Vectortekening wordt exact gekopieerd.** Die is al klein, en er pixels van maken zou hem zowel groter als slechter maken.
+- **Formulieren, links, bladwijzers, toegankelijkheidsstructuur en bijlagen gaan mee.** Die raak je bij een herschrijving makkelijk kwijt en dat merkt zelden iemand tot hij er een nodig heeft.
+
+Een verwante regel die een compressor hoort te volgen en die veel niet volgen: komt het hercoderen van een afbeelding niet echt kleiner uit dan het origineel, zet de originele bytes dan terug. Een plaatje slechter maken zonder besparing is het geval van puur verlies, en dat gebeurt vaker dan je zou denken bij afbeeldingen die al goed gecomprimeerd waren.
+
+## De plaatjes die niet gecomprimeerd kunnen worden
+
+Sommige afbeeldingen in een pdf worden overgeslagen, en een goede tool noemt ze in plaats van ze stilletjes buiten het rekenwerk te laten:
+
+- **JPEG 2000-, JBIG2- en faxgecodeerde (CCITT) afbeeldingen.** Geen enkele browser levert er een decoder voor mee, dus die worden onaangeroerd doorgegeven. De laatste twee zijn tweekleurig, alleen zwart en wit dus, en zitten meestal al bijna op hun kleinst.
+- **CMYK-afbeeldingen.** Met opzet met rust gelaten. Hercoderen kan de kleuren verschuiven die een drukker zou produceren, en dat is een verrassende daad tegenover een document dat iemand gaat printen.
+
+## Dingen om te proberen vóór je comprimeert
+
+Soms is het bestand groot om een reden waarvoor comprimeren het verkeerde antwoord is.
+
+**Is het gescand terwijl dat niet hoefde?** Een document dat geprint en daarna gescand is, is een stapel foto's van tekst. Bestaat het origineel ergens nog als document, dan levert dat naar pdf exporteren een bestand op van een fractie van de grootte dat bovendien doorzoekbaar is.
+
+**Is het op drukinstellingen geëxporteerd?** Tekstverwerkers en ontwerpsoftware kiezen vaak standaard voor een export op drukkwaliteit. Vanuit het bronbestand opnieuw exporteren voor scherm wint het meestal van de export comprimeren.
+
+**Moet het één bestand zijn?** Een e-maillimiet geldt per bericht. Een document van 200 pagina's in hoofdstukken splitsen is soms de eerlijke oplossing.
+
+## Versleutelde bestanden, en waarom een compressor ze hoort te weigeren
+
+Een met een wachtwoord beveiligde pdf wordt door de tool hier geweigerd, en dat is met opzet en niet omdat de functie ontbreekt. Dat geldt ook wanneer het wachtwoord leeg is, en zo slaan veel scanners en kopieerapparaten nu eenmaal op.
+
+De beveiliging van een document afhalen is een andere klus dan het comprimeren. Een tool die dat stilletjes deed, zou iets doen waar je niet om gevraagd hebt, met een bestand dat iemand met opzet op slot gezet had, en zou je een kopie teruggeven die de eigenschap niet meer had die zij bedoeld hadden. Haal de beveiliging er eerst zelf af, met opzet, als je dat wilt.
+
+## Het resultaat controleren
+
+Open het. Bekijk de plaatjes op volle zoom, kijk of de tekst nog selecteerbaar is, en bevestig het aantal pagina's.
+
+De tool hier doet dat laatste voor je voordat hij het bestand aanbiedt: hij opent het document dat hij zojuist geschreven heeft opnieuw en telt de pagina's, op je eigen apparaat. Hij schrijft ook pdf 1.5, wat elke lezer die sinds 2003 is uitgekomen begrijpt, dus “hij gaat open op mijn apparaat” is een redelijke plaatsvervanger voor “hij gaat open op dat van hen”.
+
+## Waarom hier geen server voor nodig is
+
+Een pdf comprimeren klinkt als serverwerk, en dat was het het grootste deel van het bestaan van het web ook. Wat het werkelijk inhoudt, is de bestandsstructuur ontleden, de afbeeldingsstromen vinden, die decoderen en opnieuw coderen met de codecs die een browser toch al meelevert, en het document weer wegschrijven. Dat draait tegenwoordig allemaal in een browser.
+
+En dat telt bij dit bestandstype zwaarder dan bij de meeste, vanwege wat mensen comprimeren: contracten, brieven van de dokter, bankafschriften, identiteitsdocumenten, belastingaangiftes. De tool hier heeft helemaal geen netwerkfunctie, en de `Content-Security-Policy` van de pagina noemt elk adres dat hij mag benaderen; geen ervan hoort bij deze site. Laad hem, trek de stekker eruit, en comprimeer toch iets.
+
+[Is het veilig om bestanden naar online omzetters te uploaden?](https://abox.tools/nl/gidsen/is-bestanden-uploaden-veilig/) zet er nog drie zulke controles op een rij.

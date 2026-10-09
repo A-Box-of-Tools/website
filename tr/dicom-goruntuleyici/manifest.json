@@ -1,0 +1,26 @@
+{
+  "id": "/tr/dicom-goruntuleyici/",
+  "name": "DICOM G\u00f6r\u00fcnt\u00fcleyici",
+  "short_name": "DICOM G\u00f6r\u00fcnt\u00fcleyici",
+  "description": "BT, MR, r\u00f6ntgen ve ultrason; penceresi, ba\u015fl\u0131\u011f\u0131 ve \u00f6l\u00e7\u00fcmleriyle.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

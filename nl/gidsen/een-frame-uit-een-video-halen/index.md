@@ -1,0 +1,84 @@
+# Een frame uit een video opslaan als afbeelding
+
+De speler pauzeren en op de schermafbeeldingstoets drukken levert een plaatje van een venster op. Soms is dat genoeg. Dit is waar het verschil zit, en hoe je het frame zelf krijgt als het ertoe doet.
+
+[Open de tool Framegrabber](https://abox.tools/nl/frame-uit-video-halen/): Een stilstaand beeld op volle kwaliteit, van elk moment.
+
+Laatst bijgewerkt 26 augustus 2026
+
+## Het korte antwoord
+
+Open de [Framegrabber](https://abox.tools/nl/frame-uit-video-halen/), sleep de video erin, zoek het moment op en druk op *Dit frame pakken*. Wat er in je downloads belandt is het frame op de resolutie van de video zelf — ⁦3840 × 2160⁩ uit een 4K-video, hoe groot het voorbeeld op de pagina ook was.
+
+Laat het formaat op PNG staan zolang de bestandsgrootte geen probleem is. De rest van deze pagina gaat over waarom die twee zinnen iets anders zijn dan een schermafbeelding, en wanneer het verschil de moeite waard is.
+
+## Waarom een schermafbeelding van een gepauzeerde speler een ander plaatje is
+
+Iedereen heeft hier al een manier voor: pauzeren, schermafbeeldingstoets, de knoppenbalk eraf snijden. Dat werkt, en om iets snel door te sturen is het precies de juiste moeite. Maar er zijn tegen die tijd vier dingen met het plaatje gebeurd, en geen ervan is terug te draaien:
+
+- **Het is zo groot als het venster, niet als de video.** Een 4K-video in een speler op een halve schermbreedte levert een plaatje van een speler op een halve schermbreedte. Elke pixel die wel in het bestand zat maar niet op het scherm, is weg.
+- **Het is geschaald.** Wat de speler ook gedaan heeft om het frame in dat venster te passen — verzachten, verscherpen of gewoon opnieuw bemonsteren — zit er nu in gebakken.
+- **Het is door de weergaveketen gegaan.** Kleurbeheer, en bij een HDR-video een tonemapping die voor jouw monitor gekozen is en niet voor het bestand.
+- **Er staat meestal meubilair op.** Knoppen, een voortgangsbalk, een ondertitelspoor, de muisaanwijzer.
+
+Een framegrabber slaat alle vier over: hij decodeert het frame dat het bestand werkelijk bevat en schrijft die pixels weg. Het plaatje is zo groot als de video is, en niemand heeft erop getekend.
+
+## Op het bedoelde frame belanden
+
+Dit is het stuk dat de meeste hulpmiddelen stilletjes fout doen, en het is handig om te weten waar je bij elk ervan op moet letten.
+
+Een video is geen strook plaatjes in de volgorde waarin je ze bekijkt. De meeste frames zijn opgeslagen als een beschrijving van hoe ze van andere frames verschillen, en in elk bestand met B-frames is de volgorde van opslaan niet de volgorde van tonen. Een hulpmiddel dat een speler naar een tijdstip stuurt en pakt wat er verschijnt, is overgeleverd aan hoe die speler afrondt, en eentje dat “een frame vooruit” doet door er een dertigste seconde bij op te tellen, zit fout bij elke video die niet precies 30 fps is — en dat is zowat elke telefoonvideo, want die laten hun beeldsnelheid meebewegen met het licht.
+
+De uitweg is de framelijst van het bestand zelf lezen en frames aanwijzen op hun plek daarin. Bij een MP4 doet het hulpmiddel hier dat: de schuifknop gaat één frame per stap, de pijltoetsen gaan één frame, en het kan je vertellen dat je op frame 812 van 3.540 staat omdat het ze geteld heeft. Bij formaten die het niet rechtstreeks kan lezen, zegt het dat, en stapt het met ongeveer een frame tegelijk in plaats van te doen alsof.
+
+Een snelle test voor elke framegrabber: stap een paar frames vooruit door iets met snelle beweging. Verandert het beeld soms niet, of springt het er twee, dan zit het hulpmiddel te gokken op tijdstempels.
+
+![De framezoeker: een stilstaand beeld met een ingebrande tijdcode, een schuifbalk, stapknoppen en velden met de precieze tijd en het framenummer.](https://abox.tools/screens/grab-a-frame-from-a-video/find.webp)
+
+Frame voor frame lopen is hoe je op het bedoelde beeld belandt. De tijd en het framenummer wijzen hetzelfde aan, en allebei kun je intypen.
+
+## In welk formaat je het bewaart
+
+Er zijn eigenlijk maar drie antwoorden, en de keuze gaat over wat er hierna met het plaatje gebeurt.
+
+- **PNG** — de standaard, en de enige die het frame precies bewaart. Kies die als het beeld nog bewerkt, afgedrukt, met een ander frame vergeleken of bewaard wordt. Het is ook de grootste: reken op een paar megabyte uit 1080p en een stuk of acht uit 4K, want een fotografisch beeld is nu net niet waar de compressie van PNG goed in is.
+- **JPEG** — een tiende van de grootte, en overal geaccepteerd. Kies die voor een miniatuur, een voorbeeld, of alles wat rechtstreeks een document of een gesprek in gaat. Het is een tweede ronde verliesgevende compressie boven op die van de video zelf, en dus het verkeerde vertrekpunt om nog aan te werken.
+- **WebP** — nog kleiner bij dezelfde zichtbare kwaliteit, en inmiddels ondersteund waar het ertoe doet. Het enige voorbehoud is oude software: sommige programma's op de computer openen er nog steeds geen.
+
+Eén ding mag helder zijn: een frame uit een video is al een gecomprimeerd plaatje. Het als PNG bewaren maakt dat niet ongedaan en haalt geen detail terug dat de codec heeft weggegooid toen de video gemaakt werd. Wat PNG je oplevert is dat er niets *twee keer* weggegooid wordt. Ga je het beeld daarna kleurcorrigeren of bijsnijden, dan telt dat; stuur je het iemand toe, dan niet.
+
+## Er in één keer heel veel pakken
+
+Om de zoveel seconden een beeld is ander werk dan één beeld op één moment, en het komt vaker voor dan het klinkt: een contactblad van een lange opname, miniaturen om een omslagbeeld uit te kiezen, een gelijkmatige steekproef uit het materiaal om scherpte of belichting over een draaidag te controleren.
+
+Stel een interval in, druk op de serieknop, en het hulpmiddel loopt de video één keer door en pakt bij elk streepje een beeld. Twee praktische opmerkingen. Houd het interval ruim bij een lange video — elke seconde een beeld uit een uur materiaal zijn 3.600 plaatjes, en daarom houdt het hulpmiddel een reeks bij 500 tegen. En kies hiervoor JPEG, tenzij je een reden hebt om dat niet te doen: honderd PNG's uit 4K zijn bijna een gigabyte die de pagina vasthoudt voordat je er ook maar één gedownload hebt.
+
+Ze komen terug als één zipbestand, genoemd naar hun tijdcode, zodat ze op volgorde van gebeuren sorteren en elk beeld in de video terug te vinden is.
+
+![Drie stilstaande beelden uit hetzelfde filmpje, als miniaturen met hun tijden, en een knop om ze in één keer op te slaan.](https://abox.tools/screens/grab-a-frame-from-a-video/shots.webp)
+
+Pak er meerdere en kies daarna. Ze blijven in de pagina tot je ze opslaat, en opslaan is één knop.
+
+## Staande video's, en het klassieke beeld op zijn kant
+
+Heb je ooit een frame uit een telefoonvideo gehaald en kwam het op zijn kant terug, dan is dit waarom. Een telefoon filmt liggend en schrijft een kwartslag in het bestand in plaats van de pixels te draaien. Spelers lezen die kwartslag en passen hem toe; een hulpmiddel dat alleen de pixels leest niet, en het resultaat is een volkomen goed plaatje van het juiste moment, 90 graden gedraaid.
+
+Er is niets mis met het bestand, en het achteraf terugdraaien kost je niets dan ergernis. Het hulpmiddel hier leest de draaiing van het spoor en past hem toe voor het tekenen, zodat een staande video een staand plaatje oplevert.
+
+## Wat je niet terugkrijgt
+
+Een stilstaand beeld kan nooit beter zijn dan het frame waar het uit komt, en twee dingen begrenzen dat, welk hulpmiddel je ook gebruikt.
+
+**Bewegingsonscherpte zit in het frame.** Bewoog het onderwerp tijdens de belichting, dan is elk frame van die beweging onscherp, en zit er geen scherp frame tussen om te vinden. Met een kortere sluitertijd filmen is de enige oplossing, en die moet vóór de opname bedacht zijn.
+
+**De compressie zit er ook in.** Video wordt veel harder gecomprimeerd dan een foto, en veel harder nog op de frames tussen de keyframes. Ziet een beeld er blokkerig uit, stap dan eens een frame of twee naar voren of naar achteren: een keyframe is voluit opgeslagen en ziet er vaak merkbaar schoner uit dan zijn buren.
+
+En moet het beeld daarna een ander formaat of een andere vorm krijgen, doe dat dan als losse stap: [Afbeeldingsformaat wijzigen](https://abox.tools/nl/afbeelding-formaat-wijzigen/) schaalt, snijdt bij en zet om, en [die gids](https://abox.tools/nl/gidsen/formaat-van-een-afbeelding-wijzigen/) vertelt wat elk van die dingen kost.
+
+## Waarom hier geen upload voor nodig is
+
+Video decoderen in een browser is nieuw en het is echt: WebCodecs geeft toegang tot dezelfde hardwaredecoder waarmee je telefoon video afspeelt. Het werk gebeurt op het apparaat dat het bestand al heeft, wat bij een video van meerdere gigabytes ook de enige indeling is die hout snijdt — een uur 4K uploaden om er één plaatje van 8 MB voor terug te krijgen is in elke richting een slechte ruil.
+
+Het hulpmiddel hier heeft geen enkele netwerkfunctie, en de `Content-Security-Policy` van de pagina noemt elk adres dat ze mag benaderen, en geen daarvan is van deze site. Trek de internetverbinding eruit en pak alsnog een frame, als je liever zelf kijkt dan het aanneemt.
+
+[Is het veilig om bestanden naar online omzetters te uploaden?](https://abox.tools/nl/gidsen/is-bestanden-uploaden-veilig/) zet nog drie controles op een rij die je op elk hulpmiddel kunt loslaten.

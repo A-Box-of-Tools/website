@@ -1,0 +1,26 @@
+{
+  "id": "/de/qr-code-erstellen/",
+  "name": "QR- & Barcode-Generator",
+  "short_name": "QR- & Barcode-Generator",
+  "description": "Eintippen, und es wird ein Code. Zum Erzeugen wird nichts gesendet.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

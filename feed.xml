@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data.</subtitle>
+  <id>https://abox.tools/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/"/>
+  <updated>2026-10-08T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/</uri>
+  </author>
+  <entry>
+    <title type="html">How to arrange multiple images into one picture</title>
+    <id>https://abox.tools/guides/arrange-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/arrange-images/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">Make a collage, contact sheet or image strip: choose a grid, keep pictures whole or crop to fill, set the spacing and save a PNG, JPEG or WebP without uploading.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to stack photographs to reduce noise, or remove people</title>
+    <id>https://abox.tools/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">Stacking combines a burst of frames into one picture. Which method to use depends on what you are trying to lose: noise, passers-by, or the shallow depth of field on a macro shot. How each one works, what it costs, and how RAW files fit in.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Layout</title>
+    <id>https://abox.tools/image-layout/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-layout/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">Arrange images in a grid or strip with ready-to-use presets. Adjust each picture with pan and zoom, then save one PNG, JPEG or WebP. Free, offline and no upload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Stacker</title>
+    <id>https://abox.tools/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Share Text &amp; Files</title>
+    <id>https://abox.tools/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/share-text/"/>
+    <updated>2026-10-08T00:00:00Z</updated>
+    <summary type="html">Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract receipt and invoice details from photos</title>
+    <id>https://abox.tools/guides/extract-receipts-and-invoices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/extract-receipts-and-invoices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">How to check receipt OCR and crops, choose one email currency and manual or historical rates, then email compressed images with each converted value, the document count and a grand total.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to share text and files between devices without uploading them</title>
+    <id>https://abox.tools/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-text-between-devices/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
+  </entry>
+  <entry>
+    <title type="html">Receipt &amp; Invoice Extractor</title>
+    <id>https://abox.tools/receipt-invoice-extractor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/receipt-invoice-extractor/"/>
+    <updated>2026-10-05T00:00:00Z</updated>
+    <summary type="html">Read receipt and invoice photos locally, review crops and amounts, then convert each document into one email currency using manual or historical online rates. Email compressed images, individual values and a grand total.</summary>
+  </entry>
+  <entry>
+    <title type="html">Business Profile Preview</title>
+    <id>https://abox.tools/business-profile-preview/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/business-profile-preview/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">See how your Google Business Profile will look before it goes live: the knowledge panel, the phone card and the search result, drawn from the name, category, hours, rating and photo you type. Import an existing listing by pasting it. Download as PNG or SVG. It all happens in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF Viewer &amp; Remover</title>
+    <id>https://abox.tools/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. JPEG, PNG and WebP stay unencoded; AVIF cleaning converts to a new PNG. Nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Maker</title>
+    <id>https://abox.tools/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG, WebP or AVIF images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC to JPG</title>
+    <id>https://abox.tools/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Convert iPhone HEIC and AVIF photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along. The metadata checkbox and metadata preview apply only to HEIC; AVIF metadata is always left out.</summary>
+  </entry>
+  <entry>
+    <title type="html">Height Comparison Chart</title>
+    <id>https://abox.tools/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compare-heights/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Compare heights side by side. Add a man, a woman, a boy, a girl and objects &amp;mdash; a door, a window, a whiteboard, a vending machine &amp;mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">ID Photo Maker</title>
+    <id>https://abox.tools/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Compressor</title>
+    <id>https://abox.tools/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Compress a JPEG, PNG, WebP or AVIF to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Redactor</title>
+    <id>https://abox.tools/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Resizer</title>
+    <id>https://abox.tools/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/resize-image/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Resize, crop and convert JPEG, PNG, WebP and AVIF images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to Data URI</title>
+    <id>https://abox.tools/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-data-uri/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. UTF-8 SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to ICO</title>
+    <id>https://abox.tools/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-ico/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Convert a PNG, JPEG, AVIF or SVG into a real multi-size .ico or a macOS .icns in your browser. Favicon, Windows app icon, Mac app icon, plus the Apple and Android files a site needs. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image to SVG</title>
+    <id>https://abox.tools/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images to PDF</title>
+    <id>https://abox.tools/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Combine JPG, PNG, WebP or AVIF images into one PDF, free and entirely in your browser. JPEG photos go in without being re-encoded, and nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images to Video</title>
+    <id>https://abox.tools/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-video/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG, WebP or AVIF images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">PNG to WebP</title>
+    <id>https://abox.tools/png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Convert PNG and AVIF images to WebP in your browser, losslessly or smaller still. Transparency is kept either way. Nothing is uploaded, there is no account, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR &amp; Barcode Reader</title>
+    <id>https://abox.tools/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/qr-barcode-reader/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Read a QR code from a photo, a screenshot or your camera, and see exactly where the link goes before you open it. EAN, UPC, Code 128, Code 39 and ITF barcodes too. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">The photo your phone saved, and the format nothing will open</title>
+    <id>https://abox.tools/guides/convert-heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-heic-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">iPhones save photos as HEIC, and half the internet cannot open one. What the format is, why only Safari decodes it, what converting costs the picture, and how to do it without uploading the photos to anyone.</summary>
+  </entry>
+  <entry>
+    <title type="html">The picture the web saved, and the format everything still takes</title>
+    <id>https://abox.tools/guides/convert-webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Saved a picture from a website and got a .webp nothing will open? What WebP is, why converting makes the file larger rather than smaller, what happens to transparency, and how to do it without uploading anything.</summary>
+  </entry>
+  <entry>
+    <title type="html">The same picture, a third smaller, with the transparency intact</title>
+    <id>https://abox.tools/guides/convert-png-to-webp/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-png-to-webp/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">WebP is smaller than PNG even without losing anything - and far smaller if you let it. Which of the two you want depends on what is in the picture. What each mode does, what it saves, and how to convert without uploading.</summary>
+  </entry>
+  <entry>
+    <title type="html">WebP to JPG</title>
+    <id>https://abox.tools/webp-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/webp-to-jpg/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">Convert WebP and AVIF images to JPG in your browser. Your browser already decodes WebP, so nothing is uploaded, there is no account, and it works offline. Transparency is filled with a colour you choose.</summary>
+  </entry>
+  <entry>
+    <title type="html">What a photo says about you, and how to take it out</title>
+    <id>https://abox.tools/guides/remove-exif-and-gps-data/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/remove-exif-and-gps-data/"/>
+    <updated>2026-10-04T00:00:00Z</updated>
+    <summary type="html">A photo off a phone usually carries the exact spot it was taken, the time to the second, and the camera's serial number. What is in there, who can read it, and how to take it out without touching the picture.</summary>
+  </entry>
+</feed>

@@ -1,0 +1,26 @@
+{
+  "id": "/es/cortar-audio/",
+  "name": "Cortador de audio",
+  "short_name": "Cortador de audio",
+  "description": "Marca los trozos que valen la pena mientras suena. Te vuelven como un solo archivo, cortado donde dijiste.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/de/pdf-wasserzeichen/",
+  "name": "PDF-Wasserzeichen",
+  "short_name": "PDF-Wasserzeichen",
+  "description": "Ein Scan, der sagt, wohin er gegangen ist, kann nicht stillschweigend woandershin gehen.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

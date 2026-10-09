@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/split-gif/",
+  "name": "GIF \u62c6\u5e40",
+  "short_name": "GIF \u62c6\u5e40",
+  "description": "\u6bcf\u4e00\u5e40\u90fd\u55ae\u7368\u5b58\u6210\u4e00\u5f35 PNG\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
