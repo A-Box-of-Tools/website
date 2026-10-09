@@ -102,6 +102,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Alle löschen</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Marken laden&hellip;</button>
+        <select id="import-mode" aria-label="Beim Laden von Markierungen" aria-describedby="import-mode-note"><option value="append" selected>An aktuelle Teile anhängen</option><option value="replace">Aktuelle Teile ersetzen</option></select>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Format der Zeitmarkendatei">
           <option value="seconds" selected>Sekunden</option>
@@ -109,6 +110,7 @@
         </select>
         <button type="button" id="export-marks" class="ghost">Marken speichern</button>
       </div>
+      <p class="path-note" id="import-mode-note">Anhängen behält deine aktuellen Teile. Ersetzen verwirft sie erst, nachdem die ausgewählte Datei erfolgreich gelesen wurde.</p>
 
       <p class="field-note">
         Die Marken werden als reine Textdatei gespeichert, eine Zeile je Teil im

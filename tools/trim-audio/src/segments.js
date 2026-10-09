@@ -17,6 +17,14 @@ export {
  */
 const MIN_SEGMENT = 0.001;
 
+/** The pending mark stays last so the next Out can still close it. */
+export function appendCompletedSegments(current, completed) {
+  const pending = shared.openSegment(current);
+  return pending
+    ? [...current.slice(0, -1), ...completed, pending]
+    : [...current, ...completed];
+}
+
 export const segmentRanges = (segments) => shared.segmentRanges(segments, MIN_SEGMENT);
 export const totalCaptured = (segments) => shared.totalCaptured(segments, MIN_SEGMENT);
 export const writeTimestamps = (segments, options = {}) => (

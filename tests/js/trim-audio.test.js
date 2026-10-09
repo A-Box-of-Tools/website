@@ -27,7 +27,7 @@ import {
   totalSeconds, trim,
 } from '../../tools/trim-audio/src/trim.js';
 import {
-  TIMESTAMP_FORMATS, formatClock, formatDuration, openSegment, parseClock,
+  TIMESTAMP_FORMATS, appendCompletedSegments, formatClock, formatDuration, openSegment, parseClock,
   readTimestamps, segmentRanges, totalCaptured, writeTimestamps,
 } from '../../tools/trim-audio/src/segments.js';
 import { formatTime, parseTime } from '../../tools/trim-audio/src/timeline.js';
@@ -385,6 +385,30 @@ test('an unclosed part is open, counts for nothing, and is always the last', () 
   assert.equal(segmentRanges(segments).length, 1);
   assert.equal(totalCaptured(segments), 2);
   assert.equal(openSegment([{ id: 1, start: 0, end: 2 }]), null);
+});
+
+test('appending completed marks keeps the unfinished part available for Out', () => {
+  const closed = { id: 1, start: 0, end: 2 };
+  const pending = { id: 2, start: 3, end: null };
+  const imported = [{ id: 3, start: 5, end: 7 }, { id: 4, start: 8, end: 9 }];
+  const original = [closed, pending];
+  const combined = appendCompletedSegments(original, imported);
+  assert.deepEqual(combined.map((part) => part.id), [1, 3, 4, 2]);
+  assert.equal(openSegment(combined), pending);
+  assert.deepEqual(original, [closed, pending]);
+  assert.equal(combined[0], closed);
+  pending.end = 4;
+  assert.deepEqual(segmentRanges(combined), [closed, ...imported, pending]
+    .map(({ start, end }) => ({ start, end })));
+});
+
+test('appending completed marks preserves ordered closed parts and independent arrays', () => {
+  const current = [{ id: 1, start: 8, end: 10 }, { id: 2, start: 0, end: 2 }];
+  const added = [{ id: 3, start: 4, end: 6 }];
+  assert.deepEqual(appendCompletedSegments(current, added), [...current, ...added]);
+  assert.notEqual(appendCompletedSegments(current, []), current);
+  assert.deepEqual(appendCompletedSegments([], added), added);
+  assert.notEqual(appendCompletedSegments([], added), added);
 });
 
 test('a part too short to be worth keeping is not a part', () => {
