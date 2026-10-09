@@ -291,11 +291,7 @@ a = """
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
-a = """
-        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
-        Testphase. Für die Dateigröße gibt es keine Grenze außer dem
-        Arbeitsspeicher Ihres Geräts. Bezahlt wird die Seite über Werbung, und den
-        Anzeigen wird nichts über Ihre Datei übergeben."""
+a = "Es ist kostenlos, ohne Konto, Anmeldung oder Probezeit. Das Lesen einer Datei hängt weiterhin vom Speicher Ihres Geräts ab. Die Darstellung endet nach 300 Millionen dekodierten Pixeln oder bei geschätzten 512 MiB an Puffern dieser Seite; das ist keine Grenze für den gesamten Browserspeicher. Danach oder nach einem Abbruch bleiben Kopfzeilen, Bytebilanz und Zeitangaben verfügbar. Nicht gezeichnete Frames werden anhand ihrer Kopfzeilen beschrieben; vollständige Pixelnutzungszahlen und die native Animationsvorschau sind nicht verfügbar. Der erste Parserlauf und native Speicher- oder Canvas-Operationen lassen sich nicht mitten im Aufruf unterbrechen. Die Website enthält Werbung; die Anzeigen erhalten keine Angaben zu Ihrer Datei."
 
 [[faq]]
 q = "Funktioniert es offline?"

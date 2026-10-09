@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar análisis</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>Borrar análisis</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- El resumen, y la animación tal como la dibuja el propio navegador. -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="La animación, tal como la dibuja este navegador">
-        <p class="preview-note">El decodificador de tu propio navegador, reproduciendo el archivo tal cual.</p>
+        <p id="preview-note" class="preview-note">El decodificador de tu propio navegador, reproduciendo el archivo tal cual.</p>
       </div>
 
       <dl class="facts">
@@ -160,6 +165,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">Dibujando {name}: {done} de {total} fotogramas…</span>
+    <span data-phrase="read.cancelled">Análisis cancelado. La lectura nativa del archivo aún puede terminar.</span>
+    <span data-phrase="drawing.empty">El lienzo o un fotograma no tiene un tamaño dibujable.</span>
+    <span data-phrase="drawing.memory">Dibujar superaría el límite estimado de búferes de 512 MiB de esta página.</span>
+    <span data-phrase="drawing.pixels">El dibujo alcanzó el límite de 300 millones de píxeles decodificados.</span>
+    <span data-phrase="drawing.cancelled">Se canceló el dibujo.</span>
+    <span data-phrase="drawing.failed">El dibujo se detuvo: {detail}</span>
+    <span data-phrase="drawing.partial">Se dibujaron {drawn} de {total} fotogramas. {why} El análisis de cabeceras, tiempos y bytes sigue disponible; el uso de píxeles no dibujados es desconocido.</span>
+    <span data-phrase="preview.refused">La reproducción del navegador está desactivada porque el dibujo está incompleto. El análisis leído sigue disponible.</span>
+    <span data-phrase="colours.unknown">No medido por completo</span>
+    <span data-phrase="colours.partial">Las tablas declaran {declared} entradas de color. El uso total de píxeles no está disponible mientras haya fotogramas sin dibujar.</span>
+    <span data-phrase="palette.globalpartial">{entries}, {size}, compartida por {frames}. No se marca ninguna entrada como sin usar porque no se dibujaron todos los píxeles.</span>
+    <span data-phrase="palette.unused">{index}: {colour} — nunca usado</span>
+    <span data-phrase="report.drawing">Dibujo</span>
+    <span data-phrase="report.partial">Se dibujaron {drawn} de {total} fotogramas. {why} Los no dibujados se describen desde sus cabeceras; el uso total de píxeles no está disponible.</span>
+    <span data-phrase="preview.native">El decodificador de tu propio navegador, reproduciendo el archivo tal cual.</span>
     <span data-phrase="read.reading">Leyendo {name}&hellip;</span>
     <span data-phrase="read.notagif">{name} no es un GIF: {why}. Esta herramienta lee el formato GIF en sí, así que no
       tiene nada que decir sobre otros archivos.</span>
@@ -195,8 +216,7 @@
     <span data-phrase="level.bad">Problema</span>
     <span data-phrase="level.warn">Conviene saberlo</span>
     <span data-phrase="level.note">Nota</span>
-    <span data-phrase="frames.partial">{frames}. {drawn} de ellos están dibujados aquí; el resto es demasiado grande para
-      tenerlo todo en memoria a la vez y se describe solo desde sus cabeceras.</span>
+    <span data-phrase="frames.partial">{frames}. Aquí se dibujaron {drawn}; el resto se describe solo desde sus cabeceras.</span>
     <span data-phrase="frames.none">{frames}, ninguno de ellos cubre todo el lienzo.</span>
     <span data-phrase="frames.all">{frames}, todos cubren todo el lienzo.</span>
     <span data-phrase="frames.some">{frames}, {n} de ellos cubren todo el lienzo.</span>

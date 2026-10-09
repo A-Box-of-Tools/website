@@ -356,3 +356,7 @@
 }
 
 /* -------------------------------------------------------------- messages */
+
+/* Progress and refusal feedback remain visible beside their current controls. */
+.analysis-actions { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .8rem; }
+.drawing-status { color: var(--text-dim); font-size: .9rem; line-height: 1.5; margin: .8rem 0 0; }

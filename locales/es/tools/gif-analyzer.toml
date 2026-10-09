@@ -280,11 +280,7 @@ a = """
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
-a = """
-        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba. No
-        hay límite de tamaño de archivo más allá de la memoria de tu propio equipo.
-        El sitio lleva publicidad, que es lo que lo paga, y a los anuncios no se
-        les da nada sobre tu archivo."""
+a = "Es gratis, sin cuenta, inicio de sesión ni periodo de prueba. Leer el archivo sigue dependiendo de la memoria de tu dispositivo. El dibujo se detiene al alcanzar 300 millones de píxeles decodificados o unos 512 MiB estimados de búferes de esta página; no es un límite de memoria total del navegador. Después de detener o cancelar el dibujo, siguen disponibles las cabeceras, el recuento de bytes y los tiempos. Los fotogramas no dibujados se describen desde sus cabeceras; no están disponibles los totales completos de uso de píxeles ni la vista previa nativa. El análisis inicial y las operaciones nativas de memoria o lienzo no se pueden interrumpir durante una llamada. El sitio incluye publicidad; los anuncios no reciben información sobre tu archivo."
 
 [[faq]]
 q = "¿Funciona sin conexión?"

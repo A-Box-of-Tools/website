@@ -268,11 +268,7 @@ a = """
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
-a = """
-        É grátis, e não tem conta, nem login, nem período de teste. Não tem limite de
-        tamanho de arquivo além da memória do seu próprio computador. O site exibe
-        publicidade, e é ela que paga a conta; os anúncios não recebem nada sobre o
-        seu arquivo."""
+a = "É grátis, sem conta, início de sessão ou período de teste. A leitura do arquivo ainda depende da memória do seu dispositivo. O desenho para ao atingir 300 milhões de pixels decodificados ou uma estimativa de 512 MiB de buffers desta página; não é um limite de memória total do navegador. Após a parada ou o cancelamento, os cabeçalhos, a contagem de bytes e os tempos continuam disponíveis. Os quadros não desenhados são descritos pelos cabeçalhos; os totais completos de uso de pixels e a prévia nativa não ficam disponíveis. A análise inicial e as operações nativas de memória ou canvas não podem ser interrompidas durante uma chamada. O site tem publicidade; os anúncios não recebem informações sobre seu arquivo."
 
 [[faq]]
 q = "Funciona offline?"

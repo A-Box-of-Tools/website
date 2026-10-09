@@ -29,6 +29,8 @@
  * exception, and the flags say exactly which of the three things went wrong.
  */
 
+import { finishSteps } from './analysis-steps.js';
+
 /** The largest dictionary the format allows: twelve bits of code. */
 const MAX_CODES = 4096;
 
@@ -41,6 +43,11 @@ const MAX_CODES = 4096;
  *            corrupt: {key: string, values: object}|null}}
  */
 export function lzwDecode(data, minCodeSize, pixelCount) {
+  return finishSteps(lzwSteps(data, minCodeSize, pixelCount));
+}
+
+/** Code expansion also yields inside long dictionary chains, not just per frame. */
+export function* lzwSteps(data, minCodeSize, pixelCount) {
   if (minCodeSize < 2 || minCodeSize > 8) {
     return fail(pixelCount,
       { key: 'decode.codesize', values: { size: minCodeSize } });
@@ -70,6 +77,7 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
   let complete = false;
   let truncated = false;
   let corrupt = null;
+  let operations = 0;
 
   reading: while (true) {
     // Fill the bit buffer. Twelve is the widest a code gets and eight the most
@@ -89,6 +97,7 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
     bitBuffer >>= width;
     bitCount -= width;
     codes += 1;
+    if (++operations >= 8192) { operations = 0; yield; }
 
     if (code === clearCode) {
       next = endCode + 1;
@@ -139,6 +148,7 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
       stack[top] = suffix[walk];
       top += 1;
       walk = prefix[walk];
+      if (++operations >= 8192) { operations = 0; yield; }
     }
     stack[top] = walk;
     top += 1;
@@ -148,6 +158,7 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
       top -= 1;
       if (out < pixelCount) indices[out] = stack[top];
       out += 1;
+      if (++operations >= 8192) { operations = 0; yield; }
     }
 
     if (next < MAX_CODES) {

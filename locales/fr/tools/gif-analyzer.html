@@ -21,6 +21,11 @@
 
     <p id="load-error" class="error" role="alert" hidden></p>
     <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+    <div class="analysis-actions">
+      <button type="button" id="cancel" class="ghost" hidden>Annuler l’analyse</button>
+      <button type="button" id="clear-analysis" class="ghost" hidden>Effacer l’analyse</button>
+    </div>
+    <p id="drawing-status" class="drawing-status" role="status" aria-live="polite" hidden></p>
   </section>
 
   <!-- Le résumé, et l'animation telle que le navigateur la dessine lui-même. -->
@@ -42,7 +47,7 @@
           the disagreement that would tell you this reader had a bug.
         -->
         <img id="preview" class="preview" alt="L'animation, telle que ce navigateur la dessine">
-        <p class="preview-note">Le décodeur de votre propre navigateur, jouant le fichier tel quel.</p>
+        <p id="preview-note" class="preview-note">Le décodeur de votre propre navigateur, jouant le fichier tel quel.</p>
       </div>
 
       <dl class="facts">
@@ -160,6 +165,22 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.drawing">Dessin de {name} : {done} images sur {total}…</span>
+    <span data-phrase="read.cancelled">Analyse annulée. La lecture native du fichier peut encore se terminer.</span>
+    <span data-phrase="drawing.empty">Le canevas ou une image n’a pas de taille dessinable.</span>
+    <span data-phrase="drawing.memory">Le dessin dépasserait la limite estimée de 512 MiB pour les tampons de cette page.</span>
+    <span data-phrase="drawing.pixels">Le dessin a atteint la limite de 300 millions de pixels décodés.</span>
+    <span data-phrase="drawing.cancelled">Le dessin a été annulé.</span>
+    <span data-phrase="drawing.failed">Le dessin s’est arrêté : {detail}</span>
+    <span data-phrase="drawing.partial">{drawn} images sur {total} dessinées. {why} L’analyse des en-têtes, des durées et des octets reste disponible ; l’usage des pixels non dessinés est inconnu.</span>
+    <span data-phrase="preview.refused">La lecture du navigateur est désactivée car le dessin est incomplet. L’analyse lue reste disponible.</span>
+    <span data-phrase="colours.unknown">Pas entièrement mesuré</span>
+    <span data-phrase="colours.partial">Les tables déclarent {declared} entrées de couleur. L’usage total des pixels est indisponible tant que des images ne sont pas dessinées.</span>
+    <span data-phrase="palette.globalpartial">{entries}, {size}, partagée par {frames}. Aucune entrée n’est marquée inutilisée car tous les pixels n’ont pas été dessinés.</span>
+    <span data-phrase="palette.unused">{index} : {colour} — jamais utilisé</span>
+    <span data-phrase="report.drawing">Dessin</span>
+    <span data-phrase="report.partial">{drawn} images sur {total} dessinées. {why} Les images non dessinées sont décrites par leurs en-têtes ; l’usage total des pixels est indisponible.</span>
+    <span data-phrase="preview.native">Le décodeur de votre propre navigateur, jouant le fichier tel quel.</span>
     <span data-phrase="read.reading">Lecture de {name}&hellip;</span>
     <span data-phrase="read.notagif">{name} n&rsquo;est pas un GIF&nbsp;: {why}. Cet outil lit le format GIF lui-même, il
       n&rsquo;a donc rien à dire sur les autres fichiers.</span>
@@ -195,9 +216,7 @@
     <span data-phrase="level.bad">Problème</span>
     <span data-phrase="level.warn">Bon à savoir</span>
     <span data-phrase="level.note">Remarque</span>
-    <span data-phrase="frames.partial">{frames}. {drawn} d&rsquo;entre elles sont dessinées ici&nbsp;; le reste est trop
-      grand pour tenir en mémoire d&rsquo;un coup et est décrit à partir de ses seuls
-      en-têtes.</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} sont dessinées ici ; les autres sont décrites uniquement par leurs en-têtes.</span>
     <span data-phrase="frames.none">{frames}, dont aucune ne couvre toute la surface.</span>
     <span data-phrase="frames.all">{frames}, toutes couvrant toute la surface.</span>
     <span data-phrase="frames.some">{frames}, dont {n} couvrent toute la surface.</span>
