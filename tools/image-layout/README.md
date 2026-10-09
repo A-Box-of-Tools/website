@@ -93,6 +93,12 @@ arrow buttons, cancellation, the preview and result URLs. Changing a setting
 invalidates the previous result so an old download cannot claim to represent
 newly selected gaps or a new order.
 
+Remove all hides its own toolbar, so it returns keyboard focus to the native
+image picker after updating the empty list. Otherwise the focused button
+disappears and the next keyboard action starts at the page body. An empty
+preview also releases its canvas backing pixels rather than retaining the
+last layout until another source is chosen.
+
 ## A format is checked rather than assumed
 
 The page writes PNG, JPEG and WebP using the browser's own encoders through
