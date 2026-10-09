@@ -29,6 +29,8 @@
       </select>
     </div>
 
+    <p class="width-guidance" id="width-guidance">Deixe a largura do objeto vazia para usar a largura automática. Se a largura digitada não puder ser lida, essa linha fica fora do gráfico até ser corrigida.</p>
+
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
         <span></span>
@@ -126,6 +128,7 @@
       então meça a sua e digite os números de verdade por cima.
     </p>
 
+    <p id="import-status" class="field-note" role="status" aria-live="polite" aria-atomic="true" hidden></p>
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
@@ -252,6 +255,17 @@
     <span data-phrase="height.unreadable">Isso não é uma altura que se entenda aqui. Tente 173, 1,73 m, 5'8" ou 68 in.</span>
     <span data-phrase="height.tooshort">Baixo demais para desenhar &mdash; 5 cm é o mínimo.</span>
     <span data-phrase="height.tootall">Mais alto do que o gráfico vai &mdash; o limite é 12 metros.</span>
+
+    <span data-phrase="width.reads">Largura lida como {width}.</span>
+    <span data-phrase="width.automatic">A largura automática acompanha a altura.</span>
+    <span data-phrase="width.automaticread">Largura automática: {width}.</span>
+    <span data-phrase="width.unreadable">Esta largura não foi entendida. Tente 60 cm ou 24 in.</span>
+    <span data-phrase="width.toosmall">Estreito demais para desenhar — o mínimo é 5 cm.</span>
+    <span data-phrase="width.toolarge">Mais largo do que o gráfico permite — o limite é 12 metros.</span>
+    <span data-phrase="chart.invalid">Corrija uma altura ou largura para desenhar uma linha no gráfico.</span>
+    <span data-phrase="import.failed">Não foi possível ler {name}: {detail}.</span>
+    <span data-phrase="import.readingone">Lendo uma imagem nesta página…</span>
+    <span data-phrase="import.readingmany">Lendo {count} imagens nesta página…</span>
 
     <span data-phrase="svg.added">Adicionado, desenhado a partir de {shapes} formas desse arquivo. Nada foi enviado para lê-lo.</span>
     <span data-phrase="svg.noshapes">Nesse arquivo não há nada para desenhar. Só as formas são mantidas &mdash; um arquivo feito só de texto, efeitos ou imagens vinculadas não tem nenhuma.</span>
