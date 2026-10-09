@@ -90,20 +90,25 @@
       赤い線がいまの輪郭で、その元になったピクセルの上に重ねて描かれています。この問いに答えが出せる場所はそこしかありません。輪郭が正しいか間違っているかは、そのピクセルとの関係だけで決まるからです。どちらかの画像をドラッグすれば両方が動き、ホイールを回せば拡大できます。あってはいけないものはクリックしてください。クリックひとつでその色のかたまり全体が選ばれるので、指しているのはピクセルではなく形です。もう一度クリックすれば戻ります。
     </p>
 
+    <p id="keyboard-help" class="field-note">キーボード：Tabでどちらかの画像に移動します。矢印キーで元画像の1ピクセル、Shiftと矢印キーで10ピクセル移動します。Homeで画像の中央に戻ります。EnterまたはSpaceで領域を切り替えます。背景を指定する設定が有効なら背景色を追加します。十字カーソルは両方の画像に表示され、座標は1から始まります。</p>
+
     <div class="stages waiting" id="stages">
       <div class="stage-wrap">
         <h3 class="stage-title">画像</h3>
-        <div class="stage" id="stage-picture" role="group"
+        <div class="stage" id="stage-picture" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="画像。トレースした輪郭が重ねて描かれています。ドラッグで移動、ホイールで拡大、部分をクリックで外します。"></div>
       </div>
       <div class="stage-wrap">
         <h3 class="stage-title">SVG</h3>
-        <div class="stage" id="stage-svg" role="group"
+        <div class="stage" id="stage-svg" role="group" tabindex="-1" aria-disabled="true"
+             aria-describedby="keyboard-help cursor-status"
              aria-label="トレースした図。ドラッグで移動、ホイールで拡大、部分をクリックで外します。"></div>
       </div>
     </div>
 
     <p id="hint" class="hint" role="status" aria-live="polite"></p>
+    <p id="cursor-status" class="hint" role="status" aria-live="polite" aria-atomic="true"></p>
 
     <div class="controls">
       <div class="option-row">
@@ -190,6 +195,15 @@
     in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="cursor.ink">ピクセル（{x}, {y}）は形に含まれています。EnterまたはSpaceでこの領域を除外します。</span>
+    <span data-phrase="cursor.paper">ピクセル（{x}, {y}）は形に含まれていません。EnterまたはSpaceでこの領域を塗りつぶします。</span>
+    <span data-phrase="cursor.sample">ピクセル（{x}, {y}）：EnterまたはSpaceでこの色を背景に追加します。</span>
+    <span data-phrase="cursor.sampled">ピクセル（{x}, {y}）：背景色を追加しました。{count}個のサンプルを使用中です。</span>
+    <span data-phrase="cursor.excluded">ピクセル（{x}, {y}）：形から{size}ピクセルを除外しました。</span>
+    <span data-phrase="cursor.included">ピクセル（{x}, {y}）：形に{size}ピクセルを追加しました。</span>
+    <span data-phrase="trace.updating">輪郭を更新しています…</span>
+    <span data-phrase="trace.failed">輪郭を更新できませんでした：{why}</span>
+
     <span data-phrase="read.nodecode">このブラウザでは画像をデコードできませんでした。</span>
     <span data-phrase="read.failed">そのファイルは開けませんでした：{why}</span>
     <span data-phrase="loaded.name">{name}｜&#x2066;{width}&times;{height}&#x2069;</span>

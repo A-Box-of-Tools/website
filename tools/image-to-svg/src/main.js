@@ -9,6 +9,8 @@ import { traceMask } from './trace.js';
 import { labelRegions, selectRegion, outlineOfSelection, MaskEdits } from './regions.js';
 import { Viewport, clamp } from './view.js';
 import { makeExample } from './example.js';
+import { pictureReads, releasePicture } from './picture-read.js';
+import { traceUpdates } from './trace-updates.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -47,6 +49,7 @@ const el = {
   stagePicture: $('stage-picture'),
   stageSvg: $('stage-svg'),
   hint: $('hint'),
+  cursorStatus: $('cursor-status'),
   zoom: $('zoom'),
   zoomValue: $('zoom-value'),
   fit: $('fit'),
@@ -115,6 +118,7 @@ const view = new Viewport({
   hosts: [el.stagePicture, el.stageSvg],
   onHover: (point) => (point ? hoverAt(point) : clearHover()),
   onPick: (point) => pick(point),
+  onCursor: (point) => cursorAt(point),
   onView: () => {
     el.fit.checked = false;
     el.zoom.value = String(Math.log2(view.zoom));
@@ -133,51 +137,61 @@ const picker = wireFilePicker({
   example: makeExample,
 });
 
-async function load(file) {
-  el.loadError.hidden = true;
-  picker.busy(readingLabel(1));
-  try {
-    const bitmap = await createImageBitmap(file);
-    const canvas = document.createElement('canvas');
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
-    const g = canvas.getContext('2d', { willReadFrequently: true });
-    // On white, because that is what a transparent pixel is sitting on once it
-    // is a black-and-white drawing, and it is what the threshold assumes.
-    g.fillStyle = '#fff';
-    g.fillRect(0, 0, canvas.width, canvas.height);
-    g.drawImage(bitmap, 0, 0);
-    bitmap.close?.();
-
-    picture = {
-      name: file.name,
-      stem: file.name.replace(/\.[^.]+$/, '') || 'drawing',
-      canvas,
-      image: g.getImageData(0, 0, canvas.width, canvas.height),
-    };
+const reads = pictureReads({
+  busy() {
+    updates.cancel();
+    retireHover();
+    download.clear();
+    el.loadError.hidden = true;
+    picker.busy(readingLabel(1));
+  },
+  apply(next) {
+    clearTimeout(resizing);
+    releasePicture(picture);
+    picture = next;
     el.loadedName.textContent = phrase('loaded.name', {
-      name: file.name, width: canvas.width, height: canvas.height,
+      name: picture.name, width: picture.canvas.width, height: picture.canvas.height,
     });
     el.loaded.hidden = false;
     bgSamples = [];
+    showSamples();
     edits = null;
-    view.setSize(canvas.width, canvas.height);
+    view.setSize(picture.canvas.width, picture.canvas.height);
     view.fit = true;
     el.fit.checked = true;
     view.pan = { x: 0, y: 0 };
+    picker.arrived();
     remask({ keepEdits: false });
-  } catch (why) {
+  },
+  failed(why) {
     el.loadError.textContent = phrase('read.failed', {
       why: why?.message || phrase('read.nodecode'),
     });
     el.loadError.hidden = false;
-    // The file was turned away, so the steps that would have acted on it go
-    // back to being dimmed rather than sitting live and empty.
-    picker.waiting();
-  } finally {
-    picker.done();
-  }
-}
+    // A refused replacement leaves the last usable drawing, rebuilt for the
+    // current controls; a first refusal leaves the download step waiting.
+    if (picture) { picker.arrived(); remask(); }
+    else picker.waiting();
+  },
+  done() { picker.done(); },
+});
+
+function load(file) { return reads.read(file); }
+
+const updates = traceUpdates({
+  remask: () => remask(), trace: () => retrace(),
+  queued() {
+    retireHover();
+    download.clear();
+    el.saveCard.setAttribute('aria-busy', 'true');
+    el.facts.textContent = phrase('trace.updating');
+  },
+  settled() { el.saveCard.removeAttribute('aria-busy'); },
+  failed(why) {
+    download.clear();
+    el.facts.textContent = phrase('trace.failed', { why: why?.message || phrase('read.nodecode') });
+  },
+});
 
 /* ---- the pipeline, cheapest last ------------------------------------------- */
 
@@ -255,11 +269,12 @@ function retrace() {
 
   overwhelming = out.stats.contours > TOO_MANY_LOOPS || out.stats.bytes > TOO_MANY_BYTES;
   outPath = overwhelming ? null : new Path2D(out.d);
-  hover = { ...NOTHING };
+  retireHover();
   el.undo.disabled = edits.edits === 0;
   el.resetEdits.disabled = edits.edits === 0;
   offerDownload();
   redraw();
+  if (view.focused) cursorAt(view.cursor);
 }
 
 function redraw() {
@@ -286,36 +301,37 @@ function drawPicture(pane, zw, zh, zoom) {
   const wanted = el.show.value;
   const field = wanted === 'measured' ? baseMask.distance : null;
   let source = picture.canvas;
-
-  if (wanted === 'mask' || field) {
-    const c = document.createElement('canvas');
-    c.width = workMask.w;
-    c.height = workMask.h;
-    const g = c.getContext('2d');
-    const id = g.createImageData(workMask.w, workMask.h);
-    for (let i = 0; i < workMask.bits.length; i++) {
-      const v = field ? field[i] : (workMask.bits[i] ? 0 : 255);
-      id.data[i * 4] = id.data[i * 4 + 1] = id.data[i * 4 + 2] = v;
-      id.data[i * 4 + 3] = 255;
+  let temporary;
+  try {
+    if (wanted === 'mask' || field) {
+      const c = temporary = document.createElement('canvas');
+      c.width = workMask.w;
+      c.height = workMask.h;
+      const g = c.getContext('2d');
+      const id = g.createImageData(workMask.w, workMask.h);
+      for (let i = 0; i < workMask.bits.length; i++) {
+        const v = field ? field[i] : (workMask.bits[i] ? 0 : 255);
+        id.data[i * 4] = id.data[i * 4 + 1] = id.data[i * 4 + 2] = v;
+        id.data[i * 4 + 3] = 255;
+      }
+      g.putImageData(id, 0, 0);
+      source = c;
     }
-    g.putImageData(id, 0, 0);
-    source = c;
-  }
 
-  const canvas = pane.content;
-  canvas.width = zw;
-  canvas.height = zh;
-  canvas.setAttribute('aria-label', phrase('picture.alt', {
-    width: workMask.w, height: workMask.h,
-  }));
-  const g = canvas.getContext('2d');
-  // Nearest neighbour is the point of this pane when magnifying: it is how you
-  // see the staircase the tracer is arguing with. Shrinking is the opposite -
-  // dropping every other pixel invents a moire that is not in the file.
-  g.imageSmoothingEnabled = zoom < 1;
-  g.drawImage(source, 0, 0, zw, zh);
+    const canvas = pane.content;
+    canvas.width = zw;
+    canvas.height = zh;
+    canvas.setAttribute('aria-label', phrase('picture.alt', {
+      width: workMask.w, height: workMask.h,
+    }));
+    const g = canvas.getContext('2d');
+    // Nearest neighbour is the point of this pane when magnifying: it is how you
+    // see the staircase the tracer is arguing with. Shrinking is the opposite -
+    // dropping every other pixel invents a moire that is not in the file.
+    g.imageSmoothingEnabled = zoom < 1;
+    g.drawImage(source, 0, 0, zw, zh);
+  } finally { if (temporary) temporary.width = temporary.height = 0; }
 }
-
 function drawSvg(pane, zw, zh) {
   if (overwhelming) {
     const said = document.createElement('div');
@@ -362,6 +378,19 @@ function drawOverlays(zoom) {
       g.restore();
     }
 
+    if (view.focused && view.cursor) {
+      const x = (view.cursor[0] + 0.5) * zoom, y = (view.cursor[1] + 0.5) * zoom;
+      g.save();
+      g.beginPath();
+      g.moveTo(x - 8, y); g.lineTo(x + 8, y);
+      g.moveTo(x, y - 8); g.lineTo(x, y + 8);
+      g.moveTo(x + 4, y); g.arc(x, y, 4, 0, Math.PI * 2);
+      g.lineWidth = 3;
+      g.strokeStyle = '#fff'; g.stroke();
+      g.lineWidth = 1.5;
+      g.strokeStyle = '#155bc2'; g.stroke();
+      g.restore();
+    }
     if (!hover.outline) continue;
     const putting = !hover.wasInk;
     g.save();
@@ -400,8 +429,33 @@ const wandOptions = (budget) => ({
 
 const labelsIfNeeded = () => (el.wandMode.value === 'shape' ? labelsNow() : null);
 
+function retireHover() {
+  clearTimeout(pending);
+  pending = 0;
+  hover = { ...NOTHING };
+  el.hint.textContent = '';
+  el.cursorStatus.textContent = '';
+}
+
+function cursorAt(point) {
+  if (!point || !workMask) {
+    el.cursorStatus.textContent = '';
+    clearHover();
+    return;
+  }
+  const [x, y] = point;
+  const key = el.sampleBackground.checked && el.find.value === 'subject'
+    ? 'cursor.sample' : (workMask.bits[y * workMask.w + x] ? 'cursor.ink' : 'cursor.paper');
+  el.cursorStatus.textContent = phrase(key, { x: x + 1, y: y + 1 });
+  hover.at = -1;
+  hoverAt(point);
+  redrawOverlaysOnly();
+}
+
 function clearHover() {
-  if (hover.at === -1) return;
+  clearTimeout(pending);
+  pending = 0;
+  if (hover.at === -1) { redrawOverlaysOnly(); return; }
   hover = { ...NOTHING };
   el.hint.textContent = '';
   redrawOverlaysOnly();
@@ -423,7 +477,8 @@ function hoverAt([x, y]) {
   // preview that silently never arrives is a bad way to find that out.
   clearTimeout(pending);
   pending = setTimeout(() => {
-    if (hover.at !== at) return;
+    pending = 0;
+    if (!workMask || hover.at !== at) return;
     const got = selectRegion(workMask, labelsIfNeeded(), x, y, wandOptions(PREVIEW_BUDGET));
     const outline = got.truncated
       ? null
@@ -446,13 +501,14 @@ function redrawOverlaysOnly() {
 }
 
 function pick([x, y]) {
-  if (!workMask) return;
+  if (!updates.flush() || !workMask) return;
 
   if (el.sampleBackground.checked && el.find.value === 'subject') {
     bgSamples.push(meanColourAround(x, y, 3));
     el.useBorder.checked = false;
     showSamples();
     remask();
+    if (view.focused) el.cursorStatus.textContent = phrase('cursor.sampled', { x: x + 1, y: y + 1, count: bgSamples.length });
     return;
   }
 
@@ -460,6 +516,7 @@ function pick([x, y]) {
   if (!got.size) return;
   edits.set(got.pixels, !got.wasInk);
   retrace();
+  if (view.focused) el.cursorStatus.textContent = phrase(got.wasInk ? 'cursor.excluded' : 'cursor.included', { x: x + 1, y: y + 1, size: got.size.toLocaleString(document.documentElement.lang) });
 }
 
 /** The average colour of a small patch, which is steadier than one pixel. */
@@ -482,6 +539,7 @@ function meanColourAround(x, y, r) {
 /* ---- what the page says about the result ------------------------------------ */
 
 function showNumbers() {
+  if (updates.pending) { el.facts.textContent = phrase('trace.updating'); return; }
   const s = out.stats;
   const parts = [phrase(s.contours === 1 ? 'facts.line.one' : 'facts.line.many', {
     loops: s.contours.toLocaleString(),
@@ -555,7 +613,7 @@ for (const id of ['find', 'threshold', 'threshold-auto', 'invert',
     if (id === 'invert' && edits) edits.flip();
     el.threshold.disabled = el.thresholdAuto.checked;
     showSubjectValues();
-    remask();
+    if (picture) updates.queue('mask');
   });
 }
 
@@ -563,8 +621,13 @@ for (const id of ['detail', 'detail-auto', 'corner']) {
   $(id).addEventListener('input', () => {
     if (id === 'detail') el.detailAuto.checked = false;
     showDetail();
-    if (picture) retrace();
+    if (picture) updates.queue('trace');
   });
+}
+
+for (const id of ['find', 'threshold', 'threshold-auto', 'invert', 'sensitivity',
+  'reach', 'seal', 'solid', 'keep-all', 'use-border', 'detail', 'detail-auto', 'corner']) {
+  $(id).addEventListener('change', () => updates.flush());
 }
 
 for (const id of ['zoom', 'fit', 'show', 'show-outline']) {
@@ -586,33 +649,44 @@ function pickableShow() {
 for (const id of ['wand-mode', 'wand-tolerance']) {
   $(id).addEventListener('input', () => {
     showTolerance();
-    hover.at = -1;   // what was highlighted was answering a different question
+    retireHover();
+    if (view.focused) cursorAt(view.cursor);
   });
 }
 
 el.sampleBackground.addEventListener('input', () => {
-  hover.at = -1;
-  el.hint.textContent = '';
+  retireHover();
+  if (view.focused) cursorAt(view.cursor);
 });
 
 el.clearSamples.addEventListener('click', () => {
+  if (!updates.flush() || !picture) return;
   bgSamples = [];
   showSamples();
   remask();
 });
 
 el.undo.addEventListener('click', () => {
+  if (!updates.flush()) return;
   if (edits?.undo()) retrace();
 });
 
 el.resetEdits.addEventListener('click', () => {
+  if (!updates.flush() || !picture) return;
   edits?.reset();
   retrace();
 });
 
 el.clearImage.addEventListener('click', () => {
+  reads.retire();
+  updates.cancel();
+  retireHover();
+  clearTimeout(resizing);
+  releasePicture(picture);
+  view.clear();
+  download.clear();
   picture = null;
-  baseMask = workMask = out = outPath = null;
+  baseMask = workMask = labelled = out = outPath = null;
   edits = null;
   bgSamples = [];
   el.loaded.hidden = true;

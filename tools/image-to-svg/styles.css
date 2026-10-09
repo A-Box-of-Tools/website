@@ -116,3 +116,8 @@
 }
 
 #download { display: inline-block; text-decoration: none; }
+
+/* Focus and a source-pixel crosshair give keyboard picking the same two views. */
+.stage:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+#cursor-status:empty { display: none; }
+#cursor-status { color: var(--text); }
