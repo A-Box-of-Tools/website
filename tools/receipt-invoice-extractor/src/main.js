@@ -7,7 +7,7 @@ import { acceptsImageFile } from './shared/image-input.js';
 import { exampleFiles } from './example.js';
 import { recognize, terminateOcr } from './ocr.js';
 import { receiptFromRecognition } from './ocr-results.js';
-import { extractReceipt, parseAmount, formatMinor, summarize } from './receipt.js';
+import { extractReceipt, parseAmount, formatMinor, summarize, duplicatePhotoCounts } from './receipt.js';
 import { inferLocationCurrency } from './location-currency.js';
 import { mostUsedCurrency, isoDate, parseRate, conversionFor, summarizeConverted, buildConversionCsv, fetchHistoricalRate } from './fx.js';
 import { FULL_CROP, inspectImage, prepareImage, readImageCanvas, rotateCrop } from './attachments.js';
@@ -625,6 +625,14 @@ function readyToSend() {
 }
 
 function updateReport() {
+  const duplicates = duplicatePhotoCounts(records);
+  for (const record of records) {
+    const note = record.element.querySelector('.duplicate-note');
+    const count = duplicates.get(record);
+    const message = count ? phrase('duplicatePhoto', { count }) : '';
+    if (note.textContent !== message) note.textContent = message;
+    note.hidden = !count;
+  }
   const summary = summarize(records);
   const grand = summarizeConverted(records, finalCurrency);
   $('document-count').textContent = summary.count;
