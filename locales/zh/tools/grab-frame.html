@@ -90,7 +90,7 @@
       <div class="field">
         <label for="every">每隔</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>秒</span>
         </div>
         <p class="field-note">
@@ -98,6 +98,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>设置覆盖整段视频且不超过 500 张的间隔</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">截下这一帧</button>
@@ -153,6 +156,9 @@
     <span data-phrase="at.notread">这条路径不读帧的时刻</span>
     <span data-phrase="note.png">无损：静帧里存的正是这一帧解码出来的像素，&#x2066;{width} x {height}&#x2069;。</span>
     <span data-phrase="note.lossy">在视频本身的压缩之上又压了一遍。看看可以，还要接着编辑就不合适。</span>
+    <span data-phrase="series.plan">计划：从 {first} 到 {last}，共 {n} 张静帧。</span>
+    <span data-phrase="series.plan.player">计划向播放器请求 {n} 个时间点，从 {first} 到 {last}。实际帧由播放器选择。</span>
+    <span data-phrase="series.overlimit">此间隔将从 {first} 到 {last} 生成 {n} 张静帧。上限为 500 张；请先增大间隔再开始。</span>
     <span data-phrase="series.any">连续抓一批</span>
     <span data-phrase="series.every.one">每秒抓一张</span>
     <span data-phrase="series.every.many">每 {n} 秒抓一张</span>
@@ -169,7 +175,7 @@
     <span data-phrase="save.nowrite">这个浏览器不肯写 {format}。</span>
     <span data-phrase="save.failed">那一帧没能保存。</span>
     <span data-phrase="zip.failed">那个压缩包没能做出来。</span>
-    <span data-phrase="series.nointerval">把间隔设成大于零秒。</span>
+    <span data-phrase="series.nointerval">请设置至少 0.1秒的间隔。</span>
     <span data-phrase="series.noframes">这个间隔一帧也挑不出来。</span>
     <span data-phrase="series.failed">连续抓的时候出了问题。</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
@@ -204,6 +210,7 @@
     <span data-phrase="read.layout">这个文件的排布，这里的读取器看不懂。</span>
     <span data-phrase="read.nodecoder">这个浏览器不直接解码 {codec}。</span>
     <span data-phrase="read.nowebcodecs">这个浏览器没有 WebCodecs，画面没法一帧一帧解码。</span>
+    <span data-phrase="read.duplicatetime">此文件含有显示时间相同的帧。浏览器播放器会选择可见帧，无法精确选择单帧。</span>
     <span data-phrase="read.turned">这个文件是转着存的，这里的读取器和浏览器的播放器对这个旋转的看法不一致。</span>
     <span data-phrase="open.failed">这个浏览器打不开这个文件。{reason}</span>
     <span data-phrase="path.player">{reason} 所以这个文件不是一帧一帧读的，而是交给浏览器自己的播放器。图片还是按视频的原始尺寸保存，但落在哪一帧由播放器说了算，走一步是大约一帧，而不是正好一帧。</span>

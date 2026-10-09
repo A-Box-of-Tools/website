@@ -93,7 +93,7 @@
       <div class="field">
         <label for="every">Cada</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>segundos</span>
         </div>
         <p class="field-note">
@@ -102,6 +102,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>Ajustar el intervalo para todo el vídeo con un máximo de 500 imágenes</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">Capturar este fotograma</button>
@@ -161,6 +164,9 @@
     <span data-phrase="note.lossy">Comprimida otra vez encima de la compresión del
       propio vídeo. Vale para una vista previa, no para algo que se vaya a seguir
       editando.</span>
+    <span data-phrase="series.plan">Imágenes fijas planificadas: {n}, de {first} a {last}.</span>
+    <span data-phrase="series.plan.player">Posiciones solicitadas al reproductor: {n}, de {first} a {last}. El reproductor elige las imágenes reales.</span>
+    <span data-phrase="series.overlimit">Este intervalo produciría {n} imágenes fijas, de {first} a {last}. El límite es 500; aumente el intervalo antes de empezar.</span>
     <span data-phrase="series.any">Capturar una serie</span>
     <span data-phrase="series.every.one">Capturar uno cada segundo</span>
     <span data-phrase="series.every.many">Capturar uno cada {n} segundos</span>
@@ -178,7 +184,7 @@
     <span data-phrase="save.nowrite">Este navegador no ha querido escribir un {format}.</span>
     <span data-phrase="save.failed">Ese fotograma no se ha podido guardar.</span>
     <span data-phrase="zip.failed">Ese archivo comprimido no se ha podido construir.</span>
-    <span data-phrase="series.nointerval">Pon un intervalo de más de cero segundos.</span>
+    <span data-phrase="series.nointerval">Establezca un intervalo de al menos 0,1 segundos.</span>
     <span data-phrase="series.noframes">Ese intervalo no elige ningún fotograma.</span>
     <span data-phrase="series.failed">Algo ha salido mal al capturar la serie.</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
@@ -215,6 +221,7 @@
     <span data-phrase="read.nodecoder">Este navegador no decodifica {codec} directamente.</span>
     <span data-phrase="read.nowebcodecs">Este navegador no tiene WebCodecs, así que los fotogramas no se pueden decodificar
       uno a uno.</span>
+    <span data-phrase="read.duplicatetime">Este archivo tiene imágenes con el mismo tiempo de presentación. El reproductor del navegador elige la imagen visible; no se puede seleccionar un fotograma exacto.</span>
     <span data-phrase="read.turned">Este archivo está guardado girado, y el lector de aquí y el reproductor del
       navegador no se ponen de acuerdo sobre el giro.</span>
     <span data-phrase="open.failed">Este navegador no puede abrir este archivo. {reason}</span>

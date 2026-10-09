@@ -28,9 +28,10 @@
  */
 
 import { FileWindow } from './shared/mp4-reader.js';
+import { distinctFrameTimes } from './plan.js';
 import { drawUpright } from './draw.js';
 import { micros } from './shared/webcodecs.js';
-import { throwIfAborted } from './shared/errors.js';
+import { throwIfAborted, AbortedError } from './shared/errors.js';
 
 /**
  * The frames of a track in the order they are watched in.
@@ -164,6 +165,7 @@ export class FrameReader {
     this.file = file;
     this.video = video;
     this.order = displayOrder(video);
+    if (!distinctFrameTimes(this.order)) throw new Error('read.duplicatetime');
     // The way back: which watched-in position each stored frame holds. Built
     // once, because the alternative is searching the list inside the decode
     // loop, and that is quadratic on a clip with fifty thousand frames in it.
@@ -179,6 +181,7 @@ export class FrameReader {
     this.failure = null;
     /** What the run in flight is for, or null between runs. */
     this.pending = null;
+    this.released = false;
   }
 
   get count() {
@@ -199,6 +202,7 @@ export class FrameReader {
    * @returns {Promise<ImageBitmap>}
    */
   frameAt(index) {
+    if (this.released) return Promise.reject(new AbortedError());
     const wanted = Math.max(0, Math.min(index, this.order.length - 1));
     const hit = this.cache.get(wanted);
     if (hit) return Promise.resolve(hit);
@@ -248,6 +252,7 @@ export class FrameReader {
    * run after the cache filled up.
    */
   #collect(frame) {
+    if (this.released) { frame.close(); return; }
     const pending = this.pending;
     const index = pending?.byTime.get(frame.timestamp);
     const isTarget = index !== undefined && index === pending.target;
@@ -267,6 +272,7 @@ export class FrameReader {
   }
 
   #store(index, bitmap) {
+    if (this.released) { bitmap.close(); return; }
     const existing = this.cache.get(index);
     if (existing) {
       existing.close();
@@ -283,6 +289,7 @@ export class FrameReader {
   }
 
   async #run(target) {
+    if (this.released) throw new AbortedError();
     const cached = this.cache.get(target);
     if (cached) return cached;
 
@@ -309,6 +316,7 @@ export class FrameReader {
         if (this.failure) throw this.failure;
         const sample = samples[i];
         const bytes = await this.window.read(sample.offset, sample.size);
+        if (this.released) throw new AbortedError();
         decoder.decode(new EncodedVideoChunk({
           type: sample.isKey ? 'key' : 'delta',
           timestamp: micros(sample.pts, this.video.timescale),
@@ -318,6 +326,7 @@ export class FrameReader {
 
       await decoder.flush();
       await Promise.all(this.pending.copies);
+      if (this.released) throw new AbortedError();
       if (this.failure) throw this.failure;
 
       const frame = this.cache.get(target);
@@ -345,6 +354,7 @@ export class FrameReader {
   }
 
   release() {
+    this.released = true;
     this.#discard();
     for (const bitmap of this.cache.values()) bitmap.close();
     this.cache.clear();
@@ -369,6 +379,7 @@ export async function decodeSeries({ file, video, indexes, onFrame, onProgress, 
   if (!indexes.length) return;
 
   const order = displayOrder(video);
+  if (!distinctFrameTimes(order)) throw new Error('read.duplicatetime');
   const wanted = new Map();   // timestamp -> display index
   for (const index of indexes) {
     wanted.set(micros(order[index].pts, video.timescale), index);
@@ -385,6 +396,7 @@ export async function decodeSeries({ file, video, indexes, onFrame, onProgress, 
   const decoder = new VideoDecoder({
     output: (frame) => {
       try {
+        if (signal?.aborted) return;
         const index = wanted.get(frame.timestamp);
         if (index === undefined) return;
         // Drawn here, synchronously, because the frame has to be closed before
@@ -414,26 +426,31 @@ export async function decodeSeries({ file, video, indexes, onFrame, onProgress, 
     codedHeight: video.codedHeight,
   };
   if (video.description) config.description = video.description;
-  decoder.configure(config);
-
   const window = new FileWindow(file, 4 << 20);
 
   const drain = async () => {
     while (ready.length) {
       const next = ready.shift();
-      await onFrame(next.index, next.canvas);
+      try {
+        throwIfAborted(signal);
+        await onFrame(next.index, next.canvas);
+        throwIfAborted(signal);
+      } finally { next.canvas.width = next.canvas.height = 0; }
       done++;
       onProgress?.({ done, total: indexes.length });
     }
   };
 
   try {
+    throwIfAborted(signal);
+    decoder.configure(config);
     for (let i = from; i <= last; i++) {
       throwIfAborted(signal);
       if (failure) throw failure;
 
       const sample = video.samples[i];
       const bytes = await window.read(sample.offset, sample.size);
+      throwIfAborted(signal);
       decoder.decode(new EncodedVideoChunk({
         type: sample.isKey ? 'key' : 'delta',
         timestamp: micros(sample.pts, video.timescale),
@@ -448,5 +465,7 @@ export async function decodeSeries({ file, video, indexes, onFrame, onProgress, 
     await drain();
   } finally {
     if (decoder.state !== 'closed') decoder.close();
+    for (const { canvas } of ready) canvas.width = canvas.height = 0;
+    ready.length = 0;
   }
 }

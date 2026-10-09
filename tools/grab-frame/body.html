@@ -93,7 +93,7 @@
       <div class="field">
         <label for="every">Every</label>
         <div class="inline-pair">
-          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <input type="number" id="every" min="0.1" step="0.001" value="5">
           <span>seconds</span>
         </div>
         <p class="field-note">
@@ -102,6 +102,9 @@
         </p>
       </div>
     </div>
+
+    <p id="series-plan" class="field-note" role="status" aria-live="polite" hidden></p>
+    <button type="button" id="cover-series" class="ghost" hidden>Set an interval for the whole clip within 500 stills</button>
 
     <div class="export-row">
       <button type="button" id="grab" class="primary">Grab this frame</button>
@@ -159,6 +162,9 @@
       decoded to, at &#x2066;{width} x {height}&#x2069;.</span>
     <span data-phrase="note.lossy">Compressed again on top of the video&rsquo;s own
       compression. Fine for a preview, not for anything that will be edited further.</span>
+    <span data-phrase="series.plan">Planned stills: {n}, from {first} to {last}.</span>
+    <span data-phrase="series.plan.player">Planned player seeks: {n}, from {first} to {last}. The player chooses the actual frames.</span>
+    <span data-phrase="series.overlimit">This interval would produce {n} stills, from {first} to {last}. The limit is 500; increase the interval before starting.</span>
     <span data-phrase="series.any">Grab a series</span>
     <span data-phrase="series.every.one">Grab one every second</span>
     <span data-phrase="series.every.many">Grab one every {n} seconds</span>
@@ -175,7 +181,7 @@
     <span data-phrase="save.nowrite">This browser would not write a {format}.</span>
     <span data-phrase="save.failed">That frame could not be saved.</span>
     <span data-phrase="zip.failed">That archive could not be built.</span>
-    <span data-phrase="series.nointerval">Set an interval of more than zero seconds.</span>
+    <span data-phrase="series.nointerval">Set an interval of at least 0.1 seconds.</span>
     <span data-phrase="series.noframes">That interval picks out no frames.</span>
     <span data-phrase="series.failed">Something went wrong while grabbing the series.</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
@@ -210,6 +216,7 @@
     <span data-phrase="read.layout">The layout of this file is not one the reader here understands.</span>
     <span data-phrase="read.nodecoder">This browser will not decode {codec} directly.</span>
     <span data-phrase="read.nowebcodecs">This browser has no WebCodecs, so frames cannot be decoded one by one.</span>
+    <span data-phrase="read.duplicatetime">This file has frames with the same presentation time. The browser’s player chooses the visible frame; exact frame selection is unavailable.</span>
     <span data-phrase="read.turned">This file is stored turned in a way the reader and the player disagree on.</span>
     <span data-phrase="open.failed">This browser cannot open this file. {reason}</span>
     <span data-phrase="path.player">{reason} So this file is read by the browser&rsquo;s own player rather than frame by

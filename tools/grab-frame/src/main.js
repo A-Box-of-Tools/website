@@ -7,12 +7,14 @@ import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
-import { FrameReader, decodeSeries, frameNear, seriesFrames } from './frames.js';
+import { FrameReader, decodeSeries, frameNear } from './frames.js';
 import { drawUpright, frameCanvas } from './draw.js';
 import { FORMATS, clockTime, encodeStill, stillName } from './still.js';
 import { makeZip } from './shared/zip.js';
 import { hasWebCodecs, canDecode, encodableTypes } from './support.js';
 import { makeExample } from './example.js';
+import { seriesPlan, coveringInterval, distinctFrameTimes } from './plan.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for
@@ -21,7 +23,7 @@ import { makeExample } from './example.js';
  * all - the browser's own player took it instead.
  */
 function why(fallback, absent) {
-  return phrase(fallback?.key ?? absent, fallback?.values);
+  return errorText({ message: fallback?.key, values: fallback?.values }, absent);
 }
 
 const $ = (id) => document.getElementById(id);
@@ -55,6 +57,9 @@ const el = {
   quality: $('quality'),
   qualityValue: $('quality-value'),
   every: $('every'),
+  seriesPlan: $('series-plan'),
+  coverSeries: $('cover-series'),
+  settings: document.querySelector('#grab-card .settings'),
   grab: $('grab'),
   grabSeries: $('grab-series'),
   cancel: $('cancel'),
@@ -96,7 +101,9 @@ let position = 0;
 let frameIndex = 0;
 let playing = false;
 let working = false;
-let abortController = null;
+let activeJob = null;
+let sourceVersion = 0;
+let loading = false;
 
 /**
  * The frame the canvas is currently showing, and the one it has been asked to
@@ -106,7 +113,7 @@ let abortController = null;
  */
 let wantedFrame = -1;
 let shownFrame = -1;
-let drawing = false;
+let drawing = null;
 
 /** The stills taken so far. */
 let shots = [];
@@ -133,90 +140,95 @@ const picker = wireFilePicker({
 
 /* ----------------------------------------------------------------- loading */
 
+/** Native error sentences are never used as CSS selectors by phrase(). */
+function errorText(error, fallback) {
+  const key = error?.message;
+  const known = [...document.querySelectorAll('#phrases [data-phrase]')]
+    .some((node) => node.dataset.phrase === key);
+  return phrase(known ? key : fallback, fill(error?.values));
+}
+
 async function loadFile(picked) {
-  if (working) return;
-
+  const version = ++sourceVersion;
+  const current = () => version === sourceVersion;
+  cancelJob();
   clearError();
-  releaseFile();
-
+  resetView();
+  loading = true;
   file = picked;
+  refreshControls();
   picker.busy(phrase('step.reading'));
-
   try {
     objectUrl = URL.createObjectURL(picked);
     const played = await openInPlayer(el.preview, objectUrl);
-
+    if (!current()) return;
+    let found = null;
+    let fallback = null;
     try {
-      media = await demux(picked);
-      fallbackReason = null;
+      found = await demux(picked);
     } catch (error) {
+      if (!current()) return;
       if (error instanceof UnsupportedTimeline) throw error;
-      media = null;
-      fallbackReason = error instanceof UnsupportedFile
+      fallback = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
-        : { key: error.message || 'read.unreadable' };
+        : { key: 'read.unreadable' };
     }
-
+    if (!current()) return;
     let decodable = false;
-    if (media && hasWebCodecs()) {
+    if (found && hasWebCodecs()) {
       decodable = await canDecode({
-        codec: media.video.codec,
-        codedWidth: media.video.codedWidth,
-        codedHeight: media.video.codedHeight,
-        ...(media.video.description ? { description: media.video.description } : {}),
+        codec: found.video.codec,
+        codedWidth: found.video.codedWidth,
+        codedHeight: found.video.codedHeight,
+        ...(found.video.description ? { description: found.video.description } : {}),
       });
-      if (!decodable) {
-        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
-      }
-    } else if (media && !hasWebCodecs()) {
-      fallbackReason = { key: 'read.nowebcodecs' };
-    }
-
-    // If the reader and the player disagree about the shape of the picture, one
-    // of them is applying a rotation the other is not - and a still saved from
-    // the wrong one is a picture of the right moment, sideways. The player is
-    // what you are looking at, so it wins and the exact path stands down.
-    if (decodable && played.ok
-      && (played.width !== media.video.displayWidth || played.height !== media.video.displayHeight)) {
+      if (!current()) return;
+      if (!decodable) fallback = { key: 'read.nodecoder', values: { codec: found.video.codec } };
+    } else if (found) fallback = { key: 'read.nowebcodecs' };
+    if (decodable && !distinctFrameTimes(found.video.samples
+      .map((sample) => ({ time: sample.pts })).sort((a, b) => a.time - b.time))) {
       decodable = false;
-      fallbackReason = { key: 'read.turned' };
+      fallback = { key: 'read.duplicatetime' };
     }
-
-    exact = decodable;
-    playable = played.ok;
-
-    if (!exact && !playable) {
-      showError(phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
+    if (decodable && played.ok
+      && (played.width !== found.video.displayWidth || played.height !== found.video.displayHeight)) {
+      decodable = false;
+      fallback = { key: 'read.turned' };
+    }
+    if (!decodable && !played.ok) {
+      showError(phrase('open.failed', { reason: why(fallback, 'read.notplayed') }));
       resetView();
       return;
     }
-
+    media = found;
+    fallbackReason = fallback;
+    exact = decodable;
+    playable = played.ok;
     source = exact
-      ? { width: media.video.displayWidth, height: media.video.displayHeight }
+      ? { width: found.video.displayWidth, height: found.video.displayHeight }
       : { width: played.width, height: played.height };
-    duration = played.duration || (media ? media.duration : 0);
-
+    duration = played.duration || (found ? found.duration : 0);
     if (exact) {
-      reader = new FrameReader(picked, media.video);
+      reader = new FrameReader(picked, found.video);
       if (!duration) duration = reader.timeOf(reader.count - 1);
     }
-
     layOutStage();
     describeSource();
     updateFormatNote();
     setUpTransport();
-
-
     await goTo(0);
   } catch (error) {
-    console.error(error);
-    // The leaf modules throw keys; a browser that failed for its own reasons
-    // throws a sentence, and phrase() hands back what it does not recognise.
-    showError(error?.message
-      ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
-    resetView();
+    if (current()) {
+      showError(errorText(error, 'open.notopened'));
+      resetView();
+    }
   } finally {
-    picker.done();
+    if (current()) {
+      loading = false;
+      picker.done();
+      refreshControls();
+      updateSeriesButton();
+    }
   }
 }
 
@@ -272,6 +284,7 @@ function releaseFile() {
     URL.revokeObjectURL(objectUrl);
     objectUrl = null;
   }
+  el.preview.pause();
   reader?.release();
   reader = null;
   media = null;
@@ -279,12 +292,32 @@ function releaseFile() {
   playing = false;
   wantedFrame = -1;
   shownFrame = -1;
+  drawing = null;
+  exact = false;
+  playable = false;
+  duration = 0;
+  position = 0;
+  frameIndex = 0;
+  source = { width: 0, height: 0 };
 }
 
 function resetView() {
   el.source.hidden = true;
   el.pathNote.hidden = true;
   releaseFile();
+  el.still.width = el.still.height = 0;
+  el.still.hidden = true;
+  el.preview.hidden = true;
+  el.stageBusy.hidden = true;
+  el.play.textContent = '▶';
+  el.play.setAttribute('aria-label', phrase('play.play'));
+  el.atTime.textContent = clockTime(0);
+  el.atFrame.textContent = '';
+  el.scrub.value = '0';
+  el.findCard.inert = true;
+  el.settings.inert = true;
+  el.seriesPlan.hidden = true;
+  el.coverSeries.hidden = true;
 }
 
 /* --------------------------------------------------------------- the moment */
@@ -325,13 +358,14 @@ async function goTo(seconds) {
 
 /** Move to a frame, by its place in the order the frames are watched in. */
 async function goToFrame(index) {
-  if (!exact) return;
+  if (!exact || !reader) return;
+  const version = sourceVersion;
   frameIndex = Math.max(0, Math.min(index, reader.count - 1));
   position = reader.timeOf(frameIndex);
   el.scrub.value = String(frameIndex);
   updateReadout();
   await showFrame(frameIndex);
-  showStill();
+  if (version === sourceVersion) showStill();
 }
 
 /**
@@ -365,32 +399,31 @@ function updateReadout() {
  * frames and the only one worth having is the last.
  */
 async function showFrame(index) {
+  if (!reader) return;
   wantedFrame = index;
   if (drawing) return;
-
-  drawing = true;
+  const owner = { version: sourceVersion, reader };
+  drawing = owner;
+  const current = () => owner.version === sourceVersion && owner.reader === reader;
   try {
-    while (wantedFrame !== shownFrame) {
+    while (current() && wantedFrame !== shownFrame) {
       const target = wantedFrame;
-      const slow = setTimeout(() => { el.stageBusy.hidden = false; }, 120);
+      const slow = setTimeout(() => { if (current()) el.stageBusy.hidden = false; }, 120);
       try {
-        const bitmap = await reader.frameAt(target);
-        // Something newer came in while this was decoding; that one wins.
+        const bitmap = await owner.reader.frameAt(target);
+        if (!current()) return;
         if (wantedFrame !== target) continue;
         paintStage(bitmap);
         shownFrame = target;
       } finally {
         clearTimeout(slow);
-        el.stageBusy.hidden = true;
+        if (current()) el.stageBusy.hidden = true;
       }
     }
   } catch (error) {
-    if (error?.name !== 'AbortError') {
-      showError(error?.message
-        ? phrase(error.message, fill(error.values)) : phrase('decode.nodecode'));
-    }
+    if (current() && error?.name !== 'AbortError') showError(errorText(error, 'decode.nodecode'));
   } finally {
-    drawing = false;
+    if (drawing === owner) drawing = null;
   }
 }
 
@@ -415,9 +448,10 @@ function paintStage(bitmap) {
 }
 
 /** Ask the player to move, and wait until it has actually got there. */
-function seekPlayer(seconds) {
+function seekPlayer(seconds, signal) {
+  throwIfAborted(signal);
   if (!playable) return Promise.resolve();
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (Math.abs(el.preview.currentTime - seconds) < 0.001 && el.preview.readyState >= 2) {
       resolve();
       return;
@@ -425,9 +459,12 @@ function seekPlayer(seconds) {
     const done = () => {
       clearTimeout(timer);
       el.preview.removeEventListener('seeked', done);
+      signal?.removeEventListener('abort', stopped);
       resolve();
     };
+    const stopped = () => { try { throwIfAborted(signal); } catch (error) { reject(error); } done(); };
     const timer = setTimeout(done, 4000);
+    signal?.addEventListener('abort', stopped, { once: true });
     el.preview.addEventListener('seeked', done, { once: true });
     el.preview.currentTime = seconds;
   });
@@ -435,6 +472,7 @@ function seekPlayer(seconds) {
 
 /** One frame forward or back. */
 function step(by) {
+  if (!ready() || working) return;
   if (playing) pause();
   if (exact) {
     goToFrame(frameIndex + by);
@@ -446,7 +484,7 @@ function step(by) {
 }
 
 function play() {
-  if (!playable || playing) return;
+  if (!ready() || working || !playable || playing) return;
   playing = true;
   el.play.textContent = '⏸';
   el.play.setAttribute('aria-label', phrase('play.pause'));
@@ -494,6 +532,7 @@ el.stepBack.addEventListener('click', () => step(-1));
 el.stepOn.addEventListener('click', () => step(1));
 
 el.scrub.addEventListener('input', () => {
+  if (!ready() || working) { el.scrub.value = String(exact ? frameIndex : Math.round(position * 1000)); return; }
   if (playing) pause();
   const value = Number(el.scrub.value);
   if (exact) goToFrame(value);
@@ -501,7 +540,7 @@ el.scrub.addEventListener('input', () => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (el.findCard.hidden || event.ctrlKey || event.metaKey || event.altKey) return;
+  if (!ready() || working || el.findCard.inert || event.ctrlKey || event.metaKey || event.altKey) return;
   const tag = event.target?.tagName;
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
 
@@ -531,26 +570,42 @@ function updateFormatNote() {
     : phrase('note.lossy');
 }
 
-el.format.addEventListener('change', updateFormatNote);
+el.format.addEventListener('change', () => { restoreJobSettings(); updateFormatNote(); });
 el.quality.addEventListener('input', () => {
+  restoreJobSettings();
   el.qualityValue.textContent = el.quality.value;
 });
 el.every.addEventListener('change', updateSeriesButton);
 el.every.addEventListener('input', updateSeriesButton);
 
-function updateSeriesButton() {
-  const every = Number(el.every.value);
-  // "every 1 seconds" was already wrong in English, and a plural chosen
-  // outside the phrase is wrong in most languages. Two whole sentences.
-  el.grabSeries.textContent = every > 0
-    ? phrase(every === 1 ? 'series.every.one' : 'series.every.many',
-      { n: every % 1 ? every.toFixed(1) : every })
-    : phrase('series.any');
+function plannedSeries() {
+  return ready() ? seriesPlan({ order: exact ? reader.order : null, duration, every: Number(el.every.value) }) : null;
 }
+
+function updateSeriesButton() {
+  restoreJobSettings();
+  const every = Number(el.every.value);
+  el.grabSeries.textContent = Number.isFinite(every) && every >= 0.1
+    ? phrase(every === 1 ? 'series.every.one' : 'series.every.many', { n: every.toLocaleString(undefined, { maximumFractionDigits: 3 }) })
+    : phrase('series.any');
+  const plan = plannedSeries();
+  el.seriesPlan.hidden = !plan;
+  el.coverSeries.hidden = !plan?.overflow;
+  if (plan) el.seriesPlan.textContent = phrase(plan.overflow ? 'series.overlimit' : exact ? 'series.plan' : 'series.plan.player', {
+    n: plan.count.toLocaleString(), first: clockTime(plan.first), last: clockTime(plan.last),
+  });
+  el.grabSeries.disabled = working || !plan || plan.overflow || !plan.count;
+}
+
+el.coverSeries.addEventListener('click', () => {
+  if (!ready() || working) return;
+  el.every.value = String(coveringInterval(exact ? reader.order.at(-1).time : duration));
+  updateSeriesButton();
+});
 
 /* -------------------------------------------------------------- the stills */
 
-function addShot({ blob, time, width, height, type }) {
+function addShot({ blob, time, width, height, type, sourceName }) {
   const shot = {
     id: nextShotId++,
     blob,
@@ -558,7 +613,7 @@ function addShot({ blob, time, width, height, type }) {
     width,
     height,
     type,
-    name: stillName(file?.name, time, type),
+    name: stillName(sourceName, time, type),
     url: URL.createObjectURL(blob),
   };
   shots.push(shot);
@@ -567,6 +622,8 @@ function addShot({ blob, time, width, height, type }) {
 }
 
 function renderShots() {
+  el.shotsCard.inert = !shots.length;
+  el.downloadAll.disabled = working || !shots.length;
   el.shotsCount.textContent = phrase(
     shots.length === 1 ? 'n.still.one' : 'n.still.many',
     { n: shots.length },
@@ -615,6 +672,7 @@ function renderShots() {
 }
 
 function removeShot(id) {
+  if (activeJob?.kind === 'zip') cancelJob();
   const shot = shots.find((other) => other.id === id);
   if (shot) URL.revokeObjectURL(shot.url);
   shots = shots.filter((other) => other.id !== id);
@@ -622,6 +680,7 @@ function removeShot(id) {
 }
 
 function clearShots() {
+  cancelJob();
   for (const shot of shots) URL.revokeObjectURL(shot.url);
   shots = [];
   renderShots();
@@ -636,58 +695,46 @@ el.clear.addEventListener('click', clearShots);
  * unpacks to one file.
  */
 el.downloadAll.addEventListener('click', async () => {
-  if (!shots.length || working) return;
-  setWorking(true);
+  if (!shots.length || working || loading) return;
+  const selected = shots.slice();
+  const job = beginJob('zip');
+  const base = (job.name ?? 'video').replace(/\.[^.]+$/, '');
+  clearError();
   el.progress.hidden = false;
-  setProgress({ done: 0, total: shots.length, step: 'step.packing' });
-
+  setProgress({ done: 0, total: selected.length, step: 'step.packing' });
   try {
     const used = new Set();
     const files = [];
-    let done = 0;
-
-    for (const shot of shots) {
+    for (const [index, shot] of selected.entries()) {
+      checkJob(job);
       let name = shot.name;
-      for (let n = 2; used.has(name); n++) {
-        name = shot.name.replace(/(\.[^.]+)$/, `-${n}$1`);
-      }
+      for (let n = 2; used.has(name); n++) name = shot.name.replace(/(\.[^.]+)$/, `-${n}$1`);
       used.add(name);
-      files.push({ name, data: new Uint8Array(await shot.blob.arrayBuffer()) });
-      setProgress({ done: ++done, total: shots.length, step: 'step.packing' });
+      const data = new Uint8Array(await shot.blob.arrayBuffer());
+      checkJob(job);
+      files.push({ name, data });
+      setProgress({ done: index + 1, total: selected.length, step: 'step.packing' });
     }
-
-    const base = (file?.name ?? 'video').replace(/\.[^.]+$/, '');
+    checkJob(job);
     saveBlob(makeZip(files), `${base}-stills.zip`);
   } catch (error) {
-    showError(error?.message ? phrase(error.message, fill(error.values))
-      : phrase('zip.failed'));
-  } finally {
-    setWorking(false);
-    el.progress.hidden = true;
-  }
+    if (ownsJob(job) && error?.name !== 'AbortError') showError(errorText(error, 'zip.failed'));
+  } finally { finishJob(job); }
 });
 
 /* ------------------------------------------------------------- the grabbing */
 
 /** The frame on screen, at its full size, ready to encode. */
-async function currentCanvas() {
-  if (exact) {
-    const bitmap = await reader.frameAt(frameIndex);
-    return frameCanvas(bitmap, {
-      rotation: media.video.rotation,
-      displayWidth: source.width,
-      displayHeight: source.height,
-    });
+async function currentCanvas(job, at = job.time, index = job.index) {
+  checkJob(job);
+  if (job.exact) {
+    const bitmap = await job.reader.frameAt(index);
+    checkJob(job);
+    return frameCanvas(bitmap, { rotation: job.video.rotation, displayWidth: job.width, displayHeight: job.height });
   }
-
-  // The playback path draws the player itself, which has already applied any
-  // rotation the file asked for - so nothing is turned here.
-  await seekPlayer(position);
-  return frameCanvas(el.preview, {
-    rotation: 0,
-    displayWidth: source.width,
-    displayHeight: source.height,
-  });
+  await seekPlayer(at, job.controller.signal);
+  checkJob(job);
+  return frameCanvas(el.preview, { rotation: 0, displayWidth: job.width, displayHeight: job.height });
 }
 
 function encodeOptions() {
@@ -695,121 +742,118 @@ function encodeOptions() {
 }
 
 el.grab.addEventListener('click', async () => {
-  if (working || !file) return;
+  if (working || !ready()) return;
   if (playing) pause();
-
   clearError();
-  setWorking(true);
+  const job = beginJob('still');
+  let canvas;
   try {
-    const canvas = await currentCanvas();
-    const options = encodeOptions();
-    const blob = await encodeStill(canvas, options);
-    const shot = addShot({
-      blob,
-      time: position,
-      width: canvas.width,
-      height: canvas.height,
-      type: options.type,
-    });
+    canvas = await currentCanvas(job);
+    const time = job.exact ? job.time : el.preview.currentTime;
+    const blob = await encodeStill(canvas, job.options);
+    checkJob(job);
+    const shot = addShot({ blob, time, width: canvas.width, height: canvas.height, type: job.options.type, sourceName: job.name });
     el.shotsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     el.grab.title = phrase('grab.last', { name: shot.name });
   } catch (error) {
-    showError(error?.message ? phrase(error.message, fill(error.values))
-      : phrase('save.failed'));
-    console.error(error);
+    if (ownsJob(job) && error?.name !== 'AbortError') showError(errorText(error, 'save.failed'));
   } finally {
-    setWorking(false);
+    if (canvas) canvas.width = canvas.height = 0;
+    finishJob(job);
   }
 });
 
 el.grabSeries.addEventListener('click', async () => {
-  if (working || !file) return;
+  if (working || !ready()) return;
+  const plan = plannedSeries();
+  if (!plan || !plan.count) { showError(phrase('series.nointerval')); return; }
+  if (plan.overflow) { updateSeriesButton(); return; }
   if (playing) pause();
-
-  const every = Number(el.every.value);
-  if (!(every > 0)) {
-    showError(phrase('series.nointerval'));
-    return;
-  }
-
   clearError();
-  setWorking(true);
-  abortController = new AbortController();
-  el.cancel.hidden = false;
+  const job = beginJob('series');
   el.progress.hidden = false;
-
-  const options = encodeOptions();
-  const { signal } = abortController;
-
+  setProgress({ done: 0, total: plan.count, step: 'step.grabbing' });
+  const accept = async (time, canvas) => {
+    try {
+      checkJob(job);
+      const blob = await encodeStill(canvas, job.options);
+      checkJob(job);
+      addShot({ blob, time, width: canvas.width, height: canvas.height, type: job.options.type, sourceName: job.name });
+    } finally { canvas.width = canvas.height = 0; }
+  };
   try {
-    if (exact) {
-      const indexes = seriesFrames(reader.order, { every });
-      if (!indexes.length) throw new Error('series.noframes');
-      setProgress({ done: 0, total: indexes.length, step: 'step.grabbing' });
-
-      // One forward walk through the file, rather than a seek per still: the
-      // decoder is fed from the first keyframe and every wanted frame is taken
-      // as it goes past.
+    if (job.exact) {
       await decodeSeries({
-        file,
-        video: media.video,
-        indexes,
-        signal,
-        onProgress: ({ done, total }) => setProgress({ done, total, step: 'step.grabbing' }),
-        async onFrame(index, canvas) {
-          const blob = await encodeStill(canvas, options);
-          addShot({
-            blob,
-            time: reader.timeOf(index),
-            width: canvas.width,
-            height: canvas.height,
-            type: options.type,
-          });
-        },
+        file: job.file, video: job.video, indexes: plan.indexes, signal: job.controller.signal,
+        onProgress: ({ done, total }) => { if (ownsJob(job)) setProgress({ done, total, step: 'step.grabbing' }); },
+        onFrame: (index, canvas) => accept(job.reader.timeOf(index), canvas),
       });
     } else {
-      const times = [];
-      for (let at = 0; at <= duration && times.length < 500; at += every) times.push(at);
-      setProgress({ done: 0, total: times.length, step: 'step.grabbing' });
-
-      for (const [n, at] of times.entries()) {
-        if (signal.aborted) break;
-        await goTo(at);
-        const canvas = await currentCanvas();
-        const blob = await encodeStill(canvas, options);
-        addShot({
-          blob,
-          time: el.preview.currentTime || at,
-          width: canvas.width,
-          height: canvas.height,
-          type: options.type,
-        });
-        setProgress({ done: n + 1, total: times.length, step: 'step.grabbing' });
+      for (let n = 0; n < plan.count; n++) {
+        const at = n * job.every;
+        const canvas = await currentCanvas(job, at);
+        const time = el.preview.currentTime;
+        await accept(time, canvas);
+        checkJob(job);
+        position = time;
+        el.scrub.value = String(Math.round(time * 1000));
+        updateReadout();
+        setProgress({ done: n + 1, total: plan.count, step: 'step.grabbing' });
       }
     }
-
+    checkJob(job);
     el.shotsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
-    if (error?.name !== 'AbortError') {
-      showError(error?.message ? phrase(error.message, fill(error.values))
-        : phrase('series.failed'));
-      console.error(error);
-    }
-  } finally {
-    abortController = null;
-    el.cancel.hidden = true;
-    el.progress.hidden = true;
-    setWorking(false);
-  }
+    if (ownsJob(job) && error?.name !== 'AbortError') showError(errorText(error, 'series.failed'));
+  } finally { finishJob(job); }
 });
 
-el.cancel.addEventListener('click', () => abortController?.abort());
-
+function ready() { return Boolean(file && !loading && (exact || playable)); }
+function ownsJob(job) { return activeJob === job && job.version === sourceVersion && !job.controller.signal.aborted; }
+function checkJob(job) {
+  if (!ownsJob(job)) job.controller.abort();
+  throwIfAborted(job.controller.signal);
+}
+function beginJob(kind) {
+  const job = { kind, version: sourceVersion, controller: new AbortController(), file, name: file?.name,
+    exact, reader, video: media?.video, width: source.width, height: source.height,
+    time: position, index: frameIndex, options: encodeOptions(), every: Number(el.every.value) };
+  activeJob = job;
+  setWorking(true);
+  el.cancel.hidden = false;
+  return job;
+}
+function finishJob(job) {
+  if (activeJob !== job) return;
+  activeJob = null;
+  el.cancel.hidden = true;
+  el.progress.hidden = true;
+  setWorking(false);
+}
+function cancelJob() {
+  if (!activeJob) return;
+  const job = activeJob;
+  job.controller.abort();
+  finishJob(job);
+}
+el.cancel.addEventListener('click', cancelJob);
+function restoreJobSettings() {
+  if (!activeJob) return;
+  el.format.value = activeJob.options.type;
+  el.quality.value = String(activeJob.options.quality * 100);
+  el.every.value = String(activeJob.every);
+}
+function refreshControls() {
+  const locked = working || !ready();
+  el.findCard.inert = locked;
+  el.settings.inert = locked;
+  el.grab.disabled = locked;
+  el.downloadAll.disabled = working || loading || !shots.length;
+  updateSeriesButton();
+}
 function setWorking(state) {
   working = state;
-  el.grab.disabled = state;
-  el.grabSeries.disabled = state;
-  el.downloadAll.disabled = state;
+  refreshControls();
 }
 
 // `step` names the whole sentence rather than a word glued in front of a
@@ -857,7 +901,7 @@ async function offerFormats() {
   updateFormatNote();
 }
 
-updateSeriesButton();
+refreshControls();
 updateFormatNote();
 offerFormats();
 
