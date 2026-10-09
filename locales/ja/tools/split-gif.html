@@ -114,14 +114,19 @@
   <div id="phrases" hidden aria-hidden="true">
     <span data-phrase="read.reading">GIFを読み込んでいます&hellip;</span>
     <span data-phrase="read.failed">そのファイルは読み込めませんでした：{why}</span>
+    <span data-phrase="read.unreadable">このブラウザーでは、そのGIFを開けませんでした。</span>
+    <span data-phrase="save.unfinished">このブラウザーでは、ダウンロードを完了できませんでした。</span>
+    <span data-phrase="gif.workinglimit">このバッファーは、道具の計画予算512 MiBを超えています。小さいGIF、少ないフレーム、またはシートの代わりにZIPを試してください。元画像には全体サイズのバッファーが必要で、ブラウザー内部の割り当てはさらにメモリーを使う場合があります。</span>
+    <span data-phrase="gif.workinginvalid">画像の寸法またはバッファーのサイズを安全に確保できません。</span>
+    <span data-phrase="zip.entries">このZIPには{n}項目が入ります。時間一覧を含め、この道具の上限は{limit}項目です。選ぶフレームを減らしてください。</span>
     <span data-phrase="gif.tooshort">そのファイルはGIFにしては短すぎます。</span>
     <span data-phrase="gif.notagif">それはGIFではありません。ファイルがGIF87aでもGIF89aでも始まっていません。</span>
-    <span data-phrase="gif.enormous">このGIFは巨大です。最初の{n}フレームでこのページが一度に抱える気のあるメモリが埋まったため、残りは読まずに終わりました。</span>
+    <span data-phrase="gif.enormous">次のフレームがデコード済みピクセルの上限を超える前に読み込みを止めました。最初の{n}フレームを保持しました。</span>
     <span data-phrase="gif.midframe">このGIFはフレームの途中で終わっているので、最後の1枚は不完全かもしれません。</span>
     <span data-phrase="gif.damaged">このGIFは壊れています。最初のフレームが揃う前に終わっています。</span>
     <span data-phrase="gif.noframes">そのGIFには、この読み取り機で開けたフレームがありませんでした。</span>
-    <span data-phrase="note.partial.one">1フレームがファイルの中で途切れています。欠けた画素は透明になります。</span>
-    <span data-phrase="note.partial.many">{n}フレームがファイルの中で途切れています。欠けた画素は透明になります。</span>
+    <span data-phrase="note.partial.one">ファイル自体で1フレームが途中で終わっています。不足部分には、透明色として指定されていない限り、パレットの最初の色が使われます。</span>
+    <span data-phrase="note.partial.many">ファイル自体で{n}フレームが途中で終わっています。不足部分には、透明色として指定されていない限り、パレットの最初の色が使われます。</span>
     <span data-phrase="note.local">{n}フレームが独自のカラーテーブルを持っており、このGIFが見た目の寸法より大きいのはそのためです。</span>
     <span data-phrase="note.comment">ファイルにコメントが入っています：「{comment}」</span>
     <span data-phrase="join.sentences">{a}{b}</span>

@@ -226,22 +226,12 @@ a = """
 [[faq]]
 q = "Gibt es eine Grenze, wie viele Einzelbilder gelesen werden?"
 a = """
-        Eine feste Grenze gibt es nicht. Die praktische Obergrenze ist der
-        Arbeitsspeicher Ihres Geräts: Ein GIF wird beim Lesen auf etwa ein Byte
-        je Pixel und Einzelbild aufgeblasen, eine kleine Datei kann also sehr viel
-        Speicher bedeuten. Diese Seite hört dann lieber auf zu lesen, als den Tab
-        sterben zu lassen. Passiert das, sagt sie es und gibt die Einzelbilder
-        heraus, die sie bekommen hat."""
+        Das Werkzeug verwendet eine Planungsschätzung von 512 MiB für Quellpuffer, gespeicherte Bildteile, Vorschauen und Ausgabe und stoppt vor mehr als 128 Mi dekodierten Pixeln. Ein kleiner gespeicherter Bildteil verkleinert die Puffer des vollständigen Quellbildes nicht. Unsichere Pläne werden vor dem Zeichnen abgelehnt; gelesene Teilresultate stehen nur bereit, wenn ihr Pufferplan passt. Bögen und gesammelte PNGs zählen ebenfalls. Interne Browser-Zuweisungen, JS-Objekte und Canvas-Grenzen können mehr benötigen oder früher ablehnen. Das misst keinen freien Speicher und garantiert nicht, dass er ausreicht."""
 
 [[faq]]
 q = "Öffnet es auch ein beschädigtes GIF?"
 a = """
-        Meistens. Abgebrochene Downloads, eine fehlende Endmarke und ein letztes
-        Einzelbild, das mitten im Datenstrom aufhört, sind alle häufig, und ein
-        Leser, der so etwas ablehnt, nützt genau bei den Dateien nichts, die man
-        am dringendsten auseinandernehmen möchte. Was vollständig ist, kommt
-        heraus, mit einem Hinweis darauf, was nicht stimmte. Abgelehnt wird nur,
-        was gar kein GIF ist."""
+        Oft. Vollständige Bilder bleiben bei abgeschnittenen Dateien und fehlenden Endmarkierungen erhalten. In einem unvollständigen Bild verwenden fehlende Bereiche die erste Palettenfarbe, sofern sie nicht transparent markiert ist; die Seite weist darauf hin. Dateien ohne lesbare Bilder und unsichere Pufferpläne werden abgelehnt."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
@@ -273,4 +263,4 @@ features = [
 
 [picker]
 title = "GIF hierher ziehen"
-hint = "oder klicken und auswählen &mdash; animiert oder nicht, jede Größe"
+hint = "oder klicken und auswählen &mdash; animiertes oder stilles GIF"

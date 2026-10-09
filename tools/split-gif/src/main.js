@@ -3,15 +3,17 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { decodeGif, GifFormatError, playedDelay, totalDuration } from './shared/gif-decode.js';
+import { decodeGif, playedDelay, totalDuration } from './shared/gif-decode.js';
 import { GifCanvas, flatten, parseColour, patchPixels } from './shared/gif-compose.js';
 import {
-  disposalLabel, encodePng, formatBytes, formatSeconds,
+  canvasPng, disposalLabel, encodePng, formatBytes, formatSeconds,
   baseName, frameName, thumbnail, timingList, zipName,
 } from './frames.js';
 import { makeZip } from './shared/zip.js';
 import { cellAt, sheetName, sheetPlan } from './sheet.js';
 import { makeExample } from './example.js';
+import { throwIfAborted } from './shared/errors.js';
+import { WORKING_LIMIT, PATCH_PIXEL_LIMIT, gifWorkingBase, gifWorkingPlan, withWorkingBytes, headerWorkingPlan, requireWorking, requireZipEntries } from './working.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -61,16 +63,77 @@ let file = null;
 let gif = null;
 /** One row per frame: the frame, its name, its thumbnail and whether it is picked. */
 let rows = [];
-/** True while a ZIP or a single frame is being written. */
-let working = false;
-let cancelled = false;
-/**
- * Which render pass owns the grid. Changing a setting starts a new pass over
- * every frame, and the old one has to stop drawing into a list that is now
- * showing something else - so each pass carries a number and drops out the
- * moment it is no longer the current one.
- */
-let pass = 0;
+/** Native reads/PNG callbacks may return late; each operation owns its publication. */
+let loadOwner = null;
+let renderOwner = null;
+let job = null;
+let progressOwner = null;
+let previewPlan = null;
+let thumbnailBytes = 0;
+let thumbnailRgbaBytes = 0;
+const previewKey = () => { const { stored, colour } = settings(); return JSON.stringify({ stored, colour }); };
+const previewNeeded = () => rows.some(row => !row.thumbUrl) || previewPlan !== previewKey();
+const phraseKeys = new Set([$('phrases'), $('frame-phrases')]
+  .flatMap(bucket => [...(bucket?.querySelectorAll('[data-phrase]') ?? [])])
+  .map(node => node.dataset.phrase));
+const reason = (error, fallback) => phraseKeys.has(error?.message)
+  ? phrase(error.message, error.values) : phrase(fallback);
+const turn = () => new Promise(resolve => { setTimeout(resolve, 0); });
+const owns = task => task && !task.controller.signal.aborted
+  && (task === loadOwner || task === renderOwner || task === job);
+
+function retireRender() {
+  const previous = renderOwner;
+  renderOwner = null;
+  previous?.controller.abort();
+  hideProgress(previous);
+}
+
+function retireJob({ redraw = false } = {}) {
+  const previous = job;
+  job = null;
+  previous?.controller.abort();
+  hideProgress(previous);
+  syncControls();
+  if (redraw && gif && !loadOwner && previewNeeded()) draw();
+}
+
+function thumbnailStorage() {
+  return { thumbnailBytes, thumbnailRgbaBytes };
+}
+
+function syncControls() {
+  const unavailable = !gif || !!loadOwner || !!job;
+  const picked = rows.filter(row => row.checked).length;
+  el.downloadAll.disabled = unavailable;
+  el.downloadSelected.disabled = unavailable || picked === 0;
+  el.downloadSheet.disabled = unavailable || picked === 0;
+  el.cancel.hidden = !job;
+  for (const row of rows) row.save.disabled = unavailable;
+}
+
+function beginJob(kind, wanted, extra = {}) {
+  retireRender();
+  const task = { controller: new AbortController(), kind, gif, name: file.name,
+    rows: rows.map(({ index, frame, played, name }) => ({ index, frame, played, name })),
+    picked: new Set(wanted.map(row => row.index)), options: settings(),
+    storage: thumbnailStorage(), ...extra };
+  job = task;
+  syncControls();
+  clearError();
+  progress(task, 0, wanted.length, phrase(kind === 'sheet'
+    ? (task.options.stored ? 'sheet.stored' : 'sheet.drawing') : 'step.writing',
+  { done: 0, total: wanted.length }));
+  return task;
+}
+
+function finishJob(task) {
+  if (job !== task) return;
+  job = null;
+  hideProgress(task);
+  syncControls();
+  if (gif && previewNeeded()) draw();
+}
 
 /* ------------------------------------------------------------------ adding */
 
@@ -89,33 +152,40 @@ const picker = wireFilePicker({
 /* ----------------------------------------------------------------- loading */
 
 async function loadFile(picked) {
-  if (working) return;
-
+  reset();
+  const task = { controller: new AbortController() };
+  loadOwner = task;
+  syncControls();
   clearError();
   picker.busy(phrase('read.reading'));
-
   try {
-    const bytes = new Uint8Array(await picked.arrayBuffer());
-    const decoded = decodeGif(bytes);
-
-    reset();
+    if (picked.size > WORKING_LIMIT) throw new Error('gif.workinglimit');
+    let bytes = new Uint8Array(await picked.arrayBuffer());
+    if (!owns(task)) return;
+    requireWorking(headerWorkingPlan(bytes));
+    const decoded = decodeGif(bytes, { maxPixels: PATCH_PIXEL_LIMIT, strictMaxPixels: true });
+    requireWorking(gifWorkingPlan(decoded, settings()));
+    bytes = null;
+    if (!owns(task)) return;
     file = picked;
     gif = decoded;
+    picker.arrived();
     describe();
     build();
+    loadOwner = null;
+    picker.done();
+    syncControls();
     await draw();
   } catch (error) {
-    // gif.js and frames.js throw keys; a browser that failed for its own
-    // reasons throws a sentence, and phrase() hands back what it does not know.
-    if (error instanceof GifFormatError) showError(phrase(error.message, error.values));
-    else showError(phrase('read.failed', { why: phrase(error.message) }));
-    // Nothing was read, so the frames card has nothing to act on. Without
-    // this it stays live and empty - Select all, Select none and Start again
-    // all offering to work on no frames, under a line saying the file was not
-    // a GIF at all.
+    if (!owns(task)) return;
+    showError(phrase('read.failed', { why: reason(error, 'read.unreadable') }));
     picker.waiting();
   } finally {
-    picker.done();
+    if (loadOwner === task) {
+      loadOwner = null;
+      picker.done();
+      syncControls();
+    }
   }
 }
 
@@ -168,6 +238,8 @@ function build() {
     name: frameName(file.name, index + 1, total),
     checked: true,
     thumbUrl: null,
+    thumbBytes: 0,
+    thumbRgbaBytes: 0,
     node: null,
     image: null,
     meta: null,
@@ -187,6 +259,7 @@ function makeRow(row) {
   box.type = 'checkbox';
   box.checked = row.checked;
   box.addEventListener('change', () => {
+    retireJob({ redraw: true });
     row.checked = box.checked;
     item.classList.toggle('unpicked', !box.checked);
     countFrames();
@@ -216,6 +289,7 @@ function makeRow(row) {
   row.image = image;
   row.meta = meta;
   row.box = box;
+  row.save = save;
   return item;
 }
 
@@ -237,54 +311,57 @@ function settings() {
  * the browser a turn every so often so the page stays alive on a long GIF.
  */
 async function draw() {
-  const mine = (pass += 1);
-  const { stored, colour } = settings();
-
-  const canvas = stored ? null : new GifCanvas(gif);
-  progress(0, rows.length, phrase('step.drawing'));
-
-  for (const row of rows) {
-    if (mine !== pass) return;
-
-    const { frame } = row;
-    let pixels;
-    let width;
-    let height;
-
-    if (stored) {
-      pixels = patchPixels(frame);
-      width = frame.width;
-      height = frame.height;
-    } else {
-      const step = canvas.next();
-      pixels = step.pixels.slice();
-      width = gif.width;
-      height = gif.height;
+  if (!gif || job) return;
+  retireRender();
+  // A partial new pass has replaced some pictures, so no completed plan survives it.
+  previewPlan = null;
+  const task = { controller: new AbortController(), gif, rows: [...rows], options: settings() };
+  renderOwner = task;
+  const { stored, colour } = task.options;
+  let canvas = null;
+  try {
+    task.budget = gifWorkingBase(task.gif, task.options);
+    requireWorking(withWorkingBytes(task.budget, thumbnailStorage()));
+    canvas = stored ? null : new GifCanvas(task.gif);
+    progress(task, 0, task.rows.length, phrase('step.drawing'));
+    for (const row of task.rows) {
+      throwIfAborted(task.controller.signal);
+      let pixels, width, height;
+      if (stored) {
+        pixels = patchPixels(row.frame);
+        width = row.frame.width; height = row.frame.height;
+      } else {
+        pixels = canvas.next().pixels.slice();
+        width = task.gif.width; height = task.gif.height;
+      }
+      if (colour) flatten(pixels, colour);
+      const thumb = await thumbnail(pixels, width, height, { signal: task.controller.signal });
+      if (!owns(task)) { URL.revokeObjectURL(thumb.url); return; }
+      try {
+        requireWorking(withWorkingBytes(task.budget, { ...thumbnailStorage(), incomingBytes: thumb.bytes }));
+      } catch (error) { URL.revokeObjectURL(thumb.url); throw error; }
+      if (row.thumbUrl) URL.revokeObjectURL(row.thumbUrl);
+      row.thumbUrl = thumb.url;
+      const rgbaBytes = thumb.width * thumb.height * 4;
+      thumbnailBytes += thumb.bytes - row.thumbBytes;
+      thumbnailRgbaBytes += rgbaBytes - row.thumbRgbaBytes;
+      row.thumbBytes = thumb.bytes;
+      row.thumbRgbaBytes = rgbaBytes;
+      row.image.src = thumb.url;
+      row.meta.textContent = describeFrame(row, stored);
+      progress(task, row.index + 1, task.rows.length, phrase('step.drawing'));
+      await turn();
     }
-
-    if (colour) flatten(pixels, colour);
-
-    const thumb = await thumbnail(pixels, width, height);
-    if (mine !== pass) {
-      URL.revokeObjectURL(thumb.url);
-      return;
+    if (owns(task)) previewPlan = JSON.stringify({ stored, colour });
+  } catch (error) {
+    if (owns(task)) showError(phrase('read.failed', { why: reason(error, 'png.nopreview') }));
+  } finally {
+    if (canvas) { canvas.pixels = null; canvas.saved = null; }
+    if (renderOwner === task) {
+      renderOwner = null;
+      hideProgress(task);
+      countFrames();
     }
-
-    if (row.thumbUrl) URL.revokeObjectURL(row.thumbUrl);
-    row.thumbUrl = thumb.url;
-    row.image.src = thumb.url;
-    row.meta.textContent = describeFrame(row, stored);
-
-    progress(row.index + 1, rows.length, phrase('step.drawing'));
-    // One turn back to the browser per frame keeps the grid filling in visibly
-    // and the page answering clicks. It costs a few milliseconds on a long
-    // animation and buys a page that is never locked.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-  }
-
-  if (mine === pass) {
-    hideProgress();
-    countFrames();
   }
 }
 
@@ -316,7 +393,7 @@ function countFrames() {
   el.framesCount.textContent = phrase(rows.length === 1 ? 'frames.count.one' : 'frames.count.many',
     { n: rows.length, picked });
   el.downloadSelected.hidden = picked === rows.length || picked === 0;
-  el.downloadAll.disabled = rows.length === 0;
+  syncControls();
 }
 
 /** "Keep every N" ticks the frames it keeps and unticks the rest. */
@@ -348,221 +425,136 @@ function pick(all) {
  * means replaying the animation from the start, which sounds expensive and is
  * not: the indices are already decoded, so a frame costs a copy and a paint.
  */
-function pixelsFor(index, { stored, colour }) {
-  const frame = gif.frames[index];
-
+function pixelsFor(input, index, { stored, colour }) {
+  const frame = input.frames[index];
   if (stored) {
     const pixels = patchPixels(frame);
     if (colour) flatten(pixels, colour);
     return { pixels, width: frame.width, height: frame.height };
   }
-
-  const canvas = new GifCanvas(gif);
-  let step = null;
-  for (let at = 0; at <= index; at += 1) step = canvas.next();
-
-  const pixels = step.pixels.slice();
-  if (colour) flatten(pixels, colour);
-  return { pixels, width: gif.width, height: gif.height };
+  const canvas = new GifCanvas(input);
+  try {
+    let step;
+    for (let at = 0; at <= index; at += 1) step = canvas.next();
+    const pixels = step.pixels.slice();
+    if (colour) flatten(pixels, colour);
+    return { pixels, width: input.width, height: input.height };
+  } finally { canvas.pixels = null; canvas.saved = null; }
 }
 
 async function downloadOne(row) {
-  if (working) return;
-  clearError();
-
+  if (job || loadOwner || !gif) return;
+  const task = beginJob('frame', [row]);
   try {
-    const options = settings();
-    const { pixels, width, height } = pixelsFor(row.index, options);
-    save(await encodePng(pixels, width, height), row.name);
+    task.budget = gifWorkingBase(task.gif, task.options);
+    requireWorking(withWorkingBytes(task.budget, task.storage));
+    const { pixels, width, height } = pixelsFor(task.gif, row.index, task.options);
+    const blob = await encodePng(pixels, width, height, { signal: task.controller.signal });
+    if (!owns(task)) return;
+    requireWorking(withWorkingBytes(task.budget, { ...task.storage, incomingBytes: blob.size }));
+    save(blob, task.rows[row.index].name);
   } catch (error) {
-    showError(phrase('save.frame.failed', { why: phrase(error.message) }));
-  }
+    if (owns(task)) showError(phrase('save.frame.failed', { why: reason(error, 'save.unfinished') }));
+  } finally { finishJob(task); }
 }
 
-/**
- * Every selected frame, as one ZIP.
- *
- * One archive rather than a folder of downloads: a hundred frames is a hundred
- * save prompts otherwise, which is the point at which people give up and go
- * back to the upload site. The frames are encoded one at a time and the pass
- * runs forward through the animation exactly once, so a long GIF costs memory
- * for one canvas plus the PNGs themselves.
- */
-/**
- * Every kept frame on one sheet, in a grid.
- *
- * The same forward walk the ZIP export makes, painting each frame into its cell
- * instead of encoding it on its own, so the cost is one working canvas plus the
- * sheet rather than every frame at once - which is the whole reason `GifCanvas`
- * exists and the one rule a sheet could easily have broken.
- *
- * Always the composited view. A sheet's cells have to be the same size and sit
- * on the same grid, and a stored frame is a patch of its own size at its own
- * offset; laying those out would produce a grid of unrelated rectangles that no
- * sprite-sheet reader could cut back up. The page says so when it applies
- * rather than silently ignoring the setting.
- *
- * `putImageData` rather than `drawImage`, because it writes the pixels through
- * untouched: no smoothing, no compositing, no alpha applied twice. Cells do not
- * overlap, so nothing is lost by skipping the blend - and a resampled sheet
- * would put a hairline of the next cell down every edge, which is exactly what
- * ruins pixel art.
- */
+/** A sheet replays every dependency, while selection controls only the emitted cells. */
 async function downloadSheet() {
-  if (working) return;
-
-  const options = settings();
-  const wanted = rows.filter((row) => row.checked);
-  const kept = wanted.length ? wanted : rows;
-  if (!kept.length) return;
-
-  const plan = sheetPlan(kept.length, gif.width, gif.height, 0);
+  if (job || loadOwner || !gif) return;
+  const wanted = rows.filter(row => row.checked);
+  if (!wanted.length) return;
+  const plan = sheetPlan(wanted.length, gif.width, gif.height, 0);
   if (plan.tooBig) {
     showError(phrase('sheet.toobig', { width: plan.width, height: plan.height }));
     return;
   }
-
-  working = true;
-  cancelled = false;
-  clearError();
-  el.cancel.hidden = false;
-  el.downloadAll.disabled = true;
-  el.downloadSelected.disabled = true;
-  el.downloadSheet.disabled = true;
-
+  const task = beginJob('sheet', wanted, { plan });
+  let sheet = null, canvas = null;
   try {
-    const sheet = document.createElement('canvas');
-    sheet.width = plan.width;
-    sheet.height = plan.height;
+    task.budget = gifWorkingBase(task.gif, { sheet: plan });
+    requireWorking(withWorkingBytes(task.budget, task.storage));
+    sheet = document.createElement('canvas');
+    sheet.width = plan.width; sheet.height = plan.height;
     const context = sheet.getContext('2d');
-
-    const picked = new Set(kept.map((row) => row.index));
-    const canvas = new GifCanvas(gif);
+    canvas = new GifCanvas(task.gif);
     let done = 0;
-
-    for (const row of rows) {
-      if (cancelled) break;
-
-      // Every frame is drawn even when only every fifth is kept: frame 40 is
-      // frames 1 to 39 underneath it whether or not anybody asked for them.
+    for (const row of task.rows) {
+      throwIfAborted(task.controller.signal);
       const step = canvas.next();
-      if (!picked.has(row.index)) continue;
-
-      const pixels = step.pixels.slice();
-      if (options.colour) flatten(pixels, options.colour);
-
-      const { x, y } = cellAt(done, plan, gif.width, gif.height);
-      context.putImageData(new ImageData(pixels, gif.width, gif.height), x, y);
-
-      done += 1;
-      // The stored setting cannot apply to a sheet, and saying so while the
-      // sheet is drawing is the one moment somebody is looking at this line.
-      progress(done, kept.length,
-        options.stored ? phrase('sheet.stored') : phrase('sheet.drawing'));
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      if (task.picked.has(row.index)) {
+        const pixels = step.pixels.slice();
+        if (task.options.colour) flatten(pixels, task.options.colour);
+        const { x, y } = cellAt(done, plan, task.gif.width, task.gif.height);
+        context.putImageData(new ImageData(pixels, task.gif.width, task.gif.height), x, y);
+        done += 1;
+        progress(task, done, wanted.length, phrase(task.options.stored ? 'sheet.stored' : 'sheet.drawing'));
+      }
+      // Unselected patches still do work, and must return browser turns too.
+      await turn();
     }
-
-    if (cancelled) {
-      hideProgress();
-      return;
-    }
-
-    const blob = await new Promise((resolve, reject) => {
-      sheet.toBlob((made) => {
-        if (made) resolve(made);
-        else reject(new Error('png.nowrite'));
-      }, 'image/png');
-    });
-    save(blob, sheetName(baseName(file.name), plan));
-    hideProgress();
+    throwIfAborted(task.controller.signal);
+    const blob = await canvasPng(sheet, task.controller.signal);
+    if (!owns(task)) return;
+    requireWorking(withWorkingBytes(task.budget, { ...task.storage, incomingBytes: blob.size }));
+    save(blob, sheetName(baseName(task.name), plan));
   } catch (error) {
-    hideProgress();
-    showError(phrase('save.sheet.failed', { why: phrase(error.message) }));
+    if (owns(task)) showError(phrase('save.sheet.failed', { why: reason(error, 'save.unfinished') }));
   } finally {
-    working = false;
-    el.cancel.hidden = true;
-    el.downloadAll.disabled = false;
-    el.downloadSelected.disabled = false;
-    el.downloadSheet.disabled = false;
+    if (sheet) sheet.width = sheet.height = 0;
+    if (canvas) { canvas.pixels = null; canvas.saved = null; }
+    finishJob(task);
   }
 }
 
-
 async function downloadZip(wanted) {
-  if (working || !wanted.length) return;
-
-  working = true;
-  cancelled = false;
-  clearError();
-  el.cancel.hidden = false;
-  el.downloadAll.disabled = true;
-  el.downloadSelected.disabled = true;
-
-  const options = settings();
-  const canvas = options.stored ? null : new GifCanvas(gif);
-  const picked = new Set(wanted.map((row) => row.index));
-  const files = [];
-  const written = [];
-
+  if (job || loadOwner || !gif || !wanted.length) return;
+  const task = beginJob('zip', wanted);
+  const files = [], written = [];
+  let canvas = null, archiveBytes = 0;
   try {
+    requireZipEntries(wanted.length, task.options.timing);
+    task.budget = gifWorkingBase(task.gif, task.options);
+    requireWorking(withWorkingBytes(task.budget, task.storage));
+    canvas = task.options.stored ? null : new GifCanvas(task.gif);
     let done = 0;
-    for (const row of rows) {
-      if (cancelled) break;
-
-      let pixels = null;
-      let width = gif.width;
-      let height = gif.height;
-
-      if (options.stored) {
-        // Nothing to replay: a stored frame does not depend on the ones before
-        // it, so the frames nobody asked for are never touched.
-        if (!picked.has(row.index)) continue;
-        pixels = patchPixels(row.frame);
-        width = row.frame.width;
-        height = row.frame.height;
+    for (const row of task.rows) {
+      throwIfAborted(task.controller.signal);
+      let pixels, width = task.gif.width, height = task.gif.height;
+      if (task.options.stored) {
+        if (!task.picked.has(row.index)) continue;
+        pixels = patchPixels(row.frame); width = row.frame.width; height = row.frame.height;
       } else {
-        // Composited frames do depend on their predecessors, so every frame is
-        // drawn even when only every fifth is being saved.
         const step = canvas.next();
-        if (!picked.has(row.index)) continue;
+        if (!task.picked.has(row.index)) { await turn(); continue; }
         pixels = step.pixels.slice();
       }
-
-      if (options.colour) flatten(pixels, options.colour);
-
-      const blob = await encodePng(pixels, width, height);
-      files.push({ name: row.name, data: new Uint8Array(await blob.arrayBuffer()) });
-      written.push(row);
-
+      if (task.options.colour) flatten(pixels, task.options.colour);
+      const blob = await encodePng(pixels, width, height, { signal: task.controller.signal });
+      if (!owns(task)) return;
+      requireWorking(withWorkingBytes(task.budget, { ...task.storage, archiveBytes, incomingBytes: blob.size }));
+      const data = new Uint8Array(await blob.arrayBuffer());
+      if (!owns(task)) return;
+      archiveBytes += data.byteLength;
+      files.push({ name: row.name, data }); written.push(row);
       done += 1;
-      progress(done, wanted.length,
-        phrase('step.writing', { done, total: wanted.length }));
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      progress(task, done, wanted.length, phrase('step.writing', { done, total: wanted.length }));
+      await turn();
     }
-
-    if (cancelled) {
-      hideProgress();
-      return;
+    throwIfAborted(task.controller.signal);
+    if (task.options.timing) {
+      const data = new TextEncoder().encode(timingList(task.name, task.gif, written, phrase));
+      requireWorking(withWorkingBytes(task.budget, { ...task.storage, archiveBytes, incomingBytes: data.byteLength }));
+      archiveBytes += data.byteLength;
+      files.push({ name: 'frames.txt', data });
     }
-
-    if (options.timing) {
-      files.push({
-        name: 'frames.txt',
-        data: new TextEncoder().encode(timingList(file.name, gif, written, phrase)),
-      });
-    }
-
-    save(makeZip(files), zipName(file.name));
-    hideProgress();
+    requireWorking(withWorkingBytes(task.budget, { ...task.storage, archiveBytes }));
+    save(makeZip(files), zipName(task.name));
   } catch (error) {
-    showError(phrase('save.frames.failed', { why: phrase(error.message) }));
-    hideProgress();
+    if (owns(task)) showError(phrase('save.frames.failed', { why: reason(error, 'save.unfinished') }));
   } finally {
-    working = false;
-    cancelled = false;
-    el.cancel.hidden = true;
-    el.downloadAll.disabled = false;
-    el.downloadSelected.disabled = false;
+    files.length = 0; written.length = 0;
+    if (canvas) { canvas.pixels = null; canvas.saved = null; }
+    finishJob(task);
   }
 }
 
@@ -580,13 +572,17 @@ function save(blob, name) {
 
 /* -------------------------------------------------------------- the frame */
 
-function progress(done, total, label) {
+function progress(owner, done, total, label) {
+  if (!owns(owner)) return;
+  progressOwner = owner;
   el.progress.hidden = false;
   el.progressBar.style.width = `${total ? (done / total) * 100 : 0}%`;
   el.progressLabel.textContent = label;
 }
 
-function hideProgress() {
+function hideProgress(owner) {
+  if (owner !== progressOwner) return;
+  progressOwner = null;
   el.progress.hidden = true;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = '';
@@ -594,17 +590,26 @@ function hideProgress() {
 
 /** Let go of everything the last file left behind. */
 function reset() {
-  pass += 1;
+  loadOwner?.controller.abort();
+  loadOwner = null;
+  retireRender();
+  retireJob();
   for (const row of rows) {
     if (row.thumbUrl) URL.revokeObjectURL(row.thumbUrl);
   }
   rows = [];
   gif = null;
   file = null;
+  previewPlan = null;
+  thumbnailBytes = 0;
+  thumbnailRgbaBytes = 0;
   el.frames.replaceChildren();
   el.source.hidden = true;
   el.notice.hidden = true;
-  hideProgress();
+  el.framesCount.textContent = '';
+  picker.waiting();
+  picker.done();
+  syncControls();
 }
 
 function updateModeNote() {
@@ -629,37 +634,42 @@ function updateEveryNote() {
 /* --------------------------------------------------------------- listeners */
 
 el.mode.addEventListener('change', () => {
+  retireJob();
   updateModeNote();
   if (gif) draw();
 });
 
 el.background.addEventListener('change', () => {
+  retireJob();
   el.colourRow.hidden = el.background.value !== 'flatten';
   if (gif) draw();
 });
 
 let colourTimer = null;
 el.colour.addEventListener('input', () => {
+  retireJob();
   clearTimeout(colourTimer);
   colourTimer = setTimeout(() => { if (gif) draw(); }, 150);
 });
 
 el.every.addEventListener('change', () => {
+  retireJob({ redraw: true });
   updateEveryNote();
   if (gif) applyEvery();
 });
 
-el.selectAll.addEventListener('click', () => pick(true));
-el.selectNone.addEventListener('click', () => pick(false));
-el.clear.addEventListener('click', () => { reset(); clearError(); });
+el.timing.addEventListener('change', () => retireJob({ redraw: true }));
+el.selectAll.addEventListener('click', () => { retireJob({ redraw: true }); pick(true); });
+el.selectNone.addEventListener('click', () => { retireJob({ redraw: true }); pick(false); });
+el.clear.addEventListener('click', () => { reset(); clearError(); el.fileInput.focus(); });
 
 el.downloadAll.addEventListener('click', () => downloadZip(rows));
 el.downloadSelected.addEventListener('click', () => downloadZip(rows.filter((row) => row.checked)));
 el.downloadSheet.addEventListener('click', () => downloadSheet());
-el.cancel.addEventListener('click', () => { cancelled = true; });
+el.cancel.addEventListener('click', () => retireJob({ redraw: true }));
 
 window.addEventListener('beforeunload', (event) => {
-  if (!working) return;
+  if (!job) return;
   event.preventDefault();
   event.returnValue = ''; // still required by some browsers to trigger the prompt
 });
@@ -683,6 +693,7 @@ window.addEventListener('unhandledrejection', (event) => {
 
 updateModeNote();
 updateEveryNote();
+syncControls();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();
