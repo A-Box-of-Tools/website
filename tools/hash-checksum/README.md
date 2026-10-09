@@ -114,3 +114,9 @@ A paste that carries filenames is narrowed to the lines naming the file that was
 chosen. If none of them do but some other line matches the bytes, that is
 reported as a match under a different name rather than as a failure: it is what
 happens when a mirror renames a download.
+
+The overall answer accepts any matching candidate, because a manifest can name
+several downloads. Each displayed algorithm compares its own expected values
+separately: correct MD5 and SHA-256 values both say they match, and a differing
+value for one does not mark the other as wrong. A wrapped digest only labels
+the joined algorithm, not the shorter checksums its line fragments could be.
