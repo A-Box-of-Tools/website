@@ -168,6 +168,8 @@
 
     <div class="preview" id="preview" role="img" aria-label="Le code que vous avez fabriqué"></div>
 
+    <div id="scan-note" class="scan-note" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
@@ -193,6 +195,11 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="scan.same">Le code et le fond ont la même couleur : le code disparaît. Choisissez des couleurs différentes avant de l’utiliser.</span>
+    <span data-phrase="scan.low">Ces couleurs ont très peu de contraste. Un code foncé sur un fond clair est plus sûr ; testez-le sur la surface où il sera utilisé.</span>
+    <span data-phrase="scan.transparent">Le fond est transparent : le contraste dépend donc de ce qui se trouve derrière le code. Testez-le sur sa surface finale.</span>
+    <span data-phrase="scan.margin">Cette marge QR est inférieure à quatre modules. Laissez au moins quatre modules libres de chaque côté et testez le code terminé avant de l’imprimer.</span>
+
     <span data-phrase="bar.code128.holds">N&rsquo;importe quel texte&nbsp;: lettres, chiffres et ponctuation. Le choix
       habituel quand le numéro vous appartient.</span>
     <span data-phrase="bar.code128.needs">n&rsquo;importe quel texte que vous pouvez taper au clavier</span>

@@ -17,6 +17,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { scanAdvisories } from '../../tools/qr-barcode/src/scan-advice.js';
 
 import { PATTERNS, values } from '../../tools/qr-barcode/src/code128.js';
 import { gs1Check, makeBarcode, SYMBOLOGIES } from '../../tools/qr-barcode/src/barcode.js';
@@ -514,3 +515,32 @@ function readItf(modules) {
   }
   return out;
 }
+
+
+
+test('scan hints: equal colours are invisible even with different hex case', () => {
+  assert.deepEqual(scanAdvisories({ foreground: '#aabbcc', background: '#AABBCC', quiet: 4 }), ['scan.same']);
+});
+
+test('scan hints: faint grey is flagged while black on white keeps the default clear', () => {
+  assert.deepEqual(scanAdvisories({ foreground: '#cccccc', background: '#ffffff', quiet: 4 }), ['scan.low']);
+  assert.deepEqual(scanAdvisories({ foreground: '#000000', background: '#ffffff', quiet: 4 }), []);
+});
+
+test('scan hints: luminance sees bright green differently from equal-intensity blue', () => {
+  assert.deepEqual(scanAdvisories({ foreground: '#00ff00', background: '#ffffff' }), ['scan.low']);
+  assert.deepEqual(scanAdvisories({ foreground: '#0000ff', background: '#ffffff' }), []);
+});
+
+test('scan hints: transparent output does not compare an ignored background swatch', () => {
+  assert.deepEqual(scanAdvisories({ foreground: '#ffffff', background: 'none', quiet: 4 }), ['scan.transparent']);
+});
+
+test('scan hints: QR margin boundary is inclusive and barcodes have no QR margin', () => {
+  const options = { foreground: '#000000', background: '#ffffff' };
+  assert.deepEqual(scanAdvisories({ ...options, quiet: 3 }), ['scan.margin']);
+  assert.deepEqual(scanAdvisories({ ...options, quiet: 0 }), ['scan.margin']);
+  assert.deepEqual(scanAdvisories({ ...options, quiet: 4 }), []);
+  assert.deepEqual(scanAdvisories(options), []);
+  assert.deepEqual(scanAdvisories({ foreground: '#ffffff', background: '#ffffff', quiet: 0 }), ['scan.same', 'scan.margin']);
+});

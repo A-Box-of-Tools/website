@@ -157,6 +157,8 @@
 
     <div class="preview" id="preview" role="img" aria-label="你做出来的码"></div>
 
+    <div id="scan-note" class="scan-note" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
@@ -179,6 +181,11 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="scan.same">码和背景颜色相同，因此码无法显示。使用前请选择不同的颜色。</span>
+    <span data-phrase="scan.low">这些颜色的对比度很低。浅色背景上的深色码更易读取；请在实际使用的表面上测试。</span>
+    <span data-phrase="scan.transparent">背景是透明的，因此对比度取决于码后面的颜色。请在最终使用的表面上测试。</span>
+    <span data-phrase="scan.margin">这个二维码的边距不足 4 个模块。请在每一边保留至少 4 个模块的空白，并在打印前测试完成的码。</span>
+
     <span data-phrase="bar.code128.holds">任何文字：字母、数字和标点。当号码由你自己定时，通常就选它。</span>
     <span data-phrase="bar.code128.needs">任何你能在键盘上打出来的文字</span>
     <span data-phrase="bar.ean13.holds">12 或 13 位数字。北美以外零售商品上的条码。</span>

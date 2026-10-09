@@ -155,6 +155,8 @@
 
     <div class="preview" id="preview" role="img" aria-label="できあがったコード"></div>
 
+    <div id="scan-note" class="scan-note" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
@@ -177,6 +179,11 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="scan.same">コードと背景が同じ色なので、コードが見えません。使う前に別の色を選んでください。</span>
+    <span data-phrase="scan.low">この配色はコントラストが非常に低い状態です。明るい背景に暗いコードのほうが読み取りやすくなります。実際に使う面に配置して試してください。</span>
+    <span data-phrase="scan.transparent">背景が透明なので、コントラストはコードの背後の色によって変わります。実際に使う面で試してください。</span>
+    <span data-phrase="scan.margin">このQRコードの余白は4モジュール未満です。四辺それぞれに少なくとも4モジュールの空白を残し、印刷前に完成したコードを試してください。</span>
+
     <span data-phrase="bar.code128.holds">どんな文字でも。英数字も記号も入ります。番号を自分で決められるときの定番です。</span>
     <span data-phrase="bar.code128.needs">キーボードで打てる任意の文字</span>
     <span data-phrase="bar.ean13.holds">12桁または13桁。北米以外の小売商品に付いているバーコードです。</span>

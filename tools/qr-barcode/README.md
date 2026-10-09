@@ -27,8 +27,8 @@ Six steps, and each one needs the answer to the last:
   ->  mask it              eight candidates, scored, lowest wins
 ```
 
-`src/qr-encode.js` is the first four and `src/qr.js` is the last two, with the
-field arithmetic in `src/gf256.js` and the specification's tables in
+`src/shared/qr-encode.js` is the first four and `src/shared/qr.js` is the last two, with the
+field arithmetic in `src/shared/gf256.js` and the specification's tables in
 `src/shared/qr-tables.js`, a shared part the reader next door ships too.
 
 The awkward join is between steps two and three: the header carries the
@@ -62,7 +62,7 @@ either table wrong at any version and the byte capacity moves.
 
 ## Reed-Solomon, and why the codewords are shuffled
 
-`src/gf256.js` is a hundred lines: bytes, added with XOR, multiplied modulo
+`src/shared/gf256.js` is a hundred lines: bytes, added with XOR, multiplied modulo
 `x^8 + x^4 + x^3 + x^2 + 1`. Every block of data gets a remainder computed
 against a generator polynomial, and a reader uses that remainder to rebuild
 whatever it could not see — up to half as many codewords as there are checks.
@@ -185,6 +185,20 @@ Rasterizing needs the SVG to reach the browser as an image, which it does as a
 blob URL — the only reason this tool's `img-src` needs `blob:`. The markup has no
 external reference of any kind, so nothing is fetched, the canvas is not
 tainted, and `toBlob` gives back the bytes.
+
+The PNG download captures the picture and filename together before rasterizing.
+Changing the next code does not rename an earlier requested download, and late
+conversion or clipboard feedback cannot describe the new preview. Clipboard
+conversion is retired before writing if a newer result or action supersedes it;
+a native clipboard write already underway cannot be recalled.
+
+The result offers design hints for identical colours, a luminance contrast below
+3:1, transparent backgrounds and QR margins below four modules. Three is a local
+advisory threshold, not a QR or barcode pass/fail requirement. Transparency leaves
+the actual background unknown, so the ignored background swatch is not evaluated.
+The four-module margin follows [DENSO WAVE’s code-area guidance](https://www.qrcode.com/en/howto/code.html/index.html).
+None of these hints blocks a download or promises that a particular scanner will
+read it; the finished code still needs testing on its intended surface.
 
 ## The tests
 

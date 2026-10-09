@@ -165,6 +165,8 @@
 
     <div class="preview" id="preview" role="img" aria-label="The code you have made"></div>
 
+    <div id="scan-note" class="scan-note" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
@@ -190,6 +192,11 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="scan.same">The code and background are the same colour, so the code disappears. Choose different colours before using it.</span>
+    <span data-phrase="scan.low">These colours have very low contrast. Dark code on a light background is safer; test it on the surface where it will be used.</span>
+    <span data-phrase="scan.transparent">The background is transparent, so contrast depends on what is behind the code. Test it on its final surface.</span>
+    <span data-phrase="scan.margin">This QR margin is below four modules. Leave at least four clear modules on every side, and test the finished code before printing.</span>
+
     <span data-phrase="bar.code128.holds">Any text: letters, digits and punctuation. The usual choice when the number is yours
       to decide.</span>
     <span data-phrase="bar.code128.needs">any text you can type on a keyboard</span>

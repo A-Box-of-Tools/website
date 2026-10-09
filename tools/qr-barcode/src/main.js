@@ -9,6 +9,7 @@ import { SYMBOLOGIES, makeBarcode } from './barcode.js';
 import {
   barcodeSvg, qrSvg, sizeOfSvg, svgToPng,
 } from './render.js';
+import { scanAdvisories } from './scan-advice.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -40,6 +41,7 @@ const el = {
   sizeNote: $('size-note'),
   preview: $('preview'),
   facts: $('facts'),
+  scanNote: $('scan-note'),
   downloadSvg: $('download-svg'),
   downloadPng: $('download-png'),
   copyPng: $('copy-png'),
@@ -87,6 +89,7 @@ const EXAMPLE_URL = 'https://abox.tools/';
 
 /** The SVG on screen, kept so the downloads are the picture that is shown. */
 let current = null;
+let actionVersion = 0;
 
 /* --------------------------------------------------------------- the form */
 
@@ -194,6 +197,8 @@ function style() {
  * nothing to send anywhere.
  */
 function update() {
+  actionVersion += 1;
+  el.downloadNote.textContent = '';
   const values = currentValues();
   const isQr = el.symbology.value === 'qr';
   const kind = isQr ? el.format.value : 'text';
@@ -232,6 +237,14 @@ function update() {
   const parsed = new DOMParser().parseFromString(current.svg, 'image/svg+xml');
   el.preview.replaceChildren(document.importNode(parsed.documentElement, true));
   el.facts.textContent = current.facts;
+  el.scanNote.replaceChildren(...scanAdvisories({
+    ...style(), quiet: current.quiet,
+  }).map((key) => {
+    const line = document.createElement('p');
+    line.textContent = phrase(key);
+    return line;
+  }));
+  el.scanNote.hidden = !el.scanNote.childElementCount;
   for (const button of [el.downloadSvg, el.downloadPng, el.copyPng]) button.disabled = false;
 }
 
@@ -259,6 +272,7 @@ function drawQr(text) {
   return {
     svg,
     name: 'qr-code',
+    quiet,
     facts: phrase('facts.qr', {
       version: qr.version,
       size: qr.size,
@@ -324,6 +338,8 @@ function showNothing(message, quiet) {
   current = null;
   el.preview.replaceChildren();
   el.facts.textContent = '';
+  el.scanNote.replaceChildren();
+  el.scanNote.hidden = true;
   el.encoded.textContent = '';
   el.encodedNote.textContent = '';
   el.sizeNote.textContent = '';
@@ -367,39 +383,47 @@ function switchSymbology() {
 
 /* ---------------------------------------------------------- the downloads */
 
-function baseName() {
-  return current?.name ?? 'code';
+/** Each action owns both the captured picture and any feedback it may publish. */
+function takeAction() {
+  const result = current;
+  const version = ++actionVersion;
+  el.downloadNote.textContent = '';
+  return { result, owns: () => result === current && version === actionVersion };
 }
 
 el.downloadSvg.addEventListener('click', () => {
   if (!current) return;
-  saveBlob(new Blob([current.svg], { type: 'image/svg+xml' }), `${baseName()}.svg`);
+  const { result } = takeAction();
+  saveBlob(new Blob([result.svg], { type: 'image/svg+xml' }), `${result.name}.svg`);
   el.downloadNote.textContent = phrase('save.done');
 });
 
 el.downloadPng.addEventListener('click', async () => {
   if (!current) return;
+  const { result, owns } = takeAction();
   try {
-    saveBlob(await svgToPng(current.svg), `${baseName()}.png`);
-    el.downloadNote.textContent = phrase('save.done');
+    const blob = await svgToPng(result.svg);
+    // A requested download still completes if the visitor edits the next code.
+    saveBlob(blob, `${result.name}.png`);
+    if (owns()) el.downloadNote.textContent = phrase('save.done');
   } catch (error) {
-    // render.js throws a key; a browser that failed for its own reasons throws
-    // a sentence, and phrase() hands back what it does not recognise.
-    el.downloadNote.textContent = phrase('save.failed', { detail: phrase(error.message) });
+    if (owns()) {
+      el.downloadNote.textContent = phrase('save.failed', { detail: phrase(error.message) });
+    }
   }
 });
 
 el.copyPng.addEventListener('click', async () => {
   if (!current) return;
+  const { result, owns } = takeAction();
   try {
-    const blob = await svgToPng(current.svg);
+    const blob = await svgToPng(result.svg);
+    // An older conversion must not overwrite a newer copy in the clipboard.
+    if (!owns()) return;
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-    el.downloadNote.textContent = phrase('save.copied');
+    if (owns()) el.downloadNote.textContent = phrase('save.copied');
   } catch {
-    // Clipboard access is refused in plenty of ordinary situations - an
-    // insecure origin, a browser that has never supported writing an image,
-    // a permission the visitor declined. None of them is worth an alarm.
-    el.downloadNote.textContent = phrase('save.noclipboard');
+    if (owns()) el.downloadNote.textContent = phrase('save.noclipboard');
   }
 });
 
