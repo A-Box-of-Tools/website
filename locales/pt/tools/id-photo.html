@@ -191,6 +191,8 @@
         <button type="button" id="whole-photo" class="ghost">Maior quadro que couber</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -449,6 +451,7 @@
     <span data-phrase="mark.lefteye.hint">a pupila, à esquerda de quem olha</span>
     <span data-phrase="mark.righteye">Olho direito</span>
     <span data-phrase="mark.righteye.hint">a outra pupila</span>
+    <span data-phrase="mark.position">{label}: {x} pixels a partir da margem esquerda e {y} pixels a partir do topo da fotografia.</span>
     <span data-phrase="mark.aria">{label}: {hint}. As setas movem o ponto; segure Shift para dez pixels de cada vez.</span>
     <span data-phrase="crop.aria">Área de recorte. As setas movem, Alt com as setas redimensiona, e segurando Shift
       cada passo são dez pixels. O formato é fixado pela especificação e não pode ser

@@ -199,6 +199,8 @@
         <button type="button" id="whole-photo" class="ghost">Größter passender Rahmen</button>
       </div>
 
+      <p id="mark-position" class="field-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+
       <p id="short-note" class="hint-line" hidden></p>
 
       <!-- The live readout. Every line is measured from the box as it stands,
@@ -672,6 +674,7 @@
     <span data-phrase="mark.lefteye.hint">die Pupille, links aus Ihrer Sicht</span>
     <span data-phrase="mark.righteye">Rechtes Auge</span>
     <span data-phrase="mark.righteye.hint">die andere Pupille</span>
+    <span data-phrase="mark.position">{label}: {x} Pixel vom linken Rand und {y} Pixel vom oberen Rand des Fotos.</span>
     <span data-phrase="mark.aria">{label}: {hint}. Die Pfeiltasten bewegen ihn; mit gehaltener Umschalttaste zehn
       Pixel auf einmal.</span>
     <span data-phrase="crop.aria">Ausschnittsbereich. Die Pfeiltasten bewegen ihn, Alt und die Pfeiltasten ändern

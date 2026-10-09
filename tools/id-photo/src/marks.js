@@ -44,16 +44,48 @@ const OPENING = {
   rightEye: { x: 0.58, y: 0.28 },
 };
 
+/**
+ * A held arrow key should leave one position to read, not a queue of positions
+ * that are already out of date. Retiring the timer also retires its callback:
+ * a hidden landmark or a replacement photograph must never speak later.
+ */
+export function createMarkFeedback(onPosition, {
+  schedule = setTimeout, cancel = clearTimeout, delay = 250,
+} = {}) {
+  let pending = null;
+  let generation = 0;
+  return {
+    queue(position) {
+      const ticket = ++generation;
+      if (pending !== null) cancel(pending);
+      const snapshot = { ...position };
+      pending = schedule(() => {
+        if (ticket !== generation) return;
+        pending = null;
+        onPosition?.(snapshot);
+      }, delay);
+    },
+    clear() {
+      generation += 1;
+      if (pending !== null) cancel(pending);
+      pending = null;
+      onPosition?.(null);
+    },
+  };
+}
+
 export class Marks {
   #stage;
   #onChange;
+  #feedback;
   #dots = new Map();
   #source = { width: 0, height: 0 };
   #points = null;
 
-  constructor(stage, { onChange, t } = {}) {
+  constructor(stage, { onChange, onPosition, t } = {}) {
     this.#stage = stage;
     this.#onChange = onChange;
+    this.#feedback = createMarkFeedback(onPosition);
 
     for (const entry of MARK_KEYS) {
       const { key } = entry;
@@ -72,6 +104,8 @@ export class Marks {
 
       dot.addEventListener('pointerdown', this.#onPointerDown);
       dot.addEventListener('keydown', this.#onKeyDown);
+      dot.addEventListener('focus', this.#onFocus);
+      dot.addEventListener('blur', () => this.#feedback.clear());
 
       this.#dots.set(key, dot);
       stage.append(dot);
@@ -119,11 +153,13 @@ export class Marks {
   }
 
   hide() {
+    this.#feedback.clear();
     for (const dot of this.#dots.values()) dot.hidden = true;
   }
 
   /** Put them back, where they were left, after a rule that had no use for them. */
   show() {
+    this.#feedback.clear();
     if (!this.#points) return;
     for (const dot of this.#dots.values()) dot.hidden = false;
     this.#paint();
@@ -154,6 +190,7 @@ export class Marks {
     dot.setPointerCapture?.(event.pointerId);
     event.preventDefault();
     dot.focus({ preventScroll: true });
+    this.#feedback.clear();
     dot.classList.add('dragging');
 
     const from = { x: event.clientX, y: event.clientY };
@@ -177,6 +214,10 @@ export class Marks {
     window.addEventListener('pointercancel', up);
   };
 
+  #onFocus = (event) => {
+    this.#queuePosition(event.currentTarget.dataset.key);
+  };
+
   #onKeyDown = (event) => {
     const directions = {
       ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1],
@@ -189,16 +230,24 @@ export class Marks {
     const step = event.shiftKey ? 10 : 1;
     const at = this.#points[key];
     this.#set(key, { x: at.x + direction[0] * step, y: at.y + direction[1] * step });
+    this.#queuePosition(key);
   };
 
   /** All four at once, shown, painted and announced. */
   #show(points, why) {
+    this.#feedback.clear();
     this.#points = Object.fromEntries(MARK_KEYS.map(({ key }) => [
       key, this.#inside(points[key]),
     ]));
     for (const dot of this.#dots.values()) dot.hidden = false;
     this.#paint();
     this.#onChange?.(this.marks, why);
+  }
+
+  #queuePosition(key) {
+    if (!this.#points || this.#dots.get(key)?.hidden) return;
+    const entry = MARK_KEYS.find((mark) => mark.key === key);
+    this.#feedback.queue({ label: entry.label, ...this.#points[key] });
   }
 
   #set(key, point) {
