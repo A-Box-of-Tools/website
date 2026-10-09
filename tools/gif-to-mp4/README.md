@@ -84,3 +84,8 @@ Clearing the file aborts and retires its export. A codec can finish a pending
 flush after cancellation, and the result check also reads asynchronously, so
 the page checks the run again at both boundaries. Progress, errors and cleanup
 from that retired run cannot overwrite the controls for a replacement file.
+
+The generated MP4 readback uses the shared reader's explicit
+`demux(..., { timeline: 'media' })` inspection mode. It checks raw media samples
+and headers; it does not make a claim about an arbitrary incoming MP4 edit list.
+This tool accepts GIF inputs, so it has no incoming MP4 timeline path to widen.

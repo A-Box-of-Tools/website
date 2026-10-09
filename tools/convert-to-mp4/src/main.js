@@ -366,7 +366,7 @@ async function run() {
 async function verify(blob, expectedSeconds, expectSound) {
   let again;
   try {
-    again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }));
+    again = await demux(new File([blob], 'check.mp4', { type: 'video/mp4' }), { timeline: 'media' });
   } catch (error) {
     return { ok: false, text: { key: 'check.reopen', values: { detail: messageFor(error) } } };
   }

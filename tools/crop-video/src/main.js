@@ -6,7 +6,7 @@ import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { cropExact, grabFrame } from './transcode.js';
 import { cropByRecording } from './record.js';
 import { Cropper } from './shared/cropper.js';
@@ -164,6 +164,7 @@ async function loadFile(picked) {
       found = await demux(picked);
     } catch (error) {
       if (mine !== loadId) return;
+      if (error instanceof UnsupportedTimeline) throw error;
       refused = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };
@@ -230,6 +231,8 @@ async function loadFile(picked) {
     showError(error?.message
       ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
     resetView();
+    // The disabled export is still a gate, but its refusal alert must be heard.
+    el.exportCard.inert = false;
   } finally {
     if (mine === loadId) picker.done();
   }

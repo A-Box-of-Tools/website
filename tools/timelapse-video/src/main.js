@@ -6,7 +6,7 @@ import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { timelapseByDecoding, previewFrame } from './decode.js';
 import { timelapseByPlaying } from './playback.js';
 import { TimelapseWriter } from './encode.js';
@@ -249,6 +249,7 @@ async function loadFile(picked) {
       throwIfAborted(signal);
     } catch (error) {
       throwIfAborted(signal);
+      if (error instanceof UnsupportedTimeline) throw error;
       refused = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };

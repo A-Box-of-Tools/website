@@ -317,9 +317,8 @@ but the tables.
   it. That is the only path in this tool where the audio is decoded at all, and
   it needs a browser that will encode AAC — Chrome and Edge will; where one will
   not, the join is written without sound and says so.
-- **Edit lists on the way *in* are ignored.** A source that says "start playing
-  40 milliseconds in" is read from its first sample instead. Honouring one
-  properly means honouring all of them, including the ones that reorder a track.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason.
 - **The recording path keeps one section, and needs the tab in front.** Browsers
   stop painting a hidden tab and canvas capture stops with it. The tool notices,
@@ -414,3 +413,25 @@ the move reaches the edge of the list. Browser checks cover mouse entry, Enter
 and Tab commits, invalid marks, repeated keyboard moves, and removal. Removing
 a focused part sends focus to its neighbour's Remove action, or Add segment
 when no parts remain.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.

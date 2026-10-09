@@ -29,7 +29,7 @@ says which one it is using and why, in those words, rather than quietly being
 five times slower on some files than others.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an ordinary `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
@@ -76,7 +76,8 @@ Three things in it are worth knowing:
   megabytes around whatever sample is being asked for, and the samples are asked
   for in file order, so a two-gigabyte clip costs one window at a time. This is
   the one kind of file on this site that would not have fitted otherwise.
-- **A file it cannot read is a fallback, not a failure.** Every refusal carries a
+- **An ordinary reader refusal can choose a fallback.** A timeline refusal stops
+  the load, while other refusals carry a
   reason in plain words, and the app prints it.
 
 ## The audio survives, exactly
@@ -202,9 +203,8 @@ what covers the loss of a second pass: 0.8× on "smaller file", 1.25× on
 - **It crops and nothing else.** No resizing, no rotating. The clip that comes
   out is exactly as long as the one that went in; trimming is
   [its own tool](../trim-video/) now, at `/trim-video/`.
-- **Edit lists on the way in are ignored.** A file that says "start playing 40
-  milliseconds in" is read from the first sample instead. Honouring one properly
-  means honouring all of them, including the ones that reorder a track.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason. Nothing here can
   decrypt them and a garbled result would be worse than an honest refusal.
 - **The recording path needs the tab in front.** Browsers stop painting a hidden
@@ -267,5 +267,24 @@ appear before an old decode completes, and refused input recovers with a valid
 file. Export exact and recorded crops, open them natively, and compare their
 dimensions, duration and retained sound against the captured crop operation.
 
-Incoming MP4 edit-list support remains the audit's optional shared enhancement
-for a separate shared-media change; the limitation above still applies.
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.

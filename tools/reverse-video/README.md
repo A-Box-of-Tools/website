@@ -50,7 +50,7 @@ on. The budget is in `windowLimit()`: about 384 MB of decoded frames, which is
 | Out | MP4 (H.264) | MP4 (H.264) |
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an ordinary `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
@@ -157,8 +157,8 @@ leaving at 6, it just becomes larger.
 - **AAC encoder delay moves.** The silence an AAC encoder puts in front of a
   track ends up at the end of the reversed one: a few tens of milliseconds, and
   only on the exact path.
-- **Edit lists on the way in are ignored**, as they are in the other two video
-  tools.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason.
 - **The finished file is assembled in memory** before you download it, even
   though the source is not.
@@ -227,6 +227,24 @@ AAC submission, browser-turn cancellation and codec configuration cleanup. Those
 checks use controlled codec objects; native decoding and playback remain the
 browser checks above.
 
-Incoming MP4 edit lists are still intentionally ignored by the shared reader.
-Honoring or refusing those timelines remains a separate shared-media
-enhancement; the replacement and queue guards do not add edit-list support.
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.
