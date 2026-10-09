@@ -172,3 +172,16 @@ Clearing the file aborts and retires its export. A codec can finish a pending
 flush after cancellation, and the result check also reads asynchronously, so
 the page checks the run again at both boundaries. Progress, errors and cleanup
 from that retired run cannot overwrite the controls for a replacement file.
+
+The result sentence uses the sound job captured at the start of the run:
+AAC when sound was copied or encoded, no sound when it was absent or omitted.
+Changing the sound checkbox while a codec finishes cannot relabel that output.
+A new file or clear also retires every earlier read and codec capability
+probe, including its errors and picker cleanup.
+
+Browser regressions: convert the example with and without sound, then a
+silent MP4, and play each exported file. The result sentence and reopened
+tracks must agree. Change the checkbox during a run to check captured wording.
+Delay an earlier valid or invalid file read until a replacement has loaded;
+it must neither replace the clip nor show an old error. Clear that replacement
+while the earlier read remains pending, and check that the cleared state stays.
