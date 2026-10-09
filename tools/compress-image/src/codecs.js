@@ -60,8 +60,13 @@ async function canEncode(mime) {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
-  return Boolean(blob) && blob.type === mime;
+  try {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, 0.8));
+    return Boolean(blob) && blob.type === mime;
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
 
 /** @returns {Promise<Set<string>>} the types this browser can write. */
@@ -93,27 +98,27 @@ export async function encode(source, { width, height, mime, quality }) {
   canvas.width = Math.max(1, Math.round(width));
   canvas.height = Math.max(1, Math.round(height));
 
-  const ctx = canvas.getContext('2d', { alpha: mime !== JPEG });
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+  try {
+    const ctx = canvas.getContext('2d', { alpha: mime !== JPEG });
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
 
-  if (mime === JPEG) {
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (mime === JPEG) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
+    if (!blob) throw saying('error.encode', { format: FORMATS[mime]?.label ?? mime });
+
+    return blob;
+  } finally {
+    // A failed encode can hold the same large backing store as a successful one.
+    canvas.width = 0;
+    canvas.height = 0;
   }
-
-  ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
-  if (!blob) throw saying('error.encode', { format: FORMATS[mime]?.label ?? mime });
-
-  // Free the backing store now rather than when the collector gets round to
-  // it. A search runs a dozen of these; on a large photo the difference is
-  // hundreds of megabytes held for no reason.
-  canvas.width = 0;
-  canvas.height = 0;
-
-  return blob;
 }
 
 /**
