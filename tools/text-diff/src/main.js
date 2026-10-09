@@ -301,7 +301,8 @@ function drawDiff(rows) {
     while (block < blocks.length && entry.index >= blocks[block].end) block += 1;
     const node = el.view.value === 'split' ? splitRow(entry.row) : unifiedRow(entry.row);
     if (entry.row.type !== 'equal' && block !== lastBlock) {
-      const target = node.querySelector('.side:not(.empty)');
+      const target = [...node.querySelectorAll('.side')]
+        .find((cell) => !cell.classList.contains('empty'));
       target.tabIndex = -1;
       target.classList.add('change-target');
       targets.push(target);
