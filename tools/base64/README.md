@@ -105,3 +105,25 @@ cleared box therefore stays clear, and edits are not overwritten by an
 asynchronous file read after navigation. Copy and Download are invalidated as
 soon as typing starts, before the debounced calculation runs; a pending
 clipboard write may only update feedback for the result it actually copied.
+
+## Optional canonical decoding
+
+**Require canonical Base64** is off by default and appears only for Base64 or
+URL-safe Base64 decoding. The regular decoder still accepts either alphabet,
+wrapped input and missing padding. The optional check uses the exact spelling
+of this tool’s encoder: standard Base64 has its standard alphabet and padding;
+URL-safe Base64 has its URL alphabet and no padding. Both require zero unused
+bits and no whitespace. This is an explicit choice of profiles, not a claim
+that every protocol uses the same padding rule.
+
+The check compares the encoded spelling of the decoded bytes before UTF-8
+conversion, so byte validation does not depend on whether those bytes are
+text. It follows the encoder rules and optional decoder rejection in
+[RFC 4648 sections 3.2–3.5](https://www.rfc-editor.org/rfc/rfc4648.html#section-3.5).
+Changing the option invalidates and recomputes the result. It does not verify
+a JWT or introduce a binary-file workflow.
+
+A braced backslash escape above U+10FFFF is reported as a localized
+`CodecError` before the platform can throw a `RangeError`. Fixed-width UTF-16
+escapes, surrogate pairs and the existing JavaScript code-unit behavior remain
+unchanged.

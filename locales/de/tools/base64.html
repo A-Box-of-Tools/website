@@ -23,6 +23,13 @@
           </label>
         </fieldset>
       </div>
+      <div class="field" id="canonical-field" hidden inert>
+        <label class="mode" for="canonical">
+          <input type="checkbox" id="canonical" aria-describedby="canonical-note">
+          <span>Kanonisches Base64 verlangen</span>
+        </label>
+        <p class="field-note" id="canonical-note"></p>
+      </div>
     </div>
   </section>
 
@@ -122,6 +129,10 @@
     <span data-phrase="result.none">Es kam nichts heraus.</span>
     <span data-phrase="out.encoded">{name}, kodiert &mdash; {in} hinein, {out} heraus</span>
     <span data-phrase="out.decoded">{name}, dekodiert &mdash; {in} hinein, {out} heraus</span>
+    <span data-phrase="b64.profile.standard">Standardprofil: + und /, bei Bedarf =-Padding, ungenutzte Bits auf null und keine Leerzeichen. Ohne Häkchen werden beide Alphabete, Zeilenumbrüche und fehlendes Padding akzeptiert.</span>
+    <span data-phrase="b64.profile.url">URL-Profil: - und _, ohne Padding, ungenutzte Bits auf null und keine Leerzeichen. Ohne Häkchen werden beide Alphabete, Zeilenumbrüche und Padding akzeptiert.</span>
+    <span data-phrase="b64.canonical">Dies ist nicht die kanonische Schreibweise für das gewählte Base64-Profil. Prüfe Alphabet, Auffüllung und ungenutzte Bits und entferne Leerraum.</span>
+    <span data-phrase="esc.range">\u{…} muss ein Codepunkt von U+0000 bis U+10FFFF sein.</span>
     <span data-phrase="b64.padding">Da stehen mehr als zwei Auffüllzeichen am Ende.</span>
     <span data-phrase="b64.notfour">Das ist aufgefüllt, aber seine Länge ist kein
       Vielfaches von vier.</span>

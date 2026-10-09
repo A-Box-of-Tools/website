@@ -23,6 +23,13 @@
           </label>
         </fieldset>
       </div>
+      <div class="field" id="canonical-field" hidden inert>
+        <label class="mode" for="canonical">
+          <input type="checkbox" id="canonical" aria-describedby="canonical-note">
+          <span>正規形のBase64を要求</span>
+        </label>
+        <p class="field-note" id="canonical-note"></p>
+      </div>
     </div>
   </section>
 
@@ -108,6 +115,10 @@
     <span data-phrase="result.none">何も出てきませんでした。</span>
     <span data-phrase="out.encoded">{name}、エンコード——入力{in}、出力{out}</span>
     <span data-phrase="out.decoded">{name}、デコード——入力{in}、出力{out}</span>
+    <span data-phrase="b64.profile.standard">標準形式：+と/を使用し、必要に応じて=で埋めます。未使用ビットは0で、空白と改行は許可しません。オフの場合は両方の文字集合、改行、パディングの省略を受け付けます。</span>
+    <span data-phrase="b64.profile.url">URL形式：-と_を使用し、パディングは付けません。未使用ビットは0で、空白と改行は許可しません。オフの場合は両方の文字集合、改行、パディングを受け付けます。</span>
+    <span data-phrase="b64.canonical">選択したBase64形式の正規形ではありません。文字集合、パディング、未使用ビットを確認し、空白と改行を取り除いてください。</span>
+    <span data-phrase="esc.range">\u{…}のコードポイントはU+0000からU+10FFFFの範囲で指定してください。</span>
     <span data-phrase="b64.padding">末尾のパディング文字が2個を超えています。</span>
     <span data-phrase="b64.notfour">パディングはありますが、長さが4の倍数になっていません。</span>
     <span data-phrase="b64.length">Base64にしては1文字長いか、3文字足りません。</span>

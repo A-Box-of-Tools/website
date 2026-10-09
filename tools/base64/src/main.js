@@ -17,6 +17,9 @@ const el = {
   inputCount: $('input-count'),
   codec: $('codec'),
   codecNote: $('codec-note'),
+  canonicalField: $('canonical-field'),
+  canonical: $('canonical'),
+  canonicalNote: $('canonical-note'),
   sample: $('sample'),
   clear: $('clear'),
   error: $('error'),
@@ -86,6 +89,7 @@ function schedule() {
 el.input.addEventListener('input', () => { updateCounts(); schedule(); });
 
 el.codec.addEventListener('change', run);
+el.canonical.addEventListener('change', run);
 for (const radio of document.querySelectorAll('input[name="direction"]')) {
   radio.addEventListener('change', run);
 }
@@ -129,6 +133,12 @@ function run() {
   clearError();
   clearResult();
   el.codecNote.textContent = phrase(codecById(el.codec.value).note);
+  const canonicalVisible = pickedDirection() === 'decode'
+    && ['base64', 'base64url'].includes(el.codec.value);
+  el.canonicalField.hidden = !canonicalVisible;
+  el.canonicalField.inert = !canonicalVisible;
+  el.canonicalNote.textContent = canonicalVisible
+    ? phrase(el.codec.value === 'base64url' ? 'b64.profile.url' : 'b64.profile.standard') : '';
 
   const text = el.input.value;
   // The last step is dimmed until there is something for it to act on, and
@@ -161,7 +171,7 @@ function runEncode(text) {
   const decoding = pickedDirection() === 'decode';
   let out;
   try {
-    out = decoding ? codec.decode(text) : codec.encode(text);
+    out = decoding ? codec.decode(text, { canonical: el.canonical.checked }) : codec.encode(text);
   } catch (error) {
     if (error?.name === 'TypeError') {
       // What a fatal TextDecoder throws. Its own message says nothing useful

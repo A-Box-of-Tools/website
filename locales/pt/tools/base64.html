@@ -23,6 +23,13 @@
           </label>
         </fieldset>
       </div>
+      <div class="field" id="canonical-field" hidden inert>
+        <label class="mode" for="canonical">
+          <input type="checkbox" id="canonical" aria-describedby="canonical-note">
+          <span>Exigir Base64 canônico</span>
+        </label>
+        <p class="field-note" id="canonical-note"></p>
+      </div>
     </div>
   </section>
 
@@ -123,6 +130,10 @@
       saída</span>
     <span data-phrase="out.decoded">{name}, decodificado &mdash; {in} de entrada, {out}
       de saída</span>
+    <span data-phrase="b64.profile.standard">Perfil padrão: + e /, preenchimento = quando necessário, bits não usados em zero e sem espaços. Desmarcado aceita ambos os alfabetos, quebras de linha e preenchimento omitido.</span>
+    <span data-phrase="b64.profile.url">Perfil URL: - e _, sem preenchimento, bits não usados em zero e sem espaços. Desmarcado aceita ambos os alfabetos, quebras de linha e preenchimento.</span>
+    <span data-phrase="b64.canonical">Esta não é a forma canônica do perfil Base64 escolhido. Confira o alfabeto, o preenchimento e os bits não utilizados e remova os espaços em branco.</span>
+    <span data-phrase="esc.range">\u{…} deve ser um ponto de código de U+0000 a U+10FFFF.</span>
     <span data-phrase="b64.padding">Tem mais de dois caracteres de preenchimento no fim.</span>
     <span data-phrase="b64.notfour">Tem preenchimento, mas o comprimento não é múltiplo
       de quatro.</span>

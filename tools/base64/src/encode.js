@@ -58,7 +58,7 @@ export function bytesToBase64(bytes, { urlSafe = false, pad = !urlSafe } = {}) {
   return out;
 }
 
-export function base64ToBytes(text) {
+export function base64ToBytes(text, { canonical = false, urlSafe = false, pad = !urlSafe } = {}) {
   // Line breaks are allowed in: Base64 arrives wrapped at 64 or 76 characters
   // from every mail and certificate tool there is.
   const cleaned = text.replace(/[\s\r\n]+/g, '');
@@ -87,6 +87,12 @@ export function base64ToBytes(text) {
       bytes[out] = (held >> bits) & 0xff;
       out += 1;
     }
+  }
+  // The encoder defines one spelling for these exact bytes, including zero
+  // unused bits. Comparing before UTF-8 decoding also keeps binary validation
+  // independent from whether the decoded bytes are displayable text.
+  if (canonical && text !== bytesToBase64(bytes, { urlSafe, pad })) {
+    throw new CodecError('b64.canonical');
   }
   return bytes;
 }
@@ -192,7 +198,9 @@ export function unescapeUnicode(text) {
       const end = text.indexOf('}', i + 3);
       const digits = end < 0 ? '' : text.slice(i + 3, end);
       if (!/^[0-9a-fA-F]{1,6}$/.test(digits)) throw new CodecError('esc.braces');
-      out += String.fromCodePoint(parseInt(digits, 16));
+      const code = parseInt(digits, 16);
+      if (code > 0x10ffff) throw new CodecError('esc.range');
+      out += String.fromCodePoint(code);
       i = end;
       continue;
     }
@@ -240,14 +248,14 @@ export const CODECS = [
     name: 'codec.base64.name',
     note: 'codec.base64.note',
     encode: (text) => bytesToBase64(utf8.encode(text)),
-    decode: (text) => utf8.decode(base64ToBytes(text)),
+    decode: (text, { canonical = false } = {}) => utf8.decode(base64ToBytes(text, { canonical })),
   },
   {
     id: 'base64url',
     name: 'codec.base64url.name',
     note: 'codec.base64url.note',
     encode: (text) => bytesToBase64(utf8.encode(text), { urlSafe: true }),
-    decode: (text) => utf8.decode(base64ToBytes(text)),
+    decode: (text, { canonical = false } = {}) => utf8.decode(base64ToBytes(text, { canonical, urlSafe: true })),
   },
   {
     id: 'url',
