@@ -46,7 +46,7 @@ Ogg, or anything else this repository has no demuxer for — and it is not merel
 a consolation prize, because it also covers a browser with no WebCodecs at all.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an ordinary `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". The page says which path it used, in those terms,
@@ -188,8 +188,8 @@ everything.
   produce the frame in front of the mark and mostly does; on a clip with long
   gaps between keyframes it can be a frame out. The reader path has no such
   looseness, which is why it is preferred whenever it is available.
-- **Edit lists on the way in are ignored**, the same as in the cropper: a file
-  that says "start playing 40 milliseconds in" is read from its first sample.
+- **Unsupported incoming edit lists are refused.** See the incoming timeline
+  policy below; hidden media must not become visible in another operation.
 - **Encrypted tracks are refused**, with that as the reason.
 - **AVI, WMV, FLV and most MKVs** are neither readable here nor playable in most
   browsers. That is the FFmpeg question in
@@ -256,3 +256,25 @@ An export captures its frame times, delays, size, dithering and loop setting
 before decoding starts. Controls remain available for the next run; changing
 the selected end while frames are being collected cannot lengthen the last
 frame of the GIF already being made.
+
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.

@@ -23,11 +23,11 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { demux, FileWindow, UnsupportedFile } from '../../shared/js/mp4-reader.js';
+import { demux, FileWindow, UnsupportedFile, UnsupportedTimeline } from '../../shared/js/mp4-reader.js';
 
 import {
   AV1C, AVCC, FTYP, HVCC, VPCC_BODY,
-  asFile, audioEntry, box, fillBytes, fragmentedFile, full, largeBox, mvhd,
+  asFile, audioEntry, box, editList, fillBytes, fragmentedFile, full, largeBox, mvhd,
   plainFile, trak, u64be, visualEntry, zeros,
 } from './mp4-fixtures.js';
 import { ascii, concat, u32be } from './helpers.js';
@@ -729,3 +729,268 @@ function renameBox(bytes, from, to) {
   out.set(ascii(to), findBoxOffset(out, from) + 4);
   return out;
 }
+
+/* ------------------------------------------------------ incoming timelines */
+
+async function refusesTimeline(bytes, reason = 'read.edits') {
+  await assert.rejects(() => demux(asFile(bytes)), (error) => {
+    assert.ok(error instanceof UnsupportedTimeline);
+    assert.ok(error instanceof UnsupportedFile);
+    assert.equal(error.reason, reason);
+    return true;
+  });
+}
+
+test('full-span identities retain raw bytes, sample facts and both clock versions', async () => {
+  const baseline = await demux(asFile(plainFile({ tracks: [VIDEO] }).bytes));
+  for (const version of [0, 1]) {
+    const { bytes, layout } = plainFile({
+      movieTimescale: 90000, mvhdVersion: version,
+      tracks: [{ ...VIDEO, mdhdVersion: version, editBoxes: editList([{ duration: 18000 }], { version, wide: true }) }],
+    });
+    const incoming = await demux(asFile(bytes));
+    const inspected = await demux(asFile(bytes), { timeline: 'media' });
+    assert.deepEqual(incoming, inspected);
+    assert.equal(incoming.duration, 0.2);
+    assert.deepEqual(incoming.video.samples, baseline.video.samples);
+    assert.deepEqual(incoming.video.sampleEntry, baseline.video.sampleEntry);
+    assert.deepEqual(incoming.video.matrix, baseline.video.matrix);
+    assert.deepEqual(incoming.video.samples.map((sample) => sample.offset), layout[0].offsets);
+  }
+});
+
+test('a literal signed edit hides non-keyframe preroll instead of becoming an identity', async () => {
+  // This entry is literal format bytes: 100 movie ticks, media time 20 and
+  // rate 1.0. It starts at frame 1, whose dependency is the hidden frame 0.
+  const editBoxes = new Uint8Array([
+    0, 0, 0, 36, 101, 100, 116, 115,
+    0, 0, 0, 28, 101, 108, 115, 116,
+    0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 100, 0, 0, 0, 20, 0, 1, 0, 0,
+  ]);
+  const { bytes, layout } = plainFile({ tracks: [{ ...VIDEO, editBoxes }] });
+  await refusesTimeline(bytes);
+  const inspected = await demux(asFile(bytes), { timeline: 'media' });
+  assert.equal(inspected.duration, 0.2);
+  assert.equal(inspected.video.samples.length, 6);
+  assert.equal(inspected.video.samples[0].isKey, true);
+  assert.equal(inspected.video.samples[1].isKey, false);
+  assert.deepEqual(inspected.video.samples.map((sample) => sample.offset), layout[0].offsets);
+});
+
+test('tail cuts, signed shifts, gaps, repeats, reordered pieces and altered rates are refused', async () => {
+  const layouts = [
+    [{ duration: 199 }], // one movie tick short must not round to 200
+    [{ duration: 200, mediaTime: 1 }],
+    [{ duration: 200, mediaTime: -1 }],
+    [{ duration: 50, mediaTime: -1 }, { duration: 200 }],
+    [{ duration: 100 }, { duration: 100 }],
+    [{ duration: 100, mediaTime: 60 }, { duration: 100 }],
+    [{ duration: 200, rate: 0 }],
+    [{ duration: 200, rate: 0x00008000 }],
+    [{ duration: 200, rate: -0x00010000 }],
+  ];
+  for (const version of [0, 1]) {
+    for (const entries of layouts) {
+      await refusesTimeline(plainFile({ tracks: [{ ...VIDEO, editBoxes: editList(entries, { version }) }] }).bytes);
+    }
+  }
+});
+
+test('a matching edit and short header cannot hide samples or negative presentation times', async () => {
+  for (const spec of [
+    { duration: 60, editBoxes: editList([{ duration: 100 }]) },
+    { compositions: [[6, -1]], cttsVersion: 1, editBoxes: editList([{ duration: 200 }]) },
+    { compositions: [[6, 1]], editBoxes: editList([{ duration: 200 }]) },
+  ]) {
+    await refusesTimeline(plainFile({ tracks: [{ ...VIDEO, ...spec }] }).bytes);
+  }
+  for (const deltas of [[[5, 20]], [[7, 20]], [[6, 0]]]) {
+    await refusesTimeline(plainFile({ tracks: [{ ...VIDEO, deltas, editBoxes: editList([{ duration: 200 }]) }] }).bytes,
+      'read.editinvalid');
+  }
+});
+
+test('selected audio edits are checked independently, including codec fallback inputs', async () => {
+  const sound = {
+    id: 2, handler: 'soun', entry: audioEntry('mp4a'), timescale: 48000,
+    duration: 9600, sizes: [20, 20], deltas: [[2, 4800]],
+  };
+  const identity = await demux(asFile(plainFile({ tracks: [VIDEO,
+    { ...sound, editBoxes: editList([{ duration: 200 }], { version: 1 }) }],
+  }).bytes));
+  assert.equal(identity.audio.samples.length, 2);
+  for (const picture of [VIDEO, { ...VIDEO, entry: visualEntry('zzzz') }]) {
+    for (const entries of [[{ duration: 200, mediaTime: 1024 }], [{ duration: 199 }]]) {
+      const bytes = plainFile({ tracks: [picture, { ...sound, editBoxes: editList(entries) }] }).bytes;
+      await refusesTimeline(bytes, 'read.edits');
+    }
+  }
+  await assert.rejects(() => demux(asFile(plainFile({ tracks: [{ ...VIDEO, entry: visualEntry('zzzz') }] }).bytes)),
+    (error) => error instanceof UnsupportedFile && !(error instanceof UnsupportedTimeline)
+      && error.reason === 'read.unknowncodec');
+});
+
+test('malformed edit containers, table lengths, clocks and unsafe wide fields are typed refusals', async () => {
+  const malformed = [
+    box('edts'),
+    box('edts', box('elst', zeros(3))),
+    editList([]),
+    box('edts', full('elst', 0, 0, u32be(2), zeros(12))),
+    concat(editList([{ duration: 200 }]), editList([{ duration: 200 }])),
+    box('edts', full('elst', 0, 0, u32be(1), zeros(12)), full('elst', 0, 0, u32be(1), zeros(12))),
+    concat(u32be(10000), ascii('edts'), zeros(4)),
+    box('edts', concat(u32be(10000), ascii('elst'), zeros(4))),
+    editList([{ duration: 2n ** 53n }], { version: 1 }),
+    editList([{ duration: 200, mediaTime: 2n ** 53n }], { version: 1 }),
+    editList([{ duration: 200, mediaTime: -2 }], { version: 1 }),
+  ];
+  for (const editBoxes of malformed) {
+    await refusesTimeline(plainFile({ tracks: [{ ...VIDEO, editBoxes }] }).bytes, 'read.editinvalid');
+  }
+  for (const options of [{ version: 2 }, { flags: 1 }]) {
+    await refusesTimeline(plainFile({ tracks: [{ ...VIDEO, editBoxes: editList([{ duration: 200 }], options) }] }).bytes);
+  }
+  const { bytes } = plainFile({ tracks: [{ ...VIDEO, editBoxes: editList([{ duration: 200 }]) }], movieTimescale: 0 });
+  await refusesTimeline(bytes, 'read.editinvalid');
+  for (const version of [0, 1]) {
+    const fixture = plainFile({ tracks: [{ ...VIDEO, mdhdVersion: version,
+      editBoxes: editList([{ duration: 200 }]) }],
+    }).bytes;
+    const badVersion = fixture.slice();
+    badVersion[findBoxOffset(badVersion, 'mdhd') + 8] = 2;
+    await refusesTimeline(badVersion, 'read.editinvalid');
+    const shortClock = fixture.slice();
+    const at = findBoxOffset(shortClock, 'mdhd');
+    new DataView(shortClock.buffer).setUint32(at, version ? 39 : 27);
+    await refusesTimeline(shortClock, 'read.editinvalid');
+  }
+  const missingClock = bytes.slice();
+  const typeAt = findBoxOffset(missingClock, 'mvhd') + 4;
+  missingClock.set(ascii('free'), typeAt);
+  await refusesTimeline(missingClock, 'read.editinvalid');
+});
+
+test('fragmented identities require actual complete sample extents before acceptance', async () => {
+  const fragments = [{ runs: [{ trackId: 1, baseDecodeTime: 0,
+    samples: [{ size: 30 }, { size: 20 }, { size: 10 }] }] }];
+  for (const duration of [0, 100]) {
+    for (const version of [0, 1]) {
+      const bytes = fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO,
+        editBoxes: editList([{ duration }], { version }) }], fragments });
+      const incoming = await demux(asFile(bytes));
+      assert.deepEqual(incoming, await demux(asFile(bytes), { timeline: 'media' }));
+      assert.equal(incoming.video.duration, 60);
+      assert.deepEqual(incoming.video.samples.map((sample) => sample.pts), [0, 20, 40]);
+    }
+  }
+  for (const entries of [[{ duration: 99 }], [{ duration: 0, mediaTime: 20 }]]) {
+    await refusesTimeline(fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO, editBoxes: editList(entries) }], fragments }));
+  }
+  const negative = [{ runs: [{ trackId: 1, baseDecodeTime: 0, trunVersion: 1,
+    samples: [{ size: 30, composition: -1 }] }] }];
+  await refusesTimeline(fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO,
+    editBoxes: editList([{ duration: 0 }]) }], fragments: negative }));
+});
+
+test('empty or zero-duration edited fragments cannot establish an identity', async () => {
+  for (const samples of [[], [{ size: 30, duration: 0 }, { size: 20, duration: 20 }]]) {
+    await refusesTimeline(fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO,
+      editBoxes: editList([{ duration: 0 }]) }], fragments: [{ runs: [{ trackId: 1, samples }] }],
+    }), 'read.editinvalid');
+  }
+});
+
+test('an unselected alternate picture does not change first-track processing', async () => {
+  const { bytes, layout } = plainFile({ tracks: [VIDEO, { ...VIDEO, id: 3,
+    editBoxes: editList([{ duration: 100, mediaTime: 20 }]) }],
+  });
+  const { video } = await demux(asFile(bytes));
+  assert.equal(video.trackId, 1);
+  assert.deepEqual(video.samples.map((sample) => sample.offset), layout[0].offsets);
+});
+
+test('raw media inspection is explicit and does not advertise movie timeline support', async () => {
+  const { bytes } = plainFile({ tracks: [{ ...VIDEO, editBoxes: editList([{ duration: 100, mediaTime: 20 }]) }] });
+  await refusesTimeline(bytes);
+  const raw = await demux(asFile(bytes), { timeline: 'media' });
+  assert.equal(raw.duration, 0.2);
+  assert.deepEqual(raw.video.samples.map((sample) => sample.pts), [0, 20, 40, 60, 80, 100]);
+  await assert.rejects(() => demux(asFile(bytes), { timeline: 'movie' }), TypeError);
+});
+
+
+test('edited identities require supported bounded decode and composition tables', async () => {
+  for (const version of [0, 1]) {
+    const bytes = plainFile({ tracks: [{ ...VIDEO, compositions: [[6, 0]], cttsVersion: version,
+      editBoxes: editList([{ duration: 200 }]) }],
+    }).bytes;
+    const expected = await demux(asFile(bytes));
+    for (const [type, field, value] of [
+      ['stts', 8, 1], ['stts', 11, 1], ['ctts', 8, 2], ['ctts', 11, 1], ['tkhd', 8, 2],
+    ]) {
+      // Mutate only a literal full-box header, leaving all row bytes intact.
+      // Raw inspection deliberately keeps interpreting those bytes as before.
+      const unknown = bytes.slice();
+      unknown[findBoxOffset(unknown, type) + field] |= value;
+      await refusesTimeline(unknown, 'read.editinvalid');
+      assert.deepEqual(await demux(asFile(unknown), { timeline: 'media' }), expected);
+    }
+    const incomplete = bytes.slice();
+    new DataView(incomplete.buffer).setUint32(findBoxOffset(incomplete, 'ctts') + 16, 5);
+    await refusesTimeline(incomplete, 'read.editinvalid');
+    assert.deepEqual(await demux(asFile(incomplete), { timeline: 'media' }), expected);
+    for (const type of ['stts', 'ctts']) {
+      const short = bytes.slice();
+      const at = findBoxOffset(short, type), view = new DataView(short.buffer);
+      view.setUint32(at, view.getUint32(at) - 1);
+      await refusesTimeline(short, 'read.editinvalid');
+    }
+  }
+});
+
+test('edited fragment proofs support both clock and composition versions without guessing new ones', async () => {
+  for (const tfdtVersion of [0, 1]) {
+    for (const trunVersion of [0, 1]) {
+      const bytes = fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO, tkhdVersion: tfdtVersion,
+        editBoxes: editList([{ duration: 0 }]) }], fragments: [{ runs: [{ trackId: 1,
+        baseDecodeTime: 0, tfdtVersion, trunVersion,
+        samples: [{ size: 30, composition: 0 }, { size: 20, composition: 0 }, { size: 10, composition: 0 }],
+      }] }],
+      });
+      const expected = await demux(asFile(bytes));
+      assert.deepEqual(expected.video.samples.map((sample) => sample.pts), [0, 20, 40]);
+      for (const [type, field, value] of [
+        ['trex', 8, 1], ['trex', 11, 1], ['tfhd', 8, 1], ['tfhd', 11, 4],
+        ['tfdt', 8, 2], ['tfdt', 11, 1], ['trun', 8, 2], ['trun', 11, 2],
+      ]) {
+        const unknown = bytes.slice();
+        unknown[findBoxOffset(unknown, type) + field] |= value;
+        await refusesTimeline(unknown, 'read.editinvalid');
+        assert.deepEqual(await demux(asFile(unknown), { timeline: 'media' }), expected);
+      }
+    }
+  }
+});
+
+test('edited fragment proofs cannot lose malformed records or count an empty-duration run', async () => {
+  const bytes = fragmentedFile({ tracks: [{ ...FRAGMENTED_VIDEO,
+    editBoxes: editList([{ duration: 0 }]) }], fragments: [{ runs: [{ trackId: 1,
+    baseDecodeTime: 0, samples: [{ size: 30 }, { size: 20 }, { size: 10 }],
+  }] }],
+  });
+  for (const type of ['trex', 'tfhd', 'tfdt', 'trun', 'traf']) {
+    const short = bytes.slice();
+    const at = findBoxOffset(short, type), view = new DataView(short.buffer);
+    view.setUint32(at, view.getUint32(at) - 1);
+    await refusesTimeline(short, 'read.editinvalid');
+    const oversized = bytes.slice();
+    new DataView(oversized.buffer).setUint32(at, 0x7fffffff);
+    await refusesTimeline(oversized, 'read.editinvalid');
+  }
+  const empty = bytes.slice();
+  empty[findBoxOffset(empty, 'tfhd') + 9] |= 1; // duration-is-empty, with three literal sample rows
+  await refusesTimeline(empty, 'read.editinvalid');
+  const missing = renameBox(bytes, 'tfhd', 'free');
+  await refusesTimeline(missing, 'read.editinvalid');
+});

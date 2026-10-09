@@ -6,7 +6,7 @@ import { sizeText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { framesByDecoding, framesByPlaying } from './frames.js';
 import { encodeGif, ColorHistogram, MAX_COLORS } from './encode.js';
 import { RangeBar, formatTime, parseTime } from './range.js';
@@ -165,6 +165,7 @@ async function loadFile(picked) {
     try {
       inputMedia = await demux(picked);
     } catch (error) {
+      if (error instanceof UnsupportedTimeline) throw error;
       inputFallback = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
         : { key: error.message || 'read.unreadable' };

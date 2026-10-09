@@ -113,6 +113,29 @@ compare header-copy and baked native playback, and replace or clear a file
 during reads, capability checks and delayed preview creation. Count preview
 bitmaps through clear to confirm that none remain owned.
 
-The shared reader still ignores incoming MP4 edit lists. Honoring or refusing
-those timelines is recorded in the audit as an optional shared enhancement
-for a separate change, rather than a promise implemented by this fix.
+## Incoming MP4 edit lists
+
+The shared reader now refuses incoming playback edit lists unless a selected
+track has one rate-1 edit starting at media time zero and spanning the full
+media exactly. Both picture and sound tracks are checked, even when this tool
+will omit sound. A fragmented file may also have a single unbounded rate-1
+identity edit. The raw sample times and processing engines are unchanged.
+
+This is deliberately conservative: ordinary camera files can use edits for
+composition shifts or AAC encoder priming, and cuts saved here can keep hidden
+preroll through an edit list. Those inputs are refused too. Save the visible
+edited clip as a new video with its edits applied before processing it here.
+This guard does not implement general trim, gap, repeat, reorder or rate edits,
+and does not silently send an unknown timeline through the playback fallback.
+
+`UnsupportedTimeline` is distinct from an ordinary reader failure that can use
+the tool's existing fallback. Independent binary fixtures cover the movie and
+media clocks, version widths, signed fields, malformed lists, hidden samples,
+audio-only edits and fragmented identities. Browser checks also compare actual
+picture and sound content; a plausible raw duration alone does not prove the
+visible movie timeline survived.
+
+The generated-output readback uses `demux(..., { timeline: 'media' })`
+explicitly. It inspects trusted writer-produced raw samples and headers,
+including composition/delay edits, without claiming general incoming timeline
+support. The existing readback facts still need native playback/content checks.

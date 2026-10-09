@@ -37,9 +37,10 @@
  * Scope, and what it deliberately does not do:
  *   - Encrypted tracks are refused: nothing here can decrypt them, and a
  *     garbled result is worse than an honest refusal.
- *   - Edit lists are ignored. They shift a track's start by a fraction of a
- *     second at most in the files people crop, and honouring one properly means
- *     honouring all of them.
+ *   - Incoming edit lists must describe a full-span identity. Trims, gaps,
+ *     repeats and encoder-priming edits are refused because exposing their raw
+ *     samples can reveal hidden media. Explicit media inspection is reserved
+ *     for generated-output checks, and does not interpret the movie timeline.
  *
  * Nothing in this file can reach the network. It is handed a File and returns a
  * description of what is in it.
@@ -60,6 +61,18 @@ export class UnsupportedFile extends Error {
     this.name = 'UnsupportedFile';
     this.reason = reason;
     this.values = values;
+  }
+}
+
+/**
+ * A timeline refusal must not become a playback fallback: a browser can ignore
+ * an edit, too. Consumers report this typed condition as an incoming-file
+ * refusal, while ordinary UnsupportedFile failures retain their usual fallback.
+ */
+export class UnsupportedTimeline extends UnsupportedFile {
+  constructor(reason = 'read.edits') {
+    super(reason);
+    this.name = 'UnsupportedTimeline';
   }
 }
 
@@ -392,15 +405,21 @@ function readSamples(view, stbl) {
  * samples the plain layout produces, so nothing downstream has to know which
  * kind of file it came from.
  */
-function fragmentDefaults(view, moov) {
+function fragmentDefaults(view, moov, bounds = null) {
   const defaults = new Map();
   const mvex = findBox(view, moov.body, moov.end, 'mvex');
   if (!mvex) return defaults;
 
-  for (const trex of boxes(view, mvex.body, mvex.end)) {
+  const children = bounds?.size ? proofBoxes(view, mvex.body, mvex.end) : boxes(view, mvex.body, mvex.end);
+  for (const trex of children) {
     if (trex.type !== 'trex') continue;
-    const { at } = fullBox(view, trex);
-    defaults.set(view.getUint32(at), {
+    if (bounds?.size && trex.body + 8 > trex.end) throw new UnsupportedTimeline('read.editinvalid');
+    const { at, version, flags } = fullBox(view, trex);
+    const trackId = view.getUint32(at);
+    if (bounds?.has(trackId) && (version !== 0 || flags || at + 20 !== trex.end || defaults.has(trackId))) {
+      throw new UnsupportedTimeline('read.editinvalid');
+    }
+    defaults.set(trackId, {
       duration: view.getUint32(at + 8),
       size: view.getUint32(at + 12),
       flags: view.getUint32(at + 16),
@@ -416,7 +435,7 @@ function fragmentDefaults(view, moov) {
  * @param {Map<number, object[]>} wanted  track id -> the list to append to
  * @returns {Promise<Map<number, number>>} track id -> where its clock ended up
  */
-async function readFragments(file, top, defaults, wanted) {
+async function readFragments(file, top, defaults, wanted, bounds = null) {
   const clocks = new Map();
 
   for (const fragment of top) {
@@ -427,16 +446,33 @@ async function readFragments(file, top, defaults, wanted) {
     const view = new DataView(bytes.buffer);
     const moof = { body: fragment.body - fragment.start, end: bytes.length };
 
-    for (const traf of boxes(view, moof.body, moof.end)) {
+    const children = bounds?.size ? proofBoxes(view, moof.body, moof.end) : boxes(view, moof.body, moof.end);
+    for (const traf of children) {
       if (traf.type !== 'traf') continue;
 
-      const tfhd = findBox(view, traf.body, traf.end, 'tfhd');
-      if (!tfhd) continue;
+      let records = [...boxes(view, traf.body, traf.end)];
+      const tfhd = records.find((record) => record.type === 'tfhd');
+      if (!tfhd) {
+        // An unassigned fragment cannot prove which edited track owns its rows.
+        if (bounds?.size) throw new UnsupportedTimeline('read.editinvalid');
+        continue;
+      }
 
+      if (bounds?.size && tfhd.body + 8 > tfhd.end) throw new UnsupportedTimeline('read.editinvalid');
       const head = fullBox(view, tfhd);
       let at = head.at;
       const trackId = view.getUint32(at);
       at += 4;
+      const extent = bounds?.get(trackId);
+      if (extent) {
+        records = proofBoxes(view, traf.body, traf.end);
+        const width = 4 + (head.flags & 0x1 ? 8 : 0) + (head.flags & 0x2 ? 4 : 0)
+          + (head.flags & 0x8 ? 4 : 0) + (head.flags & 0x10 ? 4 : 0) + (head.flags & 0x20 ? 4 : 0);
+        if (head.version !== 0 || (head.flags & ~0x03003b) || head.at + width !== tfhd.end
+          || records.filter((record) => record.type === 'tfhd').length !== 1) {
+          throw new UnsupportedTimeline('read.editinvalid');
+        }
+      }
 
       // Without an explicit base, offsets are counted from the start of this
       // moof, which is what `default-base-is-moof` asks for and what every
@@ -457,22 +493,38 @@ async function readFragments(file, top, defaults, wanted) {
       if (!samples) continue;
 
       let clock = clocks.get(trackId) ?? 0;
-      const tfdt = findBox(view, traf.body, traf.end, 'tfdt');
+      const tfdt = records.find((record) => record.type === 'tfdt');
       if (tfdt) {
+        if (extent && tfdt.body + 4 > tfdt.end) throw new UnsupportedTimeline('read.editinvalid');
         const time = fullBox(view, tfdt);
+        if (extent && ((time.version !== 0 && time.version !== 1) || time.flags
+          || time.at + (time.version === 1 ? 8 : 4) !== tfdt.end
+          || records.filter((record) => record.type === 'tfdt').length !== 1)) {
+          throw new UnsupportedTimeline('read.editinvalid');
+        }
         clock = time.version === 1
           ? Number(view.getBigUint64(time.at))
           : view.getUint32(time.at);
       }
 
       let offset = base;
-      for (const trun of boxes(view, traf.body, traf.end)) {
+      for (const trun of records) {
         if (trun.type !== 'trun') continue;
+        if (extent && trun.body + 8 > trun.end) throw new UnsupportedTimeline('read.editinvalid');
 
         const run = fullBox(view, trun);
         let read = run.at;
         const count = view.getUint32(read);
         read += 4;
+        if (extent) {
+          const prefix = (run.flags & 0x1 ? 4 : 0) + (run.flags & 0x4 ? 4 : 0);
+          const width = (run.flags & 0x100 ? 4 : 0) + (run.flags & 0x200 ? 4 : 0)
+            + (run.flags & 0x400 ? 4 : 0) + (run.flags & 0x800 ? 4 : 0);
+          if ((run.version !== 0 && run.version !== 1) || (run.flags & ~0x000f05)
+            || read + prefix + count * width !== trun.end || (count && (head.flags & 0x010000))) {
+            throw new UnsupportedTimeline('read.editinvalid');
+          }
+        }
         if (run.flags & 0x1) { offset = base + view.getInt32(read); read += 4; }
         let firstFlags = null;
         if (run.flags & 0x4) { firstFlags = view.getUint32(read); read += 4; }
@@ -500,6 +552,12 @@ async function readFragments(file, top, defaults, wanted) {
             // fragment that says nothing about a sample is saying it is one.
             isKey: (flags & 0x10000) === 0,
           });
+          if (extent) {
+            if (!duration) throw new UnsupportedTimeline('read.editinvalid');
+            extent.start = Math.min(extent.start, clock + composition);
+            extent.end = Math.max(extent.end, clock + composition + duration);
+            extent.decodeEnd = Math.max(extent.decodeEnd, clock + duration);
+          }
           offset += size;
           clock += duration;
         }
@@ -655,15 +713,174 @@ function readAudioTrack(view, trak, timescale, duration, fragmented) {
   };
 }
 
+/* -------------------------------------------------------- movie timelines */
+
+// Truncated recovery cannot establish an edited identity: an unread timing
+// record may describe samples that the visible movie deliberately hides.
+function proofBoxes(view, start, end) {
+  const found = [...boxes(view, start, end)];
+  if ((found.at(-1)?.end ?? start) !== end) throw new UnsupportedTimeline('read.editinvalid');
+  return found;
+}
+
+/**
+ * An edit box with a broken size must not disappear into the general box
+ * walk's truncated-file recovery. That would turn an unknown movie timeline
+ * into an apparently unedited track. Other boxes keep that walk's old scope.
+ */
+function timelineBoxes(view, start, end, wanted) {
+  const found = [];
+  for (let at = start; at + 8 <= end;) {
+    let size = view.getUint32(at);
+    const type = fourcc(view, at + 4);
+    let header = 8;
+    if (size === 1) {
+      if (at + 16 > end) {
+        if (type === wanted) throw new UnsupportedTimeline('read.editinvalid');
+        break;
+      }
+      size = Number(view.getBigUint64(at + 8));
+      header = 16;
+    } else if (size === 0) {
+      size = end - at;
+    }
+    if (!Number.isSafeInteger(size) || size < header || at + size > end) {
+      if (type === wanted) throw new UnsupportedTimeline('read.editinvalid');
+      break;
+    }
+    if (type === wanted) found.push({ body: at + header, end: at + size });
+    at += size;
+  }
+  return found;
+}
+
+function readEdits(view, trak) {
+  const containers = timelineBoxes(view, trak.body, trak.end, 'edts');
+  if (!containers.length) return null;
+  if (containers.length !== 1) throw new UnsupportedTimeline('read.editinvalid');
+  const [container] = containers;
+  const lists = timelineBoxes(view, container.body, container.end, 'elst');
+  if (lists.length !== 1) throw new UnsupportedTimeline('read.editinvalid');
+  const [list] = lists;
+  if (list.body + 8 > list.end) throw new UnsupportedTimeline('read.editinvalid');
+  const { at, version, flags } = fullBox(view, list);
+  if ((version !== 0 && version !== 1) || flags) return { identity: false };
+  const count = view.getUint32(at);
+  const width = version === 1 ? 20 : 12;
+  if (!count || count !== (list.end - at - 4) / width) {
+    throw new UnsupportedTimeline('read.editinvalid');
+  }
+
+  // The one supported incoming layout is a single identity. Multiple entries
+  // can repeat or reorder media, so do not allocate their table to ignore it.
+  if (count !== 1) return { identity: false };
+  const entry = at + 4;
+  const duration = version === 1 ? view.getBigUint64(entry) : BigInt(view.getUint32(entry));
+  const mediaTime = version === 1 ? view.getBigInt64(entry + 8) : BigInt(view.getInt32(entry + 4));
+  const limit = BigInt(Number.MAX_SAFE_INTEGER);
+  if (duration > limit || mediaTime > limit || mediaTime < -1n) {
+    throw new UnsupportedTimeline('read.editinvalid');
+  }
+  const rate = view.getInt32(entry + (version === 1 ? 16 : 8));
+  return { duration, identity: mediaTime === 0n && rate === 0x00010000 };
+}
+
+function movieTimescale(view, moov) {
+  const mvhd = findBox(view, moov.body, moov.end, 'mvhd');
+  if (!mvhd || mvhd.body + 4 > mvhd.end) throw new UnsupportedTimeline('read.editinvalid');
+  const { at, version, flags } = fullBox(view, mvhd);
+  if ((version !== 0 && version !== 1) || flags
+    || at + (version === 1 ? 28 : 16) > mvhd.end) {
+    throw new UnsupportedTimeline('read.editinvalid');
+  }
+  const scale = view.getUint32(at + (version === 1 ? 16 : 8));
+  if (!scale) throw new UnsupportedTimeline('read.editinvalid');
+  return BigInt(scale);
+}
+
+/**
+ * Declaring a full-span edit is not enough if the sample tables extend beyond
+ * that span. Keep decode dependencies and presentation bounds intact rather
+ * than accepting hidden frames because mdhd repeated the edit's short length.
+ */
+function plainBounds(view, trak, track) {
+  const stbl = findPath(view, trak, 'mdia', 'minf', 'stbl');
+  if (!stbl) throw new UnsupportedTimeline('read.editinvalid');
+  const tables = proofBoxes(view, stbl.body, stbl.end);
+  const decode = tables.filter((table) => table.type === 'stts');
+  const composition = tables.filter((table) => table.type === 'ctts');
+  if (decode.length !== 1 || composition.length > 1) throw new UnsupportedTimeline('read.editinvalid');
+  const [stts] = decode;
+  if (stts.body + 8 > stts.end) throw new UnsupportedTimeline('read.editinvalid');
+  const { at, version, flags } = fullBox(view, stts);
+  const count = view.getUint32(at);
+  if (version !== 0 || flags || at + 4 + count * 8 !== stts.end) {
+    throw new UnsupportedTimeline('read.editinvalid');
+  }
+  if (composition.length) {
+    const [ctts] = composition;
+    if (ctts.body + 8 > ctts.end) throw new UnsupportedTimeline('read.editinvalid');
+    const head = fullBox(view, ctts);
+    const entries = view.getUint32(head.at);
+    if ((head.version !== 0 && head.version !== 1) || head.flags || head.at + 4 + entries * 8 !== ctts.end) {
+      throw new UnsupportedTimeline('read.editinvalid');
+    }
+    let samples = 0;
+    for (let row = 0; row < entries; row++) samples += view.getUint32(head.at + 4 + row * 8);
+    if (samples !== track.samples.length) throw new UnsupportedTimeline('read.editinvalid');
+  }
+  const bounds = { start: Infinity, end: -Infinity, decodeEnd: 0 };
+  let index = 0;
+  for (let row = 0; row < count; row++) {
+    const run = view.getUint32(at + 4 + row * 8);
+    const duration = view.getUint32(at + 8 + row * 8);
+    if (!duration || index + run > track.samples.length) {
+      throw new UnsupportedTimeline('read.editinvalid');
+    }
+    for (let i = 0; i < run; i++) {
+      const sample = track.samples[index++];
+      bounds.start = Math.min(bounds.start, sample.pts);
+      bounds.end = Math.max(bounds.end, sample.pts + duration);
+      bounds.decodeEnd += duration;
+    }
+  }
+  if (index !== track.samples.length) throw new UnsupportedTimeline('read.editinvalid');
+  return bounds;
+}
+
+function requireIdentity(track, editDuration, movieScale, fragmented, bounds) {
+  if (!Number.isSafeInteger(track.duration) || !(track.duration > 0)
+    || !Number.isSafeInteger(track.timescale) || !(track.timescale > 0)
+    || !bounds || !Number.isSafeInteger(bounds.start) || !Number.isSafeInteger(bounds.end)
+    || !Number.isSafeInteger(bounds.decodeEnd)) {
+    throw new UnsupportedTimeline('read.editinvalid');
+  }
+  if (bounds.start < 0 || bounds.end > track.duration || bounds.decodeEnd !== track.duration) {
+    throw new UnsupportedTimeline();
+  }
+  // Duration is on the movie clock, media time on the track clock. Rounding
+  // would turn a one-tick-short cut into a full-span identity.
+  if (!(fragmented && editDuration === 0n)
+    && editDuration * BigInt(track.timescale) !== BigInt(track.duration) * movieScale) {
+    throw new UnsupportedTimeline();
+  }
+}
+
 /* -------------------------------------------------------------------- read */
 
 /**
  * @param {File} file
+ * @param {{timeline?: 'incoming'|'media'}} [options]  Incoming reads require an
+ *   unmodified timeline. 'media' is explicit raw-sample inspection for trusted
+ *   generated-output checks, and makes no claim about an edited movie timeline.
  * @returns {Promise<{video: object, audio: object|null, duration: number}>}
- * @throws {UnsupportedFile} when the file is out of scope. The caller is
- *   expected to fall back to the recording path and say why it did.
+ * @throws {UnsupportedTimeline} when incoming edits cannot be preserved. This
+ *   refusal must be reported without a playback fallback.
+ * @throws {UnsupportedFile} for other out-of-scope files. A consumer may retain
+ *   its ordinary playback fallback and say why it did.
  */
-export async function demux(file) {
+export async function demux(file, { timeline = 'incoming' } = {}) {
+  if (timeline !== 'incoming' && timeline !== 'media') throw new TypeError('read.timeline');
   const top = await topLevel(file);
   if (!top.some((box) => box.type === 'ftyp' || box.type === 'moov')) {
     throw new UnsupportedFile('read.notmp4');
@@ -683,40 +900,100 @@ export async function demux(file) {
 
   let video = null;
   let audio = null;
+  let triedVideo = false;
+  let readFailure = null;
+  const timelines = [];
+  const fragmentBounds = new Map();
 
   for (const trak of boxes(view, moov.body, moov.end)) {
     if (trak.type !== 'trak') continue;
 
+    // A malformed edit size can hide the metadata that normally selects a
+    // track. Detect it before the general truncated-box walk skips that track.
+    const edits = timeline === 'incoming' ? readEdits(view, trak) : null;
     const mdhd = findPath(view, trak, 'mdia', 'mdhd');
     const hdlr = findPath(view, trak, 'mdia', 'hdlr');
-    if (!mdhd || !hdlr) continue;
+    if (!mdhd || !hdlr) {
+      if (edits !== null) throw new UnsupportedTimeline('read.editinvalid');
+      continue;
+    }
 
-    const head = fullBox(view, mdhd);
-    const timescale = head.version === 1
-      ? view.getUint32(head.at + 16)
-      : view.getUint32(head.at + 8);
-    const duration = head.version === 1
-      ? Number(view.getBigUint64(head.at + 20))
-      : view.getUint32(head.at + 12);
-
-    const kind = fourcc(view, hdlr.body + 8);
-    if (kind === 'vide' && !video) {
-      video = readVideoTrack(view, trak, timescale, duration, fragmented);
-    } else if (kind === 'soun' && !audio) {
-      audio = readAudioTrack(view, trak, timescale, duration, fragmented);
+    let timescale, duration, kind;
+    try {
+      const head = fullBox(view, mdhd);
+      if (edits && ((head.version !== 0 && head.version !== 1) || head.flags
+        || head.at + (head.version === 1 ? 28 : 16) > mdhd.end || hdlr.body + 12 > hdlr.end)) {
+        throw new UnsupportedTimeline('read.editinvalid');
+      }
+      timescale = head.version === 1 ? view.getUint32(head.at + 16) : view.getUint32(head.at + 8);
+      duration = head.version === 1 ? Number(view.getBigUint64(head.at + 20)) : view.getUint32(head.at + 12);
+      kind = fourcc(view, hdlr.body + 8);
+    } catch (error) {
+      if (edits !== null) throw new UnsupportedTimeline('read.editinvalid');
+      throw error;
+    }
+    if (!((kind === 'vide' && !triedVideo) || (kind === 'soun' && !audio))) continue;
+    if (edits && !edits.identity) throw new UnsupportedTimeline();
+    const editDuration = edits?.duration ?? null;
+    if (edits) {
+      const tkhd = findBox(view, trak.body, trak.end, 'tkhd');
+      if (!tkhd || tkhd.body + 4 > tkhd.end) throw new UnsupportedTimeline('read.editinvalid');
+      const head = fullBox(view, tkhd);
+      if ((head.version !== 0 && head.version !== 1)
+        || head.at + (head.version === 1 ? 20 : 12) > tkhd.end) {
+        throw new UnsupportedTimeline('read.editinvalid');
+      }
+    }
+    let selected = null;
+    try {
+      if (kind === 'vide') {
+        triedVideo = true;
+        selected = video = readVideoTrack(view, trak, timescale, duration, fragmented);
+      } else {
+        selected = audio = readAudioTrack(view, trak, timescale, duration, fragmented);
+      }
+    } catch (error) {
+      readFailure ??= error;
+    }
+    if (editDuration !== null) {
+      // A failed codec/table read cannot prove that an edit is an identity.
+      // Keep inspecting the selected sound timeline before an ordinary codec
+      // refusal is allowed to choose a playback fallback.
+      if (!selected) {
+        // A broken timing box can hide another mandatory table before the
+        // later bounds proof, so missing tables are invalid edited timing too.
+        const invalid = readFailure && (!(readFailure instanceof UnsupportedFile)
+          || readFailure.reason === 'read.sampletables');
+        throw new UnsupportedTimeline(invalid ? 'read.editinvalid' : 'read.edits');
+      }
+      timelines.push({ track: selected, trak, editDuration });
+      fragmentBounds.set(selected.trackId, { start: Infinity, end: -Infinity, decodeEnd: 0 });
     }
   }
 
+  if (readFailure) {
+    if (timelines.length) {
+      throw new UnsupportedTimeline(readFailure instanceof UnsupportedFile ? 'read.edits' : 'read.editinvalid');
+    }
+    throw readFailure;
+  }
   if (!video) throw new UnsupportedFile('read.novideo');
-  if (!video.timescale) throw new UnsupportedFile('read.notimescale');
+  if (!video.timescale) {
+    if (timelines.length) throw new UnsupportedTimeline('read.editinvalid');
+    throw new UnsupportedFile('read.notimescale');
+  }
 
   if (fragmented) {
     const wanted = new Map([[video.trackId, video.samples]]);
     if (audio) wanted.set(audio.trackId, audio.samples);
 
-    const clocks = await readFragments(file, top, fragmentDefaults(view, moov), wanted);
-    if (!video.samples.length) {
-      throw new UnsupportedFile('read.nofragments');
+    let clocks;
+    try {
+      clocks = await readFragments(file, top, fragmentDefaults(view, moov, fragmentBounds), wanted, fragmentBounds);
+      if (!video.samples.length) throw new UnsupportedFile('read.nofragments');
+    } catch (error) {
+      if (timelines.length) throw new UnsupportedTimeline('read.editinvalid');
+      throw error;
     }
 
     // A fragmented file usually declares a duration of zero in the header,
@@ -729,5 +1006,12 @@ export async function demux(file) {
     if (audio && !audio.samples.length) audio = null;
   }
 
+  if (timelines.length) {
+    const movieScale = movieTimescale(view, moov);
+    for (const { track, trak, editDuration } of timelines) {
+      requireIdentity(track, editDuration, movieScale, fragmented,
+        fragmented ? fragmentBounds.get(track.trackId) : plainBounds(view, trak, track));
+    }
+  }
   return { video, audio, duration: video.duration / video.timescale };
 }

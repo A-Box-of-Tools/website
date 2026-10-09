@@ -6,7 +6,7 @@ import { openInPlayer } from './shared/media.js';
 import { saveBlob } from './shared/download.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { FrameReader, decodeSeries, frameNear, seriesFrames } from './frames.js';
 import { drawUpright, frameCanvas } from './draw.js';
 import { FORMATS, clockTime, encodeStill, stillName } from './still.js';
@@ -150,6 +150,7 @@ async function loadFile(picked) {
       media = await demux(picked);
       fallbackReason = null;
     } catch (error) {
+      if (error instanceof UnsupportedTimeline) throw error;
       media = null;
       fallbackReason = error instanceof UnsupportedFile
         ? { key: error.reason, values: error.values }
