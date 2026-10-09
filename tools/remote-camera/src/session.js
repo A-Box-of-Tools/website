@@ -254,6 +254,7 @@ export class CameraSession {
       } else if (message.type === 'approved' && this.role === 'viewer' && !entry.approved) {
         entry.approved = true;
         this.state('viewer.approved');
+        this.control(entry, 'approval-ack');
         this.deadline(entry, () => {
           entry.pc.getStats().then((stats) => {
             const received = [...stats.values()].some((item) => item.type === 'inbound-rtp' && item.kind === 'video' && item.framesDecoded > 0);
@@ -262,6 +263,8 @@ export class CameraSession {
             if (this.current(entry)) this.peerFailed(entry, 'connection.direct-failed');
           });
         }, CONNECT_TIMEOUT);
+      } else if (message.type === 'approval-ack' && this.role === 'camera' && entry.approved && this.active === entry.id) {
+        this.beginVideo(entry);
       } else if (message.type === 'denied' && this.role === 'viewer') {
         this.stop('viewer.denied');
       } else if (message.type === 'busy' && this.role === 'viewer') {
@@ -288,20 +291,36 @@ export class CameraSession {
     entry.approved = true;
     try {
       this.control(entry, 'approved');
-      // The first offer contains only the control channel. Attaching a track
-      // here makes approval a transport boundary, not a hidden video element.
-      entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] });
     } catch {
       this.peerFailed(entry, 'connection.ended');
       return false;
     }
-    this.queue(entry, () => this.offer(entry));
+    this.deadline(entry, () => {
+      if (!entry.video) this.peerFailed(entry, 'connection.direct-failed');
+    }, CONNECT_TIMEOUT);
     this.requests();
-    this.state('camera.streaming');
+    this.state('camera.approved');
     for (const other of [...this.peers.values()]) {
       if (other !== entry) this.deny(other.id, 'busy');
     }
     return true;
+  }
+
+  beginVideo(entry) {
+    if (!this.current(entry) || entry.video || this.role !== 'camera' || this.active !== entry.id) return;
+    const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
+    if (!track) { this.stop('camera.ended'); return; }
+    try {
+      // Approval and SDP use different transports. The acknowledgement proves
+      // the viewer processed approval before a video offer can overtake it.
+      entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] });
+      entry.video = true;
+    } catch {
+      this.peerFailed(entry, 'connection.ended');
+      return;
+    }
+    this.queue(entry, () => this.offer(entry));
+    this.state('camera.streaming');
   }
 
   deny(id, reason = 'denied') {

@@ -32,7 +32,7 @@ export function controlMessage(text) {
   try {
     const value = JSON.parse(text);
     if (!value || value.protocol !== PROTOCOL) return null;
-    if (['hello', 'request', 'approved', 'denied', 'busy', 'ended'].includes(value.type)) {
+    if (['hello', 'request', 'approved', 'approval-ack', 'denied', 'busy', 'ended'].includes(value.type)) {
       if (value.type === 'request' && (typeof value.note !== 'string' || value.note.length > 80)) return null;
       return value;
     }

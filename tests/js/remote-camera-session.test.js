@@ -69,7 +69,7 @@ test('an introduced viewer receives no video sender before approval', async (t) 
 test('approval sends one video track and excludes a second viewer', async (t) => {
   const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
   const first = await requestViewer(f, 'v:1'), second = await requestViewer(f, 'v:2');
-  assert.equal(f.session.approve('v:1'), true); await settle();
+  assert.equal(f.session.approve('v:1'), true); first.channel.receive('approval-ack'); await settle();
   assert.equal(first.transceivers.length, 1); assert.equal(first.transceivers[0].direction, 'sendonly');
   assert.equal(first.transceivers[0].sender.track, stream.video);
   assert.ok(first.channel.sent.some((message) => message.type === 'approved'));
@@ -81,6 +81,57 @@ test('denying a viewer sends no media and retains source preview', async (t) => 
   const peer = await requestViewer(f, 'v:1'); f.session.deny('v:1'); await settle();
   assert.equal(peer.transceivers.length, 0); assert.ok(peer.channel.sent.some((message) => message.type === 'denied'));
   assert.equal(stream.video.readyState, 'live'); assert.deepEqual(f.requests.at(-1), []);
+});
+
+test('video waits for the approval acknowledgement across transports', async (t) => {
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  const signals = [...f.sockets[0].sent];
+  assert.equal(f.session.approve('v:1'), true); await settle();
+  assert.ok(peer.channel.sent.some((message) => message.type === 'approved'));
+  assert.equal(peer.transceivers.length, 0);
+  assert.deepEqual(f.sockets[0].sent, signals);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+  assert.ok(f.sockets[0].sent.length > signals.length);
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 1);
+});
+
+test('a late approval acknowledgement cannot restart a stopped session', async (t) => {
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  f.session.stop(); const signals = [...f.sockets[0].sent];
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  assert.deepEqual(f.sockets[0].sent, signals);
+  assert.equal(stream.video.readyState, 'ended');
+});
+
+test('an unacknowledged approval times out without sending video', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); await settle();
+  t.mock.timers.tick(20000); await settle();
+  assert.equal(peer.closed, true);
+  assert.equal(f.session.active, null);
+  const signals = [...f.sockets[0].sent];
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.transceivers.length, 0);
+  assert.deepEqual(f.sockets[0].sent, signals);
+  assert.equal(stream.video.readyState, 'live');
+});
+
+test('an acknowledgement cannot substitute for source approval', async (t) => {
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  peer.channel.receive('approval-ack'); await settle();
+  assert.equal(peer.closed, true);
+  assert.equal(peer.transceivers.length, 0);
+  assert.equal(stream.video.readyState, 'live');
 });
 test('Stop closes all source tracks and peers and ignores late signaling', async (t) => {
   const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
