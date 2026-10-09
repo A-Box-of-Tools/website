@@ -345,5 +345,5 @@ features = [
 ]
 
 [picker]
-title = "Arraste um arquivo aqui"
+title = "Solte um ou mais arquivos aqui"
 hint = "ou clique para escolher &mdash; qualquer arquivo, qualquer tamanho, nada é enviado"

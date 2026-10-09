@@ -11,7 +11,7 @@
     und antwortet in einem Satz statt in einer Farbe.
   -->
   <section class="card">
-    <h2><span class="step">1</span> Datei auswählen</h2>
+    <h2><span class="step">1</span> Eine oder mehrere Dateien auswählen</h2>
 
     <!--
       Ein echtes <label> öffnet den Dateidialog von sich aus. Ein .click() auf ein
@@ -23,6 +23,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">Wählen Sie mehrere Dateien, um eine Prüfsummenliste zu prüfen. Jede Datei wird stückweise gelesen, eine nach der anderen. Eine neue Auswahl ersetzt diese Auswahl.</p>
+    <div id="batch" hidden>
+      <h3>Dateien dieser Auswahl</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>Fertige Prüfsummen speichern</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -79,7 +86,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      Angehalten. Für diese Datei wurde nichts berechnet.
+      Weitere Prüfsummen fehlen noch. Erneutes Starten liest nur fehlende Prüfsummen; fertige Ergebnisse bleiben erhalten.
       <button type="button" id="restart" class="ghost">Neu starten</button>
     </p>
 
@@ -190,6 +197,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">Der vorherige Lesevorgang des Browsers muss noch enden. Stoppen bricht diesen wartenden Auftrag ab.</span>
+    <span data-phrase="progress.file">Datei {n} von {count}: {name}</span>
+    <span data-phrase="batch.pending">Prüfsummen ausstehend</span>
+    <span data-phrase="batch.reading">Wird gelesen</span>
+    <span data-phrase="batch.ready">Prüfsummen fertig</span>
+    <span data-phrase="batch.match">Stimmt überein</span>
+    <span data-phrase="batch.renamed">Stimmt unter anderem Namen überein</span>
+    <span data-phrase="batch.mismatch">Weicht ab</span>
+    <span data-phrase="batch.waiting">Algorithmus ausstehend</span>
+    <span data-phrase="batch.unlisted">Dateiname fehlt in der Liste</span>
+    <span data-phrase="batch.unreadable">Nicht lesbar</span>
+    <span data-phrase="batch.stopped">Gestoppt</span>
+    <span data-phrase="batch.choose">Algorithmus auswählen</span>
+    <span data-phrase="batch.inspect">Prüfen</span>
+    <span data-phrase="batch.inspect-name">Datei {n} prüfen: {name}</span>
+    <span data-phrase="batch.summary">{matched} von {count} Dateien stimmen mit mindestens einer erwarteten Prüfsumme überein. Prüfen Sie jede Datei für die einzelnen Algorithmen.</span>
+    <span data-phrase="batch.selected">Die gewählten Prüfsummen sind für {done} von {count} Dateien fertig.</span>
+
     <span data-phrase="read.failed">{name} konnte nicht vollständig gelesen werden: {reason}. Meist wurde die Datei während des Lesens auf dem Datenträger verändert. Es wird kein Teilergebnis angezeigt, denn die Prüfsumme einer halben Datei ist falsch und nicht etwa eine teilweise Prüfsumme.</span>
     <span data-phrase="read.unreadable">die Datei konnte nicht gelesen werden</span>
     <span data-phrase="read.short">die Datei endete vor der angegebenen Größe</span>

@@ -10,7 +10,7 @@
     com uma frase em vez de com uma cor.
   -->
   <section class="card">
-    <h2><span class="step">1</span> Escolha um arquivo</h2>
+    <h2><span class="step">1</span> Escolha um ou mais arquivos</h2>
 
     <!--
       Um <label> de verdade abre o seletor de arquivos sozinho. O Safari e algumas
@@ -21,6 +21,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">Selecione vários arquivos para conferir uma lista de somas. Cada arquivo é lido em partes, um por vez. Uma nova seleção substitui esta seleção.</p>
+    <div id="batch" hidden>
+      <h3>Arquivos desta seleção</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>Salvar somas concluídas</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -77,7 +84,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      Parado. Nada foi calculado para este arquivo.
+      Ainda faltam somas. Reiniciar lê apenas as que faltam; os resultados concluídos são mantidos.
       <button type="button" id="restart" class="ghost">Começar de novo</button>
     </p>
 
@@ -188,6 +195,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">Aguardando o fim da leitura anterior do navegador. Parar cancela esta solicitação na fila.</span>
+    <span data-phrase="progress.file">Arquivo {n} de {count}: {name}</span>
+    <span data-phrase="batch.pending">Somas pendentes</span>
+    <span data-phrase="batch.reading">Lendo</span>
+    <span data-phrase="batch.ready">Somas prontas</span>
+    <span data-phrase="batch.match">Corresponde</span>
+    <span data-phrase="batch.renamed">Corresponde com outro nome</span>
+    <span data-phrase="batch.mismatch">Difere</span>
+    <span data-phrase="batch.waiting">Algoritmo pendente</span>
+    <span data-phrase="batch.unlisted">Nome ausente da lista</span>
+    <span data-phrase="batch.unreadable">Não foi possível ler</span>
+    <span data-phrase="batch.stopped">Parado</span>
+    <span data-phrase="batch.choose">Escolha um algoritmo</span>
+    <span data-phrase="batch.inspect">Examinar</span>
+    <span data-phrase="batch.inspect-name">Examinar arquivo {n}: {name}</span>
+    <span data-phrase="batch.summary">{matched} de {count} arquivos correspondem a pelo menos uma soma esperada. Examine cada arquivo para ver seus algoritmos.</span>
+    <span data-phrase="batch.selected">{done} de {count} arquivos têm as somas selecionadas prontas.</span>
+
     <span data-phrase="read.failed">Não foi possível ler {name} até o fim: {reason}. Isso costuma acontecer quando o arquivo muda no disco durante a leitura. Nenhum resultado parcial é mostrado, porque ler apenas metade de um arquivo produz uma soma de verificação incorreta, não uma soma parcial.</span>
     <span data-phrase="read.unreadable">não foi possível ler o arquivo</span>
     <span data-phrase="read.short">o arquivo terminou antes do tamanho informado</span>

@@ -360,5 +360,5 @@ features = [
 ]
 
 [picker]
-title = "Datei hierher ziehen"
+title = "Eine oder mehrere Dateien hier ablegen"
 hint = "oder klicken und auswählen &mdash; jede Datei, jede Größe, nichts wird hochgeladen"

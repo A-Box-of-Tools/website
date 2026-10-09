@@ -420,8 +420,8 @@ features = [
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
 accept = "*/*"
-multiple = false
-title = "Drop a file here"
+multiple = true
+title = "Drop one or more files here"
 hint = "or click to browse &mdash; any file, any size, nothing is uploaded"
 # A two-megapixel photograph, so the reading is a real read rather
 # than an instant one, which is the part of this tool worth watching.

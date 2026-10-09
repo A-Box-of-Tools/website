@@ -10,7 +10,7 @@
     published in, and it answers in a sentence rather than in a colour.
   -->
   <section class="card">
-    <h2><span class="step">1</span> Choose a file</h2>
+    <h2><span class="step">1</span> Choose one or more files</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -21,6 +21,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">Select several files to check a manifest. Each file is read in pieces, one at a time. Choosing again replaces this selection.</p>
+    <div id="batch" hidden>
+      <h3>Files in this selection</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>Save completed checksums</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -78,7 +85,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      Stopped. Nothing was worked out for this file.
+      More checksums are still needed. Start again reads only missing checksums; completed results stay here.
       <button type="button" id="restart" class="ghost">Start again</button>
     </p>
 
@@ -188,6 +195,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">Waiting for the previous browser read to finish. Stop can cancel this queued request.</span>
+    <span data-phrase="progress.file">File {n} of {count}: {name}</span>
+    <span data-phrase="batch.pending">Waiting for checksums</span>
+    <span data-phrase="batch.reading">Reading</span>
+    <span data-phrase="batch.ready">Checksums ready</span>
+    <span data-phrase="batch.match">Matches</span>
+    <span data-phrase="batch.renamed">Matches under another name</span>
+    <span data-phrase="batch.mismatch">Differs</span>
+    <span data-phrase="batch.waiting">Waiting for an algorithm</span>
+    <span data-phrase="batch.unlisted">Filename absent from manifest</span>
+    <span data-phrase="batch.unreadable">Unreadable</span>
+    <span data-phrase="batch.stopped">Stopped</span>
+    <span data-phrase="batch.choose">Select an algorithm</span>
+    <span data-phrase="batch.inspect">Inspect</span>
+    <span data-phrase="batch.inspect-name">Inspect file {n}: {name}</span>
+    <span data-phrase="batch.summary">{matched} of {count} files match at least one expected checksum. Inspect each file for its algorithm results.</span>
+    <span data-phrase="batch.selected">{done} of {count} files have their selected checksums ready.</span>
+
     <span data-phrase="read.failed">{name} could not be read to the end: {reason}. A file that changed on disk while it was being read is the usual reason. Nothing partial is shown, because half a file has the wrong checksum rather than a partial one.</span>
     <span data-phrase="read.unreadable">the file could not be read</span>
     <span data-phrase="read.short">the file ended sooner than its size said</span>

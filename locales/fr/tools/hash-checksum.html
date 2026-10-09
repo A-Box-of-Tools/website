@@ -11,7 +11,7 @@
     phrase plutôt que par une couleur.
   -->
   <section class="card">
-    <h2><span class="step">1</span> Choisir un fichier</h2>
+    <h2><span class="step">1</span> Choisissez un ou plusieurs fichiers</h2>
 
     <!--
       Un vrai <label> ouvre le sélecteur de fichiers tout seul. Safari et certaines
@@ -23,6 +23,13 @@
     {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
+    <p class="card-lede">Sélectionnez plusieurs fichiers pour vérifier une liste de sommes. Chaque fichier est lu par morceaux, un à la fois. Une nouvelle sélection remplace celle-ci.</p>
+    <div id="batch" hidden>
+      <h3>Fichiers de cette sélection</h3>
+      <p id="batch-summary" role="status" aria-live="polite"></p>
+      <ul id="batch-list" class="batch-list"></ul>
+      <button type="button" id="save-batch" class="ghost" disabled>Enregistrer les sommes terminées</button>
+    </div>
   </section>
 
   <section class="card" id="run-card">
@@ -79,7 +86,7 @@
     </div>
 
     <p class="stopped" id="stopped" hidden>
-      Arrêté. Rien n'a été calculé pour ce fichier.
+      Il manque encore des sommes. Recommencer ne lit que les sommes manquantes ; les résultats terminés sont conservés.
       <button type="button" id="restart" class="ghost">Reprendre</button>
     </p>
 
@@ -190,6 +197,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.waiting">En attente de la fin de la lecture précédente du navigateur. Arrêter annule cette demande en attente.</span>
+    <span data-phrase="progress.file">Fichier {n} sur {count} : {name}</span>
+    <span data-phrase="batch.pending">Sommes en attente</span>
+    <span data-phrase="batch.reading">Lecture en cours</span>
+    <span data-phrase="batch.ready">Sommes prêtes</span>
+    <span data-phrase="batch.match">Correspond</span>
+    <span data-phrase="batch.renamed">Correspond sous un autre nom</span>
+    <span data-phrase="batch.mismatch">Diffère</span>
+    <span data-phrase="batch.waiting">Algorithme en attente</span>
+    <span data-phrase="batch.unlisted">Nom absent de la liste</span>
+    <span data-phrase="batch.unreadable">Illisible</span>
+    <span data-phrase="batch.stopped">Arrêté</span>
+    <span data-phrase="batch.choose">Choisissez un algorithme</span>
+    <span data-phrase="batch.inspect">Examiner</span>
+    <span data-phrase="batch.inspect-name">Examiner le fichier {n} : {name}</span>
+    <span data-phrase="batch.summary">{matched} fichiers sur {count} correspondent à au moins une somme attendue. Examinez chacun pour voir ses algorithmes.</span>
+    <span data-phrase="batch.selected">Les sommes sélectionnées sont prêtes pour {done} fichiers sur {count}.</span>
+
     <span data-phrase="net.clean">votre fichier n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

@@ -207,5 +207,20 @@ export function rowVerdicts(expected, digests, fileName) {
 
 /** The last path segment, so a Windows path and a URL both come down to a name. */
 function basename(name) {
-  return name.split(/[\/]/).pop().trim();
+  return name.split(/[\\/]/).pop().trim();
+}
+
+/** A missing filename is distinguishable from a checksum for a different file. */
+export function manifestVerdict(expected, digests, fileName) {
+  const entries = expected.wrapped ? expected.entries.slice(0, 1) : expected.entries;
+  const answer = verdict(entries, digests, fileName);
+  if (answer.state === 'match') {
+    return { ...answer, renamed: !!answer.entry.name
+      && basename(answer.entry.name) !== basename(fileName) };
+  }
+  if (answer.state === 'mismatch' && entries.every(entry => entry.name)
+    && !entries.some(entry => basename(entry.name) === basename(fileName))) {
+    return { state: 'unlisted' };
+  }
+  return answer;
 }
