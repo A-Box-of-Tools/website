@@ -210,6 +210,15 @@ test('YAML: a document laid out again is the same document', () => {
   assert.equal(printYaml(parseYaml(source)), source);
 });
 
+test('YAML: formatting keeps normalised numeric values exact and is idempotent', () => {
+  const source = 'plus: +9007199254740993\nzeros: 0009007199254740993\nhex: 0x20000000000001\noctal: -0o400000000000000001\nlarge: .5e999\nsmall: +.5e-999\n';
+  const expected = 'plus: 9007199254740993\nzeros: 9007199254740993\nhex: 9007199254740993\noctal: -9007199254740993\nlarge: 0.5e999\nsmall: 0.5e-999\n';
+  const formatted = formatText(source, { language: 'yaml' });
+  assert.equal(formatted, expected);
+  assert.equal(formatText(formatted, { language: 'yaml' }), formatted);
+  assert.deepEqual(parseYaml(formatted), parseYaml(source));
+});
+
 test('YAML: strings are quoted exactly when leaving them bare would lie', () => {
   const data = parseYaml('a: yes\nb: "1.0"\nc: plain text\nd: "true"\ne: ""\n');
   const out = printYaml(data);

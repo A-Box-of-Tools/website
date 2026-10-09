@@ -50,7 +50,11 @@ never mentions XML.
   reader.
 - **Key order and digits survive.** `src/shared/parse-json.js` is a hand-written parser
   rather than a call to `JSON.parse`, which reorders integer-like keys and
-  rounds a twenty-digit id to the nearest double.
+  rounds a twenty-digit id to the nearest double. YAML numbers use the same
+  text-based tree: a leading plus or leading zeros are normalised without
+  calculating a floating-point value, and hexadecimal/octal integers become
+  exact decimal text through `BigInt`. `.5e999` becomes `0.5e999`, not zero;
+  an extreme exponent is retained just as it is by the JSON parser.
 
 ## The direction follows the file
 

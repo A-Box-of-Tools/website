@@ -487,17 +487,16 @@ export function resolvePlain(text) {
   if (/^(true|True|TRUE)$/.test(text)) return { t: 'bool', value: true };
   if (/^(false|False|FALSE)$/.test(text)) return { t: 'bool', value: false };
 
-  if (/^[-+]?[0-9]+$/.test(text) || /^[-+]?[0-9]*\.[0-9]*(?:[eE][-+]?[0-9]+)?$/.test(text)
-      || /^[-+]?[0-9]+[eE][-+]?[0-9]+$/.test(text)) {
-    if (text === '.' || text === '-.' || text === '+.') return { t: 'str', value: text };
+  if (/^[-+]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][-+]?[0-9]+)?$/.test(text)) {
     return { t: 'num', raw: jsonNumber(text) };
   }
   if (/^[-+]?0x[0-9a-fA-F]+$/.test(text) || /^[-+]?0o[0-7]+$/.test(text)) {
     const negative = text.startsWith('-');
     const digits = text.replace(/^[-+]/, '');
-    const value = digits.startsWith('0x')
-      ? parseInt(digits.slice(2), 16) : parseInt(digits.slice(2), 8);
-    return { t: 'num', raw: String(negative ? -value : value) };
+    // The destination is decimal text, not a double: a long hexadecimal id
+    // must not lose its low bits just because JSON uses a different spelling.
+    const raw = BigInt(digits).toString();
+    return { t: 'num', raw: negative ? `-${raw}` : raw };
   }
   return { t: 'str', value: text };
 }
@@ -509,8 +508,13 @@ export function resolvePlain(text) {
  */
 function jsonNumber(text) {
   if (/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?$/.test(text)) return text;
-  const value = Number(text);
-  return Number.isFinite(value) ? String(value) : '0';
+  // Only the spelling changes. Computing the value would round long ids,
+  // underflow small exponents and turn a value such as .5e999 into Infinity.
+  const [, sign, integer, fraction, exponent] =
+    /^([-+]?)([0-9]*)(?:\.([0-9]*))?([eE][-+]?[0-9]+)?$/.exec(text);
+  const whole = integer.replace(/^0+(?=[0-9])/, '') || '0';
+  const decimal = fraction === undefined ? '' : `.${fraction || '0'}`;
+  return `${sign === '-' ? '-' : ''}${whole}${decimal}${exponent || ''}`;
 }
 
 /* ------------------------------------------------------- quoted, and flow */
