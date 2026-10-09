@@ -83,9 +83,9 @@ BASELINE = {
     # filename template. The quad invariant now lives in the shared geometry
     # module alongside the detector, because the receipt tool uses it too.
     'document-scanner': 6,
-    # A clock format, and one invariant check in each of the two speed
-    # modules - main.js clamps the speed, so neither can be reached.
-    'edit-audio': 3,
+    # One invariant check remains in each speed module. Validated editor
+    # settings keep both from reaching a visitor; the clock now uses shared format.
+    'edit-audio': 2,
     'exif-editor': 20,
     'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
