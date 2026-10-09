@@ -97,6 +97,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
 | `shared/js/ordered-loads.js` | `js_parts = ["ordered-loads"]` | sequential batches for an append workflow; Reset retires pending reads and starts a fresh queue |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
+| `shared/js/image-batch.js` | `js_parts = ["image-batch", "image-convert"]` | sequential native image conversion with captured jobs, per-file failures and cooperative cancellation; imports `image-convert` |
 | `shared/js/image-list.js` | `js_parts = ["image-list"]` | a list of pictures to work through in order: decoded once for a thumbnail and their size, sorted, reordered, re-decoded one at a time |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
