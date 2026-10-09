@@ -31,11 +31,52 @@
       <!-- The picture is a canvas, not an <img>, because the redaction is
            painted into it rather than laid over it. The boxes above it are
            outlines and handles only; src/stage.js adds them. -->
-      <div class="stage-wrap">
+      <div class="preview-tools">
+        <label for="zoom">プレビューの拡大</label>
+        <select id="zoom" aria-controls="stage-viewport">
+          <option value="1">幅に合わせる</option>
+          <option value="2">幅に合わせた表示の2倍</option>
+          <option value="4">幅に合わせた表示の4倍</option>
+        </select>
+        <div class="preview-pan" role="group" aria-label="プレビューをスクロール">
+          <button type="button" id="pan-left" class="ghost" aria-controls="stage-viewport" aria-label="プレビューを左にスクロール" title="プレビューを左にスクロール">←</button>
+          <button type="button" id="pan-up" class="ghost" aria-controls="stage-viewport" aria-label="プレビューを上にスクロール" title="プレビューを上にスクロール">↑</button>
+          <button type="button" id="pan-down" class="ghost" aria-controls="stage-viewport" aria-label="プレビューを下にスクロール" title="プレビューを下にスクロール">↓</button>
+          <button type="button" id="pan-right" class="ghost" aria-controls="stage-viewport" aria-label="プレビューを右にスクロール" title="プレビューを右にスクロール">→</button>
+        </div>
+      </div>
+      <p class="note preview-note">拡大するのはプレビューだけです。座標と保存する画像は元の画素を使います。</p>
+      <div class="stage-wrap" id="stage-viewport" tabindex="0" role="region" aria-label="スクロールできる画像プレビュー">
         <div class="stage" id="stage">
           <canvas id="preview" role="img" aria-label="プレビュー"></canvas>
         </div>
       </div>
+
+      <fieldset id="coordinates" class="options coordinate-editor" disabled>
+        <legend>選択した枠の座標</legend>
+        <p id="coordinate-selection"></p>
+        <div class="coordinate-grid">
+          <div>
+            <label for="coordinate-x">左位置（px）</label>
+            <input id="coordinate-x" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-y">上位置（px）</label>
+            <input id="coordinate-y" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-width">幅（px）</label>
+            <input id="coordinate-width" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-height">高さ（px）</label>
+            <input id="coordinate-height" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+        </div>
+        <p id="coordinate-note" class="note">元の画像の左上を0, 0として、整数の画素数を入力します。適用すると枠は画像内に収まり、6画素未満の大きさは画像に収まる範囲で広がります。</p>
+        <button type="button" id="apply-coordinates" class="ghost">座標を適用</button>
+        <p id="coordinate-status" class="coordinate-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </fieldset>
 
       <fieldset class="options" id="style-group">
         <legend>新しい枠が何をするか</legend>
@@ -201,6 +242,10 @@
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
     <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+    <span data-phrase="coordinates.selection">枠{n}：元の画素</span>
+    <span data-phrase="coordinates.empty">枠を選ぶか中央に追加すると、座標を編集できます。</span>
+    <span data-phrase="coordinates.invalid">4つの座標に整数を入力し、幅と高さは正の数にしてください。</span>
+    <span data-phrase="coordinates.applied">元の画素で⁦{x}, {y}⁩の位置に⁦{width} x {height}⁩を適用しました。</span>
     <span data-phrase="region.remove">削除</span>
   </div>
 </main>

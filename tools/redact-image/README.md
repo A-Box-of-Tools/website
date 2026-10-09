@@ -97,6 +97,26 @@ old pixels under the new box count or a replacement picture's filename.
 Clearing or replacing a picture also retires an outstanding load, so an older
 decode cannot put back an image the visitor has just removed.
 
+## Precise positioning
+
+The selected box has stable Left, Top, Width and Height fields in original
+pixels. The top left is 0, 0. Apply accepts whole numbers, keeps the rectangle
+inside the source and uses the ordinary six-pixel gesture minimum, limited by
+a smaller picture's own dimensions. Its displayed applied values are the box
+that will be saved. One Apply makes one Undo step; an unchanged or rejected
+edit makes none. Drafts survive preview or style redraws, while selecting a
+box, moving it, undoing, removing it or replacing the source synchronizes the
+fields with their current owner.
+
+Fit width, 2× and 4× enlarge the display inside a named scrollable viewport.
+This magnifies the existing preview, whose longest side stays capped at 1,800
+pixels; it does not decode extra detail. Source coordinates and the full-size
+export do not change with zoom. The viewport supports native keyboard scrolling
+and labelled scroll buttons for touch screens, where a swipe is deliberately a
+drawing gesture. The existing box arrow keys still move one original pixel at
+every zoom. A zoom change, scroll-button press or source replacement retires the
+pointer gesture before its mapping can change. Clear and a new picture start at Fit width again.
+
 ## The modules
 
 | File | What is in it |

@@ -39,11 +39,52 @@
       <!-- The picture is a canvas, not an <img>, because the redaction is
            painted into it rather than laid over it. The boxes above it are
            outlines and handles only; src/stage.js adds them. -->
-      <div class="stage-wrap">
+      <div class="preview-tools">
+        <label for="zoom">Ampliação da pré-visualização</label>
+        <select id="zoom" aria-controls="stage-viewport">
+          <option value="1">Ajustar à largura</option>
+          <option value="2">2× a largura ajustada</option>
+          <option value="4">4× a largura ajustada</option>
+        </select>
+        <div class="preview-pan" role="group" aria-label="Deslocar a pré-visualização">
+          <button type="button" id="pan-left" class="ghost" aria-controls="stage-viewport" aria-label="Deslocar a pré-visualização para a esquerda" title="Deslocar a pré-visualização para a esquerda">←</button>
+          <button type="button" id="pan-up" class="ghost" aria-controls="stage-viewport" aria-label="Deslocar a pré-visualização para cima" title="Deslocar a pré-visualização para cima">↑</button>
+          <button type="button" id="pan-down" class="ghost" aria-controls="stage-viewport" aria-label="Deslocar a pré-visualização para baixo" title="Deslocar a pré-visualização para baixo">↓</button>
+          <button type="button" id="pan-right" class="ghost" aria-controls="stage-viewport" aria-label="Deslocar a pré-visualização para a direita" title="Deslocar a pré-visualização para a direita">→</button>
+        </div>
+      </div>
+      <p class="note preview-note">A ampliação afeta apenas a pré-visualização. As coordenadas e a imagem guardada mantêm os píxeis originais.</p>
+      <div class="stage-wrap" id="stage-viewport" tabindex="0" role="region" aria-label="Pré-visualização da imagem com deslocamento">
         <div class="stage" id="stage">
           <canvas id="preview" role="img" aria-label="Pré-visualização"></canvas>
         </div>
       </div>
+
+      <fieldset id="coordinates" class="options coordinate-editor" disabled>
+        <legend>Coordenadas da área selecionada</legend>
+        <p id="coordinate-selection"></p>
+        <div class="coordinate-grid">
+          <div>
+            <label for="coordinate-x">Esquerda (px)</label>
+            <input id="coordinate-x" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-y">Topo (px)</label>
+            <input id="coordinate-y" type="number" min="0" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-width">Largura (px)</label>
+            <input id="coordinate-width" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+          <div>
+            <label for="coordinate-height">Altura (px)</label>
+            <input id="coordinate-height" type="number" min="1" step="1" aria-describedby="coordinate-note coordinate-status">
+          </div>
+        </div>
+        <p id="coordinate-note" class="note">Introduza píxeis inteiros da imagem original, medidos a partir do canto superior esquerdo em 0, 0. Aplicar mantém a área dentro da imagem; tamanhos inferiores a 6 píxeis são ampliados se a imagem o permitir.</p>
+        <button type="button" id="apply-coordinates" class="ghost">Aplicar coordenadas</button>
+        <p id="coordinate-status" class="coordinate-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </fieldset>
 
       <fieldset class="options" id="style-group">
         <legend>O que uma caixa nova faz</legend>
@@ -183,6 +224,10 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="coordinates.selection">Área {n} — píxeis originais</span>
+    <span data-phrase="coordinates.empty">Selecione uma área ou adicione uma no centro para editar as coordenadas.</span>
+    <span data-phrase="coordinates.invalid">Introduza números inteiros nas quatro coordenadas, com largura e altura positivas.</span>
+    <span data-phrase="coordinates.applied">Aplicado: ⁦{width} x {height}⁩ em ⁦{x}, {y}⁩ nos píxeis originais.</span>
     <span data-phrase="region.remove">Remover</span>
     <span data-phrase="read.nodecode">este navegador não conseguiu decodificar a imagem.</span>
     <span data-phrase="read.failed">Este arquivo não pôde ser aberto: {why}</span>
