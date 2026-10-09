@@ -154,7 +154,7 @@
       PDFはここ、このページのメモリの中で1ページずつ作られます。この道具の向こう側には給与明細やパスポートや契約書を送る先のサーバーがなく、コードにもそうするものはありません。
     </p>
 
-    <div class="settings">
+    <div class="settings" id="save-settings">
       <div class="field">
         <label for="page-size">ページの大きさ</label>
         <select id="page-size">
@@ -216,16 +216,17 @@
       <div class="field">
         <label for="title">書類の題名<span class="optional">（任意）</span></label>
         <input type="text" id="title" maxlength="120" placeholder="空のままならPDFに題名は入りません">
-        <p class="field-note">
-          ページ以外で書類に書かれる唯一のものです。日付も作成者も、この端末についての情報もありません。<code>src/document.js</code>を見てください。
-        </p>
+        <p class="field-note">PDFにはこの道具の名前と入力した題名が記録されます。日付、作成者、端末の情報は入りません。</p>
       </div>
     </div>
 
     <div class="run-row">
       <button type="button" id="save-pdf" class="primary big" disabled>PDFで保存</button>
       <button type="button" id="save-images" class="ghost big" disabled>ページを画像で保存</button>
+      <button type="button" id="cancel" class="ghost big" hidden>キャンセル</button>
     </div>
+
+    <p id="cancel-note" class="field-summary" hidden>キャンセルはページ処理の区切りで確認されます。すでに始まった画像のデコードやエンコードはバックグラウンドで完了する場合がありますが、その結果は破棄されます。</p>
 
     <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
 
@@ -284,12 +285,17 @@
 
     <span data-phrase="result.pdf">{name}｜{size}、{pages}。</span>
     <span data-phrase="result.images">{name}｜{size}、{pages}。</span>
-    <span data-phrase="result.mono">1画素1ビットで保存し、正確に圧縮しました。それがこれほど小さい理由です。</span><span data-phrase="result.jpeg">ページは選んだ画質のJPEGで保存しました。</span><span data-phrase="result.png">ページはPNGで保存しました。可逆で、色が2つの画像が求めるのがこれです。JPEGなら大きくなるうえ、文字の周りがにじみます。</span><span data-phrase="result.clean">日付も作成者も端末名もありません。ページ以外で書類に入っているのは、この道具の名前だけです。</span>
+    <span data-phrase="result.mono">1画素1ビットで保存し、正確に圧縮しました。それがこれほど小さい理由です。</span><span data-phrase="result.jpeg">ページは選んだ画質のJPEGで保存しました。</span><span data-phrase="result.png">ページはPNGで保存しました。可逆で、色が2つの画像が求めるのがこれです。JPEGなら大きくなるうえ、文字の周りがにじみます。</span><span data-phrase="result.clean">日付も作成者も端末名もありません。PDFにはページのほか、この道具の名前と入力した題名だけが入ります。</span>
 
     <span data-phrase="size.fit">各用紙は、そのページが実際に持つ寸法を、上で選んだ解像度で受け取ります。帯で埋めることはしません。</span><span data-phrase="size.named">各ページは、どんな形になっていても、余白の内側で
       {name}の用紙に置かれます。</span>
 
-    <span data-phrase="error.decode">このブラウザは{name}を開けませんでした。iPhoneのHEIC写真なら、先に変換してください。</span><span data-phrase="error.none">まず写真を少なくとも1枚選んでください。</span><span data-phrase="error.failed">ファイルを作る途中で問題が起きました。{detail}</span>
+    <span data-phrase="busy.cancelled">キャンセルしました。設定を変えるか、もう一度保存して再試行できます。</span>
+    <span data-phrase="error.skipped.one">写真として認識できないファイルを1件スキップしました：{names}。</span>
+    <span data-phrase="error.skipped.many">写真として認識できないファイルを{count}件スキップしました：{names}。</span>
+    <span data-phrase="error.more">{names}、ほか{count}件</span>
+    <span data-phrase="error.decode.one">このブラウザは{names}を開けませんでした。iPhoneのHEIC写真なら、先に変換してください。</span>
+    <span data-phrase="error.decode.many">このブラウザは写真を{count}枚開けませんでした：{names}。HEIC写真は追加する前に変換してください。</span><span data-phrase="error.none">まず写真を少なくとも1枚選んでください。</span><span data-phrase="error.failed">ファイルを作る途中で問題が起きました。{detail}</span>
 
     <span data-phrase="net.clean">書類はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>

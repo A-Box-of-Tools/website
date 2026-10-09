@@ -38,3 +38,59 @@ test('a picker list is captured before it can be cleared or changed', async () =
   const done = queue.add(values); values[0] = 'changed'; values.push('new'); await done;
   assert.deepEqual(batches[0].items, ['selected']);
 });
+
+
+test('reset discards a late resource and the resources accumulated before it exactly once', async () => {
+  const entered = deferred(), held = deferred();
+  const first = { id: 'prepared' }, late = { id: 'late' }, fresh = { id: 'fresh' };
+  const disposed = [], delivered = [], statuses = [];
+  const queue = orderedLoads({
+    read: async value => {
+      if (value === first) return first;
+      entered.resolve();
+      return value === late ? held.promise : value;
+    },
+    complete: ({ items }) => delivered.push(...items), status: n => statuses.push(n),
+    discard: resource => disposed.push(resource),
+  });
+  const old = queue.add([first, late]);
+  await entered.promise;
+  queue.reset();
+  await queue.add([fresh]);
+  const settledStatuses = statuses.slice();
+  held.resolve(late);
+  await old;
+  assert.deepEqual(disposed, [late, first]);
+  assert.deepEqual(delivered, [fresh]);
+  assert.deepEqual(statuses, settledStatuses);
+  assert.equal(queue.pending, 0);
+});
+
+test('reset disposes accumulated resources even when the final retired read refuses', async () => {
+  const entered = deferred(), held = deferred(), resource = { id: 'prepared' };
+  const disposed = [], errors = [];
+  const queue = orderedLoads({
+    read: async value => { if (value === resource) return resource; entered.resolve(); return held.promise; },
+    complete: batch => errors.push(...batch.errors), status() {}, discard: item => disposed.push(item),
+  });
+  const old = queue.add([resource, 'refused']);
+  await entered.promise;
+  queue.reset();
+  held.reject(new Error('retired refusal'));
+  await old;
+  assert.deepEqual(disposed, [resource]);
+  assert.deepEqual(errors, []);
+});
+
+test('current completion transfers resources even when its callback resets the queue', async () => {
+  const resource = { id: 'transferred' }, disposed = [], delivered = [];
+  const queue = orderedLoads({
+    read: async value => value,
+    complete: ({ items }) => { delivered.push(...items); queue.reset(); },
+    status() {}, discard: item => disposed.push(item),
+  });
+  await queue.add([resource]);
+  assert.deepEqual(delivered, [resource]);
+  assert.deepEqual(disposed, []);
+  assert.equal(queue.pending, 0);
+});

@@ -45,8 +45,9 @@ numbers, which is why most of this tool is tested without a browser:
 [`document-scanner-detect.test.js`](../../tests/js/document-scanner-detect.test.js)
 and [`document-scanner-scan.test.js`](../../tests/js/document-scanner-scan.test.js).
 
-`main.js` holds the state, the DOM and the two sizes everything is done at; it
-is wiring, and it is the only file here that knows a browser exists.
+`main.js` holds the state, the DOM and the two sizes everything is done at.
+`write-scan.js` sequences page rendering and writing, with the same encoders
+and PDF/ZIP writers, so cancellation can be checked at their await boundaries.
 
 ## The four decisions worth arguing about
 
@@ -169,6 +170,39 @@ made smaller than it appears in the photo — and that shrink is `drawImage` on 
 canvas, which is the browser's own filtered downscale. It is better than
 anything worth writing here, and it means the resample itself never has to read
 more than one sample per output pixel.
+
+## Results belong to the current document
+
+A page, corner or output-setting change revokes the finished download. Selecting
+another page to inspect its corners does not change the document. Starting a new
+import or export also clears the old result, so a visible file describes the
+pages and settings that made it. The PDF records the tool's producer name and an
+optional entered title, without a date, author or machine information.
+
+Imports use the shared ordered-loads queue, so overlapping selections append
+in the order they were chosen. Remove all retires both an active read and any
+queued batches, and a later import can start immediately. Retired reads cannot
+append pages, show errors or reset a new import's progress. Their decoded bitmaps
+and prepared preview canvases are released rather than kept by an abandoned
+batch.
+
+Exports are unavailable while photographs are loading. Skipped non-photo files
+and decoder refusals remain visible, with bounded filename examples; valid
+photographs in the same batch are still added. Admission by image MIME type or
+extension is only permission to try the browser's decoder, never proof of
+picture bytes.
+
+An export captures the list order, corners and settings before it starts.
+Editing and new imports are locked for that run, while Cancel stays reachable.
+Cancel retires the run immediately and enables retry. An older completion may
+neither publish a file nor change the new run's progress or controls.
+
+Cancellation is cooperative, between page operations and before final
+publication. A synchronous warp or cleanup pass cannot be interrupted, and an
+already started native image decode, canvas encoding or compression operation
+may finish in the background. Its resources are released when it returns and
+its bytes are discarded. This does not reduce the memory needed to render one
+full page or change its cleanup, encoding, PDF layout or image format.
 
 ## Why 1 bit per pixel matters
 

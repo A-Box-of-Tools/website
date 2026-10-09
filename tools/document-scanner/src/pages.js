@@ -17,6 +17,8 @@
  * same entry here and why a scan cannot be told apart from any other member of
  * the family by its shape alone.
  */
+import { acceptsImageFile } from './shared/image-input.js';
+
 const PAPER = [
   { key: 'paper.a', aspect: 1 / Math.SQRT2 },
   { key: 'paper.letter', aspect: 215.9 / 279.4 },
@@ -168,4 +170,34 @@ export function snapshotPages(pages) {
   return pages.map(({ file, name, width, height, quad }) => ({
     file, name, width, height, quad: quad.map(({ x, y }) => ({ x, y })),
   }));
+}
+
+/** Admission is deliberately separate from the browser's later decoding. */
+export function photoBatch(files) {
+  const accepted = [];
+  const refused = [];
+  for (const file of files) {
+    (acceptsImageFile(file, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif'])
+      ? accepted : refused).push(file);
+  }
+  return { accepted, refused };
+}
+
+/** A folder's refusal remains readable even when its filenames are enormous. */
+export function fileSummary(files) {
+  const names = files.slice(0, 3).map(({ name }) => {
+    const letters = Array.from(String(name ?? ''));
+    return letters.length > 80 ? `${letters.slice(0, 80).join('')}…` : letters.join('');
+  }).join(', ');
+  return { count: files.length, names, more: Math.max(0, files.length - 3) };
+}
+
+const SCAN_ERRORS = new Set([
+  'build.nopages', 'encode.nodeflate', 'encode.nojpeg', 'encode.nopage', 'warp.degenerate',
+]);
+
+/** Native diagnostics are text, never keys to interpolate into a DOM selector. */
+export function errorDetail(error, phrase) {
+  const message = String(error?.message ?? error);
+  return SCAN_ERRORS.has(message) ? phrase(message, error?.values ?? {}) : message;
 }

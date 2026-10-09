@@ -22,6 +22,8 @@
  * work on bytes that are already in memory.
  */
 
+import { throwIfAborted } from './shared/errors.js';
+
 /**
  * Pack a black and white page eight pixels to the byte.
  *
@@ -95,13 +97,16 @@ export async function deflate(bytes) {
  * @returns {Promise<{kind: 'flate1'|'dct', data: Uint8Array, width: number,
  *   height: number, gray: boolean}>}
  */
-export async function encodePage(page, settings) {
+export async function encodePage(page, settings, signal) {
+  throwIfAborted(signal);
   const { width, height } = page;
 
   if (page.mono) {
+    const data = await deflate(packMono(page));
+    throwIfAborted(signal);
     return {
       kind: 'flate1',
-      data: await deflate(packMono(page)),
+      data,
       width,
       height,
       gray: true,
@@ -109,24 +114,22 @@ export async function encodePage(page, settings) {
   }
 
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const context = canvas.getContext('2d');
-  context.putImageData(new ImageData(page.data, width, height), 0, 0);
-
-  const quality = Math.min(1, Math.max(0.3, Number(settings?.quality) || 0.82));
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
-  canvas.width = 0;
-  canvas.height = 0;
-  if (!blob) throw new Error('encode.nojpeg');
-
-  return {
-    kind: 'dct',
-    data: new Uint8Array(await blob.arrayBuffer()),
-    width,
-    height,
-    gray: false,
-  };
+  try {
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context.putImageData(new ImageData(page.data, width, height), 0, 0);
+    const quality = Math.min(1, Math.max(0.3, Number(settings?.quality) || 0.82));
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+    throwIfAborted(signal);
+    if (!blob) throw new Error('encode.nojpeg');
+    const data = new Uint8Array(await blob.arrayBuffer());
+    throwIfAborted(signal);
+    return { kind: 'dct', data, width, height, gray: false };
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
 
 /**
@@ -138,22 +141,24 @@ export async function encodePage(page, settings) {
  * with hard edges everywhere it produces both a larger file and a visible halo
  * around every letter.
  */
-export async function encodeImage(page, settings) {
+export async function encodeImage(page, settings, signal) {
+  throwIfAborted(signal);
   const canvas = document.createElement('canvas');
-  canvas.width = page.width;
-  canvas.height = page.height;
-  const context = canvas.getContext('2d');
-  context.putImageData(new ImageData(page.data, page.width, page.height), 0, 0);
-
-  const type = page.mono ? 'image/png' : 'image/jpeg';
-  const quality = page.mono
-    ? undefined
-    : Math.min(1, Math.max(0.3, Number(settings?.quality) || 0.82));
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, type, quality));
-  canvas.width = 0;
-  canvas.height = 0;
-  if (!blob) throw new Error('encode.nopage');
-
-  return { blob, extension: page.mono ? 'png' : 'jpg' };
+  try {
+    canvas.width = page.width;
+    canvas.height = page.height;
+    const context = canvas.getContext('2d');
+    context.putImageData(new ImageData(page.data, page.width, page.height), 0, 0);
+    const type = page.mono ? 'image/png' : 'image/jpeg';
+    const quality = page.mono
+      ? undefined
+      : Math.min(1, Math.max(0.3, Number(settings?.quality) || 0.82));
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+    throwIfAborted(signal);
+    if (!blob) throw new Error('encode.nopage');
+    return { blob, extension: page.mono ? 'png' : 'jpg' };
+  } finally {
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
