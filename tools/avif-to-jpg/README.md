@@ -43,7 +43,7 @@ AVIF, and it is worth telling them that rather than letting them conclude their
 picture is broken. Two things catch it:
 
 - `checkSupport()` decodes a known-good, 493-byte AVIF through the same path
-  as the visitor's file. `src/support.js` holds the project's own generated
+  as the visitor's file. `src/avif-support.js` holds the project's own generated
   four-quadrant QA fixture, so this check needs neither a network request nor
   the much larger example photographs.
 - A file whose brand says AVIF but whose pixels cannot be decoded receives a
@@ -53,12 +53,12 @@ picture is broken. Two things catch it:
 
 ## The example is committed bytes, and has to be
 
-`src/example-data.js` holds two real AVIFs as base64. This is the only example
+`src/example-data.js` holds three real AVIFs as base64. This is the only example
 on the site besides the HEIC one that is not drawn in the page at the moment it
 is pressed, and the reason is the tool's own premise: nothing in a browser will
 encode an AVIF, so there is no way to draw one.
 
-They are the same landscape `shared/js/example-photo.js` draws for two dozen
+The two photographs are the same landscape `shared/js/example-photo.js` draws for two dozen
 other tools — flattened onto white, since a real photograph has no alpha
 channel — encoded with `libaom` at crf 32 in 4:2:0, which is what a website
 serves. 32 KB and 28 KB. So the example looks like the rest of the site's
@@ -76,10 +76,26 @@ over CDP, save them as PNGs, and
 ffmpeg -i photo.png -c:v libaom-av1 -crf 32 -cpu-used 3 -pix_fmt yuv420p -frames:v 1 out.avif
 ```
 
-Note that ffmpeg's AVIF muxer **drops the alpha plane** — `-pix_fmt yuva420p`
-is accepted and silently writes `yuv420p` — so it cannot produce a transparent
-AVIF to demonstrate the background-colour field with. That is why both examples
-are opaque photographs, which is the representative case anyway.
+The third example is the project's own `shared/js/example-mark.js` artwork at
+256 x 256, with transparent corners and partly transparent antialiased edges.
+It makes the background control visible, so a visitor can see which colour
+will replace transparency in the JPEG. Its 6.8 KB of AVIF bytes preserve the
+PNG source's alpha plane; no browser encoder or dependency is added.
+
+ffmpeg's AVIF muxer drops the alpha plane even when given `-pix_fmt yuva420p`,
+so the mark uses an alpha-capable libavif encoder instead. Draw `markCanvas(256)`
+in a built page, save its PNG, then encode offline with Pillow/libavif:
+
+```python
+from PIL import Image
+
+Image.open('mark.png').save('mark.avif', format='AVIF', quality=100, speed=6,
+                            subsampling='4:4:4', max_threads=2)
+```
+
+Check the decoded alpha before replacing its base64 block. The two opaque
+photographs remain the representative website case; the mark demonstrates
+the decision a photograph cannot.
 
 ## What a JPEG cannot carry over
 
@@ -92,10 +108,39 @@ background first for any format whose `FORMATS` entry says `alpha: false`, and
 the caller cannot turn it off, because the alternative is black where the
 transparency was.
 
+## Keeping completed conversions
+
+`shared/js/image-batch.js` captures the selected sources, allocated output names,
+quality and background before conversion begins. Each file has its own refusal,
+so an input that passed inspection but cannot be decoded or written on export
+does not remove completed files or prevent later files from being attempted.
+The page resolves the converter's own phrase keys, names the failed input, and
+keeps native error details as text. Only completed files enter the ZIP, using
+the names allocated for their original positions even when an input failed.
+
+Cancel is cooperative because native decoding and canvas encoding cannot be
+interrupted. A stop before decoding starts no work; a stop during decoding
+releases that bitmap without writing; a stop during encoding keeps that finished
+JPEG and starts no later input. The stopped count remains visible and the native
+limit is explained beside the controls. Settings remain locked for the run, and
+the result's flattening note describes its captured background. Decoded bitmaps
+and scratch canvases are released on success, refusal and stopping, including
+when alpha inspection itself fails.
+
 ## Testing
 
 `tests/js/image-convert.test.js` covers the pure half of the shared module,
-including AVIF brand sniffing against a real file's header bytes. The canvas
-half is checked in a browser: convert the example and confirm two JPEGs come
-back at the source dimensions, several times larger than the AVIFs they came
-from.
+including AVIF brand sniffing against a real file's header bytes. The shared
+`tests/js/image-batch.test.js` pins captured facts/settings, retained outputs,
+allocated names, deferred stopping and bitmap disposal.
+`tests/js/avif-example.test.js` checks the actual example Files and the mark's
+alpha auxiliary item relationship, so an opaque regeneration cannot silently
+remove the demonstration.
+
+The native half is checked in a built browser: convert all three examples and
+confirm JPEG types and original dimensions. Change the background on the mark
+and inspect its formerly transparent corner pixels. Hold native decode/encoding
+to check captured quality/background and cooperative Cancel, force a later
+refusal to retain earlier/later downloads and their ZIP names, and check that
+corrupt input does not disable support for good AVIFs. Exercise all translated
+390-pixel pages with long filenames and verify settled resources are released.

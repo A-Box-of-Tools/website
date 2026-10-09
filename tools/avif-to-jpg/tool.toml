@@ -49,7 +49,7 @@ css_parts = ["file-list", "progress", "results", "form", "notes"]
 # engine the three format converters share. There is no example-photo here:
 # this tool's example is real bytes in src/example-data.js, because nothing in
 # a browser can draw an AVIF.
-js_parts = ["file-picker", "image-convert", "zip", "crc32", "message-box", "download", "format"]
+js_parts = ["file-picker", "image-convert", "image-batch", "zip", "crc32", "message-box", "download", "format"]
 # The tool to offer next, on the carry-on row under the result.
 handoff = ["compress-image", "resize-image"]
 lastmod = "2026-09-17"
