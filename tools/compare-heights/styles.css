@@ -113,11 +113,12 @@ body.is-reordering { user-select: none; }
 }
 
 .row-reads.bad { color: var(--danger); }
+.row input[aria-invalid="true"] { border-color: var(--danger); }
 
-/* The width box belongs to the rectangle and to nothing else. It keeps its
-   grid cell when it is not wanted, so a row with an object in it does not
-   shunt every column along. */
-.row:not(.is-object) .row-width { visibility: hidden; }
+/* Rectangles and drawn object presets share the width box. It keeps its grid
+   cell when it is not wanted, so a row with an object in it does not shunt
+   every column along. */
+.row:not(.is-object) .row-width-cell { visibility: hidden; }
 
 .row-colour {
   width: 2.6rem;
@@ -159,8 +160,8 @@ body.is-reordering { user-select: none; }
   .row-colour { grid-column: 3; }
   .row-name { grid-column: 2 / -1; }
   .row-cell { grid-column: 2 / -1; }
-  .row-width { grid-column: 2 / -1; }
-  .row:not(.is-object) .row-width { display: none; }
+  .row-width-cell { grid-column: 2 / -1; }
+  .row:not(.is-object) .row-width-cell { display: none; }
   .row-tools { grid-column: 2 / -1; justify-content: flex-end; }
 }
 
@@ -168,12 +169,21 @@ body.is-reordering { user-select: none; }
 
 /* An uploaded shape has no width to type: its proportions are its own, and
    stretching somebody's drawing to a number would be the tool redrawing it. */
-.row.is-upload .row-width { visibility: hidden; }
+.row.is-upload .row-width-cell { visibility: hidden; }
 
 /* The unit sits above the table it changes rather than in a panel of its own:
    it decides what a number typed into any of those boxes means, so it is part
    of the typing rather than part of the picture. */
 .unit-row { margin-bottom: 1.1rem; }
+
+/* Width errors change which rows reach the chart, so this guidance stays
+   beside the table rather than inside the unit control's help. */
+.width-guidance {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0 0 0.8rem;
+}
 
 /* ------------------------------------------------------------- the options */
 

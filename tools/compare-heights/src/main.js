@@ -6,8 +6,9 @@ import { SHAPES, objectShape, shapeOf } from './figures.js';
 import { FONT, chartSvg, isDark } from './chart.js';
 import { format, formatBoth, parseHeight, toInput } from './units.js';
 import { svgBlob, svgToPng } from './save.js';
-import { LIMITS, importSvg } from './import-svg.js';
-import { IMAGE_LIMITS, fit, imageMarkup, nameFromFile } from './import-image.js';
+import { orderedLoads } from './shared/ordered-loads.js';
+import { chartMeasurements } from './chart-measurements.js';
+import { readChartPicture } from './chart-picture-read.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -22,6 +23,7 @@ const el = {
   clear: $('clear'),
   preset: $('preset'),
   inputError: $('input-error'),
+  importStatus: $('import-status'),
   unit: $('unit'),
   order: $('order'),
   showRuler: $('show-ruler'),
@@ -80,156 +82,6 @@ const gauge = document.createElement('canvas').getContext('2d');
 function measure(text, fontPx, weight = 400) {
   gauge.font = `${weight} ${fontPx}px ${FONT}`;
   return gauge.measureText(String(text)).width;
-}
-
-/* ----------------------------------------------------- a shape from a file */
-
-// One off-screen SVG, the same trick chart.js's `measure` uses for text: an
-// uploaded shape is drawn in whatever coordinates its author chose, and the
-// only way to know the box it occupies is to let the browser lay it out.
-const stage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-stage.setAttribute('aria-hidden', 'true');
-stage.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden';
-
-/**
- * The parsed document as plain objects, which is all import-svg.js will take.
- *
- * Deliberately lossy: it copies the tag and the attributes and nothing else -
- * no node references, no text, no namespaces. The sanitiser then builds a
- * third tree from a whitelist, so what reaches the page has been through two
- * translations that only carry geometry.
- */
-function plain(element, depth = 0) {
-  if (depth > 40) return null;
-  const attrs = {};
-  for (const attribute of element.attributes ?? []) {
-    attrs[attribute.name.toLowerCase()] = attribute.value;
-  }
-  return {
-    tag: element.tagName,
-    attrs,
-    children: [...element.children].map((child) => plain(child, depth + 1)).filter(Boolean),
-  };
-}
-
-/**
- * Read one file into a shape, or say why not.
- *
- * `DOMParser` on `image/svg+xml` builds an inert document: nothing in the file
- * runs, no `onload` fires, and no reference in it is resolved. That is the
- * only place the visitor's file is ever parsed, and nothing from it is
- * inserted anywhere - see import-svg.js for what is built instead.
- */
-async function shapeFromFile(file) {
-  if (file.size > LIMITS.bytes) return { error: 'svg.toobig' };
-
-  const text = await file.text();
-  const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
-  if (doc.querySelector('parsererror') || !doc.documentElement) {
-    return { error: 'svg.unreadable' };
-  }
-
-  const result = importSvg(plain(doc.documentElement));
-  if (result.error) return result;
-
-  if (!stage.isConnected) document.body.append(stage);
-  const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  group.innerHTML = result.markup;
-  stage.append(group);
-  const box = group.getBBox();
-  group.remove();
-
-  if (!(box.width > 0) || !(box.height > 0)) return { error: 'svg.noshapes' };
-
-  return {
-    shape: {
-      id: 'upload',
-      label: 'shape.upload',
-      width: box.width / box.height,
-      // The same mapping every drawn figure gets: the artwork's own box onto
-      // the unit box the chart places figures in. The uploaded coordinates are
-      // never rewritten, only wrapped.
-      inner: `scale(${1 / box.height}) translate(${-(box.x + box.width / 2)} ${-box.y})`,
-      paths: null,
-      markup: result.markup,
-      defaultCm: 0,
-    },
-    shapes: result.shapes,
-    name: file.name.replace(/\.svg$/i, '').slice(0, 40),
-  };
-}
-
-/**
- * Read one picture into a shape, or say why not.
- *
- * The browser's own decoder does the reading, in `createImageBitmap`, which
- * runs nothing and resolves nothing: a raster has no references in it to
- * follow. What comes back is redrawn onto a canvas at a bounded size and
- * encoded again, so what reaches the chart is a PNG this page wrote - see
- * import-image.js for why that matters more than the reading does.
- *
- * Anything the browser can decode is taken, not only PNG. Refusing a JPEG
- * would be extra code to make the tool worse: it decodes, it draws, and what
- * is embedded is a PNG either way.
- */
-async function shapeFromImage(file) {
-  if (file.size > IMAGE_LIMITS.bytes) return { error: 'image.toobig' };
-
-  let bitmap;
-  try {
-    bitmap = await createImageBitmap(file);
-  } catch {
-    return { error: 'image.unreadable' };
-  }
-
-  const box = fit(bitmap.width, bitmap.height);
-  const tiny = bitmap.width < IMAGE_LIMITS.smallest || bitmap.height < IMAGE_LIMITS.smallest;
-  if (!box || tiny) {
-    bitmap.close?.();
-    return { error: 'image.unreadable' };
-  }
-
-  const canvas = document.createElement('canvas');
-  canvas.width = box.width;
-  canvas.height = box.height;
-  const context = canvas.getContext('2d');
-  context.imageSmoothingQuality = 'high';
-  context.drawImage(bitmap, 0, 0, box.width, box.height);
-  bitmap.close?.();
-
-  const aspect = box.width / box.height;
-  const markup = imageMarkup(canvas.toDataURL('image/png'), aspect);
-  if (!markup) return { error: 'image.unreadable' };
-
-  return {
-    shape: {
-      id: 'upload',
-      label: 'shape.upload',
-      width: aspect,
-      // No `inner`, unlike a drawing: a picture has no coordinates of its own
-      // to be mapped out of, so imageMarkup writes it into the unit box
-      // directly.
-      inner: null,
-      paths: null,
-      markup,
-      raster: true,
-      defaultCm: 0,
-    },
-    name: nameFromFile(file.name),
-  };
-}
-
-/**
- * Which of the two readers a file goes to.
- *
- * An SVG is a program and has to go through the whitelist; everything else is
- * pixels. A file that lies about which it is can only be wrong in the safe
- * direction: an SVG named .png is handed to the image decoder, which
- * rasterises it and runs nothing, and a raster named .svg fails to parse and
- * is refused.
- */
-function isVector(file) {
-  return file.type === 'image/svg+xml' || /\.svg$/i.test(file.name);
 }
 
 /* --------------------------------------------------------------------- rows */
@@ -311,6 +163,7 @@ function buildRow(row) {
       askForFile(row);
       return;
     }
+    retireImportsFor(row);
     row.shape = shape.value;
     // Swapping a figure moves the height with it, but only while the height is
     // still the one that arrived with the old figure: a number somebody typed
@@ -342,6 +195,8 @@ function buildRow(row) {
   height.inputMode = 'decimal';
   const reads = document.createElement('span');
   reads.className = 'row-reads';
+  reads.id = `height-reading-${row.key}`;
+  height.setAttribute('aria-describedby', reads.id);
   heightCell.append(height, reads);
   height.addEventListener('input', () => { row.height = height.value; draw(); });
 
@@ -352,6 +207,13 @@ function buildRow(row) {
   width.placeholder = phrase('row.widthexample');
   width.inputMode = 'decimal';
   width.addEventListener('input', () => { row.width = width.value; draw(); });
+  const widthCell = document.createElement('div');
+  widthCell.className = 'row-cell row-width-cell';
+  const widthReads = document.createElement('span');
+  widthReads.className = 'row-reads';
+  widthReads.id = `width-reading-${row.key}`;
+  width.setAttribute('aria-describedby', widthReads.id);
+  widthCell.append(width, widthReads);
 
   const colour = document.createElement('input');
   colour.type = 'color';
@@ -375,6 +237,7 @@ function buildRow(row) {
   const up = iconButton('&#8593;', () => move(row, -1));
   const down = iconButton('&#8595;', () => move(row, 1));
   const remove = iconButton('&#215;', () => {
+    retireImportsFor(row);
     rows = rows.filter((other) => other !== row);
     paintRows();
     draw();
@@ -382,14 +245,14 @@ function buildRow(row) {
   remove.classList.add('danger');
   tools.append(up, down, remove);
 
-  node.append(grip, shape, name, heightCell, width, colour, tools);
+  node.append(grip, shape, name, heightCell, widthCell, colour, tools);
   node.classList.toggle('is-object', row.shape === 'object');
   node.classList.toggle('is-upload', row.shape === 'upload');
 
   // Kept for the renaming pass in paintRows: the aria-labels carry a row
   // number, and every number after a removed row has just changed.
   row.controls = {
-    shape, name, height, width, colour, up, down, remove, reads,
+    shape, name, height, width, colour, up, down, remove, reads, widthReads,
   };
   return node;
 }
@@ -523,45 +386,36 @@ function paintRows() {
 
 /* ------------------------------------------------------------------ drawing */
 
-/** Every row that has a height this understands, with its errors reported. */
+/** Every drawn row has understood measurements, with refused fields identified. */
 function readRows() {
   const ready = [];
-
   for (const row of rows) {
-    const parsed = parseHeight(row.height, unit());
-    const { reads } = row.controls;
-
-    if (parsed.error) {
-      // An empty box reads as an error like any other. It used to be a neutral
-      // hint, on the grounds that a row you have not filled in yet is not a
-      // mistake - but every row now arrives with a height in it, so an empty
-      // one is a box somebody has cleared, and a row that will not be drawn
-      // should say so where the reading would have been.
-      reads.textContent = phrase(parsed.error);
-      reads.className = 'row-reads bad';
-      continue;
-    }
-
-    reads.textContent = phrase('row.reads', { height: formatBoth(parsed.cm, unit()) });
-    reads.className = 'row-reads';
-
     const shape = figureFor(row);
-    let widthCm = 0;
-    if (!shape.markup) {
-      const wide = parseHeight(row.width, unit());
-      widthCm = wide.error ? parsed.cm * shape.width : wide.cm;
-    }
-
+    const measured = chartMeasurements(row.height, row.width, unit(), shape);
+    const { height, width } = measured;
+    const { reads, widthReads } = row.controls;
+    reads.textContent = height.error ? phrase(height.error)
+      : phrase('row.reads', { height: formatBoth(height.cm, unit()) });
+    reads.className = height.error ? 'row-reads bad' : 'row-reads';
+    row.controls.height.setAttribute('aria-invalid', String(!!height.error));
+    if (measured.usesWidth) {
+      widthReads.textContent = width.error ? phrase(width.error)
+        : width.auto ? (height.error ? phrase('width.automatic')
+          : phrase('width.automaticread', { width: formatBoth(height.cm * 0.6, unit()) }))
+          : phrase('width.reads', { width: formatBoth(width.cm, unit()) });
+      widthReads.className = width.error ? 'row-reads bad' : 'row-reads';
+    } else widthReads.textContent = '';
+    row.controls.width.setAttribute('aria-invalid', String(!!width.error));
+    if (!measured.valid) continue;
     ready.push({
       shape,
       name: row.name.trim(),
-      label: format(parsed.cm, unit()),
-      cm: parsed.cm,
-      widthCm,
+      label: format(height.cm, unit()),
+      cm: height.cm,
+      widthCm: width.cm,
       colour: row.colour,
     });
   }
-
   return ready;
 }
 
@@ -578,9 +432,9 @@ function draw() {
     current = null;
     el.preview.replaceChildren();
     // Two different nothings: a chart with no rows at all, and a chart whose
-    // rows have all had their heights emptied. The second is a mistake to
+    // rows have no understood measurements. The second is a mistake to
     // correct rather than a step not taken yet.
-    el.facts.textContent = phrase(rows.length ? 'chart.noheights' : 'chart.empty');
+    el.facts.textContent = phrase(rows.length ? 'chart.invalid' : 'chart.empty');
     setDownloads(false);
     return;
   }
@@ -678,6 +532,7 @@ el.addObject.addEventListener('click', () => {
 let wantsFile = null;
 
 function askForFile(row) {
+  if (row) retireImportsFor(row);
   wantsFile = row ?? null;
   el.svgFile.value = '';
   el.svgFile.click();
@@ -685,40 +540,88 @@ function askForFile(row) {
 
 el.addSvg.addEventListener('click', () => askForFile(null));
 
-el.svgFile.addEventListener('change', async () => {
-  const file = el.svgFile.files?.[0];
-  const row = wantsFile;
+// Imports add rows, so they keep selection order; Clear starts a new queue
+// immediately rather than waiting for an old native decoder to settle.
+const requests = new Set();
+const requestLives = request => !request.controller.signal.aborted && (!request.row
+  || (rows.includes(request.row) && request.row.art === request.art
+    && request.row.shape === request.shape));
+function retireImportsFor(row) {
+  for (const request of requests) if (request.row === row) request.controller.abort();
+  if (wantsFile === row) wantsFile = null;
+}
+const imports = orderedLoads({
+  async read(request) {
+    try { return { request, result: await readChartPicture(request.file, request.controller.signal) }; }
+    finally { requests.delete(request); }
+  },
+  complete({ items, errors }) {
+    for (const { request, result } of items) {
+      if (!requestLives(request)) continue;
+      if (result.error) {
+        el.inputError.textContent = phrase(result.error);
+        el.inputError.hidden = false;
+        continue;
+      }
+      result.shape.defaultCm = 100;
+      const row = request.row;
+      if (row) {
+        row.art = result.shape;
+        row.shape = 'upload';
+        if (!row.name.trim()) row.name = result.name;
+        if (!row.height.trim()) row.height = toInput(100, unit());
+      } else if (!addRow('upload', {
+        art: result.shape, name: result.name, height: toInput(100, unit()),
+      })) {
+        el.inputError.textContent = phrase('chart.full');
+        el.inputError.hidden = false;
+        continue;
+      }
+      el.inputError.hidden = true;
+      paintRows();
+      draw();
+      note(result.shapes === undefined ? phrase('image.added')
+        : phrase('svg.added', { shapes: result.shapes }));
+    }
+    for (const { value: request, error } of errors) {
+      if (!requestLives(request)) continue;
+      el.inputError.textContent = phrase('import.failed', {
+        name: request.file.name, detail: error?.message || String(error),
+      });
+      el.inputError.hidden = false;
+    }
+  },
+  status(pending) {
+    el.importStatus.hidden = !pending;
+    el.importStatus.textContent = pending ? phrase(pending === 1 ? 'import.readingone' : 'import.readingmany', {
+      count: pending.toLocaleString(document.documentElement.lang),
+    }) : '';
+    if (pending) el.addSvg.setAttribute('aria-busy', 'true');
+    else el.addSvg.removeAttribute('aria-busy');
+  },
+});
+el.svgFile.addEventListener('change', () => {
+  const file = el.svgFile.files?.[0], row = wantsFile;
   wantsFile = null;
-  if (!file) return;
-
-  const result = isVector(file) ? await shapeFromFile(file) : await shapeFromImage(file);
-  if (result.error) {
-    el.inputError.hidden = false;
-    el.inputError.textContent = phrase(result.error);
-    return;
-  }
-  el.inputError.hidden = true;
-
-  result.shape.defaultCm = 100;
-  if (row) {
-    row.art = result.shape;
-    row.shape = 'upload';
-    if (!row.name.trim()) row.name = result.name;
-    if (!row.height.trim()) row.height = toInput(100, unit());
-  } else {
-    addRow('upload', {
-      art: result.shape, name: result.name, height: toInput(100, unit()),
-    });
-  }
-  paintRows();
-  draw();
-  note(result.shapes === undefined
-    ? phrase('image.added')
-    : phrase('svg.added', { shapes: result.shapes }));
+  el.svgFile.value = '';
+  if (!file || (row && !rows.includes(row))) return;
+  const request = { file, row, art: row?.art, shape: row?.shape,
+    controller: new AbortController() };
+  requests.add(request);
+  imports.add([request]);
 });
 
 el.clear.addEventListener('click', () => {
+  for (const request of requests) request.controller.abort();
+  requests.clear();
+  imports.reset();
+  wantsFile = null;
+  el.svgFile.value = '';
+  endDrag();
   rows = [];
+  el.inputError.hidden = true;
+  el.inputError.textContent = '';
+  note('');
   paintRows();
   draw();
 });

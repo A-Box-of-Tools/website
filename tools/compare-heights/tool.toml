@@ -112,7 +112,7 @@ css_parts = ["form", "checks", "notes"]
 
 # Shared modules this tool asks for, copied into it at src/shared/ by the
 # build: download hands the chart to the browser as a file.
-js_parts = ["download"]
+js_parts = ["download", "ordered-loads", "errors"]
 
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
