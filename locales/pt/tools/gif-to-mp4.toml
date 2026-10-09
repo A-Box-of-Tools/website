@@ -49,7 +49,7 @@ body = "Um GIF pode deixar o conteúdo atrás dele aparecer; um vídeo é um ret
 
 [[privacy]]
 title = "O custo no seu computador, explicado com clareza."
-body = "A codificação depende do computador. Com um codificador por hardware &mdash; presente na maioria dos notebooks e celulares fabricados na última década &mdash; um GIF comum leva poucos segundos; sem ele, mais tempo. Todos os quadros do GIF são primeiro decodificados na memória, que define o limite: alguns megabytes podem se expandir para um byte por pixel por quadro. A página interrompe a leitura ao atingir meio gigabyte e avisa, em vez de travar a aba. Cancelar permanece disponível."
+body = "A codificação por hardware costuma levar segundos para um GIF comum; por software pode levar mais tempo. O leitor retém no máximo 512 milhões de pixels de regiões decodificadas. A conversão também recusa uma estimativa acima de 512 MiB para os buffers conhecidos: entrada retida, tela inteira, cópias de restauração e vídeo coletado. A memória interna do codec pode acrescentar mais. Cancelar descarta a execução; uma leitura nativa ou um desenho síncrono ainda podem terminar."
 
 [[privacy]]
 title = "O que o Google carrega e o que não recebe."
@@ -93,11 +93,11 @@ a = "Elas recebem uma cor, porque um vídeo é um retângulo opaco. Se o GIF tiv
 
 [[faq]]
 q = "As dimensões da imagem mudam?"
-a = "Apenas um pixel, e só quando necessário. H.264 exige largura e altura pares. Se uma dimensão do GIF for ímpar, uma linha da cor de fundo é acrescentada, sem reamostragem. GIFs com mais de 3840 pixels de largura são reduzidos a essa largura, que os codificadores aceitam de forma confiável. A página informa as dimensões de saída antes de começar."
+a = "H.264 exige dimensões pares: uma largura ou altura ímpar recebe uma linha de fundo sem reamostragem. Se o maior lado passar de 3840 pixels, o GIF é reduzido até esse limite. A página informa o tamanho real antes de começar. Reduzir a saída não reduz os buffers de composição da origem."
 
 [[faq]]
 q = "Quanto tempo leva?"
-a = "Poucos segundos para um GIF comum em um dispositivo com codificador por hardware, como a maioria dos notebooks e celulares recentes; sem ele, mais tempo. O GIF é primeiro decodificado na memória, e um muito longo pode exceder o que a página aceita guardar &mdash; a leitura para ao atingir meio gigabyte de quadros e avisa. A barra mostra o quadro atual, e cancelar interrompe imediatamente, sem gravar nada."
+a = "Um GIF comum costuma levar segundos com codificação por hardware, mais sem ela. A barra mostra o quadro atual. Cancelar descarta o codificador e sua saída; uma consulta nativa de compatibilidade, leitura ou desenho síncrono ainda podem terminar. Um trabalho tardio não substitui uma origem ou resultado mais recente."
 
 [[faq]]
 q = "Meus GIFs são enviados para algum lugar?"
@@ -109,7 +109,7 @@ a = "Sim, se o navegador do celular conseguir codificar vídeo. O codificador po
 
 [[faq]]
 q = "Há limite de tamanho, e custa alguma coisa?"
-a = "A página interrompe a leitura ao atingir meio gigabyte de quadros decodificados &mdash; uma grande quantidade &mdash; e avisa. É grátis, sem conta, login ou período de teste. Os anúncios sustentam o site e não recebem informações sobre seus GIFs."
+a = "O leitor retém no máximo 512 milhões de pixels de regiões decodificadas, e a conversão recusa uma estimativa de buffers conhecidos acima de 512 MiB. Isso não garante um limite para a memória interna do codec nem todas as alocações do navegador. A página explica as recusas. É grátis, sem conta, login ou período de teste. Os anúncios sustentam o site e não recebem informações sobre seus GIFs."
 
 [[faq]]
 q = "Funciona offline?"

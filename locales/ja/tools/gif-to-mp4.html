@@ -32,6 +32,7 @@
     <p class="card-lede">GIFの各フレームを、元と同じ表示時間の動画フレームにします。間引き、複製、間隔の変更はなく、動画の長さも同じです。画像の大きさも保ちます。</p>
 
     <p id="plan-line" class="plan-line" role="status" aria-live="polite"></p>
+    <p class="budget-note">512 MiBは、保持するピクセルと合成・動画バッファの推定上限です。コーデック内部のメモリは別に増える場合があります。キャンセルすると処理を破棄しますが、ネイティブの読み込みや同期的な描画が完了することはあります。</p>
 
     <div id="background-row" class="background-row" hidden>
       <label class="field" for="background">
@@ -89,6 +90,7 @@
     <span data-phrase="file.facts">{size} &middot; {frames}フレーム &middot; {length} &middot; {frame}</span>
     <span data-phrase="plan.nofile">上でGIFを選ぶと、動画の内容をここに表示します。</span>
     <span data-phrase="plan.same">{frame}、{frames}フレーム{timing}、長さ{length}、H.264で約{rate}です。</span>
+    <span data-phrase="plan.scaled">{frame}（H.264に合わせて{from}から縮小し、必要に応じて偶数の辺に補います）、{frames}フレーム{timing}、長さ{length}、H.264で約{rate}です。</span>
     <span data-phrase="plan.resized">{frame}（元のGIFは{from}です。H.264には偶数の辺が必要なので、背景色の1列を足します）、{frames}フレーム{timing}、長さ{length}、H.264で約{rate}です。</span>
     <span data-phrase="timing.steady">、毎秒{fps}フレームの一定間隔で</span>
     <span data-phrase="timing.varies">、元の表示時間を保ち、平均毎秒{fps}フレームで</span>
@@ -121,6 +123,7 @@
     <span data-phrase="facts.timing">各フレームはGIF自身の表示時間を保ちます：{timing}。</span>
     <span data-phrase="facts.loop.gif">元のGIFは繰り返し再生でした。MP4にその設定はなく、プレーヤーが決めます。フィードやチャットアプリの多くは短い動画を繰り返します。</span>
     <span data-phrase="facts.loop.none">元のGIFは1回だけの再生でした。MP4にその設定はなく、プレーヤーが決めます。</span>
+    <span data-phrase="facts.background">透明な部分の背景には{colour}を使いました。</span>
     <span data-phrase="facts.time">{seconds}で完了しました。</span>
     <span data-phrase="support.nowebcodecs">このブラウザは動画をエンコードできません。Chrome、Edge、Safari、Firefox 130以降は対応しています。</span>
     <span data-phrase="stall.encoder">ブラウザの動画エンコーダーが応答しなくなりました。再読み込みして試してください。端末のハードウェアエンコーダーが使用中、またはない場合に起きます。</span>
@@ -130,7 +133,9 @@
     <span data-phrase="mp4.toobig">完成したファイルが4GBを超えます。ここで書き出すMP4はそのサイズに対応しません。</span>
     <span data-phrase="gif.tooshort">そのファイルはGIFにしては短すぎます。</span>
     <span data-phrase="gif.notagif">それはGIFではありません。ファイルがGIF87aでもGIF89aでも始まっていません。</span>
-    <span data-phrase="gif.enormous">このGIFは非常に大きく、先頭の{n}フレームでこのページが保持できるメモリに達しました。残りは読み込んでいません。</span>
+    <span data-phrase="gif.workinglimit">このGIFは、このページのバッファの推定上限512 MiBを超えます。より小さいGIFを選んでください。コーデック内部のメモリは別に増える場合があります。</span>
+    <span data-phrase="gif.workinginvalid">このGIFの画面やバッファのサイズを安全に表せません。別のGIFを選んでください。</span>
+    <span data-phrase="gif.enormous">デコード済みピクセルの上限で読み込みを停止しました。読み込んだフレーム数：{n}。</span>
     <span data-phrase="gif.midframe">このGIFはフレームの途中で終わっているので、最後の1枚は不完全かもしれません。</span>
     <span data-phrase="gif.damaged">このGIFは壊れています。最初のフレームが揃う前に終わっています。</span>
     <span data-phrase="gif.noframes">そのGIFには、この読み取り機で開けたフレームがありませんでした。</span>

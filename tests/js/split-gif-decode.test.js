@@ -542,3 +542,35 @@ test('sizes and durations are written the way a person reads them', () => {
   assert.equal(formatSeconds(2.25, say), 'unit.seconds 2.3');
   assert.equal(formatSeconds(61.4, say), 'unit.seconds 61');
 });
+
+
+test('strict pixel admission stops before the next patch and keeps default compatibility', () => {
+  const bytes = buildGif({ width: 2, height: 1, palette: FOUR,
+    frames: [{ w: 2, h: 1, indices: Uint8Array.from([1, 2]) }, { w: 2, h: 1, indices: Uint8Array.from([2, 3]) }] });
+  const legacy = decodeGif(bytes, { maxPixels: 3 });
+  assert.equal(legacy.frames.length, 2);
+  assert.deepEqual(legacy.truncated, { key: 'gif.enormous', values: { n: 2 } });
+  const strict = decodeGif(bytes, { maxPixels: 3, strictMaxPixels: true });
+  assert.equal(strict.frames.length, 1);
+  assert.deepEqual(strict.frames[0].indices, Uint8Array.from([1, 2]));
+  assert.deepEqual(strict.truncated, { key: 'gif.enormous', values: { n: 1 } });
+  assert.equal(decodeGif(bytes, { maxPixels: 4, strictMaxPixels: true }).truncated, null);
+});
+
+test('strict admission refuses a first patch and invalid ceilings without retaining its indices', () => {
+  const bytes = buildGif({ width: 2, height: 1, palette: FOUR,
+    frames: [{ w: 2, h: 1, indices: Uint8Array.from([1, 2]) }] });
+  for (const maxPixels of [0, 1, -1, NaN, Infinity]) {
+    assert.throws(() => decodeGif(bytes, { maxPixels, strictMaxPixels: true }),
+      (error) => error instanceof GifFormatError && error.message === 'gif.enormous' && error.values.n === 0);
+  }
+});
+
+
+test('strict admission refuses an enormous interlaced patch even with a zero screen header', () => {
+  const bytes = Uint8Array.from([...new TextEncoder().encode('GIF89a'),
+    0, 0, 0, 0, 0x80, 0, 0, 0, 0, 0, 255, 255, 255,
+    0x2c, 0, 0, 0, 0, 255, 255, 255, 255, 0x40, 2, 2, 0x44, 0x01, 0, 0x3b]);
+  assert.throws(() => decodeGif(bytes, { strictMaxPixels: true }),
+    (error) => error instanceof GifFormatError && error.message === 'gif.enormous' && error.values.n === 0);
+});

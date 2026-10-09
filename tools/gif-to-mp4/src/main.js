@@ -16,7 +16,7 @@ import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { sizeText, durationText } from './shared/format.js';
 import { decodeGif, GifFormatError, totalDuration } from './shared/gif-decode.js';
-import { demux, UnsupportedFile } from './shared/mp4-reader.js';
+import { demux } from './shared/mp4-reader.js';
 import { hasWebCodecs, hasEncoder } from './shared/video-support.js';
 import { gifToMp4 } from './encode.js';
 import {
@@ -24,6 +24,7 @@ import {
 } from './plan.js';
 import { bitrateText, frameText, outName, timingText } from './format.js';
 import { makeExample } from './example.js';
+import { WORKING_LIMIT, gifWorkingPlan, headerWorkingPlan, requireWorking } from './working.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -75,6 +76,9 @@ const { show: note } = messageBox(el.loadNote);
 let loaded = null;
 let downloadUrl = '';
 let running = null;
+let sourceVersion = 0;
+let loading = false;
+const phraseKeys = new Set([...document.querySelectorAll('#phrases [data-phrase]')].map((node) => node.dataset.phrase));
 
 /* ------------------------------------------------------------------ loading */
 
@@ -88,61 +92,56 @@ const picker = wireFilePicker({
 });
 
 async function load(file) {
-  if (!file || running) return;
-
+  if (!file) return;
   reset();
+  const version = sourceVersion;
+  const current = () => version === sourceVersion;
+  loading = true;
+  el.fileName.textContent = file.name;
+  el.fileFacts.textContent = readingLabel(1);
+  el.fileRow.hidden = false;
+  refresh();
   picker.busy(readingLabel(1));
-
   try {
     if (!hasWebCodecs() || !hasEncoder()) throw new Error('support.nowebcodecs');
-
-    const gif = decodeGif(new Uint8Array(await file.arrayBuffer()));
+    if (file.size > WORKING_LIMIT) throw new Error('gif.workinglimit');
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    if (!current()) return;
+    requireWorking(headerWorkingPlan(bytes));
+    const gif = decodeGif(bytes, { strictMaxPixels: true });
     if (!gif.frames.length) throw new GifFormatError('gif.noframes');
-
     const fps = nominalFps(gif.frames);
     const size = outputSize(gif);
-    loaded = {
-      file,
-      gif,
-      seconds: totalDuration(gif.frames),
-      fps,
-      size,
-      bitrate: bitrateFor({ width: size.width, height: size.height, fps }),
-    };
-
-    el.fileName.textContent = file.name;
-    el.fileFacts.textContent = phrase('file.facts', {
-      size: sizeOf(file.size),
-      frames: gif.frames.length.toLocaleString(),
-      length: durationText(loaded.seconds, phrase),
-      frame: say(frameText(gif)),
-    });
-    el.fileRow.hidden = false;
-
-    if (gif.truncated === 'enormous') {
-      note(phrase('gif.enormous', { n: gif.frames.length.toLocaleString() }));
-    } else if (gif.truncated) {
-      note(phrase('gif.midframe'));
-    }
-
-    // The one question a video needs answered that a GIF does not. Asked
-    // only when the GIF has anywhere it could show through.
+    requireWorking(gifWorkingPlan(gif, size));
+    const source = { file, gif, seconds: totalDuration(gif.frames), fps, size,
+      bitrate: bitrateFor({ width: size.width, height: size.height, fps }) };
+    if (!current()) return;
+    loaded = source;
+    el.fileFacts.textContent = phrase('file.facts', { size: sizeOf(file.size),
+      frames: gif.frames.length.toLocaleString(), length: durationText(source.seconds, phrase), frame: say(frameText(gif)) });
+    if (gif.truncated) note(say(gif.truncated));
     const transparent = hasTransparency(gif.frames);
     el.backgroundRow.hidden = !transparent;
     el.backgroundNote.textContent = phrase(transparent ? 'background.some' : 'background.none');
-
-    refresh();
   } catch (error) {
-    showLoadError(messageFor(error));
-    picker.waiting();
+    if (current()) {
+      loaded = null;
+      el.fileFacts.textContent = '';
+      showLoadError(messageFor(error));
+      picker.waiting();
+    }
   } finally {
-    picker.done();
+    if (current()) {
+      loading = false;
+      picker.done();
+      refresh();
+    }
   }
 }
 
 /* ---------------------------------------------------------------- the plan */
 
-el.background.addEventListener('input', refresh);
+el.background.addEventListener('input', () => { retireRun(); clearResult(); refresh(); });
 
 /**
  * Say what will be written, and wake or dim the last card: the size, the
@@ -150,6 +149,8 @@ el.background.addEventListener('input', refresh);
  * is encoded.
  */
 function refresh() {
+  el.run.disabled = Boolean(loading || running || !loaded);
+  el.background.disabled = Boolean(loading || running || !loaded);
   if (!loaded) {
     el.plan.textContent = phrase('plan.nofile');
     gate(false);
@@ -157,7 +158,7 @@ function refresh() {
   }
   const { gif, size, fps, bitrate, seconds } = loaded;
   el.plan.textContent = phrase(size.scale === 1 && size.width === gif.width && size.height === gif.height
-    ? 'plan.same' : 'plan.resized', {
+    ? 'plan.same' : size.scale === 1 ? 'plan.resized' : 'plan.scaled', {
     frame: say(frameText(size)),
     from: say(frameText(gif)),
     frames: gif.frames.length.toLocaleString(),
@@ -194,66 +195,62 @@ function gate(ready) {
 /* ----------------------------------------------------------------- running */
 
 el.run.addEventListener('click', run);
-el.cancel.addEventListener('click', () => running?.abort());
+el.cancel.addEventListener('click', cancelRun);
 el.clearFile.addEventListener('click', () => {
   reset();
   picker.waiting();
 });
 
+function ownsRun(job) { return running === job && job.version === sourceVersion; }
+function currentRun(job) { return ownsRun(job) && !job.controller.signal.aborted; }
+function retireRun() {
+  const job = running;
+  running = null;
+  job?.controller.abort();
+  el.cancel.hidden = true;
+  el.progress.hidden = true;
+}
+function cancelRun() {
+  if (!running) return;
+  retireRun();
+  el.progressLabel.textContent = phrase('run.cancelled');
+  el.progressBar.style.width = '0%';
+  el.progress.hidden = false;
+  refresh();
+}
 async function run() {
-  if (!loaded || running) return;
-
-  const controller = new AbortController();
-  running = controller;
-  // Clear can retire this run while a codec or the verification read awaits.
-  // Its progress and cleanup must not change the next file's controls.
-  const report = (progress) => {
-    if (running === controller && !controller.signal.aborted) setProgress(progress);
-  };
-  el.run.disabled = true;
+  if (!loaded || loading || running) return;
+  const job = { version: sourceVersion, controller: new AbortController(), source: loaded,
+    background: parseHex(el.background.value), backgroundHex: el.background.value };
+  running = job;
+  const report = (progress) => { if (currentRun(job)) setProgress(progress); };
+  refresh();
   el.cancel.hidden = false;
-  el.result.hidden = true;
+  clearResult();
   el.runError.hidden = true;
   el.progress.hidden = false;
-  releaseDownload();
-
-  let cancelled = false;
+  setProgress({ phase: 'preparing', done: 0, total: 1 });
   const started = performance.now();
-
   try {
-    const { gif, size, fps, bitrate } = loaded;
-    const out = await gifToMp4({
-      gif, size, fps, bitrate,
-      background: parseHex(el.background.value),
-      signal: controller.signal,
-      onProgress: report,
-    });
-
-    if (running !== controller) return;
-    controller.signal.throwIfAborted();
-
+    const { gif, size, fps, bitrate } = job.source;
+    const out = await gifToMp4({ gif, size, fps, bitrate, background: job.background,
+      signal: job.controller.signal, onProgress: report });
+    if (!currentRun(job)) return;
     setProgress({ phase: 'checking', done: 1, total: 1 });
     const check = await verify(out.blob, out.seconds, gif.frames.length);
-    if (running !== controller) return;
-    controller.signal.throwIfAborted();
-
-    showResult({ out, check, seconds: (performance.now() - started) / 1000 });
+    if (!currentRun(job)) return;
+    showResult({ out, check, seconds: (performance.now() - started) / 1000, job });
   } catch (error) {
-    if (running !== controller) return;
-    if (error?.name === 'AbortError' || error?.message === 'aborted') {
-      cancelled = true;
-      el.progressLabel.textContent = phrase('run.cancelled');
-    } else {
-      el.runError.textContent = messageFor(error);
-      el.runError.hidden = false;
-    }
+    if (!currentRun(job)) return;
+    clearResult();
+    el.runError.textContent = messageFor(error);
+    el.runError.hidden = false;
   } finally {
-    if (running === controller) {
+    if (ownsRun(job)) {
       running = null;
-      el.run.disabled = false;
       el.cancel.hidden = true;
-      el.progress.hidden = !cancelled;
-      if (cancelled) el.progressBar.style.width = '0%';
+      el.progress.hidden = true;
+      refresh();
     }
   }
 }
@@ -300,8 +297,8 @@ async function verify(blob, expectedSeconds, expectedFrames) {
   };
 }
 
-function showResult({ out, check, seconds }) {
-  const { file, gif, size, fps, bitrate } = loaded;
+function showResult({ out, check, seconds, job }) {
+  const { file, gif, size, fps, bitrate } = job.source;
   const saved = 1 - out.blob.size / file.size;
 
   el.resultSize.textContent = phrase(saved > 0 ? 'result.ready' : 'result.bigger', {
@@ -320,20 +317,23 @@ function showResult({ out, check, seconds }) {
     phrase(gif.loopCount === null ? 'facts.loop.none' : 'facts.loop.gif'),
     phrase('facts.time', { seconds: durationText(seconds, phrase) }),
   ];
+  if (hasTransparency(gif.frames)) facts.push(phrase('facts.background', { colour: job.backgroundHex }));
   el.resultFacts.replaceChildren(...facts.map((text) => {
     const row = document.createElement('li');
     row.textContent = text;
     return row;
   }));
 
-  downloadUrl = URL.createObjectURL(out.blob);
-  el.download.href = downloadUrl;
-  el.download.download = outName(file.name);
+  if (check.ok) {
+    downloadUrl = URL.createObjectURL(out.blob);
+    el.download.href = downloadUrl;
+    el.download.download = outName(file.name);
+    el.player.src = downloadUrl;
+  }
   el.download.hidden = !check.ok;
 
   // Played from memory, looping the way the GIF did, so "did it survive" is
   // a thing that can be looked at rather than inferred from a number.
-  el.player.src = downloadUrl;
   el.player.hidden = !check.ok;
 
   el.result.hidden = false;
@@ -370,38 +370,38 @@ const sizeOf = (n) => ltr(sizeText(n, phrase, { under: 'size.b', kb: 'auto', mb:
 const say = (said) => (said && said.key ? phrase(said.key, said.values) : said ?? '');
 
 function messageFor(error) {
-  if (error instanceof GifFormatError || error instanceof UnsupportedFile) {
-    return phrase(error.message, error.values);
-  }
   if (error?.name === 'AbortError') return phrase('run.cancelled');
   const key = String(error?.message ?? '');
-  if (/^(support|stall|encode|gif|mp4|read)\./.test(key)) return phrase(key, error.values);
+  if (phraseKeys.has(key)) return phrase(key, error.values);
   return phrase('run.failed', { detail: key || String(error) });
 }
 
 function reset() {
-  running?.abort();
-  running = null;
-  el.run.disabled = false;
-  el.cancel.hidden = true;
+  sourceVersion += 1;
+  loading = false;
+  retireRun();
   loaded = null;
   el.fileRow.hidden = true;
-  el.result.hidden = true;
-  el.progress.hidden = true;
   el.loadError.hidden = true;
   el.loadNote.hidden = true;
   el.runError.hidden = true;
   el.backgroundRow.hidden = true;
-  releaseDownload();
+  clearResult();
+  picker.done();
   refresh();
 }
 
-function releaseDownload() {
+function clearResult() {
+  el.result.hidden = true;
+  el.download.hidden = true;
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  el.player.pause();
+  el.player.removeAttribute('src');
+  el.player.load();
+  el.player.hidden = true;
   if (downloadUrl) URL.revokeObjectURL(downloadUrl);
   downloadUrl = '';
-  el.download.removeAttribute('href');
-  el.player.removeAttribute('src');
-  el.player.hidden = true;
 }
 
 /* ------------------------------------------------------------------- trust */

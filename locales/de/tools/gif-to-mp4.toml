@@ -132,16 +132,7 @@ body = """
 
 [[privacy]]
 title = "Was es auf Ihrem Gerät kostet, ehrlich gesagt."
-body = """
-
-      Das Kodieren dauert so lange, wie Ihr Gerät braucht: mit einem
-      Hardware-Encoder, und den haben die meisten Laptops und jedes Telefon
-      aus den letzten zehn Jahren, ein paar Sekunden für ein gewöhnliches GIF;
-      ohne einen länger. Jedes Einzelbild des GIFs wird zuerst in den
-      Arbeitsspeicher dekodiert, und dort liegt die Grenze: Ein GIF sind ein
-      paar Megabyte, die sich auf ein Byte pro Pixel und Bild ausdehnen, und
-      die Seite hört bei einem halben Gigabyte davon auf zu lesen und sagt es,
-      statt den Tab abstürzen zu lassen. Abbrechen geht jederzeit."""
+body = "Hardware-Kodierung dauert bei einem normalen GIF meist Sekunden, Software kann länger brauchen. Der Leser hält höchstens 512 Millionen dekodierte Patch-Pixel. Die Umwandlung weist außerdem einen geschätzten Pufferbedarf über 512 MiB ab, einschließlich gespeicherter Eingabe, vollständiger Bildfläche, Wiederherstellungsbildern und gesammelter Videodaten. Interner Codec-Speicher kann dazukommen. Abbrechen beendet den Lauf; native Lese- und synchrone Zeichenvorgänge können noch zu Ende laufen."
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
@@ -241,24 +232,11 @@ a = """
 
 [[faq]]
 q = "Ändert es die Größe des Bildes?"
-a = """
-        Nur um ein Pixel, und nur wenn es sein muss. H.264 braucht auf beiden
-        Seiten eine gerade Kantenlänge, ein GIF mit ungerader Breite oder Höhe
-        bekommt also eine Linie in der Hintergrundfarbe dazu; neu abgetastet
-        wird nichts. Ein GIF, das breiter als 3840 Pixel ist, wird darauf
-        verkleinert gezeichnet, denn darauf ist bei Encodern Verlass. Die
-        Seite nennt die Größe, die sie schreiben wird, bevor sie anfängt."""
+a = "H.264 braucht gerade Kanten. Eine ungerade Breite oder Höhe bekommt deshalb eine Linie Hintergrund ohne Neuberechnung der Bildpunkte. Übersteigt die längste Kante 3840 Pixel, wird das GIF passend verkleinert. Die Seite nennt vorab die tatsächliche Ausgabegröße. Das Verkleinern der Ausgabe verkleinert die Puffer für den Bildaufbau der Quelle nicht."
 
 [[faq]]
 q = "Wie lange dauert es?"
-a = """
-        Ein paar Sekunden für ein gewöhnliches GIF auf einem Gerät mit
-        Hardware-Encoder, und das sind die meisten Laptops und jedes neuere
-        Telefon; ohne einen länger. Das GIF wird zuerst in den Arbeitsspeicher
-        dekodiert, und ein sehr langes kann mehr sein, als die Seite halten
-        will: Bei einem halben Gigabyte an Einzelbildern hört sie auf und sagt
-        es. Der Balken sagt, bei welchem Bild sie ist, und Abbrechen hält
-        sofort an und schreibt nichts."""
+a = "Ein normales GIF dauert mit Hardware-Kodierung meist Sekunden, ohne sie länger. Die Leiste zeigt das aktuelle Bild. Abbrechen beendet den Encoder und verwirft die Ausgabe; eine native Unterstützungsabfrage, ein Lese- oder synchroner Zeichenvorgang kann noch zu Ende laufen. Verspätete Arbeit ersetzt keine neuere Quelle oder Ausgabe."
 
 [[faq]]
 q = "Werden meine GIFs irgendwohin hochgeladen?"
@@ -281,12 +259,7 @@ a = """
 
 [[faq]]
 q = "Gibt es eine Größengrenze, und kostet es etwas?"
-a = """
-        Die Seite hört bei einem halben Gigabyte an dekodierten Einzelbildern
-        auf, ein GIF zu lesen, und das sind sehr viele Bilder; sie sagt es
-        dann. Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und
-        keine Testphase. Bezahlt wird die Seite über Werbung, und den Anzeigen
-        wird nichts über Ihre GIFs übergeben."""
+a = "Der Leser hält höchstens 512 Millionen dekodierte Patch-Pixel; die Umwandlung weist einen geschätzten Pufferbedarf über 512 MiB ab. Das garantiert keine Obergrenze für internen Codec-Speicher oder jede Browser-Zuweisung. Eine Ablehnung wird erklärt. Es ist kostenlos, ohne Konto, Anmeldung oder Testphase. Werbung bezahlt die Seite und bekommt keine Angaben über Ihre GIFs."
 
 [[faq]]
 q = "Funktioniert es offline?"

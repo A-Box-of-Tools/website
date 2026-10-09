@@ -118,3 +118,6 @@ a.primary { text-decoration: none; display: inline-block; }
 @media (max-width: 560px) {
   .result-head { flex-direction: column; align-items: stretch; }
 }
+
+/* This qualification stays beside the plan instead of folding into a label. */
+.budget-note { font-size: .9rem; line-height: 1.5; color: var(--text-dim); margin: .8rem 0 0; }
