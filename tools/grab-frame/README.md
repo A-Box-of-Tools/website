@@ -147,7 +147,24 @@ Two details in `seriesFrames()` are deliberate:
   a frame would otherwise produce — a hundred copies of one picture, each with a
   different name.
 
-The stills come out as one ZIP, because twenty downloads is twenty save prompts
+The page shows the planned count and first/last selected frame before starting.
+A plan above 500 is refused rather than truncated to the beginning of the clip;
+the interval button spreads at most 500 regular marks across its whole length.
+On the playback path those are requested times and the player still chooses the
+actual frames. Repeated interval marks picking the same exact frame are counted only once, even for sparse
+footage. Planning skips held-frame intervals rather than walking every mark.
+
+Each grab captures its source, frame time, dimensions, name and encoding settings
+before decoding. Duplicate presentation timestamps cannot identify individual
+native decoded pictures, so those files use the explicitly approximate player
+path; the exact reader/series APIs refuse them before opening a decoder.
+Transport and settings stay locked until completion or Cancel;
+a new source retires pending loads, frames, series and archives. Late native
+callbacks cannot publish a result or unlock a newer job. Clear retires a pending
+series or archive, and archive membership and names are captured before reading
+any blob. Retired readers close delayed bitmaps and series dispose their canvases.
+
+The stills can be downloaded together as one ZIP, because twenty downloads is twenty save prompts
 and that is the sort of thing that makes people give up and use the upload site
 instead. `src/zip.js` is the stored-only writer the image tools already use.
 
