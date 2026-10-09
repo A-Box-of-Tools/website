@@ -11,6 +11,7 @@
 
 import { PdfWriter, num, textString } from './shared/pdf-page-writer.js';
 import { prepareImage } from './encode.js';
+import { throwIfAborted } from './shared/errors.js';
 import { layoutPage, placement } from './layout.js';
 
 /** What the document says made it. No version, no machine, no user. */
@@ -34,10 +35,11 @@ export async function buildDocument(items, settings, { onProgress, signal } = {}
   let copied = 0;
 
   for (const [index, item] of items.entries()) {
-    stopIfCancelled(signal);
+    throwIfAborted(signal);
     onProgress?.({ done: index, total: items.length, name: item.name });
 
-    const image = await prepareImage(item, settings);
+    const image = await prepareImage(item, settings, signal);
+    throwIfAborted(signal);
     if (image.copied) copied += 1;
 
     const page = layoutPage({
@@ -55,7 +57,7 @@ export async function buildDocument(items, settings, { onProgress, signal } = {}
     await new Promise((resolve) => setTimeout(resolve, 0));
   }
 
-  stopIfCancelled(signal);
+  throwIfAborted(signal);
   onProgress?.({ done: items.length, total: items.length, name: '' });
 
   pdf.object(catalog, `<< /Type /Catalog /Pages ${pageTree} 0 R >>`);
@@ -67,10 +69,6 @@ export async function buildDocument(items, settings, { onProgress, signal } = {}
   const info = writeInfo(pdf, settings);
 
   return { blob: pdf.finish({ root: catalog, info }), pages: pageIds.length, copied };
-}
-
-function stopIfCancelled(signal) {
-  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
 }
 
 /**

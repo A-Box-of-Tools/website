@@ -77,12 +77,7 @@ body = """
 
 [[privacy]]
 title = "Al documento no se le cuenta nada de ti."
-body = """
- Casi todas las
-      herramientas le estampan a un PDF una marca de tiempo y el nombre del
-      programa que lo hizo. Esta escribe un título, un autor y una fecha solo si
-      los tecleas tú. Los nombres de archivo de tus fotos no aparecen en ningún
-      sitio del documento, y de tu dispositivo tampoco aparece nada."""
+body = """El PDF identifica esta herramienta como su creadora. Solo incluye un título y un autor si los escribes, y una fecha de creación si marcas la casilla. Se omiten los nombres de los archivos de imagen y la información sobre tu equipo."""
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."

@@ -36,7 +36,7 @@
   <section class="card">
     <h2><span class="step">2</span> Mise en page</h2>
 
-    <div class="settings">
+    <div class="settings" id="page-settings">
       <div class="field">
         <label for="page-size">Format de page</label>
         <select id="page-size">
@@ -146,16 +146,10 @@
       </div>
     </div>
 
-    <details class="meta-panel">
+    <details class="meta-panel" id="metadata-settings">
       <summary>Détails du document &mdash; tous facultatifs, tous vides par défaut</summary>
       <div class="meta-body">
-        <p class="meta-note">
-          Un PDF porte un petit bloc d'informations sur lui-même, et la plupart
-          des outils le remplissent d'un horodatage et d'un nom de programme, que
-          vous l'ayez demandé ou non. Celui-ci écrit ce que vous tapez ici et rien
-          d'autre&nbsp;: pas de noms de fichiers, pas de nom de machine, et pas de
-          date à moins que vous ne cochiez la case.
-        </p>
+        <p class="meta-note">Le PDF nomme cet outil comme son créateur. Il contient aussi le titre et l’auteur que vous saisissez, et la date du jour uniquement si vous cochez la case. Les noms des fichiers image et les informations sur votre appareil sont omis.</p>
         <div class="settings">
           <div class="field">
             <label for="doc-title">Titre</label>
@@ -213,6 +207,9 @@
       <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
     </div>
 
+    <p id="cancel-note" class="field-note" hidden>Annuler empêche ce PDF d’être proposé au téléchargement. Un décodage, un encodage ou une compression du navigateur déjà en cours peut se terminer avant que ses ressources soient libérées.</p>
+    <p id="export-wait" class="field-note" role="status" aria-live="polite" tabindex="-1" hidden>Le navigateur termine encore un travail précédent. Vous pourrez créer un PDF dès qu’une opération sera terminée.</p>
+
     <div id="progress" class="progress" hidden>
       <div class="progress-track"><div id="progress-bar" class="progress-bar is-smooth"></div></div>
       <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
@@ -242,6 +239,7 @@
     <span data-phrase="tile.later">Déplacer {name} plus tard</span>
     <span data-phrase="read.notimage">{name}&nbsp;: pas une image que cet outil sait
       lire.</span>
+    <span data-phrase="read.failed">{name}&nbsp;: cette image n’a pas pu être préparée. {detail}</span>
     <span data-phrase="read.nodecode">{name}&nbsp;: ce navigateur n&rsquo;a pas pu la
       décoder.</span>
     <span data-phrase="drag.move">Faire glisser pour déplacer {name}</span>

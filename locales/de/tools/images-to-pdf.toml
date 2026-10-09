@@ -79,12 +79,7 @@ body = """
 
 [[privacy]]
 title = "Dem Dokument wird nichts über Sie erzählt."
-body = """
- Die meisten Werkzeuge
-      stempeln einem PDF einen Zeitstempel und den Namen des Programms auf, das
-      es erzeugt hat. Dieses schreibt Titel, Autor und Datum nur, wenn Sie sie
-      selbst eintippen. Die Dateinamen Ihrer Bilder tauchen im Dokument nie auf,
-      und etwas über Ihr Gerät ebenso wenig."""
+body = """Das PDF nennt dieses Werkzeug als Ersteller. Titel und Autor werden nur aufgenommen, wenn Sie sie eingeben, und ein Erstellungsdatum nur, wenn Sie das Häkchen setzen. Bilddateinamen und Informationen über Ihr Gerät bleiben außen vor."""
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
