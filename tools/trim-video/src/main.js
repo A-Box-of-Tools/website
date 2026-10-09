@@ -5,6 +5,7 @@ import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { textImport } from './shared/text-import.js';
 import { demux, UnsupportedFile, UnsupportedTimeline } from './shared/mp4-reader.js';
 import { joinByCopy, estimateJoinCopy, copyRefusal } from './copy.js';
 import { decoderConfig, averageFps } from './shared/webcodecs.js';
@@ -66,6 +67,7 @@ const el = {
   marksFormat: $('marks-format'),
   exportMarks: $('export-marks'),
   exportCard: $('export-card'),
+  settings: $('export-settings'),
   method: $('method'),
   methodNote: $('method-note'),
   copyNote: $('copy-note'),
@@ -100,6 +102,15 @@ const { show: showError, clear: clearError } = messageBox(el.error);
 const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
 const formatDuration = (seconds) => durationText(seconds, phrase);
 
+// Native exceptions contain prose and quotes, not selector-safe phrase keys.
+// Only the tool's declared keys may reach phrase(); values remain plain data.
+const errorKeys = new Set([...document.querySelectorAll('#phrases [data-phrase]')]
+  .map((element) => element.dataset.phrase));
+function errorReason(error, values = error?.values) {
+  return phrase(errorKeys.has(error?.message) ? error.message : 'error.generic', values);
+}
+
+
 /**
  * The videos, in the order they will be joined, each holding its own list of
  * marked segments.
@@ -119,7 +130,8 @@ let selectedSegment = null;
 let mode = 'keep';
 
 let exporting = false;
-let abortController = null;
+let activeExport = null;
+let planRevision = 0;
 let lastResultUrl = null;
 let nextId = 1;
 let batch = 0;
@@ -138,6 +150,41 @@ const timeline = new Timeline(el.timeline, {
 });
 
 const clip = () => (selected >= 0 ? clips[selected] : null);
+const canEdit = () => !exporting && !loading;
+const marksReader = textImport({
+  busy: () => el.importMarks.setAttribute('aria-busy', 'true'),
+  done: () => el.importMarks.removeAttribute('aria-busy'),
+});
+
+/** A download belongs to the plan that produced it, not the next set of marks. */
+function clearResult() {
+  el.resultVideo.pause();
+  el.resultVideo.removeAttribute('src');
+  el.resultVideo.load();
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  el.resultInfo.textContent = '';
+  el.result.hidden = true;
+}
+
+function changedPlan() {
+  planRevision++;
+  marksReader.invalidate();
+  clearResult();
+}
+
+// Keep Cancel and the error alert available while the mark editor and writing
+// choices are locked. A new source delivery still cancels and replaces the job.
+function lockPlan() {
+  el.sectionCard.inert = exporting || loading || !clips.length;
+  el.settings.inert = exporting || loading || !clips.length;
+  timeline.setEnabled(canEdit() && Boolean(clips.length));
+  if (!canEdit()) {
+    for (const control of el.clipList.querySelectorAll('button')) control.disabled = true;
+  }
+}
 
 /* ------------------------------------------------------------------ adding */
 
@@ -169,8 +216,7 @@ async function addFiles(files) {
     if (generation === batch) {
       loading = false;
       picker.done();
-      el.sectionCard.inert = !clips.length;
-      timeline.setEnabled(Boolean(clips.length));
+      lockPlan();
       renderSegments();
     }
   }
@@ -182,14 +228,14 @@ async function addFiles(files) {
 }
 
 function discardSelection() {
-  abortController?.abort();
-  abortController = null;
+  activeExport?.controller.abort();
+  activeExport = null;
   exporting = false;
-  for (const video of [el.preview, el.resultVideo]) {
-    video.pause();
-    video.removeAttribute('src');
-    video.load();
-  }
+  changedPlan();
+  el.preview.pause();
+  el.preview.removeAttribute('src');
+  el.preview.load();
+  updateTransport();
   for (const entry of clips) URL.revokeObjectURL(entry.objectUrl);
   clips = [];
   selected = -1;
@@ -198,12 +244,6 @@ function discardSelection() {
   watchUntil = null;
   clearTimeout(stillTimer);
   stillWanted = null;
-  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
-  lastResultUrl = null;
-  el.download.removeAttribute('href');
-  el.download.removeAttribute('download');
-  el.resultInfo.textContent = '';
-  el.result.hidden = true;
   el.progress.hidden = true;
   el.cancelBtn.hidden = true;
   el.preview.hidden = true;
@@ -212,7 +252,7 @@ function discardSelection() {
     note.hidden = true;
     note.textContent = '';
   }
-  el.sectionCard.inert = true;
+  lockPlan();
   // The error alert lives in this card too. Disable export through its
   // current selection, so a refused replacement can still be announced.
   el.exportCard.inert = false;
@@ -382,6 +422,7 @@ function renderClips() {
 
     const title = document.createElement('button');
     title.type = 'button';
+    title.disabled = exporting || loading;
     title.className = 'clip-name';
     title.textContent = entry.name;
     title.title = phrase('clip.mark');
@@ -429,8 +470,10 @@ function iconButton(label, title, onClick, disabled = false, extra = '') {
 }
 
 function moveClip(index, by) {
+  if (!canEdit()) return;
   const to = index + by;
   if (to < 0 || to >= clips.length) return;
+  changedPlan();
   const [moved] = clips.splice(index, 1);
   clips.splice(to, 0, moved);
   if (selected === index) selected = to;
@@ -441,14 +484,15 @@ function moveClip(index, by) {
 }
 
 function removeClip(index) {
+  if (!canEdit() || !clips[index]) return;
+  changedPlan();
   const [gone] = clips.splice(index, 1);
   URL.revokeObjectURL(gone.objectUrl);
 
   if (!clips.length) {
-    selected = -1;
-    el.preview.removeAttribute('src');
-    el.preview.load();
+    discardSelection();
     renderClips();
+    updateMethodOptions();
     return;
   }
 
@@ -469,7 +513,10 @@ function describeSelection() {
 }
 
 function selectClip(index) {
-  if (index < 0 || index >= clips.length) return;
+  if (exporting || index < 0 || index >= clips.length) return;
+  if (selected !== index) marksReader.invalidate();
+  el.preview.pause();
+  watchUntil = null;
   selected = index;
   const entry = clips[index];
   selectedSegment = entry.segments.length ? entry.segments[entry.segments.length - 1].id : null;
@@ -514,6 +561,7 @@ function selectClip(index) {
     });
   }
 
+  updateTransport();
   renderSegments();
   renderClips();
 }
@@ -575,6 +623,7 @@ async function drawStill(entry, atSeconds) {
 /* ------------------------------------------------------------ the playhead */
 
 function seekTo(seconds) {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const at = Math.max(0, Math.min(seconds, entry.duration));
@@ -609,11 +658,18 @@ el.preview.addEventListener('timeupdate', () => {
   }
 });
 
-el.preview.addEventListener('play', () => { el.play.textContent = '❚❚'; });
-el.preview.addEventListener('pause', () => { el.play.textContent = '▶'; });
+function updateTransport() {
+  const playing = !el.preview.paused && !el.preview.ended;
+  el.play.textContent = playing ? '❚❚' : '▶';
+  el.play.setAttribute('aria-label', phrase(playing ? 'transport.pause' : 'transport.play'));
+}
+
+for (const event of ['play', 'pause', 'ended', 'emptied']) {
+  el.preview.addEventListener(event, updateTransport);
+}
 
 function togglePlay() {
-  if (!clip()?.playable) return;
+  if (!canEdit() || !clip()?.playable) return;
   watchUntil = null;
   if (el.preview.paused) el.preview.play().catch(() => {});
   else el.preview.pause();
@@ -624,6 +680,7 @@ el.back5.addEventListener('click', () => seekTo(currentTime() - 5));
 el.forward5.addEventListener('click', () => seekTo(currentTime() + 5));
 
 el.speedRow.addEventListener('click', (event) => {
+  if (!canEdit()) return;
   const button = event.target.closest('.speed');
   if (!button) return;
   for (const other of el.speedRow.querySelectorAll('.speed')) {
@@ -642,11 +699,13 @@ el.speedRow.addEventListener('click', (event) => {
  * and pressed a beat too early.
  */
 function markIn() {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const at = timeline.snap(currentTime());
   const open = openSegment(entry.segments);
 
+  changedPlan();
   if (open) open.start = at;
   else entry.segments.push({ id: entry.nextSegmentId++, start: at, end: null });
 
@@ -657,6 +716,7 @@ function markIn() {
 
 /** `o`: close the last segment here. */
 function markOut() {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const last = entry.segments[entry.segments.length - 1];
@@ -672,6 +732,7 @@ function markOut() {
     return;
   }
 
+  if (last.end !== at) changedPlan();
   last.end = at;
   selectedSegment = last.id;
   clearError();
@@ -680,8 +741,10 @@ function markOut() {
 
 /** `u`: take the last one back. */
 function undoSegment() {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry?.segments.length) return;
+  changedPlan();
   entry.segments.pop();
   selectedSegment = entry.segments.length
     ? entry.segments[entry.segments.length - 1].id
@@ -694,6 +757,7 @@ el.markOut.addEventListener('click', markOut);
 el.undo.addEventListener('click', undoSegment);
 
 el.addSegment.addEventListener('click', () => {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const start = timeline.snap(currentTime());
@@ -702,26 +766,31 @@ el.addSegment.addEventListener('click', () => {
     showError(phrase('mark.nospace'));
     return;
   }
+  changedPlan();
   entry.segments.push({ id: entry.nextSegmentId++, start, end });
   selectedSegment = entry.segments[entry.segments.length - 1].id;
   renderSegments();
 });
 
 el.resetSegments.addEventListener('click', () => {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry?.segments.length) return;
   // eslint-disable-next-line no-alert
   if (!window.confirm(phrase('mark.clearall',
     { n: entry.segments.length, name: entry.name }))) return;
+  changedPlan();
   entry.segments = [];
   selectedSegment = null;
   renderSegments();
 });
 
 function adjustSegment(id, { start, end }) {
+  if (!canEdit()) return;
   const entry = clip();
   const segment = entry?.segments.find((one) => one.id === id);
   if (!segment) return;
+  if (segment.start !== start || segment.end !== end) changedPlan();
   segment.start = start;
   segment.end = end;
   renderSegments();
@@ -818,6 +887,7 @@ function timeCell(segment, which) {
   const commit = () => {
     const entry = clip();
     if (!entry?.segments.includes(segment)) return;
+    if (!canEdit()) { restore(); return; }
     const seconds = parseTime(input.value);
     if (seconds === null) {
       restore();
@@ -829,6 +899,7 @@ function timeCell(segment, which) {
       restore();
       return;
     }
+    if (segment[which] !== at) changedPlan();
     segment[which] = at;
     restore();
     const row = cell.parentElement;
@@ -839,6 +910,10 @@ function timeCell(segment, which) {
     updateSegmentSummary();
   };
 
+  input.addEventListener('input', () => {
+    if (!canEdit()) { restore(); return; }
+    marksReader.invalidate();
+  });
   input.addEventListener('change', commit);
   input.addEventListener('blur', commit);
   cell.append(input);
@@ -869,7 +944,7 @@ function actionsCell(segment, index) {
 
 function playSegment(segment) {
   const entry = clip();
-  if (!entry?.playable || segment.end === null) return;
+  if (!canEdit() || !entry?.playable || segment.end === null) return;
   el.preview.currentTime = segment.start;
   watchUntil = segment.end;
   selectSegment(segment.id);
@@ -877,12 +952,14 @@ function playSegment(segment) {
 }
 
 function moveSegment(index, by) {
+  if (!canEdit()) return;
   const entry = clip();
   const to = index + by;
   if (!entry || to < 0 || to >= entry.segments.length) return;
   const focused = document.activeElement;
   const buttons = focused.closest('.segment-buttons');
   const action = buttons ? [...buttons.children].indexOf(focused) : -1;
+  changedPlan();
   const [moved] = entry.segments.splice(index, 1);
   entry.segments.splice(to, 0, moved);
   renderSegments();
@@ -895,9 +972,12 @@ function moveSegment(index, by) {
 }
 
 function removeSegment(index) {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const hadFocus = el.segmentRows.children[index]?.contains(document.activeElement);
+  if (!entry.segments[index]) return;
+  changedPlan();
   const [gone] = entry.segments.splice(index, 1);
   if (selectedSegment === gone.id) {
     selectedSegment = entry.segments.length
@@ -914,6 +994,7 @@ function removeSegment(index) {
 /* ----------------------------------------------------- saving the marks */
 
 el.exportMarks.addEventListener('click', () => {
+  if (!canEdit()) return;
   const entry = clip();
   if (!entry) return;
   const ranges = segmentRanges(entry.segments);
@@ -937,61 +1018,67 @@ el.exportMarks.addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
-el.importMarks.addEventListener('click', () => el.marksInput.click());
+el.importMarks.addEventListener('click', () => {
+  if (canEdit()) el.marksInput.click();
+});
 
-el.marksInput.addEventListener('change', async () => {
+el.marksInput.addEventListener('change', () => {
   const [file] = el.marksInput.files ?? [];
   el.marksInput.value = '';
   const entry = clip();
-  if (!file || !entry) return;
+  if (!file || !entry || !canEdit()) return;
   const generation = batch;
 
-  try {
-    const parsed = readTimestamps(await file.text());
-    if (generation !== batch || entry !== clip()) return;
-    const kept = parsed.segments.filter((segment) => segment.start < entry.duration);
+  marksReader.read([file], {
+    apply: ([text]) => {
+      if (generation !== batch || entry !== clip() || !canEdit()) return;
+      const parsed = readTimestamps(text);
+      const kept = parsed.segments.filter((segment) => segment.start < entry.duration);
 
-    if (!kept.length) {
-      showError(phrase('marks.pastend', { name: file.name }));
-      return;
-    }
-
-    entry.segments = kept.map((segment) => ({
-      id: entry.nextSegmentId++,
-      start: segment.start,
-      end: Math.min(segment.end, entry.duration),
-    }));
-    selectedSegment = entry.segments[entry.segments.length - 1].id;
-    el.marksFormat.value = parsed.format;
-
-    // Nothing to say when the whole file loaded: the rows appearing is the
-    // report. The box below is red, and red should mean something went wrong.
-    const dropped = parsed.segments.length - kept.length;
-    clearError();
-    if (dropped || parsed.skipped) {
-      // Three sentences, each whole. The English one picked a noun and
-      // two verbs with ternaries - "1 segment ... starts ... it was"
-      // against "3 segments ... start ... they were" - which is a
-      // sentence assembled out of English grammar rather than translated.
-      const says = [];
-      if (dropped) {
-        says.push(phrase(dropped === 1 ? 'marks.dropped.one' : 'marks.dropped.many',
-          { n: dropped, name: file.name }));
+      if (!kept.length) {
+        showError(phrase('marks.pastend', { name: file.name }));
+        return;
       }
-      if (parsed.skipped) {
-        says.push(phrase(
-          parsed.skipped === 1 ? 'marks.skipped.one' : 'marks.skipped.many',
-          { n: parsed.skipped }));
+
+      changedPlan();
+      entry.segments = kept.map((segment) => ({
+        id: entry.nextSegmentId++,
+        start: segment.start,
+        end: Math.min(segment.end, entry.duration),
+      }));
+      selectedSegment = entry.segments[entry.segments.length - 1].id;
+      el.marksFormat.value = parsed.format;
+
+      // Nothing to say when the whole file loaded: the rows appearing is the
+      // report. The box below is red, and red should mean something went wrong.
+      const dropped = parsed.segments.length - kept.length;
+      clearError();
+      if (dropped || parsed.skipped) {
+        // Three sentences, each whole. The English one picked a noun and
+        // two verbs with ternaries - "1 segment ... starts ... it was"
+        // against "3 segments ... start ... they were" - which is a
+        // sentence assembled out of English grammar rather than translated.
+        const says = [];
+        if (dropped) {
+          says.push(phrase(dropped === 1 ? 'marks.dropped.one' : 'marks.dropped.many',
+            { n: dropped, name: file.name }));
+        }
+        if (parsed.skipped) {
+          says.push(phrase(
+            parsed.skipped === 1 ? 'marks.skipped.one' : 'marks.skipped.many',
+            { n: parsed.skipped }));
+        }
+        says.push(phrase('marks.loaded', { n: kept.length }));
+        showError(sentences(says));
       }
-      says.push(phrase('marks.loaded', { n: kept.length }));
-      showError(sentences(says));
-    }
-    renderSegments();
-  } catch (error) {
-    if (generation !== batch || entry !== clip()) return;
-    showError(phrase('marks.failed',
-      { name: file.name, reason: phrase(error.message, error.values) }));
-  }
+      renderSegments();
+    },
+    failed: (error) => {
+      if (generation !== batch || entry !== clip() || !canEdit()) return;
+      showError(phrase('marks.failed',
+        { name: file.name, reason: errorReason(error) }));
+    },
+  });
 });
 
 /* --------------------------------------------------------------- shortcuts */
@@ -1047,7 +1134,7 @@ function exportClips() {
       file: entry.file,
       media: entry.media,
       name: entry.name,
-      source: entry.source,
+      source: { ...entry.source },
       ranges: rangesOf(entry),
     }))
     .filter((entry) => entry.ranges.length);
@@ -1055,6 +1142,13 @@ function exportClips() {
 
 document.querySelectorAll('input[name="mode"]').forEach((radio) => {
   radio.addEventListener('change', () => {
+    if (!canEdit()) {
+      for (const choice of document.querySelectorAll('input[name=mode]')) {
+        choice.checked = choice.value === mode;
+      }
+      return;
+    }
+    if (mode !== radio.value) changedPlan();
     mode = radio.value;
     renderSegments();
   });
@@ -1142,10 +1236,24 @@ function updateMethodNote() {
   updateSummary();
 }
 
-el.method.addEventListener('change', updateMethodNote);
-el.frame.addEventListener('change', updateSummary);
-el.quality.addEventListener('change', updateSummary);
-el.keepAudio.addEventListener('change', () => updateMethodOptions());
+function restoreWritingChoices() {
+  if (!activeExport) return;
+  el.method.value = activeExport.method;
+  el.frame.value = activeExport.frameChoice;
+  el.quality.value = activeExport.quality;
+  el.keepAudio.checked = activeExport.audioChecked;
+}
+
+for (const [control, update] of [
+  [el.method, updateMethodNote], [el.frame, updateSummary],
+  [el.quality, updateSummary], [el.keepAudio, updateMethodOptions],
+]) {
+  control.addEventListener('change', () => {
+    if (!canEdit()) { restoreWritingChoices(); return; }
+    changedPlan();
+    update();
+  });
+}
 
 function updateSummary() {
   const chosen = exportClips();
@@ -1281,8 +1389,8 @@ function setProgress({ phase, done, total, realtime }) {
   }
 }
 
-function outputFilename(extension) {
-  const base = (clips[0]?.name ?? 'video').replace(/\.[^.]+$/, '');
+function outputFilename(name, extension) {
+  const base = name.replace(/\.[^.]+$/, '');
   return `${base}-cut.${extension}`;
 }
 
@@ -1297,55 +1405,64 @@ async function runExport() {
   }
 
   clearError();
-  const generation = batch;
+  marksReader.invalidate();
+  clearResult();
+  const method = el.method.value;
+  const quality = el.quality.value;
+  const keepAudio = el.keepAudio.checked && !el.keepAudio.disabled;
+  const job = {
+    generation: batch, revision: planRevision, controller: new AbortController(),
+    method, quality, keepAudio, frameChoice: el.frame.value,
+    audioChecked: el.keepAudio.checked, sourceName: clips[0].name,
+    frame: chosen.length > 1
+      ? outputFrame(chosen, el.frame.value)
+      : outputFrame(chosen.slice(0, 1), 'first'),
+    sound: joinability(chosen, { keepAudio, t: phrase }).sound,
+    recording: { src: clips[0].objectUrl, size: { ...clips[0].source }, fps: clips[0].fps },
+  };
+  activeExport = job;
   exporting = true;
-  abortController = new AbortController();
+  lockPlan();
+  const ownsPage = () => activeExport === job && job.generation === batch
+    && job.revision === planRevision;
+  const canPublish = () => ownsPage() && !job.controller.signal.aborted;
 
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
   el.progress.hidden = false;
-  el.result.hidden = true;
-  timeline.setEnabled(false);
   el.preview.pause();
   setProgress({ phase: 'preparing', done: 0, total: 1 });
 
-  const method = el.method.value;
-  const quality = el.quality.value;
-  const keepAudio = el.keepAudio.checked && !el.keepAudio.disabled;
-  const onProgress = (progress) => { if (generation === batch) setProgress(progress); };
-  const signal = abortController.signal;
+  const onProgress = (progress) => { if (canPublish()) setProgress(progress); };
+  const signal = job.controller.signal;
 
   try {
     let result;
     if (method === 'copy') {
       result = await joinByCopy({ clips: chosen, keepAudio, onProgress, signal });
     } else if (method === 'exact') {
-      const frame = chosen.length > 1
-        ? outputFrame(chosen, el.frame.value)
-        : outputFrame(chosen.slice(0, 1), 'first');
-      const sound = joinability(chosen, { keepAudio, t: phrase }).sound;
       result = await joinExact({
         clips: chosen,
-        frame,
+        frame: job.frame,
         quality,
-        audioMode: keepAudio ? sound : 'none',
+        audioMode: keepAudio ? job.sound : 'none',
         onProgress,
         signal,
       });
     } else {
       result = await trimByRecording({
-        src: clips[0].objectUrl,
+        src: job.recording.src,
         range: chosen[0].ranges[0],
-        size: clips[0].source,
+        size: job.recording.size,
         quality,
         keepAudio,
-        fps: clips[0].fps,
+        fps: job.recording.fps,
         onProgress,
         signal,
       });
     }
 
-    if (generation !== batch) return;
+    if (!canPublish()) return;
     if (result.warning?.length) {
       showError(sentences(result.warning.map((key) => phrase(key))));
     }
@@ -1356,7 +1473,7 @@ async function runExport() {
     const sections = chosen.reduce((total, entry) => total + entry.ranges.length, 0);
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
-    el.download.download = outputFilename(result.extension);
+    el.download.download = outputFilename(job.sourceName, result.extension);
     el.resultInfo.textContent = [
       result.extension.toUpperCase(),
       sections > 1 ? phrase('result.parts', { n: sections }) : null,
@@ -1368,29 +1485,27 @@ async function runExport() {
     el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
-    if (generation !== batch) return;
+    if (!ownsPage()) return;
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      showError(error?.message
-        ? phrase(error.message, error.message === 'copy.internalpreroll'
-          ? { method: exactMethodLabel() } : error.values)
-        : phrase('error.generic'));
+      showError(errorReason(error, error?.message === 'copy.internalpreroll'
+        ? { ...error.values, method: exactMethodLabel() } : error?.values));
       console.error(error);
     }
   } finally {
-    if (generation === batch) {
+    if (activeExport === job) {
       exporting = false;
-      abortController = null;
+      activeExport = null;
       el.cancelBtn.hidden = true;
-      el.exportBtn.disabled = false;
-      timeline.setEnabled(true);
+      el.progress.hidden = true;
+      lockPlan();
       renderSegments();
     }
   }
 }
 
 el.exportBtn.addEventListener('click', runExport);
-el.cancelBtn.addEventListener('click', () => abortController?.abort());
+el.cancelBtn.addEventListener('click', () => activeExport?.controller.abort());
 
 window.addEventListener('beforeunload', (event) => {
   if (!exporting) return;

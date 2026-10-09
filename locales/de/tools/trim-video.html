@@ -37,7 +37,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="Vorschau"></video>
+        <video id="preview" playsinline aria-label="Ausgangsvideo"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -144,7 +144,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> Schneiden</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">Wie geschnitten wird</label>
         <select id="method">
@@ -216,7 +216,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="Geschnittenes Video"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>Video herunterladen</a>
@@ -231,6 +231,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">Abspielen</span>
+    <span data-phrase="transport.pause">Pausieren</span>
     <span data-phrase="tl.band">Abschnitt {n}: {from} bis {to}</span>
     <span data-phrase="record.failed">Die Aufnahme ist fehlgeschlagen.</span>
     <span data-phrase="time.start">Startzeit</span>

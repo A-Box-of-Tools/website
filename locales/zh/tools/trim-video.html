@@ -39,7 +39,7 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline aria-label="预览"></video>
+        <video id="preview" playsinline aria-label="源视频"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
@@ -140,7 +140,7 @@
   <section class="card" id="export-card" inert>
     <h2><span class="step">3</span> 开剪</h2>
 
-    <div class="settings">
+    <div class="settings" id="export-settings">
       <div class="field">
         <label for="method">怎么剪</label>
         <select id="method">
@@ -210,7 +210,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <video id="result-video" controls playsinline></video>
+      <video id="result-video" controls playsinline aria-label="剪辑后的视频"></video>
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>下载视频</a>
@@ -225,6 +225,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="transport.play">播放</span>
+    <span data-phrase="transport.pause">暂停</span>
     <span data-phrase="tl.band">第 {n} 段：{from} 到 {to}</span>
     <span data-phrase="record.failed">录制失败。</span>
     <span data-phrase="time.start">开始时间</span>
