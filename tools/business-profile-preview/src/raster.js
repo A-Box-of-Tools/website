@@ -22,6 +22,8 @@
  * where a line broke, because the layout was decided before this file saw it.
  */
 
+import { throwIfAborted } from './shared/errors.js';
+
 /** Wrap a string of SVG as a blob the browser will treat as an image. */
 export function svgBlob(svg) {
   return new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
@@ -32,12 +34,15 @@ export function svgBlob(svg) {
  *
  * @param {{svg: string, width: number, height: number}} drawn
  * @param {number} [scale]
+ * @param {AbortSignal} [signal]  native work may finish after retirement
  * @returns {Promise<Blob>}
  */
-export async function toPng(drawn, scale = 1) {
+export async function toPng(drawn, scale = 1, signal) {
+  throwIfAborted(signal);
   const url = URL.createObjectURL(svgBlob(drawn.svg));
+  let canvas;
+  const image = new Image();
   try {
-    const image = new Image();
     image.width = drawn.width;
     image.height = drawn.height;
     await new Promise((resolve, reject) => {
@@ -46,7 +51,8 @@ export async function toPng(drawn, scale = 1) {
       image.src = url;
     });
 
-    const canvas = document.createElement('canvas');
+    throwIfAborted(signal);
+    canvas = document.createElement('canvas');
     canvas.width = Math.round(drawn.width * scale);
     canvas.height = Math.round(drawn.height * scale);
     const context = canvas.getContext('2d');
@@ -58,13 +64,18 @@ export async function toPng(drawn, scale = 1) {
     context.imageSmoothingQuality = 'high';
     context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-    return await new Promise((resolve, reject) => {
+    const blob = await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (blob) resolve(blob);
         else reject(new Error('save.nopng'));
       }, 'image/png');
     });
+    throwIfAborted(signal);
+    return blob;
   } finally {
+    image.onload = image.onerror = null;
+    image.removeAttribute('src');
+    if (canvas) canvas.width = canvas.height = 0;
     URL.revokeObjectURL(url);
   }
 }

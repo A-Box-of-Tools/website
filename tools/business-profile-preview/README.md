@@ -148,6 +148,31 @@ shows a visitor the status in the business's local time, and the closest this
 page can get without asking anybody anything is the reader's own clock. The page
 says so under the week rather than leaving it to be discovered.
 
+### A date belongs to the preview, and a save belongs to its picture
+
+The default status follows the device's local clock, refreshed at each minute
+boundary and when a background tab returns. A chosen local date/time lets a
+visitor inspect an evening, the next morning or an overnight opening without
+waiting. It uses the device's time zone and the existing weekly-hours model,
+with no holiday calendar or conversion to a business time zone. Invalid or
+incomplete wall times, including a spring-forward gap, offer no picture
+download. The chosen time is a preview setting and does not change the saved
+profile's JSON format.
+
+A PNG captures its SVG, surface, business name, dimensions and scale before
+native work starts. Editing the form while it encodes does not relabel those
+pixels. Replacing or clearing the profile retires the save; native encoding may
+finish, but cannot download or publish a late message. One PNG writer owns its
+button, so an old completion cannot unlock a newer save.
+
+A cover-photo read belongs to its own selection. A later photo, Remove,
+example, paste or saved-profile import retires that owner before applying
+anything. Native decoding may still finish; its bitmap is closed and its
+canvas cleared without reinstalling the picture or an old error. Saved JSON
+reads use the existing shared text-import owner, so later edits and imports
+also retire late profile replacements. Only known phrase keys are looked up;
+unexpected platform failures never become phrase selectors.
+
 ### One renderer, and no words in it
 
 What is on screen, what the SVG download holds and what the PNG download holds
@@ -256,6 +281,7 @@ mock-up that changed colour with the page would be a mock-up of nothing.
 | `src/saved.js` | the JSON this page writes, and the Business Profile export it also reads |
 | `src/samples.js` | the example profile behind the button, and the shopfront it draws |
 | `src/photo.js` | the bound a cover photo is redrawn to, and the only href the picture may carry |
+| `src/preview-time.js` | strict local wall times and native date/time input values |
 | `src/raster.js` | the SVG blob and the canvas rasterisation |
 | `src/main.js` | the form, the week rows, the surface switcher and the downloads |
 

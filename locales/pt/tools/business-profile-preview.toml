@@ -76,7 +76,9 @@ body = "São os campos de maior impacto. O nome pode ser cortado nas três apres
 
 [[howto]]
 title = "Preencha a semana e confira o status."
-body = "A linha de status muda sozinha: <em>Aberto &middot; Fecha às 21:00</em> pode virar <em>Fechado &middot; Abre às 09:00 ter.</em>. O cálculo usa os horários informados e o relógio do seu computador. Marcar um dia como fechado mostra o que uma pessoa verá ao consultar naquele período. Um intervalo que termina antes de começar, como 22:00 a 02:00, é interpretado como atravessando a meia-noite."
+body = """A linha de status muda sozinha: <em>Aberto &middot; Fecha às 21:00</em> pode virar <em>Fechado &middot; Abre às 09:00 ter.</em>. O cálculo usa os horários informados e o relógio do seu computador. Marcar um dia como fechado mostra o que uma pessoa verá ao consultar naquele período. Um intervalo que termina antes de começar, como 22:00 a 02:00, é interpretado como atravessando a meia-noite.
+
+      Ative <em>Pré-visualizar uma data e hora escolhidas</em> para conferir uma noite específica ou a manhã seguinte no fuso horário deste dispositivo. Desative a opção para voltar a seguir o relógio. Esta escolha não é salva no JSON do perfil."""
 
 [[howto]]
 title = "Confira quais botões aparecem."
@@ -112,7 +114,8 @@ a = "Porque um perfil sem avaliações deve mostrar isso claramente. Cinco estre
 
 [[faq]]
 q = "Como é calculada a indicação Aberto ou Fechado?"
-a = "Pelos horários da semana e pelo relógio do seu computador. Não há campo de fuso horário. O Google usa o horário local da empresa; esta página, sem consultar serviços externos, usa seu relógio. Portanto, o status corresponde ao da empresa se você estiver no mesmo fuso, mas pode divergir se estiver em outro. A página informa isso abaixo dos horários."
+a = """
+        A semana preenchida e, por padrão, o relógio local deste dispositivo. O estado é atualizado a cada minuto. Você também pode escolher uma data e hora locais para verificar um momento específico da semana. A pré-visualização usa o fuso horário deste dispositivo, sem conversão para o da empresa nem horários especiais de feriados. Se a empresa estiver noutro local, insira a hora local que deseja conferir. Esta escolha não faz parte do JSON salvo do perfil."""
 
 [[faq]]
 q = "Posso usar a imagem em uma proposta, apresentação ou relatório para cliente?"

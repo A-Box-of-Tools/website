@@ -360,7 +360,9 @@
   <section class="card">
     <h2><span class="step">3</span> Horário de funcionamento</h2>
 
-    <p class="card-lede">Esta é a linha do perfil que muda sozinha. Preencha a semana e a prévia calcula o status conforme o relógio do seu computador, como <em>Aberto &middot; Fecha às 21:00</em> ou <em>Fechado &middot; Abre às 09:00 ter.</em>. Assim você confere o que alguém verá ao consultar no domingo à noite, por exemplo.</p>
+    <p class="card-lede">
+      O estado segue o relógio local do dispositivo ou uma data e hora escolhidas abaixo. Preencha a semana para ver quando a ficha indica Aberto ou Fechado, incluindo horários que passam da meia-noite.
+    </p>
 
     <div class="settings">
       <div class="field">
@@ -381,6 +383,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>Pré-visualizar uma data e hora escolhidas</span></label>
+      <div class="field">
+        <label for="preview-at">Data e hora locais</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">Usa o fuso horário deste dispositivo. Deixe a opção desativada para seguir o relógio; o estado é atualizado a cada minuto. Esta escolha não é salva no JSON do perfil.</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -483,6 +495,10 @@
 
     <span data-phrase="name.length">{count} caracteres. No resultado de busca, o nome ocupa uma linha e é cortado quando o espaço acaba. Confira a terceira prévia.</span>
     <span data-phrase="description.length">{count} caracteres. O painel mostra aproximadamente as quatro primeiras linhas.</span>
+
+    <span data-phrase="preview.invalid">Escolha uma data e hora locais completas e válidas. Os downloads de imagens ficam indisponíveis até lá.</span>
+    <span data-phrase="week.chosen">Em {date}, no fuso horário deste dispositivo: {status}.</span>
+    <span data-phrase="load.failed">Este navegador não conseguiu ler o arquivo do perfil. Escolha-o novamente ou tente outro arquivo.</span>
 
     <span data-phrase="photo.added">Foto adicionada e redesenhada em {width} por {height} nesta página. Nada foi enviado para abri-la.</span>
     <span data-phrase="photo.toobig">A imagem é grande demais. O limite é de vinte megabytes.</span>

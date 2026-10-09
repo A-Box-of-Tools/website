@@ -415,8 +415,7 @@
     <h2><span class="step">3</span> Horario de apertura</h2>
 
     <p class="card-lede">
-      La línea que cambia sola. Completa la semana y la vista calculará el estado según el reloj del dispositivo: <em>Abierto &middot; Cierra a las 21:00</em>o
-      <em>Cerrado &middot; Abre el martes a las 9:00</em> . Así puedes revisar qué verá alguien al buscarte en cada momento.
+      El estado sigue el reloj local del dispositivo o una fecha y hora que elijas abajo. Completa la semana para ver cuándo la ficha indica Abierto o Cerrado, incluidos los horarios que pasan de medianoche.
     </p>
 
     <div class="settings">
@@ -438,6 +437,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>Previsualizar una fecha y hora elegidas</span></label>
+      <div class="field">
+        <label for="preview-at">Fecha y hora locales</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">Usa la zona horaria de este dispositivo. Deja la opción desactivada para seguir su reloj; el estado se actualiza cada minuto. Esta elección no se guarda en el JSON del perfil.</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -566,6 +575,10 @@
 
     <span data-phrase="name.length">{count} caracteres. El resultado de búsqueda reserva una línea al nombre y recorta lo que no cabe. Revisa la tercera vista.</span>
     <span data-phrase="description.length">{count} caracteres. El panel muestra aproximadamente las primeras cuatro líneas.</span>
+
+    <span data-phrase="preview.invalid">Elige una fecha y hora locales completas y válidas. Las descargas de imágenes no están disponibles hasta entonces.</span>
+    <span data-phrase="week.chosen">El {date} en la zona horaria de este dispositivo: {status}.</span>
+    <span data-phrase="load.failed">Este navegador no pudo leer el archivo del perfil. Vuelve a elegirlo o prueba otro archivo.</span>
 
     <span data-phrase="photo.added">Foto añadida y redibujada aquí a {width} por {height}. No se subió para leerla.</span>
     <span data-phrase="photo.toobig">La imagen supera el límite de veinte megabytes.</span>

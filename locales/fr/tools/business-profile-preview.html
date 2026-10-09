@@ -416,8 +416,7 @@
     <h2><span class="step">3</span> Horaires d’ouverture</h2>
 
     <p class="card-lede">
-      La ligne d’une fiche qui change toute seule. Remplissez la semaine&nbsp;: l’aperçu calcule son état actuel avec votre horloge &mdash; <em>Ouvert &middot; Ferme à 21&nbsp;h</em>, ou
-      <em>Fermé &middot; Ouvre mardi à 9&nbsp;h</em> &mdash; pour voir ce qui s’affiche lors d’une recherche le dimanche soir.
+      Le statut suit l’horloge locale de votre appareil ou une date et une heure choisies ci-dessous. Remplissez la semaine pour voir quand la fiche indique Ouvert ou Fermé, y compris avec des horaires qui dépassent minuit.
     </p>
 
     <div class="settings">
@@ -439,6 +438,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>Prévisualiser une date et une heure choisies</span></label>
+      <div class="field">
+        <label for="preview-at">Date et heure locales</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">Utilise le fuseau horaire de cet appareil. Sans cette option, le statut suit son horloge et se met à jour chaque minute. Ce choix n’est pas enregistré dans le JSON du profil.</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -567,6 +576,10 @@
 
     <span data-phrase="name.length">{count} caractères. Le nom tient sur une ligne dans les résultats et est coupé au-delà. Regardez le troisième aperçu.</span>
     <span data-phrase="description.length">{count} caractères. Le panneau affiche environ les quatre premières lignes.</span>
+
+    <span data-phrase="preview.invalid">Choisissez une date et une heure locales complètes et valides. Les téléchargements d’images sont indisponibles jusque-là.</span>
+    <span data-phrase="week.chosen">Le {date} dans le fuseau horaire de cet appareil&nbsp;: {status}.</span>
+    <span data-phrase="load.failed">Ce navigateur n’a pas pu lire le fichier du profil. Sélectionnez-le à nouveau ou essayez un autre fichier.</span>
 
     <span data-phrase="photo.added">Ajoutée et redessinée à {width} sur {height} dans cette page. Aucun envoi n’a servi à la lire.</span>
     <span data-phrase="photo.toobig">Cette image dépasse la limite de vingt mégaoctets.</span>

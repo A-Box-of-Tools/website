@@ -448,12 +448,7 @@
     <h2><span class="step">3</span> Wann es geöffnet ist</h2>
 
     <p class="card-lede">
-      Die eine Zeile in einem Eintrag, die sich von selbst ändert. Füllen Sie
-      die Woche aus, und die Vorschau rechnet aus, was sie in diesem Moment
-      nach Ihrer eigenen Uhr sagt &mdash; <em>Geöffnet &middot; Schließt um
-      21:00</em> oder <em>Geschlossen &middot; Öffnet Di um 09:00</em> &mdash;,
-      und das ist der einzige Weg herauszufinden, was jemandem gesagt wird,
-      der Sie an einem Sonntagabend nachschlägt.
+      Der Status folgt der lokalen Geräteuhr oder einem unten gewählten Datum und einer Uhrzeit. Tragen Sie die Woche ein, um zu sehen, wann der Eintrag geöffnet oder geschlossen anzeigt, auch bei Öffnungszeiten über Mitternacht.
     </p>
 
     <div class="settings">
@@ -475,6 +470,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>Ein gewähltes Datum und eine Uhrzeit ansehen</span></label>
+      <div class="field">
+        <label for="preview-at">Lokales Datum und Uhrzeit</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">Verwendet die Zeitzone dieses Geräts. Ohne diese Option folgt der Status der Geräteuhr und wird jede Minute aktualisiert. Diese Vorschauauswahl wird nicht im Profil-JSON gespeichert.</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -611,6 +616,10 @@
 
     <span data-phrase="name.length">{count} Zeichen. Ein Suchergebnis gibt dem Namen eine Zeile und schneidet ihn dort ab, wo diese Zeile endet &mdash; sehen Sie sich die dritte Vorschau an.</span>
     <span data-phrase="description.length">{count} Zeichen. Das Panel zeigt etwa die ersten vier Zeilen davon.</span>
+
+    <span data-phrase="preview.invalid">Wählen Sie ein vollständiges, gültiges lokales Datum und eine Uhrzeit. Bis dahin sind die Bilddownloads nicht verfügbar.</span>
+    <span data-phrase="week.chosen">Am {date} in der Zeitzone dieses Geräts: {status}.</span>
+    <span data-phrase="load.failed">Dieser Browser konnte die Profildatei nicht lesen. Wählen Sie sie erneut oder versuchen Sie eine andere Datei.</span>
 
     <span data-phrase="photo.added">Hinzugefügt und auf dieser Seite auf {width} mal {height} neu gezeichnet. Um es zu lesen, wurde nichts hochgeladen.</span>
     <span data-phrase="photo.toobig">Dieses Bild ist zu groß. Zwanzig Megabyte sind die Grenze.</span>
