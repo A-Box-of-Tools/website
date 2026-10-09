@@ -18,6 +18,7 @@ import { stripMetadata, writeDocument } from './shared/pdf-writer.js';
 import { standardSecurity, WrongPasswordError } from './shared/pdf-crypt.js';
 import { refusedIn } from './shared/pdf-permissions.js';
 import { outName, pages, scheme, strength } from './format.js';
+import { documentForExport } from './document-for-export.js';
 import { makeExample } from './example.js';
 
 const $ = (id) => document.getElementById(id);
@@ -88,6 +89,8 @@ let waitingOn = null;
 /** The object URL behind the download link, revoked when it is replaced. */
 let downloadUrl = '';
 let running = null;
+let opening = null;
+let loadGeneration = 0;
 
 /* ------------------------------------------------------------------ loading */
 
@@ -104,24 +107,28 @@ async function load(file) {
   if (!file || running) return;
 
   reset();
+  const mine = loadGeneration;
   picker.busy(readingLabel(1));
 
   try {
     if (!looksLikePdf(file)) throw new NotAPdfError('read.notpdf');
 
     const bytes = new Uint8Array(await file.arrayBuffer());
-    waitingOn = { file, bytes };
+    if (mine !== loadGeneration) return;
+    const input = { file, bytes };
+    waitingOn = input;
 
     el.fileName.textContent = file.name;
     el.fileFacts.textContent = size(bytes.length);
     el.fileRow.hidden = false;
 
-    await attempt('');
+    await attempt('', input, mine);
   } catch (error) {
+    if (mine !== loadGeneration) return;
     showLoadError(messageFor(error));
     picker.waiting();
   } finally {
-    picker.done();
+    if (mine === loadGeneration) picker.done();
   }
 }
 
@@ -136,14 +143,20 @@ async function load(file) {
  *
  * @returns {Promise<boolean>} whether the document opened
  */
-async function attempt(password) {
-  if (!waitingOn) return false;
-
+async function attempt(password, input, generation) {
+  if (!input) return false;
+  const owner = {};
+  opening = owner;
+  el.tryPassword.disabled = true;
+  el.password.disabled = true;
+  const current = () => opening === owner && generation === loadGeneration
+    && waitingOn === input;
   const { unlock, report } = standardSecurity(password);
 
   try {
-    const doc = await PdfDocument.open(waitingOn.bytes, { unlock });
-    loaded = { ...waitingOn, doc, report };
+    const doc = await PdfDocument.open(input.bytes, { unlock });
+    if (!current()) return false;
+    loaded = { ...input, doc, report };
 
     el.passwordRow.hidden = true;
     el.passwordError.hidden = true;
@@ -155,11 +168,19 @@ async function attempt(password) {
 
     return true;
   } catch (error) {
+    if (!current()) return false;
     if (error instanceof WrongPasswordError) {
       askForPassword(password !== '');
       return false;
     }
     throw error;
+  } finally {
+    if (current()) {
+      opening = null;
+      el.tryPassword.disabled = false;
+      el.password.disabled = false;
+      if (!el.passwordRow.hidden) el.password.focus();
+    }
   }
 }
 
@@ -262,17 +283,18 @@ el.password.addEventListener('keydown', (event) => {
 });
 
 async function submitPassword() {
-  if (!waitingOn || running) return;
+  if (!waitingOn || running || opening) return;
   const typed = el.password.value;
   if (!typed) return;
+  const input = waitingOn;
+  const generation = loadGeneration;
 
-  el.tryPassword.disabled = true;
   try {
-    await attempt(typed);
+    await attempt(typed, input, generation);
   } catch (error) {
-    showPasswordError(messageFor(error));
-  } finally {
-    el.tryPassword.disabled = false;
+    if (generation === loadGeneration && waitingOn === input) {
+      showPasswordError(messageFor(error));
+    }
   }
 }
 
@@ -293,13 +315,17 @@ el.run.addEventListener('click', run);
 el.cancel.addEventListener('click', () => running?.abort());
 el.clearFile.addEventListener('click', () => {
   reset();
-  picker.waiting();
+  el.dropzone.focus();
 });
 
 async function run() {
-  if (!loaded || running) return;
+  if (!loaded || running || !loaded.report.encrypted) return;
 
-  running = new AbortController();
+  const input = loaded;
+  const strip = el.stripMeta.checked;
+  const controller = new AbortController();
+  running = controller;
+  el.stripMeta.disabled = true;
   el.run.disabled = true;
   el.cancel.hidden = false;
   el.result.hidden = true;
@@ -311,19 +337,30 @@ async function run() {
   let cancelled = false;
 
   try {
-    const metadata = el.stripMeta.checked ? stripMetadata(loaded.doc) : 0;
-    const signed = hasSignature(loaded.doc);
+    const doc = await documentForExport(input);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
+    const metadata = strip ? stripMetadata(doc) : 0;
+    const signed = hasSignature(doc);
+    const expected = doc.countPages();
 
-    const blob = await writeDocument(loaded.doc, {
-      signal: running.signal,
-      onProgress: (done, total) => setProgress(done, total, null),
+    const blob = await writeDocument(doc, {
+      signal: controller.signal,
+      onProgress: (done, total) => {
+        if (running === controller) setProgress(done, total, null);
+      },
     });
 
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
     setProgress(1, 1, phrase('stage.checking'));
-    const check = await verify(blob, loaded.doc.countPages());
+    const check = await verify(blob, expected);
+    if (running !== controller) return;
+    controller.signal.throwIfAborted();
 
-    showResult({ blob, check, metadata, signed });
+    showResult({ blob, check, metadata, signed }, input);
   } catch (error) {
+    if (running !== controller) return;
     if (error?.name === 'AbortError') {
       cancelled = true;
       el.progressLabel.textContent = phrase('run.cancelled');
@@ -332,11 +369,14 @@ async function run() {
       el.runError.hidden = false;
     }
   } finally {
-    running = null;
-    el.run.disabled = false;
-    el.cancel.hidden = true;
-    el.progress.hidden = !cancelled;
-    if (cancelled) el.progressBar.style.width = '0%';
+    if (running === controller) {
+      running = null;
+      el.stripMeta.disabled = false;
+      el.run.disabled = false;
+      el.cancel.hidden = true;
+      el.progress.hidden = !cancelled;
+      if (cancelled) el.progressBar.style.width = '0%';
+    }
   }
 }
 
@@ -372,7 +412,7 @@ async function verify(blob, expected) {
   }
 }
 
-function showResult({ blob, check, metadata, signed }) {
+function showResult({ blob, check, metadata, signed }, input) {
   el.resultSize.textContent = phrase('result.ready', { size: size(blob.size) });
   el.resultSub.textContent = phrase('result.sub');
 
@@ -380,11 +420,11 @@ function showResult({ blob, check, metadata, signed }) {
     { found: say(check.text) });
   el.checkLine.className = `check-line ${check.ok ? 'good' : 'bad'}`;
 
-  renderFacts({ metadata, signed });
+  renderFacts({ metadata, signed }, input);
 
   downloadUrl = URL.createObjectURL(blob);
   el.download.href = downloadUrl;
-  el.download.download = outName(loaded.file.name);
+  el.download.download = outName(input.file.name);
   // A file the tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !check.ok;
@@ -392,8 +432,8 @@ function showResult({ blob, check, metadata, signed }) {
   el.result.hidden = false;
 }
 
-function renderFacts({ metadata, signed }) {
-  const { report, doc } = loaded;
+function renderFacts({ metadata, signed }, input) {
+  const { report, doc } = input;
   const lifted = refusedIn(report.restrictions).length;
   const facts = [];
 
@@ -491,6 +531,17 @@ function setProgress(done, total, stage) {
 }
 
 function reset() {
+  loadGeneration += 1;
+  running?.abort();
+  running = null;
+  opening = null;
+  el.stripMeta.disabled = false;
+  el.run.disabled = false;
+  el.cancel.hidden = true;
+  el.tryPassword.disabled = false;
+  el.password.disabled = false;
+  picker.done();
+  picker.waiting();
   loaded = null;
   waitingOn = null;
   el.fileRow.hidden = true;
