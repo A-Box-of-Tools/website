@@ -80,7 +80,8 @@ const el = {
 
 const { show: showError, clear: clearError } = messageBox(el.error);
 const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
-const phraseKeys = new Set([...document.querySelectorAll('#phrases [data-phrase], #frame-phrases [data-phrase]')]
+const phraseKeys = new Set(['phrases', 'frame-phrases']
+  .flatMap(id => [...($(id)?.querySelectorAll('[data-phrase]') ?? [])])
   .map(node => node.dataset.phrase));
 const knownReason = (key, values) => phraseKeys.has(key) ? phrase(key, values) : String(key || '');
 
@@ -477,7 +478,7 @@ function updateSummary() {
     fromWidth: source.width,
     fromHeight: source.height,
   });
-  el.sumFrames.textContent = `${frames.toLocaleString()}`;
+  el.sumFrames.textContent = frames.toLocaleString();
 
   const { low, high } = estimateBytes({ frames, ...size });
   el.sumBytes.textContent = phrase('sum.bytes',
