@@ -116,12 +116,15 @@
         gezeigt wird und was nicht.
       -->
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">Vorschauseite</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">Diese Auswahl betrifft nur die Vorschau; beim Export gilt die Option Nur erste Seite.</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
         <figcaption id="preview-note" class="field-note">
-          Der Stempel auf einer leeren Seite in der Form Ihrer ersten Seite,
-          genau dort, wo die Datei ihn hinsetzen wird. Der eigene Inhalt Ihrer
-          Seite wird nicht gezeichnet: Diese Website hat keinen PDF-Renderer,
-          mit Absicht.
+          Ein leeres Blatt mit Größe, Zuschnitt und Drehung der gewählten Seite zeigt, wo der Stempel erscheint. Der Inhalt Ihrer Seite wird nicht gezeichnet: Diese Website hat keinen PDF-Renderer.
         </figcaption>
       </figure>
     </div>
@@ -166,6 +169,9 @@
     Aufrufer eingesetzt.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">Seite {n} von {total} — Platzierungsvorschau.</span>
+    <span data-phrase="preview.unstamped">Seite {n} von {total} bleibt ohne Stempel, weil Nur erste Seite gewählt ist.</span>
+    <span data-phrase="preview.sample">A4-Platzierungsbeispiel, bis Sie ein Dokument wählen.</span>
     <span data-phrase="waiting.words">Das wird frei, sobald oben ein Dokument liegt und Wörter auf dem Stempel stehen.</span>
     <span data-phrase="note.repaired">Die Querverweistabelle dieser Datei passte nicht zu ihrem Inhalt, sie wurde
       deshalb durch Absuchen nach Objekten gelesen. Das ist eine Reparatur, und sie

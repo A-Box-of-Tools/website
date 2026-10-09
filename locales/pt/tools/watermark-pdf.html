@@ -72,8 +72,16 @@
 
 
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">Página da prévia</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">Esta escolha muda apenas a prévia; a exportação segue a opção Somente a primeira página.</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
-        <figcaption id="preview-note" class="field-note">A marca aparece numa página em branco no formato da primeira página do arquivo, exatamente onde será gravada. O conteúdo original não é desenhado: este site não inclui um renderizador de PDF.</figcaption>
+        <figcaption id="preview-note" class="field-note">
+          Uma folha em branco com o tamanho, recorte e rotação da página escolhida mostra onde o carimbo ficará. O conteúdo da sua página não é desenhado: este site não tem renderizador de PDF.
+        </figcaption>
       </figure>
     </div>
   </section>
@@ -111,6 +119,9 @@
 
 
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">Página {n} de {total}: prévia da posição.</span>
+    <span data-phrase="preview.unstamped">A página {n} de {total} fica sem carimbo porque Somente a primeira página está selecionado.</span>
+    <span data-phrase="preview.sample">Exemplo de posição em A4 até você escolher um documento.</span>
     <span data-phrase="waiting.words">O botão fica disponível quando há um documento escolhido e texto na marca.</span>
     <span data-phrase="note.repaired">A tabela de referências cruzadas deste arquivo não batia com o conteúdo dele, então
       ele foi lido procurando os objetos um a um. Isso é um conserto, e deu certo, mas

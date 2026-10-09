@@ -72,7 +72,7 @@
 
 /*
   The page is drawn at its own aspect ratio inside a fixed-width column, so a
-  landscape first page comes out short and a portrait one tall; main.js sets
+  landscape selected page comes out short and a portrait one tall; main.js sets
   the canvas's pixel size and this only says how wide it may be on screen.
 */
 .stamp-preview {
@@ -143,3 +143,14 @@ a.primary { text-decoration: none; display: inline-block; }
   .stamp-layout { grid-template-columns: 1fr; }
   .result-head { flex-direction: column; align-items: stretch; }
 }
+
+/* The preview selector changes page geometry without selecting export pages. */
+.preview-page-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.preview-page-field input { width: 5rem; }
+.preview-page-field p { flex-basis: 100%; margin: 0; }
+.stamp-preview .field-summary { margin: 0.6rem 0; }

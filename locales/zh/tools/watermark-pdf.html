@@ -109,9 +109,15 @@
         预览。一张跟第一页大小形状一样的空白页，水印压在上面；字是实时画的，访客看到的是自己打的字，不是占位符。屏幕阅读器靠下面那句话理解它，那句话说了画了什么、没画什么。
       -->
       <figure class="stamp-preview">
+        <div id="preview-page-field" class="preview-page-field" hidden>
+          <label for="preview-page">预览页码</label>
+          <input type="number" id="preview-page" min="1" max="1" step="1" value="1" required aria-describedby="preview-scope preview-state">
+          <p id="preview-scope" class="field-note">这里只选择预览页面；导出仍按“仅第一页”设置处理。</p>
+        </div>
+        <p id="preview-state" class="field-summary" role="status" aria-live="polite"></p>
         <canvas id="preview" aria-labelledby="preview-note"></canvas>
         <figcaption id="preview-note" class="field-note">
-          水印压在一张跟你第一页一样形状的空白页上，位置就是文件会放的位置。你页面自己的内容不会画出来：本站没有 PDF 渲染器，这是有意的。
+          用与所选页面尺寸、裁剪范围和旋转一致的白纸展示水印的位置。不会绘制原页面的内容：本站没有 PDF 渲染器。
         </figcaption>
       </figure>
     </div>
@@ -152,6 +158,9 @@
     这个工具的 JavaScript 要用的句子，放在标记里而不是 src/ 里，因为 src/ 是按字节原样复制进每一种语言的，写在那里的字符串会在除一个地址之外的所有地址上都是英文。shared/js/phrases.js 把它们读回去；{name} 这样的占位由调用方填。
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="preview.page">第 {n} 页，共 {total} 页，水印位置预览。</span>
+    <span data-phrase="preview.unstamped">已选择“仅第一页”，所以第 {n} 页（共 {total} 页）不加水印。</span>
+    <span data-phrase="preview.sample">选择文档前，显示 A4 纸上的位置示例。</span>
     <span data-phrase="waiting.words">这一步会在上面有了文档、水印上有了字之后开放。</span>
     <span data-phrase="note.repaired">这个文件的交叉引用表跟它的内容对不上，所以是靠扫描对象把它读出来的。那是一次修复，而且成功了，不过在把结果发给别人之前先检查一下。</span>
     <span data-phrase="note.incremental">这份文档至少被编辑并重新保存过一次，所以它里面还带着一些已经没有任何东西指向的旧对象副本。那些不会出现在你拿回去的文件里。</span>
