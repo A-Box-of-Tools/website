@@ -21,6 +21,8 @@
  * None of it involves the network, and the file is never read as text.
  */
 
+import { throwIfAborted } from './shared/errors.js';
+
 export const LIMITS = {
   // The file on disk. Generous, because a cover photo straight off a phone
   // honestly is this big, and it is bounded again by `side` below before any of
@@ -57,10 +59,12 @@ export function fit(width, height, longest = LIMITS.side) {
  *
  * @param {File|Blob} file
  * @param {number} [longest]  the longest side to keep
+ * @param {AbortSignal} [signal]  retirement is checked after native decoding
  * @returns {Promise<{uri: string, width: number, height: number}>}  the size is
  *   the one it was redrawn at, which is what the page reports back
  */
-export async function readPhoto(file, longest = LIMITS.side) {
+export async function readPhoto(file, longest = LIMITS.side, signal) {
+  throwIfAborted(signal);
   if (file.size > LIMITS.bytes) throw new Error('photo.toobig');
 
   let bitmap;
@@ -70,12 +74,14 @@ export async function readPhoto(file, longest = LIMITS.side) {
     throw new Error('photo.unreadable');
   }
 
+  let canvas;
   try {
+    throwIfAborted(signal);
     if (bitmap.width < LIMITS.smallest || bitmap.height < LIMITS.smallest) {
       throw new Error('photo.tiny');
     }
     const size = fit(bitmap.width, bitmap.height, longest);
-    const canvas = document.createElement('canvas');
+    canvas = document.createElement('canvas');
     canvas.width = size.width;
     canvas.height = size.height;
     const context = canvas.getContext('2d');
@@ -83,6 +89,7 @@ export async function readPhoto(file, longest = LIMITS.side) {
     context.drawImage(bitmap, 0, 0, size.width, size.height);
     return { uri: canvas.toDataURL('image/jpeg', 0.82), ...size };
   } finally {
+    if (canvas) canvas.width = canvas.height = 0;
     bitmap.close();
   }
 }

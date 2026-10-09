@@ -388,7 +388,9 @@
   <section class="card">
     <h2><span class="step">3</span>営業時間</h2>
 
-    <p class="card-lede">リスティングの中で自動で変わる行です。1週間を入力すると、端末の現在時刻から表示を計算します。例：<em>営業中 &middot; 午後9時に閉店</em>、または<em>営業時間外 &middot; 火曜日の午前9時に開店</em>。日曜日の夜に探す人に何が見えるかを確認できます。</p>
+    <p class="card-lede">
+      状態は端末のローカル時計、または下で指定した日時に従います。1週間の営業時間を入力して、深夜をまたぐ場合も含め、営業中・閉店の表示を確認できます。
+    </p>
 
     <div class="settings">
       <div class="field">
@@ -409,6 +411,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>指定した日時でプレビュー</span></label>
+      <div class="field">
+        <label for="preview-at">ローカルの日付と時刻</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">この端末のタイムゾーンを使います。オフにすると端末の時計に従い、状態を毎分更新します。この選択はプロフィールのJSONには保存されません。</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -525,6 +537,10 @@
 
     <span data-phrase="name.length">{count}文字です。検索結果の名前は1行で、幅に収まらない部分は切られます。3番目のプレビューで確認してください。</span>
     <span data-phrase="description.length">{count}文字です。パネルには最初の約4行が表示されます。</span>
+
+    <span data-phrase="preview.invalid">有効なローカルの日付と時刻をすべて入力してください。入力が完了するまで画像をダウンロードできません。</span>
+    <span data-phrase="week.chosen">この端末のタイムゾーンで{date}の状態：{status}。</span>
+    <span data-phrase="load.failed">このブラウザーではプロフィールファイルを読み込めませんでした。もう一度選ぶか、別のファイルを試してください。</span>
 
     <span data-phrase="photo.added">このページで追加し、{width}×{height}に縮小して描きました。画像を読むためのアップロードはありません。</span>
     <span data-phrase="photo.toobig">画像が大きすぎます。上限は20MBです。</span>

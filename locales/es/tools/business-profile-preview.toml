@@ -70,7 +70,9 @@ body = "El nombre se recorta en las tres vistas, especialmente en el resultado l
 
 [[howto]]
 title = "Completa la semana y mira el estado."
-body = "La línea cambia de <em>Abierto &middot; Cierra a las 21:00</em> a <em>Cerrado &middot; Abre el martes a las 9:00</em> según el horario y el reloj del dispositivo. Así puedes revisar qué se verá en cada momento. Un intervalo de 22:00 a 02:00 se interpreta como abierto después de medianoche."
+body = """La línea cambia de <em>Abierto &middot; Cierra a las 21:00</em> a <em>Cerrado &middot; Abre el martes a las 9:00</em> según el horario y el reloj del dispositivo. Así puedes revisar qué se verá en cada momento. Un intervalo de 22:00 a 02:00 se interpreta como abierto después de medianoche.
+
+      Activa <em>Previsualizar una fecha y hora elegidas</em> para comprobar una tarde concreta o la mañana siguiente en la zona horaria del dispositivo. Desactívala para volver a seguir el reloj. La elección no se guarda en el JSON del perfil."""
 
 [[howto]]
 title = "Comprueba qué botones aparecen."
@@ -106,7 +108,8 @@ a = "Sin valoración ni número de reseñas se muestra que aún no hay reseñas,
 
 [[faq]]
 q = "¿De qué depende el estado abierto o cerrado?"
-a = "De la semana que introduces y el reloj del dispositivo. La ficha real usa la hora local del negocio; esta vista usa tu reloj sin consultar ubicaciones. Por tanto, coincide si estás en la misma zona horaria y puede desplazarse si no. La advertencia aparece bajo los horarios."
+a = """
+        La semana que rellenaste y, de forma predeterminada, el reloj local del dispositivo. El estado se actualiza cada minuto. También puedes elegir una fecha y hora locales para revisar un momento concreto de la semana. La vista previa usa la zona horaria del dispositivo, sin conversión a la del negocio ni horarios especiales de festivos. Si el negocio está en otro lugar, introduce la hora local que quieras comprobar. Esta elección no forma parte del JSON guardado del perfil."""
 
 [[faq]]
 q = "¿Puedo usar la imagen en propuestas o informes para clientes?"

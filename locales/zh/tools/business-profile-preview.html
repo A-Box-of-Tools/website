@@ -412,7 +412,7 @@
     <h2><span class="step">3</span> 什么时候开门</h2>
 
     <p class="card-lede">
-      这是一份资料上唯一会自己变的一行。把一周填满，预览就会按你自己的钟算出此刻它说的是什么——<em>营业中 &middot; 21:00 关门</em>，或者<em>已关门 &middot; 周二 09:00 开门</em>——而这是弄清楚「周日傍晚来查你的人被告知了什么」的唯一办法。
+      状态跟随设备的本地时钟，或下方指定的日期和时间。填写一周营业时间，即可查看何时显示营业中或已打烊，也支持跨越午夜的时段。
     </p>
 
     <div class="settings">
@@ -434,6 +434,16 @@
         </select>
       </div>
     </div>
+
+    <div class="settings preview-time">
+      <label class="check"><input type="checkbox" id="preview-fixed" aria-controls="preview-at"><span>预览指定的日期和时间</span></label>
+      <div class="field">
+        <label for="preview-at">本地日期和时间</label>
+        <input id="preview-at" type="datetime-local" step="60" disabled aria-describedby="preview-time-note preview-time-error">
+      </div>
+    </div>
+    <p class="preview-time-note" id="preview-time-note">使用此设备的时区。关闭此选项后会跟随设备时钟，每分钟更新状态。此选择不会保存在商家资料的 JSON 中。</p>
+    <p class="error" id="preview-time-error" role="alert" hidden></p>
 
     <div class="week" id="week"></div>
 
@@ -562,6 +572,10 @@
 
     <span data-phrase="name.length">{count} 个字符。搜索结果只给名称一行，行到哪儿就从哪儿截断——看看第三个预览。</span>
     <span data-phrase="description.length">{count} 个字符。面板大约显示它的前四行。</span>
+
+    <span data-phrase="preview.invalid">请选择完整有效的本地日期和时间。在此之前无法下载图片。</span>
+    <span data-phrase="week.chosen">此设备时区中 {date} 的状态：{status}。</span>
+    <span data-phrase="load.failed">此浏览器无法读取该资料文件。请重新选择或尝试其他文件。</span>
 
     <span data-phrase="photo.added">已添加，并在这个页面里重画成 {width} × {height}。为了读它，什么都没有上传。</span>
     <span data-phrase="photo.toobig">这张图太大了。上限是二十兆字节。</span>

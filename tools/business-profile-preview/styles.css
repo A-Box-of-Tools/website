@@ -152,3 +152,22 @@
 /* The example values arrive in the boxes rather than as placeholders, so the
    number fields want the tabular figures the rest of the site gives them. */
 .numbers input[type="number"] { width: 100%; }
+
+/* A local date/time belongs with the status controls and must fit a phone. */
+.preview-time { align-items: center; margin-top: 1rem; }
+.preview-time .field { min-width: 0; }
+#preview-at {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  width: 100%;
+}
+
+.preview-time-note {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0.6rem 0;
+}
