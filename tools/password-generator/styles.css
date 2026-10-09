@@ -93,15 +93,18 @@
   align-items: center;
   gap: 0.8rem;
 }
-.slider-row input[type="range"] { flex: 1; }
+.slider-row input[type="range"] { flex: 1; min-width: 0; }
 
-.slider-row output {
-  min-width: 2.6rem;
+.slider-row input[type="number"] {
+  width: 5.3rem;
+  flex: 0 0 5.3rem;
   text-align: end;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  font-size: 1.05rem;
 }
+
+.slider-row input[aria-invalid="true"] { border-color: var(--danger); }
+.numeric-error { color: var(--danger); font-size: 0.8rem; margin: 0; }
 
 /* -------------------------------------------------------------- the result */
 

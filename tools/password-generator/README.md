@@ -130,7 +130,7 @@ to make them in.
 ## The wordlist
 
 `src/wordlist.js` holds the Electronic Frontier Foundation's two diceware
-lists, unchanged: 7,776 words (six dice throws, 12.925 bits each) and 1,296
+lists, unchanged: 7,776 words (five dice throws, 12.925 bits each) and 1,296
 (four throws, 10.340 bits each).
 
 They are not generated here and should not be regenerated here. Assembling a
@@ -228,3 +228,11 @@ label the new secret as copied. The result remains an output rather than a
 password input, but is keyboard focusable and selects its text on focus. If
 clipboard access is refused, the same selection is offered directly; a batch
 gets a contiguous output block so copying it by hand includes every secret.
+
+Length, word count and batch count also accept exact numeric entry beside their
+sliders, with the same whole-number bounds. Valid entry updates its slider and
+regenerates the result. An invalid or empty draft keeps the field editable,
+shows its translated bounds, and retires output and clipboard feedback rather
+than leaving a secret that appears to match the refused setting. Changing the
+slider restores valid numeric entry. Hidden settings do not block the other
+mode. Randomness, word lists and strength arithmetic are unchanged.
