@@ -46,6 +46,8 @@ read_first = """
       <code>workers/rendezvous/worker.js</code> in the same repository"""
 howto_heading = "How to watch another device's camera"
 card = "A phone or computer camera in another browser, with one approved viewer and direct encrypted video."
+pledge_line = "Camera video goes <strong>directly to the viewer you approve</strong>. Internet introduces the browsers."
+md_note = "Camera video travels directly between approved browsers. Internet rendezvous carries setup metadata, never video; no microphone or recording feature."
 
 [csp]
 "connect-src" = ["wss://rendezvous.abox.tools"]

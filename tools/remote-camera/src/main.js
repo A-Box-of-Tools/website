@@ -280,6 +280,15 @@ window.addEventListener('hashchange', () => {
   const code = parseCode(location.hash);
   if (code) { selectMode('viewer'); $('viewer-code').value = code; }
 });
+$('privacy-toggle').addEventListener('click', () => {
+  const panel = $('privacy-panel');
+  const open = panel.hidden;
+  panel.hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
+});
 const code = parseCode(location.hash);
 selectMode(code ? 'viewer' : 'camera');
 if (code) $('viewer-code').value = code;
+
+// The frame keeps its warning until every control has been initialised.
+$('boot-warning')?.remove();

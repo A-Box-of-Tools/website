@@ -141,8 +141,10 @@ BASELINE = {
     # PDF syntax, three internal range keys and one key template.
     'redact-pdf': 6,
     'resize-image': 5,
+    # A random camera-code template and the rendezvous URL. Neither is
+    # visitor prose; both are protocol syntax kept in JavaScript.
+    'remote-camera': 2,
     # The key template that picks between two whole sentences.
-    'remote-camera': 0,
     'reverse-video': 1,
     'share-text': 1,
     # A filename template, one line of a template literal, and three markers the
