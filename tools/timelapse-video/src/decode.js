@@ -184,6 +184,7 @@ export async function timelapseByDecoding({
  * which WebCodecs will still decode happily through the machine's own hardware.
  */
 export async function previewFrame({ file, media, atSeconds = 0, maxWidth = 640, signal }) {
+  throwIfAborted(signal);
   const { video } = media;
   const times = [Math.max(0, atSeconds)];
   const [run] = decodeRuns({ samples: video.samples, timescale: video.timescale, times });
@@ -196,13 +197,14 @@ export async function previewFrame({ file, media, atSeconds = 0, maxWidth = 640,
 
   let failure = null;
   let drawn = false;
+  let returned = false;
 
   const sampler = new Sampler({ times, canvas, write: () => { drawn = true; } });
 
   const decoder = new VideoDecoder({
     output: (frame) => {
       try {
-        if (failure) return;
+        if (failure || signal?.aborted) return;
         sampler.offer(frame.timestamp / 1_000_000, () => drawScaled(ctx, frame, {
           rotation: video.rotation,
           displayWidth: video.displayWidth,
@@ -219,17 +221,23 @@ export async function previewFrame({ file, media, atSeconds = 0, maxWidth = 640,
     error: (error) => { failure ??= error; },
   });
 
-  decoder.configure(decoderConfig(video));
+  const close = () => {
+    if (decoder.state !== 'closed') decoder.close();
+  };
+  signal?.addEventListener('abort', close, { once: true });
 
   const window = new FileWindow(file, 4 << 20);
 
   try {
+    throwIfAborted(signal);
+    decoder.configure(decoderConfig(video));
     for (let i = run.first; i <= run.last; i += 1) {
       throwIfAborted(signal);
       if (failure) throw failure;
 
       const sample = video.samples[i];
       const bytes = await window.read(sample.offset, sample.size);
+      throwIfAborted(signal);
       decoder.decode(new EncodedVideoChunk({
         type: sample.isKey ? 'key' : 'delta',
         timestamp: Math.round(sample.pts / video.timescale * 1_000_000),
@@ -238,12 +246,16 @@ export async function previewFrame({ file, media, atSeconds = 0, maxWidth = 640,
     }
 
     await decoder.flush();
+    throwIfAborted(signal);
     if (failure) throw failure;
 
     sampler.finish();
     if (!drawn) throw new Error('decode.nodraw');
+    returned = true;
     return canvas;
   } finally {
+    signal?.removeEventListener('abort', close);
+    if (!returned) canvas.width = canvas.height = 0;
     if (decoder.state !== 'closed') decoder.close();
   }
 }
