@@ -182,6 +182,7 @@
         <canvas id="preview-canvas" role="img" aria-label="Preview"></canvas>
       </div>
       <p class="preview-note" id="preview-note"></p>
+      <p class="preview-note linked-assets" id="preview-assets" hidden></p>
     </div>
 
     <p id="preview-empty" class="field-summary">Add an SVG and it appears here.</p>
@@ -212,6 +213,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="source.linked-assets">This SVG contains links to assets outside the file. The preview and export do not load them. Embed those assets in the SVG, or turn lettering into paths before exporting.</span>
     <span data-phrase="read.notsvg">{name}: this tool only reads SVG files. A PNG or a
       JPEG is already pixels; the Image Resizer is the one for those.</span>
     <span data-phrase="read.nosvg.named">{name}: there is no &lt;svg&gt; element in this

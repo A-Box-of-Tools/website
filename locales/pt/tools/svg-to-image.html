@@ -185,6 +185,7 @@
         <canvas id="preview-canvas" role="img" aria-label="Pré-visualização"></canvas>
       </div>
       <p class="preview-note" id="preview-note"></p>
+      <p class="preview-note linked-assets" id="preview-assets" hidden></p>
     </div>
 
     <p id="preview-empty" class="field-summary">Adicione um SVG e ele aparece aqui.</p>
@@ -215,6 +216,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="source.linked-assets">Este SVG contém links para recursos externos ao arquivo. A prévia e a exportação não os carregam. Incorpore esses recursos no SVG ou converta o texto em caminhos antes de exportar.</span>
     <span data-phrase="read.notsvg">{name}: esta ferramenta só lê arquivos SVG. Um PNG
       ou um JPEG já é feito de pixels; para esses é o Redimensionador de imagens.</span>
     <span data-phrase="read.nosvg.named">{name}: não há elemento &lt;svg&gt; nenhum

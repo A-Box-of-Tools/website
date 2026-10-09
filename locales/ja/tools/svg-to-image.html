@@ -169,6 +169,7 @@
         <canvas id="preview-canvas" role="img" aria-label="プレビュー"></canvas>
       </div>
       <p class="preview-note" id="preview-note"></p>
+      <p class="preview-note linked-assets" id="preview-assets" hidden></p>
     </div>
 
     <p id="preview-empty" class="field-summary">SVGを追加すると、ここに出ます。</p>
@@ -199,6 +200,7 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="source.linked-assets">このSVGには、ファイル外の素材への参照があります。プレビューと書き出しでは読み込みません。素材をSVG内に埋め込むか、文字をパスに変換してから書き出してください。</span>
     <span data-phrase="read.notsvg">{name}：この道具はSVGファイルしか読みません。PNGやJPEGはすでにピクセルなので、それらには画像リサイズツールがあります。</span>
     <span data-phrase="read.nosvg.named">{name}：このファイルには&lt;svg&gt;要素がありません。</span>
     <span data-phrase="read.nosvg">このファイルには&lt;svg&gt;要素がありません。</span>
