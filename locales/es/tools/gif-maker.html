@@ -35,13 +35,14 @@
 
     <div id="bulk-delay" class="bulk" hidden>
       <label for="bulk-amount">Mantener cada fotograma</label>
-      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.01" aria-describedby="bulk-help" value="0.5">
       <select id="bulk-unit" aria-label="Unidad para el tiempo que se mantiene cada fotograma">
         <option value="seconds" selected>segundos</option>
         <option value="fps">fotogramas por segundo</option>
       </select>
       <button type="button" id="apply-bulk" class="ghost">Aplicar a todos</button>
       <span class="bulk-note" id="bulk-note"></span>
+      <p class="bulk-note" id="bulk-help">GIF guarda centésimas de segundo. Con una velocidad elegida en fotogramas por segundo, las duraciones contiguas pueden variar 0,01s para mantener la velocidad total.</p>
     </div>
   </section>
 

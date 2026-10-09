@@ -24,7 +24,7 @@
 import { GifWriter } from './gif.js';
 import { createHistogram, addToHistogram, buildPalette, mapFrame } from './quantize.js';
 import { drawFrame } from './compose.js';
-import { decodeFull } from './images.js';
+import { decodeFull, frameDelays } from './images.js';
 import { throwIfAborted } from './shared/errors.js';
 
 /** Hand the main thread back so a click on Cancel is heard and the bar moves. */
@@ -57,6 +57,7 @@ export async function encodeGif({ items, settings, onProgress, signal }) {
   // The editor stays usable between decodes. This export keeps the order and
   // delays the reader chose when it started, including when thumbnails go away.
   items = items.map((item) => ({ ...item }));
+  const delays = frameDelays(items);
   const {
     width, height, fit, background, colors, dither, sharedPalette, transparent, loop,
   } = settings;
@@ -108,7 +109,7 @@ export async function encodeGif({ items, settings, onProgress, signal }) {
 
   const writer = new GifWriter({ width, height, palette: shared, loop });
 
-  for (const item of items) {
+  for (const [index, item] of items.entries()) {
     throwIfAborted(signal);
 
     const rgba = await pixelsFor(item);
@@ -129,7 +130,7 @@ export async function encodeGif({ items, settings, onProgress, signal }) {
       // is written again for every frame, which is up to 768 bytes each and the
       // smaller half of what the choice costs.
       palette: shared ? null : palette,
-      delay: Math.round(item.delay * 100),
+      delay: delays[index],
       transparentIndex: transparent ? 0 : -1,
     });
 

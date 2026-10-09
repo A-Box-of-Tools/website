@@ -6,7 +6,7 @@ import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import {
   loadImages, releaseItem, sortItems, moveItem, decodeFull,
-  clampDelay, DEFAULT_DELAY, MIN_DELAY, MAX_DELAY,
+  clampDelay, boundDelay, frameDelays, DEFAULT_DELAY, MIN_DELAY, MAX_DELAY,
 } from './images.js';
 import { drawFrame, resolveOutputSize, MAX_SIDE } from './compose.js';
 import { encodeGif, loopValue } from './encode.js';
@@ -72,9 +72,40 @@ const formatDuration = (seconds) => durationText(seconds, phrase, { decimals: 2 
 let items = [];
 
 let exporting = false;
-let abortController = null;
+let activeExport = null;
+let planRevision = 0;
+let settingsState = null;
 let lastResultUrl = null;
 let previewToken = 0;
+
+// Native exceptions are prose, so only declared keys may reach phrase().
+const errorKeys = new Set([...document.querySelectorAll('#phrases [data-phrase]')]
+  .map((element) => element.dataset.phrase));
+
+function clearResult() {
+  el.resultImage.removeAttribute('src');
+  el.download.removeAttribute('href');
+  el.download.removeAttribute('download');
+  el.resultInfo.textContent = '';
+  el.result.hidden = true;
+  if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+  lastResultUrl = null;
+}
+
+function retireExport() {
+  activeExport?.controller.abort();
+  activeExport = null;
+  exporting = false;
+  el.progress.hidden = true;
+  el.cancelBtn.hidden = true;
+  el.exportBtn.disabled = items.length === 0;
+}
+
+function changedPlan() {
+  planRevision += 1;
+  retireExport();
+  clearResult();
+}
 
 /* ------------------------------------------------------------------ adding */
 
@@ -100,7 +131,10 @@ async function addFiles(files) {
 
   try {
     const { items: loaded, skipped } = await loadImages(files, defaultDelay());
-    items = items.concat(loaded);
+    if (loaded.length) {
+      items = items.concat(loaded);
+      changedPlan();
+    }
 
     if (skipped.length) {
       // The names are a list, and a list separator is a phrase: not every
@@ -125,7 +159,7 @@ async function addFiles(files) {
 function defaultDelayFrom(unit) {
   const typed = Number(el.bulkAmount.value);
   if (!Number.isFinite(typed) || typed <= 0) return DEFAULT_DELAY;
-  return clampDelay(unit === 'fps' ? 1 / typed : typed);
+  return unit === 'fps' ? boundDelay(1 / typed) : clampDelay(typed);
 }
 
 /** What a newly added frame is held for: whatever the bulk field currently says. */
@@ -146,10 +180,11 @@ function clearDropMarkers() {
   }
 }
 
-function buildItemNode(item, index) {
+function buildItemNode(item, index, delay) {
   const li = document.createElement('li');
   li.className = 'frame-item';
   li.dataset.index = String(index);
+  li.dataset.itemId = String(item.id);
 
   // A dedicated handle makes the gesture discoverable and keeps dragging from
   // fighting with the number input and the buttons on the tile.
@@ -189,7 +224,9 @@ function buildItemNode(item, index) {
   remove.addEventListener('click', () => {
     releaseItem(item);
     items.splice(index, 1);
-    render();
+    changedPlan();
+    const neighbor = items[Math.min(index, items.length - 1)];
+    render({ itemId: neighbor?.id, action: 'remove' });
   });
   thumbWrap.append(remove);
 
@@ -210,12 +247,17 @@ function buildItemNode(item, index) {
   amount.type = 'number';
   amount.min = String(MIN_DELAY);
   amount.max = String(MAX_DELAY);
-  amount.step = '0.05';
-  amount.value = String(item.delay);
+  amount.step = '0.01';
+  amount.value = String(delay / 100);
   amount.setAttribute('aria-label', phrase('tile.delay', { name: item.name }));
   amount.addEventListener('change', () => {
-    item.delay = clampDelay(amount.value);
-    amount.value = String(item.delay);
+    const before = frameDelays(items)[index] / 100;
+    const requested = clampDelay(amount.value);
+    if (requested !== before) {
+      item.delay = requested;
+      changedPlan();
+    }
+    refreshDelays();
     updateSummary();
   });
   controls.append(amount);
@@ -228,21 +270,31 @@ function buildItemNode(item, index) {
   const earlier = document.createElement('button');
   earlier.type = 'button';
   earlier.className = 'move-btn';
+  earlier.dataset.action = 'earlier';
   earlier.textContent = '‹';
   earlier.title = phrase('tile.earlier', { name: item.name });
   earlier.setAttribute('aria-label', earlier.title);
   earlier.disabled = index === 0;
-  earlier.addEventListener('click', () => { moveItem(items, index, index - 1); render(); });
+  earlier.addEventListener('click', () => {
+    moveItem(items, index, index - 1);
+    changedPlan();
+    render({ itemId: item.id, action: 'earlier' });
+  });
   controls.append(earlier);
 
   const later = document.createElement('button');
   later.type = 'button';
   later.className = 'move-btn';
+  later.dataset.action = 'later';
   later.textContent = '›';
   later.title = phrase('tile.later', { name: item.name });
   later.setAttribute('aria-label', later.title);
   later.disabled = index === items.length - 1;
-  later.addEventListener('click', () => { moveItem(items, index, index + 1); render(); });
+  later.addEventListener('click', () => {
+    moveItem(items, index, index + 1);
+    changedPlan();
+    render({ itemId: item.id, action: 'later' });
+  });
   controls.append(later);
 
   meta.append(controls);
@@ -313,11 +365,36 @@ function applyDrop() {
   }
 
   moveItem(items, from, target);
+  changedPlan();
   render();
 }
 
-function render() {
-  el.list.replaceChildren(...items.map(buildItemNode));
+/** Updating other holds must not replace the input being committed. */
+function refreshDelays() {
+  const delays = frameDelays(items);
+  const inputs = [...el.list.children].map((row) => row.querySelector('input'));
+  for (const [index, input] of inputs.entries()) {
+    input.value = String(delays[index] / 100);
+  }
+}
+
+function restoreItemFocus({ itemId, action }) {
+  const row = [...el.list.children].find((node) => node.dataset.itemId === String(itemId));
+  if (!row) {
+    el.fileInput.focus();
+    return;
+  }
+  const wanted = action === 'remove' ? row.querySelector('.remove-btn')
+    : row.querySelector(`[data-action="${action}"]`);
+  const available = [...row.querySelectorAll('.move-btn')].find((button) => !button.disabled);
+  const target = wanted && !wanted.disabled ? wanted
+    : available ?? row.querySelector('.drag-handle');
+  target.focus();
+}
+
+function render(focus) {
+  const delays = frameDelays(items);
+  el.list.replaceChildren(...items.map((item, index) => buildItemNode(item, index, delays[index])));
   el.list.className = `frame-list view-${view}`;
 
   const any = items.length > 0;
@@ -329,13 +406,17 @@ function render() {
   el.exportBtn.disabled = !any || exporting;
 
   syncSettingControls();
+  settingsState = JSON.stringify(currentSettings());
   updateSummary();
   updatePreview();
+  if (focus) restoreItemFocus(focus);
 }
 
 for (const button of document.querySelectorAll('[data-sort]')) {
   button.addEventListener('click', () => {
+    const before = [...items];
     sortItems(items, button.dataset.sort);
+    if (items.some((item, index) => item !== before[index])) changedPlan();
     render();
   });
 }
@@ -366,12 +447,16 @@ el.clearAll.addEventListener('click', () => {
   if (!items.length) return;
   for (const item of items) releaseItem(item);
   items = [];
-  render();
+  changedPlan();
+  render({ action: 'remove' });
 });
 
 el.applyBulk.addEventListener('click', () => {
   const delay = defaultDelay();
-  for (const item of items) item.delay = delay;
+  if (items.some((item) => item.delay !== delay)) {
+    for (const item of items) item.delay = delay;
+    changedPlan();
+  }
   render();
 });
 
@@ -390,10 +475,10 @@ el.bulkUnit.addEventListener('change', () => {
 
   el.bulkAmount.min = toFps ? '1' : String(MIN_DELAY);
   el.bulkAmount.max = toFps ? String(Math.round(1 / MIN_DELAY)) : String(MAX_DELAY);
-  el.bulkAmount.step = toFps ? '1' : '0.05';
+  el.bulkAmount.step = toFps ? '1' : '0.01';
   el.bulkAmount.value = toFps
     ? String(Math.min(50, Math.max(1, Math.round(1 / seconds))))
-    : String(seconds);
+    : String(clampDelay(seconds));
 });
 
 /* ---------------------------------------------------------------- settings */
@@ -479,7 +564,7 @@ function updateSummary() {
   }
 
   const settings = currentSettings();
-  const total = items.reduce((sum, item) => sum + item.delay, 0);
+  const total = frameDelays(items).reduce((sum, delay) => sum + delay, 0) / 100;
 
   el.sumFrames.textContent = String(items.length);
   el.sumDuration.textContent = formatDuration(total);
@@ -550,6 +635,11 @@ for (const input of settingsInputs) {
   // 'input' as well as 'change' so typing in the number fields updates live.
   for (const type of ['change', 'input']) {
     input.addEventListener(type, () => {
+      const state = JSON.stringify(currentSettings());
+      if (state !== settingsState) {
+        settingsState = state;
+        changedPlan();
+      }
       syncSettingControls();
       updateSummary();
       schedulePreview();
@@ -589,34 +679,39 @@ async function runExport() {
   if (exporting || !items.length) return;
 
   clearError();
+  clearResult();
+  const job = {
+    controller: new AbortController(),
+    revision: planRevision,
+    items: items.map((item) => ({ ...item })),
+    settings: currentSettings(),
+    name: outputFilename(),
+  };
+  activeExport = job;
   exporting = true;
-  abortController = new AbortController();
+  const owns = () => activeExport === job && planRevision === job.revision;
 
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
   el.progress.hidden = false;
-  el.result.hidden = true;
   setProgress({ phase: 'palette', done: 0, total: 1 });
-
-  const settings = currentSettings();
 
   try {
     const { blob, frames } = await encodeGif({
-      items,
-      settings,
-      onProgress: setProgress,
-      signal: abortController.signal,
+      items: job.items,
+      settings: job.settings,
+      onProgress(progress) { if (owns()) setProgress(progress); },
+      signal: job.controller.signal,
     });
 
-    if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
+    if (!owns() || job.controller.signal.aborted) return;
     lastResultUrl = URL.createObjectURL(blob);
-
     el.resultImage.src = lastResultUrl;
     el.download.href = lastResultUrl;
-    el.download.download = outputFilename();
+    el.download.download = job.name;
     el.resultInfo.textContent = [
       'GIF',
-      phrase('size.plain', { width: settings.width, height: settings.height }),
+      phrase('size.plain', { width: job.settings.width, height: job.settings.height }),
       phrase(frames === 1 ? 'n.frame.one' : 'n.frame.many', { n: frames }),
       formatBytes(blob.size),
     ].reduce((a, b) => phrase('join.dot', { a, b }));
@@ -624,23 +719,25 @@ async function runExport() {
     el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
+    if (!owns() || job.controller.signal.aborted) return;
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      // The writer's invariant checks are bugs here rather than anything a
-      // file can cause, and phrase() hands back what it does not recognise.
-      showError(error?.message ? phrase(error.message) : phrase('export.failed'));
+      showError(phrase(errorKeys.has(error?.message) ? error.message : 'export.failed', error?.values));
       console.error(error);
     }
   } finally {
-    exporting = false;
-    abortController = null;
-    el.cancelBtn.hidden = true;
-    el.exportBtn.disabled = items.length === 0;
+    // A retired native decode may finish after a newer export has started.
+    if (activeExport === job) {
+      activeExport = null;
+      exporting = false;
+      el.cancelBtn.hidden = true;
+      el.exportBtn.disabled = items.length === 0;
+    }
   }
 }
 
 el.exportBtn.addEventListener('click', runExport);
-el.cancelBtn.addEventListener('click', () => abortController?.abort());
+el.cancelBtn.addEventListener('click', retireExport);
 
 window.addEventListener('beforeunload', (event) => {
   if (!exporting) return;

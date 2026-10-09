@@ -33,13 +33,14 @@
 
     <div id="bulk-delay" class="bulk" hidden>
       <label for="bulk-amount">すべてのコマの表示時間</label>
-      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.01" aria-describedby="bulk-help" value="0.5">
       <select id="bulk-unit" aria-label="表示時間の単位">
         <option value="seconds" selected>秒</option>
         <option value="fps">フレーム毎秒</option>
       </select>
       <button type="button" id="apply-bulk" class="ghost">全部に適用</button>
       <span class="bulk-note" id="bulk-note"></span>
+      <p class="bulk-note" id="bulk-help">GIFの表示時間は0.01秒単位です。指定したフレームレートを保つため、隣り合うコマの表示時間が0.01秒異なる場合があります。</p>
     </div>
   </section>
 
