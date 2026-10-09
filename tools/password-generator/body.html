@@ -36,11 +36,12 @@
 
     <div class="settings" id="options-password">
       <div class="field">
-        <label for="length">Length</label>
+        <label for="length" id="length-label">Length</label>
         <div class="slider-row">
           <input type="range" id="length" min="6" max="128" value="20" step="1">
-          <output for="length" id="length-out">20</output>
+          <input type="number" id="length-out" min="6" max="128" value="20" step="1" required inputmode="numeric" aria-labelledby="length-label" aria-describedby="length-error">
         </div>
+        <p id="length-error" class="numeric-error" role="status" aria-live="polite" hidden>Enter a whole number from 6 to 128.</p>
         <p class="field-note">
           Length beats everything else. Adding one character to a
           ninety-four-character alphabet is worth more than any rule about
@@ -108,11 +109,12 @@
 
     <div class="settings" id="options-passphrase" hidden>
       <div class="field">
-        <label for="words">Words</label>
+        <label for="words" id="words-label">Words</label>
         <div class="slider-row">
           <input type="range" id="words" min="3" max="12" value="6" step="1">
-          <output for="words" id="words-out">6</output>
+          <input type="number" id="words-out" min="3" max="12" value="6" step="1" required inputmode="numeric" aria-labelledby="words-label" aria-describedby="words-error">
         </div>
+        <p id="words-error" class="numeric-error" role="status" aria-live="polite" hidden>Enter a whole number from 3 to 12.</p>
         <p class="field-note">
           Four words is the well-known picture and is below what is worth using
           today. Six is the sensible floor for anything that matters, and seven
@@ -127,7 +129,7 @@
           <option value="short">The short list &mdash; 1,296 short words</option>
         </select>
         <p class="field-note">
-          The long list is six dice throws a word, so 12.9 bits each. The short
+          The long list is five dice throws a word, so 12.9 bits each. The short
           list is four throws, 10.3 bits each, and every word in it is five
           letters or fewer with no word the beginning of another &mdash; which
           is what to use for a passphrase you will be typing on a television
@@ -266,11 +268,12 @@
       everything else is a string in a box.
     -->
     <div class="field bulk">
-      <label for="count">Or make several at once</label>
+      <label for="count" id="count-label">Or make several at once</label>
       <div class="slider-row">
         <input type="range" id="count" min="1" max="100" value="1" step="1">
-        <output for="count" id="count-out">1</output>
+        <input type="number" id="count-out" min="1" max="100" value="1" step="1" required inputmode="numeric" aria-labelledby="count-label" aria-describedby="count-error">
       </div>
+        <p id="count-error" class="numeric-error" role="status" aria-live="polite" hidden>Enter a whole number from 1 to 100.</p>
       <ol class="batch" id="batch" start="2" hidden></ol>
       <div class="result-actions">
         <button type="button" id="copy-all" class="ghost" hidden>Copy all</button>
