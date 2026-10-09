@@ -199,3 +199,6 @@ skipped-clock cases live in `tests/js/images-to-video-recording.test.js`.
 
 The keyboard reorder controls restore focus to the moved image. Reaching either
 edge focuses the opposite direction so the same image remains reachable.
+
+The generated player has a translated accessible name so assistive technology
+identifies the finished video alongside its native playback controls.
