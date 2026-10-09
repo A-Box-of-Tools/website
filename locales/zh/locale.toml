@@ -66,19 +66,20 @@ complete = true
 #
 
 [hub]
+privacy_heading = "你的文件，始终归你。"
+privacy_lede = "工具就在你的设备上处理文件。打开一次，断网后也能接着用。"
+support_heading = "有你的支持，工具一直免费。"
 title = "免费在线工具箱 | 不上传文件，不用注册 | abox.tools"
 # 中文搜索结果大约在这个长度截断。
 description = "全部免费，文件不用上传。图片拼成 PDF 或 MP4、把图压到指定大小、裁视频、清 EXIF，都在你自己的浏览器里做完。"
-heading = "一箱子工具，都不走服务器"
+heading = "工具免费，文件不外传。"
 og_title = "A Box of Tools | 不走服务器的工具"
 og_description = "一个工具只干一件事，全程在你的浏览器里跑。文件不出这台机器。"
 og_image_alt = "abox.tools - 不走服务器的工具"
 schema_description = "一个工具只干一件事，活全在浏览器里干完。没有东西要上传，也不用账号。"
 schema_about = "在浏览器里就地处理文件、不需要上传的文件工具"
 
-lede = """
-    一个工具只干一件事，全程在你的浏览器里跑。文件留在你自己的机器上，没有\
-    东西要传，没有账号要注册，也没人在旁边记你干了什么。"""
+lede = "全程在你的浏览器里运行。不用上传，不用登录。"
 
 support_note = """
       这些工具免费，以后也一样。要是哪个真帮你省了事，全站开口跟你要点什么\
@@ -107,21 +108,25 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "图片"
+short_name = "图片"
 note = "压缩、改尺寸，或者抹掉照片悄悄记下的那些信息，全都不出这台机器。"
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "视频与动画"
+short_name = "视频与 GIF"
 note = "剪片、转格式，或者用照片拼一段，素材都不出这台机器。"
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "文档与音频"
+short_name = "PDF 与音频"
 note = "拼文档、剪录音，两样都不用送出去处理。"
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "文本、编码与密码"
+short_name = "文本与编码"
 note = "看一看、核一核，或者就在这里生成。令牌、配置文件和密码都不会落到别人的服务器上。"
 
 #
@@ -266,6 +271,10 @@ guarantees_note = """
       怎么判断一个工具是不是真需要你的文件</a>\
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
+hub_categories_label = "工具分类"
+hub_view_all = "查看全部"
+hub_show_fewer = "收起"
+hub_privacy_details = "隐私是如何保护的"
 hub_filter_label = "查找工具"
 hub_filter_none = "没有匹配的工具。试试减少关键词，或输入 PDF、PNG 等文件格式。"
 

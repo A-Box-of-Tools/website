@@ -136,15 +136,18 @@ complete = true
 "guides/what-20-converters-do-with-your-file" = "guides/ce-que-20-convertisseurs-font-de-vos-fichiers"
 
 [hub]
+privacy_heading = "Vos fichiers restent les vôtres."
+privacy_lede = "Les outils traitent vos fichiers sur votre appareil. Après une première ouverture, ils continuent de fonctionner hors ligne."
+support_heading = "Des outils gratuits, grâce à votre soutien."
 title = "Outils en ligne gratuits, sans envoi ni inscription | abox.tools"
 description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à la taille voulue, recadrer une vidéo."
-heading = "Des outils qui ne passent jamais par un serveur"
+heading = "Outils gratuits. Fichiers privés."
 og_title = "A Box of Tools &mdash; des outils qui ne passent jamais par un serveur"
 og_description = "De petits outils à usage unique qui travaillent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 schema_description = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Rien n'est envoyé et aucun compte n'est nécessaire."
 schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers en local, sans jamais les envoyer"
-lede = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Vos fichiers restent sur votre machine, car il n'y a rien à envoyer, aucun compte à créer et rien qui vous suive."
+lede = "Tout se fait dans votre navigateur. Aucun envoi, aucun compte."
 support_note = "Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une corvée, voici la seule chose, sur tout ce site, qui vous demande quelque chose."
 
 [[hub.guarantees]]
@@ -162,21 +165,25 @@ body = "Ouvrez un outil une fois, coupez votre connexion, et il continue de trav
 [[hub.categories]]
 id = "images"
 name = "Images"
+short_name = "Images"
 note = "La réduire, la redimensionner ou lui retirer ce qu'elle raconte de vous sans le dire. Rien de tout cela n'est envoyé ailleurs."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vidéo &amp; animation"
+short_name = "Vidéo &amp; GIF"
 note = "La couper, la convertir ou la fabriquer à partir de photos, sans que les rushes quittent votre machine."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documents &amp; audio"
+short_name = "PDF &amp; audio"
 note = "Réorganiser un document ou couper un enregistrement, sans envoyer ni l'un ni l'autre se faire traiter ailleurs."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texte, codes &amp; mots de passe"
+short_name = "Texte &amp; codes"
 note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de configuration et aucun mot de passe sur le serveur d'un inconnu."
 
 [guides]
@@ -254,6 +261,10 @@ md_copied = "Copié"
 md_failed = "Impossible de copier"
 md_view = "Voir en Markdown"
 guarantees_note = "Rien de tout cela n'est à croire sur parole. <a href=\"{{ base }}{{ links.safety_guide }}/\"> Comment savoir si un outil a vraiment besoin de vos fichiers</a> présente quatre vérifications que vous pouvez mener vous-même, sur ce site comme sur n'importe quel autre."
+hub_categories_label = "Catégories d'outils"
+hub_view_all = "Tout afficher"
+hub_show_fewer = "Afficher moins"
+hub_privacy_details = "Comment vos fichiers restent privés"
 hub_filter_label = "Trouver un outil"
 hub_filter_none = "Aucun outil ne correspond. Essayez avec moins de mots ou avec un format de fichier, comme PDF ou PNG."
 hub_guides_note = "Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte&nbsp;? <a href=\"{{ base }}{{ links.guides }}/\">Il y a un guide pour chaque outil</a>."

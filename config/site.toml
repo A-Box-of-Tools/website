@@ -312,20 +312,20 @@ title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
 description = "Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data."
-heading = "A box of tools that never touch a server"
+heading = "Free tools. Private files."
 og_title = "A Box of Tools &mdash; tools that never touch a server"
 og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
 og_image_alt = "abox.tools - tools that never touch a server"
 schema_description = "Small, single-purpose utilities that do all of their work inside your browser. Nothing is uploaded and no account is needed."
 schema_about = "Browser-based file utilities that process files locally without uploading them"
 
-# "tools" rather than "utilities": this is the first line of body copy on the
-# site and the only place the phrase people actually search for can appear
-# early without being forced. The sentence is otherwise unchanged.
-lede = """
-    Small, single-purpose tools that do all of their work inside your
-    browser. Your files stay on your machine: there is nothing to upload,
-    no account to make, and nothing to track."""
+# The opening gives the premise in one breath; the checkable details live
+# below the catalogue so they do not put a phone's first tool off screen.
+lede = "Everything runs in your browser. No uploads, no sign-in."
+
+privacy_heading = "Your files stay yours."
+privacy_lede = "Tools process your files on your device. Open one once and it keeps working offline."
+support_heading = "Free, with your support."
 
 support_note = """
       These tools are free and always will be. If one saved you a job, this is
@@ -375,6 +375,7 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Images"
+short_name = "Images"
 note = "Resize one, shrink one, take out what it quietly records about you, or draw one from nothing - none of it sent anywhere."
 order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-to-jpg", "png-to-webp", "avif-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image", "image-to-svg", "compare-heights", "business-profile-preview"]
 
@@ -385,6 +386,7 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; animation"
+short_name = "Video &amp; GIFs"
 note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
 order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
@@ -395,6 +397,7 @@ order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documents &amp; audio"
+short_name = "PDF &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
 order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pdf", "redact-pdf", "pdf-to-csv", "receipt-invoice-extractor", "images-to-pdf", "document-scanner", "extract-audio-from-video", "trim-audio", "edit-audio"]
 
@@ -408,6 +411,7 @@ order = ["merge-pdf", "compress-pdf", "unlock-pdf", "protect-pdf", "watermark-pd
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
+short_name = "Text &amp; codes"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
 order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
@@ -737,6 +741,11 @@ guarantees_note = """
 # The label is used twice on one control - as the placeholder a sighted reader
 # sees and as the <label> a screen reader hears - so it has to read as an
 # instruction rather than as a heading. "Find a tool", not "Search".
+hub_categories_label = "Tool categories"
+hub_view_all = "View all"
+hub_show_fewer = "Show fewer"
+hub_privacy_details = "How it stays private"
+
 hub_filter_label = "Find a tool"
 hub_filter_none = "No tool matches that. Try fewer words or a file format, such as PDF or PNG."
 

@@ -198,21 +198,21 @@ complete = true
 #
 
 [hub]
+privacy_heading = "Seus arquivos continuam seus."
+privacy_lede = "As ferramentas processam seus arquivos no seu dispositivo. Depois de abertas, continuam funcionando sem internet."
+support_heading = "Grátis, com o seu apoio."
 title = "Ferramentas grátis no navegador &mdash; sem enviar arquivo, sem cadastro | abox.tools"
 # Abaixo de 155 caracteres, como no inglês: o Google corta a descrição por ali,
 # e aqui o final é a parte que vende o site.
 description = "Ferramentas grátis que nunca enviam seus arquivos. Junte imagens num PDF ou MP4, comprima uma imagem até o tamanho exato, corte um vídeo, remova o EXIF."
-heading = "Ferramentas que não passam por servidor nenhum"
+heading = "Ferramentas grátis. Arquivos privados."
 og_title = "A Box of Tools &mdash; ferramentas que não passam por servidor nenhum"
 og_description = "Ferramentas pequenas, cada uma com uma função só, que rodam inteiras dentro do seu navegador. Seus arquivos não saem do seu computador."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
 schema_description = "Utilitários pequenos, cada um com uma função só, que fazem todo o trabalho dentro do navegador. Não se envia nada e não é preciso ter conta."
 schema_about = "Utilitários de arquivo que rodam no navegador e processam tudo localmente, sem enviar nada"
 
-lede = """
-    Ferramentas pequenas, cada uma com uma função só, que fazem todo o trabalho
-    dentro do seu navegador. Seus arquivos ficam no seu computador. Não há nada
-    para enviar, nenhuma conta para criar e nada rastreando você."""
+lede = "Tudo funciona no seu navegador. Sem enviar arquivos nem fazer login."
 
 support_note = """
       Estas ferramentas são grátis e vão continuar assim. Se alguma poupou
@@ -245,21 +245,25 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Imagens"
+short_name = "Imagens"
 note = "Reduza, mude o tamanho ou tire o que a foto conta de você sem avisar. Nada disso é mandado para lugar nenhum."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Vídeo e animação"
+short_name = "Vídeo &amp; GIFs"
 note = "Corte, converta ou monte a partir de fotos, sem que a gravação saia do seu computador."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Documentos e áudio"
+short_name = "PDF &amp; áudio"
 note = "Reorganize um documento ou corte uma gravação, sem mandar nenhum dos dois para ser processado fora."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Texto, códigos e senhas"
+short_name = "Texto &amp; códigos"
 note = "Leia, confira ou crie aqui. Nenhum token, nenhum arquivo de configuração e nenhuma senha vai parar no servidor dos outros."
 
 #
@@ -419,6 +423,10 @@ guarantees_note = """
     traz quatro verificações que você mesmo pode fazer, aqui ou em qualquer
     outro site."""
 
+hub_categories_label = "Categorias de ferramentas"
+hub_view_all = "Ver todas"
+hub_show_fewer = "Ver menos"
+hub_privacy_details = "Como seus arquivos ficam privados"
 hub_filter_label = "Encontrar uma ferramenta"
 hub_filter_none = "Nenhuma ferramenta corresponde. Tente menos palavras ou um formato de arquivo, como PDF ou PNG."
 

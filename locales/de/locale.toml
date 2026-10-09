@@ -240,21 +240,21 @@ complete = true
 #
 
 [hub]
+privacy_heading = "Ihre Dateien bleiben bei Ihnen."
+privacy_lede = "Die Werkzeuge verarbeiten Ihre Dateien auf Ihrem Gerät. Einmal geöffnet, funktionieren sie auch offline weiter."
+support_heading = "Kostenlos, dank Ihrer Unterstützung."
 title = "Kostenlose Browser-Tools &mdash; ohne Upload, ohne Anmeldung | abox.tools"
 # Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
 description = "Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 zusammenfügen, exakt komprimieren, Videos zuschneiden, EXIF entfernen."
-heading = "Werkzeuge, die ohne Server auskommen"
+heading = "Kostenlose Werkzeuge. Dateien bleiben privat."
 og_title = "A Box of Tools &mdash; Werkzeuge, die ohne Server auskommen"
 og_description = "Kleine Werkzeuge für je eine Aufgabe, die vollständig in Ihrem Browser laufen. Ihre Dateien verlassen Ihr Gerät nicht."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 schema_description = "Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit im Browser erledigen. Nichts wird hochgeladen, und ein Konto brauchen Sie nicht."
 schema_about = "Browser-Werkzeuge für Dateien, die lokal verarbeitet und nicht hochgeladen werden"
 
-lede = """
-    Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit in Ihrem
-    Browser erledigen. Ihre Dateien bleiben dabei auf Ihrem Gerät. Sie laden
-    nichts hoch, Sie legen kein Konto an, und niemand verfolgt, was Sie tun."""
+lede = "Alles läuft in Ihrem Browser. Kein Upload, keine Anmeldung."
 
 support_note = """
       Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit
@@ -288,21 +288,25 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Bilder"
+short_name = "Bilder"
 note = "Verkleinern, in der Größe ändern oder herausnehmen, was ein Foto still über Sie verrät. Nichts davon wird verschickt."
 
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; Animation"
+short_name = "Video &amp; GIFs"
 note = "Schneiden, umwandeln oder aus Einzelbildern bauen, ohne dass die Aufnahme Ihr Gerät verlässt."
 
 [[hub.categories]]
 id = "documents-and-audio"
 name = "Dokumente &amp; Audio"
+short_name = "PDF &amp; Audio"
 note = "Ein Dokument umsortieren oder eine Aufnahme kürzen, ohne eines von beiden zum Verarbeiten wegzuschicken."
 
 [[hub.categories]]
 id = "text-codes-and-passwords"
 name = "Text, Codes &amp; Passwörter"
+short_name = "Text &amp; Codes"
 note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei und kein Passwort landet auf einem fremden Server."
 
 #
@@ -479,6 +483,10 @@ guarantees_note = """
     nennt vier Prüfungen, die Sie selbst durchführen können, auf dieser Seite
     wie auf jeder anderen."""
 
+hub_categories_label = "Werkzeugkategorien"
+hub_view_all = "Alle anzeigen"
+hub_show_fewer = "Weniger anzeigen"
+hub_privacy_details = "So bleiben Ihre Dateien privat"
 hub_filter_label = "Werkzeug suchen"
 hub_filter_none = "Kein Werkzeug passt dazu. Versuche weniger Wörter oder ein Dateiformat wie PDF oder PNG."
 

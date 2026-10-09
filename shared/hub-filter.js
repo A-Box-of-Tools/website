@@ -3,14 +3,11 @@
  *
  * GENERATED FILE - do not edit; see shared/hub-filter.js.
  *
- * WHY THE FRONT PAGE NEEDS THIS AND DID NOT USED TO
+ * WHY THE FRONT PAGE NEEDS THIS
  *
- * The hub is four categories a reader scrolls through in full. That was the
- * right shape at a dozen tools and it is the wrong one at thirty-seven:
- * somebody who already knows they want "the hash one" reads three headings and
- * part of a fourth to find it, and somebody who does not know what this site
- * has still gets the categories, unchanged, because nothing here is removed
- * until they type.
+ * Three tools from each category show what is in the box without making a
+ * visitor read the whole catalogue first. Every card still ships in the page:
+ * "View all" reveals the rest, and a search always checks them all.
  *
  * THREE RULES, WHICH ARE THE SAME RULE THE REST OF THE SITE FOLLOWS
  *
@@ -21,25 +18,23 @@
  *      wired to somebody's server, so on this site of all sites it has to be
  *      obviously not.
  *   2. NOTHING IS REMEMBERED. No history entry, no query string, no
- *      localStorage. The filter is a way of looking at one page, not a
- *      preference, and the language switcher next to it deliberately stores
- *      nothing either.
- *   3. IT IS AN ENHANCEMENT, STRICTLY. The field is in the markup but carries
- *      `hidden`, and this script is the only thing that reveals it. With
- *      JavaScript off - which, on a site whose whole argument is that you
- *      should not have to trust it, people really do - the page is exactly the
- *      page it was, rather than a search box that does nothing.
+ *      localStorage. Searching and expanding are ways of looking at one page,
+ *      not preferences.
+ *   3. IT IS AN ENHANCEMENT, STRICTLY. The field and expansion buttons carry
+ *      `hidden` until this script is ready. With JavaScript off every tool
+ *      remains visible, rather than leaving a search box or button that does
+ *      nothing.
  *
  * WHAT IT MATCHES ON
  *
- * The name and the one-line description, both already on the card, plus the
- * name of the category the card sits in - so "video" finds the whole group and
- * "pdf" finds the four that say so. Accents are stripped from both sides
- * before comparing, because a reader typing in a hurry in French or Portuguese
- * should not have to get them right to find their own language's page. Format
- * identifiers also find the tools that handle them, even when the card says
- * "format change" rather than spelling out JPG and PNG. Multiple words may
- * occur anywhere in that text; a task need not be a quotation from a card.
+ * The name, compact tagline and full description, plus the name and note of
+ * the category the card sits in. The full description stays in data-search
+ * when the visible card is shortened, so a detail that found a tool before
+ * still finds it now. Accents are stripped from both sides before comparing,
+ * because a reader typing in a hurry should not have to get them right.
+ * Format identifiers also find tools when the card says "format change".
+ * Multiple words may occur anywhere in that text; a task need not be a
+ * quotation from a card.
  */
 
 (function () {
@@ -87,15 +82,15 @@
   var connectors = /^(to|into|a|al|para|de|em|en|zu|in|nach|convert|convertir|converter|umwandeln)$/;
   var fileFormat = /^(jpg|png|webp|gif|bmp|avif|heic|heif|svg|ico|icns|webm|mkv|mov|mp4|yaml|yml|json|xml|html|css)$/;
 
-  /* Every card, with the text it can be found by worked out once. Reading this
-     on each keystroke would be re-reading the whole page thirty-seven times a
-     second for an answer that cannot have changed. */
+  /* Index before collapsing anything. Searching only the preview would make a
+     tool vanish from the box for the reader who knows exactly what they need. */
   var groups = [];
   var items = [];
   Array.prototype.forEach.call(
     document.querySelectorAll('main .category'), function (section) {
       var heading = section.querySelector('h2');
       var note = section.querySelector('.category-note');
+      var toggle = section.querySelector('.category-toggle');
       var groupText = fold(
         (heading ? heading.textContent : '') + ' ' + (note ? note.textContent : ''));
       var rows = [];
@@ -104,13 +99,21 @@
           var card = row.querySelector('a.tool-card');
           var slug = card ? card.getAttribute('data-tool') : '';
           var capability = formats[slug];
+          var description = card ? card.getAttribute('data-search') || '' : '';
           var entry = { row: row, slug: slug, capability: capability,
-            text: fold(row.textContent) + ' ' + groupText
+            text: fold(row.textContent + ' ' + description) + ' ' + groupText
               + ' ' + (capability ? capability.join(' ') : '') };
           rows.push(entry);
           items.push(entry);
         });
-      groups.push({ section: section, rows: rows });
+      groups.push({
+        section: section,
+        rows: rows,
+        toggle: toggle,
+        more: section.querySelector('.category-more'),
+        less: section.querySelector('.category-less'),
+        expanded: !toggle
+      });
     });
 
   if (!items.length) return;
@@ -126,7 +129,7 @@
 
     groups.forEach(function (group) {
       var visible = 0;
-      group.rows.forEach(function (entry) {
+      group.rows.forEach(function (entry, index) {
         var match = !query || entry.text.indexOf(query) !== -1
           || (terms.length > 0 && terms.every(function (term) {
             return entry.text.indexOf(term) !== -1;
@@ -140,9 +143,19 @@
               || (terms[1] === 'json' && /^(xml|yaml|yml)$/.test(terms[0]));
           }
         }
-        entry.row.hidden = !match;
+        entry.row.hidden = !match || (!query && !group.expanded && index >= 3);
         if (match) visible++;
       });
+      /* Searching reveals every match, and clearing it returns to the way
+         each category was being browsed. The hidden button keeps that state
+         without suggesting that some search results have been held back. */
+      if (group.toggle) {
+        group.toggle.hidden = !!query || group.rows.length <= 3;
+        group.toggle.setAttribute('aria-expanded', String(group.expanded));
+      }
+      if (group.more) group.more.hidden = group.expanded;
+      if (group.less) group.less.hidden = !group.expanded;
+
       /* A heading with nothing under it is worse than no heading: it reads as
          a category that has lost its tools rather than as one nothing in the
          search matched. */
@@ -152,10 +165,53 @@
 
     /* Announced rather than merely drawn: this sentence sits inside a live
        region that has been in the page since it loaded, so revealing it is a
-       change the screen reader is already watching for. A reader who cannot
-       see the grid go empty is told that it has. */
+       change the screen reader is already watching for. */
     empty.hidden = shown !== 0;
   }
+
+  groups.forEach(function (group) {
+    if (!group.toggle) return;
+    group.toggle.addEventListener('click', function () {
+      group.expanded = !group.expanded;
+      apply();
+    });
+  });
+
+  /* A category link promises the whole category. Clear a filter that could
+     hide its target before the browser follows the ordinary fragment link.
+     The same promise holds when a saved link opens the page, or Back restores
+     a fragment whose category a later search had hidden. */
+  function expandHash(hash, scroll) {
+    var id;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch (error) {
+      return false;
+    }
+    var group = groups.find(function (candidate) {
+      return candidate.section.getAttribute('id') === id;
+    });
+    if (!group) return false;
+    input.value = '';
+    group.expanded = true;
+    apply();
+    if (scroll) group.section.scrollIntoView({ block: 'start' });
+    return true;
+  }
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll('.hub-categories a'), function (anchor) {
+      anchor.addEventListener('click', function (event) {
+        if (event.defaultPrevented || event.ctrlKey || event.metaKey
+            || event.shiftKey || event.altKey
+            || (typeof event.button === 'number' && event.button !== 0)) return;
+        var hash = anchor.getAttribute('href') || '';
+        if (hash.charAt(0) === '#') expandHash(hash, false);
+      });
+    });
+  window.addEventListener('hashchange', function () {
+    expandHash(window.location.hash, true);
+  });
 
   input.addEventListener('input', apply);
 
@@ -179,9 +235,8 @@
     input.focus();
   });
 
+  /* A restored search is applied before the field is revealed. An explicit
+     category fragment takes precedence so the browser has a visible target. */
+  if (!expandHash(window.location.hash, true)) apply();
   box.hidden = false;
-  /* The page may have been restored with a value already in the field - a
-     back-button return keeps it - so the grid is brought into line with
-     whatever is in there before anybody touches a key. */
-  if (input.value) apply();
 })();
