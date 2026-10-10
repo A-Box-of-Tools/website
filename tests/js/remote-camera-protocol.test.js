@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PROTOCOL, CODE_PATTERN, makeCode, parseCode, viewerLink, controlMessage } from '../../tools/remote-camera/src/protocol.js';
+import { PROTOCOL, CODE_PATTERN, makeCode, normalize, parseCode, viewerLink, controlMessage } from '../../tools/remote-camera/src/protocol.js';
 const code = 'cam-abcdefghijkl';
 const message = (type, fields = {}) => JSON.stringify({ protocol: PROTOCOL, type, ...fields });
 test('pairing codes consume twelve random bytes in the lowercase base32 alphabet', () => {
@@ -19,13 +19,21 @@ test('a pasted code, fragment or viewer URL resolves to the same code', () => {
   assert.equal(parseCode(viewerLink('https://example.test/remote-camera/', code)), code);
 });
 test('invalid and oversized pairing input is refused', () => {
-  for (const value of ['', 'short', `${code}extra`, '!!!!!!!!!!!!', 'javascript:alert(1)', 'x'.repeat(2049), null]) assert.equal(parseCode(value), null);
+  for (const value of ['', '-room', 'two words', '!!!!!!!!!!!!', 'javascript:alert(1)', 'x'.repeat(65), 'x'.repeat(2049), null]) assert.equal(parseCode(value), null);
 });
 test('viewer links carry the code in the fragment and discard old queries', () => {
   const url = new URL(viewerLink('https://example.test/remote-camera/?old=value#old', code));
   assert.equal(url.origin, 'https://example.test'); assert.equal(url.pathname, '/remote-camera/');
   assert.equal(url.search, ''); assert.equal(parseCode(url.href), code);
-  assert.throws(() => viewerLink(url.href, 'bad'), /code.invalid/);
+  assert.throws(() => viewerLink(url.href, 'bad name'), /code.invalid/);
+});
+
+test('custom camera names use the shared alphabet and round trip through viewer links', () => {
+  const name = normalize('  My Kitchen_CAMERA!! ');
+  assert.equal(name, 'my-kitchen-camera');
+  assert.equal(parseCode(viewerLink('https://example.test/remote-camera/', name)), name);
+  assert.equal(normalize('x'.repeat(80)).length, 64);
+  assert.equal(normalize('!!!'), '');
 });
 test('control messages require the protocol, a known type and bounded note', () => {
   for (const type of ['hello', 'approved', 'denied', 'busy', 'ended']) assert.deepEqual(controlMessage(message(type)), { protocol: PROTOCOL, type });

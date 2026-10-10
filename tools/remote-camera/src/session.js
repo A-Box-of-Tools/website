@@ -1,5 +1,5 @@
 import { rtcConfig, allowedCandidate, localDescription } from './shared/peer-network.js';
-import { PROTOCOL, CODE_PATTERN, controlMessage } from './protocol.js';
+import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 
 const RENDEZVOUS = 'wss://rendezvous.abox.tools';
 const CONNECT_TIMEOUT = 20000;
@@ -8,13 +8,14 @@ const MAX_PEERS = 4;
 export class CameraSession {
   constructor({
     PeerConnection = globalThis.RTCPeerConnection, Socket = globalThis.WebSocket,
-    onState = () => {}, onRequests = () => {}, onStream = () => {},
+    onState = () => {}, onRequests = () => {}, onStream = () => {}, onDiscovery = () => {},
   } = {}) {
     this.PeerConnection = PeerConnection;
     this.Socket = Socket;
     this.onState = onState;
     this.onRequests = onRequests;
     this.onStream = onStream;
+    this.onDiscovery = onDiscovery;
     this.revision = 0;
     this.role = null;
     this.socket = null;
@@ -26,7 +27,7 @@ export class CameraSession {
 
   state(key) { this.onState(key, this.role); }
 
-  async startHost(stream, code) {
+  async startHost(stream, code, { discoverable = false } = {}) {
     this.stop();
     this.role = 'camera';
     this.stream = stream;
@@ -34,7 +35,7 @@ export class CameraSession {
       this.stop('camera.ended');
       throw new Error('camera.ended');
     }
-    return this.open(code);
+    return this.open(code, discoverable);
   }
 
   async connect(code, note) {
@@ -44,16 +45,17 @@ export class CameraSession {
     return this.open(code);
   }
 
-  open(code) {
+  open(code, discoverable = false) {
     if (!CODE_PATTERN.test(code)) {
       this.stop('code.invalid');
       return Promise.reject(new Error('code.invalid'));
     }
     const revision = this.revision;
+    this.code = code;
     this.state('connection.starting');
     return new Promise((resolve, reject) => {
       let ready = false;
-      const socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1`);
+      const socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
       const current = () => this.revision === revision && this.socket === socket;
       const timer = setTimeout(() => fail('connection.server-failed'), CONNECT_TIMEOUT);
       const fail = (key) => {
@@ -92,6 +94,14 @@ export class CameraSession {
   }
 
   message(message) {
+    if (this.role === 'camera' && message?.type === 'host-ready') {
+      const publication = message.discovery;
+      if (publication?.tool === TOOL && publication.code === this.code && CODE_PATTERN.test(publication.code)
+          && typeof publication.lease === 'string' && /^[a-z0-9-]{16,128}$/i.test(publication.lease)) {
+        this.onDiscovery(publication);
+      }
+      return;
+    }
     if (this.role === 'viewer' && message?.type === 'ready') {
       if (this.peers.size) return;
       const entry = this.newPeer('viewer');
@@ -336,7 +346,12 @@ export class CameraSession {
   peerFailed(entry, key) {
     if (!this.current(entry)) return;
     if (this.role === 'viewer') this.stop(key);
-    else { this.removePeer(entry.id); this.state(key); }
+    else {
+      this.removePeer(entry.id);
+      // A viewer leaving closes only its peer; the camera invitation remains
+      // available and must not acquire the viewer's end-of-link status.
+      if (key !== 'connection.ended') this.state(key);
+    }
   }
 
   removePeer(id) {

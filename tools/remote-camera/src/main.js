@@ -1,14 +1,19 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
+import { watchDiscovery } from './shared/peer-discovery.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
-import { makeCode, parseCode, viewerLink } from './protocol.js';
+import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 
 const $ = (id) => document.getElementById(id);
 let mode = 'camera';
 let epoch = 0;
 let wake = null;
 let detailsTimer = null;
+let discovery = null;
+let discoveryState = 'connecting';
+let foundCameras = [];
+let hostCode = null;
 const capture = new CameraCapture({ getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints) });
 
 const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
@@ -20,7 +25,9 @@ function showStatus(key, role = mode) {
 
 function idleCamera() {
   $('camera-start').disabled = false;
-  $('camera-facing').disabled = false;
+  $('camera-name').disabled = false;
+  $('camera-suggest').disabled = false;
+  $('camera-discoverable').disabled = false;
   $('camera-stop').hidden = true;
   $('camera-invite').hidden = true;
   $('camera-approval').hidden = true;
@@ -30,6 +37,9 @@ function idleCamera() {
   $('camera-code').textContent = '';
   $('camera-requests').replaceChildren();
   $('copy-status').textContent = '';
+  $('camera-publication-status').textContent = '';
+  hostCode = null;
+  renderDiscovery();
 }
 
 function idleViewer() {
@@ -60,6 +70,7 @@ const session = new CameraSession({
     if (!role) return;
     showStatus(key, role);
     if (session.role === null) {
+      discovery?.unpublish();
       epoch += 1;
       clearDetails();
       if (role === 'camera') { capture.stop(); releaseWake(); idleCamera(); }
@@ -93,10 +104,40 @@ const session = new CameraSession({
     $('viewer-video-panel').hidden = stream === null;
     if (stream) playVideo();
   },
+  onDiscovery({ code, lease }) {
+    if (hostCode === code && $('camera-discoverable').checked) discovery?.publish(code, lease);
+  },
 });
+
+function renderDiscovery() {
+  const cameras = foundCameras.filter(({ code }) => code !== hostCode);
+  $('discovery-status').textContent = phrase(discoveryState === 'ready'
+    ? cameras.length ? 'discovery.ready' : 'discovery.empty' : `discovery.${discoveryState}`);
+  $('discovery-list').replaceChildren();
+  for (const { code } of cameras) {
+    const row = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = viewerLink(location.href, code);
+    link.textContent = code;
+    link.dir = 'ltr';
+    row.append(link);
+    $('discovery-list').append(row);
+  }
+}
+
+function startDiscovery() {
+  discovery = watchDiscovery(`wss://rendezvous.abox.tools/discover?tool=${TOOL}`, {
+    list(list) { foundCameras = list; renderDiscovery(); },
+    status(state) { discoveryState = state; renderDiscovery(); },
+    publication(state) {
+      $('camera-publication-status').textContent = state ? phrase(`discovery.${state}`) : '';
+    },
+  });
+}
 
 function stop(key = 'connection.stopped') {
   epoch += 1;
+  discovery?.unpublish();
   session.stop(key);
   capture.stop();
   releaseWake();
@@ -177,19 +218,21 @@ function captureError(error) {
 }
 
 async function startCamera() {
+  const code = normalize($('camera-name').value);
+  if (!code) return showStatus('code.name-invalid', 'camera');
   if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) return showStatus('camera.unsupported', 'camera');
   if (!globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'camera');
   stop();
   const current = ++epoch;
   $('camera-start').disabled = true;
-  $('camera-facing').disabled = true;
+  $('camera-name').value = code;
+  $('camera-name').disabled = true;
+  $('camera-suggest').disabled = true;
+  $('camera-discoverable').disabled = true;
   $('camera-stop').hidden = false;
   showStatus('camera.permission', 'camera');
   try {
-    const stream = await capture.start({
-      video: { facingMode: { ideal: $('camera-facing').value }, width: { ideal: 1280, max: 1920 }, height: { ideal: 720, max: 1080 }, frameRate: { ideal: 24, max: 30 } },
-      audio: false,
-    });
+    const stream = await capture.start();
     if (current !== epoch || stream === null) return;
     $('camera-preview').srcObject = stream;
     $('camera-preview-panel').hidden = false;
@@ -197,8 +240,10 @@ async function startCamera() {
     for (const track of stream.getVideoTracks()) {
       track.addEventListener('ended', () => { if (current === epoch) stop('camera.ended'); });
     }
-    const code = makeCode();
-    await session.startHost(stream, code);
+    hostCode = code;
+    if ($('camera-discoverable').checked) $('camera-publication-status').textContent = phrase('discovery.not-published');
+    renderDiscovery();
+    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked });
     if (current !== epoch) return;
     const link = viewerLink(location.href, code);
     $('camera-link').value = link;
@@ -254,6 +299,9 @@ $('role-camera').addEventListener('click', () => {
 });
 $('role-viewer').addEventListener('click', () => selectMode('viewer'));
 $('camera-start').addEventListener('click', startCamera);
+$('camera-suggest').addEventListener('click', () => { $('camera-name').value = makeCode(); });
+$('camera-name').addEventListener('change', () => { $('camera-name').value = normalize($('camera-name').value); });
+$('discovery-refresh').addEventListener('click', () => discovery?.refresh());
 $('camera-stop').addEventListener('click', () => stop());
 $('viewer-connect').addEventListener('click', connectViewer);
 $('viewer-stop').addEventListener('click', () => stop());
@@ -272,7 +320,8 @@ $('camera-copy').addEventListener('click', async () => {
     $('copy-status').textContent = phrase('copy.manual');
   }
 });
-window.addEventListener('pagehide', () => stop());
+window.addEventListener('pagehide', () => { stop(); discovery?.close(); discovery = null; });
+window.addEventListener('pageshow', () => { if (!discovery) startDiscovery(); });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && (!$('camera-stop').hidden || session.role === 'camera')) stop('camera.hidden');
 });
@@ -287,8 +336,10 @@ $('privacy-toggle').addEventListener('click', () => {
   $('privacy-toggle').setAttribute('aria-expanded', String(open));
 });
 const code = parseCode(location.hash);
+$('camera-name').value = makeCode();
 selectMode(code ? 'viewer' : 'camera');
 if (code) $('viewer-code').value = code;
+startDiscovery();
 
 // The frame keeps its warning until every control has been initialised.
 $('boot-warning')?.remove();

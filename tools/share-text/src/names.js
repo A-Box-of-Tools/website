@@ -27,22 +27,7 @@ export function makeCode() {
   return `${pick(ADJECTIVES)}-${pick(NOUNS)}-${10 + Math.floor(Math.random() * 90)}`;
 }
 
-/**
- * Fold whatever was typed to the shape the rendezvous accepts - lowercase
- * letters, digits and hyphens, at most 64 - rather than rejecting near
- * misses. `  My Secret NOTE!! ` becomes `my-secret-note`.
- */
-export function normalize(raw) {
-  return raw.toLowerCase()
-    .replace(/[\s_]+/g, '-')
-    .replace(/[^a-z0-9-]/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 64);
-}
-
-/** The pattern a code in a share link must match to be dialled at all. */
-export const CODE_PATTERN = /^[a-z0-9][a-z0-9-]{0,63}$/;
+export { normalize, CODE_PATTERN } from './shared/room-names.js';
 
 /**
  * A file size a person can read. The unit names come from the caller - they

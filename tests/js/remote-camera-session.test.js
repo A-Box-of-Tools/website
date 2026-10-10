@@ -22,7 +22,7 @@ function sourceStream() {
 }
 async function settle() { for (let i = 0; i < 4; i += 1) await nextTurn(); }
 function fixture(t) {
-  const sockets = [], peers = [], requests = [], streams = [];
+  const sockets = [], peers = [], requests = [], streams = [], publications = [], states = [];
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
     constructor(url) { super(); this.url = url; sockets.push(this); queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
@@ -46,10 +46,30 @@ function fixture(t) {
     async getStats() { return new Map(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const session = new CameraSession({ Socket, PeerConnection, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); } });
+  const session = new CameraSession({ Socket, PeerConnection, onRequests(value) { requests.push(value); }, onStream(value) { streams.push(value); }, onDiscovery(value) { publications.push(value); }, onState(value) { states.push(value); } });
   t.after(() => session.stop());
-  return { session, sockets, peers, requests, streams };
+  return { session, sockets, peers, requests, streams, publications, states };
 }
+
+test('camera discovery accepts only its own live room and namespace acknowledgement', async (t) => {
+  const f = fixture(t), stream = sourceStream();
+  await f.session.startHost(stream, 'kitchen', { discoverable: true });
+  const url = new URL(f.sockets[0].url);
+  assert.equal(url.pathname, '/ws/kitchen');
+  assert.equal(url.searchParams.get('tool'), 'remote-camera');
+  assert.equal(url.searchParams.get('discover'), '1');
+  const discovery = { code: 'kitchen', lease: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' };
+  for (const claim of [discovery, { ...discovery, tool: 'share-text' }, { ...discovery, tool: 'remote-camera', code: 'other' }]) {
+    f.sockets[0].receive({ type: 'host-ready', discovery: claim });
+  }
+  assert.deepEqual(f.publications, []);
+  const valid = { ...discovery, tool: 'remote-camera' };
+  f.sockets[0].receive({ type: 'host-ready', discovery: valid });
+  assert.deepEqual(f.publications, [valid]);
+  f.session.stop();
+  f.sockets[0].receive({ type: 'host-ready', discovery: valid });
+  assert.equal(f.publications.length, 1);
+});
 function signal(socket, from, data) { socket.receive({ type: 'signal', from, data: { protocol: PROTOCOL, ...data } }); }
 async function requestViewer(f, id, note = 'My viewer') {
   signal(f.sockets[0], id, { dial: true }); await settle();
@@ -81,6 +101,21 @@ test('denying a viewer sends no media and retains source preview', async (t) => 
   const peer = await requestViewer(f, 'v:1'); f.session.deny('v:1'); await settle();
   assert.equal(peer.transceivers.length, 0); assert.ok(peer.channel.sent.some((message) => message.type === 'denied'));
   assert.equal(stream.video.readyState, 'live'); assert.deepEqual(f.requests.at(-1), []);
+});
+
+test('a viewer leaving keeps the camera invitation open for a fresh request', async (t) => {
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:1');
+  f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  peer.channel.emit('close'); await settle();
+  assert.equal(f.session.role, 'camera');
+  assert.equal(f.session.active, null);
+  assert.equal(f.sockets[0].closed, false);
+  assert.equal(stream.video.readyState, 'live');
+  assert.equal(f.states.at(-1), 'camera.waiting');
+  const fresh = await requestViewer(f, 'v:2');
+  assert.equal(fresh.transceivers.length, 0);
+  assert.deepEqual(f.requests.at(-1), [{ id: 'v:2', note: 'My viewer' }]);
 });
 
 test('video waits for the approval acknowledgement across transports', async (t) => {

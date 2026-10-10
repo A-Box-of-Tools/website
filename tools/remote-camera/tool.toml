@@ -12,8 +12,8 @@ glyph = "camera"
 category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr"]
-lastmod = "2026-10-09"
+js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names"]
+lastmod = "2026-10-10"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a phone or computer camera from another browser on a reachable local network. Direct encrypted video, source approval, no microphone or recording."
 og_title = "Watch another device's camera"
@@ -21,9 +21,9 @@ og_description = "A direct camera view between two browsers, with camera permiss
 og_image_alt = "Remote Camera - watch a camera from another device"
 og_card = "A live camera, straight from one browser to another."
 csp_note = """
-  This tool opens a WebSocket to the rendezvous only after Start camera or
-  Connect is chosen. It carries WebRTC descriptions and host candidates,
-  never video. The encrypted control channel carries the viewer note and
+  Opening this page opens a discovery WebSocket to the rendezvous that lists
+  opted-in camera names. Start camera or Connect adds a room WebSocket carrying
+  WebRTC descriptions and host candidates, never video. The encrypted control channel carries the viewer note and
   approval; video is added only after approval. Both peers configure no STUN
   server or TURN relay and filter remote descriptions and candidates too.
   WebRTC media is outside CSP's connect-src. The existing worker source is
@@ -36,8 +36,8 @@ pledge = """
     and capture ends. Internet access is required for the introduction;
     pairing also reveals network addresses to the other browser."""
 live_hint = """
-      Watch DevTools while connecting: one WebSocket to the rendezvous carries
-      setup messages. Camera frames and the viewer's note travel the encrypted
+      Watch DevTools: one WebSocket lists camera names, and starting or
+      connecting adds one for setup messages. Camera frames and the viewer's note travel the encrypted
       peer connection. The page stays available offline; pairing needs internet."""
 read_first = """
 , <code>src/capture.js</code> for permission cancellation and track cleanup,
@@ -85,12 +85,17 @@ body = """
 [[privacy]]
 title = "The introduction requires internet and exposes connection metadata."
 body = """
-      Start camera or Connect opens one WebSocket to
-      <code>rendezvous.abox.tools</code>. It stays open while the session is
-      active. The service sees the code, IP addresses, connection times, and
+      Opening this page opens a discovery WebSocket to
+      <code>rendezvous.abox.tools</code>. Start camera or Connect adds a room
+      socket that stays open while the session is active. The service sees the code, IP addresses, connection times, and
       WebRTC setup descriptions and candidates; those setup messages are not
       encrypted from the service. It does not receive video or the viewer note.
-      Rooms exist only on open connections. Cloudflare keeps connection logs
+      Discovery lists only opted-in camera names, grouped by the public IPv4
+      address or IPv6 /64 seen by the service and the page origin. Shared VPNs
+      or carrier networks can include strangers; nearby devices can be missed.
+      Turn off listing before starting for a link-only camera. Choosing a
+      listed name opens the viewing form and waits for Connect and approval.
+      Rooms and listings exist only on open connections. Cloudflare keeps connection logs
       for seven days: the code, address and time, never a payload."""
 [[privacy]]
 title = "A direct connection shares addresses before video is approved."
@@ -128,10 +133,10 @@ body = """
 
 [[howto]]
 title = "Start on the camera device."
-body = "Open this HTTPS page on the phone or computer whose camera you want. Prefer the front or back camera, choose Start camera, and allow camera access. No microphone is requested."
+body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the camera. No microphone is requested."
 [[howto]]
 title = "Invite the viewing device."
-body = "Open the viewer link or scan the QR code on the other device. You can also choose Watch another device and enter the code. Both devices need internet for pairing and a network that lets them reach each other."
+body = "Open the viewer link or scan the QR code on the other device. You can also choose a listed camera name, or choose Watch another device and enter the code. Both devices need internet for pairing and a network that lets them reach each other."
 [[howto]]
 title = "Request a view and approve it."
 body = "The viewer chooses Connect and ask to view. On the source, approve the request you recognise. Live video then appears in the viewer; use Play live video if the browser pauses playback."
@@ -170,4 +175,4 @@ a = "Guest networks and client isolation can separate devices. Firewalls, blocke
 [schema]
 category = "MultimediaApplication"
 description = "Watch one approved device camera in another browser over a direct encrypted WebRTC connection, with no microphone or recording feature."
-features = ["Camera video without microphone access", "One approved viewer at a time", "Direct encrypted WebRTC video", "Viewer link, random code and QR code", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata"]
+features = ["Camera video without microphone access", "One approved viewer at a time", "Direct encrypted WebRTC video", "Custom viewer link name, random suggestion and QR code", "Opt-in camera discovery with viewer approval", "Host-only ICE without STUN or TURN", "Stops capture when the source page is hidden", "Internet introduction with disclosed connection metadata"]

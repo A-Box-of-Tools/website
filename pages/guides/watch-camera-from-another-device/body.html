@@ -7,15 +7,15 @@
   <h2>Start on the camera device</h2>
   <ol>
     <li>Choose Use this device's camera.</li>
-    <li>Prefer the front or back camera, then choose Start camera.</li>
+    <li>Choose a viewer link name or keep the random suggestion, then choose Start camera. Your browser chooses the camera.</li>
     <li>Allow camera access. The page requests video only.</li>
   </ol>
-  <p>Your local preview appears along with a viewer link, random code and QR code. Nothing is sent as video yet. Keep this page visible and the device awake; switching away stops capture. Stop before changing the preferred camera.</p>
+  <p>Your local preview appears along with a viewer link, your chosen code and a QR code. Nothing is sent as video yet. Keep this page visible and the device awake; switching away stops capture. Stop before changing the link name. Turn off listing before starting if you want to invite viewers by link only.</p>
 </section>
 <section>
   <h2>Connect the viewer and approve it</h2>
   <ol>
-    <li>On the other device, open the viewer link or scan its QR code. You can also choose Watch another device and enter the code.</li>
+    <li>On the other device, open the viewer link or scan its QR code. You can also choose a listed camera name to open its viewing form, or choose Watch another device and enter the code.</li>
     <li>Optionally enter a note the source owner will recognise, then choose Connect and ask to view.</li>
     <li>On the camera device, approve the expected request. Live video then appears on the viewer.</li>
   </ol>
@@ -24,7 +24,7 @@
 <section>
   <h2>Stop when finished</h2>
   <p>Stop camera and end the link releases capture and closes the invitation. Hiding or closing the source page does the same. Disconnect on the viewer clears its live view while the source retains a local preview for another request.</p>
-  <p>A camera permission granted after Stop is released immediately. Starting again creates a fresh code. Ending a session stops future video; a viewer can still keep anything they independently captured on their own screen.</p>
+  <p>A camera permission granted after Stop is released immediately. Starting again uses the name in the link-name field; choose New random name for a fresh invitation. Ending a session stops future video; a viewer can still keep anything they independently captured on their own screen.</p>
 </section>
 <section>
   <h2>If the devices cannot connect</h2>
@@ -33,7 +33,7 @@
 </section>
 <section>
   <h2>What the introduction service sees</h2>
-  <p>Start or Connect opens a WebSocket to the rendezvous. The connection stays open during the session, and losing it ends the session. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
-  <p>Rooms exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
+  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start or Connect adds a room WebSocket. The connection stays open during the session, and losing it ends the session. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Listing a name never grants video. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
   <p>This is a browser camera view: it has no microphone or recording feature, and it does not install a system webcam for other applications.</p>
 </section>
