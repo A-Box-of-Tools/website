@@ -334,6 +334,9 @@ support_note = """
 # The guarantee, stated as three checkable facts rather than a promise. Every
 # tool here is expected to hold all three; if one ever cannot, it says so on its
 # own page instead of quietly weakening this claim.
+# Remote Camera is another explicit network feature: live video goes to one
+# approved browser, while the rendezvous carries only connection negotiation.
+# The camera page describes its permissions, metadata and network limits.
 # Receipt OCR stays local; its optional historical-rate button sends only a
 # currency pair and date to Frankfurter. That exception and the later email
 # handoff are explained on the receipt tool, beside the controls that use them.
@@ -385,8 +388,8 @@ order = ["compress-image", "resize-image", "image-layout", "heic-to-jpg", "webp-
 [[hub.categories]]
 id = "video-and-animation"
 name = "Video &amp; animation"
-note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
-order = ["compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
+note = "Edit video and animation in your browser, or watch an approved camera on another device."
+order = ["remote-camera", "compress-video", "convert-to-mp4", "rotate-video", "images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "gif-to-mp4", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
 # Documents and audio have nothing in common except the thing that matters here:
 # they are what people are most often told to upload to a stranger to have
@@ -589,6 +592,7 @@ order = [
   "whats-inside-a-gif",
   "format-json-without-uploading-it",
   "share-text-between-devices",
+  "watch-camera-from-another-device",
   "make-a-height-comparison-chart",
   "trace-an-image-into-an-svg",
   "preview-a-google-business-profile",

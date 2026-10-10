@@ -10,7 +10,7 @@
 # that lives only in the sharer's open tab: readers fetch the text and files
 # over a direct, encrypted, browser-to-browser channel, and closing the tab
 # is the whole of the deletion. A direct channel needs an introduction, so
-# this tool - alone on the site - names a server of ours in its CSP: the
+# this tool names a server of ours in its CSP: the
 # rendezvous, a Cloudflare Worker whose entire code is in workers/rendezvous/
 # that matches the two ends of a code word, forwards their negotiation, and
 # lists opted-in local link names to browsers sharing a public IPv4 address or IPv6 subnet.
@@ -37,7 +37,7 @@ roadmap_group = "beyond"
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules: the checkbox rows of the sharing options.
 css_parts = ["checks"]
-js_parts = ["help-tooltip", "clipboard-feedback"]
+js_parts = ["help-tooltip", "clipboard-feedback", "peer-network"]
 lastmod = "2026-10-08"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -52,7 +52,7 @@ og_card = "Text and files, straight from your open tab to theirs - and gone the 
 
 # Appended to the Content-Security-Policy comment in the generated page.
 csp_note = """
-  The one tool on this site whose CSP names an origin of ours: connect-src
+  This tool has a network feature whose CSP names an origin of ours: connect-src
   carries the rendezvous, the WebSocket that matches the two ends of a link
   name and relays their WebRTC negotiation. It is the introduction only -
   the text and files travel the peer-to-peer channel, which CSP does not
@@ -382,7 +382,7 @@ a = """
         draft is here, markdown renders, and you can write and save with no
         network at all. Sharing does not, and cannot: reaching another
         person's browser is a network act, and the introduction needs the
-        rendezvous. This is the one tool on this site with a job that is
+        rendezvous. This is a tool on this site with a job that is
         impossible offline, and it would be dishonest to imply otherwise."""
 
 [[faq]]

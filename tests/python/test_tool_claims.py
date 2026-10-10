@@ -75,6 +75,21 @@ class ToolClaims(unittest.TestCase):
         self.assertNotIn(
             '## ' + markdown.inline(ui['pledge_line'], tool['url']), twin)
 
+    def test_camera_qualifies_its_network_feature_in_both_twins(self):
+        tool = self.tool('remote-camera')
+        ui = self.ui(tool)
+        pledge = self.html_pledge(tool, ui)
+        twin = self.twin(tool, ui)
+        self.assertEqual(pledge, tool['pledge_line'])
+        self.assertIn('Internet introduces the browsers.', pledge)
+        self.assertIn(
+            '## ' + markdown.inline(tool['pledge_line'], tool['url']), twin)
+        self.assertIn(markdown.inline(tool['md_note'], tool['url']), twin)
+        self.assertIn('Internet rendezvous carries setup metadata', twin)
+        self.assertNotIn(markdown.inline(ui['md_note'], tool['url']), twin)
+        self.assertNotIn(
+            '## ' + markdown.inline(ui['pledge_line'], tool['url']), twin)
+
     def test_the_two_optional_overrides_are_independent(self):
         for key in ('pledge_line', 'md_note'):
             with self.subTest(override=key):

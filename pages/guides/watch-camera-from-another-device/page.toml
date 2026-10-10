@@ -1,0 +1,17 @@
+# The network and permission requirements matter before somebody starts a
+# camera. This guide explains the browser viewer and its approval boundary.
+slug = "guides/watch-camera-from-another-device"
+kind = "guide"
+nav = "Watching another device's camera"
+group = "doing-the-job"
+tool = "remote-camera"
+title = "How to Watch Another Device's Camera in Your Browser"
+description = "Connect a phone or computer camera to another browser on a reachable local network, approve the viewer, and stop capture when finished."
+heading = "How to watch a camera from another device"
+lede = "A phone can show a document or another view to your computer without installing a webcam app. Open the camera in one browser, approve a viewer in the other, and keep the source visible while watching."
+updated = "9 October 2026"
+published = "2026-10-09"
+lastmod = "2026-10-09"
+og_title = "A camera view from another device"
+og_description = "Two browsers, a reachable local network, and approval before live video. What to allow and what to check when pairing fails."
+og_image_alt = "abox.tools - watching another device's camera"

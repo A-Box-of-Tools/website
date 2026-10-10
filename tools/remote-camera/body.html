@@ -1,0 +1,124 @@
+<main id="main">
+  <div class="camera-modes" role="group" aria-label="Choose what this device does">
+    <button type="button" id="role-camera" aria-pressed="true">Use this device&rsquo;s camera</button>
+    <button type="button" id="role-viewer" class="ghost" aria-pressed="false">Watch another device</button>
+  </div>
+  <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video travels directly between the browsers. No microphone, recording or internet relay.</p>
+
+  <section id="camera-panel" data-role="camera" class="card">
+    <h2>Start the camera, then invite a viewer</h2>
+    <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code, and you approve its request before any video is sent.</p>
+    <div class="field camera-facing-field">
+      <label for="camera-facing">Camera to prefer</label>
+      <select id="camera-facing">
+        <option value="environment">Back camera</option>
+        <option value="user">Front camera</option>
+      </select>
+      <p class="field-note">Your browser uses the closest available camera. Stop before changing it.</p>
+    </div>
+    <div class="run-row">
+      <button type="button" id="camera-start" class="big">Start camera</button>
+      <button type="button" id="camera-stop" class="ghost" hidden>Stop camera and end the link</button>
+    </div>
+    <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
+    <div id="camera-preview-panel" class="camera-video-panel" hidden>
+      <video id="camera-preview" autoplay muted playsinline aria-label="Your camera preview, visible only on this device until you approve a viewer"></video>
+      <p class="field-note">Keep this tab visible and this device awake. Switching tabs or closing the page stops the camera and ends the link.</p>
+    </div>
+    <div id="camera-invite" class="camera-invite" hidden>
+      <div class="camera-link-fields">
+        <label for="camera-link">Open this link on the viewing device</label>
+        <input id="camera-link" readonly autocomplete="off" spellcheck="false">
+        <button type="button" id="camera-copy" class="ghost">Copy viewer link</button>
+        <p id="copy-status" class="field-note" role="status"></p>
+        <p class="camera-code-line">Or choose Watch another device and enter this code: <output id="camera-code" dir="ltr"></output></p>
+      </div>
+      <canvas id="camera-qr" width="180" height="180" role="img" aria-label="Scan this QR code on the viewing device to open the camera link"></canvas>
+    </div>
+    <section id="camera-approval" aria-labelledby="approval-heading" hidden>
+      <h3 id="approval-heading">Viewer requests</h3>
+      <p class="field-note">Recognise the person or device before approving. One viewer at a time receives video; everyone else is turned away.</p>
+      <div id="camera-requests" aria-live="polite"></div>
+    </section>
+  </section>
+
+  <section id="viewer-panel" data-role="viewer" class="card" hidden>
+    <h2>Watch a camera on your local network</h2>
+    <p class="card-lede">Enter the code or viewer link from the camera device. This device does not need camera or microphone access.</p>
+    <div class="settings">
+      <div class="field">
+        <label for="viewer-code">Camera code or viewer link</label>
+        <input id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
+      </div>
+      <div class="field">
+        <label for="viewer-name">A name the camera device will recognise</label>
+        <input id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop">
+        <p class="field-note">Optional. This note goes to the camera browser over the encrypted connection.</p>
+      </div>
+    </div>
+    <p class="camera-consent">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera device must approve you before video arrives. Continue only if you know who controls it.</p>
+    <div class="run-row">
+      <button type="button" id="viewer-connect" class="big">Connect and ask to view</button>
+      <button type="button" id="viewer-stop" class="ghost" hidden>Disconnect</button>
+    </div>
+    <p id="viewer-status" class="camera-status" role="status" aria-live="polite">Enter a camera code to request a view.</p>
+    <div id="viewer-video-panel" class="camera-video-panel" hidden>
+      <video id="remote-video" autoplay muted playsinline aria-label="Live video from the camera device"></video>
+      <div class="run-row">
+        <button type="button" id="viewer-play" hidden>Play live video</button>
+        <button type="button" id="viewer-fullscreen" class="ghost">Full screen</button>
+      </div>
+    </div>
+  </section>
+
+  <details id="connection-details" class="camera-details">
+    <summary>Connection details and troubleshooting</summary>
+    <p id="details-route">No camera connection yet.</p>
+    <p id="details-frames" hidden></p>
+    <p>This tool offers only the browsers&rsquo; own host addresses, without public STUN servers or TURN relays. A VPN or operating-system route can affect the path. Guest Wi-Fi isolation, a firewall, blocked local address discovery, or browser and OS local-network permissions can prevent a connection.</p>
+    <p>If pairing fails, stop on both devices, check that both are on the same reachable network, allow local-network access if asked, and try a new link. The camera device needs trusted HTTPS; ordinary HTTP on a LAN IP cannot request a camera.</p>
+  </details>
+
+  <div id="phrases" hidden>
+    <span data-phrase="camera.ready">Your camera is off. Nothing is paired.</span>
+    <span data-phrase="camera.permission">Waiting for camera permission. You can stop this attempt at any time.</span>
+    <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
+    <span data-phrase="camera.approved">Viewer approved. Waiting for the direct video connection.</span>
+    <span data-phrase="camera.streaming">One approved viewer is connected to your camera. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.ended">The camera stopped. Start again to create a new viewer link.</span>
+    <span data-phrase="camera.hidden">The camera stopped because this tab was hidden. Start again when you are ready to share.</span>
+    <span data-phrase="camera.denied">Camera access was not allowed. Check this page&rsquo;s camera permission and try again.</span>
+    <span data-phrase="camera.missing">No available camera was found on this device.</span>
+    <span data-phrase="camera.busy">The camera could not start. Check whether another application is using it and try again.</span>
+    <span data-phrase="camera.unsupported">Camera access needs trusted HTTPS and a browser that supports it. Ordinary HTTP on a LAN IP cannot use the camera.</span>
+    <span data-phrase="camera.unnamed">A viewer without a note</span>
+    <span data-phrase="camera.approve">Approve this viewer</span>
+    <span data-phrase="camera.deny">Turn away</span>
+    <span data-phrase="viewer.ready">Enter a camera code to request a view.</span>
+    <span data-phrase="viewer.waiting">Your request reached the camera device. Waiting for its approval; no video is being sent to you.</span>
+    <span data-phrase="viewer.approved">The camera device approved you. Waiting for live video&hellip;</span>
+    <span data-phrase="viewer.receiving">Receiving live video directly from the camera device.</span>
+    <span data-phrase="viewer.denied">The camera device turned away your request. Ask its owner before trying again.</span>
+    <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
+    <span data-phrase="viewer.fullscreen-failed">Full screen is unavailable here. You can still watch the video in this page.</span>
+    <span data-phrase="code.invalid">Enter the complete camera code or viewer link from this tool.</span>
+    <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
+    <span data-phrase="connection.connecting">Connecting directly to the camera device&hellip;</span>
+    <span data-phrase="connection.stopped">Disconnected. Camera capture and the live connection are closed on this device.</span>
+    <span data-phrase="connection.ended">The camera link ended. Ask the camera device to start again and send a new link.</span>
+    <span data-phrase="connection.not-found">This camera link is no longer open. Check the code or ask the camera device for a new link.</span>
+    <span data-phrase="connection.taken">That camera code is already in use. Start again to create a new one.</span>
+    <span data-phrase="connection.busy">This camera already has a viewer or too many pending requests. Try again after the camera device is free.</span>
+    <span data-phrase="connection.server-failed">The introduction service could not stay connected. Check your internet connection, then start again.</span>
+    <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions; no internet relay will be used.</span>
+    <span data-phrase="connection.invalid">The other browser sent an unsupported connection message. Reload both pages and pair again.</span>
+    <span data-phrase="connection.unsupported">This page needs trusted HTTPS and a browser with WebRTC support.</span>
+    <span data-phrase="copy.done">Viewer link copied.</span>
+    <span data-phrase="copy.manual">Select and copy the viewer link from the field above.</span>
+    <span data-phrase="details.idle">No camera connection yet.</span>
+    <span data-phrase="details.direct">The selected connection uses host candidates on both devices. No STUN server or TURN relay is configured.</span>
+    <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>
+    <span data-phrase="details.frames">Video frames decoded on this device: {count}.</span>
+    <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
+  </div>
+</main>

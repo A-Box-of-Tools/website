@@ -33,6 +33,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Business Profile Preview](business-profile-preview/) | `/business-profile-preview/` | Type it, and it becomes the card Google would draw. Nothing is sent to draw it. |
+| [Remote Camera](remote-camera/) | `/remote-camera/` | Open a camera on one device and approve one viewer in another browser. Live video travels directly between them, encrypted. |
 | [Video Compressor](compress-video/) | `/compress-video/` | Say how big it may be. The tool works out the rest, and measures the result before you get it. |
 | [MP4 Converter](convert-to-mp4/) | `/convert-to-mp4/` | Whatever came off the screen recorder, the ripper or the camera, as H.264 and AAC in an MP4. Copied where it can be, re-encoded only where it must. |
 | [Video Rotator](rotate-video/) | `/rotate-video/` | A quarter turn, a half turn, the other way. With header rotation, the picture frames stay unchanged. |
