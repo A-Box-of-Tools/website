@@ -11,6 +11,14 @@ function stream() {
   const tracks = Array.from({ length: 2 }, () => ({ stopped: 0, stop() { this.stopped += 1; } }));
   return { tracks, getTracks: () => tracks };
 }
+
+test('default capture leaves camera selection to the browser without microphone access', async () => {
+  let received;
+  const capture = new CameraCapture({ getUserMedia: async (constraints) => { received = constraints; return stream(); } });
+  await capture.start();
+  assert.deepEqual(received, { video: true, audio: false });
+  capture.stop();
+});
 test('stopping during camera permission closes every late track', async () => {
   const pending = deferred();
   const capture = new CameraCapture({ getUserMedia: () => pending.promise });

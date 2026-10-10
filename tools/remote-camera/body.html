@@ -8,19 +8,22 @@
   <section id="camera-panel" data-role="camera" class="card">
     <h2>Start the camera, then invite a viewer</h2>
     <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code, and you approve its request before any video is sent.</p>
-    <div class="field camera-facing-field">
-      <label for="camera-facing">Camera to prefer</label>
-      <select id="camera-facing">
-        <option value="environment">Back camera</option>
-        <option value="user">Front camera</option>
-      </select>
-      <p class="field-note">Your browser uses the closest available camera. Stop before changing it.</p>
+    <div class="field camera-name-field">
+      <label for="camera-name">Viewer link name</label>
+      <div class="camera-name-row">
+        <input type="text" id="camera-name" maxlength="64" autocomplete="off" spellcheck="false" dir="ltr" aria-describedby="camera-name-note">
+        <button type="button" id="camera-suggest" class="ghost">New random name</button>
+      </div>
+      <p id="camera-name-note" class="field-note">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
     </div>
+    <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
+    <p class="field-note">The link name is visible to browsers in the discovery group described below. A listed camera still requires your approval. Turn this off to invite viewers by link only.</p>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
       <button type="button" id="camera-stop" class="ghost" hidden>Stop camera and end the link</button>
     </div>
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
+    <p id="camera-publication-status" class="field-note" role="status" aria-live="polite"></p>
     <div id="camera-preview-panel" class="camera-video-panel" hidden>
       <video id="camera-preview" autoplay muted playsinline aria-label="Your camera preview, visible only on this device until you approve a viewer"></video>
       <p class="field-note">Keep this tab visible and this device awake. Switching tabs or closing the page stops the camera and ends the link.</p>
@@ -28,7 +31,7 @@
     <div id="camera-invite" class="camera-invite" hidden>
       <div class="camera-link-fields">
         <label for="camera-link">Open this link on the viewing device</label>
-        <input id="camera-link" readonly autocomplete="off" spellcheck="false">
+        <input type="url" id="camera-link" readonly autocomplete="off" spellcheck="false">
         <button type="button" id="camera-copy" class="ghost">Copy viewer link</button>
         <p id="copy-status" class="field-note" role="status"></p>
         <p class="camera-code-line">Or choose Watch another device and enter this code: <output id="camera-code" dir="ltr"></output></p>
@@ -48,11 +51,11 @@
     <div class="settings">
       <div class="field">
         <label for="viewer-code">Camera code or viewer link</label>
-        <input id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
+        <input type="text" id="viewer-code" maxlength="2048" autocomplete="off" spellcheck="false" placeholder="cam-abcdefghijkl">
       </div>
       <div class="field">
         <label for="viewer-name">A name the camera device will recognise</label>
-        <input id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop">
+        <input type="text" id="viewer-name" maxlength="80" autocomplete="off" placeholder="For example, my laptop">
         <p class="field-note">Optional. This note goes to the camera browser over the encrypted connection.</p>
       </div>
     </div>
@@ -71,6 +74,15 @@
     </div>
   </section>
 
+  <section id="camera-discovery" class="card" aria-labelledby="discovery-heading">
+    <h2 id="discovery-heading">Find a camera</h2>
+    <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise; its owner must approve you.</p>
+    <p class="field-note">Choosing a name opens the viewing form. It does not connect or request video. The camera owner must approve you after you choose Connect.</p>
+    <button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button>
+    <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
+    <ul id="discovery-list" class="camera-discovery-list"></ul>
+  </section>
+
   <details id="connection-details" class="camera-details">
     <summary>Connection details and troubleshooting</summary>
     <p id="details-route">No camera connection yet.</p>
@@ -85,7 +97,7 @@
     <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
     <span data-phrase="camera.approved">Viewer approved. Waiting for the direct video connection.</span>
     <span data-phrase="camera.streaming">One approved viewer is connected to your camera. Keep this tab visible and this device awake.</span>
-    <span data-phrase="camera.ended">The camera stopped. Start again to create a new viewer link.</span>
+    <span data-phrase="camera.ended">The camera stopped. Start again when you are ready to share.</span>
     <span data-phrase="camera.hidden">The camera stopped because this tab was hidden. Start again when you are ready to share.</span>
     <span data-phrase="camera.denied">Camera access was not allowed. Check this page&rsquo;s camera permission and try again.</span>
     <span data-phrase="camera.missing">No available camera was found on this device.</span>
@@ -102,12 +114,13 @@
     <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
     <span data-phrase="viewer.fullscreen-failed">Full screen is unavailable here. You can still watch the video in this page.</span>
     <span data-phrase="code.invalid">Enter the complete camera code or viewer link from this tool.</span>
+    <span data-phrase="code.name-invalid">Choose a viewer link name with letters, numbers or hyphens.</span>
     <span data-phrase="connection.starting">Opening the introduction connection&hellip;</span>
     <span data-phrase="connection.connecting">Connecting directly to the camera device&hellip;</span>
     <span data-phrase="connection.stopped">Disconnected. Camera capture and the live connection are closed on this device.</span>
     <span data-phrase="connection.ended">The camera link ended. Ask the camera device to start again and send a new link.</span>
     <span data-phrase="connection.not-found">This camera link is no longer open. Check the code or ask the camera device for a new link.</span>
-    <span data-phrase="connection.taken">That camera code is already in use. Start again to create a new one.</span>
+    <span data-phrase="connection.taken">That camera link name is already in use. Choose another name and start again.</span>
     <span data-phrase="connection.busy">This camera already has a viewer or too many pending requests. Try again after the camera device is free.</span>
     <span data-phrase="connection.server-failed">The introduction service could not stay connected. Check your internet connection, then start again.</span>
     <span data-phrase="connection.direct-failed">The browsers could not keep a direct connection. Check Wi-Fi isolation, firewall and local-network permissions; no internet relay will be used.</span>
@@ -120,5 +133,12 @@
     <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>
     <span data-phrase="details.frames">Video frames decoded on this device: {count}.</span>
     <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
+    <span data-phrase="discovery.connecting">Looking for listed cameras&hellip;</span>
+    <span data-phrase="discovery.empty">No other cameras are listed in this group. You can still use a viewer link or code.</span>
+    <span data-phrase="discovery.ready">Choose a camera name to open its viewing form.</span>
+    <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>
+    <span data-phrase="discovery.publishing">Listing your camera&hellip;</span>
+    <span data-phrase="discovery.published">Your camera name is listed. Every viewer still needs your approval.</span>
+    <span data-phrase="discovery.not-published">Your camera is available by link, but its name could not be listed.</span>
   </div>
 </main>

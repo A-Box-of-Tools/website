@@ -1,7 +1,10 @@
-// A distinct room namespace and control handshake prevent a camera link from
-// accidentally becoming a text share when it is opened in the other tool.
+import { CODE_PATTERN, normalize } from './shared/room-names.js';
+
+// The worker's tool namespace and this control handshake keep an identically
+// named text share from becoming a camera invitation.
 export const PROTOCOL = 'remote-camera-v1';
-export const CODE_PATTERN = /^cam-[a-z2-7]{12}$/;
+export const TOOL = 'remote-camera';
+export { CODE_PATTERN, normalize };
 
 export function makeCode(random = globalThis.crypto) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz234567';

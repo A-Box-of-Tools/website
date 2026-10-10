@@ -8,8 +8,8 @@ them and match "the person who typed `brave-otter-42`" with the other person
 who typed it. This Worker carries that introduction and lists opted-in local
 link names, never the shared text or files.
 
-One Room Durable Object per code word, plus a Discovery Durable Object per
-public-address-and-origin group. No storage is ever written; the rooms and
+One Room Durable Object per tool and code word, plus a Discovery Durable Object
+per tool, public-address-and-origin group. No storage is ever written; the rooms and
 directory entries live on open sockets, so a room ends when its sharer
 disconnects, and an idle deployment costs nothing at all. What it can see:
 that a code word is in use, when peers come and go, their IP addresses, and
@@ -64,6 +64,17 @@ and binding. An older worker leaves discovery unavailable on the page while
 the ordinary share link and its consent workflow continue to work.
 
 ### What local discovery means
+
+Remote Camera uses `tool=remote-camera` on room and discovery URLs. An omitted
+tool or `tool=share-text` preserves the existing text room identifiers and
+discovery hash input; unknown tools are refused. Camera room identifiers and
+discovery scopes are separate, so the same custom name can belong to both
+tools without mixing introductions or listings. Camera host leases and
+snapshots carry a tool marker. The camera page requires that acknowledgement
+before publishing or displaying names; an older deployment therefore leaves
+camera discovery unavailable while direct links still work. Deploy this worker
+before the updated static page. Camera tabs opened before the namespace change
+must reload; bookmarked viewer links retain their names.
 
 Discovery groups browsers by the canonical Cloudflare public IPv4 address
 or IPv6 /64 subnet, together with the normalized allowed origin, hashed

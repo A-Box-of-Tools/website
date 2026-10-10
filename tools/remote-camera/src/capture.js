@@ -11,7 +11,7 @@ export class CameraCapture {
 
   get active() { return this.#stream !== null; }
 
-  async start(constraints) {
+  async start(constraints = { video: true }) {
     this.stop();
     const generation = this.#generation;
     let stream;

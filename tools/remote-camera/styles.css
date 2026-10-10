@@ -3,7 +3,15 @@
 .camera-modes { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
 .camera-modes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
 .camera-requirements, .camera-consent { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
-.camera-facing-field { max-width: 22rem; }
+.camera-name-field { max-width: 42rem; }
+.camera-name-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.camera-name-row input { flex: 1 1 18rem; min-width: 0; }
+.camera-name-row button { flex: 0 0 auto; }
+.camera-discoverable { display: flex; gap: 0.6rem; align-items: baseline; }
+.camera-discovery-note { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
+.camera-discovery-list { display: flex; gap: 0.6rem; flex-wrap: wrap; list-style: none; padding: 0; }
+.camera-discovery-list a { display: inline-block; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--radius); overflow-wrap: anywhere; }
+.camera-discovery-list li { min-width: 0; max-width: 100%; }
 .camera-status { margin: 0.8rem 0; min-height: 1.6em; font-weight: 600; }
 .camera-status.warn { color: var(--danger); }
 .run-row .big { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
