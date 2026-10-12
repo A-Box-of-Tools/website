@@ -32,8 +32,8 @@ text = "Open source"
 text = "Vos fichiers restent chez vous"
 
 [[privacy]]
-title = "Votre examen n'a nulle part où aller."
-body = "La Content-Security-Policy énumère toutes les adresses que cette page peut contacter, et aucune ne nous appartient. Il n&rsquo;y a ici aucun point de collecte pour votre fichier, et rien dans le code qui l&rsquo;y enverrait s&rsquo;il en existait un. Cette ligne disait autrefois <code>connect-src 'none'</code>, ce qui était absolu&nbsp;; la publicité a coûté cela, et le dire fait partie du marché."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Ici, cela compte davantage que sur les autres pages."
@@ -45,7 +45,7 @@ body = "Rien ici n'utilise une bibliothèque récupérée ailleurs. <code>src/di
 
 [[privacy]]
 title = "Les identifiants vous sont énumérés, à vous et à personne d'autre."
-body = "La page affiche chaque champ de votre fichier qui nomme la personne concernée ou qui réduit le cercle de qui elle peut être, parce que c'est la question à laquelle quelqu'un sur le point de partager une coupe a besoin d'une réponse et qu'aucune visionneuse ne la donne. Cela apparaît sur l'écran devant vous et ne va nulle part ailleurs&nbsp;: il n'existe dans ce dépôt aucun événement de mesure qui transporte quoi que ce soit de cela, et la page ne pourrait pas l'envoyer même s'il en existait un."
+body = "La page affiche chaque champ de votre fichier qui nomme la personne concernée ou qui réduit le cercle de qui elle peut être, parce que c'est la question à laquelle quelqu'un sur le point de partager une coupe a besoin d'une réponse et qu'aucune visionneuse ne la donne. Cela apparaît sur l'écran devant vous et ne va nulle part ailleurs&nbsp;: il n'existe dans ce dépôt aucun événement de mesure qui transporte quoi que ce soit de cela. L’avis facultatif ne transmet que l’outil, une réponse et un motif fixes, jamais les métadonnées du fichier."
 
 [[privacy]]
 title = "Elle lit. Elle n'écrit pas."

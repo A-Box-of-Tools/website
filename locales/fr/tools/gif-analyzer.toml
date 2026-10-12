@@ -33,8 +33,8 @@ text = "Open source"
 text = "Vos fichiers restent chez vous"
 
 [[privacy]]
-title = "Votre GIF n'a nulle part où aller."
-body = "La Content-Security-Policy nomme chaque adresse que cette page a le droit de contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point de collecte où votre fichier pourrait atterrir, ni rien dans le code qui l'y enverrait s'il en existait un. Cette ligne disait autrefois <code>connect-src 'none'</code>, ce qui ne souffrait aucune exception&nbsp;; la publicité a coûté cela, et le dire fait partie du marché."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Le lecteur, ce sont quatre fichiers de ce dépôt."
@@ -42,7 +42,7 @@ body = "Rien ici n'utilise le décodeur GIF du navigateur pour savoir ce que con
 
 [[privacy]]
 title = "Les commentaires et les métadonnées vous sont montrés, à vous seul."
-body = "Un GIF peut transporter un bloc de commentaire, un paquet XMP décrivant une retouche ou un profil de couleurs, et cette page les imprime tous. Ils sont mis à l'écran devant vous et ne vont nulle part ailleurs&nbsp;: il n'existe dans ce dépôt aucun événement de mesure qui en transporte quoi que ce soit, et la page ne pourrait pas en envoyer un s'il en existait."
+body = "Un GIF peut transporter un bloc de commentaire, un paquet XMP décrivant une retouche ou un profil de couleurs, et cette page les imprime tous. Ils sont mis à l'écran devant vous et ne vont nulle part ailleurs&nbsp;: il n'existe dans ce dépôt aucun événement de mesure qui en transporte quoi que ce soit. L’avis facultatif ne transmet que l’outil, une réponse et un motif fixes, jamais les métadonnées du fichier."
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."

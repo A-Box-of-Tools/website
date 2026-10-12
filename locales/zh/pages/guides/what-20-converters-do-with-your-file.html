@@ -1,7 +1,7 @@
   <section>
     <h2>简短答案</h2>
-    <p>2026 年 9 月 17 日，我们把同一份文件交给二十个免费在线转换器，测量离开浏览器的每个字节。<strong>二十个中十九个上传了文件。</strong>一个没有。</p>
-    <p>这大概在预料中。但有三点不明显：<strong>十九个中十一个在选择文件的瞬间就发送</strong>，还没按转换，也没机会反悔；<strong>所有后来检查的成品都能从普通网址直接读取</strong>，无需 Cookie、登录或会话；<strong>两个还把文件名放进网址</strong>。</p>
+    <p>2026 年 9 月 17 日，我们把同一份文件交给二十个免费在线转换器，通过下述监测钩子记录请求体大小。<strong>二十个中十九个上传了文件。</strong>一个没有。</p>
+    <p>这大概在预料中。但有三点不明显：<strong>十九个中十三个在选择文件的瞬间就发送</strong>，还没按转换，也没机会反悔；<strong>所有后来检查的成品都能从普通网址直接读取</strong>，无需 Cookie、登录或会话；<strong>两个还把文件名放进网址</strong>。</p>
     <p>这并非不当行为的证据。多数工具一直靠上传工作，保留政策多为具体短期。文件在无人猜到的网址保留两小时并非丑闻。它说明另一件实用的事：“<em>网站说会删除</em>”与“<em>我能看见文件怎样被处理</em>”的差距比想象大，而一个下午就能测出。</p>
   </section>
 
@@ -10,10 +10,10 @@
     <p>方法刻意平常、可重复，重点是数字而非附加意见。</p>
 
     <h3>文件</h3>
-    <p>450&nbsp;&times;&nbsp;350 的随机像素 PNG，约 542&nbsp;KB，命名 <code>abox-probe-9471.png</code>。噪声无法压缩，传到哪里大小都相似，请求中很容易识别。特别的文件名便于后来从 URL 找到，事实证明很有用。</p>
+    <p>一张 &#x2066;450 x 350&#x2069; 的随机像素 PNG，约 542&nbsp;KB，名为 <code>abox-probe-9471.png</code>。随机噪声难以压缩，大小接近它的载荷是有用线索，但仍须检查请求体，才能确定发送了什么。独特文件名让我们能在后来的 URL 中找到它，这一点确实起了作用。</p>
 
     <h3>测量</h3>
-    <p>交出文件前，把网页所有发字节的方法替换为先记录大小再照常处理的版本：<code>fetch</code>、<code>XMLHttpRequest</code>、<code>navigator.sendBeacon</code>、<code>WebSocket.send</code>，以及重要的 <code>HTMLFormElement.submit</code>。再将文件放进原生选择框，等待十秒，读取记录。</p>
+    <p>交出文件前，对以下请求 API 加入监测：记录收到的数据大小，然后照常执行。包括 <code>fetch</code>、<code>XMLHttpRequest</code>、<code>navigator.sendBeacon</code>、<code>WebSocket.send</code>，以及很重要的 <code>HTMLFormElement.submit</code>。随后把文件放入页面自己的文件输入框，等待十秒，再读取记录。</p>
     <p>表单监测很重要。多个站点用普通 HTML 表单而非脚本上传，常见的 <code>fetch</code> 和 <code>XMLHttpRequest</code> 监测看不到。PicResize 上传同时还用本地 <code>blob:</code> 显示图像，看起来像浏览器本地工具，直到抓到表单发送。</p>
 
     <h3>之后检查</h3>
@@ -23,7 +23,7 @@
 
   <section>
     <h2>表格</h2>
-    <p>以下字节数均来自 2026 年 9 月 17 日实际传输。末列简述该站同日发布的保留政策。</p>
+    <p>以下字节数是 2026 年 9 月 17 日报告的请求体测量值，缺失值仍保留为缺失。末列保留当日报告的政策摘要。链接指向 2026 年 10 月 12 日核对的当前参考页面，并非证明当时措辞的存档。</p>
 
     <figure class="data">
       <div class="scroll">
@@ -38,25 +38,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>Squoosh</td><td>否</td><td>0</td><td>——</td><td>无内容可保留</td></tr>
-            <tr><td>TinyPNG</td><td>是，选择时</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 小时</td></tr>
-            <tr><td>iLoveIMG</td><td>是，选择时</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 小时</td></tr>
-            <tr><td>iLovePDF</td><td>是，选择时</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 小时</td></tr>
-            <tr><td>Sejda</td><td>是，选择时</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>处理后删除；分享链接保留 7 天</td></tr>
-            <tr><td>PDF24</td><td>是，选择时</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>“通常”1 小时</td></tr>
-            <tr><td>PDF Candy</td><td>是，选择时</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 小时</td></tr>
-            <tr><td>jpg2pdf.com</td><td>是，选择时</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 小时，条款说明</td></tr>
-            <tr><td>Img2Go</td><td>是，选择时</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</td></tr>
-            <tr><td>Online-Convert</td><td>是，选择时</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 小时</td></tr>
-            <tr><td>PDF2Go</td><td>是，选择时</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</td></tr>
-            <tr><td>Compress2Go</td><td>是，选择时</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</td></tr>
-            <tr><td>PicResize</td><td>是，选择时</td><td>542,568</td><td><code>picresize.com/en/edit</code>，表单提交</td><td>20 分钟</td></tr>
-            <tr><td>ResizePixel</td><td>是，选择时</td><td>表单提交</td><td><code>resizepixel.com/</code></td><td>1 小时内</td></tr>
-            <tr><td>CloudConvert</td><td>是，转换时</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 小时</td></tr>
-            <tr><td>Convertio</td><td>是，转换时</td><td>未捕获</td><td><code>convertio.co/process/&hellip;</code></td><td>24 小时</td></tr>
-            <tr><td>Ezgif</td><td>是，转换时</td><td>542,483</td><td><code>ezgif.com/optimize</code>，表单提交</td><td>最后使用后 1 小时</td></tr>
-            <tr><td>Aconvert</td><td>是，转换时</td><td>表单提交</td><td><code>aconvert.com/results.php</code></td><td>2 小时</td></tr>
-            <tr><td>Online2PDF</td><td>是，转换时</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>“立即”</td></tr>
+            <tr><td>Squoosh</td><td><a href="https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md" target="_blank" rel="noopener noreferrer">否</td><td>0</td><td>——</td><td>无内容可保留</a></td></tr>
+            <tr><td>TinyPNG</td><td><a href="https://tinypng.com/terms" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 小时</a></td></tr>
+            <tr><td>iLoveIMG</td><td><a href="https://www.iloveimg.com/help/terms" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 小时</a></td></tr>
+            <tr><td>iLovePDF</td><td><a href="https://www.ilovepdf.com/help/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 小时</a></td></tr>
+            <tr><td>Sejda</td><td><a href="https://www.sejda.com/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>处理后删除；分享链接保留 7 天</a></td></tr>
+            <tr><td>PDF24</td><td><a href="https://www.pdf24.org/en/privacy-policy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>“通常”1 小时</a></td></tr>
+            <tr><td>PDF Candy</td><td><a href="https://pdfcandy.com/help.html" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 小时</a></td></tr>
+            <tr><td>jpg2pdf.com</td><td><a href="https://jpg2pdf.com/terms" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 小时，条款说明</a></td></tr>
+            <tr><td>Img2Go</td><td><a href="https://www.img2go.com/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</a></td></tr>
+            <tr><td>Online-Convert</td><td><a href="https://www.online-convert.com/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 小时</a></td></tr>
+            <tr><td>PDF2Go</td><td><a href="https://www.pdf2go.com/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</a></td></tr>
+            <tr><td>Compress2Go</td><td><a href="https://www.compress2go.com/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 小时</a></td></tr>
+            <tr><td>PicResize</td><td><a href="https://picresize.com/en/privacypolicy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>542,568</td><td><code>picresize.com/en/edit</code>，表单提交</td><td>20 分钟</a></td></tr>
+            <tr><td>ResizePixel</td><td><a href="https://www.resizepixel.com/en/privacy" target="_blank" rel="noopener noreferrer">是，选择时</td><td>表单提交</td><td><code>resizepixel.com/</code></td><td>1 小时内</a></td></tr>
+            <tr><td>CloudConvert</td><td><a href="https://cloudconvert.com/privacy" target="_blank" rel="noopener noreferrer">是，转换时</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 小时</a></td></tr>
+            <tr><td>Convertio</td><td><a href="https://convertio.co/privacy/" target="_blank" rel="noopener noreferrer">是，转换时</td><td>未捕获</td><td><code>convertio.co/process/&hellip;</code></td><td>24 小时</a></td></tr>
+            <tr><td>Ezgif</td><td><a href="https://ezgif.com/privacy" target="_blank" rel="noopener noreferrer">是，转换时</td><td>542,483</td><td><code>ezgif.com/optimize</code>，表单提交</td><td>最后使用后 1 小时</a></td></tr>
+            <tr><td>Aconvert</td><td><a href="https://www.aconvert.com/privacy.html" target="_blank" rel="noopener noreferrer">是，转换时</td><td>表单提交</td><td><code>aconvert.com/results.php</code></td><td>2 小时</a></td></tr>
+            <tr><td>Online2PDF</td><td><a href="https://online2pdf.com/privacy" target="_blank" rel="noopener noreferrer">是，转换时</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>“立即”</a></td></tr>
             <tr><td>IMGonline</td><td>是，转换时</td><td>542,633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>未找到政策</td></tr>
           </tbody>
         </table>
@@ -66,10 +66,18 @@
   </section>
 
   <section>
-    <h2>十一个在你点击之前就上传</h2>
-    <p>这个悬殊结果出乎意料。十九个中十一个还显示未点击的转换按钮，文件却已前往服务器。</p>
+    <h2>观察结果及其局限</h2>
+    <p>已发布表格可下载为<a href="/data/converter-observations-2026-09-17.json">含来源说明和局限的 JSON</a> 或 <a href="/data/converter-observations-2026-09-17.csv">CSV 数据行</a>。这些文件转录本文，并非新测试。按表格统计，选择时上传的站点有十三个，修正了正文此前的十一个。</p>
+    <p>本文没有保留原始请求日志、浏览器版本、确切的随机测试文件或历史政策快照。因此，这些数字是报告的观察结果，而不是读者能独立核验的原始数据集。钩子并未覆盖所有传输途径：表单导航、其他框架、工作线程和 WebRTC 需要分别检查。表格中的零表示本测试未记录上传，并不能证明不存在传输可能。</p>
+    <p>如要重做比较，请生成新的模拟文件，记录确切字节数和 SHA-256，并使用新的浏览器配置。保存包含请求体、保留导航记录的网络抓包，分别检查选择文件和执行转换。记录浏览器版本、URL、时间、动作、目的地、请求体大小，以及请求体是否包含测试文件。分享前删去凭据和私密结果链接。保留政策原文、URL 和日期，另行记录未完成的测试。</p>
+    <p>文件 URL 在无会话时返回结果，说明在检查当时，持有该 URL 的人能访问。声称删除失败前，应在政策规定的保留时间之后再次检查。这类检查和网络抓包都无法证明服务内部日志或备份中还保留什么。</p>
+  </section>
+
+  <section>
+    <h2>十三个在你点击之前就上传</h2>
+    <p>这个悬殊结果出乎意料。十九个中十三个还显示未点击的转换按钮，文件却已前往服务器。</p>
     <p>iLoveIMG 显示 <em>Compress IMAGES</em> 等待开始，542,816 字节却已发往 <code>api9.iloveimg.com</code>。iLovePDF、PDF24、PDF Candy、Sejda、TinyPNG、jpg2pdf 和下方四个同平台站点也一样。</p>
-    <p>技术理由合理：用户看选项时先上传，最终确认后就感觉立即转换。这改善了体验，却悄悄取消许多人以为存在的步骤。选择文件像打开，按转换像发送。在十一站，两者是同一时刻，而且早的那个才算。</p>
+    <p>技术理由合理：用户看选项时先上传，最终确认后就感觉立即转换。这改善了体验，却悄悄取消许多人以为存在的步骤。选择文件像打开，按转换像发送。在十三站，两者是同一时刻，而且早的那个才算。</p>
     <p>实际后果很具体：发现选错了未删减草稿、工资单或本想先裁的照片时，它已离开。</p>
   </section>
 
@@ -82,7 +90,7 @@
       <li><strong>ResizePixel</strong>：<code>resizepixel.com/Image/&hellip;</code> 返回 432,111 字节。</li>
       <li><strong>IMGonline</strong>：<code>srv2.imgonline.com.ua/result_img/&hellip;</code> 返回 128,179 字节 JPEG。</li>
     </ul>
-    <p>这是普通网页设计，不是入侵。地址有长随机部分，实际难以猜中。但真正保护它的不是密码或账号，而是 <strong>URL 的保密性</strong>。网址并不很秘密，会进入浏览历史、地址栏截图、<code>Referer</code> 请求头、代理和别人分享链接的聊天。</p>
+    <p>测试的地址包含难以猜中的部分。持有地址的人在检查当时可以读取结果。链接可能经浏览历史、截图、消息，或页面政策允许的来源信息泄露。HTTPS 会向普通网络中间节点隐藏路径；后续网站收到什么取决于来源策略。这项观察只针对这四条链接，并不涵盖转换器提供的所有下载方式。</p>
     <p>Aconvert 在结果页明确说文件最多保留两小时，不要从其他网站链接。这是正确时间、正确页面的正确警告，也是四个中唯一如此的。</p>
   </section>
 
@@ -107,13 +115,13 @@
     <h2>政策说什么，值多少</h2>
     <p>保留承诺大多短、具体，比此类网站的名声好。从 Online2PDF 转换后立即删除、PicResize 二十分钟，到 iLovePDF、iLoveIMG、PDF Candy、Aconvert 两小时，以及四站平台 72 小时。</p>
     <p>两个反例值得提：<strong>jpg2pdf.com</strong> 常规地址没有隐私政策，首页唯一法律链接是 <code>/terms</code>，一小时承诺藏在“Terms and Privacy”中，承诺不错、位置奇怪。<strong>IMGonline</strong> 找不到政策：英文首页无链接、两个常用地址无内容、工具页无储存或删除说明，而成品仍可由任何有链接的人获取。</p>
-    <p>小时数并非重点。<strong>这些承诺从你的位置都无法验证。</strong>你看不到删除，也不知道备份、日志、捕获请求体的错误报告或缓存成品的 CDN 是否一起删。公司出售或泄露后怎样也不可见。政策是陌生人对看不到的机器作出的意图声明，诚实与不诚实版本用完全相同词语。</p>
+<p>小时数并非全部问题。<strong>超过公布的保留期限后，公共结果链接仍返回文件，可以说明删除没有按时完成。</strong>链接失效却不能证明所有内部副本都已删除。你看不到备份、日志、捕获请求体的错误报告或缓存成品的 CDN 是否一起删除，公司出售或遭入侵后的内部副本也不可见。保留政策是对你无法检查的系统所作的意图声明，诚实与不诚实的承诺可能使用同样的词语。</p>
     <p>这就是偏好不能发送文件的工具的原因，并不是说上述企业撒谎。没有上传，在这一点就没有可隐瞒的内容，也无需信谁的承诺。</p>
   </section>
 
   <section>
     <h2>唯一不上传的工具</h2>
-    <p>Google 的 Squoosh 接收、显示、压缩文件，<strong>完全没有网络请求</strong>。不是更小或哈希后的请求，是零字节。同一方法一分钟前才捕获 TinyPNG 发出 542,566 字节。</p>
+    <p>Google 的图片压缩器 Squoosh 接收、显示并压缩文件，<strong>本测试未记录到文件上传</strong>。报告的上传字节为零；同一测量方法一分钟前记录了 TinyPNG 发出 542,566 字节。</p>
     <p>它是对照，说明方法能得到阴性，十九个阳性不是必然发现内容的测量缺陷。也说明同任务、同格式可在浏览器完成，无需服务器，否定转换因为困难所以必须上传的假设。</p>
     <p>多数工具上传，是因为当年如此开发，也因为账号、额度和付费分层在服务器。纯浏览器工具难以计量收费。</p>
   </section>
@@ -127,10 +135,10 @@
 
   <section>
     <h2>自己检查</h2>
-    <p>无需相信我们。公布方法正是为了让认为我们错的人重做表格。最快版本不需特别工具：</p>
+    <p>原始记录已不可用，因此无法从原始请求验证历史表格。上述方法可用于新的比较。最快的版本无需专用工具：</p>
     <ul>
       <li><strong>断网。</strong>加载工具、关 Wi-Fi、使用。浏览器工作继续，服务器工作停止。文字承诺无法替代测试。</li>
-      <li><strong>看网络标签页。</strong>开开发者工具，选网络，按大小排序。4&nbsp;MB 照片若发走，会有对应请求在顶部。也看按转换<em>之前</em>，不只之后，这正是前文发现。</li>
+      <li><strong>看网络面板。</strong>打开开发者工具，选择 Network，按大小排序并操作工具。检查请求载荷，不能只看传输大小列，因为它通常描述响应。缩略图、分块上传或编码文件的大小可能不同。按转换<em>之前</em>和之后都看，这是上文的主要发现。</li>
       <li><strong>读 <code>connect-src</code>。</strong>源码中的 <code>Content-Security-Policy</code> 列出可联系地址，浏览器强制执行。若包含本站地址，页面能向那里发文件。</li>
     </ul>
     <p>三种测试及值得做的第四种，详见<a href="../is-it-safe-to-upload-files/">上传文件到在线转换器安全吗</a>。</p>
@@ -138,19 +146,33 @@
 
   <section>
     <h2>本网站怎样回答</h2>
-    <p>测别人却要求自己豁免很奇怪，因此按同样列说明：</p>
+    <p>
+      本站源码与上面的历史转换器测量是两类证据。当前实现作出以下说明；请针对要用的功能，按<a href="../is-it-safe-to-upload-files/">四项检查</a>自行核查。
+    </p>
     <ul>
-      <li><strong>发出字节：零。</strong>工具在浏览器工作，不发送文件、缩略图、名称、大小或内部数据。</li>
-      <li><strong>去向：无。</strong>没有接收服务器。网站是静态文件，安全策略 <code>connect-src</code> 只列 Google 广告、统计和捐赠按钮，<strong>没有一个地址属于本站</strong>。</li>
-      <li><strong>保留：不适用。</strong>因为没有收到文件，所以不需要信任删除定时器。</li>
-      <li><strong>可验证：是。</strong>每行代码都<a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">公开</a>，构建只去注释和空白，别无改动。可自己运行并比对上线内容。</li>
+      <li>
+        <strong>离线。</strong>本地处理在资源加载、缓存就绪后可以断网完成。网址图片、在线汇率和浏览器引见需要各自连接。
+      </li>
+      <li>
+        <strong>请求。</strong>处理代码不上传所选文件。页面访问和主动的固定反馈属于另一类请求。汇率请求包含货币对和日期；主动的对等功能向选定浏览器发送内容。 <strong>策略。</strong>多数工具继承平台目的地。收据工具加入 Frankfurter，分享和远程摄像头加入引见服务器。策略约束目的地，不能证明每条载荷。
+      </li>
+      <li>
+        <strong>保存。</strong>abox.tools 不接收文件去处理，因此这类操作没有需要删除的服务器副本。本地浏览器记录、引见服务七天的连接日志，以及分享或邮件收件人保留的内容，属于隐私页说明的其他数据路径。
+      </li>
+      <li>
+        <strong>源码。</strong><a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">源码公开</a>，可以自行构建并比较输出。共享模块和内置引擎与本站代码一起可读。
+      </li>
     </ul>
-    <p>明确列出的例外：广告和访问统计联系 Google，却不获得文件信息；<a href="../../images-to-video/">图片转视频</a>可获取你粘贴地址的图片，目标服务器会看见 IP；<a href="../../share-text/">分享文本</a>只为让两个浏览器认识而开一条连接，不保存或传内容。<a href="../../privacy/">隐私页</a>完整解释三种。</p>
-    <p>对应工具包括按指定大小工作的<a href="../../compress-image/">图片压缩器</a>、<a href="../../images-to-pdf/">图片转 PDF</a>、<a href="../../merge-pdf/">合并 PDF</a>、<a href="../../compress-pdf/">PDF 压缩器</a>和处理前述隐藏数据的 <a href="../../exif-editor/">EXIF 查看与移除工具</a>。全部免费、无需账号，也无处发送文件。</p>
+    <p>
+      <a href="../../privacy/">隐私页</a>完整说明边界：<a href="../../images-to-video/">网址图片导入</a>、可选的<a href="../../receipt-invoice-extractor/">收据汇率和应用交接</a>、<a href="../../share-text/">浏览器间分享</a>、<a href="../../remote-camera/">远程摄像头</a>，以及广告、Analytics 和固定反馈。主动传送不同于上传文件去处理。
+    </p>
+    <p>
+      本地处理的例子包括<a href="../../compress-image/">按目标大小压缩</a>、<a href="../../crop-video/">裁剪视频</a>、<a href="../../exif-editor/">删除 EXIF 和 GPS</a>、<a href="../../images-to-pdf/">图片合成 PDF</a>。要核查支持格式和下载结果。这些任务无须上传处理或账号。
+    </p>
   </section>
 
   <section>
     <h2>使用这些数字</h2>
-    <p>可自由引用并重测。主要结果是：2026 年 9 月 17 日测二十个免费在线转换器，十九个上传，十一个按转换前就上传，四个已测成品都能无会话从公共地址取回。</p>
+    <p>可自由引用并重测。主要结果是：2026 年 9 月 17 日测二十个免费在线转换器，十九个上传，十三个按转换前就上传，四个已测成品都能无会话从公共地址取回。</p>
     <p>欢迎链接本页，但不强制。重测有不同结果请告诉我们，网站会变，这只是一个下午的快照。通过<a href="../../contact/">联系页</a>提交带字节数的更正，我们会发布。</p>
   </section>

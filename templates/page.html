@@ -56,7 +56,8 @@
 <meta property="og:image" content="{{ site.domain }}og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{{ page.og_image_alt }}">
+<!-- Every prose page uses the root card, so its image description comes from the same translated frame. -->
+<meta property="og:image:alt" content="{{ site.hub.og_image_alt }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ page.og_title }}">
 <meta name="twitter:description" content="{{ page.og_description }}">

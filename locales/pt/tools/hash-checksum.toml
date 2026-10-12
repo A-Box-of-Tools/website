@@ -70,14 +70,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu computador"
 
 [[privacy]]
-title = "Seu arquivo não tem para onde ir."
-body = """
- Na
-      Content-Security-Policy está cada endereço que esta página pode contatar, e
-      nenhum é nosso. Aqui não existe um ponto de coleta onde o seu arquivo possa
-      parar, e não há nada no código que o mandaria para lá se existisse. Antes
-      isto dizia <code>connect-src 'none'</code>, o que era absoluto; a
-      publicidade custou isso, e dizer isso faz parte do acordo."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "O arquivo nunca fica inteiro em lugar nenhum, de qualquer tamanho."

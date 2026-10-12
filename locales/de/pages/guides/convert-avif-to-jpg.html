@@ -49,16 +49,16 @@
   </section>
 
   <section>
-    <h2>Was JPEG nicht übernehmen kann</h2>
+    <h2>Was diese Umwandlung nicht erhält</h2>
     <p>Zwei Dinge, die die meisten Bilder nicht betreffen:</p>
     <p><strong>Transparenz.</strong> AVIF kann einen transparenten Hintergrund haben, JPEG nicht. Deshalb muss dahinter eine Farbe stehen. Das Werkzeug fragt nach ihr und verwendet standardmäßig Weiß, aber nur bei tatsächlich transparenten Dateien. Die meisten AVIFs von Webseiten sind undurchsichtige Fotos; die Frage erscheint dann nicht. Soll Transparenz bleiben, verwenden Sie den <a href="../../bild-komprimieren/">Bildkompressor</a>, der AVIF liest und PNG sowie WebP schreibt.</p>
-    <p><strong>HDR und große Farbtiefe.</strong> AVIF kann zehn oder zwölf Bit pro Kanal und hellere Spitzlichter als ein gewöhnlicher Bildschirm speichern. JPEG hat acht Bit und kein HDR. Solche Bilder werden auf den gewöhnlichen Dynamikbereich reduziert. Fast kein Bild von einer normalen Webseite nutzt diese Möglichkeiten. Bei Ihren Bildern entsteht daher sehr wahrscheinlich kein solcher Verlust.</p>
+    <p><strong>HDR und hohe Farbtiefe.</strong> Dieses Werkzeug schreibt ein gewöhnliches 8-Bit-SDR-JPEG aus einem Browser-Canvas. Zusätzliche AVIF-Farbtiefe und HDR-Informationen bleiben nicht erhalten; Farben oder helle Spitzlichter können sich ändern. Für das Archiv das Original behalten. HDR-Formate auf JPEG-Basis gibt es: <a href="https://developer.android.com/media/platform/hdr-image-format">Androids Ultra-HDR-Spezifikation</a> beschreibt eine Gain Map, die dieses Werkzeug nicht erzeugt.</p>
   </section>
 
   <section>
     <h2>Die Gegenrichtung ist ein anderes Problem</h2>
-    <p>Hier gibt es kein JPG-zu-AVIF-Werkzeug. Der Grund ist dieselbe Tatsache von der anderen Seite: <strong>Kein Browser schreibt AVIF</strong>. Ein Canvas liefert stattdessen stillschweigend PNG mit der falschen Formatangabe.</p>
-    <p>Eine Seite, die AVIF im Browser verspricht, liegt daher entweder falsch oder schickt Ihr Bild zur Kodierung an einen Server. Für die korrekte Verarbeitung ohne Server muss ein Encoder entwickelt werden. Diese echte Arbeit steht auf <a href="../../roadmap/">der Roadmap</a>, statt hier nur behauptet zu werden.</p>
+    <p>Hier gibt es kein JPG-zu-AVIF-Werkzeug, weil <strong>diese Seite keinen AVIF-Encoder mitliefert</strong>. Die Canvas-Ausgabe nutzt JPEG, PNG oder WebP und gibt kein umbenanntes PNG als AVIF aus.</p>
+    <p>Mit einem eigenen Encoder, auch WebAssembly, ist lokales AVIF-Kodieren ohne Server möglich. Das ist eine andere Umsetzung als diese Seite. Ein nicht unterstütztes natives Canvas-Format fällt auf PNG zurück, wie <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob">die Canvas-Dokumentation</a> erklärt.</p>
   </section>
 
   <section>

@@ -21,7 +21,7 @@ import assert from 'node:assert/strict';
 import { ENDONYMS, SOURCES } from '../../tools/id-photo/src/sources.js';
 import { SPECS } from '../../tools/id-photo/src/specs.js';
 
-const COLUMNS = ['native', 'authority', 'document', 'checked'];
+const COLUMNS = ['native', 'authority', 'document', 'url', 'checked'];
 
 /** The longest thing anybody publishes as a title, with room to spare. */
 const LONGEST = 90;
@@ -71,6 +71,7 @@ test('sources: a citation is a name, never a sentence', () => {
       assert.ok(COLUMNS.includes(column), `${id}: ${column} is not a column here`);
       assert.equal(typeof value, 'string', `${id}.${column}`);
       assert.ok(value.trim() !== '', `${id}.${column} is empty`);
+      if (column === 'url') continue;
       assert.ok(value.length <= LONGEST,
         `${id}.${column} is ${value.length} characters. A published title is `
         + 'shorter than that, and a sentence is how this file stops being a '
@@ -81,6 +82,17 @@ test('sources: a citation is a name, never a sentence', () => {
       assert.ok(!/[a-z]\.\s/.test(value) && !value.endsWith('.'),
         `${id}.${column} reads like a sentence`);
     }
+  }
+});
+
+test('sources: every citation links directly to an HTTPS publication', () => {
+  for (const [id, source] of Object.entries(SOURCES)) {
+    const url = new URL(source.url);
+    assert.equal(url.protocol, 'https:', id);
+    assert.ok(url.hostname.includes('.'), id);
+    assert.equal(url.username, '', id);
+    assert.equal(url.password, '', id);
+    assert.ok(!/[\s<>]/.test(source.url), id);
   }
 });
 

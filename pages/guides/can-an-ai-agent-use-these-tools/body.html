@@ -1,20 +1,10 @@
   <section>
     <h2>The short answer</h2>
     <p>
-      Yes. Every tool here is an ordinary web page: a file picker, some
-      labelled controls, a download button. There is no account to sign into,
-      no captcha to solve, no step that needs a human in particular. An AI
-      agent with a browser drives these pages the way it drives any other
-      &mdash; and several things this site already does for people turn out
-      to serve agents for free, which the last section lists.
+      An agent with browser control can use these ordinary web pages: labelled controls, file pickers and downloads, without a site account. Its environment must support the required file access, browser APIs and permissions. Camera permission or a device share sheet may need your participation.
     </p>
     <p>
-      But &ldquo;can it press the buttons&rdquo; is the small question. The
-      one worth a page is what happens to the site's promise &mdash;
-      <em>your file never leaves your machine</em> &mdash; when the machine
-      pressing the buttons is not you. The answer is that the promise
-      survives delegation perfectly, or not at all, depending on one thing:
-      <strong>where the agent's browser is running.</strong>
+      For file processing, the first question is <strong>where the controlled browser runs</strong>. Also check what the agent's own service receives, and whether the requested feature intentionally fetches or shares data. A local browser alone does not settle all three questions.
     </p>
   </section>
 
@@ -25,32 +15,13 @@
       them matters more than anything else on this page.
     </p>
     <p>
-      <strong>A local agent</strong> runs on your machine: an assistant
-      installed on your computer, or one steering the browser you are looking
-      at. When an agent like that opens a tool here and hands it your file,
-      the work happens where the work always happens with these pages &mdash;
-      in a browser, on your hardware. The file is read from your disk,
-      processed in your browser's memory, and written back to your disk.
-      Nothing about the delegation changed the path the bytes take. An AI
-      chose the settings; the file still never left.
+      <strong>A locally controlled browser</strong> reads and processes the file on that device. Using a local processing tool here adds no file upload for processing. The agent may still send instructions, screenshots or file context to its vendor; that is governed by the agent's own implementation and settings.
     </p>
     <p>
-      <strong>A cloud agent</strong> runs a browser on its vendor's computer.
-      You attach a file to a chat, the agent works in a virtual machine
-      somewhere else, and whatever it does with these tools happens there.
-      The tools still behave exactly as promised &mdash; the file goes no
-      further than the browser it is in &mdash; but that browser is not
-      yours, and the upload already happened at the moment you attached the
-      file, before any tool was opened. No page can undo an upload that
-      preceded it.
+      <strong>A cloud browser</strong> runs on the agent vendor's computer. If you attach a file for the agent to use there, it has already left your device. These tools process it inside that remote browser and do not undo the earlier transfer. Intentional sharing or app handoffs are additional actions in either environment.
     </p>
     <p>
-      So the question this site keeps asking &mdash; does this job need my
-      file to leave at all? &mdash; does not disappear when an agent does the
-      job. It just moves one step earlier, to the choice of agent. A local
-      agent driving a browser-only tool is the rare arrangement where
-      delegation costs no privacy at all: the AI does the work, and the file
-      stays home.
+      Specify a local browser when keeping processing on your device matters, check the agent's own data handling, and authorize any deliberate transfer separately. <a href="../../receipt-invoice-extractor/">Online rate lookup and email handoff</a>, <a href="../../images-to-video/">image URL import</a>, <a href="../../share-text/">sharing</a> and <a href="../../remote-camera/">camera viewing</a> have documented network boundaries.
     </p>
   </section>
 
@@ -86,22 +57,14 @@
         guide a link away. An agent that seems unsure of a setting can be
         told to read the guide first, the same advice a person would get.
       </li>
-      <li>
-        <strong>Chains work.</strong> The jobs this site's workflow guides
-        describe for people &mdash; scan, then combine into a
-        <a href="../../images-to-pdf/">PDF</a>; strip
-        <a href="../../exif-editor/">EXIF</a>, then resize &mdash; are the
-        jobs agents are best at, because each step's output is the next
-        step's input and nothing in between needs judgement.
-      </li>
+      <li><strong>State the checks between steps.</strong> For scan-to-PDF or image-cleanup workflows, tell the agent to inspect page order, crop, readable text and output size. OCR, redaction and choosing what may be shared require judgement and a review of the result.</li>
     </ul>
   </section>
 
   <section>
     <h2>What not to delegate</h2>
     <p>
-      An agent can drive every tool here. There are two places where driving
-      is not the whole job, and the remainder should stay with you.
+      Operating controls is only part of a task. Review decisions that change what another person can see or receive. Two examples:
     </p>
     <p>
       <strong>Deciding what must not be seen.</strong> The redaction tools
@@ -136,22 +99,9 @@
       <a href="../how-can-a-web-page-work-offline/">a page of its own</a>.
     </p>
     <p>
-      What this site does for an agent, it does on purpose and for everyone:
-      every control is labelled, because screen readers need names and an
-      agent reads the same names; the pages carry no accounts, no popups and
-      no consent walls to steer around; the source is public and served
-      without a build step, so the code an agent audits is the code that
-      runs; and <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
-      is the whole box in one fetch. None of that was added for machines.
-      A page that is legible to a person with a screen reader turns out to
-      be legible to everything else as well.
+      The pages label their controls and publish <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a> and Markdown copies for reading. Their source, shared modules and bundled engines are public. The build generates and minifies the served pages, so compare a build with the deployed output when auditing code. Availability of DevTools and WebRTC diagnostics depends on the agent environment.
     </p>
     <p>
-      One honest limit: this page is about agents using these tools, not
-      about the agents themselves. What an agent's own vendor sees &mdash;
-      your instructions, your screenshots, sometimes your files &mdash; is a
-      separate question, and the habit this whole group of guides keeps
-      arriving at is the right lens for it too: ask what actually needs to
-      leave your machine, and in what state.
+      This guide cannot make a privacy guarantee about an agent vendor. Instructions, screenshots and sometimes files may be sent by the agent even when its browser is local. Treat that data path and the tool's documented network features as part of the task, not as something browser location alone proves.
     </p>
   </section>

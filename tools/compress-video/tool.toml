@@ -66,7 +66,7 @@ js_parts = ["file-picker", "mp4-reader", "mp4-writer", "mp4-boxes", "reencode-vi
 # of links shared/handoff.js shows under the result once there is one. A
 # clip made small enough to send is often then cut, or turned into a GIF.
 handoff = ["trim-video", "video-to-gif"]
-lastmod = "2026-09-12"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -184,17 +184,7 @@ body = """
 
 [[privacy]]
 title = "A compressed video is an encoded-again video, and the page says so."
-body = """
-
-      &ldquo;Compress&rdquo; means something lossless for a zip file and
-      nothing of the kind for a video. The picture is decoded, drawn smaller,
-      and encoded again with H.264 at the bitrate the number allows, which
-      leaves it one generation further from the camera than the file you
-      started with. The sound is not: its samples are copied into the new
-      file exactly as they were. The result is an MP4, because that is the
-      one container every phone, browser and chat app plays, and this site
-      has already ruled out promising a format half its visitors could not
-      have made."""
+body = "Compression decodes and re-encodes the picture locally. The original audio samples are copied unchanged. The output is MP4 with H.264 video; it is widely supported, but its copied audio codec and video profile must also be supported by the receiving player. Test the finished file before sending it."
 
 [[privacy]]
 title = "The result is measured, and tightened once if it missed."
@@ -319,24 +309,11 @@ a = """
 
 [[faq]]
 q = "Will the quality be worse?"
-a = """
-        Yes, by exactly as much as the number requires and no more. A
-        compressed video is a re-encoded video: the picture is written again
-        at a lower bitrate, one generation further from the camera. The sound
-        is not touched. What you lose is decided by the number you typed
-        &mdash; a 900 MB clip made 25 MB has lost most of its bits, and a
-        clip made half its size has lost few &mdash; and the page says the
-        bitrate and frame size it chose so that the trade is visible rather
-        than hidden."""
+a = "Re-encoding the picture can lose detail or introduce artefacts. The chosen bitrate, frame size, source and scene complexity all affect what is visible; a size limit does not specify an exact amount of quality loss. The audio is copied unchanged. Play the result, compare important text and motion, and keep the original."
 
 [[faq]]
 q = "What format does it write?"
-a = """
-        MP4 with H.264 video, and the sound track copied through as it was.
-        That is the one combination every phone, browser, chat app and email
-        client plays, which is what a file that has to send needs. It does
-        not write WebM, HEVC or AV1: smaller for the same quality, and not
-        something half of the people you would send it to could open."""
+a = "MP4 with H.264 video and the original audio track copied through. H.264 in MP4 is widely supported, but playback also depends on whether the receiving player supports the copied audio codec and the video profile. Test the finished file in its destination app. This tool does not write WebM, HEVC or AV1."
 
 [[faq]]
 q = "Which files does it read?"

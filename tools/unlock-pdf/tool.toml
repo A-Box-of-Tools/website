@@ -29,7 +29,7 @@ name = "PDF Unlocker"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
 heading = "Unlock&nbsp;PDF <span class=\"h1-kw\">&mdash; take off the password and the restrictions</span>"
-tagline = "Most locked PDFs need no password at all. This one says which kind you have before it touches it."
+tagline = "Permission restrictions and open passwords are different. This page tells you which your PDF uses."
 icon = "&#128273;"                  # the key, beside the page heading
 favicon = "&#128273;"      # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -73,14 +73,14 @@ js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writ
 # sends its reader here - so it needs a way out, or the journey ends on a
 # download and a second upload to the tool they wanted in the first place.
 handoff = ["merge-pdf", "compress-pdf", "redact-pdf", "watermark-pdf", "protect-pdf"]
-lastmod = "2026-09-12"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Unlock a PDF &mdash; Remove the Password &amp; Restrictions, Free, No Upload"
-description = "Take the password and the printing, copying and editing restrictions off a PDF in your browser. Most protected files need no password at all, and this one tells you which kind you have. Nothing is uploaded, and it never guesses a password."
+description = "Remove PDF permission restrictions locally, or remove an open password you supply. The page identifies which protection the file uses before asking for a password. Nothing is uploaded and no password is guessed."
 og_title = "Unlock a PDF without uploading it anywhere"
-og_description = "Most \"protected\" PDFs open for anybody and only ask readers not to print or copy them. This removes that, in your browser, and tells you what the protection was actually worth."
+og_description = "Remove PDF permission restrictions locally, or remove an open password you supply. The page identifies which protection the file uses before asking for a password. Nothing is uploaded and no password is guessed."
 og_image_alt = "Unlock a PDF in your browser, without uploading it"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -125,11 +125,7 @@ howto_heading = "How to remove a password or the restrictions from a PDF"
 
 # --- the card on the hub page ------------------------------------------------
 
-card = """
-            Take the password and the printing, copying and editing
-            restrictions off a PDF. Most protected files open for anybody
-            already and need no password at all &mdash; this says which kind
-            you have, what the protection was worth, and removes it here."""
+card = "Remove PDF permission restrictions locally, or remove an open password you supply. The page identifies which protection the file uses before asking for a password. Nothing is uploaded and no password is guessed."
 
 # The nouns this tool uses for the things it works on.
 [words]
@@ -159,7 +155,7 @@ mark = "&#10003;"
 text = "Files stay on your device"
 
 [[privacy]]
-title = "Most protected PDFs are not locked at all, and this page says so before it does anything."
+title = "The page distinguishes permissions from an open password."
 body = """
 
       A PDF can carry two quite different things. An <em>open password</em> is
@@ -287,12 +283,7 @@ body = """
 
 [[howto]]
 title = "Choose the PDF."
-body = """
- One document at a time. It is read
-      straight off your disk by the browser, and the first thing that happens
-      is that it is tried with a blank password &mdash; which is what opens the
-      majority of protected files, because the majority of them were never
-      closed."""
+body = "Choose one document. The browser reads it from your disk and first tries an empty password. That opens files whose protection restricts permissions without requiring a password to read them."
 
 [[howto]]
 title = "Read what the page found."
@@ -326,37 +317,15 @@ body = """
 
 [[faq]]
 q = "Do I need the password?"
-a = """
-        Usually not, and the page tells you within a second of choosing the
-        file. Most \"protected\" PDFs &mdash; bank statements, payslips,
-        exported reports, anything from an office suite's \"restrict editing\"
-        box &mdash; open for anybody and merely carry a list of things readers
-        are asked not to do. Those come off with one click and no password. A
-        document that genuinely asks you for a password when you open it is the
-        other kind, and for that one you need the password."""
+a = "It depends on the protection. A PDF that opens without a password but restricts printing or copying can have those permission restrictions removed here without a password. If an open password is required, supply the user or owner password. The page tries the empty password first and explains which case it found."
 
 [[faq]]
 q = "Can it open a PDF whose password I do not have?"
-a = """
-        No, and it does not try. There is no dictionary, no word list and no
-        brute-force search anywhere in this tool &mdash; you can read
-        <code>src/shared/pdf-crypt.js</code> and see that there is no loop in
-        it. For the
-        oldest documents, with 40-bit keys, a search would in fact work, which
-        is exactly why the refusal is written down rather than left to be
-        assumed. If you have lost the password to your own document, this page
-        cannot help you and neither can any honest one."""
+a = "No. This tool does not guess passwords or search encryption keys. You can inspect <code>src/shared/pdf-crypt.js</code> for its supplied-password handling. Recovery tools elsewhere may guess a weak password or attack obsolete encryption, with no guaranteed result; this page does neither. If you do not know a working password, ask the sender for it or for an accessible copy."
 
 [[faq]]
 q = "What is the difference between the two passwords?"
-a = """
-        A PDF has room for two. The <em>user</em> password is the one a reader
-        asks you for; without it the file does not open. The <em>owner</em>
-        password lifts the restrictions &mdash; printing, copying, editing
-        &mdash; and a document very often has an owner password with no user
-        password at all, which is why it opens for everybody and still refuses
-        to print. This tool accepts either one, and tells you which of them
-        the document actually let it in with."""
+a = "A PDF can have two passwords. The <em>user</em> password opens it; the <em>owner</em> password grants full permissions. A document can have an owner password with an empty user password, so it opens freely while a reader still enforces printing or copying restrictions. This tool accepts either supplied password and explains what it found."
 
 [[faq]]
 q = "Is removing the restrictions legal?"

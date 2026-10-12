@@ -35,7 +35,7 @@
   each card is rasterised by a headless Edge, that flakes about one call in
   every run, and the redraws are not byte-identical even when it does not - so
   a full run dirties every og.png whether or not the wording changed. If you
-  changed one tool, name it.
+  changed one tool, name it. Use -Only site to redraw only the root card.
 
 .EXAMPLE
   .\og-image.ps1
@@ -461,11 +461,11 @@ if (-not $Only) {
 
 # The hub's own card. Written out here because it is the one that belongs to no
 # tool - everything below reads its words from the tool it belongs to.
-if (-not ($Only -or $Icons)) {
+if ((-not ($Only -or $Icons)) -or ($Only -eq 'site' -and -not $Icons)) {
   New-OgImage -Path 'shared\og.png' `
-    -Title 'Tools that never touch a server' `
-    -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
-    -Footer $footer
+    -Title 'Work on your files in your browser' `
+    -Subtitle 'Local file processing, with chosen connections explained on each tool.' `
+    -Footer 'Local processing | No accounts | Open source'
 }
 
 # One card and two icons per tool, from that tool's own tool.toml.
@@ -494,11 +494,15 @@ foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filte
     }
   }
 
+  $cardFooter = if ($slug -in @('share-text', 'remote-camera')) {
+    'Peer connection | No accounts | Open source'
+  } else { $footer }
+
   if (-not $Icons) {
     New-OgImage -Path (Join-Path 'tools' (Join-Path $slug 'og.png')) `
       -Title $fields['name'] `
       -Subtitle $fields['og_card'] `
-      -Footer $footer
+      -Footer $cardFooter
   }
 
   # The em box at 0.82 of the tile for the plain icon and 0.55 for the maskable

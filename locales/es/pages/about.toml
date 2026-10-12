@@ -17,8 +17,8 @@ lede = """
     funciona en tu propio dispositivo, el código es público, y esta página
     explica el porqué de ambas cosas."""
 
-updated = "27 de agosto de 2026"
+updated = "12 de octubre de 2026"
 
 og_title = "Quién hace abox.tools y por qué todo funciona en el navegador"
-og_description = "Un proyecto independiente y autofinanciado. Por qué las herramientas no suben nada, cómo se paga el sitio y cómo comprobar las dos cosas."
-og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
+og_description = "Un proyecto independiente y autofinanciado: procesamiento local, funciones de red, financiación y formas de comprobar sus afirmaciones."
+og_image_alt = "abox.tools - herramientas del navegador para procesar archivos localmente"

@@ -39,14 +39,14 @@ js_parts = ["file-picker", "text-import", "codec-support", "mp4-reader", "mp4-wr
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["video-to-gif", "reverse-video"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Cut a Video Online &mdash; Keep Only the Parts You Want, No Upload"
-description = "Watch a video and mark every part worth keeping as it plays, then save those parts as one file. Runs in your browser: nothing uploaded, nothing re-encoded, works offline."
+description = "Mark the parts worth keeping and save them as one video in your browser. Copy mode preserves encoded frames; exact cuts and recording re-encode. No upload, works offline."
 og_title = "Video Cutter &mdash; keep only the parts you want, without uploading anything"
-og_description = "Press I and O as it plays to mark each part worth keeping. The marked parts are written back out as one video, frame for frame, with nothing uploaded."
+og_description = "Press I and O to mark the parts to keep. Copy preserves the encoded picture and sound when compatible; exact cuts re-encode video and recording re-encodes both. Nothing is uploaded."
 og_image_alt = "Video Cutter - mark the parts you want and save them as one video, in your browser"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -92,10 +92,7 @@ howto_heading = "How to cut a video"
 
 # --- the card on the hub page ------------------------------------------------
 
-card = """
-            Mark every part worth keeping as it plays, then save them as one
-            video. The frames are copied rather than re-encoded, so nothing is
-            lost."""
+card = "Mark the parts worth keeping, then save them as one video. Copy preserves quality when the selection allows it; exact cuts re-encode the picture."
 
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
@@ -124,20 +121,15 @@ text = "As many parts as you like"
 
 [[facts]]
 mark = "&#10003;"
-text = "No quality lost"
+text = "Lossless copy when compatible"
 
 [[facts]]
 mark = "&#10003;"
 text = "Works offline"
 
 [[privacy]]
-title = "Your videos have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your file
-      could be collected at, and nothing in the code that would send it if there
-      were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -149,14 +141,7 @@ body = """
 
 [[privacy]]
 title = "On the normal path, nothing is even decoded."
-body = """
-
-      Cutting does not change what any frame looks like, so the encoded frames of
-      the parts you marked are moved into the new file exactly as they were
-      found. Each one is stored as a slice of the file on your disk &mdash; a
-      note saying which bytes, not the bytes themselves &mdash; and your browser
-      reads them for the first time as it writes the download. Nothing here ever
-      turns your video back into a picture."""
+body = "On the copy path, compatible encoded frames are moved to the output unchanged. The page keeps slices pointing to the original bytes instead of decoding them. Exact cuts and recording are different: they decode and re-encode the picture locally, and the export controls identify that choice."
 
 [[privacy]]
 title = "The marks file is made in the page."
@@ -167,12 +152,8 @@ body = """
       neither carries anything but times."""
 
 [[privacy]]
-title = "The sound is copied, not listened to."
-body = """
- On both MP4 paths the
-      audio samples are moved across without being decoded at all &mdash; nothing
-      here ever turns them back into sound, and nothing could pass them anywhere
-      if it did."""
+title = "Compatible audio is copied."
+body = "On MP4 copy and exact-cut paths, compatible audio samples are copied unchanged. Joining clips with incompatible audio can decode, resample and re-encode it locally; recording also re-encodes sound. The page names these cases before export. No audio is uploaded."
 
 [[privacy]]
 title = "Where frames are decoded, it happens here."
@@ -365,15 +346,15 @@ a = """
 [schema]
 browser_requirements = "Requires JavaScript. Copying frames needs no video codec support at all; the exact cut needs a browser with WebCodecs, and other formats fall back to recording."
 category = "MultimediaApplication"
-description = "Mark any number of parts of a video while it plays, then save those parts as a single file - or cut them out and keep the rest. MP4, MOV and M4V are cut by moving the encoded frames into a new file untouched, with the original audio carried across sample by sample; nothing is uploaded and nothing is re-encoded."
+description = "Mark parts to keep or remove and join the rest in your browser. MP4, MOV and M4V support byte-preserving copy when the selected sections and tracks are compatible. Exact cuts re-encode video; recording re-encodes picture and sound. Nothing is uploaded."
 features = [
   "Marks any number of parts with I and O while the video plays",
   "Joins the marked parts into one file, in the order you choose",
   "Cuts the marked parts out instead, keeping everything else",
-  "Cuts without re-encoding, so no quality is lost",
+  "Lossless copying for compatible selections; exact cuts explicitly re-encode",
   "Saves and reloads the marks as a plain text timestamps file",
   "Frame-accurate marks, with keyframes shown on the timeline",
-  "Keeps the original audio without re-encoding it",
+  "Copies compatible original audio; incompatible joins and recording re-encode sound",
   "Runs offline; no upload, no account, no watermark",
 ]
 

@@ -10,9 +10,9 @@ heading = "Video&nbsp;schneiden <span class=\"h1-kw\">&mdash; online kürzen und
 tagline = "Beim Abspielen markieren, was bleiben soll. Und alles davon als ein Video zurückbekommen."
 
 title = "Video online schneiden &mdash; nur behalten, was Sie wollen, ohne Upload"
-description = "Ein Video ansehen und beim Abspielen jeden behaltenswerten Teil markieren, dann diese Teile als eine Datei speichern. Läuft im Browser: kein Upload, nichts wird neu kodiert, auch offline."
+description = "Markieren Sie die Teile, die bleiben sollen, und speichern Sie sie im Browser als ein Video. Kopieren erhält kodierte Bilder; exakte Schnitte und Aufnahmen kodieren neu. Kein Upload, auch offline."
 og_title = "Video-Schneider &mdash; nur behalten, was Sie wollen, ohne etwas hochzuladen"
-og_description = "Drücken Sie beim Abspielen I und O, um jeden behaltenswerten Teil zu markieren. Die markierten Teile werden Einzelbild für Einzelbild als ein Video zurückgeschrieben, ohne dass etwas hochgeladen wird."
+og_description = "Mit I und O markieren Sie, was bleiben soll. Kopieren erhält kompatible Bild- und Tonspuren; exakte Schnitte kodieren das Video neu, Aufnahmen beides. Nichts wird hochgeladen."
 og_image_alt = "Video-Schneider - die gewünschten Teile markieren und als ein Video speichern, im Browser"
 
 pledge = """
@@ -41,10 +41,7 @@ read_first = """
 
 howto_heading = "So schneiden Sie ein Video"
 
-card = """
-            Beim Abspielen jeden behaltenswerten Teil markieren und sie dann als
-            ein Video speichern. Die Einzelbilder werden kopiert statt neu
-            kodiert, es geht also nichts verloren."""
+card = "Markieren Sie, was bleiben soll, und speichern Sie es als ein Video. Kopieren erhält die Qualität, wenn die Auswahl es zulässt; exakte Schnitte kodieren das Bild neu."
 
 [words]
 plural = "Videos"
@@ -63,19 +60,14 @@ text = "Kein Wasserzeichen"
 text = "Beliebig viele Teile"
 
 [[facts]]
-text = "Kein Qualitätsverlust"
+text = "Verlustfreie Kopie bei Kompatibilität"
 
 [[facts]]
 text = "Funktioniert offline"
 
 [[privacy]]
-title = "Ihre Videos haben keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -88,14 +80,7 @@ body = """
 
 [[privacy]]
 title = "Auf dem normalen Weg wird nicht einmal dekodiert."
-body = """
-      Schneiden ändert nichts daran, wie ein Einzelbild aussieht, also wandern
-      die kodierten Einzelbilder der von Ihnen markierten Teile genau so in die
-      neue Datei, wie sie vorgefunden wurden. Gehalten wird jedes als Ausschnitt
-      der Datei auf Ihrer Festplatte, also als Notiz, welche Bytes es sind, und
-      nicht als die Bytes selbst. Ihr Browser liest sie zum ersten Mal, während
-      er den Download schreibt. Ein Bild macht hier nie wieder jemand aus Ihrem
-      Video."""
+body = "Beim Kopieren werden kompatible kodierte Bilder unverändert in die Ausgabe verschoben. Dateiausschnitte verweisen auf die Originalbytes statt sie zu dekodieren. Exakte Schnitte und Aufnahmen dekodieren und kodieren das Bild lokal neu; die Exportsteuerung zeigt diese Wahl."
 
 [[privacy]]
 title = "Die Markierungsdatei entsteht in der Seite."
@@ -107,12 +92,8 @@ body = """
       trägt etwas anderes als Zeiten."""
 
 [[privacy]]
-title = "Der Ton wird kopiert, nicht angehört."
-body = """
- Auf beiden MP4-Wegen werden
-      die Audio-Samples übernommen, ohne überhaupt dekodiert zu werden. Nichts
-      hier macht daraus je wieder Klang, und selbst wenn, könnte nichts ihn
-      weiterreichen."""
+title = "Kompatibler Ton wird kopiert."
+body = "Beim MP4-Kopieren und exakten Schneiden werden kompatible Audiosamples unverändert kopiert. Inkompatibler Ton beim Verbinden kann lokal dekodiert, neu abgetastet und kodiert werden; Aufnahmen kodieren Ton ebenfalls neu. Die Seite benennt das vor dem Export. Kein Audio-Upload."
 
 [[privacy]]
 title = "Wo Einzelbilder dekodiert werden, passiert das hier."
@@ -311,15 +292,15 @@ a = """
 
 [schema]
 browser_requirements = "Benötigt JavaScript. Das Kopieren von Einzelbildern braucht überhaupt keine Video-Codec-Unterstützung; der exakte Schnitt braucht einen Browser mit WebCodecs, und andere Formate weichen auf die Aufzeichnung aus."
-description = "Beliebig viele Teile eines Videos markieren, während es läuft, und diese Teile dann als eine einzige Datei speichern, oder sie herausschneiden und den Rest behalten. MP4, MOV und M4V werden geschnitten, indem die kodierten Einzelbilder unangetastet in eine neue Datei wandern, wobei der Originalton Sample für Sample übernommen wird. Es wird nichts hochgeladen und nichts neu kodiert."
+description = "Markieren Sie Teile zum Behalten oder Entfernen und verbinden Sie den Rest im Browser. MP4, MOV und M4V lassen sich bei kompatiblen Abschnitten und Spuren Byte für Byte kopieren. Exakte Schnitte kodieren Video neu; Aufnahmen Bild und Ton. Kein Upload."
 features = [
   "Markiert beliebig viele Teile mit I und O, während das Video läuft",
   "Fügt die markierten Teile zu einer Datei zusammen, in der Reihenfolge Ihrer Wahl",
   "Schneidet die markierten Teile stattdessen heraus und behält alles andere",
-  "Schneidet ohne Neukodierung, es geht also keine Qualität verloren",
+  "Verlustfreies Kopieren kompatibler Auswahlen; exakte Schnitte kodieren ausdrücklich neu",
   "Speichert die Markierungen als reine Zeitstempel-Textdatei und lädt sie wieder",
   "Einzelbildgenaue Markierungen, mit Keyframes auf der Zeitleiste",
-  "Behält den Originalton, ohne ihn neu zu kodieren",
+  "Kopiert kompatiblen Originalton; inkompatible Verbindungen und Aufnahmen kodieren Ton neu",
   "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
 ]
 

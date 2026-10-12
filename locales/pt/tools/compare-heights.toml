@@ -71,14 +71,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Uma lista de pessoas não é pouca coisa para entregar."
-body = """
- A maioria
-      dos gráficos de altura quer uma conta, e os que não querem ainda têm um
-      servidor que vê cada nome e cada número que você digita. O que você está
-      digitando aqui é quem tem na sua família e a altura de cada um, muitas
-      vezes com a idade de uma criança implícita na figura ao lado do nome. Nada
-      disso é enviado a lugar nenhum, porque aqui não existe para onde ir."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui busca coisa alguma."
@@ -318,18 +312,7 @@ a = """
 
 [[faq]]
 q = "Por que não tem uma criança pequena ou um bebê?"
-a = """
-        Porque ninguém desenhou um e colocou em domínio público. O Wikimedia
-        Commons tem exatamente uma criança livre utilizável &mdash; a menina
-        &mdash; e a biblioteca NIH BioArt o menino; abaixo da idade escolar a
-        busca volta vazia, e todo conjunto livre e coerente de pessoas é um
-        pictograma de banheiro com a mesma forma em toda idade, que é o erro que
-        esta ferramenta inteira existe para evitar. Por um tempo houve uma
-        criança pequena desenhada pelo código desta própria página, e era a única
-        figura do gráfico que ninguém tinha desenhado: dava para ver, do lado de
-        quatro que alguém tinha. Para qualquer pessoa menor que o menino ou a
-        menina, ponha um dos dois na altura real &mdash; quem carrega a comparação
-        é a régua, e ela vai estar certa."""
+a = "Não encontramos desenhos de bebês ou crianças pequenas que cumprissem os requisitos de domínio público e desenho desta ferramenta. As figuras incluídas são um menino e uma menina, não um catálogo completo. Para uma criança menor, ajuste a altura medida ou adicione uma imagem própria adequada; a régua mostra a medida."
 
 [[faq]]
 q = "Quantas pessoas cabem num gráfico?"

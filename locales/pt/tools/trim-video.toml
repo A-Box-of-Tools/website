@@ -15,9 +15,9 @@ heading = "Aparar&nbsp;vídeo <span class=\"h1-kw\">&mdash; cortar trechos de um
 tagline = "Marque os trechos que valem a pena enquanto ele toca. Receba tudo como um vídeo só."
 
 title = "Aparar um vídeo online &mdash; fique só com os trechos que quer, sem envio"
-description = "Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline."
+description = "Marque os trechos que deseja manter e salve-os como um vídeo no navegador. A cópia preserva os quadros codificados; cortes exatos e gravação recodificam. Sem upload, funciona offline."
 og_title = "Aparador de vídeo &mdash; fique só com os trechos que quer, sem enviar nada"
-og_description = "Aperte I e O enquanto toca para marcar cada trecho que vale a pena. Os trechos marcados são escritos de volta como um vídeo só, quadro a quadro, sem nada ser enviado."
+og_description = "Use I e O para marcar os trechos. A cópia preserva imagem e som codificados compatíveis; o corte exato recodifica o vídeo e a gravação ambos. Nada é enviado."
 og_image_alt = "Aparador de vídeo - marque os trechos que você quer e salve como um vídeo só, no navegador"
 
 pledge = """
@@ -46,10 +46,7 @@ read_first = """
 
 howto_heading = "Como aparar um vídeo"
 
-card = """
-            Marque cada trecho que vale a pena enquanto ele toca, e salve tudo
-            como um vídeo só. Os quadros são copiados em vez de recodificados,
-            então nada se perde."""
+card = "Marque os trechos e salve-os como um vídeo. A cópia preserva a qualidade quando a seleção permite; o corte exato recodifica a imagem."
 
 [words]
 plural = "vídeos"
@@ -68,19 +65,14 @@ text = "Sem marca d'água"
 text = "Quantos trechos você quiser"
 
 [[facts]]
-text = "Sem perda de qualidade"
+text = "Cópia sem perdas quando compatível"
 
 [[facts]]
 text = "Funciona offline"
 
 [[privacy]]
-title = "Seus vídeos não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde o seu
-      arquivo pudesse ser recolhido, e não existe no código nada que o mandaria
-      mesmo que existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui vai buscar coisa alguma."
@@ -92,14 +84,7 @@ body = """
 
 [[privacy]]
 title = "No caminho normal, nada chega sequer a ser decodificado."
-body = """
-
-      Aparar não muda a aparência de quadro nenhum, então os quadros codificados
-      dos trechos que você marcou são movidos para o arquivo novo exatamente como
-      foram encontrados. Cada um fica guardado como uma fatia do arquivo no seu
-      disco, ou seja, uma anotação dizendo quais bytes, e não os bytes em si. O seu
-      navegador só os lê pela primeira vez na hora de escrever o download. Nada
-      aqui transforma o seu vídeo de volta em imagem."""
+body = "Na cópia, quadros codificados compatíveis passam intactos à saída. A página mantém referências aos bytes originais em vez de decodificá-los. Cortes exatos e gravação decodificam e recodificam a imagem localmente; os controles de exportação indicam essa escolha."
 
 [[privacy]]
 title = "O arquivo de marcações é feito na página."
@@ -111,12 +96,8 @@ body = """
       de tempos."""
 
 [[privacy]]
-title = "O som é copiado, não escutado."
-body = """
- Nos dois caminhos de MP4, as
-      amostras de áudio são movidas sem serem decodificadas. Nada aqui as
-      transforma de volta em som, e nada conseguiria passá-las a lugar nenhum se
-      transformasse."""
+title = "O áudio compatível é copiado."
+body = "Na cópia MP4 e no corte exato, amostras de áudio compatíveis são copiadas intactas. Juntar clips com áudio incompatível pode decodificar, reamostrar e recodificar localmente; a gravação também recodifica som. A página informa antes de exportar. Nenhum áudio é enviado."
 
 [[privacy]]
 title = "Onde quadros são decodificados, isso acontece aqui."
@@ -305,15 +286,15 @@ a = """
 
 [schema]
 browser_requirements = "Requer JavaScript. Copiar quadros não precisa de suporte a codec de vídeo nenhum; o corte exato precisa de um navegador com WebCodecs, e outros formatos são cortados por gravação."
-description = "Marque quantos trechos quiser de um vídeo enquanto ele toca, e salve esses trechos como um arquivo só - ou tire-os fora e fique com o resto. MP4, MOV e M4V são aparados movendo os quadros codificados para um arquivo novo, intocados, com o áudio original levado adiante amostra por amostra; nada é enviado e nada é recodificado."
+description = "Marque partes para manter ou remover e junte o restante no navegador. MP4, MOV e M4V permitem copiar os bytes quando trechos e faixas são compatíveis. Cortes exatos recodificam vídeo; a gravação recodifica imagem e som. Sem upload."
 features = [
   "Marca quantos trechos você quiser, com I e O, enquanto o vídeo toca",
   "Emenda os trechos marcados num arquivo só, na ordem que você escolher",
   "Ou tira os trechos marcados fora, mantendo todo o resto",
-  "Apara sem recodificar, então nenhuma qualidade se perde",
+  "Cópia sem perdas de seleções compatíveis; cortes exatos recodificam explicitamente",
   "Salva e recarrega as marcações como um arquivo de texto com os tempos",
   "Marcações com precisão de quadro, com os keyframes mostrados na linha do tempo",
-  "Mantém o áudio original sem recodificá-lo",
+  "Copia o áudio original compatível; junções incompatíveis e gravação recodificam o som",
   "Roda offline; sem envio, sem conta, sem marca d'água",
 ]
 

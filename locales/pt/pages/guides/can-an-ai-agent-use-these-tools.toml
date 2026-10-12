@@ -4,15 +4,10 @@
 
 nav = "Um agente de IA pode usar estas ferramentas?"
 title = "Um agente de IA pode usar estas ferramentas?"
-description = "Sim: são páginas web comuns, sem contas e com os controles rotulados, e um agente as opera como qualquer outra coisa. O que importa é onde roda o navegador do agente, porque isso decide se o seu arquivo continua no seu computador."
+description = "Um agente pode usar as ferramentas. Confira localização do navegador, dados do provedor, permissões e funções deliberadas de rede."
 heading = "Um agente de IA pode usar estas ferramentas?"
-lede = """
-    Sim. São páginas web comuns, sem contas, sem captchas e com todos os
-    controles rotulados, e um agente as opera como opera todo o resto. A
-    pergunta que merece uma página é a de trás: quando você entrega uma
-    tarefa com arquivos a um agente, para onde vai o arquivo? A resposta
-    depende inteiramente de onde roda o navegador do agente."""
-updated = "6 de setembro de 2026"
+lede = "Agentes usam a interface do navegador. Para avaliar os dados, confira onde ele roda, o que o agente envia e quais funções usam rede."
+updated = "12 de outubro de 2026"
 og_title = "Um agente de IA pode usar estas ferramentas?"
-og_description = "Páginas web comuns, controles rotulados, nenhuma conta: então sim. O que importa é onde roda o navegador do agente, porque isso decide se o seu arquivo continua no seu computador."
-og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
+og_description = "Usar ferramentas com agente: navegador, dados do provedor, permissões e funções deliberadas de rede."
+og_image_alt = "abox.tools - ferramentas do navegador para processamento local de arquivos"

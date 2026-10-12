@@ -62,15 +62,8 @@ text = "Código abierto"
 text = "Los archivos no salen de tu dispositivo"
 
 [[privacy]]
-title = "Tu GIF no tiene por dónde salir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún destino donde
-      pudieran recogerse tus archivos, ni nada en el código que los enviara si lo
-      hubiera. Antes esto decía <code>connect-src 'none'</code>, que no admitía
-      excepciones; añadir publicidad costó eso, y decirlo forma parte del
-      trato."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "El lector de GIF son dos archivos de este repositorio."

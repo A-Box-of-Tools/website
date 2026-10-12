@@ -23,7 +23,7 @@
   The mark is Lucide's `copy`, drawn inline like the GitHub mark on the
   header; shared/icons/LICENSE covers it.
 -->
-<p class="page-md">
+<p data-indexnow-ignore class="page-md">
   <button type="button" class="page-md-copy" title="{{ ui.md_copy_title }}">
     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -37,5 +37,5 @@
         data-copied="{{ ui.md_copied }}" data-failed="{{ ui.md_failed }}"></span>
   <a class="page-md-view" href="index.md">{{ ui.md_view }}</a>
 </p>
-<pre id="page-markdown" hidden>{{ markdown | e }}</pre>
-<script src="{{ md_href }}" defer></script>
+<pre data-indexnow-ignore id="page-markdown" hidden>{{ markdown | e }}</pre>
+<script data-indexnow-ignore src="{{ md_href }}" defer></script>

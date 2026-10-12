@@ -1,0 +1,27 @@
+  <section>
+    <h2>Richtung wählen und Text hinzufügen</h2>
+    <p>Fügen Sie ein Dokument ein oder wählen Sie eine Datei. Das Menü wählt YAML zu JSON oder JSON zu YAML; der Import einer <code>.json</code>-, <code>.yaml</code>- oder <code>.yml</code>-Datei setzt die passende Richtung. Prüfen Sie das Ergebnis vor Kopieren oder Herunterladen.</p>
+    <p>Die Umwandlung läuft im Browser ohne Upload der Konfiguration. Bewahren Sie das Original auf: Formatierung und Kommentare können für die Pflege wichtig sein, auch bei unveränderten Daten.</p>
+    <figure class="shot">
+      <img src="/screens/convert-yaml-and-json/values.webp" alt="YAML-Eingabe und JSON-Ausgabe mit der Anzahl verworfener Kommentare.">
+      <figcaption>Der Kommentar entfällt; no bleibt eine Zeichenkette und die große Ganzzahl behält ihre Ziffern.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Die unterstützte YAML-Teilmenge nutzen</h2>
+    <p>Der Leser verarbeitet übliche Zuordnungen, Sequenzen und skalare Werte mit YAML-1.2-artiger Auflösung. Er ist keine vollständige YAML-1.2-Implementierung. Anker, Aliase, eigene Tags und Mehrdokument-Streams stoppen die Umwandlung. Braucht die Datei diese Funktionen, nutzen Sie einen passenden Parser; einen Alias ohne Wahrung seiner Bedeutung zu entfernen verändert die Konfiguration.</p>
+    <p>Ein Parsefehler bietet Zur Fehlerstelle. Korrigieren Sie die gemeldete Eingabe statt die alte Ausgabe zu nutzen, die beim Bearbeiten nicht mehr verfügbar ist.</p>
+  </section>
+  <section>
+    <h2>Kommentare, Zeichenketten und Zahlen prüfen</h2>
+    <pre><code>enabled: true
+country: no
+account: 12345678901234567890</code></pre>
+    <p>Hier bleibt <code>no</code> die Zeichenkette <code>"no"</code>, statt wie unter YAML 1.1 zu false zu werden. Der Umwandler behält den Zahlentext, ohne die lange Kontonummer durch JavaScript-Gleitkommazahlen zu runden. Die Anwendung, die das Ergebnis liest, kann eigene Zahlengrenzen haben.</p>
+    <p>JSON hat keine Kommentare; YAML-Kommentare werden verworfen und das Werkzeug meldet die gelesenen Kommentare. Ein <code>#</code> innerhalb einer Zeichenkette in Anführungszeichen oder eines Blockskalars ist Inhalt, kein Kommentar.</p>
+  </section>
+  <section>
+    <h2>JSON zurück in YAML umwandeln</h2>
+    <p>Das Datenmodell wird übernommen, aber die Ausgabe ist neu geschriebenes YAML und stellt keine früheren Kommentare oder Formatierungen wieder her. Mehrdeutige Wörter werden für YAML-1.1-Leser in Anführungszeichen gesetzt. Prüfen Sie Version und Schema der Zielanwendung, besonders bei Bereitstellungskonfigurationen.</p>
+    <p>Die <a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener noreferrer">YAML-Spezifikation</a> beschreibt die ganze Sprache. Für das Prüfen oder Minimieren von JSON allein nutzen Sie den <a href="../../json-formatieren/">JSON-Formatierer</a>.</p>
+  </section>

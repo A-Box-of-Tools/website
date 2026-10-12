@@ -126,6 +126,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.icao.int/publications/documents/9303_p3_cons_en.pdf",
       "authority": "International Civil Aviation Organization",
       "checked": "2026-08-20"
     },
@@ -274,6 +275,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://travel.state.gov/en/passports/apply/help/photos.html",
       "authority": "U.S. Department of State",
       "checked": "2026-09-17"
     },
@@ -373,10 +375,12 @@
             "key": "facts.upload.value",
             "values": {
               "pixels": {
-                "key": "px.least",
+                "key": "px.upto",
                 "values": {
-                  "width": 600,
-                  "height": 600
+                  "width": "600+",
+                  "height": "600+",
+                  "maxWidth": 1200,
+                  "maxHeight": 1200
                 }
               },
               "size": {
@@ -406,11 +410,12 @@
           "document": {
             "key": "travel.state.gov, Photo Requirements / Digital Image Requirements / Composition Template"
           },
-          "checked": "2026-09-19"
+          "checked": "2026-10-12"
         }
       },
+      "source_url": "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html",
       "authority": "U.S. Department of State",
-      "checked": "2026-09-19"
+      "checked": "2026-10-12"
     },
     {
       "id": "us-dv",
@@ -540,11 +545,12 @@
             "key": "U.S. Department of State"
           },
           "document": {
-            "key": "dvprogram.state.gov, Photo Requirements"
+            "key": "travel.state.gov, Photo Requirements, Diversity Visa (DV) Program"
           },
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html",
       "authority": "U.S. Department of State",
       "checked": "2026-08-20"
     },
@@ -687,6 +693,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.gov.uk/photos-for-passports",
       "authority": "HM Passport Office",
       "checked": "2026-08-20"
     },
@@ -801,6 +808,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.nidirect.gov.uk/articles/photo-your-driving-licence",
       "authority": "nidirect, for the Driver & Vehicle Agency",
       "checked": "2026-09-21"
     },
@@ -905,6 +913,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://home-affairs.ec.europa.eu/system/files/2016-12/icao_photograph_guidelines_en.pdf",
       "authority": "European Commission",
       "checked": "2026-08-20"
     },
@@ -1009,6 +1018,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.germany.info/resource/blob/1216632/c66e7e46592ebf65c7e1ab4281a234a4/pass-passbild-schablone-data.pdf",
       "authority": "Bundesministerium des Innern",
       "checked": "2026-08-20"
     },
@@ -1123,6 +1133,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.tk.de/techniker/versicherung/tk-leistungen/versichertenkarte/gesundheitskarte-bild/aussehen-passbild-versichertenkarte-2002316",
       "authority": "Techniker Krankenkasse",
       "checked": "2026-09-21"
     },
@@ -1227,6 +1238,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10619",
       "authority": "Service-Public.fr / Ministère chargé de l’intérieur",
       "checked": "2026-09-17"
     },
@@ -1336,6 +1348,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://questure.poliziadistato.it/statics/35/foto-per-passaporto.pdf",
       "authority": "Polizia di Stato",
       "checked": "2026-09-17"
     },
@@ -1439,6 +1452,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.cartaidentita.interno.gov.it/richiedi/modalita-di-acquisizione-delle-foto/",
       "authority": "Ministero dell’Interno",
       "checked": "2026-09-21"
     },
@@ -1548,6 +1562,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.ilportaledellautomobilista.it/web/portale-automobilista/-/fotografie-da-apporre-sulla-patente-di-guida",
       "authority": "Ministero delle Infrastrutture e dei Trasporti, Motorizzazione",
       "checked": "2026-09-21"
     },
@@ -1658,6 +1673,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://rvig.nl/fotomatrix",
       "authority": "Rijksdienst voor Identiteitsgegevens",
       "checked": "2026-09-17"
     },
@@ -1772,6 +1788,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.interior.gob.es/opencms/es/servicios-al-ciudadano/tramites-y-gestiones/pasaporte/procedimiento-de-expedicion/",
       "authority": "Ministerio del Interior",
       "checked": "2026-09-17"
     },
@@ -1886,6 +1903,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://sede.dgt.gob.es/es/permisos-de-conducir/obtencion-y-gestion-de-permisos/renovacion-de-permiso-proximo-a-caducar/",
       "authority": "Dirección General de Tráfico",
       "checked": "2026-09-21"
     },
@@ -2001,6 +2019,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.ireland.ie/en/dfa/passports/photo-guidelines/",
       "authority": "Department of Foreign Affairs",
       "checked": "2026-09-17"
     },
@@ -2138,6 +2157,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.gov.pl/attachment/f36a05f9-7f17-4c34-a2ae-ccbcb93c0116",
       "authority": "Ministerstwo Spraw Wewnętrznych i Administracji",
       "checked": "2026-09-17"
     },
@@ -2279,6 +2299,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.gov.pl/web/gov/zdjecie-do-prawa-jazdy",
       "authority": "Ministerstwo Infrastruktury",
       "checked": "2026-09-21"
     },
@@ -2389,6 +2410,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.sg.ch/content/dam/sgch/verkehr/strassenverkehr/formulare-und-merkbl%C3%A4tter/infobl%C3%A4tter/Anforderungen%20Foto%20F%C3%BChrerausweis",
       "authority": "asa, Vereinigung der Strassenverkehrsämter",
       "checked": "2026-09-21"
     },
@@ -2503,6 +2525,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.transportstyrelsen.se/sv/vagtrafik/korkort/har-korkort/fornya-korkortet/fotot-pa-korkortet/",
       "authority": "Transportstyrelsen",
       "checked": "2026-09-21"
     },
@@ -2612,6 +2635,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.fstyr.dk/publikationer/krav-til-koerekortfoto",
       "authority": "Færdselsstyrelsen",
       "checked": "2026-09-21"
     },
@@ -2721,6 +2745,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.kdmid.ru/regulatory-frameworks/orders/PR_%E2%84%9602_09.01.2025.docx",
       "authority": "Посольство Российской Федерации в США",
       "checked": "2026-09-19"
     },
@@ -2830,6 +2855,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://epp.genproc.gov.ru/upload/iblock/701/11rtwhq8z58el7ebz3gm0lqtlnz21y86.pdf",
       "authority": "Министерство внутренних дел Российской Федерации",
       "checked": "2026-09-21"
     },
@@ -2940,6 +2966,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html",
       "authority": "Immigration, Refugees and Citizenship Canada",
       "checked": "2026-08-20"
     },
@@ -3082,6 +3109,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/permanent-residents/card/photos.html",
       "authority": "Immigration, Refugees and Citizenship Canada",
       "checked": "2026-09-19"
     },
@@ -3223,6 +3251,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/citizenship-application-photograph-specifications.html",
       "authority": "Immigration, Refugees and Citizenship Canada",
       "checked": "2026-09-19"
     },
@@ -3333,6 +3362,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html",
       "authority": "Immigration, Refugees and Citizenship Canada",
       "checked": "2026-09-19"
     },
@@ -3480,6 +3510,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.rcmp.ca/en/firearms/licensing/photo-requirements-firearms-licence",
       "authority": "Royal Canadian Mounted Police",
       "checked": "2026-09-21"
     },
@@ -3584,6 +3615,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.passports.gov.au/passports-explained/how-apply/passport-photo-guidelines",
       "authority": "Australian Passport Office",
       "checked": "2026-08-20"
     },
@@ -3591,7 +3623,7 @@
       "id": "au-visa",
       "country": "country.au",
       "endonym": "Australia",
-      "document": "doc.visa",
+      "document": "spec.au-visa.doc",
       "native": null,
       "size": {
         "key": "doc.size.mm",
@@ -3693,13 +3725,14 @@
             "key": "Department of Home Affairs"
           },
           "document": {
-            "key": "immi.homeaffairs.gov.au, Photograph - Passport"
+            "key": "Form 47OF, Application for migration to Australia by other family members"
           },
-          "checked": "2026-09-19"
+          "checked": "2026-10-12"
         }
       },
+      "source_url": "https://immi.homeaffairs.gov.au/form-listing/forms/47OF.pdf",
       "authority": "Department of Home Affairs",
-      "checked": "2026-09-19"
+      "checked": "2026-10-12"
     },
     {
       "id": "au-citizenship",
@@ -3807,6 +3840,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://immi.homeaffairs.gov.au/citizenship/photo-requirements-for-citizenship-applications",
       "authority": "Department of Home Affairs",
       "checked": "2026-09-19"
     },
@@ -3817,10 +3851,15 @@
       "document": "spec.au-citizenship-online.doc",
       "native": null,
       "size": {
-        "key": "doc.size.px",
+        "key": "band.guidance",
         "values": {
-          "width": 1200,
-          "height": 1600
+          "band": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 1200,
+              "height": 1600
+            }
+          }
         }
       },
       "background": {
@@ -3885,10 +3924,15 @@
             "key": "facts.upload.value",
             "values": {
               "pixels": {
-                "key": "px.least",
+                "key": "band.guidance",
                 "values": {
-                  "width": 1200,
-                  "height": 1600
+                  "band": {
+                    "key": "px.least",
+                    "values": {
+                      "width": 1200,
+                      "height": 1600
+                    }
+                  }
                 }
               },
               "size": {
@@ -3925,11 +3969,12 @@
           "document": {
             "key": "immi.homeaffairs.gov.au, Photo requirements for citizenship applications"
           },
-          "checked": "2026-09-19"
+          "checked": "2026-10-12"
         }
       },
+      "source_url": "https://immi.homeaffairs.gov.au/citizenship/photo-requirements-for-citizenship-applications",
       "authority": "Department of Home Affairs",
-      "checked": "2026-09-19"
+      "checked": "2026-10-12"
     },
     {
       "id": "in-passport",
@@ -4032,6 +4077,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://embassy6.passportindia.gov.in/AppMissionUIProject/pdf/GPSP_PhotoGraph_SOP.pdf",
       "authority": "Ministry of External Affairs",
       "checked": "2026-08-20"
     },
@@ -4044,8 +4090,8 @@
       "size": {
         "key": "doc.size.px",
         "values": {
-          "width": 600,
-          "height": 600
+          "width": 350,
+          "height": 350
         }
       },
       "background": {
@@ -4105,10 +4151,12 @@
             "key": "facts.upload.value",
             "values": {
               "pixels": {
-                "key": "px.least",
+                "key": "px.upto",
                 "values": {
-                  "width": 600,
-                  "height": 600
+                  "width": "350+",
+                  "height": "350+",
+                  "maxWidth": 1000,
+                  "maxHeight": 1000
                 }
               },
               "size": {
@@ -4142,13 +4190,14 @@
             "key": "Government of India, Bureau of Immigration"
           },
           "document": {
-            "key": "India Visa Online, Instructions, Photo Requirements"
+            "key": "India Visa Online, Online Visa Registration, Photo Uploading Process"
           },
-          "checked": "2026-09-19"
+          "checked": "2026-10-12"
         }
       },
+      "source_url": "https://indianvisaonline.gov.in/visa/VSS_IMAGE.pdf",
       "authority": "Government of India, Bureau of Immigration",
-      "checked": "2026-09-19"
+      "checked": "2026-10-12"
     },
     {
       "id": "in-evisa",
@@ -4157,10 +4206,15 @@
       "document": "doc.evisa",
       "native": null,
       "size": {
-        "key": "doc.size.px",
+        "key": "band.guidance",
         "values": {
-          "width": 600,
-          "height": 600
+          "band": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 600,
+              "height": 600
+            }
+          }
         }
       },
       "background": {
@@ -4225,10 +4279,15 @@
             "key": "facts.upload.value",
             "values": {
               "pixels": {
-                "key": "px.least",
+                "key": "band.guidance",
                 "values": {
-                  "width": 600,
-                  "height": 600
+                  "band": {
+                    "key": "px.exact",
+                    "values": {
+                      "width": 600,
+                      "height": 600
+                    }
+                  }
                 }
               },
               "size": {
@@ -4265,11 +4324,12 @@
           "document": {
             "key": "indianvisaonline.gov.in, e-Visa"
           },
-          "checked": "2026-09-19"
+          "checked": "2026-10-12"
         }
       },
+      "source_url": "https://www.indianvisaonline.gov.in/evisa/tvoa.html",
       "authority": "Government of India, Bureau of Immigration",
-      "checked": "2026-09-19"
+      "checked": "2026-10-12"
     },
     {
       "id": "in-driving-licence",
@@ -4420,6 +4480,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://sarathi.parivahan.gov.in/sarathiservice/pdf/PhotoSign.pdf",
       "authority": "Ministry of Road Transport & Highways, Sarathi Parivahan",
       "checked": "2026-09-21"
     },
@@ -4430,10 +4491,15 @@
       "document": "spec.in-exam-photo.doc",
       "native": null,
       "size": {
-        "key": "doc.size.px",
+        "key": "band.guidance",
         "values": {
-          "width": 200,
-          "height": 230
+          "band": {
+            "key": "doc.size.px",
+            "values": {
+              "width": 200,
+              "height": 230
+            }
+          }
         }
       },
       "background": {
@@ -4498,10 +4564,15 @@
             "key": "facts.upload.value",
             "values": {
               "pixels": {
-                "key": "px.exact",
+                "key": "band.guidance",
                 "values": {
-                  "width": 200,
-                  "height": 230
+                  "band": {
+                    "key": "px.exact",
+                    "values": {
+                      "width": 200,
+                      "height": 230
+                    }
+                  }
                 }
               },
               "size": {
@@ -4534,16 +4605,17 @@
         "key": "source.line",
         "values": {
           "authority": {
-            "key": "Staff Selection Commission / UPSC"
+            "key": "Institute of Banking Personnel Selection"
           },
           "document": {
-            "key": "Notice of Examination, photograph and signature specifications"
+            "key": "CRP PO/MT XIII, Annexure III: Guidelines for scanning and Upload of Documents"
           },
-          "checked": "2026-08-20"
+          "checked": "2026-10-12"
         }
       },
-      "authority": "Staff Selection Commission / UPSC",
-      "checked": "2026-08-20"
+      "source_url": "https://www.ibps.in/wp-content/uploads/2024/01/Detailed_Notification_CRP_PO_XIII.pdf",
+      "authority": "Institute of Banking Personnel Selection",
+      "checked": "2026-10-12"
     },
     {
       "id": "cn-passport",
@@ -4689,6 +4761,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://chicago.china-consulate.gov.cn/lsfw/zj/hzlxz/202605/t20260501_11903971.htm",
       "authority": "National Immigration Administration",
       "checked": "2026-08-20"
     },
@@ -4803,6 +4876,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://gaj.beijing.gov.cn/hudong/rddf/202003/t20200331_1771797.html",
       "authority": "北京市公安局",
       "checked": "2026-09-21"
     },
@@ -4912,6 +4986,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://jtgl.beijing.gov.cn/jgj/qaknowledge/d6e41d3a-7.html",
       "authority": "北京市公安局公安交通管理局",
       "checked": "2026-09-21"
     },
@@ -5021,6 +5096,7 @@
           "checked": "2026-08-20"
         }
       },
+      "source_url": "https://www.mofa.go.jp/mofaj/toko/passport/ic_photo.html",
       "authority": "Ministry of Foreign Affairs of Japan",
       "checked": "2026-08-20"
     },
@@ -5173,6 +5249,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.kojinbango-card.go.jp/apprec/apply/facephoto/",
       "authority": "地方公共団体情報システム機構",
       "checked": "2026-09-21"
     },
@@ -5282,6 +5359,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.moj.go.jp/isa/applications/status/photo_info00002.html",
       "authority": "出入国在留管理庁",
       "checked": "2026-09-21"
     },
@@ -5396,6 +5474,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.keishicho.metro.tokyo.lg.jp/menkyo/koshin/koshin/koshin02_2.html",
       "authority": "警視庁",
       "checked": "2026-09-21"
     },
@@ -5530,6 +5609,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://passport.go.kr/home/kor/contents.do?menuPos=32",
       "authority": "외교부 (Ministry of Foreign Affairs)",
       "checked": "2026-09-17"
     },
@@ -5671,6 +5751,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.safedriving.or.kr/commonManage/selectCommonPhotoRulePop.do",
       "authority": "한국도로교통공단",
       "checked": "2026-09-21"
     },
@@ -5785,6 +5866,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://mois.go.kr/frt/sub/a06/b06/IDCard_5/screen.do",
       "authority": "행정안전부",
       "checked": "2026-09-21"
     },
@@ -5931,6 +6013,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.ica.gov.sg/photo-guidelines",
       "authority": "Immigration & Checkpoints Authority",
       "checked": "2026-09-17"
     },
@@ -6040,6 +6123,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.immd.gov.hk/eng/residents/immigration/traveldoc/photorequirements.html",
       "authority": "Immigration Department, HKSAR",
       "checked": "2026-09-19"
     },
@@ -6155,6 +6239,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.immd.gov.hk/eng/residents/immigration/traveldoc/photorequirements.html",
       "authority": "Immigration Department, HKSAR",
       "checked": "2026-09-19"
     },
@@ -6296,6 +6381,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.boca.gov.tw/fp-25-4123-c2932-1.html",
       "authority": "外交部領事事務局",
       "checked": "2026-09-19"
     },
@@ -6437,6 +6523,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.ris.gov.tw/documents/html/5/3/187.html",
       "authority": "內政部戶政司",
       "checked": "2026-09-21"
     },
@@ -6551,6 +6638,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
       "authority": "Cục Quản lý xuất nhập cảnh, Bộ Công an",
       "checked": "2026-09-19"
     },
@@ -6697,6 +6785,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://dvc-gplx.csgt.bocongan.gov.vn/p/home/dvc-cap-doi-gplx.html",
       "authority": "Cục Cảnh sát giao thông, Bộ Công an",
       "checked": "2026-09-21"
     },
@@ -6838,6 +6927,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://dgip.gov.pk/eServices/online-passport.php",
       "authority": "Directorate General of Immigration & Passports",
       "checked": "2026-09-19"
     },
@@ -6952,6 +7042,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.epassport.gov.bd/landing/faqs/4",
       "authority": "Department of Immigration & Passports",
       "checked": "2026-09-19"
     },
@@ -7067,6 +7158,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.digitalkorlantas.id/sim/",
       "authority": "Korps Lalu Lintas Polri",
       "checked": "2026-09-21"
     },
@@ -7176,6 +7268,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.kln.gov.my/web/pak_islamabad/passport_renewal",
       "authority": "Kementerian Luar Negeri, Suruhanjaya Tinggi Malaysia Islamabad",
       "checked": "2026-09-19"
     },
@@ -7317,6 +7410,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://esd.imi.gov.my/portal/photo-requirements/",
       "authority": "Jabatan Imigresen Malaysia, Expatriate Services Division",
       "checked": "2026-09-19"
     },
@@ -7431,6 +7525,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.jpj.gov.my/pusat-media-3/informasi-perkhidmatan-jpj/pemandu/pembaharuan-lesen-memandu-kompeten-cdl/",
       "authority": "Jabatan Pengangkutan Jalan Malaysia",
       "checked": "2026-09-21"
     },
@@ -7541,6 +7636,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://singapore.thaiembassy.org/en/page/photograph-specifications-e-visa",
       "authority": "Ministry of Foreign Affairs of the Kingdom of Thailand",
       "checked": "2026-09-19"
     },
@@ -7665,6 +7761,7 @@
           "checked": "2026-09-17"
         }
       },
+      "source_url": "https://www.passports.govt.nz/passport-photos",
       "authority": "Department of Internal Affairs",
       "checked": "2026-09-17"
     },
@@ -7775,6 +7872,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.gov.br/mre/pt-br/recuperacao-dados-marselha/consulado-marselha/servicos-consulares/passaporte/especificacoes-da-fotografia-para-o-pedido-de-passaporte",
       "authority": "Ministério das Relações Exteriores",
       "checked": "2026-09-19"
     },
@@ -7889,6 +7987,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://consulmex.sre.gob.mx/frankfurt/images/stories/pdf/fotosejemp.pdf",
       "authority": "Secretaría de Relaciones Exteriores",
       "checked": "2026-09-19"
     },
@@ -8003,6 +8102,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://croma.cancilleria.gob.ar/es/node/73992",
       "authority": "Consulado General de la República Argentina en Roma",
       "checked": "2026-09-19"
     },
@@ -8117,6 +8217,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://www.nvi.gov.tr/istanbul/biyometrik-fotograf-nasil-olmalidir",
       "authority": "Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü",
       "checked": "2026-09-19"
     },
@@ -8226,6 +8327,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://stanonprodmtpdxpzan.blob.core.windows.net/dxp/2024-04/dha-passport-id-photo-specifications.pdf",
       "authority": "Department of Home Affairs",
       "checked": "2026-09-19"
     },
@@ -8340,6 +8442,7 @@
           "checked": "2026-09-21"
         }
       },
+      "source_url": "https://www.westerncape.gov.za/service/driving-licence",
       "authority": "Western Cape Government, Mobility",
       "checked": "2026-09-21"
     },
@@ -8449,6 +8552,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://icp.gov.ae/wp-content/uploads/2021/11/icao_english.pdf",
       "authority": "Federal Authority for Identity, Citizenship, Customs & Port Security",
       "checked": "2026-09-19"
     },
@@ -8565,6 +8669,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://visa.visitsaudi.com/Home/PhotoSpecifications",
       "authority": "Saudi eVisa, visa.visitsaudi.com",
       "checked": "2026-09-19"
     },
@@ -8679,6 +8784,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://embassies.gov.il/england/en/services/israeli-citizens/issuance-travel-documents-passport-citizens-and-residents-israel",
       "authority": "Ministry of Foreign Affairs, Embassy of Israel in London",
       "checked": "2026-09-19"
     },
@@ -8794,6 +8900,7 @@
           "checked": "2026-09-19"
         }
       },
+      "source_url": "https://passport.immigration.gov.ng/",
       "authority": "Nigeria Immigration Service",
       "checked": "2026-09-19"
     }

@@ -63,13 +63,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Ihre Bilder haben keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -269,15 +264,7 @@ a = """
 
 [[faq]]
 q = "Gibt es eine Größengrenze für eine Data-URI?"
-a = """
-        Keine, der Sie in CSS oder in einem <code>&lt;img&gt;</code>-Element
-        begegnen, denn moderne Browser setzen dort keine praktische Grenze.
-        Begrenzt wird das Eintippen einer Data-URI in die Adressleiste, was die
-        meisten Browser inzwischen für alles Nichttriviale verweigern, aus
-        Sicherheitsgründen, die mit dieser Verwendung nichts zu tun haben. Die
-        echte Grenze ist die von oben: Lange bevor irgendetwas Technisches
-        bricht, ist die Seite, in der es steckt, langsamer geworden, als sie mit
-        einer gewöhnlichen Bilddatei gewesen wäre."""
+a = "Ja. Browser haben endliche Data-URL-Grenzen, die je nach Implementierung variieren; Zielprogramme oder Inhaltsrichtlinien können kleinere Grenzen setzen. CSS und ein <code>&lt;img&gt;</code> können Data-URLs nutzen, während die Adressleiste eigene Sicherheitsregeln hat. Kleine Bilder einbetten und am Ziel testen. <a href=\"https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data\">MDN dokumentiert die Grenzen</a>."
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"

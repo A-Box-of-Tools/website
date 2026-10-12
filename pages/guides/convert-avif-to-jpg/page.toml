@@ -32,10 +32,10 @@ lede = """
     That gap is the whole story, and it is also why this conversion never needs
     to leave your machine."""
 
-updated = "17 September 2026"
+updated = "12 October 2026"
 published = "2026-09-17"
-lastmod = "2026-09-17"
+lastmod = "2026-10-12"
 
 og_title = "How to convert AVIF to JPG"
 og_description = "Why your browser opens an AVIF when nothing else will, what a JPEG cannot carry over, and how to convert without uploading."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

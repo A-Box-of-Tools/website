@@ -9,13 +9,7 @@
       die sie gedacht sind.
     </p>
     <p>
-      Das Ungewöhnliche daran ist nicht, was sie tun, sondern wo sie es tun.
-      Jedes einzelne läuft vollständig in Ihrem Browser, auf Ihrer eigenen
-      Hardware, mit den Decodern und Encodern, die Ihr Browser ohnehin
-      mitbringt. Nichts, was Sie öffnen, wird irgendwohin übertragen. Es gibt
-      hinter diesen Seiten auch keinen Server, an den es gehen könnte, denn die
-      ganze Seite besteht aus statischen Dateien, und die Werkzeuge sind
-      einfache JavaScript-Module, die daneben liegen.
+      Jedes Werkzeug verarbeitet Dateien im Browser, auf der Hardware des Geräts, auf dem er läuft. Meist werden native Browser-Codecs genutzt; einige Werkzeuge enthalten lokale JavaScript- oder WebAssembly-Engines, etwa für HEIC und Beleg-OCR. Dateien werden nicht zur Verarbeitung hochgeladen. Die Seite liefert statische Seiten und Code; bewusstes Teilen und optionale Onlinefunktionen haben eigene, unten erklärte Grenzen.
     </p>
     <p>
       Das ist das Produkt. Alles Weitere auf dieser Seite erklärt, warum sich
@@ -49,20 +43,10 @@
   <section>
     <h2>Warum es so gebaut ist</h2>
     <p>
-      Der übliche Weg für solche Werkzeuge geht so: Datei hochladen, Arbeit auf
-      einem Server erledigen, Ergebnis zurückschicken. Das ist einfacher, es
-      funktioniert auf jedem Gerät, und fast jeder &bdquo;kostenlose
-      Online-Converter&ldquo; macht es genau so.
+      Viele Online-Converter laden die Datei hoch, verarbeiten sie auf einem Server und geben das Ergebnis zurück. Andere arbeiten lokal. Entscheidend ist, wo die Arbeit stattfindet und ob die Datei dafür den Browser verlassen muss.
     </p>
     <p>
-      Es bedeutet aber auch, einem Fremden die eigene Datei zu geben. Bei einem
-      Meme ist das belanglos, beim Scan eines Reisepasses, bei einer
-      medizinischen Aufnahme, bei einem unterschriebenen Vertrag oder bei einem
-      Foto, in dessen Metadaten die eigene Adresse steht, ist es das nicht.
-      Sobald die Datei auf dem Gerät eines anderen liegt, hängt ihr weiteres
-      Schicksal an dessen Richtlinien und dessen Sorgfalt, und weder das eine
-      noch das andere können Sie prüfen. Die Datenschutzerklärung einer solchen
-      Seite ist ein Versprechen und keine technische Schranke.
+      Serververarbeitung übergibt dem Anbieter eine Kopie Ihrer Datei. Bei Passscan, medizinischer Aufnahme, unterschriebenem Vertrag oder Foto mit Standortdaten lohnt sich eine Prüfung. Veröffentlichte Richtlinien, Sicherheitsunterlagen, Audits und beobachtbares Verhalten können Belege liefern. Die Webseite allein zeigt nicht jede interne Kopie, Sicherung oder jeden Zugriff nach dem Upload. Eine Datenschutzrichtlinie beschreibt den Umgang des Anbieters; sie ist nicht dieselbe Einschränkung wie eine lokale Operation ohne Verbindung.
     </p>
     <p>
       Browser sind inzwischen gut genug, dass es dieses Versprechen nicht mehr
@@ -84,47 +68,24 @@
   <section>
     <h2>Prüfen statt glauben</h2>
     <p>
-      Jede Aussage weiter oben ist zum Nachprüfen gedacht. Vier Wege, nach
-      Aufwand geordnet:
+      Vier Prüfungen liefern unterschiedliche Belege. Nutzen Sie sie zusammen und prüfen Sie die Funktion, die Sie tatsächlich verwenden wollen:
     </p>
     <ul>
       <li>
-        <strong>Ziehen Sie den Stecker.</strong> Laden Sie eine beliebige
-        Werkzeugseite, trennen Sie die Verbindung und arbeiten Sie trotzdem
-        damit. Es funktioniert weiter, weil nie ein Netzwerkschritt darin war.
-        Ein Werkzeug, das Ihre Datei zur Verarbeitung wegschickt, würde
-        stehenbleiben.
+        <strong>Für lokale Verarbeitung die Verbindung trennen.</strong> Warten Sie, bis alles geladen ist und die Offline-Anzeige bereit meldet. Verarbeiten Sie dann eine Datei vom Gerät. Ein fertiges Ergebnis belegt die lokale Ausführung ohne Verbindung, aber nicht das Verhalten nach erneutem Verbinden.
       </li>
       <li>
-        <strong>Sehen Sie dem Netzwerk zu.</strong> Öffnen Sie die
-        Entwicklerwerkzeuge, gehen Sie auf den Reiter &bdquo;Netzwerk&ldquo;
-        und verarbeiten Sie eine Datei. Keine einzige Anfrage trägt Ihre Datei,
-        ein Vorschaubild davon, ihren Namen oder ein Byte ihres Inhalts. Zu
-        sehen sind die Seite, ihre Skripte, die Werbung und der Besuchszähler.
+        <strong>Netzwerkanfragen prüfen.</strong> Sehen Sie sich URLs, Anfrageinhalte und WebSocket-Nachrichten an, nicht nur Übertragungsgrößen. Lokale Verarbeitung sendet keine Dateien. Seitenressourcen, Plattformskripte, optionale Abfragen und bewusstes Teilen sind andere, auf den Seiten erklärte Vorgänge.
       </li>
       <li>
-        <strong>Lesen Sie die Regel, die sich die Seite selbst auferlegt.</strong>
-        Jede Seite trägt eine <code>Content-Security-Policy</code>, die jede
-        Adresse benennt, die sie kontaktieren darf, und keine davon gehört zu
-        dieser Seite. Selbst ein Fehler im Quelltext könnte eine Datei nirgends
-        hinschicken, weil der Browser die Verbindung verweigern würde.
+        <strong>Content-Security-Policy lesen.</strong> Sie begrenzt Ressourcen und Verbindungsziele. Sie prüft keine Nutzdaten, verhindert keine Übertragung an erlaubte Hosts und beschreibt keinen WebRTC-Peer-Verkehr. Vergleichen Sie sie mit Quelltext und beobachtetem Verhalten.
       </li>
       <li>
-        <strong>Lesen Sie den Quelltext.</strong> Er ist
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">vollständig
-        öffentlich</a>, ohne Build-Schritt und ohne Bundler. Was im Repository
-        steht, ist Byte für Byte das, was Ihr Browser ausführt. Zu jedem
-        Werkzeug gehört eine README, die erklärt, wie es arbeitet, und jede
-        Werkzeugseite nennt die Dateien, die man zuerst lesen sollte.
+        <strong>Quelltext und Build lesen.</strong> Das <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">Repository</a> enthält Vorlagen, Module, gemeinsame Teile und mitgelieferte Engines. Der Build erzeugt Seiten und minifiziert eigenen Code. Jedes Werkzeug nennt die zuerst lesenswerten Dateien; Sie können selbst bauen und mit der Veröffentlichung vergleichen.
       </li>
     </ul>
     <p>
-      Es gibt genau eine gewollte Ausnahme von &bdquo;kein Netz&ldquo;, und sie
-      steht ausführlich auf ihrer eigenen Seite.
-      <a href="../text-teilen/">Text teilen</a> bewegt Text zwischen zwei Ihrer
-      eigenen Geräte, was ohne Netz nicht geht. Dafür wird eine einzige
-      Verbindung zu einer Vermittlungsstelle geöffnet, die nichts speichert und
-      der nur gesagt wird, dass zwei Browser einander kennenlernen möchten.
+      Die Netzwerkfunktionen haben einen ausdrücklichen Zweck. <a href="../bilder-in-video-umwandeln/">Bilder zu Video</a> kann eine Bild-URL abrufen. Der <a href="../belege-rechnungen-auslesen/">Beleg- und Rechnungsextraktor</a> kann Währungspaar und Datum bei Frankfurter abfragen und einen Bericht an Ihre gewählte E-Mail- oder Teilen-App übergeben. <a href="../text-teilen/">Text und Dateien teilen</a> und <a href="../remote-camera/">Remote-Kamera</a> übertragen Inhalte zwischen Browsern. Die Vermittlungsstelle trägt Such- und Verbindungsmetadaten, niemals geteilte Dateien oder Kameravideo. Diese Funktionen benötigen eine Verbindung; die Werkzeugseiten und die <a href="../datenschutz/">Datenschutzseite</a> erklären, was jeder Beteiligte sieht.
     </p>
   </section>
 
@@ -141,13 +102,7 @@
       Test nicht, den dieselbe Person geschrieben hat wie den Fehler.
     </p>
     <p>
-      Darunter liegt eine automatische Testsuite für beide Hälften, für den
-      Generator, der die Seite baut, und für die Module, die der Browser
-      ausführt. Sie läuft bei jeder Änderung, und nichts wird nach einem
-      Fehlschlag veröffentlicht. Wo dieselbe Arbeit in mehreren Werkzeugen
-      steckt, mehrere von ihnen lesen MP4-Dateien, prüft ein Test, dass die
-      Kopien noch übereinstimmen. So kann eine Korrektur an einer Stelle die
-      anderen nicht stillschweigend falsch zurücklassen.
+      Eine automatische Suite prüft Generator und Browsermodule in CI; ein Fehler stoppt die Veröffentlichung. Gemeinsame Parser und Writer, etwa der MP4-Reader, liegen in gemeinsamen Modulen und werden beim Build in jedes Werkzeug kopiert. Eine Duplikatprüfung verhindert auseinanderlaufende separate Kopien.
     </p>
     <p>
       Die Ratgeber entstehen nach derselben Regel. Ihre Bildschirmfotos werden
@@ -165,21 +120,10 @@
       was dazugehört und was nicht.
     </p>
     <p>
-      <strong>Es gibt nichts zu kaufen.</strong> Kein Konto, keine Anmeldung,
-      keine kostenlose Stufe mit einer bezahlten darüber, kein Wasserzeichen,
-      das man wegkaufen muss, keine Größenbeschränkung, kein Tageslimit und
-      keine zurückgehaltene Funktion. Was auf der Seite steht, ist alles.
+      <strong>Es gibt nichts zu kaufen.</strong> Kein Konto, keine Bezahlstufe, kein freizukaufendes Wasserzeichen und keine Funktion gegen Aufpreis. Unterstützte Formate, Browserspeicher und bewusste Grenzen bleiben wichtig; jedes Werkzeug erklärt sie.
     </p>
     <p>
-      <strong>Ihre Dateien sind nicht Teil des Geschäfts.</strong> Die Werbung
-      kommt von Google, gezählt wird mit Google Analytics, und keines von beiden
-      erfährt, was Sie öffnen, was Sie erzeugen, wie es hieß oder wie groß es
-      war. Kein Skript bekommt das jemals zu sehen, und die
-      Sicherheitsrichtlinie der Seite würde die Übertragung verweigern, falls es
-      eines versuchte. Was die beiden tatsächlich erheben und wie Sie jedes
-      davon abschalten, steht auf der
-      <a href="../datenschutz/">Datenschutzseite</a>. Jedes Werkzeug
-      funktioniert weiter, wenn beide blockiert sind.
+      <strong>Ihre Dateien sind nicht Teil des Geschäfts.</strong> Werbung und Besuchszählung nutzen Google-Dienste. Freiwilliges Feedback sendet Werkzeugnamen, eine feste Ja- oder Nein-Antwort und einen festen Grund, aber keine Datei, keinen Namen, keine Größe und keinen Inhalt. Der Quelltext übergibt diesen Diensten keine Dateidaten. Erlaubte Endpunkte bleiben dennoch Netzwerkziele; die Sicherheitsrichtlinie allein garantiert keine Nutzdaten. Die <a href="../datenschutz/">Datenschutzseite</a> erklärt Erhebung und Blockieren. Lokale Verarbeitung funktioniert mit blockierten Skripten.
     </p>
     <p>
       <strong>Die Werkzeuge werden nicht für die Werbung geschrieben.</strong>
@@ -196,14 +140,7 @@
   <section>
     <h2>Sprachen</h2>
     <p>
-      Die Seite erscheint in fünfzehn Sprachen. Jede davon ist eine echte
-      Übersetzung und keine Maschinenausgabe, die man liegengelassen hat. Die
-      Namen der Werkzeuge, die Erklärungen, die Ratgeber und die Adressen selbst
-      sind übersetzt, und eine Seite wird in einer Sprache erst gelistet, wenn
-      diese Sprache tatsächlich geschrieben wurde. Eine Sprache, an der noch
-      gearbeitet wird, bleibt lesbar, wird aber aus der Sitemap und aus der
-      Sprachauswahl herausgehalten. So wird niemand auf eine Seite eingeladen,
-      die zur Hälfte englisch ist.
+      Englisch, vereinfachtes Chinesisch, Deutsch, Spanisch, brasilianisches Portugiesisch, Französisch und Japanisch werden hier gepflegt. Acht ältere Übersetzungen bleiben als archivierte Seiten lesbar und erhalten keine aktuellen Änderungen. Gepflegte Seiten erscheinen erst nach vollständiger Übersetzung in Sitemap und Sprachauswahl; unfertige bleiben lesbar, ohne als fertige Übersetzung angeboten zu werden.
     </p>
     <p>
       Beantwortet wird Post auf Englisch. Bei einem Projekt dieser Größe ist das
@@ -214,11 +151,8 @@
   <section>
     <h2>Was diese Seite nicht tut</h2>
     <ul>
-      <li>Nach einem Konto oder nach Ihrer E-Mail-Adresse fragen.</li>
-      <li>
-        Eine Datei hochladen, speichern, durchsehen oder aufbewahren, die Sie
-        hier öffnen.
-      </li>
+      <li>Für die Dateiverarbeitung ein Konto oder eine E-Mail-Adresse verlangen.</li>
+      <li>Dateien auf einem Server zur Verarbeitung empfangen oder aufbewahren.</li>
       <li>
         Ein Wasserzeichen auf ein Ergebnis setzen oder eine Funktion für eine
         Bezahlstufe zurückhalten.

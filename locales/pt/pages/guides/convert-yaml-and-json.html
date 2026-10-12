@@ -1,0 +1,27 @@
+  <section>
+    <h2>Escolha a direção e adicione o texto</h2>
+    <p>Cole um documento ou escolha um arquivo. O menu seleciona YAML para JSON ou JSON para YAML; importar um arquivo <code>.json</code>, <code>.yaml</code> ou <code>.yml</code> escolhe a direção correspondente. Revise antes de Copiar ou Baixar.</p>
+    <p>A conversão roda no navegador sem enviar a configuração. Guarde o original: mudanças de formato e comentários podem importar para quem mantém o arquivo, mesmo sem mudar os dados.</p>
+    <figure class="shot">
+      <img src="/screens/convert-yaml-and-json/values.webp" alt="Entrada YAML e saída JSON com a contagem de comentários descartados.">
+      <figcaption>O comentário desaparece; no continua string e o inteiro grande mantém seus dígitos.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Use o subconjunto YAML aceito</h2>
+    <p>O leitor aceita mapeamentos, sequências e valores escalares comuns com resolução no estilo YAML 1.2. Não implementa todo YAML 1.2. Âncoras, aliases, tags personalizadas e fluxos de vários documentos interrompem a conversão. Se o arquivo precisar deles, use um parser compatível; remover um alias sem manter seu significado muda a configuração.</p>
+    <p>Um erro oferece Ir ao erro. Corrija a entrada indicada em vez de usar a saída anterior, que fica indisponível ao editar.</p>
+  </section>
+  <section>
+    <h2>Confira comentários, strings e números</h2>
+    <pre><code>enabled: true
+country: no
+account: 12345678901234567890</code></pre>
+    <p>Aqui <code>no</code> continua a string <code>"no"</code>, sem virar false como pode ocorrer em YAML 1.1. O conversor mantém o texto numérico sem arredondar essa conta longa via ponto flutuante do JavaScript. A aplicação que lê o resultado pode impor limites numéricos próprios.</p>
+    <p>JSON não tem comentários: os comentários YAML são descartados e a ferramenta informa os que leu. Um <code>#</code> dentro de uma string entre aspas ou escalar de bloco é conteúdo, não comentário.</p>
+  </section>
+  <section>
+    <h2>Convertendo JSON de volta para YAML</h2>
+    <p>O modelo de dados é mantido, mas o resultado é YAML recém-escrito, não recuperação de comentários ou formato antigos. Palavras ambíguas recebem aspas para leitores YAML 1.1. Confira versão e esquema da aplicação de destino, principalmente em configurações de implantação.</p>
+    <p>A <a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener noreferrer">especificação YAML</a> descreve a linguagem completa. Para conferir ou minificar só JSON, use o <a href="../../formatar-json/">formatador JSON</a>.</p>
+  </section>

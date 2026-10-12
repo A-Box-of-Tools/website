@@ -66,13 +66,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Ihre Bilder haben keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -172,15 +167,7 @@ a = """
 
 [[faq]]
 q = "Verliert ein Bild beim Skalieren an Qualität?"
-a = """
-        Kleiner machen kostet nichts Sichtbares. Es gehen mehr Pixel hinein als
-        heraus, was bleibt, ist also echtes Detail. Größer machen kann dagegen
-        nicht hinzufügen, was nie fotografiert wurde, und heraus kommt eine
-        weichere Kopie desselben Bildes und keine schärfere. Genau deshalb ist
-        &bdquo;ein Bild nie größer machen, als es angefangen hat&ldquo;
-        standardmäßig aktiv. Etwas kostet dann noch die Neukodierung, wenn das
-        Format JPEG oder WebP ist, und der Qualitätsregler bestimmt, wie viel Sie
-        dort ausgeben."""
+a = "Verkleinern entfernt Pixel und kann kleine Schrift, dünne Linien und feine Details verlieren, auch wenn ein Foto in der vorgesehenen Anzeigegröße gut aussieht. Vergrößern gewinnt nie aufgezeichnete Details nicht zurück. JPEG und verlustbehaftetes WebP können weitere Verluste hinzufügen; PNG erhält die skalierten Pixel, nicht die ursprünglichen Details. Prüfen Sie das Ergebnis in der späteren Größe."
 
 [[faq]]
 q = "Kann ich jedes Bild anders zuschneiden?"

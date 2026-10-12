@@ -81,13 +81,7 @@
         the limit is 25 MB, 25 MB is the right answer; 8 MB throws away
         two-thirds of the picture for nothing.
       </li>
-      <li>
-        <strong>Cut first.</strong> Length is the other half of the
-        multiplication. Ten seconds you did not need are ten seconds of
-        bitrate every remaining second could have had. The
-        <a href="../trim-a-video/">Video Trimmer</a> cuts without
-        re-encoding, so do that before this.
-      </li>
+      <li><strong>Cut first.</strong> Removing time you do not need leaves more of the size budget for each remaining second. The <a href="../trim-a-video/">Video Trimmer</a> can copy compatible selections without re-encoding; exact cuts re-encode the picture. Choose the labelled method deliberately before compressing.</li>
       <li>
         <strong>Drop the sound if it does not matter.</strong> A minute of
         stereo is about a megabyte. On a short clip with a tight limit, that
@@ -146,15 +140,5 @@
 
   <section>
     <h2>What it writes, and what it reads</h2>
-    <p>
-      It writes MP4 with H.264 video, because that is the one combination
-      every phone, browser, chat app and email client plays &mdash; which is
-      the point of a file that has to send. It does not write WebM, HEVC or
-      AV1: smaller for the same quality, and not something half of the people
-      you would send it to could open. It reads MP4 and MOV, which is what
-      phones, cameras and screen recorders write, with whatever codec is
-      inside as long as your browser will decode it; an iPhone HEVC clip
-      opens on most machines. WebM, MKV and AVI are not read yet, and the
-      page says so when it meets one.
-    </p>
+    <p>It writes MP4 with H.264 video and copied original audio. H.264 in MP4 is widely supported, but the receiving player must also support the audio codec and video profile. Test the finished file in the destination app. Inputs are MP4 and MOV with codecs your browser can decode; WebM, MKV and AVI are not read here. This tool does not write WebM, HEVC or AV1.</p>
   </section>

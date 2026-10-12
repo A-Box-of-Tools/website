@@ -74,14 +74,8 @@ text = "Quelloffen"
 text = "Dateien bleiben auf Ihrem Gerät"
 
 [[privacy]]
-title = "Ihre Aufnahme hat keinen Ort, an den sie gehen könnte."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört uns. Es gibt hier keinen Endpunkt, an dem
-      Ihre Datei gesammelt werden könnte, und keinen Code, der sie senden würde,
-      wenn es ihn gäbe. Früher stand hier <code>connect-src 'none'</code>, und
-      das war absolut. Die Werbung hat das gekostet, und das gehört dazugesagt."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Hier wiegt das schwerer als auf den anderen Seiten."
@@ -110,14 +104,7 @@ body = """
 
 [[privacy]]
 title = "Die Identifikatoren werden für Sie aufgelistet, und für sonst niemanden."
-body = """
-
-      Die Seite zeigt jedes Feld Ihrer Datei an, das die abgebildete Person
-      benennt oder eingrenzt. Das ist die Frage, die jemand beantwortet haben
-      möchte, bevor er eine Schicht weitergibt, und kein Viewer beantwortet sie.
-      Sie steht auf dem Bildschirm vor Ihnen und geht nirgendwo sonst hin: In
-      diesem Repository gibt es kein Analytics-Ereignis, das irgendetwas davon
-      trüge, und die Seite könnte es auch nicht senden, wenn es eines gäbe."""
+body = "Die Seite zeigt jedes Feld Ihrer Datei an, das die abgebildete Person benennt oder eingrenzt. Das ist die Frage, die jemand beantwortet haben möchte, bevor er eine Schicht weitergibt, und kein Viewer beantwortet sie. Sie steht auf dem Bildschirm vor Ihnen und geht nirgendwo sonst hin: In diesem Repository gibt es kein Analytics-Ereignis, das irgendetwas davon trüge. Freiwilliges Feedback meldet nur Werkzeugkennung, feste Antwort und festen Grund, niemals gelesene Dateimetadaten."
 
 [[privacy]]
 title = "Sie liest. Sie schreibt nicht."

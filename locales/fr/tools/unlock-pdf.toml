@@ -1,16 +1,16 @@
 name = "Déverrouillage PDF"
 heading = "Déverrouiller&nbsp;un&nbsp;PDF <span class=\"h1-kw\">&mdash; retirer le mot de passe et les restrictions</span>"
-tagline = "La plupart des PDF protégés n’exigent aucun mot de passe. Cet outil vous indique leur type avant de les modifier."
+tagline = "Les restrictions de permissions et les mots de passe d’ouverture diffèrent. Cette page distingue ceux de votre PDF."
 title = "Déverrouiller un PDF &mdash; Retirer mot de passe et restrictions, gratuit, sans envoi"
-description = "Retirez mot de passe et restrictions d’impression, copie et édition dans votre navigateur. La plupart des fichiers protégés s’ouvrent sans mot de passe&nbsp;: la page distingue les deux cas. Aucun envoi ni tentative de deviner un mot de passe."
+description = "Retirez localement les restrictions de permissions d’un PDF ou le mot de passe d’ouverture que vous fournissez. La page identifie la protection avant de demander un mot de passe. Aucun envoi ni recherche de mot de passe."
 og_title = "Déverrouiller un PDF sans l’envoyer"
-og_description = "La plupart des PDF protégés s’ouvrent à tous et demandent seulement de ne pas imprimer ni copier. Retirez ces restrictions dans votre navigateur en comprenant leur valeur réelle."
+og_description = "Retirez localement les restrictions de permissions d’un PDF ou le mot de passe d’ouverture que vous fournissez. La page identifie la protection avant de demander un mot de passe. Aucun envoi ni recherche de mot de passe."
 og_image_alt = "Déverrouiller un PDF dans votre navigateur sans l’envoyer"
 pledge = "Votre document est ouvert, déchiffré puis réécrit en mémoire sur votre appareil par le code de ce site. Aucun envoi possible ni serveur pour le recevoir. Ni fichier ni mot de passe ne quittent l’onglet."
 live_hint = "Regardez l’onglet Réseau des outils de développement pendant le déverrouillage. Aucune requête ne transporte document, mot de passe ou nom de fichier. Ou déconnectez Internet et ouvrez-le quand même."
 read_first = ", <code>src/shared/pdf-crypt.js</code> pour dériver la clé du document, sans boucle de recherche de mots de passe, et <code>src/shared/aes.js</code> et <code>src/shared/rc4.js</code> pour les deux chiffrements. Aucun de ces fichiers ni les lecteurs et rédacteurs ne contacte le réseau."
 howto_heading = "Comment retirer mot de passe ou restrictions d’un PDF"
-card = "Retirez le mot de passe et les restrictions d’impression, copie et édition. La plupart des PDF protégés s’ouvrent déjà à tous&nbsp;: cet outil précise leur protection et sa valeur avant de la retirer localement."
+card = "Retirez localement les restrictions de permissions d’un PDF ou le mot de passe d’ouverture que vous fournissez. La page identifie la protection avant de demander un mot de passe. Aucun envoi ni recherche de mot de passe."
 
 [words]
 plural = "documents"
@@ -32,7 +32,7 @@ text = "Open source"
 text = "Vos fichiers restent chez vous"
 
 [[privacy]]
-title = "La plupart des PDF protégés ne sont pas réellement verrouillés."
+title = "La page distingue les permissions du mot de passe d’ouverture."
 body = "Un <em>mot de passe d’ouverture</em> empêche vraiment la lecture&nbsp;: sans lui, cet outil n’ouvre rien. Les <em>restrictions</em> d’impression, copie et édition n’empêchent pas l’ouverture. Le fichier contient donc de quoi dériver sa clé, comme le fait votre lecteur. Les permissions sont un champ respecté par accord entre logiciels, documenté ainsi par Adobe. Les retirer ne casse pas un verrou&nbsp;: l’outil choisit de ne pas les appliquer. Il distingue les deux et ne demande un mot de passe que si nécessaire."
 
 [[privacy]]
@@ -77,7 +77,7 @@ body = "Déconnectez le réseau&nbsp;: toutes les fonctions restent disponibles.
 
 [[howto]]
 title = "Choisissez le PDF."
-body = "Un document à la fois, lu depuis votre disque. L’outil essaie d’abord un mot de passe vide, suffisant pour la plupart des PDF protégés uniquement par des permissions."
+body = "Choisissez un document. Le navigateur le lit sur votre disque et essaie d’abord un mot de passe vide. Il ouvre ainsi les fichiers qui restreignent les permissions sans demander de mot de passe de lecture."
 
 [[howto]]
 title = "Lisez ce que la page a trouvé."
@@ -93,15 +93,15 @@ body = "Le document est déchiffré avec sa clé puis réécrit sans dictionnair
 
 [[faq]]
 q = "Ai-je besoin du mot de passe&nbsp;?"
-a = "Souvent non&nbsp;: relevés, fiches de paie, rapports et PDF avec restrictions d’édition s’ouvrent à tous et portent seulement des permissions, retirables en un clic. La page l’indique dès le choix. Un document qui demande réellement un mot de passe à l’ouverture exige que vous le fournissiez."
+a = "Cela dépend de la protection. Si le PDF s’ouvre sans mot de passe mais restreint l’impression ou la copie, ces permissions peuvent être retirées ici sans mot de passe. Si un mot de passe d’ouverture est requis, fournissez celui de l’utilisateur ou du propriétaire. La page essaie d’abord un mot de passe vide et explique le cas trouvé."
 
 [[faq]]
 q = "Peut-il ouvrir un PDF dont je n’ai pas le mot de passe&nbsp;?"
-a = "Non, il n’essaie pas. <code>src/shared/pdf-crypt.js</code> ne contient ni dictionnaire, liste de mots ni boucle de recherche par force brute. Même les anciennes clés de 40 bits, explorables, ne sont pas recherchées. Si le mot de passe est perdu, cette page ne le récupère pas."
+a = "Non. Cet outil ne devine pas les mots de passe ni ne recherche des clés. <code>src/shared/pdf-crypt.js</code> montre le traitement du mot de passe fourni. D’autres outils peuvent deviner un mot de passe faible ou attaquer un chiffrement obsolète, sans garantie ; cette page ne fait ni l’un ni l’autre. Demandez à l’expéditeur un mot de passe valide ou une copie accessible."
 
 [[faq]]
 q = "Quelle différence entre les deux mots de passe&nbsp;?"
-a = "Le mot de passe <em>utilisateur</em> ouvre le fichier. Celui du <em>propriétaire</em> lève les permissions d’impression, copie et édition. Un propriétaire peut en définir un sans mot de passe utilisateur&nbsp;: le PDF s’ouvre mais refuse l’impression. Cet outil accepte les deux et indique lequel l’a ouvert."
+a = "Un PDF peut avoir deux mots de passe. Celui de l’<em>utilisateur</em> l’ouvre ; celui du <em>propriétaire</em> accorde toutes les permissions. Avec un mot de passe utilisateur vide et un mot de passe propriétaire défini, il s’ouvre librement mais le lecteur peut appliquer les restrictions. Cet outil accepte l’un ou l’autre et explique le résultat."
 
 [[faq]]
 q = "Retirer les restrictions est-il légal&nbsp;?"

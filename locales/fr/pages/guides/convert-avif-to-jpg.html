@@ -42,15 +42,15 @@
     <p>Si la taille compte ensuite, le <a href="../../compresser-une-image/">compresseur d’images</a> réduit un JPEG à la taille demandée. L’outil le propose sous votre résultat.</p>
   </section>
   <section>
-    <h2>Ce qu’un JPEG ne peut pas conserver</h2>
+    <h2>Ce que cette conversion ne conserve pas</h2>
     <p>Deux choses, qui ne concernent pas la plupart des images :</p>
     <p><strong>La transparence.</strong> AVIF peut avoir un fond transparent, JPEG non : il faut donc ajouter un fond. L’outil demande sa couleur et propose le blanc, uniquement lorsqu’un fichier de votre liste contient réellement de la transparence. La plupart des AVIF enregistrés sur le web sont des photographies opaques ; la question n’apparaît généralement pas. Pour garder la transparence, convertissez plutôt en PNG ou WebP avec le <a href="../../compresser-une-image/">compresseur d’images</a>, qui lit AVIF et écrit ces deux formats.</p>
-    <p><strong>Le HDR et les couleurs profondes.</strong> AVIF peut stocker dix ou douze bits par canal et décrire des hautes lumières plus brillantes que celles d’un écran ordinaire. JPEG utilise huit bits et ne connaît pas le HDR : ces images sont ramenées à la plage ordinaire. Presque aucune image enregistrée depuis une page web habituelle n’utilise ces fonctions. Si la vôtre ne les utilise pas, ce qui est très probable, vous ne perdez rien sur ce point.</p>
+    <p><strong>HDR et profondeur de couleur.</strong> Cet outil écrit un JPEG SDR classique de 8 bits depuis le canvas du navigateur. La profondeur supplémentaire et les informations HDR de l’AVIF ne sont pas conservées ; les couleurs ou hautes lumières peuvent changer. Gardez l’original pour l’archivage. Des formats HDR basés sur JPEG existent : <a href="https://developer.android.com/media/platform/hdr-image-format">la spécification Ultra HDR d’Android</a> décrit une carte de gain que cet outil ne crée pas.</p>
   </section>
   <section>
     <h2>La conversion inverse est un autre problème</h2>
-    <p>Il n’y a pas d’outil JPG en AVIF ici, pour une raison qui mérite d’être dite : <strong>aucun navigateur ne sait écrire un AVIF</strong>. Si vous en demandez un au canevas du navigateur, il renvoie discrètement un PNG avec une mauvaise étiquette.</p>
-    <p>Une page qui prétend créer des AVIF dans le navigateur se trompe donc, ou envoie l’image à un serveur pour l’encoder. Le faire correctement sans serveur demande de construire l’encodeur : c’est un vrai travail, inscrit sur <a href="../../feuille-de-route/">la feuille de route</a>, plutôt qu’une fonction simulée.</p>
+    <p>Il n’y a pas de conversion JPG vers AVIF ici car <strong>cette page n’inclut aucun encodeur AVIF</strong>. Sa sortie canvas utilise JPEG, PNG ou WebP, sans présenter un PNG renommé comme un AVIF.</p>
+    <p>Un encodeur distinct, notamment WebAssembly, peut créer de l’AVIF localement sans serveur. C’est une autre implémentation. Un format natif non pris en charge revient au PNG, comme l’explique <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob">la documentation du canvas</a>.</p>
   </section>
   <section>
     <h2>Les métadonnées ne suivent pas</h2>

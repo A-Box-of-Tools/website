@@ -10,7 +10,7 @@ heading = "YAML&nbsp;a&nbsp;JSON <span class=\"h1-kw\">&mdash; y de JSON de vuel
 tagline = "Los dos sentidos, y te dice lo que cuesta cada uno. Nada de esto se pega en el servidor de otro."
 
 title = "Conversor de YAML a JSON &mdash; en los dos sentidos, sin subir nada"
-description = "Convierte YAML a JSON y JSON a YAML en tu navegador. Lee YAML 1.2, así que yes y no siguen siendo cadenas, y dice exactamente qué pierde cada sentido. No se sube nada: un archivo de configuración nunca sale de tu dispositivo."
+description = "Convierte un subconjunto compatible de YAML 1.2 a JSON y de JSON a YAML en el navegador. Rechaza anclas, alias, etiquetas y varios documentos; JSON pierde los comentarios. Nada se sube."
 og_title = "Convertir YAML sin pegarlo en un servidor"
 og_description = "Un conversor de YAML y JSON que corre en tu propio dispositivo. Las claves mantienen su orden, los números sus dígitos, y lo que pegas no va a ninguna parte."
 og_image_alt = "Conversor de YAML a JSON - los dos sentidos, sin subir nada"
@@ -66,13 +66,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Lo que pegas no tiene adónde ir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún punto final
-      donde recoger una configuración pegada, ni nada en el código que la
-      enviaría si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada descarga nada."
@@ -84,7 +79,7 @@ body = """
       devuelven una cadena."""
 
 [[privacy]]
-title = "Lee YAML 1.2, así que Noruega sigue siendo Noruega."
+title = "El subconjunto admitido usa las reglas escalares de YAML 1.2."
 body = """
  En YAML 1.1,
       <code>no</code> era un booleano, que es el error famoso que convierte el
@@ -96,12 +91,7 @@ body = """
 
 [[privacy]]
 title = "Una conversión que no puede ser honesta se detiene."
-body = """
- Un ancla, un
-      alias o una etiqueta en el YAML terminan la conversión con un mensaje que
-      dice en qué línea está, en lugar de un documento JSON que en silencio
-      significa otra cosa. JSON no tiene manera de decir &laquo;el mismo nodo dos
-      veces&raquo;, y elegir una interpretación sería decidir por ti."""
+body = "JSON elimina los comentarios. Este analizador admite deliberadamente un subconjunto de YAML 1.2 y rechaza anclas, alias y etiquetas en vez de elegir su expansión o conversión de tipos. JSON representa un árbol de valores; YAML admite nodos compartidos y valores tipados. También rechaza varios documentos en vez de inventar una matriz. De JSON a YAML conserva los valores representados."
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
@@ -172,27 +162,11 @@ a = """
 
 [[faq]]
 q = "¿Qué se pierde al convertir YAML a JSON?"
-a = """
-        Los comentarios, porque JSON no tiene dónde ponerlos. Las anclas, los
-        alias y las etiquetas se rechazan directamente en lugar de adivinarse
-        &mdash; cada una dice algo que JSON no puede decir, y un conversor que en
-        silencio eligiera una interpretación te entregaría un documento que no es
-        lo que decía el archivo. El otro sentido no pierde nada: todo documento
-        JSON ya es un documento YAML."""
+a = "JSON elimina los comentarios. Este analizador admite deliberadamente un subconjunto de YAML 1.2 y rechaza anclas, alias y etiquetas en vez de elegir su expansión o conversión de tipos. JSON representa un árbol de valores; YAML admite nodos compartidos y valores tipados. También rechaza varios documentos en vez de inventar una matriz. De JSON a YAML conserva los valores representados. <a href=\"https://yaml.org/spec/1.2.2/\">La especificación YAML</a> define el formato completo."
 
 [[faq]]
 q = "Mi YAML dice no y el JSON salió como cadena. ¿Por qué?"
-a = """
-        Porque es una cadena, y esto lee YAML 1.2 en lugar de 1.1. En YAML 1.1,
-        <code>yes</code>, <code>no</code>, <code>on</code> y <code>off</code> eran
-        booleanos, que es el error famoso que convierte el código de país de
-        Noruega en <code>false</code>. YAML 1.2 lo dejó caer y esto también: solo
-        <code>true</code>, <code>false</code>, <code>null</code> y <code>~</code>
-        se leen como algo que no sea texto. En el otro sentido, esas palabras se
-        escriben de vuelta <em>entre comillas</em>, aunque esto las leería como
-        texto sin ellas, porque lo que abra el archivo después quizá no. PyYAML
-        sigue usando 1.1 por defecto. Leer estrictamente y escribir de forma
-        conservadora es la única combinación que acierta en los dos sentidos."""
+a = "YAML 1.1 trataba <code>yes</code>, <code>no</code>, <code>on</code> y <code>off</code> como booleanos y convertía el código de Noruega en <code>false</code>. Este subconjunto usa YAML 1.2: esas palabras siguen siendo cadenas, <code>true</code> y <code>false</code> son booleanos, <code>null</code> y <code>~</code> son null y los escalares numéricos son números. El escritor YAML entrecomilla las palabras ambiguas para lectores con reglas antiguas."
 
 [[faq]]
 q = "¿Mantiene el orden de mis claves?"
@@ -248,12 +222,12 @@ a = """
         convertirla se pararía en el momento en que te desconectaras."""
 
 [schema]
-description = "Convierte YAML a JSON y JSON a YAML en el navegador. Lee YAML 1.2, mantiene el orden de las claves y los dígitos exactos de cada número, y dice qué pierde cada sentido. No se sube nada."
+description = "Convierte un subconjunto compatible de YAML 1.2 a JSON y de JSON a YAML en el navegador. Rechaza anclas, alias, etiquetas y varios documentos; JSON pierde los comentarios. Nada se sube."
 features = [
   "Convierte YAML a JSON y JSON a YAML",
-  "Lee YAML 1.2, así que yes y no siguen siendo cadenas",
+  "Lee un subconjunto de YAML 1.2; yes y no siguen siendo cadenas",
   "Mantiene el orden de las claves y los dígitos exactos de cada número",
-  "Rechaza anclas, alias y etiquetas en lugar de adivinar qué querían decir",
+  "Rechaza explícitamente anclas, alias, etiquetas y flujos de varios documentos",
   "Dice en qué línea y columna está el error, con palabras",
   "Funciona con un archivo soltado igual que con un pegado",
   "Funciona sin conexión; sin subidas, sin cuenta",

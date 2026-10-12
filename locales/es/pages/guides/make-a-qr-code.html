@@ -56,19 +56,12 @@
       Cuántas de esas palabras hay es el nivel, y hay cuatro:
     </p>
     <ul>
-      <li><strong>L:</strong> se puede perder alrededor del 7&nbsp;% del código.</li>
+      <li><strong>L</strong> &mdash; aproximadamente el 7 % del total de palabras de código.</li>
       <li><strong>M:</strong> alrededor del 15&nbsp;%.</li>
       <li><strong>Q:</strong> alrededor del 25&nbsp;%.</li>
       <li><strong>H:</strong> alrededor del 30&nbsp;%.</li>
     </ul>
-    <p>
-      Más corrección no sale gratis: los datos de comprobación van en el mismo
-      cuadrado, así que el mismo texto en H necesita un código más grande y más
-      denso que en L. A grandes rasgos, pasar de L a H duplica el número de módulos
-      para la misma cadena, y cuanto más densos son los módulos, más le cuesta
-      resolverlos a una cámara. Aquí hay un intercambio de verdad, y la respuesta
-      depende de dónde vaya a acabar el código.
-    </p>
+    <p><a href="https://www.qrcode.com/en/about/error_correction.html">DENSO define estos porcentajes sobre el total de palabras de código</a>, no sobre módulos arbitrarios ni superficie. Los patrones de detección dañados pueden impedir el escaneo antes de corregir datos. Más corrección ocupa espacio: el mismo contenido suele necesitar un símbolo más denso o mayor.</p>
     <p>
       <strong>L</strong> es para una pantalla: un código en una diapositiva, en un
       correo, en una página web. Nada lo va a dañar y cada módulo de más lo hace
@@ -179,21 +172,8 @@
 
   <section>
     <h2>Un logotipo en el centro</h2>
-    <p>
-      Esto funciona, y funciona gracias a la corrección de errores, no a pesar de
-      ella. En el nivel H se puede destruir alrededor del 30&nbsp;% de los módulos
-      y el código se sigue leyendo, así que un logotipo que cubra bastante menos que
-      eso, y en el centro, donde no hay ningún patrón de localización, es un daño
-      que el lector repara.
-    </p>
-    <p>
-      Hay tres cosas que respetar. Usa el nivel H. Mantén el logotipo por debajo de
-      una quinta parte del área más o menos, bien lejos del límite teórico, porque
-      la impresión no es lo único que se está comiendo tu margen. Y no tapes nunca
-      los tres cuadrados grandes de las esquinas ni los pequeños que hay cerca: es
-      así como un lector encuentra y orienta el símbolo, y no hay corrección de
-      errores que los reconstruya.
-    </p>
+    <p>Un logo pequeño puede funcionar, pero ningún porcentaje de superficie es seguro por definición. DENSO refiere la recuperación de aproximadamente el 30 % en H al total de palabras de código, no a cuadrados arbitrarios. Deja libres los patrones de posición y alineación, usa H y prueba el código impreso con varios móviles. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO explica la corrección de errores</a>.</p>
+    <p>Usa H y un logo pequeño. No hay una fracción de superficie segura garantizada: importan posición, versión, distribución del daño y calidad de impresión. Deja libres los patrones de posición y alineación y comprueba la fiabilidad con una prueba impresa.</p>
     <p>
       Y luego pruébalo en móviles de verdad. Un logotipo baja un código de «siempre
       funciona» a «funciona con este margen», y la única forma de saber cuánto

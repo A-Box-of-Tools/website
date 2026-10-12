@@ -18,19 +18,15 @@ nav = "How can a web page work offline?"
 group = "before-you-upload"
 
 title = "How Can a Web Page Work Offline?"
-description = "A page that keeps working with the wi-fi off is not magic - it is a service worker and a cache, standard browser machinery. How that works, why offline is the strongest privacy proof a tool can offer, and what it does not prove."
+description = "How a service worker caches browser tools, what an offline operation proves about local processing, and the network features and limits to check."
 
 heading = "How can a web page work with the wi-fi off?"
-lede = """
-    Because the browser kept a complete copy, and a small program that
-    ships with the page serves that copy whenever the network cannot. The
-    machinery is standard and worth understanding, because a tool that
-    works disconnected is showing you something no privacy policy can."""
+lede = "A service worker can keep a local copy of a tool. A completed disconnected operation is evidence of local processing; it does not guarantee every future data path. Here is how the cache works and what to check."
 
-updated = "26 August 2026"
+updated = "12 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-12"
 
 og_title = "How can a web page work with the wi-fi off?"
-og_description = "A service worker and a cache - standard browser machinery. How offline pages work, why offline is the strongest privacy proof a tool can offer, and what it does not prove."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "How browser tools cache their resources, what disconnected processing demonstrates and which features still require a connection."
+og_image_alt = "abox.tools - browser tools for local file processing"

@@ -6,7 +6,7 @@ Takes the password and the printing, copying and editing restrictions off a
 PDF, in the browser, without the document or the password going anywhere.
 
 The reason this tool exists is a fact about the format that almost nobody is
-told: **most protected PDFs are not locked at all.** So the page's first job is
+told: **permission restrictions differ from an open password.** So the page's first job is
 not to unlock anything. It is to say which of two very different situations you
 are in.
 

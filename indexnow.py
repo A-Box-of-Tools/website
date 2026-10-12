@@ -27,8 +27,10 @@ So the comparison is now of the thing itself: the bytes inside <main>, which is
 where a page's own content lives and where the frame does not reach. The nav,
 the header, the footer and the language switcher are all outside it, so the
 whole class of false positives that made a byte diff useless is excluded by
-construction rather than by discipline. `lastmod` stays exactly as it was and
-goes on doing its own job in the sitemap; nothing here reads it any more.
+construction rather than by discipline. Tool instructions and FAQs are inside
+the landmark. Shared controls among that help use data-indexnow-ignore so
+their copy and navigation do not become a site-wide change signal. `lastmod`
+keeps doing its own job in the sitemap; nothing here reads it any more.
 
 The set of URLs still comes from the sitemap, because that is what already
 knows which pages are indexable - the roadmap is deliberately absent, and a
@@ -56,6 +58,7 @@ able to fetch it there is how the protocol proves the sender owns the host.
 
 import argparse
 import hashlib
+from html.parser import HTMLParser
 import json
 import pathlib
 import re
@@ -120,8 +123,65 @@ COMMENT = re.compile(rb'<!--.*?-->', re.S)
 MAIN = re.compile(rb'<main[\s/>].*?</main>', re.S)
 
 
+class ContentOnly(HTMLParser):
+    """Remove explicitly marked frame controls while preserving source bytes.
+
+    A tool's main includes its written help. The related-tool ring and the
+    Markdown copy control sit among that help but describe the site's frame;
+    changing either must not announce every tool. Parsing the excluded
+    elements handles nested markup without a regex stopping at the first div.
+    """
+    VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+            'link', 'meta', 'param', 'source', 'track', 'wbr'}
+
+    def __init__(self, source):
+        super().__init__(convert_charrefs=False)
+        self.source = source
+        self.lines = [0] + [match.end() for match in re.finditer('\n', source)]
+        self.stack = []
+        self.ranges = []
+        self.feed(source)
+        if self.stack:
+            raise ValueError('unclosed data-indexnow-ignore element')
+
+    def position(self):
+        line, column = self.getpos()
+        return self.lines[line - 1] + column
+
+    def handle_starttag(self, tag, attrs):
+        if not self.stack and 'data-indexnow-ignore' not in dict(attrs):
+            return
+        if not self.stack:
+            self.start = self.position()
+        if tag not in self.VOID:
+            self.stack.append(tag)
+        elif not self.stack:
+            self.ranges.append((self.start, self.position() + len(self.get_starttag_text())))
+
+    def handle_startendtag(self, tag, attrs):
+        if not self.stack and 'data-indexnow-ignore' in dict(attrs):
+            start = self.position()
+            self.ranges.append((start, start + len(self.get_starttag_text())))
+
+    def handle_endtag(self, tag):
+        if not self.stack or tag not in self.stack:
+            return
+        index = len(self.stack) - 1 - self.stack[::-1].index(tag)
+        self.stack = self.stack[:index]
+        if not self.stack:
+            self.ranges.append((self.start, self.source.index('>', self.position()) + 1))
+
+    def content(self):
+        parts, previous = [], 0
+        for start, end in self.ranges:
+            parts.append(self.source[previous:start])
+            previous = end
+        parts.append(self.source[previous:])
+        return ''.join(parts).encode('utf-8')
+
+
 def content_of(path):
-    """The bytes inside <main>, or an error naming the page that has none.
+    """The main content excluding marked frame controls, or a missing-main error.
 
     Refusing rather than falling back to the whole file is deliberate. A
     fallback would quietly restore the byte diff this script exists to avoid -
@@ -132,7 +192,7 @@ def content_of(path):
     found = MAIN.search(html)
     if not found:
         raise ValueError(f'{path} has no <main> to compare')
-    return found.group(0)
+    return ContentOnly(found.group(0).decode('utf-8')).content()
 
 
 def page_path(tree, url):

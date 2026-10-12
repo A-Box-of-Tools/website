@@ -24,19 +24,12 @@
   </section>
 
   <section>
-    <h2>Réduire est sans danger. Agrandir ne l'est pas.</h2>
+    <h2>Ce que la réduction et l’agrandissement font perdre</h2>
     <p>
       Ce ne sont pas deux sens d'une même opération, et il vaut la peine de dire
       clairement pourquoi.
     </p>
-    <p>
-      <strong>Réduire une image</strong> jette de l'information, et dans le seul
-      sens bénin du terme&nbsp;: il entre plus de pixels qu'il n'en sort, et
-      chaque pixel du résultat est donc une moyenne de détail réellement mesuré.
-      Une copie réduite proprement est en général <em>plus belle</em> que
-      l'original regardé à cette taille, parce que le moyennage supprime le
-      bruit. Rien n'est inventé.
-    </p>
+    <p><strong>Réduire une image</strong> retire de l’information. La moyenne des pixels peut rendre une photo plus propre à sa taille prévue, mais petits textes, traits fins et textures peuvent disparaître. Comparez à la taille d’utilisation ; moins de pixels ne garantit pas la conservation des détails visibles.</p>
     <p>
       <strong>Agrandir une image</strong> doit inventer. Le détail ne manque pas
       dans le fichier&nbsp;; il n'a jamais été photographié. Tout ce qu'un
@@ -176,12 +169,7 @@
 
   <section>
     <h2>Ce que coûte le réencodage, et comment n'en faire qu'un</h2>
-    <p>
-      Redimensionner un JPEG ou un WebP, c'est le décoder, mettre les pixels à
-      l'échelle, puis les réencoder, et c'est cette dernière étape qui est avec
-      perte. Ce n'est pas la mise à l'échelle elle-même qui vous coûte de la
-      qualité&nbsp;; c'est le réencodage.
-    </p>
+    <p>Redimensionner un JPEG ou WebP implique de décoder, rééchantillonner les pixels et réencoder. La réduction peut perdre des détails au rééchantillonnage ; JPEG ou WebP avec perte peuvent ensuite ajouter des artefacts. Ce sont deux coûts distincts : vérifiez les dimensions et le résultat encodé.</p>
     <p>
       Deux conséquences. D'abord, le réglage de qualité en sortie compte&nbsp;:
       quelque part autour de 80 à 85, c'est invisible pour une photographie et

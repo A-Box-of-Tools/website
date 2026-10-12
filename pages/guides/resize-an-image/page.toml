@@ -16,7 +16,7 @@ group = "doing-the-job"
 tool = "resize-image"
 
 title = "How to Resize an Image Without Wrecking It"
-description = "What happens to a picture when you change its pixel dimensions: why shrinking is safe and enlarging is not, what to do when the box is the wrong shape, and when to crop instead."
+description = "What changes when you resize: fine detail lost when shrinking, interpolation when enlarging, fitting a different shape, and choosing when to crop."
 
 heading = "How to resize an image without wrecking it"
 lede = """
@@ -24,10 +24,10 @@ lede = """
     the button, by which number you type and which shape you ask for. This is
     what each choice does to the picture, and which of them you can undo."""
 
-updated = "26 August 2026"
+updated = "12 October 2026"
 published = "2026-08-20"
-lastmod = "2026-08-26"
+lastmod = "2026-10-12"
 
 og_title = "Resizing an image without wrecking it"
-og_description = "Why shrinking is safe and enlarging is not, what to do when the box is the wrong shape, and when to crop instead."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "What changes when you resize: fine detail lost when shrinking, interpolation when enlarging, fitting a different shape, and choosing when to crop."
+og_image_alt = "abox.tools - browser tools for local file processing"

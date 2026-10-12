@@ -21,20 +21,15 @@ nav = "Can an AI agent use these tools?"
 group = "before-you-upload"
 
 title = "Can an AI Agent Use These Tools?"
-description = "Yes - they are ordinary web pages with no accounts and labelled controls, and an agent can drive them like anything else. What matters is where the agent's browser runs, because that decides whether your file still stays on your machine."
+description = "An agent can operate these browser tools. Check browser location, the agent vendor’s data handling, required permissions and any deliberate network feature."
 
 heading = "Can an AI agent use these tools?"
-lede = """
-    Yes. They are ordinary web pages, with no accounts, no captchas and
-    every control labelled, and an agent drives them the way it drives
-    anything else. The question worth a page is the one behind it: when
-    you hand a file chore to an agent, where does the file go? The answer
-    turns entirely on where the agent's browser is running."""
+lede = "Agents can use the browser interface. To assess where data goes, check where the browser runs, what the agent itself sends and which tool features use the network."
 
-updated = "6 September 2026"
+updated = "12 October 2026"
 published = "2026-08-27"
-lastmod = "2026-09-06"
+lastmod = "2026-10-12"
 
 og_title = "Can an AI agent use these tools?"
-og_description = "They are ordinary web pages with labelled controls and no accounts, so yes. The question that matters is where the agent's browser runs - that decides whether your file still stays on your machine."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "Using these tools through an agent: browser location, vendor data handling, permissions and deliberate network features."
+og_image_alt = "abox.tools - browser tools for local file processing"

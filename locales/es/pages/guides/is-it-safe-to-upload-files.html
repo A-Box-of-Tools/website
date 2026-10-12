@@ -1,9 +1,7 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Con casi cualquier archivo, y casi siempre, no pasa nada por subirlo. Los
-      conversores serios borran lo que les mandas en unas horas y no tienen el más
-      mínimo interés en tus fotos de vacaciones.
+      Subir puede ser adecuado para un archivo no sensible y un servicio cuyas condiciones encajen. La retención y el acceso varían por proveedor y función; un temporizador de borrado no demuestra por sí solo dónde está cada copia.
     </p>
     <p>
       El problema no es que estén mintiendo, sino que
@@ -26,28 +24,13 @@
   <section>
     <h2>Qué hace de verdad una «subida»</h2>
     <p>
-      Cuando un conversor te pide que elijas un archivo y acto seguido te enseña
-      una barra de progreso, lo que está haciendo tu navegador es copiar el archivo
-      entero, byte por byte, por internet hasta una máquina que es de otra persona.
-      Esa máquina lo escribe en un disco, ejecuta la conversión, escribe el
-      resultado en el mismo disco y te da un enlace.
+      Una subida envía datos del archivo del navegador a otro ordenador. Pueden ser los bytes originales o una copia transformada. Elegir un archivo no equivale a subirlo: una herramienta local puede leerlo sin enviarlo.
     </p>
     <p>
-      A esas alturas tu archivo existe en al menos tres sitios que tú no has
-      elegido: el disco del servidor, los registros que hayan anotado la petición y,
-      muchas veces, una red de distribución de contenidos que ha cacheado el
-      resultado para que la descarga vaya rápida. Una política de borrado tiene que
-      llegar a los tres. Casi todas dicen que llegan. Y tú no puedes comprobar
-      ninguno.
+      El procesamiento en servidor puede crear archivos de trabajo, registros que identifican solicitudes, resultados en caché y copias de seguridad. Son posibilidades que revisar en las condiciones, no tres copias que todo servicio necesariamente crea. Una prueba externa de navegador no verifica su borrado interno.
     </p>
     <p>
-      Conviene saber además que lo que llega no es solo el archivo. Con él va su
-      nombre, y va también todo lo que el archivo lleva dentro y tú no ves. Una foto
-      recién salida de un móvil suele llevar las coordenadas GPS exactas del sitio
-      donde se tomó, la hora, el número de serie de la cámara y a veces una
-      miniatura incrustada de la imagen original, de antes de que la recortaras.
-      Mucha gente que cuida la imagen no cuida nada de eso, sencillamente porque no
-      hay nada en pantalla que se lo enseñe.
+      El nombre y los metadatos integrados pueden viajar con la subida. Las fotos pueden incluir ubicación, hora, cámara, software y miniaturas; los campos dependen del dispositivo, ajustes y ediciones. Inspecciona el archivo en vez de suponer que toda foto de móvil tiene todos ellos.
     </p>
   </section>
 
@@ -81,68 +64,23 @@
   <section>
     <h2>Cuatro comprobaciones que puedes hacer tú</h2>
     <p>
-      Sirven para cualquier herramienta, esta incluida. Ninguna te obliga a creerte
-      la palabra de nadie, y la primera lleva unos diez segundos.
+      Prueba la operación y entrada concretas que usarás. Cada comprobación responde a una parte; juntas son más útiles que una sola.
     </p>
-
-    <h3>1. Desenchufa</h3>
+    <h3>1. Desconecta para la operación local</h3>
     <p>
-      Carga la página, apaga el wifi o desenchufa el cable e intenta usarla. Una
-      herramienta que hace su trabajo dentro de tu navegador sigue exactamente
-      igual que antes. Una que sube se para en el acto, porque lo que hacía el
-      trabajo ya le queda fuera de alcance.
+      Carga completamente la herramienta y espera a que su caché indique que está lista. Desconecta y procesa un archivo del dispositivo. Terminar demuestra que esa operación no necesitó servidor mientras no había conexión. Fallar también puede significar recursos ausentes o funciones no compatibles, y no prueba una subida. El éxito no demuestra qué pasa al reconectar; la <a href="../como-puede-una-pagina-web-funcionar-sin-conexion/">guía sin conexión</a> explica ese límite.
     </p>
+    <h3>2. Inspecciona las solicitudes</h3>
     <p>
-      Esta es la prueba más contundente que hay, y la más difícil de fingir, porque
-      no se puede responder con palabras: o la conversión termina sin red, o no
-      termina.
+      Abre DevTools antes, limpia la lista y conserva el registro. Revisa destinos, parámetros, cuerpos de solicitud y mensajes WebSocket. Las columnas de tamaño suelen describir respuestas; solicitudes pequeñas pueden llevar datos extraídos o comprimidos. Igualar el tamaño del archivo no basta. Las listas ordinarias tampoco muestran cargas WebRTC; revisa el transporte y usa los diagnósticos WebRTC del navegador.
     </p>
-
-    <h3>2. Mira la pestaña Red</h3>
-    <p>
-      Abre las herramientas de desarrollo del navegador, ponte en Red y usa la
-      herramienta. Ahí se listan todas las peticiones que hace la página, con su
-      tamaño. Si tu foto de 4&nbsp;MB se ha subido, en esa lista hay una petición
-      de 4&nbsp;MB. Si lo más grande que sale de la página son unos kilobytes de
-      publicidad, no se ha subido nada.
-    </p>
-    <p>
-      Ordena por tamaño y mira lo de arriba. No hace falta que entiendas las
-      peticiones: lo único que tienes que ver es si alguna tiene el tamaño de tu
-      archivo.
-    </p>
-
     <h3>3. Lee la Content-Security-Policy</h3>
     <p>
-      Mira el código fuente de la página y busca
-      <code>Content-Security-Policy</code>, cerca del principio. Es la lista de
-      direcciones a las que esa página tiene permitido conectarse, y quien la hace
-      cumplir es tu navegador y no las buenas intenciones del sitio: una petición a
-      algo que no esté en la lista se rechaza, intente lo que intente el código.
+      La <a href="https://www.w3.org/TR/CSP3/#directive-connect-src" target="_blank" rel="noopener noreferrer">directiva connect-src</a> limita destinos de API como fetch y WebSocket. Un tercero permitido puede recibir datos. Otras directivas regulan imágenes, formularios y recursos; la lista no describe tráfico WebRTC entre navegadores. CSP es una restricción útil, no una auditoría de cargas ni una prueba aislada de que no se sube nada.
     </p>
+    <h3>4. Sigue los datos en el código</h3>
     <p>
-      La directiva que importa es <code>connect-src</code>, que decide adónde puede
-      enviar datos la página. Si ahí aparece una dirección del propio sitio en el
-      que estás, la página puede mandarle tu archivo. Si no aparece ninguna, o solo
-      hay terceros como una red publicitaria, no puede.
-    </p>
-    <p>
-      Que una página no tenga Content-Security-Policy no demuestra nada malo:
-      significa solo que esta comprobación en concreto no tiene nada que decirte.
-    </p>
-
-    <h3>4. Lee el código</h3>
-    <p>
-      La menos cómoda y la más concluyente. Si una herramienta publica su código
-      fuente y lo sirve sin ningún paso de compilación, los archivos que se ha
-      bajado tu navegador son exactamente los que puedes leer. Búscales
-      <code>fetch</code>, <code>XMLHttpRequest</code> y <code>sendBeacon</code>,
-      que son las tres formas que tiene una página de enviar algo, y mira qué se
-      les está entregando.
-    </p>
-    <p>
-      Esto no lo va a hacer casi nadie. Aun así importa que se pueda hacer, porque
-      una afirmación que nadie puede comprobar no llega a ser una afirmación.
+      Compara el código publicado y generado. Sigue los archivos por fetch, XMLHttpRequest, sendBeacon, WebSocket y RTCPeerConnection, y revisa formularios, URL de recursos y entregas a aplicaciones. Son ejemplos, no una lista exhaustiva. Lo decisivo son los datos que recibe cada ruta, incluidos los scripts de plataforma y comentarios.
     </p>
   </section>
 
@@ -172,11 +110,7 @@
         y una herramienta debería decirlo con todas las letras en vez de pasarla
         por alto.
       </li>
-      <li>
-        <strong>No es lo mismo que «borramos tus archivos».</strong> Esa segunda
-        frase habla de lo que una empresa decide hacer; la primera, de lo que es
-        técnicamente posible. Y solo una de las dos se puede comprobar.
-      </li>
+      <li><strong>No equivale a «borramos tus archivos».</strong> Procesar localmente identifica dónde se ejecuta una operación. La retención es otra afirmación sobre lo que hace un proveedor tras recibir datos. Lee la implementación y los límites de red antes de considerar cualquier frase una garantía.</li>
     </ul>
   </section>
 
@@ -208,57 +142,28 @@
     </p>
     <ul>
       <li>
-        <strong>Desenchufa.</strong> Abre cualquier herramienta de aquí,
-        desconéctate y verás que sigue funcionando. Cada página de herramienta
-        lleva un indicador en directo que dice si estás conectado ahora mismo, así
-        que puedes verlo cambiar.
+        <strong>Sin conexión.</strong> El procesamiento local funciona con recursos cargados y caché lista. Obtener imágenes, cambios en línea y presentar navegadores necesitan conexión.
       </li>
       <li>
-        <strong>Pestaña Red.</strong> Convierte algo y lee la lista. No hay nada
-        que lleve tu archivo, ni una miniatura suya, ni su nombre, ni su tamaño, ni
-        nada leído de dentro de él. En este sitio no hay ningún evento de analítica
-        propio que tuviera nada de eso que enviar.
+        <strong>Solicitudes.</strong> El código de procesamiento no sube archivos elegidos. Las visitas y los votos fijos voluntarios son distintos. El cambio envía monedas y fecha; las funciones entre navegadores envían contenido deliberadamente al elegido.
       </li>
       <li>
-        <strong>Content-Security-Policy.</strong> Está al principio del código
-        fuente de todas las páginas. En <code>connect-src</code> aparecen los
-        destinos de publicidad y medición de Google y el botón de donación, y nada
-        más. <strong>Ninguna dirección de esa lista es de este sitio</strong>,
-        porque este sitio no tiene servidor: son archivos estáticos. No hay ningún
-        sitio al que mandar un archivo aunque algo lo intentara.
+        <strong>Política.</strong> La mayoría hereda destinos de plataforma. Los recibos añaden Frankfurter y compartir y cámara añaden el servidor de encuentro. Se limitan destinos, no se demuestra cada carga.
       </li>
       <li>
-        <strong>Código.</strong> Todas las líneas son
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">públicas</a>.
-        La compilación quita comentarios y espacios en blanco y nada más, y puedes
-        ejecutarla tú y comparar el resultado con lo que se está sirviendo.
+        <strong>Código.</strong> El <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">código es público</a>. Compila y compara el resultado. Incluye módulos compartidos y motores empaquetados.
       </li>
     </ul>
     <p>
-      Las excepciones, dichas en voz alta en vez de escondidas: este sitio lleva
-      publicidad de Google y un contador de visitas, que hablan los dos con Google
-      y a ninguno de los cuales se le entrega nada sobre tus archivos; y la
-      herramienta <a href="../../imagenes-a-video/">Imágenes a vídeo</a> puede
-      descargar una imagen desde una dirección que pegues tú, con lo que ese
-      servidor ve tu IP. La <a href="../../privacidad/">página de privacidad</a>
-      explica las dos al completo.
+      La <a href="../../privacidad/">página de privacidad</a> describe los límites: <a href="../../imagenes-a-video/">importaciones de URL</a>, <a href="../../extraer-recibos-facturas/">cambio opcional y entrega a aplicaciones</a>, <a href="../../compartir-texto/">compartir entre navegadores</a> y <a href="../../remote-camera/">cámara remota</a>, además de anuncios, Analytics y comentarios fijos. Transferir deliberadamente es distinto de subir para procesar.
     </p>
     <p>
-      Todas las herramientas de aquí funcionan así: un
-      <a href="../../comprimir-imagen/">compresor de imágenes</a> que acierta el
-      tamaño que tú digas, un <a href="../../recortar-video/">recortador de
-      vídeo</a>, un <a href="../../eliminar-datos-exif/">visor y eliminador de
-      EXIF</a> para esos datos ocultos de los que hablábamos más arriba,
-      <a href="../../imagenes-a-video/">imágenes a vídeo</a> e
-      <a href="../../imagenes-a-pdf/">imágenes a PDF</a>. Todas gratis, sin cuenta,
-      y ninguna tiene adónde mandar tus archivos.
+      Ejemplos locales: <a href="../../comprimir-imagen/">comprimir hacia un tamaño objetivo</a>, <a href="../../recortar-video/">recortar vídeo</a>, <a href="../../eliminar-datos-exif/">borrar EXIF y GPS</a> y <a href="../../imagenes-a-pdf/">crear PDF con imágenes</a>. Revisa formatos y resultado. Estas tareas no necesitan subir para procesar ni cuenta.
     </p>
 
     <figure class="shot">
       <img src="/screens/is-it-safe-to-upload-files/pledge.webp" loading="lazy" decoding="async"
-           alt="El panel de una página de herramienta: una línea que dice que los archivos nunca salen del navegador, los datos que lo sostienen y una comprobación en vivo que informa de que la página no ha hecho ninguna petición de red.">
-      <figcaption>
-        La última de las cuatro comprobaciones, contestada en la página y no en un párrafo: la cuenta la hace la página sobre sí misma, y puedes hacer la misma cuenta en tu navegador.
-      </figcaption>
+           alt="Panel de privacidad con procesamiento local, referencias al código y resumen en directo de los recursos cargados.">
+      <figcaption>El panel muestra la afirmación y el código que la respalda. Su resumen ayuda a revisar las solicitudes del navegador, pero no inspecciona por sí mismo las cargas.</figcaption>
     </figure>
   </section>

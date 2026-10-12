@@ -1,7 +1,7 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>Am 17. September 2026 gaben wir dieselbe Datei an zwanzig kostenlose Onlinekonverter und maßen jedes Byte, das den Browser verließ. <strong>Neunzehn der zwanzig luden sie hoch.</strong> Einer nicht.</p>
-    <p>Das war ungefähr zu erwarten. Drei Ergebnisse waren weniger offensichtlich: <strong>Elf der neunzehn versendeten die Datei sofort bei der Auswahl</strong>, vor dem Klick auf „Umwandeln“ und jeder Möglichkeit zum Umdenken. <strong>Jede später erneut abgerufene Ergebnisdatei blieb über eine gewöhnliche Webadresse lesbar</strong>, ohne Cookie, Anmeldung oder Sitzung. <strong>Zwei Dienste schrieben den Dateinamen in diese Adresse</strong>.</p>
+    <p>Am 17. September 2026 gaben wir dieselbe Datei an zwanzig kostenlose Onlinekonverter und zeichneten mit den unten beschriebenen Hooks die Größen der Request-Bodys auf. <strong>Neunzehn der zwanzig luden sie hoch.</strong> Einer nicht.</p>
+    <p>Das war ungefähr zu erwarten. Drei Ergebnisse waren weniger offensichtlich: <strong>Dreizehn der neunzehn versendeten die Datei sofort bei der Auswahl</strong>, vor dem Klick auf „Umwandeln“ und jeder Möglichkeit zum Umdenken. <strong>Jede später erneut abgerufene Ergebnisdatei blieb über eine gewöhnliche Webadresse lesbar</strong>, ohne Cookie, Anmeldung oder Sitzung. <strong>Zwei Dienste schrieben den Dateinamen in diese Adresse</strong>.</p>
     <p>Das beweist kein Fehlverhalten. Die meisten Werkzeuge arbeiten seit jeher mit Uploads, ihre Aufbewahrungsfristen sind meist kurz und konkret. Eine für zwei Stunden über eine nicht erratene Adresse verfügbare Datei ist kein Skandal. Gemessen wird etwas Nüchterneres: Der Unterschied zwischen „<em>Die Website verspricht, meine Datei zu löschen</em>“ und „<em>Ich kann nachprüfen, was mit meiner Datei geschah</em>“ ist größer als gedacht und lässt sich an einem Nachmittag untersuchen.</p>
   </section>
 
@@ -10,10 +10,10 @@
     <p>Die Methode ist bewusst unspektakulär und wiederholbar. Es geht um Zahlen, nicht um die Meinung dazu.</p>
 
     <h3>Die Datei</h3>
-    <p>Ein PNG mit 450&nbsp;&times;&nbsp;350 zufälligen Pixeln, etwa 542&nbsp;KB groß, namens <code>abox-probe-9471.png</code>. Zufallsrauschen lässt sich nicht komprimieren. Seine Größe bleibt unterwegs gleich und macht eine entsprechende Anfrage deutlich erkennbar. Der besondere Dateiname hilft, die Datei später in URLs zu finden, was tatsächlich relevant wurde.</p>
+    <p>Ein PNG mit &#x2066;450 x 350&#x2069; zufälligen Pixeln, etwa 542&nbsp;KB groß, namens <code>abox-probe-9471.png</code>. Zufälliges Rauschen ist schwer zu komprimieren. Eine ähnlich große Nutzlast ist ein Hinweis; was gesendet wurde, lässt sich aber erst durch Prüfung des Request-Bodys feststellen. Der auffällige Dateiname machte die Datei später in URLs auffindbar.</p>
 
     <h3>Die Messung</h3>
-    <p>Vor der Dateiauswahl wurden alle Möglichkeiten zum Versenden von Bytes durch Varianten ersetzt, die zunächst die übergebene Größe protokollieren und dann normal arbeiten: <code>fetch</code>, <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>, <code>WebSocket.send</code> und besonders <code>HTMLFormElement.submit</code>. Danach wurde die Datei in das Dateifeld der Seite gesetzt, zehn Sekunden gewartet und das Protokoll gelesen.</p>
+    <p>Vor der Übergabe der Datei wurden diese Request-APIs instrumentiert: Sie zeichneten die Größe der übergebenen Daten auf und führten dann ihre normale Funktion aus. Das waren <code>fetch</code>, <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>, <code>WebSocket.send</code> und, besonders wichtig, <code>HTMLFormElement.submit</code>. Danach wurde die Datei in die Dateiauswahl der Seite gelegt, zehn Sekunden gewartet und die Aufzeichnung ausgelesen.</p>
     <p>Die Formularüberwachung ist entscheidend. Mehrere Dienste versenden über gewöhnliche HTML-Formulare statt Skripte. Das sehen die zuerst verwendeten Überwachungen für <code>fetch</code> und <code>XMLHttpRequest</code> nicht. PicResize zeigt währenddessen das Bild lokal über <code>blob:</code> an. Das wirkt wie lokale Verarbeitung, bis die Formularübertragung erfasst wird.</p>
 
     <h3>Die anschließende Prüfung</h3>
@@ -23,7 +23,7 @@
 
   <section>
     <h2>Die Tabelle</h2>
-    <p>Alle Bytezahlen wurden am 17. September 2026 tatsächlich übertragen und gemessen. Die letzte Spalte fasst die am selben Tag veröffentlichte Aufbewahrungsrichtlinie des jeweiligen Dienstes zusammen.</p>
+    <p>Die Bytezahlen sind die am 17. September 2026 berichteten Größen der Request-Bodys; fehlende Werte bleiben fehlend. Die letzte Spalte bewahrt die damals berichteten Richtlinienzusammenfassungen. Ihre Links führen zu aktuellen Referenzseiten, geprüft am 12. Oktober 2026, nicht zu archivierten Belegen des damaligen Wortlauts.</p>
 
     <figure class="data">
       <div class="scroll">
@@ -38,25 +38,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>Squoosh</td><td>Nein</td><td>0</td><td>&mdash;</td><td>nichts aufzubewahren</td></tr>
-            <tr><td>TinyPNG</td><td>Ja, bei der Auswahl</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 Stunden</td></tr>
-            <tr><td>iLoveIMG</td><td>Ja, bei der Auswahl</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 Stunden</td></tr>
-            <tr><td>iLovePDF</td><td>Ja, bei der Auswahl</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 Stunden</td></tr>
-            <tr><td>Sejda</td><td>Ja, bei der Auswahl</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>nach der Verarbeitung; geteilte Links 7 Tage</td></tr>
-            <tr><td>PDF24</td><td>Ja, bei der Auswahl</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>„normalerweise“ 1 Stunde</td></tr>
-            <tr><td>PDF Candy</td><td>Ja, bei der Auswahl</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 Stunden</td></tr>
-            <tr><td>jpg2pdf.com</td><td>Ja, bei der Auswahl</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 Stunde laut Nutzungsbedingungen</td></tr>
-            <tr><td>Img2Go</td><td>Ja, bei der Auswahl</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</td></tr>
-            <tr><td>Online-Convert</td><td>Ja, bei der Auswahl</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</td></tr>
-            <tr><td>PDF2Go</td><td>Ja, bei der Auswahl</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</td></tr>
-            <tr><td>Compress2Go</td><td>Ja, bei der Auswahl</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</td></tr>
-            <tr><td>PicResize</td><td>Ja, bei der Auswahl</td><td>542,568</td><td><code>picresize.com/en/edit</code>, Formularübertragung</td><td>20 Minuten</td></tr>
-            <tr><td>ResizePixel</td><td>Ja, bei der Auswahl</td><td>Formularübertragung</td><td><code>resizepixel.com/</code></td><td>innerhalb 1 Stunde</td></tr>
-            <tr><td>CloudConvert</td><td>Ja, beim Umwandeln</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 Stunden</td></tr>
-            <tr><td>Convertio</td><td>Ja, beim Umwandeln</td><td>nicht erfasst</td><td><code>convertio.co/process/&hellip;</code></td><td>24 Stunden</td></tr>
-            <tr><td>Ezgif</td><td>Ja, beim Umwandeln</td><td>542,483</td><td><code>ezgif.com/optimize</code>, Formularübertragung</td><td>1 Stunde nach der letzten Nutzung</td></tr>
-            <tr><td>Aconvert</td><td>Ja, beim Umwandeln</td><td>Formularübertragung</td><td><code>aconvert.com/results.php</code></td><td>2 Stunden</td></tr>
-            <tr><td>Online2PDF</td><td>Ja, beim Umwandeln</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>„sofort“</td></tr>
+            <tr><td>Squoosh</td><td><a href="https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md" target="_blank" rel="noopener noreferrer">Nein</td><td>0</td><td>&mdash;</td><td>nichts aufzubewahren</a></td></tr>
+            <tr><td>TinyPNG</td><td><a href="https://tinypng.com/terms" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 Stunden</a></td></tr>
+            <tr><td>iLoveIMG</td><td><a href="https://www.iloveimg.com/help/terms" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 Stunden</a></td></tr>
+            <tr><td>iLovePDF</td><td><a href="https://www.ilovepdf.com/help/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 Stunden</a></td></tr>
+            <tr><td>Sejda</td><td><a href="https://www.sejda.com/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>nach der Verarbeitung; geteilte Links 7 Tage</a></td></tr>
+            <tr><td>PDF24</td><td><a href="https://www.pdf24.org/en/privacy-policy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>„normalerweise“ 1 Stunde</a></td></tr>
+            <tr><td>PDF Candy</td><td><a href="https://pdfcandy.com/help.html" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 Stunden</a></td></tr>
+            <tr><td>jpg2pdf.com</td><td><a href="https://jpg2pdf.com/terms" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 Stunde laut Nutzungsbedingungen</a></td></tr>
+            <tr><td>Img2Go</td><td><a href="https://www.img2go.com/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</a></td></tr>
+            <tr><td>Online-Convert</td><td><a href="https://www.online-convert.com/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</a></td></tr>
+            <tr><td>PDF2Go</td><td><a href="https://www.pdf2go.com/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</a></td></tr>
+            <tr><td>Compress2Go</td><td><a href="https://www.compress2go.com/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 Stunden</a></td></tr>
+            <tr><td>PicResize</td><td><a href="https://picresize.com/en/privacypolicy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>542,568</td><td><code>picresize.com/en/edit</code>, Formularübertragung</td><td>20 Minuten</a></td></tr>
+            <tr><td>ResizePixel</td><td><a href="https://www.resizepixel.com/en/privacy" target="_blank" rel="noopener noreferrer">Ja, bei der Auswahl</td><td>Formularübertragung</td><td><code>resizepixel.com/</code></td><td>innerhalb 1 Stunde</a></td></tr>
+            <tr><td>CloudConvert</td><td><a href="https://cloudconvert.com/privacy" target="_blank" rel="noopener noreferrer">Ja, beim Umwandeln</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 Stunden</a></td></tr>
+            <tr><td>Convertio</td><td><a href="https://convertio.co/privacy/" target="_blank" rel="noopener noreferrer">Ja, beim Umwandeln</td><td>nicht erfasst</td><td><code>convertio.co/process/&hellip;</code></td><td>24 Stunden</a></td></tr>
+            <tr><td>Ezgif</td><td><a href="https://ezgif.com/privacy" target="_blank" rel="noopener noreferrer">Ja, beim Umwandeln</td><td>542,483</td><td><code>ezgif.com/optimize</code>, Formularübertragung</td><td>1 Stunde nach der letzten Nutzung</a></td></tr>
+            <tr><td>Aconvert</td><td><a href="https://www.aconvert.com/privacy.html" target="_blank" rel="noopener noreferrer">Ja, beim Umwandeln</td><td>Formularübertragung</td><td><code>aconvert.com/results.php</code></td><td>2 Stunden</a></td></tr>
+            <tr><td>Online2PDF</td><td><a href="https://online2pdf.com/privacy" target="_blank" rel="noopener noreferrer">Ja, beim Umwandeln</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>„sofort“</a></td></tr>
             <tr><td>IMGonline</td><td>Ja, beim Umwandeln</td><td>542,633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>keine Richtlinie gefunden</td></tr>
           </tbody>
         </table>
@@ -66,11 +66,19 @@
   </section>
 
   <section>
-    <h2>Elf versenden vor jedem weiteren Klick</h2>
-    <p>Dieses deutliche Verhältnis überraschte uns. Bei elf der neunzehn war die Datei schon zum Server unterwegs, während „Umwandeln“ noch unberührt auf der Seite stand.</p>
+    <h2>Beobachtungen und ihre Grenzen</h2>
+    <p>Die veröffentlichte Tabelle ist als <a href="/data/converter-observations-2026-09-17.json">JSON mit Herkunft und Einschränkungen</a> und als <a href="/data/converter-observations-2026-09-17.csv">CSV-Zeilen</a> verfügbar. Diese Dateien übertragen den Artikel, sie sind kein neuer Test. Die Tabelle zählt dreizehn Uploads bei der Auswahl und korrigiert damit die zuvor im Text genannten elf.</p>
+    <p>Die ursprünglichen Request-Logs, Browserversion, genaue Zufallsdatei und historischen Richtlinienkopien wurden nicht mit dem Artikel aufbewahrt. Die Zahlen sind deshalb berichtete Beobachtungen, kein anhand von Rohdaten unabhängig prüfbarer Datensatz. Die Hooks erfassen nicht jeden Übertragungsweg: Formularnavigation, andere Frames, Worker und WebRTC brauchen eigene Prüfungen. Eine Null bedeutet, dass dieser Test keinen Upload aufzeichnete, nicht dass keine Übertragung möglich ist.</p>
+    <p>Erstellen Sie für eine Wiederholung eine neue synthetische Datei, halten Sie ihre genaue Bytezahl und SHA-256 fest und verwenden Sie ein neues Browserprofil. Speichern Sie eine Netzwerkaufzeichnung mit Request-Bodys und erhaltenen Navigationen; prüfen Sie Auswahl und Umwandlung getrennt. Notieren Sie Browserversion, URL, Zeit, Aktion, Ziel, Bodygröße und ob der Body die Testdatei enthält. Entfernen Sie Zugangsdaten und private Ergebnislinks vor der Weitergabe. Bewahren Sie Richtlinientext, URL und Datum auf und führen Sie unvollständige Tests separat.</p>
+    <p>Ein Datei-URL, der ohne Sitzung ein Ergebnis liefert, belegt den Zugriff für jemanden mit diesem URL zum Prüfzeitpunkt. Prüfen Sie nach Ablauf der angegebenen Aufbewahrungsfrist erneut, bevor Sie eine fehlgeschlagene Löschung behaupten. Weder dieser Abruf noch eine Netzwerkaufzeichnung belegt, was in internen Logs oder Sicherungen verbleibt.</p>
+  </section>
+
+  <section>
+    <h2>Dreizehn versenden vor jedem weiteren Klick</h2>
+    <p>Dieses deutliche Verhältnis überraschte uns. Bei dreizehn der neunzehn war die Datei schon zum Server unterwegs, während „Umwandeln“ noch unberührt auf der Seite stand.</p>
     <p>iLoveIMG zeigte weiterhin <em>Compress IMAGES</em> und wartete auf den Start, obwohl 542,816 Bytes bereits an <code>api9.iloveimg.com</code> gegangen waren. Dasselbe geschah bei iLovePDF, PDF24, PDF Candy, Sejda, TinyPNG, jpg2pdf und den vier unten beschriebenen Plattform-Websites.</p>
-    <p>Dafür gibt es einen guten technischen Grund: Ein Upload während der Einstellungswahl lässt die Umwandlung nach dem Start sofort erscheinen. Diese Verbesserung entfernt jedoch unbemerkt einen Schritt, den viele Menschen erwarten. Dateiauswahl fühlt sich wie Öffnen an, „Umwandeln“ wie Versenden. Bei elf von zwanzig Diensten ist beides derselbe frühere Moment.</p>
-    <p>Die konkrete Folge: Bei diesen elf bemerken Sie eine falsch gewählte Datei &mdash; einen ungeschwärzten Entwurf, eine Gehaltsabrechnung oder ein noch zuzuschneidendes Foto &mdash; erst nach dem Versand.</p>
+    <p>Dafür gibt es einen guten technischen Grund: Ein Upload während der Einstellungswahl lässt die Umwandlung nach dem Start sofort erscheinen. Diese Verbesserung entfernt jedoch unbemerkt einen Schritt, den viele Menschen erwarten. Dateiauswahl fühlt sich wie Öffnen an, „Umwandeln“ wie Versenden. Bei dreizehn von zwanzig Diensten ist beides derselbe frühere Moment.</p>
+    <p>Die konkrete Folge: Bei diesen dreizehn bemerken Sie eine falsch gewählte Datei &mdash; einen ungeschwärzten Entwurf, eine Gehaltsabrechnung oder ein noch zuzuschneidendes Foto &mdash; erst nach dem Versand.</p>
   </section>
 
   <section>
@@ -82,7 +90,7 @@
       <li><strong>ResizePixel</strong>: <code>resizepixel.com/Image/&hellip;</code> lieferte 432,111 Bytes.</li>
       <li><strong>IMGonline</strong>: <code>srv2.imgonline.com.ua/result_img/&hellip;</code> lieferte ein JPEG von 128,179 Bytes.</li>
     </ul>
-    <p>Das ist gewöhnliche Webtechnik, kein Einbruch. Die Adressen enthalten lange zufällige Bestandteile und sind praktisch nicht erratbar. Dennoch sollte die Schutzwirkung präzise benannt werden: weder Passwort noch Konto, sondern <strong>die Geheimhaltung einer URL</strong>. URLs sind wenig geheim. Sie landen im Browserverlauf, auf Bildschirmfotos der Adressleiste, in <code>Referer</code>-Kopfzeilen, in zwischengeschalteten Proxys oder in Chatnachrichten mit dem Link statt der Datei.</p>
+    <p>Die geprüften Adressen enthielten schwer zu erratende Bestandteile. Wer eine davon kannte, konnte das Ergebnis zum Prüfzeitpunkt abrufen. Links können über Browserverlauf, Screenshots oder Nachrichten und, soweit die Seitenrichtlinie es erlaubt, über Referrer weitergegeben werden. HTTPS verbirgt den Pfad vor gewöhnlichen Netzwerkzwischenstellen; die Referrer-Richtlinie bestimmt, was eine spätere Website erhält. Die Beobachtung betrifft diese vier Links, nicht jede Downloadmethode eines Konverters.</p>
     <p>Aconvert erklärt auf der Ergebnisseite ausdrücklich, dass Dateien höchstens zwei Stunden bleiben und nicht von anderen Websites verlinkt werden sollen. Das ist der passende Hinweis am richtigen Ort und Zeitpunkt. Von diesen vier Diensten gibt ihn nur Aconvert.</p>
   </section>
 
@@ -107,13 +115,13 @@
     <h2>Was die Richtlinien sagen und wie viel das beweist</h2>
     <p>Die Aufbewahrungsversprechen sind meist kurz, konkret und besser als der Ruf dieser Branche. Sie reichen von sofortiger Löschung nach der Umwandlung bei Online2PDF und zwanzig Minuten bei PicResize über zwei Stunden bei iLovePDF, iLoveIMG, PDF Candy und Aconvert bis zu 72 Stunden bei der vierteiligen Plattform.</p>
     <p>Zwei fallen anders auf. <strong>jpg2pdf.com</strong> hat keine Datenschutzerklärung an der üblichen Adresse. Der einzige rechtliche Link auf der Startseite führt zu <code>/terms</code>. Dort steht unter „Terms and Privacy“ die Frist von einer Stunde. Ein ordentliches Versprechen an ungewohntem Ort. Bei <strong>IMGonline</strong> fanden wir gar keine Datenschutzerklärung: keinen Link auf der englischen Startseite, nichts an zwei üblichen Adressen und keine Angaben zu Speicherung oder Löschung auf der Werkzeugseite. Seine Ergebnisse sind dennoch wie oben beschrieben für jeden mit dem Link abrufbar.</p>
-    <p>Die Stundenzahl ist nicht der wichtigste Punkt. <strong>Keines dieser Versprechen lässt sich von außen überprüfen.</strong> Sie sehen weder die Löschung noch ihre Wirkung auf Sicherungen, Protokolle, Fehlerberichte mit Anfrageinhalt oder das Inhaltsnetzwerk, das den Download zwischenspeichert. Auch nach Verkauf oder Sicherheitsvorfall bleibt das weitere Geschehen unsichtbar. Eine Aufbewahrungsrichtlinie ist die Absichtserklärung unbekannter Menschen über einen fremden Rechner. Ehrliche und unehrliche Fassungen verwenden dieselben Wörter.</p>
+<p>Die Stundenzahl ist nicht die ganze Frage. <strong>Liefert ein öffentlicher Ergebnislink die Datei nach Ablauf der genannten Frist weiterhin, kann das eine versäumte Löschung zeigen.</strong> Ein abgelaufener Link beweist aber nicht, dass jede interne Kopie entfernt wurde. Sie sehen nicht, ob Sicherungen, Protokolle, Fehlerberichte mit dem Request-Body oder das zwischenspeichernde Inhaltsnetzwerk ebenfalls gelöscht wurden. Auch nach Verkauf oder Sicherheitsvorfall bleibt der Verbleib interner Kopien unsichtbar. Eine Aufbewahrungsrichtlinie beschreibt Absichten über Systeme, die Sie nicht prüfen können; ehrliche und unehrliche Versprechen können dieselben Wörter verwenden.</p>
     <p>Deshalb ist ein Werkzeug sinnvoll, das die Datei gar nicht versenden kann. Es geht nicht um den Vorwurf, diese Unternehmen lügen. Ohne Upload gibt es in diesem Punkt nichts zu verheimlichen und kein Versprechen, auf das Sie angewiesen sind.</p>
   </section>
 
   <section>
     <h2>Der Konverter ohne Upload</h2>
-    <p>Squoosh, Googles Bildkompressor, nahm die Datei an, zeigte und komprimierte sie und stellte <strong>gar keine Netzwerkanfrage</strong>. Keine kleinere und keine gehashte: null Bytes, gemessen mit derselben Methode, die kurz davor bei TinyPNG 542,566 Bytes erfasste.</p>
+    <p>Squoosh, Googles Bildkompressor, nahm die Datei an, zeigte und komprimierte sie. <strong>Dieser Test zeichnete keinen Datei-Upload auf.</strong> Es wurden null Upload-Bytes berichtet, mit derselben Messung, die eine Minute vorher 542,566 versendete Bytes bei TinyPNG erfasste.</p>
     <p>Dieser Eintrag ist die Kontrollprobe. Er zeigt, dass die Messung negativ ausfallen kann. Die neunzehn positiven Ergebnisse sind also kein unvermeidliches Artefakt der Methode. Er zeigt außerdem, dass dieselbe Aufgabe mit denselben Formaten im Browser ohne Server möglich ist. Die Annahme, Umwandlung müsse wegen ihrer Schwierigkeit einen Upload benötigen, stimmt hier nicht.</p>
     <p>Viele Dienste laden Dateien hoch, weil sie so entwickelt wurden, als es nötig war, und weil Server Konten, Kontingente und Bezahltarife verwalten. Eine vollständig lokale Verarbeitung lässt sich schwer abrechnen.</p>
   </section>
@@ -127,10 +135,10 @@
 
   <section>
     <h2>Prüfen Sie die Ergebnisse selbst</h2>
-    <p>Sie müssen uns nicht glauben. Die veröffentlichte Methode erlaubt auch Menschen, die uns widersprechen, eine erneute Messung. Die schnellste Variante braucht keine besonderen Werkzeuge:</p>
+    <p>Die ursprünglichen Aufzeichnungen sind nicht verfügbar. Die historische Tabelle lässt sich daher nicht anhand der Rohrequests prüfen. Die Methode oben ermöglicht einen neuen Vergleich. Die schnellste Variante braucht keine besonderen Werkzeuge:</p>
     <ul>
       <li><strong>Trennen Sie die Verbindung.</strong> Laden Sie das Werkzeug, schalten Sie WLAN aus und verwenden Sie es. Lokale Verarbeitung läuft weiter, Serververarbeitung stoppt. Keine Formulierung kann diesen Test ersetzen.</li>
-      <li><strong>Beobachten Sie den Netzwerk-Tab.</strong> Öffnen Sie die Entwicklertools, wählen Sie Netzwerk und sortieren Sie nach Größe. Wird Ihr Foto von 4&nbsp;MB verschickt, erscheint eine entsprechende Anfrage oben. Prüfen Sie auch <em>vor</em> „Umwandeln“, nicht nur danach. Genau das ist das Ergebnis des früheren Abschnitts.</li>
+      <li><strong>Netzwerk-Tab beobachten.</strong> Öffnen Sie die Entwicklerwerkzeuge, wählen Sie Netzwerk, sortieren Sie nach Größe und benutzen Sie das Werkzeug. Prüfen Sie die Request-Nutzlasten, nicht nur die Spalte der übertragenen Größe, die häufig Antworten beschreibt. Vorschaubilder, Teiluploads und kodierte Dateien können anders groß sein. Sehen Sie auch <em>vor</em> dem Klick auf Umwandeln hin.</li>
       <li><strong>Lesen Sie <code>connect-src</code>.</strong> Die <code>Content-Security-Policy</code> im Seitenquelltext listet erlaubte Kontaktadressen. Der Browser erzwingt sie unabhängig vom Code. Steht dort eine Adresse dieser Website, kann die Seite Ihre Datei dorthin schicken.</li>
     </ul>
     <p>Die ausführliche Erklärung dieser drei Prüfungen und einer sinnvollen vierten steht in <a href="../../ratgeber/ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien an Onlinekonverter hochzuladen?</a></p>
@@ -138,19 +146,33 @@
 
   <section>
     <h2>Wie diese Website dieselbe Frage beantwortet</h2>
-    <p>Nach der Messung anderer Dienste wäre eine Ausnahme für uns selbst merkwürdig. Deshalb beantworten wir dieselben Tabellenspalten:</p>
+    <p>
+      Der Quelltext dieser Seite ist eine andere Belegart als die historischen Messungen oben. Die aktuelle Umsetzung macht folgende Aussagen; prüfen Sie die verwendete Funktion mit den <a href="../ist-das-hochladen-von-dateien-sicher/">vier Prüfungen</a>.
+    </p>
     <ul>
-      <li><strong>Versendete Bytes: null.</strong> Jedes Werkzeug arbeitet im Browser. Keine Anfrage enthält Ihre Datei, ihre Vorschau, Namen, Größe oder ausgelesene Informationen.</li>
-      <li><strong>Ziel: keines.</strong> Es gibt keinen empfangenden Server. Diese Website besteht aus statischen Dateien. Ihre Content-Security-Policy erlaubt in <code>connect-src</code> Googles Werbung und Messung sowie die Spendenschaltfläche. <strong>Keine dieser Adressen gehört zu dieser Website</strong>.</li>
-      <li><strong>Aufbewahrung: nicht anwendbar.</strong> Das ist die passende Antwort auf diese Spalte. Weil nichts ankommt, müssen Sie keiner Löschfrist vertrauen.</li>
-      <li><strong>Prüfbar: ja.</strong> Jede Zeile ist <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">öffentlich</a>. Der Build entfernt Kommentare und Leerraum, sonst nichts. Sie können ihn selbst ausführen und das Ergebnis mit der ausgelieferten Seite vergleichen.</li>
+      <li>
+        <strong>Offline.</strong> Lokale Verarbeitung funktioniert mit geladenen Ressourcen und fertigem Cache. Bild-URLs, Onlinekurse und Browser-Vermittlung benötigen Verbindungen.
+      </li>
+      <li>
+        <strong>Anfragen.</strong> Verarbeitungscode lädt ausgewählte Dateien nicht hoch. Seitenaufrufe und freiwillige feste Feedback-Antworten sind andere Anfragen. Kursabfragen enthalten Währungspaar und Datum; bewusste Peer-Funktionen senden Inhalte an den gewählten Browser. <strong>Richtlinie.</strong> Die meisten Werkzeuge übernehmen Plattformziele. Belege ergänzen Frankfurter, Teilen und Kamera die Vermittlung. Die Richtlinie begrenzt Ziele und beweist keine Nutzdaten.
+      </li>
+      <li>
+        <strong>Aufbewahrung.</strong> abox.tools empfängt keine Dateien zur Verarbeitung und hat dafür keine Serverkopie zu löschen. Lokale Browserdaten, siebentägige Vermittlungsprotokolle und von Teilen- oder E-Mail-Empfängern behaltene Inhalte sind andere, auf der Datenschutzseite erklärte Wege.
+      </li>
+      <li>
+        <strong>Quelltext.</strong> Der <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">Quelltext ist öffentlich</a>. Bauen und vergleichen Sie die Ausgabe. Gemeinsame Module und mitgelieferte Engines sind ebenfalls lesbar.
+      </li>
     </ul>
-    <p>Die ausdrücklich genannten Ausnahmen: Werbung und Besucherzählung kontaktieren Google, erhalten aber keine Dateiinformationen. <a href="../../bilder-in-video-umwandeln/">Bilder zu Video</a> kann Bilder von eingegebenen Adressen abrufen, deren Server dabei Ihre IP sehen. <a href="../../text-teilen/">Text teilen</a> öffnet eine Verbindung allein zur Vermittlung zweier Browser. Sie speichert nichts und überträgt keinen Inhalt. Die <a href="../../datenschutz/">Datenschutzseite</a> erklärt alle drei Fälle vollständig.</p>
-    <p>Entsprechende Werkzeuge hier sind ein <a href="../../bild-komprimieren/">Bildkompressor</a> mit gewählter Zielgröße, <a href="../../bilder-in-pdf-umwandeln/">Bilder zu PDF</a>, <a href="../../pdf-zusammenfuegen/">PDF zusammenführen</a>, ein <a href="../../pdf-verkleinern/">PDF-Kompressor</a> und ein <a href="../../exif-daten-entfernen/">EXIF-Betrachter und Entferner</a> für die beschriebenen versteckten Daten. Alle sind kostenlos, brauchen kein Konto und können Ihre Dateien nirgends versenden.</p>
+    <p>
+      Die <a href="../../datenschutz/">Datenschutzseite</a> erklärt die Grenzen: <a href="../../bilder-in-video-umwandeln/">Bild-URL-Import</a>, optionale <a href="../../belege-rechnungen-auslesen/">Belegkurse und App-Übergabe</a>, <a href="../../text-teilen/">Teilen zwischen Browsern</a> und <a href="../../remote-camera/">Remote-Kamera</a>, dazu Werbung, Analytics und festes Feedback. Bewusstes Übertragen ist von einem Verarbeitungsupload zu unterscheiden.
+    </p>
+    <p>
+      Lokale Beispiele sind <a href="../../bild-komprimieren/">Komprimieren auf eine Zielgröße hin</a>, <a href="../../video-zuschneiden/">Videos zuschneiden</a>, <a href="../../exif-daten-entfernen/">EXIF und GPS entfernen</a> und <a href="../../bilder-in-pdf-umwandeln/">Bilder zu PDF</a>. Prüfen Sie Formatunterstützung und Ergebnis. Diese Aufgaben brauchen weder Verarbeitungsupload noch Konto.
+    </p>
   </section>
 
   <section>
     <h2>Diese Zahlen verwenden</h2>
-    <p>Sie dürfen die Messungen zitieren und wiederholen. Die wesentlichen Angaben sind: zwanzig kostenlose Onlinekonverter, gemessen am 17. September 2026; neunzehn luden die Datei hoch; elf davon vor dem Klick auf „Umwandeln“; vier von vier geprüften Ergebnisdateien waren ohne Sitzung über öffentliche Adressen abrufbar.</p>
+    <p>Sie dürfen die Messungen zitieren und wiederholen. Die wesentlichen Angaben sind: zwanzig kostenlose Onlinekonverter, gemessen am 17. September 2026; neunzehn luden die Datei hoch; dreizehn davon vor dem Klick auf „Umwandeln“; vier von vier geprüften Ergebnisdateien waren ohne Sitzung über öffentliche Adressen abrufbar.</p>
     <p>Ein Link zu dieser Seite ist willkommen, aber nicht erforderlich. Liefert eine Wiederholung andere Ergebnisse, hören wir das gern. Websites ändern sich; dies ist die Aufnahme eines Nachmittags. Über die <a href="../../kontakt/">Kontaktseite</a> erreichen Sie uns. Korrekturen mit Bytezahlen werden hier veröffentlicht.</p>
   </section>

@@ -74,15 +74,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Eine Liste von Menschen ist keine Kleinigkeit, die man weggibt."
-body = """
- Die
-      meisten Größendiagramme wollen ein Konto, und die anderen haben immer noch
-      einen Server, der jeden Namen und jede Zahl sieht, die Sie eintippen. Was
-      Sie hier eintippen, ist, wer zu Ihrer Familie gehört und wie groß jeder
-      davon ist, oft mit dem Alter eines Kindes, das die Figur daneben verrät.
-      Nichts davon wird irgendwohin geschickt, denn es gibt hier nichts, wohin es
-      gehen könnte."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -337,19 +330,7 @@ a = """
 
 [[faq]]
 q = "Warum gibt es kein Kleinkind und kein Baby?"
-a = """
-        Weil niemand eines gezeichnet und gemeinfrei gestellt hat. Wikimedia
-        Commons hat genau ein brauchbares freies Kind &mdash; das Mädchen &mdash;
-        und die NIH-BioArt-Bibliothek den Jungen; unterhalb des Schulalters kommt
-        die Suche leer zurück, und jeder in sich stimmige freie Satz von Menschen
-        ist ein Toiletten-Piktogramm, in jedem Alter dieselbe Form, also genau
-        der Fehler, den dieses Werkzeug vermeiden soll. Eine Weile lang gab es
-        ein Kleinkind, das der Code dieser Seite selbst zeichnete, und es war die
-        einzige Figur auf dem Diagramm, die niemand gezeichnet hatte: Man sah es
-        ihr an, neben vier anderen, die jemand gezeichnet hatte. Für jemanden,
-        der kleiner ist als der Junge oder das Mädchen, stellen Sie eines von
-        beiden auf die echte Größe &mdash; getragen wird der Vergleich vom
-        Maßstab, und der stimmt dann."""
+a = "Wir fanden keine Kleinkind- oder Babyzeichnung, die den Gemeinfreiheits- und Zeichenanforderungen dieses Werkzeugs entsprach. Die mitgelieferten Kinder sind ein Junge und ein Mädchen, kein vollständiger Katalog von Kinderzeichnungen. Für ein jüngeres Kind die gemessene Größe einstellen oder ein geeignetes eigenes Bild hinzufügen; der Maßstab trägt den Messwert."
 
 [[faq]]
 q = "Wie viele Menschen passen auf ein Diagramm?"

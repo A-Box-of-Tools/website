@@ -1,16 +1,16 @@
 name = "Desbloquear PDF"
 heading = "Desbloquear&nbsp;PDF <span class=\"h1-kw\">&mdash; elimina la contraseña y las restricciones</span>"
-tagline = "Muchos PDF protegidos no necesitan contraseña. Aquí ves qué protección tiene el tuyo antes de cambiarlo."
+tagline = "Las restricciones de permisos y las contraseñas de apertura son distintas. La página distingue las de tu PDF."
 title = "Desbloquear un PDF &mdash; quitar contraseña y restricciones gratis, sin subirlo"
-description = "Quita la contraseña y las restricciones de impresión, copia y edición de un PDF en el navegador. Indica si necesita contraseña; no la adivina ni sube el archivo."
+description = "Elimina restricciones de permisos del PDF localmente o la contraseña de apertura que proporciones. La página identifica la protección antes de pedir una contraseña. Nada se sube ni se adivinan contraseñas."
 og_title = "Desbloquea un PDF sin subirlo a ninguna parte"
-og_description = "Muchos PDF protegidos se abren sin contraseña y solo piden a los lectores que no permitan imprimir o copiar. Elimina esas restricciones en el navegador y conoce qué protección tenían."
+og_description = "Elimina restricciones de permisos del PDF localmente o la contraseña de apertura que proporciones. La página identifica la protección antes de pedir una contraseña. Nada se sube ni se adivinan contraseñas."
 og_image_alt = "Desbloquear un PDF en el navegador sin subirlo"
 pledge = "El documento se abre, descifra y escribe en la memoria del dispositivo con código servido desde esta página. No hay funciones de subida ni un servidor que lo reciba. Ni el archivo ni la contraseña salen de esta pestaña."
 live_hint = "Abre las herramientas de desarrollo, mira Red y desbloquea un archivo. Ninguna petición lleva un documento, una contraseña ni un nombre. O desconéctate y hazlo igualmente."
 read_first = ", <code>src/shared/pdf-crypt.js</code> para convertir la contraseña en la clave del documento, sin un bucle que pruebe contraseñas, y <code>src/shared/aes.js</code> y <code>src/shared/rc4.js</code> para los algoritmos de cifrado. Ninguno accede a la red, ni el lector y el escritor."
 howto_heading = "Cómo quitar la contraseña o las restricciones de un PDF"
-card = "Quita la contraseña y las restricciones de impresión, copia y edición. Muchos PDF protegidos ya se abren para cualquiera sin contraseña. Aquí ves qué protección tienen, su alcance y cómo retirarla localmente."
+card = "Elimina restricciones de permisos del PDF localmente o la contraseña de apertura que proporciones. La página identifica la protección antes de pedir una contraseña. Nada se sube ni se adivinan contraseñas."
 
 [words]
 plural = "documentos"
@@ -33,7 +33,7 @@ text = "Código abierto"
 text = "Los archivos no salen de tu dispositivo"
 
 [[privacy]]
-title = "Las restricciones no equivalen a una contraseña de apertura."
+title = "La página distingue permisos de contraseña de apertura."
 body = "Un PDF puede tener una <em>contraseña de apertura</em>: sin ella no se lee y esta herramienta no la busca. Las <em>restricciones</em> de impresión, copia o edición son distintas. Si el archivo se abre para cualquiera, contiene lo necesario para obtener su clave. Los permisos son un campo que los lectores respetan por acuerdo, como documenta Adobe. Esta página distingue ambos casos y solo pide contraseña cuando realmente hace falta."
 
 [[privacy]]
@@ -78,7 +78,7 @@ body = "Desconéctate y la página sigue funcionando. Una herramienta que enviar
 
 [[howto]]
 title = "Elige el PDF."
-body = "Un documento cada vez. El navegador lo lee del disco y prueba primero la contraseña vacía, que abre los PDF que solo tienen restricciones."
+body = "Elige un documento. El navegador lo lee del disco y primero prueba una contraseña vacía. Así abre archivos con permisos restringidos que no exigen contraseña para leerlos."
 
 [[howto]]
 title = "Lee lo que encontró."
@@ -94,15 +94,15 @@ body = "El documento se descifra con su clave y se escribe sin diccionario de ci
 
 [[faq]]
 q = "¿Necesito la contraseña?"
-a = "A menudo no. Muchos extractos, recibos e informes protegidos se abren para cualquiera y solo tienen restricciones de uso. Estas se retiran sin contraseña. Si el archivo realmente pide una contraseña para abrirse, sí debes conocerla. La página distingue los dos casos al elegirlo."
+a = "Depende de la protección. Si el PDF abre sin contraseña pero limita imprimir o copiar, puedes quitar esos permisos aquí sin contraseña. Si exige una contraseña de apertura, proporciona la de usuario o propietario. La página prueba primero una contraseña vacía y explica el caso encontrado."
 
 [[faq]]
 q = "¿Abre un PDF si no conozco su contraseña?"
-a = "No lo intenta. No hay diccionario ni búsqueda por fuerza bruta; puedes comprobarlo en <code>src/shared/pdf-crypt.js</code>. Ni siquiera busca las claves antiguas de 40 bits, aunque sean débiles. Si perdiste la contraseña de apertura, esta herramienta no puede recuperarla."
+a = "No. Esta herramienta no adivina contraseñas ni busca claves. <code>src/shared/pdf-crypt.js</code> muestra cómo usa la contraseña proporcionada. Otras herramientas pueden adivinar contraseñas débiles o atacar cifrados obsoletos, sin garantía de éxito; esta página no hace ninguna de esas cosas. Pide al remitente una contraseña válida o una copia accesible."
 
 [[faq]]
 q = "¿Qué diferencia hay entre las dos contraseñas?"
-a = "La contraseña de <em>usuario</em> permite abrir el archivo. La de <em>propietario</em> retira las restricciones de impresión, copia y edición. Es habitual tener contraseña de propietario y ninguna de usuario: el PDF se abre, pero el lector no deja imprimir. Aquí se acepta cualquiera de las dos y se indica cuál funcionó."
+a = "Un PDF puede tener dos contraseñas. La de <em>usuario</em> lo abre; la de <em>propietario</em> concede todos los permisos. Puede tener contraseña de propietario y una de usuario vacía: abre libremente, pero el lector impone restricciones de impresión o copia. Esta herramienta acepta cualquiera de las proporcionadas y explica lo encontrado."
 
 [[faq]]
 q = "¿Es legal quitar las restricciones?"

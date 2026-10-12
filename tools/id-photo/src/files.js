@@ -36,9 +36,11 @@ export function docSize(spec, t) {
     })
     : null;
   const pixels = portalPixels(spec);
-  const upload = pixels
+  const rawUpload = pixels
     ? t(SIZE_KEYS.upload, { width: pixels.width, height: pixels.height })
     : null;
+  const upload = rawUpload && spec.digital.advisory
+    ? t('band.guidance', { band: rawUpload }) : rawUpload;
   if (print && upload) return t(SIZE_KEYS.both, { print, upload });
   return print ?? upload ?? '';
 }

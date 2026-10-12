@@ -1,0 +1,27 @@
+  <section>
+    <h2>Paste or import the XML</h2>
+    <p>Open the formatter and paste XML or choose a text file. Select two spaces, four spaces or a tab for indentation, or choose the minified output. Copy or download the current result once it parses. Typing invalidates the old result while the new input is checked.</p>
+    <p>The parser runs locally. It checks the document’s syntax; it does not validate an XSD or DTD, prove that a configuration is correct for your application, or contact a URL named in the text.</p>
+    <figure class="shot">
+      <img src="/screens/format-and-check-xml/mapping.webp" alt="XML input and its JSON mapping with an attribute, string value and repeated elements.">
+      <figcaption>The attribute becomes @region, the port stays a string, and repeated feature elements become an array.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Follow a parse error</h2>
+    <p>An unclosed tag, mismatched end tag or invalid character reference stops formatting and conversion. Use Go to error to move the caret to the reported position. The document needs one outer element: two roots or text outside the root are refused.</p>
+    <pre><code>&lt;settings&gt;
+  &lt;port&gt;8080&lt;/port&gt;
+&lt;/settings&gt;</code></pre>
+    <p>DOCTYPE text is preserved literally. External entities are not resolved; naming a file or website in a declaration does not load it.</p>
+  </section>
+  <section>
+    <h2>Understand whitespace before reindenting</h2>
+    <p>Text values, CDATA and mixed-content elements keep their text. Whitespace used only between child elements is treated as layout unless <code>xml:space="preserve"</code> applies. That choice is useful for readable configuration files, but an application that treats those spaces as data needs a check of the result before reuse.</p>
+  </section>
+  <section>
+    <h2>Know what XML to JSON changes</h2>
+    <p>Choose the conversion direction before reading the result. Attributes become keys starting with <code>@</code>, repeated elements become arrays, and text beside other content uses <code>#text</code>. XML values remain strings: <code>&lt;port&gt;8080&lt;/port&gt;</code> becomes a string, not an inferred number.</p>
+    <p>Comments and the interleaved order of mixed text and child elements are lost in the JSON mapping. Converting back therefore does not promise the original document. Save an original copy and compare the fields your application uses.</p>
+    <p>For JSON formatting without that mapping, use the <a href="../../json-formatter/">JSON formatter</a>.</p>
+  </section>

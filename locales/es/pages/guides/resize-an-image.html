@@ -23,19 +23,12 @@
   </section>
 
   <section>
-    <h2>Encoger es seguro. Agrandar no.</h2>
+    <h2>Qué se pierde al reducir y ampliar</h2>
     <p>
       No son dos direcciones de la misma operación, y conviene tener claro por
       qué.
     </p>
-    <p>
-      <strong>Hacer una foto más pequeña</strong> tira información, pero de la
-      única manera inofensiva: entran más píxeles de los que salen, así que cada
-      píxel del resultado es el promedio de detalle real medido. Una copia
-      pequeña bien redimensionada suele verse <em>mejor</em> que el original
-      visto a ese tamaño, porque promediar quita ruido. Aquí no se inventa
-      nada.
-    </p>
+    <p><strong>Reducir una imagen</strong> elimina información. Promediar píxeles reales puede limpiar una foto al tamaño previsto, pero texto pequeño, líneas finas y texturas pueden desaparecer. Compara al tamaño de uso; menos píxeles no garantizan conservar todos los detalles visibles.</p>
     <p>
       <strong>Hacer una foto más grande</strong> obliga a inventar. El detalle no
       es que le falte al archivo: es que nunca se fotografió. Lo único que puede
@@ -168,11 +161,7 @@
 
   <section>
     <h2>Qué cuesta la recodificación, y cómo dejarla en una</h2>
-    <p>
-      Redimensionar un JPEG o un WebP consiste en descodificarlo, escalar los
-      píxeles y volver a codificarlos, y ese último paso tiene pérdidas. Lo que te
-      cuesta calidad no es el escalado en sí, sino la recodificación.
-    </p>
+    <p>Escalar JPEG o WebP implica decodificar, remuestrear los píxeles y volver a codificar. Reducir puede perder detalle al remuestrear; JPEG o WebP con pérdida pueden añadir artefactos después. Son costes distintos: revisa dimensiones y resultado codificado.</p>
     <p>
       De ahí salen dos cosas. La primera, que el ajuste de calidad de la salida
       importa: algo entre 80 y 85 es invisible en una fotografía y bastante más

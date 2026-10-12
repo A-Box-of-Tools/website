@@ -69,13 +69,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Ihr Bild hat keinen Weg nach draußen."
-body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört dieser Website. Es gibt hier keine Stelle,
-      an der Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
-      dorthin schicken würde, wenn es sie gäbe."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."

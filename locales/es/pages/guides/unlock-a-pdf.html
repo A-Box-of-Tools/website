@@ -2,8 +2,8 @@
     <h2>La respuesta corta</h2>
     <p>Abre el <a href="/es/desbloquear-pdf/">desbloqueador de PDF</a> y arrastra el documento. En un segundo te indicará cuál de estas dos situaciones tienes:</p>
     <ul>
-      <li><strong>El documento se abre, pero no deja imprimir o copiar.</strong> No hace falta una contraseña. Pulsa el botón para retirar las restricciones. Es el caso más habitual.</li>
-      <li><strong>El documento pide una contraseña para abrirse.</strong> Necesitas esa contraseña. La herramienta no puede encontrarla por ti ni promete hacerlo.</li>
+      <li><strong>El documento abre, pero no deja imprimir o copiar.</strong> Si solo tiene permisos restringidos, aquí no necesita contraseña. Pulsa el botón para quitarlos.</li>
+      <li><strong>El documento pide contraseña antes de abrir.</strong> Proporciona una válida de usuario o propietario. Esta herramienta no la adivina ni recupera.</li>
     </ul>
     <p>El resto de esta guía explica por qué son situaciones tan distintas. Conviene saberlo antes de entregar un documento a un servicio que ofrece desbloquearlo.</p>
   </section>
@@ -11,10 +11,10 @@
   <section>
     <h2>Dos protecciones, pero solo una impide leer</h2>
     <p>Un PDF admite dos contraseñas. Los lectores las presentan casi igual, y de ahí viene buena parte de la confusión.</p>
-    <p>La <strong>contraseña de usuario</strong>, normalmente llamada contraseña de apertura, es una protección real. El contenido está cifrado; la clave se deriva de la contraseña y esta no aparece escrita en el documento. Sin ella no pueden leerlo ni tú, ni un sitio web, ni el programa que lo creó.</p>
-    <p>La <strong>contraseña de propietario</strong> controla las <em>restricciones</em>: impedir imprimir, copiar, editar o rellenar formularios. Es habitual que exista sin una contraseña de usuario. Ese es el archivo que se abre al hacer doble clic, pero después no deja imprimir.</p>
+    <p>La <strong>contraseña de usuario</strong>, o de apertura, sirve para descifrar el documento que la exige. Aquí puede abrirlo una válida de usuario o propietario. Sin ninguna, esta herramienta lo deja cerrado; no busca contraseñas ni claves.</p>
+    <p>La <strong>contraseña de propietario</strong> controla los <em>permisos</em>: imprimir, copiar, editar o rellenar formularios. Si la de usuario está vacía, el archivo abre sin preguntar, aunque el lector aplique esas restricciones.</p>
     <p>Un archivo que se abre sin pedirte nada <em>debe contener todo lo necesario para derivar su propia clave</em>, porque el lector acaba de hacerlo. El contenido está cifrado con una clave que cualquiera puede obtener. Lo que impide imprimir es un campo separado, con bits de permisos que los lectores respetan por acuerdo. Adobe lo documentó así desde el principio. Es una petición, no una barrera criptográfica.</p>
-    <p>Por eso retirar restricciones es inmediato, mientras que retirar una contraseña de apertura desconocida no lo es. No son dos intensidades de la misma cerradura: una cierra la puerta y la otra deja una nota.</p>
+    <p>Quitar permisos restringidos de un archivo que ya abre no requiere buscar contraseñas. Para quitar aquí una contraseña de apertura se necesita una válida que proporciones. Son operaciones distintas y la página distingue el caso antes de continuar.</p>
   </section>
 
   <section>
@@ -42,8 +42,8 @@
 
   <section>
     <h2>Si has perdido la contraseña de apertura</h2>
-    <p>Puedes haber perdido el acceso al documento. Conviene saberlo antes de pasar por varios sitios que te pedirán el archivo para intentarlo.</p>
-    <p>Los buscadores muestran muchas herramientas de «recuperación de contraseñas PDF». Lo que hacen es probar diccionarios, patrones y combinaciones. Puede funcionar con una contraseña corta, pero deja de ser práctico con una larga. Algunas trabajan en tu dispositivo; muchas suben el documento a un servidor y otras cobran antes de decir si funcionó. Una contraseña fuerte en un archivo moderno no se recupera por arte de magia.</p>
+    <p>Esta herramienta no recupera contraseñas de apertura perdidas. Primero pide al remitente la contraseña o una copia accesible y conserva el original.</p>
+    <p>Los recuperadores prueban candidatos o atacan protecciones débiles y obsoletas. El éxito depende de contraseña y cifrado: una corta o predecible no equivale a una fuerte con cifrado moderno. Algunos funcionan localmente y otros requieren subir el archivo. Este desbloqueador no hace esas búsquedas.</p>
     <p>El <a href="/es/desbloquear-pdf/">desbloqueador de PDF</a> no intenta adivinar contraseñas. No contiene un diccionario ni un bucle de búsqueda; puedes leer el código. Es una decisión deliberada: en archivos antiguos sí sería posible probar claves, por eso este límite se explica en lugar de dejarlo implícito.</p>
     <p>Antes de nada, pregunta a quien te envió el documento: normalmente conserva la contraseña. En empresas puede ser la misma para un departamento, y bancos o sistemas de nómina a veces usan datos como la fecha de nacimiento o las últimas cifras de una cuenta. Las instrucciones suelen estar en el correo que acompañaba al archivo.</p>
   </section>

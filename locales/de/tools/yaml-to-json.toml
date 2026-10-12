@@ -10,7 +10,7 @@ heading = "YAML&nbsp;zu&nbsp;JSON <span class=\"h1-kw\">&mdash; und JSON zurück
 tagline = "Beide Richtungen, und es sagt Ihnen, was jede davon kostet. Nichts davon wird in den Server eines anderen eingefügt."
 
 title = "YAML-zu-JSON-Umwandler &mdash; in beide Richtungen, ohne Upload"
-description = "YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie."
+description = "Eine unterstützte Teilmenge von YAML 1.2 im Browser in JSON umwandeln und zurück. Anker, Aliase, Tags und mehrere Dokumente werden abgelehnt; Kommentare gehen in JSON verloren. Kein Upload."
 og_title = "YAML umwandeln, ohne es in einen Server einzufügen"
 og_description = "Ein YAML- und JSON-Umwandler auf Ihrem eigenen Gerät. Schlüssel behalten ihre Reihenfolge, Zahlen ihre Ziffern, und was Sie einfügen, geht nirgendwohin."
 og_image_alt = "YAML-zu-JSON-Umwandler - beide Richtungen, ohne Upload"
@@ -67,13 +67,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Was Sie einfügen, hat keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem eine eingefügte Konfiguration eingesammelt werden könnte, und im Code
-      steht auch nichts, das sie dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -85,7 +80,7 @@ body = """
       zurückgeben."""
 
 [[privacy]]
-title = "Es liest YAML 1.2, Norwegen bleibt also Norwegen."
+title = "Die unterstützte Teilmenge nutzt YAML-1.2-Skalarregeln."
 body = """
  In YAML 1.1
       war <code>no</code> ein Wahrheitswert, und das ist der berühmte Fehler, der
@@ -98,13 +93,7 @@ body = """
 
 [[privacy]]
 title = "Eine Umwandlung, die nicht ehrlich sein kann, hört lieber auf."
-body = """
- Ein
-      Anker, ein Alias oder ein Tag im YAML beendet die Umwandlung mit einer
-      Meldung, in welcher Zeile er steht, statt ein JSON-Dokument zu liefern,
-      das stillschweigend etwas anderes bedeutet. JSON hat keine Möglichkeit,
-      &bdquo;derselbe Knoten zweimal&ldquo; zu sagen, und eine Deutung
-      auszuwählen hieße, für Sie zu entscheiden."""
+body = "JSON verliert Kommentare. Dieser Parser unterstützt bewusst nur eine Teilmenge von YAML 1.2 und lehnt Anker, Aliase und Tags ab, statt eine Auflösung oder Typumwandlung für Sie zu wählen. JSON stellt einen Wertebaum dar; YAML kann gemeinsame Knoten und typisierte Werte darstellen. Mehrdokument-Streams werden abgelehnt statt in ein erfundenes Array verpackt. JSON zu YAML erhält die dargestellten Werte."
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
@@ -178,29 +167,11 @@ a = """
 
 [[faq]]
 q = "Was geht beim Umwandeln von YAML in JSON verloren?"
-a = """
-        Die Kommentare, denn JSON hat keinen Platz für einen. Anker, Aliase und
-        Tags werden rundheraus abgelehnt, statt erraten zu werden &mdash; jedes
-        davon sagt etwas, das JSON nicht sagen kann, und ein Umwandler, der
-        stillschweigend eine Deutung auswählte, gäbe Ihnen ein Dokument, das
-        nicht das ist, was in der Datei stand. Die andere Richtung verliert
-        nichts: Jedes JSON-Dokument ist bereits ein YAML-Dokument."""
+a = "JSON verliert Kommentare. Dieser Parser unterstützt bewusst nur eine Teilmenge von YAML 1.2 und lehnt Anker, Aliase und Tags ab, statt eine Auflösung oder Typumwandlung für Sie zu wählen. JSON stellt einen Wertebaum dar; YAML kann gemeinsame Knoten und typisierte Werte darstellen. Mehrdokument-Streams werden abgelehnt statt in ein erfundenes Array verpackt. JSON zu YAML erhält die dargestellten Werte. <a href=\"https://yaml.org/spec/1.2.2/\">Die YAML-Spezifikation</a> beschreibt das umfassendere Format."
 
 [[faq]]
 q = "In meinem YAML steht no, und im JSON kam eine Zeichenkette heraus. Warum?"
-a = """
-        Weil es eine Zeichenkette ist und hier YAML 1.2 gelesen wird, nicht 1.1.
-        In YAML 1.1 waren <code>yes</code>, <code>no</code>, <code>on</code> und
-        <code>off</code> Wahrheitswerte, und das ist der berühmte Fehler, der aus
-        dem Ländercode für Norwegen <code>false</code> macht. YAML 1.2 hat das
-        fallen gelassen, und dieses Werkzeug auch: Nur <code>true</code>,
-        <code>false</code>, <code>null</code> und <code>~</code> werden als etwas
-        anderes als Text gelesen. In der anderen Richtung werden diese Wörter
-        <em>in Anführungszeichen</em> zurückgeschrieben, obwohl sie hier auch
-        ohne als Text gelesen würden &mdash; denn was die Datei als Nächstes
-        öffnet, tut das vielleicht nicht. PyYAML verwendet immer noch 1.1 als
-        Voreinstellung. Streng zu lesen und vorsichtig zu schreiben, ist die
-        einzige Kombination, die in beide Richtungen richtig ist."""
+a = "YAML 1.1 las <code>yes</code>, <code>no</code>, <code>on</code> und <code>off</code> als Boolesche Werte und machte Norwegens Ländercode zu <code>false</code>. Diese unterstützte Teilmenge nutzt YAML 1.2: Diese Wörter bleiben Zeichenketten, <code>true</code> und <code>false</code> sind Boolesche Werte, <code>null</code> und <code>~</code> sind null, numerische Skalare sind Zahlen. Der YAML-Schreiber setzt mehrdeutige Wörter für ältere Leser in Anführungszeichen."
 
 [[faq]]
 q = "Bleibt die Reihenfolge meiner Schlüssel erhalten?"
@@ -261,12 +232,12 @@ a = """
         Verbindung trennen."""
 
 [schema]
-description = "YAML in JSON und JSON in YAML umwandeln, im Browser. Gelesen wird YAML 1.2, die Reihenfolge der Schlüssel und die genauen Ziffern jeder Zahl bleiben erhalten, und es sagt, was jede Richtung verliert. Hochgeladen wird nichts."
+description = "Eine unterstützte Teilmenge von YAML 1.2 im Browser in JSON umwandeln und zurück. Anker, Aliase, Tags und mehrere Dokumente werden abgelehnt; Kommentare gehen in JSON verloren. Kein Upload."
 features = [
   "Wandelt YAML in JSON und JSON in YAML um",
-  "Liest YAML 1.2, yes und no bleiben also Zeichenketten",
+  "Liest eine YAML-1.2-Teilmenge; yes und no bleiben Zeichenketten",
   "Behält die Reihenfolge der Schlüssel und die genauen Ziffern jeder Zahl",
-  "Lehnt Anker, Aliase und Tags ab, statt zu raten, was sie bedeuten sollten",
+  "Lehnt Anker, Aliase, Tags und Mehrdokument-Streams ausdrücklich ab",
   "Sagt in Worten, in welcher Zeile und Spalte ein Fehler steckt",
   "Arbeitet mit einer abgelegten Datei ebenso wie mit Eingefügtem",
   "Läuft offline; kein Upload, kein Konto",
