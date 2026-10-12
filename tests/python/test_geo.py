@@ -6,9 +6,34 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import build as buildmod
 import indexnow
 from buildlib import landing, site
-from tests.python.test_build import site_build
+
+
+_BUILD = None
+
+
+def site_build():
+    """Keep this module's readable build alive until its own cleanup runs.
+
+    Discovery finishes test_build before reaching this module, so reusing
+    that module's cached path would read a directory its cleanup deleted.
+    """
+    global _BUILD
+    if _BUILD is None:
+        temporary = tempfile.TemporaryDirectory()
+
+        def cleanup():
+            global _BUILD
+            _BUILD = None
+            temporary.cleanup()
+
+        unittest.addModuleCleanup(cleanup)
+        out = Path(temporary.name) / 'site'
+        written = buildmod.build(out, clean=True, minify_output=False)
+        _BUILD = (out, written)
+    return _BUILD
 
 
 class ContentBoundaries(unittest.TestCase):
@@ -26,7 +51,7 @@ class ContentBoundaries(unittest.TestCase):
         self.assertNotEqual(self.fingerprint(source), self.fingerprint(source.replace('answer', 'correction')))
 
     def test_the_built_tool_help_is_inside_the_only_main(self):
-        out, written = site_build(False)
+        out, written = site_build()
         count = 0
         for name in written:
             if not name.endswith('index.html'):
@@ -44,7 +69,7 @@ class ContentBoundaries(unittest.TestCase):
         self.assertGreater(count, 300)
 
     def test_a_real_faq_correction_changes_the_fingerprint_but_frame_copy_does_not(self):
-        out, _ = site_build(False)
+        out, _ = site_build()
         source = (out / 'trim-video/index.html').read_text(encoding='utf-8')
         original = self.fingerprint(source)
         correction = source.replace('<h2 id="faq-h">', '<p>Corrected mode limitations.</p><h2 id="faq-h">', 1)
