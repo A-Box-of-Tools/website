@@ -602,6 +602,24 @@ class BuildTheSite(unittest.TestCase):
             with self.subTest(file=name):
                 self.assertTrue((self.out / slug / name).is_file(), name)
 
+    def test_pairing_versions_identify_the_shipped_code_across_languages(self):
+        for slug in ('remote-camera', 'share-text'):
+            versions = set()
+            for locale in self.locales:
+                folder = buildmod.i18n.locale_path(locale, slug).lstrip('/')
+                page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+                with self.subTest(tool=slug, lang=locale['lang']):
+                    stamp = re.search(r'data-pairing-version="([0-9a-f]{10})"', page)
+                    asset = re.search(r'src="src/main\.js\?v=([0-9a-f]{10})"', page)
+                    self.assertIsNotNone(stamp)
+                    self.assertIsNotNone(asset)
+                    self.assertEqual(stamp.group(1), asset.group(1))
+                    self.assertIn(f'<code id="tool-version" dir="ltr">{stamp.group(1)}</code>', page)
+                    versions.add(stamp.group(1))
+            self.assertEqual(len(versions), 1)
+        ordinary = (self.out / 'compress-image' / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('data-pairing-version', ordinary)
+
     # -- installing a page as an app --------------------------------------
     #
     # Four things have to agree for the browser to offer it, and every one of

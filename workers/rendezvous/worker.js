@@ -38,7 +38,7 @@
 // somebody else's site. A script can send any Origin it likes; the rate limit
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
-import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, validPublication, validScope } from "./discovery.js";
+import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, roomName, validPublication, validScope } from "./discovery.js";
 
 export { Discovery };
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
@@ -63,6 +63,8 @@ export default {
     }
     const room = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/);
     if (room || url.pathname === "/discover") {
+      const tool = rendezvousTool(url.searchParams.get("tool"));
+      if (tool === null) return new Response("unknown tool", { status: 400 });
       if (request.headers.get("Upgrade") !== "websocket") {
         return new Response("expected a websocket", { status: 426 });
       }
@@ -74,7 +76,7 @@ export default {
         && url.searchParams.get("local") === "1" && url.searchParams.get("discover") === "1";
       let scope = null;
       if (discover || offered) {
-        scope = await discoveryScope(request);
+        scope = await discoveryScope(request, tool);
         if (discover && scope === null) return new Response("discovery unavailable for this address", { status: 403 });
       }
       // Keyed by address rather than by room: the nuisance this caps is one
@@ -91,7 +93,7 @@ export default {
       if (scope !== null) headers.set(DISCOVERY_SCOPE_HEADER, scope);
       const forwarded = new Request(request, { headers });
       if (discover) return env.DISCOVERY.get(env.DISCOVERY.idFromName(scope)).fetch(forwarded);
-      return env.ROOMS.get(env.ROOMS.idFromName(room[1])).fetch(forwarded);
+      return env.ROOMS.get(env.ROOMS.idFromName(roomName(room[1], tool))).fetch(forwarded);
     }
     return new Response("not found", { status: 404 });
   },
@@ -167,17 +169,21 @@ export class Room {
         if (text.length > 512) return new Response(null, { status: 400 });
         claim = JSON.parse(text);
       } catch { return new Response(null, { status: 400 }); }
-      if (!validPublication(claim) || !validScope(claim.scope)) return new Response(null, { status: 400 });
+      const tool = rendezvousTool(claim?.tool);
+      if (!validPublication(claim) || !validScope(claim.scope) || tool === null) return new Response(null, { status: 400 });
       const live = this.ctx.getWebSockets("host").some((host) => {
         const who = host.deserializeAttachment();
         return host.readyState === 1 && who?.role === "host" && who.local === true && who.discover === true
-          && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope;
+          && who.code === claim.code && who.lease === claim.lease && who.scope === claim.scope
+          && (who.tool ?? "share-text") === tool;
       });
       return new Response(null, { status: live ? 204 : 403 });
     }
     const code = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/)?.[1];
     if (code === undefined) return new Response(null, { status: 404 });
     const role = url.searchParams.get("role");
+    const tool = rendezvousTool(url.searchParams.get("tool"));
+    if (tool === null) return new Response(null, { status: 400 });
     const scope = request.headers.get(DISCOVERY_SCOPE_HEADER);
     // Discovery can be unavailable behind a proxy or an address transform.
     // The local share still works through its copied link; it simply has no
@@ -206,10 +212,10 @@ export class Room {
       this.ctx.acceptWebSocket(server, ["host"]);
       if (offered) {
         const lease = crypto.randomUUID();
-        server.serializeAttachment({ role: "host", code, scope, local: true, discover: true, lease });
-        server.send(JSON.stringify({ type: "host-ready", discovery: { code, lease } }));
+        server.serializeAttachment({ role: "host", code, scope, tool, local: true, discover: true, lease });
+        server.send(JSON.stringify({ type: "host-ready", discovery: { code, lease, ...(tool === "share-text" ? {} : { tool }) } }));
       } else {
-        server.serializeAttachment({ role: "host" });
+        server.serializeAttachment({ role: "host", ...(tool === "share-text" ? {} : { tool }) });
       }
     } else if (role === "viewer") {
       if (hosts.length === 0) return refuse(4404, "no-host");
@@ -280,7 +286,7 @@ export class Room {
           "https://discovery.internal/_discovery/withdraw", {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ code: who.code, lease: who.lease }),
+            body: JSON.stringify({ code: who.code, lease: who.lease, tool: who.tool ?? "share-text" }),
           },
         ).catch(() => {}));
       }

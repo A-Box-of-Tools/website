@@ -107,6 +107,23 @@
       per-visitor logs from either of them.
     </p>
 
+    <h3>The camera tool&rsquo;s introduction</h3>
+    <p>
+      <a href="../remote-camera/">Remote Camera</a> sends live video directly
+      to one approved browser. Start camera or Connect opens a WebSocket to
+      the same rendezvous used by the share tool below. It carries setup
+      descriptions and candidates, never video or viewer notes. The service
+      can see the camera code, IP addresses, connection times and setup
+      messages. Cloudflare keeps seven-day connection metadata logs, never a
+      payload. Opening a viewer link waits for Connect; the source must
+      approve before video is sent. The tool requests no microphone and has
+      no recording feature. Stop, hide or close the source page, or lose its
+      introduction connection, and capture ends. Internet is required for
+      pairing; no STUN server or TURN relay is configured for the video.
+      Its page describes address exposure, routing limits and third-party
+      scripts that can read the viewer link's address in full.
+    </p>
+
     <h3>The share tool&rsquo;s rendezvous</h3>
     <p>
       <a href="../share-text/">Share Text &amp; Files</a> moves text and
