@@ -14,6 +14,7 @@ let discovery = null;
 let discoveryState = 'connecting';
 let foundCameras = [];
 let hostCode = null;
+let devicesRevision = 0;
 const capture = new CameraCapture({ getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints) });
 
 const warning = (key) => /failed|invalid|unsupported|denied|missing|busy|not-found|taken/.test(key);
@@ -38,6 +39,11 @@ function idleCamera() {
   $('camera-requests').replaceChildren();
   $('copy-status').textContent = '';
   $('camera-publication-status').textContent = '';
+  $('camera-device-field').hidden = true;
+  $('camera-device').disabled = true;
+  $('camera-device').replaceChildren();
+  $('camera-switch-status').textContent = '';
+  devicesRevision += 1;
   hostCode = null;
   renderDiscovery();
 }
@@ -91,6 +97,7 @@ const session = new CameraSession({
         button.textContent = phrase(key);
         button.dataset.action = action;
         button.dataset.peer = request.id;
+        button.disabled = Boolean(session.cameraChange) || capture.switching;
         if (action === 'deny') button.className = 'ghost';
         button.addEventListener('click', () => session[action](request.id));
         row.append(button);
@@ -217,6 +224,85 @@ function captureError(error) {
   return 'camera.busy';
 }
 
+function showApprovalPolicy() {
+  const required = $('camera-require-approval').checked;
+  $('camera-approval-policy').textContent = phrase(required ? 'camera.approval-required' : 'camera.open-access');
+  $('camera-approval-policy').classList.toggle('warn', !required);
+}
+
+function showCameraStream(stream, current) {
+  const alreadyShown = $('camera-preview').srcObject === stream;
+  $('camera-preview').srcObject = stream;
+  $('camera-preview-panel').hidden = false;
+  $('camera-preview').play().catch(() => {});
+  if (alreadyShown) return;
+  for (const track of stream.getVideoTracks()) {
+    track.addEventListener('ended', () => {
+      // Opening another camera can end the old hardware track. The switch
+      // reconciles that result; a replaced stream must not stop its successor.
+      if (current === epoch && capture.stream === stream && !capture.switching) stop('camera.ended');
+    });
+  }
+}
+
+async function refreshCameras() {
+  if (session.role !== 'camera' || capture.switching || !capture.stream || !navigator.mediaDevices?.enumerateDevices) return;
+  const current = epoch, revision = ++devicesRevision, stream = capture.stream;
+  let devices;
+  try { devices = (await navigator.mediaDevices.enumerateDevices()).filter((device) => device.kind === 'videoinput' && device.deviceId); }
+  catch { return; }
+  if (current !== epoch || revision !== devicesRevision || capture.stream !== stream || capture.switching) return;
+  const selected = stream.getVideoTracks()[0]?.getSettings?.().deviceId;
+  const select = $('camera-device');
+  select.replaceChildren();
+  if (!devices.some((device) => device.deviceId === selected)) {
+    const option = document.createElement('option');
+    option.value = ''; option.disabled = true; option.selected = true;
+    option.textContent = phrase('camera.current-device');
+    select.append(option);
+  }
+  devices.forEach((device, index) => {
+    const option = document.createElement('option');
+    option.value = device.deviceId;
+    option.textContent = device.label || phrase('camera.device-label', { number: ltr((index + 1).toLocaleString(document.documentElement.lang)) });
+    select.append(option);
+  });
+  if (devices.some((device) => device.deviceId === selected)) select.value = selected;
+  $('camera-device-field').hidden = devices.length < 2;
+  select.disabled = false;
+}
+
+async function switchCamera() {
+  const deviceId = $('camera-device').value;
+  if (!deviceId || session.role !== 'camera' || session.cameraChange || capture.switching || !capture.stream) return;
+  if (capture.stream.getVideoTracks()[0]?.getSettings?.().deviceId === deviceId) return;
+  const current = epoch;
+  const operation = session.prepareCameraChange();
+  $('camera-device').disabled = true;
+  $('camera-switch-status').textContent = phrase('camera.switching');
+  $('camera-switch-status').classList.remove('warn');
+  try {
+    const stream = await capture.switchDevice(deviceId, operation.commit);
+    if (current !== epoch || stream === null) return;
+    showCameraStream(stream, current);
+    $('camera-switch-status').textContent = phrase('camera.switched');
+  } catch {
+    if (current !== epoch) return;
+    if (capture.stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
+      showCameraStream(capture.stream, current);
+      $('camera-switch-status').textContent = phrase('camera.switch-failed');
+      $('camera-switch-status').classList.add('warn');
+    } else stop('camera.switch-ended');
+  } finally {
+    operation.cancel();
+    if (current === epoch && session.role === 'camera') {
+      session.requests();
+      $('camera-device').disabled = false;
+      await refreshCameras();
+    }
+  }
+}
+
 async function startCamera() {
   const code = normalize($('camera-name').value);
   if (!code) return showStatus('code.name-invalid', 'camera');
@@ -234,16 +320,11 @@ async function startCamera() {
   try {
     const stream = await capture.start();
     if (current !== epoch || stream === null) return;
-    $('camera-preview').srcObject = stream;
-    $('camera-preview-panel').hidden = false;
-    $('camera-preview').play().catch(() => {});
-    for (const track of stream.getVideoTracks()) {
-      track.addEventListener('ended', () => { if (current === epoch) stop('camera.ended'); });
-    }
+    showCameraStream(stream, current);
     hostCode = code;
     if ($('camera-discoverable').checked) $('camera-publication-status').textContent = phrase('discovery.not-published');
     renderDiscovery();
-    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked });
+    await session.startHost(stream, code, { discoverable: $('camera-discoverable').checked, requireApproval: $('camera-require-approval').checked });
     if (current !== epoch) return;
     const link = viewerLink(location.href, code);
     $('camera-link').value = link;
@@ -252,6 +333,7 @@ async function startCamera() {
     qr(link);
     watchDetails();
     keepAwake(current);
+    refreshCameras();
   } catch (error) {
     if (current === epoch) stop(captureError(error));
   }
@@ -299,6 +381,12 @@ $('role-camera').addEventListener('click', () => {
 });
 $('role-viewer').addEventListener('click', () => selectMode('viewer'));
 $('camera-start').addEventListener('click', startCamera);
+$('camera-device').addEventListener('change', switchCamera);
+$('camera-require-approval').addEventListener('change', () => {
+  showApprovalPolicy();
+  session.setApprovalRequired($('camera-require-approval').checked);
+});
+navigator.mediaDevices?.addEventListener?.('devicechange', refreshCameras);
 $('camera-suggest').addEventListener('click', () => { $('camera-name').value = makeCode(); });
 $('camera-name').addEventListener('change', () => { $('camera-name').value = normalize($('camera-name').value); });
 $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
@@ -340,6 +428,7 @@ $('camera-name').value = makeCode();
 selectMode(code ? 'viewer' : 'camera');
 if (code) $('viewer-code').value = code;
 startDiscovery();
+showApprovalPolicy();
 
 // The frame keeps its warning until every control has been initialised.
 $('boot-warning')?.remove();

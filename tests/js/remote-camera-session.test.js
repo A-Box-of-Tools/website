@@ -40,7 +40,10 @@ function fixture(t) {
     async setLocalDescription(value) { this.localDescription = value; }
     async setRemoteDescription(value) { this.remoteDescription = value; }
     async addIceCandidate(value) { this.ice.push(value); }
-    addTransceiver(track, options) { const value = { sender: { track }, direction: options.direction }; this.transceivers.push(value); return value; }
+    addTransceiver(track, options) {
+      const sender = { track, async replaceTrack(next) { this.track = next; } };
+      const value = { sender, direction: options.direction }; this.transceivers.push(value); return value;
+    }
     getTransceivers() { return this.transceivers; }
     getSenders() { return this.transceivers.map((value) => value.sender); }
     async getStats() { return new Map(); }
@@ -186,4 +189,109 @@ test('host ICE waits for a description while relay candidates are discarded', as
   signal(f.sockets[0], 'host', { description: { type: 'offer', sdp: `${SDP}a=${host.candidate}\r\na=${relay.candidate}\r\n` } }); await settle();
   assert.equal(peer.ice.length, 1); assert.equal(peer.ice[0].candidate, host.candidate);
   assert.ok(peer.remoteDescription.sdp.includes('typ host')); assert.ok(!peer.remoteDescription.sdp.includes('typ relay'));
+});
+
+test('changing approval policy applies to new requests and preserves existing manual requests', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE);
+  const first = await requestViewer(f, 'v:1');
+  f.session.setApprovalRequired(false);
+  first.channel.receive('request', { note: 'Repeated manual request' }); await settle();
+  assert.equal(f.session.active, null);
+  assert.equal(f.session.peers.get('v:1').approved, false);
+  const second = await requestViewer(f, 'v:2');
+  assert.equal(f.session.active, 'v:2');
+  assert.equal(f.session.peers.get('v:2').approved, true);
+  second.channel.receive('approval-ack'); await settle();
+  f.session.setApprovalRequired(true);
+  assert.equal(f.session.active, 'v:2');
+  assert.equal(second.transceivers.length, 1);
+});
+
+test('automatic approval reserves the only viewer slot before acknowledgement', async t => {
+  const f = fixture(t), stream = sourceStream();
+  await f.session.startHost(stream, CODE, { requireApproval: false });
+  const peer = await requestViewer(f, 'v:1');
+  assert.equal(f.session.active, 'v:1'); assert.equal(peer.transceivers.length, 0);
+  signal(f.sockets[0], 'v:2', { dial: true }); await settle();
+  assert.equal(f.peers.length, 1);
+  assert.deepEqual(f.sockets[0].sent.at(-1), { to: 'v:2', data: { protocol: PROTOCOL, refused: 'busy' } });
+  peer.channel.receive('approval-ack'); await settle();
+  assert.deepEqual(peer.getSenders().map(sender => sender.track), [stream.video]);
+});
+
+test('camera replacement preserves the connection without another offer', async t => {
+  const f = fixture(t), original = sourceStream(); await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1'); f.session.approve('v:1');
+  peer.channel.receive('approval-ack'); await settle();
+  const entry = f.session.peers.get('v:1'), sender = entry.sender;
+  const offers = t.mock.method(peer, 'createOffer'), next = sourceStream();
+  const operation = f.session.prepareCameraChange();
+  assert.equal(await operation.commit(next), true); await settle();
+  assert.equal(f.session.stream, next); assert.equal(f.session.active, 'v:1');
+  assert.equal(f.session.peers.get('v:1'), entry); assert.equal(entry.sender, sender);
+  assert.equal(sender.track, next.video); assert.equal(peer.transceivers.length, 1);
+  assert.equal(offers.mock.callCount(), 0); assert.equal(f.sockets.length, 1); assert.equal(f.peers.length, 1);
+  // Capture owns the old hardware stream and closes it after this commit.
+  assert.equal(original.video.readyState, 'live'); original.getTracks().forEach(track => track.stop());
+  operation.cancel(); assert.equal(next.video.readyState, 'live');
+});
+
+test('failed replacement keeps the original stream and holds the operation for recovery', async t => {
+  const f = fixture(t), original = sourceStream(); await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1'); f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  const sender = f.session.peers.get('v:1').sender;
+  sender.replaceTrack = async () => { throw new Error('Replacement failed'); };
+  const operation = f.session.prepareCameraChange(), held = f.session.cameraChange, candidate = sourceStream();
+  await assert.rejects(operation.commit(candidate), /Replacement failed/);
+  assert.equal(f.session.stream, original); assert.equal(sender.track, original.video);
+  assert.equal(f.session.cameraChange, held); assert.equal(candidate.video.readyState, 'live');
+  candidate.getTracks().forEach(track => track.stop()); operation.cancel();
+  assert.equal(f.session.cameraChange, null); assert.equal(original.video.readyState, 'live');
+});
+
+test('acknowledgement during camera acquisition survives the approval deadline', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = fixture(t), original = sourceStream(); await f.session.startHost(original, CODE);
+  const peer = await requestViewer(f, 'v:1'); f.session.approve('v:1');
+  const operation = f.session.prepareCameraChange(); peer.channel.receive('approval-ack'); await settle();
+  t.mock.timers.tick(20001); await settle();
+  const entry = f.session.peers.get('v:1'); assert.ok(entry); assert.equal(entry.video, undefined);
+  assert.equal(entry.acknowledged, true); assert.equal(peer.transceivers.length, 0);
+  const next = sourceStream(); await operation.commit(next); await settle();
+  assert.equal(entry.video, true); assert.equal(entry.sender.track, next.video);
+  original.getTracks().forEach(track => track.stop());
+});
+
+test('automatic requests held during acquisition use the committed stream', async t => {
+  const f = fixture(t), original = sourceStream();
+  await f.session.startHost(original, CODE, { requireApproval: false });
+  const operation = f.session.prepareCameraChange(), peer = await requestViewer(f, 'v:1');
+  const entry = f.session.peers.get('v:1'); assert.equal(entry.approved, false); assert.equal(f.session.active, null);
+  const next = sourceStream(); await operation.commit(next);
+  assert.equal(entry.approved, true); peer.channel.receive('approval-ack'); await settle();
+  assert.equal(entry.sender.track, next.video); original.getTracks().forEach(track => track.stop());
+});
+
+test('stale replacement cannot overwrite a restarted host or its newer operation', async t => {
+  const f = fixture(t); await f.session.startHost(sourceStream(), CODE);
+  const peer = await requestViewer(f, 'v:1'); f.session.approve('v:1'); peer.channel.receive('approval-ack'); await settle();
+  const sender = f.session.peers.get('v:1').sender; let release;
+  sender.replaceTrack = track => new Promise(resolve => { release = () => { sender.track = track; resolve(); }; });
+  const operation = f.session.prepareCameraChange(), candidate = sourceStream(), changing = operation.commit(candidate);
+  f.session.stop(); const restarted = sourceStream(); await f.session.startHost(restarted, CODE);
+  const newer = f.session.prepareCameraChange(), held = f.session.cameraChange; release();
+  assert.equal(await changing, false); assert.equal(f.session.stream, restarted); assert.equal(f.session.cameraChange, held);
+  assert.equal(candidate.video.readyState, 'ended'); assert.equal(restarted.video.readyState, 'live'); newer.cancel();
+});
+
+test('departed sender failure still lets a later viewer use the new camera', async t => {
+  const f = fixture(t), original = sourceStream(); await f.session.startHost(original, CODE, { requireApproval: false });
+  const first = await requestViewer(f, 'v:1'); first.channel.receive('approval-ack'); await settle();
+  let reject; f.session.peers.get('v:1').sender.replaceTrack = () => new Promise((resolve, fail) => { reject = fail; });
+  const operation = f.session.prepareCameraChange(), next = sourceStream(), changing = operation.commit(next);
+  f.session.removePeer('v:1'); const second = await requestViewer(f, 'v:2');
+  assert.equal(f.session.active, null); reject(new Error('Departed peer closed')); await changing;
+  assert.equal(f.session.stream, next); assert.equal(f.session.active, 'v:2');
+  second.channel.receive('approval-ack'); await settle(); assert.equal(second.getSenders()[0].track, next.video);
+  original.getTracks().forEach(track => track.stop());
 });

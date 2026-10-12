@@ -503,6 +503,13 @@ def load_tool(path, site):
         raise ConfigError(
             f'{path}: slug is {tool["slug"]!r} but the folder is {path.parent.name!r}')
 
+    pairing = tool.get('requires_pairing', False)
+    if not isinstance(pairing, bool):
+        raise ConfigError(f'{path}: requires_pairing must be true or false')
+    # The existing pairing transport implies the display even when a future
+    # tool forgets to ask. Other pairing transports can opt in explicitly.
+    tool['requires_pairing'] = pairing or 'peer-network' in tool.get('js_parts', [])
+
     for key in ('plural', 'choose'):
         if key not in tool['words']:
             raise ConfigError(f'{path}: [words] needs {key}')
