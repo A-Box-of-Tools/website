@@ -147,7 +147,7 @@ title = "Start on the camera device."
 body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. No microphone is requested."
 [[howto]]
 title = "Invite the viewing device."
-body = "Open the viewer link or scan the QR code on the other device. In Watch a camera, you can also choose a listed camera name or enter the code directly. Both devices need internet for pairing and a network that lets them reach each other."
+body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
 [[howto]]
 title = "Connect the viewer."
 body = "The viewer chooses Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback."

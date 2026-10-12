@@ -1,7 +1,7 @@
 # Remote Camera
 
-Sharing, listed cameras and manual connection are visible together on the idle
-page. Start or Connect focuses its active section until Stop or a failure returns
+Online cameras appear at the top of the idle page, above sharing and manual
+connection. Start or Connect focuses its active section until Stop or a failure returns
 to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
 viewer fragment so the URL no longer suggests a different camera.

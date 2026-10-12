@@ -3,8 +3,8 @@
 .camera-workspace { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
 .camera-workspace > .card { min-width: 0; margin: 0; }
 .camera-workspace[data-active] { grid-template-columns: minmax(0, 1fr); }
-.camera-discovery { margin: 1rem 0 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
-.camera-discovery h3 { margin-top: 0; }
+.camera-discovery { margin: 1rem 0; }
+.camera-discovery h2 { margin-top: 0; }
 .camera-discovery-details { margin-top: 0.75rem; }
 .camera-discovery-details summary { cursor: pointer; color: var(--text-dim); }
 .camera-requirements, .camera-consent { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
