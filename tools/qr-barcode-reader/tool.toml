@@ -319,9 +319,9 @@ q = "Can it read a code that is damaged or partly covered?"
 a = "Sometimes. Reed-Solomon correction can restore damaged codewords within the symbol’s correction capacity. Level H’s roughly 30% refers to total codewords, not 30% of arbitrary modules or image area; damage to finder patterns can prevent detection entirely. The repair count under each result reports what this reader corrected. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explains the levels</a>."
 
 [[faq]]
-q = "Why does it say it cannot tell me where a bit.ly link goes?"
+q = "Why does it say it cannot tell me where a <code>bit.ly</code> link goes?"
 a = """
-        Because finding out would mean asking bit.ly, and that is a network
+        Because finding out would mean asking <code>bit.ly</code>, and that is a network
         request. Every other claim on this page rests on there being no code here
         that contacts anything, and quietly making an exception for this would be
         worth less than the answer. So the shortener is named, and what it hides

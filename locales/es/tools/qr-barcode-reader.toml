@@ -242,9 +242,9 @@ q = "¿Puede leer un código dañado o tapado en parte?"
 a = "A veces. Reed-Solomon restaura palabras de código dañadas dentro de la capacidad del símbolo. El 30 % aproximado de H se refiere al total de palabras de código, no a módulos arbitrarios ni a superficie; dañar los patrones de posición puede impedir la detección. El contador del resultado muestra las reparaciones realizadas. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explica los niveles</a>."
 
 [[faq]]
-q = "¿Por qué dice que no puede saber adónde lleva un enlace de bit.ly?"
+q = "¿Por qué dice que no puede saber adónde lleva un enlace de <code>bit.ly</code>?"
 a = """
-        Porque averiguarlo sería preguntarle a bit.ly, y eso es una petición de
+        Porque averiguarlo sería preguntarle a <code>bit.ly</code>, y eso es una petición de
         red. Todo lo demás que afirma esta página se apoya en que aquí no hay
         código que contacte con nada, y hacer una excepción a la callada valdría
         menos que la respuesta. Así que se nombra el acortador y lo que esconde se

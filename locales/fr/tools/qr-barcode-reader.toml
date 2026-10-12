@@ -108,8 +108,8 @@ q = "Peut-il lire un code abîmé ou partiellement recouvert&nbsp;?"
 a = "Parfois. Reed-Solomon restaure des mots de code endommagés dans la limite du symbole. Les quelque 30 % de H concernent le total des mots de code, pas des modules quelconques ni la surface ; des motifs de repérage abîmés peuvent empêcher toute détection. Le compteur du résultat indique les corrections effectuées. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explique les niveaux</a>."
 
 [[faq]]
-q = "Pourquoi dit-il qu'il ne peut pas savoir où mène un lien bit.ly&nbsp;?"
-a = "Parce que le savoir voudrait dire demander à bit.ly, et c'est une requête réseau. Tout le reste de ce que cette page affirme repose sur le fait qu'aucun code ici ne contacte quoi que ce soit, et faire discrètement une exception vaudrait moins que la réponse. Alors le raccourcisseur est nommé, et ce qu'il cache est honnêtement laissé inconnu. Si vous voulez le résoudre, collez-le dans quelque chose qui accepte, lui, de demander."
+q = "Pourquoi dit-il qu'il ne peut pas savoir où mène un lien <code>bit.ly</code>&nbsp;?"
+a = "Parce que le savoir voudrait dire demander à <code>bit.ly</code>, et c'est une requête réseau. Tout le reste de ce que cette page affirme repose sur le fait qu'aucun code ici ne contacte quoi que ce soit, et faire discrètement une exception vaudrait moins que la réponse. Alors le raccourcisseur est nommé, et ce qu'il cache est honnêtement laissé inconnu. Si vous voulez le résoudre, collez-le dans quelque chose qui accepte, lui, de demander."
 
 [[faq]]
 q = "Est-ce risqué de scanner un QR code&nbsp;?"

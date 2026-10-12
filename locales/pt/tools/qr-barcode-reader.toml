@@ -240,9 +240,9 @@ q = "Ela lê um código danificado ou coberto em parte?"
 a = "Às vezes. Reed-Solomon restaura palavras de código danificadas dentro da capacidade do símbolo. Os cerca de 30% de H se referem ao total de palavras de código, não a módulos arbitrários nem à área; danos nos padrões de localização podem impedir a detecção. O contador do resultado mostra os reparos realizados. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">A DENSO explica os níveis</a>."
 
 [[faq]]
-q = "Por que ela diz que não sabe para onde um link do bit.ly leva?"
+q = "Por que ela diz que não sabe para onde um link do <code>bit.ly</code> leva?"
 a = """
-        Porque descobrir seria perguntar ao bit.ly, e isso é uma requisição de
+        Porque descobrir seria perguntar ao <code>bit.ly</code>, e isso é uma requisição de
         rede. Todo o resto do que esta página afirma se apoia em não existir aqui
         nenhum código que contate coisa alguma, e abrir uma exceção caladinho
         valeria menos do que a resposta. Então o encurtador é apontado e o que ele

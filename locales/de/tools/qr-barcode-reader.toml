@@ -257,9 +257,9 @@ q = "Kann sie einen beschädigten oder teilweise verdeckten Code lesen?"
 a = "Manchmal. Reed-Solomon kann beschädigte Codewörter innerhalb der Korrekturkapazität wiederherstellen. Die rund 30 % bei H beziehen sich auf alle Codewörter, nicht auf beliebige Module oder Bildfläche; beschädigte Suchmuster können die Erkennung ganz verhindern. Die Reparaturzahl unter dem Ergebnis zeigt die tatsächliche Korrektur. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO erklärt die Stufen</a>."
 
 [[faq]]
-q = "Warum sagt sie, sie könne mir nicht verraten, wohin ein bit.ly-Link führt?"
+q = "Warum sagt sie, sie könne mir nicht verraten, wohin ein <code>bit.ly</code>-Link führt?"
 a = """
-        Weil das hieße, bit.ly zu fragen, und das wäre eine Netzanfrage. Jede
+        Weil das hieße, <code>bit.ly</code> zu fragen, und das wäre eine Netzanfrage. Jede
         andere Aussage auf dieser Seite beruht darauf, dass es hier keinen Code
         gibt, der irgendetwas kontaktiert, und dafür stillschweigend eine
         Ausnahme zu machen wäre weniger wert als die Antwort. Also wird der
