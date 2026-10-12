@@ -7,6 +7,7 @@ import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js'
 
 const $ = (id) => document.getElementById(id);
 let mode = 'camera';
+let activeRole = null;
 let epoch = 0;
 let wake = null;
 let detailsTimer = null;
@@ -81,6 +82,7 @@ const session = new CameraSession({
       clearDetails();
       if (role === 'camera') { capture.stop(); releaseWake(); idleCamera(); }
       else idleViewer();
+      showActiveRole(null);
     }
   },
   onRequests(requests) {
@@ -151,19 +153,27 @@ function stop(key = 'connection.stopped') {
   idleCamera();
   idleViewer();
   clearDetails();
+  showStatus('camera.ready', 'camera');
+  showStatus('viewer.ready', 'viewer');
   showStatus(key);
+  showActiveRole(null);
 }
 
-function selectMode(next) {
-  stop();
-  mode = next;
-  $('camera-panel').hidden = next !== 'camera';
-  $('viewer-panel').hidden = next !== 'viewer';
-  $('role-camera').setAttribute('aria-pressed', String(next === 'camera'));
-  $('role-viewer').setAttribute('aria-pressed', String(next === 'viewer'));
-  $('role-camera').classList.toggle('ghost', next !== 'camera');
-  $('role-viewer').classList.toggle('ghost', next !== 'viewer');
-  showStatus(next === 'camera' ? 'camera.ready' : 'viewer.ready');
+function showActiveRole(role) {
+  activeRole = role;
+  $('camera-panel').hidden = role === 'viewer';
+  $('viewer-panel').hidden = role === 'camera';
+  $('camera-discovery').hidden = role !== null;
+  if (role) $('camera-workspace').dataset.active = role;
+  else delete $('camera-workspace').dataset.active;
+}
+
+function fillViewerCode(code) {
+  if (activeRole) stop();
+  mode = 'viewer';
+  $('viewer-code').value = code;
+  showStatus('viewer.ready', 'viewer');
+  $('viewer-code').focus();
 }
 
 function qr(link) {
@@ -309,6 +319,9 @@ async function startCamera() {
   if (!globalThis.isSecureContext || !navigator.mediaDevices?.getUserMedia) return showStatus('camera.unsupported', 'camera');
   if (!globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'camera');
   stop();
+  mode = 'camera';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  showActiveRole('camera');
   const current = ++epoch;
   $('camera-start').disabled = true;
   $('camera-name').value = code;
@@ -344,6 +357,8 @@ async function connectViewer() {
   if (!code) return showStatus('code.invalid', 'viewer');
   if (!globalThis.isSecureContext || !globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'viewer');
   stop();
+  mode = 'viewer';
+  showActiveRole('viewer');
   const current = ++epoch;
   $('viewer-code').value = code;
   $('viewer-code').disabled = true;
@@ -375,11 +390,6 @@ async function playVideo() {
   }
 }
 
-$('role-camera').addEventListener('click', () => {
-  if (parseCode(location.hash)) history.replaceState(null, '', location.pathname + location.search);
-  selectMode('camera');
-});
-$('role-viewer').addEventListener('click', () => selectMode('viewer'));
 $('camera-start').addEventListener('click', startCamera);
 $('camera-device').addEventListener('change', switchCamera);
 $('camera-require-approval').addEventListener('change', () => {
@@ -390,9 +400,9 @@ navigator.mediaDevices?.addEventListener?.('devicechange', refreshCameras);
 $('camera-suggest').addEventListener('click', () => { $('camera-name').value = makeCode(); });
 $('camera-name').addEventListener('change', () => { $('camera-name').value = normalize($('camera-name').value); });
 $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
-$('camera-stop').addEventListener('click', () => stop());
+$('camera-stop').addEventListener('click', () => { stop(); $('camera-start').focus(); });
 $('viewer-connect').addEventListener('click', connectViewer);
-$('viewer-stop').addEventListener('click', () => stop());
+$('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', playVideo);
 $('viewer-fullscreen').addEventListener('click', async () => {
   try { await $('remote-video').requestFullscreen(); }
@@ -415,7 +425,7 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('hashchange', () => {
   const code = parseCode(location.hash);
-  if (code) { selectMode('viewer'); $('viewer-code').value = code; }
+  if (code) fillViewerCode(code);
 });
 $('privacy-toggle').addEventListener('click', () => {
   const panel = $('privacy-panel');
@@ -425,8 +435,8 @@ $('privacy-toggle').addEventListener('click', () => {
 });
 const code = parseCode(location.hash);
 $('camera-name').value = makeCode();
-selectMode(code ? 'viewer' : 'camera');
-if (code) $('viewer-code').value = code;
+showActiveRole(null);
+if (code) fillViewerCode(code);
 startDiscovery();
 showApprovalPolicy();
 

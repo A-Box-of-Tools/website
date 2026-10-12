@@ -1,5 +1,11 @@
 # Remote Camera
 
+Online cameras appear at the top of the idle page, above sharing and manual
+connection. Start or Connect focuses its active section until Stop or a failure returns
+to the idle page. A viewer link only fills and focuses the code field; it does
+not start pairing or ask for camera permission. Starting the source clears a
+viewer fragment so the URL no longer suggests a different camera.
+
 One browser opens a camera and accepts one viewer. Approval is on by default;
 turning it off accepts new requests through the same encrypted acknowledgement
 flow. The camera track is added only after that acknowledgement; the initial WebRTC offer has a control channel and no

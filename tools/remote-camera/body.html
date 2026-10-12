@@ -1,12 +1,21 @@
 <main id="main">
-  <div class="camera-modes" role="group" aria-label="Choose what this device does">
-    <button type="button" id="role-camera" aria-pressed="true">Use this device&rsquo;s camera</button>
-    <button type="button" id="role-viewer" class="ghost" aria-pressed="false">Watch another device</button>
-  </div>
+  <section id="camera-discovery" class="card camera-discovery" aria-labelledby="discovery-heading">
+    <h2 id="discovery-heading">Online cameras</h2>
+    <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
+    <ul id="discovery-list" class="camera-discovery-list"></ul>
+    <button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button>
+    <p class="field-note">Choosing a camera fills in its code. Choose Connect to request a view.</p>
+    <details class="camera-discovery-details">
+      <summary>How cameras are listed</summary>
+      <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise.</p>
+    </details>
+  </section>
+
   <p class="camera-requirements">Both devices need this page open, an internet connection for pairing, and a local network that lets them reach each other. Video travels directly between the browsers. No microphone, recording or internet relay.</p>
 
+  <div id="camera-workspace" class="camera-workspace">
   <section id="camera-panel" data-role="camera" class="card">
-    <h2>Start the camera, then invite a viewer</h2>
+    <h2>Share my camera</h2>
     <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
     <div class="field camera-name-field">
       <label for="camera-name">Viewer link name</label>
@@ -17,7 +26,7 @@
       <p id="camera-name-note" class="field-note">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
     </div>
     <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
-    <p class="field-note">The link name is visible to browsers in the discovery group described below. Turn this off to invite viewers by link only.</p>
+    <p class="field-note">The link name is visible to browsers in the discovery group described under Online cameras. Turn this off to invite viewers by link only.</p>
     <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked> Require my approval before viewers can watch</label>
     <p id="camera-approval-policy" class="camera-policy" role="status" aria-live="polite">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
     <div class="run-row">
@@ -42,7 +51,7 @@
         <input type="url" id="camera-link" readonly autocomplete="off" spellcheck="false">
         <button type="button" id="camera-copy" class="ghost">Copy viewer link</button>
         <p id="copy-status" class="field-note" role="status"></p>
-        <p class="camera-code-line">Or choose Watch another device and enter this code: <output id="camera-code" dir="ltr"></output></p>
+        <p class="camera-code-line">Or enter this code in Watch a camera on the viewing device: <output id="camera-code" dir="ltr"></output></p>
       </div>
       <canvas id="camera-qr" width="180" height="180" role="img" aria-label="Scan this QR code on the viewing device to open the camera link"></canvas>
     </div>
@@ -53,9 +62,9 @@
     </section>
   </section>
 
-  <section id="viewer-panel" data-role="viewer" class="card" hidden>
-    <h2>Watch a camera on your local network</h2>
-    <p class="card-lede">Enter the code or viewer link from the camera device. This device does not need camera or microphone access.</p>
+  <section id="viewer-panel" data-role="viewer" class="card">
+    <h2>Watch a camera</h2>
+    <p class="card-lede">Choose an online camera above, or enter a code or viewer link below. This device does not need camera or microphone access.</p>
     <div class="settings">
       <div class="field">
         <label for="viewer-code">Camera code or viewer link</label>
@@ -81,15 +90,7 @@
       </div>
     </div>
   </section>
-
-  <section id="camera-discovery" class="card" aria-labelledby="discovery-heading">
-    <h2 id="discovery-heading">Find a camera</h2>
-    <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise.</p>
-    <p class="field-note">Choosing a name opens the viewing form. It does not connect or request video. Choose Connect to request a view; the owner can require approval or allow viewers automatically.</p>
-    <button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button>
-    <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
-    <ul id="discovery-list" class="camera-discovery-list"></ul>
-  </section>
+  </div>
 
   <details id="connection-details" class="camera-details">
     <summary>Connection details and troubleshooting</summary>
@@ -150,9 +151,9 @@
     <span data-phrase="details.host-policy">Only host candidates are offered. Waiting for the browser to report the selected connection.</span>
     <span data-phrase="details.frames">Video frames decoded on this device: {count}.</span>
     <span data-phrase="qr.unavailable">The QR code could not be drawn. Copy the viewer link instead.</span>
-    <span data-phrase="discovery.connecting">Looking for listed cameras&hellip;</span>
-    <span data-phrase="discovery.empty">No other cameras are listed in this group. You can still use a viewer link or code.</span>
-    <span data-phrase="discovery.ready">Choose a camera name to open its viewing form.</span>
+    <span data-phrase="discovery.connecting">Looking for online cameras&hellip;</span>
+    <span data-phrase="discovery.empty">No online cameras are listed in this group. You can still use a viewer link or code.</span>
+    <span data-phrase="discovery.ready">Choose a camera name to fill in its code.</span>
     <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>
     <span data-phrase="discovery.publishing">Listing your camera&hellip;</span>
     <span data-phrase="discovery.published">Your camera name is listed. Your viewer approval setting still applies.</span>

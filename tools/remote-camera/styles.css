@@ -1,7 +1,12 @@
 /* A preview and its invitation stay together so the camera owner can see
    exactly when capture is running and which link they are offering. */
-.camera-modes { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
-.camera-modes button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
+.camera-workspace { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+.camera-workspace > .card { min-width: 0; margin: 0; }
+.camera-workspace[data-active] { grid-template-columns: minmax(0, 1fr); }
+.camera-discovery { margin: 1rem 0; }
+.camera-discovery h2 { margin-top: 0; }
+.camera-discovery-details { margin-top: 0.75rem; }
+.camera-discovery-details summary { cursor: pointer; color: var(--text-dim); }
 .camera-requirements, .camera-consent { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
 .camera-name-field { max-width: 42rem; }
 .camera-name-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
@@ -34,8 +39,10 @@
 .camera-details { margin: 1rem 0; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem 1rem; }
 .camera-details summary { cursor: pointer; font-weight: 600; }
 .camera-details p { color: var(--text-dim); line-height: 1.65; }
+@media (max-width: 52rem) {
+  .camera-workspace { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 36rem) {
-  .camera-modes { flex-direction: column; }
   .camera-invite { grid-template-columns: 1fr; }
   #camera-qr { justify-self: center; }
   .camera-request button { flex: 1 1 100%; }
