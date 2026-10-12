@@ -50,7 +50,7 @@ read_first = """
       <code>workers/rendezvous/worker.js</code> in the same repository"""
 howto_heading = "How to watch another device's camera"
 card = "A phone or computer camera in another browser, with optional viewer approval, camera switching and direct encrypted video."
-pledge_line = "Camera video goes <strong>directly to one viewer</strong>. You choose whether approval is required; internet introduces the browsers."
+pledge_line = "Camera video goes <strong>directly to one viewer</strong>. You choose whether approval is required. Internet introduces the browsers."
 md_note = "Camera video travels directly between connected browsers, with viewer approval on by default. Internet rendezvous carries setup metadata, never video; no microphone or recording feature."
 
 [csp]
