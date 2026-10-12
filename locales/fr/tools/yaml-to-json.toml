@@ -2,7 +2,7 @@ name = "Convertisseur YAML vers JSON"
 heading = "YAML&nbsp;vers&nbsp;JSON <span class=\"h1-kw\">&mdash; et JSON de nouveau en YAML</span>"
 tagline = "Les deux sens, et il dit ce que chacun coûte. Rien de tout cela n'est collé dans le serveur de quelqu'un d'autre."
 title = "Convertisseur YAML vers JSON &mdash; dans les deux sens, sans envoi"
-description = "Convertissez YAML en JSON et JSON en YAML dans votre navigateur. Il lit le YAML 1.2, donc yes et no restent des chaînes, et il dit exactement ce que chaque sens perd. Rien n'est envoyé : un fichier de configuration ne quitte jamais votre machine."
+description = "Convertissez un sous-ensemble pris en charge de YAML 1.2 en JSON et inversement dans le navigateur. Ancres, alias, balises et documents multiples sont refusés ; JSON perd les commentaires. Aucun envoi."
 og_title = "Convertir du YAML sans le coller dans un serveur"
 og_description = "Un convertisseur YAML et JSON qui tourne sur votre propre machine. Les clés gardent leur ordre, les nombres leurs chiffres, et ce que vous collez ne va nulle part."
 og_image_alt = "Convertisseur YAML vers JSON - les deux sens, sans envoi"
@@ -33,20 +33,20 @@ text = "Fonctionne hors ligne"
 text = "Open source"
 
 [[privacy]]
-title = "Ce que vous collez n'a nulle part où aller."
-body = "La Content-Security-Policy nomme chaque adresse que cette page peut contacter, et aucune ne nous appartient. Il n'y a ici aucun point de collecte où une configuration collée pourrait aboutir, et rien dans le code qui l'y enverrait s'il en existait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Rien ici ne récupère quoi que ce soit."
 body = "Il n'y a aucun <code>fetch</code>, aucun <code>XMLHttpRequest</code> et aucun <code>sendBeacon</code> nulle part dans <code>src/</code>. Les deux analyseurs et les deux imprimeurs sont des fonctions de cette page qui prennent une chaîne et renvoient une chaîne."
 
 [[privacy]]
-title = "Il lit le YAML 1.2, donc la Norvège reste la Norvège."
+title = "Le sous-ensemble pris en charge utilise les règles scalaires de YAML 1.2."
 body = "En YAML 1.1, <code>no</code> était un booléen, ce qui est le fameux bogue qui transforme le code pays de la Norvège en <code>false</code>. Ceci lit la 1.2, où c'est la chaîne qu'il paraît être. Dans l'autre sens, ces mots sont réécrits <em>entre guillemets</em>, parce que ce qui ouvrira le fichier ensuite peut encore être un lecteur 1.1. <code>tests/js/text-convert.test.js</code> vérifie les deux moitiés."
 
 [[privacy]]
 title = "Une conversion qui ne peut pas être honnête s'arrête."
-body = "Une ancre, un alias ou une étiquette dans le YAML met fin à la conversion avec un message indiquant à quelle ligne elle se trouve, plutôt qu'un document JSON qui voudrait discrètement dire autre chose. Le JSON n'a aucun moyen de dire &laquo;&nbsp;le même nœud deux fois&nbsp;&raquo;, et choisir une interprétation reviendrait à choisir à votre place."
+body = "JSON supprime les commentaires. Ce parseur prend volontairement en charge un sous-ensemble de YAML 1.2 et refuse ancres, alias et balises plutôt que de choisir leur expansion ou conversion de type. JSON représente un arbre de valeurs ; YAML accepte des nœuds partagés et des valeurs typées. Les flux de documents multiples sont refusés plutôt qu’enveloppés dans un tableau inventé. JSON vers YAML conserve les valeurs représentées."
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -82,11 +82,11 @@ a = "Non. Les deux analyseurs et les deux imprimeurs de cette page sont des fonc
 
 [[faq]]
 q = "Que perd-on en convertissant du YAML en JSON&nbsp;?"
-a = "Les commentaires, parce que le JSON n'a nulle part où en mettre. Les ancres, les alias et les étiquettes sont refusés d'emblée plutôt que devinés &mdash; chacun dit quelque chose que le JSON ne sait pas dire, et un convertisseur qui choisirait discrètement une interprétation vous rendrait un document qui n'est pas ce que disait le fichier. L'autre sens ne perd rien&nbsp;: tout document JSON est déjà un document YAML."
+a = "JSON supprime les commentaires. Ce parseur prend volontairement en charge un sous-ensemble de YAML 1.2 et refuse ancres, alias et balises plutôt que de choisir leur expansion ou conversion de type. JSON représente un arbre de valeurs ; YAML accepte des nœuds partagés et des valeurs typées. Les flux de documents multiples sont refusés plutôt qu’enveloppés dans un tableau inventé. JSON vers YAML conserve les valeurs représentées. <a href=\"https://yaml.org/spec/1.2.2/\">La spécification YAML</a> définit le format complet."
 
 [[faq]]
 q = "Mon YAML dit no et le JSON est sorti en chaîne. Pourquoi&nbsp;?"
-a = "Parce que c'en est une, et que ceci lit le YAML 1.2 plutôt que le 1.1. En YAML 1.1, <code>yes</code>, <code>no</code>, <code>on</code> et <code>off</code> étaient des booléens, ce qui est le fameux bogue qui transforme le code pays de la Norvège en <code>false</code>. Le YAML 1.2 a abandonné cela, et ceci aussi&nbsp;: seuls <code>true</code>, <code>false</code>, <code>null</code> et <code>~</code> sont lus comme autre chose que du texte. Dans l'autre sens, ces mots sont réécrits <em>entre guillemets</em>, alors même que ceci les lirait comme du texte sans eux &mdash; parce que ce qui ouvrira le fichier ensuite ne le fera peut-être pas. PyYAML utilise toujours la 1.1 par défaut. Lire strictement et écrire prudemment est la seule combinaison qui soit juste dans les deux sens."
+a = "YAML 1.1 lisait <code>yes</code>, <code>no</code>, <code>on</code> et <code>off</code> comme des booléens, transformant le code de la Norvège en <code>false</code>. Ce sous-ensemble utilise YAML 1.2 : ces mots restent des chaînes, <code>true</code> et <code>false</code> sont des booléens, <code>null</code> et <code>~</code> sont null et les scalaires numériques sont des nombres. L’écriture YAML met les mots ambigus entre guillemets pour les lecteurs aux anciennes règles."
 
 [[faq]]
 q = "Garde-t-il l'ordre de mes clés&nbsp;?"
@@ -113,8 +113,8 @@ q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = "Oui. Chargez la page une fois, puis débranchez internet et elle continue de fonctionner. C'est aussi la façon la plus simple de prouver que rien n'est envoyé&nbsp;: un outil qui expédierait votre configuration pour la convertir s'arrêterait à l'instant où vous débranchez."
 
 [schema]
-description = "Convertir YAML en JSON et JSON en YAML dans le navigateur. Lit le YAML 1.2, garde l'ordre des clés et les chiffres exacts de chaque nombre, et dit ce que chaque sens perd. Rien n'est envoyé."
-features = ["Convertit YAML en JSON et JSON en YAML", "Lit le YAML 1.2, donc yes et no restent des chaînes", "Garde l'ordre des clés et les chiffres exacts de chaque nombre", "Refuse ancres, alias et étiquettes plutôt que de deviner ce qu'ils voulaient dire", "Dit à quelle ligne et quelle colonne se trouve l'erreur, avec des mots", "Fonctionne sur un fichier déposé comme sur un collage", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
+description = "Convertissez un sous-ensemble pris en charge de YAML 1.2 en JSON et inversement dans le navigateur. Ancres, alias, balises et documents multiples sont refusés ; JSON perd les commentaires. Aucun envoi."
+features = ["Convertit YAML en JSON et JSON en YAML", "Lit un sous-ensemble de YAML 1.2 ; yes et no restent des chaînes", "Garde l'ordre des clés et les chiffres exacts de chaque nombre", "Refuse explicitement ancres, alias, balises et flux de documents multiples", "Dit à quelle ligne et quelle colonne se trouve l'erreur, avec des mots", "Fonctionne sur un fichier déposé comme sur un collage", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]
 title = "Déposez un fichier ici"

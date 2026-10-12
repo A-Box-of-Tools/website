@@ -6,7 +6,7 @@ description = "Combinez une rafale de photographies en une seule&nbsp;: moyennez
 og_title = "Empiler une rafale de photographies, fichiers RAW compris"
 og_description = "Moyenne, médiane, écrêtage sigma, éclaircir, assombrir, additionner ou empilement de mise au point, avec les prises alignées au préalable. Les fichiers RAW sont ouverts depuis l'aperçu JPEG intégré par l'appareil, lorsqu'il existe, sans décoder les données du capteur. Rien n'est envoyé."
 og_image_alt = "Empileur d'images - plusieurs prises combinées en une seule, dans le navigateur"
-pledge = "Chaque prise est ouverte, décodée, alignée, combinée et écrite par votre propre navigateur, sur votre propre machine. Une pile de vingt fichiers RAW de 60&nbsp;Mo, c'est environ un gigaoctet de photographies, et pas un octet ne bouge&nbsp;: l'outil n'a aucune fonction réseau, et les fichiers sont lus directement sur votre disque par un worker qui n'a nulle part où envoyer quoi que ce soit."
+pledge = "Chaque prise est ouverte, décodée, alignée, combinée et écrite par votre propre navigateur, sur votre propre machine. Une pile de vingt fichiers RAW de 60&nbsp;Mo, c'est environ un gigaoctet de photographies, et pas un octet ne bouge&nbsp;: l'outil n'a aucune fonction réseau, et les fichiers sont lus directement sur votre disque par un worker qui les traite localement sans les envoyer."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez l'onglet Réseau et empilez un dossier de fichiers RAW. Aucune requête ne transporte une photographie, une vignette, un nom de fichier ou un modèle d'appareil. Ou débranchez-vous d'internet et empilez-les quand même&nbsp;: rien ne change à l'outil."
 read_first = ", <code>src/raw.js</code> explique comment trouver les aperçus RAW intégrés sans décoder le capteur, <code>src/stack.js</code> donne le calcul de chaque méthode et <code>src/plan.js</code> explique la mémoire de travail estimée et les décodages prévus de l'empilement. Le fonctionnement interne du navigateur et la récupération de mémoire peuvent ajouter de la mémoire au-delà des tampons modélisés."
 howto_heading = "Comment empiler une série de photographies dans votre navigateur"
@@ -35,8 +35,8 @@ text = "Fonctionne hors ligne"
 text = "Code ouvert"
 
 [[privacy]]
-title = "Vos photographies n'ont nulle part où aller."
-body = "La Content-Security-Policy nomme chaque adresse que cette page peut contacter, et aucune ne nous appartient. Il n'y a ici aucun point de collecte où vos fichiers pourraient atterrir, ni de code qui les enverrait s'il y en avait un&nbsp;: pas de <code>fetch</code>, pas de <code>XMLHttpRequest</code>, pas de <code>sendBeacon</code>, ni dans <code>src/</code> ni dans le worker."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Les aperçus RAW sont lus sur cet appareil."
@@ -44,7 +44,7 @@ body = "De nombreux RAW contiennent un aperçu JPEG rendu par l'appareil. Cet ou
 
 [[privacy]]
 title = "Le travail se fait dans un Worker sur cette machine, pas sur un serveur."
-body = "C'est le seul outil d'ici qui en emploie un, parce qu'empiler se compte en minutes de calcul plutôt qu'en secondes, et qu'une page figée ne peut ni montrer sa progression ni être annulée. Un Worker est un second fil dans ce même navigateur &mdash; voir <code>src/worker.js</code>. On lui remet les fichiers eux-mêmes, ce qui ne coûte rien, car une poignée de fichier n'est pas les octets&nbsp;; et il a exactement la même Content-Security-Policy que la page, c'est-à-dire nulle part où les envoyer."
+body = "L’empilement peut durer des minutes ; un Worker calcule pendant que la page répond, affiche la progression et permet l’annulation. C’est un autre fil du navigateur : <code>src/worker.js</code>. Les références sont transmises localement sans envoyer les octets. Le Worker lit et combine les fichiers sur cet appareil. Examinez ce code sans prendre la politique de la page pour preuve de ses chemins de données."
 
 [[privacy]]
 title = "Rien de la série n'est rapporté nulle part."

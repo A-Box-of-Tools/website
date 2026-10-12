@@ -55,18 +55,12 @@
       level, and there are four:
     </p>
     <ul>
-      <li><strong>L</strong> &mdash; about 7% of the code can be lost.</li>
+      <li><strong>L</strong> &mdash; about 7% of total codewords.</li>
       <li><strong>M</strong> &mdash; about 15%.</li>
       <li><strong>Q</strong> &mdash; about 25%.</li>
       <li><strong>H</strong> &mdash; about 30%.</li>
     </ul>
-    <p>
-      More correction is not free: the check data goes in the same square, so
-      the same text at H needs a bigger, denser code than at L. Roughly, moving
-      from L to H doubles the number of modules for the same string, and denser
-      modules are harder for a camera to resolve. There is a real trade here and
-      the answer depends on where the code is going.
-    </p>
+    <p><a href="https://www.qrcode.com/en/about/error_correction.html">DENSO defines these percentages against total codewords</a>, not arbitrary modules or image area. Damage to detection patterns can stop a scan before data correction even begins. More correction also costs space: the same payload generally needs a denser or larger symbol.</p>
     <p>
       <strong>L</strong> is for a screen: a code in a slide, an email, a web
       page. Nothing is going to damage it and every extra module makes it
@@ -174,20 +168,8 @@
 
   <section>
     <h2>A logo in the middle</h2>
-    <p>
-      This works, and it works because of the error correction rather than in
-      spite of it. At level H roughly 30% of the modules can be destroyed and the
-      code still read, so a logo covering rather less than that &mdash; in the
-      centre, where no finder pattern sits &mdash; is damage the reader repairs.
-    </p>
-    <p>
-      Three things to hold to. Use level H. Keep the logo under about a fifth of
-      the area, well short of the theoretical limit, because print is not the
-      only thing eating into your margin. And never cover the three big squares
-      in the corners or the smaller ones near them: those are how a reader finds
-      and orients the symbol in the first place, and no amount of error
-      correction rebuilds them.
-    </p>
+    <p>A small logo can work, but no percentage of image area is guaranteed safe. DENSO defines level H’s roughly 30% restoration against total codewords, not arbitrary squares. Keep finder and alignment patterns clear, use H, and test the final printed code on several phones. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO’s error-correction explanation</a> describes the denominator.</p>
+    <p>Choose H and keep the logo small. There is no guaranteed safe area fraction: placement, symbol version, damage distribution and print quality all matter. Leave the finder and alignment patterns clear, and use a printed proof to decide whether this design scans reliably.</p>
     <p>
       Then test it on real phones. A logo takes a code from "always works" to
       "works with this much margin", and the only way to know how much margin is

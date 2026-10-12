@@ -2,18 +2,18 @@
   <h2>Como começar</h2>
   <p>Abra <a href="../../desbloquear-pdf/">Desbloquear PDF</a> e escolha o documento. A página identifica rapidamente qual destas situações se aplica:</p>
   <ul>
-    <li><strong>O documento abre, mas não permite impressão ou cópia.</strong> Não é preciso senha. Aperte o botão para remover as restrições. É um caso comum.</li>
-    <li><strong>O documento exige senha antes de abrir.</strong> Você precisa dela. Esta ferramenta não a descobre nem promete recuperá-la.</li>
+    <li><strong>O documento abre, mas não permite imprimir ou copiar.</strong> Se tiver apenas permissões restritas, aqui não precisa de senha. Use o botão para removê-las.</li>
+    <li><strong>O documento pede senha antes de abrir.</strong> Forneça uma senha válida de usuário ou proprietário. Esta ferramenta não adivinha nem recupera senhas.</li>
   </ul>
   <p>Entender essa diferença antes de entregar um documento a um serviço de desbloqueio ajuda a avaliar o que ele realmente pode fazer.</p>
 </section>
 <section>
   <h2>Senha de abertura e senha de proprietário</h2>
   <p>Um PDF pode ter duas senhas, apresentadas de forma quase idêntica pelos leitores.</p>
-  <p>A <strong>senha de usuário</strong>, também chamada de senha de abertura, impede a leitura. O conteúdo é criptografado com uma chave derivada da senha, que não fica escrita no documento. Sem a credencial necessária, nem você, nem um site, nem o programa que criou o arquivo consegue ler o conteúdo.</p>
-  <p>A <strong>senha de proprietário</strong> controla as restrições: impressão, cópia, edição e preenchimento de formulários. É comum haver senha de proprietário sem senha de usuário. Esse é o arquivo que abre com um clique duplo, mas não deixa imprimir.</p>
+  <p>A <strong>senha de usuário</strong>, ou de abertura, serve para decifrar o documento que a exige. Uma senha válida de usuário ou proprietário pode abri-lo aqui. Sem nenhuma, esta ferramenta mantém o arquivo fechado; não procura senhas nem chaves.</p>
+  <p>A <strong>senha de proprietário</strong> controla as <em>permissões</em>: imprimir, copiar, editar e preencher formulários. Com senha de usuário vazia, o arquivo abre sem pedir senha, enquanto o leitor aplica as restrições.</p>
   <p>Se ele abre sem pedir nada, <em>contém o necessário para derivar a própria chave</em>, como o leitor acabou de fazer. A criptografia usa uma chave que pode ser obtida sem uma credencial secreta. O bloqueio de impressão vem de outro campo, com bits de permissão que os leitores concordam em respeitar. A Adobe documenta isso desde o início. É um pedido, não uma barreira criptográfica.</p>
-  <p>Por isso, remover restrições é imediato, enquanto remover uma senha de abertura desconhecida não é uma função deste desbloqueador. São mecanismos diferentes, não duas intensidades da mesma proteção.</p>
+  <p>Remover permissões restritas de um arquivo que já abre não exige procurar senhas. Remover aqui uma senha de abertura exige uma senha válida fornecida. São operações diferentes e a página identifica o caso antes de continuar.</p>
 </section>
 <section>
   <h2>Como identificar o caso sem ferramenta</h2>
@@ -38,8 +38,8 @@
 </section>
 <section>
   <h2>Se você perdeu a senha de abertura</h2>
-  <p>Você pode perder o acesso ao documento. É importante saber disso antes de tentar uma sequência de sites que recebem o arquivo primeiro.</p>
-  <p>Ferramentas de recuperação fazem tentativas: palavras de dicionário, padrões e combinações. Isso pode funcionar para senhas curtas e ser impraticável para senhas fortes. Algumas rodam localmente, outras enviam o documento a servidores, e há serviços que cobram antes de informar o resultado. Um arquivo recente com método atual e senha forte não tem recuperação garantida.</p>
+  <p>Esta ferramenta não recupera senhas de abertura perdidas. Primeiro peça ao remetente a senha ou uma cópia acessível e guarde o original.</p>
+  <p>Ferramentas de recuperação testam candidatos ou atacam proteção fraca e obsoleta. O sucesso depende da senha e da criptografia: uma senha curta ou previsível difere de uma forte com criptografia moderna. Algumas rodam localmente, outras exigem upload. Este desbloqueador não realiza essas buscas.</p>
   <p>O <a href="../../desbloquear-pdf/">desbloqueador de PDF</a> não faz essa busca. O código não contém dicionário nem laço para testar senhas. Mesmo para documentos antigos em que uma busca seria viável, essa função foi deliberadamente excluída.</p>
   <p>Antes de qualquer outra coisa, procure quem enviou o documento. A pessoa normalmente ainda tem a senha. Documentos de empresas podem usar uma senha compartilhada pelo setor; bancos e sistemas de folha às vezes usam data de nascimento ou últimos dígitos da conta. As instruções costumam estar no e-mail que acompanhou o arquivo.</p>
 </section>

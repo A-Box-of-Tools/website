@@ -2,15 +2,15 @@ name = "Coupeur de vidéos"
 heading = "Couper&nbsp;une&nbsp;vidéo <span class=\"h1-kw\">&mdash; couper une vidéo en ligne</span>"
 tagline = "Marquez les passages à garder pendant la lecture. Récupérez-les en une seule vidéo."
 title = "Couper une vidéo en ligne &mdash; ne garder que ce que vous voulez, sans envoi"
-description = "Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur&nbsp;: rien n'est envoyé et rien n'est réencodé."
+description = "Marquez les passages à garder et enregistrez-les dans une vidéo dans votre navigateur. La copie conserve les images encodées ; les coupes exactes et l’enregistrement réencodent. Sans envoi, fonctionne hors ligne."
 og_title = "Coupeur de vidéos &mdash; ne garder que ce que vous voulez, sans rien envoyer"
-og_description = "Appuyez sur I et O pendant la lecture pour marquer chaque passage à garder. Les passages marqués sont réécrits en une seule vidéo, image pour image, sans rien envoyer."
+og_description = "Appuyez sur I et O pour marquer les passages. La copie conserve les pistes compatibles ; une coupe exacte réencode la vidéo et l’enregistrement les deux pistes. Rien n’est envoyé."
 og_image_alt = "Coupeur de vidéos - marquez ce que vous voulez et enregistrez-le en une seule vidéo, dans votre navigateur"
 pledge = "Votre vidéo est lue, marquée, coupée et écrite par votre propre navigateur, sur votre propre matériel. Cet outil ne comporte aucune fonction réseau, si bien que rien ici ne sait aller chercher ni envoyer quoi que ce soit. Et quand bien même il en aurait une, il n'y a à l'autre bout de cette page aucun serveur à qui remettre une vidéo."
 live_hint = "Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement, surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et coupez une vidéo. Pas une seule requête ne transporte d'image, de nom de fichier ni le moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la connexion et en couper une quand même, car un outil qui expédierait votre vidéo ailleurs pour la couper s'arrêterait tout simplement."
 read_first = ", <code>src/segments.js</code> pour les marques et le fichier où elles s'enregistrent, <code>src/shared/mp4-reader.js</code> pour le lecteur qui trouve les images dans un MP4, <code>src/ranges.js</code> pour l'arithmétique qui transforme une marque en une suite d'échantillons, et <code>src/copy.js</code> pour la boucle qui déplace ces échantillons dans le nouveau fichier. Aucun d'eux n'importe la moindre chose capable d'émettre une requête."
 howto_heading = "Comment couper une vidéo"
-card = "Marquez chaque passage à garder pendant la lecture, puis enregistrez-les en une seule vidéo. Les images sont recopiées plutôt que réencodées&nbsp;: rien n'est perdu."
+card = "Marquez les passages et enregistrez-les dans une vidéo. La copie conserve la qualité quand la sélection le permet ; la coupe exacte réencode l’image."
 
 [words]
 plural = "vidéos"
@@ -29,14 +29,14 @@ text = "Sans filigrane"
 text = "Autant de passages que vous voulez"
 
 [[facts]]
-text = "Aucune perte de qualité"
+text = "Copie sans perte si compatible"
 
 [[facts]]
 text = "Fonctionne hors ligne"
 
 [[privacy]]
-title = "Vos vidéos n'ont nulle part où aller."
-body = "La Content-Security-Policy énumère toutes les adresses que cette page peut contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de collecte où votre fichier pourrait aboutir, ni rien dans le code qui l'y enverrait s'il en existait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Rien ici ne récupère quoi que ce soit."
@@ -44,15 +44,15 @@ body = "Cet outil n'a aucune fonction réseau&nbsp;: pas d'adresse à coller, ri
 
 [[privacy]]
 title = "Sur le chemin normal, rien n'est même décodé."
-body = "Couper ne change l'aspect d'aucune image&nbsp;: les images encodées des passages que vous avez marqués sont donc déplacées dans le nouveau fichier exactement telles qu'on les a trouvées. Chacune est retenue comme une tranche du fichier sur votre disque, c'est-à-dire une note disant quels octets plutôt que les octets eux-mêmes, et votre navigateur les lit pour la première fois au moment d'écrire le téléchargement. Rien ici ne retransforme jamais votre vidéo en image."
+body = "En copie, les images encodées compatibles passent inchangées dans la sortie. La page garde des références aux octets originaux plutôt que de les décoder. Les coupes exactes et l’enregistrement décodent et réencodent l’image localement ; les commandes d’exportation indiquent ce choix."
 
 [[privacy]]
 title = "Le fichier de marques est fabriqué dans la page."
 body = "Enregistrer vos marques écrit un fichier texte à partir des nombres déjà à l'écran, directement dans vos téléchargements. En charger un le lit ici. Ni l'un ni l'autre ne s'approche d'un réseau, et ni l'un ni l'autre ne transporte autre chose que des temps."
 
 [[privacy]]
-title = "Le son est copié, pas écouté."
-body = "Sur les deux chemins MP4, les échantillons audio sont déplacés sans être décodés le moins du monde. Rien ici ne les retransforme jamais en son, et rien ne saurait les faire passer où que ce soit si c'était le cas."
+title = "L’audio compatible est copié."
+body = "En copie MP4 et coupe exacte, les échantillons audio compatibles sont copiés inchangés. Joindre des clips au son incompatible peut le décoder, rééchantillonner et réencoder localement ; l’enregistrement réencode aussi le son. La page l’indique avant exportation. Aucun audio n’est envoyé."
 
 [[privacy]]
 title = "Là où des images sont décodées, cela se passe ici."
@@ -132,8 +132,8 @@ a = "C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essa
 
 [schema]
 browser_requirements = "Nécessite JavaScript. Recopier les images ne demande aucune prise en charge de codec vidéo&nbsp;; la coupe exacte demande un navigateur avec WebCodecs, et les autres formats se rabattent sur l'enregistrement."
-description = "Marquez autant de passages que vous voulez pendant la lecture d'une vidéo, puis enregistrez ces passages en un seul fichier - ou coupez-les et gardez le reste. Les MP4, MOV et M4V sont coupés en déplaçant les images encodées intactes dans un nouveau fichier, avec l'audio d'origine repris échantillon par échantillon&nbsp;; rien n'est envoyé et rien n'est réencodé."
-features = ["Marque autant de passages que voulu avec I et O pendant la lecture", "Raccorde les passages marqués en un seul fichier, dans l'ordre que vous choisissez", "Coupe plutôt les passages marqués, en gardant tout le reste", "Coupe sans réencoder, si bien qu'aucune qualité n'est perdue", "Enregistre et recharge les marques dans un fichier texte d'horodatages", "Marques à l'image près, avec les images clés montrées sur la ligne de temps", "Garde l'audio d'origine sans le réencoder", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane"]
+description = "Marquez les passages à garder ou retirer et joignez le reste dans le navigateur. MP4, MOV et M4V permettent une copie des octets si les passages et pistes sont compatibles. La coupe exacte réencode la vidéo ; l’enregistrement l’image et le son. Aucun envoi."
+features = ["Marque autant de passages que voulu avec I et O pendant la lecture", "Raccorde les passages marqués en un seul fichier, dans l'ordre que vous choisissez", "Coupe plutôt les passages marqués, en gardant tout le reste", "Copie sans perte des sélections compatibles ; la coupe exacte réencode explicitement", "Enregistre et recharge les marques dans un fichier texte d'horodatages", "Marques à l'image près, avec les images clés montrées sur la ligne de temps", "Copie le son original compatible ; les assemblages incompatibles et l’enregistrement réencodent le son", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane"]
 
 [picker]
 title = "Déposez une vidéo ici"

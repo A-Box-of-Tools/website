@@ -7,12 +7,12 @@
 
 name = "Creador de fotos de carnet"
 heading = "Foto&nbsp;de&nbsp;carnet <span class=\"h1-kw\">&mdash; pasaporte y visado según la norma</span>"
-tagline = "Elige el país. Aplica esa norma, exactamente."
+tagline = "Elige un país y documento compatibles. Se distinguen los requisitos y las orientaciones."
 
-title = "Foto de pasaporte a medida &mdash; la norma de cada país, sin subir nada"
-description = "Haz una foto de pasaporte o visado según la norma publicada de tu país: milímetros y DPI exactos, una guía en vivo de altura de cabeza y línea de ojos, comprobación del fondo, una hoja de 10x15 lista para imprimir y un archivo ajustado al límite en KB del portal. No se sube nada."
-og_title = "Haz una foto de pasaporte según la norma exacta de tu país, sin subirla"
-og_description = "Elige un país y un documento y el recuadro de recorte toma la altura de cabeza y la línea de ojos de esa norma. Imprime al tamaño y la resolución obligatorios y escribe el archivo de subida dentro de la banda de KB que exige el formulario."
+title = "Foto de pasaporte &mdash; tamaños compatibles, sin subidas"
+description = "Prepara fotos de pasaporte o visado para países compatibles: tamaños publicados, guías de recorte señaladas, cabeza y ojos, comprobación del fondo, hojas imprimibles y ajustes JPEG. Tu foto permanece en tu navegador."
+og_title = "Prepara fotos de pasaporte y visado con fuentes, sin subirlas"
+og_description = "Elige un documento compatible, revisa los requisitos citados y las orientaciones, recorta localmente y exporta una foto, una hoja o un JPEG."
 og_image_alt = "Creador de fotos de carnet - fotos de pasaporte y visado según la norma, sin subir nada"
 
 pledge = """
@@ -36,7 +36,7 @@ read_first = """
       modificaciones de cabecera que meten la resolución de impresión en el archivo y
       suben una subida demasiado pequeña hasta el tamaño que exige un formulario."""
 
-howto_heading = "Cómo hacer una foto de pasaporte que no te devuelvan"
+howto_heading = "Cómo preparar una foto de pasaporte"
 
 card = """
             Elige un país y un documento, y el recuadro de recorte toma la altura de
@@ -285,14 +285,7 @@ a = """
 
 [[faq]]
 q = "¿Puede hacer también el archivo de la firma?"
-a = """
-        Sí: los formularios SSC y UPSC la quieren a &#x2066;140&nbsp;&times;&nbsp;60&#x2069; píxeles y
-        entre 10 y 20&nbsp;KB, y está en la lista como especificación propia. La guía de
-        la cara se apaga para ella, porque una firma no tiene línea de ojos, y lo que se
-        comprueba en su lugar es que el papel sea claro, que haya tinta encima y que el
-        recorte no se haya llevado una raya del cuaderno o el borde de la página. Llegar
-        a los 10&nbsp;KB es la parte difícil de esa regla, no quedarse por debajo de
-        20."""
+a = "Sí. La convocatoria citada de IBPS recomienda &#x2066;140&nbsp;&times;&nbsp;60&#x2069; píxeles y exige de 10 a 20&nbsp;KB para la firma JPEG. Este ajuste genera esas dimensiones; revisa la convocatoria actual de tu solicitud. Las marcas de cara están desactivadas. La herramienta comprueba papel claro, tinta visible y líneas o bordes de página en el recorte."
 
 [[faq]]
 q = "¿Esto garantiza que me acepten la solicitud?"
@@ -336,7 +329,7 @@ features = [
   "Imprime a los milímetros exactos, con la resolución escrita en la cabecera JPEG",
   "Una hoja de &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 o Carta, mosaicada con marcas de corte en los huecos y sin nada encima de una imagen",
   "Un archivo de subida al tamaño en píxeles obligatorio, ajustado a la banda de KB del portal por los dos extremos",
-  "Fotos de formulario SSC y UPSC a &#x2066;200 x 230&#x2069; en 20-50 KB, y firmas a &#x2066;140 x 60&#x2069; en 10-20 KB",
+  "Ajustes IBPS: fotos recomendadas de &#x2066;200 x 230&#x2069; en 20-50 KB y firmas de &#x2066;140 x 60&#x2069; en 10-20 KB; consulta la convocatoria actual",
   "Funciona sin conexión; sin subidas, sin cuenta, sin modelo de caras",
 ]
 
@@ -348,7 +341,7 @@ hint = "o haz clic para buscarla &mdash; una fotografía, JPEG, PNG, WebP, AVIF 
 title = "Tamaño y requisitos de foto: {document}, {country}"
 heading = "Requisitos de foto: {document}, {country}"
 nav = "{document}, {country}"
-description = "{size}, sobre fondo {background}: medidas de {authority}, consultadas el {checked}, y una herramienta gratuita para recortar la foto en el navegador. Sin subidas."
+description = "{document}, {country}: {size}, sobre fondo {background}, con requisitos de {authority}, consultados el {checked}, y una herramienta gratuita de recorte en el navegador. Sin subidas."
 lede = "Los requisitos publicados para la foto de este documento, de {authority}, consultados el {checked}, y una forma de prepararla sin enviar tu rostro a nadie."
 updated = "{checked}"
 facts_heading = "Las medidas"

@@ -1,0 +1,24 @@
+  <section>
+    <h2>Escolha o vídeo e ouça o resultado</h2>
+    <p>Abra o extrator e escolha ou arraste o vídeo. O navegador decodifica o áudio e cria um WAV automaticamente. Ouça o resultado antes de baixar. Um vídeo sem som não tem faixa para extrair; um codec que o navegador não decodifique precisa de outro decodificador.</p>
+    <p>A conversão acontece no seu dispositivo, sem upload para decodificar. Vídeos grandes ainda precisam de memória para entrada, amostras decodificadas e saída; processamento local não torna a memória ilimitada.</p>
+    <figure class="shot">
+      <img src="/screens/extract-audio-from-a-video/output.webp" alt="Profundidade WAV e opções de canais ao lado do player do áudio extraído.">
+      <figcaption>O player usa o WAV oferecido para baixar. Mudar profundidade ou canais cria outro resultado.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Escolha 16 bits ou Float32</h2>
+    <p>PCM de 16 bits é a opção padrão para ampla compatibilidade. A escrita arredonda e limita as amostras decodificadas. Float32 mantém seus valores quando os canais não mudam, inclusive valores acima da escala completa, e serve para continuar editando. Não restaura detalhes já perdidos por compressão.</p>
+    <p>WAV guarda áudio sem compressão e pode ser muito maior que a faixa comprimida do vídeo. O extrator não produz MP3 porque não inclui um codificador MP3. Outra aplicação com codificador local pode criar MP3 sem enviar o arquivo.</p>
+  </section>
+  <section>
+    <h2>Mantenha os canais ou misture para mono</h2>
+    <p>Mantenha os canais de origem para preservar sua separação. Mono calcula a média em um canal: pode diminuir o arquivo, mas remove a posição estéreo e pode cancelar sons quando os canais se opõem. Ouça depois de alterar essa opção.</p>
+    <p>A ferramenta lê a taxa de amostragem original quando o cabeçalho a expõe e decodifica nessa taxa. Quando precisa assumir uma taxa, os dados de saída dizem qual. Confira se o tempo ou a taxa importar para a próxima aplicação.</p>
+  </section>
+  <section>
+    <h2>Salve, cancele ou tente de novo</h2>
+    <p>Mudar profundidade ou canais substitui automaticamente o resultado anterior. Baixe a versão que ouviu. Cancelar retira o trabalho atual; uma decodificação em andamento pode terminar internamente, mas seu resultado atrasado não substitui uma escolha mais nova. Se a escrita falhar, use Criar WAV novamente com a fonte atual.</p>
+    <p>Para encurtar a faixa, continue no <a href="../../cortar-audio/">cortador de áudio</a>. Para fades, ganho ou inversão, use o <a href="../../editar-audio/">editor de áudio</a>.</p>
+  </section>

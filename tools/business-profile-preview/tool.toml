@@ -45,7 +45,7 @@ roadmap_group = "beyond"
 # the build so that its own can override them.
 css_parts = ["form", "checks", "notes", "chips"]
 js_parts = ["download", "errors", "text-import"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -134,13 +134,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "There is nowhere for what you type to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that an
-      address or a phone number could be collected at, and nothing in the code
-      that would send it if there were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."

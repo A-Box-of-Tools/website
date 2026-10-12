@@ -1313,6 +1313,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # which would all be saying the same thing about the same paragraph. See
     # buildlib/cards.py.
     body = cards.fold_ledes(body)
+    # The authored body closes its workspace. The rendered page keeps the
+    # landmark open through the instructions and FAQ, because those words
+    # are the tool's content too and must participate in change detection.
+    if body.count('</main>') != 1:
+        raise sitelib.ConfigError(f'{tool["slug"]}: the tool body needs one closing main')
+    body = body.replace('</main>', '', 1)
 
     # Setting [picker.urls] ships the module, the stylesheet and the widened
     # img-src. If the panel itself were then left off the page, the tool would
@@ -1724,7 +1730,7 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
         'main_class': 'legal' if page['kind'] == 'legal' else 'prose',
         'footer': footer,
         'css_href': f'{up}site.css?v={css_v}',
-        'jsonld': sitelib.page_jsonld(root, page),
+        'jsonld': sitelib.page_jsonld(root, page, body),
         'csp': sitelib.render_csp(root['csp']),
         # The screenshots are measured on the way past, because the body that
         # carries them is a different file in every language and the picture is

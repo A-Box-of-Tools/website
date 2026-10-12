@@ -1,0 +1,24 @@
+  <section>
+    <h2>Choose the video and listen to the result</h2>
+    <p>Open the extractor and choose or drop your video. The browser decodes its audio and creates a WAV automatically. Play the result before downloading it. A silent video has no soundtrack to extract, and a codec your browser cannot decode needs another decoder.</p>
+    <p>Conversion happens on your device. The file is not uploaded for decoding. Large videos still need memory for the input, decoded samples and output; local processing does not make that memory unlimited.</p>
+    <figure class="shot">
+      <img src="/screens/extract-audio-from-a-video/output.webp" alt="WAV depth and channel choices beside the extracted audio player.">
+      <figcaption>The player uses the WAV offered for download. Changing depth or channels creates a replacement result.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Choose 16-bit or Float32</h2>
+    <p>16-bit PCM is the default for broad playback compatibility. Writing it rounds and clamps the decoded samples. Float32 keeps those decoded sample values when the channels are unchanged, including values above full scale, and is useful for further editing. It does not restore detail already lost in a compressed soundtrack.</p>
+    <p>WAV stores uncompressed audio, so it can be much larger than the video’s compressed audio track. The extractor does not produce MP3: this tool ships no MP3 encoder. A local encoder in another application can create MP3 without uploading the file.</p>
+  </section>
+  <section>
+    <h2>Keep the channels or mix to mono</h2>
+    <p>Keep the source channels to preserve their separation. Mono averages them into one channel; it can make a smaller file, but removes stereo placement and can cancel sounds when the channels oppose each other. Listen after changing this option.</p>
+    <p>The tool reads the source sample rate where its header exposes it and decodes at that rate. When it must assume a rate, the output facts say which one. Check those facts if timing or sample rate matters to your next application.</p>
+  </section>
+  <section>
+    <h2>Save, cancel or try again</h2>
+    <p>Changing depth or channels replaces the previous result automatically. Download the version you have listened to. Cancel retires the current job; a browser decode already in progress may finish internally, but its late result will not replace your newer choice. If a write fails, use Create WAV again with the current source.</p>
+    <p>For a shorter soundtrack, continue in the <a href="../../trim-audio/">audio trimmer</a>. For fades, gain or reversing, use the <a href="../../edit-audio/">audio editor</a>.</p>
+  </section>

@@ -22,7 +22,7 @@
     <p>Ein komprimiertes Video ist ein neu kodiertes Video. Das Bild wird dekodiert, kleiner gezeichnet und mit der neuen Bitrate geschrieben. Es liegt damit eine Generation weiter vom Kamerabild entfernt als die Ausgangsdatei. Der Ton bleibt unberührt: Seine Samples werden genau so in die neue Datei kopiert, wie sie waren. Den Bildverlust bestimmt die Zahl. Ein halb so großer Clip verliert wenig; ein Clip von 900 MB, der auf 25 MB sinkt, verliert die meisten Bits, und das sieht man.</p>
     <ul>
       <li><strong>Wählen Sie die benötigte Grenze und keine kleinere.</strong> Bei einer Grenze von 25 MB sind 25 MB richtig. 8 MB werfen ohne Grund zwei Drittel des Bildbudgets weg.</li>
-      <li><strong>Schneiden Sie zuerst.</strong> Die Länge ist die andere Hälfte der Multiplikation. Zehn unnötige Sekunden verbrauchen Bitrate, die jeder verbleibenden Sekunde hätte zugutekommen können. Der <a href="../../ratgeber/video-kuerzen/">Videoschneider</a> schneidet ohne Neukodierung. Machen Sie das deshalb zuerst.</li>
+      <li><strong>Schneiden Sie zuerst.</strong> Unnötige Zeit zu entfernen lässt mehr Größenbudget pro verbleibender Sekunde. Der <a href="../../ratgeber/video-kuerzen/">Videoschneider</a> kann kompatible Auswahlen ohne Neukodierung kopieren; exakte Schnitte kodieren das Bild neu. Wählen Sie die angezeigte Methode vor dem Komprimieren bewusst.</li>
       <li><strong>Lassen Sie unwichtigen Ton weg.</strong> Eine Minute Stereo benötigt etwa ein Megabyte. Bei einem kurzen Clip mit enger Grenze entscheidet dieses Megabyte oft zwischen einem klaren und einem verschmierten Bild.</li>
       <li><strong>Behalten Sie das Original.</strong> Ein komprimiertes Video lässt sich nicht wiederherstellen. Komprimieren und versenden Sie eine Kopie und behalten Sie die Datei aus der Kamera.</li>
     </ul>
@@ -42,5 +42,5 @@
 
   <section>
     <h2>Was es schreibt und was es liest</h2>
-    <p>Es schreibt MP4 mit H.264-Video, weil jedes Handy, jeder Browser, jede Chat-App und jedes E-Mail-Programm diese Kombination abspielt. Genau darum geht es bei einer Datei, die sich versenden lassen soll. WebM, HEVC oder AV1 werden nicht geschrieben: Sie sind bei gleicher Qualität kleiner, aber viele Empfänger können sie nicht öffnen. Gelesen werden MP4 und MOV, wie sie Handys, Kameras und Bildschirmrekorder schreiben, mit jedem enthaltenen Codec, den Ihr Browser dekodiert. Ein HEVC-Clip vom iPhone öffnet sich auf den meisten Rechnern. WebM, MKV und AVI werden noch nicht gelesen; die Seite erklärt das, wenn sie eine solche Datei erhält.</p>
+    <p>Es schreibt MP4 mit H.264-Video und kopiertem Originalton. H.264 in MP4 ist weit verbreitet, aber das Zielprogramm muss auch Audiocodec und Videoprofil unterstützen. Testen Sie die fertige Datei dort. Eingaben sind MP4 und MOV mit im Browser dekodierbaren Codecs; WebM, MKV und AVI liest es nicht. Es schreibt kein WebM, HEVC oder AV1.</p>
   </section>

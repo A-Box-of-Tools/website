@@ -13,8 +13,8 @@ lede = """
     diese Diagramme. Hier steht, wie eines entsteht, das nicht nur überzeugt,
     sondern auch stimmt."""
 
-updated = "30. August 2026"
+updated = "12. Oktober 2026"
 
 og_title = "Ein Größenvergleichsdiagramm erstellen"
 og_description = "Wie die Größen geschrieben werden, welche Figur zu wählen ist, und warum ein vertrauter Gegenstand im Diagramm mehr bringt als eine dritte Person."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"

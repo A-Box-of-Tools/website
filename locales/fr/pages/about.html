@@ -9,14 +9,7 @@
       ils servent.
     </p>
     <p>
-      L&rsquo;inhabituel n&rsquo;est pas ce qu&rsquo;ils font, mais où ils le
-      font. Chacun d&rsquo;eux tourne entièrement dans le navigateur, sur la
-      machine de la personne qui l&rsquo;utilise, avec les décodeurs et les
-      encodeurs que ce navigateur embarque déjà. Rien de ce que vous ouvrez
-      n&rsquo;est transmis nulle part. Il n&rsquo;y a d&rsquo;ailleurs aucun
-      serveur derrière ces pages pour le recevoir&nbsp;: le site entier est fait
-      de fichiers statiques, et les outils sont de simples modules JavaScript
-      servis à côté d&rsquo;eux.
+      Chaque outil traite les fichiers dans le navigateur qui l’exécute, avec le matériel de cet appareil. La plupart utilisent les codecs natifs ; d’autres incluent des moteurs locaux JavaScript ou WebAssembly, comme le décodeur HEIC et l’OCR des reçus. Les fichiers ne sont pas envoyés pour traitement. Le site fournit des pages et du code statiques ; le partage volontaire et les fonctions en ligne facultatives ont leurs propres limites, décrites plus bas.
     </p>
     <p>
       Voilà le produit. Tout le reste de cette page explique pourquoi cela vaut
@@ -51,21 +44,10 @@
   <section>
     <h2>Pourquoi il est construit ainsi</h2>
     <p>
-      La façon ordinaire de bâtir ces outils consiste à envoyer le fichier, à
-      faire le travail sur un serveur et à renvoyer le résultat. C&rsquo;est
-      plus simple, cela fonctionne sur n&rsquo;importe quel appareil, et
-      c&rsquo;est ce que fait presque tout &laquo;&nbsp;convertisseur en ligne
-      gratuit&nbsp;&raquo;.
+      De nombreux convertisseurs envoient le fichier à un serveur, le traitent puis renvoient le résultat. D’autres travaillent localement. La distinction utile est l’endroit où le travail a lieu et la nécessité de faire sortir le fichier du navigateur.
     </p>
     <p>
-      Cela revient aussi à confier son fichier à un inconnu. Peu importe pour un
-      mème. Cela importe beaucoup pour le scan d&rsquo;un passeport, une image
-      médicale, un contrat signé, ou une photo dont les métadonnées portent
-      votre adresse. Une fois le fichier sur la machine de quelqu&rsquo;un
-      d&rsquo;autre, son sort dépend des règles et du sérieux de cette personne,
-      et vous n&rsquo;avez aucun moyen de vérifier ni l&rsquo;un ni
-      l&rsquo;autre. La politique de confidentialité d&rsquo;un tel site est une
-      promesse, pas une contrainte.
+      Le traitement serveur remet une copie au prestataire. Pour un passeport, une image médicale, un contrat signé ou une photo avec localisation, cette décision mérite vérification. Politiques publiques, documentation de sécurité, audits et comportement observable apportent des preuves. La page seule ne montre pas chaque copie interne, sauvegarde ou accès après l’envoi. Une politique décrit le traitement du prestataire ; ce n’est pas la même contrainte qu’une opération locale terminée déconnecté.
     </p>
     <p>
       Les navigateurs sont devenus assez bons pour rendre cette promesse
@@ -89,49 +71,24 @@
   <section>
     <h2>Vérifier, plutôt que faire confiance</h2>
     <p>
-      Tout ce qui précède est fait pour être mis à l&rsquo;épreuve. Quatre
-      moyens, par ordre d&rsquo;effort croissant&nbsp;:
+      Quatre vérifications apportent des preuves différentes. Combinez-les et vérifiez la fonction que vous comptez utiliser :
     </p>
     <ul>
       <li>
-        <strong>Débranchez internet.</strong> Chargez la page d&rsquo;un outil,
-        déconnectez-vous, et servez-vous-en quand même. Elle continue de
-        fonctionner, parce qu&rsquo;il n&rsquo;y a jamais eu d&rsquo;étape
-        réseau dedans. Un outil qui enverrait votre fichier ailleurs pour le
-        traiter s&rsquo;arrêterait net.
+        <strong>Déconnectez-vous pour une opération locale.</strong> Laissez l’outil charger et attendez que son indicateur hors ligne soit prêt. Traitez un fichier de votre appareil. Un résultat terminé prouve que cette opération était locale pendant la déconnexion, mais pas ce qui pourrait partir après reconnexion.
       </li>
       <li>
-        <strong>Regardez le réseau.</strong> Ouvrez les outils de développement,
-        allez dans l&rsquo;onglet Réseau, et traitez un fichier. Pas une seule
-        requête ne transporte votre fichier, une vignette de celui-ci, son nom
-        ou un octet de son contenu. Ce que vous verrez, c&rsquo;est la page, ses
-        scripts, la publicité et le compteur de visites.
+        <strong>Examinez les requêtes réseau.</strong> Vérifiez URL, corps des requêtes et messages WebSocket, plutôt que la seule taille. Le traitement local n’envoie pas vos fichiers. Ressources, scripts de plateforme, recherches facultatives et partages volontaires sont des trafics distincts expliqués sur leurs pages.
       </li>
       <li>
-        <strong>Lisez la règle que la page s&rsquo;impose.</strong> Chaque page
-        porte une <code>Content-Security-Policy</code> qui nomme toutes les
-        adresses qu&rsquo;elle a le droit de contacter, et aucune
-        n&rsquo;appartient à ce site. Même une erreur dans le code ne pourrait
-        pas envoyer un fichier quelque part, car le navigateur refuserait la
-        connexion.
+        <strong>Lisez la Content-Security-Policy.</strong> Elle limite les ressources et destinations de connexion. Elle n’inspecte pas les données, n’empêche pas leur envoi aux hôtes autorisés et ne décrit pas le trafic WebRTC entre pairs. Comparez-la au code et au comportement observé.
       </li>
       <li>
-        <strong>Lisez le code.</strong> Il est
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">entièrement
-        public</a>, sans étape de compilation ni empaqueteur&nbsp;: ce qui est
-        dans le dépôt est, octet pour octet, ce que votre navigateur exécute.
-        Chaque outil a un README qui explique son fonctionnement, et chaque page
-        d&rsquo;outil nomme les fichiers à lire en premier.
+        <strong>Lisez le code et le résultat compilé.</strong> Le <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a> contient modèles, modules, composants partagés et moteurs inclus. La compilation génère les pages et minifie le code du site. Chaque outil indique les fichiers à lire d’abord ; vous pouvez compiler et comparer avec la publication.
       </li>
     </ul>
     <p>
-      Il existe exactement une exception délibérée au
-      &laquo;&nbsp;sans réseau&nbsp;&raquo;, et elle est exposée longuement sur
-      sa propre page&nbsp;: <a href="../partager-du-texte/">Partager du
-      texte</a> déplace du texte entre deux de vos appareils, ce qui ne peut se
-      faire sans réseau. Une seule connexion est ouverte vers un relais qui ne
-      stocke rien et à qui l&rsquo;on dit uniquement que deux navigateurs
-      souhaitent être mis en relation.
+      Les fonctions réseau sont volontaires. <a href="../images-en-video/">Images en vidéo</a> peut récupérer une URL d’image. L’<a href="../extraire-recus-factures/">extracteur de reçus et factures</a> peut demander une paire de devises et une date à Frankfurter et remettre un rapport à l’application de messagerie ou de partage choisie. <a href="../partager-du-texte/">Partager du texte et des fichiers</a> et <a href="../remote-camera/">Caméra distante</a> transfèrent le contenu entre navigateurs. Le rendez-vous transporte des métadonnées de découverte et de connexion, jamais les fichiers partagés ni la vidéo. Ces fonctions nécessitent une connexion ; leurs pages et la <a href="../confidentialite/">page de confidentialité</a> expliquent ce que voit chaque participant.
     </p>
   </section>
 
@@ -148,13 +105,7 @@
       personne que le bogue ne trouvera pas.
     </p>
     <p>
-      En dessous, une suite de tests automatiques couvre les deux moitiés&nbsp;:
-      le générateur qui construit le site, et les modules que le navigateur
-      exécute. Elle tourne à chaque modification, et rien n&rsquo;est publié
-      après un échec. Là où le même travail se retrouve dans plusieurs outils
-      (plusieurs d&rsquo;entre eux lisent des fichiers MP4), un test vérifie que
-      les copies concordent toujours, de sorte qu&rsquo;une correction apportée
-      à l&rsquo;une ne laisse pas les autres silencieusement fausses.
+      Une suite automatisée couvre le générateur et les modules du navigateur. Elle s’exécute en CI et une erreur bloque la publication. Les analyseurs et générateurs communs, comme le lecteur MP4, se trouvent dans des modules partagés copiés dans chaque outil compilé. Un contrôle des doublons empêche des copies indépendantes de diverger.
     </p>
     <p>
       Les guides suivent la même règle. Leurs captures d&rsquo;écran sont prises
@@ -172,23 +123,10 @@
       qu&rsquo;il implique et ce qu&rsquo;il n&rsquo;implique pas.
     </p>
     <p>
-      <strong>Il n&rsquo;y a rien à acheter.</strong> Pas de compte, pas
-      d&rsquo;inscription, pas d&rsquo;offre gratuite avec une offre payante
-      au-dessus, pas de filigrane à faire retirer, pas de limite de taille, pas
-      de quota journalier, aucune fonction gardée en réserve. Ce qui est sur le
-      site, c&rsquo;est tout.
+      <strong>Il n’y a rien à acheter.</strong> Aucun compte, formule payante, filigrane à retirer contre paiement ou fonction réservée. Formats pris en charge, mémoire du navigateur et limites volontaires restent importants ; chaque outil les explique.
     </p>
     <p>
-      <strong>Vos fichiers ne font pas partie du marché.</strong> La publicité
-      est celle de Google et le comptage des visites est Google Analytics, et
-      ni l&rsquo;un ni l&rsquo;autre n&rsquo;apprend ce que vous ouvrez, ce que
-      vous produisez, comment cela s&rsquo;appelait ou quelle taille cela
-      faisait&nbsp;: aucun de ces scripts ne le reçoit jamais, et la politique
-      de sécurité de la page refuserait l&rsquo;envoi si l&rsquo;un
-      d&rsquo;eux essayait. Ce que ces deux-là collectent réellement, et comment
-      désactiver chacun, est exposé sur la
-      <a href="../confidentialite/">page de confidentialité</a>. Tous les outils
-      continuent de fonctionner avec les deux bloqués.
+      <strong>Vos fichiers ne font pas partie du modèle économique.</strong> Publicité et comptage des visites utilisent les services Google. L’avis facultatif envoie le nom de l’outil, une réponse fixe positive ou négative et un motif fixe, jamais fichier, nom, taille ou contenu. Le code ne transmet pas de données de fichiers à ces services. Les destinations autorisées restent des destinations réseau ; la politique seule ne garantit pas les données envoyées. La <a href="../confidentialite/">page de confidentialité</a> décrit collecte et blocage. Le traitement local fonctionne avec ces scripts bloqués.
     </p>
     <p>
       <strong>Les outils ne sont pas écrits pour la publicité.</strong> Aucun
@@ -205,14 +143,7 @@
   <section>
     <h2>Les langues</h2>
     <p>
-      Le site est publié en quinze langues. Chacune est une véritable traduction
-      et non une passe automatique laissée en l&rsquo;état&nbsp;: les noms des
-      outils, les explications, les guides et les adresses elles-mêmes sont
-      traduits, et une page n&rsquo;est répertoriée dans une langue que
-      lorsqu&rsquo;elle y a réellement été écrite. Une langue encore en chantier
-      reste lisible mais est tenue à l&rsquo;écart du plan du site et du sélecteur
-      de langue, pour que personne ne soit invité sur une page à moitié en
-      anglais.
+      L’anglais, le chinois simplifié, l’allemand, l’espagnol, le portugais brésilien, le français et le japonais sont maintenus ici. Huit traductions antérieures restent lisibles sous forme de pages archivées sans recevoir les modifications actuelles. Les pages maintenues n’entrent dans le sitemap et le sélecteur qu’une fois traduites ; les pages inachevées restent lisibles sans être présentées comme traductions terminées.
     </p>
     <p>
       Le courrier reçoit une réponse en anglais, ce qui est la seule chose
@@ -223,10 +154,8 @@
   <section>
     <h2>Ce que ce site ne fera pas</h2>
     <ul>
-      <li>Vous demander de créer un compte, ni votre adresse e-mail.</li>
-      <li>
-        Envoyer, stocker, inspecter ou conserver un fichier que vous ouvrez ici.
-      </li>
+      <li>Exiger un compte ou une adresse de messagerie pour traiter un fichier.</li>
+      <li>Recevoir ou conserver des fichiers sur un serveur pour les traiter.</li>
       <li>
         Apposer un filigrane sur un résultat, ni réserver une fonction à une
         offre payante.

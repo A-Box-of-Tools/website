@@ -40,7 +40,7 @@ js_parts = ["image-input", "file-picker", "zip", "crc32", "message-box", "downlo
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["compress-image"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -126,13 +126,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "Your images have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your files
-      could be collected at, and nothing in the code that would send them if there
-      were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -230,14 +225,7 @@ a = """
 
 [[faq]]
 q = "Does resizing an image lose quality?"
-a = """
-        Making a picture smaller does not, in any way you can see: there are more
-        pixels going in than coming out, so the detail that is kept is real detail.
-        Making one bigger cannot add what was never photographed &mdash; the result
-        is a softer copy of the same picture, not a sharper one &mdash; which is why
-        "never make a picture bigger than it started" is on by default. What does
-        cost a little is the re-encode afterwards, if the format is JPEG or WebP,
-        and the quality slider is what you spend there."""
+a = "Shrinking removes pixels and can lose small text, thin lines and fine detail, even when a photo looks good at the intended display size. Enlarging cannot recover detail that was never recorded. JPEG and lossy WebP encoding can add further loss after resizing; PNG preserves the resized pixels, not the original detail. Check the result at the size where it will be used."
 
 [[faq]]
 q = "Can I crop each image differently?"

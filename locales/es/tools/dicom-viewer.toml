@@ -73,14 +73,8 @@ text = "Código abierto"
 text = "Los archivos no salen de tu equipo"
 
 [[privacy]]
-title = "Tu estudio no tiene adónde ir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es nuestra. Aquí no hay ningún destino donde recoger
-      tu archivo, ni código que lo enviaría si lo hubiera. Antes esto decía
-      <code>connect-src 'none'</code>, que era absoluto; la publicidad costó eso,
-      y decirlo forma parte del trato."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí esto pesa más que en las demás páginas."
@@ -107,14 +101,7 @@ body = """
 
 [[privacy]]
 title = "Los identificadores se te enumeran a ti, y a nadie más."
-body = """
-
-      La página imprime cada campo de tu archivo que nombra o acota a la persona
-      retratada, porque esa es la pregunta que necesita respuesta quien está a
-      punto de compartir un corte, y ningún visor la responde. Aparece en la
-      pantalla que tienes delante y no va a ninguna otra parte: en este
-      repositorio no hay ningún evento de analítica que lleve nada de eso, y la
-      página no podría enviarlo aunque lo hubiera."""
+body = "La página imprime cada campo de tu archivo que nombra o acota a la persona retratada, porque esa es la pregunta que necesita respuesta quien está a punto de compartir un corte, y ningún visor la responde. Aparece en la pantalla que tienes delante y no va a ninguna otra parte: en este repositorio no hay ningún evento de analítica que lleve nada de eso. Los comentarios opcionales solo envían herramienta, voto y motivo fijos, nunca metadatos del archivo."
 
 [[privacy]]
 title = "Lee. No escribe."

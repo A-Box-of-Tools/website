@@ -12,7 +12,7 @@ name = "ID Photo Maker"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
 heading = "ID&nbsp;Photo Maker <span class=\"h1-kw\">&mdash; passport and visa photos to spec</span>"
-tagline = "Pick the country. It applies that country's rule, exactly."
+tagline = "Choose a supported country and document. Published rules and guidance are marked."
 icon = "&#128706;"          # the mark beside the page heading
 favicon = "&#128706;"       # the tab icon, drawn into an inline SVG
 # The drawn mark the pages wear, by its name in shared/icons - Lucide,
@@ -30,20 +30,20 @@ css_parts = ["progress", "form", "notes", "modes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "Passport Photo Maker &mdash; Every Country's Size, No Upload"
-description = "Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded."
-og_title = "Make a passport photo to your country's exact rule, without uploading it"
-og_description = "Pick a country and a document and the crop box takes that rule's head height and eye line. Prints at the mandated size and DPI, and writes the upload file inside the KB band the form insists on."
+title = "Passport Photo Maker &mdash; Supported Sizes, No Upload"
+description = "Prepare passport or visa photos for supported countries: published sizes, marked crop guidance, head and eye overlays, background checks, printable sheets and JPEG upload presets. Your photo stays in your browser."
+og_title = "Prepare passport and visa photos with cited rules, without uploading"
+og_description = "Choose a supported document, check its cited requirements and marked guidance, then crop locally and export a print, sheet or JPEG upload file."
 og_image_alt = "ID Photo Maker - passport and visa photos to spec, without uploading"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
 # card's heading is `name` above and its footer is the same line on every
 # card, so this is the only part of it that belongs to this tool.
-og_card = "Pick a country and a document, and it applies that rule exactly - on your own machine."
+og_card = "Supported passport and visa sizes, with local cropping and printable sheets."
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
@@ -80,7 +80,7 @@ read_first = """
 
 # --- the written half of the page --------------------------------------------
 
-howto_heading = "How to make a passport photo that is not sent back"
+howto_heading = "How to prepare a passport photo"
 
 # --- the card on the hub page ------------------------------------------------
 
@@ -355,13 +355,7 @@ a = """
 
 [[faq]]
 q = "Can it do the signature file as well?"
-a = """
-        Yes &mdash; the SSC and UPSC forms want one at &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixels
-        and between 10 and 20&nbsp;KB, and it is on the list as its own specification.
-        The face overlay is switched off for it, since a signature has no eye line, and
-        what is checked instead is that the paper is light, that there is ink on it, and
-        that the crop has not taken in a ruled line or the edge of the page. Reaching
-        10&nbsp;KB is the hard part of that rule, not staying under 20."""
+a = "Yes. The cited IBPS notice prefers &#x2066;140&nbsp;&times;&nbsp;60&#x2069; pixels and requires 10 to 20&nbsp;KB for a signature JPEG. This preset writes those dimensions; check the current notice for your application. The face overlay is disabled. The tool checks for light paper, visible ink, and lines or page edges in the crop."
 
 [[faq]]
 q = "Will this guarantee my application is accepted?"
@@ -406,7 +400,7 @@ features = [
   "Prints at the exact millimetres, with the resolution written into the JPEG header",
   "A &#x2066;4 x 6&#x2069;, &#x2066;5 x 7&#x2069;, A4 or Letter sheet, tiled with cut marks in the gaps and nothing over a picture",
   "An upload file at the mandated pixel size, searched into the portal's KB band at both ends",
-  "SSC and UPSC form photos at &#x2066;200 x 230&#x2069; in 20-50 KB, and signatures at &#x2066;140 x 60&#x2069; in 10-20 KB",
+  "IBPS notice presets: preferred &#x2066;200 x 230&#x2069; photos in 20-50 KB and &#x2066;140 x 60&#x2069; signatures in 10-20 KB; check your current notice",
   "Runs offline; no upload, no account, no face model",
 ]
 
@@ -428,7 +422,7 @@ features = [
 #
 # The patterns take {country}, {document}, {size}, {background}, {authority}
 # and {checked}. A colon rather than a sentence, because {document} is
-# "Passport" on one page and "SSC / UPSC online form photo" on another, and a
+# "Passport" on one page and "IBPS online form photo" on another, and a
 # pattern that reads naturally around the first reads "photo photo" around the
 # second - and is translated into languages where the noun would need a case.
 # ---------------------------------------------------------------------------
@@ -436,7 +430,7 @@ features = [
 title = "Photo size and requirements: {document}, {country}"
 heading = "Photo requirements: {document}, {country}"
 nav = "{document}, {country}"
-description = "{size}, on a {background} background: the figures published by {authority}, as read on {checked}, and a free tool that crops a photo to them in your browser. Nothing is uploaded."
+description = "{document}, {country}: {size}, on {background}, with requirements cited from {authority}, checked {checked}, and a free browser crop tool. No upload."
 lede = "The published rule for this document&rsquo;s photograph &mdash; from {authority}, as it was read on {checked} &mdash; and a way to make one that meets it without sending your face to anybody."
 updated = "{checked}"
 facts_heading = "The figures"

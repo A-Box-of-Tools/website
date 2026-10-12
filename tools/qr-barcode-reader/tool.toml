@@ -33,7 +33,7 @@ glyph = "scan-line"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
@@ -158,14 +158,7 @@ body = """
 
 [[privacy]]
 title = "Nothing here fetches anything."
-body = """
- There is no
-      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
-      <code>sendBeacon</code> anywhere in <code>src/</code>, and the page's
-      <code>Content-Security-Policy</code> leaves no address this origin could
-      send to even if there were. That is why this page cannot tell you where a
-      shortened link ends up: finding out would mean asking, and it does not
-      ask."""
+body = "Decoded text and links are shown locally, never opened automatically. The tool does not resolve shortened links, because that would contact the destination. Check the processing source and any calls to <code>fetch</code>, <code>XMLHttpRequest</code> or <code>sendBeacon</code> to see what data they receive. The page’s <code>Content-Security-Policy</code> limits connection destinations, including allowed platform hosts; it is not a claim that no network destination exists or proof of every payload."
 
 [[privacy]]
 title = "It shows you the address. It never opens it."
@@ -323,15 +316,7 @@ a = """
 
 [[faq]]
 q = "Can it read a code that is damaged or partly covered?"
-a = """
-        Often, yes, and that is the format working as designed rather than
-        anything clever here. Every QR code carries Reed-Solomon check data, and
-        a symbol made at level H can lose about 30% of its modules and still be
-        rebuilt exactly. The page says how many codewords it had to repair under
-        &ldquo;how this one was read&rdquo;, so you can see how close to the edge
-        it was. What it will not do is guess: a symbol damaged past what the
-        checks can carry is reported as unreadable rather than answered
-        wrongly."""
+a = "Sometimes. Reed-Solomon correction can restore damaged codewords within the symbol’s correction capacity. Level H’s roughly 30% refers to total codewords, not 30% of arbitrary modules or image area; damage to finder patterns can prevent detection entirely. The repair count under each result reports what this reader corrected. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explains the levels</a>."
 
 [[faq]]
 q = "Why does it say it cannot tell me where a bit.ly link goes?"

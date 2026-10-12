@@ -41,7 +41,7 @@ body = "Um aplicativo de mensagens, e-mail ou formulário impõe um máximo. Voc
 
 [[privacy]]
 title = "Comprimir vídeo significa codificar novamente."
-body = "Ao contrário de um ZIP, esta compressão tem perdas. A imagem é decodificada, reduzida e codificada em H.264 na taxa permitida pelo limite: mais uma geração de compressão desde a câmera. O áudio não é recodificado; seus dados são copiados intactos. O resultado é MP4 pela compatibilidade com celulares, navegadores e aplicativos de mensagens."
+body = "A compressão decodifica e recodifica a imagem localmente e copia as amostras de áudio intactas. MP4 com H.264 tem amplo suporte, mas o destino também precisa aceitar o codec de áudio copiado e o perfil de vídeo. Teste o arquivo antes de enviar."
 
 [[privacy]]
 title = "O resultado é medido e ajustado uma segunda vez se necessário."
@@ -93,11 +93,11 @@ a = "A taxa de bits precisa ser considerada junto com o número de pixels. Dois 
 
 [[faq]]
 q = "A qualidade vai piorar?"
-a = "Sim. A imagem é codificada novamente com uma taxa menor, ganhando mais uma geração de compressão. O áudio não muda. Reduzir 900 MB para 25 MB perde muito mais detalhe que reduzir um arquivo à metade. A página mostra dimensões e taxa para que você possa avaliar a troca."
+a = "Recodificar a imagem pode perder detalhes ou introduzir artefatos. Bitrate, dimensões, fonte e complexidade da cena afetam o que se vê; um limite não define perda exata de qualidade. O áudio é copiado intacto. Reproduza o resultado, compare texto e movimento importantes e guarde o original."
 
 [[faq]]
 q = "Qual formato é gerado?"
-a = "MP4 com vídeo H.264 e a faixa de áudio copiada intacta. A escolha busca ampla compatibilidade. Não gera WebM, HEVC ou AV1, que podem ocupar menos espaço, mas nem todos os destinatários conseguem abrir."
+a = "MP4 com vídeo H.264 e a faixa de áudio original copiada. H.264 em MP4 tem amplo suporte, mas o destino também precisa aceitar o codec de áudio copiado e o perfil de vídeo. Teste o arquivo final no aplicativo de destino. Esta ferramenta não grava WebM, HEVC nem AV1."
 
 [[faq]]
 q = "Quais arquivos são aceitos?"

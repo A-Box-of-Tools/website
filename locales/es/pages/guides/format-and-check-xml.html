@@ -1,0 +1,27 @@
+  <section>
+    <h2>Pega o importa el XML</h2>
+    <p>Abre el formateador y pega XML o elige un archivo de texto. Usa dos espacios, cuatro o una tabulación para indentar, o salida minimizada. Copia o descarga el resultado válido. Al escribir, la salida anterior deja de estar disponible mientras se comprueba la entrada nueva.</p>
+    <p>El analizador funciona localmente. Comprueba la sintaxis; no valida XSD ni DTD, no demuestra que una configuración funcione en tu aplicación ni visita URL mencionadas en el texto.</p>
+    <figure class="shot">
+      <img src="/screens/format-and-check-xml/mapping.webp" alt="Entrada XML y su conversión JSON con atributo, cadena y elementos repetidos.">
+      <figcaption>El atributo pasa a @region, el puerto sigue como cadena y los elementos feature repetidos se convierten en matriz.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Sigue un error de análisis</h2>
+    <p>Una etiqueta sin cerrar, un cierre incorrecto o una referencia de carácter inválida detienen formato y conversión. Ir al error mueve el cursor a la posición indicada. Se necesita un elemento exterior: rechaza dos raíces o texto fuera de la raíz.</p>
+    <pre><code>&lt;settings&gt;
+  &lt;port&gt;8080&lt;/port&gt;
+&lt;/settings&gt;</code></pre>
+    <p>DOCTYPE se conserva literalmente. No resuelve entidades externas; nombrar un archivo o sitio en una declaración no lo carga.</p>
+  </section>
+  <section>
+    <h2>Comprende los espacios antes de indentar</h2>
+    <p>Conserva valores de texto, CDATA y texto de elementos con contenido mixto. Los espacios solo entre elementos hijos se tratan como diseño salvo que aplique <code>xml:space="preserve"</code>. Esto facilita leer configuraciones, pero si la aplicación usa esos espacios como datos, comprueba el resultado antes de reutilizarlo.</p>
+  </section>
+  <section>
+    <h2>Qué cambia de XML a JSON</h2>
+    <p>Elige la dirección antes de leer el resultado. Los atributos son claves con <code>@</code>, elementos repetidos son matrices y el texto junto a otro contenido usa <code>#text</code>. Los valores XML siguen como cadenas: <code>&lt;port&gt;8080&lt;/port&gt;</code> no se infiere como número.</p>
+    <p>La conversión JSON pierde comentarios y el orden intercalado de texto mixto y elementos hijos. Volver no garantiza recuperar el documento original. Guarda una copia y compara los campos que usa tu aplicación.</p>
+    <p>Para formatear JSON sin ese cambio, usa el <a href="../../formatear-json/">formateador JSON</a>.</p>
+  </section>

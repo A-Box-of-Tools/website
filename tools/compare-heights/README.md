@@ -62,10 +62,10 @@ figure is added or upstream republishes one.
 
 ### There is nobody smaller than the boy and the girl
 
-Because nobody has drawn one and released it. Wikimedia Commons has exactly one
-usable free child — the girl — and NIH BioArt the boy; below school age the
-search comes back empty, and every coherent free family of people is a restroom
-pictogram about four and a half heads tall at *every* age.
+The search for this tool did not find toddler or baby artwork meeting its
+public-domain licensing and drawing requirements. The shipped girl came from
+Wikimedia Commons and the boy from NIH BioArt. That is a record of the artwork
+chosen here, not a claim that no other suitable drawing exists.
 
 A toddler built here from a table of body proportions stood on the chart for a
 while. The table was the right idea — **a small person is not a scaled-down

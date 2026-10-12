@@ -198,21 +198,18 @@ complete = true
 #
 
 [hub]
-title = "Ferramentas grátis no navegador &mdash; sem enviar arquivo, sem cadastro | abox.tools"
+title = "Ferramentas de navegador grátis &mdash; processamento local | abox.tools"
 # Abaixo de 155 caracteres, como no inglês: o Google corta a descrição por ali,
 # e aqui o final é a parte que vende o site.
-description = "Ferramentas grátis que nunca enviam seus arquivos. Junte imagens num PDF ou MP4, comprima uma imagem até o tamanho exato, corte um vídeo, remova o EXIF."
-heading = "Ferramentas que não passam por servidor nenhum"
-og_title = "A Box of Tools &mdash; ferramentas que não passam por servidor nenhum"
-og_description = "Ferramentas pequenas, cada uma com uma função só, que rodam inteiras dentro do seu navegador. Seus arquivos não saem do seu computador."
-og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
-schema_description = "Utilitários pequenos, cada um com uma função só, que fazem todo o trabalho dentro do navegador. Não se envia nada e não é preciso ter conta."
-schema_about = "Utilitários de arquivo que rodam no navegador e processam tudo localmente, sem enviar nada"
+description = "Ferramentas grátis processam arquivos no navegador: imagens em PDF ou MP4, compressão para um tamanho alvo, recorte de vídeo e remoção de EXIF."
+heading = "Ferramentas que processam arquivos no seu navegador"
+og_title = "A Box of Tools &mdash; processamento local no navegador"
+og_description = "Ferramentas para uma tarefa que processam arquivos no seu dispositivo. Compartilhamento e funções online opcionais são explicados onde aparecem."
+og_image_alt = "abox.tools - ferramentas de navegador para processamento local de arquivos"
+schema_description = "Utilitários de navegador para processamento local de arquivos, sem envio para processamento nem conta. As funções de rede são explicadas nas próprias páginas."
+schema_about = "Utilitários de navegador para processamento local e compartilhamento deliberado entre navegadores"
 
-lede = """
-    Ferramentas pequenas, cada uma com uma função só, que fazem todo o trabalho
-    dentro do seu navegador. Seus arquivos ficam no seu computador. Não há nada
-    para enviar, nenhuma conta para criar e nada rastreando você."""
+lede = "Ferramentas para uma tarefa que processam arquivos no seu dispositivo. Sem envio para processamento e sem conta. Funções que buscam ou compartilham algo explicam o que sai do navegador antes do uso."
 
 support_note = """
       Estas ferramentas são grátis e vão continuar assim. Se alguma poupou
@@ -221,26 +218,16 @@ support_note = """
 
 # Três fatos verificáveis em vez de uma promessa, igual ao inglês.
 [[hub.guarantees]]
-title = "Seus arquivos nunca saem do seu computador"
-body = """
-        Quem abre, lê e processa é o seu próprio navegador, usando o seu próprio
-        hardware. A <code>Content-Security-Policy</code> de cada ferramenta lista
-        todos os endereços que ela pode acessar, e nenhum deles é nosso."""
+title = "Seus arquivos são processados no seu dispositivo"
+body = "Seu navegador abre, lê e edita os arquivos escolhidos. Não há envio para processamento. Compartilhar texto e arquivos e Câmera remota enviam conteúdo deliberadamente a outro navegador; as próprias páginas explicam a conexão."
 
 [[hub.guarantees]]
-title = "Nada sobre seus arquivos sai daqui"
-body = """
-        Nem o arquivo, nem uma miniatura, nem o nome, o tamanho ou quantos você
-        escolheu. Nenhuma ferramenta daqui transmite nada disso. E não existe
-        servidor nenhum do outro lado dessas ferramentas para receber."""
+title = "Seus arquivos não são entregues à análise de visitas"
+body = "São contadas as visitas e as respostas fixas do feedback opcional. Nenhum deles recebe seu arquivo, nome, tamanho ou conteúdo. A importação opcional de imagens e a consulta de câmbio de recibos explicam, junto aos controles, as informações enviadas."
 
 [[hub.guarantees]]
-title = "Funciona offline"
-body = """
-        Abra uma ferramenta uma vez, desligue a internet e ela continua
-        trabalhando nos seus arquivos exatamente como antes. Isso é difícil de
-        fingir, porque uma ferramenta que mandasse seus arquivos para processar
-        em outro lugar simplesmente pararia."""
+title = "O processamento local funciona offline"
+body = "Espere o indicador offline mostrar que está pronto, desconecte e use arquivos do dispositivo. Buscar uma imagem da web, consultar uma taxa online e conectar dois navegadores precisam de rede."
 
 [[hub.categories]]
 id = "images"
@@ -273,14 +260,10 @@ nav = "Todos os guias"
 title = "Guias &mdash; como fazer o serviço e o que cada escolha custa"
 description = "Guias diretos para comprimir, redimensionar, cortar, aparar e converter seus próprios arquivos. O que cada ajuste significa, o que ele custa e por que nada disso precisa de envio."
 heading = "Guias"
-lede = """
-    Um guia por ferramenta, escrito para quem recebeu um tamanho ou um formato
-    para cumprir e quer entender o que aquele ajuste faz de verdade antes de
-    mexer nele. Tudo o que se descreve aqui acontece no seu próprio
-    computador."""
+lede = "Guias das ferramentas e das tarefas que as combinam: o que cada configuração faz, o que custa e o que verificar no resultado. Processamento local e funções deliberadas de rede são explicados separadamente."
 og_title = "Guias do abox.tools"
 og_description = "Como comprimir, redimensionar, cortar, aparar e converter seus arquivos, e quanto custa cada ajuste. Sem enviar nada."
-og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
+og_image_alt = "abox.tools - ferramentas de navegador para processamento local de arquivos"
 
 [[guides.groups]]
 id = "doing-the-job"
@@ -307,13 +290,9 @@ note = "O que realmente acontece quando você entrega um arquivo a um site, e co
 [roadmap]
 nav = "Roteiro"
 title = "Roteiro &mdash; as próximas ferramentas do abox.tools"
-description = "Todas as ferramentas planejadas para o abox.tools, agrupadas e à vista de todo mundo, junto com as que já ficaram prontas. Todas rodam no navegador e não enviam nada."
+description = "Todas as ferramentas planejadas e prontas de abox.tools, agrupadas e públicas. O processamento acontece no navegador."
 heading = "O que vem por aí"
-lede = """
-    Tudo o que está nas duas listas abaixo faz seu trabalho dentro do seu
-    navegador e não envia nada. Essa é a regra que um nome precisa passar para
-    sequer entrar aqui. Os números não estão escritos em lugar nenhum, porque a
-    compilação conta os itens das próprias listas."""
+lede = "Todas as ferramentas das duas listas processam arquivos no navegador, sem envio para processamento. Uma função que precisa de rede deve explicá-lo na própria página. A compilação calcula as quantidades a partir das listas."
 
 intro_heading = "Como esta lista foi montada"
 intro = """
@@ -341,8 +320,8 @@ intro = """
 planned_heading = "Cada tipo de arquivo, e o que dá para fazer com ele"
 
 og_title = "Roteiro do abox.tools"
-og_description = "O que já está pronto e o que vem por aí. Tudo roda no navegador e não envia nada."
-og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
+og_description = "O que está pronto e o que vem a seguir. Processamento local; funções que precisam de rede são explicadas."
+og_image_alt = "abox.tools - ferramentas de navegador para processamento local de arquivos"
 
 #
 # ---------------------------------------------------------------------------
@@ -352,10 +331,10 @@ og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
 
 [not_found]
 title = "Página não encontrada &mdash; abox.tools"
-description = "Esse endereço não existe no abox.tools. Estas são as ferramentas que existem, todas grátis e nenhuma delas enviando seus arquivos para lugar nenhum."
+description = "Esse endereço não existe em abox.tools. Aqui estão as ferramentas grátis de navegador para processar arquivos no seu dispositivo."
 heading = "Esta página não está aqui"
 tools_heading = "Todas as ferramentas num lugar só"
-tools_note = "Todas grátis, todas rodando no seu navegador, nenhuma enviando nada."
+tools_note = "Todas grátis; todas processam arquivos no navegador."
 
 lede = """
     Ou o endereço tem um erro de digitação, ou o que ficava nele mudou de
@@ -450,11 +429,7 @@ related_heading = "Também na caixa"
 handoff_lead = "Leve o resultado direto para:"
 privacy_heading = "Como dá para conferir a promessa de privacidade"
 
-md_note = """
-    Esta página é uma ferramenta interativa que funciona inteiramente no seu
-    navegador, em {{ tool.url }} &mdash; nada do que você entrega a ela é
-    enviado para lugar algum. O que segue é tudo o que a página diz sobre a
-    ferramenta em palavras; para usá-la, abra o endereço."""
+md_note = "Esta é uma ferramenta interativa de navegador em {{ tool.url }}. Os arquivos são processados no dispositivo que executa esse navegador. Compartilhamento deliberado e funções opcionais de rede são explicados na página. A seguir está sua explicação escrita; abra o endereço para usá-la."
 
 card_waiting = "Abre assim que você escolher um arquivo acima."
 example_load = "Testar um exemplo"
@@ -465,8 +440,7 @@ example_failed = "Este navegador não conseguiu criar o exemplo. Escolha um arqu
 # e documentos. Como o substantivo vem de cada ferramenta, nenhuma das duas
 # formas serve para todas - então a frase foi reescrita em volta de um verbo
 # que não concorda com nada.
-pledge_line = """
-    <strong>Nada sai daqui</strong>, nem {{ tool.words.plural }}. Não existe servidor."""
+pledge_line = "Seus {{ tool.words.plural }} são <strong>processados no navegador</strong>. Sem envio para processamento."
 
 boot_title = "O código desta página não rodou."
 boot_body = """
@@ -503,15 +477,7 @@ read_first_lead = """
       Os primeiros arquivos que valem a leitura são <code>config/site.toml</code>
       para a Content-Security-Policy"""
 
-dlp_note = """
-      <strong>Se o software de segurança da sua empresa avisar sobre um
-      envio.</strong> Ele observa o momento em que um arquivo é escolhido no
-      navegador, e não tem como saber se a página pretende enviá-lo &mdash;
-      então avisa na escolha. Daqui não sai nada: abra as ferramentas de
-      desenvolvedor, vá para Rede e escolha um arquivo. Não há nenhuma
-      requisição que o leve, nem requisição alguma além da pré-visualização
-      local da página. É a mesma verificação que o seu time de TI faz em meio
-      minuto."""
+dlp_note = "<strong>Se o software de segurança da sua empresa avisar sobre um envio.</strong> Um aviso ao escolher um arquivo não prova que ele foi enviado. Em uma operação local, confira os endereços e os dados das solicitações na aba Rede e compare com o código desta página. Buscas opcionais e compartilhamentos deliberados têm explicações próprias. Sua equipe de TI pode fazer a mesma verificação."
 
 [ui.feedback]
 # Os rótulos dos polegares são para o leitor de tela e a dica de ferramenta; os
@@ -543,12 +509,7 @@ open_tool = "Abrir {{ tool.name | e }}"
 # invariáveis em gênero e em número. Assim o próximo tool que ganhar um
 # [picker.urls] pode nomear o que quiser sem quebrar a gramática.
 [ui.picker]
-warning = """
-      <strong>Esta é a única função que usa a rede.</strong>
-      Buscar um endereço informa àquele servidor o seu IP e qual {{ tool.picker.urls.noun }} você
-      pediu. O que chega é copiado para a memória local na hora e nunca mais é
-      pedido de novo. Nada seu sai daqui em momento nenhum, porque esta página
-      continua sem conseguir fazer envio de tipo nenhum."""
+warning = "<strong>Buscar este endereço usa a rede.</strong> O servidor vê seu IP e o endereço da {{ tool.picker.urls.noun }} solicitada, incluindo os parâmetros da URL. A imagem fica na memória local depois de chegar. Arquivos escolhidos no seu dispositivo não são enviados como parte dessa importação."
 label = "Um endereço por linha"
 note = """
       O servidor precisa liberar o uso entre origens de cada {{ tool.picker.urls.noun }}. Muitos sites não

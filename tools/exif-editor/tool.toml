@@ -44,7 +44,7 @@ js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media", "
 # twelve back is the part nobody does twice. Checked against the tools that
 # exist by the build.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-10-04"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -128,13 +128,8 @@ mark = "&#10003;"
 text = "AVIF cleans to PNG; JPEG, PNG and WebP keep their encoding"
 
 [[privacy]]
-title = "Your photos have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your files
-      could be collected at, and nothing in the code that would send them if there
-      were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -146,10 +141,7 @@ body = """
 
 [[privacy]]
 title = "The metadata we read is never read out."
-body = """
- Your GPS position
-      is displayed on this page and goes nowhere else. There is no custom analytics
-      event in this repository that carries a tag, a filename, a size or a count."""
+body = "Your GPS position is displayed on this page and goes nowhere else. There is no custom analytics event in this repository that carries a tag, a filename, a size or a count. Optional feedback reports only the tool slug, a fixed vote and a fixed reason, never the metadata read from your file."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."

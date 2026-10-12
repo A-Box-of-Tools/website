@@ -4,16 +4,10 @@
 
 nav = "Kann ein KI-Agent diese Werkzeuge nutzen?"
 title = "Kann ein KI-Agent diese Werkzeuge nutzen?"
-description = "Ja - es sind gewöhnliche Webseiten ohne Konten und mit beschrifteten Bedienelementen, und ein Agent steuert sie wie alles andere. Was zählt, ist, wo der Browser des Agenten läuft: Das entscheidet, ob Ihre Datei auf Ihrer Maschine bleibt."
+description = "Ein Agent kann Browser-Werkzeuge bedienen. Prüfen Sie Browserort, Anbieter-Datenwege, Berechtigungen und bewusste Netzwerkfunktionen."
 heading = "Kann ein KI-Agent diese Werkzeuge nutzen?"
-lede = """
-    Ja. Es sind gewöhnliche Webseiten, ohne Konten, ohne Captchas und mit
-    beschrifteten Bedienelementen, und ein Agent steuert sie so, wie er
-    alles andere steuert. Die Frage, die eine Seite verdient, steckt
-    dahinter: Wenn Sie eine Dateiarbeit an einen Agenten abgeben, wohin
-    geht die Datei? Die Antwort hängt allein davon ab, wo der Browser des
-    Agenten läuft."""
-updated = "6. September 2026"
+lede = "Agenten können die Browseroberfläche bedienen. Für die Datenwege zählen Browserort, eigene Übertragungen des Agenten und die Netzwerkfunktionen des Werkzeugs."
+updated = "12. Oktober 2026"
 og_title = "Kann ein KI-Agent diese Werkzeuge nutzen?"
-og_description = "Gewöhnliche Webseiten mit beschrifteten Bedienelementen und ohne Konten - also ja. Was zählt, ist, wo der Browser des Agenten läuft: Das entscheidet, ob Ihre Datei auf Ihrer Maschine bleibt."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_description = "Werkzeuge per Agent nutzen: Browserort, Daten beim Anbieter, Berechtigungen und bewusste Netzwerkfunktionen."
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"

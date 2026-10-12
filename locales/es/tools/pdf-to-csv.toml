@@ -1,16 +1,16 @@
 name = "PDF a CSV"
-heading = "PDF&nbsp;a&nbsp;CSV <span class=\"h1-kw\">&mdash; tablas de todo tipo, incluidos extractos bancarios</span>"
-tagline = "Encuentra tablas en un PDF y las convierte en filas para una hoja de cálculo."
-title = "PDF a CSV &mdash; tablas y extractos bancarios, gratis y sin subidas"
-description = "Convierte tablas de PDF a CSV: extractos, facturas, listas de precios e informes. Detecta columnas por la posición del texto y compara saldos cuando es posible. Sin subir nada."
-og_title = "Convierte las tablas de un PDF a CSV sin subir el archivo"
-og_description = "Encuentra las tablas del documento en tu navegador e indica qué comparaciones de saldo coinciden en un extracto. El archivo no se envía a un servidor."
+heading = "PDF&nbsp;a&nbsp;CSV <span class=\"h1-kw\">&mdash; extraer tablas con texto</span>"
+tagline = "Convierte las tablas detectadas de PDF con texto en filas para una hoja de cálculo."
+title = "PDF a CSV &mdash; tablas con texto y extractos, sin subir archivos"
+description = "Extrae tablas de PDF con texto a CSV en el navegador: extractos, facturas, listas y informes. Usa las posiciones del texto legible y puede omitir diseños inusuales; los escaneos necesitan OCR primero. Nada se sube."
+og_title = "Tablas PDF a CSV, sin subir el archivo"
+og_description = "Extrae tablas de PDF con texto a CSV en el navegador: extractos, facturas, listas y informes. Usa las posiciones del texto legible y puede omitir diseños inusuales; los escaneos necesitan OCR primero. Nada se sube."
 og_image_alt = "Convertir las tablas de un PDF a CSV en el navegador"
 pledge = "El PDF se abre y lee en la memoria del dispositivo con código de esta página. El CSV se escribe del mismo modo. No hay funciones de subida ni un servidor que lo reciba. Números de cuenta, saldos, destinatarios y precios se quedan en la pestaña."
 live_hint = "Abre las herramientas de desarrollo, mira Red y convierte un PDF. Ninguna petición lleva páginas, filas, cifras ni nombres de archivo. O desconéctate y hazlo igualmente."
 read_first = ", <code>src/layout.js</code> para separar regiones de una página, <code>src/tables.js</code> para detectar tablas y columnas, <code>src/rows.js</code> para reunir líneas en filas y <code>src/check.js</code> para comparar los saldos de un extracto. Ninguno accede a la red, ni el lector que usan."
 howto_heading = "Cómo convertir las tablas de un PDF a CSV"
-card = "Pasa tablas de extractos, facturas, precios e informes a una hoja de cálculo. Encuentra columnas por la posición del texto y reúne celdas que ocupan varias líneas. Compara saldos de extractos cuando los importes y saldos son legibles."
+card = "Extrae tablas de PDF con texto a CSV en el navegador: extractos, facturas, listas y informes. Usa las posiciones del texto legible y puede omitir diseños inusuales; los escaneos necesitan OCR primero. Nada se sube."
 
 [words]
 plural = "documentos"
@@ -70,7 +70,7 @@ body = "Un documento cada vez. Se leen todas las páginas antes de decidir el se
 
 [[howto]]
 title = "Revisa las tablas encontradas."
-body = "Cada tabla conserva sus columnas y encabezados. Si continúa en otra sección o página con la misma estructura, se reúne sin repetir el encabezado. Las celdas partidas en varias líneas se unen. Totales, subtotales y etiquetas se conservan como filas."
+body = "Revisa cada tabla detectada con columnas y encabezados recuperados. Las tablas entre páginas pueden unirse y las celdas partidas volver a su fila. Antes de guardar CSV, compara con el original para detectar tablas omitidas, filas mezcladas y errores de diseño."
 
 [[howto]]
 title = "Elige una tabla o todas."
@@ -125,8 +125,8 @@ q = "¿Funciona sin conexión?"
 a = "Sí. Carga la página una vez y desconéctate. Seguirá funcionando, algo que una herramienta que enviara el PDF a un servidor no podría hacer."
 
 [schema]
-description = "Convierte tablas de PDF a CSV en el navegador: extractos, facturas, precios e informes. Detecta la estructura por la posición del texto y compara saldos cuando los importes son legibles. Sin subidas."
-features = ["Detecta tablas con sus propias columnas y encabezados", "Separa las notas laterales en vez de mezclarlas con la tabla", "Une tablas que continúan en otras secciones o páginas sin repetir encabezados", "Reúne celdas partidas en varias líneas", "Compara saldos e identifica filas no comprobadas", "Lee 1.240,00 y 1,240.00 e infiere el orden de fechas del documento", "Avisa si el PDF es un escaneo o está protegido y explica alternativas", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
+description = "Extrae tablas de PDF con texto a CSV en el navegador: extractos, facturas, listas y informes. Usa las posiciones del texto legible y puede omitir diseños inusuales; los escaneos necesitan OCR primero. Nada se sube."
+features = ["Detecta tablas con texto a partir de posiciones recuperables", "Separa las notas laterales en vez de mezclarlas con la tabla", "Une tablas que continúan en otras secciones o páginas sin repetir encabezados", "Reúne celdas partidas en varias líneas", "Compara saldos e identifica filas no comprobadas", "Lee 1.240,00 y 1,240.00 e infiere el orden de fechas del documento", "Avisa si el PDF es un escaneo o está protegido y explica alternativas", "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño"]
 
 [picker]
 title = "Suelta aquí tu PDF"

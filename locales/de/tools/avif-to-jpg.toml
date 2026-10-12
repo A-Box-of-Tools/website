@@ -32,8 +32,8 @@ text = "Funktioniert offline"
 text = "Open Source"
 
 [[privacy]]
-title = "Ihre Bilder haben kein Ziel außerhalb Ihres Rechners."
-body = " Die Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren darf. Keine davon gehört zu dieser Website. Es gibt keinen Endpunkt, der Ihre Dateien sammeln könnte, und keinen Code, der sie versenden würde."
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Der Decoder steckt bereits im Browser. Das ist der ganze Trick."
@@ -44,8 +44,8 @@ title = "Die transparenten Bereiche und die Farbe dahinter."
 body = " AVIF kann einen Alphakanal enthalten, JPEG nicht. Deshalb muss dahinter eine Farbe stehen. Diese Seite fragt nach ihr und verwendet standardmäßig Weiß. Sie fragt nur, wenn eine Datei tatsächlich Transparenz enthält, festgestellt anhand der dekodierten Pixel. Die meisten AVIF-Dateien von Websites sind undurchsichtige Fotos. Dann bleibt das Farbfeld verborgen."
 
 [[privacy]]
-title = "Was JPEG aus einem AVIF nicht übernehmen kann."
-body = " AVIF kann mehr Farben und hellere Spitzlichter beschreiben als JPEG: zehn oder zwölf Bit pro Kanal und HDR. JPEG hat acht Bit und kein HDR. Ein entsprechendes Bild wird auf den gewöhnlichen Dynamikbereich reduziert. Bei der großen Mehrheit der Bilder gibt es nichts zu reduzieren und keinen sichtbaren Unterschied; bei einem Bildschirmfoto eines HDR-Fotos möglicherweise schon. Das steht deshalb vorab hier."
+title = "Was diese Umwandlung nicht erhält."
+body = "Dieses Werkzeug schreibt ein gewöhnliches 8-Bit-SDR-JPEG aus einem Browser-Canvas. Zusätzliche AVIF-Farbtiefe und HDR-Informationen bleiben nicht erhalten; Farben oder helle Spitzlichter können sich ändern. Für das Archiv das Original behalten."
 
 [[privacy]]
 title = "Was Google lädt und welche Informationen es nicht erhält."
@@ -85,7 +85,7 @@ a = "Sie wird mit einer Farbe Ihrer Wahl gefüllt. Die Seite erklärt das vor de
 
 [[faq]]
 q = "Was ist mit HDR und 10-Bit-Farbe?"
-a = "Beides geht verloren, weil JPEG es nicht aufnehmen kann. AVIF speichert zehn oder zwölf Bit pro Kanal und Spitzlichter, die heller sind als die Anzeige eines gewöhnlichen Bildschirms. JPEG hat acht Bit und kennt keinen solchen Dynamikbereich. Ein HDR-AVIF wird deshalb zu einem gewöhnlichen Bild. Für eine überall zu öffnende Datei ist das passend, für eine Archivierung ein echter Verlust. Fast kein Bild von einer gewöhnlichen Webseite enthält HDR; für die meisten Menschen ändert sich daher nichts."
+a = "Dieses Werkzeug schreibt ein gewöhnliches 8-Bit-SDR-JPEG aus einem Browser-Canvas. Zusätzliche AVIF-Farbtiefe und HDR-Informationen bleiben nicht erhalten; Farben oder helle Spitzlichter können sich ändern. Für das Archiv das Original behalten. HDR-Formate auf JPEG-Basis gibt es: <a href=\"https://developer.android.com/media/platform/hdr-image-format\">Androids Ultra-HDR-Spezifikation</a> beschreibt eine Gain Map, die dieses Werkzeug nicht erzeugt."
 
 [[faq]]
 q = "Wird das Bild erneut komprimiert?"
@@ -93,7 +93,7 @@ a = "Ja, das ist erforderlich. AVIF und JPEG verwenden verschiedene Codecs. Ohne
 
 [[faq]]
 q = "Geht es auch andersherum, von JPG zu AVIF?"
-a = "Hier nicht. Der Grund: Kein Browser schreibt AVIF. Ein Canvas, das um AVIF gebeten wird, liefert stillschweigend PNG mit dem falschen Typ. Eine Seite, die AVIF im Browser verspricht, liegt daher entweder falsch oder sendet das Bild zur Kodierung an einen Server. Für die korrekte Verarbeitung ohne Server wäre ein eigener Encoder nötig. Diese Arbeit steht auf <a href=\"../roadmap/\">der Roadmap</a>, statt hier nur behauptet zu werden."
+a = "Hier nicht. Dieses Werkzeug verwendet den Canvas-Encoder des Browsers und liefert keinen AVIF-Encoder mit. Ein nicht unterstützter Canvas-Ausgabetyp fällt auf PNG zurück; eine andere Dateiendung erzeugt kein AVIF. Andere Werkzeuge können AVIF mit einem eigenen Encoder lokal schreiben, ohne Upload. <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob\">Die Canvas-Ausgaberegeln</a> erklären den Rückfall."
 
 [[faq]]
 q = "Bleiben Datum, Kamera und Standort erhalten?"

@@ -2,12 +2,12 @@
     <h2>The short answer</h2>
     <p>
       On 17 September 2026 we handed the same file to twenty free online
-      converters and measured every byte that left the browser.
+      converters and recorded request-body sizes through the hooks described below.
       <strong>Nineteen of the twenty uploaded it.</strong> One did not.
     </p>
     <p>
       That much is roughly what anybody would have guessed. The three things
-      that were not obvious are these: <strong>eleven of the nineteen sent the
+      that were not obvious are these: <strong>thirteen of the nineteen sent the
       file the moment it was chosen</strong>, before the Convert button was
       pressed and before there was any way to change your mind;
       <strong>every finished file we went looking for afterwards was still
@@ -38,16 +38,16 @@
     <p>
       A 450&nbsp;&times;&nbsp;350 PNG filled with random pixels, about
       542&nbsp;KB, named <code>abox-probe-9471.png</code>. Random noise because
-      it does not compress: its byte count stays the same wherever it goes, so a
-      request carrying it is unmistakable in a list of requests. A distinctive
+      it is difficult to compress. A payload near its size is a useful clue,
+      but the request body must still be inspected to establish what was sent. A distinctive
       filename because it makes the file findable in a URL later, which turned
       out to matter.
     </p>
 
     <h3>The measurement</h3>
     <p>
-      Before the file was handed over, every way a web page can send bytes was
-      replaced with a version that records the size of what it was given and
+      Before the file was handed over, the following request APIs were
+      instrumented with a version that records the size of what it was given and
       then does the normal thing: <code>fetch</code>,
       <code>XMLHttpRequest</code>, <code>navigator.sendBeacon</code>,
       <code>WebSocket.send</code>, and &mdash; this one matters &mdash;
@@ -83,9 +83,11 @@
   <section>
     <h2>The table</h2>
     <p>
-      Every byte count below was taken off the wire on 17 September 2026. The
-      last column is what that site's own published policy said on the same day,
-      in its own words, shortened.
+      The byte counts below are the request-body measurements reported on
+      17 September 2026, with missing counts left missing. The last column
+      preserves the policy summaries reported that day. Its links point to
+      current reference pages checked on 12 October 2026; they are not archived
+      proof of the earlier wording.
     </p>
 
     <figure class="data">
@@ -101,25 +103,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>Squoosh</td><td>No</td><td>0</td><td>&mdash;</td><td>nothing to keep</td></tr>
-            <tr><td>TinyPNG</td><td>Yes, on select</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td>48 hours</td></tr>
-            <tr><td>iLoveIMG</td><td>Yes, on select</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td>2 hours</td></tr>
-            <tr><td>iLovePDF</td><td>Yes, on select</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td>2 hours</td></tr>
-            <tr><td>Sejda</td><td>Yes, on select</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td>after processing; shared links 7 days</td></tr>
-            <tr><td>PDF24</td><td>Yes, on select</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td>&ldquo;usually&rdquo; 1 hour</td></tr>
-            <tr><td>PDF Candy</td><td>Yes, on select</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td>2 hours</td></tr>
-            <tr><td>jpg2pdf.com</td><td>Yes, on select</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td>1 hour, stated in Terms</td></tr>
-            <tr><td>Img2Go</td><td>Yes, on select</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td>72 hours</td></tr>
-            <tr><td>Online-Convert</td><td>Yes, on select</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td>72 hours</td></tr>
-            <tr><td>PDF2Go</td><td>Yes, on select</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td>72 hours</td></tr>
-            <tr><td>Compress2Go</td><td>Yes, on select</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td>72 hours</td></tr>
-            <tr><td>PicResize</td><td>Yes, on select</td><td>542,568</td><td><code>picresize.com/en/edit</code>, form post</td><td>20 minutes</td></tr>
-            <tr><td>ResizePixel</td><td>Yes, on select</td><td>form post</td><td><code>resizepixel.com/</code></td><td>within 1 hour</td></tr>
-            <tr><td>CloudConvert</td><td>Yes, on convert</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td>24 hours</td></tr>
-            <tr><td>Convertio</td><td>Yes, on convert</td><td>not captured</td><td><code>convertio.co/process/&hellip;</code></td><td>24 hours</td></tr>
-            <tr><td>Ezgif</td><td>Yes, on convert</td><td>542,483</td><td><code>ezgif.com/optimize</code>, form post</td><td>1 hour after last use</td></tr>
-            <tr><td>Aconvert</td><td>Yes, on convert</td><td>form post</td><td><code>aconvert.com/results.php</code></td><td>2 hours</td></tr>
-            <tr><td>Online2PDF</td><td>Yes, on convert</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td>&ldquo;immediately&rdquo;</td></tr>
+            <tr><td>Squoosh</td><td>No</td><td>0</td><td>&mdash;</td><td><a href="https://github.com/GoogleChromeLabs/squoosh/blob/dev/README.md" target="_blank" rel="noopener noreferrer">nothing to keep</a></td></tr>
+            <tr><td>TinyPNG</td><td>Yes, on select</td><td>542,566</td><td><code>tinypng.com/backend/opt/store</code></td><td><a href="https://tinypng.com/terms" target="_blank" rel="noopener noreferrer">48 hours</a></td></tr>
+            <tr><td>iLoveIMG</td><td>Yes, on select</td><td>542,816</td><td><code>api9.iloveimg.com/v1/upload</code></td><td><a href="https://www.iloveimg.com/help/terms" target="_blank" rel="noopener noreferrer">2 hours</a></td></tr>
+            <tr><td>iLovePDF</td><td>Yes, on select</td><td>542,801</td><td><code>api4.ilovepdf.com/v1/upload</code></td><td><a href="https://www.ilovepdf.com/help/privacy" target="_blank" rel="noopener noreferrer">2 hours</a></td></tr>
+            <tr><td>Sejda</td><td>Yes, on select</td><td>542,537</td><td><code>sejda.com/api/files/upload</code></td><td><a href="https://www.sejda.com/privacy" target="_blank" rel="noopener noreferrer">after processing; shared links 7 days</a></td></tr>
+            <tr><td>PDF24</td><td>Yes, on select</td><td>542,531</td><td><code>filetools24.pdf24.org/client.php</code></td><td><a href="https://www.pdf24.org/en/privacy-policy" target="_blank" rel="noopener noreferrer">&ldquo;usually&rdquo; 1 hour</a></td></tr>
+            <tr><td>PDF Candy</td><td>Yes, on select</td><td>542,522</td><td><code>s35.api.pdfcandy.com/uploadcbc/&hellip;</code></td><td><a href="https://pdfcandy.com/help.html" target="_blank" rel="noopener noreferrer">2 hours</a></td></tr>
+            <tr><td>jpg2pdf.com</td><td>Yes, on select</td><td>542,570</td><td><code>jpg2pdf.com/api/upload</code></td><td><a href="https://jpg2pdf.com/terms" target="_blank" rel="noopener noreferrer">1 hour, stated in Terms</a></td></tr>
+            <tr><td>Img2Go</td><td>Yes, on select</td><td>542,589</td><td><code>www21.img2go.com/v2/dl/web7/&hellip;</code></td><td><a href="https://www.img2go.com/privacy" target="_blank" rel="noopener noreferrer">72 hours</a></td></tr>
+            <tr><td>Online-Convert</td><td>Yes, on select</td><td>542,423</td><td><code>www8.online-convert.com/v2/dl/web7/&hellip;</code></td><td><a href="https://www.online-convert.com/privacy" target="_blank" rel="noopener noreferrer">72 hours</a></td></tr>
+            <tr><td>PDF2Go</td><td>Yes, on select</td><td>542,542</td><td><code>www15.pdf2go.com/v2/dl/web7/&hellip;</code></td><td><a href="https://www.pdf2go.com/privacy" target="_blank" rel="noopener noreferrer">72 hours</a></td></tr>
+            <tr><td>Compress2Go</td><td>Yes, on select</td><td>542,492</td><td><code>www6.compress2go.com/v2/dl/web7/&hellip;</code></td><td><a href="https://www.compress2go.com/privacy" target="_blank" rel="noopener noreferrer">72 hours</a></td></tr>
+            <tr><td>PicResize</td><td>Yes, on select</td><td>542,568</td><td><code>picresize.com/en/edit</code>, form post</td><td><a href="https://picresize.com/en/privacypolicy" target="_blank" rel="noopener noreferrer">20 minutes</a></td></tr>
+            <tr><td>ResizePixel</td><td>Yes, on select</td><td>form post</td><td><code>resizepixel.com/</code></td><td><a href="https://www.resizepixel.com/en/privacy" target="_blank" rel="noopener noreferrer">within 1 hour</a></td></tr>
+            <tr><td>CloudConvert</td><td>Yes, on convert</td><td>543,218</td><td><code>eu-central.storage.cloudconvert.com/&hellip;</code></td><td><a href="https://cloudconvert.com/privacy" target="_blank" rel="noopener noreferrer">24 hours</a></td></tr>
+            <tr><td>Convertio</td><td>Yes, on convert</td><td>not captured</td><td><code>convertio.co/process/&hellip;</code></td><td><a href="https://convertio.co/privacy/" target="_blank" rel="noopener noreferrer">24 hours</a></td></tr>
+            <tr><td>Ezgif</td><td>Yes, on convert</td><td>542,483</td><td><code>ezgif.com/optimize</code>, form post</td><td><a href="https://ezgif.com/privacy" target="_blank" rel="noopener noreferrer">1 hour after last use</a></td></tr>
+            <tr><td>Aconvert</td><td>Yes, on convert</td><td>form post</td><td><code>aconvert.com/results.php</code></td><td><a href="https://www.aconvert.com/privacy.html" target="_blank" rel="noopener noreferrer">2 hours</a></td></tr>
+            <tr><td>Online2PDF</td><td>Yes, on convert</td><td>547,330</td><td><code>online2pdf.com/conversion/frame</code></td><td><a href="https://online2pdf.com/privacy" target="_blank" rel="noopener noreferrer">&ldquo;immediately&rdquo;</a></td></tr>
             <tr><td>IMGonline</td><td>Yes, on convert</td><td>542,633</td><td><code>imgonline.com.ua/eng/&hellip;-result.php</code></td><td>no policy found</td></tr>
           </tbody>
         </table>
@@ -135,9 +137,17 @@
   </section>
 
   <section>
-    <h2>Eleven of them upload before you press anything</h2>
+    <h2>The observations and their limits</h2>
+    <p>The published table is available as <a href="/data/converter-observations-2026-09-17.json">JSON with provenance and limitations</a> and <a href="/data/converter-observations-2026-09-17.csv">CSV rows</a>. These files transcribe this article; they are not a new test. Counting the table gives thirteen selection-time uploads, correcting the eleven previously stated in the text.</p>
+    <p>The original request logs, browser version, exact random fixture and historical policy snapshots were not retained with the article. The figures therefore remain reported observations rather than a raw dataset that a reader can independently verify. The hooks do not cover every transfer path: form navigation, other frames, workers and WebRTC require separate inspection. A zero in this table means no upload was recorded by this test, rather than proof that no transfer is possible.</p>
+    <p>To repeat the comparison, create a fresh synthetic file, record its exact bytes and SHA-256, and use a fresh browser profile. Save a Network capture with request bodies and navigation preserved; inspect selection and conversion separately. Record the browser version, URL, time, action, destination, body size and whether the body contains the fixture. Redact credentials and private result links before sharing a capture. Preserve the policy text with its URL and date, and record unfinished tests separately.</p>
+    <p>A file URL returning without a session establishes access for someone holding that URL at that time. Check again after the stated retention interval before claiming deletion failed. Neither that check nor a network capture establishes what remains in a service’s internal logs or backups.</p>
+  </section>
+
+  <section>
+    <h2>Thirteen of them upload before you press anything</h2>
     <p>
-      This was the result we did not expect to be so lopsided. On eleven of the
+      This was the result we did not expect to be so lopsided. On thirteen of the
       nineteen, the file was already on its way to a server while the page was
       still showing a Convert button that had not been clicked.
     </p>
@@ -153,11 +163,11 @@
       they finally commit. It is a real improvement to the thing it is trying to
       improve. But it quietly removes a step most people believe they have.
       Choosing a file feels like opening it; pressing Convert feels like sending
-      it. On eleven of these twenty those are the same moment, and it is the
+      it. On thirteen of these twenty those are the same moment, and it is the
       earlier one that counts.
     </p>
     <p>
-      The practical consequence is small and exact: on those eleven, noticing
+      The practical consequence is small and exact: on those thirteen, noticing
       that you picked the wrong file &mdash; the unredacted draft, the payslip,
       the photo you meant to crop first &mdash; is something you can only do
       after it has gone.
@@ -193,16 +203,13 @@
       </li>
     </ul>
     <p>
-      This is ordinary web design and it is not a break-in: the addresses carry
-      a long random component, and guessing one is not realistic. But it is
-      worth being precise about what is actually protecting the file, because it
-      is not a password and it is not an account.
-      <strong>It is the secrecy of a URL</strong> &mdash; and a URL is among the
-      least secret things on the web. It goes into browser history, into the
-      screenshot of the address bar, into a <code>Referer</code> header on the
-      way to the next page, into whatever proxy sits between you and the
-      internet, and into the chat message where somebody sends the link instead
-      of the file.
+      The tested addresses contained hard-to-guess components. Anyone holding
+      one could fetch that result at the time of the check. Such a link can
+      leak through browser history, screenshots or messages, and through
+      referrers where the page’s policy permits it. HTTPS hides its path from
+      an ordinary network intermediary; the referrer policy determines what a
+      later website receives. The observation is about those four links, not
+      every download method a converter offers.
     </p>
     <p>
       Aconvert, to its credit, says so on the results page itself: that the
@@ -294,19 +301,7 @@
       while its finished files are, as above, fetchable by anyone holding the
       link.
     </p>
-    <p>
-      But the number of hours is not really the point, and this is the part
-      worth taking from the table rather than any individual row.
-      <strong>Every one of those promises is unfalsifiable from where you are
-      standing.</strong> You cannot watch the deletion happen. You cannot see
-      whether it reached the backup, the log, the error report that captured the
-      request body, or the content delivery network that cached the result so
-      the download would be fast. You cannot see what becomes of any of it if
-      the company is sold or breached. A retention policy is a statement of
-      intent, by people you have never met, about a machine you cannot look at
-      &mdash; and the honest ones and the dishonest ones are written in exactly
-      the same words.
-    </p>
+<p>But the number of hours is not the whole question. <strong>A public result link still returning the file after the stated retention interval can reveal missed deletion.</strong> A link that expires cannot prove that every internal copy was removed. You cannot see whether deletion reached the backup, the log, the error report that captured the request body, or the content delivery network that cached the result. You cannot see what becomes of those copies if the company is sold or breached. A retention policy states an intention about systems you cannot inspect; honest and dishonest promises can use the same words.</p>
     <p>
       That is the whole argument for preferring a tool that cannot send the file
       at all. Not that the companies above are lying. That with a tool which
@@ -319,8 +314,8 @@
     <h2>The one that did not upload</h2>
     <p>
       Squoosh, Google's image compressor, took the file, showed it, compressed
-      it, and made <strong>no network request at all</strong>. Not a smaller
-      one. Not a hashed one. Zero bytes, by the same measurement that caught
+      it, and had <strong>no file upload recorded by this test</strong>. Zero reported
+      upload bytes, by the same measurement that caught
       542,566 leaving TinyPNG a minute earlier.
     </p>
     <p>
@@ -370,8 +365,8 @@
   <section>
     <h2>Check any of it yourself</h2>
     <p>
-      Nothing here needs our word for it, and the point of publishing the method
-      is that the table can be rebuilt by somebody who thinks we got it wrong.
+      The original traces are unavailable, so the historical table cannot be
+      verified from raw requests. The method above supports a fresh comparison.
       The quickest version needs no tooling at all:
     </p>
     <ul>
@@ -382,8 +377,9 @@
       </li>
       <li>
         <strong>Watch the Network tab.</strong> Open developer tools, select
-        Network, sort by size, and use the tool. If your 4&nbsp;MB photo went
-        somewhere, there is a 4&nbsp;MB request at the top of that list. Look
+        Network, sort by size, and use the tool. Inspect request payloads,
+        not just the transferred-size column, which often describes responses.
+        A thumbnail, chunked upload or encoded file can have a different size. Look
         <em>before</em> you press Convert as well as after &mdash; that is the
         whole finding of the section above.
       </li>
@@ -406,54 +402,27 @@
   <section>
     <h2>How this site answers the same question</h2>
     <p>
-      It would be a strange page that measured twenty other sites and asked to
-      be exempt from the measurement. So, in the same terms as the table:
+      This site’s source is separate evidence from the historical converter measurements above. The current implementation makes the following claims, which you can check with the <a href="../is-it-safe-to-upload-files/">four-check method</a> on the feature you intend to use.
     </p>
     <ul>
       <li>
-        <strong>Bytes out: zero.</strong> Every tool here does its work in your
-        browser. Nothing carries your file, a thumbnail of it, its name, its
-        size, or anything read out of it.
+        <strong>Offline.</strong> Local processing works with loaded assets and a ready cache. Image URL retrieval, online rates and browser introductions require their respective connections.
       </li>
       <li>
-        <strong>Where it goes: nowhere.</strong> There is no server to send it
-        to. This site is static files, and the <code>connect-src</code> in its
-        Content-Security-Policy names Google's advertising and measurement
-        endpoints and the donate button, and <strong>no address on that list
-        belongs to this site</strong>.
+        <strong>Requests.</strong> The processing code does not upload selected files. Platform page visits and optional fixed feedback votes are separate. Rate requests contain a currency pair and date, and intentional peer features send content to the chosen browser. <strong>Policy.</strong> Most tools inherit platform destinations. Receipt extraction adds Frankfurter; Share Text &amp; Files and Remote Camera add the rendezvous. The policy constrains destinations and does not prove every payload.
       </li>
       <li>
-        <strong>Retention: not applicable</strong>, which is the only honest
-        entry in that column and the reason this page exists. There is no
-        deletion timer to trust, because nothing arrives.
+        <strong>Retention.</strong> abox.tools does not receive files for processing, so it has no server copy to delete from that operation. Local browser records, seven-day rendezvous connection logs and content retained by a sharing or email recipient are separate data paths described in the Privacy page.
       </li>
       <li>
-        <strong>Checkable: yes.</strong> Every line is
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">public</a>,
-        the build strips comments and whitespace and nothing else, and you can
-        run it yourself and compare the result against what is being served.
+        <strong>Source.</strong> The <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">source is public</a>. Build it and compare generated output. Shared modules and bundled engines are available alongside the first-party code.
       </li>
     </ul>
     <p>
-      The exceptions, stated rather than buried: this site carries Google
-      advertising and a visit counter, both of which talk to Google and neither
-      of which is handed anything about your files; the
-      <a href="../../images-to-video/">Images to Video</a> tool can fetch an
-      image from an address you paste in, which means that server sees your IP;
-      and <a href="../../share-text/">Share Text</a> opens one connection purely
-      to introduce two browsers to each other, which stores nothing and never
-      carries your content. The <a href="../../privacy/">privacy page</a> sets
-      out all three in full.
+      The <a href="../../privacy/">Privacy page</a> gives the full boundaries: <a href="../../images-to-video/">image URL imports</a>, optional <a href="../../receipt-invoice-extractor/">receipt exchange rates and app handoffs</a>, <a href="../../share-text/">browser-to-browser sharing</a> and <a href="../../remote-camera/">remote camera viewing</a>, plus ads, Analytics and fixed feedback. A deliberate transfer is distinct from uploading a file for processing.
     </p>
     <p>
-      If you arrived here from a search for one of the twenty, the equivalents
-      here are an <a href="../../compress-image/">image compressor</a> that hits
-      a size you name, <a href="../../images-to-pdf/">images to PDF</a>,
-      <a href="../../merge-pdf/">merge PDF</a>, a
-      <a href="../../compress-pdf/">PDF compressor</a>, and an
-      <a href="../../exif-editor/">EXIF viewer and remover</a> for the hidden
-      data described further up. All free, no account, and none of them has
-      anywhere to send your files.
+      For local file processing, examples include <a href="../../compress-image/">compressing toward a target size</a>, <a href="../../crop-video/">cropping a video</a>, <a href="../../exif-editor/">removing EXIF and GPS</a> and <a href="../../images-to-pdf/">making a PDF from images</a>. Check supported formats and the downloaded result. These jobs need no processing upload or account.
     </p>
   </section>
 
@@ -463,7 +432,7 @@
       The measurements on this page are free to quote, cite and re-run. If you
       are writing about this, the useful shape is: twenty free online
       converters, measured 17 September 2026; nineteen uploaded the file;
-      eleven of those sent it before the Convert button was pressed; and four of
+      thirteen of those sent it before the Convert button was pressed; and four of
       four finished files were retrievable from a public address with no session
       of any kind.
     </p>

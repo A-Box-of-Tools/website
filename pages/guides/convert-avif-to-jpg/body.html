@@ -114,7 +114,7 @@
   </section>
 
   <section>
-    <h2>What a JPEG cannot carry over</h2>
+    <h2>What this conversion does not preserve</h2>
     <p>
       Two things, and neither affects most pictures:
     </p>
@@ -128,30 +128,13 @@
       <a href="../../compress-image/">Image Compressor</a>, which reads AVIF and
       writes both.
     </p>
-    <p>
-      <strong>HDR and deep colour.</strong> AVIF can store ten or twelve bits a
-      channel and describe highlights brighter than an ordinary screen shows. A
-      JPEG is eight bits with no notion of HDR at all, so a picture using any of
-      that arrives flattened to ordinary range. Almost nothing saved from a normal
-      web page uses it, and if yours does not &mdash; which is very likely &mdash;
-      this costs you nothing.
-    </p>
+    <p><strong>HDR and deep colour.</strong> This tool writes an ordinary 8-bit SDR JPEG from a browser canvas. Extra AVIF bit depth and HDR information are not preserved, and colours or bright highlights may change. Keep the original for archiving. JPEG-based HDR formats do exist: <a href="https://developer.android.com/media/platform/hdr-image-format">Android’s Ultra HDR specification</a> describes a gain map, which this tool does not create.</p>
   </section>
 
   <section>
     <h2>Going the other way is a different problem</h2>
-    <p>
-      There is no JPG-to-AVIF tool here, and the reason is worth stating because
-      it is the same fact from the other side: <strong>no browser will write an
-      AVIF</strong>. Ask a browser canvas for one and it quietly hands back a PNG
-      with the wrong label on it.
-    </p>
-    <p>
-      So any page claiming to make AVIFs in your browser is either mistaken or is
-      sending your picture to a server to be encoded there. Doing it properly
-      without a server means building the encoder, which is real work and sits on
-      <a href="../../roadmap/">the roadmap</a> rather than being pretended at.
-    </p>
+    <p>There is no JPG-to-AVIF tool here because <strong>this page ships no AVIF encoder</strong>. Its browser canvas output uses JPEG, PNG or WebP rather than pretending a renamed PNG is an AVIF.</p>
+    <p>Local AVIF encoding is possible with a separate encoder, including WebAssembly, without sending the image to a server. That is a different implementation from this page. An unsupported native canvas format falls back to PNG, as <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob">the canvas documentation</a> explains.</p>
   </section>
 
   <section>

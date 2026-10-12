@@ -66,13 +66,8 @@ text = "Funktioniert offline"
 text = "Quelloffen"
 
 [[privacy]]
-title = "Für das, was Sie eintippen, gibt es keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem ein WLAN-Passwort landen könnte, und im Code steht auch nichts, das es
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -297,15 +292,7 @@ a = """
 
 [[faq]]
 q = "Kann ich ein Logo in die Mitte eines QR-Codes setzen?"
-a = """
-        Hier nicht, aber es lohnt sich zu wissen, warum es anderswo funktioniert:
-        Möglich macht es die Fehlerkorrektur. Auf Stufe H lassen sich rund
-        30&nbsp;% der Module zerstören, und der Code ist noch lesbar. Ein Logo,
-        das deutlich weniger als das in der Mitte verdeckt, wo kein Suchmuster
-        sitzt, ist damit reparabler Schaden. Schicken Sie den Code auf Stufe H
-        durch Ihr Bildbearbeitungsprogramm, halten Sie das Logo unter etwa einem
-        Fünftel der Fläche, und testen Sie ihn mit einem echten Telefon, statt
-        ihm zu vertrauen."""
+a = "Ein kleines Logo kann funktionieren, aber kein Flächenanteil ist garantiert sicher. DENSO bezieht die rund 30 % Wiederherstellung bei H auf alle Codewörter, nicht auf beliebige Quadrate. Such- und Ausrichtungsmuster freihalten, H wählen und den endgültigen Druck mit mehreren Handys testen. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSOs Erklärung zur Fehlerkorrektur</a> erläutert die Bezugsgröße."
 
 [[faq]]
 q = "Warum ist das SVG besser als das PNG?"

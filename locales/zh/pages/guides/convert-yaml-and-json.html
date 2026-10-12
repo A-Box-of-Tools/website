@@ -1,0 +1,27 @@
+  <section>
+    <h2>选择方向并添加文本</h2>
+    <p>粘贴文档或选择文件。菜单可选 YAML 转 JSON 或 JSON 转 YAML；导入 <code>.json</code>、<code>.yaml</code> 或 <code>.yml</code> 文件会选择对应方向。复制或下载前请检查结果。</p>
+    <p>转换在浏览器中运行，不会上传配置。请保留原本：即使数据未变，格式和注释的变化仍可能影响维护人员。</p>
+    <figure class="shot">
+      <img src="/screens/convert-yaml-and-json/values.webp" alt="YAML 输入和 JSON 输出，以及丢弃的注释数量。">
+      <figcaption>注释被移除，no 仍是字符串，大整数保留全部数字。</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>使用支持的 YAML 子集</h2>
+    <p>解析器处理常用映射、序列和标量值，采用 YAML 1.2 风格的解析规则，但并非完整的 YAML 1.2 实现。锚点、别名、自定义标签和多文档流会停止转换。文件需要这些功能时，请用支持它们的解析器；移除别名而不保留其含义会改变配置。</p>
+    <p>解析错误提供跳转到错误功能。请修正报告的输入，而不是使用旧输出；编辑后旧输出会不可用。</p>
+  </section>
+  <section>
+    <h2>检查注释、字符串和数字</h2>
+    <pre><code>enabled: true
+country: no
+account: 12345678901234567890</code></pre>
+    <p>这里的 <code>no</code> 保留为字符串 <code>"no"</code>，不会像 YAML 1.1 那样变成 false。转换器保留数字文本，不通过 JavaScript 浮点数对这个长账号取整。但读取结果的应用仍可能有自己的数字范围限制。</p>
+    <p>JSON 不支持注释，所以 YAML 注释被丢弃，工具会报告读取的注释。引号字符串或块标量里的 <code>#</code> 是内容，不是注释。</p>
+  </section>
+  <section>
+    <h2>将 JSON 转回 YAML</h2>
+    <p>数据模型会保留，但结果是重新写出的 YAML，不会恢复之前的注释或格式。歧义词会加引号，以兼容仍使用 YAML 1.1 的读取器。请检查接收应用的 YAML 版本和模式，尤其是部署配置。</p>
+    <p><a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener noreferrer">YAML 规范</a>描述完整语言。仅需检查或压缩 JSON 时，请使用 <a href="../../json-formatter/">JSON 格式化工具</a>。</p>
+  </section>

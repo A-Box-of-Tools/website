@@ -59,13 +59,8 @@ text = "Código abierto"
 text = "AVIF se limpia a PNG; JPEG, PNG y WebP conservan su codificación"
 
 [[privacy]]
-title = "Tus fotos no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger tus archivos, ni una línea de código que los mandara
-      si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada le pide nada a la red."
@@ -78,11 +73,7 @@ body = """
 
 [[privacy]]
 title = "Los metadatos que leemos no se los contamos a nadie."
-body = """
- Tu posición GPS
-      se muestra en esta página y no va a ninguna otra parte. En este repositorio
-      no hay ningún evento de analítica propio que lleve una etiqueta, un nombre
-      de archivo, un tamaño o un recuento."""
+body = "Tu posición GPS se muestra en esta página y no va a ninguna otra parte. En este repositorio no hay ningún evento de analítica propio que lleve una etiqueta, un nombre de archivo, un tamaño o un recuento. Los comentarios opcionales solo envían herramienta, voto y motivo fijos, nunca metadatos del archivo."
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."

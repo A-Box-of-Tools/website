@@ -1,0 +1,27 @@
+  <section>
+    <h2>Choisir le sens et ajouter le texte</h2>
+    <p>Collez un document ou choisissez un fichier. Le menu sélectionne YAML vers JSON ou JSON vers YAML ; importer un fichier <code>.json</code>, <code>.yaml</code> ou <code>.yml</code> choisit le sens correspondant. Vérifiez le résultat avant Copier ou Télécharger.</p>
+    <p>La conversion se déroule dans le navigateur sans envoyer la configuration. Gardez l’original : formatage et commentaires peuvent compter pour sa maintenance, même sans changement des données.</p>
+    <figure class="shot">
+      <img src="/screens/convert-yaml-and-json/values.webp" alt="Entrée YAML et sortie JSON avec le nombre de commentaires supprimés.">
+      <figcaption>Le commentaire disparaît ; no reste une chaîne et le grand entier garde ses chiffres.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Utiliser le sous-ensemble YAML pris en charge</h2>
+    <p>Le lecteur traite les associations, séquences et valeurs scalaires courantes avec une résolution de type YAML 1.2. Il n’implémente pas tout YAML 1.2. Ancres, alias, balises personnalisées et flux de documents multiples arrêtent la conversion. Utilisez un parseur adapté si le fichier en a besoin ; retirer un alias sans garder son sens change la configuration.</p>
+    <p>Une erreur propose Aller à l’erreur. Corrigez l’entrée signalée plutôt que d’utiliser l’ancienne sortie, indisponible après modification.</p>
+  </section>
+  <section>
+    <h2>Vérifier commentaires, chaînes et nombres</h2>
+    <pre><code>enabled: true
+country: no
+account: 12345678901234567890</code></pre>
+    <p>Ici <code>no</code> reste la chaîne <code>"no"</code>, sans devenir false comme en YAML 1.1. Le convertisseur garde le texte numérique sans arrondir ce long numéro de compte via les nombres flottants de JavaScript. L’application lisant le résultat peut imposer ses propres limites numériques.</p>
+    <p>JSON n’a pas de commentaires : ceux de YAML sont supprimés et l’outil signale ceux qu’il a lus. Un <code>#</code> dans une chaîne entre guillemets ou un scalaire de bloc est du contenu, pas un commentaire.</p>
+  </section>
+  <section>
+    <h2>Reconvertir JSON en YAML</h2>
+    <p>Le modèle de données est conservé, mais le YAML est nouvellement écrit : il ne retrouve ni commentaires ni formatage antérieurs. Les mots ambigus sont cités pour les lecteurs YAML 1.1. Vérifiez version et schéma de l’application destinataire, surtout pour les configurations de déploiement.</p>
+    <p>La <a href="https://yaml.org/spec/1.2.2/" target="_blank" rel="noopener noreferrer">spécification YAML</a> décrit la langue complète. Pour vérifier ou minimiser JSON seul, utilisez le <a href="../../formater-du-json/">formateur JSON</a>.</p>
+  </section>

@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Code ouvert"
 
 [[privacy]]
-title = "Vos documents n'ont nulle part où aller."
-body = "La Content-Security-Policy nomme chaque adresse que cette page peut contacter, et aucune ne nous appartient. Il n'y a ici aucun point de collecte où vos photos pourraient atterrir, ni de code qui les enverrait s'il y en avait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Il n'y a pas de modèle, donc rien à télécharger et rien à demander."

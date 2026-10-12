@@ -247,6 +247,7 @@ class StructuredData(unittest.TestCase):
     def test_a_tool_graph_has_the_three_types(self):
         tool = {
             'name': 'Widget', 'url': 'https://example.test/widget/',
+            'lastmod': '2026-01-01',
             'schema': {'category': 'UtilitiesApplication', 'description': 'd',
                        'features': ['a']},
             'faq': [{'q': '<b>Why?</b>', 'a': 'Because &amp; so.'}],
@@ -260,6 +261,7 @@ class StructuredData(unittest.TestCase):
         # each other.
         tool = {
             'name': 'Widget', 'url': 'https://example.test/widget/',
+            'lastmod': '2026-01-01',
             'schema': {'category': 'C', 'description': 'd', 'features': []},
             'faq': [{'q': '<b>Why?</b>', 'a': 'Because &amp; <i>so</i>.'}],
         }

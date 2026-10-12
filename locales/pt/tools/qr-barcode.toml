@@ -70,13 +70,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Não existe para onde o que você digita possa ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde uma
-      senha de Wi-Fi pudesse ser recolhida, e não existe no código nada que a
-      mandaria mesmo que existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui vai buscar coisa alguma."
@@ -290,14 +285,7 @@ a = """
 
 [[faq]]
 q = "Posso pôr uma logomarca no meio de um QR Code?"
-a = """
-        Aqui não, mas vale saber por que funciona em outros lugares: quem torna isso
-        possível é a correção de erros. No nível H, cerca de 30% dos módulos podem
-        ser destruídos e o código ainda é lido, então uma logomarca cobrindo bem
-        menos que isso no centro, onde não fica nenhum padrão de localização, é dano
-        reparável. Passe o código pelo seu editor de imagem no nível H, mantenha a
-        logomarca abaixo de uns 20% da área, e teste com um celular de verdade em vez
-        de confiar."""
+a = "Um logo pequeno pode funcionar, mas nenhum percentual da área é garantido. A DENSO define a recuperação de cerca de 30% no nível H pelo total de palavras de código, não por quadrados arbitrários. Preserve os padrões de localização e alinhamento, use H e teste a impressão final em vários celulares. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">A DENSO explica a correção de erros</a>."
 
 [[faq]]
 q = "Por que o SVG é melhor que o PNG?"

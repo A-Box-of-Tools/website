@@ -21,8 +21,9 @@ So this is that job, on a page with one thing on it.
 `video to mp3` is the larger phrase again, and this tool cannot honestly answer
 it.
 
-No browser ships an MP3 encoder. The only route to one is sending the video to
-a server that has it, which is the single thing this site exists not to do.
+The browser APIs this tool uses do not provide an MP3 encoder, and this tool
+does not ship one. A JavaScript or WebAssembly encoder could produce MP3
+locally; uploading to a server is not required for that format.
 `ROADMAP.md` is explicit that MP3 out waits on a vendored `libmp3lame` — 1.4 MB
 for the job you need, rather than 25–30 MB of FFmpeg for every job you do not —
 and `edit-audio` has answered *"Why does it save a WAV rather than an MP3?"* in

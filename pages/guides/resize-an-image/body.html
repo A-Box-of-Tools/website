@@ -24,19 +24,12 @@
   </section>
 
   <section>
-    <h2>Shrinking is safe. Enlarging is not.</h2>
+    <h2>What shrinking and enlarging lose</h2>
     <p>
       These are not two directions of the same operation, and it is worth being
       clear about why.
     </p>
-    <p>
-      <strong>Making a picture smaller</strong> throws information away, and in
-      the only benign sense: there are more pixels going in than coming out, so
-      every pixel of the result is averaged from real measured detail. A
-      well-resized smaller copy usually looks <em>better</em> than the original
-      viewed at that size, because the averaging removes noise. Nothing is
-      invented.
-    </p>
+    <p><strong>Making a picture smaller</strong> removes information. Averaging real pixels can make a photograph look cleaner at its intended size, but small text, fine lines and texture may disappear. Compare at the size where the result will be used; fewer pixels are not a guarantee that every visible detail survives.</p>
     <p>
       <strong>Making a picture bigger</strong> has to invent. The detail is not
       missing from the file; it was never photographed. All any enlarger can do
@@ -169,11 +162,7 @@
 
   <section>
     <h2>What the re-encode costs, and how to keep it to one</h2>
-    <p>
-      Resizing a JPEG or a WebP means decoding it, scaling the pixels, and
-      encoding them again &mdash; and that last step is lossy. The scaling
-      itself is not what costs you quality; the re-encode is.
-    </p>
+    <p>Resizing a JPEG or a WebP means decoding it, resampling the pixels and encoding again. Shrinking can lose detail at the resampling step; JPEG or lossy WebP can add compression artefacts afterward. These are separate costs, so inspect the dimensions and the encoded result.</p>
     <p>
       Two things follow. First, the quality setting on the way out matters:
       somewhere around &#x2066;80&ndash;85&#x2069; is invisible for a photograph and considerably

@@ -2,17 +2,17 @@
 
 name = "Desbloquear PDF"
 heading = "Desbloquear&nbsp;PDF <span class=\"h1-kw\">&mdash; remova a senha e as restrições</span>"
-tagline = "Muitos PDFs protegidos não exigem senha. Descubra qual tipo você tem antes de alterar o arquivo."
+tagline = "Permissões restritas e senhas de abertura são diferentes. A página identifica o que seu PDF usa."
 title = "Desbloquear PDF &mdash; remover senha e restrições, grátis, sem enviar"
-description = "Remova a senha e as restrições de impressão, cópia e edição de um PDF no navegador. A ferramenta identifica o tipo de proteção, não adivinha senhas e não envia nada."
+description = "Remova permissões restritas do PDF localmente ou uma senha de abertura que você forneça. A página identifica a proteção antes de pedir a senha. Sem upload e sem adivinhar senhas."
 og_title = "Desbloqueie um PDF sem enviar o arquivo"
-og_description = "Muitos PDFs protegidos abrem para qualquer pessoa e apenas pedem ao leitor que bloqueie impressão e cópia. Remova essas restrições no navegador e entenda o que a proteção realmente fazia."
+og_description = "Remova permissões restritas do PDF localmente ou uma senha de abertura que você forneça. A página identifica a proteção antes de pedir a senha. Sem upload e sem adivinhar senhas."
 og_image_alt = "Desbloqueie um PDF no navegador, sem enviar nada"
 pledge = "O documento é aberto, descriptografado e gravado na memória deste computador por código servido deste endereço. Nada aqui faz envio, e não há servidor do outro lado para recebê-lo. Nem o arquivo nem a senha digitada saem desta aba."
 live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, acompanhe a aba Rede e desbloqueie um PDF. Nenhuma requisição leva documento, senha ou nome de arquivo. Ou desligue a internet e use a ferramenta mesmo assim."
 read_first = ", <code>src/shared/pdf-crypt.js</code> para ver como a senha gera a chave do documento e confirmar que não há busca por senhas, e <code>src/shared/aes.js</code> e <code>src/shared/rc4.js</code> para as duas cifras. Nenhum deles, nem o leitor ou o gravador usados ao lado, acessa a rede."
 howto_heading = "Como remover a senha ou as restrições de um PDF"
-card = "Remova a senha e as restrições de impressão, cópia e edição de um PDF. Muitos arquivos protegidos já abrem para qualquer pessoa e não precisam de senha. A ferramenta identifica o tipo de proteção, explica sua força e a remove no seu computador."
+card = "Remova permissões restritas do PDF localmente ou uma senha de abertura que você forneça. A página identifica a proteção antes de pedir a senha. Sem upload e sem adivinhar senhas."
 
 [words]
 plural = "documentos"
@@ -39,7 +39,7 @@ mark = "&#10003;"
 text = "Os arquivos ficam no seu aparelho"
 
 [[privacy]]
-title = "Muitos PDFs protegidos já abrem sem senha; a página informa isso antes de agir."
+title = "A página distingue permissões de senha de abertura."
 body = "Um PDF pode ter duas proteções diferentes. A <em>senha de abertura</em> impede a leitura, e esta ferramenta não a descobre. As <em>restrições</em> de impressão, cópia e edição são outra coisa. Um arquivo com apenas restrições abre para qualquer pessoa, portanto contém o necessário para derivar sua própria chave, como o leitor já fez. Impedir a impressão depende de um campo de permissões que os programas concordam em respeitar. A Adobe documenta isso desde o início. Remover esse pedido não quebra a criptografia. A página identifica o tipo de proteção e só pede senha quando ela é realmente necessária."
 
 [[privacy]]
@@ -84,7 +84,7 @@ body = "Desligue a rede e tudo continua funcionando. Uma ferramenta que enviasse
 
 [[howto]]
 title = "Escolha o PDF."
-body = "Um documento por vez, lido diretamente do disco pelo navegador. Primeiro, a ferramenta tenta abri-lo com senha vazia, o que funciona para muitos arquivos protegidos porque eles têm apenas restrições."
+body = "Escolha um documento. O navegador lê do disco e primeiro tenta uma senha vazia. Isso abre arquivos com permissões restritas que não exigem senha para leitura."
 
 [[howto]]
 title = "Leia o que a página encontrou."
@@ -100,15 +100,15 @@ body = "O documento é descriptografado com sua própria chave e gravado sem dic
 
 [[faq]]
 q = "Preciso da senha?"
-a = "Muitas vezes, não. A página informa isso logo após a escolha do arquivo. Muitos PDFs protegidos, como extratos, holerites e relatórios com edição restrita, abrem para qualquer pessoa e só contêm uma lista de ações que o leitor deve impedir. Essas restrições saem com um clique, sem senha. Se o documento realmente pede senha para abrir, você precisa fornecê-la."
+a = "Depende da proteção. Um PDF que abre sem senha, mas limita impressão ou cópia, pode ter essas permissões removidas aqui sem senha. Se exigir senha de abertura, forneça a de usuário ou proprietário. A página tenta primeiro uma senha vazia e explica o caso encontrado."
 
 [[faq]]
 q = "A ferramenta abre um PDF cuja senha eu não tenho?"
-a = "Não, e não tenta. Não há dicionário, lista de palavras nem busca por força bruta; isso pode ser conferido em <code>src/shared/pdf-crypt.js</code>. Mesmo os documentos antigos com chaves de 40 bits, que permitiriam uma busca viável, não são atacados. A recusa é explícita. Se você perdeu a senha, esta ferramenta não a recupera."
+a = "Não. Esta ferramenta não adivinha senhas nem procura chaves. <code>src/shared/pdf-crypt.js</code> mostra como trata a senha fornecida. Outras ferramentas podem adivinhar uma senha fraca ou atacar criptografia obsoleta, sem garantia; esta página não faz nenhuma dessas coisas. Peça ao remetente uma senha válida ou uma cópia acessível."
 
 [[faq]]
 q = "Qual é a diferença entre as duas senhas?"
-a = "A senha de <em>usuário</em> é pedida para abrir o PDF. A de <em>proprietário</em> remove as restrições de impressão, cópia e edição. Um documento pode ter senha de proprietário sem senha de usuário; por isso, abre para qualquer pessoa, mas impede impressão em leitores que respeitam as restrições. A ferramenta aceita ambas e informa qual delas foi usada para abrir."
+a = "Um PDF pode ter duas senhas. A de <em>usuário</em> o abre; a de <em>proprietário</em> concede todas as permissões. Pode haver senha de proprietário com senha de usuário vazia: o arquivo abre livremente, mas o leitor aplica restrições. A ferramenta aceita qualquer senha fornecida e explica o resultado."
 
 [[faq]]
 q = "É legal remover as restrições?"

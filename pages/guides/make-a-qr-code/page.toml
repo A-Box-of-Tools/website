@@ -26,10 +26,10 @@ lede = """
     and all four are made before you print anything. Here is what each one
     does."""
 
-updated = "26 August 2026"
+updated = "12 October 2026"
 published = "2026-08-20"
-lastmod = "2026-08-26"
+lastmod = "2026-10-12"
 
 og_title = "Making a QR code that still scans on somebody else's phone"
 og_description = "The four decisions that decide whether a printed QR code works: the level, the margin, the size, and whose address is actually inside it."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

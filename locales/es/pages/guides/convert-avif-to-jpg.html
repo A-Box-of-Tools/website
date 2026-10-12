@@ -49,16 +49,16 @@
   </section>
 
   <section>
-    <h2>Qué no puede conservar un JPEG</h2>
+    <h2>Lo que esta conversión no conserva</h2>
     <p>Dos características, que no afectan a la mayoría de las imágenes:</p>
     <p><strong>Transparencia.</strong> AVIF puede tener un fondo transparente y JPEG no. Hay que poner un color debajo. La herramienta lo pregunta solo si algún archivo realmente tiene transparencia y propone blanco. La mayoría de los AVIF guardados de sitios web son fotografías opacas, así que normalmente no aparece esa pregunta. Si necesitas conservar la transparencia, usa PNG o WebP con el <a href="/es/comprimir-imagen/">compresor de imágenes</a>, que lee AVIF y escribe ambos formatos.</p>
-    <p><strong>HDR y mayor profundidad de color.</strong> AVIF puede guardar diez o doce bits por canal y describir luces más brillantes de lo que muestra una pantalla normal. JPEG usa ocho bits y no representa HDR, así que esos datos se reducen al rango ordinario. Casi ninguna imagen guardada de una página web normal utiliza esas características; si la tuya tampoco, no pierdes nada por este motivo.</p>
+    <p><strong>HDR y profundidad de color.</strong> Esta herramienta escribe un JPEG SDR convencional de 8 bits desde el canvas del navegador. No conserva la profundidad adicional ni la información HDR del AVIF; los colores o brillos pueden cambiar. Guarda el original para archivar. Existen formatos HDR basados en JPEG: <a href="https://developer.android.com/media/platform/hdr-image-format">la especificación Ultra HDR de Android</a> describe un mapa de ganancia que esta herramienta no crea.</p>
   </section>
 
   <section>
     <h2>Convertir en sentido contrario es otro problema</h2>
-    <p>Aquí no hay un convertidor de JPG a AVIF por la otra cara de la misma razón: <strong>ningún navegador escribe AVIF</strong>. Si se lo pides a un lienzo del navegador, devuelve un PNG con una etiqueta incorrecta.</p>
-    <p>Por eso, una página que afirma crear AVIF en el navegador puede estar equivocada o enviar la imagen a un servidor para codificarla allí. Hacerlo correctamente sin servidor requiere incorporar el codificador. Es un trabajo real que está en <a href="/es/hoja-de-ruta/">la hoja de ruta</a>, no una función que se deba dar por hecha.</p>
+    <p>Aquí no hay conversor JPG a AVIF porque <strong>esta página no incluye un codificador AVIF</strong>. Su salida de canvas usa JPEG, PNG o WebP; no presenta un PNG renombrado como AVIF.</p>
+    <p>Un codificador aparte, incluido WebAssembly, puede crear AVIF localmente sin enviar la imagen a un servidor. Es otra implementación. Un formato nativo no admitido vuelve a PNG, como explica <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob">la documentación de canvas</a>.</p>
   </section>
 
   <section>

@@ -89,14 +89,7 @@ body = """
 
 [[privacy]]
 title = "Aquí no hay nada que descargue nada."
-body = """
- No existe
-      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
-      <code>sendBeacon</code> en ninguna parte de <code>src/</code>, y la
-      <code>Content-Security-Policy</code> de la página no deja ninguna dirección
-      a la que este origen pudiera enviar aunque la hubiera. Por eso esta página
-      no puede decirte dónde acaba un enlace acortado: averiguarlo sería
-      preguntar, y no pregunta."""
+body = "Texto y enlaces se muestran localmente y nunca se abren solos. No se resuelven enlaces cortos porque eso contactaría al destino. Revisa el código y las llamadas a <code>fetch</code>, <code>XMLHttpRequest</code> o <code>sendBeacon</code> para ver qué datos reciben. La <code>Content-Security-Policy</code> limita destinos, incluidos hosts de plataforma permitidos; no afirma que no haya destinos de red ni demuestra todas las cargas."
 
 [[privacy]]
 title = "Te enseña la dirección. Nunca la abre."
@@ -246,15 +239,7 @@ a = """
 
 [[faq]]
 q = "¿Puede leer un código dañado o tapado en parte?"
-a = """
-        A menudo sí, y eso es el formato funcionando como se diseñó, no ninguna
-        habilidad de aquí. Todo código QR lleva datos de comprobación
-        Reed-Solomon, y un símbolo hecho al nivel H puede perder cerca del 30% de
-        sus módulos y aun así reconstruirse exacto. La página dice cuántas
-        palabras de código tuvo que reparar en &laquo;cómo se leyó este&raquo;,
-        para que veas lo justo que fue. Lo que no hace es adivinar: un símbolo
-        dañado más allá de lo que la comprobación aguanta se informa como
-        ilegible en vez de responderse mal."""
+a = "A veces. Reed-Solomon restaura palabras de código dañadas dentro de la capacidad del símbolo. El 30 % aproximado de H se refiere al total de palabras de código, no a módulos arbitrarios ni a superficie; dañar los patrones de posición puede impedir la detección. El contador del resultado muestra las reparaciones realizadas. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explica los niveles</a>."
 
 [[faq]]
 q = "¿Por qué dice que no puede saber adónde lleva un enlace de bit.ly?"

@@ -61,14 +61,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu aparelho"
 
 [[privacy]]
-title = "Os seus documentos não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todo endereço que esta página pode contatar, e
-      nenhum deles é nosso. Esta ferramenta não acrescenta nada a essa lista: ela não
-      tem função de rede própria, nem opcional. Aqui não existe um ponto de coleta
-      onde os seus arquivos pudessem parar, nem nada no código que os mandasse para
-      lá se existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Juntar é o trabalho que mais vale a pena não enviar."

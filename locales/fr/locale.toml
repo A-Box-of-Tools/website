@@ -136,28 +136,28 @@ complete = true
 "guides/what-20-converters-do-with-your-file" = "guides/ce-que-20-convertisseurs-font-de-vos-fichiers"
 
 [hub]
-title = "Outils en ligne gratuits, sans envoi ni inscription | abox.tools"
-description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à la taille voulue, recadrer une vidéo."
-heading = "Des outils qui ne passent jamais par un serveur"
-og_title = "A Box of Tools &mdash; des outils qui ne passent jamais par un serveur"
-og_description = "De petits outils à usage unique qui travaillent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
-og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
-schema_description = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Rien n'est envoyé et aucun compte n'est nécessaire."
-schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers en local, sans jamais les envoyer"
-lede = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Vos fichiers restent sur votre machine, car il n'y a rien à envoyer, aucun compte à créer et rien qui vous suive."
+title = "Outils de navigateur gratuits &mdash; traitement local | abox.tools"
+description = "Outils gratuits traitant vos fichiers dans le navigateur : images en PDF ou MP4, compression vers une taille cible, recadrage vidéo, suppression EXIF."
+heading = "Des outils qui traitent vos fichiers dans le navigateur"
+og_title = "A Box of Tools &mdash; traitement local dans le navigateur"
+og_description = "De petits outils traitent les fichiers sur votre appareil. Le partage volontaire et les fonctions en ligne facultatives sont expliqués là où ils apparaissent."
+og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
+schema_description = "Utilitaires de navigateur pour traiter les fichiers localement, sans envoi pour traitement ni compte. Les fonctions réseau sont expliquées sur leurs pages."
+schema_about = "Utilitaires de navigateur pour le traitement local et le partage volontaire entre navigateurs"
+lede = "De petits outils, chacun pour une tâche, qui traitent les fichiers sur votre appareil. Aucun envoi pour traitement, aucun compte. Les fonctions qui récupèrent ou partagent du contenu expliquent ce qui quitte le navigateur avant leur utilisation."
 support_note = "Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une corvée, voici la seule chose, sur tout ce site, qui vous demande quelque chose."
 
 [[hub.guarantees]]
-title = "Vos fichiers ne quittent jamais votre machine"
-body = "C'est votre navigateur qui les ouvre, les lit et les traite, sur votre propre matériel. La <code>Content-Security-Policy</code> de chaque outil énumère toutes les adresses qu'il a le droit de contacter, et aucune ne nous appartient."
+title = "Vos fichiers sont traités sur votre appareil"
+body = "Votre navigateur ouvre, lit et modifie les fichiers choisis. Aucun envoi pour traitement. Partager du texte et des fichiers et Caméra distante transmettent volontairement du contenu à un autre navigateur ; leurs pages expliquent la connexion."
 
 [[hub.guarantees]]
-title = "Aucune information sur vos fichiers n'est transmise"
-body = "Ni le fichier, ni une vignette, ni son nom, ni sa taille, ni le nombre que vous avez choisi. Aucun outil d'ici n'en dit quoi que ce soit, et il n'y a de toute façon, à l'autre bout, aucun serveur pour l'entendre."
+title = "Vos fichiers ne sont pas transmis aux statistiques"
+body = "Les visites et les réponses fixes aux avis facultatifs sont comptées. Ni votre fichier, ni son nom, sa taille ou son contenu ne leur sont transmis. Les imports d’images et les demandes de taux de change des reçus expliquent leurs données près des commandes."
 
 [[hub.guarantees]]
-title = "Tout fonctionne hors ligne"
-body = "Ouvrez un outil une fois, coupez votre connexion, et il continue de travailler sur vos fichiers exactement comme avant. La démonstration est difficile à truquer, puisqu'un outil qui expédierait vos fichiers ailleurs pour les traiter s'arrêterait net."
+title = "Le traitement local fonctionne hors ligne"
+body = "Attendez que l’indicateur hors ligne signale que l’outil est prêt, puis déconnectez-vous et utilisez des fichiers de votre appareil. Récupérer une image web, demander un taux en ligne et connecter deux navigateurs nécessitent un réseau."
 
 [[hub.categories]]
 id = "images"
@@ -184,10 +184,10 @@ nav = "Tous les guides"
 title = "Guides&nbsp;: comment faire, et ce que chaque choix coûte"
 description = "Des guides pour compresser, redimensionner, recadrer, couper et convertir ses fichiers&nbsp;: ce que veulent dire les réglages, ce qu'ils coûtent, et pourquoi aucun envoi n'est nécessaire."
 heading = "Guides"
-lede = "Un guide par outil, écrit pour qui s'est vu imposer une taille ou un format et aimerait savoir ce que fait vraiment le réglage qu'il s'apprête à déplacer. Tout ce qui est décrit ici se passe sur votre propre machine."
+lede = "Des guides sur les outils et les tâches qui les combinent : ce que fait chaque réglage, son coût et les vérifications du résultat. Le traitement local et les fonctions réseau volontaires sont expliqués séparément."
 og_title = "Les guides d'abox.tools"
 og_description = "Compresser, redimensionner, recadrer, couper et convertir ses fichiers, et ce que chaque réglage coûte. Sans le moindre envoi."
-og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
+og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
 
 [[guides.groups]]
 id = "doing-the-job"
@@ -207,22 +207,22 @@ note = "Ce que confier un fichier à un site implique vraiment, et comment savoi
 [roadmap]
 nav = "Feuille de route"
 title = "Feuille de route&nbsp;: ce qu'abox.tools construit ensuite"
-description = "Tous les outils prévus pour abox.tools, groupés et à découvert, avec ceux qui sont déjà finis. Tous s'exécutent dans le navigateur et n'envoient rien."
+description = "Tous les outils prévus et terminés d’abox.tools, regroupés et publics. Les fichiers sont traités dans le navigateur."
 heading = "Ce qui arrive ensuite"
-lede = "Tout ce qui figure sur les deux listes ci-dessous travaille dans votre navigateur et n'envoie rien, car c'est la condition qu'un nom doit remplir pour y entrer. Aucun de ces nombres n'est écrit à la main&nbsp;: la compilation les relève elle-même sur les deux listes."
+lede = "Les outils des deux listes traitent les fichiers dans votre navigateur, sans envoi pour traitement. Toute fonction nécessitant un réseau doit l’expliquer sur sa page. La compilation compte les éléments des listes."
 intro_heading = "Comment cette liste a été établie"
 intro = "<p> Ce n'est pas une liste de souhaits. Elle a été dressée en dépouillant le catalogue du plus grand site de GIF et de vidéo en ligne, ce qui se rapproche le plus d'un inventaire de ce que les gens veulent réellement faire à un fichier, puis en gardant chaque entrée réalisable de telle sorte que le travail se fasse sur votre propre machine et continue de se faire une fois le réseau débranché. </p> <p> L'essentiel de ce qui a survécu repose sur des interfaces que le navigateur fournit déjà. Quelques entrées réclament un codec embarqué dans le seul outil qui l'utilise, ce qui reste permis, puisque le fichier ne quitte toujours pas la machine. Ce qui ne franchissait pas cette barre a été écarté plutôt que promis, si bien que certains des manques évidents ci-dessous sont voulus. </p> <p> Les outils qui existent déjà figurent en haut de leur groupe, marqués <em>Terminé</em> et reliés à leur propre page. Tout ce qui se trouve en dessous reste à venir, et rien n'y devient un lien avant de l'être. </p>"
 planned_heading = "Chaque type de fichier, et ce qu'on peut en faire"
 og_title = "La feuille de route d'abox.tools"
-og_description = "Ce qui est fait, et ce qui arrive ensuite. Tout s'exécute dans le navigateur et n'envoie rien."
-og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
+og_description = "Les outils terminés et ceux à venir. Traitement local ; les fonctions nécessitant un réseau sont expliquées."
+og_image_alt = "abox.tools - outils de navigateur pour le traitement local des fichiers"
 
 [not_found]
 title = "Page introuvable &mdash; abox.tools"
-description = "Cette adresse n'existe pas sur abox.tools. Voici celles qui existent&nbsp;: que des outils gratuits, dont aucun n'envoie vos fichiers où que ce soit."
+description = "Cette adresse n’existe pas sur abox.tools. Voici les outils gratuits de navigateur pour traiter les fichiers sur votre appareil."
 heading = "Cette page n'est pas ici"
 tools_heading = "Tous les outils, au même endroit"
-tools_note = "Tous gratuits, tous dans votre navigateur, aucun n'envoie quoi que ce soit."
+tools_note = "Tous gratuits ; tous traitent les fichiers dans votre navigateur."
 lede = "Soit l'adresse contient une faute de frappe, soit ce qui s'y trouvait a déménagé. Il n'est rien arrivé à votre fichier et rien n'a été perdu, ce site n'ayant jamais rien détenu de vous qu'il puisse perdre."
 
 [footer]
@@ -274,12 +274,12 @@ guide_heading = "La version longue"
 related_heading = "Aussi dans la boîte"
 handoff_lead = "Poursuivre avec le résultat dans&nbsp;:"
 privacy_heading = "Comment cette promesse se vérifie"
-md_note = "Cette page est un outil interactif qui fonctionne entièrement dans votre navigateur, à l'adresse {{ tool.url }} &mdash; rien de ce que vous lui confiez n'est envoyé. Ce qui suit est tout ce que la page dit de l'outil, en mots&nbsp;; pour l'utiliser, ouvrez l'adresse."
+md_note = "Cette page est un outil interactif de navigateur à l’adresse {{ tool.url }}. Les fichiers sont traités sur l’appareil qui exécute ce navigateur. Tout partage volontaire ou fonction réseau facultative est expliqué sur la page. Voici son explication écrite ; ouvrez l’adresse pour l’utiliser."
 card_waiting = "S'ouvre dès que vous choisissez un fichier ci-dessus."
 example_load = "Essayer un exemple"
 example_busy = "Création d'un exemple&hellip;"
 example_failed = "Ce navigateur n'a pas pu créer l'exemple. Choisissez plutôt un fichier."
-pledge_line = "Cet outil n'envoie <strong>jamais</strong> vos {{ tool.words.plural }}. Il n'y a pas de serveur."
+pledge_line = "Vos {{ tool.words.plural }} sont <strong>traités dans votre navigateur</strong>. Aucun envoi pour traitement."
 boot_title = "Le code de cette page n'a pas démarré."
 boot_body = "Ouvrir <code>index.html</code> directement depuis un dossier bloque les modules JavaScript, si bien que rien ne se passera au moment de choisir {{ tool.words.choose }}. Servez plutôt le dossier en http&nbsp;:"
 boot_then = "Ouvrez ensuite <code>http://localhost:8080/</code>."
@@ -298,7 +298,7 @@ reading_one = "Lecture de {count} fichier&hellip;"
 reading_many = "Lecture de {count} fichiers&hellip;"
 check_yourself = "<strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur parole. Cette page est produite à partir des gabarits et de la configuration du dépôt par un script de compilation que vous pouvez lire et exécuter vous-même, et le résultat est publié sur la branche <code>dist</code>, ce qui vous permet de comparer ce qui est servi avec ce que produit une compilation des sources&nbsp;:"
 read_first_lead = "Les fichiers à lire en premier sont <code>config/site.toml</code> pour la Content-Security-Policy"
-dlp_note = "<strong>Si le logiciel de sécurité de votre employeur signale un envoi.</strong> Il surveille le moment où un fichier est choisi dans un navigateur, et il ne peut pas savoir si la page compte l'envoyer &mdash; il alerte donc au choix. Rien n'est envoyé ici : ouvrez les outils de développement, allez dans Réseau, et choisissez un fichier. Aucune requête ne le transporte, et aucune requête du tout hormis l'aperçu local de la page. C'est la vérification que votre service informatique peut faire en trente secondes."
+dlp_note = "<strong>Si le logiciel de sécurité de votre employeur signale un envoi.</strong> Une alerte lors du choix d’un fichier ne prouve pas son transfert. Pour une opération locale, examinez les adresses et les données des requêtes dans l’onglet Réseau et comparez-les au code de cette page. Les récupérations facultatives et les partages volontaires sont expliqués séparément. Votre service informatique peut effectuer la même vérification."
 
 [ui.feedback]
 prompt = "Est-ce que ça a marché&nbsp;?"
@@ -317,6 +317,6 @@ note = "Seule la réponse est envoyée, et seulement quand vous cliquez. Jamais 
 open_tool = "Ouvrir {{ tool.name | e }}"
 
 [ui.picker]
-warning = "<strong>C'est la seule fonction de la page qui touche au réseau.</strong> Aller chercher une adresse révèle au serveur concerné votre adresse IP et lui apprend quelle {{ tool.picker.urls.noun }} vous réclamez. Le fichier reçu est recopié en mémoire locale dès son arrivée et n'est jamais redemandé. Rien de vous ne sort d'ici, et cette page reste tout aussi incapable d'envoyer quoi que ce soit."
+warning = "<strong>Récupérer cette adresse utilise le réseau.</strong> Le serveur voit votre IP et l’adresse de l’{{ tool.picker.urls.noun }} demandée, paramètres de requête compris. L’image est conservée en mémoire locale à son arrivée. Les fichiers choisis sur votre appareil ne sont pas envoyés lors de cet import."
 label = "Une adresse par ligne"
 note = "Le serveur d'en face doit autoriser l'usage multi-origine de ses {{ tool.picker.urls.noun }}s. Beaucoup ne le font pas, auquel cas vous aurez un message d'erreur plutôt qu'une panne silencieuse plus tard."

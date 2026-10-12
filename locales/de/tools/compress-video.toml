@@ -108,18 +108,7 @@ body = """
 
 [[privacy]]
 title = "Ein komprimiertes Video ist ein neu kodiertes Video, und die Seite sagt das."
-body = """
-
-      &bdquo;Komprimieren&ldquo; heißt bei einer ZIP-Datei etwas Verlustfreies
-      und bei einem Video nichts dergleichen. Das Bild wird dekodiert, kleiner
-      gezeichnet und mit H.264 in der von der Zahl zugelassenen Bitrate neu
-      kodiert, und ist danach eine Generation weiter von der Kamera entfernt
-      als die Datei, mit der Sie begonnen haben. Der Ton nicht: Seine Samples
-      werden genau so in die neue Datei kopiert, wie sie waren. Das Ergebnis
-      ist ein MP4, weil das der eine Container ist, den jedes Handy, jeder
-      Browser und jede Chat-App abspielt, und diese Seite hat längst
-      ausgeschlossen, ein Format zu versprechen, das die Hälfte ihrer
-      Besucher gar nicht hätte erzeugen können."""
+body = "Kompression dekodiert und kodiert das Bild lokal neu. Originale Audiosamples werden unverändert kopiert. Die Ausgabe ist MP4 mit H.264-Video und weit verbreitet, doch das Zielprogramm muss auch den kopierten Audiocodec und das Videoprofil unterstützen. Prüfen Sie die fertige Datei vor dem Versand."
 
 [[privacy]]
 title = "Das Ergebnis wird gemessen und, wenn es danebenlag, einmal nachgezogen."
@@ -254,26 +243,11 @@ a = """
 
 [[faq]]
 q = "Wird die Qualität schlechter?"
-a = """
-        Ja, um genau so viel, wie die Zahl verlangt, und nicht mehr. Ein
-        komprimiertes Video ist ein neu kodiertes Video: Das Bild wird mit
-        einer niedrigeren Bitrate neu geschrieben, eine Generation weiter von
-        der Kamera entfernt. Der Ton wird nicht angerührt. Was Sie verlieren,
-        entscheidet die Zahl, die Sie eingetippt haben. Ein 900-MB-Clip, der
-        auf 25 MB gebracht wird, hat die meisten seiner Bits verloren, ein
-        Clip, der auf die Hälfte gebracht wird, wenige. Und die Seite nennt
-        die Bitrate und Bildgröße, die sie gewählt hat, damit der Tausch
-        sichtbar ist statt versteckt."""
+a = "Neukodieren kann Details verlieren oder Artefakte erzeugen. Bitrate, Bildgröße, Quelle und Szenenkomplexität bestimmen den sichtbaren Verlust; eine Größengrenze legt keinen exakten Qualitätsverlust fest. Der Ton wird unverändert kopiert. Spielen Sie das Ergebnis ab, vergleichen Sie wichtigen Text und Bewegung und behalten Sie das Original."
 
 [[faq]]
 q = "Welches Format schreibt es?"
-a = """
-        MP4 mit H.264-Video, und die Tonspur übernommen, wie sie war. Das ist
-        die eine Kombination, die jedes Handy, jeder Browser, jede Chat-App
-        und jedes Mailprogramm abspielt, und genau das braucht eine Datei,
-        die durchgehen muss. WebM, HEVC oder AV1 schreibt es nicht: kleiner
-        bei gleicher Qualität, aber nichts, was die Hälfte der Leute öffnen
-        könnte, denen Sie es schicken würden."""
+a = "MP4 mit H.264-Video und der kopierten Originaltonspur. H.264 in MP4 ist weit verbreitet, aber die Wiedergabe hängt auch vom kopierten Audiocodec und Videoprofil im Zielprogramm ab. Testen Sie die fertige Datei dort. Dieses Werkzeug schreibt kein WebM, HEVC oder AV1."
 
 [[faq]]
 q = "Welche Dateien liest es?"

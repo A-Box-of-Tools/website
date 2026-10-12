@@ -1,8 +1,8 @@
 name = "Compresseur d'images"
-heading = "Compresseur&nbsp;d'images <span class=\"h1-kw\">&mdash; compresser à une taille exacte</span>"
+heading = "Compresser&nbsp;une&nbsp;image <span class=\"h1-kw\">&mdash; sous une limite de taille</span>"
 tagline = "Vous donnez la taille. Il se charge du reste."
-title = "Compresser une image à une taille précise &mdash; gratuit, sans envoi"
-description = "Compressez un JPEG, un PNG ou un WebP à une taille exacte&nbsp;: 100 KB, 2 MB, ce que vous voulez. Tout se passe dans votre navigateur, sans envoi, sans compte et même hors ligne."
+title = "Compresser une image sous une taille cible &mdash; gratuit, sans envoi"
+description = "Compressez un JPEG, PNG, WebP ou AVIF sous une limite comme 100 Ko ou 2 Mo. Le résultat vise la taille cible ou moins, pas un nombre exact d’octets. Sans envoi, fonctionne hors ligne."
 og_title = "Compresser une image à la taille que vous choisissez"
 og_description = "Donnez une taille à atteindre&nbsp;: l'outil cherche la compression la plus légère qui y arrive, puis mesure ce que cela a coûté. Il tourne sur votre machine et n'envoie rien."
 og_image_alt = "Compresseur d'images - donnez une taille, gardez la qualité"
@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Open source"
 
 [[privacy]]
-title = "Vos images n'ont nulle part où aller."
-body = "La Content-Security-Policy énumère toutes les adresses que cette page peut contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y enverrait s'il en existait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Rien ici ne va rien chercher."
@@ -72,8 +72,8 @@ q = "Mon image est-elle envoyée quelque part&nbsp;?"
 a = "Non. Le fichier est décodé, compressé et mesuré par votre propre navigateur sur votre propre matériel, avec les encodeurs JPEG, PNG et WebP qu'il embarque déjà. Cet outil ne comporte aucune fonction réseau, si bien qu'il ne va jamais rien chercher et n'envoie jamais rien. Sa <code>Content-Security-Policy</code> énumère par ailleurs toutes les adresses qu'il peut contacter, dont aucune n'appartient à ce site."
 
 [[faq]]
-q = "Comment atteint-il une taille exacte&nbsp;?"
-a = "En essayant. Aucune formule ne transforme un réglage de qualité en un nombre d'octets, puisque tout dépend de l'image&nbsp;; l'outil encode donc celle-ci plusieurs fois et cherche la réponse. Il part du haut de la plage de qualité et resserre par dichotomie, ce qui lui fait trouver la meilleure qualité acceptable en huit encodages environ. Chaque taille affichée sur la page correspond à un vrai fichier encodé, et non à une estimation."
+q = "Comment respecte-t-il une limite de taille ?"
+a = "Il encode et mesure plusieurs essais pour rechercher la meilleure qualité qui tient. Si un résultat adapté est possible, il est à la taille cible ou en dessous, sans garantir le nombre exact d’octets saisi. Un fichier déjà sous la limite reste inchangé. Si la qualité ne suffit pas, les dimensions diminuent ; vérifiez le résultat."
 
 [[faq]]
 q = "Que veut dire &laquo;&nbsp;perte minimale&nbsp;&raquo; exactement, ici&nbsp;?"
@@ -105,7 +105,7 @@ a = "Oui. Chargez la page une fois, coupez ensuite votre connexion et elle conti
 
 [schema]
 description = "Compressez des images JPEG, PNG et WebP à une taille que vous nommez. L'outil cherche la meilleure qualité qui tienne dans la cible, ne redimensionne que lorsque la qualité seule n'y suffit pas, et mesure le résultat par rapport à l'original. Tout se passe dans le navigateur, sans aucun envoi."
-features = ["Compresse vers une taille de fichier que vous choisissez, pas vers un chiffre de qualité à deviner", "Garde la pleine résolution quand il le peut, et ne redimensionne que si la qualité seule n'atteint pas la cible", "Dépense tout le budget&nbsp;: le résultat arrive juste sous la cible plutôt que loin en dessous", "Mesure le résultat par rapport à l'original avec le SSIM et le PSNR", "Laisse totalement intacts les fichiers déjà sous la cible", "JPEG, PNG et WebP, avec un choix de format automatique", "Traitement par lots, tous les résultats dans un seul zip", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
+features = ["Compresse vers une taille de fichier que vous choisissez, pas vers un chiffre de qualité à deviner", "Garde la pleine résolution quand il le peut, et ne redimensionne que si la qualité seule n'atteint pas la cible", "Recherche un résultat proche de la limite sans promettre un nombre exact d’octets", "Mesure le résultat par rapport à l'original avec le SSIM et le PSNR", "Laisse totalement intacts les fichiers déjà sous la cible", "JPEG, PNG et WebP, avec un choix de format automatique", "Traitement par lots, tous les résultats dans un seul zip", "Fonctionne hors ligne&nbsp;; sans envoi, sans compte"]
 
 [picker]
 title = "Déposez vos images ici"

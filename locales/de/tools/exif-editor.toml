@@ -60,13 +60,8 @@ text = "Quelloffen"
 text = "AVIF wird zu PNG; JPEG, PNG und WebP behalten ihre Kodierung"
 
 [[privacy]]
-title = "Ihre Fotos haben keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
-      dorthin schicken würde, gäbe es einen."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -79,11 +74,7 @@ body = """
 
 [[privacy]]
 title = "Gelesen wird alles, weitergesagt nichts."
-body = """
- Ihre GPS-Position
-      steht auf dieser Seite und sonst nirgends. In diesem Repository gibt es
-      kein eigenes Analytics-Ereignis, das ein Tag, einen Dateinamen, eine Größe
-      oder eine Anzahl mitführt."""
+body = "Ihre GPS-Position steht auf dieser Seite und sonst nirgends. In diesem Repository gibt es kein eigenes Analytics-Ereignis, das ein Tag, einen Dateinamen, eine Größe oder eine Anzahl mitführt. Freiwilliges Feedback meldet nur Werkzeugkennung, feste Antwort und festen Grund, niemals gelesene Dateimetadaten."
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."

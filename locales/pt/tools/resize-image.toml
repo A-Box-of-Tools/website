@@ -62,13 +62,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Suas imagens não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
-      arquivos pudessem ser recolhidos, e não existe no código nada que os
-      mandaria mesmo que existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui vai buscar coisa alguma."
@@ -164,15 +159,7 @@ a = """
 
 [[faq]]
 q = "Redimensionar uma imagem perde qualidade?"
-a = """
-        Diminuir uma imagem não perde, de nenhum jeito que você consiga ver, porque
-        entram mais pixels do que saem e o detalhe que fica é detalhe de verdade.
-        Aumentar é outra história: não dá para acrescentar o que nunca foi
-        fotografado, e o resultado é uma cópia mais macia da mesma imagem, não uma
-        mais nítida. Por isso &ldquo;nunca deixar uma imagem maior do que ela
-        começou&rdquo; já vem ligado. O que custa um pouco é a recodificação depois,
-        se o formato for JPEG ou WebP, e é no controle de qualidade que você paga
-        essa conta."""
+a = "Reduzir remove pixels e pode perder texto pequeno, linhas finas e detalhes, mesmo quando a foto fica boa no tamanho de uso. Ampliar não recupera detalhes nunca registrados. JPEG e WebP com perdas podem acrescentar perda depois de redimensionar; PNG preserva os pixels redimensionados, não os detalhes originais. Confira no tamanho em que será usado."
 
 [[faq]]
 q = "Posso cortar cada imagem de um jeito diferente?"

@@ -71,6 +71,8 @@ test('every page says when its rule was read, and by whom', () => {
   for (const page of built) {
     assert.match(page.checked, /^\d{4}-\d{2}-\d{2}$/, page.id);
     assert.ok(page.authority, page.id);
+    assert.equal(page.source_url, SOURCES[page.id].url, page.id);
+    assert.equal(new URL(page.source_url).protocol, 'https:', page.id);
     assert.ok(page.facts.length >= 4, page.id);
     // An id is an address beside src/ and sw.js - see buildlib/landing.py.
     assert.match(page.id, /^[a-z0-9]+(-[a-z0-9]+)*$/, page.id);
@@ -97,6 +99,27 @@ test('specFacts: a band nobody published is marked as guidance', () => {
   assert.match(eye[1], /^band\.guidance\(/);
   const [, head] = specFacts(specById('us-passport'), words);
   assert.doesNotMatch(head[1], /guidance/);
+});
+
+test('specFacts: preferred pixel dimensions are marked as guidance', () => {
+  for (const id of ['in-exam-photo', 'in-exam-signature', 'in-evisa', 'au-citizenship-online']) {
+    const rows = specFacts(specById(id), words);
+    assert.ok(rows.at(-1)[1].includes('band.guidance('), id);
+  }
+  assert.ok(!specFacts(specById('us-dv'), words).at(-1)[1].includes('band.guidance('));
+});
+
+test('landing descriptions identify the document in every maintained language', () => {
+  for (const lang of ['en', 'zh', 'de', 'es', 'pt', 'fr', 'ja']) {
+    const path = lang === 'en'
+      ? '../../tools/id-photo/tool.toml' : `../../locales/${lang}/tools/id-photo.toml`;
+    const toml = readFileSync(new URL(path, import.meta.url), 'utf8');
+    const landing = toml.split('[landing]')[1];
+    assert.ok(landing, lang);
+    const description = landing.match(/^description = (.+)$/m)?.[1];
+    assert.ok(description?.includes('{document}'), lang);
+    assert.ok(description?.includes('{country}'), lang);
+  }
 });
 
 test('specFacts: an upload rule that states no size does not say "Infinity"', () => {

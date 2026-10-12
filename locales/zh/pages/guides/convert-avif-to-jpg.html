@@ -49,16 +49,16 @@
   </section>
 
   <section>
-    <h2>JPEG 不能保留什么</h2>
+    <h2>本次转换不保留的内容</h2>
     <p>两件事，多数图片都不受影响：</p>
     <p><strong>透明。</strong>AVIF 可有透明背景，JPEG 没有，必须填色。工具询问颜色，默认白色，只有文件确实透明时才询问。网页保存的 AVIF 多数是不透明照片，通常不会出现。要保留透明，可用<a href="../../compress-image/">图片压缩器</a>转为 PNG 或 WebP，它读取 AVIF 并写出两者。</p>
-    <p><strong>HDR 和高色深。</strong>AVIF 能存每通道十位、十二位和超过普通屏幕亮度的高光。JPEG 只有八位，完全没有 HDR，所以这些图片会被压到普通范围。一般网页图片几乎不使用，你的文件很可能也没有，因此不会因此损失。</p>
+    <p><strong>HDR 和高位深。</strong>本工具从浏览器画布输出普通的 8 位 SDR JPEG，不保留 AVIF 额外的位深或 HDR 信息，颜色和高亮部分可能改变。归档时请保留原文件。基于 JPEG 的 HDR 格式确实存在：<a href="https://developer.android.com/media/platform/hdr-image-format">Android 的 Ultra HDR 规范</a>描述了增益图，但本工具不会生成它。</p>
   </section>
 
   <section>
     <h2>反向转换是另一回事</h2>
-    <p>这里没有 JPG 转 AVIF，原因是同一事实的另一面：<strong>没有浏览器能写出 AVIF</strong>。向画布请求它，只会默默拿回标错格式的 PNG。</p>
-    <p>所以宣称在浏览器生成 AVIF 的页面，要么出错，要么把图片发送到服务器编码。正确地离线完成需要开发编码器，这是真正的工作，列在<a href="../../roadmap/">路线图</a>上，而非假装已有。</p>
+    <p>这里没有 JPG 转 AVIF 工具，因为<strong>本页面没有附带 AVIF 编码器</strong>。画布输出使用 JPEG、PNG 或 WebP，不会把改名的 PNG 冒充 AVIF。</p>
+    <p>使用独立编码器，包括 WebAssembly，可以在本地编码 AVIF 而无需把图片发送到服务器。这与本页面的实现不同。<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob">画布文档</a>说明，不支持的原生输出格式会回退为 PNG。</p>
   </section>
 
   <section>

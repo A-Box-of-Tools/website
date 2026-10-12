@@ -41,7 +41,7 @@ body = "Messagerie, courriel ou formulaire imposent un poids. Le son copié et l
 
 [[privacy]]
 title = "Compresser une vidéo signifie la réencoder."
-body = "Contrairement au ZIP, ce n’est pas sans perte. L’image est décodée, réduite puis réencodée en H.264 au débit permis, une génération de plus depuis la caméra. Le son reste intact. Le résultat est MP4, lisible par téléphones, navigateurs et messageries."
+body = "La compression décode et réencode l’image localement et copie les échantillons audio inchangés. La sortie MP4 avec H.264 est largement prise en charge, mais le destinataire doit accepter le codec audio copié et le profil vidéo. Testez le fichier avant de l’envoyer."
 
 [[privacy]]
 title = "Le résultat est mesuré, puis resserré une fois si nécessaire."
@@ -93,11 +93,11 @@ a = "Le débit dépend du nombre de pixels. Deux mégabits par seconde convienne
 
 [[faq]]
 q = "La qualité diminue-t-elle&nbsp;?"
-a = "Oui, selon la réduction demandée. L’image est réencodée à débit inférieur, une génération de plus&nbsp;; le son reste intact. Passer de 900 à 25 Mo coûte davantage que réduire de moitié. Dimensions et débit rendent ce compromis visible."
+a = "Réencoder l’image peut perdre des détails ou introduire des artefacts. Débit, dimensions, source et complexité des scènes influencent ce qui se voit ; une limite ne définit pas une perte exacte de qualité. Le son est copié inchangé. Lisez le résultat, comparez textes et mouvements importants et gardez l’original."
 
 [[faq]]
 q = "Quel format est écrit&nbsp;?"
-a = "MP4 avec H.264 et piste audio copiée intacte, pour la compatibilité avec téléphones, navigateurs, messageries et courriels. Pas de WebM, HEVC ni AV1, plus efficaces mais moins largement acceptés."
+a = "Un MP4 avec vidéo H.264 et la piste audio originale copiée. H.264 en MP4 est largement pris en charge, mais le lecteur destinataire doit aussi accepter le codec audio copié et le profil vidéo. Testez le fichier dans l’application prévue. Cet outil n’écrit pas de WebM, HEVC ni AV1."
 
 [[faq]]
 q = "Quels fichiers sont lus&nbsp;?"

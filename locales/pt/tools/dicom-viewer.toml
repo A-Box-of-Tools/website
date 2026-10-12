@@ -72,15 +72,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu dispositivo"
 
 [[privacy]]
-title = "O seu exame não tem para onde ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      contatar, e nenhum deles pertence a este site. Não existe aqui um endpoint
-      onde o seu arquivo pudesse ser recolhido, e não existe no código nada que o
-      enviasse se existisse. Antes estava escrito <code>connect-src 'none'</code>,
-      que era absoluto; acrescentar publicidade custou isso, e dizê-lo faz parte do
-      acordo."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Aqui isso pesa mais do que nas outras páginas."
@@ -108,14 +101,7 @@ body = """
 
 [[privacy]]
 title = "Os identificadores estão listados para você, e para mais ninguém."
-body = """
-
-      A página imprime todos os campos do seu arquivo que nomeiam ou estreitam a
-      pessoa de quem é o exame, porque essa é a pergunta que precisa de resposta
-      para quem está prestes a compartilhar um corte, e nenhum visualizador
-      responde. Fica na tela à sua frente e não vai a lugar nenhum: não existe
-      neste repositório um evento de analytics que carregue qualquer parte disso, e
-      a página não conseguiria enviá-lo mesmo que existisse."""
+body = "A página imprime todos os campos do seu arquivo que nomeiam ou estreitam a pessoa de quem é o exame, porque essa é a pergunta que precisa de resposta para quem está prestes a compartilhar um corte, e nenhum visualizador responde. Fica na tela à sua frente e não vai a lugar nenhum: não existe neste repositório um evento de analytics que carregue qualquer parte disso. O feedback opcional envia somente ferramenta, voto e motivo fixos, nunca metadados lidos do arquivo."
 
 [[privacy]]
 title = "Ele lê. Ele não escreve."
