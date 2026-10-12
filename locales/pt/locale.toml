@@ -436,6 +436,7 @@ guides_all_note = """
     <a href="{{ base }}">veja todas</a>."""
 
 [ui.tool]
+pairing_version = "Versão:"
 view_source = "Ver o código-fonte"
 how_verified = "Como conferir isso"
 live_check = "Verificação ao vivo:"

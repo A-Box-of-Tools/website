@@ -1,5 +1,13 @@
 # Adding a tool
 
+Tools that pair browsers through the shared `peer-network` part automatically
+show a version beside their heading. It combines the site's git-derived release
+with the tool's JavaScript fingerprint, so two cached or preview builds can be
+compared even before the next release. The fingerprint is the same across
+languages and identifies code rather than translated copy. A tool using another
+pairing transport sets `requires_pairing = true` in its `tool.toml` to get the
+same display. No hand-maintained version number is needed.
+
 [← README](../README.md)
 
 1. Make `tools/<slug>/` with five things: `tool.toml`, `body.html` (the `<main>`

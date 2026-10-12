@@ -1,7 +1,8 @@
 # Remote Camera
 
-One browser opens a camera and approves one viewer. The camera track is added
-only after approval; the initial WebRTC offer has a control channel and no
+One browser opens a camera and accepts one viewer. Approval is on by default;
+turning it off accepts new requests through the same encrypted acknowledgement
+flow. The camera track is added only after that acknowledgement; the initial WebRTC offer has a control channel and no
 media. The viewer note, hello and approval travel that encrypted channel.
 This makes approval a transport boundary rather than a hidden video element.
 
@@ -36,6 +37,19 @@ and one approved viewer. Notes are bounded to 80 characters and rendered with
 
 Capture requests `{video: true, audio: false}` so the browser chooses its camera. `CameraCapture` invalidates pending
 permission requests on Stop; a late successful grant has every track closed.
+After permission, enumerateDevices exposes a selector when several video
+devices exist. Camera switching holds new approvals and video acknowledgements
+until the selected capture is ready, replaces the active sender track without
+renegotiating, and keeps the invitation, discovery lease and peer connection.
+The old capture stays alive until adoption where hardware permits. Exclusive
+devices release it and retry once; a failed retry attempts to restore the old
+device. Stop invalidates both acquisition and replacement, including late
+streams. A failure with no usable camera ends the invitation.
+
+The approval switch applies to new requests. Waiting manual requests never
+inherit automatic acceptance, and an accepted viewer remains connected when
+the setting changes. One active slot is reserved synchronously before its
+acknowledgement; the four-pending cap and busy refusals remain in place.
 Source Stop, page hide, page close and signaling loss stop capture, peers and
 socket. Viewer Disconnect closes its own peer while the source retains preview.
 A best-effort screen wake lock is released on cleanup, including a late grant.
@@ -58,7 +72,8 @@ coverage lives in the sibling `A-Box-of-Tools/qa` repository. Do not run the
 website suites locally; reproduce a named failure only after CI reports it.
 
 For acceptance use two physical devices and test camera permissions, QR/link
-pairing, browser camera selection, custom names, discovery and link-only mode, app switching, device sleep and the actual
+pairing, browser camera selection, mid-share camera switching, both approval
+modes, custom names, discovery and link-only mode, app switching, device sleep and the actual
 network. Two browser processes on one computer verify transport and UI but
 do not establish that a particular phone or Wi-Fi network supports it.
 

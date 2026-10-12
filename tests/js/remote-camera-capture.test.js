@@ -78,3 +78,122 @@ test('current permission failure is reported while a cancelled failure is ignore
   cancelled.stop(); obsolete.reject(denied);
   assert.equal(await result, null);
 });
+
+function videoStream(deviceId) {
+  const result = stream(), track = result.tracks[0];
+  track.kind = 'video';
+  track.getSettings = () => ({ deviceId });
+  result.getVideoTracks = () => [track];
+  return result;
+}
+function queuedCapture(...results) {
+  const calls = [];
+  const capture = new CameraCapture({ async getUserMedia(constraints) {
+    calls.push(constraints);
+    const next = results.shift();
+    if (next instanceof Error) throw next;
+    return typeof next === 'function' ? next(constraints) : next;
+  } });
+  return { capture, calls };
+}
+function captureFailure(name) { return Object.assign(new Error(name), { name }); }
+function assertStopped(value, count) { assert.deepEqual(value.tracks.map((track) => track.stopped), value.tracks.map(() => count)); }
+
+test('switch commits only after the new camera is installed', async () => {
+  const previous = videoStream('previous'), candidate = videoStream('chosen');
+  const installation = deferred(), entered = deferred();
+  const { capture, calls } = queuedCapture(previous, candidate);
+  await capture.start();
+  const changing = capture.switchDevice('chosen', (value) => {
+    assert.equal(value, candidate); entered.resolve(); return installation.promise;
+  });
+  await entered.promise;
+  assert.equal(capture.stream, previous);
+  assert.equal(capture.switching, true);
+  assertStopped(previous, 0);
+  installation.resolve(true);
+  assert.equal(await changing, candidate);
+  assert.equal(capture.stream, candidate);
+  assert.equal(capture.switching, false);
+  assertStopped(previous, 1); assertStopped(candidate, 0);
+  assert.deepEqual(calls, [{ video: true, audio: false }, { video: { deviceId: { exact: 'chosen' } }, audio: false }]);
+  capture.stop();
+});
+
+test('failed camera acquisition preserves the existing stream', async () => {
+  const previous = videoStream('previous'), error = captureFailure('OverconstrainedError');
+  const { capture } = queuedCapture(previous, error);
+  await capture.start();
+  await assert.rejects(capture.switchDevice('missing', () => assert.fail('no candidate')), (value) => value === error);
+  assert.equal(capture.stream, previous); assert.equal(capture.switching, false); assertStopped(previous, 0);
+  capture.stop();
+});
+
+test('a rejected camera installation stops only its candidate', async () => {
+  const previous = videoStream('previous'), candidate = videoStream('chosen');
+  const { capture } = queuedCapture(previous, candidate);
+  await capture.start();
+  assert.equal(await capture.switchDevice('chosen', () => false), null);
+  assert.equal(capture.stream, previous); assertStopped(previous, 0); assertStopped(candidate, 1);
+  capture.stop();
+});
+
+test('Stop closes a candidate while installation is pending', async () => {
+  const previous = videoStream('previous'), candidate = videoStream('chosen');
+  const installation = deferred(), entered = deferred();
+  const { capture } = queuedCapture(previous, candidate);
+  await capture.start();
+  const changing = capture.switchDevice('chosen', () => { entered.resolve(); return installation.promise; });
+  await entered.promise; capture.stop();
+  assert.equal(capture.stream, null); assertStopped(previous, 1); assertStopped(candidate, 1);
+  installation.resolve(true);
+  assert.equal(await changing, null); assertStopped(candidate, 1);
+});
+
+test('a late old camera switch cannot replace or clear a newer switch', async () => {
+  const previous = videoStream('previous'), stale = videoStream('stale');
+  const restarted = videoStream('restarted'), chosen = videoStream('chosen');
+  const oldAcquisition = deferred(), newAcquisition = deferred();
+  const { capture } = queuedCapture(previous, oldAcquisition.promise, restarted, newAcquisition.promise);
+  await capture.start();
+  const oldSwitch = capture.switchDevice('stale', () => assert.fail('stale installation'));
+  capture.stop(); await capture.start();
+  const newSwitch = capture.switchDevice('chosen', () => true);
+  oldAcquisition.resolve(stale);
+  assert.equal(await oldSwitch, null); assertStopped(stale, 1);
+  assert.equal(capture.stream, restarted); assert.equal(capture.switching, true);
+  newAcquisition.resolve(chosen);
+  assert.equal(await newSwitch, chosen); assert.equal(capture.switching, false);
+  assertStopped(restarted, 1); assertStopped(chosen, 0);
+  capture.stop();
+});
+
+test('exclusive camera hardware is released before one retry', async () => {
+  const previous = videoStream('previous'), chosen = videoStream('chosen');
+  const { capture, calls } = queuedCapture(previous, captureFailure('NotReadableError'), () => { assertStopped(previous, 1); return chosen; });
+  await capture.start();
+  assert.equal(await capture.switchDevice('chosen', () => true), chosen);
+  assertStopped(previous, 1); assertStopped(chosen, 0);
+  assert.deepEqual(calls.slice(1), Array.from({ length: 2 }, () => ({ video: { deviceId: { exact: 'chosen' } }, audio: false })));
+  capture.stop();
+});
+
+test('a failed exclusive camera retry restores the old device', async () => {
+  const previous = videoStream('previous'), restored = videoStream('previous'), failure = captureFailure('NotFoundError');
+  const { capture, calls } = queuedCapture(previous, captureFailure('AbortError'), failure, restored);
+  await capture.start();
+  await assert.rejects(capture.switchDevice('chosen', () => true), (error) => error === failure);
+  assert.equal(capture.stream, restored); assert.equal(capture.switching, false);
+  assertStopped(previous, 1); assertStopped(restored, 0);
+  assert.deepEqual(calls.at(-1), { video: { deviceId: { exact: 'previous' } }, audio: false });
+  capture.stop();
+});
+
+test('failed camera restoration releases its candidate and leaves no capture', async () => {
+  const previous = videoStream('previous'), restored = videoStream('previous'), failure = captureFailure('NotFoundError');
+  const { capture } = queuedCapture(previous, captureFailure('NotReadableError'), failure, restored);
+  await capture.start();
+  await assert.rejects(capture.switchDevice('chosen', () => { throw captureFailure('InvalidStateError'); }), (error) => error === failure);
+  assert.equal(capture.stream, null); assert.equal(capture.switching, false);
+  assertStopped(previous, 1); assertStopped(restored, 1);
+});

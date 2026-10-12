@@ -23,13 +23,24 @@ export class CameraSession {
     this.peers = new Map();
     this.active = null;
     this.keepalive = null;
+    this.requireApproval = true;
+    this.cameraChange = null;
   }
 
-  state(key) { this.onState(key, this.role); }
+  state(key) {
+    if (key === 'camera.waiting' && !this.requireApproval) key = 'camera.open-waiting';
+    this.onState(key, this.role);
+  }
 
-  async startHost(stream, code, { discoverable = false } = {}) {
+  setApprovalRequired(value) {
+    this.requireApproval = Boolean(value);
+    if (this.role === 'camera' && this.active === null) this.state('camera.waiting');
+  }
+
+  async startHost(stream, code, { discoverable = false, requireApproval = true } = {}) {
     this.stop();
     this.role = 'camera';
+    this.requireApproval = Boolean(requireApproval);
     this.stream = stream;
     if (!stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
       this.stop('camera.ended');
@@ -201,6 +212,7 @@ export class CameraSession {
       if (this.current(entry)) work();
     }, ms);
     entry.timers.add(timer);
+    return timer;
   }
 
   queue(entry, work) {
@@ -257,10 +269,13 @@ export class CameraSession {
       } else if (!entry.hello) {
         this.peerFailed(entry, 'connection.invalid');
       } else if (message.type === 'request' && this.role === 'camera' && !entry.approved) {
-        if (entry.pending) return;
+        if (entry.pending || entry.refused) return;
         entry.pending = true;
         entry.note = message.note;
-        this.requests();
+        entry.autoAccept = !this.requireApproval;
+        if (entry.autoAccept && !this.cameraChange) {
+          if (!this.approve(entry.id)) this.deny(entry.id, 'busy');
+        } else this.requests();
       } else if (message.type === 'approved' && this.role === 'viewer' && !entry.approved) {
         entry.approved = true;
         this.state('viewer.approved');
@@ -274,6 +289,9 @@ export class CameraSession {
           });
         }, CONNECT_TIMEOUT);
       } else if (message.type === 'approval-ack' && this.role === 'camera' && entry.approved && this.active === entry.id) {
+        entry.acknowledged = true;
+        clearTimeout(entry.approvalDeadline);
+        entry.timers.delete(entry.approvalDeadline);
         this.beginVideo(entry);
       } else if (message.type === 'denied' && this.role === 'viewer') {
         this.stop('viewer.denied');
@@ -293,7 +311,7 @@ export class CameraSession {
 
   approve(id) {
     const entry = this.peers.get(id);
-    if (!entry?.pending || this.active !== null || this.role !== 'camera') return false;
+    if (!entry?.pending || entry.refused || this.active !== null || this.role !== 'camera' || this.cameraChange) return false;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.stop('camera.ended'); return false; }
     this.active = id;
@@ -305,8 +323,8 @@ export class CameraSession {
       this.peerFailed(entry, 'connection.ended');
       return false;
     }
-    this.deadline(entry, () => {
-      if (!entry.video) this.peerFailed(entry, 'connection.direct-failed');
+    entry.approvalDeadline = this.deadline(entry, () => {
+      if (!entry.acknowledged) this.peerFailed(entry, 'connection.direct-failed');
     }, CONNECT_TIMEOUT);
     this.requests();
     this.state('camera.approved');
@@ -317,13 +335,13 @@ export class CameraSession {
   }
 
   beginVideo(entry) {
-    if (!this.current(entry) || entry.video || this.role !== 'camera' || this.active !== entry.id) return;
+    if (!this.current(entry) || entry.video || !entry.acknowledged || this.role !== 'camera' || this.active !== entry.id || this.cameraChange) return;
     const track = this.stream?.getVideoTracks().find((item) => item.readyState === 'live');
     if (!track) { this.stop('camera.ended'); return; }
     try {
       // Approval and SDP use different transports. The acknowledgement proves
       // the viewer processed approval before a video offer can overtake it.
-      entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] });
+      entry.sender = entry.pc.addTransceiver(track, { direction: 'sendonly', streams: [this.stream] }).sender;
       entry.video = true;
     } catch {
       this.peerFailed(entry, 'connection.ended');
@@ -333,10 +351,72 @@ export class CameraSession {
     this.state('camera.streaming');
   }
 
+  prepareCameraChange() {
+    if (this.role !== 'camera' || this.cameraChange) throw new Error('camera.switch-failed');
+    const revision = this.revision;
+    const operation = { candidate: null };
+    this.cameraChange = operation;
+    const current = () => this.role === 'camera' && this.revision === revision && this.cameraChange === operation;
+    const finish = () => {
+      if (!current()) return;
+      this.cameraChange = null;
+      if (!this.stream?.getVideoTracks().some((track) => track.readyState === 'live')) {
+        this.stop('camera.switch-ended');
+        return;
+      }
+      const active = this.peers.get(this.active);
+      if (active?.acknowledged) this.beginVideo(active);
+      // Only requests made while approval was off may be accepted here.
+      // An existing manual request does not inherit a later policy change.
+      for (const entry of [...this.peers.values()]) {
+        if (entry.pending && entry.autoAccept && !entry.refused) {
+          if (!this.approve(entry.id)) this.deny(entry.id, 'busy');
+        }
+      }
+      this.requests();
+    };
+    this.requests();
+    return {
+      commit: async (stream) => {
+        if (!current()) return false;
+        const track = stream?.getVideoTracks().find((item) => item.readyState === 'live');
+        if (!track) throw new Error('camera.switch-failed');
+        operation.candidate = stream;
+        const entry = this.peers.get(this.active);
+        const sender = entry?.video ? entry.sender : null;
+        const previous = sender?.track;
+        if (sender) {
+          try { await sender.replaceTrack(track); }
+          catch (error) {
+            if (!current()) return false;
+            // A departing viewer no longer has a sender to replace. The new
+            // camera can still serve the next viewer on the same invitation.
+            if (this.current(entry)) throw error;
+          }
+        }
+        if (!current()) return false;
+        if (track.readyState !== 'live') {
+          if (sender && this.current(entry) && previous?.readyState === 'live') {
+            try { await sender.replaceTrack(previous); }
+            catch { if (this.current(entry)) this.peerFailed(entry, 'connection.ended'); }
+          }
+          if (!current()) return false;
+          throw new Error('camera.switch-failed');
+        }
+        this.stream = stream;
+        operation.candidate = null;
+        finish();
+        return true;
+      },
+      cancel: finish,
+    };
+  }
+
   deny(id, reason = 'denied') {
     const entry = this.peers.get(id);
     if (!entry || entry.approved) return false;
     try { this.control(entry, reason); } catch {}
+    entry.refused = true;
     entry.pending = false;
     this.requests();
     this.deadline(entry, () => this.removePeer(id), 150);
@@ -369,6 +449,10 @@ export class CameraSession {
   stop(key = 'connection.stopped') {
     const role = this.role;
     this.revision += 1;
+    this.cameraChange?.candidate?.getTracks().forEach((track) => {
+      if (track.readyState !== 'ended') track.stop();
+    });
+    this.cameraChange = null;
     clearInterval(this.keepalive);
     this.keepalive = null;
     const socket = this.socket;

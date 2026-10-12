@@ -259,6 +259,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
+.pairing-version { margin: 0.35rem 0 0; color: var(--text-dim); font-size: 0.82rem; }
+.pairing-version code { font-size: inherit; overflow-wrap: anywhere; }
 
 .topbar-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 

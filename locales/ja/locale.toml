@@ -284,6 +284,7 @@ guides_all_note = """
     <a href="{{ base }}">ツールを一覧で見る</a>。"""
 
 [ui.tool]
+pairing_version = "バージョン："
 view_source = "ソースを見る"
 how_verified = "確かめ方"
 live_check = "いまの通信："

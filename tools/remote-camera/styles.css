@@ -8,6 +8,10 @@
 .camera-name-row input { flex: 1 1 18rem; min-width: 0; }
 .camera-name-row button { flex: 0 0 auto; }
 .camera-discoverable { display: flex; gap: 0.6rem; align-items: baseline; }
+.camera-policy, .camera-switch-status { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
+.camera-policy.warn, .camera-switch-status.warn { color: var(--danger); }
+.camera-device-field { max-width: 32rem; margin-bottom: 0.75rem; }
+.camera-device-field select { width: 100%; }
 .camera-discovery-note { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
 .camera-discovery-list { display: flex; gap: 0.6rem; flex-wrap: wrap; list-style: none; padding: 0; }
 .camera-discovery-list a { display: inline-block; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: var(--radius); overflow-wrap: anywhere; }

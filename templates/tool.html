@@ -224,6 +224,8 @@
     <div>
       <h1>{{ tool.heading }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
+{% if tool.requires_pairing %}      <p class="pairing-version" data-pairing-version="{{ js_v }}">{{ ui.tool.pairing_version }} <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code dir="ltr">{{ js_v }}</code></span></p>
+{% endif %}
     </div>
   </div>
   <div class="topbar-actions">

@@ -7,7 +7,7 @@
 
   <section id="camera-panel" data-role="camera" class="card">
     <h2>Start the camera, then invite a viewer</h2>
-    <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code, and you approve its request before any video is sent.</p>
+    <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
     <div class="field camera-name-field">
       <label for="camera-name">Viewer link name</label>
       <div class="camera-name-row">
@@ -17,7 +17,9 @@
       <p id="camera-name-note" class="field-note">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
     </div>
     <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
-    <p class="field-note">The link name is visible to browsers in the discovery group described below. A listed camera still requires your approval. Turn this off to invite viewers by link only.</p>
+    <p class="field-note">The link name is visible to browsers in the discovery group described below. Turn this off to invite viewers by link only.</p>
+    <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked> Require my approval before viewers can watch</label>
+    <p id="camera-approval-policy" class="camera-policy" role="status" aria-live="polite">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
       <button type="button" id="camera-stop" class="ghost" hidden>Stop camera and end the link</button>
@@ -25,6 +27,12 @@
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
     <p id="camera-publication-status" class="field-note" role="status" aria-live="polite"></p>
     <div id="camera-preview-panel" class="camera-video-panel" hidden>
+      <div id="camera-device-field" class="field camera-device-field" hidden>
+        <label for="camera-device">Camera</label>
+        <select id="camera-device" disabled aria-describedby="camera-device-note"></select>
+        <p id="camera-device-note" class="field-note">Switch cameras while keeping the same viewer link and connection. A brief pause may occur while your browser opens the other camera.</p>
+      </div>
+      <p id="camera-switch-status" class="camera-switch-status" role="status" aria-live="polite"></p>
       <video id="camera-preview" autoplay muted playsinline aria-label="Your camera preview, visible only on this device until you approve a viewer"></video>
       <p class="field-note">Keep this tab visible and this device awake. Switching tabs or closing the page stops the camera and ends the link.</p>
     </div>
@@ -59,9 +67,9 @@
         <p class="field-note">Optional. This note goes to the camera browser over the encrypted connection.</p>
       </div>
     </div>
-    <p class="camera-consent">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera device must approve you before video arrives. Continue only if you know who controls it.</p>
+    <p class="camera-consent">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
     <div class="run-row">
-      <button type="button" id="viewer-connect" class="big">Connect and ask to view</button>
+      <button type="button" id="viewer-connect" class="big">Connect to camera</button>
       <button type="button" id="viewer-stop" class="ghost" hidden>Disconnect</button>
     </div>
     <p id="viewer-status" class="camera-status" role="status" aria-live="polite">Enter a camera code to request a view.</p>
@@ -76,8 +84,8 @@
 
   <section id="camera-discovery" class="card" aria-labelledby="discovery-heading">
     <h2 id="discovery-heading">Find a camera</h2>
-    <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise; its owner must approve you.</p>
-    <p class="field-note">Choosing a name opens the viewing form. It does not connect or request video. The camera owner must approve you after you choose Connect.</p>
+    <p class="camera-discovery-note">Listed cameras share the internet address seen by our introduction service and this site&rsquo;s address. A shared VPN or carrier network can include strangers, and nearby cameras can be missed. Choose a camera you recognise.</p>
+    <p class="field-note">Choosing a name opens the viewing form. It does not connect or request video. Choose Connect to request a view; the owner can require approval or allow viewers automatically.</p>
     <button type="button" id="discovery-refresh" class="ghost">Refresh cameras</button>
     <p id="discovery-status" class="field-note" role="status" aria-live="polite"></p>
     <ul id="discovery-list" class="camera-discovery-list"></ul>
@@ -95,8 +103,17 @@
     <span data-phrase="camera.ready">Your camera is off. Nothing is paired.</span>
     <span data-phrase="camera.permission">Waiting for camera permission. You can stop this attempt at any time.</span>
     <span data-phrase="camera.waiting">Camera preview is on. Waiting for a viewer you approve.</span>
-    <span data-phrase="camera.approved">Viewer approved. Waiting for the direct video connection.</span>
-    <span data-phrase="camera.streaming">One approved viewer is connected to your camera. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.open-waiting">Camera preview is on. A viewer can connect without asking you for approval.</span>
+    <span data-phrase="camera.approval-required">Approve viewer requests on this device. Changes to this setting apply to new requests.</span>
+    <span data-phrase="camera.open-access">Approval is off. Anyone who knows your link or finds your listed camera can watch while it is free. Changes apply to new requests; an existing viewer stays connected.</span>
+    <span data-phrase="camera.approved">Viewer accepted. Waiting for the direct video connection.</span>
+    <span data-phrase="camera.streaming">One viewer is connected to your camera. Keep this tab visible and this device awake.</span>
+    <span data-phrase="camera.current-device">Current camera</span>
+    <span data-phrase="camera.device-label">Camera {number}</span>
+    <span data-phrase="camera.switching">Switching cameras&hellip;</span>
+    <span data-phrase="camera.switched">Camera switched. The viewer link and connection stay open.</span>
+    <span data-phrase="camera.switch-failed">The camera could not be switched. Sharing continues with the current camera.</span>
+    <span data-phrase="camera.switch-ended">The camera could not be switched or restored. Start again to share a camera.</span>
     <span data-phrase="camera.ended">The camera stopped. Start again when you are ready to share.</span>
     <span data-phrase="camera.hidden">The camera stopped because this tab was hidden. Start again when you are ready to share.</span>
     <span data-phrase="camera.denied">Camera access was not allowed. Check this page&rsquo;s camera permission and try again.</span>
@@ -107,8 +124,8 @@
     <span data-phrase="camera.approve">Approve this viewer</span>
     <span data-phrase="camera.deny">Turn away</span>
     <span data-phrase="viewer.ready">Enter a camera code to request a view.</span>
-    <span data-phrase="viewer.waiting">Your request reached the camera device. Waiting for its approval; no video is being sent to you.</span>
-    <span data-phrase="viewer.approved">The camera device approved you. Waiting for live video&hellip;</span>
+    <span data-phrase="viewer.waiting">Your request reached the camera device. If approval is required, wait for its owner; no video is being sent yet.</span>
+    <span data-phrase="viewer.approved">The camera device accepted you. Waiting for live video&hellip;</span>
     <span data-phrase="viewer.receiving">Receiving live video directly from the camera device.</span>
     <span data-phrase="viewer.denied">The camera device turned away your request. Ask its owner before trying again.</span>
     <span data-phrase="viewer.play">Your browser paused playback. Choose Play live video to continue.</span>
@@ -138,7 +155,7 @@
     <span data-phrase="discovery.ready">Choose a camera name to open its viewing form.</span>
     <span data-phrase="discovery.unavailable">Camera discovery is unavailable. You can still use a viewer link or code.</span>
     <span data-phrase="discovery.publishing">Listing your camera&hellip;</span>
-    <span data-phrase="discovery.published">Your camera name is listed. Every viewer still needs your approval.</span>
+    <span data-phrase="discovery.published">Your camera name is listed. Your viewer approval setting still applies.</span>
     <span data-phrase="discovery.not-published">Your camera is available by link, but its name could not be listed.</span>
   </div>
 </main>

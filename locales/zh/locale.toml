@@ -282,6 +282,7 @@ guides_all_note = """
     <a href="{{ base }}">全都在这儿</a>。"""
 
 [ui.tool]
+pairing_version = "版本："
 view_source = "查看源码"
 how_verified = "这条怎么核实"
 live_check = "实时检查："
