@@ -762,6 +762,8 @@ guides_all_note = """
 #
 
 [ui.tool]
+pairing_version_help = "About the tool version"
+pairing_version_hint = "Compare this value on both devices. If it differs, reload both pages before starting a new share."
 pairing_version = "Version:"
 view_source = "View source"
 how_verified = "How this is verified"

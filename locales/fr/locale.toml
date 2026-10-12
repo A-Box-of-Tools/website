@@ -261,6 +261,8 @@ hub_roadmap_note = "Il en arrive d'autres, et la liste est publique&nbsp;: <a hr
 guides_all_note = "Chaque guide décrit ici un outil qui s'exécute sur votre propre machine&nbsp;: <a href=\"{{ base }}\">les voir tous</a>."
 
 [ui.tool]
+pairing_version_help = "À propos de la version de l’outil"
+pairing_version_hint = "Comparez cette valeur sur les deux appareils. Si elle diffère, rechargez les deux pages avant de commencer un nouveau partage."
 pairing_version = "Version :"
 view_source = "Voir le code"
 how_verified = "Comment le vérifier"

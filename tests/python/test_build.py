@@ -614,7 +614,7 @@ class BuildTheSite(unittest.TestCase):
                     self.assertIsNotNone(stamp)
                     self.assertIsNotNone(asset)
                     self.assertEqual(stamp.group(1), asset.group(1))
-                    self.assertIn(f'<code dir="ltr">{stamp.group(1)}</code>', page)
+                    self.assertIn(f'<code id="tool-version" dir="ltr">{stamp.group(1)}</code>', page)
                     versions.add(stamp.group(1))
             self.assertEqual(len(versions), 1)
         ordinary = (self.out / 'compress-image' / 'index.html').read_text(encoding='utf-8')

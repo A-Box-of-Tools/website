@@ -436,6 +436,8 @@ guides_all_note = """
     <a href="{{ base }}">veja todas</a>."""
 
 [ui.tool]
+pairing_version_help = "Sobre a versão da ferramenta"
+pairing_version_hint = "Compare este valor nos dois dispositivos. Se for diferente, recarregue as duas páginas antes de iniciar um novo compartilhamento."
 pairing_version = "Versão:"
 view_source = "Ver o código-fonte"
 how_verified = "Como conferir isso"

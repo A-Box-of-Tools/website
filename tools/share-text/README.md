@@ -74,7 +74,8 @@ unchanged.
 
 ## Finding a share on the start page
 
-Both roles show the tool's generated code version above their controls. It is
+The shared frame shows the tool's generated code version beside its heading,
+so both roles use the same display as Remote Camera. It is
 the same content hash used in this page's module URLs, so languages using the
 same code show the same value, and changing the tool or its shared modules
 changes it without a hand-maintained version number. The information tooltip

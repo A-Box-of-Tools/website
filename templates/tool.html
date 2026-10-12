@@ -224,7 +224,13 @@
     <div>
       <h1>{{ tool.heading }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
-{% if tool.requires_pairing %}      <p class="pairing-version" data-pairing-version="{{ js_v }}">{{ ui.tool.pairing_version }} <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code dir="ltr">{{ js_v }}</code></span></p>
+{% if tool.requires_pairing %}      <div class="pairing-version" data-pairing-version="{{ js_v }}">
+        <span>{{ ui.tool.pairing_version }}</span> <span dir="ltr">{% if site.release_version %}v{{ site.release_version }} &middot; {% endif %}<code id="tool-version" dir="ltr">{{ js_v }}</code></span>
+        <details id="tool-version-help" class="tool-version-help info-fold">
+          <summary aria-describedby="tool-version-note"><span class="visually-hidden">{{ ui.tool.pairing_version_help }}</span></summary>
+          <p id="tool-version-note" role="tooltip" class="tool-version-note">{{ ui.tool.pairing_version_hint }}</p>
+        </details>
+      </div>
 {% endif %}
     </div>
   </div>

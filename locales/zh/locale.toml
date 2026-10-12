@@ -282,6 +282,8 @@ guides_all_note = """
     <a href="{{ base }}">全都在这儿</a>。"""
 
 [ui.tool]
+pairing_version_help = "关于工具版本"
+pairing_version_hint = "请比较两台设备上的这个值。如果不同，请重新加载两边的页面，然后开始新的分享。"
 pairing_version = "版本："
 view_source = "查看源码"
 how_verified = "这条怎么核实"
