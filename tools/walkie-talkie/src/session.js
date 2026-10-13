@@ -2,6 +2,7 @@ import { allowedCandidate, localDescription } from './shared/peer-network.js';
 
 const INTERVAL = 1000;
 const DEADLINE = 10000;
+const KEEPALIVE = 30000;
 const MAX_ICE = 128;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const realClock = { now: () => Date.now(),
@@ -168,7 +169,8 @@ export class BroadcastSession {
     let ws;
     try { ws = new this._Socket(this._endpoint); }
     catch { this._voiceState(); this._retry(epoch, 1006); return; }
-    const ctx = { ws, epoch, auth: false, closed: false, pending: 0, chain: Promise.resolve(), timer: null };
+    const ctx = { ws, epoch, auth: false, closed: false, pending: 0, chain: Promise.resolve(),
+      timer: null, pongTimer: null, lastPing: 0 };
     this._socket = ctx;
     ctx.timer = this._clock.setTimeout(() => this._lost(ctx, 1006), DEADLINE);
     ws.onopen = () => {
@@ -179,6 +181,11 @@ export class BroadcastSession {
     };
     ws.onmessage = event => {
       if (!this._currentSocket(ctx)) return;
+      if (event.data === 'pong') {
+        this._clock.clearTimeout(ctx.pongTimer);
+        ctx.pongTimer = null;
+        return;
+      }
       if (typeof event.data !== 'string' || event.data.length > 65536 || ctx.pending >= 256) {
         this._lost(ctx, 1006);
         return;
@@ -201,6 +208,8 @@ export class BroadcastSession {
     if (!ctx) return;
     ctx.closed = true;
     this._clock.clearTimeout(ctx.timer);
+    this._clock.clearTimeout(ctx.pongTimer);
+    ctx.timer = ctx.pongTimer = null;
     ctx.ws.onopen = ctx.ws.onmessage = ctx.ws.onclose = ctx.ws.onerror = null;
     try { ctx.ws.close(1000); } catch {}
   }
@@ -230,10 +239,11 @@ export class BroadcastSession {
   _send(frame) {
     const ctx = this._socket;
     if (!ctx || !this._currentSocket(ctx) || ctx.ws.readyState !== 1 || ctx.ws.bufferedAmount > 65536) return false;
-    try { ctx.ws.send(JSON.stringify(frame)); return true; }
+    try { ctx.ws.send(typeof frame === 'string' ? frame : JSON.stringify(frame)); return true; }
     catch { this._lost(ctx, 1006); return false; }
   }
   _authenticated(ctx) {
+    if (!ctx.auth) ctx.lastPing = this._clock.now();
     ctx.auth = true;
     this._failures = 0;
     this._clock.clearTimeout(ctx.timer);
@@ -318,6 +328,12 @@ export class BroadcastSession {
     this._tickTimer = this._clock.setTimeout(() => {
       this._tickTimer = null;
       if (!this._live(epoch)) return;
+      const ctx = this._socket;
+      if (ctx?.auth && ctx.pongTimer === null && this._clock.now() - ctx.lastPing >= KEEPALIVE) {
+        ctx.lastPing = this._clock.now();
+        ctx.pongTimer = this._clock.setTimeout(() => this._lost(ctx, 1006), DEADLINE);
+        this._send('ping');
+      }
       if (this._canSignal()) {
         for (const peer of this._peers.values()) this._flushOutgoing(peer);
       }

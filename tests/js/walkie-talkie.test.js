@@ -82,11 +82,11 @@ function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
       sockets.push(this);
     }
     open() { this.readyState = 1; this.onopen?.(); }
-    message(frame) { this.onmessage?.({ data: JSON.stringify(frame) }); }
+    message(frame) { this.onmessage?.({ data: typeof frame === 'string' ? frame : JSON.stringify(frame) }); }
     serverClose(code = 1006) { this.readyState = 3; this.onclose?.({ code }); }
     send(text) {
       assert.equal(this.readyState, 1);
-      this.sent.push(JSON.parse(text));
+      this.sent.push(text === 'ping' || text === 'pong' ? text : JSON.parse(text));
       if (this.pauseAfterSends === this.sent.length) this.bufferedAmount = 70000;
     }
     close(code) { this.closed = true; this.readyState = 3; this.closeCode = code; }
@@ -452,4 +452,50 @@ test('temporary socket backpressure retains the unsent tail and flushes it in or
   const delivered = ws.sent.filter(frame => ['answer', 'candidate'].includes(frame.type));
   assert.deepEqual(delivered.map(frame => frame.type), ['answer', 'candidate', 'candidate']);
   assert.deepEqual(delivered.slice(1).map(frame => frame.candidate), candidates);
+});
+
+test('pong keeps signaling alive and a missing pong reconnects without cutting healthy audio', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.message(offer());
+  await flush();
+  const voice = { name: 'direct voice' };
+  h.peers[0].receive(voice);
+  h.peers[0].connect();
+  await h.clock.advance(29999);
+  assert.equal(ws.sent.filter(frame => frame === 'ping').length, 0);
+  await h.clock.advance(1);
+  assert.equal(ws.sent.filter(frame => frame === 'ping').length, 1);
+  ws.message('pong');
+  await h.clock.advance(10000);
+  assert.equal(ws.closed, false);
+  assert.equal(h.sockets.length, 1);
+  await h.clock.advance(20000);
+  assert.equal(ws.sent.filter(frame => frame === 'ping').length, 2);
+  await h.clock.advance(9999);
+  assert.equal(ws.closed, false);
+  await h.clock.advance(1);
+  assert.equal(ws.closed, true);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(h.streams.at(-1), voice);
+  assert.equal(h.states.at(-1).key, 'listener-reconnecting');
+  assert.equal(h.states.at(-1).detail.directReady, true);
+  await h.clock.advance(1000);
+  assert.equal(h.sockets.length, 2);
+});
+
+test('Stop clears an outstanding pong deadline and parked replies do not delay keepalive', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  for (let i = 0; i < 30; i++) {
+    await h.clock.advance(1000);
+    ws.message({ type: 'waiting' });
+    await flush();
+  }
+  assert.equal(ws.sent.filter(frame => frame === 'ping').length, 1);
+  h.session.stop();
+  assert.equal(ws.closed, true);
+  assert.equal(h.clock.tasks.size, 0);
+  await h.clock.advance(30000);
+  assert.equal(h.sockets.length, 1);
 });
