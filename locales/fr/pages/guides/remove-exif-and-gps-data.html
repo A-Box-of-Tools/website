@@ -1,13 +1,19 @@
   <section>
     <h2>La réponse courte</h2>
-    <p>Ouvrez <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur
-      EXIF</a> pour retirer les métadonnées de vos photos. JPEG, PNG et WebP conservent leurs données d’image compressées. AVIF est nettoyé dans un nouveau PNG de la première image décodée sans métadonnées d’origine. Les options d’orientation et de profil concernent seulement les trois formats de conteneur. AVIF est décodé par votre navigateur et enregistré dans un nouveau PNG sans copier les métadonnées d’origine. Les balises EXIF disponibles sont consultables ici, mais ne peuvent pas être modifiées. Le PNG peut être plus gros et la conversion peut changer les couleurs ou le HDR. Votre original reste inchangé.</p>
+    <p>Ouvrez le <a href="../../supprimer-les-donnees-exif/">Visualiseur et suppresseur EXIF</a>, déposez les photos et choisissez «&nbsp;Retirer toutes les métadonnées&nbsp;». EXIF, XMP, IPTC, commentaires et miniature d'origine sont retirés des JPEG, PNG et WebP de la liste. Les réglages par défaut peuvent garder une nouvelle orientation et le profil colorimétrique&nbsp;; l'inspecteur final indique ce qui reste. Les données d'image compressées sont copiées intactes. Pour AVIF, le nettoyage crée plutôt un PNG depuis la première image décodée, sans métadonnées originales. L'original reste intact&nbsp;; le PNG peut être plus grand et changer HDR ou couleurs.</p>
     <p>
       Avant de le faire, cela vaut la peine de regarder ce qu'il y avait dedans.
       C'est en général plus que ce que les gens imaginent, et cette liste est
       l'argument même en faveur de l'opération.
     </p>
   </section>
+
+  <section>
+    <h2>Copies publiques et horloge d'appareil incorrecte</h2>
+    <p><strong>Des photos pour annonce, forum ou disque partagé.</strong> Gardez les originaux dans l'archive et nettoyez les copies avec orientation et profil couleur activés pour l'affichage. Utilisez <strong>Inspecter la copie nettoyée</strong> pour voir ce téléchargement exact. Vérifiez portrait droit et couleurs avant partage. Nom de fichier, panneau de rue et visage dans les pixels ne sont pas des métadonnées&nbsp;; renommez ou caviardez-les séparément si nécessaire.</p>
+    <p><strong>Une collection avec mauvaise date de prise de vue.</strong> Pour JPEG, PNG ou WebP, sélectionnez une photo, modifiez les dates utiles et enregistrez-la plutôt que tout retirer. Vérifiez la lecture de la photothèque. EXIF peut porter plusieurs dates sans fuseau&nbsp;; changer un champ ne garantit pas le tri partout. Gardez une copie intacte si les notes constructeur comptent.</p>
+  </section>
+
 
   <section>
     <h2>Ce qu'il y a réellement dans une photo</h2>
@@ -56,7 +62,7 @@
 
     <figure class="shot">
       <img src="/screens/remove-exif-and-gps-data/inside.webp" loading="lazy" decoding="async"
-           alt="L'inspecteur&nbsp;: la vignette d'une photo à côté d'une liste de ce qui a été trouvé dedans, dont la marque et le modèle de l'appareil, la date de prise de vue et des coordonnées GPS.">
+           alt="L&#x27;inspecteur : la vignette d&#x27;une photo à côté d&#x27;une liste de ce qui a été trouvé dedans, dont la marque et le modèle de l&#x27;appareil, la date de prise de vue et des coordonnées GPS.">
       <figcaption>
         Ce qu'une photo de téléphone transporte réellement. La plupart des gens n'ont jamais regardé, et c'est la raison d'être de ce guide.
       </figcaption>
@@ -105,11 +111,7 @@
       pour octet et le résultat décode exactement les mêmes pixels. C'est là
       toute la raison d'utiliser un outil de métadonnées plutôt qu'un
       convertisseur.</p>
-    <p>
-      L'exception est le cas où vous alliez réencoder de toute façon. Si vous
-      compressez ou redimensionnez déjà la photo, les étiquettes partent par
-      effet de bord et vous n'avez pas besoin d'une seconde étape.
-    </p>
+    <p>L'exception est un réencodage déjà prévu. Si compression ou redimensionnement réencodent réellement, les balises originales sont omises. Un fichier rendu intact les garde&nbsp;; vérifiez ce résultat séparément.</p>
   </section>
 
   <section>
@@ -129,7 +131,7 @@
 
     <figure class="shot">
       <img src="/screens/remove-exif-and-gps-data/strip.webp" loading="lazy" decoding="async"
-           alt="La carte de nettoyage&nbsp;: un bouton pour tout retirer, avec des interrupteurs pour garder l'étiquette d'orientation et le profil de couleur.">
+           alt="La carte de nettoyage : un bouton pour tout retirer, avec des interrupteurs pour garder l&#x27;étiquette d&#x27;orientation et le profil de couleur.">
       <figcaption>
         Tout retirer, sauf les deux choses qui valent d'être gardées. L'orientation est celle dont le départ couche la moitié d'une série sur le côté.
       </figcaption>

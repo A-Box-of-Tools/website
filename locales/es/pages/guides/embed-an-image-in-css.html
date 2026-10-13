@@ -15,6 +15,13 @@
   </section>
 
   <section>
+    <h2>Un icono pequeño o un documento en un solo archivo</h2>
+    <p><strong>Una marca decorativa reutilizada en un sitio.</strong> Elige una propiedad personalizada CSS y úsala donde deba aparecer la marca. Revisa el número de caracteres codificados y la vista previa antes de pegar. Si la imagen informa y no solo decora, es mejor un <code>&lt;img&gt;</code> con texto alternativo adecuado que un fondo CSS.</p>
+    <p><strong>Un material HTML autónomo o informe sin conexión.</strong> Elige la salida de etiqueta de imagen HTML, añade el texto alternativo necesario e incorpora solo los recursos pequeños que el documento deba llevar. Abre el archivo guardado en su visor previsto sin conexión y comprueba las imágenes. La vista previa demuestra que la URI funciona aquí; no que un cliente de correo, visor Markdown o política del destino admita imágenes de datos. Prueba el destino antes de preparar un informe entero y revisa los metadatos antes de incorporar fotos byte por byte.</p>
+  </section>
+
+
+  <section>
     <h2>Qué es en realidad un data URI</h2>
     <p>
       Una dirección que contiene la cosa en vez de apuntar a ella. Donde una hoja
@@ -126,7 +133,7 @@
   </section>
 
   <section>
-    <h2>No pases nunca un SVG a base64</h2>
+    <h2>Prefiere codificación porcentual para un SVG UTF-8</h2>
     <p>
       Este es el error más frecuente de las imágenes incrustadas, y lo cometen los
       exportadores y los complementos de compilación tanto como las personas.
@@ -143,14 +150,7 @@
       Y además sigue siendo legible:
     </p>
     <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      Ahí ves el <code>viewBox</code>, y puedes cambiar el color de relleno en tu
-      editor sin descodificar nada. Pasa ese mismo archivo a base64 y se convierte
-      en un muro de letras que no va a volver a tocar nadie.
-      <a href="../../imagen-a-base64/">Imagen a data URI</a> hace esto
-      automáticamente con todo lo que resulte ser un SVG, y tiene una casilla para
-      esa rara cadena de herramientas que insiste en <code>;base64</code>.
-    </p>
+    <p>Puedes ver el <code>viewBox</code> y cambiar el color en el editor sin decodificar. En base64, el mismo archivo se convierte en un muro de letras que nadie tocará. <a href="../../imagen-a-base64/">Imagen a URI de datos</a> lo hace automáticamente con SVG UTF-8 válidos. Una exportación UTF-16 u otra codificación, una declaración incoherente o UTF-8 inválido usa base64 con los bytes originales; el resultado explica por qué. Así conserva la codificación propia sin cambiarla silenciosamente. También hay una casilla para sistemas que exigen <code>;base64</code>.</p>
   </section>
 
   <section>
@@ -241,16 +241,16 @@
       y el tema oscuro, decláralo una vez como propiedad personalizada:
     </p>
     <pre><code>:root {
-  --icono-buscar: url("data:image/svg+xml,%3Csvg ... %3E");
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
 }
 
-.campo-busqueda { background-image: var(--icono-buscar); }
-.boton-busqueda::before { content: var(--icono-buscar); }</code></pre>
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
     <p>
       Un URI de 3 KB pegado en cuatro reglas son 12 KB de hoja de estilos y cuatro
       sitios que tocar cuando cambie el icono. Con la propiedad personalizada es
       uno de cada. Y es además lo que hace que los temas funcionen: redefine
-      <code>--icono-buscar</code> dentro de una media query y todos sus usos van
+      <code>--icon-search</code> dentro de una media query y todos sus usos van
       detrás.
     </p>
     <p>

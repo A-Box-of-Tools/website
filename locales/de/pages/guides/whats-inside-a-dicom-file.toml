@@ -12,7 +12,7 @@ lede = """
     derselben Datei wie die Pixel &mdash; was genau in dem Moment am
     meisten zählt, in dem man Ihnen eine CD in die Hand drückt und Sie
     einen Betrachter suchen gehen."""
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 og_title = "Was in einer DICOM-Datei steckt"
 og_description = "Eine Patientenakte mit Bild darin: Name, Geburtsdatum, Kliniknummern und Schlüssel zurück ins Archiv. Was der Header trägt, und wie man hineinsieht, ohne die Datei hochzuladen."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

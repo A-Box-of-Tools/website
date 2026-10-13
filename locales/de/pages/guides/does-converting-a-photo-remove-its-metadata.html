@@ -20,6 +20,13 @@
   </section>
 
   <section>
+    <h2>Eine Archivkopie und eine Kopie zum Teilen behalten</h2>
+    <p><strong>Für eine Fotobibliothek</strong> behalten Sie das Original und wählen eine Konvertierung, die benötigte Aufnahmedaten gezielt erhält. Der <a href="../ratgeber/heic-in-jpg-umwandeln/">HEIC-Konverter</a> kann unterstützte Metadaten im JPEG erhalten. Prüfen Sie ein Beispiel vor dem ganzen Bestand. Das Änderungsdatum im Dateisystem ist ein anderer Eintrag als das Aufnahmedatum eines Fotos.</p>
+    <p><strong>Für eine Verkaufsanzeige oder ein öffentliches Portfolio</strong> erstellen Sie eine eigene Kopie zum Teilen. Skalieren oder komprimieren Sie sie nach Bedarf, <a href="../ratgeber/exif-und-gps-daten-entfernen/">entfernen Sie unerwünschte Tags</a> gezielt und prüfen Sie den fertigen Download. Laden Sie das Archivoriginal nicht mit hoch.</p>
+    <p>So fällt auch der leicht übersehene Fall auf, dass ein Skalierer oder Kompressor keine Änderung für nötig hält und die Originalbytes zurückgibt. Eine bereits kleine Datei kann weiterhin GPS-Daten enthalten, obwohl sie eine Seite zur Bildbereinigung durchlaufen hat.</p>
+  </section>
+
+  <section>
     <h2>Was da mitreist, und warum es getrennt ist</h2>
     <p>
       Eine Fotodatei ist zwei Dinge in einem Behälter: das kodierte Bild
@@ -44,17 +51,7 @@
 
   <section>
     <h2>Warum Neukodieren abstreift und Kopieren behält</h2>
-    <p>
-      Die meiste Bildarbeit im Browser läuft über eine Leinwand: Datei zu
-      rohen Pixeln dekodieren, verwandeln, frische Datei kodieren. Eine
-      Leinwand trägt keine Angaben, also hat die frische Datei keine
-      &mdash; nicht aus Politik, sondern aus Bauart. Darum erzeugen der
-      <a href="../../bild-komprimieren/">Bildkompressor</a> und das
-      Werkzeug zum <a href="../../bildgroesse-aendern/">Ändern der
-      Bildgröße</a> hier Ausgaben ohne EXIF, GPS und XMP, und ihre Seiten
-      sagen es: Es ist unvermeidlich &mdash; und wissenswert, wenn Sie das
-      Aufnahmedatum behalten wollten.
-    </p>
+    <p>Die meisten Bildarbeiten im Browser nutzen einen Canvas. Die Datei wird zu Rohpixeln dekodiert, diese werden verändert und neu kodiert. Der neue Export kopiert Kameratags nur, wenn das Werkzeug sie ausdrücklich wiederherstellt. Wenn der <a href="../../bild-komprimieren/">Bildkompressor</a> und der <a href="../../bildgroesse-aendern/">Bildskalierer</a> hier ein Bild tatsächlich neu kodieren, enthalten die neuen Ergebnisse kein EXIF, GPS oder XMP. Beide können aber ein unverändertes Original zurückgeben, wenn keine Verringerung nötig ist. Diese Durchleitung erhält dessen Metadaten. Prüfen Sie den Download, statt aus dem Seitennamen auf ihre Entfernung zu schließen.</p>
     <p>
       Ein Konverter dagegen kann sich Mühe geben zu bewahren. Der
       <a href="../../heic-in-jpg-umwandeln/">HEIC-zu-JPG-Konverter</a>

@@ -17,6 +17,13 @@
   </section>
 
   <section>
+    <h2>Ein Support-Screenshot oder Dokumentausschnitt</h2>
+    <p><strong>Ein Screenshot für einen Fehlerbericht.</strong> Behalten Sie Fehler und erklärende Bedienelemente. Decken Sie E-Mail-Adressen, Kontonamen, Tokens in der Adressleiste und unbeteiligte Benachrichtigungen einfarbig ab. Wählen Sie PNG für scharfen Text. Öffnen Sie die heruntergeladene <code>-redacted</code>-Datei und lesen Sie vor dem Anhängen um jede Fläche herum, einschließlich wiederholter Namen an anderer Stelle.</p>
+    <p><strong>Ein Beleg, Paketetikett oder Ausweisausschnitt.</strong> Decken Sie das ganze unerwünschte Feld mit etwas Abstand um Buchstaben ab, ebenso QR- und Barcodes neben lesbaren Nummern. Präzise Felder für Links, Oben, Breite und Höhe helfen bei kleiner Vorschau. Bearbeiten Sie ein Bild nach dem anderen und prüfen das gespeicherte Ergebnis in voller Größe. Ein entferntes Feld beseitigt keine Hinweise anderswo. Die Fläche zeigt weiterhin Ort und Größe des verdeckten Bereichs. Decken Sie auch Gesichter einfarbig ab, wenn Identifizierung relevant ist. Weichzeichnung und Verpixelung behalten Messwerte des Motivs.</p>
+  </section>
+
+
+  <section>
     <h2>Abdecken und Entfernen sehen auf dem Bildschirm gleich aus</h2>
     <p>
       Zeichnen Sie in einem PDF-Betrachter, einer Präsentation, einer
@@ -100,15 +107,7 @@
       Alle drei überschreiben die Pixel. Nur eines davon lässt nichts übrig.
     </p>
     <h3>Schwarze Fläche</h3>
-    <p>
-      Jedes Pixel im Kasten bekommt dieselbe Farbe. Von dem, was dort war,
-      bleibt nichts: keine Kontur, keine mittlere Helligkeit, nicht die Anzahl
-      der Zeichen, nicht die Länge des Wortes. Es ist die einzige der drei
-      Arten, bei der die Frage &bdquo;könnte man das rückgängig machen?&ldquo;
-      ein glattes Nein zur Antwort hat, und die richtige Wahl für einen Namen,
-      eine Adresse, eine Kontonummer, ein Kennzeichen, eine Unterschrift oder
-      einen Barcode.
-    </p>
+    <p>Jeder Pixel der Fläche erhält dieselbe Farbe. Von ursprünglichem Umriss oder mittlerer Helligkeit bleibt nichts. Größe und Umfeld können weiterhin den Feldtyp verraten. Es ist die einzige der drei Methoden mit einem klaren Nein auf „Lässt sich das rückgängig machen?“. Verwenden Sie sie für Namen, Adressen, Kontonummern, Kennzeichen, Unterschriften und Barcodes.</p>
     <h3>Verpixeln</h3>
     <p>
       Der Kasten wird in Blöcke zerlegt, und jeder Block bekommt die
@@ -143,14 +142,7 @@
       dem Fall, auf den es hier ankommt, nämlich bei scharfem Text, der mit
       kleinem Radius weichgezeichnet wurde.
     </p>
-    <p>
-      Nutzlos sind Verpixeln und Weichzeichnen deswegen nicht. Ein Gesicht im
-      Hintergrund einer Straßenaufnahme, eine Hausnummer gegenüber, der
-      Bildschirm einer Kollegin hinter Ihnen in einer Videokonferenz: Das ist
-      alles in Ordnung, und das Bild bleibt dabei ein Bild. Die Regel lautet
-      schlicht: <strong>Was sich als Text lesen lässt, wird
-      geschwärzt.</strong>
-    </p>
+    <p>Verpixelung und Weichzeichnung lenken weniger von beiläufigem Hintergrund ab. Verlassen Sie sich aber nicht darauf, Identifizierung zu verhindern. Nutzen Sie einfarbige Füllung, wenn das Motiv nicht erkennbar sein darf. Namen, Nummern und andere lesbare Felder <strong>schwärzen Sie</strong>.</p>
 
     <figure class="shot">
       <img src="/screens/redact-an-image/cover.webp" loading="lazy" decoding="async"
@@ -187,14 +179,7 @@
         statt das Bild neu zu lesen. Zeigt die kleine Fassung noch, was Sie
         abgedeckt haben, wurde die Datei bearbeitet statt neu aufgebaut.
       </li>
-      <li>
-        <strong>Zoomen Sie ganz an die Ränder des Kastens heran.</strong> Eine
-        Schwärzung, die auf die Pixel angewendet wurde, hat genau an der Grenze
-        eine harte Kante. Ein weicher oder halbdurchsichtiger Rand heißt, dass
-        etwas mit einer Deckkraft über das Bild gezeichnet wurde, und eine
-        Deckkraft unter 100 Prozent ist eine Kopie des Originals mit einem
-        Farbschleier darauf.
-      </li>
+      <li><strong>Prüfen Sie Ränder und Umgebung.</strong> Außerhalb der Fläche dürfen keine Buchstaben, Ziffern oder Codefragmente bleiben und kein anderer Bildbereich dasselbe Feld wiederholen. JPEG kann Flächenränder weich machen. Kantenschärfe allein zeigt daher nicht, ob Quellpixel überschrieben wurden.</li>
     </ol>
   </section>
 

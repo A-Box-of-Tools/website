@@ -11,7 +11,7 @@ lede = """
     reconheça o desfaz em milissegundos, sem chave nenhuma. Mas a pergunta
     merece resposta de verdade, porque codificação, criptografia e hash se
     parecem na tela e não poderiam prometer coisas mais diferentes."""
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "Base64 é criptografia?"
 og_description = "Não - qualquer um desfaz, sem chave. Codificação, criptografia e hash se parecem na tela e prometem três coisas completamente diferentes. Qual é qual."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

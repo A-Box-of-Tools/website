@@ -7,6 +7,12 @@
       <figcaption>L’attribut devient @region, le port reste une chaîne et les éléments feature répétés deviennent un tableau.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Déboguer une réponse, un flux ou une modification de configuration</h2>
+    <p>Une réponse d'API ou un flux RSS sur une ligne se vérifie plus facilement avec une ligne par élément. Importez le XML enregistré, choisissez deux espaces et utilisez Aller à l'erreur si l'analyse s'arrête. Vérifiez l'élément extérieur, les attributs et entrées répétées. Une adresse contenant une esperluette exige <code>&amp;amp;</code> dans le texte XML ordinaire ou un attribut&nbsp;; une esperluette brute ne convient pas. Revérifiez le document corrigé dans l'application qui le consomme&nbsp;: cette page ne valide ni les règles d'un flux ni un XSD.</p>
+    <p>Pour migrer une configuration XML vers JSON, convertissez une copie et examinez les attributs <code>@</code>, tableaux d'éléments répétés et valeurs de chaîne avant de la comparer au JSON proposé. <a href="../comparer-deux-fichiers-json/">Formatez d'abord les deux copies JSON pareil</a>. Réservez cela aux documents orientés données&nbsp;: la correspondance perd les commentaires et l'ordre du contenu mixte, ce n'est donc pas un format de conservation de la prose.</p>
+  </section>
   <section>
     <h2>Suivre une erreur d’analyse</h2>
     <p>Une balise non fermée, une mauvaise fermeture ou une référence de caractère invalide bloque formatage et conversion. Aller à l’erreur place le curseur à la position signalée. Le document exige un élément extérieur unique : deux racines ou du texte hors racine sont refusés.</p>

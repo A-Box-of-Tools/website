@@ -13,7 +13,7 @@ lede = """
     pocos megas. Tres herramientas cubren el camino entero, y el papeleo se
     queda en tu propio equipo durante todo él."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Escanea un montón de páginas en un PDF que de verdad se envía"
 og_description = "Fotografía las páginas, consigue un PDF, fúndelo con lo que ya existe en PDF y encoge el resultado bajo el límite del adjunto, todo en el navegador."

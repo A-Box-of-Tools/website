@@ -1,14 +1,7 @@
   <section>
     <h2>A resposta curta</h2>
     <ol>
-      <li>
-        <strong>Corte.</strong> Abra o
-        <a href="../../cortar-audio/">Cortador de áudio</a>, solte a nota e
-        marque as partes que valem com <kbd>I</kbd> e <kbd>O</kbd> enquanto
-        toca. A forma de onda mostra os silêncios e os falsos começos como
-        trechos chapados, então a maior parte do corte é feita no olho.
-        Exporte um arquivo só.
-      </li>
+      <li><strong>Corte.</strong> Abra o <a href="../../cortar-audio/">Cortador de áudio</a>, adicione a gravação e marque as partes que quer manter com <kbd>I</kbd> e <kbd>O</kbd> durante a reprodução. A forma de onda mostra os intervalos silenciosos como trechos planos. Ouça para distinguir um começo descartável da tomada que vale manter e use a onda para posicionar os cortes. Exporte um arquivo.</li>
       <li>
         <strong>Suba.</strong> Leve esse arquivo ao
         <a href="../../editar-audio/">Editor de áudio</a> e normalize: o nível
@@ -35,6 +28,12 @@
         O que a ferramenta descobre antes de você mexer em qualquer coisa. O nível de pico é o número que decide se dá para aumentar o volume com segurança.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Uma gravação para enviar ou um trecho para praticar</h2>
+    <p>Para uma mensagem a um colega ou uma gravação de família, mantenha a frase com a respiração e um pouco de som ambiente nas duas pontas. Corte o começo descartável, normalize e ouça todo o WAV baixado na velocidade normal. Confira a primeira palavra, as junções e o final: aumentar o volume não compensa uma consoante cortada.</p>
+    <p>O mesmo processo cria um trecho para praticar idiomas ou ensaiar. Mantenha uma passagem curta no cortador e escolha 0,75&times; no editor preservando o tom. Ouça uma frase difícil antes de exportar e deixe 1&times; na versão enviada com a voz original. A normalização de pico aumenta o trecho inteiro por igual; não iguala uma pessoa falando baixo a outra falando alto.</p>
   </section>
 
   <section>
@@ -66,14 +65,7 @@
       1,25&times; mantendo o tom é o truque dos podcasts, e funciona
       igualmente bem numa nota que se espalha.
     </p>
-    <p>
-      O editor escreve WAV &mdash; amostras exatas, nenhum codificador no
-      caminho &mdash; então o arquivo pesa mais que o original comprimido.
-      Para uma nota medida em minutos é um preço justo por nunca empilhar
-      uma segunda codificação com perda sobre a primeira que o telefone fez;
-      o mensageiro que a enviar vai comprimi-la mais uma vez de qualquer
-      jeito, e essa deveria ser a única.
-    </p>
+    <p>O editor gera WAV, não outro formato comprimido. O PCM de 16 bits padrão arredonda as amostras; escolha ponto flutuante de 32 bits para preservar os valores editados. O arquivo fica maior que o original comprimido. Em uma gravação de poucos minutos, isso evita somar outra compressão com perdas à primeira do celular. Antes de enviar, confira se o serviço aceita WAV e seu tamanho. Alguns serviços recodificam anexos: mantenha o WAV como matriz editada, sem depender da cópia recebida.</p>
 
     <figure class="shot">
       <img src="/screens/clean-up-a-voice-memo/edit.webp" loading="lazy" decoding="async"

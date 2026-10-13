@@ -8,25 +8,20 @@
         el instante exacto. Guárdalo como PNG: la copia sin pérdida, para
         que nada quede decidido todavía.
       </li>
-      <li>
-        <strong>Encuadra el fotograma.</strong> Lleva el PNG al
-        <a href="../../redimensionar-imagen/">Redimensionador de imágenes</a>:
-        recorta a la forma de la plataforma &mdash; 16:9 para YouTube
-        &mdash; y fija el lado largo; 1280 píxeles es el número que YouTube
-        pide de verdad.
-      </li>
-      <li>
-        <strong>Clava el techo.</strong> Termina en el
-        <a href="../../comprimir-imagen/">Compresor de imágenes</a> con el
-        límite de la plataforma como objetivo &mdash; 2&nbsp;MB para una
-        miniatura de YouTube &mdash; y deja que elija JPEG o WebP.
-      </li>
+      <li><strong>Encuadra el fotograma.</strong> Lleva el PNG al <a href="../../redimensionar-imagen/">Redimensionador de imágenes</a>, recorta a la forma de la plataforma y elige dimensiones adecuadas a fuente y destino. YouTube recomienda actualmente 16:9 para vídeos y 9:16 para Shorts; abajo se distingue cada caso.</li>
+      <li><strong>Cumple el límite.</strong> Termina en el <a href="../../comprimir-imagen/">Compresor de imágenes</a> con el límite actual de la plataforma como objetivo y algo de margen. Elige JPEG para una miniatura fotográfica de YouTube; no dejes Auto si exige JPG o PNG.</li>
     </ol>
     <p>
       Nada en la cadena sube nada, que es justo lo que quieres cuando el
       video está sin publicar; la miniatura se hace precisamente porque el
       video aún no es público.
     </p>
+  </section>
+
+  <section>
+    <h2>Una portada legible a su tamaño real</h2>
+    <p>Al publicar vídeo, elige un fotograma que explique qué se verá: el objeto terminado, quien habla mirando arriba o el instante antes de la acción. El texto de origen debe leerse en vista pequeña. Estas herramientas capturan, recortan y comprimen; añadir título u otro diseño exige un editor de imagen entre la captura PNG y la compresión final.</p>
+    <p>En una web, la misma imagen sirve de póster antes de reproducir. Iguala forma y tamaño mostrado del reproductor y comprueba que explique el clip en teléfono. También sirve para portada de presentación: pruébala en la diapositiva real, sin suponer que el público ve el PNG completo.</p>
   </section>
 
   <section>
@@ -46,12 +41,7 @@
       miniatura: el fotograma <em>entre</em> los dos evidentes, donde el
       movimiento se lee y nada sale movido.
     </p>
-    <p>
-      Guarda la captura como PNG aunque la miniatura final vaya a ser JPEG o
-      WebP. El PNG es una copia exacta del fotograma; toda decisión con
-      pérdida ocurre entonces una sola vez, al final, dentro de un
-      presupuesto de bytes, en vez de dos veces y acumulándose.
-    </p>
+    <p>Guarda la captura en PNG aunque la miniatura final sea JPEG. Conserva la imagen dibujada sin otra codificación con pérdida; cada decisión posterior de compresión ocurre una vez al final, dentro de un límite de bytes, sin acumular dos pérdidas.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
@@ -64,24 +54,13 @@
 
   <section>
     <h2>La aritmética de la plataforma</h2>
-    <p>
-      Recorta antes de comprimir, por la misma razón que da la
-      <a href="../preparar-fotos-para-la-web/">guía de fotos</a>: los
-      píxeles son el presupuesto. Un recorte 16:9 de un fotograma 4K llevado
-      a &#x2066;1280&times;720&#x2069; deja que el compresor gaste sus 2&nbsp;MB en calidad
-      que nadie tendrá que entornar los ojos para ver. La caja de recorte
-      del redimensionador se bloquea en 16:9, así que la forma es un
-      arrastre y no un cálculo; el texto y las caras quieren quedar en los
-      dos tercios centrales, porque los feeds redondean las esquinas y
-      superponen la duración abajo a la derecha.
-    </p>
+    <p>Recorta antes de comprimir, como explica <a href="../preparar-fotos-para-la-web/">la guía de fotos</a>: los píxeles son el presupuesto. &#x2066;1280&times;720&#x2069; en 16:9 es una salida pequeña útil, no la recomendación actual de YouTube. Sus <a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">instrucciones de miniaturas</a> recomiendan ahora &#x2066;3840&times;2160&#x2069; para vídeos y &#x2066;2160&times;3840&#x2069; para Shorts; JPG y PNG son ejemplos admitidos. En escritorio, hasta 50 MB; en móvil, las miniaturas de vídeo deben ser menores de 2 MB. Revisa tu vía de subida y no amplíes una imagen pequeña solo para alcanzar una cifra. Necesitas cuenta verificada; los Shorts personalizados se suben actualmente con YouTube Studio en un dispositivo de escritorio.</p>
+    <p>El recuadro bloquea 16:9 o 9:16: ajustas arrastrando, sin calcular. Mantén texto y caras en los dos tercios centrales: los feeds redondean esquinas y superponen la duración abajo a la derecha.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
            alt="El redimensionador con una anchura de 1280 y una altura de 720 escritas, y un resumen de cómo saldrá la imagen.">
-      <figcaption>
-        Y después la aritmética: lo que pida la plataforma, escrito como dos números.
-      </figcaption>
+      <figcaption>Una exportación de ejemplo de 1280 por 720. Elige dimensiones según el destino actual y el detalle real de la fuente.</figcaption>
     </figure>
   </section>
 

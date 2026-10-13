@@ -1,11 +1,7 @@
   <section>
     <h2>A resposta curta</h2>
     <ol>
-      <li>
-        <strong>Corte o momento.</strong> Abra o
-        <a href="../../aparar-video/">Cortador de vídeo</a>, marque o segundo ou
-        dois que devem ir e voltar, e exporte como um clipe próprio.
-      </li>
+      <li><strong>Corte o momento.</strong> Abra o <a href="../../aparar-video/">Cortador de vídeo</a>, marque o segundo ou dois que irão e voltarão, escolha o método indicado e exporte um clipe separado. Copiar pode preservar quadros iniciais ocultos; um corte exato ainda pode carregar ajustes de áudio. Para um loop silencioso, omita som neste clipe intermediário. Se o reversor rejeitar a linha do tempo, aplique os ajustes em uma nova exportação local antes de continuar.</li>
       <li>
         <strong>Inverta uma cópia.</strong> Solte esse clipe no
         <a href="../../inverter-video/">Inversor de vídeo</a>, deixe o som de
@@ -35,13 +31,14 @@
   </section>
 
   <section>
+    <h2>Escolha um movimento que funcione na volta</h2>
+    <p>Um salto ou respingo são comuns. Um produto girando, uma gaveta abrindo ou uma mão colocando algo tornam o mesmo loop útil em uma demonstração. Escolha um movimento claro em uma tomada estável, com o assunto visível nos dois sentidos. Uma panorâmica ou alguém saindo do quadro costumam causar um solavanco incômodo na volta.</p>
+    <p>Silencie as duas metades se quiser um loop sem som: desative no primeiro corte e na reversão. Depois de juntar, confira a virada e a volta ao início e teste se o destino repete o MP4. A repetição da prévia não insere essa instrução no arquivo. Se precisar de outro formato, recorte o enquadramento do clipe curto para frente antes de revertê-lo.</p>
+  </section>
+
+  <section>
     <h2>Por que cortar primeiro</h2>
-    <p>
-      Inverter precisa decodificar e recodificar cada quadro que toca; o
-      <a href="../inverter-um-video/">guia de inversão</a> explica por que não
-      existe jeito mais barato. Cortar, por outro lado, é quase de graça: o
-      cortador passa os quadros inteiros adiante sem recodificar.
-    </p>
+    <p>Reverter exige decodificar e recodificar todos os quadros; o <a href="../inverter-um-video/">guia de reversão</a> explica por quê. Cortar custa pouco quando é possível copiar; cortes exatos recodificam a imagem. O <a href="../aparar-um-video/">guia de corte</a> explica a escolha.</p>
     <p>
       Então a ordem é o truque todo. Inverta um clipe de dois segundos e o
       passo caro trabalha em dois segundos; inverta o original e ele trabalha
@@ -67,13 +64,7 @@
 
   <section>
     <h2>O que fazer com o som</h2>
-    <p>
-      Deixe de fora, e faça isso no passo da inversão: o inversor tem uma
-      caixinha exatamente para isso. O áudio de um boomerang tocaria para a
-      frente e depois para trás; som invertido soa esquisito na hora, e quase
-      todo lugar onde um boomerang termina toca mudo de qualquer jeito. Sem o
-      som, a inversão também fica mais rápida e os dois arquivos, menores.
-    </p>
+    <p>Remova som das duas metades: o cortador e o reversor oferecem essa opção. Remover só ao reverter deixa som na metade para frente. Em um bumerangue tocaria primeiro normal e depois ao contrário; soa estranho e quase sempre é reproduzido sem som. Omitir áudio também acelera a reversão e reduz os dois arquivos.</p>
     <p>
       Se mesmo assim você mantiver, o cortador junta os dois clipes do mesmo
       jeito; mas a costura que o olho perdoa, o ouvido não perdoa.
@@ -93,12 +84,7 @@
       Ordene as partes antes de exportar: ida primeiro, volta depois. Um
       boomerang que começa pela volta se lê como um engano.
     </p>
-    <p>
-      Um refinamento que vale os dez segundos: apare um quadro do começo do
-      clipe invertido antes de juntar. O último quadro da ida e o primeiro da
-      volta são a mesma imagem, e mostrá-la duas vezes faz a virada travar
-      por um instante.
-    </p>
+    <p>Um refinamento útil: marque a metade revertida a partir do segundo quadro antes de juntar e escolha o método exato se esse início não for um quadro-chave. O último quadro normal e o primeiro revertido são iguais; mostrá-lo duas vezes segura a virada por um instante.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-boomerang-video/reverse.webp" loading="lazy" decoding="async"

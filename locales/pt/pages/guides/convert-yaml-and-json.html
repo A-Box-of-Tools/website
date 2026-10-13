@@ -7,6 +7,12 @@
       <figcaption>O comentário desaparece; no continua string e o inteiro grande mantém seus dígitos.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Passar uma configuração de aplicativo entre formatos</h2>
+    <p>Se um aplicativo espera YAML e outro JSON, comece com uma cópia de um documento de configuração. Escolha a direção e dois espaços; deixe a ordenação desativada se os grupos ajudarem na revisão. Confira se identificadores entre aspas continuam strings, opções continuam booleanos e listas contêm o esperado. Salve com outro nome e use a validação do aplicativo de destino antes de substituir seu arquivo ativo. Converter com sucesso prova que o parser entendeu a sintaxe compatível, não que as configurações sejam válidas para o aplicativo.</p>
+    <p>Também serve para revisar dois ambientes escritos em formatos diferentes. Converta a cópia YAML para JSON e siga <a href="../comparar-dois-arquivos-json/">o fluxo de comparação JSON</a> com ambas as cópias formatadas igualmente. Confira nomes de hosts, limites e opções; preserve o YAML por seus comentários. Converta documentos YAML separados individualmente e use um parser mais completo se a configuração contiver âncoras, aliases ou tags.</p>
+  </section>
   <section>
     <h2>Use o subconjunto YAML aceito</h2>
     <p>O leitor aceita mapeamentos, sequências e valores escalares comuns com resolução no estilo YAML 1.2. Não implementa todo YAML 1.2. Âncoras, aliases, tags personalizadas e fluxos de vários documentos interrompem a conversão. Se o arquivo precisar deles, use um parser compatível; remover um alias sem manter seu significado muda a configuração.</p>

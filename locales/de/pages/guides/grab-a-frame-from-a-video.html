@@ -15,6 +15,12 @@
   </section>
 
   <section>
+    <h2>Ein Bild für Anweisungen, Reparaturnotizen oder ein Titelbild</h2>
+    <p>Ein klares Standbild macht aus einer aufgezeichneten Rezept-, Reparatur- oder Übungsdemonstration eine Anleitung ohne vollständige Clipwiedergabe. Gehen Sie zu einem Moment mit sichtbaren Händen und Teilen. Speichern Sie PNG für späteren Zuschnitt oder Anmerkungen und notieren Sie Zeit oder Framenummer, um die Bewegung wiederzufinden. Ein bewegungsunscharfer Frame wird durch ein verlustfreies Format nicht schärfer.</p>
+    <p>Dasselbe Vorgehen liefert ein Videotitelbild oder einen Vorher-Nachher-Nachweis eines Projekts. Wählen Sie JPEG, wenn das fertige Bild nur in eine Nachricht kommt, und prüfen Sie es bei dieser Darstellungsgröße. Bei einem Websiteplayer kann es als Poster vor der Wiedergabe dienen. Der <a href="../ratgeber/video-thumbnail-erstellen/">Vorschaubildablauf</a> erklärt Zuschnitt und Bytebudget nach der Aufnahme.</p>
+  </section>
+
+  <section>
     <h2>Warum der Screenshot eines pausierten Players ein anderes Bild ist</h2>
     <p>
       Jeder hat längst einen Weg dafür: anhalten, Screenshot-Taste, Bedienleiste
@@ -44,11 +50,7 @@
         Fortschrittsbalken, eine Untertitelspur, der Mauszeiger.
       </li>
     </ul>
-    <p>
-      Ein Standbild-Greifer überspringt alle vier: Er dekodiert das Einzelbild,
-      das die Datei tatsächlich enthält, und schreibt genau diese Pixel heraus.
-      Das Bild hat die Größe, die das Video hat, und niemand hat darauf gemalt.
-    </p>
+    <p>Ein Frame-Extractor überspringt alle vier Schritte. Er dekodiert den tatsächlich gespeicherten Frame und schreibt seine Pixel heraus. Das Bild hat die Videomaße und nichts wurde darauf gezeichnet. Der Canvasexport bleibt ein 8-Bit-Bild. Eine HDR- oder 10-Bit-Quelle wird dabei konvertiert. PNG ist somit verlustfrei für das gezeichnete Standbild, erhält aber nicht die HDR-Daten der Quelle.</p>
   </section>
 
   <section>

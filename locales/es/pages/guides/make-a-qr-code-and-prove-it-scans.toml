@@ -13,7 +13,7 @@ lede = """
     herramientas, y correr la segunda antes de la tirada cuesta un minuto y
     atrapa casi todo lo que la tirada habría repartido."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Demuestra que el cartel escanea antes de imprimir doscientos"
 og_description = "Genera el código, fotografía la prueba de imprenta y léela de vuelta con el lector del mismo sitio - carga, enlace y todo - antes de dar la orden de imprimir."

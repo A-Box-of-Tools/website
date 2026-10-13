@@ -20,6 +20,13 @@
   </section>
 
   <section>
+    <h2>Garder une copie d'archive et une copie de partage</h2>
+    <p><strong>Pour une photothèque,</strong> gardez l'original et utilisez une conversion qui préserve délibérément les dates de prise de vue utiles. Le <a href="../convertir-un-heic-en-jpg/">convertisseur HEIC</a> peut garder les métadonnées prises en charge dans le JPEG&nbsp;; testez un échantillon avant toute la collection. La date de modification du système de fichiers est distincte de la date de prise de vue.</p>
+    <p><strong>Pour une annonce ou un portfolio public,</strong> créez une copie de partage distincte. Redimensionnez ou compressez-la selon le besoin, <a href="../supprimer-les-donnees-exif-et-gps/">retirez volontairement les balises indésirables</a> et examinez le fichier final téléchargé. Gardez l'original d'archive hors de cet envoi.</p>
+    <p>Cela repère aussi le cas facile à manquer où un redimensionneur ou compresseur juge qu'aucun changement n'est nécessaire et rend les octets originaux. Un fichier déjà assez petit peut encore contenir sa position GPS malgré son passage par une page de nettoyage d'images.</p>
+  </section>
+
+  <section>
     <h2>Ce qui voyage à côté, et pourquoi c'est séparé</h2>
     <p>
       Un fichier photo est deux choses dans un même conteneur&nbsp;:
@@ -45,18 +52,7 @@
 
   <section>
     <h2>Pourquoi réencoder décape, et recopier conserve</h2>
-    <p>
-      La plupart du travail d'image dans un navigateur passe par un
-      canevas&nbsp;: décoder le fichier en pixels bruts, les transformer,
-      encoder un fichier neuf. Un canevas ne porte pas d'étiquettes, donc
-      le fichier neuf n'en a pas &mdash; non par principe mais par
-      construction. C'est pourquoi le
-      <a href="../../compresser-une-image/">compresseur d'images</a> et
-      l'outil pour <a href="../../redimensionner-une-image/">redimensionner
-      une image</a> d'ici produisent des sorties sans EXIF, sans GPS et
-      sans XMP, et leurs pages le disent&nbsp;: c'est inévitable, et bon à
-      savoir quand vous vouliez garder la date.
-    </p>
+    <p>La plupart des opérations d'image dans le navigateur utilisent un canevas&nbsp;: décoder en pixels bruts, les transformer, encoder un nouveau fichier. Ce nouvel encodage ne copie les balises de l'appareil que si l'outil les rétablit explicitement. Lorsque le <a href="../../compresser-une-image/">Compresseur d'images</a> et le <a href="../../redimensionner-une-image/">Redimensionneur d'images</a> réencodent réellement ici, leurs sorties n'ont ni EXIF, ni GPS, ni XMP. Mais les deux peuvent rendre l'original inchangé si aucune réduction n'est nécessaire. Ce passage intact conserve les métadonnées. Vérifiez le fichier téléchargé sans déduire leur suppression du nom de la page.</p>
     <p>
       Un convertisseur, à l'inverse, peut se donner du mal pour préserver.
       Le <a href="../../convertir-heic-en-jpg/">convertisseur HEIC vers

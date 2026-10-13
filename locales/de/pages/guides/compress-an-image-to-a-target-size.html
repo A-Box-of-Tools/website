@@ -25,6 +25,14 @@
   </section>
 
   <section>
+    <h2>Ein Formular, ein Anhang oder ein lesbarer Scan</h2>
+    <p><strong>Eine Bewerbung mit Pixelvorgabe und Dateigrößenlimit.</strong> Lesen Sie zuerst die zulässigen Formate. Beschneiden und skalieren Sie im <a href="../../bildgroesse-aendern/">Bildskalierer</a> auf die geforderten Maße. Geben Sie dann hier das Bytebudget ein und schalten Sie <strong>Darf das Bild bei Bedarf verkleinern</strong> aus. Wählen Sie JPEG ausdrücklich, wenn das Formular es verlangt. Prüfen Sie in der fertigen Zeile Maße, Format und Größe. Eine kleine Datei mit falschen Maßen erfüllt die Vorgabe trotzdem nicht.</p>
+    <p><strong>Mehrere Fotos in einer Nachricht.</strong> Das Ziel gilt für jedes einzelne Bild. Wählen Sie deshalb ein Limit pro Bild, das zum gesamten Anhangsbudget passt. Ein ZIP sammelt die Ergebnisse. Es verspricht keine weitere große Ersparnis bei bereits komprimierten Bildern.</p>
+    <p><strong>Ein Beleg oder Screenshot für eine Supportanfrage.</strong> Beginnen Sie mit PNG, wenn feiner Text wichtig ist, und prüfen Sie die kleinste Schrift im Download. Ein sehr enges Ziel kann das Bild bis zur Unlesbarkeit verkleinern. Behalten Sie eine größere Kopie oder beschneiden Sie unwichtige Ränder, bevor Sie weitere Details opfern.</p>
+  </section>
+
+
+  <section>
     <h2>Was eine Größengrenze in Wirklichkeit von Ihnen verlangt</h2>
     <p>
       Ein JPEG oder ein WebP speichert nicht Ihr Foto, sondern eine Beschreibung
@@ -34,13 +42,7 @@
       bekommen Streifen, und um Kanten legt sich ein blasser Kranz aus
       Blöcken.
     </p>
-    <p>
-      Eine Größengrenze ist damit nichts anderes als ein Budget für Bilddetail.
-      Ob Sie 500&nbsp;KB treffen, ist dabei nicht die interessante Frage, denn
-      treffen lässt sich jede Zahl. Interessant ist, wie viel Bild der Weg
-      dorthin kostet und ob das bei Ihrem Verwendungszweck überhaupt
-      auffällt.
-    </p>
+    <p>Ein Größenlimit ist also ein Budget für Details. Die nützliche Frage lautet nicht „Komme ich unter 500&nbsp;KB?“, sondern „Wie viel vom Bild muss ich dafür aufgeben, und ist das für meinen Zweck wichtig?“</p>
     <p>
       Zwei Faustregeln helfen. Aufnahmen einer realen Szene, also Gesichter,
       Laub oder Stoff, verkraften Kompression gut, weil dem Auge die glatte
@@ -165,11 +167,7 @@
         dieser Seite: Als JPEG oder WebP wird es oft fünf- bis zehnmal kleiner,
         ohne dass sich sichtbar etwas ändert.
       </li>
-      <li>
-        <strong>Ein Screenshot oder ein Diagramm.</strong> Nach WebP umwandeln;
-        das kann auf Wunsch ebenfalls verlustfrei und fällt bei gleichen Pixeln
-        meist kleiner aus als PNG. JPEG würde die Textkanten matschig machen.
-      </li>
+      <li><strong>Ein Screenshot oder Diagramm.</strong> Probieren Sie den <a href="../../png-in-webp-umwandeln/">PNG-zu-WebP-Konverter</a> im verlustfreien Modus und prüfen Sie die tatsächliche Ersparnis. Die WebP-Suche dieses Zielgrößenkompressors ist verlustbehaftet und bietet den verlustfreien Modus nicht. JPEG kann Textkanten unscharf machen.</li>
       <li>
         <strong>Ein Logo mit Transparenz.</strong> WebP behält sie, JPEG füllt
         sie mit einer Volltonfarbe auf, und das wollte fast nie jemand.
@@ -217,19 +215,7 @@
 
   <section>
     <h2>Drei Dinge, bevor die Datei aus dem Haus geht</h2>
-    <p>
-      <strong>Komprimieren löscht die Metadaten.</strong> Neu kodieren heißt,
-      das Bild zu Pixeln zu dekodieren und diese Pixel erneut zu kodieren, und
-      ein Canvas voller Pixel trägt keine Tags. GPS-Position, Kameramodell,
-      Zeitstempel und der ganze Rest werden also schlicht nicht mitgeschrieben.
-      Meistens ist das ein willkommener Nebeneffekt. Sollen dagegen die Tags
-      verschwinden und das Bild unangetastet bleiben, ist das eine andere
-      Aufgabe. Der
-      <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
-      schreibt nur den Container neu, ohne irgendetwas neu zu komprimieren, und
-      was da alles drinsteht, erklärt
-      <a href="../exif-und-gps-daten-entfernen/">sein Ratgeber</a>.
-    </p>
+    <p><strong>Neukodierung entfernt die Metadaten.</strong> Eine Datei, die bereits unter dem Ziel liegt, wird unverändert samt Metadaten zurückgegeben. Für eine Datei, die verarbeitet werden muss, bedeutet Neukodierung, das Bild zu Pixeln zu dekodieren und diese erneut zu kodieren. Ein Canvas voller Pixel trägt keine Tags. GPS-Position, Kameramodell, Zeitstempel und weitere Angaben werden daher nicht in die neue Datei geschrieben. Meist ist das ein Vorteil. Sollen nur die Tags verschwinden und das Bild unverändert bleiben, ist das eine andere Aufgabe. Der <a href="../../exif-daten-entfernen/">EXIF-Betrachter und -Entferner</a> schreibt den Container ohne erneute Kompression um. <a href="../ratgeber/exif-und-gps-daten-entfernen/">Sein Leitfaden</a> erklärt den Inhalt.</p>
     <p>
       <strong>Komprimieren Sie dieselbe Datei nie zweimal.</strong> Jede
       verlustbehaftete Kodierung wirft Detail unwiederbringlich weg, und ein

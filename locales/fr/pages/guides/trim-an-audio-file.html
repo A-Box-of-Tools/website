@@ -1,20 +1,18 @@
   <section>
     <h2>La réponse courte</h2>
-    <p>
-      Ouvrez le <a href="../../couper-un-audio/">Découpeur audio</a>, déposez
-      l'enregistrement, appuyez sur <kbd>I</kbd> et <kbd>O</kbd> pour marquer
-      chaque passage que vous gardez &mdash; autant que vous voulez &mdash; puis
-      exportez. Chaque coupe tombe sur l'échantillon exact que vous avez marqué,
-      les échantillons gardés ressortent tels qu'ils sont entrés, et les raccords
-      reçoivent un fondu de cinq millisecondes pour qu'ils ne puissent pas
-      claquer.
-    </p>
+    <p>Ouvrez le <a href="../../couper-un-audio/">Découpeur audio</a>, déposez l'enregistrement, marquez autant de parties que souhaité avec <kbd>I</kbd> et <kbd>O</kbd>, puis exportez. Chaque coupe tombe sur l'échantillon exact&nbsp;; les échantillons décodés sont copiés entre coupes et les raccords adoucis sur cinq millisecondes. Choisissez Float32 pour éviter l'arrondi final en PCM 16 bits.</p>
     <p>
       C'est tout le travail. Le reste de cette page explique pourquoi cette
       exactitude est réelle et non un argument commercial, et quelle est la seule
       chose qui, elle, se passe mal quand on met bout à bout deux morceaux de
       son.
     </p>
+  </section>
+
+  <section>
+    <h2>Une prise propre, une citation ou un passage de répétition</h2>
+    <p>Pour une voix off, marquez la bonne prise avec un peu de silence autour du premier souffle et dernier mot. Pour une citation, gardez assez de question pour comprendre. Lisez chaque ligne puis tous les raccords du WAV fini&nbsp;; une rampe de cinq millisecondes évite un bord brutal, mais ne restaure pas une syllabe coupée.</p>
+    <p>Pour répétition ou apprentissage, marquez plusieurs sections du même fichier dans l'ordre voulu. Sauvegardez les repères pour plus tard. L'outil prend une source à la fois&nbsp;; réunir plusieurs enregistrements exige un autre éditeur. Il écrit WAV, pas un MP3 plus léger&nbsp;: 16 bits pour écouter, Float32 pour modifier, puis vérifiez application et limite de taille.</p>
   </section>
 
   <section>
@@ -110,7 +108,7 @@
 
     <figure class="shot">
       <img src="/screens/trim-an-audio-file/export.webp" loading="lazy" decoding="async"
-           alt="La carte d'export&nbsp;: un menu de profondeur en bits, une longueur de fondu en millisecondes et un récapitulatif comptant les parties, les raccords et la durée.">
+           alt="La carte d&#x27;export : un menu de profondeur en bits, une longueur de fondu en millisecondes et un récapitulatif comptant les parties, les raccords et la durée.">
       <figcaption>
         Le fondu n'est appliqué qu'à un raccord, et c'est le détail qui compte&nbsp;: un fondu au début d'un enregistrement serait une modification que personne n'a demandée.
       </figcaption>
@@ -209,7 +207,7 @@
 
     <figure class="shot">
       <img src="/screens/trim-an-audio-file/marks.webp" loading="lazy" decoding="async"
-           alt="Une forme d'onde avec deux sections marquées, les silences entre les phrases bien visibles, et un tableau donnant le début, la fin et la durée de chaque section.">
+           alt="Une forme d&#x27;onde avec deux sections marquées, les silences entre les phrases bien visibles, et un tableau donnant le début, la fin et la durée de chaque section.">
       <figcaption>
         Les silences sont là où quelqu'un s'est arrêté de parler. C'est ce qui rend une forme d'onde utile à regarder, contrairement à un chronomètre.
       </figcaption>

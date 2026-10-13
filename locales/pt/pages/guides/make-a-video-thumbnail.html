@@ -8,25 +8,20 @@
         exato. Salve como PNG: a cópia sem perda, para nada ficar decidido
         ainda.
       </li>
-      <li>
-        <strong>Enquadre o quadro.</strong> Leve o PNG ao
-        <a href="../../redimensionar-imagem/">Redimensionador de imagens</a>:
-        recorte no formato da plataforma &mdash; 16:9 para o YouTube
-        &mdash; e defina o lado maior; 1280 pixels é o número que o YouTube
-        pede de verdade.
-      </li>
-      <li>
-        <strong>Acerte o teto.</strong> Termine no
-        <a href="../../comprimir-imagem/">Compressor de imagens</a> com o
-        limite da plataforma como alvo &mdash; 2&nbsp;MB para miniatura de
-        YouTube &mdash; e deixe que ele escolha JPEG ou WebP.
-      </li>
+      <li><strong>Enquadre o quadro.</strong> Leve o PNG ao <a href="../../redimensionar-imagem/">Redimensionador de imagens</a>, recorte no formato da plataforma e escolha dimensões adequadas à fonte e ao destino. O YouTube recomenda atualmente 16:9 para vídeos e 9:16 para Shorts; abaixo há os detalhes de cada caso.</li>
+      <li><strong>Cumpra o limite.</strong> Termine no <a href="../../comprimir-imagem/">Compressor de imagens</a> com o limite atual da plataforma como meta e alguma margem. Escolha JPEG para uma miniatura fotográfica do YouTube; não deixe Auto se exigir JPG ou PNG.</li>
     </ol>
     <p>
       Nada na sequência envia nada &mdash; o que importa quando o vídeo não
       foi publicado, e a miniatura está sendo feita justamente porque o
       vídeo ainda não é público.
     </p>
+  </section>
+
+  <section>
+    <h2>Uma capa legível no tamanho real</h2>
+    <p>Ao publicar vídeo, escolha um quadro que explique o que será visto: o objeto pronto, a pessoa falando olhando para cima ou o instante antes da ação. O texto de origem deve ser legível na prévia pequena. Estas ferramentas capturam, recortam e comprimem; adicionar título ou outro desenho exige um editor de imagem entre a captura PNG e a compressão final.</p>
+    <p>Em um site, a mesma imagem serve de pôster antes de reproduzir. Combine formato e tamanho exibido do reprodutor e confira se explica o clipe no celular. Também serve para capa de apresentação: teste no slide real, sem supor que o público vê o PNG inteiro.</p>
   </section>
 
   <section>
@@ -45,12 +40,7 @@
       quadro <em>entre</em> os dois óbvios, onde o movimento se lê e nada
       saiu borrado.
     </p>
-    <p>
-      Salve a captura como PNG mesmo que a miniatura final vá ser JPEG ou
-      WebP. O PNG é uma cópia exata do quadro; toda decisão com perda
-      acontece então uma vez só, no final, dentro de um orçamento de bytes,
-      em vez de duas vezes, se somando.
-    </p>
+    <p>Salve a captura em PNG mesmo que a miniatura final seja JPEG. Preserva a imagem desenhada sem outra codificação com perdas; cada decisão posterior de compressão ocorre uma vez no final, dentro de um limite de bytes, sem acumular duas perdas.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
@@ -63,24 +53,13 @@
 
   <section>
     <h2>A aritmética da plataforma</h2>
-    <p>
-      Recorte antes de comprimir, pela mesma razão que o
-      <a href="../preparar-fotos-para-a-web/">guia de fotos</a> dá: os
-      pixels são o orçamento. Um recorte 16:9 de um quadro 4K levado a
-      &#x2066;1280&times;720&#x2069; deixa o compressor gastar os 2&nbsp;MB em qualidade que
-      ninguém vai precisar apertar os olhos para ver. A caixa de recorte do
-      redimensionador trava em 16:9, então o formato é um arrasto e não uma
-      conta; texto e rostos querem ficar nos dois terços do meio, porque os
-      feeds arredondam os cantos e sobrepõem a duração embaixo à
-      direita.
-    </p>
+    <p>Recorte antes de comprimir, como explica o <a href="../preparar-fotos-para-a-web/">guia de fotos</a>: pixels são o orçamento. &#x2066;1280&times;720&#x2069; em 16:9 é uma saída pequena útil, não a recomendação atual do YouTube. Suas <a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">instruções de miniaturas</a> recomendam agora &#x2066;3840&times;2160&#x2069; para vídeos e &#x2066;2160&times;3840&#x2069; para Shorts; JPG e PNG são exemplos aceitos. No desktop, até 50 MB; no celular, miniaturas de vídeo devem ter menos de 2 MB. Confira sua modalidade de envio e não amplie uma imagem pequena só para alcançar um valor. É necessária conta verificada; Shorts personalizados são enviados atualmente pelo YouTube Studio em um computador.</p>
+    <p>O quadro trava em 16:9 ou 9:16: você ajusta arrastando, sem calcular. Mantenha texto e rostos nos dois terços centrais: feeds arredondam cantos e sobrepõem a duração embaixo à direita.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
            alt="O redimensionador com uma largura de 1280 e uma altura de 720 digitadas, e um resumo de como a imagem vai sair.">
-      <figcaption>
-        E depois a aritmética: o que a plataforma pedir, digitado como dois números.
-      </figcaption>
+      <figcaption>Uma exportação de exemplo de 1280 por 720. Escolha dimensões conforme o destino atual e os detalhes reais da fonte.</figcaption>
     </figure>
   </section>
 

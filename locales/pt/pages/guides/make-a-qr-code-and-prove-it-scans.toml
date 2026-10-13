@@ -13,7 +13,7 @@ lede = """
     ferramentas aqui, e rodar a segunda antes da tiragem custa um minuto e
     pega quase tudo que a tiragem teria despachado."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "Prove que o cartaz escaneia antes de imprimir duzentos"
 og_description = "Gere o código, fotografe a prova de impressão e leia de volta com o leitor do mesmo site - carga, link e tudo - antes de liberar a impressão."

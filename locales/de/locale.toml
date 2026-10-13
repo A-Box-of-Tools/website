@@ -68,6 +68,8 @@ complete = true
 #
 
 [slugs]
+"guides/arrange-images" = "ratgeber/bilder-anordnen"
+"guides/watch-camera-from-another-device" = "ratgeber/kamera-von-anderem-geraet-ansehen"
 # The tools.
 "receipt-invoice-extractor" = "belege-rechnungen-auslesen"
 "protect-pdf" = "pdf-schuetzen"

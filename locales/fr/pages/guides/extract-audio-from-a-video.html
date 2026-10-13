@@ -8,6 +8,12 @@
     </figure>
   </section>
   <section>
+    <h2>Une conférence à écouter ou une piste à modifier</h2>
+    <p>Pour écouter un cours, une présentation enregistrée ou un entretien loin de l'écran, gardez d'abord les canaux source et le PCM 16 bits par défaut. Écoutez le début et la fin, puis passez le WAV au <a href="../../couper-un-audio/">découpeur audio</a> si seul un extrait compte. Le WAV peut être bien plus gros que la piste compressée&nbsp;: vérifiez ce que l'application d'écoute accepte avant le transfert.</p>
+    <p>Pour monter une voix off ou un podcast, choisissez Float32 sans changer les canaux et gardez ce WAV comme copie de travail. L'extraction prend la piste mixée existante&nbsp;; elle ne sépare pas une voix de la musique, ne supprime pas le bruit et ne transcrit pas les paroles. Essayez mono après avoir écouté les deux canaux&nbsp;: cela peut alléger une voix, mais deux microphones peuvent porter des voix différentes ou s'annuler en partie lors de la moyenne.</p>
+  </section>
+
+  <section>
     <h2>Choisir 16 bits ou Float32</h2>
     <p>Le PCM 16 bits est le réglage par défaut pour une large compatibilité. L’écriture arrondit et limite les échantillons décodés. Float32 conserve ces valeurs lorsque les canaux sont inchangés, y compris celles dépassant la pleine échelle, et sert pour un montage ultérieur. Il ne restaure pas les détails déjà perdus par compression.</p>
     <p>WAV contient de l’audio non compressé et peut être bien plus grand que la piste compressée de la vidéo. L’extracteur ne produit pas de MP3, car il n’inclut aucun encodeur MP3. Une autre application avec un encodeur local peut créer du MP3 sans envoyer le fichier.</p>

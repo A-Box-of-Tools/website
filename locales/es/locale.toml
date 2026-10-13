@@ -43,6 +43,8 @@ complete = true
 #
 
 [slugs]
+"guides/arrange-images" = "guias/organizar-imagenes"
+"guides/watch-camera-from-another-device" = "guias/ver-camara-de-otro-dispositivo"
 "receipt-invoice-extractor" = "extraer-recibos-facturas"
 "guides/extract-receipts-and-invoices" = "guias/extraer-recibos-facturas-de-fotos"
 "avif-to-jpg" = "convertir-avif-a-jpg"

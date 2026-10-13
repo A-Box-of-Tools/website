@@ -14,18 +14,18 @@
         Faites de même avec le second fichier, dans la zone de droite.
       </li>
     </ol>
-    <p>
-      Ce qui s'allume maintenant est réel&nbsp;: une valeur qui a changé, une
-      clé apparue, une entrée partie. Les différences de mise en forme et les
-      clés réordonnées qui auraient noyé un diff ordinaire ont disparu, parce
-      que les deux côtés étaient écrits pareil avant que la comparaison
-      commence.
-    </p>
+    <p>Le résultat est bien plus facile à lire&nbsp;: une valeur modifiée, une clé apparue, une entrée supprimée. Les différences de mise en forme et les clés réordonnées qui auraient noyé un diff ordinaire disparaissent, car les deux côtés ont été écrits de la même façon avant la comparaison.</p>
     <p>
       Aucune des deux pages n'a la moindre fonction réseau &mdash; bon à
       savoir, puisque le JSON que l'on compare est si souvent un fichier de
       configuration avec ses identifiants encore dedans.
     </p>
+  </section>
+
+  <section>
+    <h2>Modifications de configuration et régressions d'API</h2>
+    <p>Pour comparer préproduction et production, gardez les originaux et formatez une copie de chacun avec deux espaces et les clés d'objet triées. Placez la préproduction à gauche et la production à droite, désactivez Ignorer la casse et Ignorer les espaces, puis examinez les points d'accès, indicateurs de fonctionnalités et limites. Les espaces dans une chaîne et la casse d'une clé peuvent compter. Téléchargez le patch après avoir confirmé quel environnement est de quel côté.</p>
+    <p>La même recette vérifie une réponse d'API avant et après une modification. Utilisez les mêmes entrées de requête et traitez séparément les horodatages ou identifiants générés. Les tableaux gardent leur ordre&nbsp;: une liste réordonnée reste différente, comme il convient à une séquence JSON ordonnée. Des nombres équivalents comme <code>1</code> et <code>1.0</code>, ou des chaînes échappées différemment, peuvent aussi différer ici. C'est une comparaison de texte formaté, pas une validation de schéma ni un test d'équivalence de toutes les valeurs JSON. La <a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">norme JSON</a> distingue les objets non ordonnés des tableaux ordonnés.</p>
   </section>
 
   <section>
@@ -50,10 +50,8 @@
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
-           alt="Les options de comparaison&nbsp;: un affichage côte à côte ou en ligne, un interrupteur pour n'afficher que les lignes modifiées, et des interrupteurs pour ignorer les espaces, la casse et les lignes vides.">
-      <figcaption>
-        Ce sont eux qui empêchent une comparaison de signaler toutes les lignes parce qu'un fichier a été enregistré avec d'autres fins de ligne.
-      </figcaption>
+           alt="Les options de comparaison : un affichage côte à côte ou en ligne, un interrupteur pour n&#x27;afficher que les lignes modifiées, et des interrupteurs pour ignorer les espaces, la casse et les lignes vides.">
+      <figcaption>Utilisez les options d'ignorance avec prudence&nbsp;: elles affectent l'affichage, tandis que le patch téléchargé conserve toutes les différences d'entrée, y compris les fins de ligne.</figcaption>
     </figure>
   </section>
 
@@ -111,17 +109,11 @@
       canoniques, ce qui est en général ce qu'une revue veut de toute
       façon&nbsp;: le changement, sans le reformatage.
     </p>
-    <p>
-      La même recette marche pour tout ce que les deux pages parlent. YAML et
-      XML se canonisent pareil&nbsp;; et pour deux fichiers de même forme
-      venus de sources différentes, les interrupteurs d'ignorance du
-      comparateur &mdash; espaces, casse, lignes vides &mdash; sont une
-      version plus légère de la même idée.
-    </p>
+    <p>Formater puis comparer peut aussi faciliter l'examen du YAML ou du XML, mais leurs règles d'espacement et de conversion diffèrent de celles du JSON. Gardez le langage d'origine si seule la présentation doit changer. Les options d'ignorance du diff affectent sa vue&nbsp;; le patch compare les chaînes réellement fournies. Ici, ce sont vos copies formatées&nbsp;: ce patch ne s'applique donc pas aux originaux intacts.</p>
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"
-           alt="Deux versions d'une configuration JSON côte à côte, les lignes modifiées signalées&nbsp;: un numéro de version, un nombre de tentatives, une option ajoutée et une région ajoutée.">
+           alt="Deux versions d&#x27;une configuration JSON côte à côte, les lignes modifiées signalées : un numéro de version, un nombre de tentatives, une option ajoutée et une région ajoutée.">
       <figcaption>
         Quatre différences réelles, et rien d'autre signalé. Les lire est la moitié facile&nbsp;; le travail a été fait par les réglages du dessus.
       </figcaption>

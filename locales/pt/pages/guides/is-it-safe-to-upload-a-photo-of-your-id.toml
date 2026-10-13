@@ -12,7 +12,7 @@ lede = """
     compressor que você visita porque o formulário exigiu &ldquo;menos de
     300&nbsp;KB, JPEG&rdquo; &mdash; e esse passo é o que nunca precisa
     acontecer."""
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "É seguro enviar uma foto do seu documento de identidade?"
 og_description = "O passo arriscado não é o formulário do pedido. É o desvio para reduzir e comprimir logo antes - e esse desvio nunca precisa que o documento saia do seu computador."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

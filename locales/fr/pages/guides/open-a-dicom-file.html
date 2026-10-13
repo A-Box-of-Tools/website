@@ -13,6 +13,13 @@
   </section>
 
   <section>
+    <h2>Vérifier un disque ou comprendre le refus d'un lecteur</h2>
+    <p><strong>Vérifier ce qui vous a été remis.</strong> Ouvrez le dossier, examinez études et séries et comparez leurs descriptions à l'examen attendu. Parcourez les images avec les commandes de coupes. Si des fichiers manquent ou un codec est incompatible, demandez de l'aide au centre d'imagerie&nbsp;; une vue locale ne prouve pas la complétude de l'étude et n'interprète pas ses résultats.</p>
+    <p><strong>Examiner un problème de compatibilité.</strong> Lisez Transfer Syntax dans l'en-tête et le codec refusé avant de renommer ou supposer une corruption. L'en-tête peut rester lisible sans image décodable. Ne partagez que les détails techniques nécessaires, pas l'en-tête entier contenant le patient.</p>
+    <p>L'enseignement est un autre cas utile avec des données déjà approuvées et désidentifiées pour cet usage. Ce lecteur n'anonymise rien. Les <a href="https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_E.html" target="_blank" rel="noopener noreferrer">profils de confidentialité DICOM</a> expliquent pourquoi retirer un nom ne suffit pas.</p>
+  </section>
+
+  <section>
     <h2>Qu’est-ce qu’un fichier DCM et comment l’ouvrir&nbsp;?</h2>
     <p>
       Un fichier portant l’extension <code>.dcm</code> est un fichier DICOM, le format de l’imagerie médicale. Ces trois lettres sont simplement son extension habituelle. Sans lecteur médical installé, le double-clic demande un programme&nbsp;: aucun logiciel fourni avec l’ordinateur n’est associé au format. Une application photo ne suffit pas&nbsp;: les pixels ne sont pas un JPEG renommé, ils ont douze ou seize bits et leur en-tête doit être lu pour déterminer la largeur de l’image.
@@ -126,7 +133,7 @@
 
     <figure class="shot">
       <img src="/screens/open-a-dicom-file/viewer.webp" loading="lazy" decoding="async"
-           alt="La visionneuse&nbsp;: une coupe en niveaux de gris avec les commandes de fenêtre et de niveau à côté, des préréglages pour les plages de tissus courantes, et les informations de l'examen dans les coins.">
+           alt="La visionneuse : une coupe en niveaux de gris avec les commandes de fenêtre et de niveau à côté, des préréglages pour les plages de tissus courantes, et les informations de l&#x27;examen dans les coins.">
       <figcaption>
         La fenêtre et le niveau sont les deux commandes qui comptent. Un examen contient plus de nuances qu'un écran ne peut en montrer, et ce sont elles qui décident lesquelles vous regardez.
       </figcaption>
@@ -221,7 +228,7 @@
 
     <figure class="shot">
       <img src="/screens/open-a-dicom-file/identity.webp" loading="lazy" decoding="async"
-           alt="Une carte listant ce qui, dans le fichier, identifie le patient&nbsp;: le nom, l'identifiant, la date de naissance et la description de l'examen.">
+           alt="Une carte listant ce qui, dans le fichier, identifie le patient : le nom, l&#x27;identifiant, la date de naissance et la description de l&#x27;examen.">
       <figcaption>
         Ce qu'un examen transporte en plus de l'image. C'est la carte qui explique pourquoi il ne faut pas en envoyer un par courriel.
       </figcaption>

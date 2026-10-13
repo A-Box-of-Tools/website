@@ -21,6 +21,13 @@
   </section>
 
   <section>
+    <h2>Déboguer une réponse sans coller tout l'enregistrement</h2>
+    <p><strong>Une réponse d'API cassée.</strong> Gardez accolades, types et champ défaillant, remplacez les identifiants et données personnelles sans rapport, puis utilisez le <a href="../formater-du-json/">formateur</a> pour trouver l'erreur de syntaxe. Si l'échec dépend d'une valeur, reproduisez-le avec une valeur fictive de même forme avant de partager l'exemple. Un formatage réussi ne prouve pas que l'application accepte les données.</p>
+    <p><strong>Une régression de configuration.</strong> Passez les copies fonctionnelle et défaillante par le même formateur, puis <a href="../comparer-deux-fichiers-json/">comparez-les</a>. Gardez l'ordre des tableaux lorsqu'il compte. Une comparaison locale peut trouver le champ modifié sans publier aucune configuration.</p>
+    <p>Un prolongement utile consiste à préparer un petit exemple d'assistance à partir de cette différence. Vérifiez le texte enregistré autant que l'éditeur&nbsp;: commentaires, URL, identifiants et sorties copiées peuvent porter les détails retirés du champ de mot de passe évident.</p>
+  </section>
+
+  <section>
     <h2>Ce qu'un collage transporte vraiment</h2>
     <p>
       Ce qui atterrit dans les outils en ligne est rarement de la prose.
@@ -108,27 +115,9 @@
       de fichiers</a>. La version courte, façon collage&nbsp;:
     </p>
     <ul>
-      <li>
-        <strong>Débranchez.</strong> Chargez la page, coupez la connexion,
-        collez, appuyez sur le bouton. Un outil local continue&nbsp;; un
-        outil serveur s'arrête. Trente secondes, aucune expertise,
-        infalsifiable.
-      </li>
-      <li>
-        <strong>Regardez l'onglet Réseau pendant que vous appuyez sur
-        Formater.</strong> Une requête qui part à cet instant, à peu près
-        de la taille de votre collage, c'est votre collage qui part. Pas
-        de requête, pas d'envoi.
-      </li>
-      <li>
-        <strong>Méfiez-vous des extras serviables.</strong> Un bouton
-        &laquo;&nbsp;partager cet extrait&nbsp;&raquo;, un historique de
-        vos collages synchronisé entre appareils, un lien à envoyer à un
-        collègue &mdash; chacun n'est possible que si le texte a été
-        stocké sur un serveur. Les fonctionnalités sont des aveux&nbsp;:
-        une page qui peut montrer votre collage à quelqu'un d'autre l'a
-        gardé.
-      </li>
+      <li><strong>Débranchez.</strong> Chargez la page, déconnectez-vous, collez et appuyez sur le bouton. Un outil local continue&nbsp;; un outil serveur s'arrête. La réussite prouve que cette opération a fonctionné hors ligne, sans exclure un stockage puis un envoi après reconnexion.</li>
+      <li><strong>Observez l'onglet Réseau pendant Format.</strong> Une requête à cet instant justifie d'examiner son URL et son corps. La taille seule n'identifie pas la charge, et de petites requêtes ou des requêtes ultérieures peuvent aussi porter du texte sensible.</li>
+      <li><strong>Méfiez-vous des extras pratiques.</strong> Un bouton de partage d'extrait, un historique de collages entre appareils ou un lien pour un collègue franchit une frontière de transfert ou de stockage à vérifier. Certains services stockent le texte&nbsp;; le <a href="../partager-du-texte-entre-appareils/">partage direct entre navigateurs</a> le transmet au lecteur choisi sans stockage serveur. Dans les deux cas, envoyer un extrait est distinct de le formater.</li>
     </ul>
     <p>
       Et une habitude vaut mieux que les trois vérifications&nbsp;: coller

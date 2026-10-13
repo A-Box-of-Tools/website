@@ -13,7 +13,7 @@ lede = """
     qué segundos, después qué ajustes. Las dos ocurren en tu propio equipo,
     porque ninguna de las dos herramientas sube nada."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Haz un GIF de un trozo de video sin subir ninguno de los dos"
 og_description = "Corta primero, convierte después. Qué herramienta debe cortar, lo que de verdad cuesta un segundo de GIF, y cómo quedar por debajo del límite de tamaño de un foro."

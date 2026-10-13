@@ -2,11 +2,17 @@
 
 [← README](../README.md) · [Guide conventions](guides.md)
 
-This pass reviewed all 75 English source guides on `dev`. It expanded 74 and
+This review covers all 75 guides on `dev`. The English pass expanded 74 and
 kept the recently revised Remote Camera guide, whose nursery, pet, entryway and
-DIY workflows already supplied both ordinary and less obvious uses. Existing
-translated bodies and frozen archives are separate copies and were not expanded
-in this English-source pass.
+DIY workflows already supplied both ordinary and less obvious uses. The same
+use-case coverage and corrected limitations are now translated into Simplified
+Chinese, German, Spanish, Brazilian Portuguese, French and Japanese.
+
+Each maintained language has 75 complete guide bodies and translated article
+metadata. Image Layout and Remote Camera previously had English guide fallbacks;
+both guides are now translated in full. Older sharing translations also lacked
+the local-network section, which is included in this update. The eight frozen
+language archives remain outside the selected scope.
 
 “Common” here is an editorial judgement about the job a reader arrives with,
 supported by the tool's current controls and representative primary references.

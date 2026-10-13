@@ -33,6 +33,8 @@ complete = true
 #
 
 [slugs]
+"guides/arrange-images" = "guias/organizar-imagens"
+"guides/watch-camera-from-another-device" = "guias/ver-camera-de-outro-dispositivo"
 "guides/extract-receipts-and-invoices" = "guias/extrair-recibos-e-faturas"
 "receipt-invoice-extractor" = "extrair-recibos-faturas"
 "avif-to-jpg" = "avif-para-jpg"

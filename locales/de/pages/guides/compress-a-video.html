@@ -5,6 +5,12 @@
   </section>
 
   <section>
+    <h2>Ein Anhang, ein Upload oder ein Fehlerbericht</h2>
+    <p>Prüfen Sie für eine E-Mail das Limit der ganzen Nachricht, ziehen Sie andere Anhänge ab und lassen Sie etwas Spielraum. Persönliche Gmail-Konten erlauben derzeit 25 MB Anhänge. Bei Arbeits- und Schulkonten bestimmt der Administrator das Limit. Die <a href="https://support.google.com/mail/answer/6584?hl=en" target="_blank" rel="noopener noreferrer">Gmail-Anleitung zu Anhängen</a> erklärt den Unterschied. Eine Voreinstellung ist ein Größenziel und keine Zusage, dass jeder Empfänger so viel annimmt.</p>
+    <p>Schneiden Sie für einen Fehlerbericht oder eine kurze Demonstration die Wartezeit vor dem Komprimieren ab. Behalten Sie die Klicks, die das Problem erklären, und den Ton, wenn er zur Erklärung gehört. Wählen Sie genug Auflösung für den kleinsten wichtigen Text. Spielen Sie das heruntergeladene Ergebnis in der Ziel-App ab und prüfen Sie tatsächliche Größe und letzte Sekunde. Erhöhen Sie das Ziel oder kürzen Sie den Clip, wenn der Text unleserlich geworden ist.</p>
+  </section>
+
+  <section>
     <h2>Wohin die Megabytes gehen</h2>
     <p>Eine Videodatei besteht fast vollständig aus dem Bild. Eine Minute in 1080p vom Handy belegt etwa 60 bis 150 MB, davon ungefähr eines für den Ton. Der Rest sind dreißig Bilder pro Sekunde, jeweils beschrieben durch die Änderungen seit dem vorherigen. Die Größe eines Videos ist daher annähernd eine einzige Zahl: die erlaubten Bits pro Sekunde für das Bild &mdash; die <em>Bitrate</em> &mdash; multipliziert mit seiner Laufzeit.</p>
     <p>Deshalb wird aus einer Größenbegrenzung unmittelbar eine Bitrate. Von der Obergrenze werden der unverändert kopierte Ton und ein kleiner Anteil für den Container abgezogen. Der Rest wird durch die Länge des Clips geteilt. Eine Grenze von 25 MB für einen Clip von zwei Minuten lässt dem Bild etwa 1,6 Megabit pro Sekunde. Das ist das gesamte Budget, aus dem alles Weitere folgt.</p>
@@ -22,7 +28,7 @@
     <p>Ein komprimiertes Video ist ein neu kodiertes Video. Das Bild wird dekodiert, kleiner gezeichnet und mit der neuen Bitrate geschrieben. Es liegt damit eine Generation weiter vom Kamerabild entfernt als die Ausgangsdatei. Der Ton bleibt unberührt: Seine Samples werden genau so in die neue Datei kopiert, wie sie waren. Den Bildverlust bestimmt die Zahl. Ein halb so großer Clip verliert wenig; ein Clip von 900 MB, der auf 25 MB sinkt, verliert die meisten Bits, und das sieht man.</p>
     <ul>
       <li><strong>Wählen Sie die benötigte Grenze und keine kleinere.</strong> Bei einer Grenze von 25 MB sind 25 MB richtig. 8 MB werfen ohne Grund zwei Drittel des Bildbudgets weg.</li>
-      <li><strong>Schneiden Sie zuerst.</strong> Unnötige Zeit zu entfernen lässt mehr Größenbudget pro verbleibender Sekunde. Der <a href="../../ratgeber/video-kuerzen/">Videoschneider</a> kann kompatible Auswahlen ohne Neukodierung kopieren; exakte Schnitte kodieren das Bild neu. Wählen Sie die angezeigte Methode vor dem Komprimieren bewusst.</li>
+      <li><strong>Erst schneiden.</strong> Weniger unnötige Zeit lässt jeder verbleibenden Sekunde mehr Größenbudget. Der <a href="../ratgeber/video-kuerzen/">Videoschneider</a> kann kompatible Abschnitte ohne Neukodierung kopieren. Exakte Schnitte kodieren das Bild neu. Ein geschnittenes Ergebnis kann Wiedergabebearbeitungen enthalten, auch Audiobearbeitungen nach einem exakten Bildschnitt. Lehnt der Kompressor diese Zeitleiste ab, speichern Sie in einem lokalen Editor ein neues Video mit angewendeten Bearbeitungen. Wählen Sie die beschriftete Methode bewusst.</li>
       <li><strong>Lassen Sie unwichtigen Ton weg.</strong> Eine Minute Stereo benötigt etwa ein Megabyte. Bei einem kurzen Clip mit enger Grenze entscheidet dieses Megabyte oft zwischen einem klaren und einem verschmierten Bild.</li>
       <li><strong>Behalten Sie das Original.</strong> Ein komprimiertes Video lässt sich nicht wiederherstellen. Komprimieren und versenden Sie eine Kopie und behalten Sie die Datei aus der Kamera.</li>
     </ul>
@@ -37,7 +43,7 @@
 
   <section>
     <h2>Was das Werkzeug prüft, bevor es die Datei ausgibt</h2>
-    <p>Ein Encoder trifft eine angeforderte Bitrate ungefähr, nicht exakt. Deshalb wird zunächst etwas unter der Grenze kodiert und die Datei anschließend gemessen. Ist sie zu groß, wird die Bitrate aus der Abweichung neu berechnet und der Clip erneut kodiert. Die Seite meldet das. Anschließend wird die fertige Datei auf Ihrem Rechner erneut geöffnet und ihre ursprüngliche Länge geprüft. Auch ein Kompressor, der die letzte Sekunde oder den Ton verliert, erzeugt eine kleinere Datei. Erst das erneute Lesen zeigt den Unterschied. Das Ergebnis lässt sich unter dem Download abspielen, damit Sie es vor dem Versenden ansehen können.</p>
+    <p>Ein Encoder nähert sich der gewünschten Bitrate, trifft sie aber nicht genau. Deshalb wird etwas unter dem Limit angefragt und anschließend gemessen. Ist die Datei zu groß, wird die Bitrate anhand der Abweichung neu berechnet und der Clip erneut kodiert. Die Seite meldet das. Danach wird die fertige Datei auf Ihrem Gerät wieder geöffnet und ihre Länge mit der Quelle verglichen. Auch ein Ergebnis ohne letzte Sekunde oder Ton wäre kleiner. Erst das erneute Lesen zeigt den Unterschied. Das Ergebnis spielt unter dem Download, sodass Sie es vor dem Senden prüfen können. Meldet die Prüfzeile weiterhin ein verfehltes Ziel, liegt der Download nicht unter dem Limit. Wählen Sie kleinere Bildmaße, einen kürzeren Clip oder ein höheres Limit und versuchen Sie es erneut.</p>
   </section>
 
   <section>

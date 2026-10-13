@@ -1,13 +1,19 @@
   <section>
     <h2>La respuesta corta</h2>
-    <p>Abre <a href="../../eliminar-datos-exif/">visor y eliminador de
-      EXIF</a> y elimina los metadatos de tus fotos. JPEG, PNG y WebP conservan sus datos de imagen comprimidos. La limpieza de AVIF crea un PNG nuevo de la primera imagen decodificada sin metadatos originales. Las opciones de orientación y perfil de color solo se aplican a los tres formatos de contenedor. El navegador decodifica AVIF y lo guarda como un PNG nuevo sin copiar los metadatos originales. Aquí puedes ver sus etiquetas EXIF disponibles, pero no editarlas. El PNG puede ser mayor y la conversión puede cambiar el color o el HDR. El archivo original no cambia.</p>
+    <p>Abre el <a href="../../eliminar-datos-exif/">Visor y eliminador de EXIF</a>, añade fotos y pulsa «Eliminar todos los metadatos». Quita EXIF, XMP, IPTC, comentarios y miniatura de JPEG, PNG y WebP. Los ajustes pueden conservar una etiqueta nueva de orientación y el perfil de color; el inspector de copia indica qué queda. Los datos comprimidos de imagen se copian intactos. En AVIF, crea PNG desde la primera imagen decodificada, sin metadatos originales. El original no cambia; PNG puede ocupar más y modificar HDR o representación de color.</p>
     <p>
       Aun así, antes de hacerlo conviene mirar qué había ahí dentro. Suele haber
       más de lo que la gente espera, y esa lista es justamente el argumento para
       hacer todo esto.
     </p>
   </section>
+
+  <section>
+    <h2>Copias públicas y un reloj de cámara incorrecto</h2>
+    <p><strong>Fotos para anuncios, foros o unidades compartidas.</strong> Guarda originales en tu archivo y limpia copias con orientación y perfil de color activos para preservar la vista. Usa <strong>Inspeccionar copia limpia</strong> para ver qué contiene la descarga exacta. Comprueba que el retrato esté vertical y los colores correctos antes de compartir el lote. Nombre de archivo, cartel de calle y cara no son metadatos: renombra o censura aparte si revelan algo privado.</p>
+    <p><strong>Una colección con fecha de captura incorrecta.</strong> En JPEG, PNG o WebP, elige la foto, edita las fechas pertinentes y guárdala en vez de eliminar todo. Comprueba cómo lee la fecha tu biblioteca. EXIF puede incluir varias fechas sin zona horaria: cambiar un campo no garantiza el orden en toda aplicación. Conserva una copia intacta si importan las notas del fabricante.</p>
+  </section>
+
 
   <section>
     <h2>Qué hay de verdad dentro de una foto</h2>
@@ -104,11 +110,7 @@
       comprimidos se copian byte por byte, y el resultado descodifica exactamente
       los mismos píxeles. Ahí está la razón entera para usar una herramienta de
       metadatos en vez de un conversor.</p>
-    <p>
-      La excepción es que fueras a recodificar de todas formas. Si ya estás
-      comprimiendo o redimensionando la foto, las etiquetas se van de rebote y no
-      te hace falta un segundo paso.
-    </p>
+    <p>La excepción es si vas a recodificar de todos modos. Cuando se recodifica al comprimir o redimensionar, se omiten las etiquetas. Un archivo devuelto intacto las conserva: comprueba ese resultado aparte.</p>
   </section>
 
   <section>

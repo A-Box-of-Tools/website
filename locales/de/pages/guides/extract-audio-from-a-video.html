@@ -8,6 +8,12 @@
     </figure>
   </section>
   <section>
+    <h2>Ein Vortrag zum Hören oder eine Spur zum Bearbeiten</h2>
+    <p>Behalten Sie für eine Vorlesung, Präsentationsaufnahme oder ein Interview zum Hören ohne Bildschirm zunächst die Quellkanäle und das voreingestellte 16-Bit-PCM. Hören Sie Anfang und Ende an und übernehmen Sie die WAV-Datei in den <a href="../../audio-schneiden/">Audioschneider</a>, wenn nur ein Abschnitt wichtig ist. WAV kann viel größer als die komprimierte Tonspur sein. Prüfen Sie vor dem Übertragen, was Ihre Hör-App annimmt.</p>
+    <p>Wählen Sie für Voiceover- oder Podcastbearbeitung Float32 mit unveränderten Kanälen und behalten Sie diese WAV-Datei als Arbeitskopie. Extrahieren übernimmt die vorhandene gemischte Tonspur. Es trennt keine Stimme von Musik, entfernt kein Hintergrundrauschen und transkribiert keine Wörter. Testen Sie Mono erst nach dem Anhören beider Kanäle. Es spart bei Sprache Platz, aber zwei Mikrofone können verschiedene Stimmen tragen oder sich beim Mitteln teilweise auslöschen.</p>
+  </section>
+
+  <section>
     <h2>16 Bit oder Float32 wählen</h2>
     <p>16-Bit-PCM ist die Vorgabe für breite Wiedergabekompatibilität. Beim Schreiben werden die dekodierten Samples gerundet und begrenzt. Float32 behält bei unveränderten Kanälen deren Werte, auch oberhalb der Vollaussteuerung, und eignet sich für weitere Bearbeitung. Bereits durch Kompression verlorene Details stellt es nicht wieder her.</p>
     <p>WAV speichert unkomprimiertes Audio und kann deutlich größer als die komprimierte Tonspur des Videos sein. Der Extraktor erzeugt kein MP3, da dieses Werkzeug keinen MP3-Encoder mitliefert. Ein lokaler Encoder in einer anderen Anwendung kann MP3 ohne Upload schreiben.</p>

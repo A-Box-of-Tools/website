@@ -12,7 +12,7 @@ lede = """
     o que uma config ou um log colados realmente carregam &mdash; e sobre
     como saber se a ferramenta na sua frente tem sequer para onde
     mandá-los."""
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "É seguro colar texto numa ferramenta online?"
 og_description = "Um colar pode ser um envio silencioso. O que uma config, um log ou uma consulta realmente carregam, e como saber se o formatador guarda uma cópia."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

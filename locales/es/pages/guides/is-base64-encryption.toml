@@ -12,7 +12,7 @@ lede = """
     pregunta merece respuesta de verdad, porque codificación, cifrado y
     hash se parecen en pantalla y no podrían prometer cosas más
     distintas."""
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "¿Base64 es un cifrado?"
 og_description = "No: cualquiera puede deshacerlo, sin clave. Codificación, cifrado y hash se parecen en pantalla y prometen tres cosas completamente distintas. Cuál es cuál."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

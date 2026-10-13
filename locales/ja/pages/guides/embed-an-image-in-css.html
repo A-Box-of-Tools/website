@@ -8,6 +8,8 @@
     </p>
   </section>
 
+  <section><h2>小さな印と1ファイルで渡す文書</h2><p><strong>サイトで繰り返す装飾。</strong>CSSカスタムプロパティを選び、必要な場所で参照します。貼る前に符号化文字数とプレビューを確認します。情報を伝える画像は、背景でなく適切な代替文のある<code>&lt;img&gt;</code>に置く方が適切です。</p><p><strong>独立HTML資料やオフライン報告。</strong>画像タグ出力に代替文を加え、必要な小素材だけを埋めます。切断して目的の閲覧ソフトで保存文書を開き、画像を確認します。プレビューはここでURIが描ける証明で、メール・Markdown・相手の内容ポリシーがdata画像を許す証明ではありません。報告全体を作る前に相手で試し、写真を原バイトで埋める前にメタデータを調べます。</p></section>
+
   <section>
     <h2>データURIとは実際何なのか</h2>
     <p>
@@ -77,22 +79,7 @@
     </figure>
   </section>
 
-  <section>
-    <h2>SVGをbase64にしてはいけません</h2>
-    <p>
-      埋め込み画像に関していちばんよくある間違いがこれで、書き出し機能やビルドプラグインが、人と同じくらいの頻度でこれをやります。
-    </p>
-    <p>
-      SVGはテキストです。URLはもともとテキストを運べます。逃がす必要のある文字はほんのひと握り、<code>%</code>、<code>#</code>、<code>&lt;</code>、<code>&gt;</code>、そして囲んだ引用符だけで、それ以外はまったくそのままにできます。その方式でエンコードすると、同じファイルのbase64よりだいたい5分の1短いURIができますし、しかもそのあと、ノイズではなくテキストとして圧縮されます。
-    </p>
-    <p>
-      そのうえ、読めるままです。
-    </p>
-    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      <code>viewBox</code>が見えます。何もデコードせずに、エディター上で塗りの色を変えられます。同じファイルをbase64にすれば、それは二度と誰も触らない文字の壁になります。<a href="../../image-to-data-uri/">画像をデータURIに</a>は、SVGだと判明したものに対してこれを自動で行いますし、<code>;base64</code>をどうしても要求するツールチェーン向けに、チェックボックスも用意しています。
-    </p>
-  </section>
+  <section><h2>UTF-8のSVGはパーセント符号化を優先します</h2><p>SVGを一律Base64にするのは、画像の埋め込みでよくある誤りです。書き出し器やプラグインも行います。</p><p>SVGもURLも文字です。<code>%</code>、<code>#</code>、<code>&lt;</code>、<code>&gt;</code>、囲む引用符などをエスケープすれば、ほかは保てます。URIは同じファイルのBase64より通常約5分の1短く、後の圧縮も文字として効きます。</p><p>内容も読めます。</p><pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre><p><code>viewBox</code>や塗り色を解読なしで編集できます。<a href="../../image-to-data-uri/">画像からData URI</a>は有効なUTF-8 SVGを自動処理します。UTF-16など別の符号化、矛盾した宣言、不正UTF-8は原バイトのBase64にして理由を示し、勝手に符号化を変えません。<code>;base64</code>必須の処理系には設定もあります。</p></section>
 
   <section>
     <h2>SVGのときだけ壊れる引用符の間違い</h2>

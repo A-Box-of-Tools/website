@@ -14,8 +14,8 @@ lede = """
     unter ihrem Byte-Limit, ist eine Kette aus drei Schritten, die ganz in
     Ihrem Browser läuft."""
 
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 
 og_title = "Genau das Bild, im Format der Plattform, unter dem Byte-Limit"
-og_description = "Bild für Bild zum richtigen Augenblick, verlustfrei sichern, auf 16:9 zuschneiden und auf die Obergrenze der Plattform komprimieren, ohne das Material hochzuladen."
+og_description = "Ein klares Standbild auswählen, an Zielform und aktuelles Uploadlimit anpassen oder ein Websiteposter und Präsentationstitelbild erstellen, ohne die Aufnahme hochzuladen."
 og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"
