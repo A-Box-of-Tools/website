@@ -1,28 +1,35 @@
 # The rendezvous
 
-The one server component anything on this site has. `/share-text/` moves
-text and files directly between two browsers over WebRTC, and a direct
+The one server component anything on this site has. `/share-text/`,
+`/remote-camera/`, and `/walkie-talkie/` connect browsers directly over WebRTC.
+Text and files, camera frames, and voice stay on the peer connection. A direct
 connection needs an introduction: the two sides must exchange a few KB of
 session descriptions before a channel can exist, and something has to carry
 them and match "the person who typed `brave-otter-42`" with the other person
 who typed it. This Worker carries that introduction and lists opted-in local
 link names, never the shared text or files.
 
-One Room Durable Object per tool and code word, plus a Discovery Durable Object
-per tool, public-address-and-origin group. No storage is ever written; the rooms and
-directory entries live on open sockets, so a room ends when its sharer
-disconnects, and an idle deployment costs nothing at all. What it can see:
-that a code word is in use, when peers come and go, their IP addresses, and
-the negotiation blobs. What it cannot see: the text, the files, who was
-admitted, or what anybody said - all of that travels the encrypted peer
-channel, including the knock on a private share.
+One Room Durable Object per text/camera tool and code word, a Discovery Durable
+Object per tool, public-address-and-origin group, and a separate Broadcast
+Durable Object per voice invitation. No application storage is ever written;
+room authority and directory entries live in socket attachments. Text/camera
+rooms end when their sharer disconnects. Voice listeners can remain parked
+while their host reconnects; their room disappears when its last socket leaves.
+What it can see: that an invitation or code word is in use, when peers come
+and go, their IP addresses, and negotiation metadata. The voice object also
+validates anonymous capabilities and handles the host's talking status.
+What it cannot see: shared text or files, camera frames, or voice. Those
+travel the encrypted peer connection. Text/camera admission decisions,
+including the knock on a private share, also stay on that peer channel.
 
 That is what it sees. What it stores is a shorter list, and no longer an
 empty one: `observability.logs` in `wrangler.toml` asks Cloudflare to keep
 its own record of every invocation for seven days, readable in the Workers
-dashboard. That record is the request and its outcome - the URL, which
-carries the code word and the role, and the metadata Cloudflare attaches to
-it - and never a payload. The worker adds one line of its own, on a refusal,
+dashboard. That record is the request and its outcome - the URL, which for
+text/camera carries the code word and role, and the metadata Cloudflare attaches to
+it - and never a payload. Voice URLs carry an opaque digest of the host secret;
+both voice capabilities enter the first WSS message, never the URL. The worker
+adds one line of its own on a text/camera refusal,
 because a refused handshake completes the upgrade exactly like an admission
 and the record alone cannot tell them apart; the line carries the close code
 and nothing else. It is a view of the switchboard working, not of anything
@@ -43,14 +50,20 @@ the `workers.dev` name it was born with, and should keep doing so: a page
 cached before the switch dials the old name. The custom domain is not a
 nicety. The whole `workers.dev` domain is blocked inside mainland China, and
 a reader there saw the page load and then wait forever for an introduction,
-while the site's own domain resolves fine. The tool page names the hostname
-in its `connect-src` and in one constant in `tools/share-text/src/main.js`;
-if the worker ever moves again, those are the two places that change.
+while the site's own domain resolves fine. The connected tool pages name the
+hostname in their `connect-src` and client endpoint. If the worker moves again,
+update every connected tool's declarations.
 
 This folder is invisible to `build.py` - the deploy is by hand, and rare,
 because nearly every feature the tool has gained since the first version has
 been page-side. The protocol carries introductions, the relay credential
 below and the local discovery directory.
+
+Voice uses the same origin check and address connection limit, with neither
+discovery nor relay credentials. Its signaling service never carries audio,
+and the page does not configure STUN or TURN. Host-only ICE candidates can
+include globally routable interface addresses, especially IPv6: a candidate
+type describes how an address was obtained, not a physical LAN boundary.
 
 ### The discovery migration
 
@@ -62,6 +75,17 @@ and binding: existing share names must keep addressing the same rooms.
 The normal `npx wrangler deploy` from this directory applies the new class
 and binding. An older worker leaves discovery unavailable on the page while
 the ordinary share link and its consent workflow continue to work.
+
+### The voice migration
+
+Website-native Walkie-talkie needs this worker deployed before its updated
+static page. `wrangler.toml` adds `BROADCASTS`, the exported `Broadcast` class,
+and migration `v3` with `new_sqlite_classes = ["Broadcast"]`. Keep `v1`, `v2`,
+`ROOMS`, and `DISCOVERY` unchanged: the new voice namespace must not reinterpret
+an existing text or camera room. The usual manual deploy applies the new
+binding and class. There are no new secrets, relay keys, or storage records to
+configure. An older worker has no `/broadcast/` route, so the page cannot pair
+until that deployment has happened.
 
 ### What local discovery means
 
@@ -185,3 +209,75 @@ pairs that could not connect directly.
   connection.
   The usual origin checks, address connection limit and automatic ping/pong
   responses also apply. The page does not send text or files to this socket.
+
+## The voice protocol
+
+The page generates separate random 32-byte host and listener capabilities,
+each encoded as 43 URL-safe characters. Its room code is the lowercase hex
+SHA-256 digest of the host capability's UTF-8 text. That derivation lets a host
+authenticate a resumed room even after every socket has disappeared; no saved
+room record or server signing key is needed. The listener invitation carries
+the listener capability in the page URL fragment. Request URLs carry only
+`/broadcast/<64 lowercase hex characters>`, with no query parameters.
+
+- The new route uses the existing allowed origins and thirty-connections-per-
+  address-per-minute limit. It addresses only `BROADCASTS`, never `ROOMS` or
+  `DISCOVERY`. A refused upgrade still uses the ordinary 403, 426, or 429 gates.
+- The first frame is `{type: "auth", role: "host", key, listenKey}` or
+  `{type: "auth", role: "listener", key}`. Host authority requires the digest
+  of `key` to equal the path's code. Socket attachments retain hashes, roles,
+  random listener ids, generations, connection ids, and bounded bookkeeping;
+  they retain no raw capabilities, SDP, candidates, or audio.
+- A listener arriving before the first host can wait, but its capability is
+  unverified and cannot establish authority for other listeners. A genuine
+  host validates those waiting hashes and removes mismatches. After a host
+  disconnects, previously authenticated listener attachments anchor the
+  listener hash, so new invited listeners can join the waiting group.
+- The host receives `{type: "host-ready", generation}` first. A matching
+  listener receives `{type: "ready", id, generation, talking}` before the
+  host receives `{type: "join", id, generation}`. Both ids and generations
+  are UUIDs generated by the worker. A repeated check for the current
+  generation sends `ready` again without a second `join`.
+- The host sends `offer` or `candidate` frames with `to`, `generation`,
+  `connection`, and either `sdp` or `candidate`. A listener sends `answer` or
+  `candidate` with the same fields except `to`. The worker derives `from` and
+  `to` from authenticated sockets: host-to-listener frames name `from: "host"`,
+  and listener-to-host frames name `to: "host"`. A client cannot choose its
+  sender or address another listener. Only an offer selects the connection
+  UUID against which its listener's replies are checked; early or late host
+  candidates cannot overwrite that selection.
+- SDP is bounded ASCII with one encrypted audio media section. ICE accepts
+  syntactically valid IPv4, IPv6, or mDNS interface addresses with `typ host`
+  only. `srflx`, `prflx`, `relay`, data-channel offers, arbitrary envelopes,
+  binary messages, and relay-credential requests are not forwarded. A room
+  does not relay or record media.
+- An authenticated host can publish `{type: "status", generation, talking}`
+  with a boolean `talking`. Listeners receive the same bounded status frame.
+  `{type: "end", generation}` notifies connected listeners with `ended`,
+  and their live attachments preserve that state for subsequent checks.
+  Nothing preserves an ended history after the final socket has left.
+- A host socket disappearing sends `waiting` and keeps listener sockets open.
+  A waiting page sends `{type: "check"}` once a second; the worker replies
+  `waiting`, `ready`, or `ended`. A host returning with the same capability
+  receives a fresh generation and reintroduces valid listeners. A replacement
+  host retires the prior host with `replaced` and close code 4409, so a late
+  old-host callback cannot disturb the new generation.
+- `{type: "leave"}` removes that listener and closes its socket normally.
+  A current host receives `{type: "leave", id, generation}`. Socket close,
+  error, and failed sends perform the same cleanup without duplicate events.
+- A room permits ten listener sockets, including waiting ones, and four
+  pending handshakes. Silent pending authentication expires after eight
+  seconds, checked at the next request or message without a periodic alarm.
+  Frames are limited to 64 Ki UTF-16 units, SDP to 32 Ki, and ICE strings to
+  4096 characters. Each socket may send 120 updates per ten-second window.
+- Refusals use `{type: "error", error}` and close codes: 4400 `invalid`,
+  4403 `unauthorized`, 4408 `timeout`, or 4429 `full`/`busy`. Invalid or stale
+  negotiation frames receive recoverable `invalid`/`stale` error frames.
+  `ping` still receives `pong` through the hibernation auto-response.
+
+Internet access is needed for introductions and signaling recovery. Already
+working direct media does not pass through this service, and a signaling
+outage need not tear it down. Wi-Fi isolation, firewalls, VPNs, and browser
+policies can still prevent a direct connection. The absence of STUN/TURN and
+the use of host-only candidates do not prove that two devices share a physical
+LAN, and neither the worker nor the page claims that proof.
