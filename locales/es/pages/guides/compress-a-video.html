@@ -22,7 +22,7 @@
     <p>Comprimir un video implica volver a codificarlo. La imagen se decodifica, se dibuja más pequeña y se escribe de nuevo con la nueva tasa de bits: queda una generación más lejos de la cámara. El sonido no se toca; sus muestras se copian exactamente. La pérdida visual depende del límite: reducir un video a la mitad suele costar poco; pasar de 900 MB a 25 MB elimina casi todos sus bits, y se nota.</p>
     <ul>
       <li><strong>Pide el tamaño que necesitas, no uno menor.</strong> Si el límite es 25 MB, usa 25 MB. Elegir 8 MB descarta dos tercios de la información de imagen sin necesidad.</li>
-      <li><strong>Recorta primero.</strong> La duración es la otra mitad de la multiplicación. Diez segundos que sobran consumen bits que podrían repartirse entre los segundos útiles. El <a href="/es/guias/cortar-un-video/">recortador de video</a> corta sin volver a codificar; úsalo antes de comprimir.</li>
+      <li><strong>Corta primero.</strong> Quitar tiempo innecesario deja más presupuesto por segundo restante. El <a href="/es/guias/cortar-un-video/">recortador de vídeo</a> copia selecciones compatibles sin recodificar; los cortes exactos recodifican la imagen. Elige el método indicado antes de comprimir.</li>
       <li><strong>Quita el sonido si no importa.</strong> Un minuto de audio estéreo ocupa alrededor de un megabyte. En un video corto con un límite ajustado, ese megabyte puede marcar la diferencia entre una imagen nítida y una borrosa.</li>
       <li><strong>Conserva el original.</strong> No se puede recuperar lo perdido al comprimir. Comprime una copia, envía esa copia y guarda el archivo de la cámara.</li>
     </ul>
@@ -42,5 +42,5 @@
 
   <section>
     <h2>Qué formatos escribe y cuáles lee</h2>
-    <p>Escribe MP4 con video H.264, la combinación que reproducen teléfonos, navegadores, aplicaciones de mensajería y clientes de correo. Esa compatibilidad es lo que necesita un archivo que se quiere enviar. No escribe WebM, HEVC ni AV1: ocupan menos con la misma calidad, pero muchas personas no podrían abrirlos. Lee MP4 y MOV, habituales en teléfonos, cámaras y grabaciones de pantalla, siempre que el navegador pueda decodificar el códec interior. Los videos HEVC de iPhone se abren en la mayoría de los dispositivos. Todavía no lee WebM, MKV ni AVI; la página lo indica al encontrarlos.</p>
+    <p>Escribe MP4 con vídeo H.264 y audio original copiado. H.264 en MP4 es ampliamente compatible, pero el destino también debe admitir el códec de audio y el perfil de vídeo. Prueba allí el archivo final. Lee MP4 y MOV con códecs que tu navegador decodifique; no lee WebM, MKV ni AVI. No escribe WebM, HEVC ni AV1.</p>
   </section>

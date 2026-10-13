@@ -4,15 +4,10 @@
 
 nav = "¿Páginas sin conexión?"
 title = "¿Cómo puede una página web funcionar sin conexión?"
-description = "Una página que sigue funcionando con el Wi-Fi apagado no es magia: es un service worker y una caché, maquinaria estándar del navegador. Cómo funciona, por qué el sin-conexión es la prueba de privacidad más fuerte que una herramienta puede ofrecer, y qué no prueba."
+description = "Cómo un service worker almacena herramientas, qué demuestra una operación local sin conexión y qué funciones y límites revisar."
 heading = "¿Cómo puede una página web funcionar sin el Wi-Fi?"
-lede = """
-    Porque el navegador guardó una copia completa, y un pequeño programa
-    que viaja con la página sirve esa copia siempre que la red no puede.
-    La maquinaria es estándar y merece entenderse, porque una herramienta
-    que trabaja desconectada te está enseñando algo que ninguna política
-    de privacidad puede enseñar."""
-updated = "26 de agosto de 2026"
+lede = "Un service worker puede guardar una copia local. Terminar una operación sin conexión demuestra procesamiento local, no todas las rutas futuras de datos. Así funciona la caché y esto debes comprobar."
+updated = "12 de octubre de 2026"
 og_title = "¿Cómo puede una página web funcionar sin el Wi-Fi?"
-og_description = "Un service worker y una caché: maquinaria estándar del navegador. Cómo funcionan las páginas sin conexión, por qué es la prueba de privacidad más fuerte, y qué no prueba."
-og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
+og_description = "Cómo se guardan los recursos de una herramienta, qué demuestra procesar desconectado y qué funciones aún necesitan red."
+og_image_alt = "abox.tools - herramientas del navegador para procesar archivos localmente"

@@ -38,7 +38,7 @@ js_parts = ["file-picker", "message-box", "example-photo"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["compress-image", "resize-image"]
-lastmod = "2026-10-08"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -56,7 +56,7 @@ og_card = "Twenty frames become one. The noise averages away; the tourists do no
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """
-  worker-src is named explicitly because this is the only tool here that runs
+  worker-src is named explicitly because stacking runs
   its work in a Worker, and a directive that is merely inherited is one nobody
   reading the policy can see was intended. It is 'self' and nothing else: the
   worker is a file in this folder, cached by the service worker beside it.
@@ -68,12 +68,7 @@ csp_note = """
 
 # --- the pledge block --------------------------------------------------------
 
-pledge = """
-    Every frame is opened, decoded, aligned, combined and written by your own
-    browser, on your own machine. A stack of twenty 60&nbsp;MB RAW files is
-    about a gigabyte of photographs, and not one byte of it moves: the tool has
-    no network feature of any kind, and the files are read straight off your
-    disk by a worker that has nowhere to send anything."""
+pledge = "Every frame is opened, decoded, aligned, combined and written by your own browser, on your own machine. A stack of twenty 60&nbsp;MB RAW files is about a gigabyte of photographs, and not one byte of it moves: the tool has no network feature of any kind, and the files are read straight off your disk by a worker that processes them locally without a file upload."
 
 live_hint = """
       Don't take our word for it: open DevTools, watch the Network tab, and stack
@@ -136,14 +131,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "Your photographs have nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your files
-      could be collected at, and nothing in the code that would send them if there
-      were &mdash; no <code>fetch</code>, no <code>XMLHttpRequest</code>, no
-      <code>sendBeacon</code>, in <code>src/</code> or in the worker."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "RAW previews are read on this machine."
@@ -157,14 +146,7 @@ body = """
 
 [[privacy]]
 title = "The work happens in a Worker on this machine, not on a server."
-body = """
- This is the
-      only tool here that uses one, because stacking is minutes of arithmetic
-      rather than seconds and a frozen page cannot show progress or be cancelled.
-      A Worker is a second thread in this same browser &mdash; see
-      <code>src/worker.js</code>. It is handed the files themselves, which is
-      free, because a file handle is not the bytes; and it has exactly the same
-      Content-Security-Policy as the page, which is to say nowhere to send them."""
+body = "Stacking can take minutes, so a Worker handles the arithmetic while the page remains responsive and can show progress or cancel. It is another thread in this browser: see <code>src/worker.js</code>. File references are handed to it locally without uploading their bytes. The worker’s processing code reads and combines those files on this device; review that source rather than treating the page’s destination policy as proof of a worker’s data paths."
 
 [[privacy]]
 title = "Nothing about the set is reported anywhere."

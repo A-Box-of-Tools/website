@@ -1,18 +1,18 @@
 # Brazilian Portuguese translation. Structural settings come from the English tool.
 
 name = "PDF para CSV"
-heading = "PDF&nbsp;para&nbsp;CSV <span class=\"h1-kw\">&mdash; todas as tabelas, inclusive extratos bancários</span>"
-tagline = "Encontra as tabelas de um PDF e as transforma em linhas que uma planilha consegue abrir."
-title = "PDF para CSV &mdash; tabelas e extratos bancários, grátis, sem enviar"
-description = "Converta tabelas de PDF em CSV: extratos bancários e de cartão, faturas, listas de preços e relatórios. Localiza o texto de cada tabela e compara saldos quando possível. Nada é enviado."
-og_title = "Todas as tabelas de PDF para CSV, sem enviar o arquivo"
-og_description = "Muitos conversores pedem o arquivo no servidor deles. Este encontra as tabelas no seu navegador e informa quais comparações de saldo do extrato conferem."
+heading = "PDF&nbsp;para&nbsp;CSV <span class=\"h1-kw\">&mdash; extrair tabelas com texto</span>"
+tagline = "Transforme tabelas detectadas de PDFs com texto em linhas para uma planilha."
+title = "PDF para CSV &mdash; tabelas com texto e extratos, sem upload"
+description = "Extraia tabelas de PDFs com texto para CSV no navegador: extratos, faturas, listas e relatórios. A detecção usa posições de texto legível e pode perder layouts incomuns; páginas digitalizadas precisam de OCR primeiro. Sem upload."
+og_title = "Tabelas PDF para CSV, sem enviar o arquivo"
+og_description = "Extraia tabelas de PDFs com texto para CSV no navegador: extratos, faturas, listas e relatórios. A detecção usa posições de texto legível e pode perder layouts incomuns; páginas digitalizadas precisam de OCR primeiro. Sem upload."
 og_image_alt = "Converta as tabelas de um PDF em CSV no navegador"
 pledge = "O PDF é aberto e lido na memória deste computador por código servido deste endereço. O CSV é gerado da mesma forma. Nada aqui faz envio, e não há servidor do outro lado para recebê-lo. O conteúdo das tabelas, seja número de conta, saldo, beneficiários ou preços de um cliente, fica nesta aba."
 live_hint = "Confira você mesmo: abra as ferramentas de desenvolvedor, acompanhe a aba Rede e converta um PDF. Nenhuma requisição leva uma página, linha, número ou nome de arquivo. Ou desligue a internet e faça a conversão mesmo assim."
 read_first = ", <code>src/layout.js</code> para a divisão da página em regiões mesmo sem linhas de grade, <code>src/tables.js</code> para a identificação das tabelas e colunas, <code>src/rows.js</code> para reunir o texto em linhas, e <code>src/check.js</code> para as contas que comparam os saldos do extrato. Nenhum deles, nem o leitor usado por eles, acessa a rede."
 howto_heading = "Como transformar as tabelas de um PDF em CSV"
-card = "Transforme tabelas de PDF em planilha: extratos bancários e de cartão, faturas, listas de preços e relatórios. Localiza todas as tabelas pela posição do texto, reúne células que ocupam várias linhas e compara os saldos quando os valores estão legíveis."
+card = "Extraia tabelas de PDFs com texto para CSV no navegador: extratos, faturas, listas e relatórios. A detecção usa posições de texto legível e pode perder layouts incomuns; páginas digitalizadas precisam de OCR primeiro. Sem upload."
 
 [words]
 plural = "documentos"
@@ -76,7 +76,7 @@ body = "Um por vez. O navegador lê todas as páginas diretamente do disco antes
 
 [[howto]]
 title = "Confira as tabelas encontradas."
-body = "Cada tabela mantém suas colunas e os cabeçalhos impressos, quando existem. Uma tabela que continua em outra seção ou página com os mesmos cabeçalhos é reunida, sem repetir o cabeçalho no meio. Uma célula que ocupa duas linhas volta a ser uma só. Totais, subtotais e rótulos são preservados como as linhas em que aparecem."
+body = "Revise cada tabela detectada, suas colunas e cabeçalhos recuperados. Continuações entre páginas podem ser unidas e células quebradas reunidas na linha. Antes de salvar CSV, compare com o original para encontrar tabelas omitidas, linhas mescladas e erros de layout."
 
 [[howto]]
 title = "Escolha uma tabela ou leve todas."
@@ -132,8 +132,8 @@ a = "Sim. Abra a página uma vez e depois desligue a internet: ela continua func
 
 [schema]
 category = "BusinessApplication"
-description = "Converta tabelas de PDF em CSV no navegador: extratos bancários e de cartão, faturas, listas de preços e relatórios. Encontra tabelas pela posição do texto e compara saldos quando os valores estão legíveis. Nada é enviado."
-features = ["Encontra as tabelas de um PDF, cada uma com suas colunas e cabeçalhos", "Separa colunas laterais de letras pequenas para não misturá-las à tabela", "Reúne tabelas que continuam em outras seções ou páginas sem repetir cabeçalhos", "Reúne células que ocupam várias linhas", "Compara saldos de extratos e identifica linhas sem conferência", "Lê 1.240,00 e 1,240.00 e interpreta datas ambíguas a partir do documento", "Identifica PDFs digitalizados ou protegidos por senha e indica alternativas", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
+description = "Extraia tabelas de PDFs com texto para CSV no navegador: extratos, faturas, listas e relatórios. A detecção usa posições de texto legível e pode perder layouts incomuns; páginas digitalizadas precisam de OCR primeiro. Sem upload."
+features = ["Detecta tabelas com texto pelas posições recuperáveis", "Separa colunas laterais de letras pequenas para não misturá-las à tabela", "Reúne tabelas que continuam em outras seções ou páginas sem repetir cabeçalhos", "Reúne células que ocupam várias linhas", "Compara saldos de extratos e identifica linhas sem conferência", "Lê 1.240,00 e 1,240.00 e interpreta datas ambíguas a partir do documento", "Identifica PDFs digitalizados ou protegidos por senha e indica alternativas", "Funciona offline; sem envio, sem conta, sem limite de tamanho"]
 
 [picker]
 accept = "application/pdf,.pdf"

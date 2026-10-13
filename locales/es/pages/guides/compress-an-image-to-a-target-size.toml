@@ -8,18 +8,18 @@
 
 nav = "Comprimir una imagen"
 
-title = "Cómo comprimir una imagen a un tamaño de archivo exacto"
+title = "Cómo comprimir una imagen bajo un límite de tamaño"
 description = "Un formulario pide 500 KB y tu foto ocupa 4 MB. Lo que cuesta de verdad un límite de tamaño, qué ajuste hay que mover primero, y por qué un PNG no encoge como encoge un JPEG."
 
-heading = "Cómo comprimir una imagen a un tamaño de archivo exacto"
+heading = "Cómo comprimir una imagen bajo un límite de tamaño"
 lede = """
     Te han dado un número, sea 100&nbsp;KB, 500&nbsp;KB o 2&nbsp;MB, y tu foto no
     se acerca ni de lejos. Aquí va lo que cuesta ese número, en qué conviene
     gastarlo y cómo saber si el resultado sigue estando lo bastante bien para
     mandarlo."""
 
-updated = "26 de agosto de 2026"
+updated = "12 de octubre de 2026"
 
-og_title = "Comprimir una imagen a un tamaño de archivo exacto"
+og_title = "Cómo comprimir una imagen bajo un límite de tamaño"
 og_description = "Lo que cuesta de verdad un límite de tamaño, qué ajuste hay que mover primero, y por qué un PNG no encoge como encoge un JPEG."
-og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
+og_image_alt = "abox.tools - herramientas del navegador para procesar archivos localmente"

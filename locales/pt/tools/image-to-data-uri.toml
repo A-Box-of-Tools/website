@@ -67,13 +67,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Suas imagens não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todos os endereços que esta página pode
-      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
-      arquivos pudessem ser recolhidos, e não existe no código nada que os
-      mandaria mesmo que existisse."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Nada aqui vai buscar coisa alguma."
@@ -264,14 +259,7 @@ a = """
 
 [[faq]]
 q = "Existe limite de tamanho para uma data URI?"
-a = """
-        Nenhum que você vá encontrar em CSS ou numa tag <code>&lt;img&gt;</code>,
-        porque os navegadores modernos não impõem teto prático ali. O que eles
-        limitam é digitar uma data URI na barra de endereços, coisa que a maioria
-        hoje recusa para qualquer coisa não trivial, por motivos de segurança que
-        nada têm a ver com este uso. O limite real é o de cima: muito antes de algo
-        técnico quebrar, a página em que ela está já ficou mais lenta do que ficaria
-        com um arquivo de imagem comum."""
+a = "Sim. Navegadores impõem limites finitos às URLs de dados, diferentes por implementação; o aplicativo ou a política de destino pode impor limites menores. CSS e um <code>&lt;img&gt;</code> podem usá-las, mas a navegação na barra de endereços tem restrições separadas. Use imagens pequenas e teste o destino. <a href=\"https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data\">A MDN documenta os limites</a>."
 
 [[faq]]
 q = "É grátis, e preciso de conta?"

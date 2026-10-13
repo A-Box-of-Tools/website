@@ -1,6 +1,6 @@
 # PDF to CSV
 
-Finds every table in a PDF and turns it into a CSV, in the browser, and checks
+Detects text-based tables in a PDF and turns them into CSV, in the browser, and checks
 a statement's running balance where one is printed.
 
 It was first a bank statement converter at `/bank-statement-to-csv/`, which

@@ -1,24 +1,10 @@
   <section>
     <h2>La réponse courte</h2>
     <p>
-      Une page web vit et meurt d'ordinaire avec sa connexion, parce que
-      chaque visite la va rechercher. Mais une page peut livrer avec elle
-      un petit programme appelé <em>service worker</em>, que le navigateur
-      installe à côté d'elle et met aux commandes de son trafic réseau. À
-      la première visite, ce worker range une copie complète de tout ce
-      qui compose la page &mdash; balisage, styles, scripts &mdash; dans
-      un cache sur votre machine. Dès lors, les requêtes trouvent réponse
-      dans cette copie. Quand le wifi meurt, rien ne change, puisque rien
-      n'était recherché de toute façon.
+      Un service worker peut stocker les ressources nécessaires sur votre appareil et répondre ensuite depuis cette copie. Le site conserve page, scripts et moteurs locaux de chaque outil. Le cache doit être terminé ; le navigateur peut le refuser ou l’effacer et les mises à jour nécessiter une connexion. Vérifiez d’abord l’indicateur hors ligne.
     </p>
     <p>
-      Il n'y a là ni magie ni permission spéciale&nbsp;: c'est de la
-      mécanique standard du navigateur, livrée dans tous les grands
-      navigateurs depuis une dizaine d'années. Ce qui est inhabituel,
-      c'est un site qui s'y appuie aussi fort que celui-ci &mdash; parce
-      que pour un site dont toute la promesse est que vos fichiers ne
-      partent jamais, le hors-ligne n'est pas un confort. C'est la
-      preuve.
+      Un cache prêt permet une opération locale sans connexion. Cela montre où cette opération a eu lieu, sans garantir toutes les fonctions ni les transmissions futures. Un service worker est un mécanisme de cache, pas une frontière de confidentialité en soi.
     </p>
   </section>
 
@@ -37,13 +23,7 @@
       quoi que son code puisse souhaiter.
     </p>
     <p>
-      Aucune politique de confidentialité ne peut offrir cela. Une
-      politique décrit des intentions et peut changer&nbsp;; une page qui
-      fait son travail en mode avion, c'est de la physique. C'est pourquoi
-      chaque outil de ce site fonctionne hors ligne et porte un indicateur
-      en direct qui dit si vous l'êtes en ce moment &mdash; pour que vous
-      puissiez le regarder basculer en coupant la connexion, et dérouler
-      la plus forte vérification qui soit en une dizaine de secondes.
+      Les outils locaux indiquent si la copie est prête et si une connexion existe. Essayez l’opération avec un fichier de votre appareil. Imports d’images, taux en ligne, partage et présentation des caméras ont des étapes réseau expliquées près des commandes.
     </p>
   </section>
 
@@ -90,23 +70,8 @@
       d'être dites aussi nettement que sa force&nbsp;:
     </p>
     <ul>
-      <li>
-        <strong>Elle prouve l'instant, pas l'avenir.</strong> Le travail
-        fait hors ligne est resté sur votre machine, point. Une page
-        pourrait en principe retenir des données et les envoyer au retour
-        de la connexion &mdash; pour les fichiers les plus délicats,
-        fermez donc l'onglet avant de vous reconnecter, ou vérifiez aussi
-        l'autre sens&nbsp;: regardez l'onglet Réseau au moment où la
-        connexion revient.
-      </li>
-      <li>
-        <strong>Elle prouve cette page, pas le site.</strong> Chaque page
-        répond pour elle-même. Celle d'ici qui utilise le réseau le dit
-        sur sa propre page&nbsp;: l'outil de
-        <a href="../../partager-du-texte/">partage de texte</a>, dont tout
-        le métier est de déplacer quelque chose entre deux appareils, et
-        qui explique exactement ce que transporte sa seule connexion.
-      </li>
+      <li><strong>Il prouve l’opération pendant la déconnexion.</strong> Une page pourrait stocker des données pour les envoyer après. Fermer un onglet n’efface pas le stockage persistant. Examinez code, stockage et requêtes après reconnexion pour vérifier le chemin entier.</li>
+      <li><strong>Il concerne une fonction, pas tout le site.</strong> <a href="../../partager-du-texte/">Partager</a> et <a href="../../remote-camera/">Caméra distante</a> nécessitent le rendez-vous public, même en mode local. Les <a href="../../images-en-video/">URL d’images</a> et <a href="../../extraire-recus-factures/">taux en ligne facultatifs</a> nécessitent leurs serveurs ; le traitement local peut fonctionner déconnecté.</li>
       <li>
         <strong>Il ne vous cache pas.</strong> Charger la page a d'emblée
         donné votre adresse au site, comme tout chargement de page sur le
@@ -115,12 +80,6 @@
       </li>
     </ul>
     <p>
-      Ces limites sont la raison pour laquelle le guide sur l'envoi
-      enseigne quatre vérifications plutôt qu'une &mdash; l'onglet Réseau,
-      la politique de sécurité dans la source de la page et le code
-      lisible couvrent ce que le débranchage ne peut pas. Mais comme
-      premier filtre, aucun n'est plus rapide&nbsp;: si un outil ne peut
-      pas faire son travail réseau coupé, vous avez appris où le travail
-      se passe, et aucune lecture supplémentaire n'est requise.
+      Combinez réussite hors ligne, examen des requêtes, politique et code. Une opération terminée déconnectée n’a pas nécessité de traitement serveur à ce moment. Un échec n’explique pas seul le besoin de connexion ; aucun résultat ne remplace les limites documentées.
     </p>
   </section>

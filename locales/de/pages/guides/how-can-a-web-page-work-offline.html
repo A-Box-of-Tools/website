@@ -1,23 +1,10 @@
   <section>
     <h2>Die kurze Antwort</h2>
     <p>
-      Eine Webseite lebt und stirbt normalerweise mit ihrer Verbindung,
-      weil jeder Besuch sie neu holt. Aber eine Seite kann ein kleines
-      Programm mitliefern, einen <em>Service Worker</em>, den der Browser
-      neben der Seite installiert und der über ihren Netzwerkverkehr
-      gebietet. Beim ersten Besuch legt dieser Worker eine vollständige
-      Kopie von allem, woraus die Seite besteht &mdash; Markup, Stile,
-      Skripte &mdash;, in einem Cache auf Ihrer Maschine ab. Von da an
-      werden Anfragen aus dieser Kopie beantwortet. Stirbt das WLAN,
-      ändert sich nichts, weil ohnehin nichts geholt wurde.
+      Ein Service Worker kann benötigte Seitenressourcen auf Ihrem Gerät zwischenspeichern und spätere Anfragen daraus beantworten. Diese Seite speichert je Werkzeug Seite, Skripte und lokale Engines. Der Cache muss zuerst fertig werden; Browser können ihn verweigern oder entfernen und Updates eine Verbindung benötigen. Prüfen Sie vorher die Offline-Anzeige.
     </p>
     <p>
-      Keine Zauberei, keine Sondererlaubnis: Das ist normale
-      Browser-Maschinerie, seit rund einem Jahrzehnt in jedem großen
-      Browser. Ungewöhnlich ist nur, wie sehr sich diese Seite darauf
-      stützt &mdash; denn für eine Seite, deren ganzes Versprechen ist,
-      dass Ihre Dateien sie nie verlassen, ist offline kein
-      Komfortmerkmal. Es ist der Beweis.
+      Ein fertiger Cache ermöglicht lokale Verarbeitung ohne Verbindung. Das zeigt den Ort dieser Operation, garantiert aber nicht jede Funktion oder spätere Übertragung. Ein Service Worker ist Cache-Technik, keine eigene Datenschutzgrenze.
     </p>
   </section>
 
@@ -36,13 +23,7 @@
       immer ihr Code sich wünschte.
     </p>
     <p>
-      Das kann keine Datenschutzerklärung bieten. Eine Erklärung
-      beschreibt Absichten und kann sich ändern; eine Seite, die ihre
-      Arbeit im Flugmodus tut, ist Physik. Darum arbeitet jedes Werkzeug
-      dieser Seite offline und trägt eine Live-Anzeige, die sagt, ob Sie
-      es gerade sind &mdash; damit Sie zusehen können, wie sie beim
-      Umschalten kippt, und die stärkste Prüfung überhaupt in etwa zehn
-      Sekunden laufen lassen können.
+      Lokale Werkzeuge zeigen, ob der Offline-Cache bereit und eine Verbindung verfügbar ist. Probieren Sie die konkrete Operation mit einer Datei vom Gerät. Bildimport, Onlinekurse, Teilen und Kamera-Vermittlung enthalten erklärte Netzwerkschritte.
     </p>
   </section>
 
@@ -87,23 +68,8 @@
       dieselbe Deutlichkeit wie ihre Stärke:
     </p>
     <ul>
-      <li>
-        <strong>Sie beweist den Moment, nicht die Zukunft.</strong>
-        Offline getane Arbeit blieb auf Ihrer Maschine, Punkt. Eine Seite
-        könnte im Prinzip Daten halten und nach Rückkehr der Verbindung
-        senden &mdash; schließen Sie für die heikelsten Dateien also den
-        Tab vor dem Wiederverbinden, oder prüfen Sie auch die andere
-        Richtung: den Netzwerk-Tab beobachten, während die Verbindung
-        zurückkommt.
-      </li>
-      <li>
-        <strong>Sie beweist diese Seite, nicht die Website.</strong> Jede
-        Seite antwortet für sich. Die eine hier, die das Netz benutzt,
-        sagt es auf ihrer eigenen Seite: das Werkzeug zum
-        <a href="../../text-teilen/">Teilen von Text</a>, dessen ganze
-        Aufgabe es ist, etwas zwischen zwei Geräten zu bewegen, und das
-        genau erklärt, was seine eine Verbindung trägt.
-      </li>
+      <li><strong>Es belegt die Operation ohne Verbindung.</strong> Eine Seite könnte Daten speichern und später senden. Ein Tab zu schließen löscht keinen dauerhaften Websitedatenspeicher. Prüfen Sie Quelltext, Speicher und Anfragen nach Wiederverbindung für den gesamten Datenweg.</li>
+      <li><strong>Es gilt für eine Funktion, nicht die ganze Seite.</strong> <a href="../../text-teilen/">Teilen</a> und <a href="../../remote-camera/">Remote-Kamera</a> benötigen die öffentliche Vermittlungsstelle, auch im lokalen Netzwerkmodus. <a href="../../bilder-in-video-umwandeln/">Bild-URL-Import</a> und optionale <a href="../../belege-rechnungen-auslesen/">Onlinekurse</a> brauchen ihre Server; lokale Verarbeitung kann getrennt weiterlaufen.</li>
       <li>
         <strong>Sie versteckt Sie nicht.</strong> Die Seite überhaupt zu
         laden hat der Website Ihre Adresse verraten, wie jeder Seitenabruf
@@ -112,12 +78,6 @@
       </li>
     </ul>
     <p>
-      Diese Grenzen sind der Grund, warum der Upload-Ratgeber vier
-      Prüfungen lehrt statt einer &mdash; der Netzwerk-Tab, die
-      Sicherheitsrichtlinie im Seitenquelltext und der lesbare Code
-      decken ab, was das Steckerziehen nicht kann. Aber als erster Filter
-      ist keiner schneller: Kann ein Werkzeug seine Arbeit ohne Netz nicht
-      tun, haben Sie gelernt, wo die Arbeit passiert, und weiteres Lesen
-      erübrigt sich.
+      Verbinden Sie Offline-Erfolg mit Anfrage-, Richtlinien- und Quelltextprüfung. Eine fertiggestellte Operation ohne Verbindung brauchte in diesem Moment keine Serververarbeitung. Ein Fehlschlag erklärt nicht allein den Verbindungsbedarf. Beide Ergebnisse ersetzen die dokumentierten Funktionsgrenzen nicht.
     </p>
   </section>

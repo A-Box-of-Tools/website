@@ -65,13 +65,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Lo que escribes no tiene adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger una contraseña de wifi, ni una línea de código que la
-      mandara si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada le pide nada a la red."
@@ -297,15 +292,7 @@ a = """
 
 [[faq]]
 q = "¿Puedo poner un logotipo en el centro de un código QR?"
-a = """
-        Aquí no, pero merece la pena saber por qué funciona en otros sitios: lo
-        que lo hace posible es la corrección de errores. En el nivel H se puede
-        destruir alrededor del 30&nbsp;% de los módulos y el código se sigue
-        leyendo, así que un logotipo que cubra bastante menos que eso en el
-        centro, donde no hay ningún patrón de localización, es daño reparable.
-        Pasa el código por tu editor de imágenes en el nivel H, mantén el logotipo
-        por debajo de una quinta parte del área más o menos, y pruébalo con un
-        móvil de verdad en vez de fiarte."""
+a = "Un logo pequeño puede funcionar, pero ningún porcentaje de superficie es seguro por definición. DENSO refiere la recuperación de aproximadamente el 30 % en H al total de palabras de código, no a cuadrados arbitrarios. Deja libres los patrones de posición y alineación, usa H y prueba el código impreso con varios móviles. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO explica la corrección de errores</a>."
 
 [[faq]]
 q = "¿Por qué el SVG es mejor que el PNG?"

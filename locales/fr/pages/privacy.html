@@ -1,32 +1,24 @@
   <section>
     <h2>Vos fichiers</h2>
     <p>
-      Chaque outil de ce site fait son travail à l'intérieur de votre propre
-      navigateur, sur votre propre matériel. Quand vous choisissez un fichier, il
-      est lu par la page que vous avez déjà ouverte. Il ne nous est pas envoyé,
-      faute de serveur à nous vers lequel l'envoyer&nbsp;: ce site est un
-      ensemble de fichiers statiques, sans backend, sans base de données et sans
-      stockage.
+      Les fichiers choisis sont lus, modifiés et écrits dans le navigateur de votre appareil. abox.tools n’a ni point d’envoi pour traiter vos fichiers ni base de données les conservant. Les téléchargements sont préparés localement. Partager, voir une caméra distante ou transmettre un rapport à une autre application sont des transferts volontaires, décrits ci-dessous.
     </p>
     <p>
-      Cela veut dire que nous ne recevons, ne voyons, ne stockons, ne
-      journalisons et ne traitons jamais&nbsp;:
+      Le traitement local ne nous transmet pas :
     </p>
     <ul>
-      <li>vos fichiers, en tout ou en partie</li>
-      <li>leurs vignettes ou leurs aperçus</li>
-      <li>leurs noms, tailles, dimensions ou formats</li>
-      <li>combien vous en avez choisi, ni ce que vous en avez fait</li>
-      <li>quoi que ce soit qui en est lu, données EXIF et GPS comprises</li>
+      <li>
+        vos fichiers ni leurs aperçus
+      </li>
+      <li>
+        leurs noms, tailles, dimensions ou formats
+      </li>
+      <li>
+        leur contenu, y compris EXIF, GPS et texte reconnu
+      </li>
     </ul>
     <p>
-      Ce n'est pas une promesse sur nos intentions. Chaque page porte une
-      <code>Content-Security-Policy</code> qui énumère toutes les adresses que la
-      page a le droit de contacter, et c'est le navigateur qui l'applique. Aucune
-      de ces adresses ne nous appartient. Vous pouvez lire la politique en tête
-      du code source de n'importe quelle page, ou ouvrir l'onglet
-      &laquo;&nbsp;Réseau&nbsp;&raquo; de votre navigateur et regarder&nbsp;:
-      aucune requête ne transporte votre fichier.
+      Chaque page porte une <code>Content-Security-Policy</code> limitant les ressources et destinations. Certains outils ajoutent le rendez-vous ou l’API de change facultative. La politique n’inspecte pas les données transmises à un hôte autorisé et <code>connect-src</code> ne décrit pas le trafic WebRTC entre pairs. Lisez-la avec le code et observez la fonction utilisée ; la liste d’hôtes ne prouve pas chaque contenu envoyé.
     </p>
     <p>
       Les fichiers que vous produisez avec un outil sont remis au mécanisme de
@@ -36,21 +28,15 @@
   </section>
 
   <section>
-    <h2>La seule exception, et où elle s'applique</h2>
+    <h2>Les fonctions qui utilisent volontairement une connexion</h2>
     <p>
-      L'outil <a href="../images-en-video/">Images en vidéo</a> a une fonction
-      &laquo;&nbsp;ajouter depuis une adresse web&nbsp;&raquo;. Si vous y collez
-      une adresse, votre navigateur récupère cette image sur le serveur que vous
-      avez nommé, et <strong>ce serveur voit votre adresse IP</strong> ainsi que
-      le fichier que vous avez demandé. C'est incontournable, et c'est la nature
-      même de la fonction.
+      <a href="../images-en-video/">Images en vidéo</a> peut récupérer une image à l’adresse fournie. Le serveur reçoit votre IP et l’URL demandée, paramètres compris. L’image est placée en mémoire locale puis réencodée pour le traitement. Cette requête n’envoie pas de fichiers choisis sur votre appareil.
     </p>
     <p>
-      Cela n'arrive jamais que pour des adresses que vous tapez vous-même, c'est
-      construit de sorte que les images puissent entrer mais que les données ne
-      puissent pas sortir, et la page de cet outil l'explique plus en détail.
-      Aucun autre outil de ce site ne peut émettre une requête sortante avec quoi
-      que ce soit de vous dedans.
+      L’<a href="../extraire-recus-factures/">extracteur de reçus et factures</a> lit les photos et reconnaît le texte localement. Son bouton facultatif de taux historique demande une paire de devises et la date choisie à <a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer">Frankfurter</a>. La date peut être celle du reçu. Le prestataire voit votre IP et la requête ; identifiants et référent sont omis, et elle ne contient ni photo, nom, commerçant, montant ni adresse de messagerie. Les taux manuels ne font aucune requête.
+    </p>
+    <p>
+      Les boutons de messagerie et de partage préparent rapports et copies JPEG localement, puis téléchargent un fichier de message ou les remettent à l’application choisie. Cette page n’envoie pas de courriel. Application, prestataire et destinataire choisis gèrent la suite selon leurs politiques. <a href="../partager-du-texte/">Partager du texte et des fichiers</a> et <a href="../remote-camera/">Caméra distante</a> envoient volontairement du contenu à un autre navigateur ; les métadonnées sont décrites ci-dessous.
     </p>
   </section>
 
@@ -89,11 +75,7 @@
       et de votre navigateur, et le site qui vous a envoyé ici.
     </p>
     <p>
-      Il est configuré pour ne rien faire d'autre, et cette configuration est un
-      fichier que vous pouvez lire&nbsp;: <code>analytics.js</code>, à côté de
-      chaque page, met en place un compteur de pages vues et ne contient aucun
-      événement personnalisé. Rien sur ce site ne lui passe un fichier, un nom de
-      fichier, une dimension ou un nombre, aucun code d'ici ne pouvant le faire.
+      <code>analytics.js</code> configure les vues de pages. Après votre réponse facultative, <code>feedback.js</code> envoie aussi un événement <code>tool_feedback</code> : identifiant de l’outil, réponse fixe positive ou négative et motif fixe. Aucun texte libre, fichier, nom, taille, dimension, nombre, format ou contenu n’y figure. Nous pouvons consulter des rapports Analytics agrégés. Le blocage laisse le traitement local disponible.
     </p>
 
     <h3>Buy Me a Coffee &mdash; le bouton de don</h3>
@@ -118,33 +100,21 @@
       accès aux journaux par visiteur d'aucun des deux.
     </p>
 
-    <h3>L'entremetteur de l'outil de partage</h3>
+    <h3>Caméra distante et présentation des navigateurs</h3>
     <p>
-      <a href="../partager-du-texte/">Partager du texte et des fichiers</a>
-      fait passer le texte et les fichiers directement entre les navigateurs.
-      Sa page d’accueil se connecte automatiquement à notre entremetteur pour
-      lister les noms de lien locaux rendus visibles ; commencer un partage
-      ouvre une autre connexion pour présenter les navigateurs. La liste
-      regroupe les noms selon l’adresse IPv4 publique ou le sous-réseau IPv6 et l’origine de la page,
-      un indice de passerelle commune plutôt qu’une preuve de réseau physique
-      commun. Un VPN partagé ou une adresse mutualisée par un fournisseur peut
-      inclure d’autres réseaux. Des connexions IPv4 et IPv6 ou des routes
-      différentes peuvent laisser des navigateurs voisins hors de la liste. Le serveur ne reçoit jamais le texte ni les
-      fichiers partagés, qui passent par une connexion chiffrée entre les
-      navigateurs. Les noms de l’annuaire ne vivent que dans les connexions
-      ouvertes et ne sont pas enregistrés durablement. Le serveur voit les
-      noms, les heures de connexion et les adresses IP ; Cloudflare conserve
-      toujours les journaux de connexion pendant sept jours. Ce sont toujours
-      les seuls journaux par visiteur de ce site que nous pouvons lire. La page
-      de l’outil explique l’ensemble, et tout le code du serveur est dans le dépôt.
+      <a href="../remote-camera/">Caméra distante</a> ouvre une connexion WebSocket de découverte au chargement de sa page. Démarrer, Connecter ou sélectionner une caméra en ligne ajoute une connexion à notre service de mise en relation pour la salle concernée. Sélectionner un nom dans la liste demande immédiatement une connexion et échange les adresses réseau. Lorsqu’un lien de visionnage est ouvert, la page attend toujours un clic sur Connecter. L’approbation des spectateurs par l’hôte est activée par défaut et contrôle la transmission vidéo, pas l’échange des adresses réseau. Le rendez-vous voit codes, adresses, horaires et messages de configuration, jamais vidéo ni notes. La vidéo utilise une connexion directe chiffrée sans STUN ni TURN configuré, sans microphone ni enregistrement. Internet reste nécessaire pour la présentation. VPN et règles du système peuvent influencer le routage ; le mode local ne prouve pas une frontière physique. La page décrit ces limites et l’accès des scripts à l’adresse complète du lien.
+    </p>
+
+    <h3>Partager du texte et des fichiers et le rendez-vous</h3>
+    <p>
+      <a href="../partager-du-texte/">Partager du texte et des fichiers</a> ouvre une connexion de découverte à l’accueil et une autre au partage. Les noms sont regroupés par IPv4 publique ou sous-réseau IPv6 et origine de page ; c’est une aide à la découverte, pas une preuve du même réseau physique. Le rendez-vous voit noms, IP, horaires et négociation, jamais texte ni fichiers partagés. Les noms publiés vivent sur les connexions ouvertes sans stockage durable. Le mode ordinaire utilise les STUN publics de Google et Cloudflare. Un lecteur peut choisir de réessayer par le relais TURN Cloudflare, qui transmet le trafic chiffré sans ses clés. Le mode local omet STUN et TURN mais nécessite toujours le rendez-vous public. Cloudflare conserve sept jours les métadonnées de connexion du partage et de la caméra ; nous pouvons lire ces journaux par visiteur. Les copies déjà faites par le destinataire restent les siennes après fermeture de l’onglet source.
     </p>
   </section>
 
   <section>
     <h2>Cookies</h2>
     <p>
-      Nous ne posons aucun cookie à nous. Nous n'avons ni connexion ni session,
-      et il n'y a qu'une seule préférence que nous retenions.
+      Nous ne définissons aucun cookie de connexion ou session. Les scripts Google peuvent utiliser les cookies et identifiants décrits. Le site utilise également le stockage local pour les préférences et le travail temporaire.
     </p>
     <p>
       <strong>La langue que vous choisissez.</strong> Si vous prenez une langue
@@ -158,10 +128,10 @@
       appariée sur le moment, puis oubliée.
     </p>
     <p>
-      Tout cookie ou identifiant similaire que vous pourriez trouver ici
-      appartient à Google et est posé par les scripts publicitaires et
-      d'analytique décrits ci-dessus. Ils servent à mesurer les visites, et à
-      choisir et plafonner les annonces.
+      <strong>Autres données locales.</strong> Les avis conservent l’heure d’une réponse ou fermeture pour ne pas redemander. Les outils peuvent garder des réglages ou un brouillon de partage facultatif. Changer de langue ou poursuivre volontairement dans un autre outil peut stocker temporairement fichiers et réglages dans IndexedDB. Ce ne sont pas des cookies et ils ne nous sont pas envoyés ; effacer les données du site les supprime. L’outil concerné explique les brouillons persistants.
+    </p>
+    <p>
+      Les cookies et identifiants Google mesurent les visites, choisissent les publicités et limitent leur répétition. Ils sont distincts des données locales du site décrites ci-dessus.
     </p>
     <h3>Comment tout désactiver</h3>
     <ul>
@@ -182,34 +152,24 @@
       </li>
     </ul>
     <p>
-      Tout bloquer nous convient très bien. <strong>Chaque outil de ce site
-      fonctionne avec les scripts bloqués, et fonctionne avec le réseau
-      entièrement débranché.</strong> Rien ici n'est retenu derrière une annonce.
+      Bloquer publicité, Analytics et don laisse le traitement local disponible. Avec le cache hors ligne prêt, il fonctionne déconnecté. Images web, taux en ligne, présentation entre navigateurs et envoi par une autre application nécessitent leurs connexions respectives. Aucune fonction de traitement n’est conditionnée à une publicité.
     </p>
   </section>
 
   <section>
     <h2>Vos droits sur les données</h2>
     <p>
-      Nous ne détenons aucune donnée personnelle sur vous&nbsp;: il n'y a donc
-      rien que nous puissions vous montrer, corriger, exporter ou supprimer, et
-      une demande qui nous serait adressée reviendrait honnêtement vide.
+      Nous ne conservons pas vos fichiers traités. Les rapports Analytics et métadonnées de connexion sont des données distinctes. Vos questions ou demandes sur leur traitement peuvent aller à <a href="mailto:hi@abox.tools">hi@abox.tools</a> ; indiquez page et date approximative sans joindre de fichier privé.
     </p>
     <p>
-      Les données décrites ci-dessus sont détenues par Google, qui en est son
-      propre responsable de traitement. Les demandes à leur sujet doivent lui
-      être adressées, via
-      <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">votre compte Google</a>
-      ou ses contacts en matière de confidentialité.
+      Pour les données de votre compte Google, utilisez <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">les contrôles du compte</a> ou les contacts de confidentialité Google. Les prestataires facultatifs de change, don et messagerie gèrent leurs propres services et demandes.
     </p>
   </section>
 
   <section>
     <h2>Les enfants</h2>
     <p>
-      Ce site ne s'adresse pas aux enfants et ne demande son âge à personne,
-      parce qu'il ne demande rien à personne. Nous ne collectons sciemment aucune
-      donnée personnelle, de qui que ce soit, à tout âge.
+      Le site ne s’adresse pas aux enfants et ne demande ni âge ni compte utilisateur. Les informations automatiques de pages et de connexions décrites concernent les visiteurs de tout âge.
     </p>
   </section>
 

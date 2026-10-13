@@ -32,12 +32,12 @@
 
 name = "PDF-Entsperrer"
 heading = "PDF&nbsp;entsperren <span class=\"h1-kw\">&mdash; Passwort und Einschränkungen abnehmen</span>"
-tagline = "Die meisten gesperrten PDFs brauchen gar kein Passwort. Dieses Werkzeug sagt Ihnen, welche Sorte Sie haben, bevor es sie anrührt."
+tagline = "Berechtigungen und Öffnungspasswörter sind verschieden. Diese Seite zeigt, was Ihr PDF verwendet."
 
 title = "PDF entsperren &mdash; Passwort &amp; Einschränkungen entfernen, kostenlos, ohne Upload"
-description = "Das Passwort und die Einschränkungen für Drucken, Kopieren und Bearbeiten im Browser von einem PDF abnehmen. Die meisten geschützten Dateien brauchen gar kein Passwort, und dieses Werkzeug sagt Ihnen, welche Sorte Sie haben. Es wird nichts hochgeladen, und ein Passwort wird nie erraten."
+description = "PDF-Berechtigungen lokal entfernen oder ein von Ihnen angegebenes Öffnungspasswort abnehmen. Die Seite erkennt den Schutz, bevor sie nach einem Passwort fragt. Kein Upload, kein Erraten von Passwörtern."
 og_title = "Ein PDF entsperren, ohne es irgendwohin hochzuladen"
-og_description = "Die meisten &bdquo;geschützten&ldquo; PDFs öffnen sich für jeden und bitten Leseprogramme nur, sie nicht zu drucken oder zu kopieren. Dieses Werkzeug entfernt das in Ihrem Browser und sagt Ihnen, was der Schutz tatsächlich wert war."
+og_description = "PDF-Berechtigungen lokal entfernen oder ein von Ihnen angegebenes Öffnungspasswort abnehmen. Die Seite erkennt den Schutz, bevor sie nach einem Passwort fragt. Kein Upload, kein Erraten von Passwörtern."
 og_image_alt = "Ein PDF im Browser entsperren, ohne es hochzuladen"
 
 pledge = """
@@ -63,12 +63,7 @@ read_first = """
 
 howto_heading = "So entfernen Sie ein Passwort oder die Einschränkungen von einem PDF"
 
-card = """
-            Das Passwort und die Einschränkungen für Drucken, Kopieren und
-            Bearbeiten von einem PDF abnehmen. Die meisten geschützten Dateien
-            öffnen sich ohnehin für jeden und brauchen gar kein Passwort. Dieses
-            Werkzeug sagt, welche Sorte Sie haben und was der Schutz wert war,
-            und entfernt ihn hier."""
+card = "PDF-Berechtigungen lokal entfernen oder ein von Ihnen angegebenes Öffnungspasswort abnehmen. Die Seite erkennt den Schutz, bevor sie nach einem Passwort fragt. Kein Upload, kein Erraten von Passwörtern."
 
 [words]
 plural = "Dokumente"
@@ -92,7 +87,7 @@ text = "Quelloffen"
 text = "Dateien bleiben auf Ihrem Gerät"
 
 [[privacy]]
-title = "Die meisten geschützten PDFs sind gar nicht gesperrt, und diese Seite sagt das, bevor sie irgendetwas tut."
+title = "Die Seite unterscheidet Berechtigungen vom Öffnungspasswort."
 body = """
 
       Ein PDF kann zwei recht verschiedene Dinge tragen. Ein
@@ -232,11 +227,7 @@ body = """
 
 [[howto]]
 title = "Wählen Sie das PDF."
-body = """
- Ein Dokument nach dem anderen. Der Browser
-      liest es direkt von Ihrer Festplatte, und als Erstes wird es mit einem
-      leeren Passwort probiert, denn das öffnet die Mehrheit der geschützten
-      Dateien, weil die Mehrheit von ihnen nie verschlossen war."""
+body = "Wählen Sie ein Dokument. Der Browser liest es von Ihrer Festplatte und versucht zuerst ein leeres Passwort. Das öffnet Dateien, deren Schutz nur Berechtigungen einschränkt und kein Lesepasswort verlangt."
 
 [[howto]]
 title = "Lesen Sie, was die Seite gefunden hat."
@@ -273,40 +264,15 @@ body = """
 
 [[faq]]
 q = "Brauche ich das Passwort?"
-a = """
-        Meistens nicht, und die Seite sagt es Ihnen innerhalb einer Sekunde
-        nach der Auswahl der Datei. Die meisten &bdquo;geschützten&ldquo;
-        PDFs, Kontoauszüge, Gehaltsabrechnungen, exportierte Berichte, alles
-        aus dem Kästchen &bdquo;Bearbeitung einschränken&ldquo; einer
-        Office-Suite, öffnen sich für jeden und tragen bloß eine Liste von
-        Dingen, um deren Unterlassung Leseprogramme gebeten werden. Die gehen
-        mit einem Klick und ohne Passwort ab. Ein Dokument, das Sie beim
-        Öffnen tatsächlich nach einem Passwort fragt, ist die andere Sorte,
-        und für die brauchen Sie das Passwort."""
+a = "Das hängt vom Schutz ab. Bei einem PDF, das ohne Passwort öffnet, aber Drucken oder Kopieren einschränkt, lassen sich diese Berechtigungen hier ohne Passwort entfernen. Wird ein Öffnungspasswort verlangt, geben Sie das Benutzer- oder Eigentümerpasswort an. Die Seite versucht zuerst ein leeres Passwort und erklärt den Fall."
 
 [[faq]]
 q = "Kann es ein PDF öffnen, dessen Passwort ich nicht habe?"
-a = """
-        Nein, und es versucht es nicht. Es gibt in diesem Werkzeug kein
-        Wörterbuch, keine Wortliste und nirgends eine Brute-Force-Suche; Sie
-        können <code>src/shared/pdf-crypt.js</code> lesen und sehen, dass darin
-        keine Schleife ist. Bei den ältesten Dokumenten, mit 40-Bit-Schlüsseln,
-        würde eine Suche tatsächlich funktionieren, und genau deshalb steht
-        die Weigerung geschrieben, statt dass man sie annehmen muss. Wenn Sie
-        das Passwort zu Ihrem eigenen Dokument verloren haben, kann diese Seite
-        Ihnen nicht helfen, und keine ehrliche kann es."""
+a = "Nein. Dieses Werkzeug errät keine Passwörter und sucht keine Schlüssel. <code>src/shared/pdf-crypt.js</code> zeigt die Verarbeitung angegebener Passwörter. Andere Wiederherstellungsprogramme können schwache Passwörter erraten oder alte Verschlüsselung angreifen, ohne Erfolgsgarantie; diese Seite tut beides nicht. Fragen Sie den Absender nach einem funktionierenden Passwort oder einer zugänglichen Kopie."
 
 [[faq]]
 q = "Was ist der Unterschied zwischen den beiden Passwörtern?"
-a = """
-        Ein PDF hat Platz für zwei. Das <em>Benutzerpasswort</em> ist das,
-        nach dem ein Leseprogramm Sie fragt; ohne es öffnet sich die Datei
-        nicht. Das <em>Besitzerpasswort</em> hebt die Einschränkungen auf,
-        also Drucken, Kopieren, Bearbeiten, und sehr oft hat ein Dokument ein
-        Besitzerpasswort und gar kein Benutzerpasswort, weshalb es sich für
-        jeden öffnet und sich trotzdem nicht drucken lässt. Dieses Werkzeug
-        nimmt beide an und sagt Ihnen, mit welchem von beiden das Dokument es
-        tatsächlich hineingelassen hat."""
+a = "Ein PDF kann zwei Passwörter haben. Das <em>Benutzer</em>passwort öffnet es; das <em>Eigentümer</em>passwort gewährt alle Berechtigungen. Bei leerem Benutzerpasswort und gesetztem Eigentümerpasswort öffnet es frei, während Leser Druck- oder Kopiereinschränkungen beachten. Dieses Werkzeug akzeptiert jedes der angegebenen Passwörter und erklärt den Befund."
 
 [[faq]]
 q = "Ist es legal, die Einschränkungen zu entfernen?"

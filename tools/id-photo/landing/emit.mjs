@@ -9,7 +9,7 @@
  * Somebody searching "Canada passport photo size" wants Canada's numbers, the
  * name of whoever published them and the day they were last read - and the
  * tool's own page cannot answer that, because it is one address holding
- * sixty-seven rules behind a menu. So each rule with figures of its own gets an
+ * many rules behind a menu. So each rule with figures of its own gets an
  * address of its own: /id-photo/ca-passport/. The build writes those pages, the
  * build is Python, and the rulebook is src/specs.js. This file is how the one
  * reads the other without the numbers being typed out a second time.
@@ -70,6 +70,7 @@ export function pages() {
     facts: specFacts(spec, asked),
     notes: spec.notes,
     source: sourceLine(spec, asked),
+    source_url: spec.source.url,
     authority: spec.source.authority,
     checked: spec.source.checked,
   }));

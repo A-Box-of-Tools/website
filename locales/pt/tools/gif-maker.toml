@@ -60,14 +60,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu aparelho"
 
 [[privacy]]
-title = "As suas imagens não têm para onde ir."
-body = """
- A
-      Content-Security-Policy lista todo endereço que esta página pode contatar, e
-      nenhum deles é nosso. Aqui não existe um ponto de coleta onde os seus arquivos
-      pudessem parar, nem nada no código que os mandasse para lá se existisse. Isto
-      já disse <code>connect-src 'none'</code>, que não abria exceção; a publicidade
-      custou isso, e dizer isso faz parte do acordo."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "O codificador são quatro arquivos deste repositório."

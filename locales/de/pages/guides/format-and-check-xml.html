@@ -1,0 +1,27 @@
+  <section>
+    <h2>XML einfügen oder importieren</h2>
+    <p>Öffnen Sie den Formatierer und fügen Sie XML ein oder wählen Sie eine Textdatei. Wählen Sie zwei Leerzeichen, vier oder einen Tab zur Einrückung oder die minimierte Ausgabe. Kopieren oder laden Sie das gültige Ergebnis herunter. Beim Tippen wird die alte Ausgabe ungültig, während die neue Eingabe geprüft wird.</p>
+    <p>Der Parser läuft lokal. Er prüft Syntax, validiert aber weder XSD noch DTD, beweist keine korrekte Konfiguration für Ihre Anwendung und ruft keine im Text genannte URL auf.</p>
+    <figure class="shot">
+      <img src="/screens/format-and-check-xml/mapping.webp" alt="XML-Eingabe und JSON-Abbildung mit Attribut, Zeichenkettenwert und wiederholten Elementen.">
+      <figcaption>Das Attribut wird zu @region, der Port bleibt eine Zeichenkette und wiederholte feature-Elemente werden zu einem Array.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Einem Parsefehler folgen</h2>
+    <p>Ein offenes Tag, ein falsches Endtag oder eine ungültige Zeichenreferenz stoppt Formatierung und Umwandlung. Zur Fehlerstelle setzt den Cursor an die gemeldete Position. Es braucht ein äußeres Element; zwei Wurzeln oder Text außerhalb der Wurzel werden abgelehnt.</p>
+    <pre><code>&lt;settings&gt;
+  &lt;port&gt;8080&lt;/port&gt;
+&lt;/settings&gt;</code></pre>
+    <p>DOCTYPE-Text bleibt wörtlich erhalten. Externe Entitäten werden nicht aufgelöst; eine genannte Datei oder Website in einer Deklaration wird nicht geladen.</p>
+  </section>
+  <section>
+    <h2>Leerraum vor dem Einrücken verstehen</h2>
+    <p>Textwerte, CDATA und Elemente mit gemischtem Inhalt behalten ihren Text. Leerraum nur zwischen Kindelementen gilt als Layout, sofern <code>xml:space="preserve"</code> nicht wirkt. Das erleichtert lesbare Konfigurationen; behandelt Ihre Anwendung die Leerzeichen als Daten, prüfen Sie das Ergebnis vor weiterer Nutzung.</p>
+  </section>
+  <section>
+    <h2>Was XML zu JSON verändert</h2>
+    <p>Wählen Sie die Umwandlungsrichtung, bevor Sie das Ergebnis lesen. Attribute werden Schlüssel mit <code>@</code>, wiederholte Elemente Arrays und Text neben anderen Inhalten verwendet <code>#text</code>. XML-Werte bleiben Zeichenketten: <code>&lt;port&gt;8080&lt;/port&gt;</code> wird nicht automatisch zur Zahl.</p>
+    <p>Kommentare und die verflochtene Reihenfolge von Text und Kindelementen gehen bei der JSON-Abbildung verloren. Zurückumwandeln verspricht deshalb nicht das Originaldokument. Speichern Sie eine Originalkopie und vergleichen Sie die von Ihrer Anwendung verwendeten Felder.</p>
+    <p>Für JSON-Formatierung ohne diese Abbildung nutzen Sie den <a href="../../json-formatieren/">JSON-Formatierer</a>.</p>
+  </section>

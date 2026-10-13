@@ -23,17 +23,11 @@
   </section>
 
   <section>
-    <h2>Diminuir é seguro. Aumentar não é.</h2>
+    <h2>O que se perde ao reduzir e ampliar</h2>
     <p>
       Não são duas direções da mesma operação, e vale deixar claro por quê.
     </p>
-    <p>
-      <strong>Diminuir uma imagem</strong> joga informação fora, e no único
-      sentido benigno: entram mais pixels do que saem, então cada pixel do
-      resultado é a média de detalhe que foi medido de verdade. Uma cópia menor
-      bem redimensionada costuma ficar <em>melhor</em> do que o original visto
-      naquele tamanho, porque a média remove ruído. Nada é inventado.
-    </p>
+    <p><strong>Reduzir uma imagem</strong> remove informação. A média dos pixels pode deixar a foto mais limpa no tamanho previsto, mas texto pequeno, linhas finas e texturas podem desaparecer. Compare no tamanho de uso; menos pixels não garantem manter todos os detalhes visíveis.</p>
     <p>
       <strong>Aumentar uma imagem</strong> obriga a inventar. O detalhe não está
       faltando no arquivo, ele nunca foi fotografado. Tudo o que qualquer
@@ -169,11 +163,7 @@
 
   <section>
     <h2>O que a recodificação custa, e como manter em uma só</h2>
-    <p>
-      Redimensionar um JPEG ou um WebP significa decodificá-lo, escalar os
-      pixels e codificá-los de novo, e essa última etapa é com perdas. Quem custa
-      qualidade a você não é a escala em si, é a recodificação.
-    </p>
+    <p>Redimensionar JPEG ou WebP exige decodificar, reamostrar os pixels e codificar novamente. Reduzir pode perder detalhes na reamostragem; JPEG ou WebP com perdas podem acrescentar artefatos depois. São custos distintos: confira dimensões e resultado codificado.</p>
     <p>
       Daí decorrem duas coisas. A primeira: o ajuste de qualidade na saída
       importa, e algo entre 80 e 85 é invisível numa fotografia e

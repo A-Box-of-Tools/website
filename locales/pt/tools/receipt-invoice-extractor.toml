@@ -7,12 +7,12 @@
 
 name = "Extrator de recibos e faturas"
 heading = "Extrator&nbsp;de&nbsp;recibos&nbsp;e&nbsp;faturas <span class=\"h1-kw\">&mdash; das fotos a um relatório que você confere</span>"
-tagline = "Leia as fotos, confira os campos e os recortes, depois envie as imagens comprimidas por e-mail com cada valor e os totais."
+tagline = "Leia fotos, revise campos e recortes e prepare anexos comprimidos e totais para seu aplicativo de e-mail."
 
 title = "Extrator de recibos e faturas &mdash; Fotos para CSV e e-mail, sem envio para processamento"
-description = "Leia fotos de recibos e faturas neste dispositivo, confira os recortes e os valores e converta cada documento para uma única moeda no e-mail, com taxas manuais ou consultas históricas online. Envie imagens comprimidas, valores individuais e um total geral por e-mail."
+description = "Leia recibos e faturas localmente, revise valores e converta moedas com taxas manuais ou históricas opcionais. Prepare anexos e totais para compartilhar ou um arquivo de e-mail; você revisa e envia."
 og_title = "Das fotos de recibos e faturas a um relatório para enviar por e-mail"
-og_description = "Leia as fotos neste dispositivo, confira cada documento, escolha taxas de câmbio manuais ou históricas e envie imagens recortadas por e-mail com os valores convertidos de cada documento, a quantidade de documentos e um total geral."
+og_description = "Leia recibos e faturas localmente, revise valores e converta moedas com taxas manuais ou históricas opcionais. Prepare anexos e totais para compartilhar ou um arquivo de e-mail; você revisa e envia."
 og_image_alt = "Extrator de recibos e faturas — leia fotos neste dispositivo e prepare um relatório por e-mail"
 
 pledge_line = "Suas fotos são <strong>lidas neste dispositivo</strong>. As taxas online são opcionais. Você escolhe o que enviar por e-mail ou compartilhar."

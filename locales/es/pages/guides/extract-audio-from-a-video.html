@@ -1,0 +1,24 @@
+  <section>
+    <h2>Elige el vídeo y escucha el resultado</h2>
+    <p>Abre el extractor y elige o arrastra el vídeo. El navegador decodifica su audio y crea un WAV automáticamente. Escucha el resultado antes de descargar. Un vídeo silencioso no tiene pista que extraer y un códec no admitido por el navegador necesita otro decodificador.</p>
+    <p>La conversión ocurre en tu dispositivo, sin subir el archivo para decodificarlo. Los vídeos grandes necesitan memoria para la entrada, las muestras decodificadas y la salida; procesar localmente no hace ilimitada la memoria.</p>
+    <figure class="shot">
+      <img src="/screens/extract-audio-from-a-video/output.webp" alt="Profundidad WAV y opciones de canales junto al reproductor del audio extraído.">
+      <figcaption>El reproductor usa el WAV disponible para descargar. Cambiar profundidad o canales crea un resultado nuevo.</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h2>Elige 16 bits o Float32</h2>
+    <p>PCM de 16 bits es la opción predeterminada para una reproducción ampliamente compatible. Al escribirlo se redondean y limitan las muestras decodificadas. Float32 conserva sus valores si los canales no cambian, incluso por encima de la escala completa, y sirve para editar después. No restaura detalles ya perdidos por compresión.</p>
+    <p>WAV guarda audio sin comprimir y puede ser mucho mayor que la pista comprimida del vídeo. El extractor no produce MP3 porque no incluye un codificador MP3. Otra aplicación con codificador local puede crear MP3 sin subir el archivo.</p>
+  </section>
+  <section>
+    <h2>Conserva los canales o mezcla a mono</h2>
+    <p>Conserva los canales originales para mantener su separación. Mono los promedia en uno: puede reducir el tamaño, pero elimina la posición estéreo y puede cancelar sonidos cuando los canales se oponen. Escucha tras cambiar esta opción.</p>
+    <p>La herramienta lee la frecuencia de muestreo original cuando su cabecera la expone y decodifica a esa frecuencia. Si debe asumir una, los datos de salida indican cuál. Compruébalos si la duración o la frecuencia importan para la siguiente aplicación.</p>
+  </section>
+  <section>
+    <h2>Guarda, cancela o vuelve a intentarlo</h2>
+    <p>Cambiar profundidad o canales reemplaza automáticamente el resultado anterior. Descarga la versión escuchada. Cancelar retira el trabajo actual; una decodificación en curso puede terminar internamente, pero su resultado tardío no reemplaza una elección nueva. Si falla la escritura, usa Crear WAV de nuevo con la fuente actual.</p>
+    <p>Para acortar la pista, sigue en el <a href="../../cortar-audio/">recortador de audio</a>. Para fundidos, ganancia o invertirla, usa el <a href="../../editar-audio/">editor de audio</a>.</p>
+  </section>

@@ -66,12 +66,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Tus documentos no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es nuestra. Aquí no hay ningún destino donde recoger
-      tus fotos, ni código que las enviaría si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "No hay modelo, así que no hay nada que descargar ni nada que preguntar."

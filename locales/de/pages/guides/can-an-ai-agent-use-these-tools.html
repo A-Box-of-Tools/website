@@ -1,22 +1,10 @@
   <section>
     <h2>Die kurze Antwort</h2>
     <p>
-      Ja. Jedes Werkzeug hier ist eine gewöhnliche Webseite: eine
-      Dateiauswahl, ein paar beschriftete Bedienelemente, ein
-      Download-Knopf. Es gibt kein Konto, in das man sich einloggen müsste,
-      kein Captcha, keinen Schritt, der eigens einen Menschen verlangt. Ein
-      KI-Agent mit einem Browser steuert diese Seiten so, wie er jede andere
-      steuert &mdash; und einiges, was diese Website ohnehin für Menschen
-      tut, kommt Agenten nebenbei zugute; der letzte Abschnitt zählt es auf.
+      Ein Agent mit Browsersteuerung kann diese normalen Seiten bedienen: beschriftete Controls, Dateiauswahl und Downloads, ohne Seitenkonto. Seine Umgebung muss Dateizugriff, Browser-APIs und Berechtigungen unterstützen. Kamerafreigabe oder Teilen-Dialog können Ihre Beteiligung benötigen.
     </p>
     <p>
-      Aber &bdquo;kann er die Knöpfe drücken&ldquo; ist die kleine Frage.
-      Die, die eine Seite verdient, lautet: Was wird aus dem Versprechen
-      dieser Website &mdash; <em>Ihre Datei verlässt Ihre Maschine nie</em>
-      &mdash;, wenn die Maschine, die die Knöpfe drückt, nicht Sie sind? Die
-      Antwort: Das Versprechen übersteht die Delegation vollkommen oder gar
-      nicht, und zwar abhängig von genau einer Sache &mdash;
-      <strong>davon, wo der Browser des Agenten läuft.</strong>
+      Bei Dateiverarbeitung ist die erste Frage, <strong>wo der gesteuerte Browser läuft</strong>. Prüfen Sie auch die Daten beim Agent-Anbieter und bewusste Abruf- oder Teilen-Funktionen. Ein lokaler Browser beantwortet nicht alle drei Fragen.
     </p>
   </section>
 
@@ -28,37 +16,13 @@
       Seite.
     </p>
     <p>
-      <strong>Ein lokaler Agent</strong> läuft auf Ihrer Maschine: ein
-      Assistent, der auf Ihrem Rechner installiert ist, oder einer, der den
-      Browser steuert, in den Sie gerade schauen. Wenn so ein Agent hier ein
-      Werkzeug öffnet und ihm Ihre Datei reicht, geschieht die Arbeit dort,
-      wo sie bei diesen Seiten immer geschieht &mdash; in einem Browser, auf
-      Ihrer Hardware. Die Datei wird von Ihrer Platte gelesen, im Speicher
-      Ihres Browsers verarbeitet und auf Ihre Platte zurückgeschrieben. An
-      dem Weg, den die Bytes nehmen, hat die Delegation nichts geändert.
-      Eine KI hat die Einstellungen gewählt; die Datei ist trotzdem nie
-      fortgegangen.
+      <strong>Ein lokal gesteuerter Browser</strong> liest und verarbeitet auf diesem Gerät. Ein lokales Werkzeug hier fügt keinen Verarbeitungsupload hinzu. Der Agent könnte trotzdem Anweisungen, Bildschirmfotos oder Dateikontext an seinen Anbieter senden; das hängt von Umsetzung und Einstellungen des Agenten ab.
     </p>
     <p>
-      <strong>Ein Cloud-Agent</strong> betreibt einen Browser auf dem
-      Rechner seines Anbieters. Sie hängen eine Datei an einen Chat, der
-      Agent arbeitet in einer virtuellen Maschine irgendwo anders, und was
-      immer er mit diesen Werkzeugen tut, geschieht dort. Die Werkzeuge
-      verhalten sich weiterhin exakt wie versprochen &mdash; die Datei kommt
-      nicht weiter als bis zu dem Browser, in dem sie liegt &mdash;, aber
-      dieser Browser ist nicht Ihrer, und das Hochladen ist bereits in dem
-      Moment geschehen, in dem Sie die Datei angehängt haben, bevor
-      irgendein Werkzeug geöffnet war. Keine Seite kann ein Hochladen
-      ungeschehen machen, das ihr vorausging.
+      <strong>Ein Cloud-Browser</strong> läuft beim Agent-Anbieter. Eine dafür angehängte Datei hat Ihr Gerät bereits verlassen. Die Werkzeuge verarbeiten sie in jenem Browser und machen die vorherige Übertragung nicht rückgängig. Bewusstes Teilen und App-Übergaben sind in beiden Umgebungen weitere Aktionen.
     </p>
     <p>
-      Die Frage, die diese Website immer wieder stellt &mdash; braucht diese
-      Arbeit, dass meine Datei überhaupt fortgeht? &mdash;, verschwindet
-      also nicht, wenn ein Agent die Arbeit tut. Sie rückt nur eine Stufe
-      vor, zur Wahl des Agenten. Ein lokaler Agent, der ein reines
-      Browser-Werkzeug steuert, ist die seltene Anordnung, in der
-      Delegation gar keine Privatsphäre kostet: Die KI macht die Arbeit,
-      und die Datei bleibt zu Hause.
+      Geben Sie einen lokalen Browser vor, wenn lokale Verarbeitung wichtig ist, prüfen Sie die Agent-Datenwege und erlauben Sie bewusste Übertragungen gesondert. <a href="../../belege-rechnungen-auslesen/">Kursabruf und E-Mail-Übergabe</a>, <a href="../../bilder-in-video-umwandeln/">Bild-URL-Import</a>, <a href="../../text-teilen/">Teilen</a> und <a href="../../remote-camera/">Kamera</a> dokumentieren ihre Netzwerkgrenzen.
     </p>
   </section>
 
@@ -99,23 +63,14 @@
         sagen, er möge zuerst den Ratgeber lesen &mdash; derselbe Rat, den
         ein Mensch bekäme.
       </li>
-      <li>
-        <strong>Ketten funktionieren.</strong> Die Arbeiten, die die
-        Workflow-Ratgeber dieser Website Menschen beschreiben &mdash;
-        scannen, dann zu einem <a href="../../bilder-in-pdf-umwandeln/">PDF</a>
-        zusammenfügen; <a href="../../exif-daten-entfernen/">EXIF</a>
-        entfernen, dann verkleinern &mdash;, sind die Arbeiten, in denen
-        Agenten am besten sind, weil das Ergebnis jedes Schritts die Eingabe
-        des nächsten ist und dazwischen nichts Urteilskraft braucht.
-      </li>
+      <li><strong>Prüfungen zwischen den Schritten nennen.</strong> Bei Scan-zu-PDF und Bildbereinigung lassen Sie Reihenfolge, Zuschnitt, Lesbarkeit und Größe kontrollieren. OCR, Schwärzung und die Auswahl teilbarer Inhalte brauchen Urteil und Ergebnisprüfung.</li>
     </ul>
   </section>
 
   <section>
     <h2>Was man nicht delegiert</h2>
     <p>
-      Ein Agent kann jedes Werkzeug hier steuern. An zwei Stellen ist das
-      Steuern nicht die ganze Arbeit, und der Rest sollte bei Ihnen bleiben.
+      Controls zu bedienen ist nur ein Teil. Prüfen Sie Entscheidungen, die ändern, was andere sehen oder bekommen. Zwei Beispiele:
     </p>
     <p>
       <strong>Entscheiden, was nicht gesehen werden darf.</strong> Die
@@ -157,25 +112,9 @@
       eigene Seite</a>.
     </p>
     <p>
-      Was diese Website für einen Agenten tut, tut sie mit Absicht und für
-      alle: Jedes Bedienelement ist beschriftet, weil Screenreader Namen
-      brauchen und ein Agent dieselben Namen liest; die Seiten kennen keine
-      Konten, keine Popups und keine Zustimmungswände, um die man
-      herumsteuern müsste; der Quelltext ist öffentlich und wird ohne
-      Build-Schritt ausgeliefert, sodass der Code, den ein Agent prüft, der
-      Code ist, der läuft; und
-      <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
-      ist die ganze Kiste in einem Abruf. Nichts davon wurde für Maschinen
-      hinzugefügt. Eine Seite, die für einen Menschen mit Screenreader
-      lesbar ist, erweist sich als lesbar für alles andere ebenso.
+      Die Controls sind beschriftet; <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a> und Markdown-Kopien dienen dem Lesen. Quelltext, gemeinsame Module und Engines sind öffentlich. Der Build erzeugt und minifiziert die Seiten; vergleichen Sie ihn bei einer Prüfung mit der Veröffentlichung. DevTools und WebRTC-Diagnose hängen von der Agent-Umgebung ab.
     </p>
     <p>
-      Eine ehrliche Grenze: Diese Seite handelt von Agenten, die diese
-      Werkzeuge benutzen, nicht von den Agenten selbst. Was der Anbieter
-      eines Agenten sieht &mdash; Ihre Anweisungen, Ihre Bildschirmfotos,
-      manchmal Ihre Dateien &mdash;, ist eine eigene Frage, und die
-      Gewohnheit, bei der diese ganze Ratgebergruppe immer wieder ankommt,
-      ist auch für sie der richtige Blick: Fragen Sie, was Ihre Maschine
-      wirklich verlassen muss, und in welchem Zustand.
+      Dieser Ratgeber garantiert nicht den Datenschutz eines Agent-Anbieters. Auch bei lokalem Browser kann der Agent Anweisungen, Bildschirmfotos und manchmal Dateien senden. Berücksichtigen Sie diesen Weg und dokumentierte Netzwerkfunktionen; der Browserort beweist sie nicht.
     </p>
   </section>

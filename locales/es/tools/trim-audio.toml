@@ -69,13 +69,8 @@ text = "Corta justo donde marcaste"
 text = "Funciona sin conexión"
 
 [[privacy]]
-title = "Tus grabaciones no tienen por dónde salir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún destino donde
-      pudiera recogerse tu archivo, ni nada en el código que lo enviara si lo
-      hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada pide nada."

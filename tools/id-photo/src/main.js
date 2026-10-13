@@ -335,7 +335,17 @@ function renderSpec() {
     return li;
   }));
 
-  el.specSource.textContent = sourceLine(spec, phrase);
+  const citation = sourceLine(spec, phrase);
+  if (spec.source.url) {
+    const link = document.createElement('a');
+    link.href = spec.source.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = citation;
+    el.specSource.replaceChildren(link);
+  } else {
+    el.specSource.textContent = citation;
+  }
 
   el.customPanel.hidden = spec.id !== 'custom';
   el.readRules.hidden = spec.id !== 'custom';

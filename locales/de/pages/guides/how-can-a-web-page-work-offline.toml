@@ -4,16 +4,10 @@
 
 nav = "Webseiten ohne Netz?"
 title = "Wie kann eine Webseite offline funktionieren?"
-description = "Eine Seite, die mit abgeschaltetem WLAN weiterarbeitet, ist keine Zauberei - sie ist ein Service Worker und ein Cache, normale Browser-Maschinerie. Wie das funktioniert, warum offline der stärkste Privatheitsbeweis ist, den ein Werkzeug bieten kann, und was es nicht beweist."
+description = "Wie Service Worker Browser-Werkzeuge speichern, was Offline-Verarbeitung belegt und welche Netzwerkfunktionen und Grenzen zu prüfen sind."
 heading = "Wie kann eine Webseite ohne WLAN funktionieren?"
-lede = """
-    Weil der Browser eine vollständige Kopie behalten hat und ein kleines
-    Programm, das mit der Seite ausgeliefert wird, diese Kopie serviert,
-    wann immer das Netz es nicht kann. Die Maschinerie ist Standard und
-    lohnt das Verstehen, denn ein Werkzeug, das getrennt vom Netz
-    arbeitet, zeigt Ihnen etwas, das keine Datenschutzerklärung zeigen
-    kann."""
-updated = "26. August 2026"
+lede = "Ein Service Worker kann eine lokale Kopie behalten. Eine fertiggestellte Operation ohne Verbindung belegt lokale Verarbeitung, aber nicht jeden zukünftigen Datenweg. So funktioniert der Cache und so prüfen Sie ihn."
+updated = "12. Oktober 2026"
 og_title = "Wie kann eine Webseite ohne WLAN funktionieren?"
-og_description = "Ein Service Worker und ein Cache - normale Browser-Maschinerie. Wie Offline-Seiten funktionieren, warum offline der stärkste Privatheitsbeweis ist, und was es nicht beweist."
-og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+og_description = "Wie Browser-Werkzeuge Ressourcen speichern, was Verarbeitung ohne Verbindung belegt und welche Funktionen weiterhin ein Netz brauchen."
+og_image_alt = "abox.tools - Browser-Werkzeuge für lokale Dateiverarbeitung"

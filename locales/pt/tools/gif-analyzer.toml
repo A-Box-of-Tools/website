@@ -60,14 +60,8 @@ text = "Código aberto"
 text = "Os arquivos ficam no seu aparelho"
 
 [[privacy]]
-title = "O seu GIF não tem para onde ir."
-body = """
- A
-      Content-Security-Policy lista todo endereço que esta página pode contatar, e
-      nenhum deles é nosso. Aqui não existe um ponto de coleta onde o seu arquivo
-      pudesse parar, nem nada no código que o mandasse para lá se existisse. Isto já
-      disse <code>connect-src 'none'</code>, que não abria exceção; a publicidade
-      custou isso, e dizer isso faz parte do acordo."""
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "O leitor são quatro arquivos deste repositório."
@@ -81,13 +75,7 @@ body = """
 
 [[privacy]]
 title = "Comentários e metadados são mostrados a você, e a mais ninguém."
-body = """
-
-      Um GIF pode carregar um bloco de comentário, um pacote XMP descrevendo uma
-      edição ou um perfil de cor, e esta página imprime todos eles. Eles vão parar na
-      tela na sua frente e em lugar nenhum além disso: não existe neste repositório um
-      evento de medição que leve nada disso, e a página não conseguiria enviar um nem
-      se existisse."""
+body = "Um GIF pode carregar um bloco de comentário, um pacote XMP descrevendo uma edição ou um perfil de cor, e esta página imprime todos eles. Eles vão parar na tela na sua frente e em lugar nenhum além disso: não existe neste repositório um evento de medição que leve nada disso. O feedback opcional envia somente ferramenta, voto e motivo fixos, nunca metadados lidos do arquivo."
 
 [[privacy]]
 title = "O que o Google carrega, e o que não chega até ele."

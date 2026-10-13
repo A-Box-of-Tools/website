@@ -1,7 +1,8 @@
 # Remote Camera
 
 Online cameras appear at the top of the idle page, above sharing and manual
-connection. Start or Connect focuses its active section until Stop or a failure returns
+connection. Choosing a listed camera requests a connection immediately. Start
+or Connect focuses its active section until Stop or a failure returns
 to the idle page. A viewer link only fills and focuses the code field; it does
 not start pairing or ask for camera permission. Starting the source clears a
 viewer fragment so the URL no longer suggests a different camera.
@@ -19,8 +20,11 @@ discovery socket using the shared `peer-discovery` part. Hosts are listed by
 default, with a link-only switch; publication requires the room's live lease
 and an explicit `remote-camera` namespace acknowledgement. Discovery groups
 public IPv4 addresses or IPv6 /64 networks and page origins, as Share Text does.
-Choosing a name only opens the viewing form. No peer connection is created
-until Connect. The room socket remains open during the session. Losing it ends capture or viewing.
+Choosing a listed name starts the same viewing request as Connect, including
+network-address exchange and the source's approval policy. Modified clicks
+retain the viewer link; opening it still waits for Connect. Repeated clicks
+cannot start another request while viewing is active. The room socket remains
+open during the session. Losing it ends capture or viewing.
 The worker sees descriptions, candidates, room code, addresses and timing,
 never media or the viewer note. Cloudflare keeps seven-day metadata logs.
 

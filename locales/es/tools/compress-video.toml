@@ -42,7 +42,7 @@ body = "Un chat, correo o formulario impone un máximo. Aquí introduces ese nú
 
 [[privacy]]
 title = "Comprimir vídeo implica volver a codificar."
-body = "A diferencia de un ZIP, esta compresión tiene pérdida. La imagen se decodifica, reduce y codifica como H.264 con la tasa que permite el objetivo: otra generación desde la cámara. El sonido no se recodifica; se copia intacto. El resultado es MP4, por su amplia compatibilidad con teléfonos, navegadores y chats."
+body = "La compresión decodifica y recodifica la imagen localmente y copia intactas las muestras de audio originales. La salida MP4 con H.264 es ampliamente compatible, pero el destino también debe admitir el códec de audio copiado y el perfil de vídeo. Prueba el archivo antes de enviarlo."
 
 [[privacy]]
 title = "Se mide el resultado y se ajusta una segunda vez si hace falta."
@@ -94,11 +94,11 @@ a = "Una tasa de bits solo tiene sentido respecto al número de píxeles. Dos me
 
 [[faq]]
 q = "¿Empeorará la calidad?"
-a = "Sí. La imagen se recodifica a menor tasa, con otra generación de compresión. El sonido no cambia. Un clip de 900 MB reducido a 25 MB pierde mucho más detalle que uno reducido a la mitad. La página muestra las dimensiones y la tasa para que puedas valorar la diferencia."
+a = "Recodificar puede perder detalle o producir artefactos. Bitrate, dimensiones, fuente y complejidad de la escena influyen en lo visible; un límite no define una pérdida exacta de calidad. El audio se copia intacto. Reproduce el resultado, compara texto y movimiento importantes y conserva el original."
 
 [[faq]]
 q = "¿Qué formato genera?"
-a = "MP4 con vídeo H.264 y la pista de audio copiada intacta. Se elige por su amplia compatibilidad. No genera WebM, HEVC ni AV1, que pueden ocupar menos pero no todos los destinatarios podrán abrir."
+a = "MP4 con vídeo H.264 y la pista de audio original copiada. H.264 en MP4 es ampliamente compatible, pero el destino también debe admitir el códec de audio copiado y el perfil de vídeo. Prueba el archivo final en la aplicación de destino. No escribe WebM, HEVC ni AV1."
 
 [[faq]]
 q = "¿Qué archivos admite?"

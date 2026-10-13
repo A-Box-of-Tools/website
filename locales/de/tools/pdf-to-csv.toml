@@ -19,13 +19,13 @@
 #
 
 name = "PDF zu CSV"
-heading = "PDF&nbsp;zu&nbsp;CSV <span class=\"h1-kw\">&mdash; jede Tabelle darin, Kontoauszüge eingeschlossen</span>"
-tagline = "Findet jede Tabelle in einem PDF und macht daraus Zeilen, die eine Tabellenkalkulation öffnen kann."
+heading = "PDF&nbsp;zu&nbsp;CSV <span class=\"h1-kw\">&mdash; textbasierte Tabellen auslesen</span>"
+tagline = "Erkannte textbasierte PDF-Tabellen als Zeilen für eine Tabellenkalkulation."
 
-title = "PDF in CSV umwandeln &mdash; jede Tabelle, auch Kontoauszüge, kostenlos, ohne Upload"
-description = "Die Tabellen in einem PDF in eine CSV verwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten, Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und lesbare laufende Salden werden verglichen, wo es möglich ist. Es wird nichts hochgeladen."
-og_title = "PDF zu CSV, jede Tabelle darin, ohne die Datei hochzuladen"
-og_description = "Die meisten PDF-zu-CSV-Umwandler wollen Ihre Datei auf ihrem Server. Dieser findet jede Tabelle im Dokument in Ihrem eigenen Browser und zeigt, welche Vergleiche des laufenden Saldos übereinstimmen."
+title = "PDF zu CSV &mdash; Textbasierte Tabellen und Auszüge, ohne Upload"
+description = "Textbasierte PDF-Tabellen im Browser als CSV auslesen: Auszüge, Rechnungen, Preislisten und Berichte. Die Erkennung nutzt lesbare Textpositionen und kann ungewöhnliche Layouts übersehen; Scans brauchen zuerst OCR. Kein Upload."
+og_title = "PDF-Tabellen zu CSV, ohne Upload"
+og_description = "Textbasierte PDF-Tabellen im Browser als CSV auslesen: Auszüge, Rechnungen, Preislisten und Berichte. Die Erkennung nutzt lesbare Textpositionen und kann ungewöhnliche Layouts übersehen; Scans brauchen zuerst OCR. Kein Upload."
 og_image_alt = "Die Tabellen in einem PDF im Browser in CSV umwandeln"
 
 pledge = """
@@ -53,13 +53,7 @@ read_first = """
 
 howto_heading = "So verwandeln Sie die Tabellen in einem PDF in eine CSV"
 
-card = """
-            Die Tabellen in einem PDF in eine Tabellenkalkulation verwandeln,
-            ob Konto- oder Kreditkartenauszug, Rechnung, Preisliste oder
-            Bericht. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr
-            Text sitzt, eine Zelle, die in eine zweite Zeile umgebrochen ist,
-            wird wieder zusammengesetzt, und der laufende Saldo eines
-            Kontoauszugs wird verglichen, wo Beträge und Salden lesbar sind."""
+card = "Textbasierte PDF-Tabellen im Browser als CSV auslesen: Auszüge, Rechnungen, Preislisten und Berichte. Die Erkennung nutzt lesbare Textpositionen und kann ungewöhnliche Layouts übersehen; Scans brauchen zuerst OCR. Kein Upload."
 
 [words]
 plural = "Dokumente"
@@ -189,27 +183,11 @@ body = """
 
 [[howto]]
 title = "Sehen Sie sich die Tabellen an, die es gefunden hat."
-body = """
- Jede Tabelle auf jeder
-      Seite, jede mit ihren eigenen Spalten und ihren eigenen Überschriften,
-      wo die Seite welche gedruckt hat. Eine Tabelle, die unter denselben
-      Überschriften über zwei Abschnitte oder zwei Seiten läuft, ist eine
-      Tabelle, und die Überschriften werden mittendrin nicht wiederholt. Eine
-      Zelle, die in eine zweite Zeile umgebrochen ist, wird in ihre Zeile
-      zurückgefaltet. Summen, Zwischensummen und Beschriftungen kommen als die
-      Zeilen durch, die sie auf der Seite sind."""
+body = "Prüfen Sie jede erkannte Tabelle mit Spalten und wiedergewonnenen Überschriften. Fortsetzungen über Seiten können verbunden und umbrochene Zellen in ihre Zeilen gefaltet werden. Vor dem CSV-Speichern mit dem Original auf fehlende Tabellen, zusammengelegte Zeilen und Layoutfehler prüfen."
 
 [[howto]]
 title = "Nehmen Sie eine, oder nehmen Sie alle."
-body = """
- Gibt es mehr als eine Tabelle,
-      wählt das Feld über ihnen, welche in die CSV kommt: alle nacheinander
-      oder nur die, wegen der Sie gekommen sind. Führt eine Tabelle einen
-      laufenden Saldo, zeigt die Zeile über den Tabellen übereinstimmende
-      Vergleiche und nicht geprüfte Zeilen. Daten mit Jahr kommen als YYYY-MM-DD heraus und Beträge
-      als schlichte Zahlen mit Vorzeichen; ein Datum ohne Jahr bleibt genau
-      so, wie es gedruckt war, denn das Jahr, zu dem es gehört, wäre
-      geraten."""
+body = " Gibt es mehr als eine Tabelle,\n      wählt das Feld über ihnen, welche in die CSV kommt: alle nacheinander\n      oder nur die, wegen der Sie gekommen sind. Führt eine Tabelle einen\n      laufenden Saldo, zeigt die Zeile über den Tabellen übereinstimmende\n      Vergleiche und nicht geprüfte Zeilen. Daten mit Jahr kommen als YYYY-MM-DD heraus und Beträge\n      als schlichte Zahlen mit Vorzeichen; ein Datum ohne Jahr bleibt genau\n      so, wie es gedruckt war, denn das Jahr, zu dem es gehört, wäre\n      geraten."
 
 [[howto]]
 title = "Nehmen Sie die CSV mit."
@@ -358,9 +336,9 @@ a = """
         Verbindung trennen."""
 
 [schema]
-description = "Die Tabellen in einem PDF im Browser in CSV umwandeln: Konto- und Kreditkartenauszüge, Rechnungen, Preislisten und Berichte. Jede Tabelle auf jeder Seite wird daran gefunden, wo ihr Text sitzt, und der laufende Saldo eines Kontoauszugs wird verglichen, wo Beträge und Salden lesbar sind. Es wird nichts hochgeladen."
+description = "Textbasierte PDF-Tabellen im Browser als CSV auslesen: Auszüge, Rechnungen, Preislisten und Berichte. Die Erkennung nutzt lesbare Textpositionen und kann ungewöhnliche Layouts übersehen; Scans brauchen zuerst OCR. Kein Upload."
 features = [
-  "Findet jede Tabelle in einem PDF, jede mit ihren eigenen Spalten und Überschriften",
+  "Erkennt textbasierte Tabellen anhand lesbarer Textpositionen",
   "Trennt eine Randspalte mit Kleingedrucktem ab, statt sie in die Tabelle zu mischen",
   "Fügt eine Tabelle zusammen, die über Abschnitte oder Seiten läuft, ohne ihre Überschriften zu wiederholen",
   "Faltet eine Zelle, die in eine zweite Zeile umgebrochen ist, in ihre Zeile zurück",

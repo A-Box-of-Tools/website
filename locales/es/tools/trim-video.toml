@@ -10,9 +10,9 @@ heading = "Cortar&nbsp;vídeo <span class=\"h1-kw\">&mdash; cortar un vídeo en 
 tagline = "Marca lo que vale mientras se reproduce. Te lo devuelve como un solo vídeo."
 
 title = "Cortar un vídeo en línea &mdash; quédate solo con lo que quieras, sin subir nada"
-description = "Mira un vídeo y ve marcando cada trozo que valga la pena mientras se reproduce; luego guarda esos trozos en un solo archivo. Todo en el navegador: sin subir nada, sin recodificar nada y también sin conexión."
+description = "Marca las partes que quieres conservar y guárdalas como un vídeo en tu navegador. Copiar conserva los fotogramas codificados; los cortes exactos y la grabación recodifican. Sin subir archivos, también sin conexión."
 og_title = "Cortador de vídeo &mdash; quédate solo con lo que quieras, sin subir nada"
-og_description = "Pulsa I y O mientras se reproduce para marcar cada trozo que quieras conservar. Los trozos marcados se vuelven a escribir en un solo vídeo, fotograma a fotograma, sin subir nada."
+og_description = "Pulsa I y O para marcar los tramos. Copiar conserva imagen y sonido codificados compatibles; el corte exacto recodifica el vídeo y la grabación ambos. Nada se sube."
 og_image_alt = "Cortador de vídeo - marca lo que quieras y guárdalo como un solo vídeo, en tu navegador"
 
 pledge = """
@@ -38,10 +38,7 @@ read_first = """
 
 howto_heading = "Cómo cortar un vídeo"
 
-card = """
-            Marca cada trozo que valga la pena mientras se reproduce y guárdalos
-            en un solo vídeo. Los fotogramas se copian en vez de recodificarse,
-            así que no se pierde nada."""
+card = "Marca los tramos y guárdalos como un vídeo. Copiar conserva la calidad cuando la selección lo permite; el corte exacto recodifica la imagen."
 
 [words]
 plural = "vídeos"
@@ -60,19 +57,14 @@ text = "Sin marca de agua"
 text = "Tantos trozos como quieras"
 
 [[facts]]
-text = "Sin pérdida de calidad"
+text = "Copia sin pérdida si es compatible"
 
 [[facts]]
 text = "Funciona sin conexión"
 
 [[privacy]]
-title = "Tus vídeos no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger tu archivo, ni una línea de código que lo mandara si
-      lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada le pide nada a la red."
@@ -84,14 +76,7 @@ body = """
 
 [[privacy]]
 title = "Por la vía normal ni siquiera se descodifica nada."
-body = """
-
-      Cortar no le cambia el aspecto a ningún fotograma, así que los fotogramas
-      codificados de los trozos que has marcado se mueven al archivo nuevo tal y
-      como se encontraron. Cada uno se guarda como un trozo del archivo de tu
-      disco, es decir, como una nota que dice qué bytes son, y no como los bytes
-      en sí, y tu navegador los lee por primera vez mientras escribe la descarga.
-      Aquí no hay nada que convierta tu vídeo de vuelta en una imagen."""
+body = "Al copiar, los fotogramas codificados compatibles pasan intactos a la salida. La página conserva referencias a los bytes originales en vez de decodificarlos. Los cortes exactos y la grabación decodifican y recodifican la imagen localmente; los controles de exportación señalan esa elección."
 
 [[privacy]]
 title = "El archivo de marcas se hace en la página."
@@ -102,12 +87,8 @@ body = """
       dos se acerca a una red, y ninguno lleva más que tiempos."""
 
 [[privacy]]
-title = "El sonido se copia, no se escucha."
-body = """
- Por las dos vías del MP4,
-      las muestras de audio se trasladan sin llegar a descodificarse. Aquí nada
-      las vuelve a convertir en sonido, y aunque lo hiciera, no habría adónde
-      mandarlas."""
+title = "Se copia el audio compatible."
+body = "En copia MP4 y corte exacto se copian intactas las muestras de audio compatibles. Unir clips con audio incompatible puede decodificarlo, remuestrearlo y recodificarlo localmente; la grabación también lo recodifica. La página lo indica antes de exportar. No sube audio."
 
 [[privacy]]
 title = "Donde sí se descodifican fotogramas, ocurre aquí."
@@ -300,15 +281,15 @@ a = """
 
 [schema]
 browser_requirements = "Necesita JavaScript. Copiar fotogramas no requiere ningún soporte de códec de vídeo; el corte exacto necesita un navegador con WebCodecs, y los demás formatos recurren a la grabación."
-description = "Marca cuantos trozos quieras de un vídeo mientras se reproduce y guarda esos trozos en un único archivo, o quítalos y quédate con el resto. Los MP4, MOV y M4V se cortan trasladando los fotogramas codificados a un archivo nuevo sin tocarlos, con el audio original copiado muestra a muestra. No se sube nada y no se recodifica nada."
+description = "Marca partes para conservar o eliminar y une el resto en el navegador. MP4, MOV y M4V permiten copiar los bytes con tramos y pistas compatibles. Los cortes exactos recodifican el vídeo; la grabación imagen y sonido. Nada se sube."
 features = [
   "Marca cuantos trozos quieras con I y O mientras el vídeo se reproduce",
   "Une los trozos marcados en un solo archivo, en el orden que elijas",
   "O quita los trozos marcados y conserva todo lo demás",
-  "Corta sin recodificar, así que no se pierde calidad",
+  "Copia sin pérdida con selecciones compatibles; el corte exacto recodifica explícitamente",
   "Guarda y vuelve a cargar las marcas como un archivo de tiempos en texto plano",
   "Marcas exactas al fotograma, con los fotogramas clave visibles en la línea de tiempo",
-  "Conserva el audio original sin volver a codificarlo",
+  "Copia el audio original compatible; las uniones incompatibles y la grabación recodifican el sonido",
   "Funciona sin conexión, sin subidas, sin cuenta y sin marca de agua",
 ]
 

@@ -55,19 +55,12 @@
       escaneia. Quantas dessas palavras existem é o nível, e há quatro:
     </p>
     <ul>
-      <li><strong>L:</strong> cerca de 7% do código pode se perder.</li>
+      <li><strong>L</strong> &mdash; cerca de 7% do total de palavras de código.</li>
       <li><strong>M:</strong> cerca de 15%.</li>
       <li><strong>Q:</strong> cerca de 25%.</li>
       <li><strong>H:</strong> cerca de 30%.</li>
     </ul>
-    <p>
-      Mais correção não é de graça: os dados de verificação entram no mesmo
-      quadrado, então o mesmo texto no nível H precisa de um código maior e mais
-      denso que no L. Grosso modo, ir de L para H dobra o número de módulos para a
-      mesma cadeia, e módulos mais densos são mais difíceis de uma câmera
-      resolver. Há uma troca real aqui, e a resposta depende de para onde o código
-      vai.
-    </p>
+    <p><a href="https://www.qrcode.com/en/about/error_correction.html">A DENSO define os percentuais pelo total de palavras de código</a>, não por módulos arbitrários ou área. Padrões de detecção danificados podem impedir a leitura antes da correção. Mais correção também ocupa espaço: o mesmo conteúdo costuma exigir um símbolo mais denso ou maior.</p>
     <p>
       <strong>L</strong> é para tela: um código num slide, num e-mail, numa página
       web. Nada vai danificá-lo, e cada módulo a mais o torna mais difícil de ler
@@ -178,19 +171,8 @@
 
   <section>
     <h2>Uma logomarca no meio</h2>
-    <p>
-      Isso funciona, e funciona por causa da correção de erros, e não apesar dela.
-      No nível H, cerca de 30% dos módulos podem ser destruídos e o código ainda é
-      lido, então uma logomarca cobrindo bem menos que isso, no centro, onde não
-      fica nenhum padrão de localização, é dano que o leitor conserta.
-    </p>
-    <p>
-      Três coisas a respeitar. Use o nível H. Mantenha a logomarca abaixo de uns
-      20% da área, bem longe do limite teórico, porque a impressão não é a única
-      coisa comendo a sua margem. E nunca cubra os três quadrados grandes dos
-      cantos nem os menores perto deles: é assim que um leitor encontra e orienta
-      o símbolo em primeiro lugar, e correção de erros nenhuma reconstrói isso.
-    </p>
+    <p>Um logo pequeno pode funcionar, mas nenhum percentual da área é garantido. A DENSO define a recuperação de cerca de 30% no nível H pelo total de palavras de código, não por quadrados arbitrários. Preserve os padrões de localização e alinhamento, use H e teste a impressão final em vários celulares. <a href="https://www.qrcode.com/en/about/error_correction.html">A DENSO explica a correção de erros</a>.</p>
+    <p>Escolha H e um logo pequeno. Não há fração de área segura garantida: posição, versão, distribuição dos danos e qualidade de impressão importam. Preserve os padrões de localização e alinhamento e confira a leitura com uma prova impressa.</p>
     <p>
       Depois teste em celulares de verdade. Uma logomarca leva um código de
       &ldquo;sempre funciona&rdquo; para &ldquo;funciona com esta margem&rdquo;, e

@@ -13,6 +13,7 @@
 
 slug = "guides/is-base64-encryption"
 kind = "guide"
+tool = "base64"
 nav = "Is base64 encryption?"
 # Which group on the guides index this joins, by the id in config/site.toml.
 group = "before-you-upload"
@@ -33,4 +34,4 @@ lastmod = "2026-08-26"
 
 og_title = "Is base64 encryption?"
 og_description = "No - anyone can undo it, no key required. Encoding, encryption and hashing look alike on screen and promise three completely different things. Which is which."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

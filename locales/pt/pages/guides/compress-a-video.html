@@ -22,7 +22,7 @@
     <p>Comprimir um vídeo significa codificá-lo de novo. A imagem é decodificada, desenhada menor e gravada na nova taxa de bits: fica uma geração mais distante da câmera. O som não é alterado; as amostras são copiadas exatamente. A perda depende do limite: reduzir um vídeo à metade costuma custar pouco; transformar 900 MB em 25 MB descarta quase todos os bits, e isso aparece na imagem.</p>
     <ul>
       <li><strong>Peça o tamanho necessário, não um menor.</strong> Se o limite é 25 MB, use 25 MB. Escolher 8 MB joga fora dois terços da informação da imagem sem necessidade.</li>
-      <li><strong>Corte primeiro.</strong> A duração é a outra metade da multiplicação. Dez segundos desnecessários consomem bits que poderiam melhorar os segundos restantes. O <a href="/pt/guias/aparar-um-video/">Cortador de vídeo</a> corta sem recodificar; use-o antes de comprimir.</li>
+      <li><strong>Corte primeiro.</strong> Remover tempo desnecessário deixa mais espaço por segundo restante. O <a href="/pt/guias/aparar-um-video/">cortador de vídeo</a> copia seleções compatíveis sem recodificar; cortes exatos recodificam a imagem. Escolha o método indicado antes de comprimir.</li>
       <li><strong>Remova o som se ele não fizer falta.</strong> Um minuto de áudio estéreo ocupa cerca de um megabyte. Em um vídeo curto com limite apertado, esse espaço pode separar uma imagem nítida de outra borrada.</li>
       <li><strong>Guarde o original.</strong> Não dá para recuperar a informação descartada pela compressão. Comprima uma cópia, envie essa cópia e mantenha o arquivo da câmera.</li>
     </ul>
@@ -42,5 +42,5 @@
 
   <section>
     <h2>O que ela grava e o que consegue ler</h2>
-    <p>Grava MP4 com vídeo H.264, a combinação aceita por celulares, navegadores, aplicativos de mensagem e clientes de e-mail. Essa compatibilidade é o objetivo de um arquivo que precisa ser enviado. Não grava WebM, HEVC ou AV1: ocupam menos na mesma qualidade, mas muitos destinatários não conseguiriam abri-los. Lê MP4 e MOV, comuns em celulares, câmeras e gravações de tela, desde que o navegador consiga decodificar o codec interno. Vídeos HEVC de iPhone abrem na maioria dos computadores. WebM, MKV e AVI ainda não são lidos; a página avisa ao encontrar um deles.</p>
+    <p>Grava MP4 com vídeo H.264 e áudio original copiado. H.264 em MP4 tem amplo suporte, mas o destino também precisa aceitar o codec de áudio e o perfil de vídeo. Teste o arquivo no aplicativo de destino. Lê MP4 e MOV com codecs que o navegador decodifique; não lê WebM, MKV nem AVI. Não grava WebM, HEVC nem AV1.</p>
   </section>

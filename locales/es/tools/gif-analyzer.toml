@@ -62,15 +62,8 @@ text = "Código abierto"
 text = "Los archivos no salen de tu dispositivo"
 
 [[privacy]]
-title = "Tu GIF no tiene por dónde salir."
-body = """
- La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún destino donde
-      pudiera recogerse tu archivo, ni nada en el código que lo enviara si lo
-      hubiera. Antes esto decía <code>connect-src 'none'</code>, que no admitía
-      excepciones; añadir publicidad costó eso, y decirlo forma parte del
-      trato."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "El lector son cuatro archivos de este repositorio."
@@ -85,13 +78,7 @@ body = """
 
 [[privacy]]
 title = "Los comentarios y los metadatos se te enseñan a ti, y a nadie más."
-body = """
-
-      Un GIF puede llevar un bloque de comentario, un paquete XMP que describe una
-      edición o un perfil de color, y esta página los imprime todos. Se ponen en la
-      pantalla delante de ti y no van a ninguna otra parte: en este repositorio no
-      hay ningún evento de analítica que lleve nada de eso, y la página no podría
-      enviarlo aunque lo hubiera."""
+body = "Un GIF puede llevar un bloque de comentario, un paquete XMP que describe una edición o un perfil de color, y esta página los imprime todos. Se ponen en la pantalla delante de ti y no van a ninguna otra parte: en este repositorio no hay ningún evento de analítica que lleve nada de eso. Los comentarios opcionales solo envían herramienta, voto y motivo fijos, nunca metadatos del archivo."
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."

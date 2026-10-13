@@ -97,12 +97,13 @@ Check the decoded alpha before replacing its base64 block. The two opaque
 photographs remain the representative website case; the mark demonstrates
 the decision a photograph cannot.
 
-## What a JPEG cannot carry over
+## What this JPEG export does not carry over
 
 Stated on the page rather than discovered afterwards: AVIF can hold ten or
-twelve bits a channel and describe HDR highlights, and a JPEG is eight bits
-with no such notion, so any of that is flattened. Almost nothing saved off an
-ordinary web page uses it. Transparency is the other one, and is handled the
+twelve bits a channel and describe HDR highlights. This canvas export writes
+an ordinary eight-bit SDR JPEG and does not preserve that HDR data. JPEG can
+carry HDR through extensions such as Ultra HDR gain maps; this tool does not
+write them. Transparency is the other loss, and is handled the
 same way as in [WebP to JPG](../webp-to-jpg/) — `encode()` paints the
 background first for any format whose `FORMATS` entry says `alpha: false`, and
 the caller cannot turn it off, because the alternative is black where the

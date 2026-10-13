@@ -129,6 +129,13 @@ function renderDiscovery() {
     link.href = viewerLink(location.href, code);
     link.textContent = code;
     link.dir = 'ltr';
+    link.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      if (activeRole) return;
+      $('viewer-code').value = code;
+      connectViewer();
+    });
     row.append(link);
     $('discovery-list').append(row);
   }
@@ -353,6 +360,7 @@ async function startCamera() {
 }
 
 async function connectViewer() {
+  if (activeRole === 'viewer') return;
   const code = parseCode($('viewer-code').value);
   if (!code) return showStatus('code.invalid', 'viewer');
   if (!globalThis.isSecureContext || !globalThis.RTCPeerConnection) return showStatus('connection.unsupported', 'viewer');
@@ -365,6 +373,7 @@ async function connectViewer() {
   $('viewer-name').disabled = true;
   $('viewer-connect').disabled = true;
   $('viewer-stop').hidden = false;
+  $('viewer-stop').focus();
   const url = new URL(location.href);
   url.hash = code;
   history.replaceState(null, '', url);

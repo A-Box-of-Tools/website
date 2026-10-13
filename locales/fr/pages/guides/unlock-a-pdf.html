@@ -4,13 +4,8 @@
       Ouvrez le <a href="../../deverrouiller-un-pdf/">Déverrouilleur de PDF</a> et déposez le document. En une seconde, il indique laquelle des deux situations suivantes s’applique ; elles sont très différentes :
     </p>
     <ul>
-      <li>
-        <strong>Le document s’ouvre mais refuse l’impression ou la copie.</strong> Aucun mot de passe nécessaire. Appuyez sur le bouton pour retirer les restrictions. C’est de loin le cas le plus courant.
-      </li>
-      <li>
-        <strong>Le document demande un mot de passe à l’ouverture.</strong>
-        Il vous faut ce mot de passe. Cette page &mdash; comme toute page honnête &mdash; ne le retrouvera pas pour vous.
-      </li>
+      <li><strong>Le document s’ouvre, mais refuse l’impression ou la copie.</strong> S’il ne comporte que des restrictions de permissions, aucun mot de passe n’est requis ici. Le bouton les retire.</li>
+      <li><strong>Le document demande un mot de passe avant de s’ouvrir.</strong> Fournissez un mot de passe utilisateur ou propriétaire valide. Cet outil ne le devine ni ne le récupère.</li>
     </ul>
     <p>
       La suite explique cette différence, utile avant de confier un document à un service qui propose de le déverrouiller.
@@ -22,18 +17,12 @@
     <p>
       Un PDF peut avoir deux mots de passe. Les lecteurs les présentent presque de la même façon, d’où la confusion.
     </p>
-    <p>
-      Le <strong>mot de passe utilisateur</strong> &mdash; généralement appelé mot de passe d’ouverture &mdash; est réel. Le contenu est chiffré, la clé provient du mot de passe et celui-ci n’est enregistré nulle part dans le fichier. Sans lui, personne ne lit le document : ni vous, ni un site, ni le programme qui l’a créé.
-    </p>
-    <p>
-      Le <strong>mot de passe propriétaire</strong> est différent malgré sa présentation similaire. Il contrôle les <em>restrictions</em> : aucune impression, copie, modification ou saisie dans les formulaires. Un document a souvent un mot de passe propriétaire sans mot de passe utilisateur &mdash; il s’ouvre alors par double clic, mais refuse d’imprimer.
-    </p>
+    <p>Le <strong>mot de passe utilisateur</strong>, ou d’ouverture, sert à déchiffrer un document qui l’exige. Un mot de passe utilisateur ou propriétaire valide peut l’ouvrir ici. Sans l’un ou l’autre, cet outil le laisse fermé ; il ne recherche ni mot de passe ni clé.</p>
+    <p>Le <strong>mot de passe propriétaire</strong> contrôle les <em>permissions</em> : impression, copie, modification ou formulaires. Un mot de passe utilisateur vide permet l’ouverture sans demande, tandis que le lecteur applique les restrictions.</p>
     <p>
       Voici ce qu’on explique rarement. Un fichier qui s’ouvre sans rien demander <em>doit contenir tout ce qui permet de calculer sa propre clé</em>, puisque votre lecteur vient de le faire sans votre aide. Son contenu est donc chiffré avec une clé accessible à tous. L’interdiction d’imprimer est un champ distinct &mdash; des bits d’autorisation &mdash; respecté par convention. Adobe le documente ainsi depuis le début. C’est une demande, pas une barrière.
     </p>
-    <p>
-      C’est pourquoi retirer des restrictions est immédiat alors que retirer un mot de passe d’ouverture inconnu est impossible. L’un est un verrou, l’autre une note sur la porte.
-    </p>
+    <p>Retirer les restrictions d’un fichier qui s’ouvre déjà ne demande aucune recherche de mot de passe. Retirer ici un mot de passe d’ouverture requis demande celui que vous fournissez. Ce sont deux opérations différentes, identifiées avant de poursuivre.</p>
   </section>
 
   <section>
@@ -83,12 +72,8 @@
 
   <section>
     <h2>Si vous avez perdu le mot de passe d’ouverture</h2>
-    <p>
-      Le document est alors perdu ; mieux vaut le savoir clairement que donner le fichier à une série de sites.
-    </p>
-    <p>
-      Les résultats de recherche proposent de nombreux outils de &ldquo;récupération de mot de passe PDF&rdquo;. Ils essaient des dictionnaires, des motifs, puis toutes les combinaisons : rapide pour un mot de passe court, interminable pour un long. Quelques-uns fonctionnent localement, la plupart envoient le document sur un serveur, et beaucoup facturent avant le résultat. Aucun n’ouvrira un fichier récent correctement protégé par un vrai mot de passe.
-    </p>
+    <p>Cet outil ne récupère pas un mot de passe d’ouverture perdu. Demandez d’abord à l’expéditeur le mot de passe ou une copie accessible et conservez l’original.</p>
+    <p>Les outils de récupération essaient des candidats ou attaquent une protection faible ou obsolète. Le succès dépend du mot de passe et du chiffrement : un mot court ou prévisible diffère d’un mot fort sous chiffrement moderne. Certains fonctionnent localement, d’autres demandent un envoi. Le déverrouilleur ici n’effectue aucune de ces recherches.</p>
     <p>
       Le <a href="../../deverrouiller-un-pdf/">Déverrouilleur de PDF</a> ne devine rien et ne le propose pas. Aucun dictionnaire ni boucle d’essais n’existe dans son code, consultable. C’est une limite volontaire : une recherche pourrait réussir sur les plus vieux documents, ce qui explique pourquoi ce refus est explicite.
     </p>

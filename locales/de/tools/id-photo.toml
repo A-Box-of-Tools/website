@@ -7,12 +7,12 @@
 
 name = "Passbild-Ersteller"
 heading = "Passbild&nbsp;erstellen <span class=\"h1-kw\">&mdash; Pass- und Visumfotos nach Vorschrift</span>"
-tagline = "Land auswählen. Es wendet genau die Vorschrift dieses Landes an."
+tagline = "Wählen Sie ein unterstütztes Land und Dokument. Vorgaben und Orientierung sind gekennzeichnet."
 
-title = "Passbild erstellen &mdash; die Maße jedes Landes, ohne Upload"
-description = "Ein Pass- oder Visumfoto nach der veröffentlichten Vorschrift Ihres Landes: exakte Millimeter und DPI, eine mitlaufende Kontrolle von Kopfhöhe und Augenlinie, eine Hintergrundprüfung, ein druckfertiger 10x15-Bogen und eine Datei, die in die KB-Grenze des Portals passt. Es wird nichts hochgeladen."
-og_title = "Ein Passbild genau nach der Vorschrift Ihres Landes, ohne es hochzuladen"
-og_description = "Wählen Sie Land und Dokument, und der Zuschnittrahmen übernimmt Kopfhöhe und Augenlinie dieser Vorschrift. Druckt in der vorgeschriebenen Größe und Auflösung und schreibt die Upload-Datei in das KB-Band, auf dem das Formular besteht."
+title = "Passbild erstellen &mdash; unterstützte Maße, ohne Upload"
+description = "Pass- und Visumfotos für unterstützte Länder vorbereiten: veröffentlichte Maße, gekennzeichnete Zuschnitt-Hinweise, Kopf- und Augenlinien, Hintergrundprüfung, Druckbögen und JPEG-Voreinstellungen. Ihr Foto bleibt im Browser."
+og_title = "Pass- und Visumfotos nach belegten Vorgaben vorbereiten, ohne Upload"
+og_description = "Wählen Sie ein unterstütztes Dokument, prüfen Sie Quelle und Orientierung, schneiden Sie lokal zu und speichern Sie ein Foto, einen Druckbogen oder eine JPEG-Datei."
 og_image_alt = "Passbild-Ersteller - Pass- und Visumfotos nach Vorschrift, ohne Upload"
 
 pledge = """
@@ -39,7 +39,7 @@ read_first = """
       zwei Kopfänderungen, die die Druckauflösung in die Datei schreiben und einen zu
       kleinen Upload auf die Größe bringen, auf der ein Formular besteht."""
 
-howto_heading = "So machen Sie ein Passbild, das nicht zurückkommt"
+howto_heading = "So bereiten Sie ein Passbild vor"
 
 card = """
             Wählen Sie Land und Dokument, und der Zuschnittrahmen übernimmt
@@ -312,14 +312,7 @@ a = """
 
 [[faq]]
 q = "Kann es auch die Unterschriftsdatei?"
-a = """
-        Ja. Die SSC- und UPSC-Formulare wollen eine mit &#x2066;140&nbsp;&times;&nbsp;60&#x2069; Pixeln
-        und zwischen 10 und 20&nbsp;KB, und sie steht als eigene Vorschrift auf der
-        Liste. Die Gesichtsüberlagerung ist dafür abgeschaltet, denn eine Unterschrift
-        hat keine Augenlinie. Geprüft wird stattdessen, dass das Papier hell ist, dass
-        Tinte darauf ist und dass der Zuschnitt keine Linierung und keinen Blattrand
-        mitgenommen hat. Die 10&nbsp;KB zu erreichen ist bei dieser Regel der schwere
-        Teil, nicht das Unterschreiten von 20."""
+a = "Ja. Die zitierte IBPS-Ausschreibung empfiehlt &#x2066;140&nbsp;&times;&nbsp;60&#x2069; Pixel und verlangt 10 bis 20&nbsp;KB für eine JPEG-Unterschrift. Diese Voreinstellung schreibt diese Maße; prüfen Sie die aktuelle Ausschreibung Ihres Antrags. Die Gesichtsmarkierungen sind deaktiviert. Geprüft werden helles Papier, sichtbare Tinte sowie Linien oder Seitenränder im Zuschnitt."
 
 [[faq]]
 q = "Garantiert das, dass mein Antrag angenommen wird?"
@@ -363,7 +356,7 @@ features = [
   "Druckt auf den exakten Millimeter, mit der Auflösung im JPEG-Kopf",
   "Ein Bogen in &#x2066;10 x 15&#x2069;, &#x2066;13 x 18&#x2069;, A4 oder Letter, gekachelt mit Schnittmarken in den Lücken",
   "Eine Upload-Datei in der vorgeschriebenen Pixelgröße, an beiden Enden ins KB-Band des Portals gebracht",
-  "SSC- und UPSC-Formularfotos in &#x2066;200 x 230&#x2069; mit 20 bis 50 KB und Unterschriften in &#x2066;140 x 60&#x2069; mit 10 bis 20 KB",
+  "IBPS-Voreinstellungen: empfohlene &#x2066;200 x 230&#x2069;-Fotos mit 20-50 KB und &#x2066;140 x 60&#x2069;-Unterschriften mit 10-20 KB; aktuelle Ausschreibung prüfen",
   "Läuft offline; kein Upload, kein Konto, kein Gesichtsmodell",
 ]
 
@@ -378,7 +371,7 @@ hint = "oder klicken und auswählen &mdash; ein Foto, JPEG, PNG, WebP, AVIF oder
 title = "Fotogröße und Anforderungen: {document}, {country}"
 heading = "Fotoanforderungen: {document}, {country}"
 nav = "{document}, {country}"
-description = "{size}, Hintergrund {background}: die Vorgaben laut {authority}, gelesen am {checked} &mdash; und ein kostenloses Werkzeug, das ein Foto im Browser danach zuschneidet. Nichts wird hochgeladen."
+description = "{document}, {country}: {size}, vor {background}, mit Vorgaben von {authority}, geprüft am {checked}, und einem kostenlosen Zuschnitt im Browser. Ohne Upload."
 lede = "Die veröffentlichte Vorschrift für das Foto zu diesem Dokument (Quelle: {authority}, Stand {checked}) &mdash; und ein Weg, eines zu erstellen, das ihr entspricht, ohne Ihr Gesicht irgendwohin zu schicken."
 updated = "{checked}"
 facts_heading = "Die Vorgaben"

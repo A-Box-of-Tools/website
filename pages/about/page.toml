@@ -27,9 +27,9 @@ lede = """
     trusting. Everything here runs on your own machine, the code is public, and
     this page is where the reasons behind both are written down."""
 
-updated = "27 August 2026"
-lastmod = "2026-08-27"
+updated = "12 October 2026"
+lastmod = "2026-10-12"
 
 og_title = "Who makes abox.tools, and why they run in your browser"
-og_description = "An independent, self-funded project. Why the tools never upload anything, how the site pays for itself, and how to check both."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_description = "An independent, self-funded project. Why files are processed locally, which features use the network, how the site pays for itself, and how to check its claims."
+og_image_alt = "abox.tools - browser tools for local file processing"

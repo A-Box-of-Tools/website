@@ -8,11 +8,11 @@
 name = "Compresor de imágenes"
 # El añadido es la frase que la gente busca. Como en inglés, el nombre del
 # producto se queda con la mitad ruidosa.
-heading = "Comprimir&nbsp;imagen <span class=\"h1-kw\">&mdash; a un tamaño exacto</span>"
+heading = "Comprimir&nbsp;imagen <span class=\"h1-kw\">&mdash; bajo un límite de tamaño</span>"
 tagline = "Tú dices el tamaño. Del resto se encarga él."
 
-title = "Comprimir una imagen a un tamaño exacto &mdash; gratis y sin subir nada"
-description = "Comprime un JPEG, PNG o WebP al tamaño exacto que te pidan: 100 KB, 2 MB o el que sea. Todo dentro del navegador, sin subir nada, sin cuenta y sin conexión."
+title = "Comprimir imagen bajo un tamaño objetivo &mdash; gratis, sin subir archivos"
+description = "Comprime JPEG, PNG, WebP o AVIF para un límite como 100 KB o 2 MB. Busca un resultado igual o menor que el objetivo, no una cantidad exacta de bytes. Sin subir archivos, también sin conexión."
 og_title = "Comprimir una imagen al tamaño que tú elijas"
 og_description = "Dices un tamaño y la herramienta busca la menor compresión que llega hasta él. Después mide lo que ha costado. Todo ocurre en tu dispositivo y no se sube nada."
 og_image_alt = "Compresor de imágenes - di un tamaño y conserva la calidad"
@@ -60,13 +60,8 @@ text = "Funciona sin conexión"
 text = "Código abierto"
 
 [[privacy]]
-title = "Tus imágenes no tienen adónde ir."
-body = """
- La
-      Content-Security-Policy enumera todas las direcciones a las que esta
-      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
-      destino donde recoger tus archivos, ni una línea de código que los
-      mandara si lo hubiera."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "Aquí nada le pide nada a la red."
@@ -145,15 +140,8 @@ a = """
         sitio."""
 
 [[faq]]
-q = "¿Cómo consigue un tamaño exacto?"
-a = """
-        Probando. No hay ninguna fórmula que convierta un ajuste de calidad en un
-        número de bytes, porque eso depende por completo de la foto. Así que la
-        herramienta codifica la imagen varias veces y busca la respuesta. Empieza
-        por lo más alto del rango de calidad y va acercándose por mitades, con lo
-        que da con la calidad más alta que cabe en unas ocho codificaciones. Cada
-        tamaño que ves en la página es un archivo codificado de verdad, no una
-        estimación."""
+q = "¿Cómo cumple un límite de tamaño?"
+a = "Codifica y mide varios candidatos y busca la mayor calidad que quepa. Si puede producir un archivo válido, queda igual o por debajo del objetivo, no necesariamente con los bytes exactos indicados. Un archivo ya bajo el límite sigue intacto. Si bajar la calidad no basta, reduce las dimensiones; revisa el resultado."
 
 [[faq]]
 q = "¿Qué significa aquí exactamente «pérdida mínima»?"
@@ -214,7 +202,7 @@ description = "Comprime imágenes JPEG, PNG y WebP al tamaño que tú digas. La 
 features = [
   "Comprime a un tamaño de archivo que eliges tú, no a un número de calidad que hay que adivinar",
   "Conserva la resolución completa siempre que puede, y redimensiona solo cuando la calidad por sí sola no alcanza el objetivo",
-  "Gasta todo el presupuesto: el resultado queda justo por debajo del objetivo, no muy por debajo",
+  "Busca acercarse al límite sin prometer bytes exactos",
   "Mide el resultado frente al original con SSIM y PSNR",
   "Deja intactos los archivos que ya están por debajo del objetivo",
   "JPEG, PNG y WebP, con elección automática de formato",

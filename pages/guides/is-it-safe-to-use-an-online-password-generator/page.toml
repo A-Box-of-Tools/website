@@ -13,6 +13,7 @@
 
 slug = "guides/is-it-safe-to-use-an-online-password-generator"
 kind = "guide"
+tool = "password-generator"
 nav = "Are online password generators safe?"
 # Which group on the guides index this joins, by the id in config/site.toml.
 group = "before-you-upload"
@@ -33,4 +34,4 @@ lastmod = "2026-08-26"
 
 og_title = "Is it safe to use an online password generator?"
 og_description = "Where browser randomness comes from, what a generator page could do wrong, and how to catch one keeping what it made - before you use anything it produced."
-og_image_alt = "abox.tools - tools that never touch a server"
+og_image_alt = "abox.tools - browser tools for local file processing"

@@ -32,8 +32,8 @@ text = "Fonctionne hors ligne"
 text = "Open source"
 
 [[privacy]]
-title = "Vos images n'ont nulle part où aller."
-body = "La Content-Security-Policy énumère toutes les adresses que cette page peut contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y enverrait s'il en existait un."
+title = "Le traitement se fait dans ce navigateur."
+body = "L’outil traite entrées et résultats dans le navigateur. Son code ne les envoie pas pour traitement. Content-Security-Policy limite ressources et destinations, mais les hôtes autorisés peuvent recevoir des requêtes : elle n’inspecte pas les données et ne prouve pas seule une absence d’envoi. Comparez code et requêtes de l’opération ou terminez l’opération locale déconnecté."
 
 [[privacy]]
 title = "Rien ici ne va rien chercher."
@@ -77,7 +77,7 @@ a = "La hauteur découle de la forme même de l'image, ce qui est presque toujou
 
 [[faq]]
 q = "Redimensionner une image fait-il perdre de la qualité&nbsp;?"
-a = "Réduire une image, non, d'aucune façon visible&nbsp;: il entre plus de pixels qu'il n'en sort, et le détail conservé est du vrai détail. Agrandir, en revanche, ne peut pas ajouter ce qui n'a jamais été photographié, et le résultat est une copie plus molle de la même image plutôt qu'une plus nette. C'est pourquoi &laquo;&nbsp;ne jamais agrandir une image au-delà de sa taille de départ&nbsp;&raquo; est actif par défaut. Ce qui coûte un peu, c'est le réencodage qui suit, si le format est du JPEG ou du WebP, et le curseur de qualité est ce que vous y dépensez."
+a = "Réduire supprime des pixels et peut faire perdre petits textes, traits fins et détails, même si une photo paraît correcte à sa taille d’affichage. Agrandir ne retrouve pas un détail jamais enregistré. JPEG et WebP avec perte peuvent ajouter une perte après redimensionnement ; PNG conserve les pixels redimensionnés, pas les détails originaux. Vérifiez à la taille d’utilisation."
 
 [[faq]]
 q = "Puis-je recadrer chaque image différemment&nbsp;?"

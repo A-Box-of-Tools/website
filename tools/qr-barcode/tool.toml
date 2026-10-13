@@ -31,7 +31,7 @@ roadmap_group = "beyond"
 # the build so that its own can override them.
 css_parts = ["form", "checks", "notes"]
 js_parts = ["qr-tables", "download", "gf256", "qr-encode", "qr"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -118,13 +118,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "There is nowhere for what you type to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that a Wi-Fi
-      password could be collected at, and nothing in the code that would send it
-      if there were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -342,14 +337,7 @@ a = """
 
 [[faq]]
 q = "Can I put a logo in the middle of a QR code?"
-a = """
-        Not here, but the reason it works elsewhere is worth knowing: the error
-        correction is what makes it possible. At level H roughly 30% of the
-        modules can be destroyed and the code still read, so a logo covering
-        rather less than that in the centre &mdash; where no finder pattern sits
-        &mdash; is repairable damage. Put the code through your image editor at
-        level H, keep the logo under about a fifth of the area, and test it with
-        a real phone rather than trusting it."""
+a = "A small logo can work, but no percentage of image area is guaranteed safe. DENSO defines level H’s roughly 30% restoration against total codewords, not arbitrary squares. Keep finder and alignment patterns clear, use H, and test the final printed code on several phones. <a href=\"https://www.qrcode.com/en/about/error_correction.html\">DENSO’s error-correction explanation</a> describes the denominator."
 
 [[faq]]
 q = "Why is the SVG better than the PNG?"

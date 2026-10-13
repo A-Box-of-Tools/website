@@ -183,11 +183,12 @@ export const ICAO_EYE = band(0.50, 0.60);
  * @property {string[]} notes       shown under the specification, verbatim
  * @property {string|null} native   the document's own name for itself, where
  *   that is a different word from the one this site prints. From sources.js.
- * @property {{authority: string, document: string, checked: string}} source
+ * @property {{authority: string, document: string, url?: string, checked: string}} source
  *   from sources.js, except on the two rules that cite nothing
  *
  * @typedef {object} Digital
  * @property {string} label
+ * @property {boolean} [advisory]   pixel dimensions are a preferred export size
  * @property {{exact?: number, min?: number, max?: number}} width   pixels
  * @property {{exact?: number, min?: number, max?: number}} height  pixels
  * @property {{min?: number, max?: number}} bytes
@@ -259,8 +260,8 @@ const RULES = [
     // 240 kB at most, where online renewal takes anything up to 10 MB.
     digital: {
       label: 'upload.online',
-      width: { min: 600 },
-      height: { min: 600 },
+      width: { min: 600, max: 1200 },
+      height: { min: 600, max: 1200 },
       bytes: { max: 240 * 1024 },
       format: 'image/jpeg',
     },
@@ -763,7 +764,7 @@ const RULES = [
   {
     id: 'au-visa',
     country: 'country.au',
-    document: 'doc.visa',
+    document: 'spec.au-visa.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: band(0.70, 0.80, true),
@@ -799,6 +800,7 @@ const RULES = [
     background: 'light-grey',
     digital: {
       label: 'upload.online',
+      advisory: true,
       width: { min: 1200 },
       height: { min: 1600 },
       bytes: { min: 70 * 1024, max: 3.5 * 1024 * 1024 },
@@ -835,8 +837,8 @@ const RULES = [
     background: 'white-or-light',
     digital: {
       label: 'upload.online',
-      width: { min: 600 },
-      height: { min: 600 },
+      width: { min: 350, max: 1000 },
+      height: { min: 350, max: 1000 },
       bytes: { min: 10 * 1024, max: 300 * 1024 },
       format: 'image/jpeg',
     },
@@ -854,8 +856,9 @@ const RULES = [
     background: 'white-or-light',
     digital: {
       label: 'upload.online',
-      width: { min: 600 },
-      height: { min: 600 },
+      advisory: true,
+      width: { exact: 600 },
+      height: { exact: 600 },
       bytes: { min: 10 * 1024, max: 1024 * 1024 },
       format: 'image/jpeg',
     },
@@ -910,6 +913,7 @@ const RULES = [
     background: 'white',
     digital: {
       label: 'spec.in-exam-photo.upload',
+      advisory: true,
       width: { exact: 200 },
       height: { exact: 230 },
       bytes: { min: 20 * 1024, max: 50 * 1024 },
@@ -933,6 +937,7 @@ const RULES = [
     background: 'white',
     digital: {
       label: 'spec.in-exam-signature.upload',
+      advisory: true,
       width: { exact: 140 },
       height: { exact: 60 },
       bytes: { min: 10 * 1024, max: 20 * 1024 },
@@ -1886,19 +1891,20 @@ export function printLabel(spec, t) {
 export function pixelLabel(spec, t) {
   const digital = spec.digital;
   if (!digital) return null;
+  const guidance = (text) => (digital.advisory ? t('band.guidance', { band: text }) : text);
   const axis = (value) => (value.exact ? `${value.exact}` : value.min ? `${value.min}+` : '-');
   if (digital.width.exact && digital.height.exact) {
-    return t('px.exact', { width: digital.width.exact, height: digital.height.exact });
+    return guidance(t('px.exact', { width: digital.width.exact, height: digital.height.exact }));
   }
   if (digital.width.max || digital.height.max) {
-    return t('px.upto', {
+    return guidance(t('px.upto', {
       width: axis(digital.width),
       height: axis(digital.height),
       maxWidth: digital.width.max ?? '?',
       maxHeight: digital.height.max ?? '?',
-    });
+    }));
   }
-  return t('px.least', { width: digital.width.min, height: digital.height.min });
+  return guidance(t('px.least', { width: digital.width.min, height: digital.height.min }));
 }
 
 /** 35 rather than 35.0, and 16.9 rather than 16.933333333333334. */

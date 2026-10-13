@@ -1,9 +1,7 @@
   <section>
     <h2>The short answer</h2>
     <p>
-      For most files, most of the time, uploading is fine. Reputable converters
-      delete what you send within a few hours and have no interest in your
-      holiday photos.
+      Uploading can be appropriate for a non-sensitive file and a service whose terms fit the job. Retention and access vary by provider and feature; a deletion timer alone does not establish where every copy goes.
     </p>
     <p>
       The problem is not that they are lying. It is that
@@ -24,27 +22,13 @@
   <section>
     <h2>What &ldquo;upload&rdquo; actually does</h2>
     <p>
-      When a converter asks you to choose a file and then shows you a progress
-      bar, your browser is copying the whole file, byte for byte, across the
-      internet to a computer somebody else owns. That computer writes it to a
-      disk, runs the conversion, writes the result to the same disk, and hands
-      you a link.
+      An upload sends file data from your browser to another computer. The bytes may be the original file or a transformed copy. Choosing a file alone is not an upload: a local tool can read it without sending it.
     </p>
     <p>
-      At that moment your file exists in at least three places you did not
-      choose: the server's disk, whatever logs recorded the request, and often a
-      content delivery network that cached the result so the download is fast.
-      A deletion policy has to reach all three. Most say they do. You cannot
-      check any of them.
+      Server processing may create working files, logs that identify the request, cached results and backups. These are possibilities to check in a provider's terms, rather than three copies every service necessarily makes. An external browser test cannot verify internal deletion or retention.
     </p>
     <p>
-      Worth knowing as well: the file is not the only thing that arrives. The
-      filename goes with it, and so does everything inside the file that you
-      cannot see. A photo straight off a phone typically carries the exact GPS
-      coordinates where it was taken, the time, the camera's serial number, and
-      sometimes an embedded thumbnail of the original image from before you
-      cropped it. People who are careful about the picture are often not careful
-      about that, because nothing on screen shows it to them.
+      The filename and embedded metadata may travel with the upload. Photos can contain location, time, camera or software details and embedded thumbnails; the actual fields depend on the device, settings and edits. Inspect the file rather than assuming every phone photo has all of them.
     </p>
   </section>
 
@@ -77,66 +61,23 @@
   <section>
     <h2>Four checks you can run yourself</h2>
     <p>
-      These work on any tool, including this one. None of them requires taking
-      anybody's word for anything, and the first takes about ten seconds.
+      Run these checks on the exact operation and input you plan to use. Each answers part of the question; together they are stronger than any one alone.
     </p>
-
-    <h3>1. Pull the plug</h3>
+    <h3>1. Disconnect for the local operation</h3>
     <p>
-      Load the page, then turn off your wi-fi or unplug the cable, and try to use
-      it. A tool that does its work in your browser carries on exactly as before.
-      A tool that uploads stops immediately, because the thing doing the work is
-      no longer reachable.
+      Load the tool fully and, if it caches offline assets, wait until its indicator says ready. Disconnect, then process a file from your device. Completion proves this operation did not need a server while disconnected. A failure can also mean missing assets or an unsupported browser feature. It does not prove an upload. A successful offline run does not establish what happens after reconnection; <a href="../how-can-a-web-page-work-offline/">the offline guide</a> explains that limit.
     </p>
+    <h3>2. Inspect the requests</h3>
     <p>
-      This is the strongest test there is, and the hardest to fake, because it
-      cannot be answered with wording. Either the conversion completes with no
-      network or it does not.
+      Open DevTools before the operation, clear the list and preserve the log. Inspect destinations, URL parameters, request bodies and WebSocket messages. Transfer-size columns often describe responses, and small requests can carry extracted or compressed data; matching the file's size is not a sufficient test. Ordinary request lists also do not show WebRTC peer payloads. For a peer feature, read its transport code and use the browser's WebRTC diagnostics.
     </p>
-
-    <h3>2. Watch the Network tab</h3>
-    <p>
-      Open your browser's developer tools, select Network, then use the tool.
-      Every request the page makes is listed with its size. If your 4&nbsp;MB
-      photo was uploaded, there is a 4&nbsp;MB request in that list. If the
-      largest thing leaving the page is a few kilobytes of advertising, it was
-      not.
-    </p>
-    <p>
-      Sort by size and look at the top. You do not need to understand the
-      requests; you need to notice whether one of them is the size of your file.
-    </p>
-
     <h3>3. Read the Content-Security-Policy</h3>
     <p>
-      View the page source and look for
-      <code>Content-Security-Policy</code>, near the top. It is a list of the
-      addresses that page is permitted to contact, and it is enforced by your
-      browser rather than by the site's good intentions &mdash; a request to
-      anything not on the list is refused, whatever the code tries.
+      The <a href="https://www.w3.org/TR/CSP3/#directive-connect-src" target="_blank" rel="noopener noreferrer">connect-src directive</a> restricts destinations for APIs such as fetch and WebSocket. An allowed third-party host can still receive data. Other directives govern images, forms and resources; WebRTC peer traffic is not described by this host list. CSP is a useful constraint, not a payload audit or a standalone no-upload proof.
     </p>
+    <h3>4. Follow the data in the source</h3>
     <p>
-      The directive that matters is <code>connect-src</code>, which governs where
-      the page may send data. If it names an address belonging to the site you
-      are on, the page can send your file there. If it names nothing, or only
-      third parties like an ad network, it cannot.
-    </p>
-    <p>
-      A page with no Content-Security-Policy at all is not evidence of anything
-      bad. It just means this particular check has nothing to tell you.
-    </p>
-
-    <h3>4. Read the code</h3>
-    <p>
-      Least convenient, most conclusive. If a tool publishes its source and
-      serves it without a build step, the files your browser fetched are the
-      files you can read. Search them for <code>fetch</code>,
-      <code>XMLHttpRequest</code> and <code>sendBeacon</code> &mdash; the three
-      ways a page can send anything &mdash; and see what they are given.
-    </p>
-    <p>
-      Most people will not do this. It still matters that it is possible,
-      because a claim nobody is able to check is not really a claim.
+      Compare the published source and generated code. Trace chosen files through fetch, XMLHttpRequest, sendBeacon, WebSocket and RTCPeerConnection, and check forms, resource URLs and app handoffs too. These are examples of paths to inspect, not an exhaustive list. The decisive question is what data each path is given, including platform and feedback scripts.
     </p>
   </section>
 
@@ -165,11 +106,7 @@
         the feature, not a flaw in it &mdash; but it is a real exception and a
         tool should say so plainly rather than round it off.
       </li>
-      <li>
-        <strong>It is not the same as &ldquo;we delete your files.&rdquo;</strong>
-        The second sentence is about what a company chooses to do. The first is
-        about what is technically possible. Only one of them is checkable.
-      </li>
+      <li><strong>It is not the same as &ldquo;we delete your files.&rdquo;</strong> Local processing identifies where a particular operation runs. Retention is a separate claim about what a provider does after receiving data. Read the implementation and any network-feature boundaries before treating either phrase as a privacy guarantee.</li>
     </ul>
   </section>
 
@@ -201,55 +138,28 @@
     </p>
     <ul>
       <li>
-        <strong>Pull the plug.</strong> Open any tool here, disconnect, and it
-        keeps working. Each tool page has a live indicator that tells you whether
-        you are currently online, so you can watch it change.
+        <strong>Offline.</strong> Local processing works with loaded assets and a ready cache. Image URL retrieval, online rates and browser introductions require their respective connections.
       </li>
       <li>
-        <strong>Network tab.</strong> Convert something and read the list.
-        Nothing carries your file, a thumbnail of it, its name, its size, or
-        anything read out of it. There is no custom analytics event on this site
-        that has any of that to send.
+        <strong>Requests.</strong> The processing code does not upload selected files. Platform page visits and optional fixed feedback votes are separate. Rate requests contain a currency pair and date, and intentional peer features send content to the chosen browser.
       </li>
       <li>
-        <strong>Content-Security-Policy.</strong> It is at the top of every
-        page's source. <code>connect-src</code> names Google's advertising and
-        measurement endpoints and the donate button, and nothing else.
-        <strong>No address on that list belongs to this site</strong>, because
-        this site has no server &mdash; it is static files. There is nowhere for
-        a file to be sent even if something tried.
+        <strong>Policy.</strong> Most tools inherit platform destinations. Receipt extraction adds Frankfurter; Share Text &amp; Files and Remote Camera add the rendezvous. The policy constrains destinations and does not prove every payload.
       </li>
       <li>
-        <strong>Code.</strong> Every line is
-        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">public</a>.
-        The build strips comments and whitespace and nothing else, and you can
-        run it yourself and compare the result against what is being served.
+        <strong>Source.</strong> The <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">source is public</a>. Build it and compare generated output. Shared modules and bundled engines are available alongside the first-party code.
       </li>
     </ul>
     <p>
-      The exceptions, stated rather than buried: this site carries Google
-      advertising and a visit counter, both of which talk to Google and neither
-      of which is handed anything about your files; and the
-      <a href="../../images-to-video/">Images to Video</a> tool can fetch an
-      image from an address you paste in, which means that server sees your IP.
-      The <a href="../../privacy/">privacy page</a> sets both out in full.
+      The <a href="../../privacy/">Privacy page</a> gives the full boundaries: <a href="../../images-to-video/">image URL imports</a>, optional <a href="../../receipt-invoice-extractor/">receipt exchange rates and app handoffs</a>, <a href="../../share-text/">browser-to-browser sharing</a> and <a href="../../remote-camera/">remote camera viewing</a>, plus ads, Analytics and fixed feedback. A deliberate transfer is distinct from uploading a file for processing.
     </p>
     <p>
-      Every tool here works this way: an
-      <a href="../../compress-image/">image compressor</a> that hits a size you
-      name, a <a href="../../crop-video/">video cropper</a>, an
-      <a href="../../exif-editor/">EXIF viewer and remover</a> for the hidden
-      data described further up this page,
-      <a href="../../images-to-video/">images to video</a>, and
-      <a href="../../images-to-pdf/">images to PDF</a>. All free, no account,
-      and none of them has anywhere to send your files.
+      For local file processing, examples include <a href="../../compress-image/">compressing toward a target size</a>, <a href="../../crop-video/">cropping a video</a>, <a href="../../exif-editor/">removing EXIF and GPS</a> and <a href="../../images-to-pdf/">making a PDF from images</a>. Check supported formats and the downloaded result. These jobs need no processing upload or account.
     </p>
 
     <figure class="shot">
       <img src="/screens/is-it-safe-to-upload-files/pledge.webp" loading="lazy" decoding="async"
-           alt="The panel on a tool page: a line saying the files never leave the browser, the facts behind it, and a live check reporting that the page has made no network requests.">
-      <figcaption>
-        The last of the four checks, answered on the page rather than in a paragraph: the count is made by the page about itself, and you can make the same count in your own browser.
-      </figcaption>
+           alt="A tool privacy panel showing its local-processing claim, source references and a live summary of loaded resources.">
+      <figcaption>The panel makes the claim and its supporting source files visible. Its resource summary is a useful prompt to inspect the browser's own requests; it does not independently inspect their payloads.</figcaption>
     </figure>
   </section>

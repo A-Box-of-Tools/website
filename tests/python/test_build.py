@@ -671,7 +671,9 @@ class BuildTheSite(unittest.TestCase):
                 self.assertEqual('class="page-md-copy"' in page, expected)
                 if not expected:
                     continue
-                block = re.search(r'<pre id="page-markdown" hidden>(.*?)</pre>', page, re.S)
+                block = re.search(
+                    r'<pre\b(?=[^>]*\bid="page-markdown")(?=[^>]*\bhidden)[^>]*>(.*?)</pre>',
+                    page, re.S)
                 self.assertIsNotNone(block, 'no embedded twin')
                 self.assertEqual(htmllib.unescape(block.group(1)),
                                  twin.read_text(encoding='utf-8'))

@@ -63,15 +63,8 @@ text = "Quelloffen"
 text = "Dateien bleiben auf Ihrem Gerät"
 
 [[privacy]]
-title = "Ihr GIF hat keinen Weg nach draußen."
-body = """
- In der
-      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
-      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
-      dem Ihre Datei eingesammelt werden könnte, und im Code steht auch nichts,
-      das sie dorthin schicken würde, gäbe es einen. Früher stand hier
-      <code>connect-src 'none'</code>, was keine Ausnahme kannte. Die Werbung hat
-      das gekostet, und das gehört dazugesagt."""
+title = "Die Verarbeitung findet in diesem Browser statt."
+body = "Dieses Werkzeug verarbeitet Eingaben und Ergebnisse im Browser. Sein Verarbeitungscode lädt sie nicht zur Verarbeitung hoch. Content-Security-Policy begrenzt Ressourcen und Verbindungsziele; erlaubte Hosts können jedoch Anfragen empfangen. Die Richtlinie prüft keine Nutzdaten und beweist allein keine ausbleibende Übertragung. Vergleichen Sie Quelltext und konkrete Anfragen oder führen Sie die lokale Operation ohne Verbindung aus."
 
 [[privacy]]
 title = "Der Leser sind vier Dateien in diesem Repository."
@@ -86,13 +79,7 @@ body = """
 
 [[privacy]]
 title = "Kommentare und Metadaten sehen Sie, und sonst niemand."
-body = """
-
-      Ein GIF kann einen Kommentarblock enthalten, ein XMP-Paket, das eine
-      Bearbeitung beschreibt, oder ein Farbprofil, und diese Seite druckt alles
-      davon aus. Es steht vor Ihnen auf dem Bildschirm und geht sonst nirgendwo
-      hin. In diesem Repository gibt es kein Analytics-Ereignis, das davon etwas
-      mitträgt, und die Seite könnte es auch nicht senden, gäbe es eines."""
+body = "Ein GIF kann einen Kommentarblock enthalten, ein XMP-Paket, das eine Bearbeitung beschreibt, oder ein Farbprofil, und diese Seite druckt alles davon aus. Es steht vor Ihnen auf dem Bildschirm und geht sonst nirgendwo hin. In diesem Repository gibt es kein Analytics-Ereignis, das davon etwas mitträgt. Freiwilliges Feedback meldet nur Werkzeugkennung, feste Antwort und festen Grund, niemals gelesene Dateimetadaten."
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."

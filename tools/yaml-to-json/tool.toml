@@ -61,12 +61,12 @@ css_parts = ["form", "panes", "checks", "notes", "editor-feedback"]
 # is here for the config file that is easier to drop than to open, select all
 # and copy.
 js_parts = ["file-picker", "text-import", "parse-errors", "parse-json", "parse-yaml", "message-box", "editor-feedback", "download", "format"]
-lastmod = "2026-09-07"
+lastmod = "2026-10-12"
 
 # --- what search engines and chat apps are told ------------------------------
 
 title = "YAML to JSON Converter &mdash; Both Ways, No Upload"
-description = "Convert YAML to JSON and JSON to YAML in your browser. Reads YAML 1.2, so yes and no stay strings, and says exactly what each direction loses. Nothing is uploaded - a config file never leaves your machine."
+description = "Convert a supported YAML 1.2 subset to JSON and JSON back to YAML in your browser. Anchors, aliases, tags and multiple documents are refused; comments are lost in JSON. Nothing is uploaded."
 og_title = "Convert YAML to JSON without pasting it into a server"
 og_description = "A YAML and JSON converter running on your own machine. Keys keep their order, numbers keep their digits, and what you paste goes nowhere."
 og_image_alt = "YAML to JSON Converter - both directions, no upload"
@@ -152,13 +152,8 @@ mark = "&#10003;"
 text = "Open source"
 
 [[privacy]]
-title = "What you paste has nowhere to go."
-body = """
- The
-      Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that a pasted
-      config could be collected at, and nothing in the code that would send it
-      if there were."""
+title = "Processing happens in this browser."
+body = "This tool processes input and results inside your browser. Its processing code does not upload them for processing. Content-Security-Policy restricts permitted resources and connection destinations, but allowed hosts can still receive requests: the policy does not inspect payloads and alone cannot prove that nothing is sent. Compare the source with the requests for the operation you use, or complete that local operation while disconnected."
 
 [[privacy]]
 title = "Nothing here fetches anything."
@@ -170,7 +165,7 @@ body = """
       string."""
 
 [[privacy]]
-title = "It reads YAML 1.2, so Norway is still Norway."
+title = "The supported subset uses YAML 1.2 scalar rules."
 body = """
  In YAML 1.1,
       <code>no</code> was a boolean, which is the famous bug that turns the
@@ -182,13 +177,7 @@ body = """
 
 [[privacy]]
 title = "A conversion that cannot be honest stops instead."
-body = """
- An
-      anchor, an alias or a tag in the YAML ends the conversion with a message
-      saying which line it is on, rather than a JSON document that quietly
-      means something else. JSON has no way to say &ldquo;the same node
-      twice&rdquo;, and picking an interpretation would be choosing for
-      you."""
+body = "JSON drops comments. This parser deliberately supports a subset of YAML 1.2 and refuses anchors, aliases and tags instead of choosing an expansion or type conversion for you. JSON represents a tree of values; YAML can represent shared nodes and typed values. Multi-document streams are also refused rather than wrapped in an invented array. JSON to YAML keeps the represented values."
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -263,28 +252,11 @@ a = """
 
 [[faq]]
 q = "What does converting YAML to JSON lose?"
-a = """
-        Comments, because JSON has nowhere to put one. Anchors, aliases and tags
-        are refused outright rather than guessed at &mdash; each of them says
-        something JSON cannot say, and a converter that quietly picked an
-        interpretation would hand you a document that is not what the file said.
-        The other direction loses nothing: every JSON document is already a YAML
-        document."""
+a = "JSON drops comments. This parser deliberately supports a subset of YAML 1.2 and refuses anchors, aliases and tags instead of choosing an expansion or type conversion for you. JSON represents a tree of values; YAML can represent shared nodes and typed values. Multi-document streams are also refused rather than wrapped in an invented array. JSON to YAML keeps the represented values. <a href=\"https://yaml.org/spec/1.2.2/\">The YAML specification</a> defines the broader format."
 
 [[faq]]
 q = "My YAML says no and the JSON came out as a string. Why?"
-a = """
-        Because it is a string, and this reads YAML 1.2 rather than 1.1. In YAML
-        1.1, <code>yes</code>, <code>no</code>, <code>on</code> and
-        <code>off</code> were booleans, which is the famous bug that turns the
-        country code for Norway into <code>false</code>. YAML 1.2 dropped that
-        and so does this: only <code>true</code>, <code>false</code>,
-        <code>null</code> and <code>~</code> are read as anything but text.
-        Going the other way, those words are written back <em>quoted</em>, even
-        though this would read them as text without the quotes &mdash; because
-        whatever opens the file next may not. PyYAML still defaults to 1.1.
-        Reading strictly and writing conservatively is the only combination
-        that is right either way."""
+a = "YAML 1.1 treated <code>yes</code>, <code>no</code>, <code>on</code> and <code>off</code> as booleans, turning Norway’s country code into <code>false</code>. This supported subset uses YAML 1.2 rules: those words stay strings, <code>true</code> and <code>false</code> are booleans, <code>null</code> and <code>~</code> are null, and numeric scalars are numbers. The YAML writer quotes the ambiguous words for readers that still use older rules."
 
 [[faq]]
 q = "Does it keep the order of my keys?"
@@ -339,12 +311,12 @@ a = """
 
 [schema]
 category = "DeveloperApplication"
-description = "Convert YAML to JSON and JSON to YAML in the browser. Reads YAML 1.2, keeps the order of keys and the exact digits of every number, and says what each direction loses. Nothing is uploaded."
+description = "Convert a supported YAML 1.2 subset to JSON and JSON back to YAML in your browser. Anchors, aliases, tags and multiple documents are refused; comments are lost in JSON. Nothing is uploaded."
 features = [
   "Converts YAML to JSON and JSON to YAML",
-  "Reads YAML 1.2, so yes and no stay strings",
+  "Reads a YAML 1.2 subset; yes and no stay strings",
   "Keeps the order of keys and the exact digits of every number",
-  "Refuses anchors, aliases and tags rather than guessing what they meant",
+  "Refuses anchors, aliases, tags and multi-document streams explicitly",
   "Says which line and column an error is on, in words",
   "Works on a dropped file as well as on a paste",
   "Runs offline; no upload, no account",

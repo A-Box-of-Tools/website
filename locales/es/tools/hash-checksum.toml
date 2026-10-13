@@ -71,14 +71,8 @@ text = "Código abierto"
 text = "Los archivos no salen de tu dispositivo"
 
 [[privacy]]
-title = "Tu archivo no tiene por dónde salir."
-body = """
- En la
-      Content-Security-Policy está cada dirección que esta página puede
-      contactar, y ninguna es nuestra. Aquí no hay ningún punto final donde
-      recoger tu archivo, ni nada en el código que lo enviara si lo hubiera.
-      Antes esto decía <code>connect-src 'none'</code>, que era absoluto; la
-      publicidad costó eso, y decirlo forma parte del trato."""
+title = "El procesamiento se hace en este navegador."
+body = "La herramienta procesa entradas y resultados en el navegador. Su código no los sube para procesarlos. Content-Security-Policy limita recursos y destinos, pero los hosts permitidos pueden recibir solicitudes: no inspecciona sus datos ni prueba por sí sola que nada se envíe. Compara código y solicitudes de la operación concreta o complétala desconectado."
 
 [[privacy]]
 title = "El archivo nunca está entero en ningún sitio, sea del tamaño que sea."

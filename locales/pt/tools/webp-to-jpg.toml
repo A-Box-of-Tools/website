@@ -32,8 +32,8 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[privacy]]
-title = "Suas imagens não têm para onde ir."
-body = "A Content-Security-Policy lista todos os endereços que esta página pode contatar, e nenhum pertence a este site. Não existe aqui um endereço capaz de coletar seus arquivos, nem código que os enviaria se existisse."
+title = "O processamento acontece neste navegador."
+body = "A ferramenta processa entradas e resultados no navegador. Seu código não os envia para processamento. Content-Security-Policy limita recursos e destinos, mas hosts permitidos podem receber solicitações: ela não inspeciona o conteúdo nem prova sozinha que nada é enviado. Compare código e solicitações da operação ou conclua a operação local desconectado."
 
 [[privacy]]
 title = "Não há decodificador para distribuir, por isso não há servidor."
