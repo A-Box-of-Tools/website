@@ -27,6 +27,7 @@ function showStatus(key, role = mode) {
 
 function idleCamera() {
   $('camera-start').disabled = false;
+  $('camera-start').hidden = false;
   $('camera-name').disabled = false;
   $('camera-suggest').disabled = false;
   $('camera-discoverable').disabled = false;
@@ -78,6 +79,7 @@ const session = new CameraSession({
     if (!role) return;
     showStatus(key, role);
     if (session.role === null) {
+      closeStopDialog();
       discovery?.unpublish();
       epoch += 1;
       clearDetails();
@@ -153,6 +155,7 @@ function startDiscovery() {
 }
 
 function stop(key = 'connection.stopped') {
+  closeStopDialog();
   epoch += 1;
   discovery?.unpublish();
   session.stop(key);
@@ -165,6 +168,22 @@ function stop(key = 'connection.stopped') {
   showStatus('viewer.ready', 'viewer');
   showStatus(key);
   showActiveRole(null);
+}
+
+function closeStopDialog() {
+  const dialog = $('camera-stop-dialog');
+  if (dialog.open) dialog.close('cancel');
+}
+
+function stopCamera() {
+  stop();
+  $('camera-start').focus();
+}
+
+function requestCameraStop() {
+  if (!session.hasViewers) return stopCamera();
+  const dialog = $('camera-stop-dialog');
+  dialog.showModal();
 }
 
 function showActiveRole(role) {
@@ -332,11 +351,13 @@ async function startCamera() {
   showActiveRole('camera');
   const current = ++epoch;
   $('camera-start').disabled = true;
+  $('camera-start').hidden = true;
   $('camera-name').value = code;
   $('camera-name').disabled = true;
   $('camera-suggest').disabled = true;
   $('camera-discoverable').disabled = true;
   $('camera-stop').hidden = false;
+  $('camera-stop').focus();
   showStatus('camera.permission', 'camera');
   try {
     const stream = await capture.start();
@@ -411,7 +432,10 @@ navigator.mediaDevices?.addEventListener?.('devicechange', refreshCameras);
 $('camera-suggest').addEventListener('click', () => { $('camera-name').value = makeCode(); });
 $('camera-name').addEventListener('change', () => { $('camera-name').value = normalize($('camera-name').value); });
 $('discovery-refresh').addEventListener('click', () => discovery?.refresh());
-$('camera-stop').addEventListener('click', () => { stop(); $('camera-start').focus(); });
+$('camera-stop').addEventListener('click', requestCameraStop);
+$('camera-stop-confirm').addEventListener('click', () => {
+  if (activeRole === 'camera') stopCamera();
+});
 $('viewer-connect').addEventListener('click', connectViewer);
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
 $('viewer-play').addEventListener('click', playVideo);

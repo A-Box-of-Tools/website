@@ -31,7 +31,7 @@
     <p id="camera-approval-policy" class="camera-policy" role="status" aria-live="polite">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
-      <button type="button" id="camera-stop" class="ghost" hidden>Stop camera and end the link</button>
+      <button type="button" id="camera-stop" class="big danger" hidden>Stop camera and end the link</button>
     </div>
     <p id="camera-status" class="camera-status" role="status" aria-live="polite">Your camera is off. Nothing is paired.</p>
     <p id="camera-publication-status" class="field-note" role="status" aria-live="polite"></p>
@@ -79,7 +79,7 @@
     <p class="camera-consent">Connecting shares each browser&rsquo;s network address with the other and contacts our introduction service. The camera may ask its owner to approve you or start video automatically, depending on its setting. Continue only if you know who controls it.</p>
     <div class="run-row">
       <button type="button" id="viewer-connect" class="big">Connect to camera</button>
-      <button type="button" id="viewer-stop" class="ghost" hidden>Disconnect</button>
+      <button type="button" id="viewer-stop" class="big danger" hidden>Disconnect</button>
     </div>
     <p id="viewer-status" class="camera-status" role="status" aria-live="polite">Enter a camera code to request a view.</p>
     <div id="viewer-video-panel" class="camera-video-panel" hidden>
@@ -91,6 +91,17 @@
     </div>
   </section>
   </div>
+
+  <dialog id="camera-stop-dialog" class="camera-stop-dialog" aria-labelledby="camera-stop-heading" aria-describedby="camera-stop-warning">
+    <form method="dialog">
+      <h2 id="camera-stop-heading">Stop sharing your camera?</h2>
+      <p id="camera-stop-warning">Viewers are connected or connecting to this camera. Stopping will disconnect them and end the viewer link.</p>
+      <div class="run-row">
+        <button id="camera-stop-cancel" type="submit" class="big ghost" value="cancel" autofocus>Keep sharing</button>
+        <button id="camera-stop-confirm" type="button" class="big danger">Stop sharing</button>
+      </div>
+    </form>
+  </dialog>
 
   <details id="connection-details" class="camera-details">
     <summary>Connection details and troubleshooting</summary>
