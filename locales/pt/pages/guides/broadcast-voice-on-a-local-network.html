@@ -1,0 +1,16 @@
+<main id="main">
+  <h2>Comece no computador de quem vai falar</h2>
+  <p>Baixe o ZIP local da ferramenta, extraia e execute <code>python helper.py</code> na pasta dele com Python 3.10 ou posterior. Não precisa de pacotes adicionais. Mantenha a janela aberta. Abra nesse computador o convite do transmissor indicado em <code>http://localhost:</code>, escolha Start channel e permita acesso ao microfone.</p>
+  <h2>Convide os ouvintes</h2>
+  <p>Escolha no transmissor o endereço de rede pretendido e compartilhe o link ou código QR dos ouvintes. Celulares e computadores podem ouvir por Wi-Fi ou Ethernet se houver conexão acessível. Nunca pedem acesso ao microfone. A reprodução é tentada automaticamente; se o navegador bloquear o som, o controle Unmute inicia. Mute/Unmute e Leave são os únicos controles dos ouvintes.</p>
+  <h2>Segure para falar</h2>
+  <p>Segure o botão Talk com o dedo ou mouse, ou coloque o foco nele e segure a barra de espaço. Solte para parar de enviar voz. Tap to talk permite começar e parar com um clique. O mudo do transmissor prevalece sobre os dois modos. Mantenha a página do transmissor visível e o computador acordado; ocultar a página libera a captura.</p>
+  <p>Até dez ouvintes podem conectar, incluindo conexões pendentes. O transmissor envia um fluxo separado para cada um. Comece com um grupo pequeno e confira o computador e a rede que pretende usar.</p>
+  <h2>Recupere uma conexão perdida com o transmissor</h2>
+  <p>Os ouvintes mostram Reconnecting e conferem a conexão sem sair da página, com intervalo previsto de um segundo enquanto a página estiver ativa. A escolha de mudo permanece. Abra o mesmo convite do transmissor pelo serviço local que continua funcionando e inicie novamente para retomar. Navegadores em segundo plano e aparelhos em repouso podem atrasar as tentativas.</p>
+  <p>End broadcast libera o microfone e encerra a sessão deliberadamente. Leave desconecta um ouvinte e interrompe suas tentativas. Reiniciar o serviço local cria convites novos, então compartilhe o novo link dos ouvintes.</p>
+  <h2>Use uma rede de confiança</h2>
+  <p>Quem tiver o link dos ouvintes e acesso ao serviço local pode entrar. WebRTC criptografa a voz, mas o serviço usa HTTP na configuração da conexão e nas credenciais do convite. Um invasor ativo na rede local pode observar ou alterar essa configuração. O pacote não tem scripts nem recursos remotos e o serviço local não recebe áudio. Não há recurso de gravação nem retransmissor público; os destinatários podem gravar por conta própria o que ouvem.</p>
+  <h2>Confira se os dispositivos podem se conectar</h2>
+  <p>Confira a permissão do firewall para redes privadas, o endereço local escolhido e as permissões de rede local do navegador. Wi-Fi de visitantes pode isolar aparelhos; VPNs e rotas do sistema afetam os endereços do transmissor. Se a descoberta automática não encontrar uma interface, execute <code>python helper.py --address 192.168.1.20</code>, substituindo o exemplo pelo endereço IPv4 privado real do computador.</p>
+</main>

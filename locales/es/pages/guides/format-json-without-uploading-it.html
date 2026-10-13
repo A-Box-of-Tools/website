@@ -7,12 +7,7 @@
       No se sube nada, porque no hay adónde: el analizador son unos cientos de
       líneas de JavaScript ejecutándose en la pestaña que ya tienes abierta.
     </p>
-    <p>
-      Todo lo de abajo es lo que merece la pena saber antes de pegar un archivo
-      de configuración en cualquiera de las alternativas: qué puede cambiar un
-      formateador, qué cambian casi todos de todas formas, y cómo leer el error
-      cuando el archivo no se deja analizar siquiera.
-    </p>
+    <p>Lo siguiente conviene saberlo antes de pegar una configuración en cualquier alternativa: qué puede cambiar un formateador, qué podría cambiar una implementación descuidada y cómo leer el error cuando el archivo ni siquiera se analiza.</p>
 
     <figure class="shot">
       <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
@@ -21,6 +16,12 @@
         Una línea entra, algo legible sale. Para eso no se envió nada a ningún sitio.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Revisa una respuesta de API o un archivo de configuración</h2>
+    <p>Pega el cuerpo de la respuesta sin las cabeceras HTTP, elige JSON y sangría de dos espacios. Al revisar por primera vez, deja las claves sin ordenar para seguir la fuente. Si falla, usa <em>Ir al error</em>, corrige la coma, comilla o escape indicado y revisa antes de copiar. Analizar correctamente no valida el esquema de la API: compara claves obligatorias, tipos e identificadores largos con lo que espera la aplicación receptora.</p>
+    <p>Para un contenido compacto en una etiqueta sin conexión o campo con límite de bytes, conserva una copia legible y entrega la versión minimizada. Revisa el tamaño indicado y vuelve a leer o decodificar lo entregado. Minimizar elimina espacios de presentación; no acorta valores largos ni quita campos privados. Si compartes una respuesta formateada con soporte, elimina credenciales y datos personales de esa copia.</p>
   </section>
 
   <section>
@@ -243,33 +244,13 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       dicen lo mismo pueden diferir en todas las líneas si uno estaba minificado
       y el otro no, y no hay diff que vea más allá de eso.
     </p>
-    <p>
-      Así que: formatea el primero, formatea el segundo, y luego compara los dos
-      resultados. Los tres pasos están aquí en la misma página &mdash; la pestaña
-      <em>Comparar</em> comparte la casilla con <em>Formatear</em> justamente por
-      esto. Si además listan sus claves en órdenes distintos, ordénalas en los dos
-      mientras los formateas y la comparación se reduce a la diferencia que
-      buscabas.
-    </p>
+    <p>Formatea ambos archivos y pega los resultados en <a href="../../comparar-textos/">Comparador de texto</a>. La comparación tiene su propia página. Si las claves de objetos aparecen en distinto orden, ordénalas en ambas copias al formatear. La <a href="../comparar-dos-archivos-json/">guía de comparación</a> explica el procedimiento completo y qué diferencias no elimina ordenar.</p>
   </section>
 
   <section>
     <h2>La parte que nadie pone en la página</h2>
-    <p>
-      Busca un formateador de JSON y encontrarás docenas de sitios con una
-      casilla. Pegar en esa casilla es subir. Lo que hubiera en tu portapapeles
-      &mdash; una respuesta de una API con la dirección de un cliente dentro, un
-      archivo de configuración con una cadena de conexión, un token que estabas
-      depurando &mdash; se ha enviado a una máquina que no controlas, y ahora es
-      su archivo de registro, su informe de error y su copia de seguridad.
-    </p>
-    <p>
-      Esto no es una hipótesis sobre mala fe. Un sitio con toda la buena
-      intención sigue guardando registros de acceso, sigue teniendo analítica, y
-      sigue teniendo un proveedor de alojamiento. Los datos más seguros son los
-      que no salieron nunca, y para un trabajo que es puramente manipulación de
-      texto no hay razón alguna para que salgan.
-    </p>
+    <p>Buscar un formateador JSON devuelve decenas de sitios con un cuadro. Si envía la entrada a un servidor, pegar y formatear entrega lo que había en el portapapeles: una respuesta con la dirección de un cliente, una cadena de conexión o un token. Algunos trabajan localmente: inspecciona el que usas, sin deducir dónde funciona por la forma del cuadro.</p>
+    <p>No hace falta mala intención. Un servicio puede conservar entradas en registros, informes de errores o copias de seguridad aunque su responsable tenga buenas intenciones. Los datos más seguros son los que nunca salieron. Una tarea que solo manipula cadenas no tiene por qué enviarlos.</p>
     <p>
       Dos comprobaciones, y sirven para cualquier sitio que haga esta afirmación,
       no solo para este:
@@ -295,11 +276,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
 
   <section>
     <h2>¿Y el YAML, el XML y los demás?</h2>
-    <p>
-      La misma página lee XML, HTML, CSS y YAML, y convierte entre JSON y el
-      primero y el último de esos. Dos cosas merecen traerse de arriba, porque
-      son el mismo argumento con otro traje:
-    </p>
+    <p>La misma página lee XML, HTML, CSS y YAML y convierte entre JSON y XML o YAML. La <a href="../../guides/format-and-check-xml/">guía de XML</a> y la <a href="../../guides/convert-yaml-and-json/">guía de conversión YAML</a> explican esos procesos. Conviene conservar dos ideas anteriores, porque el argumento es el mismo:</p>
     <ul>
       <li>
         <strong>Convertir YAML a JSON pierde los comentarios</strong>, porque

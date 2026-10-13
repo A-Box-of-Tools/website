@@ -19,6 +19,13 @@
   </section>
 
   <section>
+    <h2>Conserva una copia de archivo y otra para compartir</h2>
+    <p><strong>Para una biblioteca fotográfica,</strong> guarda el original y usa una conversión que preserve expresamente las fechas si las necesitas. El <a href="../convertir-heic-a-jpg/">convertidor HEIC</a> conserva metadatos compatibles en JPEG; revisa una muestra antes de convertir toda la colección. La fecha de modificación del archivo es distinta de la fecha de captura.</p>
+    <p><strong>Para un anuncio de venta o portafolio público,</strong> crea una copia aparte. Redimensiona o comprime según necesites, <a href="../eliminar-datos-exif-y-gps/">elimina expresamente las etiquetas no deseadas</a> y revisa el archivo descargado final. No subas el original de archivo.</p>
+    <p>Así detectas el caso fácil de pasar por alto: un redimensionador o compresor decide que no hace falta cambiar nada y devuelve los bytes originales. Un archivo ya pequeño puede seguir llevando GPS aunque pase por una página de limpieza de imágenes.</p>
+  </section>
+
+  <section>
     <h2>Qué viaja al lado, y por qué va separado</h2>
     <p>
       Un archivo de foto son dos cosas en un mismo contenedor: la imagen
@@ -43,18 +50,7 @@
 
   <section>
     <h2>Por qué reencodear arranca, y copiar conserva</h2>
-    <p>
-      Casi todo el trabajo de imagen en un navegador pasa por un lienzo:
-      decodificar el archivo a píxeles crudos, transformarlos, codificar
-      un archivo nuevo. Un lienzo no lleva etiquetas, así que el archivo
-      nuevo no tiene ninguna &mdash; no por política sino por
-      construcción. Por eso el
-      <a href="../../comprimir-imagen/">compresor de imágenes</a> y la
-      herramienta de <a href="../../redimensionar-imagen/">redimensionar
-      imágenes</a> de aquí producen salidas sin EXIF, sin GPS y sin XMP, y
-      sus páginas lo dicen: es inevitable, y conviene saberlo cuando
-      querías conservar la fecha.
-    </p>
+    <p>La mayoría de tareas de imagen del navegador usan un lienzo: decodifican a píxeles, los transforman y codifican un archivo nuevo. Ese archivo no copia las etiquetas de cámara salvo que la herramienta las restaure expresamente. Cuando el <a href="../../comprimir-imagen/">Compresor de imágenes</a> y el <a href="../../redimensionar-imagen/">Redimensionador de imágenes</a> realmente recodifican, sus salidas no conservan EXIF, GPS ni XMP. Ambos también pueden devolver intacto el original si no necesita reducción, conservando sus metadatos. Revisa la descarga; no deduzcas la eliminación del nombre de la página.</p>
     <p>
       Un conversor, en cambio, puede esmerarse en preservar. El
       <a href="../../convertir-heic-a-jpg/">conversor de HEIC a JPG</a> de

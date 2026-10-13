@@ -5,6 +5,12 @@
   </section>
 
   <section>
+    <h2>Un archivo adjunto, una publicación o un informe de errores</h2>
+    <p>Para un correo, comprueba el límite de todo el mensaje, resta los demás archivos y deja margen. Actualmente, Gmail personal admite 25 MB de archivos adjuntos; en trabajo y educación, el límite lo fija el administrador. Las <a href="https://support.google.com/mail/answer/6584?hl=en" target="_blank" rel="noopener noreferrer">instrucciones de Gmail</a> explican la diferencia. Un ajuste predeterminado es un objetivo de tamaño, no una garantía de que todo destinatario lo acepte.</p>
+    <p>Para un informe de errores o una demostración corta, recorta las esperas antes de comprimir. Conserva los clics que explican el problema, el sonido si aporta información y resolución suficiente para leer el texto importante más pequeño. Reproduce la descarga en la aplicación de destino, comprueba el tamaño real y el último segundo. Si el texto no se lee, aumenta el objetivo o acorta el vídeo.</p>
+  </section>
+
+  <section>
     <h2>En qué se gastan los megabytes</h2>
     <p>Casi todo el tamaño de un video corresponde a la imagen. Un minuto a 1080p grabado con un teléfono ocupa entre 60 y 150 MB; el sonido ocupa alrededor de uno. El resto son treinta imágenes por segundo, descritas mediante los cambios respecto a la anterior. Por eso, el tamaño se aproxima a una multiplicación: los bits por segundo asignados a la imagen, la <em>tasa de bits</em>, por la duración.</p>
     <p>Así se obtiene una tasa de bits a partir de un límite de tamaño. Se resta el espacio del sonido, que se copia tal como está, y un pequeño margen para el contenedor. Lo que queda se divide por la duración. Un límite de 25 MB para dos minutos deja unos 1,6 megabits por segundo para la imagen. Ese es todo el presupuesto; lo demás depende de él.</p>
@@ -22,7 +28,7 @@
     <p>Comprimir un video implica volver a codificarlo. La imagen se decodifica, se dibuja más pequeña y se escribe de nuevo con la nueva tasa de bits: queda una generación más lejos de la cámara. El sonido no se toca; sus muestras se copian exactamente. La pérdida visual depende del límite: reducir un video a la mitad suele costar poco; pasar de 900 MB a 25 MB elimina casi todos sus bits, y se nota.</p>
     <ul>
       <li><strong>Pide el tamaño que necesitas, no uno menor.</strong> Si el límite es 25 MB, usa 25 MB. Elegir 8 MB descarta dos tercios de la información de imagen sin necesidad.</li>
-      <li><strong>Corta primero.</strong> Quitar tiempo innecesario deja más presupuesto por segundo restante. El <a href="/es/guias/cortar-un-video/">recortador de vídeo</a> copia selecciones compatibles sin recodificar; los cortes exactos recodifican la imagen. Elige el método indicado antes de comprimir.</li>
+      <li><strong>Recorta primero.</strong> Quitar el tiempo innecesario deja más espacio para cada segundo restante. El <a href="../cortar-un-video/">Recortador de vídeo</a> copia selecciones compatibles sin recodificar; los cortes exactos recodifican la imagen. El resultado puede incluir ajustes de reproducción, también de audio tras un corte exacto de imagen. Si el compresor rechaza esa línea de tiempo, guarda un vídeo nuevo con los ajustes aplicados en un editor local antes de continuar. Elige conscientemente el método indicado.</li>
       <li><strong>Quita el sonido si no importa.</strong> Un minuto de audio estéreo ocupa alrededor de un megabyte. En un video corto con un límite ajustado, ese megabyte puede marcar la diferencia entre una imagen nítida y una borrosa.</li>
       <li><strong>Conserva el original.</strong> No se puede recuperar lo perdido al comprimir. Comprime una copia, envía esa copia y guarda el archivo de la cámara.</li>
     </ul>
@@ -37,7 +43,7 @@
 
   <section>
     <h2>Qué comprueba la herramienta antes de entregar el archivo</h2>
-    <p>Un codificador se acerca a la tasa de bits pedida, pero no la clava. Por eso se solicita un tamaño algo menor y se mide el resultado. Si supera el límite, se ajusta la tasa según la diferencia y se vuelve a codificar; la página avisa cuando ocurre. Después se abre el archivo terminado en el dispositivo y se comprueba que conserva la duración. Perder el último segundo o el sonido también produciría un archivo más pequeño; volver a leer el resultado permite distinguirlo. Puedes reproducirlo bajo la descarga antes de enviarlo.</p>
+    <p>Un codificador se acerca a la tasa pedida, sin acertar exactamente. Por eso se solicita un poco menos y se mide el resultado. Si se excede, se recalcula la tasa según la diferencia y se codifica otra vez; la página lo indica. Luego se abre el archivo en el dispositivo y se compara su duración con la fuente. Perder el último segundo o el sonido también reduciría el tamaño: solo revisar el resultado permite distinguirlo. Puedes reproducirlo debajo de la descarga. Si la comprobación dice que sigue superando el objetivo, elige menos resolución, un clip más corto o un límite mayor y vuelve a intentarlo.</p>
   </section>
 
   <section>

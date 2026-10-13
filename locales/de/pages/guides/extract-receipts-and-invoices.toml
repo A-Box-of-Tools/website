@@ -14,7 +14,7 @@ lede = """
     versandfertig. Hier erfahren Sie, was Sie prüfen sollten, wie das ganze
     Dokument in einem kleineren Anhang erhalten bleibt, was die Summen bedeuten
     und wie Sie Bilder und Bericht in Ihre eigene E-Mail-App übernehmen."""
-updated = "4. Oktober 2026"
+updated = "13. Oktober 2026"
 og_title = "Aus Belegfotos einen Bericht für die E-Mail erstellen"
 og_description = "Belegangaben und Ausschnitte prüfen, Währungen wählen und komprimierte JPEG-Anhänge sowie einen Bericht mit Dokumentanzahl und Summen in die E-Mail-App übernehmen."
 og_image_alt = "abox.tools, Werkzeuge zur Dateiverarbeitung auf Ihrem eigenen Gerät"

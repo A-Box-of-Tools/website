@@ -166,8 +166,7 @@ BASELINE = {
     'unlock-pdf': 4,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
-    # The HTTP Authorization template is protocol syntax, never visitor copy.
-    'walkie-talkie': 1,
+    'walkie-talkie': 0,
     'watermark-pdf': 0,
     'webp-to-jpg': 0,
     'xml-formatter': 0,

@@ -15,6 +15,12 @@
   </section>
 
   <section>
+    <h2>Uma imagem para instruções, um reparo ou uma capa</h2>
+    <p>Uma imagem clara transforma uma receita, reparo ou exercício gravado em instruções que se seguem sem reproduzir o clipe inteiro. Avance até ver as mãos e a peça, salve PNG se depois for recortar ou anotar e registre o tempo ou número do quadro para localizar o movimento. Escolher um arquivo sem perdas não corrige o desfoque de movimento.</p>
+    <p>Também fornece uma capa de vídeo ou um registro do antes e depois de um projeto. Escolha JPEG se a imagem pronta só irá em uma mensagem e confira nesse tamanho. Em um reprodutor web pode ser o pôster antes da reprodução; <a href="../criar-uma-miniatura-de-video/">o fluxo de miniaturas</a> explica o recorte e o limite de bytes posteriores.</p>
+  </section>
+
+  <section>
     <h2>Por que uma captura do player pausado é outra imagem</h2>
     <p>
       Todo mundo já tem um jeito de fazer isso: pausar, apertar a tecla de
@@ -43,11 +49,7 @@
         progresso, faixa de legenda, o cursor.
       </li>
     </ul>
-    <p>
-      Um extrator de quadro pula as quatro: ele decodifica o quadro que o arquivo
-      realmente guarda e escreve aqueles pixels. A imagem tem o tamanho que o
-      vídeo tem, e ninguém desenhou nada em cima.
-    </p>
+    <p>Um extrator evita esses quatro problemas: decodifica o quadro real e salva seus pixels. A imagem tem as dimensões do vídeo e nada foi desenhado sobre ela. A exportação do canvas continua de 8 bits: uma fonte HDR ou de 10 bits é convertida. PNG preserva sem perdas a imagem desenhada, não os dados HDR de origem.</p>
   </section>
 
   <section>

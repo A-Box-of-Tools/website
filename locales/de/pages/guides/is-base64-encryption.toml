@@ -12,7 +12,7 @@ lede = """
     verdient eine richtige Antwort, denn Kodierung, Verschlüsselung und
     Hashing sehen auf dem Bildschirm gleich aus und könnten in dem, was
     sie versprechen, kaum verschiedener sein."""
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 og_title = "Ist Base64 eine Verschlüsselung?"
 og_description = "Nein - jeder kann es rückgängig machen, ohne Schlüssel. Kodierung, Verschlüsselung und Hashing sehen gleich aus und versprechen drei völlig verschiedene Dinge. Was was ist."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

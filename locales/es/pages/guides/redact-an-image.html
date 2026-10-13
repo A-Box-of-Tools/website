@@ -15,6 +15,13 @@
   </section>
 
   <section>
+    <h2>Una captura de soporte o un fragmento de documento</h2>
+    <p><strong>Una captura para informar de un error.</strong> Conserva el error y controles explicativos; tapa con relleno sólido correos, cuentas, tokens en la barra de dirección y notificaciones ajenas. Elige PNG para texto nítido. Abre el archivo <code>-redacted</code> y lee alrededor de todos los cuadros antes de adjuntarlo, incluidos nombres repetidos en otro lugar.</p>
+    <p><strong>Un recibo, etiqueta de paquete o fragmento de identificación.</strong> Cubre todo el campo con margen alrededor de las letras y tapa QR y barras además del número legible. Los campos Izquierda, Arriba, Ancho y Alto ayudan con vistas pequeñas. Trabaja imagen por imagen y revisa la guardada a tamaño completo. Quitar un campo no elimina pistas en otros lugares; el cuadro revela tamaño y posición del área tapada. Usa sólido para caras cuando importe identificar: difuminado y pixelado conservan medidas del sujeto.</p>
+  </section>
+
+
+  <section>
     <h2>Tapar y quitar se ven idénticos en pantalla</h2>
     <p>
       Dibuja un rectángulo negro sobre un nombre en un lector de PDF, en una
@@ -97,14 +104,7 @@
       Los tres sobrescriben los píxeles. Solo uno no deja nada detrás.
     </p>
     <h3>Relleno negro</h3>
-    <p>
-      Todos los píxeles del recuadro pasan a ser el mismo color. De lo que había
-      no sobrevive nada: ni un contorno, ni un brillo medio, ni el número de
-      caracteres, ni la longitud de la palabra. Es el único de los tres en el que
-      la pregunta &laquo;¿se podría deshacer?&raquo; tiene un no rotundo por
-      respuesta, y es lo que hay que usar para un nombre, una dirección, un
-      número de cuenta, una matrícula, una firma o un código de barras.
-    </p>
+    <p>Todos los píxeles del cuadro toman el mismo color. No sobrevive contorno ni brillo medio de lo cubierto. El tamaño y contexto aún sugieren qué tipo de campo había. Es el único de los tres donde «¿se puede deshacer?» tiene un no rotundo respecto a esos píxeles. Úsalo para nombre, dirección, cuenta, matrícula, firma o código de barras.</p>
     <h3>Pixelado</h3>
     <p>
       El recuadro se corta en bloques y cada bloque pasa a ser el color promedio
@@ -137,13 +137,7 @@
       software estándar, y funciona mejor justo en el caso que aquí importa, que
       es texto nítido difuminado con un radio pequeño.
     </p>
-    <p>
-      Nada de esto hace inútiles el pixelado y el difuminado. Una cara al fondo de
-      una foto de calle, el número de un portal enfrente, la pantalla de un
-      compañero detrás de ti en una videollamada: todo eso está bien, y así la
-      imagen sigue pareciendo una imagen. La regla es sencilla: <strong>si se lee
-      como texto, tápalo en negro.</strong>
-    </p>
+    <p>Pixelar y difuminar reducen distracciones del fondo, pero no son fiables para impedir identificación. Usa relleno sólido si importa ocultar al sujeto. Para nombres, números y campos legibles, <strong>tápalos por completo</strong>.</p>
 
     <figure class="shot">
       <img src="/screens/redact-an-image/cover.webp" loading="lazy" decoding="async"
@@ -178,13 +172,7 @@
         versión pequeña todavía enseña lo que tapaste, el archivo se editó en vez
         de reconstruirse.
       </li>
-      <li>
-        <strong>Amplía al máximo los bordes del recuadro.</strong> Una censura
-        aplicada a los píxeles tiene un borde duro justo en el límite. Un borde
-        suave o semitransparente significa que se dibujó algo encima con una
-        opacidad, y una opacidad por debajo del 100&nbsp;% es una copia del
-        original con un tinte.
-      </li>
+      <li><strong>Inspecciona los bordes y el entorno.</strong> No deben quedar letras, dígitos ni partes de códigos fuera del cuadro, ni repetirse el campo en otro lugar. JPEG suaviza bordes; su nitidez por sí sola no comprueba que se sobrescribieron los píxeles de origen.</li>
     </ol>
   </section>
 

@@ -11,13 +11,13 @@
         第二个文件照做，贴进右边的框。
       </li>
     </ol>
-    <p>
-      现在亮起来的是真的：变了的值、冒出来的键、消失的条目。会淹死普通比对的格式差异和换了位置的键都没了，因为比对开始之前，两边已经写成了同一种拼法。
-    </p>
+    <p>结果更容易阅读。改过的值、新增的键、删除的条目会更清楚。原本淹没普通差异比较的格式变化和键顺序变化被消除，因为比较前两份内容采用了相同的写法。</p>
     <p>
       两个页面都没有任何网络功能——这一点值得知道：人们拿来比对的 JSON，太多时候是凭据还躺在里面的配置文件。
     </p>
   </section>
+
+  <section><h2>配置改动和 API 回归检查</h2><p>比较预发布与生产配置时保留原件，把副本都设为两空格缩进并排序对象键。预发布放左、生产放右，不勾选忽略大小写或空白，检查端点、功能开关和上限。字符串里的空格、键的大小写可能有意义。确认两侧环境再下载补丁。</p><p>比较 API 改动前后响应也一样，使用相同请求输入，另行考虑时间戳和生成 ID。数组顺序保留，重新排序仍会显示差异。<code>1</code> 与 <code>1.0</code>、转义写法不同的字符串也可能不同。这里比较格式化后的文字，不检查架构，也不判断所有 JSON 值是否等价。<a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">JSON 标准</a>把对象定义为无序，把数组定义为有序。</p></section>
 
   <section>
     <h2>为什么生比 JSON 几乎全是噪音</h2>
@@ -28,13 +28,7 @@
       两个最糟的情形足以说明问题。<strong>压缩过的</strong>文件是一行，于是和它比对得到一条巨大无比的变更行——正确，且无用。而<strong>内容相同、顺序不同</strong>的两个文件会比出个处处皆变，诚实的答案本该是“什么都没变”。
     </p>
 
-    <figure class="shot">
-      <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
-           alt="比较选项：并排或单栏视图、只显示改动行的开关，以及忽略空白、忽略大小写、忽略空行的开关。">
-      <figcaption>
-        正是它们，让一份文件只因为换行符不同就被报成整篇都改了的事不再发生。
-      </figcaption>
-    </figure>
+    <figure class="shot"><img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async" alt="比较选项包含并排或行内视图、只显示变动行，以及忽略空白、大小写和空行的开关。"><figcaption>谨慎使用忽略开关。它们影响显示，但下载的补丁保留输入中的全部差异，包括换行符。</figcaption></figure>
   </section>
 
   <section>
@@ -66,9 +60,7 @@
     <p>
       下载下来的是统一格式的补丁，一个 <code>.patch</code>——代码评审看得懂的格式。它描述的是规范形，而那通常正是评审想要的：只有改动，没有重排。
     </p>
-    <p>
-      同一套做法对两个页面会说的其他东西同样有效。YAML 和 XML 用同样的路子化成规范形；来源不同、形状相同的两个文件，比对的忽略开关——空白、大小写、空行——就是同一想法的轻量版。
-    </p>
+    <p>先格式化再比较，也能让 YAML 或 XML 更容易审查，但它们的空白和转换规则不同于 JSON。如果只需要调整排版，就保留原语言。比较工具的忽略开关影响视图，补丁仍比较实际输入字符串。这里输入的是格式化后的副本，因此补丁不是针对未改动原件生成的。</p>
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"

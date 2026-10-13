@@ -1,9 +1,9 @@
-# The public page distributes a local bundle. Its helper handles setup and
-# heartbeat state without carrying audio or contacting a public rendezvous.
+# Browser hosting uses a separate authenticated voice room in the rendezvous.
+# The service carries connection metadata; only direct peers carry microphone audio.
 slug = "walkie-talkie"
 name = "Local Walkie-Talkie"
 heading = "One voice <span class=\"h1-kw\">&mdash; several listeners on your local network</span>"
-tagline = "Hold to talk on one computer. Other devices listen automatically through a local link, with Mute and Leave controls."
+tagline = "Start in your browser and hold to talk. Other devices listen through your link, with Mute and Leave controls."
 icon = "&#128251;"
 favicon = "&#128251;"
 glyph = "audio-waveform"
@@ -12,93 +12,100 @@ roadmap_group = "audio"
 css_parts = ["form", "notes"]
 js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr"]
 requires_pairing = true
-local_bundle = true
 lastmod = "2026-10-13"
+
 title = "Local Walkie-Talkie &mdash; One Host, Multiple Listeners"
-description = "Broadcast voice to up to ten receive-only browsers on a reachable local network. Local pairing helper, push to talk, automatic listening and reconnection."
+description = "Broadcast voice directly from your browser to up to ten receive-only browsers. No installation, push to talk, automatic listening and reconnection."
 og_title = "One voice, several local listeners"
 og_description = "Local voice with push to talk, receive-only listeners and automatic reconnection."
 og_image_alt = "Local Walkie-Talkie - one host and several listeners"
 og_card = "Hold to talk. Everyone on your local link can listen."
-csp_note = "The public page makes no pairing request. Its ZIP contains a local Python service and built browser modules. The local page permits same-origin setup requests only, with no platform scripts. WebRTC uses host candidates without STUN or TURN; audio does not pass through the helper."
-pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Local pairing, no recording or public relay."
-pledge = "Run the local pairing service on the host computer. It handles channel state and connection setup in memory, never audio. Listeners receive encrypted WebRTC audio directly from the host browser. No account, cloud introduction or recording feature is used. Anyone with the listener link and network access can join. Use a trusted LAN: HTTP setup messages and invitation tokens can be observed or altered on that network."
-live_hint = "The local bundle contacts only its own service for setup and heartbeat messages. Audio uses direct WebRTC. No remote scripts, fonts, ads or analytics are included."
-read_first = ", <code>src/session.js</code> for capture cleanup and reconnects, and <code>local/helper.py</code> for bounded local setup messages"
+csp_note = "Starting a channel or opening a listener invitation connects to wss://rendezvous.abox.tools for authentication, setup and status. Voice uses direct encrypted WebRTC with host candidates only and no STUN or TURN. The rendezvous does not carry audio."
+pledge_line = "Live voice goes <strong>directly to your listeners</strong>. Internet pairing, no recording or audio relay."
+pledge = "Host and listen in your browser without installing anything. Internet access introduces the devices and helps them reconnect; the rendezvous handles temporary connection metadata, never microphone audio. Each listener receives encrypted WebRTC audio directly from the host browser. Anyone with the listener link and a reachable direct route can listen. Use a trusted local network and share the link carefully."
+live_hint = "This tool intentionally contacts rendezvous.abox.tools for connection setup and status. It sees room identifiers, network addresses and timing, never audio. Cloudflare keeps seven-day invocation metadata logs. Direct voice has no configured STUN server or TURN relay."
+read_first = ", <code>src/session.js</code> for microphone cleanup and reconnects, and <code>workers/rendezvous/broadcast.js</code> for the authenticated setup protocol"
 howto_heading = "How to open a local voice channel"
-card = "One microphone-enabled host and up to ten receive-only listeners, with a local pairing helper and automatic reconnection."
-md_note = "Download and run the local bundle with Python 3.10 or later. The host opens localhost for microphone access; listeners open its LAN link. Voice travels directly between browsers."
+card = "One browser host and up to ten receive-only listeners, with push to talk and automatic reconnection."
+md_note = "Choose Start channel on this website, allow microphone access and share the listener link or QR code. No Python, download or account is needed. Internet access is needed for pairing; audio travels directly between reachable devices."
+
+[csp]
+"connect-src" = ["wss://rendezvous.abox.tools"]
+"media-src" = ["blob:"]
 
 [words]
 plural = "live voice"
 choose = "a microphone"
-analytics_extra = ", and no voice or local invitations are passed to those scripts"
+analytics_extra = "; the tool does not hand microphone audio to them, but scripts on this page can read its address and browser storage"
 
 [[facts]]
 mark = "&#10003;"
 text = "One host, ten listeners"
 [[facts]]
 mark = "&#10003;"
-text = "Local pairing"
+text = "No installation"
 [[facts]]
 mark = "&#10003;"
 text = "Receive-only listeners"
 [[facts]]
 mark = "&#10007;"
-text = "No recording or cloud relay"
+text = "No recording or audio relay"
 
 [[privacy]]
-title = "The helper introduces browsers without receiving audio."
-body = "The ZIP includes all browser assets and a Python service. It serves the local interface and keeps bounded connection setup messages and channel state in memory. Each listener has a separate encrypted WebRTC audio connection to the host. No public STUN server, TURN relay, audio storage or recording feature is used. A listener can independently record what they hear."
+title = "Internet pairing carries setup, never audio."
+body = "Start channel opens one secure WebSocket to our rendezvous. A listener invitation opens a receive-only session automatically. The service authenticates the host and listener invitations, forwards bounded setup messages and reports host availability. Its temporary room state lives on open sockets without a stored room history. Cloudflare keeps seven-day request metadata logs including the room identifier, connection address and timing; invitation keys travel inside secure messages, not request URLs. Each listener has a separate encrypted WebRTC audio connection to the host. There is no recording feature, STUN server or TURN relay. Recipients can independently record what they hear."
 [[privacy]]
-title = "Use a trusted LAN and share invitations carefully."
-body = "Anyone with the listener link and a route to the helper can listen. The helper uses HTTP: setup descriptions and tokens are not encrypted on that leg and an active local-network attacker can alter them. Audio uses WebRTC encryption; that does not make HTTP signaling safe against that attacker. Host controls require a different token and loopback access. The helper rejects cross-origin requests and does not log invitations or payloads."
+title = "A listener invitation cannot control the host."
+body = "Host and listener keys differ. The host key remains in its browser tab's session storage and is never included in a shared link. A listener link carries its invitation key in the fragment after the # character. The tool saves it in per-tab session storage and removes the fragment when that storage is available, so a reload can rejoin. These are temporary browser credentials, not accounts. Anyone with the listener invitation and direct reachability can join; an invitation is not proof that someone is on your physical Wi-Fi."
 [[privacy]]
-title = "Local reachability does not prove a physical Wi-Fi boundary."
-body = "Only host candidates are offered and accepted. A VPN, public interface or operating-system route can affect their path. Guest isolation, firewalls and browser local-network permissions can prevent a connection. The helper binds loopback and private IPv4 interfaces. Choose the intended address and keep the host computer and page awake."
+title = "Direct reachability still depends on your network."
+body = "Both browsers offer and accept host candidates only, without an internet audio relay fallback. VPNs, public interfaces and operating-system routes can affect their path, so this cannot prove a physical LAN boundary. Guest isolation, firewalls and browser local-network permissions may prevent a connection even on the same Wi-Fi. Keep pages open and devices awake, and try the actual devices you intend to use."
 [[privacy]]
 title = "Temporary loss reconnects; End and Leave stop retries."
-body = "Leave closes one listener and its retries. End broadcast releases the microphone and tells listeners the session ended. A temporarily lost host puts listeners into Reconnecting, with a one-second foreground retry target and their mute choice preserved. Hiding the host stops capture. Start it again through the same running helper to resume. Restarting the helper creates new invitations. Background browsers can delay timers."
+body = "A waiting receiver checks host availability with a one-second foreground target and keeps its mute choice. Working direct audio can continue during a brief pairing-service outage. Hiding the host releases its microphone; return and choose Start channel to resume the same invitation when per-tab storage is available. End broadcast deliberately stops the session and the next Start creates a new invitation. Leave closes one listener and its retries. Background browsers, connection limits and sleeping devices can delay recovery."
 [[privacy]]
-title = "The local bundle contains no platform scripts."
-body = "This public page has the site's usual platform scripts. The downloadable local interface includes none of them and requests no remote assets. Its invitation links are never passed to this public page."
+title = "The website's regular scripts still run on this page."
+body = "The page uses the site's usual advertising, measurement and donate-button scripts. The tool does not hand them audio, but scripts running in the page can read its address and browser storage, including temporary invitations. Removing a URL fragment reduces its later exposure; it cannot make those scripts a separate security boundary. Trust this page and its scripts before granting microphone access or using a sensitive invitation."
 
 [[howto]]
-title = "Run the local bundle on the host computer."
-body = "Download and extract the ZIP, then run <code>python helper.py</code> from its folder with Python 3.10 or later. Open the printed <code>http://localhost:</code> host address on the same computer. No additional packages are needed."
+title = "Start directly on this website."
+body = "On the speaking device, choose Start channel and allow microphone access. Use the website's HTTPS address. There is no Python helper, download, account or installation."
 [[howto]]
-title = "Start the channel and invite listeners."
-body = "Choose Start channel and allow microphone access. Choose the intended LAN address if several are listed, then share its listener link or QR code. Listeners open it on reachable devices and are never asked for a microphone."
+title = "Invite listeners."
+body = "Share the listener link or QR code with devices on your reachable local network. Opening the invitation starts the receive-only connection automatically and never asks for microphone access. Both sides need internet access for pairing."
 [[howto]]
 title = "Hold or tap to talk."
-body = "Hold the Talk button, or focus it and hold Space. Release to stop sending voice. The tap control offers click-to-start and click-to-stop. Microphone mute overrides both. Listeners start sound automatically where permitted; their existing Unmute control starts it if the browser blocks autoplay."
+body = "Hold the Talk button, or focus it and hold Space. Release to stop sending voice. Start talking offers click-to-start and click-to-stop. Microphone mute overrides both. Listening starts automatically where permitted; the existing Unmute control starts sound if the browser blocks playback."
 [[howto]]
 title = "Recover or end the channel."
-body = "Listeners reconnect in place after a temporary host loss. Start the host again through the same helper to resume. End broadcast closes the current session; Leave closes one listener. Keep pages open and devices awake."
+body = "Receivers retry a temporarily missing host in place. Return to the same host tab and choose Start channel to resume after hiding it. End broadcast closes the current channel and creates a fresh invitation on the next Start; Leave closes one listener. Keep pages open and devices awake."
 
 [[faq]]
-q = "Does it work without internet?"
-a = "Yes, once the ZIP is downloaded and extracted. Its pages and pairing service only need a reachable LAN. The host computer needs Python 3.10 or later; listeners need only a browser."
+q = "Do I need Python or a download?"
+a = "No. The host starts directly in this website and listeners open its link. Only the host requests microphone access."
 [[faq]]
-q = "Why do I need a helper?"
-a = "Browsers need to exchange connection setup messages. A local service enables link-based pairing and automatic rejoining without a cloud introduction. It carries setup and status, never voice."
+q = "Does voice go through an internet server?"
+a = "No. The internet service exchanges connection setup and status; voice uses a separate direct encrypted browser connection to each listener. No audio relay fallback is configured."
+[[faq]]
+q = "Does it work without internet?"
+a = "Internet access is required for new pairing and recovery. A healthy direct audio connection may continue during a brief internet or pairing-service outage. A cached page alone cannot introduce new devices."
 [[faq]]
 q = "Can a phone host the channel?"
-a = "This version hosts from a computer running the helper. Its localhost page can request microphone access. Phones can listen through the LAN link; ordinary HTTP on a LAN IP cannot request a microphone."
+a = "Yes, if its browser supports microphone access and WebRTC on this HTTPS website. Keep the host page visible and the device awake. Phones can also listen without granting microphone access."
 [[faq]]
 q = "Do listeners press Listen?"
-a = "There is no Listen button. Audio playback is attempted automatically. If the browser requires an interaction before playing sound, Unmute starts it. Mute/Unmute and Leave are the only listener controls."
+a = "There is no Listen button. Opening an invitation attempts playback automatically. If the browser requires an interaction for sound, Unmute starts it. Mute/Unmute and Leave are the only listener controls."
 [[faq]]
 q = "What happens when the host disappears?"
-a = "Listeners show Reconnecting and check again with a one-second target while active. Their mute choice stays the same. Start the host through the same running helper to resume. Background timers may run later. Restarting the helper creates new invitations."
+a = "Receivers wait and check availability with a one-second target while active. Their mute choice stays the same. Return to the host tab and Start again to resume its retained invitation. Background timers or service connection limits can delay retries. End broadcast is different: it deliberately stops receivers and the next channel uses a new invitation."
 [[faq]]
 q = "How many listeners are supported?"
-a = "The helper admits up to ten, including pending connections. The host sends a separate stream to each. Actual performance depends on its browser, computer and network; the cap does not guarantee capacity on every device."
+a = "A channel admits up to ten listeners, including waiting connections. The host sends a separate audio stream to each. Actual capacity depends on its browser, device and network; ten is a limit, not a guarantee for every phone."
 [[faq]]
 q = "Why can the same Wi-Fi fail?"
-a = "Guest isolation, a firewall, an incorrect LAN interface or local-network permissions can block reachability. Choose the correct address and permit the helper on your trusted private network. No public relay fallback is used."
+a = "Guest isolation, firewalls, VPN routes or browser local-network permissions can block direct connectivity. Use a reachable trusted network. There is no public audio relay fallback."
 
 [schema]
 category = "CommunicationApplication"
-description = "Local voice from one host to up to ten receive-only browsers, with direct WebRTC audio and a local pairing helper."
-features = ["One host and multiple receive-only listeners", "Hold or tap to talk", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Local link and QR pairing", "Self-contained local bundle", "No recording, STUN or TURN"]
+description = "Browser-hosted voice from one host to up to ten receive-only browsers, with direct WebRTC audio and secure internet pairing."
+features = ["Website hosting without installation", "One host and multiple receive-only listeners", "Hold or tap to talk", "Mute/Unmute and Leave", "One-second foreground reconnection target", "Listener link and QR pairing", "No recording, STUN or TURN"]

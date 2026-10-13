@@ -13,7 +13,7 @@ lede = """
     gráficos. Aquí tienes cómo hacer uno que además de convincente sea
     correcto."""
 
-updated = "12 de octubre de 2026"
+updated = "13 de octubre de 2026"
 
 og_title = "Hacer un gráfico de comparación de alturas"
 og_description = "Cómo escribir las alturas, qué figura elegir, y por qué un objeto familiar en el gráfico hace más que una tercera persona."

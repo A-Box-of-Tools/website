@@ -20,6 +20,13 @@
   </section>
 
   <section>
+    <h2>Revisa una respuesta sin pegar todo el registro</h2>
+    <p><strong>Una respuesta de API incorrecta.</strong> Conserva llaves, tipos y campo que falla, sustituye credenciales y datos personales ajenos al problema y usa el <a href="../formatear-json/">formateador</a> para localizar el error. Si depende de un valor concreto, reprodúcelo con uno ficticio de la misma forma antes de compartirlo. Formatear correctamente no demuestra que la aplicación acepte los datos.</p>
+    <p><strong>Una regresión de configuración.</strong> Usa el mismo formateador en la copia funcional y la que falla y <a href="../comparar-dos-archivos-json/">compáralas</a>. Conserva el orden de arrays donde importe. La comparación local revela el campo cambiado sin publicar ninguna configuración.</p>
+    <p>Después puedes preparar un ejemplo pequeño para soporte. Revisa el texto guardado además del editor: comentarios, URL, identificadores y resultados copiados pueden llevar datos eliminados del campo de contraseña evidente.</p>
+  </section>
+
+  <section>
     <h2>Qué lleva de verdad un pegado</h2>
     <p>
       Lo que acaba en las herramientas online rara vez es prosa. Es el
@@ -104,24 +111,9 @@
       archivos</a>. La versión corta, en clave de pegado:
     </p>
     <ul>
-      <li>
-        <strong>Tira del cable.</strong> Carga la página, desconéctate,
-        pega, pulsa el botón. Una herramienta local sigue; una de servidor
-        se para. Treinta segundos, cero pericia, imposible de fingir.
-      </li>
-      <li>
-        <strong>Mira la pestaña de Red mientras pulsas Formatear.</strong>
-        Una petición que sale en ese momento, más o menos del tamaño de tu
-        pegado, es tu pegado saliendo. Sin petición, no hay subida.
-      </li>
-      <li>
-        <strong>Desconfía de los extras serviciales.</strong> Un botón de
-        «compartir este fragmento», un historial de tus pegados
-        sincronizado entre dispositivos, un enlace para mandarle a un
-        colega: cada uno solo es posible si el texto se guardó en un
-        servidor. Las funciones son confesiones: una página que puede
-        enseñarle tu pegado a otra persona se lo ha quedado.
-      </li>
+      <li><strong>Desconecta.</strong> Carga la página, desconecta, pega y pulsa el botón. Una herramienta local continúa; una de servidor se detiene. Terminar demuestra que esta operación funcionó sin conexión. No descarta que se guarden datos para enviarlos al reconectar.</li>
+      <li><strong>Observa la pestaña Red al pulsar Formatear.</strong> Una solicitud en ese momento merece revisar su URL y cuerpo. El tamaño por sí solo no identifica el contenido; solicitudes pequeñas o posteriores también pueden llevar texto sensible.</li>
+      <li><strong>Revisa las funciones adicionales.</strong> Compartir un fragmento, un historial entre dispositivos o un enlace para un colega implican transferencia o almacenamiento que debes comprobar. Algunos servicios guardan texto; <a href="../compartir-texto-entre-dispositivos/">compartir directamente entre navegadores</a> lo entrega al lector elegido sin almacenarlo en un servidor. En cualquier caso, enviar es una acción distinta de formatear.</li>
     </ul>
     <p>
       Y un hábito vale más que las tres comprobaciones: pegar menos. Un

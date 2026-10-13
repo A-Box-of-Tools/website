@@ -13,8 +13,8 @@ lede = """
     &mdash; converter, enquadrar, comprimir &mdash; e cada passo roda no seu próprio computador, que é exatamente onde fotos com o seu GPS dentro devem
     ficar."""
 
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 
 og_title = "De fotos de celular a fotos postáveis, sem enviar os originais"
-og_description = "HEIC para JPEG, GPS fora, tamanho para a página, compressão a um orçamento. Qual ferramenta faz qual passo, em que ordem, e por que os metadados se resolvem sozinhos."
+og_description = "Converta, redimensione e comprima fotos para um site; depois inspecione os metadados das cópias finais. Qual ferramenta faz cada etapa e como arquivos intactos se diferenciam."
 og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

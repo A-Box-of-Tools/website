@@ -13,7 +13,7 @@ lede = """
     y las palabras viajan debajo. Esta página es el catálogo de las formas
     en que eso ocurre, y de lo que borrar tiene que significar en su
     lugar."""
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "¿Se puede recuperar el texto tapado con negro?"
 og_description = "A menudo basta seleccionar y copiar. Por qué un rectángulo dibujado no es una censura, por qué un mosaico puede leerse de vuelta, y qué hace falta de verdad para quitar algo de un archivo."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

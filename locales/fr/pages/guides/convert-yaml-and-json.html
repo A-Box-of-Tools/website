@@ -7,6 +7,12 @@
       <figcaption>Le commentaire disparaît ; no reste une chaîne et le grand entier garde ses chiffres.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Transférer une configuration entre formats</h2>
+    <p>Si une application attend YAML et une autre JSON, partez d'une copie d'un seul document de configuration. Choisissez le sens et deux espaces&nbsp;; laissez le tri désactivé si les groupes existants facilitent l'examen. Vérifiez que les identifiants entre guillemets restent des chaînes, les commutateurs des booléens et les listes les éléments attendus. Enregistrez sous un nouveau nom, puis utilisez la validation de l'application destinataire avant de remplacer son fichier fonctionnel. Une conversion réussie prouve que ce parseur comprend la syntaxe prise en charge, pas que les réglages sont valides pour l'application.</p>
+    <p>Un autre usage utile consiste à examiner deux environnements écrits dans des formats différents. Convertissez la copie YAML en JSON, puis suivez le <a href="../comparer-deux-fichiers-json/">parcours de comparaison JSON</a> avec les deux copies formatées pareil. Vérifiez noms d'hôte, limites et commutateurs&nbsp;; gardez l'original YAML pour ses commentaires. Convertissez les documents YAML séparément et utilisez un parseur plus complet si la configuration emploie ancres, alias ou balises.</p>
+  </section>
   <section>
     <h2>Utiliser le sous-ensemble YAML pris en charge</h2>
     <p>Le lecteur traite les associations, séquences et valeurs scalaires courantes avec une résolution de type YAML 1.2. Il n’implémente pas tout YAML 1.2. Ancres, alias, balises personnalisées et flux de documents multiples arrêtent la conversion. Utilisez un parseur adapté si le fichier en a besoin ; retirer un alias sans garder son sens change la configuration.</p>

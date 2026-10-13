@@ -11,7 +11,7 @@ lede = """
     para ele não faz nada além de ler esse texto. Tudo o que pode dar errado
     acontece um toque depois, quando algo abre o que foi lido &mdash; e esse
     toque está nas suas mãos não dar."""
-updated = "26 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "É seguro escanear um QR code?"
 og_description = "Escanear lê, não abre. O que um QR code realmente contém, como funciona o golpe do código colado por cima e como ver aonde um link leva antes de ir."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

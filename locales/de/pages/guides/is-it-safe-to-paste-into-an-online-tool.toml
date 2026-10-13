@@ -12,7 +12,7 @@ lede = """
     Seite sie sendet. Hier steht, was eine eingefügte Config oder ein Log
     wirklich trägt &mdash; und wie Sie erkennen, ob das Werkzeug vor Ihnen
     überhaupt irgendwohin senden kann."""
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 og_title = "Ist es sicher, Text in ein Online-Tool einzufügen?"
 og_description = "Einfügen kann ein stiller Upload sein. Was eine Config, ein Log oder eine Abfrage wirklich trägt, und wie Sie erkennen, ob der Formatierer eine Kopie behält."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

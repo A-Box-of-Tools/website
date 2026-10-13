@@ -1,11 +1,6 @@
   <section>
     <h2>La respuesta corta</h2>
-    <p>
-      Abre <a href="../../imagenes-a-video/">Imágenes a vídeo</a>, arrastra las
-      fotos dentro, ponlas en orden, decide cuánto se queda cada una y crea el
-      vídeo. Te llevas un MP4 con vídeo H.264, que se reproduce prácticamente en
-      cualquier cosa.
-    </p>
+    <p>Abre <a href="../../imagenes-a-video/">Imágenes a vídeo</a>, añade y ordena fotos, elige segundos para diapositivas o fotogramas para secuencias, indica duración de cada una y crea el vídeo. Se recomienda MP4 con H.264; pruébalo en la aplicación receptora antes de compartir.</p>
     <p>
       Los dos ajustes que más veces obligan a una segunda pasada son la duración y
       la resolución, y conviene entenderlos antes del primer renderizado, no
@@ -14,37 +9,24 @@
   </section>
 
   <section>
+    <h2>Diapositivas, animación cuadro a cuadro o registro de progreso</h2>
+    <p>Para vacaciones, resumen de evento o catálogo, cambia Mantener cada imagen durante a segundos, escribe por ejemplo tres y pulsa Aplicar a todas. Ordena la historia, elige 1080p o forma vertical del destino y Ajustar dentro para conservar toda la foto. Revisa duración antes de crear y mira primera, central y última imagen en el vídeo final.</p>
+    <p>Para animación cuadro a cuadro, render o fotos periódicas de progreso, usa fotogramas: una imagen durante un fotograma a 24 fps da 24 imágenes por segundo. Ordena por nombre y revisa. Escribe cortes directos entre imágenes, sin zoom, fundido ni sonido. Una presentación narrada necesita otro editor; un registro visual silencioso queda completo aquí.</p>
+  </section>
+
+  <section>
     <h2>La cadencia y la duración no son lo mismo</h2>
     <p>
       Esta es la confusión que le cuesta a la gente un renderizado de más.
     </p>
-    <p>
-      <strong>La duración</strong> es cuánto tiempo se queda cada imagen en
-      pantalla, y es el ajuste que de verdad te importa. Tres segundos van bien
-      por defecto para un pase que alguien está mirando; uno o dos segundos
-      quedan ágiles; y pasar de cinco se hace pesado, salvo que haya una voz por
-      encima.
-    </p>
-    <p>
-      <strong>La cadencia</strong> es cuántas veces por segundo el vídeo repite
-      esa imagen. Al aspecto del pase no le cambia nada, porque una imagen fija
-      que se queda tres segundos se ve idéntica a 24 fotogramas por segundo que a
-      60. Lo que sí cambia bastante es el tamaño del archivo y el tiempo de
-      codificación.
-    </p>
-    <p>
-      Así que para un pase de diapositivas normal, cadencia baja. Con 24 o 30
-      sobra. La única razón para subir es que haya movimiento en el vídeo, como
-      una panorámica o un zoom sobre cada foto, o un fundido entre ellas, porque
-      ahí una cadencia baja se ve a saltos.
-    </p>
+    <p><strong>Duración en segundos</strong> indica cuánto permanece cada imagen. Tres segundos es un inicio cómodo para diapositivas; uno o dos es ágil; más de cinco se alarga salvo que haya narración.</p>
+    <p><strong>Frecuencia, con segundos elegidos,</strong> es cuántas veces se repite la imagen por segundo. Una imagen fija de tres segundos se ve igual a 24 y 60 fps, pero cambia mucho el tamaño y tiempo de codificación.</p>
+    <p>Empieza con un fotograma por imagen. Así la frecuencia sí cambia duración: 24 imágenes a 24 fps duran uno, a 12 duran dos segundos. Para diapositivas normales cambia a segundos; 24 o 30 fps basta. Sin panorámicas, zoom ni fundidos, subir la frecuencia no añade movimiento.</p>
 
     <figure class="shot">
       <img src="/screens/turn-images-into-a-video/summary.webp" loading="lazy" decoding="async"
            alt="Los ajustes de resolución y tasa de fotogramas, con un resumen que cuenta las imágenes, la duración total, los fotogramas y el tamaño estimado.">
-      <figcaption>
-        La tasa de fotogramas y la duración no son lo mismo, y en el resumen queda claro: cambiar una mueve el número de fotogramas, no la duración.
-      </figcaption>
+      <figcaption>En segundos, cambiar frecuencia cambia cantidad de fotogramas, pero conserva duración de cada imagen. En fotogramas, cambia también la duración.</figcaption>
     </figure>
   </section>
 
@@ -96,14 +78,7 @@
       alfabética, <code>foto2.jpg</code> va después de <code>foto10.jpg</code>,
       porque la comparación es carácter a carácter.
     </p>
-    <p>
-      Con fotografías de un evento suele funcionar ordenar por fecha de captura,
-      porque las hiciste en el orden en que fueron pasando las cosas. Y para
-      cualquier cosa cuya historia no sea cronológica, lo suyo es mover las fichas
-      a mano. Compruébalo antes de renderizar, porque el vídeo es el único
-      resultado en el que arreglar el orden obliga a rehacer el trabajo
-      entero.
-    </p>
+    <p>Ordenar por nombre cuenta números: photo2 va antes de photo10. Por fecha usa modificación del archivo, no necesariamente captura; las fotos copiadas o editadas pueden necesitar orden manual. Arrastra si la historia no es cronológica. Revisa antes de crear: cambiar el orden del vídeo exige repetir todo.</p>
 
     <figure class="shot">
       <img src="/screens/turn-images-into-a-video/order.webp" loading="lazy" decoding="async"
@@ -151,12 +126,7 @@
       convertir, porque convertir es otra generación de codificación con
       pérdidas.
     </p>
-    <p>
-      La herramienta no lleva dentro ningún límite de cuántas imágenes puedes
-      usar. El techo es la memoria de tu propio dispositivo, porque el vídeo
-      terminado se monta ahí antes de que lo descargues, y lo primero que lo nota
-      es un pase largo en 4K.
-    </p>
+    <p>No hay máximo fijo de imágenes. El vídeo se monta en memoria y no puede superar 4 GB; el codificador del navegador también debe admitir las dimensiones. Un pase largo 4K puede alcanzar esos límites con pocas imágenes de origen.</p>
   </section>
 
   <section>

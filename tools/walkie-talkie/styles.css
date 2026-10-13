@@ -1,4 +1,3 @@
-.wt-setup,
 .wt-local {
   max-width: 780px;
   margin-inline: auto;
@@ -8,55 +7,9 @@
   display: none;
 }
 
-.wt-setup > p,
+.wt-intro,
 .wt-details p {
   line-height: 1.7;
-}
-
-.wt-setup-card,
-.wt-invite {
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.wt-setup-card {
-  margin-block: 1.5rem;
-}
-
-.wt-setup-card h3,
-.wt-invite h3 {
-  margin-top: 0;
-}
-
-.wt-setup-card ol {
-  padding-left: 1.4rem;
-  line-height: 1.7;
-}
-
-.wt-setup-card li + li {
-  margin-top: .65rem;
-}
-
-.wt-download {
-  display: inline-block;
-  margin-top: .5rem;
-  padding: .75rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
-  color: var(--accent-text);
-  background: var(--accent);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.wt-download:focus-visible,
-.wt-local button:focus-visible,
-.wt-local input:focus-visible,
-.wt-local select:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
 }
 
 .wt-note {
@@ -141,7 +94,7 @@
 }
 
 .wt-error p {
-  margin-top: 0;
+  margin: 0;
   line-height: 1.6;
 }
 
@@ -166,6 +119,12 @@
   border-color: var(--border);
   color: inherit;
   background: transparent;
+}
+
+.wt-local button:focus-visible,
+.wt-local input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .wt-host-summary {
@@ -213,14 +172,18 @@
   align-items: center;
   gap: 1.5rem;
   margin-top: 1.75rem;
-}
-
-.wt-invite[hidden] {
-  display: none;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
 }
 
 .wt-invite-fields {
   min-width: 0;
+}
+
+.wt-invite h3 {
+  margin-top: 0;
 }
 
 .wt-invite label {
@@ -230,8 +193,7 @@
   font-weight: 600;
 }
 
-.wt-invite input,
-.wt-invite select {
+.wt-invite input {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -312,14 +274,10 @@
 }
 
 @media (max-width: 640px) {
-  .wt-setup-card,
-  .wt-invite {
-    padding: 1rem;
-  }
-
   .wt-invite {
     grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
+    padding: 1rem;
   }
 
   .wt-link-row {

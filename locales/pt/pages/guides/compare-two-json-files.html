@@ -14,17 +14,18 @@
         Faça o mesmo com o segundo arquivo, na caixa da direita.
       </li>
     </ol>
-    <p>
-      O que acende agora é real: um valor que mudou, uma chave que apareceu,
-      uma entrada que se foi. As diferenças de formatação e as chaves
-      reordenadas que teriam afogado um diff comum sumiram, porque os dois
-      lados estavam escritos igual antes de a comparação começar.
-    </p>
+    <p>O resultado fica muito mais legível: um valor alterado, uma chave nova, uma entrada removida. Somem as diferenças de formatação e as chaves reordenadas que atrapalhariam uma comparação comum, pois os dois lados foram escritos da mesma forma antes da comparação.</p>
     <p>
       Nenhuma das duas páginas tem função de rede alguma, e vale saber disso:
       o JSON que as pessoas comparam é tantas vezes um arquivo de
       configuração com as credenciais ainda dentro.
     </p>
+  </section>
+
+  <section>
+    <h2>Alterações de configuração e regressões de API</h2>
+    <p>Para comparar homologação com produção, preserve os originais e formate uma cópia de cada um com dois espaços e chaves ordenadas. Coloque homologação à esquerda e produção à direita, desative Ignorar maiúsculas e minúsculas e Ignorar espaços e confira endpoints, indicadores de recursos e limites. Espaços dentro de uma string e maiúsculas em uma chave podem importar. Confirme qual ambiente está em cada lado antes de baixar o patch.</p>
+    <p>A mesma receita confere uma resposta de API antes e depois de uma alteração. Use as mesmas entradas da requisição e considere separadamente datas e IDs gerados. Arrays mantêm a ordem: uma lista reordenada ainda difere, como deve ocorrer em uma sequência JSON ordenada. Números equivalentes como <code>1</code> e <code>1.0</code> ou strings com escapes diferentes também podem divergir. A comparação é de texto formatado; não valida um esquema nem a equivalência de todos os valores JSON. <a href="https://www.rfc-editor.org/rfc/rfc8259.html#section-1" target="_blank" rel="noopener noreferrer">O padrão JSON</a> distingue objetos sem ordem de arrays ordenados.</p>
   </section>
 
   <section>
@@ -49,9 +50,7 @@
     <figure class="shot">
       <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
            alt="As opções de comparação: visão lado a lado ou em linha, uma chave para mostrar só as linhas alteradas e chaves para ignorar espaços, maiúsculas e linhas em branco.">
-      <figcaption>
-        São elas que impedem uma comparação de apontar todas as linhas só porque um arquivo foi salvo com outra quebra de linha.
-      </figcaption>
+      <figcaption>Use com cuidado as opções de ignorar: elas afetam a visualização, mas o patch baixado preserva todas as diferenças da entrada, incluindo finais de linha.</figcaption>
     </figure>
   </section>
 
@@ -106,13 +105,7 @@
       costuma ser o que uma revisão quer de qualquer jeito: a mudança, sem a
       reformatação.
     </p>
-    <p>
-      A mesma receita funciona para todo o resto que as duas páginas falam.
-      YAML e XML se canonizam do mesmo jeito; e para dois arquivos do mesmo
-      formato vindos de fontes diferentes, as chaves de ignorar do comparador
-      &mdash; espaços, maiúsculas, linhas em branco &mdash; são uma versão
-      mais leve da mesma ideia.
-    </p>
+    <p>Formatar antes de comparar também facilita revisar YAML ou XML, mas suas regras de espaços e conversão diferem das do JSON. Preserve a linguagem original se só precisa mudar a apresentação. As opções de ignorar afetam a visualização; o patch compara as strings reais de entrada. Aqui são as cópias formatadas, portanto o patch não se aplica aos originais intactos.</p>
 
     <figure class="shot">
       <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"

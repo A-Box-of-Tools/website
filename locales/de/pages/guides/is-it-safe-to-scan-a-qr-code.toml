@@ -11,7 +11,7 @@ lede = """
     darauf zu richten tut nichts weiter, als diesen Text zu lesen. Alles, was
     schiefgehen kann, passiert einen Fingertipp später, wenn etwas das
     Gelesene öffnet &mdash; und diesen Tipp können Sie sich sparen."""
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 og_title = "Ist es sicher, einen QR-Code zu scannen?"
 og_description = "Scannen ist Lesen, nicht Öffnen. Was ein QR-Code wirklich enthält, wie der Trick mit dem überklebten Code funktioniert und wie Sie sehen, wohin einer führt, bevor Sie dort sind."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

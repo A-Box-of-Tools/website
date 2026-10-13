@@ -15,7 +15,7 @@ lede = """
     Unterschiede übrig bleiben. Beide Schritte laufen in Ihrem Browser, und
     dorthin gehören Konfigurationsdateien mit Geheimnissen darin."""
 
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 
 og_title = "Zwei JSON-Dateien vergleichen, ohne das Formatierungsrauschen"
 og_description = "Beide Dateien in Normalform bringen, gleiche Einrückung, sortierte Schlüssel, dann vergleichen. Was danach aufleuchtet, ist echt, und nichts davon wurde hochgeladen."

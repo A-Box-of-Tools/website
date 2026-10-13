@@ -12,7 +12,7 @@ lede = """
     Konverter trägt alles hinüber; das Bild sieht in beiden Fällen gleich
     aus. Der einzige verlässliche Zug ist, mit dem Vorhersagen aufzuhören
     und in die Datei zu sehen."""
-updated = "26. August 2026"
+updated = "13. Oktober 2026"
 og_title = "Entfernt das Umwandeln eines Fotos seine Metadaten?"
 og_description = "Manchmal - und beide Ausgänge überraschen. Welche Vorgänge EXIF entfernen, welche es behalten, und wie man die Datei prüft statt zu raten."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

@@ -15,6 +15,13 @@
   </section>
 
   <section>
+    <h2>Um ícone pequeno ou um documento em um único arquivo</h2>
+    <p><strong>Uma marca decorativa reutilizada em um site.</strong> Escolha uma propriedade personalizada CSS e use onde a marca deve aparecer. Confira a contagem de caracteres codificados e a prévia antes de colar. Se a imagem informa e não apenas decora, é melhor um <code>&lt;img&gt;</code> com texto alternativo adequado do que um fundo CSS.</p>
+    <p><strong>Um material HTML independente ou relatório offline.</strong> Escolha a saída de tag de imagem HTML, adicione o texto alternativo necessário e incorpore apenas os recursos pequenos que o documento deve carregar. Abra o arquivo salvo no visualizador previsto sem conexão e confira as imagens. A prévia prova que a URI funciona aqui; não que um cliente de e-mail, renderizador Markdown ou política do destino aceite imagens de dados. Teste o destino antes de montar um relatório inteiro e confira metadados antes de incorporar fotos byte por byte.</p>
+  </section>
+
+
+  <section>
     <h2>O que uma data URI é de fato</h2>
     <p>
       Um endereço que contém a coisa em vez de apontar para ela. Onde uma folha
@@ -121,7 +128,7 @@
   </section>
 
   <section>
-    <h2>Nunca ponha um SVG em base64</h2>
+    <h2>Prefira codificação percentual para um SVG UTF-8</h2>
     <p>
       Este é de longe o erro mais comum em imagens embutidas, e é cometido por
       exportadores e plugins de compilação com a mesma frequência que por
@@ -139,15 +146,7 @@
       E continua legível:
     </p>
     <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
-    <p>
-      Você consegue ver o <code>viewBox</code>. Você consegue mudar a cor de
-      preenchimento no seu editor sem decodificar nada. Ponha o mesmo arquivo em
-      base64 e ele vira uma parede de letras em que ninguém nunca mais vai
-      encostar. O <a href="../../imagem-para-base64/">Imagem para data URI</a>
-      faz isso automaticamente com qualquer coisa que se revele um SVG, e tem uma
-      caixinha para a rara cadeia de ferramentas que insiste no
-      <code>;base64</code>.
-    </p>
+    <p>Você vê o <code>viewBox</code> e muda a cor no editor sem decodificar. Em base64, o mesmo arquivo vira uma parede de letras que ninguém tocará. <a href="../../imagem-para-base64/">Imagem para URI de dados</a> faz isso automaticamente com SVGs UTF-8 válidos. Uma exportação UTF-16 ou outra codificação, uma declaração inconsistente ou UTF-8 inválido usa base64 com os bytes originais; o resultado explica o motivo. Assim preserva a codificação própria sem mudá-la silenciosamente. Há também uma opção para sistemas que exigem <code>;base64</code>.</p>
   </section>
 
   <section>

@@ -11,7 +11,7 @@ lede = """
     nítido em qualquer tamanho &mdash; e transformar um no outro se chama
     vetorizar. Funciona lindamente em formas e mal em fotos, e vale
     entender a diferença antes de começar."""
-updated = "31 de agosto de 2026"
+updated = "13 de outubro de 2026"
 og_title = "Vetorizar um logotipo ou uma silhueta em SVG, no seu navegador"
 og_description = "Quais imagens viram curvas limpas, quais voltam como quatro mil borrões, e como tirar com um clique as partes que não deveriam estar ali. Nada é enviado."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -12,7 +12,7 @@ lede = """
     PDF &mdash; y, si se editó de cierta manera muy común, cada versión
     anterior de sí mismo, borrados incluidos. Nada de eso aparece en
     pantalla."""
-updated = "26 de agosto de 2026"
+updated = "13 de octubre de 2026"
 og_title = "Lo que un PDF recuerda"
 og_description = "Nombres de autor, el archivo de Word que fue, comentarios, adjuntos - a veces cada versión anterior de sí mismo. Dónde vive esa memoria, y cómo enviar un PDF sin ella."
 og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

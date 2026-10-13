@@ -1,12 +1,19 @@
   <section>
     <h2>Die kurze Antwort</h2>
-    <p>Öffnen Sie <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a> und entfernen Sie die Metadaten aus Ihren Fotos. JPEG, PNG und WebP behalten ihre komprimierten Bilddaten unverändert. Bei AVIF entsteht ein neues PNG aus dem ersten dekodierten Bild ohne Originalmetadaten. Die Optionen für Orientierung und Farbprofil gelten nur für die drei Container-Formate. AVIF wird vom Browser dekodiert und als neues PNG gespeichert, ohne die ursprünglichen Metadaten zu kopieren. Seine verfügbaren EXIF-Tags lassen sich hier ansehen, aber nicht bearbeiten. Das PNG kann größer sein und die Umwandlung Farben oder HDR verändern. Ihre Originaldatei bleibt unverändert.</p>
+    <p>Öffnen Sie den <a href="../../exif-daten-entfernen/">EXIF-Betrachter und -Entferner</a>, legen die Fotos hinein und wählen „Alle Metadaten entfernen“. Originale EXIF-, XMP- und IPTC-Blöcke, Kommentare und eingebettete Vorschaubilder werden aus JPEG, PNG und WebP in der Liste entfernt. Die Voreinstellungen können einen neuen Orientierungstag und das Farbprofil behalten. Der Prüfer fertiger Kopien zeigt den Rest. Komprimierte Bilddaten bleiben unverändert. AVIF-Bereinigung erstellt hingegen PNG aus dem ersten im Browser dekodierten Bild ohne Originalmetadaten. Das Original bleibt gleich, PNG kann größer und HDR- oder Farbdarstellung verändert sein.</p>
     <p>
       Vorher lohnt sich allerdings ein Blick darauf, was da eigentlich stand. Es
       ist meist mehr, als man erwartet, und diese Liste ist das eigentliche
       Argument dafür, das hier überhaupt zu tun.
     </p>
   </section>
+
+  <section>
+    <h2>Öffentliche Kopien und eine falsch gestellte Kamerauhr</h2>
+    <p><strong>Fotos für Anzeige, Forum oder geteiltes Laufwerk.</strong> Behalten Sie Originale im Archiv und entfernen Metadaten der Kopien mit Orientierung und Farbprofil aktiv für korrekte Darstellung. Nutzen Sie <strong>Bereinigte Kopie prüfen</strong>, um den exakten Downloadinhalt zu sehen. Prüfen Sie hochkant stehende Porträts und richtige Farben vor dem Teilen. Dateiname, Straßenschild und Gesicht sind keine Metadaten. Benennen oder schwärzen Sie diese getrennt, wenn sie Privates verraten.</p>
+    <p><strong>Ein Bestand mit falschem Aufnahmedatum.</strong> Wählen Sie bei JPEG, PNG oder WebP ein Foto, bearbeiten die relevanten Datumsfelder und speichern dieses Foto statt alles zu entfernen. Prüfen Sie, wie die Bibliothek das Datum liest. EXIF kann mehrere Daten ohne Zeitzone tragen. Ein geändertes Feld garantiert nicht überall die geplante Sortierung. Behalten Sie eine unveränderte Kopie, wenn Hersteller-Maker-Notes wichtig sind.</p>
+  </section>
+
 
   <section>
     <h2>Was wirklich in einem Foto steckt</h2>
@@ -103,11 +110,7 @@
       Byte übernommen, und das Ergebnis dekodiert zu exakt denselben Pixeln. Das
       ist der ganze Grund, ein Metadaten-Werkzeug zu nehmen und keinen
       Konverter.</p>
-    <p>
-      Eine Ausnahme gibt es: Sie hätten ohnehin neu kodiert. Wenn Sie das Foto
-      sowieso komprimieren oder skalieren, fallen die Tags nebenbei weg, und ein
-      zweiter Arbeitsschritt erübrigt sich.
-    </p>
+    <p>Die Ausnahme ist eine ohnehin geplante Neukodierung. Bei tatsächlicher Kompression oder Skalierung mit Neukodierung fehlen Originaltags. Eine unverändert zurückgegebene Datei behält sie. Prüfen Sie dieses Ergebnis getrennt.</p>
   </section>
 
   <section>

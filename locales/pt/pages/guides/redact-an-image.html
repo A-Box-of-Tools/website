@@ -15,6 +15,13 @@
   </section>
 
   <section>
+    <h2>Uma captura de suporte ou um trecho de documento</h2>
+    <p><strong>Uma captura para relatar um erro.</strong> Mantenha o erro e controles explicativos; cubra com preenchimento sólido e-mails, contas, tokens na barra de endereço e notificações alheias. Escolha PNG para texto nítido. Abra o arquivo <code>-redacted</code> e leia ao redor de todos os quadros antes de anexar, incluindo nomes repetidos em outro lugar.</p>
+    <p><strong>Um recibo, etiqueta de pacote ou trecho de identidade.</strong> Cubra o campo inteiro com margem ao redor das letras e tape QR e barras além do número legível. Os campos Esquerda, Topo, Largura e Altura ajudam com prévias pequenas. Trabalhe imagem por imagem e confira a salva em tamanho real. Remover um campo não elimina pistas em outros lugares; o quadro revela tamanho e posição da área coberta. Use sólido para rostos quando identificar importar: desfoque e pixelização preservam medidas do assunto.</p>
+  </section>
+
+
+  <section>
     <h2>Cobrir e remover têm a mesma aparência na tela</h2>
     <p>
       Desenhe um retângulo preto sobre um nome num leitor de PDF, numa
@@ -95,14 +102,7 @@
       Os três sobrescrevem os pixels. Só um não deixa nada para trás.
     </p>
     <h3>Tarja preta</h3>
-    <p>
-      Todos os pixels da caixa passam a ter a mesma cor. Do que estava ali não
-      sobrevive nada: nem um contorno, nem um brilho médio, nem a quantidade de
-      caracteres, nem o comprimento da palavra. É a única das três em que a
-      pergunta &ldquo;isso poderia ser desfeito?&rdquo; tem um não seco como
-      resposta, e é o que usar para um nome, um endereço, um número de conta, uma
-      placa, uma assinatura ou um código de barras.
-    </p>
+    <p>Todos os pixels do quadro recebem a mesma cor. Não sobra contorno nem brilho médio do que foi coberto. Tamanho e contexto ainda sugerem o tipo de campo existente. É o único dos três em que “pode desfazer?” tem um não definitivo para esses pixels. Use para nome, endereço, conta, placa, assinatura ou código de barras.</p>
     <h3>Pixelação</h3>
     <p>
       A caixa é cortada em blocos e cada bloco passa a ser a cor média daquele
@@ -135,13 +135,7 @@
       padrão, e funciona melhor justamente no caso que importa aqui, que é texto
       nítido desfocado com raio pequeno.
     </p>
-    <p>
-      Nada disso torna a pixelação e o desfoque inúteis. Um rosto ao fundo de uma
-      foto de rua, o número de uma casa do outro lado, a tela de um colega atrás
-      de você numa videochamada: tudo isso está ótimo, e a imagem continua
-      parecendo uma imagem. A regra é simples: <strong>se dá para ler como texto, cubra
-      com tarja preta.</strong>
-    </p>
+    <p>Pixelização e desfoque reduzem distrações do fundo, mas não são confiáveis para impedir identificação. Use preenchimento sólido se ocultar o assunto importar. Para nomes, números e campos legíveis, <strong>cubra completamente</strong>.</p>
 
     <figure class="shot">
       <img src="/screens/redact-an-image/cover.webp" loading="lazy" decoding="async"
@@ -176,13 +170,7 @@
         versão pequena ainda mostra o que você cobriu, o arquivo foi editado em vez
         de reconstruído.
       </li>
-      <li>
-        <strong>Amplie ao máximo as bordas da caixa.</strong> Uma tarja aplicada
-        aos pixels tem uma borda dura exatamente no limite. Uma borda macia ou
-        semitransparente quer dizer que algo foi desenhado por cima com uma
-        opacidade, e opacidade abaixo de 100&nbsp;% é uma cópia do original com um
-        tom em cima.
-      </li>
+      <li><strong>Inspecione as bordas e o entorno.</strong> Não devem sobrar letras, dígitos nem partes de códigos fora do quadro, nem repetir o campo em outro lugar. JPEG suaviza bordas; sua nitidez sozinha não verifica se os pixels de origem foram sobrescritos.</li>
     </ol>
   </section>
 

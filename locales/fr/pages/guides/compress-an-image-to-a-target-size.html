@@ -17,12 +17,20 @@
 
     <figure class="shot">
       <img src="/screens/compress-an-image-to-a-target-size/target.webp" loading="lazy" decoding="async"
-           alt="La carte de l'objectif&nbsp;: 200 ko saisis, des boutons pour les limites courantes, un menu de format et une note indiquant ce que l'outil va tenter.">
+           alt="La carte de l&#x27;objectif : 200 ko saisis, des boutons pour les limites courantes, un menu de format et une note indiquant ce que l&#x27;outil va tenter.">
       <figcaption>
         Indiquez le chiffre qu'on vous a donné. Tout ce qui suit est l'outil qui travaille vers lui, plutôt que vous qui devinez sur un curseur de qualité.
       </figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Un formulaire, une pièce jointe ou un scan lisible</h2>
+    <p><strong>Une candidature avec des dimensions imposées et une limite de fichier.</strong> Lisez d'abord les formats acceptés. Recadrez et redimensionnez avec le <a href="../../redimensionner-une-image/">Redimensionneur d'images</a>, puis saisissez ici le budget en octets et désactivez <strong>Peut réduire l'image si nécessaire</strong>. Choisissez explicitement JPEG si le formulaire le demande. Vérifiez les dimensions, le format et la taille dans la ligne finale&nbsp;: un petit fichier aux mauvaises dimensions ne respecte pas la règle.</p>
+    <p><strong>Plusieurs photos dans un message.</strong> La cible s'applique à chaque image&nbsp;: choisissez une limite par image compatible avec le budget total des pièces jointes. Un ZIP rassemble les résultats&nbsp;; il ne promet pas une nouvelle forte réduction sur des images déjà compressées.</p>
+    <p><strong>Un reçu ou une capture pour l'assistance.</strong> Commencez par PNG lorsque le texte fin compte et vérifiez les plus petits caractères dans le téléchargement. Une cible très serrée peut réduire l'image jusqu'à rendre le texte illisible. Gardez une copie plus grande ou retirez les bordures inutiles avant de sacrifier davantage de détails.</p>
+  </section>
+
 
   <section>
     <h2>Ce qu'une limite de taille demande vraiment</h2>
@@ -34,13 +42,7 @@
       les dégradés se mettent en bandes, et les bords se couvrent d'un léger halo
       de blocs.
     </p>
-    <p>
-      Une limite de taille est donc un budget de détail. La question utile n'est
-      pas &laquo;&nbsp;puis-je atteindre 500&nbsp;KB&nbsp;&raquo;, puisqu'on peut
-      toujours atteindre n'importe quel chiffre, mais bien
-      &laquo;&nbsp;quelle part de l'image dois-je abandonner pour y arriver, et
-      est-ce que cela compte pour l'usage que j'en fais&nbsp;?&nbsp;&raquo;
-    </p>
+    <p>Une limite de taille est donc un budget de détails. La question utile n'est pas «&nbsp;puis-je passer sous 500&nbsp;Ko&nbsp;?&nbsp;», mais «&nbsp;combien de l'image dois-je sacrifier pour y parvenir, et cela compte-t-il pour mon usage&nbsp;?&nbsp;»</p>
     <p>
       Deux règles empiriques. Une photographie d'une scène réelle, avec ses
       visages, son feuillage et ses tissus, cache bien la compression, parce que
@@ -171,12 +173,7 @@
         convertir en JPEG ou en WebP la rendra souvent cinq à dix fois plus
         légère sans changement visible.
       </li>
-      <li>
-        <strong>Une capture d'écran ou un schéma.</strong> Convertissez en WebP,
-        qui est sans perte lui aussi quand vous le lui demandez, et qui est
-        généralement plus léger que le PNG pour les mêmes pixels. Passer en JPEG
-        rendra les bords du texte flous.
-      </li>
+      <li><strong>Une capture ou un schéma.</strong> Essayez le <a href="../../convertir-png-en-webp/">convertisseur PNG en WebP</a> en mode Sans perte et vérifiez le gain réel. La recherche WebP de ce compresseur à taille cible utilise une compression avec perte&nbsp;; elle ne propose pas ce mode sans perte. Passer en JPEG peut flouter les contours du texte.</li>
       <li>
         <strong>Un logo avec transparence.</strong> Le WebP garde la
         transparence&nbsp;; le JPEG la remplira d'une couleur unie, ce qui n'est
@@ -216,7 +213,7 @@
 
     <figure class="shot">
       <img src="/screens/compress-an-image-to-a-target-size/results.webp" loading="lazy" decoding="async"
-           alt="Une ligne de résultat montrant l'original à 1,4 Mo et la copie compressée à 196 ko, avec la qualité qui y est parvenue et un lien pour les comparer.">
+           alt="Une ligne de résultat montrant l&#x27;original à 1,4 Mo et la copie compressée à 196 ko, avec la qualité qui y est parvenue et un lien pour les comparer.">
       <figcaption>
         Ce qui est réellement sorti, à côté de ce qui est entré. Le lien de comparaison est la façon de savoir si le chiffre vous a coûté quelque chose de visible.
       </figcaption>
@@ -225,18 +222,7 @@
 
   <section>
     <h2>Trois choses à savoir avant d'envoyer le fichier</h2>
-    <p>
-      <strong>Compresser efface les métadonnées.</strong> Réencoder, c'est
-      décoder l'image en pixels puis réencoder ces pixels, or un canvas rempli de
-      pixels ne porte aucune étiquette&nbsp;: la position GPS, le modèle
-      d'appareil, les horodatages et le reste ne sont donc simplement pas écrits
-      dans le nouveau fichier. C'est généralement un bonus. Si vous vouliez les
-      étiquettes disparues mais l'image intacte, c'est un autre travail&nbsp;: le
-      <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur EXIF</a>
-      réécrit le conteneur sans rien recompresser, et
-      <a href="../supprimer-les-donnees-exif-et-gps/">son guide</a> explique ce
-      qu'il y a dedans.
-    </p>
+    <p><strong>Le réencodage retire les métadonnées.</strong> Un fichier déjà sous la cible est rendu intact, métadonnées comprises. Pour un fichier à traiter, réencoder signifie décoder l'image en pixels puis encoder ces pixels à nouveau. Un canevas de pixels ne porte pas de balises&nbsp;: position GPS, appareil, horodatages et autres données ne sont donc pas écrits dans le nouveau fichier. C'est souvent un avantage. Retirer les balises en gardant l'image intacte est un autre travail&nbsp;: le <a href="../../supprimer-les-donnees-exif/">Visualiseur et suppresseur EXIF</a> réécrit le conteneur sans recompression, et <a href="../supprimer-les-donnees-exif-et-gps/">son guide</a> explique ce qu'il contient.</p>
     <p>
       <strong>Ne compressez jamais deux fois le même fichier.</strong> Chaque
       encodage avec perte jette du détail définitivement, et encoder une image

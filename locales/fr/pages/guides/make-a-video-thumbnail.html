@@ -8,25 +8,20 @@
         jusqu'à l'instant exact. Enregistrez en PNG &mdash; la copie sans
         perte, pour que rien ne soit encore décidé.
       </li>
-      <li>
-        <strong>Cadrer l'image.</strong> Portez le PNG au
-        <a href="../../redimensionner-une-image/">Redimensionneur d'images</a>&nbsp;:
-        recadrez à la forme de la plateforme &mdash; 16:9 pour YouTube
-        &mdash; et fixez le grand côté, 1280 pixels étant le chiffre que
-        YouTube demande réellement.
-      </li>
-      <li>
-        <strong>Tenir le plafond.</strong> Finissez dans le
-        <a href="../../compresser-une-image/">Compresseur d'images</a> avec la
-        limite de la plateforme pour cible &mdash; 2&nbsp;Mo pour une
-        miniature YouTube &mdash; et laissez-le choisir JPEG ou WebP.
-      </li>
+      <li><strong>Cadrez l'image.</strong> Passez le PNG au <a href="../../redimensionner-une-image/">Redimensionneur d'images</a>&nbsp;: recadrez à la forme de la plateforme et choisissez des dimensions adaptées. YouTube recommande actuellement 16:9 pour les vidéos et 9:16 pour Shorts&nbsp;; les détails ci-dessous les distinguent.</li>
+      <li><strong>Respectez le plafond.</strong> Terminez dans le <a href="../../compresser-une-image/">Compresseur d'images</a> avec la limite actuelle et une marge dessous. Choisissez JPEG pour une miniature photographique YouTube&nbsp;; ne laissez pas Auto si JPG ou PNG est exigé.</li>
     </ol>
     <p>
       Rien dans la chaîne n'envoie quoi que ce soit &mdash; ce qui compte
       quand la vidéo n'est pas publiée, et une miniature se fabrique
       précisément parce que la vidéo n'est pas encore publique.
     </p>
+  </section>
+
+  <section>
+    <h2>Une couverture lisible à sa taille réelle</h2>
+    <p>Choisissez un cadre qui annonce le contenu&nbsp;: objet fini, personne qui relève les yeux ou instant avant l'action. Gardez les légendes source lisibles en petit aperçu. Ces outils capturent, recadrent et compressent&nbsp;; ajouter un titre ou une illustration exige un éditeur d'image entre capture PNG et compression finale.</p>
+    <p>Pour une vidéo web, la même image peut servir d'affiche avant lecture. Adaptez forme et taille au lecteur et vérifiez qu'elle explique encore le clip sur téléphone. Une couverture de présentation est aussi utile&nbsp;: testez le vrai layout de diapositive plutôt que de supposer que le public voit le PNG en grand.</p>
   </section>
 
   <section>
@@ -46,16 +41,11 @@
       vit la miniature &mdash; l'image <em>entre</em> les deux évidentes, où
       le mouvement se lit sans que rien soit flou.
     </p>
-    <p>
-      Enregistrez la prise en PNG même si la miniature finale sera JPEG ou
-      WebP. Le PNG est une copie exacte de l'image&nbsp;; toute décision
-      avec perte n'arrive alors qu'une fois, à la fin, dans un budget
-      d'octets &mdash; plutôt que deux fois, en s'additionnant.
-    </p>
+    <p>Enregistrez la capture en PNG même si la miniature finale sera JPEG. Le PNG garde l'image dessinée sans autre encodage avec perte&nbsp;; la décision de compression se fait une seule fois à la fin, dans un budget d'octets, plutôt que deux fois avec pertes cumulées.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
-           alt="Une image fixe tirée d'une vidéo avec le code temporel visible, à côté des commandes pas à pas et de défilement et de l'instant exact d'où elle vient.">
+           alt="Une image fixe tirée d&#x27;une vidéo avec le code temporel visible, à côté des commandes pas à pas et de défilement et de l&#x27;instant exact d&#x27;où elle vient.">
       <figcaption>
         Avancer jusqu'à l'image plutôt que mettre en pause et faire une capture. La section du dessus dit en quoi consiste vraiment la différence.
       </figcaption>
@@ -64,24 +54,13 @@
 
   <section>
     <h2>L'arithmétique de la plateforme</h2>
-    <p>
-      Recadrez avant de compresser, pour la raison que donne déjà le
-      <a href="../preparer-des-photos-pour-le-web/">guide des photos</a>&nbsp;:
-      les pixels sont le budget. Un recadrage 16:9 d'une image 4K ramené à
-      &#x2066;1280&times;720&#x2069; laisse le compresseur dépenser ses 2&nbsp;Mo en qualité
-      que personne n'aura à plisser les yeux pour voir. La boîte de recadrage
-      du redimensionneur se verrouille en 16:9, la forme est donc un geste
-      plutôt qu'un calcul&nbsp;; le texte et les visages veulent tenir dans
-      les deux tiers du milieu, parce que les fils arrondissent les coins et
-      superposent la durée en bas à droite.
-    </p>
+    <p>Recadrez avant compression comme l'explique le <a href="../preparer-des-photos-pour-le-web/">guide photo</a>&nbsp;: les pixels sont le budget. Un export 16:9 de &#x2066;1280&times;720&#x2069; est un petit exemple utile, pas la recommandation actuelle de YouTube. Ses <a href="https://support.google.com/youtube/answer/72431?hl=en" target="_blank" rel="noopener noreferrer">instructions de miniature</a> recommandent maintenant &#x2066;3840&times;2160&#x2069; pour vidéos et &#x2066;2160&times;3840&#x2069; pour Shorts, avec JPG ou PNG comme exemples acceptés. Les envois sur ordinateur permettent 50 Mo&nbsp;; les miniatures vidéo mobiles doivent rester sous 2 Mo. Vérifiez votre mode d'envoi et n'agrandissez pas une petite source pour atteindre un nombre recommandé. Les envois personnalisés exigent un compte vérifié&nbsp;; ceux de Shorts utilisent actuellement YouTube Studio sur ordinateur.</p>
+    <p>Le cadre verrouille 16:9 ou 9:16&nbsp;: on déplace au lieu de calculer. Placez texte et visages dans les deux tiers centraux, car les fils arrondissent les angles et superposent la durée en bas à droite.</p>
 
     <figure class="shot">
       <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
-           alt="Le redimensionneur avec une largeur de 1280 et une hauteur de 720 saisies, et un récapitulatif de ce que donnera l'image.">
-      <figcaption>
-        Puis l'arithmétique&nbsp;: ce que demande la plateforme, saisi en deux nombres.
-      </figcaption>
+           alt="Le redimensionneur avec une largeur de 1280 et une hauteur de 720 saisies, et un récapitulatif de ce que donnera l&#x27;image.">
+      <figcaption>Un exemple d'export de 1280 par 720. Choisissez selon les exigences actuelles de la destination et les détails réellement présents dans la source.</figcaption>
     </figure>
   </section>
 

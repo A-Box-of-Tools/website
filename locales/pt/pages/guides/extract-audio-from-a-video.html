@@ -8,6 +8,12 @@
     </figure>
   </section>
   <section>
+    <h2>Uma palestra para ouvir ou uma faixa para editar</h2>
+    <p>Para ouvir uma aula, apresentação ou entrevista longe da tela, comece preservando os canais e o PCM de 16 bits padrão. Ouça o início e o final; leve o WAV ao <a href="../../cortar-audio/">cortador de áudio</a> se só um trecho importar. WAV pode ser muito maior que a faixa comprimida: confira o que o aplicativo de reprodução aceita antes de transferir.</p>
+    <p>Para editar uma narração ou podcast, escolha Float32 sem mudar os canais e preserve esse WAV como cópia de trabalho. A extração obtém a faixa já misturada: não separa voz e música, não remove ruído nem transcreve. Experimente mono após ouvir os dois canais; economiza espaço em fala, mas dois microfones podem carregar vozes diferentes ou se cancelar parcialmente ao calcular a média.</p>
+  </section>
+
+  <section>
     <h2>Escolha 16 bits ou Float32</h2>
     <p>PCM de 16 bits é a opção padrão para ampla compatibilidade. A escrita arredonda e limita as amostras decodificadas. Float32 mantém seus valores quando os canais não mudam, inclusive valores acima da escala completa, e serve para continuar editando. Não restaura detalhes já perdidos por compressão.</p>
     <p>WAV guarda áudio sem compressão e pode ser muito maior que a faixa comprimida do vídeo. O extrator não produz MP3 porque não inclui um codificador MP3. Outra aplicação com codificador local pode criar MP3 sem enviar o arquivo.</p>
