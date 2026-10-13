@@ -51,6 +51,7 @@ function idleCamera() {
 
 function idleViewer() {
   $('viewer-connect').disabled = false;
+  $('viewer-connect').hidden = false;
   $('viewer-code').disabled = false;
   $('viewer-name').disabled = false;
   $('viewer-stop').hidden = true;
@@ -372,6 +373,7 @@ async function connectViewer() {
   $('viewer-code').disabled = true;
   $('viewer-name').disabled = true;
   $('viewer-connect').disabled = true;
+  $('viewer-connect').hidden = true;
   $('viewer-stop').hidden = false;
   $('viewer-stop').focus();
   const url = new URL(location.href);
