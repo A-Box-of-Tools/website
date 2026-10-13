@@ -24,6 +24,9 @@ let alertsRevision = 0;
 let alertsTimer = null;
 let alertsAttempts = 0;
 let viewerAudioTrack = null;
+let viewerWantsAudio = true;
+let viewerAudioBlocked = false;
+let playbackRevision = 0;
 let hostAudioObserver = null;
 let viewerSoundSupported = false;
 const capture = new CameraCapture({ getUserMedia: (constraints) => navigator.mediaDevices.getUserMedia(constraints) });
@@ -65,6 +68,7 @@ function idleCamera() {
 }
 
 function idleViewer() {
+  if (document.fullscreenElement === $('viewer-video-frame')) document.exitFullscreen().catch(() => {});
   resetViewerAlerts();
   $('viewer-connect').disabled = false;
   $('viewer-connect').hidden = false;
@@ -75,6 +79,9 @@ function idleViewer() {
   $('remote-video').srcObject = null;
   $('remote-video').muted = true;
   viewerAudioTrack = null;
+  viewerWantsAudio = true;
+  viewerAudioBlocked = false;
+  playbackRevision += 1;
   $('viewer-listen').hidden = true;
   $('viewer-listen').setAttribute('aria-pressed', 'false');
   $('viewer-listen').textContent = phrase('viewer.listen');
@@ -138,13 +145,14 @@ const session = new CameraSession({
     const hasVideo = stream?.getVideoTracks().some((track) => track.readyState === 'live');
     $('viewer-video-panel').hidden = !hasVideo;
     if (stream) {
-      if (previous !== stream) $('remote-video').muted = true;
       updateViewerAudio();
       viewerAlerts?.attach(stream);
       if (hasVideo) { refreshViewerAlerts(); playVideo(); }
     } else resetViewerAlerts();
   },
-  onDiscovery({ code, lease }) {
+  onDiscovery(publication) {
+    if (!publication) { discovery?.unpublish(); return; }
+    const { code, lease } = publication;
     if (hostCode === code && $('camera-discoverable').checked) discovery?.publish(code, lease);
   },
 });
@@ -314,30 +322,23 @@ function updateViewerAudio() {
   }
   viewerAudioTrack = track ?? null;
   $('viewer-listen').hidden = !track;
-  if (!track) video.muted = true;
+  video.muted = !track || !viewerWantsAudio || viewerAudioBlocked;
   const listening = Boolean(track) && !video.muted;
   $('viewer-listen').setAttribute('aria-pressed', String(listening));
   $('viewer-listen').textContent = phrase(listening ? 'viewer.mute' : 'viewer.listen');
-  $('viewer-audio-status').textContent = phrase(track ? listening ? 'viewer.audio-listening' : 'viewer.audio-available' : 'viewer.audio-none');
-  $('viewer-audio-status').classList.remove('warn');
+  $('viewer-audio-status').textContent = phrase(track ? listening ? 'viewer.audio-listening' : viewerAudioBlocked ? 'viewer.audio-blocked' : 'viewer.audio-available' : 'viewer.audio-none');
+  $('viewer-audio-status').classList.toggle('warn', Boolean(track) && viewerAudioBlocked);
   $('viewer-sound-alert').disabled = !viewerSoundSupported || (!track && !$('viewer-sound-alert').checked);
 }
 
 async function listenToAudio() {
   const video = $('remote-video');
   if (!viewerAudioTrack || activeRole !== 'viewer') return;
-  const stream = video.srcObject;
-  video.muted = !video.muted;
+  viewerWantsAudio = video.muted;
+  viewerAudioBlocked = false;
+  playbackRevision += 1;
   updateViewerAudio();
-  if (video.muted) return;
-  try { await video.play(); }
-  catch {
-    if (video.srcObject !== stream) return;
-    video.muted = true;
-    updateViewerAudio();
-    $('viewer-audio-status').textContent = phrase('viewer.audio-blocked');
-    $('viewer-audio-status').classList.add('warn');
-  }
+  if (viewerWantsAudio) await playVideo();
 }
 
 async function refreshViewerAlerts() {
@@ -548,18 +549,42 @@ async function connectViewer() {
   }
 }
 
-async function playVideo() {
-  const stream = $('remote-video').srcObject;
+async function playVideo(retryAudio = false) {
+  const video = $('remote-video'), stream = video.srcObject;
+  if (!stream || activeRole !== 'viewer') return;
+  const current = epoch, revision = ++playbackRevision;
+  const valid = () => current === epoch && revision === playbackRevision && video.srcObject === stream && activeRole === 'viewer';
+  if (retryAudio && viewerWantsAudio) viewerAudioBlocked = false;
+  updateViewerAudio();
   try {
-    await $('remote-video').play();
-    if ($('remote-video').srcObject !== stream || stream === null) return;
+    await video.play();
+    if (!valid()) return;
     $('viewer-play').hidden = true;
     showStatus('viewer.receiving', 'viewer');
   } catch {
-    if ($('remote-video').srcObject !== stream || stream === null) return;
+    if (!valid()) return;
+    if (viewerAudioTrack && !video.muted) {
+      // Delayed approval can outlive the viewer's playback gesture. Keep the
+      // video running silently, with one explicit action to retry audio.
+      viewerAudioBlocked = true;
+      updateViewerAudio();
+      try {
+        await video.play();
+        if (!valid()) return;
+        $('viewer-play').hidden = true;
+        showStatus('viewer.receiving', 'viewer');
+        return;
+      } catch { if (!valid()) return; }
+    }
     $('viewer-play').hidden = false;
     showStatus('viewer.play', 'viewer');
   }
+}
+
+function updateFullscreenControl() {
+  const full = document.fullscreenElement === $('viewer-video-frame');
+  $('viewer-fullscreen').setAttribute('aria-pressed', String(full));
+  $('viewer-fullscreen').textContent = phrase(full ? 'viewer.fullscreen-exit' : 'viewer.fullscreen');
 }
 
 $('camera-start').addEventListener('click', startCamera);
@@ -578,15 +603,25 @@ $('camera-stop-confirm').addEventListener('click', () => {
 });
 $('viewer-connect').addEventListener('click', connectViewer);
 $('viewer-stop').addEventListener('click', () => { stop(); $('viewer-connect').focus(); });
-$('viewer-play').addEventListener('click', playVideo);
+$('viewer-play').addEventListener('click', () => playVideo(true));
 $('viewer-listen').addEventListener('click', listenToAudio);
 $('viewer-motion-alert').addEventListener('change', changeViewerAlerts);
 $('viewer-sound-alert').addEventListener('change', changeViewerAlerts);
 navigator.serviceWorker?.addEventListener('controllerchange', refreshViewerAlerts);
 $('viewer-fullscreen').addEventListener('click', async () => {
-  try { await $('remote-video').requestFullscreen(); }
-  catch { showStatus('viewer.fullscreen-failed', 'viewer'); }
+  const frame = $('viewer-video-frame'), video = $('remote-video');
+  if (activeRole !== 'viewer' || $('viewer-video-panel').hidden) return;
+  const current = epoch;
+  try {
+    if (document.fullscreenElement === frame) await document.exitFullscreen();
+    else if (frame.requestFullscreen) await frame.requestFullscreen();
+    else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+    else throw new Error();
+    if (current !== epoch && document.fullscreenElement === frame) await document.exitFullscreen();
+  }
+  catch { if (current === epoch) showStatus('viewer.fullscreen-failed', 'viewer'); }
 });
+document.addEventListener('fullscreenchange', updateFullscreenControl);
 $('camera-copy').addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText($('camera-link').value);

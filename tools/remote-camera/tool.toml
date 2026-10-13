@@ -130,8 +130,9 @@ body = """
       Stop on the source closes its tracks, peers and introduction connection.
       If viewers are connected or connecting, choosing Stop first asks you to
       confirm; Keep sharing leaves the camera and connections running.
-      Hiding or closing its page does the same, as does losing the introduction
-      connection, without waiting for confirmation. A permission granted after
+      Hiding or closing its page does the same without waiting for confirmation.
+      A lost introduction connection leaves an already accepted direct view
+      running while the source retries its invitation. A permission granted after
       Stop is immediately released.
       Disconnect on the viewer ends its connection while the source keeps its
       local preview available for a new request. Codes and notes are not saved
@@ -165,7 +166,7 @@ title = "Invite the viewing device."
 body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
 [[howto]]
 title = "Connect the viewer."
-body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback. Audio starts muted; choose Listen to audio when the host shares it. Supported browsers also offer optional motion or sound notifications."
+body = "Choosing an online camera requests a connection immediately. For a viewer link or manually entered code, choose Connect to camera. If Require my approval is on, approve the request you recognise on the source. With it off, the first accepted viewer connects automatically. Live video then appears in the viewer; use Play live video if the browser pauses playback. Shared audio starts automatically when your browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video. Supported browsers also offer optional motion or sound notifications."
 [[howto]]
 title = "Keep the source visible, then stop."
 body = "Keep the source page visible and its device awake while watching. Stop camera and end the link releases the camera and microphone. If a viewer is connected or connecting, confirm Stop sharing or choose Keep sharing to cancel. Switching away from the source page also stops it."
@@ -175,7 +176,7 @@ q = "Must both devices use the same Wi-Fi?"
 a = "They need a route to each other. Wi-Fi and Ethernet on the same reachable local network can work together. A shared Wi-Fi name alone does not establish reachability: guest isolation, firewalls, VPN routing and browser permissions can block it."
 [[faq]]
 q = "Does it work without internet?"
-a = "No. The introduction uses our public rendezvous and its connection stays open during the session. Video travels directly between the browsers, with no configured internet relay. Losing the introduction connection ends the session."
+a = "Internet is required to pair and invite new viewers through our public rendezvous. An already accepted direct view can continue if the introduction service disconnects; the camera retries its invitation without restarting capture or the existing view. Video and enabled audio travel directly between the browsers, with no configured internet relay. Losing that direct route still ends the view."
 [[faq]]
 q = "Does this turn my phone into a webcam for meeting apps?"
 a = "It provides a live view in another browser. It does not install a system webcam or make that camera available to desktop meeting applications."
@@ -196,7 +197,7 @@ q = "Can I change cameras while sharing?"
 a = "After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again."
 [[faq]]
 q = "Does it send sound or record video?"
-a = "Audio is off by default. Select Enable microphone before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. The viewer chooses Listen to audio to hear it. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
+a = "Audio is off by default on the host. Select Enable microphone before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. The viewer tries to play shared audio automatically; if the browser requires a tap, choose Unmute audio on the video. Mute silences playback while sound detection remains available. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
 [[faq]]
 q = "Can I receive motion or sound alerts?"
 a = "Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen."

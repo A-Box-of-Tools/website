@@ -12,7 +12,7 @@
     <li><strong>An indoor entryway.</strong> Keep an eye on the front door from another room. This is a live view while you watch, with no recording. Supported browsers can notify you about detected motion or sound while the viewer page can run.</li>
     <li><strong>DIY inspections.</strong> Aim a phone at a pipe joint under a sink, a dropped screw behind a cabinet, or a gap where you are routing cables. A laptop gives you a second pair of eyes where your head will not fit.</li>
   </ul>
-  <p>Keep the camera page visible and the phone awake for every use. Switching apps, hiding the page or losing the introduction connection ends the view. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
+  <p>Keep the camera page visible and the phone awake for every use. Switching apps or hiding the page ends the view. An already accepted direct view can continue through an introduction-service interruption while the camera retries its invitation. This tool offers live video within a reachable network; it has no internet relay for watching from elsewhere.</p>
 </section>
 <section>
   <h2>Set up a DIY inspection view</h2>
@@ -38,7 +38,7 @@
     <li>Alternatively, open the viewer link, scan its QR code or enter the code in Watch a camera. These wait for you to choose Connect to camera.</li>
     <li>If Require my approval is on, approve the expected request on the camera device. With approval off, the first accepted viewer receives video automatically.</li>
   </ol>
-  <p>The note is not verified identity. Recognise the person and expected request before approving. Pairing exchanges network addresses even before approval; the source approval setting controls whether an owner action is required before video. With approval off, anyone who knows the link or finds the listed camera can watch while it is free. Changes to the setting apply to new requests; an already connected viewer stays connected. One viewer receives video at a time. If playback pauses, choose Play live video; Full screen enlarges the view where supported. Audio starts muted; choose Listen to audio when the host shares it.</p>
+  <p>The note is not verified identity. Recognise the person and expected request before approving. Pairing exchanges network addresses even before approval; the source approval setting controls whether an owner action is required before video. With approval off, anyone who knows the link or finds the listed camera can watch while it is free. Changes to the setting apply to new requests; an already connected viewer stays connected. One viewer receives video at a time. If playback pauses, choose Play live video. Shared audio starts automatically when the browser allows it; otherwise choose Unmute audio. Mute and Full screen are on the video frame. Muting playback does not stop sound alerts.</p>
 </section>
 <section>
   <h2>Enable viewer alerts where supported</h2>
@@ -57,7 +57,7 @@
 </section>
 <section>
   <h2>What the introduction service sees</h2>
-  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. The connection stays open during the session, and losing it ends the session. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video, enabled audio and the viewer note travel the encrypted peer connection instead.</p>
+  <p>Opening the page opens a discovery WebSocket to the rendezvous. Start, Connect or choosing an online camera adds a room WebSocket. It stays open for invitations, but an already accepted direct view continues if that introduction connection closes. The camera retries its invitation without repeating capture or viewer approval. If the introduction service cannot recover, the existing view continues; stop and start again before inviting another viewer. The service sees the code, IP addresses, times, and WebRTC setup descriptions and candidates. Setup messages are visible to that service; live video, enabled audio and the viewer note travel the encrypted peer connection instead.</p>
   <p>Discovery lists opted-in camera names grouped by the public IPv4 address or IPv6 /64 seen by the service and this site’s address. This can include strangers behind shared VPNs or carrier networks, and nearby cameras may be missed. Choosing a listed name requests a connection immediately and exchanges network addresses. The source can require owner approval or accept a viewer automatically. Opening a viewer link still waits for Connect. Rooms and listings exist only on open connections. Cloudflare keeps seven-day connection logs containing metadata, never a payload. The usual site advertising scripts can read the page address, including a camera code in its fragment. A code permits a request, so source approval remains essential.</p>
   <p>This is a browser camera view: microphone audio is optional and it has no recording feature, and it does not install a system webcam for other applications.</p>
 </section>

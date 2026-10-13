@@ -24,7 +24,14 @@ Choosing a listed name starts the same viewing request as Connect, including
 network-address exchange and the source's approval policy. Modified clicks
 retain the viewer link; opening it still waits for Connect. Repeated clicks
 cannot start another request while viewing is active. The room socket remains
-open during the session. Losing it ends capture or viewing.
+open during the session. A lost room socket no longer closes an already
+approved, connected peer with live video and an open encrypted control channel.
+The source retries its invitation with the same code after 2, 4, 8, 15 and 30
+seconds, with each handshake bounded at 20 seconds and confirmed by a pong.
+Recovery republishes a fresh discovery lease. Unfinished peers are closed;
+the viewer never rejoins the room under a new identity. If retries fail, an
+established view continues, but new invitations need Stop and Start. An idle
+source with no established peer ends after the retry budget is exhausted.
 The worker sees descriptions, candidates, room code, addresses and timing,
 never media or the viewer note. Cloudflare keeps seven-day metadata logs.
 
@@ -64,12 +71,14 @@ The approval switch applies to new requests. Waiting manual requests never
 inherit automatic acceptance, and an accepted viewer remains connected when
 the setting changes. One active slot is reserved synchronously before its
 acknowledgement; the four-pending cap and busy refusals remain in place.
-Source Stop, page hide, page close and signaling loss stop capture, peers and
+Source Stop, page hide and page close stop capture, peers and
 socket. Manual Source Stop asks for confirmation while any viewer peer is
 attached, including before its approval request arrives. Keep sharing or Escape
 leaves capture, invitation and connections intact. The native dialog does not
-block lifecycle handling: page hide, page close, capture failure and signaling
-loss cancel it and clean up immediately. Viewer Disconnect closes its own peer
+block lifecycle handling: page hide, page close and capture failure cancel it
+and clean up immediately. Losing setup before an accepted direct view remains
+a failure; a later introduction interruption preserves the existing peer.
+Viewer Disconnect closes its own peer
 while the source retains preview.
 A best-effort screen wake lock is released on cleanup, including a late grant.
 
@@ -83,9 +92,19 @@ visible. A viewer can independently capture their screen.
 New viewers advertise `receiveAudio: true` in their existing hello. Hosts send
 enabled audio only to such viewers after acceptance is acknowledged, so older
 video-only tabs keep working. Received video and audio share one stable stream;
-audio arrival or loss does not restart video. The local source preview and remote
-video start muted. Listening is a separate viewer gesture and does not control
-whether local sound detection can analyze the received track.
+audio arrival or loss does not restart video. The local source preview stays
+muted. The viewer tries audible playback automatically when a live audio track
+arrives, falling back to muted video when the browser requires a gesture.
+Unmute audio retries playback; a deliberate Mute is kept through camera
+switches and stream updates. Playback promises are invalidated by a newer
+choice or Disconnect. Sound detection always analyzes the received track
+independently of the video's playback mute.
+
+Mute, Unmute and Full screen sit on the video frame. Fullscreen targets the
+frame so the controls remain reachable, with native video fullscreen as a
+fallback on browsers that expose only that API. Viewer name, connection,
+playback and notification descriptions use the same accessible help tooltips
+as the host controls.
 
 `src/alerts.js` checks notification support and an active registration at the
 exact tool scope without waiting indefinitely for `serviceWorker.ready`. It
@@ -118,6 +137,12 @@ Host setup descriptions use inline help beside the link name, approval choice
 and microphone choice. They reuse Share Text's `wireHelpTooltip` controller for
 hover, keyboard focus, touch pinning, Escape and outside-click dismissal. The
 approval explanation still updates with the chosen policy inside its tooltip.
+Check viewer tooltips with keyboard, hover and taps too. With an accepted live
+view, close the room sockets and confirm that media keeps advancing, the source
+republishes after recovery, camera switching still works and Stop releases all
+resources. Before approval or live video, transport failure must still close
+the unfinished attempt. Confirm sound notices while playback is muted, and
+muted video plus an Unmute control after an audible autoplay rejection.
 
 Build the scoped page with `python build.py --only remote-camera --locale en
 --quiet`, then use the built page. A complete check joins a second browser,

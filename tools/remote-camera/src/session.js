@@ -4,6 +4,7 @@ import { PROTOCOL, TOOL, CODE_PATTERN, controlMessage } from './protocol.js';
 const RENDEZVOUS = 'wss://rendezvous.abox.tools';
 const CONNECT_TIMEOUT = 20000;
 const MAX_PEERS = 4;
+const INTRODUCTION_RETRIES = [2000, 4000, 8000, 15000, 30000];
 
 export class CameraSession {
   constructor({
@@ -24,6 +25,12 @@ export class CameraSession {
     this.peers = new Map();
     this.active = null;
     this.keepalive = null;
+    this.socketDeadline = null;
+    this.cancelOpen = null;
+    this.retryTimer = null;
+    this.retryAttempts = 0;
+    this.reconnecting = false;
+    this.signalingUnavailable = false;
     this.requireApproval = true;
     this.cameraChange = null;
   }
@@ -39,7 +46,7 @@ export class CameraSession {
 
   setApprovalRequired(value) {
     this.requireApproval = Boolean(value);
-    if (this.role === 'camera' && this.active === null) this.state('camera.waiting');
+    if (this.role === 'camera' && this.active === null) this.state(this.reconnecting ? 'camera.reconnecting' : 'camera.waiting');
   }
 
   async startHost(stream, code, { discoverable = false, requireApproval = true } = {}) {
@@ -61,33 +68,67 @@ export class CameraSession {
     return this.open(code);
   }
 
-  open(code, discoverable = false) {
+  open(code, discoverable = false, recovering = false) {
     if (!CODE_PATTERN.test(code)) {
       this.stop('code.invalid');
       return Promise.reject(new Error('code.invalid'));
     }
     const revision = this.revision;
     this.code = code;
-    this.state('connection.starting');
+    this.discoverable = discoverable;
+    if (!recovering) this.state('connection.starting');
     return new Promise((resolve, reject) => {
-      let ready = false;
+      let settled = false, opened = false;
       const socket = this.socket = new this.Socket(`${RENDEZVOUS}/ws/${code}?role=${this.role === 'camera' ? 'host' : 'viewer'}&local=1&tool=${TOOL}${discoverable ? '&discover=1' : ''}`);
       const current = () => this.revision === revision && this.socket === socket;
-      const timer = setTimeout(() => fail('connection.server-failed'), CONNECT_TIMEOUT);
+      const finish = () => {
+        if (!current() || settled) return;
+        settled = true;
+        clearTimeout(this.socketDeadline);
+        this.socketDeadline = null;
+        this.cancelOpen = null;
+        if (recovering) {
+          this.reconnecting = false;
+          this.signalingUnavailable = false;
+          this.retryAttempts = 0;
+        }
+        this.state(this.role === 'camera' ? this.active === null ? 'camera.waiting' : 'camera.streaming' : 'connection.connecting');
+        resolve();
+      };
       const fail = (key) => {
-        clearTimeout(timer);
-        if (current()) this.stop(key);
-        if (!ready) reject(new Error(key));
+        if (!current()) return;
+        clearTimeout(this.socketDeadline);
+        this.socketDeadline = null;
+        this.cancelOpen = null;
+        this.detachSocket(socket);
+        if (recovering) {
+          if (!settled) {
+            this.onDiscovery(null);
+            this.detachIntroducedPeers();
+            settled = true; reject(new Error(key));
+          }
+          else this.lostIntroduction(key, opened);
+        } else {
+          this.lostIntroduction(key, opened);
+          if (!settled) { settled = true; reject(new Error(key)); }
+        }
+      };
+      this.socketDeadline = setTimeout(() => fail('connection.server-failed'), CONNECT_TIMEOUT);
+      this.cancelOpen = () => {
+        if (!settled) { settled = true; reject(new Error('connection.stopped')); }
       };
       socket.addEventListener('open', () => {
         if (!current()) return;
-        ready = true;
-        clearTimeout(timer);
+        opened = true;
         this.keepalive = setInterval(() => {
-          if (current() && socket.readyState === 1) socket.send('ping');
+          if (!current() || socket.readyState !== 1) return;
+          try { socket.send('ping'); } catch { fail('connection.server-failed'); }
         }, 25000);
-        this.state(this.role === 'camera' ? 'camera.waiting' : 'connection.connecting');
-        resolve();
+        // A refused upgrade also fires open. A pong proves that a recovery
+        // socket owns the room before its retry budget can be reset.
+        if (recovering) {
+          try { socket.send('ping'); } catch { fail('connection.server-failed'); }
+        } else finish();
       });
       socket.addEventListener('error', () => fail('connection.server-failed'));
       socket.addEventListener('close', (event) => {
@@ -95,13 +136,81 @@ export class CameraSession {
         fail(reasons[event.code] ?? 'connection.server-failed');
       });
       socket.addEventListener('message', (event) => {
-        if (!current() || event.data === 'pong') return;
+        if (!current()) return;
+        if (event.data === 'pong') { if (recovering && opened) finish(); return; }
         if (typeof event.data !== 'string' || event.data.length > 65536) return fail('connection.invalid');
         let message;
         try { message = JSON.parse(event.data); } catch { return fail('connection.invalid'); }
         try { this.message(message); } catch { fail('connection.invalid'); }
       });
     });
+  }
+
+  established(entry, retainDetached = false) {
+    if (!entry || !this.current(entry) || !entry.approved || !entry.hello
+        || entry.dc?.readyState !== 'open') return false;
+    // A retained peer has already crossed the approval and media boundary.
+    // Invitation retries must not shorten its ordinary direct-link grace.
+    const connected = entry.pc.connectionState === 'connected';
+    if (!connected && !(retainDetached && entry.signalingDetached && entry.pc.connectionState === 'disconnected')) return false;
+    return this.role === 'camera' ? entry.video === true && entry.mediaNegotiated === true && entry.acknowledged === true
+      : entry.received?.getVideoTracks().some((track) => track.readyState === 'live');
+  }
+
+  detachSocket(socket) {
+    if (this.socket !== socket) return;
+    this.socket = null;
+    clearInterval(this.keepalive);
+    this.keepalive = null;
+    try { socket.close(); } catch {}
+  }
+
+  lostIntroduction(key, opened) {
+    if (!opened || !['connection.server-failed', 'connection.ended'].includes(key)) return this.stop(key);
+    const established = [...this.peers.values()].filter((entry) => this.established(entry, true));
+    if (this.role === 'viewer') {
+      if (!established.length) return this.stop(key);
+      established.forEach((entry) => { entry.signalingDetached = true; });
+      this.signalingUnavailable = true;
+      this.state('viewer.signaling-lost');
+      return;
+    }
+    if (this.role !== 'camera') return;
+    this.reconnecting = true;
+    this.onDiscovery(null);
+    this.detachIntroducedPeers();
+    this.state('camera.reconnecting');
+    this.retryIntroduction();
+  }
+
+  detachIntroducedPeers() {
+    // Worker viewer IDs belong to the lost sockets. Existing direct peers
+    // remain private, while unfinished peers cannot cross a new room lease.
+    for (const entry of [...this.peers.values()]) {
+      if (this.established(entry, true)) entry.signalingDetached = true;
+      else this.removePeer(entry.id);
+    }
+  }
+
+  retryIntroduction() {
+    if (this.role !== 'camera' || !this.reconnecting) return;
+    if (this.retryAttempts >= INTRODUCTION_RETRIES.length) {
+      this.reconnecting = false;
+      this.signalingUnavailable = true;
+      if (this.established(this.peers.get(this.active), true)) this.state('camera.reconnect-failed');
+      else this.stop('connection.server-failed');
+      return;
+    }
+    const revision = this.revision;
+    this.retryTimer = setTimeout(() => {
+      this.retryTimer = null;
+      if (this.revision !== revision || this.role !== 'camera' || !this.reconnecting) return;
+      this.open(this.code, this.discoverable, true).catch((error) => {
+        if (this.revision !== revision || this.role !== 'camera' || !this.reconnecting) return;
+        if (error.message === 'connection.invalid') this.stop(error.message);
+        else this.retryIntroduction();
+      });
+    }, INTRODUCTION_RETRIES[this.retryAttempts++]);
   }
 
   send(data, id = null) {
@@ -125,7 +234,11 @@ export class CameraSession {
       return entry;
     }
     if (this.role === 'camera' && message?.type === 'leave') {
-      this.removePeer(message.id);
+      // The old worker socket can disappear while its direct peer is live.
+      // It no longer owns that peer's lifetime after introduction is lost.
+      const entry = this.peers.get(message.id);
+      if (this.established(entry)) entry.signalingDetached = true;
+      else if (!entry?.signalingDetached) this.removePeer(message.id);
       return;
     }
     if (message?.type !== 'signal' || message.data?.protocol !== PROTOCOL) return;
@@ -148,7 +261,7 @@ export class CameraSession {
       return;
     }
     const entry = this.peers.get(id);
-    if (!entry) return;
+    if (!entry || entry.signalingDetached) return;
     this.queue(entry, async () => {
       if (data.description !== undefined) {
         const description = data.description;
@@ -157,6 +270,7 @@ export class CameraSession {
             || description.sdp.length > 60000 || !description.sdp.startsWith('v=0')) throw new Error('connection.invalid');
         await entry.pc.setRemoteDescription(localDescription(description));
         if (!this.current(entry)) return;
+        if (expected === 'answer' && entry.video) entry.mediaNegotiated = true;
         for (const candidate of entry.candidates.splice(0)) await entry.pc.addIceCandidate(candidate);
         if (expected === 'offer') {
           entry.pc.getTransceivers().forEach((transceiver) => { transceiver.direction = 'recvonly'; });
@@ -237,7 +351,14 @@ export class CameraSession {
   }
 
   signal(entry, data) {
-    this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null);
+    if (entry.signalingDetached) return;
+    try { this.send({ protocol: PROTOCOL, ...data }, this.role === 'camera' ? entry.id : null); }
+    catch (error) {
+      if (!this.established(entry) || !this.socket) throw error;
+      const socket = this.socket;
+      this.detachSocket(socket);
+      this.lostIntroduction('connection.server-failed', true);
+    }
   }
 
   async offer(entry) {
@@ -448,7 +569,7 @@ export class CameraSession {
       this.removePeer(entry.id);
       // A viewer leaving closes only its peer; the camera invitation remains
       // available and must not acquire the viewer's end-of-link status.
-      if (key !== 'connection.ended') this.state(key);
+      if (key !== 'connection.ended' && this.role === 'camera') this.state(key);
     }
   }
 
@@ -461,7 +582,10 @@ export class CameraSession {
     entry.pc.close();
     if (this.active === id) this.active = null;
     this.requests();
-    if (this.role === 'camera' && this.active === null) this.state('camera.waiting');
+    if (this.role === 'camera' && this.active === null) {
+      if (this.signalingUnavailable && !this.reconnecting && !this.socket) this.stop('connection.server-failed');
+      else this.state(this.reconnecting ? 'camera.reconnecting' : 'camera.waiting');
+    }
   }
 
   stop(key = 'connection.stopped') {
@@ -474,6 +598,15 @@ export class CameraSession {
     this.cameraChange = null;
     clearInterval(this.keepalive);
     this.keepalive = null;
+    clearTimeout(this.socketDeadline);
+    this.socketDeadline = null;
+    this.cancelOpen?.();
+    this.cancelOpen = null;
+    clearTimeout(this.retryTimer);
+    this.retryTimer = null;
+    this.retryAttempts = 0;
+    this.reconnecting = false;
+    this.signalingUnavailable = false;
     const socket = this.socket;
     this.socket = null;
     this.role = null;

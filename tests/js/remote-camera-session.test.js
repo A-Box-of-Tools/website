@@ -39,8 +39,10 @@ function fixture(t) {
   class Socket extends Events {
     readyState = 0; sent = []; closed = false;
     constructor(url) { super(); this.url = url; sockets.push(this); queueMicrotask(() => { this.readyState = 1; this.emit('open'); }); }
-    send(value) { assert.equal(this.readyState, 1); this.sent.push(JSON.parse(value)); }
+    send(value) { assert.equal(this.readyState, 1); this.sent.push(value === 'ping' ? value : JSON.parse(value)); }
     receive(value) { this.emit('message', { data: JSON.stringify(value) }); }
+    pong() { this.emit('message', { data: 'pong' }); }
+    drop(code = 1006) { this.readyState = 3; this.emit('close', { code }); }
     close() { this.closed = true; this.readyState = 3; }
   }
   class PeerConnection extends Events {
@@ -445,4 +447,218 @@ test('departed sender failure still lets a later viewer use the new camera', asy
   assert.equal(f.session.stream, next); assert.equal(f.session.active, 'v:2');
   second.channel.receive('approval-ack'); await settle(); assert.equal(second.getSenders()[0].track, next.video);
   original.getTracks().forEach(track => track.stop());
+});
+
+async function streamingHost(f, { discoverable = false } = {}) {
+  const stream = sourceStream(true);
+  await f.session.startHost(stream, CODE, { discoverable });
+  const peer = await requestViewer(f, 'v:live', 'Watching', { receiveAudio: true });
+  peer.connectionState = 'connected';
+  f.session.approve('v:live'); peer.channel.receive('approval-ack'); await settle();
+  signal(f.sockets[0], 'v:live', { description: { type: 'answer', sdp: SDP } }); await settle();
+  return { stream, peer, entry: f.session.peers.get('v:live') };
+}
+
+test('introduction loss retains acknowledged media and restores the host with a fresh lease', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream, peer, entry } = await streamingHost(f, { discoverable: true });
+  const first = f.sockets[0], messages = [...peer.channel.sent], sender = entry.sender, audio = entry.audioSender;
+  first.drop(); await settle();
+  assert.equal(f.session.role, 'camera'); assert.equal(f.session.stream, stream);
+  assert.equal(f.session.peers.get('v:live'), entry); assert.equal(peer.closed, false);
+  assert.equal(stream.video.stops, 0); assert.equal(stream.other.stops, 0);
+  assert.equal(f.publications.at(-1), null); assert.equal(f.states.at(-1), 'camera.reconnecting');
+  t.mock.timers.tick(1999); await settle(); assert.equal(f.sockets.length, 1);
+  t.mock.timers.tick(1); await settle();
+  const recovered = f.sockets[1];
+  assert.equal(recovered.url, first.url); assert.deepEqual(recovered.sent, ['ping']);
+  assert.equal(f.session.reconnecting, true);
+  const publication = { tool: 'remote-camera', code: CODE, lease: 'new-lease-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' };
+  recovered.receive({ type: 'host-ready', discovery: publication }); recovered.pong(); await settle();
+  assert.equal(f.session.reconnecting, false); assert.deepEqual(f.publications.at(-1), publication);
+  assert.equal(f.states.at(-1), 'camera.streaming');
+  assert.equal(entry.sender, sender); assert.equal(entry.audioSender, audio);
+  assert.deepEqual(peer.channel.sent, messages); assert.equal(f.peers.length, 1);
+  first.receive({ type: 'leave', id: 'v:live' }); first.emit('error');
+  recovered.receive({ type: 'leave', id: 'v:live' }); await settle();
+  assert.equal(f.session.peers.get('v:live'), entry);
+  peer.emit('icecandidate', { candidate: { candidate: 'candidate:1 1 udp 123 192.168.1.2 5000 typ host', toJSON() { return { candidate: this.candidate }; } } });
+  assert.deepEqual(recovered.sent, ['ping']);
+  const replacement = new Stream([new Track('video'), stream.other]);
+  assert.equal(await f.session.prepareCameraChange().commit(replacement), true);
+  assert.equal(sender.track, replacement.getVideoTracks()[0]); assert.equal(audio.track, stream.other);
+  stream.video.stop(); f.session.stop();
+  assert.equal(stream.other.stops, 1); assert.equal(replacement.getVideoTracks()[0].stops, 1);
+});
+
+test('a lost viewer socket and worker host-gone close preserve only established approved video', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  peer.connectionState = 'connected'; channel.receive('approved'); await settle();
+  const video = new Track('video'), audio = new Track('audio');
+  peer.emit('track', { track: video }); peer.emit('track', { track: audio });
+  const stream = f.session.stream, notifications = f.streams.length;
+  f.sockets[0].drop(4410); await settle();
+  assert.equal(f.session.role, 'viewer'); assert.equal(f.session.stream, stream);
+  assert.equal(f.states.at(-1), 'viewer.signaling-lost'); assert.equal(peer.closed, false);
+  assert.equal(video.stops, 0); assert.equal(audio.stops, 0); assert.equal(f.streams.length, notifications);
+  assert.equal(f.sockets.length, 1);
+  channel.emit('close'); await settle();
+  assert.equal(f.session.role, null); assert.equal(f.streams.at(-1), null);
+  assert.equal(video.stops, 1); assert.equal(audio.stops, 1);
+});
+
+test('a viewer losing only its introduction socket does not let worker leave close its healthy peer', async (t) => {
+  const f = fixture(t), { stream, peer, entry } = await streamingHost(f);
+  const socket = f.sockets[0];
+  socket.receive({ type: 'leave', id: 'v:live' }); await settle();
+  assert.equal(f.session.peers.get('v:live'), entry); assert.equal(entry.signalingDetached, true);
+  assert.equal(peer.closed, false); assert.equal(stream.video.stops, 0);
+  assert.equal(socket.closed, false); assert.equal(f.session.retryTimer, null);
+  signal(socket, 'v:new', { dial: true }); await settle();
+  assert.equal(f.peers.length, 1); assert.equal(socket.sent.at(-1).data.refused, 'busy');
+  peer.channel.emit('close'); await settle();
+  assert.equal(f.session.active, null); assert.equal(f.session.role, 'camera');
+  assert.equal(f.states.at(-1), 'camera.waiting'); assert.equal(stream.video.stops, 0);
+});
+
+test('viewer introduction loss before received video remains fail-closed', async (t) => {
+  const f = fixture(t), { peer, channel } = await readyViewer(f);
+  peer.connectionState = 'connected'; channel.receive('approved'); await settle();
+  f.sockets[0].drop(4410); await settle();
+  assert.equal(f.session.role, null); assert.equal(peer.closed, true);
+  assert.equal(f.states.at(-1), 'connection.ended');
+  peer.emit('track', { track: new Track('video') });
+  assert.equal(f.session.stream, null); assert.equal(f.streams.at(-1), null);
+});
+
+test('host recovery discards pending peers and never replays an unacknowledged approval', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  const peer = await requestViewer(f, 'v:pending'); f.session.approve('v:pending');
+  f.sockets[0].drop(); await settle();
+  assert.equal(peer.closed, true); assert.equal(f.session.active, null);
+  assert.equal(f.session.peers.size, 0); assert.equal(peer.transceivers.length, 0);
+  peer.channel.receive('approval-ack'); t.mock.timers.tick(2000); await settle();
+  f.sockets[1].pong(); await settle();
+  assert.equal(f.session.role, 'camera'); assert.equal(f.states.at(-1), 'camera.waiting');
+  assert.equal(peer.transceivers.length, 0); assert.equal(stream.video.stops, 0);
+  assert.equal(f.sockets[1].sent.length, 1);
+});
+
+test('five refused host recoveries cannot reset the retry budget or end healthy media', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream, peer } = await streamingHost(f);
+  f.sockets[0].drop(); await settle();
+  for (const delay of [2000, 4000, 8000, 15000, 30000]) {
+    t.mock.timers.tick(delay); await settle();
+    const socket = f.sockets.at(-1);
+    assert.deepEqual(socket.sent, ['ping']); socket.drop(4409); await settle();
+  }
+  assert.equal(f.sockets.length, 6); assert.equal(f.session.retryTimer, null);
+  assert.equal(f.states.at(-1), 'camera.reconnect-failed'); assert.equal(f.session.role, 'camera');
+  assert.equal(peer.closed, false); assert.equal(stream.video.stops, 0); assert.equal(stream.other.stops, 0);
+  t.mock.timers.tick(60000); await settle(); assert.equal(f.sockets.length, 6);
+  peer.channel.emit('close'); await settle();
+  assert.equal(f.session.role, null); assert.equal(stream.video.stops, 1); assert.equal(stream.other.stops, 1);
+});
+
+test('an idle host releases capture after bounded introduction recovery fails', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), stream = sourceStream(); await f.session.startHost(stream, CODE);
+  f.sockets[0].drop(); await settle();
+  for (const delay of [2000, 4000, 8000, 15000, 30000]) {
+    t.mock.timers.tick(delay); await settle(); f.sockets.at(-1).drop(); await settle();
+  }
+  assert.equal(f.session.role, null); assert.equal(stream.video.stops, 1);
+  assert.equal(f.states.at(-1), 'connection.server-failed'); assert.equal(f.sockets.length, 6);
+});
+
+test('recovery handshakes stop after twenty seconds without an admission pong', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream, peer } = await streamingHost(f);
+  f.sockets[0].drop(); await settle(); t.mock.timers.tick(2000); await settle();
+  const opening = f.sockets[1];
+  t.mock.timers.tick(19999); await settle(); assert.equal(opening.closed, false);
+  t.mock.timers.tick(1); await settle();
+  assert.equal(opening.closed, true); assert.equal(f.session.socketDeadline, null);
+  assert.equal(f.session.retryAttempts, 2); assert.equal(f.session.socket, null);
+  opening.pong(); await settle(); assert.equal(f.session.reconnecting, true);
+  assert.equal(peer.closed, false); assert.equal(stream.video.stops, 0);
+  f.session.stop(); t.mock.timers.tick(60000); await settle(); assert.equal(f.sockets.length, 2);
+});
+
+test('a refused introduction retry preserves the disconnected grace of an already retained peer', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream, peer, entry } = await streamingHost(f);
+  f.sockets[0].drop(); await settle();
+  peer.connectionState = 'disconnected'; peer.emit('connectionstatechange');
+  t.mock.timers.tick(2000); await settle(); f.sockets[1].drop(4409); await settle();
+  assert.equal(f.session.peers.get('v:live'), entry); assert.equal(peer.closed, false);
+  assert.equal(stream.video.stops, 0); assert.equal(stream.other.stops, 0);
+  peer.connectionState = 'connected'; peer.emit('connectionstatechange');
+  t.mock.timers.tick(4000); await settle(); f.sockets[2].pong(); await settle();
+  assert.equal(f.session.peers.get('v:live'), entry); assert.equal(f.session.active, 'v:live');
+  assert.equal(peer.closed, false); assert.equal(f.states.at(-1), 'camera.streaming');
+});
+
+test('a retained peer still ends at the ordinary five-second disconnected deadline during retries', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { peer, entry } = await streamingHost(f);
+  f.sockets[0].drop(); await settle();
+  peer.connectionState = 'disconnected'; peer.emit('connectionstatechange');
+  t.mock.timers.tick(2000); await settle(); f.sockets[1].drop(4409); await settle();
+  t.mock.timers.tick(2999); await settle();
+  assert.equal(f.session.peers.get('v:live'), entry); assert.equal(peer.closed, false);
+  t.mock.timers.tick(1); await settle();
+  assert.equal(peer.closed, true); assert.equal(f.session.peers.size, 0); assert.equal(f.session.active, null);
+});
+
+test('the disconnected grace does not newly retain a peer that was not healthy when signaling was lost', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { peer, entry } = await streamingHost(f);
+  peer.connectionState = 'disconnected'; peer.emit('connectionstatechange');
+  assert.equal(entry.signalingDetached, undefined);
+  f.sockets[0].drop(); await settle();
+  assert.equal(peer.closed, true); assert.equal(f.session.peers.size, 0); assert.equal(f.session.active, null);
+});
+
+test('retry exhaustion leaves a retained disconnected peer its remaining direct-link grace', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream, peer, entry } = await streamingHost(f);
+  f.sockets[0].drop(); await settle();
+  for (const delay of [2000, 4000, 8000, 15000]) {
+    t.mock.timers.tick(delay); await settle(); f.sockets.at(-1).drop(4409); await settle();
+  }
+  t.mock.timers.tick(30000); await settle();
+  peer.connectionState = 'disconnected'; peer.emit('connectionstatechange');
+  f.sockets.at(-1).drop(4409); await settle();
+  assert.equal(f.states.at(-1), 'camera.reconnect-failed'); assert.equal(f.session.peers.get('v:live'), entry);
+  assert.equal(peer.closed, false); assert.equal(stream.video.stops, 0);
+  t.mock.timers.tick(4999); await settle(); assert.equal(peer.closed, false);
+  t.mock.timers.tick(1); await settle();
+  assert.equal(peer.closed, true); assert.equal(f.session.role, null);
+  assert.equal(stream.video.stops, 1); assert.equal(stream.other.stops, 1);
+});
+
+test('Stop cancels scheduled and opening recovery and stale callbacks cannot restart capture', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+  const f = fixture(t), { stream } = await streamingHost(f);
+  f.sockets[0].drop(); await settle(); f.session.stop();
+  t.mock.timers.tick(120000); await settle(); assert.equal(f.sockets.length, 1);
+  const next = sourceStream(); await f.session.startHost(next, CODE);
+  f.sockets[1].drop(); await settle(); t.mock.timers.tick(2000); await settle();
+  const opening = f.sockets[2]; f.session.stop();
+  opening.pong(); opening.emit('error'); opening.receive({ type: 'host-ready', discovery: { tool: 'remote-camera', code: CODE, lease: 'late-lease-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' } });
+  t.mock.timers.tick(120000); await settle();
+  assert.equal(f.session.role, null); assert.equal(f.sockets.length, 3);
+  assert.equal(stream.video.stops, 1); assert.equal(next.video.stops, 1);
+  assert.equal(f.session.retryTimer, null); assert.equal(f.session.socketDeadline, null);
+});
+
+test('malformed signaling still closes approved media instead of attempting recovery', async (t) => {
+  const f = fixture(t), { stream, peer } = await streamingHost(f);
+  f.sockets[0].emit('message', { data: '{broken' }); await settle();
+  assert.equal(f.session.role, null); assert.equal(peer.closed, true);
+  assert.equal(stream.video.stops, 1); assert.equal(f.states.at(-1), 'connection.invalid');
+  assert.equal(f.session.retryTimer, null);
 });

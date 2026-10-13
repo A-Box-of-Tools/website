@@ -30,6 +30,11 @@
 .viewer-alert-options { margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; }
 .viewer-alert-options legend { font-weight: 600; padding: 0 0.4rem; }
 .viewer-alert-options label { margin-bottom: 0.65rem; }
+.viewer-alert-heading { font-weight: 600; margin-bottom: 0.5rem; }
+#viewer-panel > .run-row { position: relative; }
+#viewer-panel > .run-row > .camera-help-row { position: static; }
+.camera-help-note p { margin: 0; }
+.camera-help-note p + p { margin-top: 0.65rem; }
 #viewer-alert-status.warn, #viewer-audio-status.warn { color: var(--danger); }
 .camera-device-field { max-width: 32rem; margin-bottom: 0.75rem; }
 .camera-device-field select { width: 100%; }
@@ -48,6 +53,16 @@
 .camera-stop-dialog .run-row { margin-top: 1.25rem; }
 .camera-video-panel { margin: 1rem 0; }
 .camera-video-panel video { display: block; width: 100%; max-height: 32rem; min-height: 12rem; aspect-ratio: 16 / 9; object-fit: contain; background: #101418; border: 1px solid var(--border); border-radius: var(--radius); }
+.viewer-video-frame { position: relative; background: #101418; border-radius: var(--radius); }
+.viewer-video-controls { position: absolute; inset-inline: 0.75rem; inset-block-end: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; width: auto; margin: 0; }
+.viewer-video-controls button, .viewer-video-controls .camera-help > summary { min-height: 2.75rem; background: rgb(16 20 24 / 0.9); color: #fff; border: 1px solid rgb(255 255 255 / 0.6); }
+.viewer-video-controls button { padding: 0.5rem 0.75rem; }
+.viewer-video-controls button:hover, .viewer-video-controls .camera-help > summary:hover { background: #26313b; }
+.viewer-video-controls button:focus-visible, .viewer-video-controls .camera-help > summary:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.viewer-video-controls .camera-help-note { font-weight: 400; }
+.viewer-video-frame:fullscreen { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #000; border-radius: 0; }
+.viewer-video-frame:fullscreen video { max-height: none; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; }
+.viewer-video-frame:fullscreen .viewer-video-controls { inset-block-end: max(0.75rem, env(safe-area-inset-bottom)); }
 .camera-invite { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 1.25rem; align-items: center; margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); }
 .camera-link-fields { min-width: 0; }
 .camera-link-fields label { display: block; margin-bottom: 0.4rem; }
