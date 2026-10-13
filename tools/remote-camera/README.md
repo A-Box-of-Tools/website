@@ -114,6 +114,11 @@ response-header rule. This PR does not change the live account rule.
 
 ## Checking a change
 
+Host setup descriptions use inline help beside the link name, approval choice
+and microphone choice. They reuse Share Text's `wireHelpTooltip` controller for
+hover, keyboard focus, touch pinning, Escape and outside-click dismissal. The
+approval explanation still updates with the chosen policy inside its tooltip.
+
 Build the scoped page with `python build.py --only remote-camera --locale en
 --quiet`, then use the built page. A complete check joins a second browser,
 observes zero senders before approval, denies a request, approves a fresh

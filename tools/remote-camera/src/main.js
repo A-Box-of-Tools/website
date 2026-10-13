@@ -1,12 +1,14 @@
 import { phrase, ltr } from './shared/phrases.js';
 import { makeQr } from './shared/qr.js';
 import { watchDiscovery } from './shared/peer-discovery.js';
+import { wireHelpTooltip } from './shared/help-tooltip.js';
 import { CameraCapture } from './capture.js';
 import { CameraSession } from './session.js';
 import { alertCapabilities, ViewerAlerts } from './alerts.js';
 import { TOOL, makeCode, normalize, parseCode, viewerLink } from './protocol.js';
 
 const $ = (id) => document.getElementById(id);
+document.querySelectorAll('.camera-help').forEach(wireHelpTooltip);
 let mode = 'camera';
 let activeRole = null;
 let epoch = 0;

@@ -13,7 +13,7 @@ glyph = "camera"
 category = "video-and-animation"
 roadmap_group = "video"
 css_parts = ["form", "notes"]
-js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names"]
+js_parts = ["peer-network", "gf256", "qr-tables", "qr-encode", "qr", "peer-discovery", "room-names", "help-tooltip"]
 lastmod = "2026-10-13"
 title = "Remote Camera &mdash; Watch Another Device's Camera in Your Browser"
 description = "Watch a camera on your local network with direct encrypted video, optional audio, viewer approval, camera switching and motion or sound notifications."
@@ -159,7 +159,7 @@ body = """
 
 [[howto]]
 title = "Start on the camera device."
-body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Enable Share microphone audio before starting to request microphone access; stop before changing this choice."
+body = "Open this HTTPS page on the phone or computer whose camera you want. Choose a viewer link name or keep the random suggestion, choose Start camera, and allow camera access. Your browser chooses the initial camera. After permission, a Camera selector appears if this browser exposes more than one camera; use it to switch without ending the invitation. Audio is off by default. Select Enable microphone before starting to request microphone access; stop before changing this choice."
 [[howto]]
 title = "Invite the viewing device."
 body = "Open the viewer link or scan the QR code on the other device. You can also choose a name under Online cameras, or enter the code in Watch a camera. Both devices need internet for pairing and a network that lets them reach each other."
@@ -196,7 +196,7 @@ q = "Can I change cameras while sharing?"
 a = "After camera permission, the Camera selector appears when this browser exposes multiple video devices. Choose another to keep the same invitation and viewer connection. Some devices need a brief pause while the old hardware is released. If switching fails, the tool keeps or restores the previous camera where possible; if neither camera can be opened, sharing ends and you can start again."
 [[faq]]
 q = "Does it send sound or record video?"
-a = "Audio is off by default. Enable Share microphone audio before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. The viewer chooses Listen to audio to hear it. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
+a = "Audio is off by default. Select Enable microphone before starting to request the microphone and send it directly to an accepted viewer. Stop before changing this choice. The viewer chooses Listen to audio to hear it. Reload older viewer pages to receive audio; they can still watch video. There is no recording feature. A viewer can independently capture their screen, as with anything they can see."
 [[faq]]
 q = "Can I receive motion or sound alerts?"
 a = "Supported browsers offer optional notifications in the connected viewer. Enable motion or sound detection and allow notifications. Sound detection requires audio from the host; playback can stay muted. Detection runs locally while the viewer page can run, and may pause in the background or during sleep. Lighting changes can trigger motion alerts and activity can be missed. This is not a safety monitor. On iPhone or iPad, browser notifications may require adding the site to the Home Screen."

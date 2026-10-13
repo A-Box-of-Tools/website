@@ -15,6 +15,18 @@
 .camera-discoverable { display: flex; gap: 0.6rem; align-items: baseline; }
 .camera-policy, .camera-switch-status { color: var(--text-dim); line-height: 1.65; max-width: 72ch; }
 .camera-policy.warn, .camera-switch-status.warn { color: var(--danger); }
+.camera-help-row { position: relative; display: flex; align-items: center; gap: 0.25rem; width: fit-content; max-width: 100%; margin: 0.25rem 0; }
+.camera-help-row > label { margin: 0; min-width: 0; }
+.camera-help { flex: none; }
+.camera-help > summary { justify-content: center; min-width: 2.25rem; min-height: 2.25rem; border-radius: 50%; }
+.camera-help > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.camera-help-note { position: absolute; z-index: 5; inset-block-start: calc(100% + 0.35rem); inset-inline-start: 0; width: min(28rem, calc(100vw - 5rem)); margin: 0; padding: 0.75rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 8px 24px rgb(0 0 0 / 0.16); font-size: 0.84rem; line-height: 1.5; }
+.camera-help-note::before { content: ""; position: absolute; inset-inline: 0; inset-block-end: 100%; height: 0.5rem; }
+.camera-help[data-placement="above"] > .camera-help-note { inset-block-start: auto; inset-block-end: calc(100% + 0.35rem); }
+.camera-help[data-placement="above"] > .camera-help-note::before { inset-block-start: 100%; inset-block-end: auto; }
+@media (pointer: coarse) {
+  .camera-help > summary { min-width: 2.75rem; min-height: 2.75rem; }
+}
 .viewer-alert-options { margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); min-width: 0; }
 .viewer-alert-options legend { font-weight: 600; padding: 0 0.4rem; }
 .viewer-alert-options label { margin-bottom: 0.65rem; }

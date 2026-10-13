@@ -18,19 +18,34 @@
     <h2>Share my camera</h2>
     <p class="card-lede">Allow camera access on this device. The other device opens your link or scans the QR code. Choose whether you want to approve each viewer.</p>
     <div class="field camera-name-field">
-      <label for="camera-name">Viewer link name</label>
+      <div class="camera-help-row">
+        <label for="camera-name">Viewer link name</label>
+        <details id="camera-name-help" class="camera-help info-fold">
+          <summary aria-describedby="camera-name-note"><span class="visually-hidden">About the viewer link name</span></summary>
+          <p id="camera-name-note" class="camera-help-note" role="tooltip">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
+        </details>
+      </div>
       <div class="camera-name-row">
         <input type="text" id="camera-name" maxlength="64" autocomplete="off" spellcheck="false" dir="ltr" aria-describedby="camera-name-note">
         <button type="button" id="camera-suggest" class="ghost">New random name</button>
       </div>
-      <p id="camera-name-note" class="field-note">Choose your own name using letters, numbers and hyphens, or keep the random suggestion. Stop before changing the name. Your browser chooses the camera.</p>
     </div>
     <label class="camera-discoverable"><input type="checkbox" id="camera-discoverable" checked> List this camera for other devices to find</label>
     <p class="field-note">The link name is visible to browsers in the discovery group described under Online cameras. Turn this off to invite viewers by link only.</p>
-    <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked> Require my approval before viewers can watch</label>
-    <p id="camera-approval-policy" class="camera-policy" role="status" aria-live="polite">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
-    <label class="camera-discoverable"><input type="checkbox" id="camera-audio" aria-describedby="camera-audio-note">Share microphone audio</label>
-    <p id="camera-audio-note" class="field-note">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice.</p>
+    <div class="camera-help-row">
+      <label class="camera-discoverable"><input type="checkbox" id="camera-require-approval" checked aria-describedby="camera-approval-policy"> Require my approval before viewers can watch</label>
+      <details id="camera-approval-help" class="camera-help info-fold">
+        <summary aria-describedby="camera-approval-policy"><span class="visually-hidden">About viewer approval</span></summary>
+        <p id="camera-approval-policy" class="camera-help-note camera-policy" role="tooltip">Approve viewer requests on this device. Changes to this setting apply to new requests.</p>
+      </details>
+    </div>
+    <div class="camera-help-row">
+      <label class="camera-discoverable"><input type="checkbox" id="camera-audio" aria-describedby="camera-audio-note">Enable microphone</label>
+      <details id="camera-audio-help" class="camera-help info-fold">
+        <summary aria-describedby="camera-audio-note"><span class="visually-hidden">About enabling the microphone</span></summary>
+        <p id="camera-audio-note" class="camera-help-note" role="tooltip">Audio is off by default. Enable it before starting to request microphone access. Stop sharing before changing this choice.</p>
+      </details>
+    </div>
     <p id="camera-audio-status" class="field-note" role="status" aria-live="polite"></p>
     <div class="run-row">
       <button type="button" id="camera-start" class="big">Start camera</button>
