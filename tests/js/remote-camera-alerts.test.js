@@ -221,6 +221,7 @@ test('cleanup closes only this alert cycle even if the browser returns other not
   const f = fixture(), other = { tag: 'another-tool', closed: 0, close() { this.closed += 1; } };
   f.registration.notifications.push(other);
   await f.alerts.enable({ motion: true }); f.warmMotion(); f.movement();
+  await flush();
   f.alerts.disable(); await flush();
   assert.equal(other.closed, 0); assert.equal(f.registration.notifications[1].closed, 1);
   f.alerts.disconnect();
