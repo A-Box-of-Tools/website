@@ -2,13 +2,14 @@
 
 [← README](../README.md) · [Guide conventions](guides.md)
 
-This review covers all 75 guides on `dev`. The English pass expanded 74 and
+The English use-case pass covered 75 guides on `dev`. It expanded 74 and
 kept the recently revised Remote Camera guide, whose nursery, pet, entryway and
 DIY workflows already supplied both ordinary and less obvious uses. The same
 use-case coverage and corrected limitations are now translated into Simplified
 Chinese, German, Spanish, Brazilian Portuguese, French and Japanese.
 
-Each maintained language has 75 complete guide bodies and translated article
+The voice-broadcast guide arrived on `dev` during translation and is included
+too. Each maintained language now has 76 complete guide bodies and article
 metadata. Image Layout and Remote Camera previously had English guide fallbacks;
 both guides are now translated in full. Older sharing translations also lacked
 the local-network section, which is included in this update. The eight frozen
@@ -36,6 +37,7 @@ the job; it is not a second specification for the tool.
 
 | Guide | Review | Common job | Useful additional case | Important limit or check |
 |---|---|---|---|---|
+| [broadcast voice on a local network](../pages/guides/broadcast-voice-on-a-local-network/body.html) | New guide, translated | One speaking computer broadcasts to receive-only browsers. | Live instructions for a small workshop group. | Downloaded helper needs Python 3.10+; ten listeners including pending connections; HTTP setup requires a trusted network; no recording or public relay. |
 | [arrange images](../pages/guides/arrange-images/body.html) | Expanded | Contact-sheet shortlist and before/after strip with fit, size and format choices. | Ordered support screenshots or assembly instructions as a vertical PNG strip. | One still output; no cell captions or filename labels; long strips meet canvas limits. |
 | [can an ai agent use these tools](../pages/guides/can-an-ai-agent-use-these-tools/body.html) | Expanded | Application attachment preparation | Repeatable expense-packet brief | Agent data handling and human review remain separate |
 | [can blacked out text be recovered](../pages/guides/can-blacked-out-text-be-recovered/body.html) | Expanded | Support screenshots and document copies | Reusable training example | Check every occurrence and scanned pixels |

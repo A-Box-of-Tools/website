@@ -43,6 +43,7 @@ complete = true
 #
 
 [slugs]
+"guides/broadcast-voice-on-a-local-network" = "guias/transmitir-voz-en-red-local"
 "guides/arrange-images" = "guias/organizar-imagenes"
 "guides/watch-camera-from-another-device" = "guias/ver-camara-de-otro-dispositivo"
 "receipt-invoice-extractor" = "extraer-recibos-facturas"
