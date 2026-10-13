@@ -104,6 +104,7 @@ from buildlib import i18n
 from buildlib import icons as iconlib
 from buildlib import imports
 from buildlib import landing
+from buildlib import local_bundle
 from buildlib import markdown as mdlib
 from buildlib import minify
 from buildlib import screens
@@ -1452,6 +1453,9 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
                 'browser would refuse to install the tool; draw it with '
                 f'.\\og-image.ps1 -Icons -Only {tool["slug"]}')
         shutil.copy2(source, dest / icon['src'])
+
+    local_bundle.write_bundle(dest, templates, tool, body, css,
+                              SHARED / 'site.css', js_v, locale['lang'])
 
 
 def landing_pages(tool, locale):

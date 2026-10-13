@@ -103,6 +103,11 @@
       Optional viewer alerts analyze small video frames and received audio on the viewer device without recordings or uploads. Enabling alerts requests browser notification permission. Generic notices contain no camera image, audio, link name or viewer note; the browser and operating system display them. Disconnect stops analysis and closes this session’s notifications. The viewer page must stay open; browsers may pause analysis in the background or during sleep.
     </p>
 
+    <h3>Local Walkie-Talkie</h3>
+    <p>
+      <a href="../walkie-talkie/">Local Walkie-Talkie</a> distributes a downloadable local bundle. Its host computer runs a Python service for connection setup and heartbeat state, held only in memory. Live voice travels directly from the host browser to up to ten receive-only browsers using encrypted WebRTC; the service receives no audio. The bundle has no platform scripts or remote assets and uses no public rendezvous, STUN server, TURN relay or recording feature. Anyone with a listener invitation and network access can join. Local HTTP setup messages and tokens can be observed or altered by an active LAN attacker, so use a trusted network. VPN and operating-system routes can affect direct reachability. A recipient can independently record audio.
+    </p>
+
     <h3>Share Text &amp; Files and the rendezvous</h3>
     <p>
       <a href="../share-text/">Share Text &amp; Files</a> opens a discovery connection on its start page and another connection when sharing. Names are grouped by public IPv4 address or IPv6 subnet and page origin; this is a discovery hint, not proof of the same physical network. The rendezvous sees names, IP addresses, connection times and negotiation messages, never shared text or files. Advertised names live on open connections without durable storage. Ordinary mode uses public STUN servers from Google and Cloudflare; a reader may explicitly retry through a Cloudflare TURN relay, which forwards encrypted traffic without its decryption keys. Local network mode omits STUN and TURN, but still needs the public rendezvous. Cloudflare keeps seven-day connection metadata logs for the share and camera rendezvous; these are per-visitor service logs we can read. Content copied or downloaded by a recipient remains theirs after the source tab closes.
