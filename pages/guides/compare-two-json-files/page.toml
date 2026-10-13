@@ -28,9 +28,9 @@ lede = """
     first, so that the only differences left are real ones. Both steps run in
     your browser, which is where config files with secrets in them belong."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-27"
+lastmod = "2026-10-13"
 
 og_title = "Compare two JSON files without the formatting noise"
 og_description = "Canonicalise both files - same indent, sorted keys - then diff them. What lights up after that is real, and none of it was uploaded."

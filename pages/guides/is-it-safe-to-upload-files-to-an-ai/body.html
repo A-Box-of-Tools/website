@@ -1,8 +1,8 @@
   <section>
     <h2>The short answer</h2>
     <p>
-      Attaching a file to an AI chat is an upload. So is pasting text into
-      one. The window does not look like an upload form &mdash; there is no
+      Attaching a file to a cloud AI chat is an upload. So is pasting text into
+      that service. The window does not look like an upload form &mdash; there is no
       progress bar, no &ldquo;your file is being transferred&rdquo; &mdash;
       but the bytes cross the internet to a vendor's servers all the same,
       and everything the <a href="../is-it-safe-to-upload-files/">first
@@ -18,6 +18,32 @@
       with a different name. Three differences change what a careful person
       does &mdash; and none of them means &ldquo;never&rdquo;. They mean:
       send less, and send it clean.
+    </p>
+  </section>
+
+  <section>
+    <h2>Prepare the smallest useful question</h2>
+    <p>
+      <strong>Explaining a passage.</strong> Copy the relevant clause or
+      paragraph, retaining the definitions and context needed to understand it.
+      Remove unrelated names and identifiers from a separate working copy. If
+      extracting PDF pages is easier, <a
+      href="../merge-and-split-pdf-files/">keep only the necessary pages</a> and
+      review the output before any attachment. Decide whether the remaining
+      content may be shared under the service's terms and your own obligations.
+    </p>
+    <p>
+      <strong>Debugging a configuration.</strong> Replace live credentials,
+      customer records and private hostnames with consistent fictional examples.
+      Locally <a href="../compare-two-json-files/">compare the working and
+      failing files</a>, then ask about the small difference rather than
+      attaching both complete files.
+    </p>
+    <p>
+      A useful first attempt is a synthetic version of the question: the layout,
+      error or field types may be enough. If a model needs the actual contents,
+      that is the point to make a deliberate sharing decision; local preparation
+      does not remove the AI service's data path.
     </p>
   </section>
 
@@ -140,14 +166,12 @@
       And notice how often the answer to &ldquo;does anything need to go at
       all?&rdquo; is no. The chores people hand to AI chats &mdash;
       compress this, convert this, strip this data, make this smaller than
-      a form's limit &mdash; are jobs a browser can do on your own machine,
-      and every tool on this site does them without the file leaving. An AI
-      agent can even drive those tools for you, and when it runs locally
-      the delegation costs nothing &mdash; that is
-      <a href="../can-an-ai-agent-use-these-tools/">the previous
-      guide</a>. The clean division of labour: this site's tools are where
-      a file gets smaller, cleaner and stripped of what nobody else needs
-      to see &mdash; on your machine &mdash; and what you choose to send
-      afterwards goes out on purpose, in the state you decided.
+      a form's limit &mdash; can often run in a browser on your own machine.
+      Those local processing steps need no upload. Sharing, online lookups and
+      app handoffs have separate boundaries. An AI agent can operate the
+      tools too, but its own service may receive screenshots or file context
+      even when its browser is local; <a href="../can-an-ai-agent-use-these-tools/">
+      the agent guide</a> explains that distinction. Prepare the copy locally,
+      inspect it and decide separately what to send onwards.
     </p>
   </section>

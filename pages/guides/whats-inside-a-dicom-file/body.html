@@ -19,6 +19,34 @@
   </section>
 
   <section>
+    <h2>A second opinion and a teaching example need different copies</h2>
+    <p>
+      <strong>For a second opinion,</strong> ask the receiving clinic how to
+      transfer the original study. Inspect it locally to understand what you
+      have, but do not improvise a de-identification step that could remove
+      clinical context the recipient needs. A screenshot of one slice is not a
+      substitute for a study.
+    </p>
+    <p>
+      <strong>For teaching or research,</strong> obtain a copy approved for that
+      purpose and handled through an appropriate de-identification process.
+      Review headers and image pixels: identifying text can be burned into the
+      picture. The <a
+      href="https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_E.html"
+      target="_blank" rel="noopener noreferrer">DICOM confidentiality
+      profiles</a> cover attributes and additional cleaning options, and
+      explicitly do not guarantee that an information object is fully
+      de-identified.
+    </p>
+    <p>
+      For a viewer compatibility question, the codec name or error may be
+      enough. Avoid attaching a complete header report to a public issue when it
+      contains patient identifiers. The viewer reads those fields; it does not
+      remove them.
+    </p>
+  </section>
+
+  <section>
     <h2>Why this file gets uploaded so casually</h2>
     <p>
       Here is the trap in practice. A patient is handed a disc or a
@@ -119,8 +147,8 @@
         <strong>If you must share a file, know what is in it first.</strong>
         Read the header and the identity panel, so whatever you pass on is
         a decision rather than a surprise &mdash; and treat
-        &ldquo;properly de-identified&rdquo; as a service your imaging
-        provider owes you on request, not a checkbox you improvise.
+        &ldquo;properly de-identified&rdquo; as a process to discuss with your
+        imaging provider or receiving organisation, not a checkbox you improvise.
       </li>
       <li>
         <strong>Remember the disc outlives the errand.</strong> The copy

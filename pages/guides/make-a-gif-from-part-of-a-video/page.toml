@@ -26,9 +26,9 @@ lede = """
     which settings &mdash; and both happen on your own machine, because neither
     tool here uploads anything."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-27"
+lastmod = "2026-10-13"
 
 og_title = "Make a GIF from part of a video, without uploading either"
 og_description = "Cut first, convert second. Which tool should do the cutting, what a second of GIF really costs, and how to keep the result under a forum's size limit."

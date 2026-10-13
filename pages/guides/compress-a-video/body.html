@@ -17,6 +17,28 @@
   </section>
 
   <section>
+    <h2>An attachment, an upload, or a bug report</h2>
+    <p>
+      For an email, check the allowance for the whole message, then subtract
+      the other attachments and leave some room. Personal Gmail currently
+      allows 25 MB of attachments; work and school limits are set by the
+      administrator. The <a
+      href="https://support.google.com/mail/answer/6584?hl=en" target="_blank"
+      rel="noopener noreferrer">Gmail attachment instructions</a> explain the
+      distinction. A preset is a size target, not a promise that every
+      recipient accepts that much.
+    </p>
+    <p>
+      For a bug report or a short demonstration, cut the waiting before
+      compressing. Keep the clicks that explain the problem, retain sound when
+      it carries the explanation, and keep enough resolution to read the
+      smallest important text. Play the downloaded result in the receiving
+      app, check the actual size and the last second, and raise the target or
+      shorten the clip if the text has become unreadable.
+    </p>
+  </section>
+
+  <section>
     <h2>Where the megabytes go</h2>
     <p>
       A video file is almost entirely its picture. A minute of 1080p from a
@@ -81,7 +103,7 @@
         the limit is 25 MB, 25 MB is the right answer; 8 MB throws away
         two-thirds of the picture for nothing.
       </li>
-      <li><strong>Cut first.</strong> Removing time you do not need leaves more of the size budget for each remaining second. The <a href="../trim-a-video/">Video Trimmer</a> can copy compatible selections without re-encoding; exact cuts re-encode the picture. Choose the labelled method deliberately before compressing.</li>
+      <li><strong>Cut first.</strong> Removing time you do not need leaves more of the size budget for each remaining second. The <a href="../trim-a-video/">Video Trimmer</a> can copy compatible selections without re-encoding; exact cuts re-encode the picture. A trimmed result can carry playback edits, including audio edits after an exact picture cut; if the compressor refuses that timeline, save a new video with those edits applied in a local editor before continuing. Choose the labelled method deliberately.</li>
       <li>
         <strong>Drop the sound if it does not matter.</strong> A minute of
         stereo is about a megabyte. On a short clip with a tight limit, that
@@ -131,10 +153,12 @@
       If it came out over, the bitrate is worked out again from how far it
       missed and the clip is encoded once more; the page says when that
       happened. Then the finished file is opened again, on your machine, and
-      has to be the length it was. A compressor that dropped the last second
+      its length is checked against the source. A compressor that dropped the last second
       or the sound would still produce a smaller file, and only reading the
       result back can tell the difference. The result plays under the
-      download, so you can look before you send.
+      download, so you can look before you send. If the check line says the
+      target was still missed, that download is not under the limit: choose
+      a smaller frame size, a shorter clip or a larger allowance and retry.
     </p>
   </section>
 

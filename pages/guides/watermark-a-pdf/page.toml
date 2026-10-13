@@ -23,15 +23,15 @@ description = "Why lenders and landlords ask for a scan to be stamped with their
 
 heading = "How to watermark a PDF, and what the stamp is actually for"
 lede = """
-    A scan stamped with who it is for cannot quietly be used somewhere else.
+    A scan stamped with who it is for makes its intended use visible.
     That is the whole job, it is worth doing, and it is not the same thing as
     locking the document. Here is what to write, how to put it on, and where
     the line is."""
 
-updated = "12 September 2026"
+updated = "13 October 2026"
 published = "2026-09-12"
-lastmod = "2026-09-12"
+lastmod = "2026-10-13"
 
 og_title = "How to watermark a PDF, and what it is for"
-og_description = "What to write on a scan before you send it, why it stops a copy being reused and does not stop it being copied, and how to stamp it in your browser."
+og_description = "What to write on a scan or draft before you send it, how a removable stamp marks its intended use, and how to add it in your browser."
 og_image_alt = "abox.tools - tools that never touch a server"

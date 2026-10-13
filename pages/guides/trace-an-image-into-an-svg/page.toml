@@ -26,9 +26,9 @@ lede = """
     tracing. It works beautifully on shapes and badly on photographs, and
     the difference is worth understanding before you start."""
 
-updated = "31 August 2026"
+updated = "13 October 2026"
 published = "2026-08-31"
-lastmod = "2026-08-31"
+lastmod = "2026-10-13"
 
 og_title = "Trace a logo or a silhouette into an SVG, in your browser"
 og_description = "Which pictures trace into clean curves, which come back as four thousand blobs, and how to click away the parts that should not be there. Nothing is uploaded."

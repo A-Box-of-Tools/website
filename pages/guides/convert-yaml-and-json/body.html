@@ -7,6 +7,30 @@
       <figcaption>The comment disappears, while no remains a string and the large integer keeps its digits.</figcaption>
     </figure>
   </section>
+
+  <section>
+    <h2>Move an application configuration between formats</h2>
+    <p>
+      When one application expects YAML and another expects JSON, start with
+      a copy of one configuration document. Select the direction, choose two
+      spaces, and leave sorting off if the existing groups help you review it.
+      Check that quoted identifiers remain strings, switches remain booleans,
+      and lists contain the expected items. Save the result under a new name,
+      then use the receiving application's own configuration check before
+      replacing its working file. Successful conversion proves that this
+      parser understood the supported syntax, not that the settings are valid
+      for that application.
+    </p>
+    <p>
+      A useful second job is reviewing two environments written in different
+      formats. Convert the YAML copy to JSON, then follow
+      <a href="../compare-two-json-files/">the JSON comparison workflow</a>
+      with both copies formatted alike. Review hostnames, limits and switches;
+      keep the YAML original for its comments. Convert separate YAML documents
+      individually, and use a fuller parser when anchors, aliases or tags are
+      part of the configuration.
+    </p>
+  </section>
   <section>
     <h2>Use the supported YAML subset</h2>
     <p>The reader handles common mappings, sequences and scalar values with YAML 1.2-style resolution. It is not a complete YAML 1.2 implementation. Anchors, aliases, custom tags and multiple-document streams stop conversion. Use a parser supporting those features when the file needs them; removing an alias without preserving its meaning changes the configuration.</p>

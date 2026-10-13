@@ -3,16 +3,38 @@
     <p>
       Open the <a href="../../qr-barcode/">QR &amp; Barcode Generator</a>, paste
       your link, leave the level at <strong>M</strong> and the margin at
-      <strong>4</strong>, and download the SVG. Print it at least two
-      centimetres across, on something matt, dark on light. Then scan the
-      printed one with a phone that is not yours before you order a thousand of
-      them.
+      <strong>4</strong>, and download the SVG. Start with a short-link code
+      around two or three centimetres across for a hand-held card, dark on
+      light, then test the final print at its intended distance. Its density,
+      surface and the phone matter more than a universal minimum size.
     </p>
     <p>
       That covers nearly every case. The rest of this page is what to do when it
       is not one of them: a code that has to survive being handled, a code with
       a logo on it, a code going on something small, and the one decision that
       is easy to get wrong in a way you only find out about a year later.
+    </p>
+  </section>
+
+  <section>
+    <h2>Guest access, contact cards and equipment labels</h2>
+    <p>
+      For a guest network, choose <em>Wi-Fi network</em>, enter its exact name,
+      security type and password, then inspect the encoded string. Leave M and
+      a margin of four modules for an ordinary indoor card, export the SVG,
+      and test that the printed card joins the intended network. Anyone who
+      can read the code can recover its password; changing that password means
+      making a new code. For a business card, choose <em>Contact card</em> and
+      test that a phone saves the intended name, email and phone number.
+    </p>
+    <p>
+      A useful label on a printer or shared appliance points to its manual or
+      setup instructions. Choose <em>Text or a link</em>, use a short, stable
+      HTTPS address you control, and print the equipment name beside it. Q or H
+      is worth trying where labels get dirty. Keep the four-module border and
+      <a href="../make-a-qr-code-and-prove-it-scans/">test the final mounted
+      label</a>, including opening the instructions on a phone. The web page
+      still needs a connection to load.
     </p>
   </section>
 
@@ -27,14 +49,16 @@
     <p>
       So there is no such thing as a "Wi-Fi QR code" as a kind of code. There is
       a QR code holding <code>WIFI:T:WPA;S:My Network;P:the password;;</code>,
-      which every phone made in the last decade knows how to read. The generator
+      which a compatible phone recognises as network details. Test the
+      phones that will use it. The generator
       shows you the finished string for exactly this reason: when a code does not
       do what you expected, the string is the only thing worth looking at.
     </p>
     <p>
-      It also means a QR code cannot be changed after it is printed, cannot phone
-      home, and cannot expire &mdash; unless somebody has put a link to their own
-      server inside it, which is the subject of the last section here.
+      It also means a QR code cannot be changed after it is printed, does not itself make
+      a network request, and its encoded text does not expire. A linked page
+      can move or disappear, and a network password can change; the printed
+      code will still hold the old string.
     </p>
 
     <figure class="shot">
@@ -110,32 +134,25 @@
   <section>
     <h2>Decision three: how big to print it</h2>
     <p>
-      The rule of thumb that has survived contact with reality is
-      <strong>one to ten</strong>: a code needs to be about a tenth as wide as the
-      distance it will be scanned from.
-    </p>
-    <ul>
-      <li>A business card or a menu, read at 30 cm: about 2 cm across.</li>
-      <li>A poster read from two metres: about 20 cm.</li>
-      <li>A bus shelter or a shop window read from five metres: about 50 cm.</li>
-    </ul>
-    <p>
-      Two centimetres is a floor rather than a target. Below about 1.5 cm an
-      ordinary phone starts struggling regardless of how good the print is,
-      because the individual modules approach the size of a pixel in its camera.
+      Size depends on how many modules the payload needs, how sharply they
+      print, and the distance and camera used to read them. A short URL can
+      make a simpler symbol than a long tracking address. Around two or three
+      centimetres across is a starting proof for a hand-held card, not a
+      guarantee or a minimum in the QR specification. A poster read from
+      across a room needs a larger proof tested from that distance.
     </p>
     <p>
-      Less text means fewer modules means a code that reads at a distance for a
-      given printed size &mdash; which is a good reason to point a code at
-      <code>example.com/x</code> rather than at a URL with a hundred characters
-      of tracking parameters on the end.
+      <a href="https://www.qrcode.com/en/howto/code.html/index.html" target="_blank" rel="noopener noreferrer">DENSO's sizing example</a>
+      calculates symbol size from the version and printed module size, then
+      adds four clear modules on every side. Keep that border in the final
+      layout. If a dense code struggles, shorten the payload or give it more
+      space rather than cropping the border.
     </p>
     <p>
-      And print from the <strong>SVG</strong>. A QR code is made of edges, and a
-      PNG has a fixed number of pixels to make them out of; enlarge one and every
-      edge softens, which is precisely what a scanner has trouble with. An SVG is
-      the squares as instructions, so it comes out sharp at a business card or a
-      billboard.
+      Print from the <strong>SVG</strong>: its edges scale with the layout.
+      When the layout only accepts PNG, use enough pixels for the final size
+      and avoid enlarging a small export. Then scan the actual printed proof;
+      neither format can guarantee a particular printer or phone will read it.
     </p>
   </section>
 
@@ -168,12 +185,14 @@
 
   <section>
     <h2>A logo in the middle</h2>
-    <p>A small logo can work, but no percentage of image area is guaranteed safe. DENSO defines level H’s roughly 30% restoration against total codewords, not arbitrary squares. Keep finder and alignment patterns clear, use H, and test the final printed code on several phones. <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO’s error-correction explanation</a> describes the denominator.</p>
-    <p>Choose H and keep the logo small. There is no guaranteed safe area fraction: placement, symbol version, damage distribution and print quality all matter. Leave the finder and alignment patterns clear, and use a printed proof to decide whether this design scans reliably.</p>
     <p>
-      Then test it on real phones. A logo takes a code from "always works" to
-      "works with this much margin", and the only way to know how much margin is
-      left is to try it.
+      A small logo can work, but the generator does not place one for you.
+      If you add it in a layout editor, use H and keep the finder and alignment
+      patterns clear. There is no guaranteed safe fraction of image area:
+      <a href="https://www.qrcode.com/en/about/error_correction.html">DENSO defines restoration against total codewords</a>,
+      not arbitrary squares. Placement, density and print quality all matter.
+      Test the final printed design on several phones, and reduce or remove
+      the logo if it makes scanning unreliable.
     </p>
   </section>
 

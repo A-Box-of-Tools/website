@@ -23,6 +23,28 @@
   </section>
 
   <section>
+    <h2>A logo for a document, or a set of screen assets</h2>
+    <p>
+      <strong>A slide deck or document that will not accept the SVG.</strong>
+      Export a PNG at the width it will occupy, with enough pixels for the
+      screen or print it is going to. Keep transparency for a logo that will
+      sit on different slide colours; choose an opaque background if the
+      destination expects one. Look at the preview for substituted lettering
+      and missing linked artwork before inserting the download.
+    </p>
+    <p>
+      <strong>Matching icons for different screen densities.</strong> Give the
+      1x version its intended display size and request the @2x and @3x copies
+      in the same run. For a group of SVGs with consistent source dimensions,
+      a size multiple preserves their relationship; a longest-side limit
+      instead makes different-shaped drawings fit the same maximum extent.
+      Check the smallest copy for disappearing strokes. A larger export cannot
+      make a delicate symbol readable in a tiny slot.
+    </p>
+  </section>
+
+
+  <section>
     <h2>Why the size is your decision and not the file's</h2>
     <p>
       A JPEG is a grid of measured pixels; asking how big it is has an answer.
@@ -56,7 +78,7 @@
     </p>
     <p><strong>For an app icon, a store listing or a favicon.</strong> The
       number is published and there is nothing to work out: whatever the store's
-      page says, exactly. For a favicon, do not rasterize at all &mdash;
+      page says, exactly. For a favicon, export the required sizes together &mdash;
       <a href="../make-a-favicon/">make an .ico</a>, which holds several sizes in
       one file, because a browser tab, a bookmark and a Windows shortcut all ask
       for different ones.
@@ -172,8 +194,9 @@
       Use it when something insists on it.
     </p>
     <p>
-      <strong>WebP</strong> does everything PNG does, in a smaller file, and is
-      read by every current browser. The reason not to use it is what happens
+      <strong>WebP</strong> keeps transparency and can produce a smaller file,
+      but its quality setting can add compression artefacts. Compare lettering
+      and flat edges before replacing a PNG. The reason not to use it is what happens
       after the browser: older software, some print shops and a fair number of
       upload forms still will not open one.
     </p>

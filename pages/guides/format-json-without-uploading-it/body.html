@@ -11,7 +11,7 @@
     <p>
       Everything below is the part that is worth knowing before you paste a
       configuration file into any of the alternatives: what a formatter is
-      allowed to change, what most of them change anyway, and how to read the
+      allowed to change, what a careless implementation can change anyway, and how to read the
       error when the file will not parse at all.
     </p>
 
@@ -22,6 +22,27 @@
         One line in, something readable out. Nothing was sent anywhere to do it.
       </figcaption>
     </figure>
+  </section>
+
+  <section>
+    <h2>Debug an API response or a configuration file</h2>
+    <p>
+      Paste the response body rather than its HTTP headers, choose JSON in the
+      language menu, and use two-space indentation. Keep key sorting off for
+      the first inspection so the output follows the source. If parsing fails,
+      use <em>Go to error</em>, correct the reported comma, quote or escape,
+      and check the new result before copying it. A successful parse does not
+      check the API's schema: inspect required keys, value types and long IDs
+      against what the receiving application expects.
+    </p>
+    <p>
+      For a compact payload in an offline label or a field with a byte limit,
+      keep a readable copy and choose the minified output for delivery. Check
+      the reported size, then read or decode the delivered payload once more.
+      Minification removes layout whitespace; it does not shorten long values
+      or remove private fields. If a formatted response will go into a support
+      ticket, remove credentials and personal values from the copy you share.
+    </p>
   </section>
 
   <section>
@@ -240,11 +261,12 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       other was not, and no diff can see past that.
     </p>
     <p>
-      So: format the first, format the second, then compare the two results. All
-      three steps are on the same page here &mdash; the <em>Compare</em> tab
-      shares the box with <em>Format</em> for exactly this reason. If the two
-      also list their keys in different orders, sort both while you format them
-      and the comparison collapses to the difference you were looking for.
+      So: format the first, format the second, then paste the two results
+      into <a href="../../text-diff/">Text Diff</a>. Comparing has its own
+      page. If the two also list their object keys in different orders, sort
+      both copies while formatting them. The
+      <a href="../compare-two-json-files/">comparison guide</a> covers the
+      complete workflow and the differences that sorting does not remove.
     </p>
   </section>
 
@@ -252,16 +274,15 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
     <h2>The part nobody puts on the page</h2>
     <p>
       Search for a JSON formatter and you will find dozens of sites with a box
-      on them. Pasting into that box is an upload. Whatever was in your
-      clipboard &mdash; an API response with a customer&rsquo;s address in it, a
-      config file with a connection string, a token you were debugging &mdash;
-      has been sent to a machine you do not control, and it is now their log
-      file, their error report, and their backup.
+      on them. If the formatter sends its input to a server, pasting and
+      formatting gives that server whatever was in your clipboard &mdash; an
+      API response with a customer&rsquo;s address, a connection string, or a
+      token. Some formatters work locally, so inspect the one you use rather
+      than assuming the shape of its text box tells you where it works.
     </p>
     <p>
-      This is not a hypothetical about malice. A perfectly well-meaning site
-      still keeps access logs, still runs analytics, and still has a hosting
-      provider. The safest data is the data that never left, and for a job which
+      This is not a hypothetical about malice. A server service can retain input in logs, error reports or backups,
+      even when its operator means well. The safest data is the data that never left, and for a job which
       is entirely string manipulation there is no reason at all for it to leave.
     </p>
     <p>
@@ -289,8 +310,11 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
   <section>
     <h2>What about YAML, XML and the rest</h2>
     <p>
-      The same page reads XML, HTML, CSS and YAML, and converts between JSON and
-      the first and last of those. Two things are worth carrying over from
+      The same page reads XML, HTML, CSS and YAML, and converts between JSON
+      and XML or YAML. The focused
+      <a href="../format-and-check-xml/">XML guide</a> and
+      <a href="../convert-yaml-and-json/">YAML conversion guide</a> cover
+      those workflows. Two things are worth carrying over from
       above, because they are the same argument in a different suit:
     </p>
     <ul>

@@ -28,9 +28,9 @@ lede = """
     a real answer, because encoding, encryption and hashing look alike on
     screen and could hardly be more different in what they promise."""
 
-updated = "26 August 2026"
+updated = "13 October 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-10-13"
 
 og_title = "Is base64 encryption?"
 og_description = "No - anyone can undo it, no key required. Encoding, encryption and hashing look alike on screen and promise three completely different things. Which is which."

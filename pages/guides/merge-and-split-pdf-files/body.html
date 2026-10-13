@@ -16,6 +16,28 @@
   </section>
 
   <section>
+    <h2>An application packet, or just the pages somebody requested</h2>
+    <p>
+      To assemble a cover letter, form and supporting documents, add the PDFs
+      in checklist order and choose one document as the output. Use the source
+      filename and page number on each tile to check where a page came from;
+      the small position label is where it will land. The tiles show page shape
+      and labels, not the page contents, so open the finished PDF and check
+      every page. Review filled form values, especially when the tool reports
+      colliding field names, and keep digitally signed originals separately.
+    </p>
+    <p>
+      To send only a certificate or requested appendix, find its physical page
+      positions in the original, add that PDF, type a range such as
+      <code>2-4, 9</code>, and choose <em>Keep only these</em>. The range counts
+      current positions, not printed page labels such as &ldquo;iii&rdquo;.
+      Export one PDF and check that the four intended pages survived, in order.
+      This removes whole pages; use
+      <a href="../redact-a-pdf/">redaction</a> for private text on a kept page.
+    </p>
+  </section>
+
+  <section>
     <h2>Merging two or more documents</h2>
     <p>
       Choose the first file, then choose the second; each one's pages go on the
@@ -101,16 +123,16 @@
       <code>even</code> and two turns.
     </p>
     <p>
-      The numbers on the tiles renumber as you work, so they always mean
-      &ldquo;position in the finished document&rdquo; rather than &ldquo;page in
-      whichever file it came from&rdquo;. Nothing is written until you press the
+      The large number on each tile is its source page number and stays with
+      the page. The small position label changes as you work, and that is the
+      number the range box uses. Nothing is written until you press the
       button, so there is nothing to undo &mdash; and &ldquo;back to how they
       came&rdquo; restores the original order of everything.
     </p>
 
     <figure class="shot">
       <img src="/screens/merge-and-split-pdf-files/pages.webp" loading="lazy" decoding="async"
-           alt="The page grid: every page of two documents as a thumbnail, in the order they will come out, with controls for rotating, reversing and removing.">
+           alt="The page grid: page-shaped tiles from two documents, showing their source labels and output positions, with controls for rotating, reversing and removing.">
       <figcaption>
         Both documents, page by page. Reordering is dragging; the range box above it is for the documents where dragging would take all afternoon.
       </figcaption>
@@ -185,8 +207,8 @@
       An encrypted PDF is refused, including the empty-password kind that a lot
       of office copiers produce. Removing a document's protection is a different
       job from moving its pages, and a tool that did it quietly would be doing
-      something you did not ask for. Open it in a reader with the password and
-      save an unprotected copy first.
+      something you did not ask for. Use the <a href="../unlock-a-pdf/">PDF Unlocker</a> to make an
+      unprotected copy first, supplying a working password when required.
     </p>
   </section>
 

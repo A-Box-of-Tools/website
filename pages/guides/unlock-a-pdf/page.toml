@@ -35,9 +35,9 @@ lede = """
     honour. Telling them apart takes a second and decides everything that
     follows."""
 
-updated = "12 October 2026"
+updated = "13 October 2026"
 published = "2026-09-10"
-lastmod = "2026-10-12"
+lastmod = "2026-10-13"
 
 og_title = "How to unlock a PDF: password vs restrictions"
 og_description = "How permission restrictions differ from a required open password, which one this tool can remove without a password, and why it does not guess a missing one."

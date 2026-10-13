@@ -29,9 +29,9 @@ lede = """
     better, what changes on the way, and how to do it without first
     uploading the file that was too big."""
 
-updated = "13 September 2026"
+updated = "13 October 2026"
 published = "2026-09-13"
-lastmod = "2026-09-13"
+lastmod = "2026-10-13"
 
 og_title = "How to convert a GIF to MP4, and why it gets so much smaller"
 og_description = "Why an MP4 of the same animation is a tenth of the size, what changes on the way, and how to do it in your browser without uploading the file."
