@@ -7,6 +7,9 @@ if (document.documentElement.hasAttribute('data-local-broadcast')) {
   activateLocalChannel();
 }
 
+// The public setup page has no pairing step, but its module has still started.
+document.getElementById('boot-warning')?.remove();
+
 function activateLocalChannel() {
   const element = id => document.getElementById(`wt-${id}`);
   const ui = Object.fromEntries([
