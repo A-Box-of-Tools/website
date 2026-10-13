@@ -85,7 +85,7 @@ export class BroadcastSession {
         for (const track of stream.getTracks()) {
           track.enabled = false;
           track.onended = () => {
-            if (this._live(epoch)) this.stop({ state: 'error-microphone' });
+            if (this._live(epoch)) this.stop({ notify: false, state: 'error-microphone' });
           };
         }
         const result = await this._request('/api/host/start', {}, epoch);
@@ -398,7 +398,7 @@ export class BroadcastSession {
       if (this._current(peer)) await this._signal(peer, localDescription(peer.pc.localDescription));
     } else if (payload.type === 'candidate' && allowedCandidate(payload.candidate, true)) {
       if (peer?.connection === payload.connection) await this._candidate(peer, payload.candidate);
-      else if (!peer && this._orphanIce.length < MAX_PENDING_ICE) this._orphanIce.push(payload);
+      else if (this._orphanIce.length < MAX_PENDING_ICE) this._orphanIce.push(payload);
     }
   }
 

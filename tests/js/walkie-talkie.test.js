@@ -220,6 +220,8 @@ test('a host starts silent, sends audio only, and release mutes immediately', as
   h.session.stop();
   assert.equal(mic.track.stops, 1);
   assert.equal(h.peers[0].closed, true);
+  assert.equal(h.callsTo('/api/host/end').length, 1);
+  assert.equal(h.callsTo('/api/host/end')[0].body.generation, 1);
   h.session.setTalking(true);
   assert.equal(mic.track.enabled, false);
 });
@@ -389,4 +391,53 @@ test('an expired receiver registration rejoins with a fresh identity', async t =
   assert.equal(h.callsTo('/api/listener/leave')[0].body.id, joined[0].body.id);
   assert.equal(h.peers.length, 1);
   assert.equal(h.callsTo('/api/signal').at(-1).body.payload.connection, CONNECTION_B);
+});
+
+test('a replacement offer retains early ICE while its previous peer still exists', async t => {
+  let polls = 0;
+  const candidates = Array.from({ length: 140 }, (_unused, index) => ({
+    candidate: `candidate:1 1 UDP 2122260223 192.168.1.20 ${50000 + index} typ host`,
+    sdpMid: '0', sdpMLineIndex: 0,
+  }));
+  const h = harness(t, { routes: { '/api/listener/poll': (_body, _options, state) => {
+    polls++;
+    const messages = polls === 1 ? [offer()] : [
+      ...candidates.map((candidate, index) => ({ seq: index + 2,
+        payload: { type: 'candidate', connection: CONNECTION_B, candidate } })),
+      offer(CONNECTION_B, 142),
+    ];
+    return { ...state, messages };
+  } } });
+  await h.session.start();
+  await flush();
+  h.peers[0].connect();
+  await h.clock.advance(1000);
+  // This batch intentionally exceeds the pending ICE bound and has many awaits.
+  for (let i = 0; i < 20; i++) await flush();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(h.peers.length, 2);
+  assert.ok(h.peers[1].candidates.length > 0);
+  assert.ok(h.peers[1].candidates.length <= 128);
+  assert.deepEqual(h.peers[1].candidates[0], candidates[0]);
+  assert.equal(h.callsTo('/api/signal').at(-1).body.payload.connection, CONNECTION_B);
+});
+
+test('automatic capture loss stops the host without declaring an intentional end', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', getUserMedia: async () => mic.stream,
+    routes: { '/api/host/poll': (_body, _options, state) =>
+      ({ ...state, listeners: [LISTENER], messages: [] }) } });
+  await h.session.start();
+  await flush();
+  h.session.setTalking(true);
+  mic.track.onended();
+  assert.equal(mic.track.stops, 1);
+  assert.equal(mic.track.onended, null);
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(h.states.at(-1).key, 'error-microphone');
+  assert.equal(h.callsTo('/api/host/end').length, 0);
+  const pollsAtLoss = h.callsTo('/api/host/poll').length;
+  await h.clock.advance(5000);
+  assert.equal(h.callsTo('/api/host/poll').length, pollsAtLoss);
+  assert.equal(h.callsTo('/api/host/end').length, 0);
 });
