@@ -3,37 +3,38 @@ import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
 import { BroadcastSession } from '../../tools/walkie-talkie/src/session.js';
 
-if (!globalThis.crypto) {
-  Object.defineProperty(globalThis, 'crypto', { value: webcrypto, configurable: true });
-}
-
-const CONNECTION_A = '11111111-1111-4111-8111-111111111111';
-const CONNECTION_B = '22222222-2222-4222-8222-222222222222';
-const LISTENER = '33333333-3333-4333-8333-333333333333';
+if (!globalThis.crypto) Object.defineProperty(globalThis, 'crypto', { value: webcrypto, configurable: true });
+const CODE = 'a'.repeat(64);
+const KEY = 'h'.repeat(43);
+const LISTEN_KEY = 'l'.repeat(43);
+const GEN_A = '11111111-1111-4111-8111-111111111111';
+const GEN_B = '22222222-2222-4222-8222-222222222222';
+const ID_A = '33333333-3333-4333-8333-333333333333';
+const ID_B = '44444444-4444-4444-8444-444444444444';
+const CONN_A = '55555555-5555-4555-8555-555555555555';
+const CONN_B = '66666666-6666-4666-8666-666666666666';
 const SDP = 'v=0\r\no=- 0 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n' +
-  'm=audio 9 UDP/TLS/RTP/SAVPF 111\r\nc=IN IP4 0.0.0.0\r\na=mid:0\r\na=sendonly\r\n';
-const offer = (connection = CONNECTION_A, seq = 1) => ({
-  seq, payload: { type: 'offer', connection, sdp: SDP },
-});
-const flush = async () => {
-  for (let i = 0; i < 40; i++) await Promise.resolve();
-};
+  'm=audio 9 UDP/TLS/RTP/SAVPF 111\r\nc=IN IP4 0.0.0.0\r\na=mid:0\r\na=sendonly\r\n' +
+  'a=candidate:1 1 UDP 2122260223 192.168.1.20 50000 typ host\r\n' +
+  'a=candidate:2 1 UDP 2122260223 198.51.100.2 50001 typ srflx raddr 192.168.1.20 rport 50000\r\n';
+const flush = async (turns = 128) => { for (let i = 0; i < turns; i++) await Promise.resolve(); };
 const deferred = () => {
   let resolve;
-  let reject;
-  const promise = new Promise((yes, no) => { resolve = yes; reject = no; });
-  return { promise, resolve, reject };
+  const promise = new Promise(yes => { resolve = yes; });
+  return { promise, resolve };
 };
+const ready = (id = ID_A, generation = GEN_A) => ({ type: 'ready', id, generation, talking: false });
+const offer = (id = ID_A, connection = CONN_A, generation = GEN_A) =>
+  ({ type: 'offer', from: 'host', to: id, generation, connection, sdp: SDP });
 
-// Advancing the clock exercises requests and peer deadlines without real waiting.
 class Clock {
   time = 0;
   nextId = 0;
   tasks = new Map();
   now = () => this.time;
-  setTimeout = (callback, delay) => {
+  setTimeout = (fn, delay) => {
     const id = ++this.nextId;
-    this.tasks.set(id, { at: this.time + Math.max(0, delay), callback });
+    this.tasks.set(id, { at: this.time + Math.max(0, delay), fn });
     return id;
   };
   clearTimeout = id => this.tasks.delete(id);
@@ -46,10 +47,10 @@ class Clock {
         if (task.at <= target && (!next || task.at < next.task.at)) next = { id, task };
       }
       if (!next) break;
-      assert.ok(++count < 1000, 'Retry scheduling must not produce an immediate loop.');
+      assert.ok(++count < 1000, 'Reconnects must not create an immediate loop.');
       this.time = next.task.at;
       this.tasks.delete(next.id);
-      next.task.callback();
+      next.task.fn();
       await flush();
     }
     this.time = target;
@@ -58,25 +59,43 @@ class Clock {
 }
 
 function microphone() {
-  const track = { kind: 'audio', enabled: true, stops: 0, onended: null,
+  const track = { kind: 'audio', enabled: true, onended: null, stops: 0,
     stop() { this.stops++; } };
   return { track, stream: { getTracks: () => [track], getAudioTracks: () => [track] } };
 }
 
-function harness(t, { role = 'listener', routes = {}, getUserMedia } = {}) {
+function harness(t, { role = 'listener', mediaDevices, endpoint } = {}) {
   const clock = new Clock();
-  const calls = [];
+  const sockets = [];
   const peers = [];
   const states = [];
   const streams = [];
-  const state = { generation: role === 'host' ? 0 : 1, online: role !== 'host',
-    ended: false, talking: false };
+  class Socket {
+    constructor(url) {
+      assert.equal(sockets.filter(ws => ws.readyState < 2).length, 0,
+        'Only one connection attempt may be alive.');
+      this.url = url;
+      this.readyState = 0;
+      this.bufferedAmount = 0;
+      this.sent = [];
+      this.closed = false;
+      sockets.push(this);
+    }
+    open() { this.readyState = 1; this.onopen?.(); }
+    message(frame) { this.onmessage?.({ data: JSON.stringify(frame) }); }
+    serverClose(code = 1006) { this.readyState = 3; this.onclose?.({ code }); }
+    send(text) {
+      assert.equal(this.readyState, 1);
+      this.sent.push(JSON.parse(text));
+      if (this.pauseAfterSends === this.sent.length) this.bufferedAmount = 70000;
+    }
+    close(code) { this.closed = true; this.readyState = 3; this.closeCode = code; }
+  }
   class Peer {
     constructor(config) {
       this.config = config;
       this.connectionState = 'new';
-      this.localDescription = null;
-      this.remoteDescription = null;
+      this.localDescription = this.remoteDescription = null;
       this.senders = [];
       this.transceivers = [];
       this.candidates = [];
@@ -91,353 +110,346 @@ function harness(t, { role = 'listener', routes = {}, getUserMedia } = {}) {
     async createOffer() { return { type: 'offer', sdp: SDP }; }
     async createAnswer() { return { type: 'answer', sdp: SDP.replace('sendonly', 'recvonly') }; }
     async setLocalDescription(description) { this.localDescription = description; }
-    async setRemoteDescription(description) { this.remoteDescription = description; }
-    async addIceCandidate(candidate) { this.candidates.push(candidate); }
-    connect() {
-      this.connectionState = 'connected';
-      this.onconnectionstatechange?.();
+    async setRemoteDescription(description) {
+      this.remoteDescription = description;
+      if (!this.transceivers.length) this.transceivers.push({ direction: 'sendrecv' });
     }
+    async addIceCandidate(candidate) { this.candidates.push(candidate); }
+    connect() { this.connectionState = 'connected'; this.onconnectionstatechange?.(); }
     receive(stream) { this.ontrack?.({ track: { kind: 'audio' }, streams: [stream] }); }
+    candidate(value) { this.onicecandidate?.({ candidate: value && { toJSON: () => value, ...value } }); }
+    fail() { this.connectionState = 'failed'; this.onconnectionstatechange?.(); }
     close() { this.closed = true; this.connectionState = 'closed'; }
   }
-  const defaults = {
-    '/api/config': () => ({ ...state, role }),
-    '/api/host/start': () => {
-      state.generation++;
-      state.online = true;
-      state.ended = false;
-      return { ...state };
-    },
-    '/api/host/poll': body => {
-      state.talking = body.talking;
-      return { ...state, listeners: [], messages: [] };
-    },
-    '/api/listener/join': body => ({ ...state, id: body.id }),
-    '/api/listener/poll': () => ({ ...state, messages: [] }),
-    '/api/signal': () => ({ ...state }),
-    '/api/listener/leave': () => ({ ...state }),
-    '/api/host/end': () => {
-      state.online = false;
-      state.ended = true;
-      return { ...state };
-    },
-  };
-  const fetchImpl = async (path, options) => {
-    const body = options.body ? JSON.parse(options.body) : null;
-    calls.push({ path, body, options });
-    assert.equal(options.headers.Authorization, 'Bearer test-capability');
-    assert.equal(options.mode, 'same-origin');
-    const route = routes[path] || defaults[path];
-    assert.ok(route, `Unexpected route: ${path}`);
-    const result = await route(body, options, state);
-    const status = result.status || 200;
-    return { ok: status >= 200 && status < 300, status,
-      json: async () => result.data || result };
-  };
-  const session = new BroadcastSession({ role, token: 'test-capability', clock,
-    fetchImpl, PeerConnection: Peer, getUserMedia,
-    onState: (key, detail) => states.push({ key, detail }),
-    onStream: stream => streams.push(stream) });
+  const session = new BroadcastSession({ role, code: CODE,
+    key: role === 'host' ? KEY : LISTEN_KEY,
+    ...(role === 'host' ? { listenKey: LISTEN_KEY } : {}), Socket, Peer, mediaDevices, clock, endpoint,
+    onState: (key, detail) => states.push({ key, detail }), onStream: stream => streams.push(stream) });
   t.after(async () => {
     session.stop({ notify: false, state: null });
     await flush();
-    assert.equal(clock.tasks.size, 0, 'Stopping must retire request and peer timers.');
+    assert.equal(clock.tasks.size, 0, 'Stopping must clear peer, retry and check timers.');
+    assert.equal(sockets.filter(ws => ws.readyState < 2).length, 0);
   });
-  return { session, clock, calls, peers, states, streams, state,
-    callsTo: path => calls.filter(call => call.path === path) };
+  const begin = async frame => {
+    const starting = session.start();
+    await flush();
+    const ws = sockets.at(-1);
+    ws.open();
+    ws.message(frame || (role === 'host' ? { type: 'host-ready', generation: GEN_A } : { type: 'waiting' }));
+    await flush();
+    assert.equal(await starting, true);
+    return ws;
+  };
+  return { session, clock, sockets, peers, states, streams, begin };
 }
 
-test('a LAN receiver works without randomUUID and never captures a microphone', async t => {
-  const previousCrypto = Object.getOwnPropertyDescriptor(globalThis, 'crypto');
-  Object.defineProperty(globalThis, 'crypto', { configurable: true,
-    value: { getRandomValues: webcrypto.getRandomValues.bind(webcrypto) } });
-  t.after(() => Object.defineProperty(globalThis, 'crypto', previousCrypto));
-  let microphoneRequests = 0;
-  const h = harness(t, {
-    getUserMedia: () => { microphoneRequests++; throw new Error('Unexpected capture.'); },
-    routes: { '/api/listener/poll': (_body, _options, state) =>
-      ({ ...state, messages: [offer()] }) },
-  });
-  assert.equal(await h.session.start(), true);
+test('receiver auth is outside its URL, waiting checks stay on one socket, and capture is never requested', async t => {
+  let captures = 0;
+  const h = harness(t, { mediaDevices: { getUserMedia() { captures++; throw new Error('Unexpected capture.'); } } });
+  const ws = await h.begin();
+  assert.equal(ws.url, `wss://rendezvous.abox.tools/broadcast/${CODE}`);
+  assert.ok(!ws.url.includes(LISTEN_KEY));
+  assert.deepEqual(ws.sent[0], { type: 'auth', role: 'listener', key: LISTEN_KEY });
+  await h.clock.advance(3000);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(ws.sent.filter(frame => frame.type === 'check').length, 3);
+  ws.message(ready());
+  ws.message(offer());
   await flush();
-  assert.equal(microphoneRequests, 0);
-  const id = h.callsTo('/api/listener/join')[0].body.id;
-  assert.match(id, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+  assert.equal(captures, 0);
   assert.equal(h.peers.length, 1);
   assert.deepEqual(h.peers[0].senders, []);
   assert.deepEqual(h.peers[0].config.iceServers, []);
-  const answer = h.callsTo('/api/signal')[0].body;
-  assert.equal(answer.payload.type, 'answer');
-  assert.equal(answer.payload.connection, CONNECTION_A);
-  assert.equal(answer.generation, 1);
-  const incoming = { name: 'remote audio' };
-  h.peers[0].receive(incoming);
+  assert.equal(h.peers[0].transceivers[0].direction, 'recvonly');
+  assert.ok(!h.peers[0].remoteDescription.sdp.includes('srflx'));
+  const answer = ws.sent.find(frame => frame.type === 'answer');
+  assert.equal(answer.connection, CONN_A);
+  assert.equal(answer.generation, GEN_A);
+  assert.ok(!('to' in answer) && !('from' in answer));
+  assert.ok(!answer.sdp.includes('srflx'));
+  const stream = { name: 'remote voice' };
+  h.peers[0].receive(stream);
+  assert.equal(h.streams.length, 0);
   h.peers[0].connect();
-  assert.equal(h.streams.at(-1), incoming);
+  assert.equal(h.streams.at(-1), stream);
   assert.equal(h.states.at(-1).key, 'listener-listening');
-  await h.clock.advance(1000);
-  assert.equal(h.callsTo('/api/listener/poll')[1].body.ack, 1);
-  assert.equal(microphoneRequests, 0);
 });
 
-test('stopping while microphone permission is pending retires a late grant', async t => {
+test('a late microphone permission grant cannot restart a stopped host', async t => {
   const permission = deferred();
   const mic = microphone();
-  const h = harness(t, { role: 'host', getUserMedia: () => permission.promise });
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: () => permission.promise } });
   const starting = h.session.start();
   await flush();
   h.session.stop({ notify: false, state: null });
   permission.resolve(mic.stream);
   assert.equal(await starting, false);
   assert.equal(mic.track.stops, 1);
-  assert.equal(h.callsTo('/api/host/start').length, 0);
-  assert.equal(h.peers.length, 0);
+  assert.equal(h.sockets.length, 0);
 });
 
-test('a host starts silent, sends audio only, and release mutes immediately', async t => {
+test('Stop during the authenticated readiness callback cannot return a successful start', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const reportState = h.session.onState;
+  h.session.onState = (key, detail) => {
+    reportState(key, detail);
+    if (key === 'host-ready') h.session.stop({ notify: false, state: null });
+  };
+  const starting = h.session.start();
+  await flush();
+  const ws = h.sockets[0];
+  ws.open();
+  ws.message({ type: 'host-ready', generation: GEN_A });
+  await flush();
+  assert.equal(await starting, false);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(ws.closed, true);
+  assert.equal(ws.sent.filter(frame => frame.type === 'end').length, 0);
+});
+
+test('one disabled host track serves sendonly peers and release still mutes during signaling loss', async t => {
   const mic = microphone();
   const constraints = [];
-  const h = harness(t, { role: 'host', getUserMedia: options => {
-    constraints.push(options);
-    return Promise.resolve(mic.stream);
-  }, routes: { '/api/host/poll': (body, _options, state) =>
-    ({ ...state, talking: body.talking, listeners: [LISTENER], messages: [] }) } });
-  assert.equal(await h.session.start(), true);
-  await flush();
+  const h = harness(t, { role: 'host', endpoint: 'ws://127.0.0.1:8794',
+    mediaDevices: { async getUserMedia(options) { constraints.push(options); return mic.stream; } } });
+  const ws = await h.begin();
+  assert.equal(ws.url, `ws://127.0.0.1:8794/broadcast/${CODE}`);
+  assert.deepEqual(ws.sent[0], { type: 'auth', role: 'host', key: KEY, listenKey: LISTEN_KEY });
   assert.deepEqual(constraints, [{ audio: true, video: false }]);
   assert.equal(mic.track.enabled, false);
-  assert.equal(h.peers.length, 1);
-  assert.equal(h.peers[0].senders[0].track, mic.track);
-  assert.equal(h.peers[0].transceivers[0].direction, 'sendonly');
-  assert.deepEqual(h.peers[0].config.iceServers, []);
-  assert.equal(h.callsTo('/api/signal')[0].body.payload.type, 'offer');
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
+  ws.message({ type: 'join', id: ID_B, generation: GEN_A });
+  await flush();
+  assert.equal(h.peers.length, 2);
+  for (const peer of h.peers) {
+    assert.equal(peer.senders[0].track, mic.track);
+    assert.equal(peer.transceivers[0].direction, 'sendonly');
+    assert.deepEqual(peer.config.iceServers, []);
+  }
+  for (const frame of ws.sent.filter(frame => frame.type === 'offer')) {
+    assert.ok(!('from' in frame));
+    assert.ok(!frame.sdp.includes('srflx'));
+    assert.equal(frame.generation, GEN_A);
+  }
+  h.peers[0].connect();
   h.session.setTalking(true);
   assert.equal(mic.track.enabled, true);
-  await h.clock.advance(1000);
-  assert.equal(h.callsTo('/api/host/poll').at(-1).body.talking, true);
+  ws.message({ type: 'leave', id: ID_A, generation: GEN_A });
+  await flush();
+  ws.serverClose();
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(mic.track.enabled, true);
+  assert.equal(h.states.at(-1).detail.signaling, false);
+  assert.equal(h.states.at(-1).detail.listeners, 0);
+  assert.equal(h.states.at(-1).detail.directReady, true);
   h.session.setTalking(false);
   assert.equal(mic.track.enabled, false);
-  h.session.stop();
-  assert.equal(mic.track.stops, 1);
-  assert.equal(h.peers[0].closed, true);
-  assert.equal(h.callsTo('/api/host/end').length, 1);
-  assert.equal(h.callsTo('/api/host/end')[0].body.generation, 1);
-  h.session.setTalking(true);
-  assert.equal(mic.track.enabled, false);
-});
-
-test('a failed heartbeat mutes the host until its local service returns', async t => {
-  const mic = microphone();
-  let unavailable = false;
-  const h = harness(t, { role: 'host', getUserMedia: async () => mic.stream,
-    routes: { '/api/host/poll': (_body, _options, state) => {
-      if (unavailable) throw new Error('Local service unavailable.');
-      return { ...state, listeners: [], messages: [] };
-    } } });
-  await h.session.start();
-  await flush();
-  h.session.setTalking(true);
-  unavailable = true;
-  await h.clock.advance(1000);
-  assert.equal(mic.track.enabled, false);
-  assert.equal(h.states.at(-1).key, 'host-reconnecting');
-  h.session.setTalking(true);
-  assert.equal(mic.track.enabled, false);
-  unavailable = false;
-  await h.clock.advance(1000);
   h.session.setTalking(true);
   assert.equal(mic.track.enabled, true);
+  h.peers[0].fail();
+  await h.clock.advance(1000);
+  assert.equal(mic.track.enabled, false);
 });
 
-test('a restarted host gives the receiver a fresh identity and retires stale callbacks', async t => {
-  const h = harness(t, { routes: { '/api/listener/poll': (body, _options, state) => {
-    const messages = body.generation === state.generation ?
-      [offer(state.generation === 1 ? CONNECTION_A : CONNECTION_B, state.generation)] : [];
-    return { ...state, messages };
-  } } });
-  await h.session.start();
+test('same-generation socket recovery keeps healthy audio until its replacement connects', async t => {
+  const h = harness(t);
+  const first = await h.begin(ready());
+  first.message(offer());
   await flush();
-  const firstId = h.callsTo('/api/listener/join')[0].body.id;
-  const firstPeer = h.peers[0];
-  const staleTrackCallback = firstPeer.ontrack;
-  firstPeer.receive({ name: 'first host' });
-  firstPeer.connect();
-  h.state.generation = 2;
-  await h.clock.advance(1000);
-  assert.equal(firstPeer.closed, true);
-  assert.equal(h.streams.at(-1), null);
-  const secondId = h.callsTo('/api/listener/join').at(-1).body.id;
-  assert.notEqual(secondId, firstId);
-  assert.equal(h.callsTo('/api/listener/leave')[0].body.id, firstId);
-  staleTrackCallback({ track: { kind: 'audio' }, streams: [{ name: 'stale host' }] });
-  assert.equal(h.streams.at(-1), null);
-  await h.clock.advance(1000);
-  assert.equal(h.peers.length, 2);
-  assert.equal(h.callsTo('/api/listener/poll').at(-1).body.id, secondId);
-  assert.equal(h.callsTo('/api/listener/poll').at(-1).body.generation, 2);
-  assert.equal(h.callsTo('/api/listener/poll').at(-1).body.ack, 0);
-  assert.equal(h.callsTo('/api/signal').at(-1).body.payload.connection, CONNECTION_B);
-  h.peers[1].receive({ name: 'new host' });
-  assert.equal(h.streams.at(-1).name, 'new host');
-});
-
-test('a hung signaling request has one bounded attempt before a fresh retry', async t => {
-  let active = 0;
-  let maximumActive = 0;
-  let aborted = 0;
-  const h = harness(t, { routes: {
-    '/api/listener/poll': (_body, _options, state) => ({ ...state, messages: [offer()] }),
-    '/api/signal': (_body, options) => new Promise((_resolve, reject) => {
-      active++;
-      maximumActive = Math.max(maximumActive, active);
-      options.signal.addEventListener('abort', () => {
-        active--;
-        aborted++;
-        reject(new Error('Request aborted.'));
-      }, { once: true });
-    }),
-  } });
-  await h.session.start();
-  await flush();
-  assert.equal(active, 1);
-  await h.clock.advance(9999);
-  assert.equal(h.callsTo('/api/listener/poll').length, 1);
-  assert.equal(h.callsTo('/api/listener/join').length, 1);
+  const oldPeer = h.peers[0];
+  const staleTrack = oldPeer.ontrack;
+  const oldStream = { name: 'old voice' };
+  oldPeer.receive(oldStream);
+  oldPeer.connect();
+  first.serverClose();
+  assert.equal(oldPeer.closed, false);
+  assert.equal(h.streams.at(-1), oldStream);
+  await h.clock.advance(999);
+  assert.equal(h.sockets.length, 1);
   await h.clock.advance(1);
-  assert.equal(aborted, 1);
-  assert.equal(maximumActive, 1);
-  assert.equal(active, 1);
-  assert.equal(h.callsTo('/api/listener/poll').length, 2);
-  assert.equal(h.callsTo('/api/listener/join').length, 2);
-  assert.notEqual(h.callsTo('/api/listener/join')[0].body.id,
-    h.callsTo('/api/listener/join')[1].body.id);
-  h.session.stop({ notify: false, state: null });
+  const next = h.sockets[1];
+  next.open();
+  next.message(ready(ID_B));
+  next.message(offer(ID_B, CONN_B));
   await flush();
-  assert.equal(active, 0);
-  assert.equal(maximumActive, 1);
+  assert.equal(oldPeer.closed, false);
+  const newStream = { name: 'new voice' };
+  h.peers[1].receive(newStream);
+  assert.equal(h.streams.at(-1), oldStream);
+  h.peers[1].connect();
+  assert.equal(oldPeer.closed, true);
+  assert.equal(h.streams.at(-1), newStream);
+  staleTrack({ track: { kind: 'audio' }, streams: [{ name: 'stale voice' }] });
+  assert.equal(h.streams.at(-1), newStream);
+  next.message(ready(ID_B, GEN_B));
+  await flush();
+  assert.equal(h.peers[1].closed, true);
+  assert.equal(h.streams.at(-1), null);
+  next.message(offer(ID_B, CONN_A, GEN_A));
+  await flush();
+  assert.equal(h.peers.length, 2);
 });
 
-test('a lost host retries each second while an explicit end stops retries', async t => {
-  const h = harness(t, { routes: { '/api/listener/poll': (_body, _options, state) =>
-    ({ ...state, messages: state.online ? [offer()] : [] }) } });
-  await h.session.start();
+test('waiting preserves healthy audio, while deliberate End stops all retries', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.message(offer());
   await flush();
+  h.peers[0].receive({ name: 'direct voice' });
   h.peers[0].connect();
-  h.state.online = false;
-  await h.clock.advance(2000);
-  assert.equal(h.peers[0].closed, true);
-  assert.equal(h.callsTo('/api/listener/poll').length, 3);
+  ws.message({ type: 'waiting' });
+  await flush();
+  await h.clock.advance(3000);
+  assert.equal(h.peers[0].closed, false);
+  assert.equal(h.sockets.length, 1);
+  assert.equal(ws.sent.filter(frame => frame.type === 'check').length, 3);
   assert.equal(h.states.at(-1).key, 'listener-reconnecting');
-  h.state.ended = true;
-  await h.clock.advance(1000);
+  assert.equal(h.states.at(-1).detail.directReady, true);
+  assert.equal(h.streams.at(-1).name, 'direct voice');
+  ws.message({ type: 'ended' });
+  await flush();
+  assert.equal(h.peers[0].closed, true);
   assert.equal(h.states.at(-1).key, 'broadcast-ended');
-  const endedAt = h.callsTo('/api/listener/poll').length;
   await h.clock.advance(5000);
-  assert.equal(h.callsTo('/api/listener/poll').length, endedAt);
+  assert.equal(h.sockets.length, 1);
 });
 
-test('a full channel keeps retrying until receiver capacity is available', async t => {
-  let full = true;
-  const h = harness(t, { routes: {
-    '/api/listener/join': (body, _options, state) => full ?
-      { status: 409, data: { ...state, error: 'full' } } : { ...state, id: body.id },
-    '/api/listener/poll': (_body, _options, state) => ({ ...state, messages: [offer()] }),
-  } });
-  assert.equal(await h.session.start(), true);
+test('capacity and unknown network failures back off without overlapping handshakes', async t => {
+  const h = harness(t);
+  const ws = await h.begin();
+  ws.message({ type: 'error', error: 'full' });
   await flush();
   assert.equal(h.states.at(-1).key, 'error-full');
   await h.clock.advance(2999);
-  assert.equal(h.callsTo('/api/listener/join').length, 3);
-  assert.equal(h.callsTo('/api/listener/poll').length, 0);
-  full = false;
+  assert.equal(h.sockets.length, 1);
   await h.clock.advance(1);
-  assert.equal(h.callsTo('/api/listener/join').length, 4);
-  assert.equal(h.peers.length, 1);
-  h.peers[0].connect();
-  assert.equal(h.states.at(-1).key, 'listener-listening');
-});
-
-test('a receiver can recover when its initial config request fails', async t => {
-  const h = harness(t, { routes: {
-    '/api/config': () => { throw new Error('Local service temporarily unavailable.'); },
-    '/api/listener/poll': (_body, _options, state) => ({ ...state, messages: [offer()] }),
-  } });
-  assert.equal(await h.session.start(), true);
+  assert.equal(h.sockets.length, 2);
+  await h.clock.advance(10000);
+  assert.equal(h.sockets[1].closed, true);
+  assert.equal(h.sockets.length, 2);
+  await h.clock.advance(1999);
+  assert.equal(h.sockets.length, 2);
+  await h.clock.advance(1);
+  assert.equal(h.sockets.length, 3);
+  h.sockets[2].open();
+  h.sockets[2].message({ type: 'waiting' });
   await flush();
-  assert.ok(h.states.some(state => state.key === 'listener-reconnecting'));
-  assert.equal(h.callsTo('/api/listener/join').length, 1);
-  assert.equal(h.callsTo('/api/listener/poll')[0].body.generation, 1);
-  assert.equal(h.peers.length, 1);
+  await h.clock.advance(3000);
+  assert.equal(h.sockets.length, 3);
+  h.session.stop();
+  assert.equal(h.sockets[2].sent.at(-1).type, 'leave');
 });
 
-test('an expired receiver registration rejoins with a fresh identity', async t => {
-  let expired = true;
-  const h = harness(t, { routes: {
-    '/api/listener/poll': (_body, _options, state) => {
-      if (expired) {
-        expired = false;
-        return { status: 404, data: { ...state, error: 'unknown' } };
-      }
-      return { ...state, messages: [offer(CONNECTION_B)] };
-    },
-  } });
-  await h.session.start();
-  await flush();
-  assert.equal(h.states.at(-1).key, 'listener-reconnecting');
-  await h.clock.advance(1000);
-  const joined = h.callsTo('/api/listener/join');
-  assert.equal(joined.length, 2);
-  assert.notEqual(joined[0].body.id, joined[1].body.id);
-  assert.equal(h.callsTo('/api/listener/leave')[0].body.id, joined[0].body.id);
-  assert.equal(h.peers.length, 1);
-  assert.equal(h.callsTo('/api/signal').at(-1).body.payload.connection, CONNECTION_B);
-});
-
-test('a replacement offer retains early ICE while its previous peer still exists', async t => {
-  let polls = 0;
+test('early ICE is bounded, non-host candidates are rejected, and authority fields are checked', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
   const candidates = Array.from({ length: 140 }, (_unused, index) => ({
     candidate: `candidate:1 1 UDP 2122260223 192.168.1.20 ${50000 + index} typ host`,
     sdpMid: '0', sdpMLineIndex: 0,
   }));
-  const h = harness(t, { routes: { '/api/listener/poll': (_body, _options, state) => {
-    polls++;
-    const messages = polls === 1 ? [offer()] : [
-      ...candidates.map((candidate, index) => ({ seq: index + 2,
-        payload: { type: 'candidate', connection: CONNECTION_B, candidate } })),
-      offer(CONNECTION_B, 142),
-    ];
-    return { ...state, messages };
-  } } });
-  await h.session.start();
+  for (const candidate of candidates) ws.message({ type: 'candidate', from: 'host', to: ID_A,
+    generation: GEN_A, connection: CONN_A, candidate });
+  ws.message({ ...offer(), from: ID_B });
+  ws.message({ ...offer(), to: ID_B });
+  ws.message(offer());
+  await flush(2000);
+  assert.equal(h.peers.length, 1);
+  assert.ok(h.peers[0].candidates.length > 0 && h.peers[0].candidates.length <= 128);
+  assert.deepEqual(h.peers[0].candidates[0], candidates[0]);
+  h.peers[0].candidate(candidates[0]);
+  h.peers[0].candidate({ candidate: 'candidate:2 1 UDP 2122260223 198.51.100.2 50000 typ srflx',
+    sdpMid: '0', sdpMLineIndex: 0 });
+  const sent = ws.sent.filter(frame => frame.type === 'candidate');
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].connection, CONN_A);
+  assert.ok(!('from' in sent[0]) && !('to' in sent[0]));
+  for (let i = 0; i < 5; i++) ws.message(ready());
   await flush();
-  h.peers[0].connect();
-  await h.clock.advance(1000);
-  // This batch intentionally exceeds the pending ICE bound and has many awaits.
-  for (let i = 0; i < 20; i++) await flush();
-  assert.equal(h.peers[0].closed, true);
-  assert.equal(h.peers.length, 2);
-  assert.ok(h.peers[1].candidates.length > 0);
-  assert.ok(h.peers[1].candidates.length <= 128);
-  assert.deepEqual(h.peers[1].candidates[0], candidates[0]);
-  assert.equal(h.callsTo('/api/signal').at(-1).body.payload.connection, CONNECTION_B);
+  assert.equal(h.peers.length, 1);
+  assert.equal(h.peers[0].closed, false);
 });
 
-test('automatic capture loss stops the host without declaring an intentional end', async t => {
+test('microphone loss stops capture without End, while explicit host stop sends End', async t => {
   const mic = microphone();
-  const h = harness(t, { role: 'host', getUserMedia: async () => mic.stream,
-    routes: { '/api/host/poll': (_body, _options, state) =>
-      ({ ...state, listeners: [LISTENER], messages: [] }) } });
-  await h.session.start();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.message({ type: 'join', id: ID_A, generation: GEN_A });
   await flush();
-  h.session.setTalking(true);
   mic.track.onended();
   assert.equal(mic.track.stops, 1);
-  assert.equal(mic.track.onended, null);
   assert.equal(h.peers[0].closed, true);
   assert.equal(h.states.at(-1).key, 'error-microphone');
-  assert.equal(h.callsTo('/api/host/end').length, 0);
-  const pollsAtLoss = h.callsTo('/api/host/poll').length;
-  await h.clock.advance(5000);
-  assert.equal(h.callsTo('/api/host/poll').length, pollsAtLoss);
-  assert.equal(h.callsTo('/api/host/end').length, 0);
+  assert.equal(ws.sent.filter(frame => frame.type === 'end').length, 0);
+  const secondMic = microphone();
+  const other = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => secondMic.stream } });
+  const second = await other.begin();
+  other.session.stop();
+  assert.deepEqual(second.sent.at(-1), { type: 'end', generation: GEN_A });
+  assert.equal(secondMic.track.stops, 1);
+});
+
+test('host grace preserves departing audio briefly and evicts it before exceeding ten peers', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  const ids = Array.from({ length: 11 }, (_unused, index) =>
+    `77777777-7777-4777-8777-${String(index).padStart(12, '0')}`);
+  for (const id of ids.slice(0, 10)) ws.message({ type: 'join', id, generation: GEN_A });
+  await flush(512);
+  for (const peer of h.peers) peer.connect();
+  assert.equal(h.session._peers.size, 10);
+  ws.message({ type: 'leave', id: ids[0], generation: GEN_A });
+  await flush();
+  assert.equal(h.peers[0].closed, false);
+  ws.message({ type: 'join', id: ids[10], generation: GEN_A });
+  await flush();
+  assert.equal(h.peers[0].closed, true);
+  assert.equal(h.session._peers.size, 10);
+  ws.message({ type: 'leave', id: ids[1], generation: GEN_A });
+  await flush();
+  await h.clock.advance(9999);
+  assert.equal(h.peers[1].closed, false);
+  await h.clock.advance(1);
+  assert.equal(h.peers[1].closed, true);
+  assert.ok(h.session._peers.size <= 10);
+});
+
+test('unauthorized or replaced hosts stop capture and cannot reconnect automatically', async t => {
+  const mic = microphone();
+  const h = harness(t, { role: 'host', mediaDevices: { getUserMedia: async () => mic.stream } });
+  const ws = await h.begin();
+  ws.serverClose(4403);
+  assert.equal(mic.track.stops, 1);
+  assert.equal(h.states.at(-1).key, 'error-access');
+  await h.clock.advance(30000);
+  assert.equal(h.sockets.length, 1);
+});
+
+test('temporary socket backpressure retains the unsent tail and flushes it in order', async t => {
+  const h = harness(t);
+  const ws = await h.begin(ready());
+  ws.bufferedAmount = 70000;
+  ws.message(offer());
+  await flush();
+  const candidates = [50000, 50001].map(port => ({
+    candidate: `candidate:1 1 UDP 2122260223 192.168.1.20 ${port} typ host`,
+    sdpMid: '0', sdpMLineIndex: 0,
+  }));
+  for (const candidate of candidates) h.peers[0].candidate(candidate);
+  await h.clock.advance(1000);
+  assert.equal(ws.sent.filter(frame => frame.type === 'answer').length, 0);
+  assert.equal(ws.sent.filter(frame => frame.type === 'candidate').length, 0);
+  ws.pauseAfterSends = ws.sent.length + 1;
+  ws.bufferedAmount = 0;
+  await h.clock.advance(1000);
+  assert.equal(ws.sent.filter(frame => frame.type === 'answer').length, 1);
+  assert.equal(ws.sent.filter(frame => frame.type === 'candidate').length, 0);
+  ws.pauseAfterSends = null;
+  ws.bufferedAmount = 0;
+  await h.clock.advance(1000);
+  const delivered = ws.sent.filter(frame => ['answer', 'candidate'].includes(frame.type));
+  assert.deepEqual(delivered.map(frame => frame.type), ['answer', 'candidate', 'candidate']);
+  assert.deepEqual(delivered.slice(1).map(frame => frame.candidate), candidates);
 });

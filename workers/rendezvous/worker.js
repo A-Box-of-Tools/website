@@ -1,5 +1,5 @@
-// The rendezvous for /share-text/: the one server component anything on this
-// site has, and deliberately the smallest one that could work.
+// The rendezvous for the site's direct browser connections: one server
+// component, carrying introductions rather than the content they negotiate.
 //
 // It upgrades /ws/<code> to a WebSocket handled by one Durable Object per
 // code word. The object stores nothing - its whole state is the sockets
@@ -39,8 +39,9 @@
 // is for that. Local builds are served from localhost and need the live
 // rendezvous to try the tool at all, so localhost is let in on any port.
 import { DISCOVERY_SCOPE_HEADER, Discovery, discoveryScope, pageOrigin, rendezvousTool, roomName, validPublication, validScope } from "./discovery.js";
+import { Broadcast } from "./broadcast.js";
 
-export { Discovery };
+export { Broadcast, Discovery };
 // Every pull request is deployed to a preview of its own on Cloudflare Pages
 // (see the `preview` job in .github/workflows/build.yml), at
 // https://pr-<n>.abox-preview.pages.dev, and the QA suite is run against it -
@@ -56,10 +57,23 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/") {
       return new Response(
-        "The rendezvous for abox.tools/share-text/. It introduces two "
-        + "browsers to each other and never sees what they exchange.\n",
+        "The rendezvous for abox.tools/share-text/, remote-camera/, and walkie-talkie/. "
+        + "It introduces browsers to each other and never sees what they exchange.\n",
         { headers: { "content-type": "text/plain; charset=utf-8" } },
       );
+    }
+    const broadcast = url.pathname.match(/^\/broadcast\/([a-f0-9]{64})$/);
+    if (broadcast) {
+      // A separate binding leaves text/camera rooms and their relay protocol
+      // unchanged. Voice capabilities enter the first WSS frame, never a URL.
+      if (url.search) return new Response("unexpected parameters", { status: 400 });
+      if (request.headers.get("Upgrade") !== "websocket") return new Response("expected a websocket", { status: 426 });
+      if (!fromOurPage(request.headers.get("Origin"))) return new Response("not for this page", { status: 403 });
+      const knock = await env.LIMIT.limit({ key: request.headers.get("CF-Connecting-IP") ?? "" });
+      if (!knock.success) return new Response("too many connections from this address", { status: 429 });
+      const headers = new Headers(request.headers);
+      headers.delete(DISCOVERY_SCOPE_HEADER);
+      return env.BROADCASTS.get(env.BROADCASTS.idFromName(broadcast[1])).fetch(new Request(request, { headers }));
     }
     const room = url.pathname.match(/^\/ws\/([a-z0-9][a-z0-9-]{0,63})$/);
     if (room || url.pathname === "/discover") {
