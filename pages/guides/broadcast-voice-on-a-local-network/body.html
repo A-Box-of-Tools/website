@@ -1,0 +1,16 @@
+<main id="main">
+  <h2>Start on the speaking computer</h2>
+  <p>Download the tool&rsquo;s local ZIP, extract it, and run <code>python helper.py</code> from its folder with Python 3.10 or later. No extra packages are needed. Keep its window open. Open the printed <code>http://localhost:</code> host invitation on that computer, choose Start channel and allow microphone access.</p>
+  <h2>Invite listeners</h2>
+  <p>Choose the intended network address on the host and share its listener link or QR code. Phones and computers can listen through reachable Wi-Fi or Ethernet. They never request microphone access. Playback is attempted automatically; if the browser blocks sound, the existing Unmute control starts it. Mute/Unmute and Leave are the only listener controls.</p>
+  <h2>Hold to talk</h2>
+  <p>Hold the Talk button with touch or a mouse, or focus it and hold Space. Release to stop sending voice. Tap to talk offers click-to-start and click-to-stop. Host mute overrides both. Keep the host page visible and the computer awake; hiding the page releases capture.</p>
+  <p>Up to ten listeners may connect, including pending connections. The host sends a separate stream to each. Begin with a small group and check the computer and network you intend to use.</p>
+  <h2>Recover a lost host</h2>
+  <p>Listeners show Reconnecting and check the connection in place with a one-second target while their page is active. Their mute choice stays the same. Open the same host invitation through the running helper and start again to resume. Background browsers and sleeping devices can delay retries.</p>
+  <p>End broadcast releases the microphone and deliberately ends the session. Leave stops one listener and its retries. Restarting the helper creates new invitations, so share its new listener link.</p>
+  <h2>Use a trusted network</h2>
+  <p>Anyone with the listener link and access to the helper can join. WebRTC encrypts voice, but the helper uses HTTP for setup and invitation credentials. An active attacker on the LAN can observe or alter that setup. The bundle has no remote scripts or assets, and the helper receives no audio. No recording feature or public relay is used; recipients can independently record what they hear.</p>
+  <h2>Check reachability</h2>
+  <p>Check private-network firewall permission, the selected LAN address and browser local-network permissions. Guest Wi-Fi can isolate devices; VPN and operating-system routes can affect host addresses. If automatic discovery misses an interface, run <code>python helper.py --address 192.168.1.20</code>, replacing the example with the computer&rsquo;s actual private IPv4 address.</p>
+</main>
